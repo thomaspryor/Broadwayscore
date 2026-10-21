@@ -1,35 +1,13 @@
 {
-  "generatedAt": "2026-10-21T09:52:10.365Z",
+  "generatedAt": "2026-10-21T10:54:03.471Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 250,
-  "clean": 249,
-  "defective": 1,
-  "byType": {
-    "missing-from-prod": 1
-  },
-  "shows": [
-    {
-      "showId": "midnight-off-broadway-2026",
-      "title": "Midnight",
-      "openingDate": "2026-10-15",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "2 scored outlet(s) absent from the deployed payload: blackstarreviews, yeahimfamous"
-        }
-      ],
-      "missingFromProd": [
-        "blackstarreviews",
-        "yeahimfamous"
-      ],
-      "localCount": 17,
-      "deployedCount": 17,
-      "firstDefectAt": "2026-10-21T09:52:03.272Z"
-    }
-  ],
+  "clean": 250,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

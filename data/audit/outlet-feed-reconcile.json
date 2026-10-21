@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T09:52:10.712Z",
+  "generatedAt": "2026-10-21T10:54:03.781Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -193,13 +193,9 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 709,
+  "itemsScanned": 738,
   "matchedGaps": 7,
   "possibleGaps": 5,
   "gaps": [
@@ -219,6 +215,15 @@
       "outletId": "off-off-online",
       "url": "https://www.offoffonline.com/offoffonline/2026/10/16/copperfield-the-new-musical",
       "headline": "Copperfield! The New Musical",
+      "publishDate": "2026-10-20"
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
+      "title": "Ilford Boy",
+      "level": "matched",
+      "outletId": "theatre-weekly",
+      "url": "https://theatreweekly.com/review-ilford-boy-at-donmar-warehouse/",
+      "headline": "Review: Ilford Boy at Donmar Warehouse",
       "publishDate": "2026-10-20"
     },
     {
@@ -247,15 +252,6 @@
       "url": "https://liamodell.com/2026/10/21/some-woman-review-dorfman-theatre-national-theatre-play-anne-marie-duff-helen-edmundson-cast/",
       "headline": "‘Some Woman’ review &#8211; Anne-Marie Duff is complex and captivating in this shocking drama",
       "publishDate": "2026-10-21"
-    },
-    {
-      "showId": "the-dog-show-come-sit-stay-off-broadway-2026",
-      "title": "The Dog Show: Come. Sit. Stay.",
-      "level": "matched",
-      "outletId": "theater-pizzazz",
-      "url": "https://theaterpizzazz.com/the-dog-show-come-sit-stay/",
-      "headline": "&#8220;The Dog Show: Come. Sit. Stay.&#8221;",
-      "publishDate": "2026-10-20"
     },
     {
       "showId": "triumph-off-west-end-2026",

@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-21T09:46:32.652Z",
+  "generatedAt": "2026-10-21T10:53:45.610Z",
   "windowDays": 1095,
-  "targets": 637,
-  "auditedThisRun": 8,
-  "carriedForward": 758,
+  "targets": 630,
+  "auditedThisRun": 13,
+  "carriedForward": 753,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 424,
-    "missingCurrentRun": 773,
+    "withGap": 425,
+    "missingCurrentRun": 768,
     "totalCitedNoUrl": 3,
-    "totalFlaggedMisses": 893,
-    "totalRecoverable": 11,
+    "totalFlaggedMisses": 895,
+    "totalRecoverable": 12,
     "totalRecovered": 18,
     "humanExcluded": 5,
-    "automatedExcluded": 278,
-    "automatedExcludedListed": 225,
-    "priorProductionCitations": 5244
+    "automatedExcluded": 280,
+    "automatedExcludedListed": 227,
+    "priorProductionCitations": 5250
   },
   "results": [
     {
@@ -24270,7 +24270,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 2,
+            "results": 4,
             "accepted": 0,
             "error": null
           }
@@ -24281,14 +24281,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 16,
+        "count": 18,
         "byReason": {
-          "non-review-host": 11,
-          "write-path-blocked": 1,
+          "non-review-host": 13,
           "aggregator-internal-nav": 1,
-          "ticketing-reseller": 1,
+          "write-path-blocked": 1,
           "census-junk-host": 1,
-          "tag-index-page": 1
+          "tag-index-page": 1,
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [],
@@ -24319,7 +24319,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-20T21:11:21.454Z"
+      "computedAt": "2026-10-21T10:53:45.610Z"
     },
     {
       "showId": "bone-wars-a-new-musical-off-broadway-2026",
@@ -26073,12 +26073,20 @@
       "status": "open",
       "category": "tour",
       "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-boop-the-musical-on-broadway",
         "https://playbill.com/article/reviews-see-what-critics-have-to-say-about-boop-the-betty-boop-musical-in-chicago",
+        "https://playbill.com/article/read-the-reviews-for-boop-the-musical-on-broadway",
         "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
         "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-BETTY-BOOP-MUSICAL-Opens-Pre-Broadway-Run-in-Chicago-20231207"
       ],
       "aggregatorListedUrls": [
+        "https://chicagoconcertreviews.com/2023/12/06/boop-cibc-theatre/",
+        "https://chicagocultureauthority.com/2023/12/07/boop-the-musical-proves-ready-for-its-colorful-close-up-in-pre-broadway-chicago-premiere/",
+        "https://chicago.suntimes.com/2023/12/7/23992246/boop-review-betty-musical-chicago-cibc-theatre-jasmine-amy-rogers-jerry-mitchell",
+        "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-boop-musical-chicago-review-20231207-il5ulvagu5awzhoi3t4nx7z5gy-story.html",
+        "https://www.newcitystage.com/2023/12/08/in-living-color-a-review-of-boop-the-betty-boop-musical-at-broadway-in-chicago/",
+        "https://rollingout.com/2023/12/08/boop-blending-fantasy-and-real-life/",
+        "https://www.shawlocal.com/northwest-herald/2023/12/08/boop-the-musical-a-3d-rainbow-playing-chicago-before-heading-to-broadway/",
+        "https://news.wttw.com/2023/12/07/girl-named-boop-headed-broadway-review",
         "https://www.amny.com/entertainment/broadway/boop-the-musical-boop-oop-a-dont/",
         "https://www.chicagotribune.com/2025/04/07/review-boop-the-musical-broadway/",
         "https://cititour.com/NYC_Broadway/Boop/1293",
@@ -26096,29 +26104,74 @@
         "https://variety.com/2025/legit/reviews/boop-review-broadway-musical-1236361705/",
         "https://www.washingtonpost.com/entertainment/theater/2025/04/10/boop-smash-broadway-review/",
         "https://www.thewrap.com/boop-the-musical-broadway-review-david-foster/",
-        "https://chicagoconcertreviews.com/2023/12/06/boop-cibc-theatre/",
-        "https://chicagocultureauthority.com/2023/12/07/boop-the-musical-proves-ready-for-its-colorful-close-up-in-pre-broadway-chicago-premiere/",
-        "https://chicago.suntimes.com/2023/12/7/23992246/boop-review-betty-musical-chicago-cibc-theatre-jasmine-amy-rogers-jerry-mitchell",
-        "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-boop-musical-chicago-review-20231207-il5ulvagu5awzhoi3t4nx7z5gy-story.html",
-        "https://www.newcitystage.com/2023/12/08/in-living-color-a-review-of-boop-the-betty-boop-musical-at-broadway-in-chicago/",
-        "https://rollingout.com/2023/12/08/boop-blending-fantasy-and-real-life/",
-        "https://www.shawlocal.com/northwest-herald/2023/12/08/boop-the-musical-a-3d-rainbow-playing-chicago-before-heading-to-broadway/",
-        "https://news.wttw.com/2023/12/07/girl-named-boop-headed-broadway-review",
         "https://www.timesunion.com/theater/article/review-boop-the-musical-tour-proctors-22466983.php",
-        "https://www.yahoo.com/entertainment/music/articles/review-boop-playful-yet-perplexing-150000630.html",
-        "https://www.newsfromme.com/2026/10/05/the-boop-report/",
-        "https://www.timesunion.com/theater/article/boop-the-musical-aliya-grace-proctors-theatre-22473535.php",
+        "https://www.saratogian.com/2026/10/14/review-boop-the-musical-turns-a-comic-icon-into-a-star-of-a-broadway-musical/",
         "https://meganannrasmussen.com/reviews/boop-the-musical",
-        "https://www.broadwaynews.com/boop-the-musical-sets-50-week-north-american-tour/",
         "https://popcultblog.com/review-revisited-boop-hits-broadway",
         "https://reallytallguy.com/theatre/reviews/boop/",
-        "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/boop-the-musical-broadway-a-post-show-analysis/271",
+        "https://www.broadwaynews.com/boop-the-musical-sets-50-week-north-american-tour/",
         "https://didtheylikeit.com/shows/boop-the-musical/boop-broadway-review/"
       ],
-      "dirFiles": 4,
-      "dirClean": 1,
-      "inReviewsJson": 1,
+      "dirFiles": 7,
+      "dirClean": 2,
+      "inReviewsJson": 2,
       "missing": [
+        {
+          "url": "https://chicagoconcertreviews.com/2023/12/06/boop-cibc-theatre/",
+          "host": "chicagoconcertreviews.com",
+          "knownOutletId": "chicagoconcertreviews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://chicagocultureauthority.com/2023/12/07/boop-the-musical-proves-ready-for-its-colorful-close-up-in-pre-broadway-chicago-premiere/",
+          "host": "chicagocultureauthority.com",
+          "knownOutletId": "chicagocultureauthority",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://chicago.suntimes.com/2023/12/7/23992246/boop-review-betty-musical-chicago-cibc-theatre-jasmine-amy-rogers-jerry-mitchell",
+          "host": "suntimes.com",
+          "knownOutletId": "chicago-sun-times",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-boop-musical-chicago-review-20231207-il5ulvagu5awzhoi3t4nx7z5gy-story.html",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newcitystage.com/2023/12/08/in-living-color-a-review-of-boop-the-betty-boop-musical-at-broadway-in-chicago/",
+          "host": "newcitystage.com",
+          "knownOutletId": "new-city-stage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://rollingout.com/2023/12/08/boop-blending-fantasy-and-real-life/",
+          "host": "rollingout.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.shawlocal.com/northwest-herald/2023/12/08/boop-the-musical-a-3d-rainbow-playing-chicago-before-heading-to-broadway/",
+          "host": "shawlocal.com",
+          "knownOutletId": "shaw-local",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://news.wttw.com/2023/12/07/girl-named-boop-headed-broadway-review",
+          "host": "wttw.com",
+          "knownOutletId": "wttw",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
         {
           "url": "https://www.amny.com/entertainment/broadway/boop-the-musical-boop-oop-a-dont/",
           "host": "amny.com",
@@ -26239,89 +26292,9 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://chicagoconcertreviews.com/2023/12/06/boop-cibc-theatre/",
-          "host": "chicagoconcertreviews.com",
-          "knownOutletId": "chicagoconcertreviews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://chicagocultureauthority.com/2023/12/07/boop-the-musical-proves-ready-for-its-colorful-close-up-in-pre-broadway-chicago-premiere/",
-          "host": "chicagocultureauthority.com",
-          "knownOutletId": "chicagocultureauthority",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://chicago.suntimes.com/2023/12/7/23992246/boop-review-betty-musical-chicago-cibc-theatre-jasmine-amy-rogers-jerry-mitchell",
-          "host": "suntimes.com",
-          "knownOutletId": "chicago-sun-times",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-boop-musical-chicago-review-20231207-il5ulvagu5awzhoi3t4nx7z5gy-story.html",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newcitystage.com/2023/12/08/in-living-color-a-review-of-boop-the-betty-boop-musical-at-broadway-in-chicago/",
-          "host": "newcitystage.com",
-          "knownOutletId": "new-city-stage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://rollingout.com/2023/12/08/boop-blending-fantasy-and-real-life/",
-          "host": "rollingout.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.shawlocal.com/northwest-herald/2023/12/08/boop-the-musical-a-3d-rainbow-playing-chicago-before-heading-to-broadway/",
-          "host": "shawlocal.com",
-          "knownOutletId": "shaw-local",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://news.wttw.com/2023/12/07/girl-named-boop-headed-broadway-review",
-          "host": "wttw.com",
-          "knownOutletId": "wttw",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timesunion.com/theater/article/review-boop-the-musical-tour-proctors-22466983.php",
-          "host": "timesunion.com",
-          "knownOutletId": "albany-times-union",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.yahoo.com/entertainment/music/articles/review-boop-playful-yet-perplexing-150000630.html",
-          "host": "yahoo.com",
-          "knownOutletId": "yahoo",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.timesunion.com/theater/article/boop-the-musical-aliya-grace-proctors-theatre-22473535.php",
-          "host": "timesunion.com",
-          "knownOutletId": "albany-times-union",
-          "serpCensus": true
-        },
-        {
           "url": "https://meganannrasmussen.com/reviews/boop-the-musical",
           "host": "meganannrasmussen.com",
           "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.broadwaynews.com/boop-the-musical-sets-50-week-north-american-tour/",
-          "host": "broadwaynews.com",
-          "knownOutletId": "broadwaynews",
           "serpCensus": true
         },
         {
@@ -26337,9 +26310,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/boop-the-musical-broadway-a-post-show-analysis/271",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork",
+          "url": "https://www.broadwaynews.com/boop-the-musical-sets-50-week-north-american-tour/",
+          "host": "broadwaynews.com",
+          "knownOutletId": "broadwaynews",
           "serpCensus": true
         },
         {
@@ -26349,8 +26322,71 @@
           "serpCensus": true
         }
       ],
-      "dirOnly": [],
-      "flaggedMisses": [],
+      "dirOnly": [
+        {
+          "host": "newsfromme.com",
+          "count": 1
+        },
+        {
+          "host": "dailygazette.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.timesunion.com/theater/article/review-boop-the-musical-tour-proctors-22466983.php",
+          "host": "timesunion.com",
+          "knownOutletId": "albany-times-union",
+          "recoverable": true,
+          "recoverableFile": "albany-times-union--katherine-kiessling.json",
+          "recoverableOutletId": "albany-times-union",
+          "recoverableCritic": "Katherine Kiessling",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "albany-times-union--katherine-kiessling.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.timesunion.com/theater/article/review-boop-the-musical-tour-proctors-22466983.php"
+            },
+            {
+              "file": "albany-times-union--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.timesunion.com/theater/article/review-boop-the-musical-tour-proctors-22466983.php"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "noTextOrScoreSignal",
+            "duplicateOf"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://www.saratogian.com/2026/10/14/review-boop-the-musical-turns-a-comic-icon-into-a-star-of-a-broadway-musical/",
+          "host": "saratogian.com",
+          "knownOutletId": "the-saratogian",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "the-saratogian--bob-goepfert.json",
+              "flag": "clean",
+              "urlInDir": "https://www.saratogian.com/2026/10/14/review-boop-the-musical-turns-a-comic-icon-into-a-star-of-a-broadway-musical/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -26364,8 +26400,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 4,
+            "results": 10,
+            "accepted": 2,
             "error": null
           },
           {
@@ -26385,7 +26421,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -26395,7 +26431,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -26411,34 +26447,35 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 12,
+        "resultCount": 8,
         "error": null
       },
       "candidatesRejected": {
-        "count": 843,
+        "count": 847,
         "byReason": {
-          "non-review-host": 95,
-          "aggregator-internal-nav": 583,
-          "show-hub": 1,
+          "non-review-host": 96,
+          "aggregator-internal-nav": 581,
+          "roundup-page": 5,
           "not-http-url": 84,
-          "aggregator-section-root": 16,
-          "roundup-page": 1,
           "production-database-listing": 57,
+          "aggregator-section-root": 16,
+          "bare-host": 1,
+          "non-review-path": 3,
+          "no-review-evidence": 1,
           "ticketing-reseller": 1,
-          "bare-host": 2,
-          "non-review-path": 2,
-          "show-listing-page": 1
+          "show-listing-page": 1,
+          "show-hub": 1
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
         {
-          "url": "https://playbill.com/article/read-the-reviews-for-boop-the-musical-on-broadway",
-          "publishDate": "2025-04-07"
-        },
-        {
           "url": "https://playbill.com/article/reviews-see-what-critics-have-to-say-about-boop-the-betty-boop-musical-in-chicago",
           "publishDate": "2023-12-07"
+        },
+        {
+          "url": "https://playbill.com/article/read-the-reviews-for-boop-the-musical-on-broadway",
+          "publishDate": "2025-04-07"
         },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
@@ -26449,206 +26486,186 @@
           "publishDate": "2023-12-07"
         }
       ],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
-        {
-          "url": "https://www.amny.com/entertainment/broadway/boop-the-musical-boop-oop-a-dont/",
-          "host": "amny.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.chicagotribune.com/2025/04/07/review-boop-the-musical-broadway/",
-          "host": "chicagotribune.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://cititour.com/NYC_Broadway/Boop/1293",
-          "host": "cititour.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://culturesauce.com/2025/04/07/betty-boop-musical-broadway-review/",
-          "host": "culturesauce.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.thedailybeast.com/review-boop-the-musical-should-turn-betty-boop-into-the-new-barbie/",
-          "host": "thedailybeast.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://nypost.com/2025/04/07/entertainment/boop-review-broadway-star-jasmine-amy-rogers-is-born-in-new-musical/",
-          "host": "nypost.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://nystagereview.com/2025/04/07/boop-boop-oop-a-doop/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://nystagereview.com/2025/04/07/boop-betty-brightens-broadway-but/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://newyorktheater.me/2025/04/07/boop-broadway-review/",
-          "host": "newyorktheater.me",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/boop-the-musical-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.nytimes.com/2025/04/07/theater/boop-the-musical-review-broadway.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.slantmagazine.com/theater/boop-the-musical-review/",
-          "host": "slantmagazine.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.theatrely.com/post/boop-the-musical-betty-lands-on-broadway-and-broadway-gains-a-star-review",
-          "host": "theatrely.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/boop-the-musical-broadway-review-betty-boop-jasmine-amy-rogers",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://variety.com/2025/legit/reviews/boop-review-broadway-musical-1236361705/",
-          "host": "variety.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.washingtonpost.com/entertainment/theater/2025/04/10/boop-smash-broadway-review/",
-          "host": "washingtonpost.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.thewrap.com/boop-the-musical-broadway-review-david-foster/",
-          "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
         {
           "url": "https://chicagoconcertreviews.com/2023/12/06/boop-cibc-theatre/",
           "host": "chicagoconcertreviews.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://chicagocultureauthority.com/2023/12/07/boop-the-musical-proves-ready-for-its-colorful-close-up-in-pre-broadway-chicago-premiere/",
           "host": "chicagocultureauthority.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://chicago.suntimes.com/2023/12/7/23992246/boop-review-betty-musical-chicago-cibc-theatre-jasmine-amy-rogers-jerry-mitchell",
           "host": "suntimes.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-boop-musical-chicago-review-20231207-il5ulvagu5awzhoi3t4nx7z5gy-story.html",
           "host": "chicagotribune.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.newcitystage.com/2023/12/08/in-living-color-a-review-of-boop-the-betty-boop-musical-at-broadway-in-chicago/",
           "host": "newcitystage.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://rollingout.com/2023/12/08/boop-blending-fantasy-and-real-life/",
           "host": "rollingout.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.shawlocal.com/northwest-herald/2023/12/08/boop-the-musical-a-3d-rainbow-playing-chicago-before-heading-to-broadway/",
           "host": "shawlocal.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://news.wttw.com/2023/12/07/girl-named-boop-headed-broadway-review",
           "host": "wttw.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.amny.com/entertainment/broadway/boop-the-musical-boop-oop-a-dont/",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.chicagotribune.com/2025/04/07/review-boop-the-musical-broadway/",
+          "host": "chicagotribune.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Boop/1293",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://culturesauce.com/2025/04/07/betty-boop-musical-broadway-review/",
+          "host": "culturesauce.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/review-boop-the-musical-should-turn-betty-boop-into-the-new-barbie/",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2025/04/07/entertainment/boop-review-broadway-star-jasmine-amy-rogers-is-born-in-new-musical/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2025/04/07/boop-boop-oop-a-doop/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2025/04/07/boop-betty-brightens-broadway-but/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://newyorktheater.me/2025/04/07/boop-broadway-review/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/boop-the-musical-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2025/04/07/theater/boop-the-musical-review-broadway.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.slantmagazine.com/theater/boop-the-musical-review/",
+          "host": "slantmagazine.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/boop-the-musical-betty-lands-on-broadway-and-broadway-gains-a-star-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/boop-the-musical-broadway-review-betty-boop-jasmine-amy-rogers",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2025/legit/reviews/boop-review-broadway-musical-1236361705/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2025/04/10/boop-smash-broadway-review/",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/boop-the-musical-broadway-review-david-foster/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         }
       ],
       "ingestResults": [
-        {
-          "url": "https://www.timesunion.com/theater/article/review-boop-the-musical-tour-proctors-22466983.php",
-          "host": "timesunion.com",
-          "outletId": "albany-times-union",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        },
-        {
-          "url": "https://www.yahoo.com/entertainment/music/articles/review-boop-playful-yet-perplexing-150000630.html",
-          "host": "yahoo.com",
-          "outletId": "yahoo",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "Fetch failed: All scraping methods failed"
-        },
-        {
-          "url": "https://www.timesunion.com/theater/article/boop-the-musical-aliya-grace-proctors-theatre-22473535.php",
-          "host": "timesunion.com",
-          "outletId": "albany-times-union",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        },
         {
           "url": "https://meganannrasmussen.com/reviews/boop-the-musical",
           "host": "meganannrasmussen.com",
@@ -26658,11 +26675,41 @@
           "noop": true,
           "conflict": false,
           "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": true,
+          "expected": true,
+          "expectedReason": "tour-review",
+          "unclassified": false,
           "zeroChar": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (tour)"
+          "reason": "boop-tour-2026: https://meganannrasmussen.com/reviews/boop-the-musical looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
+        },
+        {
+          "url": "https://popcultblog.com/review-revisited-boop-hits-broadway",
+          "host": "popcultblog.com",
+          "outletId": "popcultblog",
+          "provisional": true,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "tour-review",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "boop-tour-2026: https://popcultblog.com/review-revisited-boop-hits-broadway looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
+        },
+        {
+          "url": "https://reallytallguy.com/theatre/reviews/boop/",
+          "host": "reallytallguy.com",
+          "outletId": "reallytallguy",
+          "provisional": true,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "tour-review",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "boop-tour-2026: https://reallytallguy.com/theatre/reviews/boop/ looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
         },
         {
           "url": "https://www.broadwaynews.com/boop-the-musical-sets-50-week-north-american-tour/",
@@ -26673,72 +26720,46 @@
           "noop": true,
           "conflict": false,
           "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": true,
+          "expected": true,
+          "expectedReason": "tour-review",
+          "unclassified": false,
           "zeroChar": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (tour)"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://popcultblog.com/review-revisited-boop-hits-broadway",
-          "host": "popcultblog.com",
-          "outletId": "popcultblog"
-        },
-        {
-          "url": "https://reallytallguy.com/theatre/reviews/boop/",
-          "host": "reallytallguy.com",
-          "outletId": "reallytallguy"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/boop-the-musical-broadway-a-post-show-analysis/271",
-          "host": "broadwaypodcastnetwork.com",
-          "outletId": "broadwaypodcastnetwork"
+          "reason": "boop-tour-2026: https://www.broadwaynews.com/boop-the-musical-sets-50-week-north-american-tour/ looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
         },
         {
           "url": "https://didtheylikeit.com/shows/boop-the-musical/boop-broadway-review/",
           "host": "didtheylikeit.com",
-          "outletId": "dtli"
+          "outletId": "dtli",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "tour-review",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "boop-tour-2026: https://didtheylikeit.com/shows/boop-the-musical/boop-broadway-review/ looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [],
+      "recoverySkippedByCap": [
+        {
+          "url": "https://www.timesunion.com/theater/article/review-boop-the-musical-tour-proctors-22466983.php",
+          "host": "timesunion.com",
+          "file": "albany-times-union--katherine-kiessling.json"
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "albany-times-union",
-            "outlet": "albany-times-union",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timesunion.com/theater/article/review-boop-the-musical-tour-proctors-22466983.php"
-          },
-          {
-            "outletId": "yahoo",
-            "outlet": "yahoo",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.yahoo.com/entertainment/music/articles/review-boop-playful-yet-perplexing-150000630.html"
-          },
-          {
-            "outletId": "albany-times-union",
-            "outlet": "albany-times-union",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timesunion.com/theater/article/boop-the-musical-aliya-grace-proctors-theatre-22473535.php"
-          },
-          {
             "outletId": "meganannrasmussen.com",
             "outlet": "meganannrasmussen.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://meganannrasmussen.com/reviews/boop-the-musical"
-          },
-          {
-            "outletId": "broadwaynews",
-            "outlet": "broadwaynews",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.broadwaynews.com/boop-the-musical-sets-50-week-north-american-tour/"
           },
           {
             "outletId": "popcultblog.com",
@@ -26755,11 +26776,11 @@
             "url": "https://reallytallguy.com/theatre/reviews/boop/"
           },
           {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
+            "outletId": "broadwaynews",
+            "outlet": "broadwaynews",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/boop-the-musical-broadway-a-post-show-analysis/271"
+            "url": "https://www.broadwaynews.com/boop-the-musical-sets-50-week-north-american-tour/"
           },
           {
             "outletId": "dtli",
@@ -26767,47 +26788,27 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://didtheylikeit.com/shows/boop-the-musical/boop-broadway-review/"
+          },
+          {
+            "outletId": "albany-times-union",
+            "outlet": "albany-times-union",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timesunion.com/theater/article/review-boop-the-musical-tour-proctors-22466983.php"
+          },
+          {
+            "outletId": "the-saratogian",
+            "outlet": "the-saratogian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.saratogian.com/2026/10/14/review-boop-the-musical-turns-a-comic-icon-into-a-star-of-a-broadway-musical/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.newsfromme.com/2026/10/05/the-boop-report/",
-            "outletId": "newsfromme.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-05T17:43:35.209Z"
-          },
-          {
-            "url": "https://www.timesunion.com/theater/article/review-boop-the-musical-tour-proctors-22466983.php",
-            "outletId": "albany-times-union",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T01:58:23.533Z"
-          },
-          {
-            "url": "https://www.yahoo.com/entertainment/music/articles/review-boop-playful-yet-perplexing-150000630.html",
-            "outletId": "yahoo",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T01:58:23.533Z"
-          },
-          {
-            "url": "https://www.timesunion.com/theater/article/boop-the-musical-aliya-grace-proctors-theatre-22473535.php",
-            "outletId": "albany-times-union",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T01:58:23.533Z"
-          },
-          {
             "url": "https://meganannrasmussen.com/reviews/boop-the-musical",
             "outletId": "meganannrasmussen.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T01:35:25.861Z"
-          },
-          {
-            "url": "https://www.broadwaynews.com/boop-the-musical-sets-50-week-north-american-tour/",
-            "outletId": "broadwaynews",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-05T01:35:25.861Z"
@@ -26827,11 +26828,11 @@
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
           },
           {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/boop-the-musical-broadway-a-post-show-analysis/271",
-            "outletId": "broadwaypodcastnetwork",
+            "url": "https://www.broadwaynews.com/boop-the-musical-sets-50-week-north-american-tour/",
+            "outletId": "broadwaynews",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T01:58:23.533Z"
+            "firstSeenAt": "2026-10-05T01:35:25.861Z"
           },
           {
             "url": "https://didtheylikeit.com/shows/boop-the-musical/boop-broadway-review/",
@@ -26839,13 +26840,27 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
+          },
+          {
+            "url": "https://www.timesunion.com/theater/article/review-boop-the-musical-tour-proctors-22466983.php",
+            "outletId": "albany-times-union",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-16T01:58:23.533Z"
+          },
+          {
+            "url": "https://www.saratogian.com/2026/10/14/review-boop-the-musical-turns-a-comic-icon-into-a-star-of-a-broadway-musical/",
+            "outletId": "the-saratogian",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-21T10:53:45.610Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 1,
-        "candidateCount": 9
+        "liveCount": 0,
+        "candidateCount": 7
       },
-      "computedAt": "2026-10-16T01:58:23.533Z"
+      "computedAt": "2026-10-21T10:53:45.610Z"
     },
     {
       "showId": "brainiac-live-west-end-2026",
@@ -47135,7 +47150,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-21T00:49:57.456Z"
+      "computedAt": "2026-10-21T10:53:45.610Z"
     },
     {
       "showId": "dinosaur-world-live-off-west-end-2026",
@@ -99776,7 +99791,6 @@
         "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404",
         "https://www.broadwayworld.com/article/Review-Roundup-The-Publics-KING-LEAR-Opens-at-the-Delacorte-20140805",
         "https://www.broadwayworld.com/article/Review-Roundup-Kenneth-Branagh-Directed-KING-LEAR-Opens-at-The-Shed-20241114",
-        "https://www.broadwayworld.com/article/Review-Roundup-The-Publics-KING-LEAR-Opens-at-the-Delacorte-20140805",
         "https://www.broadwayworld.com/article/Review-Roundup-Amazon-Primes-KING-LEAR-with-Anthony-Hopkins-and-Emma-Thompson-20180927"
       ],
       "aggregatorListedUrls": [
@@ -99833,10 +99847,6 @@
         "https://www.nj.com/entertainment/2019/04/glenda-jackson-roars-in-an-amazing-king-lear-on-broadway-review.html",
         "https://www.thedailybeast.com/glenda-jackson-in-shakespeares-king-lear-on-broadway-tragedy-and-a-lot-of-trump-era-sighing",
         "https://www.theguardian.com/stage/2019/apr/04/king-lear-shakespeare-glenda-jackson-broadway",
-        "https://www.nytimes.com/2024/11/14/theater/king-lear-review-kenneth-branagh.html",
-        "https://observer.com/2024/11/review-kenneth-branaghs-king-lear-howls-into-a-stormy-rushed-muddle/",
-        "https://www.theatrely.com/post/a-hasty-king-lear-at-the-shed-review",
-        "https://www.newyorktheatreguide.com/reviews/king-lear-off-broadway-review-kenneth-branagh",
         "http://www.nytimes.com/2014/08/06/theater/king-lear-in-central-park-starring-john-lithgow.html",
         "http://www.vulture.com/2014/08/theater-review-king-lear-public-theater-john-lithgow.html",
         "http://www.newsday.com/entertainment/theater/king-lear-review-hail-john-lithgow-1.8945797",
@@ -99851,38 +99861,42 @@
         "http://www.amny.com/entertainment/king-lear-review-john-lithgow-superb-in-shakespeare-in-the-park-production-1.8971915",
         "https://www.theguardian.com/stage/2014/aug/06/king-lear-shakespeare-central-park-john-lithgow-review",
         "http://www.deadline.com/2014/08/king-lear-central-park-john-lithgow-annette-bening-review/",
+        "https://www.nytimes.com/2024/11/14/theater/king-lear-review-kenneth-branagh.html",
+        "https://observer.com/2024/11/review-kenneth-branaghs-king-lear-howls-into-a-stormy-rushed-muddle/",
+        "https://www.theatrely.com/post/a-hasty-king-lear-at-the-shed-review",
+        "https://www.newyorktheatreguide.com/reviews/king-lear-off-broadway-review-kenneth-branagh",
         "https://www.theguardian.com/tv-and-radio/2018/may/28/bbc-king-lear-review-anthony-hopkins",
         "https://www.hollywoodreporter.com/review/king-lear-review-amazon-1143459",
         "https://www.pastemagazine.com/articles/2018/09/amazon-prime-bbc-king-lear-anthony-hopkins-emma-th.html",
-        "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Oakland-Theater-Project-20261002",
-        "https://www.mercurynews.com/2026/10/01/review-missed-opportunities-plague-oakland-theaters-king-lear/",
-        "https://www.whatsonstage.com/news/king-lear-with-david-threlfall-at-the-royal-exchange-review_1734679/",
-        "https://www.thestage.co.uk/reviews/king-lear-review-royal-exchange-theatre-manchester-matthew-dunster-david-threlfall",
         "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Z-Space-20260928",
         "https://www.theguardian.com/stage/2026/oct/10/king-lear-review-david-threlfall-royal-exchange-theatre-manchester",
+        "https://www.mercurynews.com/2026/10/01/review-missed-opportunities-plague-oakland-theaters-king-lear/",
+        "https://www.whatsonstage.com/news/king-lear-with-david-threlfall-at-the-royal-exchange-review_1734679/",
+        "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Oakland-Theater-Project-20261002",
         "https://theatreandtonic.co.uk/blog/king-lear-at-royal-exchange-theatre-review",
         "https://www.britishtheatreguide.info/reviews/king-lear-royal-exchange-26094",
+        "https://ilovemanchester.com/king-lear-royal-exchange-review",
         "https://www.thetimes.com/culture/theatre-dance/article/king-lear-review-david-threlfall-kb6mrfglj",
-        "https://www.allabouttheatreuk.com/post/review-king-lear-royal-exchange-theatre-manchester",
         "https://www.thereviewshub.com/king-lear-royal-exchange-manchester/",
-        "https://quayslife.com/reviews/king-lear-royal-exchange-50th-anniversary-production-review/",
+        "https://eastmidlandstheatre.com/2026/10/10/review-king-lear-cast-adc-theatre-cambridge/",
         "https://everything-theatre.co.uk/2026/09/review-king-lear-crucible-theatre-sheffield/",
+        "https://www.sfchronicle.com/entertainment/theater/article/oakland-theater-project-king-lear-22404840.php",
         "https://www.royalexchange.co.uk/event/king-lear/",
-        "https://northwestend.co.uk/index.php/professional-reviews/773-king-lear-royal-exchange-manchester",
         "https://confidentials.com/manchester/review-king-lear-royal-exchange-theatre",
-        "https://www.telegraph.co.uk/theatre/what-to-see/king-lear-royal-exchange-three-star-review/",
+        "https://northwestend.co.uk/index.php/professional-reviews/773-king-lear-royal-exchange-manchester",
         "https://www.manchestertheatres.com/event/king-lear",
+        "https://www.weekendnotes.co.uk/king-lear-royal-exchange-review/",
+        "https://www.telegraph.co.uk/theatre/what-to-see/king-lear-royal-exchange-three-star-review/",
         "https://www.northernsoul.me.uk/review-king-lear-mcr/",
-        "https://www.visitmanchester.com/event/king-lear/111756101/",
-        "https://www.franklymydearuk.co.uk/theatre-review-king-lear-royal-exchange-manchester/",
         "https://www.britishtheatreguide.info/reviews/king-lear-royal-exchange-12733",
         "https://ilovemanchester.com/event/king-lear",
         "https://uk.news.yahoo.com/review-king-lear-royal-exchange-170000344.html",
+        "https://www.whatsonstage.com/news/king-lear-royal-exchange_75/",
         "https://www.thestage.co.uk/reviews/king-lear-review-at-the-royal-exchange-theatre-manchester--outstanding"
       ],
       "dirFiles": 30,
-      "dirClean": 14,
-      "inReviewsJson": 14,
+      "dirClean": 15,
+      "inReviewsJson": 15,
       "missing": [
         {
           "url": "http://broadway.news/2019/04/04/review-a-scorching-glenda-jackson-leads-the-way-for-the-women-of-king-lear/",
@@ -100165,34 +100179,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.nytimes.com/2024/11/14/theater/king-lear-review-kenneth-branagh.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://observer.com/2024/11/review-kenneth-branaghs-king-lear-howls-into-a-stormy-rushed-muddle/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatrely.com/post/a-hasty-king-lear-at-the-shed-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/king-lear-off-broadway-review-kenneth-branagh",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "http://www.nytimes.com/2014/08/06/theater/king-lear-in-central-park-starring-john-lithgow.html",
           "host": "nytimes.com",
           "knownOutletId": "nytimes",
@@ -100284,6 +100270,34 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://www.nytimes.com/2024/11/14/theater/king-lear-review-kenneth-branagh.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2024/11/review-kenneth-branaghs-king-lear-howls-into-a-stormy-rushed-muddle/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/a-hasty-king-lear-at-the-shed-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/king-lear-off-broadway-review-kenneth-branagh",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "https://www.hollywoodreporter.com/review/king-lear-review-amazon-1143459",
           "host": "hollywoodreporter.com",
           "knownOutletId": "hollywood-reporter",
@@ -100298,17 +100312,17 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://northwestend.co.uk/index.php/professional-reviews/773-king-lear-royal-exchange-manchester",
-          "host": "northwestend.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://confidentials.com/manchester/review-king-lear-royal-exchange-theatre",
           "host": "confidentials.com",
           "knownOutletId": null,
           "priorRun": true,
           "priorRunSource": "pending-file-date:2016-04-07",
+          "serpCensus": true
+        },
+        {
+          "url": "https://northwestend.co.uk/index.php/professional-reviews/773-king-lear-royal-exchange-manchester",
+          "host": "northwestend.co.uk",
+          "knownOutletId": null,
           "serpCensus": true
         },
         {
@@ -100320,14 +100334,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.franklymydearuk.co.uk/theatre-review-king-lear-royal-exchange-manchester/",
-          "host": "franklymydearuk.co.uk",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2016-04-07",
-          "serpCensus": true
-        },
-        {
           "url": "https://uk.news.yahoo.com/review-king-lear-royal-exchange-170000344.html",
           "host": "yahoo.com",
           "knownOutletId": "yahoo",
@@ -100336,7 +100342,15 @@
       ],
       "dirOnly": [
         {
+          "host": "allabouttheatreuk.com",
+          "count": 1
+        },
+        {
           "host": "jadar.uk",
+          "count": 1
+        },
+        {
+          "host": "quayslife.com",
           "count": 1
         },
         {
@@ -100498,7 +100512,7 @@
           "reverify": false
         },
         {
-          "url": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Oakland-Theater-Project-20261002",
+          "url": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Z-Space-20260928",
           "host": "broadwayworld.com",
           "knownOutletId": "broadwayworld",
           "recoverable": false,
@@ -100508,9 +100522,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "broadwayworld--kelly-rogers-flynt.json",
+              "file": "broadwayworld--steve-murray.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Oakland-Theater-Project-20261002"
+              "urlInDir": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Z-Space-20260928"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -100534,6 +100548,52 @@
               "file": "san-jose-mercury-news--charles-lewis-iii.json",
               "flag": "wrongProduction",
               "urlInDir": "https://www.mercurynews.com/2026/10/01/review-missed-opportunities-plague-oakland-theaters-king-lear/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Oakland-Theater-Project-20261002",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadwayworld--kelly-rogers-flynt.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Oakland-Theater-Project-20261002"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://eastmidlandstheatre.com/2026/10/10/review-king-lear-cast-adc-theatre-cambridge/",
+          "host": "eastmidlandstheatre.com",
+          "knownOutletId": "east-midlands-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "east-midlands-theatre--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://eastmidlandstheatre.com/2026/10/10/review-king-lear-cast-adc-theatre-cambridge/"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -100609,12 +100669,13 @@
           "basis": [
             "rejectionReason"
           ],
+          "confirmedNonReview": true,
           "serpCensus": true,
-          "reverify": true
+          "reverify": false
         },
         {
-          "url": "https://www.manchestertheatres.com/event/king-lear",
-          "host": "manchestertheatres.com",
+          "url": "https://www.weekendnotes.co.uk/king-lear-royal-exchange-review/",
+          "host": "weekendnotes.co.uk",
           "knownOutletId": null,
           "recoverable": false,
           "recoverableFile": null,
@@ -100623,32 +100684,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "manchestertheatres--unknown.json",
+              "file": "weekendnotes--unknown.json",
               "flag": "clean",
-              "urlInDir": "https://www.manchestertheatres.com/event/king-lear"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://www.visitmanchester.com/event/king-lear/111756101/",
-          "host": "visitmanchester.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "visitmanchester--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.visitmanchester.com/event/king-lear/111756101/"
+              "urlInDir": "https://www.weekendnotes.co.uk/king-lear-royal-exchange-review/"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -100673,7 +100711,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -100682,8 +100720,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 7,
+            "results": 10,
+            "accepted": 5,
             "error": null
           },
           {
@@ -100692,8 +100730,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 2,
+            "results": 9,
+            "accepted": 3,
             "error": null
           },
           {
@@ -100713,7 +100751,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -100723,7 +100761,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           }
         ],
@@ -100733,18 +100771,17 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 1734,
+        "count": 1737,
         "byReason": {
-          "non-review-host": 177,
-          "aggregator-internal-nav": 1256,
+          "non-review-host": 179,
+          "aggregator-internal-nav": 1245,
           "write-path-blocked": 1,
-          "bare-host": 1,
+          "roundup-page": 12,
           "not-http-url": 189,
-          "aggregator-section-root": 36,
-          "roundup-page": 2,
           "production-database-listing": 73,
-          "review-index-page": 1,
-          "venue-production-page": 1
+          "aggregator-section-root": 36,
+          "bare-host": 1,
+          "no-review-evidence": 1
         }
       },
       "dedupedVariants": [],
@@ -100782,10 +100819,6 @@
           "publishDate": "2024-11-14"
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-The-Publics-KING-LEAR-Opens-at-the-Delacorte-20140805",
-          "publishDate": "2014-08-05"
-        },
-        {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-Amazon-Primes-KING-LEAR-with-Anthony-Hopkins-and-Emma-Thompson-20180927",
           "publishDate": "2018-09-27"
         }
@@ -100805,373 +100838,428 @@
           "url": "http://broadway.news/2019/04/04/review-a-scorching-glenda-jackson-leads-the-way-for-the-women-of-king-lear/",
           "host": "broadway.news",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://dctheatrescene.com/2019/04/04/king-lear-review-glenda-jackson-in-must-see-if-imperfect-shakespeare/",
           "host": "dctheatrescene.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://deadline.com/2019/04/glenda-jackson-king-lear-broadway-review-ruth-wilson-pedro-pascal-1202587083/",
           "host": "deadline.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/",
           "host": "ew.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://www.vulture.com/2019/04/theater-review-once-more-into-the-storm-with-king-lear.html",
           "host": "vulture.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://nystagereview.com/2019/04/04/king-lear-glenda-jackson-rants-raves-and-rules/",
           "host": "nystagereview.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://nystagereview.com/2019/04/04/king-lear-a-role-fit-for-a-commander/",
           "host": "nystagereview.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://www.nytimes.com/2019/04/04/theater/king-lear-review-glenda-jackson.html",
           "host": "nytimes.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://www.nj.com/entertainment/2019/04/glenda-jackson-roars-in-an-amazing-king-lear-on-broadway-review.html",
           "host": "nj.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://www.ny1.com/nyc/all-boroughs/news/2019/04/05/theater-review---king-lear-",
           "host": "ny1.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://www.timeout.com/newyork/theater/review-king-lear-glenda-jackson",
           "host": "timeout.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://www.towleroad.com/2019/04/glenda-jackson-king-lear/",
           "host": "towleroad.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://variety.com/2019/legit/reviews/king-lear-review-glenda-jackson-broadway-1203180018/",
           "host": "variety.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.nytimes.com/2023/10/31/theater/review-kenneth-branaghs-short-shallow-king-lear.html",
           "host": "nytimes.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.dailymail.co.uk/tvshowbiz/article-12695241/PATRICK-MARMION-Kenneth-Branagh-King-Lear-play-mad-dash-tragedy.html",
           "host": "dailymail.co.uk",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://theartsdesk.com/theatre/king-lear-wyndhams-theatre-review-kenneth-branagh-helms-pared-down-tragedy",
           "host": "theartsdesk.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/king-lear-review-kenneth-branagh-wyndhams-b2439245.html",
           "host": "independent.co.uk",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.newstatesman.com/culture/theatre/2023/11/kenneth-branagh-king-lear-review-callow-utterly-unmoving",
           "host": "newstatesman.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.thetimes.co.uk/article/king-lear-theatre-review-kenneth-branagh-6cwrgk03v",
           "host": "thetimes.co.uk",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.timeout.com/london/theatre/king-lear-25-review",
           "host": "timeout.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.broadwayworld.com/washington-dc/article/Review-KING-LEAR-at-Shakespeare-Theatre-Company-20230303",
           "host": "broadwayworld.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.washingtonpost.com/theater-dance/2023/03/03/king-lear-patrick-page-godwin-stc/",
           "host": "washingtonpost.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://www.hollywoodreporter.com/review/king-lear-review-amazon-1143459",
           "host": "hollywoodreporter.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.standard.co.uk/goingout/theatre/king-lear-theatre-review-ian-mckellens-detailed-intelligent-performance-is-a-triumph-a3648041.html",
           "host": "standard.co.uk",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://inews.co.uk/essentials/ian-mckellen-king-lear-brutal-sensual-triumphant/",
           "host": "inews.co.uk",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.metro.news/theatre-review-ian-mckellen-put-through-the-wringer-in-king-lear/766152/",
           "host": "metro.news",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://variety.com/2017/legit/reviews/king-lear-review-ian-mckellen-1202577750/",
           "host": "variety.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.hollywoodreporter.com/review/king-lear-theater-review-258884",
           "host": "hollywoodreporter.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.nytimes.com/2019/04/04/theater/king-lear-review-glenda-jackson.html",
           "host": "nytimes.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.timeout.com/newyork/theater/review-king-lear-glenda-jackson",
           "host": "timeout.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.thewrap.com/king-lear-broadway-review-glenda-jackson-triumphs-in-cluttered-mess-of-a-revival/",
           "host": "thewrap.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://deadline.com/2019/04/glenda-jackson-king-lear-broadway-review-ruth-wilson-pedro-pascal-1202587083/",
           "host": "deadline.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.washingtonpost.com/entertainment/theater_dance/glenda-jackson-as-king-lear-was-a-good-idea-why-is-everything-around-her-so-wrong/2019/04/04/ed786ad0-56db-11e9-8ef3-fbd41a2ce4d5_story.html",
           "host": "washingtonpost.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://variety.com/2019/legit/reviews/king-lear-review-glenda-jackson-broadway-1203180018/",
           "host": "variety.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/",
           "host": "ew.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.amny.com/entertainment/king-lear-broadway-review-1.29377016",
           "host": "amny.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.ny1.com/nyc/all-boroughs/news/2019/04/05/theater-review---king-lear-",
           "host": "ny1.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.vulture.com/2019/04/theater-review-once-more-into-the-storm-with-king-lear.html",
           "host": "vulture.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.nj.com/entertainment/2019/04/glenda-jackson-roars-in-an-amazing-king-lear-on-broadway-review.html",
           "host": "nj.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.thedailybeast.com/glenda-jackson-in-shakespeares-king-lear-on-broadway-tragedy-and-a-lot-of-trump-era-sighing",
           "host": "thedailybeast.com",
           "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.nytimes.com/2024/11/14/theater/king-lear-review-kenneth-branagh.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://observer.com/2024/11/review-kenneth-branaghs-king-lear-howls-into-a-stormy-rushed-muddle/",
-          "host": "observer.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.theatrely.com/post/a-hasty-king-lear-at-the-shed-review",
-          "host": "theatrely.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/king-lear-off-broadway-review-kenneth-branagh",
-          "host": "newyorktheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://www.nytimes.com/2014/08/06/theater/king-lear-in-central-park-starring-john-lithgow.html",
           "host": "nytimes.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://www.vulture.com/2014/08/theater-review-king-lear-public-theater-john-lithgow.html",
           "host": "vulture.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://www.newsday.com/entertainment/theater/king-lear-review-hail-john-lithgow-1.8945797",
           "host": "newsday.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://www.hollywoodreporter.com/review/king-lear-theater-review-723483",
           "host": "hollywoodreporter.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://variety.com/2014/legit/reviews/review-king-lear-john-lithgow-annette-bening-1201275895/",
           "host": "variety.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://www.timeout.com/newyork/theater/king-lear-12",
           "host": "timeout.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://www.nydailynews.com/entertainment/theater-arts/king-lear-theater-review-article-1.1892742",
           "host": "nydailynews.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://www.nbcnewyork.com/entertainment/the-scene/SITP-King-Lear-Review-269970641.html",
           "host": "nbcnewyork.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://www.usatoday.com/story/life/theater/2014/08/05/shakespeare-in-the-park-review-king-lear/13580135/",
           "host": "usatoday.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://online.wsj.com/articles/theater-review-king-lear-1407290743",
           "host": "wsj.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://nypost.com/2014/08/05/john-lithgow-and-annette-bening-flail-in-central-park-king-lear/",
           "host": "nypost.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://www.amny.com/entertainment/king-lear-review-john-lithgow-superb-in-shakespeare-in-the-park-production-1.8971915",
           "host": "amny.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://www.deadline.com/2014/08/king-lear-central-park-john-lithgow-annette-bening-review/",
           "host": "deadline.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2024/11/14/theater/king-lear-review-kenneth-branagh.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://observer.com/2024/11/review-kenneth-branaghs-king-lear-howls-into-a-stormy-rushed-muddle/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/a-hasty-king-lear-at-the-shed-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/king-lear-off-broadway-review-kenneth-branagh",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.hollywoodreporter.com/review/king-lear-review-amazon-1143459",
           "host": "hollywoodreporter.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.pastemagazine.com/articles/2018/09/amazon-prime-bbc-king-lear-anthony-hopkins-emma-th.html",
           "host": "pastemagazine.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://confidentials.com/manchester/review-king-lear-royal-exchange-theatre",
           "host": "confidentials.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.northernsoul.me.uk/review-king-lear-mcr/",
           "host": "northernsoul.me.uk",
           "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.franklymydearuk.co.uk/theatre-review-king-lear-royal-exchange-manchester/",
-          "host": "franklymydearuk.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         }
       ],
       "ingestResults": [
@@ -101181,14 +101269,14 @@
           "outletId": "northwestend",
           "provisional": true,
           "ok": false,
-          "noop": false,
+          "noop": true,
           "conflict": false,
           "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  provisional outlet \"northwestend\" (not in registry) — onboard to outlet-registry.json after revi"
+          "reason": "king-lear-royal-exchange-regional-2026: https://northwestend.co.uk/index.php/professional-reviews/773-king-lear-royal-exchange-manchester has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         },
         {
           "url": "https://uk.news.yahoo.com/review-king-lear-royal-exchange-170000344.html",
@@ -101229,7 +101317,7 @@
             "outlet": "broadwayworld",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Oakland-Theater-Project-20261002"
+            "url": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Z-Space-20260928"
           },
           {
             "outletId": "san-jose-mercury-news",
@@ -101237,6 +101325,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.mercurynews.com/2026/10/01/review-missed-opportunities-plague-oakland-theaters-king-lear/"
+          },
+          {
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Oakland-Theater-Project-20261002"
+          },
+          {
+            "outletId": "east-midlands-theatre",
+            "outlet": "east-midlands-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://eastmidlandstheatre.com/2026/10/10/review-king-lear-cast-adc-theatre-cambridge/"
           },
           {
             "outletId": "everything-theatre",
@@ -101260,18 +101362,11 @@
             "url": "https://www.royalexchange.co.uk/event/king-lear/"
           },
           {
-            "outletId": "manchestertheatres.com",
-            "outlet": "manchestertheatres.com",
+            "outletId": "weekendnotes.co.uk",
+            "outlet": "weekendnotes.co.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.manchestertheatres.com/event/king-lear"
-          },
-          {
-            "outletId": "visitmanchester.com",
-            "outlet": "visitmanchester.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.visitmanchester.com/event/king-lear/111756101/"
+            "url": "https://www.weekendnotes.co.uk/king-lear-royal-exchange-review/"
           }
         ],
         "suppressedMissing": [],
@@ -101331,20 +101426,14 @@
             "firstSeenAt": "2026-10-12T23:33:06.241Z"
           },
           {
-            "url": "https://www.whatsonstage.com/news/king-lear-with-david-threlfall-at-the-royal-exchange-review_1734679/",
-            "outletId": "whatsonstage.com",
+            "url": "https://www.theguardian.com/stage/2026/oct/10/king-lear-review-david-threlfall-royal-exchange-theatre-manchester",
+            "outletId": "theguardian.com",
             "state": "live",
             "firstSeenAt": "2026-10-13T12:28:08.210Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/king-lear-review-royal-exchange-theatre-manchester-matthew-dunster-david-threlfall",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-14T22:22:34.949Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/oct/10/king-lear-review-david-threlfall-royal-exchange-theatre-manchester",
-            "outletId": "theguardian.com",
+            "url": "https://www.whatsonstage.com/news/king-lear-with-david-threlfall-at-the-royal-exchange-review_1734679/",
+            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-10-13T12:28:08.210Z"
           },
@@ -101361,10 +101450,10 @@
             "firstSeenAt": "2026-10-13T12:28:08.210Z"
           },
           {
-            "url": "https://www.allabouttheatreuk.com/post/review-king-lear-royal-exchange-theatre-manchester",
-            "outletId": "allabouttheatreuk.com",
+            "url": "https://ilovemanchester.com/king-lear-royal-exchange-review",
+            "outletId": "ilovemanchester.com",
             "state": "live",
-            "firstSeenAt": "2026-10-13T12:28:08.210Z"
+            "firstSeenAt": "2026-10-21T10:53:45.610Z"
           },
           {
             "url": "https://www.thereviewshub.com/king-lear-royal-exchange-manchester/",
@@ -101373,8 +101462,8 @@
             "firstSeenAt": "2026-10-13T12:28:08.210Z"
           },
           {
-            "url": "https://quayslife.com/reviews/king-lear-royal-exchange-50th-anniversary-production-review/",
-            "outletId": "quayslife.com",
+            "url": "https://www.manchestertheatres.com/event/king-lear",
+            "outletId": "manchestertheatres.com",
             "state": "live",
             "firstSeenAt": "2026-10-16T05:39:49.231Z"
           },
@@ -101397,6 +101486,12 @@
             "firstSeenAt": "2026-10-15T20:51:35.128Z"
           },
           {
+            "url": "https://www.whatsonstage.com/news/king-lear-royal-exchange_75/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-21T10:53:45.610Z"
+          },
+          {
             "url": "https://www.thestage.co.uk/reviews/king-lear-review-at-the-royal-exchange-theatre-manchester--outstanding",
             "outletId": "thestage.co.uk",
             "state": "live",
@@ -101417,11 +101512,11 @@
             "firstSeenAt": "2026-10-15T20:51:35.128Z"
           },
           {
-            "url": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Oakland-Theater-Project-20261002",
+            "url": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Z-Space-20260928",
             "outletId": "broadwayworld",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-14T22:22:34.949Z"
+            "firstSeenAt": "2026-10-21T10:53:45.610Z"
           },
           {
             "url": "https://www.mercurynews.com/2026/10/01/review-missed-opportunities-plague-oakland-theaters-king-lear/",
@@ -101429,6 +101524,20 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-15T04:30:21.497Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Oakland-Theater-Project-20261002",
+            "outletId": "broadwayworld",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-14T22:22:34.949Z"
+          },
+          {
+            "url": "https://eastmidlandstheatre.com/2026/10/10/review-king-lear-cast-adc-theatre-cambridge/",
+            "outletId": "east-midlands-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-21T10:53:45.610Z"
           },
           {
             "url": "https://everything-theatre.co.uk/2026/09/review-king-lear-crucible-theatre-sheffield/",
@@ -101452,25 +101561,18 @@
             "firstSeenAt": "2026-10-15T04:30:21.497Z"
           },
           {
-            "url": "https://www.manchestertheatres.com/event/king-lear",
-            "outletId": "manchestertheatres.com",
+            "url": "https://www.weekendnotes.co.uk/king-lear-royal-exchange-review/",
+            "outletId": "weekendnotes.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T05:39:49.231Z"
-          },
-          {
-            "url": "https://www.visitmanchester.com/event/king-lear/111756101/",
-            "outletId": "visitmanchester.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T20:46:15.120Z"
+            "firstSeenAt": "2026-10-21T10:53:45.610Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 10,
+        "liveCount": 9,
         "candidateCount": 18
       },
-      "computedAt": "2026-10-16T20:46:15.120Z"
+      "computedAt": "2026-10-21T10:53:45.610Z"
     },
     {
       "showId": "king-of-the-yees-off-broadway-2026",
@@ -120630,9 +120732,7 @@
         "https://www.vulture.com/article/reviews-memoirs-of-amorous-gentlemen-and-a-ghost-in-your-ear.html",
         "https://www.thewrap.com/creative-content/theater/memoirs-of-amorous-gentlemen-off-broadway-review/",
         "https://pagesonstages.com/2026/10/15/memoirs-of-amorous-gentlemen/",
-        "https://t2conline.com/memoirs-of-amorous-gentlemen-offers-a-first-look-at-one-of-duncan-sheiks-final-musicals/",
         "https://nypost.com/2026/10/17/entertainment/memoirs-of-amorous-gentlemen-review-the-musical-duncan-sheik-was-working-on-when-he-died-is-an-awkward-letdown/",
-        "https://www.theatermania.com/news/sophia-anne-caruso-to-star-in-duncan-sheik-musical-memoirs-of-amorous-gentlemen_1848982/",
         "https://thefrontrowcenter.com/2026/10/memoirs-of-amorous-gentlemen/"
       ],
       "dirFiles": 28,
@@ -120649,32 +120749,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://t2conline.com/memoirs-of-amorous-gentlemen-offers-a-first-look-at-one-of-duncan-sheiks-final-musicals/",
-          "host": "t2conline.com",
-          "knownOutletId": "times-square-chronicles",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "times-square-chronicles--genevieve-rafter-keddy.json",
-              "flag": "clean",
-              "urlInDir": "https://t2conline.com/memoirs-of-amorous-gentlemen-offers-a-first-look-at-one-of-duncan-sheiks-final-musicals/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "serpCensus": true,
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -120688,8 +120763,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 6,
+            "results": 5,
+            "accepted": 0,
             "error": null
           },
           {
@@ -120699,7 +120774,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 4,
             "error": null
           },
           {
@@ -120709,7 +120784,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -120719,7 +120794,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -120735,22 +120810,24 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 10,
+        "resultCount": 8,
         "error": null
       },
       "candidatesRejected": {
         "count": 398,
         "byReason": {
-          "non-review-host": 52,
+          "non-review-host": 49,
+          "aggregator-internal-nav": 251,
           "write-path-blocked": 2,
-          "aggregator-internal-nav": 253,
-          "not-http-url": 61,
-          "production-database-listing": 9,
-          "aggregator-section-root": 11,
+          "census-junk-host": 3,
           "roundup-page": 2,
+          "not-http-url": 61,
+          "production-database-listing": 10,
+          "aggregator-section-root": 11,
+          "bare-host": 4,
+          "no-review-evidence": 2,
+          "ticketing-listing": 1,
           "venue-production-page": 1,
-          "census-junk-host": 4,
-          "bare-host": 2,
           "merch-store": 1
         }
       },
@@ -120758,16 +120835,8 @@
       "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "times-square-chronicles",
-            "outlet": "times-square-chronicles",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://t2conline.com/memoirs-of-amorous-gentlemen-offers-a-first-look-at-one-of-duncan-sheiks-final-musicals/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -120849,30 +120918,17 @@
             "firstSeenAt": "2026-10-18T08:32:02.058Z"
           },
           {
-            "url": "https://www.theatermania.com/news/sophia-anne-caruso-to-star-in-duncan-sheik-musical-memoirs-of-amorous-gentlemen_1848982/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-20T21:11:21.454Z"
-          },
-          {
             "url": "https://thefrontrowcenter.com/2026/10/memoirs-of-amorous-gentlemen/",
             "outletId": "thefrontrowcenter.com",
             "state": "live",
             "firstSeenAt": "2026-10-20T21:11:21.454Z"
-          },
-          {
-            "url": "https://t2conline.com/memoirs-of-amorous-gentlemen-offers-a-first-look-at-one-of-duncan-sheiks-final-musicals/",
-            "outletId": "times-square-chronicles",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-18T17:41:52.084Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 14,
-        "candidateCount": 15
+        "candidateCount": 14
       },
-      "computedAt": "2026-10-20T21:11:21.454Z"
+      "computedAt": "2026-10-21T10:53:45.610Z"
     },
     {
       "showId": "meow-meow-off-broadway-2026",
@@ -145273,7 +145329,8 @@
         "http://www.newsday.com/entertainment/theater/other-desert-cities-is-a-broadway-gem-1.3292020",
         "http://www.washingtonpost.com/lifestyle/style/playwright-jon-robin-baitzs-other-desert-cities-is-a-strong-serio-comedy/2011/11/03/gIQA8ZehjM_story.html",
         "http://www.usatoday.com/life/theater/reviews/story/2011-11-03/other-desert-cities/51064886/1",
-        "http://www.ny1.com/content/ny1_living/on_stage/150158/ny1-theater-review---other-desert-cities-"
+        "http://www.ny1.com/content/ny1_living/on_stage/150158/ny1-theater-review---other-desert-cities-",
+        "https://culturesauce.com/other-desert-cities-julia-louis-dreyfus-broadway-review/"
       ],
       "dirFiles": 51,
       "dirClean": 32,
@@ -145325,7 +145382,31 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://culturesauce.com/other-desert-cities-julia-louis-dreyfus-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "culturesauce--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://culturesauce.com/other-desert-cities-julia-louis-dreyfus-broadway-review/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "duplicateOf"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -145340,7 +145421,7 @@
             "geo": "us",
             "ok": true,
             "results": 8,
-            "accepted": 5,
+            "accepted": 3,
             "error": null
           },
           {
@@ -145360,7 +145441,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 3,
             "error": null
           },
           {
@@ -145400,17 +145481,19 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 681,
+        "count": 690,
         "byReason": {
-          "non-review-host": 61,
+          "non-review-host": 65,
           "aggregator-internal-nav": 480,
+          "roundup-page": 4,
           "not-http-url": 109,
           "production-database-listing": 9,
           "aggregator-section-root": 15,
-          "roundup-page": 3,
-          "ticketing-reseller": 2,
           "bare-host": 1,
-          "show-hub": 1
+          "ticketing-reseller": 4,
+          "show-listing-page": 1,
+          "show-hub": 1,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -145420,7 +145503,7 @@
           "publishDate": "2011-11-03"
         }
       ],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -145462,8 +145545,16 @@
       "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "culturesauce",
+            "outlet": "culturesauce",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://culturesauce.com/other-desert-cities-julia-louis-dreyfus-broadway-review/"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -145663,13 +145754,20 @@
             "outletId": "usatoday.com",
             "state": "live",
             "firstSeenAt": "2026-10-19T14:57:03.324Z"
+          },
+          {
+            "url": "https://culturesauce.com/other-desert-cities-julia-louis-dreyfus-broadway-review/",
+            "outletId": "culturesauce",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-21T10:53:45.610Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 29,
-        "candidateCount": 29
+        "candidateCount": 30
       },
-      "computedAt": "2026-10-20T21:11:21.454Z"
+      "computedAt": "2026-10-21T10:53:45.610Z"
     },
     {
       "showId": "our-sinatra-a-musical-celebration-off-broadway-2026",
@@ -147583,7 +147681,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-21T00:49:57.456Z"
+      "computedAt": "2026-10-21T10:53:45.610Z"
     },
     {
       "showId": "pied-a-terre-off-broadway-2026",
@@ -152741,7 +152839,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-21T00:49:57.456Z"
+      "computedAt": "2026-10-21T10:53:45.610Z"
     },
     {
       "showId": "race-the-movie-the-play-off-broadway-2026",
@@ -186385,19 +186483,20 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://nitelifeexchange.com/the-dog-show-come-sit-stay-fetch-as-in-tickets-to-a-funny-and-charming-show/",
         "https://theknockturnal.com/triad-theater-presents-the-dog-show-come-sit-stay/",
         "https://nitelifeexchange.com/the-dog-show-come-sit-stay-a-new-comedy-at-the-triad-theater-from-tuesday-october-13-sunday-november-29/",
-        "https://nitelifeexchange.com/the-dog-show-come-sit-stay-fetch-as-in-tickets-to-a-funny-and-charming-show/",
-        "https://www.picturethispost.com/30-minutes-from-broadway-entertainment-presents-the-dog-show-come-sit-stay-preview/"
+        "https://www.picturethispost.com/30-minutes-from-broadway-entertainment-presents-the-dog-show-come-sit-stay-preview/",
+        "https://theaterpizzazz.com/the-dog-show-come-sit-stay/"
       ],
-      "dirFiles": 5,
-      "dirClean": 1,
+      "dirFiles": 6,
+      "dirClean": 2,
       "inReviewsJson": 1,
       "missing": [
         {
-          "url": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-fetch-as-in-tickets-to-a-funny-and-charming-show/",
-          "host": "nitelifeexchange.com",
-          "knownOutletId": "nitelifeexchange-com",
+          "url": "https://theaterpizzazz.com/the-dog-show-come-sit-stay/",
+          "host": "theaterpizzazz.com",
+          "knownOutletId": "theater-pizzazz",
           "serpCensus": true
         }
       ],
@@ -186415,17 +186514,16 @@
           "dirFlags": [
             {
               "file": "nitelifeexchange-com--nitelife-exchange.json",
-              "flag": "clean",
+              "flag": "wrongShow",
               "urlInDir": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-a-new-comedy-at-the-triad-theater-from-tuesday-october-13-sunday-november-29/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "rejectionReason"
+            "wrongShow"
           ],
-          "confirmedNonReview": true,
           "serpCensus": true,
-          "reverify": false
+          "reverify": true
         },
         {
           "url": "https://www.picturethispost.com/30-minutes-from-broadway-entertainment-presents-the-dog-show-come-sit-stay-preview/",
@@ -186466,7 +186564,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -186476,7 +186574,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -186496,7 +186594,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -186512,28 +186610,29 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 35,
+        "count": 32,
         "byReason": {
-          "non-review-host": 21,
-          "aggregator-internal-nav": 8,
-          "venue-production-page": 2,
+          "non-review-host": 19,
+          "aggregator-internal-nav": 6,
+          "bare-host": 1,
           "non-review-path": 2,
-          "merch-store": 1,
-          "no-review-evidence": 1
+          "no-review-evidence": 1,
+          "venue-production-page": 2,
+          "merch-store": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-fetch-as-in-tickets-to-a-funny-and-charming-show/",
-          "host": "nitelifeexchange.com",
-          "outletId": "nitelifeexchange-com",
+          "url": "https://theaterpizzazz.com/the-dog-show-come-sit-stay/",
+          "host": "theaterpizzazz.com",
+          "outletId": "theater-pizzazz",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -186551,11 +186650,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "nitelifeexchange-com",
-            "outlet": "nitelifeexchange-com",
+            "outletId": "theater-pizzazz",
+            "outlet": "theater-pizzazz",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-fetch-as-in-tickets-to-a-funny-and-charming-show/"
+            "url": "https://theaterpizzazz.com/the-dog-show-come-sit-stay/"
           },
           {
             "outletId": "nitelifeexchange-com",
@@ -186575,17 +186674,23 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-fetch-as-in-tickets-to-a-funny-and-charming-show/",
+            "outletId": "nitelifeexchange.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-20T21:11:21.454Z"
+          },
+          {
             "url": "https://theknockturnal.com/triad-theater-presents-the-dog-show-come-sit-stay/",
             "outletId": "theknockturnal.com",
             "state": "live",
             "firstSeenAt": "2026-10-20T01:37:32.051Z"
           },
           {
-            "url": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-fetch-as-in-tickets-to-a-funny-and-charming-show/",
-            "outletId": "nitelifeexchange-com",
+            "url": "https://theaterpizzazz.com/the-dog-show-come-sit-stay/",
+            "outletId": "theater-pizzazz",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-20T21:11:21.454Z"
+            "firstSeenAt": "2026-10-21T10:53:45.610Z"
           },
           {
             "url": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-a-new-comedy-at-the-triad-theater-from-tuesday-october-13-sunday-november-29/",
@@ -186603,10 +186708,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 1,
-        "candidateCount": 3
+        "liveCount": 2,
+        "candidateCount": 5
       },
-      "computedAt": "2026-10-20T21:11:21.454Z"
+      "computedAt": "2026-10-21T10:53:45.610Z"
     },
     {
       "showId": "the-enormous-crocodile-west-end-2026",
@@ -193930,14 +194035,198 @@
       "openingDate": "2026-10-22",
       "status": "previews",
       "category": "broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-Red-Bull-Theaters-THE-IMAGINARY-INVALID-20250604"
+      ],
+      "aggregatorListedUrls": [
+        "https://nystagereview.com/2025/06/02/the-imaginary-invalid-moliere-classic-in-robust-good-health-and-humor/",
+        "https://exeuntnyc.com/reviews/review-the-imaginary-invalid-at-new-world-stages/",
+        "https://1minutecritic.com/the-imaginary-invalid-off-broadway-review/",
+        "https://thefrontrowcenter.com/2025/06/the-imaginary-invalid/",
+        "https://stagebuddy.com/theater/theater-review/the-imaginary-invalid",
+        "https://cititour.com/NYC_News/Review-Laughter-is-the-Best-Medicine-in-The-Imaginary-Invalid/9556",
+        "https://theaterpizzazz.com/the-imaginary-invalid-proves-laughters-the-best-medicine/"
+      ],
+      "dirFiles": 10,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://nystagereview.com/2025/06/02/the-imaginary-invalid-moliere-classic-in-robust-good-health-and-humor/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--david-finkle.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2025/06/02/the-imaginary-invalid-moliere-classic-in-robust-good-health-and-humor/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-the-imaginary-invalid-at-new-world-stages/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "exeunt-magazine--juliet-hindell.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://exeuntnyc.com/reviews/review-the-imaginary-invalid-at-new-world-stages/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://1minutecritic.com/the-imaginary-invalid-off-broadway-review/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "one-minute-critic--matthew-wexler.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://1minutecritic.com/the-imaginary-invalid-off-broadway-review/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2025/06/the-imaginary-invalid/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "front-row-center--tulis-mccall.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://thefrontrowcenter.com/2025/06/the-imaginary-invalid/"
+            },
+            {
+              "file": "front-row-center--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://thefrontrowcenter.com/2025/06/the-imaginary-invalid/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://stagebuddy.com/theater/theater-review/the-imaginary-invalid",
+          "host": "stagebuddy.com",
+          "knownOutletId": "stagebuddy",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "stagebuddy--elyse-trevers.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://stagebuddy.com/theater/theater-review/the-imaginary-invalid"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://cititour.com/NYC_News/Review-Laughter-is-the-Best-Medicine-in-The-Imaginary-Invalid/9556",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "cititour--brian-scott-lipton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://cititour.com/NYC_News/Review-Laughter-is-the-Best-Medicine-in-The-Imaginary-Invalid/9556"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://theaterpizzazz.com/the-imaginary-invalid-proves-laughters-the-best-medicine/",
+          "host": "theaterpizzazz.com",
+          "knownOutletId": "theater-pizzazz",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theater-pizzazz--ron-fassler.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theaterpizzazz.com/the-imaginary-invalid-proves-laughters-the-best-medicine/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -193945,10 +194234,22 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 266,
+        "byReason": {
+          "non-review-host": 16,
+          "aggregator-internal-nav": 206,
+          "not-http-url": 38,
+          "aggregator-section-root": 6
+        }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Red-Bull-Theaters-THE-IMAGINARY-INVALID-20250604",
+          "publishDate": "2025-06-04"
+        }
+      ],
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
@@ -193959,7 +194260,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-21T00:49:57.456Z"
+      "computedAt": "2026-10-21T10:53:45.610Z"
     },
     {
       "showId": "the-importance-of-being-oscar-off-west-end-2026",
@@ -208119,7 +208420,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-21T00:49:57.456Z"
+      "computedAt": "2026-10-21T10:53:45.610Z"
     },
     {
       "showId": "the-picture-of-dorian-gray-2025",
@@ -209919,43 +210220,40 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.theguardian.com/stage/2026/oct/11/the-prime-of-miss-jean-brodie-review-muriel-spark-royal-lyceum-edinburgh-tour",
+        "https://www.mixuptheatre.com/post/theatre-review-the-prime-of-miss-jean-brodie",
         "https://list.co.uk/news/the-prime-of-miss-jean-brodie-theatre-review-sparkling-ambiguity-49282",
         "https://www.telegraph.co.uk/theatre/what-to-see/the-prime-of-miss-jean-brodie-national-theatre-of-scotland/",
         "https://www.whatsonstage.com/news/the-prime-of-miss-jean-brodie-at-royal-lyceum-theatre-and-on-tour-review_1734843/",
-        "https://uktheatrenetwork.com/2026/10/10/the-prime-of-miss-jean-brodie-at-the-royal-lyceum-theatre-edinburgh/",
-        "https://www.mixuptheatre.com/post/theatre-review-the-prime-of-miss-jean-brodie",
         "https://www.scotsman.com/arts-and-culture/edinburgh-festivals/the-prime-of-miss-jean-brodie-review-lyceum-edinburgh-9279438",
         "https://www.thetimes.com/culture/theatre-dance/article/the-prime-of-miss-jean-brodie-review-nk3mmsrbz",
+        "https://www.heraldscotland.com/news/26547748.prime-miss-jean-brodie-edinburgh-lyceum-need-know/",
         "https://www.heraldscotland.com/life_style/26626439.review-prime-miss-jean-brodie-royal-lyceum-theatre-edinburgh/",
-        "https://www.reviewsgate.co.uk/reviews-archive-part-2/the-prime-of-miss-jean-brodie",
-        "https://ground.news/article/the-prime-of-miss-jean-brodie-review-spectacular",
+        "https://uktheatrenetwork.com/2026/10/10/the-prime-of-miss-jean-brodie-at-the-royal-lyceum-theatre-edinburgh/",
         "https://www.scotsman.com/arts-and-culture/the-prime-of-miss-jean-brodie-the-muriel-spark-fax-which-gave-playwright-go-ahead-for-radical-adaptation-9232721",
-        "https://www.yahoo.com/entertainment/tv/articles/ingenious-production-prime-miss-jean-115106935.html",
         "https://theweek.com/culture-life/theatre/the-prime-of-miss-jean-brodie-review",
-        "https://www.heraldscotland.com/news/26547748.prime-miss-jean-brodie-edinburgh-lyceum-need-know/"
+        "https://www.express.co.uk/entertainment/theatre/978894/theatre-reviews-prime-miss-jean-brodie-finishing-picture",
+        "https://www.heraldscotland.com/life_style/26592186.inside-prime-miss-jean-brodie-returns-edinburgh-lyceum/"
       ],
-      "dirFiles": 26,
-      "dirClean": 19,
-      "inReviewsJson": 20,
+      "dirFiles": 27,
+      "dirClean": 20,
+      "inReviewsJson": 21,
       "missing": [
         {
-          "url": "https://www.reviewsgate.co.uk/reviews-archive-part-2/the-prime-of-miss-jean-brodie",
-          "host": "reviewsgate.co.uk",
-          "knownOutletId": "reviewsgate",
+          "url": "https://www.express.co.uk/entertainment/theatre/978894/theatre-reviews-prime-miss-jean-brodie-finishing-picture",
+          "host": "express.co.uk",
+          "knownOutletId": "sunday-express",
           "priorRun": true,
-          "priorRunSource": "pending-file-date:2018-05-17",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.yahoo.com/entertainment/tv/articles/ingenious-production-prime-miss-jean-115106935.html",
-          "host": "yahoo.com",
-          "knownOutletId": "yahoo",
+          "priorRunSource": "pending-file-date:2018-06-24",
           "serpCensus": true
         }
       ],
       "dirOnly": [
         {
           "host": "ayoungishperspective.co.uk",
+          "count": 1
+        },
+        {
+          "host": "alledinburghtheatre.com",
           "count": 1
         },
         {
@@ -210049,29 +210347,6 @@
           "reverify": true
         },
         {
-          "url": "https://ground.news/article/the-prime-of-miss-jean-brodie-review-spectacular",
-          "host": "ground.news",
-          "knownOutletId": "ground",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "ground--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://ground.news/article/the-prime-of-miss-jean-brodie-review-spectacular"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
           "url": "https://www.scotsman.com/arts-and-culture/the-prime-of-miss-jean-brodie-the-muriel-spark-fax-which-gave-playwright-go-ahead-for-radical-adaptation-9232721",
           "host": "scotsman.com",
           "knownOutletId": "the-scotsman",
@@ -210119,7 +210394,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -210139,7 +210414,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -210149,75 +210424,48 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 15,
+        "resultCount": 14,
         "error": null
       },
       "candidatesRejected": {
-        "count": 19,
+        "count": 22,
         "byReason": {
           "non-review-host": 14,
-          "aggregator-internal-nav": 4,
-          "census-junk-host": 1
+          "aggregator-internal-nav": 5,
+          "census-junk-host": 1,
+          "no-review-evidence": 1,
+          "static-asset": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 3,
+      "automatedExcludedListed": 2,
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://www.reviewsgate.co.uk/reviews-archive-part-2/the-prime-of-miss-jean-brodie",
-          "host": "reviewsgate.co.uk",
+          "url": "https://www.express.co.uk/entertainment/theatre/978894/theatre-reviews-prime-miss-jean-brodie-finishing-picture",
+          "host": "express.co.uk",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://www.yahoo.com/entertainment/tv/articles/ingenious-production-prime-miss-jean-115106935.html",
-          "host": "yahoo.com",
-          "outletId": "yahoo",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "Fetch failed: All scraping methods failed"
-        }
-      ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "yahoo",
-            "outlet": "yahoo",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.yahoo.com/entertainment/tv/articles/ingenious-production-prime-miss-jean-115106935.html"
-          },
           {
             "outletId": "the-scotsman",
             "outlet": "the-scotsman",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.scotsman.com/arts-and-culture/edinburgh-festivals/the-prime-of-miss-jean-brodie-review-lyceum-edinburgh-9279438"
-          },
-          {
-            "outletId": "ground",
-            "outlet": "ground",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://ground.news/article/the-prime-of-miss-jean-brodie-review-spectacular"
           },
           {
             "outletId": "the-scotsman",
@@ -210236,6 +210484,12 @@
             "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
+            "url": "https://www.mixuptheatre.com/post/theatre-review-the-prime-of-miss-jean-brodie",
+            "outletId": "mixuptheatre.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
+          },
+          {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-prime-of-miss-jean-brodie-national-theatre-of-scotland/",
             "outletId": "telegraph.co.uk",
             "state": "live",
@@ -210248,32 +210502,8 @@
             "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
-            "url": "https://uktheatrenetwork.com/2026/10/10/the-prime-of-miss-jean-brodie-at-the-royal-lyceum-theatre-edinburgh/",
-            "outletId": "uktheatrenetwork.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-17T18:15:37.224Z"
-          },
-          {
-            "url": "https://www.mixuptheatre.com/post/theatre-review-the-prime-of-miss-jean-brodie",
-            "outletId": "mixuptheatre.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-17T18:15:37.224Z"
-          },
-          {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/the-prime-of-miss-jean-brodie-review-nk3mmsrbz",
             "outletId": "thetimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-17T18:15:37.224Z"
-          },
-          {
-            "url": "https://www.heraldscotland.com/life_style/26626439.review-prime-miss-jean-brodie-royal-lyceum-theatre-edinburgh/",
-            "outletId": "heraldscotland.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-17T18:15:37.224Z"
-          },
-          {
-            "url": "https://theweek.com/culture-life/theatre/the-prime-of-miss-jean-brodie-review",
-            "outletId": "theweek.com",
             "state": "live",
             "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
@@ -210284,22 +210514,32 @@
             "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
-            "url": "https://www.yahoo.com/entertainment/tv/articles/ingenious-production-prime-miss-jean-115106935.html",
-            "outletId": "yahoo",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "url": "https://www.heraldscotland.com/life_style/26626439.review-prime-miss-jean-brodie-royal-lyceum-theatre-edinburgh/",
+            "outletId": "heraldscotland.com",
+            "state": "live",
             "firstSeenAt": "2026-10-17T18:15:37.224Z"
+          },
+          {
+            "url": "https://uktheatrenetwork.com/2026/10/10/the-prime-of-miss-jean-brodie-at-the-royal-lyceum-theatre-edinburgh/",
+            "outletId": "uktheatrenetwork.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
+          },
+          {
+            "url": "https://theweek.com/culture-life/theatre/the-prime-of-miss-jean-brodie-review",
+            "outletId": "theweek.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
+          },
+          {
+            "url": "https://www.heraldscotland.com/life_style/26592186.inside-prime-miss-jean-brodie-returns-edinburgh-lyceum/",
+            "outletId": "heraldscotland.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-21T10:53:45.610Z"
           },
           {
             "url": "https://www.scotsman.com/arts-and-culture/edinburgh-festivals/the-prime-of-miss-jean-brodie-review-lyceum-edinburgh-9279438",
             "outletId": "the-scotsman",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T18:15:37.224Z"
-          },
-          {
-            "url": "https://ground.news/article/the-prime-of-miss-jean-brodie-review-spectacular",
-            "outletId": "ground",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-17T18:15:37.224Z"
@@ -210314,9 +210554,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 8,
-        "candidateCount": 11
+        "candidateCount": 9
       },
-      "computedAt": "2026-10-17T18:15:37.224Z"
+      "computedAt": "2026-10-21T10:53:45.610Z"
     },
     {
       "showId": "the-producers-west-end-2025",
@@ -227678,21 +227918,22 @@
       "aggregatorListedUrls": [
         "https://www.newyorktheatreguide.com/reviews/two-girls-off-broadway-review",
         "https://exeuntnyc.com/reviews/review-two-girls-a-homeric-retelling-in-the-oral-tradition-at-cherry-lane-theatre/",
+        "https://www.nytimes.com/2026/10/20/theater/school-pictures-two-girls-review.html",
         "https://nyunews.com/arts/performance/2026/10/20/two-girls-cherry-lane-review/",
+        "https://www.theatermania.com/news/review-two-girls-an-interrogation-of-a-memory-of-a-brazilian-porno_1857490/",
         "https://thefrontrowcenter.com/2026/10/two-girls-one-cup-at-cherry-lane-theatre/",
         "https://www.timeout.com/newyork/theater/two-girls",
-        "https://www.theatermania.com/news/review-two-girls-an-interrogation-of-a-memory-of-a-brazilian-porno_1857490/",
         "https://www.yahoo.com/entertainment/articles/two-girls-one-cup-inspired-192755191.html",
         "https://airmail.news/arts-intel/events/school-pictures-and-two-girls"
       ],
-      "dirFiles": 13,
-      "dirClean": 4,
-      "inReviewsJson": 4,
+      "dirFiles": 14,
+      "dirClean": 5,
+      "inReviewsJson": 5,
       "missing": [
         {
-          "url": "https://nyunews.com/arts/performance/2026/10/20/two-girls-cherry-lane-review/",
-          "host": "nyunews.com",
-          "knownOutletId": "washington-square-news",
+          "url": "https://www.nytimes.com/2026/10/20/theater/school-pictures-two-girls-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
           "serpCensus": true
         },
         {
@@ -227749,7 +227990,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 5,
             "error": null
           },
           {
@@ -227759,7 +228000,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -227779,7 +228020,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -227789,26 +228030,24 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 8,
+        "resultCount": 9,
         "error": null
       },
       "candidatesRejected": {
-        "count": 27,
+        "count": 23,
         "byReason": {
-          "non-review-host": 18,
+          "non-review-host": 14,
+          "aggregator-internal-nav": 4,
           "write-path-blocked": 1,
-          "aggregator-internal-nav": 3,
-          "venue-production-page": 1,
-          "ticketing-listing": 1,
-          "census-junk-host": 1,
-          "bare-host": 1,
-          "non-review-path": 1
+          "census-junk-host": 2,
+          "non-review-path": 1,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -227816,19 +228055,19 @@
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://nyunews.com/arts/performance/2026/10/20/two-girls-cherry-lane-review/",
-          "host": "nyunews.com",
-          "outletId": "washington-square-news",
+          "url": "https://www.nytimes.com/2026/10/20/theater/school-pictures-two-girls-review.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes",
           "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": null
+          "reason": "two-girls-off-broadway-2026: https://www.nytimes.com/2026/10/20/theater/school-pictures-two-girls-review.html is already owned by school-pictures-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/school-pictures-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
         },
         {
           "url": "https://www.timeout.com/newyork/theater/two-girls",
@@ -227858,7 +228097,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "Fetch failed: All scraping methods failed"
+          "reason": "⚠️  Bright Data failed: Bright Data request timeout\nFetch failed: All scraping methods failed"
         }
       ],
       "ingestSkippedByCap": [],
@@ -227866,11 +228105,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "washington-square-news",
-            "outlet": "washington-square-news",
+            "outletId": "nytimes",
+            "outlet": "nytimes",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://nyunews.com/arts/performance/2026/10/20/two-girls-cherry-lane-review/"
+            "url": "https://www.nytimes.com/2026/10/20/theater/school-pictures-two-girls-review.html"
           },
           {
             "outletId": "timeout-london",
@@ -227909,10 +228148,10 @@
             "firstSeenAt": "2026-10-20T21:11:21.454Z"
           },
           {
-            "url": "https://thefrontrowcenter.com/2026/10/two-girls-one-cup-at-cherry-lane-theatre/",
-            "outletId": "thefrontrowcenter.com",
+            "url": "https://nyunews.com/arts/performance/2026/10/20/two-girls-cherry-lane-review/",
+            "outletId": "nyunews.com",
             "state": "live",
-            "firstSeenAt": "2026-10-20T01:37:32.051Z"
+            "firstSeenAt": "2026-10-20T21:11:21.454Z"
           },
           {
             "url": "https://www.theatermania.com/news/review-two-girls-an-interrogation-of-a-memory-of-a-brazilian-porno_1857490/",
@@ -227921,11 +228160,17 @@
             "firstSeenAt": "2026-10-19T18:05:32.145Z"
           },
           {
-            "url": "https://nyunews.com/arts/performance/2026/10/20/two-girls-cherry-lane-review/",
-            "outletId": "washington-square-news",
+            "url": "https://thefrontrowcenter.com/2026/10/two-girls-one-cup-at-cherry-lane-theatre/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-20T01:37:32.051Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/10/20/theater/school-pictures-two-girls-review.html",
+            "outletId": "nytimes",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-20T21:11:21.454Z"
+            "firstSeenAt": "2026-10-21T10:53:45.610Z"
           },
           {
             "url": "https://www.timeout.com/newyork/theater/two-girls",
@@ -227950,10 +228195,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 4,
-        "candidateCount": 8
+        "liveCount": 5,
+        "candidateCount": 9
       },
-      "computedAt": "2026-10-20T21:11:21.454Z"
+      "computedAt": "2026-10-21T10:53:45.610Z"
     },
     {
       "showId": "two-strangers-bway-2025",
@@ -244573,21 +244818,22 @@
     }
   ],
   "staleness": {
-    "at": "2026-10-21T09:46:32.651Z",
+    "at": "2026-10-21T10:53:45.609Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "fences-off-west-end-2026",
-      "harry-potter-and-the-cursed-child-one-part-west-end-2026"
+      "boop-tour-2026",
+      "king-lear-royal-exchange-regional-2026",
+      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026"
     ],
     "oldestDueRowAtStart": {
       "showId": "hamlet-off-broadway-2026",
       "computedAt": "2026-09-05T17:16:12.711Z",
-      "ageHours": 1096.2
+      "ageHours": 1097.3
     },
     "oldestDueRowAfterRun": {
       "showId": "hamlet-off-broadway-2026",
       "computedAt": "2026-09-05T17:16:12.711Z",
-      "ageHours": 1096.5
+      "ageHours": 1097.6
     }
   }
 }
