@@ -1,5 +1,5 @@
 // BRO-5614 / CLAUDE.md rule 3: a date parsed from a review URL is never stored as
-// publishDate. These five backfill scripts used to; they must not parse URL dates
+// publishDate. These six backfill scripts used to; they must not parse URL dates
 // at all (the rebuild dates a dateless file itself, backfill-publish-date.js).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
