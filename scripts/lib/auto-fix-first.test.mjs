@@ -411,3 +411,13 @@ test('escalationPreamble: a handed-back card (startedAt set) does not claim nobo
   assert.doesNotMatch(text, /no fix session picked it up/);
   assert.match(afx.escalationPreamble({ reason: 'not-started', card: card({ createdAt: iso(4 * H) }), nowMs: NOW }), /no fix session picked it up/);
 });
+
+test('decide: parked-fix edge cases (colon-less stamp, newest report wins, re-claimed card, attempt 1 retries on red)', () => {
+  const parked = (o = {}) => ({ createdAt: iso(6 * H), startedAt: iso(5 * H), state: { type: 'backlog' }, comments: [{ body: '**Session report (paused)**\n\nFix landed. RECHECK-AFTER 2026-10-20', createdAt: iso(4 * H) }], ...o });
+  assert.equal(decide([card(parked())], null), 'hold:fix-parked-awaiting-proof', 'colon-less stamp (shared parser) counts');
+  const two = parked({ comments: [{ body: '**Session report (paused)**\n\nRECHECK-AFTER: 2026-10-20', createdAt: iso(5.5 * H) }, { body: '**Session report (paused)**\n\nRECHECK-AFTER: 2026-10-21', createdAt: iso(2 * H) }] });
+  assert.equal(decide([card(two)], 3 * H), 'hold:fix-parked-awaiting-proof', 'red from before the NEWEST park is the old failure');
+  assert.equal(decide([card(two)], 0.5 * H), 'escalate:still-red');
+  assert.equal(decide([card(parked({ state: { type: 'started' } }))], null), 'hold:fix-in-progress', 're-claimed card takes the started path');
+  assert.equal(decide([first(parked())], 0.5 * H), 'retry:still-red', 'a first attempt that goes red after parking files attempt 2');
+});

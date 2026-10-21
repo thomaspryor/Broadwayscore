@@ -29,6 +29,7 @@
  */
 
 const { parseSessionReportStatus } = require('./linear-session-reporting.js');
+const { parseRecheckAfter } = require('./recheck-stamp.js');
 
 const HOUR_MS = 3600000;
 const WINDOW_MS = 3 * HOUR_MS;
@@ -103,8 +104,10 @@ function closedAtMs(card) {
 
 /**
  * PURE. When a worker parked this card with its fix already landed, as ms; else
- * null. linear-session.js writes `**Session report (paused)**` plus a
- * `RECHECK-AFTER:` stamp when a fix only shows on a later scheduled run (the
+ * null. A stamp alone is trusted as "fix landed"; a later red run still
+ * escalates (decideAttempt), so a wrong trust costs a late email, never a silent one.
+ * linear-session.js writes `**Session report (paused)**` plus a
+ * `RECHECK-AFTER` stamp (colon optional, shared parser) when a fix only shows on a later scheduled run (the
  * poller has no cron). The card goes back to Backlog, which reads as "not
  * started", but a fix exists: it must wait for proof, not page the owner
  * (BRO-5835: BRO-5716 was claimed 20:53Z, fixed 21:06Z, parked 21:33Z, and
@@ -115,7 +118,7 @@ function fixParkedAt(card) {
   let newest = null;
   for (const c of (card && card.comments) || []) {
     const body = String((c && c.body) || '');
-    if (parseSessionReportStatus(body) !== 'paused' || !body.includes('RECHECK-AFTER:')) continue;
+    if (parseSessionReportStatus(body) !== 'paused' || parseRecheckAfter(body) === null) continue;
     const at = ms(c.createdAt);
     if (at !== null && (created === null || at >= created) && (newest === null || at > newest)) newest = at;
   }
