@@ -87,6 +87,9 @@ function evaluateAuthHealth({ preflight, authStatus = null }) {
  * @returns {{preflight: object, attemptsUsed: number}}
  */
 function probeWithConfirm({ probe, sleep, attempts = 2, delayMs = 45000, log = () => {} }) {
+  // Atomics.wait treats a NaN timeout as infinite, so a typo'd env-sourced
+  // delay ("30s") would hang the caller forever; fall back to the default.
+  if (!Number.isFinite(delayMs) || delayMs < 0) delayMs = 45000;
   let preflight;
   for (let i = 1; i <= attempts; i++) {
     preflight = probe();

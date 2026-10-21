@@ -205,6 +205,14 @@ test('probeWithConfirm: failing every attempt still reports failure (a real revo
   assert.equal(attemptsUsed, 2);
 });
 
+test('probeWithConfirm: a NaN/negative delay (typo in an env var) falls back to the default instead of hanging Atomics.wait', () => {
+  for (const bad of [NaN, -5, Infinity]) {
+    const sleeps = [];
+    probeWithConfirm({ probe: () => ({ ok: false }), sleep: ms => sleeps.push(ms), delayMs: bad });
+    assert.deepEqual(sleeps, [45000], `delayMs=${bad} must be replaced by the finite default`);
+  }
+});
+
 test('probeWithConfirm: a healthy first probe never sleeps or re-probes', () => {
   let calls = 0;
   const { attemptsUsed } = probeWithConfirm({ probe: () => { calls++; return { ok: true, mode: 'oauth' }; }, sleep: () => { throw new Error('must not sleep'); } });
