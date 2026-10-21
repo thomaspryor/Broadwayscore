@@ -465,6 +465,11 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
             Measured against the {formatCurrency(commercial.capitalization)} maximum offering; the amount raised may be lower.
           </p>
         )}
+        {showModelBar && commercial.modelRecoupmentPct && commercial.estimatedInputs?.length ? (
+          <p className="text-xs text-gray-400" data-testid="model-estimated-inputs">
+            This estimate rests on guesses: {commercial.estimatedInputs.join('; ')}. They are not disclosed figures.
+          </p>
+        ) : null}
         {holdLabel && (
           <p className="text-xs text-gray-400" data-testid="model-hold">
             Recoupment estimate: {holdLabel}

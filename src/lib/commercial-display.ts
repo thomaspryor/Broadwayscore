@@ -324,6 +324,22 @@ export function getCitedSourceUrl(sources: SourceList): string | null {
  * modelWarnings, classifiedReason, estimatedRecoupmentSource, source
  * excerpts...) never leaves the server. Call it in the server component.
  */
+/**
+ * Plain-words names for the model inputs that are guesses (BRO-5849), by what
+ * kind of guess: never "lead", never the forum's name (policy BRO-5020).
+ * A Form D ceiling is a disclosed maximum and has its own "up to" wording, so
+ * it is not listed. Empty when every input is a figure the record states.
+ */
+export function estimatedInputNotes(commercial: Pick<ShowCommercial, 'modelInputBasis' | 'costMethodology'>): string[] {
+  const out: string[] = [];
+  for (const { input, basis } of commercial.modelInputBasis ?? []) {
+    if (basis === 'comparables') out.push(`${input === 'capitalization' ? 'capitalization' : 'weekly running cost'} estimated from similar shows, not this show's own figures`);
+    else if (basis === 'estimate' && input === 'capitalization') out.push('capitalization is an unconfirmed estimate');
+    else if (basis === 'estimate') out.push(commercial.costMethodology === 'reddit-standard' ? 'weekly running cost is a fan-forum estimate, unconfirmed' : 'weekly running cost is an industry estimate, unconfirmed');
+  }
+  return out;
+}
+
 export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommercial {
   const rawRecoupedSource = commercial.recoupedSource ?? null;
   const recoupedSource =
@@ -339,6 +355,7 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     weeklyRunningCostSource: publicSourceText(commercial.weeklyRunningCostSource),
     costMethodology: commercial.costMethodology,
     isEstimate: commercial.isEstimate,
+    ...(estimatedInputNotes(commercial).length ? { estimatedInputs: estimatedInputNotes(commercial) } : {}),
     recouped: commercial.recouped,
     recoupedDate: commercial.recoupedDate,
     recoupedWeeks: commercial.recoupedWeeks,

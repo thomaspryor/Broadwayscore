@@ -15,6 +15,8 @@ require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { isMaximumCapitalization } = require('./lib/public-source-text');
+const { modelInputBasis } = require('./lib/model-input-basis');
+const inputBasis = (data, input) => (modelInputBasis(data, null).find((b) => b.input === input) || {}).basis;
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data');
@@ -84,11 +86,14 @@ for (const [slug, data] of Object.entries(commercial.shows)) {
     designation: data.designation,
     capitalization: data.capitalization,
     capitalizationSource: data.capitalizationSource || null,
-    isCapitalizationEstimate: data.isEstimate?.capitalization || false,
+    // A guess is flagged from every marker the record carries (isEstimate, an "Estimate:" source, a forum or industry cost method), never from the flag alone (BRO-5849).
+    isCapitalizationEstimate: inputBasis(data, 'capitalization') === 'estimate' || data.isEstimate?.capitalization || false,
+    capitalizationBasisNote: inputBasis(data, 'capitalization') || null,
     // A Form D maximum or "up to" figure, not an exact capitalization (BRO-5660).
     isCapitalizationMaximum: isMaximumCapitalization(data),
     weeklyRunningCost: data.weeklyRunningCost,
-    isRunningCostEstimate: data.isEstimate?.weeklyRunningCost || false,
+    isRunningCostEstimate: inputBasis(data, 'weeklyRunningCost') === 'estimate' || data.isEstimate?.weeklyRunningCost || false,
+    runningCostBasisNote: inputBasis(data, 'weeklyRunningCost') || null,
     recouped: data.recouped,
     recoupedDate: data.recoupedDate,
     // The date is our estimate when true (BRO-5568); recoupedDate is when the recoupment was REPORTED.
@@ -137,8 +142,10 @@ const csvHeaders = [
   'Capitalization',
   'Cap. Estimated',
   'Cap. Is Maximum',
+  'Cap. Basis',
   'Weekly Running Cost',
   'Running Cost Est.',
+  'Running Cost Basis',
   'Recouped',
   'Weeks to Recoup',
   'Recoup Date',
@@ -160,8 +167,10 @@ for (const show of exportData.shows) {
     show.capitalization || '',
     show.isCapitalizationEstimate ? 'Yes' : '',
     show.isCapitalizationMaximum ? 'Yes' : '',
+    show.capitalizationBasisNote || '',
     show.weeklyRunningCost || '',
     show.isRunningCostEstimate ? 'Yes' : '',
+    show.runningCostBasisNote || '',
     show.recouped === true ? 'Yes' : show.recouped === false ? 'No' : '',
     show.recoupedWeeks || '',
     show.recoupedDate ? `${show.isRecoupDateEstimate ? '~' : ''}${show.recoupedDate}` : '',

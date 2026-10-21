@@ -532,6 +532,10 @@ export interface ShowCommercial {
   modelCategory?: string;
   modelLastRun?: string;
   modelWarnings?: string[];
+  /** Model inputs that are guesses or fallbacks (BRO-5849); server-side, the page gets estimatedInputs. */
+  /** Page-safe wording for the guessed inputs (estimatedInputNotes). */
+  estimatedInputs?: string[];
+  modelInputBasis?: Array<{ input: 'capitalization' | 'weeklyRunningCost'; basis: 'estimate' | 'ceiling' | 'type-default' | 'comparables' }>;
   modelDesignationFlag?: string;
 }
 

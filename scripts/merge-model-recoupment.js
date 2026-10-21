@@ -22,6 +22,7 @@ const { createCommercialWriteGuard } = require('./lib/commercial-write-guard');
 const { classifyTier } = require('./lib/model-return-v2');
 const { clearStaleModelFields, applyShadowReturnFields, applyReturnedSoFarFields, RETURNED_SO_FAR_OPTS } = require('./lib/model-run-fields');
 const { makeGrossesLookup } = require('./lib/grosses-lookup');
+const { modelInputBasis, decidedByGuess } = require('./lib/model-input-basis');
 const { modelContradictsDesignation, planModelLossResizes, MODEL_LOSS_RESIZE_LIMIT } = require('./lib/commercial-designations');
 
 // ---------------------------------------------------------------------------
@@ -158,6 +159,9 @@ function main() {
     comm.modelCategory = result.category;
     comm.modelLastRun = today;
     comm.modelWarnings = result.warnings;
+    // Which inputs are guesses (BRO-5849): separate from dataQuality, which the display floor reads.
+    const basis = modelInputBasis(comm, result);
+    if (basis.length) comm.modelInputBasis = basis; else delete comm.modelInputBasis;
     // Shadow fields (BRO-4989 G): SVOG-denominator fix + investor multiple.
     // Nothing reads them yet; modelRecoupmentPct above stays the live value.
     applyShadowReturnFields(comm, result, show);
@@ -188,7 +192,10 @@ function main() {
   // one that cleared a record's model fields leaves no estimate, so a Fizzle
   // or Flop the model sized becomes Did Not Recoup. Too many moves at once are
   // held for review instead of written.
-  const resize = planModelLossResizes(keys.map((key) => [key, commercial.shows[key]]));
+  const resize = planModelLossResizes(
+    // A guess or comparable never relabels a show publicly (BRO-5849).
+    keys.map((key) => [key, commercial.shows[key]]).filter(([, entry]) => !decidedByGuess(entry)),
+  );
   for (const { key, from, to } of resize.moves) {
     console.log(`  [SIZE] ${key}.designation: ${from} -> ${to} (by its recorded estimate)${resize.held ? ', held' : ''}`);
     if (!resize.held) commercial.shows[key].designation = to;
