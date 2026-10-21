@@ -62,9 +62,22 @@ function isTextOnlyDiff(patch) {
   return flush();
 }
 
-module.exports = { isTextOnlyDiff, maskLine };
+module.exports = { isTextOnlyDiff, maskLine, filterFiles };
 
-if (require.main === module) {
+function filterFiles(range, files, run) {
+  // Keep every file that is not provably a text-only src code edit (fail closed).
+  return files.filter((f) => {
+    if (!/^src\/.*\.(tsx|jsx|ts|js)$/.test(f)) return true;
+    try { return !isTextOnlyDiff(run(range, f)); } catch { return true; }
+  });
+}
+
+if (require.main === module && process.argv[2] === '--filter') {
+  const { execFileSync } = require('child_process');
+  const files = require('fs').readFileSync(0, 'utf8').split('\n').filter(Boolean);
+  const run = (range, f) => execFileSync('git', ['diff', range, '--', f], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, stdio: ['ignore', 'pipe', 'ignore'] });
+  process.stdout.write(filterFiles(process.argv[3], files, run).map((f) => f + '\n').join(''));
+} else if (require.main === module) {
   let buf = '';
   process.stdin.setEncoding('utf8');
   process.stdin.on('data', (d) => { buf += d; });

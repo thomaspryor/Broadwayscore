@@ -148,26 +148,12 @@ else
   # partial copy) — fall back to the old unscoped diff rather than fail closed.
   UI_FILES_CHANGED=$(_UNSCOPED_UI_DIFF)
 fi
-# BRO-5844 (owner decision 2026-10-21): a code file whose diff only changes
-# copy (JSX text, prose lines, // comments) is not a visual change. Filter the
-# FULL list (never a head -5 cut) and fail closed: CSS/config files, a git or
-# helper error, or anything the helper can't prove text-only stays in the list.
-# Canonical root ONLY: a pushed branch must not supply its own classifier.
-_TEXT_ONLY_LIB="$CANONICAL_ROOT/scripts/lib/visual-text-only-diff.js"
-if [ -n "$UI_FILES_CHANGED" ] && [ -f "$_TEXT_ONLY_LIB" ]; then
-  _KEPT=""
-  while IFS= read -r _f; do
-    [ -z "$_f" ] && continue
-    case "$_f" in
-      src/*.tsx|src/*.jsx|src/*.ts|src/*.js)
-        if _PATCH=$(cd "$SESSION_ROOT" && git diff "origin/main...$DIFF_REF" -- "$_f" 2>/dev/null) \
-           && printf '%s\n' "$_PATCH" | node "$_TEXT_ONLY_LIB" >/dev/null 2>&1; then
-          continue
-        fi ;;
-    esac
-    _KEPT="${_KEPT}${_f}"$'\n'
-  done <<< "$UI_FILES_CHANGED"
-  UI_FILES_CHANGED=$(printf '%s' "$_KEPT" | sed '/^$/d')
+# BRO-5844: drop code files whose diff only changes copy (logic in the helper,
+# canonical root ONLY so a pushed branch can't supply its own). Fail closed: any
+# helper/git error keeps the full list.
+_TOL="$CANONICAL_ROOT/scripts/lib/visual-text-only-diff.js"
+if [ -n "$UI_FILES_CHANGED" ] && [ -f "$_TOL" ]; then
+  _KEPT=$(printf '%s\n' "$UI_FILES_CHANGED" | (cd "$SESSION_ROOT" && node "$_TOL" --filter "origin/main...$DIFF_REF" 2>/dev/null)) && UI_FILES_CHANGED="$_KEPT"
 fi
 UI_FILES_CHANGED=$(printf '%s\n' "$UI_FILES_CHANGED" | sed '/^$/d' | head -5)
 if [ -z "$UI_FILES_CHANGED" ]; then

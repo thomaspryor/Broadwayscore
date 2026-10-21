@@ -59,3 +59,13 @@ for (const [name, body] of Object.entries(visual)) {
 test('prose moved between blocks is still text-only', () => {
   assert.equal(isTextOnlyDiff(hunk('-  Old copy here.\n+  New copy here.')), true);
 });
+
+test('filterFiles keeps non-src and non-text-only files, drops copy-only ones', async () => {
+  const { filterFiles } = createRequire(import.meta.url)('./visual-text-only-diff.js');
+  const patches = {
+    'src/a.tsx': hunk('-<p>Old words</p>\n+<p>New words here</p>'),
+    'src/b.tsx': hunk('-<p className="a">Hi</p>\n+<p className="b">Hi</p>'),
+  };
+  const run = (_r, f) => { if (!patches[f]) throw new Error('boom'); return patches[f]; };
+  assert.deepEqual(filterFiles('r', ['src/a.tsx', 'src/b.tsx', 'src/c.tsx', 'src/x.css'], run), ['src/b.tsx', 'src/c.tsx', 'src/x.css']);
+});
