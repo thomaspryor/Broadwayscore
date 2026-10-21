@@ -11,7 +11,7 @@
  * (validate-show-venue.js treats manual-user-request as provisional).
  */
 
-const { sanitizeVenueForWrite } = require('./venue-classification');
+const { sanitizeVenueForWrite, isBroadwayCategory } = require('./venue-classification');
 const { MARKET_BEFORE_TOUR_RE } = require('./tour-family');
 
 const REQUIRED = ['id', 'title', 'slug', 'venue', 'status', 'type', 'category', 'market'];
@@ -93,7 +93,7 @@ function applyAddShow(shows, action, { isRetired } = {}) {
   if (!show || typeof show !== 'object') return { ok: false, reason: 'add-show: missing show object' };
   // A Broadway production announced before its theater is booked has no venue yet
   // (dreamgirls, private-lives exist this way); every other shape needs one.
-  const venueTbd = show.venue === null && show.status === 'announced' && show.category === 'broadway';
+  const venueTbd = show.venue === null && show.status === 'announced' && isBroadwayCategory(show);
   for (const f of REQUIRED) if (!show[f] && !(f === 'venue' && venueTbd)) return { ok: false, reason: `add-show: missing required field "${f}"` };
   const extra = Object.keys(show).filter(k => !ALLOWED.has(k));
   if (extra.length) return { ok: false, reason: `add-show: fields not allowed: ${extra.join(', ')}` };
