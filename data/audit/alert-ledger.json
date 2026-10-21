@@ -21,10 +21,10 @@
       "title": "Cron's latest run failed (not yet stale): Test Suite",
       "firstSeen": "2026-10-12T20:42:23.460Z",
       "incidentOpenedAt": "2026-10-19T18:07:12.414Z",
-      "lastSeen": "2026-10-19T18:07:12.414Z",
-      "lastNotifiedAt": "2026-10-19T18:07:12.414Z",
-      "lastSurfacedAt": "2026-10-19T18:07:12.414Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-10-21T16:25:30.277Z",
+      "lastNotifiedAt": "2026-10-21T16:25:30.277Z",
+      "lastSurfacedAt": "2026-10-21T16:25:30.277Z",
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -12906,19 +12906,18 @@
       "resolveReason": "job-green"
     },
     "cron-health:Weekly A/B Monitors": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Weekly A/B Monitors",
       "firstSeen": "2026-10-07T18:18:17.939Z",
-      "incidentOpenedAt": "2026-10-07T18:18:17.939Z",
-      "lastSeen": "2026-10-07T18:18:17.939Z",
-      "lastNotifiedAt": "2026-10-07T18:18:17.939Z",
-      "lastSurfacedAt": "2026-10-07T18:18:17.939Z",
-      "notifyCount": 1,
+      "incidentOpenedAt": "2026-10-21T16:25:30.418Z",
+      "lastSeen": "2026-10-21T16:25:30.418Z",
+      "lastNotifiedAt": "2026-10-21T16:25:30.418Z",
+      "lastSurfacedAt": "2026-10-21T16:25:30.418Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-10-12T20:42:23.586Z"
+      "linearIdentifier": null
     },
     "land:land/bro-4238-failopen": {
       "status": "resolved",
@@ -19946,7 +19945,7 @@
       "silentRefires": 9
     },
     "cron-health-failed:Clear Stale Wrong-Production Flags": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Cron's latest run failed (not yet stale): Clear Stale Wrong-Production Flags",
       "firstSeen": "2026-10-17T14:48:28.895Z",
@@ -19956,7 +19955,9 @@
       "lastSurfacedAt": "2026-10-17T14:48:28.895Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-21T16:25:30.308Z",
+      "resolveReason": "latest run no longer failing"
     },
     "test-yml:red:Unit Tests:25534026": {
       "status": "resolved",
@@ -21458,10 +21459,10 @@
       "title": "Cron's latest run failed (not yet stale): Fetch All Image Formats",
       "firstSeen": "2026-10-19T18:07:12.430Z",
       "incidentOpenedAt": "2026-10-19T18:07:12.430Z",
-      "lastSeen": "2026-10-20T16:09:19.773Z",
-      "lastNotifiedAt": "2026-10-20T16:09:19.773Z",
-      "lastSurfacedAt": "2026-10-20T16:09:19.773Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-10-21T16:25:30.293Z",
+      "lastNotifiedAt": "2026-10-21T16:25:30.293Z",
+      "lastSurfacedAt": "2026-10-21T16:25:30.293Z",
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null
     },
