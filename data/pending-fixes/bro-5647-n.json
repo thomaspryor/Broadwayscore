@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5647-n",
   "planId": "cc07e99f-491d-459a-afb6-899df1ab9680",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-21T16:27:31.660Z",
   "submitter": {
     "name": null,
@@ -285,5 +285,69 @@
         "description": "once-on-this-island-2017: add (weekly cost only)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T16:35:04.443Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added to-kill-a-mockingbird-2018 (Windfall)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added network-2018 (Easy Winner)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-ferryman-2018 (Trickle)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-boys-in-the-band-2018 (Easy Winner)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-lifespan-of-a-fact-2018 (Easy Winner)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added spongebob-squarepants-2017 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-prom-2018 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-cher-show-2018 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added be-more-chill-2019 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added carousel-2018 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added american-son-2018 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added once-on-this-island-2017 (TBD)"
+    }
+  ],
+  "executedIn": "ci"
 }
