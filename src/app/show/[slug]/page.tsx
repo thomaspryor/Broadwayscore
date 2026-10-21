@@ -168,7 +168,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   const tourNow = isTourMeta && show.status !== 'closed' ? getTourNowNextForShow(show)?.now : null;
   const venuePhrase = (label: string) => (tourNow
     ? ` Now in ${tourNow.city} (${tourNow.venue}) through ${formatShowDate(tourNow.end, { month: 'short', day: 'numeric' })}.`
-    : isTourMeta ? ` ${label} on tour.` : ` ${label} at ${show.venue}.`);
+    : isTourMeta ? ` ${label} on tour.` : show.venue ? ` ${label} at ${show.venue}.` : ` ${label}.`);
   const statusPart = statusLabel ? venuePhrase(statusLabel) : '';
   const synopsisPart = synopsisSnippet ? ` ${synopsisSnippet}` : '';
   const SENTIMENT_PHRASES: Record<string, string> = {
@@ -719,7 +719,9 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                   the verdict/score block 2026-07-19 (SXO fix) — production metadata
                   used to lead the page ahead of any reviews-intent content. */}
               <p className="text-gray-400 text-xs sm:text-sm mt-3 mb-1 leading-relaxed" data-testid="show-meta-line">
-                {isWestEnd ? (
+                {!show.venue ? (
+                  <span className="text-gray-300">Theater to be announced</span>
+                ) : isWestEnd ? (
                   <Link href={`/west-end/theater/${slugify(show.venue)}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
                 ) : isOffBroadway && offBroadwayTheater ? (
                   <Link href={`/off-broadway/theater/${offBroadwayTheater.slug}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>

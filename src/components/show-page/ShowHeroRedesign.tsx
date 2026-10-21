@@ -433,7 +433,8 @@ function Inner({
 
   // ─── Render ────────────────────────────────────────────────────────────
 
-  const venueLink = isWestEnd
+  // An announced show may have no theater yet (BRO-5814): no link, no empty label.
+  const venueLink = !show.venue ? null : isWestEnd
     ? `/west-end/theater/${slugify(show.venue)}`
     // Off-Broadway links only when the venue resolved to a page (freeform venue strings).
     // Regional and tour venues have no /theater page ("North American Tour" is not a house).
@@ -534,7 +535,7 @@ function Inner({
                   {show.venue}
                 </Link>
               ) : (
-                <span className="text-gray-300">{show.venue}</span>
+                <span className="text-gray-300">{show.venue || 'Theater to be announced'}</span>
               )}
               {/* nowrap keeps "2h 45m" from splitting across lines at 390px
                   (same pattern as the legacy show-meta-line). */}

@@ -471,8 +471,11 @@ export default function ShowPageBelowFold({
           <div className="sm:col-span-2">
             <dt className="text-gray-500">{isTour ? 'Where' : isWestEnd ? 'Theatre' : 'Theater'}</dt>
             <dd className="text-white mt-0.5">
-              {/* A tour has no house: its venue is the current stop (or a placeholder), never a /theater page. */}
-              {isTour ? (
+              {/* A tour has no house: its venue is the current stop (or a placeholder), never a /theater page.
+                  An announced show may have no theater yet (BRO-5814): no /theater/null link. */}
+              {!show.venue ? (
+                <span className="text-gray-400">To be announced</span>
+              ) : isTour ? (
                 <span>{show.venue}</span>
               ) : isWestEnd ? (
                 <Link href={`/west-end/theater/${venueSlug}`} className="hover:text-brand transition-colors">{show.venue}</Link>
