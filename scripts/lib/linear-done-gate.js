@@ -104,13 +104,17 @@ function applyCmdExecution(result, verifyCmdEvidence) {
   if (execResult && execResult.allowed === true) {
     return { ...result, cmdExecution: execResult };
   }
+  // BRO-5837: an infra timeout never ran the command, so "was executed ... and
+  // did not pass" would contradict the reason it carries.
+  const neverRan = execResult && execResult.verdict === 'verify-cmd-infra-timeout';
   return {
     ...result,
     allowed: false,
     verdict: (execResult && execResult.verdict) || 'verify-cmd-failed',
-    reason:
-      `recorded acceptance command \`${result.cmd}\` was executed against a fresh origin/main checkout and did not pass: ` +
-      `${(execResult && execResult.reason) || 'no result from the execution verifier'}`,
+    reason: neverRan
+      ? execResult.reason
+      : `recorded acceptance command \`${result.cmd}\` was executed against a fresh origin/main checkout and did not pass: ` +
+        `${(execResult && execResult.reason) || 'no result from the execution verifier'}`,
     cmdExecution: execResult || null,
   };
 }

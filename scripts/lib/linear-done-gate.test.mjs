@@ -146,3 +146,16 @@ test('BRO-3885: no evidence at all is still refused (unchanged baseline)', () =>
   assert.equal(gate.allowed, false);
   assert.equal(gate.verdict, DONE_VERDICTS.BLOCKED_NO_EVIDENCE);
 });
+
+// BRO-5837: an infra timeout must not be captioned "was executed ... did not pass".
+test('applyCmdExecution: infra-timeout verdict keeps its own reason, no "executed and did not pass" prefix', () => {
+  const { checkLinearDoneTransition } = require('./linear-done-gate.js');
+  const r = checkLinearDoneTransition({
+    targetStateType: 'completed',
+    description: 'VERIFY: node --test tests/unit/ok.test.mjs',
+    verifyCmdEvidence: () => ({ allowed: false, verdict: 'verify-cmd-infra-timeout', reason: 'checkout timed out; re-run' }),
+  });
+  assert.equal(r.allowed, false);
+  assert.equal(r.verdict, 'verify-cmd-infra-timeout');
+  assert.equal(r.reason, 'checkout timed out; re-run');
+});
