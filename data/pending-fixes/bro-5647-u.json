@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5647-u",
   "planId": "62846845-967c-4091-b9af-a4ef62ed8665",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-21T18:59:36.867Z",
   "submitter": {
     "name": null,
@@ -65,5 +65,34 @@
         "description": "the-kite-runner-2022: note the bundled Broadway and tour capitalization"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T19:06:30.265Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for the-kite-runner-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for the-kite-runner-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for the-kite-runner-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for the-kite-runner-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-kite-runner-2022"
+    }
+  ],
+  "executedIn": "ci"
 }
