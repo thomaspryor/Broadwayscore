@@ -129,7 +129,7 @@ fi
 UI_PATTERN='^(src/.*\.(tsx|jsx|css|scss|module\.css)$|tailwind\.config\.|postcss\.config\.|src/app/.*\.(tsx|jsx|ts|js)$)'
 GATE_LIB="$CANONICAL_ROOT/scripts/lib/review-gate.mjs"
 _UNSCOPED_UI_DIFF() {
-  cd "$SESSION_ROOT" && git diff --name-only "origin/main...$DIFF_REF" 2>/dev/null | grep -E "$UI_PATTERN" | head -5
+  cd "$SESSION_ROOT" && git diff --name-only "origin/main...$DIFF_REF" 2>/dev/null | grep -E "$UI_PATTERN"
 }
 if [ -f "$GATE_LIB" ]; then
   CHANGED_RESULT=$(node "$GATE_LIB" --query=changed-files --repo="$SESSION_ROOT" --ref="$DIFF_REF" --pattern="$UI_PATTERN" 2>/dev/null)
@@ -139,7 +139,7 @@ if [ -f "$GATE_LIB" ]; then
   # `.files[]? // empty` would otherwise silently read that as "no UI files"
   # (push allowed) instead of falling back to the safer unscoped diff below.
   if echo "$CHANGED_RESULT" | jq -e 'has("files") and (has("error") | not)' >/dev/null 2>&1; then
-    UI_FILES_CHANGED=$(echo "$CHANGED_RESULT" | jq -r '.files[]? // empty' 2>/dev/null | head -5)
+    UI_FILES_CHANGED=$(echo "$CHANGED_RESULT" | jq -r '.files[]? // empty' 2>/dev/null)
   else
     UI_FILES_CHANGED=$(_UNSCOPED_UI_DIFF)
   fi
@@ -148,8 +148,30 @@ else
   # partial copy) — fall back to the old unscoped diff rather than fail closed.
   UI_FILES_CHANGED=$(_UNSCOPED_UI_DIFF)
 fi
+# BRO-5844 (owner decision 2026-10-21): a code file whose diff only changes
+# copy (string literals, JSX text, comments) is not a visual change. Filter the
+# FULL list (never a head -5 cut) and fail closed: CSS/config files, a git or
+# helper error, or anything the helper can't prove text-only stays in the list.
+_TEXT_ONLY_LIB="$SESSION_ROOT/scripts/lib/visual-text-only-diff.js"
+[ -f "$_TEXT_ONLY_LIB" ] || _TEXT_ONLY_LIB="$CANONICAL_ROOT/scripts/lib/visual-text-only-diff.js"
+if [ -n "$UI_FILES_CHANGED" ] && [ -f "$_TEXT_ONLY_LIB" ]; then
+  _KEPT=""
+  while IFS= read -r _f; do
+    [ -z "$_f" ] && continue
+    case "$_f" in
+      src/*.tsx|src/*.jsx|src/*.ts|src/*.js)
+        if _PATCH=$(cd "$SESSION_ROOT" && git diff "origin/main...$DIFF_REF" -- "$_f" 2>/dev/null) \
+           && printf '%s\n' "$_PATCH" | node "$_TEXT_ONLY_LIB" >/dev/null 2>&1; then
+          continue
+        fi ;;
+    esac
+    _KEPT="${_KEPT}${_f}"$'\n'
+  done <<< "$UI_FILES_CHANGED"
+  UI_FILES_CHANGED=$(printf '%s' "$_KEPT" | sed '/^$/d')
+fi
+UI_FILES_CHANGED=$(printf '%s\n' "$UI_FILES_CHANGED" | sed '/^$/d' | head -5)
 if [ -z "$UI_FILES_CHANGED" ]; then
-  # No UI files changed in this branch — push freely.
+  # No UI files changed (or only copy edits) in this branch — push freely.
   exit 0
 fi
 
