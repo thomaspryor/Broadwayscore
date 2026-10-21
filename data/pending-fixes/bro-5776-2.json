@@ -1,13 +1,13 @@
 {
   "issueNumber": "bro-5776-2",
-  "planId": "23458f9c-1e75-41ed-a2b3-cb09d14d45e4",
+  "planId": "e51527c2-d955-49dc-a91a-fe4c8a8b59d3",
   "status": "pending",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-5776: add commercial.json records for every 2026-27 Broadway production that had none (22 shows) and record the three SEC Form D offering maximums found (Damn Yankees, Inter Alia, Much Ado). Producers of Roundabout, Second Stage, MTC and Lincoln Center shows are marked Nonprofit with nonprofitOrg, each cited to a trade article; all others are TBD.",
+    "summary": "BRO-5776: add commercial.json records for every announced or upcoming Broadway production that had none (22 shows) and record the three SEC Form D offering maximums found (Damn Yankees, Inter Alia, Much Ado). Producers of Roundabout, Second Stage, MTC and Lincoln Center shows are marked Nonprofit with nonprofitOrg, each cited to a trade article; all others are TBD.",
     "steps": [
       "Nonprofit only where a trade article names the nonprofit as producer; commercial shows are TBD, never a guessed outcome.",
       "SEC Form D amounts are offering maxima and carry capitalizationBasis=maximum."
@@ -227,7 +227,7 @@
         "slug": "10-things-i-hate-about-you-on-broadway",
         "entry": {
           "designation": "TBD",
-          "notes": "Announced commercial production; no capitalization reported.",
+          "notes": "Announced Broadway production; producers and capitalization not confirmed.",
           "sources": [
             {
               "type": "trade",
@@ -243,7 +243,7 @@
         "slug": "evita",
         "entry": {
           "designation": "TBD",
-          "notes": "Announced commercial revival at the Winter Garden Theatre; no capitalization reported.",
+          "notes": "Announced Broadway revival at the Winter Garden Theatre; producers and capitalization not confirmed.",
           "sources": [
             {
               "type": "trade",
@@ -307,7 +307,7 @@
         "slug": "now-you-see-me-live",
         "entry": {
           "designation": "TBD",
-          "notes": "Announced commercial production at the Al Hirschfeld Theatre; no capitalization reported.",
+          "notes": "Announced Broadway production at the Al Hirschfeld Theatre; producers and capitalization not confirmed.",
           "sources": [
             {
               "type": "trade",
@@ -323,7 +323,7 @@
         "slug": "blue-man-group-a-new-holiday-surprise",
         "entry": {
           "designation": "TBD",
-          "notes": "Announced commercial holiday engagement at the Lunt-Fontanne Theatre; no capitalization reported.",
+          "notes": "Announced holiday engagement at the Lunt-Fontanne Theatre; producers and capitalization not confirmed.",
           "sources": [
             {
               "type": "trade",
@@ -339,7 +339,7 @@
         "slug": "wanted",
         "entry": {
           "designation": "TBD",
-          "notes": "Commercial production at the James Earl Jones Theatre; no capitalization reported.",
+          "notes": "Broadway production at the James Earl Jones Theatre; producers and capitalization not confirmed.",
           "sources": [
             {
               "type": "trade",
@@ -355,7 +355,7 @@
         "slug": "let-the-good-times-roll",
         "entry": {
           "designation": "TBD",
-          "notes": "Announced commercial production; no capitalization reported.",
+          "notes": "Announced Broadway production; producers and capitalization not confirmed.",
           "sources": [
             {
               "type": "trade",
@@ -371,7 +371,7 @@
         "slug": "midnight-in-the-garden-of-good-and-evil",
         "entry": {
           "designation": "TBD",
-          "notes": "Announced commercial production; no capitalization reported.",
+          "notes": "Announced Broadway production; producers and capitalization not confirmed.",
           "sources": [
             {
               "type": "trade",
@@ -387,7 +387,7 @@
         "slug": "inter-alia",
         "entry": {
           "designation": "TBD",
-          "notes": "Commercial play at the Music Box Theatre. Capitalization is the SEC Form D offering maximum, not a reported final figure.",
+          "notes": "Play at the Music Box Theatre. Capitalization is the SEC Form D offering maximum, not a reported final figure.",
           "sources": [
             {
               "type": "trade",
@@ -411,7 +411,7 @@
         "slug": "much-ado-about-nothing",
         "entry": {
           "designation": "TBD",
-          "notes": "Commercial revival at the Winter Garden Theatre. Capitalization is the SEC Form D offering maximum, not a reported final figure.",
+          "notes": "Revival at the Winter Garden Theatre. Capitalization is the SEC Form D offering maximum, not a reported final figure.",
           "sources": [
             {
               "type": "trade",
@@ -429,6 +429,15 @@
           "capitalizationSource": "SEC Form D filing (JLC Much Ado Limited Partnership, CIK 0002133246): total offering amount $7,500,000, an offering maximum rather than a reported final capitalization. Matched to Much Ado About Nothing by the issuer name and its related persons."
         },
         "description": "much-ado-about-nothing: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "damn-yankees",
+        "field": "notes",
+        "oldValue": "No capitalization reported.",
+        "newValue": "Capitalization shown is the SEC Form D offering maximum for DY Broadway LLC (CIK 0002106793), not a reported final figure. Previews begin March 24, 2027 at the Marquis Theatre.",
+        "description": "damn-yankees: notes from SEC Form D (DY Broadway LLC, CIK 0002106793)"
       },
       {
         "type": "data-edit",

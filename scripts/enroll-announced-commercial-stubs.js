@@ -14,7 +14,8 @@
 require('./lib/cli-help').exitOnHelp(module);
 const path = require('path');
 const { createCommercialWriteGuard } = require('./lib/commercial-write-guard');
-const { findUnenrolled, nonprofitHouseCandidate } = require('./lib/commercial-enrollment');
+const fs = require('fs');
+const { findUnenrolled, nonprofitHouseCandidate, pendingAddCommercialSlugs } = require('./lib/commercial-enrollment');
 const { makeStub } = require('./initialize-commercial-stub');
 
 function main(argv) {
@@ -23,7 +24,11 @@ function main(argv) {
   const shows = require(path.join(dataDir, 'shows.json')).shows || [];
   const { loadCommercial, saveCommercial } = createCommercialWriteGuard(path.join(dataDir, 'commercial.json'));
   const commercial = loadCommercial();
-  const missing = findUnenrolled(shows, commercial.shows);
+  const planDir = path.join(dataDir, 'pending-fixes');
+  const plans = fs.existsSync(planDir)
+    ? fs.readdirSync(planDir).filter(f => f.endsWith('.json')).map(f => { try { return JSON.parse(fs.readFileSync(path.join(planDir, f), 'utf8')); } catch { return null; } })
+    : [];
+  const missing = findUnenrolled(shows, commercial.shows, pendingAddCommercialSlugs(plans));
   const report = missing.map(s => ({ slug: s.slug, status: s.status, venue: s.venue || null, nonprofitHouse: nonprofitHouseCandidate(s) }));
   if (!dryRun) {
     for (const s of missing) commercial.shows[s.slug] = makeStub();
