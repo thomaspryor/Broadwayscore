@@ -5,7 +5,8 @@
  * Tries multiple scraping services with smart ordering:
  * - Public sites (IBDB, Broadway.com): Playwright first (free), then BD/SB
  * - BroadwayWorld: Playwright first (complex JS rendering)
- * - All other sites: Bright Data → ScrapingBee → Playwright
+ * - DTLI show pages: direct fetch (free), then the provider chain on failure
+ * - All other sites: Scrapingdog → Bright Data → ScrapingBee → Playwright
  *
  * Usage:
  *   const { fetchPage } = require('./lib/scraper');
@@ -1470,6 +1471,29 @@ async function fetchPage(url, options = {}) {
     }
     console.log(`  ⚠️  ${source} returned wrong page (${vr.reason}${vr.actual ? ': ' + vr.actual.slice(0, 80) : ''}) — trying next provider...`);
     return null;
+  }
+
+  // BRO-4244: DTLI serves complete review HTML without a proxy. Keep this
+  // narrow: listings, sitemaps, and other hosts retain their existing routes.
+  // Cloudflare can still block runner IPs, so a failed or incomplete direct
+  // response must fall through to the normal provider chain.
+  if (!preferPlaywright && requestedUrl && requestedUrl.protocol === 'https:' &&
+      ['didtheylikeit.com', 'www.didtheylikeit.com'].includes(requestedUrl.hostname) &&
+      /^\/shows\/[^/]+\/?$/.test(requestedUrl.pathname)) {
+    console.log('  → Trying direct DTLI fetch...');
+    try {
+      const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
+      if (response.ok) {
+        const content = await response.text();
+        if (!_isChallengeOrGarbage(content) && /<\/html\s*>/i.test(content) &&
+            /<div class="(?:poster-)?review-item">/.test(content)) {
+          const checked = _checkAndReturn({ content, format: 'html', source: 'direct' }, 'Direct');
+          if (checked) return checked;
+        }
+      }
+    } catch (error) {
+      console.log(`  ⚠️  Direct DTLI fetch failed: ${error.message}`);
+    }
   }
 
   // Live re-check at chain-build time — matches the original code's gate

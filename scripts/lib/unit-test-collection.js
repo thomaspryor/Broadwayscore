@@ -182,6 +182,7 @@ const EXCLUDED = new Map([
   ['scripts/ingest-manual-review.test.mjs', 'BRO-3151 acceptance shim: imports scripts/lib/manual-review-url-change.test.mjs (scripts/lib/*.test.mjs glob step). EXEMPT_NEVER_CI in audit-orphan-tests.js.'],
   ['scripts/replay-pending-bylines.test.mjs', 'BRO-4408 + BRO-2735 acceptance shim: imports scripts/lib/opening-night-poller-pending-drain.test.mjs, pending-drain-order.test.mjs and replay-pending-zero-text.test.mjs (scripts/lib/*.test.mjs glob step). EXEMPT_NEVER_CI in audit-orphan-tests.js.'],
   ['scripts/scrape-playbill-verdict.test.mjs', 'BRO-2136 acceptance shim: re-imports the collected tests/unit copy. EXEMPT_NEVER_CI in audit-orphan-tests.js.'],
+  ['scripts/scraper-dtli-routing.test.mjs', 'BRO-4244 acceptance shim: imports scripts/lib/scraper-dtli-routing.test.mjs (scripts/lib/*.test.mjs glob step). EXEMPT_NEVER_CI in audit-orphan-tests.js.'],
   // Live-data acceptance checks (data-state, would flap in CI).
   ['scripts/matilda-theatre-row-closed.test.mjs', 'BRO-328 live-data acceptance check (data-state, would flap in CI). Run by hand / by its card\'s VERIFY. EXEMPT_NEVER_CI in audit-orphan-tests.js.'],
   ['scripts/opening-night-express.test.mjs', 'BRO-3137 live-data acceptance check (data-state, would flap in CI). Run by hand / by its card\'s VERIFY. EXEMPT_NEVER_CI in audit-orphan-tests.js.'],
