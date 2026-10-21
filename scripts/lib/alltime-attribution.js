@@ -318,8 +318,7 @@ function fillClearedFromHistory(grossesShows, shows, history, clears, opts = {})
     if (!own || own.status !== 'complete') continue;
     // A run that may have begun before the history does (it starts December
     // 2001) can look complete from one late row: leave it blank.
-    const firstWeek = toMs(Object.keys(history?.weeks || {}).sort()[0]);
-    if (firstWeek != null && toMs(own.since) <= firstWeek + OWN_RUN_START_SLACK_DAYS * DAY_MS) continue;
+    if (mayPredateHistory(history, own)) continue;
     fills.push({ slug, status: own.status, weeks: own.weeks, gaps: own.gaps, since: own.since, gross: own.gross });
     grossesShows[slug] = {
       allTime: { gross: own.gross, performances: own.performances, attendance: own.attendance },
@@ -336,6 +335,14 @@ function fillClearedFromHistory(grossesShows, shows, history, clears, opts = {})
  * partial or gappy rows are not listed: blank is the honest answer there.
  * @returns {Array<{slug:string, gross:number, weeks:number}>}
  */
+// True when the run's rows could be missing its start because the history
+// itself begins then (December 2001): such a total may look complete from one
+// late row, so neither the fill nor the audit trusts it.
+function mayPredateHistory(history, own) {
+  const firstWeek = toMs(Object.keys(history?.weeks || {}).sort()[0]);
+  return firstWeek != null && toMs(own.since) <= firstWeek + OWN_RUN_START_SLACK_DAYS * DAY_MS;
+}
+
 function closedRunsMissingAllTime(grossesShows, shows, history, opts = {}) {
   const now = (opts.now || new Date()).getTime();
   const out = [];
@@ -345,7 +352,7 @@ function closedRunsMissingAllTime(grossesShows, shows, history, opts = {}) {
     if (!slug || !isBroadway(show) || closing == null || closing >= now) continue;
     if (grossesShows?.[slug]?.allTime?.gross != null) continue;
     const own = ownRunTotals(history, show, opts);
-    if (own && own.status === 'complete') out.push({ slug, gross: own.gross, weeks: own.weeks });
+    if (own && own.status === 'complete' && !mayPredateHistory(history, own)) out.push({ slug, gross: own.gross, weeks: own.weeks });
   }
   return out;
 }

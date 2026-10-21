@@ -79,3 +79,9 @@ test('an existing entry (real BWW row) is left alone by the no-entry path', () =
   applyAllTimeAttribution(g, [s], { now: NOW, history });
   assert.equal(g['revival-2022'].allTime.gross, 99);
 });
+
+test('the audit applies the same history-start guard as the fill (no permanent false flag)', () => {
+  const s = show('early-2001', '2001-11-01', '2002-03-03');
+  const history = hist('early-2001', '2001-12-09', '2002-03-03');
+  assert.deepEqual(closedRunsMissingAllTime({}, [s], history, { now: NOW }), []);
+});
