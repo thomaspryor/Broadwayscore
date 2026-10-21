@@ -268,6 +268,28 @@ function logDateContext(text, title, mode) {
     }
   }
   if (!shown) console.log(`    [${mode}] no heading equal to "${want}"`);
+  logOpeningsContext(lines, want, mode);
+}
+
+/**
+ * CI-log diagnostics for the issue's Openings listing (BRO-5851): pre-2019
+ * production pages print no dates, so the run dates live in listing rows
+ * elsewhere in the issue. For up to 6 non-heading lines that contain the
+ * title, print that line and the next 2, each cut to 90 characters: enough to
+ * show the venue/date row layout, too little to carry review text.
+ */
+function logOpeningsContext(lines, want, mode) {
+  if (!want) return;
+  const openings = lines.reduce((n, l) => n + (/^\s*(?:Issue\s+\d+\S*\s+)?Openings\b/i.test(l) ? 1 : 0), 0);
+  console.log(`    [${mode}] Openings headings: ${openings}`);
+  let hits = 0;
+  for (let i = 0; i < lines.length && hits < 6; i++) {
+    const key = capsKey(lines[i].trim()).replace(/^THE /, '');
+    if (!key || key === want || !key.includes(want) || lines[i].trim().length > 120) continue;
+    hits++;
+    const cut = s => s.replace(/\s+/g, ' ').trim().slice(0, 90);
+    console.log(`    [${mode}] title row @${i}: ${cut(lines[i])} || ${cut(lines[i + 1] || '')} || ${cut(lines[i + 2] || '')}`);
+  }
 }
 
 const LABEL_LINE = /^(?:press night|first preview|previews?|opening night|opens|opened|closes|closing|until|runs until|final performance)\b/i;
