@@ -730,7 +730,12 @@ test('BRO-5657: toplevel push-path check blocks a new uncovered script, names th
   assert.equal(checkToplevelPushPaths({ base: 'main', tip: 'HEAD', cwd: d, gapsFor: () => [] }).status, 'clean');
   // a gap already on base is not this branch's fault
   assert.equal(checkToplevelPushPaths({ base: 'main', tip: 'HEAD', cwd: d, gapsFor: () => [gap] }).status, 'clean');
-  // audit cannot run -> fail open
+  // audit cannot run -> fail open; so does a base audit that cannot run (cannot tell whose gap it is)
   assert.equal(checkToplevelPushPaths({ base: 'main', tip: 'HEAD', cwd: d, gapsFor: () => null }).status, 'skip');
+  assert.equal(checkToplevelPushPaths({ base: 'main', tip: 'HEAD', cwd: d, gapsFor: (root) => (fs.existsSync(path.join(root, 'scripts/foo-probe.js')) ? [gap] : null) }).status, 'skip');
+  // same uncovered source reported under a different test (reordered/renamed) is still base's gap
+  assert.equal(checkToplevelPushPaths({ base: 'main', tip: 'HEAD', cwd: d, gapsFor: (root) => [{ ...gap, test: fs.existsSync(path.join(root, 'scripts/foo-probe.js')) ? 'tests/unit/a.test.mjs' : 'tests/unit/b.test.mjs' }] }).status, 'clean');
+  // a branch touching only a scripts/lib test or the collector helpers still runs the audit
+  assert.ok(TOPLEVEL_PUSH_PATH_RE.test('scripts/lib/foo.test.mjs') && TOPLEVEL_PUSH_PATH_RE.test('scripts/lib/unit-test-collection.js'));
   assert.ok(TOPLEVEL_PUSH_PATH_RE.test('scripts/foo-probe.js') && !TOPLEVEL_PUSH_PATH_RE.test('scripts/lib/x.js'));
 });

@@ -559,13 +559,15 @@ export function checkWorkflowChecks({ base, tip, cwd, landedTip = null, run = sp
 // audit-toplevel-script-test-yml-coverage.test.mjs) about 45 minutes in. Cloud
 // containers have no pre-push hook, so run the same audit here: the judged
 // tree's own copy, compared with base so a gap already on main is not blamed.
-export const TOPLEVEL_PUSH_PATH_RE = /^scripts\/[^/]+\.(js|mjs|cjs|ts|tsx)$|^tests\/|^\.github\/workflows\/test\.yml$|^tests\/unit-test-manifest/;
+export const TOPLEVEL_PUSH_PATH_RE = /^scripts\/[^/]+\.(js|mjs|cjs|ts|tsx)$|^scripts\/.+\.test\.(mjs|cjs|js|ts)$|^scripts\/lib\/(unit-test-collection|test-manifest)\.js$|^tests\/|^\.github\/workflows\/test\.yml$/;
 const TOPLEVEL_AUDIT = 'scripts/audit-toplevel-script-test-yml-coverage.js';
-const gapKey = (g) => `${g.source || ''}|${g.test || ''}`;
+// The audit reports each uncovered source once, under whichever test reaches it first,
+// so key on the source alone (a reordered test or a renamed job must not look new).
+const gapKey = (g) => (g.source && g.sourceCovered === false ? `src:${g.source}` : `${g.source || ''}|${g.test || ''}`);
 /** -> gaps array, or null when the audit could not run / parse (fail open). */
 function toplevelGaps(treeRoot, env) {
   if (!fs.existsSync(path.join(treeRoot, TOPLEVEL_AUDIT))) return null;
-  const r = spawnSync('node', [TOPLEVEL_AUDIT, '--json'], { cwd: treeRoot, env, encoding: 'utf8', timeout: 45000 });
+  const r = spawnSync('node', [TOPLEVEL_AUDIT, '--json'], { cwd: treeRoot, env, encoding: 'utf8', timeout: 25000 });
   if (r.status !== 0) return null;
   try {
     const gaps = JSON.parse(r.stdout).gaps;
@@ -589,16 +591,18 @@ export function checkToplevelPushPaths({ base, tip, cwd, landedTip = null, gapsF
     const gaps = gapsFor(judgeRoot, env);
     if (gaps === null) return { status: 'skip', reason: 'toplevel push-path audit could not run' };
     if (gaps.length === 0) return { status: 'clean' };
-    let fresh = gaps;
+    // Without a base verdict we cannot tell this branch's gaps from main's: fail open.
     const baseRoot = materializeTree(cwd, base);
-    if (baseRoot) {
-      try {
-        if (nm) { try { fs.symlinkSync(nm, path.join(baseRoot, 'node_modules'), 'dir'); } catch { /* as above */ } }
-        const onBase = gapsFor(baseRoot, env);
-        if (onBase) { const known = new Set(onBase.map(gapKey)); fresh = gaps.filter((g) => !known.has(gapKey(g))); }
-      } finally {
-        fs.rmSync(baseRoot, { recursive: true, force: true, maxRetries: 5 });
-      }
+    if (!baseRoot) return { status: 'skip', reason: 'could not materialize base' };
+    let fresh;
+    try {
+      if (nm) { try { fs.symlinkSync(nm, path.join(baseRoot, 'node_modules'), 'dir'); } catch { /* as above */ } }
+      const onBase = gapsFor(baseRoot, env);
+      if (onBase === null) return { status: 'skip', reason: 'base audit could not run' };
+      const known = new Set(onBase.map(gapKey));
+      fresh = gaps.filter((g) => !known.has(gapKey(g)));
+    } finally {
+      fs.rmSync(baseRoot, { recursive: true, force: true, maxRetries: 5 });
     }
     const problems = [];
     for (const g of fresh) {
