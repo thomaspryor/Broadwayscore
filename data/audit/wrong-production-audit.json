@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-21T01:07:00.864Z",
+  "timestamp": "2026-10-21T01:20:55.901Z",
   "stats": {
-    "totalReviews": 57995,
+    "totalReviews": 58023,
     "alreadyFlagged": 21116,
     "dateGuardCatches": 198,
-    "directorMismatch": 2029,
-    "tvFilmSignals": 1653,
-    "londonSignals": 2573,
+    "directorMismatch": 2044,
+    "tvFilmSignals": 1654,
+    "londonSignals": 2575,
     "offBroadwaySignals": 530,
-    "yearMismatch": 161,
-    "noPublishDate": 5230
+    "yearMismatch": 163,
+    "noPublishDate": 5229
   },
   "findings": [
     {
@@ -24435,6 +24435,19 @@
     },
     {
       "showId": "les-miserables-tour-2022",
+      "file": "broadwayworld--dc-felton.json",
+      "publishDate": "2025-11-24",
+      "url": "https://www.broadwayworld.com/des-moines/article/Review-LES-MISERABLES-at-Des-Moines-Performing-Arts-20251124",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (6x) more than 2022 (0x). 2026 matches production: les-miserables-arena-concert-spectacular-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
       "file": "calgary-herald--louis-b-hobson.json",
       "score": 91,
       "publishDate": "2026-03-05",
@@ -24463,6 +24476,39 @@
     },
     {
       "showId": "les-miserables-tour-2022",
+      "file": "ladue-news--mark-bretz.json",
+      "publishDate": "2025-11-24",
+      "url": "https://www.laduenews.com/arts-and-culture/les-miserables-fabulous-fox-theatre-theater-review-performance-musical-broadway-stl/article_1c6b16c9-ee3a-4fb7-946e-d519e8ad930d.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from les-miserables-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john caird\" from les-miserables-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn and john caird\" from les-miserables-west-end-2021"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
       "file": "new-city-stage--dennis-polkow.json",
       "score": 75,
       "publishDate": "2026-05-19",
@@ -24472,6 +24518,29 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (3x) more than 2022 (0x). 2026 matches production: les-miserables-arena-concert-spectacular-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
+      "file": "onstagepittsburgh--jessica-neu.json",
+      "publishDate": "2025-11-26",
+      "url": "https://onstagepittsburgh.com/2025/11/26/review-nick-cartell-leads-a-flawless-40th-anniversary-production-of-les-miserables/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2022 (0x). 2026 matches production: les-miserables-arena-concert-spectacular-off-broadway-2026"
         }
       ]
     },
@@ -27239,6 +27308,19 @@
       "score": 84,
       "publishDate": "2025-12-20",
       "url": "https://localnewsmatters.org/2025/12/20/review-moulin-rouge-a-delightful-jukebox-musical-for-all-fans-of-pop-fans/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-tour-2022",
+      "file": "playbill--andrew-gans.json",
+      "publishDate": "2025-12-03",
+      "url": "https://playbill.com/article/moulin-rouge-the-musical-tour-to-welcome-gabriela-carrillo-ryan-vasquez-adea-michelle-sessoms",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -35980,10 +36062,41 @@
     },
     {
       "showId": "some-like-it-hot-tour-2024",
+      "file": "broadwayworld--david-friscic.json",
+      "publishDate": "2025-11-28",
+      "url": "https://www.broadwayworld.com/washington-dc/article/Review-SOME-LIKE-IT-HOT-at-National-Theatre-20251128",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
       "file": "broadwayworld--jonathan-netek.json",
       "score": 88,
       "publishDate": "2026-03-25",
       "url": "https://www.broadwayworld.com/houston/article/Review-SOME-LIKE-IT-HOT-at-Broadway-At-The-Hobby-Center-20260325",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
+      "file": "dc-theater-arts--jennifer-georgia.json",
+      "publishDate": "2025-11-28",
+      "url": "https://dctheaterarts.org/2025/11/28/some-like-it-hot-the-broadway-musical-is-a-dazzling-delight-at-the-national/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -36002,6 +36115,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
+      "file": "maryland-theatre-guide--unknown.json",
+      "publishDate": "2025-11-27",
+      "url": "https://mdtheatreguide.com/2025/11/theatre-review-some-like-it-hot-at-the-national-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -37852,6 +37983,19 @@
       "score": 89,
       "publishDate": "2025-11-21",
       "url": "https://socalthrills.com/theatre-review-suffs-the-musical/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
+      "file": "stage-raw--steven-morris.json",
+      "publishDate": "2025-11-24",
+      "url": "https://stageraw.com/suffs/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -44539,6 +44683,24 @@
     },
     {
       "showId": "the-notebook-tour-2025",
+      "file": "pioneer-press--rob-hubbard.json",
+      "publishDate": "2025-11-19",
+      "url": "https://www.twincities.com/2025/11/19/theater-review-notebook-goes-for-a-gusher-at-the-ordway/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
       "file": "revue--josh.json",
       "score": 85,
       "publishDate": "2026-10-15",
@@ -45259,10 +45421,36 @@
     },
     {
       "showId": "the-outsiders-tour-2025",
+      "file": "houston-chronicle--joey-guerra.json",
+      "publishDate": "2025-11-19",
+      "url": "https://www.houstonchronicle.com/entertainment/theater/article/the-outsiders-musical-jaydon-nget-houston-cambodia-21171464.php",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
       "file": "houston-press--la-garza.json",
       "score": 90,
       "publishDate": "2025-11-20",
       "url": "https://www.houstonpress.com/arts/the-outsiders-stays-gold-in-musical-form/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
+      "file": "intermissionblog--morgan-politzer.json",
+      "publishDate": "2025-12-04",
+      "url": "https://www.intermissionblog.com/reviews/review-nothing-gold-can-stay-so-go-see-the-outsiders-at-dpac-before-its-too-late",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
