@@ -35,6 +35,9 @@ import SeasonStatsCard from '@/components/biz/SeasonStatsCard';
 import SeasonComparisonTable from '@/components/biz/SeasonComparisonTable';
 import SeasonHistoryTable from '@/components/biz/SeasonHistoryTable';
 import MixCard from '@/components/biz/MixCard';
+import TopicCard from '@/components/biz/TopicCard';
+import { formatMillions } from '@/lib/investment-topics';
+import { getMusicalsSinceReopening, getWhatPredictsTheMoney, getFlopsAndRecoups, getTonyWinners } from '@/lib/data-topic-pages';
 import WhoRecoupsCard from '@/components/biz/WhoRecoupsCard';
 import RecentDevelopmentsList, { type DevelopmentItem } from '@/components/biz/RecentDevelopmentsList';
 import ApproachingRecoupmentCard from '@/components/biz/ApproachingRecoupmentCard';
@@ -158,6 +161,11 @@ export default function BizDashboard() {
   // The Season Report's visuals (owner, 2026-10-21); its Key Findings are linked, not repeated.
   const scores = new Map(getAllShows().map((s) => [s.slug, s.compositeScore == null ? null : Math.round(s.compositeScore)]));
   const recoupFindings = getRecoupFindings(scores, today);
+  const musicalsTopic = getMusicalsSinceReopening(today);
+  const reviewsTopic = getWhatPredictsTheMoney(today);
+  const flopsTopic = getFlopsAndRecoups(today);
+  const tonyTopic = getTonyWinners(today);
+  const newMusicals = reviewsTopic.buckets.find((b) => b.id === 'new-musical')!;
   const mixCard = currentSeason ? mixSection(profiles, currentSeason, currentComparison) : null;
 
   // Unreleased (BRO-5007): running shows by break-even band, moved here from /box-office.
@@ -301,6 +309,42 @@ export default function BizDashboard() {
             <MixCard columns={mixCard.columns} overallRows={mixCard.overallRows} withinRows={mixCard.withinRows} />
           </section>
         )}
+
+        <section className="mb-8">
+          <h2 className="text-xl font-bold text-white mb-3">Topics</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4" data-testid="topic-cards">
+            <TopicCard
+              href="/biz/musicals-since-reopening"
+              title="Musicals since the reopening"
+              headline={`${musicalsTopic.originals.recouped} of ${musicalsTopic.originals.total} original musicals opened have recouped`}
+              detail={`Every commercial musical opened since September 2021, ${musicalsTopic.total} in all.`}
+            />
+            <TopicCard
+              href="/biz/reviews-and-money"
+              title="What predicts the money"
+              headline={`${newMusicals.tonyNoms.high.recouped} of ${newMusicals.tonyNoms.high.total} new musicals with 5+ Tony nominations recouped`}
+              detail="Critic scores, audience scores and Tony results against recoupment, for new musicals, revivals and plays."
+            />
+            <TopicCard
+              href="/biz/biggest-flops"
+              title="Biggest flops"
+              headline={`${flopsTopic.flops[0].title}: ${formatMillions(flopsTopic.flops[0].capitalization)} raised, labelled ${flopsTopic.flops[0].designation}`}
+              detail="Loss-labelled shows since the reopening, ranked by the capital they raised."
+            />
+            <TopicCard
+              href="/biz/fastest-recoups"
+              title="Fastest recoupments"
+              headline={`${flopsTopic.recoups[0].title} recouped in about ${flopsTopic.recoups[0].weeksToRecoup} weeks`}
+              detail="Shows ranked by weeks from opening night to recoupment."
+            />
+            <TopicCard
+              href="/biz/tony-winners"
+              title="Tony winners"
+              headline={`${tonyTopic.recouped} of ${tonyTopic.decided} Best Musical and Best Play winners recouped`}
+              detail="What happened to the investors in each winner since 2021-22."
+            />
+          </div>
+        </section>
 
         <section className="mb-8">
           <h2 className="text-xl font-bold text-white mb-3">Who Recoups</h2>

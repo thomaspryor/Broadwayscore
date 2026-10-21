@@ -56,6 +56,7 @@ import {
   hasNoInvestorsToRepay,
 } from './commercial-display';
 import { reportedReturn } from '../../scripts/lib/reported-return';
+import type { TopicShowInput } from './investment-topics';
 import { buildSeasonProfiles, buildRecoupFindings, compareSeason, isOwnEstimate, type SeasonProfile, type SeasonComparison, type RecoupFindings } from './season-profile';
 import { getMarketDate } from './date-utils';
 import { isLossDesignation } from '../../scripts/lib/commercial-designations';
@@ -404,6 +405,34 @@ export function getRecoupFindings(criticScoreBySlug: Map<string, number | null>,
       })),
     asOf,
   );
+}
+
+/**
+ * Broadway shows joined with their commercial.json record, for the topic pages
+ * (investment-topics.ts). Scores come from the caller: canonical Critic Scores
+ * and audience buzz by show id.
+ */
+export function getTopicShowInputs(
+  criticScoreById: Map<string, number | null>,
+  audienceScoreById: Map<string, number | null>,
+): TopicShowInput[] {
+  const shows = commercial.shows;
+  return rawShows
+    .filter((s) => s.category === 'broadway' && !!s.openingDate)
+    .map((s) => ({
+      id: s.id,
+      slug: s.slug,
+      title: s.title,
+      type: s.type,
+      isRevival: s.isRevival,
+      tags: s.tags ?? null,
+      openingDate: s.openingDate,
+      closingDate: s.closingDate ?? null,
+      status: s.status,
+      criticScore: criticScoreById.get(s.id) ?? null,
+      audienceScore: audienceScoreById.get(s.id) ?? null,
+      commercial: shows[s.slug] ?? null,
+    }));
 }
 
 /** Path to Broadway and source material findings (BRO-5842), as of today in New York (build time). */
