@@ -105,3 +105,20 @@ test('fileOpSourceProblem refuses a path that escapes the tree and normalizes ./
   // the normalized path is what was removed
   assert.match(fileOpSourceProblem({ type: 'review-file-op', operation: 'delete', sourcePath: 'a/x.json' }, exists, removed, created), /Source not found/);
 });
+
+// BRO-5866: a run-script arg shape the executor refuses fails here, before the land.
+test('preflight() fails a run-script action whose args the executor would refuse', () => {
+  const { preflight } = require('./preflight-review-fix-plan.js');
+  const tree = fs.mkdtempSync(path.join(os.tmpdir(), 'pf-tree-'));
+  fs.mkdirSync(path.join(tree, 'show-a'));
+  const planPath = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'pf-plan-')), 'p.json');
+  fs.writeFileSync(planPath, JSON.stringify({ issueNumber: 'bro-y', status: 'pending', plan: { actions: [
+    { type: 'run-script', script: 'x.js', args: '--apply' },
+    { type: 'run-script', script: 'x.js', arguments: ['--apply'] },
+    { type: 'run-script', script: 'x.js', args: '--a', arguments: ['--b'] },
+  ] } }));
+  const lines = [];
+  const { failed } = preflight([planPath], { reviewTextsDir: tree, log: (l) => lines.push(l) });
+  assert.equal(failed, 1);
+  assert.ok(lines.some((l) => /FAIL bro-y run-script x\.js: .*both args and arguments/.test(l)));
+});

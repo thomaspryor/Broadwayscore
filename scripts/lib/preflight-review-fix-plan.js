@@ -21,6 +21,7 @@ const { executeReviewFieldEditIn } = require('./review-field-edit');
 const { MAX_PLAN_ACTIONS } = require('./pending-fix-limits');
 const { planStatusAction } = require('./plan-status');
 const { resolveReviewTextsDir } = require('./review-texts-dir');
+const { runScriptArgs } = require('./run-script-args');
 
 const ROOT = path.join(__dirname, '..', '..');
 
@@ -98,6 +99,11 @@ function preflight(planPaths, { reviewTextsDir = pickReviewTextsTree(), log = co
         if (problem) { failed++; log(`  FAIL ${id} ${a.operation} ${a.sourcePath}: ${problem}`); continue; }
         // Advisory (BRO-5739): nulling images while the files stay on disk is undone by pre-deploy-check.
         for (const f of orphanFilesAfterNulling(a)) log(`  WARN ${id}: ${f} is still on disk; pre-deploy-check re-attaches it, so git rm it in the same land`);
+        // The executor refuses an arg shape it cannot run (BRO-5866); say so before the land.
+        if (a.type === 'run-script') {
+          const parsed = runScriptArgs(a);
+          if (!parsed.ok) { failed++; log(`  FAIL ${id} run-script ${a.script}: ${parsed.reason}`); continue; }
+        }
         if (a.type !== 'review-field-edit') { log(`  skip ${a.type} (not replayed)`); continue; }
         const showId = String(a.file || '').split('/')[0];
         if (showId && !copied.has(showId) && fs.existsSync(path.join(reviewTextsDir, showId))) {
