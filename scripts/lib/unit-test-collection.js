@@ -122,6 +122,10 @@ const TESTS_UNIT_QUARANTINE = new Map([
     'BRO-4750 — runs in check-corpus-drift.yml (data-health), not test.yml: asserts every national tour in data/shows.json carries a runtime and synopsis (unless a documented gap). shows.json is rewritten daily and new tours appear, so in the unit batch it would redden main with no code change.',
   ],
   [
+    'tests/unit/tour-runtime-source-agreement.test.mjs',
+    'BRO-4776 acceptance shim: imports tour-runtime-coverage.test.mjs, which runs in check-corpus-drift.yml (data-health). Keep live source reads out of the unit batch. EXEMPT_NEVER_CI in audit-orphan-tests.js.',
+  ],
+  [
     'tests/unit/outlet-registry-live-data.test.mjs',
     'BRO-3425 — runs in check-corpus-drift.yml (data-health), not test.yml: null-domain ceiling + domain collisions over data/outlet-registry.json, which the rebuild auto-registers into and commits to main many times a day. In the unit batch it turned main red on 2026-09-29 (51 > 50) with no code change.',
   ],

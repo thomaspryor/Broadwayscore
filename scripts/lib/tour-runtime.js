@@ -118,4 +118,17 @@ function candidateUrls(tour, schedules) {
   return urls;
 }
 
-module.exports = { extractTourRuntime, parseIntermissions, titleKey, pageIsTour, candidateUrls };
+/** Unsourced runtimes may be inherited; verify them once against the tour page. */
+function shouldEnrichTourRuntime(tour) {
+  return tour.category === 'tour' && !tour.runtimeSource && !tour.humanCorrectedRuntime;
+}
+
+/** Apply only a validated tour-page result; an agreeing runtime still gains provenance. */
+function tourRuntimePatch(tour, found) {
+  if (!shouldEnrichTourRuntime(tour) || !found) return null;
+  const patch = { runtime: found.runtime, runtimeSource: found.url };
+  if (tour.intermissions == null && found.intermissions != null) patch.intermissions = found.intermissions;
+  return patch;
+}
+
+module.exports = { extractTourRuntime, parseIntermissions, titleKey, pageIsTour, candidateUrls, shouldEnrichTourRuntime, tourRuntimePatch };

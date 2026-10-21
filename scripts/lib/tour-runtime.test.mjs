@@ -8,7 +8,8 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { extractTourRuntime, parseIntermissions, titleKey, pageIsTour, candidateUrls } = require('./tour-runtime.js');
+const { extractTourRuntime, parseIntermissions, titleKey, pageIsTour, candidateUrls, shouldEnrichTourRuntime, tourRuntimePatch } = require('./tour-runtime.js');
+const { applyTourInheritance } = require('./tour-family.js');
 
 const DOUBTFIRE = '<ul><li><strong>Runtime</strong>: 2 hours 35 minutes</li><li><strong>Intermissions</strong>: 1</li><li><strong>Age Recommendation</strong>: 8+</li></ul>';
 const WAITRESS = '<ul><li><strong>Runtime:</strong> 2 hours 30 minutes</li><li><strong>Intermissions:</strong> 1</li><li><strong>Age Recommendation:</strong> 12+</li></ul>';
@@ -131,4 +132,52 @@ test('extractTourRuntime: only plain runtime text; loose or misread shapes fail 
 test('parseIntermissions: spelled-out counts', () => {
   assert.equal(parseIntermissions('One'), 1);
   assert.equal(parseIntermissions('two'), 2);
+});
+
+const published = { ...extractTourRuntime(WAITRESS), url: 'https://tourstoyou.org/shows/waitress-1/' };
+
+test('unsourced tour runtimes are verified, including inherited and missing values', () => {
+  for (const runtime of [undefined, '2h 40m', '2h 30m']) {
+    const tour = { category: 'tour', runtime };
+    assert.equal(shouldEnrichTourRuntime(tour), true);
+    assert.deepEqual(tourRuntimePatch(tour, published), {
+      runtime: '2h 30m', runtimeSource: published.url, intermissions: 1,
+    });
+  }
+});
+
+test('sourced, human-corrected and non-tour runtimes are never replaced', () => {
+  for (const tour of [
+    { category: 'tour', runtime: '2h 40m', runtimeSource: 'https://example.org/official/' },
+    { category: 'tour', runtime: '2h 40m', humanCorrectedRuntime: true },
+    { category: 'tour', runtime: '2h 40m', humanCorrectedRuntime: '2h 40m' },
+    { category: 'broadway', runtime: '2h 40m' },
+  ]) {
+    assert.equal(shouldEnrichTourRuntime(tour), false);
+    assert.equal(tourRuntimePatch(tour, published), null);
+  }
+});
+
+test('a missing page result changes nothing; an existing intermission count is preserved', () => {
+  const tour = { category: 'tour', runtime: '2h 40m', intermissions: 0 };
+  assert.equal(tourRuntimePatch(tour, null), null);
+  assert.deepEqual(tourRuntimePatch(tour, published), { runtime: '2h 30m', runtimeSource: published.url });
+});
+
+test('sourcing an agreeing runtime prevents another daily fetch', () => {
+  const tour = { category: 'tour', runtime: published.runtime };
+  Object.assign(tour, tourRuntimePatch(tour, published));
+  assert.equal(shouldEnrichTourRuntime(tour), false);
+  assert.equal(tourRuntimePatch(tour, { ...published, runtime: '3h' }), null);
+});
+
+test('parent inheritance cannot undo a runtime corrected from the tour page', () => {
+  const parent = { id: 'waitress-2016', title: 'Waitress', category: 'broadway', runtime: '2h 40m' };
+  const tour = { id: 'waitress-tour-2027', title: 'Waitress', category: 'tour', tourOf: parent.id };
+  applyTourInheritance([parent, tour]);
+  assert.equal(tour.runtime, parent.runtime);
+  Object.assign(tour, tourRuntimePatch(tour, published));
+  applyTourInheritance([parent, tour]);
+  assert.equal(tour.runtime, published.runtime);
+  assert.equal(tour.runtimeSource, published.url);
 });

@@ -73,6 +73,8 @@ const ROOT = path.resolve(__dirname, '..');
 // that as "decay" would turn a success into a red main. Keep this map tiny and
 // only for tests whose correct home is a scheduled recheck, not the test suite.
 const EXEMPT_NEVER_CI = {
+  // BRO-4776 acceptance shim; imports the live-data suite run by check-corpus-drift.yml.
+  'tests/unit/tour-runtime-source-agreement.test.mjs': 'BRO-4776',
   // BRO-5287 live acceptance: reads the Codex runner's run summaries on Linear (needs LINEAR_API_KEY).
   'scripts/verify-codex-runner-health.test.mjs': 'BRO-5287',
   'scripts/verify-bro-5384-codex-throughput.test.mjs': 'BRO-5384',

@@ -1,5 +1,5 @@
 /**
- * BRO-4750: every national tour carries a runtime and a synopsis.
+ * BRO-4750 / BRO-4776: tour runtime coverage and agreement with its source.
  *
  * LIVE-DATA test (reads data/shows.json and data/tour-schedules.json, the real
  * files, like scripts/verify-provider-spend-streak.test.mjs). It is NOT in the
@@ -8,6 +8,8 @@
  * in check-corpus-drift.yml's "Live-data assertions" step, and is quarantined in
  * scripts/lib/test-yml-manifest-paths.js. Run it by hand:
  *   node --test tests/unit/tour-runtime-coverage.test.mjs
+ * BRO-4776's tour-runtime-source-agreement.test.mjs imports this same suite,
+ * so the acceptance command and the existing live-data workflow both run it.
  *
  * What it pins: a tour page showed no runtime for 11 tours at the Reddit launch.
  * scripts/enrich-tour-runtimes.js now fills a tour's runtime from the tour's own
@@ -21,12 +23,19 @@
  * that differ; this test does not assert a tour's runtime differs from or equals
  * its parent's, only that the tour page has one.
  */
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural coverage (every tour has a runtime and a synopsis); it pins no fact about a specific show, only documented gaps (a closed one is reported for removal)
+// TESTS-VS-DERIVED-DATA-EXEMPT: live coverage and source agreement, not pinned show facts; checks current tour pages against shows.json and reports closed documented gaps
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const { extractTourRuntime, pageIsTour } = require('../../scripts/lib/tour-runtime.js');
+const { parseCompactRuntime } = require('../../scripts/lib/todaytix-runtime.js');
+const { politeFetchText } = require('../../scripts/lib/tours-to-you.js');
+const { createRunBudget } = require('../../scripts/lib/run-budget.js');
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const readJson = (rel) => JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8'));
@@ -98,6 +107,26 @@ test('a runtime written by the pipeline names its tour source and is well formed
   for (const s of fromPipeline) {
     assert.match(s.runtimeSource, TOURS_TO_YOU_PAGE, `${s.id}: runtimeSource must be the tour's Tours To You page`);
     assert.match(String(s.runtime), RUNTIME_FORMAT, `${s.id}: runtime "${s.runtime}" is not like "2h 35m"`);
+  }
+});
+
+test('every sourced tour runtime agrees with its published tour page', { timeout: 300000 }, async (t) => {
+  if (needsData(t)) return;
+  const budget = createRunBudget(4);
+  const pages = new Map();
+  for (const tour of tours.filter((s) => s.runtimeSource)) {
+    await t.test(tour.id, async () => {
+      assert.match(tour.runtimeSource, TOURS_TO_YOU_PAGE);
+      if (!pages.has(tour.runtimeSource)) {
+        pages.set(tour.runtimeSource, politeFetchText(tour.runtimeSource, { budget }));
+      }
+      const html = await pages.get(tour.runtimeSource);
+      assert.ok(pageIsTour(html, tour), `${tour.id}: runtimeSource names a different show`);
+      const published = extractTourRuntime(html);
+      assert.ok(published, `${tour.id}: runtimeSource publishes no unambiguous runtime`);
+      assert.equal(parseCompactRuntime(tour.runtime), published.minutes,
+        `${tour.id}: stored ${tour.runtime}, published ${published.runtime} (${tour.runtimeSource})`);
+    });
   }
 });
 
