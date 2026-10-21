@@ -1160,7 +1160,7 @@ const report = {
       hasDeepResearch,
     },
     openShowCoverage: {
-      totalOpenPreviewsShows: coverageStats.total,
+      totalTrackedStatusShows: coverageStats.total,
       withCommercialData: coverageStats.covered,
       withoutCommercialData: coverageStats.missing,
       coveragePct: coverageStats.total > 0
@@ -1235,7 +1235,7 @@ console.log(`  With deep research: ${hasDeepResearch}/${commercialEntries.length
 console.log('');
 
 console.log('--- Open Show Coverage ---');
-console.log(`  Open/previews shows: ${coverageStats.total}`);
+console.log(`  Open, previews, announced and upcoming shows: ${coverageStats.total}`);
 console.log(`  With commercial data: ${coverageStats.covered} (${report.summary.openShowCoverage.coveragePct}%)`);
 console.log(`  Missing commercial data: ${coverageStats.missing}`);
 console.log('');

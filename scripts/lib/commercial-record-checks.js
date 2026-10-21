@@ -72,6 +72,7 @@ const URL_RE = /\bhttps?:\/\/\S+/gi;
 // research output, so a writer clears the field rather than trimming it to
 // something that reads like a checked source.
 const CITATION_FIELDS = ['capitalizationSource', 'recoupedSource'];
+const { NP_VENUES, venueMatches } = require('./nonprofit-venues');
 const { VALID_DESIGNATION_BASES, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, isLossDesignation, lossDesignationFor } = require('./commercial-designations');
 const { conversionOf, conversionShapeProblems } = require('./commercial-conversion');
 const { COST_BASES, BASIS_CUE_TEXT } = require('./cost-split');
@@ -240,25 +241,8 @@ function commercialRecordErrors(showId, show, ctx = {}) {
   if (show.nonprofitOrg) {
     const showRecord = ctx.showRecord;
     if (showRecord?.venue) {
-      const NP_VENUES = {
-        'Lincoln Center Theater': ['Vivian Beaumont Theater', 'Mitzi E. Newhouse Theater', 'Claire Tow Theater'],
-        'Manhattan Theatre Club': ['Samuel J. Friedman Theatre', 'New York City Center Stage I', 'New York City Center Stage II'],
-        'Roundabout Theatre Company': ['Todd Haimes Theatre', 'American Airlines Theatre', 'Stephen Sondheim Theatre', 'Studio 54', 'Laura Pels Theatre', 'Harold and Miriam Steinberg Center for Theatre'],
-        'Second Stage Theater': ['Helen Hayes Theater', 'Tony Kiser Theater'],
-        // 'The Public Theater' venue field is the building name; specific room names
-        // (Newman/Anspacher/Martinson/LuEsther/Shiva) appear in title metadata but
-        // not as venue strings in shows.json.
-        'The Public Theater': ['The Public Theater', 'Newman Theater', 'Anspacher Theater', 'Martinson Hall', 'LuEsther Hall', 'Shiva Theater'],
-        // Off-Broadway nonprofit venues added 2026-05-24 backfill.
-        'New York Theatre Workshop': ['New York Theatre Workshop'],
-        'Atlantic Theater Company': ['Atlantic Theater Company', 'Linda Gross Theater', 'Atlantic Stage 2'],
-        'MCC Theater': ['MCC Theater', 'Newman Mills Theater', 'The Lucille Lortel Theatre'],
-        'Vineyard Theatre': ['Vineyard Theatre'],
-        'Signature Theatre': ['Signature Theatre', 'Romulus Linney Courtyard Theatre', 'Irene Diamond Stage', 'Alice Griffin Jewel Box Theatre'],
-        'Playwrights Horizons': ['Playwrights Horizons', 'Mainstage Theater', 'Peter Jay Sharp Theater'],
-      };
       const allowed = NP_VENUES[show.nonprofitOrg];
-      if (allowed && !allowed.includes(showRecord.venue)) {
+      if (allowed && !venueMatches(allowed, showRecord.venue)) {
         out.push(`commercial.json: "${showId}" has nonprofitOrg="${show.nonprofitOrg}" but venue is "${showRecord.venue}" (expected one of: ${allowed.join(', ')}). Likely a stale tag — was this a commercial production at a non-nonprofit venue?`);
       }
     }

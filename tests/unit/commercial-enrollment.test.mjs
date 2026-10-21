@@ -4,6 +4,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { findUnenrolled, nonprofitHouseCandidate } = require('../../scripts/lib/commercial-enrollment');
+const { NP_VENUES, venueMatches } = require('../../scripts/lib/nonprofit-venues');
 
 test('announced, upcoming, previews and open Broadway shows without a record are enrolled', () => {
   const shows = ['announced', 'upcoming', 'previews', 'open'].map(status => ({ slug: `s-${status}`, category: 'broadway', status }));
@@ -33,4 +34,15 @@ test('nonprofit house flags a candidate and nothing else', () => {
   assert.equal(nonprofitHouseCandidate({ venue: 'Todd Haimes Theatre' }), 'Roundabout Theatre Company');
   assert.equal(nonprofitHouseCandidate({ venue: 'Booth Theatre' }), null);
   assert.equal(nonprofitHouseCandidate(null), null);
+});
+
+test('an id-keyed legacy record counts as enrolled', () => {
+  assert.equal(findUnenrolled([{ id: 'x-2026', slug: 'x', status: 'upcoming' }], { 'x-2026': {} }).length, 0);
+});
+
+test('venue spellings in shows.json resolve to their nonprofit, and the record check accepts that pairing', () => {
+  assert.equal(nonprofitHouseCandidate({ venue: 'Hayes Theater' }), 'Second Stage Theater');
+  assert.equal(nonprofitHouseCandidate({ venue: 'Vivian Beaumont Theater - Lincoln Center Theater' }), 'Lincoln Center Theater');
+  assert.equal(venueMatches(NP_VENUES['Second Stage Theater'], 'Hayes Theater'), true);
+  assert.equal(venueMatches(NP_VENUES['Second Stage Theater'], 'Booth Theatre'), false);
 });
