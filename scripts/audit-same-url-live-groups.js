@@ -15,7 +15,7 @@
 'use strict';
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { findSameUrlLiveGroups, findShowSameUrlLiveGroups, bylineMentions } = require('./lib/same-url-live-groups');
+const { findSameUrlLiveGroups, findShowSameUrlLiveGroups, bylineMentions, SAME_URL_ALLOWLIST } = require('./lib/same-url-live-groups');
 
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -50,7 +50,9 @@ async function main() {
   const limitArg = argv.find((a) => a.startsWith('--limit='));
   let result;
   if (showArg) {
-    result = { groups: findShowSameUrlLiveGroups(path.join(REVIEW_TEXTS_DIR, showArg.slice(7))), allowlisted: [] };
+    const all = findShowSameUrlLiveGroups(path.join(REVIEW_TEXTS_DIR, showArg.slice(7)));
+    const allowed = (g) => Boolean(SAME_URL_ALLOWLIST[`${g.showId}|${g.key}`]);
+    result = { groups: all.filter((g) => !allowed(g)), allowlisted: all.filter(allowed) };
   } else {
     result = findSameUrlLiveGroups(REVIEW_TEXTS_DIR);
   }

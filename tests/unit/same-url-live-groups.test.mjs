@@ -6,7 +6,7 @@
 // sameUrlKey, which keeps ?utm_* params, so McHenry's file (stored with
 // ?utm_medium=s1&utm_source=tw...) did not count as "this url's owner".
 
-import { test } from 'node:test';
+import { test, after } from 'node:test';
 import assert from 'node:assert';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -17,7 +17,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const { sameArticleUrl, findSiblingUrlOwner } = require(path.join(REPO, 'scripts/lib/review-url-collision.js'));
-const { urlOwnedByOtherCritic } = require(path.join(REPO, 'scripts/lib/review-slot-guards.js'));
+const { urlOwnedByOtherCritic, urlHeldBySibling } = require(path.join(REPO, 'scripts/lib/review-slot-guards.js'));
 const { updateFileUrlWithInvariant } = require(path.join(REPO, 'scripts/lib/url-change-invariant.js'));
 const { isLiveForSameUrl, findShowSameUrlLiveGroups, findSameUrlLiveGroups, bylineMentions } =
   require(path.join(REPO, 'scripts/lib/same-url-live-groups.js'));
@@ -25,8 +25,12 @@ const { isLiveForSameUrl, findShowSameUrlLiveGroups, findSameUrlLiveGroups, byli
 const BARE = 'https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-broadway-neil-diamond-musical.html';
 const TRACKED = `${BARE}?utm_medium=s1&utm_source=tw&utm_campaign=vulture`;
 
+const roots = [];
+after(() => { for (const r of roots) fs.rmSync(r, { recursive: true, force: true }); });
+
 function showDir(files, name = 'a-beautiful-noise-the-neil-diamond-musical-2022') {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5858-'));
+  roots.push(root);
   const dir = path.join(root, name);
   fs.mkdirSync(dir);
   for (const [f, data] of Object.entries(files)) fs.writeFileSync(path.join(dir, f), JSON.stringify(data, null, 2));
@@ -58,6 +62,19 @@ test('updateFileUrlWithInvariant refuses to move one critic onto another critic\
   assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).url, holdren.url);
 });
 
+test('urlHeldBySibling (raw SERP writers) refuses a held url even when a byline is Unknown', () => {
+  const unknown = { ...holdren, criticName: 'Unknown' };
+  const dir = showDir({ 'vulture--jackson-mchenry.json': mchenry, 'vulture--unknown.json': unknown });
+  // the critic-identity guard lets an Unknown self through; the raw-write guard must not
+  assert.equal(urlOwnedByOtherCritic({ showDir: dir, url: BARE, selfFilename: 'vulture--unknown.json', selfCriticName: 'Unknown' }), null);
+  assert.deepEqual(urlHeldBySibling({ showDir: dir, url: BARE, selfFilename: 'vulture--unknown.json' }),
+    { filename: 'vulture--jackson-mchenry.json', criticName: 'Jackson McHenry' });
+  // its own url is not "held by a sibling"; a duplicateOf sibling holds nothing
+  assert.equal(urlHeldBySibling({ showDir: dir, url: BARE, selfFilename: 'vulture--jackson-mchenry.json' }), null);
+  fs.writeFileSync(path.join(dir, 'vulture--jackson-mchenry.json'), JSON.stringify({ ...mchenry, duplicateOf: 'x.json' }));
+  assert.equal(urlHeldBySibling({ showDir: dir, url: BARE, selfFilename: 'vulture--unknown.json' }), null);
+});
+
 test('findSiblingUrlOwner matches a tracked variant of the candidate url', () => {
   const dir = showDir({ 'vulture--jackson-mchenry.json': mchenry });
   const owner = findSiblingUrlOwner({ showDir: dir, url: BARE, selfFilename: 'vulture--sara-holdren.json' });
@@ -72,6 +89,7 @@ test('isLiveForSameUrl follows the card definition', () => {
   assert.equal(isLiveForSameUrl({ contentTier: 'complete', wrongProduction: true }), false);
   assert.equal(isLiveForSameUrl({ contentTier: 'complete', rejectedAt: '2026-01-01' }), false);
   assert.equal(isLiveForSameUrl({ contentTier: 'complete', isRoundupArticle: true }), false);
+  assert.equal(isLiveForSameUrl({ contentTier: 'complete', wrongAttribution: true }), false);
 });
 
 test('findShowSameUrlLiveGroups groups by article key and drops duplicateOf losers', () => {

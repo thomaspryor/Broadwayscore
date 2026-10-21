@@ -140,6 +140,38 @@ function urlOwnedByOtherCritic({ showDir, url, selfFilename, selfCriticName, fs:
 }
 
 /**
+ * BRO-5858: the sibling file that already holds `url` (same article), for raw
+ * url writers that bypass the slot guards (the wrongUrl SERP retries). Stricter
+ * than urlOwnedByOtherCritic: an Unknown byline on either side still counts,
+ * because a raw write onto a held url always leaves two live files on one url.
+ * Siblings already marked duplicateOf / wrongAttribution cannot hold it.
+ * @param {object} args
+ * @param {string} args.showDir      data/review-texts/<showId>
+ * @param {string} args.url          candidate url for this file
+ * @param {string} args.selfFilename this file's basename
+ * @param {object} [args.fs]         injected fs for tests
+ * @returns {{filename: string, criticName: string|null}|null}
+ */
+function urlHeldBySibling({ showDir, url, selfFilename, fs: fsImpl } = {}) {
+  if (!showDir || !url) return null;
+  const fs = fsImpl || require('fs');
+  const path = require('path');
+  let files;
+  try { files = fs.readdirSync(showDir).filter((f) => isReviewTextFile(f)); }
+  catch { return null; }
+  for (const file of files) {
+    if (file === selfFilename) continue;
+    let data;
+    try { data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8')); }
+    catch { continue; }
+    if (!data || !data.url || !_sameUrl(data.url, url)) continue;
+    if (data.duplicateOf || data.wrongAttribution === true) continue;
+    return { filename: file, criticName: data.criticName || null };
+  }
+  return null;
+}
+
+/**
  * The file in ANOTHER show's folder that already holds `url`, when the url
  * itself names that show (cross-show-url detector): {showId, filename} or
  * null. Proves the url belongs to that show's review, not this file's
@@ -323,6 +355,7 @@ module.exports = {
   isStaleNonReviewSlot,
   flaggedSlotSupersededBy,
   urlOwnedByOtherCritic,
+  urlHeldBySibling,
   urlOwnedByOtherShow,
   isDatelessRevivalHold,
   shouldRetryDatelessHoldFetch,

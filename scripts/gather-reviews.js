@@ -5270,10 +5270,10 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           const _serpRegression = result && result !== '__SERP_UNAVAILABLE__'
             ? require('./lib/url-downgrade-guard').isUrlSwapRegression({ newUrl: result, show, outletId })
             : { regression: false };
-          // BRO-5858: same raw-write gap for sibling ownership. A SERP hit
-          // another critic's file already holds is that critic's review.
+          // BRO-5858: same raw-write gap for sibling ownership. A SERP hit a
+          // sibling file already holds is that file's review, never this slot's.
           const _serpOwner = result && result !== '__SERP_UNAVAILABLE__' && !_serpRegression.regression
-            ? require('./lib/review-slot-guards').urlOwnedByOtherCritic({ showDir, url: result, selfFilename: file, selfCriticName: data.criticName })
+            ? require('./lib/review-slot-guards').urlHeldBySibling({ showDir, url: result, selfFilename: file })
             : null;
           if (_serpRegression.regression) {
             console.log(`✗ refused ${result}: ${_serpRegression.reason}`);

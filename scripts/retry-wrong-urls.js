@@ -23,7 +23,7 @@ const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
 const { normalizeOutlet } = require('./lib/review-normalization');
 const { isUrlSwapRegression } = require('./lib/url-downgrade-guard');
-const { urlOwnedByOtherCritic } = require('./lib/review-slot-guards');
+const { urlHeldBySibling } = require('./lib/review-slot-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
@@ -161,10 +161,10 @@ async function main() {
     const serpRegression = result && result !== '__SERP_UNAVAILABLE__'
       ? isUrlSwapRegression({ newUrl: result, show: showMeta, outletId: c.outletId })
       : { regression: false };
-    // BRO-5858: a SERP hit another critic's file already holds is that
-    // critic's review, never this slot's (raw write, outside the slot guards).
+    // BRO-5858: a SERP hit a sibling file already holds is that file's
+    // review, never this slot's (raw write, outside the slot guards).
     const serpOwner = result && result !== '__SERP_UNAVAILABLE__' && !serpRegression.regression
-      ? urlOwnedByOtherCritic({ showDir: path.join(REVIEW_TEXTS_DIR, c.showId), url: result, selfFilename: c.file, selfCriticName: c.data.criticName })
+      ? urlHeldBySibling({ showDir: path.join(REVIEW_TEXTS_DIR, c.showId), url: result, selfFilename: c.file })
       : null;
     if (serpRegression.regression) {
       console.log(`✗ refused: ${serpRegression.reason}`);

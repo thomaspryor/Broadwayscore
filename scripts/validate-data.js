@@ -5088,12 +5088,6 @@ function validateActorImages() {
   }
 }
 
-/**
- * BRO-4954 invariant: on a returning production, each outlet counts once and its
- * review of THIS run wins. The rebuild enforces it (supersededPriorRunReviews); this
- * re-checks the built reviews.json so a later pass that re-adds an earlier-run row
- * (or a rebuild that skipped the pass) is seen. Advisory (warn) while it beds in.
- */
 // BRO-5858 (advisory, CLAUDE.md s19): 2+ live files in one show holding the
 // same article url. One url is one critic's review, so one file is surplus and,
 // when the bylines differ, names the wrong critic. One summary warning, not one
@@ -5105,9 +5099,15 @@ function validateSameUrlLiveGroups() {
   const { groups, allowlisted } = findSameUrlLiveGroups(REVIEW_TEXTS_ROOT);
   if (groups.length === 0) { ok(`Same-url live groups: none (${allowlisted.length} allowlisted)`); return; }
   const sample = groups.slice(0, 5).map((g) => `${g.showId}: ${g.members.map((m) => m.file).join(' + ')}`).join('; ');
-  warn(`${groups.length} same-url live group(s) outside the allowlist (BRO-5858), e.g. ${sample}. Run node scripts/audit-same-url-live-groups.js; mark the wrong-critic file duplicateOf the right one.`);
+  warn(`${groups.length} same-url live group(s) outside the allowlist (BRO-5858), e.g. ${sample}. Run node scripts/audit-same-url-live-groups.js; check the page byline (--probe-bylines) before marking the wrong-critic file duplicateOf the right one, or allowlist a real co-review.`);
 }
 
+/**
+ * BRO-4954 invariant: on a returning production, each outlet counts once and its
+ * review of THIS run wins. The rebuild enforces it (supersededPriorRunReviews); this
+ * re-checks the built reviews.json so a later pass that re-adds an earlier-run row
+ * (or a rebuild that skipped the pass) is seen. Advisory (warn) while it beds in.
+ */
 function validatePriorRunOnePerOutlet() {
   info('Checking returning shows count each outlet once (newest review wins)...');
   const reviewsFile = path.join(DATA_DIR, 'reviews.json');

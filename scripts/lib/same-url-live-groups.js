@@ -9,6 +9,8 @@
  * wrongShow / isRoundupArticle / duplicateOf, and contentTier complete,
  * truncated or excerpt. duplicateTextOf does NOT make a file dead: it is a
  * text-storage note, and the rebuild picks between such files by sort order.
+ * wrongAttribution is dead too: the rebuild hard-skips it (rebuild-all-reviews
+ * skippedWrongAttribution), so such a file never reaches a scored row.
  *
  * Urls compare by review-normalization's canonicalArticleKey, the same
  * same-article key the write guard's collision setter uses (tracking params,
@@ -33,7 +35,7 @@ const SAME_URL_ALLOWLIST = Object.freeze({});
 function isLiveForSameUrl(d) {
   if (!d || typeof d !== 'object') return false;
   if (d.rejectedAt || d.wrongProduction === true || d.wrongShow === true
-    || d.isRoundupArticle === true || d.duplicateOf) return false;
+    || d.isRoundupArticle === true || d.duplicateOf || d.wrongAttribution === true) return false;
   return LIVE_TIERS.has(d.contentTier);
 }
 
