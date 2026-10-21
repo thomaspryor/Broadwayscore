@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T09:51:53.567Z",
+  "generatedAt": "2026-10-21T15:59:57.040Z",
   "phase": "done",
   "days": 21,
   "shows": 81,
@@ -30,18 +30,27 @@
       "errors": 0
     },
     "theatre-reviews": {
-      "queries": 8,
-      "listed": 31,
+      "queries": 39,
+      "listed": 62,
       "errors": 0
     }
   },
-  "listingTruncated": true,
-  "listed": 80,
+  "listingTruncated": false,
+  "listed": 111,
   "ingested": [
     {
-      "showId": "ilford-boy-west-end-2026",
-      "url": "https://www.whatsonstage.com/news/ilford-boy-at-donmar-warehouse-review_1735535/",
-      "ok": true
+      "showId": "martin-guerre-west-end-2026",
+      "source": "theatre-reviews",
+      "ok": true,
+      "created": 2,
+      "updated": 0
+    },
+    {
+      "showId": "triumph-off-west-end-2026",
+      "source": "theatre-reviews",
+      "ok": true,
+      "created": 1,
+      "updated": 0
     }
   ],
   "missing": []

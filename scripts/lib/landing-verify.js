@@ -56,7 +56,7 @@
  * Callers and what UNKNOWN means to each (verified 2026-09-14 — none of them
  * force-pushes, re-pushes or "recovers" on it):
  *   scripts/hooks/pre-push:82           exit!=1 -> non_ff=0, push proceeds
- *   scripts/check-prod-deploy.js:97     warns, treats as not-yet-live
+ *   scripts/check-prod-deploy.js:160    warns, exits 2 ("could not tell")
  *   scripts/lib/review-gate.mjs:449     caches shallow, ancestry "can't confirm"
  *   scripts/merge-worktree-to-main.sh   rc=2 -> retry, then die loudly
  *   scripts/gc-merged-worktrees.sh:457  rc=2 -> falls through to `git cherry`

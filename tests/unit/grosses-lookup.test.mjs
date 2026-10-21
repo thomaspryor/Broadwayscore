@@ -28,6 +28,23 @@ test('exact keys resolve; another production of the title never does', () => {
   assert.deepEqual(L.getGrossesAllTime('cabaret-2024'), { gross: 5 });
 });
 
+test('a production with weekly rows but no all-time row gets the sum of its own weeks', () => {
+  const h = { weeks: {
+    '2022-01-02': { 'the-music-man-2022': { gross: 3000000, performances: 8, attendance: 11000 } },
+    '2022-01-09': { 'the-music-man-2022': { gross: 3100000, performances: 7, attendance: 10500 }, 'cabaret-2024': { gross: 2 } },
+  } };
+  const L = makeGrossesLookup(grosses, h);
+  assert.deepEqual(L.getGrossesAllTime('the-music-man-2022', 'the-music-man-2022'),
+    { gross: 6100000, performances: 15, attendance: 21500, fromWeekly: true });
+  // An all-time row still wins over the weeks.
+  assert.deepEqual(L.getGrossesAllTime('cabaret-2024'), { gross: 5 });
+  // No rows of its own: still nothing.
+  assert.equal(L.getGrossesAllTime('ragtime-2009', 'ragtime-2009'), null);
+  // Weeks that all gross zero sum to nothing.
+  const z = makeGrossesLookup({ shows: {} }, { weeks: { '2022-01-02': { 'dark-show': { gross: 0 } } } });
+  assert.equal(z.getGrossesAllTime('dark-show'), null);
+});
+
 test('the recoupment scripts use the shared lookup, not their own fuzzy copy', () => {
   for (const f of ['calculate-recoupment.js', 'merge-model-recoupment.js']) {
     const src = fs.readFileSync(new URL(`../../scripts/${f}`, import.meta.url), 'utf8');

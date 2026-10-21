@@ -53,7 +53,7 @@ function StackedBar({ m }: { m: MixBreakdown }) {
           <div
             key={s.key}
             title={s.label}
-            className={`${s.className} ${s.textClassName} flex items-center justify-center overflow-hidden whitespace-nowrap text-[11px] sm:text-xs font-semibold border-r-2 border-surface-raised last:border-r-0 px-1 first:pl-3 last:pr-3`}
+            className={`${s.className} ${s.textClassName} flex items-center justify-center overflow-hidden whitespace-nowrap text-[10px] tracking-tight sm:tracking-normal sm:text-xs font-semibold border-r-2 border-surface-raised last:border-r-0 px-0 sm:px-1 first:pl-1.5 sm:first:pl-3 last:pr-1.5 sm:last:pr-3`}
             style={{ width: `${pct}%` }}
           >
             {pct >= SHORT_LABEL_MIN_PCT && (

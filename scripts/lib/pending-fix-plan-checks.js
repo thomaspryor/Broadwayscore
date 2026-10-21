@@ -23,6 +23,18 @@ function planShapeProblems(name, plan) {
   if (actions.length > MAX_PLAN_ACTIONS) {
     problems.push(`${name}: ${actions.length} actions (max ${MAX_PLAN_ACTIONS}); split it into ${path.basename(name, '.json')}-b.json`);
   }
+  // An applied openingDate edit stamps openingDateSource 'human-correction'
+  // (execute-approved-fix -> stampHumanCorrectedOpeningDate), so a later
+  // openingDateSource edit on that show must expect it or its
+  // compare-and-set fails and the plan ends 'partial' (BRO-5843).
+  const datedShows = new Set();
+  for (const a of actions) {
+    if (!a || a.type !== 'data-edit' || a.file !== 'shows.json') continue;
+    if (a.field === 'openingDate' && a.newValue) datedShows.add(a.showId);
+    else if (a.field === 'openingDateSource' && datedShows.has(a.showId) && a.oldValue !== 'human-correction') {
+      problems.push(`${name}: ${a.showId}.openingDateSource expects ${JSON.stringify(a.oldValue)} but the earlier openingDate edit sets it to "human-correction"`);
+    }
+  }
   return problems;
 }
 

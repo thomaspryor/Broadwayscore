@@ -134,6 +134,9 @@ test('a season key samples that season only, even outside WE_SEASONS', () => {
   assert.deepEqual(fc.parseCohortKey('we-historical-2024-2025'), { base: 'we-historical', season: '2024-2025' });
   assert.deepEqual(fc.drawSample(shows, 'we-historical-2024-2025', 10, 1).ids.map((r) => r.id), ['a']);
   assert.throws(() => fc.parseCohortKey('nope'));
+  // Season keys resolve to their base cohort's market (the synopsis prompt crashed on them, BRO-5843).
+  assert.equal(fc.cohortMarket('we-historical-2024-2025'), fc.COHORTS['we-historical'].market);
+  assert.equal(fc.cohortMarket('we-historical'), fc.COHORTS['we-historical'].market);
 });
 
 test('the season audit carries the sourced sample as an advisory check', () => {

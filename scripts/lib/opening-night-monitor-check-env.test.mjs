@@ -93,8 +93,9 @@ test('preflightScraperEnv: keys absent -> one error/human alert shaped like hand
 // Shared harness for driving the real main() with fs writes / auth mocked.
 function mockTick(t, { env, authResult }) {
   const saved = {};
-  for (const k of [...monitor.SCRAPER_CREDENTIAL_KEYS, 'ON_MONITOR_DISABLED']) { saved[k] = process.env[k]; delete process.env[k]; }
-  Object.assign(process.env, env);
+  for (const k of [...monitor.SCRAPER_CREDENTIAL_KEYS, 'ON_MONITOR_DISABLED', 'ON_MONITOR_AUTH_CONFIRM_DELAY_MS']) { saved[k] = process.env[k]; delete process.env[k]; }
+  // No real 30s wait between the confirm re-probes in tests.
+  Object.assign(process.env, { ON_MONITOR_AUTH_CONFIRM_DELAY_MS: '0' }, env);
   t.after(() => {
     for (const k of Object.keys(saved)) { if (saved[k] === undefined) delete process.env[k]; else process.env[k] = saved[k]; }
   });
@@ -146,7 +147,7 @@ test('keyed launcher tick: preflight passes and the auth ping runs', async (t) =
   });
   const code = await launcher.main(['--show', 'test-show-2026']);
   assert.equal(code, 1);
-  assert.equal(authPing.mock.callCount(), 1);
+  assert.equal(authPing.mock.callCount(), 2, 'a failed ping is re-probed once (probeWithConfirm) before paging');
   assert.equal(alerts.filter(a => /scraper-env-missing/.test(a.conditionKey)).length, 0);
   assert.equal(alerts.filter(a => /^on-monitor-auth-failed-/.test(a.conditionKey)).length, 1);
 });

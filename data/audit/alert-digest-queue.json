@@ -407,5 +407,93 @@
       }
     ],
     "queuedAt": "2026-10-21T15:33:53.352Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5836-land-prod-wait",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5836-land-prod-wait",
+    "description": "land.yml did not land land/bro-5836-land-prod-wait: the unit-tests-node gate went red at 7431110c88. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39629071820",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5836-land-prod-wait"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "7431110c8833f9a621527ae7022a97b644e99f65"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39629071820"
+      }
+    ],
+    "queuedAt": "2026-10-21T16:07:12.124Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Test Suite",
+    "title": "Cron's latest run failed (not yet stale): Test Suite",
+    "description": "Test Suite: Latest run failed (last success 19h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39634393888",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39634393888)"
+      }
+    ],
+    "queuedAt": "2026-10-21T16:25:30.278Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Fetch All Image Formats",
+    "title": "Cron's latest run failed (not yet stale): Fetch All Image Formats",
+    "description": "Fetch All Image Formats: Latest run failed (last success 44h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39634393888",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39634393888)"
+      }
+    ],
+    "queuedAt": "2026-10-21T16:25:30.294Z"
+  },
+  {
+    "conditionKey": "cron-health:Weekly A/B Monitors",
+    "title": "🚨 Critical cron stale, self-heal failed: Weekly A/B Monitors",
+    "description": "Self-heal redispatch did not bring this cron back to healthy. See the run log for the mapped workflow file and last-success timestamp.",
+    "severity": "critical",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39634393888",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39634393888)"
+      }
+    ],
+    "queuedAt": "2026-10-21T16:25:30.420Z"
   }
 ]

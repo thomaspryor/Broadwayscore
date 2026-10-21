@@ -34,8 +34,23 @@ function makeGrossesLookup(grosses, grossesHistory) {
     return Object.keys(weekly).length ? weekly : null;
   }
 
+  // A production with weekly rows but no all-time row (The Music Man 2022,
+  // Take Me Out 2022: grosses.json never got one) gets the sum of its own
+  // weeks, so the model's tier gate does not skip a show it can run (BRO-5647).
+  function sumOfWeeks(slug, showId) {
+    const weekly = getWeeklyData(slug, showId);
+    if (!weekly) return null;
+    const total = { gross: 0, performances: 0, attendance: 0, fromWeekly: true };
+    for (const row of Object.values(weekly)) {
+      total.gross += row.gross || 0;
+      total.performances += row.performances || 0;
+      total.attendance += row.attendance || 0;
+    }
+    return total.gross > 0 ? total : null;
+  }
+
   function getGrossesAllTime(slug, showId) {
-    return grosses?.shows?.[slug]?.allTime || (showId && grosses?.shows?.[showId]?.allTime) || null;
+    return grosses?.shows?.[slug]?.allTime || (showId && grosses?.shows?.[showId]?.allTime) || sumOfWeeks(slug, showId);
   }
 
   return { resolveWeeklySlug, getWeeklyData, getGrossesAllTime };

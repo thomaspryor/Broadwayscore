@@ -148,12 +148,17 @@ function seasonPhrase(season) {
   return m ? `the ${m[1]}-${m[2].slice(2)} theatre season (roughly mid-${m[1]} to mid-${m[2]})` : 'an unknown season';
 }
 
+/** Market label for a cohort key, season-scoped keys included. */
+function cohortMarket(key) {
+  return COHORTS[parseCohortKey(key).base].market;
+}
+
 /**
  * The question both checkers get. Identity only: title, market, season. No
  * stored venue, date, credit or type, so the answer is the checker's own.
  */
 function buildFactPrompt(show, cohortName) {
-  const market = COHORTS[parseCohortKey(cohortName).base].market;
+  const market = cohortMarket(cohortName);
   return `Use web search. I need facts about one specific theatre production: "${show.title}" in the ${market} market, the production that played during ${seasonPhrase(show.season)}. If this title had several productions, answer only about the one in that market and season.
 
 Return JSON only, no prose, in this exact shape. Every non-null value needs the URL of a web page that states it (a page you actually found, not a guess). Never use broadwayscorecard.com as a source: it is the site being checked. Use null when you cannot find a page that states the fact.
@@ -459,7 +464,7 @@ function seasonSummary(verdicts, seasonIds) {
 
 module.exports = {
   COHORTS, WE_SEASONS, FACT_FIELDS, FIELD_KIND,
-  prng, seededShuffle, stratifiedSample, drawSample, parseCohortKey, cohortRows, seasonSummary,
+  prng, seededShuffle, stratifiedSample, drawSample, parseCohortKey, cohortMarket, cohortRows, seasonSummary,
   seasonPhrase, buildFactPrompt, parseJsonReply,
   normalizePerson, samePerson, dateSpellings, pageSupports, sameVenue,
   storedCredits, storedValue, isSelfSource, normalizeAnswer, compareField, triageField, wilson, errorTable,

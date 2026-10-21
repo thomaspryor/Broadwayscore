@@ -329,16 +329,25 @@ async function alert(opts) {
 // failed" with working auth. Delegate to the shared probe; never re-fork it.
 const cliAuth = require('./lib/claude-cli.js');
 const resolvePassAuth = cliAuth.resolvePassAuth;
+const { probeWithConfirm } = require('./lib/claude-auth-health.js');
 
 function preflightAuth() {
   // Operator kill switch for the pay-per-token path specifically (the
   // launcher-wide switches ON_MONITOR_DISABLED / KILL_FILE stop everything;
   // this one says "OAuth or nothing").
   const allowApiKeyFallback = process.env.ON_MONITOR_NO_API_FALLBACK !== '1';
-  return cliAuth.preflightAuth({
-    allowApiKeyFallback,
-    log: msg => log(`${msg} (spend hard-capped by NIGHTLY_USD_CAP $${NIGHTLY_USD_CAP}/night, disable with ON_MONITOR_NO_API_FALLBACK=1)`),
-  });
+  // Confirm a failure with one delayed re-probe before it can page "auth
+  // preflight failed" (2026-10-21: a single transient blip paged the owner
+  // from the sibling health check; same probe, same class).
+  return probeWithConfirm({
+    probe: () => cliAuth.preflightAuth({
+      allowApiKeyFallback,
+      log: msg => log(`${msg} (spend hard-capped by NIGHTLY_USD_CAP $${NIGHTLY_USD_CAP}/night, disable with ON_MONITOR_NO_API_FALLBACK=1)`),
+    }),
+    sleep: ms => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms),
+    delayMs: Number(process.env.ON_MONITOR_AUTH_CONFIRM_DELAY_MS ?? 30000),
+    log,
+  }).preflight;
 }
 
 /**

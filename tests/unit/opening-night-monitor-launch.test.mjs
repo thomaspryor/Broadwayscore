@@ -232,6 +232,8 @@ test('pass env forwards the API key only under auth.mode api-key', () => {
   // here is exactly how the hooks-off fix never reached this launcher.
   assert.match(src, /cliAuth\.preflightAuth\(/, 'preflight must delegate to the shared claude-cli.js probe');
   assert.doesNotMatch(src, /Reply with exactly: pong/, 'no forked auth ping in the launcher');
+  // 2026-10-21: one transient failed probe must not page; confirm-retry wraps it.
+  assert.match(src, /probeWithConfirm\(\{\s*probe: \(\) => cliAuth\.preflightAuth\(/, 'preflight must be wrapped in probeWithConfirm');
 });
 
 // BRO-4141: a ping that times out because the Mac is overloaded is not a

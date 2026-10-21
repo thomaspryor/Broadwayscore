@@ -49,6 +49,14 @@ test('planShapeProblems: the action cap, planId and actions shape (fixtures)', (
     `bro-1.json: ${MAX_PLAN_ACTIONS + 1} actions (max ${MAX_PLAN_ACTIONS}); split it into bro-1-b.json`,
   ]);
   assert.deepEqual(planShapeProblems('bro-1.json', plan(many(1), { planId: undefined })), ['bro-1.json: missing planId']);
+});
+
+// BRO-5843: the executor stamps openingDateSource 'human-correction' when it applies an openingDate edit.
+test('an openingDateSource edit after an openingDate edit must expect human-correction', () => {
+  const se = (field, oldValue, newValue) => ({ type: 'data-edit', file: 'shows.json', showId: 'x', field, oldValue, newValue });
+  assert.deepEqual(planShapeProblems('bro-1.json', plan([se('openingDate', null, '2024-01-02'), se('openingDateSource', 'human-correction', 'sourced')])), []);
+  assert.equal(planShapeProblems('bro-1.json', plan([se('openingDate', null, '2024-01-02'), se('openingDateSource', null, 'sourced')])).length, 1);
+  assert.deepEqual(planShapeProblems('bro-1.json', plan([se('openingDateSource', null, 'sourced')])), []);
   assert.deepEqual(planShapeProblems('bro-1.json', { planId: 'p-1', status: 'pending', plan: {} }), ['bro-1.json: plan.actions is not an array']);
   // Only a pending plan is judged: an applied one stays in the directory as history.
   assert.deepEqual(planShapeProblems('bro-1.json', plan(many(MAX_PLAN_ACTIONS + 1), { status: 'applied' })), []);

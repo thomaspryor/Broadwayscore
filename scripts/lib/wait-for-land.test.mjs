@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { landVerdict, parseArgs } = require('./wait-for-land.js');
+const { landVerdict, prodPlan, prodVerdict, parseArgs, sitePathsIn } = require('./wait-for-land.js');
 
 const TIP = '057156419a666b690b937354092729af67ceb092';
 const NOW = Date.parse('2026-10-05T05:00:00Z');
@@ -62,11 +62,53 @@ test('queued, in-progress, missing and green-but-ref-still-there all keep waitin
 });
 
 test('parseArgs takes a land/ ref and a positive whole-minute timeout', () => {
-  assert.deepEqual(parseArgs(['land/bro-4619-welcome-onboarding']), { ref: 'land/bro-4619-welcome-onboarding', timeoutMin: 60 });
-  assert.deepEqual(parseArgs(['land/job/linear-BRO-2067-muuqf9tn', '30']), { ref: 'land/job/linear-BRO-2067-muuqf9tn', timeoutMin: 30 });
+  assert.deepEqual(parseArgs(['land/bro-4619-welcome-onboarding']), { ref: 'land/bro-4619-welcome-onboarding', timeoutMin: 60, prodMin: null });
+  assert.deepEqual(parseArgs(['land/job/linear-BRO-2067-muuqf9tn', '30']), { ref: 'land/job/linear-BRO-2067-muuqf9tn', timeoutMin: 30, prodMin: null });
   assert.equal(parseArgs([]), null);
   assert.equal(parseArgs(['bro-4619-welcome-onboarding']), null, 'bare branch name, the same mistake that broke a land.yml dispatch');
   assert.equal(parseArgs(['land/x', '0']), null);
   assert.equal(parseArgs(['land/x', '08']), null);
   assert.equal(parseArgs(['land/x;rm -rf /']), null);
+});
+
+// BRO-5836: --prod keeps waiting past LANDED until the change is live, so a
+// session does not stop at LANDED and idle NOT SAFE TO EXIT for days.
+test('parseArgs takes --prod anywhere, with an optional whole-minute budget', () => {
+  assert.deepEqual(parseArgs(['land/x', '60', '--prod']), { ref: 'land/x', timeoutMin: 60, prodMin: 40 });
+  assert.deepEqual(parseArgs(['--prod=25', 'land/x']), { ref: 'land/x', timeoutMin: 60, prodMin: 25 });
+  assert.equal(parseArgs(['land/x', '--prod=0']), null);
+  assert.equal(parseArgs(['land/x', '--prod=abc']), null);
+  assert.equal(parseArgs(['land/x', '60', '30']), null, 'a stray positional is a typo, not ignored');
+});
+
+test('prodPlan skips the wait only when the branch provably changes no deploy-gate path', () => {
+  const main = 'b'.repeat(40);
+  const none = prodPlan({ mainSha: main, siteFiles: [] });
+  assert.equal(none.watch, false);
+  assert.equal(none.nothingToDeploy, true, 'a hooks/docs-only landing never deploys before the 6h backstop');
+  assert.equal(prodPlan({ mainSha: main, siteFiles: ['src/app/page.tsx'] }).watch, true);
+  assert.equal(prodPlan({ mainSha: main, siteFiles: null }).watch, true, 'ref never seen (landed before the wait) or diff failed: wait');
+  const noMain = prodPlan({ mainSha: null, siteFiles: [] });
+  assert.equal(noMain.watch, false);
+  assert.notEqual(noMain.nothingToDeploy, true, 'no main tip is unchecked, never "nothing to deploy"');
+});
+
+test('prodVerdict: live, not yet, and can-not-tell are three different things', () => {
+  const at = { nowMs: 0, deadlineMs: 1000 };
+  assert.equal(prodVerdict({ checkExit: 0, errors: 0, ...at }).verdict, 'live');
+  assert.equal(prodVerdict({ checkExit: 1, errors: 0, ...at }).verdict, 'waiting');
+  assert.equal(prodVerdict({ checkExit: 2, errors: 1, ...at }).verdict, 'waiting', 'one failed check is retried');
+  assert.equal(prodVerdict({ checkExit: 2, errors: 3, ...at }).verdict, 'gave-up', 'a 403 loop stops early instead of burning the budget');
+  assert.equal(prodVerdict({ checkExit: -1, errors: 3, ...at }).verdict, 'gave-up', 'a killed check counts as can-not-tell');
+  assert.equal(prodVerdict({ checkExit: 1, errors: 0, nowMs: 1000, deadlineMs: 1000 }).verdict, 'gave-up');
+  assert.equal(prodVerdict({ checkExit: 0, errors: 0, nowMs: 5000, deadlineMs: 1000 }).verdict, 'live', 'live on the last check still counts');
+});
+
+test('sitePathsIn reads SITE_PATHS as git pathspecs and refuses a possibly-cut file list', () => {
+  assert.deepEqual(sitePathsIn(['.claude/hooks/verify-edits.sh', 'docs/x.md', '.github/workflows/land.yml']), [], 'hooks/docs/workflows never deploy');
+  assert.deepEqual(sitePathsIn(['src/app/page.tsx', 'docs/x.md']), ['src/app/page.tsx']);
+  assert.deepEqual(sitePathsIn(['scripts/lib/wait-for-land.js']), ['scripts/lib/wait-for-land.js'], 'scripts/ is a deploy path (prebuild)');
+  assert.deepEqual(sitePathsIn(['package.json', 'package.json.bak', 'srcs/x']), ['package.json'], 'files match exactly, directories by prefix');
+  assert.equal(sitePathsIn(Array.from({ length: 300 }, (_, i) => `docs/${i}.md`)), null, 'the compare API caps files at 300');
+  assert.equal(sitePathsIn(null), null);
 });
