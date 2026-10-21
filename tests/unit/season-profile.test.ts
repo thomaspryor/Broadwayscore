@@ -288,6 +288,25 @@ test('estimated capital adds a median of similar disclosed shows for each undisc
   assert.deepEqual(p.estimatedCapital, { total: 120e6, estimated: 1, missing: 0, nonprofitOut: 0 });
 });
 
+// BRO-5647: six budgets we estimated ourselves (isEstimate / "Estimate:" source)
+// were counted as disclosed. Our estimate fills the estimated total, never the
+// disclosed sum, the disclosed averages or the comparables pool.
+test('our own capitalization estimate is not a disclosed figure', () => {
+  const ps = buildSeasonProfiles([
+    show({ openingDate: '2022-10-01', type: 'musical', commercial: com({ capitalization: 10e6 }) }),
+    show({ openingDate: '2023-10-01', type: 'musical', commercial: com({ capitalization: 20e6 }) }),
+    show({ openingDate: '2024-10-01', type: 'musical', commercial: com({ capitalization: 30e6 }) }),
+    // Our estimate of 90M: kept out of the pool, so the median stays 20M.
+    show({ openingDate: '2023-11-01', type: 'musical', commercial: com({ capitalization: 90e6, capitalizationIsEstimate: true }) }),
+    show({ openingDate: '2023-12-01', type: 'musical', commercial: com({ capitalization: null }) }),
+  ]);
+  const p = ps.find((x) => x.season === '2023-2024')!;
+  assert.equal(p.capitalization.all.total, 20e6);
+  assert.equal(p.capitalization.all.known, 1);
+  assert.equal(p.capitalization.musical.known, 1);
+  assert.deepEqual(p.estimatedCapital, { total: 20e6 + 90e6 + 20e6, estimated: 2, missing: 0, nonprofitOut: 0 });
+});
+
 test('estimated capital widens the window, then drops the revival match, then gives up', () => {
   const plays = (year: number, caps: number[], isRevival = false) =>
     caps.map((c, i) => show({ openingDate: `${year}-0${i + 1}-15`, isRevival, commercial: com({ capitalization: c }) }));

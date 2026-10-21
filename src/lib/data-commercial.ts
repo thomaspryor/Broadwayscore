@@ -371,7 +371,7 @@ export function getSeasonProfiles(): SeasonProfile[] {
           type: s.type,
           isRevival: s.isRevival,
           openingDate: s.openingDate,
-          commercial: shows[s.slug] ? { ...shows[s.slug], weeklyCost: shows[s.slug].weeklyRunningCost } : null,
+          commercial: shows[s.slug] ? { ...shows[s.slug], weeklyCost: shows[s.slug].weeklyRunningCost, capitalizationIsEstimate: isEstimatedCapitalization(shows[s.slug]) } : null,
         })),
     );
   }

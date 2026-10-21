@@ -17,6 +17,12 @@ export interface SeasonShowInput {
   commercial: {
     capitalization?: number | null;
     /**
+     * True when the capitalization is our estimate (isEstimatedCapitalization),
+     * not a public figure: it counts toward the estimated season total, never
+     * toward the disclosed one or the disclosed averages (BRO-5647).
+     */
+    capitalizationIsEstimate?: boolean;
+    /**
      * Weekly running cost as recorded. Supplied by data-commercial.ts, the
      * approved reader of the running-cost field in commercial data (cost-for-week
      * baseline test); this lib only averages it.
@@ -180,7 +186,7 @@ export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
     const season = getSeason(show.openingDate);
     const c = show.commercial;
     if (!season || !c || isExcludedFromSeasonStats(c) || c.nonprofitOrg) continue;
-    if (typeof c.capitalization === 'number' && c.capitalization > 0) {
+    if (typeof c.capitalization === 'number' && c.capitalization > 0 && !c.capitalizationIsEstimate) {
       disclosed.push({
         year: parseInt(season.slice(0, 4), 10),
         type: show.type ?? '',
@@ -227,9 +233,16 @@ export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
     if (isExcludedFromSeasonStats(c)) continue;
     p.commercial++;
     if (c.recouped === true) p.recouped++;
-    addMoney(p.capitalization.all, c.capitalization);
-    if (typeof c.capitalization === 'number' && c.capitalization > 0) {
+    // Our own estimate of a show's budget is not a disclosed figure: it stays
+    // out of the disclosed sums and averages, and fills the estimated total
+    // ahead of the comparables median.
+    const disclosedCap = c.capitalizationIsEstimate ? null : c.capitalization;
+    addMoney(p.capitalization.all, disclosedCap);
+    if (typeof disclosedCap === 'number' && disclosedCap > 0) {
+      p.estimatedCapital.total += disclosedCap;
+    } else if (typeof c.capitalization === 'number' && c.capitalization > 0) {
       p.estimatedCapital.total += c.capitalization;
+      p.estimatedCapital.estimated++;
     } else if (c.nonprofitOrg) {
       p.estimatedCapital.nonprofitOut++;
     } else {
@@ -243,10 +256,10 @@ export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
       }
     }
     if (isMusical) {
-      addMoney(p.capitalization.musical, c.capitalization);
+      addMoney(p.capitalization.musical, disclosedCap);
       addMoney(p.runningCost.musical, c.weeklyCost);
     } else if (isPlay) {
-      addMoney(p.capitalization.play, c.capitalization);
+      addMoney(p.capitalization.play, disclosedCap);
       addMoney(p.runningCost.play, c.weeklyCost);
     }
   }
