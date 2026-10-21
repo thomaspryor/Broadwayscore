@@ -29,6 +29,17 @@ test('isEvergreenListingUrl: singular "review" headline slugs containing tickets
   assert.equal(isEvergreenListingUrl('https://review.example.com/tickets/'), true);
 });
 
+test('isEvergreenListingUrl: an outlet /reviews/<slug> section counts as a review headline, a plural slug or /tickets/ segment does not (BRO-5876)', () => {
+  // Paul Taylor's I'm Not Running (Independent): the only review word is the section.
+  assert.equal(isEvergreenListingUrl('https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/im-not-running-dave-hare-play-national-theatre-cast-tickets-last-night-a8576961.html'), false);
+  assert.equal(isEvergreenListingUrl('https://www.express.co.uk/entertainment/theatre/1920772/starlight-express-reviews-tickets-london-2024'), true);
+  assert.equal(isEvergreenListingUrl('https://example.com/reviews/buy-tickets'), true);
+  assert.equal(isEvergreenListingUrl('https://example.com/shows/x-tickets?from=/reviews/'), true);
+  // A /tickets/ segment under /reviews/ is a hub page, not a review.
+  assert.equal(isEvergreenListingUrl('https://www.example.com/reviews/tickets/'), true);
+  assert.equal(isEvergreenListingUrl('https://www.londontheatre.co.uk/reviews/tickets/x'), true);
+});
+
 test('evergreen: tickets/listing pages are detected (date heuristic must skip them)', () => {
   assert.equal(isEvergreenListingUrl('https://www.britishtheatre.com/nl/shows/titanique-musical-tickets'), true);
   assert.equal(isEvergreenListingUrl('https://nymag.com/listings/theater/the_phantom_of_the_opera/'), true);

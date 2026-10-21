@@ -30,7 +30,13 @@ function isEvergreenListingUrl(url) {
   // /going-out/tickets/hercules-musical-review/, BRO-5876). Plain "reviews" is NOT
   // exempt: "avenue-q-reviews-tickets" / "tickets-reviews-and-video" are roundup/show pages.
   const path = u.replace(/^https?:\/\/[^\/]+/, '').replace(/[?#].*$/, '');
-  const pathSaysReview = /(^|[^a-z])review(ed)?([^a-z]|$)/.test(path);
+  // An outlet's /reviews/ section counts too when "tickets" is only a slug word
+  // (independent.co.uk/.../theatre-dance/reviews/im-not-running-...-cast-tickets-
+  // last-night-...). A /tickets/ path segment never gets this exemption
+  // (/reviews/tickets/ is a hub page), and a plural "reviews" inside the slug
+  // still does not count.
+  const pathSaysReview = /(^|[^a-z])review(ed)?([^a-z]|$)/.test(path)
+    || (/\/reviews\/[^\/]+/.test(path) && !/\/tickets(\/|$)/.test(path));
   return (
     (!pathSaysReview && /(?:^|[\/-])tickets(?:[\/?#-]|$)/.test(u)) ||  // .../titanique-musical-tickets, /tickets/
     /\/buy-tickets?\b/.test(u) ||
