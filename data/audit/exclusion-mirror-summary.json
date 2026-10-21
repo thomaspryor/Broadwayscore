@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-21T01:20:39.119Z",
-  "totalScanned": 58125,
-  "totalExcluded": 27180,
+  "generatedAt": "2026-10-21T01:34:51.250Z",
+  "totalScanned": 58127,
+  "totalExcluded": 27176,
   "ruleCounts": {
     "wrongProduction": 18211,
-    "duplicateOf": 1960,
-    "wrongShow": 1809,
-    "rejectionReason": 1042,
+    "duplicateOf": 1961,
+    "wrongShow": 1810,
+    "rejectionReason": 1038,
     "unverifiableWebSearchRow": 957,
-    "noTextOrScoreSignal": 607,
+    "noTextOrScoreSignal": 605,
     "nonReview": 541,
     "wrongAttribution": 311,
     "isRoundupArticle": 225,
@@ -41,19 +41,21 @@
     "suspectedMisattribution": 1
   },
   "ruleDeltas": {
-    "rejectionReason": 1,
-    "suspectedMisattribution": -1
+    "duplicateOf": 1,
+    "wrongShow": 1,
+    "rejectionReason": -4,
+    "noTextOrScoreSignal": -2
   },
-  "previousGeneratedAt": "2026-10-21T01:06:41.670Z",
+  "previousGeneratedAt": "2026-10-21T01:20:39.119Z",
   "mirror": {
     "comparedShows": 2567,
-    "comparedFiles": 57570,
-    "agreeExcluded": 26434,
-    "agreeIncluded": 30040,
+    "comparedFiles": 57572,
+    "agreeExcluded": 26430,
+    "agreeIncluded": 30042,
     "mirrorOnly": 196,
-    "rebuildOnly": 900,
-    "disagreements": 1096,
-    "disagreementRate": 0.019,
+    "rebuildOnly": 904,
+    "disagreements": 1100,
+    "disagreementRate": 0.0191,
     "mirrorOnlyByRule": {
       "duplicateOf": 79,
       "cvWrongArticleHighConfidence": 59,
@@ -66,17 +68,17 @@
     },
     "rebuildOnlyByReason": {
       "skippedDuplicateText": 254,
-      "skippedUnknownCriticDedup": 234,
+      "skippedUnknownCriticDedup": 232,
       "skippedCrossMarket": 80,
-      "skippedNoScore": 73,
+      "skippedNoScore": 80,
       "skippedInvalidUrl": 63,
       "skippedPreOpening": 47,
       "skippedShowNotMentioned": 27,
       "skippedListingPage": 26,
       "skippedCrossShowDupe": 20,
       "skippedSameArticleNamedTwin": 16,
-      "skippedScraperGarbage": 12,
       "priorRunSuperseded": 11,
+      "skippedScraperGarbage": 11,
       "skippedPlaceholderBylineTwin": 8,
       "skippedDateMismatch": 7,
       "skippedGarbage": 4,
@@ -95,5 +97,5 @@
     "notComparedShows": 81,
     "notComparedFiles": 555
   },
-  "previousDisagreementRate": 0.0186
+  "previousDisagreementRate": 0.019
 }

@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026",
   "openingDate": "2026-10-19",
-  "detectedAt": "2026-10-21T01:20:39.554Z",
+  "detectedAt": "2026-10-21T01:34:51.676Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -11,8 +11,8 @@
       "criticName": "Unknown",
       "url": "https://www.timeout.com/newyork/theater/the-nicest-body-ever-seen-around-these-parts",
       "fullTextLen": 1964,
-      "dispatchActionable": false,
-      "skipReason": "not_scoreable",
+      "dispatchActionable": true,
+      "skipReason": null,
       "rescoreBlockedReason": null,
       "humanReviewScore": null,
       "adjudicatedScore": null,
@@ -24,9 +24,9 @@
     }
   ],
   "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
-  "blockedOrphanCount": 1,
+  "dispatchableOrphanCount": 1,
+  "blockedOrphanCount": 0,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }

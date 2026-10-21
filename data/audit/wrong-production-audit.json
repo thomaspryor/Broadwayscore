@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-21T01:20:55.901Z",
+  "timestamp": "2026-10-21T01:35:10.002Z",
   "stats": {
-    "totalReviews": 58023,
-    "alreadyFlagged": 21116,
+    "totalReviews": 58025,
+    "alreadyFlagged": 21117,
     "dateGuardCatches": 198,
-    "directorMismatch": 2044,
+    "directorMismatch": 2045,
     "tvFilmSignals": 1654,
     "londonSignals": 2575,
     "offBroadwaySignals": 530,
     "yearMismatch": 163,
-    "noPublishDate": 5229
+    "noPublishDate": 5228
   },
   "findings": [
     {
@@ -11309,6 +11309,19 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1244d before show (2022-10-09 vs 2026-03-06)"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-west-end-2026",
+      "file": "london-box-office--phil-willmott.json",
+      "publishDate": null,
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-death-of-a-salesman-piccadilly",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"miranda cromwell\" from death-of-a-salesman-2022"
         }
       ]
     },
@@ -51002,7 +51015,7 @@
     },
     {
       "showId": "war-horse-west-end-2026",
-      "file": "london-theatre--unknown.json",
+      "file": "london-theatre--holly-omahony.json",
       "score": 97,
       "publishDate": "2026-06-03",
       "url": "https://www.londontheatre.co.uk/reviews/war-horse-review-national-theatre",
@@ -52918,7 +52931,7 @@
     },
     {
       "showId": "whos-afraid-of-virginia-woolf-2012",
-      "file": "vulture--unknown.json",
+      "file": "vulture--scott-brown.json",
       "score": 93,
       "publishDate": null,
       "url": "https://www.vulture.com/2012/10/theater-review-whos-afraid-of-virginia-woolf.html",
@@ -92061,7 +92074,7 @@
     },
     {
       "showId": "war-horse-west-end-2026",
-      "file": "theupcoming--unknown.json",
+      "file": "theupcoming--sophie-humphrey.json",
       "score": 92,
       "publishDate": "2026-06-03",
       "url": "https://www.theupcoming.co.uk/2026/06/03/warhorse-at-the-national-theatre-theatre-review/",
@@ -92158,7 +92171,7 @@
     },
     {
       "showId": "what-if-if-only-west-end-2021",
-      "file": "guardian--unknown.json",
+      "file": "guardian--mark-lawson.json",
       "score": 77,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2021/oct/01/what-if-if-only-review-short-and-sharp-with-shades-of-scrooge",
@@ -92767,7 +92780,7 @@
     },
     {
       "showId": "wise-children-west-end-2018",
-      "file": "guardian--unknown.json",
+      "file": "guardian--kate-kellaway.json",
       "score": 98,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2018/oct/21/wise-children-old-vic-review-emma-rice-angela-carter",
