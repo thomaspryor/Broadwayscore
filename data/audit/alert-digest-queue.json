@@ -82,5 +82,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-21T07:42:19.987Z"
+  },
+  {
+    "conditionKey": "time-to-publish-sla:unmeasurable",
+    "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
+    "description": "Scope: 2 opening window(s): the-curious-case-of-benjamin-button-off-broadway-2026 (2026-10-21), billy-crystal-860-2026 (2026-10-21)\n0 review(s) still in flight.\nStage log currently starts at 2026-10-18T23:13:07.604Z.\nThis is NOT a pass — the SLA had too little to judge.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T08:00:12.236Z"
   }
 ]
