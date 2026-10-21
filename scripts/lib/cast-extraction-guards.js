@@ -204,10 +204,35 @@ function validateCastSourceUrl(url, show, shows = []) {
 
 // Same-title productions need positive evidence from page text as well as
 // the URL veto. A date or venue in the URL/SERP alone is not corroboration.
+const GENERIC_VENUE_WORDS = new Set([
+  'theatre', 'theater', 'center', 'centre', 'company', 'the', 'and', 'street', 'avenue', 'house',
+  'playhouse', 'stage', 'hall', 'room', 'studio', 'main', 'new', 'york', 'london', 'broadway', 'west', 'east',
+]);
+
+/** Distinctive words of a venue name: "Signature Theatre Company/Alice Griffin Jewel Box Theater" -> signature, alice, griffin, jewel. */
+function venueTokens(venue) {
+  return foldDiacritics(String(venue || '')).toLowerCase().split(/[^a-z0-9]+/)
+    .filter(w => w.length >= 5 && !GENERIC_VENUE_WORDS.has(w));
+}
+
+/** True when the page names the venue, or when the venue has no distinctive word to test (fail open). */
+function venueMentioned(pageText, venue) {
+  const tokens = venueTokens(venue);
+  if (tokens.length === 0) return true;
+  const text = foldDiacritics(String(pageText || '')).toLowerCase();
+  return tokens.some(t => new RegExp(`\\b${t}\\b`).test(text));
+}
+
 function validateCastPageContext(pageText, show, shows = []) {
   const titleKey = title => foldDiacritics(String(title || '')).toLowerCase().trim();
   const ambiguous = shows.some(s => s.id !== show.id && titleKey(s.title) === titleKey(show.title));
-  if (!ambiguous) return { ok: true };
+  if (!ambiguous) {
+    // A sibling-free title is not proof the page is about THIS production: King of the Yees
+    // (Signature, Oct 2026) had no same-title row, so another company's cast page (Profile
+    // Theatre) passed unchecked and its cast was written to shows.json (BRO-5853). The page
+    // must at least name the venue's distinctive word(s).
+    return venueMentioned(pageText, show.venue) ? { ok: true } : { ok: false, reason: 'unconfirmed-production-venue' };
+  }
   const year = String(show.openingDate || show.previewsStartDate || '').slice(0, 4);
   const venue = normalizeVenueName(show.venue);
   if (!/^\d{4}$/.test(year) || venue.length < 4) return { ok: false, reason: 'missing-production-context' };
@@ -390,6 +415,7 @@ module.exports = {
   castWebSkipReason,
   validateCastSourceUrl,
   validateCastPageContext,
+  venueMentioned,
   validateCastExtraction,
   isOperaSourceUrl,
   scoreSerpResult,
