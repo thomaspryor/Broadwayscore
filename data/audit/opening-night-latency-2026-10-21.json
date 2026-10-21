@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-21T10:16:07.097Z",
+  "generatedAt": "2026-10-21T13:48:28.688Z",
   "date": "2026-10-21",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 178426,
+  "entryCount": 193725,
   "shows": [
     {
       "showId": "la-boheme-off-broadway-2025",
@@ -768,8 +768,8 @@
       "p90_e2e_ms": 143415139,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 560149,
-        "scored-to-rebuilt": 323639,
+        "collected-to-scored": 560978,
+        "scored-to-rebuilt": 326766,
         "rebuilt-to-deployed": 142479563
       },
       "reviews_over_15min": 3,
@@ -1421,7 +1421,7 @@
     },
     {
       "showId": "1536-off-west-end-2026",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2546,13 +2546,13 @@
     },
     {
       "showId": "boop-tour-2026",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 3925104,
-        "scored-to-rebuilt": 703641,
+        "collected-to-scored": 3987918,
+        "scored-to-rebuilt": 355840,
         "rebuilt-to-deployed": 159823845
       },
       "reviews_over_15min": 0,
@@ -2807,7 +2807,7 @@
     },
     {
       "showId": "macbeth-off-broadway-2026",
-      "reviewCount": 13,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3544,6 +3544,36 @@
     {
       "showId": "creation-stories-and-all-the-important-importants-off-broadway-2026",
       "reviewCount": 12,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "alice-in-wonderland-off-broadway-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "burning-leaves-off-broadway-2026",
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5058,6 +5088,27 @@
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
       "slowest_reviews": []
+    },
+    {
+      "showId": "lincoln-in-the-bardo-off-broadway-2026",
+      "reviewCount": 5,
+      "median_e2e_ms": 53937223,
+      "p90_e2e_ms": 53937223,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 283065,
+        "scored-to-rebuilt": 169096,
+        "rebuilt-to-deployed": 54870069
+      },
+      "reviews_over_15min": 1,
+      "reviews_over_60min": 1,
+      "slowest_reviews": [
+        {
+          "reviewKey": "nytimes:joshua-barone:https://www.nytimes.com/2026/10/20/arts/music/lincoln-in-the-bardo-met-opera-review.html",
+          "e2e_ms": 53937223,
+          "stuck_at_stage": "rebuilt"
+        }
+      ]
     },
     {
       "showId": "two-girls-off-broadway-2026",
@@ -6764,13 +6815,13 @@
     },
     {
       "showId": "the-dog-show-come-sit-stay-off-broadway-2026",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 968125,
+        "scored-to-rebuilt": 494526,
         "rebuilt-to-deployed": 109168887
       },
       "reviews_over_15min": 0,
@@ -7037,27 +7088,6 @@
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
       "slowest_reviews": []
-    },
-    {
-      "showId": "lincoln-in-the-bardo-off-broadway-2026",
-      "reviewCount": 4,
-      "median_e2e_ms": 53937223,
-      "p90_e2e_ms": 53937223,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": 283065,
-        "scored-to-rebuilt": 133908,
-        "rebuilt-to-deployed": 54870069
-      },
-      "reviews_over_15min": 1,
-      "reviews_over_60min": 1,
-      "slowest_reviews": [
-        {
-          "reviewKey": "nytimes:joshua-barone:https://www.nytimes.com/2026/10/20/arts/music/lincoln-in-the-bardo-met-opera-review.html",
-          "e2e_ms": 53937223,
-          "stuck_at_stage": "rebuilt"
-        }
-      ]
     },
     {
       "showId": "the-holy-rosenbergs-west-end-2026",
@@ -7537,13 +7567,13 @@
     },
     {
       "showId": "martin-guerre-west-end-2026",
-      "reviewCount": 3,
+      "reviewCount": 7,
       "median_e2e_ms": 25811178,
       "p90_e2e_ms": 25811178,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 665130,
-        "scored-to-rebuilt": 312828,
+        "collected-to-scored": 649128,
+        "scored-to-rebuilt": 319497,
         "rebuilt-to-deployed": 22744511
       },
       "reviews_over_15min": 1,
@@ -7558,7 +7588,7 @@
     },
     {
       "showId": "jesus-christ-superstar-off-west-end-2026",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": 24440833,
       "p90_e2e_ms": 24441743,
       "per_stage_median_ms": {
@@ -7614,7 +7644,7 @@
     },
     {
       "showId": "high-school-musical-off-west-end-2026",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7710,7 +7740,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 2158265,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7719,13 +7749,13 @@
     },
     {
       "showId": "the-saviors-off-broadway-2026",
-      "reviewCount": 1,
+      "reviewCount": 22,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1964737,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7734,13 +7764,13 @@
     },
     {
       "showId": "redcliffe-off-west-end-2026",
-      "reviewCount": 1,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1959922,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7749,13 +7779,13 @@
     },
     {
       "showId": "the-p-word-off-west-end-2026",
-      "reviewCount": 1,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1948430,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7764,13 +7794,13 @@
     },
     {
       "showId": "dark-of-the-moon-west-end-2026",
-      "reviewCount": 1,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1943170,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7779,13 +7809,13 @@
     },
     {
       "showId": "care-west-end-2026",
-      "reviewCount": 2,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1934791,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7794,13 +7824,13 @@
     },
     {
       "showId": "churchills-urinal-a-new-comedy-by-and-starring-rosie-holt-with-additional-material-off-west-end-2026",
-      "reviewCount": 1,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1927134,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7809,13 +7839,13 @@
     },
     {
       "showId": "the-emporium-off-broadway-2025",
-      "reviewCount": 2,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1912718,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7824,13 +7854,13 @@
     },
     {
       "showId": "lauder-scotlands-kilted-king-of-broadway-off-broadway-2026",
-      "reviewCount": 1,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1898788,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7839,13 +7869,13 @@
     },
     {
       "showId": "sherlock-holmes-west-end-2026",
-      "reviewCount": 3,
+      "reviewCount": 22,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1888091,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7854,13 +7884,13 @@
     },
     {
       "showId": "im-not-being-funny-west-end-2026",
-      "reviewCount": 1,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1849628,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7869,13 +7899,13 @@
     },
     {
       "showId": "new-born-off-broadway-2026",
-      "reviewCount": 1,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1844841,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7884,13 +7914,13 @@
     },
     {
       "showId": "kenrex-off-broadway-2026",
-      "reviewCount": 1,
+      "reviewCount": 19,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1835582,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7899,13 +7929,13 @@
     },
     {
       "showId": "the-balusters-2026",
-      "reviewCount": 1,
+      "reviewCount": 35,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1815781,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7914,13 +7944,13 @@
     },
     {
       "showId": "fallen-angels-2026",
-      "reviewCount": 1,
+      "reviewCount": 33,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1787971,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7929,13 +7959,58 @@
     },
     {
       "showId": "proof-2026",
+      "reviewCount": 31,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1782572,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 848844,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "billy-crystal-860-2026",
       "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 3190876,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "reviewCount": 23,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 52946,
+        "scored-to-rebuilt": 400271,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
