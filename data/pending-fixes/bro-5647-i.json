@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5647-i",
   "planId": "b25e3302-5cba-49d7-96ad-6f8f30fecc39",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-21T02:53:41.556039Z",
   "submitter": {
     "name": null,
@@ -218,5 +218,64 @@
         "description": "beaches: add the NYT closing report"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T03:25:56.327Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for maybe-happy-ending"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for maybe-happy-ending"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for titanique"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for titanique"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for titanique"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for beaches"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for beaches"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for beaches"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for beaches"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for beaches"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for beaches"
+    }
+  ],
+  "executedIn": "ci"
 }
