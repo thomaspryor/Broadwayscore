@@ -65,14 +65,16 @@ export interface TopicShowInput {
 
 const TOP_CATEGORIES = new Set(['Best Musical', 'Best Play', 'Best Revival of a Musical', 'Best Revival of a Play']);
 
-/** Reads a Tony record from awards.json. Ceremony not held yet (no nominations number) gives null. */
+/** Reads a Tony record from awards.json. No nominations count and no nominatedFor list (ceremony not held yet) gives null; a list without a count is a decided season, counted by its length. */
 export function tonyFromAwards(tony: { season?: unknown; nominations?: unknown; nominatedFor?: unknown; wins?: unknown } | null | undefined): TopicTony | null {
-  if (!tony || typeof tony.nominations !== 'number') return null;
+  if (!tony) return null;
   const list = (x: unknown) => (Array.isArray(x) ? (x as string[]) : []);
   const noms = list(tony.nominatedFor);
+  const count = typeof tony.nominations === 'number' ? tony.nominations : Array.isArray(tony.nominatedFor) ? noms.length : null;
+  if (count === null) return null;
   const wins = list(tony.wins);
   return {
-    nominations: tony.nominations,
+    nominations: count,
     won: wins.length > 0,
     topNominated: noms.some((c) => TOP_CATEGORIES.has(c)),
     topWon: wins.some((c) => TOP_CATEGORIES.has(c)),

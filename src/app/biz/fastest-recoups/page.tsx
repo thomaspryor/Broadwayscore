@@ -43,7 +43,7 @@ export default function Page() {
       </ul>
       <p className="text-xs text-gray-500 mt-3">
         Weeks run from opening night to the month the recoupment was reported, so they are approximate.
-        {data.recoupsWithoutDate > 0 && ` ${data.recoupsWithoutDate} recouped shows with no report date are not ranked.`}
+        {data.recoupsWithoutDate > 0 && ` ${data.recoupsWithoutDate} recouped shows without a usable recoup date (none reported, or reported after closing) are not ranked.`}
       </p>
     </TopicPageShell>
   );

@@ -171,7 +171,7 @@ test('what predicts the money: audience score split at 70', () => {
 
 test('tonyFromAwards: top categories, ceremony not held gives null', () => {
   assert.equal(tonyFromAwards(null), null);
-  assert.equal(tonyFromAwards({ nominatedFor: ['Best Musical'] }), null);
+  assert.equal(tonyFromAwards({ season: '2025-26' }), null);
   assert.deepEqual(
     tonyFromAwards({ nominations: 3, nominatedFor: ['Best Musical', 'Best Direction of a Musical', 'Best Choreography'], wins: ['Best Direction of a Musical'] }),
     { nominations: 3, won: true, topNominated: true, topWon: false, season: null, bestNewWon: null },
@@ -180,6 +180,7 @@ test('tonyFromAwards: top categories, ceremony not held gives null', () => {
     tonyFromAwards({ nominations: 1, nominatedFor: ['Best Revival of a Play'], wins: ['Best Revival of a Play'] }),
     { nominations: 1, won: true, topNominated: true, topWon: true, season: null, bestNewWon: null },
   );
+  assert.deepEqual(tonyFromAwards({ season: '2023-24', nominatedFor: [] }), { nominations: 0, won: false, topNominated: false, topWon: false, season: '2023-24', bestNewWon: null });
   assert.deepEqual(tonyFromAwards({ nominations: 0, nominatedFor: [], wins: [] }), { nominations: 0, won: false, topNominated: false, topWon: false, season: null, bestNewWon: null });
 });
 
