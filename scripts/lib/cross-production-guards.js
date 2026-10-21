@@ -25,8 +25,14 @@ const { foldDiacritics } = require('./title-match');
 function isEvergreenListingUrl(url) {
   if (!url || typeof url !== 'string') return false;
   const u = url.toLowerCase();
+  // Singular whole-word review/reviewed in the PATH means a headline slug that merely
+  // contains "tickets" (express.co.uk ...-musical-review-...-dates-tickets, radiotimes
+  // /going-out/tickets/hercules-musical-review/, BRO-5876). Plain "reviews" is NOT
+  // exempt: "avenue-q-reviews-tickets" / "tickets-reviews-and-video" are roundup/show pages.
+  const path = u.replace(/^https?:\/\/[^\/]+/, '').replace(/[?#].*$/, '');
+  const pathSaysReview = /(^|[^a-z])review(ed)?([^a-z]|$)/.test(path);
   return (
-    /(?:^|[\/-])tickets(?:[\/?#-]|$)/.test(u) ||  // .../titanique-musical-tickets, /tickets/
+    (!pathSaysReview && /(?:^|[\/-])tickets(?:[\/?#-]|$)/.test(u)) ||  // .../titanique-musical-tickets, /tickets/
     /\/buy-tickets?\b/.test(u) ||
     /\/box-office\b/.test(u) ||
     // /whats-on/ is a venue listing unless the path says "review" as a whole word

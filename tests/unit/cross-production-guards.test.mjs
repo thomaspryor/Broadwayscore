@@ -7,6 +7,19 @@ const { isEvergreenListingUrl, contentMatchesFiledUnderVenue } =
 const { venueSlug } = require('../../scripts/lib/venue-classification.js');
 
 // ── isEvergreenListingUrl ─────────────────────────────────────────────────────
+test('isEvergreenListingUrl: singular "review" headline slugs containing tickets are not listings (BRO-5876)', () => {
+  assert.equal(isEvergreenListingUrl('https://www.radiotimes.com/going-out/tickets/hercules-musical-review/'), false);
+  assert.equal(isEvergreenListingUrl('https://www.express.co.uk/entertainment/theatre/1769203/operation-mincemeat-musical-review-London-2023-Fortune-theatre-dates-tickets'), false);
+  assert.equal(isEvergreenListingUrl('https://www.digitalspy.com/theatre/a1/hercules-review-buy-tickets/'), false);
+  assert.equal(isEvergreenListingUrl('https://www.timeout.com/london/theatre/hamilton-tickets-and-review'), false);
+  // roundups / true listings stay blocked
+  assert.equal(isEvergreenListingUrl('https://www.express.co.uk/entertainment/theatre/avenue-q-reviews-tickets'), true);
+  assert.equal(isEvergreenListingUrl('https://www.timeout.com/newyork/theater/tickets-reviews-and-video'), true);
+  assert.equal(isEvergreenListingUrl('https://venue.com/tickets/?utm=review'), true);
+  assert.equal(isEvergreenListingUrl('https://venue.com/review/buy-tickets'), true);
+  assert.equal(isEvergreenListingUrl('https://review.example.com/tickets/'), true);
+});
+
 test('evergreen: tickets/listing pages are detected (date heuristic must skip them)', () => {
   assert.equal(isEvergreenListingUrl('https://www.britishtheatre.com/nl/shows/titanique-musical-tickets'), true);
   assert.equal(isEvergreenListingUrl('https://nymag.com/listings/theater/the_phantom_of_the_opera/'), true);
