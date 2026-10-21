@@ -26,6 +26,7 @@ const require = createRequire(import.meta.url);
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(HERE, '..');
 const SYNC_SH = path.join(REPO_ROOT, 'scripts', 'sync-memory-to-repo.sh');
+const hasRsync = spawnSync('bash', ['-c', 'command -v rsync'], { stdio: 'ignore' }).status === 0;
 
 const {
   planSync,
@@ -611,7 +612,9 @@ describe('sync-memory-to-repo.sh end-to-end', () => {
     assert.deepEqual(listMd(dest), []);
   });
 
-  test('a crashing merge lib falls back to a copy with NO deletions, loudly', () => {
+  test('a crashing merge lib falls back to a copy with NO deletions, loudly', {
+    skip: !process.env.CI && !hasRsync ? 'rsync not installed here; CI runs the copy fallback test' : false,
+  }, () => {
     // session-stop.sh invokes this script as `... --commit 2>&1 | grep -v ...
     // >/dev/null || true`. Under a bare `set -e` call a throwing merge lib
     // would abort the script and the mirror would silently stop syncing

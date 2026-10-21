@@ -19,6 +19,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+import { spawnSync } from 'node:child_process';
+import os from 'node:os';
 
 const require = createRequire(import.meta.url);
 const { readWorkflowJobBlocks } = require('./audit-workflow-hygiene-rules.js');
@@ -84,6 +86,93 @@ function missingModes(pairs, gauntlet) {
 
 const testYml = fs.readFileSync(path.join(ROOT, '.github/workflows/test.yml'), 'utf8');
 const gauntlet = fs.readFileSync(path.join(ROOT, 'scripts/lib/land-gauntlet.sh'), 'utf8');
+
+// Execute the shipped function with unrelated audits stubbed, so the tests
+// cover tool selection and lwgate's real failure reporting together.
+const lintWorkflowsStart = gauntlet.indexOf('lint_workflows() {');
+const lintWorkflowsEnd = gauntlet.indexOf('\ngate lint-workflows lint_workflows');
+assert.ok(lintWorkflowsStart >= 0 && lintWorkflowsEnd > lintWorkflowsStart);
+const lintWorkflows = gauntlet.slice(lintWorkflowsStart, lintWorkflowsEnd);
+const gateStart = gauntlet.indexOf('\ngate() {');
+const gateEnd = gauntlet.indexOf('\n}\n', gateStart) + 2;
+assert.ok(gateStart >= 0 && gateEnd > gateStart);
+const gate = gauntlet.slice(gateStart, gateEnd);
+
+for (const [name, ci, available, exit, expected] of [
+  ['local missing actionlint warns', '', false, 127, 0],
+  ['CI missing actionlint fails', 'true', false, 127, 1],
+  ['installed actionlint runs locally', '', true, 0, 0],
+  ['installed actionlint failures stay blocking', '', true, 1, 1],
+  ['installed actionlint runs in CI', 'true', true, 0, 0],
+]) {
+  test(name, (t) => {
+    const out = fs.mkdtempSync(path.join(os.tmpdir(), 'gauntlet-tools-'));
+    t.after(() => fs.rmSync(out, { recursive: true, force: true }));
+    const run = spawnSync('bash', ['-c', `
+      ${lintWorkflows}
+      ${gate}
+      want_gate() { :; }
+      git() { :; }
+      node() { :; }
+      bash() { :; }
+      command() {
+        if [ "$1" = -v ] && [ "$2" = actionlint ]; then return ${available ? 0 : 1}; fi
+        builtin command "$@"
+      }
+      actionlint() { echo actionlint-invoked; return ${exit}; }
+      gate lint-workflows lint_workflows
+    `], { encoding: 'utf8', env: { ...process.env, CI: ci, LAND_BASE: '', BG_GATES: '', OUT: out } });
+    assert.equal(run.status, 0, run.stdout + run.stderr);
+    assert.equal(Number(fs.readFileSync(path.join(out, 'lint-workflows.exit'), 'utf8')), expected);
+    const skipped = !ci && !available;
+    assert.equal(run.stdout.includes('actionlint-invoked'), !skipped);
+    assert.equal(run.stdout.includes('::warning::actionlint not installed here; CI runs it'), skipped);
+    assert.equal(run.stderr.includes('::warning::actionlint not installed here; CI runs it'), skipped,
+      'missing tools must be visible when land-local-check hides gauntlet stdout');
+    assert.equal(run.stdout.includes('::error::lint-workflows gate failed: actionlint'), expected !== 0);
+  });
+}
+
+test('gate forwards the named rsync skip when its stdout is hidden', (t) => {
+  const out = fs.mkdtempSync(path.join(os.tmpdir(), 'gauntlet-tools-'));
+  t.after(() => fs.rmSync(out, { recursive: true, force: true }));
+  const run = spawnSync('bash', ['-c', `
+    ${gate}
+    want_gate() { :; }
+    gate unit-tests-node printf '%s\\n' 'ok 1 - copy fallback # SKIP rsync not installed here; CI runs the copy fallback test'
+  `], { encoding: 'utf8', env: { ...process.env, BG_GATES: '', OUT: out } });
+  assert.equal(run.status, 0, run.stderr);
+  assert.equal(fs.readFileSync(path.join(out, 'unit-tests-node.exit'), 'utf8').trim(), '0');
+  assert.match(run.stderr, /^::warning::rsync not installed here; CI runs the copy fallback test\n$/);
+});
+
+test('parallel lane preserves tool warnings when the local caller hides stdout', (t) => {
+  const out = fs.mkdtempSync(path.join(os.tmpdir(), 'gauntlet-tools-'));
+  t.after(() => fs.rmSync(out, { recursive: true, force: true }));
+  const child = path.join(out, 'child.sh');
+  fs.writeFileSync(child, `
+    BG_GATES=""
+    ${gate}
+    want_gate() { :; }
+    missing_tool() { echo '::warning::actionlint not installed here; CI runs it'; }
+    gate lint-workflows missing_tool
+  `);
+  const start = gauntlet.indexOf('BG_GATES=""\nif');
+  const end = gauntlet.indexOf('\n# ', start);
+  assert.ok(start >= 0 && end > start);
+  const run = spawnSync('bash', ['-c', `
+    want_gate() { [ "$1" = lint-workflows ]; }
+    ${gauntlet.slice(start, end)}
+    wait "$BG_PID"
+  `], {
+    encoding: 'utf8',
+    stdio: ['ignore', 'ignore', 'pipe'],
+    env: { ...process.env, CI: '', GAUNTLET_PARALLEL: '1', GAUNTLET_CHILD: '', BG_GATES: '', SCOPE_DIR: '', OUT: out, SELF: child },
+  });
+  assert.equal(run.status, 0, run.stderr);
+  assert.match(run.stderr, /^::warning::actionlint not installed here; CI runs it\n$/);
+  assert.equal(fs.readFileSync(path.join(out, 'lint-workflows.exit'), 'utf8').trim(), '0');
+});
 
 test('every script test.yml lint-workflows runs is also run by land-gauntlet.sh', () => {
   const names = lintWorkflowsScripts(testYml);

@@ -158,6 +158,9 @@ gate() {
   echo "::group::gate $name — $*"
   "$@" 2>&1 | tee "$OUT/$name.log"
   local rc=${PIPESTATUS[0]}
+  # land-local-check hides stdout. Keep local missing-tool warnings visible.
+  sed -n -e '/^::warning::.*not installed here; CI runs/p' \
+    -e 's/.*# SKIP \(.*not installed here; CI runs.*\)/::warning::\1/p' "$OUT/$name.log" >&2
   echo "::endgroup::"
   echo "$rc" > "$OUT/$name.exit"
   echo "gate $name: exit $rc"
@@ -175,7 +178,8 @@ if [ "${GAUNTLET_PARALLEL:-0}" = "1" ] && [ -z "${GAUNTLET_CHILD:-}" ]; then
   for g in bash-integration lint-workflows; do want_gate "$g" && { BG_GATES="${BG_GATES:+$BG_GATES,}$g"; rm -f "$OUT/$g.exit"; }; done
   if [ -n "$BG_GATES" ]; then
     # SCOPE_DIR was unset from the env above; hand it to the child explicitly (BRO-5766).
-    GAUNTLET_CHILD=1 GAUNTLET_PARALLEL=0 GAUNTLET_GATES="$BG_GATES" GAUNTLET_SCOPE_DIR="$SCOPE_DIR" bash "$SELF" "$OUT" > "$OUT/background-lane.log" 2>&1 &
+    # Gates log their output; inherit stderr so tool warnings reach land-local-check.
+    GAUNTLET_CHILD=1 GAUNTLET_PARALLEL=0 GAUNTLET_GATES="$BG_GATES" GAUNTLET_SCOPE_DIR="$SCOPE_DIR" bash "$SELF" "$OUT" > "$OUT/background-lane.log" &
     BG_PID=$!
     echo "background lane: $BG_GATES (pid $BG_PID, log $OUT/background-lane.log)"
   fi
@@ -401,6 +405,8 @@ lint_workflows() {
   }
   if grep -Fq "[skip-actionlint]" <<<"$MSG"; then
     echo "::warning::actionlint check skipped via [skip-actionlint] commit-message tag"
+  elif [ -z "${CI:-}" ] && ! command -v actionlint >/dev/null 2>&1; then
+    echo "::warning::actionlint not installed here; CI runs it"
   else
     lwgate actionlint actionlint -color -shellcheck="" -ignore 'maximum number of inputs' .github/workflows/*.yml
   fi
