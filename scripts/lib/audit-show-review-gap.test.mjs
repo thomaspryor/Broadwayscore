@@ -188,3 +188,10 @@ test('BRO-5627 an article + one-word title needs the whole title, a quote, or "r
   assert.equal(titleMatchesShow('Wicked turns 20 on Broadway', 'Wicked'), true);
   assert.equal(titleMatchesShow("New 'King and I' is something wonderful", 'The King and I'), true);
 });
+
+test('BRO-5627: "The X" RSS gate keeps theatre-context headlines that drop the article', () => {
+  const { titleMatchesShow } = require('./rss-discovery');
+  assert.equal(titleMatchesShow('Outsiders musical wins best musical Tony', 'The Outsiders'), true);
+  assert.equal(titleMatchesShow('Notebook musical opens on Broadway', 'The Notebook'), true);
+  assert.equal(titleMatchesShow('How to Ask Colleagues for a Raise', 'The Ask'), false);
+});

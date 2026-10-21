@@ -234,7 +234,12 @@ function singleWordTitleIdentity(itemTitle, itemForms, phrase, word) {
   // Headline led by the title word ("Story: what a newsroom does...").
   if (new RegExp(`^\\s*${esc}\\s*[:|]`).test(raw)) return true;
   const besideReview = new RegExp(`(?:^| )reviews? (?:of )?${esc}(?: |$)|(?:^| )${esc} (?:theater |theatre )?reviews?(?: |$)`);
-  return itemForms.some(h => besideReview.test(h));
+  if (itemForms.some(h => besideReview.test(h))) return true;
+  // Theatre context beside the word ("Outsiders musical wins Tony", "Notebook
+  // musical opens on Broadway"): a careers or advice column has none.
+  const theatreCue = /(?:^| )(?:broadway|off broadway|musical|tony|tonys|revival|playwright|theater|theatre)(?: |$)/;
+  const hasWord = itemForms.some(h => new RegExp(`(?:^| )${esc}(?: |$)`).test(h));
+  return hasWord && itemForms.some(h => theatreCue.test(h));
 }
 
 /**
