@@ -12,6 +12,7 @@ const SCRIPTS = [
   'backfill-network-tier-dates.js',
   'cleanup-fake-publish-dates.js',
   'fix-null-dates-from-url.js',
+  'recover-null-dates.js',
 ];
 const read = (f) => fs.readFileSync(new URL(`../${f}`, import.meta.url), 'utf8');
 
@@ -23,7 +24,7 @@ for (const f of SCRIPTS) {
   });
 }
 
-for (const f of ['backfill-url-dates.js', 'fix-null-dates-from-url.js']) {
+for (const f of ['backfill-url-dates.js', 'fix-null-dates-from-url.js', 'recover-null-dates.js']) {
   test(`${f} is retired and exits non-zero without touching data`, () => {
     assert.throws(
       () => execFileSync('node', [new URL(`../${f}`, import.meta.url).pathname, '--apply', '--write'], { stdio: 'pipe' }),
