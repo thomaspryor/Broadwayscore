@@ -495,5 +495,36 @@
       }
     ],
     "queuedAt": "2026-10-21T16:25:30.420Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5849-leads",
+    "title": "Landing blocked: rebase red on land/bro-5849-leads",
+    "description": "land.yml did not land land/bro-5849-leads: the rebase gate went red at 17fc857e7a. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5849-leads @ 17fc857e7a (origin/land/bro-5849-leads) → origin/main @ e122dd5f20 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ e122dd5f20: Rebasing (1/3) Rebasing (2/3) Rebasing (3/3) error: could not apply 17fc857e7a6... Stop land: BRO-5849 step 1 held for the revised plan (no leads[] schema). Zero-diff vs main. hint: Resolve all conflicts manually, mark them  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39641438124",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5849-leads"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "17fc857e7a6c5cedf8c4a42cfea6c51cc60bec02"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39641438124"
+      }
+    ],
+    "queuedAt": "2026-10-21T17:29:57.784Z"
   }
 ]
