@@ -275,6 +275,7 @@ function venueFromWetDescription(description) {
  * @returns {Promise<Array<{title: string, sourceUrl: string, articlePublishedAt: string|null, wpPostId: number}>>}
  */
 async function fetchWetRecentRoundups(opts = {}) {
+  if (opts.timeBudget && opts.timeBudget.exceeded()) return [];
   const fetchJSON = opts.fetchJSON || require('./scraper').fetchJSON;
   const log = opts.log || console.log;
   const perPage = opts.perPage || 20;
@@ -316,6 +317,7 @@ async function fetchWetRecentRoundups(opts = {}) {
  * trusted for this).
  */
 async function fetchNewsArticleJsonLd(url, opts = {}) {
+  if (opts.timeBudget && opts.timeBudget.exceeded()) return { description: null, datePublished: null };
   const fetchPage = opts.fetchPage || require('./scraper').fetchPage;
   const log = opts.log || console.log;
   try {
@@ -421,6 +423,7 @@ function slugToTitle(slug) {
  * @returns {Promise<Array<{title: string, venue: string, sourceUrl: string, articlePublishedAt: string|null}>>}
  */
 async function fetchLboRecentRoundups(opts = {}) {
+  if (opts.timeBudget && opts.timeBudget.exceeded()) return [];
   const fetchPage = opts.fetchPage || require('./scraper').fetchPage;
   const log = opts.log || console.log;
   let xml = '';

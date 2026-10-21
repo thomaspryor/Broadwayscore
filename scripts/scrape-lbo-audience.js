@@ -32,6 +32,7 @@ const { calculateCombinedScore, getDesignation } = require('./lib/audience-weigh
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildLondonSlugVariants } = require('./lib/show-matching');
 const { batchDiscoverSlugs } = require('./lib/serp-slug-discovery');
+const { fetchAudiencePage } = require('./lib/audience-page-fetch');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 
@@ -299,30 +300,11 @@ async function fetchAllFeefoReviews() {
   return allByProduct;
 }
 
-async function fetchLboPage(url) {
-  try {
-    const res = await httpsGet(url);
-    if (res.status === 200 && res.body.length > 1000) {
-      return res.body;
-    }
-    if (res.status === 404 || res.status === 301 || res.status === 302) return null;
-  } catch (e) {
-    console.log(`  ⚠️  Plain fetch failed: ${e.message}`);
-  }
-
-  if (BRIGHTDATA_TOKEN) {
-    try {
-      console.log('  → Trying BrightData fallback...');
-      const result = await fetchWithBrightData(url);
-      if (result && result.content && result.content.length > 1000) {
-        return result.content;
-      }
-    } catch (e) {
-      console.log(`  ⚠️  BrightData failed: ${e.message}`);
-    }
-  }
-
-  return null;
+function fetchLboPage(url) {
+  return fetchAudiencePage(url, {
+    budget: timeBudget, httpsGet, fetchWithBrightData, brightDataEnabled: !!BRIGHTDATA_TOKEN,
+    stopStatuses: [404, 301, 302],
+  });
 }
 
 // --- Main ---
@@ -381,6 +363,7 @@ async function main() {
 
     // Try each slug variant
     for (const url of urlVariants) {
+      if (timeBudget.exceeded()) break;
       console.log(`  URL: ${url}`);
       let lastError = null;
 
@@ -406,6 +389,14 @@ async function main() {
       if (urlVariants.indexOf(url) < urlVariants.length - 1) {
         await sleep(RATE_LIMIT_MS);
       }
+    }
+
+    if (!html && timeBudget.exceeded()) {
+      stats.processed--;
+      stats.unprocessedShows = toProcess.length - i;
+      stats.budgetExit = true;
+      console.log(`  Time budget reached; ${stats.unprocessedShows} shows deferred.`);
+      break;
     }
 
     if (!html) {

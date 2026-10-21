@@ -97,12 +97,16 @@ function fetchText(url, redirects = 3) {
 /**
  * fetchText through the shared pacer, retrying a 429. When the plain GET is
  * still rate-limited, `fallback` (a scraper.js fetchPage) is tried once.
- * `budget` (run-budget.js) stops a retry wait that would overrun the run.
+ * `budget` (run-budget.js) stops new requests and retry waits after expiry.
  * Any other failure is thrown as before.
  */
 async function politeFetchText(url, { fallback = null, budget = null, log = console.log, get = fetchText, wait = sleep, pace = pacer } = {}) {
   for (let attempt = 0; ; attempt++) {
+    // Re-entered for alternate slugs and retries, after the outer loop check.
+    if (budget && budget.remainingMs() <= 0) throw new Error('Run time budget reached');
     await pace.take();
+    // A pacing wait can use the last of the budget before the first GET.
+    if (budget && budget.remainingMs() <= 0) throw new Error('Run time budget reached');
     stats.requests++;
     try {
       const body = await get(url);
@@ -150,6 +154,7 @@ async function fetchSchedule(tour, fetchPage = null, opts = {}) {
   // scheduleSlugs returns at most 2 (the stored slug, or title and
   // title-the-musical); the slice states that bound for audit-run-budget-coverage.
   for (const slug of scheduleSlugs(tour).slice(0, 2)) {
+    if (opts.budget && opts.budget.remainingMs() <= 0) break;
     const url = `https://tourstoyou.org/shows/${slug}/`;
     let html = '';
     try { html = await politeFetchText(url, { ...opts, fallback: fetchPage }); } catch (e) { console.log(`  plain GET failed for ${url}: ${e.message}`); }

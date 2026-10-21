@@ -33,6 +33,7 @@ const { calculateCombinedScore, getDesignation } = require('./lib/audience-weigh
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildLondonSlugVariants } = require('./lib/show-matching');
 const { batchDiscoverSlugs } = require('./lib/serp-slug-discovery');
+const { fetchAudiencePage } = require('./lib/audience-page-fetch');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
@@ -184,32 +185,10 @@ function buildSeatplanUrls(title) {
     .map(s => `https://seatplan.com/london/${s}-tickets/`);
 }
 
-async function fetchSeatplanPage(url) {
-  // Try plain fetch first (free)
-  try {
-    const res = await httpsGet(url);
-    if (res.status === 200 && res.body.length > 1000) {
-      return res.body;
-    }
-    if (res.status === 404) return null;
-  } catch (e) {
-    console.log(`  ⚠️  Plain fetch failed: ${e.message}`);
-  }
-
-  // Fall back to BrightData
-  if (process.env.BRIGHTDATA_TOKEN) {
-    try {
-      console.log('  → Trying BrightData fallback...');
-      const result = await fetchWithBrightData(url);
-      if (result && result.content && result.content.length > 1000) {
-        return result.content;
-      }
-    } catch (e) {
-      console.log(`  ⚠️  BrightData failed: ${e.message}`);
-    }
-  }
-
-  return null;
+function fetchSeatplanPage(url) {
+  return fetchAudiencePage(url, {
+    budget: timeBudget, httpsGet, fetchWithBrightData, brightDataEnabled: !!process.env.BRIGHTDATA_TOKEN,
+  });
 }
 
 // --- Main ---
@@ -266,6 +245,7 @@ async function main() {
     let usedUrl = null;
 
     for (const url of urlVariants) {
+      if (timeBudget.exceeded()) break;
       console.log(`  URL: ${url}`);
       for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
         if (attempt > 0) {
@@ -281,6 +261,14 @@ async function main() {
       }
       if (html) { usedUrl = url; break; }
       if (urlVariants.indexOf(url) < urlVariants.length - 1) await sleep(RATE_LIMIT_MS);
+    }
+
+    if (!html && timeBudget.exceeded()) {
+      stats.processed--;
+      stats.unprocessedShows = toProcess.length - i;
+      stats.budgetExit = true;
+      console.log(`  Time budget reached; ${stats.unprocessedShows} shows deferred.`);
+      break;
     }
 
     if (!html) {

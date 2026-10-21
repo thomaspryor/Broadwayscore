@@ -327,8 +327,8 @@ async function discoverAnnouncedDate(showTitle, fieldType, opts = {}, budget = n
 
 // Backwards-compat wrapper preserves the original API used by
 // audit-closing-dates.js. New callers should use discoverAnnouncedDate().
-async function discoverAnnouncedClosingDate(showTitle, opts = {}) {
-  return discoverAnnouncedDate(showTitle, 'closing', opts);
+async function discoverAnnouncedClosingDate(showTitle, opts = {}, budget = null) {
+  return discoverAnnouncedDate(showTitle, 'closing', opts, budget);
 }
 
 module.exports = {

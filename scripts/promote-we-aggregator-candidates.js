@@ -427,7 +427,7 @@ async function evaluateCandidates(candidates, ctx) {
           continue;
         }
         lboDateFetches++;
-        const { articlePublishedAt } = await fetchDate(c.sourceUrl, { log, fetchPage });
+        const { articlePublishedAt } = await fetchDate(c.sourceUrl, { log, fetchPage, timeBudget });
         c.articlePublishedAt = articlePublishedAt;
       }
 

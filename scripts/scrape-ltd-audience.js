@@ -36,6 +36,7 @@ const { calculateCombinedScore, getDesignation } = require('./lib/audience-weigh
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildLondonSlugVariants } = require('./lib/show-matching');
 const { batchDiscoverSlugs } = require('./lib/serp-slug-discovery');
+const { fetchAudiencePage } = require('./lib/audience-page-fetch');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
@@ -235,32 +236,10 @@ function extractReviewData(html) {
   return null;
 }
 
-async function fetchLtdPage(url) {
-  // Try plain fetch first (free)
-  try {
-    const res = await httpsGet(url);
-    if (res.status === 200 && res.body.length > 1000) {
-      return res.body;
-    }
-    if (res.status === 404) return null;
-  } catch (e) {
-    console.log(`  ⚠️  Plain fetch failed: ${e.message}`);
-  }
-
-  // Fall back to BrightData
-  if (BRIGHTDATA_TOKEN) {
-    try {
-      console.log('  → Trying BrightData fallback...');
-      const result = await fetchWithBrightData(url);
-      if (result && result.content && result.content.length > 1000) {
-        return result.content;
-      }
-    } catch (e) {
-      console.log(`  ⚠️  BrightData failed: ${e.message}`);
-    }
-  }
-
-  return null;
+function fetchLtdPage(url) {
+  return fetchAudiencePage(url, {
+    budget: timeBudget, httpsGet, fetchWithBrightData, brightDataEnabled: !!BRIGHTDATA_TOKEN,
+  });
 }
 
 // --- Main ---
@@ -316,6 +295,7 @@ async function main() {
 
     // Try each URL variant — stop at first success
     for (const url of urlVariants) {
+      if (timeBudget.exceeded()) break;
       for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
         if (attempt > 0) {
           console.log(`  Retry ${attempt}/${MAX_RETRIES}...`);
@@ -333,6 +313,14 @@ async function main() {
         console.log(`  URL: ${url}`);
         break;
       }
+    }
+
+    if (!html && timeBudget.exceeded()) {
+      stats.processed--;
+      stats.unprocessedShows = toProcess.length - i;
+      stats.budgetExit = true;
+      console.log(`  Time budget reached; ${stats.unprocessedShows} shows deferred.`);
+      break;
     }
 
     if (!html) {

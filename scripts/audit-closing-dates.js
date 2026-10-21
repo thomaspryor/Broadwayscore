@@ -508,7 +508,7 @@ async function main() {
       const showTitle = show.name || show.title || a.id;
       let discovery;
       try {
-        discovery = await discoverAnnouncedClosingDate(showTitle, { log: (msg) => console.log(msg) });
+        discovery = await discoverAnnouncedClosingDate(showTitle, { log: (msg) => console.log(msg) }, timeBudget);
       } catch (e) {
         console.warn(`  [auto-fix] ${a.id}: discovery error: ${e.message.slice(0, 120)}`);
         continue;
