@@ -28,7 +28,7 @@ const path = require('path');
 const https = require('https');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { venuesMatch } = require('./lib/deduplication');
-const { findConflictingShowId } = require('./lib/show-score-url-map');
+const { findConflictingShowId, isProductionMismatch } = require('./lib/show-score-url-map');
 const { disambiguateByVenue, mergeShowScoreCandidates } = require('./lib/show-score-venue-disambiguation');
 
 const DATA_DIR = path.join(__dirname, '../data');
@@ -614,6 +614,9 @@ async function main() {
     const conflictId = findConflictingShowId(urlData.shows, d.showId, d.url);
     if (conflictId) {
       rejected.push({ ...d, conflictId });
+    } else if (isProductionMismatch(urlData, d.showId, d.url)) {
+      // BRO-5866: recorded as another production's page; don't re-map it.
+      rejected.push({ ...d, conflictId: '(another production, BRO-5866)' });
     } else {
       toWrite.push(d);
     }

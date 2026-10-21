@@ -11,7 +11,8 @@ const { maxPlausibleYear } = require('./lib/date-utils');
  *
  * Usage:
  *   node scripts/audit-show-score-urls.js [--verbose]        report only
- *   node scripts/audit-show-score-urls.js --strict           exit 1 on a NEW duplicate URL
+ *   node scripts/audit-show-score-urls.js --strict           exit 1 on a NEW duplicate URL, or a mapping to
+ *                                                            another production's page (BRO-5866)
  *   node scripts/audit-show-score-urls.js --update-baseline  regenerate baseline from current scan
  *   node scripts/audit-show-score-urls.js --check-stale      exit 1 on baseline entries no longer duplicated (BRO-5315)
  *   node scripts/audit-show-score-urls.js --prune-stale      drop only those entries from the baseline
@@ -41,7 +42,8 @@ const cheerio = require('cheerio');
 const { venuesMatch } = require('./lib/deduplication');
 const { normalizeUrl, identityKey, baselineKeySet, computeNewViolators } = require('./lib/show-score-urls-baseline');
 const { computeStaleBaselineKeys, reportStaleBaseline, pruneStaleEntries, runStaleModes } = require('./lib/stale-baseline');
-const { findDuplicateUrls } = require('./lib/show-score-url-map');
+const { findDuplicateUrls, isLapsedProductionMismatch } = require('./lib/show-score-url-map');
+const { findWrongProductionMappings } = require('./lib/show-score-wrong-production');
 const { countWrongProductionFiles, formatWrongProductionRatio } = require('./lib/show-score-url-wrongproduction-ratio');
 
 const DATA_DIR = path.join(__dirname, '../data');
@@ -296,15 +298,47 @@ if (results.suspicious.length > 0) {
   console.log('');
 }
 
+// BRO-5866: a mapping whose page's review dates fall outside this
+// production's run (same title, different production: Safe House 2026 on the
+// 2025 St. Ann's page). Unlike the heuristics above this one is strict:
+// show-score-production-window.js needs 3+ dates, 90% of them outside the
+// run, and keeps a reviewed exemption list, and the evidence is public
+// (show-score.json) so CI sees it without the archive.
+const SHOW_SCORE_JSON = path.join(DATA_DIR, 'show-score.json');
+let wrongProduction = [];
+let awaitingRecheck = [];
+try {
+  const showScoreData = JSON.parse(fs.readFileSync(SHOW_SCORE_JSON, 'utf8'));
+  const readArchive = (id) => {
+    try { return fs.readFileSync(path.join(ARCHIVE_DIR, `${id}.html`), 'utf8'); } catch { return null; }
+  };
+  wrongProduction = findWrongProductionMappings({ urlMap: urlData.shows, showScoreData, showsById: showMap, readArchive });
+  // A lapsed record mapped again by a listings pass: the evidence above is
+  // the old page, and the weekly scrape re-judges it before any data is used.
+  awaitingRecheck = wrongProduction.filter((w) => isLapsedProductionMismatch(urlData, w.showId, w.url));
+  wrongProduction = wrongProduction.filter((w) => !awaitingRecheck.includes(w));
+} catch (e) {
+  console.error(`Wrong-production check could not run: ${e.message}`);
+  if (STRICT) process.exit(1);
+}
+if (wrongProduction.length > 0) {
+  console.log(`ANOTHER PRODUCTION'S PAGE (${wrongProduction.length}):`);
+  wrongProduction.forEach(w => console.log(`  ${w.showId}: ${w.url}\n    ${w.reason} [${w.evidence}]`));
+  console.log(`\nRemove with: node scripts/purge-wrong-production-show-score.js --apply`);
+  console.log('');
+}
+
 console.log('Summary:');
 console.log(`  Duplicate URLs:       ${results.duplicate_url.length}`);
 console.log(`  Confirmed wrong:      ${results.confirmed_wrong.length}`);
 console.log(`  Suspicious (no arch): ${results.suspicious.length}`);
+console.log(`  Other production:     ${wrongProduction.length}`);
+if (awaitingRecheck.length) console.log(`  Awaiting re-check:    ${awaitingRecheck.length} (lapsed mismatch mapped again: ${awaitingRecheck.map((w) => w.showId).join(', ')})`);
 console.log(`  OK:                   ${results.ok.length}`);
 console.log(`  No archive:           ${results.no_archive.length}`);
 console.log(`  Total checked:        ${Object.keys(urlData.shows).length}`);
 
 if (staleKeys.length) reportStaleBaseline(staleKeys, { label: 'show-score-urls', updateCmd: STALE_CMD });
 
-if (STRICT && newDuplicates.length > 0) process.exit(1);
+if (STRICT && (newDuplicates.length > 0 || wrongProduction.length > 0)) process.exit(1);
 process.exit(0);

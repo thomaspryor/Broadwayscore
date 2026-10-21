@@ -29,11 +29,13 @@ const { calculateCombinedScore, getDesignation } = require('./lib/audience-weigh
 const { isSourceFresh } = require('./lib/audience-freshness');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { checkShowScorePage } = require('./lib/show-score-page-check');
+const { checkPageProductionWindow } = require('./lib/show-score-production-window');
+const { removeWrongProductionShowScore } = require('./lib/show-score-wrong-production');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 const { fetchPage, isChallengeOrGarbage } = require('./lib/scraper');
-const { findConflictingShowId, isShowScoreNotFoundPage, decideDeadUrlAction } = require('./lib/show-score-url-map');
+const { findConflictingShowId, isShowScoreNotFoundPage, decideDeadUrlAction, isProductionMismatch, recordProductionMismatch } = require('./lib/show-score-url-map');
 const { recordSbCall, recordBdCall } = require('./lib/provider-telemetry');
 const { consultBrightData } = require('./lib/brightdata-caps');
 const { gateScrapedSynopsis } = require('./lib/synopsis-fact-check');
@@ -595,6 +597,10 @@ async function discoverShowScoreUrl(show) {
   if (verbose) console.log(`  Trying ${candidates.length} URL patterns...`);
 
   for (const url of candidates) {
+    if (isProductionMismatch(urlData, show.id, url)) {
+      if (verbose) console.log(`  Skip: ${url} (recorded as another production's page, BRO-5866)`);
+      continue;
+    }
     // For older productions, skip URLs already claimed by any other show
     if (newestUrl && url === newestUrl) {
       if (verbose) console.log(`  Skip: ${url} (same as newest production)`);
@@ -624,6 +630,13 @@ async function discoverShowScoreUrl(show) {
         const pageValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null, pageType: 'audience-aggregator', skipLlm: true });
         if (!pageValidation.valid) {
           if (verbose) console.log(`  ✗ Page validator rejected (deterministic): ${pageValidation.reason}`);
+          continue;
+        }
+        // BRO-5866: a plain slug can be a same-title earlier production's page.
+        const windowCheck = checkPageProductionWindow(html, show, url);
+        if (!windowCheck.ok) {
+          console.log(`  ✗ ${url} is another production's page: ${windowCheck.reason}`);
+          noteProductionMismatch(show.id, url);
           continue;
         }
         console.log(`  ✓ Discovered: ${url}`);
@@ -834,6 +847,25 @@ function getCachedUrl(showId) {
   return null;
 }
 
+// Shard output (main() fills these in shard mode), module-level so the
+// wrong-production path in processShow can hand its finding to the merge.
+let shardOutput = null;
+let shardPath = null;
+
+/**
+ * BRO-5866: record a page proven to be another production's. Shard runs
+ * don't save the URL cache or audience-buzz, so the finding rides the shard
+ * file and merge-show-score-shards.js applies it.
+ */
+function noteProductionMismatch(showId, url) {
+  recordProductionMismatch(urlData, showId, url);
+  if (shardOutput && shardPath) {
+    if (!shardOutput.productionMismatch) shardOutput.productionMismatch = {};
+    shardOutput.productionMismatch[showId] = url;
+    fs.writeFileSync(shardPath, JSON.stringify(shardOutput, null, 2));
+  }
+}
+
 // BRO-4215: set when processShow's fetch THREW for the current show, as
 // opposed to cleanly finding no usable data (404, wrong page, empty page).
 // Both return null; only a clean no-data result may stamp
@@ -858,6 +890,20 @@ function dropUkShowScoreSource(show, html) {
   console.log(`  Cleared stale Show Score rating for ${show.id}; combinedScore now ${rec.combinedScore}`);
   // processShow returns null here, so the main loop's save-on-success never runs for this show.
   // Shard runs merge through merge-show-score-shards.js instead of writing audience-buzz directly.
+  if (!shardMode) saveAudienceBuzz(audienceBuzz);
+}
+
+/**
+ * BRO-5866: the cached page was another production's, so any rating stored
+ * from it belongs to that production. Clear it (tombstoned, so reconcile
+ * does not refill it) and recompute, like dropUkShowScoreSource.
+ */
+function dropWrongProductionShowScoreSource(show, url) {
+  if (dryRun) return;
+  const r = removeWrongProductionShowScore({ showId: show.id, url, audienceBuzz, show });
+  if (!r.audienceRemoved) return;
+  console.log(`  Cleared Show Score rating from another production's page for ${show.id}; combinedScore now ${r.combinedScore}`);
+  // Shard runs hand the finding to merge-show-score-shards.js instead.
   if (!shardMode) saveAudienceBuzz(audienceBuzz);
 }
 
@@ -947,11 +993,15 @@ async function processShow(show, { rediscovered = false } = {}) {
     // revival wouldn't otherwise be caught). skipLlm avoids the flaky LLM
     // heading tiebreaker (see page-validator.js), which was rejecting
     // genuinely correct pages.
-    const pageCheck = await checkShowScorePage(html, show, { jsonLdName });
+    const pageCheck = await checkShowScorePage(html, show, { jsonLdName, url });
     if (!pageCheck.valid) {
       console.log(`  SKIP: Page validator rejected — ${pageCheck.reason}`);
       console.log(`  Removing bad cached URL for ${show.id}`);
       if (urlData.shows) delete urlData.shows[show.id];
+      if (pageCheck.productionMismatch) {
+        noteProductionMismatch(show.id, url);
+        dropWrongProductionShowScoreSource(show, url);
+      }
       if (!dryRun) saveUrlCache();
       return null;
     }
@@ -1111,8 +1161,6 @@ async function main() {
   }
 
   // Initialize shard output for incremental writing (survives timeout/crash)
-  let shardOutput = null;
-  let shardPath = null;
   if (shardMode && !dryRun) {
     const shardDir = path.join(__dirname, '../data/show-score-shards');
     if (!fs.existsSync(shardDir)) fs.mkdirSync(shardDir, { recursive: true });

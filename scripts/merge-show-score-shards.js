@@ -16,7 +16,8 @@ const { calculateCombinedScore, getDesignation } = require('./lib/audience-weigh
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { findConflictingShowId } = require('./lib/show-score-url-map');
+const { findConflictingShowId, isProductionMismatch } = require('./lib/show-score-url-map');
+const { removeWrongProductionShowScore } = require('./lib/show-score-wrong-production');
 
 const USAGE = `merge-show-score-shards.js — Merges Show Score shard output files into audience-buzz.json and show-score-urls.json.
 
@@ -94,6 +95,7 @@ function main() {
   // Aggregate all shard data
   const allUrls = {};
   const allScores = {};
+  const allMismatches = {}; // BRO-5866: showId -> another production's page
 
   for (const file of shardFiles) {
     const filePath = path.join(shardDir, file);
@@ -104,6 +106,7 @@ function main() {
       console.log(`  ${file}: ${scoreCount} scores, ${urlCount} URLs`);
       Object.assign(allUrls, data.discoveredUrls || {});
       Object.assign(allScores, data.scores || {});
+      Object.assign(allMismatches, data.productionMismatch || {});
     } catch (e) {
       console.error(`  Error reading ${file}: ${e.message}`);
     }
@@ -123,6 +126,12 @@ function main() {
   // land in audience-buzz.json even though its URL assignment was refused.
   const urlConflictShowIds = new Set();
   for (const [showId, url] of Object.entries(allUrls)) {
+    // BRO-5866: never map a show back onto another production's page.
+    if (isProductionMismatch(urlData, showId, url) || allMismatches[showId] === url) {
+      console.log(`  SKIP URL ${showId}: ${url} is another production's page`);
+      urlConflictShowIds.add(showId);
+      continue;
+    }
     if (!isMostRecentProduction(showId)) {
       // Older production: only cache if URL differs from newest production's
       const show = showMapById[showId];
@@ -158,6 +167,13 @@ function main() {
   // ── Merge scores into audience-buzz.json ──
   const audienceBuzz = loadAudienceBuzz();
   if (!audienceBuzz.shows) audienceBuzz.shows = {};
+
+  // BRO-5866: a shard found a cached page was another production's. Shards
+  // don't write the URL cache or audience-buzz, so apply the finding here.
+  for (const [showId, url] of Object.entries(allMismatches)) {
+    const r = removeWrongProductionShowScore({ showId, url, urlData, audienceBuzz, show: showMapById[showId] });
+    console.log(`  ${showId}: ${url} is another production's page (mapping removed: ${r.mappingRemoved}, audience score removed: ${r.audienceRemoved})`);
+  }
 
   let merged = 0;
   let created = 0;

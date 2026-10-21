@@ -101,4 +101,59 @@ function decideDeadUrlAction({ deadUrl, rediscoveredUrl, conflictId, budgetLeft 
   return 'drop';
 }
 
-module.exports = { findDuplicateUrls, findConflictingShowId, isShowScoreNotFoundPage, decideDeadUrlAction };
+// BRO-5866: a page proven to be another production's (its review dates fall
+// outside this production's run, see show-score-production-window.js) is
+// recorded under urlData._productionMismatch[showId] = url, with the day it
+// was last found in _productionMismatchAt[showId]. Writers check it so a slug
+// guess, listings pass or shard merge can't put the mapping straight back.
+// The record lapses after MISMATCH_RECHECK_DAYS: Show Score reuses one page
+// for a remount (a Met revival, an annual holiday run), and once the new run
+// is reviewed there the page's dates pass the window check again. Every
+// writer re-runs that check on fetch, so a lapsed record only costs a fetch.
+// Pure: mutates only the urlData object passed in.
+const MISMATCH_RECHECK_DAYS = 30;
+
+function isProductionMismatch(urlData, showId, url, now = Date.now()) {
+  const known = urlData && urlData._productionMismatch && urlData._productionMismatch[showId];
+  if (!known || !url) return false;
+  if (mismatchLapsed(urlData, showId, now)) return false;
+  return recordedUrls(known).some((u) => normalizeCacheValue(u) === normalizeCacheValue(url));
+}
+
+function recordedUrls(known) {
+  return Array.isArray(known) ? known : [known];
+}
+
+// A missing or unreadable day counts as lapsed: re-checking costs one fetch,
+// while a record that never lapses would block a remount for good.
+function mismatchLapsed(urlData, showId, now) {
+  const at = Date.parse(urlData._productionMismatchAt && urlData._productionMismatchAt[showId]);
+  return Number.isNaN(at) ? !!urlData._productionMismatchAt : now - at > MISMATCH_RECHECK_DAYS * 24 * 60 * 60 * 1000;
+}
+
+/**
+ * True when url was recorded as another production's page for showId and the
+ * record has lapsed: a listings pass may have mapped it again, and the weekly
+ * scrape re-judges it by its dates before using it. The audit reports these
+ * as awaiting that re-check instead of failing on stale evidence.
+ */
+function isLapsedProductionMismatch(urlData, showId, url, now = Date.now()) {
+  const known = urlData && urlData._productionMismatch && urlData._productionMismatch[showId];
+  if (!known || !url || !mismatchLapsed(urlData, showId, now)) return false;
+  return recordedUrls(known).some((u) => normalizeCacheValue(u) === normalizeCacheValue(url));
+}
+
+function recordProductionMismatch(urlData, showId, url, now = Date.now()) {
+  if (!urlData || !showId || !url) return;
+  if (!urlData._productionMismatch) urlData._productionMismatch = {};
+  if (!urlData._productionMismatchAt) urlData._productionMismatchAt = {};
+  const known = urlData._productionMismatch[showId];
+  const list = known ? [].concat(known) : [];
+  const key = normalizeCacheValue(url);
+  if (!list.some((u) => normalizeCacheValue(u) === key)) {
+    urlData._productionMismatch[showId] = known ? list.concat(url) : url;
+  }
+  urlData._productionMismatchAt[showId] = new Date(now).toISOString().slice(0, 10);
+}
+
+module.exports = { findDuplicateUrls, findConflictingShowId, isShowScoreNotFoundPage, decideDeadUrlAction, isProductionMismatch, isLapsedProductionMismatch, recordProductionMismatch, MISMATCH_RECHECK_DAYS };

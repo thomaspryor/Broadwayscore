@@ -72,7 +72,11 @@ const SHOW_ID_KEYED_FILES = [
     note: 'the live file also carries a stray top-level "giant-2026" key outside `shows`; it is not registered and shows up in the residual scan' },
   { repo: 'web', path: 'data/show-score-urls.json', shape: 'map', keyPath: ['shows'] },
   { repo: 'web', path: 'data/show-score-urls.json', shape: 'map', keyPath: ['_discoveryAttempts'] },
+  // BRO-5866: pages recorded as another production's, and when.
+  { repo: 'web', path: 'data/show-score-urls.json', shape: 'map', keyPath: ['_productionMismatch'] },
+  { repo: 'web', path: 'data/show-score-urls.json', shape: 'map', keyPath: ['_productionMismatchAt'] },
   { repo: 'web', path: 'data/show-score.json', shape: 'map', keyPath: ['shows'] },
+  { repo: 'web', path: 'data/show-score.json', shape: 'map', keyPath: ['_meta', 'wrongProduction'] },
   { repo: 'web', path: 'data/todaytix-ids.json', shape: 'map', keyPath: ['shows'] },
   { repo: 'web', path: 'data/todaytix-showtimes.json', shape: 'map', keyPath: ['shows'] },
   { repo: 'web', path: 'data/show-schedules.json', shape: 'map', keyPath: ['shows'] },
