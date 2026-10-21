@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "conditionKey": "coverage-holes:good-time-charlie-off-broadway-2026",
+    "title": "good-time-charlie-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+    "description": "- rejected as not-a-review, verification says review: good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T07:41:03.397Z"
+  },
+  {
+    "conditionKey": "coverage-holes:other-desert-cities-2026",
+    "title": "other-desert-cities-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+    "description": "- rejected as not-a-review, verification says review: other-desert-cities-2026/new-york-city-theatre--unknown.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T07:41:03.452Z"
+  },
+  {
+    "conditionKey": "coverage-holes:cadel-lungs-on-legs-west-end-2026",
+    "title": "cadel-lungs-on-legs-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+    "description": "- rejected as not-a-review, verification says review: cadel-lungs-on-legs-west-end-2026/loureviews--louise-penn.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T07:41:03.584Z"
+  },
+  {
+    "conditionKey": "coverage-holes:the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+    "title": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+    "description": "- rejected as not-a-review, verification says review: the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/ground--unknown.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T07:41:03.682Z"
+  },
+  {
+    "conditionKey": "guard-audit:bd-serp_api1",
+    "title": "Spend guard bd-circuit-breaker-serp_api1: cap drift",
+    "description": "bd-circuit-breaker-serp_api1 ceiling 250 (opening-window-reserve) is below 1.5x the 14-day median demand 196. A guard that trips more than 2 days a week is mis-sized (or its provider needs an owner-accepted exemption in scripts/config/provider-spend-thresholds.json acceptedDailyTrip). Rerouted spend on trip days: n/a (no skip label).",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T07:42:19.975Z"
+  },
+  {
+    "conditionKey": "guard-audit:bd-web_unlocker2",
+    "title": "Spend guard bd-circuit-breaker-web_unlocker2: cap drift",
+    "description": "bd-circuit-breaker-web_unlocker2 ceiling 1750 (opening-window-reserve) is below 1.5x the 14-day median demand 2787. A guard that trips more than 2 days a week is mis-sized (or its provider needs an owner-accepted exemption in scripts/config/provider-spend-thresholds.json acceptedDailyTrip). Rerouted spend on trip days: $0.05.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T07:42:19.987Z"
+  }
+]
