@@ -210,3 +210,30 @@ test('CLI: delete/modify and non-JSON conflicts are left for the caller', () => 
     assert.ok(git(rb, 'ls-files', '-u').includes(F), 'still unmerged for the action fallback');
   } finally { fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
+
+// BRO-5656: Pride Independent (2026-10-14). The fresh refetch (3963 chars) lost
+// to the stale 2021 body (4027 chars) because longer-wins decided the group.
+test('BRO-5656: newer shorter refetch beats an older longer body', () => {
+  const OLD = 'The stale body from another production. '.repeat(100);
+  const NEW = 'The corrected article. '.repeat(100);
+  assert.ok(OLD.length > NEW.length);
+  const b = { showId: 's', outletId: 'o', criticName: 'c', needsRefetch: true };
+  const stale = { ...b, fullText: OLD, wordCount: 629, needsRefetch: false, textFetchedAt: '2026-10-01T00:00:00.000Z', fetchMethod: 'old' };
+  const fresh = { ...b, fullText: NEW, wordCount: 450, needsRefetch: false, textFetchedAt: '2026-10-14T00:52:00.000Z', fetchMethod: 'playwright' };
+  for (const [up, wf, winner] of [[stale, fresh, 'workflow'], [fresh, stale, 'upstream']]) {
+    const r = mergeReviewJson(b, up, wf, { tie: 'workflow' });
+    assert.equal(r.winner, winner);
+    assert.equal(r.merged.fullText, NEW);
+    assert.equal(r.merged.wordCount, 450);
+    assert.equal(r.merged.fetchMethod, 'playwright');
+  }
+});
+
+test('BRO-5656: a text-less side never wins on recency; missing stamp falls back to length', () => {
+  const b = { showId: 's', needsRefetch: true };
+  const withText = { ...b, fullText: TEXT, textFetchedAt: '2026-10-01T00:00:00.000Z', contentTier: 'complete' };
+  const failed = { ...b, textFetchedAt: '2026-10-14T00:00:00.000Z', contentTier: 'stub', incompleteReason: 'url_dead' };
+  assert.equal(mergeReviewJson(b, withText, failed).winner, 'upstream');
+  const noStamp = { ...b, fullText: TEXT + 'more', contentTier: 'complete' };
+  assert.equal(mergeReviewJson(b, noStamp, withText).winner, 'upstream');
+});

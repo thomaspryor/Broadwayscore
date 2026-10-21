@@ -20,7 +20,8 @@
  *   - A field only one side changed takes that side's value (or absence).
  *   - The text-state fields (TEXT_STATE_GROUP) describe ONE fetch of the
  *     article; when both sides changed that group, the whole group comes from
- *     the side holding the longer fullText, so a stale "stub, url_dead" never
+ *     the side with the newer text fetch (textFetchedAt, when both sides have a
+ *     text and a stamp), else the longer fullText, so a stale "stub, url_dead" never
  *     sits next to a fresh full text.
  *   - Any other field both sides changed differently goes to the same winner.
  * Scoring recency (scoring-recency.js) and the protected-field restore still
@@ -48,6 +49,25 @@ const GROUP_SET = new Set(TEXT_STATE_GROUP);
 const _same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const _isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const _textLen = (d) => (typeof d.fullText === 'string' ? d.fullText.length : 0);
+const _fetchedMs = (d) => {
+  const t = typeof d.textFetchedAt === 'string' ? Date.parse(d.textFetchedAt) : NaN;
+  return Number.isFinite(t) ? t : null;
+};
+
+// BRO-5656: a newer, shorter refetch is the corrected article; length alone
+// would revert it to the older, longer (wrong) body. Recency decides only when
+// both sides hold a text and both carry distinct textFetchedAt stamps; a
+// text-less side (failed fetch, stub) never wins on recency.
+function _pickWinner(upstream, workflow, tie) {
+  const uLen = _textLen(upstream);
+  const wLen = _textLen(workflow);
+  const uAt = _fetchedMs(upstream);
+  const wAt = _fetchedMs(workflow);
+  if (uLen > 0 && wLen > 0 && uAt !== null && wAt !== null && uAt !== wAt) {
+    return wAt > uAt ? 'workflow' : 'upstream';
+  }
+  return wLen > uLen ? 'workflow' : uLen > wLen ? 'upstream' : tie;
+}
 
 /**
  * @param {object|null} base     common ancestor (null/undefined: added on both sides)
@@ -60,9 +80,7 @@ function mergeReviewJson(base, upstream, workflow, opts = {}) {
   if (!_isObj(upstream) || !_isObj(workflow)) throw new TypeError('upstream and workflow must be objects');
   const b = _isObj(base) ? base : {};
   const tie = opts.tie === 'upstream' ? 'upstream' : 'workflow';
-  const uLen = _textLen(upstream);
-  const wLen = _textLen(workflow);
-  const winner = wLen > uLen ? 'workflow' : uLen > wLen ? 'upstream' : tie;
+  const winner = _pickWinner(upstream, workflow, tie);
   const pick = (k) => (winner === 'workflow' ? workflow[k] : upstream[k]);
 
   const keys = [...new Set([...Object.keys(upstream), ...Object.keys(workflow), ...Object.keys(b)])];
