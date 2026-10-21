@@ -8,6 +8,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -86,4 +87,18 @@ test('the website and the feed both use the helper (no local copy of the rule)',
   assert.match(gen, /const status = effectiveShowStatus\(show\)/);
   assert.match(gen, /buildMobileCriticScore\(show, /, 'the builder corrects status itself; pass the raw entry (the rule is not idempotent)');
   assert.doesNotMatch(gen, /toISOString\(\)\.slice\(0, 10\)/, 'the feed must not use the UTC date for status');
+  const lookup = read('scripts/generate-show-lookup.js');
+  assert.match(lookup, /const status = effectiveShowStatus\(show\)/, 'My Shows and shared lists read show-lookup.json');
+  assert.doesNotMatch(lookup, /entry\.st = show\.status|show\.status === 'upcoming'/, 'show-lookup must not use the raw status');
+});
+
+test('every place that hides a score for old shows also hides it for announced shows', () => {
+  // engine.ts hides reviews of an announced show (they belong to a prior
+  // production); a feed that skips this shows a score the website hides.
+  const callers = execFileSync('git', ['grep', '-l', 'shouldHideReviews(show', '--', 'scripts', 'src'], { cwd: ROOT, encoding: 'utf8' })
+    .split('\n').filter(rel => rel && !/\.test\.|should-hide-reviews\.js$|config\/scoring\.ts$/.test(rel));
+  assert.ok(callers.includes('scripts/generate-mobile-data.js'), `caller scan is broken: ${callers}`);
+  for (const rel of callers) {
+    assert.match(read(rel), /shouldHideReviews\(show\) \|\| show\.status === 'announced'/, rel);
+  }
 });

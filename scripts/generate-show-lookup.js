@@ -16,6 +16,7 @@ const path = require('path');
 // tests/unit/parse-runtime-parity.test.ts. See that file before editing either.
 const { parseRuntimeMinutes } = require('./lib/parse-runtime');
 const { isPublishedShowFile } = require('./lib/markets');
+const { effectiveShowStatus } = require('./lib/effective-status');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data');
@@ -46,14 +47,17 @@ const relevantShows = shows.filter(show =>
 const lookup = relevantShows.map(show => {
   const entry = { id: show.id, t: show.title, s: show.slug, v: show.venue || '' };
   if (show.type === 'musical') entry.m = 1;
-  if (show.status !== 'closed') entry.st = show.status;
+  // The status the website shows (src/lib/engine.ts): corrected for today's
+  // date in the show's market, so opening night reads "open", not "previews".
+  const status = effectiveShowStatus(show);
+  if (status !== 'closed') entry.st = status;
   if (show.category) entry.c = show.category;
   if (show.openingDate) entry.od = show.openingDate;
   if (show.closingDate) entry.cd = show.closingDate;
   // Bookability signals for watchlist labels (owner, 2026-07-20): previews
   // start date + a tickets-on-sale bit for not-yet-open shows with links.
   if (show.previewsStartDate) entry.pd = show.previewsStartDate;
-  if ((show.status === 'upcoming' || show.status === 'announced') && show.ticketLinks?.length) entry.tx = 1;
+  if ((status === 'upcoming' || status === 'announced') && show.ticketLinks?.length) entry.tx = 1;
   if (show.images?.poster) entry.p = show.images.poster;
   else if (show.images?.thumbnail) entry.p = show.images.thumbnail;
   // Calendar export (Phase 0): a diary card only ever had `venue`, so an .ics

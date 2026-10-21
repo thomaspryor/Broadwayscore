@@ -170,8 +170,10 @@ const mobileShows = visibleShows.map(show => {
   // same correction to its show-page gate, so it takes the raw entry.
   const status = effectiveShowStatus(show);
 
-  // Pre-2005 closed shows: hide reviews entirely (unreliable data from bulk import)
-  const hideReviews = shouldHideReviews(show);
+  // Pre-2005 closed shows: hide reviews entirely (unreliable data from bulk import).
+  // Announced shows: any reviews belong to a prior production (engine.ts and
+  // slim-critic-score.js hide them the same way).
+  const hideReviews = shouldHideReviews(show) || show.status === 'announced';
   let criticScore = hideReviews
     ? null
     : buildMobileCriticScore(show, showReviews, outletRegistry, coverageFloorOptsForShow(coverageFloorInputs, show));
