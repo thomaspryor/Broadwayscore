@@ -50,7 +50,6 @@ scripts/audit-standing-coverage.test.mjs
 scripts/audit-star-score-mismatch.test.mjs
 scripts/audit-t1-silent-gaps.test.mjs
 scripts/audit-test-yml-lib-deps.test.mjs
-scripts/audit-grosses-data.test.mjs
 scripts/audit-time-bomb-tests.test.mjs
 scripts/audit-toplevel-script-test-yml-coverage.test.mjs
 scripts/audit-venue-complex-slugs.test.mjs
@@ -426,6 +425,7 @@ tests/unit/audit-push-retry-budgets.test.mjs
 tests/unit/audit-same-job-breadcrumb-coverage.test.mjs
 tests/unit/audit-show-review-gap.test.mjs
 tests/unit/audit-stale-baseline-exceptions.test.mjs
+tests/unit/audit-grosses-data.test.mjs
 tests/unit/audit-time-bomb-test-exemption.test.mjs
 tests/unit/audit-time-bomb-tests-per-test.test.mjs
 tests/unit/audit-url-collisions.test.mjs

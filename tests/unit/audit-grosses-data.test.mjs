@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { applyAllTimeAttribution, closedRunsMissingAllTime } = require('./lib/alltime-attribution.js');
+const { applyAllTimeAttribution, closedRunsMissingAllTime } = require('../../scripts/lib/alltime-attribution.js');
 
 const NOW = new Date('2026-10-01T00:00:00Z');
 const show = (slug, previews, closing) => ({
