@@ -49,7 +49,6 @@ const GOLD_83_BASELINE = {
   'src/app/methodology/page.tsx': { count: 2, why: 'methodology prose and tier legend' },
   'src/app/west-end/methodology/page.tsx': { count: 2, why: 'prose comparing WE 85 to Broadway 83' },
   'src/components/HomepageExplainerShelf.tsx': { count: 1, why: 'homepage explainer legend "83+ Critical Gold"' },
-  'src/components/filters/filter-ui-config.ts': { count: 1, why: 'filter option label "Critical Gold (83+)" (the predicate itself is market-aware)' },
   'src/components/show-cards/ScoreBadge.tsx': { count: 1, why: 'SCORE_TIERS.mustSee.range display string' },
 };
 
@@ -67,31 +66,37 @@ function walk(dir, out) {
 const isTestFile = rel =>
   /\.test\.[cm]?[jt]sx?$/.test(rel) || rel.startsWith('scripts/tests/') || rel.includes('/__tests__/');
 
-/** Code with comments blanked out, one entry per source line (line numbers preserved). */
+/**
+ * Code with comments blanked out, one entry per source line (line numbers preserved).
+ * Comment markers inside '…' and "…" strings are code, so a glob like
+ * 'src/**\/*.ts' does not blank the rest of the file. Template literals are
+ * not tracked (a stray backtick in JSX text would hide every later comment).
+ */
 export function codeLines(src) {
-  const lines = src.split('\n');
   let inBlock = false;
-  return lines.map(raw => {
-    let line = raw;
+  return src.split('\n').map(line => {
     let out = '';
-    while (line.length) {
+    let quote = null;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      const prev = i ? line[i - 1] : '';
       if (inBlock) {
-        const end = line.indexOf('*/');
-        if (end === -1) { line = ''; break; }
-        line = line.slice(end + 2);
-        inBlock = false;
+        if (c === '*' && line[i + 1] === '/') { inBlock = false; i++; }
         continue;
       }
-      const start = line.indexOf('/*');
+      if (quote) {
+        out += c;
+        if (c === '\\') out += line[++i] ?? '';
+        else if (c === quote) quote = null;
+        continue;
+      }
+      if (c === '/' && line[i + 1] === '*') { inBlock = true; i++; continue; }
       // `//` starts a comment only at line start or after whitespace/punctuation,
-      // so URLs ("https://…") inside strings survive.
-      const lineComment = line.search(/(^|[\s;,(){}[\]])\/\//);
-      const lc = lineComment === -1 ? -1 : (line[lineComment] === '/' ? lineComment : lineComment + 1);
-      if (lc !== -1 && (start === -1 || lc < start)) { out += line.slice(0, lc); line = ''; break; }
-      if (start === -1) { out += line; line = ''; break; }
-      out += line.slice(0, start);
-      line = line.slice(start + 2);
-      inBlock = true;
+      // so URLs in JSX text ("https://…") survive.
+      if (c === '/' && line[i + 1] === '/' && (i === 0 || /[\s;,(){}[\]]/.test(prev))) break;
+      // An apostrophe between letters is JSX text ("Don't"), not a string.
+      if ((c === "'" || c === '"') && !(c === "'" && /\w/.test(prev) && /\w/.test(line[i + 1] || ''))) quote = c;
+      out += c;
     }
     return out;
   });
@@ -139,6 +144,10 @@ test('detectors: comments ignored, code caught', () => {
   assert.deepEqual(skippableHits("{ id: 'skippable', label: 'Mixed' }"), []);
   assert.deepEqual(skippableHits("if (s >= 55) return 'Skippable';"), [1]);
   assert.deepEqual(skippableHits("const u = 'https://x.com/Skippable';"), [1], 'a URL is not a comment');
+  assert.deepEqual(goldLiteralHits("const g = 'src/**/*.ts'; if (s >= 83) return 'Critical Gold';"), [1], '/* inside a string is not a comment');
+  assert.deepEqual(goldLiteralHits("const g = \"a//b\"; if (s >= 83) return 'Critical Gold';"), [1], '// inside a string is not a comment');
+  assert.deepEqual(goldLiteralHits("<p>Don't miss</p> // gold 83"), [], 'a JSX apostrophe does not swallow the comment');
+  assert.deepEqual(goldLiteralHits("const q = 'it\\'s'; /* gold 83 */"), [], 'escaped quote inside a string');
 });
 
 test(`no hard-coded Gold threshold 83 next to a tier label outside ${SOURCE_OF_TRUTH}`, () => {

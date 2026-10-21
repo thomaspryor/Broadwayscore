@@ -437,6 +437,7 @@ function OffWestEndPageInner({ shows, archiveHash, totalShows, totalReviews, mar
     [panelSingleGroups, updateParams],
   );
   const panel = usePanelFilters({
+    category: 'off-west-end',
     shows: filteredAndSortedShows,
     awardWinnerSets,
     scoreMode,
@@ -546,6 +547,7 @@ function OffWestEndPageInner({ shows, archiveHash, totalShows, totalReviews, mar
         onDateRangesChange={panel.setDateRanges}
         onClearAll={handlePanelClearAll}
         resultCount={panel.filteredShows.length}
+        groups={panel.filterGroups}
       />
 
       {/* Market + Type Filter Row */}

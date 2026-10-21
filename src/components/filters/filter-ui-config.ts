@@ -33,6 +33,13 @@ import {
   SOURCE_FILM_ADAPTATION,
   SOURCE_DISNEY,
 } from '@/lib/show-filter-predicates';
+import {
+  DEFAULT_GOLD_THRESHOLD,
+  RECOMMENDED_MIN,
+  WORTH_SEEING_MIN,
+  MIXED_MIN,
+  SCORE_TIER_LABELS,
+} from '../../../scripts/lib/score-tiers';
 // Excluded from v1 — match 0 (concert, revue) or 0 currently-open shows
 // (solo-show, immersive). Predicates remain in show-filter-predicates.ts
 // and can be re-added when tag coverage improves.
@@ -78,6 +85,21 @@ export interface SingleGroupConfig {
 
 export type FilterGroupConfig = MultiGroupConfig | SingleGroupConfig;
 
+/**
+ * Score tier pills with their ranges, from scripts/lib/score-tiers.js. Gold
+ * (and the top of Recommended) moves with the market: London critics' Gold
+ * starts at 85, so the West End pages pass that threshold.
+ */
+export function scoreTierOptions(goldThreshold: number = DEFAULT_GOLD_THRESHOLD): FilterOption[] {
+  return [
+    { id: 'critical-gold', label: `${SCORE_TIER_LABELS['must-see']} (${goldThreshold}+)`, predicate: SCORE_TIER_CRITICAL_GOLD },
+    { id: 'recommended', label: `${SCORE_TIER_LABELS.recommended} (${RECOMMENDED_MIN}–${goldThreshold - 1})`, predicate: SCORE_TIER_RECOMMENDED },
+    { id: 'worth-seeing', label: `${SCORE_TIER_LABELS['worth-seeing']} (${WORTH_SEEING_MIN}–${RECOMMENDED_MIN - 1})`, predicate: SCORE_TIER_WORTH_SEEING },
+    { id: 'skippable', label: `${SCORE_TIER_LABELS.skippable} (${MIXED_MIN}–${WORTH_SEEING_MIN - 1})`, predicate: SCORE_TIER_SKIPPABLE },
+    { id: 'critical-miss', label: `${SCORE_TIER_LABELS['stay-away']} (<${MIXED_MIN})`, predicate: SCORE_TIER_CRITICAL_MISS },
+  ];
+}
+
 export const FILTER_GROUPS: MultiGroupConfig[] = [
   {
     kind: 'multi',
@@ -92,13 +114,7 @@ export const FILTER_GROUPS: MultiGroupConfig[] = [
     kind: 'multi',
     paramKey: 'score_tier',
     label: 'Score tier',
-    options: [
-      { id: 'critical-gold', label: 'Critical Gold (83+)', predicate: SCORE_TIER_CRITICAL_GOLD },
-      { id: 'recommended', label: 'Recommended (75–82)', predicate: SCORE_TIER_RECOMMENDED },
-      { id: 'worth-seeing', label: 'Worth Seeing (65–74)', predicate: SCORE_TIER_WORTH_SEEING },
-      { id: 'skippable', label: 'Mixed (55–64)', predicate: SCORE_TIER_SKIPPABLE },
-      { id: 'critical-miss', label: 'Critical Miss (<55)', predicate: SCORE_TIER_CRITICAL_MISS },
-    ],
+    options: scoreTierOptions(),
   },
   {
     kind: 'multi',
@@ -198,9 +214,21 @@ export const PANEL_PARAM_KEYS: ReadonlySet<string> = new Set([
   'dates', // time-period date ranges (multi)
 ]);
 
+/** FILTER_GROUPS with the score tier labels for a Gold threshold (see scoreTierOptions). */
+export function filterGroupsFor(goldThreshold: number = DEFAULT_GOLD_THRESHOLD): MultiGroupConfig[] {
+  if (goldThreshold === DEFAULT_GOLD_THRESHOLD) return FILTER_GROUPS;
+  return FILTER_GROUPS.map((g) =>
+    g.paramKey === 'score_tier' ? { ...g, options: scoreTierOptions(goldThreshold) } : g,
+  );
+}
+
 /** Look up a multi-select option by paramKey + id */
-export function findFilterOption(paramKey: string, id: string): FilterOption | undefined {
-  const group = FILTER_GROUPS.find((g) => g.paramKey === paramKey);
+export function findFilterOption(
+  paramKey: string,
+  id: string,
+  groups: MultiGroupConfig[] = FILTER_GROUPS,
+): FilterOption | undefined {
+  const group = groups.find((g) => g.paramKey === paramKey);
   return group?.options.find((o) => o.id === id);
 }
 

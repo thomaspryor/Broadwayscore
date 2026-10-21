@@ -2,7 +2,7 @@
 
 import { useEffect, useId } from 'react';
 import { useFocusTrap } from '@/lib/hooks/useFocusTrap';
-import { FILTER_GROUPS, type SingleGroupConfig } from './filter-ui-config';
+import { FILTER_GROUPS, type MultiGroupConfig, type SingleGroupConfig } from './filter-ui-config';
 import { FilterPillGroup } from './FilterPillGroup';
 import { FilterSinglePillGroup } from './FilterSinglePillGroup';
 import { TimePeriodSection } from './TimePeriodSection';
@@ -22,6 +22,8 @@ interface FilterPanelProps {
   onDateRangesChange: (ranges: DateRange[] | ((prev: DateRange[]) => DateRange[])) => void;
   onClearAll: () => void;
   resultCount: number;
+  /** Multi-select groups to render (usePanelFilters' filterGroups, which carry the market's tier labels). */
+  groups?: MultiGroupConfig[];
 }
 
 /**
@@ -41,6 +43,7 @@ export function FilterPanel({
   onDateRangesChange,
   onClearAll,
   resultCount,
+  groups = FILTER_GROUPS,
 }: FilterPanelProps) {
   const headingId = useId();
   const containerRef = useFocusTrap<HTMLDivElement>(isOpen);
@@ -130,7 +133,7 @@ export function FilterPanel({
           })}
 
           {/* Multi-select groups */}
-          {FILTER_GROUPS.map((group, idx) => (
+          {groups.map((group, idx) => (
             <div key={group.paramKey}>
               <div className="py-3 border-b border-white/5">
                 <h3 className="text-[11px] font-bold uppercase tracking-wider text-gray-500 mb-2.5">

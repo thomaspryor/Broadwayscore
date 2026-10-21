@@ -23,6 +23,7 @@
 const fs = require('fs');
 const path = require('path');
 const { getScoreTierId, getScoreTierLabel, getGoldThreshold } = require('./lib/score-tiers');
+const { hasEnoughReviews } = require('./lib/min-reviews');
 
 const ROOT = path.resolve(__dirname, '..');
 const IMAGES_DIR = path.join(ROOT, 'public', 'images', 'shows');
@@ -42,13 +43,19 @@ const SCORE_COLORS = {
 // badge); this file only owns the card colors.
 const TIER_COLOR_KEY = { 'must-see': 'mustSee', recommended: 'great', 'worth-seeing': 'good', skippable: 'tepid', 'stay-away': 'skip' };
 
-function getScoreStyle(score, reviewCount, category) {
-  if (!score || reviewCount < 5) return SCORE_COLORS.tbd;
+// The site's review minimum (per market: Off-Broadway and Off-West End need 3,
+// not 5; a T3-only show needs more). tier1And2Count is optional on card data.
+function scoreShown(score, reviewCount, category, tier1And2Count) {
+  return !!score && hasEnoughReviews(reviewCount || 0, category, tier1And2Count);
+}
+
+function getScoreStyle(score, reviewCount, category, tier1And2Count) {
+  if (!scoreShown(score, reviewCount, category, tier1And2Count)) return SCORE_COLORS.tbd;
   return SCORE_COLORS[TIER_COLOR_KEY[getScoreTierId(Math.round(score), category)]];
 }
 
-function getScoreLabel(score, category) {
-  if (!score) return 'Awaiting Reviews';
+function getScoreLabel(score, reviewCount, category, tier1And2Count) {
+  if (!scoreShown(score, reviewCount, category, tier1And2Count)) return 'Awaiting Reviews';
   return getScoreTierLabel(score, category);
 }
 
@@ -101,11 +108,11 @@ const BASE_STYLES = `
  * Generate a "show" type social card
  */
 function generateShowHTML(data) {
-  const { title, score, reviewCount, venue, showId, category } = data;
-  const style = getScoreStyle(score, reviewCount, category);
-  const label = getScoreLabel(score, category);
+  const { title, score, reviewCount, venue, showId, category, tier1And2Count } = data;
+  const style = getScoreStyle(score, reviewCount, category, tier1And2Count);
+  const label = getScoreLabel(score, reviewCount, category, tier1And2Count);
   const imageData = showId ? getShowImageBase64(showId) : null;
-  const displayScore = score && reviewCount >= 5 ? Math.round(score) : null;
+  const displayScore = scoreShown(score, reviewCount, category, tier1And2Count) ? Math.round(score) : null;
   const titleSize = title.length > 25 ? '54px' : '64px';
 
   const posterHTML = imageData
@@ -194,9 +201,9 @@ function generatePicksHTML(data) {
   // shows: [{ title, score, reviewCount, showId, category? }]
 
   const cardsHTML = shows.slice(0, 4).map(show => {
-    const style = getScoreStyle(show.score, show.reviewCount, show.category);
+    const style = getScoreStyle(show.score, show.reviewCount, show.category, show.tier1And2Count);
     const imageData = show.showId ? getShowImageBase64(show.showId) : null;
-    const displayScore = show.score && show.reviewCount >= 5 ? Math.round(show.score) : null;
+    const displayScore = scoreShown(show.score, show.reviewCount, show.category, show.tier1And2Count) ? Math.round(show.score) : null;
     const cardWidth = shows.length <= 3 ? '280px' : '220px';
     const imgHeight = shows.length <= 3 ? '300px' : '250px';
 

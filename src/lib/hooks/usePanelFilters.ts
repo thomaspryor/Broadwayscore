@@ -13,13 +13,16 @@ import {
   labelForRange,
   rangesEqual,
 } from '@/lib/tony-seasons';
+import { getGoldThreshold } from '@/config/score-buckets';
 import {
   FILTER_GROUPS,
+  filterGroupsFor,
   PANEL_PARAM_KEYS,
   SINGLE_PARAM_KEYS,
   findFilterOption,
   findSingleOption,
   type FilterOption,
+  type MultiGroupConfig,
   type SingleGroupConfig,
 } from '@/components/filters/filter-ui-config';
 import type { ActiveFilterChip } from '@/components/filters/ActiveFilterChips';
@@ -31,6 +34,8 @@ interface UsePanelFiltersArgs<T extends ShowCardShow> {
   awardWinnerSets?: AwardWinnerSets;
   /** Active score-mode — Score tier predicates filter against this score */
   scoreMode?: 'critics' | 'audience';
+  /** The page's market (show category). Critics-mode Gold labels follow it (London 85+). */
+  category?: string;
   /** Per-page single-select groups (Type, Status) — page provides Status options. */
   singleGroups?: SingleGroupConfig[];
   /**
@@ -78,6 +83,8 @@ interface UsePanelFiltersReturn<T extends ShowCardShow> {
   clearAll: () => void;
   /** Chips for ActiveFilterChips */
   chips: ActiveFilterChip[];
+  /** Multi-select groups with this page's score tier labels, for FilterPanel. */
+  filterGroups: MultiGroupConfig[];
 }
 
 /**
@@ -95,6 +102,7 @@ export function usePanelFilters<T extends ShowCardShow>({
   shows,
   awardWinnerSets,
   scoreMode = 'critics',
+  category,
   singleGroups,
   singleValueOverrides,
   onSetSingleValueOverride,
@@ -104,6 +112,13 @@ export function usePanelFilters<T extends ShowCardShow>({
   const search = useLocationSearch();
   const searchParams = useMemo(() => new URLSearchParams(search), [search]);
   const pathname = usePathname();
+
+  // Score tier pill labels match the predicates: critics mode tiers by the
+  // market (West End Gold is 85+), audience mode uses the default bands.
+  const filterGroups = useMemo(
+    () => filterGroupsFor(scoreMode === 'audience' ? undefined : getGoldThreshold(category)),
+    [scoreMode, category],
+  );
 
   // Stable reference for the optional singleGroups prop — empty array if omitted
   const singleGroupsList = useMemo<SingleGroupConfig[]>(() => singleGroups ?? [], [singleGroups]);
@@ -206,7 +221,7 @@ export function usePanelFilters<T extends ShowCardShow>({
     // Multi-select chips
     for (const [paramKey, selected] of Object.entries(selectedByGroup)) {
       Array.from(selected).forEach((id) => {
-        const option = findFilterOption(paramKey, id);
+        const option = findFilterOption(paramKey, id, filterGroups);
         if (option) {
           out.push({ key: `${paramKey}:${id}`, label: option.label });
         }
@@ -232,7 +247,7 @@ export function usePanelFilters<T extends ShowCardShow>({
       });
     }
     return out;
-  }, [selectedByGroup, dateRanges, singleGroupsList, singleValueByGroup]);
+  }, [selectedByGroup, dateRanges, singleGroupsList, singleValueByGroup, filterGroups]);
 
   const writeParams = useCallback(
     (mutate: (params: URLSearchParams) => void) => {
@@ -341,5 +356,6 @@ export function usePanelFilters<T extends ShowCardShow>({
     removeChip,
     clearAll,
     chips,
+    filterGroups,
   };
 }

@@ -481,6 +481,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
     [panelSingleGroups, updateParams],
   );
   const panel = usePanelFilters({
+    category: 'west-end',
     shows: filteredAndSortedShows,
     awardWinnerSets,
     scoreMode,
@@ -589,6 +590,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
         onDateRangesChange={panel.setDateRanges}
         onClearAll={handlePanelClearAll}
         resultCount={panel.filteredShows.length}
+        groups={panel.filterGroups}
       />
 
       {/* Market + Type Filter Row */}
