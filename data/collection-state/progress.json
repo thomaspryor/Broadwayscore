@@ -191,7 +191,11 @@
     "the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json",
     "harry-potter-2021/latimes--erin-ben-moche.json",
     "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-    "harry-potter-2021/npr--jeff-lunden.json"
+    "harry-potter-2021/npr--jeff-lunden.json",
+    "the-dog-show-come-sit-stay-off-broadway-2026/theater-pizzazz--adam-cohen.json",
+    "darkling-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "paranormal-activity-2026/nytimes--helen-shaw.json",
+    "harry-potter-2021/sfgate--lily-janiak.json"
   ],
   "failed": [
     "the-dog-show-come-sit-stay-off-broadway-2026/talkalmanmusic--unknown.json",
@@ -304,7 +308,9 @@
     "hadestown-2019/theater-life--isa-goldberg.json",
     "the-play-that-goes-wrong-off-broadway-2019/talkinbroadway--unknown.json",
     "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
-    "harry-potter-2021/front-row-center--tulis-mccall.json"
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json",
+    "hamilton-west-end-2021/ew--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -395,14 +401,20 @@
       "abba-voyage-off-west-end-2026/fairypoweredproductions--unknown.json",
       "the-lion-king-tour-2021/south-florida-sun-sentinel--stafford-hagwood.json",
       "little-shop-of-horrors-off-broadway-2019/ew--maureen-lee-lenker.json",
-      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+      "the-dog-show-come-sit-stay-off-broadway-2026/theater-pizzazz--adam-cohen.json",
+      "darkling-off-west-end-2026/londonlivinglarge--london-living-large.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json"
+    ],
     "browserbase": [
       "data/review-texts/dirty-dancing-tour-2026/nytimes--michael-paulson.json",
       "dirty-dancing-tour-2026/nytimes--michael-paulson.json",
       "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json",
-      "the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json"
+      "the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json",
+      "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
+      "paranormal-activity-2026/nytimes--helen-shaw.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -516,11 +528,12 @@
       "little-shop-of-horrors-off-broadway-2019/amny--matt-windman.json",
       "hadestown-2019/theater-life--isa-goldberg.json",
       "harry-potter-2021/latimes--erin-ben-moche.json",
-      "harry-potter-2021/npr--jeff-lunden.json"
+      "harry-potter-2021/npr--jeff-lunden.json",
+      "harry-potter-2021/sfgate--lily-janiak.json"
     ]
   },
   "startTime": "2026-10-21T09:21:37.956Z",
-  "lastProcessed": "harry-potter-2021/npr--jeff-lunden.json",
+  "lastProcessed": "hamilton-west-end-2021/ew--unknown.json",
   "log": [
     {
       "t": "2026-10-21T09:21:56.087Z",
@@ -576,6 +589,17 @@
     },
     {
       "t": "2026-10-21T10:58:26.788Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-21T11:20:05.985Z",
+      "event": "bb-session",
+      "session": "79e92091",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-21T11:20:06.893Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
