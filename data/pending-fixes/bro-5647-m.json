@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5647-m",
   "planId": "1282eae2-32a5-4547-bade-be319f4e4ce2",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-21T15:29:59.035Z",
   "submitter": {
     "name": null,
@@ -336,8 +336,8 @@
         "showSlug": "ragtime-2009",
         "showId": "ragtime-2009",
         "field": "notes",
-        "oldValue": "The 2009 Broadway revival of Ragtime at the Neil Simon Theatre ran only about two months (Nov 2009\u2013Jan 2010) and lost its entire $8 million capitalization according to producer Kevin McCollum, as cited in a NYT article about Next to Normal's finances. No recoupment occurred.",
-        "newValue": "The 2009 Broadway revival of Ragtime at the Neil Simon Theatre ran only about two months (Nov 2009\u2013Jan 2010) and lost its entire $8 million capitalization according to producer Kevin McCollum, as cited in a NYT article about Next to Normal's finances. No recoupment occurred. The Washington Post (Dec 29, 2009) reported an $8.5 million production cost and weekly running costs of more than $500,000 (CBC gave the same weekly floor).",
+        "oldValue": "The 2009 Broadway revival of Ragtime at the Neil Simon Theatre ran only about two months (Nov 2009–Jan 2010) and lost its entire $8 million capitalization according to producer Kevin McCollum, as cited in a NYT article about Next to Normal's finances. No recoupment occurred.",
+        "newValue": "The 2009 Broadway revival of Ragtime at the Neil Simon Theatre ran only about two months (Nov 2009–Jan 2010) and lost its entire $8 million capitalization according to producer Kevin McCollum, as cited in a NYT article about Next to Normal's finances. No recoupment occurred. The Washington Post (Dec 29, 2009) reported an $8.5 million production cost and weekly running costs of more than $500,000 (CBC gave the same weekly floor).",
         "description": "ragtime-2009: add the Post and CBC figures"
       },
       {
@@ -373,5 +373,104 @@
         "description": "ragtime-2009: add sources"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T15:37:15.343Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for rodgers-hammersteins-cinderella-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for rodgers-hammersteins-cinderella-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for rodgers-hammersteins-cinderella-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for rodgers-hammersteins-cinderella-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for hillary-and-clinton-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for hillary-and-clinton-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for a-strange-loop-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for a-strange-loop-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for and-juliet"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for bad-cinderella-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for all-out"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for all-out"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for all-out"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for ragtime-2009"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for ragtime-2009"
+    }
+  ],
+  "executedIn": "ci"
 }
