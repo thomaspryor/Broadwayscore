@@ -56,6 +56,10 @@ test('Cloudflare interstitial is still treated as garbage', () => {
   assert.equal(s.isChallengeOrGarbage('<title>Just a moment...</title>'), true);
   // BRO-5725: full-size (~29KB) Cloudflare managed challenge must not pass the <10KB gate
   assert.equal(s.isChallengeOrGarbage(`<html><head><title>Just a moment...</title></head><body>${'x'.repeat(28000)}</body></html>`), true);
+  const big = (head, body = '') => `<html><head>${head}</head><body>${body}${'x'.repeat(28000)}</body></html>`;
+  assert.equal(s.isChallengeOrGarbage(big('<title>Attention Required! | Cloudflare</title>')), true);
+  assert.equal(s.isChallengeOrGarbage(big('<title>Just a moment…</title>')), true);
+  assert.equal(s.isChallengeOrGarbage(big('', 'window._cf_chl_opt={};<script src="/cdn-cgi/challenge-platform/h/b/orchestrate"></script>')), true);
   assert.equal(s.isChallengeOrGarbage(`<html><head><title>Review: Just a moment</title></head><body>${'x'.repeat(28000)}</body></html>`), false);
 });
 

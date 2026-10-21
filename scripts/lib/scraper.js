@@ -143,7 +143,9 @@ function _isChallengeOrGarbage(content) {
   // the <10KB gate below let it through as "Success (Playwright)". Its <title> is
   // always exactly "Just a moment..." and no real article is titled that, so this
   // check is size-independent.
-  if (content && /<title[^>]*>\s*Just a moment\.\.\.\s*<\/title>/i.test(content)) return true;
+  if (content && /<title[^>]*>\s*(?:Just a moment(?:\.\.\.|…)|Attention Required!)/i.test(content)) return true;
+  // Both Cloudflare managed-challenge script markers together never appear in a real article (same rule as bww-roundup-validator.js).
+  if (content && content.includes('cf_chl_opt') && content.includes('challenge-platform')) return true;
   return (!!content && content.length < 10000 && (
     content.includes('Just a moment...') ||
     content.includes('cf_chl_opt') ||
@@ -1632,7 +1634,9 @@ async function fetchPage(url, options = {}) {
       }
       console.log('  → Trying ScrapingBee...');
       const raw = await fetchWithScrapingBee(url, { ...options, fallbackFrom, onSkip });
-      if (raw) {
+      if (raw && raw.content && _isChallengeOrGarbage(raw.content)) {
+        console.log(`  ⚠️  ScrapingBee returned challenge/garbage (${raw.content.length} bytes)`);
+      } else if (raw) {
         const checked = _checkAndReturn(raw, 'ScrapingBee');
         if (checked) return checked;
       }
