@@ -12,6 +12,11 @@ name: Commercial Stale Closures Classifier
 #   - humanReviewedDesignation:true → never auto-classify
 #   - Late recoupment signal in pending/archive (last 30d) → human-review
 #
+# Also enrolls an empty TBD stub for every Broadway show that is announced,
+# upcoming, in previews or open with no commercial.json record (BRO-5776: stubs
+# used to appear only on opening night, so the season report had no record for
+# announced shows).
+#
 # Concurrency group commercial-data-write — queues with Friday, Saturday,
 # (future) RSS poller.
 
@@ -80,6 +85,17 @@ jobs:
           ARGS="$ARGS --report-json=/tmp/stale-closure-report.json"
           node scripts/classify-stale-closures.js $ARGS
 
+      - name: Enroll announced Broadway stubs
+        # BRO-5776. LLM-free and idempotent; continue-on-error so an enrollment
+        # problem never blocks the Fizzle classifications or their push.
+        continue-on-error: true
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="--dry-run"
+          fi
+          node scripts/enroll-announced-commercial-stubs.js $ARGS
+
       - name: Refresh recoupment model
         # Daily catch-all (BRO-4985): any writer that changed a weekly cost
         # since the last model run (Reddit gap-fill, RSS poll, deep research,
@@ -114,7 +130,7 @@ jobs:
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          message: 'data: Stale-closure Fizzle classifications'
+          message: 'data: Stale-closure Fizzle classifications and announced-show commercial stubs'
 
       - name: Dispatch deploy
         if: inputs.dry_run != true

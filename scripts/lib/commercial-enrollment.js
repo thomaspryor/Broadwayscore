@@ -1,6 +1,7 @@
 'use strict';
 
 const { isCommercialScope } = require('./commercial-scope');
+const { nonprofitForVenue } = require('./nonprofit-venues');
 
 /**
  * commercial-enrollment.js (BRO-5776)
@@ -18,20 +19,6 @@ const { isCommercialScope } = require('./commercial-scope');
 
 const ENROLLABLE_STATUSES = ['announced', 'upcoming', 'previews', 'open'];
 
-// Houses a Broadway nonprofit owns or runs. A rental to a commercial producer
-// happens, so the venue only FLAGS a candidate for a human; it never sets
-// designation or nonprofitOrg on its own (memory: feedback_nonprofit_venue_vs_production).
-const NONPROFIT_HOUSE_ORG = {
-  'Vivian Beaumont Theater': 'Lincoln Center Theater',
-  'Mitzi E. Newhouse Theater': 'Lincoln Center Theater',
-  'Samuel J. Friedman Theatre': 'Manhattan Theatre Club',
-  'Todd Haimes Theatre': 'Roundabout Theatre Company',
-  'American Airlines Theatre': 'Roundabout Theatre Company',
-  'Stephen Sondheim Theatre': 'Roundabout Theatre Company',
-  'Studio 54': 'Roundabout Theatre Company',
-  'Helen Hayes Theater': 'Second Stage Theater',
-  'Hayes Theater': 'Second Stage Theater',
-};
 
 function findUnenrolled(shows, commercialShows) {
   const have = commercialShows || {};
@@ -40,15 +27,19 @@ function findUnenrolled(shows, commercialShows) {
   for (const show of shows || []) {
     if (!isCommercialScope(show) || !ENROLLABLE_STATUSES.includes(show.status)) continue;
     if (!show.slug || seen.has(show.slug)) continue;
-    if (Object.prototype.hasOwnProperty.call(have, show.slug)) continue;
+    // Same two keys commercial-queue.js looks up: the canonical slug, or an id-keyed legacy row.
+    if (Object.prototype.hasOwnProperty.call(have, show.slug) || (show.id && Object.prototype.hasOwnProperty.call(have, show.id))) continue;
     seen.add(show.slug);
     out.push(show);
   }
   return out;
 }
 
+// A rental to a commercial producer happens, so the venue only FLAGS a
+// candidate for a human; it never sets designation or nonprofitOrg itself
+// (memory: feedback_nonprofit_venue_vs_production).
 function nonprofitHouseCandidate(show) {
-  return NONPROFIT_HOUSE_ORG[show && show.venue] || null;
+  return nonprofitForVenue(show && show.venue);
 }
 
-module.exports = { ENROLLABLE_STATUSES, NONPROFIT_HOUSE_ORG, findUnenrolled, nonprofitHouseCandidate };
+module.exports = { ENROLLABLE_STATUSES, findUnenrolled, nonprofitHouseCandidate };
