@@ -2502,8 +2502,9 @@ async function main(argv = process.argv.slice(2)) {
       // newsletter gate don't keep a just-closed gap at > 0 for another cycle.
       if (useCheckpoint && r.ingestResults.length && checkpoint[s.id]) {
         const recount = currentRunUncollected(r);
-        if (recount !== checkpoint[s.id].uncollected) {
-          checkpoint[s.id] = { ...checkpoint[s.id], uncollected: recount };
+        const alertRecount = currentRunUncollected(r, { ignoreCensusTagged: !censusGapsAlert(alertShowState(r, new Map([[s.id, s]]))) });
+        if (recount !== checkpoint[s.id].uncollected || alertRecount !== checkpoint[s.id].alertUncollected) {
+          checkpoint[s.id] = { ...checkpoint[s.id], uncollected: recount, alertUncollected: alertRecount };
           saveCheckpointEntries(CHECKPOINT_PATH, { [s.id]: checkpoint[s.id] });
         }
       }
