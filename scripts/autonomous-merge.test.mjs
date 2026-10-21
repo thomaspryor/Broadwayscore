@@ -51,28 +51,54 @@ test('cloneDataRepo refuses an unknown repoKey before touching the network', () 
   assert.throws(() => cloneDataRepo('nonsense', 'fake-token'), /unknown repoKey/);
 });
 
-test('verifyRebaseData: missing-show class rebases, gates, and runs validate-show-venue against the candidate branch', () => {
-  const { clone } = makeFixtureRepo({ 'shows.json': '[]' });
+test('verifyRebaseData: missing-show class rebases, gates, and leaves the repo venue ledger untouched', (t) => {
+  const { tmp, clone } = makeFixtureRepo({ 'shows.json': '[]' });
+  t.after(() => fs.rmSync(tmp, { recursive: true, force: true }));
   git(clone, ['checkout', '-b', 'auto/fixture-missing-show']);
   fs.writeFileSync(path.join(clone, 'shows.json'), '[{"id":"fixture-2026","provisional":false}]');
   git(clone, ['add', '-A']);
   git(clone, ['commit', '-q', '-m', 'add fixture show']);
 
-  // The verifier runs validate-show-venue.js --all-provisional, which rewrites
-  // the TRACKED ledger data/audit/venue-date-mismatches.json (checksEnv()
-  // allowlists the child's env, so VENUE_AUDIT_PATH cannot redirect it).
-  // Running this test used to leave that file replaced by a 0-row report.
+  // checksEnv() strips VENUE_AUDIT_PATH, so --data-dir must isolate the
+  // verifier's report without relying on an environment override (BRO-4278).
   const ledger = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'data', 'audit', 'venue-date-mismatches.json');
   const ledgerBefore = fs.existsSync(ledger) ? fs.readFileSync(ledger) : null;
-  let result;
-  try {
-    result = verifyRebaseData(clone, 'scorecard-data', 'missing-show', { showIds: [] });
-  } finally {
-    if (ledgerBefore !== null) fs.writeFileSync(ledger, ledgerBefore);
-    else fs.rmSync(ledger, { force: true });
-  }
+  const result = verifyRebaseData(clone, 'scorecard-data', 'missing-show', { showIds: [] });
   assert.equal(result.ok, true, JSON.stringify(result));
   assert.deepEqual(result.files, ['shows.json']);
+  assert.deepEqual(fs.existsSync(ledger) ? fs.readFileSync(ledger) : null, ledgerBefore);
+  assert.equal(git(path.dirname(ledger), ['diff', '--', ledger]), '');
+});
+
+test('validate-show-venue: --data-dir isolates provisional, full-corpus, and filtered audit writes', (t) => {
+  const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+  const ledgerNames = ['venue-date-mismatches.json', 'venue-date-mismatches-all.json'];
+  const before = ledgerNames.map(name => {
+    const file = path.join(repo, 'data', 'audit', name);
+    return fs.existsSync(file) ? fs.readFileSync(file) : null;
+  });
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-4278-'));
+  t.after(() => fs.rmSync(tmp, { recursive: true, force: true }));
+  const candidates = path.join(tmp, 'candidates.json');
+  fs.writeFileSync(candidates, '[]');
+
+  for (const [index, mode] of ['--all-provisional', '--all', `--candidates-file=${candidates}`].entries()) {
+    const dataDir = path.join(tmp, `data=${index}`);
+    const report = path.join(dataDir, 'audit', ledgerNames[mode === '--all' ? 1 : 0]);
+    fs.mkdirSync(path.dirname(report), { recursive: true });
+    fs.writeFileSync(path.join(dataDir, 'shows.json'), '[]');
+    fs.writeFileSync(report, JSON.stringify({ results: [{ id: 'retired-fixture', result: 'match' }] }));
+    execFileSync(process.execPath, [path.join(repo, 'scripts', 'validate-show-venue.js'), mode, `--data-dir=${dataDir}`], {
+      env: { ...process.env, VENUE_AUDIT_PATH: '' }, encoding: 'utf8', timeout: 30_000,
+    });
+    const after = JSON.parse(fs.readFileSync(report, 'utf8'));
+    assert.deepEqual(after.results, [], `${mode} must use the candidate ledger and retire stale rows`);
+    assert.equal(after.counts.total, 0);
+    for (const [i, name] of ledgerNames.entries()) {
+      const file = path.join(repo, 'data', 'audit', name);
+      assert.deepEqual(fs.existsSync(file) ? fs.readFileSync(file) : null, before[i], `${mode} changed ${name}`);
+    }
+  }
 });
 
 test('verifyRebaseData: refuses a diff touching a path outside the repoKey allow-list, before running any verifier', () => {

@@ -41,9 +41,9 @@
  *   --fail-on-mismatch     exit 1 + emit ::error:: lines per mismatch
  *   --dry-run              do not write audit file
  *   --limit=N              cap shows processed (debug aid)
- *   --data-dir=PATH        validate PATH/shows.json instead of the live
- *                          checkout's data/shows.json (autonomous loop
- *                          Tier-2 verification against a candidate branch)
+ *   --data-dir=PATH        validate PATH/shows.json and write reports under
+ *                          PATH/audit (autonomous loop Tier-2 verification
+ *                          against a candidate branch)
  *   --time-budget-min=N    (--all-provisional only, BRO-2627) stop starting
  *                          new shows once N minutes have elapsed; writes
  *                          whatever was completed so far. Checked between
@@ -115,14 +115,13 @@ const { routeVenueValidation, validateLondonShow } = require('./lib/london-venue
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
-// --data-dir overrides ONLY the shows.json this run validates (Sprint 4,
+// --data-dir overrides shows.json and the audit output (BRO-4278,
 // autonomous nightly loop): SHOWS_PATH is __dirname-relative, so without this
 // flag a check invoked from ANY cwd — including a Tier-2 verification
 // scratch dir wired to a candidate branch's worktree — would silently
 // validate the live checkout's shows.json instead of the candidate diff.
-// playbill-urls.json (read cache) and the audit report (output) are NOT part
-// of what a card mutates, so they intentionally keep resolving to the real
-// repo regardless of this flag.
+// Candidate validation must not rewrite the live checkout's audit ledger.
+// The shared playbill-urls.json lookup cache keeps its existing location.
 const dataDirOverride = args.find(a => a.startsWith('--data-dir='))?.split('=').slice(1).join('=');
 const SHOWS_PATH = dataDirOverride ? path.join(path.resolve(dataDirOverride), 'shows.json') : path.join(ROOT, 'data', 'shows.json');
 const PLAYBILL_URLS_PATH = path.join(ROOT, 'data', 'playbill-urls.json');
@@ -140,7 +139,7 @@ const allMode = args.includes('--all');
 // CI never set it.
 const AUDIT_PATH = process.env.VENUE_AUDIT_PATH
   ? path.resolve(process.env.VENUE_AUDIT_PATH)
-  : path.join(ROOT, 'data', 'audit', allMode ? 'venue-date-mismatches-all.json' : 'venue-date-mismatches.json');
+  : path.join(dataDirOverride ? path.resolve(dataDirOverride) : path.join(ROOT, 'data'), 'audit', allMode ? 'venue-date-mismatches-all.json' : 'venue-date-mismatches.json');
 if (process.env.VENUE_AUDIT_PATH) {
   // Never silent: if this were ever set in CI, the gate would read and update a
   // ledger nobody is looking at while every run still reported success.
@@ -852,22 +851,8 @@ async function main() {
   const allCheckableShows = allShows.filter((s) => !isExemptFromPlaybillCheck(s));
   const trackedShows = allMode ? allCheckableShows : provisionalShows;
   const previousResultsById = loadPreviousResultById();
-  // --data-dir points shows.json at a CANDIDATE branch's copy while the ledger
-  // still resolves to the real repo (documented above), so the two describe
-  // different universes. Retiring rows on that basis would let a candidate
-  // branch delete real coverage, so in that combination the write set is the
-  // union — nothing already in the ledger is dropped — and fingerprint
-  // staleness is not evaluated against a shows.json the ledger is not about.
-  // VENUE_AUDIT_PATH means the ledger was redirected alongside shows.json, so
-  // the two DO describe the same universe and normal semantics apply.
-  const mismatchedUniverse = Boolean(dataDirOverride) && !process.env.VENUE_AUDIT_PATH;
-  const currentProvisionalIds = new Set([
-    ...trackedShows.map(s => s.id),
-    ...(mismatchedUniverse ? Object.keys(previousResultsById) : []),
-  ]);
-  const showsById = mismatchedUniverse
-    ? null
-    : Object.fromEntries(trackedShows.map(s => [s.id, s]));
+  const currentProvisionalIds = new Set(trackedShows.map(s => s.id));
+  const showsById = Object.fromEntries(trackedShows.map(s => [s.id, s]));
   // BRO-2701 review finding 3: this used to map EVERY prior row to its
   // `.result` unconditionally, while buildAuditResults drops fingerprint-stale
   // rows at write time. A show whose venue/dates were edited since its last
