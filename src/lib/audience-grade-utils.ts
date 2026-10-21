@@ -39,7 +39,7 @@ export function getAudienceGrade(score: number | null | undefined): {
   textColor: string;
   tooltip: string;
 } {
-  if (score == null) return { grade: '—', label: 'No Data', color: '#6b7280', textColor: '#ffffff', tooltip: 'No audience data available' };
+  if (score == null) return { grade: '–', label: 'No Data', color: '#6b7280', textColor: '#ffffff', tooltip: 'No audience data available' };
   if (score >= 90) return { grade: 'A+', label: 'Loving It', color: '#22c55e', textColor: '#ffffff', tooltip: 'Audiences love it' };
   if (score >= 88) return { grade: 'A', label: 'Loving It', color: '#16a34a', textColor: '#ffffff', tooltip: 'Audiences love it' };
   if (score >= 83) return { grade: 'A-', label: 'Liking It', color: '#14b8a6', textColor: '#ffffff', tooltip: 'Strong audience reception' };

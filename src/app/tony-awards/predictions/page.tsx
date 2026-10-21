@@ -30,7 +30,7 @@ export function generateMetadata(): Metadata {
       canonical: `${BASE_URL}/tony-awards/predictions`,
     },
     openGraph: {
-      title: 'Tony Awards Predictions: Broadway Scorecard',
+      title: 'Tony Awards Predictions | Broadway Scorecard',
       description: 'Every Tony-eligible show ranked by our per-category prediction model: critic, audience, and precursor signal.',
       url: `${BASE_URL}/tony-awards/predictions`,
       type: 'website',
@@ -38,7 +38,7 @@ export function generateMetadata(): Metadata {
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Tony Awards Predictions: Broadway Scorecard',
+      title: 'Tony Awards Predictions | Broadway Scorecard',
       description: 'Every Tony-eligible show ranked by our per-category prediction model.',
     },
   };
@@ -170,7 +170,7 @@ export default function TonyPredictionsOverviewPage() {
         {/* Announcement banner — hidden once win probabilities are live */}
         {!featureFlags.tonyPredictionsOurPick && (
           <div className="mb-6 px-4 py-3 rounded-xl border border-white/8 bg-surface-raised text-sm">
-            <span className="text-brand font-semibold">Predictions being released on Thursday</span>
+            <span className="text-brand font-semibold">Predictions are released on Thursday.</span>
             {' '}Check back for per-category win probabilities ranked by our critic, audience &amp; awards model.
           </div>
         )}

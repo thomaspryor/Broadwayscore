@@ -45,7 +45,7 @@ export const SCORE_BUCKETS: ScoreBucketConfig[] = [
     maxScore: DEFAULT_GOLD_THRESHOLD - 1,
     color: 'text-emerald-400',    // Green
     bgColor: 'bg-emerald-400/20',
-    description: 'Strong choice—most people will have a great time.',
+    description: 'Strong choice, most people will have a great time.',
   },
   {
     id: 'worth-seeing',
@@ -65,7 +65,7 @@ export const SCORE_BUCKETS: ScoreBucketConfig[] = [
     maxScore: WORTH_SEEING_MIN - 1,
     color: 'text-orange-500',     // Orange (darker, distinct from Must-See gold)
     bgColor: 'bg-orange-500/20',
-    description: 'Critics are split — worth a look if the premise grabs you.',
+    description: 'Critics are split: worth a look if the premise grabs you.',
   },
   {
     id: 'stay-away',
@@ -75,7 +75,7 @@ export const SCORE_BUCKETS: ScoreBucketConfig[] = [
     maxScore: MIXED_MIN - 1,
     color: 'text-red-400',        // Red
     bgColor: 'bg-red-400/20',
-    description: 'Not recommended—save your time and money.',
+    description: 'Not recommended: save your time and money.',
   },
   {
     id: 'pending',

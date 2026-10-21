@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     images: [TONY_OG_IMAGE],
-    title: `2026 Tony Award Winners: Broadway Scorecard`,
+    title: `2026 Tony Award Winners | Broadway Scorecard`,
     description: `Who won the 2026 Tony Awards? Data-driven predictions ranked by critic score, audience grade, and GoldDerby win odds.`,
     url: `${BASE_URL}/tony-awards/winners-2026`,
     type: 'website',

@@ -589,7 +589,7 @@ function AssetTile({ asset }: { asset: Asset }) {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={href}
-          alt={`${asset.label}${asset.sub ? ' – ' + asset.sub : ''}`}
+          alt={`${asset.label}${asset.sub ? ', ' + asset.sub : ''}`}
           loading="lazy"
           className="max-w-full max-h-full object-contain"
         />

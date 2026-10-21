@@ -210,7 +210,7 @@ export default async function TheaterPage(props: { params: Promise<{ slug: strin
             <div className="card p-3 sm:p-4 text-center">
               <p className="text-gray-500 text-[10px] sm:text-xs uppercase tracking-wider mb-1">Past Shows</p>
               <p className="text-xl sm:text-2xl font-bold text-white">{theater.allShows.length}</p>
-              <p className="text-[10px] text-gray-600 mt-0.5">1970 – present</p>
+              <p className="text-[10px] text-gray-600 mt-0.5">1970: present</p>
             </div>
             <div className="card p-3 sm:p-4 text-center">
               <p className="text-gray-500 text-[10px] sm:text-xs uppercase tracking-wider mb-1">Avg Score</p>

@@ -487,7 +487,7 @@ export default function ShowPageBelowFold({
               )}
               {show.theaterAddress && (
                 <>
-                  {' – '}
+                  {', '}
                   <a
                     href={getGoogleMapsUrl(show.theaterAddress)}
                     target="_blank"

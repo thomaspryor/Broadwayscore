@@ -31,15 +31,15 @@ export const metadata: Metadata = {
     canonical: `${BASE_URL}/tony-awards`,
   },
   openGraph: {
-    title: 'Tony Awards: Broadway Scorecard',
+    title: 'Tony Awards | Broadway Scorecard',
     description: 'Predictions, all-time leaderboard, and historical accuracy data for the Tony Awards.',
     url: `${BASE_URL}/tony-awards`,
     type: 'website',
-    images: [{ url: `${BASE_URL}/og/tony-awards.png`, width: 1200, height: 630, alt: 'Tony Awards: Broadway Scorecard' }],
+    images: [{ url: `${BASE_URL}/og/tony-awards.png`, width: 1200, height: 630, alt: 'Tony Awards | Broadway Scorecard' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Tony Awards: Broadway Scorecard',
+    title: 'Tony Awards | Broadway Scorecard',
     description: 'Predictions, leaderboard, and historical accuracy for the Tony Awards.',
   },
 };
