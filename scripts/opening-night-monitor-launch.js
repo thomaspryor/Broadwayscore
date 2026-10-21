@@ -345,7 +345,7 @@ function preflightAuth() {
       log: msg => log(`${msg} (spend hard-capped by NIGHTLY_USD_CAP $${NIGHTLY_USD_CAP}/night, disable with ON_MONITOR_NO_API_FALLBACK=1)`),
     }),
     sleep: ms => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms),
-    delayMs: 30000,
+    delayMs: Number(process.env.ON_MONITOR_AUTH_CONFIRM_DELAY_MS ?? 30000),
     log,
   }).preflight;
 }
