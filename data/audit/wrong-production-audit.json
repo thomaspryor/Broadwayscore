@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-21T23:42:26.141Z",
+  "timestamp": "2026-10-21T23:57:55.246Z",
   "stats": {
     "totalReviews": 58479,
-    "alreadyFlagged": 21168,
-    "dateGuardCatches": 198,
-    "directorMismatch": 2064,
+    "alreadyFlagged": 21170,
+    "dateGuardCatches": 197,
+    "directorMismatch": 2065,
     "tvFilmSignals": 1655,
-    "londonSignals": 2630,
+    "londonSignals": 2631,
     "offBroadwaySignals": 530,
     "yearMismatch": 165,
-    "noPublishDate": 5345
+    "noPublishDate": 5339
   },
   "findings": [
     {
@@ -31870,6 +31870,19 @@
     },
     {
       "showId": "patriots-west-end-2023",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2023-06-14",
+      "url": "https://www.ft.com/content/50c5318d-0e6a-4c88-afe9-0d91ce88276a",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from patriots-2024"
+        }
+      ]
+    },
+    {
+      "showId": "patriots-west-end-2023",
       "file": "london-box-office--stuart-king.json",
       "score": 56,
       "publishDate": "2023-06-07",
@@ -61370,7 +61383,7 @@
       "showId": "cuckoo-west-end-2023",
       "file": "broadwayworld--alexander-cohen.json",
       "score": 88,
-      "publishDate": "July 13th, 2023",
+      "publishDate": "2023-07-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-CUCKOO-Royal-Court-20230713",
       "findings": [
         {
@@ -61414,6 +61427,20 @@
       "score": 91,
       "publishDate": "July 13th, 2023",
       "url": "https://lostintheatreland.co.uk/cuckoo-review-royal-court-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "cuckoo-west-end-2023",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 55,
+      "publishDate": "2023-07-13",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/cuckoo-royal-court-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -78238,20 +78265,6 @@
       ]
     },
     {
-      "showId": "patriots-west-end-2023",
-      "file": "standard--nick-curtis.json",
-      "score": 80,
-      "publishDate": "July 13th, 2022",
-      "url": "https://www.standard.co.uk/culture/theatre/patriots-almeida-theatre-review-putin-boris-berezovsky-peter-morgan-tom-hollander-b1011934.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 317d before show (July 13th, 2022 vs 2023-05-26)"
-        }
-      ]
-    },
-    {
       "showId": "people-places-and-things-west-end-2024",
       "file": "london-box-office--stuart-king.json",
       "score": 93,
@@ -79676,7 +79689,7 @@
       "showId": "rose-west-end-2023",
       "file": "telegraph--dominic-cavendish.json",
       "score": 79,
-      "publishDate": "June 6th, 2023",
+      "publishDate": "2023-05-26",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/rose-ambassadors-theatre-review-maureen-lipman/",
       "findings": [
         {
