@@ -1,41 +1,5 @@
 [
   {
-    "startedAt": "2026-10-20T01:52:00.212Z",
-    "completedAt": "2026-10-20T01:52:00.214Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "39355345164",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-20T01:54:44.264Z",
-    "completedAt": "2026-10-20T01:54:44.266Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "39355667550",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-20T01:56:55.392Z",
     "completedAt": "2026-10-20T01:56:55.394Z",
     "totalReviews": 0,
@@ -673762,6 +673726,53 @@
     },
     "costUsd": 0,
     "runId": "39621406283",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-21T15:31:06.326Z",
+    "completedAt": "2026-10-21T15:34:30.350Z",
+    "totalReviews": 58202,
+    "processed": 16,
+    "skipped": 58170,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 125813,
+      "output": 6905,
+      "cacheRead": 52329,
+      "cacheWrite": 59676,
+      "total": 365452
+    },
+    "costUsd": 0.37299757499999997,
+    "runId": "39625647391",
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-years-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-21T15:34:44.246Z",
+    "completedAt": "2026-10-21T15:35:12.189Z",
+    "totalReviews": 11,
+    "processed": 11,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 26837,
+      "output": 2463,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 29300
+    },
+    "costUsd": 0.07572620000000001,
+    "runId": "39625647391",
     "errorDetails": []
   }
 ]
