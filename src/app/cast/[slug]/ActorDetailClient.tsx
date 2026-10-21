@@ -259,9 +259,9 @@ export default function ActorDetailClient({
               subValue: tonyStats.wins > 0 ? `${tonyStats.nominations} nom${tonyStats.nominations !== 1 ? 's' : ''}` : undefined,
               subValueColor: '#fbbf24',
             }] : []),
-            { label: 'Avg Score', value: profile.avgScore !== null ? Math.round(profile.avgScore) : '—', color: profile.avgScore !== null ? getScoreTextColor(profile.avgScore) : undefined, dimmed: profile.avgScore === null, subValue: highestRatedRank > 0 && highestRatedRank <= 200 ? `${ordinalSuffix(highestRatedRank)} highest-rated` : undefined },
-            { label: 'Highest', value: profile.highScore ? profile.highScore.score : '—', color: highTier?.color, dimmed: !profile.highScore, subtitle: profile.highScore?.showTitle },
-            { label: 'Lowest', value: profile.lowScore ? profile.lowScore.score : '—', color: lowTier?.color, dimmed: !profile.lowScore, subtitle: profile.lowScore?.showTitle },
+            { label: 'Avg Score', value: profile.avgScore !== null ? Math.round(profile.avgScore) : '–', color: profile.avgScore !== null ? getScoreTextColor(profile.avgScore) : undefined, dimmed: profile.avgScore === null, subValue: highestRatedRank > 0 && highestRatedRank <= 200 ? `${ordinalSuffix(highestRatedRank)} highest-rated` : undefined },
+            { label: 'Highest', value: profile.highScore ? profile.highScore.score : '–', color: highTier?.color, dimmed: !profile.highScore, subtitle: profile.highScore?.showTitle },
+            { label: 'Lowest', value: profile.lowScore ? profile.lowScore.score : '–', color: lowTier?.color, dimmed: !profile.lowScore, subtitle: profile.lowScore?.showTitle },
           ]} />
         )}
 

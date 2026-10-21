@@ -249,7 +249,7 @@ export function LotteryTable({ data, market = 'broadway' }: LotteryTableProps) {
                     {(() => {
                       const platform = lottery?.platform || special?.platform;
                       const rawUrl = ensureHttps(lottery?.url || special?.url);
-                      if (!platform) return <span className="text-gray-500">—</span>;
+                      if (!platform) return <span className="text-gray-500">–</span>;
                       if (rawUrl) {
                         const { url, isAffiliate } = buildAffiliateUrl(rawUrl, platform || '', 'lottery');
                         return (
@@ -283,7 +283,7 @@ export function LotteryTable({ data, market = 'broadway' }: LotteryTableProps) {
                         </span>
                       )}
                       {!item.lotteryData.rush && !item.lotteryData.standingRoom && (
-                        <span className="text-gray-500">—</span>
+                        <span className="text-gray-500">–</span>
                       )}
                     </div>
                   </td>
@@ -792,7 +792,7 @@ export function RushTable({ data, market = 'broadway' }: RushTableProps) {
                         </span>
                       )}
                       {!item.rushData.lottery && !item.rushData.standingRoom && (
-                        <span className="text-gray-500">—</span>
+                        <span className="text-gray-500">–</span>
                       )}
                     </div>
                   </td>

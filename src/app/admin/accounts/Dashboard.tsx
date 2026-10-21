@@ -28,9 +28,9 @@ interface Payload {
   cached?: boolean;
 }
 
-const fmtN = (n: number | null | undefined) => (n == null ? '—' : Math.round(n).toLocaleString('en-US'));
+const fmtN = (n: number | null | undefined) => (n == null ? '–' : Math.round(n).toLocaleString('en-US'));
 const fmtDay = (iso: string) => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
-const pctOf = (n: number, d: number) => (d > 0 ? `${Math.round((n / d) * 100)}%` : '—');
+const pctOf = (n: number, d: number) => (d > 0 ? `${Math.round((n / d) * 100)}%` : '–');
 const PROVIDER: Record<string, string> = { google: 'Google', apple: 'Apple', email: 'Email' };
 const DEVICE: Record<string, string> = { mobile: 'Phones', desktop: 'Computers', other: 'iPhone app / other' };
 
@@ -348,9 +348,9 @@ export default function Dashboard() {
                 <tbody>
                   {a.people.map((p, i) => (
                     <tr key={i} className="border-t border-white/[0.06] text-gray-300">
-                      <td className="py-1.5 pr-3">{p.joined ? fmtDay(p.joined) : '—'}</td>
+                      <td className="py-1.5 pr-3">{p.joined ? fmtDay(p.joined) : '–'}</td>
                       <td className="py-1.5 pr-3 text-gray-400">{PROVIDER[p.provider] || p.provider}</td>
-                      <td className="py-1.5 pr-3">{p.lastSignIn ? fmtDay(p.lastSignIn) : '—'}</td>
+                      <td className="py-1.5 pr-3">{p.lastSignIn ? fmtDay(p.lastSignIn) : '–'}</td>
                       <td className="py-1.5 text-right">{p.saved ? 'Yes' : 'No'}</td>
                     </tr>
                   ))}

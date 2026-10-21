@@ -365,7 +365,7 @@ export function DiscountTicketsTable({ rows, market = 'broadway' }: DiscountTick
                           showName={row.title}
                         />
                       ) : (
-                        <span className="text-gray-600">—</span>
+                        <span className="text-gray-600">–</span>
                       )}
                     </td>
                     <td className="py-3 px-1.5 sm:px-3 text-center whitespace-nowrap">
@@ -381,7 +381,7 @@ export function DiscountTicketsTable({ rows, market = 'broadway' }: DiscountTick
                           showName={row.title}
                         />
                       ) : (
-                        <span className="text-gray-600">—</span>
+                        <span className="text-gray-600">–</span>
                       )}
                     </td>
                     <td className="py-3 px-1.5 sm:px-3 text-center whitespace-nowrap">
@@ -396,7 +396,7 @@ export function DiscountTicketsTable({ rows, market = 'broadway' }: DiscountTick
                           showName={row.title}
                         />
                       ) : (
-                        <span className="text-gray-600">—</span>
+                        <span className="text-gray-600">–</span>
                       )}
                     </td>
                     <td className="py-3 px-2 sm:px-3 text-center hidden md:table-cell">

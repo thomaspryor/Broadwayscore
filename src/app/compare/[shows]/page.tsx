@@ -295,7 +295,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
 
   // Creative team link
   function CreativeLink({ member, roleSlug }: { member: { name: string; role: string } | undefined; roleSlug: string }) {
-    if (!member) return <span className="text-gray-500">—</span>;
+    if (!member) return <span className="text-gray-500">–</span>;
     return (
       <Link href={`/${roleSlug}/${slugify(member.name)}`} className="text-gray-300 hover:text-brand transition-colors border-b border-dashed border-white/20 hover:border-brand">
         {member.name}
@@ -305,7 +305,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
 
   // Tag rendering
   function GenreTags({ tags }: { tags: string[] }) {
-    if (!tags.length) return <span className="text-gray-500">—</span>;
+    if (!tags.length) return <span className="text-gray-500">–</span>;
     return (
       <div className="flex flex-wrap justify-center gap-1">
         {tags.slice(0, 4).map(tag => {
@@ -409,8 +409,8 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
           <SectionLabel>Scores</SectionLabel>
           <Row
             label="Audience"
-            valueA={gradeA && gradeClassesA ? <AudienceBadge grade={gradeA} classes={gradeClassesA} showSlug={showA.slug} /> : '—'}
-            valueB={gradeB && gradeClassesB ? <AudienceBadge grade={gradeB} classes={gradeClassesB} showSlug={showB.slug} /> : '—'}
+            valueA={gradeA && gradeClassesA ? <AudienceBadge grade={gradeA} classes={gradeClassesA} showSlug={showA.slug} /> : '–'}
+            valueB={gradeB && gradeClassesB ? <AudienceBadge grade={gradeB} classes={gradeClassesB} showSlug={showB.slug} /> : '–'}
           />
 
           {/* ── SHOW DETAILS ── */}
@@ -438,8 +438,8 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
           />
           <Row
             label="Ages"
-            valueA={showA.ageRecommendation ? <Link href="/browse/broadway-age-guide" className="text-gray-300 hover:text-brand transition-colors">{showA.ageRecommendation}</Link> : '—'}
-            valueB={showB.ageRecommendation ? <Link href="/browse/broadway-age-guide" className="text-gray-300 hover:text-brand transition-colors">{showB.ageRecommendation}</Link> : '—'}
+            valueA={showA.ageRecommendation ? <Link href="/browse/broadway-age-guide" className="text-gray-300 hover:text-brand transition-colors">{showA.ageRecommendation}</Link> : '–'}
+            valueB={showB.ageRecommendation ? <Link href="/browse/broadway-age-guide" className="text-gray-300 hover:text-brand transition-colors">{showB.ageRecommendation}</Link> : '–'}
           />
           <Row
             label="Opened"
@@ -454,8 +454,8 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
           {(showA.closingDate || showB.closingDate) && (
             <Row
               label="Closed"
-              valueA={showA.closingDate ? formatDate(showA.closingDate) : '—'}
-              valueB={showB.closingDate ? formatDate(showB.closingDate) : '—'}
+              valueA={showA.closingDate ? formatDate(showA.closingDate) : '–'}
+              valueB={showB.closingDate ? formatDate(showB.closingDate) : '–'}
             />
           )}
 
@@ -470,13 +470,13 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
                     <span className="text-amber-400 font-bold group-hover:text-amber-300">🏆 {awardsA.tony.wins?.length ?? 0} wins</span>
                     <span className="block text-[11px] text-gray-500">{awardsA.tony.nominations ?? 0} nominations</span>
                   </Link>
-                ) : <span className="text-gray-500">—</span>}
+                ) : <span className="text-gray-500">–</span>}
                 valueB={awardsB?.tony ? (
                   <Link href={`/show/${showB.slug}#awards`} className="group">
                     <span className="text-amber-400 font-bold group-hover:text-amber-300">🏆 {awardsB.tony.wins?.length ?? 0} wins</span>
                     <span className="block text-[11px] text-gray-500">{awardsB.tony.nominations ?? 0} nominations</span>
                   </Link>
-                ) : <span className="text-gray-500">—</span>}
+                ) : <span className="text-gray-500">–</span>}
                 winnerA={!!awardsA?.tony?.wins?.length && (awardsA.tony.wins.length > (awardsB?.tony?.wins?.length ?? 0))}
                 winnerB={!!awardsB?.tony?.wins?.length && (awardsB.tony.wins.length > (awardsA?.tony?.wins?.length ?? 0))}
               />
@@ -503,8 +503,8 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
           {(theaterA?.venueScores?.overall || theaterB?.venueScores?.overall) && (
             <Row
               label="Venue Score"
-              valueA={theaterA?.venueScores?.overall ? <Link href={`/theater/${theaterA.slug}`} className="text-gray-300 hover:text-brand transition-colors">{theaterA.venueScores.overall} / 10</Link> : '—'}
-              valueB={theaterB?.venueScores?.overall ? <Link href={`/theater/${theaterB.slug}`} className="text-gray-300 hover:text-brand transition-colors">{theaterB.venueScores.overall} / 10</Link> : '—'}
+              valueA={theaterA?.venueScores?.overall ? <Link href={`/theater/${theaterA.slug}`} className="text-gray-300 hover:text-brand transition-colors">{theaterA.venueScores.overall} / 10</Link> : '–'}
+              valueB={theaterB?.venueScores?.overall ? <Link href={`/theater/${theaterB.slug}`} className="text-gray-300 hover:text-brand transition-colors">{theaterB.venueScores.overall} / 10</Link> : '–'}
               winnerA={!!theaterA?.venueScores?.overall && !!theaterB?.venueScores?.overall && theaterA.venueScores.overall > theaterB.venueScores.overall}
               winnerB={!!theaterB?.venueScores?.overall && !!theaterA?.venueScores?.overall && theaterB.venueScores.overall > theaterA.venueScores.overall}
             />
@@ -512,8 +512,8 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
           {(theaterA?.capacity || theaterB?.capacity) && (
             <Row
               label="Capacity"
-              valueA={theaterA?.capacity ? <Link href={`/theater/${theaterA.slug}`} className="text-gray-300 hover:text-brand transition-colors">{theaterA.capacity.toLocaleString()} seats</Link> : '—'}
-              valueB={theaterB?.capacity ? <Link href={`/theater/${theaterB.slug}`} className="text-gray-300 hover:text-brand transition-colors">{theaterB.capacity.toLocaleString()} seats</Link> : '—'}
+              valueA={theaterA?.capacity ? <Link href={`/theater/${theaterA.slug}`} className="text-gray-300 hover:text-brand transition-colors">{theaterA.capacity.toLocaleString()} seats</Link> : '–'}
+              valueB={theaterB?.capacity ? <Link href={`/theater/${theaterB.slug}`} className="text-gray-300 hover:text-brand transition-colors">{theaterB.capacity.toLocaleString()} seats</Link> : '–'}
             />
           )}
 
@@ -523,14 +523,14 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
             label="Tickets"
             valueA={sortedLinksA.length > 0 ? (
               <TicketLink showName={showA.title} showId={showA.id} showSlug={showA.slug} showStatus={showA.status} platform={sortedLinksA[0].platform} url={sortedLinksA[0].url} pageType="comparison" linkPosition={0} totalLinks={sortedLinksA.length} className="text-white font-semibold hover:text-brand transition-colors">
-                <span className="text-gray-300 font-normal text-sm">{sortedLinksA[0].platform} from </span>{currencyA}{sortedLinksA[0].priceFrom ?? '—'}
+                <span className="text-gray-300 font-normal text-sm">{sortedLinksA[0].platform} from </span>{currencyA}{sortedLinksA[0].priceFrom ?? '–'}
               </TicketLink>
-            ) : '—'}
+            ) : '–'}
             valueB={sortedLinksB.length > 0 ? (
               <TicketLink showName={showB.title} showId={showB.id} showSlug={showB.slug} showStatus={showB.status} platform={sortedLinksB[0].platform} url={sortedLinksB[0].url} pageType="comparison" linkPosition={0} totalLinks={sortedLinksB.length} className="text-white font-semibold hover:text-brand transition-colors">
-                <span className="text-gray-300 font-normal text-sm">{sortedLinksB[0].platform} from </span>{currencyB}{sortedLinksB[0].priceFrom ?? '—'}
+                <span className="text-gray-300 font-normal text-sm">{sortedLinksB[0].platform} from </span>{currencyB}{sortedLinksB[0].priceFrom ?? '–'}
               </TicketLink>
-            ) : '—'}
+            ) : '–'}
           />
           {(sortedLinksA.length > 1 || sortedLinksB.length > 1) && (
             <Row
@@ -557,13 +557,13 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
           )}
           <Row
             label="Lottery"
-            valueA={lotteryRushA ? <LotteryPill data={lotteryRushA} showSlug={showA.slug} /> : <span className="text-gray-500 text-xs">—</span>}
-            valueB={lotteryRushB ? <LotteryPill data={lotteryRushB} showSlug={showB.slug} /> : <span className="text-gray-500 text-xs">—</span>}
+            valueA={lotteryRushA ? <LotteryPill data={lotteryRushA} showSlug={showA.slug} /> : <span className="text-gray-500 text-xs">–</span>}
+            valueB={lotteryRushB ? <LotteryPill data={lotteryRushB} showSlug={showB.slug} /> : <span className="text-gray-500 text-xs">–</span>}
           />
           <Row
             label="Rush"
-            valueA={lotteryRushA ? <RushPill data={lotteryRushA} showSlug={showA.slug} /> : <span className="text-gray-500 text-xs">—</span>}
-            valueB={lotteryRushB ? <RushPill data={lotteryRushB} showSlug={showB.slug} /> : <span className="text-gray-500 text-xs">—</span>}
+            valueA={lotteryRushA ? <RushPill data={lotteryRushA} showSlug={showA.slug} /> : <span className="text-gray-500 text-xs">–</span>}
+            valueB={lotteryRushB ? <RushPill data={lotteryRushB} showSlug={showB.slug} /> : <span className="text-gray-500 text-xs">–</span>}
           />
 
           {/* ── BOX OFFICE — THIS WEEK ── */}
@@ -579,7 +579,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
                       <span className="block text-[11px] text-gray-500">{pctChange(grossesA.thisWeek.gross, grossesA.thisWeek.grossPrevWeek)} vs last week</span>
                     )}
                   </Link>
-                ) : '—'}
+                ) : '–'}
                 valueB={grossesB?.thisWeek?.gross != null ? (
                   <Link href={`/show/${showB.slug}#box-office`} className="group">
                     <span className="text-white font-semibold group-hover:text-brand">{formatMoney(grossesB.thisWeek.gross, currency)}</span>
@@ -587,19 +587,19 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
                       <span className="block text-[11px] text-gray-500">{pctChange(grossesB.thisWeek.gross, grossesB.thisWeek.grossPrevWeek)} vs last week</span>
                     )}
                   </Link>
-                ) : '—'}
+                ) : '–'}
               />
               <Row
                 label="Capacity"
-                valueA={grossesA?.thisWeek?.capacity != null ? <Link href={`/show/${showA.slug}#box-office`} className="text-gray-300 hover:text-brand transition-colors">{grossesA.thisWeek.capacity.toFixed(1)}%</Link> : '—'}
-                valueB={grossesB?.thisWeek?.capacity != null ? <Link href={`/show/${showB.slug}#box-office`} className="text-gray-300 hover:text-brand transition-colors">{grossesB.thisWeek.capacity.toFixed(1)}%</Link> : '—'}
+                valueA={grossesA?.thisWeek?.capacity != null ? <Link href={`/show/${showA.slug}#box-office`} className="text-gray-300 hover:text-brand transition-colors">{grossesA.thisWeek.capacity.toFixed(1)}%</Link> : '–'}
+                valueB={grossesB?.thisWeek?.capacity != null ? <Link href={`/show/${showB.slug}#box-office`} className="text-gray-300 hover:text-brand transition-colors">{grossesB.thisWeek.capacity.toFixed(1)}%</Link> : '–'}
                 winnerA={grossesA?.thisWeek?.capacity != null && grossesB?.thisWeek?.capacity != null && grossesA.thisWeek.capacity > grossesB.thisWeek.capacity}
                 winnerB={grossesB?.thisWeek?.capacity != null && grossesA?.thisWeek?.capacity != null && grossesB.thisWeek.capacity > grossesA.thisWeek.capacity}
               />
               <Row
                 label="Avg Ticket"
-                valueA={grossesA?.thisWeek?.atp != null ? <Link href={`/show/${showA.slug}#box-office`} className="text-gray-300 hover:text-brand transition-colors">{currency}{Math.round(grossesA.thisWeek.atp)}</Link> : '—'}
-                valueB={grossesB?.thisWeek?.atp != null ? <Link href={`/show/${showB.slug}#box-office`} className="text-gray-300 hover:text-brand transition-colors">{currency}{Math.round(grossesB.thisWeek.atp)}</Link> : '—'}
+                valueA={grossesA?.thisWeek?.atp != null ? <Link href={`/show/${showA.slug}#box-office`} className="text-gray-300 hover:text-brand transition-colors">{currency}{Math.round(grossesA.thisWeek.atp)}</Link> : '–'}
+                valueB={grossesB?.thisWeek?.atp != null ? <Link href={`/show/${showB.slug}#box-office`} className="text-gray-300 hover:text-brand transition-colors">{currency}{Math.round(grossesB.thisWeek.atp)}</Link> : '–'}
               />
             </>
           )}
@@ -612,21 +612,21 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
                 label="Total Gross"
                 valueA={grossesA?.allTime?.gross != null ? (
                   <Link href={`/show/${showA.slug}#box-office`} className="text-white font-semibold hover:text-brand transition-colors">{formatMoney(grossesA.allTime.gross, currency)}</Link>
-                ) : '—'}
+                ) : '–'}
                 valueB={grossesB?.allTime?.gross != null ? (
                   <Link href={`/show/${showB.slug}#box-office`} className="text-white font-semibold hover:text-brand transition-colors">{formatMoney(grossesB.allTime.gross, currency)}</Link>
-                ) : '—'}
+                ) : '–'}
               />
               <Row
                 label="Performances"
-                valueA={grossesA?.allTime?.performances != null ? <Link href={`/show/${showA.slug}#box-office`} className="text-gray-300 hover:text-brand transition-colors">{grossesA.allTime.performances.toLocaleString()}</Link> : '—'}
-                valueB={grossesB?.allTime?.performances != null ? <Link href={`/show/${showB.slug}#box-office`} className="text-gray-300 hover:text-brand transition-colors">{grossesB.allTime.performances.toLocaleString()}</Link> : '—'}
+                valueA={grossesA?.allTime?.performances != null ? <Link href={`/show/${showA.slug}#box-office`} className="text-gray-300 hover:text-brand transition-colors">{grossesA.allTime.performances.toLocaleString()}</Link> : '–'}
+                valueB={grossesB?.allTime?.performances != null ? <Link href={`/show/${showB.slug}#box-office`} className="text-gray-300 hover:text-brand transition-colors">{grossesB.allTime.performances.toLocaleString()}</Link> : '–'}
               />
               {(grossesA?.allTime?.attendance != null || grossesB?.allTime?.attendance != null) && (
                 <Row
                   label="Tickets Sold"
-                  valueA={grossesA?.allTime?.attendance != null ? <Link href={`/show/${showA.slug}#box-office`} className="text-gray-300 hover:text-brand transition-colors">{formatNumber(grossesA.allTime.attendance)}</Link> : '—'}
-                  valueB={grossesB?.allTime?.attendance != null ? <Link href={`/show/${showB.slug}#box-office`} className="text-gray-300 hover:text-brand transition-colors">{formatNumber(grossesB.allTime.attendance)}</Link> : '—'}
+                  valueA={grossesA?.allTime?.attendance != null ? <Link href={`/show/${showA.slug}#box-office`} className="text-gray-300 hover:text-brand transition-colors">{formatNumber(grossesA.allTime.attendance)}</Link> : '–'}
+                  valueB={grossesB?.allTime?.attendance != null ? <Link href={`/show/${showB.slug}#box-office`} className="text-gray-300 hover:text-brand transition-colors">{formatNumber(grossesB.allTime.attendance)}</Link> : '–'}
                 />
               )}
             </>

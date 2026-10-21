@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: 'Embed CriticScore badges on your site. Copy-paste snippets for iframes and SVG images. Free to use with attribution.',
   alternates: { canonical: `${BASE_URL}/partners` },
   openGraph: {
-    title: 'Partner Embeds — Broadway Scorecard',
+    title: 'Partner Embeds | Broadway Scorecard',
     description: 'Embed CriticScore badges on your site. Free to use with attribution.',
     url: `${BASE_URL}/partners`,
     images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],

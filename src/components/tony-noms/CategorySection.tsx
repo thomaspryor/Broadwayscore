@@ -37,8 +37,8 @@ type ShowGrade = TonyCategory['shows'][number]['audienceGrade'];
 
 function AudienceBox({ grade, size }: { grade: ShowGrade; size: 'sm' | 'md' }) {
   const boxClass = size === 'md' ? BOX_MD : BOX_SM;
-  if (!grade || grade.grade === '—') {
-    return <div className={`${boxClass} bg-surface-overlay text-gray-500`}>—</div>;
+  if (!grade || grade.grade === '–') {
+    return <div className={`${boxClass} bg-surface-overlay text-gray-500`}>–</div>;
   }
   const isAplus = grade.grade === 'A+';
   return (
@@ -75,7 +75,7 @@ function OddsCol({ odds, change, size }: { odds: number | null | undefined; chan
   return (
     <div className="flex-shrink-0 w-11 lg:w-[68px] flex items-center justify-center">
       <div className={`flex flex-col items-center justify-center gap-0.5 bg-surface-overlay rounded-lg ${boxClass}`}>
-        <span className={numClass}>{odds != null ? `${Math.round(odds * 100)}%` : '—'}</span>
+        <span className={numClass}>{odds != null ? `${Math.round(odds * 100)}%` : '–'}</span>
         <span className={`text-[8px] lg:text-[10px] font-semibold leading-none ${changeDisplay != null ? (change! > 0 ? 'text-emerald-400' : 'text-red-400') : odds != null ? 'text-white/20' : 'text-transparent'}`}>
           {changeDisplay != null ? `${change! > 0 ? '▲' : '▼'}${changeDisplay}%` : odds != null ? '–' : '–'}
         </span>
@@ -96,7 +96,7 @@ function OurPickBox({ winProbability, isWinner }: { winProbability: number | nul
         <div
           className="w-11 h-11 lg:w-[68px] lg:h-[68px] rounded-lg flex items-center justify-center border border-amber-400/15 text-amber-400/40 text-sm lg:text-xl font-bold"
           style={baseTintStyle}
-        >—</div>
+        >–</div>
       </div>
     );
   }
@@ -134,7 +134,7 @@ function PredictedWinnerPill() {
 const PRECURSOR_LABELS: Record<string, string> = { DL: 'Drama League', OCC: 'Outer Critics Circle', DD: 'Drama Desk' };
 
 function PrecursorChips({ wins }: { wins?: string[] }) {
-  if (!wins || wins.length === 0) return <span className="text-xs text-gray-600">—</span>;
+  if (!wins || wins.length === 0) return <span className="text-xs text-gray-600">–</span>;
   return (
     <div className="flex flex-col items-start gap-1">
       {wins.map(w => (
@@ -627,7 +627,7 @@ export function CategorySection({ category, winProbs, ceremonyDate, sectionId, d
                 <Link href={`/show/${item.slug}`} className="text-gray-300 hover:text-white font-medium">
                   {item.title}
                 </Link>
-                <span className="text-gray-500"> — {item.note}</span>
+                <span className="text-gray-500"> – {item.note}</span>
               </li>
             ))}
           </ul>

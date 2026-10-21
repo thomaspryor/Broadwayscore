@@ -45,7 +45,7 @@ export default function AboutPage() {
         <div className="card p-6 sm:p-8 mb-6">
           <div className="space-y-5 text-gray-300 leading-relaxed text-lg">
             <p className="text-sm font-semibold uppercase tracking-wide text-brand">
-              {AUTHOR.name} &mdash; {AUTHOR.jobTitle}
+              {AUTHOR.name} – {AUTHOR.jobTitle}
             </p>
             <p>
               I&apos;m Tom Pryor &mdash; I built Broadway Scorecard™ because I see 60+ shows a year and got tired

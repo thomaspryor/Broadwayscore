@@ -102,7 +102,7 @@ const surfaceSwatches: Swatch[] = [
 ];
 
 const brandSwatches: Swatch[] = [
-  { name: 'Brand Gold', hex: '#d4a574', usage: 'Primary — buttons, links, logo', textOn: 'light' },
+  { name: 'Brand Gold', hex: '#d4a574', usage: 'Primary: buttons, links, logo', textOn: 'light' },
   { name: 'Brand Gold Hover', hex: '#c4956a', usage: 'Hover state', textOn: 'light' },
   { name: 'Brand Gold Light', hex: '#e4b584', usage: 'Light emphasis', textOn: 'light' },
   { name: 'West End Pink', hex: '#f472b6', usage: 'WE market accent', textOn: 'light' },
@@ -242,19 +242,19 @@ export default function BrandPageClient() {
           <Section title="Typography" description="Inter for everything. Extrabold for headlines, Regular for body.">
             <div className="rounded-card bg-surface-raised border border-white/5 p-6 space-y-4">
               <div>
-                <div className="text-xs font-semibold uppercase text-gray-400 mb-2 tracking-wide">Headline — Inter Extrabold</div>
+                <div className="text-xs font-semibold uppercase text-gray-400 mb-2 tracking-wide">Headline: Inter Extrabold</div>
                 <div className="text-4xl font-extrabold">The 2025-26 Season</div>
               </div>
               <div>
-                <div className="text-xs font-semibold uppercase text-gray-400 mb-2 tracking-wide">Title — Inter Bold</div>
+                <div className="text-xs font-semibold uppercase text-gray-400 mb-2 tracking-wide">Title: Inter Bold</div>
                 <div className="text-2xl font-bold">Critical Gold</div>
               </div>
               <div>
-                <div className="text-xs font-semibold uppercase text-gray-400 mb-2 tracking-wide">Body — Inter Regular</div>
+                <div className="text-xs font-semibold uppercase text-gray-400 mb-2 tracking-wide">Body: Inter Regular</div>
                 <div className="text-base text-gray-300">Broadway Scorecard aggregates every critic review into a single 0-100 score per show, so you always know what&apos;s worth seeing.</div>
               </div>
               <div>
-                <div className="text-xs font-semibold uppercase text-gray-400 mb-2 tracking-wide">Caption — Inter Medium Small</div>
+                <div className="text-xs font-semibold uppercase text-gray-400 mb-2 tracking-wide">Caption: Inter Medium Small</div>
                 <div className="text-xs font-medium uppercase tracking-wide text-gray-500">MUSICAL · PREVIEWS · $89</div>
               </div>
             </div>
@@ -273,7 +273,7 @@ export default function BrandPageClient() {
                   <span className="flex-shrink-0 w-6 h-6 rounded-full bg-brand text-white text-xs font-bold flex items-center justify-center">1</span>
                   <div>
                     <div className="font-semibold text-white">Open Canva → Brand Hub</div>
-                    <div className="text-gray-400 mt-1">In Canva, click <span className="text-gray-300 font-medium">Brand</span> in the left sidebar → <span className="text-gray-300 font-medium">Brand Kits</span> → pick or create a kit. Requires Canva Pro or Teams. (Exact path may vary — search &quot;Brand Kit&quot; from the Canva homepage if you can&apos;t find it.)</div>
+                    <div className="text-gray-400 mt-1">In Canva, click <span className="text-gray-300 font-medium">Brand</span> in the left sidebar → <span className="text-gray-300 font-medium">Brand Kits</span> → pick or create a kit. Requires Canva Pro or Teams. (Exact path may vary; search &quot;Brand Kit&quot; from the Canva homepage if you can&apos;t find it.)</div>
                   </div>
                 </li>
                 <li className="flex gap-3">
@@ -322,11 +322,11 @@ export default function BrandPageClient() {
         <div id="buffer">
           <Section
             title="Buffer"
-            description="Social post scheduling. Content Library doesn't support brand kits — use downloads below."
+            description="Social post scheduling. Content Library doesn't support brand kits. Use downloads below."
           >
             <div className="rounded-card bg-surface-raised border border-white/5 p-6 text-sm space-y-3">
               <p className="text-gray-300">
-                Buffer doesn&apos;t have a Brand Kit feature — its Content Library is for saving ready-to-schedule posts, not tokens.
+                Buffer doesn&apos;t have a Brand Kit feature. Its Content Library is for saving ready-to-schedule posts, not tokens.
               </p>
               <p className="text-gray-400">
                 <strong className="text-white">Workflow:</strong> Design posts in Canva (with the Brand Kit above applied), export as PNG, upload to Buffer&apos;s Content Library as templates you can reuse across Twitter, Instagram, etc.
@@ -402,7 +402,7 @@ export default function BrandPageClient() {
         <div id="attribution">
           <Section
             title="CriticScore™ Lockup"
-            description="How to display the score when embedding on another site. The score and its tier travel as a unit — never split them."
+            description="How to display the score when embedding on another site. The score and its tier travel as a unit. Never split them."
           >
             <div className="rounded-card bg-surface-raised border border-white/5 p-6 mb-4">
               <div className="text-xs font-semibold uppercase text-gray-400 mb-4 tracking-wide">Required lockup</div>
@@ -423,10 +423,10 @@ export default function BrandPageClient() {
                 <strong className="text-white">The four required elements</strong> for any external display of a BWSC score:
               </p>
               <ol className="list-decimal list-inside space-y-2 pl-2">
-                <li><strong className="text-white">Score number</strong> — rounded, as a whole integer (e.g. 88)</li>
-                <li><strong className="text-white">Tier color</strong> — the badge background must match the tier: gold (83+), green (75-82), teal (65-74), orange (55-64), red (&lt;55)</li>
-                <li><strong className="text-white">Tier label</strong> — &ldquo;Critical Gold,&rdquo; &ldquo;Recommended,&rdquo; &ldquo;Worth Seeing,&rdquo; &ldquo;Mixed,&rdquo; or &ldquo;Critical Miss&rdquo;</li>
-                <li><strong className="text-white">Attribution</strong> — the text <span className="font-mono text-xs bg-surface-overlay px-2 py-0.5 rounded">CriticScore™ by Broadway Scorecard</span> in brand gold <code className="text-xs text-brand">#d4a574</code>, linking to broadwayscorecard.com</li>
+                <li><strong className="text-white">Score number</strong>: rounded, as a whole integer (e.g. 88)</li>
+                <li><strong className="text-white">Tier color</strong>: the badge background must match the tier: gold (83+), green (75-82), teal (65-74), orange (55-64), red (&lt;55)</li>
+                <li><strong className="text-white">Tier label</strong>: &ldquo;Critical Gold,&rdquo; &ldquo;Recommended,&rdquo; &ldquo;Worth Seeing,&rdquo; &ldquo;Mixed,&rdquo; or &ldquo;Critical Miss&rdquo;</li>
+                <li><strong className="text-white">Attribution</strong>: the text <span className="font-mono text-xs bg-surface-overlay px-2 py-0.5 rounded">CriticScore™ by Broadway Scorecard</span> in brand gold <code className="text-xs text-brand">#d4a574</code>, linking to broadwayscorecard.com</li>
               </ol>
               <p>
                 <strong className="text-white">Not allowed:</strong> stripping the tier color, normalizing to a different scale (e.g. /5 stars), removing the attribution, or showing a stale cached score. Partners should use the live{' '}
@@ -589,7 +589,7 @@ function AssetTile({ asset }: { asset: Asset }) {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={href}
-          alt={`${asset.label}${asset.sub ? ' — ' + asset.sub : ''}`}
+          alt={`${asset.label}${asset.sub ? ' – ' + asset.sub : ''}`}
           loading="lazy"
           className="max-w-full max-h-full object-contain"
         />

@@ -24,7 +24,7 @@ interface ShowCommercialData {
 }
 
 function formatCurrency(amount: number | null | undefined): string {
-  if (amount === null || amount === undefined) return '—';
+  if (amount === null || amount === undefined) return '–';
   if (amount >= 1000000) {
     return `$${(amount / 1000000).toFixed(1)}M`;
   }

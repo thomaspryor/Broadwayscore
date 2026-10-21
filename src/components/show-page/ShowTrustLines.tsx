@@ -72,9 +72,9 @@ export default function ShowTrustLines({ show }: { show: ComputedShow }) {
                 // No tour has a score yet: its page exists for the dates, so
                 // say reviews are on the way rather than promising a score.
                 if (!tours.some(isTourScored)) {
-                  return <>{' '}— {tours.length > 1 ? 'the national tours are' : 'the national tour is'} {tours.every(x => x.status === 'upcoming') ? 'announced' : 'on the road'}, with critic reviews coming in.{' '}</>;
+                  return <>{' '}– {tours.length > 1 ? 'the national tours are' : 'the national tour is'} {tours.every(x => x.status === 'upcoming') ? 'announced' : 'on the road'}, with critic reviews coming in.{' '}</>;
                 }
-                return <>{' '}— {describeTourScores(tours.filter(isTourScored).length, tours.length)}.{' '}</>;
+                return <>{' '}– {describeTourScores(tours.filter(isTourScored).length, tours.length)}.{' '}</>;
               })()}
               {tours.map((tour, i) => (
                 <span key={tour.id}>
@@ -173,7 +173,7 @@ export default function ShowTrustLines({ show }: { show: ComputedShow }) {
           <p className="text-xs sm:text-sm mb-1 leading-relaxed text-emerald-300/90" data-testid="tour-stops-line">
             <span className="font-semibold">Tour stops</span>
             <span className="text-gray-400">
-              {' '}—{' '}
+              {' '}–{' '}
               {stops.map((stop, i) => (
                 <span key={stop.id}>
                   <Link href={`/show/${stop.slug}`} className="text-emerald-300 underline decoration-emerald-300/40 underline-offset-2 hover:text-emerald-200" data-testid="tour-stop-link">

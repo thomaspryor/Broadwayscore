@@ -63,9 +63,9 @@ export default function CreativeDetailClient({
         {/* Stats */}
         <StatGrid className="mb-4" stats={[
           { label: 'Shows', value: profile.showCount },
-          { label: 'Avg Score', value: profile.avgScore !== null ? Math.round(profile.avgScore) : '—', dimmed: profile.avgScore === null },
-          { label: 'Highest', value: profile.highScore !== null ? Math.round(profile.highScore) : '—', dimmed: profile.highScore === null },
-          { label: 'Lowest', value: profile.lowScore !== null ? Math.round(profile.lowScore) : '—', dimmed: profile.lowScore === null },
+          { label: 'Avg Score', value: profile.avgScore !== null ? Math.round(profile.avgScore) : '–', dimmed: profile.avgScore === null },
+          { label: 'Highest', value: profile.highScore !== null ? Math.round(profile.highScore) : '–', dimmed: profile.highScore === null },
+          { label: 'Lowest', value: profile.lowScore !== null ? Math.round(profile.lowScore) : '–', dimmed: profile.lowScore === null },
         ]} />
 
         {/* Rank */}

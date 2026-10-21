@@ -110,7 +110,7 @@ export function TrackRecord({ summaries, seasonCount }: Props) {
                   {CAT_COLS.map(c => {
                     const h = sum.categoryHighlights.find(x => x.category === c);
                     if (!h || !h.winnerTitle) {
-                      return <td key={c} className="text-center text-gray-600 py-2 px-1">&mdash;</td>;
+                      return <td key={c} className="text-center text-gray-600 py-2 px-1">–</td>;
                     }
                     const hit = h.topShowTitle === h.winnerTitle;
                     return (

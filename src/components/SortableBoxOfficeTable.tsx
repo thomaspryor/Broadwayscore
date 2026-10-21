@@ -36,7 +36,7 @@ interface ShowGrossesData {
 }
 
 function formatCurrency(amount: number | null | undefined): string {
-  if (amount === null || amount === undefined) return '—';
+  if (amount === null || amount === undefined) return '–';
   if (amount >= 1000000000) {
     return `$${(amount / 1000000000).toFixed(1)}B`;
   }
@@ -50,12 +50,12 @@ function formatCurrency(amount: number | null | undefined): string {
 }
 
 function formatNumber(num: number | null | undefined): string {
-  if (num === null || num === undefined) return '—';
+  if (num === null || num === undefined) return '–';
   return num.toLocaleString();
 }
 
 function formatPercent(pct: number | null | undefined): string {
-  if (pct === null || pct === undefined) return '—';
+  if (pct === null || pct === undefined) return '–';
   return `${pct.toFixed(1)}%`;
 }
 
@@ -331,7 +331,7 @@ export function ThisWeekTable({ data, extraColumns = NO_EXTRA_COLUMNS, hideColum
                   />
                 </td>
                 <td className="py-3 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap align-middle">
-                  {item.grosses?.thisWeek?.atp ? `$${item.grosses.thisWeek.atp.toFixed(0)}` : '—'}
+                  {item.grosses?.thisWeek?.atp ? `$${item.grosses.thisWeek.atp.toFixed(0)}` : '–'}
                 </td>
                 {shown('attendance') && (
                   <td className="py-3 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap align-middle">

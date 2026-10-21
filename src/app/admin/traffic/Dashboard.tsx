@@ -23,7 +23,7 @@ interface Payload {
   cached?: boolean;
 }
 
-const fmtN = (n: number | null | undefined) => (n == null ? '—' : Math.round(n).toLocaleString('en-US'));
+const fmtN = (n: number | null | undefined) => (n == null ? '–' : Math.round(n).toLocaleString('en-US'));
 const fmtDay = (iso: string) => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
 const fmtMonth = (ym: string) => {
   const d = new Date(ym + '-01T00:00:00Z');

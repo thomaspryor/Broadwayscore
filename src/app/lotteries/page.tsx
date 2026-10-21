@@ -245,17 +245,17 @@ export default function LotteriesPage() {
                       cheapestLottery.lotteryData?.lottery?.price,
                     'broadway'
                   )
-                : '—'}
+                : '–'}
             </div>
             <div className="text-xs text-gray-500 mt-1">Cheapest Lottery</div>
-            <div className="text-xs text-gray-400 truncate">{cheapestLottery?.show.title ?? '—'}</div>
+            <div className="text-xs text-gray-400 truncate">{cheapestLottery?.show.title ?? '–'}</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-white">{showsWithLottery.length}</div>
             <div className="text-xs text-gray-500 mt-1">Shows with Lotteries</div>
           </div>
           <div className="card p-4 text-center">
-            <div className="text-2xl font-bold text-gray-300">{avgPrice !== null ? formatTicketPrice(Math.round(avgPrice), 'broadway') : '—'}</div>
+            <div className="text-2xl font-bold text-gray-300">{avgPrice !== null ? formatTicketPrice(Math.round(avgPrice), 'broadway') : '–'}</div>
             <div className="text-xs text-gray-500 mt-1">Avg Lottery Price</div>
           </div>
         </div>

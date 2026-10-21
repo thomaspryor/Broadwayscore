@@ -140,7 +140,7 @@ export async function GET(request: NextRequest) {
     // em-dash label (Codex adversarial review, BRO-3555).
     const tierId = hasScoreVal && rawId && Object.prototype.hasOwnProperty.call(AWARD_RING_COLORS, rawId) ? rawId : 'eligible';
     const ring = AWARD_RING_COLORS[tierId];
-    const label = hasScoreVal && scoreRaw > 0 ? String(scoreRaw) : '—';
+    const label = hasScoreVal && scoreRaw > 0 ? String(scoreRaw) : '–';
     const size = clampInt(sp.get('size'), 40, 8, 200);
     const fontSize = clampInt(sp.get('fontSize'), Math.round(size * 0.36), 4, 120);
     const px = size * RENDER_SCALE;

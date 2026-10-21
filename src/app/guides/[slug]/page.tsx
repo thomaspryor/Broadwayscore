@@ -389,7 +389,7 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
                         tier1And2Count={(show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0)}
                         labelTbd
                       />
-                      {audienceGrade && audienceGrade.grade !== '—' && (
+                      {audienceGrade && audienceGrade.grade !== '–' && (
                         <AudienceChip grade={audienceGrade} />
                       )}
                     </div>

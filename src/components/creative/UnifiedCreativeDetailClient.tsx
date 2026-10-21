@@ -76,11 +76,11 @@ export default function UnifiedCreativeDetailClient({
             subValueColor: '#fbbf24',
           }] : []),
           ...(profile.scoredShowCount >= 2 ? [
-            { label: 'Avg Score', value: profile.avgScore !== null ? Math.round(profile.avgScore) : '—' as string | number, dimmed: profile.avgScore === null },
-            { label: 'Highest', value: profile.highScore !== null ? Math.round(profile.highScore) : '—' as string | number, dimmed: profile.highScore === null },
-            { label: 'Lowest', value: profile.lowScore !== null ? Math.round(profile.lowScore) : '—' as string | number, dimmed: profile.lowScore === null },
+            { label: 'Avg Score', value: profile.avgScore !== null ? Math.round(profile.avgScore) : '–' as string | number, dimmed: profile.avgScore === null },
+            { label: 'Highest', value: profile.highScore !== null ? Math.round(profile.highScore) : '–' as string | number, dimmed: profile.highScore === null },
+            { label: 'Lowest', value: profile.lowScore !== null ? Math.round(profile.lowScore) : '–' as string | number, dimmed: profile.lowScore === null },
           ] : profile.scoredShowCount === 1 ? [
-            { label: 'Score', value: profile.avgScore !== null ? Math.round(profile.avgScore) : '—' as string | number, dimmed: profile.avgScore === null, subtitle: '1 scored show' },
+            { label: 'Score', value: profile.avgScore !== null ? Math.round(profile.avgScore) : '–' as string | number, dimmed: profile.avgScore === null, subtitle: '1 scored show' },
           ] : []),
         ]} />
 

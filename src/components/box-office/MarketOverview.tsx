@@ -133,7 +133,7 @@ export default function MarketOverview({ page }: { page: MarketPage }) {
         <Tile label="This week" value={money(t.gross, 1)}>
           <Change pct={t.lastWeekPct} label="vs last week" />
         </Tile>
-        <Tile label="Same week last year" value={t.lastYearGross != null ? money(t.lastYearGross, 1) : '—'}>
+        <Tile label="Same week last year" value={t.lastYearGross != null ? money(t.lastYearGross, 1) : '–'}>
           <Change pct={t.lastYearPct} label="now vs then" />
         </Tile>
         {t.seasonGross != null && (
