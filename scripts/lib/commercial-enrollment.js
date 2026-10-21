@@ -20,13 +20,28 @@ const { nonprofitForVenue } = require('./nonprofit-venues');
 const ENROLLABLE_STATUSES = ['announced', 'upcoming', 'previews', 'open'];
 
 
-function findUnenrolled(shows, commercialShows) {
+// Slugs a still-pending plan will create itself (add-commercial-entry refuses an
+// existing key, so a stub made first would silently drop the plan's designation,
+// nonprofitOrg and capitalization). Enrollment leaves those slugs to the plan.
+function pendingAddCommercialSlugs(plans) {
+  const out = new Set();
+  for (const plan of plans || []) {
+    if (!plan || plan.status !== 'pending') continue;
+    for (const a of (plan.plan && plan.plan.actions) || []) {
+      if (a && a.type === 'add-commercial-entry' && a.slug) out.add(a.slug);
+    }
+  }
+  return out;
+}
+
+function findUnenrolled(shows, commercialShows, skipSlugs) {
   const have = commercialShows || {};
+  const skip = skipSlugs || new Set();
   const seen = new Set();
   const out = [];
   for (const show of shows || []) {
     if (!isCommercialScope(show) || !ENROLLABLE_STATUSES.includes(show.status)) continue;
-    if (!show.slug || seen.has(show.slug)) continue;
+    if (!show.slug || seen.has(show.slug) || skip.has(show.slug)) continue;
     // Same two keys commercial-queue.js looks up: the canonical slug, or an id-keyed legacy row.
     if (Object.prototype.hasOwnProperty.call(have, show.slug) || (show.id && Object.prototype.hasOwnProperty.call(have, show.id))) continue;
     seen.add(show.slug);
@@ -42,4 +57,4 @@ function nonprofitHouseCandidate(show) {
   return nonprofitForVenue(show && show.venue);
 }
 
-module.exports = { ENROLLABLE_STATUSES, findUnenrolled, nonprofitHouseCandidate };
+module.exports = { ENROLLABLE_STATUSES, findUnenrolled, pendingAddCommercialSlugs, nonprofitHouseCandidate };

@@ -46,3 +46,15 @@ test('venue spellings in shows.json resolve to their nonprofit, and the record c
   assert.equal(venueMatches(NP_VENUES['Second Stage Theater'], 'Hayes Theater'), true);
   assert.equal(venueMatches(NP_VENUES['Second Stage Theater'], 'Booth Theatre'), false);
 });
+
+test('a slug with a pending add-commercial-entry plan is left to the plan', () => {
+  const { pendingAddCommercialSlugs } = require('../../scripts/lib/commercial-enrollment.js');
+  const plans = [
+    { status: 'pending', plan: { actions: [{ type: 'add-commercial-entry', slug: 'x' }, { type: 'data-edit', slug: 'y' }] } },
+    { status: 'applied', plan: { actions: [{ type: 'add-commercial-entry', slug: 'z' }] } },
+  ];
+  const skip = pendingAddCommercialSlugs(plans);
+  assert.deepEqual([...skip], ['x']);
+  const shows = ['x', 'z'].map(slug => ({ id: slug + '-2027', slug, status: 'announced', category: 'broadway', market: 'broadway', type: 'play' }));
+  assert.deepEqual(findUnenrolled(shows, {}, skip).map(s => s.slug), ['z']);
+});
