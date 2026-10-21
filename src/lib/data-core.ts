@@ -28,7 +28,7 @@ import { getShowAwards } from './data-awards';
 import { BROWSE_PAGES, BrowsePageConfig, BrowseFilterContext, getAllBrowseSlugs as getBrowseSlugsFromConfig, getBrowsePageConfig } from '@/config/browse-pages';
 import { slugify as urlSlugify } from '../../scripts/lib/url-slug';
 import { broadwayTheaterNames, stubTheaterName, HIDDEN_LONDON_IDS } from '../../scripts/lib/page-name-sources';
-import { loadCoverageFloorInputs, coverageFloorOptsForShow } from '../../scripts/lib/coverage-floor-inputs';
+import { buildCoverageFloorInputs, coverageFloorOptsForShow } from '../../scripts/lib/coverage-floor-inputs';
 import { resolveNameRedirect, type SlugRedirectMap } from './slug-redirects';
 // Import raw data (loaded at build time for static generation)
 import showsData from '../../data/shows.json';
@@ -78,7 +78,19 @@ for (const r of reviews) {
 // and acks. Fail-open: a missing/unreadable audit file (or
 // COVERAGE_GATE_DISABLED) just means every show gets no
 // `cov`/`scorePublicSince`, so existing TBD behavior is unchanged.
-const coverageFloorInputs = loadCoverageFloorInputs(path.join(process.cwd(), 'data'));
+// Literal file paths only, never data/ itself: Next's file tracer bundles any
+// directory a server module names, and passing path.join(process.cwd(), 'data')
+// to the loader put all of data/ (~290 MB) into every server function; Vercel
+// refused the deploy (2026-10-21). data/audit/** is excluded from tracing in
+// next.config.js. src-no-traced-data-dir.test.mjs guards this.
+function readAuditJson(file: string): unknown {
+  try { return JSON.parse(fs.readFileSync(file, 'utf-8')); } catch { return null; }
+}
+const coverageFloorInputs = buildCoverageFloorInputs({
+  gapAudit: readAuditJson(path.join(process.cwd(), 'data', 'audit', 'show-review-gap.json')),
+  stamps: readAuditJson(path.join(process.cwd(), 'data', 'audit', 'score-public-since.json')),
+  acks: readAuditJson(path.join(process.cwd(), 'data', 'audit', 't1-coverage-ack.json')),
+});
 
 // Cache for computed shows
 let computedShowsCache: ComputedShow[] | null = null;

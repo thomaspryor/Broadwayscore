@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5809",
   "planId": "1ed7d641-83d6-4bd9-9fbb-2fe6b07d8fb9",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -288,5 +288,34 @@
         "description": "Announced show carries 1940s ballet-era cast (Russian Art Singer, American Ballet), not the unopened musical; cleared (BRO-5809)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T03:11:00.298Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for private-lives-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for let-the-good-times-roll-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for is-anything-ok-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for our-house-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for midnight-in-the-garden-of-good-and-evil-2024"
+    }
+  ],
+  "executedIn": "ci"
 }

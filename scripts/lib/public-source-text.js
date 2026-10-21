@@ -153,8 +153,9 @@ const CAPITALIZATION_BASES = ['maximum', 'sold', 'reported'];
 // snapshot ("$400,000 sold by then") is not a raise.
 const SOLD_SOURCE_RE = /(?<!\bnot )\bfully sold\b|\ball of it sold\b|\$[\d,.]+(?:\s?(?:M|million))? sold (?:to|of)\b|(?<!\b(?:max(?:imum)?|min(?:imum)?)(?:[\s-]+total)?[\s-]+)\b(?:offering|entity) (?:was |is )?capitalized at \$(?!\d[\d,]*(?:\.\d+)?(?:\s?(?:M|million))?\s*(?:\(max(?:imum)? cap\)|max(?:imum)?\b(?!\s+capitali)))/i;
 // A ceiling: "capitalized for up to $18 million", "an offering of up to $20M",
-// "total offering amount $5,500,000", "(max cap)", "maximum capitalization".
-const MAXIMUM_SOURCE_RE = /\bup to \$|\btotal offering(?: amount)? (?:of )?\$|\(max(?:imum)? cap\)|\bmaximum (?:capitali[sz]ation|offering)\b|\bForm D maximum\b/i;
+// "total offering amount $5,500,000", "(max cap)", "maximum capitalization",
+// "a maximum of $9.5 million" (Broadway Journal on Titanique, BRO-5647).
+const MAXIMUM_SOURCE_RE = /\bup to \$|\bmaximum of \$|\btotal offering(?: amount)? (?:of )?\$|\(max(?:imum)? cap\)|\bmaximum (?:capitali[sz]ation|offering)\b|\bForm D maximum\b/i;
 
 /**
  * The basis a capitalization source's wording states, else null. Writers use
