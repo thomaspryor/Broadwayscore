@@ -12,6 +12,7 @@ const {
   staleAutomatedTextVerdicts,
   neutralizeStaleAutomatedTextVerdict,
 } = require('../../scripts/lib/stale-automated-text-verdict.js');
+const { processRecord } = require('../../scripts/clear-stale-automated-text-verdicts.js');
 
 const BODY = 'A sharp, funny production with a standout lead performance. '.repeat(50);
 
@@ -30,15 +31,25 @@ function rejectedStub(over = {}) {
 test('refetch that upgrades to complete text after an ensemble rejection is re-queued', () => {
   const d = rejectedStub();
   assert.deepEqual(staleAutomatedTextVerdicts(d), ['rejection']);
-  neutralizeStaleAutomatedTextVerdict(d, new Date('2026-10-21T00:00:00Z'));
+  neutralizeStaleAutomatedTextVerdict(d, '2026-10-21T00:00:00.000Z');
   assert.equal(d.rejectionReason ?? null, null);
   assert.equal(d.rejectedBy ?? null, null);
   assert.equal(d.priorAutomatedTextVerdicts.at(-1).rejectionReason, 'not_a_review');
 });
 
+test('the sweep raises needsRescore for a scoreable stale rejection', () => {
+  const d = rejectedStub();
+  const show = { id: 'x-2024', title: 'X', openingDate: '2024-03-01', status: 'closed' };
+  const row = processRecord({ data: d, show, path: '/tmp/x-2024/talkinbroadway--howard-miller.json', rel: 'x-2024/talkinbroadway--howard-miller.json', kinds: ['rejection'] }, new Date('2026-10-21T00:00:00Z'));
+  assert.equal(row.changed, true);
+  assert.equal(d.needsRescore, true);
+  assert.equal(d.rejectionReason ?? null, null);
+});
+
 test('a rejection made after the fetch, or on a still-short body, stays', () => {
   assert.deepEqual(staleAutomatedTextVerdicts(rejectedStub({ rejectedAt: '2026-10-02T00:00:00Z' })), []);
-  assert.deepEqual(staleAutomatedTextVerdicts(rejectedStub({ fullText: 'short teaser', contentTier: 'excerpt' })), []);
+  assert.deepEqual(staleAutomatedTextVerdicts(rejectedStub({ fullText: 'short teaser' })), []);
+  assert.deepEqual(staleAutomatedTextVerdicts(rejectedStub({ contentTier: 'excerpt' })), []);
 });
 
 test('a human verdict is never re-queued', () => {
