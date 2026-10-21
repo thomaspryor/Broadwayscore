@@ -62,7 +62,7 @@ function londonShows(shows) {
   );
 }
 
-/** getOffBroadwayShows(). */
+/** isOffBroadwayShow() (opera included, as in getAllOffBroadwayTheaters), NOT getOffBroadwayShows(), which excludes opera (BRO-5854). */
 function offBroadwayShows(shows) {
   return shows.filter((s) => s && !s._devOnly && s.category === 'off-broadway');
 }

@@ -30,5 +30,6 @@ test('off-broadway-archive.json has no opera rows', () => {
 test('Met venue page keeps its opera productions in the theater index', () => {
   const met = getAllOffBroadwayTheaters().find(t => /metropolitan opera/i.test(t.name || ''));
   assert.ok(met, 'Met theater present');
-  assert.ok(met!.showCount >= getOperaShows().length, 'venue showCount includes opera');
+  assert.ok(getOperaShows().some(o => o.venue === met!.name), 'fixture: an opera plays the Met');
+  assert.ok(met!.allShows.some(s => s.type === 'opera'), 'venue lists its opera productions');
 });
