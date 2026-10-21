@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T16:00:12.170Z",
+  "generatedAt": "2026-10-21T19:02:31.223Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -184,7 +184,11 @@
     },
     {
       "outletId": "plays-international",
-      "error": "Timeout fetching https://playsinternational.org.uk/feed/"
+      "error": "AggregateError"
+    },
+    {
+      "outletId": "viewfromthegods",
+      "error": "AggregateError"
     },
     {
       "outletId": "theartsdispatch",
@@ -199,62 +203,17 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 727,
-  "matchedGaps": 7,
+  "itemsScanned": 717,
+  "matchedGaps": 2,
   "possibleGaps": 4,
   "gaps": [
     {
-      "showId": "copperfield-the-new-musical-off-broadway-2026",
-      "title": "Copperfield! The New Musical",
+      "showId": "some-woman-west-end-2026",
+      "title": "Some Woman",
       "level": "matched",
-      "outletId": "theater-pizzazz",
-      "url": "https://theaterpizzazz.com/copperfield-the-new-musical-a-wonderfully-entertaining-version-of-the-saga/",
-      "headline": "&#8216;Copperfield  &#8211; The New Musical&#8217; &#8211; A Wonderfully Entertaining Version of the Saga",
-      "publishDate": "2026-10-20"
-    },
-    {
-      "showId": "copperfield-the-new-musical-off-broadway-2026",
-      "title": "Copperfield! The New Musical",
-      "level": "matched",
-      "outletId": "off-off-online",
-      "url": "https://www.offoffonline.com/offoffonline/2026/10/16/copperfield-the-new-musical",
-      "headline": "Copperfield! The New Musical",
-      "publishDate": "2026-10-20"
-    },
-    {
-      "showId": "martin-guerre-west-end-2026",
-      "title": "Martin Guerre",
-      "level": "matched",
-      "outletId": "musical-theatre-review",
-      "url": "https://musicaltheatrereview.com/martin-guerre-the-old-vic/",
-      "headline": "Martin Guerre – The Old Vic",
-      "publishDate": "2026-10-21"
-    },
-    {
-      "showId": "martin-guerre-west-end-2026",
-      "title": "Martin Guerre",
-      "level": "matched",
-      "outletId": "the-spy-in-the-stalls",
-      "url": "https://thespyinthestalls.com/2026/10/martin-guerre/",
-      "headline": "MARTIN GUERRE★★★The Old Vic",
-      "publishDate": "2026-10-21"
-    },
-    {
-      "showId": "martin-guerre-west-end-2026",
-      "title": "Martin Guerre",
-      "level": "matched",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/martin-guerre-the-old-vic-london/",
-      "headline": "Martin Guerre – The Old Vic, London",
-      "publishDate": "2026-10-21"
-    },
-    {
-      "showId": "martin-guerre-west-end-2026",
-      "title": "Martin Guerre",
-      "level": "matched",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/review-martin-guerre-old-vic-theatre",
-      "headline": "Review: MARTIN GUERRE, Old Vic Theatre",
+      "outletId": "a-youngish-perspective",
+      "url": "https://ayoungishperspective.co.uk/2026/10/21/review-some-woman/",
+      "headline": "REVIEW: Some Woman",
       "publishDate": "2026-10-21"
     },
     {

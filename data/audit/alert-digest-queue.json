@@ -713,6 +713,20 @@
     "queuedAt": "2026-10-21T18:18:08.888Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:two-girls-off-broadway-2026",
+    "title": "Review gap — \"Two Girls\" missing 2 cited review(s)",
+    "description": "Two Girls (two-girls-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=two-girls-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T19:01:58.915Z"
+  },
+  {
     "conditionKey": "opening-night-publish-date-pre-opening:missing:king-of-the-yees-off-broadway-2026",
     "title": "Shipped review missing publishDate on King of the Yees",
     "description": "new-york-sun/Elysa Gardner SHIPPED with no publishDate — cannot confirm post-opening: https://www.nysun.com/article/lauren-yees-kind-of-theatrical-magic",
