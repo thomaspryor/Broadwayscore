@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5859-synopsis-3",
   "planId": "171dcb18-bb81-467e-92b5-1faf8ed2bfd2",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-21T19:23:30.643Z",
   "submitter": {
     "name": null,
@@ -33,5 +33,19 @@
         "description": "BRO-5859: synopsis was a 300-char cut ending \"forces bo…\"; cut back to the last full sentence"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T20:58:54.558Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for romeo-and-juliet-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for death-note-the-musical-off-west-end-2027"
+    }
+  ],
+  "executedIn": "ci"
 }
