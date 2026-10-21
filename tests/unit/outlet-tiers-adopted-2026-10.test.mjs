@@ -13,6 +13,7 @@ const CATEGORY = { nyc: "broadway", london: "west-end" };
 
 // [outletId, region, adopted tier], shared with scripts/verify-outlet-tiers-published.test.mjs
 const ADOPTED = require("./outlet-tiers-adopted-2026-10.json").rows;
+const BLOG_PLATFORMS = require("./blog-platform-tiers-adopted-2026-10.json");
 
 test("every adopted 2026-10 tier move resolves through getTier", () => {
   const wrong = ADOPTED.filter(([id, region, tier]) => getTier(id, { showCategory: CATEGORY[region] }) !== tier)
@@ -22,7 +23,17 @@ test("every adopted 2026-10 tier move resolves through getTier", () => {
 
 test("outlets the audit kept on purpose did not move", () => {
   assert.equal(getTier("broadwaynews", { showCategory: "broadway" }), 1);
-  assert.equal(getTier("medium", { showCategory: "broadway" }), 3);
   assert.equal(getTier("thereviewshub", { showCategory: "west-end" }), 2);
   assert.equal(getTier("londontheatre1", { showCategory: "west-end" }), 2);
+});
+
+// BRO-5801 supersedes the earlier Medium exception. The acceptance criteria
+// include all 45 hosted-blog outlet IDs under the 2026-10-20 owner rule.
+test("every BRO-5801 blog-platform tier move resolves in both regions", () => {
+  assert.equal(Object.keys(BLOG_PLATFORMS).length, 45);
+  for (const id of Object.keys(BLOG_PLATFORMS)) {
+    for (const [region, showCategory] of Object.entries(CATEGORY)) {
+      assert.equal(getTier(id, { showCategory }), 4, `${id} ${region}`);
+    }
+  }
 });

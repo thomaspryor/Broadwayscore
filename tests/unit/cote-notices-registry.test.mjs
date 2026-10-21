@@ -37,7 +37,7 @@ describe('Cote Notices outlet registry entry', () => {
     assert.strictEqual(entry.domain, 'davidcote1.substack.com');
   });
 
-  it('is tier 3', () => {
-    assert.strictEqual(entry.tier, 3);
+  it('is tier 4 under the hosted-blog owner rule (BRO-5801)', () => {
+    assert.strictEqual(entry.tier, 4);
   });
 });
