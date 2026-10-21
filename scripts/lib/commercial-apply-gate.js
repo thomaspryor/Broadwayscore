@@ -281,6 +281,13 @@ function buildCommercialEntry(entry, existing, opts = {}) {
     if (recoupedSource) result.recoupedSource = recoupedSource;
   }
   if (notes) result.notes = notes;
+  // A research label replaces an inferred classify-stale-closures label, so the
+  // overlay must not keep that inference's attribution (BRO-5639).
+  if (overlay && !isClaimAutoApply && designation && existing.classifiedBy === 'classify-stale-closures') {
+    delete result.classifiedBy;
+    delete result.classifiedAt;
+    delete result.classifiedReason;
+  }
   if (isClaimAutoApply && entry.recouped === true && recoupClaimDesignationAction(existing) === 'reset') {
     // The inferred "closed, no recoupment found" Fizzle is contradicted by a
     // verified recoupment: drop it and its inference stamps.

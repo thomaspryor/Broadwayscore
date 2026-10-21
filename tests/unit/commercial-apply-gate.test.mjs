@@ -579,6 +579,34 @@ describe('held-row release (BRO-5041)', () => {
     const rebuilt = gate.buildCommercialEntry(row, existing, {});
     assert.equal(rebuilt.modelRecouped, undefined, 'default path still rebuilds from scratch');
   });
+  it('BRO-5639: research apply onto a TBD record keeps costHistory and analyst fields', () => {
+    const existing = {
+      designation: 'TBD', capitalization: 4e6, capitalizationSource: 'SEC filing',
+      costHistory: [{ date: '2025-01-01', capitalization: 4e6 }],
+      analystRecoupPct: 55, analystSources: [{ url: 'https://analyst.example/1' }],
+      estimatedRecoupmentPct: [20, 40], sources: [{ url: 'https://a.example/1' }],
+    };
+    const row = { designation: 'Flop', recouped: false, sources: [{ url: 'https://b.example/2' }] };
+    const out = gate.buildCommercialEntry(row, existing, { mergeExisting: true });
+    assert.deepEqual(out.costHistory, existing.costHistory);
+    assert.equal(out.analystRecoupPct, 55);
+    assert.deepEqual(out.analystSources, existing.analystSources);
+    assert.deepEqual(out.estimatedRecoupmentPct, [20, 40]);
+    const dropped = gate.buildCommercialEntry(row, existing, {});
+    assert.equal(dropped.costHistory, undefined, 'from-scratch rebuild is what the caller must not use for existing records');
+  });
+  it('BRO-5639: a research label clears a stale classify-stale-closures attribution', () => {
+    const existing = { designation: 'Fizzle', classifiedBy: 'classify-stale-closures', classifiedAt: '2026-01-01', classifiedReason: 'closed, no recoupment found' };
+    const out = gate.buildCommercialEntry({ designation: 'Flop', recouped: false }, existing, { mergeExisting: true });
+    assert.equal(out.classifiedBy, undefined);
+    assert.equal(out.classifiedReason, undefined);
+    const kept = gate.buildCommercialEntry({ recouped: false }, existing, { mergeExisting: true });
+    assert.equal(kept.classifiedBy, 'classify-stale-closures', 'no new label, no clearing');
+  });
+  it('BRO-5639: apply-commercial-pending passes mergeExisting for every existing record', () => {
+    const src = fs.readFileSync(path.resolve('scripts/apply-commercial-pending.js'), 'utf8');
+    assert.match(src, /const mergeExisting = Boolean\(RELEASE_HELD \|\| existing\)/);
+  });
   it('CLI: --release-held applies only eligible held rows; plain --show and --all leave held rows pending', () => {
     const dir = fs.mkdtempSync(path.resolve('tests/.bro5041-'));
     try {
