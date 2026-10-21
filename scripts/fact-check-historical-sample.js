@@ -190,7 +190,7 @@ async function supportFor(rawAnswer) {
 // ---------- per-show checks ----------
 
 function synopsisPrompt(show, cohort) {
-  return `Use web search to learn what this theatre production is: "${show.title}", ${fc.COHORTS[cohort].market}, ${fc.seasonPhrase(show.season)}.
+  return `Use web search to learn what this theatre production is: "${show.title}", ${fc.cohortMarket(cohort)}, ${fc.seasonPhrase(show.season)}.
 Then judge this synopsis text a website shows for it:
 """${String(show.synopsis || '').slice(0, 2000)}"""
 Return JSON only: {"describesThisWork": true|false (is it about this show's story/subject, not a different show of a similar name), "otherProductionDetails": ["any person, theatre, city or year in the text that belongs to a different production of this title than the one above"], "marketingCopy": true|false (mostly praise, booking or star-billing pitch rather than describing the story), "note": "one short sentence", "source": "url of a page describing this production"}`;
