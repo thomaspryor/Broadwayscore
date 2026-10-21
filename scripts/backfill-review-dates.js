@@ -38,7 +38,6 @@ const axios = require('axios');
 require('./lib/load-env').loadEnv();
 
 const { fetchPage } = require('./lib/scraper');
-const { extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { runPublishDateBackfillTriage } = require('./lib/publish-date-backfill-triage');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -289,23 +288,9 @@ async function main() {
     console.log(`  URL: ${url.substring(0, 100)}`);
 
     try {
-      // Pre-check: try URL-based extraction first (free, no API credits)
-      // Not in --recheck-dates: the stored date is what is in doubt, and only
-      // the page's own date replaces it.
-      const urlDateResult = recheckDates ? null : extractDateFromUrl(url);
-      if (urlDateResult && urlDateResult.date) {
-        console.log(`  ✓ Date from URL (no fetch needed): ${urlDateResult.date}`);
-        if (!dryRun) {
-          const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-          data.publishDate = urlDateResult.date;
-          data.dateSource = `url-backfill-${urlDateResult.source}`;
-          const result = safeWriteReview(filePath, data);
-          if (result && result.wrote === false) { failed++; continue; }
-          touchedFiles.add(path.relative(baseDir, filePath));
-        }
-        extracted++;
-        continue;
-      }
+      // A date parsed from the URL is never stored as publishDate (BRO-5614, CLAUDE.md
+      // rule 3). The page's own date, found below, is the only source; a dateless
+      // file is dated at rebuild time by resolveBackfillPublishDate.
 
       // Pre-check: try text-based extraction from existing fullText (free)
       {

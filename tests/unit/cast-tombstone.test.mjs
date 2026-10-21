@@ -78,3 +78,39 @@ describe('cast-tombstone production-year guard (BRO-4171)', () => {
     assert.equal(isProductionYearMismatch(1967, null), false);
   });
 });
+
+// BRO-5809: announced shows have no openingDate, so a past-run IBDB cast slipped through.
+describe('expectedOpeningYear / castFileMismatchReason (BRO-5809)', () => {
+  const { expectedOpeningYear, castFileMismatchReason } = require('../../scripts/lib/cast-tombstone.js');
+  const announced = { id: 'private-lives-2025', status: 'announced', openingDate: null };
+  it('falls back to previews year, then the id year', () => {
+    assert.equal(expectedOpeningYear({ openingDate: '2026-03-01', id: 'x-2020' }), 2026);
+    assert.equal(expectedOpeningYear({ previewsStartDate: '2026-02-01', id: 'x' }), 2026);
+    assert.equal(expectedOpeningYear(announced), 2025);
+    assert.equal(expectedOpeningYear({ id: 'hamilton' }), null);
+  });
+  it('rejects the 1948 Private Lives cast for the 2025 announced show', () => {
+    assert.equal(castFileMismatchReason({ ibdbUrl: 'u', productionYear: 1948 }, announced), 'year-mismatch');
+  });
+  it('rejects an unverifiable IBDB file on an unopened show, accepts web-search and matching years', () => {
+    assert.equal(castFileMismatchReason({ ibdbUrl: 'u' }, announced), 'unverified-ibdb');
+    assert.equal(castFileMismatchReason({ source: 'web-search' }, announced), null);
+    assert.equal(castFileMismatchReason({ ibdbUrl: 'u', productionYear: 2025 }, announced), null);
+    assert.equal(castFileMismatchReason({ ibdbUrl: 'u' }, { id: 'a-2025', status: 'open', openingDate: '2025-04-01' }), null);
+  });
+});
+
+describe('BRO-5809 review follow-ups', () => {
+  const { shouldTombstone, expectedOpeningYear, castFileMismatchReason } = require('../../scripts/lib/cast-tombstone.js');
+  it('never tombstones a wrong-production result', () => {
+    assert.equal(shouldTombstone({ productionMismatch: true }), false);
+    assert.equal(shouldTombstone({}), true);
+  });
+  it('ignores the id year for shows that already opened or are running', () => {
+    assert.equal(expectedOpeningYear({ id: 'harry-potter-2021', status: 'open' }), null);
+    assert.equal(expectedOpeningYear({ id: 'x-2026', status: 'upcoming' }), 2026);
+  });
+  it('covers upcoming shows in the unverified-ibdb rule', () => {
+    assert.equal(castFileMismatchReason({ ibdbUrl: 'u' }, { id: 'x-2026', status: 'upcoming' }), 'unverified-ibdb');
+  });
+});

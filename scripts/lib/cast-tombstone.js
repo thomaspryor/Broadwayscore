@@ -5,6 +5,8 @@
 // decide whether to write an empty "tombstone" file (which permanently blocks
 // re-scraping, since default runs skip shows that already have a cast file).
 //
+// A wrong-production IBDB page (productionMismatch) is not a genuine empty either:
+// the right production may exist later, so never lock the show out (BRO-5809).
 // Tombstone ONLY a genuine empty — a page that loaded and parsed fine but whose
 // production has no cast on IBDB. NEVER tombstone a transient scrape failure
 // (page didn't load / wasn't HTML / didn't parse / network error): that would
@@ -12,7 +14,7 @@
 // cast this way on 2026-06-24 (a transient miss was tombstoned, then skipped on
 // every subsequent run until a forced re-scrape).
 function shouldTombstone(result) {
-  return !(result && result.fetchFailed);
+  return !(result && (result.fetchFailed || result.productionMismatch));
 }
 
 // Mass-wipe circuit breaker for --force backfill runs. A scraper regression
@@ -43,4 +45,36 @@ function isProductionYearMismatch(productionYear, openingYear) {
   return Math.abs(productionYear - openingYear) > 1;
 }
 
-module.exports = { shouldTombstone, shouldAbortMassWipe, parseIbdbProductionYear, isProductionYearMismatch };
+// Announced shows have no openingDate, so the year check above never fired and
+// a stored/searched IBDB URL for an earlier run supplied that cast (BRO-5809:
+// private-lives-2025 carried the 1948 Tallulah Bankhead cast). Fall back to the
+// previews year, then to the year the show id carries ("-2025").
+function expectedOpeningYear(show) {
+  if (!show) return null;
+  for (const d of [show.openingDate, show.previewsStartDate]) {
+    const m = /^((?:18|19|20)\d{2})/.exec(d || '');
+    if (m) return parseInt(m[1], 10);
+  }
+  // id year is only trusted while the show has not opened (ids of long runners drift from their dates)
+  if (show.status && show.status !== 'announced' && show.status !== 'upcoming') return null;
+  const idm = /-((?:19|20)\d{2})$/.exec(show.id || '');
+  return idm ? parseInt(idm[1], 10) : null;
+}
+
+// Why a data/cast file may NOT be copied onto its show, or null when it may.
+// 'year-mismatch': IBDB production year is more than a year off the show's year.
+// 'unverified-ibdb': an IBDB-sourced file for a show that has not opened and
+// whose file records no production year, so nothing proves which run it is.
+function castFileMismatchReason(castData, show) {
+  if (!castData || !show) return null;
+  const expected = expectedOpeningYear(show);
+  if (isProductionYearMismatch(castData.productionYear, expected)) return 'year-mismatch';
+  const unopened = !show.openingDate && (show.status === 'announced' || show.status === 'upcoming' || !show.status);
+  if (unopened && castData.ibdbUrl && !castData.productionYear) return 'unverified-ibdb';
+  return null;
+}
+
+module.exports = {
+  shouldTombstone, shouldAbortMassWipe, parseIbdbProductionYear, isProductionYearMismatch,
+  expectedOpeningYear, castFileMismatchReason,
+};

@@ -84,15 +84,13 @@ function isPlaceholderByline(criticName, outlet, opts = {}) {
 
 /**
  * isPlaceholderByline() applied to a review-text record, with the shared
- * "criticName must actually be present" guard both callers need: a record
+ * "criticName must actually be present" guard: a record
  * with NO criticName field at all (byline identity conveyed only by the
  * filename — every fixture in this codebase's tests, never a real corpus
  * record) is NOT judged a placeholder from data alone — isPlaceholderByline
  * treats an empty criticName as vacuously true, which would wrongly flag
- * every filename-only real byline. Centralizing this guard here (instead of
- * two separate ad-hoc copies in fix-circular-duplicate-pairs.js and
- * dedupe-same-url-bylines.js) is what keeps the two callers from silently
- * drifting out of sync (Codex adversarial review, card #1907).
+ * every filename-only real byline. Centralizing this guard keeps callers
+ * consistent (Codex adversarial review, card #1907).
  * Pure — no I/O.
  *
  * @param {{criticName?: string|null, outlet?: string|null}} data

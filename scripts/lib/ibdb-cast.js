@@ -408,7 +408,7 @@ async function lookupIBDBCast(title, options = {}) {
     // the same title (1967 revival vs 2026 revival) must not supply the cast.
     if (isProductionYearMismatch(castData.productionYear, options.openingYear)) {
       console.log(`  ⚠️  IBDB production year ${castData.productionYear} != show opening year ${options.openingYear} — wrong production, skipping`);
-      return { ...notFound, ibdbUrl: null, titleMismatch: true };
+      return { ...notFound, ibdbUrl: null, titleMismatch: true, productionMismatch: true };
     }
 
     // Title validation: skip when using a pre-known stored URL (already verified by prior lookup)
@@ -468,6 +468,7 @@ async function lookupIBDBCast(title, options = {}) {
       currentCast: castData.currentCast,
       replacements: castData.replacements,
       ibdbUrl: bestMatch.url,
+      productionYear: castData.productionYear || null,
       found: true
     };
 

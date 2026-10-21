@@ -1,133 +1,44 @@
 {
-  "updatedAt": "2026-10-21T02:49:29.009Z",
-  "processed": 603,
-  "failed": 365,
-  "successRate": "62.3%",
+  "updatedAt": "2026-10-21T03:06:07.019Z",
+  "processed": 8,
+  "failed": 9,
+  "successRate": "47.1%",
   "tierBreakdown": {
-    "playwright": 272,
-    "amp": 2,
-    "browserbase": 7,
-    "directCookies": 1,
-    "scrapingdog": 28,
-    "scrapingbee": 51,
-    "brightdata": 3,
+    "playwright": 7,
+    "amp": 0,
+    "browserbase": 1,
+    "directCookies": 0,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 233
+    "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-10-20T18:03:26.145Z",
+      "t": "2026-10-21T03:01:50.477Z",
       "event": "bb-session",
-      "session": "451494fd",
-      "url": "https://www.nytimes.com/2026/10/20/theater/king-of-the-yees-review.html"
-    },
-    {
-      "t": "2026-10-20T18:03:26.591Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-20T18:05:14.599Z",
-      "event": "bb-session",
-      "session": "8b80fdc4",
+      "session": "e5941158",
       "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
     },
     {
-      "t": "2026-10-20T18:06:14.843Z",
+      "t": "2026-10-21T03:02:50.202Z",
       "event": "bb-session",
-      "session": "83441f40",
+      "session": "f2df7a81",
       "url": "https://www.cbsnews.com/video/other-desert-cities-on-broadway-family-secrets-lai"
     },
     {
-      "t": "2026-10-20T18:07:36.506Z",
+      "t": "2026-10-21T03:05:46.086Z",
       "event": "bb-session",
-      "session": "17e9e1fb",
-      "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/"
+      "session": "d4444072",
+      "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07"
     },
     {
-      "t": "2026-10-20T18:09:40.853Z",
+      "t": "2026-10-21T03:05:53.940Z",
       "event": "bb-session",
-      "session": "f5e9bca1",
-      "url": "https://openingnight.online/midnight-off-broadway-review-todrick-halls-new-music"
-    },
-    {
-      "t": "2026-10-20T18:11:24.912Z",
-      "event": "bb-session",
-      "session": "7b0d0737",
-      "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
-    },
-    {
-      "t": "2026-10-20T18:11:33.028Z",
-      "event": "bb-session",
-      "session": "0759395b",
-      "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
-    },
-    {
-      "t": "2026-10-20T21:54:25.270Z",
-      "event": "bb-session",
-      "session": "8da71f93",
-      "url": "https://www.nytimes.com/2026/04/03/theater/burnout-paradise-treadmills-theater-o"
-    },
-    {
-      "t": "2026-10-20T21:54:26.139Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-20T21:54:43.733Z",
-      "event": "bb-session",
-      "session": "13e4da85",
-      "url": "https://www.nytimes.com/2026/04/03/theater/burnout-paradise-treadmills-theater-o"
-    },
-    {
-      "t": "2026-10-20T21:54:44.577Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-20T23:08:37.228Z",
-      "event": "bb-session",
-      "session": "4eb3e8d4",
-      "url": "https://www.nytimes.com/topic/organization/atlantic-theater-company?page=7"
-    },
-    {
-      "t": "2026-10-20T23:08:38.179Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-20T23:39:47.934Z",
-      "event": "bb-session",
-      "session": "ff5d5504",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-20T23:39:48.430Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-20T23:40:05.323Z",
-      "event": "bb-session",
-      "session": "a6a4dfa4",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-20T23:40:05.753Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-21T00:12:01.762Z",
-      "event": "bb-session",
-      "session": "74f76e03",
-      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
-    },
-    {
-      "t": "2026-10-21T00:12:02.244Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "session": "5f8fb272",
+      "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07"
     }
   ]
 }

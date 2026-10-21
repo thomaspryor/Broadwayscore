@@ -115,7 +115,7 @@ test('mergeReviewsJson: manualEntry wins even when its snapshot carries a STALE 
   assert.equal(merged2.reviews[0].assignedScore, 55);
 });
 
-test('mergeReviewsJson: both sides manualEntry — keeps ours (matches -X ours rebase default)', () => {
+test('mergeReviewsJson: both sides manualEntry with no recency or tier difference keep ours', () => {
   const oursManual = review({ manualEntry: true, assignedScore: 50 });
   const remoteManual = review({ manualEntry: true, assignedScore: 60 });
   const { merged } = mergeReviewsJson({ reviews: [oursManual] }, { reviews: [remoteManual] });
@@ -454,15 +454,7 @@ test('mergeReviewsJson: a sentinel row on a DIFFERENT url is untouched', () => {
 });
 
 
-test('mergeReviewsJson: a sentinel-byline manualEntry row survives, and the manual rescue is what makes the fossil pass unable to reach it', () => {
-  // Named for what it actually proves. An adversarial review called the missing
-  // manualEntry guard a P0; checking it showed the case is unreachable, because
-  // the manual-entry rescue runs FIRST and splices every same-urlKey sibling of
-  // a manual row. This test pins that ordering invariant: if someone reorders
-  // the two passes, urlRescueConflicts stops being 1 here and the fossil pass
-  // starts seeing manual rows with siblings. The guard itself is defence in
-  // depth and this test does NOT fail without it — deliberately not claiming
-  // otherwise.
+test('mergeReviewsJson: a bylined scored pipeline row beats a stale unbylined manual row (BRO-2919)', () => {
   const bylined = review({ criticName: 'Olivia Garrett', url: SHARED_URL, contentTier: 'complete' });
   const manualUnbylined = review({ criticName: 'Unknown', url: SHARED_URL, contentTier: 'complete', manualEntry: true });
   const { merged, stats } = mergeReviewsJson(
@@ -470,9 +462,104 @@ test('mergeReviewsJson: a sentinel-byline manualEntry row survives, and the manu
     { _meta: { lastUpdated: '2026-09-05T09:00:00Z' }, reviews: [manualUnbylined] },
   );
   assert.equal(merged.reviews.length, 1, 'the manual rescue collapses the pair before the fossil pass runs');
-  assert.equal(merged.reviews[0].manualEntry, true, 'the human correction is the survivor');
+  assert.equal(merged.reviews[0], bylined, 'the enriched pipeline row is the survivor');
   assert.equal(stats.urlRescueConflicts, 1, 'ordering invariant: the manual rescue, not the fossil pass, resolved this');
   assert.equal(stats.unknownBylineFossilsDropped, 0, 'the fossil pass must not have touched a manual row');
+});
+
+test('mergeReviewsJson: manual URL rescue prefers enriched attribution on either side or array order', () => {
+  const bylined = review({ criticName: 'Olivia Garrett', url: SHARED_URL });
+  for (const criticName of ['Unknown', '', null, undefined]) {
+    const manual = review({ criticName, url: SHARED_URL, manualEntry: true });
+    for (const [ours, remote] of [
+      [[manual], [bylined]], [[bylined], [manual]],
+      [[manual, bylined], []], [[bylined, manual], []],
+    ]) {
+      const { merged } = mergeReviewsJson({ reviews: ours }, { reviews: remote });
+      assert.deepEqual(merged.reviews, [bylined], `${criticName}: enriched row survives`);
+    }
+  }
+});
+
+test('mergeReviewsJson: named manual corrections retain priority even at a self-branded outlet', () => {
+  const manual = review({ criticName: 'Carole Di Tosti', outlet: 'Carole Di Tosti', url: SHARED_URL, manualEntry: true });
+  const pipeline = review({ criticName: 'Another Critic', outlet: manual.outlet, url: SHARED_URL });
+  assert.deepEqual(mergeReviewsJson(
+    { _meta: { lastUpdated: '2026-10-19' }, reviews: [manual] },
+    { _meta: { lastUpdated: '2026-10-20' }, reviews: [pipeline] },
+  ).merged.reviews, [manual]);
+});
+
+test('mergeReviewsJson: manual rescue does not use unscored, placeholder or poorer pipeline rows as enrichment', () => {
+  const manual = review({ criticName: 'Unknown', url: SHARED_URL, manualEntry: true });
+  for (const overrides of [
+    { assignedScore: null }, { assignedScore: undefined }, { assignedScore: '70' },
+    { criticName: 'Staff' }, { criticName: 'The Stage' }, { contentTier: 'stub' },
+  ]) {
+    const pipeline = review({ criticName: 'Olivia Garrett', url: SHARED_URL, ...overrides });
+    const { merged } = mergeReviewsJson({ reviews: [manual] }, { reviews: [pipeline] });
+    assert.deepEqual(merged.reviews, [manual]);
+  }
+});
+
+test('mergeReviewsJson: stale manual removal requires the same outlet and raw path', () => {
+  const manual = review({ criticName: 'Unknown', url: SHARED_URL, manualEntry: true });
+  for (const overrides of [
+    { outlet: 'The Guardian' },
+    { url: SHARED_URL.toUpperCase() },
+  ]) {
+    const pipeline = review({ criticName: 'Olivia Garrett', url: SHARED_URL, ...overrides });
+    const { merged } = mergeReviewsJson({ reviews: [manual] }, { reviews: [pipeline] });
+    assert.deepEqual(merged.reviews, [manual], 'unconfirmed enrichment cannot evict the manual row');
+  }
+});
+
+test('mergeReviewsJson: named manual URL rescue still works across outlet and path case drift', () => {
+  const manual = review({ criticName: 'Steven Oxman', outlet: 'Chicago Sun-Times',
+    outletId: 'chicago-sun-times', url: SHARED_URL, manualEntry: true });
+  for (const overrides of [{}, { url: SHARED_URL.toUpperCase() }]) {
+    const pipeline = review({ criticName: 'Another Critic', outlet: 'Sun-Times',
+      outletId: 'suntimes', url: SHARED_URL, ...overrides });
+    assert.deepEqual(mergeReviewsJson({ reviews: [manual] }, { reviews: [pipeline] }).merged.reviews, [manual]);
+  }
+  const otherShow = review({ showId: 'another-show-2026', url: SHARED_URL });
+  assert.deepEqual(mergeReviewsJson({ reviews: [manual] }, { reviews: [otherShow] }).merged.reviews,
+    [manual, otherShow]);
+});
+
+test('mergeReviewsJson: dropping stale manual attribution preserves multiple real bylines and tracks one drop', () => {
+  const manual = review({ criticName: 'Unknown', url: SHARED_URL, manualEntry: true });
+  const first = review({ criticName: 'Olivia Garrett', url: SHARED_URL });
+  const second = review({ criticName: 'Another Critic', url: SHARED_URL });
+  const { merged, stats } = mergeReviewsJson({ reviews: [manual] }, { reviews: [first, second] });
+  assert.deepEqual(merged.reviews, [first, second]);
+  assert.equal(stats.urlRescueConflicts, 1);
+});
+
+test('mergeReviewsJson: manual corrections use snapshot recency for both same-key and byline-swap conflicts', () => {
+  for (const criticName of ['First Correction', 'Second Correction']) {
+    const old = review({ criticName: 'First Correction', manualEntry: true, assignedScore: 40, url: SHARED_URL });
+    const fresh = review({ criticName, manualEntry: true, assignedScore: 90, url: SHARED_URL });
+    const older = { _meta: { lastUpdated: '2026-10-19' }, reviews: [old] };
+    const newer = { _meta: { lastUpdated: '2026-10-20' }, reviews: [fresh] };
+    for (const [ours, remote] of [[older, newer], [newer, older]]) {
+      assert.deepEqual(mergeReviewsJson(ours, remote).merged.reviews, [fresh]);
+    }
+  }
+});
+
+test('mergeReviewsJson: manual byline-swap ties fall back to tier, then ours', () => {
+  const first = review({ criticName: 'First Correction', manualEntry: true, contentTier: 'stub', url: SHARED_URL });
+  const second = review({ criticName: 'Second Correction', manualEntry: true, contentTier: 'complete', url: SHARED_URL });
+  for (const lastUpdated of [undefined, 'invalid', '2026-10-20']) {
+    assert.deepEqual(mergeReviewsJson(
+      { _meta: { lastUpdated }, reviews: [first] },
+      { _meta: { lastUpdated }, reviews: [second] },
+    ).merged.reviews, [second]);
+  }
+  assert.deepEqual(mergeReviewsJson(
+    { reviews: [second] }, { reviews: [{ ...second, criticName: 'Third Correction' }] },
+  ).merged.reviews, [second]);
 });
 
 test('mergeReviewsJson: same canonical key but a DIFFERENT raw path is NOT dropped', () => {
