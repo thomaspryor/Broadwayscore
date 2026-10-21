@@ -1,22 +1,6 @@
 {
   "entries": [
     {
-      "showId": "school-pictures-off-broadway-2026",
-      "market": "broadway",
-      "queuedAt": "2026-10-18T12:59:53.917Z",
-      "dueAt": "2026-10-19T04:59:53.917Z",
-      "attempted": true,
-      "attemptedAt": "2026-10-19T05:12:13.378Z"
-    },
-    {
-      "showId": "other-desert-cities-2026",
-      "market": "broadway",
-      "queuedAt": "2026-10-18T13:02:08.633Z",
-      "dueAt": "2026-10-19T05:02:08.633Z",
-      "attempted": true,
-      "attemptedAt": "2026-10-19T05:12:13.378Z"
-    },
-    {
       "showId": "murder-cathedral-off-west-end-2026",
       "market": "west-end",
       "queuedAt": "2026-10-19T16:02:08.526Z",
@@ -127,6 +111,42 @@
       "market": "broadway",
       "queuedAt": "2026-10-21T11:59:01.563Z",
       "dueAt": "2026-10-22T03:59:01.563Z",
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "ilford-boy-west-end-2026",
+      "market": "west-end",
+      "queuedAt": "2026-10-21T17:42:41.385Z",
+      "dueAt": "2026-10-21T18:42:41.385Z",
+      "offsetHours": 1,
+      "outletIds": [
+        "telegraph"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "ilford-boy-west-end-2026",
+      "market": "west-end",
+      "queuedAt": "2026-10-21T17:42:41.385Z",
+      "dueAt": "2026-10-21T20:42:41.385Z",
+      "offsetHours": 3,
+      "outletIds": [
+        "telegraph"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "ilford-boy-west-end-2026",
+      "market": "west-end",
+      "queuedAt": "2026-10-21T17:42:41.385Z",
+      "dueAt": "2026-10-22T05:42:41.385Z",
+      "offsetHours": 12,
+      "outletIds": [
+        "telegraph"
+      ],
       "attempted": false
     }
   ]
