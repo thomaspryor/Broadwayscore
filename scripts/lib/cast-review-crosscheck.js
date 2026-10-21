@@ -18,6 +18,16 @@
  *   ok            otherwise
  *   insufficient  not enough cast names or full-text reviews to judge
  *
+ * A contradiction on an open long-running show is usually not a wrong cast
+ * (BRO-5857): shows.json lists the company on stage today (enrich-cast-from-files
+ * takes IBDB currentCast for open shows), while the reviews were written about
+ * the opening company. explainContradiction returns 'current-cast' when the row
+ * cast is the cast file's currentCast/replacements and the file's
+ * openingNightCast IS named in the reviews (Operation Mincemeat 2025, Chicago
+ * 1996). There is deliberately no excuse by run length alone: a long run is
+ * where a same-title tour or regional cast is most likely to be scraped, and
+ * West End long runs were fixed from their newest reviews instead.
+ *
  * crossCheckCast is pure (CLAUDE.md §15); loadEvidenceTexts is the one fs reader, kept
  * here so the audit and the backfill read review files the same way.
  * Tests: cast-review-crosscheck.test.mjs.
@@ -82,6 +92,38 @@ function crossCheckCast(cast, texts) {
   return { verdict, named, missing, fraction, texts: full.length, names: names.length };
 }
 
+/**
+ * Open long runs whose row lists a company newer than any review, checked by hand
+ * against cast announcements (BRO-5857). The reviews' casts are older still, so
+ * swapping them in would make the row more stale. Each entry expires, and drops
+ * as soon as the row no longer carries `rowHas` (someone updated the cast).
+ */
+const HAND_CHECKED = {
+  'les-miserables-west-end-2021': { rowHas: 'Harry Hepple', until: '2027-01-31', why: 'row = Feb 2026 Sondheim company; newest naming review is 2025' },
+  'the-mousetrap-west-end-2021': { rowHas: 'Gay Soper', until: '2027-01-31', why: 'row = a post-2021 St Martin\'s company; reviews name the May 2021 reopening company' },
+};
+
+/**
+ * Why a `contradicted` cast may still be right. Pure.
+ * @param {object} show       shows.json row (cast, status, openingDate)
+ * @param {object|null} castFile  data/cast/<id>.json
+ * @param {string[]} texts    the same evidence texts crossCheckCast saw
+ * @param {string} [today]   YYYY-MM-DD, for HAND_CHECKED expiry
+ * @returns {null|'current-cast'|'hand-checked'}  null = the contradiction stands
+ */
+function explainContradiction(show, castFile, texts, today = new Date().toISOString().slice(0, 10)) {
+  const open = show && (show.status === 'open' || show.status === 'previews');
+  if (!open) return null;
+  const hand = HAND_CHECKED[show.id];
+  if (hand && today <= hand.until && castNames(show.cast).some((n) => n.folded === fold(hand.rowHas))) return 'hand-checked';
+  const obc = (castFile && castFile.openingNightCast) || [];
+  if (!obc.length) return null;
+  const later = new Set([...(castFile.currentCast || []), ...(castFile.replacements || [])].map((c) => fold(c && c.name)));
+  const rowIsLater = castNames(show.cast).every((n) => later.has(n.folded));
+  const obcCheck = crossCheckCast(obc, texts);
+  return rowIsLater && obcCheck.verdict === 'ok' ? 'current-cast' : null;
+}
+
 /** A review file counts as evidence only if it is a live, full, about-this-production text. */
 function isEvidenceReview(file) {
   if (!file || typeof file.fullText !== 'string') return false;
@@ -104,4 +146,4 @@ function loadEvidenceTexts(showDir) {
   return texts;
 }
 
-module.exports = { crossCheckCast, isEvidenceReview, loadEvidenceTexts, castNames, fold, MIN_TEXTS };
+module.exports = { crossCheckCast, explainContradiction, HAND_CHECKED, isEvidenceReview, loadEvidenceTexts, castNames, fold, MIN_TEXTS };
