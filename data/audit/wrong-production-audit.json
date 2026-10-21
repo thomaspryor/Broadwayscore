@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-21T17:53:44.876Z",
+  "timestamp": "2026-10-21T18:04:25.790Z",
   "stats": {
-    "totalReviews": 58120,
+    "totalReviews": 58124,
     "alreadyFlagged": 21131,
     "dateGuardCatches": 198,
     "directorMismatch": 2060,
-    "tvFilmSignals": 1652,
-    "londonSignals": 2586,
+    "tvFilmSignals": 1653,
+    "londonSignals": 2589,
     "offBroadwaySignals": 530,
     "yearMismatch": 163,
     "noPublishDate": 5249
@@ -9328,6 +9328,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael longhurst\" from constellations-2015"
+        }
+      ]
+    },
+    {
+      "showId": "copperfield-the-new-musical-off-broadway-2026",
+      "file": "theater-life--unknown.json",
+      "publishDate": "2026-10-19",
+      "url": "https://theaterlife.com/copperfield-the-new-musical/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -73376,6 +73389,19 @@
     },
     {
       "showId": "martin-guerre-west-end-2026",
+      "file": "musical-theatre-review--unknown.json",
+      "publishDate": "2026-10-21",
+      "url": "https://musicaltheatrereview.com/martin-guerre-the-old-vic/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
       "file": "south-london--michael-holland.json",
       "score": 89,
       "publishDate": "2026-10-21",
@@ -73394,6 +73420,19 @@
       "score": 46,
       "publishDate": "2026-10-21",
       "url": "https://www.standard.co.uk/culture/theatre/martin-guerre-at-the-old-vic-b1301716.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
+      "file": "west-end-best-friend--phil-meikle.json",
+      "publishDate": "2026-10-21",
+      "url": "https://www.westendbestfriend.co.uk/news/review-martin-guerre-old-vic-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -83754,6 +83793,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-cherry-orchard-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/cherry-orchard-harold-pinter-theatre-review-chekhov-his-most-choice",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
