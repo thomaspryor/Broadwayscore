@@ -29,7 +29,7 @@ function main(argv) {
     ? fs.readdirSync(planDir).filter(f => f.endsWith('.json')).map(f => { try { return JSON.parse(fs.readFileSync(path.join(planDir, f), 'utf8')); } catch { return null; } })
     : [];
   const missing = findUnenrolled(shows, commercial.shows, pendingAddCommercialSlugs(plans));
-  const report = missing.map(s => ({ slug: s.slug, status: s.status, venue: s.venue || null, nonprofitHouse: nonprofitHouseCandidate(s) }));
+  const report = missing.map(s => ({ slug: s.slug, status: s.status, venue: s.venue || null, nonprofitHouse: nonprofitHouseCandidate(s) })); // venue-write-guard-ok: report output only, nothing is written to a show
   if (!dryRun) {
     for (const s of missing) commercial.shows[s.slug] = makeStub();
     if (missing.length) saveCommercial(commercial);
