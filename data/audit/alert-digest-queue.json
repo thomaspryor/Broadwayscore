@@ -257,5 +257,40 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-21T12:08:43.462Z"
+  },
+  {
+    "conditionKey": "opening-night-drift:other-desert-cities-2026",
+    "title": "Opening night drift: Other Desert Cities (other-desert-cities-2026)",
+    "description": "Review counts do not reconcile for Other Desert Cities (other-desert-cities-2026): local review-texts=36, reviews.json aggregate=30, live production=30, drift=6 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39610843678",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Show",
+        "value": "Other Desert Cities (other-desert-cities-2026)",
+        "inline": false
+      },
+      {
+        "name": "Counts",
+        "value": "local=36, aggregate=30, live=30, drift=6",
+        "inline": false
+      },
+      {
+        "name": "Opening",
+        "value": "2026-10-18",
+        "inline": false
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39610843678)",
+        "inline": false
+      }
+    ],
+    "queuedAt": "2026-10-21T13:48:29.957Z"
   }
 ]
