@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5647-t",
   "planId": "704074fb-81e1-4552-b1e3-a3531e45287f",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-21T18:52:24.445Z",
   "submitter": {
     "name": null,
@@ -109,5 +109,44 @@
         "description": "carousel-2018: flag the weekly cost as an estimate"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T18:59:22.479Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for all-out"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for all-out"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for all-out"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for carousel-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for carousel-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for carousel-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for carousel-2018"
+    }
+  ],
+  "executedIn": "ci"
 }
