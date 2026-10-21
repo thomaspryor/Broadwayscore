@@ -578,5 +578,22 @@ function countsFor(results) {
 // working.
 const { withFileLock } = require('./file-lock');
 
+const BLAST_RADIUS_ALERT_KEY = 'review-gap:blast-radius-refused';
+
+/**
+ * Alert-ledger keys to close after a run (BRO-5516). The blast-radius alert
+ * was only ever opened: no code path resolved it, so after the quarantine
+ * backlog drained the condition stayed 'open' for the router's 168h
+ * absence window and the card's check-alert-condition-absent VERIFY could not
+ * pass. A real (non-dry) run whose guard did NOT refuse proves the condition
+ * is not firing; callers pass the result to resolveQuietConditions, which
+ * still only resolves a key unseen for the incident gap, so a flapping
+ * refusal stays one incident.
+ */
+function blastRadiusClearedKeys(blast, { dryRun = false } = {}) {
+  return (!dryRun && blast && blast.ok === true) ? [BLAST_RADIUS_ALERT_KEY] : [];
+}
+
 module.exports = {
+  BLAST_RADIUS_ALERT_KEY, blastRadiusClearedKeys,
   priorCensusUrls, mergeGapAudit, countsFor, gapStateFor, censusVerdictFor, stateMap, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock, DEFAULT_RETENTION_DAYS, CENSUS_SCHEMA, needsCensusMigration };

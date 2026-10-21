@@ -379,3 +379,30 @@ test('confirmQuarantinedStates: shows never quarantined are untouched', () => {
   assert.deepStrictEqual(confirmed, []);
   assert.strictEqual(prevStates.a, 'complete:4:9');
 });
+
+// BRO-5516: the blast-radius alert was open-only; a passing run must close it.
+test('blastRadiusClearedKeys: only a real, non-refused run clears the alert key', () => {
+  const { blastRadiusClearedKeys, BLAST_RADIUS_ALERT_KEY } = require('./gap-audit-merge.js');
+  assert.deepStrictEqual(blastRadiusClearedKeys({ ok: true }), [BLAST_RADIUS_ALERT_KEY]);
+  assert.deepStrictEqual(blastRadiusClearedKeys({ ok: false }), []);
+  assert.deepStrictEqual(blastRadiusClearedKeys({ ok: true }, { dryRun: true }), []);
+  assert.deepStrictEqual(blastRadiusClearedKeys(undefined), []);
+});
+
+test('blastRadiusClearedKeys + resolveQuietConditions: resolves only after the quiet gap', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bra-'));
+  const lp = path.join(dir, 'ledger.json');
+  const now = Date.now();
+  const mk = (hAgo) => ({ version: 1, conditions: { 'review-gap:blast-radius-refused': { status: 'open', lastSeen: new Date(now - hAgo * 3600000).toISOString() } } });
+  process.env.ALERT_LEDGER_PATH = lp;
+  const { resolveQuietConditions } = require('./owner-alert-router.js');
+  const { blastRadiusClearedKeys, BLAST_RADIUS_ALERT_KEY } = require('./gap-audit-merge.js');
+  fs.writeFileSync(lp, JSON.stringify(mk(25)));
+  assert.deepStrictEqual(resolveQuietConditions(blastRadiusClearedKeys({ ok: true }), { nowMs: now }), []);
+  fs.writeFileSync(lp, JSON.stringify(mk(100)));
+  assert.deepStrictEqual(resolveQuietConditions(blastRadiusClearedKeys({ ok: true }), { nowMs: now }), [BLAST_RADIUS_ALERT_KEY]);
+  assert.strictEqual(JSON.parse(fs.readFileSync(lp, 'utf8')).conditions[BLAST_RADIUS_ALERT_KEY].status, 'resolved');
+});

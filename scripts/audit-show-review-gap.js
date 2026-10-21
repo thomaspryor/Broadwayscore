@@ -239,7 +239,7 @@ function writeJsonAtomic(filePath, obj) {
 // Whoopi Monologues' missing NYT review sat 3 days behind the backlog).
 const { freshnessMsFor, compareAuditPriority, auditTier, checkpointTs, gapRowTimestamps, reserveStalestSlots, oldestGapRow, STALE_RESERVE_EVERY } = require('./lib/gap-audit-freshness');
 // Per-show merge for the audit file (#893) + the S0 blast-radius guard.
-const { mergeGapAudit, countsFor, priorCensusUrls, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock } = require('./lib/gap-audit-merge');
+const { mergeGapAudit, countsFor, priorCensusUrls, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock, BLAST_RADIUS_ALERT_KEY, blastRadiusClearedKeys } = require('./lib/gap-audit-merge');
 // Merge-aware checkpoint read-modify-write (#923 — the #893 race class, one
 // file over). saveCheckpoint(wholeObject) used to write the ENTIRE in-memory
 // checkpoint from inside the per-show loop, unlocked on two of its three call
@@ -2976,7 +2976,7 @@ async function main(argv = process.argv.slice(2)) {
     try {
       const { routeAlert } = require('./lib/owner-alert-router');
       await routeAlert({
-        conditionKey: 'review-gap:blast-radius-refused',
+        conditionKey: BLAST_RADIUS_ALERT_KEY,
         title: `Review-gap audit refused to write — ${blast.changedPct.toFixed(1)}% of shows changed coverage state`,
         description: `${blast.reason}\n\nChanged shows: ${blast.changedIds.slice(0, 30).join(', ')}\n\n${partial ? `PARTIAL write: the other ${results.length - riskyShowIds.length} show(s) audited this run were NOT risky and were persisted normally. Only the ${riskyShowIds.length} changed show(s) above were quarantined (kept at their prior entry).` : `The previous ${AUDIT_PATH} is intact — nothing was lost (every examined show this run was risky, so nothing could be safely split out).`} Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …`,
         severity: 'error',
@@ -3019,6 +3019,16 @@ async function main(argv = process.argv.slice(2)) {
     }
   }
   if (verbose) console.log(`Blast radius: ${blast.reason}`);
+  // BRO-5516: close the loop once the guard stops refusing (quiet-gap debounced).
+  if (useCheckpoint) {
+    try {
+      const { resolveQuietConditions } = require('./lib/owner-alert-router');
+      const cleared = resolveQuietConditions(blastRadiusClearedKeys(blast, { dryRun }), { reason: 'review-gap: blast-radius guard passed on a real run and the refusal has not fired for the incident gap' });
+      if (cleared.length) console.log(`[Alert Router] resolved cleared blast-radius condition: ${cleared.join(', ')}`);
+    } catch (e) {
+      console.error(`::warning::resolving blast-radius condition failed: ${(e.message || '').slice(0, 120)}`);
+    }
+  }
   // BRO-3002: on a partial (quarantine) write, `audit`/`mergedResults` still
   // describe the FULL unpartitioned merge — including the risky shows'
   // rejected fresh data, which was never persisted. Report against
