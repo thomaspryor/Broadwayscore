@@ -324,7 +324,8 @@ function reconcileProtectedFields(local, remote, ours, opts = {}) {
     // breadcrumb is a deliberate clear (the text belongs to the file's OLD
     // url) — restoring it would re-contaminate the new URL era.
     if (oursText.length > 100 && oursText.length > (local.fullText || '').length
-        && !isIntentionalClear('fullText', local, ours)) {
+        && !isIntentionalClear('fullText', local, ours)
+        && fresherTextWins(local, ours) !== 'a') { // BRO-5656
       local.fullText = oursText;
       modified = true;
       notes.push(`Restored fullText (${oursText.length} chars) from pre-rebase HEAD`);

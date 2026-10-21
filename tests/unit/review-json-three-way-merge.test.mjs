@@ -273,3 +273,14 @@ test('BRO-5656: stale-checkout restore does not put the older longer body back o
   reconcileProtectedFields(stale, mk(OLD, '2026-10-01T00:00:00.000Z'), { ...stale }, { staleCheckoutGuard: true });
   assert.equal(stale.fullText, OLD);
 });
+
+test('BRO-5656: ORIG_HEAD restore does not bring back a stale older longer body over a newer refetch', () => {
+  const OLD = 'Old wrong-production body. '.repeat(100);
+  const NEW = 'The corrected article. '.repeat(100);
+  const mk = (t, at) => ({ fullText: t, contentTier: 'complete', textFetchedAt: at, textWordCount: t.length });
+  const fresh = mk(NEW, '2026-10-14T00:52:00.000Z');
+  const local = { ...fresh };
+  reconcileProtectedFields(local, { ...fresh }, mk(OLD, '2026-10-01T00:00:00.000Z'), { staleCheckoutGuard: true });
+  assert.equal(local.fullText, NEW);
+  assert.equal(local.textFetchedAt, fresh.textFetchedAt);
+});
