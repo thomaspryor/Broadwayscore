@@ -289,7 +289,8 @@ async function main() {
     // Every apply onto an existing record overlays it (BRO-5639): a research row
     // never carries costHistory, analyst*, estimatedRecoupment*, model* fields,
     // and a from-scratch rebuild would drop them.
-    const mergeExisting = Boolean(RELEASE_HELD || existing);
+    const mergeExisting = Boolean(RELEASE_HELD || (existing && !SINGLE_SHOW));
+    // --show onto an existing record keeps its research-replaces-record meaning.
     if (existing && existing.humanReviewedDesignation === true && !SINGLE_SHOW) {
       console.log(`  🔒 "${showId}" — humanReviewedDesignation:true, skipping auto-apply`);
       skipped++;

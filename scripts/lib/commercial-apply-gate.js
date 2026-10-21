@@ -281,6 +281,15 @@ function buildCommercialEntry(entry, existing, opts = {}) {
     if (recoupedSource) result.recoupedSource = recoupedSource;
   }
   if (notes) result.notes = notes;
+  // The overlay keeps the old record's recoupment evidence; a research row that
+  // says it did not recoup must not leave a recoupment date or lock behind
+  // (BRO-5639 review).
+  if (overlay && !isClaimAutoApply && entry.recouped != null && entry.recouped !== true) {
+    delete result.recoupedDate;
+    delete result.recoupedSource;
+    delete result.humanReviewedRecouped;
+    if (result.isEstimate) { result.isEstimate = { ...result.isEstimate }; delete result.isEstimate.recoupedDate; }
+  }
   // A research label replaces an inferred classify-stale-closures label, so the
   // overlay must not keep that inference's attribution (BRO-5639).
   if (overlay && !isClaimAutoApply && designation && existing.classifiedBy === 'classify-stale-closures') {

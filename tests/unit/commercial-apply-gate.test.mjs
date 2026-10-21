@@ -592,8 +592,17 @@ describe('held-row release (BRO-5041)', () => {
     assert.equal(out.analystRecoupPct, 55);
     assert.deepEqual(out.analystSources, existing.analystSources);
     assert.deepEqual(out.estimatedRecoupmentPct, [20, 40]);
+    assert.equal(out.designation, 'Fizzle', 'loss sizing sees the kept estimate');
     const dropped = gate.buildCommercialEntry(row, existing, {});
     assert.equal(dropped.costHistory, undefined, 'from-scratch rebuild is what the caller must not use for existing records');
+  });
+  it('BRO-5639: recouped:false research drops the old record\'s recoupment evidence', () => {
+    const existing = { designation: 'TBD', recouped: true, recoupedDate: '2025-12', recoupedSource: 'x', humanReviewedRecouped: true };
+    const out = gate.buildCommercialEntry({ designation: 'Flop', recouped: false }, existing, { mergeExisting: true });
+    assert.equal(out.recouped, false);
+    assert.equal(out.recoupedDate, undefined);
+    assert.equal(out.recoupedSource, undefined);
+    assert.equal(out.humanReviewedRecouped, undefined);
   });
   it('BRO-5639: a research label clears a stale classify-stale-closures attribution', () => {
     const existing = { designation: 'Fizzle', classifiedBy: 'classify-stale-closures', classifiedAt: '2026-01-01', classifiedReason: 'closed, no recoupment found' };
@@ -605,7 +614,7 @@ describe('held-row release (BRO-5041)', () => {
   });
   it('BRO-5639: apply-commercial-pending passes mergeExisting for every existing record', () => {
     const src = fs.readFileSync(path.resolve('scripts/apply-commercial-pending.js'), 'utf8');
-    assert.match(src, /const mergeExisting = Boolean\(RELEASE_HELD \|\| existing\)/);
+    assert.match(src, /const mergeExisting = Boolean\(RELEASE_HELD \|\| \(existing && !SINGLE_SHOW\)\)/);
   });
   it('CLI: --release-held applies only eligible held rows; plain --show and --all leave held rows pending', () => {
     const dir = fs.mkdtempSync(path.resolve('tests/.bro5041-'));
