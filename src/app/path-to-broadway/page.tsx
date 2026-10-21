@@ -153,9 +153,9 @@ export default function PathToBroadwayPage() {
               and {f.plays} plays), what they were based on, and, for recent seasons, which kinds earned their money back.
             </p>
             <p className="text-xs text-gray-500 mt-1" data-testid="path-asof">
-              As of {formatDataDate(today) ?? today}. Shows that have opened only. New productions only: revivals and
+              As of {formatDataDate(today) ?? today}. Eras count shows that have opened. New productions only: revivals and
               return engagements are counted separately. The 2020s column runs from 2020-21 to now, including the
-              pandemic shutdown; the far-right column is the current season alone.
+              pandemic shutdown; the far-right column is the current season alone, including new productions announced or in previews that have not opened yet.
             </p>
           </header>
 

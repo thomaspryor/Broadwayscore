@@ -16,8 +16,8 @@
       "other",
       "original"
     ],
-    "count": 889,
-    "updatedAt": "2026-10-21T16:36:19.151Z"
+    "count": 912,
+    "updatedAt": "2026-10-21T21:01:00.416Z"
   },
   "shows": {
     "110-in-the-shade-2007": {
@@ -2480,6 +2480,26 @@
         "model": "gemini-2.5-flash"
       }
     },
+    "awake-and-sing-2026": {
+      "title": "Awake and Sing!",
+      "openingDate": "2027-01-07",
+      "path": [],
+      "pathNote": null,
+      "source": "original",
+      "sourceTitle": null,
+      "confidence": "high",
+      "evidence": [
+        "https://www.ibdb.com/broadway-production/awake-and-sing-547098",
+        "https://www.broadway.org/shows/awake-and-sing"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [],
+        "source": "original",
+        "model": "gemini-2.5-flash"
+      }
+    },
     "baby-its-you-2011": {
       "title": "Baby It's You!",
       "openingDate": "2011-04-27",
@@ -3200,6 +3220,25 @@
       },
       "resolvedBy": "gpt-5.4-mini:medium",
       "verifiedBy": "BRO-5842 web audit 2026-10-21: confirmed"
+    },
+    "blue-man-group-a-new-holiday-surprise-2026": {
+      "title": "Blue Man Group “A New Holiday Surprise”",
+      "openingDate": "2026-11-17",
+      "path": [],
+      "pathNote": null,
+      "source": "original",
+      "sourceTitle": null,
+      "confidence": "high",
+      "evidence": [
+        "https://prod.blueman.com/usa/new-york/holiday-tour/buy-tickets"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [],
+        "source": "original",
+        "model": "gemini-2.5-flash"
+      }
     },
     "bob-fosses-dancin-2023": {
       "title": "Bob Fosse's Dancin'",
@@ -5072,6 +5111,30 @@
       "resolvedBy": "gpt-5.4-mini:medium",
       "verifiedBy": "BRO-5842 web audit 2026-10-21: confirmed"
     },
+    "damn-yankees-2027": {
+      "title": "Damn Yankees",
+      "openingDate": "2027-04-20",
+      "path": [
+        "regional-us"
+      ],
+      "pathNote": "Arena Stage (Washington, DC) in 2026, then Broadway in 2027.",
+      "source": "book",
+      "sourceTitle": "The Year the Yankees Lost the Pennant",
+      "confidence": "high",
+      "evidence": [
+        "https://www.arenastage.org/link/51735009a5854830b536a9d20b855d67.aspx",
+        "https://www.ibdb.com/broadway-production/damn-yankees-548199"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [
+          "regional-us"
+        ],
+        "source": "book",
+        "model": "gemini-2.5-flash"
+      }
+    },
     "dana-h-2021": {
       "title": "Dana H.",
       "openingDate": "2021-10-17",
@@ -5481,6 +5544,30 @@
         "model": "gemini-2.5-flash"
       }
     },
+    "dirty-dancing-2027": {
+      "title": "Dirty Dancing",
+      "openingDate": "2027-03-14",
+      "path": [
+        "regional-us"
+      ],
+      "pathNote": "North American tour launched at the Ordway Center for the Performing Arts in Saint Paul, Minnesota, before Broadway (2027).",
+      "source": "film",
+      "sourceTitle": "Dirty Dancing",
+      "confidence": "high",
+      "evidence": [
+        "https://www.playbill.com/article/lonny-price-directed-dirty-dancing-stage-musical-will-tour-north-america",
+        "https://www.ibdb.com/broadway-production/dirty-dancing-the-musical-548291"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [
+          "regional-us"
+        ],
+        "source": "film",
+        "model": "gemini-2.5-flash"
+      }
+    },
     "dirty-rotten-scoundrels-2005": {
       "title": "Dirty Rotten Scoundrels",
       "openingDate": "2005-03-03",
@@ -5647,6 +5734,37 @@
       },
       "verifiedBy": "BRO-5842 web audit 2026-10-21: confirmed"
     },
+    "dolly-an-original-musical-2026": {
+      "title": "Dolly: A True Original Musical",
+      "openingDate": "2027-01-19",
+      "path": [
+        "regional-us"
+      ],
+      "pathNote": "Fisher Center for the Performing Arts, Nashville (world premiere in 2025). ([playbill.com](https://playbill.com/article/dolly-a-true-original-musical-world-premiere-launches-july-18-in-nashville?utm_source=openai))",
+      "source": "music-catalog",
+      "sourceTitle": "Dolly Parton catalog ([dollymusical.com](https://www.dollymusical.com/?utm_source=openai))",
+      "confidence": "high",
+      "evidence": [
+        "https://www.playbill.com/article/dolly-parton-biomusical-will-make-pre-broadway-world-premiere-in-tennessee-this-year",
+        "https://www.dollymusical.com/"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [
+          "regional-us"
+        ],
+        "source": "original",
+        "model": "gemini-2.5-flash"
+      },
+      "firstAnswer": {
+        "path": [
+          "regional-us"
+        ],
+        "source": "film"
+      },
+      "resolvedBy": "gpt-5.4-mini:medium"
+    },
     "dont-dress-for-dinner-2012": {
       "title": "Don't Dress for Dinner",
       "openingDate": "2012-04-26",
@@ -5724,6 +5842,35 @@
         "source": "original",
         "model": "gemini-2.5-flash"
       }
+    },
+    "downstate-2026": {
+      "title": "Downstate",
+      "openingDate": "2026-11-15",
+      "path": [],
+      "pathNote": "No earlier runs of this Mantello Broadway staging are counted; it is a new Broadway production. Earlier productions of Bruce Norris’s play were the separate Pam MacKinnon staging at Steppenwolf (2018), National Theatre, London (2019), and P",
+      "source": "original",
+      "sourceTitle": null,
+      "confidence": "high",
+      "evidence": [
+        "https://downstateonbroadway.com/"
+      ],
+      "needsReview": "pathNote names london stops the route codes leave out",
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [
+          "regional-us",
+          "london",
+          "off-broadway"
+        ],
+        "source": "original",
+        "model": "gemini-2.5-flash"
+      },
+      "firstAnswer": {
+        "path": [],
+        "source": "original"
+      },
+      "resolvedBy": "gpt-5.4-mini:medium"
     },
     "dr-seuss-how-the-grinch-stole-christmas-2007": {
       "title": "Dr. Seuss' How the Grinch Stole Christmas!",
@@ -6274,6 +6421,30 @@
       "evidence": [
         "https://www.ibdb.com/broadway-production/evita-491036",
         "https://www.playbill.com/article/broadway-revival-of-evita-with-ricky-martin-and-elena-roger-due-in-march-2012-com-175363"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [
+          "london"
+        ],
+        "source": "original",
+        "model": "gemini-2.5-flash"
+      }
+    },
+    "evita-2026": {
+      "title": "Evita",
+      "openingDate": "2027-03-25",
+      "path": [
+        "london"
+      ],
+      "pathNote": "London Palladium (2025)",
+      "source": "original",
+      "sourceTitle": null,
+      "confidence": "high",
+      "evidence": [
+        "https://playbill.com/production/evita-london-london-palladium-2025",
+        "https://www.ibdb.com/broadway-production/evita-547026"
       ],
       "model": "gpt-5.4-mini",
       "classifiedAt": "2026-10-21",
@@ -7128,6 +7299,30 @@
         "model": "gemini-2.5-flash"
       }
     },
+    "galileo-2026": {
+      "title": "Galileo",
+      "openingDate": "2026-12-06",
+      "path": [
+        "regional-us"
+      ],
+      "pathNote": "Berkeley Repertory Theatre (2024)",
+      "source": "original",
+      "sourceTitle": null,
+      "confidence": "high",
+      "evidence": [
+        "https://shubert.nyc/press/galileo-a-new-musical-will-premiere-on-broadway-at-the-shubert-theatre/",
+        "https://www.ibdb.com/broadway-production/galileo-545785"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [
+          "regional-us"
+        ],
+        "source": "original",
+        "model": "gemini-2.5-flash"
+      }
+    },
     "gary-a-sequel-to-titus-andronicus-2019": {
       "title": "Gary: A Sequel to Titus Andronicus",
       "openingDate": "2019-04-21",
@@ -7437,6 +7632,33 @@
         "source": "original",
         "model": "gemini-2.5-flash"
       }
+    },
+    "gloria-2026": {
+      "title": "Gloria",
+      "openingDate": "2027-04-05",
+      "path": [],
+      "pathNote": null,
+      "source": "original",
+      "sourceTitle": null,
+      "confidence": "high",
+      "evidence": [
+        "https://www.ibdb.com/broadway-show/gloria-547119",
+        "https://2st.com/shows/gloria"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [
+          "off-broadway"
+        ],
+        "source": "original",
+        "model": "gemini-2.5-flash"
+      },
+      "firstAnswer": {
+        "path": [],
+        "source": "original"
+      },
+      "resolvedBy": "gpt-5.4-mini:medium"
     },
     "glory-days-2008": {
       "title": "Glory Days",
@@ -8555,6 +8777,41 @@
       "resolvedBy": "gpt-5.4-mini:medium",
       "verifiedBy": "BRO-5842 web audit 2026-10-21: confirmed"
     },
+    "here-there-are-blueberries-2026": {
+      "title": "Here There Are Blueberries",
+      "openingDate": "2026-11-09",
+      "path": [
+        "regional-us",
+        "off-broadway",
+        "london"
+      ],
+      "pathNote": "Excluding Miami New Drama’s 2018 workshop, the production path was La Jolla Playhouse (2022) → Shakespeare Theatre Company (2023) → New York Theatre Workshop (2024) → McCarter Theatre Center (2025) → The Wallis (2025) → Berkeley Repertory T",
+      "source": "original",
+      "sourceTitle": null,
+      "confidence": "high",
+      "evidence": [
+        "https://en.wikipedia.org/wiki/Here_There_Are_Blueberries",
+        "https://www.tourstoyou.org/shows/here-there-are-blueberries/"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [
+          "regional-us",
+          "off-broadway"
+        ],
+        "source": "other",
+        "model": "gemini-2.5-flash"
+      },
+      "firstAnswer": {
+        "path": [
+          "regional-us",
+          "off-broadway"
+        ],
+        "source": "original"
+      },
+      "resolvedBy": "gpt-5.4-mini:medium"
+    },
     "high-2011": {
       "title": "High",
       "openingDate": "2011-04-19",
@@ -9324,6 +9581,29 @@
       },
       "verifiedBy": "BRO-5842 web audit 2026-10-21: confirmed"
     },
+    "inter-alia-2026": {
+      "title": "Inter Alia",
+      "openingDate": "2026-12-01",
+      "path": [
+        "london"
+      ],
+      "pathNote": "National Theatre, London (2025)",
+      "source": "original",
+      "sourceTitle": null,
+      "confidence": "high",
+      "evidence": [
+        "https://images.nationaltheatre.org.uk/uploads/2026/04/National-Theatres-production-of-Inter-Alia-to-transfer-to-Broadway-this-autumn-09.04.2026.pdf"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [
+          "london"
+        ],
+        "source": "original",
+        "model": "gemini-2.5-flash"
+      }
+    },
     "into-the-woods-2002": {
       "title": "Into the Woods",
       "openingDate": "2002-04-30",
@@ -9522,6 +9802,33 @@
         "model": "gemini-2.5-flash"
       },
       "verifiedBy": "BRO-5842 web audit 2026-10-21: confirmed"
+    },
+    "its-a-wonderful-life-a-live-radio-play-2026": {
+      "title": "It’s A Wonderful Life: A Live Radio Play",
+      "openingDate": "2026-11-18",
+      "path": [],
+      "pathNote": null,
+      "source": "other",
+      "sourceTitle": "The Greatest Gift",
+      "confidence": "high",
+      "evidence": [
+        "https://www.ibdb.com/broadway-production/its-a-wonderful-life-a-live-radio-play-548207",
+        "https://shubert.nyc/press/its-a-wonderful-life-makes-its-broadway-premiere/"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [
+          "regional-us"
+        ],
+        "source": "film",
+        "model": "gemini-2.5-flash"
+      },
+      "firstAnswer": {
+        "path": [],
+        "source": "film"
+      },
+      "resolvedBy": "gpt-5.4-mini:medium"
     },
     "its-only-a-play-2014": {
       "title": "It's Only a Play",
@@ -12292,6 +12599,26 @@
         "model": "gemini-2.5-flash"
       }
     },
+    "mix-and-master-2027": {
+      "title": "Mix and Master",
+      "openingDate": "2027-01-27",
+      "path": [],
+      "pathNote": null,
+      "source": "original",
+      "sourceTitle": null,
+      "confidence": "high",
+      "evidence": [
+        "https://www.ibdb.com/broadway-show/mix-and-master-547619",
+        "https://www.playbill.com/article/roundabout-reveals-dates-for-broadway-revivals-of-the-full-monty-the-imaginary-invalid-more"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [],
+        "source": "original",
+        "model": "gemini-2.5-flash"
+      }
+    },
     "mj-2022": {
       "title": "MJ The Musical",
       "openingDate": "2022-02-01",
@@ -12544,6 +12871,37 @@
       "check": {
         "path": [],
         "source": "original",
+        "model": "gemini-2.5-flash"
+      },
+      "firstAnswer": {
+        "path": [
+          "london"
+        ],
+        "source": "original"
+      },
+      "resolvedBy": "gpt-5.4-mini:medium"
+    },
+    "much-ado-about-nothing-2026": {
+      "title": "Much Ado About Nothing",
+      "openingDate": "2026-11-19",
+      "path": [
+        "london"
+      ],
+      "pathNote": "Theatre Royal Drury Lane, London (2025).",
+      "source": "original",
+      "sourceTitle": null,
+      "confidence": "high",
+      "evidence": [
+        "https://playbill.com/article/tom-hiddleston-and-hayley-atwell-to-star-in-broadway-transfer-of-jamie-lloyds-much-ado-about-nothing",
+        "https://thejamielloydcompany.com/productions/"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [
+          "london"
+        ],
+        "source": "play",
         "model": "gemini-2.5-flash"
       },
       "firstAnswer": {
@@ -12951,6 +13309,40 @@
         "model": "gemini-2.5-flash"
       },
       "verifiedBy": "BRO-5842 web audit 2026-10-21: confirmed"
+    },
+    "now-you-see-me-live-2026": {
+      "title": "Now You See Me Live",
+      "openingDate": "2026-11-11",
+      "path": [
+        "international",
+        "london",
+        "regional-us"
+      ],
+      "pathNote": "Sydney Opera House (2025), Crown Theatre Perth (2026), Sands Theatre at Marina Bay Sands (2026), London Coliseum (2026), MGM Grand Theater Las Vegas (2026).",
+      "source": "film",
+      "sourceTitle": "Now You See Me",
+      "confidence": "medium",
+      "evidence": [
+        "https://www.broadway.com/shows/now-you-see-me-live/",
+        "https://newsroom.mgmresorts.com/press-releases?item=122933"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [
+          "international",
+          "london"
+        ],
+        "source": "film",
+        "model": "gemini-2.5-flash"
+      },
+      "firstAnswer": {
+        "path": [
+          "london"
+        ],
+        "source": "film"
+      },
+      "resolvedBy": "gpt-5.4-mini:medium"
     },
     "oedipus-2025": {
       "title": "Oedipus",
@@ -13860,6 +14252,30 @@
       },
       "resolvedBy": "gpt-5.4-mini:medium"
     },
+    "paddington-the-musical-2026": {
+      "title": "Paddington The Musical",
+      "openingDate": "2027-04-18",
+      "path": [
+        "london"
+      ],
+      "pathNote": "London West End premiere at the Savoy Theatre in 2025, then Broadway in 2027.",
+      "source": "book",
+      "sourceTitle": "A Bear Called Paddington",
+      "confidence": "high",
+      "evidence": [
+        "https://playbill.com/production/paddington-the-musical-london-savoy-theatre-2025",
+        "https://www.ibdb.com/broadway-show/paddington-the-musical-547327"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [
+          "london"
+        ],
+        "source": "book",
+        "model": "gemini-2.5-flash"
+      }
+    },
     "pal-joey-2008": {
       "title": "Pal Joey",
       "openingDate": "2008-12-18",
@@ -14719,6 +15135,35 @@
         "model": "gemini-2.5-flash"
       }
     },
+    "purple-rain-2026": {
+      "title": "Purple Rain",
+      "openingDate": "2027-04-12",
+      "path": [
+        "regional-us"
+      ],
+      "pathNote": "State Theatre, Minneapolis (world premiere pre-Broadway run, 2025).",
+      "source": "film",
+      "sourceTitle": "Purple Rain (1984 film)",
+      "confidence": "high",
+      "evidence": [
+        "https://www.playbill.com/article/broadway-aimed-purple-rain-musical-finds-its-stars",
+        "https://en.wikipedia.org/wiki/Purple_Rain_(musical)"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [
+          "regional-us"
+        ],
+        "source": "film",
+        "model": "gemini-2.5-flash"
+      },
+      "firstAnswer": {
+        "path": [],
+        "source": "film"
+      },
+      "resolvedBy": "gpt-5.4-mini:medium"
+    },
     "purpose-2025": {
       "title": "Purpose",
       "openingDate": "2025-03-17",
@@ -15094,6 +15539,30 @@
       },
       "verifiedBy": "BRO-5842 web audit 2026-10-21: confirmed"
     },
+    "rhinoceros-2027": {
+      "title": "Rhinoceros",
+      "openingDate": "2027-04-25",
+      "path": [
+        "regional-us"
+      ],
+      "pathNote": "American Repertory Theater in Cambridge, Massachusetts, in 2026, then Broadway in 2027.",
+      "source": "original",
+      "sourceTitle": null,
+      "confidence": "high",
+      "evidence": [
+        "https://playbill.com/article/kristine-nielsen-alex-ross-more-join-a-r-t-rhinoceros",
+        "https://www.ibdb.com/broadway-production/rhinoceros-548525"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [
+          "regional-us"
+        ],
+        "source": "original",
+        "model": "gemini-2.5-flash"
+      }
+    },
     "richard-iii-2013": {
       "title": "Richard III",
       "openingDate": "2013-11-10",
@@ -15441,13 +15910,13 @@
       "title": "School Girls; Or, The African Mean Girls Play",
       "openingDate": "2026-09-28",
       "path": [],
-      "pathNote": "Direct Broadway production; no earlier staged production of this specific Broadway staging.",
+      "pathNote": null,
       "source": "original",
       "sourceTitle": null,
-      "confidence": "medium",
+      "confidence": "high",
       "evidence": [
-        "https://www.ibdb.com/broadway-production/school-girls-or-the-african-mean-girls-play-546665",
-        "https://playbill.com/production/school-girls-or-the-african-mean-girls-play-broadway-samuel-j-friedman-theatre-2026"
+        "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/",
+        "https://www.ibdb.com/broadway-production/school-girls-or-the-african-mean-girls-play-546665"
       ],
       "model": "gpt-5.4-mini",
       "classifiedAt": "2026-10-21",
@@ -15457,7 +15926,12 @@
         ],
         "source": "original",
         "model": "gemini-2.5-flash"
-      }
+      },
+      "firstAnswer": {
+        "path": [],
+        "source": "original"
+      },
+      "resolvedBy": "gpt-5.4-mini:medium"
     },
     "school-of-rock-the-musical-2015": {
       "title": "School of Rock – The Musical",
@@ -16051,6 +16525,34 @@
         "path": [
           "regional-us"
         ],
+        "source": "original"
+      },
+      "resolvedBy": "gpt-5.4-mini:medium"
+    },
+    "small-mouth-sounds-2027": {
+      "title": "Small Mouth Sounds",
+      "openingDate": "2027-03-18",
+      "path": [],
+      "pathNote": null,
+      "source": "original",
+      "sourceTitle": null,
+      "confidence": "high",
+      "evidence": [
+        "https://www.broadway.com/buzz/207418/julia-roberts-paul-rudd-and-sarah-paulson-to-star-in-broadways-small-mouth-sounds/",
+        "https://www.ibdb.com/broadway-show/small-mouth-sounds-548026"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [
+          "off-broadway",
+          "regional-us"
+        ],
+        "source": "original",
+        "model": "gemini-2.5-flash"
+      },
+      "firstAnswer": {
+        "path": [],
         "source": "original"
       },
       "resolvedBy": "gpt-5.4-mini:medium"
@@ -18073,6 +18575,30 @@
         "source": "book"
       },
       "resolvedBy": "gpt-5.4-mini:medium"
+    },
+    "the-fantasticks-2026": {
+      "title": "The Fantasticks",
+      "openingDate": "2026-11-16",
+      "path": [
+        "regional-us"
+      ],
+      "pathNote": "Flint Repertory Theatre, Flint, MI (2022) → Provincetown Theater, Provincetown, MA (2023) → Coachella Valley Repertory, Cathedral City, CA (2024)",
+      "source": "play",
+      "sourceTitle": "The Fantasticks is a revised version of Edmond Rostand’s Les Romanesques",
+      "confidence": "high",
+      "evidence": [
+        "https://www.broadwaynews.com/a-reimagined-the-fantasticks-is-coming-to-broadway-as-a-contemporary-gay-love-story/",
+        "https://en.wikipedia.org/wiki/The_Fantasticks"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [
+          "regional-us"
+        ],
+        "source": "play",
+        "model": "gemini-2.5-flash"
+      }
     },
     "the-farnsworth-invention-2007": {
       "title": "The Farnsworth Invention",
@@ -20676,6 +21202,26 @@
         "model": "gemini-2.5-flash"
       }
     },
+    "the-sound-of-music-2027": {
+      "title": "The Sound of Music",
+      "openingDate": "2027-04-15",
+      "path": [],
+      "pathNote": null,
+      "source": "book",
+      "sourceTitle": "The Story of the Trapp Family Singers",
+      "confidence": "medium",
+      "evidence": [
+        "https://www.playbill.com/article/the-sound-of-music-is-coming-back-to-broadway-starring-jasmine-amy-rogers",
+        "https://www.ibdb.com/broadway-show/the-sound-of-music-8195"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [],
+        "source": "book",
+        "model": "gemini-2.5-flash"
+      }
+    },
     "the-story-of-my-life-2009": {
       "title": "The Story of My Life",
       "openingDate": "2009-02-19",
@@ -21342,6 +21888,33 @@
         "model": "gemini-2.5-flash"
       },
       "verifiedBy": "BRO-5842 web audit 2026-10-21: the 1997 SCR/MTC runs were the original production, not this revival staging"
+    },
+    "three-days-of-rain-2026": {
+      "title": "Three Days of Rain",
+      "openingDate": "2027-03-01",
+      "path": [],
+      "pathNote": "Direct to Broadway for this Anna D. Shapiro revival: the official Shubert announcement and IBDB listing show the production beginning previews on January 30, 2027 and opening March 1, 2027 at the Longacre Theatre, with no earlier staged run",
+      "source": "original",
+      "sourceTitle": null,
+      "confidence": "high",
+      "evidence": [
+        "https://shubert.nyc/press/three-days-of-rain-announces-theatre-dates-and-design-team/",
+        "https://www.ibdb.com/broadway-production/three-days-of-rain-548496"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [
+          "regional-us"
+        ],
+        "source": "original",
+        "model": "gemini-2.5-flash"
+      },
+      "firstAnswer": {
+        "path": [],
+        "source": "original"
+      },
+      "resolvedBy": "gpt-5.4-mini:medium"
     },
     "three-tall-women-2018": {
       "title": "Three Tall Women",
@@ -22374,6 +22947,31 @@
         "model": "gemini-2.5-flash"
       },
       "verifiedBy": "BRO-5842 web audit 2026-10-21: confirmed"
+    },
+    "warriors-2026": {
+      "title": "Warriors",
+      "openingDate": "2027-04-08",
+      "path": [],
+      "pathNote": null,
+      "source": "film",
+      "sourceTitle": "The Warriors",
+      "confidence": "medium",
+      "evidence": [
+        "https://www.ibdb.com/broadway-production/warriors-548595",
+        "https://warriorsmusical.com/"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-21",
+      "check": {
+        "path": [],
+        "source": "other",
+        "model": "gemini-2.5-flash"
+      },
+      "firstAnswer": {
+        "path": [],
+        "source": "book"
+      },
+      "resolvedBy": "gpt-5.4-mini:medium"
     },
     "water-for-elephants-2024": {
       "title": "Water for Elephants",

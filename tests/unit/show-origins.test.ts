@@ -44,6 +44,10 @@ test('mix by era, recoupment over settled seasons, revivals apart', () => {
     show({ id: 'r', openingDate: '2024-10-05', isRevival: true }),
     show({ id: 's', openingDate: '2005-10-05', isRevival: true }),
     show({ id: 'x', openingDate: '2015-10-05' }), // no origin record
+    show({ id: 'p', openingDate: '2026-11-08', status: 'previews', type: 'play' }), // announced: current column only
+    show({ id: 'u', openingDate: '2027-02-01', status: 'upcoming' }),
+    show({ id: 'ur', openingDate: '2027-03-01', status: 'upcoming', isRevival: true }), // revival: not counted
+    show({ id: 'un', openingDate: '2027-09-01', status: 'upcoming' }), // next season: not counted
   ];
   const origins: Record<string, OriginRecord> = {
     a: rec({ path: ['regional-us'], source: 'film' }),
@@ -53,6 +57,10 @@ test('mix by era, recoupment over settled seasons, revivals apart', () => {
     e: rec({ path: ['london', 'regional-us'], source: 'film' }),
     f: rec({ path: ['london'], source: 'music-catalog' }),
     r: rec({ path: ['london'], source: 'original' }),
+    p: rec({ path: [], source: 'original' }),
+    u: rec({ path: ['london'], source: 'film' }),
+    ur: rec({ path: ['london'], source: 'film' }),
+    un: rec({ path: ['london'], source: 'film' }),
     s: rec({ path: [], source: 'original' }),
   };
   const f = buildOriginFindings(shows, origins, '2026-10-20');
@@ -69,12 +77,16 @@ test('mix by era, recoupment over settled seasons, revivals apart', () => {
   assert.deepEqual(f.musicalEraTotals, [1, 2, 2]);
   assert.deepEqual(f.musicalSourceMix.find((r) => r.id === 'screen')!.counts, [1, 0, 1]);
   assert.deepEqual(f.revivalsFromLondon, { counts: [0, 0, 1], totals: [1, 0, 1] });
-  // Current-season column: 2026-27 so far holds only f (London, music catalog).
+  // Current-season column: 2026-27 holds f (opened) plus announced new productions p and u.
+  // Announced shows stay out of the era totals and the show list.
   assert.equal(f.currentSeason, '2026-2027');
-  assert.deepEqual([f.currentTotal, f.musicalCurrentTotal], [1, 1]);
-  assert.equal(f.routeMix.find((r) => r.id === 'london')!.current, 1);
-  assert.equal(f.routeMix.reduce((n, r) => n + r.current, 0), 1);
+  assert.deepEqual([f.currentTotal, f.musicalCurrentTotal], [3, 2]);
+  assert.equal(f.routeMix.find((r) => r.id === 'london')!.current, 2);
+  assert.equal(f.routeMix.find((r) => r.id === 'direct')!.current, 1);
+  assert.equal(f.routeMix.reduce((n, r) => n + r.current, 0), 3);
   assert.equal(f.sourceMix.find((r) => r.id === 'music-catalog')!.current, 1);
+  assert.equal(f.sourceMix.find((r) => r.id === 'screen')!.current, 1);
+  assert.equal(f.showList.some((x) => x.slug === 'p' || x.slug === 'u'), false);
 
   // Recoupment: a, b, c, e count (d nonprofit, f unsettled 2026-27, x no record).
   const rr = Object.fromEntries(f.routeRecoup.map((r) => [r.id, [r.all.recouped, r.all.total, r.musicals.total, r.plays.total]]));

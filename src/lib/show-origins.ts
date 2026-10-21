@@ -101,7 +101,7 @@ export interface OriginFindings {
   /** Musicals by source, per era, the adaptation trend most people ask about. */
   musicalSourceMix: Array<MixRow<SourceBucketId>>;
   musicalEraTotals: number[];
-  /** The season asOf falls in (e.g. "2026-2027"), with its totals for the extra column. */
+  /** The season asOf falls in (e.g. "2026-2027"), with its totals for the extra column (opened + announced new productions). */
   currentSeason: string | null;
   currentTotal: number;
   musicalCurrentTotal: number;
@@ -237,9 +237,25 @@ export function buildOriginFindings(
   for (const s of shows) {
     const o = origins[s.id];
     const era = eraIndex(s.openingDate);
-    // Opened by asOf only: a show in previews has not reached Broadway yet.
-    if (!o || era < 0 || typeof s.isRevival !== 'boolean' || s.openingDate > asOf || s.status === 'previews') continue;
+    if (!o || era < 0 || typeof s.isRevival !== 'boolean') continue;
     if (isOneOff(s) || (!s.isRevival && returns.has(s.id))) continue;
+    // Announced or in previews: not on Broadway yet. Counts only in the current-season
+    // column (as the Season Report counts opened + announced), never in the era mixes,
+    // the show list or recoupment.
+    if (s.openingDate > asOf || s.status === 'previews' || s.status === 'upcoming') {
+      if (s.isRevival || !currentSeason || getSeason(s.openingDate) !== currentSeason) continue;
+      const isMusical = s.type === 'musical';
+      const route = routeBucket(o.path);
+      const src = sourceBucket(o.source);
+      currentTotal++;
+      routeMix.find((r) => r.id === route)!.current++;
+      sourceMix.find((r) => r.id === src)!.current++;
+      if (isMusical) {
+        musicalCurrentTotal++;
+        musicalSourceMix.find((r) => r.id === src)!.current++;
+      }
+      continue;
+    }
     if (s.isRevival) {
       revivalsFromLondon.totals[era]++;
       if (o.path.includes('london')) revivalsFromLondon.counts[era]++;

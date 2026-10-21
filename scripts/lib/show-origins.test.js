@@ -37,15 +37,16 @@ test('pathNote naming a stop the codes miss is flagged', () => {
   assert.deepEqual(pathNoteConflicts({ path: [], pathNote: null }), []);
 });
 
-test('scope: Broadway, opened from 2000-01 on, not upcoming or a tour', () => {
+test('scope: Broadway, opened or announced from 2000-01 on, not a tour or cancelled', () => {
   const ids = inScopeShows([
     { id: 'a', category: 'broadway', openingDate: '2001-01-01', status: 'closed' },
     { id: 'b', category: 'broadway', openingDate: '1999-01-01', status: 'closed' },
     { id: 'c', category: 'broadway', openingDate: '2027-01-01', status: 'upcoming' },
     { id: 'd', category: 'off-broadway', market: 'broadway', openingDate: '2010-01-01', status: 'closed' },
     { id: 'e', category: 'broadway', openingDate: '2010-01-01', status: 'closed', tourOf: 'x' },
+    { id: 'f', category: 'broadway', openingDate: '2027-01-01', status: 'upcoming', cancelledBeforeOpening: true },
   ]).map((s) => s.id);
-  assert.deepEqual(ids, ['a']);
+  assert.deepEqual(ids, ['a', 'c']);
 });
 
 test('second opinions: labels only, agreement ignores stop order and film vs TV', () => {

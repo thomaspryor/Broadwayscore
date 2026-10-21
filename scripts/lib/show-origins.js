@@ -20,14 +20,14 @@ const CONFIDENCE = ['high', 'medium', 'low'];
 const FIRST_OPENING_DATE = '2000-07-01';
 
 /**
- * Broadway productions in scope: opened (or in previews) from FIRST_OPENING_DATE on.
+ * Broadway productions in scope: opened, in previews or announced (upcoming) from FIRST_OPENING_DATE on.
  * @param {object[]} shows - shows.json rows
  * @returns {object[]}
  */
 function inScopeShows(shows) {
   return shows.filter((s) => isBroadwayCategory(s)
     && s.openingDate && s.openingDate >= FIRST_OPENING_DATE
-    && s.status !== 'upcoming' && !s.cancelledBeforeOpening && !s.tourOf);
+    && !s.cancelledBeforeOpening && !s.tourOf);
 }
 
 function isHttpUrl(u) {
