@@ -314,3 +314,47 @@ test('negative control: HOME self-skip exits 0 with no verdict (the inert path)'
   const live = runHook(fx, transcript);
   assert.equal(live.status, 2, `live HOME should block. stderr: ${live.stderr}`);
 });
+
+// BRO-5844: copy-only edits to a src/app code file do not need visual approval.
+function withUiBase(fx, base) {
+  git(fx.repo, 'checkout', '-q', 'main');
+  commitFile(fx.repo, 'src/app/copy/page.tsx', base, 'ui: base page');
+  git(fx.repo, 'push', '-q', 'origin', 'main');
+  git(fx.repo, 'fetch', '-q', 'origin');
+  git(fx.repo, 'checkout', '-q', BRANCH);
+  git(fx.repo, 'rebase', '-q', 'main');
+}
+
+test('(BRO-5844) text-only edit to a src/app page.tsx -> exit 0 with no verdict', (t) => {
+  const fx = makeFixture(t, { uiBranch: false });
+  assertGateLive(fx);
+  withUiBase(fx, 'export default function P() {\n  return <p className="a">Old words</p>;\n}\n');
+  commitFile(fx.repo, 'src/app/copy/page.tsx', 'export default function P() {\n  return <p className="a">New words</p>;\n}\n', 'copy edit');
+  const r = runHook(fx, writeTranscript(fx, NEUTRAL_USER));
+  assert.equal(r.status, 0, `stderr: ${r.stderr}`);
+});
+
+test('(BRO-5844) className edit to the same file -> still blocked', (t) => {
+  const fx = makeFixture(t, { uiBranch: false });
+  assertGateLive(fx);
+  withUiBase(fx, 'export default function P() {\n  return <p className="a">Old words</p>;\n}\n');
+  commitFile(fx.repo, 'src/app/copy/page.tsx', 'export default function P() {\n  return <p className="b">Old words</p>;\n}\n', 'style edit');
+  const r = runHook(fx, writeTranscript(fx, NEUTRAL_USER));
+  assert.equal(r.status, 2, `stderr: ${r.stderr}`);
+  assert.match(r.stderr, /without a visual-qa verdict/);
+});
+
+test('(BRO-5844) a visual file after 5 text-only files is not hidden by the head -5 cut', (t) => {
+  const fx = makeFixture(t, { uiBranch: false });
+  assertGateLive(fx);
+  git(fx.repo, 'checkout', '-q', 'main');
+  for (let i = 1; i <= 6; i++) commitFile(fx.repo, `src/app/p${i}/page.tsx`, `export default () => <p className="a">Old</p>;\n`, `base ${i}`);
+  git(fx.repo, 'push', '-q', 'origin', 'main');
+  git(fx.repo, 'fetch', '-q', 'origin');
+  git(fx.repo, 'checkout', '-q', BRANCH);
+  git(fx.repo, 'rebase', '-q', 'main');
+  for (let i = 1; i <= 5; i++) commitFile(fx.repo, `src/app/p${i}/page.tsx`, `export default () => <p className="a">New ${i}</p>;\n`, `copy ${i}`);
+  commitFile(fx.repo, 'src/app/p6/page.tsx', `export default () => <p className="z">Old</p>;\n`, 'style 6');
+  const r = runHook(fx, writeTranscript(fx, NEUTRAL_USER));
+  assert.equal(r.status, 2, `stderr: ${r.stderr}`);
+});
