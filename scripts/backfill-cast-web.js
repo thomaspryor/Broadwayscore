@@ -42,9 +42,11 @@ const {
 const { GEMINI_FLASH, CLAUDE_HAIKU } = require('./lib/models');
 const { shouldTombstone, shouldAbortMassWipe } = require('./lib/cast-tombstone');
 const { selectShowsByFilter } = require('./lib/cast-show-filter');
+const { crossCheckCast, loadEvidenceTexts } = require('./lib/cast-review-crosscheck');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const CAST_DIR = path.join(__dirname, '..', 'data', 'cast');
+const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
 // Parse CLI arguments
 const args = process.argv.slice(2);
@@ -611,6 +613,16 @@ async function main() {
           for (const b of wipedBackups) fs.writeFileSync(b.path, b.content);
           process.exit(1);
         }
+        continue;
+      }
+
+      // Reviews are independent evidence of who is in the production. A scraped list
+      // that none of >=3 full reviews names is another production's cast
+      // (King of the Yees, Oct 2026: profiletheatre.org's cast written for Signature).
+      const castCheck = crossCheckCast(result.cast, loadEvidenceTexts(path.join(REVIEW_TEXTS_DIR, show.id)));
+      if (castCheck.verdict === 'contradicted') {
+        console.log(`  Cast from ${result.sourceUrl} is named in none of ${castCheck.texts} reviews (${castCheck.missing.slice(0, 3).join(', ')}...) — NOT writing`);
+        failed++;
         continue;
       }
 
