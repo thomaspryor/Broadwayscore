@@ -219,6 +219,21 @@ test('pingFailureDetail: surfaces the envelope result text instead of the leadin
   assert.match(pingFailureDetail({ status: 1, stdout: '', stderr: 'boom' }), /boom/);
 });
 
+test('pingFailureDetail: an envelope with an EMPTY result names subtype/is_error/api_error_status instead of zeroed usage', () => {
+  const stdout = JSON.stringify({ duration_api_ms: 0, stop_reason: 'stop_sequence', is_error: true, api_error_status: 529, result: '', usage: { input_tokens: 0 } });
+  const d = pingFailureDetail({ status: 1, stdout, stderr: '' });
+  assert.match(d, /empty result/);
+  assert.match(d, /api_error_status=529/);
+  assert.doesNotMatch(d, /input_tokens/);
+});
+
+test('check-claude-auth-health.js wires probeWithConfirm around preflightAuth (not a bare single probe)', async () => {
+  const { readFileSync } = await import('node:fs');
+  const src = readFileSync(new URL('../../scripts/check-claude-auth-health.js', import.meta.url), 'utf8');
+  assert.match(src, /probeWithConfirm\(\{[\s\S]*probe: \(\) => preflightAuth\(/);
+  assert.doesNotMatch(src, /const preflight = preflightAuth\(/);
+});
+
 test('buildBillingFallbackAlertPayload: an actual revoked stored login (auth-rejected reason) keeps the confirmed-failure wording', () => {
   const health = evaluateAuthHealth({
     preflight: { ok: true, mode: 'api-key', storedDetail: 'OAuth access token has been revoked', storedReason: 'auth-rejected' },

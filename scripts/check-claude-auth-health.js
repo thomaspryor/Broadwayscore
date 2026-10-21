@@ -20,6 +20,10 @@
  * opening-night pipeline dead). Spawn starvation / spawn errors
  * ('claude-spawn-starved' / 'claude-spawn-error') route to the morning digest
  * only (BRO-4141: an overloaded Mac is not something the owner can act on).
+ *
+ * A failed probe is re-run once after 45s (probeWithConfirm) and only pages if
+ * both attempts fail — the 2026-10-21 09:00 ET run paged "log in again" on one
+ * transient empty reply while every other run that day was healthy.
  */
 'use strict';
 

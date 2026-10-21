@@ -296,6 +296,12 @@ function pingFailureDetail(r) {
   try {
     const body = JSON.parse(r.stdout);
     if (body && body.result) return `exit ${r.status}: ${String(body.result)}`.slice(0, 300);
+    // Empty result (the 2026-10-21 zero-token envelope): name the structural fields.
+    if (body && typeof body === 'object') {
+      const fields = ['subtype', 'is_error', 'api_error_status', 'stop_reason']
+        .filter(k => body[k] !== undefined && body[k] !== null).map(k => `${k}=${body[k]}`);
+      if (fields.length) return `exit ${r.status}: empty result (${fields.join(', ')})`.slice(0, 300);
+    }
   } catch { /* not JSON — fall through to raw stdout */ }
   return String(r.stdout || `exit ${r.status}${r.signal ? ` signal=${r.signal}` : ''}`).slice(0, 300);
 }
