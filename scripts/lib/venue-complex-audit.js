@@ -53,7 +53,21 @@ const GENERIC_TOKENS = new Set([
   'players',
 ]);
 
-function coreTokens(str) {
+// BRO-3159: London-only ambiguity. Retain the distinguishing words (young,
+// court, sadler/wells, elizabeth, southbank) while dropping words shared by
+// unrelated venues: Old/Young Vic, Theatre Royal/Royal Court, Waterloo East/
+// Wells East, Other Palace Main Theatre/Young Vic Main House, Pearly Queen/
+// Queen Elizabeth Hall. Do not weaken the off-Broadway detector with these.
+const LONDON_GENERIC_TOKENS = new Set([...GENERIC_TOKENS, 'vic', 'royal', 'east', 'main', 'queen']);
+
+// Soho is still a useful signal for Soho Theatre Upstairs and future studios.
+// Exclude only this known distinct venue rather than discarding "soho".
+// Nimax's @sohoplace is at 4 Soho Place; Soho Theatre is at 21 Dean Street:
+// https://nimaxtheatres.com/venue/
+// https://sohotheatre.com/dean-street/
+const LONDON_DISTINCT_VENUES = { 'soho-theatre': new Set(['soho-place']) };
+
+function coreTokens(str, genericTokens) {
   return str
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, ' ')
@@ -63,7 +77,7 @@ function coreTokens(str) {
     // become spaces, e.g. "Joe's" -> "joe s") — none are a same-venue signal
     // on their own, and are common enough across unrelated NYC venues to be
     // pure noise in the overlap check below.
-    .filter(w => w && w.length > 1 && !GENERIC_TOKENS.has(w) && !/^\d+$/.test(w));
+    .filter(w => w && w.length > 1 && !genericTokens.has(w) && !/^\d+$/.test(w));
 }
 
 /**
@@ -95,10 +109,13 @@ function buildSlugIndex(shows, categoryFilter) {
  * Lincoln Center Theater) — those require editorial knowledge, not string
  * matching.
  *
+ * `marketKey` is the VENUE_COMPLEX_MARKETS key. Omitted keys keep the original
+ * off-Broadway token rules; London callers opt into its own noise filtering.
  * Returns { [complexSlug]: [{ slug, rawStrings, showCount }] }
  */
-function findCandidateGaps(shows, complexDefs, categoryFilter) {
+function findCandidateGaps(shows, complexDefs, categoryFilter, marketKey) {
   const slugToRaw = buildSlugIndex(shows, categoryFilter);
+  const genericTokens = marketKey === 'london' ? LONDON_GENERIC_TOKENS : GENERIC_TOKENS;
   const result = {};
 
   for (const [complexSlug, def] of Object.entries(complexDefs)) {
@@ -112,7 +129,7 @@ function findCandidateGaps(shows, complexDefs, categoryFilter) {
     const covered = new Set([complexSlug, ...(Array.isArray(def && def.subVenueSlugs) ? def.subVenueSlugs : [])]);
     const coreTokenSets = [];
     const addTokens = (str) => {
-      const tokens = coreTokens(str);
+      const tokens = coreTokens(str, genericTokens);
       if (tokens.length) coreTokenSets.push(new Set(tokens));
     };
     addTokens(def.name);
@@ -123,6 +140,7 @@ function findCandidateGaps(shows, complexDefs, categoryFilter) {
     const candidates = [];
     for (const [slug, rawSet] of slugToRaw) {
       if (covered.has(slug)) continue;
+      if (marketKey === 'london' && LONDON_DISTINCT_VENUES[complexSlug]?.has(slug)) continue;
       const slugWords = new Set(slug.split('-'));
       let bestOverlap = 0;
       for (const tokenSet of coreTokenSets) {

@@ -152,3 +152,71 @@ test('findCandidateGaps still flags a real distinguishing-token gap', () => {
   };
   assert.deepEqual(Object.keys(findCandidateGaps(shows, defs, isOffBroadway)), ['the-players-theatre']);
 });
+
+const londonMarket = VENUE_COMPLEX_MARKETS.find(m => m.key === 'london');
+const westEndComplexDefs = require('../data/venue-complexes-west-end.json').complexes;
+
+test('London candidate gaps ignore shared room, direction and honorific words and distinct Soho Place', () => {
+  const venues = [
+    'Young Vic Main House', 'The Old Vic',
+    'The Other Palace - Main Theatre', 'The Other Palace Main Auditorium',
+    'Soho Place', 'Queen Elizabeth Hall, Southbank Centre', 'Pearly Queen Theatre',
+    "Sadler's Wells East", 'Theatre Royal Stratford East', 'Waterloo East Theatre',
+    'Theatre Royal Haymarket', 'Theatre Royal Drury Lane',
+    'Drury Lane, Theatre Royal', 'Haymarket, Theatre Royal',
+  ];
+  const shows = venues.map(venue => ({ venue, category: 'west-end' }));
+  assert.deepEqual(findCandidateGaps(shows, westEndComplexDefs, londonMarket.matches, londonMarket.key), {});
+});
+
+test('London noise tokens remain distinguishing tokens in the default off-Broadway audit', () => {
+  for (const word of ['Vic', 'Royal', 'East', 'Main', 'Queen']) {
+    const venue = `${word} Studio 2`;
+    const defs = { complex: { name: `${word} Theatre`, subVenueSlugs: [] } };
+    const shows = [{ venue, category: 'off-broadway' }];
+    assert.deepEqual(findCandidateGaps(shows, defs, isOffBroadway), {
+      complex: [{ slug: slugify(venue), rawStrings: [venue], showCount: 1 }],
+    });
+  }
+});
+
+test('London candidate gaps still catch numbered studios at every complex in both London categories', () => {
+  for (const category of ['west-end', 'off-west-end']) {
+    for (const [complexSlug, def] of Object.entries(westEndComplexDefs)) {
+      const venue = `${def.name} Studio 2`;
+      const candidates = findCandidateGaps([{ venue, category }], westEndComplexDefs, londonMarket.matches, londonMarket.key);
+      assert.deepEqual(candidates, {
+        [complexSlug]: [{ slug: slugify(venue), rawStrings: [venue], showCount: 1 }],
+      });
+    }
+  }
+});
+
+test('London candidate gaps retain the Soho Upstairs signal and ignore other markets', () => {
+  const defs = { 'soho-theatre': { name: 'Soho Theatre', subVenueSlugs: [] } };
+  const venue = 'Soho Theatre Upstairs';
+  const shows = [
+    { venue, category: 'off-west-end' },
+    { venue: 'Soho Theatre Studio 3', category: 'off-broadway' },
+  ];
+  assert.deepEqual(findCandidateGaps(shows, defs, londonMarket.matches, londonMarket.key), {
+    'soho-theatre': [{ slug: 'soho-theatre-upstairs', rawStrings: [venue], showCount: 1 }],
+  });
+});
+
+test('soho-theatre complex covers the verified Soho Theatre Upstairs gap (BRO-3159)', () => {
+  assert.ok(westEndComplexDefs['soho-theatre'].subVenueSlugs.includes('soho-theatre-upstairs'));
+});
+
+test('London candidate gaps still catch bare National Theatre auditorium names', () => {
+  const defs = {
+    'national-theatre': { name: 'National Theatre', subVenueSlugs: ['national-theatre-dorfman'] },
+  };
+  const shows = [
+    { venue: 'National Theatre, Dorfman', category: 'west-end' },
+    { venue: 'Dorfman Theatre', category: 'off-west-end' },
+  ];
+  assert.deepEqual(findCandidateGaps(shows, defs, londonMarket.matches, londonMarket.key), {
+    'national-theatre': [{ slug: 'dorfman-theatre', rawStrings: ['Dorfman Theatre'], showCount: 1 }],
+  });
+});

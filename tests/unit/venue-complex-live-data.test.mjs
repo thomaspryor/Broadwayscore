@@ -42,20 +42,20 @@ test('no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap su
 // getAllLondonShows), not 'west-end' alone — using the narrower filter here
 // would falsely flag every West End complex's subVenueSlugs as orphaned.
 //
-// Only the orphan check runs here, not findCandidateGaps: a first pass over
-// London venue strings surfaced heavy false-positive noise (e.g. "Old Vic" vs
-// "Young Vic", "Theatre Royal Haymarket" vs "Royal Court" — distinct real
-// venues that share a word) because GENERIC_TOKENS in venue-complex-audit.js
-// was tuned against the off-Broadway corpus's noise words (hall/house/space/
-// stage), not London's (royal/east/vic). Porting the candidate-gap check to
-// this market needs its own tuning pass, not a blind reuse — tracked as a
-// separate roadmap item rather than shipped half-verified here.
+// BRO-3159: candidate gaps now use London-specific noise filtering. Keep this
+// live-corpus assertion in data-health CI, alongside the off-Broadway check.
 const isLondonShow = (show) => show.category === 'west-end' || show.category === 'off-west-end';
 const westEndComplexDefs = require('../../data/venue-complexes-west-end.json').complexes;
 
 test('every West End venue-complex subVenueSlugs entry resolves to a real shows.json venue', () => {
   const orphans = findOrphanSubVenueSlugs(showsData.shows, westEndComplexDefs, isLondonShow);
   assert.deepEqual(orphans, {}, `orphaned subVenueSlugs (typo or venue no longer in corpus): ${JSON.stringify(orphans)}`);
+});
+
+test('no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug', () => {
+  const market = VENUE_COMPLEX_MARKETS.find(m => m.key === 'london');
+  const candidates = findCandidateGaps(showsData.shows, westEndComplexDefs, market.matches, market.key);
+  assert.deepEqual(candidates, {}, `unlinked West End candidate sub-venue slugs: ${JSON.stringify(candidates, null, 2)}`);
 });
 
 test('every registered market is orphan-free — covers a third market with no new test', () => {
