@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-21T23:22:24.309Z",
+  "timestamp": "2026-10-21T23:42:26.141Z",
   "stats": {
-    "totalReviews": 58443,
-    "alreadyFlagged": 21161,
+    "totalReviews": 58479,
+    "alreadyFlagged": 21168,
     "dateGuardCatches": 198,
-    "directorMismatch": 2057,
-    "tvFilmSignals": 1654,
-    "londonSignals": 2627,
+    "directorMismatch": 2064,
+    "tvFilmSignals": 1655,
+    "londonSignals": 2630,
     "offBroadwaySignals": 530,
     "yearMismatch": 165,
-    "noPublishDate": 5380
+    "noPublishDate": 5345
   },
   "findings": [
     {
@@ -28827,7 +28827,7 @@
       "showId": "network-west-end-2017",
       "file": "a-younger-theatre--jessica-handscomb.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "November 20th, 2017",
       "url": "https://www.ayoungertheatre.com/review-network-lyttelton-theatre/",
       "findings": [
         {
@@ -28841,7 +28841,7 @@
       "showId": "network-west-end-2017",
       "file": "guardian--michael-billington.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "November 13th, 2017",
       "url": "https://www.theguardian.com/stage/2017/nov/13/network-review-bryan-cranston-lyttelton-national-theatre-lee-hall",
       "findings": [
         {
@@ -28869,7 +28869,7 @@
       "showId": "network-west-end-2017",
       "file": "sunday-times--christopher-hart.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "November 19th, 2017",
       "url": "https://www.thetimes.co.uk/article/theatre-review-bryan-cranston-in-network-lyttelton-national-theatre-9fb8clzjc",
       "findings": [
         {
@@ -48821,9 +48821,36 @@
     },
     {
       "showId": "tina-the-tina-turner-musical-west-end-2018",
+      "file": "express-uk--neil-norman.json",
+      "publishDate": "2018-04-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"phyllida lloyd\" from tina-2019"
+        }
+      ]
+    },
+    {
+      "showId": "tina-the-tina-turner-musical-west-end-2018",
+      "file": "financialtimes--ian-shuttleworth.json",
+      "score": null,
+      "publishDate": "April 18th, 2018",
+      "url": "https://www.ft.com/content/dc029182-4231-11e8-803a-295c97e6fd0b",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"phyllida lloyd\" from tina-2019"
+        }
+      ]
+    },
+    {
+      "showId": "tina-the-tina-turner-musical-west-end-2018",
       "file": "guardian--michael-billington.json",
       "score": 89,
-      "publishDate": null,
+      "publishDate": "April 17th, 2018",
       "url": "https://www.theguardian.com/stage/2018/apr/17/tina-review-turner-musical-aldwych-theatre-london",
       "findings": [
         {
@@ -48876,10 +48903,91 @@
     },
     {
       "showId": "tina-the-tina-turner-musical-west-end-2018",
+      "file": "standard--fiona-mountford.json",
+      "score": 65,
+      "publishDate": "April 18th, 2018",
+      "url": "https://www.standard.co.uk/go/london/theatre/tina-review-tina-turner-musical-is-not-quite-better-than-all-the-rest-a3816741.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"phyllida lloyd\" from tina-2019"
+        }
+      ]
+    },
+    {
+      "showId": "tina-the-tina-turner-musical-west-end-2018",
+      "file": "sunday-express--michael-arditti.json",
+      "publishDate": "2018-04-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"phyllida lloyd\" from tina-2019"
+        }
+      ]
+    },
+    {
+      "showId": "tina-the-tina-turner-musical-west-end-2018",
+      "file": "sunday-times--christopher-hart.json",
+      "publishDate": "2018-04-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"phyllida lloyd\" from tina-2019"
+        }
+      ]
+    },
+    {
+      "showId": "tina-the-tina-turner-musical-west-end-2018",
+      "file": "telegraph--claire-allfree.json",
+      "publishDate": "2018-04-23",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "tina-the-tina-turner-musical-west-end-2018",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 96,
+      "publishDate": "April 18th, 2018",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/tina-musical-aldwych-review-joyful-lungs-bursting-show-simply/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"phyllida lloyd\" from tina-2019"
+        }
+      ]
+    },
+    {
+      "showId": "tina-the-tina-turner-musical-west-end-2018",
       "file": "thestage--tim-bano.json",
       "score": 64,
       "publishDate": "2018-04-17",
       "url": "https://www.thestage.co.uk/reviews/2018/tina-turner-musical-review-aldwych-theatre-london/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"phyllida lloyd\" from tina-2019"
+        }
+      ]
+    },
+    {
+      "showId": "tina-the-tina-turner-musical-west-end-2018",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 56,
+      "publishDate": "June 26th, 2022",
+      "url": "https://www.timeout.com/london/theatre/tina-the-tina-turner-musical-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -53976,20 +54084,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2023",
-      "file": "whatsonstage--theo-bosanquet.json",
-      "score": 82,
-      "publishDate": "2023-11-23",
-      "url": "https://www.whatsonstage.com/news/a-christmas-carol-starring-christopher-eccleston-at-the-old-vic-review_1551668/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -71198,6 +71292,19 @@
       ]
     },
     {
+      "showId": "killer-joe-west-end-2018",
+      "file": "sunday-times--kate-maltby.json",
+      "publishDate": "2018-06-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "kimberly-akimbo-2022",
       "file": "theater-scene--joel-benjamin.json",
       "score": 76,
@@ -73670,7 +73777,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 87,
+      "score": 88,
       "publishDate": "2026-10-21",
       "url": "https://www.londonboxoffice.co.uk/news/post/martin-guerre-the-old-vic-review",
       "findings": [
@@ -73724,7 +73831,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "musical-theatre-review--unknown.json",
-      "score": 64,
+      "score": 62,
       "publishDate": "2026-10-21",
       "url": "https://musicaltheatrereview.com/martin-guerre-the-old-vic/",
       "findings": [
@@ -78947,6 +79054,20 @@
       "score": 45,
       "publishDate": "2023-09-19",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "pygmalion-west-end-2023",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 46,
+      "publishDate": "2023-09-20",
+      "url": "https://www.thetimes.co.uk/article/pygmalion-review-overacting-drowns-out-the-sting-of-shaw-s-comedy-lvcdnkq3f",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -91448,6 +91569,19 @@
       ]
     },
     {
+      "showId": "tina-the-tina-turner-musical-west-end-2018",
+      "file": "observer--susannah-clapp.json",
+      "publishDate": "2018-04-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "titanique-2026",
       "file": "nysr--david-finkle.json",
       "score": 45,
@@ -91876,6 +92010,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "translations-west-end-2018",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2018-05-31",
+      "url": "https://www.timeout.com/london/theatre/translations-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
