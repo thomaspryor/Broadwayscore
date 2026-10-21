@@ -739,5 +739,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-21T18:42:58.674Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5854-ob-no-opera",
+    "title": "Landing blocked: unit-tests-e2e red on land/bro-5854-ob-no-opera",
+    "description": "land.yml did not land land/bro-5854-ob-no-opera: the unit-tests-e2e gate went red at 17ef4be216. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39654211291",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5854-ob-no-opera"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-e2e"
+      },
+      {
+        "name": "tip",
+        "value": "17ef4be216e58b9dd04f97211fe781ac54b1168f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39654211291"
+      }
+    ],
+    "queuedAt": "2026-10-21T18:53:51.279Z"
   }
 ]
