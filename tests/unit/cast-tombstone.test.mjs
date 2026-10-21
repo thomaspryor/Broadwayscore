@@ -99,3 +99,18 @@ describe('expectedOpeningYear / castFileMismatchReason (BRO-5809)', () => {
     assert.equal(castFileMismatchReason({ ibdbUrl: 'u' }, { id: 'a-2025', status: 'open', openingDate: '2025-04-01' }), null);
   });
 });
+
+describe('BRO-5809 review follow-ups', () => {
+  const { shouldTombstone, expectedOpeningYear, castFileMismatchReason } = require('../../scripts/lib/cast-tombstone.js');
+  it('never tombstones a wrong-production result', () => {
+    assert.equal(shouldTombstone({ productionMismatch: true }), false);
+    assert.equal(shouldTombstone({}), true);
+  });
+  it('ignores the id year for shows that already opened or are running', () => {
+    assert.equal(expectedOpeningYear({ id: 'harry-potter-2021', status: 'open' }), null);
+    assert.equal(expectedOpeningYear({ id: 'x-2026', status: 'upcoming' }), 2026);
+  });
+  it('covers upcoming shows in the unverified-ibdb rule', () => {
+    assert.equal(castFileMismatchReason({ ibdbUrl: 'u' }, { id: 'x-2026', status: 'upcoming' }), 'unverified-ibdb');
+  });
+});

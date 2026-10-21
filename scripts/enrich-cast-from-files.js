@@ -269,6 +269,7 @@ function main() {
   // Write
   if (!dryRun && enriched > 0) {
     saveShows(showsData);
+    if (skippedMismatch) console.log(`Skipped (wrong production): ${skippedMismatch}`);
     console.log(`\nWrote shows.json with ${enriched} enriched cast arrays`);
   }
 
