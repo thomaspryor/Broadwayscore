@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5776-2-c",
   "planId": "9af8c161-0522-4c8e-85bb-a1171786034c",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -35,5 +35,24 @@
         "reason": "BRO-5776: title as the production names itself (parent session request); id and slug unchanged"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T05:42:27.962Z",
+  "results": [
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled rhinoceros-2027: \"RHINOCEROS\" -> \"Rhinoceros\""
+    },
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled 10-things-i-hate-about-you-on-broadway-2024: \"10 Things I Hate About You on Broadway\" -> \"10 Things I Hate About You\""
+    },
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled midnight-in-the-garden-of-good-and-evil-2024: \"Midnight In The Garden Of Good And Evil\" -> \"Midnight in the Garden of Good and Evil\""
+    }
+  ],
+  "executedIn": "ci"
 }
