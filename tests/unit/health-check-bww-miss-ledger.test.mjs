@@ -15,17 +15,18 @@ const { summarizeBwwRoundupMisses, OPENING_WINDOW_DAYS, MISS_SUMMARY_WINDOW_HOUR
 const { bwwRoundupMissBacklogResults } = require('../../scripts/health-check.js');
 
 const NOW = new Date('2026-08-01T00:00:00.000Z').getTime();
+const REVIEWS = [{ showId: 'a' }, { showId: 'b' }];
 
 test('summarizeBwwRoundupMisses: no entries, no shows, or empty inputs yield nothing', () => {
-  assert.deepEqual(summarizeBwwRoundupMisses([], [], NOW), []);
-  assert.deepEqual(summarizeBwwRoundupMisses(null, null, NOW), []);
-  assert.deepEqual(summarizeBwwRoundupMisses(undefined, undefined, NOW), []);
+  assert.deepEqual(summarizeBwwRoundupMisses([], [], NOW, REVIEWS), []);
+  assert.deepEqual(summarizeBwwRoundupMisses(null, null, NOW, REVIEWS), []);
+  assert.deepEqual(summarizeBwwRoundupMisses(undefined, undefined, NOW, REVIEWS), []);
 });
 
 test('summarizeBwwRoundupMisses: a single miss (not 2+) is not flagged', () => {
   const shows = [{ id: 'a', openingDate: '2026-07-30' }]; // 2 days ago, inside window
   const entries = [{ showId: 'a', ts: new Date(NOW - 60 * 60 * 1000).toISOString() }];
-  assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, NOW), []);
+  assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, NOW, REVIEWS), []);
 });
 
 test('summarizeBwwRoundupMisses: 2+ misses inside the opening window are flagged', () => {
@@ -34,7 +35,7 @@ test('summarizeBwwRoundupMisses: 2+ misses inside the opening window are flagged
     { showId: 'a', ts: new Date(NOW - 6 * 60 * 60 * 1000).toISOString() },
     { showId: 'a', ts: new Date(NOW - 2 * 60 * 60 * 1000).toISOString() },
   ];
-  const results = summarizeBwwRoundupMisses(entries, shows, NOW);
+  const results = summarizeBwwRoundupMisses(entries, shows, NOW, REVIEWS);
   assert.equal(results.length, 1);
   assert.equal(results[0].showId, 'a');
   assert.equal(results[0].missCount, 2);
@@ -47,17 +48,30 @@ test('summarizeBwwRoundupMisses: 2+ misses OUTSIDE the opening window are NOT fl
     { showId: 'a', ts: new Date(NOW - 6 * 60 * 60 * 1000).toISOString() },
     { showId: 'a', ts: new Date(NOW - 2 * 60 * 60 * 1000).toISOString() },
   ];
-  assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, NOW), []);
+  assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, NOW, REVIEWS), []);
 });
 
-test('summarizeBwwRoundupMisses: not-yet-opened shows count as inside the window too', () => {
+test('summarizeBwwRoundupMisses: pre-opening misses without reviews are expected', () => {
   const shows = [{ id: 'a', openingDate: '2026-08-03' }]; // opens in 2 days
   const entries = [
     { showId: 'a', ts: new Date(NOW - 6 * 60 * 60 * 1000).toISOString() },
     { showId: 'a', ts: new Date(NOW - 2 * 60 * 60 * 1000).toISOString() },
   ];
-  const results = summarizeBwwRoundupMisses(entries, shows, NOW);
-  assert.equal(results.length, 1);
+  assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, NOW, []), []);
+  assert.equal(summarizeBwwRoundupMisses(entries, shows, NOW, REVIEWS).length, 1,
+    'early reviews make discovery misses actionable even before opening');
+});
+
+test('summarizeBwwRoundupMisses: opening-day misses wait for the first reviews', () => {
+  const shows = [{ id: 'a', openingDate: '2026-08-01' }];
+  const entries = [
+    { showId: 'a', ts: new Date(NOW - 6 * 60 * 60 * 1000).toISOString() },
+    { showId: 'a', ts: new Date(NOW - 2 * 60 * 60 * 1000).toISOString() },
+  ];
+  for (const reviews of [undefined, null, [], [{ showId: 'b' }]]) {
+    assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, NOW, reviews), []);
+  }
+  assert.equal(summarizeBwwRoundupMisses(entries, shows, NOW, REVIEWS).length, 1);
 });
 
 test('summarizeBwwRoundupMisses: misses older than the trailing window are excluded from the count', () => {
@@ -66,7 +80,7 @@ test('summarizeBwwRoundupMisses: misses older than the trailing window are exclu
     { showId: 'a', ts: new Date(NOW - (MISS_SUMMARY_WINDOW_HOURS + 1) * 60 * 60 * 1000).toISOString() }, // outside window
     { showId: 'a', ts: new Date(NOW - 2 * 60 * 60 * 1000).toISOString() }, // inside window — only 1 counts
   ];
-  assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, NOW), []);
+  assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, NOW, REVIEWS), []);
 });
 
 test('summarizeBwwRoundupMisses: future-timestamped entries (clock skew/corrupt) never count', () => {
@@ -75,7 +89,7 @@ test('summarizeBwwRoundupMisses: future-timestamped entries (clock skew/corrupt)
     { showId: 'a', ts: new Date(NOW + 60 * 60 * 1000).toISOString() }, // 1h in the future
     { showId: 'a', ts: new Date(NOW - 2 * 60 * 60 * 1000).toISOString() }, // legit — only 1 counts
   ];
-  assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, NOW), []);
+  assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, NOW, REVIEWS), []);
 });
 
 test('summarizeBwwRoundupMisses: no openingDate on record — cannot confirm window, not flagged (fail-safe, not fail-open)', () => {
@@ -84,7 +98,7 @@ test('summarizeBwwRoundupMisses: no openingDate on record — cannot confirm win
     { showId: 'a', ts: new Date(NOW - 6 * 60 * 60 * 1000).toISOString() },
     { showId: 'a', ts: new Date(NOW - 2 * 60 * 60 * 1000).toISOString() },
   ];
-  assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, NOW), []);
+  assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, NOW, REVIEWS), []);
 });
 
 test('summarizeBwwRoundupMisses: unknown showId (not in shows array) is not flagged', () => {
@@ -93,7 +107,7 @@ test('summarizeBwwRoundupMisses: unknown showId (not in shows array) is not flag
     { showId: 'a', ts: new Date(NOW - 6 * 60 * 60 * 1000).toISOString() },
     { showId: 'a', ts: new Date(NOW - 2 * 60 * 60 * 1000).toISOString() },
   ];
-  assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, NOW), []);
+  assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, NOW, REVIEWS), []);
 });
 
 test('summarizeBwwRoundupMisses: multiple flagged shows sort by missCount desc', () => {
@@ -108,7 +122,7 @@ test('summarizeBwwRoundupMisses: multiple flagged shows sort by missCount desc',
     { showId: 'b', ts: new Date(NOW - 3 * 60 * 60 * 1000).toISOString() },
     { showId: 'b', ts: new Date(NOW - 1 * 60 * 60 * 1000).toISOString() },
   ];
-  const results = summarizeBwwRoundupMisses(entries, shows, NOW);
+  const results = summarizeBwwRoundupMisses(entries, shows, NOW, REVIEWS);
   assert.equal(results.length, 2);
   assert.equal(results[0].showId, 'b');
   assert.equal(results[0].missCount, 3);

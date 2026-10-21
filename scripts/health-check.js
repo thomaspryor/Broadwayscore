@@ -4993,8 +4993,8 @@ function progressWatchResults(report) {
 // own cooldown check. A show that keeps missing discovery INSIDE its
 // opening-window (where the miss-cooldown deliberately never suppresses
 // retries — see OPENING_WINDOW_DAYS in bww-roundup-persistence.js) is
-// exactly the case worth a human look: the roundup may genuinely not be
-// published yet, or discovery may be broken for that show.
+// worth a look after the first reviews land. Until then a missing roundup
+// is expected, including on opening morning (CLAUDE.md rule 14).
 function bwwRoundupMissBacklogResults(summary, now = new Date()) {
   if (!summary || summary.length === 0) return [];
   const { oldest, status } = rankByAge(summary, 'lastMissTs', 21, now);
@@ -6134,7 +6134,8 @@ async function main() {
       if (misses.length > 0) {
         const { loadShows } = require('./lib/shows-write-guard');
         const { shows } = loadShows();
-        allResults.push(...bwwRoundupMissBacklogResults(summarizeBwwRoundupMisses(misses, shows)));
+        const { reviews } = readJSON(path.join(DATA_DIR, 'reviews.json'));
+        allResults.push(...bwwRoundupMissBacklogResults(summarizeBwwRoundupMisses(misses, shows, Date.now(), reviews)));
       }
     } catch { /* ledger absent or unreadable — nothing to surface */ }
 

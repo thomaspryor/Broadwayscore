@@ -146,14 +146,19 @@ const MISS_SUMMARY_WINDOW_HOURS = 48;
  * trailing MISS_SUMMARY_WINDOW_HOURS AND are currently inside their
  * OPENING_WINDOW_DAYS opening window — the ledger only matters as a health
  * signal there, since misses on long-closed shows are the expected, silently
- * cooled-down case (see isInRoundupMissCooldown above).
+ * cooled-down case (see isInRoundupMissCooldown above). Per CLAUDE.md rule
+ * 14, wait for the first reviews in reviews.json before treating a missing
+ * roundup as a discovery problem. Opening dates alone do not prove that
+ * reviews have dropped, especially during the morning of opening day.
  *
  * `entries` is the raw ledger (readRoundupMisses() output: {ts, showId}[]).
  * `shows` is the shows.json shows array (only `id`/`openingDate` are read).
+ * `reviews` is the reviews.json reviews array (only `showId` is read).
  * Returns entries sorted by missCount desc, then most-recent-miss desc.
  */
-function summarizeBwwRoundupMisses(entries, shows, now = Date.now()) {
+function summarizeBwwRoundupMisses(entries, shows, now = Date.now(), reviews = []) {
   const showsById = new Map((shows || []).filter(s => s && s.id).map(s => [s.id, s]));
+  const reviewedShowIds = new Set((reviews || []).filter(r => r && r.showId).map(r => r.showId));
   const cutoff = now - MISS_SUMMARY_WINDOW_HOURS * 60 * 60 * 1000;
   const byShow = new Map();
   for (const e of entries || []) {
@@ -166,6 +171,7 @@ function summarizeBwwRoundupMisses(entries, shows, now = Date.now()) {
   const results = [];
   for (const [showId, timestamps] of byShow) {
     if (timestamps.length < 2) continue;
+    if (!reviewedShowIds.has(showId)) continue; // unpublished roundups are expected
     const show = showsById.get(showId);
     const openingMs = show && show.openingDate ? new Date(show.openingDate).getTime() : NaN;
     if (!Number.isFinite(openingMs)) continue; // no opening date on record — can't confirm the window
