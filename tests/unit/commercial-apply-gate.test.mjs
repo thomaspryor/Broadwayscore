@@ -762,7 +762,7 @@ describe('bare capitalizationSource (BRO-5815)', () => {
 
   it('flags an outlet name, passes quotes, URLs and basis wording', () => {
     for (const s of ['Broadway Journal (Philip Boroff)', 'SEC filing / press reports', 'Deadline (Feb 2025)']) assert.equal(isBareCapitalizationSource(s), true, s);
-    for (const s of ['Broadway Journal: "a maximum of $9.5 million"', 'https://www.sec.gov/Archives/edgar/data/1/x', 'SEC Form D: up to $10M', 'SEC Form D/A: $10M, fully sold', '', null]) assert.equal(isBareCapitalizationSource(s), false, String(s));
+    for (const s of ['Broadway Journal: "a maximum of $9.5 million"', 'https://www.sec.gov/Archives/edgar/data/1/x', 'SEC Form D: up to $10M', 'SEC Form D/A: $10M, fully sold', 'Estimate: about 2.6 times its NY tax credit', 'Not disclosed by Disney.', '', null]) assert.equal(isBareCapitalizationSource(s), false, String(s));
   });
 
   it('applyCommercialFieldEdit refuses a bare new source and accepts a quoted one', () => {

@@ -8,7 +8,7 @@
     "email": null
   },
   "plan": {
-    "summary": "BRO-5815: tag capitalizationBasis on 25 records whose capitalizationSource names a publication but quotes nothing (part 3 of 4). \"reported\" = the figure is press-reported with no stated raise/ceiling nature; \"sold\" = source wording says it was raised. Neither prints \"up to\", so no displayed figure changes. Records citing only an SEC filing stay untagged until the Form D is read.",
+    "summary": "BRO-5815: tag capitalizationBasis on 25 records whose capitalizationSource names a publication but quotes nothing (part 3 of 4). \"reported\" = the figure is press-reported with no stated raise/ceiling nature; \"sold\" = source wording says it was raised. Neither prints \"up to\", so no displayed figure changes. Records whose only source is an SEC filing without stated wording stay untagged until the Form D is read.",
     "steps": [
       "Set capitalizationBasis on 25 commercial.json records"
     ],

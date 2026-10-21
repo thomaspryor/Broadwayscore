@@ -180,6 +180,7 @@ function capitalizationBasisFromText(text) {
  */
 function isBareCapitalizationSource(text) {
   if (!text || !String(text).trim()) return false;
+  if (sourceOpensAsEstimate(text) || /\bnot (?:publicly )?disclosed\b|\bundisclosed\b/i.test(text)) return false;
   return !capitalizationBasisFromText(text) && !/["\u201c]/.test(text) && !/https?:/.test(text);
 }
 
