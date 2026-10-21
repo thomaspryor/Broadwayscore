@@ -1,7 +1,22 @@
 {
-  "generatedAt": "2026-10-20T12:14:12.579Z",
-  "bannerText": "153/161 Done(14d) verified on main · 5 FAILED · 0 vacuous · 15 stuck-but-done",
+  "generatedAt": "2026-10-21T07:46:23.771Z",
+  "bannerText": "211/226 Done(14d) verified on main · 10 FAILED · 0 vacuous · 9 stuck-but-done",
   "items": [
+    {
+      "title": "FAILED BRO-5138 — Related shows: curated open recs go short as shows close (top up from algorithmic pool)",
+      "detail": "TAP version 13 # Subtest: related-shows algorithmic fallback # Subtest: there is something to test against ok 1 - there is something to test against --- duration_ms: 0.857421 ... …",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5138/related-shows-curated-open-recs-go-short-as-shows-close-top-up-from"
+    },
+    {
+      "title": "FAILED BRO-5814 — Show pages 500 for announced shows with no theater (toPostalAddress(null)); Private Lives cast file holds the 1948 cast",
+      "detail": "TAP version 13 # node:internal/modules/esm/resolve:283 # throw new ERR_MODULE_NOT_FOUND( # ^ # Error [ERR_MODULE_NOT_FOUND]: Cannot find module '<checkout>/src/lib/seo' imported f…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5814/show-pages-500-for-announced-shows-with-no-theater-topostaladdressnull"
+    },
+    {
+      "title": "FAILED BRO-5788 — Data-health live-data failures get no card and no fix: route each failing test to the alert router (auto-card + worker)",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/check-corpus-drift.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5788/data-health-live-data-failures-get-no-card-and-no-fix-route-each"
+    },
     {
       "title": "FAILED BRO-5668 — System assessment: card throughput, Codex lanes, waste, design (owner-requested audit 2026-10-19)",
       "detail": "TAP version 13 # Subtest: Codex runner: >= 4 cards per firing and >= 40% landed since the parallel slots (BRO-5384) not ok 1 - Codex runner: >= 4 cards per firing and >= 40% lande…",
@@ -13,35 +28,20 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5597/investment-tracker-explainer-should-explain-data-sourcing-check"
     },
     {
-      "title": "FAILED BRO-5536 — BSC Daily: Data quality: slug-mismatch lifetime sweep",
-      "detail": "[check-health-row-absent] FAIL: \"Data quality: slug-mismatch lifetime sweep\" still listed in the 2026-10-20T12:08:24.981Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5536/bsc-daily-data-quality-slug-mismatch-lifetime-sweep"
+      "title": "FAILED BRO-5589 — Teach push-via-git-api.sh protected-field reconciliation so review-texts can use the API fallback",
+      "detail": "TAP version 13 # Subtest: push-via-git-api.sh replays our own diff onto a tip that moved after our base, without a local rebase ok 1 - push-via-git-api.sh replays our own diff ont…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5589/teach-push-via-git-apish-protected-field-reconciliation-so-review"
     },
     {
       "title": "FAILED BRO-5453 — BSC Daily: Commercial model drift",
-      "detail": "[check-health-row-absent] FAIL: \"Commercial model drift\" still listed in the 2026-10-20T12:08:24.981Z health snapshot",
+      "detail": "[check-health-row-absent] FAIL: \"Commercial model drift\" still listed in the 2026-10-21T07:40:13.196Z health snapshot",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5453/bsc-daily-commercial-model-drift"
     },
     {
-      "title": "FAILED BRO-5314 — Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
-      "detail": "[check-alert-condition-absent] FAIL: \"corpus-drift:duplicate-shows\" still firing — open, last fired 2026-10-20T11:47:55.572Z (0.5h ago, within 168h)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5314/corpus-drift-duplicate-show-entries-in-showsjson-baseline-diff"
-    },
-    {
-      "title": "STUCK BRO-5684 — BSC Daily: Quality: outlet invalid-content rate",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5684/bsc-daily-quality-outlet-invalid-content-rate"
-    },
-    {
-      "title": "STUCK BRO-5646 — Codex PRs land on their own: the owner's only step is pressing Create PR in Codex",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5646/codex-prs-land-on-their-own-the-owners-only-step-is-pressing-create-pr"
-    },
-    {
-      "title": "STUCK BRO-5610 — BSC Daily: Quality: Show Score gap",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5610/bsc-daily-quality-show-score-gap"
+      "title": "FAILED BRO-5452 — BSC Daily: Quality: standingCoverage drift",
+      "detail": "[check-health-row-absent] FAIL: \"Quality: standingCoverage drift\" still listed in the 2026-10-21T07:40:13.196Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5452/bsc-daily-quality-standingcoverage-drift"
     }
   ],
-  "moreCount": 12
+  "moreCount": 11
 }
