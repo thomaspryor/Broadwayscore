@@ -376,5 +376,36 @@
       }
     ],
     "queuedAt": "2026-10-21T13:48:29.957Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-auth-health-confirm-retry",
+    "title": "Landing blocked: scripts-lib-tests red on land/worktree-auth-health-confirm-retry",
+    "description": "land.yml did not land land/worktree-auth-health-confirm-retry: the scripts-lib-tests gate went red at a123d0ff9c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39624004338",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-auth-health-confirm-retry"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "a123d0ff9c568c087b6ae3415de125c6344b989e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39624004338"
+      }
+    ],
+    "queuedAt": "2026-10-21T15:33:53.352Z"
   }
 ]
