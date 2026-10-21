@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5776-3",
   "planId": "87e43eb8-19a6-43e5-8ee8-6697319f02f2",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -61,5 +61,14 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T04:18:11.333Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added cat-on-a-hot-tin-roof-2027"
+    }
+  ],
+  "executedIn": "ci"
 }
