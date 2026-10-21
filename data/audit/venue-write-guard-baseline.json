@@ -361,23 +361,23 @@
       "kind": "assignment",
       "snippet": "if (show.venue) entry.venue = show.venue;"
     },
-    "scripts/generate-social-post.js::imageData: { title: pick.title, score: pick.score, reviewCount: pick.reviewCount, venue: pick.venue, showId: pick.id },": {
+    "scripts/generate-social-post.js::imageData: { title: pick.title, score: pick.score, reviewCount: pick.reviewCount, tier1And2Count: pick.tier1And2Count, venue: pick.venue, showId: pick.id },": {
       "file": "scripts/generate-social-post.js",
-      "line": 358,
+      "line": 381,
       "kind": "literal",
-      "snippet": "imageData: { title: pick.title, score: pick.score, reviewCount: pick.reviewCount, venue: pick.venue, showId: pick.id },"
+      "snippet": "imageData: { title: pick.title, score: pick.score, reviewCount: pick.reviewCount, tier1And2Count: pick.tier1And2Count, venue: pick.venue, showId: pick.id },"
     },
-    "scripts/generate-social-post.js::imageData: { title: pick.title, score: pick.criticScore, reviewCount: pick.reviewCount, venue: pick.venue, showId: pick.id },": {
+    "scripts/generate-social-post.js::imageData: { title: pick.title, score: pick.criticScore, reviewCount: pick.reviewCount, tier1And2Count: pick.tier1And2Count, venue: pick.venue, showId: pick.id ": {
       "file": "scripts/generate-social-post.js",
-      "line": 323,
+      "line": 346,
       "kind": "literal",
-      "snippet": "imageData: { title: pick.title, score: pick.criticScore, reviewCount: pick.reviewCount, venue: pick.venue, showId: pick.id },"
+      "snippet": "imageData: { title: pick.title, score: pick.criticScore, reviewCount: pick.reviewCount, tier1And2Count: pick.tier1And2Count, venue: pick.venue, showId: pick.id "
     },
-    "scripts/generate-social-post.js::imageData: { title: show.title, score, reviewCount, venue: show.venue, showId: show.id },": {
+    "scripts/generate-social-post.js::imageData: { title: show.title, score, reviewCount, tier1And2Count: r?.tier1And2Count, venue: show.venue, showId: show.id },": {
       "file": "scripts/generate-social-post.js",
-      "line": 426,
+      "line": 449,
       "kind": "literal",
-      "snippet": "imageData: { title: show.title, score, reviewCount, venue: show.venue, showId: show.id },"
+      "snippet": "imageData: { title: show.title, score, reviewCount, tier1And2Count: r?.tier1And2Count, venue: show.venue, showId: show.id },"
     },
     "scripts/lib/aggregator-candidate-extract.js::if (!chosen || preferLast) chosen = { venue: cleanVenue(m[1]), index: m.index };": {
       "file": "scripts/lib/aggregator-candidate-extract.js",

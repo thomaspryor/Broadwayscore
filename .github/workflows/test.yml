@@ -424,6 +424,8 @@ on:
       - 'scripts/scrape-theatre-reviews.js'
       # tests/unit/audience-full-snapshot.test.mjs
       - 'scripts/snapshot-audience-full.js'
+      # tests/unit/social-card-score-gate.test.mjs
+      - 'scripts/social-image-generator.js'
       # --- BRO-3202, third shape: scripts this very workflow EXECUTES (a
       # `run: node scripts/…` step in a job that runs on push) but that had no
       # push-path entry, so editing one of them alone triggered zero CI — the
@@ -525,6 +527,7 @@ on:
       - 'scripts/generate-homepage-archive.js'
       - 'scripts/generate-mobile-data.js'
       - 'scripts/generate-outlet-logos.js'
+      - 'scripts/generate-show-lookup.js'
       - 'scripts/generate-social-post.js'
       - 'scripts/generate-status-page.js'
       - 'scripts/land-retry-cancelled.js'
