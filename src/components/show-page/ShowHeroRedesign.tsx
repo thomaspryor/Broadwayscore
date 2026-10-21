@@ -898,9 +898,10 @@ function AwaitingCard({ show, reviewCount, reviewsRemaining, noReviewsExpected =
   const title = noReviewsExpected ? 'No critic reviews expected' : isLiveTour(show) ? 'Reviews coming in' : 'Awaiting reviews';
   const progress = noReviewsExpected ? 'We found no critic reviews for this event.' : (
     <>
-      {show.status === 'previews' ? 'Show in previews' : show.status === 'upcoming' ? (isTour ? 'Tour starts soon' : 'Show opens soon') : isTour ? 'Critics in each city review the tour as it plays' : 'Not enough reviews yet'}
+      {show.status === 'announced' ? 'Reviews arrive after opening night' : show.status === 'previews' ? 'Show in previews' : show.status === 'upcoming' ? (isTour ? 'Tour starts soon' : 'Show opens soon') : isTour ? 'Critics in each city review the tour as it plays' : 'Not enough reviews yet'}
       {reviewCount > 0 ? ` · ${reviewCount} ${reviewCount === 1 ? 'review' : 'reviews'} collected` : null}
-      {reviewsRemaining > 0 ? ` · ${reviewsRemaining} more for a CriticScore` : null}
+      {/* An announced show has not opened: no countdown to a CriticScore (BRO-5814). */}
+      {reviewsRemaining > 0 && show.status !== 'announced' ? ` · ${reviewsRemaining} more for a CriticScore` : null}
     </>
   );
   return (

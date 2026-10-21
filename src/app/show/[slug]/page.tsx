@@ -660,7 +660,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                             if (noReviewsExpected) {
                               return <span className="text-xs sm:text-sm text-gray-500">No critic reviews expected</span>;
                             }
-                            const isGatedByReviewCount = showTBD && show.status !== 'previews' && show.status !== 'upcoming' && remaining > 0;
+                            const isGatedByReviewCount = showTBD && show.status !== 'previews' && show.status !== 'upcoming' && show.status !== 'announced' && remaining > 0;
                             if (isGatedByReviewCount) {
                               return (
                                 <a href="#critic-reviews" className="text-xs sm:text-sm text-gray-500 hover:text-brand transition-colors">
