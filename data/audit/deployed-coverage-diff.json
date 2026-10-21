@@ -1,13 +1,128 @@
 {
-  "generatedAt": "2026-10-21T19:02:30.849Z",
+  "generatedAt": "2026-10-21T19:58:06.054Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 251,
-  "clean": 251,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 244,
+  "defective": 7,
+  "byType": {
+    "score-drift": 7
+  },
+  "shows": [
+    {
+      "showId": "ilford-boy-west-end-2026",
+      "title": "Ilford Boy",
+      "openingDate": "2026-10-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 72.42 vs local 71.88 (Δ0.54)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 8,
+      "deployedCount": 8,
+      "firstDefectAt": "2026-10-21T19:58:02.749Z"
+    },
+    {
+      "showId": "the-cherry-orchard-west-end-2026",
+      "title": "The Cherry Orchard",
+      "openingDate": "2026-10-13",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 72.77 vs local 72.87 (Δ0.1)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 42,
+      "deployedCount": 42,
+      "firstDefectAt": "2026-10-21T19:58:02.749Z"
+    },
+    {
+      "showId": "high-school-musical-off-west-end-2026",
+      "title": "High School Musical",
+      "openingDate": "2026-10-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.05 vs local 84.16 (Δ0.11)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 10,
+      "deployedCount": 10,
+      "firstDefectAt": "2026-10-21T19:58:02.749Z"
+    },
+    {
+      "showId": "murder-cathedral-off-west-end-2026",
+      "title": "Murder in the Cathedral",
+      "openingDate": "2026-10-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.81 vs local 81.56 (Δ1.25)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 17,
+      "deployedCount": 17,
+      "firstDefectAt": "2026-10-21T19:58:02.749Z"
+    },
+    {
+      "showId": "triumph-off-broadway-2026",
+      "title": "Triumph",
+      "openingDate": "2026-10-08",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 74.1 vs local 73.79 (Δ0.31)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 4,
+      "deployedCount": 4,
+      "firstDefectAt": "2026-10-21T19:58:02.749Z"
+    },
+    {
+      "showId": "kramerfauci-st-anns-off-broadway-2026",
+      "title": "Kramer/Fauci",
+      "openingDate": "2026-10-04",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.27 vs local 80.93 (Δ0.34)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 17,
+      "deployedCount": 17,
+      "firstDefectAt": "2026-10-21T19:58:02.749Z"
+    },
+    {
+      "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
+      "title": "The Hairy Ape",
+      "openingDate": "2026-10-04",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.78 vs local 76.44 (Δ0.34)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 18,
+      "deployedCount": 18,
+      "firstDefectAt": "2026-10-21T19:58:02.749Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

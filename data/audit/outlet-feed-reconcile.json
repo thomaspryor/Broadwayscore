@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T19:02:31.223Z",
+  "generatedAt": "2026-10-21T19:58:06.431Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -183,14 +183,6 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
-      "outletId": "plays-international",
-      "error": "AggregateError"
-    },
-    {
-      "outletId": "viewfromthegods",
-      "error": "AggregateError"
-    },
-    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -203,10 +195,28 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 717,
-  "matchedGaps": 2,
+  "itemsScanned": 737,
+  "matchedGaps": 4,
   "possibleGaps": 4,
   "gaps": [
+    {
+      "showId": "ilford-boy-west-end-2026",
+      "title": "Ilford Boy",
+      "level": "matched",
+      "outletId": "guardian",
+      "url": "https://www.theguardian.com/stage/2026/oct/21/ilford-boy-review-donmar-warehouse-london",
+      "headline": "Ilford Boy review – Barbra Streisand teaches teen to smile about the way we are",
+      "publishDate": "2026-10-21"
+    },
+    {
+      "showId": "king-of-the-yees-off-broadway-2026",
+      "title": "King of the Yees",
+      "level": "matched",
+      "outletId": "theater-scene",
+      "url": "https://www.theaterscene.net/plays/offbway-plays/king-of-the-yees/tony-marinelli/",
+      "headline": "King of the Yees",
+      "publishDate": "2026-10-21"
+    },
     {
       "showId": "some-woman-west-end-2026",
       "title": "Some Woman",

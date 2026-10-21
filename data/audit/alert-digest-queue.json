@@ -893,6 +893,34 @@
     "queuedAt": "2026-10-21T19:19:25.003Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+    "title": "Review gap — \"Jesus Christ Superstar - Theatre Royal Drury Lane\" missing 1 cited review(s)",
+    "description": "Jesus Christ Superstar - Theatre Royal Drury Lane (jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T19:57:41.688Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:machine-learning-off-broadway-2026",
+    "title": "Review gap — \"Machine Learning\" missing 1 cited review(s)",
+    "description": "Machine Learning (machine-learning-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=machine-learning-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T19:57:41.724Z"
+  },
+  {
     "conditionKey": "land:land/bro-5860-todaytix-placeholder-cast-drift",
     "title": "Landing blocked: rebase red on land/bro-5860-todaytix-placeholder-cast-drift",
     "description": "land.yml did not land land/bro-5860-todaytix-placeholder-cast-drift: the rebase gate went red at e39febaf64. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5860-todaytix-placeholder-cast-drift @ e39febaf64 (origin/land/bro-5860-todaytix-placeholder-cast-drift) → origin/main @ 1911cafe9d REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 7c03acd26a: Rebasing (1/1) error: could not apply e39febaf645... fix(BRO-5860): reject TodayTix placeholder runtime; cast-vs-reviews in drift monitor hint: Resolve all conflicts manual Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39658113838",
