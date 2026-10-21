@@ -10,13 +10,17 @@ test('rotateShows rotates by seed, wraps, drops empties', () => {
   assert.deepEqual(rotateShows(['a', 'b', 'c'], 4), ['b', 'c', 'a']);
   assert.deepEqual(rotateShows(['a', '', 'b'], 1), ['b', 'a']);
   assert.deepEqual(rotateShows([], 3), []);
+  // priority head is never rotated
+  assert.deepEqual(rotateShows(['n1', 'n2', 'a', 'b', 'c'], 1, 2), ['n1', 'n2', 'b', 'c', 'a']);
+  assert.deepEqual(rotateShows(['n1', 'n2'], 5, 8), ['n1', 'n2']);
   assert.deepEqual(rotateShows(['a', 'b'], 'x'), ['a', 'b']);
 });
 
 test('showTimeoutSec caps per show, clamps to remaining, stops when too little left', () => {
   assert.equal(showTimeoutSec(4000), 600);
   assert.equal(showTimeoutSec(300), 300);
-  assert.equal(showTimeoutSec(119), 0);
+  assert.equal(showTimeoutSec(239), 0);
+  assert.equal(showTimeoutSec(240), 240);
   assert.equal(showTimeoutSec(-5), 0);
   assert.equal(showTimeoutSec(NaN), 0);
 });
@@ -26,6 +30,7 @@ test('CLI matches the functions', () => {
   assert.equal(run('rotate', 'a,b,c', '1'), 'b,c,a');
   assert.equal(run('timeout', '300'), '300');
   assert.equal(run('timeout', '50'), '0');
+  assert.equal(run('rotate', 'n,a,b,c', '1', '1'), 'n,b,c,a');
 });
 
 test('poller loop is budgeted; budget + pre-loop setup leave room for the post-poll stages inside the job timeout', () => {
@@ -39,7 +44,10 @@ test('poller loop is budgeted; budget + pre-loop setup leave room for the post-p
   assert.ok(jobSec - 20 * 60 - budget >= 55 * 60, `loop budget ${budget}s leaves too little of the ${jobSec}s job`);
   assert.match(step.run, /poller-loop-budget\.js timeout/);
   assert.match(step.run, /poller-loop-budget\.js rotate/);
-  assert.match(step.run, /SKIPPED_SHOWS=.*\n?/);
+  assert.match(step.run, /SKIPPED_SHOWS="\$SKIPPED_SHOWS \$SHOW_ID"\n\s+continue/);
+  assert.ok(Number(step.env.POLL_PRIORITY_SHOWS) > 0);
+  assert.match(step.run, /poller-loop-budget\.js rotate .*POLL_PRIORITY_SHOWS/);
+  assert.match(step.run, /POLLER_RC" -eq 124/);
   // GATHER_TOTAL must only count shows actually polled (after the budget check)
-  assert.ok(step.run.indexOf('continue') < step.run.indexOf('GATHER_TOTAL=$((GATHER_TOTAL + 1))'));
+  assert.ok(step.run.indexOf('\n              continue') < step.run.indexOf('GATHER_TOTAL=$((GATHER_TOTAL + 1))'));
 });

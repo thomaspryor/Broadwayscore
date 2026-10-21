@@ -5,18 +5,22 @@
 // now has a wall-clock budget so collect/score/rebuild always keep their time.
 
 // Rotate the show list so a budget cut does not starve the same tail every run.
-function rotateShows(shows, seed) {
-  const list = shows.filter(Boolean);
-  if (list.length === 0) return list;
+// The first `keep` shows (newest openers) stay in front, never rotated.
+function rotateShows(shows, seed, keep = 0) {
+  const all = shows.filter(Boolean);
+  const k = Math.max(0, Math.min(Number(keep) || 0, all.length));
+  const head = all.slice(0, k);
+  const list = all.slice(k);
+  if (list.length === 0) return head;
   const n = ((Number(seed) || 0) % list.length + list.length) % list.length;
-  return list.slice(n).concat(list.slice(0, n));
+  return head.concat(list.slice(n), list.slice(0, n));
 }
 
 // Seconds the next show may use: the per-show cap, clamped to what is left in
 // the loop budget. 0 means stop (not enough left for a useful poll). The last
 // show is clamped to `remaining`, so the loop overruns only by the few seconds
 // of per-show bookkeeping after the poller exits.
-function showTimeoutSec(remainingSec, capSec = 600, minUsefulSec = 120) {
+function showTimeoutSec(remainingSec, capSec = 600, minUsefulSec = 240) {
   if (!(remainingSec >= minUsefulSec)) return 0;
   return Math.min(capSec, Math.floor(remainingSec));
 }
@@ -24,8 +28,8 @@ function showTimeoutSec(remainingSec, capSec = 600, minUsefulSec = 120) {
 module.exports = { rotateShows, showTimeoutSec };
 
 if (require.main === module) {
-  const [cmd, a, b] = process.argv.slice(2);
-  if (cmd === 'rotate') console.log(rotateShows(String(a || '').split(','), b).join(','));
+  const [cmd, a, b, c] = process.argv.slice(2);
+  if (cmd === 'rotate') console.log(rotateShows(String(a || '').split(','), b, c).join(','));
   else if (cmd === 'timeout') console.log(showTimeoutSec(Number(a), Number(b) || 600));
   else { console.error('usage: rotate <csv> <seed> | timeout <remainingSec> [capSec]'); process.exit(2); }
 }

@@ -236,6 +236,11 @@ jobs:
                 d.setHours(0,0,0,0);
                 return d >= cutoff && d <= now;
               });
+              // BRO-5861: newest openers first (null openingDate = stuck-preview backstop, last).
+              // The poll loop is time-budgeted and keeps the first POLL_PRIORITY_SHOWS in
+              // this order, so tonight's opener is never the one a budget cut drops.
+              const ts = s => s.openingDate ? new Date(s.openingDate).getTime() : -Infinity;
+              opened.sort((x, y) => ts(y) - ts(x));
               if (opened.length > 0) console.log(opened.map(s => s.id).join(','));
             ")
 
@@ -357,9 +362,12 @@ jobs:
           # polled 32 shows for 1h57m, so the 145-min job timeout cancelled the
           # rebuild. The list is rotated by run number so a cut spreads across runs.
           POLL_LOOP_BUDGET_SEC: '4200'
+          # First N shows (newest openers, see the Find step) are never rotated away
+          # from the front, so a budget cut can only drop older / stuck-preview shows.
+          POLL_PRIORITY_SHOWS: '8'
         run: |
           LOOP_START=$SECONDS
-          ROTATED_SHOWS=$(node scripts/lib/poller-loop-budget.js rotate "${{ steps.find.outputs.shows }}" "$GITHUB_RUN_NUMBER" || echo "${{ steps.find.outputs.shows }}")
+          ROTATED_SHOWS=$(node scripts/lib/poller-loop-budget.js rotate "${{ steps.find.outputs.shows }}" "$GITHUB_RUN_NUMBER" "$POLL_PRIORITY_SHOWS" || echo "${{ steps.find.outputs.shows }}")
           IFS=',' read -ra SHOW_ARRAY <<< "$ROTATED_SHOWS"
           SKIPPED_SHOWS=""
           ANY_NEW=false
@@ -407,7 +415,11 @@ jobs:
             GATHER_TOTAL=$((GATHER_TOTAL + 1))
             POLLER_RC=0
             timeout "$SHOW_TIMEOUT" node scripts/opening-night-poller.js --show="$SHOW_ID" $SKIP_SERP_FLAG $FORCE_SERP_FLAG $BWW_ARG $TB_ARG 2>&1 | tee "$PER_SHOW_OUT" || POLLER_RC=${PIPESTATUS[0]}
-            if [ "$POLLER_RC" -ne 0 ]; then
+            if [ "$POLLER_RC" -eq 124 ] && [ "$SHOW_TIMEOUT" -lt 600 ]; then
+              # Cut short by the loop budget, not a crash: retried next run.
+              echo "  ⏱️ $SHOW_ID hit the loop-budget timeout (${SHOW_TIMEOUT}s) — not counted as a gather failure"
+              SKIPPED_SHOWS="$SKIPPED_SHOWS $SHOW_ID(partial)"
+            elif [ "$POLLER_RC" -ne 0 ]; then
               GATHER_FAILED=$((GATHER_FAILED + 1))
               echo "  ⚠️ poller exited $POLLER_RC for $SHOW_ID — counted as a gather-stage failure"
             fi
