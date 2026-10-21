@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5858-d",
   "planId": "2172afcf-70a1-46da-9ea0-c9d299996fb1",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-21T19:54:26.686Z",
   "submitter": {
     "name": null,
@@ -160,5 +160,99 @@
         "description": "BRO-5858: same article url and text as nytimes--ben-brantley.json, which now carries Charles Isherwood; retire this copy (marking the other way would close a duplicateOf/duplicateTextOf cycle the write guard refuses)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T20:30:46.053Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-month-in-the-country-west-end-2026/whatsonstage--alex-wood.json criticName: \"Alex Wood\" -> \"Sarah Crompton\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-month-in-the-country-west-end-2026/whatsonstage--sarah-crompton.json duplicateOf: null -> \"whatsonstage--alex-wood.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "burn-the-floor-2009/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Charles Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "burn-the-floor-2009/nytimes--charles-isherwood.json duplicateOf: null -> \"nytimes--ben-brantley.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "garry-starr-classic-penguins-off-broadway-2026/theater-scene--deb-miller.json criticName: \"Deb Miller\" -> \"Victor Gluck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "garry-starr-classic-penguins-off-broadway-2026/theater-scene--victor-gluck.json duplicateOf: null -> \"theater-scene--deb-miller.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2012/nydailynews--chris-jones.json criticName: \"Chris Jones\" -> \"Joe Dziemianowicz\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2012/nydailynews--joe-dziemianowicz.json duplicateOf: null -> \"nydailynews--chris-jones.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gore-vidals-the-best-man-2012/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Charles Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gore-vidals-the-best-man-2012/nytimes--charles-isherwood.json duplicateOf: null -> \"nytimes--ben-brantley.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "manic-street-creature-west-end-2026/broadwayworld--guest-author.json criticName: \"Guest Author\" -> \"Katie Kirkpatrick\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "manic-street-creature-west-end-2026/broadwayworld--katie-kirkpatrick.json duplicateOf: null -> \"broadwayworld--guest-author.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "operation-mincemeat-west-end-2024/express-uk--neil-norman.json criticName: \"Neil Norman\" -> \"Stefan Kyriazis\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "operation-mincemeat-west-end-2024/express-uk--stefan-kyriazis.json duplicateOf: null -> \"express-uk--neil-norman.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-devil-wears-prada-west-end-2024/financialtimes--financial-times.json criticName: \"Financial Times\" -> \"Sarah Hemming\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-devil-wears-prada-west-end-2024/financialtimes--sarah-hemming.json duplicateOf: null -> \"financialtimes--financial-times.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wonderland-2011/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Charles Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wonderland-2011/nytimes--charles-isherwood.json duplicateOf: null -> \"nytimes--ben-brantley.json\""
+    }
+  ],
+  "executedIn": "ci"
 }
