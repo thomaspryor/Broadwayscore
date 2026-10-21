@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-21T03:34:48.448Z",
+  "generatedAt": "2026-10-21T04:57:06.935Z",
   "date": "2026-10-21",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 163944,
+  "entryCount": 168135,
   "shows": [
     {
       "showId": "la-boheme-off-broadway-2025",
@@ -827,6 +827,21 @@
           "stuck_at_stage": "rebuilt"
         }
       ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 665130,
+        "scored-to-rebuilt": 312828,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
     },
     {
       "showId": "stuffed-off-west-end-2026",
@@ -6587,8 +6602,8 @@
       "p90_e2e_ms": 75287022,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 637433,
-        "scored-to-rebuilt": 517106,
+        "collected-to-scored": 635513,
+        "scored-to-rebuilt": 514113,
         "rebuilt-to-deployed": 61181422
       },
       "reviews_over_15min": 6,
@@ -7529,21 +7544,6 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 240397,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "martin-guerre-west-end-2026",
-      "reviewCount": 2,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": 665130,
-        "scored-to-rebuilt": 312828,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
