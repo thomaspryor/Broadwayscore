@@ -555,6 +555,8 @@ test('workflow checks: run only when workflows change, block on exit 1, fail ope
   write(d, 'scripts/lint-workflow-guards.sh', '#!/bin/sh\n');
   write(d, 'scripts/audit-workflow-hygiene.js', '\n');
   write(d, 'scripts/generate-workflow-dependencies.js', '\n');
+  write(d, 'scripts/audit-push-retry-budgets.js', '\n');
+  write(d, 'tests/unit/audit-push-retry-budgets-residual.test.mjs', '\n');
   write(d, '.github/workflows/a.yml', 'name: a\n');
   sh(d, 'git add -A && git commit -qm wf && git checkout -qb feat');
   const calls = [];
@@ -580,7 +582,7 @@ test('workflow checks: run only when workflows change, block on exit 1, fail ope
   sh(d, 'git commit -qam wfchange');
   assert.equal(checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: stub(0) }).status, 'clean');
   assert.equal(calls.length, 1);
-  for (const c of WORKFLOW_CHECKS) assert.ok(calls[0].includes(c.args[0]), `batch runs ${c.args[0]}`);
+  for (const c of WORKFLOW_CHECKS) assert.ok(calls[0].includes(c.file || c.args[0]), `batch runs ${c.file || c.args[0]}`);
   // exit 1 blocks and the message names the fix
   // red on the landing tree, green on base: this branch broke it
   calls.length = 0;
@@ -589,6 +591,8 @@ test('workflow checks: run only when workflows change, block on exit 1, fail ope
   assert.equal(calls.length, 2, 'failed checks are re-run on base');
   // red on base too: not this branch's fault, never blocks
   assert.equal(checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: stub(1) }).status, 'clean');
+  // BRO-5833: the job-timeout budget gates are part of the batch
+  assert.ok(WORKFLOW_CHECKS.some((c) => c.args.includes('--fail-on-job-timeout')) && WORKFLOW_CHECKS.some((c) => c.file === 'tests/unit/audit-push-retry-budgets-residual.test.mjs'));
   assert.ok(WORKFLOW_PATH_RE.test('.github/actions/x/action.yml') && WORKFLOW_PATH_RE.test('scripts/lib/push-with-retry.sh'));
   assert.match(blockMessage({ target: 'land/x', base: 'main', workflows: bad }), /generate-workflow-dependencies\.js --check fails on the landing tree/);
   // a check that crashes (exit 2) or times out never blocks
