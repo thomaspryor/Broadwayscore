@@ -32,6 +32,7 @@ const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { isRejectedNonReview } = require('./lib/review-guards');
+const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { isJunkOutlet } = require('./lib/review-normalization');
 const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -57,7 +58,7 @@ function buildValidOutlets(registry) {
 // Skips excluded files (duplicateOf/wrongProduction/wrongShow/wrongUrl),
 // rejected non-reviews (isRejectedNonReview — ticket-vendor/venue/aggregator
 // pages and other garbage the pipeline already excludes from scoring, so
-// their outletId never needs a registry entry), and inherently-unresolvable
+// their outletId never needs a registry entry), blocked review URLs, and inherently-unresolvable
 // ids ("unknown", or >5 hyphens = junk/sentence id).
 function countResolvableUnknowns(reviewTextsDir, validOutlets) {
   let resolvableUnknowns = 0;
@@ -79,6 +80,7 @@ function countResolvableUnknowns(reviewTextsDir, validOutlets) {
         );
         if (data.duplicateOf || data.wrongProduction || data.wrongShow || data.wrongUrl) continue;
         if (isRejectedNonReview(data)) continue;
+        if (data.url && isBlockedReviewUrl(data.url)) continue;
 
         const outletId = (data.outletId || '').toLowerCase();
         const hyphenCount = (outletId.match(/-/g) || []).length;
