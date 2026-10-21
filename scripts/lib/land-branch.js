@@ -80,6 +80,7 @@ const { checkLanded } = require('./landing-verify.js');
 const { isRunnableTestFile } = require('./merge-post-merge-test-gate.js');
 const { segmentHeads } = require('./land-train.js');
 const { SITE_PATHS, SITE_DATA_FILES } = require('./should-deploy-gate.js');
+const { collectBuildScriptDependencies } = require('./build-script-dependencies.js');
 
 const MAX_ATTEMPTS = 3;
 // Inert-churn re-rebases allowed per attempt before a full re-check is forced.
@@ -280,11 +281,16 @@ function decideVerifiedBaseSkip({ verifiedBase, baseSha, ancestor, intervening }
  * Site CODE a production build compiles: should-deploy-gate.js's SITE_PATHS
  * (src/ imports scripts/lib, prebuild runs scripts/) minus the data files
  * bots rewrite every few minutes, which would otherwise make every src/
- * landing rebuild.
+ * landing rebuild. A known merged-tree buildScripts graph narrows scripts/
+ * to site/config/prebuild dependencies; an unknown graph stays conservative.
  */
-function isBuildCodePath(file) {
+function isBuildCodePath(file, buildScripts = null) {
   const f = String(file);
   if (f.startsWith('public/data/') || SITE_DATA_FILES.includes(f)) return false;
+  if (f.startsWith('public/images/shows/') || f === 'public/opening-night-status.json') return false;
+  // Only prune script code when the merged tree's dependency graph is known.
+  // Non-code inputs (manifests, templates) retain the broad classification.
+  if (f.startsWith('scripts/') && /\.(?:[cm]?js|jsx|ts|tsx|sh)$/.test(f) && buildScripts instanceof Set) return buildScripts.has(f);
   return SITE_PATHS.some((p) => (p.endsWith('/') ? f.startsWith(p) : f === p));
 }
 
@@ -300,10 +306,10 @@ function isBuildCodePath(file) {
  * build code (isBuildCodePath). Unknown
  * ancestry, a failed diff, an overlap or the switch → 'full', today's
  * re-check. Fails closed.
- * @param {{ancestor:boolean, intervening:(string[]|null), changedFiles:string[], disabled?:boolean}} o
+ * @param {{ancestor:boolean, intervening:(string[]|null), changedFiles:string[], disabled?:boolean, buildScripts?:(Set<string>|null)}} o
  * @returns {{mode:'full'|'small', build:boolean, reason:string}}
  */
-function selectRecheckScope({ ancestor, intervening, changedFiles, disabled = false }) {
+function selectRecheckScope({ ancestor, intervening, changedFiles, disabled = false, buildScripts = null }) {
   if (disabled) return { mode: 'full', build: true, reason: 'small re-check disabled (LAND_SMALL_RECHECK_DISABLED=true)' };
   if (ancestor !== true || !Array.isArray(intervening)) return { mode: 'full', build: true, reason: 'files main changed since the verified base are unknown' };
   if (!Array.isArray(changedFiles)) return { mode: 'full', build: true, reason: 'files the branch changed are unknown' };
@@ -311,7 +317,7 @@ function selectRecheckScope({ ancestor, intervening, changedFiles, disabled = fa
   const shared = intervening.map(String).filter((f) => mine.has(f));
   if (shared.length) return { mode: 'full', build: true, reason: `branch and main both changed ${shared.length} file(s) (${shared.slice(0, 3).join(', ')})` };
   // runSafeChecks builds only for a src/ change on the branch (hasSrcChange).
-  const build = [...mine].some((f) => f.startsWith('src/')) && intervening.some(isBuildCodePath);
+  const build = [...mine].some((f) => f.startsWith('src/')) && intervening.some(f => isBuildCodePath(f, buildScripts));
   return { mode: 'small', build, reason: `no file changed on both sides; build ${build ? 'runs (both sides changed build code)' : 'skipped (deploy builds it)'}` };
 }
 
@@ -360,6 +366,8 @@ function makeVerifiedBaseChecks({ verifiedBase, checks = defaultChecks, git = nu
           intervening: diffOut === null ? null : intervening,
           changedFiles: branchOut === null ? null : branchOut.split('\n').filter(Boolean),
           disabled: process.env.LAND_SMALL_RECHECK_DISABLED === 'true',
+          buildScripts: cwd && o.changedFiles?.some(f => f.startsWith('src/')) && intervening.some(f => f.startsWith('scripts/'))
+            ? collectBuildScriptDependencies(cwd) : null,
         });
       log(`[land] verified-base: ${decision.reason} — re-checking on the merged tree (${extra}); ${recheckScope.mode} re-check: ${recheckScope.reason}`);
       return checks({ ...o, interveningTests, recheckScope });
