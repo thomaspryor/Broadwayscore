@@ -299,19 +299,19 @@ export default function BestValuePage() {
           <h2 className="font-bold text-white mb-3 text-sm">Discount Types</h2>
           <div className="flex flex-wrap gap-3 text-xs">
             <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-purple-500/15 text-purple-300">
-              Lottery — Digital entry, random drawing
+              Lottery: Digital entry, random drawing
             </span>
             <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-emerald-500/15 text-emerald-300">
-              Rush — First-come, first-served at box office
+              Rush: First-come, first-served at box office
             </span>
             <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-blue-500/15 text-blue-300">
-              Digital Rush — Rush via TodayTix/apps
+              Digital Rush: Rush via TodayTix/apps
             </span>
             <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-pink-500/15 text-pink-300">
-              Student Rush — Student ID required
+              Student Rush: Student ID required
             </span>
             <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-gray-500/15 text-gray-300">
-              Standing Room — Standing, sold-out shows only
+              Standing Room: Standing, sold-out shows only
             </span>
           </div>
         </div>

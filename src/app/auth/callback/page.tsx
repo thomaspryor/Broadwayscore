@@ -49,7 +49,7 @@ export default function AuthCallbackPage() {
     const client = getSupabaseClient();
     if (!client) {
       reportUgcError('auth.callback', { message: 'Supabase client not available', code: 'no_client' });
-      setErrorDetail('Supabase client not available — env vars may be missing');
+      setErrorDetail('Supabase client not available: env vars may be missing');
       setError(true);
       return;
     }

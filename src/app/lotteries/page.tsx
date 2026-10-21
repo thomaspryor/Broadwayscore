@@ -278,7 +278,7 @@ export default function LotteriesPage() {
           {showsWithLottery.length > 0 ? (
             <LotteryTable data={showsWithLottery.map(item => ({ show: item.show, lotteryData: item.lotteryData! }))} />
           ) : (
-            <p className="text-sm text-gray-500">No lotteries running right now. Check back during the week — new lotteries open and close frequently.</p>
+            <p className="text-sm text-gray-500">No lotteries running right now. Check back during the week. New lotteries open and close frequently.</p>
           )}
         </div>
 

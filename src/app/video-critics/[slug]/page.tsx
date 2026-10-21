@@ -23,7 +23,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
     : `${creator.name} has reviewed ${creator.reviewCount} shows on ${platformLabel} with an average VideoScore of ${creator.avgScore}/100.`;
 
   return {
-    title: `${creator.name} — Video Critic on ${platformLabel}`,
+    title: `${creator.name}: Video Critic on ${platformLabel}`,
     description,
     alternates: { canonical: `${BASE_URL}/video-critics/${params.slug}` },
   };

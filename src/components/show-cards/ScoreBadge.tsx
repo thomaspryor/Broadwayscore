@@ -11,7 +11,7 @@ export const SCORE_TIERS = {
   },
   recommended: {
     label: 'Recommended',
-    tooltip: 'Strong choice—most people will have a great time.',
+    tooltip: 'Strong choice. Most people will have a great time.',
     color: '#22c55e',
     glow: false,
   },
@@ -23,13 +23,13 @@ export const SCORE_TIERS = {
   },
   skippable: {
     label: 'Mixed',
-    tooltip: 'Critics are split — worth a look if the premise grabs you.',
+    tooltip: 'Critics are split, but worth a look if the premise grabs you.',
     color: '#d97706',
     glow: false,
   },
   stayAway: {
     label: 'Critical Miss',
-    tooltip: 'Not recommended—save your time and money.',
+    tooltip: 'Not recommended. Save your time and money.',
     color: '#ef4444',
     glow: false,
   },

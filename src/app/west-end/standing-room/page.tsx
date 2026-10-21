@@ -13,13 +13,13 @@ import { DiscountTicketsNav } from '@/components/DiscountTicketsNav';
 import { formatTicketPrice } from '@/lib/formatting';
 
 export const metadata: Metadata = {
-  title: { absolute: 'West End Standing Room Tickets — Sold-Out London Show Seats' },
+  title: { absolute: 'West End Standing Room Tickets: Sold-Out London Show Seats' },
   description:
     'Standing room tickets for sold-out West End shows. When a show sells out completely, standing places at the back of the stalls are the last resort.',
   alternates: marketAlternates('westEnd', '/standing-room'),
   openGraph: {
     title: 'West End Standing Room Only Tickets',
-    description: 'The cheapest way to see a sold-out West End show — if a show sells out, standing places are the last resort.',
+    description: 'The cheapest way to see a sold-out West End show. If a show sells out, standing places are the last resort.',
     url: `${BASE_URL}/west-end/standing-room`,
     type: 'article',
     siteName: 'West End Scorecard',
@@ -44,7 +44,7 @@ const faqSchema = {
       name: 'How do I buy West End standing room?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Go to the box office on the day of the performance (or occasionally in advance) and ask for a standing place. SRO is only released when a show is completely sold out. Limited quantity \u2014 arrive early for popular shows.',
+        text: 'Go to the box office on the day of the performance (or occasionally in advance) and ask for a standing place. SRO is only released when a show is completely sold out. Limited quantity. Arrive early for popular shows.',
       },
     },
   ],
@@ -209,19 +209,19 @@ export default function WestEndStandingRoomPage() {
           <ul className="text-sm text-gray-400 space-y-2">
             <li className="flex gap-2">
               <span className="text-gray-500">1.</span>
-              <span><strong className="text-gray-300">Only when sold out</strong> — Standing places are only released when every seat has been sold. No SRO if there are empty seats.</span>
+              <span><strong className="text-gray-300">Only when sold out</strong>: Standing places are only released when every seat has been sold. No SRO if there are empty seats.</span>
             </li>
             <li className="flex gap-2">
               <span className="text-gray-500">2.</span>
-              <span><strong className="text-gray-300">Day of the performance</strong> — Go to the box office when it opens (usually 10 AM) and ask if standing places are available.</span>
+              <span><strong className="text-gray-300">Day of the performance</strong>: Go to the box office when it opens (usually 10 AM) and ask if standing places are available.</span>
             </li>
             <li className="flex gap-2">
               <span className="text-gray-500">3.</span>
-              <span><strong className="text-gray-300">Back of stalls or circle</strong> — You&apos;ll stand at a rail behind the last row. No sitting for the entire show.</span>
+              <span><strong className="text-gray-300">Back of stalls or circle</strong>: You&apos;ll stand at a rail behind the last row. No sitting for the entire show.</span>
             </li>
             <li className="flex gap-2">
               <span className="text-gray-500">4.</span>
-              <span><strong className="text-gray-300">Limited quantity</strong> — Usually 10–20 standing places per show. Arrive early for popular shows.</span>
+              <span><strong className="text-gray-300">Limited quantity</strong>: Usually 10–20 standing places per show. Arrive early for popular shows.</span>
             </li>
           </ul>
         </div>

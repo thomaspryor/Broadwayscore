@@ -102,7 +102,7 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: Mini
             ) : isAwaiting ? (
               <div
                 className="w-9 h-9 rounded-lg flex items-center justify-center text-xs font-bold bg-status-open-bg text-status-open ring-1 ring-status-open/25 shadow-card"
-                title="Awaiting reviews — score coming soon"
+                title="Awaiting reviews, score coming soon"
               >
                 TBD
               </div>

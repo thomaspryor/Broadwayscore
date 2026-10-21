@@ -233,7 +233,7 @@ function LogRow({ entry }: { entry: LogEntry }) {
         )}
         {bylineWarning && (
           <div className="text-[11px] text-score-tepid mt-0.5">
-            ⚠ Byline not detected — saved as &quot;Unknown&quot;. Edit the file to set criticName, then re-rebuild.
+            ⚠ Byline not detected. Saved as &quot;Unknown&quot;. Edit the file to set criticName, then re-rebuild.
           </div>
         )}
         {eta && (
@@ -243,12 +243,12 @@ function LogRow({ entry }: { entry: LogEntry }) {
         )}
         {entry.dispatchFailed && (
           <div className="text-[11px] text-score-tepid mt-0.5">
-            ⚠ Saved, but the batch rebuild dispatch failed — not live yet. See the dispatch row below for the manual trigger command.
+            ⚠ Saved, but the batch rebuild dispatch failed, so it is not live yet. See the dispatch row below for the manual trigger command.
           </div>
         )}
         {detectionWarningCount && (
           <div className="text-[11px] text-gray-500 mt-0.5">
-            ⓘ {detectionWarningCount} detection warning{detectionWarningCount === 1 ? '' : 's'} — auto-detected fields may need a check
+            ⓘ {detectionWarningCount} detection warning{detectionWarningCount === 1 ? '' : 's'}: auto-detected fields may need a check
           </div>
         )}
       </div>
@@ -269,13 +269,13 @@ function describeDispatchEta(workflow?: string): { label: string; tone: string }
   if (!workflow) return null;
   if (workflow === 'rebuild-fast.yml') {
     return {
-      label: '🚀 Fast path — live in ~5 min (rebuild-fast)',
+      label: '🚀 Fast path: live in ~5 min (rebuild-fast)',
       tone: 'text-status-open',
     };
   }
   if (workflow === 'llm-ensemble-score.yml') {
     return {
-      label: '🤖 LLM scoring — live in ~15-20 min (ensemble-then-rebuild)',
+      label: '🤖 LLM scoring: live in ~15-20 min (ensemble-then-rebuild)',
       tone: 'text-gray-400',
     };
   }
@@ -486,7 +486,7 @@ function SinglePasteForm({
 
       <Field
         label="Critic's stated score"
-        hint="Optional. Type it as written in the review (e.g. “4/5 stars”, “★★★★”, “A-”, “90/100”). If the review doesn't state a score, leave blank — our LLM will score the text."
+        hint="Optional. Type it as written in the review (e.g. “4/5 stars”, “★★★★”, “A-”, “90/100”). If the review doesn't state a score, leave it blank and our LLM will score the text."
       >
         <input
           type="text"
@@ -529,7 +529,7 @@ function SinglePasteForm({
               className="accent-brand mt-0.5"
             />
             <span>
-              Override existing wrong-production flag — only check this if you know the existing
+              Override existing wrong-production flag. Only check this if you know the existing
               file for this outlet+critic was tagged for a different production and you want to
               replace it.
             </span>
@@ -833,7 +833,7 @@ function BatchPasteForm({
         startedAt: Date.now(),
         url: `0 of ${plan.length} review${plan.length === 1 ? '' : 's'} committed for ${selectedShow.title}`,
         status: 'failed',
-        error: `All ${plan.length} submission${plan.length === 1 ? '' : 's'} in this batch failed or were skipped — nothing was dispatched. See the rows above for each reason.`,
+        error: `All ${plan.length} submission${plan.length === 1 ? '' : 's'} in this batch failed or were skipped. Nothing was dispatched. See the rows above for each reason.`,
       });
     }
 
@@ -974,7 +974,7 @@ function BatchPasteForm({
                 </span>
               )}
               {(malformedCount > 0 || duplicateCount > 0) && (
-                <span> — will still show as a status row after you submit.</span>
+                <span>. It will still show as a status row after you submit.</span>
               )}
             </div>
           )}
@@ -995,7 +995,7 @@ function BatchPasteForm({
                 ? 'Fill in at least one review (URL + text)'
                 : submitCount > 0
                   ? `Submit ${submitCount} review${submitCount === 1 ? '' : 's'} for ${selectedShow.title}`
-                  : `Log ${plan.length} failed review${plan.length === 1 ? '' : 's'} — nothing valid to submit`}
+                  : `Log ${plan.length} failed review${plan.length === 1 ? '' : 's'}: nothing valid to submit`}
           </button>
         </>
       )}
@@ -1065,7 +1065,7 @@ function SlotEditor({
         type="text"
         value={slot.scoreInput}
         onChange={e => onChange({ scoreInput: e.target.value })}
-        placeholder="Score if stated (e.g. 4/5, ★★★★, A-, 90/100) — leave blank to let LLM score"
+        placeholder="Score if stated (e.g. 4/5, ★★★★, A-, 90/100). Leave blank to let LLM score"
         autoComplete="off"
         autoCapitalize="off"
         autoCorrect="off"
@@ -1160,7 +1160,7 @@ function DetectedSection({
               : effectiveOutlet
             : null
         }
-        missingHint="URL not from a recognized outlet — try a different review URL"
+        missingHint="URL not from a recognized outlet. Try a different review URL"
       />
 
       <DetectedField
@@ -1174,7 +1174,7 @@ function DetectedSection({
         confidence={detected?.showConfidence}
         candidates={detected?.showCandidates}
         onPickCandidate={id => setShowIdOverride(id)}
-        missingHint="Couldn't find a matching show — type the show ID below"
+        missingHint="Couldn't find a matching show. Type the show ID below"
       />
 
       <DetectedField
@@ -1186,7 +1186,7 @@ function DetectedSection({
         placeholder="critic's full name, e.g. Helen Shaw"
         disabled={disabled}
         autoExpandWhenMissing
-        missingHint="Couldn't find a “By [Name]” byline — type the critic's name below"
+        missingHint="Couldn't find a “By [Name]” byline. Type the critic's name below"
       />
 
       <DetectedField
@@ -1197,7 +1197,7 @@ function DetectedSection({
         setOverride={setPublishDateOverride}
         placeholder="YYYY-MM-DD"
         disabled={disabled}
-        missingHint="Date not in URL — type it below if you want it set"
+        missingHint="Date not in URL. Type it below if you want it set"
         optional
       />
     </div>

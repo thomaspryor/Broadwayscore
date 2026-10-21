@@ -54,8 +54,8 @@ Broadway Scorecard™ aggregates reviews from professional theatre critics (New 
 ## How Scoring Works
 
 We use a per-region tier-weighted system:
-- **Tier 1** (weight 1.0): Anchor outlets — NYT, Vulture, Variety (NYC anchors); Guardian, Times UK, Telegraph, Daily Mail, The Stage (London anchors)
-- **Tier 2** (weight 0.75): Major editorial — TheaterMania, BroadwayWorld, Theater Life (NYC); WhatsOnStage, Arts Desk, British Theatre Guide (London)
+- **Tier 1** (weight 1.0): Anchor outlets: NYT, Vulture, Variety (NYC anchors); Guardian, Times UK, Telegraph, Daily Mail, The Stage (London anchors)
+- **Tier 2** (weight 0.75): Major editorial: TheaterMania, BroadwayWorld, Theater Life (NYC); WhatsOnStage, Arts Desk, British Theatre Guide (London)
 - **Tier 3** (weight 0.40): General coverage and recognized single-author critics
 - **Tier 4** (weight 0.20): Unverified single-author blogs
 
@@ -101,8 +101,8 @@ ${featureFlags.commercial ? `- [Commercial Scorecard](${BASE_URL}/biz-buzz): Whi
 ### West End (London)
 - [West End Scorecard](${BASE_URL}/west-end): London theatre ratings and reviews
 - [West End Audience Buzz](${BASE_URL}/west-end/audience-buzz): What London audiences think
-- [Tony Awards](${BASE_URL}/tony-awards): Broadway's highest honor — winners, nominations, leaderboard
-- [Olivier Awards](${BASE_URL}/olivier-awards): London's highest theatre honour — recent winners and their critic scores
+- [Tony Awards](${BASE_URL}/tony-awards): Broadway's highest honor: winners, nominations, leaderboard
+- [Olivier Awards](${BASE_URL}/olivier-awards): London's highest theatre honour: recent winners and their critic scores
 - [West End Theatres](${BASE_URL}/west-end/theater): Browse every West End and Off-West End venue
 - [West End Methodology](${BASE_URL}/west-end/methodology): How we score London theatre
 - [West End Discount Tickets](${BASE_URL}/west-end/discount-tickets): Lotteries, day seats, rush, standing room

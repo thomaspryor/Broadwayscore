@@ -10,25 +10,25 @@ const currentYear = new Date().getFullYear();
 const operaOgImageUrl = `${BASE_URL}/og/opera.png`;
 
 export const metadata: Metadata = {
-  title: `Met Opera Reviews & Ratings (${currentYear}) — OperaScorecard`,
+  title: `Met Opera Reviews & Ratings (${currentYear}) | OperaScorecard`,
   description:
-    'CriticScore ratings for Metropolitan Opera productions. Aggregated from The New York Times, Operawire, Parterre Box, New York Classical Review, Bachtrack, and more — all opera critic voices count equally.',
+    'CriticScore ratings for Metropolitan Opera productions. Aggregated from The New York Times, Operawire, Parterre Box, New York Classical Review, Bachtrack, and more. All opera critic voices count equally.',
   alternates: {
     canonical: `${BASE_URL}/opera`,
   },
   openGraph: {
-    title: 'OperaScorecard — Met Opera Reviews & Ratings',
+    title: 'OperaScorecard: Met Opera Reviews & Ratings',
     description:
       'Aggregated CriticScore ratings for Metropolitan Opera productions from Operawire, NYT, Parterre Box, NYCR, and more.',
     url: `${BASE_URL}/opera`,
     type: 'article',
-    images: [{ url: operaOgImageUrl, width: 1200, height: 630, alt: 'OperaScorecard — Met Opera Reviews & Ratings' }],
+    images: [{ url: operaOgImageUrl, width: 1200, height: 630, alt: 'OperaScorecard: Met Opera Reviews & Ratings' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'OperaScorecard',
     description: 'Aggregated CriticScore ratings for Metropolitan Opera productions from Operawire, NYT, Parterre Box, NYCR, and more.',
-    images: [{ url: operaOgImageUrl, width: 1200, height: 630, alt: 'OperaScorecard — Met Opera Reviews & Ratings' }],
+    images: [{ url: operaOgImageUrl, width: 1200, height: 630, alt: 'OperaScorecard: Met Opera Reviews & Ratings' }],
   },
 };
 
@@ -97,7 +97,7 @@ export default function OperaPage() {
       {/* Tiny footer note explaining the flat-tier methodology */}
       <div className="mt-12 mb-8 mx-auto max-w-2xl text-center text-xs text-gray-500 px-4">
         <p>
-          Opera reviews count equally — Operawire, Parterre Box, New York Classical Review, Bachtrack,
+          Opera reviews count equally: Operawire, Parterre Box, New York Classical Review, Bachtrack,
           Classical Voice America, and Seen-and-Heard International carry the same weight as The New York
           Times for opera scoring. (
           <Link href="/methodology" className="underline hover:text-gray-300">methodology</Link>)

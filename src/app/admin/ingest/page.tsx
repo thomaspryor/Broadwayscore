@@ -18,7 +18,7 @@ export default async function AdminIngestPage() {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Add a review</h1>
           <p className="text-sm text-gray-400 mt-1">
             Paste the review&apos;s URL and full text. We&apos;ll figure out the outlet, critic,
-            show, and date — you confirm or fix anything that&apos;s wrong, then submit.
+            show, and date. You confirm or fix anything that&apos;s wrong, then submit.
           </p>
         </header>
         <IngestForm />

@@ -224,7 +224,7 @@ const ShowListCard = memo(function ShowListCard({
               <span className="text-blue-400">
                 {show.previewsStartDate
                   ? `Previews ${formatShowDate(show.previewsStartDate)}`
-                  : show.status === 'announced' ? 'Announced — dates TBA' : null}
+                  : show.status === 'announced' ? 'Announced, dates TBA' : null}
               </span>
             )}
           </>

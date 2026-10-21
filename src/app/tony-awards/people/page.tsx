@@ -8,7 +8,7 @@ import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import TonyLeaderboardClient from './TonyLeaderboardClient';
 
 export const metadata: Metadata = {
-  title: 'Tony Awards Leaderboard — Most Wins & Nominations',
+  title: 'Tony Awards Leaderboard: Most Wins & Nominations',
   description: 'Browse the Tony Awards leaderboard. See which Broadway performers, directors, and designers have the most wins and nominations.',
   alternates: { canonical: `${BASE_URL}/tony-awards/people` },
   openGraph: {

@@ -328,7 +328,7 @@ export default function Dashboard() {
           {data.weeks.length === 0 ? (
             <Card title="Visits per week"><div className="text-sm text-gray-400">No full week of data yet.</div></Card>
           ) : (<>
-          <Card title={`Visits per week — last ${data.weeks.length} week${data.weeks.length === 1 ? '' : 's'}`}>
+          <Card title={`Visits per week, last ${data.weeks.length} week${data.weeks.length === 1 ? '' : 's'}`}>
             <LineChart
               labels={data.weeks.map((w) => fmtDay(w.week))}
               series={[

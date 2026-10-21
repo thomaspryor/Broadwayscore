@@ -74,7 +74,7 @@ function buildHtml(opts: {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>${escapeHtml(title)} — CriticScore</title>
+<title>${escapeHtml(title)}: CriticScore</title>
 <style>
   :root { color-scheme: ${variant === 'light' ? 'light' : variant === 'dark' ? 'dark' : 'light dark'}; }
   * { box-sizing: border-box; }

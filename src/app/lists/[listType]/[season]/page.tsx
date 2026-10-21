@@ -45,7 +45,7 @@ export async function generateMetadata(props: { params: Promise<{ listType: stri
   const config = GOLD_LIST_MAP[params.listType as GoldListType];
   if (!config) return {};
 
-  const title = `${config.title} — ${params.season}`;
+  const title = `${config.title}: ${params.season}`;
   const market = marketLabelFromListType(params.listType as GoldListType);
   const description = `${config.description}. See the top ${market} shows for the ${params.season} season.`;
 
@@ -56,14 +56,14 @@ export async function generateMetadata(props: { params: Promise<{ listType: stri
       canonical: `${BASE_URL}/lists/${params.listType}/${params.season}`,
     },
     openGraph: {
-      title: `${config.title} — ${params.season}`,
+      title: `${config.title}: ${params.season}`,
       description,
       url: `${BASE_URL}/lists/${params.listType}/${params.season}`,
       images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
     },
     twitter: {
       card: 'summary',
-      title: `${config.title} — ${params.season}`,
+      title: `${config.title}: ${params.season}`,
       description,
     },
   };
@@ -106,7 +106,7 @@ export default async function GoldListSeasonPage(props: { params: Promise<{ list
       endDate: entry.closingDate,
       status: entry.status || undefined,
     })),
-    `${config.title} — ${season}`
+    `${config.title}: ${season}`
   );
 
   return (

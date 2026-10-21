@@ -128,7 +128,7 @@ export function AwardScoreBadge({ score, badge, inProgress, size = 'lg' }: Award
         boxShadow: styles.glow,
         ...breatheStyle,
       }}
-      aria-label={inProgress && score > 0 ? `Provisional Award Score ${score} — ${label}` : `Award Score ${score} — ${label}`}
+      aria-label={inProgress && score > 0 ? `Provisional Award Score ${score}: ${label}` : `Award Score ${score}: ${label}`}
     >
       {styles.shimmer && (
         // Animated light-sweep, mirrors .score-must-see::before in globals.css.

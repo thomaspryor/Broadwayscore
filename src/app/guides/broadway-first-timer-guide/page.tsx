@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     images: [SITE_OG_IMAGE],
     title: `Your First Broadway Show: The Complete Guide (${currentYear})`,
-    description: `First time on Broadway? Here's what to expect — from buying tickets to stage door, with practical tips from experienced theatergoers.`,
+    description: `First time on Broadway? Here's what to expect, from buying tickets to stage door, with practical tips from experienced theatergoers.`,
     url: `${BASE_URL}/guides/broadway-first-timer-guide`,
     type: 'article',
   },
@@ -38,7 +38,7 @@ export default function BroadwayFirstTimerGuide() {
         name: 'How early should I arrive for a Broadway show?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Plan to arrive at the theater 30 minutes before curtain. This gives you time to pick up Will Call tickets, pass through security, find your seat, and use the restroom. If you have Will Call or mobile tickets that need to be exchanged at the box office, arrive even earlier — the line can take 10-15 minutes before popular shows.',
+          text: 'Plan to arrive at the theater 30 minutes before curtain. This gives you time to pick up Will Call tickets, pass through security, find your seat, and use the restroom. If you have Will Call or mobile tickets that need to be exchanged at the box office, arrive even earlier. The line can take 10-15 minutes before popular shows.',
         },
       },
       {
@@ -62,7 +62,7 @@ export default function BroadwayFirstTimerGuide() {
         name: 'What should I wear to Broadway?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: `There is no formal dress code for Broadway. Most people wear smart casual — a nice top and jeans, a dress, or business casual. You will see everything from suits to sneakers. The key is to be comfortable (you will be sitting for 2+ hours) while looking put-together. For a detailed breakdown of what to wear by season and occasion, see our complete guide: ${BASE_URL}/guides/what-to-wear-to-broadway`,
+          text: `There is no formal dress code for Broadway. Most people wear smart casual: a nice top and jeans, a dress, or business casual. You will see everything from suits to sneakers. The key is to be comfortable (you will be sitting for 2+ hours) while looking put-together. For a detailed breakdown of what to wear by season and occasion, see our complete guide: ${BASE_URL}/guides/what-to-wear-to-broadway`,
         },
       },
     ],
@@ -78,9 +78,9 @@ export default function BroadwayFirstTimerGuide() {
           name: `How to Plan Your First Broadway Show (${currentYear})`,
           description: 'A step-by-step guide to planning and enjoying your first Broadway show, from buying tickets to the stage door.',
           step: [
-            { '@type': 'HowToStep', name: 'Choose Your Show', text: `There are currently ${openShowCount} shows playing on Broadway. Start with a highly-rated musical for your first time — they tend to be the most accessible and crowd-pleasing.` },
+            { '@type': 'HowToStep', name: 'Choose Your Show', text: `There are currently ${openShowCount} shows playing on Broadway. Start with a highly-rated musical for your first time. They tend to be the most accessible and crowd-pleasing.` },
             { '@type': 'HowToStep', name: 'Buy Tickets', text: 'Book online 2-4 weeks ahead for the best selection. Weekday evenings (Tuesday-Thursday) are cheapest. Consider lotteries and rush tickets for deals under $40.' },
-            { '@type': 'HowToStep', name: 'Arrive Early', text: 'Get to the theater 30 minutes before curtain. Pick up Will Call tickets, pass through security, and find your seat. Use the restroom before the show — intermission lines are long.' },
+            { '@type': 'HowToStep', name: 'Arrive Early', text: 'Get to the theater 30 minutes before curtain. Pick up Will Call tickets, pass through security, and find your seat. Use the restroom before the show. Intermission lines are long.' },
             { '@type': 'HowToStep', name: 'Enjoy the Show', text: 'Silence your phone, avoid unwrapping candy, and don\'t sing along. Clap after musical numbers and at the curtain call. Standing ovations are common but not required.' },
             { '@type': 'HowToStep', name: 'Visit Stage Door', text: 'After the show, head to the stage door (usually an alley entrance). Actors often come out to sign playbills and take photos. Bring a Sharpie and your Playbill.' },
           ],
@@ -110,7 +110,7 @@ export default function BroadwayFirstTimerGuide() {
           </h1>
           <p className="text-gray-300 leading-relaxed text-base sm:text-lg">
             Your first Broadway show is a big deal, and a little planning goes a long way.
-            This guide covers everything you need to know — from buying tickets and getting to the theater,
+            This guide covers everything you need to know, from buying tickets and getting to the theater,
             to what happens inside, etiquette, and what to do after the curtain call.
             With <span className="text-brand font-semibold">{openShowCount} shows</span> currently
             running on Broadway, there has never been a better time to go.
@@ -208,7 +208,7 @@ export default function BroadwayFirstTimerGuide() {
                 </p>
                 <p>
                   <strong className="text-white">Evening shows</strong> (typically 7pm or 8pm) have a special buzz
-                  to them — getting dressed up, walking through the Theater District at night, the neon and
+                  to them: getting dressed up, walking through the Theater District at night, the neon and
                   energy of Times Square. If this is your first time and you want the full experience, an evening
                   performance is hard to beat.
                 </p>
@@ -223,11 +223,11 @@ export default function BroadwayFirstTimerGuide() {
           <div className="prose prose-invert max-w-none">
             <p className="text-gray-300 leading-relaxed mb-4">
               There are more ways to get Broadway tickets than most people realize. Here is a quick
-              overview — we have a{' '}
+              overview. We have a{' '}
               <Link href="/guides/cheap-broadway-tickets" className="text-brand hover:text-brand-hover font-medium">
                 full guide to cheap Broadway tickets
               </Link>{' '}
-              if you want the deep dive.
+              if you want more detail.
             </p>
 
             <div className="card p-4 sm:p-5 mb-4">
@@ -259,7 +259,7 @@ export default function BroadwayFirstTimerGuide() {
                 <div>
                   <strong className="text-white">Box office:</strong> You can always walk up to the theater&apos;s box
                   office and buy directly. No service fees, and the staff can help you pick the best available seats.
-                  This is underrated — especially for shows that are not sold out.
+                  This is underrated, especially for shows that are not sold out.
                 </div>
               </div>
             </div>
@@ -268,7 +268,7 @@ export default function BroadwayFirstTimerGuide() {
               <h3 className="font-bold text-yellow-400 mb-2">Watch Out for Resellers</h3>
               <p className="text-gray-300 text-sm">
                 Stick to official sources. Third-party resellers (StubHub, Vivid Seats, etc.) charge significant
-                markups — sometimes 2-3x face value. If you see someone selling tickets on the street in Times
+                markups, sometimes 2-3x face value. If you see someone selling tickets on the street in Times
                 Square, walk away. Counterfeit tickets are a real problem, and there is no recourse if you get scammed.
               </p>
             </div>
@@ -295,12 +295,12 @@ export default function BroadwayFirstTimerGuide() {
                 <li>
                   <strong className="text-white">Find the right entrance.</strong> Most Broadway theaters have
                   the main entrance on the street, clearly marked with the show&apos;s marquee. Check your ticket
-                  for the theater name and address — some theaters are on side streets, not the main avenues.
+                  for the theater name and address. Some theaters are on side streets, not the main avenues.
                 </li>
                 <li>
                   <strong className="text-white">Security check.</strong> All Broadway theaters have bag checks.
                   Open your bag for the security staff at the door. Large bags and backpacks may need to be
-                  checked at coat check. This goes quickly — it is not airport-level security.
+                  checked at coat check. This goes quickly. It is not airport-level security.
                 </li>
                 <li>
                   <strong className="text-white">Pick up your Playbill.</strong> An usher will hand you a free
@@ -309,7 +309,7 @@ export default function BroadwayFirstTimerGuide() {
                 </li>
                 <li>
                   <strong className="text-white">Find your seat.</strong> Ushers are stationed throughout the
-                  theater and will help you find your seat. Tip: use the restroom before you sit down — you do
+                  theater and will help you find your seat. Tip: use the restroom before you sit down. You do
                   not want to be climbing over people once the show starts.
                 </li>
               </ol>
@@ -347,12 +347,12 @@ export default function BroadwayFirstTimerGuide() {
                 <div>
                   <strong className="text-white">Before curtain:</strong> The house lights will dim, and you may hear
                   an announcement asking you to silence your phone and unwrap any candy. For musicals, the orchestra
-                  will begin the overture — this is part of the show, so settle in and enjoy it. Some modern
+                  will begin the overture. This is part of the show, so settle in and enjoy it. Some modern
                   musicals skip the traditional overture and go straight into the opening number.
                 </div>
                 <div>
                   <strong className="text-white">Act One:</strong> Most shows have two acts. Act One typically runs
-                  45-75 minutes. Sit back, relax, and take it all in. Do not worry about when to clap — follow
+                  45-75 minutes. Sit back, relax, and take it all in. Do not worry about when to clap. Follow
                   the audience&apos;s lead. It is natural to applaud after musical numbers, but not required during
                   dramatic scenes.
                 </div>
@@ -363,7 +363,7 @@ export default function BroadwayFirstTimerGuide() {
                 </div>
                 <div>
                   <strong className="text-white">Act Two:</strong> Usually a bit shorter than Act One. A chime or
-                  announcement will signal when intermission is ending — head back to your seat promptly. Late
+                  announcement will signal when intermission is ending. Head back to your seat promptly. Late
                   returns may have to wait for a scene break before being seated.
                 </div>
               </div>
@@ -393,19 +393,19 @@ export default function BroadwayFirstTimerGuide() {
               <h3 className="font-bold text-white mb-3">Curtain Call and Applause</h3>
               <div className="text-gray-300 space-y-2">
                 <p>
-                  When the show ends, the cast takes their bows — this is the curtain call. It is customary to
+                  When the show ends, the cast takes their bows. This is the curtain call. It is customary to
                   applaud as each performer or group comes out. The lead actors typically bow last and get the biggest
                   ovation.
                 </p>
                 <p>
                   <strong className="text-white">Standing ovations:</strong> Standing ovations are common on Broadway,
-                  but not mandatory. If the people around you stand, it is polite to join in. If the show truly moved
-                  you, stand. If you thought it was just okay, a seated applause is perfectly fine — nobody will judge you.
+                  but not mandatory. If the people around you stand, it is polite to join in. If the show moved
+                  you, stand. If you thought it was just okay, a seated applause is perfectly fine. Nobody will judge you.
                 </p>
                 <p>
                   <strong className="text-white">When to clap:</strong> After big musical numbers, at the end of
                   scenes, and during curtain call. If you are not sure, wait a beat and follow the crowd.
-                  During dramatic plays, applause is less frequent — usually just at scene endings and curtain call.
+                  During dramatic plays, applause is less frequent, usually just at scene endings and curtain call.
                 </p>
               </div>
             </div>
@@ -418,26 +418,26 @@ export default function BroadwayFirstTimerGuide() {
           <div className="prose prose-invert max-w-none">
             <p className="text-gray-300 leading-relaxed mb-4">
               Broadway etiquette is mostly common sense, but a few things trip up first-timers. These are not
-              stuffy rules — they are about making sure everyone (including the performers) has a great experience.
+              stuffy rules. They are about making sure everyone (including the performers) has a great experience.
             </p>
 
             <div className="card p-4 sm:p-5 mb-4">
               <div className="space-y-4 text-gray-300">
                 <div>
-                  <strong className="text-white">Silence your phone completely.</strong> Not vibrate — silent.
+                  <strong className="text-white">Silence your phone completely.</strong> Not vibrate. Silent.
                   A buzzing phone in a quiet theater is surprisingly loud. Better yet, turn it off. Under no
                   circumstances should you check your phone during the performance. The glow of a screen in a
                   dark theater is incredibly distracting to everyone around you and to the performers on stage.
                 </div>
                 <div>
                   <strong className="text-white">Do not talk during the show.</strong> Even whispering carries in a
-                  theater. Save your reactions for intermission or after the show. If you need to say something truly
+                  theater. Save your reactions for intermission or after the show. If you need to say something
                   urgent, lean in and keep it to two words.
                 </div>
                 <div>
                   <strong className="text-white">Do not sing along.</strong> Even if you know every word. The
                   audience paid to hear the performers, not the person in Row G. The one exception: some shows
-                  have singalong moments where the cast invites the audience to join in — you will know when.
+                  have singalong moments where the cast invites the audience to join in. You will know when.
                 </div>
                 <div>
                   <strong className="text-white">Unwrap candy and cough drops before the show.</strong> Crinkling
@@ -446,10 +446,10 @@ export default function BroadwayFirstTimerGuide() {
                 </div>
                 <div>
                   <strong className="text-white">Do not put your feet on the seat in front of you.</strong> Somebody
-                  is sitting there (or will be after intermission). Theaters are tight — be mindful of your space.
+                  is sitting there (or will be after intermission). Theaters are tight, so be mindful of your space.
                 </div>
                 <div>
-                  <strong className="text-white">No photos or recording.</strong> This is a legal issue, not just
+                  <strong className="text-white">No photos or recording.</strong> This is a legal issue and
                   a courtesy. Unauthorized recording can result in your removal from the theater. Enjoy the show
                   with your eyes, not your lens.
                 </div>
@@ -475,7 +475,7 @@ export default function BroadwayFirstTimerGuide() {
               <div className="card p-4 sm:p-5">
                 <h3 className="font-bold text-white mb-2 text-sm">Coat Check</h3>
                 <p className="text-gray-300 text-sm">
-                  Most theaters have coat check in the lobby, typically $2-3 per item. Worth it in winter — you
+                  Most theaters have coat check in the lobby, typically $2-3 per item. Worth it in winter, since you
                   do not want a heavy coat on your lap for two hours. Tip: coat check lines get long right before
                   curtain, so check your coat as soon as you arrive.
                 </p>
@@ -483,7 +483,7 @@ export default function BroadwayFirstTimerGuide() {
               <div className="card p-4 sm:p-5">
                 <h3 className="font-bold text-white mb-2 text-sm">Temperature</h3>
                 <p className="text-gray-300 text-sm">
-                  Broadway theaters are air-conditioned aggressively, even in summer. Bring a light layer — a
+                  Broadway theaters are air-conditioned aggressively, even in summer. Bring a light layer, such as a
                   cardigan, light jacket, or scarf. This is one of the most common complaints from first-timers,
                   especially in mezzanine and balcony seats where the AC hits hardest.
                 </p>
@@ -501,7 +501,7 @@ export default function BroadwayFirstTimerGuide() {
                 <p className="text-gray-300 text-sm">
                   Most theaters sell drinks and snacks in the lobby before the show and during intermission. Outside
                   food is generally not allowed. If you want to eat beforehand, the Theater District has tons of
-                  options — just plan to finish 30-45 minutes before showtime.
+                  options. Just plan to finish 30-45 minutes before showtime.
                 </p>
               </div>
               <div className="card p-4 sm:p-5">
@@ -509,13 +509,13 @@ export default function BroadwayFirstTimerGuide() {
                 <p className="text-gray-300 text-sm">
                   All Broadway theaters offer wheelchair-accessible seating, assistive listening devices, and many
                   offer audio description and open captioning performances. Contact the box office directly when
-                  booking — they can arrange the best options for your needs. Service animals are welcome.
+                  booking. They can arrange the best options for your needs. Service animals are welcome.
                 </p>
               </div>
               <div className="card p-4 sm:p-5">
                 <h3 className="font-bold text-white mb-2 text-sm">What to Wear</h3>
                 <p className="text-gray-300 text-sm">
-                  There is no dress code. Smart casual is the norm — think nice jeans and a blouse, or a casual
+                  There is no dress code. Smart casual is the norm: think nice jeans and a blouse, or a casual
                   dress. Comfortable shoes are a must (you may be walking several blocks to the theater). For a full
                   breakdown, see our{' '}
                   <Link href="/guides/what-to-wear-to-broadway" className="text-brand hover:text-brand-hover">
@@ -557,14 +557,14 @@ export default function BroadwayFirstTimerGuide() {
                 </p>
                 <p>
                   <strong className="text-white">How it works:</strong> The stage door is usually on the side or back
-                  of the theater (ask an usher for directions). Head there right after the show — a crowd will already
+                  of the theater (ask an usher for directions). Head there right after the show. A crowd will already
                   be forming. Wait patiently. Actors typically start coming out 10-30 minutes after the final bow.
                   Not every cast member will come out every night, so do not take it personally if your favorite
                   performer skips.
                 </p>
                 <p>
                   <strong className="text-white">What to bring:</strong> A Sharpie marker for autographs. Your
-                  Playbill is the traditional thing to get signed. A phone for photos. Be polite and quick — there
+                  Playbill is the traditional thing to get signed. A phone for photos. Be polite and quick. There
                   are a lot of people waiting.
                 </p>
               </div>
@@ -576,7 +576,7 @@ export default function BroadwayFirstTimerGuide() {
                 <p>
                   <strong className="text-white">Subway:</strong> By far the fastest way out of the Theater District.
                   Times Square-42nd St (1/2/3/7/N/Q/R/W/S) and 50th St (1) are the closest stations. Trains run
-                  late — you will not get stranded.
+                  late. You will not get stranded.
                 </p>
                 <p>
                   <strong className="text-white">Rideshare (Uber/Lyft):</strong> Expect surge pricing after evening
@@ -584,7 +584,7 @@ export default function BroadwayFirstTimerGuide() {
                   south to escape the worst of it.
                 </p>
                 <p>
-                  <strong className="text-white">Driving:</strong> Avoid 8th Avenue after shows — it turns into
+                  <strong className="text-white">Driving:</strong> Avoid 8th Avenue after shows. It turns into
                   gridlock when every theater lets out at the same time. If you drove, park east of Broadway and
                   exit heading east.
                 </p>
@@ -602,7 +602,7 @@ export default function BroadwayFirstTimerGuide() {
                 <p>
                   <strong className="text-white">After the show:</strong> Hell&apos;s Kitchen (9th and 10th Avenues,
                   40s-50s) is the go-to neighborhood for post-show dining. It is walkable from every Broadway
-                  theater and has restaurants at every price point. No reservation? Try 9th Avenue — plenty of spots
+                  theater and has restaurants at every price point. No reservation? Try 9th Avenue. Plenty of spots
                   that take walk-ins even at 10:30pm.
                 </p>
               </div>
@@ -623,13 +623,13 @@ export default function BroadwayFirstTimerGuide() {
               <div className="space-y-3 text-gray-300">
                 <p>
                   <strong className="text-white">Go with what excites you.</strong> If there is a show you have been
-                  hearing about, a performer you love, or a story that speaks to you — that is your show. Do not
+                  hearing about, a performer you love, or a story that speaks to you, then that is your show. Do not
                   overthink it.
                 </p>
                 <p>
                   <strong className="text-white">Musicals are a safe bet for first-timers.</strong> They are
                   visually stunning, emotionally engaging, and the music carries you through even if you are not
-                  used to live theater. That said, a great play can be equally powerful — it is a more intimate
+                  used to live theater. That said, a great play can be equally powerful. It is a more intimate
                   experience.
                 </p>
                 <p>
@@ -649,13 +649,13 @@ export default function BroadwayFirstTimerGuide() {
               <h3 className="font-bold text-white mb-3">Our First-Timer Resources</h3>
               <div className="space-y-2">
                 <Link href="/guides/best-broadway-shows-for-first-timers" className="block text-brand hover:text-brand-hover text-sm font-medium">
-                  Best Broadway Shows for First-Timers — curated recommendations with scores and reviews
+                  Best Broadway Shows for First-Timers: curated recommendations with scores and reviews
                 </Link>
                 <Link href="/browse/first-time-broadway" className="block text-brand hover:text-brand-hover text-sm font-medium">
-                  Browse First-Timer Shows — full filterable list of beginner-friendly shows
+                  Browse First-Timer Shows: full filterable list of beginner-friendly shows
                 </Link>
                 <Link href="/broadway-theaters-map" className="block text-brand hover:text-brand-hover text-sm font-medium">
-                  Broadway Theaters Map — see where every theater is located
+                  Broadway Theaters Map: see where every theater is located
                 </Link>
               </div>
             </div>
@@ -671,7 +671,7 @@ export default function BroadwayFirstTimerGuide() {
               <p className="text-gray-300 text-sm">
                 Plan to arrive 30 minutes before curtain. This gives you time to pick up Will Call tickets, pass
                 through security, find your seat, and use the restroom. If you have tickets to pick up at the box
-                office, add another 10-15 minutes — the Will Call line can move slowly before popular shows.
+                office, add another 10-15 minutes. The Will Call line can move slowly before popular shows.
               </p>
             </div>
             <div className="card p-4 sm:p-5">
@@ -685,15 +685,15 @@ export default function BroadwayFirstTimerGuide() {
             <div className="card p-4 sm:p-5">
               <h3 className="font-bold text-white mb-2">How long is a typical Broadway show?</h3>
               <p className="text-gray-300 text-sm">
-                Most musicals run 2 to 2.5 hours including a 15-20 minute intermission. Plays tend to be shorter —
-                usually 90 minutes to 2 hours — and some run straight through without an intermission. Check the
+                Most musicals run 2 to 2.5 hours including a 15-20 minute intermission. Plays tend to be shorter,
+                usually 90 minutes to 2 hours, and some run straight through without an intermission. Check the
                 show&apos;s listing before you go so you can plan dinner or transportation accordingly.
               </p>
             </div>
             <div className="card p-4 sm:p-5">
               <h3 className="font-bold text-white mb-2">What should I wear to Broadway?</h3>
               <p className="text-gray-300 text-sm">
-                There is no formal dress code. Smart casual is the sweet spot — nice jeans and a top, a casual dress,
+                There is no formal dress code. Smart casual is the sweet spot: nice jeans and a top, a casual dress,
                 or business casual all work well. You will see everything from cocktail dresses to sneakers. The key
                 is to be comfortable for 2+ hours of sitting. For a complete breakdown by season, venue, and occasion,
                 check our{' '}

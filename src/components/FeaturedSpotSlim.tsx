@@ -95,7 +95,7 @@ export default function FeaturedSpotSlim({
           href={href}
           prefetch={false}
           onClick={handleClick}
-          aria-label={`${title} — ${ctaLabel}`}
+          aria-label={`${title}: ${ctaLabel}`}
           className="absolute inset-0 z-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface rounded-card"
         >
           <span className="sr-only">{ctaLabel}</span>

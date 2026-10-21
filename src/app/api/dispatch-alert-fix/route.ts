@@ -150,7 +150,7 @@ function successHtml(alertTitle: string, workflow: string, runUrl: string) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Fix Approved — Broadway Scorecard</title>
+  <title>Fix Approved | Broadway Scorecard</title>
   <style>
     body { font-family: system-ui, sans-serif; max-width: 480px; margin: 80px auto; padding: 0 24px; text-align: center; }
     .icon { font-size: 52px; margin-bottom: 12px; }
@@ -177,7 +177,7 @@ function confirmHtml(alertTitle: string, workflow: string, token: string) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Confirm Fix — Broadway Scorecard</title>
+  <title>Confirm Fix | Broadway Scorecard</title>
   <style>
     body { font-family: system-ui, sans-serif; max-width: 480px; margin: 80px auto; padding: 0 24px; text-align: center; }
     h1 { font-size: 22px; margin-bottom: 8px; }
@@ -207,7 +207,7 @@ function errorHtml(message: string) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Error — Broadway Scorecard</title>
+  <title>Error | Broadway Scorecard</title>
   <style>
     body { font-family: system-ui, sans-serif; max-width: 480px; margin: 80px auto; padding: 0 24px; text-align: center; }
     .icon { font-size: 52px; margin-bottom: 12px; }

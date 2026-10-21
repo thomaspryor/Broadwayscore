@@ -231,7 +231,7 @@ function LockRow({ lock }: { lock: LockRecord }) {
       if (json.success) {
         setActionState({
           type: 'success',
-          message: 'Unlocked. Rebuild dispatched — refresh in ~5 min.',
+          message: 'Unlocked. Rebuild dispatched. Refresh in ~5 min.',
         });
       } else {
         setActionState({ type: 'error', message: json.error || 'Unknown error' });

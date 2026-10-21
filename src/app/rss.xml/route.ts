@@ -40,7 +40,7 @@ export function GET() {
       : '';
     items.push(`
     <item>
-      <title>${escapeXml(show.title)} — ${brandName}</title>
+      <title>${escapeXml(show.title)}: ${brandName}</title>
       <link>${BASE_URL}/show/${show.slug}</link>
       <guid isPermaLink="true">${BASE_URL}/show/${show.slug}</guid>
       <description>${escapeXml(`${show.title} reviews and CriticScore on ${brandName}.${scoreText} ${show.synopsis || ''}`.trim())}</description>
@@ -87,9 +87,9 @@ export function GET() {
 
   // Static guide pages
   const staticGuides = [
-    { slug: 'what-to-wear-to-broadway', title: 'What to Wear to Broadway', desc: 'Broadway dress code guide — what most people wear, what to avoid, and tips for every occasion.' },
-    { slug: 'broadway-first-timer-guide', title: 'Going to Broadway for the First Time', desc: 'Everything you need to know before your first Broadway show — when to arrive, what to expect, and theater etiquette.' },
-    { slug: 'off-broadway-vs-broadway', title: 'Off-Broadway vs Broadway', desc: 'The real difference between Broadway and Off-Broadway — theater size, ticket prices, and which is right for you.' },
+    { slug: 'what-to-wear-to-broadway', title: 'What to Wear to Broadway', desc: 'Broadway dress code guide: what most people wear, what to avoid, and tips for every occasion.' },
+    { slug: 'broadway-first-timer-guide', title: 'Going to Broadway for the First Time', desc: 'Everything you need to know before your first Broadway show: when to arrive, what to expect, and theater etiquette.' },
+    { slug: 'off-broadway-vs-broadway', title: 'Off-Broadway vs Broadway', desc: 'The real difference between Broadway and Off-Broadway: theater size, ticket prices, and which is right for you.' },
     { slug: 'cheap-broadway-tickets', title: 'How to Get Cheap Broadway Tickets', desc: 'TKTS, lotteries, rush tickets, and every strategy for affordable Broadway tickets.' },
   ];
   for (const guide of staticGuides) {

@@ -184,7 +184,7 @@ export default function Dashboard() {
         cache: 'no-store',
       });
       if (res.status === 404) {
-        setError('Unauthorized — your admin session has expired. Re-enter via /api/admin/login?token=…');
+        setError('Unauthorized. Your admin session has expired. Re-enter via /api/admin/login?token=…');
         setStats(null);
         return;
       }
@@ -258,7 +258,7 @@ export default function Dashboard() {
       {stats && (
         <>
           {/* Top-line: commission earned (our revenue) + WoW */}
-          <Card title={`Our earnings — last ${stats.window.days} days`}>
+          <Card title={`Our earnings, last ${stats.window.days} days`}>
             <div>
               <div className="text-xs text-gray-500 uppercase tracking-wide">Commission earned</div>
               <div className="text-4xl sm:text-5xl font-extrabold text-white tabular-nums leading-none mt-1">

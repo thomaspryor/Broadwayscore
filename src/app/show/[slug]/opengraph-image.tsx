@@ -7,7 +7,7 @@ import { getScoreTier } from '@/components/show-cards';
 import { isShowScoreTBD } from '@/lib/show-score-tbd';
 import { BASE_URL, toAbsoluteUrl } from '@/lib/seo';
 
-export const alt = 'Broadway Scorecard — show score';
+export const alt = 'Broadway Scorecard: show score';
 export const size = { width: 1200, height: 630 };
 // JPEG, not PNG: the hero is a full-bleed photo and PNG encodes it at ~1.2 MB.
 // WhatsApp drops link previews whose image is over ~300 KB, so we re-encode

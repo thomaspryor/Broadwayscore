@@ -5,7 +5,7 @@ import OffBroadwayTheaterIndexClient from './OffBroadwayTheaterIndexClient';
 
 
 export const metadata: Metadata = {
-  title: { absolute: 'Off-Broadway Theaters — All NYC Venues' },
+  title: { absolute: 'Off-Broadway Theaters: All NYC Venues' },
   description:
     'Browse every Off-Broadway theater in New York City. See what shows are currently playing at each venue with CriticScore ratings and reviews.',
   alternates: {

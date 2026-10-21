@@ -224,19 +224,19 @@ export default function StandingRoomPage() {
           <ul className="text-sm text-gray-400 space-y-2">
             <li className="flex gap-2">
               <span className="text-gray-500">1.</span>
-              <span><strong className="text-gray-300">Only when sold out</strong> — SRO tickets are only available when all seats are sold. If there are empty seats, no standing room.</span>
+              <span><strong className="text-gray-300">Only when sold out</strong>: SRO tickets are only available when all seats are sold. If there are empty seats, no standing room.</span>
             </li>
             <li className="flex gap-2">
               <span className="text-gray-500">2.</span>
-              <span><strong className="text-gray-300">Day of show</strong> — Go to the box office when it opens (usually 10 AM) and ask if SRO is available.</span>
+              <span><strong className="text-gray-300">Day of show</strong>: Go to the box office when it opens (usually 10 AM) and ask if SRO is available.</span>
             </li>
             <li className="flex gap-2">
               <span className="text-gray-500">3.</span>
-              <span><strong className="text-gray-300">Back of orchestra</strong> — You&apos;ll stand at a rail behind the last row. No sitting for the entire show.</span>
+              <span><strong className="text-gray-300">Back of orchestra</strong>: You&apos;ll stand at a rail behind the last row. No sitting for the entire show.</span>
             </li>
             <li className="flex gap-2">
               <span className="text-gray-500">4.</span>
-              <span><strong className="text-gray-300">Limited quantity</strong> — Only 10-20 SRO spots per show. Arrive early for popular shows.</span>
+              <span><strong className="text-gray-300">Limited quantity</strong>: Only 10-20 SRO spots per show. Arrive early for popular shows.</span>
             </li>
           </ul>
         </div>
@@ -247,7 +247,7 @@ export default function StandingRoomPage() {
           {showsWithSRO.length > 0 ? (
             <StandingRoomTable data={showsWithSRO.map(item => ({ show: item.show, sroData: item.sroData! }))} />
           ) : (
-            <p className="text-sm text-gray-500">No standing-room information in our database right now. Call the box office directly if the show you want is sold out — many theaters offer SRO that we don&apos;t have on file.</p>
+            <p className="text-sm text-gray-500">No standing-room information in our database right now. Call the box office directly if the show you want is sold out. Many theaters offer SRO that we don&apos;t have on file.</p>
           )}
         </div>
 

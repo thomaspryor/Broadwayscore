@@ -8,23 +8,23 @@ import awardsData from '../../../data/awards.json';
 // --- SEO ---
 
 export const metadata: Metadata = {
-  title: { absolute: 'Olivier Awards — West End Winners, Scores & History' },
+  title: { absolute: 'Olivier Awards: West End Winners, Scores & History' },
   description:
     'The Laurence Olivier Awards are London\u2019s highest theatre honour. Recent winners and their West End Scorecard critic ratings across Best New Musical, Best New Play, and Best Revival.',
   alternates: {
     canonical: `${BASE_URL}/olivier-awards`,
   },
   openGraph: {
-    title: 'Olivier Awards — West End Scorecard',
-    description: 'Recent Olivier Award winners ranked by critic scores — the UK\u2019s equivalent of the Tony Awards.',
+    title: 'Olivier Awards: West End Scorecard',
+    description: 'Recent Olivier Award winners ranked by critic scores, the UK\u2019s equivalent of the Tony Awards.',
     url: `${BASE_URL}/olivier-awards`,
     type: 'website',
     siteName: 'West End Scorecard',
-    images: [{ url: `${BASE_URL}/og/west-end.png`, width: 1200, height: 630, alt: 'Olivier Awards — West End Scorecard' }],
+    images: [{ url: `${BASE_URL}/og/west-end.png`, width: 1200, height: 630, alt: 'Olivier Awards: West End Scorecard' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Olivier Awards — West End Scorecard',
+    title: 'Olivier Awards: West End Scorecard',
     description: 'Recent Olivier Award winners ranked by critic scores.',
   },
 };
@@ -54,7 +54,7 @@ const faqSchema = {
       name: 'How do critic scores compare to Olivier winners?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Most Olivier Best New Musical and Best New Play winners earn strong critic consensus before winning \u2014 though surprises happen, especially in revival categories where nostalgia and casting weigh more than raw reviews.',
+        text: 'Most Olivier Best New Musical and Best New Play winners earn strong critic consensus before winning, though surprises happen, especially in revival categories where nostalgia and casting weigh more than raw reviews.',
       },
     },
   ],
@@ -169,7 +169,7 @@ export default function OlivierAwardsHubPage() {
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-white">Olivier Awards</h1>
           <p className="text-gray-400 mt-2 max-w-2xl">
-            The Laurence Olivier Awards are London&apos;s highest theatre honour — the West End&apos;s equivalent of Broadway&apos;s Tonys. Recent winners, their critic scores, and how reviews line up with the prize.
+            The Laurence Olivier Awards are London&apos;s highest theatre honour, the West End&apos;s equivalent of Broadway&apos;s Tonys. Recent winners, their critic scores, and how reviews line up with the prize.
           </p>
         </div>
 
@@ -246,7 +246,7 @@ export default function OlivierAwardsHubPage() {
             Major categories include Best New Musical, Best New Play, Best Musical Revival, Best Revival (Play), Best Actor, and Best Actress. Winners are typically announced at a ceremony in April held at the Royal Albert Hall.
           </p>
           <p className="text-gray-300">
-            Oliviers are the UK counterpart to Broadway&apos;s Tony Awards. Shows that triumph at one often transfer across the Atlantic — winning at both is a rare distinction reserved for the decade&apos;s defining productions.
+            Oliviers are the UK counterpart to Broadway&apos;s Tony Awards. Shows that triumph at one often transfer across the Atlantic. Winning at both is a rare distinction reserved for the decade&apos;s defining productions.
           </p>
         </section>
 

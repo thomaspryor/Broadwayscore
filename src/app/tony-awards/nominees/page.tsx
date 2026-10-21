@@ -18,14 +18,14 @@ const ceremonyDate = seasonRecord?.ceremonyDate ?? null;
 // --- SEO ---
 
 export const metadata: Metadata = {
-  title: `${season.ceremonyYear} Tony Nominations Center — Critic, Audience & Odds`,
+  title: `${season.ceremonyYear} Tony Nominations Center: Critic, Audience & Odds`,
   description: `Every ${season.label} Tony-nominated show and nominee ranked by critic score, audience grade, and win odds from GoldDerby, Polymarket, and Kalshi. All 26 categories.`,
   alternates: {
     canonical: `${BASE_URL}/tony-awards/nominees`,
   },
   openGraph: {
     images: [TONY_OG_IMAGE],
-    title: `${season.ceremonyYear} Tony Nominations Center — Broadway Scorecard`,
+    title: `${season.ceremonyYear} Tony Nominations Center: Broadway Scorecard`,
     description: `All ${season.label} Tony nominees with critic scores, audience grades, and crowd-sourced win odds from GoldDerby, Polymarket, and Kalshi.`,
     url: `${BASE_URL}/tony-awards/nominees`,
     type: 'website',
@@ -165,7 +165,7 @@ export default function TonyNomineesPage() {
         {/* Legend */}
         <div className="mt-8 text-xs text-gray-600 text-center space-y-1.5">
           <p>Win odds: GoldDerby (crowd predictions, 26 categories) · Kalshi (real-money market, 25 categories) · Polymarket (real-money market, 3 categories)</p>
-          <p>Odds may sum to more or less than 100% — prediction markets include a house spread.</p>
+          <p>Odds may sum to more or less than 100%. Prediction markets include a house spread.</p>
           <p>Award Score: composite of Drama League, Outer Critics Circle, and Drama Desk wins in this category (0–100). Press Picks: predicted winners from NYT (Helen Shaw) and Variety (Clayton Davis).</p>
         </div>
       </div>

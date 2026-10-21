@@ -13,12 +13,12 @@ import { DiscountTicketsNav } from '@/components/DiscountTicketsNav';
 import { formatTicketPrice } from '@/lib/formatting';
 
 export const metadata: Metadata = {
-  title: { absolute: 'West End Lottery Tickets — Win Cheap London Theatre Tickets' },
+  title: { absolute: 'West End Lottery Tickets: Win Cheap London Theatre Tickets' },
   description:
     'Enter digital lotteries to win discounted West End tickets. Check lottery prices, platforms, and entry times for every London show that runs one. Updated regularly.',
   alternates: marketAlternates('westEnd', '/lotteries'),
   openGraph: {
-    title: 'West End Lottery Tickets — Win Cheap London Theatre Seats',
+    title: 'West End Lottery Tickets: Win Cheap London Theatre Seats',
     description:
       'Enter digital lotteries for discounted West End tickets across the biggest London musicals and plays.',
     url: `${BASE_URL}/west-end/lotteries`,
@@ -44,7 +44,7 @@ const faqSchema = {
       name: 'How do West End lotteries work?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'West End lotteries are digital drawings for discounted tickets. You enter online through apps like TodayTix, Lottoland, or the show\u2019s website \u2014 usually the day before or the morning of the performance. Winners are picked at random and have a limited time to pay for their discounted seats.',
+        text: 'West End lotteries are digital drawings for discounted tickets. You enter online through apps like TodayTix, Lottoland, or the show\u2019s website, usually the day before or the morning of the performance. Winners are picked at random and have a limited time to pay for their discounted seats.',
       },
     },
     {
@@ -60,7 +60,7 @@ const faqSchema = {
       name: 'Which West End shows have lotteries?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Many popular West End shows offer lotteries, often via TodayTix. Availability changes week to week \u2014 check our list for the current running shows and their lottery details.',
+        text: 'Many popular West End shows offer lotteries, often via TodayTix. Availability changes week to week. Check our list for the current running shows and their lottery details.',
       },
     },
   ],
@@ -276,7 +276,7 @@ export default function WestEndLotteriesPage() {
               market="west-end"
             />
           ) : (
-            <p className="text-sm text-gray-500">No lotteries running right now. Check back during the week — new lotteries open and close frequently.</p>
+            <p className="text-sm text-gray-500">No lotteries running right now. Check back during the week. New lotteries open and close frequently.</p>
           )}
         </div>
 

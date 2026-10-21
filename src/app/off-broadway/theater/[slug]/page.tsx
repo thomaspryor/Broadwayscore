@@ -56,12 +56,12 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   const description = `${theater.name} in New York City. ${currentShowText} See all ${theater.showCount} shows, scores, and theater details.`;
 
   return {
-    title: { absolute: `${theater.name} — Off-Broadway Theater` },
+    title: { absolute: `${theater.name}: Off-Broadway Theater` },
     description,
     alternates: { canonical: canonicalUrl },
     openGraph: {
       images: [SITE_OG_IMAGE],
-      title: `${theater.name} — Off-Broadway Theater`,
+      title: `${theater.name}: Off-Broadway Theater`,
       description,
       url: canonicalUrl,
       type: 'website',
@@ -69,7 +69,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${theater.name} — Off-Broadway Theater`,
+      title: `${theater.name}: Off-Broadway Theater`,
       description,
     },
   };
@@ -248,7 +248,7 @@ export default async function OffBroadwayTheaterPage(props: { params: Promise<{ 
           {/* Placeholder note for missing venue metadata */}
           <div className="card p-4 mb-4 border border-white/5">
             <p className="text-sm text-gray-400 leading-relaxed">
-              Venue details for {theater.name} — capacity, accessibility, and seating tips — are coming soon. We&apos;re enriching all Off-Broadway venues after launch.
+              Venue details for {theater.name} (capacity, accessibility, and seating tips) are coming soon. We&apos;re enriching all Off-Broadway venues after launch.
             </p>
           </div>
 

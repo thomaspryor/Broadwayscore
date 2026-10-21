@@ -57,7 +57,7 @@ function buildSvg(opts: {
   const badgeFill = isGold ? 'url(#gold)' : tierBg;
   const badgeStroke = tierStroke ? `stroke="${tierStroke}" stroke-width="2"` : '';
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 100" width="280" height="100" role="img" aria-label="${escapeXml(tierLabel)} — ${escapeXml(scoreText)} out of 100 CriticScore">
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 100" width="280" height="100" role="img" aria-label="${escapeXml(tierLabel)}, ${escapeXml(scoreText)} out of 100 CriticScore">
 ${goldDefs}
   <rect x="0.5" y="0.5" width="279" height="99" rx="12" fill="${CARD_BG}" stroke="${CARD_BORDER}"/>
   <rect x="10" y="10" width="80" height="80" rx="12" fill="${badgeFill}" ${badgeStroke}/>

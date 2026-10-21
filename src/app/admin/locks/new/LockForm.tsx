@@ -269,7 +269,7 @@ export default function LockForm({
       <Field
         label="Rationale"
         required
-        hint={`Why is this score locked? At least ${MIN_REASON_LENGTH} chars. Reads like a footnote — explicit star rating, structural read, prior-production reuse, etc.`}
+        hint={`Why is this score locked? At least ${MIN_REASON_LENGTH} chars. Reads like a footnote: explicit star rating, structural read, prior-production reuse, etc.`}
       >
         <textarea
           value={reason}
@@ -325,11 +325,11 @@ function ResponsePanel({ response, isEdit }: { response: LockResponse; isEdit: b
           )}
         </div>
         {response.pullquoteCleared && (
-          <div className="text-gray-400">⚠ keyPhrases cleared (tier crossed) — rebuild will pick a fresh pullquote.</div>
+          <div className="text-gray-400">⚠ keyPhrases cleared (tier crossed). Rebuild will pick a fresh pullquote.</div>
         )}
         {response.workflowRunUrl && (
           <div>
-            Rebuild dispatched —{' '}
+            Rebuild dispatched:{' '}
             <a href={response.workflowRunUrl} target="_blank" rel="noopener noreferrer" className="underline">
               view workflow runs
             </a>

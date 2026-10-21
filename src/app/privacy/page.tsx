@@ -7,14 +7,14 @@ export const metadata: Metadata = {
   description: 'Privacy policy for Broadway Scorecard website and mobile app.',
   alternates: { canonical: `${BASE_URL}/privacy` },
   openGraph: {
-    title: 'Privacy Policy — Broadway Scorecard',
+    title: 'Privacy Policy | Broadway Scorecard',
     description: 'Privacy policy for Broadway Scorecard website and mobile app.',
     url: `${BASE_URL}/privacy`,
     images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary',
-    title: 'Privacy Policy — Broadway Scorecard',
+    title: 'Privacy Policy | Broadway Scorecard',
     description: 'Privacy policy for Broadway Scorecard website and mobile app.',
   },
 };

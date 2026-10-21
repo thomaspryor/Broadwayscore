@@ -359,8 +359,8 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
           {rank && rankColors ? (
             <Link
               href={trendingHref}
-              title="Rank blends mention volume across the platforms shown (relevance-weighted) with positive sentiment — not raw mention count alone."
-              aria-label={`Ranked ${rank.position} of ${rank.total} in ${rank.market} social buzz — see all trending shows`}
+              title="Rank blends mention volume across the platforms shown (relevance-weighted) with positive sentiment, not raw mention count alone."
+              aria-label={`Ranked ${rank.position} of ${rank.total} in ${rank.market} social buzz, see all trending shows`}
               className="shrink-0 flex flex-col items-center justify-center rounded-lg px-3 py-2 min-w-[72px] shadow-sm no-underline transition-transform hover:-translate-y-0.5"
               style={{
                 backgroundColor: rankColors.bg,

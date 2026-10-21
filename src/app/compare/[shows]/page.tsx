@@ -569,7 +569,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
           {/* ── BOX OFFICE — THIS WEEK ── */}
           {(grossesA?.thisWeek || grossesB?.thisWeek) && (
             <>
-              <SectionLabel>Box Office — This Week</SectionLabel>
+              <SectionLabel>Box Office: This Week</SectionLabel>
               <Row
                 label="Gross"
                 valueA={grossesA?.thisWeek?.gross != null ? (
@@ -607,7 +607,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
           {/* ── BOX OFFICE — ALL-TIME ── */}
           {(grossesA?.allTime || grossesB?.allTime) && (
             <>
-              <SectionLabel>Box Office — All-Time</SectionLabel>
+              <SectionLabel>Box Office: All-Time</SectionLabel>
               <Row
                 label="Total Gross"
                 valueA={grossesA?.allTime?.gross != null ? (
@@ -736,7 +736,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
               <p>
                 <strong className="text-white">Budget-friendly option:</strong>{' '}
                 {lotteryRushA?.lottery && lotteryRushB?.lottery
-                  ? `Both shows offer ${currency}${lotteryRushA.lottery.price} lottery tickets — enter both for better chances!`
+                  ? `Both shows offer ${currency}${lotteryRushA.lottery.price} lottery tickets. Enter both for better chances!`
                   : lotteryRushA?.lottery
                     ? `${showA.title} has a ${currency}${lotteryRushA.lottery.price} lottery for discounted tickets.`
                     : `${showB.title} has a ${currency}${lotteryRushB!.lottery!.price} lottery for discounted tickets.`}

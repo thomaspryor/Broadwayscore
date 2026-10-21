@@ -48,13 +48,13 @@ export default function AboutPage() {
               {AUTHOR.name} – {AUTHOR.jobTitle}
             </p>
             <p>
-              I&apos;m Tom Pryor &mdash; I built Broadway Scorecard™ because I see 60+ shows a year and got tired
+              I&apos;m Tom Pryor. I built Broadway Scorecard™ because I see 60+ shows a year and got tired
               of not having a single place to compare reviews across critics.
             </p>
             <p>
               Every show is scored using a weighted system that analyzes reviews from major critics
               and publications. It&apos;s a one-person project, completely independent, and it&apos;ll
-              always be free &mdash; no ads, no paywalls.
+              always be free, with no ads and no paywalls.
             </p>
             <p>
               Have feedback or ideas? Use the{' '}
