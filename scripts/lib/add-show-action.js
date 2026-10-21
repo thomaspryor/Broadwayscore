@@ -91,7 +91,10 @@ function newRowDuplicate(shows, show, distinctFrom, { ticketOnly = false } = {})
 function applyAddShow(shows, action, { isRetired } = {}) {
   const show = action && action.show;
   if (!show || typeof show !== 'object') return { ok: false, reason: 'add-show: missing show object' };
-  for (const f of REQUIRED) if (!show[f]) return { ok: false, reason: `add-show: missing required field "${f}"` };
+  // A Broadway production announced before its theater is booked has no venue yet
+  // (dreamgirls, private-lives exist this way); every other shape needs one.
+  const venueTbd = show.venue === null && show.status === 'announced' && show.category === 'broadway';
+  for (const f of REQUIRED) if (!show[f] && !(f === 'venue' && venueTbd)) return { ok: false, reason: `add-show: missing required field "${f}"` };
   const extra = Object.keys(show).filter(k => !ALLOWED.has(k));
   if (extra.length) return { ok: false, reason: `add-show: fields not allowed: ${extra.join(', ')}` };
   if (!ID_RE.test(show.id) || !ID_RE.test(show.slug)) return { ok: false, reason: 'add-show: id/slug must be lowercase-kebab' };
@@ -99,7 +102,7 @@ function applyAddShow(shows, action, { isRetired } = {}) {
   if (!CATEGORIES.includes(show.category)) return { ok: false, reason: `add-show: bad category "${show.category}"` };
   const shape = marketShapeProblem(shows, show);
   if (shape) return { ok: false, reason: shape };
-  if (sanitizeVenueForWrite(show.venue) === null) return { ok: false, reason: `add-show: venue "${show.venue}" is a placeholder` };
+  if (!venueTbd && sanitizeVenueForWrite(show.venue) === null) return { ok: false, reason: `add-show: venue "${show.venue}" is a placeholder` };
   if (shows.some(s => s.id === show.id)) return { ok: false, reason: `add-show: id "${show.id}" already exists` };
   // A retired id comes back only after an explicit unretire (BRO-5557: promoters re-minted retired rows).
   const retired = typeof isRetired === 'function' ? isRetired(show.id) : require('./retired-show-ids').isRetiredId(show.id);
@@ -135,7 +138,7 @@ function applyAddShow(shows, action, { isRetired } = {}) {
     if (!prior.openingDate) return { ok: false, reason: `add-show: priorRunOf "${action.priorRunOf}" has no openingDate` };
   }
 
-  const added = { ...show, venue: sanitizeVenueForWrite(show.venue), discoverySource: show.discoverySource || 'manual-user-request' };
+  const added = { ...show, venue: venueTbd ? null : sanitizeVenueForWrite(show.venue), discoverySource: show.discoverySource || 'manual-user-request' };
   if (prior) {
     const run = { id: prior.id, venue: sanitizeVenueForWrite(prior.venue), openingDate: prior.openingDate || null };
     if (prior.closingDate) run.closingDate = prior.closingDate;
@@ -147,7 +150,7 @@ function applyAddShow(shows, action, { isRetired } = {}) {
     if (!from.priorRuns.some(r => r.id === show.id)) {
       const run = { id: show.id, openingDate: show.openingDate };
       if (show.closingDate) run.closingDate = show.closingDate;
-      run.venue = sanitizeVenueForWrite(show.venue);
+      run.venue = venueTbd ? null : sanitizeVenueForWrite(show.venue);
       from.priorRuns.push(run);
     }
   }
