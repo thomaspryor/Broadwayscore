@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-21T12:15:32.632Z",
+  "timestamp": "2026-10-21T12:53:33.836Z",
   "stats": {
-    "totalReviews": 58049,
-    "alreadyFlagged": 21124,
-    "dateGuardCatches": 197,
+    "totalReviews": 58055,
+    "alreadyFlagged": 21125,
+    "dateGuardCatches": 198,
     "directorMismatch": 2047,
     "tvFilmSignals": 1654,
-    "londonSignals": 2578,
+    "londonSignals": 2580,
     "offBroadwaySignals": 531,
     "yearMismatch": 163,
-    "noPublishDate": 5233
+    "noPublishDate": 5234
   },
   "findings": [
     {
@@ -67107,6 +67107,20 @@
     },
     {
       "showId": "harry-potter-2021",
+      "file": "sfgate--lily-janiak.json",
+      "score": null,
+      "publishDate": "2018-06-28",
+      "url": "https://www.sfgate.com/performance/article/Harry-Potter-play-coming-to-San-Francisco-s-13035122.php",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-2021",
       "file": "theatres-leiter-side--samuel-l-leiter.json",
       "score": 71,
       "publishDate": "April 30, 2018",
@@ -70129,6 +70143,34 @@
     },
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "bestoftheatre--ella-dunmore.json",
+      "score": null,
+      "publishDate": "2026-10-06",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/glenn-close-herod-jesus-christ-superstar-drury-lane",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 61,
+      "publishDate": "2026-07-08",
+      "url": "https://www.ft.com/content/123b9505-14d8-45b1-88ec-d3fb845f71b2?syn-25a6b1a6=1",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 100d before show (2026-07-08 vs 2026-10-16)"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "whatsonstage--alex-wood.json",
       "publishDate": "2026-09-07",
       "url": "https://www.whatsonstage.com/news/full-cast-for-jesus-christ-superstar-at-theatre-royal-drury-lane-confirmed-with-on-stage-ticket-plans-revealed_1731065/",
@@ -73132,7 +73174,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 84,
+      "score": 86,
       "publishDate": "2026-10-21",
       "url": "https://www.londonboxoffice.co.uk/news/post/martin-guerre-the-old-vic-review",
       "findings": [
@@ -73146,7 +73188,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "london-theatre--anya-ryan.json",
-      "score": null,
+      "score": 63,
       "publishDate": "2026-10-21",
       "url": "https://www.londontheatre.co.uk/reviews/martin-guerre-review-old-vic",
       "findings": [
@@ -73186,7 +73228,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "south-london--michael-holland.json",
-      "score": null,
+      "score": 89,
       "publishDate": "2026-10-21",
       "url": "https://southlondon.co.uk/area/southwark/review-martin-guerre-old-vic/",
       "findings": [
@@ -73200,6 +73242,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "whatsonstage--alex-wood.json",
+      "score": 82,
       "publishDate": "2026-10-21",
       "url": "https://www.whatsonstage.com/news/martin-guerre-review-a-compelling-case-for-a-musical-with-a-complicated-past_1735581/",
       "findings": [
@@ -87194,7 +87237,7 @@
     {
       "showId": "the-mousetrap-west-end-2021",
       "file": "theatre-weekly--unknown.json",
-      "score": 55,
+      "score": null,
       "publishDate": "2025-11-25",
       "url": "https://theatreweekly.com/the-mousetrap-announces-75th-anniversary-uk-tour-and-west-end-extension/",
       "findings": [

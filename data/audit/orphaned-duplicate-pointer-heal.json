@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-21T12:06:20.648Z",
+  "generated": "2026-10-21T12:44:49.683Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 34,
+  "count": 35,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -240,6 +240,13 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026",
+      "loserFile": "patch--unknown.json",
+      "targetFile": "patch--sabrina-blandon.json",
+      "reason": "orphaned-duplicate-heal: patch--sabrina-blandon.json was flagged invalid after patch--unknown.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }

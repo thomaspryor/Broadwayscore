@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T12:15:47.913Z",
+  "generatedAt": "2026-10-21T12:53:48.542Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -518,10 +518,6 @@
         },
         {
           "name": "New York Daily News",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheWrap",
           "isDualMarket": false
         },
         {
@@ -1800,26 +1796,25 @@
       "status": "open",
       "slug": "martin-guerre-west-end",
       "thumbnail": "/images/shows/martin-guerre-west-end-2026/thumbnail.webp",
-      "siteScore": 65.33,
-      "liveScore": 65,
-      "scoreDrift": -0.3299999999999983,
+      "siteScore": 68.82,
+      "liveScore": 69,
+      "scoreDrift": 0.18000000000000682,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 6,
+      "total": 7,
       "t1": 3,
       "t2": 3,
-      "t3": 0,
-      "positive": 2,
+      "t3": 1,
+      "positive": 3,
       "mixed": 4,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "6/8 total",
-          "hi-conf:3/6"
+          "7/8 total"
         ],
-        "highConfidence": 3,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1952,6 +1947,18 @@
           "t2": 3,
           "t3": 0,
           "p": 2,
+          "m": 4,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-21T12:53:48.542Z",
+          "rc": 7,
+          "s": 68.82,
+          "t1": 3,
+          "t2": 3,
+          "t3": 1,
+          "p": 3,
           "m": 4,
           "n": 0,
           "bc": "waiting"
