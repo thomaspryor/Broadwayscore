@@ -179,6 +179,8 @@ test('the dateless-hold fetch is cooled down and ends once a date or no url', ()
   assert.equal(shouldRetryDatelessHoldFetch({ ...SUN, url: '' }, now), false);
   // Other wrongProduction reasons are not this hold.
   assert.equal(isDatelessRevivalHold({ ...SUN, wrongProductionReason: 'x', wrongProductionNote: 'Date guard: x' }), false);
+  // BRO-5877: a stale dateless-revival reason under another guard's note is not a dateless hold.
+  assert.equal(isDatelessRevivalHold({ ...SUN, wrongProductionReason: 'dateless-revival', wrongProductionNote: 'Date guard: review 2018-04-30 is 3063d before 2026-10-09' }), false);
 });
 
 test('collect-review-texts skips SERP rediscovery for a dateless hold', () => {

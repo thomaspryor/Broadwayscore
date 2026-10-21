@@ -217,9 +217,14 @@ function urlOwnedByOtherShow({ reviewTextsDir, folder, url, publishDate, detect,
  */
 function isDatelessRevivalHold(d) {
   if (!d || d.wrongProduction !== true) return false;
-  if (d.wrongProductionReason === 'dateless-revival') return true;
-  return typeof d.wrongProductionNote === 'string'
-    && d.wrongProductionNote.startsWith('Dateless revival guard');
+  // BRO-5877: the note names the guard that owns the flag. A re-flag by the
+  // date guard writes only its note and leaves a stale reason behind, so the
+  // reason decides only when there is no note (same rule as
+  // shouldAutoClearDatelessRevival).
+  if (typeof d.wrongProductionNote === 'string' && d.wrongProductionNote) {
+    return d.wrongProductionNote.startsWith('Dateless revival guard');
+  }
+  return d.wrongProductionReason === 'dateless-revival';
 }
 
 /**
