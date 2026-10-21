@@ -163,3 +163,36 @@ describe('varBandMusicalsCited (BRO-5598, live for musicals)', () => {
     assert.equal(pct(play, cited, { varBandMusicalsCited: true }), pct(play, cited));
   });
 });
+
+describe('varBandMusicalsWaltz (BRO-5872, shadow)', () => {
+  const waltz = { ...comm, costMethodology: 'reddit-standard', weeklyRunningCostSource: 'Estimate by u/Boring_Waltz_9545 on r/Broadway, "GROSSES ANALYSIS"' };
+  const bySource = { ...comm, weeklyRunningCostSource: 'Section C: Reddit Grosses Analysis' };
+  const pct = (s, c, opts) => calculateRecoupment(s, c, null, weekly, opts).recoupmentPctCentral;
+  test('off by default: a Reddit cost keeps the flat deduction', () => {
+    assert.equal(pct(show, waltz), pct(show, waltz, { varBandMusicalsWaltz: false }));
+  });
+  test('on: a Reddit cost on a musical takes the same band as a cited one', () => {
+    assert.ok(pct(show, waltz, { varBandMusicalsWaltz: true }) < pct(show, waltz));
+    assert.equal(pct(show, waltz, { varBandMusicalsWaltz: true }), pct(show, waltz, { varBandMusicals: true }));
+    assert.equal(pct(show, bySource, { varBandMusicalsWaltz: true }), pct(show, bySource, { varBandMusicals: true }));
+  });
+  test('on: an uncited non-Reddit cost, an all-in Reddit cost, and plays skip it', () => {
+    assert.equal(pct(show, comm, { varBandMusicalsWaltz: true }), pct(show, comm));
+    const allIn = { ...waltz, weeklyRunningCostBasis: 'all-in' };
+    assert.equal(pct(show, allIn, { varBandMusicalsWaltz: true }), pct(show, allIn));
+    const play = { ...show, type: 'play' };
+    assert.equal(pct(play, waltz, { varBandMusicalsWaltz: true }), pct(play, waltz));
+  });
+  test('on: a play breakeven and a solo show are untouched (musicals only)', () => {
+    const run = (s, opts) => calculateRecoupment(s, waltz, null, weekly, opts);
+    const play = { ...show, type: 'play' };
+    assert.equal(run(play, { varBandMusicalsWaltz: true }).weeklyBreakeven, run(play).weeklyBreakeven);
+    const solo = { ...show, type: 'special' };
+    assert.equal(run(solo, { varBandMusicalsWaltz: true }).recoupmentPctCentral, run(solo).recoupmentPctCentral);
+  });
+  test('a cited cost is unchanged by it, and it works with the cited band off', () => {
+    const cited = { ...comm, costMethodology: 'trade-reported', weeklyRunningCostSource: 'Broadway Journal (Jan 9, 2024): "weekly running costs of $800,000" https://www.broadwayjournal.com/p/example' };
+    assert.equal(pct(show, cited, { varBandMusicalsWaltz: true }), pct(show, cited));
+    assert.equal(pct(show, waltz, { varBandMusicalsWaltz: true, varBandMusicalsCited: false }), pct(show, waltz, { varBandMusicalsWaltz: true }));
+  });
+});

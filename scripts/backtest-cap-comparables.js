@@ -7,7 +7,12 @@
  * backtest-recoupment-ground-truth.js. This is the only place the guess meets
  * known answers. Advisory: it gates nothing.
  *
- * Usage: node scripts/backtest-cap-comparables.js [--json] [--truth=reported|all]
+ * Usage: node scripts/backtest-cap-comparables.js [--json] [--truth=reported|all] [--type=musical|play] [--opt=<name>...]
+ *
+ * --type keeps one show type (BRO-5872: the musicals-only leave-one-out run).
+ * --opt=<name> runs both sides with that shadow option on (the names
+ * backtest-recoupment-ground-truth.js takes), so an option is scored on
+ * guessed caps as well as disclosed ones.
  */
 require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
@@ -20,6 +25,14 @@ const { truthRows, rangeError, category, summarize } = require('./lib/recoupment
 
 const args = process.argv.slice(2);
 const TRUTH = (args.find((a) => a.startsWith('--truth=')) || '--truth=all').slice(8);
+const TYPE = (args.find((a) => a.startsWith('--type=')) || '').slice(7) || null;
+// --opt=name or --opt=name=false, as backtest-recoupment-ground-truth.js takes them.
+const OPTS = Object.fromEntries(args.filter((a) => a.startsWith('--opt=')).map((a) => a.slice(6).split('=')).map(([n, v]) => [n, v !== 'false']));
+// A misspelt option would run as a no-op and read as "no change": it must be one scripts/lib reads.
+const LIB = path.join(__dirname, 'lib');
+const LIB_SRC = fs.readdirSync(LIB).filter((f) => f.endsWith('.js')).map((f) => fs.readFileSync(path.join(LIB, f), 'utf8')).join('\n');
+const unknown = Object.keys(OPTS).filter((n) => !/^\w+$/.test(n) || !new RegExp(`\\bopts\\.${n}\\b`).test(LIB_SRC));
+if (unknown.length) { console.error(`Unknown --opt: ${unknown.join(', ')} (no scripts/lib module reads it)`); process.exit(2); }
 const DATA = path.join(__dirname, '..', 'data');
 const dataFile = (f) => (fs.existsSync(path.join(DATA, f)) ? path.join(DATA, f) : path.join(os.homedir(), 'broadway-scorecard-data', f));
 const load = (f) => JSON.parse(fs.readFileSync(dataFile(f), 'utf8'));
@@ -34,14 +47,15 @@ const pctRows = [];
 for (const [key, comm] of Object.entries(commercial)) {
   const show = by[key] || by[comm.slug] || by[key.replace(/-\d{4}$/, '')];
   if (!show || !isDisclosedCapitalization(comm)) continue;
+  if (TYPE && !String(show.type || '').startsWith(TYPE)) continue;
   // The pool without this record.
   const est = makeCapEstimator(shows, commercial, (c) => c === comm || require('./lib/commercial-designations').hasNoInvestorsToRepay(c))(show, comm);
   if (!est) continue;
   const ratio = est.value / comm.capitalization;
   capRows.push({ slug: key, actual: comm.capitalization, est: est.value, ratio, inside: comm.capitalization >= est.low && comm.capitalization <= est.high, n: est.n, type: show.type });
   const bare = { ...comm }; delete bare.capitalization;
-  const run = liveModelRun(show, bare, L, { capComparables: true, capEstimator: () => est });
-  const real = liveModelRun(show, comm, L, {});
+  const run = liveModelRun(show, bare, L, { ...OPTS, capComparables: true, capEstimator: () => est });
+  const real = liveModelRun(show, comm, L, OPTS);
   if (!run.result || !real.result) continue;
   for (const { truth, tier } of truthRows(comm, show, TRUTH)) {
     if (tier !== 'gate' && TRUTH === 'reported') continue;
@@ -62,7 +76,7 @@ const capSummary = {
 const pctSummary = summarize(pctRows);
 const flips = pctRows.filter((r) => r.flipped).length;
 if (args.includes('--json')) { console.log(JSON.stringify({ capSummary, pctSummary, flips }, null, 2)); process.exit(0); }
-console.log(`Leave-one-out cap estimate vs disclosed capitalization: ${capSummary.n} shows`);
+console.log(`Leave-one-out cap estimate vs disclosed capitalization: ${capSummary.n} shows${TYPE ? ` (${TYPE}s only)` : ''}${Object.keys(OPTS).length ? `, opts ${Object.keys(OPTS).join(', ')}` : ''}`);
 console.log(`  median |ln(est/actual)| ${capSummary.medianAbsLogError?.toFixed(2)} (0.29 = off by a third); within 25%: ${capSummary.within25pct}; within 2x: ${capSummary.within2x}; actual inside the estimate's P10-P90: ${capSummary.insideP10P90}`);
 console.log('Model on the guess vs model on the disclosed cap, scored against ground truth (old = disclosed cap, new = comparables):');
 console.log('group                n   old MAE  new MAE  old inside  new inside');

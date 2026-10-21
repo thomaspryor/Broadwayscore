@@ -17,7 +17,7 @@
  * - Three-scenario output (optimistic/central/pessimistic)
  */
 
-const { isCitedReportedWeeklyCost, REPORTED_COST_METHODOLOGIES } = require('./waltz-cost-gap-fill');
+const { isCitedReportedWeeklyCost, REPORTED_COST_METHODOLOGIES, costSourceBasis } = require('./waltz-cost-gap-fill');
 const { previewWeeksFromWeekly } = require('./preview-weeks');
 const { runWindow, weeksInOwnRun, COVID_DARK_START, COVID_DARK_END } = require('./run-window');
 const { taxCreditCited } = require('./tax-credit-cited');
@@ -585,6 +585,12 @@ function withCapEstimate(run, commercial, opts) {
   return res;
 }
 
+/** A weekly cost that came from the Reddit analyst (u/Boring_Waltz_9545's posts). */
+function isWaltzWeeklyCost(commercial) {
+  if (!(commercial && commercial.weeklyRunningCost > 0)) return false;
+  return commercial.costMethodology === 'reddit-standard' || costSourceBasis(commercial.weeklyRunningCostSource) === 'reddit';
+}
+
 function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, opts = {}) {
   opts = withMusicalDefaults(show, opts);
   const filled = withCapEstimate((c, o) => calculateRecoupment(show, c, grossesAllTime, grossesWeekly, o), commercial, opts);
@@ -661,7 +667,12 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   const split = opts.costSplit && !basisNut ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null;
   const baseVarRate = split ? split.varRate : getBaseVariableRate(category);
   const runNut = split ? split.fixedNut : weeklyNut;
-  const citedBand = !!opts.varBandMusicalsCited && isCitedReportedWeeklyCost(commercial) && !['all-in', 'breakeven'].includes(commercial.weeklyRunningCostBasis);
+  // opts.varBandMusicalsWaltz (shadow, BRO-5872): the band on a Reddit
+  // analyst's cost too. His weekly cost leaves out the gross-linked items his
+  // posts deduct on this band, so the flat ~11% undercharged every such run.
+  // Musicals only (classifyShow): calcWeeklyProfit's band counts a solo show as one.
+  const waltzCost = !!opts.varBandMusicalsWaltz && /^musical/.test(category) && isWaltzWeeklyCost(commercial);
+  const citedBand = (!!opts.varBandMusicalsCited && isCitedReportedWeeklyCost(commercial) || waltzCost) && !['all-in', 'breakeven'].includes(commercial.weeklyRunningCostBasis);
   const costPath = opts.stepSmall || opts.stepLate || opts.costGrowth || opts.varBand || opts.varOverage || opts.varBandMusicals || opts.varOverageMusicals || opts.varBandMusicalsRamp || citedBand
     ? { stepSmall: !!opts.stepSmall, stepLate: !!opts.stepLate, costGrowth: !!opts.costGrowth, varBand: !!opts.varBand, varOverage: !!opts.varOverage, varBandMusicals: !!opts.varBandMusicals || citedBand, varOverageMusicals: !!opts.varOverageMusicals, varBandMusicalsRamp: !!opts.varBandMusicalsRamp } : null; // shadow, BRO-5073/5091
 
