@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  titleFromLinkText, dateFromLinkText, bylineDate, resolveAgainst, reviewDateFitsShow, normalizeTbUrl, isReviewHref, normalizeTitle, extractReviewLinks, titleFromPageTitle,
+  titleFromLinkText, dateFromLinkText, holdsReview, bylineDate, resolveAgainst, reviewDateFitsShow, normalizeTbUrl, isReviewHref, normalizeTitle, extractReviewLinks, titleFromPageTitle,
   matchShowByTitle, heldKey, planCollection, pickCriticForShow, pageTitleMatchesShow,
 } = require('./talkinbroadway-index.js');
 
@@ -194,4 +194,14 @@ test('matchShowByTitle covers a show that opened up to 400 days ago (Every Brill
   const april = [{ id: 'joe-turners-come-and-gone-2026', title: "Joe Turner's Come and Gone", openingDate: '2026-04-25', market: 'broadway', category: 'broadway' }];
   assert.equal(matchShowByTitle("Joe Turner's Come and Gone", april, { now: NOW }).reason, 'match');
   assert.equal(matchShowByTitle("Joe Turner's Come and Gone", april, { now: new Date('2027-10-01T12:00:00Z') }).reason, 'none');
+});
+
+test('holdsReview: a flagged or invalid file still counts, an empty stub or a forum-thread husk does not', () => {
+  const page = 'https://www.talkinbroadway.com/page/ob/10_09_26.html';
+  assert.equal(holdsReview({ url: page, contentTier: 'complete' }), true);
+  assert.equal(holdsReview({ url: page, contentTier: 'invalid', wrongProduction: true }), true);
+  assert.equal(holdsReview({ url: page, contentTier: 'stub' }), false);
+  assert.equal(holdsReview({ url: 'https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654250', contentTier: 'excerpt' }), false);
+  assert.equal(holdsReview({ contentTier: 'complete' }), false);
+  assert.equal(holdsReview(null), false);
 });

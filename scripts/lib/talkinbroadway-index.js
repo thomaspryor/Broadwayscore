@@ -10,6 +10,8 @@
  */
 'use strict';
 
+const { isForumThreadUrl } = require('./talkinbroadway-forum-link');
+
 const BASE = 'https://www.talkinbroadway.com';
 
 // Review pages live under these sections. Region sections (/page/regional/) are
@@ -179,6 +181,18 @@ function resolveAgainst(pageUrl, href) {
   }
 }
 
+/**
+ * Does this stored file mean the show already has a Talkin' Broadway review in the corpus? Yes for
+ * any file that points at a real review page, whatever its verdict: a file flagged wrongShow or
+ * wrongProduction (tier 'invalid') is a repair job for a person, and re-queueing it every day would
+ * spend the 12-page budget on pages the ingest cannot improve. Not held: an empty stub, or a
+ * forum-thread husk whose real review page still has to be found.
+ */
+function holdsReview(file) {
+  if (!file || !file.url || isForumThreadUrl(file.url)) return false;
+  return file.contentTier !== 'stub';
+}
+
 /** Key for "we already hold a Talkin' Broadway review of this show". TB posts one review per production. */
 function heldKey(showId) {
   return String(showId);
@@ -269,6 +283,7 @@ module.exports = {
   pickCriticForShow,
   pageTitleMatchesShow,
   heldKey,
+  holdsReview,
   planCollection,
   SECTION_CATEGORY,
   MAX_UNDATED_RANK,

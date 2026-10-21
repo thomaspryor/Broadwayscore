@@ -32,9 +32,8 @@ const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
   BASE, extractReviewLinks, isReviewHref, normalizeTbUrl, titleFromPageTitle, planCollection, heldKey,
-  pickCriticForShow, pageTitleMatchesShow, bylineDate, reviewDateFitsShow, resolveAgainst,
+  pickCriticForShow, pageTitleMatchesShow, bylineDate, reviewDateFitsShow, resolveAgainst, holdsReview,
 } = require('./lib/talkinbroadway-index');
-const { isForumThreadUrl } = require('./lib/talkinbroadway-forum-link');
 
 const USAGE = 'Usage: node scripts/collect-talkinbroadway-index.js [--dry-run] [--window-days=N] [--max-pages=N] [--data-dir=PATH]';
 const args = process.argv.slice(2);
@@ -65,7 +64,7 @@ function loadHeldKeys() {
       if (!f.startsWith('talkinbroadway--') || !f.endsWith('.json')) continue;
       try {
         const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
-        if (d.url && !isForumThreadUrl(d.url) && d.contentTier !== 'stub' && d.contentTier !== 'invalid') held.add(heldKey(showId));
+        if (holdsReview(d)) held.add(heldKey(showId));
       } catch { /* unreadable file: not held */ }
     }
   }
