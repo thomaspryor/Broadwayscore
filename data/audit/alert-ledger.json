@@ -22649,6 +22649,19 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "guard-escalation:review-count-drift-strict-breach": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Check Review-Count Drift blocked 6x in a row (Review-count drift strict-breach guard (check-review-count-drift.js))",
+      "firstSeen": "2026-10-21T14:23:53.202Z",
+      "incidentOpenedAt": "2026-10-21T14:23:53.202Z",
+      "lastSeen": "2026-10-21T14:23:53.202Z",
+      "lastNotifiedAt": "2026-10-21T14:23:53.202Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-5831"
     }
   }
 }
