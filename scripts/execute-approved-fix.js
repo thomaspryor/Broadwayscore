@@ -40,6 +40,7 @@ import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
+const { runScriptArgs } = require('./lib/run-script-args');
 const { buildFeedbackThankYouEmail } = require('./lib/email-templates.js');
 const showsWriteGuard = require('./lib/shows-write-guard.js');
 const commercialWriteGuard = require('./lib/commercial-write-guard.js');
@@ -549,14 +550,16 @@ function executeRetitleShow(action) {
 }
 
 function executeRunScript(action) {
-  const { script, args } = action;
+  const { script } = action;
 
   if (!ALLOWED_SCRIPTS.includes(script)) {
     return { ok: false, reason: `Script "${script}" not in allowlist` };
   }
 
-  // Sanitize: no shell metacharacters in args
-  const safeArgs = (args || '').replace(/[;&|`$(){}]/g, '');
+  // Sanitized (no shell metacharacters); an `arguments` array counts too (BRO-5866).
+  const parsed = runScriptArgs(action);
+  if (!parsed.ok) return { ok: false, reason: parsed.reason };
+  const safeArgs = parsed.args;
 
   try {
     const cmd = `node scripts/${script} ${safeArgs}`.trim();
