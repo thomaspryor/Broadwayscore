@@ -28,7 +28,14 @@ function readJson(file) {
 }
 
 /**
- * @param {string} dataDir  the repo's data/ directory
+ * The three audit files' parsed contents (null when missing or unreadable)
+ * turned into the floor inputs. Takes contents, not a directory: the website
+ * reads them in src/lib/data-core.ts with literal file paths, because Next's
+ * file tracer bundles any directory a server module names, and handing it
+ * data/ put all of data/ (~290 MB) into every server function (Vercel refused
+ * the deploy, 2026-10-21).
+ *
+ * @param {{ gapAudit: any, stamps: any, acks: any }} audits
  * @param {NodeJS.ProcessEnv} [env]
  * @returns {{
  *   covByShowId: Map<string, {state: string, liveCount: number, candidateCount: number, computedAt: string | null}>,
@@ -36,13 +43,12 @@ function readJson(file) {
  *   coverageAckedShowIds: Set<string>,
  * }}
  */
-function loadCoverageFloorInputs(dataDir, env = process.env) {
+function buildCoverageFloorInputs({ gapAudit, stamps, acks }, env = process.env) {
   const covByShowId = new Map();
   const scorePublicSinceByShowId = new Map();
   const coverageAckedShowIds = new Set();
   if (coverageGateDisabled(env)) return { covByShowId, scorePublicSinceByShowId, coverageAckedShowIds };
 
-  const gapAudit = readJson(path.join(dataDir, 'audit', 'show-review-gap.json'));
   for (const r of (gapAudit && Array.isArray(gapAudit.results) ? gapAudit.results : [])) {
     if (!r || !r.showId || !r.censusVerdict) continue;
     covByShowId.set(r.showId, {
@@ -53,14 +59,12 @@ function loadCoverageFloorInputs(dataDir, env = process.env) {
     });
   }
 
-  const stamps = readJson(path.join(dataDir, 'audit', 'score-public-since.json'));
   if (stamps && typeof stamps === 'object') {
     for (const [showId, iso] of Object.entries(stamps)) {
       if (typeof iso === 'string') scorePublicSinceByShowId.set(showId, iso);
     }
   }
 
-  const acks = readJson(path.join(dataDir, 'audit', 't1-coverage-ack.json'));
   if (Array.isArray(acks)) {
     for (const a of acks) {
       if (a && typeof a.key === 'string' && a.key.endsWith(COVERAGE_ACK_NS_SUFFIX)) {
@@ -70,6 +74,19 @@ function loadCoverageFloorInputs(dataDir, env = process.env) {
   }
 
   return { covByShowId, scorePublicSinceByShowId, coverageAckedShowIds };
+}
+
+/**
+ * Scripts (not traced): read the three audit files from a data/ directory.
+ * @param {string} dataDir  the repo's data/ directory
+ * @param {NodeJS.ProcessEnv} [env]
+ */
+function loadCoverageFloorInputs(dataDir, env = process.env) {
+  return buildCoverageFloorInputs({
+    gapAudit: readJson(path.join(dataDir, 'audit', 'show-review-gap.json')),
+    stamps: readJson(path.join(dataDir, 'audit', 'score-public-since.json')),
+    acks: readJson(path.join(dataDir, 'audit', 't1-coverage-ack.json')),
+  }, env);
 }
 
 /**
@@ -92,4 +109,4 @@ function coverageFloorOptsForShow(inputs, show) {
   };
 }
 
-module.exports = { COVERAGE_ACK_NS_SUFFIX, loadCoverageFloorInputs, coverageFloorOptsForShow };
+module.exports = { COVERAGE_ACK_NS_SUFFIX, buildCoverageFloorInputs, loadCoverageFloorInputs, coverageFloorOptsForShow };
