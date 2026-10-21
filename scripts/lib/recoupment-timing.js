@@ -29,6 +29,7 @@
 // Pure functions; the CLI is scripts/backtest-recoupment-ground-truth.js --timing.
 
 const { truthClassOf, creditBasis } = require('./recoupment-ground-truth');
+const { optsWithCapEstimate } = require('./cap-comparables');
 const { hasNoInvestorsToRepay } = require('./commercial-designations');
 
 const RECOUP_BAND = [85, 115];
@@ -143,7 +144,8 @@ function modelAt(libs, show, comm, lookup, asOf, opts = {}) {
   const slug = show.slug || show.id;
   const allTime = lookup.getGrossesAllTime(slug, show.id);
   const closing = show.closingDate && show.closingDate < asOf ? show.closingDate : asOf;
-  const tier = libs.classifyTier({ ...show, closingDate: closing }, comm, allTime);
+  opts = optsWithCapEstimate(opts, show, comm); // shadow, BRO-5849
+  const tier = libs.classifyTier({ ...show, closingDate: closing }, comm, allTime, opts);
   if (tier !== 'weekly-model') return { tier, result: null };
   const result = libs.calculateRecoupment(show, comm, allTime, lookup.getWeeklyData(slug, show.id), { ...opts, asOf });
   if (!result || result.error) return { tier: 'ai-estimated', result: null };

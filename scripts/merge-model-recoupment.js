@@ -22,6 +22,7 @@ const { createCommercialWriteGuard } = require('./lib/commercial-write-guard');
 const { classifyTier } = require('./lib/model-return-v2');
 const { clearStaleModelFields, applyShadowReturnFields, applyReturnedSoFarFields, RETURNED_SO_FAR_OPTS } = require('./lib/model-run-fields');
 const { makeGrossesLookup } = require('./lib/grosses-lookup');
+const { makeCapEstimator, optsWithCapEstimate } = require('./lib/cap-comparables');
 const { modelInputBasis, canResizeByModel } = require('./lib/model-input-basis');
 const { modelContradictsDesignation, planModelLossResizes, MODEL_LOSS_RESIZE_LIMIT } = require('./lib/commercial-designations');
 
@@ -44,6 +45,9 @@ const { loadCommercial, saveCommercial } = createCommercialWriteGuard(COMMERCIAL
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
 const SINGLE = args.find(a => a.startsWith('--show='))?.split('=')[1];
+// --opt=capComparables (BRO-5849, shadow): a record with no capitalization runs on a comparables
+// figure, kept in modelCapitalizationEstimate. `capitalization` itself is never written.
+const CAP_COMPARABLES = args.includes('--opt=capComparables');
 
 // ---------------------------------------------------------------------------
 // Data Loading
@@ -88,6 +92,9 @@ function main() {
     if (show.id) showBySlug[show.id] = show;
   }
 
+  const runOpts = CAP_COMPARABLES
+    ? { capComparables: true, capEstimator: makeCapEstimator(allShows, commercial.shows) }
+    : {};
   const keys = SINGLE ? [SINGLE] : Object.keys(commercial.shows);
 
   for (const key of keys) {
@@ -107,13 +114,14 @@ function main() {
 
     const slug = show.slug || show.id;
     const grossAllTime = getGrossesAllTime(slug, show.id);
-    const tier = classifyTier(show, comm, grossAllTime);
+    const rowOpts = optsWithCapEstimate(runOpts, show, comm);
+    const tier = classifyTier(show, comm, grossAllTime, rowOpts);
 
     let result;
     let weeklyData = null;
     if (tier === 'weekly-model') {
       weeklyData = getWeeklyData(slug, show.id);
-      result = calculateRecoupment(show, comm, grossAllTime, weeklyData);
+      result = calculateRecoupment(show, comm, grossAllTime, weeklyData, rowOpts);
       if (result.error) {
         // Fall back to ai-estimated
         clearStaleModelFields(comm);
@@ -124,7 +132,7 @@ function main() {
       }
       tier1++;
     } else if (tier === 'simplified-lifetime') {
-      result = calculateLifetimeRecoupment(show, comm, grossAllTime);
+      result = calculateLifetimeRecoupment(show, comm, grossAllTime, rowOpts);
       if (result.error) {
         clearStaleModelFields(comm);
         comm.modelMethod = 'ai-estimated';
@@ -162,12 +170,13 @@ function main() {
     // Which inputs are guesses (BRO-5849): separate from dataQuality, which the display floor reads.
     const basis = modelInputBasis(comm, result);
     if (basis.length) comm.modelInputBasis = basis; else delete comm.modelInputBasis;
+    if (result.capitalizationEstimate) comm.modelCapitalizationEstimate = result.capitalizationEstimate; else delete comm.modelCapitalizationEstimate;
     // Shadow fields (BRO-4989 G): SVOG-denominator fix + investor multiple.
     // Nothing reads them yet; modelRecoupmentPct above stays the live value.
     applyShadowReturnFields(comm, result, show);
     applyReturnedSoFarFields(comm, tier === 'weekly-model'
-      ? calculateRecoupment(show, comm, grossAllTime, weeklyData, RETURNED_SO_FAR_OPTS)
-      : calculateLifetimeRecoupment(show, comm, grossAllTime, RETURNED_SO_FAR_OPTS));
+      ? calculateRecoupment(show, comm, grossAllTime, weeklyData, { ...RETURNED_SO_FAR_OPTS, capEstimate: rowOpts.capEstimate })
+      : calculateLifetimeRecoupment(show, comm, grossAllTime, { ...RETURNED_SO_FAR_OPTS, capEstimate: rowOpts.capEstimate }));
 
     // Flag designation contradictions
     if (comm.designation && result.recoupmentPctCentral != null) {

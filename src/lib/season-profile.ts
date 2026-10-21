@@ -9,6 +9,10 @@
 
 import { getSeason, isExcludedFromSeasonStats } from './commercial-metrics';
 import { sourceOpensAsEstimate } from '../../scripts/lib/public-source-text';
+import { MIN_AVERAGE_SAMPLE, CAP_ESTIMATE_WINDOWS, estimateCapitalization } from '../../scripts/lib/cap-comparables';
+
+// One definition with the recoupment model's fallback (BRO-5849).
+export { MIN_AVERAGE_SAMPLE, CAP_ESTIMATE_WINDOWS, estimateCapitalization };
 
 export interface SeasonShowInput {
   type: string | null | undefined;
@@ -92,8 +96,6 @@ export const MIN_TRACKED_SHARE = 0.75;
 export const MIN_CAP_COVERAGE = 0.6;
 /** Seasons in the long-run baseline. */
 export const BASELINE_SEASONS = 10;
-/** Disclosed figures a per-show average needs; fewer is one or two shows, not an average. */
-export const MIN_AVERAGE_SAMPLE = 3;
 /** Share of commercial shows with a disclosed capitalization before two seasons' sums are compared. */
 export const MIN_TOTAL_COVERAGE = 0.8;
 /** A season's recoupment count joins the average once it ended this long ago (its shows mostly closed or recouped). */
@@ -103,12 +105,6 @@ export const RECOUP_SETTLE_DAYS = 365;
  * (2020-21): left out of the baseline so they do not drag the averages.
  */
 export const DISRUPTED_SEASONS = new Set(['2019-2020', '2020-2021']);
-
-/**
- * Seasons either side a capitalization estimate pools comparable disclosed
- * figures from, widened in turn until MIN_AVERAGE_SAMPLE are found.
- */
-export const CAP_ESTIMATE_WINDOWS = [2, 4] as const;
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -150,32 +146,6 @@ interface DisclosedCap {
   capitalization: number;
 }
 
-function median(values: number[]): number {
-  const v = [...values].sort((a, b) => a - b);
-  const mid = Math.floor(v.length / 2);
-  return v.length % 2 ? v[mid] : (v[mid - 1] + v[mid]) / 2;
-}
-
-/**
- * A stand-in capitalization for a commercial show that disclosed none, so a
- * season's total does not just count how many budgets are public (owner,
- * 2026-10-21): the median disclosed figure of shows of the same type and the
- * same original/revival status opening within CAP_ESTIMATE_WINDOWS seasons
- * (commercial productions only: nonprofit-presented figures stay out of the pool),
- * then the same type at the widest window. null with too few to go on. Only
- * season totals use it; no show is labelled with an estimate.
- */
-export function estimateCapitalization(
-  disclosed: DisclosedCap[], year: number, type: string, isRevival: boolean | null,
-): number | null {
-  const near = (d: DisclosedCap, w: number) => d.type === type && Math.abs(d.year - year) <= w;
-  for (const w of CAP_ESTIMATE_WINDOWS) {
-    const pool = disclosed.filter((d) => near(d, w) && (isRevival === null || d.isRevival === isRevival));
-    if (pool.length >= MIN_AVERAGE_SAMPLE) return median(pool.map((d) => d.capitalization));
-  }
-  const widest = disclosed.filter((d) => near(d, CAP_ESTIMATE_WINDOWS[CAP_ESTIMATE_WINDOWS.length - 1]));
-  return widest.length >= MIN_AVERAGE_SAMPLE ? median(widest.map((d) => d.capitalization)) : null;
-}
 
 /**
  * True when a show's capitalization is our own estimate (isEstimate flag or an

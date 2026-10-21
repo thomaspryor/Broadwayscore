@@ -35,8 +35,9 @@ const TIERS = Object.freeze(['ai-estimated', 'simplified-lifetime', 'weekly-mode
 const INVESTOR_SHARE_ABOVE_CAP = 0.5;
 
 /** Which live calculation a record gets (moved verbatim from merge-model-recoupment.js). */
-function classifyTier(show, comm, grossesAllTime) {
-  if (!comm.capitalization) return 'ai-estimated';
+function classifyTier(show, comm, grossesAllTime, opts = {}) {
+  // opts.capEstimate (BRO-5849): a comparables figure stands in for a missing capitalization.
+  if (!comm.capitalization && !(opts.capEstimate && opts.capEstimate.value > 0)) return 'ai-estimated';
   if (!grossesAllTime) return 'ai-estimated';
 
   // Calculate run length

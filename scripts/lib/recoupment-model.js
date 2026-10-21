@@ -563,8 +563,29 @@ function withMusicalDefaults(show, opts) {
   return { ...live, ...set };
 }
 
+/**
+ * opts.capEstimate (BRO-5849, shadow behind --opt=capComparables): a record with
+ * no capitalization runs on a comparables figure ({value, low, high, n},
+ * lib/cap-comparables.js). The guess fills a COPY of the record, never the
+ * stored `capitalization`; the result carries it as capitalizationEstimate and
+ * its quality is capped at 'medium'. A record with its own figure ignores it.
+ */
+function withCapEstimate(run, commercial, opts) {
+  const est = opts.capEstimate;
+  if (!(est && est.value > 0) || commercial.capitalization) return null;
+  const { capEstimate, ...rest } = opts;
+  const res = run({ ...commercial, capitalization: est.value, capitalizationBasis: 'comparables' }, rest);
+  if (res.error) return res;
+  res.capitalizationEstimate = { value: est.value, low: est.low, high: est.high, n: est.n };
+  res.warnings.unshift(`Capitalization $${Math.round(est.value / 1000)}K is a comparables estimate (${est.n} shows, range $${Math.round(est.low / 1000)}K to $${Math.round(est.high / 1000)}K)`);
+  if (res.dataQuality === 'high') res.dataQuality = 'medium';
+  return res;
+}
+
 function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, opts = {}) {
   opts = withMusicalDefaults(show, opts);
+  const filled = withCapEstimate((c, o) => calculateRecoupment(show, c, grossesAllTime, grossesWeekly, o), commercial, opts);
+  if (filled) return filled;
   const warnings = [];
   if (isConvertedToCommercial(commercial)) return { error: SPLIT_RUN_ERROR, warnings: [SPLIT_RUN_ERROR] };
   // opts.impliedCost (BRO-5607): a reported recoupment date pins the weekly
@@ -1201,6 +1222,8 @@ function parseTaxCreditFromNotes(notes) {
  */
 function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}) {
   opts = withMusicalDefaults(show, opts);
+  const filled = withCapEstimate((c, o) => calculateLifetimeRecoupment(show, c, grossesAllTime, o), commercial, opts);
+  if (filled) return filled;
   const warnings = ['Simplified lifetime model (10+ year run)'];
   if (isConvertedToCommercial(commercial)) return { error: SPLIT_RUN_ERROR, warnings: [SPLIT_RUN_ERROR] };
 

@@ -49,7 +49,7 @@ const { execFileSync } = require('child_process');
 const { eitherBasis, basisLine, rangeError, category, summarize, worseGroups, truthRows, newFalseRecouped: falseRecoupedRows, advisoryLine, formatMarkdown, fmtTruth } = require('./lib/recoupment-ground-truth');
 const { displaysModel, playedWeeks, MIN_PLAYED_WEEKS } = require('./lib/model-display-guard');
 
-const KNOWN_OPTS = ['previewsFromWeekly', 'playedWeeksOnly', 'eraAdjust', 'taxCreditCitedOnly', 'datedCosts', 'ownRunOnly', 'costSplit', 'stepSmall', 'stepLate', 'costGrowth', 'reserveLag', 'creditBasis', 'varBand', 'varOverage', 'varBandMusicals', 'varOverageMusicals', 'varBandMusicalsRamp', 'varBandMusicalsCited', 'noReserve', 'reserveIfStated', 'costSourcedOnly', 'svogCredit', 'costBasis', 'sourcedStarDeals', 'impliedCost', 'eraIndex', 'capMaxHaircut'];
+const KNOWN_OPTS = ['previewsFromWeekly', 'playedWeeksOnly', 'eraAdjust', 'taxCreditCitedOnly', 'datedCosts', 'ownRunOnly', 'costSplit', 'stepSmall', 'stepLate', 'costGrowth', 'reserveLag', 'creditBasis', 'varBand', 'varOverage', 'varBandMusicals', 'varOverageMusicals', 'varBandMusicalsRamp', 'varBandMusicalsCited', 'noReserve', 'reserveIfStated', 'costSourcedOnly', 'svogCredit', 'costBasis', 'sourcedStarDeals', 'impliedCost', 'eraIndex', 'capMaxHaircut', 'capComparables'];
 const args = process.argv.slice(2);
 const USAGE = `Usage: node scripts/backtest-recoupment-ground-truth.js (--opt=${KNOWN_OPTS.join('|')}[=false] [--opt=...] | --base=<git ref> | --timing [--lag=<weeks>] [--crossing]) [--truth=reported|all] [--as-of-report] [--displayed] [--displayable-only] [--markdown] [--json] [--strict]`;
 if (require('./lib/cli-help').hasHelpFlag(args)) { console.log(USAGE); process.exit(0); }
@@ -109,6 +109,8 @@ const commercial = load('commercial.json').shows;
 const L = makeGrossesLookup(load('grosses.json'), load('grosses-history.json'));
 const by = {};
 for (const s of shows) { if (s.slug) by[s.slug] = s; if (s.id) by[s.id] = s; }
+// --opt=capComparables (BRO-5849): a record with no capitalization runs on a comparables figure.
+if (OPTS.capComparables) OPTS.capEstimator = require('./lib/cap-comparables').makeCapEstimator(shows, commercial);
 
 if (TIMING) {
   require('./lib/recoupment-timing-report').runTiming({

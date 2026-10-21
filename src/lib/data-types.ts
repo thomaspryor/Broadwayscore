@@ -535,6 +535,8 @@ export interface ShowCommercial {
   /** Model inputs that are guesses or fallbacks (BRO-5849); server-side, the page gets estimatedInputs. */
   /** Page-safe wording for the guessed inputs (estimatedInputNotes). */
   estimatedInputs?: string[];
+  /** Model-only comparables guess standing in for a missing capitalization (BRO-5849); never `capitalization`. */
+  modelCapitalizationEstimate?: { value: number; low: number; high: number; n: number };
   modelInputBasis?: Array<{ input: 'capitalization' | 'weeklyRunningCost'; basis: 'estimate' | 'ceiling' | 'type-default' | 'comparables' }>;
   modelDesignationFlag?: string;
 }
