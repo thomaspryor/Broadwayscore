@@ -130,7 +130,7 @@ const NON_REVIEW_HEADLINE = /\b(?:interview|q\s*&\s*a|preview|first look|meets t
 
 // Never a review of a stage production, whatever else the page says (games, TV,
 // film, year-end lists, photo captions, roundups).
-const ALWAYS_NON_REVIEW = /\b(?:video game|game review|pc game|playstation|xbox|nintendo|switch review|tv review|tv series|season \d+|episode|streaming|netflix|box office|film review|movie review|in cinemas|year in review|best of \d{4}|top \d+|photo credits?|photos? by|photograph by|review round-?\s?up|critics'? (?:picks|round-?\s?up)|\(\d{4} (?:film|movie)\)|(?:film|movie|tv|album|book)s?\b.{0,12}\breview|and more)\b/i;
+const ALWAYS_NON_REVIEW = /\b(?:video game|game review|pc game|playstation|xbox|nintendo|switch review|tv review|tv series|season \d+|episode|streaming|netflix|box office|film review|movie review|in cinemas|year in review|best of \d{4}|top \d+|photo credits?|photos? by|photograph by|review round-?\s?up|critics'? (?:picks|round-?\s?up)|\(\d{4} (?:film|movie)\)|(?:the|this|its) (?:film|movie)(?:'s)?\b|(?:film|movie|tv|album|book)s?\b.{0,12}\breview|and more)\b/i;
 
 // A headline that says "review" but is an interview/profile/list built around it.
 const INTERVIEW_TEXT = /\b(?:in an? (?:lengthy |long |wide-ranging )?(?:chat|conversation|interview)|talks to|spoke to|speaks to|sits down with)\b|review:\s*[A-Z][\w.'-]+(?: [A-Z][\w.'-]+){1,2} (?:on|talks|discusses|reflects|reveals)\b/;
@@ -178,10 +178,11 @@ function evidenceNamesShow(show, headline, description, url) {
   const phrase = ` ${tokens.join(' ')} `;
   const plural = ` ${tokens.slice(0, -1).concat(`${tokens[tokens.length - 1]}s`).join(' ')} `;
   if (tokens.length === 1) {
-    // "Cape Fear" is not "Fear": the title must open the headline or follow a
-    // review/preposition/punctuation boundary, not another title word.
+    // "Cape Fear" is not "Fear", and "with a Heart" is not "The Heart": the title
+    // must open the headline or follow a review word or punctuation boundary, never
+    // an article or preposition inside a sentence.
     const raw = foldDiacritics(String(headline || '')).toLowerCase();
-    const re = new RegExp(`(^|[:'"\\u2018\\u201c\\-|]\\s*|\\b(?:review|reviews|reviewed|of|at|the|a|an|for|in)\\s+)${tokens[0]}s?\\b`);
+    const re = new RegExp(`(^(?:the\\s+)?|[:'"\\u2018\\u201c\\-|]\\s*|\\b(?:review|reviews|reviewed)\\s+(?:of\\s+)?)${tokens[0]}s?\\b`);
     return re.test(raw) && (head.includes(phrase) || head.includes(plural));
   }
   if (full.includes(phrase) || full.includes(plural)) return true;

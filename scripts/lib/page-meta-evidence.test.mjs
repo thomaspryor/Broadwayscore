@@ -115,3 +115,12 @@ test('classifyContentTier and hasAggregatorExcerpt count metaExcerpt', () => {
   const { hasAggregatorExcerpt } = require('./review-guards.js');
   assert.equal(hasAggregatorExcerpt({ metaExcerpt: 'x'.repeat(60) }), true);
 });
+
+test('a common-word title inside another review is not the show (BRO-5794 dry run: Wildwood film vs The Heart)', () => {
+  const html = page("'Wildwood' Review: A Technical Marvel with a Heart", "The film's many world-building details aren't mere whimsy, they give the story texture and weight.",
+    '<meta property="article:published_time" content="2026-09-20T10:00:00Z">');
+  assert.equal(evidenceNamesShow(show('The Heart'), "'Wildwood' Review: A Technical Marvel with a Heart", 'x', ''), false);
+  assert.equal(judge(show('The Heart'), html).ok, false);
+  // the title still counts when the headline opens with it or follows "review:"
+  assert.equal(evidenceNamesShow(show('The Heart'), 'The Heart review: a tender new play', 'x', ''), true);
+});
