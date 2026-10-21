@@ -690,6 +690,16 @@ test('allowCrossMarket can be set true (a UK critic who reviewed the NYC product
   assert.equal(applyReviewFieldEdit(rec, { field: 'allowCrossMarket', oldValue: null, newValue: 'yes' }, stamp).ok, false);
 });
 
+// BRO-5858: stranger-things WhatsOnStage. A stale bulk fabricatedEntry kept Alex
+// Wood's real review out, so the rebuild scored a same-url twin under the wrong critic.
+test('fabricatedEntry can only be cleared (BRO-5858)', () => {
+  const rec = { outletId: 'whatsonstage', criticName: 'Alex Wood', fabricatedEntry: true };
+  const cleared = applyReviewFieldEdit(rec, { field: 'fabricatedEntry', oldValue: true, newValue: false }, stamp);
+  assert.equal(cleared.ok, true, cleared.reason);
+  assert.equal(cleared.record.fabricatedEntry, false);
+  assert.equal(applyReviewFieldEdit({ ...rec, fabricatedEntry: false }, { field: 'fabricatedEntry', oldValue: false, newValue: true }, stamp).ok, false);
+});
+
 // BRO-5557: a tag index url is provably wrong. A Ghost in Your Ear's TheaterMania
 // review was auto-pinned onto theatermania.com/tags/<show>/, which the rebuild
 // drops, and classifyReviewUrl alone did not call it wrong, so it could not be repaired.

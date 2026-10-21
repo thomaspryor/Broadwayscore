@@ -73,6 +73,11 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // breadcrumb that says what was checked. evaluateShowMentionGuard honours the
   // breadcrumb, so backfill-review-flags / the collector do not set it again.
   'showNotMentioned', 'showNotMentionedManualClear',
+  // BRO-5858: fabricatedEntry is CLEAR ONLY (false). It was stamped in bulk on
+  // web-search rows ("84% fabrication rate", Feb 2026), so a row whose url the
+  // plan author has fetched and found to be the real review stays excluded and
+  // the rebuild scores a same-url twin instead.
+  'fabricatedEntry',
   // isRoundupArticle (BRO-4914): CLEAR ONLY (false). A false value is sticky:
   // shouldSkipRoundupAudit stops the CI setters from re-flagging the file.
   'isRoundupArticle',
@@ -128,6 +133,7 @@ const FIELD_VALUE_CHECKS = {
     && typeof record.crossOutletVerifiedNote === 'string' && record.crossOutletVerifiedNote.trim().length >= 20
     ? null : 'crossOutletVerified may only be set true after an evidence note, with no wrongAttribution flag'),
   allowCrossMarket: (v) => (v === true ? null : 'allowCrossMarket may only be set to true'),
+  fabricatedEntry: (v) => (v === false ? null : 'fabricatedEntry may only be cleared (false)'),
   // BRO-4415: or when the executor's syndicated-duplicate-heal decision (ctx.syndicatedHeal) is 'clear':
   // the primary is excluded for a reason that does not apply to this copy.
   isSyndicatedDuplicate: (v, record, ctx = {}) => (v === false && (isSelfSyndicationPointer(record, ctx) || ctx.syndicatedHeal === true || ctx.syndicatedDanglingClear === true)
