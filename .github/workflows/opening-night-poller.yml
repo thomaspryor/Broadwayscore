@@ -353,8 +353,15 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           INPUT_BWW_ROUNDUP_URL: ${{ inputs.bww_roundup_url }}
           INPUT_TB_REVIEW_URL: ${{ inputs.tb_review_url }}
+          # BRO-5861: wall-clock cap on the per-show loop (70 min). Run 39632362408
+          # polled 32 shows for 1h57m, so the 145-min job timeout cancelled the
+          # rebuild. The list is rotated by run number so a cut spreads across runs.
+          POLL_LOOP_BUDGET_SEC: '4200'
         run: |
-          IFS=',' read -ra SHOW_ARRAY <<< "${{ steps.find.outputs.shows }}"
+          LOOP_START=$SECONDS
+          ROTATED_SHOWS=$(node scripts/lib/poller-loop-budget.js rotate "${{ steps.find.outputs.shows }}" "$GITHUB_RUN_NUMBER" || echo "${{ steps.find.outputs.shows }}")
+          IFS=',' read -ra SHOW_ARRAY <<< "$ROTATED_SHOWS"
+          SKIPPED_SHOWS=""
           ANY_NEW=false
           ANY_READY=false
           SKIP_SERP_FLAG=""
@@ -377,6 +384,12 @@ jobs:
           GATHER_FAILED=0
           GATHER_TOTAL=0
           for SHOW_ID in "${SHOW_ARRAY[@]}"; do
+            SHOW_TIMEOUT=$(node scripts/lib/poller-loop-budget.js timeout $((POLL_LOOP_BUDGET_SEC - (SECONDS - LOOP_START))) 600 || echo 600)
+            case "$SHOW_TIMEOUT" in ''|*[!0-9]*) SHOW_TIMEOUT=600 ;; esac
+            if [ "$SHOW_TIMEOUT" -eq 0 ]; then
+              SKIPPED_SHOWS="$SKIPPED_SHOWS $SHOW_ID"
+              continue
+            fi
             echo "════════════════════════════════════════"
             echo "Polling: $SHOW_ID"
             echo "════════════════════════════════════════"
@@ -393,7 +406,7 @@ jobs:
             PER_SHOW_OUT="$RUNNER_TEMP/poller-$SHOW_ID.log"
             GATHER_TOTAL=$((GATHER_TOTAL + 1))
             POLLER_RC=0
-            timeout 600 node scripts/opening-night-poller.js --show="$SHOW_ID" $SKIP_SERP_FLAG $FORCE_SERP_FLAG $BWW_ARG $TB_ARG 2>&1 | tee "$PER_SHOW_OUT" || POLLER_RC=${PIPESTATUS[0]}
+            timeout "$SHOW_TIMEOUT" node scripts/opening-night-poller.js --show="$SHOW_ID" $SKIP_SERP_FLAG $FORCE_SERP_FLAG $BWW_ARG $TB_ARG 2>&1 | tee "$PER_SHOW_OUT" || POLLER_RC=${PIPESTATUS[0]}
             if [ "$POLLER_RC" -ne 0 ]; then
               GATHER_FAILED=$((GATHER_FAILED + 1))
               echo "  ⚠️ poller exited $POLLER_RC for $SHOW_ID — counted as a gather-stage failure"
@@ -455,6 +468,11 @@ jobs:
               GUARDIAN_REDISPATCH_SHOWS="$GUARDIAN_REDISPATCH_SHOWS,$SHOW_ID"
             fi
           done
+
+          if [ -n "$SKIPPED_SHOWS" ]; then
+            echo "::warning::Poll loop budget (${POLL_LOOP_BUDGET_SEC}s) spent; not polled this run (rotation reaches them next run):$SKIPPED_SHOWS"
+            echo "Poll loop budget spent; not polled:$SKIPPED_SHOWS" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
           # Strip leading comma, expose as output
           GUARDIAN_REDISPATCH_SHOWS="${GUARDIAN_REDISPATCH_SHOWS#,}"
