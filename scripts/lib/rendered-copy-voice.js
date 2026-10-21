@@ -17,6 +17,9 @@ const BANNED_PHRASES = new RegExp(
   'i',
 );
 
+// A find-and-replace that eats an ampersand leaves text like "navigateapos;ll".
+const BROKEN_ENTITY = /(?<![&\w])\w+(?:apos|quot|amp|mdash);|[A-Za-z](?:apos|quot);/;
+
 function isConsoleArg(node) {
   for (let p = node.parent; p; p = p.parent) {
     if (ts.isCallExpression(p)) {
@@ -34,7 +37,7 @@ function copyViolationsIn(file, root = process.cwd()) {
   const visit = (node) => {
     const literal = ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node) || ts.isTemplateHead(node)
       || ts.isTemplateMiddle(node) || ts.isTemplateTail(node) || ts.isJsxText(node);
-    if (literal && (EM_DASH.test(node.text) || BANNED_PHRASES.test(node.text)) && !isConsoleArg(node)) {
+    if (literal && (EM_DASH.test(node.text) || BANNED_PHRASES.test(node.text) || BROKEN_ENTITY.test(node.text)) && !isConsoleArg(node)) {
       const { line } = src.getLineAndCharacterOfPosition(node.getStart(src));
       hits.push(`${path.relative(root, file)}:${line + 1}: ${node.text.trim().replace(/\s+/g, ' ').slice(0, 90)}`);
     }
