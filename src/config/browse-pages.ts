@@ -294,7 +294,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     h1: 'Pre-Broadway: Out-of-Town Shows',
     metaTitle: `Pre-Broadway Tryouts: Out-of-Town Reviews (${CURRENT_YEAR})`,
     metaDescription: 'Critic scores for Broadway-bound shows in their out-of-town tryouts: Arena Stage, the Goodman, A.R.T., La Jolla, and other feeder theaters. See how a show reviewed before it reaches New York.',
-    intro: 'Most big Broadway productions are born somewhere else. Before a musical or play reaches New York, it usually premieres at a major regional theater, Chicago\'s Goodman, D.C.\'s Arena Stage, Cambridge\'s American Repertory Theater, the La Jolla Playhouse, where critics deliver the first professional verdict. We track those tryout productions and score their reviews the same way we score Broadway, so you can see how a Broadway-bound show is really landing months before it announces a New York theater. When a tryout transfers, we link the two productions so the out-of-town score follows it to Broadway.',
+    intro: 'Most big Broadway productions are born somewhere else. Before a musical or play reaches New York, it usually premieres at a major regional theater (Chicago\'s Goodman, D.C.\'s Arena Stage, Cambridge\'s American Repertory Theater, the La Jolla Playhouse), where critics deliver the first professional verdict. We track those tryout productions and score their reviews the same way we score Broadway, so you can see how a Broadway-bound show is really landing months before it announces a New York theater. When a tryout transfers, we link the two productions so the out-of-town score follows it to Broadway.',
     // Every regional show belongs here EXCEPT individual legs of a multi-venue
     // tour (tourParent set) — those roll up into one aggregate card instead of
     // cluttering the list with near-duplicate per-city entries. The leg pages
@@ -375,7 +375,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     title: 'Broadway Shows Closing Soon',
     h1: 'Broadway Shows Closing Soon',
     metaTitle: `Broadway Shows Closing Soon: Last Chance (${CURRENT_YEAR})`,
-    metaDescription: 'These Broadway shows are closing soon, see exact closing dates and grab tickets before they\'re gone. Updated weekly with the latest announcements.',
+    metaDescription: 'These Broadway shows are closing soon. See exact closing dates and grab tickets before they\'re gone. Updated weekly with the latest announcements.',
     intro: 'Time is running out to see these Broadway productions! Whether they\'re limited engagements or shows that have announced their closing dates, these productions will be gone soon. If any of these have been on your must-see list, now is the time to act. Once a show closes on Broadway, there\'s no guarantee it will return. Don\'t let these slip away - book your tickets before it\'s too late.',
     filter: (show) => {
       return show.status === 'open' && isClosingWithinDays(show, 120);
@@ -805,7 +805,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     h1: 'Long Broadway Shows (2.5+ Hours)',
     metaTitle: `Long Broadway Shows Over 2.5 Hours (${CURRENT_YEAR})`,
     metaDescription: 'Broadway\'s epic theatrical experiences running 2.5+ hours. Immersive productions that demand and reward your full evening.',
-    intro: 'Some stories need more time to tell. These Broadway productions run two and a half hours or more, offering immersive theatrical experiences that transport you into fully realized worlds. From sweeping historical dramas to elaborate musical extravaganzas, these shows reward your time investment with unforgettable journeys. Plan for a full evening, these aren\'t shows to rush through.',
+    intro: 'Some stories need more time to tell. These Broadway productions run two and a half hours or more, offering immersive theatrical experiences that transport you into fully realized worlds. From sweeping historical dramas to elaborate musical extravaganzas, these shows reward your time investment with unforgettable journeys. Plan for a full evening. These aren\'t shows to rush through.',
     filter: (show) => {
       if (show.status !== 'open') return false;
       const runtime = parseRuntime(show.runtime);
@@ -822,7 +822,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     h1: 'West End Shows: London Theatre Ratings',
     metaTitle: 'West End Shows: London Theatre CriticScore Ratings',
     metaDescription: 'Complete ranked list of West End shows by CriticScore. Aggregated ratings from The Guardian, Telegraph, Time Out, WhatsOnStage, and more.',
-    intro: 'Every currently running and recently closed West End show in London, ranked by aggregated CriticScore ratings. We collect reviews from the UK\'s top theatre critics, including The Guardian, The Telegraph, Time Out London, WhatsOnStage, and The Stage, and combine them into a single score. Whether you\'re a London local or planning a theatre trip, find out which West End shows are getting the best reviews right now.',
+    intro: 'Every currently running and recently closed West End show in London, ranked by aggregated CriticScore ratings. We collect reviews from the UK\'s top theatre critics (including The Guardian, The Telegraph, Time Out London, WhatsOnStage, and The Stage) and combine them into a single score. Whether you\'re a London local or planning a theatre trip, find out which West End shows are getting the best reviews right now.',
     filter: (show) => show.category === 'west-end',
     sort: 'score',
     source: 'west-end',
@@ -837,7 +837,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     h1: 'Best Broadway Shows of All Time',
     metaTitle: 'Best Broadway Shows of All Time: Ranked by Critics',
     metaDescription: 'Every scored Broadway show ranked by aggregated CriticScore. The definitive all-time ranking of Broadway musicals, plays, and revivals.',
-    intro: 'Every Broadway show we\'ve scored, ranked by aggregated CriticScore ratings from dozens of professional critics and publications. This isn\'t a popularity contest or a list of personal favorites, it\'s a data-driven ranking based on the collective judgment of theater critics across The New York Times, Variety, Vulture, and dozens more. From recent hits to classic revivals, these rankings span decades of Broadway history. Whether you\'re settling a debate or discovering your next obsession, this is the most comprehensive critical ranking of Broadway shows available anywhere.',
+    intro: 'Every Broadway show we\'ve scored, ranked by aggregated CriticScore ratings from dozens of professional critics and publications. This isn\'t a popularity contest or a list of personal favorites. It\'s a data-driven ranking based on the collective judgment of theater critics across The New York Times, Variety, Vulture, and dozens more. From recent hits to classic revivals, these rankings span decades of Broadway history. Whether you\'re settling a debate or discovering your next obsession, this is the most comprehensive critical ranking of Broadway shows available anywhere.',
     filter: (show) => (show.criticScore?.score ?? 0) > 0,
     sort: 'score',
     sectionGroup: (show) => {
@@ -922,7 +922,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     h1: 'Broadway Shows Based on Books',
     metaTitle: `Broadway Musicals & Plays Based on Books (${CURRENT_YEAR})`,
     metaDescription: 'Broadway shows adapted from novels and books. See beloved literary works brought to life on stage with music, drama, and spectacle.',
-    intro: 'From beloved novels to unexpected page-to-stage adaptations, these Broadway shows bring literary works to life with the unique magic of live theater. Books have always been a rich source of Broadway material, their deep characters, complex plots, and built-in audiences make them ideal for theatrical adaptation. Whether you read the book first or discover the story through the show, these productions prove that great literature makes for great theater.',
+    intro: 'From beloved novels to unexpected page-to-stage adaptations, these Broadway shows bring literary works to life with the unique magic of live theater. Books have always been a rich source of Broadway material: their deep characters, complex plots, and built-in audiences make them ideal for theatrical adaptation. Whether you read the book first or discover the story through the show, these productions prove that great literature makes for great theater.',
     filter: (show) => {
       if (show.status !== 'open') return false;
       const tags = show.tags?.map(t => t.toLowerCase()) || [];
@@ -938,7 +938,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     h1: 'Broadway Shows Based on True Stories',
     metaTitle: `Broadway Shows Based on True Stories (${CURRENT_YEAR})`,
     metaDescription: 'Broadway musicals and plays inspired by real events and people. True stories brought to life on stage with unforgettable performances.',
-    intro: 'The best stories are often true. These Broadway shows draw from real events, real people, and real history to create theatrical experiences that are both entertaining and enlightening. From biographical musicals about legendary figures to plays that dramatize pivotal moments in history, these productions prove that truth really can be stranger, and more compelling, than fiction. Each show takes creative liberties, but the emotional core comes from events that actually happened.',
+    intro: 'The best stories are often true. These Broadway shows draw from real events, real people, and real history to create theatrical experiences that are both entertaining and enlightening. From biographical musicals about legendary figures to plays that dramatize pivotal moments in history, these productions prove that truth really can be stranger (and more compelling) than fiction. Each show takes creative liberties, but the emotional core comes from events that actually happened.',
     filter: (show) => {
       if (show.status !== 'open') return false;
       const tags = show.tags?.map(t => t.toLowerCase()) || [];
@@ -974,7 +974,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     h1: 'Best Broadway Soundtracks: Tony Score Nominees',
     metaTitle: 'Best Broadway Soundtracks: Tony Best Score Nominees',
     metaDescription: 'Broadway shows nominated for Tony Award for Best Original Score. The best original music written for the stage, ranked by CriticScore.',
-    intro: 'The Tony Award for Best Original Score recognizes the finest original music written for Broadway. These shows were nominated for, or won, this prestigious award, meaning their music was deemed among the best of its season by Tony voters. From sweeping orchestral scores to contemporary pop-influenced soundtracks, these productions represent the gold standard of Broadway music. Ranked by our aggregated CriticScore, which reflects the overall quality of the production, not just its music.',
+    intro: 'The Tony Award for Best Original Score recognizes the finest original music written for Broadway. These shows were nominated for or won this prestigious award, meaning their music was deemed among the best of its season by Tony voters. From sweeping orchestral scores to contemporary pop-influenced soundtracks, these productions represent the gold standard of Broadway music. Ranked by our aggregated CriticScore, which reflects the overall quality of the production, not just its music.',
     dataFilter: (show, ctx) => {
       const awards = ctx.getShowAwards(show.id);
       if (!awards?.tony) return false;
@@ -996,7 +996,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     h1: 'Best West End Musicals: London Theatre Rankings',
     metaTitle: `Best West End Musicals (${CURRENT_YEAR}): Ranked by Critics`,
     metaDescription: 'The best West End musicals in London right now, ranked by aggregated critic reviews from The Guardian, Telegraph, Time Out, WhatsOnStage, and more.',
-    intro: 'Every currently running West End musical in London, ranked by aggregated CriticScore ratings. We collect reviews from the UK\'s leading theatre critics, The Guardian, The Telegraph, Time Out London, WhatsOnStage, The Stage, and more, and combine them into a single weighted score. Whether you\'re a London local choosing your next night out or a tourist planning a theatre trip, this is the definitive ranked list of West End musicals playing right now.',
+    intro: 'Every currently running West End musical in London, ranked by aggregated CriticScore ratings. We collect reviews from the UK\'s leading theatre critics (The Guardian, The Telegraph, Time Out London, WhatsOnStage, The Stage, and more) and combine them into a single weighted score. Whether you\'re a London local choosing your next night out or a tourist planning a theatre trip, this is the definitive ranked list of West End musicals playing right now.',
     filter: (show) => show.category === 'west-end' && show.status === 'open' && show.type === 'musical' && displaysCriticScore(show),
     sort: 'score',
     source: 'west-end',
@@ -1009,7 +1009,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     h1: 'Best West End Plays: London Theatre Rankings',
     metaTitle: `Best West End Plays (${CURRENT_YEAR}): Ranked by Critics`,
     metaDescription: 'The best West End plays in London right now, ranked by aggregated critic reviews from The Guardian, Telegraph, Time Out, WhatsOnStage, and more.',
-    intro: 'Every currently running West End play in London, ranked by aggregated CriticScore ratings. From gripping dramas to sharp comedies, these plays represent the finest non-musical theatre London has to offer. Our scores aggregate reviews from the UK\'s top theatre critics, The Guardian, The Telegraph, Time Out London, WhatsOnStage, and The Stage, into a single weighted score that reflects the critical consensus.',
+    intro: 'Every currently running West End play in London, ranked by aggregated CriticScore ratings. From gripping dramas to sharp comedies, these plays represent the finest non-musical theatre London has to offer. Our scores aggregate reviews from the UK\'s top theatre critics (The Guardian, The Telegraph, Time Out London, WhatsOnStage, and The Stage) into a single weighted score that reflects the critical consensus.',
     filter: (show) => show.category === 'west-end' && show.status === 'open' && show.type === 'play' && displaysCriticScore(show),
     sort: 'score',
     source: 'west-end',
@@ -1228,7 +1228,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     h1: 'Recently Opened Off-Broadway Shows: Awaiting Reviews',
     metaTitle: `Recently Opened Off-Broadway Shows (${CURRENT_YEAR})`,
     metaDescription: 'Off-Broadway shows that just opened in NYC and are still gathering reviews. See what opened this month before the CriticScore lands.',
-    intro: 'Off-Broadway shows that have just opened but don\'t yet have enough reviews for a CriticScore. Off-Broadway critics often take a week or two after opening night to publish, so newly opened productions spend a stretch in limbo, already playing, but not yet scored. This page collects them in one place, newest first, so nothing gets lost in the gap between opening and its first reviews. Check back as reviews land and each show earns its score.',
+    intro: 'Off-Broadway shows that have just opened but don\'t yet have enough reviews for a CriticScore. Off-Broadway critics often take a week or two after opening night to publish, so newly opened productions spend a stretch in limbo: already playing, but not yet scored. This page collects them in one place, newest first, so nothing gets lost in the gap between opening and its first reviews. Check back as reviews land and each show earns its score.',
     // Canonical predicate shared with the /off-broadway "awaiting" shelf.
     filter: (show) => isRecentlyOpenedAwaitingReviews(show),
     sort: 'opening-date',
@@ -1243,7 +1243,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     title: 'Broadway Show Runtimes',
     h1: 'Broadway Show Runtimes: Complete Guide',
     metaTitle: `Broadway Show Runtimes: How Long Is Every Show? (${CURRENT_YEAR})`,
-    metaDescription: 'Find out how long every Broadway show is. Complete runtimes sorted shortest to longest, plan around dinner, babysitters, or just your attention span.',
+    metaDescription: 'Find out how long every Broadway show is. Complete runtimes sorted shortest to longest. Plan around dinner, babysitters, or just your attention span.',
     intro: 'How long is every Broadway show currently playing? This page lists the runtime for every open production on Broadway, sorted from shortest to longest. Whether you\'re planning around dinner reservations, babysitter schedules, or just prefer a shorter show, this guide helps you find exactly the right fit. Runtimes include intermission where applicable. Shows marked with an intermission count give you a sense of pacing, a 2.5-hour show with one intermission feels very different from a straight-through production.',
     filter: (show) => {
       if (show.status !== 'open') return false;
@@ -1269,7 +1269,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     title: 'Broadway Age Guide',
     h1: 'Broadway Age Guide: What\'s Appropriate for Your Kids?',
     metaTitle: `Broadway Age Guide: Age Recommendations for Every Show (${CURRENT_YEAR})`,
-    metaDescription: 'Check if a Broadway show is right for your child. Age recommendations for every current production, sorted by minimum age, find the perfect family-friendly show.',
+    metaDescription: 'Check if a Broadway show is right for your child. Age recommendations for every current production, sorted by minimum age. Find the perfect family-friendly show.',
     intro: 'Wondering if a Broadway show is appropriate for your kids? This guide lists age recommendations for every current Broadway production, sorted from youngest-appropriate to most mature. You\'ll find shows suitable for children as young as 4 (family-friendly musicals like Disney productions) through shows recommended for ages 16+ (mature themes, strong language). These recommendations come from official show guidance and reflect content including language, themes, violence, and sexual content. When in doubt, err on the side of the higher age recommendation, a child who\'s too young for a show won\'t enjoy it, and neither will you.',
     filter: (show) => {
       if (show.status !== 'open') return false;
