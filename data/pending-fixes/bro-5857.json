@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5857",
   "planId": "d96c8e3b-f7e9-4e9c-92d1-4146b951b589",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -603,5 +603,94 @@
         "description": "BRO-5857: row lists the Met Opera season roster (Netrebko, Davidsen and others in other operas); the reviews are of this opera's world premiere. Replace with the performers its live reviews credit (each name appears in at least one live review text)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T19:30:01.890Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sticks-and-bones-1972/nydailynews--joe-dziemianowicz.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sticks-and-bones-1972/nydailynews--joe-dziemianowicz.json wrongProductionReason: null -> \"2014 New Group off-Broadway revival (text: \\\"Credit the intrepid ... New Group for reviving this early work\\\"); the row is the 1972 Broadway production at the John Golden\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sticks-and-bones-1972/thewrap--robert-hofler.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sticks-and-bones-1972/thewrap--robert-hofler.json wrongProductionReason: null -> \"2014 New Group off-Broadway revival (text: \\\"Watching the New Group's tough, horrifyingly funny revival\\\"); the row is the 1972 Broadway production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sticks-and-bones-1972/timeout--adam-feldman.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sticks-and-bones-1972/timeout--adam-feldman.json wrongProductionReason: null -> \"2014 New Group off-Broadway revival (text: \\\"Pershing Square Signature Center (Off Broadway) ... With Bill Pullman, Holly Hunter\\\"); the row is the 1972 Broadway production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sticks-and-bones-1972/ew--jason-clark.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sticks-and-bones-1972/ew--jason-clark.json wrongProductionReason: null -> \"2014 New Group off-Broadway revival (excerpt credits \\\"Scott Elliott's expertly rendered production\\\"; BWW roundup Review-Roundup-STICKS-AND-BONES-Opens-Off-Broadway-20141106); the row is the 1972 Broadway production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sticks-and-bones-1972/financialtimes--brendan-lemon.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sticks-and-bones-1972/financialtimes--brendan-lemon.json wrongProductionReason: null -> \"2014 New Group off-Broadway revival (paywalled stub; the FT content id 40d072a2-64df-11e4 is a time-based UUID minted 2014-11-05, the revival's opening week); the row is the 1972 Broadway production\""
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for the-play-that-goes-wrong-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for magic-mike-live-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for equus-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for girl-interrupted-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for avenue-q-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for les-liaisons-dangereuses-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for the-amazing-adventures-of-kavalier-and-clay-off-broadway-2025"
+    }
+  ],
+  "executedIn": "ci"
 }
