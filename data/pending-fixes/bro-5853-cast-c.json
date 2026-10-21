@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5853-cast-c",
   "planId": "c684a85f-6fdb-44ee-b726-035d5cd7b099",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -321,5 +321,39 @@
         "description": "BRO-5853: director credited in the reviews"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T18:28:22.958Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for loves-labours-lost-globe-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for loves-labours-lost-globe-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for dracula-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for dracula-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for death-note-the-musical-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for death-note-the-musical-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
