@@ -201,5 +201,19 @@
     "tracked": "BRO-5823",
     "fields": [],
     "queuedAt": "2026-10-21T09:29:33.268Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:jesus-christ-superstar-off-west-end-2026",
+    "title": "1 review(s) for jesus-christ-superstar-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- times-uk--1bd02e4.json (times-uk): no byline in page and no recoverable body https://www.thetimes.com/culture/theatre-dance/article/jesus-christ-superstar-review-a-mike-swinging-swaggering-spectacle-9zz8kbjc2",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T10:02:11.618Z"
   }
 ]
