@@ -24,3 +24,10 @@ test('other shapes and spaced elements are refused', () => {
   assert.equal(runScriptArgs({ args: { apply: true } }).ok, false);
   assert.equal(runScriptArgs({ arguments: ['--reason=two words'] }).ok, false);
 });
+
+test('an empty args does not hide a non-empty arguments; both set is refused', () => {
+  assert.deepEqual(runScriptArgs({ args: '', arguments: ['--apply'] }), { ok: true, args: '--apply' });
+  assert.deepEqual(runScriptArgs({ args: null, arguments: ['--apply'] }), { ok: true, args: '--apply' });
+  assert.equal(runScriptArgs({ args: '--x', arguments: ['--apply'] }).ok, false);
+  assert.equal(runScriptArgs({ arguments: [1] }).ok, false);
+});

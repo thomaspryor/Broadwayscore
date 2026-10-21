@@ -451,7 +451,7 @@ Each edit must specify: file, showId/slug, field, oldValue, newValue
 
 ### 2. run-script — Run a pipeline script
 Allowed scripts: ${ALLOWED_SCRIPTS.join(', ')}
-Specify: script name, arguments (optional)
+Specify: script name, args (optional, ONE string of space-separated flags, e.g. "args": "--show=some-show-id --apply")
 IMPORTANT: Do NOT include validate-data.js as an action — validation runs automatically after data edits.
 
 ### 3. review-file-op — Move/delete review files in data/review-texts/

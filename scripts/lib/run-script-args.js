@@ -15,11 +15,15 @@ const SHELL_META = /[;&|`$(){}]/g;
  * @returns {{ok: true, args: string} | {ok: false, reason: string}}
  */
 function runScriptArgs(action) {
-  const given = action.args !== undefined ? action.args : action.arguments;
-  if (given === undefined || given === null || given === '') return { ok: true, args: '' };
+  const present = (v) => v !== undefined && v !== null && v !== '';
+  // Both set: which one the planner meant is a guess, and guessing wrong is
+  // the silent dry run this exists to stop.
+  if (present(action.args) && present(action.arguments)) return { ok: false, reason: 'run-script action sets both args and arguments; use args' };
+  const given = present(action.args) ? action.args : action.arguments;
+  if (!present(given)) return { ok: true, args: '' };
   let list;
   if (typeof given === 'string') list = [given];
-  else if (Array.isArray(given) && given.every((a) => typeof a === 'string' || typeof a === 'number')) list = given.map(String);
+  else if (Array.isArray(given) && given.every((a) => typeof a === 'string')) list = given;
   else return { ok: false, reason: `run-script args must be a string or an array of strings (got ${JSON.stringify(given)})` };
   // execSync splits on spaces, so an array element with a space would split.
   const bad = Array.isArray(given) ? list.find((a) => /\s/.test(a)) : undefined;
