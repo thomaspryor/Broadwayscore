@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T22:59:44.747Z",
+  "generatedAt": "2026-10-21T23:25:23.541Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -18,13 +18,61 @@
       "defects": [
         {
           "type": "score-drift",
+          "detail": "deployed cs 72.77 vs local 70.17 (Δ2.6)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 9,
+      "deployedCount": 11,
+      "firstDefectAt": "2026-10-21T19:58:02.749Z"
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
+      "title": "Martin Guerre",
+      "openingDate": "2026-10-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 67.19 vs local 67.7 (Δ0.51)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 16,
+      "deployedCount": 16,
+      "firstDefectAt": "2026-10-21T23:25:19.428Z"
+    },
+    {
+      "showId": "abba-voyage-off-west-end-2026",
+      "title": "ABBA Voyage",
+      "openingDate": "2022-05-28",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.77 vs local 84.05 (Δ1.28)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 10,
+      "deployedCount": 12,
+      "firstDefectAt": "2026-10-21T19:58:02.749Z"
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "title": "The Devil Wears Prada",
+      "openingDate": "2024-12-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
           "detail": "deployed cs 57.72 vs local 57.64 (Δ0.08)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 27,
+      "localCount": 28,
       "deployedCount": 28,
-      "firstDefectAt": "2026-10-21T22:59:38.446Z"
+      "firstDefectAt": "2026-10-21T23:25:19.428Z"
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
@@ -38,9 +86,9 @@
         }
       ],
       "missingFromProd": [],
-      "localCount": 24,
+      "localCount": 25,
       "deployedCount": 25,
-      "firstDefectAt": "2026-10-21T22:59:38.446Z"
+      "firstDefectAt": "2026-10-21T23:25:19.428Z"
     },
     {
       "showId": "abba-voyage-off-west-end-2026",
@@ -54,9 +102,9 @@
         }
       ],
       "missingFromProd": [],
-      "localCount": 22,
+      "localCount": 23,
       "deployedCount": 23,
-      "firstDefectAt": "2026-10-21T22:59:38.446Z"
+      "firstDefectAt": "2026-10-21T23:25:19.428Z"
     },
     {
       "showId": "magic-mike-live-west-end-2021",
@@ -70,9 +118,9 @@
         }
       ],
       "missingFromProd": [],
-      "localCount": 12,
+      "localCount": 13,
       "deployedCount": 13,
-      "firstDefectAt": "2026-10-21T22:59:38.446Z"
+      "firstDefectAt": "2026-10-21T23:25:19.428Z"
     }
   ],
   "persistentDefective": 0,
