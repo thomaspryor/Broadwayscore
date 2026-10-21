@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-21T16:20:23.925Z",
-  "processed": 154,
-  "failed": 97,
-  "successRate": "61.4%",
+  "updatedAt": "2026-10-21T16:20:25.205Z",
+  "processed": 94,
+  "failed": 56,
+  "successRate": "62.7%",
   "tierBreakdown": {
-    "playwright": 68,
+    "playwright": 46,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingdog": 12,
-    "scrapingbee": 6,
+    "scrapingdog": 7,
+    "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 69
+    "archive": 38
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-10-21T15:22:35.247Z",
@@ -46,10 +46,26 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-21T15:31:32.824Z",
+      "t": "2026-10-21T16:09:00.435Z",
       "event": "bb-session",
-      "session": "d1563152",
-      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
+      "session": "2b95a96e",
+      "url": "https://www.nytimes.com/2026/04/25/theater/rheology-inspirations.html"
+    },
+    {
+      "t": "2026-10-21T16:09:01.271Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-21T16:15:05.654Z",
+      "event": "bb-session",
+      "session": "20484eea",
+      "url": "https://www.nytimes.com/2026/04/03/theater/burnout-paradise-treadmills-theater-o"
+    },
+    {
+      "t": "2026-10-21T16:15:06.598Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
