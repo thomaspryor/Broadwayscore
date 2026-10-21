@@ -31,6 +31,7 @@ const {
 } = require('./lib/not-found-cache');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { findConflictingShowId } = require('./lib/show-score-url-map');
+const { checkPageProductionWindow } = require('./lib/show-score-production-window');
 const { createRunBudget, parseTimeBudgetMin } = require('./lib/run-budget');
 const { withDeadline, closeBrowserServer } = require('./lib/cron-deadline');
 const { parseShowScorePagination, showScorePaginationPages } = require('./lib/show-score-discover');
@@ -63,6 +64,9 @@ interface Show {
   venue?: string;
   transferredTo?: string;
   transferOf?: string;
+  previewsStartDate?: string;
+  openingDate?: string;
+  closingDate?: string;
 }
 
 interface FetchResult {
@@ -350,6 +354,14 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
       const conflictShowId = findConflictingShowId(urlMappings, showId, pageUrl);
       if (conflictShowId) {
         console.warn(`  ⚠️  [show-score] ${showId}: landed on ${pageUrl}, already owned by ${conflictShowId} — skipping`);
+        continue;
+      }
+
+      // BRO-5866: same title, different production (review dates outside
+      // this production's run). Don't archive it or record it as our page.
+      const windowCheck = checkPageProductionWindow(html, show, pageUrl);
+      if (!windowCheck.ok) {
+        console.warn(`  ⚠️  [show-score] ${showId}: ${pageUrl} is another production's page — ${windowCheck.reason}`);
         continue;
       }
 

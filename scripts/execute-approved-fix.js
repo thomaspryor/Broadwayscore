@@ -84,6 +84,9 @@ const ALLOWED_SCRIPTS = [
   // BRO-5499: delete Show Score audience data that came from a UK production page on a US show
   // (stored rating must equal the archived UK page's). Needs --apply in args.
   'purge-uk-show-score-audience.js',
+  // BRO-5866: delete Show Score data from another production's page (review dates outside this
+  // run, or recorded under show-score-urls.json _productionMismatch). Needs --apply in args.
+  'purge-wrong-production-show-score.js',
   // BRO-5499: publishDate stored one day late (UTC truncation) -> permalink date; evidence rules in the script.
   'fix-utc-shifted-publish-dates.js',
   // BRO-4779: delete sibling-misfiled aggregator-archive pages (+ tombstone ids).

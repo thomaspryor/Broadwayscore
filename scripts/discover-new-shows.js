@@ -176,7 +176,7 @@ const {
   TM_INDEX_URL, titleKey, parseTheatremonkeyIndex, extractTheatremonkeyVenue, extractTheatremonkeyDates,
   parseVenuePageBudget, loadVenueCache, saveVenueCache, planVenueFetches, recordVenueResult,
 } = require('./lib/theatremonkey-venue');
-const { findConflictingShowId } = require('./lib/show-score-url-map');
+const { findConflictingShowId, isProductionMismatch } = require('./lib/show-score-url-map');
 const { gateScrapedSynopsis, truncateAtSentence } = require('./lib/synopsis-fact-check');
 
 const USAGE = `discover-new-shows.js — Broadway New Show Discovery.
@@ -3498,6 +3498,8 @@ async function discoverShows() {
             const conflictId = findConflictingShowId(urlData.shows, addedShow.id, url);
             if (conflictId) {
               console.log(`  [SKIP] ${url} already assigned to ${conflictId} — refusing to also assign it to ${addedShow.id}`);
+            } else if (isProductionMismatch(urlData, addedShow.id, url)) {
+              console.log(`  [SKIP] ${url} is recorded as another production's page for ${addedShow.id} (BRO-5866)`);
             } else {
               urlData.shows[addedShow.id] = url;
               urlsAssigned++;

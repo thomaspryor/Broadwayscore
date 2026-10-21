@@ -25,6 +25,7 @@ const { detectSiblingMisfile } = require('./lib/sibling-misfile');
 const { parseJsonLd } = require('./lib/jsonld');
 const { makeArchiveShowChecker } = require('./lib/archive-cache-guard');
 const { isUkPageForShow } = require('./lib/show-score-canonical');
+const { checkShowScoreProduction } = require('./lib/show-score-production-window');
 const { filterToLiveShowIds } = require('./lib/live-show-ids');
 
 const archivePath = path.join(__dirname, '../data/aggregator-archive/show-score');
@@ -269,6 +270,20 @@ function extractShowData(html, showId, sourceUrl) {
     }
   }
 
+  // BRO-5866: same title, different production (Safe House 2026 archived the
+  // 2025 St. Ann's page). The critic dates all fall outside this run, so the
+  // whole page, audience numbers included, is the other production's.
+  if (!result._rejectAll && showsById[showId]) {
+    const window = checkShowScoreProduction(result.criticReviews.map(r => r.date), showsById[showId], sourceUrl);
+    if (!window.ok) {
+      result.rejectedCriticUrls = result.criticReviews.map(r => r.url || r.author || 'unknown');
+      result.criticReviews = [];
+      result._rejectionReason = `wrong-production page: ${window.reason}`;
+      result._rejectAll = true;
+      result._wrongProduction = true;
+    }
+  }
+
   // BRO-5499 follow-up: a US show whose archived page is London's (Show Score serves it at the US
   // slug until a NYC page exists) must not record London's audience rating. Critic tiles keep their
   // own wrongProduction handling downstream.
@@ -363,7 +378,16 @@ function main() {
         // included) under this showId — see the comment at the rejection
         // site in extractShowData(). Still logged loudly for CI visibility.
         console.log(`  REJECT: [${data.category}] ${data._rejectionReason}`);
-        console.log(`::warning::[show-score] ${showId} all critic tiles rejected — archive likely holds a same-title sibling's page under this show's filename — see logs, no entry written to show-score.json`);
+        // BRO-5866: keep the finding where audit-show-score-urls.js (public
+        // CI, no archive) can see the mapping still points at that page.
+        if (data._wrongProduction) {
+          if (!showScoreData._meta.wrongProduction) showScoreData._meta.wrongProduction = {};
+          showScoreData._meta.wrongProduction[showId] = { url: sourceUrl, reason: data._rejectionReason };
+        }
+        const cause = data._wrongProduction
+          ? 'mapped Show Score page is another production\'s (BRO-5866)'
+          : 'archive likely holds a same-title sibling\'s page under this show\'s filename';
+        console.log(`::warning::[show-score] ${showId} all critic tiles rejected — ${cause} — see logs, no entry written to show-score.json`);
         failCount++;
       } else if (data) {
         showScoreData.shows[showId] = data;
