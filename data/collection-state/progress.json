@@ -94,7 +94,9 @@
     "gobstopper-off-broadway-2026/front-row-center--david-walters.json",
     "kramerfauci-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "chinese-republicans-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "the-reservoir-off-broadway-2026/playbill--unknown.json"
+    "the-reservoir-off-broadway-2026/playbill--unknown.json",
+    "king-of-the-yees-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+    "other-desert-cities-2026/new-york-city-theatre--unknown.json"
   ],
   "failed": [
     "seagull-true-story-off-broadway-2026/nysr--frank-scheck.json",
@@ -151,7 +153,17 @@
     "spread-off-broadway-2026/whatsonstage--michael-coveney.json",
     "bigfoot-off-broadway-2026/theater-life--paulanne-simmons.json",
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
-    "silver-manhattan-off-broadway-2026/theatermania--unknown.json"
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "king-of-the-yees-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "lincoln-in-the-bardo-off-broadway-2026/sunday-times--emma-hoffman.json",
+    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json",
+    "other-desert-cities-2026/cbsnews--unknown.json",
+    "school-pictures-off-broadway-2026/airmail--air-mail.json",
+    "the-dog-show-come-sit-stay-off-broadway-2026/talkalmanmusic--unknown.json",
+    "two-girls-off-broadway-2026/airmail--air-mail.json",
+    "two-girls-off-broadway-2026/howdidimissthat--unknown.json",
+    "midnight-off-broadway-2026/timeout--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -196,7 +208,8 @@
       "the-maids-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
       "public-charge-off-broadway-2026/timeout--unknown.json",
-      "gobstopper-off-broadway-2026/front-row-center--david-walters.json"
+      "gobstopper-off-broadway-2026/front-row-center--david-walters.json",
+      "king-of-the-yees-off-broadway-2026/lighting-and-sound-america--david-barbour.json"
     ],
     "amp": [],
     "browserbase": [
@@ -207,7 +220,8 @@
       "data/review-texts/rheology-off-broadway-2026/nytimes--tim-teeman.json",
       "rheology-off-broadway-2026/nytimes--tim-teeman.json",
       "data/review-texts/burnout-paradise-off-broadway-2026/nytimes--erik-piepenburg.json",
-      "burnout-paradise-off-broadway-2026/nytimes--erik-piepenburg.json"
+      "burnout-paradise-off-broadway-2026/nytimes--erik-piepenburg.json",
+      "data/review-texts/the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -270,11 +284,12 @@
       "cold-war-choir-practice-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "kramerfauci-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "chinese-republicans-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "the-reservoir-off-broadway-2026/playbill--unknown.json"
+      "the-reservoir-off-broadway-2026/playbill--unknown.json",
+      "other-desert-cities-2026/new-york-city-theatre--unknown.json"
     ]
   },
   "startTime": "2026-10-21T14:15:44.320Z",
-  "lastProcessed": "the-reservoir-off-broadway-2026/playbill--unknown.json",
+  "lastProcessed": "midnight-off-broadway-2026/chicagotribune--unknown.json",
   "log": [
     {
       "t": "2026-10-21T14:55:31.736Z",
@@ -332,6 +347,12 @@
       "t": "2026-10-21T15:07:46.079Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-21T15:31:32.824Z",
+      "event": "bb-session",
+      "session": "d1563152",
+      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
     }
   ]
 }

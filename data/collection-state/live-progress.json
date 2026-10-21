@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-21T15:13:58.076Z",
-  "processed": 95,
-  "failed": 55,
-  "successRate": "63.3%",
+  "updatedAt": "2026-10-21T15:37:47.192Z",
+  "processed": 97,
+  "failed": 65,
+  "successRate": "59.9%",
   "tierBreakdown": {
-    "playwright": 41,
+    "playwright": 42,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 9,
     "directCookies": 0,
     "scrapingdog": 6,
     "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 44
+    "archive": 45
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-10-21T14:55:31.736Z",
@@ -72,6 +72,12 @@
       "t": "2026-10-21T15:07:46.079Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-21T15:31:32.824Z",
+      "event": "bb-session",
+      "session": "d1563152",
+      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
     }
   ]
 }
