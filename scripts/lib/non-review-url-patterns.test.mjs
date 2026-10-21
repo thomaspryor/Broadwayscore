@@ -498,6 +498,20 @@ test('gap census rejects the ticket page and Page Six gossip that alerted for Mi
   assert.equal(classifyGapCandidateUrl('https://pagesix.com/2026/10/14/entertainment/theater/some-show-review/').ok, true);
 });
 
+test('BRO-5617: NY Post producer news is excluded without blocking critic reviews', () => {
+  const news = 'https://nypost.com/2026/10/14/scooter-braun-and-todrick-hall-join-forces-to-produce-star-studded-off-broadway-musical-midnight-to-rave-reviews/';
+  assert.equal(namedNonReviewReason(news), 'producer-news');
+  assert.equal(classifyGapCandidateUrl(news).ok, false);
+  assert.equal(namedNonReviewReason('https://www.nypost.com/2026/10/21/other-producers-join-forces-to-produce-a-new-musical-to-rave-reviews/'), 'producer-news');
+  for (const url of [
+    'https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/',
+    'http://nypost.com/2015/08/06/hamilton-isnt-quite-revolutionary/',
+    'http://nypost.com/2003/10/31/broom-shtick-wicked-witches-most-entrancing/',
+    'https://nypost.com/2026/10/14/midnight-review-a-rave-for-the-musical/',
+    'https://example.com/2026/10/14/artists-join-forces-to-produce-a-review/',
+  ]) assert.equal(namedNonReviewReason(url), null, url);
+});
+
 test('BRO-3719: variety.com/shop/ ticket guide is a non-review, variety reviews are not', () => {
   assert.equal(namedNonReviewReason('https://variety.com/shop/broadway-show-tickets-where-to-buy-1234970196/'), 'ticketing-listing');
   assert.equal(namedNonReviewReason('https://variety.com/2026/legit/reviews/some-show-review-1234567890/'), null);

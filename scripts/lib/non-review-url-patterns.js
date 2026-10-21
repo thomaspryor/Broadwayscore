@@ -218,9 +218,11 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   { host: /(^|\.)viptickets\.com$/, reason: 'ticketing-reseller' },
   { host: /(^|\.)ticketwarehouse\.com$/, reason: 'ticketing-reseller' },
   // Page Six celebrity gossip ("...join forces to produce ... Midnight to rave
-  // reviews", BRO-5134): a press-release rewrite, never a critic review. 0 files
-  // on disk use pagesix.com.
+  // reviews", BRO-5134): a press-release rewrite, never a critic review.
   { host: /(^|\.)pagesix\.com$/, path: /^\/\d{4}\/\d\d\/\d\d\/celebrity-news\//, reason: 'celebrity-news' },
+  // BRO-5617: NY Post also exposes the Midnight producer story without the
+  // Page Six section. "Rave reviews" in producer news fooled site search.
+  { host: /(^|\.)nypost\.com$/, path: /^\/\d{4}\/\d\d\/\d\d\/[^/]+-join-forces-to-produce-[^/]+\/?$/i, reason: 'producer-news' },
   { host: /(^|\.)nationaltheatre\.org\.uk$/, path: /^\/productions\//, reason: 'venue-production-page' },
   { host: /(^|\.)middlesexcountyculture\.com$/, path: /^\/event\//, reason: 'event-listing' },
   // An events-calendar entry ("UPCOMING ... Event information supplied by the

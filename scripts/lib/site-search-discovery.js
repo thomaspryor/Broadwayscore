@@ -20,6 +20,7 @@ const { isLondonMarket } = require('./venue-classification');
 const { passesGenericTitleIdentity } = require('./generic-title-guard');
 const { urlLooksLikeReview } = require('./review-guards');
 const { cleanSearchTitle } = require('./title-normalization');
+const { namedNonReviewReason } = require('./non-review-url-patterns');
 const { hasNonMetOperaUrlMarker, isUrlYearOutsideWindow } = require('./content-filters');
 const { withOperaCache } = require('./opera-discovery-cache');
 const { recordSbCall } = require('./provider-telemetry');
@@ -1432,6 +1433,10 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
         }
       }
     }
+
+    // Both parsers can find news mentioning reviews. Apply the write path's
+    // named exclusions before returning candidates, including skipUrlFilter feeds.
+    results = results.filter(result => !namedNonReviewReason(result.url));
 
     if (verbose) {
       console.log(`    Site search [${config.name}]: ${results.length} result(s)`);

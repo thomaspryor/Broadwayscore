@@ -5,6 +5,35 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { selectApplicableSiteSearchOutlets, SITE_SEARCH_ENDPOINTS } = require('./site-search-discovery.js');
 
+test('BRO-5617: both site-search branches reject producer news and retain reviews', async (t) => {
+  const { searchOutletSite } = require('./site-search-discovery.js');
+  const { createServer } = require('node:http');
+  const { once } = require('node:events');
+  const news = 'https://nypost.com/2026/10/14/scooter-braun-and-todrick-hall-join-forces-to-produce-star-studded-off-broadway-musical-midnight-to-rave-reviews/';
+  const review = 'https://nypost.com/2026/10/14/midnight-review-a-rave-for-the-musical/';
+  const original = SITE_SEARCH_ENDPOINTS.nypost;
+  t.after(() => { SITE_SEARCH_ENDPOINTS.nypost = original; });
+
+  const server = createServer((_req, res) => {
+    res.end([news, review, news].map(url => `<a href="${url}">Article</a>`).join(''));
+  });
+  server.listen(0, '127.0.0.1');
+  await once(server, 'listening');
+  t.after(() => new Promise((resolve, reject) => server.close(err => err ? reject(err) : resolve())));
+
+  SITE_SEARCH_ENDPOINTS.nypost = { ...original, url: `http://127.0.0.1:${server.address().port}/` };
+  assert.deepEqual((await searchOutletSite('nypost', 'Midnight')).map(r => r.url), [review]);
+
+  for (const skipUrlFilter of [false, true]) {
+    SITE_SEARCH_ENDPOINTS.nypost = {
+      ...original,
+      skipUrlFilter,
+      fetchAndParse: async () => [news, { url: review }, news],
+    };
+    assert.deepEqual((await searchOutletSite('nypost', 'Midnight')).map(r => r.url), [review]);
+  }
+});
+
 // Regression coverage for #767: gather-reviews.js never invoked the site-search arm,
 // so Telegraph/Variety/The Stage/Independent/Parterre discovery only ran inside
 // opening-night-poller.js. This exercises the selection logic gather-reviews.js's
