@@ -4,6 +4,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import fs from 'node:fs';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
@@ -118,5 +119,15 @@ describe('model fallback on real shows', () => {
     const [s, c] = targets[0];
     const e = f(s, c);
     if (e) { assert.ok(e.n >= 3 && e.low <= e.value && e.value <= e.high); }
+  });
+});
+
+describe('leave-one-out backtest (advisory)', () => {
+  it('runs on real data and reports estimate accuracy and the model effect', () => {
+    const out = JSON.parse(execFileSync('node', ['scripts/backtest-cap-comparables.js', '--json'], { cwd: ROOT, encoding: 'utf8', maxBuffer: 1 << 24 }));
+    assert.ok(out.capSummary.n >= 20, `needs real rows, got ${out.capSummary.n}`);
+    assert.ok(out.capSummary.within2x >= out.capSummary.within25pct);
+    assert.ok(out.pctSummary.all.n > 0);
+    assert.ok(Number.isInteger(out.flips));
   });
 });
