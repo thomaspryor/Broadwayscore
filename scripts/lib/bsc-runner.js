@@ -224,8 +224,11 @@ function freeDiskGB(repoPath) {
 // already-merged ones) must not page the owner for nothing. Best-effort:
 // any failure here (lock held by a concurrent run, script missing) falls
 // through to the refusal check below with freeGB re-measured regardless.
+// Allow ten minutes for the shared GC to fetch, check merges and strip
+// artifacts across both web and iOS repos, including an initial backlog
+// (BRO-2553). Keep the wait bounded so dispatch can still refuse safely.
 function selfHealDiskPressure() {
-  try { execFileSync('bash', [GC_SCRIPT], { stdio: 'ignore', timeout: 5 * 60 * 1000 }); } catch { /* best-effort */ }
+  try { execFileSync('bash', [GC_SCRIPT], { stdio: 'ignore', timeout: 10 * 60 * 1000 }); } catch { /* best-effort */ }
 }
 
 // Cooldown so a fleet-wide low-disk window pages the owner once per

@@ -360,6 +360,10 @@ clean_derived_data() {
   LAST_CLEAN_DD_FREED_KB=$sz
 }
 
+# Intentionally web-only emergency disk relief (BRO-2553). The repo list in
+# worktree-gc-repos.js scopes worktree and build-artifact GC only; adding a
+# repo there must not opt its scratchpads into recursive deletion. iOS
+# scratchpads remain outside this policy, even below the disk floor.
 LAST_SCRATCHPAD_FREED_KB=0
 clean_stale_scratchpad() {
   local total=0 dir sz
