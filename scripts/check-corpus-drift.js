@@ -163,6 +163,24 @@ const AUDITS = [
     crashCodes: [3],           // 0 under ceiling / 1 above (drift) / 3 = corpus unreadable
   },
   {
+    // BRO-5860: cast on file that none of the show's >=3 full reviews names
+    // (King of the Yees took another company's cast, BRO-5853). Rows listing
+    // today's company or checked by hand are excused inside the audit
+    // (explainContradiction / HAND_CHECKED, BRO-5857), so any hit is drift.
+    name: 'cast-vs-reviews',
+    label: 'cast on file named in none of the show\'s full reviews (wrong-production cast)',
+    script: 'audit-cast-vs-reviews.js',
+    args: ['--strict'],
+    crashCodes: [2],           // 0 clean / 1 a contradicted show / 2 = shows.json unreadable or nothing checkable
+  },
+  {
+    name: 'todaytix-placeholder-runtime',
+    label: 'TodayTix placeholder runtime "3h 12m" stored on a row (BRO-5860)',
+    script: 'lib/corpus-checks/todaytix-placeholder-runtime.mjs',
+    args: [],
+    crashCodes: [],            // 0 = none stored / 1 = placeholder present
+  },
+  {
     name: 'cross-show-url',
     label: 'cross-show URL contamination (review URL slug names a different show)',
     script: 'audit-cross-show-url.js',
@@ -178,7 +196,7 @@ const AUDITS = [
     // unhandled, all checked false positives (combined reviews, same title in
     // another production, undated rows). 50 leaves room for 3 new singles.
     args: ['--strict', '--max=50'],
-    crashCodes: [2],           // 0 under baseline / 1 grew above baseline / 2 = corpus missing
+    crashCodes: [2],           // 0 clean / 1 a contradicted show / 2 = corpus missing
   },
   // BRO-2770: byline date in the body vs publishDate (>3 days) on a record that
   // still ships. Body and metadata describe different articles, or publishDate

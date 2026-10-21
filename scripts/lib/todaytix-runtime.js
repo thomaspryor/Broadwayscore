@@ -92,6 +92,29 @@ function parseRunTimeDisplay(display) {
 }
 
 /**
+ * TodayTix's filler runningTime. Listings with no real run time (all Met Opera
+ * titles, ABT ballets, The Last Ship at the Met, A View from the Bridge at
+ * La MaMa: 10 rows, 2026-10) carry a fresh runningTime record of exactly this
+ * value while the page's runTimeAndIntermission is null. Written as "3h 12m"
+ * on every one of them (BRO-5860). Never a measurement: reject it.
+ */
+const PLACEHOLDER_RUNNING_TIME = { minutes: 192, display: /^3\s*hrs?\s*12\s*min\.?\s*\(?incl(?:\.|uding)?\s*(?:two|2)\s*intermissions\)?\.?$/i };
+
+/**
+ * True when a TodayTix runningTime ({minutes, display}) or a display string is
+ * the filler value above.
+ *
+ * @param {{minutes?: number, display?: string}|string|null} rt
+ * @returns {boolean}
+ */
+function isPlaceholderRunningTime(rt) {
+  if (!rt) return false;
+  const display = typeof rt === 'string' ? rt : (rt.display || '');
+  if (typeof rt === 'object' && rt.minutes != null && rt.minutes !== PLACEHOLDER_RUNNING_TIME.minutes) return false;
+  return PLACEHOLDER_RUNNING_TIME.display.test(display.trim());
+}
+
+/**
  * Parse our shows.json compact runtime format into minutes.
  * "1h 30m" → 90, "2h" → 120, "90m" → 90.
  *
@@ -136,4 +159,5 @@ module.exports = {
   parseCompactRuntime,
   formatCompactRuntime,
   todaytixPageUrl,
+  isPlaceholderRunningTime,
 };

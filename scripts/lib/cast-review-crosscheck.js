@@ -146,4 +146,19 @@ function loadEvidenceTexts(showDir) {
   return texts;
 }
 
-module.exports = { crossCheckCast, explainContradiction, HAND_CHECKED, isEvidenceReview, loadEvidenceTexts, castNames, fold, MIN_TEXTS };
+/**
+ * Exit code for audit-cast-vs-reviews.js (BRO-5860, run by check-corpus-drift.js):
+ * 2 = could not run (nothing checkable: missing or empty review-texts would
+ * otherwise read as a clean pass), 1 = --strict and any contradicted show
+ * (hand-checked rows are excused upstream, see HAND_CHECKED), 0 otherwise.
+ *
+ * @param {{checked: number, contradicted: number, strict?: boolean, single?: boolean}} r
+ * @returns {0|1|2}
+ */
+function auditExitCode({ checked, contradicted, strict = false, single = false }) {
+  if (!single && checked === 0) return 2;
+  if (strict && contradicted > 0) return 1;
+  return 0;
+}
+
+module.exports = { crossCheckCast, explainContradiction, HAND_CHECKED, isEvidenceReview, loadEvidenceTexts, castNames, fold, MIN_TEXTS, auditExitCode };

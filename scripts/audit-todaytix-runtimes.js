@@ -37,6 +37,7 @@ const {
   parseRunTimeDisplay,
   parseCompactRuntime,
   todaytixPageUrl,
+  isPlaceholderRunningTime,
 } = require('./lib/todaytix-runtime');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -91,7 +92,7 @@ async function main() {
     }
 
     const display = extractRunTimeDisplay(html);
-    const parsed = parseRunTimeDisplay(display);
+    const parsed = isPlaceholderRunningTime(display) ? null : parseRunTimeDisplay(display);
     if (!parsed) {
       console.log(`  ${show.id}: no parseable run time on page${display ? ` ("${display}")` : ''}`);
       unreadable++;

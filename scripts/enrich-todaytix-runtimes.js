@@ -15,7 +15,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { fetchPage, cleanup } = require('./lib/scraper');
-const { extractRunTimeDisplay, parseRunTimeDisplay, todaytixPageUrl } = require('./lib/todaytix-runtime');
+const { extractRunTimeDisplay, parseRunTimeDisplay, todaytixPageUrl, isPlaceholderRunningTime } = require('./lib/todaytix-runtime');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -149,7 +149,8 @@ async function main() {
         const pageUrl = todaytixPageUrl(show);
         try {
           const pageResult = await fetchPage(pageUrl, { renderJs: false, fast: true });
-          pageRuntime = parseRunTimeDisplay(extractRunTimeDisplay(pageResult && pageResult.content));
+          const pageDisplay = extractRunTimeDisplay(pageResult && pageResult.content);
+          if (!isPlaceholderRunningTime(pageDisplay)) pageRuntime = parseRunTimeDisplay(pageDisplay);
         } catch { /* fall through to API */ }
 
         if (pageRuntime) {
@@ -159,6 +160,10 @@ async function main() {
           }
           parts.push(`runtime=${pageRuntime.runtime} (page)`);
           runtimeEnriched++;
+        } else if (isPlaceholderRunningTime(ttShow.runningTime)) {
+          // TodayTix filler (3hr 12min, two intermissions), not a real run time (BRO-5860).
+          parts.push('runtime skipped (TodayTix placeholder)');
+          noRuntime++;
         } else if (ttShow.runningTime && ttShow.runningTime.minutes) {
           const mins = ttShow.runningTime.minutes;
           const display = ttShow.runningTime.display || '';
@@ -204,7 +209,7 @@ async function main() {
       }
 
       // Intermissions (from runningTime description if present)
-      if (show.intermissions === undefined && ttShow.runningTime && ttShow.runningTime.display) {
+      if (show.intermissions === undefined && ttShow.runningTime && ttShow.runningTime.display && !isPlaceholderRunningTime(ttShow.runningTime)) {
         const display = ttShow.runningTime.display.toLowerCase();
         if (display.includes('no intermission') || display.includes('no interval')) {
           if (!DRY_RUN) show.intermissions = 0;

@@ -125,3 +125,23 @@ test('parseCompactRuntime round-trips with formatCompactRuntime', () => {
   assert.strictEqual(formatCompactRuntime(120), '2h');
   assert.strictEqual(formatCompactRuntime(45), '45m');
 });
+
+// BRO-5860: TodayTix API returns this filler for listings with no run time
+// (10 Met/La MaMa rows got "3h 12m"). Captured from api.todaytix.com 2026-10-21.
+test('isPlaceholderRunningTime: TodayTix 3hr 12min filler is rejected', () => {
+  const { isPlaceholderRunningTime } = require('../../scripts/lib/todaytix-runtime.js');
+  assert.strictEqual(isPlaceholderRunningTime({ id: 45403, minutes: 192, display: '3hr 12min (incl. two intermissions)' }), true);
+  assert.strictEqual(isPlaceholderRunningTime('3hr 12min (incl. two intermissions)'), true);
+  assert.strictEqual(isPlaceholderRunningTime({ minutes: 192, display: '3hr 12min. Incl. 1 intermission.' }), false);
+  assert.strictEqual(isPlaceholderRunningTime({ minutes: 150, display: '2hr 30min (incl. two intermissions)' }), false);
+  assert.strictEqual(isPlaceholderRunningTime({ minutes: 210, display: '3hr 30min. Incl. 2 Intermissions.' }), false);
+  assert.strictEqual(isPlaceholderRunningTime(null), false);
+  assert.strictEqual(isPlaceholderRunningTime(''), false);
+});
+
+test('isPlaceholderRunningTime: tolerates spacing/number variants of the filler', () => {
+  const { isPlaceholderRunningTime } = require('../../scripts/lib/todaytix-runtime.js');
+  assert.strictEqual(isPlaceholderRunningTime({ minutes: 192, display: '3hr 12min (incl. 2 intermissions)' }), true);
+  assert.strictEqual(isPlaceholderRunningTime('3 hr 12 min (including two intermissions)'), true);
+  assert.strictEqual(isPlaceholderRunningTime({ minutes: 193, display: '3hr 12min (incl. two intermissions)' }), false);
+});
