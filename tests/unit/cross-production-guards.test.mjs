@@ -7,6 +7,15 @@ const { isEvergreenListingUrl, contentMatchesFiledUnderVenue } =
 const { venueSlug } = require('../../scripts/lib/venue-classification.js');
 
 // ── isEvergreenListingUrl ─────────────────────────────────────────────────────
+test('isBlockedReviewUrl: /tickets/ section with a singular review slug is allowed, listings stay blocked (BRO-5876)', () => {
+  const { isBlockedReviewUrl } = require('../../scripts/lib/domain-filters.js');
+  assert.equal(isBlockedReviewUrl('https://www.radiotimes.com/going-out/tickets/hercules-musical-review/'), false);
+  assert.equal(isBlockedReviewUrl('https://www.radiotimes.com/going-out/tickets/hercules-musical/'), true);
+  assert.equal(isBlockedReviewUrl('https://www.radiotimes.com/going-out/tickets/hercules-musical-reviews/'), true);
+  assert.equal(isBlockedReviewUrl('https://www.standard.co.uk/go/london/mamma-mia-musical-theatre-tickets-in-london'), true);
+  assert.equal(isBlockedReviewUrl('https://example.com/buy-tickets/review'), true);
+});
+
 test('isEvergreenListingUrl: singular "review" headline slugs containing tickets are not listings (BRO-5876)', () => {
   assert.equal(isEvergreenListingUrl('https://www.radiotimes.com/going-out/tickets/hercules-musical-review/'), false);
   assert.equal(isEvergreenListingUrl('https://www.express.co.uk/entertainment/theatre/1769203/operation-mincemeat-musical-review-London-2023-Fortune-theatre-dates-tickets'), false);

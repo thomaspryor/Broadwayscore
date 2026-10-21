@@ -484,9 +484,14 @@ function isBlockedReviewUrl(url, opts) {
     if (matchesDomainSet(hostname, new Set(['lortel.org'])) && lowerPath.startsWith('/archives/')) return true;
         // Path-based ticket/listing detection — catches ticket pages on news sites
     // (e.g., standard.co.uk/go/london/mamma-mia-musical-theatre-tickets-in-london)
-    if (lowerPath.includes('/tickets/') || lowerPath.includes('/buy-tickets')
+    // radiotimes.com/going-out/tickets/hercules-musical-review/ is a review whose
+    // section is /tickets/ (BRO-5876): a singular whole-word review/reviewed in the
+    // path exempts the bare /tickets/ section only; /buy-tickets, /book-tickets and
+    // tickets-in-london stay blocked (same rule as isEvergreenListingUrl).
+    const pathSaysReview = /(^|[^a-z])review(ed)?([^a-z]|$)/.test(lowerPath);
+    if ((!pathSaysReview && lowerPath.includes('/tickets/')) || lowerPath.includes('/buy-tickets')
       || lowerPath.includes('/book-tickets') || lowerPath.includes('tickets-in-london')
-      || lowerPath.includes('/going-out/tickets/')) return true;
+      || (!pathSaysReview && lowerPath.includes('/going-out/tickets/'))) return true;
     // Feature articles and interviews — not reviews
     // Matches exact path segments: /features/, /feature/, /interviews/, /interview/
     // Does NOT match /featured-review/ or /review-features-xyz/ (substring matches)

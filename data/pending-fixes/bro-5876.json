@@ -1,0 +1,24 @@
+{
+  "issueNumber": "bro-5876",
+  "planId": "7c1e5d52-5876-4a3b-9b0e-0a1c5876f001",
+  "status": "pending",
+  "createdAt": "2026-10-21T23:00:00.000Z",
+  "submitter": { "name": null, "email": null },
+  "plan": {
+    "summary": "BRO-5876: the evergreen-listing guard no longer drops the Express Operation Mincemeat review (url ...-dates-tickets), so the theatre-record twin Neil Norman row now wins over the Stefan Kyriazis row (duplicateTextOf). BRO-5858 established the byline is Stefan Kyriazis; relabel the surviving row so Express does not credit Neil Norman",
+    "steps": [
+      "Set criticName on operation-mincemeat-west-end-2024/express-uk--neil-norman.json from Neil Norman to Stefan Kyriazis"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-west-end-2024/express-uk--neil-norman.json",
+        "field": "criticName",
+        "oldValue": "Neil Norman",
+        "newValue": "Stefan Kyriazis",
+        "description": "BRO-5876/BRO-5858: Express 1769203 byline is Stefan Kyriazis; the sibling express-uk--stefan-kyriazis.json (same url, same text) is duplicateTextOf this file, so this row is the one that scores"
+      }
+    ]
+  }
+}
