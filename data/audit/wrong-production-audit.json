@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-21T11:10:46.470Z",
+  "timestamp": "2026-10-21T11:24:25.438Z",
   "stats": {
     "totalReviews": 58046,
     "alreadyFlagged": 21124,
     "dateGuardCatches": 197,
-    "directorMismatch": 2045,
+    "directorMismatch": 2047,
     "tvFilmSignals": 1654,
     "londonSignals": 2576,
     "offBroadwaySignals": 531,
     "yearMismatch": 163,
-    "noPublishDate": 5235
+    "noPublishDate": 5233
   },
   "findings": [
     {
@@ -1976,6 +1976,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "all-male-as-you-like-it-regional-2026",
+      "file": "the-morning-star--unknown.json",
+      "publishDate": "2026-10-13",
+      "url": "https://morningstaronline.co.uk/article/you-it-gender-swap",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clifford williams\" from as-you-like-it-1974"
         }
       ]
     },
@@ -5408,6 +5421,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "boop-tour-2026",
+      "file": "albany-times-union--katherine-kiessling.json",
+      "score": 67,
+      "publishDate": "2026-10-15",
+      "url": "https://www.timesunion.com/theater/article/review-boop-the-musical-tour-proctors-22466983.php",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from boop-2025"
         }
       ]
     },

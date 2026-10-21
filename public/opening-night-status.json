@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T11:11:01.258Z",
+  "generatedAt": "2026-10-21T11:24:40.735Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -5013,27 +5013,27 @@
       "slug": "the-dog-show-come-sit-stay-off-broadway",
       "thumbnail": "/images/shows/the-dog-show-come-sit-stay-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": 84,
+      "liveScore": 80,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 3,
       "siteFileExists": true,
-      "total": 1,
+      "total": 2,
       "t1": 0,
       "t2": 0,
-      "t3": 1,
-      "positive": 1,
+      "t3": 2,
+      "positive": 2,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/12 total",
+          "2/12 total",
           "T1:0/3",
           "T2:0/3",
-          "hi-conf:0/8"
+          "hi-conf:1/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -5386,6 +5386,18 @@
           "t2": 0,
           "t3": 1,
           "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-21T11:24:40.735Z",
+          "rc": 2,
+          "s": 80,
+          "t1": 0,
+          "t2": 0,
+          "t3": 2,
+          "p": 2,
           "m": 0,
           "n": 0,
           "bc": "waiting"
