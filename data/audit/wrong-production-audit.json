@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-20T23:40:37.950Z",
+  "timestamp": "2026-10-21T00:41:49.269Z",
   "stats": {
-    "totalReviews": 57985,
-    "alreadyFlagged": 21113,
+    "totalReviews": 57990,
+    "alreadyFlagged": 21115,
     "dateGuardCatches": 198,
     "directorMismatch": 2029,
-    "tvFilmSignals": 1652,
-    "londonSignals": 2571,
+    "tvFilmSignals": 1653,
+    "londonSignals": 2572,
     "offBroadwaySignals": 530,
     "yearMismatch": 161,
-    "noPublishDate": 5228
+    "noPublishDate": 5227
   },
   "findings": [
     {
@@ -17807,6 +17807,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2016 (2x) more than 2018 (0x). 2016 matches production: harry-potter-and-the-cursed-child-both-parts-west-end-2021"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "file": "daily-mail--codie-bullen.json",
+      "score": null,
+      "publishDate": "2026-10-20",
+      "url": "https://www.dailymail.com/tvshowbiz/article-16224269/Concerned-organisers-ramp-security-Harry-Potter-series-premiere-trans-rights-activists-targeted-theatre-JK-Rowlings-controversial-comments.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
         }
       ]
     },
@@ -80001,6 +80015,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "file": "sierz-co-uk--unknown.json",
+      "publishDate": "2026-10-17",
+      "url": "https://sierz.co.uk/reviews/some-woman-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
