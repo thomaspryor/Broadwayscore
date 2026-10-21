@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { pdfHeaderFor } = require('./resolve-we-unlisted-tr.js');
+const { pdfHeaderFor, pdfContentsRowFor } = require('./resolve-we-unlisted-tr.js');
 const { parseTrHeaderDates, pickTrForReview, buildReviewLedCandidates } = require('./lib/we-review-led-candidates.js');
 const { isLondonVenue } = require('./lib/tr-london-venue.js');
 
@@ -122,4 +122,57 @@ test('the real production picker passes PDF context without broadening HTML or i
     }
     assert.equal(pickTrForReview([{ ...pdf, venue: `${venue}, Liverpool` }], review, { isLondonVenue }), null);
   }
+});
+
+// Contents-table rows as pdftotext -raw printed them in the 2017-18 CI log
+// (BRO-5851): Production Venue Opening Closing Page, one row per production.
+const contents = [
+  'Production Venue Opening Closing Page',
+  'MOOD MUSIC – World première of the play by Joe Penhall The Old Vic 02 May 18 16 Jun 18 401',
+  'NINE NIGHT – A new play by Natasha Gordon National, Dorfman 30 Apr 18 26 May 18 355',
+  'TINA: THE TINA TURNER MUSICAL – A new musical with the songs of Tina Turner, written by Katori',
+  'Hall Aldwych 17 Apr 18 321',
+  'Mood Music 401',
+  'GUARDIAN',
+  '03.05.18',
+].join('\n');
+const contentsDates = (title, page) => parseTrHeaderDates(pdfHeaderFor(contents, title, 'x', { page }));
+
+test('2017-18 contents row gives press night and closing for the linked page', () => {
+  assert.deepEqual(contentsDates('Mood Music', 401), { previewsStartDate: null, openingDate: '2018-05-02', closingDate: '2018-06-16' });
+  assert.deepEqual(contentsDates('Nine Night', 355), { previewsStartDate: null, openingDate: '2018-04-30', closingDate: '2018-05-26' });
+});
+
+test('contents row on a different page is a different production', () => {
+  assert.deepEqual(contentsDates('Nine Night', 999), { previewsStartDate: null, openingDate: null, closingDate: null });
+});
+
+test('wrapped contents row is joined; a missing closing date stays missing', () => {
+  assert.deepEqual(contentsDates('Tina: The Tina Turner Musical', 321), { previewsStartDate: null, openingDate: '2018-04-17', closingDate: null });
+});
+
+test('two contents rows for one title without a page fail closed', () => {
+  const twice = `${contents}\nMOOD MUSIC – Return of the play The Old Vic 01 Sep 18 01 Oct 18 700`;
+  assert.equal(pdfHeaderFor(twice, 'Mood Music', 'x', { page: null }), null);
+  assert.equal(parseTrHeaderDates(pdfHeaderFor(twice, 'Mood Music', 'x', { page: 700 })).openingDate, '2018-09-01');
+});
+
+// Ship-check cases (BRO-5851): each read another row's dates before the guards.
+test('without a page the contents path is skipped', () => {
+  assert.equal(pdfContentsRowFor(contents, 'Mood Music', [], null), null);
+});
+
+test('a dateless row does not absorb a review byline', () => {
+  const text = 'CATS – Revival TBC 401\nMichael Billington, Guardian 1 May 18 401';
+  assert.equal(pdfContentsRowFor(text, 'Cats', [], 401), null);
+});
+
+test('two -layout columns on one line fail closed', () => {
+  const text = 'MOOD MUSIC – Joe Penhall The Old Vic 02 May 18 16 Jun 18 401      NINE NIGHT – Natasha Gordon National, Dorfman 30 Apr 18 26 May 18 355';
+  assert.equal(pdfContentsRowFor(text, 'Mood Music', [], 355), null);
+  assert.equal(pdfContentsRowFor(text, 'Mood Music', [], 401), null);
+});
+
+test('a year after the current one is rejected', () => {
+  assert.equal(pdfContentsRowFor('KING LEAR – Revival Duke of York’s 26 May 97 401', 'King Lear', [], 401), null);
 });

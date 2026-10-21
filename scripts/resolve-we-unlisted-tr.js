@@ -144,7 +144,7 @@ const pdfTitleKey = title => capsKey(cleanSearchTitle(String(title || '')).repla
 
 const TR_ISSUE_BANNER = /\bIssue\s+\d+(?:\s*[-–]\s*\d+)?(?:\s+Openings)?(?:\s+\d{1,2}\s*[-–]\s*\d{1,2}\s+[A-Za-z]+\s+\d{4})?/gi;
 
-function pdfHeaderFor(text, title, venue) {
+function pdfHeaderFor(text, title, venue, opts = {}) {
   const want = pdfTitleKey(title);
   if (!want) return null;
   const variants = [...new Set([want.replace(/^THE /, ''), `THE ${want.replace(/^THE /, '')}`])].filter(v => v !== want);
@@ -176,7 +176,59 @@ function pdfHeaderFor(text, title, venue) {
       if (d.previewsStartDate || d.openingDate || d.closingDate) return facts;
     }
   }
-  return pdfOpeningsFor(text, want, variants, venue);
+  return pdfContentsRowFor(text, want, variants, opts.page) || pdfOpeningsFor(text, want, variants, venue);
+}
+
+/** "30 Apr 18" -> "2018-04-30"; null for an impossible date. */
+function readPdfDate(day, month, year) {
+  const y = Number(year) < 100 ? 2000 + Number(year) : Number(year);
+  const iso = parseTrHeaderDates(`Press night ${day} ${month} ${y}`).openingDate;
+  return iso && new Date(iso).toISOString().slice(0, 10) === iso ? iso : null;
+}
+
+const CONTENTS_ROW = /^(.+?)\s+[–—-]\s+.*?\s(\d{1,2})\s+([A-Z][a-z]{2,8})\.?\s+(\d{2}|\d{4})(?:\s+(\d{1,2})\s+([A-Z][a-z]{2,8})\.?\s+(\d{2}|\d{4}))?\s+(\d{1,4})$/;
+
+/**
+ * 2017-18 issues (BRO-5851): the production pages print no dates, but the
+ * issue's contents table has one row per production under the header
+ * "Production Venue Opening Closing Page", e.g.
+ *   "NINE NIGHT – A new play by Natasha Gordon National, Dorfman 30 Apr 18 26 May 18 355".
+ * Opening is press night. A row whose page number equals the link's page is
+ * this production. Without a page there is no positional anchor (a wrapped
+ * row can join the next one, a dateless row can absorb a review line), so
+ * /issue/N#page= links skip this path. A row that wraps is joined with up to
+ * two following lines, never a byline. A line holding a second "TITLE –" row
+ * (two -layout columns) and conflicting rows fail closed.
+ */
+function pdfContentsRowFor(text, want, variants, page) {
+  if (page == null) return null;
+  const lines = String(text || '').replace(/\f/g, '\n').split('\n').map(l => l.replace(/\s+/g, ' ').trim());
+  const startsRow = l => /^[^a-z]{2,}?\s+[–—-]\s+/.test(l);
+  const byline = l => /^[A-Z][a-z]+(?: [A-Z][A-Za-z'’-]+)+, /.test(l);
+  const secondRow = r => /\s[A-Z][A-Z'’&.]+(?: [A-Z'’&.]+)*\s+[–—-]\s+/.test(r.replace(/^.+?\s+[–—-]\s+/, ' '));
+  const maxYear = new Date().getUTCFullYear();
+  for (const keys of [new Set([want]), new Set(variants)]) {
+    const matches = new Set();
+    for (let i = 0; i < lines.length; i++) {
+      if (!startsRow(lines[i])) continue;
+      let row = lines[i];
+      for (let k = 1; k <= 2 && !CONTENTS_ROW.test(row) && lines[i + k] && !startsRow(lines[i + k]) && !byline(lines[i + k]); k++) row = `${row} ${lines[i + k]}`;
+      const m = row.match(CONTENTS_ROW);
+      if (!m || !keys.has(pdfTitleKey(m[1]))) continue;
+      if (Number(m[8]) !== Number(page)) continue;
+      if (secondRow(row)) return null;
+      const start = readPdfDate(m[2], m[3], m[4]);
+      if (!start || Number(start.slice(0, 4)) > maxYear) return null;
+      let close = null;
+      if (m[5]) {
+        close = readPdfDate(m[5], m[6], m[7]);
+        if (!close || close < start) return null;
+      }
+      matches.add(`${want}\nPress night ${m[2]} ${m[3]} ${start.slice(0, 4)}${close ? `\nCloses ${m[5]} ${m[6]} ${close.slice(0, 4)}` : ''}`);
+    }
+    if (matches.size) return matches.size === 1 ? [...matches][0] : null;
+  }
+  return null;
 }
 
 /**
@@ -191,11 +243,7 @@ function pdfOpeningsFor(text, want, variants, venue) {
   const wantedVenue = venueFamily(trVenueName(venue));
   const lines = String(text || '').replace(/\f/g, '\n').split('\n');
   const rowDate = /^(.+?)\s+(\d{1,2})\s+([A-Za-z]+)\s+(\d{4}|\d{2})(?:\s*(?:\||[–-]|to)\s*|\s+)?(?:(\d{1,2})\s+([A-Za-z]+)(?:\s+(\d{4}|\d{2}))?)?\s*$/;
-  const readDate = (day, month, year) => {
-    const y = Number(year) < 100 ? 2000 + Number(year) : Number(year);
-    const iso = parseTrHeaderDates(`Press night ${day} ${month} ${y}`).openingDate;
-    return iso && new Date(iso).toISOString().slice(0, 10) === iso ? iso : null;
-  };
+  const readDate = readPdfDate;
   for (const keys of [new Set([want]), new Set(variants)]) {
     const matches = new Set();
     let inOpenings = false;
@@ -409,7 +457,8 @@ async function main() {
         // the fallback for two-column pages (same order as extract-theatre-record.js).
         for (const mode of ['-layout', '-raw']) {
           const text = execFileSync('pdftotext', [mode, tmp, '-'], { maxBuffer: 50 * 1024 * 1024 }).toString();
-          const h = pdfHeaderFor(text, title, venue);
+          const pageNo = (link.match(/\/page\/(\d+)/) || [])[1];
+          const h = pdfHeaderFor(text, title, venue, { page: pageNo ? Number(pageNo) : null });
           const d = parseTrHeaderDates(h);
           if (!d.closingDate || !d.openingDate) logDateContext(text, title, mode);
           if (h) return h;
@@ -465,4 +514,4 @@ if (require.main === module) {
   main().catch(e => { console.error(e); process.exit(1); });
 }
 
-module.exports = { pdfHeaderFor, htmlHeaderFor, pairLabelLines, searchTitles, logDateContext };
+module.exports = { pdfHeaderFor, pdfContentsRowFor, htmlHeaderFor, pairLabelLines, searchTitles, logDateContext };
