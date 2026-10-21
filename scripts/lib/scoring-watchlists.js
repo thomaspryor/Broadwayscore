@@ -42,6 +42,11 @@ const INCLUSION_FILES = [
   // director guard excludes by (production order, earliest newer start), and
   // findPriorRunSiblings/preWindowExemptPriorRuns feed inclusion the same way.
   'scripts/lib/prior-run-sibling.js',
+  // BRO-5876: isEvergreenListingUrl excludes listing/ticket pages at the rebuild's
+  // skippedListingPage gate and feeds the wrongProduction auto-clear guards; its
+  // review-headline exemption flipped 20+ reviews into reviews.json without
+  // tripping this gate.
+  'scripts/lib/cross-production-guards.js',
   // Historical miss (2026-08-14): rebuild-all-reviews.js consumes
   // shouldWithholdStaleExclusionFlag from here at ten producer sites to decide
   // whether a guard may write an exclusion flag at all — an inclusion decision
