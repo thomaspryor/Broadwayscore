@@ -43,6 +43,7 @@ const { isSameArticleBodyUpgrade } = require('./stale-merge-check');
 const { isShowDirHiddenBySparseCheckout } = require('./sparse-checkout-guard');
 const { validateUrlDomain } = require('./url-discovery');
 const { isUnresolvableRedirectUrl } = require('./unresolvable-url');
+const { approvedUrlFixListingReason } = require('./approved-url-fix');
 const { safeWriteReview, safeRenameReview, invalidateWrongProductionAutoClear } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
 const { clearFailureFlags } = require('./clear-failure-flags');
@@ -1729,6 +1730,14 @@ function revertBodyFromRefusedUrl(before, existing, input, fields) {
 
 function _mergeIntoExisting(filepath, existing, ctx) {
   const { showId, input, fields, criticName, dryRun, onMerge } = ctx;
+  // BRO-5693: the create-only listing guard cannot protect a repaired slot
+  // from being refilled by aggregator refresh or URL discovery. Check both
+  // existing-file routes here before merging any candidate body or score.
+  const listingReason = approvedUrlFixListingReason(existing, input.url);
+  if (listingReason && fields.allowNonReviewUrl !== true) {
+    console.warn(`  Skipping listing URL after approved URL fix: ${input.url} (${listingReason})`);
+    return { action: 'skipped', reason: `listing-page-url: ${listingReason}`, guardRefused: true };
+  }
   let changed = false;
   // Self-heal: legacy/nonstandard writers occasionally leave files without a
   // showId, which validate-data hard-errors on (allegra-west-end-2026

@@ -462,6 +462,10 @@ test('BRO-4596: express.co.uk theatre section index is a listing page, real arti
   const { listingPageUrlReason } = require('./non-review-url-patterns.js');
   assert.equal(listingPageUrlReason('https://www.express.co.uk/entertainment/theatre'), 'section-index-page');
   assert.equal(listingPageUrlReason('https://www.express.co.uk/entertainment/theatre/'), 'section-index-page');
+  assert.equal(listingPageUrlReason('https://www.express.co.uk/latest/theatre'), 'section-index-page');
+  assert.equal(listingPageUrlReason('https://www.express.co.uk/latest/theatre/?ref=search'), 'section-index-page');
+  assert.equal(listingPageUrlReason('https://www.express.co.uk/entertainment/theatre/1845793/stephen-daldry-stranger-things-theatrical-prequel-dazzling-show'), null);
+  assert.equal(listingPageUrlReason('https://example.com/latest/theatre'), null);
   assert.equal(listingPageUrlReason('https://www.express.co.uk/entertainment/theatre/1769203/Operation-Mincemeat-musical-review-London-2023-Fortune-theatre-dates-tickets'), null);
   assert.equal(listingPageUrlReason('https://www.express.co.uk/entertainment/films'), null);
 });

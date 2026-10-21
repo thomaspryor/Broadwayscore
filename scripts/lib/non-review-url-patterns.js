@@ -578,7 +578,8 @@ const LISTING_PAGE_URL_PATTERNS = [
   { host: /(^|\.)show-score\.com$/, path: /^\/(broadway-shows|off-broadway-shows|shows)\//i, reason: 'show-listing-page' },  // Express UK section index (BRO-4596): four Neil Norman rows carried this URL
   // and a score read off a text-pattern star. Real Express reviews sit under
   // /entertainment/theatre/<id>/<slug>, so anchor the path to the bare section.
-  { host: /(^|\.)express\.co\.uk$/, path: /^\/entertainment\/theatre\/?$/i, reason: 'section-index-page' },
+  // /latest/theatre is the alternate section index restored after BRO-5373-s.
+  { host: /(^|\.)express\.co\.uk$/, path: /^\/(?:entertainment|latest)\/theatre\/?$/i, reason: 'section-index-page' },
   // Any host (BRO-4956): a path that ENDS in a reviews/press hub segment is a
   // page collecting many critics, never one critic's review. Found scored live:
   // timcrouchtheatre.co.uk/shows-2/an-oak-tree/reviews (the playwright's quote

@@ -116,3 +116,52 @@ test('persist re-reads the file, writes the merge, and rebases the snapshot', ()
   assert.equal(data.originalScoreCleared, true);
   assert.deepEqual(review.snapshot, onDisk);
 });
+
+for (const fixedUrl of ['', 'https://www.express.co.uk/entertainment/theatre/1845793/stephen-daldry-stranger-things-theatrical-prequel-dazzling-show']) {
+  for (const concurrent of [false, true]) {
+    test(`SERP recovery cannot overwrite an approved URL fix (${fixedUrl || 'empty'}, concurrent=${concurrent}) with a listing`, () => {
+      const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'persist-approved-url-'));
+      try {
+        const filePath = path.join(dir, 'express-uk--neil-norman.json');
+        const original = { ...read(), outletId: 'express-uk', criticName: 'Neil Norman', url: '' };
+        const disk = { ...original, url: fixedUrl,
+          approvedFixes: [{ fixId: 'approved-url-fix', field: 'url', newValue: fixedUrl }] };
+        const snapshot = concurrent ? original : disk;
+        const review = { filePath, snapshot: structuredClone(snapshot),
+          data: { ...structuredClone(snapshot), url: 'https://www.express.co.uk/latest/theatre',
+            urlSource: 'serp-recovery', fullText: 'Wrong listing page body', assignedScore: 99 } };
+        fs.writeFileSync(filePath, JSON.stringify(disk));
+        const result = persistReviewSnapshot(review, () => {});
+        assert.equal(result.droppedUrl, true);
+        assert.deepEqual(JSON.parse(fs.readFileSync(filePath, 'utf8')), disk);
+        assert.deepEqual(review.data, disk, 'later phases must see the approved URL');
+        assert.deepEqual(review.snapshot, disk);
+      } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+    });
+  }
+}
+
+test('an approved non-URL edit does not block recovery and a genuine review URL can fill a cleared URL', () => {
+  const snapshot = { ...read(), url: '',
+    approvedFixes: [{ fixId: 'score-fix', field: 'originalScore', newValue: '4/5' }] };
+  const listing = { ...snapshot, url: 'https://www.express.co.uk/latest/theatre' };
+  assert.equal(mergeOntoDisk(snapshot, listing, snapshot).merged.url, listing.url);
+  const fixed = { ...snapshot, approvedFixes: [{ fixId: 'url-fix', field: 'url', newValue: '' }] };
+  const recovered = { ...fixed, url: 'https://www.express.co.uk/entertainment/theatre/1845793/stephen-daldry-stranger-things-theatrical-prequel-dazzling-show' };
+  assert.equal(mergeOntoDisk(fixed, recovered, fixed).merged.url, recovered.url);
+});
+
+test('the latest approved URL fix wins and an explicitly approved listing is retained', () => {
+  const listing = 'https://www.talkinbroadway.com/page/world/index.html';
+  const snapshot = { ...read(), url: '', approvedFixes: [
+    { fixId: 'old-clear', field: 'url', newValue: '' },
+    { fixId: 'approved-listing', field: 'url', newValue: listing },
+  ] };
+  const data = { ...snapshot, url: listing };
+  assert.equal(mergeOntoDisk(snapshot, data, snapshot).merged.url, listing);
+  const cleared = { ...snapshot, approvedFixes: [...snapshot.approvedFixes,
+    { fixId: 'new-clear', field: 'url', newValue: '' }] };
+  const result = mergeOntoDisk(cleared, { ...cleared, url: listing }, cleared);
+  assert.equal(result.droppedUrl, true);
+  assert.equal(result.merged.url, '');
+});

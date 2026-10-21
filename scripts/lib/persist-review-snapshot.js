@@ -14,6 +14,7 @@
  * score fields are dropped and disk's are kept (BRO-3171 regression class).
  */
 const fs = require('fs');
+const { approvedUrlFixListingReason } = require('./approved-url-fix');
 
 // Fields a score recovery writes (setExtractedScore + recover-explicit-ratings).
 const RECOVERED_SCORE_FIELDS = [
@@ -34,7 +35,7 @@ const _clone = (v) => (v === undefined ? undefined : JSON.parse(JSON.stringify(v
  * @param {object} snapshot what the caller read
  * @param {object} data     the caller's edited copy
  * @param {object|null} disk the record on disk now (null: absent/unreadable)
- * @returns {{merged: object, droppedScore: boolean, keptDiskFields: string[]}}
+ * @returns {{merged: object, droppedScore: boolean, droppedUrl?: boolean, keptDiskFields: string[]}}
  */
 function mergeOntoDisk(snapshot, data, disk) {
   if (!disk) return { merged: _clone(data), droppedScore: false, keptDiskFields: [] };
@@ -49,6 +50,13 @@ function mergeOntoDisk(snapshot, data, disk) {
     }
     if (mine === undefined) delete merged[key];
     else merged[key] = _clone(mine);
+  }
+  // Phase 0 SERP recovery bypasses createOrMergeReviewFile. Check CURRENT
+  // disk approvals too, since a fix can land while discovery is in flight.
+  // Reject the whole candidate snapshot: its body/score may describe the
+  // refused listing. The caller is rebased onto disk before later phases.
+  if (merged.url !== disk.url && approvedUrlFixListingReason(disk, merged.url)) {
+    return { merged: _clone(disk), droppedScore: false, droppedUrl: true, keptDiskFields };
   }
   // A clear on disk wins over the caller's score edits: whether it appeared
   // since the snapshot, was re-made for another reason, or was already in the
@@ -84,7 +92,10 @@ function mergeOntoDisk(snapshot, data, disk) {
 function persistReviewSnapshot(review, log = console.log) {
   let disk = null;
   try { disk = JSON.parse(fs.readFileSync(review.filePath, 'utf8')); } catch { /* absent or unreadable */ }
-  const { merged, droppedScore, keptDiskFields } = mergeOntoDisk(review.snapshot || {}, review.data, disk);
+  const { merged, droppedScore, droppedUrl, keptDiskFields } = mergeOntoDisk(review.snapshot || {}, review.data, disk);
+  if (droppedUrl) {
+    log(`    [persist] ${review.filePath}: listing URL would undo an approved URL fix; candidate snapshot not written (BRO-5693)`);
+  }
   if (droppedScore) {
     log(`    [persist] ${review.filePath}: originalScoreCleared set on disk since read; recovered score not written (BRO-3168)`);
   }
@@ -96,7 +107,7 @@ function persistReviewSnapshot(review, log = console.log) {
   for (const key of Object.keys(review.data)) if (!(key in merged)) delete review.data[key];
   Object.assign(review.data, merged);
   review.snapshot = _clone(merged);
-  return { droppedScore, keptDiskFields };
+  return { droppedScore, droppedUrl: !!droppedUrl, keptDiskFields };
 }
 
 module.exports = { mergeOntoDisk, persistReviewSnapshot, RECOVERED_SCORE_FIELDS };
