@@ -860,7 +860,7 @@ function checkOpenShowCoverage() {
       'coverage-gap',
       'low',
       show.slug,
-      `Open/previews show "${show.title}" at ${show.venue || 'unknown venue'} has no commercial data entry.`
+      `Open, previews, announced or upcoming show "${show.title}" at ${show.venue || 'unknown venue'} has no commercial data entry.`
     );
   }
 
