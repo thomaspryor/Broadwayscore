@@ -111,9 +111,11 @@ For each card:
    guard-test refusal costs minutes, not a land run). Push only on exit 0 or 4;
    on 1 fix the new failures it lists; on 3 commit your work first. Then
    `git push origin HEAD:refs/heads/land/bro-<N>-<short-name>`, then
-   `node scripts/lib/wait-for-land.js land/<name> 58` in the background, and
-   pick the next card now. When a waiter reports a refusal, read the run log,
-   fix, push the same ref again.
+   `node scripts/lib/wait-for-land.js land/<name> 58 --prod=30` in the
+   background (timeout 5700000), and pick the next card now. When a waiter
+   reports a refusal, read the run log, fix, push the same ref again. Exit 4
+   means landed but not live yet: the landing stands, never push it again;
+   re-check with the `check-prod-deploy.js` command it prints.
 6. After it lands, re-run the card's VERIFY on fresh main. Then, before
    closing, run the shadow Codex cross-check in the background (timeout 1800000):
    `node scripts/codex/check-claude.js --card <id> --commit <landed sha> | tail -3`.

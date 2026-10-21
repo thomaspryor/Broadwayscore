@@ -19,7 +19,8 @@
  *
  *   node scripts/check-prod-deploy.js <commit-ish>
  *       → also checks whether <commit-ish> is live (i.e. an ancestor of, or equal
- *         to, the deployed commit). Exits 0 if live, 1 if not yet live. Use this
+ *         to, the deployed commit). Exits 0 if live, 1 if not yet live, 2 if
+ *         it could not tell (the ancestry or GitHub lookup failed). Use this
  *         to gate any "deployed/live on production" claim:
  *           node scripts/check-prod-deploy.js HEAD && echo "HEAD is live"
  *
@@ -157,13 +158,16 @@ function isLive(commit, deployedSha) {
   if (!deployedSha) return false;
   const result = checkLanded({ sha: commit, ref: deployedSha, cwd: process.cwd(), log: (m) => console.error(m) });
   if (result.verdict === 'UNKNOWN') {
-    console.error(`⚠️  Could not determine whether ${commit} is live (reason=${result.reason}) — treating as not-yet-live; this may be a false negative, verify via VERCEL_TOKEN dashboard or 'git ls-remote origin main'.`);
+    console.error(`⚠️  Could not determine whether ${commit} is live (reason=${result.reason}); verify via VERCEL_TOKEN dashboard or 'git ls-remote origin main'.`);
+    return null; // exit 2, same as the GitHub fallback (BRO-5836)
   }
   return result.landed === true;
 }
 
 // GitHub-fallback liveness: the compare API, since cloud clones are shallow
-// and checkLanded's unshallow is slow there. Unknown reads as not live.
+// and checkLanded's unshallow is slow there. Unknown is null (exit 2), so a
+// poller (wait-for-land.js --prod, BRO-5836) can tell "can't check" from
+// "not live yet" instead of waiting out its timeout on a 403.
 function isLiveViaGithub(commit, deployedSha) {
   if (!deployedSha) return false;
   try {
@@ -171,8 +175,8 @@ function isLiveViaGithub(commit, deployedSha) {
     const { status } = ghJson(`repos/${REPO}/compare/${full}...${deployedSha}`);
     return status === 'ahead' || status === 'identical';
   } catch (e) {
-    console.error(`⚠️  Could not determine whether ${commit} is live (${String(e.stderr || e.message).trim().split('\n')[0]}) — treating as not-yet-live.`);
-    return false;
+    console.error(`⚠️  Could not determine whether ${commit} is live (${String(e.stderr || e.message).trim().split('\n')[0]}).`);
+    return null;
   }
 }
 
@@ -206,10 +210,11 @@ async function main() {
           // single revision" — harmless here (we fall back to the raw arg), so
           // don't leak it to the user.
           try { shortTarget = execSync(`git rev-parse --short ${commit}`, { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim(); } catch {}
-          console.log(live ? `✅ ${shortTarget} is LIVE on production.` : `⏳ ${shortTarget} is NOT live yet (production is at ${shortDeployed}).`);
+          if (live === null) console.log(`❓ could not check whether ${shortTarget} is live (production is at ${shortDeployed}).`);
+          else console.log(live ? `✅ ${shortTarget} is LIVE on production.` : `⏳ ${shortTarget} is NOT live yet (production is at ${shortDeployed}).`);
         }
       }
-      process.exit(commit && !live ? 1 : 0);
+      process.exit(commit && live === null ? 2 : commit && !live ? 1 : 0);
     }
 
     const remaining = Math.round((deadline - Date.now()) / 1000);

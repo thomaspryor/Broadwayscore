@@ -2078,7 +2078,7 @@ if [[ "$result" == "OWNERMERGE" ]]; then
   exit 2
 fi
 if [[ "$result" == "LANDUNCHECKED" ]]; then
-  echo "🛑 BLOCKED: you pushed to land/** but claim SAFE TO EXIT without checking the Land run. land.yml can refuse a branch. Check the run (mcp__github__actions_list / actions_get on land.yml) and report LANDED or the refusal. Bypass: NO-VERIFY: <reason>." >&2
+  echo "🛑 BLOCKED: you pushed to land/** but claim SAFE TO EXIT without checking the Land run. land.yml can refuse a branch. Check the run (mcp__github__actions_list / actions_get on land.yml) and report LANDED or the refusal. To also wait for production, run node scripts/lib/wait-for-land.js land/<name> 60 --prod as a background Bash (timeout 7200000) instead of ending the turn. Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 if [[ "$result" == "PRUNMERGED" ]]; then
@@ -2102,7 +2102,7 @@ if [[ "$result" == "OPENWORK" ]]; then
 fi
 
 if [[ "$result" == "NOWRAPUP" ]]; then
-  echo "🛑 BLOCKED: claiming SAFE TO EXIT after real work, but this session's Linear card was never closed out after that work. Run: node scripts/linear-brain.js update BRO-N --state Done (needs a PR-EVIDENCE line citing the landed commit URL, https://github.com/thomaspryor/Broadwayscore/commit/<sha on main>, which verifies through GitHub even in a shallow cloud clone, or an Acceptance-criteria check; a refused update doesn't count). To pause, or when Done is refused: node scripts/linear-session.js report --issue=BRO-N --status=paused --summary=\"...\" (Linear has no Paused state; this sets Backlog). Invoking /wrap-up is required but not enough on its own, and a notion-brain.js update does not count (Notion is retired). Bypass: NO-VERIFY: <reason> (or NO-CARD: <reason> if this session has no card by design)." >&2
+  echo "🛑 BLOCKED: claiming SAFE TO EXIT after real work, but this session's Linear card was never closed out after that work. Run: node scripts/linear-brain.js update BRO-N --state Done (needs a PR-EVIDENCE line citing the landed commit URL, https://github.com/thomaspryor/Broadwayscore/commit/<sha on main>, which verifies through GitHub even in a shallow cloud clone, or an Acceptance-criteria check; a refused update doesn't count). Landed but not live yet? Don't stop and idle: re-run node scripts/check-prod-deploy.js <sha> from a background Bash every few minutes (wait-for-land.js land/<name> 60 --prod does this too, within 6h of the landing) and close out once it is live. To pause, or when Done is refused: node scripts/linear-session.js report --issue=BRO-N --status=paused --summary=\"...\" (Linear has no Paused state; this sets Backlog). Invoking /wrap-up is required but not enough on its own, and a notion-brain.js update does not count (Notion is retired). Bypass: NO-VERIFY: <reason> (or NO-CARD: <reason> if this session has no card by design)." >&2
   exit 2
 fi
 
