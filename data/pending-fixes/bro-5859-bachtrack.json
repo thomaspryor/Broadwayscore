@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5859-bachtrack",
   "planId": "1595ff71-64d2-4008-bbde-69e333e8bc8e",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-21T18:55:50.388Z",
   "submitter": {
     "name": null,
@@ -51,5 +51,34 @@
         "description": "BRO-5859: false positive. Bachtrack reviews the Met (New York); the London-outlet guard fired because the registry had it London-only"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T20:58:48.964Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted lincoln-in-the-bardo-off-broadway-2026/bachtrack--susan-sempleski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted lincoln-in-the-bardo-off-broadway-2026/bachtrack--unknown.json"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=lincoln-in-the-bardo-off-broadway-2026 --url=https://bachtrack.com/review-mazzoli-lincoln-in-the-bardo-blain-cruz-mattei-metropolitan-opera-new-york-october-2026 --outlet=bachtrack"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=innocence-off-broadway-2026 --url=https://bachtrack.com/review-saariaho-innocence-malkki-didonato-metropolitan-opera-april-2026 --outlet=bachtrack"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "innocence-off-broadway-2026/bachtrack--kurt-gottschalk.json wrongProduction: true -> false"
+    }
+  ],
+  "executedIn": "ci"
 }
