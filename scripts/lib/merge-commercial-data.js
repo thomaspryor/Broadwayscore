@@ -146,7 +146,7 @@ function sameValue(a, b) {
 // every model field merge-model-recoupment.js assigns.
 const MODEL_RUN_FIELDS = [
   'modelRecoupmentPct', 'modelRecouped', 'modelBreakeven', 'modelCostBasis', 'modelDataQuality',
-  'modelMethod', 'modelCategory', 'modelLastRun', 'modelWarnings', 'modelDesignationFlag',
+  'modelMethod', 'modelCategory', 'modelLastRun', 'modelWarnings', 'modelInputBasis', 'modelDesignationFlag',
   // BRO-4989 shadow fields (written alongside, never read by the site yet).
   'modelRecoupmentPctV2', 'modelInvestorMultiple', 'modelReturnedExCreditPct', 'modelTaxCreditExcluded', 'modelTaxCreditCounted',
 ];
