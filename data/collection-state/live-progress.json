@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-21T14:20:54.712Z",
-  "processed": 318,
-  "failed": 197,
-  "successRate": "61.7%",
+  "updatedAt": "2026-10-21T14:21:37.146Z",
+  "processed": 103,
+  "failed": 65,
+  "successRate": "61.3%",
   "tierBreakdown": {
-    "playwright": 160,
-    "amp": 2,
-    "browserbase": 8,
+    "playwright": 51,
+    "amp": 0,
+    "browserbase": 10,
     "directCookies": 0,
     "scrapingdog": 22,
     "scrapingbee": 18,
     "brightdata": 4,
     "archiveToday": 0,
-    "archive": 123
+    "archive": 41
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-10-21T13:24:26.750Z",
@@ -83,6 +83,12 @@
       "t": "2026-10-21T14:05:09.584Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-21T14:16:12.989Z",
+      "event": "bb-session",
+      "session": "145e42c5",
+      "url": "https://bachtrack.com/review-angels-bone-du-yun-vavrek-english-national-opera-lo"
     }
   ]
 }
