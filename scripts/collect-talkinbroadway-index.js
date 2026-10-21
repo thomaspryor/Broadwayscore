@@ -20,7 +20,7 @@
  *
  * Usage:
  *   node scripts/collect-talkinbroadway-index.js [--dry-run]
- *     [--window-days=200] [--max-pages=12] [--data-dir=PATH]
+ *     [--window-days=400] [--max-pages=12] [--data-dir=PATH]
  *   --dry-run      list what is missing, fetch nothing but the index pages, write nothing
  */
 'use strict';
@@ -42,7 +42,7 @@ if (hasHelpFlag(args)) { console.log(USAGE); process.exit(0); }
 
 const getArg = (name) => { const a = args.find((x) => x.startsWith(`--${name}=`)); return a ? a.split('=').slice(1).join('=') : null; };
 const dryRun = args.includes('--dry-run');
-const windowDays = parseInt(getArg('window-days'), 10) || 200;
+const windowDays = parseInt(getArg('window-days'), 10) || 400;
 const maxPages = parseInt(getArg('max-pages'), 10) || 12;
 const reviewTextsDir = getArg('data-dir') || path.join(__dirname, '..', 'data', 'review-texts');
 const showsPath = path.join(__dirname, '..', 'data', 'shows.json');

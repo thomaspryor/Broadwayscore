@@ -190,8 +190,8 @@ test('an undated link far down a newest-first list is skipped without a page loa
   assert.equal(planCollection(entry(500), shows, new Set(), { now: NOW }).skipped[0].why, 'undated-not-recent');
 });
 
-test('matchShowByTitle covers a show that opened up to 200 days ago (Joe Turner\'s Come and Gone, April)', () => {
+test('matchShowByTitle covers a show that opened up to 400 days ago (Every Brilliant Thing at 223 days, All Out at 313)', () => {
   const april = [{ id: 'joe-turners-come-and-gone-2026', title: "Joe Turner's Come and Gone", openingDate: '2026-04-25', market: 'broadway', category: 'broadway' }];
   assert.equal(matchShowByTitle("Joe Turner's Come and Gone", april, { now: NOW }).reason, 'match');
-  assert.equal(matchShowByTitle("Joe Turner's Come and Gone", april, { now: new Date('2027-01-01T12:00:00Z') }).reason, 'none');
+  assert.equal(matchShowByTitle("Joe Turner's Come and Gone", april, { now: new Date('2027-10-01T12:00:00Z') }).reason, 'none');
 });
