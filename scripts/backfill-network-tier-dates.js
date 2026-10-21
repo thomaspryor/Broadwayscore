@@ -29,7 +29,6 @@ const { loadEnv } = require('./lib/load-env');
 loadEnv();
 
 const { fetchPage, verifyFetchedUrl } = require('./lib/scraper');
-const { extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { runPublishDateBackfillTriage } = require('./lib/publish-date-backfill-triage');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -254,23 +253,7 @@ function findCandidates() {
 async function processOne(cand, stats) {
   const { filePath, url, showId } = cand;
   try {
-    const urlDate = extractDateFromUrl(url);
-    if (urlDate && urlDate.date) {
-      if (!dryRun) {
-        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        data.publishDate = urlDate.date;
-        data.dateSource = `url-backfill-${urlDate.source}`;
-        const res = safeWriteReview(filePath, data);
-        if (res && res.wrote === false) {
-          stats.failed++;
-          console.log(`  [quarantined:${res.skipped}] ${showId} (url) would-be-date=${urlDate.date}`);
-          return;
-        }
-      }
-      stats.extracted++; stats.touchedShows.add(showId); stats.touchedFiles.add(path.relative(REVIEW_TEXTS_DIR, filePath));
-      console.log(`  [url] ${showId}: ${urlDate.date}`);
-      return;
-    }
+    // A date parsed from the URL is never stored as publishDate (BRO-5614, CLAUDE.md rule 3).
 
     const raw = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     if (raw.fullText) {
