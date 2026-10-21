@@ -75,8 +75,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { planCanonicalPointerClear, applyCanonicalPointerClear } = require('./lib/canonical-duplicate-pointers');
 const { isPlaceholderRecord } = require('./lib/placeholder-byline');
 
-// See fix-circular-duplicate-pairs.js's identical helper — self-branded solo
-// critics (carole-di-tosti, carey-purcell, oscar-e-moore) have outlet
+// Self-branded solo critics (carole-di-tosti, carey-purcell, oscar-e-moore) have outlet
 // displayName === defaultCritic, so isPlaceholderRecord needs this override
 // to not flag them as placeholders (Codex adversarial review, card #1907).
 function _defaultCriticFor(outletId) {

@@ -502,17 +502,29 @@ test('mergeReviewsJson: manual rescue does not use unscored, placeholder or poor
   }
 });
 
-test('mergeReviewsJson: manual rescue preserves other outlets, raw paths and shows', () => {
+test('mergeReviewsJson: stale manual removal requires the same outlet and raw path', () => {
   const manual = review({ criticName: 'Unknown', url: SHARED_URL, manualEntry: true });
   for (const overrides of [
     { outlet: 'The Guardian' },
     { url: SHARED_URL.toUpperCase() },
-    { showId: 'another-show-2026' },
   ]) {
     const pipeline = review({ criticName: 'Olivia Garrett', url: SHARED_URL, ...overrides });
     const { merged } = mergeReviewsJson({ reviews: [manual] }, { reviews: [pipeline] });
-    assert.deepEqual(merged.reviews, [manual, pipeline]);
+    assert.deepEqual(merged.reviews, [manual], 'unconfirmed enrichment cannot evict the manual row');
   }
+});
+
+test('mergeReviewsJson: named manual URL rescue still works across outlet and path case drift', () => {
+  const manual = review({ criticName: 'Steven Oxman', outlet: 'Chicago Sun-Times',
+    outletId: 'chicago-sun-times', url: SHARED_URL, manualEntry: true });
+  for (const overrides of [{}, { url: SHARED_URL.toUpperCase() }]) {
+    const pipeline = review({ criticName: 'Another Critic', outlet: 'Sun-Times',
+      outletId: 'suntimes', url: SHARED_URL, ...overrides });
+    assert.deepEqual(mergeReviewsJson({ reviews: [manual] }, { reviews: [pipeline] }).merged.reviews, [manual]);
+  }
+  const otherShow = review({ showId: 'another-show-2026', url: SHARED_URL });
+  assert.deepEqual(mergeReviewsJson({ reviews: [manual] }, { reviews: [otherShow] }).merged.reviews,
+    [manual, otherShow]);
 });
 
 test('mergeReviewsJson: dropping stale manual attribution preserves multiple real bylines and tracks one drop', () => {

@@ -127,15 +127,8 @@
 //     union's length.
 
 const { canonicalizeUrlForDedup } = require('./review-guards');
-const { criticKey } = require('./manual-entry-merge');
-const { isPlaceholderByline } = require('./placeholder-byline');
+const { criticKey, tierRank, isUnknownByline, isMergeFossilAnchor } = require('./manual-entry-merge');
 const { foldDiacritics } = require('./title-match');
-
-const TIER_RANK = { complete: 5, truncated: 4, excerpt: 3, stub: 2, invalid: 1 };
-
-function tierRank(review) {
-  return TIER_RANK[review && review.contentTier] || 0;
-}
 
 /** Outlet identity for matching: a slug, so the display name and the slug a
  * different writer stamped ("Manic Mumdays" vs "manic-mumdays") are the same
@@ -163,56 +156,6 @@ function urlKeyOf(review) {
   } catch {
     return null;
   }
-}
-
-/** Is this criticName the pipeline's no-byline sentinel rather than a person?
- * rebuild-all-reviews.js and review-file-writer.js both normalise a missing
- * byline to the literal string 'Unknown' (review-file-writer.js:707,
- * `sanitizeCriticName(input.criticName) || 'Unknown'`), and null/'' reach
- * reviews.json from older rows written before that default existed. Deliberately
- * an exact match on the sentinel, NOT a fuzzy "looks anonymous" test: a real
- * byline such as "Unknown Theatre Collective" must stay a distinct identity. */
-function isUnknownByline(criticName) {
-  if (criticName === null || criticName === undefined) return true;
-  const s = String(criticName).trim();
-  return s === '' || s.toLowerCase() === 'unknown';
-}
-
-/** May this record ANCHOR a fossil deletion — i.e. is its byline a real person?
- * Three ways a name fails that, and isUnknownByline alone catches only the
- * first: the sentinel itself; placeholder-byline.js's generic desk/staff terms
- * AND its outlet-as-critic branch (which is only reachable when `outlet` is
- * passed, so this must take the whole RECORD, not a bare name); and
- * punctuation-only junk, since criticKey('—') is 'unknown' while
- * isUnknownByline('—') is false.
- *
- * Module-scope and EXPORTED deliberately. The corpus tests need this exact
- * predicate to reconstruct the anchor set over live reviews.json, and they
- * previously kept their own hand-copied duplicate of it in two places — which
- * CLAUDE.md rule 15 forbids ("never copy logic into test files — always
- * require() the real function") for precisely the reason it nearly caused
- * here: when production's definition changed, the copies did not, so the
- * corpus assertion would have failed on rows production now correctly keeps.
- * A copy that must be edited in lockstep is not a test of the real predicate.
- *
- * The name is deliberately narrow. This is NOT a general "is this a real
- * byline" oracle and must not be reused as one: it omits opts.defaultCritic
- * (see the pass below for why this module cannot read the registry), so it
- * misclassifies a registry-confirmed self-branded critic. It answers exactly
- * one question — may this record anchor a fossil deletion in THIS merge.
- *
- * Sharing it with the corpus test does make that ONE test partly self-
- * referential: implementation and oracle move together, so it can no longer
- * catch a novel misclassification. That is the accepted cost of rule 15, and
- * the independent check lives in the targeted cases below (ordinary name,
- * outlet-as-critic, self-branded critic, generic desk term, punctuation junk),
- * which assert concrete expected outcomes rather than calling this at all.
- * (Two rounds of Codex adversarial review.) */
-function isMergeFossilAnchor(rec) {
-  const name = rec && rec.criticName;
-  return !isUnknownByline(name)
-    && !isPlaceholderByline(name, rec && rec.outlet)
-    && criticKey(name) !== 'unknown';
 }
 
 function newerIso(a, b) {
@@ -395,7 +338,8 @@ function mergeReviewsJson(ours, remote, base) {
   // at least as rich as an unbylined manual row supersedes that stale manual
   // row. Named manual corrections still win; competing manual corrections
   // use their source snapshots' recency, then content tier and array order.
-  // Require the same outlet and raw path, as in the fossil pass below.
+  // Only the stale-manual exception requires the same outlet and raw path.
+  // Named corrections still match by show + canonical URL across outlet drift.
   const rawPathOf = (u) => {
     try {
       const parsed = new URL(String(u));
@@ -408,11 +352,9 @@ function mergeReviewsJson(ours, remote, base) {
   const articleGroups = new Map();
   for (const r of mergedReviews) {
     const uk = urlKeyOf(r);
-    const rawPath = r && rawPathOf(r.url);
-    if (!uk || !rawPath) continue;
-    const k = JSON.stringify([uk, outletKey(r.outlet), rawPath]);
-    if (!articleGroups.has(k)) articleGroups.set(k, []);
-    articleGroups.get(k).push(r);
+    if (!uk) continue;
+    if (!articleGroups.has(uk)) articleGroups.set(uk, []);
+    articleGroups.get(uk).push(r);
   }
   const oursRecords = new Set(oursDeduped.canonical);
   const urlRescueDrops = new Set();
@@ -422,7 +364,9 @@ function mergeReviewsJson(ours, remote, base) {
     for (const manual of manuals) {
       if (isUnknownByline(manual.criticName) && group.some(r => r.manualEntry !== true
         && isMergeFossilAnchor(r) && Number.isFinite(r.assignedScore)
-        && tierRank(r) >= tierRank(manual))) {
+        && tierRank(r) >= tierRank(manual)
+        && outletKey(r.outlet) === outletKey(manual.outlet)
+        && rawPathOf(manual.url) && rawPathOf(r.url) === rawPathOf(manual.url))) {
         urlRescueDrops.add(manual);
         continue;
       }

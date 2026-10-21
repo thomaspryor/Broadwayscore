@@ -21,12 +21,45 @@
  * Fix is two-layered:
  *   1. criticKey() folds punctuation + diacritics, so cosmetic byline drift
  *      still matches.
- *   2. When the name match fails, fall back to the URL. Same show + same outlet
- *      + same article URL is the same review no matter whose name is on it —
+ *   2. When the name match fails, fall back to the URL. Same show + same
+ *      article URL is the same review no matter whose name is on it:
  *      so it REPLACES rather than appends. The URL is the identity of record.
  *
  * @see scripts/rebuild-all-reviews.js (sole caller)
  */
+
+const { isPlaceholderByline } = require('./placeholder-byline');
+
+const TIER_RANK = { complete: 5, truncated: 4, excerpt: 3, stub: 2, invalid: 1 };
+
+function tierRank(review) {
+  return TIER_RANK[review && review.contentTier] || 0;
+}
+
+/** Is this criticName the pipeline's no-byline sentinel rather than a person?
+ * rebuild-all-reviews.js and review-file-writer.js both normalise a missing
+ * byline to the literal string 'Unknown' (review-file-writer.js:707,
+ * `sanitizeCriticName(input.criticName) || 'Unknown'`), and null/'' reach
+ * reviews.json from older rows written before that default existed. Deliberately
+ * an exact match on the sentinel, NOT a fuzzy "looks anonymous" test: a real
+ * byline such as "Unknown Theatre Collective" must stay a distinct identity. */
+function isUnknownByline(criticName) {
+  if (criticName === null || criticName === undefined) return true;
+  const s = String(criticName).trim();
+  return s === '' || s.toLowerCase() === 'unknown';
+}
+
+/** A conservative byline check shared by the rebuild and concurrent merge.
+ * Outlet names, generic desk terms and punctuation cannot supersede an
+ * unbylined record. Without registry context, self-branded critics also
+ * decline to anchor a deletion (isPlaceholderByline's defaultCritic caveat).
+ */
+function isMergeFossilAnchor(rec) {
+  const name = rec && rec.criticName;
+  return !isUnknownByline(name)
+    && !isPlaceholderByline(name, rec && rec.outlet)
+    && criticKey(name) !== 'unknown';
+}
 
 /**
  * Punctuation- and diacritic-insensitive critic key.
@@ -90,6 +123,8 @@ function findPipelineTwin(manual, reviews, normalizeUrl) {
  * Rules, in order:
  *   - twin has scoreSource 'human-review' → pipeline already consumed the
  *     manual score from the source file; it is authoritative, skip.
+ *   - unbylined manual with a bylined, finite-scored twin of at least the same
+ *     content tier → keep the enriched pipeline row (BRO-2919).
  *   - twin has a score → replace it (a human score beats an LLM score).
  *   - no twin at all → append (a genuinely pipeline-less manual review).
  *
@@ -108,6 +143,10 @@ function mergeManualEntries(reviews, manualEntries, normalizeUrl) {
     const twin = findPipelineTwin(manual, reviews, normalizeUrl);
 
     if (twin && twin.review.scoreSource === 'human-review') continue;
+
+    if (twin && isUnknownByline(manual.criticName)
+      && isMergeFossilAnchor(twin.review) && Number.isFinite(twin.review.assignedScore)
+      && tierRank(twin.review) >= tierRank(manual)) continue;
 
     if (twin && twin.review.assignedScore) {
       const idx = reviews.indexOf(twin.review);
@@ -139,4 +178,4 @@ function mergeManualEntries(reviews, manualEntries, normalizeUrl) {
   return { preserved, appended, matchedByUrl, matchedCrossOutlet };
 }
 
-module.exports = { criticKey, findPipelineTwin, mergeManualEntries };
+module.exports = { criticKey, tierRank, isUnknownByline, isMergeFossilAnchor, findPipelineTwin, mergeManualEntries };

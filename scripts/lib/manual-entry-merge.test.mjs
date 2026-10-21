@@ -196,3 +196,70 @@ test('replaced manual entry drops a designation the twin no longer has', () => {
   mergeManualEntries(reviews, manual, normalizeUrl);
   assert.equal(reviews[0].designation, undefined);
 });
+
+// BRO-2919: the rebuild must make the same precedence decision as a raced push.
+test('unbylined manual entries do not overwrite a bylined scored pipeline twin', () => {
+  for (const criticName of ['Unknown', ' unknown ', '', null, undefined]) {
+    for (const assignedScore of [0, 75]) {
+      for (const [outletId, contentTier] of [
+        ['stage', 'complete'], ['stage', 'excerpt'], ['stage', undefined],
+        ['stage-alias', 'complete'],
+      ]) {
+        const pipeline = { showId: 's', outletId: 'stage', outlet: 'The Stage',
+          criticName: 'Olivia Garrett', assignedScore, contentTier: 'complete',
+          url: 'https://example.com/review', designation: 'Critics_Pick' };
+        const manual = { ...pipeline, outletId, criticName, assignedScore: 60,
+          contentTier, manualEntry: true };
+        const reviews = [pipeline];
+        const result = mergeManualEntries(reviews, [manual], normalizeUrl);
+        assert.deepEqual(reviews, [pipeline]);
+        assert.equal(reviews[0], pipeline, 'retain the enriched pipeline record');
+        assert.equal(result.preserved, 0);
+        assert.equal(result.appended, 0);
+      }
+    }
+  }
+});
+
+test('manual precedence remains when the scored twin has no real byline, finite score or sufficient tier', () => {
+  for (const overrides of [
+    { criticName: 'Unknown' }, { criticName: 'Staff' }, { criticName: 'The Stage' },
+    { criticName: '...' }, { assignedScore: '75' }, { assignedScore: Infinity },
+    { contentTier: 'stub' },
+  ]) {
+    const pipeline = { showId: 's', outletId: 'stage', outlet: 'The Stage',
+      criticName: 'Olivia Garrett', assignedScore: 75, contentTier: 'complete',
+      url: 'https://example.com/review', ...overrides };
+    const manual = { ...pipeline, criticName: 'Unknown', assignedScore: 60,
+      contentTier: 'complete', manualEntry: true };
+    const reviews = [pipeline];
+    mergeManualEntries(reviews, [manual], normalizeUrl);
+    assert.equal(reviews.length, 1);
+    assert.equal(reviews[0].manualEntry, true);
+    assert.equal(reviews[0].assignedScore, 60);
+  }
+});
+
+test('an unscored twin is retained without appending the unbylined manual row', () => {
+  for (const assignedScore of [null, undefined, NaN]) {
+    const pipeline = { showId: 's', outletId: 'stage', criticName: 'Olivia Garrett',
+      assignedScore, contentTier: 'complete', url: 'https://example.com/review' };
+    const manual = { ...pipeline, criticName: 'Unknown', assignedScore: 60, manualEntry: true };
+    const reviews = [pipeline];
+    mergeManualEntries(reviews, [manual], normalizeUrl);
+    assert.deepEqual(reviews, [pipeline]);
+  }
+});
+
+test('named manual correction still replaces a differently bylined pipeline twin', () => {
+  const pipeline = { showId: 's', outletId: 'stage', outlet: 'The Stage',
+    criticName: 'Olivia Garrett', assignedScore: 75, contentTier: 'complete',
+    url: 'https://example.com/review' };
+  const manual = { ...pipeline, criticName: 'Another Critic', assignedScore: 60,
+    contentTier: 'stub', manualEntry: true };
+  const reviews = [pipeline];
+  mergeManualEntries(reviews, [manual], normalizeUrl);
+  assert.equal(reviews.length, 1);
+  assert.equal(reviews[0].criticName, 'Another Critic');
+  assert.equal(reviews[0].assignedScore, 60);
+});
