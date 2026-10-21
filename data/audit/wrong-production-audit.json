@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-21T21:08:08.750Z",
+  "timestamp": "2026-10-21T22:03:52.983Z",
   "stats": {
-    "totalReviews": 58290,
-    "alreadyFlagged": 21147,
+    "totalReviews": 58412,
+    "alreadyFlagged": 21161,
     "dateGuardCatches": 199,
-    "directorMismatch": 2034,
-    "tvFilmSignals": 1654,
-    "londonSignals": 2595,
+    "directorMismatch": 2052,
+    "tvFilmSignals": 1655,
+    "londonSignals": 2625,
     "offBroadwaySignals": 530,
     "yearMismatch": 165,
-    "noPublishDate": 5330
+    "noPublishDate": 5367
   },
   "findings": [
     {
@@ -19773,6 +19773,20 @@
       ]
     },
     {
+      "showId": "instructions-for-correct-assembly-west-end-2018",
+      "file": "britishtheatrecom--mark-ludmon.json",
+      "score": null,
+      "publishDate": "2018-04-15",
+      "url": "https://www.britishtheatre.com/hi/posts/review-instructions-for-correct-assembly-royal-court-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "inter-alia-west-end-2025",
       "file": "artsdesk--aleks-sierz.json",
       "score": 77,
@@ -28779,6 +28793,62 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "network-west-end-2017",
+      "file": "a-younger-theatre--jessica-handscomb.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.ayoungertheatre.com/review-network-lyttelton-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from network-2018"
+        }
+      ]
+    },
+    {
+      "showId": "network-west-end-2017",
+      "file": "guardian--michael-billington.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2017/nov/13/network-review-bryan-cranston-lyttelton-national-theatre-lee-hall",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from network-2018"
+        }
+      ]
+    },
+    {
+      "showId": "network-west-end-2017",
+      "file": "london-box-office--stuart-king.json",
+      "score": null,
+      "publishDate": "2017-11-14",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-network-nt",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from network-2018"
+        }
+      ]
+    },
+    {
+      "showId": "network-west-end-2017",
+      "file": "sunday-times--christopher-hart.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.thetimes.co.uk/article/theatre-review-bryan-cranston-in-network-lyttelton-national-theatre-9fb8clzjc",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from network-2018"
         }
       ]
     },
@@ -43460,6 +43530,103 @@
       ]
     },
     {
+      "showId": "the-king-and-i-west-end-2018",
+      "file": "artsdesk--marianka-swain.json",
+      "score": null,
+      "publishDate": "2018-07-04T13:31:29-04:00",
+      "url": "https://theartsdesk.com/theatre/king-and-i-london-palladium-review-classic-musical-reborn-modern-sensibilities",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from the-king-and-i-2015"
+        }
+      ]
+    },
+    {
+      "showId": "the-king-and-i-west-end-2018",
+      "file": "daily-mail--quentin-letts.json",
+      "score": null,
+      "publishDate": "2018-07-04",
+      "url": "http://www.dailymail.co.uk/tvshowbiz/article-5916911/The-King-Getting-know-joy.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from the-king-and-i-2015"
+        }
+      ]
+    },
+    {
+      "showId": "the-king-and-i-west-end-2018",
+      "file": "independent--paul-taylor.json",
+      "score": null,
+      "publishDate": "2018-07-03",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-king-and-i-review-palladium-bartlett-sher-musical-a8429906.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from the-king-and-i-2015"
+        }
+      ]
+    },
+    {
+      "showId": "the-king-and-i-west-end-2018",
+      "file": "london-box-office--phil-willmott.json",
+      "publishDate": "2018-07-17",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-the-king-and-i",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from the-king-and-i-2015"
+        }
+      ]
+    },
+    {
+      "showId": "the-king-and-i-west-end-2018",
+      "file": "london-theatre--mark-shenton.json",
+      "score": null,
+      "publishDate": "2018-07-03",
+      "url": "https://www.londontheatre.co.uk/reviews/review-the-king-and-i-at-the-london-palladium",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from the-king-and-i-2015"
+        }
+      ]
+    },
+    {
+      "showId": "the-king-and-i-west-end-2018",
+      "file": "the-jewish-chronicle--jessica-weinstein.json",
+      "score": null,
+      "publishDate": "2018-07-04",
+      "url": "https://www.thejc.com/culture/theatre/theatre-review-the-king-and-i-london-palladium-kelli-o-hara-ken-watanabe-1.466519",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from the-king-and-i-2015"
+        }
+      ]
+    },
+    {
+      "showId": "the-king-and-i-west-end-2018",
+      "file": "whatsonstage--daisy-bowie-sell.json",
+      "score": null,
+      "publishDate": "2018-07-04",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/the-king-and-i-london-palladium_47022.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from the-king-and-i-2015"
+        }
+      ]
+    },
+    {
       "showId": "the-last-five-years-2025",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 35,
@@ -43536,6 +43703,114 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lehman-trilogy-west-end-2018",
+      "file": "camdennewjournal--unknown.json",
+      "score": null,
+      "publishDate": "2018-07-19",
+      "url": "https://www.camdennewjournal.co.uk/article/review-the-lehman-trilogy-at-lyttelton-national-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-lehman-trilogy-2021"
+        }
+      ]
+    },
+    {
+      "showId": "the-lehman-trilogy-west-end-2018",
+      "file": "city-am--adam-bloodworth.json",
+      "score": null,
+      "publishDate": "2018-07-19",
+      "url": "https://www.cityam.com/lehman-trilogy-national-theatre-review-astonishing-play/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-lehman-trilogy-2021"
+        }
+      ]
+    },
+    {
+      "showId": "the-lehman-trilogy-west-end-2018",
+      "file": "independent--paul-taylor.json",
+      "score": null,
+      "publishDate": "2018-07-13",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-lehman-trilogy-review-national-theatre-sam-mendes-simon-russell-beale-a8445541.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-lehman-trilogy-2021"
+        }
+      ]
+    },
+    {
+      "showId": "the-lehman-trilogy-west-end-2018",
+      "file": "london-box-office--phil-willmott.json",
+      "score": null,
+      "publishDate": "2018-07-13",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-lehman-trilogy",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-lehman-trilogy-2021"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lehman-trilogy-west-end-2018",
+      "file": "standard--henry-hitchings.json",
+      "score": null,
+      "publishDate": "2018-07-13",
+      "url": "https://www.standard.co.uk/culture/theatre/the-lehman-trilogy-review-sam-mendes-directs-a-trio-of-performances-you-can-bank-on-a3886436.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-lehman-trilogy-2021"
+        }
+      ]
+    },
+    {
+      "showId": "the-lehman-trilogy-west-end-2018",
+      "file": "telegraph--claire-allfree.json",
+      "score": null,
+      "publishDate": "2018-07-13",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/lehman-trilogy-review-national-theatre-lean-epic-deceptively/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-lehman-trilogy-2021"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lehman-trilogy-west-end-2018",
+      "file": "thestage--tom-wicker.json",
+      "score": null,
+      "publishDate": "2018-07-13",
+      "url": "https://www.thestage.co.uk/reviews/the-lehman-trilogy-review-at-national-theatre-london--magnificently-performed",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-lehman-trilogy-2021"
         }
       ]
     },
@@ -54727,6 +55002,62 @@
       ]
     },
     {
+      "showId": "absolute-hell-west-end-2018",
+      "file": "british-theatre--philip-fisher.json",
+      "score": null,
+      "publishDate": "2018-04-26",
+      "url": "https://www.britishtheatreguide.info/reviews/absolute-hell-lyttelton-theat-15824",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "absolute-hell-west-end-2018",
+      "file": "britishtheatrecom--paul-t-davies.json",
+      "score": null,
+      "publishDate": "2018-04-27",
+      "url": "https://www.britishtheatre.com/posts/review-absolute-hell-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "absolute-hell-west-end-2018",
+      "file": "london-theatre--mark-shenton.json",
+      "score": null,
+      "publishDate": "2018-04-24",
+      "url": "https://www.londontheatre.co.uk/reviews/review-absolute-hell-in-the-lyttelton-at-the-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "absolute-hell-west-end-2018",
+      "file": "thestage--natasha-tripney.json",
+      "score": null,
+      "publishDate": "2018-04-26",
+      "url": "https://www.thestage.co.uk/reviews/absolute-hell-review-at-national-theatre-london--superbly-acted-portrait-of-wartime-soho",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
       "showId": "accidental-death-of-an-anarchist-west-end-2023",
       "file": "revstanstheatreblog--unknown.json",
       "score": 81,
@@ -57147,6 +57478,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "bat-out-of-hell-west-end-2018",
+      "file": "london-box-office--the-break-a-leggers.json",
+      "publishDate": "2018-04-26",
+      "url": "https://www.londonboxoffice.co.uk/news/post/breakaleggers-bat-out-of-hell-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -63771,6 +64115,62 @@
       ]
     },
     {
+      "showId": "exit-the-king-west-end-2018",
+      "file": "artsdesk--rachel-hilliburton.json",
+      "score": null,
+      "publishDate": "2018-07-30T12:54:09-04:00",
+      "url": "https://theartsdesk.com/theatre/exit-king-national-theatre-review-vivid-brilliant-production-somehow-leaves-you-feeling",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "exit-the-king-west-end-2018",
+      "file": "britishtheatrecom--paul-t-davies.json",
+      "score": null,
+      "publishDate": "2018-07-27",
+      "url": "https://www.britishtheatre.com/ja/posts/review-exit-the-king-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "exit-the-king-west-end-2018",
+      "file": "london-theatre--georgina-varley.json",
+      "score": null,
+      "publishDate": "2018-07-26",
+      "url": "https://www.londontheatre.co.uk/reviews/review-exit-the-king-starring-rhys-ifans-at-the-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "exit-the-king-west-end-2018",
+      "file": "londontheatre1--alan-fitter.json",
+      "score": null,
+      "publishDate": "2018-07-26",
+      "url": "https://www.londontheatre1.com/reviews/exit-the-king-by-eugene-ionesco-at-the-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "expendable-west-end-2024",
       "file": "artsdesk--aleks-sierz.json",
       "score": 77,
@@ -64972,6 +65372,45 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "goats-west-end-2017",
+      "file": "british-theatre--philip-fisher.json",
+      "publishDate": "2017-12-01",
+      "url": "https://www.britishtheatreguide.info/reviews/goats-royal-court-the-15297",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "goats-west-end-2017",
+      "file": "britishtheatrecom--helena-payne.json",
+      "publishDate": "2017-12-03",
+      "url": "https://www.britishtheatre.com/posts/review-goats-royal-court-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "goats-west-end-2017",
+      "file": "nytimes--matt-wolf.json",
+      "publishDate": "2017-12-14",
+      "url": "https://www.nytimes.com/2017/12/14/theater/twilight-zone-bad-roads-goats.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -68216,6 +68655,48 @@
       ]
     },
     {
+      "showId": "home-im-darling-west-end-2018",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": null,
+      "publishDate": "2018-08-01",
+      "url": "https://www.ft.com/content/c3ef3200-958b-11e8-b67b-b8205561c3fe?syn-25a6b1a6=1",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "home-im-darling-west-end-2018",
+      "file": "london-box-office--nicky-allpress.json",
+      "score": null,
+      "publishDate": "2018-08-03",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-home-im-darling",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "home-im-darling-west-end-2018",
+      "file": "london-theatre--will-longman.json",
+      "score": null,
+      "publishDate": "2018-08-01",
+      "url": "https://www.londontheatre.co.uk/reviews/review-home-im-darling-at-the-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "honeymoon-in-vegas-2015",
       "file": "timeout--david-cote.json",
       "score": 85,
@@ -68587,6 +69068,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
+      "file": "boycotting-trends--view-my-complete.json",
+      "score": 91,
+      "publishDate": "2026-10-19",
+      "url": "https://boycottingtrends.blogspot.com/2026/10/theatre-review-ilford-boy-donmar.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -68991,6 +69486,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "imperium-the-cicero-plays-west-end-2018",
+      "file": "london-box-office--phil-willmott.json",
+      "publishDate": "2018-07-06",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-imperium",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
@@ -70366,6 +70874,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "julie-west-end-2018",
+      "file": "british-theatre--philip-fisher.json",
+      "score": null,
+      "publishDate": "2018-06-08",
+      "url": "https://www.britishtheatreguide.info/reviews/julie-lyttelton-theat-15998",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "julie-west-end-2018",
+      "file": "londontheatre1--peter-yates.json",
+      "score": null,
+      "publishDate": "2018-06-08",
+      "url": "https://www.londontheatre1.com/reviews/review-julie-lyttelton-royal-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -75343,6 +75879,47 @@
       ]
     },
     {
+      "showId": "nine-night-west-end-2018",
+      "file": "london-box-office--nastazja-domaradzka.json",
+      "publishDate": "2018-05-07",
+      "url": "https://www.londonboxoffice.co.uk/news/post/nine-night-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "nine-night-west-end-2018",
+      "file": "londontheatre1--peter-yates.json",
+      "score": null,
+      "publishDate": "2018-05-03",
+      "url": "https://www.londontheatre1.com/reviews/review-nine-night-national-theatre-dorfman-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "nine-night-west-end-2018",
+      "file": "sierz-co-uk--unknown.json",
+      "score": null,
+      "publishDate": "2018-04-30",
+      "url": "https://sierz.co.uk/reviews/nine-night-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "no-i-d-west-end-2023",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 96,
@@ -77696,6 +78273,58 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "pinocchio-west-end-2017",
+      "file": "financialtimes--unknown.json",
+      "publishDate": "2017-12-15",
+      "url": "https://www.ft.com/content/5f579352-e0bc-11e7-8f9f-de1c2175f5ce?syn-25a6b1a6=1",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "pity-west-end-2018",
+      "file": "british-theatre--philip-fisher.json",
+      "publishDate": "2018-07-19",
+      "url": "https://www.britishtheatreguide.info/reviews/pity-royal-court-the-16145",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "pity-west-end-2018",
+      "file": "london-theatre--will-longman.json",
+      "publishDate": "2018-07-19",
+      "url": "https://www.londontheatre.co.uk/reviews/review-rory-mullarkeys-pity-at-the-royal-court",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "pity-west-end-2018",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2018-07-20",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/pity-review-royal-court-downstairs-surreal-outrageous-chilling/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -86449,6 +87078,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-jungle-west-end-2018",
+      "file": "britishtheatrecom--mark-ludmon.json",
+      "score": null,
+      "publishDate": "2018-07-09",
+      "url": "https://www.britishtheatre.com/posts/review-the-jungle-playhouse-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-jungle-west-end-2018",
+      "file": "london-theatre--will-longman.json",
+      "score": null,
+      "publishDate": "2018-07-05",
+      "url": "https://www.londontheatre.co.uk/reviews/review-the-jungle-at-the-playhouse-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
