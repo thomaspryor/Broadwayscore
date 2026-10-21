@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-21T19:16:41.363Z",
+  "timestamp": "2026-10-21T19:34:26.770Z",
   "stats": {
-    "totalReviews": 58129,
-    "alreadyFlagged": 21135,
+    "totalReviews": 58192,
+    "alreadyFlagged": 21136,
     "dateGuardCatches": 199,
-    "directorMismatch": 2033,
+    "directorMismatch": 2034,
     "tvFilmSignals": 1654,
-    "londonSignals": 2590,
+    "londonSignals": 2591,
     "offBroadwaySignals": 530,
     "yearMismatch": 163,
-    "noPublishDate": 5246
+    "noPublishDate": 5293
   },
   "findings": [
     {
@@ -48491,6 +48491,20 @@
     },
     {
       "showId": "tina-the-tina-turner-musical-west-end-2018",
+      "file": "guardian--michael-billington.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2018/apr/17/tina-review-turner-musical-aldwych-theatre-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"phyllida lloyd\" from tina-2019"
+        }
+      ]
+    },
+    {
+      "showId": "tina-the-tina-turner-musical-west-end-2018",
       "file": "i-paper--holly-williams.json",
       "publishDate": "2018-04-06",
       "url": "https://inews.co.uk/culture/arts/tina-turner-musical-review-141989?srsltid=AU7gw4UDFZnz-jf6o8VWCUoBU3NMyG9gbFItOr_fLekO0HxGHycLUGd3",
@@ -83498,6 +83512,7 @@
     {
       "showId": "the-cherry-orchard-west-end-2026",
       "file": "artsdesk--unknown.json",
+      "score": 97,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/cherry-orchard-harold-pinter-theatre-review-chekhov-his-most-choice",
       "findings": [
@@ -91154,6 +91169,20 @@
       "score": 78,
       "publishDate": "2026-10-19",
       "url": "https://nystagereview.com/2026/10/19/triumph-history-repeating-itself/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "triumph-off-broadway-2026",
+      "file": "talkinbroadway--howard-miller.json",
+      "score": 75,
+      "publishDate": "2026-10-21",
+      "url": "https://www.talkinbroadway.com/page/ob/10_21_26.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
