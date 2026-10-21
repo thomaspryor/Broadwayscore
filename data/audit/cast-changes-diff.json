@@ -1,67 +1,91 @@
 {
-  "timestamp": "2026-10-17T12:36:23.685Z",
+  "timestamp": "2026-10-21T14:16:44.317Z",
   "summary": {
-    "eventsAdded": 11,
+    "eventsAdded": 18,
     "eventsUpgraded": 0,
-    "eventsCleaned": 0,
+    "eventsCleaned": 1,
     "showsCleaned": 0,
-    "totalChanges": 11,
+    "totalChanges": 19,
     "errors": 0
   },
   "changes": [
     {
-      "showId": "just-in-time-2025",
-      "changeType": "added",
-      "eventType": "departure",
-      "name": "Olivia Holt",
-      "role": "Connie Francis",
-      "source": "playbill-cast"
+      "showId": "harry-potter-2021",
+      "changeType": "cleaned-absence",
+      "eventType": "absence",
+      "name": "Tom Felton",
+      "role": "Draco Malfoy",
+      "date": "2026-05-11"
     },
     {
       "showId": "just-in-time-2025",
       "changeType": "added",
-      "eventType": "arrival",
-      "name": "Ariana Madix",
-      "role": "Unknown",
+      "eventType": "departure",
+      "name": "Jeremy Jordan",
+      "role": "Bobby Darin",
       "source": "playbill-cast"
     },
     {
-      "showId": "the-great-gatsby-2024",
-      "changeType": "added",
-      "eventType": "arrival",
-      "name": "Justin Keats",
-      "role": "Unknown",
-      "source": "playbill-cast"
-    },
-    {
-      "showId": "and-juliet-2022",
+      "showId": "just-in-time-2025",
       "changeType": "added",
       "eventType": "departure",
-      "name": "Chrissy Metz",
-      "role": "Angelique",
+      "name": "Carrie St. Louis",
+      "role": "Sandra Dee",
       "source": "playbill-cast"
     },
     {
-      "showId": "and-juliet-2022",
+      "showId": "just-in-time-2025",
       "changeType": "added",
       "eventType": "arrival",
-      "name": "Spencer Sutherland",
+      "name": "Matthew Morrison",
       "role": "Unknown",
       "source": "playbill-cast"
     },
     {
-      "showId": "and-juliet-2022",
+      "showId": "just-in-time-2025",
       "changeType": "added",
       "eventType": "arrival",
-      "name": "Anthony Gargiula",
+      "name": "Tristen Buettel",
       "role": "Unknown",
       "source": "playbill-cast"
     },
     {
-      "showId": "and-juliet-2022",
+      "showId": "maybe-happy-ending-2024",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Dez Duron",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "maybe-happy-ending-2024",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Hannah Kevitt",
+      "role": "Claire",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "maybe-happy-ending-2024",
       "changeType": "added",
       "eventType": "arrival",
-      "name": "Kenzie Ziegler",
+      "name": "Stella Cole",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "mj-2022",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Apollo Levine",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "mj-2022",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Nick T. Daly",
       "role": "Unknown",
       "source": "playbill-cast"
     },
@@ -69,31 +93,71 @@
       "showId": "mj-2022",
       "changeType": "added",
       "eventType": "arrival",
-      "name": "Ilario Grant",
+      "name": "Josh Jordan",
       "role": "Unknown",
       "source": "playbill-cast"
     },
     {
-      "showId": "harry-potter-2021",
+      "showId": "mj-2022",
       "changeType": "added",
       "eventType": "arrival",
-      "name": "Eleasha Gamble",
+      "name": "Kendrick Mitchell",
       "role": "Unknown",
       "source": "playbill-cast"
     },
     {
-      "showId": "aladdin-2014",
+      "showId": "book-of-mormon-2011",
       "changeType": "added",
       "eventType": "departure",
-      "name": "Caleb A. Barnett",
-      "role": "Genie",
+      "name": "John Eric Parker",
+      "role": "Unknown",
       "source": "playbill-cast"
     },
     {
-      "showId": "aladdin-2014",
+      "showId": "book-of-mormon-2011",
       "changeType": "added",
       "eventType": "arrival",
-      "name": "Sherri Shepherd",
+      "name": "Teddy Trice",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "wicked-2003",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Reagan Davidson",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Andrea Guzman",
+      "role": "Young Nala",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Camilla Lockhart",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "chicago-1996",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Krysta Rodriguez",
+      "role": "Roxie Hart",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "chicago-1996",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Max von Essen",
       "role": "Unknown",
       "source": "playbill-cast"
     }
@@ -105,9 +169,9 @@
     "redditSearches": 0,
     "redditPostsAnalyzed": 0,
     "officialSitesChecked": 0,
-    "eventsAdded": 11,
+    "eventsAdded": 18,
     "eventsUpgraded": 0,
-    "eventsCleaned": 0,
+    "eventsCleaned": 1,
     "showsCleaned": 0,
     "errors": []
   }
