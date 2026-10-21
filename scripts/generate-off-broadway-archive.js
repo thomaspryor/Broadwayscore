@@ -25,6 +25,7 @@ const { generateMarketArchive } = require('./lib/generate-market-archive');
 generateMarketArchive({
   outputFilename: 'off-broadway-archive.json',
   entryCategory: 'off-broadway',
-  belongsToMarket: show => show.category === 'off-broadway',
+  // Opera has its own page + archive-free section (BRO-5854).
+  belongsToMarket: show => show.category === 'off-broadway' && show.type !== 'opera',
   label: 'Off-Broadway',
 });

@@ -165,10 +165,17 @@ export function isOffBroadwayShow(show: ComputedShow): boolean {
 }
 
 /**
- * Get all Off-Broadway shows
+ * Get all Off-Broadway shows. Excludes opera (category 'off-broadway' only for
+ * routing; opera has its own /opera page and homepage "At the Met" shelf, see
+ * getOperaShows). BRO-5854.
  */
 export function getOffBroadwayShows(): ComputedShow[] {
-  return getAllShows().filter(isOffBroadwayShow);
+  return getAllShows().filter(isOffBroadwayMarketShow);
+}
+
+/** Off-Broadway market membership: category 'off-broadway' and not an opera production. */
+export function isOffBroadwayMarketShow(show: ComputedShow): boolean {
+  return isOffBroadwayShow(show) && !isOperaShow(show);
 }
 
 /**
