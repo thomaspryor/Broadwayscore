@@ -40,3 +40,22 @@ test('new files, deletions, empty and header-only patches are visual', () => {
 test('a text change mixed with a style change is visual', () => {
   assert.equal(isTextOnlyDiff(hunk('-<p>Old</p>\n-  gap: 4,\n+<p>New</p>\n+  gap: 8,')), false);
 });
+
+// Review bypass cases (BRO-5844): each must stay gated.
+const visual = {
+  'comment out code': '+/*\n <Hero />\n+*/',
+  'block comment attr swap': '-/* a */ <div className="a">\n+/* a */ <div className="b">',
+  'moved line': '-<Badge />\n-<Title />\n+<Title />\n+<Badge />',
+  'operator in braces': '-{items.length > 0 && x < 3 && <List/>}\n+{items.length > 9 || x < 3 && <List/>}',
+  'arrow comparison': '-f(x => x.score < 50)\n+f(x => x.n !== 2 || x.score < 50)',
+  'tailwind line': '-  px-4 py-2 bg-red-500\n+  px-8 hidden bg-blue-500',
+  'boolean props line': '+  priority fill',
+  'continuation': '-  * 2\n+  * 3',
+  'added code line': '+  <Banner />',
+};
+for (const [name, body] of Object.entries(visual)) {
+  test(`bypass stays gated: ${name}`, () => assert.equal(isTextOnlyDiff(hunk(body)), false));
+}
+test('prose moved between blocks is still text-only', () => {
+  assert.equal(isTextOnlyDiff(hunk('-  Old copy here.\n+  New copy here.')), true);
+});
