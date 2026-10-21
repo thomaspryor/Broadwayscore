@@ -48,7 +48,7 @@ test('the scanner flags rendered strings but not comments or console output', (t
 });
 
 test('on-screen copy in src/app, src/components, src/config and src/lib follows the voice rules', () => {
-  const hits = ['src/app', 'src/components', 'src/config', 'src/lib'].flatMap((d) => listTsFiles(path.join(root, d)))
+  const hits = ['src/app', 'src/components', 'src/config', 'src/lib', 'src/sanity', 'src/contexts', 'src/hooks'].flatMap((d) => listTsFiles(path.join(root, d)))
     .filter((f) => !SKIP.some((s) => path.relative(root, f).startsWith(s)))
     .flatMap((f) => copyViolationsIn(f, root))
     .filter((h) => !(UNLOCK_ACTION.test(h.split(':')[0]) && /unlock/i.test(h)));
