@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5866-b",
   "planId": "8cd0b82d-c189-4b9b-bfdb-d74db1f0a4ca",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -21,5 +21,14 @@
         "description": "Remove the Show Score audience score that came from another production's page from audience-buzz.json (33 shows, Safe House included; combinedScore recomputed, showScore tombstoned). The public mapping and show-score.json part landed in the BRO-5866 PR, recorded under _productionMismatch."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T23:25:23.544Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran purge-wrong-production-show-score.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
