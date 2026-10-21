@@ -78,7 +78,7 @@ const results = upcoming.map(s => {
     if (hasEmptyCast(s)) completenessIssues.push('empty cast');
     if (isPlaceholderSynopsis(s.synopsis)) completenessIssues.push('thin/placeholder synopsis');
     if (hasStaleUpcomingTag(s)) completenessIssues.push("stale 'upcoming' tag");
-    if (s.isRevival !== true && hasSameMarketTitleMatch(s, shows.shows)) completenessIssues.push('unverified revival');
+    if (s.isRevival !== true && s.revivalVerifiedNot !== true && hasSameMarketTitleMatch(s, shows.shows)) completenessIssues.push('unverified revival');
   }
 
   return {
