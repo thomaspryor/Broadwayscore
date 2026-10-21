@@ -1,32 +1,21 @@
 {
-  "updatedAt": "2026-10-21T18:08:05.167Z",
-  "processed": 305,
-  "failed": 198,
-  "successRate": "60.6%",
+  "updatedAt": "2026-10-21T18:26:17.240Z",
+  "processed": 306,
+  "failed": 210,
+  "successRate": "59.3%",
   "tierBreakdown": {
     "playwright": 143,
     "amp": 1,
-    "browserbase": 17,
+    "browserbase": 18,
     "directCookies": 1,
     "scrapingdog": 22,
-    "scrapingbee": 14,
+    "scrapingbee": 15,
     "brightdata": 4,
     "archiveToday": 0,
     "archive": 125
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-10-21T15:02:57.513Z",
-      "event": "bb-session",
-      "session": "33cc85b1",
-      "url": "https://www.nytimes.com/2026/04/25/theater/rheology-inspirations.html"
-    },
-    {
-      "t": "2026-10-21T15:02:58.291Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-10-21T15:07:45.444Z",
       "event": "bb-session",
@@ -127,6 +116,18 @@
       "t": "2026-10-21T17:35:44.787Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-21T18:17:56.569Z",
+      "event": "bb-session",
+      "session": "f1cf5718",
+      "url": "https://bachtrack.com/review-mazzoli-lincoln-in-the-bardo-blain-cruz-mattei-metr"
+    },
+    {
+      "t": "2026-10-21T18:21:08.135Z",
+      "event": "bb-session",
+      "session": "839850c1",
+      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
     }
   ]
 }
