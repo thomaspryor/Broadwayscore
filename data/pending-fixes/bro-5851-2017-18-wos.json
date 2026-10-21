@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5851-2017-18-wos",
   "planId": "75163873-a6ac-43a9-ac20-0f05e5f1efc2",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-21T17:47:38.481Z",
   "submitter": {
     "name": null,
@@ -270,5 +270,54 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T18:05:04.074Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added tina-the-tina-turner-musical-west-end-2018"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added consent-west-end-2018"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added killer-joe-west-end-2018"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added translations-west-end-2018"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added pressure-west-end-2018"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added imperium-the-cicero-plays-west-end-2018"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-jungle-west-end-2018"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added knights-of-the-rose-west-end-2018"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-glenn-miller-story-west-end-2018"
+    }
+  ],
+  "executedIn": "ci"
 }
