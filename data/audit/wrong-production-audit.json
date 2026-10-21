@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-21T16:05:49.588Z",
+  "timestamp": "2026-10-21T16:19:58.226Z",
   "stats": {
-    "totalReviews": 58105,
-    "alreadyFlagged": 21127,
+    "totalReviews": 58121,
+    "alreadyFlagged": 21128,
     "dateGuardCatches": 198,
     "directorMismatch": 2060,
     "tvFilmSignals": 1652,
-    "londonSignals": 2584,
+    "londonSignals": 2586,
     "offBroadwaySignals": 530,
     "yearMismatch": 162,
-    "noPublishDate": 5251
+    "noPublishDate": 5253
   },
   "findings": [
     {
@@ -68831,6 +68831,20 @@
     },
     {
       "showId": "ilford-boy-west-end-2026",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "score": null,
+      "publishDate": "2026-10-21",
+      "url": "https://www.broadwayworld.com/westend/article/Review-ILFORD-BOY-Donmar-Warehouse-20261021",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
       "score": 78,
       "publishDate": "2026-10-21",
@@ -91535,6 +91549,19 @@
       "score": 68,
       "publishDate": "2026-10-19",
       "url": "https://theartsdispatch.substack.com/p/triumph-review-almeida-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "triumph-off-west-end-2026",
+      "file": "theqr--will-quinn.json",
+      "publishDate": "2026-10-20",
+      "url": "https://theqr.co.uk/2026/10/20/caryl-churchills-triumph-falters-at-the-almeida-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
