@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5647-o",
   "planId": "37152615-1173-47a5-8890-362a950e0542",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-21T16:42:09.777Z",
   "submitter": {
     "name": null,
@@ -269,5 +269,94 @@
         "description": "gutenberg: reported by Broadway Journal"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T16:49:17.764Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for king-kong-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for king-kong-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for king-kong-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for othello-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for othello-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for gutenberg"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for gutenberg"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for gutenberg"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for gutenberg"
+    }
+  ],
+  "executedIn": "ci"
 }
