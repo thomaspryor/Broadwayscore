@@ -8,8 +8,10 @@ const hunk = (body) => `diff --git a/src/app/x/page.tsx b/src/app/x/page.tsx\nin
 test('copy change inside a JSX tag is text-only', () => {
   assert.equal(isTextOnlyDiff(hunk('-<p className="a">Old words</p>\n+<p className="a">New words here</p>')), true);
 });
-test('string literal change is text-only', () => {
-  assert.equal(isTextOnlyDiff(hunk("-  title: 'Old title',\n+  title: 'New title',")), true);
+test('string literal change stays gated (can be a style value)', () => {
+  assert.equal(isTextOnlyDiff(hunk("-  title: 'Old title',\n+  title: 'New title',")), false);
+  assert.equal(isTextOnlyDiff(hunk("-  const s = { gap: '4' };\n+  const s = { gap: '8' };")), false);
+  assert.equal(isTextOnlyDiff(hunk("-  return c ? 'a' : 'b';\n+  return c ? 'b' : 'a';")), false);
 });
 test('bare prose line change is text-only', () => {
   assert.equal(isTextOnlyDiff(hunk('-  We do not track you.\n+  We never track you.')), true);

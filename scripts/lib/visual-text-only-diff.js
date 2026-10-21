@@ -3,25 +3,23 @@
 // Used by .claude/hooks/pre-push-visual-gate.sh to skip the owner-approval gate
 // for copy edits. Fail closed: anything unrecognised counts as visual.
 //
-// Rule (no hint regex, so no drift against verify-edits.sh): mask string
-// literals and JSX text on every removed and added line, then compare the two
-// sequences in order. Identical => only copy changed.
+// Rule (no hint regex, so no drift against verify-edits.sh): mask JSX text and
+// bare prose lines on every removed and added line, then compare the two
+// sequences in order. Identical => only copy changed. String literals stay
+// significant (they can be style values), so those edits stay gated.
 
-const STRING_RE = /'(?:\\.|[^'\\\n])*'|"(?:\\.|[^"\\\n])*"|`(?:\\.|[^`\\\n])*`/g;
 const JSX_TEXT_RE = />[^<>{}]+</g;
-const STYLE_LINE_RE = /class|\bcn\(|clsx|style|\bsx\b|variant|size|color|\btw`/i;
-const CODE_TOKEN_RE = /[<>{}()=[\];:,?&|+*\/-]/;
+// A bare line of JSX prose: starts with a letter, 2+ words, no code punctuation,
+// no quotes, and not a statement keyword. Anything else counts as code.
+const PROSE_RE = /^[A-Za-z][\w\s,.!?'\u2019&%$#@-]*\s[\w\s,.!?'\u2019&%$#@-]*$/;
+const KEYWORD_RE = /^(return|const|let|var|import|export|if|else|case|default|break|continue|await|throw|type|interface|function|async|new|typeof|from)\b/;
 
 function maskLine(line) {
-  // Strings are copy EXCEPT attribute values (`size="lg"`) and anything on a
-  // line that can carry styling (className/cn()/clsx/style/variant/size).
-  const keepStrings = STYLE_LINE_RE.test(line);
-  let s = line
-    .replace(STRING_RE, (m, off, whole) => (keepStrings || /=\s*$/.test(whole.slice(0, off)) ? m : '""'))
-    .replace(JSX_TEXT_RE, '><')
-    .trim();
+  // String literals are NOT masked: `gap: '4'`, ternary branches and prop values
+  // can all change layout. Only JSX text between tags and bare prose lines are copy.
+  let s = line.replace(JSX_TEXT_RE, '><').trim();
   if (/^(\/\/|\/\*|\*)/.test(s)) return '';
-  if (!CODE_TOKEN_RE.test(s)) return ''; // bare prose line inside JSX
+  if (!s || (PROSE_RE.test(s) && !KEYWORD_RE.test(s))) return '';
   return s.replace(/\s+/g, ' ');
 }
 
