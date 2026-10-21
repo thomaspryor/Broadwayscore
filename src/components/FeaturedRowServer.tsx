@@ -85,7 +85,7 @@ function ServerMiniShowCard({ show, priority }: { show: ServerShelfShow; priorit
             <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${
               score === undefined || score === null ? 'bg-surface-overlay text-gray-400' : getScoreColorClass(score, category)
             }`}>
-              {score !== undefined && score !== null ? Math.round(score) : '—'}
+              {score !== undefined && score !== null ? Math.round(score) : '–'}
             </div>
           </div>
         </div>

@@ -225,7 +225,7 @@ export default function OlivierAwardsHubPage() {
                             {Math.round(w.compositeScore)}
                           </span>
                         ) : (
-                          <span className="text-sm text-gray-500">—</span>
+                          <span className="text-sm text-gray-500">–</span>
                         )}
                       </td>
                     </tr>

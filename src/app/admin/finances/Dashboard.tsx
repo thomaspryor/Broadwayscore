@@ -69,10 +69,10 @@ const fmtMoney = (n: number | undefined | null) =>
     ? n < 0
       ? `-$${Math.abs(n).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
       : `$${n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-    : '—';
+    : '–';
 
 const fmtPct = (n: number | undefined | null) =>
-  typeof n === 'number' ? `${n >= 0 ? '+' : ''}${n.toFixed(1)}%` : '—';
+  typeof n === 'number' ? `${n >= 0 ? '+' : ''}${n.toFixed(1)}%` : '–';
 
 // "2026-06" → "Jun ’26" (rows) / "June 2026" (header). The bare 2-digit form
 // ("Jun 26") reads like a calendar date, so always disambiguate the year.

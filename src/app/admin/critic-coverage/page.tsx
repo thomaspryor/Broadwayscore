@@ -208,7 +208,7 @@ export default async function AdminCriticCoveragePage() {
                 })}
                 {/* Totals row */}
                 <tr className="border-t border-white/20 bg-surface-overlay/50 font-semibold">
-                  <td className="px-4 py-3 text-gray-400">—</td>
+                  <td className="px-4 py-3 text-gray-400">–</td>
                   <td className="px-4 py-3 text-white">Total</td>
                   <td className="px-4 py-3 hidden sm:table-cell" />
                   <td className="px-4 py-3 text-right text-white">{current.totalGaps.toLocaleString()}</td>
@@ -302,7 +302,7 @@ export default async function AdminCriticCoveragePage() {
                         <td className="px-4 py-3 text-right text-gray-400">{row.gapsByBucket.D}</td>
                         <td className="px-4 py-3 text-right text-gray-400">{row.gapsByBucket.E}</td>
                         <td className={`px-4 py-3 text-right font-medium ${deltaClass(d.sign)}`}>
-                          {i === 0 ? '—' : `${d.sign}${d.diff !== 0 ? Math.abs(d.diff) : ''}`}
+                          {i === 0 ? '–' : `${d.sign}${d.diff !== 0 ? Math.abs(d.diff) : ''}`}
                         </td>
                       </tr>
                     );

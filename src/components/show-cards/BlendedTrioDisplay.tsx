@@ -61,7 +61,7 @@ export function BlendedTrioDisplay({
     status !== 'previews' &&
     status !== 'upcoming';
   const tier = showTier ? getScoreTier(blendedScore) : null;
-  const hasGrade = audienceGrade && audienceGrade.grade !== '—';
+  const hasGrade = audienceGrade && audienceGrade.grade !== '–';
   const isAplus = hasGrade && audienceGrade!.grade === 'A+';
   const showAwardsBox = awardsScore !== undefined;
   const hasAwards = typeof awardsScore === 'number' && awardsScore > 0;
@@ -119,7 +119,7 @@ export function BlendedTrioDisplay({
             </div>
           ) : (
             <div className={`${boxClass} bg-surface-overlay text-gray-500`}>
-              —
+              –
             </div>
           )}
         </div>

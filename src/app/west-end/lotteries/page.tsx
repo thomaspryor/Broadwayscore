@@ -238,10 +238,10 @@ export default function WestEndLotteriesPage() {
                       cheapestLottery.lotteryData?.lottery?.price,
                     'west-end'
                   )
-                : '—'}
+                : '–'}
             </div>
             <div className="text-xs text-gray-500 mt-1">Cheapest Lottery</div>
-            <div className="text-xs text-gray-400 truncate">{cheapestLottery?.show.title ?? '—'}</div>
+            <div className="text-xs text-gray-400 truncate">{cheapestLottery?.show.title ?? '–'}</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-white">{showsWithLottery.length}</div>
@@ -249,7 +249,7 @@ export default function WestEndLotteriesPage() {
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-gray-300">
-              {avgPrice !== null ? formatTicketPrice(Math.round(avgPrice), 'west-end') : '—'}
+              {avgPrice !== null ? formatTicketPrice(Math.round(avgPrice), 'west-end') : '–'}
             </div>
             <div className="text-xs text-gray-500 mt-1">Avg Lottery Price</div>
           </div>

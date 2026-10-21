@@ -351,10 +351,10 @@ export default function TonyAwardsHubPage() {
                               {Math.round(displayScore)}
                             </span>
                           ) : (
-                            <span className="text-sm text-gray-500">&mdash;</span>
+                            <span className="text-sm text-gray-500">–</span>
                           )}
                         </td>
-                        <td className="py-2.5 text-right text-sm text-gray-500">{winner.reviewCount || '—'}</td>
+                        <td className="py-2.5 text-right text-sm text-gray-500">{winner.reviewCount || '–'}</td>
                       </tr>
                     );
                   })}

@@ -193,7 +193,7 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tic
               )}
               <span className={`ml-auto text-sm ${isDark ? 'text-gray-600' : ''}`}>
                 {isDark ? (
-                  <span className="text-gray-600">&mdash;</span>
+                  <span className="text-gray-600">–</span>
                 ) : (
                   <>
                     {day.m && (hasTicketLink ? (

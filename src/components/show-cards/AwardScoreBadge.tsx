@@ -147,7 +147,7 @@ export function AwardScoreBadge({ score, badge, inProgress, size = 'lg' }: Award
           }}
         />
       )}
-      <span className="leading-none relative">{score > 0 ? score : '—'}</span>
+      <span className="leading-none relative">{score > 0 ? score : '–'}</span>
     </div>
   );
 }

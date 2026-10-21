@@ -204,16 +204,16 @@ export default function StandingRoomPage() {
         {/* Quick Stats */}
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="card p-4 text-center">
-            <div className="text-2xl font-bold text-gray-300">{cheapestSRO ? formatTicketPrice(cheapestSRO.sroData?.standingRoom?.price, 'broadway') : '—'}</div>
+            <div className="text-2xl font-bold text-gray-300">{cheapestSRO ? formatTicketPrice(cheapestSRO.sroData?.standingRoom?.price, 'broadway') : '–'}</div>
             <div className="text-xs text-gray-500 mt-1">Cheapest SRO</div>
-            <div className="text-xs text-gray-400 truncate">{cheapestSRO?.show.title ?? '—'}</div>
+            <div className="text-xs text-gray-400 truncate">{cheapestSRO?.show.title ?? '–'}</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-white">{showsWithSRO.length}</div>
             <div className="text-xs text-gray-500 mt-1">Shows with SRO</div>
           </div>
           <div className="card p-4 text-center">
-            <div className="text-2xl font-bold text-gray-400">{avgPrice !== null ? formatTicketPrice(avgPrice, 'broadway') : '—'}</div>
+            <div className="text-2xl font-bold text-gray-400">{avgPrice !== null ? formatTicketPrice(avgPrice, 'broadway') : '–'}</div>
             <div className="text-xs text-gray-500 mt-1">Average Price</div>
           </div>
         </div>

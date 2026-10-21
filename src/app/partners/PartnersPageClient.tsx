@@ -80,7 +80,7 @@ export default function PartnersPageClient({ shows, baseUrl }: Props) {
   width="360" height="96"
   frameborder="0"
   scrolling="no"
-  title="${selected.title} — CriticScore by Broadway Scorecard"
+  title="${selected.title}: CriticScore by Broadway Scorecard"
   style="border:0;max-width:100%;"
   loading="lazy"
 ></iframe>`
@@ -90,7 +90,7 @@ export default function PartnersPageClient({ shows, baseUrl }: Props) {
     ? `<a href="${showUrl}" target="_blank" rel="noopener">
   <img
     src="${badgeUrl}"
-    alt="${selected.title} — CriticScore by Broadway Scorecard"
+    alt="${selected.title}: CriticScore by Broadway Scorecard"
     width="280" height="100"
     style="max-width:100%;height:auto;"
   />
@@ -112,7 +112,7 @@ export default function PartnersPageClient({ shows, baseUrl }: Props) {
           </h1>
           <p className="text-lg text-gray-400 max-w-2xl mx-auto">
             Free badges and embeds for any Broadway or West End show. Copy-paste a single line.
-            Scores stay fresh automatically — badges update whenever critics post new reviews.
+            Scores stay fresh automatically. Badges update whenever critics post new reviews.
           </p>
         </div>
       </section>
@@ -210,7 +210,7 @@ export default function PartnersPageClient({ shows, baseUrl }: Props) {
             {/* Step 3: Preview */}
             <section>
               <h2 className="text-2xl font-bold text-white mb-2">3. Preview</h2>
-              <p className="text-gray-400 mb-5 text-sm">Live preview — this is exactly what visitors will see.</p>
+              <p className="text-gray-400 mb-5 text-sm">Live preview: this is exactly what visitors will see.</p>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="bg-surface-raised border border-white/5 rounded-card p-6">
                   <div className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-4">Iframe (interactive, themeable)</div>
@@ -220,7 +220,7 @@ export default function PartnersPageClient({ shows, baseUrl }: Props) {
                     height={96}
                     frameBorder={0}
                     scrolling="no"
-                    title={`${selected.title} — CriticScore`}
+                    title={`${selected.title}: CriticScore`}
                     style={{ border: 0, maxWidth: '100%' }}
                     loading="lazy"
                   />
@@ -230,7 +230,7 @@ export default function PartnersPageClient({ shows, baseUrl }: Props) {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={previewBadgeUrl}
-                    alt={`${selected.title} — CriticScore`}
+                    alt={`${selected.title}: CriticScore`}
                     width={280}
                     height={100}
                     style={{ maxWidth: '100%', height: 'auto' }}
@@ -242,9 +242,9 @@ export default function PartnersPageClient({ shows, baseUrl }: Props) {
             {/* Step 4: Copy-paste */}
             <section>
               <h2 className="text-2xl font-bold text-white mb-2">4. Copy the snippet</h2>
-              <p className="text-gray-400 mb-5 text-sm">Paste anywhere — your CMS, Webflow, plain HTML, a blog post.</p>
-              <CopyBlock label="Iframe (recommended — themeable, interactive)" code={iframeSnippet} />
-              <CopyBlock label="SVG image (simplest — drop-in as any image)" code={svgSnippet} />
+              <p className="text-gray-400 mb-5 text-sm">Paste anywhere: your CMS, Webflow, plain HTML, a blog post.</p>
+              <CopyBlock label="Iframe (recommended, themeable, interactive)" code={iframeSnippet} />
+              <CopyBlock label="SVG image (simplest, drop-in as any image)" code={svgSnippet} />
               <CopyBlock label="Plain link (for emails, newsletters)" code={linkSnippet} />
             </section>
           </>
@@ -256,23 +256,23 @@ export default function PartnersPageClient({ shows, baseUrl }: Props) {
           <div className="space-y-4 text-sm text-gray-300 leading-relaxed max-w-3xl">
             <p>
               <strong className="text-white">Attribution is required.</strong> The badge and iframe both include
-              &ldquo;CriticScore™ by Broadway Scorecard&rdquo; text — don&apos;t remove or obscure it. That text
+              &ldquo;CriticScore™ by Broadway Scorecard&rdquo; text. Don&apos;t remove or obscure it. That text
               must link back to{' '}
               <Link href="/" className="text-brand hover:text-brand-light">broadwayscorecard.com</Link> (the embed
               already does this for you).
             </p>
             <p>
               <strong className="text-white">The score, tier name, and color must stay together.</strong> Don&apos;t
-              show just the number in your site&apos;s font color or strip the tier label — the meaning comes from
+              show just the number in your site&apos;s font color or strip the tier label. The meaning comes from
               the full unit.
             </p>
             <p>
               <strong className="text-white">Don&apos;t modify the values.</strong> Don&apos;t normalize to your own
-              scale, round differently, or show stale scores. Use the live embed — it updates automatically.
+              scale, round differently, or show stale scores. Use the live embed. It updates automatically.
             </p>
             <p>
               <strong className="text-white">Scores are aggregated critic reviews only</strong> (not audience
-              scores). Minimum 5 reviews for Broadway, 3 for Off-Broadway — shows below that show as &ldquo;TBD.&rdquo;
+              scores). Minimum 5 reviews for Broadway, 3 for Off-Broadway. Shows below that show as &ldquo;TBD.&rdquo;
             </p>
             <p>
               Full terms are in our <Link href="/terms" className="text-brand hover:text-brand-light">Terms of Service</Link>.

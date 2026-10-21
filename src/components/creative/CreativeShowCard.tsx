@@ -108,7 +108,7 @@ export function CreativeShowCard({
         </div>
       ) : (
         <div className="w-10 h-10 text-sm rounded-lg bg-surface-overlay flex items-center justify-center text-gray-500 font-bold flex-shrink-0">
-          —
+          –
         </div>
       )}
     </Link>

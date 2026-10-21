@@ -217,7 +217,7 @@ export function SortableAwardScoreTable({ data }: SortableAwardScoreTableProps) 
               const hasTonyActivity = awardScore.tonyWins > 0 || awardScore.tonyNoms > 0;
               const tonyRecord = hasTonyActivity
                 ? `${awardScore.tonyWins} Win${awardScore.tonyWins !== 1 ? 's' : ''} · ${awardScore.tonyNoms} Nom${awardScore.tonyNoms !== 1 ? 's' : ''}`
-                : '—';
+                : '–';
 
               const posterUrl = show.images?.poster ?? show.images?.thumbnail ?? show.images?.hero;
               const optimizedUrl = posterUrl ? getOptimizedImageUrl(posterUrl, 'thumbnail') : undefined;
@@ -295,7 +295,7 @@ export function SortableAwardScoreTable({ data }: SortableAwardScoreTableProps) 
                   <td className="py-3 px-4 text-center align-middle hidden lg:table-cell">
                     {notableWin
                       ? <span className="text-amber-300 text-xs font-medium">{notableWin}</span>
-                      : <span className="text-gray-600">—</span>
+                      : <span className="text-gray-600">–</span>
                     }
                   </td>
 

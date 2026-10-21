@@ -290,7 +290,7 @@ function Cell({
         className="text-gray-600 tabular-nums cursor-help"
         title={naHint ?? 'Not enough data for this pool'}
       >
-        —
+        –
       </span>
     );
   }

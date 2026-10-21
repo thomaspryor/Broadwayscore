@@ -164,7 +164,7 @@ export function AudienceBuzzTable({ data, sources }: AudienceBuzzTableProps) {
                         {gradeInfo.grade}
                       </span>
                     ) : (
-                      <span className="text-gray-500">—</span>
+                      <span className="text-gray-500">–</span>
                     )}
                   </td>
                   {sources?.map((src, i) => {
@@ -178,7 +178,7 @@ export function AudienceBuzzTable({ data, sources }: AudienceBuzzTableProps) {
                         {srcData ? (
                           <span className="text-gray-400 text-sm">{srcData.reviewCount.toLocaleString()} {src.volumeLabel}</span>
                         ) : (
-                          <span className="text-gray-500">—</span>
+                          <span className="text-gray-500">–</span>
                         )}
                       </td>
                     );

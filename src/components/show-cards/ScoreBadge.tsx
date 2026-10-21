@@ -158,7 +158,7 @@ export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown,
   if (score === undefined || score === null) {
     return (
       <div className={`score-badge ${sizeClass} score-none font-bold`}>
-        —
+        –
       </div>
     );
   }

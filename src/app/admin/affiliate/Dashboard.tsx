@@ -107,13 +107,13 @@ interface Stats {
 type Timeframe = 7 | 30;
 
 const fmtMoney = (n: number | undefined | null) =>
-  typeof n === 'number' ? `$${n.toFixed(2)}` : '—';
+  typeof n === 'number' ? `$${n.toFixed(2)}` : '–';
 
 const fmtInt = (n: number | undefined | null) =>
-  typeof n === 'number' ? n.toLocaleString() : '—';
+  typeof n === 'number' ? n.toLocaleString() : '–';
 
 const fmtPct = (n: number | undefined | null) =>
-  typeof n === 'number' ? `${n >= 0 ? '+' : ''}${n.toFixed(1)}%` : '—';
+  typeof n === 'number' ? `${n >= 0 ? '+' : ''}${n.toFixed(1)}%` : '–';
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -329,7 +329,7 @@ export default function Dashboard() {
                 value={
                   stats.unitEconomics.takeRate != null
                     ? `${(stats.unitEconomics.takeRate * 100).toFixed(2)}%`
-                    : '—'
+                    : '–'
                 }
                 hint="commission ÷ sale"
               />
@@ -338,7 +338,7 @@ export default function Dashboard() {
                 value={
                   stats.unitEconomics.earningsPerClick != null
                     ? `$${stats.unitEconomics.earningsPerClick.toFixed(3)}`
-                    : '—'
+                    : '–'
                 }
                 hint="commission ÷ click"
               />
@@ -371,16 +371,16 @@ export default function Dashboard() {
                         </td>
                         <td className="px-2 py-2 text-right text-gray-300 tabular-nums">{fmtInt(r.clicks)}</td>
                         <td className="px-2 py-2 text-right text-gray-300 tabular-nums">
-                          {r.conversions != null ? fmtInt(r.conversions) : <span className="text-gray-600">—</span>}
+                          {r.conversions != null ? fmtInt(r.conversions) : <span className="text-gray-600">–</span>}
                         </td>
                         <td className="px-2 py-2 text-right text-gray-300 tabular-nums">
-                          {r.conversionRate != null ? `${(r.conversionRate * 100).toFixed(1)}%` : <span className="text-gray-600">—</span>}
+                          {r.conversionRate != null ? `${(r.conversionRate * 100).toFixed(1)}%` : <span className="text-gray-600">–</span>}
                         </td>
                         <td className="px-2 py-2 text-right text-white font-semibold tabular-nums">
-                          {r.commission != null ? fmtMoney(r.commission) : <span className="text-gray-600">—</span>}
+                          {r.commission != null ? fmtMoney(r.commission) : <span className="text-gray-600">–</span>}
                         </td>
                         <td className="px-4 sm:px-5 py-2 text-right text-gray-300 tabular-nums">
-                          {r.epc != null ? `$${r.epc.toFixed(3)}` : <span className="text-gray-600">—</span>}
+                          {r.epc != null ? `$${r.epc.toFixed(3)}` : <span className="text-gray-600">–</span>}
                         </td>
                       </tr>
                     ))}

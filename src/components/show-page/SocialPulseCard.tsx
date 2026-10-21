@@ -451,7 +451,7 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
                 {quote.t}
                 <span className="text-gray-500">&rdquo;</span>{' '}
                 <span className="text-xs text-gray-500 inline-flex items-center gap-1.5 ml-1">
-                  —{' '}
+                  –{' '}
                   {meta && (
                     <span className="inline-block scale-75 -my-1">
                       <meta.Icon />

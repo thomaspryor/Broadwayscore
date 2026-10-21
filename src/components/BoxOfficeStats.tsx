@@ -12,7 +12,7 @@ interface BoxOfficeStatsProps {
 }
 
 function formatCurrency(value: number | null | undefined): string {
-  if (value == null) return '—';
+  if (value == null) return '–';
   if (value >= 1_000_000_000) {
     return `$${(value / 1_000_000_000).toFixed(1)}B`;
   }
@@ -26,7 +26,7 @@ function formatCurrency(value: number | null | undefined): string {
 }
 
 function formatNumber(value: number | null | undefined): string {
-  if (value == null) return '—';
+  if (value == null) return '–';
   if (value >= 1_000_000) {
     return `${(value / 1_000_000).toFixed(1)}M`;
   }
@@ -37,7 +37,7 @@ function formatNumber(value: number | null | undefined): string {
 }
 
 function formatPercentage(value: number | null | undefined): string {
-  if (value == null) return '—';
+  if (value == null) return '–';
   return `${value.toFixed(0)}%`;
 }
 
@@ -234,7 +234,7 @@ export function BoxOfficeThisWeek({ grosses, history, className = 'mb-4', stackC
           stackChanges={stackChanges} roundNearest={roundNearest}
         />
         <StatCard
-          value={grosses.thisWeek.atp ? `$${grosses.thisWeek.atp.toFixed(0)}` : '—'}
+          value={grosses.thisWeek.atp ? `$${grosses.thisWeek.atp.toFixed(0)}` : '–'}
           label="Avg Ticket"
           wowChange={atpWoW}
           yoyChange={atpYoY}
