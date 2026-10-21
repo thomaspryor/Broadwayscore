@@ -15,7 +15,10 @@
  *                  passes: reviewCount, category, T1+T2 count, curated-historical.
  *                  This is the website card and badge rule.
  *   pq             1 when the website's show page shows the score: `q`'s gate,
- *                  previews/upcoming always TBD, then the coverage floor
+ *                  previews/upcoming always TBD (the website's corrected status,
+ *                  scripts/lib/effective-status.js: a show is open from its
+ *                  opening date even while shows.json still says previews),
+ *                  then the coverage floor
  *                  (scripts/lib/coverage-floor.js: a score public for 24h+
  *                  stays shown; a never-public score waits while known reviews
  *                  are missing). Differs from `q` for a few dozen shows.
@@ -29,23 +32,29 @@ const { isCuratedHistoricalShow } = require('./should-hide-reviews');
 const { hasEnoughReviews } = require('./min-reviews');
 const { getScoreTierLabel } = require('./score-tiers');
 const { applyCoverageFloor } = require('./coverage-floor');
+const { effectiveShowStatus, getMarketDate } = require('./effective-status');
 
 /**
- * @param {{ id: string, category?: string, type?: string, status?: string }} show
+ * @param {{ id: string, category?: string, type?: string, status: string, openingDate?: string, closingDate?: string, previewsStartDate?: string }} show
+ *   the shows.json entry (raw status; corrected here the way the website does)
  * @param {Array<object>} showReviews - the show's reviews (reviews.json + blog reviews)
  * @param {Object} outletRegistry - data/outlet-registry.json `outlets`
  * @param {{scorePublicSince?: string, coverageState?: string, coverageAcked?: boolean, now?: number}} [floorOpts]
  *   the show's coverage floor inputs (coverageFloorOptsForShow in
- *   scripts/lib/coverage-floor-inputs.js); omitted means no stamp, no verdict
+ *   scripts/lib/coverage-floor-inputs.js); omitted means no stamp, no verdict.
+ *   `now` (ms) also sets the date the status is corrected against.
  * @returns {{ s: number, rc: number, t1: number, t2: number, l: string, q: 0 | 1, pq: 0 | 1 } | null}
  */
 function buildMobileCriticScore(show, showReviews, outletRegistry, floorOpts = {}) {
   const result = computeCriticScore(showReviews, outletRegistry, show.category, show.type);
   if (!result) return null;
   const enough = hasEnoughReviews(result.rc, show.category, result.t1 + result.t2, isCuratedHistoricalShow(show.id));
-  // Same expression as the website show page's showTBD (src/app/show/[slug]/page.tsx).
+  // Same expression as the website show page's showTBD (src/app/show/[slug]/page.tsx),
+  // which reads ComputedShow.status: shows.json's status corrected for today.
+  const today = getMarketDate(show.category, floorOpts.now != null ? new Date(floorOpts.now) : new Date());
+  const status = effectiveShowStatus(show, today);
   const pageTBD = applyCoverageFloor(
-    !enough || show.status === 'previews' || show.status === 'upcoming',
+    !enough || status === 'previews' || status === 'upcoming',
     floorOpts,
   );
   return {

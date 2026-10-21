@@ -18,6 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const { shouldHideReviews } = require('./lib/should-hide-reviews');
 const { buildMobileCriticScore } = require('./lib/mobile-critic-score');
+const { effectiveShowStatus } = require('./lib/effective-status');
 const { loadCoverageFloorInputs, coverageFloorOptsForShow } = require('./lib/coverage-floor-inputs');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const { isHiddenFromAppFeed } = require('./lib/markets');
@@ -163,6 +164,12 @@ const coverageFloorInputs = loadCoverageFloorInputs(dataDir);
 const mobileShows = visibleShows.map(show => {
   const showReviews = reviewsByShow[show.id] || [];
 
+  // The status the website shows (src/lib/engine.ts uses the same helper):
+  // shows.json corrected against today's date in the show's market, so a show
+  // on its opening night is "open" here too. buildMobileCriticScore applies the
+  // same correction to its show-page gate, so it takes the raw entry.
+  const status = effectiveShowStatus(show);
+
   // Pre-2005 closed shows: hide reviews entirely (unreliable data from bulk import)
   const hideReviews = shouldHideReviews(show);
   let criticScore = hideReviews
@@ -180,12 +187,6 @@ const mobileShows = visibleShows.map(show => {
     if (totalReviews >= MIN_AUDIENCE_REVIEWS) {
       audienceGrade = getAudienceGrade(buzz.combinedScore);
     }
-  }
-
-  // Determine effective status (same as engine.ts line 639)
-  let status = show.status;
-  if (status === 'previews' && show.previewsStartDate && show.previewsStartDate > new Date().toISOString().slice(0, 10)) {
-    status = 'upcoming';
   }
 
   // Build compact entry — omit null/empty fields for size

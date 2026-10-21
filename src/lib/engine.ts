@@ -31,6 +31,7 @@ import {
 import { getRegistryTier, getOutletRegistry } from './outlet-id-mapper';
 // The one critic-score formula, shared with the slim-file generator (BRO-4312).
 import { scoreReviews } from '../../scripts/lib/compute-critic-score';
+import { normalizeShowStatus, effectiveShowStatus } from '../../scripts/lib/effective-status';
 
 /** Per-review detail returned by scripts/lib/compute-critic-score.js scoreReviews(). */
 interface SharedScoredReview {
@@ -636,13 +637,9 @@ export function computeShowData(
   // (ET for Broadway/OB, London for WE/OWE). UTC comparison causes off-by-one when
   // builds run after midnight UTC but before midnight local (e.g., Titanique 2026-04-12
   // appeared "open" at 9pm ET April 11 because UTC was already April 12).
+  // The rule lives in scripts/lib/effective-status.js, which the app feed uses too.
   const today = getMarketDate(show.category);
-  let normalizedStatus = show.status;
-  if (normalizedStatus === 'previews' && show.openingDate && show.openingDate <= today) {
-    normalizedStatus = 'open';
-  } else if (normalizedStatus === 'open' && show.closingDate && show.closingDate < today) {
-    normalizedStatus = 'closed';
-  }
+  const normalizedStatus = normalizeShowStatus(show, today);
 
   const confidence = assessConfidence(criticScore, null, normalizedStatus);
 
@@ -659,7 +656,7 @@ export function computeShowData(
     venue: show.venue,
     openingDate: show.openingDate,
     closingDate: show.closingDate,
-    status: normalizedStatus === 'previews' && show.previewsStartDate && show.previewsStartDate > today ? 'upcoming' : normalizedStatus,
+    status: effectiveShowStatus(show, today),
     type: show.type,
     category: show.category,
     genre: show.genre,
