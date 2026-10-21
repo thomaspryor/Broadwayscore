@@ -5,8 +5,9 @@
  * --strict (CLAUDE.md s19).
  *
  * --probe-bylines fetches each group's url through fetchPage() and counts
- * every member critic's name on the live page, so the plan author can decide
- * who wrote it from the page. Needs scraper keys: from cloud, run it through
+ * every member critic's name on the live page, plus the page's own byline
+ * (which may name none of them), so the plan author can decide who wrote it
+ * from the page. Needs scraper keys: from cloud, run it through
  * cloud-run-script.js --review-texts.
  *
  * Usage:
@@ -21,6 +22,7 @@ const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '.
 
 async function probe(groups) {
   const { fetchPage, cleanup } = require('./lib/scraper.js');
+  const { extractByline, extractJsonLdAuthor } = require('./lib/byline-extraction.js');
   try {
     for (const g of groups) {
       const names = [...new Set(g.members.map((m) => m.criticName).filter(Boolean))];
@@ -28,7 +30,13 @@ async function probe(groups) {
       try {
         const r = await fetchPage(g.members[0].url, {});
         const content = (r && typeof r.content === 'string') ? r.content : '';
-        res = { ok: content.length > 0, source: (r && r.source) || null, length: content.length, mentions: bylineMentions(content, names) };
+        // The page's own byline too: the author may be none of the members.
+        const by = (fn) => { try { return fn(content) || null; } catch { return null; } };
+        res = {
+          ok: content.length > 0, source: (r && r.source) || null, length: content.length,
+          byline: by(extractByline), jsonLdAuthor: by(extractJsonLdAuthor),
+          mentions: bylineMentions(content, names),
+        };
       } catch (err) {
         res = { ok: false, error: String(err && err.message || err).slice(0, 120) };
       }
