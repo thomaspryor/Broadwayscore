@@ -59,6 +59,7 @@ describe('draftable show catalog (data/fantasy-league.json)', () => {
     // Anchor on the snapshot's own generatedAt, not the wall clock: the data
     // file is frozen, so a later clock would demand scores it never had (BRO-5721).
     const asOf = Math.min(Date.now(), Date.parse(leagueData._meta.generatedAt));
+    assert.ok(Number.isFinite(asOf), 'fantasy-league.json _meta.generatedAt missing/invalid');
     const weekAgo = new Date(asOf - 7 * 86400000).toISOString().slice(0, 10);
     const locked = Object.entries(shows).filter(([, s]) => s.eligible.criticScore === false && (!s.openingDate || s.openingDate <= weekAgo));
     for (const [id, show] of locked) {
