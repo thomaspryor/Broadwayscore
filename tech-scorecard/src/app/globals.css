@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-font-smoothing: antialiased; }
+  body { @apply bg-surface text-ink; }
+  h1, h2, h3 { text-wrap: balance; }
+}
+
+@layer components {
+  /* Card component (Broadway Scorecard .card, light) */
+  .card {
+    @apply bg-surface-raised rounded-card shadow-card border border-line;
+  }
+  .card-interactive {
+    @apply card;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, border-color 0.2s ease-out;
+  }
+  .card-interactive:hover {
+    @apply shadow-card-hover border-line-strong;
+    transform: translateY(-2px);
+  }
+
+  .section-label {
+    @apply text-xs font-bold uppercase tracking-[0.12em] text-ink-faint;
+  }
+
+  /* Score badges: same tiers and colors as Broadway Scorecard */
+  .score-badge {
+    @apply inline-flex items-center justify-center rounded-badge font-bold shrink-0;
+    font-variant-numeric: tabular-nums;
+  }
+  .score-must-see {
+    background: linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%);
+    color: #1a1a1a;
+    box-shadow: 0 0 18px rgba(218, 165, 32, 0.35), 0 2px 8px rgba(0, 0, 0, 0.08), inset 0 2px 0 rgba(255, 255, 255, 0.35);
+    border: 2px solid #C8960E;
+    position: relative;
+    overflow: hidden;
+  }
+  .score-must-see::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    animation: shimmer 2.5s infinite;
+  }
+  @keyframes shimmer { 0% { left: -100%; } 100% { left: 100%; } }
+  @media (prefers-reduced-motion: reduce) { .score-must-see::before { animation: none; } }
+
+  .score-great { background-color: #22c55e; color: #fff; box-shadow: 0 2px 8px rgba(34, 197, 94, 0.25); }
+  .score-good { background-color: #14b8a6; color: #fff; box-shadow: 0 2px 8px rgba(20, 184, 166, 0.25); }
+  .score-tepid { background-color: #f59e0b; color: #1a1a1a; box-shadow: 0 2px 8px rgba(217, 119, 6, 0.25); }
+  .score-skip { background-color: #ef4444; color: #fff; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25); }
+  .score-none { @apply bg-surface-overlay text-ink-faint border border-line; }
+
+  .chip {
+    @apply inline-flex items-center px-2 py-0.5 rounded-pill text-[10px] font-bold tracking-wider uppercase border;
+  }
+
+  /* Critic Scorecard sort toggle: pure CSS so it works in the static preview too */
+  .sort-toggle input { position: absolute; opacity: 0; pointer-events: none; }
+  .sort-toggle label { @apply cursor-pointer text-sm text-ink-faint hover:text-ink; }
+  .by-score:checked ~ .sort-labels .lbl-score,
+  .by-date:checked ~ .sort-labels .lbl-date { @apply text-ink font-semibold; }
+  .by-score:focus-visible ~ .sort-labels .lbl-score,
+  .by-date:focus-visible ~ .sort-labels .lbl-date { @apply outline outline-2 outline-brand rounded; }
+  .sort-toggle .list-date { display: none; }
+  .by-date:checked ~ .list-score { display: none; }
+  .by-date:checked ~ .list-date { display: block; }
+
+  details.more > summary { list-style: none; }
+  details.more > summary::-webkit-details-marker { display: none; }
+  details.more[open] > summary .more-closed { display: none; }
+  details.more:not([open]) > summary .more-open { display: none; }
+}
