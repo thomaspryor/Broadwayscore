@@ -8,6 +8,7 @@
 // fixtures.
 
 import { getSeason, isExcludedFromSeasonStats } from './commercial-metrics';
+import { sourceOpensAsEstimate } from '../../scripts/lib/public-source-text';
 
 export interface SeasonShowInput {
   type: string | null | undefined;
@@ -16,12 +17,9 @@ export interface SeasonShowInput {
   /** commercial.json record, null when the show is not tracked there. */
   commercial: {
     capitalization?: number | null;
-    /**
-     * True when the capitalization is our estimate (isEstimatedCapitalization),
-     * not a public figure: it counts toward the estimated season total, never
-     * toward the disclosed one or the disclosed averages (BRO-5647).
-     */
-    capitalizationIsEstimate?: boolean;
+    /** Read by isOwnEstimate: our own estimate is not a disclosed figure. */
+    isEstimate?: Record<string, boolean | undefined> | null;
+    capitalizationSource?: string | null;
     /**
      * Weekly running cost as recorded. Supplied by data-commercial.ts, the
      * approved reader of the running-cost field in commercial data (cost-for-week
@@ -179,6 +177,20 @@ export function estimateCapitalization(
   return widest.length >= MIN_AVERAGE_SAMPLE ? median(widest.map((d) => d.capitalization)) : null;
 }
 
+/**
+ * True when a show's capitalization is our own estimate (isEstimate flag or an
+ * "Estimate:" source), not a public figure (BRO-5647: six such budgets were
+ * counted as disclosed). Decided from the record, so buildSeasonProfiles and
+ * getSeasonStats (data-commercial.ts) agree.
+ */
+export function isOwnEstimate(c: Pick<NonNullable<SeasonShowInput['commercial']>, 'capitalization' | 'isEstimate' | 'capitalizationSource'>): boolean {
+  // Not isEstimatedCapitalization: it also marks an uncited figure, a display
+  // rule ("~" on an unsourced number); here only our own estimates leave the
+  // disclosed counts.
+  return typeof c.capitalization === 'number' && c.capitalization > 0
+    && (c.isEstimate?.capitalization === true || sourceOpensAsEstimate(c.capitalizationSource));
+}
+
 /** One profile per season (July 1 - June 30), newest first. */
 export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
   const disclosed: DisclosedCap[] = [];
@@ -186,7 +198,7 @@ export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
     const season = getSeason(show.openingDate);
     const c = show.commercial;
     if (!season || !c || isExcludedFromSeasonStats(c) || c.nonprofitOrg) continue;
-    if (typeof c.capitalization === 'number' && c.capitalization > 0 && !c.capitalizationIsEstimate) {
+    if (typeof c.capitalization === 'number' && c.capitalization > 0 && !isOwnEstimate(c)) {
       disclosed.push({
         year: parseInt(season.slice(0, 4), 10),
         type: show.type ?? '',
@@ -236,7 +248,7 @@ export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
     // Our own estimate of a show's budget is not a disclosed figure: it stays
     // out of the disclosed sums and averages, and fills the estimated total
     // ahead of the comparables median.
-    const disclosedCap = c.capitalizationIsEstimate ? null : c.capitalization;
+    const disclosedCap = isOwnEstimate(c) ? null : c.capitalization;
     addMoney(p.capitalization.all, disclosedCap);
     if (typeof disclosedCap === 'number' && disclosedCap > 0) {
       p.estimatedCapital.total += disclosedCap;

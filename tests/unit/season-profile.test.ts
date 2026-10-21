@@ -16,6 +16,7 @@ import {
   buildSeasonProfiles,
   compareSeason,
   formatRowValue,
+  isOwnEstimate,
   mix,
   MIX_ROW_LABELS_HIDDEN,
   seasonBaseline,
@@ -297,7 +298,7 @@ test('our own capitalization estimate is not a disclosed figure', () => {
     show({ openingDate: '2023-10-01', type: 'musical', commercial: com({ capitalization: 20e6 }) }),
     show({ openingDate: '2024-10-01', type: 'musical', commercial: com({ capitalization: 30e6 }) }),
     // Our estimate of 90M: kept out of the pool, so the median stays 20M.
-    show({ openingDate: '2023-11-01', type: 'musical', commercial: com({ capitalization: 90e6, capitalizationIsEstimate: true }) }),
+    show({ openingDate: '2023-11-01', type: 'musical', commercial: com({ capitalization: 90e6, isEstimate: { capitalization: true } }) }),
     show({ openingDate: '2023-12-01', type: 'musical', commercial: com({ capitalization: null }) }),
   ]);
   const p = ps.find((x) => x.season === '2023-2024')!;
@@ -305,6 +306,17 @@ test('our own capitalization estimate is not a disclosed figure', () => {
   assert.equal(p.capitalization.all.known, 1);
   assert.equal(p.capitalization.musical.known, 1);
   assert.deepEqual(p.estimatedCapital, { total: 20e6 + 90e6 + 20e6, estimated: 2, missing: 0, nonprofitOut: 0 });
+  // An "Estimate:" source alone marks it too.
+  const [q] = buildSeasonProfiles([show({ openingDate: '2023-11-01', type: 'musical',
+    commercial: com({ capitalization: 5e6, capitalizationSource: 'Estimate: about 2.6 times its tax credit' }) })]);
+  assert.equal(q.capitalization.all.known, 0);
+  assert.deepEqual(q.estimatedCapital, { total: 5e6, estimated: 1, missing: 0, nonprofitOut: 0 });
+  // getSeasonStats (the /biz capital cards) uses the same test.
+  assert.equal(isOwnEstimate({ capitalization: 5e6, capitalizationSource: 'Estimate: comparables' }), true);
+  assert.equal(isOwnEstimate({ capitalization: 5e6, isEstimate: { capitalization: true } }), true);
+  // An uncited figure is not ours: it stays disclosed (shown with "~").
+  assert.equal(isOwnEstimate({ capitalization: 5e6, capitalizationSource: null }), false);
+  assert.equal(isOwnEstimate({ capitalization: null, isEstimate: { capitalization: true } }), false);
 });
 
 test('estimated capital widens the window, then drops the revival match, then gives up', () => {

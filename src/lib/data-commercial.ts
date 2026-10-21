@@ -56,7 +56,7 @@ import {
   hasNoInvestorsToRepay,
 } from './commercial-display';
 import { reportedReturn } from '../../scripts/lib/reported-return';
-import { buildSeasonProfiles, buildRecoupFindings, compareSeason, type SeasonProfile, type SeasonComparison, type RecoupFindings } from './season-profile';
+import { buildSeasonProfiles, buildRecoupFindings, compareSeason, isOwnEstimate, type SeasonProfile, type SeasonComparison, type RecoupFindings } from './season-profile';
 import { getMarketDate } from './date-utils';
 import { isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { conversionOf, isConvertedToCommercial, commercialRunWeeks, recoupClockStart } from '../../scripts/lib/commercial-conversion';
@@ -310,13 +310,15 @@ export function getSeasonStats(season: string): SeasonStats {
     if (isExcludedFromSeasonStats(data)) continue;
 
     totalShows++;
-    allCaps.push(data.capitalization);
+    // Our own budget estimate counts as undisclosed here, as in getSeasonProfiles.
+    const cap = isOwnEstimate(data) ? null : data.capitalization;
+    allCaps.push(cap);
 
     if (data.recouped === true) {
       recoupedCount++;
       recoupedShowsList.push(show.title);
     } else if (isRunningStatus(show.status)) {
-      atRiskCaps.push(data.capitalization);
+      atRiskCaps.push(cap);
     }
   }
 
@@ -371,7 +373,7 @@ export function getSeasonProfiles(): SeasonProfile[] {
           type: s.type,
           isRevival: s.isRevival,
           openingDate: s.openingDate,
-          commercial: shows[s.slug] ? { ...shows[s.slug], weeklyCost: shows[s.slug].weeklyRunningCost, capitalizationIsEstimate: isEstimatedCapitalization(shows[s.slug]) } : null,
+          commercial: shows[s.slug] ? { ...shows[s.slug], weeklyCost: shows[s.slug].weeklyRunningCost } : null,
         })),
     );
   }
