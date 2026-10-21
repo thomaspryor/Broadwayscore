@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5647-w",
   "planId": "ecd35ceb-95f6-474e-855e-763a92f83dee",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-21T20:42:21.274Z",
   "submitter": {
     "name": null,
@@ -97,5 +97,49 @@
         "description": "death-of-a-salesman: add the SEC filing"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T20:55:35.925Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-last-five-years-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-last-five-years-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-sign-in-sidney-brusteins-window-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-sign-in-sidney-brusteins-window-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-sign-in-sidney-brusteins-window-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for job-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-lehman-trilogy-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for death-of-a-salesman"
+    }
+  ],
+  "executedIn": "ci"
 }
