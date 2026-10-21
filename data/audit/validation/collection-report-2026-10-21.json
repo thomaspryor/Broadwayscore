@@ -1,70 +1,63 @@
 {
-  "runDate": "2026-10-21T08:40:00.941Z",
+  "runDate": "2026-10-21T09:24:32.138Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "ilford-boy-west-end-2026,lincoln-in-the-bardo-off-broadway-2026,king-of-the-yees-off-broadway-2026,other-desert-cities-2026,martin-guerre-west-end-2026,copperfield-the-new-musical-off-broadway-2026,school-pictures-off-broadway-2026,triumph-off-west-end-2026,machine-learning-off-broadway-2026,two-girls-off-broadway-2026,the-dog-show-come-sit-stay-off-broadway-2026,the-nicest-body-ever-seen-around-these-parts-off-broadway-2026",
+    "showFilter": "two-girls-off-broadway-2026,the-dog-show-come-sit-stay-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
-    "failed": 8,
+    "processed": 0,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 13,
-    "tier1Success": 7,
+    "tier1Attempts": 3,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 8,
-    "tier1_5Success": 3,
-    "tier1_9Attempts": 3,
+    "tier1_5Attempts": 4,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 2,
     "tier1_9Success": 0,
-    "tier2Attempts": 6,
-    "tier2Success": 2,
-    "tier3Attempts": 3,
+    "tier2Attempts": 2,
+    "tier2Success": 0,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier3_6Attempts": 3,
+    "tier3_6Attempts": 2,
     "tier3_6Success": 0,
-    "tier4Attempts": 9,
-    "tier4Success": 1,
-    "totalFailed": 8,
-    "scrapingBeePageCredits": 24,
+    "tier4Attempts": 3,
+    "tier4Success": 0,
+    "totalFailed": 3,
+    "scrapingBeePageCredits": 2,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 8,
-    "browserbaseMinutesUsed": 2.1,
+    "browserbaseSessionsUsed": 4,
+    "browserbaseMinutesUsed": 1,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 8,
-    "failed": 8,
+    "processed": 0,
+    "failed": 3,
     "shows": [
-      "king-of-the-yees-off-broadway-2026",
-      "lincoln-in-the-bardo-off-broadway-2026",
-      "martin-guerre-west-end-2026",
-      "other-desert-cities-2026",
-      "school-pictures-off-broadway-2026",
       "the-dog-show-come-sit-stay-off-broadway-2026",
-      "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026",
-      "triumph-off-west-end-2026",
       "two-girls-off-broadway-2026"
     ],
     "outOfScopeShows": [],
@@ -73,82 +66,32 @@
       "failed": 0
     }
   },
-  "processed": [
-    "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
-    "martin-guerre-west-end-2026/sunday-times--dominic-maxwell.json",
-    "martin-guerre-west-end-2026/times-uk--dominic-maxwell.json",
-    "lincoln-in-the-bardo-off-broadway-2026/hollywood-reporter--unknown.json",
-    "lincoln-in-the-bardo-off-broadway-2026/operawire--david-salazar.json",
-    "lincoln-in-the-bardo-off-broadway-2026/slippedisc--norman-lebrecht.json",
-    "other-desert-cities-2026/new-york-city-theatre--unknown.json",
-    "triumph-off-west-end-2026/londonlivinglarge--london-living-large.json"
-  ],
+  "processed": [],
   "failed": [
-    "king-of-the-yees-off-broadway-2026/new-york-sun--elysa-gardner.json",
-    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json",
-    "other-desert-cities-2026/cbsnews--unknown.json",
-    "school-pictures-off-broadway-2026/airmail--air-mail.json",
     "the-dog-show-come-sit-stay-off-broadway-2026/talkalmanmusic--unknown.json",
-    "triumph-off-west-end-2026/closeupculture--unknown.json",
-    "triumph-off-west-end-2026/thestage--david-benedict.json",
+    "two-girls-off-broadway-2026/airmail--air-mail.json",
     "two-girls-off-broadway-2026/howdidimissthat--unknown.json"
   ],
   "cumulativeResumedState": {
-    "processed": [
-      "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
-      "martin-guerre-west-end-2026/sunday-times--dominic-maxwell.json",
-      "martin-guerre-west-end-2026/times-uk--dominic-maxwell.json",
-      "lincoln-in-the-bardo-off-broadway-2026/hollywood-reporter--unknown.json",
-      "lincoln-in-the-bardo-off-broadway-2026/operawire--david-salazar.json",
-      "lincoln-in-the-bardo-off-broadway-2026/slippedisc--norman-lebrecht.json",
-      "other-desert-cities-2026/new-york-city-theatre--unknown.json",
-      "triumph-off-west-end-2026/londonlivinglarge--london-living-large.json"
-    ],
+    "processed": [],
     "failed": [
-      "king-of-the-yees-off-broadway-2026/new-york-sun--elysa-gardner.json",
-      "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json",
-      "other-desert-cities-2026/cbsnews--unknown.json",
-      "school-pictures-off-broadway-2026/airmail--air-mail.json",
       "the-dog-show-come-sit-stay-off-broadway-2026/talkalmanmusic--unknown.json",
-      "triumph-off-west-end-2026/closeupculture--unknown.json",
-      "triumph-off-west-end-2026/thestage--david-benedict.json",
+      "two-girls-off-broadway-2026/airmail--air-mail.json",
       "two-girls-off-broadway-2026/howdidimissthat--unknown.json"
     ]
   },
   "tierDetails": {
-    "playwright": [
-      "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
-      "lincoln-in-the-bardo-off-broadway-2026/operawire--david-salazar.json",
-      "lincoln-in-the-bardo-off-broadway-2026/slippedisc--norman-lebrecht.json",
-      "triumph-off-west-end-2026/londonlivinglarge--london-living-large.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/martin-guerre-west-end-2026/sunday-times--dominic-maxwell.json",
-      "martin-guerre-west-end-2026/sunday-times--dominic-maxwell.json",
-      "data/review-texts/lincoln-in-the-bardo-off-broadway-2026/hollywood-reporter--unknown.json",
-      "lincoln-in-the-bardo-off-broadway-2026/hollywood-reporter--unknown.json",
-      "data/review-texts/the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [
-      "martin-guerre-west-end-2026/times-uk--dominic-maxwell.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "other-desert-cities-2026/new-york-city-theatre--unknown.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {
-    "CBS News": {
-      "count": 1,
-      "domain": "cbsnews.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
     "talkalmanmusic": {
       "count": 1,
       "domain": "lessons.talkalmanmusic.com",
