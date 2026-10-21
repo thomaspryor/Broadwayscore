@@ -1,41 +1,5 @@
 [
   {
-    "recordedAt": "2026-10-15T13:57:26.748Z",
-    "fromShowId": "cyrano-de-bergerac-west-end-2019",
-    "toShowId": "cyrano-de-bergerac-2012",
-    "file": "nytimes--ben-brantley.json",
-    "url": "http://theater.nytimes.com/2012/10/12/theater/reviews/cyrano-de-bergerac-with-douglas-hodge.html?ref=theater",
-    "publishDate": "October 12, 2012",
-    "reason": "sibling opening 1d from publishDate vs current 2612d"
-  },
-  {
-    "recordedAt": "2026-10-15T13:57:26.756Z",
-    "fromShowId": "cyrano-de-bergerac-west-end-2022",
-    "toShowId": "cyrano-de-bergerac-2012",
-    "file": "amny--unknown.json",
-    "url": "http://www.amny.com/urbanite-1.812039/theater-review-cyrano-de-bergerac-2-stars-1.4102980",
-    "publishDate": "October 11, 2012",
-    "reason": "sibling opening 0d from publishDate vs current 3411d"
-  },
-  {
-    "recordedAt": "2026-10-15T13:57:26.759Z",
-    "fromShowId": "cyrano-de-bergerac-west-end-2022",
-    "toShowId": "cyrano-de-bergerac-2012",
-    "file": "ap--unknown.json",
-    "url": "http://www.crescent-news.com/ap%20entertainment/2012/10/11/review-ponderous-cyrano-de-bergerac-misses-mark",
-    "publishDate": "October 11, 2012",
-    "reason": "sibling opening 0d from publishDate vs current 3411d"
-  },
-  {
-    "recordedAt": "2026-10-15T13:57:26.762Z",
-    "fromShowId": "cyrano-de-bergerac-west-end-2022",
-    "toShowId": "cyrano-de-bergerac-2012",
-    "file": "hollywood-reporter--unknown.json",
-    "url": "http://www.hollywoodreporter.com/review/cyrano-de-bergerac-broadway-theater-review-378215",
-    "publishDate": "October 11, 2012",
-    "reason": "sibling opening 0d from publishDate vs current 3411d"
-  },
-  {
     "recordedAt": "2026-10-15T13:57:26.764Z",
     "fromShowId": "cyrano-de-bergerac-west-end-2022",
     "toShowId": "cyrano-de-bergerac-2012",
@@ -4461,5 +4425,39 @@
     "file": "guardian--arifa-akbar.json",
     "url": "https://www.theguardian.com/stage/2025/dec/12/into-the-woods-review-bridge-theatre-london",
     "reason": "same-title-sibling: url-year, venue-substring"
+  },
+  {
+    "recordedAt": "2026-10-21T01:23:52.885Z",
+    "fromShowId": "into-the-woods-noel-coward-west-end-2026",
+    "toShowId": "into-the-woods-west-end-2025",
+    "file": "guardian--arifa-akbar.json",
+    "url": "https://www.theguardian.com/stage/2025/dec/12/into-the-woods-review-bridge-theatre-london",
+    "reason": "same-title-sibling: url-year, venue-substring"
+  },
+  {
+    "recordedAt": "2026-10-21T01:35:01.909Z",
+    "fromShowId": "jesus-christ-superstar-off-west-end-2026",
+    "toShowId": "jesus-christ-superstar-west-end-2026",
+    "file": "independent--alice-saville.json",
+    "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html",
+    "publishDate": "",
+    "reason": "sibling-venue-in-url: \"london-palladium\""
+  },
+  {
+    "recordedAt": "2026-10-21T01:35:02.355Z",
+    "fromShowId": "jesus-christ-superstar-off-west-end-2026",
+    "toShowId": "jesus-christ-superstar-west-end-2026",
+    "file": "thestage--sam-marlowe.json",
+    "url": "https://www.thestage.co.uk/long-reviews/jesus-christ-superstar-review-london-palladium-sam-ryder",
+    "publishDate": "",
+    "reason": "sibling-venue-in-url: \"london-palladium\""
+  },
+  {
+    "recordedAt": "2026-10-21T01:35:06.450Z",
+    "fromShowId": "jesus-christ-superstar-off-west-end-2026",
+    "toShowId": "jesus-christ-superstar-west-end-2026",
+    "file": "times-uk--unknown.json",
+    "url": "https://www.thetimes.com/culture/theatre-dance/article/jesus-christ-superstar-review-sam-ryder-london-palladium-tim-sheader-zfqtxmj8b",
+    "reason": "sibling-venue-in-url: \"london-palladium\""
   }
 ]
