@@ -20,6 +20,7 @@ const path = require('path');
 const { calculateCombinedScore, getDesignation, isBroadwayComMarket } = require('./lib/audience-weighting');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 const { fetchPage } = require('./lib/scraper');
+const { discoverShows, discoverFromSitemap } = require('./lib/broadway-com-discovery');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 const {
   isBotChallenge,
@@ -89,123 +90,6 @@ async function fetchPageWithTimeout(url, options = {}, timeoutMs = 30000) {
       setTimeout(() => reject(new Error(`fetchPage timeout after ${timeoutMs / 1000}s`)), timeoutMs)
     ),
   ]);
-}
-
-// ---- Discovery: Parse /shows/ listing page ----
-
-/**
- * Fetch the Broadway.com /shows/ listing page and extract all show slugs + titles.
- * Returns array of { title, slug, url }.
- */
-async function discoverShows() {
-  console.log('Fetching Broadway.com /shows/tickets/ listing...');
-  let { status, data: html } = await httpsGet('https://www.broadway.com/shows/tickets/');
-
-  if (status !== 200) {
-    throw new Error(`Broadway.com /shows/ returned ${status}`);
-  }
-
-  // If listing page is bot-challenged, retry via shared scraper (Playwright → Bright Data → ScrapingBee)
-  if (isBotChallenge(html)) {
-    console.log('  Bot challenge on listing page, trying scraper fallback chain...');
-    const result = await fetchPageWithTimeout('https://www.broadway.com/shows/tickets/', { renderJs: true });
-    const scraperHtml = result?.content || '';
-    if (scraperHtml.length > 10000 && !isBotChallenge(scraperHtml)) {
-      html = scraperHtml;
-    } else {
-      console.error(`  Scraper fallback failed for listing page (${scraperHtml.length} bytes)`);
-      throw new Error('Broadway.com /shows/ blocked by bot challenge and scraper fallback failed');
-    }
-  }
-
-  const shows = [];
-
-  // Extract show links: /shows/{slug}/
-  // Pattern: <a href="/shows/slug/">Title</a> or similar link structures
-  const linkPattern = /<a[^>]+href="\/shows\/([a-z0-9-]+)\/"[^>]*>([^<]+)<\/a>/gi;
-  let match;
-  const seen = new Set();
-
-  while ((match = linkPattern.exec(html)) !== null) {
-    const slug = match[1];
-    const title = match[2].trim()
-      .replace(/&amp;/g, '&')
-      .replace(/&#39;/g, "'")
-      .replace(/&#x27;/g, "'")
-      .replace(/&quot;/g, '"')
-      .replace(/&nbsp;/g, ' ');
-
-    // Skip navigation/utility slugs and duplicates
-    if (seen.has(slug)) continue;
-    if (['shows', 'broadway-guide', 'discount-broadway-tickets', 'tickets', 'find-by-date'].includes(slug)) continue;
-    if (title.length < 2) continue;
-    // Skip generic navigation links
-    if (['Shows', 'Tickets', 'Shows (tickets)'].includes(title)) continue;
-
-    seen.add(slug);
-    shows.push({
-      title,
-      slug,
-      url: `https://www.broadway.com/shows/${slug}/`,
-    });
-  }
-
-  console.log(`  Discovered ${shows.length} shows on Broadway.com`);
-  return shows;
-}
-
-/**
- * Fetch Broadway.com sitemap to discover ALL show slugs (including closed shows).
- * The /shows/ listing only has currently-running shows. The sitemap has everything.
- * Returns array of slugs found.
- */
-async function discoverFromSitemap() {
-  console.log('\nFetching Broadway.com sitemap for closed shows...');
-
-  // The main sitemap.xml is a sitemap index. The actual show URLs are in sitemap-shows.xml.
-  const sitemapUrl = 'https://www.broadway.com/sitemap-shows.xml';
-
-  let xml;
-  // Try direct fetch first (sitemap-shows.xml is often not bot-challenged)
-  const { data: rawXml } = await httpsGet(sitemapUrl);
-  if (!isBotChallenge(rawXml) && rawXml.includes('<url>')) {
-    xml = rawXml;
-  } else {
-    // Bot-challenged — fall through to the shared fetchPage() chain (tries
-    // free Playwright first for broadway.com, then Scrapingdog/Bright Data,
-    // before ever considering ScrapingBee). Previously called ScrapingBee
-    // directly with premium_proxy=true ($2.48/1k, more than Bright Data's
-    // $1.50/1k) for a page that's just static XML (task #5).
-    console.log('  Sitemap bot-challenged, trying shared fetchPage()...');
-    try {
-      const result = await fetchPage(sitemapUrl, { renderJs: false });
-      xml = result.content;
-    } catch (e) {
-      console.log(`  fetchPage sitemap fetch failed: ${e.message}`);
-    }
-  }
-
-  if (!xml || !xml.includes('/shows/')) {
-    console.log('  No show URLs found in sitemap');
-    return [];
-  }
-
-  // Extract /shows/{slug}/ URLs from sitemap XML
-  const slugs = [];
-  const urlPattern = /broadway\.com\/shows\/([a-z0-9-]+)\//gi;
-  let match;
-  const seen = new Set();
-
-  while ((match = urlPattern.exec(xml)) !== null) {
-    const slug = match[1];
-    if (seen.has(slug)) continue;
-    if (['shows', 'broadway-guide', 'discount-broadway-tickets', 'tickets', 'find-by-date'].includes(slug)) continue;
-    seen.add(slug);
-    slugs.push(slug);
-  }
-
-  console.log(`  Found ${slugs.length} show slugs in sitemap`);
-  return slugs;
 }
 
 // ---- Title matching ----
@@ -385,7 +269,7 @@ async function main() {
   for (const s of showsData.shows) showMapById[s.id] = s;
 
   // 1. Discover shows on Broadway.com (listing page = currently running)
-  const bcShows = await discoverShows();
+  const bcShows = await discoverShows({ httpsGet, fetchPage: fetchPageWithTimeout });
 
   // 2. Match to our shows
   console.log('\nMatching to shows.json...');
@@ -394,7 +278,7 @@ async function main() {
 
   // 3. Discover closed shows from sitemap (slugs only, no titles)
   const matchedIds = new Set(matches.map(m => m.show.id));
-  const sitemapSlugs = includeClosed ? await discoverFromSitemap() : [];
+  const sitemapSlugs = includeClosed ? await discoverFromSitemap({ httpsGet, fetchPage }) : [];
 
   // Match sitemap slugs to our shows that weren't already matched
   // Broadway.com slugs are typically the show title lowercased with hyphens
