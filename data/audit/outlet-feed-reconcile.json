@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T05:36:34.507Z",
+  "generatedAt": "2026-10-21T09:52:10.712Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -47,6 +47,11 @@
       "id": "other-desert-cities-2026",
       "title": "Other Desert Cities",
       "openingDate": "2026-10-18"
+    },
+    {
+      "id": "billy-crystal-860-2026",
+      "title": "Billy Crystal 860",
+      "openingDate": "2026-10-21"
     },
     {
       "id": "midnight-off-broadway-2026",
@@ -155,10 +160,6 @@
       "reason": "no data/review-texts directory for this show"
     },
     {
-      "showId": "billy-crystal-860-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
       "showId": "doll-day-afternoon-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     }
@@ -182,10 +183,6 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
-      "outletId": "musical-theatre-review",
-      "error": "HTTP 401 for https://musicaltheatrereview.com/feed/"
-    },
-    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -196,9 +193,13 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 724,
+  "itemsScanned": 709,
   "matchedGaps": 7,
   "possibleGaps": 5,
   "gaps": [
@@ -221,21 +222,21 @@
       "publishDate": "2026-10-20"
     },
     {
-      "showId": "lincoln-in-the-bardo-off-broadway-2026",
-      "title": "Lincoln in the Bardo",
+      "showId": "martin-guerre-west-end-2026",
+      "title": "Martin Guerre",
       "level": "matched",
-      "outletId": "operawire",
-      "url": "https://operawire.com/dua-lipas-service95-releases-mini-documentary-on-the-making-of-lincoln-in-the-bardo/",
-      "headline": "Dua Lipa&#8217;s Service95 Releases Mini Documentary on the Making of &#8216;Lincoln in the Bardo&#8217;",
-      "publishDate": "2026-10-20"
+      "outletId": "south-london",
+      "url": "https://southlondon.co.uk/area/southwark/review-martin-guerre-old-vic/",
+      "headline": "Review: Martin Guerre &#8211; Old Vic",
+      "publishDate": "2026-10-21"
     },
     {
-      "showId": "lincoln-in-the-bardo-off-broadway-2026",
-      "title": "Lincoln in the Bardo",
+      "showId": "martin-guerre-west-end-2026",
+      "title": "Martin Guerre",
       "level": "matched",
-      "outletId": "operawire",
-      "url": "https://operawire.com/metropolitan-opera-2026-27-review-lincoln-in-the-bardo/",
-      "headline": "Metropolitan Opera 2026-27 Review: Lincoln in the Bardo",
+      "outletId": "the-spy-in-the-stalls",
+      "url": "https://thespyinthestalls.com/2026/10/martin-guerre/",
+      "headline": "MARTIN GUERRE★★★The Old Vic",
       "publishDate": "2026-10-21"
     },
     {
