@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5858-b",
   "planId": "073ccf8d-7d4e-41a5-94e3-cbb9e36fdf86",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-21T19:35:07.444Z",
   "submitter": {
     "name": null,
@@ -208,5 +208,129 @@
         "description": "same article url as deadline--greg-evans.json; one review by Greg Evans (live page byline \"Greg Evans\")"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T20:22:20.916Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gypsy-2024/deadline--pete-hammond.json duplicateOf: null -> \"deadline--greg-evans.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamlet-off-broadway-2026/theatermania--zachary-stewart.json duplicateOf: null -> \"theatermania--dan-rubins.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hand-to-god-2015/variety--gordon-cox.json duplicateOf: null -> \"variety--marilyn-stasio.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hedwig-and-the-angry-inch-2014/guardian--jesse-green.json duplicateOf: null -> \"guardian--alexis-soloski.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-we-are-west-end-2025/all-that-dazzles-uk--unknown.json duplicateOf: null -> \"all-that-dazzles-uk--all-that-dazzles.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "how-i-learned-to-drive-2022/deadline--pete-hammond.json duplicateOf: null -> \"deadline--greg-evans.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hughie-2016/ew--melissa-rose-bernardo.json duplicateOf: null -> \"ew--jessica-derschowitz.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ifthen-2014/nbcny--david-cote.json duplicateOf: null -> \"nbcny--dave-quinn.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "in-transit-2016/theater-pizzazz--sandi-durelljk-clarke.json duplicateOf: null -> \"theater-pizzazz--sandi-durell.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "in-transit-2016/variety--marilyn-stasio.json duplicateOf: null -> \"variety--frank-rizzo.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jagged-little-pill-2019/deadline--pete-hammond.json duplicateOf: null -> \"deadline--greg-evans.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kinky-boots-2013/guardian--jesse-green.json duplicateOf: null -> \"guardian--alexis-soloski.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kpop-2022/variety--aramide-tinubu.json duplicateOf: null -> \"variety--ad-amorosi.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "life-of-pi-2023/theatrely--kobi-kassal.json duplicateOf: null -> \"theatrely--juan-a-ramirez.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "little-bear-ridge-road-2025/theatrely--kobi-kassal.json duplicateOf: null -> \"theatrely--juan-a-ramirez.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "long-days-journey-into-night-2016/deadline--pete-hammond.json duplicateOf: null -> \"deadline--greg-evans.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "long-days-journey-into-night-2016/deadline--greg-evans.json criticName: \"Greg Evans\" -> \"Jeremy Gerard\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "loves-labours-lost-globe-west-end-2026/whatsonstage--sarah-crompton.json duplicateOf: null -> \"whatsonstage--matt-trueman.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "loves-labours-lost-globe-west-end-2026/whatsonstage--matt-trueman.json criticName: \"Matt Trueman\" -> \"Aliya Al-Hassan\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lyonesse-west-end-2023/theatre-weekly--theatre-weekly.json duplicateOf: null -> \"theatre-weekly--greg-stewart.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "machinal-2014/nytimes--charles-isherwood.json duplicateOf: null -> \"nytimes--ben-brantley.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "master-class-2011/timeout--rossilynne-skena-culgan.json duplicateOf: null -> \"timeout--adam-feldman.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mauritius-2007/nytimes--charles-isherwood.json duplicateOf: null -> \"nytimes--ben-brantley.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mean-girls-2018/deadline--pete-hammond.json duplicateOf: null -> \"deadline--greg-evans.json\""
+    }
+  ],
+  "executedIn": "ci"
 }
