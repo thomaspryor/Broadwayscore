@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5647-p-b",
   "planId": "19f3f086-43f3-4b04-a412-9eebc58a0a24",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-21T17:19:54.978Z",
   "submitter": {
     "name": null,
@@ -184,5 +184,59 @@
         "description": "west-side-story-2020: add (budget only)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T17:27:12.518Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-picture-of-dorian-gray-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-picture-of-dorian-gray-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-picture-of-dorian-gray-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-picture-of-dorian-gray-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for spongebob-squarepants-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for spongebob-squarepants-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for spongebob-squarepants-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for spongebob-squarepants-2017"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-inheritance-2019 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added west-side-story-2020 (TBD)"
+    }
+  ],
+  "executedIn": "ci"
 }
