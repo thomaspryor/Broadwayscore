@@ -959,7 +959,8 @@ export function getAllLondonTheaterSlugs(): string[] {
 let _offBroadwayTheatersCache: Theater[] | null = null;
 export function getAllOffBroadwayTheaters(): Theater[] {
   if (_offBroadwayTheatersCache) return _offBroadwayTheatersCache;
-  _offBroadwayTheatersCache = buildStubTheaterIndex(getOffBroadwayShows());
+  // Includes opera: Met productions still link to their venue page (BRO-5854).
+  _offBroadwayTheatersCache = buildStubTheaterIndex(getAllShows().filter(isOffBroadwayShow));
   return _offBroadwayTheatersCache;
 }
 
