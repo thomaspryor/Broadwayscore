@@ -1017,5 +1017,144 @@
       }
     ],
     "queuedAt": "2026-10-21T03:17:19.045Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-5811-mvhirzk6",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-5811-mvhirzk6",
+    "description": "land.yml did not land land/job/linear-BRO-5811-mvhirzk6: the rebase gate went red at c106a817eb. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39537702299",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-5811-mvhirzk6"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "c106a817eb329c91b8e3facc87c375fde0fcefac"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39537702299"
+      }
+    ],
+    "queuedAt": "2026-10-21T03:18:51.728Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:ilford-boy-west-end-2026",
+    "title": "Review gap — \"Ilford Boy\" missing 1 cited review(s)",
+    "description": "Ilford Boy (ilford-boy-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=ilford-boy-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T03:55:06.494Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:king-of-the-yees-off-broadway-2026",
+    "title": "Review gap — \"King of the Yees\" missing 1 cited review(s)",
+    "description": "King of the Yees (king-of-the-yees-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-of-the-yees-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T03:55:06.531Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:martin-guerre-west-end-2026",
+    "title": "Review gap — \"Martin Guerre\" missing 2 cited review(s)",
+    "description": "Martin Guerre (martin-guerre-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=martin-guerre-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T03:55:06.576Z"
+  },
+  {
+    "conditionKey": "opening-night-drift:other-desert-cities-2026",
+    "title": "Opening night drift: Other Desert Cities (other-desert-cities-2026)",
+    "description": "Review counts do not reconcile for Other Desert Cities (other-desert-cities-2026): local review-texts=36, reviews.json aggregate=30, live production=30, drift=6 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39539134637",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Show",
+        "value": "Other Desert Cities (other-desert-cities-2026)",
+        "inline": false
+      },
+      {
+        "name": "Counts",
+        "value": "local=36, aggregate=30, live=30, drift=6",
+        "inline": false
+      },
+      {
+        "name": "Opening",
+        "value": "2026-10-18",
+        "inline": false
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39539134637)",
+        "inline": false
+      }
+    ],
+    "queuedAt": "2026-10-21T03:34:58.172Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5776-commercial-coverage-2",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5776-commercial-coverage-2",
+    "description": "land.yml did not land land/bro-5776-commercial-coverage-2: the unit-tests-node gate went red at b0988b851d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39539263552",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5776-commercial-coverage-2"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "b0988b851d15d2fc3ae404b68d57808b6e79ddce"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39539263552"
+      }
+    ],
+    "queuedAt": "2026-10-21T03:51:56.226Z"
   }
 ]

@@ -2,7 +2,6 @@
 // Imports: shows.json (~1.3 MB), reviews.json (~3.8 MB), audience.json (~8 KB), buzz.json (~7 KB)
 // Also imports getShowGrosses from data-grosses for browse page performance sort
 
-import fs from 'fs';
 import path from 'path';
 import {
   computeShowData,
@@ -28,7 +27,7 @@ import { getShowAwards } from './data-awards';
 import { BROWSE_PAGES, BrowsePageConfig, BrowseFilterContext, getAllBrowseSlugs as getBrowseSlugsFromConfig, getBrowsePageConfig } from '@/config/browse-pages';
 import { slugify as urlSlugify } from '../../scripts/lib/url-slug';
 import { broadwayTheaterNames, stubTheaterName, HIDDEN_LONDON_IDS } from '../../scripts/lib/page-name-sources';
-import { loadCoverageFloorInputs, coverageFloorOptsForShow } from '../../scripts/lib/coverage-floor-inputs';
+import { readCoverageFloorInputs, coverageFloorOptsForShow } from '../../scripts/lib/coverage-floor-inputs';
 import { resolveNameRedirect, type SlugRedirectMap } from './slug-redirects';
 // Import raw data (loaded at build time for static generation)
 import showsData from '../../data/shows.json';
@@ -78,7 +77,21 @@ for (const r of reviews) {
 // and acks. Fail-open: a missing/unreadable audit file (or
 // COVERAGE_GATE_DISABLED) just means every show gets no
 // `cov`/`scorePublicSince`, so existing TBD behavior is unchanged.
-const coverageFloorInputs = loadCoverageFloorInputs(path.join(process.cwd(), 'data'));
+// Literal file paths only, never data/ itself: Next's file tracer bundles any
+// directory a server module names, and passing path.join(process.cwd(), 'data')
+// to the loader put all of data/ (~290 MB) into every server function; Vercel
+// refused the deploy (2026-10-21). data/audit/** is excluded from tracing in
+// next.config.js. src-no-traced-data-dir.test.mjs guards this.
+// BRO-5811: data/audit/** is excluded too, so a runtime re-render (show page
+// revalidate, OG dynamicParams, force-dynamic embed/badge) finds no gap audit
+// and reads the prebuild snapshot below instead (traced via next.config.js
+// outputFileTracingIncludes). Without it the floor silently failed open there.
+const coverageFloorInputs = readCoverageFloorInputs({
+  gapAudit: path.join(process.cwd(), 'data', 'audit', 'show-review-gap.json'),
+  stamps: path.join(process.cwd(), 'data', 'audit', 'score-public-since.json'),
+  acks: path.join(process.cwd(), 'data', 'audit', 't1-coverage-ack.json'),
+  snapshot: path.join(process.cwd(), 'data', 'coverage-floor-snapshot.json'),
+});
 
 // Cache for computed shows
 let computedShowsCache: ComputedShow[] | null = null;

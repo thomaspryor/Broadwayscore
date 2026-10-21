@@ -32,52 +32,55 @@ export default function SeasonComparisonTable({ comparison }: { comparison: Seas
             </tr>
           </thead>
           <tbody>
-            {rows.map((row) => (
-              <tr key={row.label} className="border-b border-white/5">
-                <td className="py-2.5 pl-3 pr-2 sm:px-4 text-gray-300">{row.label}</td>
-                <td className="py-2.5 px-2 sm:px-4 text-center sm:whitespace-nowrap">
-                  <span className="font-semibold text-white">{formatRowValue(row.format, row.current)}</span>
-                  {row.currentDetail && <span className="block text-xs text-gray-500">{row.currentDetail}</span>}
-                </td>
-                <td className="py-2.5 px-2 sm:px-4 text-center text-gray-300 whitespace-nowrap bg-white/[0.03]">{formatRowValue(row.format, row.last)}</td>
-                <td className="py-2.5 px-2 sm:px-4 text-center text-gray-300 whitespace-nowrap bg-white/[0.03]">
-                  {formatRowValue(row.format, row.avg)}
-                  {row.avg != null && row.avgSeasons < baselineSeasons && (
-                    <span className="block text-xs text-gray-500">{row.avgSeasons} {row.avgSeasons === 1 ? 'season' : 'seasons'}</span>
-                  )}
-                </td>
-              </tr>
-            ))}
+            {rows.map((row) => {
+              const partial = row.avg != null && row.avgSeasons < baselineSeasons;
+              return (
+                <tr key={row.label} className="border-b border-white/5">
+                  <td className="py-2.5 pl-3 pr-2 sm:px-4 text-gray-300">{row.label}</td>
+                  <td className="py-2.5 px-2 sm:px-4 text-center sm:whitespace-nowrap">
+                    <span className="font-semibold text-white">{formatRowValue(row.format, row.current)}</span>
+                    {row.currentDetail && <span className="block text-xs text-gray-500">{row.currentDetail}</span>}
+                  </td>
+                  <td className="py-2.5 px-2 sm:px-4 text-center text-gray-300 sm:whitespace-nowrap bg-white/[0.03]">
+                    {formatRowValue(row.format, row.last)}
+                    {row.lastDetail && <span className="block text-xs text-gray-500">{row.lastDetail}</span>}
+                  </td>
+                  <td className="py-2.5 px-2 sm:px-4 text-center text-gray-300 sm:whitespace-nowrap bg-white/[0.03]">
+                    {formatRowValue(row.format, row.avg)}{partial && '*'}
+                    {row.avgDetail && <span className="block text-xs text-gray-500">{row.avgDetail}</span>}
+                    {partial && (
+                      <span className="block text-xs text-gray-500">{row.avgSeasons} {row.avgSeasons === 1 ? 'season' : 'seasons'}</span>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
       <div className="px-4 py-3 text-xs text-gray-500 space-y-1">
         {avgLabel && (
           <p>
-            Average: the {baselineSeasons} seasons {avgLabel}, leaving out the pandemic seasons 2019-20 and 2020-21.
-            Shares are pooled across those seasons.
+            Prior seasons avg covers {avgLabel} ({baselineSeasons} seasons, skipping 2019-20 and 2020-21). Counts under
+            it are per season.
           </p>
         )}
         {inProgress && (
           <p>
-            &ldquo;Opened so far&rdquo; compares the same point in each season. Other rows count the announced
-            slate against whole seasons.{hasMoney && ' Budget averages for this season need most of its announced shows disclosed.'}
+            &ldquo;Opened so far&rdquo; compares the same date in each season. The other rows count every show opened
+            or announced for this season.
           </p>
         )}
         {lastDisrupted && lastSeason && <p>{shortSeason(lastSeason)} stopped in March 2020 when theaters closed.</p>}
-        {recoupUnsettled && (
-          <p>Recoupment marked &ldquo;so far&rdquo; and recent seasons&apos; rates can still rise while their shows run.</p>
-        )}
-        {partialAvg && (
+        {recoupUnsettled && <p>Shows still running can recoup later, so recent seasons&apos; recoupment rates can still rise.</p>}
+        {partialAvg && <p>* Averages only the seasons where we have the figures (for recoupment, seasons that ended over a year ago).</p>}
+        {hasMoney && (
           <p>
-            Rows marked with a season count average fewer seasons: only those where we have most productions&apos;
-            figures (recoupment: only seasons that ended over a year ago). Shares{hasMoney && ' and averages'} need at least 3 shows.
-            {hasMoney && ' Money averages are per show with a disclosed figure, averaged across seasons. The capitalization sum is compared only between finished seasons where nearly every budget is public.'}
+            Money figures cover only the budgets and running costs made public, so each sum is a floor. Some are
+            estimates.
           </p>
         )}
-        <p>
-          Seasons run July 1 to June 30 by opening date.{hasMoney && ' Running costs and some capitalizations are estimates.'}
-        </p>
+        <p>Seasons run July 1 to June 30 by opening night.</p>
       </div>
     </div>
   );

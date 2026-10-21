@@ -332,6 +332,35 @@ export function getSeasonStats(season: string): SeasonStats {
 
 /** Every Broadway season's profile (mix, capital, recoupment), newest first. Built once. */
 let seasonProfilesCache: SeasonProfile[] | null = null;
+/** A show in the Season Report's list: the same rows getSeasonProfiles counts. */
+export interface SeasonListShow {
+  slug: string;
+  title: string;
+  type: string;
+  isRevival: boolean | null | undefined;
+  openingDate: string | null;
+}
+
+/**
+ * The season's Broadway shows exactly as getSeasonProfiles counts them (same
+ * filter, raw isRevival), plus announced shows with no opening date yet, which
+ * no season counts.
+ */
+export function getSeasonShowList(season: string): { dated: SeasonListShow[]; undated: SeasonListShow[] } {
+  const pick = (s: RawShow): SeasonListShow => ({ slug: s.slug, title: s.title, type: s.type, isRevival: s.isRevival, openingDate: s.openingDate || null });
+  const broadway = rawShows.filter((s) => s.category === 'broadway');
+  return {
+    dated: broadway
+      .filter((s) => !!s.openingDate && getSeason(s.openingDate) === season)
+      .map(pick)
+      .sort((a, b) => a.openingDate!.localeCompare(b.openingDate!) || a.title.localeCompare(b.title)),
+    undated: broadway
+      .filter((s) => !s.openingDate && (s.status === 'announced' || s.status === 'upcoming'))
+      .map(pick)
+      .sort((a, b) => a.title.localeCompare(b.title)),
+  };
+}
+
 export function getSeasonProfiles(): SeasonProfile[] {
   if (!seasonProfilesCache) {
     const shows = commercial.shows;
@@ -366,6 +395,8 @@ export function getRecoupFindings(criticScoreBySlug: Map<string, number | null>,
         status: s.status,
         criticScore: criticScoreBySlug.get(s.slug) ?? null,
         commercial: shows[s.slug] ?? null,
+        slug: s.slug,
+        title: s.title,
       })),
     asOf,
   );

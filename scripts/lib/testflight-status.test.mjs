@@ -14,6 +14,10 @@ test('build 54 submitted for Beta App Review and externally visible', async (t) 
   if (!hasCredentials()) return t.skip(`no ASC credentials at ${keyPath()}`);
 
   const status = await getBuildBetaStatus('54');
+  // TestFlight builds expire after 90 days. Build 54 passed this check while
+  // live (BRO-88); once Apple expires it, there is nothing left to verify, so
+  // skip instead of failing every local merge's test floor forever.
+  if (status.externalBuildState === 'EXPIRED') return t.skip('build 54 has expired on TestFlight (90-day limit)');
 
   assert.equal(status.submitted, true, `expected build 54 to be submitted, got betaReviewState=${status.betaReviewState}`);
   assert.ok(

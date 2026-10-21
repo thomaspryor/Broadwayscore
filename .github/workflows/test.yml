@@ -3089,6 +3089,7 @@ on:
       - 'scripts/cleanup-fake-publish-dates.js'
       - 'scripts/backfill-url-dates.js'
       - 'scripts/fix-null-dates-from-url.js'
+      - 'scripts/recover-null-dates.js'
       - 'scripts/clear-stale-automated-text-verdicts.js'
       - 'scripts/clear-stale-wrong-production-flags.js'
       # BRO-2323: root-level scripts/*.test.mjs is NOT globbed — a solo edit to

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-21T03:04:06.685Z",
+  "timestamp": "2026-10-21T04:04:44.087Z",
   "stats": {
     "totalReviews": 58031,
-    "alreadyFlagged": 21117,
+    "alreadyFlagged": 21119,
     "dateGuardCatches": 198,
     "directorMismatch": 2045,
     "tvFilmSignals": 1654,
-    "londonSignals": 2574,
+    "londonSignals": 2575,
     "offBroadwaySignals": 531,
     "yearMismatch": 163,
-    "noPublishDate": 5236
+    "noPublishDate": 5234
   },
   "findings": [
     {
@@ -73116,6 +73116,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 84,
+      "publishDate": "2026-10-21",
+      "url": "https://www.londonboxoffice.co.uk/news/post/martin-guerre-the-old-vic-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },

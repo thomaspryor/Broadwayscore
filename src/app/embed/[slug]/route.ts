@@ -1,8 +1,8 @@
 import { getShowBySlug } from '@/lib/data-core';
 import { isCategoryEnabled } from '@/lib/markets';
 import { getScoreTier } from '@/components/show-cards';
-import { hasEnoughReviews, isCriticalGold } from '@/config/score-buckets';
-import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
+import { isCriticalGold } from '@/config/score-buckets';
+import { isShowScoreTBD } from '@/lib/show-score-tbd';
 import { BASE_URL } from '@/lib/seo';
 
 // Server-render each request so ?theme= query params actually vary the output.
@@ -198,10 +198,8 @@ export async function GET(request: Request, props: { params: Promise<{ slug: str
 
   const rawScore = show.criticScore?.score;
   const reviewCount = show.criticScore?.reviewCount ?? 0;
-  const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
-  const enoughReviews = hasEnoughReviews(reviewCount, show.category, t1t2, CURATED_HISTORICAL_SHOWS.has(show.id));
-  const isPreviewsOrUpcoming = show.status === 'previews' || show.status === 'upcoming';
-  const isTbd = !enoughReviews || isPreviewsOrUpcoming || rawScore == null;
+  // Same TBD decision as the show page, coverage floor included (BRO-5811).
+  const isTbd = isShowScoreTBD(show);
 
   let tierStyle = { bg: '#2a2a38', text: '#9ca3af', glow: 'rgba(0,0,0,0)' };
   let tierLabel = 'TBD';

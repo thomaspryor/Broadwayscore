@@ -215,6 +215,11 @@ const EXPECTED_REJECTION_REASONS = [
   // outletId (review-file-writer.js Guard E0, isRoundupPageAsReview). The page
   // quotes other critics; it is never a review by that outlet. Permanent.
   'roundup-page-as-review',
+  // BRO-5627: ingest-review-from-url.js --require-publish-date found no publish
+  // date on the page. The gap audit sets it only when the show has an
+  // earlier-dated citation, so an undated page may be the prior run's review.
+  // Correct until the page carries a date (NOT durable: a later run can ingest it).
+  'publish-date-unresolved',
 ];
 
 // Desired end state already holds, or the URL legitimately isn't a review.
@@ -357,6 +362,9 @@ function describeSkip(showId, url, { reason, detail }) {
   }
   if (reason === 'named-non-review-url') {
     return `${showId}: ${url} was refused because its URL structurally matches a known non-review page shape${detail ? ` (${detail})` : ''} (ticketing/venue-production/event-listing) — refused by the named-non-review-url guard. Expected rejection; if this host genuinely publishes reviews at a different path, that path is unaffected — only this exact URL shape is blocked. If this pattern is now wrong (the host changed what it publishes there), fix the entry in scripts/lib/non-review-url-patterns.js.`;
+  }
+  if (reason === 'publish-date-unresolved') {
+    return `${showId}: ${url} has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD.`;
   }
   if (reason === 'timeout-listing-capsule') {
     return `${showId}: ${url} is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest.`;

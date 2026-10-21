@@ -23,7 +23,10 @@ import {
   getSeason,
   getSeasonComparison,
   getSeasonProfiles,
+  getRecoupFindings,
 } from '@/lib/data-commercial';
+import { getAllShows } from '@/lib/data-core';
+import { mixSection, withoutMixRows } from '@/lib/season-findings';
 import { getGrossesWeekEnding } from '@/lib/data-grosses';
 import { formatDataDate, formatDevelopmentDate, sortNewestFirst } from '@/lib/biz-format';
 import { lossOutcomePhrase, ESTIMATE_SOURCES_NOTE } from '@/lib/commercial-display';
@@ -31,6 +34,8 @@ import { lossOutcomePhrase, ESTIMATE_SOURCES_NOTE } from '@/lib/commercial-displ
 import SeasonStatsCard from '@/components/biz/SeasonStatsCard';
 import SeasonComparisonTable from '@/components/biz/SeasonComparisonTable';
 import SeasonHistoryTable from '@/components/biz/SeasonHistoryTable';
+import MixCard from '@/components/biz/MixCard';
+import WhoRecoupsCard from '@/components/biz/WhoRecoupsCard';
 import RecentDevelopmentsList, { type DevelopmentItem } from '@/components/biz/RecentDevelopmentsList';
 import ApproachingRecoupmentCard from '@/components/biz/ApproachingRecoupmentCard';
 import AtRiskCard from '@/components/biz/AtRiskCard';
@@ -143,11 +148,17 @@ export default function BizDashboard() {
 
   // Season profile: this season vs last season and the 10-season average, and
   // the last 11 seasons side by side (season-profile.ts).
-  const currentSeason = getSeason(getMarketDate('broadway'));
+  const today = getMarketDate('broadway');
+  const currentSeason = getSeason(today);
   const currentComparison = currentSeason ? getSeasonComparison(currentSeason) : null;
-  const seasonHistory = getSeasonProfiles()
+  const profiles = getSeasonProfiles();
+  const seasonHistory = profiles
     .filter((p) => !currentSeason || p.season <= currentSeason)
     .slice(0, 11);
+  // The Season Report's visuals (owner, 2026-10-21); its Key Findings are linked, not repeated.
+  const scores = new Map(getAllShows().map((s) => [s.slug, s.compositeScore == null ? null : Math.round(s.compositeScore)]));
+  const recoupFindings = getRecoupFindings(scores, today);
+  const mixCard = currentSeason ? mixSection(profiles, currentSeason, currentComparison) : null;
 
   // Unreleased (BRO-5007): running shows by break-even band, moved here from /box-office.
   const costCoverage = featureFlags.commercial && featureFlags.boxOfficeV2 ? getBoxOfficeCostCoverage() : null;
@@ -274,9 +285,27 @@ export default function BizDashboard() {
                 Every show →
               </Link>
             </div>
-            <SeasonComparisonTable comparison={currentComparison} />
+            <SeasonComparisonTable comparison={mixCard?.columns.length ? withoutMixRows(currentComparison) : currentComparison} />
           </section>
         )}
+
+        {mixCard && mixCard.columns.length > 0 && (
+          <section className="mb-8">
+            <div className="flex items-baseline justify-between gap-4 mb-1">
+              <h2 className="text-xl font-bold text-white">Production Mix</h2>
+              <Link href="/season-report" className="text-sm text-brand hover:text-brand-hover whitespace-nowrap">
+                Key findings in the Season Report →
+              </Link>
+            </div>
+            <p className="text-sm text-gray-400 mb-3">Originals and revivals, each split into musicals and plays.</p>
+            <MixCard columns={mixCard.columns} overallRows={mixCard.overallRows} withinRows={mixCard.withinRows} />
+          </section>
+        )}
+
+        <section className="mb-8">
+          <h2 className="text-xl font-bold text-white mb-3">Who Recoups</h2>
+          <WhoRecoupsCard findings={recoupFindings} />
+        </section>
 
         {/* Season Stats Row */}
         <section className="mb-8">
@@ -301,7 +330,7 @@ export default function BizDashboard() {
         {seasonHistory.length > 0 && (
           <section className="mb-8">
             <h2 className="text-xl font-bold text-white mb-3">Season by Season</h2>
-            <SeasonHistoryTable profiles={seasonHistory} currentSeason={currentSeason} />
+            <SeasonHistoryTable profiles={seasonHistory} currentSeason={currentSeason} asOf={today} />
           </section>
         )}
 

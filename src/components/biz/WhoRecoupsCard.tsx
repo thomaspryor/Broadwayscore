@@ -1,9 +1,10 @@
 /**
  * WhoRecoupsCard - recoupment rate by show type, and how critic scores line
  * up with recouping (buildRecoupFindings in season-profile.ts). Public Season
- * Report (BRO-5777): aggregates only, no show names or money figures.
+ * Report (BRO-5777): no money figures, and only shows that recouped are named.
  */
 
+import Link from 'next/link';
 import { HIGH_SCORE, LOW_SCORE, MIN_AVERAGE_SAMPLE, type RecoupFindings } from '@/lib/season-profile';
 
 function shortSeason(season: string): string {
@@ -24,7 +25,7 @@ export default function WhoRecoupsCard({ findings }: { findings: RecoupFindings 
   return (
     <div className="card rounded-xl overflow-hidden" data-testid="who-recoups">
       <div className="px-4 pt-4 text-sm text-gray-400">
-        Commercial productions that opened {shortSeason(range[0])} to {shortSeason(range[1])}
+        Commercial productions that opened from {shortSeason(range[0])} to {shortSeason(range[1])}
       </div>
       <table className="w-full text-sm mt-2">
         <thead>
@@ -57,7 +58,7 @@ export default function WhoRecoupsCard({ findings }: { findings: RecoupFindings 
       <div className="px-4 py-4 space-y-2 text-sm text-gray-300">
         {lowRate != null && highRate != null && (
           <div>
-            <p className="text-white font-semibold mb-2">Reviews and recoupment line up</p>
+            <p className="text-white font-semibold mb-2">Critic scores and recoupment</p>
             <div className="space-y-2" data-testid="critic-bands">
               {[
                 { label: `Critic score ${HIGH_SCORE}+`, r: highRate, band: atLeast80 },
@@ -75,21 +76,40 @@ export default function WhoRecoupsCard({ findings }: { findings: RecoupFindings 
                 </div>
               ))}
             </div>
-            <p className="mt-2 text-xs text-gray-500">Share that recouped, among shows that have closed or recouped.</p>
+            <p className="mt-2 text-xs text-gray-500">Share that recouped, counting shows that have closed or recouped.</p>
           </div>
         )}
         {findings.recoupedAvgScore != null && findings.closedUnrecoupedAvgScore != null && (
           <p>
-            Shows that recouped averaged a critic score of {Math.round(findings.recoupedAvgScore)}; shows that closed
+            Shows that recouped averaged a critic score of {Math.round(findings.recoupedAvgScore)}. Shows that closed
             with no recoupment announced averaged {Math.round(findings.closedUnrecoupedAvgScore)}.
           </p>
         )}
       </div>
+      {buckets.some((b) => b.recoupedShows.length > 0) && (
+        <div className="px-4 pb-4 space-y-1 text-sm" data-testid="recouped-shows">
+          {buckets.filter((b) => b.recoupedShows.length > 0).map((b) => (
+            <details key={b.label} className="group">
+              <summary className="cursor-pointer text-brand hover:text-brand-hover">
+                {b.label} that recouped ({b.recoupedShows.length})
+              </summary>
+              <ul className="mt-1 mb-2 ml-4 flex flex-wrap gap-x-4 gap-y-1">
+                {b.recoupedShows.map((s) => (
+                  <li key={s.slug}>
+                    <Link href={`/show/${s.slug}`} className="text-gray-300 hover:text-white underline decoration-white/25 underline-offset-2 hover:decoration-white">{s.title}</Link>
+                    <span className="text-gray-500"> ({s.year})</span>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          ))}
+        </div>
+      )}
       <p className="px-4 pb-4 text-xs text-gray-500">
-        Nonprofit-only runs and tour stops are left out (no investors to repay). Shows still running count as not yet
-        recouped, so rates are floors. Critic figures count only shows with a critic score that have recouped or closed;
-        they show a pattern, not that reviews caused the outcome. Recoupment from
-        producer announcements and trade press; critic scores are Broadway Scorecard&apos;s.
+        Leaves out nonprofit-only runs and tour stops, which have no investors to repay. Shows still running count as
+        not recouped yet, so the rates by show type can only go up. The critic rows count shows with a critic score
+        that have recouped or closed, and show a correlation only. Recoupment comes from producer announcements and
+        trade press. Critic scores are Broadway Scorecard&apos;s.
       </p>
     </div>
   );

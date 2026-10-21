@@ -139,13 +139,21 @@ function gapRowTimestamps(gapAudit) {
 // shows out, no duplicates. Shows without a gap row are not stale-slot
 // candidates (no row means no stale alert, and compareAuditPriority already
 // puts never-audited shows first in their tier).
-function reserveStalestSlots(ordered, rowTsById, { every = STALE_RESERVE_EVERY } = {}) {
+// BRO-5489: `preferIds` (shows whose row the opening-window alert re-reads
+// every day: auditTier 1) take the reserved slots before older rows. Oldest-
+// first alone gave every slot to back-catalogue rows from September (Hate
+// Radio, 46 days), so on 2026-10-21 What The Animals Say (row 11 days old),
+// Kramer/Fauci, Fences and Boop kept re-alerting on rows no run refreshed.
+// Preferred rows get the 12h freshness once refreshed, so they cannot hold
+// the slots for long; oldest-first still orders within each group.
+function reserveStalestSlots(ordered, rowTsById, { every = STALE_RESERVE_EVERY, preferIds = null } = {}) {
   const list = Array.isArray(ordered) ? ordered : [];
   if (!(every >= 2) || !rowTsById || rowTsById.size === 0) return { targets: list.slice(), reservedIds: [] };
   const pos = new Map(list.map((s, i) => [s.id, i]));
+  const pref = (s) => (preferIds && preferIds.has(s.id) ? 0 : 1);
   const stale = list
     .filter((s) => rowTsById.has(s.id))
-    .sort((a, b) => (rowTsById.get(a.id) - rowTsById.get(b.id)) || (pos.get(a.id) - pos.get(b.id)));
+    .sort((a, b) => (pref(a) - pref(b)) || (rowTsById.get(a.id) - rowTsById.get(b.id)) || (pos.get(a.id) - pos.get(b.id)));
   const taken = new Set();
   const targets = [];
   const reservedIds = [];

@@ -91,6 +91,11 @@ const publishDateArg = getArg('publish-date');
 // passes the engagement window so a review of an earlier visit, another
 // production or the film never lands in the tour folder.
 const dateWindow = (getArg('date-window') || '').split(',').filter(Boolean);
+// --require-publish-date (BRO-5627): skip, before any write, a page with no
+// resolvable publish date. The gap audit passes it when the show has an
+// earlier-dated citation: an undated file bypasses the date-plausibility guard,
+// so a revival's folder could hold (and later score) the prior run's review.
+const requirePublishDate = hasFlag('require-publish-date');
 const dryRun = hasFlag('dry-run');
 // --data-dir: override the review-texts root, same flag block-review.js already
 // exposes ("Override data/review-texts root (for tests)"). Flows to BOTH the
@@ -132,12 +137,12 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 
 // --help must print usage and exit BEFORE any side effect (BRO-1711).
 if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
-  console.log('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--html-file=PATH] [--land]');
+  console.log('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--require-publish-date] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--html-file=PATH] [--land]');
   process.exit(0);
 }
 
 if (!showId || !url) {
-  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--html-file=PATH] [--land]');
+  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--require-publish-date] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--html-file=PATH] [--land]');
   process.exit(1);
 }
 
@@ -333,6 +338,13 @@ if (!show) {
       console.error(`❌ Fetch failed (${reason}); no retry stub under --date-window — ${url}`);
       process.exit(3);
     }
+    // An unfetched page has no date to check; an undated stub is the very file
+    // --require-publish-date exists to prevent.
+    if (requirePublishDate && !publishDateArg) {
+      // Expected, not a failure: exiting non-zero here would re-alarm every hourly audit run.
+      console.log(`⚠️  Skipped: publish-date-unresolved — fetch failed (${reason}); no retry stub under --require-publish-date — ${url}`);
+      process.exit(0);
+    }
     const { buildRetryStubFields } = require('./lib/submission-retry-stub');
     const stubResult = createOrMergeReviewFile(showId, {
       outletId,
@@ -430,6 +442,12 @@ if (!show) {
   const publishDate = publishDateArg || extractPublishDate(html, url) || (stageMeta && stageMeta.publishDate) || null;
   if (!publishDateArg && publishDate) {
     console.log(`  → Extracted publishDate from page metadata: ${publishDate}`);
+  }
+
+  if (requirePublishDate && !publishDate) {
+    // `Skipped: <reason>` is the ingest-skip-classify contract (expected rejection).
+    console.log(`⚠️  Skipped: publish-date-unresolved — no publish date on the page and --require-publish-date is set — ${url}`);
+    process.exit(0);
   }
 
   if (dateWindow.length === 2) {

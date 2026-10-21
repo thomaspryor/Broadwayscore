@@ -8,10 +8,10 @@
 import { formatRowValue, type ComparisonRow, type MixBreakdown } from '@/lib/season-profile';
 
 const SEGMENTS = [
-  { key: 'originalMusicals', label: 'Original musicals', className: 'bg-brand' },
-  { key: 'musicalRevivals', label: 'Musical revivals', className: 'bg-brand/55' },
-  { key: 'originalPlays', label: 'Original plays', className: 'bg-accent-purple' },
-  { key: 'playRevivals', label: 'Play revivals', className: 'bg-accent-purple/55' },
+  { key: 'originalMusicals', id: 'original-musicals', label: 'Original musicals', className: 'bg-brand' },
+  { key: 'musicalRevivals', id: 'musical-revivals', label: 'Musical revivals', className: 'bg-brand/55' },
+  { key: 'originalPlays', id: 'original-plays', label: 'Original plays', className: 'bg-accent-purple' },
+  { key: 'playRevivals', id: 'play-revivals', label: 'Play revivals', className: 'bg-accent-purple/55' },
 ] as const;
 
 export interface MixColumn {
@@ -20,14 +20,21 @@ export interface MixColumn {
   /** Under the heading, e.g. "28 productions" or "10 seasons pooled". */
   note: string;
   mix: MixBreakdown;
-  /** Show the counts (a single season) or only shares (a pooled average). */
-  showCounts: boolean;
+  /** Seasons pooled in `mix`; counts are shown per season (1 for a single season). */
+  seasons: number;
   /** Which compareSeason value fills this column in the within-group rows. */
   value: 'current' | 'last' | 'avg';
 }
 
 function share(n: number, total: number): number | null {
   return total > 0 ? n / total : null;
+}
+
+const DETAIL = { current: 'currentDetail', last: 'lastDetail', avg: 'avgDetail' } as const;
+
+function perSeason(n: number, seasons: number): string {
+  const v = n / seasons;
+  return Number.isInteger(v) ? String(v) : v.toFixed(1);
 }
 
 function StackedBar({ m }: { m: MixBreakdown }) {
@@ -55,7 +62,7 @@ function GroupRows({ title, rows, columns }: { title: string; rows: ComparisonRo
           {columns.map((c) => (
             <td key={c.label} className="py-2 px-2 sm:px-4 text-center whitespace-nowrap">
               <span className={c.value === 'current' ? 'font-semibold text-white' : 'text-gray-300'}>{formatRowValue(r.format, r[c.value])}</span>
-              {c.value === 'current' && r.currentDetail && <span className="block text-xs text-gray-500">{r.currentDetail}</span>}
+              {r[DETAIL[c.value]] && <span className="block text-xs text-gray-500">{r[DETAIL[c.value]]}</span>}
             </td>
           ))}
         </tr>
@@ -64,7 +71,8 @@ function GroupRows({ title, rows, columns }: { title: string; rows: ComparisonRo
   );
 }
 
-export default function MixCard({ columns, overallRows, withinRows }: { columns: MixColumn[]; overallRows: ComparisonRow[]; withinRows: ComparisonRow[] }) {
+/** `linkGroups`: groups whose names link to the page's show list (#original-musicals...); only groups that have one. */
+export default function MixCard({ columns, overallRows, withinRows, linkGroups }: { columns: MixColumn[]; overallRows: ComparisonRow[]; withinRows: ComparisonRow[]; linkGroups?: ReadonlySet<string> }) {
   return (
     <div className="card rounded-xl overflow-hidden" data-testid="mix-card">
       <div className="p-4 space-y-3">
@@ -102,14 +110,14 @@ export default function MixCard({ columns, overallRows, withinRows }: { columns:
               <tr key={s.key} className="border-b border-white/5">
                 <td className="py-2 pl-3 pr-2 sm:px-4 text-gray-300">
                   <span className={`mr-2 inline-block h-2.5 w-2.5 rounded-sm ${s.className}`} aria-hidden="true" />
-                  {s.label}
+                  {linkGroups?.has(s.id) ? <a href={`#${s.id}`} className="text-brand hover:text-brand-hover">{s.label}</a> : s.label}
                 </td>
                 {columns.map((c, i) => (
                   <td key={c.label} className="py-2 px-2 sm:px-4 text-center whitespace-nowrap">
                     <span className={i === 0 ? 'font-semibold text-white' : 'text-gray-300'}>
                       {formatRowValue('pct', share(c.mix[s.key], c.mix.total))}
                     </span>
-                    {c.showCounts && <span className="block text-xs text-gray-500">{c.mix[s.key]}</span>}
+                    <span className="block text-xs text-gray-500">{perSeason(c.mix[s.key], c.seasons)} of {perSeason(c.mix.total, c.seasons)}</span>
                   </td>
                 ))}
               </tr>
@@ -120,9 +128,9 @@ export default function MixCard({ columns, overallRows, withinRows }: { columns:
         </table>
       </div>
       <p className="px-4 py-3 text-xs text-gray-500">
-        The average pools the prior seasons&apos; productions (pandemic seasons 2019-20 and 2020-21 left out), so bigger
-        seasons count for more. Specials and other shows that are neither musicals nor plays, and any show we have not
-        classed as original or revival, fill the rest of each bar. This season&apos;s column includes announced shows.
+        The average pools every production from the prior seasons (skipping 2019-20 and 2020-21), and its counts are
+        per season. Specials (magic and holiday shows, for example) and any show we haven&apos;t classed as original or
+        revival fill the rest of each bar. This season includes shows announced but not yet open.
       </p>
     </div>
   );

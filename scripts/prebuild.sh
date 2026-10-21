@@ -26,6 +26,10 @@ node scripts/build-actor-slugs-manifest.js
 # /cast/[slug] profile pages). Without this, every /cast/[slug] 404s because
 # next.config.js excludes data/cast/** from the serverless bundle.
 node scripts/build-cast-manifest.js
+# Coverage-floor snapshot — data/audit/** is excluded from the server
+# functions, so pages re-rendered at runtime read this slim copy of the
+# floor's verdicts/stamps/acks instead (BRO-5811; traced via next.config.js).
+node scripts/build-coverage-floor-snapshot.js
 # Slug redirects — AFTER the cast manifest: the "cast:" family of
 # data/slug-redirects-compact.json (retired pre-fold /cast/<slug> URLs, S7-T3
 # follow-up) is derived from data/cast-manifest.json, so this build's manifest

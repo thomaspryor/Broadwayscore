@@ -55,6 +55,15 @@ const nextConfig = {
   // dynamic paths with static require()). This is a belt-and-suspenders guard
   // for any future dynamic data/ access: exclude .git pack files, audit logs,
   // and other files that are never needed at serverless runtime.
+  // BRO-5811: data-core.ts reads the coverage floor at module load. Its raw
+  // inputs live under data/audit/ (excluded below, ~10MB), so runtime
+  // re-renders (show/[slug] revalidate, OG dynamicParams) read this ~200KB
+  // prebuild snapshot instead. Without it the floor silently fails open and
+  // a held show's score appears. Checked post-build by
+  // scripts/lib/check-coverage-floor-trace.js.
+  outputFileTracingIncludes: {
+    '**/*': ['data/coverage-floor-snapshot.json'],
+  },
   outputFileTracingExcludes: {
     '**/*': [
       'data/audit/**',

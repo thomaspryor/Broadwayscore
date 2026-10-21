@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T00:53:37.484Z",
+  "generatedAt": "2026-10-21T03:55:29.749Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -196,15 +196,11 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 723,
-  "matchedGaps": 5,
-  "possibleGaps": 5,
+  "itemsScanned": 724,
+  "matchedGaps": 6,
+  "possibleGaps": 6,
   "gaps": [
     {
       "showId": "copperfield-the-new-musical-off-broadway-2026",
@@ -223,6 +219,15 @@
       "url": "https://www.offoffonline.com/offoffonline/2026/10/16/copperfield-the-new-musical",
       "headline": "Copperfield! The New Musical",
       "publishDate": "2026-10-20"
+    },
+    {
+      "showId": "king-of-the-yees-off-broadway-2026",
+      "title": "King of the Yees",
+      "level": "matched",
+      "outletId": "culturesauce",
+      "url": "https://culturesauce.com/king-of-the-yees-off-broadway-review/",
+      "headline": "&#8216;King of the Yees&#8217; takes an antic tour through Chinatown (Off Broadway review)",
+      "publishDate": "2026-10-19"
     },
     {
       "showId": "lincoln-in-the-bardo-off-broadway-2026",
@@ -267,6 +272,15 @@
       "outletId": "artsdesk",
       "url": "https://theartsdesk.com/theatre/jane-eyre-southwark-playhouse-elephant-review-self-actualization-gothic-gloom",
       "headline": "Jane Eyre, Southwark Playhouse Elephant review - self-actualization in the gothic gloom",
+      "publishDate": null
+    },
+    {
+      "showId": "machine-learning-off-broadway-2026",
+      "title": "Machine Learning",
+      "level": "possible",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-machine-learning-a-reality-show-masquerading-as-an-experiment_1857715/",
+      "headline": "Review: Machine Learning, a Reality Show Masquerading as an Experiment",
       "publishDate": null
     },
     {

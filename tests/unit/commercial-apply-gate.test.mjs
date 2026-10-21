@@ -752,4 +752,5 @@ it('a filing\'s "Offering capitalized at" is a sold basis, its limits are not (B
   assert.equal(capitalizationBasisFromText('offering capitalized at $6 million, fully subscribed'), 'sold');
   assert.equal(capitalizationBasisFromText('Offering capitalized at $4,108,500. Maximum capitalization was $6,000,000'), 'sold');
   assert.equal(capitalizationBasisFromText('Offering capitalized at $4,108,500 Maximum capitalization was $6,000,000'), 'sold');
+  assert.equal(capitalizationBasisFromText('Broadway Journal: "Its capitalization is indeed modest for Broadway ... a maximum of $9.5 million"'), 'maximum');
 });

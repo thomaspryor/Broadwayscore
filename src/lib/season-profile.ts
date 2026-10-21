@@ -62,7 +62,24 @@ export interface SeasonProfile {
   commercial: number;
   recouped: number;
   capitalization: { all: MoneyAggregate; musical: MoneyAggregate; play: MoneyAggregate };
+  /** Disclosed capitalizations plus an estimate for each commercial show with none (estimateCapitalization). */
+  estimatedCapital: CapitalEstimate;
   runningCost: { musical: MoneyAggregate; play: MoneyAggregate };
+}
+
+export interface CapitalEstimate {
+  /** Disclosed figures plus the estimates. */
+  total: number;
+  /** Commercial shows whose figure is an estimate. */
+  estimated: number;
+  /** Commercial shows with no figure and too few comparable ones to estimate. */
+  missing: number;
+  /**
+   * Nonprofit-presented runs (enhancement deals) with no figure: left out, since
+   * their investor money is a fraction of a commercial budget and almost never
+   * disclosed, so commercial comparables would overstate it.
+   */
+  nonprofitOut: number;
 }
 
 /** Share of productions with a commercial.json record before nonprofit / recoupment rows count. */
@@ -82,6 +99,12 @@ export const RECOUP_SETTLE_DAYS = 365;
  * (2020-21): left out of the baseline so they do not drag the averages.
  */
 export const DISRUPTED_SEASONS = new Set(['2019-2020', '2020-2021']);
+
+/**
+ * Seasons either side a capitalization estimate pools comparable disclosed
+ * figures from, widened in turn until MIN_AVERAGE_SAMPLE are found.
+ */
+export const CAP_ESTIMATE_WINDOWS = [2, 4] as const;
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -111,12 +134,62 @@ function emptyProfile(season: string): SeasonProfile {
     openingDayOffsets: [],
     tracked: 0, nonprofit: 0, commercial: 0, recouped: 0,
     capitalization: { all: emptyMoney(), musical: emptyMoney(), play: emptyMoney() },
+    estimatedCapital: { total: 0, estimated: 0, missing: 0, nonprofitOut: 0 },
     runningCost: { musical: emptyMoney(), play: emptyMoney() },
   };
 }
 
+interface DisclosedCap {
+  year: number;
+  type: string;
+  isRevival: boolean | null;
+  capitalization: number;
+}
+
+function median(values: number[]): number {
+  const v = [...values].sort((a, b) => a - b);
+  const mid = Math.floor(v.length / 2);
+  return v.length % 2 ? v[mid] : (v[mid - 1] + v[mid]) / 2;
+}
+
+/**
+ * A stand-in capitalization for a commercial show that disclosed none, so a
+ * season's total does not just count how many budgets are public (owner,
+ * 2026-10-21): the median disclosed figure of shows of the same type and the
+ * same original/revival status opening within CAP_ESTIMATE_WINDOWS seasons
+ * (commercial productions only: nonprofit-presented figures stay out of the pool),
+ * then the same type at the widest window. null with too few to go on. Only
+ * season totals use it; no show is labelled with an estimate.
+ */
+export function estimateCapitalization(
+  disclosed: DisclosedCap[], year: number, type: string, isRevival: boolean | null,
+): number | null {
+  const near = (d: DisclosedCap, w: number) => d.type === type && Math.abs(d.year - year) <= w;
+  for (const w of CAP_ESTIMATE_WINDOWS) {
+    const pool = disclosed.filter((d) => near(d, w) && (isRevival === null || d.isRevival === isRevival));
+    if (pool.length >= MIN_AVERAGE_SAMPLE) return median(pool.map((d) => d.capitalization));
+  }
+  const widest = disclosed.filter((d) => near(d, CAP_ESTIMATE_WINDOWS[CAP_ESTIMATE_WINDOWS.length - 1]));
+  return widest.length >= MIN_AVERAGE_SAMPLE ? median(widest.map((d) => d.capitalization)) : null;
+}
+
 /** One profile per season (July 1 - June 30), newest first. */
 export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
+  const disclosed: DisclosedCap[] = [];
+  for (const show of shows) {
+    const season = getSeason(show.openingDate);
+    const c = show.commercial;
+    if (!season || !c || isExcludedFromSeasonStats(c) || c.nonprofitOrg) continue;
+    if (typeof c.capitalization === 'number' && c.capitalization > 0) {
+      disclosed.push({
+        year: parseInt(season.slice(0, 4), 10),
+        type: show.type ?? '',
+        isRevival: typeof show.isRevival === 'boolean' ? show.isRevival : null,
+        capitalization: c.capitalization,
+      });
+    }
+  }
+
   const bySeason = new Map<string, SeasonProfile>();
   for (const show of shows) {
     const season = getSeason(show.openingDate);
@@ -155,6 +228,20 @@ export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
     p.commercial++;
     if (c.recouped === true) p.recouped++;
     addMoney(p.capitalization.all, c.capitalization);
+    if (typeof c.capitalization === 'number' && c.capitalization > 0) {
+      p.estimatedCapital.total += c.capitalization;
+    } else if (c.nonprofitOrg) {
+      p.estimatedCapital.nonprofitOut++;
+    } else {
+      const est = estimateCapitalization(
+        disclosed, parseInt(season.slice(0, 4), 10), show.type ?? '', typeof show.isRevival === 'boolean' ? show.isRevival : null,
+      );
+      if (est === null) p.estimatedCapital.missing++;
+      else {
+        p.estimatedCapital.total += est;
+        p.estimatedCapital.estimated++;
+      }
+    }
     if (isMusical) {
       addMoney(p.capitalization.musical, c.capitalization);
       addMoney(p.runningCost.musical, c.weeklyCost);
@@ -183,6 +270,61 @@ export function hasFullCapitalCoverage(p: SeasonProfile): boolean {
     && p.capitalization.all.known / p.commercial >= MIN_TOTAL_COVERAGE;
 }
 
+/** Tracked well enough that the estimated capital total (disclosed + estimates) can be stated. */
+export function hasEstimatedCapital(p: SeasonProfile): boolean {
+  return hasTrackedCoverage(p) && p.commercial > 0;
+}
+
+export interface HistoryAverage {
+  /** Seasons averaged: finished, with openings, pandemic seasons left out. */
+  seasons: number;
+  productions: number | null;
+  /** Pooled shares (all openings of the averaged seasons together) and the mean count per season. */
+  musicals: { share: number | null; count: number | null };
+  revivals: { share: number | null; count: number | null };
+  musicalRevivals: number | null;
+  playRevivals: number | null;
+  /** Over averaged seasons we track well. */
+  nonprofit: number | null;
+  /** Over settled seasons we track well (RECOUP_SETTLE_DAYS): mean recouped and commercial per season. */
+  recouped: { recouped: number; commercial: number; seasons: number } | null;
+  disclosedCapital: { avg: number | null; seasons: number };
+  estimatedCapital: { avg: number | null; seasons: number };
+}
+
+/**
+ * The average row under the season-by-season table: each column over the
+ * finished seasons it is stated for (the season under way and DISRUPTED_SEASONS
+ * left out), so a column's average matches the cells above it.
+ */
+export function seasonHistoryAverage(profiles: SeasonProfile[], currentSeason: string | null, asOf: string): HistoryAverage {
+  const base = profiles.filter((p) => p.season !== currentSeason && p.productions > 0 && !DISRUPTED_SEASONS.has(p.season));
+  const meanOf = (vals: number[]) => (vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null);
+  const tracked = base.filter(hasTrackedCoverage);
+  const asOfMs = Date.parse(asOf);
+  const settled = tracked.filter((p) => asOfMs - Date.UTC(parseInt(p.season.slice(5), 10), 6, 1) >= RECOUP_SETTLE_DAYS * DAY_MS);
+  const disclosedSeasons = base.filter(hasFullCapitalCoverage);
+  const estimatedSeasons = base.filter(hasEstimatedCapital);
+  return {
+    seasons: base.length,
+    productions: meanOf(base.map((p) => p.productions)),
+    musicals: { share: pooled(base, (p) => p.musicals, (p) => p.productions), count: meanOf(base.map((p) => p.musicals)) },
+    revivals: { share: pooled(base, (p) => p.revivals, (p) => p.revivalKnown), count: meanOf(base.map((p) => p.revivals)) },
+    musicalRevivals: pooled(base, (p) => p.musicalRevivals, (p) => p.musicalRevivalKnown),
+    playRevivals: pooled(base, (p) => p.playRevivals, (p) => p.playRevivalKnown),
+    nonprofit: pooled(tracked, (p) => p.nonprofit, (p) => p.tracked),
+    recouped: settled.length
+      ? {
+        recouped: meanOf(settled.map((p) => p.recouped)) as number,
+        commercial: meanOf(settled.map((p) => p.commercial)) as number,
+        seasons: settled.length,
+      }
+      : null,
+    disclosedCapital: { avg: meanOf(disclosedSeasons.map((p) => p.capitalization.all.total)), seasons: disclosedSeasons.length },
+    estimatedCapital: { avg: meanOf(estimatedSeasons.map((p) => p.estimatedCapital.total)), seasons: estimatedSeasons.length },
+  };
+}
+
 /** Enough disclosed figures in this one bucket (each money row is gated on its own field). */
 function hasMoneyCoverage(agg: MoneyAggregate, min = MIN_CAP_COVERAGE): boolean {
   return agg.of > 0 && agg.known / agg.of >= min;
@@ -194,10 +336,13 @@ export interface ComparisonRow {
   label: string;
   format: RowFormat;
   current: number | null;
-  /** "12 of 32" style detail for the current season. */
+  /** "12 of 32" style detail under each column's value. */
   currentDetail: string | null;
   last: number | null;
+  lastDetail: string | null;
   avg: number | null;
+  /** Per-season average counts ("15.4 of 36.2") or disclosure, under the average. */
+  avgDetail: string | null;
   /** Seasons the average is taken over (fewer than BASELINE_SEASONS for money and recoupment rows). */
   avgSeasons: number;
 }
@@ -254,6 +399,20 @@ function pctDetail(n: number, d: number): string | null {
   return d > 0 ? `${n} of ${d}` : null;
 }
 
+/** "15.4 of 36.2": a pooled share's counts as per-season averages. */
+function avgCountDetail(ps: SeasonProfile[], num: (p: SeasonProfile) => number, den: (p: SeasonProfile) => number): string | null {
+  if (!ps.length) return null;
+  const per = (f: (p: SeasonProfile) => number) => {
+    const v = ps.reduce((a, p) => a + f(p), 0) / ps.length;
+    return Number.isInteger(v) ? String(v) : v.toFixed(1);
+  };
+  return ps.reduce((a, p) => a + den(p), 0) > 0 ? `${per(num)} of ${per(den)}` : null;
+}
+
+function disclosedDetail(agg: MoneyAggregate): string | null {
+  return agg.of > 0 ? `${agg.known} of ${agg.of} disclosed` : null;
+}
+
 /**
  * The BASELINE_SEASONS seasons before `season` with openings, pandemic
  * seasons left out, and the season just before it (even if disrupted; 2020-21
@@ -280,6 +439,23 @@ export const MIX_ROW_LABELS = [
 ] as const;
 /** Mix rows the report drops outright ('Plays' is 100% less 'Musicals' less specials). */
 export const MIX_ROW_LABELS_HIDDEN = [...MIX_ROW_LABELS, 'Plays'] as const;
+
+/** The four mix groups plus specials, in report order; `id` doubles as the page anchor. */
+export const SHOW_GROUPS = [
+  { id: 'original-musicals', label: 'Original musicals', one: 'Original musical' },
+  { id: 'musical-revivals', label: 'Musical revivals', one: 'Musical revival' },
+  { id: 'original-plays', label: 'Original plays', one: 'Original play' },
+  { id: 'play-revivals', label: 'Play revivals', one: 'Play revival' },
+  { id: 'specials', label: 'Specials and other shows', one: 'Special' },
+] as const;
+export type ShowGroupId = (typeof SHOW_GROUPS)[number]['id'];
+
+/** The mix group a show counts in, by the same rule as mix(): no revival flag means 'specials'. */
+export function showGroup(type: string | null | undefined, isRevival: boolean | null | undefined): ShowGroupId {
+  if (typeof isRevival !== 'boolean' || (type !== 'musical' && type !== 'play')) return 'specials';
+  if (type === 'musical') return isRevival ? 'musical-revivals' : 'original-musicals';
+  return isRevival ? 'play-revivals' : 'original-plays';
+}
 
 export interface MixBreakdown {
   originalMusicals: number;
@@ -336,7 +512,9 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
       current: openedBy(cur),
       currentDetail: null,
       last: last ? openedBy(last) : null,
+      lastDetail: null,
       avg: avgOf(baseline.map(openedBy)),
+      avgDetail: null,
       avgSeasons: baseline.length,
     });
   }
@@ -347,7 +525,9 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
     current: cur.productions,
     currentDetail: null,
     last: last?.productions ?? null,
+    lastDetail: null,
     avg: avgOf(baseline.map((p) => p.productions)),
+    avgDetail: null,
     avgSeasons: baseline.length,
   });
 
@@ -358,7 +538,9 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
       current: share(num(cur), den(cur)),
       currentDetail: pctDetail(num(cur), den(cur)),
       last: last ? share(num(last), den(last)) : null,
+      lastDetail: last ? pctDetail(num(last), den(last)) : null,
       avg: pooled(baseline, num, den),
+      avgDetail: avgCountDetail(baseline, num, den),
       avgSeasons: baseline.length,
     });
   };
@@ -380,61 +562,67 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
     current: trackedOk ? sampledShare(cur.nonprofit, cur.tracked) : null,
     currentDetail: trackedOk ? pctDetail(cur.nonprofit, cur.tracked) : null,
     last: last && hasTrackedCoverage(last) ? sampledShare(last.nonprofit, last.tracked) : null,
+    lastDetail: last && hasTrackedCoverage(last) ? pctDetail(last.nonprofit, last.tracked) : null,
     avg: pooled(tracked, (p) => p.nonprofit, (p) => p.tracked),
+    avgDetail: avgCountDetail(tracked, (p) => p.nonprofit, (p) => p.tracked),
     avgSeasons: tracked.length,
   });
   // Recoupment keeps rising while a season's shows run, so the average uses
   // settled seasons only and an unsettled season's rate is labelled "so far".
-  // A season under way gets its count, not a rate, unless we track most of it.
+  // A season under way states its rate so far: recouping mid-season is rare, so it is mostly 0%.
   const isSettled = (p: SeasonProfile) => asOfMs - Date.UTC(parseInt(p.season.slice(5), 10), 6, 1) >= RECOUP_SETTLE_DAYS * DAY_MS;
   const settled = tracked.filter(isSettled);
   const recoupUnsettled = !isSettled(cur) || (!!last && !isSettled(last));
   rows.push({
     label: isSettled(cur) ? 'Commercial shows recouped' : 'Commercial shows recouped so far',
     format: 'pct',
-    current: trackedOk ? sampledShare(cur.recouped, cur.commercial) : null,
+    current: trackedOk || inProgress ? sampledShare(cur.recouped, cur.commercial) : null,
     currentDetail: trackedOk || inProgress ? pctDetail(cur.recouped, cur.commercial) : null,
     last: last && hasTrackedCoverage(last) ? sampledShare(last.recouped, last.commercial) : null,
+    lastDetail: last && hasTrackedCoverage(last) ? pctDetail(last.recouped, last.commercial) : null,
     avg: pooled(settled, (p) => p.recouped, (p) => p.commercial),
+    avgDetail: avgCountDetail(settled, (p) => p.recouped, (p) => p.commercial),
     avgSeasons: settled.length,
   });
 
-  // Each money row is gated on its own bucket's coverage. A season under way
-  // is judged against its whole announced bucket (`slate`): most of it is not
-  // in commercial.json yet, so `agg.of` would overstate coverage.
+  // Money rows state an average once MIN_AVERAGE_SAMPLE figures are public
+  // (owner, 2026-10-21: show what we have, marked), each column saying how
+  // many were disclosed. The prior-seasons average takes only seasons we
+  // track well that have a figure, and says how many seasons that is.
   const moneyRow = (label: string, agg: (p: SeasonProfile) => MoneyAggregate, slate: (p: SeasonProfile) => number) => {
-    const ok = (p: SeasonProfile) => hasTrackedCoverage(p) && hasMoneyCoverage(agg(p));
+    const ok = (p: SeasonProfile) => hasTrackedCoverage(p);
     const { avg, n } = moneyAvg(baseline, ok, (p) => mean(agg(p)));
+    const used = baseline.filter((p) => ok(p) && mean(agg(p)) != null);
     const a = agg(cur);
+    // A season under way is judged against its whole announced bucket: most of it is not in commercial.json yet.
     const curOf = inProgress ? Math.max(a.of, slate(cur)) : a.of;
-    const curOk = (trackedOk || inProgress) && hasMoneyCoverage({ ...a, of: curOf });
     rows.push({
       label,
       format: 'money',
-      current: curOk ? mean(a) : null,
-      currentDetail: curOf > 0 ? `${a.known} of ${curOf} disclosed` : null,
+      current: trackedOk || inProgress ? mean(a) : null,
+      currentDetail: disclosedDetail({ ...a, of: curOf }),
       last: last && ok(last) ? mean(agg(last)) : null,
+      lastDetail: last && ok(last) ? disclosedDetail(agg(last)) : null,
       avg,
+      avgDetail: used.length ? `${avgCountDetail(used, (p) => agg(p).known, (p) => agg(p).of)} disclosed` : null,
       avgSeasons: n,
     });
   };
 
   // A sum of disclosed budgets measures how much we found as much as what was
-  // spent: it is stated for the season, and compared only between seasons
-  // where nearly every budget is public.
+  // spent, so every column says how many budgets it adds up.
   const capAll = (p: SeasonProfile) => p.capitalization.all;
-  const fullCap = (p: SeasonProfile) => hasTrackedCoverage(p) && hasMoneyCoverage(capAll(p), MIN_TOTAL_COVERAGE);
-  // A season under way is a partial slate: its sum is stated, never compared.
-  const curFull = !inProgress && fullCap(cur);
-  const fullBaseline = curFull ? baseline.filter(fullCap) : [];
+  const capSeasons = baseline.filter((p) => hasTrackedCoverage(p) && capAll(p).known > 0);
   rows.push({
     label: 'Disclosed capitalization (sum)',
     format: 'money',
-    current: cur.capitalization.all.known > 0 ? cur.capitalization.all.total : null,
-    currentDetail: cur.capitalization.all.of > 0 ? `${cur.capitalization.all.known} of ${cur.capitalization.all.of} disclosed` : null,
-    last: curFull && last && fullCap(last) ? last.capitalization.all.total : null,
-    avg: avgOf(fullBaseline.map((p) => p.capitalization.all.total)),
-    avgSeasons: fullBaseline.length,
+    current: capAll(cur).known > 0 ? capAll(cur).total : null,
+    currentDetail: disclosedDetail(capAll(cur)),
+    last: last && hasTrackedCoverage(last) && capAll(last).known > 0 ? capAll(last).total : null,
+    lastDetail: last && hasTrackedCoverage(last) ? disclosedDetail(capAll(last)) : null,
+    avg: avgOf(capSeasons.map((p) => capAll(p).total)),
+    avgDetail: capSeasons.length ? `${avgCountDetail(capSeasons, (p) => capAll(p).known, (p) => capAll(p).of)} disclosed` : null,
+    avgSeasons: capSeasons.length,
   });
   moneyRow('Average capitalization, musical', (p) => p.capitalization.musical, (p) => p.musicals);
   moneyRow('Average capitalization, play', (p) => p.capitalization.play, (p) => p.plays);
@@ -471,12 +659,16 @@ export interface RecoupShowInput extends SeasonShowInput {
   status: string | null | undefined;
   /** Broadway Scorecard critic score (compositeScore), null when unscored. */
   criticScore: number | null | undefined;
+  slug?: string;
+  title?: string;
 }
 
 export interface RecoupBucket {
   label: string;
   recouped: number;
   total: number;
+  /** The shows that recouped (named publicly; shows that did not are never listed). */
+  recoupedShows: Array<{ slug: string; title: string; year: string }>;
 }
 
 export interface ScoreBand {
@@ -523,10 +715,10 @@ export function buildRecoupFindings(shows: RecoupShowInput[], asOf: string): Rec
   const sorted = [...seasons].sort();
 
   const buckets: Record<string, RecoupBucket> = {
-    'play|true': { label: 'Play revivals', recouped: 0, total: 0 },
-    'play|false': { label: 'Original plays', recouped: 0, total: 0 },
-    'musical|true': { label: 'Musical revivals', recouped: 0, total: 0 },
-    'musical|false': { label: 'Original musicals', recouped: 0, total: 0 },
+    'play|true': { label: 'Play revivals', recouped: 0, total: 0, recoupedShows: [] },
+    'play|false': { label: 'Original plays', recouped: 0, total: 0, recoupedShows: [] },
+    'musical|true': { label: 'Musical revivals', recouped: 0, total: 0, recoupedShows: [] },
+    'musical|false': { label: 'Original musicals', recouped: 0, total: 0, recoupedShows: [] },
   };
   const recScores: number[] = [];
   const lossScores: number[] = [];
@@ -540,7 +732,10 @@ export function buildRecoupFindings(shows: RecoupShowInput[], asOf: string): Rec
     const b = buckets[`${s.type}|${s.isRevival === true}`];
     if (b && typeof s.isRevival === 'boolean') {
       b.total++;
-      if (recouped) b.recouped++;
+      if (recouped) {
+        b.recouped++;
+        if (s.slug && s.title) b.recoupedShows.push({ slug: s.slug, title: s.title, year: s.openingDate.slice(0, 4) });
+      }
     }
     const decided = recouped || s.status === 'closed';
     const score = typeof s.criticScore === 'number' ? s.criticScore : null;
@@ -554,6 +749,7 @@ export function buildRecoupFindings(shows: RecoupShowInput[], asOf: string): Rec
   }
 
   const avg = (xs: number[]) => (xs.length >= MIN_AVERAGE_SAMPLE ? xs.reduce((a, b) => a + b, 0) / xs.length : null);
+  for (const b of Object.values(buckets)) b.recoupedShows.sort((x, y) => x.title.localeCompare(y.title));
   return {
     range: sorted.length ? [sorted[0], sorted[sorted.length - 1]] : null,
     seasonCount: sorted.length,
