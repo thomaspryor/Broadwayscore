@@ -418,7 +418,7 @@ export default function WhatToWearToBroadwayGuide() {
                   Bring a hoodie or light jacket.
                 </li>
                 <li>
-                  <strong className="text-white">Shoes they can walk in:</strong> YouYou&apos;ll navigateapos;ll move through
+                  <strong className="text-white">Shoes they can walk in:</strong> You&apos;ll move through
                   crowds and stairs. Skip the dress shoes if they&apos;re not broken in.
                 </li>
                 <li>
