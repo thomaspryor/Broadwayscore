@@ -36,6 +36,14 @@ const PRE_OPENING_GRACE_MS = 24 * 60 * 60 * 1000;
 // (ship-check finding, task #902).
 const MAX_FRESHNESS_SKIP_MS = 365 * 24 * 60 * 60 * 1000;
 
+// The opening-window alert still reads this show's row and it counts uncollected reviews.
+// alertUncollected is the alert's own count (census-only hits ignored for a closed show);
+// an entry written before that field existed falls back to uncollected.
+function alertReadsRow(show, entry, now = Date.now()) {
+  if (!entry || !inOpeningWindow(show, now)) return false;
+  return (entry.alertUncollected ?? entry.uncollected) > 0;
+}
+
 function inOpeningPriorityWindow(show, now = Date.now()) {
   if (show?.status === 'closed') return false;
   if (inOpeningWindow(show, now, OPENING_PRIORITY_WINDOW_DAYS)) return true;
@@ -52,6 +60,10 @@ function freshnessMsFor(show, lastEntry, { freshnessHours = 12, now = Date.now()
   // A closed show that audited clean won't get new reviews — re-check only yearly
   // (effectively one-time) so the back-catalogue grind doesn't burn credits forever.
   if (closed && lastEntry && lastEntry.gaps === 0) return MAX_FRESHNESS_SKIP_MS; // 365d
+  // BRO-5513: a closed show still inside the opening-window alert whose row counts
+  // uncollected reviews is read by that alert daily; waiting 14d left a stale row
+  // firing (Measure for Measure, closed after 2 nights, row frozen at 2026-10-04).
+  if (closed && alertReadsRow(show, lastEntry, now)) return freshnessHours * 60 * 60 * 1000;
   if (closed) return 14 * 24 * 60 * 60 * 1000; // 14d — retry closed shows that still had gaps
   if (inOpeningPriorityWindow(show, now)) {
     return inOpeningWindow(show, now, OPENING_HOT_DAYS)
@@ -92,6 +104,7 @@ function checkpointTs(entry) {
 function auditTier(show, entry, now = Date.now()) {
   if (inOpeningPriorityWindow(show, now)) return 0;
   if (show?.status !== 'closed' && inOpeningWindow(show, now) && (!entry || entry.uncollected > 0)) return 1;
+  if (show?.status === 'closed' && alertReadsRow(show, entry, now)) return 1; // BRO-5513
   return 2;
 }
 

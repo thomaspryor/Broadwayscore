@@ -2295,6 +2295,9 @@ async function main(argv = process.argv.slice(2)) {
         // audit — the TKAM class, where a WE revival "missed" 77 URLs from the
         // 2018 Broadway run; same filter the WE completeness alert applies).
         uncollected: currentRunUncollected(r),
+        // BRO-5513: the opening-window alert's own count (a closed show ignores census-only
+        // hits), so gap-audit-freshness refreshes only rows that alert still reads.
+        alertUncollected: currentRunUncollected(r, { ignoreCensusTagged: !censusGapsAlert(alertShowState(r, new Map([[s.id, s]]))) }),
         ...(isWeShow(s) ? { refVersion: WE_REF_VERSION } : {}),
         ...(checkpoint[s.id] && checkpoint[s.id].weAlert ? { weAlert: checkpoint[s.id].weAlert } : {}),
         ...(zeroCharStored && Object.keys(zeroCharStored).length ? { zeroChar: zeroCharStored } : {}),

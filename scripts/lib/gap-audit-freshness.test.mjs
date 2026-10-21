@@ -150,7 +150,20 @@ test('alert-window tier needs a live show with uncollected reviews on its row', 
   assert.equal(auditTier(show, { uncollected: 1 }, NOW), 1);
   assert.equal(auditTier(show, { uncollected: 0 }, NOW), 2);
   assert.equal(auditTier(show, undefined, NOW), 1, "never audited in the alert window: check it first");
-  assert.equal(auditTier({ ...show, status: 'closed' }, { uncollected: 1 }, NOW), 2);
+  // BRO-5513: a closed show's stale row still fires the alert, so it refreshes like a live one
+  assert.equal(auditTier({ ...show, status: 'closed' }, { uncollected: 1 }, NOW), 1);
+  assert.equal(auditTier({ ...show, status: 'closed' }, { uncollected: 16, alertUncollected: 0 }, NOW), 2);
+  assert.equal(auditTier({ ...show, status: 'closed' }, { uncollected: 0 }, NOW), 2);
   assert.equal(auditTier({ ...show, openingDate: iso(40 * DAY) }, { uncollected: 1 }, NOW), 2);
   assert.equal(auditTier(openedToday, undefined, NOW), 0);
+});
+
+test('BRO-5513: closed in-window show with an alerting row re-audits at 12h, not 14d', () => {
+  const closedAlerting = { id: 'mfm', status: 'closed', openingDate: iso(10 * DAY) };
+  assert.equal(freshnessMsFor(closedAlerting, { gaps: 20, uncollected: 16 }, { freshnessHours: 12, now: NOW }), 12 * 60 * 60 * 1000);
+  // census-only churn (alertUncollected 0) keeps the 14d retry
+  assert.equal(freshnessMsFor(closedAlerting, { gaps: 20, uncollected: 16, alertUncollected: 0 }, { now: NOW }), 14 * DAY);
+  // past the alert window it is no longer read
+  const old = { id: 'o', status: 'closed', openingDate: iso(60 * DAY) };
+  assert.equal(freshnessMsFor(old, { gaps: 2, uncollected: 2 }, { now: NOW }), 14 * DAY);
 });
