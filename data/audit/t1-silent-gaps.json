@@ -1,8 +1,30 @@
 {
-  "generatedAt": "2026-10-21T14:08:36.666Z",
+  "generatedAt": "2026-10-21T15:56:47.605Z",
   "windowDays": 45,
   "showsScanned": 196,
   "gaps": [
+    {
+      "showId": "high-school-musical-off-west-end-2026",
+      "title": "High School Musical",
+      "openingDate": "2026-10-12",
+      "file": "whatsonstage--hang-yuen.json",
+      "outletId": "whatsonstage",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "https://www.whatsonstage.com/news/disneys-high-school-musical-at-troubadour-wembley-park-theatre-review-exactly-what-ive-been-looking-",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=high-school-musical-off-west-end-2026 --url=https://www.whatsonstage.com/news/disneys-high-school-musical-at-troubadour-wembley-park-theatre-review-exactly-what-ive-been-looking- --outlet=whatsonstage --critic=\"Hang Yuen\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-10-20T23:20:06.795Z",
+      "fileAgeHours": 16.61011722222222,
+      "gapSeenAt": "2026-10-21T15:56:47.605Z",
+      "nonTerminalAgeHours": 0
+    },
     {
       "showId": "other-desert-cities-2026",
       "title": "Other Desert Cities",
@@ -18,9 +40,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=other-desert-cities-2026",
       "firstSeen": "2026-10-20T01:24:52.774Z",
-      "fileAgeHours": 36.727754166666664,
+      "fileAgeHours": 38.53075527777778,
       "gapSeenAt": "2026-10-20T16:46:29.082Z",
-      "nonTerminalAgeHours": 21.368773333333333
+      "nonTerminalAgeHours": 23.171811944444446
     },
     {
       "showId": "slam-frank-off-broadway-2026",
@@ -36,9 +58,9 @@
       "forumLinkRecoveryCount": 5,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=slam-frank-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-18T14:14:33.814Z",
-      "fileAgeHours": 71.89975111111112,
+      "fileAgeHours": 73.70275777777778,
       "gapSeenAt": "2026-10-18T18:09:48.486Z",
-      "nonTerminalAgeHours": 67.98005
+      "nonTerminalAgeHours": 69.78308861111111
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -54,27 +76,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 693.4673413888889,
+      "fileAgeHours": 695.2703552777778,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 244.4871288888889
-    },
-    {
-      "showId": "maybe-happy-ending-tour-2026",
-      "title": "Maybe Happy Ending",
-      "openingDate": "2026-09-13",
-      "file": "theatermania--zachary-stewart.json",
-      "outletId": "theatermania",
-      "tier": 2,
-      "type": "rejected-unscoreable",
-      "url": "https://www.theatermania.com/news/jazz-vocalist-stella-cole-to-join-cast-of-maybe-happy-ending-on-broadway_1855818/",
-      "recovery": null,
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=maybe-happy-ending-tour-2026 --url=https://www.theatermania.com/news/jazz-vocalist-stella-cole-to-join-cast-of-maybe-happy-ending-on-broadway_1855818/ --outlet=theatermania --critic=\"Zachary Stewart\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-06T02:28:41.564Z",
-      "fileAgeHours": 371.6649347222222,
-      "gapSeenAt": "2026-10-19T11:33:43.077Z",
-      "nonTerminalAgeHours": 50.5815525
+      "nonTerminalAgeHours": 246.2901675
     },
     {
       "showId": "all-male-as-you-like-it-regional-2026",
@@ -90,9 +94,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=all-male-as-you-like-it-regional-2026 --url=https://www.talkinbroadway.com/page/regional/minn/minn1539.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-19T17:17:56.172Z",
-      "fileAgeHours": 44.84446555555556,
+      "fileAgeHours": 46.647505833333334,
       "gapSeenAt": "2026-10-19T18:06:42.214Z",
-      "nonTerminalAgeHours": 44.03179222222222
+      "nonTerminalAgeHours": 45.834830833333335
     }
   ],
   "contradictions": []

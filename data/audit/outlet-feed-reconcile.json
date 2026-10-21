@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T14:08:52.438Z",
+  "generatedAt": "2026-10-21T16:00:12.170Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -183,6 +183,10 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "plays-international",
+      "error": "Timeout fetching https://playsinternational.org.uk/feed/"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -195,8 +199,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 739,
-  "matchedGaps": 6,
+  "itemsScanned": 727,
+  "matchedGaps": 7,
   "possibleGaps": 4,
   "gaps": [
     {
@@ -216,6 +220,15 @@
       "url": "https://www.offoffonline.com/offoffonline/2026/10/16/copperfield-the-new-musical",
       "headline": "Copperfield! The New Musical",
       "publishDate": "2026-10-20"
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
+      "title": "Martin Guerre",
+      "level": "matched",
+      "outletId": "musical-theatre-review",
+      "url": "https://musicaltheatrereview.com/martin-guerre-the-old-vic/",
+      "headline": "Martin Guerre – The Old Vic",
+      "publishDate": "2026-10-21"
     },
     {
       "showId": "martin-guerre-west-end-2026",

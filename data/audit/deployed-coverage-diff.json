@@ -1,13 +1,87 @@
 {
-  "generatedAt": "2026-10-21T14:08:51.707Z",
+  "generatedAt": "2026-10-21T16:00:11.803Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 251,
-  "clean": 251,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 247,
+  "defective": 4,
+  "byType": {
+    "score-drift": 4,
+    "missing-from-prod": 1
+  },
+  "shows": [
+    {
+      "showId": "wicked-west-end-2021",
+      "title": "Wicked",
+      "openingDate": "2006-09-27",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: metro-uk"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 71.31 vs local 71.4 (Δ0.09)"
+        }
+      ],
+      "missingFromProd": [
+        "metro-uk"
+      ],
+      "localCount": 16,
+      "deployedCount": 16,
+      "firstDefectAt": "2026-10-21T16:00:06.480Z"
+    },
+    {
+      "showId": "king-of-the-yees-off-broadway-2026",
+      "title": "King of the Yees",
+      "openingDate": "2026-10-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 77.4 vs local 76.62 (Δ0.78)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 10,
+      "deployedCount": 11,
+      "firstDefectAt": "2026-10-21T16:00:06.480Z"
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
+      "title": "Martin Guerre",
+      "openingDate": "2026-10-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 67.5 vs local 65.39 (Δ2.11)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 8,
+      "deployedCount": 8,
+      "firstDefectAt": "2026-10-21T16:00:06.480Z"
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "title": "Avenue Q",
+      "openingDate": "2026-04-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.89 vs local 81.99 (Δ0.1)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 37,
+      "deployedCount": 37,
+      "firstDefectAt": "2026-10-21T16:00:06.480Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

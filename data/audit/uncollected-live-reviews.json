@@ -1,8 +1,41 @@
 {
-  "generatedAt": "2026-10-21T14:08:36.920Z",
+  "generatedAt": "2026-10-21T15:59:57.212Z",
   "maxAgeHours": 12,
-  "showsAffected": 0,
-  "strandedFiles": 0,
+  "showsAffected": 2,
+  "strandedFiles": 2,
   "blackoutShows": [],
-  "findings": []
+  "findings": [
+    {
+      "showId": "hamilton-west-end-2021",
+      "title": "Hamilton",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "independent--unknown.json",
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/hamilton-victoria-palace-theatre-london-review-a-magnificent-achievement-thomas-kail-the-book-of-mormon-a8122091.html",
+          "outlet": "Independent",
+          "ageHours": null
+        }
+      ],
+      "usable": 39,
+      "discovered": 54,
+      "totalBlackout": false
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "title": "Stranger Things: The First Shadow",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "standard--unknown.json",
+          "url": "https://www.standard.co.uk/culture/theatre/stranger-things-the-first-shadow-review-west-end-netflix-phoenix-theatre-b1127020.html",
+          "outlet": "Evening Standard",
+          "ageHours": null
+        }
+      ],
+      "usable": 61,
+      "discovered": 83,
+      "totalBlackout": false
+    }
+  ]
 }
