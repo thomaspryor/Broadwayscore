@@ -1083,5 +1083,36 @@
       }
     ],
     "queuedAt": "2026-10-21T03:34:58.172Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5776-commercial-coverage-2",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5776-commercial-coverage-2",
+    "description": "land.yml did not land land/bro-5776-commercial-coverage-2: the unit-tests-node gate went red at b0988b851d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39539263552",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5776-commercial-coverage-2"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "b0988b851d15d2fc3ae404b68d57808b6e79ddce"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39539263552"
+      }
+    ],
+    "queuedAt": "2026-10-21T03:51:56.226Z"
   }
 ]
