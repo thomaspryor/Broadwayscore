@@ -8,10 +8,10 @@
 import { formatRowValue, type ComparisonRow, type MixBreakdown } from '@/lib/season-profile';
 
 const SEGMENTS = [
-  { key: 'originalMusicals', id: 'original-musicals', label: 'Original musicals', className: 'bg-brand' },
-  { key: 'musicalRevivals', id: 'musical-revivals', label: 'Musical revivals', className: 'bg-brand/55' },
-  { key: 'originalPlays', id: 'original-plays', label: 'Original plays', className: 'bg-accent-purple' },
-  { key: 'playRevivals', id: 'play-revivals', label: 'Play revivals', className: 'bg-accent-purple/55' },
+  { key: 'originalMusicals', id: 'original-musicals', label: 'Original musicals', short: 'OM', className: 'bg-brand', textClassName: 'text-surface' },
+  { key: 'musicalRevivals', id: 'musical-revivals', label: 'Musical revivals', short: 'MR', className: 'bg-brand/55', textClassName: 'text-white' },
+  { key: 'originalPlays', id: 'original-plays', label: 'Original plays', short: 'OP', className: 'bg-accent-purple', textClassName: 'text-surface' },
+  { key: 'playRevivals', id: 'play-revivals', label: 'Play revivals', short: 'PR', className: 'bg-accent-purple/55', textClassName: 'text-white' },
 ] as const;
 
 export interface MixColumn {
@@ -37,15 +37,45 @@ function perSeason(n: number, seasons: number): string {
   return Number.isInteger(v) ? String(v) : v.toFixed(1);
 }
 
+/** Segment shares (% of the bar) below which the label drops to the acronym, and below which it is left off. */
+const FULL_LABEL_MIN_PCT = 13;
+const SHORT_LABEL_MIN_PCT = 11;
+
 function StackedBar({ m }: { m: MixBreakdown }) {
   return (
-    <div className="flex h-4 w-full overflow-hidden rounded-full bg-white/5" aria-hidden="true">
+    <div className="flex h-8 w-full overflow-hidden rounded-full bg-white/5" aria-hidden="true">
       {SEGMENTS.map((s) => {
         const pct = (share(m[s.key], m.total) ?? 0) * 100;
+        if (pct <= 0) return null;
+        // Wide segments carry the full name from xl up; narrower ones (and phones) the acronym; slivers nothing.
         // A divider between segments keeps the lighter revival shades distinct from their solid neighbours.
-        return pct > 0 ? <div key={s.key} className={`${s.className} border-r-2 border-surface-raised last:border-r-0`} style={{ width: `${pct}%` }} /> : null;
+        return (
+          <div
+            key={s.key}
+            title={s.label}
+            className={`${s.className} ${s.textClassName} flex items-center justify-center overflow-hidden whitespace-nowrap text-[11px] sm:text-xs font-semibold border-r-2 border-surface-raised last:border-r-0 px-1 first:pl-3 last:pr-3`}
+            style={{ width: `${pct}%` }}
+          >
+            {pct >= SHORT_LABEL_MIN_PCT && (
+              <>
+                <span className={pct >= FULL_LABEL_MIN_PCT ? 'xl:hidden' : ''}>{s.short}</span>
+                {pct >= FULL_LABEL_MIN_PCT && <span className="hidden xl:inline">{s.label}</span>}
+              </>
+            )}
+          </div>
+        );
       })}
     </div>
+  );
+}
+
+/** True when some bar shows an acronym on desktop (a segment between the two cutoffs), so the key must stay visible there. */
+function needsDesktopKey(columns: MixColumn[]): boolean {
+  return columns.some((c) =>
+    SEGMENTS.some((s) => {
+      const pct = (share(c.mix[s.key], c.mix.total) ?? 0) * 100;
+      return pct >= SHORT_LABEL_MIN_PCT && pct < FULL_LABEL_MIN_PCT;
+    }),
   );
 }
 
@@ -85,11 +115,11 @@ export default function MixCard({ columns, overallRows, withinRows, linkGroups }
             <StackedBar m={c.mix} />
           </div>
         ))}
-        <ul className="flex flex-wrap gap-x-4 gap-y-1 pt-1 text-xs text-gray-400">
+        {/* Wide segments name themselves from xl up; elsewhere bars show acronyms, so spell them out here. */}
+        <ul className={`${needsDesktopKey(columns) ? '' : 'xl:hidden'} flex flex-wrap gap-x-3 gap-y-1 pt-1 text-xs text-gray-400`}>
           {SEGMENTS.map((s) => (
-            <li key={s.key} className="inline-flex items-center gap-1.5">
-              <span className={`inline-block h-2.5 w-2.5 rounded-sm ${s.className}`} />
-              {s.label}
+            <li key={s.key}>
+              <strong className="font-semibold text-gray-300">{s.short}</strong> {s.label}
             </li>
           ))}
         </ul>
