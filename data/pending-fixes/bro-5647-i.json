@@ -8,10 +8,11 @@
     "email": null
   },
   "plan": {
-    "summary": "From the owner's Gemini Deep Research batch (Oct 21). Most sourced figures were already on record; two records change. (1) Maybe Happy Ending: the $16M capitalization was cited to Wikipedia; the show's SEC Form D/A (Jan 22, 2025) states 'Offering capitalized at $16,000,000' with $16,000,000 sold to 56 investors, so the source becomes the filing (basis sold). (2) Titanique: the $9.5M was shown as raised, but Broadway Journal (Feb 20, 2026) and the SEC Form D (Jan 14, 2026) both call it the maximum (minimum $7.5M), so it becomes 'up to $9.5M' (basis maximum). Rejected from the batch: Spamalot $8M (the cited aggregator page is a different CIK's 2022 filing; our record cites the show's own Aug 2023 Form D at $12M), Ragtime 'did not recoup' (closed Aug 16, 2026; a no-announcement loss label waits ~6 months under classify-stale-closure), Reddit and forum figures. Old values read from the private core data at c1886db.",
+    "summary": "From the owner's Gemini Deep Research batch (Oct 21). Most sourced figures were already on record; two records change. (1) Maybe Happy Ending: the $16M capitalization was cited to Wikipedia; the show's SEC Form D/A (Jan 22, 2025) states 'Offering capitalized at $16,000,000' with $16,000,000 sold to 56 investors, so the source becomes the filing (basis sold). (2) Titanique: the $9.5M was shown as raised, but Broadway Journal (Feb 20, 2026) and the SEC Form D (Jan 14, 2026) both call it the maximum (minimum $7.5M), so it becomes 'up to $9.5M' (basis maximum). Rejected from the batch: Spamalot $8M (the cited aggregator page is a different CIK's 2022 filing; our record cites the show's own Aug 2023 Form D at $12M), Ragtime 'did not recoup' (closed Aug 16, 2026; a no-announcement loss label waits ~6 months under classify-stale-closure), Reddit and forum figures. Old values read from the private core data at c1886db. (3) Beaches: TBD -> Flop with designationBasis reported-loss. The New York Times (May 19, 2026) reported the early closing was 'losing investors millions of dollars'; Dots' Oct 19 audit (GN12-003, CG14-003, GD01-003) verified it as did-not-recoup and it had not been applied. The r/Broadway grosses analyst estimate on record is 0% returned. designationBasis is set before the label so stampDesignationBasis keeps it.",
     "steps": [
       "Maybe Happy Ending source to its SEC Form D/A",
-      "Titanique capitalization shown as the Form D maximum"
+      "Titanique capitalization shown as the Form D maximum",
+      "Beaches: Flop, on the New York Times report of investor losses"
     ],
     "riskLevel": "low",
     "actions": [
@@ -108,6 +109,113 @@
           }
         ],
         "description": "titanique: add the SEC Form D"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beaches",
+        "showId": "beaches",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "The New York Times (Michael Paulson, May 19, 2026): \"The strategy proved to be an unsuccessful gambit, losing investors millions of dollars (the capitalization cost has not yet been disclosed).\" https://www.nytimes.com/2026/05/19/theater/beaches-broadway-closing.html",
+        "description": "beaches: NYT (May 19, 2026) reported investor losses; Dots audit GN12-003/CG14-003 verified it"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beaches",
+        "showId": "beaches",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "beaches: NYT (May 19, 2026) reported investor losses; Dots audit GN12-003/CG14-003 verified it"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beaches",
+        "showId": "beaches",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "beaches: basis set before the label so the label keeps it"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beaches",
+        "showId": "beaches",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Flop",
+        "description": "beaches: TBD -> Flop: reported investor loss, analyst estimate 0% returned"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beaches",
+        "showId": "beaches",
+        "field": "notes",
+        "oldValue": "Commercial new musical at the Majestic; opened Apr 22, 2026 and closed May 24, 2026, more than three months early, after grossing about $4.2M. No capitalization reported and no recoupment announced.",
+        "newValue": "Commercial new musical at the Majestic; opened Apr 22, 2026 and closed May 24, 2026, more than three months early, after grossing about $4.2M. No capitalization reported. The New York Times reported the run was losing investors millions of dollars.",
+        "description": "beaches: notes cite the reported loss"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beaches",
+        "showId": "beaches",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/beaches-plays-final-performance-on-broadway-may-24",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-10"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1sf5swb/easter_grosses_analysis_week_ending_april_5/",
+            "date": "2026-04-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://broadwaydirect.com/beaches-to-close-on-broadway-this-month/",
+            "date": "2026-05-21"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/beaches-plays-final-performance-on-broadway-may-24",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-10"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1sf5swb/easter_grosses_analysis_week_ending_april_5/",
+            "date": "2026-04-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://broadwaydirect.com/beaches-to-close-on-broadway-this-month/",
+            "date": "2026-05-21"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2026/05/19/theater/beaches-broadway-closing.html",
+            "date": "2026-05-19"
+          }
+        ],
+        "description": "beaches: add the NYT closing report"
       }
     ]
   }
