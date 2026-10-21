@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5875",
   "planId": "dea77be9-c27e-49b0-898c-b338c1831ee5",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-21T22:00:00.000Z",
   "submitter": {
     "name": null,
@@ -30,5 +30,19 @@
         "description": "BRO-5875: the Bachtrack text is a Scottish Ballet 'Mary Queen of Scots' review from New York, not Oh, Mary!"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T21:48:23.615Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-leading-site-nav.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oh-mary-west-end-2025/bachtrack--unknown.json wrongShow: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
