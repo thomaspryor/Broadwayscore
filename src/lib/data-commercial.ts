@@ -366,6 +366,8 @@ export function getRecoupFindings(criticScoreBySlug: Map<string, number | null>,
         status: s.status,
         criticScore: criticScoreBySlug.get(s.slug) ?? null,
         commercial: shows[s.slug] ?? null,
+        slug: s.slug,
+        title: s.title,
       })),
     asOf,
   );
