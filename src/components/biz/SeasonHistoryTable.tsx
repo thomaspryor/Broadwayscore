@@ -167,7 +167,7 @@ export default function SeasonHistoryTable({ profiles, currentSeason, asOf, show
         productions (nonprofit runs and tour stops have no investors to repay). &ldquo;—&rdquo; means we track too few of
         that season&apos;s productions to say{showCapital && '; a disclosed capital sum shows only where at least 80% of budgets are disclosed'}. Recent seasons&apos;
         recoupment counts can still rise.
-        {showCapital && ' Est. total capital adds, for each tracked commercial production with no public figure, the median disclosed capitalization of similar shows (same type and original or revival, opening within two seasons, else four, else the same type within four); left out are nonprofit-presented runs with no public figure and productions we do not track (the cell counts them), and no single show is given an estimate. Disclosed figures include SEC filing maximums, so both capital columns can run high.'}
+        {showCapital && ' Est. total capital adds, for each tracked commercial production with no public figure, our own estimate of its budget where we have one (never counted as disclosed), else the median disclosed capitalization of similar shows (same type and original or revival, opening within two seasons, else four, else the same type within four); left out are nonprofit-presented runs with no public figure and productions we do not track (the cell counts them). Disclosed figures include SEC filing maximums, so both capital columns can run high.'}
         {' '}The average row covers finished seasons, leaving out the season under way and the pandemic seasons; recoupment averages only seasons that ended over a year ago.
       </p>
     </div>

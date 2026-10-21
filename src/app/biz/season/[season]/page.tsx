@@ -143,7 +143,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
             </div>
             <div
               className="text-xs text-gray-500"
-              title="Sum of known capitalizations for commercial productions. Nonprofit productions and tour stops are excluded."
+              title="Sum of publicly disclosed capitalizations for commercial productions; our own budget estimates (shown with ~) count as undisclosed. Nonprofit productions and tour stops are excluded."
             >
               Total Capital
             </div>
