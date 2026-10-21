@@ -42,11 +42,13 @@ const { venuesMatch } = require('./lib/deduplication');
 const { normalizeUrl, identityKey, baselineKeySet, computeNewViolators } = require('./lib/show-score-urls-baseline');
 const { computeStaleBaselineKeys, reportStaleBaseline, pruneStaleEntries, runStaleModes } = require('./lib/stale-baseline');
 const { findDuplicateUrls } = require('./lib/show-score-url-map');
+const { countWrongProductionFiles, formatWrongProductionRatio } = require('./lib/show-score-url-wrongproduction-ratio');
 
 const DATA_DIR = path.join(__dirname, '../data');
 const URLS_PATH = path.join(DATA_DIR, 'show-score-urls.json');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
 const ARCHIVE_DIR = path.join(DATA_DIR, 'aggregator-archive/show-score');
+const REVIEW_TEXTS_DIR = path.join(DATA_DIR, 'review-texts');
 const BASELINE_PATH = path.join(DATA_DIR, 'audit', 'show-score-urls-baseline.json');
 
 const args = process.argv.slice(2);
@@ -258,7 +260,8 @@ if (results.duplicate_url.length > 0) {
     console.log(`  ${d.url}${isNew ? '  [NEW — not in baseline]' : ''}`);
     d.showIds.forEach(id => {
       const s = showMap[id];
-      console.log(`    → ${id} (${s?.status || '?'}, ${s?.venue || 'no venue'}, opens ${s?.openingDate || '?'})`);
+      const ratio = formatWrongProductionRatio(countWrongProductionFiles(REVIEW_TEXTS_DIR, id));
+      console.log(`    → ${id} (${s?.status || '?'}, ${s?.venue || 'no venue'}, opens ${s?.openingDate || '?'}) | ${ratio}`);
     });
   });
   if (newDuplicates.length > 0) {
