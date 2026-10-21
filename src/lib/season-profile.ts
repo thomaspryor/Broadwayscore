@@ -465,8 +465,6 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
   // spent, so every column says how many budgets it adds up.
   const capAll = (p: SeasonProfile) => p.capitalization.all;
   const capSeasons = baseline.filter((p) => hasTrackedCoverage(p) && capAll(p).known > 0);
-  const capKnown = capSeasons.reduce((t, p) => t + capAll(p).known, 0);
-  const capOf = capSeasons.reduce((t, p) => t + capAll(p).of, 0);
   rows.push({
     label: 'Disclosed capitalization (sum)',
     format: 'money',
@@ -475,7 +473,7 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
     last: last && hasTrackedCoverage(last) && capAll(last).known > 0 ? capAll(last).total : null,
     lastDetail: last && hasTrackedCoverage(last) ? disclosedDetail(capAll(last)) : null,
     avg: avgOf(capSeasons.map((p) => capAll(p).total)),
-    avgDetail: capSeasons.length ? `${capKnown} of ${capOf} disclosed` : null,
+    avgDetail: capSeasons.length ? `${avgCountDetail(capSeasons, (p) => capAll(p).known, (p) => capAll(p).of)} disclosed` : null,
     avgSeasons: capSeasons.length,
   });
   moneyRow('Average capitalization, musical', (p) => p.capitalization.musical, (p) => p.musicals);
