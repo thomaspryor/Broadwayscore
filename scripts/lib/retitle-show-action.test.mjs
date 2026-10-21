@@ -99,3 +99,19 @@ test('a trailing " on Broadway" market tag may be dropped, unless another row ho
   assert.match(retitleProblem('Hamilton on Broadway', 'Hamilton', []), /not a cosmetic repair/);
   assert.match(retitleProblem('Wicked on Broadway', 'Gypsy', []), /not a cosmetic repair/);
 });
+
+test('the " on Broadway" tag rule matches collisions after normalization and ignores "of Broadway"', () => {
+  assert.match(retitleProblem('10 Things I Hate About You on Broadway', '10 Things I Hate About You', ['10 things i hate about you!']), /not a cosmetic repair/);
+  assert.match(retitleProblem('Prince of Broadway', 'Prince of', []), /not a cosmetic repair/);
+});
+
+test('applyRetitleShow drops the tag only with expectTitle and a reason', () => {
+  const mk = () => [{ id: 'ten-2024', title: '10 Things I Hate About You on Broadway' }];
+  const act = { id: 'ten-2024', expectTitle: '10 Things I Hate About You on Broadway', newTitle: '10 Things I Hate About You', reason: 'market tag added by feed' };
+  const shows = mk();
+  assert.equal(applyRetitleShow(shows, act).ok, true);
+  assert.equal(shows[0].title, '10 Things I Hate About You');
+  const stale = mk();
+  assert.equal(applyRetitleShow(stale, { ...act, expectTitle: 'something else' }).ok, false);
+  assert.equal(stale[0].title, '10 Things I Hate About You on Broadway');
+});

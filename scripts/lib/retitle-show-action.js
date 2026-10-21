@@ -67,13 +67,15 @@ function retitleProblem(oldTitle, newTitle, otherTitles = []) {
       && otherTitles.some(t => words(t) === n)) return null;
   // A trailing " on Broadway" is a market tag a feed appended, not part of the name
   // ("10 Things I Hate About You on Broadway"); drop it only when the rest is not
-  // already another row's title.
+  // already another row's title. Some real titles end this way ("Oh, Hello on
+  // Broadway"), so this only clears the cosmetic check: the plan still has to carry
+  // expectTitle (compare-and-set) and a reason that says why the tag is not the name.
   if (o.endsWith(' on broadway') && o.slice(0, -' on broadway'.length) === n && n.split(' ').length >= 2
       && !otherTitles.some(t => words(t) === n)) return null;
   // Restoring dropped function words must not land on a title another row already holds
   // (that is a duplicate row, not a typo).
   if (o.split(' ').length >= 2 && onlyFunctionWordsInserted(o, n) && !otherTitles.some(t => words(t) === n)) return null;
-  return `"${newTitle}" is not a cosmetic repair of "${oldTitle}" (only case, punctuation, a trailing slug counter or dropped function words may change)`;
+  return `"${newTitle}" is not a cosmetic repair of "${oldTitle}" (only case, punctuation, a trailing slug counter, a trailing ' on Broadway' tag or dropped function words may change)`;
 }
 
 function applyRetitleShow(shows, action) {
