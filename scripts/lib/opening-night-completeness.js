@@ -134,7 +134,8 @@ function hasSameMarketTitleMatch(show, shows) {
     const a = startOf(s);
     const b = startOf(show);
     if (a && b) return a <= b;
-    return s.isRevival !== true;
+    if (a && !b) return true; // undated target: a dated sibling is presumably earlier
+    return s.isRevival !== true; // undated sibling: a flagged revival is the later one
   });
 }
 

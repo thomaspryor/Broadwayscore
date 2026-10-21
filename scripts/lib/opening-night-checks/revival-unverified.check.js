@@ -31,6 +31,12 @@ function run(show, context) {
     return { ok: true, severity: 'ok', message: `isRevival already set for ${show.id}` };
   }
 
+  // Human-verified "not a revival" (BRO-5439): "revival" mentions in reviews
+  // are often about other shows' revivals, so a verified original opts out.
+  if (show.revivalVerifiedNot === true) {
+    return { ok: true, severity: 'ok', message: `${show.id} verified not a revival` };
+  }
+
   const shows = context.shows || [];
   const titleMatch = hasSameMarketTitleMatch(show, shows);
 

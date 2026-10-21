@@ -80,6 +80,13 @@ describe('hasSameMarketTitleMatch', () => {
       assert.equal(hasSameMarketTitleMatch(s2, [s2, { id: 'b', title: 'Legally Blonde', ...t }]), false);
     }
   });
+  it('revival-unverified check passes a show with revivalVerifiedNot despite title match (BRO-5439)', () => {
+    const chk = require('../../scripts/lib/opening-night-checks/revival-unverified.check.js');
+    const show = { id: 'pa-2026', title: 'Paranormal Activity', category: 'broadway', status: 'open', openingDate: '2026-08-25', revivalVerifiedNot: true };
+    const sib = { id: 'pa-2020', title: 'Paranormal Activity', category: 'broadway', openingDate: '2020-01-01' };
+    assert.equal(chk.run(show, { shows: [show, sib], reviewTextsRoot: '/nonexistent' }).ok, true);
+    assert.equal(chk.run({ ...show, revivalVerifiedNot: undefined }, { shows: [show, sib], reviewTextsRoot: '/nonexistent' }).ok, false);
+  });
   it('revival-unverified check passes a tour even with revival-heavy title match', () => {
     const chk = require('../../scripts/lib/opening-night-checks/revival-unverified.check.js');
     const show = { id: 'p-tour', title: 'Parade', category: 'tour', tourOf: 'p', status: 'upcoming' };
@@ -99,6 +106,8 @@ describe('hasSameMarketTitleMatch', () => {
     // undated: a sibling already flagged isRevival is the later one
     const u = { id: 'u1', title: 'X', category: 'broadway' };
     assert.equal(hasSameMarketTitleMatch(u, [u, { id: 'u2', title: 'X', category: 'broadway', isRevival: true }]), false);
+    // undated target, dated sibling: sibling presumed earlier
+    assert.equal(hasSameMarketTitleMatch(u, [u, { id: 'u3', title: 'X', category: 'broadway', openingDate: '2012-01-01', isRevival: true }]), true);
   });
   it('false for same title, different market (transfer, not revival — regression: Hamilton/Wicked/Hadestown/Oh Mary FP)', () => {
     const show = { id: 'hamilton-2015', title: 'Hamilton', market: 'broadway' };
