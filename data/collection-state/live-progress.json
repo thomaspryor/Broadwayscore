@@ -1,32 +1,21 @@
 {
-  "updatedAt": "2026-10-21T17:25:24.475Z",
-  "processed": 277,
-  "failed": 173,
-  "successRate": "61.6%",
+  "updatedAt": "2026-10-21T18:08:05.167Z",
+  "processed": 305,
+  "failed": 198,
+  "successRate": "60.6%",
   "tierBreakdown": {
-    "playwright": 122,
+    "playwright": 143,
     "amp": 1,
-    "browserbase": 15,
+    "browserbase": 17,
     "directCookies": 1,
-    "scrapingdog": 16,
+    "scrapingdog": 22,
     "scrapingbee": 14,
-    "brightdata": 2,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 122
+    "archive": 125
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-10-21T15:04:43.977Z",
-      "event": "bb-session",
-      "session": "2cbed9dc",
-      "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07"
-    },
-    {
-      "t": "2026-10-21T14:31:01.479Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-10-21T15:02:57.513Z",
       "event": "bb-session",
@@ -127,6 +116,17 @@
       "t": "2026-10-21T17:08:37.075Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-21T17:35:44.002Z",
+      "event": "bb-session",
+      "session": "6f78b2f9",
+      "url": "https://www.wsj.com/articles/a-beautiful-noise-the-neil-diamond-musical-review-b"
+    },
+    {
+      "t": "2026-10-21T17:35:44.787Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
