@@ -237,3 +237,39 @@ test('BRO-5656: a text-less side never wins on recency; missing stamp falls back
   const noStamp = { ...b, fullText: TEXT + 'more', contentTier: 'complete' };
   assert.equal(mergeReviewJson(b, noStamp, withText).winner, 'upstream');
 });
+
+const { fresherTextWins } = require(LIB);
+const { reconcileProtectedFields } = require(path.join(repoRoot, 'scripts/lib/restore-protected-fields.js'));
+
+test('BRO-5656: a newer truncated/paywall text does not displace an older complete one', () => {
+  const b = { showId: 's' };
+  const complete = { ...b, fullText: TEXT, contentTier: 'complete', textFetchedAt: '2026-10-01T00:00:00.000Z' };
+  const teaser = { ...b, fullText: 'Subscribe to read.', contentTier: 'truncated', textFetchedAt: '2026-10-14T00:00:00.000Z' };
+  assert.equal(fresherTextWins(teaser, complete), null);
+  assert.equal(mergeReviewJson(b, complete, teaser).winner, 'upstream');
+  assert.equal(mergeReviewJson(b, teaser, complete).winner, 'workflow');
+});
+
+test('BRO-5656: equal, garbage or missing stamps fall back to length then the tie option', () => {
+  const mk = (t, at) => ({ fullText: t, contentTier: 'complete', textFetchedAt: at });
+  const same = '2026-10-01T00:00:00.000Z';
+  assert.equal(fresherTextWins(mk('aa', same), mk('a', same)), null);
+  assert.equal(fresherTextWins(mk('aa', 'garbage'), mk('a', same)), null);
+  assert.equal(fresherTextWins(mk('aa', undefined), mk('a', same)), null);
+  assert.equal(mergeReviewJson({}, mk('abc', same), mk('abc', same), { tie: 'upstream' }).winner, 'upstream');
+  assert.equal(mergeReviewJson({}, mk('abc', same), mk('abc', same), { tie: 'workflow' }).winner, 'workflow');
+});
+
+test('BRO-5656: stale-checkout restore does not put the older longer body back over a newer refetch', () => {
+  const OLD = 'Old wrong-production body. '.repeat(100);
+  const NEW = 'The corrected article. '.repeat(100);
+  const mk = (t, at) => ({ fullText: t, contentTier: 'complete', textFetchedAt: at, textWordCount: t.length });
+  const remote = mk(OLD, '2026-10-01T00:00:00.000Z');
+  const local = mk(NEW, '2026-10-14T00:52:00.000Z');
+  reconcileProtectedFields(local, remote, { ...local }, { staleCheckoutGuard: true });
+  assert.equal(local.fullText, NEW);
+  // a genuinely stale checkout (older stamp, shorter text) is still restored
+  const stale = mk('short stub text', '2026-09-01T00:00:00.000Z');
+  reconcileProtectedFields(stale, mk(OLD, '2026-10-01T00:00:00.000Z'), { ...stale }, { staleCheckoutGuard: true });
+  assert.equal(stale.fullText, OLD);
+});

@@ -29,6 +29,7 @@ const { execSync } = require('child_process');
 // human-verified review. See review-write-guard.js. (2026-06-05)
 const { isIntentionalClear, CLEARABLE_VERDICT_FLAGS } = require(path.join(__dirname, 'review-write-guard.js'));
 const { carryNewerScoring } = require(path.join(__dirname, 'scoring-recency.js'));
+const { fresherTextWins } = require(path.join(__dirname, 'review-json-three-way-merge.js'));
 
 // Fields that must be preserved across rebases. Two categories:
 //   (a) MANUAL human corrections CI should never touch — see DoaS Apr 9-10
@@ -355,7 +356,8 @@ function reconcileProtectedFields(local, remote, ours, opts = {}) {
     const remoteText = remote.fullText || '';
     const localTextNow = local.fullText || '';
     if (remoteText.length > 100 && remoteText.length > localTextNow.length
-        && !isIntentionalClear('fullText', local, remote)) {
+        && !isIntentionalClear('fullText', local, remote)
+        && fresherTextWins(local, remote) !== 'a') { // BRO-5656: a newer refetch is not stale
       for (const field of CONTENT_FIELDS) {
         if (remote[field] !== undefined) local[field] = remote[field];
       }

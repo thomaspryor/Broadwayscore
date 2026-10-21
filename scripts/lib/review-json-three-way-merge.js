@@ -54,18 +54,32 @@ const _fetchedMs = (d) => {
   return Number.isFinite(t) ? t : null;
 };
 
+const TIER_RANK = { complete: 4, truncated: 3, excerpt: 2, stub: 1, invalid: 0 };
+
 // BRO-5656: a newer, shorter refetch is the corrected article; length alone
 // would revert it to the older, longer (wrong) body. Recency decides only when
-// both sides hold a text and both carry distinct textFetchedAt stamps; a
-// text-less side (failed fetch, stub) never wins on recency.
+// both sides hold a text and carry distinct parseable textFetchedAt stamps, and
+// the newer side's contentTier is not known to be worse than the older side's
+// (a newer paywall teaser must not displace an older complete text). Returns
+// 'a', 'b', or null (caller falls back to length). Shared with
+// restore-protected-fields' stale-checkout guard so both steps agree.
+function fresherTextWins(a, b) {
+  if (!_isObj(a) || !_isObj(b) || _textLen(a) === 0 || _textLen(b) === 0) return null;
+  const aAt = _fetchedMs(a);
+  const bAt = _fetchedMs(b);
+  if (aAt === null || bAt === null || aAt === bAt) return null;
+  const [newer, older, id] = aAt > bAt ? [a, b, 'a'] : [b, a, 'b'];
+  const nr = TIER_RANK[newer.contentTier];
+  const or = TIER_RANK[older.contentTier];
+  if (nr !== undefined && or !== undefined && nr < or) return null;
+  return id;
+}
+
 function _pickWinner(upstream, workflow, tie) {
+  const fresher = fresherTextWins(workflow, upstream);
+  if (fresher) return fresher === 'a' ? 'workflow' : 'upstream';
   const uLen = _textLen(upstream);
   const wLen = _textLen(workflow);
-  const uAt = _fetchedMs(upstream);
-  const wAt = _fetchedMs(workflow);
-  if (uLen > 0 && wLen > 0 && uAt !== null && wAt !== null && uAt !== wAt) {
-    return wAt > uAt ? 'workflow' : 'upstream';
-  }
   return wLen > uLen ? 'workflow' : uLen > wLen ? 'upstream' : tie;
 }
 
@@ -148,4 +162,4 @@ if (require.main === module) {
   try { _cli(); } catch (e) { process.stderr.write(`review-json-three-way-merge: ${e.message}\n`); }
 }
 
-module.exports = { mergeReviewJson, TEXT_STATE_GROUP };
+module.exports = { mergeReviewJson, TEXT_STATE_GROUP, fresherTextWins };
