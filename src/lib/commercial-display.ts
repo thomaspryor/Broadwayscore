@@ -335,7 +335,10 @@ export function estimatedInputNotes(commercial: Pick<ShowCommercial, 'modelInput
   for (const { input, basis } of commercial.modelInputBasis ?? []) {
     if (basis === 'comparables') out.push(`${input === 'capitalization' ? 'capitalization' : 'weekly running cost'} estimated from similar shows, not this show's own figures`);
     else if (basis === 'estimate' && input === 'capitalization') out.push('capitalization is an unconfirmed estimate');
-    else if (basis === 'estimate') out.push(commercial.costMethodology === 'reddit-standard' ? 'weekly running cost is a fan-forum estimate, unconfirmed' : 'weekly running cost is an industry estimate, unconfirmed');
+    else if (basis !== 'estimate') continue;
+    else if (commercial.costMethodology === 'reddit-standard') out.push('weekly running cost is a fan-forum estimate, unconfirmed');
+    else if (commercial.costMethodology === 'industry-estimate') out.push('weekly running cost is an industry estimate, unconfirmed');
+    else out.push('weekly running cost is an unconfirmed estimate');
   }
   return out;
 }
@@ -346,6 +349,7 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     publicSourceText(rawRecoupedSource) ??
     // Keep the "no announcement" signal getRecoupmentAttribution reads, without the internal wording.
     (rawRecoupedSource && saysRecoupmentUnannounced(rawRecoupedSource) ? NOT_ANNOUNCED_LABEL : null);
+  const estimatedInputs = estimatedInputNotes(commercial);
   return {
     designation: commercial.designation,
     capitalization: commercial.capitalization,
@@ -355,7 +359,7 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     weeklyRunningCostSource: publicSourceText(commercial.weeklyRunningCostSource),
     costMethodology: commercial.costMethodology,
     isEstimate: commercial.isEstimate,
-    ...(estimatedInputNotes(commercial).length ? { estimatedInputs: estimatedInputNotes(commercial) } : {}),
+    ...(estimatedInputs.length ? { estimatedInputs } : {}),
     recouped: commercial.recouped,
     recoupedDate: commercial.recoupedDate,
     recoupedWeeks: commercial.recoupedWeeks,
