@@ -40,6 +40,7 @@ require('./lib/load-env').loadEnv();
 const { fetchPage } = require('./lib/scraper');
 const { extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { runPublishDateBackfillTriage } = require('./lib/publish-date-backfill-triage');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -280,6 +281,7 @@ async function main() {
   if (dryRun) console.log('DRY RUN — no files will be modified');
 
   let extracted = 0, failed = 0, errors = 0;
+  const touchedFiles = new Set();
 
   for (let i = 0; i < batch.length; i++) {
     const { show, file, url, filePath } = batch[i];
@@ -297,7 +299,9 @@ async function main() {
           const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
           data.publishDate = urlDateResult.date;
           data.dateSource = `url-backfill-${urlDateResult.source}`;
-          safeWriteReview(filePath, data);
+          const result = safeWriteReview(filePath, data);
+          if (result && result.wrote === false) { failed++; continue; }
+          touchedFiles.add(path.relative(baseDir, filePath));
         }
         extracted++;
         continue;
@@ -313,7 +317,9 @@ async function main() {
             if (!dryRun) {
               data.publishDate = textDate;
               data.dateSource = 'text-regex-backfill';
-              safeWriteReview(filePath, data);
+              const result = safeWriteReview(filePath, data);
+              if (result && result.wrote === false) { failed++; continue; }
+              touchedFiles.add(path.relative(baseDir, filePath));
             }
             extracted++;
             continue;
@@ -417,7 +423,13 @@ async function main() {
           } else {
             delete data.needsDateRecheck;
           }
-          safeWriteReview(filePath, data, { force: true });
+          const result = safeWriteReview(filePath, data, { force: true });
+          if (result && result.wrote === false) {
+            extracted--;
+            failed++;
+          } else {
+            touchedFiles.add(path.relative(baseDir, filePath));
+          }
         }
       } else {
         console.log('  ✗ No date in HTML metadata');
@@ -435,6 +447,8 @@ async function main() {
       await new Promise(r => setTimeout(r, 2000));
     }
   }
+
+  runPublishDateBackfillTriage({ touchedFiles, dryRun, repoRoot: path.resolve(__dirname, '..') });
 
   console.log(`\n=== SUMMARY ===`);
   console.log(`Processed: ${batch.length}`);

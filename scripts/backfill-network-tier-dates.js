@@ -31,6 +31,7 @@ loadEnv();
 const { fetchPage, verifyFetchedUrl } = require('./lib/scraper');
 const { extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { runPublishDateBackfillTriage } = require('./lib/publish-date-backfill-triage');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `backfill-network-tier-dates.js — BRO-70 scoped network-tier publishDate backfill.
@@ -266,7 +267,7 @@ async function processOne(cand, stats) {
           return;
         }
       }
-      stats.extracted++; stats.touchedShows.add(showId);
+      stats.extracted++; stats.touchedShows.add(showId); stats.touchedFiles.add(path.relative(REVIEW_TEXTS_DIR, filePath));
       console.log(`  [url] ${showId}: ${urlDate.date}`);
       return;
     }
@@ -285,7 +286,7 @@ async function processOne(cand, stats) {
             return;
           }
         }
-        stats.extracted++; stats.touchedShows.add(showId);
+        stats.extracted++; stats.touchedShows.add(showId); stats.touchedFiles.add(path.relative(REVIEW_TEXTS_DIR, filePath));
         console.log(`  [text] ${showId}: ${textDate}`);
         return;
       }
@@ -378,7 +379,7 @@ async function processOne(cand, stats) {
           return;
         }
       }
-      stats.extracted++; stats.touchedShows.add(showId);
+      stats.extracted++; stats.touchedShows.add(showId); stats.touchedFiles.add(path.relative(REVIEW_TEXTS_DIR, filePath));
       console.log(`  [${dateSource}] ${showId}: ${date}`);
     } else {
       stats.failed++;
@@ -416,7 +417,7 @@ async function main() {
   const batch = candidates.slice(0, limit);
   console.log(`Processing ${batch.length} (concurrency=${concurrency}, freeOnly=${freeOnly}, dryRun=${dryRun})`);
 
-  const stats = { extracted: 0, failed: 0, errors: 0, touchedShows: new Set() };
+  const stats = { extracted: 0, failed: 0, errors: 0, touchedShows: new Set(), touchedFiles: new Set() };
   const startedAt = Date.now();
   let processed = 0;
 
@@ -439,6 +440,8 @@ async function main() {
       }
     }
   }, concurrency);
+
+  runPublishDateBackfillTriage({ touchedFiles: stats.touchedFiles, dryRun, repoRoot: REPO_ROOT });
 
   console.log(`\n=== SUMMARY ===`);
   console.log(`Processed: ${batch.length}`);

@@ -42,6 +42,7 @@
  *   node scripts/auto-triage-cross-production.js --apply    # write the flags
  *   node scripts/auto-triage-cross-production.js --include-medium
  *   node scripts/auto-triage-cross-production.js --json
+ *   node scripts/auto-triage-cross-production.js --apply --files-from=files.json
  */
 
 'use strict';
@@ -50,6 +51,7 @@ const fs = require('fs');
 const path = require('path');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { scopeCrossProductionIssues } = require('./lib/publish-date-backfill-triage');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -58,6 +60,8 @@ const USAGE = `auto-triage-cross-production.js — Conservative auto-triage of c
 Usage:
   node scripts/auto-triage-cross-production.js [options]
   node scripts/auto-triage-cross-production.js --help, -h    print this usage and exit
+
+  --files-from=PATH    JSON array of review paths relative to data/review-texts
 `;
 
 // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
@@ -66,6 +70,12 @@ const ARGS = process.argv.slice(2);
 const APPLY = ARGS.includes('--apply');
 const INCLUDE_MEDIUM = ARGS.includes('--include-medium');
 const OUT_JSON = ARGS.includes('--json');
+const fileScope = ARGS.find(a => a.startsWith('--files-from='));
+const touchedFiles = fileScope == null ? null : JSON.parse(fs.readFileSync(fileScope.slice('--files-from='.length), 'utf8'));
+if (fileScope != null && (!Array.isArray(touchedFiles) || touchedFiles.some(f => typeof f !== 'string'))) {
+  console.error('ERROR: --files-from must contain a JSON array of review paths');
+  process.exit(1);
+}
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 const AUDIT_PATH = path.join(REPO_ROOT, 'data', 'audit', 'cross-production-audit.json');
@@ -82,7 +92,7 @@ if (!fs.existsSync(AUDIT_PATH)) {
 }
 
 const audit = JSON.parse(fs.readFileSync(AUDIT_PATH, 'utf8'));
-const issues = Array.isArray(audit.issues) ? audit.issues : [];
+const issues = scopeCrossProductionIssues(Array.isArray(audit.issues) ? audit.issues : [], touchedFiles);
 
 // ── Conservative auto-fixable filter ─────────────────────────────────────────
 // A real reassignment target (closerTo) AND a positive signal (not ambiguous).
@@ -149,7 +159,10 @@ for (const issue of candidates) {
   data.wrongProductionDetectedAt = nowIso;
 
   if (APPLY) {
-    safeWriteReview(filePath, data);
+    const result = safeWriteReview(filePath, data);
+    if (result && result.wrote === false) {
+      fail(`could not flag ${issue.file}: ${result.skipped}`);
+    }
   }
 
   flagged.push({
