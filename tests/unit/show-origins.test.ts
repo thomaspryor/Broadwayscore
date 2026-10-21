@@ -48,6 +48,7 @@ test('mix by era, recoupment over settled seasons, revivals apart', () => {
     show({ id: 'u', openingDate: '2027-02-01', status: 'upcoming' }),
     show({ id: 'ur', openingDate: '2027-03-01', status: 'upcoming', isRevival: true }), // revival: not counted
     show({ id: 'un', openingDate: '2027-09-01', status: 'upcoming' }), // next season: not counted
+    show({ id: 'sp', openingDate: '2026-11-17', status: 'upcoming', type: 'special' }), // specials: not counted
   ];
   const origins: Record<string, OriginRecord> = {
     a: rec({ path: ['regional-us'], source: 'film' }),
@@ -61,6 +62,7 @@ test('mix by era, recoupment over settled seasons, revivals apart', () => {
     u: rec({ path: ['london'], source: 'film' }),
     ur: rec({ path: ['london'], source: 'film' }),
     un: rec({ path: ['london'], source: 'film' }),
+    sp: rec({ path: [], source: 'original' }),
     s: rec({ path: [], source: 'original' }),
   };
   const f = buildOriginFindings(shows, origins, '2026-10-20');

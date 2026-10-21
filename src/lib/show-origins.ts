@@ -243,7 +243,9 @@ export function buildOriginFindings(
     // column (as the Season Report counts opened + announced), never in the era mixes,
     // the show list or recoupment.
     if (s.openingDate > asOf || s.status === 'previews' || s.status === 'upcoming') {
-      if (s.isRevival || !currentSeason || getSeason(s.openingDate) !== currentSeason) continue;
+      // Specials are filed apart from productions in the Season Report, so they stay out here too.
+      if (s.isRevival || (s.type !== 'musical' && s.type !== 'play')) continue;
+      if (!currentSeason || getSeason(s.openingDate) !== currentSeason) continue;
       const isMusical = s.type === 'musical';
       const route = routeBucket(o.path);
       const src = sourceBucket(o.source);

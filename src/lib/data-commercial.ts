@@ -440,7 +440,7 @@ export function getOriginFindings(asOf: string = getMarketDate('broadway')): Ori
   const shows = commercial.shows;
   return buildOriginFindings(
     rawShows
-      .filter((s) => s.category === 'broadway' && !!s.openingDate)
+      .filter((s) => s.category === 'broadway' && !!s.openingDate && !(s as { cancelledBeforeOpening?: boolean }).cancelledBeforeOpening && !(s as { tourOf?: string }).tourOf)
       .map((s) => ({
         id: s.id,
         creativeTeam: (s as { creativeTeam?: Array<{ name?: string | null }> }).creativeTeam ?? null,
