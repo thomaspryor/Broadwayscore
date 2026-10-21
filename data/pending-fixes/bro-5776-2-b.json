@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5776-2-b",
   "planId": "d9755740-f609-4bc1-9b07-afb9531173e0",
-  "status": "pending",
+  "status": "partial",
   "submitter": {
     "name": null,
     "email": null
@@ -104,5 +104,49 @@
         "description": "Title casing (Broadway News, Playbill spell it Midnight in the Garden of Good and Evil). Status left announced: no 2027 dates found, sources only say 2025 or 2026 with no venue."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T04:22:01.216Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for damn-yankees"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for damn-yankees"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for damn-yankees"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for damn-yankees"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for damn-yankees"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "Field \"title\" not allowed in shows.json"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "Field \"title\" not allowed in shows.json"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "Field \"title\" not allowed in shows.json"
+    }
+  ],
+  "executedIn": "ci"
 }
