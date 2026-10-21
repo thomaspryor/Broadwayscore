@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5693-b",
   "planId": "48a29412-b42b-4623-ad83-0e0dc7d6bdf3",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -24,5 +24,14 @@
         "description": "Replace the Express category URL with the Neil Norman review permalink linked by West End Theatre. No review text is included in this plan."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T15:05:04.053Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-the-first-shadow-west-end-2023/express-uk--neil-norman.json url: \"https://www.express.co.uk/latest/theatre\" -> \"https://www.express.co.uk/entertainment/theatre/1845793/stephen-daldry-stranger-things-theatrical-prequel-dazzling-show\""
+    }
+  ],
+  "executedIn": "ci"
 }
