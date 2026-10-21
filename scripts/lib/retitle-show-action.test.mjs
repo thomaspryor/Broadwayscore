@@ -91,3 +91,11 @@ test('BRO-5110: restoring function words never lands on a title another row alre
   assert.equal(r.ok, false);
   assert.equal(shows[0].title, 'Lion King');
 });
+
+test('a trailing " on Broadway" market tag may be dropped, unless another row holds the bare title', () => {
+  assert.equal(retitleProblem('10 Things I Hate About You on Broadway', '10 Things I Hate About You', []), null);
+  assert.match(retitleProblem('10 Things I Hate About You on Broadway', '10 Things I Hate About You', ['10 Things I Hate About You']), /not a cosmetic repair/);
+  // one-word remainder and a different name still refuse
+  assert.match(retitleProblem('Hamilton on Broadway', 'Hamilton', []), /not a cosmetic repair/);
+  assert.match(retitleProblem('Wicked on Broadway', 'Gypsy', []), /not a cosmetic repair/);
+});
