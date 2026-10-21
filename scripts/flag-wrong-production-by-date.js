@@ -7,7 +7,7 @@
  * linked to the wrong showId by aggregator sources.
  *
  * Safe to re-run — skips files already flagged wrongProduction/wrongShow/manualClear.
- * Run after adding new publishDates (e.g., backfill-url-dates.js) to catch more.
+ * Run after adding new publishDates (e.g., backfill-review-dates.js) to catch more.
  *
  * Usage:
  *   node scripts/flag-wrong-production-by-date.js              # dry run

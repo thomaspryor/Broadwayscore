@@ -3086,6 +3086,9 @@ on:
       - 'scripts/check-review-count-drift.js'
       # BRO-4767: end-to-end baseline tests, and the tracked baseline they validate
       - 'data/audit/review-suppression-baseline.json'
+      - 'scripts/cleanup-fake-publish-dates.js'
+      - 'scripts/backfill-url-dates.js'
+      - 'scripts/fix-null-dates-from-url.js'
       - 'scripts/clear-stale-automated-text-verdicts.js'
       - 'scripts/clear-stale-wrong-production-flags.js'
       # BRO-2323: root-level scripts/*.test.mjs is NOT globbed — a solo edit to
