@@ -103,7 +103,7 @@ export const showReviewType = defineType({
     defineField({
       name: 'stressTest',
       title: 'Broadway Stress Test (optional)',
-      description: 'Optional sidebar — sightlines, sound, intermission notes, etc.',
+      description: 'Optional sidebar: sightlines, sound, intermission notes, etc.',
       type: 'array',
       of: [{ type: 'block' }],
     }),
