@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-20T21:11:29.043Z",
+  "generatedAt": "2026-10-21T00:22:57.612Z",
   "windowDays": 45,
-  "showsScanned": 193,
+  "showsScanned": 196,
   "gaps": [
     {
       "showId": "other-desert-cities-2026",
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=other-desert-cities-2026",
       "firstSeen": "2026-10-20T01:24:52.774Z",
-      "fileAgeHours": 19.7756325,
+      "fileAgeHours": 22.932575833333335,
       "gapSeenAt": "2026-10-20T16:46:29.082Z",
-      "nonTerminalAgeHours": 4.4166558333333334
+      "nonTerminalAgeHours": 7.607925
     },
     {
       "showId": "slam-frank-off-broadway-2026",
@@ -31,14 +31,18 @@
       "tier": 2,
       "type": "empty-body",
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654721",
-      "recovery": null,
+      "recovery": {
+        "attempted": true,
+        "ok": true,
+        "reason": "s\":false,\"status\":\"Bright Data request timeout\",\"credits\":null,\"fallback_from\":null,\"purpose\":null,\"category\":null,\"showId\":null} |   → Trying Playwright (last resort)... |   ⏱️  Playwright: network still busy after 15s at https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654721 — reading the DOMContentLoaded page |   ✅ Success (Playwright, html) |  | Done. 0 succeeded, 0 failed, 1 skipped."
+      },
       "recoveryCount": 0,
       "forumLinkRecoveryCount": 4,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=slam-frank-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-18T14:14:33.814Z",
-      "fileAgeHours": 54.94763,
+      "fileAgeHours": 58.13891638888889,
       "gapSeenAt": "2026-10-18T18:09:48.486Z",
-      "nonTerminalAgeHours": 51.0279325
+      "nonTerminalAgeHours": 54.21920166666666
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -54,9 +58,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 676.5152236111111,
+      "fileAgeHours": 679.7065158333334,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 227.53501138888888
+      "nonTerminalAgeHours": 230.72628055555555
     },
     {
       "showId": "maybe-happy-ending-tour-2026",
@@ -72,9 +76,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=maybe-happy-ending-tour-2026 --url=https://www.theatermania.com/news/jazz-vocalist-stella-cole-to-join-cast-of-maybe-happy-ending-on-broadway_1855818/ --outlet=theatermania --critic=\"Zachary Stewart\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-06T02:28:41.564Z",
-      "fileAgeHours": 354.71281416666665,
+      "fileAgeHours": 357.90409666666665,
       "gapSeenAt": "2026-10-19T11:33:43.077Z",
-      "nonTerminalAgeHours": 33.629435
+      "nonTerminalAgeHours": 36.820704166666665
     },
     {
       "showId": "all-male-as-you-like-it-regional-2026",
@@ -90,9 +94,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=all-male-as-you-like-it-regional-2026 --url=https://www.talkinbroadway.com/page/regional/minn/minn1539.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-19T17:17:56.172Z",
-      "fileAgeHours": 27.892350277777776,
+      "fileAgeHours": 31.083623055555556,
       "gapSeenAt": "2026-10-19T18:06:42.214Z",
-      "nonTerminalAgeHours": 27.079674722222222
+      "nonTerminalAgeHours": 30.27094388888889
     }
   ],
   "contradictions": []

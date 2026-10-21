@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-20T21:11:43.997Z",
+  "generatedAt": "2026-10-21T00:27:11.974Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -17,6 +17,11 @@
       "id": "stories-the-tap-dance-sensation-west-end-2026",
       "title": "STORIES – The Tap Dance Sensation",
       "openingDate": "2026-10-16"
+    },
+    {
+      "id": "derren-brown-only-human-west-end-2026",
+      "title": "Derren Brown: Only Human",
+      "openingDate": "2026-10-22"
     },
     {
       "id": "the-curious-case-of-benjamin-button-off-broadway-2026",
@@ -49,19 +54,19 @@
       "openingDate": "2026-10-15"
     },
     {
-      "id": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
-      "title": "ANON – a tempest at our kitchen table",
-      "openingDate": "2026-10-14"
-    },
-    {
-      "id": "stuffed-off-west-end-2026",
-      "title": "Stuffed",
-      "openingDate": "2026-10-14"
-    },
-    {
       "id": "martin-guerre-west-end-2026",
       "title": "Martin Guerre",
       "openingDate": "2026-10-20"
+    },
+    {
+      "id": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
+      "openingDate": "2026-10-22"
+    },
+    {
+      "id": "the-imaginary-invalid-2026",
+      "title": "The Imaginary Invalid",
+      "openingDate": "2026-10-22"
     },
     {
       "id": "copperfield-the-new-musical-off-broadway-2026",
@@ -124,11 +129,6 @@
       "openingDate": "2026-10-18"
     },
     {
-      "id": "baby-off-west-end-2026",
-      "title": "Baby",
-      "openingDate": "2026-10-14"
-    },
-    {
       "id": "the-dog-show-come-sit-stay-off-broadway-2026",
       "title": "The Dog Show: Come. Sit. Stay.",
       "openingDate": "2026-10-18"
@@ -144,17 +144,16 @@
       "openingDate": "2026-10-15"
     },
     {
-      "id": "larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026",
-      "title": "Larger Than Life: Starring Wallace & Gromit, Shaun and More",
-      "openingDate": "2026-10-14"
-    },
-    {
       "id": "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026",
       "title": "The Nicest Body Ever Seen Around These Parts",
       "openingDate": "2026-10-19"
     }
   ],
   "skipped": [
+    {
+      "showId": "phyl-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
     {
       "showId": "billy-crystal-860-2026",
       "reason": "no data/review-texts directory for this show"
@@ -183,16 +182,8 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
-      "outletId": "plays-international",
-      "error": "AggregateError"
-    },
-    {
       "outletId": "musical-theatre-review",
       "error": "HTTP 401 for https://musicaltheatrereview.com/feed/"
-    },
-    {
-      "outletId": "theatre-vibe",
-      "error": "HTTP 403 for https://theatrevibe.co.uk/feed/"
     },
     {
       "outletId": "theartsdispatch",
@@ -205,11 +196,15 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 716,
-  "matchedGaps": 4,
-  "possibleGaps": 6,
+  "itemsScanned": 696,
+  "matchedGaps": 5,
+  "possibleGaps": 5,
   "gaps": [
     {
       "showId": "copperfield-the-new-musical-off-broadway-2026",
@@ -230,6 +225,15 @@
       "publishDate": "2026-10-20"
     },
     {
+      "showId": "lincoln-in-the-bardo-off-broadway-2026",
+      "title": "Lincoln in the Bardo",
+      "level": "matched",
+      "outletId": "operawire",
+      "url": "https://operawire.com/dua-lipas-service95-releases-mini-documentary-on-the-making-of-lincoln-in-the-bardo/",
+      "headline": "Dua Lipa&#8217;s Service95 Releases Mini Documentary on the Making of &#8216;Lincoln in the Bardo&#8217;",
+      "publishDate": "2026-10-20"
+    },
+    {
       "showId": "the-dog-show-come-sit-stay-off-broadway-2026",
       "title": "The Dog Show: Come. Sit. Stay.",
       "level": "matched",
@@ -246,24 +250,6 @@
       "url": "https://culturesauce.com/caryl-churchill-triumph-off-broadway-review/",
       "headline": "Caryl Churchill&#8217;s &#8216;Triumph&#8217; views imperial Rome through a Foxy blond flack (Off Broadway review)",
       "publishDate": "2026-10-18"
-    },
-    {
-      "showId": "baby-off-west-end-2026",
-      "title": "Baby",
-      "level": "possible",
-      "outletId": "this-week-in-new-york",
-      "url": "https://twi-ny.com/2026/10/11/ectoplasm-sara-fellini-spit-and-vigor/",
-      "headline": "HAUNTED THEATER ON MacDOUGAL: spit&#038;vigor’s ECTOPLASM",
-      "publishDate": "2026-10-11"
-    },
-    {
-      "showId": "baby-off-west-end-2026",
-      "title": "Baby",
-      "level": "possible",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/bfi-london-film-festival-2026-club-kid/",
-      "headline": "BFI London Film Festival 2026: Club Kid",
-      "publishDate": "2026-10-20"
     },
     {
       "showId": "cadel-lungs-on-legs-west-end-2026",
@@ -291,6 +277,15 @@
       "url": "https://standard.co.uk/culture/theatre/midnight-at-the-never-get-review-b1290727.html",
       "headline": "Midnight at the Never Get: Polished if schmaltzy musical",
       "publishDate": null
+    },
+    {
+      "showId": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
+      "level": "possible",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/lambeth-fringe-2026-happy-heart-the-songs-of-andy-williams-toulouse-lautrec-jazz-club-london/",
+      "headline": "Lambeth Fringe 2026: Happy Heart: The Songs of Andy Williams – Toulouse Lautrec Jazz Club, London",
+      "publishDate": "2026-10-19"
     },
     {
       "showId": "triumph-off-west-end-2026",
