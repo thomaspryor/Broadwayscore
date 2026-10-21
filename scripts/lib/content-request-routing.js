@@ -559,7 +559,8 @@ function planContentRequestActions({
           // stays on the structured showId field for machine/ledger use.
           reason:
             `show "${requestedTitle}"${market ? ` (${market})` : ''} already in catalog as ` +
-            `"${existing.title}"; ask is not a recognised image or review-gap request`,
+            `"${existing.title}" and is already live on the site (nothing to add); ` +
+            `ask is not a recognised image or review-gap request`,
           showId: existing.id,
         });
       }

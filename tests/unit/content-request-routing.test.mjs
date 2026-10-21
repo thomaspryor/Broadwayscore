@@ -502,6 +502,7 @@ test('missing-show check: an ambiguous already-catalogued title parks instead of
   // not a market word MARKET_TOKEN_RE recognises, so this uses West End.)
   assert.deepEqual(actions.map((a) => a.kind), ['unroutable']);
   assert.match(actions[0].reason, /already in catalog as "The Book of Mormon"/);
+  assert.match(actions[0].reason, /already live on the site/);
   assert.equal(actions[0].showId, 'book-of-mormon-we-2024');
 });
 
