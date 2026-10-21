@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5647-l",
   "planId": "9a917ed8-8f74-4a48-a074-3e9ffd1c570b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-21T15:03:02.352Z",
   "submitter": {
     "name": null,
@@ -113,5 +113,49 @@
         "description": "tootsie-2019: reported by Broadway Journal from offering documents"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T15:18:00.267Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for aint-no-mo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for aint-no-mo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for aint-no-mo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for aint-no-mo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for tootsie-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for tootsie-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for tootsie-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for tootsie-2019"
+    }
+  ],
+  "executedIn": "ci"
 }
