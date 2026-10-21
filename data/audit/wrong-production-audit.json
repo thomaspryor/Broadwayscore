@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-21T20:11:53.799Z",
+  "timestamp": "2026-10-21T21:08:08.750Z",
   "stats": {
-    "totalReviews": 58193,
-    "alreadyFlagged": 21145,
+    "totalReviews": 58290,
+    "alreadyFlagged": 21147,
     "dateGuardCatches": 199,
     "directorMismatch": 2034,
     "tvFilmSignals": 1654,
-    "londonSignals": 2594,
+    "londonSignals": 2595,
     "offBroadwaySignals": 530,
     "yearMismatch": 165,
-    "noPublishDate": 5255
+    "noPublishDate": 5330
   },
   "findings": [
     {
@@ -48520,7 +48520,7 @@
     {
       "showId": "tina-the-tina-turner-musical-west-end-2018",
       "file": "guardian--michael-billington.json",
-      "score": null,
+      "score": 89,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2018/apr/17/tina-review-turner-musical-aldwych-theatre-london",
       "findings": [
@@ -48547,6 +48547,7 @@
     {
       "showId": "tina-the-tina-turner-musical-west-end-2018",
       "file": "london-theatre--will-longman.json",
+      "score": 79,
       "publishDate": "2018-04-17",
       "url": "https://www.londontheatre.co.uk/reviews/review-tina-the-tina-turner-musical-at-the-aldwych-theatre",
       "findings": [
@@ -48560,6 +48561,7 @@
     {
       "showId": "tina-the-tina-turner-musical-west-end-2018",
       "file": "nytimes--matt-wolf.json",
+      "score": 76,
       "publishDate": "2018-04-19",
       "url": "https://www.nytimes.com/2018/04/19/theater/tina-turner-musical.html",
       "findings": [
@@ -48573,6 +48575,7 @@
     {
       "showId": "tina-the-tina-turner-musical-west-end-2018",
       "file": "variety--david-benedict.json",
+      "score": 82,
       "publishDate": "2018-04-17",
       "url": "https://variety.com/2018/legit/reviews/tina-review-tina-turner-musical-1202755932/",
       "findings": [
@@ -63212,6 +63215,7 @@
     {
       "showId": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
       "file": "soz6--unknown.json",
+      "score": 88,
       "publishDate": "2026-10-09",
       "url": "https://soz6.com/news/end-of-the-world-and-hard-boiled-wonderland-review-murakami-s-marvel-brilliantly-brought-to-life",
       "findings": [
@@ -73171,7 +73175,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": null,
+      "score": 96,
       "publishDate": "2026-10-21",
       "url": "https://theatreandtonic.co.uk/blog/martin-guerre-the-old-vic-review",
       "findings": [
@@ -73184,7 +73188,22 @@
     },
     {
       "showId": "martin-guerre-west-end-2026",
+      "file": "thereviewshub--john-cutler.json",
+      "score": 48,
+      "publishDate": "2026-10-21",
+      "url": "https://www.thereviewshub.com/martin-guerre-the-old-vic-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
       "file": "thereviewshub--unknown.json",
+      "score": 48,
       "publishDate": "2026-10-21",
       "url": "https://www.thereviewshub.com/martin-guerre-the-old-vic-london/",
       "findings": [
@@ -82100,6 +82119,7 @@
     {
       "showId": "table-17-off-west-end-2026",
       "file": "monstagigz--unknown.json",
+      "score": 76,
       "publishDate": "2026-10-21",
       "url": "https://monstagigz.com/2026/10/21/theatre-review-table-17-starring-marisha-wallace-and-jamael-westman-at-the-kiln-theatre/",
       "findings": [
