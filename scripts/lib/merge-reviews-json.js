@@ -105,8 +105,8 @@
 //     permanently drop either side's genuine additions depending purely on
 //     which push won the race.
 //   * same-identity conflict, in order:
-//       1. manualEntry wins over non-manual (both manual → keep ours,
-//          deterministic, matches the rebase's own `-X ours` default).
+//       1. manualEntry wins over non-manual. Two manual corrections use
+//          snapshot recency, then tier and ours, just like pipeline conflicts.
 //       2. Otherwise, whichever whole SNAPSHOT's `_meta.lastUpdated` is
 //          newer wins its version of the record. This is a full-rebuild
 //          file: `_meta.lastUpdated` is stamped fresh by rebuild-all-
@@ -118,8 +118,8 @@
 //          per-field heuristic (contentTier, publishDate) that has no
 //          relationship to which side's assignedScore is fresher.
 //       3. Timestamps tied or unparseable on either side (rare — e.g. a
-//          first-ever write, or a manual-vs-manual tie already resolved
-//          above) → fall back to higher contentTier rank (complete >
+//          first-ever write or concurrent manual corrections) → fall back
+//          to higher contentTier rank (complete >
 //          truncated > excerpt > stub > invalid > untiered); else ours.
 //   * _meta: newer lastUpdated wins (whole object, so its stats travel
 //     together); totalReviews is corrected afterward to the actual merged
@@ -238,8 +238,6 @@ function resolveConflict(ours, remote, oursSnapshotNewer = null) {
   const oursManual = ours.manualEntry === true;
   const remoteManual = remote.manualEntry === true;
   if (oursManual !== remoteManual) return oursManual ? 'ours' : 'remote';
-  if (oursManual && remoteManual) return 'ours';
-
   if (oursSnapshotNewer === true) return 'ours';
   if (oursSnapshotNewer === false) return 'remote';
 
@@ -393,28 +391,54 @@ function mergeReviewsJson(ours, remote, base) {
   // Scoped to pairs involving at least one manualEntry record — a bare
   // same-URL rule is unsafe in general (7 legitimate same-URL/
   // different-critic pairs exist in the live corpus with no manual entry
-  // involved — see module comment). First-registered manual record per URL
-  // wins (mergedReviews is ours-derived entries first, then remote-only
-  // additions, so this prefers ours on an ours-vs-remote manual/manual tie
-  // — consistent with resolveConflict's "both manual → ours" rule above).
-  let urlRescueConflicts = 0;
-  const manualUrlIndex = new Map();
-  for (const r of mergedReviews) {
-    if (r && r.manualEntry === true) {
-      const uk = urlKeyOf(r);
-      if (uk && !manualUrlIndex.has(uk)) manualUrlIndex.set(uk, r);
+  // involved, see module comment). BRO-2919: a bylined, scored pipeline row
+  // at least as rich as an unbylined manual row supersedes that stale manual
+  // row. Named manual corrections still win; competing manual corrections
+  // use their source snapshots' recency, then content tier and array order.
+  // Require the same outlet and raw path, as in the fossil pass below.
+  const rawPathOf = (u) => {
+    try {
+      const parsed = new URL(String(u));
+      return `${parsed.hostname.toLowerCase()}${parsed.pathname.replace(/\/+$/, '')}`;
+    } catch {
+      return null;
     }
+  };
+  let urlRescueConflicts = 0;
+  const articleGroups = new Map();
+  for (const r of mergedReviews) {
+    const uk = urlKeyOf(r);
+    const rawPath = r && rawPathOf(r.url);
+    if (!uk || !rawPath) continue;
+    const k = JSON.stringify([uk, outletKey(r.outlet), rawPath]);
+    if (!articleGroups.has(k)) articleGroups.set(k, []);
+    articleGroups.get(k).push(r);
   }
-  if (manualUrlIndex.size) {
-    for (let i = mergedReviews.length - 1; i >= 0; i--) {
-      const r = mergedReviews[i];
-      if (!r) continue;
-      const uk = urlKeyOf(r);
-      const twin = uk && manualUrlIndex.get(uk);
-      if (twin && twin !== r) {
-        mergedReviews.splice(i, 1); // the earlier-registered manual twin wins
-        urlRescueConflicts++;
+  const oursRecords = new Set(oursDeduped.canonical);
+  const urlRescueDrops = new Set();
+  for (const group of articleGroups.values()) {
+    const manuals = group.filter(r => r.manualEntry === true);
+    let winner;
+    for (const manual of manuals) {
+      if (isUnknownByline(manual.criticName) && group.some(r => r.manualEntry !== true
+        && isMergeFossilAnchor(r) && Number.isFinite(r.assignedScore)
+        && tierRank(r) >= tierRank(manual))) {
+        urlRescueDrops.add(manual);
+        continue;
       }
+      const recency = snapshotIsNewer(
+        oursRecords.has(winner) ? ours : remote,
+        oursRecords.has(manual) ? ours : remote,
+      );
+      if (!winner || resolveConflict(winner, manual, recency) === 'remote') winner = manual;
+    }
+    // If all manuals were stale, keep every legitimate pipeline byline.
+    if (winner) for (const r of group) if (r !== winner) urlRescueDrops.add(r);
+  }
+  for (let i = mergedReviews.length - 1; i >= 0; i--) {
+    if (urlRescueDrops.has(mergedReviews[i])) {
+      mergedReviews.splice(i, 1);
+      urlRescueConflicts++;
     }
   }
 
@@ -461,21 +485,8 @@ function mergeReviewsJson(ours, remote, base) {
   // pairs" figure is that same group count as it stood on 2026-08-20, so the
   // legitimate subset is 6 today — the 7th is the fossil this pass removes.
   // A manualEntry row is NEVER dropped here, even when its own byline is the
-  // sentinel. DEFENCE IN DEPTH, not a live bug fix — be precise about which,
-  // because a guard whose comment overclaims is the same defect as a test that
-  // asserts less than its name. An adversarial review (gpt-5.4-mini) raised
-  // this as a P0: "a manualEntry row with criticName 'Unknown' would be dropped
-  // here, defeating the manualEntry priority the module guarantees". Checked
-  // rather than taken on trust, and it is NOT reachable today: the manual-entry
-  // rescue immediately above registers each manual row's urlKeyOf and then
-  // splices EVERY other row sharing that key, so by the time this pass runs a
-  // manualEntry row provably has no same-urlKey sibling and can never match.
-  // Verified directly: merging a bylined row against a manual sentinel-byline
-  // row on one URL returns 1 row (the manual one) with urlRescueConflicts 1 and
-  // unknownBylineFossilsDropped 0. The guard stays because it costs one boolean
-  // and it is what stops a future reordering of these two passes from silently
-  // deleting human corrections — the failure it prevents is a refactor's, not
-  // today's.
+  // sentinel. The manual-entry pass above owns the narrower exception for a
+  // bylined, scored pipeline twin (BRO-2919); this pass preserves manual rows.
   // SECOND CONDITION, beyond the shared canonical key: the two rows must also
   // agree on the raw URL PATH, compared case-sensitively. Adversarial-review
   // finding (Codex): canonicalizeUrlForDedup lowercases the WHOLE url, so on a
@@ -489,15 +500,6 @@ function mergeReviewsJson(ours, remote, base) {
   // while making a case-only or query-only path collapse unable to authorise a
   // deletion. Deleting derived rows deserves the stricter of two available
   // tests, not the more convenient one.
-  const rawPathOf = (u) => {
-    try {
-      const parsed = new URL(String(u));
-      return `${parsed.hostname.toLowerCase()}${parsed.pathname.replace(/\/+$/, '')}`;
-    } catch {
-      return null;
-    }
-  };
-
   let unknownBylineFossilsDropped = 0;
   // Provenance, not just a tally. A pass that DELETES rows must leave enough
   // behind to answer "what went missing and why" without digging through
