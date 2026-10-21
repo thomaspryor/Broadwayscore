@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5853",
   "planId": "2204d6ca-c382-48a4-ae6b-74397409349c",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -140,5 +140,29 @@
         "description": "BRO-5853: duplicate of theatermania--dan-rubins.json (same url, identical text)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T18:14:43.784Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for king-of-the-yees-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for king-of-the-yees-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for king-of-the-yees-off-broadway-2026"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted king-of-the-yees-off-broadway-2026/theatermania--unknown.json"
+    }
+  ],
+  "executedIn": "ci"
 }
