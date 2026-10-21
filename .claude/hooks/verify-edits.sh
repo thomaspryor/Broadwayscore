@@ -1519,8 +1519,7 @@ def _edit_touches_visual_surface(events_list, edit_idx, file_path):
         text_blob = inp.get('new_source', '') or ''
     if not text_blob:
         return True
-    code_only = _strip_string_literals(text_blob)
-    return bool(VISUAL_DIFF_HINT_RE.search(code_only))
+    return bool(VISUAL_DIFF_HINT_RE.search('\n'.join(_strip_string_literals(_ln) for _ln in text_blob.split('\n'))))  # per line (BRO-5844): joined, JSX-text apostrophes paired across lines and hid components
 
 
 # Per-commit memo: skip the gate when (a) HEAD hasn't moved AND (b) no NEW UI

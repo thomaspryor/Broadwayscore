@@ -24,7 +24,7 @@
 //   --query=diff-hash     [--repo=… --ref=HEAD]        current gated diff stats + hash
 //   --query=record        --reviewer=… --result=pass|fail [--session-id=…]
 //   --query=push-allowed  [--repo=… --ref=HEAD --ledger-root=…]
-//   --query=changed-files [--repo=… --ref=HEAD --pattern=<regex>] own-merge-scoped
+//   --query=changed-files [--repo=… --ref=HEAD --pattern=<regex> --visual-only=1] own-merge-scoped
 //                        changed file paths matching --pattern (default: all).
 //                        Shared with pre-push-visual-gate.sh (task #879) —
 //                        same own-merge scoping as diff-hash/push-allowed but
@@ -48,6 +48,7 @@ import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { createRequire } from 'node:module';
 import { isMainModule } from './is-main-module.mjs';
+import { isVisualByPath, patchTouchesVisualSurface } from './ui-paths.mjs';
 
 // CJS libs — ci-red-claims.js/duplicate-dispatch-guard.js predate this file's
 // ESM conversion and are shared with scripts/claim-ci-red.js, so require()
@@ -308,6 +309,24 @@ export function scopedChangedFiles(repoRoot, base, ref, pathRegex) {
     return { files: [], error: `git diff failed for ${range.join(' ')}` };
   }
   return { files: out.split('\n').filter(Boolean).filter(p => pathRegex.test(p)) };
+}
+
+// BRO-5844: drop files whose diff provably touches no visual surface.
+// Only `src/app/**/*.tsx` (page/layout copy edits) is skippable; everything
+// else the caller listed stays. Fail-safe in every direction: a git error, an
+// empty patch or a missing module keeps the file listed.
+const VISUAL_SKIPPABLE_RE = /^src\/app\/.*\.tsx$/;
+export function dropNonVisualFiles(repoRoot, base, ref, files) {
+  const range = diffRangeArgs(repoRoot, base, ref, false);
+  return files.filter(f => {
+    if (!VISUAL_SKIPPABLE_RE.test(f) || isVisualByPath(f)) return true;
+    try {
+      const patch = git(repoRoot, ['diff', ...DIFF_STABLE_FLAGS, ...range, '--', f]);
+      return patchTouchesVisualSurface(patch);
+    } catch {
+      return true;
+    }
+  });
 }
 
 // Patch text for the gated files only: split on "diff --git" headers and
@@ -1616,6 +1635,9 @@ if (__isMain) {
         break;
       }
       result = { base, ...scopedChangedFiles(repoRoot, base, ref, re) };
+      if (args['visual-only'] && Array.isArray(result.files) && !result.error) {
+        result.files = dropNonVisualFiles(repoRoot, base, ref, result.files);
+      }
       break;
     }
     default:

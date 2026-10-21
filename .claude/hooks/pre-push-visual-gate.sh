@@ -132,7 +132,7 @@ _UNSCOPED_UI_DIFF() {
   cd "$SESSION_ROOT" && git diff --name-only "origin/main...$DIFF_REF" 2>/dev/null | grep -E "$UI_PATTERN" | head -5
 }
 if [ -f "$GATE_LIB" ]; then
-  CHANGED_RESULT=$(node "$GATE_LIB" --query=changed-files --repo="$SESSION_ROOT" --ref="$DIFF_REF" --pattern="$UI_PATTERN" 2>/dev/null)
+  CHANGED_RESULT=$(node "$GATE_LIB" --query=changed-files --repo="$SESSION_ROOT" --ref="$DIFF_REF" --pattern="$UI_PATTERN" --visual-only=1 2>/dev/null)
   # Only trust a well-formed {files:[...]} response with no error — a query
   # this hook doesn't recognize (stale review-gate.mjs), a resolveBase
   # failure, or a node crash all print no valid `.files` array, and jq's
