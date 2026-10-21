@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-21T15:05:45.293Z",
-  "processed": 4,
-  "failed": 11,
-  "successRate": "26.7%",
+  "updatedAt": "2026-10-21T15:13:58.076Z",
+  "processed": 95,
+  "failed": 55,
+  "successRate": "63.3%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 41,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 6,
+    "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 44
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-10-21T14:55:31.736Z",
@@ -47,10 +47,31 @@
       "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07"
     },
     {
-      "t": "2026-10-21T15:04:53.788Z",
+      "t": "2026-10-21T14:31:01.479Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-21T15:02:57.513Z",
       "event": "bb-session",
-      "session": "80ed8b6c",
-      "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07"
+      "session": "33cc85b1",
+      "url": "https://www.nytimes.com/2026/04/25/theater/rheology-inspirations.html"
+    },
+    {
+      "t": "2026-10-21T15:02:58.291Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-21T15:07:45.444Z",
+      "event": "bb-session",
+      "session": "4e7f1c63",
+      "url": "https://www.nytimes.com/2026/04/03/theater/burnout-paradise-treadmills-theater-o"
+    },
+    {
+      "t": "2026-10-21T15:07:46.079Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
