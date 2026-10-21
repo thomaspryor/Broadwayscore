@@ -40,9 +40,7 @@ function _classify(url) {
 }
 
 function _sameUrl(a, b) {
-  const { sameUrlKey } = require('./review-url-collision');
-  const ka = sameUrlKey(a);
-  return !!ka && ka === sameUrlKey(b);
+  return require('./review-url-collision').sameArticleUrl(a, b);
 }
 
 /**

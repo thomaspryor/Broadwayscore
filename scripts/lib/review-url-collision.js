@@ -43,6 +43,32 @@ function sameUrlKey(url) {
 }
 
 /**
+ * True when two urls address the same article for SIBLING-OWNERSHIP checks:
+ * the validator key above, or review-normalization's canonicalArticleKey
+ * (tracking params, www/protocol, registry domain aliases, Variety ids). The
+ * write guard's collision setter already uses canonicalArticleKey (BRO-5321);
+ * the slot guards used only sameUrlKey, so a SERP hit carrying ?utm_source=
+ * slipped past "another critic already holds this url" and re-pointed one
+ * critic's file onto another critic's review (BRO-5858: 33 such moves, e.g.
+ * vulture--sara-holdren.json onto Jackson McHenry's A Beautiful Noise review).
+ * Real query ids (?p=123) stay distinct: canonicalArticleKey keeps them.
+ *
+ * @param {string} a
+ * @param {string} b
+ * @returns {boolean}
+ */
+function sameArticleUrl(a, b) {
+  const ka = sameUrlKey(a);
+  if (!ka) return false;
+  if (ka === sameUrlKey(b)) return true;
+  // Lazy require: review-normalization lazily requires this module.
+  const { canonicalArticleKey } = require('./review-normalization');
+  let ca = null, cb = null;
+  try { ca = canonicalArticleKey(a); cb = canonicalArticleKey(b); } catch { return false; }
+  return !!ca && ca === cb;
+}
+
+/**
  * Full validator key: one show's records are compared against each other.
  *
  * @param {string} showId
@@ -78,8 +104,7 @@ function sameUrlDuplicateKey(showId, url) {
  * @returns {{filename: string, url: string}|null}
  */
 function findSiblingUrlOwner({ showDir, url, selfOutletId, selfCriticName, selfFilename } = {}) {
-  const candidateKey = sameUrlKey(url);
-  if (!candidateKey || !showDir) return null;
+  if (!sameUrlKey(url) || !showDir) return null;
 
   let files;
   try {
@@ -97,7 +122,7 @@ function findSiblingUrlOwner({ showDir, url, selfOutletId, selfCriticName, selfF
       continue; // unreadable sibling — cannot prove a collision, so allow
     }
     if (!data || !data.url) continue;
-    if (sameUrlKey(data.url) !== candidateKey) continue;
+    if (!sameArticleUrl(data.url, url)) continue;
     // Self-identity. The FILENAME is authoritative and is checked above, so
     // when the caller supplied one, every other file on disk is a genuine
     // sibling — full stop.
@@ -121,4 +146,4 @@ function findSiblingUrlOwner({ showDir, url, selfOutletId, selfCriticName, selfF
   return null;
 }
 
-module.exports = { sameUrlKey, sameUrlDuplicateKey, findSiblingUrlOwner };
+module.exports = { sameUrlKey, sameArticleUrl, sameUrlDuplicateKey, findSiblingUrlOwner };
