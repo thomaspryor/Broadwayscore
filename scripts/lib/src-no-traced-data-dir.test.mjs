@@ -24,7 +24,7 @@ const ROOTS = new Set(['data', 'public', 'public/data', '.', '']);
 
 function walk(dir, out) {
   for (const ent of readdirSync(dir, { withFileTypes: true })) {
-    if (ent.isDirectory()) { if (!ent.name.startsWith('.') && ent.name !== 'node_modules') walk(join(dir, ent.name), out); }
+    if (ent.isDirectory()) { if (!ent.name.startsWith('.') && ent.name !== 'node_modules' && ent.name !== '__tests__') walk(join(dir, ent.name), out); }
     else if (/\.(?:c|m)?[jt]sx?$/.test(ent.name) && !/\.test\./.test(ent.name)) out.push(join(dir, ent.name));
   }
   return out;
@@ -40,6 +40,12 @@ export function rootDirHits(src) {
     const segs = [...m[1].matchAll(/['"]([^'"]*)['"]/g)].map(x => x[1]).join('/').replace(/\/+$/, '');
     if (ROOTS.has(segs)) hits.push(m[0]);
   }
+  // process.cwd() + '/data' and `${process.cwd()}/data` (page.tsx already uses
+  // the + form, with file names), ending at the root rather than a file.
+  for (const m of code.matchAll(/process\.cwd\(\)\s*\+\s*(['"])([^'"]*)\1(?!\s*\+)|`\$\{process\.cwd\(\)\}([^`$]*)`/g)) {
+    const segs = (m[2] ?? m[3] ?? '').replace(/^\/+|\/+$/g, '');
+    if (ROOTS.has(segs)) hits.push(m[0]);
+  }
   return hits;
 }
 
@@ -49,6 +55,10 @@ test('detector: roots caught, files and subfolders allowed, comments ignored', (
   assert.equal(rootDirHits("path.join(process.cwd(), 'data', 'audit', 'x.json')").length, 0);
   assert.equal(rootDirHits("path.join(process.cwd(), 'data', 'social-pulse')").length, 0);
   assert.equal(rootDirHits("// passing path.join(process.cwd(), 'data') traced everything").length, 0);
+  assert.equal(rootDirHits("const d = process.cwd() + '/data';").length, 1);
+  assert.equal(rootDirHits('const d = `${process.cwd()}/public/data/`;').length, 1);
+  assert.equal(rootDirHits("fs.readFileSync(process.cwd() + '/public/data/homepage-archive.json')").length, 0);
+  assert.equal(rootDirHits("const r = `${process.cwd()}/data/audit/x.json`;").length, 0);
 });
 
 test('no server code under src/ names the data/ or public/ root', () => {
