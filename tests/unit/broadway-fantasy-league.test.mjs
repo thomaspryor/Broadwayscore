@@ -56,7 +56,10 @@ describe('draftable show catalog (data/fantasy-league.json)', () => {
     // form is supposed to show their locked score as built-in research.
     // A show locked because it opens in the last days before the draft has
     // no reviews yet; give the review pipeline a week after opening night.
-    const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
+    // Anchor on the snapshot's own generatedAt, not the wall clock: the data
+    // file is frozen, so a later clock would demand scores it never had (BRO-5721).
+    const asOf = Math.min(Date.now(), Date.parse(leagueData._meta.generatedAt));
+    const weekAgo = new Date(asOf - 7 * 86400000).toISOString().slice(0, 10);
     const locked = Object.entries(shows).filter(([, s]) => s.eligible.criticScore === false && (!s.openingDate || s.openingDate <= weekAgo));
     for (const [id, show] of locked) {
       assert.ok(
