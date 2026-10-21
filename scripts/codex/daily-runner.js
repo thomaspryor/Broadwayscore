@@ -61,6 +61,7 @@ const linear = require(path.join(ROOT, 'scripts/lib/linear-client.js'));
 const { verifyCommand } = require(path.join(ROOT, 'scripts/lib/linear-drain-parked.js'));
 const { makeVerifyCmdEvidence } = require(path.join(ROOT, 'scripts/lib/linear-cmd-execution.js'));
 const R = require(path.join(ROOT, 'scripts/lib/codex-runner.js'));
+const PF = require(path.join(ROOT, 'scripts/lib/codex-sandbox-preflight.js'));
 const { createSandbox, sandboxUser, judgeLandSandboxed, readSandboxFile, JSON_MARK } = require(path.join(ROOT, 'scripts/lib/codex-sandbox.js'));
 
 const RUNNER_CARD = process.env.CODEX_RUNNER_CARD || 'BRO-4745';
@@ -333,10 +334,21 @@ function saveLogin() {
   if (r.code !== 0) log(`login save failed: ${tail(r.out, 300)}`);
 }
 
+/** Codex's --sandbox mode, probed once per process (BRO-5856: bubblewrap cannot start in the cloud routine). */
+let sandboxChoice = null;
+function codexSandboxMode() {
+  if (!sandboxChoice) {
+    sandboxChoice = PF.chooseSandbox(PF.probeNamespaceSandbox((c, a) => sh(c, a, { timeoutMs: 30_000 })));
+    log(`codex sandbox: ${sandboxChoice.mode || 'none'} (${sandboxChoice.reason})`);
+  }
+  if (!sandboxChoice.ok) throw new Error(sandboxChoice.reason);
+  return sandboxChoice.mode;
+}
+
 function runCodex(id, prompt, tag, timeoutMs = CODEX_TIMEOUT_MS) {
   const last = path.join(LOG_DIR, `${id}-${tag}-last.md`);
   fs.writeFileSync(path.join(LOG_DIR, `${id}-${tag}-prompt.md`), prompt);
-  const r = sh('codex', ['exec', '--dangerously-bypass-hook-trust', '--sandbox', 'workspace-write', '--color', 'never',
+  const r = sh('codex', ['exec', '--dangerously-bypass-hook-trust', '--sandbox', codexSandboxMode(), '--color', 'never',
     '-c', 'model_reasoning_effort=high', '-o', last, '-C', WT, prompt],
   { cwd: WT, timeoutMs, env: scrubbedEnv(), input: '' });
   fs.writeFileSync(path.join(LOG_DIR, `${id}-${tag}.log`), r.out);
@@ -1351,6 +1363,12 @@ async function runLocked(startedMs) {
   log(restore.out.trim());
   if (restore.code !== 0) {
     if (!OPTS.dryRun) await linearBrain(['update', RUNNER_CARD, '--comment', `## Codex runner did not start\n\nNo usable Codex login (it may have expired). Someone with the ChatGPT account must run \`codex login --device-auth\` in a cloud session, then \`node scripts/codex/auth-store.js save\`.\n\n${fence(tail(restore.out, 600))}`]);
+    process.exitCode = 2;
+    return;
+  }
+  // Unusable namespace sandbox outside the cloud VM: stop before claiming any card (BRO-5856).
+  try { codexSandboxMode(); } catch (e) {
+    if (!OPTS.dryRun) await linearBrain(['update', RUNNER_CARD, '--comment', `## Codex runner did not start\n\n${e.message}. No card was claimed, so the Claude lane keeps them.`]);
     process.exitCode = 2;
     return;
   }
