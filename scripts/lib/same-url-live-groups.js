@@ -26,7 +26,16 @@ const LIVE_TIERS = new Set(['complete', 'truncated', 'excerpt']);
  * Add an entry only with the evidence that the files are two separate reviews
  * (or that the critic cannot be determined) in `reason`.
  */
-const SAME_URL_ALLOWLIST = Object.freeze({});
+const SAME_URL_ALLOWLIST = Object.freeze({
+  // BRO-5858 sweep (2026-10-21): critic could not be determined, so neither
+  // file was retired and no attribution was changed.
+  'living-on-love-2015|nytimes.com/2015/04/21/theater/review-renee-fleming-plays-against-type-in-living-on-love.html':
+    { reason: 'NYT page paywalled (no byline); no aggregator quotes this text; neither member (Soloski, Isherwood) attested' },
+  'present-laughter-2017|broadwaynews.com/2017/04/05/review/present-laughter-review':
+    { reason: 'page did not load; BWW reviews quotes the text under Charles Isherwood, BWW roundup under Elizabeth Bradley' },
+  'time-stands-still-2010|hollywoodreporter.com/movies/movie-reviews/time-stands-still-theater-review-29218':
+    { reason: 'THR page byline/JSON-LD credits "The Associated Press"; BWW reviews places the excerpt near Frank Scheck' },
+});
 
 /**
  * @param {object} d review record
