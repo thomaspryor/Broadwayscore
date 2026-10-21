@@ -27,6 +27,33 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { buildTbCandidateUrls, verifyTbPage } = require('./tb-direct-url.js');
 const { extractArticleText } = require('./article-extractor.js');
+const { urlYearOf } = require('./url-discovery.js');
+const { extractUrlYear } = require('./opening-night-discovery.js');
+
+describe('BRO-5278: URL years distinguish publication dates from title and season years', () => {
+  const cases = [
+    ['https://theandygram.com/2013-2014-season/2014/review.html', 2014],
+    ['https://theandygram.com/2013-2014-season/review.html', null],
+    ['https://example.com/2013-2014-season/review-2018-news/', 2018],
+    ['https://theartsdesk.com/theatre/review-summer-1959', null],
+    ['https://theartsdesk.com/theatre/review-summer-1960/', null],
+    ['https://theartsdesk.com/theatre/oliver-gielgud-theatre-review-lionel-barts-1960-masterpiece-bourne-again', null],
+    ['https://theartsdesk.com/2026/theatre/review-summer-1959', 2026],
+    ['https://www.broadwayworld.com/article/Review-NETWORK-1976-20181206', 2018],
+    ['https://www.broadwayworld.com/article/Review-NETWORK-1976-20010101', null],
+    ['https://example.com/review-1959/2026/10/12/', 2026],
+    ['https://example.com/review?year=1994', null],
+    ['https://example.com/review-2015-news/', 2015],
+    ['https://example.com/2015-the-car-man-review/', 2015],
+    ['https://www.theatermania.com/news/broadway-shockers-2017-1984-gives-audiences-truly-visceral-reactions_83556/', 2017],
+  ];
+  for (const [url, expected] of cases) {
+    it(`reads ${expected} from ${url}`, () => {
+      assert.strictEqual(urlYearOf(url), expected);
+      assert.strictEqual(extractUrlYear(url), expected, 'opening-night discovery shares the extractor');
+    });
+  }
+});
 
 describe('BRO-928: Talkin\' Broadway slug discovery produces multiple candidates', () => {
   it('guesses more than one slug variant so a single wrong guess is not fatal', () => {

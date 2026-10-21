@@ -1512,9 +1512,8 @@ function earliestTourLegStart(show) {
 // man-review/. The slash-only form left 481 dash-form URLs on disk invisible
 // to readmission — including one on a show that DOES declare the run
 // (ship-check 2026-08-02, #872). Anchored on both sides so an article ID
-// like /a12019x/ can't be read as a year. Exported so callers needing the
-// same URL-year extraction (e.g. scripts/lib/opening-night-discovery.js)
-// share one pattern instead of a copy that can silently drift (BRO-736).
+// like /a12019x/ can't be read as a year. This is urlYearOf's fallback;
+// callers use that function so season and date precedence rules stay shared.
 const URL_YEAR_PATTERN = /[/-]((?:19|20)\d{2})(?:[/-]|$)/;
 
 // BroadwayWorld article slugs end in a compact publish date with no year
@@ -1525,26 +1524,33 @@ const URL_YEAR_PATTERN = /[/-]((?:19|20)\d{2})(?:[/-]|$)/;
 const BWW_COMPACT_DATE_PATTERN = /-((?:19|20)\d{2})(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])\/?$/;
 
 /**
- * The publish year a URL carries: a /YYYY/ or -YYYY- token, else a
- * BroadwayWorld trailing -YYYYMMDD. Every URL-year rule should read the year
- * through this so the two shapes cannot drift apart.
+ * A URL-year rejection signal, never publication metadata. Prefer /YYYY/
+ * path segments and BWW's dated suffix over ambiguous slug tokens. Season
+ * ranges and artsdesk's headline years are not publication years.
  * @param {string} url
  * @returns {number|null}
  */
 function urlYearOf(url) {
   if (!url) return null;
-  const s = String(url);
-  const m = s.match(URL_YEAR_PATTERN);
-  if (m) return parseInt(m[1], 10);
+  const withoutSeasons = String(url).replace(/\b((?:19|20)\d{2})-((?:19|20)\d{2})\b/g,
+    (range, from, to) => Number(to) === Number(from) + 1 ? '' : range);
   let host = '';
-  let path = '';
-  try { const u = new URL(s); host = u.hostname.toLowerCase(); path = u.pathname; } catch { return null; }
-  if (!/(^|\.)broadwayworld\.com$/.test(host)) return null;
-  // -20010101 is BWW's placeholder for an undated article, not a date: a
-  // 2026 Dirty Dancing tour review carries it.
-  if (/-20010101\/?$/.test(path)) return null;
-  const c = path.match(BWW_COMPACT_DATE_PATTERN);
-  return c ? parseInt(c[1], 10) : null;
+  let pathname = withoutSeasons;
+  try { const u = new URL(withoutSeasons); host = u.hostname.toLowerCase(); pathname = u.pathname; } catch { /* retain legacy token matching for nonstandard URLs */ }
+  const m = pathname.match(/\/((?:19|20)\d{2})(?=\/|$)/);
+  if (m) return parseInt(m[1], 10);
+  if (/(^|\.)broadwayworld\.com$/.test(host)) {
+    // -20010101 is BWW's undated placeholder. Do not fall through to a
+    // subject year such as NETWORK's 1976 when that placeholder is present.
+    if (/-20010101\/?$/.test(pathname)) return null;
+    const c = pathname.match(BWW_COMPACT_DATE_PATTERN);
+    if (c) return parseInt(c[1], 10);
+  }
+  // Artsdesk has undated headline slugs: 1959 and 1960 describe the subject,
+  // including mid-slug references such as "barts-1960-masterpiece".
+  if (/(^|\.)theartsdesk\.com$/.test(host)) return null;
+  const token = withoutSeasons.match(URL_YEAR_PATTERN);
+  return token ? parseInt(token[1], 10) : null;
 }
 
 /**

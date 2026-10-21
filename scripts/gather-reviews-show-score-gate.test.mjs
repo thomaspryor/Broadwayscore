@@ -103,6 +103,5 @@ test('gather-reviews gates the raw link and skips slug guessing for an older pro
   const src = fs.readFileSync(path.join(here, 'gather-reviews.js'), 'utf8');
   assert.match(src, /partitionShowScoreReviews\(reviews, show, \{ urlOf \}\)/);
   assert.strictEqual((src.match(/\[SS_RAW_URL\]: /g) || []).length, 3, 'every extractShowScoreReviews push keeps the raw link');
-  assert.match(src, /const bareUnsafe = allShowsForSlugs \? bareSlugGuessUnsafe\(show, allShowsForSlugs\) : true;/);
-  assert.match(src, /if \(bareUnsafe && !\(yearTag && slug\.includes\(yearTag\)\)\)/);
+  assert.match(src, /showScoreSlugGuessBlockReason\(show, url, urlMap, allShowsForSlugs, year\)/);
 });

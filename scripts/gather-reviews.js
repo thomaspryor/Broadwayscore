@@ -101,7 +101,7 @@ const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { shouldTriggerRebuild } = require('./lib/gather-reviews-rebuild-trigger');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { partitionShowScoreReviews } = require('./lib/gap-ingest-policy');
-const { bareSlugGuessUnsafe } = require('./lib/show-score-discover');
+const { showScoreSlugGuessBlockReason } = require('./lib/show-score-discover');
 const { recordSbCall, sbBilledCredits, withSpendShow } = require('./lib/provider-telemetry');
 const { isSerpUrlWrongProductionForOpeningNight, computeSerpShare, exceedsOpeningNightSerpBudget, parseGatherReviewsFlags } = require('./lib/opening-night-discovery');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
@@ -1217,40 +1217,14 @@ async function searchShowScore(show) {
     ];
   }
 
-  // Try Playwright first if available (to get ALL reviews via carousel scrolling)
-  // Drop any guessed slug whose URL another show already OWNS in the curated
-  // map (BRO-3416). Show Score keeps one page per title — the current or most
-  // recent production — so a same-title sibling's guessed slug collapses onto
-  // the other production's page and ingests its notices under this show's id.
-  // she-loves-me-1994 accumulated the entire 2016 Roundabout revival that way:
-  // the bare `she-loves-me` variation below resolves to she-loves-me-2016's
-  // curated page, and nothing downstream rejects it (the venue check at
-  // :1192 only logs [VENUE WARN], and openingDate/closingDate are passed in
-  // but never used to reject). Mirrors the "already cached for another show"
-  // skip in scrape-show-score-audience.js:550 and the same guard in
-  // merge-show-score-shards.js. The curated branch above is untouched — an
-  // explicit entry for THIS show still wins.
-  const ownedByOtherShow = new Set(
-    Object.entries(urlMap)
-      .filter(([id, u]) => id !== show.id && typeof u === 'string' && u)
-      .map(([, u]) => u.toLowerCase().replace(/\/+$/, ''))
-  );
-  // Show Score keeps one page per title, showing the newest production, so a
-  // bare-title slug guessed for an older (or undated) production lands on a
-  // same-title sibling's page, whose later-year links pass the year gate
-  // (BRO-3556). Only slugs carrying this production's year stay.
-  // shows.json unreadable: fail closed (no sibling check means no bare guesses).
+  // Share curated and newest-production ownership with the gap audit.
+  // Older productions can still try year-specific pages (BRO-5278).
   const allShowsForSlugs = getShowScoreAllShows();
-  const bareUnsafe = allShowsForSlugs ? bareSlugGuessUnsafe(show, allShowsForSlugs) : true;
-  const yearTag = year ? `-${year}` : null;
   const candidateSlugs = [...new Set(variations)].filter((slug) => {
-    const url = `${showScoreBase}/${slug}`.toLowerCase().replace(/\/+$/, '');
-    if (ownedByOtherShow.has(url)) {
-      console.log(`    Skip: ${showScoreBase}/${slug} (curated page of another production)`);
-      return false;
-    }
-    if (bareUnsafe && !(yearTag && slug.includes(yearTag))) {
-      console.log(`    Skip: ${showScoreBase}/${slug} (bare title; a same-title production may own it)`);
+    const url = `${showScoreBase}/${slug}`;
+    const reason = showScoreSlugGuessBlockReason(show, url, urlMap, allShowsForSlugs, year);
+    if (reason) {
+      console.log(`    Skip: ${url} (${reason})`);
       return false;
     }
     return true;

@@ -370,6 +370,26 @@ function bareSlugGuessUnsafe(show, allShows) {
   return !hasProductionDate(show) && sameTitleSiblings(show, allShows).length > 0;
 }
 
+/** Gate gather-reviews' slug variations with the canonical page ownership rule.
+ * Year-specific guesses may still find an older production's dedicated page.
+ * London retains its own slug variations since constructed NYC URLs do not apply.
+ */
+function showScoreSlugGuessBlockReason(show, url, urlMap, allShows, year) {
+  const want = normSsUrl(url);
+  if (Object.entries(urlMap || {}).some(([id, u]) =>
+    id !== show.id && typeof u === 'string' && normSsUrl(u) === want)) {
+    return 'curated page of another production';
+  }
+  const bareUnsafe = !Array.isArray(allShows)
+    || bareSlugGuessUnsafe(show, allShows)
+    || (constructShowScoreUrl(show) && !showScoreUrlForShow(show, urlMap, allShows));
+  const yearTag = year ? `-${year}` : null;
+  if (bareUnsafe && !(yearTag && new URL(url).pathname.includes(yearTag))) {
+    return 'bare title; a same-title production may own it';
+  }
+  return null;
+}
+
 module.exports = {
   showScorePosterFromHtml,
   showScoreUrlForShow,
@@ -377,6 +397,7 @@ module.exports = {
   productionRecencyMs,
   hasNewerSameTitleProduction,
   bareSlugGuessUnsafe,
+  showScoreSlugGuessBlockReason,
   loadShowScoreUrlMap,
   extractShowScoreReviewUrls,
   extractReadMoreUrls,

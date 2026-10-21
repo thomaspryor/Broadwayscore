@@ -4,6 +4,28 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { showScoreUrlForShow } = require('./show-score-discover.js');
+const { showScoreSlugGuessBlockReason } = require('./show-score-discover.js');
+
+test('BRO-5278: slug guesses share newest-production ownership, including open siblings and ties', () => {
+  const older = { id: 'cats-2016', title: 'Cats', category: 'broadway', status: 'open', openingDate: '2016-07-31' };
+  const newer = { ...older, id: 'cats-2026', openingDate: '2026-07-31' };
+  const url = 'https://www.show-score.com/broadway-shows/cats-broadway';
+  assert.ok(showScoreSlugGuessBlockReason(older, url, {}, [older, newer], 2016));
+  assert.equal(showScoreSlugGuessBlockReason(newer, url, {}, [older, newer], 2026), null);
+  assert.equal(showScoreSlugGuessBlockReason(older, `${url}-2016`, {}, [older, newer], 2016), null);
+  const tie = { ...older, id: 'cats-other-2016' };
+  assert.ok(showScoreSlugGuessBlockReason(older, url, {}, [older, tie], 2016));
+});
+
+test('BRO-5278: slug guesses preserve curated ownership and London discovery', () => {
+  const show = { id: 'cats-2016', title: 'Cats', category: 'broadway', status: 'open', openingDate: '2016-07-31' };
+  const url = 'https://www.show-score.com/broadway-shows/cats-2016';
+  assert.ok(showScoreSlugGuessBlockReason(show, url, { other: `${url.toUpperCase()}/` }, [show], 2016));
+  assert.equal(showScoreSlugGuessBlockReason(show, url, { [show.id]: url }, [show], 2016), null);
+  const london = { ...show, category: 'west-end' };
+  assert.equal(showScoreSlugGuessBlockReason(london, 'https://www.show-score.com/uk/london/west-end-shows/cats-london', {}, [london], 2016), null);
+  assert.ok(showScoreSlugGuessBlockReason(show, url.replace('-2016', ''), {}, null, 2016));
+});
 
 // BRO-3416. Show Score keeps ONE page per title — the current or most recent
 // production — so when two same-title shows slug to the same URL, at most one
