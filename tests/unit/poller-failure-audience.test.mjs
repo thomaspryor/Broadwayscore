@@ -37,6 +37,35 @@ describe('isBroadwayPoll', () => {
   });
 });
 
+describe('isBroadwayPoll: only Broadway openings email right away', () => {
+  const NOW = new Date('2026-10-21T16:10:00Z');
+  const dated = (openingDate) => [{ id: 'b', category: 'broadway', openingDate }];
+  test('opening night and the 3 days after count', () => {
+    assert.equal(isBroadwayPoll(['b'], dated('2026-10-21'), NOW), true);
+    assert.equal(isBroadwayPoll(['b'], dated('2026-10-19'), NOW), true);
+  });
+  test('the day before opening counts', () => {
+    assert.equal(isBroadwayPoll(['b'], dated('2026-10-22'), NOW), true);
+  });
+  test('a Broadway show past its opening window does not (Other Desert Cities, 2026-10-21)', () => {
+    const shows = [
+      { id: 'other-desert-cities-2026', category: 'broadway', openingDate: '2026-10-18' },
+      { id: 'fish-off-broadway-2026', category: 'off-broadway', openingDate: '2026-10-20' },
+    ];
+    assert.equal(isBroadwayPoll(['fish-off-broadway-2026', 'other-desert-cities-2026'], shows, NOW), false);
+  });
+  test('a Broadway show weeks out does not', () => {
+    assert.equal(isBroadwayPoll(['b'], dated('2026-11-20'), NOW), false);
+  });
+  test('fails open on a missing or unparseable openingDate', () => {
+    assert.equal(isBroadwayPoll(['b'], dated(null), NOW), true);
+    assert.equal(isBroadwayPoll(['b'], dated('TBA'), NOW), true);
+  });
+  test('an Off-Broadway show in its opening window still does not', () => {
+    assert.equal(isBroadwayPoll(['o'], [{ id: 'o', category: 'off-broadway', openingDate: '2026-10-21' }], NOW), false);
+  });
+});
+
 describe('opening-night-poller.yml wiring', () => {
   const doc = yaml.load(fs.readFileSync(path.join(process.cwd(), '.github/workflows/opening-night-poller.yml'), 'utf8'));
   const steps = doc.jobs.poll.steps;

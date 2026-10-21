@@ -57,3 +57,27 @@ describe('isInOpeningWindow', () => {
     assert.strictEqual(isInOpeningWindow({ openingDate: 'not-a-date' }, new Date('2026-08-12T00:00:00Z')), false);
   });
 });
+
+describe('nextPollDelayMs (BRO-5861: 6h floor outside the opening window)', () => {
+  const { nextPollDelayMs, OUTSIDE_WINDOW_MIN_INTERVAL_MS } = require('../../scripts/lib/opening-window-backoff.js');
+  const NOW = new Date('2026-10-21T16:10:00Z');
+
+  it('keeps the no-op delay inside the opening window, even when it is 0', () => {
+    assert.strictEqual(nextPollDelayMs(0, { openingDate: '2026-10-20' }, NOW), 0);
+    assert.strictEqual(nextPollDelayMs(30 * 60 * 1000, { openingDate: '2026-10-20' }, NOW), 30 * 60 * 1000);
+  });
+
+  it('raises the delay to 6h outside the window (Off-Broadway show 2 weeks past opening)', () => {
+    assert.strictEqual(nextPollDelayMs(0, { openingDate: '2026-10-07' }, NOW), OUTSIDE_WINDOW_MIN_INTERVAL_MS);
+    assert.strictEqual(OUTSIDE_WINDOW_MIN_INTERVAL_MS, 6 * 60 * 60 * 1000);
+  });
+
+  it('never lowers a longer no-op delay', () => {
+    const long = 8 * 60 * 60 * 1000;
+    assert.strictEqual(nextPollDelayMs(long, { openingDate: '2026-10-07' }, NOW), long);
+  });
+
+  it('a show with no openingDate counts as in-window, so no floor', () => {
+    assert.strictEqual(nextPollDelayMs(0, { openingDate: null }, NOW), 0);
+  });
+});
