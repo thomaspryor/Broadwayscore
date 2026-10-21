@@ -130,9 +130,14 @@ test('a season key samples that season only, even outside WE_SEASONS', () => {
     { id: 'a', discoverySource: 'we-historical:wos', season: '2024-2025' },
     { id: 'b', discoverySource: 'we-historical:wos', season: '2019-2020' },
     { id: 'c', discoverySource: 'manual-user-request', season: '2024-2025' },
+    { id: 'd', discoverySource: 'we-historical:tr', season: '2024-2025' },
+    { id: 'e', discoverySource: 'we-historical:tr', season: '2019-2020' },
   ];
   assert.deepEqual(fc.parseCohortKey('we-historical-2024-2025'), { base: 'we-historical', season: '2024-2025' });
-  assert.deepEqual(fc.drawSample(shows, 'we-historical-2024-2025', 10, 1).ids.map((r) => r.id), ['a']);
+  // Review-led TR rows are gated by the season audit, so the season sample draws them too (BRO-5851).
+  assert.deepEqual(fc.drawSample(shows, 'we-historical-2024-2025', 10, 1).ids.map((r) => r.id).sort(), ['a', 'd']);
+  // The cross-season cohort is unchanged: WOS rows in WE_SEASONS only.
+  assert.deepEqual(fc.cohortRows(shows, 'we-historical').map((r) => r.id), ['b']);
   assert.throws(() => fc.parseCohortKey('nope'));
   // Season keys resolve to their base cohort's market (the synopsis prompt crashed on them, BRO-5843).
   assert.equal(fc.cohortMarket('we-historical-2024-2025'), fc.COHORTS['we-historical'].market);

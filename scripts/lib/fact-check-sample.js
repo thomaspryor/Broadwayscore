@@ -25,6 +25,7 @@
 const { normalizeVenueName } = require('./image-source-match');
 const { findCanonical } = require('./venue-aliases');
 const { isBroadwayCategory } = require('./venue-classification');
+const { WE_HISTORICAL_DISCOVERY_SOURCES } = require('./we-historical-corroboration');
 
 const WE_SEASONS = ['2018-2019', '2019-2020', '2020-2021', '2021-2022', '2022-2023', '2023-2024'];
 
@@ -126,8 +127,9 @@ function cohortRows(shows, key) {
   const { base, season } = parseCohortKey(key);
   const c = COHORTS[base];
   if (!season) return shows.filter(c.filter);
-  // A season key widens the WE cohort past WE_SEASONS: keep the source test, swap the season test.
-  const sourceOk = base === 'we-historical' ? (s) => s.discoverySource === 'we-historical:wos' : c.filter;
+  // A season key widens the WE cohort past WE_SEASONS and to every row the
+  // season audit gates, review-led 'we-historical:tr' rows included (BRO-5851).
+  const sourceOk = base === 'we-historical' ? (s) => WE_HISTORICAL_DISCOVERY_SOURCES.has(s.discoverySource) : c.filter;
   return shows.filter((s) => sourceOk(s) && s.season === season);
 }
 
