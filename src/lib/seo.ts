@@ -137,6 +137,15 @@ export function generateAuthorPersonSchema() {
 // (caught in review of #1451: the fallback branch below used to return a bare
 // string with no country claim at all; defaulting to 'US' there would have
 // turned "no claim" into a false one for any future non-US theater).
+/** Market-level stand-in location for a show with no theater yet (Google requires a TheaterEvent location). */
+function unannouncedTheater(category: string | undefined, country: string) {
+  return {
+    '@type': 'PerformingArtsTheater',
+    name: category === 'opera' ? 'Metropolitan Opera House' : isLondonMarket(category) ? 'West End Theatre' : category === 'off-broadway' ? 'Off-Broadway Theater' : 'Broadway Theater',
+    address: toPostalAddress(isLondonMarket(category) ? 'London, England' : 'New York, NY', country),
+  };
+}
+
 function toPostalAddress(address: string, country: string) {
   const match = address.match(/^(.+?),\s*(.+?),\s*([A-Z]{2})\s+(\d{5})$/);
   if (match) {
@@ -261,18 +270,22 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
     description: show.synopsis,
     url: `${BASE_URL}/show/${show.slug}`,
     inLanguage: 'en',
+    // An announced show with no theater yet gets the market stand-in, as the
+    // list schema does (toPostalAddress(null) crashed its page, BRO-5808).
     location: isTour
       ? { '@type': 'Place', name: show.venue, address: { '@type': 'PostalAddress', addressCountry: country } }
-      : {
-          '@type': 'PerformingArtsTheater',
-          name: show.venue,
-          address: toPostalAddress(show.theaterAddress || show.venue, country),
-        },
+      : show.venue
+        ? {
+            '@type': 'PerformingArtsTheater',
+            name: show.venue,
+            address: toPostalAddress(show.theaterAddress || show.venue, country),
+          }
+        : unannouncedTheater(show.category, country),
     // GSC flags Events missing "organizer". We don't track producers, so the
     // presenting theater is the closest honest entity we always have.
     // organizerUrl (our /theater/{slug} entity page, Broadway-only) clears the
     // follow-up "Missing field 'url' (in 'organizer')" GSC warning.
-    ...(!isTour && {
+    ...(!isTour && show.venue && {
       organizer: {
         '@type': 'Organization',
         name: show.venue,
@@ -560,14 +573,7 @@ export function generateItemListSchema(items: {
           // regional venue (RSC, Chichester) needs its city/country made explicit —
           // otherwise it falls through to the New York/US default below (#1437).
           : ukRegionalCity ? { '@type': 'PostalAddress', addressLocality: ukRegionalCity, addressCountry: itemCountry } : item.venue,
-      } : {
-        '@type': 'PerformingArtsTheater',
-        name: item.category === 'opera' ? 'Metropolitan Opera House' : isLondonMarket(item.category) ? 'West End Theatre' : item.category === 'off-broadway' ? 'Off-Broadway Theater' : 'Broadway Theater',
-        address: toPostalAddress(
-          isLondonMarket(item.category) ? 'London, England' : 'New York, NY',
-          itemCountry
-        ),
-      };
+      } : unannouncedTheater(item.category, itemCountry);
 
       // Dates
       if (item.startDate) {
@@ -744,19 +750,23 @@ export function getShowFAQs(show: ComputedShow, consensusText?: string | null, t
       answer: `${nowPart}${nextPart}`.trim(),
     });
   }
+  // Announced shows often have no theater yet: never print "at null".
+  const at = show.venue ? ` at ${show.venue}` : '';
   if (!isTour) faqs.push({
     question: `Is ${show.title} still running ${marketLabel}?`,
     answer: show.status === 'open'
-      ? `Yes, ${show.title} is currently playing at ${show.venue} ${marketLabel}.${closingDateStr ? ` It is scheduled to close on ${closingDateStr}.` : ''}`
+      ? `Yes, ${show.title} is currently playing${at} ${marketLabel}.${closingDateStr ? ` It is scheduled to close on ${closingDateStr}.` : ''}`
       : show.status === 'previews'
-      ? `${show.title} is currently in previews at ${show.venue}.${openingDateStr ? ` It officially opens on ${openingDateStr}.` : ''}`
+      ? `${show.title} is currently in previews${at}.${openingDateStr ? ` It officially opens on ${openingDateStr}.` : ''}`
       : show.status === 'upcoming'
-      ? `${show.title} is upcoming at ${show.venue}. Previews begin ${previewsStartStr || 'soon'}${openingDateStr ? ` and it officially opens on ${openingDateStr}.` : '.'}`
-      : `No, ${show.title} has closed. It played at ${show.venue}${closingDateStr ? ` and closed on ${closingDateStr}` : ''}.`,
+      ? `${show.title} is upcoming${at}. Previews begin ${previewsStartStr || 'soon'}${openingDateStr ? ` and it officially opens on ${openingDateStr}.` : '.'}`
+      : show.status === 'announced'
+      ? `${show.title} has been announced${at}.${openingDateStr ? ` It opens on ${openingDateStr}.` : ' Dates have not been set yet.'}`
+      : `No, ${show.title} has closed. It played${at}${closingDateStr ? ` and closed on ${closingDateStr}` : ''}.`,
   });
 
   // Q: Where is it playing?
-  if (show.status !== 'closed' && !isTour) {
+  if (show.status !== 'closed' && !isTour && show.venue) {
     faqs.push({
       question: `Where is ${show.title} playing ${marketLabel}?`,
       answer: `${show.title} is playing at ${show.venue}${show.theaterAddress ? `, located at ${show.theaterAddress}` : ''}.`,
