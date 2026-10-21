@@ -13,12 +13,12 @@ import { DiscountTicketsNav } from '@/components/DiscountTicketsNav';
 import { formatTicketPrice } from '@/lib/formatting';
 
 export const metadata: Metadata = {
-  title: { absolute: 'West End Rush Tickets — Same-Day Discount London Theatre Tickets' },
+  title: { absolute: 'West End Rush Tickets: Same-Day Discount London Theatre Tickets' },
   description:
     'Same-day rush tickets for West End shows. Box office day seats, digital rush via TodayTix, and student standby. Updated regularly.',
   alternates: marketAlternates('westEnd', '/rush'),
   openGraph: {
-    title: 'West End Rush Tickets — Same-Day Cheap London Theatre Seats',
+    title: 'West End Rush Tickets: Same-Day Cheap London Theatre Seats',
     description:
       'First-come, first-served same-day discounted tickets for West End shows.',
     url: `${BASE_URL}/west-end/rush`,
@@ -249,7 +249,7 @@ export default function WestEndRushPage() {
         <div className="mb-6">
           <h1 className="text-3xl sm:text-4xl font-bold text-white">West End Rush Tickets</h1>
           <p className="text-gray-400 mt-2">
-            Same-day discounted tickets available at the box office or through digital apps. First-come, first-served — arrive early enough and you&apos;re guaranteed a seat.
+            Same-day discounted tickets available at the box office or through digital apps. First-come, first-served: arrive early enough and you&apos;re guaranteed a seat.
           </p>
           <p className="text-sm text-gray-500 mt-1">
             {showsWithRush.length} shows with rush tickets · Updated {new Date(lastUpdated).toLocaleDateString('en-GB', { month: 'long', day: 'numeric', year: 'numeric' })}
@@ -282,7 +282,7 @@ export default function WestEndRushPage() {
               <h3 className="font-semibold text-emerald-300 mb-1">Box Office Day Seats</h3>
               <ul className="space-y-1 list-disc list-inside">
                 <li>Queue when the box office opens (usually 10 AM)</li>
-                <li>First-come, first-served — arrive early for popular shows</li>
+                <li>First-come, first-served: arrive early for popular shows</li>
                 <li>Usually limited to 2 tickets per person</li>
                 <li>Photo ID may be required</li>
               </ul>
@@ -307,7 +307,7 @@ export default function WestEndRushPage() {
               market="west-end"
             />
           ) : (
-            <p className="text-sm text-gray-500">No rush tickets available right now. Check back tomorrow — day seats open daily at the box office.</p>
+            <p className="text-sm text-gray-500">No rush tickets available right now. Check back tomorrow. Day seats open daily at the box office.</p>
           )}
         </div>
 

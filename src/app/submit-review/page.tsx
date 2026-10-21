@@ -11,14 +11,14 @@ export const metadata: Metadata = {
     canonical: `${BASE_URL}/submit-review`,
   },
   openGraph: {
-    title: 'Submit a Missing Review — Broadway Scorecard',
+    title: 'Submit a Missing Review | Broadway Scorecard',
     description: 'Help us expand our database by submitting missing Broadway and West End reviews from professional critics.',
     url: `${BASE_URL}/submit-review`,
     images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary',
-    title: 'Submit a Missing Review — Broadway Scorecard',
+    title: 'Submit a Missing Review | Broadway Scorecard',
     description: 'Help us expand our database by submitting missing Broadway and West End reviews from professional critics.',
   },
 };

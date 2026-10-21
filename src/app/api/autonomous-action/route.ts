@@ -173,7 +173,7 @@ async function handleDispatch(req: NextRequest, method: 'GET' | 'POST'): Promise
   const expMs = parseInt(exp) * 1000;
   if (isNaN(expMs) || Date.now() > expMs) {
     return html('Link Expired',
-      '<h1>Link Expired</h1><p>This action link has expired — nothing was changed.</p>' +
+      '<h1>Link Expired</h1><p>This action link has expired. Nothing was changed.</p>' +
       '<p><a href="https://broadwayscorecard.com">Back to Broadway Scorecard</a></p>', 410);
   }
 
@@ -183,7 +183,7 @@ async function handleDispatch(req: NextRequest, method: 'GET' | 'POST'): Promise
   // Vercel env kills the dispatch action immediately.
   if (process.env.DISPATCH_LINKS_DISABLED === 'true') {
     return html('Temporarily Disabled',
-      '<h1>Fix-this Links Are Paused</h1><p>One-tap dispatch is temporarily switched off — nothing was changed. ' +
+      '<h1>Fix-this Links Are Paused</h1><p>One-tap dispatch is temporarily switched off. Nothing was changed. ' +
       'The issue is still recorded in the morning digest.</p>' +
       '<p><a href="https://broadwayscorecard.com">Back to Broadway Scorecard</a></p>', 503);
   }

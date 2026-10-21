@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { BASE_URL } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Official Rules — Beat the Critics Prize Draw',
+  title: 'Official Rules: Beat the Critics Prize Draw',
   alternates: { canonical: `${BASE_URL}/beat-the-critics/rules` },
   robots: { index: false },
 };
@@ -12,7 +12,7 @@ export default function BeatTheCriticsRulesPage() {
     <div className="max-w-[680px] mx-auto px-5 py-12">
       <div className="mb-8">
         <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Beat the Critics</div>
-        <h1 className="text-2xl font-extrabold tracking-tight mb-1">Official Rules — Prize Draw</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight mb-1">Official Rules: Prize Draw</h1>
         <p className="text-sm text-gray-500">$200 TodayTix Gift Card · Tony Awards 2026</p>
       </div>
 

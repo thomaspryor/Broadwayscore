@@ -15,14 +15,14 @@ import { SHOW_LEVEL_CATEGORIES, PERSON_LEVEL_CATEGORIES } from '@/components/ton
 const season = getTonySeasonWindowFor(2026);
 
 export const metadata: Metadata = {
-  title: `2026 Tony Award Winners — ${season.ceremonyYear} Tony Awards Results`,
+  title: `2026 Tony Award Winners: ${season.ceremonyYear} Tony Awards Results`,
   description: `Complete list of 2026 Tony Award winners and top predictions for the 79th Annual Tony Awards ceremony. Ranked by critic score, audience grade, and GoldDerby win odds.`,
   alternates: {
     canonical: `${BASE_URL}/tony-awards/winners-2026`,
   },
   openGraph: {
     images: [TONY_OG_IMAGE],
-    title: `2026 Tony Award Winners — Broadway Scorecard`,
+    title: `2026 Tony Award Winners: Broadway Scorecard`,
     description: `Who won the 2026 Tony Awards? Data-driven predictions ranked by critic score, audience grade, and GoldDerby win odds.`,
     url: `${BASE_URL}/tony-awards/winners-2026`,
     type: 'website',

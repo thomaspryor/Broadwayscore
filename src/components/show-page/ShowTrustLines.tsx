@@ -67,7 +67,7 @@ export default function ShowTrustLines({ show }: { show: ComputedShow }) {
                 );
                 const tourScore = (!tourHidden && t?.criticScore?.score) ? Math.round(t.criticScore.score) : null;
                 if (tourScore) {
-                  return <>{' '}— critics {t?.status === 'open' || t?.status === 'previews' ? 'score' : 'scored'} the tour <span className="text-sky-300 font-semibold">{tourScore}/100</span>.{' '}</>;
+                  return <>{': '}critics {t?.status === 'open' || t?.status === 'previews' ? 'score' : 'scored'} the tour <span className="text-sky-300 font-semibold">{tourScore}/100</span>.{' '}</>;
                 }
                 // No tour has a score yet: its page exists for the dates, so
                 // say reviews are on the way rather than promising a score.
@@ -108,13 +108,13 @@ export default function ShowTrustLines({ show }: { show: ComputedShow }) {
             <span className="font-semibold">UK regional production</span>
             {transfer ? (
               <span className="text-gray-400">
-                {hasReachedStage(transfer.status) ? ` — this production transferred to ${where}. ` : ` — this production is transferring to ${where}. `}
+                {hasReachedStage(transfer.status) ? `: this production transferred to ${where}. ` : `: this production is transferring to ${where}. `}
                 <Link href={`/show/${transfer.slug}`} className="text-emerald-300 underline decoration-emerald-300/40 underline-offset-2 hover:text-emerald-200" data-testid="transfer-link">
                   See the {where.replace(/^the /, '')} production →
                 </Link>
               </span>
             ) : (
-              <span className="text-gray-400"> — a major house outside London, tracked alongside the West End.</span>
+              <span className="text-gray-400">: a major house outside London, tracked alongside the West End.</span>
             )}
           </p>
         );
@@ -133,14 +133,14 @@ export default function ShowTrustLines({ show }: { show: ComputedShow }) {
             {transfer ? (
               <span className="text-gray-400">
                 {hasReachedStage(transfer.status)
-                  ? ' — this tryout transferred to Broadway. '
-                  : ' — this tryout is transferring to Broadway. '}
+                  ? ': this tryout transferred to Broadway. '
+                  : ': this tryout is transferring to Broadway. '}
                 <Link href={`/show/${transfer.slug}`} className="text-emerald-300 underline decoration-emerald-300/40 underline-offset-2 hover:text-emerald-200" data-testid="transfer-link">
                   See the Broadway production →
                 </Link>
               </span>
             ) : (
-              <span className="text-gray-400"> — tracked as a buzzy, well-reviewed show that could transfer to Broadway.</span>
+              <span className="text-gray-400">: tracked as a buzzy, well-reviewed show that could transfer to Broadway.</span>
             )}
           </p>
         );
@@ -155,7 +155,7 @@ export default function ShowTrustLines({ show }: { show: ComputedShow }) {
           <p className="text-xs sm:text-sm mb-1 leading-relaxed text-emerald-300/90" data-testid="tour-parent-line">
             <span className="font-semibold">Part of a national tour</span>
             <span className="text-gray-400">
-              {' '}— see how this show landed across all its pre-Broadway stops.{' '}
+              {': '}see how this show landed across all its pre-Broadway stops.{' '}
               <Link href={`/show/${tour.slug}`} className="text-emerald-300 underline decoration-emerald-300/40 underline-offset-2 hover:text-emerald-200" data-testid="tour-parent-link">
                 See the combined tour reviews →
               </Link>
@@ -210,7 +210,7 @@ export default function ShowTrustLines({ show }: { show: ComputedShow }) {
           <p className="text-xs sm:text-sm mb-1 leading-relaxed text-emerald-300/90" data-testid="tryout-link-line">
             <span className="font-semibold">Pre-Broadway tryout</span>
             <span className="text-gray-400">
-              {' '}— critics first reviewed this show at {tryoutVenue}{tryoutScore ? <> (scored <span className="text-emerald-300 font-semibold">{tryoutScore}/100</span>)</> : null}.{' '}
+              {': '}critics first reviewed this show at {tryoutVenue}{tryoutScore ? <> (scored <span className="text-emerald-300 font-semibold">{tryoutScore}/100</span>)</> : null}.{' '}
               <Link href={`/show/${tryout.slug}`} className="text-emerald-300 underline decoration-emerald-300/40 underline-offset-2 hover:text-emerald-200" data-testid="transfer-link">
                 See the tryout reviews →
               </Link>

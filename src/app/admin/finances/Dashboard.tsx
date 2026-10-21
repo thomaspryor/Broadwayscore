@@ -181,7 +181,7 @@ export default function Dashboard() {
       if (refresh) params.set('refresh', '1');
       const res = await fetch(`/api/admin/finance-stats?${params.toString()}`, { cache: 'no-store' });
       if (res.status === 404) {
-        setError('Unauthorized — your admin session has expired. Re-enter via /api/admin/login?token=…');
+        setError('Unauthorized. Your admin session has expired. Re-enter via /api/admin/login?token=…');
         setStats(null);
         return;
       }
@@ -246,7 +246,7 @@ export default function Dashboard() {
       {stats && (
         <>
           {/* Top line: this month's P&L */}
-          <Card title={`This month — ${fmtMonthLong(stats.asOfMonth)}`}>
+          <Card title={`This month: ${fmtMonthLong(stats.asOfMonth)}`}>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <BigStat
                 label="Net"
@@ -274,7 +274,7 @@ export default function Dashboard() {
           </Card>
 
           {/* Monthly trend — paired bars, table-legible */}
-          <Card title={`Monthly trend — last ${stats.trend.length} months`}>
+          <Card title={`Monthly trend, last ${stats.trend.length} months`}>
             <div className="text-[11px] text-gray-500 mb-2">Tap a month for the full expense list.</div>
             <div className="space-y-1">
               {stats.trend.map(t => {
@@ -402,9 +402,9 @@ export default function Dashboard() {
           {/* Review queue — emails the matcher couldn't classify. Read-only:
               booking rules live in finance-vendors.json. */}
           {stats.queuePreview.length > 0 && (
-            <Card title={`Review queue — ${stats.reviewQueueCount} unclassified emails`}>
+            <Card title={`Review queue: ${stats.reviewQueueCount} unclassified emails`}>
               <div className="text-xs text-gray-500 mb-3">
-                Not booked, not counted — just unrecognized. To book or suppress one, add a vendor/ignore rule
+                Not booked and not counted, only unrecognized. To book or suppress one, add a vendor/ignore rule
                 (tell Claude the sender). Newest {stats.queuePreview.length} shown.
               </div>
               <div className="overflow-x-auto -mx-4 sm:-mx-5">
@@ -428,7 +428,7 @@ export default function Dashboard() {
             businessPct applied · pending revenue excluded from net.
             {stats.excluded?.count > 0 && (
               <> {stats.excluded.count} charge{stats.excluded.count === 1 ? '' : 's'} ({fmtMoney(stats.excluded.totalUsd)})
-              excluded — not business costs (family-paid early overages, personal subscriptions).</>
+              excluded. They are not business costs (family-paid early overages, personal subscriptions).</>
             )}
           </div>
         </>

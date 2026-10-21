@@ -19,14 +19,14 @@ import { generateBreadcrumbSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export const metadata: Metadata = {
-  title: 'Gold Lists — Broadway & West End',
+  title: 'Gold Lists: Broadway & West End',
   description: 'Curated rankings of the best Broadway and West End shows by critics, audiences, box office, and demand. Updated each season.',
   alternates: {
     canonical: `${BASE_URL}/lists`,
   },
   openGraph: {
     images: [SITE_OG_IMAGE],
-    title: 'Gold Lists — Broadway & West End',
+    title: 'Gold Lists: Broadway & West End',
     description: 'Curated rankings of the best Broadway and West End shows by critics, audiences, box office, and demand.',
     url: `${BASE_URL}/lists`,
   },
@@ -122,7 +122,7 @@ export default function GoldListsIndex() {
           </h1>
           <p className="text-gray-300 leading-relaxed">
             The best of Broadway and the West End, ranked. Curated lists highlighting the top shows
-            each season — by critical acclaim, audience love, box office power, and ticket demand.
+            each season: by critical acclaim, audience love, box office power, and ticket demand.
           </p>
         </div>
 
@@ -163,7 +163,7 @@ export default function GoldListsIndex() {
         <footer className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-8">
           <p>
             Gold Lists™ are curated each season with minimum quality thresholds.
-            Shows must meet review count and score minimums to qualify — not every season has 10 shows per list.
+            Shows must meet review count and score minimums to qualify. Not every season has 10 shows per list.
           </p>
         </footer>
       </div>

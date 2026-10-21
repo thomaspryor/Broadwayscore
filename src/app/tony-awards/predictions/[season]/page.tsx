@@ -56,11 +56,11 @@ export async function generateMetadata(props: { params: Promise<{ season: string
   const preSeason = season.label === getTonySeasonWindow().label && !hasNominationsBeenAnnounced(season);
 
   const title = preSeason
-    ? `Tony Awards ${season.ceremonyYear} — Eligible Shows So Far`
+    ? `Tony Awards ${season.ceremonyYear}: Eligible Shows So Far`
     : `Tony Awards ${season.ceremonyYear} Predictions, Odds & Predicted Winners`;
   const description = preSeason
     ? `Broadway shows that have opened in the ${season.label} Tony season so far, plus those announced without a date. Tony eligibility has not been ruled on yet and predictions are not available until nominations are announced.`
-    : `${season.ceremonyYear} Tony Award odds and predicted winners for every category. Per-category model blends critic, audience, and precursor signal — tuned on 11 years of Tony history. Updated daily.`;
+    : `${season.ceremonyYear} Tony Award odds and predicted winners for every category. Per-category model blends critic, audience, and precursor signal, tuned on 11 years of Tony history. Updated daily.`;
 
   return {
     title,
@@ -364,7 +364,7 @@ export default async function TonySeasonPredictionsPage(props: { params: Promise
         name: 'What is the Awards Score?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'A 0-100 score derived from a show’s nominations at the three precursor industry awards — Drama League (weighted 1.0), Outer Critics Circle (0.9), and Drama Desk (0.7). The matching top category (Outstanding Musical / Play / Revival) earns +30 × tier weight for a win or +10 × tier weight for a nomination. Other nominations are then weighted by the importance of the category — Book / Music / Lyrics / Score (A+ tier, weight 2.0), Direction / Lead Acting / Choreography (A tier, 1.5), Featured Acting / Orchestrations (B tier, 1.0), Design (C tier, 0.5). The weighted-nominations total is normalized by an eligible-pool ceiling so plays and musicals are comparable. Awards Score only contributes to the Best Play prediction; for other categories it’s shown for transparency but not weighted.',
+          text: 'A 0-100 score derived from a show’s nominations at the three precursor industry awards: Drama League (weighted 1.0), Outer Critics Circle (0.9), and Drama Desk (0.7). The matching top category (Outstanding Musical / Play / Revival) earns +30 × tier weight for a win or +10 × tier weight for a nomination. Other nominations are then weighted by the importance of the category: Book / Music / Lyrics / Score (A+ tier, weight 2.0), Direction / Lead Acting / Choreography (A tier, 1.5), Featured Acting / Orchestrations (B tier, 1.0), Design (C tier, 0.5). The weighted-nominations total is normalized by an eligible-pool ceiling so plays and musicals are comparable. Awards Score only contributes to the Best Play prediction; for other categories it’s shown for transparency but not weighted.',
         },
       },
       {
@@ -471,7 +471,7 @@ export default async function TonySeasonPredictionsPage(props: { params: Promise
           </div>
           <p className="text-gray-400 mt-2 max-w-2xl">
             {nominationsAnnounced
-              ? <>Tony nominees ranked by our per-category model — critic, audience, and (for Best Play) precursor Awards Score. {(() => {
+              ? <>Tony nominees ranked by our per-category model: critic, audience, and (for Best Play) precursor Awards Score. {(() => {
                   const iso = getOddsLastUpdated();
                   if (!iso) return 'Updated daily.';
                   const d = new Date(iso);
@@ -492,7 +492,7 @@ export default async function TonySeasonPredictionsPage(props: { params: Promise
                   // "Data-driven predictions … Updated daily" line contradicted both the
                   // eligibility banner below and the FAQ schema. Describe the real content.
                   ? `Broadway shows opening in the ${season.label} season, tracked as they open. Predictions start once Tony nominations are announced.`
-                  : 'Data-driven predictions powered by per-category blends of critic, audience, and precursor-award signal — tuned on 11 years of Tony history. Updated daily.'}
+                  : 'Data-driven predictions powered by per-category blends of critic, audience, and precursor-award signal, tuned on 11 years of Tony history. Updated daily.'}
           </p>
           {ceremonyDate && isCurrent && (
             <div className="mt-2 flex items-center gap-2">
@@ -515,7 +515,7 @@ export default async function TonySeasonPredictionsPage(props: { params: Promise
             <span className="font-semibold text-white">Eligibility not yet determined.</span>{' '}
             Shows below are grouped by Broadway opening date only. The Tony Awards Administration
             Committee hasn&apos;t ruled on category eligibility (new vs. revival, play vs. musical, or
-            eligible at all) for the {season.label} season — those rulings, and official nominations,
+            eligible at all) for the {season.label} season. Those rulings, and official nominations,
             come later in the season.
           </div>
         )}
@@ -687,7 +687,7 @@ export default async function TonySeasonPredictionsPage(props: { params: Promise
               </p>
               <p className="text-sm text-gray-400 leading-relaxed mt-3">
                 Awards Score combines Drama League (weight 1.0), OCC (0.9), and Drama Desk (0.7) signal,
-                with each nomination weighted by category importance &mdash; top categories like Best Musical
+                with each nomination weighted by category importance. Top categories like Best Musical
                 are credited via a +30 win / +10 nom bonus, then non-top nominations are tiered (Book/Music/Lyrics
                 A+ = 2.0, Direction/Lead Acting A = 1.5, Featured/Orchestrations B = 1.0, Design C = 0.5).
                 Best Play also pulls in a broader prestige signal across Pulitzer, NYDCC, Olivier, Obie, and
@@ -713,7 +713,7 @@ export default async function TonySeasonPredictionsPage(props: { params: Promise
           <div className="rounded-xl border border-white/10 bg-surface-overlay p-5 mb-8">
             <h2 className="text-base font-bold text-white mb-1">Predictions start after nominations</h2>
             <p className="text-gray-400 text-sm">
-              The {season.label} Tony season is still early &mdash; the shows below have been announced
+              The {season.label} Tony season is still early. The shows below have been announced
               or have opened, but our model doesn&apos;t rank them until Tony nominations are announced.
             </p>
             <Link
@@ -775,7 +775,7 @@ export default async function TonySeasonPredictionsPage(props: { params: Promise
               for the {season.label} season, grouped the way the Tony show categories are.
               {awaitingOpeningNight > 0 && <> {awaitingOpeningNight} of them {awaitingOpeningNight === 1 ? 'has' : 'have'} a
               previews date but no announced opening night yet.</>} Eligibility itself is not yet
-              determined — the Tony Administration Committee rules on that, and it hasn&apos;t.
+              determined. The Tony Administration Committee rules on that, and it hasn&apos;t.
               Scores appear once each show opens and reviews land.
             </p>
             {seasonGroups.map(group => (
@@ -814,7 +814,7 @@ export default async function TonySeasonPredictionsPage(props: { params: Promise
               <h2 className="text-xl font-bold text-white">Performer &amp; Craft Categories</h2>
               <p className="text-sm text-gray-400 mt-1">
                 {isCurrent
-                  ? <>Our model doesn&apos;t predict these — they&apos;re shown with Gold Derby, Kalshi, and Polymarket odds plus precursor signal.</>
+                  ? <>Our model doesn&apos;t predict these. They&apos;re shown with Gold Derby, Kalshi, and Polymarket odds plus precursor signal.</>
                   : <>Historical {season.label} nominees with critic scores, audience grades, and Award Score.</>}
               </p>
             </div>

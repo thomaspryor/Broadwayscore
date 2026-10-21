@@ -23,7 +23,7 @@ const season = getTonySeasonWindow();
 const hubNominationsAnnounced = hasNominationsBeenAnnounced(season);
 
 export const metadata: Metadata = {
-  title: 'Tony Awards — Predictions, Leaderboard & Historical Data',
+  title: 'Tony Awards: Predictions, Leaderboard & Historical Data',
   description: hubNominationsAnnounced
     ? `Data-driven Tony Awards analysis: ${season.ceremonyYear} predictions ranked by critic scores, the all-time leaderboard of winners and nominees, and 12 seasons of accuracy data.`
     : `Data-driven Tony Awards analysis: the all-time leaderboard of winners and nominees, 12 seasons of prediction accuracy, and every show tracked through the ${season.label} season.`,
@@ -31,15 +31,15 @@ export const metadata: Metadata = {
     canonical: `${BASE_URL}/tony-awards`,
   },
   openGraph: {
-    title: 'Tony Awards — Broadway Scorecard',
+    title: 'Tony Awards: Broadway Scorecard',
     description: 'Predictions, all-time leaderboard, and historical accuracy data for the Tony Awards.',
     url: `${BASE_URL}/tony-awards`,
     type: 'website',
-    images: [{ url: `${BASE_URL}/og/tony-awards.png`, width: 1200, height: 630, alt: 'Tony Awards — Broadway Scorecard' }],
+    images: [{ url: `${BASE_URL}/og/tony-awards.png`, width: 1200, height: 630, alt: 'Tony Awards: Broadway Scorecard' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Tony Awards — Broadway Scorecard',
+    title: 'Tony Awards: Broadway Scorecard',
     description: 'Predictions, leaderboard, and historical accuracy for the Tony Awards.',
   },
 };
@@ -122,7 +122,7 @@ export default function TonyAwardsHubPage() {
             Tony Awards
           </h1>
           <p className="text-gray-400 mt-2 max-w-2xl">
-            Data-driven Tony Awards analysis &mdash; predictions, accuracy stats, and the all-time leaderboard.
+            Data-driven Tony Awards analysis: predictions, accuracy stats, and the all-time leaderboard.
           </p>
         </div>
 
@@ -209,7 +209,7 @@ export default function TonyAwardsHubPage() {
                 </svg>
               </div>
               <p className="text-sm text-gray-400 mb-3">
-                Our predicted winners for all 26 Tony categories — ceremony June 8
+                Our predicted winners for all 26 Tony categories (ceremony June 8)
               </p>
               <p className="text-sm text-amber-400 mt-3 group-hover:text-amber-300 transition-colors">
                 See predicted winners &rarr;
@@ -319,7 +319,7 @@ export default function TonyAwardsHubPage() {
           <section className="mb-10">
             <h2 className="text-xl font-bold text-white mb-2">Recent Tony Winning Shows &amp; Their Scores</h2>
             <p className="text-sm text-gray-400 mb-4">
-              How recent Tony winners scored with critics &mdash; showing the relationship between reviews and awards.
+              How recent Tony winners scored with critics: showing the relationship between reviews and awards.
             </p>
             <div className="overflow-x-auto">
               <table className="w-full">

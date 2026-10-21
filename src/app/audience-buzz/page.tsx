@@ -43,7 +43,7 @@ const faqSchema = {
       name: 'How is the AudienceGrade calculated?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: `We combine ${getSourcesForMarket('broadway').length} sources — ${bwSourceNames} — weighted proportionally by their number of reviews. More reviews means more weight. No single source can account for more than 80% of the total. Reddit requires a minimum of 50 classified comments to be included.`,
+        text: `We combine ${getSourcesForMarket('broadway').length} sources (${bwSourceNames}), weighted proportionally by their number of reviews. More reviews means more weight. No single source can account for more than 80% of the total. Reddit requires a minimum of 50 classified comments to be included.`,
       },
     },
     {
@@ -138,7 +138,7 @@ export default function AudienceBuzzPage() {
         <div className="card p-5 mb-8 bg-gradient-to-r from-red-500/5 to-emerald-500/5 border-white/10">
           <h2 className="font-bold text-white mb-2">How AudienceGrade Works</h2>
           <p className="text-sm text-gray-400 mb-3">
-            We combine {marketSources.length} audience sources into a single AudienceGrade letter grade. Each source is weighted proportionally by its number of reviews — more reviews means more influence. No single source can exceed 80% of the total weight.
+            We combine {marketSources.length} audience sources into a single AudienceGrade letter grade. Each source is weighted proportionally by its number of reviews, so more reviews means more influence. No single source can exceed 80% of the total weight.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 text-sm text-gray-400">
             {marketSources.map(src => (

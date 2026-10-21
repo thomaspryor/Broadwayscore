@@ -139,7 +139,7 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
           placeholder="Hamilton, Wicked, Stereophonic, etc."
         />
         <p className="mt-1 text-xs text-gray-500/70">
-          Optional &mdash; we&apos;ll auto-detect if not provided
+          Optional: we&apos;ll auto-detect if not provided
         </p>
       </div>
 
@@ -156,7 +156,7 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
           placeholder="The New York Times, Variety, Vulture, etc."
         />
         <p className="mt-1 text-xs text-gray-500/70">
-          Optional &mdash; we&apos;ll auto-detect if not provided
+          Optional: we&apos;ll auto-detect if not provided
         </p>
       </div>
 
@@ -173,7 +173,7 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
           placeholder="Jesse Green, Naveen Kumar, etc."
         />
         <p className="mt-1 text-xs text-gray-500/70">
-          Optional &mdash; we&apos;ll auto-detect if not provided
+          Optional: we&apos;ll auto-detect if not provided
         </p>
       </div>
 

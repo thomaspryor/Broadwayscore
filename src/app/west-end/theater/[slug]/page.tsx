@@ -54,12 +54,12 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   const description = `${theater.name} in London. ${currentShowText} See all ${theater.showCount} shows, scores, and theatre details.`;
 
   return {
-    title: { absolute: `${theater.name} — West End Theatre` },
+    title: { absolute: `${theater.name}: West End Theatre` },
     description,
     alternates: { canonical: canonicalUrl },
     openGraph: {
       images: [WEST_END_OG_IMAGE],
-      title: `${theater.name} — West End Theatre`,
+      title: `${theater.name}: West End Theatre`,
       description,
       url: canonicalUrl,
       type: 'website',
@@ -67,7 +67,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${theater.name} — West End Theatre`,
+      title: `${theater.name}: West End Theatre`,
       description,
     },
   };
@@ -247,7 +247,7 @@ export default async function LondonTheaterPage(props: { params: Promise<{ slug:
           {/* Placeholder note for missing venue metadata */}
           <div className="card p-4 mb-4 border border-white/5">
             <p className="text-sm text-gray-400 leading-relaxed">
-              Venue details for {theater.name} — capacity, accessibility, pre-show dining, and seating tips — are coming soon. We&apos;re enriching all London venues after launch.
+              Venue details for {theater.name} (capacity, accessibility, pre-show dining, and seating tips) are coming soon. We&apos;re enriching all London venues after launch.
             </p>
           </div>
 

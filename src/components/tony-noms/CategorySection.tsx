@@ -108,7 +108,7 @@ function OurPickBox({ winProbability, isWinner }: { winProbability: number | nul
       <div
         className={`w-11 h-11 lg:w-[68px] lg:h-[68px] rounded-lg flex items-center justify-center font-bold text-sm lg:text-xl leading-none ${isWinner ? winnerClass : nonWinnerClass}`}
         style={isWinner ? winnerStyle : baseTintStyle}
-        title="Our model's win probability — critic, audience, and precursor signal."
+        title="Our model's win probability: critic, audience, and precursor signal."
       >
         {pct}%
       </div>
@@ -120,7 +120,7 @@ function PredictedWinnerPill() {
   return (
     <span
       className="flex-shrink-0 inline-flex items-center gap-1 px-1 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-300 bg-amber-400/15 border border-amber-400/50 rounded leading-none"
-      title="Predicted Winner — our model's #1 pick"
+      title="Predicted Winner: our model's #1 pick"
     >
       <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
         <path d="M10 1l2.39 4.84L17.3 6.9l-3.65 3.56.86 5.03L10 13.26l-4.51 2.23.86-5.03L2.7 6.9l4.91-.96L10 1z" />

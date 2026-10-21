@@ -16,7 +16,7 @@ const currentYear = new Date().getFullYear();
 
 export const metadata: Metadata = {
   title: {
-    absolute: `Best Off-West End Shows (${currentYear}) — London Theatre Reviews & Ratings`,
+    absolute: `Best Off-West End Shows (${currentYear}) | London Theatre Reviews & Ratings`,
   },
   description: 'CriticScore ratings for Off-West End shows in London, aggregated from The Guardian, Telegraph, Time Out, WhatsOnStage, and more.',
   alternates: {

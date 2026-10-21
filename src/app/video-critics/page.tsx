@@ -10,7 +10,7 @@ export const revalidate = 86400;
 export function generateMetadata(): Metadata {
   const creators = getAllVideoCreators();
   const total = creators.reduce((sum, c) => sum + c.reviewCount, 0);
-  const title = `${creators.length} Video Theater Critics — TikTok & YouTube Reviewers`;
+  const title = `${creators.length} Video Theater Critics: TikTok & YouTube Reviewers`;
   const description = `Browse ${creators.length} theater reviewers on TikTok and YouTube, with ${total.toLocaleString()} scored reviews. See average scores and full review histories.`;
   return {
     title,

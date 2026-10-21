@@ -20,12 +20,12 @@ const SOURCES = (criticPicksData as { sources: PickSource[] }).sources;
 const PICK_CATEGORIES = new Set(Object.keys((criticPicksData as { picks: Record<string, unknown> }).picks));
 
 export const metadata: Metadata = {
-  title: `${season.ceremonyYear} Tony Awards — Critic Press Picks`,
-  description: `Who ${SOURCES.length} critics predict will win at the ${season.ceremonyYear} Tony Awards, category by category — plus a "should win" view. See where the press agrees and where it splits.`,
+  title: `${season.ceremonyYear} Tony Awards: Critic Press Picks`,
+  description: `Who ${SOURCES.length} critics predict will win at the ${season.ceremonyYear} Tony Awards, category by category, plus a "should win" view. See where the press agrees and where it splits.`,
   alternates: { canonical: `${BASE_URL}/tony-awards/press-picks` },
   openGraph: {
     images: [TONY_OG_IMAGE],
-    title: `${season.ceremonyYear} Tony Awards — Critic Press Picks`,
+    title: `${season.ceremonyYear} Tony Awards: Critic Press Picks`,
     description: `Every ${season.ceremonyYear} Tony category with the predicted winner from ${SOURCES.length} outlets. Toggle to "should win" to see critics' personal favorites.`,
     url: `${BASE_URL}/tony-awards/press-picks`,
     type: 'website',
@@ -68,7 +68,7 @@ export default function TonyPressPicksPage() {
               ← Tony Nominations Center
             </Link>
             <h1 className="mt-2 text-2xl sm:text-3xl font-bold text-white">
-              {season.ceremonyYear} Tony Awards — Critic Press Picks
+              {season.ceremonyYear} Tony Awards: Critic Press Picks
             </h1>
             <PressPicksBoard categories={categories} sources={sources} />
           </header>

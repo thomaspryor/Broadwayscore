@@ -13,7 +13,7 @@ import { BestValueTable, type BestValueRow } from '../../best-value/BestValueTab
 import { formatTicketPrice } from '@/lib/formatting';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Best Value West End Tickets — Cheapest Ways to See London Shows' },
+  title: { absolute: 'Best Value West End Tickets: Cheapest Ways to See London Shows' },
   description:
     'Find the cheapest West End tickets. Compare lotteries, day seats, rush, student standby, and standing room prices for every London show. Sorted by lowest price.',
   alternates: marketAlternates('westEnd', '/best-value'),
@@ -45,7 +45,7 @@ const faqSchema = {
       name: 'Where can I compare West End discount ticket prices?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'This page lists every discount ticket option \u2014 lottery, rush, day seats, student standby, and standing room \u2014 for every West End show in our database, sorted by cheapest price.',
+        text: 'This page lists every discount ticket option (lottery, rush, day seats, student standby, and standing room) for every West End show in our database, sorted by cheapest price.',
       },
     },
   ],
@@ -280,19 +280,19 @@ export default function WestEndBestValuePage() {
           <h2 className="font-bold text-white mb-3 text-sm">Discount Types</h2>
           <div className="flex flex-wrap gap-3 text-xs">
             <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-purple-500/15 text-purple-300">
-              Lottery — Digital entry, random draw
+              Lottery: Digital entry, random draw
             </span>
             <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-emerald-500/15 text-emerald-300">
-              Day Seat — First-come at the box office
+              Day Seat: First-come at the box office
             </span>
             <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-blue-500/15 text-blue-300">
-              Digital Rush — Rush via TodayTix/apps
+              Digital Rush: Rush via TodayTix/apps
             </span>
             <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-pink-500/15 text-pink-300">
-              Student Standby — Student ID required
+              Student Standby: Student ID required
             </span>
             <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-gray-500/15 text-gray-300">
-              Standing Room — Sold-out shows only
+              Standing Room: Sold-out shows only
             </span>
           </div>
         </div>

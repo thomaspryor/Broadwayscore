@@ -109,7 +109,7 @@ export default function WestEndAudienceBuzzPage() {
         <div className="card p-5 mb-8 bg-gradient-to-r from-red-500/5 to-emerald-500/5 border-white/10">
           <h2 className="font-bold text-white mb-2">How AudienceGrade Works</h2>
           <p className="text-sm text-gray-400 mb-3">
-            We combine {marketSources.length} audience sources into a single AudienceGrade letter grade. Each source is weighted proportionally by its number of reviews — more reviews means more influence. No single source can exceed 80% of the total weight.
+            We combine {marketSources.length} audience sources into a single AudienceGrade letter grade. Each source is weighted proportionally by its number of reviews: more reviews means more influence. No single source can exceed 80% of the total weight.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 text-sm text-gray-400">
             {marketSources.map(src => (

@@ -8,12 +8,12 @@ const currentYear = new Date().getFullYear();
 
 export const metadata: Metadata = {
   title: `Off-Broadway vs Broadway: What's the Difference? (${currentYear}) | Guide`,
-  description: `Discover the real difference between Broadway and Off-Broadway — theater size, ticket prices, locations, and what to expect. Find which is right for your next NYC theater outing.`,
+  description: `Discover the real difference between Broadway and Off-Broadway: theater size, ticket prices, locations, and what to expect. Find which is right for your next NYC theater outing.`,
   alternates: { canonical: `${BASE_URL}/guides/off-broadway-vs-broadway` },
   openGraph: {
     images: [SITE_OG_IMAGE],
     title: `Off-Broadway vs Broadway: What's the Difference? (${currentYear})`,
-    description: `The real difference between Broadway and Off-Broadway explained — theater size, ticket prices, locations, and which is right for you.`,
+    description: `The real difference between Broadway and Off-Broadway explained: theater size, ticket prices, locations, and which is right for you.`,
     url: `${BASE_URL}/guides/off-broadway-vs-broadway`,
     type: 'article',
   },
@@ -49,7 +49,7 @@ export default function OffBroadwayVsBroadwayGuide() {
         name: 'Is Off-Broadway worse than Broadway?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'No. Off-Broadway is not a lesser version of Broadway — it\'s a different format. Many acclaimed productions and future Broadway hits start Off-Broadway. Shows like Hamilton, Dear Evan Hansen, and Little Shop of Horrors all began Off-Broadway. Off-Broadway often features more experimental, intimate, and critically praised work.',
+          text: 'No. Off-Broadway is a different format from Broadway. Many acclaimed productions and future Broadway hits start Off-Broadway. Shows like Hamilton, Dear Evan Hansen, and Little Shop of Horrors all began Off-Broadway. Off-Broadway often features more experimental, intimate, and critically praised work.',
         },
       },
       {
@@ -364,7 +364,7 @@ export default function OffBroadwayVsBroadwayGuide() {
           <div className="prose prose-invert max-w-none">
             <p className="text-gray-300 leading-relaxed mb-4">
               <strong className="text-white">Different sizes create different experiences.</strong> Neither
-              is objectively better, but they feel genuinely different.
+              is objectively better, but they feel different.
             </p>
 
             <div className="space-y-4">
@@ -481,7 +481,7 @@ export default function OffBroadwayVsBroadwayGuide() {
             <div className="card p-4 sm:p-5">
               <h3 className="font-bold text-white mb-2">Is Off-Broadway worse than Broadway?</h3>
               <p className="text-gray-300 text-sm">
-                Not at all. Off-Broadway is a different format, not a lesser one. Some of the most
+                Not at all. Off-Broadway is a different format. Some of the most
                 critically acclaimed theater in New York happens Off-Broadway. Hamilton, Rent, Dear
                 Evan Hansen, and Little Shop of Horrors all started Off-Broadway before transferring.
                 The smaller scale often allows for more creative risk-taking and more intimate

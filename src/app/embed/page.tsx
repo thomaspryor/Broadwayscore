@@ -18,7 +18,7 @@ function Snippet({
   slug?: string;
   theme?: 'auto' | 'light' | 'dark';
 }) {
-  const code = `<iframe src="https://broadwayscorecard.com/embed/${slug}?theme=${theme}" width="280" height="120" frameborder="0" loading="lazy" title="CriticScore — ${slug}"></iframe>`;
+  const code = `<iframe src="https://broadwayscorecard.com/embed/${slug}?theme=${theme}" width="280" height="120" frameborder="0" loading="lazy" title="CriticScore: ${slug}"></iframe>`;
   return (
     <pre className="text-xs sm:text-sm bg-black/60 border border-white/10 rounded-lg p-4 overflow-x-auto text-gray-200 font-mono">
       {code}
@@ -57,7 +57,7 @@ export default function EmbedDocsPage() {
             height="120"
             frameBorder="0"
             loading="lazy"
-            title="CriticScore — Hamilton"
+            title="CriticScore: Hamilton"
           />
         </div>
       </section>

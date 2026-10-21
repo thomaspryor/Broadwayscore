@@ -20,7 +20,7 @@ import { displaysCriticScore } from '@/lib/critic-score-display';
 const currentYear = new Date().getFullYear();
 
 export const metadata: Metadata = {
-  title: `Best Off-Broadway Shows (${currentYear}) — NYC Reviews & Ratings`,
+  title: `Best Off-Broadway Shows (${currentYear}): NYC Reviews & Ratings`,
   description: 'CriticScore ratings for Off-Broadway shows in New York City, aggregated from The New York Times, Vulture, Variety, Time Out, and more.',
   alternates: {
     canonical: `${BASE_URL}/off-broadway`,

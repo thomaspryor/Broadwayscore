@@ -17,7 +17,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   const profile = getActorBySlug(params.slug);
   if (!profile) return {};
 
-  const title = `${profile.name} — Broadway Actor`;
+  const title = `${profile.name}: Broadway Actor`;
   const description = `${profile.name} has appeared in ${profile.showCount} Broadway show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null ? ` with an avg critic score of ${profile.avgScore}` : ''}. See all Broadway credits and scores.`;
 
   return {

@@ -175,7 +175,7 @@ export default function CastSection({ openingNightCast, currentCast, currentCast
             </h2>
             {obcLikelyStale && (
               <p className="text-xs text-amber-500/80 mb-3 leading-snug">
-                Current cast unavailable. The list below is the original cast — performers on stage today may differ.
+                Current cast unavailable. The list below is the original cast, and performers on stage today may differ.
               </p>
             )}
             <CastList cast={openingNightCast} actorSlugs={actorSlugs} tonyMap={tonyMap} />

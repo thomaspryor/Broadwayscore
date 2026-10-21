@@ -110,7 +110,7 @@ export default function CheapBroadwayTicketsGuide() {
         name: 'What are rush tickets?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Rush tickets are discounted same-day tickets sold at the box office when it opens (usually 10am) or online. Prices range from $30-50. First-come, first-served—arrive early for popular shows.',
+          text: 'Rush tickets are discounted same-day tickets sold at the box office when it opens (usually 10am) or online. Prices range from $30-50. First-come, first-served. Arrive early for popular shows.',
         },
       },
     ],
@@ -218,7 +218,7 @@ export default function CheapBroadwayTicketsGuide() {
           </h2>
           <div className="prose prose-invert max-w-none">
             <p className="text-gray-300 leading-relaxed mb-4">
-              <strong className="text-white">The cheapest option:</strong> Digital lotteries offer orchestra seats for $30-40—tickets that normally cost $150-300+.
+              <strong className="text-white">The cheapest option:</strong> Digital lotteries offer orchestra seats for $30-40, tickets that normally cost $150-300+.
               Most Broadway shows now run digital lotteries through apps, making it easy to enter from anywhere.
             </p>
 
@@ -237,7 +237,7 @@ export default function CheapBroadwayTicketsGuide() {
               <ul className="text-gray-300 space-y-1 text-sm">
                 <li>• Enter multiple lotteries daily to increase your chances</li>
                 <li>• Wednesday matinees typically have the best odds (lowest demand)</li>
-                <li>• Some shows allow entering for 1 or 2 tickets—requesting 1 may improve odds</li>
+                <li>• Some shows allow entering for 1 or 2 tickets. Requesting 1 may improve odds</li>
                 <li>• Set calendar reminders so you don&apos;t forget to enter</li>
                 <li>• Currently <strong className="text-white">{lotteryShowCount} shows</strong> offer digital lotteries</li>
               </ul>
@@ -253,7 +253,7 @@ export default function CheapBroadwayTicketsGuide() {
           <div className="prose prose-invert max-w-none">
             <p className="text-gray-300 leading-relaxed mb-4">
               <strong className="text-white">First-come, first-served:</strong> Rush tickets are discounted same-day tickets sold at the box office or online.
-              Unlike lotteries, you&apos;re guaranteed a ticket if you&apos;re early enough—no luck required.
+              Unlike lotteries, you&apos;re guaranteed a ticket if you&apos;re early enough. No luck required.
             </p>
 
             <div className="card p-4 sm:p-5 mb-4">
@@ -277,7 +277,7 @@ export default function CheapBroadwayTicketsGuide() {
             <div className="card p-4 sm:p-5 bg-emerald-500/10 border border-emerald-500/20">
               <h3 className="font-bold text-emerald-400 mb-2">💡 Pro Tips</h3>
               <ul className="text-gray-300 space-y-1 text-sm">
-                <li>• Check each show&apos;s specific rush policy—times and prices vary</li>
+                <li>• Check each show&apos;s specific rush policy, since times and prices vary</li>
                 <li>• Bring cash for in-person rush (some shows are cash-only)</li>
                 <li>• Weekday mornings have shorter lines than weekends</li>
                 <li>• Currently <strong className="text-white">{rushShowCount} shows</strong> offer rush tickets</li>
@@ -326,7 +326,7 @@ export default function CheapBroadwayTicketsGuide() {
               <ul className="text-gray-300 space-y-1 text-sm">
                 <li>• Download the <a href="https://www.tdf.org/nyc/81/TKTS-Background" target="_blank" rel="noopener noreferrer" className="text-brand hover:text-brand-hover">TKTS app</a> to see what&apos;s available before you line up</li>
                 <li>• Arrive right when it opens or after 7pm for shorter waits</li>
-                <li>• Hit shows like Hamilton and Wicked rarely appear—focus on newer productions</li>
+                <li>• Hit shows like Hamilton and Wicked rarely appear. Focus on newer productions</li>
                 <li>• Lincoln Center location often has the same shows with much shorter lines</li>
                 <li>• <strong className="text-white">TKTS Fast Pass:</strong> Buy a ticket, then return within 7 days with your stub to skip the line entirely</li>
                 <li>• You can buy next-day matinee tickets at TKTS (not just same-day)</li>
@@ -344,7 +344,7 @@ export default function CheapBroadwayTicketsGuide() {
           <div className="prose prose-invert max-w-none">
             <p className="text-gray-300 leading-relaxed mb-4">
               When a show sells out, some theaters release Standing Room Only tickets for ${GUIDE_DATA.sroRange.min}-{GUIDE_DATA.sroRange.max}.
-              You&apos;ll stand at the back of the orchestra during the performance—but for a sold-out hit, it&apos;s worth it.
+              You&apos;ll stand at the back of the orchestra during the performance, but for a sold-out hit, it&apos;s worth it.
             </p>
 
             <div className="card p-4 sm:p-5 mb-4">
@@ -353,7 +353,7 @@ export default function CheapBroadwayTicketsGuide() {
                 <li><strong className="text-white">Availability:</strong> Only sold when performance is sold out</li>
                 <li><strong className="text-white">When to buy:</strong> Usually day-of at the box office when it opens</li>
                 <li><strong className="text-white">Where you&apos;ll stand:</strong> Back of orchestra, behind last row of seats</li>
-                <li><strong className="text-white">What to bring:</strong> Comfortable shoes—you&apos;ll be standing 2-3 hours</li>
+                <li><strong className="text-white">What to bring:</strong> Comfortable shoes, since you&apos;ll be standing 2-3 hours</li>
               </ul>
             </div>
 
@@ -382,7 +382,7 @@ export default function CheapBroadwayTicketsGuide() {
                 <h3 className="font-bold text-white mb-2">TodayTix</h3>
                 <p className="text-gray-300 text-sm mb-2">
                   The essential Broadway app. Hosts most digital lotteries, plus flash sales and last-minute discounts.
-                  Free to download—just create an account. TodayTix is <strong className="text-white">not a reseller</strong>—tickets
+                  Free to download. Just create an account. TodayTix is <strong className="text-white">not a reseller</strong>. Tickets
                   come directly from the venues, so you&apos;re getting legitimate, face-value tickets.
                 </p>
                 <a href="https://www.todaytix.com" target="_blank" rel="noopener noreferrer" className="text-brand hover:text-brand-hover text-sm">
@@ -397,7 +397,7 @@ export default function CheapBroadwayTicketsGuide() {
                   Codes can be redeemed online, by phone, or at the box office.
                 </p>
                 <p className="text-emerald-400 text-xs mb-2">
-                  💡 Redeem codes at the box office to skip the ~${GUIDE_DATA.onlineServiceFee}/ticket online service fee—you&apos;ll only pay a ${GUIDE_DATA.boxOfficeFacilityCharge} facility charge.
+                  💡 Redeem codes at the box office to skip the ~${GUIDE_DATA.onlineServiceFee}/ticket online service fee. You&apos;ll only pay a ${GUIDE_DATA.boxOfficeFacilityCharge} facility charge.
                 </p>
                 <a href="https://www.playbill.com/discounts" target="_blank" rel="noopener noreferrer" className="text-brand hover:text-brand-hover text-sm">
                   Browse Playbill Discounts →
@@ -424,7 +424,7 @@ export default function CheapBroadwayTicketsGuide() {
                 <h3 className="font-bold text-white mb-2">Theatr</h3>
                 <p className="text-gray-300 text-sm">
                   A peer-to-peer ticket resale app specifically for theatergoers. If someone can&apos;t make a show,
-                  they sell directly to another audience member—often at or below face value. Worth checking for
+                  they sell directly to another audience member, often at or below face value. Worth checking for
                   sold-out performances.
                 </p>
               </div>
@@ -508,7 +508,7 @@ export default function CheapBroadwayTicketsGuide() {
               <p className="text-gray-300 text-sm">
                 When you search for Broadway tickets online, ads for resale sites often appear above the official vendor.
                 Knowing the right vendor for each theatre helps you avoid paying a markup. Playbill.com links always go
-                to the official vendor—it&apos;s a reliable shortcut.
+                to the official vendor. It&apos;s a reliable shortcut.
               </p>
             </div>
           </div>
@@ -523,7 +523,7 @@ export default function CheapBroadwayTicketsGuide() {
             <div className="card p-4 sm:p-5">
               <h3 className="font-bold text-white mb-2">House Seat Releases</h3>
               <p className="text-gray-300 text-sm">
-                Every show holds back &quot;house seats&quot;—prime orchestra seats reserved for producers, cast, and VIPs.
+                Every show holds back &quot;house seats&quot;, prime orchestra seats reserved for producers, cast, and VIPs.
                 Unsold house seats are released to the general public <strong className="text-white">1-3 days before the performance,
                 typically after 5 PM</strong>. This is how &quot;sold out&quot; shows suddenly have excellent seats available.
                 Check the official vendor in the evening a few days before your target date.
@@ -571,7 +571,7 @@ export default function CheapBroadwayTicketsGuide() {
                 <p className="text-gray-300 text-sm">
                   Two-for-one tickets to dozens of shows, run twice a year (mid-January and early September).
                   Participating shows vary, but it typically includes both long-running hits and newer productions.
-                  Tickets go fast—mark your calendar.
+                  Tickets go fast. Mark your calendar.
                 </p>
               </div>
 

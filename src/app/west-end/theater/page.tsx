@@ -5,7 +5,7 @@ import LondonTheaterIndexClient from './LondonTheaterIndexClient';
 
 
 export const metadata: Metadata = {
-  title: { absolute: 'West End Theatres — All London Venues' },
+  title: { absolute: 'West End Theatres: All London Venues' },
   description:
     'Browse every West End and Off-West End theatre in London. See what shows are currently playing at each venue with CriticScore ratings and reviews.',
   alternates: {

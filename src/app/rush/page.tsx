@@ -318,7 +318,7 @@ export default function RushPage() {
           {showsWithRush.length > 0 ? (
             <RushTable data={showsWithRush.map(item => ({ show: item.show, rushData: item.rushData! }))} />
           ) : (
-            <p className="text-sm text-gray-500">No rush tickets available in our database right now. Many shows offer day-of rush at the box office — call ahead to confirm policies.</p>
+            <p className="text-sm text-gray-500">No rush tickets available in our database right now. Many shows offer day-of rush at the box office. Call ahead to confirm policies.</p>
           )}
         </div>
 

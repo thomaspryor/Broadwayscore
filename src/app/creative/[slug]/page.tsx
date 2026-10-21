@@ -19,7 +19,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
 
   const categoryLabels = profile.categories.map(c => CREATIVE_CATEGORY_CONFIG[c].label);
   const rolesText = categoryLabels.join(', ');
-  const title = `${profile.name} — Broadway ${rolesText}`;
+  const title = `${profile.name}: Broadway ${rolesText}`;
   const description = `${profile.name} is a Broadway ${rolesText.toLowerCase()} with ${profile.showCount} show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null ? ` and an avg critic score of ${profile.avgScore}` : ''}. See all shows and roles.`;
 
   return {

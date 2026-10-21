@@ -59,8 +59,8 @@ const BUCKET_LABELS: Record<keyof GapsByBucket, { short: string; description: st
   A: { short: 'Exact URL misattribution', description: 'We have the review but under the wrong critic name' },
   B: { short: 'Show+outlet misattribution', description: 'A different review of the same show in the same outlet' },
   C: { short: 'Not Broadway', description: 'Off-Broadway, regional, books, or other non-qualifying content' },
-  D: { short: 'True missing Broadway', description: 'Genuine gap — no Broadway review from this critic in our data' },
-  E: { short: 'True missing West End', description: 'Genuine gap — no West End review from this critic in our data' },
+  D: { short: 'True missing Broadway', description: 'Real gap: no Broadway review from this critic in our data' },
+  E: { short: 'True missing West End', description: 'Real gap: no West End review from this critic in our data' },
 };
 
 // ---------------------------------------------------------------------------
@@ -151,7 +151,7 @@ export default async function AdminCriticCoveragePage() {
         <header className="mb-8">
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Critic Coverage</h1>
           <p className="text-sm text-gray-400 mt-1">
-            Gap audit across tracked critics — how many shows are we missing from each?
+            Gap audit across tracked critics: how many shows are we missing from each?
           </p>
           <p className="text-[11px] text-gray-500 mt-1">
             Digest generated{' '}

@@ -35,7 +35,7 @@ export async function generateMetadata(props: { params: Promise<{ listType: stri
   const config = GOLD_LIST_MAP[params.listType as GoldListType];
   if (!config) return {};
 
-  const title = `${config.title} — All-Time`;
+  const title = `${config.title}: All-Time`;
   const market = marketLabelFromListType(params.listType as GoldListType);
   const description = `${config.description}. The top ${config.maxAllTime} ${market} shows of all time.`;
 
@@ -46,14 +46,14 @@ export async function generateMetadata(props: { params: Promise<{ listType: stri
       canonical: `${BASE_URL}/lists/${params.listType}/all-time`,
     },
     openGraph: {
-      title: `${config.title} — All-Time`,
+      title: `${config.title}: All-Time`,
       description,
       url: `${BASE_URL}/lists/${params.listType}/all-time`,
       images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
     },
     twitter: {
       card: 'summary',
-      title: `${config.title} — All-Time`,
+      title: `${config.title}: All-Time`,
       description,
     },
   };
@@ -91,7 +91,7 @@ export default async function GoldListAllTimePage(props: { params: Promise<{ lis
       endDate: entry.closingDate,
       status: entry.status || undefined,
     })),
-    `${config.title} — All-Time`
+    `${config.title}: All-Time`
   );
 
   return (
@@ -105,7 +105,7 @@ export default async function GoldListAllTimePage(props: { params: Promise<{ lis
         <Breadcrumb className="mb-4" items={[
           { label: 'Home', href: '/' },
           { label: 'Gold Lists', href: '/lists' },
-          { label: `${config.shortTitle} — All-Time` },
+          { label: `${config.shortTitle}: All-Time` },
         ]} />
 
         {/* Back Link */}

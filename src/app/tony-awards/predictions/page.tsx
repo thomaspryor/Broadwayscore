@@ -24,21 +24,21 @@ const currentSeason = getTonySeasonWindow();
 
 export function generateMetadata(): Metadata {
   return {
-    title: 'Tony Awards Predictions — Per-Category Critic, Audience & Awards Score',
+    title: 'Tony Awards Predictions: Per-Category Critic, Audience & Awards Score',
     description: `Data-driven Tony Awards predictions across ${getAllPredictionSeasons().length} seasons. Each category gets its own blend of critic, audience, and (for Best Play) precursor Awards Score.`,
     alternates: {
       canonical: `${BASE_URL}/tony-awards/predictions`,
     },
     openGraph: {
-      title: 'Tony Awards Predictions — Broadway Scorecard',
-      description: 'Every Tony-eligible show ranked by our per-category prediction model — critic, audience, and precursor signal.',
+      title: 'Tony Awards Predictions: Broadway Scorecard',
+      description: 'Every Tony-eligible show ranked by our per-category prediction model: critic, audience, and precursor signal.',
       url: `${BASE_URL}/tony-awards/predictions`,
       type: 'website',
       images: [{ url: `${BASE_URL}/og/tony-predictions.png`, width: 1200, height: 630, alt: 'Tony Awards Predictions' }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Tony Awards Predictions — Broadway Scorecard',
+      title: 'Tony Awards Predictions: Broadway Scorecard',
       description: 'Every Tony-eligible show ranked by our per-category prediction model.',
     },
   };
@@ -153,7 +153,7 @@ export default function TonyPredictionsOverviewPage() {
           <h1 className="text-3xl sm:text-4xl font-bold text-white">Tony Awards Predictions</h1>
           <p className="text-gray-400 mt-2 max-w-2xl">
             {nominationsAnnounced
-              ? `${currentSeason.label} nominees ranked by our per-category model — critic, audience, and (for Best Play) precursor Awards Score.`
+              ? `${currentSeason.label} nominees ranked by our per-category model: critic, audience, and (for Best Play) precursor Awards Score.`
               : `${seasons.length} seasons of data-driven Tony predictions. Each category gets its own blend of critic, audience, and precursor signal.`}
           </p>
         </div>
@@ -162,7 +162,7 @@ export default function TonyPredictionsOverviewPage() {
         <div className="mb-6 px-4 py-3 rounded-xl border border-brand/20 bg-brand/5">
           <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
             <span className="text-brand font-semibold">These are data-driven, not editorial.</span>{' '}
-            Rankings are what our model outputs when trained on past Tony data — not personal picks.
+            Rankings are what our model outputs when trained on past Tony data. They are not personal picks.
             Expect surprises when audience buzz or precursor signal pushes a show above conventional favorites.
           </p>
         </div>
@@ -171,7 +171,7 @@ export default function TonyPredictionsOverviewPage() {
         {!featureFlags.tonyPredictionsOurPick && (
           <div className="mb-6 px-4 py-3 rounded-xl border border-white/8 bg-surface-raised text-sm">
             <span className="text-brand font-semibold">Predictions being released on Thursday</span>
-            {' '}— check back for per-category win probabilities ranked by our critic, audience &amp; awards model.
+            {' '}Check back for per-category win probabilities ranked by our critic, audience &amp; awards model.
           </div>
         )}
 
@@ -225,7 +225,7 @@ export default function TonyPredictionsOverviewPage() {
           <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Track Record</h2>
           <TrackRecord summaries={summaries} seasonCount={stats.seasonCount} />
           <p className="text-xs text-gray-500 mt-5 pt-4 border-t border-white/5 leading-relaxed">
-            <span className="text-gray-400 font-medium">A note on the number:</span> the match rate above is measured on the same {stats.seasonCount} seasons the recipe weights were tuned on. Under leave-one-season-out cross-validation &mdash; refitting the weights on the other {stats.seasonCount - 1} seasons and predicting the held-out one &mdash; the model matches <span className="text-white font-semibold">{losoStats.totalLoso.pct}%</span> of past winners ({losoStats.totalLoso.hits} of {losoStats.totalLoso.total}). The remaining gap is a handful of voter-sentiment upsets (cultural significance, star power) that no critic, audience, or precursor signal will fully capture.
+            <span className="text-gray-400 font-medium">A note on the number:</span> the match rate above is measured on the same {stats.seasonCount} seasons the recipe weights were tuned on. Under leave-one-season-out cross-validation (refitting the weights on the other {stats.seasonCount - 1} seasons and predicting the held-out one), the model matches <span className="text-white font-semibold">{losoStats.totalLoso.pct}%</span> of past winners ({losoStats.totalLoso.hits} of {losoStats.totalLoso.total}). The remaining gap is a handful of voter-sentiment upsets (cultural significance, star power) that no critic, audience, or precursor signal will fully capture.
           </p>
         </section>
 

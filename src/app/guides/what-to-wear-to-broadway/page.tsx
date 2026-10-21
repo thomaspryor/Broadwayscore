@@ -7,7 +7,7 @@ const currentYear = new Date().getFullYear();
 
 export const metadata: Metadata = {
   title: `What to Wear to Broadway (${currentYear}) | Broadway Dress Code Guide`,
-  description: `Find out what to wear to a Broadway show in ${currentYear}. No official dress code — smart casual is the sweet spot. Get outfit tips for tourist trips, date nights, and opening nights.`,
+  description: `Find out what to wear to a Broadway show in ${currentYear}. No official dress code: smart casual is the sweet spot. Get outfit tips for tourist trips, date nights, and opening nights.`,
   alternates: { canonical: `${BASE_URL}/guides/what-to-wear-to-broadway` },
   openGraph: {
     images: [SITE_OG_IMAGE],
@@ -34,7 +34,7 @@ export default function WhatToWearToBroadwayGuide() {
         name: 'Is there a dress code for Broadway?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'No, Broadway theaters do not have an official dress code. You will see everything from jeans and sneakers to cocktail dresses. Most theatergoers dress smart casual — think nice jeans with a blouse or blazer, or a casual dress with comfortable shoes.',
+          text: 'No, Broadway theaters do not have an official dress code. You will see everything from jeans and sneakers to cocktail dresses. Most theatergoers dress smart casual: think nice jeans with a blouse or blazer, or a casual dress with comfortable shoes.',
         },
       },
       {
@@ -50,7 +50,7 @@ export default function WhatToWearToBroadwayGuide() {
         name: 'What should I wear to a Broadway matinee?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Matinees tend to be slightly more casual than evening performances. Comfortable, put-together daytime clothes work well — think a nice top with jeans or khakis, a casual dress, or a sweater with slacks. Bring a layer since theaters can be cool.',
+          text: 'Matinees tend to be slightly more casual than evening performances. Comfortable, put-together daytime clothes work well: think a nice top with jeans or khakis, a casual dress, or a sweater with slacks. Bring a layer since theaters can be cool.',
         },
       },
       {
@@ -58,7 +58,7 @@ export default function WhatToWearToBroadwayGuide() {
         name: 'Do I need to dress up for Broadway?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'You do not need to dress up for Broadway, but many people enjoy the occasion to look a little nicer than their everyday wardrobe. Smart casual is the sweet spot — comfortable enough for walking around Manhattan but polished enough to feel like a night out.',
+          text: 'You do not need to dress up for Broadway, but many people enjoy the occasion to look a little nicer than their everyday wardrobe. Smart casual is the sweet spot: comfortable enough for walking around Manhattan but polished enough to feel like a night out.',
         },
       },
     ],
@@ -75,9 +75,9 @@ export default function WhatToWearToBroadwayGuide() {
           description: 'A simple guide to choosing the right outfit for your Broadway show, from casual matinees to special occasions.',
           step: [
             { '@type': 'HowToStep', name: 'Know There Is No Dress Code', text: 'Broadway theaters have no official dress code. You will not be turned away for wearing jeans, and you will not be overdressed in a cocktail dress. Most people land somewhere in the middle.' },
-            { '@type': 'HowToStep', name: 'Default to Smart Casual', text: 'A nice top with dark jeans or slacks, a casual dress, or a blazer over a simple outfit. Comfortable shoes are essential — you will walk to and from the theater.' },
+            { '@type': 'HowToStep', name: 'Default to Smart Casual', text: 'A nice top with dark jeans or slacks, a casual dress, or a blazer over a simple outfit. Comfortable shoes are essential. You will walk to and from the theater.' },
             { '@type': 'HowToStep', name: 'Dress for the Occasion', text: 'Tourist trip: clean and comfortable. Date night: step it up with a dress or blazer. Opening night: this is the one time to go all out.' },
-            { '@type': 'HowToStep', name: 'Prepare for the Theater', text: 'Theaters are cold — bring a light layer. Check your coat at the theater ($2-3). Wear shoes you can sit in comfortably for 2+ hours.' },
+            { '@type': 'HowToStep', name: 'Prepare for the Theater', text: 'Theaters are cold. Bring a light layer. Check your coat at the theater ($2-3). Wear shoes you can sit in comfortably for 2+ hours.' },
           ],
         }]) }}
       />
@@ -142,7 +142,7 @@ export default function WhatToWearToBroadwayGuide() {
             </p>
             <p className="text-gray-300 leading-relaxed mb-4">
               That said, most people treat a Broadway show as a &quot;nice outing&quot; and dress a notch above
-              their everyday clothes. The most common look is <strong className="text-white">smart casual</strong> &mdash;
+              their everyday clothes. The most common look is <strong className="text-white">smart casual</strong>:
               think nice jeans with a blouse or blazer, a casual dress, or slacks with a button-down.
             </p>
             <div className="card p-4 sm:p-5 bg-emerald-500/10 border border-emerald-500/20">
@@ -191,7 +191,7 @@ export default function WhatToWearToBroadwayGuide() {
             </div>
 
             <p className="text-gray-300 leading-relaxed">
-              The Broadway audience is genuinely diverse. You will never be the most or least dressed-up
+              The Broadway audience is diverse. You will never be the most or least dressed-up
               person in the room, no matter what you wear.
             </p>
           </div>
@@ -210,26 +210,26 @@ export default function WhatToWearToBroadwayGuide() {
             <div className="card p-4 sm:p-5 mb-4">
               <ul className="text-gray-300 space-y-3 text-sm">
                 <li>
-                  <strong className="text-white">Flip flops or very flat sandals</strong> &mdash;
+                  <strong className="text-white">Flip flops or very flat sandals</strong>:
                   You&apos;ll walk several blocks to and from the theater. Broadway-adjacent sidewalks are
                   crowded and uneven. Closed-toe shoes or sturdy sandals are much more practical.
                 </li>
                 <li>
-                  <strong className="text-white">Gym clothes or athletic wear</strong> &mdash;
+                  <strong className="text-white">Gym clothes or athletic wear</strong>:
                   Not a rule, but you may feel underdressed sitting next to people in business casual.
                   A quick change from workout gear to jeans and a clean shirt goes a long way.
                 </li>
                 <li>
-                  <strong className="text-white">Very bulky coats or large bags</strong> &mdash;
-                  Theater seats are narrow. If you&apos;re visiting in winter, plan to check your coat &mdash;
-                  most theaters offer coat check for a few dollars.
+                  <strong className="text-white">Very bulky coats or large bags</strong>:
+                  Theater seats are narrow. If you&apos;re visiting in winter, plan to check your coat.
+                  Most theaters offer coat check for a few dollars.
                 </li>
                 <li>
-                  <strong className="text-white">Strong perfume or cologne</strong> &mdash;
+                  <strong className="text-white">Strong perfume or cologne</strong>:
                   You&apos;ll be sitting very close to other people for hours. Go easy on fragrances.
                 </li>
                 <li>
-                  <strong className="text-white">Tall hats or elaborate headwear</strong> &mdash;
+                  <strong className="text-white">Tall hats or elaborate headwear</strong>:
                   Be mindful of the person behind you. If your hat blocks sightlines, you may be asked to remove it.
                 </li>
               </ul>
@@ -247,7 +247,7 @@ export default function WhatToWearToBroadwayGuide() {
               <h3 className="font-bold text-white mb-2">Tourist Trip or First Visit</h3>
               <p className="text-gray-300 text-sm mb-2">
                 Comfort is king. You&apos;ve been walking around Manhattan all day, and that&apos;s fine.
-                Clean, casual clothes work perfectly &mdash; jeans, a comfortable top, and shoes you&apos;ve
+                Clean, casual clothes work perfectly: jeans, a comfortable top, and shoes you&apos;ve
                 been walking in all day. Nobody will judge you for looking like a tourist.
               </p>
               <p className="text-gray-400 text-xs">
@@ -260,7 +260,7 @@ export default function WhatToWearToBroadwayGuide() {
               <p className="text-gray-300 text-sm mb-2">
                 This is where most people step it up a notch. A Broadway show is a natural date-night
                 activity, and dressing a little nicer adds to the experience. Think business casual
-                or a going-out outfit &mdash; something you&apos;d wear to a nice restaurant.
+                or a going-out outfit: something you&apos;d wear to a nice restaurant.
               </p>
               <p className="text-gray-400 text-xs">
                 Suggested: A dress or dressy separates, slacks with a blazer, nice shoes (but ones you can walk in).
@@ -270,7 +270,7 @@ export default function WhatToWearToBroadwayGuide() {
             <div className="card p-4 sm:p-5">
               <h3 className="font-bold text-white mb-2">Opening Night or Special Occasion</h3>
               <p className="text-gray-300 text-sm mb-2">
-                Opening nights and galas are the one time Broadway gets genuinely dressy. If you&apos;re
+                Opening nights and galas are the one time Broadway gets dressy. If you&apos;re
                 attending an opening night, press event, or benefit performance, cocktail attire is
                 the norm. These events often include pre- or post-show receptions.
               </p>
@@ -286,7 +286,7 @@ export default function WhatToWearToBroadwayGuide() {
                 and regulars fitting a show into their weekend. Daytime-appropriate clothes are perfectly fine.
               </p>
               <p className="text-gray-400 text-xs">
-                Suggested: Whatever you&apos;d wear to a nice brunch. Jeans, a sweater, casual dress &mdash; all fair game.
+                Suggested: Whatever you&apos;d wear to a nice brunch. Jeans, a sweater, casual dress: all fair game.
               </p>
             </div>
           </div>
@@ -304,7 +304,7 @@ export default function WhatToWearToBroadwayGuide() {
                 <p className="text-gray-300 text-sm">
                   This is the single most common complaint from first-time theatergoers.
                   Broadway theaters crank the air conditioning, even in winter (all those bodies generate heat).
-                  <strong className="text-white"> Bring a light layer</strong> &mdash; a cardigan, blazer,
+                  <strong className="text-white"> Bring a light layer</strong>: a cardigan, blazer,
                   or lightweight jacket you can drape over your shoulders. You&apos;ll thank yourself by intermission.
                 </p>
               </div>
@@ -418,7 +418,7 @@ export default function WhatToWearToBroadwayGuide() {
                   Bring a hoodie or light jacket.
                 </li>
                 <li>
-                  <strong className="text-white">Shoes they can walk in:</strong> You&apos;ll navigate
+                  <strong className="text-white">Shoes they can walk in:</strong> YouYou&apos;ll navigateapos;ll move through
                   crowds and stairs. Skip the dress shoes if they&apos;re not broken in.
                 </li>
                 <li>

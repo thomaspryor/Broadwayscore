@@ -9,7 +9,7 @@ const ogImageUrl = `${BASE_URL}/og/home.png`;
 
 export const metadata: Metadata = {
   title: 'Reviews',
-  description: 'Personal Broadway reviews from the founder of Broadway Scorecard. Honest takes on what\'s worth seeing — and what isn\'t.',
+  description: 'Personal Broadway reviews from the founder of Broadway Scorecard. Honest takes on what\'s worth seeing and what isn\'t.',
   alternates: {
     canonical: `${BASE_URL}/reviews`,
   },
@@ -45,7 +45,7 @@ export default async function ReviewsPage() {
         Reviews
       </h1>
       <p className="text-gray-400 mb-8 max-w-xl">
-        Personal reviews from the founder of Broadway Scorecard. Honest takes on what&apos;s worth seeing — and what isn&apos;t.
+        Personal reviews from the founder of Broadway Scorecard. Honest takes on what&apos;s worth seeing and what isn&apos;t.
       </p>
 
       {/* Disclaimer */}

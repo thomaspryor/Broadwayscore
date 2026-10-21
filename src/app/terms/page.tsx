@@ -9,14 +9,14 @@ export const metadata: Metadata = {
     canonical: `${BASE_URL}/terms`,
   },
   openGraph: {
-    title: 'Terms of Service — Broadway Scorecard',
+    title: 'Terms of Service | Broadway Scorecard',
     description: 'Terms of Service for Broadway Scorecard. Guidelines for acceptable use of our aggregated Broadway review scores and data.',
     url: `${BASE_URL}/terms`,
     images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary',
-    title: 'Terms of Service — Broadway Scorecard',
+    title: 'Terms of Service | Broadway Scorecard',
     description: 'Terms of Service for Broadway Scorecard.',
   },
 };
@@ -54,7 +54,7 @@ export default function TermsOfServicePage() {
           </p>
           <p>
             <strong className="text-white">&ldquo;Database&rdquo;</strong> means the structured collection of Score Data
-            and linked metadata — including shows, dates, sources, tiers, normalization outputs, and identifiers — whether
+            and linked metadata (including shows, dates, sources, tiers, normalization outputs, and identifiers), whether
             publicly visible or not.
           </p>
           <p>
@@ -65,7 +65,7 @@ export default function TermsOfServicePage() {
           <p>
             <strong className="text-white">&ldquo;Bulk Extraction&rdquo;</strong> means copying or collecting Score Data
             for more than five (5) shows in a 24-hour period, or more than twenty (20) shows in a calendar month, by any
-            means — automated or manual.
+            means, automated or manual.
           </p>
         </section>
 
@@ -81,13 +81,13 @@ export default function TermsOfServicePage() {
             <li>Share links to individual show pages or articles</li>
             <li>
               Reference a single Score Data point in a bona fide editorial context (article, review, blog post, social
-              media post) with attribution to Broadway Scorecard and a link to the relevant show page — provided you do
+              media post) with attribution to Broadway Scorecard and a link to the relevant show page, provided you do
               not publish Score Data for multiple shows in a table, database, directory, or recurring format
             </li>
             <li>Use the site to inform personal ticket-buying decisions</li>
             <li>
               <strong className="text-white">Use the Official Embed Program</strong> (Section 3a) to display CriticScore
-              badges on third-party websites, blogs, and applications — subject to the conditions in Section 3a
+              badges on third-party websites, blogs, and applications, subject to the conditions in Section 3a
             </li>
           </ul>
           <p className="font-medium text-white">
@@ -99,8 +99,8 @@ export default function TermsOfServicePage() {
         <section>
           <h2 className="text-xl font-semibold text-white">3a. Official Embed Program</h2>
           <p>
-            Broadway Scorecard provides hosted embed endpoints that you may use — free of charge, without a written
-            agreement — to display a single show&apos;s CriticScore on a third-party website, blog, email newsletter,
+            Broadway Scorecard provides hosted embed endpoints that you may use (free of charge, without a written
+            agreement) to display a single show&apos;s CriticScore on a third-party website, blog, email newsletter,
             or application, subject to the following conditions:
           </p>
           <ul className="list-disc pl-6 space-y-2">
@@ -122,12 +122,12 @@ export default function TermsOfServicePage() {
             </li>
             <li>
               <strong className="text-white">No modification of values.</strong> Do not alter, normalize, round
-              differently, or transform Score Data pulled from these endpoints. Do not present stale values — use the
+              differently, or transform Score Data pulled from these endpoints. Do not present stale values. Use the
               live embed so scores update automatically.
             </li>
             <li>
               <strong className="text-white">Per-page limit.</strong> A single page or screen may display badges for
-              a single show (the show that page is about), or — with prior written consent — a bounded list of shows
+              a single show (the show that page is about), or, with prior written consent, a bounded list of shows
               directly relevant to that page&apos;s editorial subject. This license does not permit directories,
               leaderboards, or tables of CriticScores.
             </li>
@@ -150,7 +150,7 @@ export default function TermsOfServicePage() {
           <p>
             <strong className="text-white">Bulk or large-scale embedding</strong> (multiple shows per page, database-
             style integration, API-level access to Score Data) continues to require a separate written licensing
-            agreement — see Section 6.
+            agreement; see Section 6.
           </p>
         </section>
 
@@ -167,12 +167,12 @@ export default function TermsOfServicePage() {
             </li>
             <li>
               <strong className="text-white">Manual bulk extraction:</strong> Systematic manual copying, transcription, or compilation
-              of Score Data, Rankings, or Database content — whether by hand or through any organized effort — exceeding the thresholds
+              of Score Data, Rankings, or Database content (whether by hand or through any organized effort) exceeding the thresholds
               defined in Section 2
             </li>
             <li>
               <strong className="text-white">Unauthorized commercial display:</strong> Displaying, embedding, syndicating, or integrating
-              Score Data, Rankings, or Database content on any third-party website, application, platform, API, widget, tooltip, badge, or product —
+              Score Data, Rankings, or Database content on any third-party website, application, platform, API, widget, tooltip, badge, or product,
               <em className="text-gray-200"> except via the Official Embed Program described in Section 3a, subject to its conditions</em>
             </li>
             <li>
@@ -181,7 +181,7 @@ export default function TermsOfServicePage() {
             </li>
             <li>
               <strong className="text-white">Reproduction or redistribution:</strong> Reproducing or redistributing Score Data, Rankings,
-              or Database content in any form — including in competing products, apps, APIs, newsletters, databases, datasets, or directories
+              or Database content in any form, including in competing products, apps, APIs, newsletters, databases, datasets, or directories
             </li>
             <li>
               <strong className="text-white">Competing indexes:</strong> Creating competing critic score indexes, aggregation products, or
@@ -293,13 +293,13 @@ export default function TermsOfServicePage() {
           <h3 className="text-lg font-medium text-white mt-6 mb-2">Commercial Display Requires a Written License</h3>
           <p>
             Any Commercial Use, reproduction, distribution, display, embedding, syndication, or integration of Score Data,
-            Rankings, or Database content — including in apps, websites, search result features, newsletters, APIs, or
-            internal tools — requires a separate written licensing agreement signed by Broadway Scorecard LLC.
+            Rankings, or Database content (including in apps, websites, search result features, newsletters, APIs, or
+            internal tools) requires a separate written licensing agreement signed by Broadway Scorecard LLC.
           </p>
 
           <h3 className="text-lg font-medium text-white mt-6 mb-2">No Rights From Conversations</h3>
           <p>
-            Meetings, emails, direct messages, or discussions — including partnership conversations — do not grant any
+            Meetings, emails, direct messages, or discussions, including partnership conversations, do not grant any
             rights to Score Data, Rankings, or the Database unless and until a separate written licensing agreement is
             executed by both parties.
           </p>

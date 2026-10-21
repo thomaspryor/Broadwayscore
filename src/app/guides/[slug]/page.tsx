@@ -52,7 +52,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   const metaTitle = interpolateTemplate(config.metaTitleTemplate, vars);
   const metaDescription = shows.length > 0
     ? interpolateTemplate(config.metaDescriptionTemplate, vars)
-    : `${config.title} — guide by Broadway Scorecard. Check back soon for updated listings.`;
+    : `${config.title}, a guide by Broadway Scorecard. Check back soon for updated listings.`;
   const canonicalUrl = `${BASE_URL}/guides/${params.slug}`;
 
   // Top show poster for OG image
@@ -524,7 +524,7 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
             <div className="text-3xl sm:text-4xl mb-4">🎭</div>
             <h2 className="text-lg sm:text-xl font-bold text-white mb-2">No Shows Right Now</h2>
             <p className="text-gray-400 text-sm sm:text-base mb-6">
-              There are no shows matching this guide at the moment. This page updates automatically — check back soon!
+              There are no shows matching this guide at the moment. This page updates automatically. Check back soon!
             </p>
             {relatedGuides.length > 0 && (
               <div className="flex flex-wrap justify-center gap-2">

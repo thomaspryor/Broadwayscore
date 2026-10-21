@@ -53,7 +53,7 @@ export async function generateMetadata(props: { params: Promise<{ season: string
   const label = formatSeason(params.season);
   return {
     title: `${label} Broadway Award Scorecard`,
-    description: `Prestige-weighted award scores for the ${label} Broadway season — Tony Awards, Pulitzer Prize, Drama Desk, Outer Critics Circle, Drama League, and NYDCC.`,
+    description: `Prestige-weighted award scores for the ${label} Broadway season: Tony Awards, Pulitzer Prize, Drama Desk, Outer Critics Circle, Drama League, and NYDCC.`,
     alternates: { canonical: `${BASE_URL}/award-score/${params.season}` },
     openGraph: {
       images: [TONY_OG_IMAGE],
@@ -101,7 +101,7 @@ export default async function AwardScoreSeasonPage(props: { params: Promise<{ se
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-white">{seasonLabel} Broadway Award Scorecard</h1>
           <p className="text-gray-400 mt-2">
-            Which shows dominated the {seasonLabel} Broadway awards season? Each score weighs seven ceremonies — Tonys, Pulitzer, Olivier, Drama Desk, OCC, Drama League, and NYDCC — with Tony wins carrying the most weight.
+            Which shows dominated the {seasonLabel} Broadway awards season? Each score weighs seven ceremonies (Tonys, Pulitzer, Olivier, Drama Desk, OCC, Drama League, and NYDCC), with Tony wins carrying the most weight.
           </p>
           <p className="text-sm text-gray-500 mt-1">
             {showsWithScore.length} show{showsWithScore.length !== 1 ? 's' : ''} with award activity

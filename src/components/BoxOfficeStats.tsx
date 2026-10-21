@@ -155,7 +155,7 @@ function TrendSparkline({ points }: { points: { weekEnding: string; gross: numbe
           {points.length}-week trend
         </span>
         <span className="text-[11px] text-gray-500 tabular-nums">
-          {min === max ? formatCurrency(min) : `${formatCurrency(min)} — ${formatCurrency(max)}`}
+          {min === max ? formatCurrency(min) : `${formatCurrency(min)} to ${formatCurrency(max)}`}
         </span>
       </div>
       <svg

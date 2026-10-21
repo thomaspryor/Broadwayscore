@@ -156,10 +156,10 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   const OG_POSITIVE_TIERS = new Set(['Critical Gold', 'Recommended']);
   const ogShowsSentiment = !!(tier && roundedScore && sentimentLabel && OG_POSITIVE_TIERS.has(tier.label));
   const ogTitle = ogShowsSentiment
-    ? `${seoTitle} — ${sentimentLabel} (${roundedScore}/100) | ${siteName}`
+    ? `${seoTitle}: ${sentimentLabel} (${roundedScore}/100) | ${siteName}`
     : `${seoTitle} - ${siteName}`;
   const twitterTitle = ogShowsSentiment
-    ? `${seoTitle} — ${sentimentLabel} (${roundedScore}/100)`
+    ? `${seoTitle}: ${sentimentLabel} (${roundedScore}/100)`
     : `${seoTitle} - CriticScore ${(!isTBD && roundedScore) ? `${roundedScore}/100` : 'TBD'}`;
 
   // Sentiment-aware description: lead with verdict, not database dump
@@ -172,11 +172,11 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   const statusPart = statusLabel ? venuePhrase(statusLabel) : '';
   const synopsisPart = synopsisSnippet ? ` ${synopsisSnippet}` : '';
   const SENTIMENT_PHRASES: Record<string, string> = {
-    'Critical Gold': `Critics rave about ${show.title} — ${roundedScore}/100 from ${reviewCount} reviews.`,
-    'Recommended': `${show.title} earns positive reviews — ${roundedScore}/100 from ${reviewCount} critics.`,
-    'Worth Seeing': `Critics say ${show.title} is worth seeing — ${roundedScore}/100 from ${reviewCount} reviews.`,
-    'Mixed': `Critics are mixed on ${show.title} — ${roundedScore}/100 from ${reviewCount} reviews.`,
-    'Critical Miss': `${show.title} gets poor reviews from critics — ${roundedScore}/100 from ${reviewCount} reviews.`,
+    'Critical Gold': `Critics rave about ${show.title}: ${roundedScore}/100 from ${reviewCount} reviews.`,
+    'Recommended': `${show.title} earns positive reviews: ${roundedScore}/100 from ${reviewCount} critics.`,
+    'Worth Seeing': `Critics say ${show.title} is worth seeing: ${roundedScore}/100 from ${reviewCount} reviews.`,
+    'Mixed': `Critics are mixed on ${show.title}: ${roundedScore}/100 from ${reviewCount} reviews.`,
+    'Critical Miss': `${show.title} gets poor reviews from critics: ${roundedScore}/100 from ${reviewCount} reviews.`,
   };
   const description = (score && roundedScore && tier
     ? `${SENTIMENT_PHRASES[tier.label] ?? `${show.title} ${marketLabel} scores ${roundedScore}/100 from ${reviewCount} critic reviews.`}${statusPart}${synopsisPart}`
@@ -200,9 +200,9 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   return {
     title: {
       absolute: roundedScore && titleSentimentWord
-        ? `${seoTitle} Reviews — ${titleSentimentWord} ${roundedScore}/100 | ${siteName}`
+        ? `${seoTitle} Reviews: ${titleSentimentWord} ${roundedScore}/100 | ${siteName}`
         // A tour's seoTitle already says "National Tour"; the market label would repeat it.
-        : `${seoTitle} Reviews${isTourMeta ? '' : ` ${marketLabel}`} — ${siteName}`,
+        : `${seoTitle} Reviews${isTourMeta ? '' : ` ${marketLabel}`} | ${siteName}`,
     },
     // An unscored tour is indexed once it is live with a schedule (the page's
     // own content); a closed or unscheduled one with no score stays out of

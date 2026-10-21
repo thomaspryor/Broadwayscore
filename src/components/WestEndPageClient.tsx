@@ -779,14 +779,14 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
         <FeaturedRow title="Beyond London" subtitle="Major UK productions outside the capital" shows={beyondLondonShows} minShows={1} />
         <FeaturedRow title="Olivier Award Winning Shows" subtitle="Current productions that have won Olivier Awards" shows={olivierWinners} />
         <FeaturedRow title="West End Lotteries" subtitle="Enter for a chance at discounted tickets" shows={lotteryShows} />
-        <FeaturedRow title="Rush Tickets Available" subtitle="Same-day discount tickets — first come, first served" shows={rushShows} />
-        <FeaturedRow title="In Previews" subtitle="Open now — reviews still coming in" shows={inPreviewsShows} />
+        <FeaturedRow title="Rush Tickets Available" subtitle="Same-day discount tickets, first come, first served" shows={rushShows} />
+        <FeaturedRow title="In Previews" subtitle="Open now, reviews still coming in" shows={inPreviewsShows} />
         <FeaturedRow title="Opening Soon" subtitle="Starting in the next 60 days" shows={upcomingSoon} />
         <FeaturedRow title="Coming Up Later" subtitle="Announced productions further out" shows={upcomingLater} />
         <FeaturedRow title="Great for Kids" subtitle="Family-friendly shows for younger audiences" shows={kidsShows} />
         <FeaturedRow title="Perfect for Date Night" subtitle="Romantic shows to see with someone special" shows={dateNightShows} />
         <FeaturedRow title="Jukebox Musicals" subtitle="Shows built around classic pop and rock catalogues" shows={jukeboxMusicals} />
-        <FeaturedRow title="Closing Soon" subtitle="Last chance — these shows end within 90 days" shows={closingSoonShows} />
+        <FeaturedRow title="Closing Soon" subtitle="Last chance: these shows end within 90 days" shows={closingSoonShows} />
       </div>
 
       {/* Off-West End cross-promo link */}

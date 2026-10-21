@@ -53,7 +53,7 @@ export default function HomepageExplainerShelf({ totalShows, totalReviews, total
             <span className="text-gradient">Broadway show</span>
           </h2>
           <p className="mt-4 text-base sm:text-lg text-gray-300 max-w-xl">
-            We aggregate every major critic review into a single, weighted score — so you can find the best Broadway shows without reading 20 reviews.
+            We aggregate every major critic review into a single, weighted score, so you can find the best Broadway shows without reading 20 reviews.
           </p>
         </div>
       </div>
@@ -71,7 +71,7 @@ export default function HomepageExplainerShelf({ totalShows, totalReviews, total
         </div>
         <div className="flex justify-between text-[10px] sm:text-xs text-gray-500 mb-6 font-medium uppercase tracking-wide">
           <span>83+ Critical Gold</span>
-          <span>0 — Critical Miss</span>
+          <span>0 Critical Miss</span>
         </div>
 
         {/* Bullets + tier samples */}
@@ -79,7 +79,7 @@ export default function HomepageExplainerShelf({ totalShows, totalReviews, total
           <ul className="space-y-3 text-sm sm:text-base text-gray-300">
             <li className="flex gap-3">
               <span className="flex-shrink-0 mt-1 w-1.5 h-1.5 rounded-full bg-brand" />
-              <span>We collect reviews from <strong className="text-white">{roundedFloor(totalCritics, 50)}+ critics</strong> across <strong className="text-white">{roundedFloor(totalOutlets, 50)}+ outlets</strong> — The New York Times, Vulture, Variety, and every publication that covers Broadway.</span>
+              <span>We collect reviews from <strong className="text-white">{roundedFloor(totalCritics, 50)}+ critics</strong> across <strong className="text-white">{roundedFloor(totalOutlets, 50)}+ outlets</strong>, including The New York Times, Vulture, Variety, and every publication that covers Broadway.</span>
             </li>
             <li className="flex gap-3">
               <span className="flex-shrink-0 mt-1 w-1.5 h-1.5 rounded-full bg-brand" />
@@ -87,7 +87,7 @@ export default function HomepageExplainerShelf({ totalShows, totalReviews, total
             </li>
             <li className="flex gap-3">
               <span className="flex-shrink-0 mt-1 w-1.5 h-1.5 rounded-full bg-brand" />
-              <span>The weighted average becomes one <strong className="text-white">CriticScore</strong> — the same formula for every show, updated daily.</span>
+              <span>The weighted average becomes one <strong className="text-white">CriticScore</strong>, using the same formula for every show, updated daily.</span>
             </li>
             <li className="flex gap-3">
               <span className="flex-shrink-0 mt-1 w-1.5 h-1.5 rounded-full bg-brand" />

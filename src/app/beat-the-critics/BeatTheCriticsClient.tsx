@@ -441,7 +441,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     const text = shareText();
     if (navigator.share) {
       ph('btc_shared', { method: 'native' });
-      try { await navigator.share({ title: 'My Tony Picks — Beat the Critics', text }); } catch { /* user cancelled */ }
+      try { await navigator.share({ title: 'My Tony Picks: Beat the Critics', text }); } catch { /* user cancelled */ }
     } else {
       ph('btc_shared', { method: 'clipboard' });
       await navigator.clipboard.writeText(text);
@@ -477,7 +477,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             <p className="text-base leading-snug text-gray-300 text-center">Pick Tony winners.</p>
             <p className="text-base leading-snug text-gray-300 text-center">Compete against top critics.</p>
             <div className="mt-1 px-5 py-2.5 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-sm font-semibold text-center max-w-xs w-full">
-              🎁 Beat a critic — win a <strong>$200 TodayTix gift card</strong>
+              🎁 Beat a critic: win a <strong>$200 TodayTix gift card</strong>
             </div>
             <div className="flex items-center justify-center gap-1.5 text-[14px] text-gray-600 font-semibold">Prize sponsored by <img src="/todaytix-logo.svg" alt="TodayTix" className="h-[14px] opacity-80" /></div>
             <a href="/beat-the-critics/rules" className="text-[10px] text-gray-600 hover:text-gray-400 transition-colors">Official Rules</a>
@@ -502,7 +502,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           </div>
 
           {!countdownExpired && (
-          <p className="animate-fade-up text-[13px] text-gray-500 mt-4 max-w-[300px] text-center leading-relaxed" style={{ animationDelay: '0.88s', animationFillMode: 'both' }}>Only 1 round required to enter — do all 4 for your best shot at beating the critics.</p>
+          <p className="animate-fade-up text-[13px] text-gray-500 mt-4 max-w-[300px] text-center leading-relaxed" style={{ animationDelay: '0.88s', animationFillMode: 'both' }}>Only 1 round required to enter. Do all 4 for your best shot at beating the critics.</p>
           )}
           {countdownExpired ? (
             <div className="animate-fade-up mt-5 text-center" style={{ animationDelay: '0.9s', animationFillMode: 'both' }}>
@@ -563,7 +563,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           </div>
           <div className="mt-8 pb-10">
             <div className="text-center mb-4 text-[11px] text-amber-400/60 font-semibold">
-              Beat a critic &mdash; chance to win a <span className="text-amber-400/80">$200 TodayTix gift card</span>
+              Beat a critic: chance to win a <span className="text-amber-400/80">$200 TodayTix gift card</span>
             </div>
             <button onClick={handleLockIn} disabled={!selectedTitle} className={`w-full py-4 rounded-[14px] text-base font-bold transition-all duration-200 ${selectedTitle ? 'bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5' : 'bg-surface-overlay text-gray-500 cursor-not-allowed'}`}>{selectedTitle ? 'Lock In: ' + shortTitle(selectedTitle) + ' \u2192' : 'Lock In Pick'}</button>
             <p className="text-center mt-2.5 text-xs text-gray-500">Not sure? Go with your gut!</p>
@@ -691,7 +691,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           {isActor && actorNominees.length > 0 && (
             <div className="mb-7 animate-fade-up" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
               <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">How Others Voted<div className="flex-1 h-px bg-white/5" /></div>
-              <div className="text-[10px] text-gray-600 mb-3">{totalCategoryVotes > 0 ? `${totalCategoryVotes.toLocaleString()} pick${totalCategoryVotes === 1 ? '' : 's'} so far` : 'No votes yet — be the first!'}</div>
+              <div className="text-[10px] text-gray-600 mb-3">{totalCategoryVotes > 0 ? `${totalCategoryVotes.toLocaleString()} pick${totalCategoryVotes === 1 ? '' : 's'} so far` : 'No votes yet. Be the first!'}</div>
               {totalCategoryVotes > 0 && actorNominees.map((actor, i) => (<CrowdBar key={actor.name} label={actor.name} pct={actorCrowdPcts[i] ?? 0} isUserPick={actor.name === userPick} variant={actor.name === userPick ? 'rose' : i === 0 ? 'brand' : 'muted'} />))}
             </div>
           )}
@@ -699,7 +699,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           {!isActor && (
             <div className="mb-7 animate-fade-up" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
               <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">How Others Voted<div className="flex-1 h-px bg-white/5" /></div>
-              <div className="text-[10px] text-gray-600 mb-3">{totalCategoryVotes > 0 ? `${totalCategoryVotes.toLocaleString()} pick${totalCategoryVotes === 1 ? '' : 's'} so far` : 'No votes yet — be the first!'}</div>
+              <div className="text-[10px] text-gray-600 mb-3">{totalCategoryVotes > 0 ? `${totalCategoryVotes.toLocaleString()} pick${totalCategoryVotes === 1 ? '' : 's'} so far` : 'No votes yet. Be the first!'}</div>
               {totalCategoryVotes > 0 && nominees.map((show, i) => (<CrowdBar key={show.slug} label={show.title} pct={crowdPcts[i] ?? 0} isUserPick={show.title === userPick} variant={show.title === userPick ? 'rose' : i === 0 ? 'brand' : 'muted'} />))}
             </div>
           )}
@@ -794,7 +794,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
         ) : (
           <div className="w-full max-w-[380px] p-5 rounded-2xl bg-gradient-to-br from-[#ff1368]/[0.06] to-brand/[0.04] border border-[#ff1368]/10 animate-fade-up">
             <h3 className="text-base font-bold">Submit your picks</h3>
-            <p className="text-sm text-gray-400 mt-1.5 mb-1">Enter your email to officially enter. After the ceremony on June 8, we&apos;ll email you with your results. You&apos;ll also be added to our mailing list — unsubscribe anytime.</p>
+            <p className="text-sm text-gray-400 mt-1.5 mb-1">Enter your email to officially enter. After the ceremony on June 8, we&apos;ll email you with your results. You&apos;ll also be added to our mailing list (unsubscribe anytime).</p>
             <p className="text-sm font-semibold text-amber-400 mb-4">🎟️ Beat a critic and you&apos;ll be entered in the <strong>$200 TodayTix prize draw</strong>.</p>
             <div className="flex gap-2 mb-3">
               <input ref={emailRef} type="email" placeholder="you@email.com" className="flex-1 px-4 py-3.5 rounded-xl border border-white/10 bg-surface-raised text-white text-base sm:text-sm outline-none focus:border-[#ff1368] transition-colors placeholder:text-gray-500" />
