@@ -7,7 +7,7 @@
     "email": null
   },
   "plan": {
-    "summary": "BRO-5776: record the SEC Form D offering maximum for Damn Yankees ($18.5M, DY Broadway LLC) with its source and refreshed notes.",
+    "summary": "BRO-5776: record the SEC Form D offering maximum for Damn Yankees ($18.5M, DY Broadway LLC) with its source and refreshed notes. Also fixes three show titles (Rhinoceros casing, 10 Things I Hate About You suffix, Midnight in the Garden of Good and Evil casing).",
     "steps": [
       "SEC Form D amounts are offering maxima and carry capitalizationBasis=maximum."
     ],
@@ -75,6 +75,33 @@
           }
         ],
         "description": "damn-yankees: sources from SEC Form D (DY Broadway LLC, CIK 0002106793)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rhinoceros-2027",
+        "field": "title",
+        "oldValue": "RHINOCEROS",
+        "newValue": "Rhinoceros",
+        "description": "Title casing; Broadway.com and TheaterMania announce it as Rhinoceros (https://www.theatermania.com/news/john-turturro-tony-shalhoub-and-tatiana-maslany-to-star-on-broadway-in-rhinocero_1857244/)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "10-things-i-hate-about-you-on-broadway-2024",
+        "field": "title",
+        "oldValue": "10 Things I Hate About You on Broadway",
+        "newValue": "10 Things I Hate About You",
+        "description": "Drop the 'on Broadway' suffix; the musical is titled 10 Things I Hate About You, previews Aug 17, 2027, venue not announced (https://www.broadwaynews.com/10-things-i-hate-about-you-musical-sets-2027-broadway-premiere-date/). Slug unchanged so existing keys stay valid."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "midnight-in-the-garden-of-good-and-evil-2024",
+        "field": "title",
+        "oldValue": "Midnight In The Garden Of Good And Evil",
+        "newValue": "Midnight in the Garden of Good and Evil",
+        "description": "Title casing (Broadway News, Playbill spell it Midnight in the Garden of Good and Evil). Status left announced: no 2027 dates found, sources only say 2025 or 2026 with no venue."
       }
     ]
   }
