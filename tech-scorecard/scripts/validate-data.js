@@ -27,6 +27,8 @@ for (const p of products) {
 function ratingToScore(rating) {
   const frac = rating.match(/(\d+(?:\.\d+)?)\s*(?:\/|out of)\s*(\d+(?:\.\d+)?)/i);
   if (frac) return Math.round((parseFloat(frac[1]) / parseFloat(frac[2])) * 100);
+  const pct = rating.match(/^(\d+(?:\.\d+)?)\s*%$/);
+  if (pct) return Math.round(parseFloat(pct[1]));
   const stars = rating.match(/^(\d(?:\.\d)?)\s*stars?$/i);
   if (stars) return Math.round((parseFloat(stars[1]) / 5) * 100);
   return null;
@@ -66,4 +68,3 @@ if (errors.length) {
   process.exit(1);
 }
 console.log('data OK');
-module.exports = { ratingToScore };

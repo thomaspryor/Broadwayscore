@@ -17,6 +17,7 @@ export function ReviewRow({ review }: { review: ScoredReview }) {
           <span className="ml-auto text-xs text-ink-faint">{formatDate(review.date)}</span>
         </div>
         <p className="mt-2 leading-relaxed text-ink">&ldquo;{review.excerpt}&rdquo;</p>
+        {review.note && <p className="mt-1 text-xs italic text-ink-faint">{review.note}</p>}
         <div className="mt-1.5 flex flex-wrap items-center justify-between gap-2 text-sm">
           <span className="text-ink-faint">
             {review.critic ? `By ${review.critic}` : 'Staff review'}

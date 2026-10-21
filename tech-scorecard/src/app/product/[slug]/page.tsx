@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import { getAllProducts, getProduct } from '@/lib/data';
 import { getScoreTier } from '@/config/score-buckets';
 import { TIER_WEIGHTS } from '@/config/scoring';
-import { formatDate, formatPrice, CATEGORY_LABEL } from '@/lib/format';
+import { formatDate, formatPrice, releaseLabel, CATEGORY_LABEL } from '@/lib/format';
 import { DeviceArt, MiniProductCard, OutletTierChip, ProductChips, ScoreBadge, ScoreBreakdownBar } from '@/components/product-cards';
 import { ReviewList } from '@/components/ReviewRow';
 
@@ -51,7 +51,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
             <p className="mt-1.5 text-sm text-ink-muted sm:text-base">
               {product.brand}{price && <> · From {price}</>}
             </p>
-            <p className="text-xs text-ink-faint sm:text-sm">Released {formatDate(product.releaseDate)}</p>
+            <p className="text-xs text-ink-faint sm:text-sm">{releaseLabel(product.releaseDate)}</p>
             <div className="mt-4 hidden items-center gap-4 sm:flex">
               <ScoreBadge score={product.criticScore} size="lg" />
               <ScoreSummary product={product} tier={tier} />

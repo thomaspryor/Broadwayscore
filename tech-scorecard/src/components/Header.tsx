@@ -14,9 +14,9 @@ export function Header() {
     <header className="sticky top-0 z-30 border-b border-line bg-white/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link href="/" aria-label="Tech Scorecard home"><Logo className="text-2xl sm:text-[28px]" /></Link>
-        <nav className="flex items-center gap-5 text-sm font-medium text-ink-muted">
+        <nav className="flex items-center gap-4 whitespace-nowrap text-sm font-medium text-ink-muted sm:gap-5">
           <Link href="/" className="hover:text-ink">Phones</Link>
-          <Link href="/methodology/" className="hover:text-ink">How scores work</Link>
+          <Link href="/methodology/" className="hover:text-ink">Methodology</Link>
         </nav>
       </div>
     </header>

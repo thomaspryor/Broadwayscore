@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { ComputedProduct } from '@/lib/engine';
 import { getScoreTier } from '@/config/score-buckets';
-import { formatDate, formatPrice } from '@/lib/format';
+import { formatPrice, releaseLabel } from '@/lib/format';
 import { DeviceArt } from './DeviceArt';
 import { ProductChips } from './ProductChips';
 import { ScoreBadge } from './ScoreBadge';
@@ -19,7 +19,7 @@ export function ProductListCard({ product }: { product: ComputedProduct }) {
         <h3 className="truncate text-lg font-bold sm:text-xl">{product.name}</h3>
         <div className="mt-1.5"><ProductChips category={product.category} releaseDate={product.releaseDate} /></div>
         <p className="mt-2 text-sm text-ink-muted">
-          {product.brand} · Released {formatDate(product.releaseDate)}
+          {product.brand} · {releaseLabel(product.releaseDate)}
           {price && <span className="hidden sm:inline"> · From {price}</span>}
         </p>
       </div>

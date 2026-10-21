@@ -32,6 +32,8 @@ export interface Review {
   scoreSource: 'rating' | 'text';
   excerpt: string;
   editorsChoice?: boolean;
+  /** Context a reader needs, e.g. a joint review whose score is for a sibling model. */
+  note?: string;
 }
 
 export interface Outlet {
