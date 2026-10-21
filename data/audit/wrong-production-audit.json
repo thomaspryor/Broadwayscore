@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-10-21T19:48:07.634Z",
+  "timestamp": "2026-10-21T20:11:53.799Z",
   "stats": {
-    "totalReviews": 58192,
-    "alreadyFlagged": 21143,
+    "totalReviews": 58193,
+    "alreadyFlagged": 21145,
     "dateGuardCatches": 199,
     "directorMismatch": 2034,
     "tvFilmSignals": 1654,
-    "londonSignals": 2591,
+    "londonSignals": 2594,
     "offBroadwaySignals": 530,
-    "yearMismatch": 163,
+    "yearMismatch": 165,
     "noPublishDate": 5255
   },
   "findings": [
@@ -25162,6 +25162,20 @@
     },
     {
       "showId": "long-days-journey-into-night-2016",
+      "file": "ew--melissa-rose-bernardo.json",
+      "score": 60,
+      "publishDate": "April 20, 2016",
+      "url": "https://www.ew.com/article/2016/04/27/long-days-journey-night-review-michael-shannon-jessica-lange",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2018 (2x) more than 2016 (1x). 2018 matches production: long-days-journey-into-night-west-end-2018"
+        }
+      ]
+    },
+    {
+      "showId": "long-days-journey-into-night-2016",
       "file": "talkinbroadway--matthew-murray.json",
       "score": 92,
       "publishDate": "May 2, 2016",
@@ -43522,6 +43536,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lehman-trilogy-west-end-2023",
+      "file": "artsdesk--heather-neill.json",
+      "score": 83,
+      "publishDate": "February 10th, 2023",
+      "url": "https://theartsdesk.com/theatre/lehman-trilogy-gillian-lynne-theatre-review-modern-classic-exuberantly-revived",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2018 (2x) more than 2023 (0x). 2018 matches production: the-lehman-trilogy-west-end-2018"
         }
       ]
     },
@@ -63183,6 +63211,19 @@
     },
     {
       "showId": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
+      "file": "soz6--unknown.json",
+      "publishDate": "2026-10-09",
+      "url": "https://soz6.com/news/end-of-the-world-and-hard-boiled-wonderland-review-murakami-s-marvel-brilliantly-brought-to-life",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
       "file": "theatreandtonic--eleanor-bywater.json",
       "score": 76,
       "publishDate": "2026-10-09",
@@ -73119,6 +73160,33 @@
       "score": 46,
       "publishDate": "2026-10-21",
       "url": "https://www.standard.co.uk/culture/theatre/martin-guerre-at-the-old-vic-b1301716.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": null,
+      "publishDate": "2026-10-21",
+      "url": "https://theatreandtonic.co.uk/blog/martin-guerre-the-old-vic-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
+      "file": "thereviewshub--unknown.json",
+      "publishDate": "2026-10-21",
+      "url": "https://www.thereviewshub.com/martin-guerre-the-old-vic-london/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
