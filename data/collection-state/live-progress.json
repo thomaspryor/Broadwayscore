@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-21T13:51:18.695Z",
-  "processed": 52,
-  "failed": 38,
-  "successRate": "57.8%",
+  "updatedAt": "2026-10-21T14:09:15.457Z",
+  "processed": 94,
+  "failed": 56,
+  "successRate": "62.7%",
   "tierBreakdown": {
-    "playwright": 28,
+    "playwright": 43,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 10,
     "directCookies": 0,
-    "scrapingdog": 5,
-    "scrapingbee": 4,
+    "scrapingdog": 6,
+    "scrapingbee": 5,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 14
+    "archive": 39
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-10-21T13:24:26.750Z",
@@ -55,6 +55,34 @@
       "event": "bb-session",
       "session": "f5437d2f",
       "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-10-21T14:01:19.349Z",
+      "event": "bb-session",
+      "session": "4c83e263",
+      "url": "https://www.nytimes.com/2026/04/25/theater/rheology-inspirations.html"
+    },
+    {
+      "t": "2026-10-21T14:01:19.832Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-21T14:01:36.275Z",
+      "event": "bb-session",
+      "session": "3438b673",
+      "url": "https://deadline.com/2026/03/rebecca-de-mornay-john-patrick-shanley-the-pushover"
+    },
+    {
+      "t": "2026-10-21T14:05:09.094Z",
+      "event": "bb-session",
+      "session": "27557e8b",
+      "url": "https://www.nytimes.com/2026/04/03/theater/burnout-paradise-treadmills-theater-o"
+    },
+    {
+      "t": "2026-10-21T14:05:09.584Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
