@@ -593,6 +593,7 @@ test('workflow checks: run only when workflows change, block on exit 1, fail ope
   assert.equal(checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: stub(1) }).status, 'clean');
   // BRO-5833: the job-timeout budget gates are part of the batch
   assert.ok(WORKFLOW_CHECKS.some((c) => c.args.includes('--fail-on-job-timeout')) && WORKFLOW_CHECKS.some((c) => c.file === 'tests/unit/audit-push-retry-budgets-residual.test.mjs'));
+  assert.ok(WORKFLOW_PATH_RE.test('scripts/lib/audit-push-retry-budgets.js'));
   assert.ok(WORKFLOW_PATH_RE.test('.github/actions/x/action.yml') && WORKFLOW_PATH_RE.test('scripts/lib/push-with-retry.sh'));
   assert.match(blockMessage({ target: 'land/x', base: 'main', workflows: bad }), /generate-workflow-dependencies\.js --check fails on the landing tree/);
   // a check that crashes (exit 2) or times out never blocks

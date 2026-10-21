@@ -473,7 +473,7 @@ export function checkRebasedManifests({ base, src, tip, cwd }) {
 // lints and the DEPENDENCIES.md freshness check; running them here saves the
 // ~30 minute land cycle they would otherwise cost (a stale DEPENDENCIES.md
 // reddened main's land runs this way). Judged on the tree that will land.
-export const WORKFLOW_PATH_RE = /^\.github\/(workflows|actions)\/|^scripts\/lib\/push-with-retry\.sh$|^scripts\/(lint-workflow-guards\.sh|audit-workflow-hygiene\.js|generate-workflow-dependencies\.js|audit-push-retry-budgets\.js)$|^tests\/unit\/audit-push-retry-budgets-residual\.test\.mjs$|^scripts\/lib\/(audit-workflow-hygiene-rules|workflow-dependency-graph)\.js$/;
+export const WORKFLOW_PATH_RE = /^\.github\/(workflows|actions)\/|^scripts\/lib\/push-with-retry\.sh$|^scripts\/(lint-workflow-guards\.sh|audit-workflow-hygiene\.js|generate-workflow-dependencies\.js|audit-push-retry-budgets\.js)$|^tests\/unit\/audit-push-retry-budgets-residual\.test\.mjs$|^scripts\/lib\/(audit-workflow-hygiene-rules|workflow-dependency-graph|audit-push-retry-budgets)\.js$/;
 export const WORKFLOW_CHECKS = [
   { name: 'lint-workflow-guards.sh workflows', cmd: 'bash', args: ['scripts/lint-workflow-guards.sh', 'workflows'], fix: 'fix the lines it prints' },
   { name: 'audit-workflow-hygiene.js', cmd: 'node', args: ['scripts/audit-workflow-hygiene.js'], fix: 'fix the lines it prints (or the exemption comment it names)' },
@@ -481,7 +481,7 @@ export const WORKFLOW_CHECKS = [
   // BRO-5833: a one-step workflow edit cleared this gauntlet and was refused ~20 min later by
   // the job-timeout-margin gate (~1s locally). `file` is what must exist in the tree to run it.
   { name: 'audit-push-retry-budgets.js --fail-on-job-timeout', cmd: 'node', args: ['scripts/audit-push-retry-budgets.js', '--fail-on-job-timeout'], fix: 'raise the timeout-minutes of the job it names' },
-  { name: 'audit-push-retry-budgets-residual.test.mjs', cmd: 'node', args: ['--test', 'tests/unit/audit-push-retry-budgets-residual.test.mjs'], file: 'tests/unit/audit-push-retry-budgets-residual.test.mjs', fix: 'raise the job timeout-minutes (node scripts/audit-push-retry-budgets.js lists the call sites)' },
+  { name: 'audit-push-retry-budgets-residual.test.mjs', cmd: 'node', args: ['--test', 'tests/unit/audit-push-retry-budgets-residual.test.mjs'], file: 'tests/unit/audit-push-retry-budgets-residual.test.mjs', fix: 'see the failing assertion; usually raise the job timeout-minutes (node scripts/audit-push-retry-budgets.js lists call sites)' },
 ];
 /** Nearest node_modules at or above dir (a worktree under .claude/worktrees has none of its own). */
 function findNodeModules(dir) {
