@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-21T15:40:53.670Z",
+  "timestamp": "2026-10-21T16:05:49.588Z",
   "stats": {
-    "totalReviews": 58074,
-    "alreadyFlagged": 21125,
+    "totalReviews": 58105,
+    "alreadyFlagged": 21127,
     "dateGuardCatches": 198,
     "directorMismatch": 2060,
     "tvFilmSignals": 1652,
     "londonSignals": 2584,
     "offBroadwaySignals": 530,
     "yearMismatch": 162,
-    "noPublishDate": 5247
+    "noPublishDate": 5251
   },
   "findings": [
     {
@@ -43,6 +43,7 @@
     {
       "showId": "1536-off-west-end-2026",
       "file": "guardian--miriam-gillinson.json",
+      "score": 82,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2025/may/14/1536-review-almeida-theatre-london",
       "findings": [
@@ -75,7 +76,7 @@
     {
       "showId": "1536-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "2025-05-14",
       "url": "https://www.londonboxoffice.co.uk/news/post/1536-almeida-review",
       "findings": [
