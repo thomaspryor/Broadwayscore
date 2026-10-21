@@ -149,11 +149,11 @@ else
   UI_FILES_CHANGED=$(_UNSCOPED_UI_DIFF)
 fi
 # BRO-5844 (owner decision 2026-10-21): a code file whose diff only changes
-# copy (string literals, JSX text, comments) is not a visual change. Filter the
+# copy (JSX text, prose lines, // comments) is not a visual change. Filter the
 # FULL list (never a head -5 cut) and fail closed: CSS/config files, a git or
 # helper error, or anything the helper can't prove text-only stays in the list.
-_TEXT_ONLY_LIB="$SESSION_ROOT/scripts/lib/visual-text-only-diff.js"
-[ -f "$_TEXT_ONLY_LIB" ] || _TEXT_ONLY_LIB="$CANONICAL_ROOT/scripts/lib/visual-text-only-diff.js"
+# Canonical root ONLY: a pushed branch must not supply its own classifier.
+_TEXT_ONLY_LIB="$CANONICAL_ROOT/scripts/lib/visual-text-only-diff.js"
 if [ -n "$UI_FILES_CHANGED" ] && [ -f "$_TEXT_ONLY_LIB" ]; then
   _KEPT=""
   while IFS= read -r _f; do
