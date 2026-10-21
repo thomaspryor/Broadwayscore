@@ -15,7 +15,13 @@ const { copyViolationsIn, listTsFiles } = require('../../scripts/lib/rendered-co
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
 // Season Report and /biz were rewritten in BRO-5808 and keep their own table placeholders.
-const SKIP = ['src/app/season-report', 'src/components/biz'];
+const SKIP = [
+  'src/app/season-report', 'src/components/biz',
+  // Shared with /biz and the Season Report, whose "—" placeholders are pinned by tests/unit/biz-format.test.ts.
+  'src/lib/biz-format.ts', 'src/lib/season-profile.ts', 'src/config/commercial.ts',
+  // Citation notes and dev sample strings, not site copy.
+  'src/lib/olivier-cutoffs.ts', 'src/lib/tony-cutoffs.ts', 'src/lib/gate-logic.ts', 'src/lib/formatting.ts',
+];
 // "Unlock" is the literal name of the admin action that removes a score lock.
 const UNLOCK_ACTION = /^src\/(app\/admin\/locks|app\/api\/admin\/lock-score)/;
 
@@ -41,8 +47,8 @@ test('the scanner flags rendered strings but not comments or console output', (t
   assert.deepEqual(copyViolationsIn(tmp, dir).map((h) => h.split(':')[1]), ['2', '3', '4', '6', '7', '8', '10', '13']);
 });
 
-test('on-screen copy in src/app and src/components follows the voice rules', () => {
-  const hits = ['src/app', 'src/components'].flatMap((d) => listTsFiles(path.join(root, d)))
+test('on-screen copy in src/app, src/components, src/config and src/lib follows the voice rules', () => {
+  const hits = ['src/app', 'src/components', 'src/config', 'src/lib'].flatMap((d) => listTsFiles(path.join(root, d)))
     .filter((f) => !SKIP.some((s) => path.relative(root, f).startsWith(s)))
     .flatMap((f) => copyViolationsIn(f, root))
     .filter((h) => !(UNLOCK_ACTION.test(h.split(':')[0]) && /unlock/i.test(h)));

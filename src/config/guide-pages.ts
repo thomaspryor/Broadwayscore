@@ -159,7 +159,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     h1Template: 'Broadway Shows Closing Soon ({monthYear})',
     metaTitleTemplate: 'Broadway Shows Closing Soon {monthYear} | Last Chance',
     metaDescriptionTemplate: 'Don\'t miss these {count} Broadway shows before they close! Productions ending their runs in the next 120 days as of {monthYear}.',
-    introFallback: 'Time is running out to see these Broadway shows. {count} productions are closing within the next few months. Don\'t let these slip away, book your tickets now.',
+    introFallback: 'Time is running out to see these Broadway shows. {count} productions are closing within the next few months. Don\'t let these slip away. Book your tickets now.',
     filter: (show) => {
       if (show.status !== 'open' || !show.closingDate) return false;
       const closing = new Date(show.closingDate);
@@ -290,7 +290,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     title: 'Best Broadway Shows to See with Your Parents',
     h1Template: 'Best Broadway Shows to See with Your Parents ({year})',
     metaTitleTemplate: 'Best Broadway Shows for Parents {year} | Crowd-Pleasing Picks',
-    metaDescriptionTemplate: 'Taking your parents to Broadway? These {count} shows are perfect for older adults, revivals, classics, Tony winners, and crowd-pleasing musicals.',
+    metaDescriptionTemplate: 'Taking your parents to Broadway? These {count} shows are perfect for older adults: revivals, classics, Tony winners, and crowd-pleasing musicals.',
     introFallback: 'Taking your parents to see a Broadway show is one of the best gifts you can give. These {count} productions are ideal picks, from beloved revivals and Tony winners to crowd-pleasing musicals that resonate across generations.',
     filter: (show) => {
       if (show.status !== 'open') return false;
@@ -369,7 +369,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     h1Template: 'Best Broadway Shows for Teenagers ({year})',
     metaTitleTemplate: 'Best Broadway Shows for Teens {year} | Ages 13+',
     metaDescriptionTemplate: 'The {count} best Broadway shows for teenagers in {year}. Age-appropriate musicals and plays that teens actually want to see.',
-    introFallback: 'Finding a Broadway show that appeals to teenagers can be tricky, too young and they\'ll roll their eyes, too mature and it\'s awkward. These {count} shows hit the sweet spot for teen audiences.',
+    introFallback: 'Finding a Broadway show that appeals to teenagers can be tricky: too young and they\'ll roll their eyes, too mature and it\'s awkward. These {count} shows hit the sweet spot for teen audiences.',
     filter: (show) => {
       if (show.status !== 'open') return false;
       if ((show.criticScore?.score ?? 0) <= 0 || !displaysCriticScore(show)) return false;
@@ -391,7 +391,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     h1Template: 'Best Broadway Shows for First-Timers ({year})',
     metaTitleTemplate: 'Best Broadway Shows for First-Timers {year} | Where to Start',
     metaDescriptionTemplate: 'Never been to Broadway? These {count} shows are perfect for your first time. Top-rated, crowd-pleasing productions.',
-    introFallback: 'Your first Broadway show should be unforgettable. These {count} productions are perfect for newcomers, critically acclaimed, visually stunning, and guaranteed to hook you on live theater.',
+    introFallback: 'Your first Broadway show should be unforgettable. These {count} productions are perfect for newcomers: critically acclaimed, visually stunning, and guaranteed to hook you on live theater.',
     filter: (show) => {
       if (show.status !== 'open') return false;
       if ((show.criticScore?.score ?? 0) < 70) return false;
@@ -448,7 +448,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     h1Template: 'Upcoming Broadway Shows ({season} Season)',
     metaTitleTemplate: 'Upcoming Broadway Shows {year} | New Shows Coming Soon',
     metaDescriptionTemplate: '{count} new Broadway shows coming soon in {year}. Preview dates, opening nights, and what to expect.',
-    introFallback: 'Exciting new productions are headed to Broadway. These {count} shows are in previews or about to begin performances, get ahead of the crowd and book early.',
+    introFallback: 'Exciting new productions are headed to Broadway. These {count} shows are in previews or about to begin performances. Get ahead of the crowd and book early.',
     filter: (show) => {
       // Keep in sync with the upcoming-broadway-shows browse page: current
       // announced shows (selling tickets, dates TBD) count as upcoming too.
