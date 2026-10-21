@@ -1050,6 +1050,48 @@
     "queuedAt": "2026-10-21T03:18:51.728Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:ilford-boy-west-end-2026",
+    "title": "Review gap — \"Ilford Boy\" missing 1 cited review(s)",
+    "description": "Ilford Boy (ilford-boy-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=ilford-boy-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T03:55:06.494Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:king-of-the-yees-off-broadway-2026",
+    "title": "Review gap — \"King of the Yees\" missing 1 cited review(s)",
+    "description": "King of the Yees (king-of-the-yees-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-of-the-yees-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T03:55:06.531Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:martin-guerre-west-end-2026",
+    "title": "Review gap — \"Martin Guerre\" missing 2 cited review(s)",
+    "description": "Martin Guerre (martin-guerre-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=martin-guerre-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T03:55:06.576Z"
+  },
+  {
     "conditionKey": "opening-night-drift:other-desert-cities-2026",
     "title": "Opening night drift: Other Desert Cities (other-desert-cities-2026)",
     "description": "Review counts do not reconcile for Other Desert Cities (other-desert-cities-2026): local review-texts=36, reviews.json aggregate=30, live production=30, drift=6 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
