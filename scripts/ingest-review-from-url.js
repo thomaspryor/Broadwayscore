@@ -128,6 +128,9 @@ const land = hasFlag('land');
 // --html-file=PATH: use HTML a caller already fetched (a browser session for a site the
 // scraper chain cannot reach, e.g. talkinbroadway.com) instead of calling fetchPage.
 const htmlFileArg = getArg('html-file');
+// --archive-snapshot=YYYYMMDDHHMMSS (BRO-5874): read an EXISTING Wayback snapshot of --url through
+// fetchPage for a site that blocks CI runners; the row keeps the original url. Never requests a new capture.
+const archiveSnapshotArg = getArg('archive-snapshot');
 // Exit code for "the page could not be read" (fetch error, no HTML, empty
 // extraction). Refusals (blocked/non-review URL, blocklist, wrong show,
 // write-guard) keep exit 1, so the workflow retries only what a retry can fix.
@@ -219,7 +222,12 @@ if (!show) {
     if (htmlFileArg) {
       html = fs.readFileSync(htmlFileArg, 'utf8');
     } else {
-      const r = await fetchPage(url, { source: 'process-review-submission' });
+      let fetchUrl = url;
+      if (archiveSnapshotArg) {
+        fetchUrl = require('./lib/archive-snapshot-url').archiveSnapshotFetchUrl(url, archiveSnapshotArg);
+        if (!fetchUrl) { console.error('--archive-snapshot needs a 14-digit YYYYMMDDHHMMSS timestamp and an http(s) --url'); process.exit(1); }
+      }
+      const r = await fetchPage(fetchUrl, { source: 'process-review-submission' });
       html = (r && (r.content || r.html || r.body)) || (typeof r === 'string' ? r : null);
     }
   } catch (e) {
@@ -384,6 +392,12 @@ if (!show) {
   // For these outlets the star IS the score (policy: 177/177 thestage reviews
   // scored from stars), so an empty text extraction with a recoverable star
   // is a score-only ingest, not a failure. Card 3b5637c5 (NYSM Live).
+  // An archived page that yields only a meta description (< 1000 chars) is not the review: refuse
+  // before any write so the 313-char stub is not re-stored as if recovered (BRO-5874).
+  if (archiveSnapshotArg && (!text || text.length < 1000)) {
+    console.error(`Archive snapshot ${archiveSnapshotArg} holds no review body (${text ? text.length : 0} chars extracted); refusing to write`);
+    process.exit(EXIT_FETCH_FAILED);
+  }
   let recoveredScore = null;
   if (!text || text.length < 200) {
     recoveredScore = recoverScoreFromHtml(html, '', outletId, show.title);

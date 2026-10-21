@@ -2003,6 +2003,8 @@ const LEGACY_ID_REDIRECTS = {
  */
 function verifyFetchedUrl(html, expectedUrl) {
   if (!html || !expectedUrl) return { verified: false, reason: 'missing_input' };
+  // BRO-5874: a pinned Wayback snapshot is verified against the page it archived, not archive.org.
+  expectedUrl = require('./archive-snapshot-url').unwrapArchiveSnapshotUrl(expectedUrl);
 
   // 1. Homepage title detection — high-risk outlets return homepage with 200
   const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
