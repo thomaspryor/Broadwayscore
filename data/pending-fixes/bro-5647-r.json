@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5647-r",
   "planId": "d883aaa2-7f32-4c95-ae4c-2a2e315d1516",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-21T18:47:19.535Z",
   "submitter": {
     "name": null,
@@ -139,5 +139,49 @@
         "description": "other-desert-cities: add the filing and the producers announcement"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T18:54:07.384Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for evita"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for evita"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for evita"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for evita"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for other-desert-cities"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for other-desert-cities"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for other-desert-cities"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for other-desert-cities"
+    }
+  ],
+  "executedIn": "ci"
 }
