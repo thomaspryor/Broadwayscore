@@ -22,7 +22,7 @@ const { createCommercialWriteGuard } = require('./lib/commercial-write-guard');
 const { classifyTier } = require('./lib/model-return-v2');
 const { clearStaleModelFields, applyShadowReturnFields, applyReturnedSoFarFields, RETURNED_SO_FAR_OPTS } = require('./lib/model-run-fields');
 const { makeGrossesLookup } = require('./lib/grosses-lookup');
-const { modelInputBasis, decidedByGuess } = require('./lib/model-input-basis');
+const { modelInputBasis, canResizeByModel } = require('./lib/model-input-basis');
 const { modelContradictsDesignation, planModelLossResizes, MODEL_LOSS_RESIZE_LIMIT } = require('./lib/commercial-designations');
 
 // ---------------------------------------------------------------------------
@@ -194,7 +194,7 @@ function main() {
   // held for review instead of written.
   const resize = planModelLossResizes(
     // A guess or comparable never relabels a show publicly (BRO-5849).
-    keys.map((key) => [key, commercial.shows[key]]).filter(([, entry]) => !decidedByGuess(entry)),
+    keys.map((key) => [key, commercial.shows[key]]).filter(([, entry]) => canResizeByModel(entry)),
   );
   for (const { key, from, to } of resize.moves) {
     console.log(`  [SIZE] ${key}.designation: ${from} -> ${to} (by its recorded estimate)${resize.held ? ', held' : ''}`);

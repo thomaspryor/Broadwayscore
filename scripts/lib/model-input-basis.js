@@ -19,6 +19,7 @@
  * dataQuality stays high/medium/low; the display floor only rejects 'low'.
  */
 
+const { ownReturnedEstimatePct } = require('./commercial-designations');
 const { sourceOpensAsEstimate, isMaximumCapitalization } = require('./public-source-text');
 
 const GUESS_COST_METHODS = Object.freeze(['reddit-standard', 'industry-estimate']);
@@ -54,4 +55,12 @@ function decidedByGuess(entry) {
   return Array.isArray(entry?.modelInputBasis) && entry.modelInputBasis.some((b) => GUESS_BASES.includes(b.basis));
 }
 
-module.exports = { modelInputBasis, decidedByGuess, GUESS_BASES, GUESS_COST_METHODS };
+/**
+ * May this record's loss label be re-sized by the model? Not when a guess
+ * decided the estimate; the record's own analyst/outside estimate still can.
+ */
+function canResizeByModel(entry) {
+  return !decidedByGuess(entry) || ownReturnedEstimatePct(entry) !== null;
+}
+
+module.exports = { modelInputBasis, decidedByGuess, canResizeByModel, GUESS_BASES, GUESS_COST_METHODS };

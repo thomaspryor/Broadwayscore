@@ -4,7 +4,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { modelInputBasis, decidedByGuess } = require('../../scripts/lib/model-input-basis');
+const { modelInputBasis, decidedByGuess, canResizeByModel } = require('../../scripts/lib/model-input-basis');
 const { planModelLossResizes } = require('../../scripts/lib/commercial-designations');
 const { estimatedInputNotes, toPublicShowCommercial } = await import('../../src/lib/commercial-display.ts');
 
@@ -28,10 +28,13 @@ test('a missing cost with a type default is listed, a comparables fill is a gues
 
 test('a guess never relabels a show; the same record with a fact does', () => {
   const entry = { designation: 'Fizzle', status: 'closed', recouped: null, modelRecoupmentPct: [-90, -80, -70], modelDataQuality: 'medium', modelMethod: 'weekly-model' };
-  const moved = (e) => planModelLossResizes([['k', e]].filter(([, x]) => !decidedByGuess(x))).moves.length;
+  const moved = (e) => planModelLossResizes([['k', e]].filter(([, x]) => canResizeByModel(x))).moves.length;
   const base = moved(entry);
-  assert.ok(base >= 0);
-  assert.equal(moved({ ...entry, modelInputBasis: [{ input: 'capitalization', basis: 'estimate' }] }), 0);
+  assert.equal(base, 1);
+  const guessed = { ...entry, modelInputBasis: [{ input: 'capitalization', basis: 'estimate' }] };
+  assert.equal(moved(guessed), 0);
+  // The record's own analyst estimate still sizes its label.
+  assert.equal(canResizeByModel({ ...guessed, analystRecoupPct: [10, 20] }), true);
 });
 
 test('page wording names the kind of guess, never "lead" or the forum', () => {
@@ -40,6 +43,9 @@ test('page wording names the kind of guess, never "lead" or the forum', () => {
   for (const n of notes) assert.doesNotMatch(n, /lead|reddit/i);
   assert.match(notes[0], /fan-forum estimate, unconfirmed/);
   assert.deepEqual(estimatedInputNotes({ modelInputBasis: [{ input: 'capitalization', basis: 'ceiling' }] }), []);
+  // A cost marked an estimate by its source text, with no methodology, is not called an "industry" estimate.
+  assert.deepEqual(estimatedInputNotes({ costMethodology: 'trade-reported', modelInputBasis: [{ input: 'weeklyRunningCost', basis: 'estimate' }] }), ['weekly running cost is an unconfirmed estimate']);
+  assert.match(estimatedInputNotes({ costMethodology: 'industry-estimate', modelInputBasis: [{ input: 'weeklyRunningCost', basis: 'estimate' }] })[0], /industry estimate/);
 });
 
 test('the public payload carries the wording, never the raw basis list', () => {
