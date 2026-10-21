@@ -403,6 +403,15 @@ jobs:
         continue-on-error: true
         run: node scripts/lib/held-feature-leak.js .vercel/output/static
 
+      - name: Guard — coverage-floor snapshot traced into runtime show routes (advisory)
+        # BRO-5811: data/audit/** is excluded from server functions, so the
+        # show page / OG / embed / badge read data/coverage-floor-snapshot.json
+        # when they render at runtime. If it isn't in their .nft.json traces,
+        # the coverage floor silently fails open on every revalidation.
+        # Advisory first (§19).
+        continue-on-error: true
+        run: node scripts/lib/check-coverage-floor-trace.js .next
+
       - name: Save Next.js build + prebuild artifacts cache
         # hygiene-cache-runid-ok: deliberate, see the "Restore" step earlier
         # in this job for the full BRO-4146 reasoning — the run_id is

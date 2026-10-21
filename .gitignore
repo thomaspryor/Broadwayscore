@@ -178,6 +178,9 @@ data/actor-slugs.json
 # data/cast/ at runtime, which would re-bloat the NFT bundle and 404 every
 # /cast/[slug] when data/cast/** is in outputFileTracingExcludes).
 data/cast-manifest.json
+# Coverage-floor snapshot (prebuild: scripts/build-coverage-floor-snapshot.js,
+# BRO-5811) — traced into server functions in place of data/audit/**.
+data/coverage-floor-snapshot.json
 
 # LLM classification checkpoint (ephemeral, crash-recovery only)
 .classify-wp-checkpoint.json

@@ -23,6 +23,10 @@ const { isPlausibleStamp, stampReferenceDate } = require('./score-public-since')
 // scoping restriction.
 const COVERAGE_ACK_NS_SUFFIX = '::newsletter-gap';
 
+// Relative to data/. Outside data/audit/ on purpose: that tree is excluded
+// from output file tracing (next.config.js), this file is included.
+const COVERAGE_FLOOR_SNAPSHOT_FILE = 'coverage-floor-snapshot.json';
+
 function readJson(file) {
   try { return JSON.parse(fs.readFileSync(file, 'utf-8')); } catch { return null; }
 }
@@ -77,16 +81,83 @@ function buildCoverageFloorInputs({ gapAudit, stamps, acks }, env = process.env)
 }
 
 /**
- * Scripts (not traced): read the three audit files from a data/ directory.
+ * Reads the floor inputs from literal file paths. src/lib/data-core.ts passes
+ * each path built from literal segments (never the data/ root: Next's tracer
+ * bundles any directory a server module names, 2026-10-21); scripts pass paths
+ * under their data/ dir via loadCoverageFloorInputs.
+ *
+ * BRO-5811: next.config.js keeps data/audit/** out of the Vercel server
+ * functions, so a page re-rendered at runtime (ISR revalidation, or a
+ * dynamicParams show added after the build) has no audit files. The prebuild
+ * snapshot then stands in for the whole audit directory. It is never mixed
+ * with raw files, so a stale snapshot can't leak into a checkout that has the
+ * real audits; and it is keyed on the gap audit being ABSENT, not unreadable,
+ * so a corrupt gap audit keeps the raw stamps/acks.
+ *
+ * @param {{ gapAudit: string, stamps: string, acks: string, snapshot: string }} files
+ * @param {NodeJS.ProcessEnv} [env]
+ */
+function readCoverageFloorInputs(files, env = process.env) {
+  if (!fs.existsSync(files.gapAudit)) {
+    return coverageFloorInputsFromSnapshot(readJson(files.snapshot), env);
+  }
+  return buildCoverageFloorInputs({
+    gapAudit: readJson(files.gapAudit),
+    stamps: readJson(files.stamps),
+    acks: readJson(files.acks),
+  }, env);
+}
+
+/**
+ * Scripts (not traced): read the floor inputs from a data/ directory.
  * @param {string} dataDir  the repo's data/ directory
  * @param {NodeJS.ProcessEnv} [env]
  */
 function loadCoverageFloorInputs(dataDir, env = process.env) {
-  return buildCoverageFloorInputs({
-    gapAudit: readJson(path.join(dataDir, 'audit', 'show-review-gap.json')),
-    stamps: readJson(path.join(dataDir, 'audit', 'score-public-since.json')),
-    acks: readJson(path.join(dataDir, 'audit', 't1-coverage-ack.json')),
+  return readCoverageFloorInputs({
+    gapAudit: path.join(dataDir, 'audit', 'show-review-gap.json'),
+    stamps: path.join(dataDir, 'audit', 'score-public-since.json'),
+    acks: path.join(dataDir, 'audit', 't1-coverage-ack.json'),
+    snapshot: path.join(dataDir, COVERAGE_FLOOR_SNAPSHOT_FILE),
   }, env);
+}
+
+/**
+ * The slim, JSON-serialisable form of the loaded inputs that prebuild writes
+ * to data/coverage-floor-snapshot.json (~200KB vs ~10MB of raw audits) and
+ * next.config.js traces into every server function (BRO-5811).
+ *
+ * @param {ReturnType<typeof buildCoverageFloorInputs>} inputs
+ */
+function coverageFloorSnapshot(inputs) {
+  return {
+    cov: Object.fromEntries(inputs.covByShowId),
+    stamps: Object.fromEntries(inputs.scorePublicSinceByShowId),
+    acked: [...inputs.coverageAckedShowIds],
+  };
+}
+
+/**
+ * Inverse of coverageFloorSnapshot. The kill switch applies here, at read
+ * time, so it can be flipped without a rebuild. A missing/unreadable
+ * snapshot fails open (empty maps).
+ *
+ * @param {any} snap  parsed snapshot, or null
+ * @param {NodeJS.ProcessEnv} [env]
+ */
+function coverageFloorInputsFromSnapshot(snap, env = process.env) {
+  const covByShowId = new Map();
+  const scorePublicSinceByShowId = new Map();
+  const coverageAckedShowIds = new Set();
+  if (coverageGateDisabled(env) || !snap || typeof snap !== 'object') {
+    return { covByShowId, scorePublicSinceByShowId, coverageAckedShowIds };
+  }
+  for (const [showId, cov] of Object.entries(snap.cov || {})) covByShowId.set(showId, cov);
+  for (const [showId, iso] of Object.entries(snap.stamps || {})) {
+    if (typeof iso === 'string') scorePublicSinceByShowId.set(showId, iso);
+  }
+  for (const showId of (Array.isArray(snap.acked) ? snap.acked : [])) coverageAckedShowIds.add(showId);
+  return { covByShowId, scorePublicSinceByShowId, coverageAckedShowIds };
 }
 
 /**
@@ -109,4 +180,13 @@ function coverageFloorOptsForShow(inputs, show) {
   };
 }
 
-module.exports = { COVERAGE_ACK_NS_SUFFIX, buildCoverageFloorInputs, loadCoverageFloorInputs, coverageFloorOptsForShow };
+module.exports = {
+  COVERAGE_ACK_NS_SUFFIX,
+  COVERAGE_FLOOR_SNAPSHOT_FILE,
+  buildCoverageFloorInputs,
+  readCoverageFloorInputs,
+  loadCoverageFloorInputs,
+  coverageFloorSnapshot,
+  coverageFloorInputsFromSnapshot,
+  coverageFloorOptsForShow,
+};
