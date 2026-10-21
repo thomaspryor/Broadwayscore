@@ -14,6 +14,11 @@ const { planStatusAction, DONE_STATUSES } = require('./plan-status.js');
 const isPending = (plan) => Boolean(plan) && plan.status === 'pending';
 
 /** Shape problems the executor refuses a pending plan for. [] for a plan that is not pending. */
+const STAMPED_SOURCE_FIELDS = {
+  openingDate: { field: 'openingDateSource', value: 'human-correction' },
+  synopsis: { field: 'synopsisSource', value: 'manual' },
+};
+
 function planShapeProblems(name, plan) {
   if (!isPending(plan)) return [];
   const problems = [];
@@ -23,16 +28,20 @@ function planShapeProblems(name, plan) {
   if (actions.length > MAX_PLAN_ACTIONS) {
     problems.push(`${name}: ${actions.length} actions (max ${MAX_PLAN_ACTIONS}); split it into ${path.basename(name, '.json')}-b.json`);
   }
-  // An applied openingDate edit stamps openingDateSource 'human-correction'
-  // (execute-approved-fix -> stampHumanCorrectedOpeningDate), so a later
-  // openingDateSource edit on that show must expect it or its
-  // compare-and-set fails and the plan ends 'partial' (BRO-5843).
-  const datedShows = new Set();
+  // Some applied edits stamp a companion source field (execute-approved-fix:
+  // openingDate -> openingDateSource 'human-correction' via
+  // stampHumanCorrectedOpeningDate; synopsis -> synopsisSource 'manual' via
+  // setSynopsis). A later edit of that source field on the same show must
+  // expect the stamped value, or its compare-and-set fails and the plan ends
+  // 'partial' (BRO-5843).
+  const stamped = new Map(); // `${showId}|${sourceField}` -> stamped value
   for (const a of actions) {
     if (!a || a.type !== 'data-edit' || a.file !== 'shows.json') continue;
-    if (a.field === 'openingDate' && a.newValue) datedShows.add(a.showId);
-    else if (a.field === 'openingDateSource' && datedShows.has(a.showId) && a.oldValue !== 'human-correction') {
-      problems.push(`${name}: ${a.showId}.openingDateSource expects ${JSON.stringify(a.oldValue)} but the earlier openingDate edit sets it to "human-correction"`);
+    const stamp = STAMPED_SOURCE_FIELDS[a.field];
+    if (stamp && a.newValue) { stamped.set(`${a.showId}|${stamp.field}`, stamp.value); continue; }
+    const key = `${a.showId}|${a.field}`;
+    if (stamped.has(key) && a.oldValue !== stamped.get(key)) {
+      problems.push(`${name}: ${a.showId}.${a.field} expects ${JSON.stringify(a.oldValue)} but the earlier edit sets it to "${stamped.get(key)}"`);
     }
   }
   return problems;
