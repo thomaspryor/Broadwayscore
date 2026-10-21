@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5647-q",
   "planId": "2b0d1cd7-86ba-4567-a31a-1fd10be7897e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-21T18:41:52.299Z",
   "submitter": {
     "name": null,
@@ -193,5 +193,44 @@
         "description": "paranormal-activity: say the figure is the amount sold"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T18:49:03.629Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for boop"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for boop"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for paradise-square-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for paradise-square-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for paradise-square-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for paranormal-activity"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for paranormal-activity"
+    }
+  ],
+  "executedIn": "ci"
 }
