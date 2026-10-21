@@ -112,6 +112,8 @@ function rebuildExcludesHeld({ review, show, corrob }) {
  * Before BRO-5877 the rebuild held on any 'strong' verdict, so a 2018 review
  * 3084d early on Cursed Child WE 2026 was never re-flagged after a hold
  * release, and its inclusion pass scored it.
+ * Like the flagger, an 'llm-scoring' date is never implausible here
+ * (date-plausibility.js), so cv-affirms still holds it at any gap.
  *
  * @returns {{hold: boolean, corrob: {strength: string|null, signals: string[]}}}
  */
