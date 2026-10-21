@@ -18,6 +18,7 @@
  *     Cathedral": a slug that dropped its stopwords, BRO-5110). A content word
  *     in the insertion ("... Under the Sky") is a different title and refuses;
  *     that case belongs to the venue promoter's dated-listing completion.
+ *   - or the old title is the new one plus a trailing " on Broadway" market tag (no other row has the bare title);
  *   - id and slug never change, so no redirect is needed.
  */
 
@@ -64,6 +65,11 @@ function retitleProblem(oldTitle, newTitle, otherTitles = []) {
   if (/ [2-9]$/.test(o) && o.slice(0, -2) === n
       && !/ (part|chapter|act|vol|volume|book|series|season)$/.test(n)
       && otherTitles.some(t => words(t) === n)) return null;
+  // A trailing " on Broadway" is a market tag a feed appended, not part of the name
+  // ("10 Things I Hate About You on Broadway"); drop it only when the rest is not
+  // already another row's title.
+  if (o.endsWith(' on broadway') && o.slice(0, -' on broadway'.length) === n && n.split(' ').length >= 2
+      && !otherTitles.some(t => words(t) === n)) return null;
   // Restoring dropped function words must not land on a title another row already holds
   // (that is a duplicate row, not a typo).
   if (o.split(' ').length >= 2 && onlyFunctionWordsInserted(o, n) && !otherTitles.some(t => words(t) === n)) return null;
