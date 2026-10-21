@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5647-j",
   "planId": "d77f408e-d9ab-4f38-9b9c-1e70bd8226cf",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-21T03:39:19.374750Z",
   "submitter": {
     "name": null,
@@ -185,5 +185,69 @@
         "description": "ragtime: add the Harbour article"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T04:06:22.822Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for purlie-victorious"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for purlie-victorious"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for gettin-the-band-back-together-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for gettin-the-band-back-together-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for gettin-the-band-back-together-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for little-bear-ridge-road"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-music-man-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for ragtime"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for ragtime"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for ragtime"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for ragtime"
+    }
+  ],
+  "executedIn": "ci"
 }
