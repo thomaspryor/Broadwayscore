@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-21T01:35:10.002Z",
+  "timestamp": "2026-10-21T01:57:21.477Z",
   "stats": {
-    "totalReviews": 58025,
+    "totalReviews": 58030,
     "alreadyFlagged": 21117,
     "dateGuardCatches": 198,
     "directorMismatch": 2045,
     "tvFilmSignals": 1654,
     "londonSignals": 2575,
-    "offBroadwaySignals": 530,
+    "offBroadwaySignals": 531,
     "yearMismatch": 163,
-    "noPublishDate": 5228
+    "noPublishDate": 5234
   },
   "findings": [
     {
@@ -63719,8 +63719,22 @@
     },
     {
       "showId": "every-brilliant-thing-2026",
+      "file": "talkinbroadway--howard-miller.json",
+      "score": 80,
+      "publishDate": null,
+      "url": "https://www.talkinbroadway.com/page/world/EveryBrilliantThing.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"barrow street\""
+        }
+      ]
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
       "file": "the-recs--the-recs-rdc-randall-david-cook.json",
-      "score": 96,
+      "score": 97,
       "publishDate": "2026-03-19",
       "url": "https://therecs.co.uk/every-brilliant-thing/",
       "findings": [
@@ -67942,19 +67956,6 @@
     },
     {
       "showId": "high-school-musical-off-west-end-2026",
-      "file": "theatre-weekly--unknown.json",
-      "publishDate": "2026-10-12",
-      "url": "https://theatreweekly.com/first-look-production-images-released-for-london-run-of-disneys-high-school-musical/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "high-school-musical-off-west-end-2026",
       "file": "tickadoo--unknown.json",
       "publishDate": "2026-10-05",
       "url": "https://www.tickadoo.com/zh-hant-hk/blogs-and-news/high-school-musical-full-cast-troubadour-wembley-park",
@@ -70938,6 +70939,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "kyoto-off-broadway-2025",
+      "file": "talkinbroadway--howard-miller.json",
+      "score": 80,
+      "publishDate": null,
+      "url": "https://www.talkinbroadway.com/page/ob/11_03_25.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
