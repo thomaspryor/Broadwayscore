@@ -215,6 +215,29 @@ const FUZZY_MIN_TITLE_WORDS = 3;
 const CONTRACTED_N_RE = /(?:^|\s)['\u2018\u2019]?n['\u2018\u2019](?:\s|$)|(?:^|\s)['\u2018\u2019]n(?:\s|$)/i;
 
 /**
+ * BRO-5627: identity for an article + one-word title ("The Ask", "The
+ * Outsiders"). Pure; titleMatchesShow is the only caller.
+ * @param {string} itemTitle raw headline
+ * @param {string[]} itemForms titleMatchesShow's normalized headline forms
+ * @param {string} phrase normalized full show title ("the ask")
+ * @param {string} word the single significant word ("ask")
+ */
+function singleWordTitleIdentity(itemTitle, itemForms, phrase, word) {
+  const escRe = t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // Same boundary set as titleMatchesShow's wordMatch ("'The Visit.'" ends in a quote).
+  const phraseRe = new RegExp('(?:^|[\\s\\-/.\'"_])' + escRe(phrase) + '(?:$|[\\s\\-/.\'"_])');
+  if (itemForms.some(h => phraseRe.test(h))) return true;
+  const esc = escRe(word);
+  const raw = foldDiacritics(String(itemTitle || '')).toLowerCase()
+    .replace(/[\u2018\u2019\u02BC]/g, "'").replace(/[\u201C\u201D]/g, '"');
+  if (new RegExp(`(?:^|[^a-z0-9])['"]${esc}[.,!?:;]?['"](?:[^a-z0-9]|$)`).test(raw)) return true;
+  // Headline led by the title word ("Story: what a newsroom does...").
+  if (new RegExp(`^\\s*${esc}\\s*[:|]`).test(raw)) return true;
+  const besideReview = new RegExp(`(?:^| )reviews? (?:of )?${esc}(?: |$)|(?:^| )${esc} (?:theater |theatre )?reviews?(?: |$)`);
+  return itemForms.some(h => besideReview.test(h));
+}
+
+/**
  * Check if a title likely contains a review for the given show.
  * Matches show title words (ignoring articles) against RSS item title.
  * @param {{fuzzy?: boolean}} [opts] fuzzy: allow one typo'd word (see above).
@@ -253,6 +276,14 @@ function titleMatchesShow(itemTitle, showTitle, opts = {}) {
   if (!passesGenericTitleIdentity(itemTitle, showTitle)) return false;
 
   const itemForms = [...new Set([normalizeKeep(itemTitle), normalize(itemTitle)])];
+  // BRO-5627: article + one word ("The Ask"): the lone word is not identity —
+  // a WSJ careers column "How to Ask Colleagues..." was filed as a review of
+  // The Ask. Require the whole title as a phrase, the word in quotes, or the
+  // word beside "review". Bare one-word titles ("Wicked") and titles whose
+  // other words are merely short ("The King and I", "Avenue Q") are unaffected.
+  const titleTokens = normalize(showTitle).split(' ');
+  if (titleTokens.length === 2 && ['the', 'a', 'an'].includes(titleTokens[0]) && showWords.length === 1
+      && !singleWordTitleIdentity(itemTitle, itemForms, titleTokens.join(' '), showWords[0])) return false;
   // Word-boundary match: prevents "tru" matching "trump" or "bug" matching "debug".
   // Boundaries: start/end of string, space, hyphen, slash, period, quote, underscore.
   const wordMatch = (haystack, word) => {

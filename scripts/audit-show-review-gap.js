@@ -936,12 +936,18 @@ async function auditShow(show, opts = {}) {
   // by a current-run article stays ingestable (the current citation vouches).
   const bwCurrentUrls = new Set();
   const bwPriorCandidateUrls = new Set();
+  // BRO-5627: URLs from a current-run article with NO readable date
+  // (articleRunIdentity fails open). Cited only by such articles, a URL has no
+  // production identity at all, so its ingest must resolve a date of its own.
+  const bwDatelessCandidateUrls = new Set();
   for (const art of articles) {
     const extracted = await extractAggregatorReviewUrls(art, show);
     if (!extracted) continue;
     for (const u of extracted.urls) {
       aggUrls.add(u);
-      (extracted.priorRun ? bwPriorCandidateUrls : bwCurrentUrls).add(u);
+      if (extracted.priorRun) bwPriorCandidateUrls.add(u);
+      else if (!extracted.publishDate) bwDatelessCandidateUrls.add(u);
+      else bwCurrentUrls.add(u);
     }
     if (extracted.priorRun) {
       result.priorRunArticles = result.priorRunArticles || [];
@@ -954,7 +960,10 @@ async function auditShow(show, opts = {}) {
       console.log(`::warning::no publish date extracted from aggregator article ${art} (${show.id}) — production-identity gate fails open for its ${extracted.urls.length} URL(s)`);
     }
   }
-  const bwPriorRunUrls = new Set([...bwPriorCandidateUrls].filter(u => !bwCurrentUrls.has(u)));
+  // A dateless current article still vouches against a prior-run one (the
+  // pre-BRO-5627 behavior); only a dated current article clears datelessness.
+  const bwPriorRunUrls = new Set([...bwPriorCandidateUrls].filter(u => !bwCurrentUrls.has(u) && !bwDatelessCandidateUrls.has(u)));
+  const bwDatelessOnlyUrls = new Set([...bwDatelessCandidateUrls].filter(u => !bwCurrentUrls.has(u)));
 
   // Show Score per-show page → direct outlet review URLs. Show Score covers
   // off-Broadway (unlike DTLI, which is Broadway-only) — it lands later and lists
@@ -1401,8 +1410,10 @@ async function auditShow(show, opts = {}) {
   // WE_GAP_INGEST=1 (absent = report-only — the SAFE default; a dropped env line
   // must fail closed), and prior-run roundup URLs are PERMANENTLY report-only
   // (auto-ingesting a prior production's URLs is the WET mass-ingestion class).
-  if (weRefUrls.size > 0 || bwPriorRunUrls.size > 0 || serpCensusUrls.size > 0 || ssPriorRunUrls.size > 0) {
+  if (weRefUrls.size > 0 || bwPriorRunUrls.size > 0 || bwDatelessOnlyUrls.size > 0 || serpCensusUrls.size > 0 || ssPriorRunUrls.size > 0) {
     for (const m of [...result.missing, ...result.flaggedMisses]) {
+      // BRO-5627: no dated aggregator article vouches for this URL's run.
+      if (bwDatelessOnlyUrls.has(m.url)) m.datelessCitationOnly = true;
       if (weRefUrls.has(m.url)) {
         m.weRef = true;
         m.weRefSources = [...(weRefUrlSources.get(m.url) || [])];
@@ -1594,7 +1605,7 @@ async function dispatchGatherFor(showId) {
 // Returns { ok, reason } so the caller can log per-URL outcomes. Skips URLs
 // whose host is unknown to the registry (those should be added to the registry
 // first via the unknown-aggregator-outlets audit).
-function ingestMissingUrl(showId, url, knownOutletId) {
+function ingestMissingUrl(showId, url, knownOutletId, { requirePublishDate = false } = {}) {
   // BRO-5500: ingest-review-from-url.js refuses these with exit 1 (the submission workflow
   // depends on that), which read here as a FAILED ingest and re-alarmed roundup-gap:all
   // hourly. Same permanent refusal, so classify it as the expected skip without spawning.
@@ -1604,6 +1615,9 @@ function ingestMissingUrl(showId, url, knownOutletId) {
     return { ok: false, noop: true, expected: true, expectedReason: skip.reason, reason: describeSkip(showId, url, skip), provisional: !knownOutletId };
   }
   const args = ['scripts/ingest-review-from-url.js', `--show=${showId}`, `--url=${url}`];
+  // BRO-5627: refuse before any write when the page has no readable publish date
+  // (see gapIngestRequiresPublishDate) — an undated file bypasses the date guard.
+  if (requirePublishDate) args.push('--require-publish-date');
   let provisional = false;
   if (knownOutletId) {
     args.push(`--outlet=${knownOutletId}`);
@@ -1813,7 +1827,7 @@ function openingWindowClearedKeys(results, now = Date.now(), { liveShowIds } = {
     .map(r => openingWindowConditionKey(r.showId));
 }
 
-const { currentRunUncollected: countUncollected } = require('./lib/audit-show-review-gap');
+const { currentRunUncollected: countUncollected, earlierDatedCitation, gapIngestRequiresPublishDate } = require('./lib/audit-show-review-gap');
 
 function currentRunUncollected(r, { blocklist, ignoreCensusTagged = false } = {}) {
   const bl = blocklist !== undefined ? blocklist : loadBlocklist(path.join(REVIEW_TEXTS_DIR, r.showId || ''));
@@ -1959,7 +1973,7 @@ function isRecoveryUrlBlocklisted(showId, url) {
   return !!(url && findBlockedEntry(recoveryBlocklist(showId), url));
 }
 
-function recoverEmptyBodyFlaggedMiss(showId, m, openingDate = null, show = null) {
+function recoverEmptyBodyFlaggedMiss(showId, m, openingDate = null, show = null, { requirePublishDate = false } = {}) {
   // Re-run the cap/url decision against the CURRENT on-disk file, not the
   // reconstructed flaggedMiss view. The audit JSON can be minutes stale, and a
   // parallel session/workflow may have FILLED the file since detection —
@@ -2003,6 +2017,10 @@ function recoverEmptyBodyFlaggedMiss(showId, m, openingDate = null, show = null)
   if (decision.critic && decision.critic.toLowerCase() !== 'unknown') {
     iargs.push(`--critic=${decision.critic}`);
   }
+  // BRO-5627: on a show with earlier-dated citations an UNDATED file may only
+  // be filled from a page that yields a publish date (the post-fill window
+  // check below can judge a date, never its absence).
+  if (requirePublishDate && !file.publishDate) iargs.push('--require-publish-date');
   let ingestExit = false; let reason = null;
   try {
     execFileSync('node', iargs, { stdio: 'pipe', timeout: 120000 });
@@ -2405,8 +2423,12 @@ async function main(argv = process.argv.slice(2)) {
       const cappedSkipped = eligibleMissing.slice(INGEST_PER_SHOW_CAP);
       r.ingestResults = [];
       r.ingestSkippedByCap = cappedSkipped.map(m => ({ url: m.url, host: m.host, outletId: m.knownOutletId || provisionalOutletIdFromHost(m.host) }));
+      // BRO-5627: any earlier-dated citation means an undated page may be the
+      // prior production's review, so every ingest for this show must resolve a date.
+      const earlierEvidence = earlierDatedCitation(r, s, { heldDates: loadDirFiles(s.id).map(d => d.publishDate) });
+      if (earlierEvidence) console.log(`  📅 earlier-dated citation (${earlierEvidence}) — gap ingests must resolve a publish date`);
       for (const m of ingestable) {
-        const res = ingestMissingUrl(r.showId, m.url, m.knownOutletId);
+        const res = ingestMissingUrl(r.showId, m.url, m.knownOutletId, { requirePublishDate: gapIngestRequiresPublishDate(m, earlierEvidence) });
         perShowFetches++;
         const outletId = m.knownOutletId || provisionalOutletIdFromHost(m.host);
         // conflict/conflictReason MUST be carried through: computeResidualCounts
@@ -2506,12 +2528,14 @@ async function main(argv = process.argv.slice(2)) {
       // per-show fetch budget (INGEST_PER_SHOW_CAP). Anything beyond rolls to the
       // next hourly run via the audit JSON.
       const recBudget = Math.max(0, INGEST_PER_SHOW_CAP - perShowFetches);
+      // BRO-5627: same evidence rule as the missing-URL ingest above.
+      const recEarlierEvidence = earlierDatedCitation(r, s, { heldDates: loadDirFiles(s.id).map(d => d.publishDate) });
       if (recoverables.length > 0) {
         const budget = recoverables.slice(0, recBudget);
         const recCapped = recoverables.slice(recBudget);
         r.recoveryResults = [];
         for (const m of budget) {
-          const res = recoverEmptyBodyFlaggedMiss(r.showId, m, s.openingDate, s);
+          const res = recoverEmptyBodyFlaggedMiss(r.showId, m, s.openingDate, s, { requirePublishDate: gapIngestRequiresPublishDate(m, recEarlierEvidence) });
           if (!res.skipped) perShowFetches++;
           r.recoveryResults.push(res);
           if (res.skipped) {
@@ -2543,8 +2567,9 @@ async function main(argv = process.argv.slice(2)) {
         // at collection time" is not "safe forever" — unflagged prior-production
         // files exist in the corpus (task #275). A stub whose publishDate falls
         // before [opening - 30d] is a prior-run artifact; refetching it would
-        // pull the earlier production's text. Dateless stubs fail open (same
-        // posture as gap-ingest-policy's dateless-article warning).
+        // pull the earlier production's text. Dateless stubs pass here, but on a
+        // show with earlier-dated citations their refetch must resolve a date
+        // (BRO-5627, --require-publish-date via recEarlierEvidence).
         const openingMs = s.openingDate ? new Date(s.openingDate).getTime() : null;
         const notPriorRun = (d) => {
           if (!openingMs || !d.publishDate) return true;
@@ -2569,7 +2594,7 @@ async function main(argv = process.argv.slice(2)) {
             recoverableCritic: d.criticName || null,
             recoverableCount: d.aggUrlRecoveryCount || 0,
           };
-          const res = recoverEmptyBodyFlaggedMiss(r.showId, m, s.openingDate, s);
+          const res = recoverEmptyBodyFlaggedMiss(r.showId, m, s.openingDate, s, { requirePublishDate: gapIngestRequiresPublishDate(m, recEarlierEvidence) });
           if (!res.skipped) perShowFetches++;
           r.recoveryResults = r.recoveryResults || [];
           r.recoveryResults.push({ ...res, uncited: true });

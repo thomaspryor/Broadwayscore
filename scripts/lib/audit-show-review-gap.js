@@ -51,4 +51,48 @@ function currentRunUncollected(r, { isCollectable = defaultCollectable, ignoreCe
   return missing + citedNoUrl;
 }
 
-module.exports = { currentRunUncollected };
+// BRO-5627: an undated gap ingest skips the date-plausibility guard (it only
+// judges a date it can read), so on a revival a prior production's review can
+// land in the new run's folder and later be scored there (the-ask-off-broadway-2026:
+// a 2024 New Yorker capsule stored with publishDate null). When the show carries
+// ANY evidence of an earlier dated run, an ingest must resolve a publish date or
+// be refused. Returns a short audit-trail reason, or null when there is no evidence.
+const DAY_MS = 24 * 60 * 60 * 1000;
+// Same 30-day pre-opening slack isCurrentRunRoundup gives a current-run article.
+const RUN_WINDOW_SLACK_DAYS = 30;
+// Days before previews/opening a HELD review must be dated to evidence an earlier run.
+const HELD_PRIOR_RUN_MIN_DAYS = 180;
+
+function runWindowStartMs(show) {
+  const starts = [show && show.previewsStartDate, show && show.openingDate]
+    .map(d => (d ? Date.parse(d) : NaN)).filter(Number.isFinite);
+  return starts.length ? Math.min(...starts) - RUN_WINDOW_SLACK_DAYS * DAY_MS : null;
+}
+
+function earlierDatedCitation(result, show, { heldDates = [] } = {}) {
+  const r = result || {};
+  const priorArt = (r.priorRunArticles || []).find(a => a && a.url);
+  if (priorArt) return `prior-run-article:${priorArt.publishDate || priorArt.url}`;
+  const priorRow = [...(r.missing || []), ...(r.flaggedMisses || [])].find(m => m && m.priorRun);
+  if (priorRow) return `prior-run-citation:${priorRow.priorRunSource || priorRow.url}`;
+  if (show && Array.isArray(show.priorRuns) && show.priorRuns.length) return 'declared-prior-run';
+  // A held file only counts when dated well before this run: preview features
+  // and interviews land weeks before previews (53 of 161 live shows had one
+  // inside 90 days), a prior production lands a season or more earlier.
+  const start = runWindowStartMs(show);
+  if (start !== null) {
+    const cutoff = start - (HELD_PRIOR_RUN_MIN_DAYS - RUN_WINDOW_SLACK_DAYS) * DAY_MS;
+    const early = heldDates.map(d => (d ? Date.parse(d) : NaN)).find(ms => Number.isFinite(ms) && ms < cutoff);
+    if (early !== undefined) return `held-review-dated:${new Date(early).toISOString().slice(0, 10)}`;
+  }
+  return null;
+}
+
+// Whether one gap ingest must resolve a publish date before it may write.
+// A row cited only by an undated aggregator article is the articleRunIdentity
+// fail-open (no date, so no production identity) and needs a date of its own.
+function gapIngestRequiresPublishDate(row, evidence) {
+  return !!evidence || !!(row && row.datelessCitationOnly);
+}
+
+module.exports = { currentRunUncollected, earlierDatedCitation, gapIngestRequiresPublishDate, runWindowStartMs };

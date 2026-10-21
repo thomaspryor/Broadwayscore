@@ -116,3 +116,75 @@ test('syndicated headline identity tolerates a moved Review label but requires h
   // A second matching headline makes the relaxed match ambiguous.
   assert.equal(syndicatedReprintOf({ candidateUrl, heldFiles: [...heldFiles, { ...guardian, url: 'https://other.example/review' }], showTitle: 'De Profundis' }).dup, false);
 });
+
+// BRO-5627: the-ask-off-broadway-2026 (revival of a Sept 2024 run) ingested a
+// dateless 2024 New Yorker capsule and a WSJ careers column matched on "ask".
+const { earlierDatedCitation, gapIngestRequiresPublishDate } = require('./audit-show-review-gap');
+const { classifyIngestSkip } = require('./ingest-skip-classify');
+const { titleMatchesShow } = require('./rss-discovery');
+const fs = require('node:fs');
+const path = require('node:path');
+
+const ASK = { id: 'the-ask-off-broadway-2026', title: 'The Ask', previewsStartDate: '2026-10-06', openingDate: '2026-10-13' };
+const askRow = {
+  showId: ASK.id,
+  missing: [
+    { url: 'https://www.theatrely.com/post/generations-collide-in-the-ask-review', priorRun: true, priorRunSource: 'pending-file-date:2024-09-21' },
+    { url: 'https://www.newyorker.com/goings-on-about-town/the-ask' },
+  ],
+  flaggedMisses: [],
+};
+
+test('BRO-5627 an earlier-dated citation is evidence; a fresh show has none', () => {
+  assert.equal(earlierDatedCitation(askRow, ASK), 'prior-run-citation:pending-file-date:2024-09-21');
+  assert.equal(earlierDatedCitation({ missing: [{ url: 'https://x.example/r' }], flaggedMisses: [] }, ASK), null);
+  assert.match(earlierDatedCitation({ priorRunArticles: [{ url: 'https://bww.example/rr', publishDate: '2024-09-16' }] }, ASK), /^prior-run-article:2024-09-16/);
+  assert.equal(earlierDatedCitation({}, { ...ASK, priorRuns: [{ start: '2024-09-01', end: '2024-10-20' }] }), 'declared-prior-run');
+  // A held review dated 180+ days before previews counts; a preview feature
+  // weeks or months ahead (2026-07-01, 97 days) does not.
+  assert.equal(earlierDatedCitation({}, ASK, { heldDates: ['2026-10-16', null, '2024-09-16'] }), 'held-review-dated:2024-09-16');
+  assert.equal(earlierDatedCitation({}, ASK, { heldDates: ['2026-07-01', '2026-09-20', '2026-10-16', undefined] }), null);
+  assert.equal(earlierDatedCitation({}, { id: 'x', title: 'X' }, { heldDates: ['2001-01-01'] }), null);
+});
+
+test('BRO-5627 a gap ingest must resolve a publish date under evidence or a dateless-only citation', () => {
+  const evidence = earlierDatedCitation(askRow, ASK);
+  assert.equal(gapIngestRequiresPublishDate(askRow.missing[1], evidence), true);
+  assert.equal(gapIngestRequiresPublishDate({ url: 'https://x.example/r' }, null), false);
+  // articleRunIdentity fail-open: cited only by an undated aggregator article.
+  assert.equal(gapIngestRequiresPublishDate({ url: 'https://x.example/r', datelessCitationOnly: true }, null), true);
+});
+
+test('BRO-5627 the dateless refusal is an expected rejection that resolves the gap row', () => {
+  const u = 'https://www.newyorker.com/goings-on-about-town/the-ask';
+  const skip = classifyIngestSkip(`⚠️  Skipped: publish-date-unresolved — no publish date on the page and --require-publish-date is set — ${u}`);
+  assert.deepEqual([skip.kind, skip.reason], ['expected', 'publish-date-unresolved']);
+  const r = { showId: ASK.id, missing: [{ url: u }], ingestResults: [{ url: u, ok: false, noop: true, expected: true, expectedReason: skip.reason }] };
+  assert.equal(currentRunUncollected(r), 0);
+});
+
+test('BRO-5627 the audit passes --require-publish-date and the ingest script emits the classified skip', () => {
+  const root = path.join(path.dirname(require.resolve('./audit-show-review-gap')), '..');
+  const ingest = fs.readFileSync(path.join(root, 'ingest-review-from-url.js'), 'utf8');
+  const audit = fs.readFileSync(path.join(root, 'audit-show-review-gap.js'), 'utf8');
+  assert.match(ingest, /hasFlag\('require-publish-date'\)/);
+  assert.match(ingest, /Skipped: publish-date-unresolved/);
+  assert.match(audit, /args\.push\('--require-publish-date'\)/);
+  assert.match(audit, /iargs\.push\('--require-publish-date'\)/);
+  assert.match(audit, /ingestMissingUrl\(r\.showId, m\.url, m\.knownOutletId, \{ requirePublishDate: gapIngestRequiresPublishDate\(m, earlierEvidence\) \}\)/);
+});
+
+test('BRO-5627 an article + one-word title needs the whole title, a quote, or "review" beside it', () => {
+  assert.equal(titleMatchesShow('How to Ask Colleagues to Agree to Your Requests', 'The Ask'), false);
+  assert.equal(titleMatchesShow('Ask Ariely: Should I tip the barista?', 'The Ask'), false);
+  for (const h of [
+    'Review: ‘The Ask’ pits a liberal donor against an ACLU lawyer',
+    'Generations collide in The Ask',
+    'In “Ask,” a donor squirms',
+    'Ask review: philanthropy satire at Theater 555',
+  ]) assert.equal(titleMatchesShow(h, 'The Ask'), true, h);
+  assert.equal(titleMatchesShow("Chita Rivera stars in Kander and Ebb's 'The Visit.'", 'The Visit'), true);
+  // Untouched: bare one-word titles and titles whose other words are just short.
+  assert.equal(titleMatchesShow('Wicked turns 20 on Broadway', 'Wicked'), true);
+  assert.equal(titleMatchesShow("New 'King and I' is something wonderful", 'The King and I'), true);
+});
