@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-21T12:53:33.836Z",
+  "timestamp": "2026-10-21T14:23:18.208Z",
   "stats": {
-    "totalReviews": 58055,
+    "totalReviews": 58070,
     "alreadyFlagged": 21125,
     "dateGuardCatches": 198,
-    "directorMismatch": 2047,
-    "tvFilmSignals": 1654,
-    "londonSignals": 2580,
-    "offBroadwaySignals": 531,
-    "yearMismatch": 163,
-    "noPublishDate": 5234
+    "directorMismatch": 2060,
+    "tvFilmSignals": 1652,
+    "londonSignals": 2583,
+    "offBroadwaySignals": 530,
+    "yearMismatch": 162,
+    "noPublishDate": 5252
   },
   "findings": [
     {
@@ -32,6 +32,19 @@
       "score": 82,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/1536-almeida-theatre-review-fast-and-furious-portrayal-women-henry-viiis-england",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lyndsey turner\" from 1536-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "1536-off-west-end-2026",
+      "file": "guardian--miriam-gillinson.json",
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2025/may/14/1536-review-almeida-theatre-london",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -244,20 +257,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (10x) more than 2022 (0x). 2026 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2026"
-        }
-      ]
-    },
-    {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-      "file": "theatermania--david-gordon.json",
-      "score": 44,
-      "publishDate": "December 4, 2022",
-      "url": "https://www.theatermania.com/broadway/news/review-neil-diamond-musical-a-beautiful-noise_94623.html",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2024 (2x) more than 2022 (0x). 2024 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2024"
         }
       ]
     },
@@ -11998,6 +11997,177 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "file": "broadwayworld--angela-lin.json",
+      "score": 88,
+      "publishDate": "2026-09-12",
+      "url": "https://www.broadwayworld.com/chicago/article/Review-DIRTY-DANCING-Presented-by-Broadway-In-Chicago-20260912",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "file": "broadwayworld--jared-fessler.json",
+      "score": 84,
+      "publishDate": "2026-08-21",
+      "url": "https://www.broadwayworld.com/minneapolis/article/Review-DIRTY-DANCING-THE-MUSICAL-at-Ordway-Center-For-The-Performing-Arts-20010101",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "file": "broadwayworld--peter-rouleau.json",
+      "score": 77,
+      "publishDate": "2026-09-30",
+      "url": "https://www.broadwayworld.com/washington-dc/article/Review-DIRTY-DANCING-at-The-National-Theatre-20260930",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "file": "chicagoonstage--unknown.json",
+      "score": 73,
+      "publishDate": "2026-09-17",
+      "url": "https://www.chicagoonstage.com/dirty-dancing-the-musical-trips-on-the-way-to-the-lift/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "file": "chicagotribune--chris-jones.json",
+      "score": 85,
+      "publishDate": "2026-09-13",
+      "url": "https://www.chicagotribune.com/2026/09/13/review-dirty-dancing-musical-chicago/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "file": "cititour--brian-scott-lipton.json",
+      "score": null,
+      "publishDate": "2026-10-07",
+      "url": "https://cititour.com/NYC_News/Dirty-Dancing-The-Musical-to-Arrive-on-Broadway-in-February/11091",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "file": "dc-theater-arts--isabella-artino.json",
+      "score": 78,
+      "publishDate": "2026-10-01",
+      "url": "https://dctheaterarts.org/2026/10/01/dirty-dancing-is-on-tour-at-the-national-to-give-us-the-time-of-our-lives/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "file": "deadline--greg-evans.json",
+      "publishDate": "2026-10-06",
+      "url": "https://deadline.com/2026/10/dirty-dancing-musical-broadway-lionsgate-1237147780/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "file": "fayetteville-flyer--by-kevin-kinder.json",
+      "publishDate": "2026-10-20",
+      "url": "https://fayettevilleflyer.com/2026/10/20/broadway-bound-but-not-before-fayetteville-dirty-dancing-comes-to-walton-arts-center/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "file": "minneapolis-star-tribune--rohan-preston.json",
+      "score": 81,
+      "publishDate": "2026-08-22",
+      "url": "https://www.startribune.com/sexy-dirty-dancing-finds-its-groove-in-new-stage-version-in-st-paul/601879471",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "file": "pioneer-press--rob-hubbard.json",
+      "score": 78,
+      "publishDate": "2026-08-22",
+      "url": "https://www.twincities.com/2026/08/22/theater-review-dirty-dancing-ordway/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "file": "playoffthepage--mary-aalgaard.json",
+      "score": 89,
+      "publishDate": "2026-08-21",
+      "url": "https://playoffthepage.com/2026/08/dirty-dancing-the-musical-north-american-tour-launching-at-the-ordway-in-st-paul-mn/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
         }
       ]
     },
@@ -35134,7 +35304,7 @@
     },
     {
       "showId": "shucked-2023",
-      "file": "variety--aramide-tinubu.json",
+      "file": "variety--frank-rizzo.json",
       "score": 90,
       "publishDate": "April 5, 2023",
       "url": "https://variety.com/2023/legit/reviews/shucked-review-corn-musical-broadway-brandy-clark-shane-mcanally-1235574263/",
@@ -35143,34 +35313,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "shucked-2023",
-      "file": "variety--frank-rizzo.json",
-      "score": 79,
-      "publishDate": "April 5th, 2023",
-      "url": "https://variety.com/2023/legit/reviews/shucked-review-corn-musical-broadway-brandy-clark-shane-mcanally-1235574263/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "shucked-2023",
-      "file": "village-voice--michael-musto.json",
-      "score": 75,
-      "publishDate": "2023-04-05",
-      "url": "https://www.villagevoice.com/review-shucked-brings-the-cornpone-home/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -53648,20 +53790,6 @@
       ]
     },
     {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-      "file": "dtli--juan-michael-porter-ii.json",
-      "score": 44,
-      "publishDate": "December 4, 2022",
-      "url": "https://didtheylikeit.com/shows/a-beautiful-noise/a-beautiful-noise-the-neil-diamond-musical-review-good-times-never-seemed-so-glum/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"ars nova\""
-        }
-      ]
-    },
-    {
       "showId": "a-chorus-line-2006",
       "file": "newsday--linda-winer.json",
       "score": 66,
@@ -62246,20 +62374,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
-        }
-      ]
-    },
-    {
-      "showId": "dirty-dancing-tour-2026",
-      "file": "dc-theater-arts--isabella-artino.json",
-      "score": 78,
-      "publishDate": "2026-10-01",
-      "url": "https://dctheaterarts.org/2026/10/01/dirty-dancing-is-on-tour-at-the-national-to-give-us-the-time-of-our-lives/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -73241,6 +73355,20 @@
     },
     {
       "showId": "martin-guerre-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": null,
+      "publishDate": "2026-10-21",
+      "url": "https://www.standard.co.uk/culture/theatre/martin-guerre-at-the-old-vic-b1301716.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
       "file": "whatsonstage--alex-wood.json",
       "score": 82,
       "publishDate": "2026-10-21",
@@ -80236,6 +80364,19 @@
     },
     {
       "showId": "some-woman-west-end-2026",
+      "file": "liamodell--liam-odell.json",
+      "publishDate": "2026-10-21",
+      "url": "https://liamodell.com/2026/10/21/some-woman-review-dorfman-theatre-national-theatre-play-anne-marie-duff-helen-edmundson-cast/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 82,
       "publishDate": "2026-10-16",
@@ -83349,6 +83490,20 @@
       "score": 79,
       "publishDate": "2025-04-25",
       "url": "https://fringereview.co.uk/review/fringereview-uk/2025/the-brightening-air/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-brightening-air-west-end-2025",
+      "file": "guardian--arifa-akbar.json",
+      "score": 66,
+      "publishDate": "April 25th, 2025",
+      "url": "https://www.theguardian.com/stage/2025/apr/25/the-brightening-air-review-conor-mcpherson-chris-o-dowd-rosie-sheehy-old-vic-london",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -91263,7 +91418,7 @@
     {
       "showId": "triumph-off-west-end-2026",
       "file": "everything-theatre--rebecca-clifton.json",
-      "score": 96,
+      "score": 97,
       "publishDate": "2026-10-19",
       "url": "https://everything-theatre.co.uk/2026/10/review-triumph-almeida-theatre/",
       "findings": [
@@ -91277,6 +91432,7 @@
     {
       "showId": "triumph-off-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 93,
       "publishDate": "2026-10-19",
       "url": "https://www.ft.com/content/cbd99692-7670-4d29-8483-9db10436aadd",
       "findings": [
