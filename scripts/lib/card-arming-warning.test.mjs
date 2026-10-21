@@ -57,6 +57,13 @@ test('BRO-3060 regression: a real command that fails safe-form warns AND names t
   assert.match(w, /node scripts\/linear-drain-parked\.js --dry-run/, 'quotes the offending command');
 });
 
+test('explicit retraction warns with instructions to restore verification', () => {
+  const warning = armingWarning('VERIFY: npx tsc --noEmit\nVERIFY: retracted');
+  assert.ok(warning);
+  assert.ok(warning.includes(KIND_HINTS.retracted));
+  assert.match(warning, /newer safe VERIFY command/);
+});
+
 test('EVERY kind verify-gate documents has a hint — derived, not restated', () => {
   // The previous version of this test built its expected set from three
   // hand-picked fixtures and asserted deepEqual against those same three. It

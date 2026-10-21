@@ -13,6 +13,49 @@ const launch = (over = {}) => ({
 });
 const done = (over = {}) => ({ id: 'card-1', name: 'Fix the thing', status: 'Done', ageDays: 0.5, ...over });
 
+test('BRO-3157: retraction refuses a captured snapshot and its older corrections', () => {
+  const out = selectRecheckTargets({
+    doneCards: [done({ notes: 'VERIFY: npx tsc --noEmit', comments: [
+      'VERIFY: node --test tests/unit/correction.test.mjs',
+      'VERIFY: retracted',
+    ] })],
+    launchEntries: [launch({ verifyReason: 'old snapshot reason' })],
+  });
+  assert.equal(out[0].verifyCmd, null);
+  assert.match(out[0].reason, /retracted/);
+});
+
+test('BRO-3157: a new command after retraction replaces the retired snapshot regardless of rank', () => {
+  const out = selectRecheckTargets({
+    doneCards: [done({ notes: 'VERIFY: node --test tests/unit/old.test.mjs', comments: [
+      'VERIFY: node --test tests/unit/old-correction.test.mjs',
+      'VERIFY: retracted',
+      'VERIFY: npx tsc --noEmit',
+    ] })],
+    launchEntries: [launch()],
+  });
+  assert.equal(out[0].verifyCmd, 'npx tsc --noEmit');
+  assert.equal(out[0].reason, null);
+});
+
+test('BRO-3157: a notes retraction cannot fall back to an Outcome command', () => {
+  const result = require('./autonomous-recheck-core.js').verifiabilityForCard({
+    notes: 'VERIFY: retracted', outcome: 'VERIFY: npx tsc --noEmit',
+  });
+  assert.equal(result.cmd, null);
+  assert.equal(result.kind, 'retracted');
+  assert.equal(result.source, 'notes');
+});
+
+test('BRO-3157: an Outcome retraction refuses notes and snapshot until a newer comment restores verification', () => {
+  for (const comments of [[], ['VERIFY: npx next lint']]) {
+    const card = done({ notes: 'VERIFY: npx tsc --noEmit', outcome: 'VERIFY: retracted', comments });
+    const result = selectRecheckTargets({ doneCards: [card], launchEntries: [launch()] })[0];
+    assert.equal(result.verifyCmd, comments.length ? 'npx next lint' : null);
+    if (!comments.length) assert.match(result.reason, /retracted/);
+  }
+});
+
 test('selects a recently-Done card that has a captured verify command', () => {
   const out = selectRecheckTargets({ doneCards: [done()], launchEntries: [launch()] });
   assert.deepEqual(out, [{ cardId: 'card-1', name: 'Fix the thing', verifyCmd: 'node --test tests/unit/a.test.mjs', reason: null, skip: null }]);

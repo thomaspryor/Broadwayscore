@@ -21,6 +21,10 @@ const { isSafeCheckCommand, explainUnsafeCheckCommand } = require('./check-paths
 // importers of verify-gate's OWNER_JUDGMENT_RE are unchanged.
 const { OWNER_JUDGMENT_RE } = require('./owner-judgment-marker.js');
 
+// A standalone directive, so prose discussing this marker cannot revoke a
+// command. Horizontal whitespace only: the directive must fit on one line.
+const RETRACTED_RE = /^[\t ]*VERIFY:[\t ]*retracted[\t ]*\r?$/im;
+
 /**
  * @param {string} notes - the card's full notes/body (untrusted content)
  * @param {string[]} [comments] - the card's comment bodies, OLDEST FIRST
@@ -35,11 +39,15 @@ const { OWNER_JUDGMENT_RE } = require('./owner-judgment-marker.js');
  *   corrected command posted by comment never changed the gate's answer).
  *   Each document (notes, then each comment, oldest to newest) is evaluated
  *   independently and NEWEST-FIRST: the first one that arms (a safe-form
- *   command or an owner-judgment marker) wins, so a later comment supersedes
- *   an earlier broken command instead of being merged with it. A comment
+ *   command or an owner-judgment marker) or explicitly retracts wins, so a
+ *   later comment supersedes an earlier broken command instead of being
+ *   merged with it. A comment
  *   that fails safe-form validation does not win and falls through to
  *   whatever armed before it — same fail-closed contract as extractVerifyCmd
- *   itself, just applied per-document instead of per-candidate.
+ *   itself, just applied per-document instead of per-candidate. BRO-3157:
+ *   a standalone `VERIFY: retracted` line stops that fallback and refuses
+ *   with kind 'retracted'. It also overrides commands/owner judgment in the
+ *   same document. A newer armed document can supersede the retraction.
  * @returns {{armed: boolean, cmd: string|null, reason: string|null, ownerJudgment: boolean, kind: string|null, source: string|null}}
  *   armed=true means bsc-next.js would dispatch this card without
  *   --allow-unverifiable. cmd is the extracted safe-form command, populated
@@ -48,7 +56,8 @@ const { OWNER_JUDGMENT_RE } = require('./owner-judgment-marker.js');
  *   returned cmd:null for such cards, silently dropping a real command the
  *   dispatch ledger used to record). reason is null whenever armed. kind is
  *   the machine-readable refusal cause (BRO-2570): 'no-section' | 'no-command'
- *   | 'shape' | 'path-prefix' | 'traversal' | 'mutating-script' | 'basename',
+ *   | 'shape' | 'path-prefix' | 'traversal' | 'mutating-script' | 'basename'
+ *   | 'retracted',
  *   also null whenever armed — see autonomous-triage-core.js's
  *   explainUnsafeCheckCommand for what each SAFE_CHECK_FORMS kind means.
  *
@@ -71,10 +80,15 @@ function evaluateVerifiability(notes, comments) {
   const commentTexts = Array.isArray(comments) ? comments.map((c) => String(c || '')) : [];
   const documents = [description, ...commentTexts];
 
-  // Newest first: the last document that arms wins outright, without being
-  // merged against earlier ones.
+  // Newest first: stop at the first armed document or explicit retraction.
   for (let i = documents.length - 1; i >= 0; i--) {
     const text = documents[i];
+    if (RETRACTED_RE.test(text)) {
+      return {
+        armed: false, cmd: null, reason: 'VERIFY command explicitly retracted',
+        ownerJudgment: false, kind: 'retracted', source: sourceLabel(i),
+      };
+    }
     const { cmd } = extractVerifyCmd(text, isSafeCheckCommand, explainUnsafeCheckCommand);
     const ownerJudgment = OWNER_JUDGMENT_RE.test(text);
     if (cmd || ownerJudgment) {

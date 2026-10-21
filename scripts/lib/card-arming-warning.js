@@ -41,14 +41,15 @@ const path = require('path');
  */
 
 // Diagnosis hints keyed by evaluateVerifiability()'s `kind`. verify-gate.js's
-// header documents SEVEN: 'no-section' | 'no-command' | 'shape' |
-// 'path-prefix' | 'traversal' | 'mutating-script' | 'basename' (BRO-2570).
+// header documents the refusal kinds, including 'retracted' (BRO-3157).
 // An earlier version of this file covered three, so a card refused for
 // 'path-prefix' or 'traversal' got the generic message with no explanation of
 // what was actually wrong — and the test meant to catch that hard-coded the
 // same three kinds, so it passed while 4 of 7 were unhandled. The test now
 // derives the list from verify-gate.js's own documented set.
 const KIND_HINTS = {
+  retracted:
+    'Verification was explicitly retracted. Post a newer safe VERIFY command to restore it.',
   'no-section': 'The card has no "## Acceptance criteria" section and no VERIFY: line at all.',
   'no-command':
     'The acceptance criteria are prose. Prose cannot be re-run, so it cannot prove the work later.',

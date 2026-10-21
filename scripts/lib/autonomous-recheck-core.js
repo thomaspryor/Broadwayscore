@@ -191,8 +191,12 @@ function needsOverflowHydration(card) {
 function verifiabilityForCard(card) {
   const comments = card && Array.isArray(card.comments) ? card.comments : undefined;
   const fromNotes = evaluateVerifiability((card && card.notes) || '', comments);
-  if (fromNotes.cmd) return { ...fromNotes, source: 'notes' };
+  if (fromNotes.kind === 'retracted') return { ...fromNotes, source: 'notes' };
   const fromOutcome = evaluateVerifiability((card && card.outcome) || '', comments);
+  // Either field can explicitly retract verification. A newer comment is
+  // evaluated by both gates, so it can still restore a runnable command.
+  if (fromOutcome.kind === 'retracted') return { ...fromOutcome, source: 'outcome' };
+  if (fromNotes.cmd) return { ...fromNotes, source: 'notes' };
   if (fromOutcome.cmd) return { ...fromOutcome, source: 'outcome' };
   return { ...fromNotes, source: null };
 }
@@ -351,12 +355,18 @@ function selectRecheckTargets({ doneCards, launchEntries, windowHours = DEFAULT_
     // change is not local to this file) or comment createdAt threaded through
     // linear-recheck-source.js's card.comments (currently plain strings) —
     // both bigger than this ticket's stated fix.
-    let verifyCmd = launch.verifyCmd || null;
-    if (verifyCmd) {
+    // BRO-3157: an explicit retraction retires the captured snapshot and all
+    // older corrections. Only the current card gate can restore a command
+    // after that, including a less-specific replacement posted intentionally.
+    const currentGate = verifiabilityForCard(card);
+    const retiredSnapshot = [card.notes, card.outcome, ...(Array.isArray(card.comments) ? card.comments : [])]
+      .some((text) => evaluateVerifiability(text).kind === 'retracted');
+    let verifyCmd = retiredSnapshot ? currentGate.cmd : (launch.verifyCmd || null);
+    if (verifyCmd && !retiredSnapshot) {
       const correction = findCommentCorrection(card.comments, verifyCmd);
       if (correction) verifyCmd = correction;
     }
-    const fallback = verifyCmd ? null : verifiabilityForCard(card);
+    const fallback = verifyCmd ? null : currentGate;
     verifyCmd = verifyCmd || (fallback && fallback.cmd) || null;
     out.push({
       cardId: card.id,
@@ -365,13 +375,14 @@ function selectRecheckTargets({ doneCards, launchEntries, windowHours = DEFAULT_
       // "not machine-verifiable" is an honest, reportable outcome — the recheck
       // never invents a command for a card whose criteria was prose.
       // Reason precedence is unchanged from before this fix: the
-      // dispatch-captured verifyReason still wins whenever nothing new armed,
+      // dispatch-captured verifyReason still wins whenever nothing new armed
+      // unless an explicit retraction retired that snapshot,
       // so a card that was unverifiable before and is unverifiable now reports
       // the identical string it always did. The gate's own reason is only a
       // backstop for a launch row that recorded neither a command nor a reason.
       reason: verifyCmd
         ? null
-        : (launch.verifyReason || (fallback && fallback.reason) || 'no verify command was captured at dispatch'),
+        : ((retiredSnapshot && currentGate.reason) || launch.verifyReason || (fallback && fallback.reason) || 'no verify command was captured at dispatch'),
       skip: null,
     });
   }
