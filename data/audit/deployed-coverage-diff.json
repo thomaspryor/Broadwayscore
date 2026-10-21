@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-10-21T00:27:11.606Z",
+  "generatedAt": "2026-10-21T00:53:37.119Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 247,
-  "clean": 247,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 246,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "king-of-the-yees-off-broadway-2026",
+      "title": "King of the Yees",
+      "openingDate": "2026-10-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.62 vs local 74.89 (Δ1.73)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 10,
+      "deployedCount": 10,
+      "firstDefectAt": "2026-10-21T00:53:34.138Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
