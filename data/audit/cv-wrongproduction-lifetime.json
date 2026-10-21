@@ -1,18 +1,20 @@
 {
-  "updatedAt": "2026-10-20T12:19:37.528Z",
-  "scanned": 2645,
+  "updatedAt": "2026-10-21T07:57:33.611Z",
+  "scanned": 2650,
   "showsWithViolations": 115,
   "totalViolations": 146,
-  "newSinceLastRun": 0,
+  "newSinceLastRun": 1,
   "handled": {
     "temporal-override-low-confidence": 775,
     "not-shipped": 55,
     "duplicate-not-shipped": 53,
     "rebuild-skip-audit": 31,
     "manual-clear-reason": 14,
-    "prior-run-or-tour-leg": 43
+    "prior-run-or-tour-leg": 42
   },
-  "newViolationKeys": [],
+  "newViolationKeys": [
+    "paranormal-activity-west-end-2025::financialtimes--sarah-hemming.json"
+  ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
     "ragtime-2025::america-magazine--weinert-kendt.json",
@@ -50,6 +52,7 @@
     "mj-the-musical-west-end-2024::timeout-london--andrzej-lukowski.json",
     "oliver-west-end-2024::sunday-telegraph--dominic-cavendish.json",
     "grace-pervades-west-end-2026::whatsonstage--kris-hallett.json",
+    "paranormal-activity-west-end-2025::financialtimes--sarah-hemming.json",
     "all-my-sons-west-end-2025::guardian--arifa-akbar.json",
     "sinatra-the-musical-west-end-2026::musical-theatre-review--unknown.json",
     "cyrano-de-bergerac-west-end-2026::artsdesk--unknown.json",
@@ -98,7 +101,6 @@
     "les-miserables-arena-concert-spectacular-off-broadway-2026::nypost--johnny-oleksinski.json",
     "a-small-and-quiet-light-off-west-end-2026::artsdesk--aleks-sierz.json",
     "a-small-and-quiet-light-off-west-end-2026::plays-international--unknown.json",
-    "school-pictures-off-broadway-2026::lighting-and-sound-america--david-barbour.json",
     "sylvia-west-end-2023::standard--nick-curtis.json",
     "crybabies-the-scaring-off-west-end-2026::london-box-office--stuart-king.json",
     "operation-mincemeat-tour-2026::boston-globe--unknown.json",
@@ -857,6 +859,27 @@
           "cvReasoning": "The review explicitly states the production is at 'Theatre Royal Bath', which is a regional UK theatre, not a West End v",
           "cvIssues": [
             "wrong production"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "title": "Paranormal Activity",
+      "openingDate": "2025-12-14",
+      "message": "financialtimes/Sarah Hemming (financialtimes--sarah-hemming.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid theater review (high-quality critical assessment), but it reviews the pre-West End production that playe — https://www.ft.com/content/899d1004-3dcb-4958-9b57-b1d2ba6745b2",
+      "violations": [
+        {
+          "filename": "financialtimes--sarah-hemming.json",
+          "url": "https://www.ft.com/content/899d1004-3dcb-4958-9b57-b1d2ba6745b2",
+          "outletId": "financialtimes",
+          "criticName": "Sarah Hemming",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "This is a valid theater review (high-quality critical assessment), but it reviews the pre-West End production that playe",
+          "cvIssues": [
+            "Review describes pre-West End production: explicitly states show was 'first seen in Leeds and then the US' before West End opening",
+            "Text is truncated mid-sentence at character 3332, ending abruptly mid-review"
           ]
         }
       ]
@@ -1747,27 +1770,6 @@
           "cvIssues": [
             "Review is of the Chichester Festival Theatre production (premiered August 2026), not the Orange Tree Theatre Off-West End production",
             "Text ends mid-sentence ('The story remains factual and heroic when it [...]'), indicating truncation"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "school-pictures-off-broadway-2026",
-      "title": "School Pictures",
-      "openingDate": "2026-10-18",
-      "message": "lighting-and-sound-america/David Barbour (lighting-and-sound-america--david-barbour.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] The scraped content evaluates a different production  — http://www.lightingandsoundamerica.com/news/story.asp?ID=-ATIT2E",
-      "violations": [
-        {
-          "filename": "lighting-and-sound-america--david-barbour.json",
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-ATIT2E",
-          "outletId": "lighting-and-sound-america",
-          "criticName": "David Barbour",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 0d of opening, likely correct production] The scraped content evaluates a different production ",
-          "cvIssues": [
-            "The review is for a different show, 'Amusements', not 'School Pictures'.",
-            "The review discusses a performance at the Peter Jay Sharp Theatre, not the Cherry Lane Theatre."
           ]
         }
       ]
