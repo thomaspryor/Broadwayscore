@@ -860,5 +860,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-21T19:13:27.415Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5861-poller-timeout",
+    "title": "Landing blocked: rebase red on land/bro-5861-poller-timeout",
+    "description": "land.yml did not land land/bro-5861-poller-timeout: the rebase gate went red at 5a884e7c6d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39660274122",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5861-poller-timeout"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "5a884e7c6dbbb3a3a2781909e98bce21ee531be1"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39660274122"
+      }
+    ],
+    "queuedAt": "2026-10-21T19:19:25.003Z"
   }
 ]
