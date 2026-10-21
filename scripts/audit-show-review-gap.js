@@ -1833,7 +1833,7 @@ function openingWindowConditionKey(showId) {
 function alertShowState(r, showById) {
   const s = showById && showById.get(r.showId);
   if (!s) return { openingDate: r.openingDate, status: r.status };
-  return { openingDate: s.openingDate, previewsStartDate: s.previewsStartDate, status: s.status };
+  return { openingDate: s.openingDate || r.openingDate, previewsStartDate: s.previewsStartDate, status: s.status };
 }
 
 function censusGapsAlert(state, now = Date.now()) {
