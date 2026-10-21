@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5436",
   "planId": "5941a247-1e2c-486a-9c18-a1c8ecf3d821",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -32,5 +32,19 @@
         "description": "Persist the confirmed non-review exclusion so refetch cleanup cannot leave this cast announcement as a silent score gap."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T14:59:57.201Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "maybe-happy-ending-tour-2026/theatermania--zachary-stewart.json isNonReviewReason: null -> \"manual (not a review): BRO-5436. The stored ensemble history contains nine unanimous not_a_review verdicts identifying this article as a Stella Cole Broadway cast announcement with no critical evaluation, rather than a national-tour review. Refetches cleared the active rejection; retain this editorial exclusion independently of text-quality refetch state.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "maybe-happy-ending-tour-2026/theatermania--zachary-stewart.json isNonReview: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
