@@ -526,5 +526,36 @@
       }
     ],
     "queuedAt": "2026-10-21T17:29:57.784Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5844-visual-gate-diff-aware",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5844-visual-gate-diff-aware",
+    "description": "land.yml did not land land/bro-5844-visual-gate-diff-aware: the unit-tests-node gate went red at 9c0625cc88. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39643650861",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5844-visual-gate-diff-aware"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "9c0625cc883f2141d25597daedb82071443ee97d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39643650861"
+      }
+    ],
+    "queuedAt": "2026-10-21T17:39:38.185Z"
   }
 ]
