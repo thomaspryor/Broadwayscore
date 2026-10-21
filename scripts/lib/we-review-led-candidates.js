@@ -48,9 +48,15 @@ const WOS_LONDON_MARKET = 83;
 // the hand check; their titles say nothing.)
 const NON_THEATRE_TITLE = /\b(in concert|concert|on screen|live on screen|screening|gala)\b|\billusionists\b|\bderren brown\b/i;
 
-/** "”The Doctor”" → "The Doctor". */
+/**
+ * "”The Doctor”" → "The Doctor". Theatre Record files a leading article
+ * after the title ("Lehman Trilogy (The)", "Birthday Party, The"); put it back
+ * in front so the row's title and id match every other source (BRO-5851).
+ */
 function cleanReviewTitle(title) {
-  return String(title || '').replace(/[“”„"]/g, '').replace(/\s+/g, ' ').trim();
+  const t = String(title || '').replace(/[“”„"]/g, '').replace(/\s+/g, ' ').trim();
+  const m = t.match(/^(.+?)(?:\s*\((The|A|An)\)|,\s*(The|A|An))$/);
+  return m ? `${m[2] || m[3]} ${m[1]}` : t;
 }
 
 const sameVenueFamily = (a, b) => !!a && !!b && (venuesMatch(a, b) || venueFamily(a) === venueFamily(b));
