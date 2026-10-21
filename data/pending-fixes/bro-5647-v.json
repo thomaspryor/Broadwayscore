@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5647-v",
   "planId": "0238ca4d-7bb8-4f88-b570-126641b67b63",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-21T19:20:43.200Z",
   "submitter": {
     "name": null,
@@ -146,5 +146,39 @@
         "description": "two-strangers: add the SEC filing"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T19:46:08.754Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for waiting-for-godot-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for waiting-for-godot-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for water-for-elephants"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for water-for-elephants"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for two-strangers"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for two-strangers"
+    }
+  ],
+  "executedIn": "ci"
 }
