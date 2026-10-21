@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-21T00:41:49.269Z",
+  "timestamp": "2026-10-21T01:07:00.864Z",
   "stats": {
-    "totalReviews": 57990,
-    "alreadyFlagged": 21115,
+    "totalReviews": 57995,
+    "alreadyFlagged": 21116,
     "dateGuardCatches": 198,
     "directorMismatch": 2029,
     "tvFilmSignals": 1653,
-    "londonSignals": 2572,
+    "londonSignals": 2573,
     "offBroadwaySignals": 530,
     "yearMismatch": 161,
-    "noPublishDate": 5227
+    "noPublishDate": 5230
   },
   "findings": [
     {
@@ -3753,6 +3753,7 @@
     {
       "showId": "back-to-the-future-tour-2024",
       "file": "the-cap-times--lindsay-christians.json",
+      "score": 63,
       "publishDate": "2026-03-11",
       "url": "https://captimes.com/entertainment/arts-and-theatre/back-to-the-future-musical-tour-is-all-spark-no-substance/article_d3c3b5ef-50cf-404e-b29c-ce62fb352138.html",
       "findings": [
@@ -58154,7 +58155,7 @@
     {
       "showId": "blue-mist-west-end-2023",
       "file": "partially-obstructed-view--view-my-complete.json",
-      "score": null,
+      "score": 77,
       "publishDate": "2023-11-13",
       "url": "https://partially-obstructed-view.blogspot.com/2023/11/theatre-review-blue-mist.html",
       "findings": [
@@ -67548,7 +67549,7 @@
     {
       "showId": "hercules-west-end-2025",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 57,
+      "score": 61,
       "publishDate": "2025-06-25",
       "url": "https://www.ft.com/content/2c619ad5-32ac-45da-812c-290d4c6522e9",
       "findings": [
@@ -70644,7 +70645,7 @@
     {
       "showId": "king-lear-west-end-2023",
       "file": "partially-obstructed-view--view-my-complete.json",
-      "score": null,
+      "score": 43,
       "publishDate": "2023-11-01",
       "url": "https://partially-obstructed-view.blogspot.com/2023/11/theatre-review-king-lear-wyndhams.html",
       "findings": [
@@ -80021,6 +80022,7 @@
     {
       "showId": "some-woman-west-end-2026",
       "file": "sierz-co-uk--unknown.json",
+      "score": 64,
       "publishDate": "2026-10-17",
       "url": "https://sierz.co.uk/reviews/some-woman-national-theatre/",
       "findings": [
@@ -90891,6 +90893,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "triumph-off-west-end-2026",
+      "file": "acast--unknown.json",
+      "publishDate": null,
+      "url": "https://shows.acast.com/mickeyjotheatre/episodes/triumph-almeida-theatre-london-review-of-caryl-churchills-17",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
