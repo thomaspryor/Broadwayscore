@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5942",
   "planId": "71d73cdb-493d-4abf-818d-6d365daceb82",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-22T15:28:13.053Z",
   "submitter": {
     "name": null,
@@ -46,5 +46,34 @@
         "description": "Washington Post Peter Marks: Thoughts of a Colored Man -> Lackawanna Blues section"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T19:38:52.575Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
