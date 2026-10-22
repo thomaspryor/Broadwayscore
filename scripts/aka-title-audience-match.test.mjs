@@ -27,9 +27,22 @@ test('Theatr "860" at the Imperial attaches; same title elsewhere does not', () 
   assert.equal(elsewhere.length, 0);
 });
 
-test('Theatr junk "Billy Crystal" row is not matched by the alias rule', () => {
-  const m = matchTheatrToShows([{ id: 3, name: 'Billy Crystal', eventCategory: 'Broadway', venue: { name: 'Imperial Theatre' } }], [{ ...show, akaTitles: ['860'] }]);
-  assert.ok(m.every(x => x.confidence !== 'alias'));
+test('a better-watched stray "Billy Crystal" row does not displace the real "860" row', () => {
+  const rows = [
+    { id: 3, name: 'Billy Crystal', eventCategory: 'Broadway', venue: { name: 'Imperial Theatre' }, totalWatchedUsers: 9 },
+    { id: 4, name: '860', eventCategory: 'Broadway', venue: { name: 'Imperial Theatre' }, totalWatchedUsers: 3 },
+  ];
+  for (const order of [rows, [...rows].reverse()]) {
+    const m = matchTheatrToShows(order, [show]);
+    assert.equal(m.length, 1);
+    assert.equal(m[0].theatr.id, 4);
+    assert.equal(m[0].confidence, 'alias');
+  }
+});
+
+test('Theatr venue given as a plain string still alias-matches', () => {
+  const m = matchTheatrToShows([{ id: 5, name: '860', eventCategory: 'Broadway', venue: 'Imperial Theatre', totalWatchedUsers: 1 }], [show]);
+  assert.equal(m.length, 1);
 });
 
 test('Mezzanine "860" at the Imperial attaches to Billy Crystal 860', () => {
@@ -43,4 +56,9 @@ test('Mezzanine "860" at the Imperial attaches to Billy Crystal 860', () => {
 test('Mezzanine "860" at another theater does not attach', () => {
   const prod = { objectId: 'pX', show: { name: '860' }, theater: { name: 'Gershwin Theatre' }, opened: '2026-10-21', ratingsCount: 5, averageRating: 3.0 };
   assert.equal(matchProductions([prod], [show]).length, 0);
+});
+
+test('Mezzanine alias at the same house but a much older run does not attach', () => {
+  const old = { objectId: 'pOld', show: { name: '860' }, theater: { name: 'Imperial Theatre' }, opened: '2019-03-01', ratingsCount: 40, averageRating: 4.0 };
+  assert.equal(matchProductions([old], [show]).length, 0);
 });

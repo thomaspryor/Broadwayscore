@@ -307,7 +307,7 @@ function matchTheatrToShows(theatrShows, ourShows) {
     // title is "Billy Crystal 860" (akaTitles ["860"]); the prefix rule below needs
     // 8+ characters, so a bare alias never matched.
     const aliasCandidates = ourShows.filter(show => {
-      if (!matchesAlias(show, theatr.name, theatr.venue && theatr.venue.name)) return false;
+      if (!matchesAlias(show, theatr.name, typeof theatr.venue === 'string' ? theatr.venue : theatr.venue && theatr.venue.name)) return false;
       if (closedBeforeTheatr(show)) return false;
       const start = show.previewsStartDate || show.openingDate;
       return !start || start <= today;
@@ -359,7 +359,12 @@ function matchTheatrToShows(theatrShows, ourShows) {
     const id = m.show.id;
     if (THEATR_SKIP_SHOWS.has(id)) continue;
     const watched = m.theatr.totalWatchedUsers || 0;
-    if (!byShowId.has(id) || watched > (byShowId.get(id).theatr.totalWatchedUsers || 0)) {
+    const cur = byShowId.get(id);
+    // BRO-5943: a title/alias match outranks a prefix match, so a better-watched
+    // stray listing ("Billy Crystal") cannot displace the real one ("860").
+    const rank = c => (c === 'prefix' ? 1 : 2);
+    if (!cur || rank(m.confidence) > rank(cur.confidence)
+        || (rank(m.confidence) === rank(cur.confidence) && watched > (cur.theatr.totalWatchedUsers || 0))) {
       byShowId.set(id, m);
     }
   }

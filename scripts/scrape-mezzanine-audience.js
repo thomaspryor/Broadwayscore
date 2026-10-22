@@ -563,8 +563,10 @@ function matchProductions(productions, shows) {
       // Strategy 1b (BRO-5943): press-title alias. Mezzanine lists "860" where our
       // title is "Billy Crystal 860" (akaTitles ["860"]). A bare alias is a short,
       // collision-prone string, so it counts only at the same house.
+      // 'low' makes the year-verification below mandatory, so an older run listed
+      // under the alias at the same house cannot attach.
       if (confidence === 'none' && aliases.has(mName) && venuesMatch(show.venue, p.theater?.name || p.theaterName)) {
-        confidence = 'high';
+        confidence = 'low';
       }
 
       // Strategy 2: Prefix matching (handles subtitles like "Angels in America: Perestroika")
