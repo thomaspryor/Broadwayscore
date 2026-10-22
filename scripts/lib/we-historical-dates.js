@@ -25,6 +25,11 @@
 
 const WOS_FIRST_PERFORMANCE_SOURCE = 'whatsonstage-first-performance';
 const MODE_INFERENCE_SOURCE = 'inferred-from-reviews-mode';
+// BRO-5851: a first performance kept as openingDate after a sourced search
+// found no press night (a transfer or reopening with none, or none on
+// record). Still unconfirmed, so a press-night source may overwrite it; the
+// season audit accepts it where it refuses WOS_FIRST_PERFORMANCE_SOURCE.
+const NO_PRESS_NIGHT_FOUND_SOURCE = 'first-performance-no-press-night-found';
 const DAY_MS = 86400000;
 const MAX_PREVIEW_DAYS = 42;
 
@@ -95,6 +100,6 @@ function repairWosOpening(show, reviews) {
 }
 
 module.exports = {
-  WOS_FIRST_PERFORMANCE_SOURCE, MODE_INFERENCE_SOURCE,
+  WOS_FIRST_PERFORMANCE_SOURCE, MODE_INFERENCE_SOURCE, NO_PRESS_NIGHT_FOUND_SOURCE,
   plausibleOpeningDate, wosStartDates, pressNightFromReviewMode, repairWosOpening,
 };

@@ -8,7 +8,7 @@
     "email": null
   },
   "plan": {
-    "summary": "BRO-5851: fix the 2017-18 West End historical fact-check errors (press nights stored as first previews, stale closing dates, two synopses)",
+    "summary": "BRO-5851: fix the 2017-18 West End historical fact-check errors (press nights stored as first previews, stale closing dates, two synopses) and the season's three remaining WhatsOnStage first-performance openings",
     "steps": [
       "shows.json: fanny-and-alexander-west-end-2018.previewsStartDate",
       "shows.json: fanny-and-alexander-west-end-2018.openingDate",
@@ -24,7 +24,10 @@
       "shows.json: strictly-ballroom-west-end-2018.synopsis",
       "shows.json: the-king-and-i-west-end-2018.closingDate",
       "shows.json: long-days-journey-into-night-west-end-2018.closingDate",
-      "shows.json: tina-the-tina-turner-musical-west-end-2018.synopsis"
+      "shows.json: tina-the-tina-turner-musical-west-end-2018.synopsis",
+      "shows.json: translations-west-end-2018.openingDate",
+      "shows.json: pressure-west-end-2018.openingDate",
+      "shows.json: the-glenn-miller-story-west-end-2018.openingDateSource"
     ],
     "riskLevel": "low",
     "actions": [
@@ -162,6 +165,33 @@
         "oldValue": "Tina Turner recounts her remarkable journey from a impoverished childhood in rural Mississippi through her rise to become the \"Queen of Rock and Roll.\" The musical traces her escape from an abusive relationship with Ike Turner, her reinvention as a solo artist, and her triumphant comeback to global stardom, celebrating her resilience, talent, and transformation into an iconic performer.",
         "newValue": "Tina Turner recounts her remarkable journey from an impoverished childhood in Nutbush, Tennessee through her rise to become the \"Queen of Rock and Roll.\" The musical traces her escape from an abusive relationship with Ike Turner, her reinvention as a solo artist, and her triumphant comeback to global stardom, celebrating her resilience, talent, and transformation into an iconic performer.",
         "description": "shows.json: tina-the-tina-turner-musical-west-end-2018.synopsis"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "translations-west-end-2018",
+        "field": "openingDate",
+        "oldValue": "2018-05-22",
+        "newValue": "2018-05-30",
+        "description": "shows.json: translations-west-end-2018.openingDate 2018-05-22 -> 2018-05-30 (https://www.londontheatre.co.uk/theatre-news/news/cast-joining-colin-morgan-in-translations-at-national-theatre-announced)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pressure-west-end-2018",
+        "field": "openingDate",
+        "oldValue": "2018-06-06",
+        "newValue": "2018-06-12",
+        "description": "shows.json: pressure-west-end-2018.openingDate 2018-06-06 -> 2018-06-12 (https://seatplan.com/london/pressure-tickets/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-glenn-miller-story-west-end-2018",
+        "field": "openingDateSource",
+        "oldValue": "whatsonstage-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: the-glenn-miller-story-west-end-2018.openingDateSource whatsonstage-first-performance -> first-performance-no-press-night-found (no press night found after a sourced search; https://officiallondontheatre.com/show/glenn-miller-show-111409139/ lists 6 Jul to 18 Aug 2018 at the Coliseum, no press night)"
       }
     ]
   }

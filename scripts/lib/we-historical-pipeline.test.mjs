@@ -367,4 +367,8 @@ test('auditSeason (BRO-5851): a WOS first performance stored as openingDate fail
   assert.deepEqual(r.checks.opening.rows, [{ showId: 'killer-joe', openingDate: '2018-05-18' }]);
   assert.equal(r.pass, false);
   assert.equal(auditSeason({ shows: [shows[1]], reviews: [], season: SEASON }).checks.opening.pass, true);
+  // A sourced search that found no press night is counted, not failed.
+  const searched = auditSeason({ shows: [row('killer-joe', { openingDateSource: 'first-performance-no-press-night-found' })], reviews: [], season: SEASON });
+  assert.equal(searched.checks.opening.pass, true);
+  assert.equal(searched.checks.opening.noPressNightFound, 1);
 });
