@@ -26,11 +26,21 @@
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
-const { matchTitleToShow, loadShows, validateRoundupPageTitle } = require('./lib/show-matching');
+const { matchTitleToShow, loadShows, buildSiblingCategoriesFromShows } = require('./lib/show-matching');
+const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { filterToLiveShowIds, loadLiveShowIds } = require('./lib/live-show-ids');
 const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
 const { isLondonMarket } = require('./lib/venue-classification');
+
+// Memoized sibling-category index (same shape as scrape-bww-reviews.js) so
+// checkArchiveCategory()'s cross-market-sibling check can fire (BRO-2550).
+let _siblingCategoriesCache = null;
+function siblingCategoriesByShowId() {
+  if (_siblingCategoriesCache) return _siblingCategoriesCache;
+  _siblingCategoriesCache = buildSiblingCategoriesFromShows(loadShows());
+  return _siblingCategoriesCache;
+}
 
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'thestage-roundups');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -227,7 +237,7 @@ async function scrapeRoundups(page, urls, weShows) {
       const html = await page.content();
 
       // Validate page title matches the show before archiving — Stuart King 2026-04-25
-      const v = validateRoundupPageTitle(html, match.show.title);
+      const v = checkArchiveCategory(html, match.show, siblingCategoriesByShowId()[match.show.id]);
       if (!v.ok) {
         console.log(`    ✗ page-title mismatch (${v.reason}): "${(v.pageTitle||'').substring(0,60)}" — skipped`);
         stats.errors++;

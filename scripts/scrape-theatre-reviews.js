@@ -29,13 +29,23 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
-const { matchTitleToShow, loadShows, validateRoundupPageTitle } = require('./lib/show-matching');
+const { matchTitleToShow, loadShows, buildSiblingCategoriesFromShows } = require('./lib/show-matching');
+const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 const { normalizeOutlet } = require('./lib/review-normalization');
 const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { aggregatorStarsPatch } = require('./lib/paywall-stub-score');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+
+// Memoized sibling-category index (same shape as scrape-bww-reviews.js) so
+// checkArchiveCategory()'s cross-market-sibling check can fire (BRO-2550).
+let _siblingCategoriesCache = null;
+function siblingCategoriesByShowId() {
+  if (_siblingCategoriesCache) return _siblingCategoriesCache;
+  _siblingCategoriesCache = buildSiblingCategoriesFromShows(loadShows());
+  return _siblingCategoriesCache;
+}
 
 // --help must print usage and exit BEFORE any side effect (BRO-1711).
 if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
@@ -521,7 +531,7 @@ async function main() {
       }
 
       // Validate page title matches the show before archiving — Stuart King 2026-04-25
-      const v = validateRoundupPageTitle(html, show.title);
+      const v = checkArchiveCategory(html, show, siblingCategoriesByShowId()[show.id]);
       if (!v.ok) {
         console.log(`    ✗ page-title mismatch (${v.reason}): "${(v.pageTitle||'').substring(0,60)}" — skipped`);
         stats.errors++;
