@@ -62,7 +62,9 @@ const MAX_CODE_ERROR_DEFERRALS = 3;
  */
 function isOwnCodeException(error) {
   if (!(error instanceof TypeError || error instanceof ReferenceError)) return false;
-  return !/^(All tiers failed|URL returned)/.test(String(error.message || ''));
+  // Node's own network errors are TypeErrors too ("fetch failed", "Invalid URL"):
+  // those are about the URL, not our code.
+  return !/^(All tiers failed|URL returned|fetch failed|Invalid URL)/.test(String(error.message || ''));
 }
 
 // Legacy rows only keep the first 200 chars of the message and no error type,
@@ -194,7 +196,10 @@ function applyRouteCapDeferralLimit(reason, existing) {
     return { reason: next > MAX_CODE_ERROR_DEFERRALS ? 'fetch_error' : reason, cappedDeferrals: (existing && existing.cappedDeferrals) || 0, codeErrorDeferrals: next };
   }
   const prior = (existing && existing.cappedDeferrals) || 0;
-  if (reason !== ROUTE_CAPPED_REASON) return { reason, cappedDeferrals: prior };
+  // Carried through other failures so a real failure in between does not
+  // hand a row a fresh code_error budget.
+  const codeErrorDeferrals = (existing && existing.codeErrorDeferrals) || 0;
+  if (reason !== ROUTE_CAPPED_REASON) return { reason, cappedDeferrals: prior, ...(codeErrorDeferrals ? { codeErrorDeferrals } : {}) };
   const next = prior + 1;
   return { reason: next > MAX_ROUTE_CAPPED_DEFERRALS ? 'all_tiers_failed' : reason, cappedDeferrals: next };
 }

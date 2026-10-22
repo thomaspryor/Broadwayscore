@@ -155,3 +155,12 @@ test('shouldRetryFetch on the collector-projected entry retries a closed show wh
   const real = { failureReason: policy.effectiveFailureReason({ failureReason: 'fetch_error', errorMessage: 'socket hang up' }), failureCount: 9 };
   assert.equal(shouldRetryFetch(show, { url: 'https://www.theguardian.com/stage/x' }, real).shouldRetry, false);
 });
+
+test('code_error review fixes: Node network TypeErrors are not code errors; the deferral count survives other failures; incomplete reason reads legacy crash rows', () => {
+  assert.equal(policy.isOwnCodeException(new TypeError('fetch failed')), false);
+  assert.equal(policy.isOwnCodeException(new TypeError('Invalid URL')), false);
+  assert.equal(policy.applyRouteCapDeferralLimit('fetch_error', { codeErrorDeferrals: 2 }).codeErrorDeferrals, 2);
+  const { classifyIncompleteReason } = require('./incomplete-reason.js');
+  const r = classifyIncompleteReason({ url: 'https://www.theguardian.com/stage/x' }, { failureReason: 'fetch_error', failureCount: 2, errorMessage: "Cannot read properties of undefined (reading 'length')" });
+  assert.equal(r && r.incompleteReason, 'code_error');
+});
