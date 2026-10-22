@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T18:41:05.794Z",
+  "generatedAt": "2026-10-22T19:07:46.034Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -148,6 +148,10 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -170,11 +174,15 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 769,
+  "itemsScanned": 730,
   "matchedGaps": 4,
-  "possibleGaps": 3,
+  "possibleGaps": 2,
   "gaps": [
     {
       "showId": "angels-bone-west-end-2026",
@@ -211,15 +219,6 @@
       "url": "https://culturesauce.com/caryl-churchill-triumph-off-broadway-review/",
       "headline": "Caryl Churchill&#8217;s &#8216;Triumph&#8217; views imperial Rome through a Foxy blond flack (Off Broadway review)",
       "publishDate": "2026-10-18"
-    },
-    {
-      "showId": "copperfield-the-new-musical-off-broadway-2026",
-      "title": "Copperfield! The New Musical",
-      "level": "possible",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/the-curious-case-of-benjamin-button/",
-      "headline": "The Curious Case of Benjamin Button *****",
-      "publishDate": "2026-10-21"
     },
     {
       "showId": "the-pianist-off-west-end-2026",

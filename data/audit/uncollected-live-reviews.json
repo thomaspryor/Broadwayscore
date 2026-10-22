@@ -1,10 +1,26 @@
 {
-  "generatedAt": "2026-10-22T18:40:53.690Z",
+  "generatedAt": "2026-10-22T19:07:32.259Z",
   "maxAgeHours": 12,
-  "showsAffected": 1,
-  "strandedFiles": 1,
+  "showsAffected": 2,
+  "strandedFiles": 2,
   "blackoutShows": [],
   "findings": [
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "title": "Thelma & Louise: A New Musical",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "times-uk--clive-davis.json",
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/thelma-and-louise-review-slow-pace-makes-heroines-seem-like-hitchhikers-pr9qmpzsk",
+          "outlet": "The Times",
+          "ageHours": null
+        }
+      ],
+      "usable": 45,
+      "discovered": 49,
+      "totalBlackout": false
+    },
     {
       "showId": "triumph-off-west-end-2026",
       "title": "Triumph",
@@ -14,7 +30,7 @@
           "file": "almeidacouk--unknown.json",
           "url": "https://almeida.co.uk/whats-on/",
           "outlet": "Almeida Theatre",
-          "ageHours": 26.68241888888889
+          "ageHours": 27.126465833333334
         }
       ],
       "usable": 27,

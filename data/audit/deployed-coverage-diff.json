@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-22T18:41:05.519Z",
+  "generatedAt": "2026-10-22T19:07:45.626Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 261,
-  "clean": 256,
-  "defective": 5,
+  "clean": 260,
+  "defective": 1,
   "byType": {
-    "score-drift": 5
+    "score-drift": 1
   },
   "shows": [
     {
@@ -24,70 +24,6 @@
       "missingFromProd": [],
       "localCount": 3,
       "deployedCount": 3,
-      "firstDefectAt": "2026-10-22T18:41:00.247Z"
-    },
-    {
-      "showId": "midnight-off-broadway-2026",
-      "title": "Midnight",
-      "openingDate": "2026-10-15",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 73.82 vs local 73.62 (Δ0.2)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 20,
-      "deployedCount": 21,
-      "firstDefectAt": "2026-10-22T18:41:00.247Z"
-    },
-    {
-      "showId": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
-      "title": "The Banality of Evil: Hannah Arendt, France 1940",
-      "openingDate": "2026-10-13",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 62.7 vs local 62.62 (Δ0.08)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 17,
-      "deployedCount": 17,
-      "firstDefectAt": "2026-10-22T18:41:00.247Z"
-    },
-    {
-      "showId": "a-ghost-in-your-ear-off-broadway-2026",
-      "title": "A Ghost In Your Ear",
-      "openingDate": "2026-10-09",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 69.14 vs local 68.7 (Δ0.44)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 15,
-      "deployedCount": 15,
-      "firstDefectAt": "2026-10-22T18:41:00.247Z"
-    },
-    {
-      "showId": "kramerfauci-st-anns-off-broadway-2026",
-      "title": "Kramer/Fauci",
-      "openingDate": "2026-10-04",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 81.59 vs local 81.27 (Δ0.32)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 18,
-      "deployedCount": 18,
       "firstDefectAt": "2026-10-22T18:41:00.247Z"
     }
   ],

@@ -951,9 +951,11 @@
     "gaps": 0
   },
   "maltby-and-shires-about-time-off-broadway-2026": {
-    "at": "2026-09-05T17:16:12.705Z",
+    "at": "2026-10-22T18:49:35.323Z",
     "gaps": 2,
-    "uncollected": 0
+    "priorProductionGaps": 0,
+    "uncollected": 0,
+    "alertUncollected": 0
   },
   "the-porch-on-windy-hill-off-broadway-2026": {
     "at": "2026-06-07T17:06:07.660Z",
@@ -993,9 +995,11 @@
     "gaps": 0
   },
   "an-ark-off-broadway-2026": {
-    "at": "2026-09-08T15:00:32.771Z",
-    "gaps": 5,
-    "uncollected": 0
+    "at": "2026-10-22T19:04:23.670Z",
+    "gaps": 3,
+    "priorProductionGaps": 0,
+    "uncollected": 0,
+    "alertUncollected": 0
   },
   "youre-a-good-man-charlie-brown-off-broadway-2026": {
     "at": "2026-09-17T01:11:52.090Z",
@@ -3678,14 +3682,18 @@
     "serpCensusAt": "2026-09-23T17:40:39.501Z"
   },
   "after-all-these-years-off-broadway-2026": {
-    "at": "2026-09-08T14:58:34.873Z",
-    "gaps": 1,
-    "uncollected": 1
+    "at": "2026-10-22T18:54:10.002Z",
+    "gaps": 0,
+    "priorProductionGaps": 0,
+    "uncollected": 0,
+    "alertUncollected": 0
   },
   "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026": {
-    "at": "2026-09-08T14:59:11.280Z",
-    "gaps": 10,
-    "uncollected": 3,
+    "at": "2026-10-22T19:01:04.081Z",
+    "gaps": 6,
+    "priorProductionGaps": 0,
+    "uncollected": 0,
+    "alertUncollected": 0,
     "serpCensusAt": "2026-09-08T14:59:11.281Z"
   },
   "the-ford-hill-project-off-broadway-2026": {
@@ -5168,12 +5176,17 @@
     "serpCensusAt": "2026-10-22T18:28:43.687Z"
   },
   "dog-mom-off-west-end-2026": {
-    "at": "2026-10-22T08:02:32.763Z",
-    "gaps": 2,
+    "at": "2026-10-22T19:05:12.352Z",
+    "gaps": 1,
     "priorProductionGaps": 1,
     "uncollected": 0,
     "alertUncollected": 0,
     "refVersion": 2,
+    "weAlert": {
+      "hash": "2235990780",
+      "at": "2026-10-22T08:02:32.770Z",
+      "delivered": false
+    },
     "zeroChar": {
       "https://shouldgoto.com/theatre/dog-mom": {
         "n": 4,
@@ -5191,12 +5204,7 @@
         "since": "2026-10-20T12:13:41.244Z"
       }
     },
-    "serpCensusAt": "2026-10-22T08:02:32.764Z",
-    "weAlert": {
-      "hash": "2235990780",
-      "at": "2026-10-22T08:02:32.770Z",
-      "delivered": false
-    }
+    "serpCensusAt": "2026-10-22T19:05:12.352Z"
   },
   "music-for-18-musicians-staged-variations-off-broadway-2026": {
     "at": "2026-10-19T05:19:40.786Z",
@@ -5286,7 +5294,7 @@
     "serpCensusAt": "2026-10-22T14:15:32.106Z"
   },
   "cadel-lungs-on-legs-west-end-2026": {
-    "at": "2026-10-22T08:04:37.055Z",
+    "at": "2026-10-22T19:07:12.997Z",
     "gaps": 1,
     "priorProductionGaps": 0,
     "uncollected": 1,
@@ -5294,10 +5302,10 @@
     "refVersion": 2,
     "weAlert": {
       "hash": "337727625",
-      "at": "2026-10-21T15:46:50.886Z",
+      "at": "2026-10-22T19:07:13.006Z",
       "delivered": false
     },
-    "serpCensusAt": "2026-10-22T08:04:37.055Z"
+    "serpCensusAt": "2026-10-22T19:07:12.997Z"
   },
   "high-school-musical-off-west-end-2026": {
     "at": "2026-10-22T14:09:42.846Z",
@@ -6016,11 +6024,11 @@
     "serpCensusAt": "2026-10-22T14:20:20.014Z"
   },
   "jesus-christ-superstar-off-west-end-2026": {
-    "at": "2026-10-22T05:44:49.615Z",
-    "gaps": 7,
-    "priorProductionGaps": 60,
-    "uncollected": 3,
-    "alertUncollected": 3,
+    "at": "2026-10-22T19:03:22.506Z",
+    "gaps": 3,
+    "priorProductionGaps": 62,
+    "uncollected": 0,
+    "alertUncollected": 0,
     "refVersion": 2,
     "weAlert": {
       "hash": "4111646529",
@@ -6044,21 +6052,28 @@
         "since": "2026-10-19T00:38:27.942Z"
       }
     },
-    "serpCensusAt": "2026-10-22T05:44:49.617Z"
+    "serpCensusAt": "2026-10-22T19:03:22.507Z"
   },
   "the-master-builder-off-west-end-2026": {
-    "at": "2026-10-22T08:03:35.038Z",
+    "at": "2026-10-22T19:06:06.867Z",
     "gaps": 4,
-    "priorProductionGaps": 10,
-    "uncollected": 1,
-    "alertUncollected": 1,
+    "priorProductionGaps": 9,
+    "uncollected": 2,
+    "alertUncollected": 2,
     "refVersion": 2,
     "weAlert": {
       "hash": "939991057",
       "at": "2026-10-20T04:40:40.591Z",
       "delivered": false
     },
-    "serpCensusAt": "2026-10-22T08:03:35.040Z"
+    "serpCensusAt": "2026-10-22T19:06:06.868Z",
+    "zeroChar": {
+      "https://theatreweekly.com/interview-greg-hicks-on-the-master-builder-at-arcola-theatre/": {
+        "n": 1,
+        "at": "2026-10-22T19:06:26.003Z",
+        "since": "2026-10-22T19:06:26.003Z"
+      }
+    }
   },
   "bob-odenkirk-presents-hospital-hour-off-broadway-2026": {
     "at": "2026-10-22T18:26:17.237Z",
@@ -6094,12 +6109,12 @@
     "serpCensusAt": "2026-10-22T18:36:15.242Z"
   },
   "school-pictures-off-broadway-2026": {
-    "at": "2026-10-22T07:58:09.458Z",
+    "at": "2026-10-22T19:04:02.763Z",
     "gaps": 1,
     "priorProductionGaps": 6,
     "uncollected": 0,
     "alertUncollected": 0,
-    "serpCensusAt": "2026-10-22T07:58:09.458Z"
+    "serpCensusAt": "2026-10-22T19:04:02.764Z"
   },
   "two-girls-off-broadway-2026": {
     "at": "2026-10-22T18:38:25.496Z",
@@ -6323,89 +6338,109 @@
     "serpCensusAt": "2026-10-22T18:39:09.698Z"
   },
   "phyl-off-broadway-2026": {
-    "at": "2026-10-22T02:03:41.489Z",
-    "gaps": 1,
+    "at": "2026-10-22T18:49:19.617Z",
+    "gaps": 0,
     "priorProductionGaps": 0,
     "uncollected": 0,
     "alertUncollected": 0,
-    "serpCensusAt": "2026-10-22T02:03:41.490Z"
+    "serpCensusAt": "2026-10-22T18:49:19.617Z"
   },
   "the-pianist-off-west-end-2026": {
-    "at": "2026-10-22T02:04:55.397Z",
-    "gaps": 8,
-    "priorProductionGaps": 1,
-    "uncollected": 4,
-    "alertUncollected": 4,
+    "at": "2026-10-22T18:50:19.509Z",
+    "gaps": 5,
+    "priorProductionGaps": 2,
+    "uncollected": 1,
+    "alertUncollected": 1,
     "refVersion": 2,
-    "serpCensusAt": "2026-10-22T02:04:55.399Z",
     "zeroChar": {
       "https://seenandheard-international.com/2026/10/sunwook-kims-mesmerises-as-pianist-and-director-of-beethovens-fourth-and-fifth-piano-concertos-in-glasgow/": {
         "n": 1,
         "at": "2026-10-22T02:05:20.558Z",
         "since": "2026-10-22T02:05:20.558Z"
       }
-    }
+    },
+    "serpCensusAt": "2026-10-22T18:50:19.511Z"
   },
   "the-imaginary-invalid-2026": {
-    "at": "2026-10-22T02:06:16.524Z",
-    "gaps": 5,
-    "priorProductionGaps": 8,
-    "uncollected": 1,
-    "alertUncollected": 1,
-    "serpCensusAt": "2026-10-22T02:06:16.526Z"
+    "at": "2026-10-22T18:52:27.609Z",
+    "gaps": 2,
+    "priorProductionGaps": 9,
+    "uncollected": 0,
+    "alertUncollected": 0,
+    "serpCensusAt": "2026-10-22T18:52:27.610Z"
   },
   "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026": {
-    "at": "2026-10-22T05:28:48.091Z",
-    "gaps": 2,
+    "at": "2026-10-22T18:53:37.883Z",
+    "gaps": 0,
     "priorProductionGaps": 0,
     "uncollected": 0,
     "alertUncollected": 0,
-    "serpCensusAt": "2026-10-22T05:28:48.093Z"
+    "serpCensusAt": "2026-10-22T18:53:37.884Z"
   },
   "women-who-eat-off-broadway-2026": {
-    "at": "2026-10-22T05:41:49.793Z",
+    "at": "2026-10-22T19:01:58.705Z",
     "gaps": 1,
     "priorProductionGaps": 0,
     "uncollected": 0,
     "alertUncollected": 0,
-    "serpCensusAt": "2026-10-22T05:41:49.793Z"
+    "serpCensusAt": "2026-10-22T19:01:58.705Z"
   },
   "cirque-berserk-west-end-2026": {
-    "at": "2026-10-22T05:31:06.892Z",
+    "at": "2026-10-22T18:55:09.032Z",
     "gaps": 4,
     "priorProductionGaps": 4,
     "uncollected": 2,
     "alertUncollected": 2,
     "refVersion": 2,
-    "serpCensusAt": "2026-10-22T05:31:06.894Z"
+    "serpCensusAt": "2026-10-22T18:55:09.033Z"
   },
   "the-kick-inside-off-broadway-2026": {
-    "at": "2026-10-22T05:33:49.440Z",
-    "gaps": 4,
-    "priorProductionGaps": 0,
-    "uncollected": 3,
-    "alertUncollected": 3,
+    "at": "2026-10-22T18:58:40.583Z",
+    "gaps": 7,
+    "priorProductionGaps": 2,
+    "uncollected": 5,
+    "alertUncollected": 5,
     "zeroChar": {
       "https://here.app.getcuebox.com/o/CCTQ0T6B/shows/BN9WR68F": {
-        "n": 2,
-        "at": "2026-10-22T05:35:49.882Z",
+        "n": 3,
+        "at": "2026-10-22T18:59:52.140Z",
         "since": "2026-10-21T13:56:40.565Z"
       },
       "https://musicboard.app/erickstarr/review/album/the-kick-inside/kate-bush/": {
         "n": 2,
         "at": "2026-10-22T05:35:49.882Z",
         "since": "2026-10-21T13:56:40.565Z"
+      },
+      "https://musicboard.app/shinybug/review/album/the-kick-inside/kate-bush/": {
+        "n": 1,
+        "at": "2026-10-22T18:59:52.140Z",
+        "since": "2026-10-22T18:59:52.140Z"
+      },
+      "https://musicboard.app/mlghtbaedrei/review/album/the-kick-inside/kate-bush/": {
+        "n": 1,
+        "at": "2026-10-22T18:59:52.140Z",
+        "since": "2026-10-22T18:59:52.140Z"
+      },
+      "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/1/": {
+        "n": 1,
+        "at": "2026-10-22T18:59:52.140Z",
+        "since": "2026-10-22T18:59:52.140Z"
+      },
+      "https://musicboard.app/figureate/review/album/the-kick-inside/kate-bush/": {
+        "n": 1,
+        "at": "2026-10-22T18:59:52.140Z",
+        "since": "2026-10-22T18:59:52.140Z"
       }
     },
-    "serpCensusAt": "2026-10-22T05:33:49.442Z"
+    "serpCensusAt": "2026-10-22T18:58:40.586Z"
   },
   "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026": {
-    "at": "2026-10-22T05:38:02.021Z",
+    "at": "2026-10-22T19:00:50.400Z",
     "gaps": 0,
     "priorProductionGaps": 0,
     "uncollected": 0,
     "alertUncollected": 0,
-    "serpCensusAt": "2026-10-22T05:38:02.021Z"
+    "serpCensusAt": "2026-10-22T19:00:50.401Z"
   },
   "girls-off-west-end-2026": {
     "at": "2026-10-22T14:08:16.923Z",
