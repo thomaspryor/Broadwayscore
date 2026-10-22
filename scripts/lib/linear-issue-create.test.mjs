@@ -34,6 +34,23 @@ test('pickStateForMode park: picks the backlog-type state', () => {
   assert.equal(state.type, 'backlog');
 });
 
+for (const [label, extra] of [['after', false], ['before', true]]) {
+  test(`pickStateForMode park: plain Backlog wins over a Paused backlog-type state listed ${label} it (BRO-2857)`, () => {
+    const paused = { id: 'paused-1', name: 'Paused', type: 'backlog' };
+    const states = extra ? [paused, ...STATES] : [...STATES, paused];
+    assert.equal(pickStateForMode(states, 'park').name, 'Backlog');
+  });
+}
+
+test('pickStateForMode park: with Backlog renamed, a non-Paused backlog-type state still beats Paused', () => {
+  const states = [
+    { id: 'paused-1', name: 'Paused', type: 'backlog' },
+    { id: 'ice-1', name: 'Icebox', type: 'backlog' },
+    ...STATES.filter((s) => s.type !== 'backlog'),
+  ];
+  assert.equal(pickStateForMode(states, 'park').name, 'Icebox');
+});
+
 test('pickStateForMode park: falls back to unstarted when no backlog state exists', () => {
   const noBacklog = STATES.filter((s) => s.type !== 'backlog');
   const state = pickStateForMode(noBacklog, 'park');

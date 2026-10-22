@@ -46,7 +46,7 @@ test('an unknown state fails AND names the valid set', () => {
 });
 
 test('notion-brain vocabulary is NOT silently translated', () => {
-  // 'Paused' is a Notion status. Linear has no such state here, and guessing a
+  // 'Paused' is a Notion status. The fixture team has no such state, and guessing a
   // nearest match ("Canceled"? "Backlog"?) would file work into the wrong
   // column silently. It must fail loudly instead.
   const r = resolveState('Paused', STATES);

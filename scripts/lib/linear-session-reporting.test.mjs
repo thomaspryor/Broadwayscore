@@ -303,3 +303,33 @@ test('buildClaimComment records the worker model only when it is a known one (BR
   assert.equal(buildClaimComment({ ...base, workerModel: 'gpt' }), buildClaimComment(base));
   assert.equal(parseWorkerModel(buildClaimComment(base)), null);
 });
+
+// ── Paused state (BRO-2857): backlog-type "Paused" state, Backlog fallback ──
+const PAUSED = { id: 'paused-1', name: 'Paused', type: 'backlog' };
+
+for (const [label, states] of [
+  ['Paused listed after Backlog', [...STATES, PAUSED]],
+  ['Paused listed before Backlog', [PAUSED, ...STATES]],
+]) {
+  test(`planCompletion: paused -> Paused state when it exists (${label})`, () => {
+    const r = planCompletion({ status: 'paused', states });
+    assert.equal(r.stateName, 'Paused');
+    assert.equal(r.stateId, 'paused-1');
+  });
+}
+
+test('planCompletion: paused -> Backlog when the team has no Paused state', () => {
+  assert.equal(planCompletion({ status: 'paused', states: STATES }).stateName, 'Backlog');
+});
+
+test('planCompletion: paused with neither name still lands on a backlog-type state', () => {
+  const renamed = STATES.map((s) => (s.type === 'backlog' ? { ...s, name: 'Icebox' } : s));
+  assert.equal(planCompletion({ status: 'paused', states: renamed }).stateName, 'Icebox');
+});
+
+test('paused reports and parked creates agree: Paused vs plain Backlog are chosen on purpose (BRO-2857)', () => {
+  const { pickStateForMode } = require('./linear-issue-create.js');
+  const states = [...STATES, PAUSED];
+  assert.equal(planCompletion({ status: 'paused', states }).stateName, 'Paused');
+  assert.equal(pickStateForMode(states, 'park').name, 'Backlog');
+});

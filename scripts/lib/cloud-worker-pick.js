@@ -46,7 +46,8 @@
  *     its card to a started state (linear-next.js), so the state filter alone
  *     keeps the cloud off cards the Mac already holds.
  *   - PAUSED BACKLOG (BRO-5360): a worker's pause report moves its card to
- *     Backlog (linear-session-reporting.js STATUS_TO_STATE_NAME), and only the
+ *     Paused, or Backlog when the team has no such state
+ *     (linear-session-reporting.js STATUS_TO_STATE_NAME), and only the
  *     Mac drain ever moved such cards back. That drain stopped on 2026-09-19:
  *     on 2026-10-14, 38 of 47 Backlog P0/P1 cards had got there from In
  *     Progress (a pause) and nothing reached them again, so the workers fell

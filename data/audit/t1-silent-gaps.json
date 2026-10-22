@@ -1,8 +1,30 @@
 {
-  "generatedAt": "2026-10-22T19:07:31.990Z",
+  "generatedAt": "2026-10-22T22:14:40.610Z",
   "windowDays": 45,
   "showsScanned": 202,
   "gaps": [
+    {
+      "showId": "dirty-dancing-the-classic-story-on-stage-west-end-2026",
+      "title": "Dirty Dancing: The Classic Story on Stage",
+      "openingDate": "2026-10-16",
+      "file": "thestage--unknown.json",
+      "outletId": "thestage",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.thestage.co.uk/reviews/dirty-dancing--the-classic-story-on-stage-review-at-churchill-theatre-bromley--lazy-and-unimaginative",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "[review-write-guard] date-implausible: dirty-dancing-the-classic-story-on-stage-west-end-2026/thestage--unknown.json → quarantined to _pending/dirty-dancing-the-classic-story-on-stage-west-end-2026/thestage--unknown.json (3509d before earliest date, not within priorRuns)\n\n❌ Write-guard refused the write — nothing changed on disk (date_implausible)\n   quarantined to: /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/_pending/dirty-dancing-the-classic-story-on-stage-west-end-2026/thestage--unknown.json"
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=dirty-dancing-the-classic-story-on-stage-west-end-2026 --url=https://www.thestage.co.uk/reviews/dirty-dancing--the-classic-story-on-stage-review-at-churchill-theatre-bromley--lazy-and-unimaginative --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-10-22T20:26:43.593Z",
+      "fileAgeHours": 1.7914302777777777,
+      "gapSeenAt": "2026-10-22T22:14:40.610Z",
+      "nonTerminalAgeHours": 0
+    },
     {
       "showId": "other-desert-cities-2026",
       "title": "Other Desert Cities",
@@ -18,9 +40,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=other-desert-cities-2026",
       "firstSeen": "2026-10-20T01:24:52.774Z",
-      "fileAgeHours": 65.70817305555556,
+      "fileAgeHours": 68.82262194444445,
       "gapSeenAt": "2026-10-20T16:46:29.082Z",
-      "nonTerminalAgeHours": 50.350807777777774
+      "nonTerminalAgeHours": 53.46986888888889
     },
     {
       "showId": "slam-frank-off-broadway-2026",
@@ -36,9 +58,27 @@
       "forumLinkRecoveryCount": 6,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=slam-frank-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-18T14:14:33.814Z",
-      "fileAgeHours": 100.88017055555555,
+      "fileAgeHours": 103.99461638888889,
       "gapSeenAt": "2026-10-18T18:09:48.486Z",
-      "nonTerminalAgeHours": 96.96208444444444
+      "nonTerminalAgeHours": 100.08114555555555
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "title": "Golden Boy",
+      "openingDate": "2026-09-15",
+      "file": "daily-mail--patrick-marmion.json",
+      "outletId": "daily-mail",
+      "tier": 1,
+      "type": "rejected-unscoreable",
+      "url": "https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing",
+      "recovery": null,
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-09-22T16:40:31.606Z",
+      "fileAgeHours": 725.5622141666666,
+      "gapSeenAt": "2026-10-22T22:14:40.610Z",
+      "nonTerminalAgeHours": 0
     },
     {
       "showId": "the-score-regional-2026",
@@ -54,13 +94,13 @@
         "ok": false,
         "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
       },
-      "recoveryCount": 1,
+      "recoveryCount": 2,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=the-score-regional-2026 --url=https://www.thetimes.co.uk/sport/football/article/bayern-munich-arsenal-champions-league-table-result-score-6vmlkkd2n?srsltid=AYCX9vIuyd3DrQDuKn8kJ4R2K-E4OT99VyXC-aVKtGpjC3bbqdpb9p2E --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-22T16:30:56.008Z",
-      "fileAgeHours": 2.6097722222222224,
+      "fileAgeHours": 5.728834166666666,
       "gapSeenAt": "2026-10-22T18:40:53.483Z",
-      "nonTerminalAgeHours": 0.4440297222222222
+      "nonTerminalAgeHours": 3.5630908333333333
     }
   ],
   "contradictions": []
