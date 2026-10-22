@@ -1,13 +1,13 @@
 'use strict';
 /**
- * BRO-4461: Opening Night Express cancels EVERY in-progress orchestrator/poller
- * run to get the data repo to itself (by design, data-race protection). That
+ * BRO-4461: Opening Night Express cancels in-progress orchestrator/poller
+ * runs to get the data repo to itself (by design, data-race protection). That
  * silently killed the west-end orchestrator + WAOVW poller mid embargo-lift
  * window while Express ran for a different show. Cancelled runs were never
  * restored. This lib records what Express cancels and plans the redispatch.
  *
  * CLI (used by opening-night-express.yml):
- *   node scripts/lib/express-preemption.js cancel <outFile>   # cancel + record
+ *   node scripts/lib/express-preemption.js cancel <outFile> [--show=ID] [--scoring]   # cancel + record
  *   node scripts/lib/express-preemption.js redispatch <file>  # re-dispatch recorded runs
  * Needs GH_TOKEN + GITHUB_REPOSITORY (gh CLI).
  */
@@ -16,6 +16,30 @@ const { execFileSync } = require('child_process');
 
 const ORCH = 'opening-night-orchestrator.yml';
 const POLLER = 'opening-night-poller.yml';
+const SCORING = 'llm-ensemble-score.yml';
+
+// BRO-5890: Express for one show cancelled a Benjamin Button scoring run and
+// would cancel every targeted poller for every other show tonight. Runs scoped
+// to ANOTHER show write that show's review-texts files and, on the fast path,
+// rebuild/push reviews.json and deploy alongside Express: the same overlap
+// BRO-4273 accepts between targeted and auto pollers (push-with-retry,
+// merge-reviews-json, sync-review-texts-drift), so they are left alone.
+// Orchestrators, auto pollers and unscoped scoring runs cover every show
+// (including this one) and are still cancelled; orchestrators/pollers are
+// re-dispatched when Express finishes.
+// Title formats: poller 'Opening Night Poller — <show|auto>', scoring
+// 'LLM Ensemble Score Reviews[ — <show>]' (run-name in each workflow).
+function scopedShowId(displayTitle) {
+  const m = String(displayTitle || '').match(/—\s*(\S+)\s*$/);
+  return m && m[1] !== 'auto' ? m[1] : '';
+}
+
+function shouldCancel(workflow, displayTitle, ownShowId) {
+  if (workflow === ORCH) return true;
+  const scoped = scopedShowId(displayTitle);
+  if (!scoped || !ownShowId) return true;
+  return scoped === ownShowId;
+}
 
 // run-name formats: 'Opening Night Orchestrator (west-end)' / 'Opening Night Poller — <show|auto>'
 function planRedispatch(workflow, displayTitle) {
@@ -43,15 +67,21 @@ function listRuns(workflow, status) {
   } catch (e) { return []; }
 }
 
-function cancelAndRecord(outFile) {
+function cancelAndRecord(outFile, ownShowId = '', { scoring = false } = {}) {
   const recorded = [];
-  for (const workflow of [ORCH, POLLER]) {
+  const workflows = scoring ? [ORCH, POLLER, SCORING] : [ORCH, POLLER];
+  for (const workflow of workflows) {
     for (const status of ['in_progress', 'queued']) {
       for (const run of listRuns(workflow, status)) {
+        if (!shouldCancel(workflow, run.displayTitle, ownShowId)) {
+          console.log(`  Leaving ${workflow} run ${run.databaseId} (${run.displayTitle}): scoped to another show`);
+          continue;
+        }
         try {
           gh(['run', 'cancel', String(run.databaseId)]);
-          const plan = planRedispatch(workflow, run.displayTitle);
           console.log(`  Cancelled ${workflow} run ${run.databaseId} (${run.displayTitle})`);
+          // Scoring runs were never re-dispatched (their next trigger rescores).
+          const plan = workflow === SCORING ? null : planRedispatch(workflow, run.displayTitle);
           if (plan) recorded.push({ ...plan, runId: run.databaseId, title: run.displayTitle });
         } catch (e) { console.log(`  ⚠ Could not cancel ${run.databaseId}`); }
       }
@@ -79,14 +109,17 @@ function redispatch(file) {
   return done;
 }
 
-module.exports = { planRedispatch, ORCH, POLLER, cancelAndRecord, redispatch };
+module.exports = { planRedispatch, shouldCancel, scopedShowId, ORCH, POLLER, SCORING, cancelAndRecord, redispatch };
 
 if (require.main === module) {
-  const [cmd, file] = process.argv.slice(2);
+  const [cmd, file, ...rest] = process.argv.slice(2);
   if (cmd === 'cancel') {
+    // cancel <file> [--show=<express show id>] [--scoring]
+    const ownShowId = (rest.find((a) => a.startsWith('--show=')) || '').slice('--show='.length);
+    const scoring = rest.includes('--scoring');
     // Append to any earlier record from this job (start cancel + post-scoring re-cancel).
     const prev = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : [];
-    const now = cancelAndRecord(file + '.new');
+    const now = cancelAndRecord(file + '.new', ownShowId, { scoring });
     fs.writeFileSync(file, JSON.stringify(prev.concat(now), null, 2));
     fs.unlinkSync(file + '.new');
     console.log(`Cancelled ${now.length} competing run(s).`);

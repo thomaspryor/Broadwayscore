@@ -113,6 +113,7 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           INPUT_SHOW_ID: ${{ inputs.show_id }}
+          INGEST_DISPATCH_MARKER: ${{ runner.temp }}/ingest-dispatch-pending
         run: |
           FLAGS=""
           if [ "${{ inputs.no_fetch }}" = "true" ]; then
@@ -138,16 +139,27 @@ jobs:
         if: always() && inputs.dry_run != true
         env:
           INPUT_SHOW_ID: ${{ inputs.show_id }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INGEST_DISPATCH_MARKER: ${{ runner.temp }}/ingest-dispatch-pending
         run: |
           cd data/review-texts
-          if git diff --quiet && git diff --cached --quiet; then
+          # BRO-5890: ingest-urls.js commits before it pushes, so a failed push
+          # there leaves a clean tree with an unpushed commit. Push that too,
+          # then dispatch the scoring/rebuild the script held back.
+          AHEAD=$(git rev-list --count origin/main..HEAD 2>/dev/null || echo 0)
+          if git diff --quiet && git diff --cached --quiet && [ "$AHEAD" = "0" ]; then
             echo "No changes to commit"
           else
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git add -A
-            git commit -m "data: Ingest URLs for ${INPUT_SHOW_ID}"
+            git diff --cached --quiet || git commit -m "data: Ingest URLs for ${INPUT_SHOW_ID}"
             bash ../../scripts/lib/push-with-retry.sh 5 main
+          fi
+          if [ -f "$INGEST_DISPATCH_MARKER" ]; then
+            cd ../..
+            NEW_REVIEWS=$(cat "$INGEST_DISPATCH_MARKER")
+            node -e "require('./scripts/lib/land-ingested-reviews').dispatchDownstream({ showId: process.env.INPUT_SHOW_ID, newReviews: Number(process.argv[1]) || 1 })" "$NEW_REVIEWS"
           fi
 
       - name: Commit scraper-spend ledger
