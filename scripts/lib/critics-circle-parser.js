@@ -34,8 +34,8 @@ const { assertTableSchema, TableSchemaError, findColumnIndex } = require('./tabl
 
 const CC_URL = 'https://en.wikipedia.org/wiki/Critics%27_Circle_Theatre_Award';
 
-/** Section anchor → which column index holds the SHOW title (fallback when
- *  the header row has no resolvable label — see SHOW_LABEL_BY_CATEGORY). */
+/** Historical show-column positions; retained for callers inspecting categories.
+ *  Parsing resolves the column by label instead. */
 const SHOW_COLUMN_BY_CATEGORY = {
   'Best New Play': 1,            // recipient = the play
   'Best Actor': 2,                // recipient = person, work = play
@@ -45,18 +45,20 @@ const SHOW_COLUMN_BY_CATEGORY = {
 };
 
 /**
- * Header label to resolve the SHOW column by, per category (BRO-3596 code
+ * Header pattern to resolve the SHOW column by, per category (BRO-3596 code
  * review finding: resolving Year alone while leaving Show at a fixed index
  * is worse than leaving both fixed — a table that moves Ref/Year around
  * without moving Play/Work would silently read the wrong cell as the
  * winner, now with no signal at all since Year still resolves "correctly").
  */
 const SHOW_LABEL_BY_CATEGORY = {
-  'Best New Play': 'Play',
-  'Best Actor': 'Work',
-  'Best Actress': 'Work',
-  'Best Director': 'Work',
-  'Most Promising Playwright': 'Work',
+  // The live page calls the play itself the Recipient. For person awards,
+  // Recipient is the person and must never substitute for a missing Work.
+  'Best New Play': /^(?:Play|Recipient(?:\(s\))?)$/i,
+  'Best Actor': /^Work$/i,
+  'Best Actress': /^Work$/i,
+  'Best Director': /^Work$/i,
+  'Most Promising Playwright': /^Work$/i,
 };
 
 /** Section heading IDs as Wikipedia normalizes them (spaces → underscores). */
@@ -165,8 +167,14 @@ function extractCategoryEntries(html, category, minYear = 1990) {
     // winner the moment a table reorders columns around Year, with no
     // signal at all since Year still "correctly" resolves.
     const showLabel = SHOW_LABEL_BY_CATEGORY[category];
-    const labelShowIdx = showLabel ? findColumnIndex(headerCells, showLabel) : -1;
-    const showIdx = labelShowIdx !== -1 ? labelShowIdx : showCol;
+    const showIdx = headerCells.findIndex((label) => showLabel.test(label));
+    if (showIdx === -1) {
+      // Omit this table's years so writePrecursorJson preserves their baseline
+      // entries. A positional fallback could publish a person as the winner
+      // without changing the entry count, bypassing the shrink guard.
+      console.warn(`critics-circle-parser: skipping table for "${category}": show column not found in header: ${JSON.stringify(headerCells)}`);
+      continue;
+    }
 
     for (const row of rows) {
       // Wikipedia uses <th> for the year and <td> for data cells. Collect

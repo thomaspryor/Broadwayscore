@@ -29,7 +29,7 @@
 
 const https = require('https');
 const { JSDOM } = require('jsdom');
-const { assertTableSchema, TableSchemaError, findColumnIndex } = require('./table-schema-assertion');
+const { assertTableSchema, TableSchemaError } = require('./table-schema-assertion');
 
 const ES_BASE_URL = 'https://en.wikipedia.org/wiki/Evening_Standard_Theatre_Award_for_';
 const FIRST_CEREMONY_YEAR = 1955; // 1st ceremony was in 1955
@@ -136,38 +136,33 @@ function extractCategoryEntries(html, category, minYear = 1990) {
     // docstring); the label search operates in the same "data columns only"
     // basis as showCol/winnerCells below (header cells minus column 0).
     //
-    // This is a best-effort UPGRADE, never a rejection: some genuine ES
-    // tables open directly with a one-cell ceremony/ordinal row instead of a
+    // Some genuine ES tables open with a one-cell ceremony/ordinal row instead of a
     // labeled multi-column header row (see the "Rowspan-combined first
     // cell" and single-cell-ordinal branches below, which this file already
-    // handles). A short or unlabeled first row there is normal, not a sign
-    // of drift — so on any resolution failure we silently keep the fixed
-    // showCol rather than skipping the whole table (code review finding:
-    // an earlier version of this fix rejected such tables outright).
+    // handles). Only that known headerless format may use a fixed index.
+    // An unrecognized labeled schema must not overwrite baseline winners.
     const headerCells = Array.from(rowsArr[0].children)
       .filter((c) => c.tagName === 'TH' || c.tagName === 'TD')
       .map((c) => (c.textContent || '').trim());
+    const headerless = /^(?:\d+(?:st|nd|rd|th)(?:\s*\(\d{4}\))?|\d{4})$/i.test(headerCells[0] || '');
     let resolvedShowCol = showCol;
-    try {
-      assertTableSchema([headerCells], { minCells: 2 });
-      const dataHeaderCells = headerCells.slice(1);
-      const candidates = ['Play', 'Musical', 'Work', 'Show'];
-      // Exact match across ALL candidates first, then substring across all
-      // candidates — otherwise an early candidate's substring match (e.g.
-      // "Play" inside "Playwright") could win over a later candidate's exact
-      // match (e.g. "Work") purely by list order.
-      let labelIdx = candidates
-        .map((l) => dataHeaderCells.findIndex((h) => h.toLowerCase() === l.toLowerCase()))
-        .find((i) => i !== -1);
-      if (labelIdx === undefined) {
-        labelIdx = candidates
-          .map((l) => findColumnIndex(dataHeaderCells, l))
-          .find((i) => i !== -1);
+    if (!headerless) {
+      try {
+        assertTableSchema([headerCells], { minCells: 2 });
+        if (!/^(?:Ceremony|Year)$/i.test(headerCells[0])) {
+          throw new TableSchemaError('Ceremony/Year must be the first column');
+        }
+        const dataHeaderCells = headerCells.slice(1);
+        const labelIdx = dataHeaderCells.findIndex((label) => /^(?:Play|Musical|Work|Show)(?:\s+title)?$/i.test(label));
+        if (labelIdx === -1) {
+          throw new TableSchemaError(`Show column not found in header: ${JSON.stringify(headerCells)}`);
+        }
+        resolvedShowCol = labelIdx;
+      } catch (err) {
+        if (!(err instanceof TableSchemaError)) throw err;
+        console.warn(`evening-standard-parser: skipping table for "${category}": ${err.message}`);
+        continue;
       }
-      if (labelIdx !== undefined) resolvedShowCol = labelIdx;
-    } catch (err) {
-      if (!(err instanceof TableSchemaError)) throw err;
-      // No labeled multi-column header row found — fall back to showCol.
     }
 
     let currentYear = null;
@@ -195,8 +190,15 @@ function extractCategoryEntries(html, category, minYear = 1990) {
       if (yearFromHeader != null && cells.length >= 2) {
         currentYear = yearFromHeader;
         const winnerCells = cells.slice(1);
-        const showCell = winnerCells[resolvedShowCol] || winnerCells[0];
-        if (showCell && currentYear >= minYear) {
+        const showCell = winnerCells[resolvedShowCol];
+        if (!showCell || !showCell.textContent.trim()) {
+          console.warn(`evening-standard-parser: skipping ceremony ${currentYear} for "${category}": missing show cell`);
+          byYear.delete(currentYear);
+          currentYear = null;
+          isFirstDataRowAfterHeader = false;
+          continue;
+        }
+        if (currentYear >= minYear) {
           const name = extractWinner(showCell);
           if (name && !/^no award$/i.test(name)) {
             const y = ensureYear(currentYear);
@@ -218,7 +220,18 @@ function extractCategoryEntries(html, category, minYear = 1990) {
         continue;
       }
       const showCell = cells[resolvedShowCol];
-      if (!showCell) continue;
+      if (!showCell || !showCell.textContent.trim()) {
+        // A missing opening winner must not promote a later nominee. Later
+        // short rows can be legitimate rowspan continuations, so leave those
+        // alone once the opening row has supplied its show.
+        if (isFirstDataRowAfterHeader) {
+          console.warn(`evening-standard-parser: skipping ceremony ${currentYear} for "${category}": missing show cell`);
+          byYear.delete(currentYear);
+          currentYear = null;
+          isFirstDataRowAfterHeader = false;
+        }
+        continue;
+      }
       const name = extractWinner(showCell);
       if (!name || /^no award$/i.test(name)) {
         isFirstDataRowAfterHeader = false;
