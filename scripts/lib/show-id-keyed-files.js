@@ -169,6 +169,8 @@ const SHOW_ID_KEYED_FILES = [
   { repo: 'web', path: 'public/data/analyst-creatives.json', shape: 'map', keyPath: ['creatives'], generated: 'bash scripts/prebuild.sh' },
   { repo: 'web', path: 'public/data/mobile-shows.json', shape: 'records', keyPath: ['shows'], idField: 'id', generated: 'node scripts/generate-mobile-data.js' },
   { repo: 'web', path: 'public/data/search-shows.json', shape: 'records', keyPath: [], idField: 'id', generated: 'node scripts/generate-search-shows.js' },
+  { repo: 'web', path: 'public/data/research/critic-audience-divergence-2026.json', shape: 'records', keyPath: ['rows'], idField: 'id', slugField: 'slug',
+    note: 'published research snapshot; scripts/build-divergence-dataset.js is not in prebuild, so the rename is its only update' },
   { repo: 'web', path: 'public/data/header-search-extra.json', shape: 'map', keyPath: ['cast'], generated: 'node scripts/generate-search-shows.js' },
   { repo: 'web', path: 'public/data/header-search-extra.json', shape: 'records', keyPath: ['archive'], idField: 'id', generated: 'node scripts/generate-search-shows.js' },
 
