@@ -1,16 +1,24 @@
 {
-  "generatedAt": "2026-10-22T07:56:04.829Z",
+  "generatedAt": "2026-10-22T18:36:46.511Z",
   "apply": true,
-  "auditGeneratedAt": "2026-10-22T07:44:50.558Z",
+  "auditGeneratedAt": "2026-10-22T18:26:31.694Z",
   "counts": {
+    "skip:command-shared-with-another-card": 2,
+    "skip:command-multi-file-test": 1,
+    "bounced": 1,
     "bounce:no-auto-worker": 4,
     "bounce:recheck-after-pending": 1,
     "bounce:recent-activity": 1,
-    "recent-activity": 16,
+    "recent-activity": 28,
     "sweep:eligible": 1,
     "sweep:refused-recently": 1
   },
   "rows": [
+    {
+      "id": "BRO-5820",
+      "state": "In Review",
+      "action": "bounced"
+    },
     {
       "id": "BRO-5720",
       "state": "In Review",
@@ -42,13 +50,37 @@
       "reason": "recheck-after-pending"
     },
     {
-      "id": "BRO-5820",
+      "id": "BRO-5952",
       "state": "In Review",
       "action": "leave",
       "reason": "recent-activity"
     },
     {
+      "id": "BRO-5800",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5791",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5744",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
       "id": "BRO-5435",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5330",
       "state": "In Progress",
       "action": "leave",
       "reason": "recent-activity"
@@ -60,7 +92,19 @@
       "reason": "recent-activity"
     },
     {
+      "id": "BRO-4672",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
       "id": "BRO-4448",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-4315",
       "state": "In Progress",
       "action": "leave",
       "reason": "recent-activity"
@@ -73,6 +117,12 @@
     },
     {
       "id": "BRO-4279",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-3689",
       "state": "In Progress",
       "action": "leave",
       "reason": "recent-activity"
@@ -102,19 +152,67 @@
       "reason": "recent-activity"
     },
     {
-      "id": "BRO-5924",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "recent-activity"
-    },
-    {
-      "id": "BRO-5915",
+      "id": "BRO-5987",
       "state": "In Review",
       "action": "leave",
       "reason": "recent-activity"
     },
     {
-      "id": "BRO-5887",
+      "id": "BRO-5975",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5972",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5957",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5943",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5940",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5930",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5907",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5906",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5902",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5901",
       "state": "In Progress",
       "action": "leave",
       "reason": "recent-activity"
@@ -122,24 +220,6 @@
     {
       "id": "BRO-5885",
       "state": "In Review",
-      "action": "leave",
-      "reason": "recent-activity"
-    },
-    {
-      "id": "BRO-5861",
-      "state": "In Review",
-      "action": "leave",
-      "reason": "recent-activity"
-    },
-    {
-      "id": "BRO-5800",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "recent-activity"
-    },
-    {
-      "id": "BRO-5791",
-      "state": "In Progress",
       "action": "leave",
       "reason": "recent-activity"
     },
