@@ -1666,6 +1666,20 @@
     "queuedAt": "2026-10-22T04:59:03.674Z"
   },
   {
+    "conditionKey": "express-retry-still-thin:rope-off-broadway-2026",
+    "title": "Opening Night Express retry still found thin review coverage for rope-off-broadway-2026",
+    "description": "The early auto-fire found next to nothing, and the same-night retry (still thin after retry — zero scoreable review records found) still hasn't closed the gap. Full-text upgrade will otherwise wait on the weekly recollect-for-scores.yml cron.",
+    "severity": "warn",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T05:30:57.914Z"
+  },
+  {
     "conditionKey": "star-band:regressions",
     "title": "Star-band detector: 102 review(s) flagged for anchored re-score",
     "description": "{\"unanchored\":75,\"false-truncation\":27} across the whole corpus, by market {\"west-end\":79,\"broadway\":22,\"regional\":1}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [unanchored] avenue-q-west-end-2026/reviewsgate--william-russell.json 4/5 stars band 71-90\n- [unanchored] romeo-and-juliet-west-end-2026/chiswickcalendar--andrea-carnevali.json 4/5 stars band 71-90\n- [unanchored] sinatra-the-musical-west-end-2026/stagedtheatre--karen-jemison.json 4/5 stars band 71-90\n- [unanchored] sinatra-the-musical-west-end-2026/a-youngish-perspective--unknown.json 3/5 stars band 51-70\n- [unanchored] cyrano-de-bergerac-west-end-2026/stagedtheatre--karen-jemison.json 5/5 stars band 91-100\n- [unanchored] as-you-like-it-globe-west-end-2026/jackstage--emma-knott.json 4/5 stars band 71-90\n- [unanchored] end-of-the-rainbow-west-end-2026/a-youngish-perspective--mark-lloyd.json 5/5 stars band 91-100\n- [unanchored] blood-of-my-blood-west-end-2026/a-youngish-perspective--lucy-holz.json 4/5 stars band 71-90\n- [unanchored] to-kill-a-mockingbird-west-end-2026/stagedtheatre--karen-jemison.json 5/5 stars band 91-100\n- [unanchored] a-life-in-four-seasons-west-end-2026/stagedtheatre--karen-jemison.json 3/5 stars band 51-70",
