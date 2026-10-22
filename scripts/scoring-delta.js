@@ -196,6 +196,8 @@ const FLAG_FIELDS = new Set([
   'scoreProvenance', 'productionCorroborated', 'aggregatorStars', 'originalScore',
   'originalScoreNormalized', 'originalScoreSource', 'aggregatorStarsSource',
   'scoreSource', 'humanReviewScore', 'firstSeenAt', 'outletHeadline', 'outletStandfirst',
+  // BRO-5794: a metaExcerpt is the text signal that keeps a stub in the rebuild.
+  'metaExcerpt',
   // BRO-5238: decideInclusion's rejectionReason / rejectedBy branches.
   'rejectionReason', 'rejectedBy',
 ]);

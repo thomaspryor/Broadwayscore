@@ -85,6 +85,8 @@ const URL_DERIVED_FIELDS = Array.from(new Set([
   'redirectRefused',
   // Salvaged from the old URL's walled page (walled-page-meta.js).
   'outletStandfirst', 'outletHeadline', 'walledPageMetaAt', 'walledPageMetaCheckedAt',
+  // Headline + standfirst of the OLD page (page-meta-evidence.js, BRO-5794) and its recheck stamps.
+  'metaExcerpt', 'metaEvidenceCheckedAt', 'metaEvidenceCheckResult', 'metaEvidenceRulesVersion',
   // The old ARTICLE's publish date. Leaving it makes the fix defeat itself:
   // the rebuild's date guards re-flag the cleared file from the stale date,
   // and the Tour-transfer carve-out below would then preserve that flag across
