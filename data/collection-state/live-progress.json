@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-10-22T04:42:08.383Z",
-  "processed": 11,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-10-22T05:09:06.609Z",
+  "processed": 19,
+  "failed": 3,
+  "successRate": "86.4%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 7,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
@@ -14,6 +14,19 @@
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-10-22T05:06:17.624Z",
+      "event": "bb-session",
+      "session": "d118e146",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-22T05:06:28.603Z",
+      "event": "bb-session",
+      "session": "e19f79b1",
+      "url": "https://deadline.com/2026/10/billy-crystal-860-broadway-review-1237168548/"
+    }
+  ]
 }
