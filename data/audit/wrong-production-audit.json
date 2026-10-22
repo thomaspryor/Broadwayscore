@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T12:49:03.457Z",
+  "timestamp": "2026-10-22T14:04:17.434Z",
   "stats": {
-    "totalReviews": 58783,
-    "alreadyFlagged": 21253,
-    "dateGuardCatches": 197,
-    "directorMismatch": 2056,
-    "tvFilmSignals": 1659,
+    "totalReviews": 58823,
+    "alreadyFlagged": 21257,
+    "dateGuardCatches": 201,
+    "directorMismatch": 2053,
+    "tvFilmSignals": 1658,
     "londonSignals": 2706,
-    "offBroadwaySignals": 532,
-    "yearMismatch": 167,
-    "noPublishDate": 5169
+    "offBroadwaySignals": 527,
+    "yearMismatch": 169,
+    "noPublishDate": 5218
   },
   "findings": [
     {
@@ -590,25 +590,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
-        }
-      ]
-    },
-    {
-      "showId": "a-bronx-tale-2007",
-      "file": "paste-magazine--alicia-kort.json",
-      "score": 75,
-      "publishDate": null,
-      "url": "https://www.pastemagazine.com/theatre/review-a-bronx-tale",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hulu\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lortel\""
         }
       ]
     },
@@ -1320,20 +1301,6 @@
       "score": 90,
       "publishDate": "November 13th, 2015",
       "url": "http://www.vogue.com/13370738/a-view-from-the-bridge-ivo-van-hove-broadway-play/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"gregory mosher\" from a-view-from-the-bridge-2010"
-        }
-      ]
-    },
-    {
-      "showId": "a-view-from-the-bridge-2015",
-      "file": "washpost--peter-marks.json",
-      "score": 95,
-      "publishDate": "November 13, 2015",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/a-view-from-the-bridge-review-ivo-van-hoves-bold-take-on-arthur-millers-tragedy/2015/11/13/8b8c8c7e-8a0f-11e5-be39-0034bb576eee_story.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -9424,23 +9391,9 @@
     },
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
-      "file": "london-theatre--mark-shenton.json",
-      "score": 91,
-      "publishDate": "2026-06-26",
-      "url": "https://www.londontheatre.co.uk/reviews/cyrano-de-bergerac-review-noel-coward-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from cyrano-de-bergerac-2012"
-        }
-      ]
-    },
-    {
-      "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
       "score": 98,
-      "publishDate": "2026-06-26",
+      "publishDate": null,
       "url": "https://www.londontheatre.co.uk/reviews/cyrano-de-bergerac-review-noel-coward-theatre",
       "findings": [
         {
@@ -12997,6 +12950,20 @@
       ]
     },
     {
+      "showId": "evita-west-end-2025",
+      "file": "west-end-wilma--westendwilma.json",
+      "score": 94,
+      "publishDate": "2025-07-31",
+      "url": "https://westendwilma.com/review-evita-london-palladium-july-2025/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2017 (2x) more than 2025 (1x). 2017 matches production: evita-west-end-2017"
+        }
+      ]
+    },
+    {
       "showId": "faith-healer-2006",
       "file": "broadwayworld--walter-mcbride.json",
       "score": null,
@@ -15210,6 +15177,11 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2017 (2x) more than 2022 (0x). 2017 matches production: girl-from-the-north-country-west-end-2017"
         }
       ]
     },
@@ -31095,20 +31067,6 @@
       "score": 80,
       "publishDate": "March 16, 2023",
       "url": "https://broadwaynews.com/2023/03/16/review-broadways-parade-resurrects-the-soured-and-shameful-dream-of-atlanta/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"harold prince\" from parade-1998"
-        }
-      ]
-    },
-    {
-      "showId": "parade-2023",
-      "file": "dailybeast--tim-teeman.json",
-      "score": 55,
-      "publishDate": "March 16, 2023",
-      "url": "https://www.thedailybeast.com/parade-is-a-strange-broadway-musical-puzzle-lost-in-time/?ref=home",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -58485,7 +58443,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "west-end-best-friend--beatriz-ferreira.json",
-      "score": 79,
+      "score": 77,
       "publishDate": "2026-10-08",
       "url": "https://www.westendbestfriend.co.uk/news/review-blood-of-my-blood-royal-court-theatre",
       "findings": [
@@ -64860,7 +64818,7 @@
     {
       "showId": "fish-off-broadway-2026",
       "file": "theater-life--david-sheward.json",
-      "score": 87,
+      "score": 84,
       "publishDate": "2026-10-16",
       "url": "https://theaterlife.com/good-time-charlie-fish-anon/",
       "findings": [
@@ -69425,7 +69383,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "2026-10-21",
       "url": "https://www.londontheatre.co.uk/reviews/ilford-boy-review-donmar-warehouse",
       "findings": [
@@ -69466,7 +69424,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": null,
+      "score": 82,
       "publishDate": "2026-10-22",
       "url": "https://www.standard.co.uk/culture/theatre/ilford-boy-donmar-review-b1301897.html",
       "findings": [
@@ -69941,14 +69899,11 @@
     {
       "showId": "indecent-2017",
       "file": "theatermania--pete-hempstead.json",
-      "score": 92,
-      "publishDate": "2017-04-18",
-      "url": "http://www.theatermania.com/broadway/reviews/indecent_80762.html",
       "findings": [
         {
-          "type": "OFF_BROADWAY_SIGNAL",
+          "type": "DATE_GUARD",
           "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
+          "detail": "Published 322d before show (May 17, 2016 vs 2017-04-04)"
         }
       ]
     },
@@ -72337,20 +72292,6 @@
       "file": "washpost--mark-kennedy.json",
       "score": 73,
       "publishDate": "October 30, 2016",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-nyc-revival-of-les-liaisons-dangereuses-crackles/2016/10/30/3d47319e-9f06-11e6-8864-6f892cad0865_story.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
-        }
-      ]
-    },
-    {
-      "showId": "les-liaisons-dangereuses-2016",
-      "file": "washpost--peter-marks.json",
-      "score": 86,
-      "publishDate": "2016-10-30",
       "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-nyc-revival-of-les-liaisons-dangereuses-crackles/2016/10/30/3d47319e-9f06-11e6-8864-6f892cad0865_story.html",
       "findings": [
         {
@@ -83438,20 +83379,6 @@
     },
     {
       "showId": "sweat-2017",
-      "file": "amny--matt-windman.json",
-      "score": 87,
-      "publishDate": "March 26, 2017",
-      "url": "https://www.amny.com/entertainment/sweat-review-drama-takes-a-timely-look-at-american-hardship-1.13319868",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "sweat-2017",
       "file": "curtainup--elyse-sommer.json",
       "score": 78,
       "publishDate": "2017-04-10",
@@ -83508,8 +83435,8 @@
     },
     {
       "showId": "sweat-2017",
-      "file": "newsday--linda-winer.json",
-      "score": 89,
+      "file": "newsday--matt-windman.json",
+      "score": 88,
       "publishDate": "2017-03-26",
       "url": "http://www.newsday.com/entertainment/columnists/linda-winer/sweat-review-lynn-nottage-gives-intimate-glimpse-of-lost-factory-life-1.13313426",
       "findings": [
@@ -83522,15 +83449,14 @@
     },
     {
       "showId": "sweat-2017",
-      "file": "newsday--matt-windman.json",
-      "score": 88,
-      "publishDate": "2017-03-26",
-      "url": "http://www.newsday.com/entertainment/columnists/linda-winer/sweat-review-lynn-nottage-gives-intimate-glimpse-of-lost-factory-life-1.13313426",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "publishDate": "November 3, 2016",
+      "url": "http://www.nydailynews.com/entertainment/theater-arts/sweat-drenched-blue-class-angst-vietgone-coriolanus-article-1.2854275",
       "findings": [
         {
-          "type": "OFF_BROADWAY_SIGNAL",
+          "type": "DATE_GUARD",
           "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
+          "detail": "Published 121d before show (November 3, 2016 vs 2017-03-04)"
         }
       ]
     },
@@ -83551,14 +83477,11 @@
     {
       "showId": "sweat-2017",
       "file": "theatermania--zachary-stewart.json",
-      "score": 86,
-      "publishDate": "2017-03-26",
-      "url": "https://www.theatermania.com/broadway/reviews/sweat_80501.html",
       "findings": [
         {
-          "type": "OFF_BROADWAY_SIGNAL",
+          "type": "DATE_GUARD",
           "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
+          "detail": "Published 121d before show (November 3, 2016 vs 2017-03-04)"
         }
       ]
     },
@@ -83587,6 +83510,17 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "sweat-2017",
+      "file": "wsj--terry-teachout.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 121d before show (November 3, 2016 vs 2017-03-04)"
         }
       ]
     },
@@ -88596,6 +88530,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "the-majority-west-end-2017",
+      "file": "londontheatre1--chris-omaweng.json",
+      "publishDate": "2017-08-14",
+      "url": "https://www.londontheatre1.com/reviews/review-the-majority-the-dorfman-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },

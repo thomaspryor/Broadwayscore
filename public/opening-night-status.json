@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T12:49:18.477Z",
+  "generatedAt": "2026-10-22T14:04:26.892Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-west-end",
       "type": "play",
       "openingDate": "2026-10-22",
-      "status": "previews",
+      "status": "open",
       "slug": "derren-brown-only-human-west-end",
       "thumbnail": "/images/shows/derren-brown-only-human-west-end-2026/thumbnail.jpg",
       "siteScore": null,
@@ -171,7 +171,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-10-22",
-      "status": "previews",
+      "status": "open",
       "slug": "phyl-off-broadway",
       "thumbnail": "/images/shows/phyl-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -547,7 +547,7 @@
       "category": "off-west-end",
       "type": "musical",
       "openingDate": "2026-10-22",
-      "status": "previews",
+      "status": "open",
       "slug": "the-pianist-off-west-end",
       "thumbnail": "/images/shows/the-pianist-off-west-end-2026/thumbnail.webp",
       "siteScore": null,
@@ -713,31 +713,31 @@
       "category": "broadway",
       "type": "play",
       "openingDate": "2026-10-22",
-      "status": "previews",
+      "status": "open",
       "slug": "the-imaginary-invalid",
       "thumbnail": "/images/shows/the-imaginary-invalid-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 63,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "reviewsNeeded": 6,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
       "t2": 0,
-      "t3": 0,
+      "t3": 1,
       "positive": 0,
-      "mixed": 0,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "1/12 total",
           "T1:0/3",
           "T2:0/3",
-          "hi-conf:0/8"
+          "hi-conf:1/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1080,6 +1080,20 @@
           "name": "The Tennessean",
           "isDualMarket": false
         }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-22T14:04:26.892Z",
+          "rc": 1,
+          "s": 63,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 0,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        }
       ]
     },
     {
@@ -1089,7 +1103,7 @@
       "category": "off-broadway",
       "type": "musical",
       "openingDate": "2026-10-22",
-      "status": "upcoming",
+      "status": "open",
       "slug": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway",
       "thumbnail": "/images/shows/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -1465,7 +1479,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-10-22",
-      "status": "upcoming",
+      "status": "open",
       "slug": "women-who-eat-off-broadway",
       "thumbnail": "/images/shows/women-who-eat-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -2251,6 +2265,172 @@
           "p": 12,
           "m": 4,
           "n": 1,
+          "bc": "waiting"
+        }
+      ]
+    },
+    {
+      "id": "surinderella-off-west-end-2026",
+      "title": "Surinderella",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-10-21",
+      "status": "open",
+      "slug": "surinderella-off-west-end",
+      "thumbnail": "/images/shows/surinderella-off-west-end-2026/thumbnail.jpg",
+      "siteScore": null,
+      "liveScore": 61,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 4,
+      "siteFileExists": true,
+      "total": 1,
+      "t1": 0,
+      "t2": 0,
+      "t3": 1,
+      "positive": 0,
+      "mixed": 1,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "1/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:1/6"
+        ],
+        "highConfidence": 1,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Sunday Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Mail on Sunday",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
+          "isDualMarket": false
+        },
+        {
+          "name": "BritishTheatre.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Spectator (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Reviews Hub",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "LondonTheatre1",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Box Office",
+          "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-22T14:04:26.892Z",
+          "rc": 1,
+          "s": 61,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 0,
+          "m": 1,
+          "n": 0,
           "bc": "waiting"
         }
       ]
@@ -3054,9 +3234,9 @@
       "status": "open",
       "slug": "ilford-boy-west-end",
       "thumbnail": "/images/shows/ilford-boy-west-end-2026/thumbnail.jpg",
-      "siteScore": 74.61,
+      "siteScore": 74.86,
       "liveScore": 75,
-      "scoreDrift": 0.39000000000000057,
+      "scoreDrift": 0.14000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -3070,7 +3250,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 9,
+        "highConfidence": 10,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3331,6 +3511,18 @@
           "t": "2026-10-22T12:49:18.477Z",
           "rc": 13,
           "s": 74.61,
+          "t1": 6,
+          "t2": 4,
+          "t3": 3,
+          "p": 8,
+          "m": 5,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T14:04:26.892Z",
+          "rc": 13,
+          "s": 74.86,
           "t1": 6,
           "t2": 4,
           "t3": 3,

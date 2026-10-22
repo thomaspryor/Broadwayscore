@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-22T12:39:16.937Z",
+  "generated": "2026-10-22T13:56:05.596Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 34,
+  "count": 33,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -78,13 +78,6 @@
       "loserFile": "huffpost--unknown.json",
       "targetFile": "huffpost--steven-suskin.json",
       "reason": "orphaned-duplicate-heal: huffpost--steven-suskin.json was flagged invalid after huffpost--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "macbeth-2013",
-      "loserFile": "newsday--unknown.json",
-      "targetFile": "newsday--linda-winer.json",
-      "reason": "orphaned-duplicate-heal: newsday--linda-winer.json was flagged invalid after newsday--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
