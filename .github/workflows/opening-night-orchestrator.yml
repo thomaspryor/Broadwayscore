@@ -299,6 +299,41 @@ jobs:
         if: steps.find.outputs.has_shows != 'true'
         run: echo "No shows opening tonight. Exiting."
 
+      - name: Start press-night probes
+        # BRO-5912: one long-running probe job per press-night show (press-night-probe.yml),
+        # NOT a cron (GitHub delays crons 3-6h). Placed BEFORE the polling loop on purpose:
+        # an Express takeover cancels this run mid-loop, so anything after it may never run.
+        # Warn-only: a dispatch failure must never fail or delay the poller. Idempotent: the
+        # workflow's own concurrency group + finalized-record check absorb repeat dispatches
+        # (this orchestrator ticks several times per night), and we skip a show-night whose
+        # probe run is already queued or running.
+        if: steps.find.outputs.has_shows == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHOWS: ${{ steps.find.outputs.shows }}
+        run: |
+          if ! DUE=$(node scripts/press-night-record.js --list-due --shows="$SHOWS"); then
+            echo "::warning::press-night --list-due failed; no probe dispatched this tick"
+            exit 0
+          fi
+          if [ -z "$DUE" ]; then
+            echo "No press night inside the probe start window (-2.5h to +3h of the embargo)."
+            exit 0
+          fi
+          ACTIVE=$( (gh run list --workflow=press-night-probe.yml --status in_progress --json displayTitle --jq '.[].displayTitle'; \
+                     gh run list --workflow=press-night-probe.yml --status queued --json displayTitle --jq '.[].displayTitle') 2>/dev/null || true)
+          while read -r SHOW NIGHT MARKET EMBARGO; do
+            [ -z "$SHOW" ] && continue
+            if echo "$ACTIVE" | grep -qF "Press night probe $SHOW $NIGHT"; then
+              echo "Probe already queued or running for $SHOW $NIGHT"
+              continue
+            fi
+            echo "Starting press-night probe: $SHOW $NIGHT ($MARKET) embargo $EMBARGO"
+            if ! gh workflow run press-night-probe.yml -f show_id="$SHOW" -f night="$NIGHT" -f market="$MARKET" -f embargo_at="$EMBARGO"; then
+              echo "::warning::Failed to dispatch press-night-probe for $SHOW $NIGHT"
+            fi
+          done <<< "$DUE"
+
       - name: Check API budget
         id: budget
         if: steps.find.outputs.has_shows == 'true'

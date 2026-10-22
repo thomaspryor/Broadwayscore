@@ -223,6 +223,11 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **No secrets needed** beyond `GITHUB_TOKEN`
 - **Manual trigger:** `gh workflow run "Opening Night Reviews" -f lookback_days=7`
 
+## `press-night-probe.yml`
+- **Does:** Measures one press night end to end (BRO-5912). Started by the orchestrator's "Start press-night probes" step (before the polling loop; warn-only; skips a show-night whose probe is queued or running) for a show whose opening-day embargo is within [-2.5h, +3h] (wide because later orchestrator runs of a market are marked redundant, so the first one must catch the night) (`probeDue` in `scripts/lib/press-night-record.js`). Not a cron: GitHub delays crons 3-6h. Two jobs because one hosted job caps at 360 min: `early` waits to embargo -30 min, samples the deployed `data/shows/<id>.json` every 5 min to +2h, stamps census coverage (`--label=2h`) and commits a checkpoint; `late` resumes from it to +6h, stamps `--label=end`, finalizes and commits. `late` runs even if `early` failed.
+- **Output:** `data/audit/press-night/<show>-<night>.json` (public fields only). Verdict: `node scripts/press-night-record.js --show=ID --night=DATE --check` prints PASS/FAIL/UNKNOWN per gate (exit 0 only on PASS). Missing census, date-only publish times and failed fetches read UNKNOWN, never PASS. +24h coverage is not measured.
+- **Gotchas:** census coverage needs the private aggregator archive (`checkout-aggregator-archive`); without it `no-census-yet`. Notify severity is `warning` (agent-fixable, not page-worthy). Advisory: nothing gates on the record yet.
+
 ## `opening-night-broadcast.yml`
 - **Runs:** Daily cron at 12:30 UTC (8:30 AM EDT / 7:30 AM EST) with `create_draft=true` semantics — creates Resend draft AND emails owner a preview. Also dispatched by: (1) `update-show-status.yml` when a show opens (preview only), (2) `workflow_run` after `LLM Ensemble Score Reviews` completes (preview only, auto-retry), (3) manual `workflow_dispatch`, (4) hourly `41 13-23 * * *` redundancy cron (preview only unless past the draft deadline, see below)
 - **Does:** Thin "check & send" workflow — reads existing scored data, generates consensus, sends broadcast email. Heavy lifting (gather, rebuild, score) handled by independent data pipeline.
