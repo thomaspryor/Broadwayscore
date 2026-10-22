@@ -11,10 +11,13 @@ on:
         required: false
         default: '9'
 
+# Shared shows.json writer group (BRO-5803): fix-platform-ticket-links.js,
+# enrich-seatplan-links.js and enrich-official-urls.js all save shows.json.
+# cancel-in-progress must be false here: in a shared group `true` would cancel
+# whichever sibling writer is mid-run, not just an older run of this workflow.
 concurrency:
-  group: fix-platform-ticket-links
-  # concurrency-cancel-ok: idempotent refresh, latest run wins (BRO-934 audit)
-  cancel-in-progress: true
+  group: shows-json-writer
+  cancel-in-progress: false
 
 jobs:
   fix-links:

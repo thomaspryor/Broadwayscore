@@ -27,6 +27,7 @@ permissions:
   actions: write
 
 concurrency:
+  # shows-json-writer-exempt: daily 14:30 lands between audit-closing-dates 14:00 and audit-we-closing-dates 14:15 plus cron lag, so it would evict their pending run; new shows survive via push-core-data show recovery (BRO-5803)
   group: promote-we-aggregator
   cancel-in-progress: false
 

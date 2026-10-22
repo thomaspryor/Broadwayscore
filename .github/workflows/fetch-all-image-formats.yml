@@ -47,6 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 180
     concurrency:
+      # shows-json-writer-exempt: 180-min runs Mon+Thu 06:00 would hold the group across update-show-status 08:00 and evict pending siblings. Images are 3-way merged by push-core-data (NESTED_3WAY_FIELDS) (BRO-5803)
       group: fetch-images
       cancel-in-progress: false
     steps:

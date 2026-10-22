@@ -129,7 +129,8 @@ jobs:
             "update-theatr.yml|200|Update Theatr"
             "collect-we-ob-reviews.yml|50|Collect WE/OB Reviews"
             "sweep-we-aggregators.yml|192|Sweep WE Aggregators"
-            # Real cadence: Mon 7 UTC + Thu 8 UTC → Thu→Mon gap is 95h.
+            # Real cadence: enrich-west-end-dates Mon 02:00 + Thu 02:30 UTC (BRO-5803),
+            # enrich-off-broadway-dates Mon 07:15 + Thu 08:15 → Thu→Mon gap is ~95h.
             # 110h leaves a 15h cushion for cron lag (commonly 30min-3h per
             # memory/feedback_github_cron_delays.md, plus retries).
             "enrich-west-end-dates.yml|110|Enrich West End Dates"

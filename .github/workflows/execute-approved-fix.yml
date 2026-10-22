@@ -26,6 +26,7 @@ permissions:
 # what-else follow-up) — see that file's comment for why a shared group was
 # wrong. workflow_dispatch-only here so inputs.issue_number is always set.
 concurrency:
+  # shows-json-writer-exempt: per-issue group shared with auto-fix-feedback-bug.yml (BRO-3500); a shared group would drop distinct issues' approved fixes at the one-pending limit (BRO-5803)
   group: auto-fix-feedback-bug-${{ inputs.issue_number }}
   cancel-in-progress: false
 

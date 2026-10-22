@@ -7,6 +7,7 @@ name: Rebuild Reviews Data
 # With cancel-in-progress: false, a second trigger queues rather than cancelling.
 # GitHub keeps at most 1 pending run, so rapid-fire triggers naturally debounce.
 concurrency:
+  # shows-json-writer-exempt: owns the rebuild-reviews resource group (shared with gather-reviews.yml); a workflow can have one top-level group. enrich-cast-from-files.js only refreshes cast fields (BRO-5803)
   # concurrency-queue-ok: a full rebuild from current data; the newest pending run covers any it
   # evicts (the `reason` input is a label). A rare evicted force_write/skip_enrichment manual run
   # shows as cancelled in Actions and is re-run by hand. Debounce is the intent (BRO-4870).

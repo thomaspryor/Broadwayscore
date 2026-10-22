@@ -34,6 +34,7 @@ permissions:
 
 # BRO-934: per-workflow group: stops overlapping runs of the same job racing on the private-repo push. Not a shared class group (GH pending-queue depth is 1; see rebuild-fast.yml).
 concurrency:
+  # shows-json-writer-exempt: 60-min weekly run at Mon 07:00, inside the enrich-off-broadway-dates 07:15 / update-show-status 08:00 window; joining creates eviction pairs. Writes runtime fields only (BRO-5803)
   group: enrich-runtimes
   cancel-in-progress: false
 

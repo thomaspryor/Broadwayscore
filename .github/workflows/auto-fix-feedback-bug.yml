@@ -21,6 +21,7 @@ on:
 # manually-approved-fix execution can't run concurrently on the SAME issue,
 # while different issues run in true parallel like today.
 concurrency:
+  # shows-json-writer-exempt: per-issue group by design (BRO-3500, see above); a shared group would drop distinct issues' fixes at GitHub's one-pending limit (BRO-5803)
   group: auto-fix-feedback-bug-${{ github.event.issue.number || inputs.issue_number }}
   cancel-in-progress: false
 
