@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-22T05:01:14.279Z",
+  "generatedAt": "2026-10-22T05:04:18.583Z",
   "counts": {
-    "router": 193,
+    "router": 194,
     "digest": 1,
-    "direct": 1,
+    "direct": 0,
     "humanCallerIgnoresDigest": 0
   },
   "senders": [
@@ -1219,6 +1219,13 @@
       "disposition": "unknown"
     },
     {
+      "file": "scripts/reddit-stale-alert.js",
+      "line": 26,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "digest"
+    },
+    {
       "file": "scripts/renew-cookies.js",
       "line": 112,
       "kind": "routeAlert",
@@ -1273,13 +1280,6 @@
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
-    },
-    {
-      "file": "scripts/scrape-reddit-sentiment.js",
-      "line": 603,
-      "kind": "sendAlert-direct",
-      "classification": "direct",
-      "severity": "error"
     },
     {
       "file": "scripts/send-opening-night-broadcast.js",
