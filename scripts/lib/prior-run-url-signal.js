@@ -1,5 +1,7 @@
 'use strict';
 
+const { foldDiacritics } = require('./url-slug');
+
 /**
  * prior-run-url-signal.js — "does this candidate URL's own slug say it reviews
  * an EARLIER production of the show?" for shows that declare `priorRuns`.
@@ -25,7 +27,7 @@ const VENUE_STOPWORDS = new Set([
 ]);
 
 function slugTokens(s) {
-  return new Set(String(s || '').toLowerCase().split(/[^a-z0-9]+/).filter(Boolean));
+  return new Set(foldDiacritics(String(s || '')).toLowerCase().split(/[^a-z0-9]+/).filter(Boolean));
 }
 
 function venueKeyTokens(venue) {
@@ -86,7 +88,7 @@ function priorRunUrlSignal(url, show, { useVenue = true } = {}) {
   const segs = slugTokens(slug);
   // Flat substring, not tokens: "st-anns-warehouse" must match "St. Ann's Warehouse".
   const flatPath = slug.replace(/[^a-z0-9]/g, '');
-  const flatCurrent = String(show.venue || '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, '');
+  const flatCurrent = foldDiacritics(String(show.venue || '')).toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, '');
   // Any distinctive word of the current venue ("warehouse") also counts: transfer
   // reviews shorten it ("from-nyu-skirball-to-st-anns").
   const currentWords = [...slugTokens(show.venue)].filter((t) => t.length >= 5 && !VENUE_STOPWORDS.has(t));
@@ -115,7 +117,7 @@ function phillyFringeUrlSignal(url, show) {
   try { pathname = decodeURIComponent(new URL(url).pathname); } catch { return null; }
   if (!PHILLY_FRINGE_SLUG_RE.test(pathname)) return null;
   const flat = pathname.toLowerCase().replace(/[^a-z0-9]/g, '');
-  const venue = String(show.venue || '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, '');
+  const venue = foldDiacritics(String(show.venue || '')).toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, '');
   if (/newyork|nyc|offbroadway|broadway/.test(flat) || (venue.length >= 6 && flat.includes(venue))) return null;
   return { signal: 'philly-fringe-url', detail: 'url names the Philadelphia Fringe; show is a New York run' };
 }
