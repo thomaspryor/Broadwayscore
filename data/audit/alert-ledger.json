@@ -244,15 +244,16 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-22T17:34:40.250Z",
-      "lastSeen": "2026-10-22T17:34:40.250Z",
-      "lastNotifiedAt": "2026-10-22T17:34:40.250Z",
-      "lastSurfacedAt": "2026-10-22T17:34:40.250Z",
+      "incidentOpenedAt": "2026-10-22T17:15:09.574Z",
+      "lastSeen": "2026-10-22T17:57:49.797Z",
+      "lastNotifiedAt": "2026-10-22T17:15:09.574Z",
+      "lastSurfacedAt": "2026-10-22T17:15:09.574Z",
       "notifyCount": 153,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 142,
-      "sweptTracker": "BRO-5554"
+      "sweptTracker": "BRO-5554",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -22259,13 +22260,13 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"real active target-outlet critics have author-page overrides\"",
       "firstSeen": "2026-10-20T20:23:23.923Z",
       "incidentOpenedAt": "2026-10-20T22:02:19.935Z",
-      "lastSeen": "2026-10-22T17:34:39.777Z",
+      "lastSeen": "2026-10-22T17:57:49.784Z",
       "lastNotifiedAt": "2026-10-20T22:02:19.935Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-5792",
-      "silentRefires": 77
+      "silentRefires": 78
     },
     "land:land/bro-5788-probe-input": {
       "status": "resolved",
