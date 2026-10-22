@@ -1574,5 +1574,36 @@
       }
     ],
     "queuedAt": "2026-10-22T04:27:08.572Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5916-reddit-cooldown",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5916-reddit-cooldown",
+    "description": "land.yml did not land land/bro-5916-reddit-cooldown: the unit-tests-node gate went red at 84892fa07b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39722584212",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5916-reddit-cooldown"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "84892fa07b7c3cf527c8815eaac7948ea3f1319d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39722584212"
+      }
+    ],
+    "queuedAt": "2026-10-22T04:48:33.258Z"
   }
 ]
