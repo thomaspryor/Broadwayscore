@@ -384,7 +384,7 @@ const RANKED = 10;
 /** Minimum shows in a bucket before a rate is shown as a percentage. */
 export const MIN_RATE_SAMPLE = 5;
 
-/** Adds shared ranks (1, 2, 2, 4) and keeps the first n rows plus any rows tied with the last one. */
+/** Adds shared ranks (1, 2, 2, 4) and keeps the first n rows plus any rows tied with the last one. Rows must already be sorted by valueOf. */
 export function rankWithTies<T>(rows: T[], valueOf: (r: T) => number, n: number): Array<T & { rank: number }> {
   const ranked = rows.map((r, i) => {
     let first = i;

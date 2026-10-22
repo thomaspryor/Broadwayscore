@@ -36,7 +36,7 @@ import SeasonComparisonTable from '@/components/biz/SeasonComparisonTable';
 import SeasonHistoryTable from '@/components/biz/SeasonHistoryTable';
 import MixCard from '@/components/biz/MixCard';
 import TopicCard from '@/components/biz/TopicCard';
-import { formatMillions } from '@/lib/investment-topics';
+import { formatMillions, TONY_NOMS_HIGH } from '@/lib/investment-topics';
 import { getMusicalsSinceReopening, getWhatPredictsTheMoney, getFlopsAndRecoups, getTonyWinners } from '@/lib/data-topic-pages';
 import WhoRecoupsCard from '@/components/biz/WhoRecoupsCard';
 import RecentDevelopmentsList, { type DevelopmentItem } from '@/components/biz/RecentDevelopmentsList';
@@ -322,7 +322,7 @@ export default function BizDashboard() {
             <TopicCard
               href="/biz/reviews-and-money"
               title="What predicts the money"
-              headline={`${newMusicals.tonyNoms.high.recouped} of ${newMusicals.tonyNoms.high.total} new musicals with 5+ Tony nominations recouped`}
+              headline={`${newMusicals.tonyNoms.high.recouped} of ${newMusicals.tonyNoms.high.total} new musicals with ${TONY_NOMS_HIGH}+ Tony nominations recouped`}
               detail="Critic scores, audience scores and Tony results against recoupment, for new musicals, revivals and plays."
             />
             {flopsTopic.flops[0] && (
