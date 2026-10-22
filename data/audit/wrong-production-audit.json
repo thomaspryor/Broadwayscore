@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T14:21:28.115Z",
+  "timestamp": "2026-10-22T14:47:17.250Z",
   "stats": {
-    "totalReviews": 58823,
-    "alreadyFlagged": 21257,
-    "dateGuardCatches": 201,
-    "directorMismatch": 2053,
-    "tvFilmSignals": 1658,
-    "londonSignals": 2706,
+    "totalReviews": 58899,
+    "alreadyFlagged": 21269,
+    "dateGuardCatches": 202,
+    "directorMismatch": 2054,
+    "tvFilmSignals": 1659,
+    "londonSignals": 2707,
     "offBroadwaySignals": 527,
     "yearMismatch": 169,
-    "noPublishDate": 5218
+    "noPublishDate": 5260
   },
   "findings": [
     {
@@ -3130,6 +3130,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "angels-bone-west-end-2026",
+      "file": "nick-holmes-music--nick-holmes.json",
+      "publishDate": "2026-10-19",
+      "url": "https://nick-holmes-music.com/2026/10/19/english-national-opera-angels-bone-live-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -12092,6 +12105,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "dreamgirls-west-end-2016",
+      "file": "thestage--mark-shenton.json",
+      "score": null,
+      "publishDate": "2016-12-14T22:30:28-05:00",
+      "url": "https://www.thestage.co.uk/reviews/2016/dreamgirls-review-at-savoy-theatre-london-a-dream-of-a-show/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael bennett\" from dreamgirls-1987"
         }
       ]
     },
@@ -65500,6 +65527,19 @@
       ]
     },
     {
+      "showId": "garry-starr-classic-penguins-off-west-end-2026",
+      "file": "timeout-london--alison-rodericks.json",
+      "publishDate": "2026-06-10",
+      "url": "https://www.timeout.com/sydney/theatre/garry-starr-classic-penguins",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 134d before show (2026-06-10 vs 2026-10-22)"
+        }
+      ]
+    },
+    {
       "showId": "gary-a-sequel-to-titus-andronicus-2019",
       "file": "theater-scene--victor-gluck.json",
       "score": 79,
@@ -69322,6 +69362,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
+      "file": "all-that-dazzles-uk--seth-wilby.json",
+      "publishDate": "2026-10-22",
+      "url": "https://www.allthatdazzles.co.uk/post/review-ilford-boy-donmar-warehouse",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -86776,6 +86829,20 @@
     },
     {
       "showId": "the-ferryman-2018",
+      "file": "thestage--mark-shenton.json",
+      "score": 82,
+      "publishDate": "October 21, 2018",
+      "url": "https://www.thestage.co.uk/reviews/2018/ferryman-review-bernard-jacobs-theatre-paddy-jez-butterworth-new-york/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-ferryman-2018",
       "file": "this-week-in-new-york--mark-rifkin.json",
       "score": 94,
       "publishDate": "2019-01-09",
@@ -92977,20 +93044,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "travesties-2018",
-      "file": "hollywood-reporter--frank-scheck.json",
-      "score": 81,
-      "publishDate": "April 24, 2018",
-      "url": "https://www.hollywoodreporter.com/news/general-news/travesties-theater-1104956/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

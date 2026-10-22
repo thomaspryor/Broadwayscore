@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T14:21:43.050Z",
+  "generatedAt": "2026-10-22T14:47:32.101Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,27 +13,26 @@
       "slug": "derren-brown-only-human-west-end",
       "thumbnail": "/images/shows/derren-brown-only-human-west-end-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": 78,
+      "liveScore": 79,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 1,
+      "total": 2,
       "t1": 0,
-      "t2": 1,
+      "t2": 2,
       "t3": 0,
-      "positive": 1,
+      "positive": 2,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "2/8 total",
           "T1:0/3",
-          "T2:1/2",
-          "hi-conf:1/6"
+          "hi-conf:2/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -141,10 +140,6 @@
           "isDualMarket": false
         },
         {
-          "name": "London Theatre",
-          "isDualMarket": false
-        },
-        {
           "name": "LondonTheatre1",
           "isDualMarket": false
         }
@@ -158,6 +153,18 @@
           "t2": 1,
           "t3": 0,
           "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T14:47:32.101Z",
+          "rc": 2,
+          "s": 79,
+          "t1": 0,
+          "t2": 2,
+          "t3": 0,
+          "p": 2,
           "m": 0,
           "n": 0,
           "bc": "waiting"
@@ -1982,10 +1989,6 @@
           "isDualMarket": false
         },
         {
-          "name": "Talkin' Broadway",
-          "isDualMarket": false
-        },
-        {
           "name": "Slant Magazine",
           "isDualMarket": false
         },
@@ -2445,17 +2448,17 @@
       "status": "open",
       "slug": "billy-crystal-860",
       "thumbnail": "/images/shows/billy-crystal-860-2026/thumbnail.webp",
-      "siteScore": 82.39,
+      "siteScore": 82.31,
       "liveScore": 82,
-      "scoreDrift": -0.39000000000000057,
+      "scoreDrift": -0.3100000000000023,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 24,
+      "total": 25,
       "t1": 8,
-      "t2": 13,
+      "t2": 14,
       "t3": 3,
-      "positive": 22,
+      "positive": 23,
       "mixed": 2,
       "negative": 0,
       "readiness": {
@@ -2470,8 +2473,8 @@
         }
       },
       "broadcast": {
-        "state": "overdue",
-        "detail": "Overdue alert sent at 10/22/2026, 11:07:30 AM"
+        "state": "preview-sent",
+        "detail": "Preview sent to thomas.pryor@gmail.com at 2:16:03 PM"
       },
       "missingT1": [
         {
@@ -2845,6 +2848,18 @@
           "m": 2,
           "n": 0,
           "bc": "overdue"
+        },
+        {
+          "t": "2026-10-22T14:47:32.101Z",
+          "rc": 25,
+          "s": 82.31,
+          "t1": 8,
+          "t2": 14,
+          "t3": 3,
+          "p": 23,
+          "m": 2,
+          "n": 0,
+          "bc": "preview-sent"
         }
       ]
     },
@@ -3234,18 +3249,18 @@
       "status": "open",
       "slug": "ilford-boy-west-end",
       "thumbnail": "/images/shows/ilford-boy-west-end-2026/thumbnail.jpg",
-      "siteScore": 74.86,
-      "liveScore": 75,
-      "scoreDrift": 0.14000000000000057,
+      "siteScore": 74.26,
+      "liveScore": 74,
+      "scoreDrift": -0.2600000000000051,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 13,
+      "total": 14,
       "t1": 6,
       "t2": 4,
-      "t3": 3,
+      "t3": 4,
       "positive": 8,
-      "mixed": 5,
+      "mixed": 6,
       "negative": 0,
       "readiness": {
         "ready": true,
@@ -3528,6 +3543,18 @@
           "t3": 3,
           "p": 8,
           "m": 5,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T14:47:32.101Z",
+          "rc": 14,
+          "s": 74.26,
+          "t1": 6,
+          "t2": 4,
+          "t3": 4,
+          "p": 8,
+          "m": 6,
           "n": 0,
           "bc": "waiting"
         }
