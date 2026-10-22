@@ -11,7 +11,7 @@ const require = createRequire(import.meta.url);
 const chk = require('./reddit-review-check.js');
 const mail = require('./reddit-post-email.js');
 const opening = require('./reddit-opening-post.js');
-const { runShowCheck, TOOLS } = require('../verify-reddit-draft-reviews.js');
+const { runShowCheck, TOOLS } = require('./reddit-review-check-runner.js');
 
 const NOW = Date.parse('2026-10-22T06:00:00Z');
 const hoursAgo = h => new Date(NOW - h * 3600e3).toISOString();
@@ -327,7 +327,7 @@ test('real deps: stub tools run in a git repo; an in-show write is kept, a stray
   const auditPath = path.join(root, 'audit.json');
   const run = async mode => {
     process.env.STUB_RT = rt; process.env.STUB_SHOW = id; process.env.STUB_MODE = mode; process.env.STUB_AUDIT = auditPath;
-    return await runShowCheck({ draft: baseDraft({ showId: id }), mode: 'apply', nowIso: 'T', deps: require('../verify-reddit-draft-reviews.js').realDeps({ root, reviewTexts: rt, auditPath, quiet: true }) });
+    return await runShowCheck({ draft: baseDraft({ showId: id }), mode: 'apply', nowIso: 'T', deps: require('./reddit-review-check-runner.js').realDeps({ root, reviewTexts: rt, auditPath, quiet: true }) });
   };
   const ok = await run('ingest');
   assert.equal(ok.verification.status, 'fixed');
@@ -353,7 +353,7 @@ test('real deps: stub tools run in a git repo; an in-show write is kept, a stray
 // ── the reader end to end: fake model, real field-edit writes ────────────────
 
 test('makeJudge: valid decisions are written through review-field-edit, invalid ones are refused, dry-run writes nothing', async () => {
-  const { makeJudge } = require('../verify-reddit-draft-reviews.js');
+  const { makeJudge } = require('./reddit-review-check-runner.js');
   const id = 'midnight-off-broadway-2026';
   const show = { id, title: 'Midnight', venue: 'Daryl Roth Theatre', openingDate: '2026-10-15', previewsStartDate: '2026-10-01', cast: [{ name: 'Todrick Hall' }], creativeTeam: [], priorRuns: [] };
   const body = 'The review goes on about the evening. '.repeat(20);
@@ -513,7 +513,7 @@ test('the workflow never lets the check, the push or the rebuild cost the owner 
 });
 
 test('makeJudge: one atomic write stamped as a script clear; a guard that keeps a field restores the file; one critic name is given once per run', async () => {
-  const { makeJudge } = require('../verify-reddit-draft-reviews.js');
+  const { makeJudge } = require('./reddit-review-check-runner.js');
   const id = 'midnight-off-broadway-2026';
   const show = { id, title: 'Midnight', venue: 'Daryl Roth Theatre', openingDate: '2026-10-15', previewsStartDate: '2026-10-01', cast: [{ name: 'Todrick Hall' }], creativeTeam: [], priorRuns: [] };
   const body = 'The review goes on about the evening. '.repeat(20);
@@ -540,7 +540,7 @@ test('makeJudge: one atomic write stamped as a script clear; a guard that keeps 
   assert.equal(guards.isScriptWrongProductionClear(held), true, 'a later flag plan may overrule it');
 
   // a write that the guard changes is rolled back to the original bytes
-  const { writeRecordAtomically } = require('../verify-reddit-draft-reviews.js');
+  const { writeRecordAtomically } = require('./reddit-review-check-runner.js');
   const original = fs.readFileSync(path.join(dir, id, 'two.json'), 'utf8');
   const bad = writeRecordAtomically(dir, id, 'two.json', { ...read('two.json'), criticName: 'Written Name' }, [{ field: 'criticName', oldValue: 'Unknown', newValue: 'A Different Name' }]);
   assert.equal(bad.ok, false);
