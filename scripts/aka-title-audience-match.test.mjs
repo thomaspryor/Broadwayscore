@@ -63,3 +63,16 @@ test('Mezzanine alias at the same house but a much older run does not attach', (
   const old = { objectId: 'pOld', show: { name: '860' }, theater: { name: 'Imperial Theatre' }, opened: '2019-03-01', ratingsCount: 40, averageRating: 4.0 };
   assert.equal(matchProductions([old], [show]).length, 0);
 });
+
+test('Theatr alias never attaches a West End show to a same-named NYC house', () => {
+  const we = { id: 'x-west-end-2026', title: 'Press Title X', akaTitles: ['X'], venue: 'Lyceum Theatre', category: 'west-end', openingDate: '2026-09-01', previewsStartDate: '2026-08-15' };
+  const m = matchTheatrToShows([{ id: 7, name: 'X', eventCategory: 'Broadway', venue: { name: 'Lyceum Theatre' }, totalWatchedUsers: 5 }], [we]);
+  assert.equal(m.length, 0);
+});
+
+test('Theatr alias matches an accented venue spelling through the real matcher', () => {
+  const fr = { ...show, id: 'y-2026', title: 'Press Title Y', akaTitles: ['Y'], venue: 'Theatre Marigny' };
+  const m = matchTheatrToShows([{ id: 8, name: 'Y', eventCategory: 'Broadway', venue: { name: 'Théâtre Marigny' }, totalWatchedUsers: 2 }], [fr]);
+  assert.equal(m.length, 1);
+  assert.equal(m[0].confidence, 'alias');
+});
