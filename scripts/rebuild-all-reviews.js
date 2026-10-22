@@ -5022,7 +5022,7 @@ showDirs.forEach(showId => {
         // Outlets whose article prints the real critic while the page/CMS credits a shared account
         // (South London: "writes Lizzie Paul" under the staff user "Michael Holland"): the printed
         // credit replaces a stored name that disagrees with it, not just a missing one.
-        const printedName = printedBylineOverride(oid, data.fullText, data.url);
+        const printedName = printedBylineOverride(oid, data.fullText, data.url, (!crit || crit === 'unknown' || crit === 'unnamed') ? null : data.criticName);
         if (printedName && normalizeCriticCanonical(printedName) !== normalizeCriticCanonical(data.criticName || 'unknown')) {
           data.criticName = printedName;
           stats.resolvedBylineFromText = (stats.resolvedBylineFromText || 0) + 1;

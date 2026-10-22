@@ -901,7 +901,7 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
   let criticName = sanitizeCriticName(input.criticName) || 'Unknown';
   // BRO-5499: where the article prints its own byline line (TheaterScene.net "Posted on <date> by X in"),
   // that line beats a scraped / aggregator-supplied name (the site editor is credited on other critics' pages).
-  const printedByline = printedBylineOverride(outletId, input.fullText || fields.fullText, input.url);
+  const printedByline = printedBylineOverride(outletId, input.fullText || fields.fullText, input.url, criticName === 'Unknown' ? null : criticName);
   if (printedByline && sanitizeCriticName(printedByline) && normalizeCritic(printedByline) !== normalizeCritic(criticName)) {
     console.warn(`  ✎ Byline: ${outletId} page prints "${printedByline}", replacing "${criticName}"`);
     criticName = sanitizeCriticName(printedByline);

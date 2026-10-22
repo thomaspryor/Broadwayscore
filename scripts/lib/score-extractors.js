@@ -1077,19 +1077,28 @@ function extractUSATodayScore(html, text) {
  */
 /**
  * A run of star EMOJI ("⭐⭐⭐⭐") in the review's opening 300 characters, as Staged Theatre,
- * Pink Prince Theatre, Reviews Gate and a dozen other London blogs print their verdict under the
- * headline ("A Beautifully Performed Production but Less Is Not Always More ⭐⭐⭐⭐ What's it about?").
- * Only the ★/☆ glyphs were read before, so ~100 emoji-rated reviews were scored with no star anchor
- * (Martin Guerre / Staged Theatre: 4 stars, originalScore null). One contiguous run of 1 to 5; a
- * second separate run in the lead (a quoted rating of another show) is ambiguous and returns null.
+ * Reviews Gate, Pink Prince Theatre ("⭐️ 3 Stars") and a dozen other London blogs print their
+ * verdict under the headline ("A Beautifully Performed Production but Less Is Not Always More
+ * ⭐⭐⭐⭐ What's it about?"). Only the ★/☆ glyphs were read before, so ~100 emoji-rated reviews
+ * were scored with no star anchor (Martin Guerre / Staged Theatre: 4 stars, originalScore null).
+ * One contiguous run: 2 to 5 stars stand on their own; a LONE ⭐ is a bullet or nav icon ("Celeb
+ * news ⭐ U.S. Politics" scraped from USA Today) unless the number follows it ("⭐️ 3 Stars").
+ * A second separate run in the lead (a quoted rating of another show) is ambiguous: null.
  * @returns {{originalScore: string, normalizedScore: number, source: string} | null}
  */
 function extractLeadEmojiStars(text) {
   if (!text) return null;
   const lead = String(text).slice(0, 300);
-  const runs = lead.match(/(?:⭐️?[\s\u00a0]*){1,6}/gu);
-  if (!runs || runs.length !== 1) return null;
-  const count = (runs[0].match(/⭐/gu) || []).length;
+  const re = /(?:⭐️?[\s\u00a0]*){1,6}/gu;
+  const runs = [...lead.matchAll(re)];
+  if (runs.length !== 1) return null;
+  const run = runs[0];
+  let count = (run[0].match(/⭐/gu) || []).length;
+  if (count === 1) {
+    const num = /^\s*([1-5])(?:\.0)?\s*(?:\/\s*5\s*)?stars?\b/i.exec(lead.slice(run.index + run[0].length));
+    if (!num) return null;
+    count = Number(num[1]);
+  }
   if (count < 1 || count > 5) return null;
   return {
     originalScore: `${count}/5 stars`,
