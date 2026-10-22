@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-22T02:58:33.048Z",
+    "generatedAt": "2026-10-22T03:54:24.679Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,9 +9,9 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 5,
-    "exemptCount": 23,
+    "exemptCount": 25,
     "coveredCount": 44,
-    "highChurnTracked": 72
+    "highChurnTracked": 74
   },
   "flagged": [
     {
@@ -24,7 +24,7 @@
     },
     {
       "path": "data/audit/bundle-size-history.json",
-      "churn": 44
+      "churn": 43
     },
     {
       "path": "data/audit/outlet-feed-reconcile.json",
@@ -38,51 +38,55 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 884
+      "churn": 899
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 226
+      "churn": 230
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 226
+      "churn": 230
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 226
+      "churn": 230
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 179
+      "churn": 182
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 176
+      "churn": 179
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 142
+      "churn": 146
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 117
+      "churn": 120
     },
     {
       "path": "public/data/shows/the-comedy-about-spies-west-end-2025.json",
-      "churn": 74
+      "churn": 75
+    },
+    {
+      "path": "public/data/shows/king-of-the-yees-off-broadway-2026.json",
+      "churn": 52
     },
     {
       "path": "public/data/shows/martin-guerre-west-end-2026.json",
       "churn": 52
     },
     {
-      "path": "public/data/shows/king-of-the-yees-off-broadway-2026.json",
-      "churn": 51
+      "path": "public/data/shows/other-desert-cities-2026.json",
+      "churn": 47
     },
     {
-      "path": "public/data/shows/other-desert-cities-2026.json",
-      "churn": 46
+      "path": "public/data/shows/lincoln-in-the-bardo-off-broadway-2026.json",
+      "churn": 40
     },
     {
       "path": "public/data/shows/angels-bone-west-end-2026.json",
@@ -97,7 +101,7 @@
       "churn": 38
     },
     {
-      "path": "public/data/shows/lincoln-in-the-bardo-off-broadway-2026.json",
+      "path": "public/data/shows/midnight-off-broadway-2026.json",
       "churn": 37
     },
     {
@@ -105,12 +109,8 @@
       "churn": 37
     },
     {
-      "path": "public/data/shows/midnight-off-broadway-2026.json",
-      "churn": 36
-    },
-    {
       "path": "public/data/shows/copperfield-the-new-musical-off-broadway-2026.json",
-      "churn": 35
+      "churn": 36
     },
     {
       "path": "data/audit/t1-outlet-breaker.json",
@@ -125,54 +125,62 @@
       "churn": 32
     },
     {
+      "path": "public/data/shows/murder-cathedral-off-west-end-2026.json",
+      "churn": 32
+    },
+    {
       "path": "public/data/shows/ilford-boy-west-end-2026.json",
       "churn": 31
+    },
+    {
+      "path": "public/data/shows/two-girls-off-broadway-2026.json",
+      "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 824,
+      "churn": 842,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 530,
+      "churn": 537,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 426,
+      "churn": 429,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 404,
+      "churn": 408,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 404,
+      "churn": 408,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 404,
+      "churn": 408,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/landings.jsonl",
-      "churn": 385,
+      "churn": 382,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/exclusion-daily-totals.json",
-      "churn": 284,
+      "churn": 288,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 283,
+      "churn": 287,
       "mergeAttr": "ours"
     },
     {
@@ -182,27 +190,27 @@
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 226,
+      "churn": 230,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 191,
+      "churn": 194,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 182,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/progress.json",
-      "churn": 181,
+      "churn": 185,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-other-desert-cities-2026.json",
-      "churn": 180,
+      "churn": 184,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/progress.json",
+      "churn": 183,
       "mergeAttr": "ours"
     },
     {
@@ -212,37 +220,37 @@
     },
     {
       "path": "data/audit/exclusion-mirror-summary.json",
-      "churn": 117,
+      "churn": 120,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 117,
+      "churn": 120,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 117,
+      "churn": 120,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 117,
+      "churn": 120,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/tour-sweep.json",
-      "churn": 117,
+      "churn": 120,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 117,
+      "churn": 120,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 114,
+      "churn": 116,
       "mergeAttr": "ours"
     },
     {
@@ -252,17 +260,22 @@
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 56,
+      "churn": 58,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 56,
+      "churn": 58,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 55,
+      "churn": 57,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/score-public-since.json",
+      "churn": 36,
       "mergeAttr": "ours"
     },
     {
@@ -271,27 +284,17 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/gather-collisions.json",
-      "churn": 34,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/market-misroutes.json",
-      "churn": 34,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/score-public-since.json",
-      "churn": 34,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/url-mismatch-suspects.json",
-      "churn": 34,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/autoclear-shadow-report.json",
+      "churn": 33,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/churn-merge-coverage.json",
+      "churn": 33,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/corpus-drift.json",
       "churn": 33,
       "mergeAttr": "ours"
     },
@@ -307,6 +310,16 @@
     },
     {
       "path": "data/audit/gap-audit-checkpoint.json",
+      "churn": 33,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/gather-collisions.json",
+      "churn": 33,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/market-misroutes.json",
       "churn": 33,
       "mergeAttr": "ours"
     },
@@ -336,13 +349,8 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/churn-merge-coverage.json",
-      "churn": 32,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/corpus-drift.json",
-      "churn": 32,
+      "path": "data/audit/url-mismatch-suspects.json",
+      "churn": 33,
       "mergeAttr": "ours"
     },
     {
