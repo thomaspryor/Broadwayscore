@@ -334,20 +334,69 @@ export function parsePushCommand(cmd) {
   let cdDir = null;
   let dirUnknown = false;
   let headMoved = false;
-  const subshells = [];
-  for (const { words, sep } of splitShellCommands(cmd)) {
-    parseOne(words);
-    if (sep === '(') subshells.push({ cdDir, dirUnknown });
-    else if (sep === ')' && subshells.length) ({ cdDir, dirUnknown } = subshells.pop());
-  }
+  run(cmd, 0);
   return pushes;
 
-  function parseOne(words) {
+  function run(src, depth) {
+    const subshells = [];
+    for (const { words, sep } of splitShellCommands(src)) {
+      parseOne(words, depth);
+      if (sep === '(') subshells.push({ cdDir, dirUnknown });
+      else if (sep === ')' && subshells.length) ({ cdDir, dirUnknown } = subshells.pop());
+    }
+  }
+
+  // `bash -c '…'`, `sh -lc '…'`, `eval '…'` (BRO-6017): the script word is parsed
+  // as its own command string. Returns { script, subshell, repoCtx } or null.
+  // bash: flags are scanned up to the first operand (a script file ends the scan,
+  // so `bash x.sh -c '…'` is not a -c script); `-o`/`-O` clusters take a value.
+  function nestedScript(words) {
+    const k = skipWrappers(words);
+    const h = path.basename(words[k] || '');
+    // Wrapper/env context that moves or redirects the inner repo (GIT_DIR=…, env -C dir).
+    const repoCtx = words.slice(0, k).some((w) => GIT_REPO_ENV.test(w) || w === '-C' || w === '--chdir' || w.startsWith('--chdir='));
+    if (h === 'eval') {
+      let j = k + 1;
+      if (words[j] === '--') j++;
+      return j < words.length ? { script: words.slice(j).join(' '), subshell: false, repoCtx } : null;
+    }
+    if (!SHELL_SINKS.has(h)) return null;
+    let sawC = false;
+    for (let n = k + 1; n < words.length; n++) {
+      const w = words[n];
+      if (w === '--') { n++; if (sawC && n < words.length) return { script: words[n], subshell: true, repoCtx }; break; }
+      if (!/^[-+][A-Za-z]+$/.test(w) && !/^--[a-z-]+$/.test(w)) {
+        if (sawC) return { script: w, subshell: true, repoCtx };
+        break; // script-file operand
+      }
+      if (/^-[A-Za-z]*n/.test(w)) return null; // noexec
+      if (/^-[A-Za-z]*c/.test(w)) sawC = true;
+      if (/^[-+][A-Za-z]*[oO]$/.test(w)) n++; // option operand (`-o pipefail`)
+    }
+    return null;
+  }
+
+  function parseOne(words, depth = 0) {
     if (!words.length) return;
+    const nested = depth < 6 ? nestedScript(words) : null;
+    if (nested) {
+      const saved = { cdDir, dirUnknown };
+      if (nested.repoCtx) dirUnknown = true;
+      run(nested.script, depth + 1);
+      // eval runs in the current shell, so its cd carries out; bash -c does not.
+      if (nested.subshell) ({ cdDir, dirUnknown } = saved);
+      return;
+    }
     let i = 0;
     let envRepo = false;
     for (; i < words.length && /^[A-Za-z_][A-Za-z0-9_]*=/.test(words[i]); i++) {
       if (GIT_REPO_ENV.test(words[i])) envRepo = true; // FOO=bar prefixes
+    }
+    // `env git push`, `timeout 30 git push`, `command git push`: look past wrappers.
+    const wk = skipWrappers(words.slice(i));
+    if (wk > 0) {
+      if (words.slice(i, i + wk).some((w) => GIT_REPO_ENV.test(w) || w === '-C' || w === '--chdir' || w.startsWith('--chdir='))) envRepo = true;
+      i += wk;
     }
     const head = words[i];
     if (head === 'cd') {

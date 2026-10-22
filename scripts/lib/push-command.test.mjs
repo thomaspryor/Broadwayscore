@@ -92,3 +92,42 @@ test('redirections and a spaceless here-string do not hide the shell', () => {
   assert.deepEqual(pushed(`bash > log <<EOF\n${G}\nEOF`), ['land/a']);
   assert.deepEqual(pushed(`bash <<<"${G}"`), ['land/a']);
 });
+
+// BRO-6017: bash -c / sh -c / eval strings are parsed recursively.
+test('bash -c, sh -lc, eval and wrapped forms expose the land push', () => {
+  assert.deepEqual(pushed(`bash -c '${G}'`), ['land/a']);
+  assert.deepEqual(pushed(`sh -lc "${G}"`), ['land/a']);
+  assert.deepEqual(pushed(`eval "${G}"`), ['land/a']);
+  assert.deepEqual(pushed(`eval ${G}`), ['land/a']);
+  assert.deepEqual(pushed(`sudo -u bob bash -c '${G}'`), ['land/a']);
+  assert.deepEqual(pushed(`bash -c "bash -c '${G}'"`), ['land/a']);
+});
+
+test('a cd inside bash -c is scoped to it; one before it carries in', () => {
+  assert.equal(parsePushCommand(`cd /x && bash -c '${G}'`)[0].cdDir, '/x');
+  const p = parsePushCommand(`bash -c 'cd /y'; ${G}`);
+  assert.equal(p[0].cdDir, null);
+  assert.equal(parsePushCommand(`bash -c 'cd /y && ${G}'`)[0].cdDir, '/y');
+});
+
+test('bash script.sh and bash -c with a non-push script are not pushes', () => {
+  assert.deepEqual(pushed(`bash script.sh`), []);
+  assert.deepEqual(pushed(`bash -c 'echo hi'`), []);
+});
+
+test('BRO-6017 review fixes: option operands, eval --, eval cd carry-out, repo context, noexec, wrappers', () => {
+  assert.deepEqual(pushed(`eval -- '${G}'`), ['land/a']);
+  assert.deepEqual(pushed(`bash -co pipefail '${G}'`), ['land/a']);
+  assert.deepEqual(pushed(`bash -o pipefail -c '${G}'`), ['land/a']);
+  assert.deepEqual(pushed(`bash -c -- '${G}'`), ['land/a']);
+  assert.deepEqual(pushed(`bash script.sh -c '${G}'`), []);
+  assert.deepEqual(pushed(`bash -n -c '${G}'`), []);
+  assert.deepEqual(pushed(`env ${G}`), ['land/a']);
+  assert.deepEqual(pushed(`timeout 30 ${G}`), ['land/a']);
+  assert.equal(parsePushCommand(`eval 'cd /other'; ${G}`)[0].cdDir, '/other');
+  assert.equal(parsePushCommand(`GIT_DIR=/o/.git bash -c '${G}'`)[0].dirUnknown, true);
+  assert.equal(parsePushCommand(`env -C /o bash -c '${G}'`)[0].dirUnknown, true);
+  let deep = G;
+  for (let n = 0; n < 5; n++) deep = `bash -c '${deep.replace(/'/g, `'\\''`)}'`;
+  assert.deepEqual(pushed(deep), ['land/a']);
+});
