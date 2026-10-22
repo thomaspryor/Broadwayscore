@@ -430,6 +430,44 @@ function collectHousedSiblingFiles(show, shows, deps) {
 }
 
 /**
+ * Files a DIFFERENT, earlier-starting production of the same title in the same
+ * market holds, dated inside that production's own run and before `show`'s first
+ * preview/opening. No priorRuns link is needed: two unrelated productions can share
+ * a title (BRO-5489: the Southwark Playhouse "Jane Eyre" musical, Aug-Oct 2026, and
+ * the Rose Theatre Kingston "Jane Eyre" play, Oct 2026). The ingest refused the
+ * Southwark-held URL as cross-show-url-owned and the opening-window alert kept
+ * counting it as a gap the Kingston entry could never collect.
+ * Dated files only (an undated one could be a misfiled review of this run), and a
+ * review dated on or after this run's start never matches. Report-only evidence.
+ *
+ * @returns {Array<object>} copies tagged `_housedOnShowId`
+ */
+function collectSameTitleProductionFiles(show, shows, deps) {
+  const out = [];
+  if (!show || !Array.isArray(shows)) return out;
+  const { getMarketPool } = require('./venue-classification');
+  const start = runStartMs(show);
+  if (!Number.isFinite(start)) return out;
+  const base = baseTitle(show);
+  const linked = new Set(findPriorRunSiblings(show, shows).map(s => s.sibling.id));
+  for (const other of shows) {
+    if (!other || other.id === show.id || linked.has(other.id) || !base || baseTitle(other) !== base) continue;
+    if (getMarketPool(other.category) !== getMarketPool(show.category)) continue;
+    const otherStart = runStartMs(other);
+    if (!Number.isFinite(otherStart) || otherStart >= start) continue;
+    const otherEnd = toDateMs(other.closingDate);
+    for (const d of deps.loadFiles(other.id) || []) {
+      const ms = toDateMs(d && d.publishDate);
+      if (!Number.isFinite(ms) || ms < otherStart || ms >= start) continue;
+      if (Number.isFinite(otherEnd) && ms > otherEnd) continue;
+      if (!deps.isCovered(d, other)) continue;
+      out.push({ ...d, _housedOnShowId: other.id });
+    }
+  }
+  return out;
+}
+
+/**
  * True when a review URL's slug names an earlier run's venue ("...-at-bridge-theatre")
  * and not this run's own. A review of the return names the house it plays (BRO-5705:
  * westminsterextra's Bridge Theatre review listed against the Noel Coward transfer).
@@ -574,6 +612,7 @@ module.exports = {
   RERUN_SEPARATE_MIN_OUTLETS,
   collectCarriedFiles,
   collectHousedSiblingFiles,
+  collectSameTitleProductionFiles,
   urlNamesPriorRunVenue,
   urlDatedInPriorRun,
 };
