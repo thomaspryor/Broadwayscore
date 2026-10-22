@@ -36,7 +36,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 
 // Load .env if available (must run before requiring ./lib/scraper, which
 // snapshots BRIGHTDATA_TOKEN/SCRAPINGBEE_API_KEY into module-level consts
@@ -48,7 +47,6 @@ const { fetchPage: fetchPageScraper, cleanup: cleanupScraper } = require('./lib/
 const { setExtractedScore, isScoreClearSupersededBy } = require('./lib/score-routing');
 const { isTier15OverrideActive } = require('./lib/rebuild-helpers');
 const { AGGREGATOR_DOMAINS } = require('./lib/aggregator-domains');
-const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { withDeadline } = require('./lib/cron-deadline');
@@ -117,16 +115,6 @@ if (OUTLET_EXTRACTORS[outlet] && OUTLET_EXTRACTORS[outlet].name === 'noScoreExtr
 // Cookie domain map from shared cookie-loader (full map, not just UK outlets)
 const { COOKIE_DOMAIN_MAP, loadCookiesForDomain: _loadCookiesForDomain } = require('./lib/cookie-loader');
 
-// Essential auth cookie patterns per domain (for ScrapingBee URL length limits).
-// Full cookie set goes to Playwright; only these go via ScrapingBee forward_headers.
-const ESSENTIAL_COOKIE_PATTERNS = {
-  'telegraph.co.uk': /^(__utp|tmg_refresh|tmg_session|tmg_pid|consentUUID)$/,
-  'thetimes.co.uk': /^(auth0|auth0_compat|sacs_tnl|authId|blaize_jwt|nukt_mem|nuk_customer_location_hint|login_event_fired|pay_fls|gamera_user_id|_nuk_sp_id\.|_nuk_sp_ses\.)$/,
-  'thetimes.com': /^(auth0|auth0_compat|sacs_tnl|authId|blaize_jwt|nukt_mem|nuk_customer_location_hint|login_event_fired|pay_fls|gamera_user_id|_nuk_sp_id\.|_nuk_sp_ses\.)$/,
-  'thestage.co.uk': null, // Small enough to send all
-  'ft.com': null, // Small enough to send all
-};
-
 function loadCookiesForUrl(url) {
   try {
     const hostname = new URL(url).hostname.replace(/^www\./, '');
@@ -139,8 +127,6 @@ function loadCookiesForUrl(url) {
   } catch (e) { /* skip */ }
   return null;
 }
-
-const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
 let _browser;
 let _context;
@@ -157,28 +143,18 @@ async function ensureBrowser() {
 async function fetchUrl(url) {
   const cookieData = loadCookiesForUrl(url);
 
-  // For paywalled sites, try ScrapingBee with filtered auth cookies
-  if (cookieData && SCRAPINGBEE_KEY) {
-    const { cookies, domain } = cookieData;
-    const pattern = ESSENTIAL_COOKIE_PATTERNS[domain];
-    const filtered = pattern ? cookies.filter(c => pattern.test(c.name)) : cookies;
-    const cookieHeader = filtered.map(c => `${c.name}=${c.value}`).join('; ');
-    if (cookieHeader.length > 0) {
-      try {
-        console.log(`  ScrapingBee: forwarding ${filtered.length}/${cookies.length} cookies (${cookieHeader.length} chars)`);
-        const html = await fetchWithScrapingBee(url, cookieHeader);
-        if (html && html.length > 500) return html;
-        console.log(`  ScrapingBee returned ${html.length} chars, trying Playwright...`);
-      } catch (e) {
-        console.log(`  ScrapingBee failed: ${e.message}, trying Playwright...`);
-      }
-    }
-  }
-
-  // For free outlets, use scraper.js for BD → SB → Playwright fallback chain
+  // fetchPage() owns the whole tier chain (cookies-plain -> SD -> BD -> SB -> Playwright)
+  // and attaches subscriber cookies itself (BRO-32: no direct ScrapingBee here).
   if (!cookieData) {
     const { content } = await fetchPageScraper(url);
     return content;
+  }
+  try {
+    const { content } = await fetchPageScraper(url);
+    if (content && content.length > 500) return content;
+    console.log(`  fetchPage returned ${content ? content.length : 0} chars, trying Playwright...`);
+  } catch (e) {
+    console.log(`  fetchPage failed: ${e.message}, trying Playwright...`);
   }
 
   // Playwright fallback for paywalled sites with full cookie set
@@ -207,55 +183,6 @@ async function fetchUrl(url) {
   } finally {
     await page.close();
   }
-}
-
-function fetchWithScrapingBee(url, cookieHeader) {
-  return new Promise((resolve, reject) => {
-    const params = new URLSearchParams({
-      api_key: SCRAPINGBEE_KEY,
-      url: url,
-      render_js: 'true',
-    });
-    if (cookieHeader) {
-      params.set('forward_headers', 'true');
-    }
-    const apiUrl = `https://app.scrapingbee.com/api/v1/?${params}`;
-    const options = { headers: {}, timeout: 30000 };
-    if (cookieHeader) {
-      options.headers['Spb-Cookie'] = cookieHeader;
-    }
-    // Guards against double-billing the ledger: req.destroy() on timeout
-    // itself emits a socket 'error' right after, so without this both
-    // handlers below would fire and recordSbCall() twice for one request
-    // (Codex adversarial review, BRO-2383).
-    let recorded = false;
-    const rec = (fields) => {
-      if (recorded) return;
-      recorded = true;
-      recordSbCall({ url, fn: 'render', purpose: 'score-recollect', ...fields });
-    };
-    const req = https.get(apiUrl, options, (res) => {
-      let data = '';
-      res.on('data', chunk => { data += chunk; });
-      res.on('end', () => {
-        rec({ success: res.statusCode === 200, status: res.statusCode, credits: sbBilledCredits(res.statusCode, 5) });
-        if (res.statusCode === 200) {
-          resolve(data);
-        } else {
-          reject(new Error(`ScrapingBee HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
-        }
-      });
-    });
-    req.on('error', (e) => {
-      rec({ success: false, status: 'error', credits: 0 });
-      reject(e);
-    });
-    req.on('timeout', () => {
-      req.destroy();
-      rec({ success: false, status: 'timeout', credits: 0 });
-      reject(new Error('Request timeout'));
-    });
-  });
 }
 
 // A timed-out fetch keeps running in the background; reset the scraper's

@@ -102,7 +102,7 @@ const { shouldTriggerRebuild } = require('./lib/gather-reviews-rebuild-trigger')
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { partitionShowScoreReviews } = require('./lib/gap-ingest-policy');
 const { showScoreSlugGuessBlockReason } = require('./lib/show-score-discover');
-const { recordSbCall, sbBilledCredits, withSpendShow } = require('./lib/provider-telemetry');
+const { withSpendShow } = require('./lib/provider-telemetry');
 const { isSerpUrlWrongProductionForOpeningNight, computeSerpShare, exceedsOpeningNightSerpBudget, parseGatherReviewsFlags } = require('./lib/opening-night-discovery');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { recordDeferredShows } = require('./lib/gather-deferred');
@@ -154,7 +154,7 @@ function saveAggregatorStub(filePath, stub) {
   safeWriteReview(filePath, preserveFlaggedFields(filePath, stub));
   return true;
 }
-const { domainMatchesExpected, fetchPage, verifyFetchedUrl } = require('./lib/scraper');
+const { domainMatchesExpected, fetchPage, fetchJSON, verifyFetchedUrl } = require('./lib/scraper');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { titleWordsMatchWithConfidence, buildSiblingCategoriesFromShows, pageTitleConfirmsShow } = require('./lib/show-matching');
 const { isArchiveIdentityMismatch: isStagedoorArchiveMismatch } = require('./lib/stagedoor-identity');
@@ -4907,25 +4907,17 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         if (dateFloor) apiUrl += `&after=${dateFloor}`;
 
         let posts = null;
-        // Try curl first, SB fallback
+        // Try curl first, shared fetchJSON() chain fallback
         try {
           const { execFileSync } = require('child_process');
           const raw = execFileSync('curl', ['-s', '-L', apiUrl, '-H', 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36', '-H', 'Accept: application/json', '--compressed'], { timeout: 15000, encoding: 'utf8' });
           posts = JSON.parse(raw);
         } catch {}
-        if (!posts && scrapingBeeKey) {
+        if (!posts) {
+          // fetchJSON() owns the provider tiers + spend ledger (BRO-32).
           try {
-            const axios = require('axios');
-            const resp = await axios.get('https://app.scrapingbee.com/api/v1', {
-              params: { api_key: scrapingBeeKey, url: apiUrl, render_js: 'false' },
-              timeout: 20000, responseType: 'text',
-            });
-            recordSbCall({ url: apiUrl, fn: 'json', success: true, status: resp.status, credits: 1, purpose: 'wet-live-fetch' });
-            try { posts = JSON.parse(resp.data); } catch {}
-          } catch (e) {
-            const status = e.response?.status || 'error';
-            recordSbCall({ url: apiUrl, fn: 'json', success: false, status, credits: sbBilledCredits(status, 1), purpose: 'wet-live-fetch' });
-          }
+            posts = await fetchJSON(apiUrl, { headers: { Accept: 'application/json' } });
+          } catch {}
         }
 
         if (posts && Array.isArray(posts)) {

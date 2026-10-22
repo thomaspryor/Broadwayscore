@@ -20,6 +20,16 @@ const BASELINE_MIGRATED = ['lbo', 'ltd', 'seatplan'].map((n) => `scripts/scrape-
 const MIGRATED = [
   'scripts/scrape-show-score-audience.js',
   'scripts/sweep-we-aggregators.js',
+  // BRO-32 batch 1
+  'scripts/scrape-bww-reviews.js',
+  'scripts/scrape-nyc-theatre-roundups.js',
+  'scripts/recollect-for-scores.js',
+  'scripts/fetch-square-images.js',
+  'scripts/fetch-all-image-formats.js',
+  'scripts/backfill-cast-web.js',
+  'scripts/verify-reviews.ts',
+  'scripts/gather-reviews.js',
+  'scripts/scrape-lottery-rush.js',
 ];
 
 for (const rel of MIGRATED) {
@@ -33,7 +43,7 @@ for (const rel of MIGRATED) {
 test('baseline no longer lists the migrated scripts', () => {
   const base = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/audit/direct-provider-calls-baseline.json'), 'utf8'));
   for (const rel of [...BASELINE_MIGRATED, ...MIGRATED]) assert.ok(!(rel in base.files), `${rel} still baselined`);
-  assert.ok(Object.keys(base.files).length <= 10, 'baseline must only shrink');
+  assert.ok(Object.keys(base.files).length <= 1, 'baseline must only shrink');
 });
 
 test('passthrough: wait + countryCode map to SB and SD param names', () => {

@@ -28,10 +28,8 @@ const https = require('https');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { CLAUDE_SONNET } = require('./lib/models');
-const { fetchPage } = require('./lib/scraper');
+const { fetchPage, fetchJSON: fetchJSONViaChain } = require('./lib/scraper');
 const { isBroadwayCategory } = require('./lib/venue-classification');
-const { recordSbCall, recordBdCall, sbBilledCredits } = require('./lib/provider-telemetry');
-const { consultBrightData } = require('./lib/brightdata-caps');
 
 // ==================== Configuration ====================
 
@@ -49,8 +47,6 @@ const verbose = args.includes('--verbose');
 const forceGuard = args.includes('--force');
 
 // API keys
-const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
-const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 
 // Load shows data for matching
@@ -126,7 +122,7 @@ async function fetchContent(url, { renderJs = true, premiumProxy = false } = {})
 }
 
 /**
- * Fetch a JSON endpoint through the proxy chain (Bright Data web_unlocker2 → ScrapingBee → direct).
+ * Fetch a JSON endpoint through the shared fetchJSON() proxy chain (then a last-resort direct request).
  * Used for the bwayrush /api/calendar endpoint, which Cloudflare blocks on datacenter IPs
  * including GitHub Actions runners. Returns parsed JSON or null.
  *
@@ -134,65 +130,16 @@ async function fetchContent(url, { renderJs = true, premiumProxy = false } = {})
  * is the zone currently configured in .env for cheap HTML fetches.
  */
 async function fetchJson(url) {
-  // Bright Data web_unlocker2 — cheap residential proxy that bypasses Cloudflare.
-  // BRO-5261 (BRO-3067 cousin): consult the daily breaker / per-run budget
-  // first, like scraper.js; a capped call skips to ScrapingBee.
-  const bdVerdict = BRIGHTDATA_TOKEN ? consultBrightData({ zone: 'web_unlocker2' }) : null;
-  if (bdVerdict && !bdVerdict.allowed && bdVerdict.firstBlock) {
-    try { recordBdCall({ url, fn: 'web-unlocker', success: false, status: 'budget_capped', purpose: 'budget_capped' }); } catch (_) {}
-  }
-  if (bdVerdict && bdVerdict.allowed) {
-    try {
-      const result = await httpsRequest('https://api.brightdata.com/request', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${BRIGHTDATA_TOKEN}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ zone: 'web_unlocker2', url, format: 'raw' }),
-      });
-      recordBdCall({ url, fn: 'web-unlocker', success: true, status: 200, purpose: 'lottery-rush' });
-      if (result) {
-        try {
-          const json = JSON.parse(result);
-          if (verbose) console.log(`  [Bright Data] JSON fetch OK (${result.length} chars)`);
-          return json;
-        } catch {
-          if (verbose) console.warn(`  [Bright Data] Non-JSON response (${result.length} chars, head: ${result.slice(0, 100)})`);
-        }
-      }
-    } catch (err) {
-      recordBdCall({ url, fn: 'web-unlocker', success: false, status: (err.message?.match(/^HTTP (\d+)/) || [])[1] || err.message?.slice(0, 80) || 'error', purpose: 'lottery-rush' });
-      console.error(`  [Bright Data] JSON fetch failed: ${err.message}`);
+  // fetchJSON() owns every provider tier (direct -> Scrapingdog -> ScrapingBee ->
+  // Bright Data) and their spend-ledger rows (BRO-32: no direct SB/BD calls here).
+  try {
+    const json = await fetchJSONViaChain(url);
+    if (json != null) {
+      if (verbose) console.log('  [fetchJSON] JSON fetch OK');
+      return json;
     }
-  }
-
-  // ScrapingBee fallback — no JS rendering for JSON endpoints
-  if (SCRAPINGBEE_KEY) {
-    try {
-      const params = new URLSearchParams({
-        api_key: SCRAPINGBEE_KEY,
-        url,
-        render_js: 'false',
-      });
-      const apiUrl = `https://app.scrapingbee.com/api/v1/?${params}`;
-      const result = await httpsRequest(apiUrl);
-      recordSbCall({ url, fn: 'json', success: true, status: 200, credits: 1, purpose: 'lottery-rush' });
-      if (result) {
-        try {
-          const json = JSON.parse(result);
-          if (verbose) console.log(`  [ScrapingBee] JSON fetch OK (${result.length} chars)`);
-          return json;
-        } catch {
-          if (verbose) console.warn(`  [ScrapingBee] Non-JSON response`);
-        }
-      }
-    } catch (err) {
-      const httpMatch = /^HTTP (\d+):/.exec(err.message || '');
-      const status = httpMatch ? Number(httpMatch[1]) : 'error';
-      recordSbCall({ url, fn: 'json', success: false, status, credits: sbBilledCredits(status, 1), purpose: 'lottery-rush' });
-      console.error(`  [ScrapingBee] JSON fetch failed: ${err.message}`);
-    }
+  } catch (err) {
+    console.error(`  [fetchJSON] JSON fetch failed: ${err.message}`);
   }
 
   // Last resort: direct — rarely works for Cloudflare-protected endpoints but cheap to try

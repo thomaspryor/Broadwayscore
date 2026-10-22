@@ -27,7 +27,6 @@ const https = require('https');
 require('./lib/load-env').loadEnv();
 
 const { serpQuery } = require('./lib/url-discovery');
-const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { isLondonMarket } = require('./lib/venue-classification');
 const {
   castWebSkipReason,
@@ -131,16 +130,15 @@ async function searchCast(show, shows) {
 }
 
 // ============================================================================
-// Page fetching via ScrapingBee
+// Page fetching via the shared provider chain (BRO-32: no direct ScrapingBee,
+// so a quota-exhausted tier, BRO-2517, falls through inside fetchPage()).
 // ============================================================================
 
-// ScrapingBee non-200 (401 = monthly quota exhausted, BRO-2517) must not turn
-// every show into a "transient failure"; fall back to the shared provider chain.
-async function fetchPageTextViaChain(url) {
+async function fetchPageTextViaChain(url, fetchOpts = {}) {
   try {
     const { fetchPage } = require('./lib/scraper');
     const { stripHtml } = require('./lib/article-extractor');
-    const r = await fetchPage(url);
+    const r = await fetchPage(url, fetchOpts);
     if (!r || !r.content) return null;
     const text = r.format === 'html' ? stripHtml(r.content) : r.content;
     return text.replace(/\s+/g, ' ').substring(0, 20000);
@@ -151,43 +149,9 @@ async function fetchPageTextViaChain(url) {
 }
 
 async function fetchPageText(url) {
-  const apiKey = process.env.SCRAPINGBEE_API_KEY;
-  if (!apiKey) throw new Error('SCRAPINGBEE_API_KEY not set');
-
-  // Targeted selectors for cast/credits sections — avoids nav/footer noise
-  const extractRules = {
-    main: {
-      selector: 'main, article, .cast, .credits, .people, [class*="cast"], [class*="credit"], [id*="cast"], .show-detail, .production-detail',
-      output: 'text',
-    },
-    fallback: { selector: 'body', output: 'text' },
-  };
-
   // BWW and Lortel need JS rendering for dynamic content
   const needsJs = url.includes('broadwayworld.com') || url.includes('lortel.org');
-  const renderParam = needsJs ? '&render_js=true&wait=3000' : '&render_js=false';
-
-  const fetchUrl = `https://app.scrapingbee.com/api/v1?api_key=${apiKey}&url=${encodeURIComponent(url)}${renderParam}&extract_rules=${encodeURIComponent(JSON.stringify(extractRules))}`;
-  const credits = needsJs ? 5 : 1;
-
-  let result;
-  try {
-    result = await httpRequest(fetchUrl, { timeout: 45000 });
-  } catch (e) {
-    recordSbCall({ url, fn: needsJs ? 'render' : 'page', success: false, status: 'error', credits: sbBilledCredits('error', credits), purpose: 'cast-backfill' });
-    throw e;
-  }
-  recordSbCall({ url, fn: needsJs ? 'render' : 'page', success: result.statusCode === 200, status: result.statusCode, credits: sbBilledCredits(result.statusCode, credits), purpose: 'cast-backfill' });
-  if (result.statusCode !== 200) return fetchPageTextViaChain(url);
-
-  try {
-    const data = JSON.parse(result.body);
-    // Prefer targeted selector, fall back to body
-    const text = (data.main || data.fallback || '').substring(0, 20000);
-    return text;
-  } catch {
-    return result.body.substring(0, 20000);
-  }
+  return fetchPageTextViaChain(url, needsJs ? { renderJs: true } : { renderJs: false });
 }
 
 // ============================================================================
@@ -532,11 +496,11 @@ async function main() {
   }
 
   // Only eligible work needs credentials or a writable cast directory.
-  const hasSerp = !!process.env.SCRAPINGBEE_API_KEY;
+  const hasSerp = !!(process.env.SCRAPINGDOG_API_KEY || process.env.SCRAPINGBEE_API_KEY || process.env.BRIGHTDATA_TOKEN);
   const hasLLM = !!process.env.GEMINI_API_KEY || !!process.env.ANTHROPIC_API_KEY;
-  if (!hasSerp) { console.error('SCRAPINGBEE_API_KEY required'); process.exit(1); }
+  if (!hasSerp) { console.error('A scraping provider key (SCRAPINGDOG_API_KEY / SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN) required'); process.exit(1); }
   if (!hasLLM) { console.error('GEMINI_API_KEY or ANTHROPIC_API_KEY required'); process.exit(1); }
-  console.log(`  SERP: ScrapingBee | LLM: ${process.env.GEMINI_API_KEY ? 'Gemini Flash' : 'Claude Haiku'}`);
+  console.log(`  SERP: provider chain | LLM: ${process.env.GEMINI_API_KEY ? 'Gemini Flash' : 'Claude Haiku'}`);
   if (!fs.existsSync(CAST_DIR)) fs.mkdirSync(CAST_DIR, { recursive: true });
 
   // Mass-wipe circuit breaker (--force only): count how many shows about to

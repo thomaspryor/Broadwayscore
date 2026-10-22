@@ -27,7 +27,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 const cheerio = require('cheerio');
 const { serpQuery } = require('./lib/url-discovery');
 const { foreignTitleEntriesFromHtml, isForeignTitleReview } = require('./lib/bww-foreign-title');
@@ -45,7 +44,6 @@ const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters
 const { isLondonMarket, getMarketPool } = require('./lib/venue-classification');
 const { normalizeTitle } = require('./lib/market-routing');
 const { fetchPage, fetchWithScrapingdog, isChallengeOrGarbage, cleanup: cleanupScraper } = require('./lib/scraper');
-const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { isBWWRoundupContent, isBWWOperaArticleContent } = require('./lib/bww-roundup-validator');
 const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligibility');
@@ -72,7 +70,6 @@ function siblingCategoriesByShowId() {
 }
 
 // API keys
-const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
 // Stats
 const stats = {
@@ -202,70 +199,12 @@ async function fetchHtmlViaSD(url) {
   }
 }
 
-/**
- * Fetch HTML with ScrapingBee (fast, no JS render) → shared fetchPage() fallback.
- * ScrapingBee is cheap and BWW /reviews/ pages don't need JS rendering. If SB
- * is unavailable or fails, fetchPage() provides BrightData → Playwright fallback chain.
- */
-async function fetchHtmlViaSB(url) {
-  if (!SCRAPINGBEE_KEY) return null;
-  const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
-  return new Promise((resolve, reject) => {
-    // recorded guards against a double ledger row for one billed call: after
-    // req.destroy() on timeout, the socket can still emit 'error', and a slow
-    // response can still land after the timeout fires — at most one of
-    // {response, error, timeout} may call recordSbCall.
-    let recorded = false;
-    const record = (opts) => {
-      if (recorded) return;
-      recorded = true;
-      recordSbCall({ url, fn: 'page', purpose: 'bww-reviews', ...opts, credits: sbBilledCredits(opts.status, 1) });
-    };
-    const req = https.get(apiUrl, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        record({ success: res.statusCode === 200, status: res.statusCode });
-        if (res.statusCode === 200) resolve(data);
-        else if (res.statusCode === 404 || res.statusCode === 410) resolve(null);
-        else reject(new Error(`SB HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
-      });
-    });
-    req.on('error', (e) => {
-      record({ success: false, status: 'error' });
-      reject(e);
-    });
-    req.setTimeout(60000, () => {
-      req.destroy();
-      record({ success: false, status: 'timeout' });
-      reject(new Error('SB Timeout'));
-    });
-  });
-}
-
-async function fetchHtml(url, maxRetries = 2) {
+async function fetchHtml(url) {
   // Attempt 1: Scrapingdog (cheap, no JS render, ample cap headroom)
   const sdHtml = await fetchHtmlViaSD(url);
   if (sdHtml) return sdHtml;
 
-  // Attempt 2: ScrapingBee (cheap, no JS render)
-  if (SCRAPINGBEE_KEY) {
-    let lastError;
-    for (let attempt = 0; attempt <= maxRetries; attempt++) {
-      try {
-        return await fetchHtmlViaSB(url);
-      } catch (e) {
-        lastError = e;
-        if (attempt < maxRetries) {
-          const delay = 3000 * (attempt + 1);
-          await sleep(delay);
-        }
-      }
-    }
-    console.log(`    [WARN] ScrapingBee exhausted for ${url.slice(0, 60)}: ${lastError.message.slice(0, 60)}`);
-  }
-
-  // Attempt 3: Shared fetchPage() fallback chain (Scrapingdog → BrightData → Playwright)
+  // Attempt 2: Shared fetchPage() chain (owns ScrapingBee/BrightData/Playwright tiers, BRO-32)
   try {
     const result = await fetchPage(url);
     return result ? result.content : null;

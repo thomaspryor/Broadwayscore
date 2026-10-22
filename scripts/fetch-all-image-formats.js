@@ -6,17 +6,15 @@
  * Usage: node scripts/fetch-all-image-formats.js
  */
 
-const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
+const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 
 const SHOWS_JSON_PATH = path.join(__dirname, '..', 'data', 'shows.json');
-const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY || 'YOUR_API_KEY';
 
-const USAGE = `fetch-all-image-formats.js — Fetch ALL image formats (square, portrait, landscape) for all shows via ScrapingBee.
+const USAGE = `fetch-all-image-formats.js — Fetch ALL image formats (square, portrait, landscape) for all shows via fetchPage().
 
 Usage:
   node scripts/fetch-all-image-formats.js [options]
@@ -50,44 +48,11 @@ function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
 }
 
-function fetchViaScrapingBee(url) {
-  return new Promise((resolve, reject) => {
-    const scrapingBeeUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_API_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
-
-    // Guards against double-billing the ledger: req.destroy() on timeout
-    // itself emits a socket 'error' right after, so without this both
-    // handlers below would fire and recordSbCall() twice for one request
-    // (Codex adversarial review, BRO-2383) — same pattern already used by
-    // scripts/lib/reddit-api.js's _rec() for this exact reason.
-    let recorded = false;
-    const rec = (fields) => {
-      if (recorded) return;
-      recorded = true;
-      recordSbCall({ url, fn: 'page', purpose: 'image-formats', ...fields });
-    };
-
-    const req = https.get(scrapingBeeUrl, { timeout: 30000 }, (response) => {
-      rec({ success: response.statusCode === 200, status: response.statusCode, credits: sbBilledCredits(response.statusCode, 1) });
-      if (response.statusCode !== 200) {
-        reject(new Error(`HTTP ${response.statusCode}`));
-        return;
-      }
-
-      let data = '';
-      response.on('data', chunk => data += chunk);
-      response.on('end', () => resolve(data));
-      response.on('error', reject);
-    });
-    req.on('error', (e) => {
-      rec({ success: false, status: 'error', credits: 0 });
-      reject(e);
-    });
-    req.on('timeout', () => {
-      req.destroy();
-      rec({ success: false, status: 'timeout', credits: 0 });
-      reject(new Error('Request timeout'));
-    });
-  });
+// Routed through fetchPage() (BRO-32): scraper.js owns every provider tier.
+async function fetchViaFetchPage(url) {
+  const result = await fetchPage(url, { renderJs: false });
+  if (!result || !result.content) throw new Error('empty fetchPage result');
+  return result.content;
 }
 
 function extractAllImageFormats(html) {
@@ -135,10 +100,10 @@ async function fetchShowImages(showSlug, showInfo) {
   console.log(`\n📽️  ${showSlug}`);
 
   const url = `https://www.todaytix.com/nyc/shows/${showInfo.id}-${showInfo.slug}`;
-  console.log(`   Fetching via ScrapingBee: ${url}`);
+  console.log(`   Fetching via fetchPage(): ${url}`);
 
   try {
-    const html = await fetchViaScrapingBee(url);
+    const html = await fetchViaFetchPage(url);
     const images = extractAllImageFormats(html);
 
     if (images && (images.square || images.portrait || images.landscape)) {
@@ -201,8 +166,8 @@ function updateShowsJson(imageResults) {
 async function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
-  if (SCRAPINGBEE_API_KEY === 'YOUR_API_KEY') {
-    console.error('ERROR: Set SCRAPINGBEE_API_KEY environment variable');
+  if (!process.env.SCRAPINGDOG_API_KEY && !process.env.SCRAPINGBEE_API_KEY && !process.env.BRIGHTDATA_TOKEN) {
+    console.error('ERROR: Set a scraping provider key (SCRAPINGDOG_API_KEY / SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN)');
     process.exit(1);
   }
 
@@ -240,4 +205,4 @@ async function main() {
 main().catch(err => {
   console.error('Fatal error:', err);
   process.exit(1);
-});
+}).finally(() => cleanupScraper());

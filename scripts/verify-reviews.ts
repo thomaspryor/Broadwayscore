@@ -1,14 +1,15 @@
 /**
- * Verify review counts against external aggregators using ScrapingBee
+ * Verify review counts against external aggregators via fetchPage()
  */
 
-import https from 'node:https';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
-if (!SCRAPINGBEE_API_KEY) {
-  console.error('SCRAPINGBEE_API_KEY env var is required.');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
+
+if (!process.env.SCRAPINGDOG_API_KEY && !process.env.SCRAPINGBEE_API_KEY && !process.env.BRIGHTDATA_TOKEN) {
+  console.error('A scraping provider key (SCRAPINGDOG_API_KEY / SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN) is required.');
   process.exit(1);
 }
 
@@ -58,33 +59,11 @@ const SHOWS: ShowToCheck[] = [
   }
 ];
 
-async function fetchWithScrapingBee(url: string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_API_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
-
-    const req = https.get(apiUrl, { timeout: 30000 }, (res) => {
-      let data = '';
-
-      res.on('data', (chunk) => {
-        data += chunk;
-      });
-
-      res.on('end', () => {
-        if (res.statusCode === 200) {
-          resolve(data);
-        } else {
-          reject(new Error(`ScrapingBee returned status ${res.statusCode}`));
-        }
-      });
-    });
-    req.on('error', (err) => {
-      reject(err);
-    });
-    req.on('timeout', () => {
-      req.destroy();
-      reject(new Error('Request timeout'));
-    });
-  });
+async function fetchHtml(url: string): Promise<string> {
+  // fetchPage() owns every provider tier (BRO-32: no direct ScrapingBee call).
+  const result = await fetchPage(url, { renderJs: false });
+  if (!result || !result.content) throw new Error('fetchPage returned no content');
+  return result.content;
 }
 
 function parseDTLI(html: string): { up: number; flat: number; down: number; total: number } | null {
@@ -145,7 +124,7 @@ async function verifyShow(show: ShowToCheck) {
   try {
     const dtliUrl = `https://didtheylikeit.com/shows/${show.dtliSlug}/`;
     console.log(`Fetching: ${dtliUrl}`);
-    const dtliHtml = await fetchWithScrapingBee(dtliUrl);
+    const dtliHtml = await fetchHtml(dtliUrl);
     const dtliData = parseDTLI(dtliHtml);
 
     if (dtliData) {
@@ -169,7 +148,7 @@ async function verifyShow(show: ShowToCheck) {
   try {
     const showScoreUrl = `https://www.show-score.com/broadway-shows/${show.showScoreSlug}`;
     console.log(`Fetching: ${showScoreUrl}`);
-    const showScoreHtml = await fetchWithScrapingBee(showScoreUrl);
+    const showScoreHtml = await fetchHtml(showScoreUrl);
     const showScoreData = parseShowScore(showScoreHtml);
 
     if (showScoreData) {
@@ -192,7 +171,7 @@ async function verifyShow(show: ShowToCheck) {
 
 async function main() {
   console.log('Review Verification Script');
-  console.log('Using ScrapingBee API to verify review counts\n');
+  console.log('Using fetchPage() to verify review counts\n');
 
   for (const show of SHOWS) {
     await verifyShow(show);
@@ -204,4 +183,4 @@ async function main() {
   console.log('\nCheck the debug-html/ folder for saved HTML files');
 }
 
-main().catch(console.error);
+main().catch(console.error).finally(() => cleanupScraper());

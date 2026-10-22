@@ -22,7 +22,7 @@ const http = require('http');
 const { execSync } = require('child_process');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { serpImagesQuery } = require('./lib/url-discovery');
-const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
+const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { recordImageSource } = require('./lib/image-sources-store');
@@ -36,7 +36,6 @@ Usage:
 `;
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
-const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
@@ -116,21 +115,9 @@ async function searchGoogleImages(query) {
 // Try to get the original full-size image URL from a source page
 async function getOriginalImageUrl(pageUrl, showTitle) {
   try {
-    const url = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_API_KEY}&url=${encodeURIComponent(pageUrl)}&render_js=false&wait=1000`;
-    let buffer;
-    try {
-      buffer = await downloadUrl(url, 20000);
-      recordSbCall({ url: pageUrl, fn: 'page', success: true, status: 200, credits: 1, purpose: 'square-image-source-page' });
-    } catch (e) {
-      // downloadUrl throws Error(`HTTP ${statusCode}`) for a non-2xx response,
-      // or a generic network/timeout Error otherwise — parse out a real
-      // status when present so 401/402 correctly bill 0 credits.
-      const httpMatch = /^HTTP (\d+)$/.exec(e.message || '');
-      const status = httpMatch ? Number(httpMatch[1]) : 'error';
-      recordSbCall({ url: pageUrl, fn: 'page', success: false, status, credits: sbBilledCredits(status, 1), purpose: 'square-image-source-page' });
-      throw e;
-    }
-    const html = buffer.toString();
+    // fetchPage() owns every provider tier and its spend ledger rows (BRO-32).
+    const result = await fetchPage(pageUrl, { renderJs: false });
+    const html = result && result.content ? result.content : '';
 
     // Extract high-res image URLs from the page
     const imgPattern = /(?:src|href|content)=["'](https?:\/\/[^"']+\.(?:jpg|jpeg|png|webp)[^"']*)/gi;
@@ -342,8 +329,8 @@ async function processShow(show) {
 async function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
-  if (!SCRAPINGBEE_API_KEY) {
-    console.error('ERROR: Set SCRAPINGBEE_API_KEY environment variable');
+  if (!process.env.SCRAPINGDOG_API_KEY && !process.env.SCRAPINGBEE_API_KEY && !process.env.BRIGHTDATA_TOKEN) {
+    console.error('ERROR: Set a scraping provider key (SCRAPINGDOG_API_KEY / SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN)');
     process.exit(1);
   }
 
@@ -395,4 +382,4 @@ async function main() {
 main().catch(err => {
   console.error('Fatal error:', err);
   process.exit(1);
-});
+}).finally(() => cleanupScraper());

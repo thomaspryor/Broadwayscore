@@ -39,6 +39,7 @@
     "reviews:all": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/index.ts --all",
     "reviews:status": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/status.ts",
     "reviews:validate": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/validate.ts",
+    "reviews:verify": "npx ts-node --project scripts/tsconfig.json scripts/verify-reviews.ts",
     "llm:score": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts",
     "llm:score:show": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --show",
     "llm:score:all": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --all",

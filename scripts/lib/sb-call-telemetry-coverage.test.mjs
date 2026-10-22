@@ -20,7 +20,6 @@ const TELEMETRY_RE = /\brecord(?:Sb|Provider)Call\b/;
 // Files allowed to reference a paid SB endpoint without writing telemetry.
 // Each needs a reason; keep this list short.
 const ALLOWED = new Map([
-  ['verify-reviews.ts', 'manual workflow_dispatch only (verify-reviews.yml), render_js=false (1 credit), a handful of calls per run'],
   ['evaluate-brightdata-serp.js', 'one-off manual provider evaluation script, not run by any workflow'],
 ]);
 

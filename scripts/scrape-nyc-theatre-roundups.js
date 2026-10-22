@@ -19,7 +19,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 const cheerio = require('cheerio');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { matchTitleToShow, loadShows, titleWordsMatch, buildSiblingCategoriesFromShows } = require('./lib/show-matching');
@@ -37,8 +36,7 @@ const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const archiveDir = path.join(__dirname, '../data/aggregator-archive/nyc-theatre');
 
 const { serpQuery } = require('./lib/url-discovery');
-const { fetchWithScrapingdog, isChallengeOrGarbage } = require('./lib/scraper');
-const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
+const { fetchPage, fetchWithScrapingdog, isChallengeOrGarbage } = require('./lib/scraper');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `scrape-nyc-theatre-roundups.js — NYC Theatre Review Roundups Scraper.
@@ -50,7 +48,6 @@ Usage:
 
 // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
 if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
-const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
 // Memoized showId -> same-title-sibling categories index (BRO-2565, mirroring
 // scrape-bww-reviews.js's siblingCategoriesByShowId()) — feeds
@@ -63,50 +60,8 @@ function siblingCategoriesByShowId() {
 }
 
 // ---------------------------------------------------------------------------
-// HTTP helper — fetch page via ScrapingBee
+// HTTP helper — every tier (incl. ScrapingBee) lives behind fetchPage() (BRO-32)
 // ---------------------------------------------------------------------------
-
-async function fetchHtmlSingle(url, renderJs = true) {
-  if (!SCRAPINGBEE_KEY) {
-    throw new Error('SCRAPINGBEE_API_KEY required');
-  }
-
-  const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=${renderJs}&wait=3000`;
-  const credits = renderJs ? 5 : 1;
-
-  return new Promise((resolve, reject) => {
-    // recorded guards against a double ledger row for one billed call: after
-    // req.destroy() on timeout, the socket can still emit 'error' — at most
-    // one of {response, error, timeout} may call recordSbCall.
-    let recorded = false;
-    const record = (opts) => {
-      if (recorded) return;
-      recorded = true;
-      recordSbCall({ url, fn: renderJs ? 'render' : 'page', purpose: 'nyc-theatre-roundup', ...opts, credits: sbBilledCredits(opts.status, credits) });
-    };
-    const req = https.get(apiUrl, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        record({ success: res.statusCode === 200, status: res.statusCode });
-        if (res.statusCode === 200) {
-          resolve(data);
-        } else {
-          reject(new Error(`HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
-        }
-      });
-    });
-    req.on('error', (e) => {
-      record({ success: false, status: 'error' });
-      reject(e);
-    });
-    req.setTimeout(60000, () => {
-      req.destroy();
-      record({ success: false, status: 'timeout' });
-      reject(new Error('Timeout'));
-    });
-  });
-}
 
 // A provider that answers 200 with a stub is a MISS, not a hit. Verified live
 // (BRO-2955): Scrapingdog returns a 154-byte JS-redirect shell for some
@@ -143,7 +98,9 @@ async function fetchHtml(url, renderJs = true, maxRetries = 2) {
   let lastError;
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
-      return await fetchHtmlSingle(url, renderJs);
+      const result = await fetchPage(url, { renderJs });
+      if (!result || !result.content) throw new Error('empty fetchPage result');
+      return result.content;
     } catch (e) {
       lastError = e;
       if (attempt < maxRetries) {
@@ -454,8 +411,8 @@ async function scrapeNYCTheatreRoundups() {
     console.log(`Targeted mode: ${targetShowIds.length} show(s): ${targetShowIds.join(', ')}`);
   }
 
-  if (!SCRAPINGBEE_KEY) {
-    console.error('SCRAPINGBEE_API_KEY is required for Google searches.');
+  if (!process.env.SCRAPINGDOG_API_KEY && !process.env.SCRAPINGBEE_API_KEY && !process.env.BRIGHTDATA_TOKEN) {
+    console.error('A scraping provider key (SCRAPINGDOG_API_KEY / SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN) is required for Google searches.');
     console.error('Set it in .env or pass as environment variable.');
     process.exit(1);
   }
