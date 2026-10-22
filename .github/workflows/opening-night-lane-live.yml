@@ -23,9 +23,9 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'smoke = one archived review in a sandbox; night = the production lane for one night'
+        description: 'smoke = one archived review in a sandbox; night = the production lane for one night; shadow = the lane beside the regular pipeline, no lease, no publish'
         type: choice
-        options: [smoke, night]
+        options: [smoke, night, shadow]
         default: smoke
       show:
         description: 'Show id (as in shows.json)'
@@ -36,9 +36,14 @@ on:
         required: false
         type: string
       night:
-        description: 'night only: opening night, YYYY-MM-DD'
+        description: 'night/shadow: opening night, YYYY-MM-DD'
         required: false
         type: string
+      window_min:
+        description: 'shadow only: minutes to run (1-320)'
+        required: false
+        type: string
+        default: '300'
 
 permissions:
   contents: write  # night: lease branch (lease-store.js) and the alert ledger commit
@@ -227,6 +232,82 @@ jobs:
         with:
           title: 'Opening-night lane run failed'
           description: 'The opening-night lane failed for this night (BRO-4835). The regular pipeline still covers it. Read the "Run the lane" step output; exit 4 means scored reviews are not yet live.'
+          severity: 'warning'
+          email: 'false'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+  # BRO-5201: the lane beside the regular pipeline. No lease (the poller, gather and rebuild keep the show), no publish,
+  # no review-texts checkout or push. Writes only under $RUNNER_TEMP/shadow, uploaded as an artifact; the report is
+  # also the step summary. Spends scraper credits (aggregator pages every 2 minutes) and one ensemble call per review.
+  shadow:
+    if: inputs.mode == 'shadow'
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Validate inputs
+        env:
+          SHOW: ${{ inputs.show }}
+          NIGHT: ${{ inputs.night }}
+          WINDOW: ${{ inputs.window_min }}
+        run: |
+          printf '%s' "$SHOW" | grep -Eq '^[a-z0-9][a-z0-9-]{0,127}$' || { echo "::error::show must be a show id"; exit 1; }
+          printf '%s' "$NIGHT" | grep -Eq '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' || { echo "::error::shadow needs night=YYYY-MM-DD"; exit 1; }
+          printf '%s' "$WINDOW" | grep -Eq '^[0-9]{1,3}$' && [ "$WINDOW" -ge 1 ] && [ "$WINDOW" -le 320 ] || { echo "::error::window_min must be 1-320"; exit 1; }
+
+      - uses: ./.github/actions/setup-node
+
+      # shows.json (the show record, Show Score's same-title guards) comes from core data.
+      - name: Checkout core data (root JSON only)
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          sparse: 'true'
+
+      - name: Run the lane in shadow
+        # The lane checks its window only when a pass starts, and a pass can run long; 340 leaves room after a
+        # 320-minute window. If the step is killed anyway, the script writes its report on SIGTERM, and the JSONL
+        # logs under the output dir are complete up to the kill.
+        timeout-minutes: 340
+        env:
+          SHOW: ${{ inputs.show }}
+          NIGHT: ${{ inputs.night }}
+          WINDOW: ${{ inputs.window_min }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: npx tsx scripts/opening-night-lane-shadow.js "--show=${SHOW}" "--night=${NIGHT}" "--window-min=${WINDOW}" "--out=${RUNNER_TEMP}/shadow"
+
+      - name: Upload shadow report and ledger
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lane-shadow-${{ inputs.show }}-${{ inputs.night }}
+          # The spend ledgers stay on this runner (contents: read, no commit), so they ride in the artifact.
+          path: |
+            ${{ runner.temp }}/shadow
+            data/audit/scraper-spend-ledger.jsonl
+            data/audit/gemini-usage-ledger.jsonl
+          retention-days: 90
+          overwrite: true
+          if-no-files-found: warn
+
+      - name: Notify on failure
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening-night lane shadow run failed'
+          description: 'The lane shadow run (BRO-5201) failed. It publishes nothing, so the site is unaffected; the comparison for this night is incomplete. Read the "Run the lane in shadow" step output and the artifact.'
           severity: 'warning'
           email: 'false'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
