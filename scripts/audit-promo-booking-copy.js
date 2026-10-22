@@ -77,23 +77,24 @@ function main(argv) {
   const shows = showArg ? [showArg] : listShowDirs(dir, { silent: true });
   const total = { promo: [], blocked: [], showHub: [], twins: [] };
   let scanned = 0;
+  let unreadable = 0;
   for (const showId of shows) {
     const sd = path.join(dir, showId);
     let names;
     try { names = fs.readdirSync(sd).filter(f => f.endsWith('.json') && !f.startsWith('_')); } catch { continue; }
     const files = [];
     for (const file of names) {
-      try { files.push({ file, data: JSON.parse(fs.readFileSync(path.join(sd, file), 'utf8')) }); } catch { /* unreadable: other audits own it */ }
+      try { files.push({ file, data: JSON.parse(fs.readFileSync(path.join(sd, file), 'utf8')) }); } catch { unreadable++; }
     }
     scanned += files.length;
     const r = auditShowFiles(showId, files);
     for (const k of Object.keys(total)) total[k].push(...r[k]);
   }
   if (json) {
-    console.log(JSON.stringify({ scanned, ...total }, null, 2));
+    console.log(JSON.stringify({ scanned, unreadable, ...total }, null, 2));
     return 0;
   }
-  console.log(`Scanned ${scanned} files in ${shows.length} show folders`);
+  console.log(`Scanned ${scanned} files in ${shows.length} show folders (${unreadable} unreadable JSON skipped)`);
   const live = rows => rows.filter(r => r.live).length;
   console.log(`\npromo booking copy: ${total.promo.length} (${live(total.promo)} live)`);
   for (const r of total.promo) console.log(`  ${r.live ? 'LIVE ' : 'excl '} ${r.id} [${r.source}/${r.contentTier}] ${r.matches.join(' | ')}`);
