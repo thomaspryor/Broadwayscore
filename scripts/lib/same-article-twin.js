@@ -15,7 +15,9 @@ const { decideSameArticleNamedTwin } = require('./review-text-identity');
  * @returns {object|null} the surviving twin, or null
  */
 function findSameArticleTwin(data, others) {
-  if (!data || !data.fullText) return null;
+  // The rebuild only runs this check for a named critic with text and only
+  // compares against named kept files; callers pass named files only.
+  if (!data || !data.fullText || !data.outletId) return null;
   const sameOutlet = others.filter((o) => o && o !== data && o.outletId === data.outletId && o.fullText);
   const verdict = decideSameArticleNamedTwin(data.fullText, sameOutlet);
   return verdict.drop ? sameOutlet[verdict.index] : null;

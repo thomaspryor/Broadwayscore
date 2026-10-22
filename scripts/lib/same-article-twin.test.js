@@ -15,4 +15,5 @@ test('different outlet, different text or no text is not a twin', () => {
   assert.strictEqual(findSameArticleTwin(a, [{ outletId: 'y', fullText: body }]), null);
   assert.strictEqual(findSameArticleTwin(a, [{ outletId: 'x', fullText: 'A wholly different review of another production, with its own words and opinions. '.repeat(20) }]), null);
   assert.strictEqual(findSameArticleTwin({ outletId: 'x' }, [a]), null);
+  assert.strictEqual(findSameArticleTwin({ fullText: body }, [{ fullText: body }]), null);
 });
