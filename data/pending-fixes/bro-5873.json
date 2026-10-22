@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5873",
   "planId": "c08f69e5-f49e-48fe-adfb-1176a0e40777",
-  "status": "pending",
+  "status": "partial",
   "submitter": {
     "name": null,
     "email": null
@@ -97,5 +97,29 @@
         "description": "the-lightning-thief-2019: add commercial entry (no recoupment announced)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T04:24:30.623Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": false,
+      "reason": "add-commercial-entry: \"head-over-heels-2018\" already has a commercial entry (use data-edit)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": false,
+      "reason": "add-commercial-entry: \"beetlejuice-2019\" already has a commercial entry (use data-edit)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added summer-2018 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-lightning-thief-2019 (Did Not Recoup)"
+    }
+  ],
+  "executedIn": "ci"
 }
