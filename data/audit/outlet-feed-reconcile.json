@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T15:09:17.535Z",
+  "generatedAt": "2026-10-22T18:41:05.794Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -148,10 +148,6 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -174,68 +170,37 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 724,
-  "matchedGaps": 7,
-  "possibleGaps": 2,
+  "itemsScanned": 769,
+  "matchedGaps": 4,
+  "possibleGaps": 3,
   "gaps": [
     {
-      "showId": "derren-brown-only-human-west-end-2026",
-      "title": "Derren Brown: Only Human",
+      "showId": "angels-bone-west-end-2026",
+      "title": "Angel's Bone",
       "level": "matched",
-      "outletId": "north-west-end",
-      "url": "https://northwestend.com/derren-brown-only-human-apollo-theatre/",
-      "headline": "Derren Brown: Only Human – Apollo Theatre",
+      "outletId": "plays-to-see",
+      "url": "https://playstosee.com/reviews/uk-reviews/angels-bone/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=angels-bone",
+      "headline": "Angel&#8217;s Bone",
       "publishDate": "2026-10-22"
-    },
-    {
-      "showId": "ilford-boy-west-end-2026",
-      "title": "Ilford Boy",
-      "level": "matched",
-      "outletId": "british-theatre",
-      "url": "https://www.britishtheatreguide.info/reviews/ilford-boy-donmar-warehous-26145",
-      "headline": "Ilford Boy",
-      "publishDate": "2026-10-22"
-    },
-    {
-      "showId": "king-of-the-yees-off-broadway-2026",
-      "title": "King of the Yees",
-      "level": "matched",
-      "outletId": "theater-scene",
-      "url": "https://www.theaterscene.net/plays/offbway-plays/king-of-the-yees/tony-marinelli/",
-      "headline": "King of the Yees",
-      "publishDate": "2026-10-21"
-    },
-    {
-      "showId": "machine-learning-off-broadway-2026",
-      "title": "Machine Learning",
-      "level": "matched",
-      "outletId": "stageandcinema",
-      "url": "https://stageandcinema.com/2026/10/21/machine-learning-off-broadway-review/",
-      "headline": "Off-Broadway Review: MACHINE LEARNING (Little Engine Theater)",
-      "publishDate": "2026-10-21"
     },
     {
       "showId": "martin-guerre-west-end-2026",
       "title": "Martin Guerre",
       "level": "matched",
-      "outletId": "the-recs",
-      "url": "https://therecs.co.uk/martin-guerre-old-vic-theatre/",
-      "headline": "Martin Guerre &#8211; Old Vic Theatre ★★★★★",
+      "outletId": "firstnightmagazine",
+      "url": "https://firstnightmagazine.com/2026/10/22/review-of-martin-guerre-old-vic-2026-new-revival-features-more-historical-accuracy-but-loses-its-identity/",
+      "headline": "Review of &#8216;Martin Guerre&#8217; (Old Vic, 2026): &#8220;New revival features more historical accuracy but loses its identity&#8221;",
       "publishDate": "2026-10-22"
     },
     {
-      "showId": "phyl-off-broadway-2026",
-      "title": "Phyl",
+      "showId": "martin-guerre-west-end-2026",
+      "title": "Martin Guerre",
       "level": "matched",
-      "outletId": "theater-pizzazz",
-      "url": "https://theaterpizzazz.com/phyl-charm-with-a-message/",
-      "headline": "&#8216;Phyl&#8217; – Charm with a Message",
+      "outletId": "plays-international",
+      "url": "https://playsinternational.org.uk/martin-guerre-the-old-vic/",
+      "headline": "“Martin Guerre” at the Old Vic",
       "publishDate": "2026-10-22"
     },
     {
@@ -246,6 +211,15 @@
       "url": "https://culturesauce.com/caryl-churchill-triumph-off-broadway-review/",
       "headline": "Caryl Churchill&#8217;s &#8216;Triumph&#8217; views imperial Rome through a Foxy blond flack (Off Broadway review)",
       "publishDate": "2026-10-18"
+    },
+    {
+      "showId": "copperfield-the-new-musical-off-broadway-2026",
+      "title": "Copperfield! The New Musical",
+      "level": "possible",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/the-curious-case-of-benjamin-button/",
+      "headline": "The Curious Case of Benjamin Button *****",
+      "publishDate": "2026-10-21"
     },
     {
       "showId": "the-pianist-off-west-end-2026",

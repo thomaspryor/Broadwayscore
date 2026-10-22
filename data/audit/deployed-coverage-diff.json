@@ -1,51 +1,94 @@
 {
-  "generatedAt": "2026-10-22T15:09:17.294Z",
+  "generatedAt": "2026-10-22T18:41:05.519Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 261,
-  "clean": 259,
-  "defective": 2,
+  "clean": 256,
+  "defective": 5,
   "byType": {
-    "missing-from-prod": 2
+    "score-drift": 5
   },
   "shows": [
     {
-      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
-      "title": "The Curious Case of Benjamin Button",
-      "openingDate": "2026-10-21",
+      "showId": "derren-brown-only-human-west-end-2026",
+      "title": "Derren Brown: Only Human",
+      "openingDate": "2026-10-22",
       "ok": false,
       "defects": [
         {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: talkinbroadway"
+          "type": "score-drift",
+          "detail": "deployed payload has no numeric cs (local 80.32)"
         }
       ],
-      "missingFromProd": [
-        "talkinbroadway"
-      ],
-      "localCount": 17,
-      "deployedCount": 16,
-      "firstDefectAt": "2026-10-22T15:09:11.016Z"
+      "missingFromProd": [],
+      "localCount": 3,
+      "deployedCount": 3,
+      "firstDefectAt": "2026-10-22T18:41:00.247Z"
     },
     {
-      "showId": "angels-bone-west-end-2026",
-      "title": "Angel's Bone",
-      "openingDate": "2026-10-17",
+      "showId": "midnight-off-broadway-2026",
+      "title": "Midnight",
+      "openingDate": "2026-10-15",
       "ok": false,
       "defects": [
         {
-          "type": "missing-from-prod",
-          "detail": "2 scored outlet(s) absent from the deployed payload: nick-holmes-music, reviewsgate"
+          "type": "score-drift",
+          "detail": "deployed cs 73.82 vs local 73.62 (Δ0.2)"
         }
       ],
-      "missingFromProd": [
-        "nick-holmes-music",
-        "reviewsgate"
-      ],
+      "missingFromProd": [],
       "localCount": 20,
+      "deployedCount": 21,
+      "firstDefectAt": "2026-10-22T18:41:00.247Z"
+    },
+    {
+      "showId": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
+      "title": "The Banality of Evil: Hannah Arendt, France 1940",
+      "openingDate": "2026-10-13",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 62.7 vs local 62.62 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 17,
+      "deployedCount": 17,
+      "firstDefectAt": "2026-10-22T18:41:00.247Z"
+    },
+    {
+      "showId": "a-ghost-in-your-ear-off-broadway-2026",
+      "title": "A Ghost In Your Ear",
+      "openingDate": "2026-10-09",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 69.14 vs local 68.7 (Δ0.44)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 15,
+      "deployedCount": 15,
+      "firstDefectAt": "2026-10-22T18:41:00.247Z"
+    },
+    {
+      "showId": "kramerfauci-st-anns-off-broadway-2026",
+      "title": "Kramer/Fauci",
+      "openingDate": "2026-10-04",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.59 vs local 81.27 (Δ0.32)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 18,
       "deployedCount": 18,
-      "firstDefectAt": "2026-10-22T15:09:11.016Z"
+      "firstDefectAt": "2026-10-22T18:41:00.247Z"
     }
   ],
   "persistentDefective": 0,
