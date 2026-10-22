@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 # pr-write-guard.sh — PreToolUse hook on Bash (BRO-5915).
 #
-# Refuses `gh pr create` / `gh pr ready` / `gh pr merge`, the equivalent
-# `gh api` + `curl` + `graphql` PR writes, on thomaspryor/Broadwayscore.
+# Refuses `gh pr create` / `gh pr ready` / `gh pr merge` and the equivalent
+# `gh api` / `curl` writes to a `repos/<owner>/<repo>/pulls` path, on
+# thomaspryor/Broadwayscore. (Not every route: a bare `curl
+# https://api.github.com/graphql` mutation, `hub`, and an API client written in
+# node or python are not parsed — see BRO-5932 for those.)
 # The owner never reviews or merges PRs, so a PR just parks the work: sessions
 # land it themselves with `git push origin HEAD:refs/heads/land/<name>` and
 # follow the Land run (CLOUD.md § Landing). The MCP route is covered by
@@ -24,12 +27,19 @@
 # scripts/lib/pre-push-review-gate.test.mjs, which drives THIS hook). This
 # wrapper only feeds it the hook JSON. It fails open: any error, a missing
 # node, or the lib missing exits 0.
-# Kill switch: PR_WRITE_GUARD_DISABLE=1 in the hook environment.
-# Per-command override: PR_GUARD_OFF=1 (this check only) or LAND_ENFORCE_OFF=1
-# (all land guards), as an env prefix, the environment, or
-# $HOME/.claude/{PR_GUARD_OFF,LAND_ENFORCE_OFF} — all handled in the lib.
-
-[ "${PR_WRITE_GUARD_DISABLE:-0}" = "1" ] && exit 0
+# Kill switches, best lever first:
+#   touch $HOME/.claude/PR_GUARD_OFF   — takes effect in EVERY running session
+#     at once, no relaunch (handled in the lib); $HOME/.claude/LAND_ENFORCE_OFF
+#     does the same for all land guards. This is the 2am lever.
+#   PR_GUARD_OFF=1 / LAND_ENFORCE_OFF=1 as an env prefix on the one command.
+#   PR_WRITE_GUARD_DISABLE=1 — skips this wrapper entirely, but only if it is
+#     in the hook's own environment, i.e. the session's launch env.
+#
+# set +e is deliberate: a hook inherits the launching shell's options, and an
+# inherited errexit would turn a nonzero child into a Bash-call-blocking exit
+# before the rc normalization below (Codex adversarial review, 2026-10-22).
+set +e
+if [ "${PR_WRITE_GUARD_DISABLE:-0}" = "1" ]; then exit 0; fi
 command -v node >/dev/null 2>&1 || exit 0
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -49,8 +59,7 @@ if command -v timeout >/dev/null 2>&1; then TO=(timeout 30)
 elif command -v gtimeout >/dev/null 2>&1; then TO=(gtimeout 30)
 else TO=()
 fi
-err=$(printf '%s' "$input" | "${TO[@]}" node "$LIB" --hook 2>&1 >/dev/null)
-rc=$?
+err=$(printf '%s' "$input" | "${TO[@]}" node "$LIB" --hook 2>&1 >/dev/null) && rc=0 || rc=$?
 # Only an explicit refusal (exit 2) blocks. A crash, a timeout kill (124/137)
 # or any other status fails open — this guard must never wedge a Bash call.
 if [ "$rc" -eq 2 ]; then

@@ -45,10 +45,12 @@ const blockedByPr = (r) => r.status === 2 && /never open, ready or merge Broadwa
 
 // No transcript_path on purpose: the PR block must not depend on the
 // transcript fail-open further down the hook.
-function run(command, { cwd = bwsRepo, env = {} } = {}) {
+function run(command, { cwd = bwsRepo, cwdField, env = {} } = {}) {
+  const payload = { tool_input: { command }, session_id: 'bro-5915-test', tool_use_id: 'tu-1' };
+  if (cwdField !== undefined) payload.cwd = cwdField;
   const r = spawnSyncStdinFile('bash', [HOOK], {
     cwd,
-    input: JSON.stringify({ tool_input: { command }, session_id: 'bro-5915-test', tool_use_id: 'tu-1' }),
+    input: JSON.stringify(payload),
     encoding: 'utf8',
     env: { ...process.env, HOME: fakeHome, CLAUDE_PROJECT_DIR: cwd, LAND_ENFORCE_OFF: '', PR_GUARD_OFF: '', REVIEW_GATE_DISABLE: '', GH_REPO: '', ...env },
     timeout: 60000,
@@ -64,6 +66,15 @@ for (const cmd of [
   'git push origin HEAD:refs/heads/claude/x && gh pr create --fill',
   'GH_TOKEN=abc gh pr create --fill',
   'gh pr create -R thomaspryor/Broadwayscore --fill',
+  // -R BEFORE the subcommand: skipping the flag but not its value made the
+  // parser read "thomaspryor/Broadwayscore" as the subcommand (ship-check).
+  'gh -R thomaspryor/Broadwayscore pr create --fill',
+  'gh --repo thomaspryor/Broadwayscore pr merge 42 --squash',
+  // Prefixes that carry an argument of their own before the real command.
+  'timeout 30 gh pr create --fill',
+  'timeout -k 5 30s gh pr create --fill',
+  'nice -n 5 gh pr create --fill',
+  'eval "gh pr create --fill"',
   'gh pr create --repo=ThomasPryor/BroadwayScore --fill',
   'gh api -X POST repos/thomaspryor/Broadwayscore/pulls -f head=x -f base=main -f title=t',
   'gh api repos/thomaspryor/Broadwayscore/pulls -f head=x -f base=main',
@@ -163,6 +174,10 @@ test('a Mac-shaped HOME (a ~/.claude/hooks master present) still blocks', () => 
   const macHome = path.join(scratch, 'home-mac-shaped');
   fs.mkdirSync(path.join(macHome, '.claude', 'hooks'), { recursive: true });
   fs.copyFileSync(REVIEW_GATE, path.join(macHome, '.claude', 'hooks', 'pre-push-review-gate.sh'));
+  // Also plant a twin of THIS hook, so a preamble keyed on its own master
+  // (rather than the review gate's) is exercised too, not just excluded by the
+  // source scan in the next test.
+  fs.copyFileSync(HOOK, path.join(macHome, '.claude', 'hooks', 'pr-write-guard.sh'));
   const r = run('gh pr create --fill', { env: { HOME: macHome } });
   assert.ok(
     blockedByPr(r),
@@ -175,7 +190,7 @@ test('pr-write-guard.sh has no ~/.claude/hooks twin to self-skip to', () => {
   const src = fs.readFileSync(HOOK, 'utf8');
   assert.doesNotMatch(
     src,
-    /\$HOME\/\.claude\/hooks\/pr-write-guard\.sh|HOME"?\/\.claude\/hooks/,
+    /\$\{?HOME\}?"?\/\.claude\/hooks/,
     'pr-write-guard.sh must not grow a self-skip preamble: a master twin would reopen BRO-5926',
   );
 });
@@ -193,6 +208,26 @@ test('the PR check is not re-added to pre-push-review-gate.sh', () => {
     'the PR-write check belongs in .claude/hooks/pr-write-guard.sh only — pre-push-review-gate.sh self-skips '
     + 'to a master that has no such check, so a copy here is dead on the Mac (BRO-5926)',
   );
+});
+
+// The hook runs as its own process, whose cwd is NOT the session's working
+// directory — only the payload's `cwd` field says where the Bash call will run.
+// Both directions are pinned, because a regression to process.cwd() breaks one
+// way (missed refusal) and over-blocks the other.
+test('the payload cwd decides the repo, not the hook process cwd — a Broadwayscore session blocks', () => {
+  const r = run('gh pr create --fill', { cwd: otherRepo, cwdField: bwsRepo });
+  assert.ok(blockedByPr(r), `payload cwd must win; got exit ${r.status}: ${r.stderr.slice(0, 200)}`);
+});
+
+test('the payload cwd decides the repo — a non-Broadwayscore session does not block', () => {
+  const r = run('gh pr create --fill', { cwd: bwsRepo, cwdField: otherRepo });
+  assert.ok(!blockedByPr(r), `payload cwd must win; got exit ${r.status}: ${r.stderr.slice(0, 200)}`);
+});
+
+test('a missing or non-string payload cwd falls back to the process cwd, never to "allow"', () => {
+  assert.ok(blockedByPr(run('gh pr create --fill', { cwd: bwsRepo })), 'absent cwd field');
+  assert.ok(blockedByPr(run('gh pr create --fill', { cwd: bwsRepo, cwdField: 42 })), 'non-string cwd field');
+  assert.ok(blockedByPr(run('gh pr create --fill', { cwd: bwsRepo, cwdField: '' })), 'empty cwd field');
 });
 
 test('settings.json registers pr-write-guard.sh on Bash', () => {

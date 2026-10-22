@@ -16,7 +16,7 @@
 // or commit message is never a write, and each command is judged on its own
 // arguments. `cd` (subshell-scoped) and `bash -c '…'` are followed.
 //
-// CLI (PreToolUse hook, called from .claude/hooks/pre-push-review-gate.sh):
+// CLI (PreToolUse hook, called from .claude/hooks/pr-write-guard.sh):
 //   node scripts/lib/pr-command.mjs --hook   < hook JSON on stdin
 // exits 2 with the refusal on stderr, else 0. Fails open on any error.
 
@@ -32,6 +32,13 @@ export const GUARDED_REPO = 'thomaspryor/broadwayscore';
 // Words that run the next word as the command (shell keywords included, so
 // `if x; then gh pr create; fi` and `{ gh pr create; }` are seen).
 const PREFIX_WORDS = new Set(['command', 'time', 'exec', 'nohup', 'builtin', 'sudo', 'xargs', 'then', 'do', 'else', 'elif', '{', '!']);
+// Prefixes that take a positional or valued argument of their own before the
+// real command, so the flags-only skip above would stop on it and miss the
+// `gh` behind it (ship-check round 2: `timeout 30 gh pr create` was allowed).
+const TIMEOUT_WORDS = new Set(['timeout', 'gtimeout']);
+const TIMEOUT_VALUE_FLAG = /^(-k|--kill-after|-s|--signal)$/;
+const NICE_VALUE_FLAG = /^(-n|--adjustment)$/;
+const DURATION = /^[0-9]+(\.[0-9]+)?[smhd]?$/;
 const SHELLS = new Set(['bash', 'sh', 'zsh']);
 const OVERRIDE_ASSIGN = /^(LAND_ENFORCE_OFF|PR_GUARD_OFF)=1$/;
 const GH_API_WITH_VALUE = new Set(['-X', '--method', '-H', '--header', '-q', '--jq', '-t', '--template', '--hostname', '--cache', '-p', '--preview']);
@@ -88,6 +95,13 @@ export function parsePrWrites(cmd, { home = os.homedir(), depth = 0 } = {}) {
         i++;
         while (i < all.length && all[i].startsWith('-')) i += /^(-u|--unset|-C|--chdir|-S|--split-string)$/.test(all[i]) ? 2 : 1;
         takeAssigns();
+      } else if (TIMEOUT_WORDS.has(w)) {
+        i++;
+        while (i < all.length && all[i].startsWith('-')) i += TIMEOUT_VALUE_FLAG.test(all[i]) ? 2 : 1;
+        if (i < all.length && DURATION.test(all[i])) i++;
+      } else if (w === 'nice') {
+        i++;
+        while (i < all.length && all[i].startsWith('-')) i += NICE_VALUE_FLAG.test(all[i]) ? 2 : 1;
       } else if (PREFIX_WORDS.has(w)) {
         i++;
         while (i < all.length && all[i].startsWith('-')) i++;
@@ -106,6 +120,19 @@ export function parsePrWrites(cmd, { home = os.homedir(), depth = 0 } = {}) {
     }
     if (head === 'pushd' || head === 'popd') { dirUnknown = true; return; }
     const at = { ghRepoEnv, cdDir, dirUnknown, override };
+    if (head === 'eval' && depth < 3 && words[1]) {
+      // `eval "gh pr create"`: the script is the next word, same as bash -c.
+      for (const inner of parsePrWrites(words[1], { home, depth: depth + 1 })) {
+        writes.push({
+          ...inner,
+          ghRepoEnv: inner.ghRepoEnv ?? ghRepoEnv,
+          cdDir: inner.cdDir ? (path.isAbsolute(inner.cdDir) || !cdDir ? inner.cdDir : path.join(cdDir, inner.cdDir)) : cdDir,
+          dirUnknown: inner.dirUnknown || dirUnknown,
+          override: inner.override || override,
+        });
+      }
+      return;
+    }
     if (SHELLS.has(head) && depth < 3) {
       // bash -c '…' / bash -lc '…': the script is the word after the c-flag.
       const ci = words.findIndex((x, k) => k > 0 && /^-[a-z]*c[a-z]*$/.test(x));
@@ -128,7 +155,10 @@ export function parsePrWrites(cmd, { home = os.homedir(), depth = 0 } = {}) {
 
   function gh(args, at) {
     let k = 0;
-    while (k < args.length && args[k].startsWith('-')) k++;
+    // `-R`/`--repo` can precede the subcommand, and its VALUE is a bare word:
+    // skipping only the flag made `gh -R owner/repo pr create` parse
+    // "owner/repo" as the subcommand and sail through (ship-check round 2).
+    while (k < args.length && args[k].startsWith('-')) k += (args[k] === '-R' || args[k] === '--repo') ? 2 : 1;
     const sub = args[k];
     const rest = args.slice(k + 1);
     if (sub === 'pr') {

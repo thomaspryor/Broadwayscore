@@ -10,7 +10,7 @@
 #     land.yml's gates. The PR's base branch is not in the tool input, so they
 #     are refused for this repo outright (PRs here target main).
 #   - create_pull_request (BRO-5915): the owner never reviews or merges PRs.
-#     Bash routes: pre-push-review-gate.sh. Narrow override: PR_GUARD_OFF.
+#     Bash routes: pr-write-guard.sh. Narrow override: PR_GUARD_OFF.
 # Sessions land instead: `git push origin HEAD:refs/heads/land/<name>` (or
 # create a land/<name> branch with the MCP tools) and follow the Land run.
 #
