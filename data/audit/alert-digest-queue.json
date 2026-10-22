@@ -60,5 +60,36 @@
       }
     ],
     "queuedAt": "2026-10-22T19:18:32.766Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5850-we-dateless-tr",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5850-we-dateless-tr",
+    "description": "land.yml did not land land/bro-5850-we-dateless-tr: the unit-tests-node gate went red at 4a13d629e7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39838373156",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5850-we-dateless-tr"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "4a13d629e7173e88bf20af39cee8c1c081026e0b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39838373156"
+      }
+    ],
+    "queuedAt": "2026-10-22T19:30:26.347Z"
   }
 ]
