@@ -77,7 +77,7 @@ function buildPrompt(batch, objections = null) {
     opened: s.openingDate,
     type: s.type,
     revival: !!s.isRevival,
-    venue: s.venue || '',
+    venue: s.venue || '', // venue-write-guard-ok: prompt context only, never written to show data
     cast: sc.promptCast(s),
     ...(objections && objections[s.id] ? { objection: objections[s.id] } : {}),
   }));

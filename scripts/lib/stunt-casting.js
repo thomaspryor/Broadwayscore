@@ -14,6 +14,7 @@
 const crypto = require('crypto');
 const { getSeasonForDate } = require('./broadway-seasons');
 const { playedOnOpeningNight } = require('./cast-principals');
+const { isLossDesignation } = require('./commercial-designations');
 
 const FIRST_SEASON = '2004-2005';
 // Headliner classification buckets. "screen" is the headline metric (it is
@@ -221,11 +222,10 @@ function median(xs) {
 // Commercial designations that settle the recoupment question. Nonprofit
 // houses, tour stops and TBD rows are not a recoup/no-recoup outcome.
 const RECOUPED = new Set(['Miracle', 'Windfall', 'Easy Winner', 'Trickle']);
-const NOT_RECOUPED = new Set(['Flop', 'Fizzle', 'Did Not Recoup']);
 
 function commercialOutcome(designation) {
   if (RECOUPED.has(designation)) return 'recouped';
-  if (NOT_RECOUPED.has(designation)) return 'not-recouped';
+  if (isLossDesignation(designation)) return 'not-recouped';
   return null;
 }
 
