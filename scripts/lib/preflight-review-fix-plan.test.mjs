@@ -168,7 +168,6 @@ test('a data-edit after an unreplayed change to the same file is a WARN, not a F
 
 test('filesChangedByUnreplayed names the files each unreplayed action may change', () => {
   assert.deepEqual(filesChangedByUnreplayed({ type: 'retire-show' }), ['shows.json', 'audience-buzz.json']);
-  assert.deepEqual(filesChangedByUnreplayed({ type: 'add-commercial-entry' }), ['commercial.json']);
   assert.equal(filesChangedByUnreplayed({ type: 'run-script' }).length, 3);
   assert.deepEqual(filesChangedByUnreplayed({ type: 'review-file-op' }), []);
 });

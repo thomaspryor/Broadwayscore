@@ -80,3 +80,69 @@ test('a status the executor will not run fails here, not after the land (BRO-501
     } finally { c.cleanup(); }
   }
 });
+
+// BRO-5528: commercial.json plans (add-commercial-entry, data-edit) were only checked after a ~45 min land, when
+// execute-approved-fix.js applies them, runs the commercial record rules and rolls the whole plan back.
+function commercialFixture(plans) {
+  const core = fs.mkdtempSync(path.join(os.tmpdir(), 'pf-com-core-'));
+  fs.writeFileSync(path.join(core, 'shows.json'), JSON.stringify({ shows: [
+    { id: 'alpha-2026', slug: 'alpha', title: 'Alpha', category: 'broadway', status: 'open', venue: 'V' },
+    { id: 'beta-2026', slug: 'beta', title: 'Beta', category: 'broadway', status: 'open', venue: 'V' },
+  ] }));
+  fs.writeFileSync(path.join(core, 'commercial.json'), JSON.stringify({ _meta: {}, shows: {
+    alpha: { designation: 'TBD', notes: 'Original note', lastUpdated: '2026-01-01T00:00:00.000Z' },
+  } }));
+  const rt = fs.mkdtempSync(path.join(os.tmpdir(), 'pf-com-rt-'));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pf-com-plan-'));
+  const paths = plans.map(([name, actions]) => {
+    const p = path.join(dir, `${name}.json`);
+    fs.writeFileSync(p, JSON.stringify({ issueNumber: name, status: 'pending', plan: { actions } }));
+    return p;
+  });
+  const lines = [];
+  const run = () => preflight(paths, { reviewTextsDir: rt, coreDataDir: core, log: (l) => lines.push(l) });
+  return { run, lines, core };
+}
+const comEdit = (field, oldValue, newValue, slug = 'alpha') => ({ type: 'data-edit', file: 'commercial.json', showSlug: slug, showId: slug, field, oldValue, newValue });
+const addBeta = (slug = 'beta') => ({ type: 'add-commercial-entry', slug, entry: { designation: 'TBD', sources: [{ url: 'https://example.com/a', type: 'manual', date: null }] } });
+
+test('a clean commercial plan passes, with add-commercial-entry replayed and a later edit chaining onto it', () => {
+  const { run, lines, core } = commercialFixture([['c1', [comEdit('notes', 'Original note', 'Better note'), addBeta(), comEdit('notes', null, 'Beta note', 'beta')]]]);
+  const { failed } = run();
+  assert.equal(failed, 0, lines.join('\n'));
+  assert.ok(!lines.some((l) => /skip add-commercial-entry/.test(l)));
+  assert.ok(lines.some((l) => /c1: 3\/3 applied cleanly/.test(l)), lines.join('\n'));
+  // In memory only.
+  assert.equal(JSON.parse(fs.readFileSync(path.join(core, 'commercial.json'), 'utf8')).shows.beta, undefined);
+});
+
+test('a commercial.json data-edit with a stale oldValue FAILs and names the action', () => {
+  const { run, lines } = commercialFixture([['c2', [comEdit('notes', 'Stale note', 'New')]]]);
+  assert.equal(run().failed, 1, lines.join('\n'));
+  assert.ok(lines.some((l) => /FAIL c2 commercial.json alpha.notes: .*changed since plan/.test(l)));
+});
+
+test('a duplicate add-commercial-entry FAILs; an unknown slug FAILs', () => {
+  const { run, lines } = commercialFixture([['c3', [addBeta('alpha'), addBeta('nope')]]]);
+  assert.equal(run().failed, 2, lines.join('\n'));
+  assert.ok(lines.some((l) => /FAIL c3 add-commercial-entry alpha: .*already has a commercial entry/.test(l)));
+  assert.ok(lines.some((l) => /FAIL c3 add-commercial-entry nope: .*not a shows.json slug/.test(l)));
+});
+
+test('an edit the commercial record rules would roll back FAILs before the land', () => {
+  const { run, lines } = commercialFixture([['c4', [comEdit('notes', 'Original note', 'Per the GPT summary, it recouped.')]]]);
+  const { failed } = run();
+  assert.ok(failed >= 1, lines.join('\n'));
+  assert.ok(lines.some((l) => /FAIL c4 commercial rules: .*alpha/.test(l)), lines.join('\n'));
+});
+
+test('prior records are per plan: a later plan repeating an earlier plan\'s text is not flagged as introducing it', () => {
+  const doubled = 'He said ""hello"" twice';
+  const { run, lines } = commercialFixture([
+    ['c5a', [comEdit('notes', 'Original note', doubled)]],
+    ['c5b', [comEdit('notes', doubled, doubled)]],
+  ]);
+  run();
+  assert.ok(lines.some((l) => /FAIL c5a commercial rules: .*doubled quotation/.test(l)), lines.join('\n'));
+  assert.equal(lines.some((l) => /FAIL c5b commercial rules/.test(l)), false, lines.join('\n'));
+});

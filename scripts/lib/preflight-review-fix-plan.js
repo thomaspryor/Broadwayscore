@@ -12,6 +12,8 @@
  *   A review-file-op delete/move whose source is not in the tree FAILs here (BRO-5386: eight of seventeen actions
  *   were refused at apply time as "Source not found" because they were planned against a two-day-old local copy
  *   of review-texts). The tree checked is the live review-texts clone when the session has one.
+ *   add-commercial-entry is replayed through applyAddCommercialEntry and the touched commercial.json records are then
+ *   checked with the executor's own record rules (touchedRecordProblems, BRO-5528).
  *   data-edit actions are replayed too (BRO-5892), through the executor's own applyDataEdit, on in-memory copies of
  *   shows.json / commercial.json / audience-buzz.json from the core-data clone (else data/). After an action this
  *   script does not replay has changed the same file (add-show, retitle-show, run-script, ...) a data-edit failure
@@ -27,6 +29,8 @@ const { planStatusAction } = require('./plan-status');
 const { resolveReviewTextsDir } = require('./review-texts-dir');
 const { runScriptArgs } = require('./run-script-args');
 const { applyDataEdit, dataEditAllowProblem } = require('./data-edit-action');
+const { applyAddCommercialEntry } = require('./commercial-entry-action');
+const { touchedRecordProblems } = require('./commercial-record-checks');
 const htmlHandoff = require('./html-handoff');
 const { handoffPlanProblems } = require('./pending-fix-plan-checks');
 
@@ -92,7 +96,6 @@ function filesChangedByUnreplayed(a) {
   switch (a && a.type) {
     case 'add-show': case 'retitle-show': return ['shows.json'];
     case 'retire-show': return ['shows.json', 'audience-buzz.json'];
-    case 'add-commercial-entry': return ['commercial.json'];
     case 'drop-orphan-key': case 'batch-transform': return a.file ? [path.basename(String(a.file))] : DATA_FILES;
     case 'run-script': return DATA_FILES;
     default: return [];
@@ -133,6 +136,13 @@ function preflight(planPaths, { reviewTextsDir = pickReviewTextsTree(), coreData
       // BRO-5886: a handoff envelope the executor will refuse (bad shape, stale key, too big).
       for (const p of handoffPlanProblems(id, actions, { publicKeyPath: htmlHandoffPublicKeyPath })) { failed++; log(`  FAIL ${p}`); }
       let ok = 0;
+      // commercial.json records this plan wrote, and their state before the plan (the executor's priorRecord is
+      // per plan, BRO-5528): both are reset for each plan, the data copy is shared.
+      const touchedCommercial = new Set();
+      let priorCommercial = null;
+      const notePriorCommercial = () => {
+        if (!priorCommercial) priorCommercial = structuredClone(loadData('commercial.json').shows || {});
+      };
       for (const a of actions) {
         const problem = fileOpSourceProblem(a, (rel) => fs.existsSync(path.join(reviewTextsDir, rel)), removed, created);
         if (problem) { failed++; log(`  FAIL ${id} ${a.operation} ${a.sourcePath}: ${problem}`); continue; }
@@ -143,7 +153,19 @@ function preflight(planPaths, { reviewTextsDir = pickReviewTextsTree(), coreData
           const parsed = runScriptArgs(a);
           if (!parsed.ok) { failed++; log(`  FAIL ${id} run-script ${a.script}: ${parsed.reason}`); continue; }
         }
+        if (a.type === 'add-commercial-entry') {
+          notePriorCommercial();
+          const sd = loadData('shows.json');
+          const res = applyAddCommercialEntry(loadData('commercial.json'), sd.shows || sd, a);
+          touchedCommercial.add(a.slug);
+          if (res.ok) { ok++; continue; }
+          const label = `${id} add-commercial-entry ${a.slug}: ${res.reason}`;
+          if (stale.has('commercial.json') || stale.has('shows.json')) log(`  WARN ${label} (an earlier unreplayed action changes the core data; re-check after it applies)`);
+          else { failed++; log(`  FAIL ${label}`); }
+          continue;
+        }
         if (a.type === 'data-edit') {
+          if (a.file === 'commercial.json') { notePriorCommercial(); touchedCommercial.add(a.showSlug || a.showId); }
           const notAllowed = dataEditAllowProblem(a);
           const res = notAllowed ? { ok: false, reason: notAllowed } : applyDataEdit(loadData(a.file), a);
           if (res.ok) { ok++; continue; }
@@ -168,6 +190,15 @@ function preflight(planPaths, { reviewTextsDir = pickReviewTextsTree(), coreData
         const res = executeReviewFieldEditIn(tmp, a, { fixId: id, at: new Date().toISOString() });
         if (res.ok) ok++;
         else { failed++; log(`  FAIL ${id} ${a.file} ${a.field}: ${res.reason}`); }
+      }
+      // The record rules execute-approved-fix.js runs after the plan and rolls the WHOLE plan back on (BRO-5528).
+      if (touchedCommercial.size) {
+        const sd = loadData('shows.json');
+        const problems = touchedRecordProblems(loadData('commercial.json'), sd.shows || sd, [...touchedCommercial], priorCommercial);
+        for (const p of problems) {
+          if (stale.has('commercial.json') || stale.has('shows.json')) log(`  WARN ${id} commercial rules: ${p} (an earlier unreplayed action changes the core data; re-check after it applies)`);
+          else { failed++; log(`  FAIL ${id} commercial rules: ${p} (apply-time validation would roll back the whole plan)`); }
+        }
       }
       log(`${id}: ${ok}/${actions.length} applied cleanly`);
     }

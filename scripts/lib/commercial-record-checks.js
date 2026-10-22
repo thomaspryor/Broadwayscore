@@ -547,6 +547,24 @@ function commercialFileWarnings(data, showsList) {
   return eachRecord(data, showsList, commercialRecordWarnings);
 }
 
+/**
+ * Errors plus warnings for only the records a plan touched (the apply-time check in execute-approved-fix.js
+ * runValidation, shared with preflight-review-fix-plan.js so a plan is checked before it lands, BRO-5528).
+ * Warnings count as errors for a record a plan writes. `priorShows` is commercial.shows before the plan, so a
+ * rule can tell a link the plan added from one already there. Returns the full list; callers truncate.
+ */
+function touchedRecordProblems(data, showsList, touchedKeys, priorShows) {
+  const bySlug = new Map();
+  for (const s of showsList || []) if (s && s.slug) bySlug.set(s.slug, s);
+  const records = (data && data.shows) || {};
+  return [...new Set(touchedKeys)]
+    .filter((k) => records[k])
+    .flatMap((k) => {
+      const ctx = { showRecord: bySlug.get(k), allRecords: records, priorRecord: priorShows && priorShows[k] };
+      return [...commercialRecordErrors(k, records[k], ctx), ...commercialRecordWarnings(k, records[k], ctx)];
+    });
+}
+
 // A sentence ends at . ; ! or ? followed by space and a non-lowercase start,
 // except after an initial ("J. Smith") or a common abbreviation ("Jr.",
 // "St. James", "approx. $2M"), which would otherwise cut a citation in half.
@@ -639,4 +657,4 @@ function sanitizeForPublicRecord(entry, show, { ownerApproved = false, now = Dat
   return { entry: out, changed, holdReason };
 }
 
-module.exports = { commercialRecordErrors, commercialRecordWarnings, commercialFileErrors, commercialFileWarnings, sanitizeForPublicRecord, stripInternalWording, internalWordingIn, VALID_COST_METHODOLOGIES, VALID_PRODUCTION_TYPES, INTERNAL_TEXT_RE, PUBLIC_TEXT_FIELDS, CITATION_FIELDS };
+module.exports = { commercialRecordErrors, commercialRecordWarnings, touchedRecordProblems, commercialFileErrors, commercialFileWarnings, sanitizeForPublicRecord, stripInternalWording, internalWordingIn, VALID_COST_METHODOLOGIES, VALID_PRODUCTION_TYPES, INTERNAL_TEXT_RE, PUBLIC_TEXT_FIELDS, CITATION_FIELDS };

@@ -57,7 +57,7 @@ const { isReviewTextFile } = require('./lib/review-text-sidecars.js');
 const { applyDropOrphanKey, DROP_ORPHAN_KEY_FILES } = require('./lib/orphan-key-action.js');
 const { applyRetitleShow } = require('./lib/retitle-show-action.js');
 const { applyAddCommercialEntry } = require('./lib/commercial-entry-action.js');
-const { commercialRecordErrors, commercialRecordWarnings } = require('./lib/commercial-record-checks.js');
+const { touchedRecordProblems } = require('./lib/commercial-record-checks.js');
 const { unretireId, loadRetiredIds } = require('./lib/retired-show-ids.js');
 const { executeReviewFieldEditIn } = require('./lib/review-field-edit.js');
 const { shouldEmailOwnerOnFix, readerFromDiagnosis, sendReaderFixOwnerEmail } = require('./lib/owner-fix-email.js');
@@ -214,13 +214,7 @@ function runValidation(changedFiles, touchedCommercialKeys = [], priorCommercial
       // some other writer left elsewhere must not block every approved fix.
       // The run-status warnings count as errors for a record a plan writes.
       const showsData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8'));
-      const bySlug = new Map((showsData.shows || showsData).filter(s => s && s.slug).map(s => [s.slug, s]));
-      const problems = [...new Set(touchedCommercialKeys)]
-        .filter(k => data.shows[k])
-        .flatMap(k => {
-          const ctx = { showRecord: bySlug.get(k), allRecords: data.shows, priorRecord: priorCommercial && priorCommercial[k] };
-          return [...commercialRecordErrors(k, data.shows[k], ctx), ...commercialRecordWarnings(k, data.shows[k], ctx)];
-        });
+      const problems = touchedRecordProblems(data, showsData.shows || showsData, touchedCommercialKeys, priorCommercial);
       if (problems.length) throw new Error(`commercial rules: ${problems.slice(0, 5).join('; ')}`);
     },
     'data/audience-buzz.json': (data) => {
