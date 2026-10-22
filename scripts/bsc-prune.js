@@ -573,16 +573,17 @@ function taskStatusById(taskId, dir = ZOMBIE_TASKS_DIR) {
 // Capped per sweep: each call can wait 20s and the prune lock goes stale at 4 minutes; past the cap
 // the answer is {error}, so the tab is reported rather than revived.
 const LINEAR_LOOKUP_CAP_PER_SWEEP = 5;
-function makeLinearStateByKeySync() {
+function makeLinearStateByKeySync(exec = (...a) => require('child_process').execFileSync(...a)) {
   let calls = 0;
   return (key) => {
     if (++calls > LINEAR_LOOKUP_CAP_PER_SWEEP) return { error: 'linear lookup cap reached this sweep' };
     try {
-      const out = require('child_process').execFileSync(process.execPath, [path.join(__dirname, 'linear-brain.js'), 'get', key], { encoding: 'utf8', timeout: 20000, stdio: ['ignore', 'pipe', 'ignore'] });
+      const out = exec(process.execPath, [path.join(__dirname, 'linear-brain.js'), 'get', key], { encoding: 'utf8', timeout: 20000, stdio: ['ignore', 'pipe', 'ignore'] });
       const j = JSON.parse(out.slice(out.indexOf('{')));
       return j && j.state ? { type: j.state.type, name: j.state.name } : { error: 'no state in linear-brain get output' };
     } catch (e) {
-      if (e && e.status === 2) return null; // linear-brain get exits 2 when the issue does not exist
+      // Exit 2 is NOT "issue missing": linear-brain get also exits 2 on auth/network/API errors, so
+      // every failure is {error} (the sweep reports the tab instead of reviving it).
       return { error: e.message || String(e) };
     }
   };
@@ -1038,4 +1039,4 @@ function parkLinearCard(vanished) {
 
 if (require.main === module) main();
 
-module.exports = { main, USAGE, sweepVanished, parkCard, parkLinearCard, acquireRunLock, releaseRunLock, sweepNoPayload, loadNoPayloadState, saveNoPayloadState, pageNoPayloadClose, NO_PAYLOAD_STATE_PATH, sweepZombieTabs, taskStatusById };
+module.exports = { main, USAGE, sweepVanished, parkCard, parkLinearCard, acquireRunLock, releaseRunLock, sweepNoPayload, loadNoPayloadState, saveNoPayloadState, pageNoPayloadClose, NO_PAYLOAD_STATE_PATH, sweepZombieTabs, taskStatusById, makeLinearStateByKeySync };

@@ -674,3 +674,17 @@ test('BRO-2575: a spared workspace does not become a no-payload reaper candidate
   assert.deepEqual(screened, [],
     'a workspace proven alive by its wrapper must not be handed to the no-payload reaper');
 });
+
+// BRO-5712 (Codex cross-check): linear-brain get exits 2 for a missing issue AND for auth/network/API
+// errors, so the sync adapter must never turn an exit-2 failure into "no such issue" (which revives).
+test('makeLinearStateByKeySync: every failure, exit 2 included, is {error}; success maps state; calls are capped', () => {
+  const { makeLinearStateByKeySync } = require('./bsc-prune.js');
+  const fail = (status) => () => { const e = new Error('Command failed'); e.status = status; throw e; };
+  for (const status of [1, 2]) assert.ok(makeLinearStateByKeySync(fail(status))('BRO-1').error, `exit ${status}`);
+  const ok = makeLinearStateByKeySync(() => 'noise {"state":{"name":"Done","type":"completed"},"terminal":true}');
+  assert.deepEqual(ok('BRO-1'), { type: 'completed', name: 'Done' });
+  assert.ok(makeLinearStateByKeySync(() => '{}')('BRO-1').error);
+  const capped = makeLinearStateByKeySync(() => '{"state":{"name":"Todo","type":"unstarted"}}');
+  for (let i = 0; i < 5; i++) assert.equal(capped('BRO-1').type, 'unstarted');
+  assert.match(capped('BRO-1').error, /cap/);
+});
