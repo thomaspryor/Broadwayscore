@@ -1253,5 +1253,36 @@
       }
     ],
     "queuedAt": "2026-10-22T16:14:30.449Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5951-crossmodel-audit",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5951-crossmodel-audit",
+    "description": "land.yml did not land land/bro-5951-crossmodel-audit: the unit-tests-node gate went red at 5296bbb257. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39810858612",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5951-crossmodel-audit"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "5296bbb25738c9720a47293d5682e83c814b4f9e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39810858612"
+      }
+    ],
+    "queuedAt": "2026-10-22T16:26:30.595Z"
   }
 ]
