@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-22T01:58:16.229Z",
+    "generatedAt": "2026-10-22T02:25:07.565Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -24,7 +24,7 @@
     },
     {
       "path": "data/audit/bundle-size-history.json",
-      "churn": 42
+      "churn": 44
     },
     {
       "path": "data/audit/outlet-feed-reconcile.json",
@@ -38,19 +38,19 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 872
+      "churn": 875
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 224
+      "churn": 225
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 224
+      "churn": 225
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 224
+      "churn": 225
     },
     {
       "path": "data/llm-scoring-runs.json",
@@ -58,15 +58,15 @@
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 172
+      "churn": 174
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 139
+      "churn": 141
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 116
+      "churn": 117
     },
     {
       "path": "public/data/shows/the-comedy-about-spies-west-end-2025.json",
@@ -78,7 +78,7 @@
     },
     {
       "path": "public/data/shows/king-of-the-yees-off-broadway-2026.json",
-      "churn": 49
+      "churn": 50
     },
     {
       "path": "public/data/shows/other-desert-cities-2026.json",
@@ -97,15 +97,15 @@
       "churn": 38
     },
     {
+      "path": "public/data/shows/lincoln-in-the-bardo-off-broadway-2026.json",
+      "churn": 36
+    },
+    {
       "path": "public/data/shows/triumph-off-west-end-2026.json",
       "churn": 36
     },
     {
       "path": "public/data/shows/copperfield-the-new-musical-off-broadway-2026.json",
-      "churn": 35
-    },
-    {
-      "path": "public/data/shows/lincoln-in-the-bardo-off-broadway-2026.json",
       "churn": 35
     },
     {
@@ -132,57 +132,57 @@
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 814,
+      "churn": 818,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 528,
+      "churn": 527,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 422,
+      "churn": 425,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 400,
+      "churn": 403,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 400,
+      "churn": 403,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 400,
+      "churn": 403,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/landings.jsonl",
-      "churn": 382,
+      "churn": 384,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/exclusion-daily-totals.json",
-      "churn": 280,
+      "churn": 283,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 280,
+      "churn": 282,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/lane-rehearsal.json",
-      "churn": 246,
+      "churn": 247,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 224,
+      "churn": 225,
       "mergeAttr": "ours"
     },
     {
@@ -191,18 +191,18 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/orphan-unscored-other-desert-cities-2026.json",
-      "churn": 177,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/collection-state/live-progress.json",
-      "churn": 175,
+      "churn": 180,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 174,
+      "churn": 179,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/orphan-unscored-other-desert-cities-2026.json",
+      "churn": 178,
       "mergeAttr": "ours"
     },
     {
@@ -212,32 +212,32 @@
     },
     {
       "path": "data/audit/exclusion-mirror-summary.json",
-      "churn": 116,
+      "churn": 117,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 116,
+      "churn": 117,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 116,
+      "churn": 117,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 116,
+      "churn": 117,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/tour-sweep.json",
-      "churn": 116,
+      "churn": 117,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 116,
+      "churn": 117,
       "mergeAttr": "ours"
     },
     {
@@ -247,22 +247,27 @@
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 90,
+      "churn": 94,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 52,
+      "churn": 56,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 52,
+      "churn": 56,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 51,
+      "churn": 55,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/gather-collisions.json",
+      "churn": 34,
       "mergeAttr": "ours"
     },
     {
@@ -271,17 +276,17 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/gather-collisions.json",
-      "churn": 33,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/show-review-gap.json",
-      "churn": 33,
+      "path": "data/audit/score-public-since.json",
+      "churn": 34,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/url-mismatch-suspects.json",
+      "churn": 34,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/show-review-gap.json",
       "churn": 33,
       "mergeAttr": "ours"
     },
@@ -302,11 +307,6 @@
     },
     {
       "path": "data/audit/gap-audit-checkpoint.json",
-      "churn": 32,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/score-public-since.json",
       "churn": 32,
       "mergeAttr": "ours"
     },
