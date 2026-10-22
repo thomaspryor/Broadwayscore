@@ -1,22 +1,58 @@
 {
-  "generatedAt": "2026-10-22T07:44:44.720Z",
+  "generatedAt": "2026-10-22T18:26:05.069Z",
   "shadow": true,
-  "checkoutSha": "3333bddd33819960134451b22219c74848fce937",
-  "totalCandidates": 539,
-  "eligibleCandidates": 79,
+  "checkoutSha": "3f063d8127a951c31732e1ae03f62d813146c193",
+  "totalCandidates": 558,
+  "eligibleCandidates": 80,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 25,
-    "fail": 0,
-    "unverifiable": 5
+    "pass": 19,
+    "fail": 2,
+    "unverifiable": 9
   },
   "alreadyDone": [
     {
-      "id": "BRO-5930",
-      "name": "Card VERIFY lines accept 'node --test <file>.test.ts', which cannot run under plain node (@/ aliases)",
-      "verifyCmd": "node --test scripts/lib/autonomous-verify-cmd.test.mjs",
+      "id": "BRO-6003",
+      "name": "digest-autofix reconcileDigestOutcomes has the same unlocked read-reconcile-append race as BRO-2513 (double-counts outcomes)",
+      "verifyCmd": "node --test scripts/lib/digest-autofix.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6002",
+      "name": "SEO: AI-assistant referrals halved since April (ChatGPT ~570/mo to ~300): find why",
+      "verifyCmd": "test -f scripts/submit-indexnow.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-5994",
+      "name": "Pull-quote compilation pages without commas slip past roundup detection on non-hub URLs",
+      "verifyCmd": "node --test scripts/audit-show-review-gap.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5981",
+      "name": "Recoupment estimate: range spans analyst + our model, rounded to 5",
+      "verifyCmd": "npx tsx --test tests/unit/commercial-display.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5979",
+      "name": "backlog-drain: concurrency cap and spend breaker run outside the reconcile lock (two overlapping ticks can both dispatch)",
+      "verifyCmd": "node --test scripts/backlog-drain.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5973",
+      "name": "rebuild-in-flight.js misses concurrency-pending runs (status=pending)",
+      "verifyCmd": "node --test scripts/lib/rebuild-in-flight.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5937",
+      "name": "Land refusal names the failing test, and RECHECK-AFTER probes cannot refuse their own landing",
+      "verifyCmd": "node --test scripts/audit-orphan-tests.test.mjs",
       "detail": null
     },
     {
@@ -32,21 +68,15 @@
       "detail": null
     },
     {
-      "id": "BRO-5916",
-      "name": "Reddit sentiment scrape dead since 2026-10-19: every dispatch trips the breaker and burns ScrapingBee credits (no audience Reddit data for new openings)",
-      "verifyCmd": "node --test scripts/lib/reddit-dispatch-cooldown.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-5909",
       "name": "Rebuild ships a duplicateOf copy whose reference is excluded as a copy of another review (possible double count, 6 files)",
       "verifyCmd": "node --test tests/unit/explain-exclusion-mirror-inventory.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-5903",
-      "name": "Extend rate-limit-aware retry to push-core-data / push-review-texts / push-aggregator-archive",
-      "verifyCmd": "node --test tests/unit/checkout-rate-limit-retry.test.mjs",
+      "id": "BRO-5905",
+      "name": "the watchdog's own crowned tab launches UNVERIFIED — createTab bypasses the hardened cmux launcher",
+      "verifyCmd": "node --test scripts/lib/cmux-launch.test.mjs",
       "detail": null
     },
     {
@@ -56,9 +86,15 @@
       "detail": null
     },
     {
-      "id": "BRO-5868",
-      "name": "BRO-5849 follow-up: hand-enter guess-grade leads (All Out, Pass Over, Little Prince, Carousel, Beetlejuice, Dorian Gray)",
-      "verifyCmd": "node --test tests/unit/commercial-model-coverage.test.mjs",
+      "id": "BRO-5874",
+      "name": "Bachtrack blocks GitHub runners: CI fetches get a 175-char page, so Met reviews cannot be ingested",
+      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=lincoln-in-the-bardo-off-broadway-2026,innocence-off-broadway-2026 --reviews=2",
+      "detail": null
+    },
+    {
+      "id": "BRO-5850",
+      "name": "Date the remaining ~97 closed West End rows with no opening night (53 we-historical + ~44 others) from Theatre Record press-night headers",
+      "verifyCmd": "node scripts/validate-data.js --strict",
       "detail": null
     },
     {
@@ -74,21 +110,9 @@
       "detail": null
     },
     {
-      "id": "BRO-5801",
-      "name": "Retier the 45 registered blog-platform outlets from T3 to T4 after owner-rule review",
-      "verifyCmd": "node --test scripts/lib/tier-migration-verify.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-5783",
       "name": "Land: trim the in-lock full re-check tail (7 of 43 lands >5 min on 2026-10-20, max 16 min; queued lands wait up to 22 min)",
       "verifyCmd": "node --test scripts/lib/land-branch.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5770",
-      "name": "Morning digest: show Opus cap use (N of 6 in 24h, cards that fell back to Sonnet)",
-      "verifyCmd": "node --test scripts/lib/board-numbers.test.js",
       "detail": null
     },
     {
@@ -98,74 +122,57 @@
       "detail": null
     },
     {
-      "id": "BRO-5744",
-      "name": "Scheduled vision sweep of live show art (open/previews/upcoming/announced) that reports wrong-work art",
-      "verifyCmd": "node --test scripts/lib/image-null-orphan-files.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-5736",
       "name": "Version remaining image paths (site pages, search-shows, show-lookup, mobile detail hero) so replaced art busts caches",
       "verifyCmd": "node --test scripts/lib/versioned-image-path.test.mjs",
       "detail": null
-    },
-    {
-      "id": "BRO-5733",
-      "name": "Cut theatre.reviews wasted Bright Data calls: negative-cache shows with no roundup",
-      "verifyCmd": "node --test tests/unit/tr-roundup-negative-cache.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5719",
-      "name": "Land: decide on fail-fast in the Checks job (BRO-5673 Part 4d)",
-      "verifyCmd": "node --test tests/unit/land-retry-cancelled-schedule.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5682",
-      "name": "audit-aggregator-gap.yml: 'Run gap audit' step fails (05:14Z, 03:44Z runs); ODC census entry stale with junk candidates",
-      "verifyCmd": "node scripts/validate-data.js --strict",
-      "detail": null
-    },
-    {
-      "id": "BRO-5678",
-      "name": "Feedback 'missing show' for an older Off-Broadway run has no automatic add path (Love, Love, Love 2016 needed a hand-built plan)",
-      "verifyCmd": "node --test tests/unit/content-request-routing.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5675",
-      "name": "recollect-for-scores times out every weekly run; liveness sweep false-flags brand-new crons",
-      "verifyCmd": "node --test scripts/lib/cron-coverage.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5671",
-      "name": "Record Claude cloud-session cost daily, per card, and show cost per landed card in the morning digest",
-      "verifyCmd": "node scripts/validate-data.js --strict",
-      "detail": null
-    },
-    {
-      "id": "BRO-5652",
-      "name": "Guard: scripts that write fullText must stamp textFetchedAt; allow textFetchedAt backfill via CI",
-      "verifyCmd": "node --test tests/unit/text-fetched-at-backfill.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5650",
-      "name": "Nightly Codex lane: codex exec still runs as the runner uid and can read its keys",
-      "verifyCmd": "node --test tests/unit/codex-sandbox.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5646",
-      "name": "Codex PRs land on their own: the owner's only step is pressing Create PR in Codex",
-      "verifyCmd": "node --test tests/unit/codex-runner.test.mjs",
-      "detail": null
     }
   ],
-  "failing": [],
+  "failing": [
+    {
+      "id": "BRO-5997",
+      "name": "musical-model-backtest timing backtest fails on main (MAE/inside thresholds)",
+      "verifyCmd": "node --test scripts/lib/musical-model-backtest.test.mjs",
+      "detail": "not ok 1 - timing backtest: musicals hold MAE <= 15.5 and >= 35 inside; plays MAE <= 12 and >= 13 inside (play timing MAE 13.2 (17.8 before BRO-5651); worst: sea-wall-a-life-2019 88, to-)"
+    },
+    {
+      "id": "BRO-5916",
+      "name": "Reddit sentiment scrape dead since 2026-10-19: every dispatch trips the breaker and burns ScrapingBee credits (no audience Reddit data for new openings)",
+      "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 cmVkZGl0LXNlbnRpbWVudDpzdGFsZQ",
+      "detail": "[check-alert-condition-absent] FAIL: \"reddit-sentiment:stale\" still firing — open, last fired 2026-10-22T14:44:24.754Z (3.7h ago, within 168h)\n"
+    }
+  ],
   "unverifiable": [
+    {
+      "id": "BRO-5956",
+      "name": "Opening-night lane: West End fixture and adapters (WET, theatre.reviews, Stagedoor, The Stage, LBO) captured from The Lives of Others",
+      "verifyCmd": "node --test tests/unit/west-end-fixture-replay.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/west-end-fixture-replay.test.mjs"
+    },
+    {
+      "id": "BRO-5955",
+      "name": "Opening-night lane cutover: LANE_ONLY_MARKETS switch that gates Express and poller press-night roles off per market, with rollback",
+      "verifyCmd": "node --test tests/unit/lane-only-markets.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/lane-only-markets.test.mjs"
+    },
+    {
+      "id": "BRO-5953",
+      "name": "Opening night: Express auto-run that scores under 3 reviews on an embargo night should retry, not finish",
+      "verifyCmd": "node --test scripts/lib/opening-night-retry-decision.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/opening-night-retry-decision.test.mjs"
+    },
+    {
+      "id": "BRO-5950",
+      "name": "Broadway.com audience scraper matches titles only: press-title shows like 'Billy Crystal 860' (alias '860') never attach",
+      "verifyCmd": "node --test scripts/aka-title-audience-match.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/aka-title-audience-match.test.mjs"
+    },
+    {
+      "id": "BRO-5935",
+      "name": "Stale pending fix plans: four approved data plans never applied, and nothing reports them",
+      "verifyCmd": "node --test scripts/lib/pending-fixes-stale-check.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/pending-fixes-stale-check.test.mjs"
+    },
     {
       "id": "BRO-5839",
       "name": "Older-revival pages follow-up: rehome Osage 2008 National Theatre reviews, refetch blurb/boilerplate rows, add Three Days of Rain 2027 revival entry (from BRO-4889)",
@@ -189,21 +196,15 @@
       "name": "Weekly-gross history: check 4 missing weeks for three 2017-2022 revivals so their all-time totals can fill",
       "verifyCmd": "node --test tests/unit/missing-weeks-audit.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/missing-weeks-audit.test.mjs"
-    },
-    {
-      "id": "BRO-5662",
-      "name": "iOS app To Be Rated hides a past rewatch of an already-rated show",
-      "verifyCmd": "node --test scripts/lib/is-watchlist-entry-rated.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/is-watchlist-entry-rated.test.mjs"
     }
   ],
   "landedButOpen": [
     {
-      "id": "BRO-5916",
-      "name": "Reddit sentiment scrape dead since 2026-10-19: every dispatch trips the breaker and burns ScrapingBee credits (no audience Reddit data for new openings)",
-      "branch": "land/bro-5916-reddit-cooldown",
-      "sha": "bcf83a161f546317bf88b141223dacb5981a34cb",
-      "landedAt": "2026-10-22T06:30:32.383Z"
+      "id": "BRO-5919",
+      "name": "Queen of Hearts (Theatre XIV) has no opening/closing dates and may be stale",
+      "branch": "land/codex-bro-5919",
+      "sha": "0aa2c6ff7f61869566f8870746a5fb5053520ddc",
+      "landedAt": "2026-10-22T12:42:50.239Z"
     },
     {
       "id": "BRO-5879",
@@ -213,11 +214,11 @@
       "landedAt": "2026-10-22T00:16:42.130Z"
     },
     {
-      "id": "BRO-5801",
-      "name": "Retier the 45 registered blog-platform outlets from T3 to T4 after owner-rule review",
-      "branch": "land/codex-bro-5801",
-      "sha": "b97081f9df3beb2af0a705c38e5836b80e15cc68",
-      "landedAt": "2026-10-21T21:17:01.809Z"
+      "id": "BRO-5874",
+      "name": "Bachtrack blocks GitHub runners: CI fetches get a 175-char page, so Met reviews cannot be ingested",
+      "branch": "land/bro-5874-bachtrack-probe",
+      "sha": "694c5569d22bb35db414f020039edec5585b98be",
+      "landedAt": "2026-10-22T02:30:24.615Z"
     },
     {
       "id": "BRO-5783",
@@ -225,41 +226,6 @@
       "branch": "land/codex-bro-5783",
       "sha": "6031bdc32bf84b8e84e3986f5047c8b206db0357",
       "landedAt": "2026-10-21T12:47:28.897Z"
-    },
-    {
-      "id": "BRO-5770",
-      "name": "Morning digest: show Opus cap use (N of 6 in 24h, cards that fell back to Sonnet)",
-      "branch": "land/codex-bro-5770",
-      "sha": "a96f86d7f7e0e36c713bfa853db0c55ff1e425b7",
-      "landedAt": "2026-10-20T22:08:39.515Z"
-    },
-    {
-      "id": "BRO-5733",
-      "name": "Cut theatre.reviews wasted Bright Data calls: negative-cache shows with no roundup",
-      "branch": "land/bro-5733-tr-negative-cache",
-      "sha": "9849f3a10f2e1cc3b28452ad3e584e480bff2500",
-      "landedAt": "2026-10-20T00:53:17.277Z"
-    },
-    {
-      "id": "BRO-5678",
-      "name": "Feedback 'missing show' for an older Off-Broadway run has no automatic add path (Love, Love, Love 2016 needed a hand-built plan)",
-      "branch": "land/bro-5678-already-live",
-      "sha": "0e7c907dabe3865f629d355a1c91f6c5bf3cfa9b",
-      "landedAt": "2026-10-21T22:27:27.845Z"
-    },
-    {
-      "id": "BRO-5675",
-      "name": "recollect-for-scores times out every weekly run; liveness sweep false-flags brand-new crons",
-      "branch": "land/bro-5675-recollect-deadline",
-      "sha": "e8f5cfd45d52a13f38317eb774d0f88855a76109",
-      "landedAt": "2026-10-19T06:05:02.621Z"
-    },
-    {
-      "id": "BRO-5646",
-      "name": "Codex PRs land on their own: the owner's only step is pressing Create PR in Codex",
-      "branch": "land/bro-5646-owner-email",
-      "sha": "c965b05fe3c88bbe5ff37d1b50227f45faee5d4f",
-      "landedAt": "2026-10-19T04:35:44.719Z"
     }
   ]
 }
