@@ -98,6 +98,12 @@ const TICKET_DOMAINS = new Set([
   // --strict as a NEW unregistered outlet rather than showing up in the
   // pre-existing baseline.
   'grabyourgroupandgo.com',
+  // BRO-5906: staybook.in is an activity/ticket booking site. Its Jeeves Takes
+  // Charge listing ("Get your booking confirmed instantly") came in through
+  // submit-review-form and was LLM-scored 78. The outlet is registered (with
+  // this domain), so the domain check passed; blocking the host is the only
+  // gate that sees it before the text is fetched.
+  'staybook.in',
 ]);
 
 // Aggregator/listing sites — not direct review sources

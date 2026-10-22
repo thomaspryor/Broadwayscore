@@ -416,6 +416,57 @@ function detectListingPageText(text) {
   return { detected: false, match: null };
 }
 
+/**
+ * Booking / deal marketing copy from a ticket or activity listing page stored
+ * as a review (BRO-5906): jeeves-takes-charge-west-end-2026/staybook--staybook.json
+ * was 197 words of "Get your booking confirmed instantly" / "Grab great deals
+ * before they are gone" and the LLM scored it 78. Domain lists can't keep up
+ * with booking sites, so catch the page itself.
+ *
+ * Each phrase is a sales call-to-action a critic never writes. A real review
+ * can still end with one ticket line ("Book now at ..."), so the detector
+ * needs PROMO_BOOKING_COPY_MIN_HITS distinct patterns and ignores any hit in
+ * the trailing 40% of a text that has substantial review content.
+ * @type {RegExp[]}
+ */
+const PROMO_BOOKING_COPY_PATTERNS = [
+  /\b(?:get\s+)?your\s+booking\s+(?:is\s+)?confirmed\s+instantly\b/i,
+  /\binstant\s+(?:booking\s+)?confirmation\b/i,
+  /\bgrab\s+(?:great|the\s+best|amazing|exclusive)\s+deals\b/i,
+  /\bbefore\s+(?:they(?:'|\u2019)re|they\s+are)\s+(?:all\s+)?gone\b/i,
+  /\bbest\s+price\s+guarante(?:e|ed)\b/i,
+  /\bfree\s+cancell?ation\b/i,
+  /\bskip\s+the\s+(?:ticket\s+)?(?:line|queue)\b/i,
+  /\b(?:select|choose)\s+(?:a|your)\s+(?:preferred\s+)?(?:date|time\s+slot)\b/i,
+  /\bcheck\s+availability\b/i,
+  /\bsecure\s+(?:your|the\s+best)\s+seats\s+(?:now|today)\b/i,
+  /\bhassle[\s-]free\s+booking\b/i,
+  /\bbook\s+(?:your\s+)?tickets?\s+(?:now|today|online)\s+(?:and|to|for|with)\s+(?:save|get|enjoy|unlock)\b/i,
+  /\b(?:lowest|unbeatable)\s+(?:ticket\s+)?prices?\s+(?:guaranteed|online)\b/i,
+  /\bmobile\s+(?:e-?)?tickets?\s+accepted\b/i,
+];
+const PROMO_BOOKING_COPY_MIN_HITS = 2;
+
+/**
+ * Count distinct booking-marketing phrases outside trailing junk.
+ * Pure: callers decide what a hit means. Not yet wired into
+ * isGarbageContent (BRO-5906 lands it advisory; the corpus FP run decides).
+ * @param {string} text
+ * @returns {{ detected: boolean, matches: string[] }}
+ */
+function detectPromoBookingCopy(text) {
+  const t = (typeof text === 'string') ? text : '';
+  const substantial = t.trim().length >= 500 && _countTheaterKeywords(t) >= 3;
+  const matches = [];
+  for (const pattern of PROMO_BOOKING_COPY_PATTERNS) {
+    const m = t.match(pattern);
+    if (!m) continue;
+    if (substantial && _isPatternInTrailingJunk(t, m[0])) continue;
+    matches.push(m[0]);
+  }
+  return { detected: matches.length >= PROMO_BOOKING_COPY_MIN_HITS, matches };
+}
+
 const STRONG_CHROME_DUMP_PATTERNS = [
   // Cookie-consent / GDPR full sentences — never occur in review prose.
   /your\s+consent\s+will\s+be\s+valid/i,
@@ -3954,6 +4005,9 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
 }
 
 module.exports = {
+  PROMO_BOOKING_COPY_PATTERNS,
+  PROMO_BOOKING_COPY_MIN_HITS,
+  detectPromoBookingCopy,
   LISTING_PAGE_TEXT_PATTERNS,
   detectListingPageText,
   URL_CONTENT_CHECK_VERSION,

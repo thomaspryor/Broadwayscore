@@ -1030,3 +1030,79 @@ test('BRO-5732: a prior-census URL is not re-judged on a bare URL; multilingual 
   assert.equal(hasReviewEvidence({ url: 'https://x.example/a', title: 'Midnight: la recensione' }), true);
   assert.equal(hasReviewEvidence({ url: 'https://x.example/a', title: 'Midnight Kritik' }), true);
 });
+
+// ── BRO-5902: the --ingest-missing path must not write phantom reviews ──────
+// The gap audit's auto-ingest execs scripts/ingest-review-from-url.js, which
+// writes through createOrMergeReviewFile with source 'submit-review-form'.
+// Two 2026-08 incidents: a DTLI show hub (didtheylikeit.com/shows/<slug>/)
+// stored as dtli--unknown.json, and one people.com URL stored twice
+// (people--dave-quinn.json + people--unknown.json). These pin the gates that
+// now stop both, on the exact write call the ingest path makes.
+{
+  const { createOrMergeReviewFile } = require('./lib/review-file-writer.js');
+  const SHOW = 'paranormal-activity-2026';
+  const prose = (n) => Array.from({ length: n }, (_, i) =>
+    `Paranormal Activity on Broadway is a chilling, inventive evening of theatre, beat ${i}; the cast is superb and the staging terrifies.`).join(' ');
+  const freshDir = () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5902-'));
+    fs.mkdirSync(path.join(dir, SHOW));
+    return dir;
+  };
+  const write = (dir, input) => createOrMergeReviewFile(SHOW, { source: 'submit-review-form', ...input },
+    { reviewTextsDir: dir, knownShowIds: new Set([SHOW]) });
+
+  test('BRO-5902: a DTLI show hub submitted as a review is refused, nothing written', () => {
+    const dir = freshDir();
+    const r = write(dir, {
+      outletId: 'dtli', outlet: 'Did They Like It', criticName: 'Unknown',
+      url: 'https://didtheylikeit.com/shows/paranormal-activity/',
+      fields: { fullText: `The New York Times Jesse Green: ${prose(3)} Variety Frank Rizzo: ${prose(3)}`, operatorTrust: false },
+    });
+    assert.notEqual(r.action, 'created');
+    assert.match(String(r.reason), /show-hub/);
+    assert.deepEqual(fs.readdirSync(path.join(dir, SHOW)), []);
+  });
+
+  for (const [label, first, second] of [
+    ['byline then Unknown', 'Dave Quinn', 'Unknown'],
+    ['Unknown then byline', 'Unknown', 'Dave Quinn'],
+  ]) {
+    test(`BRO-5902: one URL written twice (${label}) leaves one file`, () => {
+      const dir = freshDir();
+      const url = 'https://people.com/paranormal-activity-broadway-review-12067912';
+      write(dir, { outletId: 'people', outlet: 'People', criticName: first, url, fields: { fullText: prose(20), operatorTrust: false } });
+      write(dir, { outletId: 'people', outlet: 'People', criticName: second, url: `${url}?utm_source=x`, fields: { fullText: prose(20), operatorTrust: false } });
+      assert.equal(fs.readdirSync(path.join(dir, SHOW)).length, 1);
+    });
+  }
+
+  test('BRO-5902: the ingest path keeps its gates (static)', () => {
+    const ingest = fs.readFileSync(new URL('./ingest-review-from-url.js', import.meta.url), 'utf8');
+    const audit = fs.readFileSync(new URL('./audit-show-review-gap.js', import.meta.url), 'utf8');
+    // The ingester refuses blocked (ticket/booking/social) hosts before it fetches...
+    const blockedAt = ingest.indexOf('if (isBlockedReviewUrl(url))');
+    assert.ok(blockedAt > 0, 'ingest-review-from-url.js must check isBlockedReviewUrl');
+    assert.ok(blockedAt < ingest.search(/await\s+fetchPage\(/), 'blocked-host check must run before the fetch');
+    // ...and writes review files only through the guarded writer.
+    assert.match(ingest, /createOrMergeReviewFile\(/);
+    assert.doesNotMatch(ingest, /writeFileSync\([^)]*review-texts/);
+    // The gap audit never writes review files itself; it hands URLs to the ingester.
+    assert.doesNotMatch(audit, /createOrMergeReviewFile\(/);
+    assert.match(audit, /'scripts\/ingest-review-from-url\.js'/);
+  });
+
+  test('BRO-5902: only ingest-review-from-url.js tags writes as submit-review-form', () => {
+    const scriptsDir = new URL('.', import.meta.url);
+    const offenders = [];
+    const walk = (dir) => {
+      for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+        const p = path.join(dir, e.name);
+        if (e.isDirectory()) { if (e.name !== 'node_modules') walk(p); continue; }
+        if (!/\.(c|m)?js$/.test(e.name) || /\.test\./.test(e.name)) continue;
+        if (/\bsource:\s*['"]submit-review-form['"]/.test(fs.readFileSync(p, 'utf8'))) offenders.push(path.relative(scriptsDir.pathname, p));
+      }
+    };
+    walk(scriptsDir.pathname);
+    assert.deepEqual(offenders, ['ingest-review-from-url.js']);
+  });
+}

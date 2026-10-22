@@ -97,6 +97,10 @@ const PATTERN_FAMILIES = [
   'HORROR_FILM_PATTERNS',
   // Listing/search/tag-archive headers at the very start of the text (BRO-5375).
   'LISTING_PAGE_TEXT_PATTERNS',
+  // Booking/deal marketing call-to-actions (BRO-5906). detectPromoBookingCopy
+  // needs 2 distinct hits outside trailing junk, so a single ticket line at the
+  // foot of a real review does not count.
+  'PROMO_BOOKING_COPY_PATTERNS',
 ];
 
 // Per-pattern hit allowances. Default is DEFAULT_MAX_HITS. Add entries here
