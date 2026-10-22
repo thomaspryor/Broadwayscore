@@ -370,13 +370,14 @@ function decideDigestEscalation({ conditionKey, existing, notifyCount, now, thre
 // land right on the edge — pad explicitly rather than relying on margin.
 const MIN_NOTES_LENGTH = 320;
 
-function buildCardNotes({ description, hint, fields, conditionKey, verify }) {
+function buildCardNotes({ description, hint, fields, conditionKey, verify, diagnosis }) {
   const fieldLines = (fields || []).map(f => `- **${f.name}:** ${f.value}`).join('\n');
   const parts = [
     '## Problem',
     description || '(no description provided)',
   ];
   if (fieldLines) parts.push(fieldLines);
+  if (diagnosis) parts.push(`\n${diagnosis}`);
   parts.push(`\n## Suggested approach\n${hint || 'Investigate the condition and fix the root cause.'}`);
   // BRO-3881: prose alone here made EVERY card this router files
   // undispatchable. linear-next.js gates each dispatch on
@@ -564,7 +565,11 @@ function startNowEligible({ conditionKey, description, verify }) {
 }
 
 async function dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey, verify, dispatchAtFiling, workerFixable }) {
-  let notes = buildCardNotes({ description, hint, fields, conditionKey, verify });
+  // Dedupe/cooldown have already run. Spend diagnostic requests only for a
+  // chronic incident that is actually about to receive a new tracker.
+  const { chronicDiagnosisSection } = require('./cron-health-chronic-diagnosis.js');
+  const diagnosis = chronicDiagnosisSection(conditionKey);
+  let notes = buildCardNotes({ description, hint, fields, conditionKey, verify, diagnosis });
   // Linear priority ints: 1=Urgent 2=High 3=Medium 4=Low. Alert-filed issues
   // map error-class severities to High, everything else Medium — Urgent is
   // reserved for humans. (`priority`, when a caller passes one, is the OLD

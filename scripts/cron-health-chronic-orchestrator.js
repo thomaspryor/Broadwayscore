@@ -26,15 +26,14 @@
  * Usage:
  *   node scripts/cron-health-chronic-orchestrator.js --workflow=commercial-weekly.yml [--limit=30]
  *
- * Requires: `gh` CLI authenticated against this repo (same as every other
- * gh-based script here). Read-only — makes no writes, triggers no runs.
+ * Uses authenticated `gh` when available, with a public REST fallback.
+ * Read-only: makes no writes and triggers no runs.
  */
 
 'use strict';
 
-const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { classifyJob, readJobTimeouts } = require('./lib/cron-health.js');
+const { collectDiagnosis, formatDiagnosis } = require('./lib/cron-health-chronic-diagnosis.js');
 
 const USAGE = `cron-health-chronic-orchestrator.js — Diagnose a chronically-stale cron workflow.
 
@@ -58,10 +57,6 @@ function parseArgs(argv) {
   return flags;
 }
 
-function gh(args) {
-  return execFileSync('gh', args, { encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 });
-}
-
 async function main() {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
 
@@ -71,84 +66,9 @@ async function main() {
     console.error('Usage: node scripts/cron-health-chronic-orchestrator.js --workflow=<file.yml> [--limit=N]');
     process.exit(1);
   }
-  const limit = parseInt(flags.limit, 10) || 15;
-
-  let timeouts = {};
-  try {
-    timeouts = readJobTimeouts(workflowFile);
-  } catch (err) {
-    console.warn(`⚠️  Could not read timeout-minutes from ${workflowFile}: ${err.message}`);
-  }
-
-  console.log(`\n🔎 Diagnosing ${workflowFile} (last ${limit} runs)\n`);
-
-  // BRO-2530 what-else: `gh run list --limit=N` is the exact pattern
-  // scripts/lib/gh-runs-query.sh's header comment (BRO-2771/BRO-2767) warns
-  // never to use for run history on this repo — with 6,600+ test.yml runs on
-  // main it has returned arbitrary, sometimes months-stale result SETS (three
-  // identical invocations a minute apart returning three different date
-  // ranges). This diagnostic tool exists specifically to answer "what's this
-  // cron's real recent run history" for a human debugging a chronic-stale
-  // alert, so trusting that exact discouraged call here would risk the tool
-  // giving a confidently wrong answer. Query the REST endpoint directly
-  // instead (same per_page cap and field-mapping approach as gh-runs-query.sh,
-  // plus `event` since this tool prints it).
-  const repo = gh(['repo', 'view', '--json', 'nameWithOwner', '-q', '.nameWithOwner']).trim();
-  if (limit > 100) {
-    console.error(`--limit must be 1-100 (REST per_page cap), got ${limit}`);
-    process.exit(1);
-  }
-  const runsRaw = gh([
-    'api', `repos/${repo}/actions/workflows/${workflowFile}/runs?per_page=${limit}`,
-    '--jq', '[.workflow_runs[] | {databaseId: .id, conclusion: .conclusion, createdAt: .created_at, event: .event}]',
-  ]);
-  const runs = JSON.parse(runsRaw)
-    .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
-
-  if (runs.length === 0) {
-    console.log('No runs found for this workflow.');
-    return;
-  }
-
-  const lastSuccess = runs.find((r) => r.conclusion === 'success');
-  console.log(lastSuccess
-    ? `Last SUCCESSFUL run: ${lastSuccess.createdAt} (${lastSuccess.event}) — https://github.com/${repo}/actions/runs/${lastSuccess.databaseId}`
-    : `⚠️  No successful run in the last ${limit} runs — this cron has been stale for a while.`);
-
-  const shapeCounts = {};
-
-  for (const run of runs) {
-    const jobsRaw = gh(['run', 'view', String(run.databaseId), '--json', 'jobs']);
-    const { jobs } = JSON.parse(jobsRaw);
-    const classifications = jobs.map((j) => ({ name: j.name, shape: classifyJob(j, timeouts) }));
-    const notable = classifications.filter((c) => c.shape !== 'success' && c.shape !== 'skipped');
-
-    console.log(`\n${run.createdAt}  [${run.event}]  run conclusion=${run.conclusion}`);
-    for (const c of notable) {
-      console.log(`    ${c.name}: ${c.shape}`);
-      const bucket = c.shape.split(' (')[0];
-      shapeCounts[bucket] = (shapeCounts[bucket] || 0) + 1;
-    }
-    if (notable.length === 0) console.log('    (all jobs succeeded)');
-  }
-
-  console.log('\n--- Summary across', runs.length, 'runs ---');
-  const entries = Object.entries(shapeCounts).sort((a, b) => b[1] - a[1]);
-  if (entries.length === 0) {
-    console.log('No failing/cancelled jobs found — the workflow looks healthy over this window.');
-  } else {
-    for (const [shape, count] of entries) {
-      console.log(`  ${shape}: ${count}`);
-    }
-    const top = entries[0];
-    console.log(`\nDominant failure shape: "${top[0]}" (${top[1]} occurrences). ${
-      top[0].startsWith('timeout-cancelled')
-        ? 'Fix: give the underlying script a --time-budget-min wall-clock budget (scripts/lib/run-budget.js) well under the job timeout, so it stops cleanly instead of being SIGKILLed.'
-        : top[0].startsWith('push-contention')
-          ? 'Fix: check whether the committed files are eligible for scripts/lib/push-with-retry.sh\'s Git Data API fallback — see scripts/lib/core-data-merge-registry.js\'s apiFallbackSafe/apiFallbackMerge entries and scripts/lib/api-fallback-writer-drift.js to verify single-writer status before adding one.'
-          : 'Inspect the named failing step directly — this shape is not one of the two known silent-staleness patterns.'
-    }`);
-  }
+  const limit = flags.limit === undefined ? 15 : Number(flags.limit);
+  const diagnosis = collectDiagnosis({ workflowFile, limit });
+  console.log(formatDiagnosis(diagnosis));
 }
 
 main().catch((err) => {
