@@ -460,6 +460,8 @@ function cmdInventory() {
 }
 
 (async () => {
+  const { hasHelpFlag } = require('./lib/cli-help.js');
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(2, 24).join('\n')); return; }
   const cmd = process.argv[2];
   if (['completeness', 'pages', 'score'].includes(cmd)) for (const k of ['GEMINI_API_KEY', 'OPENAI_API_KEY']) if (!process.env[k]) { console.error(`${k} not set`); process.exit(2); }
   if (cmd === 'completeness') await cmdCompleteness();

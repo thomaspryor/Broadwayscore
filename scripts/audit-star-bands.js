@@ -8,6 +8,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+if (require('./lib/cli-help.js').hasHelpFlag(process.argv.slice(2))) { console.log('audit-star-bands.js [--json]: star rating vs score-band check per historical cohort (read-only)'); process.exit(0); }
 const ROOT = path.join(__dirname, '..');
 const BANDS = { 1: [0, 30], 2: [31, 50], 3: [51, 70], 4: [71, 90], 5: [91, 100] };
 
