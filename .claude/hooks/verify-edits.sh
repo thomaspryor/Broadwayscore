@@ -1258,6 +1258,45 @@ if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1':
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
+# ─── Clear-closing gate (CLEARCLOSE, BRO-5910, 2026-10-22) ──────────────────
+# Owner: "extremely clear communicators, especially at the end of their
+# messages". Replay of 38 real closings (2026-10-21): 19 had card ids or
+# commit hashes in the last lines, 7 never said what is still running, 7 never
+# said whether the owner must act, 4 ended on a bare "NOT SAFE TO EXIT".
+# After real work, the closing block must carry (CLOUD.md "Talking to the
+# owner"): a Still running line, a You need to line, a reason on NOT SAFE,
+# and no ids, hashes, paths or code in its last lines. Blocks once per turn
+# chain. Kill switch CLEARCLOSE_GATE_DISABLE=1. Fail-open.
+_CC_ID_RE = re.compile(r'\bBRO-\d+\b|\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b|`|\b[\w.-]+/[\w./-]+\.\w{1,5}\b|\bsession_[0-9A-Za-z]{10,}')
+if os.environ.get('CLEARCLOSE_GATE_DISABLE', '0') != '1':
+    try:
+        _cc_text, _cc_last = _closing()
+        if (re.match(r'^(?:NOT )?SAFE TO EXIT\b', _cc_last) and 'NO-VERIFY:' not in (_last_msg or '')
+                and not _ve_seen('CLEARCLOSE')
+                and (total_qualifying_edits > 0 or any(_k == 'tool' and _is_work_tool(_p[0], _p[1], _p[2])
+                                                       for _k, _p in events))):
+            _cc_miss = []
+            if not re.search(r'(?im)^\W*still running:|nothing is (?:still )?running', _cc_text):
+                _cc_miss.append('a "Still running: ..." (or "Nothing is still running.") line')
+            if not re.search(r'(?im)^\W*you need to:|nothing (?:is )?needed from you', _cc_text):
+                _cc_miss.append('a "You need to: ..." (or "Nothing needed from you.") line')
+            if re.match(r'^NOT SAFE TO EXIT\W*$', _cc_last) or len(re.findall(r'\w+', _cc_last)) < 7 and _cc_last.startswith('NOT'):
+                _cc_miss.append('a reason on the NOT SAFE TO EXIT line (what is still pending and what wakes you)')
+            # Last four plain lines: fenced blocks dropped, and the gate tokens other
+            # hooks require in the closing (NO-SHIP-CHECK:, BACKLOG-OK:, ...) skipped.
+            _cc_raw = [ln.strip() for ln in re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL).splitlines()
+                       if ln.strip() and not re.match(r'^\W*[A-Z][A-Z-]+:', ln.strip())
+                       and not _CLOSE_DIVIDER_RE.match(ln)]
+            _cc_tail = '\n'.join(_cc_raw[-4:])
+            _cc_id = _CC_ID_RE.search(_cc_tail)
+            if _cc_id:
+                _cc_miss.append('plain words in the last lines (found "%s": no card ids, commit hashes, file paths or code there)' % _cc_id.group(0))
+            if _cc_miss:
+                sys.stderr.write('   closing block is missing: ' + '; '.join(_cc_miss) + '\n')
+                _ve_block("CLEARCLOSE")
+    except Exception:
+        pass  # fail-open — never let this gate crash the rest of the script
+
 # ─── Cloud finish-line chain (BRO-4238 phase 2) ──────────────────────────────
 # Port of the Mac finish-line-gate's Gates 1 and 4 into the cloud Stop hook.
 # A SAFE TO EXIT claim after code edits needs (a) a review since those edits,
@@ -2190,6 +2229,11 @@ fi
 
 if [[ "$result" == "LOOSEENDS" ]]; then
   echo "🛑 BLOCKED: SAFE TO EXIT, but this message still has a loose end (quoted above): an offer or question to the owner, a call only the owner can make, or work that is not finished, verified or carded (BRO-5881, owner 2026-10-22). Pick one: finish it now; decide it yourself if it is technical; file a card for it (and add BACKLOG-OK: <why it can wait> if it can wait); start a session for it; or, if it truly needs the owner, write the DECISION NEEDED block and end NOT SAFE TO EXIT. Promising to check something later needs a running background wait and NOT SAFE TO EXIT. Then rewrite the message without the loose end. Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "CLEARCLOSE" ]]; then
+  echo "🛑 BLOCKED: the closing message is not clear enough for the owner, who reads only its end (BRO-5910, owner 2026-10-22). Rewrite the end of the message as: one or two plain sentences on what changed for them; Still running: <what, and what wakes you> (or Nothing is still running.); You need to: <the one thing> (or Nothing needed from you.); then SAFE TO EXIT, or NOT SAFE TO EXIT — <what is pending and how you will follow it>. Keep card ids, commit hashes, file paths and code out of those last lines (they belong in the Linear comment). Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 

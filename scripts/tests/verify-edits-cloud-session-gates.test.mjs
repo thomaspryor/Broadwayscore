@@ -157,9 +157,9 @@ function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive 
       encoding: 'utf8',
       // BRO-5359: the review-coverage gate has its own tests (scripts/lib/review-coverage.test.mjs); these cases model
       // bare Skill calls and must not depend on whether the host session sets CLAUDE_CODE_REMOTE.
-      // BRO-5881: LOOSEENDS and WAKELESS read every closing message, so the older fixtures (written for
+      // BRO-5881/BRO-5910: LOOSEENDS, WAKELESS and CLEARCLOSE read every closing message, so the older fixtures (written for
       // other gates) run with them off; their own section below switches them back on.
-      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1', ...env, HOME: fakeHomeDir },
+      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1', CLEARCLOSE_GATE_DISABLE: '1', ...env, HOME: fakeHomeDir },
       timeout: HOOK_TIMEOUT_MS,
       killSignal: 'SIGKILL',
     });
@@ -2056,5 +2056,47 @@ test('INFLIGHT/LOOSEENDS: a TESTED status box after the closing line does not hi
   const agent = toolUse('Agent', { description: 'scan', prompt: 'x', run_in_background: true }, 'Async agent launched successfully.\nagentId: a1b2c3d4e5f6');
   const msg = 'All landed.\n\nSAFE TO EXIT\n```\n━━━ TESTED ━━━\nProduction verified: yes\n━━━━━━\n```';
   assertBlocked(runHook(writeTranscript(dir, [agent, LINEAR_CLOSEOUT_DONE]), msg), 'the live agent still blocks SAFE');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// ─── Clear-closing gate (CLEARCLOSE, BRO-5910, 2026-10-22) ──────────────────
+// Owner: sessions must be extremely clear at the end of their messages.
+// Closings below are real 2026-10-21 endings (trimmed) and their rewrites.
+const CC_ON = { CLEARCLOSE_GATE_DISABLE: '0' };
+function assertUnclear(r, message, what) {
+  assertBlocked(r, message);
+  assert.match(r.stderr, /closing block is missing/i, `expected the CLEARCLOSE message, got: ${r.stderr.slice(0, 400)}`);
+  if (what) assert.match(r.stderr, what);
+}
+const CLEAR = 'The fix is live on the site.\n\nNothing is still running.\n\nNothing needed from you.\n\nSAFE TO EXIT';
+
+test('CLEARCLOSE: real unclear endings → BLOCKED, naming what is missing', skipNoRepoHook, () => {
+  const dir = makeTmpDir('cc-block');
+  const t = writeTranscript(dir, [GIT_PUSH, LINEAR_CLOSEOUT_DONE]);
+  assertUnclear(runHook(t, 'The ballet guard is on main. I\'m waiting for that to land.\n\nNothing needed from you.\n\nNOT SAFE TO EXIT', CC_ON), 'bare NOT SAFE', /Still running|reason on the NOT SAFE/);
+  assertUnclear(runHook(t, 'Shipped.\n\nYou need to: nothing.\n\nSAFE TO EXIT', CC_ON), 'no still-running line', /Still running/);
+  assertUnclear(runHook(t, 'Shipped.\n\nNothing is still running.\n\nSAFE TO EXIT', CC_ON), 'no you-need line', /You need to/);
+  assertUnclear(runHook(t, 'Shipped.\n\nNothing is still running.\n\nNothing needed from you; closed BRO-5717 (commit e66ac2363).\n\nSAFE TO EXIT', CC_ON), 'ids in the last lines', /BRO-5717/);
+  assertUnclear(runHook(t, 'Shipped.\n\nNothing is still running.\n\nNothing needed from you.\n\nSAFE TO EXIT — see `scripts/lib/x.js`', CC_ON), 'code on the status line');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('CLEARCLOSE: clear endings pass, including technical detail higher up and a NOT SAFE with its reason', skipNoRepoHook, () => {
+  const dir = makeTmpDir('cc-allow');
+  const t = writeTranscript(dir, [GIT_PUSH, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(t, CLEAR, CC_ON), 'canonical');
+  assertAllowed(runHook(t, 'Fixed BRO-5717 in scripts/lib/x.js (commit e66ac2363).\n\nThe early-date audit now counts only reachable reviews.\n\nNothing is still running.\n\nYou need to: nothing.\n\nSAFE TO EXIT', CC_ON), 'ids higher up are fine');
+  assertAllowed(runHook(t, 'The cleanup is landing.\n\nStill running: the landing; a background wait wakes me when it finishes.\n\nNothing needed from you.\n\nNOT SAFE TO EXIT — waiting for the cleanup to land, then I run it and check the shows.', CC_ON), 'NOT SAFE with reason');
+  assertAllowed(runHook(t, '**Still running:** nothing.\n\n**You need to:** nothing.\n\nSAFE TO EXIT', CC_ON), 'bold labels');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('CLEARCLOSE: only after real work; bypass and kill switch', skipNoRepoHook, () => {
+  const dir = makeTmpDir('cc-scope');
+  const idle = writeTranscript(dir, [], { card: false });
+  assertAllowed(runHook(idle, 'Here is the answer.\n\nSAFE TO EXIT', CC_ON), 'a read-only turn is not gated');
+  const t = writeTranscript(dir, [GIT_PUSH, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(t, 'Shipped.\n\nSAFE TO EXIT', { CLEARCLOSE_GATE_DISABLE: '1' }), 'kill switch');
+  assertAllowed(runHook(t, 'Shipped.\nNO-VERIFY: owner asked for a one-line reply\n\nSAFE TO EXIT', CC_ON), 'bypass');
   fs.rmSync(dir, { recursive: true, force: true });
 });

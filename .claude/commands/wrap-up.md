@@ -82,6 +82,13 @@ Check for:
    (LOOSEENDS): finish it, card it, decide it, or end NOT SAFE with a
    DECISION NEEDED block.
 
+   **The closing block must be clear (CLEARCLOSE, BRO-5910).** After real
+   work the message ends with: one or two plain sentences on what changed;
+   `Still running: <what, and what wakes you>` or `Nothing is still running.`;
+   `You need to: <the one thing>` or `Nothing needed from you.`; then
+   `SAFE TO EXIT` or `NOT SAFE TO EXIT — <what is pending and how you follow
+   it>`. No card ids, commit hashes, file paths or code in those last lines.
+
    **NOT SAFE TO EXIT must have a wake (WAKELESS).** If you are waiting on a
    run, a deploy or a landing, start the wait before ending the turn: a
    `run_in_background` Bash that polls until it finishes (timeout up to
