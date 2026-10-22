@@ -408,7 +408,7 @@ Session C (any time after B): S4-T1 ∥ S4-T2;  S4-T3 at day 30
 | AdSense manual units instead of Mediavine Journey | Least owner effort: no application review or support back-and-forth over how ads refresh on Next.js page changes | Owner: "very little effort" |
 | Direct sponsorship deferred | Sales and servicing are ongoing owner work | Owner: "very little effort" |
 | Privacy policy fix made a launch blocker | `/privacy` currently states the site shows no third-party ads | Codex, verified in `src/app/privacy/page.tsx:152` |
-| Holdout group added | Before/after comparison is confounded by Nov–Dec seasonality and openings | Plan review |
+| Holdout group added | Before/after comparison is confounded by Nov–Dec seasonality and openings | Author's own check (`/plan-review` not yet run) |
 | Bot challenge for CN/HK | 7,112 bot-like sessions in 28 days; invalid-traffic risk | PostHog query, Oct 22 |
 | Vercel Pro check added as Step 0 | Hobby plan bans AdSense explicitly | Vercel fair use guidelines |
 
