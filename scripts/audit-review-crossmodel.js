@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// hygiene-help-flag-ok: all work happens inside subcommands; --help is handled first in the main IIFE and runs nothing before it
 /**
  * audit-review-crossmodel.js — non-Claude (Gemini + OpenAI) audit of the
  * historical backfill at REVIEW level (BRO-5951). Companion of
