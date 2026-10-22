@@ -13,7 +13,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { planMultiShowFanout, applyMultiShowFanoutToFile, buildJointMatcher } = require('./multi-show-review-fanout.js');
+const { planMultiShowFanout, applyMultiShowFanoutToFile, buildJointMatcher, rewriteParent } = require('./multi-show-review-fanout.js');
 
 const SHOWS = [
   { id: 'midnight-off-broadway-2026', title: 'Midnight', category: 'off-broadway', openingDate: '2026-10-15' },
@@ -377,25 +377,37 @@ test('no head, and the second stretch opens in the first one\'s closing sentence
   assert.equal(plan(ID.Midnight, withHead.join('\n\n')).strategy, 'joint');
 });
 
-test('a credits block with no sentence end stays with its own show (Flipside)', () => {
-  // Flipside "King Charles III / Thérèse Raquin": each review closes on a
-  // credits block (writer, director, dates, theatre, web address) with no
-  // full stop, then the next review opens on a photo caption. The cut used
-  // to fall at the last full stop, so the first show's credits opened the
-  // second show's section and the scorer rejected it as the wrong production.
+test('a credits listing with no sentence end never opens the next section (Flipside)', () => {
+  // Flipside "Thérèse Raquin / King Charles III": the piece opens on both
+  // shows' credits (title, writer, director, dates, theatre, web address)
+  // with no full stop anywhere, then each review opens on a photo caption.
+  // The second show's credits sat between its title and the first review,
+  // so the cut fell back to the title and the first section opened on the
+  // second show's credits: the scorer rejected it as the wrong production.
   const text = [
-    'Two Broadway imports arrive this month, “Midnight” and “School Pictures.”',
-    `“Midnight” is a long night watch in a city of dreams. ${filler('dream', 6)} By its last scene “Midnight” has earned its length.`,
-    'Written by A. Writer; directed by B. Director Performances through January 31, 2026 Daryl Roth Theatre, 101 East 15th Street, New York, NY midnightshow.com',
-    `Actor One and Actor Two in School Pictures (photo: C. Photographer) “School Pictures” is a quieter piece about a class photographer. ${filler('portrait', 6)} “School Pictures” never raises its voice.`,
-    'Written by D. Writer; directed by E. Director Performances through March 1, 2026 Playwrights Horizons, 416 West 42nd Street, New York, NY schoolpictures.org',
+    'School Pictures Written by D. Writer; directed by E. Director Performances through January 3, 2026 Studio 54, 254 West 54th Street, New York, NY schoolpictures.org',
+    'Midnight Written by A. Writer; directed by B. Director Performances through January 31, 2026 Music Box Theatre, 239 West 45th Street, New York, NY midnightshow.com',
+    `Actor One and Actor Two in “School Pictures” (photo: C. Photographer) “School Pictures” is a quiet piece about a class photographer. ${filler('portrait', 8)} “School Pictures” never raises its voice.`,
+    `Actor Three in “Midnight” (photo: C. Photographer) “Midnight” is a long night watch in a city of dreams. ${filler('dream', 10)} By its last scene “Midnight” has earned its length.`,
   ].join(' ');
   const p = plan(ID.Midnight, text);
   assert.ok(p, 'expected a plan');
   assert.equal(p.strategy, 'joint');
-  const m = section(p, ID.Midnight);
   const s = section(p, ID['School Pictures']);
-  assert.match(m, /midnightshow\.com$/, 'Midnight keeps its own credits');
-  assert.match(s, /^Actor One and Actor Two in School Pictures/);
-  assert.doesNotMatch(s, /midnightshow\.com|Daryl Roth/, 'no Midnight credits in the School Pictures section');
+  assert.match(s, /^Actor One and Actor Two in “School Pictures”/);
+  assert.doesNotMatch(s, /midnightshow\.com|Music Box/, 'no Midnight credits in the School Pictures section');
+  assert.match(section(p, ID.Midnight), /^Actor Three in “Midnight”/);
+});
+
+test('a split parent drops a rating an LLM read off the whole article, keeps a scraped one (Observer)', () => {
+  const own = { sectionText: 'Plaza Suite is a creaky vehicle.', anchorKind: 'joint' };
+  const llm = rewriteParent({ fullText: 'whole article', originalScore: '4/5 stars', originalScoreSource: 'llm-gemini', starRating: 4 }, own, ['till-2024']);
+  assert.equal(llm.originalScore, null);
+  assert.equal(llm.originalScoreSource, null);
+  assert.equal(llm.starRating, null);
+  assert.equal(llm.originalScoreCorrectedFrom, '4/5 stars');
+  assert.equal(llm.originalScoreCleared, true);
+  const scraped = rewriteParent({ fullText: 'whole article', originalScore: '2/5 stars', originalScoreSource: 'guardian-api' }, own, ['till-2024']);
+  assert.equal(scraped.originalScore, '2/5 stars');
+  assert.equal(scraped.originalScoreSource, 'guardian-api');
 });

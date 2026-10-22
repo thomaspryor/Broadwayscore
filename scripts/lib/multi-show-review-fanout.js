@@ -598,10 +598,10 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
     const floor = runIdx > 0 ? runs[runIdx - 1].lastEnd : 0;
     let c = Math.max(sentenceStart(text, r.at), floor);
     if (c === floor && floor > 0) c += (text.slice(c).match(AFTER_TITLE_RE) || [''])[0].length;
-    // A credits block closing the previous review has no sentence end of its
-    // own ("...New York, NY kingcharlesiiibroadway.com Keira Knightley in
-    // Thérèse Raquin"): its web address ends it, so the cut goes after it
-    // and the credits stay with their show (Flipside, BRO-5942).
+    // A credits listing has no sentence end of its own ("...New York, NY
+    // kingcharlesiiibroadway.com Keira Knightley in Thérèse Raquin"): its
+    // web address ends it, so the cut goes after it and another show's
+    // credits never open this section (Flipside, BRO-5942).
     if (runIdx > 0) {
       let m;
       WEB_ADDRESS_RE.lastIndex = c;
@@ -784,6 +784,14 @@ function rewriteParent(data, ownSection, childShowIds, now = new Date().toISOStr
   // back into fullText (the processed marker survives merges) and re-trim.
   out.multiShowSplitTextLength = out.fullText.length;
 
+  // A rating an LLM read off the whole multi-show article may be another
+  // show's: the Observer's Plaza Suite row carried Till the Stars Come Down's
+  // 4/5, and the rebuild ranks a stored rating above every score (BRO-5942).
+  if (out.originalScore != null && /^llm/i.test(String(out.originalScoreSource || ''))) {
+    require('./verified-original-score').applyVerifiedOriginalScore(out, null,
+      'multi-show split: an LLM read this rating from the whole multi-show article (BRO-5942)');
+  }
+
   // Clear wrongShow if it was set for being a multi-show roundup — the file's
   // text is now just its own show's section. Preserve any manual review state.
   const humanVerdict = /manual|human|owner|admin/i.test(`${out.rejectedBy || ''} ${out.wrongShowSource || ''}`);
@@ -816,8 +824,9 @@ function rewriteParent(data, ownSection, childShowIds, now = new Date().toISOStr
 
   // Always re-score after a split — the trimmed text is materially different
   // from whatever was scored before (or unscored). A critic-published
-  // originalScore stays on the parent (the file the article was filed under)
-  // and is never copied to children: it can't be attributed to one section.
+  // originalScore stays on the parent (the file the article was filed under),
+  // unless an LLM extracted it (cleared above), and is never copied to
+  // children: it can't be attributed to one section.
   require('./rescore-flagging').markRescoreNeeded(out, out.rescoreReason || 'multi-show-split: text trimmed to own section', now, { requeue: true });
   out.needsRescoreReason = 'multi-show-split: text trimmed to own section';
   delete out.ensembleData;
