@@ -1322,5 +1322,36 @@
       }
     ],
     "queuedAt": "2026-10-22T16:26:30.595Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5990-image-sizes",
+    "title": "Landing blocked: rebase red on land/bro-5990-image-sizes",
+    "description": "land.yml did not land land/bro-5990-image-sizes: the rebase gate went red at 328a7cffc3. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5990-image-sizes @ 328a7cffc3 (origin/land/bro-5990-image-sizes) → origin/main @ 6d569e347f REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 6d569e347f: Rebasing (1/1) error: could not apply 328a7cffc3a... Right-size show images: cap posters 480px / thumbnails 540px, stop oversized ingest (BRO-5990) hint: Resolve all conflicts manually, mark them as resolved with Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39812810431",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5990-image-sizes"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "328a7cffc3aa992c6b721d00ce77bf81f1418f30"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39812810431"
+      }
+    ],
+    "queuedAt": "2026-10-22T17:03:24.671Z"
   }
 ]
