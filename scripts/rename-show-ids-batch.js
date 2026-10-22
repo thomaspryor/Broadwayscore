@@ -147,7 +147,15 @@ function dropReappearedRow(showsPath, oldId) {
   console.warn(`  warning: dropped re-added ${oldId} row (a concurrent edit to it is lost)`);
 }
 
+const USAGE = `Usage: node scripts/rename-show-ids-batch.js --batch=<file> --core-data=<dir> --review-texts=<dir> [--web=<dir>] [--apply | --check]
+
+Dry run by default. --apply renames every pair in the batch; --check verifies
+that every pair is fully renamed in all three trees. Exit 0 ok, 2 refused, 1 failed.
+`;
+
 function main() {
+  const { hasHelpFlag } = require('./lib/cli-help.js');
+  if (hasHelpFlag(process.argv.slice(2))) { process.stdout.write(USAGE); return; }
   let f;
   try { f = parseArgs(process.argv.slice(2)); } catch (e) { console.error(e.message); process.exit(1); }
   const batch = JSON.parse(fs.readFileSync(f.batch, 'utf8'));
