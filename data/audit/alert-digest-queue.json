@@ -1329,5 +1329,36 @@
       }
     ],
     "queuedAt": "2026-10-22T02:15:12.389Z"
+  },
+  {
+    "conditionKey": "land:land/exit-line-rules",
+    "title": "Landing blocked: unit-tests-node red on land/exit-line-rules",
+    "description": "land.yml did not land land/exit-line-rules: the unit-tests-node gate went red at 307716fbb4. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39708974733",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/exit-line-rules"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "307716fbb4730fd71698549f29665fc7fb4b3287"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39708974733"
+      }
+    ],
+    "queuedAt": "2026-10-22T02:17:23.900Z"
   }
 ]
