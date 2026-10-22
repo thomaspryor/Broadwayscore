@@ -9906,10 +9906,10 @@
       "title": "Overdue P0/P1 queue: 0 P0 older than 24h, 10 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-10-21T07:40:31.142Z",
-      "lastNotifiedAt": "2026-10-21T07:40:31.142Z",
+      "lastSeen": "2026-10-22T07:37:38.482Z",
+      "lastNotifiedAt": "2026-10-22T07:37:38.482Z",
       "lastSurfacedAt": "2026-10-18T07:17:18.505Z",
-      "notifyCount": 18,
+      "notifyCount": 19,
       "cardId": null,
       "linearIdentifier": "BRO-5613"
     },
@@ -15701,10 +15701,10 @@
       "title": "good-time-charlie-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-12T03:15:02.955Z",
       "incidentOpenedAt": "2026-10-14T02:46:15.395Z",
-      "lastSeen": "2026-10-21T07:41:03.396Z",
-      "lastNotifiedAt": "2026-10-21T07:41:03.396Z",
-      "lastSurfacedAt": "2026-10-21T07:41:03.396Z",
-      "notifyCount": 9,
+      "lastSeen": "2026-10-22T07:38:11.422Z",
+      "lastNotifiedAt": "2026-10-22T07:38:11.422Z",
+      "lastSurfacedAt": "2026-10-22T07:38:11.422Z",
+      "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -17663,12 +17663,13 @@
       "title": "Spend guard bd-circuit-breaker-serp_api1: cap drift",
       "firstSeen": "2026-10-14T02:46:56.653Z",
       "incidentOpenedAt": "2026-10-14T02:46:56.653Z",
-      "lastSeen": "2026-10-21T07:42:19.975Z",
+      "lastSeen": "2026-10-22T07:39:28.218Z",
       "lastNotifiedAt": "2026-10-21T07:42:19.975Z",
       "lastSurfacedAt": "2026-10-21T07:42:19.975Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "guard-audit:bd-web_unlocker2": {
       "status": "open",
@@ -17676,12 +17677,13 @@
       "title": "Spend guard bd-circuit-breaker-web_unlocker2: cap drift",
       "firstSeen": "2026-10-14T02:46:56.661Z",
       "incidentOpenedAt": "2026-10-14T02:46:56.661Z",
-      "lastSeen": "2026-10-21T07:42:19.987Z",
+      "lastSeen": "2026-10-22T07:39:28.231Z",
       "lastNotifiedAt": "2026-10-21T07:42:19.987Z",
       "lastSurfacedAt": "2026-10-21T07:42:19.987Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-5261-s5-retro-fixes": {
       "status": "resolved",
@@ -19750,7 +19752,7 @@
       "resolveReason": "health-check row passing"
     },
     "coverage-holes:the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-17T07:00:59.962Z",
@@ -19760,7 +19762,9 @@
       "lastSurfacedAt": "2026-10-21T07:41:03.682Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-22T07:38:11.741Z",
+      "resolveReason": "no rejected-but-verified review and no unqueued out-of-band score"
     },
     "land:land/bro-5520-research-batch": {
       "status": "resolved",
@@ -21159,10 +21163,10 @@
       "title": "cadel-lungs-on-legs-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-19T07:50:11.584Z",
       "incidentOpenedAt": "2026-10-19T07:50:11.584Z",
-      "lastSeen": "2026-10-21T07:41:03.584Z",
-      "lastNotifiedAt": "2026-10-21T07:41:03.584Z",
-      "lastSurfacedAt": "2026-10-21T07:41:03.584Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-10-22T07:38:11.645Z",
+      "lastNotifiedAt": "2026-10-22T07:38:11.645Z",
+      "lastSurfacedAt": "2026-10-22T07:38:11.645Z",
+      "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -22064,8 +22068,10 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5765",
-      "resolvedAt": "2026-10-21T15:56:46.208Z"
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-21T15:56:46.208Z",
+      "sweptTracker": "BRO-5765",
+      "notifyCountAtRelease": 1
     },
     "health-check:Workflow repeat-failure: Update Reddit Sentiment": {
       "status": "open",
@@ -22526,7 +22532,7 @@
       "silentRefires": 1
     },
     "coverage-holes:other-desert-cities-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "other-desert-cities-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-21T07:41:03.452Z",
@@ -22536,7 +22542,9 @@
       "lastSurfacedAt": "2026-10-21T07:41:03.452Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-22T07:38:11.491Z",
+      "resolveReason": "no rejected-but-verified review and no unqueued out-of-band score"
     },
     "opening-night-drift:midnight-off-broadway-2026": {
       "status": "open",
@@ -23018,8 +23026,10 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5880",
-      "resolvedAt": "2026-10-22T02:11:01.655Z"
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-22T02:11:01.655Z",
+      "sweptTracker": "BRO-5880",
+      "notifyCountAtRelease": 1
     },
     "land:land/bro-5876-reviews-section": {
       "status": "resolved",
@@ -23378,6 +23388,32 @@
       "cardId": null,
       "linearIdentifier": "BRO-5921",
       "silentRefires": 1
+    },
+    "coverage-holes:lincoln-in-the-bardo-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "lincoln-in-the-bardo-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+      "firstSeen": "2026-10-22T07:38:11.449Z",
+      "incidentOpenedAt": "2026-10-22T07:38:11.449Z",
+      "lastSeen": "2026-10-22T07:38:11.449Z",
+      "lastNotifiedAt": "2026-10-22T07:38:11.449Z",
+      "lastSurfacedAt": "2026-10-22T07:38:11.449Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "coverage-holes:the-pianist-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "the-pianist-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+      "firstSeen": "2026-10-22T07:38:11.543Z",
+      "incidentOpenedAt": "2026-10-22T07:38:11.543Z",
+      "lastSeen": "2026-10-22T07:38:11.543Z",
+      "lastNotifiedAt": "2026-10-22T07:38:11.543Z",
+      "lastSurfacedAt": "2026-10-22T07:38:11.543Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
