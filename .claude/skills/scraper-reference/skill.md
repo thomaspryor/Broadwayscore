@@ -14,6 +14,7 @@ This skill contains everything you need to know about scraping in this project. 
 
 - `references/gotchas.md` — Documented failure modes and fixes (READ FIRST)
 - `references/fallback-chain.md` — The BD → SB → Playwright → Browserbase tier chain
+- `references/hard-to-collect.md` — Escalation ladder for a page CI cannot fetch (Bachtrack, Cloudflare): probe, render, Browserbase, knownBlockedSites, archive, then the owner's Mac. Walk it before saying "no path"
 - `references/cookies.md` — Paywall cookie setup and management (local-only / gitignored; cloud sessions won't have it — ask the user if needed)
 
 ## The One Rule
@@ -31,6 +32,7 @@ Exception: WP API JSON calls use `fetchJSON()` from the same file. Google SERP u
 | BD returns empty 200 | Check `result.content.length > 0` guard. theatre.reviews does this. |
 | Playwright renders 404 as success | Validate content markers, not just length |
 | Cloudflare "Just a moment..." | Only Browserbase works — see fallback-chain.md |
+| Empty or ~175-byte page from CI, every tier | Walk `references/hard-to-collect.md` in order |
 | Missing credits / 402 | Check SB_CREDIT_BUDGET env var. Override to 1000 for bulk runs. |
 | Paywall outlet breaking | Cookie-only auth — refresh via Safari export, never email/password (host + cookie set in cookies.md, local-only) |
 
