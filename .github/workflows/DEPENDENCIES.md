@@ -234,7 +234,7 @@ Every workflow that pushes to a private repo. Each must carry a concurrency grou
 | `process-review-submission.yml` | other | broadway-scorecard-data, broadway-review-texts | `process-review-submission-${{ github.event.issue.number || inputs.issue_number }}` (false) |
 | `promote-owe-venue-candidates.yml` | other | broadway-scorecard-data | `shows-json-writer` (false) |
 | `promote-we-aggregator.yml` | scraping | broadway-scorecard-data | `promote-we-aggregator` (false) |
-| `rebuild-fast.yml` | rebuild | broadway-scorecard-data, broadway-review-texts | `rebuild-fast-${{ github.run_id }}` (false) |
+| `rebuild-fast.yml` | rebuild | broadway-scorecard-data, broadway-review-texts | `rebuild-fast` (false; force_write runs per-run) |
 | `rebuild-reviews.yml` | rebuild | broadway-scorecard-data, broadway-review-texts | `rebuild-reviews` (false) |
 | `recollect-for-scores.yml` | scraping | broadway-review-texts | `recollect-scores` (false) |
 | `reconcile-broadcast-state.yml` | other | broadway-scorecard-data | `reconcile-broadcast-state` (false) |
