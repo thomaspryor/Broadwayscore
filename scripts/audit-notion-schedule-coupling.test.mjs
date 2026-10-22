@@ -213,3 +213,29 @@ test('scanLaunchdForCoupling: reports {ok:false} off-darwin instead of silently 
   assert.match(result.reason, /darwin/);
   assert.deepEqual(result.findings, []);
 });
+
+// BRO-5845: both live Notion-calling launchd jobs ran as `bash -c "cd ... && exec node scripts/X.js"`,
+// which the old last-argument-only extractor never resolved, so the audit reported 0.
+test('scriptsFromProgramArguments: resolves every node/bash target inside a bash -c string against its cd', () => {
+  const plist = `<plist><dict><key>ProgramArguments</key><array>
+    <string>/bin/bash</string><string>-c</string>
+    <string>cd /Users/tompryor/Broadwayscore &amp;&amp; SYNC_TAG=x bash scripts/lib/sync-audit-checkout.sh &amp;&amp; exec node scripts/predispatch-queue-audit.js --fix</string>
+  </array></dict></plist>`;
+  const args = src.extractProgramArguments(plist);
+  assert.match(args[2], /&& exec node/);
+  assert.deepEqual(src.scriptsFromProgramArguments(args), [
+    '/Users/tompryor/Broadwayscore/scripts/lib/sync-audit-checkout.sh',
+    '/Users/tompryor/Broadwayscore/scripts/predispatch-queue-audit.js',
+  ]);
+  assert.deepEqual(src.scriptsFromProgramArguments(['/bin/bash', '-c', 'echo hi']), []);
+  // relative target with no cd cannot be resolved; never guess
+  assert.deepEqual(src.scriptsFromProgramArguments(['/bin/bash', '-c', 'node scripts/x.js']), []);
+});
+
+test('findSignals on shell scripts: comments and prose are clean, a real invocation is caught', () => {
+  assert.deepEqual(src.findSignals('# leave notion-action-poll.js worktrees alone\necho ok\n', 'a.sh'), []);
+  assert.deepEqual(src.findSignals('PROMPT="Notion is retired: never use notion-brain.js."\n', 'a.sh'), []);
+  assert.deepEqual(src.findSignals('node "$REPO/scripts/notion-brain.js" update "$ID"\n', 'a.sh'), ['notion-brain.js']);
+  // JS files keep the full signal set
+  assert.deepEqual(src.findSignals("const { TASKS_DIR } = require('./bsc-next.js');", 'a.js'), ['TASKS_DIR']);
+});

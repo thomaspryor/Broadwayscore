@@ -109,6 +109,11 @@ const NOTION_COUPLING_ALLOWLIST = {
   'scripts/audit-card-verifiability.js': 'Notion leg is opt-in (--source notion/all); its only scheduled caller, card-verifiability-audit.yml, passes --source linear since BRO-3488 dropped the frozen-mirror audit runs',
   'scripts/enrich-card-acceptance.js': 'Notion leg is opt-in (--source notion/both); card-verifiability-audit.yml passes --source linear on both scheduled calls (BRO-3018/BRO-3488), so the schedule never reaches notion-brain.js',
   'scripts/health-check.js': 'its one mirror read, checkDispatchOutcomes -> loadTasksUnioned, returns before reading when data/audit/dispatch-ledger.jsonl is absent, and that ledger is gitignored, so data-health-check.yml never reaches it; the TASKS_DIR hit rides in via lib/autofix-canary.js, of which health-check uses only the pure assessCanaryRow/assessThroughputRow (the mirror-reading runAutofixCanary is called by send-morning-digest.js). Retired Notion report row removed in BRO-4717',
+  // BRO-5845: the launchd half now parses `bash -c` plists, which surfaced these three. Each one's
+  // Notion API call was removed or never existed; what remains is a read of the local task store.
+  'scripts/predispatch-queue-audit.js': 'BRO-5845 removed its per-task Notion card fetch (predispatch tally is Linear-only); the remaining TASKS_DIR read feeds the dispatch-guard tally over the local task store, the same set dispatch-watchdog still unions via loadTasksUnioned. The notion-brain.js/notionIdOf hits ride in from lib/dispatch-guards.js refusal text (text-only in notion-live-write-paths.test.mjs)',
+  'scripts/reconcile-dead-completions.js': 'BRO-5845 removed its Notion card correction + sync-map reset; it reopens local task-store files (TASKS_DIR, imported from bsc-next.js) and Linear issues. The bsc-next.js hits are hint strings (text-only in notion-live-write-paths.test.mjs)',
+  'scripts/send-morning-digest.js': 'reads the local task store only for its autofix-canary/digest-autofix rows; it has no Notion API channel (notion-live-write-paths.test.mjs scans it clean)',
   'scripts/audit-notion-schedule-coupling.js': 'is this detector itself — its own COUPLING_SIGNALS regexes and this allowlist\'s comments literally contain the 4 signal strings as pattern definitions, which self-matches once data-health-check.yml (its own host workflow) is correctly recognized as scheduled',
 };
 
@@ -130,7 +135,26 @@ function stripComments(code) {
   return code.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
 }
 
-function findSignals(content) {
+// BRO-5845: shell scripts are matched on COMMAND FORM only, after stripping
+// `#` comments. Matching the JS signal strings against a .sh file flagged
+// gc-merged-worktrees.sh (a `# notion-action-poll.js` comment) and
+// weekly-retro.sh (a prompt line that says "never use notion-brain.js") —
+// both false positives — while the real couplings went unseen.
+const SH_COUPLING_SIGNALS = [
+  { name: 'notion-brain.js', re: /\bnode\s+\S*notion-brain(\.js)?\b/ },
+  { name: 'notion-tasks-sync.js', re: /\bnode\s+\S*notion-tasks-sync(\.js)?\b/ },
+  { name: 'notion-action-poll.js', re: /\bnode\s+\S*notion-action-poll(\.js)?\b/ },
+];
+
+function stripShellComments(code) {
+  return code.split('\n').map((line) => line.replace(/(^|\s)#.*$/, '$1')).join('\n');
+}
+
+function findSignals(content, file = 'x.js') {
+  if (/\.(sh|bash)$/.test(file)) {
+    const code = stripShellComments(content);
+    return SH_COUPLING_SIGNALS.filter((s) => s.re.test(code)).map((s) => s.name);
+  }
   const code = stripComments(content);
   return COUPLING_SIGNALS.filter((s) => s.re.test(code)).map((s) => s.name);
 }
@@ -301,21 +325,52 @@ function scanWorkflowsForCoupling(opts = {}) {
 // ── Half 2: Mac launchd agents ──────────────────────────────────────────────
 
 /** Minimal ProgramArguments extractor — these plists are simple, hand-authored XML. */
+function decodeXmlEntities(s) {
+  return s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'").replace(/&amp;/g, '&');
+}
+
 function extractProgramArguments(plistXml) {
   const m = /<key>ProgramArguments<\/key>\s*<array>([\s\S]*?)<\/array>/.exec(plistXml);
   if (!m) return [];
   const strs = [];
   const re = /<string>([^<]*)<\/string>/g;
   let sm;
-  while ((sm = re.exec(m[1]))) strs.push(sm[1]);
+  while ((sm = re.exec(m[1]))) strs.push(decodeXmlEntities(sm[1]));
   return strs;
 }
 
-function scriptFromProgramArguments(args) {
+/**
+ * Every repo script a plist runs. A bare argument ending in .js/.mjs/.sh is
+ * one target; a `bash -c "<cmd>"` string is parsed for each `node|bash|sh
+ * <path>` invocation, resolved against the command's own `cd <dir>`.
+ * BRO-5845: predispatch-queue-audit and reconcile-dead-completions both run
+ * as `bash -c "cd /Users/.../Broadwayscore && exec node scripts/X.js"`, so
+ * the old last-argument-only extractor never saw them and the audit reported
+ * 0 while two Notion-calling launchd jobs were live.
+ */
+function scriptsFromProgramArguments(args) {
+  const out = [];
   for (const a of args) {
-    if (/\.(js|mjs|sh)$/.test(a)) return a;
+    if (!/\s/.test(a)) {
+      if (/\.(js|mjs|sh)$/.test(a)) out.push(a);
+      continue;
+    }
+    const cd = /(?:^|[;&|]\s*)cd\s+("?)([^\s"';&|]+)\1/.exec(a);
+    const base = cd ? cd[2] : null;
+    const inv = /(?:^|[\s;&|])(?:node|bash|sh)\s+(?:-\S+\s+)*([^\s;&|'"]+\.(?:js|mjs|sh))\b/g;
+    let m;
+    while ((m = inv.exec(a))) {
+      const target = m[1];
+      if (path.isAbsolute(target)) out.push(target);
+      else if (base && path.isAbsolute(base)) out.push(path.join(base, target));
+    }
   }
-  return null;
+  return [...new Set(out)];
+}
+
+function scriptFromProgramArguments(args) {
+  return scriptsFromProgramArguments(args)[0] || null;
 }
 
 function scanLaunchdForCoupling() {
@@ -349,17 +404,17 @@ function scanLaunchdForCoupling() {
     }
     scannedAgents++;
     const args = extractProgramArguments(plistXml);
-    const scriptArg = scriptFromProgramArguments(args);
-    if (!scriptArg || !scriptArg.includes('/Broadwayscore/')) continue;
-    const absScript = scriptArg;
-    const rel = repoRelativeStable(absScript);
-    scannedScripts++;
-    if (isAllowlisted(rel)) continue;
-    const combined = readScriptWithLocalDeps(absScript);
-    if (combined === null) continue;
-    const signals = findSignals(combined);
-    if (signals.length) {
-      findings.push({ label, script: rel, signals });
+    for (const absScript of scriptsFromProgramArguments(args)) {
+      if (!absScript.includes('/Broadwayscore/')) continue;
+      const rel = repoRelativeStable(absScript);
+      scannedScripts++;
+      if (isAllowlisted(rel)) continue;
+      const combined = readScriptWithLocalDeps(absScript);
+      if (combined === null) continue;
+      const signals = findSignals(combined, absScript);
+      if (signals.length) {
+        findings.push({ label, script: rel, signals });
+      }
     }
   }
 
@@ -401,9 +456,13 @@ function main() {
       findings: launchdResult.findings,
     },
     totalFindings,
-    bannerText: totalFindings === 0
+    // BRO-5845: this snapshot is written by data-health-check.yml on Linux,
+    // where the launchd half cannot run — a bare "0 found" there hid two live
+    // Mac jobs. Name the unscanned half instead of implying it was clean.
+    bannerText: (totalFindings === 0
       ? 'notion-schedule-coupling: 0 live schedules found reading the frozen Notion mirror'
-      : `notion-schedule-coupling: ${totalFindings} live schedule(s) still reference the frozen Notion mirror — see data/audit/notion-schedule-coupling.json`,
+      : `notion-schedule-coupling: ${totalFindings} live schedule(s) still reference the frozen Notion mirror — see data/audit/notion-schedule-coupling.json`)
+      + (launchdResult.ok ? '' : ' (GitHub workflow schedules only; launchd agents NOT scanned on this host — run it on the Mac)'),
   };
 
   console.log(snapshot.bannerText);
@@ -442,6 +501,7 @@ module.exports = {
   extractScriptTargets,
   extractProgramArguments,
   scriptFromProgramArguments,
+  scriptsFromProgramArguments,
   scanWorkflowsForCoupling,
   scanLaunchdForCoupling,
   SNAPSHOT_PATH,

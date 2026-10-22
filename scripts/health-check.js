@@ -4593,7 +4593,12 @@ function notionScheduleCouplingResults(snap) {
   if (total > 0) {
     return [{ name, status: 'warn', message: `${total} live schedule(s) still reference the frozen Notion mirror (${formatAge(age)} ago)`, hint: 'node scripts/audit-notion-schedule-coupling.js --dry-run to see which; port to Linear or add to NOTION_COUPLING_ALLOWLIST if intentional' }];
   }
-  return [{ name, status: 'pass', message: `No live schedules coupled to the frozen Notion mirror (${formatAge(age)} ago)` }];
+  // BRO-5845: this snapshot comes from CI, where the launchd half cannot run;
+  // say so instead of passing it off as a full-coverage clean result.
+  const launchdNote = snap.launchdHalf && snap.launchdHalf.ok === false
+    ? ' — GitHub workflow schedules only; Mac launchd agents not scanned on this host'
+    : '';
+  return [{ name, status: 'pass', message: `No live schedules coupled to the frozen Notion mirror (${formatAge(age)} ago)${launchdNote}` }];
 }
 
 // Daily-digest surfacing for uncollected-live-review strands (data/audit/
