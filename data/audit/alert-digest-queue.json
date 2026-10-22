@@ -1009,5 +1009,36 @@
       }
     ],
     "queuedAt": "2026-10-22T19:05:41.447Z"
+  },
+  {
+    "conditionKey": "land:land/bro-32-fetchpage-batch1",
+    "title": "Landing blocked: unit-tests-node red on land/bro-32-fetchpage-batch1",
+    "description": "land.yml did not land land/bro-32-fetchpage-batch1: the unit-tests-node gate went red at bbbbfad3a6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39835778418",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-32-fetchpage-batch1"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "bbbbfad3a63c0d1b161584e19d98c65ac9ac0b04"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39835778418"
+      }
+    ],
+    "queuedAt": "2026-10-22T19:11:55.651Z"
   }
 ]
