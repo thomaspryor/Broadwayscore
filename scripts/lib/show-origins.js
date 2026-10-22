@@ -33,6 +33,23 @@ function inScopeShows(shows) {
     && !s.cancelledBeforeOpening && !s.tourOf);
 }
 
+/** Days a show may be open before a missing origin record is an error (the labeling job runs weekly). */
+const ORIGIN_GRACE_DAYS = 10;
+
+/**
+ * In-scope shows that are open/closed/in previews, opened at least
+ * ORIGIN_GRACE_DAYS ago, and have no origin record (BRO-5867).
+ * @param {object[]} shows - shows.json rows
+ * @param {Record<string, object>} origins - data/show-origins.json `shows`
+ * @param {string} today - YYYY-MM-DD
+ * @returns {object[]}
+ */
+function showsMissingOrigin(shows, origins, today) {
+  const cutoff = new Date(Date.parse(today) - ORIGIN_GRACE_DAYS * 86400000).toISOString().slice(0, 10);
+  return inScopeShows(shows).filter((s) => ['open', 'closed', 'previews'].includes(s.status)
+    && s.openingDate <= cutoff && !(origins || {})[s.id]);
+}
+
 function isHttpUrl(u) {
   return typeof u === 'string' && /^https?:\/\/[^\s]+\.[^\s]+/.test(u);
 }
@@ -139,6 +156,8 @@ module.exports = {
   ORIGINAL_KINDS,
   FIRST_OPENING_DATE,
   inScopeShows,
+  showsMissingOrigin,
+  ORIGIN_GRACE_DAYS,
   normalizeOrigin,
   urlKey,
   pathNoteConflicts,
