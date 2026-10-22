@@ -238,7 +238,7 @@ function writeJsonAtomic(filePath, obj) {
 // Freshness + ordering policy (extracted 2026-07-14 — opening-week shows must
 // re-audit every hourly run and sort ahead of the back-catalogue grind; The
 // Whoopi Monologues' missing NYT review sat 3 days behind the backlog).
-const { freshnessMsFor, compareAuditPriority, auditTier, checkpointTs, gapRowTimestamps, reserveStalestSlots, oldestGapRow, STALE_RESERVE_EVERY } = require('./lib/gap-audit-freshness');
+const { freshnessMsFor, compareAuditPriority, auditTier, checkpointTs, gapRowTimestamps, reserveStalestSlots, oldestGapRow, STALE_RESERVE_EVERY, CATALOGUE_RESERVE_EVERY } = require('./lib/gap-audit-freshness');
 // Per-show merge for the audit file (#893) + the S0 blast-radius guard.
 const { mergeGapAudit, countsFor, priorCensusUrls, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock, BLAST_RADIUS_ALERT_KEY, blastRadiusClearedKeys } = require('./lib/gap-audit-merge');
 // Merge-aware checkpoint read-modify-write (#923 — the #893 race class, one
@@ -2202,6 +2202,8 @@ async function main(argv = process.argv.slice(2)) {
   const checkpointAtStart = useCheckpoint ? JSON.parse(JSON.stringify(checkpoint)) : null;
   let gapRowTsAtStart = new Map();
   let staleReservedIds = [];
+  let catalogueReservedIds = [];
+  let neverAuditedDueAtStart = 0;
   let oldestDueAtStart = null;
   if (useCheckpoint && !showFilter) {
     const now = Date.now();
@@ -2232,9 +2234,15 @@ async function main(argv = process.argv.slice(2)) {
     }
     // BRO-5489: rows the opening-window alert still reads (tier 1) refresh first.
     const alertingIds = new Set(targets.filter(s => auditTier(s, checkpoint[s.id], now) === 1).map(s => s.id));
-    const reserved = reserveStalestSlots(targets, gapRowTsAtStart, { preferIds: alertingIds });
+    // BRO-4061: tier-2 back catalogue gets its own lane, so never-audited
+    // shows (no gap row, invisible to the stale lane) still get audited.
+    const catalogueIds = new Set(targets.filter(s => auditTier(s, checkpoint[s.id], now) === 2).map(s => s.id));
+    neverAuditedDueAtStart = targets.filter(s => !checkpoint[s.id]).length;
+    const reserved = reserveStalestSlots(targets, gapRowTsAtStart, { preferIds: alertingIds, catalogueIds });
     targets = reserved.targets;
     staleReservedIds = reserved.reservedIds;
+    catalogueReservedIds = reserved.catalogueReservedIds;
+    console.log(`audit-show-review-gap: ${neverAuditedDueAtStart} due show(s) never audited; 1 in ${CATALOGUE_RESERVE_EVERY} slots reserved for the back catalogue (first: ${catalogueReservedIds.slice(0, 3).join(', ') || 'none'})`);
     const oldest = oldestDueAtStart = oldestGapRow(gapRowTsAtStart, targets.map(s => s.id), now);
     if (oldest) console.log(`audit-show-review-gap: oldest due gap row ${oldest.showId} (${oldest.ageHours}h, computedAt ${oldest.computedAt}); 1 in ${STALE_RESERVE_EVERY} slots reserved for stalest rows`);
   }
@@ -2781,10 +2789,13 @@ async function main(argv = process.argv.slice(2)) {
     at: new Date().toISOString(),
     reserveEvery: STALE_RESERVE_EVERY,
     reservedAttempted: staleReservedIds.filter(id => auditedThisRunIds.has(id)),
+    catalogueReserveEvery: CATALOGUE_RESERVE_EVERY,
+    catalogueAttempted: catalogueReservedIds.filter(id => auditedThisRunIds.has(id)),
+    neverAuditedDueAtStart,
     oldestDueRowAtStart: oldestDueAtStart,
     oldestDueRowAfterRun: oldestGapRow(gapRowTsAtStart, targets.map(s => s.id).filter(id => !auditedThisRunIds.has(id))),
   } : null;
-  if (staleness) console.log(`Staleness: ${staleness.reservedAttempted.length} stalest row(s) audited in reserved slots; oldest due row left: ${staleness.oldestDueRowAfterRun ? `${staleness.oldestDueRowAfterRun.showId} (${staleness.oldestDueRowAfterRun.ageHours}h)` : 'none'}`);
+  if (staleness) console.log(`Staleness: ${staleness.reservedAttempted.length} stalest row(s) and ${staleness.catalogueAttempted.length} back-catalogue show(s) audited in reserved slots; oldest due row left: ${staleness.oldestDueRowAfterRun ? `${staleness.oldestDueRowAfterRun.showId} (${staleness.oldestDueRowAfterRun.ageHours}h)` : 'none'}`);
 
   const runAudit = {
     generatedAt: new Date().toISOString(),

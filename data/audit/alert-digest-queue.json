@@ -31,6 +31,37 @@
     "queuedAt": "2026-10-22T19:11:55.651Z"
   },
   {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: E2E Tests, Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39838367560",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "tracked": null,
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39838367560)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39834502510)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "31"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "E2E Tests, Unit Tests"
+      }
+    ],
+    "queuedAt": "2026-10-22T19:36:33.685Z"
+  },
+  {
     "conditionKey": "land:land/codex-bro-5820",
     "title": "Landing blocked: rebase red on land/codex-bro-5820",
     "description": "land.yml did not land land/codex-bro-5820: the rebase gate went red at 6eb1fd1e42. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39838461577",
@@ -91,5 +122,36 @@
       }
     ],
     "queuedAt": "2026-10-22T19:30:26.347Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5967-review-schema",
+    "title": "Landing blocked: rebase red on land/bro-5967-review-schema",
+    "description": "land.yml did not land land/bro-5967-review-schema: the rebase gate went red at 143263c7af. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39841918021",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5967-review-schema"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "143263c7af9da2f24cd665ccbe0c15774e7a1680"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39841918021"
+      }
+    ],
+    "queuedAt": "2026-10-22T19:41:05.885Z"
   }
 ]

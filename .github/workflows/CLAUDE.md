@@ -193,7 +193,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Does:** Runs 6 automated opening-night QA checks for shows opening within ±2 days, evaluates stage-latency SLA, dispatches Discord/email alerts for breaches. Commits `data/audit/opening-night-history.json` + `data/audit/opening-night-latency-YYYY-MM-DD.json`.
 - **SLA thresholds:** 30-min in-flight review → Discord warning; 60-min → P0 page (Discord + email to owner)
 - **Severity:** `warning` (non-critical — failures surface in daily digest, not real-time alert)
-- **CRITICAL_CRONS:** registered with 3h max gap in `check-cron-health.yml`
+- **CRITICAL_CRONS:** registered with a 10h max gap in `check-cron-health.yml` (BRO-3867: GitHub throttles the hourly schedule to a real p95 gap of ~7h)
 - **Options:** `show_id` (target specific show), `dry_run` (evaluate SLA, skip Discord/email dispatch)
 - **Scripts:** `scripts/opening-night-checklist.js`, `scripts/opening-night-latency-report.js`, `scripts/opening-night-sla-dispatch.js`
 - **Auto-fix first sweep (BRO-5477):** `node scripts/auto-fix-first.js sweep` runs after the SLA step every hour (skipped on `dry_run`): emails the owner once when an opening-night fix card has not fixed its workflow (still red 3h after filing, not In Progress at 3h, stuck In Progress 6h, canceled without a fix, or red again after Done). Never files cards.

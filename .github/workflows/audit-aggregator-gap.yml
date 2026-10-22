@@ -36,6 +36,7 @@ on:
         required: false
         default: ''
       redispatched:
+        # redispatch-after-hours: 3  (BRO-3867: the paging band is now measured-wide; re-dispatch a dropped tick at the old 3h)
         # BRO-4282: set by scripts/cron-redispatch.js when GitHub dropped the
         # hourly schedule. The run then uses the schedule's settings (3y window,
         # 6h ground-truth interval), never the manual-dispatch defaults.

@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-10-22T18:20:03.444Z",
+  "lastChecked": "2026-10-22T19:15:16.693Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -64,7 +64,7 @@
     {
       "name": "Data: uncollected live review strands",
       "status": "warn",
-      "message": "1 discovered review URL(s) across 1 live show(s) were never fetched. First: triumph-off-west-end-2026 (1 stranded)"
+      "message": "2 discovered review URL(s) across 2 live show(s) were never fetched. First: thelma-and-louise-a-new-musical-off-west-end-2026 (1 stranded)"
     },
     {
       "name": "Data: armed-but-vacuous backlog cards",
@@ -84,17 +84,17 @@
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "71 review(s) with no usable text, 53 rejected although verified as a review, 43 never scored, 29 with a blocked URL (0 published on the site), across 440 current shows"
+      "message": "71 review(s) with no usable text, 60 rejected although verified as a review, 24 never scored, 30 with a blocked URL (0 published on the site), across 449 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "warn",
-      "message": "64 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 30330 checked"
+      "message": "40 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 29667 checked"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "pass",
-      "message": "25 early publish date(s) awaiting recheck (limit 40); 62 already attempted and not yet confirmed"
+      "message": "30 early publish date(s) awaiting recheck (limit 40); 62 already attempted and not yet confirmed"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -108,18 +108,18 @@
     },
     {
       "name": "Data: T1/T2 silent review gaps",
-      "status": "error",
-      "message": "4 discovered review(s) not reaching the composite score (1 T1). Oldest: golden-boy-off-west-end-2026 — daily-mail (rejected-unscoreable)"
+      "status": "warn",
+      "message": "2 discovered review(s) not reaching the composite score (0 T1). Oldest: slam-frank-off-broadway-2026 — talkinbroadway (empty-body); 1 newer still in flight"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "error",
-      "message": "5 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Dance Is Not for Us\" (guardian-review — missing 3d) — 1 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
+      "message": "5 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Dance Is Not for Us\" (guardian-review — missing 4d) — 1 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
     },
     {
       "name": "Data: BWW roundup discovery misses near opening",
       "status": "warn",
-      "message": "2 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: the-imaginary-invalid-2026 (15 misses, last 2026-10-22T17:32:48.891Z)."
+      "message": "2 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: the-imaginary-invalid-2026 (16 misses, last 2026-10-22T17:37:40.624Z)."
     }
   ]
 }

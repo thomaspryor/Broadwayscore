@@ -56,6 +56,18 @@ const TIGHT_BY_DESIGN = {
   // on any noon following a normal throttle gap, which fired the self-heal
   // redispatch and then paged on the second consecutive check.
   'commercial-rss-poll.yml': { maxHours: 8, why: 'GitHub throttles this hourly cron to ~1.5-5.5h real cadence (max observed 5h31m, 2026-09-16->20); expression-derived gap=1h is fiction' },
+  // BRO-3867: the same throttling (BRO-3666) hits every hourly/30-min cron in
+  // this repo. Success-run gaps measured 2026-10-01 -> 10-22 (21 days, REST
+  // API): p95 7-8.5h, max 9.6-12.1h. Each band is the smallest with 0 false
+  // flags when the daily checker is replayed at every hour of the day, so a
+  // drift in the checker's own run time cannot reintroduce false trips. The old
+  // 2-5h bands false-tripped the real checker on 10-08, 10-12, 10-14, 10-15
+  // and 10-20. Keep in sync with check-cron-health.yml.
+  'audit-aggregator-gap.yml': { maxHours: 12, why: 'throttled hourly cron: real gap p95 8.0h, max 12.1h (2026-10-01->22)' },
+  'opening-night-reviews.yml': { maxHours: 12, why: 'throttled ~3h cron: real gap p95 8.5h, max 11.4h (2026-10-01->22)' },
+  'check-opening-night-drift.yml': { maxHours: 10, why: 'throttled 30-min cron: real gap p95 7.1h, max 9.7h (2026-10-01->22)' },
+  'opening-night-checklist.yml': { maxHours: 10, why: 'throttled hourly cron: real gap p95 7.1h, max 10.6h (2026-10-01->22)' },
+  'opening-night-express-retry-check.yml': { maxHours: 10, why: 'throttled hourly cron: real gap p95 7.0h, max 9.6h (2026-10-01->22)' },
 };
 
 function extractCronsFromFile(wfPath) {

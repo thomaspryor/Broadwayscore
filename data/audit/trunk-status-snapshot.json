@@ -1,41 +1,35 @@
 {
-  "generatedAt": "2026-10-22T18:40:06.346Z",
+  "generatedAt": "2026-10-22T19:34:18.534Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "20837651bb09ea650ee06ebbd70f6ddffd00420b",
+  "latestRunHeadSha": "acc36f50e3c8ff8a413e5a9f22d33fb614711ea5",
   "state": "RED",
-  "consecutiveFailures": 99,
+  "consecutiveFailures": 98,
   "consecutiveSuccesses": 0,
   "greenSince": null,
   "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": "2026-10-21T22:14:13Z",
-  "redForHours": 20.431485,
+  "redSince": "2026-10-21T22:29:30Z",
+  "redForHours": 21.080148333333334,
   "redDurationIsFloor": true,
   "lastSuccessAt": null,
-  "latestFailedRunId": "39828445306",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39828445306",
-  "decidedRuns": 99,
+  "latestFailedRunId": "39834502510",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39834502510",
+  "decidedRuns": 98,
   "verdictLag": {
-    "verdictSha": "20837651bb09ea650ee06ebbd70f6ddffd00420b",
-    "verdictAt": "2026-10-22T18:06:17Z",
-    "verdictAgeHours": 0.5637072222222222,
-    "newerHeads": 1,
-    "runsInFlight": 1,
+    "verdictSha": "acc36f50e3c8ff8a413e5a9f22d33fb614711ea5",
+    "verdictAt": "2026-10-22T18:47:49Z",
+    "verdictAgeHours": 0.7748705555555555,
+    "newerHeads": 2,
+    "runsInFlight": 2,
     "lagging": false
   },
   "failingJobs": [
     {
-      "name": "Unit Tests",
-      "steps": [
-        "Run unit tests (no-data-dependency)",
-        "Run scripts/lib tests (visual-qa transcript-scan etc.)"
-      ]
-    },
-    {
       "name": "Data Validation",
       "steps": [
         "Run BRO-1397 prior-run former-cast sweep (needs review-texts)",
+        "Run data validation",
         "Audit non-review content (weather/sports/junk pages)"
       ]
     },
@@ -48,29 +42,11 @@
   ],
   "failingPaths": [
     {
-      "path": "tests/unit/critic-author-page-discovery.test.mjs",
-      "job": "Unit Tests",
-      "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 6273 - real active target-outlet critics have author-page overrides"
-    },
-    {
-      "path": "tests/unit/related-shows-fallback.test.ts",
-      "job": "Unit Tests",
-      "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 12 - every Broadway show with a curated open/closed list still gets a full pool"
-    },
-    {
-      "path": "scripts/lib/musical-model-backtest.test.mjs",
-      "job": "Unit Tests",
-      "step": "Run scripts/lib tests (visual-qa transcript-scan etc.)",
-      "evidence": "not ok 7091 - timing backtest: musicals hold MAE <= 15.5 and >= 35 inside; plays MAE <= 12 and >= 13 inside"
-    },
-    {
       "path": "scripts/verify-prior-run-former-cast-sweep.test.mjs",
       "job": "Data Validation",
       "step": "Run BRO-1397 prior-run former-cast sweep (needs review-texts)",
       "evidence": "not ok 1 - excerptMentionsFormerCast flags exactly the known-good set across every priorRuns show"
     }
   ],
-  "topFailingJob": "Unit Tests"
+  "topFailingJob": "Data Validation"
 }

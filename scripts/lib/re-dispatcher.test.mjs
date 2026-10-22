@@ -22,11 +22,22 @@ test('parses the live CRITICAL_CRONS registry, including the two BRO-4282 crons'
   const entries = parseCriticalCronEntries(yaml);
   assert.ok(entries.length > 40, `expected the full registry, got ${entries.length}`);
   const byWf = Object.fromEntries(entries.map((e) => [e.workflow, e]));
-  assert.equal(byWf['audit-aggregator-gap.yml'].maxHours * 60, 180);
+  assert.equal(byWf['audit-aggregator-gap.yml'].maxHours * 60, 720); // BRO-3867: 12h band
   assert.ok(byWf['clear-stale-wrong-production-flags.yml'], 'clear-stale-wrong-production-flags.yml must be in CRITICAL_CRONS');
   for (const e of entries) {
     const wf = path.join(ROOT, '.github/workflows', e.workflow);
     assert.ok(fs.existsSync(wf), `${e.workflow} listed but missing`);
+  }
+});
+
+test('BRO-3867: widened opening-night bands keep the old re-dispatch window', () => {
+  const yaml = fs.readFileSync(path.join(ROOT, '.github/workflows/check-cron-health.yml'), 'utf8');
+  const byWf = Object.fromEntries(parseCriticalCronEntries(yaml).map((e) => [e.workflow, e]));
+  const want = { 'audit-aggregator-gap.yml': 3, 'check-opening-night-drift.yml': 2, 'opening-night-checklist.yml': 3, 'opening-night-express-retry-check.yml': 3 };
+  for (const [wf, h] of Object.entries(want)) {
+    const text = fs.readFileSync(path.join(ROOT, '.github/workflows', wf), 'utf8');
+    assert.ok(acceptsRedispatch(text), `${wf} must accept redispatch`);
+    assert.equal(redispatchBandHours(text, byWf[wf].maxHours), h, wf);
   }
 });
 

@@ -979,6 +979,62 @@ test('BRO-5655: no-row, quarantined and unparseable rows are not reserved-slot c
   assert.deepEqual(reserveStalestSlots(ordered, new Map()).targets.map(s => s.id), ordered.map(s => s.id));
 });
 
+// BRO-4061: back-catalogue lane. Never-audited shows have no gap row, so the
+// stale lane cannot reach them; this lane must, even under a full tier 0.
+const { CATALOGUE_RESERVE_EVERY, CATALOGUE_RESERVE_AT } = require('./lib/gap-audit-freshness.js');
+
+test('BRO-4061: never-audited back-catalogue shows get slots while opening shows fill the queue', () => {
+  const opening = Array.from({ length: 40 }, (_, i) => ({ id: `opening-${i}` }));
+  const neverAudited = [{ id: 'inala-west-end-2026' }, { id: 'menopause-the-musical-tour-2026' }];
+  const staleRow = [{ id: 'hate-radio' }, { id: 'pen-pals' }, { id: 'stale-c' }];
+  const ordered = [...opening, ...neverAudited, ...staleRow];
+  const ts = new Map([...opening.map(s => [s.id, 2e12]), ['hate-radio', 1e12], ['pen-pals', 1.1e12], ['stale-c', 1.2e12]]);
+  const catalogueIds = new Set(neverAudited.map(s => s.id));
+  // Before: a 12-show run never reaches a never-audited show.
+  assert.ok(!reserveStalestSlots(ordered, ts).targets.slice(0, 12).some(s => s.id === 'inala-west-end-2026'));
+  const { targets, reservedIds, catalogueReservedIds } = reserveStalestSlots(ordered, ts, { catalogueIds });
+  const firstTwelve = targets.slice(0, 12).map(s => s.id);
+  // The lane must sit on a stale-lane slot, or it takes slots from opening-week shows.
+  assert.equal(CATALOGUE_RESERVE_AT % STALE_RESERVE_EVERY, 1);
+  assert.equal(firstTwelve[CATALOGUE_RESERVE_AT], 'inala-west-end-2026');
+  assert.equal(targets[CATALOGUE_RESERVE_AT + CATALOGUE_RESERVE_EVERY].id, 'menopause-the-musical-tour-2026');
+  // The catalogue slot is taken from the stale lane, which keeps the rest.
+  assert.equal(firstTwelve[1], 'hate-radio');
+  assert.equal(firstTwelve[9], 'pen-pals');
+  assert.deepEqual(reservedIds.slice(0, 2), ['hate-radio', 'pen-pals']);
+  assert.deepEqual(catalogueReservedIds, ['inala-west-end-2026', 'menopause-the-musical-tour-2026']);
+  // Opening shows keep exactly the slots they had without the lane (stale lane saturated).
+  const without = reserveStalestSlots(ordered, ts).targets.slice(0, 12).map(s => s.id);
+  assert.deepEqual(firstTwelve.filter(id => id.startsWith('opening-')), without.filter(id => id.startsWith('opening-')));
+  assert.deepEqual(firstTwelve.filter(id => id.startsWith('opening-')), opening.slice(0, 9).map(s => s.id));
+  assert.equal(new Set(targets.map(s => s.id)).size, ordered.length);
+  assert.equal(targets.length, ordered.length);
+});
+
+test('BRO-4061: catalogue lane works with no gap file and leaves the stale lane unchanged without it', () => {
+  const ordered = ['o1', 'o2', 'o3', 'o4', 'o5', 'cat-a', 'cat-b'].map(id => ({ id }));
+  const catalogueIds = new Set(['cat-a', 'cat-b']);
+  const noRows = reserveStalestSlots(ordered, new Map(), { catalogueIds });
+  assert.deepEqual(noRows.targets.map(s => s.id), ['o1', 'o2', 'o3', 'o4', 'o5', 'cat-a', 'cat-b']);
+  assert.deepEqual(noRows.catalogueReservedIds, ['cat-a']);
+  assert.deepEqual(noRows.reservedIds, []);
+  // No catalogueIds → byte-for-byte the old behaviour, with an empty catalogue list.
+  const ts = new Map([['cat-b', 1]]);
+  const plain = reserveStalestSlots(ordered, ts);
+  assert.deepEqual(plain.targets.map(s => s.id), ['o1', 'cat-b', 'o2', 'o3', 'o4', 'o5', 'cat-a']);
+  assert.deepEqual(plain.catalogueReservedIds, []);
+  // A show both stale and catalogue is placed once.
+  const both = reserveStalestSlots(ordered, ts, { catalogueIds });
+  assert.deepEqual(both.targets.map(s => s.id), ['o1', 'cat-b', 'o2', 'o3', 'o4', 'cat-a', 'o5']);
+  assert.deepEqual(both.reservedIds, ['cat-b']);
+  assert.deepEqual(both.catalogueReservedIds, ['cat-a']);
+  // Empty catalogue queue: the slot falls back to the stale lane.
+  const ts2 = new Map([['o5', 1], ['cat-b', 2]]);
+  const fallback = reserveStalestSlots(ordered, ts2, { catalogueIds: new Set(['nope']) });
+  assert.deepEqual(fallback.reservedIds, ['o5', 'cat-b']);
+  assert.equal(fallback.targets[5].id, 'cat-b');
+});
+
 test('BRO-5655: oldest gap row age is reported for the given ids', () => {
   const NOW = Date.parse('2026-10-19T09:00:00Z');
   const ts = new Map([
