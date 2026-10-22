@@ -132,6 +132,22 @@ function compareAuditPriority(a, b, checkpoint, now = Date.now()) {
 // rows regardless of how many opening shows are queued. Slot 1, not slot 3,
 // so a run that only gets through a couple of shows still refreshes one.
 const STALE_RESERVE_EVERY = 4;
+// BRO-4061: a second reserved lane for the back catalogue (auditTier 2).
+// The stale lane above only reaches shows that HAVE a gap row, so a show
+// that was never audited (191 in the 3y window on 2026-10-22, the checkpoint
+// stuck at 925 entries for 14 days) could never get a slot while opening-week
+// shows filled every other one. Slots 5, 17, 29, ... (one per run of 6-17
+// shows; runs audit 8-20) go to the head of the tier-2 queue in priority
+// order: never-audited first, then oldest checkpoint. Those slots are
+// stale-lane slots (5 % 4 === 1), so the back catalogue's share is split
+// between its two lanes and opening-week shows lose nothing: replaying 14
+// days over the 2026-10-22 queue at 8, 12 and 20 shows per run, hot-show
+// waits were identical to today's, never-audited went 191 -> ~105 instead of
+// growing to ~210. Placing the lane on a tier-0 slot (3) instead pushed the
+// worst hot-show wait from 9.5h to 12.9h at 20 shows per run.
+// If the tier-2 queue is empty the slot falls back to the stale lane.
+const CATALOGUE_RESERVE_EVERY = 12;
+const CATALOGUE_RESERVE_AT = 5;
 
 // showId -> computedAt ms, from a parsed show-review-gap.json. Rows that
 // cannot be stale in a way a re-audit fixes are left out: no/unparseable
@@ -159,21 +175,44 @@ function gapRowTimestamps(gapAudit) {
 // Kramer/Fauci, Fences and Boop kept re-alerting on rows no run refreshed.
 // Preferred rows get the 12h freshness once refreshed, so they cannot hold
 // the slots for long; oldest-first still orders within each group.
-function reserveStalestSlots(ordered, rowTsById, { every = STALE_RESERVE_EVERY, preferIds = null } = {}) {
+// BRO-4061: `catalogueIds` (tier-2 shows) opt in to the catalogue lane; it
+// keeps `ordered`'s order and returns its picks as catalogueReservedIds.
+// Without it the result is exactly the stale-lane-only behaviour.
+function reserveStalestSlots(ordered, rowTsById, {
+  every = STALE_RESERVE_EVERY,
+  preferIds = null,
+  catalogueIds = null,
+  catalogueEvery = CATALOGUE_RESERVE_EVERY,
+  catalogueAt = CATALOGUE_RESERVE_AT,
+} = {}) {
   const list = Array.isArray(ordered) ? ordered : [];
-  if (!(every >= 2) || !rowTsById || rowTsById.size === 0) return { targets: list.slice(), reservedIds: [] };
+  const staleOn = every >= 2 && rowTsById && rowTsById.size > 0;
+  const catalogueOn = catalogueIds && catalogueIds.size > 0 && catalogueEvery >= 2;
+  if (!staleOn && !catalogueOn) return { targets: list.slice(), reservedIds: [], catalogueReservedIds: [] };
   const pos = new Map(list.map((s, i) => [s.id, i]));
   const pref = (s) => (preferIds && preferIds.has(s.id) ? 0 : 1);
-  const stale = list
+  const stale = !staleOn ? [] : list
     .filter((s) => rowTsById.has(s.id))
     .sort((a, b) => (pref(a) - pref(b)) || (rowTsById.get(a.id) - rowTsById.get(b.id)) || (pos.get(a.id) - pos.get(b.id)));
+  const catalogue = catalogueOn ? list.filter((s) => catalogueIds.has(s.id)) : [];
   const taken = new Set();
   const targets = [];
   const reservedIds = [];
+  const catalogueReservedIds = [];
   let p = 0;
   let q = 0;
+  let c = 0;
   while (targets.length < list.length) {
-    if (targets.length % every === 1) {
+    if (catalogueOn && targets.length % catalogueEvery === catalogueAt) {
+      while (c < catalogue.length && taken.has(catalogue[c].id)) c++;
+      if (c < catalogue.length) {
+        taken.add(catalogue[c].id);
+        targets.push(catalogue[c]);
+        catalogueReservedIds.push(catalogue[c].id);
+        continue;
+      }
+    }
+    if (staleOn && targets.length % every === 1) {
       while (q < stale.length && taken.has(stale[q].id)) q++;
       if (q < stale.length) {
         taken.add(stale[q].id);
@@ -187,7 +226,7 @@ function reserveStalestSlots(ordered, rowTsById, { every = STALE_RESERVE_EVERY, 
     taken.add(list[p].id);
     targets.push(list[p]);
   }
-  return { targets, reservedIds };
+  return { targets, reservedIds, catalogueReservedIds };
 }
 
 // Oldest gap row among `showIds` (ids missing from rowTsById are skipped).
@@ -209,6 +248,8 @@ function oldestGapRow(rowTsById, showIds, now = Date.now()) {
 
 module.exports = {
   STALE_RESERVE_EVERY,
+  CATALOGUE_RESERVE_EVERY,
+  CATALOGUE_RESERVE_AT,
   gapRowTimestamps,
   reserveStalestSlots,
   oldestGapRow,
