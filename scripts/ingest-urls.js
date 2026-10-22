@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { pushReviewTexts, dispatchDownstream } = require('./lib/land-ingested-reviews');
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { resolveOutletFromUrl, findExistingReviewFile } = require('./lib/review-normalization');
@@ -317,15 +318,35 @@ async function main() {
   // Schmigadoon reviews took 4 hours to land.
   const newReviews = results.created + results.updated;
   if (newReviews > 0 && !noPushReviewTexts && !dryRun && results.touchedPaths.length > 0) {
-    const reviewTextsDir = path.join(__dirname, '..', 'data', 'review-texts');
+    const writeDir = path.join(__dirname, '..', 'data', 'review-texts');
+    // data/review-texts is a git checkout on CI and in most worktrees, but on
+    // the owner's Mac it is a plain gitignored COPY and the clone lives at
+    // ~/broadway-review-texts. Staging the copy ran `git add` inside the
+    // Broadwayscore repo, where the path is gitignored, so every Mac-local
+    // ingest failed its push with "paths are ignored by .gitignore" and — since
+    // a failed push skips the dispatch — left the reviews unscored and silent
+    // (hit 2026-10-22 recovering 7 Bachtrack reviews). resolveReviewTextsDir()
+    // is the canonical resolver and already handles this; mirror the touched
+    // files into it when it is somewhere else.
+    const reviewTextsDir = resolveReviewTextsDir();
+    let touchedPaths = results.touchedPaths;
+    if (path.resolve(reviewTextsDir) !== path.resolve(writeDir)) {
+      console.log(`\nreview-texts checkout is ${reviewTextsDir} (data/review-texts is a copy) — mirroring ${touchedPaths.length} file(s) there before pushing.`);
+      touchedPaths = touchedPaths.map((p) => {
+        const dest = path.join(reviewTextsDir, path.relative(writeDir, p));
+        fs.mkdirSync(path.dirname(dest), { recursive: true });
+        if (fs.existsSync(p)) fs.copyFileSync(p, dest);
+        return dest;
+      });
+    }
     console.log('\nPushing review-texts to private repo...');
     const push = pushReviewTexts({
-      reviewTextsDir, touchedPaths: results.touchedPaths,
+      reviewTextsDir, touchedPaths,
       message: `ingest-urls: ${newReviews} review(s) for ${showId}`,
     });
     if (!push.pushed) {
       console.log('  The CI workflows below will not see the new files.');
-      console.log('  Fix: cd data/review-texts && git status, resolve, then push manually.');
+      console.log(`  Fix: cd ${reviewTextsDir} && git status, resolve, then push manually.`);
     }
   }
 
