@@ -1,41 +1,5 @@
 [
   {
-    "recordedAt": "2026-10-18T18:03:38.255Z",
-    "fromShowId": "fiddler-on-the-roof-west-end-2019",
-    "toShowId": "fiddler-on-the-roof-2004",
-    "file": "nytimes--ben-brantley.json",
-    "url": "http://www.nytimes.com/2004/02/27/movies/theater-review-a-cozy-little-mcshtetl.html",
-    "publishDate": "February 27, 2004",
-    "reason": "sibling opening 1d from publishDate vs current 5507d"
-  },
-  {
-    "recordedAt": "2026-10-18T18:03:38.787Z",
-    "fromShowId": "frozen-west-end-2021",
-    "toShowId": "frozen-2004",
-    "file": "nytimes--unknown.json",
-    "url": "http://theater.nytimes.com/mem/theater/treview.html?pagewanted=print&res=980DE3DD113DF936A35756C0A9629C8B63&fta=y",
-    "publishDate": "May 5, 2004",
-    "reason": "sibling opening 1d from publishDate vs current 6335d"
-  },
-  {
-    "recordedAt": "2026-10-18T18:03:44.824Z",
-    "fromShowId": "la-boheme-off-broadway-2026",
-    "toShowId": "la-boheme-2002",
-    "file": "nytimes--ben-brantley.json",
-    "url": "http://www.nytimes.com/2002/12/09/arts/theater/09BOHE.html)",
-    "publishDate": "December 9, 2002",
-    "reason": "sibling opening 1d from publishDate vs current 8691d"
-  },
-  {
-    "recordedAt": "2026-10-18T18:03:44.834Z",
-    "fromShowId": "la-cage-aux-folles-2010",
-    "toShowId": "la-cage-aux-folles-2004",
-    "file": "nytimes--ben-brantley.json",
-    "url": "http://theater.nytimes.com/2004/12/10/theater/reviews/10cage.html",
-    "publishDate": "December 10, 2004",
-    "reason": "sibling opening 1d from publishDate vs current 1955d"
-  },
-  {
     "recordedAt": "2026-10-18T18:03:45.461Z",
     "fromShowId": "little-shop-of-horrors-off-broadway-2019",
     "toShowId": "little-shop-of-horrors-2003",
@@ -4480,5 +4444,39 @@
     "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/",
     "publishDate": "",
     "reason": "sibling-venue-in-url: \"playwrights-horizons\""
+  },
+  {
+    "recordedAt": "2026-10-22T10:38:07.264Z",
+    "fromShowId": "jesus-christ-superstar-off-west-end-2026",
+    "toShowId": "jesus-christ-superstar-west-end-2026",
+    "file": "independent--alice-saville.json",
+    "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html",
+    "publishDate": "",
+    "reason": "sibling-venue-in-url: \"london-palladium\""
+  },
+  {
+    "recordedAt": "2026-10-22T10:38:08.006Z",
+    "fromShowId": "jesus-christ-superstar-off-west-end-2026",
+    "toShowId": "jesus-christ-superstar-west-end-2026",
+    "file": "thestage--sam-marlowe.json",
+    "url": "https://www.thestage.co.uk/long-reviews/jesus-christ-superstar-review-london-palladium-sam-ryder",
+    "publishDate": "",
+    "reason": "sibling-venue-in-url: \"london-palladium\""
+  },
+  {
+    "recordedAt": "2026-10-22T10:38:14.407Z",
+    "fromShowId": "jesus-christ-superstar-off-west-end-2026",
+    "toShowId": "jesus-christ-superstar-west-end-2026",
+    "file": "times-uk--unknown.json",
+    "url": "https://www.thetimes.com/culture/theatre-dance/article/jesus-christ-superstar-review-sam-ryder-london-palladium-tim-sheader-zfqtxmj8b",
+    "reason": "sibling-venue-in-url: \"london-palladium\""
+  },
+  {
+    "recordedAt": "2026-10-22T10:45:51.426Z",
+    "fromShowId": "into-the-woods-noel-coward-west-end-2026",
+    "toShowId": "into-the-woods-west-end-2025",
+    "file": "guardian--arifa-akbar.json",
+    "url": "https://www.theguardian.com/stage/2025/dec/12/into-the-woods-review-bridge-theatre-london",
+    "reason": "same-title-sibling: url-year, venue-substring"
   }
 ]
