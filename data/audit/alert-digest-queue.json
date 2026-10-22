@@ -1297,7 +1297,7 @@
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
     "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39815533886",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39815966369",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -1306,11 +1306,11 @@
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39815533886)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39815966369)"
       },
       {
         "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39809811000)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39815533886)"
       },
       {
         "name": "Consecutive failures",
@@ -1321,7 +1321,7 @@
         "value": "Unit Tests"
       }
     ],
-    "queuedAt": "2026-10-22T17:11:54.862Z"
+    "queuedAt": "2026-10-22T17:15:09.575Z"
   },
   {
     "conditionKey": "land:land/bro-5990-image-sizes",
