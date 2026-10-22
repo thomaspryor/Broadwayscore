@@ -88,6 +88,7 @@ async function runShowCheck({ draft, mode, deps, nowIso, startedMs = Date.now() 
   const census = lib.censusFromAudit(deps.readAudit(), showId);
   const verification = lib.buildVerification({
     draft, nowIso, mode, snapshotBefore: before, snapshotAfter: after, census, error, tools, judge, previous: draft.verification, durationMs: Date.now() - startedMs,
+    ownerOf: deps.ownerOf ? url => deps.ownerOf(url, showId) : null,
   });
   // What gets pushed is whatever the tools left in the working tree (unreported metadata, _pending files and all),
   // not just what the owner-facing summary names; a failed check can still have written good files.
@@ -206,6 +207,14 @@ function realDeps({ root = ROOT, reviewTexts = REVIEW_TEXTS, auditPath = AUDIT_P
       const tail = `${r.stdout || ''}${r.stderr || ''}`.trim().split('\n').slice(-12).join('\n');
       if (!quiet) console.log(`  [${tool.name}] ${ok ? 'ok' : `FAILED (${r.error ? r.error.code || r.error.message : `exit ${r.status}`})`} in ${secs}s\n${tail.replace(/^/gm, '    ')}`);
       return { ok, secs };
+    },
+    // Another show's folder that already holds this URL (one article reviewing two shows).
+    ownerOf(url, showId) {
+      try {
+        const owners = require('./url-ownership').findCrossShowOwners(url, showId, reviewTexts);
+        const real = owners.find((o) => o.blocking);
+        return real ? real.showId : null;
+      } catch { return null; }
     },
     readAudit() {
       try { return JSON.parse(fs.readFileSync(auditPath, 'utf8')); } catch { return null; }

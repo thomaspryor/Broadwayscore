@@ -131,6 +131,22 @@ test('censusFromAudit + explainGaps give the owner a reason per missing review',
   assert.match(why.edge, /different name/);
 });
 
+test('explainGaps: a census-missing review owned by another show is "filed under another show"', () => {
+  const missing = [{ outletId: 'nytimes', outlet: 'nytimes', url: 'https://www.nytimes.com/2026/10/21/theater/a-b-review.html?smid=x' },
+    { outletId: 'timeout', outlet: 'timeout', url: 'https://timeout.com/a' }];
+  const owners = { 'nytimes.com/2026/10/21/theater/a-b-review.html': 'other-show-2026' };
+  const ownerOf = u => owners[String(u).replace(/^https?:\/\/(www\.)?/, '').replace(/[?#].*$/, '')] || null;
+  const why = Object.fromEntries(chk.explainGaps(missing, new Map(), new Set(), ownerOf).map(g => [g.outlet, g.reason]));
+  assert.equal(why.nytimes, 'filed under another show (one article reviewing both)');
+  assert.equal(why.timeout, 'not found yet', 'unowned stays "not found yet"');
+  const noLookup = Object.fromEntries(chk.explainGaps(missing, new Map()).map(g => [g.outlet, g.reason]));
+  assert.equal(noLookup.nytimes, 'not found yet', 'no lookup supplied: old wording');
+  // and it flows through buildVerification into the draft's record
+  const same = new Map();
+  const v = chk.buildVerification({ draft: baseDraft(), nowIso: 'T', mode: 'apply', snapshotBefore: same, snapshotAfter: same, census: { verdict: 'incomplete', missing }, ownerOf });
+  assert.equal(v.gaps.find(g => g.outlet === 'nytimes').reason, 'filed under another show (one article reviewing both)');
+});
+
 // ── guard ────────────────────────────────────────────────────────────────────
 
 test('guardChangedPaths: only the checked shows and their _pending folders', () => {
