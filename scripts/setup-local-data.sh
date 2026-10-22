@@ -302,7 +302,20 @@ if [ ! -f "$DATA_DIR/shows.json" ] || [ ! -f "$DATA_DIR/reviews.json" ]; then
 fi
 
 # Optional: setup review texts
+# BRO-5938: with a real clone at ~/broadway-review-texts (the owner's Mac), link
+# data/review-texts to it instead of copying, so local writes land in a checkout
+# that can commit them. Cloud and CI keep the copy. REVIEW_TEXTS_COPY=1 forces it.
+RT_LINKED=0
 if [ "${1:-}" = "--all" ]; then
+  # shellcheck source=lib/link-review-texts-clone.sh
+  . "$SCRIPT_DIR/lib/link-review-texts-clone.sh" || { echo "FATAL: cannot load lib/link-review-texts-clone.sh" >&2; exit 1; }
+  link_review_texts_clone "$DATA_DIR" "$HOME/broadway-review-texts"
+  case $? in
+    0) RT_LINKED=1 ;;
+    2) echo "FATAL: linking data/review-texts to ~/broadway-review-texts failed." >&2; exit 1 ;;
+  esac
+fi
+if [ "${1:-}" = "--all" ] && [ "$RT_LINKED" = 0 ]; then
   echo ""
   echo "--- Review Texts (from broadway-review-texts) ---"
   echo "This may take a few minutes (~234 MB)..."
@@ -391,7 +404,11 @@ if [ "${1:-}" = "--all" ]; then
   # (timeout-london-attribution) failed on files that no longer exist. Build
   # the fresh copy beside the old one, then swap. A symlinked review-texts
   # (worktrees) is left alone and filled in place as before.
-  if [ -L "$DATA_DIR/review-texts" ]; then
+  if review_texts_link_is_checkout "$DATA_DIR"; then
+    echo "FATAL: data/review-texts links to a git checkout; copying into it would overwrite that clone's working tree." >&2
+    echo "       Run with ~/broadway-review-texts present to keep the link, or remove the link first." >&2
+    exit 1
+  elif [ -L "$DATA_DIR/review-texts" ]; then
     if ! cp -a "$TEMP_DIR/review-texts/." "$DATA_DIR/review-texts/"; then
       echo "FATAL: cp of review-texts failed — refusing to report a count from stale contents." >&2
       exit 1

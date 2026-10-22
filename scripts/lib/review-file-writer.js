@@ -45,6 +45,7 @@ const { validateUrlDomain } = require('./url-discovery');
 const { isUnresolvableRedirectUrl } = require('./unresolvable-url');
 const { approvedUrlFixListingReason } = require('./approved-url-fix');
 const { safeWriteReview, safeRenameReview, invalidateWrongProductionAutoClear } = require('./review-write-guard');
+const { isStampedReviewTextsCopy } = require('./review-texts-dir');
 const { classifyContentTier } = require('./content-quality');
 const { clearFailureFlags } = require('./clear-failure-flags');
 const { pickRerouteTarget, shouldSkipRoundupAudit, isRoundupPageAsReview, isRoundupUrl, isLikelyTourReview, getWrongProductionReasonForUnknownCritic, getWrongProductionReasonForBww, isWrongShowUnknownLocked } = require('./review-guards');
@@ -120,6 +121,23 @@ function sanitizeDisplayFields(review) {
 }
 
 const DEFAULT_REVIEW_TEXTS_DIR = path.join(__dirname, '..', '..', 'data', 'review-texts');
+
+// BRO-5938: a stamped copy (setup-local-data.sh strips .git and writes .review-texts-sha) is
+// read-only material. Nothing commits a file written there and the next re-sync replaces the
+// copy, so a run that "worked" leaves nothing behind. Say so once per dir instead of in silence.
+// The fix on the owner's Mac is setup-local-data.sh --all, which now links data/review-texts
+// to ~/broadway-review-texts when that clone exists.
+const _warnedCopyDirs = new Set();
+function warnIfStampedCopy(reviewTextsDir, warn = console.warn) {
+  const key = path.resolve(reviewTextsDir);
+  if (_warnedCopyDirs.has(key)) return false;
+  _warnedCopyDirs.add(key);
+  if (!isStampedReviewTextsCopy(key) || fs.existsSync(path.join(key, '.git'))) return false;
+  warn(`  ⚠️  [review-file-writer] ${key} is a COPY of broadway-review-texts (no .git): `
+    + 'nothing commits files written here and the next setup-local-data.sh re-sync deletes them. '
+    + 'On the Mac, run ./scripts/setup-local-data.sh --all to link it to ~/broadway-review-texts (BRO-5938).');
+  return true;
+}
 const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
 // BSC_CRITIC_REGISTRY_PATH lets tests point Guard G at a fixture registry; the live
 // file is rewritten by rebuild bots, so assertions against it drift (BRO-4550).
@@ -381,6 +399,7 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
   // (their fix is a move, not a refused write).
   // gather-reviews.js createReviewFile writes outside this helper; it is covered only by
   // its own shows.json check before writing.
+  if (!dryRun) warnIfStampedCopy(reviewTextsDir);
   if (unknownShowFolderRefused(showId, reviewTextsDir, options)) {
     console.warn(`  ⛔ Refusing write: ${showId} is not a shows.json id, so a new ${showId}/ folder would never reach the site`);
     return { action: 'skipped', reason: 'unknown-show-id', guardRefused: true };
@@ -2168,4 +2187,4 @@ const WRITE_GUARD_REFUSED_REASONS = new Set([
   'unknown-show-id',
 ]);
 
-module.exports = { createOrMergeReviewFile, unknownShowFolderRefused, stampFirstSeen, emitReviewFirstSeen, WRITE_GUARD_REFUSED_REASONS, shouldUpgradeUnknownByline, pageBylineRefusal, applyPageByline, revertBodyFromRefusedUrl };
+module.exports = { createOrMergeReviewFile, unknownShowFolderRefused, warnIfStampedCopy, stampFirstSeen, emitReviewFirstSeen, WRITE_GUARD_REFUSED_REASONS, shouldUpgradeUnknownByline, pageBylineRefusal, applyPageByline, revertBodyFromRefusedUrl };
