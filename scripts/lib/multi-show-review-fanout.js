@@ -511,6 +511,7 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
   const cands = dedupeProductions(candidateShows(shows, ownShow, publishDate), ownShowId, publishDate);
 
   const people = creditedNames(ownShow);
+  const normText = ` ${normTitle(text)} `;
   const byShow = new Map();
   for (const show of cands) {
     // Another show titled after someone credited on this one is that person,
@@ -519,6 +520,9 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
     // surname ("Daniel Fish" directs Kramer/Fauci; "Fish" is also a show).
     const key = show.id === ownShowId ? '' : normTitle(show.title);
     if (people.single.has(key)) continue;
+    // Once the piece names the person in full ("Daniel Fish"), a bare
+    // surname later on ("Fish recreates...") is that person too (BRO-5942).
+    if (people.given.has(key) && [...people.given.get(key)].some((g) => normText.includes(` ${g} ${key} `))) continue;
     const m = buildJointMatcher(show);
     if (!m) continue;
     let ms = jointMentions(m, text);
@@ -579,6 +583,12 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
     // The last stretch runs to the end of the piece with nothing after it to
     // bound it, so one passing mention there is a closing aside, not a review.
     if (runs[bodyIdx[bodyIdx.length - 1]].count < 2) return [];
+    // An earlier stretch named once must open on its title ("“Anon,” at MCC
+    // Theater, is..."): a single mention inside a sentence about the other
+    // show is a comparison ("unlike How to Dance in Ohio", BRO-5942).
+    for (const i of bodyIdx) {
+      if (runs[i].count < 2 && /[\p{L}\p{N}]/u.test(text.slice(sentenceStart(text, runs[i].at), runs[i].at))) return [];
+    }
   }
   const minShare = tailAll ? MIN_SECTION_SHARE : HEAD_ONLY_MIN_SHARE;
   const cutAt = (runIdx) => {
@@ -588,6 +598,14 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
     if (c === floor && floor > 0) c += (text.slice(c).match(AFTER_TITLE_RE) || [''])[0].length;
     return Math.min(c, r.at);
   };
+  // With nothing before the first stretch, a second stretch that opens in
+  // the sentence closing the first ("...Waiting for Godot," and Pinter's "No
+  // Man's Land.") means the first stretch was only the opening that names
+  // both shows: the review then interleaves them (BRO-5942). A transition
+  // after a lede that already named them ("While Birthright explores...,
+  // A Walk on the Moon...") is a real join.
+  if (!head.length && bodyIdx.length > 1
+    && sentenceStart(text, runs[bodyIdx[1]].at) < runs[bodyIdx[0]].lastEnd) return [];
   const cuts = bodyIdx.map(cutAt);
   if (cuts[0] > text.length * FIRST_INTRO_MAX_SHARE) return [];
   const bodyEnd = tail.length ? cutAt(lastBody + 1) : text.length;
@@ -699,6 +717,9 @@ function planMultiShowFanout(data, shows, opts = {}) {
   // Aggregator round-ups quote many critics; they are not one critic's review.
   if (data.isRoundupArticle) return null;
   if (data.wrongProduction === true) return null;
+  // A duplicate record of another file splits with that file, not again
+  // under its own critic slot (BRO-5942: Theater Life "--unknown" copies).
+  if (data.duplicateOf) return null;
   if (PARTIAL_TIERS.has(data.contentTier)) return null;
   if (data.contentTier === 'invalid' && !/wrong\s*show|multi[\s-]?show/i.test(data.contentTierReason || '')) return null;
   const text = data.fullText;
@@ -824,16 +845,30 @@ function buildChild(parentData, section, parentShowId, now = new Date().toISOStr
  * stub for the SAME article (e.g. a discovery stub the listing poller filed),
  * in which case the section text fills it.
  */
+// One article whatever its scheme, www prefix, query, hash or trailing slash.
+function urlKey(u) {
+  return String(u).trim().replace(/[?#].*$/, '').replace(/\/+$/, '')
+    .replace(/^https?:\/\/(?:www\.)?/i, '').replace(/^[^/]+/, (h) => h.toLowerCase());
+}
+
 function childWriteDecision(existing, parentData) {
   if (!existing) return 'create';
-  const sameUrl = existing.url && parentData.url
-    && String(existing.url).replace(/[?#].*$/, '').replace(/\/$/, '') === String(parentData.url).replace(/[?#].*$/, '').replace(/\/$/, '');
+  const sameUrl = existing.url && parentData.url && urlKey(existing.url) === urlKey(parentData.url);
   const textless = !existing.fullText || String(existing.fullText).length < 300;
   if (sameUrl && textless) return 'fill';
+  // An empty placeholder with no URL at this outlet--critic slot.
+  if (!existing.url && textless && !existing._locked) return 'fill';
   // The same article already filed under that show (e.g. the original
   // parent when this section was re-ingested under another show).
   if (sameUrl) return 'held';
   return 'skip';
+}
+
+// Whether a fan-out result moves any text: some sibling section is written or
+// already held. When every sibling slot holds a different review, apply
+// leaves the article whole, so a dry run must not count it as splittable.
+function fanoutMovesText(fan) {
+  return !!(fan && fan.applied && fan.children.some((c) => c.action === 'create' || c.action === 'fill' || c.action === 'held'));
 }
 
 /**
@@ -987,6 +1022,8 @@ function unsplitArticle(filePath, data, reviewTextsDir, ownShowId) {
 }
 
 module.exports = {
+  fanoutMovesText,
+  urlKey,
   planMultiShowFanout,
   captionSectionsCrossTalk,
   isWholeArticleBackOnBadSplit,

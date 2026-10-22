@@ -336,3 +336,43 @@ test('applying the plan writes each show its own section (Theater Life)', () => 
     fs.rmSync(dir, { recursive: true, force: true });
   }
 });
+
+// BRO-5942 corpus backfill: shapes of the false positives the dry run found.
+
+test('a single mention inside a sentence about the other show is a comparison, not a stretch', () => {
+  // TheaterMania "My Name Is Lucy Barton": the lede recalls "The Sound
+  // Inside", and one later sentence about the reviewed show names it again.
+  const shape = (opener) => [
+    '“Two Girls” closed last week. “Midnight” strikes similar chords at the Daryl Roth.',
+    `${opener} ${filler('loneliness', 7)}`,
+    `“Midnight” finds its own way in the second act. ${filler('lantern', 7)} “Midnight” ends quietly.`,
+  ].join('\n\n');
+  assert.equal(plan(ID.Midnight, shape('While the story told in “Two Girls” was about loneliness, this one is about memory.')), null);
+  // Control: a stretch that opens on its title is that show's own review.
+  assert.equal(plan(ID.Midnight, shape('“Two Girls” was about loneliness, and it said so plainly.')).strategy, 'joint');
+});
+
+test('a credited person named in full makes every bare surname that person', () => {
+  // NYSR "Kramer/Fauci": "directed by Daniel Fish", then "Fish recreates...".
+  const BB = ID['The Curious Case of Benjamin Button'];
+  const shows = SHOWS.map((s) => (s.id === BB ? { ...s, creativeTeam: [{ name: 'Ava Midnight', role: 'Director' }] } : s));
+  const text = NYT_TWO.replace('Two new shows downtown', 'Ava Midnight directs one of two new shows downtown');
+  assert.equal(planMultiShowFanout(base({ showId: BB, publishDate: '2026-10-20', fullText: text }), shows, { joint: true }), null);
+});
+
+test('no head, and the second stretch opens in the first one\'s closing sentence: interleaved, not joint', () => {
+  // Newsday "No Man's Land": a photo caption, a lede naming both repertory
+  // shows, then one essay moving between them, then one shared listing.
+  const body = [
+    `“Midnight” at the Daryl Roth Theater, in a photo by a staff photographer. ${filler('rehearsal', 6)}`,
+    `The company performs the familiar “Midnight,” and the sparer “Two Girls.” ${filler('repertory', 8)} “Two Girls” keeps the pace.`,
+    `${filler('comparison', 6)} “Two Girls” closes on a shrug.`,
+    'WHAT: “Midnight” and “Two Girls” WHERE: Daryl Roth Theater, 101 E. 15th St.',
+  ];
+  assert.equal(plan(ID.Midnight, body.join('\n\n')), null);
+  // Control: a lede that names both first makes the same join a transition.
+  const withHead = ['This week, “Midnight” and “Two Girls” share a stage.',
+    `“Midnight” is the louder of the two. ${filler('lantern', 8)} By the end, while “Midnight” roars, “Two Girls” whispers. ${filler('roommate', 8)} “Two Girls” closes on a shrug.`,
+    body[3]];
+  assert.equal(plan(ID.Midnight, withHead.join('\n\n')).strategy, 'joint');
+});

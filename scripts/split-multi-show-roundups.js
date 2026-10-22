@@ -44,7 +44,7 @@
 const fs = require('fs');
 const path = require('path');
 const { loadShows } = require('./lib/multi-show-splitter');
-const { applyMultiShowFanoutToFile } = require('./lib/multi-show-review-fanout');
+const { applyMultiShowFanoutToFile, fanoutMovesText } = require('./lib/multi-show-review-fanout');
 const { listShowDirs: listShowDirsSafe } = require('./lib/list-show-dirs');
 
 // ============================================================================
@@ -114,6 +114,7 @@ function main() {
     childrenCreated: 0,
     childrenSkippedExist: 0,
     alreadyProcessed: 0,
+    noOp: 0,
   };
 
   console.log(`${APPLY ? '[APPLY]' : '[DRY-RUN]'} ${SCAN_ALL ? '(scan-all)' : '(flagged-only)'} Scanning ${targetDirs.length} show dirs in ${REVIEW_TEXTS_DIR}`);
@@ -151,6 +152,12 @@ function main() {
       // ingest-review-from-url.js (caption + intro strategies, child-stub fill).
       const fan = applyMultiShowFanoutToFile(filePath, { shows, reviewTextsDir: REVIEW_TEXTS_DIR, dryRun: !APPLY, joint: JOINT || undefined });
       if (!fan.applied) continue;
+      // Every sibling slot holds a different review: apply leaves it whole.
+      if (!fanoutMovesText(fan)) {
+        stats.noOp++;
+        console.log(`\n[${showId}/${file}] multi-show (${fan.strategy}) but no-op: ${fan.children.map((c) => `${c.showId} ${c.action}`).join(', ')}`);
+        continue;
+      }
 
       stats.splittable++;
       stats.parentsRewritten++;
@@ -173,6 +180,7 @@ function main() {
   console.log(`isMultiShowReview=true: ${stats.flagged}`);
   console.log(`Already processed: ${stats.alreadyProcessed}`);
   console.log(`Splittable (≥2 valid sections): ${stats.splittable}`);
+  console.log(`No-op (every sibling slot holds another review): ${stats.noOp}`);
   console.log(`Parents rewritten: ${stats.parentsRewritten}`);
   console.log(`Children created: ${stats.childrenCreated}`);
   console.log(`Children skipped (already exist): ${stats.childrenSkippedExist}`);

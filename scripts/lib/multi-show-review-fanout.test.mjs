@@ -15,6 +15,7 @@ const {
   dedupeProductions,
   candidateShows,
   childWriteDecision,
+  fanoutMovesText,
 } = require('./multi-show-review-fanout.js');
 const { extractArticleText } = require('./article-extractor.js');
 
@@ -150,6 +151,7 @@ test('guards: truncated text, aggregator round-up, wrong production, old article
   assert.equal(planMultiShowFanout({ ...ok, wrongProduction: true }, SHOWS), null);
   assert.equal(planMultiShowFanout({ ...ok, publishDate: '2024-10-19' }, SHOWS), null);
   assert.equal(planMultiShowFanout({ ...ok, multiShowSplitProcessed: '2026-09-30' }, SHOWS), null);
+  assert.equal(planMultiShowFanout({ ...ok, duplicateOf: 'other.json' }, SHOWS), null, 'a duplicate splits with its original');
 });
 
 test('childWriteDecision: create, fill a textless stub for the same URL, else skip', () => {
@@ -158,6 +160,26 @@ test('childWriteDecision: create, fill a textless stub for the same URL, else sk
   assert.equal(childWriteDecision({ url: 'https://example.com/a', fullText: '' }, parent), 'fill');
   assert.equal(childWriteDecision({ url: 'https://example.com/other', fullText: '' }, parent), 'skip');
   assert.equal(childWriteDecision({ url: 'https://example.com/a', fullText: 'x'.repeat(400) }, parent), 'held', 'same article already filed there');
+});
+
+test('childWriteDecision: one article across scheme and www; an empty URL-less slot is filled (BRO-5942)', () => {
+  const parent = { url: 'https://www.example.com/a/' };
+  assert.equal(childWriteDecision({ url: 'http://example.com/a', fullText: 'x'.repeat(400) }, parent), 'held');
+  assert.equal(childWriteDecision({ url: 'http://EXAMPLE.com/a', fullText: '' }, parent), 'fill');
+  assert.equal(childWriteDecision({ url: 'https://example.com/A', fullText: 'x'.repeat(400) }, parent), 'skip', 'path case is significant');
+  assert.equal(childWriteDecision({ url: null, fullText: '' }, parent), 'fill');
+  assert.equal(childWriteDecision({ url: null, fullText: '', _locked: true }, parent), 'skip');
+  assert.equal(childWriteDecision({ url: null, fullText: 'x'.repeat(400) }, parent), 'skip', 'a URL-less slot with its own text stays');
+});
+
+test('fanoutMovesText: a plan whose every sibling slot holds another review moves nothing', () => {
+  const fan = (...actions) => ({ applied: true, children: actions.map((action) => ({ showId: 's', action })) });
+  assert.equal(fanoutMovesText(fan('skip', 'blocked')), false);
+  assert.equal(fanoutMovesText(fan('skip', 'held')), true);
+  assert.equal(fanoutMovesText(fan('create')), true);
+  assert.equal(fanoutMovesText({ applied: false, children: [] }), false);
+  // The dry-run CLI counts these apart from Splittable (it matches --apply).
+  assert.match(fs.readFileSync(new URL('../split-multi-show-roundups.js', import.meta.url), 'utf8'), /if \(!fanoutMovesText\(fan\)\)/);
 });
 
 test('applyMultiShowFanoutToFile writes the sibling, trims the parent, and is idempotent', () => {
