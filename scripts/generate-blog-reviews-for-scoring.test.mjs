@@ -51,7 +51,9 @@ test('generator emits entries for show:-only posts (no showSlug) and skips unres
   fs.mkdirSync(dir);
   fs.writeFileSync(path.join(dir, 'edward.md'), '---\ntitle: "x"\nshow: "Edward"\nscore: 84\npublishDate: "2026-03-01"\n---\nbody\n');
   fs.writeFileSync(path.join(dir, 'ghost.md'), '---\ntitle: "y"\nshow: "No Such Show"\nscore: 70\n---\nbody\n');
-  fs.writeFileSync(path.join(tmp, 'shows.json'), JSON.stringify({ shows }));
+  // BRO-6016: the generator row-guards shows.json, so fixture rows must be well-formed.
+  const wellFormed = shows.map(s => ({ category: 'broadway', status: 'open', venue: 'Test Theatre', ...s }));
+  fs.writeFileSync(path.join(tmp, 'shows.json'), JSON.stringify({ shows: wellFormed }));
   const out = path.join(tmp, 'out.json');
   execFileSync('node', [path.join(__dirname, 'generate-blog-reviews-for-scoring.js')], {
     stdio: 'pipe',
