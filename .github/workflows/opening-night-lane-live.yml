@@ -263,8 +263,10 @@ jobs:
 
       - uses: ./.github/actions/setup-node
 
-      # fetchPage's free Playwright tier; without a browser every fetch falls through to paid providers.
+      # fetchPage's free Playwright tier; without a browser every fetch falls through to paid providers. Not fatal:
+      # an apt mirror failure here stopped the Oct 22 run before the lane started, and the lane runs without it.
       - name: Setup Playwright
+        continue-on-error: true
         uses: ./.github/actions/setup-playwright
 
       # shows.json (the show record, Show Score's same-title guards) comes from core data.
