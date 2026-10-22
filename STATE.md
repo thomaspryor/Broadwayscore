@@ -1,14 +1,10 @@
-# BRO-5512 state (2026-10-18 00:10 UTC)
-
-DONE (commit 3d74506ff52 and earlier on job/linear-BRO-5512-mvcz27dv, pushed as land/job/linear-BRO-5512-mvcz27dv):
-- scripts/lib/prior-run-url-signal.js, wired into scripts/audit-show-review-gap.js: the census drops same-year
-  prior-run (inheritReviews:false) month/venue URLs and Philly Fringe slugs. Test: scripts/audit-show-review-gap.test.mjs (47 pass).
-- Guardian Kramer/Fauci piece marked manual-verified non-review in broadway-review-texts (6d56fb0d936, pushed).
-- Local audit of kramerfauci-st-anns-off-broadway-2026 shows no gap warning.
-
-REMAINING:
-- Land on main: land.yml run 39079122045 failed ONLY on the live test "branches/main/protection has enforce_admins true"
-  (test 4225), which also fails other sessions' lands. Not caused by this change.
-  Next command once that gate is fixed: the landing script in scripts/ (merge-worktree-to-main.sh) from this worktree.
-- After landing and the next hourly gap audit run:
-  node scripts/check-alert-condition-absent.js --key-b64 cmV2aWV3LWdhcDpvcGVuaW5nLXdpbmRvdzprcmFtZXJmYXVjaS1zdC1hbm5zLW9mZi1icm9hZHdheS0yMDI2
+# BRO-4786 state
+Done: lease CAS store, guard, CLI, six workflow syncs, push-review-texts enforce, script skips, 13 passing tests (tests/unit/opening-night-lane-lease-wiring.test.mjs). ship-check recorded pass.
+Landing: land run 37487992073 went red on one test (rmSync without maxRetries in my test) — fixed in the last commit; needs re-land.
+Next: `bash scripts/merge-worktree-to-main.sh job/linear-BRO-4786-muwt2lon`, wait for green land run, then on main `node --test tests/unit/opening-night-lane-lease-wiring.test.mjs`, then `node scripts/linear-session.js report --issue=BRO-4786 --status=done ...`.
+# BRO-4196 state
+Done: tests/unit/image-presence.test.mjs live imageless sweep -> t.diagnostic (fatal only with IMAGE_PRESENCE_STRICT=1) + deterministic fixture test for findImagelessScoredShows. Committed (2131dcc2e28), /second-opinion pass recorded.
+Root cause: newly scored shows are imageless until image self-heal lands (hours); a live-data assert turned main red each time.
+Remaining: land run 36623320088 (land/job/linear-BRO-4196-mun0ydst) must finish; verify `git merge-base --is-ancestor 2131dcc2e28 origin/main`. If cancelled: empty commit + bash scripts/merge-worktree-to-main.sh.
+Then: node scripts/linear-session.js report --issue=BRO-4196 --status=done --summary="..."
+Local run-unit-tests has 27 env failures (missing review-texts private repo, worktree/hook tests) unrelated to this change.
