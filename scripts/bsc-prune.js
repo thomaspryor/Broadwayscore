@@ -567,7 +567,20 @@ function taskStatusById(taskId, dir = ZOMBIE_TASKS_DIR) {
   return (archived && archived.status) || null;
 }
 
-function sweepZombieTabs({ all, idle, dryRun, closeWorkspaceFn, appendLedgerEntryFn, readLedgerEntriesFn, listWorkspacesFn = listWorkspaces, claudeAliveInFn = claudeAliveIn, surfaceAliveInFn = terminalSurfaceAliveIn, taskStatusByIdFn = taskStatusById, redispatchFn = redispatchHeadless, pageFn = pageZombieSweep }) {
+// BRO-5712: sync Linear lookup for the zombie sweep, only ever called for a dead tab whose
+// local task is still pending (rare). One `linear-brain get`; a failure is {error}, which the
+// sweep treats as unverified (reported, not revived).
+function linearStateByKeySync(key) {
+  try {
+    const out = require('child_process').execFileSync(process.execPath, [path.join(__dirname, 'linear-brain.js'), 'get', key], { encoding: 'utf8', timeout: 20000, stdio: ['ignore', 'pipe', 'ignore'] });
+    const j = JSON.parse(out.slice(out.indexOf('{')));
+    return j && j.state ? { type: j.state.type, name: j.state.name } : { error: 'no state in linear-brain get output' };
+  } catch (e) {
+    return { error: e.message || String(e) };
+  }
+}
+
+function sweepZombieTabs({ all, idle, dryRun, closeWorkspaceFn, appendLedgerEntryFn, readLedgerEntriesFn, listWorkspacesFn = listWorkspaces, claudeAliveInFn = claudeAliveIn, surfaceAliveInFn = terminalSurfaceAliveIn, taskStatusByIdFn = taskStatusById, redispatchFn = redispatchHeadless, pageFn = pageZombieSweep, linearStateByKeyFn = linearStateByKeySync }) {
   if (process.env.ZOMBIE_TAB_SWEEP_DISABLED === '1') return;
 
   const idleRefs = new Set(idle.map(w => w.ref));
@@ -594,6 +607,7 @@ function sweepZombieTabs({ all, idle, dryRun, closeWorkspaceFn, appendLedgerEntr
     launchByRef: (ref) => dispatchLedger.launchByRef(ref, entries),
     taskStatusById: taskStatusByIdFn,
     hasAutoDispatchMarker,
+    linearStateByKey: linearStateByKeyFn,
   });
 
   // BRO-2586: 'unmapped' report entries (no ledger launch record, no task

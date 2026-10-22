@@ -25,6 +25,13 @@
  *             deadDispatchGuard — verified 2026-08-03) AND the per-tick
  *             fan-out cap AFTER that guard, so guarded tasks never burn
  *             cap slots (ship-check catch).
+ *             BRO-5712: when the caller injects `linearStateByKey` and the
+ *             task's ledger taskId is "linear:BRO-N", the card is looked up
+ *             first. Done/Canceled there → corpse ('linear-done': the work
+ *             finished, the pending local task is stale; the husk goes through
+ *             the SAME corpse close path, no new one). A failed lookup → report
+ *             ('linear-unverified'): never revive on a guess. Any other state,
+ *             or no such issue, revives as before.
  *   report  — dead 🤖 tab we can't map to a task (no launch entry, no task
  *             file) or whose task is in_progress (the #883 reconciler's
  *             territory — never race it). Listed, never touched.
@@ -55,7 +62,7 @@ const { isCrownTab } = require('./prune-closeable.js');
  *        task file is missing everywhere.
  * @param {(title:string)=>boolean} hasAutoDispatchMarker
  */
-function classifyZombieTabs({ deadAutoTabs, liveWorkspaces, launchByRef, taskStatusById, hasAutoDispatchMarker }) {
+function classifyZombieTabs({ deadAutoTabs, liveWorkspaces, launchByRef, taskStatusById, hasAutoDispatchMarker, linearStateByKey }) {
   const corpses = [];
   const revive = [];
   const report = [];
@@ -95,13 +102,39 @@ function classifyZombieTabs({ deadAutoTabs, liveWorkspaces, launchByRef, taskSta
     // re-dispatch dups get their identical title from the same card name.
     const isDup = (taskId && liveTaskIds.has(taskId)) || (!taskId && liveByTitle.has(normalizeTitle(w.title)));
     if (isDup) { corpses.push({ ...entry, reason: 'live-duplicate' }); continue; }
-    if (status === 'pending') { revive.push(entry); continue; }
+    if (status === 'pending') {
+      const verdict = linearVerdict(linearStateByKey, taskId);
+      if (verdict === 'done') { corpses.push({ ...entry, reason: 'linear-done' }); continue; }
+      if (verdict === 'unverified') { report.push({ ...entry, reason: 'linear-unverified' }); continue; }
+      revive.push(entry);
+      continue;
+    }
     // in_progress → #883 reconciler's job; unknown mapping → too little
     // evidence to close someone's tab. Both are report-only.
     report.push({ ...entry, reason: status === 'in_progress' ? 'reconciler-territory' : 'unmapped' });
   }
 
   return { corpses, revive, report };
+}
+
+// Only the key the dispatcher itself wrote into the ledger ("linear:BRO-N") counts;
+// a subject or title can name several issues (same rule as cmux-triage dispatchLinearKey).
+const DISPATCH_LINEAR_KEY_RE = /^linear:([A-Z]+-\d+)$/;
+
+/**
+ * 'none' = no signal (no injected fn, no dispatcher key, or no such issue);
+ * 'done' = the Linear card is completed/canceled; 'unverified' = the lookup
+ * threw, answered {error}, or returned a state without a type.
+ */
+function linearVerdict(linearStateByKey, taskId) {
+  if (typeof linearStateByKey !== 'function' || !taskId) return 'none';
+  const m = DISPATCH_LINEAR_KEY_RE.exec(taskId);
+  if (!m) return 'none';
+  let state;
+  try { state = linearStateByKey(m[1]); } catch { return 'unverified'; }
+  if (state == null) return 'none';
+  if (state.error || !state.type) return 'unverified';
+  return state.type === 'completed' || state.type === 'canceled' ? 'done' : 'none';
 }
 
 function safeLaunch(launchByRef, ref) {

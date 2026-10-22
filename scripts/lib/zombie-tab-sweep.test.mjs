@@ -474,3 +474,39 @@ test('a non-crown 🤖 tab is unaffected by the crown branch', () => {
   assert.equal(r.corpses[0].reason, 'task-completed');
   assert.equal(r.report.length, 0);
 });
+
+// BRO-5712: Linear state signal for a pending (never-booted) task.
+function classifyLinear(linearStateByKey, taskId = 'linear:BRO-100') {
+  return classifyZombieTabs({
+    deadAutoTabs: [dead('workspace:7', '🤖⚡ Data·BRO-100 card')],
+    liveWorkspaces: [],
+    launchByRef: () => ({ taskId }),
+    taskStatusById: () => 'pending',
+    hasAutoDispatchMarker: isAuto,
+    linearStateByKey,
+  });
+}
+
+test('linear: a pending task whose card is Done/Canceled is a corpse, never revived', () => {
+  for (const type of ['completed', 'canceled']) {
+    const r = classifyLinear((k) => { assert.equal(k, 'BRO-100'); return { type, name: 'x' }; });
+    assert.equal(r.corpses[0].reason, 'linear-done');
+    assert.equal(r.revive.length + r.report.length, 0);
+  }
+});
+
+test('linear: an open card, a missing issue, or no injected fn still revives', () => {
+  assert.equal(classifyLinear(() => ({ type: 'started', name: 'In Progress' })).revive.length, 1);
+  assert.equal(classifyLinear(() => null).revive.length, 1);
+  assert.equal(classifyLinear(undefined).revive.length, 1);
+  // only the dispatcher's own "linear:BRO-N" key counts; a numeric task id is never looked up
+  assert.equal(classifyLinear(() => { throw new Error('must not be called'); }, '914').revive.length, 1);
+});
+
+test('linear: a failed or malformed lookup is reported, not revived and not closed', () => {
+  for (const fn of [() => ({ error: 'down' }), () => ({ name: 'No type' }), () => { throw new Error('boom'); }]) {
+    const r = classifyLinear(fn);
+    assert.equal(r.report[0].reason, 'linear-unverified');
+    assert.equal(r.revive.length + r.corpses.length, 0);
+  }
+});
