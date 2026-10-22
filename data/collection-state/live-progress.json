@@ -1,19 +1,42 @@
 {
-  "updatedAt": "2026-10-22T17:03:10.371Z",
-  "processed": 0,
-  "failed": 1,
-  "successRate": "0%",
+  "updatedAt": "2026-10-22T17:08:21.541Z",
+  "processed": 32,
+  "failed": 7,
+  "successRate": "82.1%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 15,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 3,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 12
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-10-22T16:59:26.201Z",
+      "event": "bb-session",
+      "session": "0045a1e6",
+      "url": "http://www.wsj.com/articles/amazing-grace-review-how-sweet-the-set-1437093002"
+    },
+    {
+      "t": "2026-10-22T16:59:26.898Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-22T17:02:15.525Z",
+      "event": "bb-session",
+      "session": "348da1b4",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/evita-2"
+    },
+    {
+      "t": "2026-10-22T17:02:16.231Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    }
+  ]
 }

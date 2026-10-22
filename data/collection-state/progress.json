@@ -1,21 +1,122 @@
 {
-  "processed": [],
+  "processed": [
+    "amazing-grace-2015/vulture--jesse-green.json",
+    "amazing-grace-2015/nydailynews--joe-dziemianowicz.json",
+    "amazing-grace-2015/chicagotribune--chris-jones.json",
+    "evita-2012/ew--thom-geier.json",
+    "take-me-out-2022/nytimes--jesse-green.json",
+    "amazing-grace-2015/hollywood-reporter--david-rooney.json",
+    "miss-saigon-2017/nyt-theater--jonathan-mandell.json",
+    "miss-saigon-2017/daily-herald--unknown.json",
+    "miss-saigon-2017/northjerseycom--unknown.json",
+    "miss-saigon-2017/tennessean--unknown.json",
+    "miss-saigon-2017/thestage--unknown.json",
+    "allegiance-2015/nyt-theater--unknown.json",
+    "amazing-grace-2015/nyt-theater--jonathan-mandell.json",
+    "amazing-grace-2015/nypost--elisabeth-vincentelli.json",
+    "amazing-grace-2015/wsj--terry-teachout.json",
+    "amazing-grace-2015/cnn--unknown.json",
+    "amazing-grace-2015/onstage-blog--chris-peterson.json",
+    "amazing-grace-2015/talkinbroadway--matthew-murray.json",
+    "evita-2012/exeunt-magazine--unknown.json",
+    "evita-2012/nbcny--unknown.json",
+    "the-color-purple-2005/abc-news--unknown.json",
+    "the-color-purple-2005/newsday--unknown.json",
+    "the-color-purple-2005/forward--unknown.json",
+    "the-color-purple-2005/artsfuse--unknown.json",
+    "the-color-purple-2005/chicago-reader--justin-hayford.json",
+    "the-color-purple-2005/financialtimes--unknown.json",
+    "the-color-purple-2005/nbcny--unknown.json",
+    "the-color-purple-2005/people--dave-quinn.json",
+    "the-color-purple-2005/telegraph--robbie-collin.json",
+    "the-color-purple-2005/the-globe-and-mail--kelly-nestruck.json",
+    "the-color-purple-2005/thestage--unknown.json",
+    "the-color-purple-2005/whatsonstage--unknown.json"
+  ],
   "failed": [
-    "double-bill-tell-me-straight-and-aggy-off-west-end-2026/soundsandstage--unknown.json"
+    "miss-saigon-2017/amny--matt-windman.json",
+    "miss-saigon-2017/sunday-times--unknown.json",
+    "miss-saigon-2017/talkinbroadway--matthew-murray.json",
+    "amazing-grace-2015/rye-the-news-guy--rye-my.json",
+    "evita-2012/newyorker--unknown.json",
+    "evita-2012/huffpost--mark-kennedy.json",
+    "the-color-purple-2005/sunday-times--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "miss-saigon-2017/daily-herald--unknown.json",
+      "miss-saigon-2017/tennessean--unknown.json",
+      "miss-saigon-2017/thestage--unknown.json",
+      "allegiance-2015/nyt-theater--unknown.json",
+      "amazing-grace-2015/nyt-theater--jonathan-mandell.json",
+      "amazing-grace-2015/nypost--elisabeth-vincentelli.json",
+      "amazing-grace-2015/onstage-blog--chris-peterson.json",
+      "evita-2012/exeunt-magazine--unknown.json",
+      "evita-2012/nbcny--unknown.json",
+      "the-color-purple-2005/artsfuse--unknown.json",
+      "the-color-purple-2005/financialtimes--unknown.json",
+      "the-color-purple-2005/nbcny--unknown.json",
+      "the-color-purple-2005/people--dave-quinn.json",
+      "the-color-purple-2005/thestage--unknown.json",
+      "the-color-purple-2005/whatsonstage--unknown.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/amazing-grace-2015/wsj--terry-teachout.json",
+      "amazing-grace-2015/wsj--terry-teachout.json"
+    ],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "amazing-grace-2015/cnn--unknown.json",
+      "the-color-purple-2005/chicago-reader--justin-hayford.json",
+      "the-color-purple-2005/the-globe-and-mail--kelly-nestruck.json"
+    ],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "amazing-grace-2015/vulture--jesse-green.json",
+      "amazing-grace-2015/talkinbroadway--matthew-murray.json"
+    ],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "amazing-grace-2015/nydailynews--joe-dziemianowicz.json",
+      "amazing-grace-2015/chicagotribune--chris-jones.json",
+      "evita-2012/ew--thom-geier.json",
+      "take-me-out-2022/nytimes--jesse-green.json",
+      "amazing-grace-2015/hollywood-reporter--david-rooney.json",
+      "miss-saigon-2017/nyt-theater--jonathan-mandell.json",
+      "miss-saigon-2017/northjerseycom--unknown.json",
+      "miss-saigon-2017/talkinbroadway--matthew-murray.json",
+      "the-color-purple-2005/abc-news--unknown.json",
+      "the-color-purple-2005/newsday--unknown.json",
+      "the-color-purple-2005/forward--unknown.json",
+      "the-color-purple-2005/telegraph--robbie-collin.json"
+    ]
   },
-  "startTime": "2026-10-22T17:03:05.955Z",
-  "lastProcessed": "double-bill-tell-me-straight-and-aggy-off-west-end-2026/soundsandstage--unknown.json",
-  "log": []
+  "startTime": "2026-10-22T16:51:42.988Z",
+  "lastProcessed": "the-color-purple-2005/whatsonstage--unknown.json",
+  "log": [
+    {
+      "t": "2026-10-22T16:59:26.201Z",
+      "event": "bb-session",
+      "session": "0045a1e6",
+      "url": "http://www.wsj.com/articles/amazing-grace-review-how-sweet-the-set-1437093002"
+    },
+    {
+      "t": "2026-10-22T16:59:26.898Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-22T17:02:15.525Z",
+      "event": "bb-session",
+      "session": "348da1b4",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/evita-2"
+    },
+    {
+      "t": "2026-10-22T17:02:16.231Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    }
+  ]
 }
