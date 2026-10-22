@@ -2,8 +2,10 @@ import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import fs from 'fs';
+import crypto from 'crypto';
 import path from 'path';
 import { getWestEndShows, getUkRegionalShows, getMarketStats } from '@/lib/data-core';
+import { SHELF_MAX_ITEMS } from '@/lib/market-list-window';
 import { getAwardWinnerSets } from '@/lib/data-awards';
 import { pickRegionalShelf } from '@/lib/regional-shelf';
 import { getUkRegionalVenueCity } from '@/lib/market-utils';
@@ -53,6 +55,7 @@ export default function WestEndPage() {
     return serialize(show, {
       isOffWestEnd: show.category === 'off-west-end',
       category: (show.category as string) || 'west-end',
+      slim: true,
     }) as WestEndShow;
   }
 
@@ -66,7 +69,8 @@ export default function WestEndPage() {
 
   // SEO schema excludes previews/upcoming (they have no scores)
   const itemListSchema = generateItemListSchema(
-    shows.filter(s => s.status !== 'previews' && s.status !== 'upcoming').map(show => ({
+    // Open shows only: closed seasons stay reachable via the sitemap and show pages (BRO-5991).
+    shows.filter(s => s.status === 'open').map(show => ({
       name: show.title,
       url: `${BASE_URL}/show/${show.slug}`,
       image: show.images?.hero,
@@ -97,7 +101,14 @@ export default function WestEndPage() {
     s.status === 'upcoming' || s.status === 'previews' ||
     lrShows[s.id]
   );
-  const serializedShows = allRelevantShows.map(serializeShow);
+  // Closed shows ride west-end-archive.json (lazy-loaded by the client), not the
+  // page props, to keep the document small (BRO-5991).
+  const serializedShows = allRelevantShows.filter(s => s.status !== 'closed').map(serializeShow);
+  const archiveHash = crypto
+    .createHash('md5')
+    .update(fs.readFileSync(path.join(process.cwd(), 'public/data/west-end-archive.json')))
+    .digest('hex')
+    .slice(0, 8);
 
   // Beyond London (BRO-5103): scored productions at flagship UK houses outside
   // London (RSC, Chichester, ...). Live ones first, then most recent. Gated on
@@ -105,12 +116,13 @@ export default function WestEndPage() {
   const beyondLondonShows = featureFlags.regional
     ? pickRegionalShelf(getUkRegionalShows(), { requireEnoughReviews: true })
         .map(s => ({
-          ...(serialize(s, { isOffWestEnd: false, category: 'regional' }) as WestEndShow),
+          ...(serialize(s, { isOffWestEnd: false, category: 'regional', slim: true }) as WestEndShow),
           // The card has no market pill, so name the city under the title.
           subtitle: getUkRegionalVenueCity(s.category, s.venue),
           subtitleColor: 'text-gray-400',
         }))
     : [];
+  const beyondLondonShelf = beyondLondonShows.slice(0, SHELF_MAX_ITEMS);
 
   // WE Lottery/Rush shelves
   const lotteryShowsList = shows
@@ -119,7 +131,8 @@ export default function WestEndPage() {
     .map(s => {
       const price = lrShows[s.id]?.specialLottery?.price ?? lrShows[s.id]?.lottery?.price;
       return { ...serializeShow(s), subtitle: price ? `£${price} lottery` : undefined, subtitleColor: 'text-emerald-400' };
-    });
+    })
+    .slice(0, SHELF_MAX_ITEMS);
 
   const rushShowsList = shows
     .filter(s => (s.status === 'open' || s.status === 'previews') && (lrShows[s.id]?.rush || lrShows[s.id]?.digitalRush))
@@ -128,7 +141,8 @@ export default function WestEndPage() {
       const prices = [lrShows[s.id]?.rush?.price, lrShows[s.id]?.digitalRush?.price].filter((p): p is number => p != null);
       const price = prices.length ? Math.min(...prices) : undefined;
       return { ...serializeShow(s), subtitle: price ? `£${price} rush` : undefined, subtitleColor: 'text-emerald-400' };
-    });
+    })
+    .slice(0, SHELF_MAX_ITEMS);
 
   // Count reviews across all scored shows (WE + OWE)
   const totalReviews = scoredShows.reduce((sum, s) => sum + (s.criticScore?.reviewCount ?? 0), 0);
@@ -186,7 +200,7 @@ export default function WestEndPage() {
           </p>
         </div>
         {topMusicals.length > 0 && (
-          <FeaturedRowServer shows={topMusicals} title="Top Musicals" subtitle="Ranked by critical consensus" />
+          <FeaturedRowServer shows={topMusicals.slice(0, SHELF_MAX_ITEMS)} title="Top Musicals" subtitle="Ranked by critical consensus" />
         )}
       </div>
 
@@ -199,9 +213,10 @@ export default function WestEndPage() {
           scoredShows={scoredShows.length}
           lotteryShows={lotteryShowsList}
           rushShows={rushShowsList}
-          beyondLondonShows={beyondLondonShows}
+          beyondLondonShows={beyondLondonShelf}
           marketOpenCounts={marketOpenCounts}
           awardWinnerSets={getAwardWinnerSets()}
+          archiveHash={archiveHash}
           skipAboveFold
         />
       </Suspense>

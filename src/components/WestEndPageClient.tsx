@@ -4,7 +4,7 @@ import { useMemo, useCallback, useState, useRef, useEffect, startTransition, Sus
 import { replaceLocationSearch } from '@/lib/hooks/useLocationSearch';
 import Link from 'next/link';
 import type Fuse from 'fuse.js';
-import { SCORE_TIERS, getScoreTierRange, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
+import { SCORE_TIERS, getScoreTierRange, ToggleBar, ScoreToggle, WindowedShowCardList, MiniShowCard } from '@/components/show-cards';
 import MarketFilterBar from '@/components/MarketFilterBar';
 import type { ScoreModeParam } from '@/components/show-cards';
 import type { AwardWinnerSets } from '@/lib/data-awards';
@@ -16,6 +16,9 @@ import { usePanelFilters } from '@/lib/hooks/usePanelFilters';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { getNextSort, getSortArrow, normalizeSort } from '@/lib/sort-toggle';
 import ScrollRow from '@/components/ScrollRow';
+import { SHELF_MAX_ITEMS } from '@/lib/market-list-window';
+import { getShowListEmptyState } from '@/lib/show-list-empty-state';
+import { creativeTeamSearchText } from '@/lib/creative-team-search';
 import { useHydrationSafeNow } from '@/hooks/useHydrationSafeNow';
 
 // Serialized show data passed from server component
@@ -39,7 +42,8 @@ export interface WestEndShow {
   ageRecommendation?: string;
   audienceCombinedScore: number | null;
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
-  creativeTeam?: Array<{ name: string; role: string }>;
+  /** Comma-joined creative team names (search only); the full team is not shipped to market list pages (BRO-5991). */
+  creativeTeamNames?: string;
   category?: string;
   genre?: string;
   subtitle?: string;
@@ -60,6 +64,8 @@ interface WestEndPageClientProps {
   /** Open-show counts for the market pills */
   marketOpenCounts: { westEnd: number; offWestEnd: number };
   awardWinnerSets?: AwardWinnerSets;
+  /** Cache-busting hash for west-end-archive.json (lazy-loaded closed shows). */
+  archiveHash?: string;
   /** When true, the hero + Top Musicals shelf are rendered server-side by the
    *  page (page.tsx) so the LCP image lands in static HTML. This client then
    *  skips them to avoid a duplicate. See #317. */
@@ -104,16 +110,6 @@ function SearchIcon() {
   );
 }
 
-function ShowCardList({ shows, hideStatus, scoreMode }: { shows: WestEndShow[]; hideStatus: boolean; scoreMode: ScoreModeParam }) {
-  return (
-    <div className="space-y-3" role="list" aria-label="West End shows">
-      {shows.map((show, index) => (
-        <ShowListCard key={show.id} show={show} index={index} hideStatus={hideStatus} scoreMode={scoreMode} />
-      ))}
-    </div>
-  );
-}
-
 // Featured row with horizontal scroll
 function FeaturedRow({ title, subtitle, shows, minShows = 4 }: { title: string; subtitle?: string; shows: WestEndShow[]; minShows?: number }) {
   if (shows.length < minShows) return null;
@@ -127,7 +123,7 @@ function FeaturedRow({ title, subtitle, shows, minShows = 4 }: { title: string; 
         <p className="text-xs text-gray-500 mb-2">{subtitle}</p>
       )}
       <ScrollRow>
-        {shows.map((show) => (
+        {shows.slice(0, SHELF_MAX_ITEMS).map((show) => (
           <MiniShowCard key={show.id} show={show} />
         ))}
       </ScrollRow>
@@ -156,7 +152,7 @@ function filtersFromParams(initialSearchParams: URLSearchParams) {
 }
 
 // Inner component that uses searchParams
-function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotteryShows = [], rushShows = [], beyondLondonShows = [], marketOpenCounts, awardWinnerSets, skipAboveFold = false, renderedAt }: WestEndPageClientProps) {
+function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotteryShows = [], rushShows = [], beyondLondonShows = [], marketOpenCounts, awardWinnerSets, archiveHash, skipAboveFold = false, renderedAt }: WestEndPageClientProps) {
   const nowMs = useHydrationSafeNow(renderedAt);
 
   const [filters, setFilters] = useState(() => filtersFromParams(new URLSearchParams()));
@@ -229,10 +225,50 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
     replaceLocationSearch('/west-end');
   }, []);
 
+  // Archive shows (closed London shows) are not in the page props: they would
+  // roughly double the document. Lazy-load them when the user filters to
+  // all/closed or searches, same pattern as the Off-Broadway and Off-West End
+  // pages (BRO-5991).
+  const [archiveShows, setArchiveShows] = useState<WestEndShow[] | null>(null);
+  const archiveFetchedRef = useRef(false);
+
+  const fetchArchive = useCallback(async () => {
+    if (archiveFetchedRef.current) return;
+    archiveFetchedRef.current = true;
+    try {
+      const cacheBust = archiveHash ? `?v=${archiveHash}` : '';
+      const res = await fetch(`/data/west-end-archive.json${cacheBust}`);
+      if (!res.ok) throw new Error(`archive ${res.status}`);
+      const data: WestEndShow[] = await res.json();
+      // The archive carries both London categories; the venue filter keys off isOffWestEnd.
+      setArchiveShows(data.map(s => ({ ...s, isOffWestEnd: s.category === 'off-west-end' })));
+    } catch (e) {
+      console.error('Failed to load West End archive shows:', e);
+      archiveFetchedRef.current = false; // allow retry
+    }
+  }, [archiveHash]);
+
+  const allShows = useMemo(() => {
+    if (!archiveShows) return shows;
+    const ids = new Set(shows.map(s => s.id));
+    return [...shows, ...archiveShows.filter(s => !ids.has(s.id))];
+  }, [shows, archiveShows]);
+
+  useEffect(() => {
+    if (statusFilter === 'all' || statusFilter === 'closed' || searchQuery || scoreMode === 'audience') {
+      fetchArchive();
+    }
+  }, [statusFilter, searchQuery, scoreMode, fetchArchive]);
+
   // Fuse.js — lazy-loaded on first search keystroke to reduce initial bundle
   const fuseRef = useRef<Fuse<WestEndShow> | null>(null);
-  const fuseDataRef = useRef(shows);
-  fuseDataRef.current = shows;
+  const fuseDataRef = useRef(allShows);
+  fuseDataRef.current = allShows;
+
+  // Rebuild the Fuse index once the archive lands so search includes closed shows
+  useEffect(() => {
+    if (archiveShows) fuseRef.current = null;
+  }, [archiveShows]);
 
   const getFuse = useCallback(async () => {
     if (fuseRef.current) return fuseRef.current;
@@ -249,7 +285,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
       getFn: (obj, path) => {
         const key = Array.isArray(path) ? path[0] : path;
         if (key === 'creativeTeamSearch') {
-          return (obj as WestEndShow).creativeTeam?.map(m => m.name).join(', ') || '';
+          return creativeTeamSearchText(obj);
         }
         return FuseModule.config.getFn(obj, path);
       },
@@ -268,7 +304,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
       }
     }).catch(() => { /* Fuse load failed — fallback to unfiltered results */ });
     return () => { cancelled = true; };
-  }, [searchQuery, getFuse]);
+  }, [searchQuery, getFuse, archiveShows]);
 
   // Featured rows
   const topMusicals = useMemo(() => {
@@ -373,7 +409,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
       return searchResults;
     }
 
-    let result = shows.filter(show => {
+    let result = allShows.filter(show => {
       if (scoreMode === 'audience') {
         return show.audienceCombinedScore !== null && show.status !== 'previews';
       } else {
@@ -459,7 +495,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
     });
 
     return result;
-  }, [shows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode, venueFilter]);
+  }, [allShows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode, venueFilter]);
 
   const panelSingleGroups = useMemo(
     () => [TYPE_GROUP, buildStatusGroup(STATUS_OPTIONS_WITH_PREVIEWS)],
@@ -490,6 +526,12 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
     onSetSingleValueOverride: setPanelSingleValue,
   });
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const showListEmptyState = getShowListEmptyState({
+    filteredCount: panel.filteredShows.length,
+    archiveLoaded: archiveShows !== null,
+    statusFilter,
+    hasSearchQuery: !!searchQuery || scoreMode === 'audience',
+  });
 
   // Single-writer clearAll (avoids URL race between window.history.replaceState
   // in startTransition + router.replace). See HomePageClient note.
@@ -689,9 +731,17 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
 
       {/* Show List */}
       <h2 className="sr-only">West End Shows</h2>
-      <ShowCardList shows={panel.filteredShows} hideStatus={shouldHideStatus} scoreMode={scoreMode} />
+      <WindowedShowCardList shows={panel.filteredShows} hideStatus={shouldHideStatus} scoreMode={scoreMode} ariaLabel="West End shows" />
 
-      {panel.filteredShows.length === 0 && (
+      {showListEmptyState === 'loading' && (
+        <div className="space-y-3" role="status" aria-label="Loading shows">
+          {[1, 2, 3, 4, 5].map(i => (
+            <div key={i} className="animate-pulse h-24 bg-surface-overlay rounded-xl" />
+          ))}
+        </div>
+      )}
+
+      {showListEmptyState === 'empty' && (
         <div className="card text-center py-16 px-6" role="status" aria-live="polite">
           <div className="w-16 h-16 rounded-full bg-surface-overlay mx-auto mb-4 flex items-center justify-center">
             <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

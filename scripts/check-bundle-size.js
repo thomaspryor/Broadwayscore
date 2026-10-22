@@ -104,6 +104,15 @@ function parseBuildOutput() {
     }
   }
 
+  // Advisory page-weight check on the market pages the build just prerendered
+  // (BRO-5991, lands advisory first per CLAUDE.md section 19). Never fails the run.
+  try {
+    const r = require('child_process').spawnSync(process.execPath, [path.join(__dirname, 'check-market-page-weight.js')], { encoding: 'utf8', timeout: 60_000 });
+    if (r.stdout) console.log(r.stdout.trim());
+  } catch (e) {
+    console.warn('Market page-weight check skipped: ' + e.message);
+  }
+
   // Shared parser: the old inline regex skipped the homepage (┌ row) and
   // every route whose own code printed in bytes, show pages included.
   const { pages, sharedJS } = parseBuildTable(output);
