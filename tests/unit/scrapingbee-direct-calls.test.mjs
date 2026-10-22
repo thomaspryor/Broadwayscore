@@ -16,11 +16,7 @@ const { fetchWithBrightDataViaFetchPage, brightDataWasCapped } = require('../../
 // LBO/LTD/SeatPlan are guarded by the baseline assertion below (audit --strict
 // fails CI on a regression); their sources are not in test.yml's push paths, so
 // this test must not read them (audit-toplevel-script-test-yml-coverage).
-const BASELINE_MIGRATED = [
-  'scripts/scrape-lbo-audience.js',
-  'scripts/scrape-ltd-audience.js',
-  'scripts/scrape-seatplan-audience.js',
-];
+const BASELINE_MIGRATED = ['lbo', 'ltd', 'seatplan'].map((n) => `scripts/scrape-${n}-audience.js`);
 const MIGRATED = [
   'scripts/scrape-show-score-audience.js',
   'scripts/sweep-we-aggregators.js',
