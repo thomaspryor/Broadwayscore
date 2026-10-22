@@ -1801,6 +1801,37 @@
     "queuedAt": "2026-10-22T06:45:38.064Z"
   },
   {
+    "conditionKey": "land:land/job/linear-BRO-5916-mvj13hpp",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-5916-mvj13hpp",
+    "description": "land.yml did not land land/job/linear-BRO-5916-mvj13hpp: the rebase gate went red at 41a423c1a1. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-5916-mvj13hpp @ 41a423c1a1 (origin/land/job/linear-BRO-5916-mvj13hpp) → origin/main @ 5428ffad6d REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 5428ffad6d: Rebasing (1/6) error: could not apply 4c73fbe5f06... feat(BRO-5916): Reddit RSS fallback for search+comments, SB failure latch, cross-run cooldown lib hint: Resolve all conflicts manually, mark th Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39726450781",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-5916-mvj13hpp"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "41a423c1a1608eac8ca63b317e70e30c5b984cac"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39726450781"
+      }
+    ],
+    "queuedAt": "2026-10-22T07:12:29.010Z"
+  },
+  {
     "conditionKey": "feedback-requests-stuck:missing-show:the way we get by:2026-10-19T05:04:34.150097+00:00",
     "title": "1 user request(s) stuck — not live after 3 days",
     "description": "\"The Way We Get By\" was asked for 3 day(s) ago and is still not on the site. Its most recent run since then on 2026-10-19 ended as failure.\n  That run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39211864891\n  Tracking issue: https://github.com/thomaspryor/Broadwayscore/issues/1123",
