@@ -66,14 +66,9 @@
  *   collision has never been observed, and even if it occurred it would only
  *   inflate the 'router' inventory count, not suppress a real 'direct'
  *   sendAlert(email:true) finding in the same file (that detection is
- *   independent). A DOTTED call assigned to a variable and inspected for
- *   `disposition:'human'` result handling (scanHumanDispositionCaller's
- *   assignMatch/destructureMatch/nextCallRe) is NOT yet covered by this same
- *   dot-tolerance — those regexes still require a bare `await routeAlert(`.
- *   No known caller hits this gap today; tracked as a follow-up rather than
- *   fixed alongside this change, since extending it risks the exact kind of
- *   regex-interaction bug this file's own "Known accepted limitations" are
- *   full of.
+ *   independent). The human-disposition result check also recognizes dotted
+ *   routeAlert calls through identifier chains and inline require() receivers
+ *   (BRO-3360). Arbitrary computed receivers still need an AST parser.
  *
  * Second check (card #616): routeAlert()'s disposition='human' path can now
  * silently downgrade to result.action==='digest' (the page-worthy allowlist
@@ -258,11 +253,12 @@ function scanHumanDispositionCaller(lines, callLineIdx, relPath, rawLines, calle
   // on the same line as the close is included) and stops at the next
   // routeAlert(/sendAlert(/wrapper( call site if one appears first.
   let windowEnd = Math.min(lines.length, bodyEnd + POST_CALL_WINDOW);
+  // Only literal routeAlert tolerates a preceding dot, as in scanFile.
   // (?<!\.) keeps a wrapper named e.g. `alert` from matching an unrelated
   // `logger.alert(...)`/`window.alert(...)` member access and prematurely
   // truncating the window before a real .action check (adversarial-review
   // find, card #616 follow-up).
-  const nextCallRe = new RegExp(`(?<!\\.)\\b(?:${callee}|sendAlert)\\s*\\(`);
+  const nextCallRe = new RegExp(`\\brouteAlert\\s*\\(|(?<!\\.)\\b(?:${callee}|sendAlert)\\s*\\(`);
   for (let j = bodyEnd + 1; j < windowEnd; j++) {
     if (nextCallRe.test(lines[j])) { windowEnd = j; break; }
   }
@@ -273,8 +269,12 @@ function scanHumanDispositionCaller(lines, callLineIdx, relPath, rawLines, calle
   // reassignment to a pre-declared variable `x = await routeAlert(` (no
   // const/let/var — the injectable-for-tests pattern some callers use); or a
   // later `.then((x) => ...)` promise chain.
-  const assignMatch = lines[callLineIdx].match(new RegExp(`(?:(?:const|let|var)\\s+)?(\\w+)\\s*=\\s*await\\s+(?:${callee})\\s*\\(`));
-  const destructureMatch = !assignMatch && lines[callLineIdx].match(new RegExp(`(?:const|let|var)\\s*\\{\\s*([^}]*)\\}\\s*=\\s*await\\s+(?:${callee})\\s*\\(`));
+  // Consume a dotted receiver only for the literal routeAlert name. Keep
+  // wrappers bare so unrelated methods such as logger.alert stay excluded.
+  // All groups are noncapturing to preserve the result-binding indices.
+  const boundCallee = `(?:(?:[\\w$]+\\s*\\.\\s*|require\\s*\\([^()\\r\\n]*\\)\\s*\\.\\s*)+routeAlert|${callee})`;
+  const assignMatch = lines[callLineIdx].match(new RegExp(`(?:(?:const|let|var)\\s+)?(\\w+)\\s*=\\s*await\\s+${boundCallee}\\s*\\(`));
+  const destructureMatch = !assignMatch && lines[callLineIdx].match(new RegExp(`(?:const|let|var)\\s*\\{\\s*([^}]*)\\}\\s*=\\s*await\\s+${boundCallee}\\s*\\(`));
   const thenMatch = !assignMatch && !destructureMatch && (
     postCall.match(/\.then\s*\(\s*(?:async\s*)?\(?\s*(\w+)\s*\)?\s*=>/) ||
     postCall.match(/\.then\s*\(\s*function\s*\(\s*(\w+)\s*\)/)

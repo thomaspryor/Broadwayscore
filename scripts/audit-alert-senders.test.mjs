@@ -2,7 +2,7 @@
 // Requires the REAL scanFile/buildDirectCounts/compareToBaseline per
 // CLAUDE.md §15 — no logic copies. Registered explicitly in test.yml's
 // unit-test `node --test` list (top-level scripts/*.test.mjs is not globbed).
-import { test } from 'node:test';
+import { after, test } from 'node:test';
 import assert from 'node:assert';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -14,6 +14,7 @@ const { scanFile, buildDirectCounts, buildHumanDigestCounts, compareToBaseline, 
   require('./audit-alert-senders.js');
 
 const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'alert-gate-test-'));
+after(() => fs.rmSync(tmpDir, { recursive: true, force: true }));
 
 function scanFixture(relPath, content) {
   const abs = path.join(tmpDir, relPath.replace(/\//g, '__'));
@@ -447,6 +448,73 @@ test('scanFile recognizes an inline require().routeAlert() call (BRO-2421)', () 
   assert.strictEqual(findings.length, 1);
   assert.strictEqual(findings[0].classification, 'router');
   assert.strictEqual(findings[0].disposition, 'digest');
+});
+
+// BRO-3360: the digest check must recognize the same dotted literal
+// routeAlert calls as the outer inventory scan, including inline require().
+for (const callee of ['router.routeAlert', 'alerts.router.routeAlert', "require('./owner-alert-router.js').routeAlert"]) {
+  for (const binding of ['const result', 'result', 'const { action }']) {
+    test(`scanFile flags a dotted human caller without digest: ${binding} = await ${callee}`, () => {
+      const findings = scanFixture('scripts/dotted-human.js', [
+        `${binding} = await ${callee}({`,
+        "  disposition: 'human',",
+        '});',
+        binding.includes('{') ? "if (action === 'human') notify();" : "if (result.action === 'human') notify();",
+      ].join('\n'));
+      const digestFindings = findings.filter(f => f.kind === 'human-caller-ignores-digest');
+      assert.strictEqual(digestFindings.length, 1);
+      assert.strictEqual(digestFindings[0].resultVar, binding.includes('{') ? '{ action }' : 'result');
+    });
+  }
+
+  test(`scanFile accepts a dotted human caller that handles digest: ${callee}`, () => {
+    const findings = scanFixture('scripts/dotted-handles-digest.js', [
+      `const result = await ${callee}({`,
+      "  disposition: 'human',",
+      '});',
+      "if (result.action === 'human' || result.action === 'digest') notify();",
+    ].join('\n'));
+    assert.strictEqual(findings.filter(f => f.kind === 'human-caller-ignores-digest').length, 0);
+  });
+
+  test(`scanFile flags a dotted promise-chain human caller without digest: ${callee}`, () => {
+    const findings = scanFixture('scripts/dotted-then.js', [
+      `${callee}({`,
+      "  disposition: 'human',",
+      '}).then((result) => {',
+      "  if (result.action === 'human') notify();",
+      '});',
+    ].join('\n'));
+    assert.strictEqual(findings.filter(f => f.kind === 'human-caller-ignores-digest').length, 1);
+  });
+
+  test(`scanFile stops before a later dotted call's digest handling: ${callee}`, () => {
+    const findings = scanFixture('scripts/dotted-window-boundary.js', [
+      'const first = await routeAlert({',
+      "  disposition: 'human',",
+      '});',
+      "if (first.action === 'human') notify();",
+      `const second = await ${callee}({`,
+      "  disposition: 'human',",
+      '});',
+      "if (second.action === 'digest') notify();",
+    ].join('\n'));
+    const digestFindings = findings.filter(f => f.kind === 'human-caller-ignores-digest');
+    assert.strictEqual(digestFindings.length, 1);
+    assert.strictEqual(digestFindings[0].resultVar, 'first');
+  });
+}
+
+test('scanFile does not truncate human result handling at a dotted wrapper method', () => {
+  const findings = scanFixture('scripts/dotted-wrapper-window.js', [
+    'async function alert(opts) { return await routeAlert(opts); }',
+    'const result = await router.routeAlert({',
+    "  disposition: 'human',",
+    '});',
+    "logger.alert('unrelated');",
+    "if (result.action === 'human') notify();",
+  ].join('\n'));
+  assert.strictEqual(findings.filter(f => f.kind === 'human-caller-ignores-digest').length, 1);
 });
 
 test('scanFile still excludes a dotted call on a resolved WRAPPER name (guard preserved)', () => {

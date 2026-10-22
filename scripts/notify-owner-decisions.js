@@ -125,6 +125,9 @@ async function main(argv = process.argv.slice(2)) {
     cooldownHours: 20,
     idempotencySalt: email.idempotencySalt,
   });
+  // The page-worthy allowlist (unit-tested) prevents a digest downgrade for
+  // this key. Record only confirmed email delivery in the told-set so failed
+  // sends remain eligible for retry.
   if (result && result.action === 'human' && result.delivered) {
     if (!router.patchCondition(CONDITION_KEY, { notifiedIds: plan.nextNotified })) {
       await reportBroken('email sent but the told-set could not be saved; the same cards will be emailed again tomorrow');
