@@ -256,6 +256,10 @@ function evaluatePageMeta({ data, show, meta, inWindow }) {
     return { ok: false, reason: 'boilerplate' };
   }
   if (ALWAYS_NON_REVIEW.test(`${headline} ${description}`)) return { ok: false, reason: 'non-theatre-or-list' };
+  // A ballet review of a same-titled work (Scottish Ballet's Streetcar vs the Old Vic play).
+  if (/\bballet\b/i.test(`${headline} ${description}`) && !/\bballet\b/i.test(`${show && show.title} ${show && show.venue}`)) {
+    return { ok: false, reason: 'non-theatre-or-list' };
+  }
   const stars = starRunRating(headline);
   if (description.length < MIN_EVIDENCE_CHARS && !(stars && description.length >= 20)) return { ok: false, reason: 'description-too-short' };
   if (description.toLowerCase() === headline.toLowerCase()) return { ok: false, reason: 'description-is-headline' };

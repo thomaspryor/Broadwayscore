@@ -124,3 +124,12 @@ test('a common-word title inside another review is not the show (BRO-5794 dry ru
   // the title still counts when the headline opens with it or follows "review:"
   assert.equal(evidenceNamesShow(show('The Heart'), 'The Heart review: a tender new play', 'x', ''), true);
 });
+
+test('a ballet review of a same-titled work is not the play (BRO-5794 live run: Scottish Ballet Streetcar)', () => {
+  const html = page('A Streetcar Named Desire, Scottish Ballet review', 'Tennessee Williams’s play gets a sultry, sweaty dance treatment with striking central performances.',
+    '<meta property="article:published_time" content="2026-09-20T10:00:00Z">');
+  assert.equal(judge(show('A Streetcar Named Desire'), html).reason, 'non-theatre-or-list');
+  const ok = judge(show('Swan Lake Ballet'), page('Swan Lake Ballet review: a radiant revival', 'The company returns to the classic with a luminous new lead and a fresh staging.',
+    '<meta property="article:published_time" content="2026-09-20T10:00:00Z">'));
+  assert.equal(ok.ok, true);
+});
