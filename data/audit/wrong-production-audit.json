@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T05:09:54.683Z",
+  "timestamp": "2026-10-22T05:21:05.538Z",
   "stats": {
-    "totalReviews": 58730,
-    "alreadyFlagged": 21230,
+    "totalReviews": 58732,
+    "alreadyFlagged": 21231,
     "dateGuardCatches": 197,
     "directorMismatch": 2125,
     "tvFilmSignals": 1660,
-    "londonSignals": 2692,
+    "londonSignals": 2693,
     "offBroadwaySignals": 531,
     "yearMismatch": 166,
-    "noPublishDate": 5243
+    "noPublishDate": 5239
   },
   "findings": [
     {
@@ -71889,6 +71889,20 @@
     {
       "showId": "jesus-christ-superstar-off-west-end-2026",
       "file": "britishtheatrecom--british-theatre.json",
+      "score": null,
+      "publishDate": "2026-10-07",
+      "url": "https://www.britishtheatre.com/de/posts/jesus-christ-superstar-glenn-close-herod-drury-lane-2027",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-off-west-end-2026",
+      "file": "britishtheatrecom--unknown.json",
       "score": null,
       "publishDate": "2026-10-07",
       "url": "https://www.britishtheatre.com/de/posts/jesus-christ-superstar-glenn-close-herod-drury-lane-2027",
