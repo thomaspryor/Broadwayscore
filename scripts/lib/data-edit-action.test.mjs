@@ -33,6 +33,17 @@ test('an absent field compares as oldValue null (BRO-4623)', () => {
   assert.equal(r.ok, true, r.reason);
 });
 
+test('a sourced theaterAddress repair is allowed and refuses a stale value (BRO-5919)', () => {
+  const data = shows();
+  const action = { file: 'shows.json', showId: 'a-2026', field: 'theaterAddress', oldValue: null, newValue: '383 Troutman Street, Brooklyn, NY 11237' };
+  assert.equal(dataEditAllowProblem(action), null);
+  assert.equal(applyDataEdit(data, action).ok, true);
+  assert.equal(data.shows[0].theaterAddress, action.newValue);
+  assert.equal(data.shows[1].theaterAddress, undefined);
+  assert.equal(applyDataEdit(data, { ...action, newValue: 'Different address' }).ok, false);
+  assert.equal(data.shows[0].theaterAddress, action.newValue);
+});
+
 test('unknown show and non-allowlisted field are refused', () => {
   assert.match(applyDataEdit(shows(), { file: 'shows.json', showId: 'zzz', field: 'venue', oldValue: null, newValue: 'v' }).reason, /not found/);
   assert.equal(applyDataEdit(shows(), { file: 'shows.json', showId: 'a-2026', field: 'id', oldValue: 'a-2026', newValue: 'x' }).ok, false);

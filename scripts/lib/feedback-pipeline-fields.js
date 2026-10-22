@@ -15,7 +15,7 @@
 // proposes, execute-approved-fix.js applies only after Tom clicks Approve).
 const FEEDBACK_EDITABLE_FIELDS = {
   'shows.json': [
-    'venue', 'synopsis', 'runtime', 'intermissions', 'ageRecommendation',
+    'venue', 'theaterAddress', 'synopsis', 'runtime', 'intermissions', 'ageRecommendation',
     'type', 'isRevival', 'status', 'closingDate', 'openingDate',
     'previewsStartDate', 'creativeTeam',
     // BRO-5080: a date repair re-stamps where the date came from, so an
