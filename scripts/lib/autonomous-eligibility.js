@@ -176,6 +176,11 @@ const EXCLUDED_FILES = new Set([
   // The loop must never edit the corpus that gates its own triage quality.
   'tests/fixtures/triage-calibration.json',
   // scoring-delta INCLUSION_FILES
+  'scripts/lib/duplicate-of-exclusion.js',
+  'scripts/lib/duplicate-cycle.js',
+  'scripts/lib/canonical-duplicate-pointers.js',
+  'scripts/lib/cross-outlet-cycle.js',
+  'scripts/lib/syndication-pairs.js',
   'scripts/lib/review-guards.js',
   'scripts/rebuild-all-reviews.js',
   'scripts/lib/date-guard.js',

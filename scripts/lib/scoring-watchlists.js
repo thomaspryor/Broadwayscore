@@ -14,6 +14,12 @@ const path = require('path');
 // included → excluded (or vice versa) in reviews.json.
 const INCLUSION_FILES = [
   'scripts/lib/review-guards.js',
+  // BRO-3963: the replay and rebuild share these dedup decisions.
+  'scripts/lib/duplicate-of-exclusion.js',
+  'scripts/lib/duplicate-cycle.js',
+  'scripts/lib/canonical-duplicate-pointers.js',
+  'scripts/lib/cross-outlet-cycle.js',
+  'scripts/lib/syndication-pairs.js',
   'scripts/rebuild-all-reviews.js',
   // Pre-window inclusion predicate + priorRuns window logic (card 386637c5).
   // Threshold changes there flip inclusion decisions exactly like review-guards
