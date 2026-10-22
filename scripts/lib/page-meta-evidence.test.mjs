@@ -152,3 +152,12 @@ test('a photo-caption description is boilerplate, not a standfirst (SFGate After
     '<meta property="article:published_time" content="2026-09-20T10:00:00Z">');
   assert.equal(judge(show('After Midnight'), html).reason, 'boilerplate');
 });
+
+test('a no-review-signal stamp from before rules v2 is stale; other reasons stay current', () => {
+  const { stampIsCurrent, RULES_VERSION } = require('./page-meta-evidence.js');
+  assert.equal(RULES_VERSION >= 2, true);
+  assert.equal(stampIsCurrent({ metaEvidenceCheckResult: 'no-review-signal' }), false);
+  assert.equal(stampIsCurrent({ metaEvidenceCheckResult: 'no-review-signal', metaEvidenceRulesVersion: RULES_VERSION }), true);
+  assert.equal(stampIsCurrent({ metaEvidenceCheckResult: 'boilerplate' }), true);
+  assert.equal(stampIsCurrent({ metaEvidenceCheckResult: 'unreachable' }), true);
+});
