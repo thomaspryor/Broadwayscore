@@ -3,7 +3,7 @@ name: Audit Live Show Art
 # BRO-5744: weekly vision sweep of the thumbnail actually served for every
 # open/previews/upcoming/announced show. ADVISORY (CLAUDE.md section 19): the
 # audit step is continue-on-error, nothing is nulled, and the report is an
-# artifact (data/audit/live-art-audit.json, never committed) plus a step
+# artifact (tmp/live-art-audit.json, never committed) plus a step
 # summary. Flagged rows fold into ONE rollup alert card (stable key); only the
 # alert ledger is committed so the weekly cooldown holds.
 # ~745 Gemini Flash calls, ~15 min, ~$0.2.
@@ -58,8 +58,8 @@ jobs:
         run: |
           {
             echo "### Live show art audit (advisory)"
-            if [ -f data/audit/live-art-audit.json ]; then
-              node -e 'const r=require("./data/audit/live-art-audit.json");console.log(`Checked ${r.totalChecked}, flagged ${r.flaggedCount} ${JSON.stringify(r.byKind)}, errors ${r.errorCount}`);for(const f of r.flagged)console.log(`- ${f.kind} \`${f.id}\`: ${String(f.description).slice(0,120)}`)'
+            if [ -f tmp/live-art-audit.json ]; then
+              node -e 'const r=require("./tmp/live-art-audit.json");console.log(`Checked ${r.totalChecked}, flagged ${r.flaggedCount} ${JSON.stringify(r.byKind)}, errors ${r.errorCount}`);for(const f of r.flagged)console.log(`- ${f.kind} \`${f.id}\`: ${String(f.description).slice(0,120)}`)'
             else
               echo "No report written (see the audit step log)."
             fi
@@ -70,7 +70,7 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: live-art-audit
-          path: data/audit/live-art-audit.json
+          path: tmp/live-art-audit.json
           if-no-files-found: ignore
           retention-days: 30
 

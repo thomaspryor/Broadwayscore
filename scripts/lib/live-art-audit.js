@@ -49,7 +49,7 @@ function classifyResult(result) {
   return null;
 }
 
-/** Report written to data/audit/live-art-audit.json. */
+/** Report written to tmp/live-art-audit.json. */
 function buildReport(rows, { generatedAt, totalChecked, statuses = LIVE_STATUSES } = {}) {
   const flagged = rows.filter(r => !r.errored);
   const errors = rows.filter(r => r.errored);

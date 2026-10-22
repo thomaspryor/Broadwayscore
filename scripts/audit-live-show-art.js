@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// venue-write-guard-ok: venue is read from shows.json and passed to the vision verifier and the report row; nothing here writes shows.json
 /**
  * audit-live-show-art.js (BRO-5744)
  *
@@ -16,7 +17,7 @@
  *
  * Flagged rows fold into ONE rollup alert card (stable key, 7-day cooldown).
  *
- * Output: data/audit/live-art-audit.json (needs GEMINI_API_KEY).
+ * Output: tmp/live-art-audit.json (needs GEMINI_API_KEY).
  */
 const fs = require('fs');
 const path = require('path');
@@ -38,7 +39,7 @@ const { verifyImage, createRateLimiter, creativesForVerify, resolveMarketSlug } 
 const { selectLiveShows, classifyResult, buildReport, buildLiveArtAlert, LIVE_ART_ALERT_KEY } =require('./lib/live-art-audit');
 
 const ROOT = path.join(__dirname, '..');
-const OUTPUT = path.join(ROOT, 'data', 'audit', 'live-art-audit.json');
+const OUTPUT = path.join(ROOT, 'tmp', 'live-art-audit.json');
 const arg = (name) => {
   const hit = process.argv.find(a => a.startsWith(`--${name}=`));
   return hit ? hit.slice(name.length + 3) : null;

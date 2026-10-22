@@ -1,0 +1,713 @@
+{
+  "generatedAt": "2026-10-22T14:09:20.086Z",
+  "advisory": true,
+  "statuses": [
+    "open",
+    "previews",
+    "upcoming",
+    "announced"
+  ],
+  "totalChecked": 741,
+  "flaggedCount": 46,
+  "errorCount": 0,
+  "byKind": {
+    "non_theatre_work": 7,
+    "wrong_show": 35,
+    "generic_image": 4
+  },
+  "flagged": [
+    {
+      "id": "a-hard-days-night-off-west-end-2026",
+      "title": "A Hard Days Night",
+      "status": "announced",
+      "venue": "Kiln Theatre",
+      "thumbnail": "/images/shows/a-hard-days-night-off-west-end-2026/thumbnail.jpg",
+      "kind": "non_theatre_work",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "other",
+      "issues": [
+        "non_theatre_work"
+      ],
+      "description": "Image shows a movie theater marquee advertising 'The Beatles A Hard Day's Night', which is a film, not a stage production."
+    },
+    {
+      "id": "amaze-magic-off-broadway-2025",
+      "title": "AMAZE Magic",
+      "status": "open",
+      "venue": "New World Stages",
+      "thumbnail": "/images/shows/amaze-magic-off-broadway-2025/thumbnail.webp",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_production"
+      ],
+      "description": "The image shows a promotional poster for 'Jamie Allan's AMAZE' with the tagline 'Direct from London's West End', indicating a different production origin than the specified Off-Broadway production."
+    },
+    {
+      "id": "and-juliet-tour-2024",
+      "title": "& Juliet",
+      "status": "open",
+      "venue": "North American Tour",
+      "thumbnail": "/images/shows/and-juliet-2022/thumbnail.webp",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_production"
+      ],
+      "description": "The image shows promotional art for '& Juliet' but explicitly states 'ON BROADWAY', indicating a different production than the North American Tour."
+    },
+    {
+      "id": "angela-s-mixtape-off-broadway-2026",
+      "title": "Angela's Mixtape",
+      "status": "upcoming",
+      "venue": "Signature Theatre",
+      "thumbnail": "/images/shows/angela-s-mixtape-off-broadway-2026/thumbnail.jpg",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_show"
+      ],
+      "description": "The image shows a promotional poster for 'Angela's Mixtape' but also includes 'The History of Light' and 'Eisa Davis', suggesting it's for a different production or a collection of works."
+    },
+    {
+      "id": "are-you-a-robot-off-west-end-2026",
+      "title": "Are You A Robot",
+      "status": "announced",
+      "venue": "Southwark Playhouse",
+      "thumbnail": "/images/shows/are-you-a-robot-off-west-end-2026/thumbnail.jpg",
+      "kind": "generic_image",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "other",
+      "issues": [
+        "generic_image"
+      ],
+      "description": "The image shows a computer screen with a pop-up window that says 'Verify you are human' with a checkbox. It does not show any theatrical promotional art."
+    },
+    {
+      "id": "awake-and-sing-2026",
+      "title": "Awake and Sing!",
+      "status": "upcoming",
+      "venue": "Samuel J. Friedman Theatre",
+      "thumbnail": "/images/shows/awake-and-sing-2026/thumbnail.webp",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_production"
+      ],
+      "description": "The image shows promotional art for 'Clifford Odets' Awake and Sing!' directed by Tyne Rafaeli, while the specified production is directed by Harold Clurman."
+    },
+    {
+      "id": "babylon-off-west-end-2026",
+      "title": "Babylon",
+      "status": "announced",
+      "venue": "Kiln Theatre",
+      "thumbnail": "/images/shows/babylon-off-west-end-2026/thumbnail.jpg",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_show"
+      ],
+      "description": "The image shows a poster for 'East End Babylon: The Story of the Cockney Rejects', which is a different show than 'Babylon'."
+    },
+    {
+      "id": "babymother-3-off-west-end-2026",
+      "title": "Babymother 3",
+      "status": "announced",
+      "venue": "Kiln Theatre",
+      "thumbnail": "/images/shows/babymother-3-off-west-end-2026/thumbnail.jpg",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "other",
+      "issues": [
+        "wrong_show",
+        "non_theatre_work",
+        "wrong_production"
+      ],
+      "description": "The image is a poster for a film titled 'Babymother (from ragga to riches)' and mentions 'THE FILM WIL BE FOLLOWED BY Q&A'. It also lists 'DEPTFORD CINEMA' as the venue. The show is 'Babymother 3' at Kiln Theatre."
+    },
+    {
+      "id": "berlin2027-off-west-end-2026",
+      "title": "Berlin_2027",
+      "status": "upcoming",
+      "venue": "Kiln Theatre",
+      "thumbnail": "/images/shows/berlin2027-off-west-end-2026/thumbnail.webp",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_show"
+      ],
+      "description": "The image shows a promotional poster for a play titled 'Berlin' at Kiln Theatre, but the requested show title is 'Berlin_2027'. The year '2027' is missing from the title on the poster."
+    },
+    {
+      "id": "brink-off-west-end-2026",
+      "title": "Brink",
+      "status": "announced",
+      "venue": "Almeida Theatre",
+      "thumbnail": "/images/shows/brink-off-west-end-2026/thumbnail.jpg",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "other",
+      "issues": [
+        "wrong_show"
+      ],
+      "description": "The image shows a split view of a city street, comparing an old black and white photo with a modern color photo. There is no text or imagery related to the show 'Brink'."
+    },
+    {
+      "id": "cinderella-west-end-2026",
+      "title": "Cinderella",
+      "status": "upcoming",
+      "venue": "London Palladium",
+      "thumbnail": "/images/shows/cinderella-west-end-2026/thumbnail.jpg",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_production"
+      ],
+      "description": "The image is for 'My First Ballet: Cinderella' by English National Ballet, which is a different production than the West End musical."
+    },
+    {
+      "id": "constanze-off-west-end-2026",
+      "title": "Constanze",
+      "status": "announced",
+      "venue": "Orange Tree Theatre",
+      "thumbnail": "/images/shows/constanze-off-west-end-2026/thumbnail.jpg",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "other",
+      "issues": [
+        "wrong_show"
+      ],
+      "description": "Image shows three people holding bags and sitting in front of a large deckchair, all branded with 'Frinton Summer Theatre'. This is a different theatre and production."
+    },
+    {
+      "id": "cranford-off-west-end-2026",
+      "title": "Cranford",
+      "status": "upcoming",
+      "venue": "Orange Tree Theatre",
+      "thumbnail": "/images/shows/cranford-off-west-end-2026/thumbnail.jpg",
+      "kind": "non_theatre_work",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "other",
+      "issues": [
+        "non_theatre_work"
+      ],
+      "description": "The image shows a promotional poster for the TV series 'Cranford', not a stage production. The artwork is clearly for a non-theatre work."
+    },
+    {
+      "id": "dick-whittington-adults-only-off-west-end-2026",
+      "title": "Dick Whittington: Adults Only",
+      "status": "upcoming",
+      "venue": "King's Head Theatre",
+      "thumbnail": "/images/shows/dick-whittington-adults-only-off-west-end-2026/thumbnail.jpg",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_show"
+      ],
+      "description": "The image shows a poster for 'Dick Whittington' but lacks the 'Adults Only' subtitle, which is a crucial part of the specific production's title."
+    },
+    {
+      "id": "disneys-pirates-of-the-caribbean-the-immersive-adventure-off-west-end-2027",
+      "title": "Disney's Pirates of the Caribbean: The Immersive Adventure",
+      "status": "upcoming",
+      "venue": "Secret Cinema, Greenwich Peninsula",
+      "thumbnail": "/images/shows/disneys-pirates-of-the-caribbean-the-immersive-adventure-off-west-end-2027/thumbnail.jpg",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "other",
+      "issues": [
+        "wrong_show"
+      ],
+      "description": "The image shows three people in elaborate costumes, but there is no text or visual element connecting it to 'Disney's Pirates of the Caribbean: The Immersive Adventure'. The costumes do not immediately suggest pirates or the specific Disney franchise."
+    },
+    {
+      "id": "dog-mom-off-west-end-2026",
+      "title": "Dog Mom",
+      "status": "open",
+      "venue": "Southwark Playhouse",
+      "thumbnail": "/images/shows/dog-mom-off-west-end-2026/thumbnail.jpg",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_production"
+      ],
+      "description": "The image shows a promotional poster for 'Dog Mom' by Tate Hanyok, with two women in character. The poster includes dates Aug 5 - Aug 22 and a 'Special Engagement' badge, but no venue information."
+    },
+    {
+      "id": "dolly-an-original-musical-2026",
+      "title": "Dolly: A True Original Musical",
+      "status": "upcoming",
+      "venue": "St. James Theatre",
+      "thumbnail": "/images/shows/dolly-an-original-musical-2026/thumbnail.webp",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_show"
+      ],
+      "description": "The image shows the title 'Hello, I'm Dolly An Original Musical' which is a different title than 'Dolly: A True Original Musical'."
+    },
+    {
+      "id": "drunk-romeo-and-juliet-off-broadway-2025",
+      "title": "Drunk Romeo & Juliet",
+      "status": "open",
+      "venue": "The Ruby Theatre",
+      "thumbnail": "/images/shows/drunk-romeo-and-juliet-off-broadway-2025/thumbnail.webp",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_show"
+      ],
+      "description": "The image shows the title 'Drunk Shakespeare Romeo & Juliet' which is a different show than 'Drunk Romeo & Juliet'."
+    },
+    {
+      "id": "faydra-off-broadway-2026",
+      "title": "Faydra",
+      "status": "announced",
+      "venue": "New York City Center",
+      "thumbnail": "/images/shows/faydra-off-broadway-2026/thumbnail.webp",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_production"
+      ],
+      "description": "The image shows a promotional poster for 'Faydra' by Sarah Ruhl, starring Julianne Moore, and produced by Manhattan Theatre Club. The requested show is 'Faydra' at New York City Center. While the show title matches, the producing company 'Manhattan Theatre Club' is not 'New York City Center', indicating a different production or venue."
+    },
+    {
+      "id": "foal-off-west-end-2026",
+      "title": "Foal",
+      "status": "announced",
+      "venue": "Finborough Theatre",
+      "thumbnail": "/images/shows/foal-off-west-end-2026/thumbnail.jpg",
+      "kind": "generic_image",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "other",
+      "issues": [
+        "generic_image"
+      ],
+      "description": "The image shows a group of horses in a field, which is a generic image and not promotional art for a theater production. There is no text or branding related to the show 'Foal'."
+    },
+    {
+      "id": "heeramandi-off-west-end-2026",
+      "title": "Heeramandi",
+      "status": "announced",
+      "venue": "Theatre Royal Stratford East",
+      "thumbnail": "/images/shows/heeramandi-off-west-end-2026/thumbnail.jpg",
+      "kind": "non_theatre_work",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "other",
+      "issues": [
+        "non_theatre_work"
+      ],
+      "description": "The image is about 'Breaking Down The Set Design Of Heeramandi', which suggests a behind-the-scenes or analytical look at the set design, not a promotional image for the stage production itself."
+    },
+    {
+      "id": "high-school-musical-off-west-end-2026",
+      "title": "High School Musical",
+      "status": "open",
+      "venue": "Troubadour Wembley Park Theatre",
+      "thumbnail": "/images/shows/high-school-musical-off-west-end-2026/thumbnail.webp",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_production"
+      ],
+      "description": "The image shows the title 'High School Musical' with producer credits 'Hope Mill Theatre and Chris Harper Productions with Lowry Present'. Hope Mill Theatre is a Manchester venue, not a London Off-West End venue, indicating a different production."
+    },
+    {
+      "id": "jajas-african-hair-braiding-west-end-2026",
+      "title": "Jaja's African Hair Braiding",
+      "status": "open",
+      "venue": "Lyric Hammersmith",
+      "thumbnail": "/images/shows/jajas-african-hair-braiding-west-end-2026/thumbnail.webp",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_show"
+      ],
+      "description": "The image credits Jocelyn Bioh as the author, but the production is by Jaja Nkengi."
+    },
+    {
+      "id": "jest-to-impress-off-broadway-2026",
+      "title": "Jest to Impress",
+      "status": "open",
+      "venue": "Soho Playhouse Main Stage",
+      "thumbnail": "/images/shows/jest-to-impress-off-broadway-2026/thumbnail.jpg",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_production"
+      ],
+      "description": "The image shows a promotional poster for 'Mark Simmons: Jest to Impress' which is explicitly branded as a 'UK TOUR 2026'."
+    },
+    {
+      "id": "kidnap-off-west-end-2026",
+      "title": "Kidnap",
+      "status": "announced",
+      "venue": "Park Theatre",
+      "thumbnail": "/images/shows/kidnap-off-west-end-2026/thumbnail.jpg",
+      "kind": "non_theatre_work",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "other",
+      "issues": [
+        "non_theatre_work"
+      ],
+      "description": "The image shows a poster for a film titled 'Kidnep', featuring children and adults in a comedic setting, which is not a stage production."
+    },
+    {
+      "id": "kilgallen-off-broadway-2026",
+      "title": "Kilgallen",
+      "status": "upcoming",
+      "venue": "Theater at St. Jean's",
+      "thumbnail": "/images/shows/kilgallen-off-broadway-2026/thumbnail.webp",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_production"
+      ],
+      "description": "The image shows the title 'KILGALLEN' with 'the York Theatre' logo, which is a different Off-Broadway venue than Theater at St. Jean's."
+    },
+    {
+      "id": "kramerfauci-st-anns-off-broadway-2026",
+      "title": "Kramer/Fauci",
+      "status": "open",
+      "venue": "St. Ann's Warehouse",
+      "thumbnail": "/images/shows/kramerfauci-off-broadway-2026/thumbnail.webp",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_production"
+      ],
+      "description": "The image shows a promotional poster for \"Kramer/Fauci\" at NYPL Skirball, not St. Ann's Warehouse."
+    },
+    {
+      "id": "masquerade-off-broadway-2025",
+      "title": "Masquerade",
+      "status": "open",
+      "venue": "Masquerade NYC",
+      "thumbnail": "/images/shows/masquerade-off-broadway-2025/thumbnail.webp",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_show"
+      ],
+      "description": "The image shows a promotional graphic for 'Andrew Lloyd Webber's Phantom of the Opera: Masquerade', which is a different show than 'Masquerade'."
+    },
+    {
+      "id": "miss-julie-off-broadway-2026",
+      "title": "Miss Julie",
+      "status": "upcoming",
+      "venue": "The Space at Irondale",
+      "thumbnail": "/images/shows/miss-julie-off-broadway-2026/thumbnail.jpg",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_production"
+      ],
+      "description": "The image shows a poster for 'Miss Julie' produced by The Gene Frankel Theatre, not The Space at Irondale."
+    },
+    {
+      "id": "mortal-wounds-off-west-end-2026",
+      "title": "Mortal Wounds",
+      "status": "announced",
+      "venue": "Orange Tree Theatre",
+      "thumbnail": "/images/shows/mortal-wounds-off-west-end-2026/thumbnail.jpg",
+      "kind": "non_theatre_work",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "other",
+      "issues": [
+        "non_theatre_work"
+      ],
+      "description": "The image is a movie poster for 'Mortal Wounds', not a promotional image for a stage production. It lists actors and production companies typical of a film."
+    },
+    {
+      "id": "nature-theater-of-oklahoma-pizza-or-a-door-in-the-dark-does-not-dance-off-broadway-2027",
+      "title": "Nature Theater of Oklahoma: Pizza, or A Door in the Dark Does Not Dance",
+      "status": "upcoming",
+      "venue": "NYU Skirball",
+      "thumbnail": "/images/shows/nature-theater-of-oklahoma-pizza-or-a-door-in-the-dark-does-not-dance-off-broadway-2027/thumbnail.jpg",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_show"
+      ],
+      "description": "The image shows the show title as \"Nature Theater of Oklahoma: Pizza or a Door in the Dark Does Not Dance or The Meaning of Life\", which includes extra words (\"or The Meaning of Life\") that form a meaningfully different title from the expected \"Nature Theater of Oklahoma: Pizza, or A Door in the Dark Does Not Dance\"."
+    },
+    {
+      "id": "olga-koch-fat-tom-cruise-off-west-end-2026",
+      "title": "Olga Koch Fat Tom Cruise",
+      "status": "announced",
+      "venue": "Park Theatre",
+      "thumbnail": "/images/shows/olga-koch-fat-tom-cruise-off-west-end-2026/thumbnail.jpg",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_production"
+      ],
+      "description": "The image shows the correct show title but lists 'Soho Theatre' as the venue, while the expected venue is 'Park Theatre'."
+    },
+    {
+      "id": "our-public-house-off-west-end-2026",
+      "title": "Our Public House",
+      "status": "announced",
+      "venue": "Marylebone Theatre",
+      "thumbnail": "/images/shows/our-public-house-off-west-end-2026/thumbnail.jpg",
+      "kind": "generic_image",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "other",
+      "issues": [
+        "generic_image"
+      ],
+      "description": "The image shows the interior of a bar or pub decorated for the holidays, with no text or artwork related to the play 'Our Public House'."
+    },
+    {
+      "id": "peter-pan-west-end-2026",
+      "title": "Peter Pan",
+      "status": "upcoming",
+      "venue": "Polka Theatre",
+      "thumbnail": "/images/shows/peter-pan-west-end-2026/thumbnail.jpg",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_production"
+      ],
+      "description": "The image shows a promotional poster for 'The Vaudevillians' Peter Pan, featuring drag queens and a 'Parental Advisory' label, which is not the Off-West End production at Polka Theatre."
+    },
+    {
+      "id": "raising-hare-an-evening-with-chloe-dalton-off-west-end-2026",
+      "title": "Raising Hare An Evening With Chloe Dalton",
+      "status": "announced",
+      "venue": "Kiln Theatre",
+      "thumbnail": "/images/shows/raising-hare-an-evening-with-chloe-dalton-off-west-end-2026/thumbnail.jpg",
+      "kind": "non_theatre_work",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "other",
+      "issues": [
+        "non_theatre_work"
+      ],
+      "description": "The image is a book cover for 'Raising Hare: A Memoir' by Chloe Dalton, not a promotional image for a stage production."
+    },
+    {
+      "id": "remember-your-lovers-off-west-end-2026",
+      "title": "Remember Your Lovers",
+      "status": "announced",
+      "venue": "Finborough Theatre",
+      "thumbnail": "/images/shows/remember-your-lovers-off-west-end-2026/thumbnail.jpg",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "other",
+      "issues": [
+        "wrong_production"
+      ],
+      "description": "Image shows the exterior of 'Theatre 503', which is a different venue than Finborough Theatre."
+    },
+    {
+      "id": "riki-lindhome-dead-inside-off-west-end-2026",
+      "title": "Riki Lindhome: Dead Inside",
+      "status": "announced",
+      "venue": "Soho Theatre",
+      "thumbnail": "/images/shows/riki-lindhome-dead-inside-off-west-end-2026/thumbnail.jpg",
+      "kind": "generic_image",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "other",
+      "issues": [
+        "generic_image"
+      ],
+      "description": "The image shows a woman with blonde hair in a room filled with plants, but there is no text or branding to identify it as 'Riki Lindhome: Dead Inside'."
+    },
+    {
+      "id": "rockers-off-west-end-2026",
+      "title": "Rockers",
+      "status": "announced",
+      "venue": "Kiln Theatre",
+      "thumbnail": "/images/shows/rockers-off-west-end-2026/thumbnail.jpg",
+      "kind": "non_theatre_work",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "other",
+      "issues": [
+        "non_theatre_work"
+      ],
+      "description": "The image shows a CD cover for \"Rockers Live Volume 2\" with \"On Broadway\" text, indicating it's a music album, not a stage play."
+    },
+    {
+      "id": "rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026",
+      "title": "Rosie Revere, Ada Twist, and Iggy Peck",
+      "status": "open",
+      "venue": "New Victory Theater",
+      "thumbnail": "/images/shows/rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026/thumbnail.jpg",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_show"
+      ],
+      "description": "The image shows the title 'Rosie Revere, Ada Twist, and Iggy Peck: The Questioners', which is a meaningfully different title from 'Rosie Revere, Ada Twist, and Iggy Peck'."
+    },
+    {
+      "id": "sam-nicoresti-baby-doomer-off-west-end-2026",
+      "title": "Sam Nicoresti: Baby Doomer",
+      "status": "announced",
+      "venue": "Soho Theatre",
+      "thumbnail": "/images/shows/sam-nicoresti-baby-doomer-off-west-end-2026/thumbnail.jpg",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_show"
+      ],
+      "description": "The image shows a man holding a microphone with the text 'The Bridge House Theatre Comedy Festival' which does not match the show title 'Sam Nicoresti: Baby Doomer'."
+    },
+    {
+      "id": "south-asian-scratch-off-west-end-2026",
+      "title": "South Asian Scratch",
+      "status": "announced",
+      "venue": "Theatre Royal Stratford East",
+      "thumbnail": "/images/shows/south-asian-scratch-off-west-end-2026/thumbnail.jpg",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_show"
+      ],
+      "description": "The image shows a poster for \"Freelance Royalty Scratch Night\" as part of \"South Asian Summer\", which is not the same as \"South Asian Scratch\"."
+    },
+    {
+      "id": "the-cherry-orchard-west-end-2026",
+      "title": "The Cherry Orchard",
+      "status": "open",
+      "venue": "Harold Pinter Theatre",
+      "thumbnail": "/images/shows/the-cherry-orchard-west-end-2026/thumbnail.jpeg",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_production"
+      ],
+      "description": "The image shows promotional art for 'The Cherry Orchard' by Roundabout Theatre Company, which is a US-based company, not a West End production."
+    },
+    {
+      "id": "the-matter-of-the-disappearance-of-michael-anthony-smith-jr-off-broadway-2026",
+      "title": "The Matter of the Disappearance of Michael Anthony Smith, Jr.",
+      "status": "upcoming",
+      "venue": "Theatre Row",
+      "thumbnail": "/images/shows/the-matter-of-the-disappearance-of-michael-anthony-smith-jr-off-broadway-2026/thumbnail.jpg",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_show"
+      ],
+      "description": "The image shows a stylized illustration of a city skyline with silhouettes of people, one in a spotlight with crutches, and two women dancing on rooftops. There is no text to confirm the show title."
+    },
+    {
+      "id": "the-odyssey-off-west-end-2026",
+      "title": "The Odyssey",
+      "status": "announced",
+      "venue": "Kiln Theatre",
+      "thumbnail": "/images/shows/the-odyssey-off-west-end-2026/thumbnail.webp",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_production"
+      ],
+      "description": "The image shows a promotional poster for 'The Odyssey: A New Adaptation' by Troubadour Stageworks, which is a different producing company than Kiln Theatre."
+    },
+    {
+      "id": "the-unbelievers-off-broadway-2026",
+      "title": "The Unbelievers",
+      "status": "previews",
+      "venue": "New York City Center",
+      "thumbnail": "/images/shows/the-unbelievers-off-broadway-2026/thumbnail.webp",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_production"
+      ],
+      "description": "The image shows promotional art for 'The Unbelievers' by Manhattan Theatre Club, not New York City Center."
+    },
+    {
+      "id": "waitress-tour-2026",
+      "title": "Waitress",
+      "status": "open",
+      "venue": "North American Tour",
+      "thumbnail": "/images/shows/waitress-tour-2026/thumbnail.webp",
+      "kind": "wrong_show",
+      "errored": false,
+      "confidence": "high",
+      "imageType": "promotional_art",
+      "issues": [
+        "wrong_production"
+      ],
+      "description": "The image shows promotional art for 'Waitress' with a '10th Anniversary' banner and 'EST. 2016', indicating it's for a 2026 production, not the 2026 tour."
+    }
+  ],
+  "errors": []
+}
