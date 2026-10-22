@@ -995,5 +995,5 @@ test('BRO-5975: undated announced show is not year-mismatched against a page for
   const url = 'https://playbill.com/production/cat-on-a-hot-tin-roof-music-box-theatre-vault-0000002570';
   const base = { id: 'cat-on-a-hot-tin-roof-2027', category: 'broadway', venue: null, openingDate: null };
   assert.equal(compareShow({ ...base, status: 'announced' }, parsed, url).mismatches.length, 0);
-  assert.equal(compareShow({ ...base, status: 'open', openingDate: '2027-04-01' }, parsed, url).mismatches.length, 1);
+  assert.equal(compareShow({ ...base, status: 'open', openingDate: '2027-04-01' }, parsed, url).mismatches.some(m => m.field === 'opening-year'), true);
 });
