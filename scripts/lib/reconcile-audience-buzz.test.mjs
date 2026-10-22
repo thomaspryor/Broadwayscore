@@ -106,3 +106,31 @@ test('BRO-5337: without a base the old refill behavior is unchanged', () => {
   reconcileAudienceBuzz(current, remote, { liveIds: live() });
   assert.equal(current.shows['show-8'].sources.showScore.score, 90);
 });
+
+test('BRO-5337: a deletion that -X ours reverted (source back in current) is re-applied from base minus ours', () => {
+  const base = { shows: { 'show-9': { sources: { showScore: { score: 90 }, mezzanine: { score: 70 } } } } };
+  const ours = { shows: { 'show-9': { sources: { mezzanine: { score: 70 } } } } };
+  const current = { shows: { 'show-9': { sources: { showScore: { score: 90 }, mezzanine: { score: 70 } } } } };
+  const remote = { shows: { 'show-9': { sources: { showScore: { score: 91 }, mezzanine: { score: 70 } } } } };
+  const r = reconcileAudienceBuzz(current, remote, { liveIds: live(), base, ours });
+  assert.equal(current.shows['show-9'].sources.showScore, undefined);
+  assert.ok(current.shows['show-9'].sources.mezzanine);
+  assert.deepEqual(r.skippedDeleted, ['show-9/showScore']);
+});
+
+test('BRO-5337: a whole key ours deleted is removed again when the rebase brought it back', () => {
+  const base = { shows: { 'show-10': { sources: {} } } };
+  const current = { shows: { 'show-10': { sources: {} } } };
+  const remote = { shows: { 'show-10': { sources: {} } } };
+  reconcileAudienceBuzz(current, remote, { liveIds: live(), base, ours: { shows: {} } });
+  assert.equal(current.shows['show-10'], undefined);
+});
+
+test('BRO-5337: tombstoned sources are not double counted and orphans still drop with a base', () => {
+  const base = { shows: { 'show-11': { sources: { showScore: { score: 90 } } } } };
+  const current = { shows: { 'show-11': { sources: {}, sourcesRemoved: { showScore: 'x' } } } };
+  const remote = { shows: { 'show-11': { sources: { showScore: { score: 90 } } }, 'orphan-z': { sources: {} } } };
+  const r = reconcileAudienceBuzz(current, remote, { liveIds: live(), base, ours: current });
+  assert.equal(current.shows['show-11'].sources.showScore, undefined);
+  assert.deepEqual(r.skippedOrphans, ['orphan-z']);
+});
