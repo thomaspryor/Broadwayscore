@@ -4,8 +4,10 @@ name: Opening Night Express
 # Runs gather → collect → push → rebuild → deploy inline in strict sequence.
 # Eliminates the concurrent-CI data race (issue #9) that caused 5+ opening night failures.
 #
-# BEFORE RUNNING: This workflow cancels competing orchestrator/poller runs automatically.
-# The existing opening-night-orchestrator.yml will be paused for the duration.
+# BEFORE RUNNING: This workflow cancels competing orchestrator runs and pollers/scoring that
+# cover THIS show (same show or auto/unscoped); runs scoped to another show are left alone
+# (BRO-5890/BRO-5952, see scripts/lib/express-preemption.js). A running orchestrator does not
+# re-check the ORCHESTRATOR_PAUSED lease mid-loop, so it must be cancelled, not just paused.
 # When Express completes, the orchestrator resumes on its next cron.
 #
 # AUTO-FIRE (task #1349): update-show-status.yml's daily transition check dispatches
