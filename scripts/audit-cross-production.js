@@ -13,6 +13,7 @@ const fs = require('fs');
 const path = require('path');
 const { urlYearFromPath } = require('./lib/review-guards');
 const { venueSlug } = require('./lib/venue-classification');
+const { normalizeRoutingTitle } = require('./lib/routing-title');
 
 // ── CLI flags ────────────────────────────────────────────────────────────────
 // --dry-run: additionally emit data/audit/same-title-confusion.json (the
@@ -26,10 +27,11 @@ const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const showsData = require('../data/shows.json');
 const shows = showsData.shows;
 
-// Build title → [show objects] map
+// Match the runtime router's sibling relation when measuring contamination.
 const byTitle = {};
 shows.forEach(s => {
-  const base = s.title.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim();
+  const base = normalizeRoutingTitle(s.title);
+  if (!base) return;
   if (!byTitle[base]) byTitle[base] = [];
   byTitle[base].push(s);
 });

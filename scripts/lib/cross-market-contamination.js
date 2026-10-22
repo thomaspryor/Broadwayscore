@@ -27,15 +27,9 @@ const NEAR_SIBLING_DAYS = 30;
 // ...but more than this many days from its OWN show's opening is class-A.
 const FAR_OWN_SHOW_DAYS = 180;
 
-/**
- * Normalize a show title for sibling grouping. Same-title shows (different ids)
- * are the sibling productions the predicate compares against. Shared so the
- * audit's sibling map and fix-circular's are grouped identically — a divergence
- * here would silently change which shows count as siblings.
- */
-function normalizeShowTitle(t) {
-  return String(t || '').toLowerCase().trim().replace(/[!?.,'"]/g, '');
-}
+// Use the runtime router's title relation for the audit and fix-circular's
+// sibling maps, so all three measure the same production families.
+const { normalizeRoutingTitle: normalizeShowTitle } = require('./routing-title');
 
 /**
  * Build a Map<showId, epoch[]> of same-title siblings' opening epochs.

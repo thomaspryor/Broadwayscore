@@ -45,14 +45,8 @@ const SIBLING_CLOSE_DAYS = 30;         // same-market: sibling opening this clos
 const CROSS_MARKET_SIBLING_CLOSE_DAYS = 60; // cross-market: wider window (e.g. oh-mary BW→WE at 32d)
 const CURRENT_FAR_DAYS = 90;           // current show's opening this far from review → eligible
 
-/**
- * Normalize a title for sibling grouping (same rules as review-file-writer.js).
- */
 const { foldDiacritics } = require('./title-match');
-
-function normalizeTitle(title) {
-  return String(title || '').toLowerCase().trim().replace(/[!?.,'"]/g, '');
-}
+const { normalizeRoutingTitle: normalizeTitle } = require('./routing-title');
 
 /**
  * Build a sibling index from a shows array. For each show, record its
