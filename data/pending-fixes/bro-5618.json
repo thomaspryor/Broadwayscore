@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5618",
   "planId": "8ecc8628-a020-440e-99e6-610ce7488436",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-22T15:19:21.000Z",
   "submitter": {
     "name": null,
@@ -31,5 +31,19 @@
         "description": "Lock the clear so detectors skip it"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T17:52:06.004Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/northjerseycom--robert-feldberg.json wrongProduction: null -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/northjerseycom--robert-feldberg.json wrongProductionManualClear: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
