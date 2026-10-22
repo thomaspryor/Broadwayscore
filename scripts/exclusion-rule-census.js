@@ -44,7 +44,7 @@ const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 
-const { explainExclusion } = require('./lib/review-guards');
+const { explainExclusion, explainShowLevelExclusion } = require('./lib/review-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { assertCorpusScanned } = require('./lib/corpus-scan-guard');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
@@ -113,6 +113,13 @@ function loadLeasedShowIds() {
   }
 }
 
+// Show ids the rebuild skips before reading any file (explainShowLevelExclusion).
+function wholeShowSkippedIds(showById, showIds) {
+  const out = new Set();
+  for (const id of showIds) if (explainShowLevelExclusion(showById[id])) out.add(id);
+  return out;
+}
+
 function numArg(argv, name, fallback) {
   const raw = (argv.find((a) => a.startsWith(`--${name}=`)) || '').split('=')[1];
   const n = raw === undefined ? NaN : Number(raw);
@@ -152,9 +159,12 @@ function loadShowsById(showsJsonPath) {
 
 /**
  * Walk one or all review-texts show dirs and call explainExclusion() on every
- * review file, returning one {showId, file, rule} record per file.
+ * review file, returning one {showId, file, rule} record per file. With
+ * rebuildExcludedByShow (BRO-5129) each record also carries alignedRule: the
+ * same call given that show's rebuild list, used only for the mirror-vs-rebuild
+ * comparison.
  */
-function scanCorpus({ reviewTextsDir, showById, showFilter }) {
+function scanCorpus({ reviewTextsDir, showById, showFilter, rebuildExcludedByShow = null }) {
   const showDirs = showFilter ? [showFilter] : listShowDirs(reviewTextsDir);
   const records = [];
   for (const showId of showDirs) {
@@ -175,7 +185,13 @@ function scanCorpus({ reviewTextsDir, showById, showFilter }) {
         continue;
       }
       const rule = explainExclusion(data, show, filePath);
-      records.push({ showId, file, rule });
+      const rebuildList = rebuildExcludedByShow && Object.prototype.hasOwnProperty.call(rebuildExcludedByShow, showId)
+        ? rebuildExcludedByShow[showId] : null;
+      if (rebuildList) {
+        records.push({ showId, file, rule, alignedRule: explainExclusion(data, show, filePath, { rebuildExclusions: rebuildList }) });
+      } else {
+        records.push({ showId, file, rule });
+      }
     }
   }
   return records;
@@ -197,7 +213,10 @@ function main() {
   }
 
   const showById = loadShowsById(SHOWS_JSON);
-  const records = scanCorpus({ reviewTextsDir: REVIEW_TEXTS_DIR, showById, showFilter });
+  // Loaded before the scan so each file's mirror verdict can consult its show's
+  // list for the passes a per-file mirror cannot see (BRO-5129).
+  const rebuildLists = compareRebuild ? loadRebuildExclusions(AUDIT_DIR) : null;
+  const records = scanCorpus({ reviewTextsDir: REVIEW_TEXTS_DIR, showById, showFilter, rebuildExcludedByShow: rebuildLists });
   // Full-corpus runs must fail loud on a vacuous 0-scanned rather than report
   // a clean census (task #1063 pattern, scripts/lib/corpus-scan-guard.js).
   // --show scans a single dir and can legitimately be empty (new show, no
@@ -233,11 +252,17 @@ function main() {
 
   let comparison = null;
   if (compareRebuild) {
-    const allLists = loadRebuildExclusions(AUDIT_DIR);
+    const allLists = rebuildLists;
     const processedShowIds = loadProcessedShowIds(REVIEWS_JSON);
     const leased = loadLeasedShowIds();
     for (const id of leased) { delete allLists[id]; processedShowIds.delete(id); }
     if (leased.size) console.error(`exclusion census: ${leased.size} leased show(s) left out of the comparison`);
+    // BRO-5129: an upcoming / Broadway-previews show is skipped before any file
+    // is read, yet carried-over rows can keep it in reviews.json; its files
+    // were never judged, so comparing them invents disagreements.
+    const wholeShowSkipped = wholeShowSkippedIds(showById, [...processedShowIds, ...Object.keys(allLists)]);
+    for (const id of wholeShowSkipped) { delete allLists[id]; processedShowIds.delete(id); }
+    if (wholeShowSkipped.size) console.error(`exclusion census: ${wholeShowSkipped.size} show(s) the rebuild skips wholesale left out of the comparison`);
     const rebuildExcludedByShow = showFilter
       ? (allLists[showFilter] ? { [showFilter]: allLists[showFilter] } : {})
       : allLists;
@@ -286,4 +311,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { scanCorpus, loadShowsById, loadRebuildExclusions, loadProcessedShowIds };
+module.exports = { scanCorpus, loadShowsById, loadRebuildExclusions, loadProcessedShowIds, wholeShowSkippedIds };

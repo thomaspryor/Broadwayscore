@@ -157,7 +157,14 @@ function formatDriftReport(diff, { limit = 5 } = {}) {
  * shows present in reviews.json, whose files with no exclusion entry were
  * included). Shows skipped wholesale (no output, no list) are not compared.
  *
- * @param {Array<{showId: string, file: string, rule: string|null}>} records
+ * BRO-5129: a record may carry `alignedRule`, explainExclusion() run with the
+ * rebuild's own list (opts.rebuildExclusions) so the cross-file dedup and
+ * score-state passes a per-file mirror cannot see are not counted as
+ * disagreements. When present it is what gets compared; `rule` (the plain
+ * mirror) still feeds buildCensus, so the committed per-rule counts stay
+ * continuous.
+ *
+ * @param {Array<{showId: string, file: string, rule: string|null, alignedRule?: string|null}>} records
  * @param {{ rebuildExcludedByShow: Record<string, Record<string, string>>,
  *           processedShowIds?: Set<string>|string[], exampleLimit?: number }} opts
  *   rebuildExcludedByShow: { showId: { file: statKey } }
@@ -178,7 +185,9 @@ function compareToRebuildExclusions(records, { rebuildExcludedByShow = {}, proce
   let mirrorOnly = 0;
   let rebuildOnly = 0;
 
-  for (const { showId, file, rule } of records) {
+  for (const rec of records) {
+    const { showId, file } = rec;
+    const rule = rec.alignedRule !== undefined ? rec.alignedRule : rec.rule;
     const showList = Object.prototype.hasOwnProperty.call(rebuildExcludedByShow, showId)
       ? rebuildExcludedByShow[showId] : null;
     if (!showList && !processed.has(showId)) {
