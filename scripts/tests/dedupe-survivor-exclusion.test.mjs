@@ -122,10 +122,17 @@ test('order: an unknown-outlet shadow moves after its named-outlet copy', () => 
 test('syndication shield follows what was really emitted', () => {
   const p = ['chicagotribune--chris-jones.json'];
   const never = () => { throw new Error('fallback must not run once the primary was processed'); };
-  assert.deepEqual(syndicationShieldDecision({ primaryFiles: p, processed: new Set(p), emitted: new Set(), fallback: never }), { skip: false, basis: 'none-emitted' });
-  assert.deepEqual(syndicationShieldDecision({ primaryFiles: p, processed: new Set(p), emitted: new Set(p), fallback: never }), { skip: true, basis: 'emitted' });
-  assert.deepEqual(syndicationShieldDecision({ primaryFiles: [], processed: new Set(), emitted: new Set(), fallback: never }), { skip: false, basis: 'no-primary' });
-  assert.deepEqual(syndicationShieldDecision({ primaryFiles: p, processed: new Set(), emitted: new Set(), fallback: () => true }), { skip: true, basis: 'fallback' });
+  const none = new Set();
+  assert.deepEqual(syndicationShieldDecision({ primaryFiles: p, processed: new Set(p), emitted: none, released: new Set(p), fallback: never }), { skip: false, basis: 'none-emitted' });
+  assert.deepEqual(syndicationShieldDecision({ primaryFiles: p, processed: new Set(p), emitted: new Set(p), released: none, fallback: never }), { skip: true, basis: 'emitted' });
+  assert.deepEqual(syndicationShieldDecision({ primaryFiles: [], processed: none, emitted: none, released: none, fallback: never }), { skip: false, basis: 'no-primary' });
+  assert.deepEqual(syndicationShieldDecision({ primaryFiles: p, processed: none, emitted: none, released: none, fallback: () => true }), { skip: true, basis: 'fallback' });
+  // Dropped before dedup finished (lost dedup to another copy, or its own
+  // flags): the static predicate over just those files decides.
+  const seen = [];
+  assert.deepEqual(syndicationShieldDecision({ primaryFiles: p, processed: new Set(p), emitted: none, released: none, fallback: (f) => { seen.push(...f); return true; } }), { skip: true, basis: 'dropped-before-dedup' });
+  assert.deepEqual(seen, p);
+  assert.deepEqual(syndicationShieldDecision({ primaryFiles: p, processed: new Set(p), emitted: none, released: none, fallback: () => false }), { skip: false, basis: 'dropped-before-dedup' });
 });
 
 test('unknown-outlet shadow: only a released named copy stops shielding', () => {
@@ -183,4 +190,21 @@ test('rebuild: a scored Tribune primary still wins and the Daily News copy is sk
   });
   assert.equal(r.included, 1);
   assert.deepEqual(r.excluded.map(e => [e.file, e.reason]), [['nydailynews--chris-jones.json', 'skippedSyndicated']]);
+});
+
+test('rebuild: a primary that lost dedup to another copy still shields the Daily News copy', { skip: !haveShow && 'data/shows.json lacks the fixture show' }, () => {
+  // A second Tribune file under a variant byline wins the fuzzy-critic dedup,
+  // so the real primary is processed but never emitted or released. The
+  // review already ships once; the Daily News copy must not count Chris
+  // Jones twice (ship-check finding on the first BRO-5901 cut).
+  const scored = { assignedScore: 84, llmScore: { score: 84, confidence: 'high' } };
+  const r = rebuild({
+    'chicagotribune--c-jones.json': { ...TRIB, ...scored, criticName: 'C. Jones', url: `${TRIB.url}?amp=1`, fullText: body(24) },
+    'chicagotribune--chris-jones.json': { ...TRIB, ...scored },
+    // Syndicated copies are often re-edited, so fingerprint dedup cannot be
+    // relied on to catch this one.
+    'nydailynews--chris-jones.json': { ...NYDN, fullText: NYDN.fullText.replace(/haunted house/g, 'spooky home').replace(/stagecraft builds dread/g, 'design keeps everyone on edge') },
+  });
+  assert.equal(r.included, 1);
+  assert.ok(r.excluded.some(e => e.file === 'nydailynews--chris-jones.json' && e.reason === 'skippedSyndicated'), JSON.stringify(r.excluded));
 });

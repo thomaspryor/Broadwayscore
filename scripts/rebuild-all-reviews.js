@@ -4300,7 +4300,8 @@ showDirs.forEach(showId => {
             primaryFiles: primaryFilesFor(file, { criticName: criticSynd, outletKey: outletSynd }, files),
             processed: processedFiles,
             emitted: emittedFiles,
-            fallback: () => hasLiveSyndicationPrimary(showDir, syndPrimaries, criticSynd, { fileNames: allJsonFiles }),
+            released: releasedFiles,
+            fallback: (prims) => hasLiveSyndicationPrimary(showDir, syndPrimaries, criticSynd, { fileNames: prims }),
           });
           if (shield.basis === 'fallback') stats.syndicationShieldFallback = (stats.syndicationShieldFallback || 0) + 1;
           if (shield.skip) {

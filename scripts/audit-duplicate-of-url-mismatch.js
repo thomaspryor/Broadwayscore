@@ -318,7 +318,9 @@ function audit() {
         if (typeof data.duplicateTextOf === 'string' && data.duplicateTextOf.endsWith('.json')
             && data.duplicateTextOf !== file && load(data.duplicateTextOf)) {
           const { cycleFound, chain } = findDuplicateOfCycle(file, load, files.length);
-          if (cycleFound) {
+          // Members only: a tail pointing into the cycle is a plain duplicate
+          // and its target's own entry already reports the loop.
+          if (cycleFound && chain.indexOf(chain[chain.length - 1]) === 0) {
             mismatches.push({
               showId: path.basename(showDir),
               file,
@@ -495,7 +497,7 @@ function main() {
   console.log(`Found ${mismatches.length} duplicateOf/crossOutletDuplicate URL mismatch(es):\n`);
   for (const m of dupMismatches) {
     console.log(`  ${m.showId}/${m.file}`);
-    console.log(`    → duplicateOf: ${m.duplicateOf}  (${m.reason})`);
+    console.log(`    → ${m.field === 'duplicateTextOf' ? 'duplicateTextOf' : 'duplicateOf'}: ${m.duplicateOf}  (${m.reason})`);
     console.log(`    → our url:     ${m.url}`);
     console.log(`    → sibling url: ${m.siblingUrl}`);
     if (m.chain) console.log(`    → chain:       ${m.chain.join(' -> ')} -> ...`);

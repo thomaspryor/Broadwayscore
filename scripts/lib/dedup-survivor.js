@@ -136,20 +136,30 @@ function orderAfterDependencies(files, depsOf) {
 }
 
 /**
- * Should a deferring file (syndicated secondary, unknown-outlet shadow) be
- * skipped in favour of the files it defers to?
- * Once every primary file has been processed, the answer is its real fate:
- * skip only if one was emitted. If a primary has not been processed yet (it
- * should not happen after orderAfterDependencies) fall back to the
- * static on-disk predicate.
- * @param {{primaryFiles:string[], processed:Set<string>, emitted:Set<string>, fallback:()=>boolean}} args
- * @returns {{skip:boolean, basis:'emitted'|'none-emitted'|'no-primary'|'fallback'}}
+ * Should a syndicated secondary be skipped in favour of its primary files?
+ * Once every primary file has been processed, the answer follows their real
+ * fate, the same split as shadowShieldDecision below:
+ *  - a primary was emitted: skip (the review ships under the primary);
+ *  - every primary won dedup and then died at a later gate (released): keep
+ *    the secondary, nothing else carries the review (BRO-5901);
+ *  - some primary was dropped before dedup finished: it either lost dedup to
+ *    another copy of the same review (still shield, or the critic counts
+ *    twice) or was dropped for its own flags. The static on-disk predicate
+ *    over just those files tells the two apart.
+ * If a primary has not been processed yet (it should not happen after
+ * orderAfterDependencies) fall back to the static predicate over all of them.
+ * @param {{primaryFiles:string[], processed:Set<string>, emitted:Set<string>, released:Set<string>, fallback:(files:string[])=>boolean}} args
+ * @returns {{skip:boolean, basis:'emitted'|'none-emitted'|'dropped-before-dedup'|'no-primary'|'fallback'}}
  */
-function syndicationShieldDecision({ primaryFiles, processed, emitted, fallback }) {
+function syndicationShieldDecision({ primaryFiles, processed, emitted, released, fallback }) {
   if (!primaryFiles.length) return { skip: false, basis: 'no-primary' };
   if (primaryFiles.some(f => emitted.has(f))) return { skip: true, basis: 'emitted' };
-  if (primaryFiles.every(f => processed.has(f))) return { skip: false, basis: 'none-emitted' };
-  return { skip: !!fallback(), basis: 'fallback' };
+  if (primaryFiles.every(f => processed.has(f))) {
+    const dropped = primaryFiles.filter(f => !released.has(f));
+    if (!dropped.length) return { skip: false, basis: 'none-emitted' };
+    return { skip: !!fallback(dropped), basis: 'dropped-before-dedup' };
+  }
+  return { skip: !!fallback(primaryFiles), basis: 'fallback' };
 }
 
 /**

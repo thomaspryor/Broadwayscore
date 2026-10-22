@@ -139,3 +139,13 @@ test('audit: a pure duplicateTextOf cycle is reported for every member', () => {
   const cycles = json.mismatches.filter(m => m.reason === 'duplicateOf-cycle');
   assert.deepEqual(cycles.map(m => [m.file, m.field]).sort(), Object.keys(CYCLE3).map(f => [f, 'duplicateTextOf']));
 });
+
+test('audit: a duplicateTextOf tail into a cycle is not reported as a cycle member', () => {
+  const { texts } = mkTree({ ...CYCLE3, 'deltareview--dee-delta.json': rec('deltareview', 'Delta Review', 'Dee Delta', 'alphareview--ann-alpha.json') });
+  const r = spawnSync('node', [path.join(ROOT, 'scripts', 'audit-duplicate-of-url-mismatch.js'), '--json'], {
+    cwd: ROOT, encoding: 'utf8', env: { ...process.env, REVIEW_TEXTS_DIR: texts },
+  });
+  const json = JSON.parse(r.stdout.slice(r.stdout.indexOf('{')));
+  const files = json.mismatches.filter(m => m.reason === 'duplicateOf-cycle').map(m => m.file).sort();
+  assert.deepEqual(files, Object.keys(CYCLE3));
+});
