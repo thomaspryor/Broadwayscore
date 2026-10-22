@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-10-22T01:43:12.879Z",
+  "runDate": "2026-10-22T01:49:26.711Z",
   "config": {
-    "batchSize": 2,
-    "maxReviews": 2,
+    "batchSize": 10,
+    "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "lincoln-in-the-bardo-off-broadway-2026,cosi-fan-tutte-off-broadway-2026",
+    "showFilter": "innocence-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 2,
+    "failed": 1,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -28,37 +28,36 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
+    "tier1Attempts": 0,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 2,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 2,
+    "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 2,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 2,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeePageCredits": 2,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 1.2,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
     "processed": 0,
-    "failed": 2,
+    "failed": 1,
     "shows": [
-      "cosi-fan-tutte-off-broadway-2026",
-      "lincoln-in-the-bardo-off-broadway-2026"
+      "innocence-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -68,14 +67,12 @@
   },
   "processed": [],
   "failed": [
-    "lincoln-in-the-bardo-off-broadway-2026/bachtrack--susan-sempleski.json",
-    "cosi-fan-tutte-off-broadway-2026/bachtrack--susan-stempleski.json"
+    "innocence-off-broadway-2026/bachtrack--kurt-gottschalk.json"
   ],
   "cumulativeResumedState": {
     "processed": [],
     "failed": [
-      "lincoln-in-the-bardo-off-broadway-2026/bachtrack--susan-sempleski.json",
-      "cosi-fan-tutte-off-broadway-2026/bachtrack--susan-stempleski.json"
+      "innocence-off-broadway-2026/bachtrack--kurt-gottschalk.json"
     ]
   },
   "tierDetails": {
@@ -91,7 +88,7 @@
   },
   "failuresByOutlet": {
     "Bachtrack": {
-      "count": 2,
+      "count": 1,
       "domain": "bachtrack.com",
       "hasCredentials": false,
       "isPaywalled": false,
