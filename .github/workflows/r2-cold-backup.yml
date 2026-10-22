@@ -73,9 +73,19 @@ jobs:
           ls -lh broadway-scorecard-data.bundle
           df -h / | tail -1
 
+      - name: Bundle BroadwayScorecard-app (iOS)
+        # BRO-5884: the iOS app repo was not backed up. Fails loudly if GH_PAT cannot read it.
+        run: |
+          git clone --mirror "https://x-access-token:${GH_PAT}@github.com/thomaspryor/BroadwayScorecard-app.git" app.git
+          git -C app.git bundle create ../broadwayscorecard-app.bundle --all
+          git -C app.git bundle verify ../broadwayscorecard-app.bundle
+          rm -rf app.git
+          ls -lh broadwayscorecard-app.bundle
+          df -h / | tail -1
+
       - name: Encrypt bundles (GPG symmetric, AES256)
         run: |
-          for f in broadwayscore-web broadway-review-texts broadway-scorecard-data; do
+          for f in broadwayscore-web broadway-review-texts broadway-scorecard-data broadwayscorecard-app; do
             gpg --batch --yes --pinentry-mode loopback --passphrase "$GPG_PASSPHRASE" \
               --cipher-algo AES256 --symmetric \
               --output "${f}.bundle.gpg" "${f}.bundle"

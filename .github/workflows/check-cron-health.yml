@@ -54,6 +54,9 @@ jobs:
             # that silently stops is undetectable until the day you need it.
             # 184h = weekly cadence + 16h cron-lag cushion.
             "r2-cold-backup.yml|184|R2 Cold Backup"
+            # BRO-5884: daily encrypted Supabase export (accounts, reviews, lists, watchlists, fantasy) to R2.
+            # 36h = daily cadence + 12h cron-lag cushion.
+            "supabase-backup.yml|36|Supabase Backup to R2"
             # Monday 07:00 UTC weekly full-history secret scan. Deliberately CRITICAL
             # rather than digest-only: this workflow exists BECAUSE a live Buffer token
             # sat in the public repo ~4 months with nothing scanning for it. A secret
