@@ -63,6 +63,7 @@ function main() {
   const flagged = allResults.filter((r) => r.flags.length > 0);
   const ranked = [...flagged].sort((a, b) => b.contentionScore - a.contentionScore);
   const mixedBundles = flagged.filter((r) => r.mixedSafetyBundle);
+  const crossStepStranding = flagged.filter((r) => r.crossStepStranding);
   const fallbackEarlyTriggerUnreachable = allResults
     .filter((r) => r.flags.includes('fallback-early-trigger-unreachable'))
     .sort((a, b) => (a.fundableAttempts - b.fundableAttempts) || (b.fallbackAfterAttempts - a.fallbackAfterAttempts));
@@ -74,7 +75,7 @@ function main() {
     console.error(`::error::${jobTimeoutViolations.length} push-with-retry.sh call site(s) have a job timeout below the summed step budgets (job-timeout-margin-undersized): ${[...new Set(jobTimeoutViolations.map((r) => `${r.file}:${r.job}`))].join(', ')}. Raise the job's timeout-minutes (see node scripts/audit-push-retry-budgets.js).`);
   }
 
-  const report = { totalFiles: files.length, filesWithPushCalls, totalCalls: allResults.length, flaggedCount: flagged.length, mixedSafetyBundleCount: mixedBundles.length, fallbackEarlyTriggerUnreachableCount: fallbackEarlyTriggerUnreachable.length, underParsedFiles, ranked: [...ranked],
+  const report = { totalFiles: files.length, filesWithPushCalls, totalCalls: allResults.length, flaggedCount: flagged.length, mixedSafetyBundleCount: mixedBundles.length, crossStepStrandingCount: crossStepStranding.length, fallbackEarlyTriggerUnreachableCount: fallbackEarlyTriggerUnreachable.length, underParsedFiles, ranked: [...ranked],
     residualJobTimeoutViolationCount: residualJobTimeoutViolations.length, residualJobTimeoutViolations };
   // Annotations are advisory even under --fail-on-job-timeout (whose catch
   // rethrows), so a failure here must only log, never fail the gate.
@@ -122,6 +123,16 @@ function main() {
       console.log(`      apiFallbackSafe file(s) losing their fallback: ${r.mixedSafetyBundleSafeFiles.join(', ')}`);
       console.log(`      bundled with disqualifying file(s):            ${r.mixedSafetyBundleDisqualifyingFiles.join(', ')}`);
       console.log('      fix: split into separate git-add-existing.sh + push-with-retry.sh calls (see opening-night-broadcast.yml\'s "Commit orphan-rescore-requeue state" step for the reference pattern)\n');
+    }
+  }
+
+  // cross-step-stranding (BRO-2580): advisory, own section (a reorder/split fix).
+  if (crossStepStranding.length > 0) {
+    console.log(`⛓️  ${crossStepStranding.length} call site(s) stay fallback-eligible but run AFTER a soft-fail (or failure-tolerant) push that stages a disqualifying file in the same job; that earlier commit can strand and disqualify this call's Git Data API fallback (the BRO-2538 cascade):\n`);
+    for (const r of crossStepStranding) {
+      console.log(`  ${r.file} :: ${r.job} / "${r.step}"`);
+      console.log(`      earlier soft-fail step(s): ${r.crossStepStrandingEarlierSteps.join(', ')}`);
+      console.log('      fix: run the all-apiFallbackSafe step BEFORE the soft-fail one (see data-health-check.yml, BRO-2538) or move it to its own job\n');
     }
   }
 
