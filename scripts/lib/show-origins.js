@@ -16,6 +16,9 @@ const SOURCE_TYPES = ['film', 'tv', 'book', 'play', 'music-catalog', 'other', 'o
 
 const CONFIDENCE = ['high', 'medium', 'low'];
 
+/** An original work's story: about real people or events, or made up (BRO-5871). */
+const ORIGINAL_KINDS = ['true-story', 'invented'];
+
 /** Season 2000-01 onward (seasons start July 1, as in the Season Report). */
 const FIRST_OPENING_DATE = '2000-07-01';
 
@@ -133,6 +136,7 @@ module.exports = {
   PATH_STAGES,
   SOURCE_TYPES,
   CONFIDENCE,
+  ORIGINAL_KINDS,
   FIRST_OPENING_DATE,
   inScopeShows,
   normalizeOrigin,

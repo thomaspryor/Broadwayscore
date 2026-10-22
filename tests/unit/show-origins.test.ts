@@ -29,6 +29,9 @@ test('route and source buckets', () => {
   assert.equal(sourceBucket('tv'), 'screen');
   assert.equal(sourceBucket('play'), 'other');
   assert.equal(sourceBucket('music-catalog'), 'music-catalog');
+  assert.equal(sourceBucket('original', 'true-story'), 'true-story');
+  assert.equal(sourceBucket('original', 'invented'), 'invented');
+  assert.equal(sourceBucket('original'), 'invented');
   assert.equal(recoupRate({ recouped: 1, total: 2, recoupedShows: [] }), null);
   assert.equal(recoupRate({ recouped: 1, total: 4, recoupedShows: [] }), 0.25);
 });
@@ -99,7 +102,7 @@ test('mix by era, recoupment over settled seasons, revivals apart', () => {
   assert.deepEqual(rr.london, [0, 0, 0, 0]);
   const screen = f.sourceRecoup.find((r) => r.id === 'screen')!;
   assert.deepEqual(screen.all.recoupedShows.map((s) => s.slug), ['a', 'e']);
-  assert.equal(f.sourceRecoup.find((r) => r.id === 'original')!.all.recoupedShows.length, 0); // losses never named
+  assert.equal(f.sourceRecoup.find((r) => r.id === 'invented')!.all.recoupedShows.length, 0); // losses never named
 
   assert.deepEqual(f.showList.map((s) => s.slug), ['f', 'e', 'd', 'c', 'b', 'a']);
 });

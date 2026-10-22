@@ -16,6 +16,8 @@ export interface OriginRecord {
   sourceTitle: string | null;
   confidence: 'high' | 'medium' | 'low';
   evidence: string[];
+  originalKind?: OriginalKind | null;
+  originalKindNote?: string | null;
 }
 
 export const ROUTE_BUCKETS = [
@@ -33,7 +35,8 @@ export const SOURCE_BUCKETS = [
   { id: 'book', label: 'Book' },
   { id: 'music-catalog', label: 'Song catalog (jukebox)' },
   { id: 'other', label: 'Other adaptation' },
-  { id: 'original', label: 'Original story' },
+  { id: 'true-story', label: 'Original: true story' },
+  { id: 'invented', label: 'Original: invented story' },
 ] as const;
 export type SourceBucketId = (typeof SOURCE_BUCKETS)[number]['id'];
 
@@ -50,9 +53,13 @@ export function routeBucket(path: PathStage[]): RouteBucketId {
   return path.length === 1 ? path[0] : 'multiple';
 }
 
-export function sourceBucket(source: SourceType): SourceBucketId {
+export type OriginalKind = 'true-story' | 'invented';
+
+/** Original works split by story: about real people or events, or made up (BRO-5871). Unlabeled originals count as invented. */
+export function sourceBucket(source: SourceType, originalKind?: OriginalKind | null): SourceBucketId {
   if (source === 'film' || source === 'tv') return 'screen';
   if (source === 'play' || source === 'other') return 'other';
+  if (source === 'original') return originalKind === 'true-story' ? 'true-story' : 'invented';
   return source;
 }
 
@@ -125,6 +132,7 @@ export interface OriginListShow {
   sourceTitle: string | null;
   pathNote: string | null;
   evidence: string | null;
+  originalKind: OriginalKind | null;
 }
 
 export interface OriginShowInput extends RecoupShowInput {
@@ -248,7 +256,7 @@ export function buildOriginFindings(
       if (!currentSeason || getSeason(s.openingDate) !== currentSeason) continue;
       const isMusical = s.type === 'musical';
       const route = routeBucket(o.path);
-      const src = sourceBucket(o.source);
+      const src = sourceBucket(o.source, o.originalKind);
       currentTotal++;
       routeMix.find((r) => r.id === route)!.current++;
       sourceMix.find((r) => r.id === src)!.current++;
@@ -269,7 +277,7 @@ export function buildOriginFindings(
     else plays++;
     eraTotals[era]++;
     const route = routeBucket(o.path);
-    const src = sourceBucket(o.source);
+    const src = sourceBucket(o.source, o.originalKind);
     routeMix.find((r) => r.id === route)!.counts[era]++;
     sourceMix.find((r) => r.id === src)!.counts[era]++;
     if (isMusical) {
@@ -290,6 +298,7 @@ export function buildOriginFindings(
       showList.push({
         slug: s.slug, title: s.title, openingDate: s.openingDate, type: s.type ?? '', route, source: o.source,
         sourceTitle: o.sourceTitle, pathNote: o.pathNote, evidence: o.evidence[0] ?? null,
+        originalKind: o.originalKind ?? null,
       });
     }
 

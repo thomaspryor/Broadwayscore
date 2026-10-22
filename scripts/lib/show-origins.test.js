@@ -57,3 +57,11 @@ test('second opinions: labels only, agreement ignores stop order and film vs TV'
   assert.equal(originsAgree({ path: [], source: 'original' }, { path: ['regional-us'], source: 'original' }), false);
   assert.equal(originsAgree({ path: [], source: 'film' }, { path: [], source: 'book' }), false);
 });
+
+test('every original record in data/show-origins.json says true story or invented (BRO-5871)', () => {
+  // sourceBucket counts an unlabeled original as invented; run scripts/classify-original-kind.js after labeling new shows.
+  const { ORIGINAL_KINDS } = require('./show-origins');
+  const data = require('../../data/show-origins.json');
+  const missing = Object.entries(data.shows).filter(([, r]) => r.source === 'original' && !ORIGINAL_KINDS.includes(r.originalKind)).map(([id]) => id);
+  assert.deepEqual(missing, []);
+});

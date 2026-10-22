@@ -106,7 +106,7 @@ function keyFindings(f: OriginFindings): FindingItem[] {
 }
 
 function ShowLine({ show }: { show: OriginListShow }) {
-  const src = SOURCE_LABEL.get(sourceBucket(show.source)) ?? show.source;
+  const src = SOURCE_LABEL.get(sourceBucket(show.source, show.originalKind)) ?? show.source;
   return (
     <li className="py-1.5 border-b border-white/5 last:border-b-0 min-w-0 [overflow-wrap:anywhere]">
       <div className="flex flex-wrap items-baseline justify-between gap-x-3">
@@ -196,8 +196,9 @@ export default function PathToBroadwayPage() {
             <h2 className="text-xl font-bold text-white mb-1">What They&apos;re Based On</h2>
             <p className="text-sm text-gray-400 mb-3">
               Every new production by its source. Musicals built on an existing song catalog count as jukebox unless
-              they adapt a movie or book. A play or musical about real events counts as an original story unless it
-              adapts a specific book or film.
+              they adapt a movie or book. Original works are split by story: a true story is about real people or
+              events (Come From Away, Oslo) without adapting a specific book or film; an invented story is made up
+              (Dear Evan Hansen, Stereophonic).
             </p>
             <OriginMixTable rows={f.sourceMix} totals={f.eraTotals} current={cur} testId="source-mix" />
             <h3 className="text-lg font-semibold text-white mt-5 mb-2">Musicals only</h3>
