@@ -71,6 +71,8 @@ function pressNightPurposeForShow(show, nowMs = Date.now()) {
  */
 function emptySerpAuthoritativeForGather({ openingNight, show, nowMs = Date.now() } = {}) {
   if (!openingNight) return true;
+  // Independent kill switch: restores today's accept-empty behaviour without a rollback.
+  if (process.env.GATHER_EMPTY_SERP_RETRY_DISABLED === '1') return true;
   return pressNightPurposeForShow(show, nowMs) === '';
 }
 

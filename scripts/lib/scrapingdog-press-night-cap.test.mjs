@@ -153,3 +153,15 @@ test('emptySerpAuthoritativeForGather: false only for an opening-night gather of
   assert.equal(sp.emptySerpAuthoritativeForGather({ openingNight: true, show, nowMs: Date.parse('2026-12-01T00:00:00Z') }), true);
   assert.equal(sp.emptySerpAuthoritativeForGather({ openingNight: true, show: undefined, nowMs: t }), true);
 });
+
+test('emptySerpAuthoritativeForGather: GATHER_EMPTY_SERP_RETRY_DISABLED=1 restores accept-empty', () => {
+  const show = { id: 'x-2026', category: 'broadway', openingDate: '2026-10-29' };
+  const t = Date.parse('2026-10-29T23:00:00Z');
+  process.env.GATHER_EMPTY_SERP_RETRY_DISABLED = '1';
+  try {
+    assert.equal(sp.emptySerpAuthoritativeForGather({ openingNight: true, show, nowMs: t }), true);
+  } finally {
+    delete process.env.GATHER_EMPTY_SERP_RETRY_DISABLED;
+  }
+  assert.equal(sp.emptySerpAuthoritativeForGather({ openingNight: true, show, nowMs: t }), false);
+});

@@ -92,3 +92,29 @@ test('another show (or an off-night call) is unaffected by a capped show', async
   process.env.SCRAPER_SPEND_PURPOSE = '';
   assert.ok((await run(true)).results !== null);
 });
+
+test('press night: an EMPTY answer cached earlier (authoritative gather) does not win', async () => {
+  const query = `"Stale Empty Show" review ${q++}`;
+  const r1 = await chain(query, 'sb-key', 'bd-key', log, null, false, undefined, undefined, true);
+  assert.equal(r1.provider, 'scrapingdog-empty');
+  const afterFirst = calls.length;
+  const r2 = await chain(query, 'sb-key', 'bd-key', log, null, false, undefined, undefined, false);
+  assert.ok(calls.length > afterFirst, 'press-night ask must go live, not read the cached empty');
+  assert.ok(!String(r2.provider).endsWith('-cached'));
+});
+
+test('fallback attribution accepts the press-night-cap skip reason (no throw)', () => {
+  const fa = require('./fallback-attribution.js');
+  assert.doesNotThrow(() => fa.fallbackFromLabel('brightdata', { skipReason: 'press-night-cap' }));
+});
+
+test('consultScrapingdog press-night block logs once per show-night tag, not once per process', () => {
+  const rows = Array.from({ length: 1400 }, () => JSON.stringify({ provider: 'brightdata', credits: null, purpose: TAG }));
+  fs.writeFileSync(process.env.SCRAPER_SPEND_LEDGER_PATH, rows.join('\n') + '\n');
+  const other = sp.pressNightPurpose('show-c-2026', '2026-10-29');
+  fs.appendFileSync(process.env.SCRAPER_SPEND_LEDGER_PATH, rows.map((r) => r.replace(TAG, other)).join('\n') + '\n');
+  const first = (tag) => caps.consultScrapingdog({ env: { ...process.env, SCRAPER_SPEND_PURPOSE: tag } }).firstBlock;
+  assert.equal(first(TAG), true);
+  assert.equal(first(TAG), false);
+  assert.equal(first(other), true);
+});
