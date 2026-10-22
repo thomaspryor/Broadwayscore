@@ -54,7 +54,7 @@
 
 const { pointsAtFile, planCanonicalPointerClear, applyCanonicalPointerClear } = require('./lib/canonical-duplicate-pointers');
 const { quarantineBody } = require('./lib/quarantine-body');
-const { guardianContentToResult } = require('./lib/guardian-api-result');
+const { guardianContentToResult, titleHtmlFor, apiHeadlineLeadsWithShow } = require('./lib/guardian-api-result');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -3831,7 +3831,7 @@ async function fetchReviewText(review) {
   if (url && url.includes('theguardian.com') && process.env.GUARDIAN_API_KEY) {
     try {
       const articlePath = url.replace(/^https?:\/\/(www\.)?theguardian\.com\//, '').replace(/\/$/, '');
-      const apiUrl = `https://content.guardianapis.com/${articlePath}?api-key=${process.env.GUARDIAN_API_KEY}&show-fields=body,starRating,bodyText`;
+      const apiUrl = `https://content.guardianapis.com/${articlePath}?api-key=${process.env.GUARDIAN_API_KEY}&show-fields=body,starRating,bodyText,headline`;
       const resp = await fetch(apiUrl, { signal: AbortSignal.timeout(60000) });
       if (resp.ok) {
         const json = await resp.json();
@@ -7505,10 +7505,14 @@ async function processReview(review) {
       const trustHtmlTitle = !UNRELIABLE_TITLE_OUTLETS.has((review.outletId || '').toLowerCase());
       const sanity = validateContentMentionsShow(
         result.text,
-        trustHtmlTitle ? (result.html || null) : null,
+        trustHtmlTitle ? titleHtmlFor(result) : null,
         canonicalTitle,
         review.showId
       );
+      if (!sanity.valid && result.method === 'guardian-api' && apiHeadlineLeadsWithShow(result.pageTitle, canonicalTitle)) {
+        console.log(`  ↪ Mention check (${sanity.reason}) waived: Guardian API headline leads with the show title ("${result.pageTitle}")`);
+        sanity.valid = true;
+      }
       if (!sanity.valid && !laneHeld(review, 'headlineBackstop')) {
         console.log(`  ✗ URL→CONTENT MISMATCH: ${sanity.reason}`);
         if (sanity.htmlTitle) console.log(`    HTML <title>: "${sanity.htmlTitle}"`);
@@ -7792,10 +7796,14 @@ async function processReview(review) {
           const retryTrustHtmlTitle = !UNRELIABLE_TITLE_OUTLETS.has((review.outletId || '').toLowerCase());
           const retrySanity = validateContentMentionsShow(
             retryResult.text,
-            retryTrustHtmlTitle ? (retryResult.html || null) : null,
+            retryTrustHtmlTitle ? titleHtmlFor(retryResult) : null,
             retryCanonicalTitle,
             review.showId
           );
+          if (!retrySanity.valid && retryResult.method === 'guardian-api' && apiHeadlineLeadsWithShow(retryResult.pageTitle, retryCanonicalTitle)) {
+            console.log(`  ↪ Mention check (${retrySanity.reason}) waived: Guardian API headline leads with the show title`);
+            retrySanity.valid = true;
+          }
           if (!retrySanity.valid && !laneHeld(review, 'headlineBackstop')) {
             console.log(`  ✗ URL→CONTENT MISMATCH (retry): ${retrySanity.reason}`);
             recordFailedFetch(review, 'url_content_mismatch', {
