@@ -188,7 +188,8 @@
  *     Wrap it as `git_net <secs> clone ...` (scripts/lib/git-net-timeout.sh).
  *     Scans workflows and composite actions. Detector and its limits:
  *     findUnboundedGitClones() in scripts/lib/audit-workflow-hygiene-rules.js.
- *     ADVISORY ONLY (CLAUDE.md §19).
+ *     Clone only: git fetch/pull/push stay out of scope (push already goes
+ *     through push-with-retry.sh). ADVISORY ONLY (CLAUDE.md §19).
  *
  * Exemption annotations (add inside the workflow YAML — anywhere in the file):
  *   # hygiene-full-blobs-ok: <reason>     — (on the checkout step) skip full-blob-checkout check

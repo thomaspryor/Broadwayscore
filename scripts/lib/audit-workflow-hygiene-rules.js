@@ -1220,8 +1220,11 @@ const UNBOUNDED_CLONE_OK_RE = /hygiene-unbounded-clone-ok:/;
 function findUnboundedGitClones(raw) {
   const lines = raw.split('\n');
   return runLineMatches(raw, GIT_CLONE_RE).filter(({ lineNum, text }) => {
-    const body = text.replace(/^\s*(?:-\s+)?run:\s*/, '').trim();
-    if (/^(?:echo|printf)\b/.test(body)) return false;
+    // A trailing `# ...` comment is dropped so its words (e.g. "timeout")
+    // cannot vouch for the command.
+    const body = text.replace(/^\s*(?:-\s+)?run:\s*/, '').replace(/\s+#.*$/, '').trim();
+    // A message only when nothing is chained after it (`echo x && git clone` runs).
+    if (/^(?:echo|printf)\b[^;&|]*$/.test(body)) return false;
     if (/--mirror\b|--bare\b/.test(body)) return false;
     if (/\bgit_net\b/.test(body)) return false;
     if (/\btimeout\b[^|;&]*\bgit\b/.test(body)) return false;

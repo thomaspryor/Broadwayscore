@@ -24,6 +24,8 @@ test('flags bare clones, including git -c ... clone and inline run', () => {
   assert.equal(findUnboundedGitClones(wf('git clone --depth 1 https://x/y.git d')).length, 1);
   assert.equal(findUnboundedGitClones(wf('if git -c "http.x.extraheader=$h" clone -q https://x/y d; then :; fi')).length, 1);
   assert.equal(findUnboundedGitClones('jobs:\n  a:\n    steps:\n      - run: git clone https://x/y.git d\n').length, 1);
+  assert.equal(findUnboundedGitClones(wf('echo cloning && git clone https://x/y.git d')).length, 1);
+  assert.equal(findUnboundedGitClones(wf('git clone https://x/y.git d  # see timeout docs')).length, 1);
 });
 
 test('bounded, archival, message and exempt lines pass', () => {

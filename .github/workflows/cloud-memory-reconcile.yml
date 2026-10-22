@@ -65,7 +65,11 @@ jobs:
             git -C "$dir" config http.https://github.com/.extraheader "$header"
             echo "ok=true" >> "$GITHUB_OUTPUT"
           else
-            reason="could not clone thomaspryor/claude-config with REVIEW_TEXTS_TOKEN: $(tail -1 "$RUNNER_TEMP/clone.err" | tr -d '\r' | cut -c1-200)"
+            rc=$?
+            # -q plus a timeout leaves clone.err empty, so name the timeout.
+            detail=$(tail -1 "$RUNNER_TEMP/clone.err" | tr -d '\r' | cut -c1-200)
+            [ "$rc" -eq 124 ] && detail="timed out after 120s${detail:+ ($detail)}"
+            reason="could not clone thomaspryor/claude-config with REVIEW_TEXTS_TOKEN: ${detail:-exit $rc}"
             echo "::error::$reason"
             echo "ok=false" >> "$GITHUB_OUTPUT"
             echo "reason=$reason" >> "$GITHUB_OUTPUT"
