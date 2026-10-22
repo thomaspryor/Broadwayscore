@@ -7,6 +7,7 @@
  *   - a twin with a different byline on the same URL (a mislabeled or stale file): the published row is the other critic's.
  */
 const { sameCritic } = require('./cloned-excerpt-guard');
+const { hasPrimaryRating } = require('./published-score-star-band');
 
 const unknownCritic = (n) => !n || /^(unknown|staff|n\/a)$/i.test(String(n).trim());
 
@@ -19,10 +20,18 @@ function differentCritic(fileName, pubName) {
   return !sameCritic({ criticName: fileName }, { criticName: pubName });
 }
 
-/** Whether review-text file `data` may be judged against the published row `pub` (null = no join). */
-function canJudgePublished(data, pub) {
-  if (!pub || !data || data.duplicateOf) return false;
-  return !differentCritic(data.criticName, pub.criticName);
+/**
+ * Whether review-text file `data` may be judged against the published row `pub` (null = no join).
+ * `siblings`: the other files joined to the same published row. A duplicate or different-byline file is skipped ONLY
+ * when a sibling can stand in for it (non-duplicate, same critic, carries the outlet's own rating); otherwise it may be
+ * the only file holding the rating (the canonical twin often has url:null or no rating) and a real violation would hide.
+ */
+function canJudgePublished(data, pub, siblings = []) {
+  if (!pub || !data) return false;
+  const shadowed = data.duplicateOf || differentCritic(data.criticName, pub.criticName);
+  if (!shadowed) return true;
+  const standIn = siblings.some((s) => s && s !== data && !s.duplicateOf && !differentCritic(s.criticName, pub.criticName) && hasPrimaryRating(s));
+  return !standIn;
 }
 
 module.exports = { differentCritic, canJudgePublished };

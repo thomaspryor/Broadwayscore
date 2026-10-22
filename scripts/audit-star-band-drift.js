@@ -52,6 +52,17 @@ try {
   }
 } catch { /* no reviews.json: the published check reports 0 joined rows, which the summary line makes visible */ }
 
+// Files sharing one published key, so a duplicate/twin is skipped only when a sibling stands in for it (BRO-5927).
+const siblingsByKey = new Map();
+for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json'))) {
+  let d;
+  try { d = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { continue; }
+  if (!d.url) continue;
+  const k = `${path.basename(path.dirname(f))}|${canonicalizeUrlForDedup(d.url)}`;
+  if (!siblingsByKey.has(k)) siblingsByKey.set(k, []);
+  siblingsByKey.get(k).push({ criticName: d.criticName, duplicateOf: d.duplicateOf, originalRating: d.originalRating, originalScore: d.originalScore, starRating: d.starRating });
+}
+
 const out = { scanned: 0, alreadyQueued: 0, unanchored: [], outOfBand: [], publishedJoined: 0, publishedOutOfBand: [], publishedQueued: [] };
 for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json'))) {
   const showId = path.basename(path.dirname(f));
@@ -63,8 +74,9 @@ for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json')
   const rel = `${showId}/${path.basename(f)}`;
   // Published-score check first: it applies in every market, unlike the anchored-market inventory below.
   // Duplicates and different-byline twins of a URL are not the published record (BRO-5927, published-join-eligibility.js).
-  const joined = d.url ? published.get(`${showId}|${canonicalizeUrlForDedup(d.url)}`) : null;
-  const pub = canJudgePublished(d, joined) ? joined : null;
+  const key = d.url ? `${showId}|${canonicalizeUrlForDedup(d.url)}` : null;
+  const joined = key ? published.get(key) : null;
+  const pub = canJudgePublished(d, joined, key ? siblingsByKey.get(key) : []) ? joined : null;
   if (pub) {
     out.publishedJoined++;
     const v = publishedScoreViolation(d, pub.score, { tol: TOL });

@@ -11,10 +11,17 @@ test('different critics are detected, typos and truncations are not', () => {
   assert.strictEqual(differentCritic(null, 'Holly O\'Mahony'), false);
 });
 
-test('duplicates and different-byline twins are not judged against the published score', () => {
+test('a duplicate or different-byline twin is skipped only when a rated sibling stands in', () => {
   const pub = { score: 89, criticName: 'Dominic Cavendish' };
-  assert.strictEqual(canJudgePublished({ criticName: 'Dominic Cavendish' }, pub), true);
-  assert.strictEqual(canJudgePublished({ criticName: 'Sam Marsden' }, pub), false);
-  assert.strictEqual(canJudgePublished({ criticName: 'Dominic Cavendish', duplicateOf: 'x.json' }, pub), false);
-  assert.strictEqual(canJudgePublished({ criticName: 'Dominic Cavendish' }, null), false);
+  const canonRated = { criticName: 'Dominic Cavendish', originalScore: '3/5' };
+  const canonUnrated = { criticName: 'Dominic Cavendish', originalScore: null };
+  const dup = { criticName: 'Dominic Cavendish', duplicateOf: 'x.json', originalScore: '3/5' };
+  const twin = { criticName: 'Sam Marsden', originalScore: '3/5' };
+  assert.strictEqual(canJudgePublished(canonRated, pub, [canonRated, dup]), true);
+  assert.strictEqual(canJudgePublished(dup, pub, [canonRated, dup]), false);
+  assert.strictEqual(canJudgePublished(twin, pub, [canonRated, twin]), false);
+  // the only rating lives on the duplicate: it must still be judged, or a real violation hides
+  assert.strictEqual(canJudgePublished(dup, pub, [canonUnrated, dup]), true);
+  assert.strictEqual(canJudgePublished(twin, pub, [twin]), true);
+  assert.strictEqual(canJudgePublished(canonRated, null, []), false);
 });
