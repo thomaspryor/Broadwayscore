@@ -1,7 +1,7 @@
 {
   "system": "workflow repeat-failure",
   "status": "error",
-  "lastChecked": "2026-10-22T18:20:03.451Z",
+  "lastChecked": "2026-10-22T19:15:16.697Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -9,7 +9,12 @@
     {
       "name": "Workflow repeat-failure: Test Suite",
       "status": "error",
-      "message": "Test Suite failed 5 times in the last 24h — likely broken, not transient."
+      "message": "Test Suite failed 7 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Deploy to Vercel",
+      "status": "warn",
+      "message": "Deploy to Vercel failed 3 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
     }
   ]
 }
