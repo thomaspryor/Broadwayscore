@@ -319,7 +319,10 @@
     "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "birthright-off-broadway-2026/the-recs--unknown.json",
     "relics-west-end-2026/rhombus-rota--unknown.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json"
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theatermania--zachary-stewart.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/culturesauce--thom-geier.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--roma-torre.json"
   ],
   "failed": [
     "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json",
@@ -507,7 +510,22 @@
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--louise-griffin.json",
     "sting-west-end-2026/ew--unknown.json",
-    "sting-west-end-2026/guardian--anya-ryan.json"
+    "sting-west-end-2026/guardian--anya-ryan.json",
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
+    "other-desert-cities-2026/cbsnews--unknown.json",
+    "school-pictures-off-broadway-2026/airmail--air-mail.json",
+    "the-dog-show-come-sit-stay-off-broadway-2026/talkalmanmusic--unknown.json",
+    "two-girls-off-broadway-2026/airmail--air-mail.json",
+    "two-girls-off-broadway-2026/howdidimissthat--unknown.json",
+    "midnight-off-broadway-2026/timeout--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "midnight-off-broadway-2026/openingnight--edward-a-kliszus.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/timeout--unknown.json",
+    "fish-off-broadway-2026/timeout--unknown.json",
+    "fish-off-broadway-2026/exeunt-magazine--unknown.json",
+    "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -652,7 +670,10 @@
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
       "birthright-off-broadway-2026/the-recs--unknown.json",
       "relics-west-end-2026/rhombus-rota--unknown.json",
-      "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json"
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
+      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theatermania--zachary-stewart.json",
+      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/culturesauce--thom-geier.json",
+      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--roma-torre.json"
     ],
     "amp": [
       "data/review-texts/lincoln-in-the-bardo-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
@@ -667,7 +688,8 @@
       "data/review-texts/dirty-dancing-tour-2026/nytimes--michael-paulson.json",
       "dirty-dancing-tour-2026/nytimes--michael-paulson.json",
       "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json",
-      "the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json"
+      "the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json",
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -842,7 +864,7 @@
     ]
   },
   "startTime": "2026-10-22T09:18:56.460Z",
-  "lastProcessed": "sting-west-end-2026/guardian--anya-ryan.json",
+  "lastProcessed": "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-10-22T09:19:53.724Z",
@@ -882,6 +904,76 @@
       "t": "2026-10-22T11:05:30.844Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-22T12:35:47.787Z",
+      "event": "bb-session",
+      "session": "f3de0180",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-22T12:36:20.932Z",
+      "event": "bb-session",
+      "session": "218ccc29",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-22T12:36:21.390Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-22T12:36:29.841Z",
+      "event": "bb-session",
+      "session": "7b2d4f24",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-22T12:36:30.265Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-22T12:38:14.461Z",
+      "event": "bb-session",
+      "session": "981ca932",
+      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
+    },
+    {
+      "t": "2026-10-22T12:39:14.675Z",
+      "event": "bb-session",
+      "session": "5e3e8990",
+      "url": "https://www.cbsnews.com/video/other-desert-cities-on-broadway-family-secrets-lai"
+    },
+    {
+      "t": "2026-10-22T12:40:05.998Z",
+      "event": "bb-session",
+      "session": "0c001f41",
+      "url": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-s"
+    },
+    {
+      "t": "2026-10-22T12:40:13.483Z",
+      "event": "bb-session",
+      "session": "4e8e8409",
+      "url": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-s"
+    },
+    {
+      "t": "2026-10-22T12:40:56.661Z",
+      "event": "bb-session",
+      "session": "f101fdfe",
+      "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07"
+    },
+    {
+      "t": "2026-10-22T12:41:05.391Z",
+      "event": "bb-session",
+      "session": "7f292148",
+      "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07"
+    },
+    {
+      "t": "2026-10-22T12:42:53.229Z",
+      "event": "bb-session",
+      "session": "eb8e8244",
+      "url": "https://openingnight.online/midnight-off-broadway-review-todrick-halls-new-music"
     }
   ],
   "recoveredAfterFailure": [
