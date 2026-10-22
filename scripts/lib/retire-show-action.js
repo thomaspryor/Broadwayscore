@@ -93,8 +93,12 @@ function sameRun(kept, row, ticketDup) {
 // National Opera" vs "Angel's Bone"). Accepted only with an https evidenceUrl (the venue
 // listing) and: undated announced/upcoming stray, kept row open and dated, identical
 // closing date. House, market and zero reviews are checked by the caller.
+// House and company words ("English National Opera", "Theatre", "Live") say where a
+// show plays, not which show it is, so they never count as a shared title word.
+const GENERIC_TITLE_WORDS = new Set(['opera', 'national', 'english', 'royal', 'theatre', 'theater', 'company', 'live', 'gala', 'concert', 'special', 'musical', 'show', 'london', 'west', 'broadway', 'with', 'from', 'that', 'this', 'tour']);
+
 function titleStems(t) {
-  return new Set(normalizeTitle(t).split(/[^a-z0-9]+/).filter(w => w.length >= 4).map(w => w.replace(/s$/, '')));
+  return new Set(normalizeTitle(t).split(/[^a-z0-9]+/).filter(w => w.length >= 4 && !GENERIC_TITLE_WORDS.has(w)).map(w => w.replace(/s$/, '')));
 }
 
 function evidenceDuplicate(kept, row, evidenceUrl) {
