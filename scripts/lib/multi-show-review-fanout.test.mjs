@@ -328,9 +328,9 @@ test('New Yorker extractor reads every body block (second show was dropped befor
   assert.match(text, /Cherry Orchard/);
 });
 
-test('every review-text writer calls the fan-out (collector, URL ingest, backfill)', () => {
+test('every review-text writer calls the fan-out (collector, URL ingests, backfill)', () => {
   const root = path.join(path.dirname(new URL(import.meta.url).pathname), '..');
-  for (const f of ['collect-review-texts.js', 'ingest-review-from-url.js', 'split-multi-show-roundups.js']) {
+  for (const f of ['collect-review-texts.js', 'ingest-review-from-url.js', 'ingest-urls.js', 'split-multi-show-roundups.js']) {
     const src = fs.readFileSync(path.join(root, f), 'utf8');
     assert.match(src, /applyMultiShowFanoutToFile\(/, `${f} must call applyMultiShowFanoutToFile`);
   }

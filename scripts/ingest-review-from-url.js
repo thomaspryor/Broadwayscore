@@ -714,9 +714,11 @@ if (!show) {
     try {
       const fan = applyMultiShowFanoutToFile(result.filepath, { reviewTextsDir });
       if (fan.applied) {
+        // Only a child this run wrote: a skipped, held or refused one is not ours to push or score.
+        const WROTE_CHILD = new Set(['create', 'fill']);
         for (const c of fan.children) {
           const childFile = path.join(reviewTextsDir, c.showId, path.basename(result.filepath));
-          if (fs.existsSync(childFile)) { landPaths.push(childFile); landShowIds.push(c.showId); }
+          if (WROTE_CHILD.has(c.action) && fs.existsSync(childFile)) { landPaths.push(childFile); landShowIds.push(c.showId); }
         }
         console.log(`  ↔ Multi-show article (${fan.strategy}): own section kept, ${fan.children.map((c) => `${c.showId}=${c.action}`).join(', ')}`);
       }
