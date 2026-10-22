@@ -61,6 +61,10 @@ jobs:
             # is invisible by construction — a scanner that never runs looks identical
             # to a scanner finding nothing. 184h = weekly cadence + 16h cron-lag cushion.
             "gitleaks.yml|184|Secret Scan (gitleaks)"
+            # BRO-5883: code mirror to GitLab, every 6h. Timeouts conclude "cancelled" and
+            # skip failure()-gated notifies, so staleness (last success) is the real alarm.
+            # 18h = 6h cadence + 12h cushion (audit-cron-health-coverage.js CUSHION_HOURS).
+            "mirror-to-gitlab.yml|18|GitLab Code Mirror"
             "opening-night-orchestrator.yml|25|Opening Night Orchestrator"
             "update-show-status.yml|36|Update Show Status"
             "rebuild-reviews.yml|36|Rebuild Reviews"

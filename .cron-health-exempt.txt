@@ -98,7 +98,6 @@ generate-theater-tips.yml  # quarterly tips refresh; stale tips stay valid
 lighthouse-post-deploy.yml  # daily Lighthouse report; a stale day delays performance findings only
 mirror-data-to-gitlab.yml  # 6-hourly backup mirror; a gap only ages the off-site backup
 mirror-review-texts-to-gitlab.yml  # 6-hourly backup mirror; a gap only ages the off-site backup
-mirror-to-gitlab.yml  # 6-hourly backup mirror; a gap only ages the off-site backup
 newsletter-draft.yml  # weekly newsletter draft for the owner to review; nothing sends without them
 newsletter-draft-refresh.yml
 newsletter-state-reconcile.yml  # daily dedup-state reconcile; a missed day is reconciled by the next

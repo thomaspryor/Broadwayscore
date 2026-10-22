@@ -8,15 +8,24 @@ on:
 
 concurrency:
   group: gitlab-mirror
-  cancel-in-progress: true
+  # false: a self-heal redispatch (check-cron-health.yml, noon) must not cancel a
+  # healthy in-flight run; the 6-hourly cadence leaves no queueing pressure.
+  cancel-in-progress: false
 
 jobs:
   mirror:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # BRO-5883: 3 scheduled runs hit the old 30-min cap mid-clone (last success: 21 min).
+    timeout-minutes: 90
     steps:
       - name: Mirror clone from GitHub
-        run: git clone --mirror "https://github.com/thomaspryor/Broadwayscore.git" repo.git
+        # BRO-5883: only heads and tags are pushed, so fetch only those instead of
+        # `clone --mirror`, which also pulls every refs/pull/* ref (459) and the
+        # objects only they reach. Every branch and tag is still mirrored.
+        run: |
+          git init --bare repo.git
+          git -C repo.git fetch --no-tags "https://github.com/thomaspryor/Broadwayscore.git" \
+            '+refs/heads/*:refs/heads/*' '+refs/tags/*:refs/tags/*'
 
       - name: Unprotect main branch (allow force push)
         run: |
@@ -36,23 +45,6 @@ jobs:
           GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
           GITLAB_NAMESPACE: ${{ vars.GITLAB_NAMESPACE }}
 
-      - name: Checkout for notify action
-        if: failure()
-        uses: actions/checkout@v5
-        with:
-          sparse-checkout: |
-            .github/actions/notify-failure
-            scripts/lib/discord-notify.js
-
-      - name: Notify on failure
-        if: failure()
-        uses: ./.github/actions/notify-failure
-        with:
-          title: 'GitLab Mirror Failed'
-          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
-          resend_api_key: ${{ secrets.RESEND_API_KEY }}
-          owner_email: ${{ secrets.OWNER_EMAIL }}
-
       - name: Verify mirror is in sync
         run: |
           GITHUB_SHA=$(cd repo.git && git rev-parse refs/heads/main)
@@ -65,3 +57,20 @@ jobs:
         env:
           GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
           GITLAB_NAMESPACE: ${{ vars.GITLAB_NAMESPACE }}
+
+      - name: Checkout for notify action
+        if: failure() || cancelled()
+        uses: actions/checkout@v5
+        with:
+          sparse-checkout: |
+            .github/actions/notify-failure
+            scripts/lib/discord-notify.js
+
+      - name: Notify on failure
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'GitLab Mirror Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
