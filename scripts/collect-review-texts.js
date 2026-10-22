@@ -54,7 +54,7 @@
 
 const { pointsAtFile, planCanonicalPointerClear, applyCanonicalPointerClear } = require('./lib/canonical-duplicate-pointers');
 const { quarantineBody } = require('./lib/quarantine-body');
-const { guardianFieldsToResult } = require('./lib/guardian-api-result');
+const { guardianContentToResult } = require('./lib/guardian-api-result');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -3835,14 +3835,17 @@ async function fetchReviewText(review) {
       const resp = await fetch(apiUrl, { signal: AbortSignal.timeout(60000) });
       if (resp.ok) {
         const json = await resp.json();
-        const result = guardianFieldsToResult(json.response?.content?.fields);
+        const { resolveShowMeta } = require('./lib/show-identity');
+        const { result, reason } = guardianContentToResult(json.response?.content, { show: resolveShowMeta(review.showId) });
         if (result) {
           console.log(`  ✓ Guardian Content API: ${result.text.length} chars` +
-            (result.starRating ? ` (${result.starRating}/5 stars)` : ''));
+            (result.apiScore ? ` (${result.apiScore.originalScore})` : ''));
           return result;
         }
+        console.log(`  ⚠ Guardian API: ${reason}, falling back to scraper chain...`);
+      } else {
+        console.log(`  ⚠ Guardian API HTTP ${resp.status}, falling back to scraper chain...`);
       }
-      console.log(`  ⚠ Guardian API returned no usable body, falling back to scraper chain...`);
     } catch (e) {
       console.log(`  ⚠ Guardian API error: ${e.message}, falling back to scraper chain...`);
     }
@@ -4548,7 +4551,7 @@ function mapSourceMethod(method) {
   return map[method] || method;
 }
 
-async function updateReviewJson(review, text, validation, archivePath, method, attempts, archiveData = {}, html = '', contentVerification = null) {
+async function updateReviewJson(review, text, validation, archivePath, method, attempts, archiveData = {}, html = '', contentVerification = null, apiScore = null) {
   const data = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
   // BRO-1431: snapshot the body BEFORE any mutation below, so the stale-flag
   // neutralization call (after contentTier reclassification) can tell "this
@@ -4920,16 +4923,20 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   if (!data.originalScoreCleared && (!data.originalScore || hasUnverifiedSSScore) && (html || text)) {
     const outletId = data.outletId || review.outletId || '';
 
+    // A rating the publisher's own API returned (Guardian starRating) beats
+    // reading it back out of the text, so skip regex + LLM when one came in.
     // Old regex extraction (for comparison logging)
     // BRO-5223: the show title lets the fallthrough refuse another show's stars.
-    const regexResult = extractScore(html, text, outletId, require('./lib/known-show-titles').showTitleForId(data.showId || review.showId));
+    const regexResult = apiScore ? null : extractScore(html, text, outletId, require('./lib/known-show-titles').showTitleForId(data.showId || review.showId));
 
     // New LLM extraction (primary — async)
     let llmResult = null;
-    try {
-      llmResult = await extractExplicitScore({ text, html, outletId });
-    } catch (e) {
-      console.log(`    ⚠ LLM score extraction failed: ${e.message}`);
+    if (!apiScore) {
+      try {
+        llmResult = await extractExplicitScore({ text, html, outletId });
+      } catch (e) {
+        console.log(`    ⚠ LLM score extraction failed: ${e.message}`);
+      }
     }
 
     // Log disagreements between old and new
@@ -4942,7 +4949,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     }
 
     // Use LLM result if available, otherwise fall back to regex
-    const scoreResult = llmResult || regexResult;
+    const scoreResult = apiScore || llmResult || regexResult;
     if (scoreResult) {
       if (hasUnverifiedSSScore) {
         console.log(`    → Replacing SS score (${data.originalScore}) with verified: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100) [${scoreResult.source}]`);
@@ -5109,7 +5116,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // New tracking fields
   data.fetchMethod = method;
   data.fetchAttempts = attempts;
-  data.fetchTier = method === 'playwright' ? 1 : method === 'browserbase' ? 1.5 : method === 'scrapingbee' ? 2 : method === 'brightdata' ? 3 : 4;
+  data.fetchTier = method === 'guardian-api' ? 0 : method === 'playwright' ? 1 : method === 'browserbase' ? 1.5 : method === 'scrapingbee' ? 2 : method === 'brightdata' ? 3 : 4;
 
   // Set quality fields from earlier classification
   data.textQuality = qualityResult.quality;
@@ -7555,7 +7562,7 @@ async function processReview(review) {
     }
 
     // Update JSON (pass HTML for score extraction)
-    await updateReviewJson(review, result.text, validation, archivePath, result.method, result.attempts, result.archiveData || {}, result.html || '', contentVerification);
+    await updateReviewJson(review, result.text, validation, archivePath, result.method, result.attempts, result.archiveData || {}, result.html || '', contentVerification, result.apiScore || null);
 
     // Persist URL discovery metadata if URL was changed via showNotMentioned recovery.
     // ORDERING NOTE: updateReviewJson above already wrote the NEW article's
@@ -7831,7 +7838,7 @@ async function processReview(review) {
             return { success: false, error: 'discovered_url_write_refused' };
           }
 
-          await updateReviewJson(review, retryResult.text, validation, archivePath, retryResult.method, retryResult.attempts, retryResult.archiveData || {}, retryResult.html || '', retryVerification);
+          await updateReviewJson(review, retryResult.text, validation, archivePath, retryResult.method, retryResult.attempts, retryResult.archiveData || {}, retryResult.html || '', retryVerification, retryResult.apiScore || null);
 
           const retryMethodKey = retryResult.method === 'direct-cookies' ? 'directCookies' : retryResult.method;
           if (retryMethodKey && state.tierBreakdown[retryMethodKey]) {
