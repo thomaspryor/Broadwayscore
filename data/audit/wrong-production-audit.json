@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T15:33:47.383Z",
+  "timestamp": "2026-10-22T15:51:01.348Z",
   "stats": {
-    "totalReviews": 58900,
-    "alreadyFlagged": 21269,
-    "dateGuardCatches": 202,
-    "directorMismatch": 2053,
-    "tvFilmSignals": 1658,
+    "totalReviews": 58901,
+    "alreadyFlagged": 21271,
+    "dateGuardCatches": 201,
+    "directorMismatch": 2054,
+    "tvFilmSignals": 1659,
     "londonSignals": 2705,
-    "offBroadwaySignals": 527,
+    "offBroadwaySignals": 528,
     "yearMismatch": 169,
-    "noPublishDate": 5249
+    "noPublishDate": 5247
   },
   "findings": [
     {
@@ -23919,6 +23919,19 @@
     },
     {
       "showId": "les-liaisons-dangereuses-2016",
+      "file": "washpost--peter-marks.json",
+      "publishDate": null,
+      "url": "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2016/10/30/les-liaisons-dangereuses-on-broadway-a-danger-free-zone/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"howard davies\" from les-liaisons-dangereuses-1987"
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-2016",
       "file": "wolf-entertainment-guide--william-wolf.json",
       "score": 72,
       "publishDate": "November 3rd, 2016",
@@ -25542,6 +25555,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john dexter\" from m-butterfly-1988"
+        }
+      ]
+    },
+    {
+      "showId": "macbeth-2013",
+      "file": "vulture--jesse-green.json",
+      "publishDate": "2013-11-21",
+      "url": "http://www.vulture.com/2013/11/theater-review-macbeth-ethan-hawke-commons-pensacola.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -65491,19 +65517,6 @@
       ]
     },
     {
-      "showId": "garry-starr-classic-penguins-off-west-end-2026",
-      "file": "timeout-london--alison-rodericks.json",
-      "publishDate": "2026-06-10",
-      "url": "https://www.timeout.com/sydney/theatre/garry-starr-classic-penguins",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 134d before show (2026-06-10 vs 2026-10-22)"
-        }
-      ]
-    },
-    {
       "showId": "gary-a-sequel-to-titus-andronicus-2019",
       "file": "theater-scene--victor-gluck.json",
       "score": 79,
@@ -69332,7 +69345,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "all-that-dazzles-uk--seth-wilby.json",
-      "score": 60,
+      "score": 56,
       "publishDate": "2026-10-22",
       "url": "https://www.allthatdazzles.co.uk/post/review-ilford-boy-donmar-warehouse",
       "findings": [
@@ -69917,6 +69930,8 @@
     {
       "showId": "indecent-2017",
       "file": "theatermania--pete-hempstead.json",
+      "publishDate": "May 17, 2016",
+      "url": "http://www.theatermania.com/off-broadway/reviews/indecent_77094.html",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -83392,6 +83407,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "sweat-2017",
+      "file": "amny--matt-windman.json",
+      "score": null,
+      "publishDate": "2017-03-26",
+      "url": "http://www.amny.com/entertainment/sweat-review-drama-takes-a-timely-look-at-american-hardship-1.13319868",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
