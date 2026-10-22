@@ -1,26 +1,48 @@
 {
-  "updatedAt": "2026-10-22T10:04:51.650Z",
-  "processed": 63,
-  "failed": 49,
-  "successRate": "56.3%",
+  "updatedAt": "2026-10-22T10:36:31.795Z",
+  "processed": 131,
+  "failed": 71,
+  "successRate": "64.9%",
   "tierBreakdown": {
-    "playwright": 30,
+    "playwright": 62,
     "amp": 2,
-    "browserbase": 1,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingdog": 5,
-    "scrapingbee": 0,
+    "scrapingdog": 9,
+    "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 25
+    "archive": 49
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-10-22T09:19:53.724Z",
       "event": "bb-session",
       "session": "a7b9b64a",
       "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
+    },
+    {
+      "t": "2026-10-22T10:27:57.796Z",
+      "event": "bb-session",
+      "session": "8bd86030",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-22T10:27:58.477Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-22T10:29:37.142Z",
+      "event": "bb-session",
+      "session": "88126bc1",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-22T10:29:37.788Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
