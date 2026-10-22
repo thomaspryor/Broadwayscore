@@ -44,8 +44,6 @@ const INCLUSION_FILES = [
   // validateShowMentioned/validateContentMentionsShow and by rebuild-all-reviews.js's
   // showNotMentioned auto-clear — an inclusion decision, same shape as above.
   'scripts/lib/show-title-variants.js',
-  // Its curated short-name list ("Phantom", "Anon") decides the same mentions (BRO-5895).
-  'scripts/lib/show-short-names.json',
   // BRO-5373: buildMultiProdDirectorGuard here builds the map the rebuild's
   // director guard excludes by (production order, earliest newer start), and
   // findPriorRunSiblings/preWindowExemptPriorRuns feed inclusion the same way.
