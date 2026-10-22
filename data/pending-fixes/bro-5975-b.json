@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5975-b",
   "planId": "b742db02-31dc-422b-98e0-15a8c62e7c38",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-22T17:27:29.267Z",
   "submitter": {
     "name": null,
@@ -74,5 +74,39 @@
         "description": "shows.json: cat-on-a-hot-tin-roof-2027.statusBackfillSource"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T18:37:56.239Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for all-the-way-home-off-broadway-2027 (tags: [])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: ibdbRevivalChecked updated for all-the-way-home-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for miss-julie-off-broadway-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for speculations-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noPlaybillProductionPage updated for cat-on-a-hot-tin-roof-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: statusBackfillSource updated for cat-on-a-hot-tin-roof-2027"
+    }
+  ],
+  "executedIn": "ci"
 }
