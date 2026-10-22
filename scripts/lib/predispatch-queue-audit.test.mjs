@@ -1,8 +1,13 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  tallyVerdicts, findWeekAgoEntry, buildQueueAuditSnapshot, JUMP_THRESHOLD_PCT,
+  tallyVerdicts, findWeekAgoEntry, buildQueueAuditSnapshot, buildSourceUnavailableSnapshot, JUMP_THRESHOLD_PCT,
 } from './predispatch-queue-audit.js';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
 
 const DAY_MS = 24 * 3600e3;
 const NOW = new Date('2026-08-19T12:00:00Z').getTime();
@@ -216,4 +221,24 @@ test('buildQueueAuditSnapshot: an unresolved (unrecognized) verdict is surfaced 
   assert.equal(snap.tally.unresolved, 1);
   const canary = snap.items.find((i) => i.title === 'UNRECOGNIZED VERDICT');
   assert.ok(canary, 'expected an UNRECOGNIZED VERDICT row when tally.unresolved > 0');
+});
+
+// BRO-5845 ship-check: with Linear the only source, an outage must not publish
+// "0 of 0 blocked" (a quiet day) nor leave yesterday's numbers looking fresh.
+test('buildSourceUnavailableSnapshot: fresh, says Linear was unavailable, and the digest renders it', () => {
+  const snap = buildSourceUnavailableSnapshot({ reason: 'linear-fetch-failed: Authentication required', now: NOW });
+  assert.equal(snap.generatedAt, new Date(NOW).toISOString());
+  assert.match(snap.bannerText, /Linear unavailable this run \(linear-fetch-failed: Authentication required\); backlog tally not computed/);
+  assert.doesNotMatch(snap.bannerText, /0 of 0/);
+  assert.equal(snap.blockedCount, null, 'null, not 0, so nothing reads it as an empty backlog');
+  assert.deepEqual(snap.items, [{ title: 'LINEAR UNAVAILABLE', detail: 'linear-fetch-failed: Authentication required' }]);
+  const { readSnapshot } = require('./digest-snapshots.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pqa-'));
+  const f = path.join(dir, 'predispatch-queue-audit-snapshot.json');
+  fs.writeFileSync(f, JSON.stringify(snap));
+  const r = readSnapshot(f, 36, NOW + 3600e3);
+  assert.equal(r.status, 'fresh');
+  assert.match(r.snapshot.bannerText, /Linear unavailable/);
+  fs.rmSync(dir, { recursive: true, force: true });
+  assert.match(buildSourceUnavailableSnapshot({ now: NOW }).bannerText, /unknown error/);
 });

@@ -116,6 +116,7 @@ const NOTION_COUPLING_ALLOWLIST = {
   'scripts/send-morning-digest.js': 'reads the local task store only for its autofix-canary/digest-autofix rows; it has no Notion API channel (notion-live-write-paths.test.mjs scans it clean)',
   'scripts/dispatch-watchdog.js': "unions the frozen local task store (loadTasksUnioned) with Linear by design (BRO-3390); the mirror half is inert: 0 of 41 watchdog-redispatch ledger rows in the 14 days to 2026-10-22 carried a mirror id. The notionIdOf( hit is lib/dispatch-dead-launch-guard.js labelling ledger rows, not an API call",
   'scripts/linear-brain.js': "is the Linear board CLI; its notion-brain.js hits are USAGE prose naming the retired CLI it replaced (BRO-3018), surfaced once the launchd half followed weekly-retro.sh into the scripts it runs",
+  'scripts/claude-auth-preflight.js': "is the shared Claude-auth check; its notion-action-poll.js hit is USAGE prose listing the callers that already gate on auth, surfaced once the launchd half resolved `$REPO/scripts/...` targets in wrappers",
   'scripts/audit-notion-schedule-coupling.js': 'is this detector itself — its own COUPLING_SIGNALS regexes and this allowlist\'s comments literally contain the 4 signal strings as pattern definitions, which self-matches once data-health-check.yml (its own host workflow) is correctly recognized as scheduled',
 };
 
@@ -146,6 +147,10 @@ const SH_COUPLING_SIGNALS = [
   { name: 'notion-brain.js', re: /\bnode\s+\S*notion-brain(\.js)?\b/ },
   { name: 'notion-tasks-sync.js', re: /\bnode\s+\S*notion-tasks-sync(\.js)?\b/ },
   { name: 'notion-action-poll.js', re: /\bnode\s+\S*notion-action-poll(\.js)?\b/ },
+  // Ship-check (BRO-5845): ~/.claude/bin/overhaul-driver.sh read the frozen
+  // store directly and dispatched from it via bsc-next.js, unseen.
+  { name: 'task-store path', re: /\.claude\/tasks\/broadwayscore\b/ },
+  { name: 'bsc-next.js', re: /\bnode\s+\S*bsc-next(\.js)?\b/ },
 ];
 
 function stripShellComments(code) {
@@ -343,26 +348,49 @@ function extractProgramArguments(plistXml) {
 }
 
 const INTERPRETERS = new Set(['node', 'bash', 'sh', 'zsh']);
+// Segments starting with these print or match text; an interpreter name later
+// in them is an argument, not an invocation.
+const NON_EXEC_HEADS = new Set(['echo', 'printf', 'grep', 'log', 'cat', 'test', '[']);
+// Interpreter flags whose value is the next word (node -r dotenv/config x.js).
+const FLAGS_WITH_VALUE = new Set(['-r', '--require', '--import', '--env-file', '-o', '--loader']);
 
-// Quote-aware split of one shell command into segments (on && || ; |) of
-// words. Enough for plist `bash -c` strings and wrapper-script lines; not a
-// shell (no subshells, no heredocs).
+// Quote-aware split of a shell command or script into segments (on newline,
+// && || ; | and a lone &) of words. Handles backslash escapes and strips
+// `$(`, `(`, `)` and redirections from words. Enough for plist `bash -c`
+// strings and wrapper scripts; not a shell (no heredocs, no expansion).
 function shellSegments(cmd) {
   const segments = [];
   let words = [];
   let word = '';
   let inWord = false;
   let quote = null;
-  const flushWord = () => { if (inWord) words.push(word); word = ''; inWord = false; };
+  const flushWord = () => {
+    if (inWord) {
+      const w = word.replace(/^(?:\$\(|\(|!)+/, '').replace(/\)+$/, '').replace(/^\d*[<>].*$/, '');
+      if (w) words.push(w);
+    }
+    word = ''; inWord = false;
+  };
   const flushSeg = () => { flushWord(); if (words.length) segments.push(words); words = []; };
   for (let i = 0; i < cmd.length; i++) {
     const c = cmd[i];
-    if (quote) {
-      if (c === quote) quote = null; else word += c;
+    if (quote === "'") { if (c === "'") quote = null; else word += c; continue; }
+    if (c === '\\' && i + 1 < cmd.length) {
+      if (cmd[i + 1] === '\n') { i++; continue; } // line continuation
+      word += cmd[++i]; inWord = true; continue;
+    }
+    if (quote === '"') { if (c === '"') quote = null; else word += c; continue; }
+    if (c === '"' || c === "'") { quote = c; inWord = true; continue; }
+    if (c === '\n') { flushSeg(); continue; }
+    if (/\s/.test(c)) { flushWord(); continue; }
+    if (c === '>' || c === '<') {
+      // redirection: `2>&1`, `>>log`, `>&2` — drop it and its target word
+      flushWord();
+      while (i + 1 < cmd.length && /[>&<\d]/.test(cmd[i + 1])) i++;
+      while (i + 1 < cmd.length && cmd[i + 1] === ' ') i++;
+      while (i + 1 < cmd.length && !/[\s;&|]/.test(cmd[i + 1])) i++;
       continue;
     }
-    if (c === '"' || c === "'") { quote = c; inWord = true; continue; }
-    if (/\s/.test(c)) { flushWord(); continue; }
     if (c === ';' || c === '|' || c === '&') {
       flushSeg();
       if ((c === '&' || c === '|') && cmd[i + 1] === c) i++;
@@ -378,37 +406,51 @@ function expandHome(p) {
   return p.replace(/^~(?=\/|$)/, os.homedir()).replace(/^\$\{?HOME\}?(?=\/|$)/, os.homedir());
 }
 
+const VAR_PREFIX_RE = /^\$\{?\w+\}?\//;
+
 /**
- * Every script one shell command runs: each `[exec] [env] [VAR=x] <node|bash|
- * sh|zsh, bare or by absolute path> [flags] <script>` segment, resolved
+ * Every script one shell command runs: each segment with an interpreter word
+ * (`node|bash|sh|zsh`, bare or by absolute path, possibly behind exec, env,
+ * nice, timeout, caffeinate, VAR=x, ...) followed by a script path, resolved
  * against the latest `cd` before it. `cwd` is the starting directory (null
- * when unknown). Script paths that can't be resolved to an absolute path are
- * pushed onto `unresolved`, so the caller can report incomplete coverage
- * instead of a clean scan (ship-check, BRO-5845).
+ * when unknown). `varCwd` is where a `cd "$VAR"` lands (null = unknown).
+ * `varDir`/`varCwd` resolve `$VAR/rest` targets when that file exists there. Script
+ * paths that still can't be resolved are pushed onto `unresolved`, so the
+ * caller reports incomplete coverage instead of a clean scan (BRO-5845).
  */
-function scriptsFromShellCommand(cmd, cwd, unresolved = [], varDir = null) {
+function scriptsFromShellCommand(cmd, cwd, unresolved = [], { varDir = null, varCwd = null } = {}) {
   const out = [];
-  for (const seg of shellSegments(cmd)) {
-    let w = seg.slice();
+  for (const w of shellSegments(cmd)) {
     if (w[0] === 'cd') {
       const dir = w[1] ? expandHome(w[1]) : os.homedir();
-      if (path.isAbsolute(dir)) cwd = dir;
-      else if (dir.includes('$')) cwd = null;
+      if (dir.includes('$')) cwd = varCwd;
+      else if (path.isAbsolute(dir)) cwd = dir;
       else cwd = cwd ? path.join(cwd, dir) : null;
       continue;
     }
-    while (w.length && (w[0] === 'exec' || /^[A-Za-z_][A-Za-z0-9_]*=/.test(w[0]) || path.basename(w[0]) === 'env')) w = w.slice(1);
-    if (!w.length || !INTERPRETERS.has(path.basename(w[0]))) continue;
-    const target = w.slice(1).find((x) => !x.startsWith('-'));
+    if (NON_EXEC_HEADS.has(w[0])) continue;
+    // `out=$(node x.js)` reaches here as the word `out=$(node`.
+    const at = w.findIndex((x) => INTERPRETERS.has(path.basename(x.replace(/^\w+=(?:\$\()?/, ''))));
+    if (at === -1) continue;
+    let target = null;
+    for (let j = at + 1; j < w.length; j++) {
+      if (FLAGS_WITH_VALUE.has(w[j])) { j++; continue; }
+      if (w[j].startsWith('-')) continue;
+      target = w[j];
+      break;
+    }
     if (!target || !/\.(c?js|mjs|sh)$/.test(target)) continue;
     const t = expandHome(target);
     if (path.isAbsolute(t)) out.push(t);
     else if (cwd && !t.includes('$')) out.push(path.join(cwd, t));
-    else if (varDir && /^\$\{?\w+\}?\//.test(t) && fs.existsSync(path.join(varDir, t.replace(/^\$\{?\w+\}?\//, '')))) {
-      // `$SCRIPT_DIR/lib/x.js` in a wrapper: unknown variable, but the file
-      // exists next to the wrapper, which is what these variables point at.
-      out.push(path.join(varDir, t.replace(/^\$\{?\w+\}?\//, '')));
-    } else unresolved.push(target);
+    else {
+      // `$SCRIPT_DIR/lib/x.js` / `$REPO/scripts/x.js` in a wrapper: unknown
+      // variable, so accept the file only where it actually exists, next to
+      // the wrapper or under the repo root those variables point at.
+      const rest = VAR_PREFIX_RE.test(t) ? t.replace(VAR_PREFIX_RE, '') : null;
+      const hit = rest && [varDir, varCwd].filter(Boolean).map((d) => path.join(d, rest)).find((f) => fs.existsSync(f));
+      if (hit) out.push(hit); else unresolved.push(target);
+    }
   }
   return out;
 }
@@ -440,20 +482,17 @@ function extractWorkingDirectory(plistXml) {
   return m ? decodeXmlEntities(m[1]) : null;
 }
 
-// A wrapper .sh is followed into the scripts it runs. Wrappers in this repo
-// cd to the repo root first (usually via `$(dirname "$0")`, which this
-// parser can't evaluate), so relative targets resolve against the root.
+// A wrapper .sh is followed into the scripts it runs, as one command so a
+// `cd` carries over to later lines. Wrappers cd to the repo root, usually via
+// a variable (`cd "$REPO"`, `cd "$(dirname "$0")/.."`) this parser can't
+// evaluate, so a variable cd lands on the repo root: the one containing the
+// wrapper, else ~/Broadwayscore for wrappers outside it (~/.claude/bin).
 function scriptsFromShellScript(absShPath, unresolved = []) {
   let content;
   try { content = fs.readFileSync(absShPath, 'utf8'); } catch { return []; }
   const idx = absShPath.lastIndexOf('/scripts/');
-  const root = idx === -1 ? path.dirname(absShPath) : absShPath.slice(0, idx);
-  const out = [];
-  for (const line of stripShellComments(content).split('\n')) {
-    if (!/\b(node|bash|sh|zsh)\b/.test(line)) continue;
-    out.push(...scriptsFromShellCommand(line.replace(/^\s*cd\s+\S*\$[^;&|]*/, ''), root, unresolved, path.dirname(absShPath)));
-  }
-  return out;
+  const root = idx === -1 ? path.join(os.homedir(), 'Broadwayscore') : absShPath.slice(0, idx);
+  return scriptsFromShellCommand(stripShellComments(content), root, unresolved, { varDir: path.dirname(absShPath), varCwd: root });
 }
 
 function scriptFromProgramArguments(args) {
@@ -499,10 +538,14 @@ function scanLaunchdForCoupling() {
       const absScript = queue.shift();
       if (seen.has(absScript)) continue;
       seen.add(absScript);
-      if (!absScript.includes('/Broadwayscore/')) continue;
-      const rel = repoRelativeStable(absScript);
+      const isSh = /\.sh$/.test(absScript);
+      // Repo scripts are scanned; a shell wrapper anywhere (~/.claude/bin) is
+      // scanned and followed too, since that is where the overhaul-driver
+      // dispatcher hid (ship-check, BRO-5845).
+      if (!absScript.includes('/Broadwayscore/') && !isSh) continue;
+      const rel = absScript.includes('/Broadwayscore/') ? repoRelativeStable(absScript) : absScript.replace(home, '~');
       scannedScripts++;
-      if (/\.sh$/.test(absScript)) queue.push(...scriptsFromShellScript(absScript, unresolved));
+      if (isSh) queue.push(...scriptsFromShellScript(absScript, unresolved));
       if (isAllowlisted(rel)) continue;
       const combined = readScriptWithLocalDeps(absScript);
       if (combined === null) { unresolvedTargets.push({ label, target: rel, why: 'unreadable' }); continue; }

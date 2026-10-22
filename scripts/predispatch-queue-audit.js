@@ -42,7 +42,7 @@ const {
   loadLinearMirrorMapping,
   matchesTaskWorkBranch, findWorkBranchCollisions,
 } = require('./lib/dispatch-guards.js');
-const { buildQueueAuditSnapshot } = require('./lib/predispatch-queue-audit.js');
+const { buildQueueAuditSnapshot, buildSourceUnavailableSnapshot } = require('./lib/predispatch-queue-audit.js');
 const { buildDispatchGuardQueueAuditSnapshot, simulateDispatchGuards } = require('./lib/dispatch-guard-queue-audit.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const { findOverlappingCards } = require('./lib/dispatch-overlap-check.js');
@@ -200,11 +200,12 @@ async function main() {
   // BRO-3431: the local task mirror above is the FROZEN Notion board (source
   // of the "135 queued cards" undercount — the real backlog lives in Linear).
   // BRO-5845: Linear is now the ONLY source of predispatch classifications;
-  // Never throw. A Linear outage leaves the previous snapshot in place
-  // (ship-check P1): writing an empty tally would read as a fresh "0 of 0
-  // blocked" in the morning digest, indistinguishable from a quiet day.
+  // Never throw. A Linear outage publishes a "Linear unavailable" snapshot
+  // and no history row (ship-check P1): an empty tally would read as a fresh
+  // "0 of 0 blocked" in the morning digest, indistinguishable from a quiet day.
   let linearClassifications = [];
   let linearOk = false;
+  let linearError = null;
   try {
     const { fetchLinearBacklogClassifications } = require('./lib/linear-predispatch-audit.js');
     const linearClient = require('./lib/linear-client.js');
@@ -214,19 +215,20 @@ async function main() {
       linearClassifications = res.classifications;
       console.log(`[predispatch-queue-audit] Linear scan: ${res.scanned} issue(s) scanned, ${linearClassifications.length} counted toward the backlog tally`);
     } else {
-      console.error(`[predispatch-queue-audit] Linear source unavailable (${res.reason}) — keeping the previous predispatch snapshot`);
+      linearError = String(res.reason);
+      console.error(`[predispatch-queue-audit] Linear source unavailable (${res.reason}) — publishing an unavailable snapshot`);
     }
   } catch (err) {
-    console.error(`[predispatch-queue-audit] Linear source error (${String(err.message).slice(0, 160)}) — keeping the previous predispatch snapshot`);
+    linearError = String(err.message).slice(0, 160);
+    console.error(`[predispatch-queue-audit] Linear source error (${linearError}) — publishing an unavailable snapshot`);
   }
 
   // Rows written before BRO-5845 counted the Notion mirror plus Linear; a
   // week-over-week jump against them compares two different populations.
   const history = loadHistory(HISTORY_FILE).filter((h) => h && h.source === HISTORY_SOURCE);
-  const snapshot = buildQueueAuditSnapshot({
-    classifications: linearClassifications,
-    history, now,
-  });
+  const snapshot = linearOk
+    ? buildQueueAuditSnapshot({ classifications: linearClassifications, history, now })
+    : buildSourceUnavailableSnapshot({ reason: linearError, now });
   console.log(`predispatch-queue-audit: ${snapshot.bannerText}`);
 
   const guardHistory = loadHistory(GUARD_HISTORY_FILE);
@@ -236,8 +238,8 @@ async function main() {
   if (dryRun) return;
 
   fs.mkdirSync(AUDIT_DIR, { recursive: true });
+  writeFileAtomic(SNAPSHOT_FILE, JSON.stringify(snapshot, null, 2) + '\n');
   if (linearOk) {
-    writeFileAtomic(SNAPSHOT_FILE, JSON.stringify(snapshot, null, 2) + '\n');
     const newHistory = [...history, { at: snapshot.generatedAt, blockedCount: snapshot.blockedCount, source: HISTORY_SOURCE }].slice(-HISTORY_MAX);
     writeFileAtomic(HISTORY_FILE, JSON.stringify(newHistory, null, 2) + '\n');
   }

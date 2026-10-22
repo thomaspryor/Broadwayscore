@@ -280,3 +280,50 @@ test('scriptsFromShellScript: follows a wrapper into the scripts it runs', () =>
   assert.deepEqual(unresolved, ['$SCRIPT_DIR/lib/missing.js']);
   fs.rmSync(root, { recursive: true, force: true });
 });
+
+// Second ship-check pass (BRO-5845): forms the first tokenizer dropped with no
+// unresolved report, and the dispatcher that hid in ~/.claude/bin.
+test('scriptsFromShellCommand: wrapper commands, substitutions, redirections, escapes, newlines', () => {
+  const cases = {
+    'X=$(node scripts/a.js; echo)': ['/r/scripts/a.js'],
+    'if ! node scripts/a.js; then x; fi': ['/r/scripts/a.js'],
+    'caffeinate -i node scripts/a.js': ['/r/scripts/a.js'],
+    'timeout 60 nohup node scripts/a.js &': ['/r/scripts/a.js'],
+    'node -r dotenv/config scripts/a.js': ['/r/scripts/a.js'],
+    'node scripts/a.js>>log 2>&1': ['/r/scripts/a.js'],
+    '(node scripts/a.js)': ['/r/scripts/a.js'],
+    '/usr/bin/env -i node scripts/a.js': ['/r/scripts/a.js'],
+    'cd /q\nnode a.js': ['/q/a.js'],
+    'node "scripts/a\\"b.js"': ['/r/scripts/a"b.js'],
+    'VAR=x node a.js': ['/r/a.js'],
+    'echo node x.js; printf "node %s" y.js': [],
+  };
+  for (const [cmd, want] of Object.entries(cases)) {
+    assert.deepEqual(src.scriptsFromShellCommand(cmd, '/r'), want, cmd);
+  }
+});
+
+test('wrapper outside the repo: shell signals catch a frozen-store dispatcher, $REPO targets resolve', () => {
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'nsc-home-'));
+  const repo = path.join(home, 'Broadwayscore');
+  fs.mkdirSync(path.join(repo, 'scripts'), { recursive: true });
+  fs.writeFileSync(path.join(repo, 'scripts', 'bsc-next.js'), '');
+  const wrapper = [
+    '#!/bin/bash',
+    'STORE="$HOME/.claude/tasks/broadwayscore"',
+    `REPO="${repo}"`,
+    'out=$(cd "$REPO" && node scripts/bsc-next.js --id "$id" 2>&1)',
+    'node "$REPO/scripts/bsc-next.js" --list',
+  ].join('\n');
+  assert.deepEqual(src.findSignals(wrapper, 'driver.sh'), ['task-store path', 'bsc-next.js']);
+  const sh = path.join(home, 'driver.sh');
+  fs.writeFileSync(sh, wrapper);
+  const unresolved = [];
+  // outside any repo the variable-cd root is ~/Broadwayscore; $REPO/... resolves only where the file exists
+  const got = src.scriptsFromShellScript(sh, unresolved);
+  // both invocations are accounted for: resolved (to whichever root holds the
+  // file) or reported unresolved, never silently dropped
+  assert.equal(got.length + unresolved.length, 2, JSON.stringify({ got, unresolved }));
+  for (const g of got) assert.match(g, /\/Broadwayscore\/scripts\/bsc-next\.js$/);
+  fs.rmSync(home, { recursive: true, force: true });
+});
