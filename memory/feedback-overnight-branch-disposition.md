@@ -3,6 +3,8 @@
 Tool: `node scripts/audit-feedback-overnight-branches.js [--json]` (test: `node --test scripts/audit-feedback-overnight-branches.test.mjs`).
 It reverse-applies each branch's commit to `origin/main` in a temp index (`git apply --cached --check -R`): success means main already contains the change (superseded). Forward success means it merges cleanly; otherwise it conflicts. Verified on a throwaway repo covering all four outcomes.
 
+**Status update, same day:** the numbers below are the snapshot taken before porting started. Porting is now owned by BRO-5900, whose worker is merging each branch into app main (merge commits titled "fixes already present on main by behaviour" record superseded batches). After those merges the script reports a branch as `merged` (ancestor of origin/main) without saying whether its changes were taken or recorded as superseded; read the merge commit message for that. Re-run the script for current counts.
+
 ## Result (iOS repo `~/BroadwayScorecard-app`, origin/main 71dd1f3)
 
 37 `worktree-feedback-overnight-*` branches: 14 already ancestors of origin/main (merged; includes the BRO-270, visual-diff and LC_ALL batches), 23 not.

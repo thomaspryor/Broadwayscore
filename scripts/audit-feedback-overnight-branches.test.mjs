@@ -18,6 +18,56 @@ test('parseBranchList keeps only feedback-overnight branches, strips worktree ma
   assert.deepStrictEqual(out, ['worktree-feedback-overnight-2026-08-09T06-15-01']);
 });
 
+test('parseBranchList keeps remote-only refs, local wins over remote twin', () => {
+  const out = parseBranchList(
+    'origin/worktree-feedback-overnight-2026-08-09T06-15-01\nworktree-feedback-overnight-2026-08-09T06-15-01\norigin/worktree-feedback-overnight-2026-08-10T06-15-01\n',
+  );
+  assert.deepStrictEqual(out, [
+    'origin/worktree-feedback-overnight-2026-08-10T06-15-01',
+    'worktree-feedback-overnight-2026-08-09T06-15-01',
+  ]);
+});
+
+test('auditBranch: multi-commit branch audits every commit; merged and empty are recognised', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'fo-audit2-'));
+  try {
+    const g = (...a) => execFileSync('git', ['-C', dir, '-c', 'commit.gpgsign=false', ...a], { encoding: 'utf8' });
+    g('init', '-q');
+    g('checkout', '-q', '-b', 'main');
+    g('config', 'user.email', 't@t');
+    g('config', 'user.name', 't');
+    fs.writeFileSync(path.join(dir, 'a.txt'), 'one\n');
+    fs.writeFileSync(path.join(dir, 'b.txt'), 'bee\n');
+    g('add', '.');
+    g('commit', '-qm', 'base');
+    g('update-ref', 'refs/remotes/origin/main', 'HEAD');
+    const N = (d) => `worktree-feedback-overnight-2026-02-0${d}T00-00-00`;
+    // Two commits: the first edits a.txt, the second only b.txt. Main later gets the second.
+    g('checkout', '-q', '-b', N(1), 'main');
+    fs.writeFileSync(path.join(dir, 'a.txt'), 'ONE\n');
+    g('commit', '-qam', 'c1');
+    fs.writeFileSync(path.join(dir, 'b.txt'), 'BEE\n');
+    g('commit', '-qam', 'c2');
+    g('checkout', '-q', '-b', N(2), 'main');
+    g('commit', '-q', '--allow-empty', '-m', 'empty tip');
+    g('checkout', '-q', '-b', N(3), 'main');
+    fs.writeFileSync(path.join(dir, 'a.txt'), 'merged\n');
+    g('commit', '-qam', 'c3');
+    g('checkout', '-q', 'main');
+    fs.writeFileSync(path.join(dir, 'b.txt'), 'BEE\n');
+    g('commit', '-qam', 'main takes c2');
+    g('merge', '-q', '--no-ff', '-m', 'merge c3', N(3));
+    g('update-ref', 'refs/remotes/origin/main', 'HEAD');
+    const one = auditBranch(dir, N(1));
+    assert.deepStrictEqual(one.files.sort(), ['a.txt', 'b.txt']); // c1 is not ignored
+    assert.strictEqual(one.fileStates['b.txt'], 'present');
+    assert.strictEqual(auditBranch(dir, N(2)).disposition, 'empty');
+    assert.strictEqual(auditBranch(dir, N(3)).disposition, 'merged');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test('classify precedence: merged > superseded > mergeable > conflicts', () => {
   assert.strictEqual(classify({ isAncestor: true, reverseApplies: true, forwardApplies: true }), 'merged');
   assert.strictEqual(classify({ isAncestor: false, reverseApplies: true, forwardApplies: false }), 'superseded');
