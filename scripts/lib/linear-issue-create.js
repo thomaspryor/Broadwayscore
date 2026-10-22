@@ -72,7 +72,15 @@ function pickStateForMode(states, mode) {
   const list = Array.isArray(states) ? states : (states && states.nodes) || [];
   const byType = (type) => list.find((s) => s && s.type === type);
   if (mode === 'park') {
-    const state = byType('backlog') || byType('unstarted');
+    // A team may carry several backlog-type states (Backlog plus a "Paused"
+    // state, BRO-2857). New parked cards belong in plain Backlog, so match
+    // that name first and only then fall back to any backlog-type state,
+    // preferring one that is not Paused.
+    const byName = (n) => list.find((s) => s && String(s.name).toLowerCase() === n);
+    const state = byName('backlog')
+      || list.find((s) => s && s.type === 'backlog' && String(s.name).toLowerCase() !== 'paused')
+      || byType('backlog')
+      || byType('unstarted');
     if (!state) {
       throw new Error(
         `linear-issue-create: no 'backlog' or 'unstarted' workflow state found on this team — cannot ` +
