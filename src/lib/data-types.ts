@@ -516,7 +516,7 @@ export interface ShowCommercial {
   modelBelowCosts?: boolean;
   /** BRO-5313: a closed show's trade-reported % returned to investors (scripts/lib/reported-return.js); null/absent unless a named outlet states the figure. */
   reportedReturn?: { lo: number; hi: number; outlet: string; asOf: string | null } | null;
-  /** Server-only: the range the display guard hid, for the At Risk rule. toPublicShowCommercial drops it. */
+  /** Server-only: the range the display guard hid, for the At Risk rule. Pages get publicHeldRange's central figure only. */
   modelHeldRange?: [number, number, number] | null;
   /** u/Boring_Waltz_9545's newest "Estimated percentage recouped" [low, high] (scripts/lib/waltz-recoup-estimates.js, BRO-5502). */
   analystRecoupPct?: [number, number] | null;
@@ -645,7 +645,7 @@ export interface CommercialShowRow {
   modelBelowCosts?: boolean;
   /** ShowCommercial.modelDisplayHold: why the guard hid the bar (getModelHoldLabel). */
   modelDisplayHold?: ShowCommercial['modelDisplayHold'];
-  /** ShowCommercial.modelHeldRange: the held model, for the analyst + model range (getDisplayableEstimateRange). */
+  /** publicHeldRange: the held model's central figure, for the analyst + model range (getDisplayableEstimateRange). */
   modelHeldRange?: ShowCommercial['modelHeldRange'];
   /** 'enhancement' marks a nonprofit production with commercial money to recoup. */
   productionType?: ShowCommercial['productionType'] | null;

@@ -21,9 +21,8 @@ export default function AnalystEstimateCredit({ asOf, url, compact = false, with
     <>
       {compact
         ? `${ANALYST_SHORT_LABEL}${withModel ? ' + our model' : ''}`
-        : `${withModel ? 'Range spans an estimate' : 'Estimate'} by ${ANALYST_FULL_LABEL}`}
+        : `${withModel ? 'Our model and an estimate' : 'Estimate'} by ${ANALYST_FULL_LABEL}`}
       {when && <>{compact ? ' · ' : ', '}<span className="whitespace-nowrap">{when}</span></>}
-      {withModel && !compact && ', and our model'}
     </>
   );
   const className = compact ? 'text-[10px] text-gray-500 mt-1' : 'text-[11px] text-gray-500';

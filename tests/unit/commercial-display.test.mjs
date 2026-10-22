@@ -552,9 +552,18 @@ test('owner 2026-10-22: the estimate range spans the analyst and our model, roun
     assert.deepEqual(getDisplayableEstimateRange({ ...gatsby, modelDisplayHold: hold }), { range: [10, 30], withModel: false }, hold);
   }
   // The show card reads the public record: it must carry what the range needs (the card once lost modelHeldRange).
-  for (const rec of [{ ...gatsby, modelDisplayHold: 'too-uncertain' }, { ...run, analystRecoupPct: [40, 40], modelRecoupmentPct: [10, 23, 40] }]) {
+  const outOfBounds = { ...gatsby, modelHeldRange: [-60, -44, -15], modelDisplayHold: 'out-of-bounds' };
+  for (const rec of [{ ...gatsby, modelDisplayHold: 'too-uncertain' }, outOfBounds, { ...run, analystRecoupPct: [40, 40], modelRecoupmentPct: [10, 23, 40] }]) {
     assert.deepEqual(getDisplayableEstimateRange({ ...toPublicShowCommercial(rec), status: rec.status }), getDisplayableEstimateRange(rec));
   }
+  // ...but only the central figure, floored at 0: the held range stays server-only.
+  assert.deepEqual(toPublicShowCommercial({ ...gatsby, modelDisplayHold: 'too-uncertain' }).modelHeldRange, [57, 57, 57]);
+  assert.deepEqual(toPublicShowCommercial(outOfBounds).modelHeldRange, [0, 0, 0]);
+  for (const hold of ['few-weeks', 'past-100-unannounced']) assert.equal('modelHeldRange' in toPublicShowCommercial({ ...gatsby, modelDisplayHold: hold }), false, hold);
+  // A held central of 100+ never joins: it would hint at an unannounced recoupment (BRO-5073).
+  const past100 = { ...gatsby, analystRecoupPct: [60, 70], modelHeldRange: [80, 130, 180], modelDisplayHold: 'too-uncertain' };
+  assert.deepEqual(getDisplayableEstimateRange(past100), { range: [60, 70], withModel: false });
+  assert.equal('modelHeldRange' in toPublicShowCommercial(past100), false);
   // The /biz cell carries the flag for its credit.
   assert.equal(getRecoupedCellSummary({ ...run, analystRecoupPct: [20, 20], modelRecoupmentPct: [30, 57, 80] }).withModel, true);
 });

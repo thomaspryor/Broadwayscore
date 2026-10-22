@@ -125,15 +125,34 @@ export function getRecoupmentDisplayMode(
 /** Display-guard holds that still let the model's central figure bound the analyst + model range. */
 const RANGE_MODEL_HOLDS = new Set(['too-uncertain', 'estimates-disagree']);
 
-/** The model [low, central, high] that may bound the estimate range, or null. */
+/**
+ * The model [low, central, high] that may bound the estimate range, or null.
+ * A held model joins only when held for being too uncertain, for disagreeing
+ * with an outside estimate, or for sitting far below costs, and never at a
+ * central of 100+: that would hint at an unannounced recoupment (BRO-5073).
+ */
 function rangeModel(commercial: RecoupmentSignals): [number, number, number] | null {
   if (commercial.modelRecoupmentPct) return commercial.modelRecoupmentPct;
   const held = commercial.modelHeldRange;
-  if (!held || !commercial.modelDisplayHold) return null;
+  if (!held || !commercial.modelDisplayHold || held[1] >= 100) return null;
   if (RANGE_MODEL_HOLDS.has(commercial.modelDisplayHold)) return held;
   // Far below costs: the bar hides the number, not the fact (out-of-bounds, central < 0).
-  if (commercial.modelDisplayHold === 'out-of-bounds' && held[1] < 0) return held;
+  // (<= 0: a page carries it floored at 0, publicHeldRange.)
+  if (commercial.modelDisplayHold === 'out-of-bounds' && held[1] <= 0) return held;
   return null;
+}
+
+/**
+ * What a page may carry of the held model: its central figure alone, floored
+ * at 0, and only when rangeModel would use it. The held range itself stays
+ * server-only (a negative or unannounced-recoupment figure never reaches a page).
+ */
+export function publicHeldRange(commercial: RecoupmentSignals): [number, number, number] | null {
+  if (commercial.modelRecoupmentPct) return null;
+  const model = rangeModel(commercial);
+  if (!model) return null;
+  const central = Math.max(0, model[1]);
+  return [central, central, central];
 }
 
 /** Nearest 5: a recoupment estimate is not good to the point (owner 2026-10-22, "23 to 40% is false accuracy"). */
@@ -439,8 +458,8 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     // Display-guard outputs (applyModelDisplayGuard): the show-page bar reads these.
     ...(commercial.modelBelowCosts ? { modelBelowCosts: true } : {}),
     ...(commercial.modelDisplayHold ? { modelDisplayHold: commercial.modelDisplayHold } : {}),
-    // A held model can still bound the analyst + model range (getDisplayableEstimateRange).
-    ...(commercial.modelHeldRange ? { modelHeldRange: commercial.modelHeldRange } : {}),
+    // A held model's central figure can still bound the analyst + model range (getDisplayableEstimateRange).
+    ...(publicHeldRange(commercial) ? { modelHeldRange: publicHeldRange(commercial) } : {}),
     ...(commercial.modelCreditBasis ? { modelCreditBasis: commercial.modelCreditBasis } : {}),
     modelBreakeven: commercial.modelBreakeven,
     modelDataQuality: commercial.modelDataQuality,
