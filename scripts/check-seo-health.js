@@ -19,7 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const {
-  getAccessToken, loadServiceAccount, readQuotaLedger, writeQuotaLedger,
+  getAccessToken, loadServiceAccount, reportGscHint, readQuotaLedger, writeQuotaLedger,
   recordQuotaUsage, getQuotaRemaining,
   SCOPE_INDEXING, SCOPE_WEBMASTERS, SITE_HOST, SITE_URL_GSC,
 } = require('./submit-google-indexing');
@@ -157,6 +157,7 @@ async function testAuth(serviceAccount) {
       const text = await res.text();
       console.error(`  Webmasters scope: FAILED - ${res.status} ${text}`);
       console.error('\n  Ensure "Google Search Console API" is enabled in GCP project.');
+      reportGscHint(res.status, text, serviceAccount);
       allOk = false;
     }
   } catch (err) {
@@ -1470,6 +1471,7 @@ async function main() {
       const text = await testRes.text();
       console.error(`GSC API access denied (${testRes.status}): ${text}`);
       console.error('Check that Search Console API is enabled and service account has access.');
+      reportGscHint(testRes.status, text, serviceAccount);
       process.exit(1);
     }
     console.log('GSC API access verified.\n');

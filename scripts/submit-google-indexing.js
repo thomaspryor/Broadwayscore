@@ -24,6 +24,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const { fetchSitemapIndexUrls } = require('./lib/sitemap-urls');
+const { describeGscError } = require('./lib/gsc-error-hint');
 
 const SITE_HOST = 'https://broadwayscorecard.com';
 const SITE_URL_GSC = 'sc-domain:broadwayscorecard.com'; // GSC property format
@@ -186,6 +187,18 @@ function getQuotaRemaining() {
   return Math.max(0, 200 - ledger.used);
 }
 
+// Print the owner-facing fix for a failed Search Console call as a GitHub
+// annotation and on the run's Summary page (BRO-5961). No-op when the
+// failure matches no known cause.
+function reportGscHint(status, bodyText, serviceAccount) {
+  const hint = describeGscError(status, bodyText, serviceAccount && serviceAccount.client_email);
+  if (!hint) return;
+  console.error(`::error::${hint}`);
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    try { fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `### Search Console access\n\n${hint}\n`); } catch { /* summary is best-effort */ }
+  }
+}
+
 // --- Sitemap Submission via Search Console API ---
 
 async function submitSitemapToGSC(serviceAccount) {
@@ -219,7 +232,9 @@ async function submitSitemapToGSC(serviceAccount) {
     } else {
       const text = await response.text();
       console.error(`Sitemap submission failed for ${sitemapUrl}: ${response.status} ${text}`);
+      reportGscHint(response.status, text, serviceAccount);
       allOk = false;
+      if (response.status === 403) break; // same answer for every shard
     }
   }
   return allOk;
@@ -254,6 +269,7 @@ async function runAuthTest(serviceAccount) {
       const text = await response.text();
       console.error(`  Webmasters scope: FAILED — ${response.status} ${text}`);
       console.error('\n  Ensure "Google Search Console API" is enabled in your GCP project.');
+      reportGscHint(response.status, text, serviceAccount);
       return false;
     }
   } catch (err) {
@@ -361,7 +377,7 @@ async function main() {
 }
 
 // Export for use by other scripts
-module.exports = { getAccessToken, loadServiceAccount, readQuotaLedger, writeQuotaLedger, recordQuotaUsage, getQuotaRemaining, SCOPE_INDEXING, SCOPE_WEBMASTERS, SCOPE_WEBMASTERS_WRITE, SITE_HOST, SITE_URL_GSC };
+module.exports = { getAccessToken, loadServiceAccount, reportGscHint, readQuotaLedger, writeQuotaLedger, recordQuotaUsage, getQuotaRemaining, SCOPE_INDEXING, SCOPE_WEBMASTERS, SCOPE_WEBMASTERS_WRITE, SITE_HOST, SITE_URL_GSC };
 
 // Only run main() when executed directly (not when required as module)
 if (require.main === module) {

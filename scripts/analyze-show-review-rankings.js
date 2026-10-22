@@ -16,9 +16,11 @@
  */
 
 const { getAccessToken, loadServiceAccount, SCOPE_WEBMASTERS, SITE_URL_GSC } = require('./submit-google-indexing');
+const { describeGscError } = require('./lib/gsc-error-hint');
 
 const DAYS = 28;
 const SITE = encodeURIComponent(SITE_URL_GSC);
+let clientEmail; // named in the 403 hint (BRO-5961)
 
 async function gsc(token, body) {
   const res = await fetch(
@@ -30,7 +32,11 @@ async function gsc(token, body) {
       body: JSON.stringify(body),
     }
   );
-  if (!res.ok) throw new Error(`GSC ${res.status}: ${(await res.text()).slice(0, 200)}`);
+  if (!res.ok) {
+    const text = await res.text();
+    const hint = describeGscError(res.status, text, clientEmail);
+    throw new Error(`GSC ${res.status}: ${text.slice(0, 200)}${hint ? `\n${hint}` : ''}`);
+  }
   return res.json();
 }
 
@@ -65,7 +71,9 @@ function summarize(rows, label) {
 }
 
 async function main() {
-  const token = await getAccessToken(loadServiceAccount(), SCOPE_WEBMASTERS);
+  const serviceAccount = loadServiceAccount();
+  clientEmail = serviceAccount.client_email;
+  const token = await getAccessToken(serviceAccount, SCOPE_WEBMASTERS);
 
   const end = new Date();
   end.setDate(end.getDate() - 3); // GSC ~3-day lag
