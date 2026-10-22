@@ -429,7 +429,7 @@ function pressNightCapStatus({ env = process.env, purpose, ledgerPath, table } =
 // ---------- stateful consult (the single enforcement helper) -----------------
 
 const _runStats = { blocked: 0, blockedByBreaker: 0, blockedByPressNightCap: 0 };
-let _loggedPressNightBlock = false;
+const _loggedPressNightBlocks = new Set();
 let _stateCache = { at: 0, value: null };
 let _loggedBlock = false;
 
@@ -480,12 +480,12 @@ function consultScrapingdog({ env = process.env, now = new Date() } = {}) {
   // off, but neither may lift a show's hard per-night cap.
   const pn = pressNightCapStatus({ env });
   if (pn.exceeded) {
-    _runStats.blocked++;
     _runStats.blockedByPressNightCap++;
-    const firstBlock = !_loggedPressNightBlock;
+    const tagKey = String(env.SCRAPER_SPEND_PURPOSE || '');
+    const firstBlock = !_loggedPressNightBlocks.has(tagKey);
     if (firstBlock) {
       console.log(`  ⚠️  Press-night cap hit (${pn.reason}${pn.spentUsd != null ? `, $${pn.spentUsd.toFixed(3)} of $${pn.capUsd.toFixed(2)}` : ''}) — skipping Scrapingdog for this show`);
-      _loggedPressNightBlock = true;
+      _loggedPressNightBlocks.add(tagKey);
     }
     return { allowed: false, exempt: false, reason: 'press-night-cap', firstBlock };
   }
@@ -532,7 +532,7 @@ function _resetForTests() {
   _runStats.blocked = 0;
   _runStats.blockedByBreaker = 0;
   _runStats.blockedByPressNightCap = 0;
-  _loggedPressNightBlock = false;
+  _loggedPressNightBlocks.clear();
   _pressNightWarned.clear();
   _stateCache = { at: 0, value: null };
   _loggedBlock = false;

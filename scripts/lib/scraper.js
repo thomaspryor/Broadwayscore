@@ -700,6 +700,11 @@ async function fetchWithScrapingdog(url, options = {}) {
   // (SD -> BD -> SB -> Playwright) routes around it automatically.
   const sdBreakerVerdict = consultScrapingdog();
   if (!sdBreakerVerdict.allowed) {
+    if (sdBreakerVerdict.reason === 'press-night-cap') {
+      // Per-show press-night cap (BRO-5914), not the daily breaker: no breaker ledger row.
+      onSkip('press-night-cap');
+      return null;
+    }
     if (sdBreakerVerdict.firstBlock) {
       recordSdCall({ host: 'breaker', fn: 'day-cap', success: false, status: 'budget_capped', credits: 0, fallbackFrom: options.fallbackFrom || null });
     }

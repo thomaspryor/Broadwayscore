@@ -934,7 +934,10 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     ...(page > 0 ? { page: String(page) } : {}),
   };
   const cached = _serpCache.get(query, cacheOpts);
-  if (cached) {
+  // emptyAuthoritative:false (press night): a cached EMPTY answer written before
+  // the reviews were indexed must not win (BRO-5914), so fall through to live.
+  const _cachedEmptyStale = !emptyAuthoritative && cached && Array.isArray(cached.results) && cached.results.length === 0;
+  if (cached && !_cachedEmptyStale) {
     log(`    📦 SERP cache hit: "${query.slice(0, 60)}..."`);
     return { results: cached.results, provider: `${cached.provider}-cached` };
   }
