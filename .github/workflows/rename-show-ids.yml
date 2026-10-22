@@ -86,7 +86,12 @@ jobs:
           test -f "$BATCH" || { echo "::error::$BATCH not found on this ref"; exit 1; }
 
       - name: Validate data before the rename
-        run: node scripts/validate-data.js 2>&1 | tail -30
+        run: |
+          # blanket-sweep-audit-ok: data/audit/validation-baseline.json validate-data side output; the web commit step restores it before staging, so it is never committed
+          # blanket-sweep-audit-ok: data/audit/same-url-duplicate-baseline.json validate-data side output; the web commit step restores it before staging, so it is never committed
+          # blanket-sweep-audit-ok: data/audit/tony-coverage-gaps.json validate-data side output; the web commit step restores it before staging, so it is never committed
+          # blanket-sweep-audit-ok: data/audit/london-only-nyc-accumulation.json validate-data side output; the web commit step restores it before staging, so it is never committed
+          node scripts/validate-data.js 2>&1 | tail -30
 
       - name: Rename (dry run or apply)
         run: |
@@ -109,7 +114,12 @@ jobs:
 
       - name: Validate data after the rename
         if: inputs.mode == 'apply'
-        run: node scripts/validate-data.js 2>&1 | tail -30
+        run: |
+          # blanket-sweep-audit-ok: data/audit/validation-baseline.json validate-data side output; the web commit step restores it before staging, so it is never committed
+          # blanket-sweep-audit-ok: data/audit/same-url-duplicate-baseline.json validate-data side output; the web commit step restores it before staging, so it is never committed
+          # blanket-sweep-audit-ok: data/audit/tony-coverage-gaps.json validate-data side output; the web commit step restores it before staging, so it is never committed
+          # blanket-sweep-audit-ok: data/audit/london-only-nyc-accumulation.json validate-data side output; the web commit step restores it before staging, so it is never committed
+          node scripts/validate-data.js 2>&1 | tail -30
 
       # validate-data writes this when the data is bad; push-core-data then
       # skips quietly, so refuse here before any of the three repos moves.
@@ -145,6 +155,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          # validate-data's side outputs are not part of the rename.
+          for f in validation-baseline.json same-url-duplicate-baseline.json tony-coverage-gaps.json london-only-nyc-accumulation.json; do git checkout -q -- "data/audit/$f" 2>/dev/null || true; done
           bash scripts/lib/stage-data-changes.sh data/ public/
           if git diff --staged --quiet; then
             echo "No web changes"
