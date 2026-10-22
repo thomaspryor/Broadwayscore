@@ -434,6 +434,8 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     // Display-guard outputs (applyModelDisplayGuard): the show-page bar reads these.
     ...(commercial.modelBelowCosts ? { modelBelowCosts: true } : {}),
     ...(commercial.modelDisplayHold ? { modelDisplayHold: commercial.modelDisplayHold } : {}),
+    // A held model can still bound the analyst + model range (getDisplayableEstimateRange).
+    ...(commercial.modelHeldRange ? { modelHeldRange: commercial.modelHeldRange } : {}),
     ...(commercial.modelCreditBasis ? { modelCreditBasis: commercial.modelCreditBasis } : {}),
     modelBreakeven: commercial.modelBreakeven,
     modelDataQuality: commercial.modelDataQuality,

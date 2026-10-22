@@ -32,6 +32,7 @@ const {
   getBreakEven,
   getDisplayableAnalystRange,
   getDisplayableEstimateRange,
+  toPublicShowCommercial,
   getRecoupedCellSummary,
 } = await import('../../src/lib/commercial-display.ts');
 
@@ -549,6 +550,10 @@ test('owner 2026-10-22: the estimate range spans the analyst and our model, roun
   assert.deepEqual(getDisplayableEstimateRange({ ...gatsby, modelHeldRange: [-60, -44, -15], modelDisplayHold: 'out-of-bounds' }), { range: [0, 30], withModel: true });
   for (const hold of ['few-weeks', 'awaiting-truth', 'past-100-unannounced', 'star-deal-unknown']) {
     assert.deepEqual(getDisplayableEstimateRange({ ...gatsby, modelDisplayHold: hold }), { range: [10, 30], withModel: false }, hold);
+  }
+  // The show card reads the public record: it must carry what the range needs (the card once lost modelHeldRange).
+  for (const rec of [{ ...gatsby, modelDisplayHold: 'too-uncertain' }, { ...run, analystRecoupPct: [40, 40], modelRecoupmentPct: [10, 23, 40] }]) {
+    assert.deepEqual(getDisplayableEstimateRange({ ...toPublicShowCommercial(rec), status: rec.status }), getDisplayableEstimateRange(rec));
   }
   // The /biz cell carries the flag for its credit.
   assert.equal(getRecoupedCellSummary({ ...run, analystRecoupPct: [20, 20], modelRecoupmentPct: [30, 57, 80] }).withModel, true);
