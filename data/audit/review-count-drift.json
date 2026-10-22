@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-10-21T14:23:39.020Z",
+  "generatedAt": "2026-10-22T14:25:34.484Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-10-21T14:13:23.465Z",
+    "reviewsJsonLastUpdated": "2026-10-22T14:14:06.774Z",
     "reviewsJsonAgeHours": 0.2,
     "freshnessBreach": false,
     "showsScanned": 35,
-    "allShowsScanned": 2651,
-    "filesScanned": 58049,
+    "allShowsScanned": 2691,
+    "filesScanned": 58829,
     "showsOverThreshold": 0,
     "newOffenders": 1,
-    "blindShows": 26,
+    "blindShows": 25,
     "orphanReviews": 5
   },
   "thresholds": {
@@ -24,13 +24,13 @@
       "suppressed": 4,
       "actual": 17,
       "files": [
-        "nytimes--charles-isherwood.json",
+        "nytimes--unknown.json",
         "theatermania--unknown.json",
         "variety--steven-suskin.json",
         "vulture--jesse-green.json"
       ],
       "newFiles": [
-        "nytimes--charles-isherwood.json",
+        "nytimes--unknown.json",
         "theatermania--unknown.json",
         "variety--steven-suskin.json",
         "vulture--jesse-green.json"
@@ -70,7 +70,7 @@
   "perShow": [
     {
       "showDir": "angels-bone-west-end-2026",
-      "actual": 17,
+      "actual": 18,
       "scanned": 23,
       "suppressedCount": 0,
       "suppressed": [],
@@ -78,8 +78,8 @@
     },
     {
       "showDir": "billy-crystal-860-2026",
-      "actual": 1,
-      "scanned": 4,
+      "actual": 24,
+      "scanned": 31,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -94,8 +94,24 @@
     },
     {
       "showDir": "copperfield-the-new-musical-off-broadway-2026",
-      "actual": 6,
-      "scanned": 8,
+      "actual": 11,
+      "scanned": 14,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "theater-life--unknown.json",
+          "outletId": "theater-life",
+          "criticName": "Unknown",
+          "publishDate": "2026-10-19",
+          "url": "https://theaterlife.com/copperfield-the-new-musical/"
+        }
+      ],
+      "overThreshold": false
+    },
+    {
+      "showDir": "derren-brown-only-human-west-end-2026",
+      "actual": 2,
+      "scanned": 6,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -110,72 +126,48 @@
     },
     {
       "showDir": "dog-mom-off-west-end-2026",
-      "actual": 16,
-      "scanned": 23,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "ilford-boy-west-end-2026",
-      "actual": 2,
-      "scanned": 10,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "jane-eyre-rose-kingston-off-west-end-2026",
-      "actual": 9,
-      "scanned": 22,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "king-of-the-yees-off-broadway-2026",
-      "actual": 11,
-      "scanned": 17,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "lincoln-in-the-bardo-off-broadway-2026",
-      "actual": 5,
+      "actual": 18,
       "scanned": 26,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "machine-learning-off-broadway-2026",
-      "actual": 1,
-      "scanned": 2,
+      "showDir": "ilford-boy-west-end-2026",
+      "actual": 13,
+      "scanned": 21,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "martin-guerre-west-end-2026",
-      "actual": 7,
+      "showDir": "king-of-the-yees-off-broadway-2026",
+      "actual": 13,
       "scanned": 18,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "memoirs-of-amorous-gentlemen-off-broadway-2026",
-      "actual": 16,
-      "scanned": 28,
+      "showDir": "lincoln-in-the-bardo-off-broadway-2026",
+      "actual": 9,
+      "scanned": 31,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "midnight-off-broadway-2026",
+      "showDir": "machine-learning-off-broadway-2026",
+      "actual": 2,
+      "scanned": 3,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "martin-guerre-west-end-2026",
       "actual": 18,
-      "scanned": 47,
+      "scanned": 30,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -206,16 +198,8 @@
     },
     {
       "showDir": "school-pictures-off-broadway-2026",
-      "actual": 2,
-      "scanned": 7,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "some-woman-west-end-2026",
-      "actual": 26,
-      "scanned": 42,
+      "actual": 3,
+      "scanned": 8,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -229,17 +213,25 @@
       "overThreshold": false
     },
     {
-      "showDir": "the-bodyguard-tour-2026",
-      "actual": 2,
-      "scanned": 22,
+      "showDir": "surinderella-off-west-end-2026",
+      "actual": 1,
+      "scanned": 3,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "actual": 17,
+      "scanned": 36,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-dog-show-come-sit-stay-off-broadway-2026",
-      "actual": 2,
-      "scanned": 7,
+      "actual": 3,
+      "scanned": 8,
       "suppressedCount": 1,
       "suppressed": [
         {
@@ -250,6 +242,14 @@
           "url": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-fetch-as-in-tickets-to-a-funny-and-charming-show/"
         }
       ],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-imaginary-invalid-2026",
+      "actual": 1,
+      "scanned": 12,
+      "suppressedCount": 0,
+      "suppressed": [],
       "overThreshold": false
     },
     {
@@ -270,16 +270,16 @@
     },
     {
       "showDir": "triumph-off-west-end-2026",
-      "actual": 16,
-      "scanned": 30,
+      "actual": 17,
+      "scanned": 32,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "two-girls-off-broadway-2026",
-      "actual": 5,
-      "scanned": 14,
+      "actual": 6,
+      "scanned": 15,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -291,10 +291,10 @@
       "suppressedCount": 4,
       "suppressed": [
         {
-          "file": "nytimes--charles-isherwood.json",
+          "file": "nytimes--unknown.json",
           "outletId": "nytimes",
-          "criticName": "Charles Isherwood",
-          "publishDate": "2011-04-18T07:58:29-04:00",
+          "criticName": "Unknown",
+          "publishDate": "April 17, 2011",
           "url": "http://theater.nytimes.com/2011/04/18/theater/reviews/wonderland-gregory-boyd-frank-wildhorn-review.html"
         },
         {
