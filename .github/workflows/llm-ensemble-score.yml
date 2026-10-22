@@ -1,4 +1,7 @@
 name: LLM Ensemble Score Reviews
+# BRO-5890: show-scoped runs carry the show id so Opening Night Express can
+# leave other shows' scoring alone (scripts/lib/express-preemption.js).
+run-name: LLM Ensemble Score Reviews${{ inputs.show_id && format(' — {0}', inputs.show_id) || '' }}
 
 # Separate concurrency groups per rescore_reason allow parallel scoring of disjoint file sets.
 # Default group "scoring-reviews" serializes regular (scheduled/bulk) runs; "scoring-reviews-{reason}" for

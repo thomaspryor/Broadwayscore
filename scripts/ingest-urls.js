@@ -317,6 +317,7 @@ async function main() {
   // pass and silently skipped. Fixed 2026-04-23 after 3 user-submitted
   // Schmigadoon reviews took 4 hours to land.
   const newReviews = results.created + results.updated;
+  let pushFailed = false;
   if (newReviews > 0 && !noPushReviewTexts && !dryRun && results.touchedPaths.length > 0) {
     const writeDir = path.join(__dirname, '..', 'data', 'review-texts');
     // data/review-texts is a git checkout on CI and in most worktrees, but on
@@ -345,13 +346,23 @@ async function main() {
       message: `ingest-urls: ${newReviews} review(s) for ${showId}`,
     });
     if (!push.pushed) {
-      console.log('  The CI workflows below will not see the new files.');
-      console.log(`  Fix: cd ${reviewTextsDir} && git status, resolve, then push manually.`);
+      // BRO-5890: dispatching anyway scored a clone without the files (run
+      // 39714821272 dispatched 50s before its files landed). Same contract as
+      // landIngestedReviews(): a failed push never dispatches.
+      pushFailed = true;
+      console.log(`::warning::Review-texts push failed for ${showId}: the CI workflows will not see the new files, so scoring/rebuild are NOT dispatched yet. Push ${reviewTextsDir}, then: gh workflow run llm-ensemble-score.yml -f show_id=${showId}`);
+      // In CI the workflow's commit step pushes the stranded commit and then
+      // dispatches downstream from this marker (ingest-urls.yml).
+      if (process.env.INGEST_DISPATCH_MARKER && !noRebuild) {
+        fs.writeFileSync(process.env.INGEST_DISPATCH_MARKER, String(newReviews));
+      } else {
+        process.exitCode = 1;
+      }
     }
   }
 
   // Trigger downstream pipelines
-  if (newReviews > 0 && !noRebuild && !dryRun) {
+  if (newReviews > 0 && !noRebuild && !dryRun && !pushFailed) {
     console.log('\nTriggering downstream pipelines...');
 
     dispatchDownstream({ showId, newReviews });

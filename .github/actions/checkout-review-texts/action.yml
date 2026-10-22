@@ -134,6 +134,12 @@ runs:
         # Stale-checkout race guard (BRO-3162): record the checkout-time SHA so
         # ./.github/actions/sync-review-texts-drift can detect pushes that land
         # between this clone and the job's rebuild-all-reviews.js step.
+        # BRO-5890: scripts that commit inside the clone (ingest-urls.js's
+        # pushReviewTexts) failed with "Author identity unknown". Set it here,
+        # only where unset, so a workflow's own identity still wins.
+        git -C data/review-texts config user.name >/dev/null || git -C data/review-texts config user.name "github-actions[bot]"
+        git -C data/review-texts config user.email >/dev/null || git -C data/review-texts config user.email "github-actions[bot]@users.noreply.github.com"
+
         CHECKOUT_SHA=$(git -C data/review-texts rev-parse HEAD)
         echo "${CHECKOUT_SHA}" > "${RUNNER_TEMP:-/tmp}/review-texts-checkout-sha"
         echo "sha=${CHECKOUT_SHA}" >> "$GITHUB_OUTPUT"

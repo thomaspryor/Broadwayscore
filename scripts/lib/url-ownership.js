@@ -154,12 +154,27 @@ function buildUrlOwnershipIndex(reviewTextsDir, { force = false } = {}) {
  * Cross-show owners of `url` — entries under shows OTHER than currentShowId.
  * Empty array when the URL is unclaimed or only claimed by currentShowId.
  */
+// A retired show's folder cannot own a URL. BRO-5890:
+// anne-washburns-anon-off-broadway-2026 was retired as a duplicate of the MCC
+// ANON (retired-show-ids.json), its NYT and Vulture reviews stayed in its
+// folder, and this guard then refused them under the real ANON. An unreadable
+// registry counts nothing as retired (the old behaviour).
+function _isRetiredShow(showId) {
+  try {
+    return require('./retired-show-ids').isRetiredId(showId);
+  } catch {
+    return false;
+  }
+}
+
 function findCrossShowOwners(url, currentShowId, reviewTextsDir) {
   if (!_isOwnableUrl(url)) return [];
   const map = buildUrlOwnershipIndex(reviewTextsDir);
   const key = _normalizeUrl(url);
   if (!key) return [];
-  return (map.get(key) || []).filter((e) => e.showId !== currentShowId);
+  return (map.get(key) || [])
+    .filter((e) => e.showId !== currentShowId)
+    .map((e) => (e.blocking && _isRetiredShow(e.showId) ? { ...e, blocking: false, retiredShow: true } : e));
 }
 
 /**
