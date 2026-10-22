@@ -9,6 +9,7 @@
  * Needs POSTHOG_PERSONAL_API_KEY and POSTHOG_PROJECT_ID.
  */
 const { CUTOVERS } = require('./lib/analytics-cutovers');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const HOST = 'https://us.posthog.com';
 
@@ -23,6 +24,10 @@ async function api(path, init = {}) {
 }
 
 async function main() {
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log('Usage: node scripts/annotate-posthog-cutovers.js [--dry-run]\nCreates a PostHog annotation for each entry in scripts/lib/analytics-cutovers.js that has none.');
+    return;
+  }
   const dry = process.argv.includes('--dry-run');
   if (!process.env.POSTHOG_PERSONAL_API_KEY || !process.env.POSTHOG_PROJECT_ID) {
     console.error('POSTHOG_PERSONAL_API_KEY and POSTHOG_PROJECT_ID are required');
