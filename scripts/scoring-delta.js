@@ -1289,7 +1289,7 @@ function decideInclusion(review, show, guards, filePath) {
         if (!guards.isIncludableForRebuild(ref, show?.raw || show, refPath)) return true;
         if (!ref.publishDate || !show?.earliestDate || ref.allowEarlyDate) return false;
         return !!guards.__dateGuard?.evaluatePreWindowInclusion({
-          pubDate: parseDate(ref.publishDate), showEarliest: show.earliestDate,
+          pubDate: parseDate(ref.publishDate), showEarliest: new Date(show.earliestDate),
           isFlexCategory: show.category === 'off-broadway' || isLondonMarket(show.category),
           priorRuns: preWindowPriorRunsFor(show, guards), tourLegs: show.tourLegs,
         }).exclude;

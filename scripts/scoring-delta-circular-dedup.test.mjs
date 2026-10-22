@@ -16,7 +16,7 @@ const show = { id: 'dedup-fixture', category: 'broadway', earliestDate: null };
 const text = 'The performers bring comic timing and emotional depth to this remarkable production. '.repeat(20);
 const review = { assignedScore: 75, contentTier: 'complete', fullText: text };
 
-function fixture(t, records) {
+function fixture(t, records, fixtureShow = show) {
   const root = fs.mkdtempSync(path.join(process.cwd(), '.bro3963-fixture-'));
   const dir = path.join(root, show.id);
   fs.mkdirSync(dir);
@@ -24,7 +24,7 @@ function fixture(t, records) {
   for (const [name, data] of Object.entries(records)) {
     fs.writeFileSync(path.join(dir, name), JSON.stringify(data));
   }
-  const decide = (name, data = records[name], sideGuards = guards) => decideInclusion(data, show, sideGuards, path.join(dir, name));
+  const decide = (name, data = records[name], sideGuards = guards) => decideInclusion(data, fixtureShow, sideGuards, path.join(dir, name));
   decide.dir = dir;
   return decide;
 }
@@ -83,6 +83,22 @@ test('ordinary duplicate stays excluded; a stale pointer recovers', t => {
   assert.equal(decide('stale.json').included, true);
   assert.equal(decide('sentinel.json').included, false);
 });
+
+for (const [label, referenceDate, allowEarlyDate, included] of [
+  ['in-window reference excludes the copy', '2025-01-10', false, false],
+  ['pre-window reference recovers the copy', '2020-01-01', false, true],
+  ['early-date override keeps the reference live', '2020-01-01', true, false],
+]) {
+  test(`ordinary duplicate with a string show date: ${label}`, t => {
+    const a = { ...review, publishDate: '2025-01-10', duplicateOf: 'b.json' };
+    const decide = fixture(t, {
+      'a.json': a,
+      'b.json': { ...review, publishDate: referenceDate, allowEarlyDate },
+    }, { ...show, earliestDate: '2025-01-01' });
+    assert.equal(decide('a.json').included, included);
+    assert.equal(decide('a.json', { ...a, duplicateOf: null }).included, true);
+  });
+}
 
 test('excluded reference recovers a copy only when inherited flags are cleared', t => {
   const a = { ...review, duplicateOf: 'b.json' };
