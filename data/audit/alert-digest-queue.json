@@ -1293,35 +1293,35 @@
     "queuedAt": "2026-10-22T16:26:30.595Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "conditionKey": "land:land/bro-5975-red-crons",
+    "title": "Landing blocked: rebase red on land/bro-5975-red-crons",
+    "description": "land.yml did not land land/bro-5975-red-crons: the rebase gate went red at 08220d94f7. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5975-red-crons @ 08220d94f7 (origin/land/bro-5975-red-crons) → origin/main @ 1a52878557 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 1a52878557: Rebasing (1/1) error: could not apply 08220d94f70... fix: four red scheduled workflows (BRO-5975) hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <conflicted_files>\", then run \"git  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39810046587",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39815966369",
+    "url": null,
     "decision": false,
     "info": false,
     "decisionPrompt": null,
-    "model": "opus",
+    "model": null,
     "tracked": null,
     "fields": [
       {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39815966369)"
+        "name": "branch",
+        "value": "land/bro-5975-red-crons"
       },
       {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39815533886)"
+        "name": "gate",
+        "value": "rebase"
       },
       {
-        "name": "Consecutive failures",
-        "value": "31"
+        "name": "tip",
+        "value": "08220d94f70aff1419ca5a494d4890d0225c8c09"
       },
       {
-        "name": "Currently failing job(s)",
-        "value": "Unit Tests"
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39810046587"
       }
     ],
-    "queuedAt": "2026-10-22T17:15:09.575Z"
+    "queuedAt": "2026-10-22T17:20:46.226Z"
   },
   {
     "conditionKey": "land:land/bro-5990-image-sizes",
