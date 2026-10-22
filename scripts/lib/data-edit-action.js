@@ -76,6 +76,13 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
       if (castProblem) return { ok: false, reason: castProblem };
     }
 
+    if (field === 'noPlaybillProductionPage' || field === 'ibdbRevivalChecked') {
+      if (newValue !== true) return { ok: false, reason: `${field}: plans may only set true` };
+    }
+    if (field === 'statusBackfillSource') {
+      if (typeof newValue !== 'string' || newValue.length <= 50) return { ok: false, reason: 'statusBackfillSource: needs a substantive (51+ char) source string' };
+    }
+
     if (field === 'rejectedImageUrls') {
       const { rejectedUrlsValueProblem } = require('./feedback-pipeline-fields.js');
       const problem = rejectedUrlsValueProblem(newValue, oldValue);

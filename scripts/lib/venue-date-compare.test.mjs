@@ -990,10 +990,17 @@ test('BRO-5975: venueVariantMatch accepts room/institution labels, rejects other
 });
 
 test('BRO-5975: undated announced show is not year-mismatched against a page for a closed earlier run', async () => {
-  const { compareShow } = await import('./venue-date-compare.js');
+  const { compareShow, classifyComparison } = await import('./venue-date-compare.js');
   const parsed = { titleParse: { venue: 'Music Box Theatre', market: 'Broadway', year: 2003 }, dates: { openingDate: '2003-11-02', closingDate: '2004-03-07' }, tagLine: null };
   const url = 'https://playbill.com/production/cat-on-a-hot-tin-roof-music-box-theatre-vault-0000002570';
   const base = { id: 'cat-on-a-hot-tin-roof-2027', category: 'broadway', venue: null, openingDate: null };
-  assert.equal(compareShow({ ...base, status: 'announced' }, parsed, url).mismatches.length, 0);
+  const cat = compareShow({ ...base, status: 'announced' }, parsed, url);
+  assert.equal(cat.mismatches.length, 0);
+  assert.equal(classifyComparison(cat), 'venue-unverified', 'a closed earlier-run page cannot validate: not a clean match');
   assert.equal(compareShow({ ...base, status: 'open', openingDate: '2027-04-01' }, parsed, url).mismatches.some(m => m.field === 'opening-year'), true);
+});
+
+test('BRO-5975 review: one-word and generic room labels are not venue variants', async () => {
+  const { venueVariantMatch } = await import('./venue-date-compare.js');
+  assert.ok(!venueVariantMatch('Studio', 'Studio Theatre @ Theatre Row'));
 });

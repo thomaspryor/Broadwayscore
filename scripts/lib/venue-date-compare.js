@@ -25,6 +25,8 @@ const INSTITUTION_PARENTS = [{ show: /^bam\b/i, page: /^brooklyn academy of musi
 function venueVariantMatch(showVenue, pageVenue) {
   if (!showVenue || !pageVenue) return false;
   if (venuesMatch(showVenue, pageVenue)) return true;
+  // A one-word label ("Studio") would match any house's room of that name.
+  if (showVenue.trim().split(/\s+/).length < 2) return false;
   if (INSTITUTION_PARENTS.some(p => p.show.test(showVenue.trim()) && p.page.test(pageVenue.trim()))) return true;
   const parts = String(pageVenue).split(/\s+@\s+/).map(x => x.trim()).filter(Boolean);
   const roomless = String(pageVenue).replace(/\s+(stage|studio|theat(?:er|re)|room)\s+(?:\d+|[a-z]|one|two|three|four|five|six)$/i, '').trim();
@@ -196,6 +198,8 @@ function compareShow(show, parsed, playbillUrl) {
   // 2003 Music Box page, BRO-5975): the id year is all we have, so the year says nothing.
   const pageRunClosed = !show.openingDate && ['announced', 'upcoming'].includes(show.status)
     && parsed.dates?.closingDate && parsed.dates.closingDate < new Date().toISOString().slice(0, 10);
+  // The page cannot validate this show either way, so say so: venue-unverified, not a clean match.
+  if (pageRunClosed && pbYear && showYear && pbYear !== showYear) venueCheck = 'unverified';
   if (pbYear && showYear && pbYear !== showYear && !pageRunClosed) {
     record({ field: 'opening-year', shows: showYear, playbill: pbYear });
   }

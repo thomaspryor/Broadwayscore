@@ -431,6 +431,8 @@ function findSameHouseTokenMatch(candidate, pool) {
     // ("The Inequalities" vs "The Inequalities Trilogy", BRO-5975).
     if (small.size < 2 && ![...big].filter(t => !small.has(t)).every(t => GENERIC_TITLE_TAGS.has(t))) continue;
     const w = rowWindow(e);
+    // A one-word overlap needs a dated, overlapping row ("Hamlet" is not an undated "Hamlet Live").
+    if (small.size < 2 && !w) continue;
     if (w && !(w.first <= shiftDay(end, 30) && w.last >= shiftDay(start, -30))) continue;
     return { match: e, reason: `same house, title words contained, ${w ? 'overlapping run' : 'undated catalog row'} ("${e.title}" vs "${candidate.title}")` };
   }

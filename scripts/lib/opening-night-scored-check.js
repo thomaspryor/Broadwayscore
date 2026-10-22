@@ -63,14 +63,22 @@ function findMissingScored(openingShows, scoredSet) {
 // reviews yet has nothing to score, and that gap belongs to the coverage gates.
 function reviewedShowIds(latencyLines) {
   const set = new Set();
+  const collected = new Map();
+  const excluded = new Map();
+  const bump = (m, id) => m.set(id, (m.get(id) || 0) + 1);
   for (const line of latencyLines) {
     if (!line) continue;
     try {
       const e = JSON.parse(line);
       if (e.stage === 'scored'
         || (e.stage === 'rebuilt' && e.metadata && e.metadata.reviewCount > 0)) set.add(e.showId);
+      else if (e.stage === 'review-text-collected' || e.stage === 'review-first-seen') bump(collected, e.showId);
+      else if (e.stage === 'excluded') bump(excluded, e.showId);
     } catch { /* skip malformed line */ }
   }
+  // Collected text that never reached a rebuild is the stalled-scorer signature this alert
+  // exists for, unless exclusions account for it (jest-to-impress: 2 collected, 9 excluded).
+  for (const [id, n] of collected) if (n > (excluded.get(id) || 0)) set.add(id);
   return set;
 }
 

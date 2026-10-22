@@ -76,13 +76,16 @@ test('BRO-5975: findOverdueMissingScored skips same-day openings and shows with 
     { id: 'today-show', openingDate: '2026-10-21', category: 'off-broadway' },
     { id: 'yday-no-reviews', openingDate: '2026-10-20', category: 'off-broadway' },
     { id: 'yday-reviewed-unscored', openingDate: '2026-10-20', category: 'off-broadway' },
+    { id: 'yday-stalled', openingDate: '2026-10-20', category: 'off-broadway' },
   ];
   const lines = [
     JSON.stringify({ showId: 'today-show', stage: 'rebuilt', at: '2026-10-21T10:00:00Z', metadata: { reviewCount: 9 } }),
     JSON.stringify({ showId: 'yday-no-reviews', stage: 'rebuilt', at: '2026-10-21T10:00:00Z', metadata: { reviewCount: 0 } }),
     JSON.stringify({ showId: 'yday-reviewed-unscored', stage: 'rebuilt', at: '2026-10-21T10:00:00Z', metadata: { reviewCount: 3 } }),
     JSON.stringify({ showId: 'yday-no-reviews', stage: 'review-text-collected', at: '2026-10-21T10:00:00Z' }),
+    JSON.stringify({ showId: 'yday-no-reviews', stage: 'excluded', at: '2026-10-21T10:00:00Z' }),
+    JSON.stringify({ showId: 'yday-stalled', stage: 'review-text-collected', at: '2026-10-21T10:00:00Z' }),
   ];
   const missing = findOverdueMissingScored(shows, new Set(), reviewedShowIds(lines), '2026-10-21').map((s) => s.id);
-  assert.deepEqual(missing, ['yday-reviewed-unscored']);
+  assert.deepEqual(missing, ['yday-reviewed-unscored', 'yday-stalled']);
 });
