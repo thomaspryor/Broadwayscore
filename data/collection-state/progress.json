@@ -5,19 +5,35 @@
     "the-curious-case-of-benjamin-button-off-broadway-2026/talkinbroadway--howard-miller.json",
     "ilford-boy-west-end-2026/guardian--kate-wyver.json",
     "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
-    "lincoln-in-the-bardo-off-broadway-2026/hollywood-reporter--caitlin-huston.json"
+    "lincoln-in-the-bardo-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
+    "other-desert-cities-2026/new-york-city-theatre--unknown.json",
+    "memoirs-of-amorous-gentlemen-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "fish-off-broadway-2026/the-100-word-review--unknown.json"
   ],
   "failed": [
     "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
     "ilford-boy-west-end-2026/telegraph--fiona-mountford.json",
     "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
-    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json"
+    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json",
+    "other-desert-cities-2026/cbsnews--unknown.json",
+    "school-pictures-off-broadway-2026/airmail--air-mail.json",
+    "the-dog-show-come-sit-stay-off-broadway-2026/talkalmanmusic--unknown.json",
+    "two-girls-off-broadway-2026/airmail--air-mail.json",
+    "two-girls-off-broadway-2026/howdidimissthat--unknown.json",
+    "midnight-off-broadway-2026/timeout--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "midnight-off-broadway-2026/openingnight--edward-a-kliszus.json",
+    "fish-off-broadway-2026/timeout--unknown.json",
+    "fish-off-broadway-2026/exeunt-magazine--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
-      "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json"
+      "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
+      "memoirs-of-amorous-gentlemen-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "fish-off-broadway-2026/the-100-word-review--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -34,10 +50,12 @@
       "the-curious-case-of-benjamin-button-off-broadway-2026/talkinbroadway--howard-miller.json"
     ],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "other-desert-cities-2026/new-york-city-theatre--unknown.json"
+    ]
   },
   "startTime": "2026-10-22T15:08:28.091Z",
-  "lastProcessed": "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json",
+  "lastProcessed": "fish-off-broadway-2026/exeunt-magazine--unknown.json",
   "log": [
     {
       "t": "2026-10-22T15:10:02.371Z",
@@ -78,6 +96,76 @@
       "event": "bb-session",
       "session": "64bde15b",
       "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
+    },
+    {
+      "t": "2026-10-22T15:17:51.685Z",
+      "event": "bb-session",
+      "session": "9d49ccd9",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-22T15:18:18.340Z",
+      "event": "bb-session",
+      "session": "f03b0f75",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-22T15:18:19.200Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-22T15:18:28.780Z",
+      "event": "bb-session",
+      "session": "1d0d54a9",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-22T15:18:29.651Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-22T15:20:13.117Z",
+      "event": "bb-session",
+      "session": "280cabee",
+      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
+    },
+    {
+      "t": "2026-10-22T15:21:15.806Z",
+      "event": "bb-session",
+      "session": "941d18af",
+      "url": "https://www.cbsnews.com/video/other-desert-cities-on-broadway-family-secrets-lai"
+    },
+    {
+      "t": "2026-10-22T15:22:24.917Z",
+      "event": "bb-session",
+      "session": "ec861519",
+      "url": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-s"
+    },
+    {
+      "t": "2026-10-22T15:22:33.253Z",
+      "event": "bb-session",
+      "session": "12b712a8",
+      "url": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-s"
+    },
+    {
+      "t": "2026-10-22T15:23:08.433Z",
+      "event": "bb-session",
+      "session": "20e35a95",
+      "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07"
+    },
+    {
+      "t": "2026-10-22T15:23:18.607Z",
+      "event": "bb-session",
+      "session": "0fc02c3f",
+      "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07"
+    },
+    {
+      "t": "2026-10-22T15:25:33.600Z",
+      "event": "bb-session",
+      "session": "222033eb",
+      "url": "https://openingnight.online/midnight-off-broadway-review-todrick-halls-new-music"
     }
   ]
 }
