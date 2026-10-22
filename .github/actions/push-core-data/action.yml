@@ -617,7 +617,7 @@ runs:
                 // Loaded on their own so a missing/truncated file only disables the 3-way rule, not the reconcile.
                 let base; let ours;
                 try { if (fs.existsSync("/tmp/core-data-snapshot/audience-buzz.json")) base = JSON.parse(fs.readFileSync("/tmp/core-data-snapshot/audience-buzz.json", "utf8")); } catch (e) { console.log("::warning::audience-buzz snapshot unreadable (" + e.message + "); no 3-way delete rule this run"); }
-                try { ours = JSON.parse(fs.readFileSync("/tmp/our-audience-buzz.json", "utf8")); } catch (e) { base = undefined; }
+                try { ours = JSON.parse(fs.readFileSync("/tmp/our-audience-buzz.json", "utf8")); } catch (e) { base = undefined; console.log("::warning::our audience-buzz copy unreadable (" + e.message + "); no 3-way delete rule this run"); }
                 const { recovered, skippedOrphans, skippedDeleted } = reconcileAudienceBuzz(current, remote, { liveIds, retiredIds, base, ours });
                 if (skippedDeleted.length > 0) {
                   fs.writeFileSync("audience-buzz.json", JSON.stringify(current, null, 2) + "\n");
