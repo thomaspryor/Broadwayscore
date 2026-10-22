@@ -1,11 +1,11 @@
 import { ImageResponse } from 'next/og';
 import { pngToOgJpegResponse } from '@/lib/og-jpeg';
+import { fetchImageDataUri } from '@/lib/og-image';
 import { interFontOption } from '@/lib/og-fonts';
 import { getShowBySlug, getHotShowSlugs } from '@/lib/data-core';
 import { isCategoryEnabled } from '@/lib/markets';
 import { getScoreTier } from '@/components/show-cards';
 import { isShowScoreTBD } from '@/lib/show-score-tbd';
-import { BASE_URL, toAbsoluteUrl } from '@/lib/seo';
 
 export const alt = 'Broadway Scorecard: show score';
 export const size = { width: 1200, height: 630 };
@@ -58,25 +58,11 @@ export default async function OGImage({ params }: { params: { slug: string } }) 
     return fallbackImage();
   }
 
-  // Satori/@vercel/og can't decode WebP. Route through Next.js's /_next/image
-  // optimizer (returns JPEG to non-webp clients), then fetch as a buffer and
-  // embed as a base64 data URI so Satori gets a format it understands.
-  // w=1200 at q=75 keeps base64 payload under ~500KB (Satori chokes on larger).
-  const optimizedUrl = `${BASE_URL}/_next/image?url=${encodeURIComponent(imagePath)}&w=1200&q=75`;
-
-  let imageUrl: string;
-  try {
-    const res = await fetch(optimizedUrl, { headers: { Accept: 'image/jpeg,image/png,*/*' } });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const buf = Buffer.from(await res.arrayBuffer());
-    // Only JPEG/PNG are reliable in Satori. Anything else → fallback.
-    const contentType = res.headers.get('content-type') || '';
-    if (!/^image\/(jpeg|png)$/.test(contentType)) {
-      throw new Error(`unsupported content-type: ${contentType}`);
-    }
-    imageUrl = `data:${contentType};base64,${buf.toString('base64')}`;
-  } catch (err) {
-    console.error('[og] Image fetch failed for', params.slug, err instanceof Error ? err.message : err);
+  // The shared /_next/image helper also converts WebP pass-through responses
+  // to JPEG so Satori always receives a format it can decode.
+  const imageUrl = await fetchImageDataUri(imagePath, 1200);
+  if (!imageUrl) {
+    console.error('[og] Image fetch failed for', params.slug);
     return fallbackImage();
   }
 
