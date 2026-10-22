@@ -646,8 +646,12 @@ _CLOSE_DIVIDER_RE = re.compile(r'^[\-=_*~─━│┃┌┐└┘•·\s]+$')
 def _closing():
     """(prose, last_line) of the final message: fenced code, inline code and
     blockquote lines removed (quoted text is not a claim), trailing divider
-    rules dropped (wrap-up.md's SESSION STATUS block ends with one)."""
-    t = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
+    rules dropped (wrap-up.md's SESSION STATUS block ends with one). A fenced
+    status box (the did-it-work TESTED block, opening with a ━ rule) is kept:
+    its "Production verified: partly" is a claim, not code (BRO-5881 replay)."""
+    t = re.sub(r'```[^\n]*\n?(.*?)```',
+               lambda m: m.group(1) if m.group(1).lstrip().startswith('━') else '',
+               _last_msg or '', flags=re.DOTALL)
     t = re.sub(r'`[^`\n]*`', '', t)
     t = '\n'.join(ln for ln in t.splitlines() if not ln.lstrip().startswith('>'))
     lines = [ln.strip() for ln in t.strip().splitlines() if ln.strip()]

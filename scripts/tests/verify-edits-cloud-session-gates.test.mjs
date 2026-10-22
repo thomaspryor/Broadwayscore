@@ -1930,6 +1930,7 @@ test('LOOSEENDS: real loose-end closings + SAFE TO EXIT → BLOCKED', skipNoRepo
     'Checked only with simulated inputs. Both will happen naturally the next time it runs.',
     'BRO-5003 is paused, waiting on the checking session\'s approval.',
     'The topic-pages session left three minor review notes for later.',
+    '```\n━━━ TESTED ━━━\nProduction verified: partly. I could not confirm the last commit deployed.\n━━━━━━\n```\nThe rewrite works.',
   ]) {
     assertLoose(runHook(t, `${body}\n\nNothing needed from you.\n\nSAFE TO EXIT`, LE_ON), body);
   }
