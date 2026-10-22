@@ -54,7 +54,7 @@
 
 const { pointsAtFile, planCanonicalPointerClear, applyCanonicalPointerClear } = require('./lib/canonical-duplicate-pointers');
 const { quarantineBody } = require('./lib/quarantine-body');
-const { guardianContentToResult, titleHtmlFor, apiHeadlineLeadsWithShow } = require('./lib/guardian-api-result');
+const { guardianContentToResult, titleHtmlFor, guardianMentionWaiver } = require('./lib/guardian-api-result');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -7509,7 +7509,7 @@ async function processReview(review) {
         canonicalTitle,
         review.showId
       );
-      if (!sanity.valid && result.method === 'guardian-api' && apiHeadlineLeadsWithShow(result.pageTitle, canonicalTitle)) {
+      if (!sanity.valid && guardianMentionWaiver(result, canonicalTitle)) {
         console.log(`  ↪ Mention check (${sanity.reason}) waived: Guardian API headline leads with the show title ("${result.pageTitle}")`);
         sanity.valid = true;
       }
@@ -7800,8 +7800,8 @@ async function processReview(review) {
             retryCanonicalTitle,
             review.showId
           );
-          if (!retrySanity.valid && retryResult.method === 'guardian-api' && apiHeadlineLeadsWithShow(retryResult.pageTitle, retryCanonicalTitle)) {
-            console.log(`  ↪ Mention check (${retrySanity.reason}) waived: Guardian API headline leads with the show title`);
+          if (!retrySanity.valid && guardianMentionWaiver(retryResult, retryCanonicalTitle)) {
+            console.log(`  ↪ Mention check (${retrySanity.reason}) waived: Guardian API headline leads with the show title ("${retryResult.pageTitle}")`);
             retrySanity.valid = true;
           }
           if (!retrySanity.valid && !laneHeld(review, 'headlineBackstop')) {

@@ -121,3 +121,13 @@ test('the mention check accepts the API title html for a body that names the sho
   assert.equal(validateContentMentionsShow(text, null, 'King Lear', 'king-lear-west-end-2018').valid, false, 'body alone fails (the BRO-5851 rejection)');
   assert.equal(validateContentMentionsShow(text, html, 'King Lear', 'king-lear-west-end-2018').valid, true);
 });
+
+test('the mention waiver applies only to guardian-api results with a review headline', () => {
+  const { guardianMentionWaiver, titleHtmlFor } = require('../../scripts/lib/guardian-api-result.js');
+  const r = { method: 'guardian-api', pageTitle: 'King Lear review – Ian McKellen', text: 'x' };
+  assert.equal(guardianMentionWaiver(r, 'King Lear'), true);
+  assert.equal(guardianMentionWaiver({ ...r, method: 'scrapingbee' }, 'King Lear'), false, 'scraped pages keep the full check');
+  assert.equal(guardianMentionWaiver(r, 'Hamlet'), false);
+  assert.equal(guardianMentionWaiver(null, 'King Lear'), false);
+  assert.equal(titleHtmlFor({ html: '', pageTitle: 'Five shows to see this autumn: King Lear and more' }), null, 'roundup headline never relaxes the check');
+});

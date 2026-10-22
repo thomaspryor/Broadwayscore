@@ -28,6 +28,10 @@ function londonDay(iso) {
   return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
 }
 
+const ROUNDUP_HEADLINE = /\b(roundup|shows? to see|things to do|what to see|best (?:plays|musicals|shows|of)|this week|and more|top \d+|\d+ shows)\b/i;
+const squash = (t) => String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+  .replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').trim();
+
 /**
  * The html the URL→content mention check should see for a result: the page html
  * when there is one, else a bare <title> built from an API headline.
@@ -35,14 +39,12 @@ function londonDay(iso) {
 function titleHtmlFor(result) {
   if (!result) return null;
   if (result.html) return result.html;
-  if (!result.pageTitle) return null;
+  // A roundup headline is no proof the article is about this show; withholding it
+  // keeps a "shows to see" title from relaxing the body-mention threshold.
+  if (!result.pageTitle || ROUNDUP_HEADLINE.test(String(result.pageTitle))) return null;
   const esc = String(result.pageTitle).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   return `<title>${esc}</title>`;
 }
-
-const ROUNDUP_HEADLINE = /\b(roundup|shows? to see|things to do|what to see|best (?:plays|musicals|shows|of)|this week|and more|top \d+|\d+ shows)\b/i;
-const squash = (t) => String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
-  .replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').trim();
 
 /**
  * True when a Guardian API headline is a dedicated review of this show: it reads
@@ -64,6 +66,14 @@ function apiHeadlineLeadsWithShow(pageTitle, showTitle) {
   // word "review" right after the title excludes interviews/features ("King Lear:
   // Ian McKellen on ...") and longer titles that begin with this one ("Pity Party").
   return [...variants].some((t) => t.length > 2 && (head === `${t} review` || head.startsWith(`${t} review `)));
+}
+
+/**
+ * Whether a failed URL→content mention check may be waived for this fetch result:
+ * only a Guardian API result whose own headline reads "<show title> review".
+ */
+function guardianMentionWaiver(result, showTitle) {
+  return !!result && result.method === 'guardian-api' && apiHeadlineLeadsWithShow(result.pageTitle, showTitle);
 }
 
 function guardianContentToResult(content, { show = null } = {}) {
@@ -98,4 +108,4 @@ function guardianContentToResult(content, { show = null } = {}) {
   };
 }
 
-module.exports = { guardianContentToResult, londonDay, titleHtmlFor, apiHeadlineLeadsWithShow };
+module.exports = { guardianContentToResult, londonDay, titleHtmlFor, apiHeadlineLeadsWithShow, guardianMentionWaiver };
