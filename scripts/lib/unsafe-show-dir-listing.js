@@ -28,8 +28,15 @@ function walk(dir, out) {
 
 /** @returns {Record<string, number>} repo-relative path -> unsafe line count */
 function scanScripts(repoRoot) {
-  const files = [];
-  walk(path.join(repoRoot, 'scripts'), files);
+  let files = [];
+  try {
+    // Tracked files only, so local scratch files cannot trip the ratchet.
+    files = require('child_process')
+      .execFileSync('git', ['ls-files', '-z', 'scripts'], { cwd: repoRoot, stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 64 * 1024 * 1024 })
+      .toString().split('\0').filter((f) => /\.(js|cjs|mjs)$/.test(f) && !/\.test\.(js|cjs|mjs)$/.test(f))
+      .map((f) => path.join(repoRoot, f));
+  } catch { files = []; }
+  if (!files.length) walk(path.join(repoRoot, 'scripts'), files);
   const counts = {};
   for (const f of files) {
     const rel = path.relative(repoRoot, f).split(path.sep).join('/');
