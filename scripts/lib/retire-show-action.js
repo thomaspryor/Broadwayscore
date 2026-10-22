@@ -17,7 +17,9 @@
  *     in a plan refuses instead of deleting another show);
  *   - only a `provisional: true` row (an automated, not-yet-corroborated
  *     add) can be retired this way, or a duplicate named with `duplicateOf`
- *     (same title, same house as the kept row, zero reviews; id-only), or a
+ *     (same title, same house as the kept row, zero reviews; id-only; a
+ *     differently-titled listing of the same run also needs `evidenceUrl`
+ *     and the same closing date, BRO-5706), or a
  *     non-production named with `nonProduction` (BRO-4449/BRO-4505: a film
  *     screening, one-night concert or stand-up set minted before the dated
  *     venue readers existed): still announced/upcoming, never dated as
@@ -49,6 +51,8 @@ function sameHouse(a, b) {
   if (!long.startsWith(`${short} `)) return false;
   return long.slice(short.length).trim().split(/[\s-]+/).filter(Boolean).every(w => HOUSE_WORDS.has(w));
 }
+
+const NON_PRODUCTION_STATUSES = new Set(['announced', 'upcoming']);
 
 function isoOrNull(v) {
   return typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : null;
@@ -85,24 +89,34 @@ function sameRun(kept, row, ticketDup) {
  * inside the kept row's run, and the retired row has no reviews (scored or
  * collected review texts).
  */
-function duplicateRefusal(row, duplicateOf, shows, reviewCount) {
+// BRO-5706: a stray listing of a run under a different title ("Angel Bones - English
+// National Opera" vs "Angel's Bone"). Accepted only with an https evidenceUrl (the venue
+// listing) and: undated announced/upcoming stray, kept row open and dated, identical
+// closing date. House, market and zero reviews are checked by the caller.
+function evidenceDuplicate(kept, row, evidenceUrl) {
+  if (typeof evidenceUrl !== 'string' || !/^https:\/\/[^\s/]+\.[^\s]+$/.test(evidenceUrl)) return false;
+  if (!NON_PRODUCTION_STATUSES.has(row.status) || isoOrNull(row.openingDate) || isoOrNull(row.previewsStartDate)) return false;
+  if (kept.status !== 'open' || !isoOrNull(kept.openingDate)) return false;
+  return !!isoOrNull(row.closingDate) && row.closingDate === kept.closingDate;
+}
+
+function duplicateRefusal(row, duplicateOf, shows, reviewCount, evidenceUrl) {
   if (typeof duplicateOf !== 'string' || !ID_RE.test(duplicateOf) || duplicateOf === row.id) return 'duplicateOf must name another show id';
   const kept = shows.find(s => s && s.id === duplicateOf);
   if (!kept) return `duplicateOf "${duplicateOf}" is not in shows.json`;
   // A shared ticketing listing with agreeing titles ("AMAZE" vs "AMAZE Magic") is the
   // audit's own proof of one production, so a single-word prefix title is accepted too.
   const ticketDup = findSharedTicketIdentityDupes([kept, row]).length > 0;
-  if (normalizeTitle(kept.title) !== normalizeTitle(row.title) && !isStrictTitleSubset(kept, row) && !ticketDup) return `title "${row.title}" does not match "${kept.title}"`;
+  const evidenceDup = evidenceDuplicate(kept, row, evidenceUrl);
+  if (normalizeTitle(kept.title) !== normalizeTitle(row.title) && !isStrictTitleSubset(kept, row) && !ticketDup && !evidenceDup) return `title "${row.title}" does not match "${kept.title}"`;
   if (!sameHouse(kept.venue, row.venue)) return `venue "${row.venue}" is not the same house as "${kept.venue}"`;
   if ((kept.market || null) !== (row.market || null)) return `market ${row.market} differs from ${kept.market}`;
-  if (!sameRun(kept, row, ticketDup)) return `run dates do not fall inside ${duplicateOf}'s run (a revival or return run is not a duplicate)`;
+  if (!evidenceDup && !sameRun(kept, row, ticketDup)) return `run dates do not fall inside ${duplicateOf}'s run (a revival or return run is not a duplicate)`;
   if (typeof reviewCount !== 'function') return 'review count unavailable';
   const n = reviewCount(row.id);
   if (n !== 0) return `${row.id} has ${n} review(s): move them before retiring`;
   return null;
 }
-
-const NON_PRODUCTION_STATUSES = new Set(['announced', 'upcoming']);
 
 /**
  * Why `row` may NOT be retired as a non-production, or null when it may. A
@@ -139,7 +153,7 @@ function applyRetireShow(shows, action, { retire, now, reviewCount, isRetired } 
     // same house) and has no reviews; it is retired id-only, never with a
     // title+venue block, since the kept row shares both.
     if (a.blockTitleVenue === true) return { ok: false, reason: `retire-show ${a.id}: a duplicate is retired id-only (blockTitleVenue would refuse the kept show's own listing)` };
-    const why = duplicateRefusal(row, a.duplicateOf, shows, reviewCount);
+    const why = duplicateRefusal(row, a.duplicateOf, shows, reviewCount, a.evidenceUrl);
     if (why) return { ok: false, reason: `retire-show ${a.id}: ${why}` };
   } else if (row.provisional !== true) {
     return { ok: false, reason: `retire-show ${a.id}: only provisional (automated, uncorroborated) rows can be retired by a plan, a duplicate named with duplicateOf, or a non-production named with nonProduction + evidenceUrl` };

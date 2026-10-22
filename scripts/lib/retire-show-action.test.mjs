@@ -224,3 +224,25 @@ test('duplicateOf: an undated stub sharing the kept row\'s ticket listing retire
   assert.equal(applyRetireShow(withAlias, action, { retire: scratch().retire, reviewCount: none }).ok, true);
   assert.deepEqual(withAlias[0].aliases, ['old-slug', 'amaze-off-broadway-2026', 'amaze-off-broadway']);
 });
+
+test('duplicateOf + evidenceUrl: a differently-titled undated stray of the same open run retires; anything weaker refuses (BRO-5706)', () => {
+  const kept = { id: 'angels-bone-west-end-2026', slug: 'angels-bone-west-end', title: "Angel's Bone", venue: 'London Coliseum', market: 'west-end', status: 'open', openingDate: '2026-10-17', previewsStartDate: '2026-10-16', closingDate: '2026-10-31' };
+  const stray = { id: 'angel-bones-english-national-opera-west-end-2026', title: 'Angel Bones - English National Opera', venue: 'London Coliseum', market: 'west-end', status: 'announced', openingDate: null, previewsStartDate: null, closingDate: '2026-10-31', type: 'special' };
+  const ev = 'https://www.eno.org/whats-on/angels-bone/';
+  const action = { id: stray.id, expectTitle: stray.title, reason: 'stray ENO listing of the same run', duplicateOf: kept.id, evidenceUrl: ev };
+  const none = () => 0;
+  const refused = (sh, a = action, rc = none) => { const r = applyRetireShow(sh, a, { retire: scratch().retire, reviewCount: rc }); assert.equal(r.ok, false); assert.equal(sh.length, 2); return r.reason; };
+  assert.match(refused([{ ...kept }, { ...stray }], { ...action, evidenceUrl: undefined }), /does not match/);
+  assert.match(refused([{ ...kept }, { ...stray }], { ...action, evidenceUrl: 'http://x.org/a' }), /does not match/);
+  assert.match(refused([{ ...kept }, { ...stray, closingDate: '2026-11-07' }]), /does not match/);
+  assert.match(refused([{ ...kept }, { ...stray, openingDate: '2026-10-17' }]), /does not match/);
+  assert.match(refused([{ ...kept }, { ...stray, status: 'open' }]), /does not match/);
+  assert.match(refused([{ ...kept, status: 'announced' }, { ...stray }]), /does not match/);
+  assert.match(refused([{ ...kept }, { ...stray, venue: 'Sadler\'s Wells' }]), /not the same house/);
+  assert.match(refused([{ ...kept }, { ...stray }], action, () => 2), /review/);
+  const shows = [{ ...kept }, { ...stray }];
+  const r = applyRetireShow(shows, action, { retire: scratch().retire, reviewCount: none });
+  assert.equal(r.ok, true, r.reason);
+  assert.deepEqual(shows.map(s => s.id), [kept.id]);
+  assert.deepEqual(shows[0].aliases, [stray.id]);
+});
