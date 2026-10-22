@@ -24,8 +24,8 @@ if (hasHelpFlag(argv)) { console.log(USAGE); process.exit(0); }
 const urls = argv.filter(a => a.startsWith('--url=')).map(a => a.slice(6));
 const waitArg = argv.find(a => a.startsWith('--wait='));
 const waitSeconds = Math.min(60, Math.max(5, parseInt(waitArg ? waitArg.slice(7) : '30', 10) || 30));
-if (!urls.length || urls.some(u => !/^https:\/\/(www\.)?bachtrack\.com\//.test(u))) {
-  console.log(USAGE + '\n(bachtrack.com urls only)');
+if (!urls.length || urls.length > 5 || urls.some(u => !/^https:\/\/(www\.)?bachtrack\.com\//.test(u))) {
+  console.log(USAGE + '\n(1-5 bachtrack.com urls)');
   process.exit(2);
 }
 
@@ -59,7 +59,8 @@ async function main() {
     purpose: 'BRO-5874 Bachtrack render diagnostic',
     host: 'bachtrack.com',
     category: 'review-text',
-    body: { timeout: 240, browserSettings: { solveCaptchas: true } },
+    // Room for every url: goto (45s) + body wait + 3s settle each, plus a minute for setup.
+    body: { timeout: 60 + urls.length * (48 + waitSeconds), browserSettings: { solveCaptchas: true } },
   });
   console.log(`session ${String(session.id).slice(0, 8)}… created`);
   const browser = await chromium.connectOverCDP(session.connectUrl);
