@@ -1692,5 +1692,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-22T05:29:12.123Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5890-express-ingest-fixes",
+    "title": "Landing blocked: rebase red on land/bro-5890-express-ingest-fixes",
+    "description": "land.yml did not land land/bro-5890-express-ingest-fixes: the rebase gate went red at 33e8433abd. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5890-express-ingest-fixes @ 33e8433abd (origin/land/bro-5890-express-ingest-fixes) → origin/main @ b936c48be4 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ b936c48be4: Rebasing (1/1) error: could not apply 33e8433abd9... BRO-5890: stop Express stalling other shows; fix the ingest push race, stranded and misflagged reviews hint: Resolve all conflicts manually,  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39724339379",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5890-express-ingest-fixes"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "33e8433abd9503b2cf8b6dedb8bcbcc47079fdff"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39724339379"
+      }
+    ],
+    "queuedAt": "2026-10-22T05:52:21.290Z"
   }
 ]
