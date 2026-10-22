@@ -1386,6 +1386,37 @@
     "queuedAt": "2026-10-22T17:39:49.959Z"
   },
   {
+    "conditionKey": "land:land/bro-5982-cite-score",
+    "title": "Landing blocked: rebase red on land/bro-5982-cite-score",
+    "description": "land.yml did not land land/bro-5982-cite-score: the rebase gate went red at 207ce0c5a5. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5982-cite-score @ 207ce0c5a5 (origin/land/bro-5982-cite-score) → origin/main @ 8e5396c425 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 8e5396c425: Rebasing (1/1) error: could not apply 207ce0c5a5b... VISUAL-OK-1440: feat(show-page): Cite this score control in hero (BRO-5982) hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <c Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39805760001",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5982-cite-score"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "207ce0c5a5b1f5d28af494209083dc78a7aca07c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39805760001"
+      }
+    ],
+    "queuedAt": "2026-10-22T18:19:36.674Z"
+  },
+  {
     "conditionKey": "land:land/bro-5963-restore-drill",
     "title": "Landing blocked: merged-tree-tests red on land/bro-5963-restore-drill",
     "description": "land.yml did not land land/bro-5963-restore-drill: the merged-tree-tests gate went red at e6cc4d12f1. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5963-restore-drill @ e6cc4d12f1 (origin/land/bro-5963-restore-drill) → origin/main @ 89e62221cd [land] train: land/bro-5982-cite-score not taken — would not rebase onto the train: Rebasing (1/1) error: could not apply 207ce0c5a5b... VISUAL-OK-1440: feat(show-page): Cite this score control in hero (BRO-5982) [land] train: + land/bro-5975-ibdb-followup @ d8f7f8fe33 (1 commit(s)) [lan Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39799348581",
