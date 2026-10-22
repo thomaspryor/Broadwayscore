@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T17:05:44.989Z",
+  "timestamp": "2026-10-22T17:22:34.256Z",
   "stats": {
-    "totalReviews": 58989,
-    "alreadyFlagged": 21295,
+    "totalReviews": 59009,
+    "alreadyFlagged": 21309,
     "dateGuardCatches": 201,
-    "directorMismatch": 2054,
+    "directorMismatch": 2057,
     "tvFilmSignals": 1659,
-    "londonSignals": 2706,
+    "londonSignals": 2708,
     "offBroadwaySignals": 529,
     "yearMismatch": 169,
-    "noPublishDate": 5277
+    "noPublishDate": 5266
   },
   "findings": [
     {
@@ -26872,6 +26872,20 @@
     },
     {
       "showId": "miss-saigon-2017",
+      "file": "talkinbroadway--matthew-murray.json",
+      "score": null,
+      "publishDate": "2017-03-23",
+      "url": "http://www.talkinbroadway.com/page/world/MissSaigon2017.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from miss-saigon-1991"
+        }
+      ]
+    },
+    {
+      "showId": "miss-saigon-2017",
       "file": "theater-life--lauren-yarger.json",
       "score": 97,
       "publishDate": "2017-05-06T15:07:02",
@@ -40272,6 +40286,34 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-color-purple-2005",
+      "file": "nbcny--robert-kahn.json",
+      "score": null,
+      "publishDate": "2015-12-09",
+      "url": "https://www.nbcnewyork.com/broadway/review-color-purple-doyle/838462/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
+        }
+      ]
+    },
+    {
+      "showId": "the-color-purple-2005",
+      "file": "newsday--linda-winer.json",
+      "score": null,
+      "publishDate": "2015-12-10",
+      "url": "https://www.newsday.com/entertainment/theater/the-color-purple-review-showstopper-stuns-on-broadway-f82820",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
         }
       ]
     },
@@ -64175,6 +64217,20 @@
     },
     {
       "showId": "evita-2012",
+      "file": "exeunt-magazine--unknown.json",
+      "score": null,
+      "publishDate": "2012-04-17",
+      "url": "https://exeuntnyc.com/reviews/evita/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "evita-2012",
       "file": "northjerseycom--robert-feldberg.json",
       "score": 42,
       "publishDate": "2012-04-07",
@@ -69341,6 +69397,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
+      "file": "afridiziak-theatre-news--elana-joseph.json",
+      "score": 95,
+      "publishDate": "2026-10-22",
+      "url": "https://www.afridiziak.com/reviews/ilford-boy-by-danny-lee-wynter-donmar-warehouse/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
