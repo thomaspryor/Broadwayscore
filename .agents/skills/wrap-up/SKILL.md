@@ -81,12 +81,23 @@ Check for:
    owner reads SAFE TO EXIT as "I can close or kill this session now".
 
    **SAFE TO EXIT means every piece of work discussed in this session is
-   finished and verified** (landed and checked on main), or the owner
-   dropped it (BRO-5040, owner 2026-10-11). A card handed to the board
-   worker (queue weeks deep) or a session you started that you have not
-   seen finish is unfinished: end `NOT SAFE TO EXIT — <what remains>`.
-   The Stop hook (OPENWORK) enforces it; `BACKLOG-OK: <why it can wait>`
-   covers a card that can honestly wait weeks.
+   finished and verified, carded, or owned by a session you started**
+   (BRO-5040, BRO-5881, owner 2026-10-22). A started session lands and
+   verifies its own work, so it does not make this session unsafe to close
+   unless this session must act on its result or the change is high-risk.
+   A card handed to the board worker (queue weeks deep) is unfinished
+   (OPENWORK); `BACKLOG-OK: <why it can wait>` covers a card that can wait.
+   A SAFE TO EXIT message must not also offer more work, name a call only
+   the owner can make, or mention work left unfinished or uncarded
+   (LOOSEENDS): finish it, card it, decide it, or end NOT SAFE with a
+   DECISION NEEDED block.
+
+   **NOT SAFE TO EXIT must have a wake (WAKELESS).** If you are waiting on a
+   run, a deploy or a landing, start the wait before ending the turn: a
+   `run_in_background` Bash that polls until it finishes (timeout up to
+   7200000; start another if it times out) or Monitor. Its exit wakes you.
+   "I'll check it at 14:56" with nothing running never happens: sessions sat
+   10-19 hours that way. `send_later` is denied in cloud (phone prompt).
 
    **If anything is still running or queued: STOP. Do not proceed to Phase 4.**
    - Monitor in background (check every 30-60s)
