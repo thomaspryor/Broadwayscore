@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T20:03:59.908Z",
+  "timestamp": "2026-10-22T20:24:48.502Z",
   "stats": {
-    "totalReviews": 59164,
-    "alreadyFlagged": 21325,
+    "totalReviews": 59183,
+    "alreadyFlagged": 21327,
     "dateGuardCatches": 201,
     "directorMismatch": 2057,
     "tvFilmSignals": 1660,
-    "londonSignals": 2709,
+    "londonSignals": 2707,
     "offBroadwaySignals": 529,
     "yearMismatch": 169,
-    "noPublishDate": 5368
+    "noPublishDate": 5369
   },
   "findings": [
     {
@@ -25176,7 +25176,7 @@
         {
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions year 2003 (2x) more than 2019 (1x). 2003 matches production: little-shop-of-horrors-2003"
+          "detail": "Mentions year 2003 (2x) more than 2019 (0x). 2003 matches production: little-shop-of-horrors-2003"
         }
       ]
     },
@@ -64371,20 +64371,6 @@
     },
     {
       "showId": "exit-the-king-west-end-2018",
-      "file": "guardian--susannah-clapp.json",
-      "score": 76,
-      "publishDate": "2018-07-29",
-      "url": "https://www.theguardian.com/stage/2018/jul/29/exit-the-king-olivier-marber-pity-royal-court-mullarkey-river-stage-festival-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "exit-the-king-west-end-2018",
       "file": "london-theatre--georgina-varley.json",
       "score": 80,
       "publishDate": "2018-07-26",
@@ -74012,20 +73998,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "manor-west-end-2021",
-      "file": "guardian--susannah-clapp.json",
-      "score": null,
-      "publishDate": "November 28th, 2021",
-      "url": "https://www.theguardian.com/stage/2021/nov/28/manor-lyttelton-national-theatre-moira-buffini-review-the-drifters-girl-beverley-knight-garrick-pride-and-prejudice-sort-of-criterion",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
