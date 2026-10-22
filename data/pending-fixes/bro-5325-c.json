@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5325-c",
   "planId": "012c67cc-5e25-4fb4-85d9-7888fe427cf7",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-19T02:55:27.466Z",
   "submitter": {
     "name": null,
@@ -29,5 +29,19 @@
         "description": "Refresh multiShowSource metadata on of-mice-and-men-2014/wsj--terry-teachout.json from its stored sibling column. Preserve the existing identical section, URL, date and scoring state. Refuse an ambiguous section or a marker mismatch."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T12:51:39.108Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
