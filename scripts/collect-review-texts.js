@@ -3839,7 +3839,7 @@ async function fetchReviewText(review) {
         const { result, reason } = guardianContentToResult(json.response?.content, { show: resolveShowMeta(review.showId) });
         if (result) {
           console.log(`  ✓ Guardian Content API: ${result.text.length} chars` +
-            (result.apiScore ? ` (${result.apiScore.originalScore})` : ''));
+            (result.apiMeta.score ? ` (${result.apiMeta.score.originalScore})` : ''));
           return result;
         }
         console.log(`  ⚠ Guardian API: ${reason}, falling back to scraper chain...`);
@@ -4551,7 +4551,9 @@ function mapSourceMethod(method) {
   return map[method] || method;
 }
 
-async function updateReviewJson(review, text, validation, archivePath, method, attempts, archiveData = {}, html = '', contentVerification = null, apiScore = null) {
+async function updateReviewJson(review, text, validation, archivePath, method, attempts, archiveData = {}, html = '', contentVerification = null, apiMeta = null) {
+  // Metadata the publisher's API returned with the text (Guardian Content API).
+  const apiScore = (apiMeta && apiMeta.score) || null;
   const data = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
   // BRO-1431: snapshot the body BEFORE any mutation below, so the stale-flag
   // neutralization call (after contentTier reclassification) can tell "this
@@ -4743,6 +4745,21 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // Extract publishDate from HTML if not already set. An archived copy is
   // stored as 'html-archive' (a live page may still replace it).
   let pageDateDiverged = false;
+  // The API's webPublicationDate is the article's own date (no page HTML to read it from).
+  if (!data.publishDate && apiMeta && apiMeta.publishDate) {
+    const decision = resolvePageDateReplacement({ storedDate: carriedPublishDate, pageDate: apiMeta.publishDate });
+    if (decision.replace) {
+      data.publishDate = apiMeta.publishDate;
+      data.dateSource = 'page-guardian-api';
+      delete data.pageDateCandidate;
+      delete data.pageDateCandidateSource;
+      console.log(`    → publishDate from Guardian API: ${apiMeta.publishDate}`);
+    } else {
+      pageDateDiverged = true;
+      data.pageDateCandidate = apiMeta.publishDate;
+      data.pageDateCandidateSource = 'page-guardian-api';
+    }
+  }
   if (!data.publishDate && html) {
     const extractedDate = extractPublishDateFromHtml(html, data.url);
     if (extractedDate) {
@@ -4920,7 +4937,10 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   if (!wasCleared && discardNoRatingOutletScore(data)) {
     console.log(`    → Discarded originalScore on no-critic-rating outlet [${data.outletId}]`);
   }
-  if (!data.originalScoreCleared && (!data.originalScore || hasUnverifiedSSScore) && (html || text)) {
+  // An API rating also supersedes an unverified extracted score (the second-pass
+  // supersede below needs page html, which the API path does not have).
+  const apiScoreSupersedes = !!apiScore && !humanVerified && !OUTLET_VERIFIED_SOURCES.has(data.scoreSource);
+  if (!data.originalScoreCleared && (!data.originalScore || hasUnverifiedSSScore || apiScoreSupersedes) && (html || text)) {
     const outletId = data.outletId || review.outletId || '';
 
     // A rating the publisher's own API returned (Guardian starRating) beats
@@ -7562,7 +7582,7 @@ async function processReview(review) {
     }
 
     // Update JSON (pass HTML for score extraction)
-    await updateReviewJson(review, result.text, validation, archivePath, result.method, result.attempts, result.archiveData || {}, result.html || '', contentVerification, result.apiScore || null);
+    await updateReviewJson(review, result.text, validation, archivePath, result.method, result.attempts, result.archiveData || {}, result.html || '', contentVerification, result.apiMeta || null);
 
     // Persist URL discovery metadata if URL was changed via showNotMentioned recovery.
     // ORDERING NOTE: updateReviewJson above already wrote the NEW article's
@@ -7838,7 +7858,7 @@ async function processReview(review) {
             return { success: false, error: 'discovered_url_write_refused' };
           }
 
-          await updateReviewJson(review, retryResult.text, validation, archivePath, retryResult.method, retryResult.attempts, retryResult.archiveData || {}, retryResult.html || '', retryVerification, retryResult.apiScore || null);
+          await updateReviewJson(review, retryResult.text, validation, archivePath, retryResult.method, retryResult.attempts, retryResult.archiveData || {}, retryResult.html || '', retryVerification, retryResult.apiMeta || null);
 
           const retryMethodKey = retryResult.method === 'direct-cookies' ? 'directCookies' : retryResult.method;
           if (retryMethodKey && state.tierBreakdown[retryMethodKey]) {
