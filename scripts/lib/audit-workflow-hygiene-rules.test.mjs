@@ -665,6 +665,11 @@ ${adds.map((a) => `          git add ${a}`).join('\n')}
     assert.deepStrictEqual(findRestFallbackUnprovenPaths('# hygiene-rest-fallback-ok: owner-only file, no hand edits\n' + flagged), []);
   });
 
+  test('a job-level env opt-in covers every push step in the job', () => {
+    const raw = wf('', ['data/audit/some-totally-unregistered-file.json']).replace('    runs-on: ubuntu-latest\n', "    runs-on: ubuntu-latest\n    env:\n      PUSH_API_REST_REF_UPDATE: '1'\n");
+    assert.strictEqual(findRestFallbackUnprovenPaths(raw).length, 1);
+  });
+
   test('a step without the opt-in env is never flagged', () => {
     assert.deepStrictEqual(findRestFallbackUnprovenPaths(wf('', ['data/audit/some-totally-unregistered-file.json'])), []);
   });

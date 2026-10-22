@@ -1092,10 +1092,18 @@ function findRestFallbackUnprovenPaths(raw) {
   if (raw.includes('hygiene-rest-fallback-ok:')) return []; // file-level exemption
   const { extractStagedPaths, classifyPushFallbackSafety } = require('./audit-push-retry-budgets.js');
   const { matchesRestrictedPath } = require('./branch-ruleset-paths.js');
+  const OPT_IN = /\bPUSH_API_REST_REF_UPDATE\b\s*[:=]\s*['"]?(?!0\b|false\b|['"]?\s*$)[^\s'"]/m;
   const out = [];
-  for (const step of splitWorkflowSteps(raw)) {
+  const steps = splitWorkflowSteps(raw);
+  // Workflow- or job-level `env:` (outside every step) opts in all push steps.
+  const inStep = new Set();
+  for (const st of steps) for (let i = st.startLine; i < st.endLine; i++) inStep.add(i);
+  const outside = raw.split('\n').filter((_, i) => !inStep.has(i));
+  const globalOptIn = OPT_IN.test(stripComments(outside).join('\n'));
+  for (const step of steps) {
     const text = stripComments(step.lines).join('\n');
-    if (!/\bPUSH_API_REST_REF_UPDATE\b\s*[:=]\s*['"]?(?!0\b|false\b|['"]?\s*$)[^\s'"]/m.test(text)) continue;
+    if (!globalOptIn && !OPT_IN.test(text)) continue;
+    if (globalOptIn && !/push-with-retry\.sh/.test(text)) continue;
     const unproven = extractStagedPaths(text).filter((p) => {
       const c = classifyPushFallbackSafety(p);
       return !c.isApiFallbackSafe && !c.isApiFallbackMerge && !matchesRestrictedPath(p);
