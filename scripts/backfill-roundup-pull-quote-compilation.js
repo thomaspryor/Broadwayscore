@@ -18,6 +18,7 @@ const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { selectPullQuoteCompilation } = require('./lib/pull-quote-compilation-backfill');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
@@ -58,6 +59,7 @@ for (const name of showDirs) {
     let data;
     try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { unreadable++; continue; }
     scanned++;
+    if (laneBypasses(data, 'roundupUrlSwap')) continue; // BRO-4807: lane reviews are never flagged
     const hit = selectPullQuoteCompilation(data);
     if (hit) toFlag.push({ showId: name, file: f, filePath, reason: hit.reason });
   }
