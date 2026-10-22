@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T14:47:17.250Z",
+  "timestamp": "2026-10-22T15:33:47.383Z",
   "stats": {
-    "totalReviews": 58899,
+    "totalReviews": 58900,
     "alreadyFlagged": 21269,
     "dateGuardCatches": 202,
-    "directorMismatch": 2054,
-    "tvFilmSignals": 1659,
-    "londonSignals": 2707,
+    "directorMismatch": 2053,
+    "tvFilmSignals": 1658,
+    "londonSignals": 2705,
     "offBroadwaySignals": 527,
     "yearMismatch": 169,
-    "noPublishDate": 5260
+    "noPublishDate": 5249
   },
   "findings": [
     {
@@ -3136,6 +3136,7 @@
     {
       "showId": "angels-bone-west-end-2026",
       "file": "nick-holmes-music--nick-holmes.json",
+      "score": 88,
       "publishDate": "2026-10-19",
       "url": "https://nick-holmes-music.com/2026/10/19/english-national-opera-angels-bone-live-review/",
       "findings": [
@@ -15656,25 +15657,6 @@
       "score": 56,
       "publishDate": "2026-06-18",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/glengarry-glen-ross-at-the-old-vic-review-3-stars/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-west-end-2026",
-      "file": "telegraph--louisa-baldwin.json",
-      "score": 71,
-      "publishDate": "2026-06-18",
-      "url": "https://www.westendtheatre.com/358451/news/reviews/glengarry-glen-ross-reviews/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -30177,24 +30159,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 1\""
-        }
-      ]
-    },
-    {
-      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
-      "file": "standard--julianna-barnaby.json",
-      "publishDate": "2026-04-16",
-      "url": "https://www.westendtheatre.com/350117/news/reviews/one-flew-over-cuckoos-nest-aaron-pierre-reviews/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -69368,6 +69332,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "all-that-dazzles-uk--seth-wilby.json",
+      "score": 60,
       "publishDate": "2026-10-22",
       "url": "https://www.allthatdazzles.co.uk/post/review-ilford-boy-donmar-warehouse",
       "findings": [
@@ -78810,7 +78775,7 @@
       "file": "financialtimes--sarah-hemming.json",
       "score": 59,
       "publishDate": "2019-07-12",
-      "url": null,
+      "url": "https://www.ft.com/content/71ad036a-a3bc-11e9-a282-2df48f366f7d",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -83503,6 +83468,7 @@
     {
       "showId": "sweat-2017",
       "file": "nydailynews--joe-dziemianowicz.json",
+      "score": null,
       "publishDate": "November 3, 2016",
       "url": "http://www.nydailynews.com/entertainment/theater-arts/sweat-drenched-blue-class-angst-vietgone-coriolanus-article-1.2854275",
       "findings": [
@@ -85144,9 +85110,9 @@
     },
     {
       "showId": "the-cherry-orchard-west-end-2026",
-      "file": "artsdesk--unknown.json",
+      "file": "artsdesk--matt-wolf.json",
       "score": 97,
-      "publishDate": null,
+      "publishDate": "2026-10-21",
       "url": "https://theartsdesk.com/theatre/cherry-orchard-harold-pinter-theatre-review-chekhov-his-most-choice",
       "findings": [
         {
