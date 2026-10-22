@@ -88,6 +88,7 @@ data/followers.json
 # files ({issue}.json, digit-leading) are trackable again; everything else in
 # the dir stays ignored so a stray `git add -A` can't stage arbitrary files.
 data/pending-fixes/*
+!data/pending-fixes/bro-3204.json
 !data/pending-fixes/bro-5839.json
 !data/pending-fixes/[0-9]*.json
 !data/pending-fixes/bro-3964.json
@@ -332,6 +333,8 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # BRO-4907 outlet tier audit: the card's acceptance criteria require these committed.
 !/docs/audits/
 /docs/audits/*
+# BRO-3944 acceptance requires the complete ledger triage on fresh checkouts.
+!/docs/audits/bro-3944-audit-ledger-triage.md
 # BRO-5743: retain the written decision for every directory-list consumer.
 !/docs/audits/bro-5743-holding-directory-consumers.md
 !/docs/audits/outlet-tier-audit-2026-10.*

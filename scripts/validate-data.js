@@ -66,6 +66,7 @@ const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
 const { criticKey } = require('./lib/manual-entry-merge');
 const { sameUrlDuplicateKey } = require('./lib/review-url-collision');
 const { hasRealImage, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
+const { findImagePointerProblems, imagePointerSeverity } = require('./lib/image-pointers');
 const { buildOutletMaps } = require('./lib/outlet-region-map');
 const { previewsAfterOpening, excessivePreviewGap, inheritedDateFromSibling, suspiciousInheritedYear, normTitle } = require('./lib/show-date-integrity');
 
@@ -1449,6 +1450,15 @@ function validateTheaterAddress(shows) {
 // ===========================================
 
 function validateImageFiles(shows) {
+  const problems = findImagePointerProblems(shows, {
+    publicDir: path.join(__dirname, '..', 'public'),
+    remotePatterns: require('../next.config.js').images.remotePatterns,
+  });
+  for (const problem of problems) {
+    const { id, key, value, reason } = problem;
+    const report = imagePointerSeverity(problem) === 'warn' ? warn : error;
+    report(`Show "${id}" images.${key}: ${reason} (${JSON.stringify(value)})`);
+  }
   info('Checking local image files exist on disk...');
   const IMAGES_DIR = path.join(__dirname, '..', 'public');
   let missing = 0;
@@ -1457,6 +1467,8 @@ function validateImageFiles(shows) {
   for (const show of shows) {
     if (!show.images) continue;
     for (const [key, url] of Object.entries(show.images)) {
+      // Hero/poster were checked above, including remote URL restrictions.
+      if (key === 'hero' || key === 'poster') continue;
       if (!url || typeof url !== 'string' || !url.startsWith('/images/')) continue;
       const filePath = path.join(IMAGES_DIR, url);
       if (!fs.existsSync(filePath)) {
@@ -1475,7 +1487,7 @@ function validateImageFiles(shows) {
     }
   }
 
-  if (missing === 0 && upgradeable === 0) {
+  if (problems.length === 0 && missing === 0 && upgradeable === 0) {
     ok('All local image paths resolve to files on disk');
   }
 }

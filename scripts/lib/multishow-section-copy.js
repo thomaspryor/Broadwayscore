@@ -18,7 +18,7 @@
  * judge already treats as one article filed per show. The column row keeps
  * its whole text: the scorer trims it at score time.
  */
-const { buildChild } = require('./multi-show-review-fanout');
+const { buildChild, rewriteParent } = require('./multi-show-review-fanout');
 const { EXCERPT_FIELDS } = require('./excerpt-fields');
 const { foldDiacritics } = require('./title-match');
 
@@ -28,6 +28,7 @@ const SOURCE_BLOCKING = ['wrongAttribution', 'isNonReview', 'duplicateOf', 'wron
 // Verdicts on the target row a copy must never overwrite.
 const TARGET_BLOCKING = ['_locked', 'manualContentTier', 'wrongAttribution', 'duplicateOf', 'isRoundupArticle', 'wrongShow', 'wrongProduction'];
 const MIN_MARKER_WORDS = 4;
+const MIN_OWN_SECTION_CHARS = 800;
 // A target body at least this long is a real text that a person must compare.
 const MAX_REPLACEABLE_TARGET_CHARS = 400;
 
@@ -38,6 +39,39 @@ function normWords(s) {
 /** Plan markers arrive with `_` for spaces (run-script args split on spaces). */
 function parseMarker(raw) {
   return normWords(String(raw || '').replace(/_/g, ' '));
+}
+
+/**
+ * Cut the stretch of `text` that starts at the words of `startMarker` and ends
+ * at the words of `endMarker` (`_` for spaces; punctuation and case between
+ * the words are ignored). For a column with no venue boxes (an NYT piece that
+ * opens with a shared lede, then one section per show): the plan author read
+ * the article and names where this show's section begins and ends. Refuses
+ * unless each marker occurs exactly once and the start comes before the end,
+ * so a marker that drifts can never file another show's text.
+ * @returns {{ok:boolean, text?:string, reason:string}}
+ */
+function sectionByMarkers(text, startMarker, endMarker) {
+  const src = String(text || '');
+  const toRe = (marker) => {
+    const words = parseMarker(marker).split(' ').filter(Boolean);
+    if (words.length < MIN_MARKER_WORDS) return null;
+    // Curly quotes match through the separator class; accented letters must be spelled as in the text.
+    return new RegExp(`(?<![A-Za-z0-9])${words.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join("[^A-Za-z0-9]+")}(?![A-Za-z0-9])`, 'gi');
+  };
+  const startRe = toRe(startMarker);
+  const endRe = toRe(endMarker);
+  if (!startRe || !endRe) return { ok: false, reason: `start and end markers need ${MIN_MARKER_WORDS}+ words each` };
+  const starts = [...src.matchAll(startRe)];
+  const ends = [...src.matchAll(endRe)];
+  if (starts.length !== 1) return { ok: false, reason: `start marker occurs ${starts.length} times, need exactly 1` };
+  if (ends.length !== 1) return { ok: false, reason: `end marker occurs ${ends.length} times, need exactly 1` };
+  const from = starts[0].index;
+  const to = ends[0].index + ends[0][0].length;
+  if (to <= from) return { ok: false, reason: 'end marker comes before the start marker' };
+  // Keep the sentence's closing punctuation that follows the last word.
+  const tail = /^[.!?…]?[”"’']?/.exec(src.slice(to))[0];
+  return { ok: true, text: src.slice(from, to + tail.length).trim(), reason: 'marker section' };
 }
 
 function markersMatch(section, expectStart, expectEnd) {
@@ -75,7 +109,7 @@ function withSplitSource(target) {
   return [...sources];
 }
 
-function planSectionCopy({ source, sourceShowId, section, target, targetShowId, expectStart, expectEnd, now = new Date().toISOString() }) {
+function planSectionCopy({ source, sourceShowId, section, target, targetShowId, expectStart, expectEnd, method = 'venue-box', ownSection = null, now = new Date().toISOString() }) {
   if (!source || typeof source !== 'object') return { ok: false, reason: 'source row missing' };
   if (!targetShowId || targetShowId === sourceShowId) return { ok: false, reason: 'target show must differ from the source show' };
   const blocked = SOURCE_BLOCKING.find((k) => source[k]);
@@ -86,7 +120,7 @@ function planSectionCopy({ source, sourceShowId, section, target, targetShowId, 
   if (!m.ok) return m;
   const multiShowSource = {
     showId: sourceShowId, outletId: source.outletId, criticName: source.criticName,
-    url: source.url, method: 'venue-box',
+    url: source.url, method,
   };
 
   // A row this tool already filed from this column with this exact section:
@@ -94,7 +128,26 @@ function planSectionCopy({ source, sourceShowId, section, target, targetShowId, 
   const ids = new Set(Array.isArray(source.multiShowSplitChildShowIds) ? source.multiShowSplitChildShowIds : []);
   ids.add(targetShowId);
   // multiShowSplitMethod keeps the BRO-4431 fan-out from re-cutting the column.
-  const parent = { ...source, multiShowSplitParent: true, multiShowSplitMethod: 'venue-box', multiShowSplitChildShowIds: [...ids].sort() };
+  let parent = { ...source, multiShowSplitParent: true, multiShowSplitMethod: method, multiShowSplitChildShowIds: [...ids].sort() };
+  // A marker split also cuts the source down to its OWN section: the scorer only
+  // trims venue-box columns at score time, so a whole article left in the source
+  // row would score its verdict on the other show too.
+  if (ownSection) {
+    // The trim is written with force, which skips the write guard's lock checks.
+    const lockedKey = ['_locked', 'manualContentTier'].find((k) => source[k]) || (source.humanReviewScore != null && source.humanReviewScoreProvisional !== true ? 'humanReviewScore' : null);
+    if (lockedKey) return { ok: false, reason: `source is ${lockedKey}, will not trim it` };
+    if (!ownSection.ok || typeof ownSection.text !== 'string') return { ok: false, reason: `no unambiguous own section: ${ownSection.reason || 'none'}` };
+    if (ownSection.text.length < MIN_OWN_SECTION_CHARS) return { ok: false, reason: `own section is only ${ownSection.text.length} chars` };
+    if (normWords(section.text).includes(normWords(ownSection.text).slice(0, 200)) || normWords(ownSection.text).includes(normWords(section.text).slice(0, 200))) {
+      return { ok: false, reason: 'own section and target section overlap' };
+    }
+    parent = {
+      ...rewriteParent(source, { sectionText: ownSection.text, anchorKind: method }, parent.multiShowSplitChildShowIds, now),
+      multiShowSplitMethod: method,
+    };
+    // Scores of the whole article must not publish against the trimmed text before the rescore.
+    for (const k of ['assignedScore', 'originalScore', 'llmMetadata', 'scoreSource']) if (k in parent) parent[k] = null;
+  }
   if (target && target.multiShowSectionCopy && target.multiShowSectionCopy.fromShowId === sourceShowId && target.fullText === section.text) {
     return { ok: true, reason: `refresh: ${section.text.length}-char section already filed`, row: { ...target, sources: withSplitSource(target), multiShowSource }, parent, action: 'refresh' };
   }
@@ -113,9 +166,9 @@ function planSectionCopy({ source, sourceShowId, section, target, targetShowId, 
     action = 'fill';
   }
 
-  const child = buildChild(source, { showId: targetShowId, sectionText: section.text, anchorKind: 'venue-box' }, sourceShowId, now);
+  const child = buildChild(source, { showId: targetShowId, sectionText: section.text, anchorKind: method }, sourceShowId, now);
   child.rescoreReason = 'multi-show column section copied from sibling row (BRO-5325)';
-  child.multiShowSectionCopy = { fromShowId: sourceShowId, method: 'venue-box', chars: section.text.length, at: now };
+  child.multiShowSectionCopy = { fromShowId: sourceShowId, method, chars: section.text.length, at: now };
   child.multiShowSource = multiShowSource;
 
   let row = child;
@@ -144,4 +197,4 @@ function planSectionCopy({ source, sourceShowId, section, target, targetShowId, 
   return { ok: true, reason: `${action}: ${section.text.length}-char section`, row, parent, action };
 }
 
-module.exports = { planSectionCopy, markersMatch, parseMarker, SOURCE_BLOCKING, TARGET_BLOCKING };
+module.exports = { planSectionCopy, sectionByMarkers, markersMatch, parseMarker, SOURCE_BLOCKING, TARGET_BLOCKING };

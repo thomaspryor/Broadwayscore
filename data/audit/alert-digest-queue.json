@@ -174,6 +174,37 @@
     "queuedAt": "2026-10-22T08:21:30.011Z"
   },
   {
+    "conditionKey": "land:land/worktree-fix-ingest-url-push-dir",
+    "title": "Landing blocked: colocated-tests red on land/worktree-fix-ingest-url-push-dir",
+    "description": "land.yml did not land land/worktree-fix-ingest-url-push-dir: the colocated-tests gate went red at 1d64edc5c4. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/worktree-fix-ingest-url-push-dir @ 1d64edc5c4 (origin/land/worktree-fix-ingest-url-push-dir) → origin/main @ 8b4d965121 [land] train: + land/codex-bro-3204 @ 196d586af2 (3 commit(s)) [land] train: + land/codex-bro-4448 @ b0a6d62f3a (1 commit(s)) [land] attempt 1/3: rebased onto 8b4d965121, 21 file(s) changed (train: land/worktree-fix-ingest-url-push-dir + land/codex-bro-3204, land/code Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39741608203",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-fix-ingest-url-push-dir"
+      },
+      {
+        "name": "gate",
+        "value": "colocated-tests"
+      },
+      {
+        "name": "tip",
+        "value": "1d64edc5c4faab9ebddb18ee784cda301a91004b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39741608203"
+      }
+    ],
+    "queuedAt": "2026-10-22T10:00:54.143Z"
+  },
+  {
     "conditionKey": "land:land/bro-5794-url-invariant",
     "title": "Landing blocked: unit-tests-node red on land/bro-5794-url-invariant",
     "description": "land.yml did not land land/bro-5794-url-invariant: the unit-tests-node gate went red at abdbb58d04. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39748974179",
@@ -238,5 +269,111 @@
       }
     ],
     "queuedAt": "2026-10-22T08:55:36.362Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:cirque-berserk-west-end-2026",
+    "title": "Review gap — \"Cirque Berserk\" missing 2 cited review(s)",
+    "description": "Cirque Berserk (cirque-berserk-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=cirque-berserk-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T11:18:12.142Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:some-woman-west-end-2026",
+    "title": "Review gap — \"Some Woman\" missing 1 cited review(s)",
+    "description": "Some Woman (some-woman-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=some-woman-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T11:18:12.273Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-kick-inside-off-broadway-2026",
+    "title": "Review gap — \"The Kick Inside\" missing 3 cited review(s)",
+    "description": "The Kick Inside (the-kick-inside-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-kick-inside-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T11:18:12.320Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-5838-mvjeap7s",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-5838-mvjeap7s",
+    "description": "land.yml did not land land/job/linear-BRO-5838-mvjeap7s: the rebase gate went red at 2093a59682. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-5838-mvjeap7s @ 2093a59682 (origin/land/job/linear-BRO-5838-mvjeap7s) → origin/main @ 1b161da18b [land] train: + land/job/linear-BRO-5867-mvjee116 @ 4f01e56756 (2 commit(s)) [land] attempt 1/3: rebased onto 1b161da18b, 10 file(s) changed (train: land/job/linear-BRO-5838-mvjeap7s + land/job/linear-BRO-5867-mvjee116) — running checks [land] train: ONE merged-tree re-check  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39764005292",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-5838-mvjeap7s"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "2093a59682a05dccdf728a9f3d2861181270e011"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39764005292"
+      }
+    ],
+    "queuedAt": "2026-10-22T11:12:53.826Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:billy-crystal-860-2026",
+    "title": "Auto-remediation gave up on billy-crystal-860-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"billy-crystal-860-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T11:06:56.565Z"
+  },
+  {
+    "conditionKey": "orphan-unscored-requeue:billy-crystal-860-2026",
+    "title": "Orphan-unscored needs a DATA fix, not a rescore — billy-crystal-860-2026",
+    "description": "1 review(s) for billy-crystal-860-2026 have includable text but no score, and the LLM ensemble's own selector would skip every one of them. Re-running scoring cannot clear this — it just burns a runner (BRO-2985). A human has to fix the underlying records.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Not dispatchable",
+        "value": "hollywood-reporter--caitlin-huston.json — terminal_text_gate_block"
+      }
+    ],
+    "queuedAt": "2026-10-22T11:07:01.671Z"
   }
 ]

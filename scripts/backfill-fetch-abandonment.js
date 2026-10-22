@@ -28,6 +28,7 @@ const fs = require('fs');
 const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
 const { shouldRetryFetch } = require('./lib/review-guards');
+const { effectiveFailureReason } = require('./lib/failed-fetch-policy');
 
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
@@ -95,7 +96,7 @@ for (const f of failedFetches) {
   }
 
   const show = showsById[f.showId] || null;
-  const entry = { failureReason: f.failureReason || '', failureCount: f.failureCount || 1 };
+  const entry = { failureReason: effectiveFailureReason(f), failureCount: f.failureCount || 1 };
   const gate = shouldRetryFetch(show, review, entry);
 
   if (!gate.shouldRetry && gate.updates && gate.updates.fetchDiscoveryAbandoned === true) {

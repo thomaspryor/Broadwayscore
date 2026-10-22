@@ -127,7 +127,7 @@ const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
 const { writeShowExclusionsFile, writeDailyExclusionTotals } = require('./lib/rebuild-exclusion-audit');
 const { isRebuildPaused, readRebuildPause, REBUILD_PAUSE_PATH } = require('./lib/rebuild-pause');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { findDuplicateOfCycle, resolveCycleTiebreak } = require('./lib/duplicate-cycle');
+const { duplicateOfExclusion } = require('./lib/duplicate-of-exclusion');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { evaluateReviewCountRegression, isRunningInCI, WARN_THRESHOLD_PCT, LOCAL_HARD_BLOCK_PCT } = require('./lib/regression-guard');
 
@@ -2971,171 +2971,32 @@ showDirs.forEach(showId => {
         }
       }
 
-      // Skip files flagged as duplicates by cleanup-review-sources.js
-      // But only if the referenced file exists and is NOT also flagged as a duplicate
-      // AND the reference wouldn't be excluded by other guards (prevents both files being dropped)
+      // Shared with scoring-delta so circular recovery and inherited flags cannot drift.
       if (data.duplicateOf) {
-        // Sentinel values like "known-outlet-copy-exists" indicate a confirmed duplicate
-        // even without a specific reference file — always skip these
-        if (!data.duplicateOf.endsWith('.json')) {
-          logExclusion("skippedDuplicateOf", showId, file, data);
-          stats.skippedDuplicateOf = (stats.skippedDuplicateOf || 0) + 1;
-          return;
-        }
-        const refPath = path.join(showDir, data.duplicateOf);
-        let refAlsoDupe = false;
-        let refExcluded = false;
-        // Task #1256 — set only inside the try block below (stays null on a
-        // missing/corrupt refPath, matching refAlsoDupe/refExcluded's own
-        // catch-path defaults: a stale pointer must not exclude this file).
-        let refInheritedFlag = null;
-        let isCircular = false;
-        let circularSameText = false;
-        // N-node cycle detection (Notion #967, write-time cousin of #941): the
-        // isCircular check below only looks ONE hop back (refData.duplicateOf
-        // === file). A longer chain — A->B->C->A — never finds a terminal
-        // non-duplicate node this way, so EVERY member fell through the
-        // `!refAlsoDupe && !refExcluded` skip and ALL of them landed in
-        // reviews.json as same-URL duplicates (the washpost 3-cycle:
-        // andor-brodeur -> justin-davidson -> michael-andor-brodeur ->
-        // andor-brodeur, caught only by the post-hoc
-        // audit-duplicate-of-url-mismatch.js, never here). These stay separate
-        // from isCircular/circularSameText (kept exactly as before) so the
-        // pre-existing 2-node tiebreak below is untouched; nCycle* only fires
-        // when the 1-hop check misses.
-        let nCycleFound = false;
-        let nCycleSameText = false;
-        let nCycleExcludeFile = false;
-        try {
-          const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
-          // refAlsoDupe deliberately checks ONLY refData.duplicateOf, not
-          // refData.duplicateTextOf (BRO-2317). duplicateTextOf is a
-          // TEXT-STORAGE annotation this file's own content-fingerprint dedup
-          // pass (above, "1C. Content hash dedup" in collect-review-texts.js)
-          // sets on a file that legitimately holds its OWN fullText — it means
-          // "my content also matches some sibling", not "I am excluded/at
-          // risk", and it never by itself excludes refData (nothing in
-          // isIncludableForRebuild/explainExclusion checks bare
-          // data.duplicateTextOf as a self-exclusion trigger). Folding it into
-          // "reference is ALSO a dupe, recover me" was the root cause: a
-          // cluster winner that legitimately holds its own fullText AND
-          // carries a duplicateTextOf pointing at one of its own losers (from
-          // that same dedup pass) made every OTHER, non-circular loser in the
-          // cluster look like it pointed at "a dupe pointing elsewhere" and
-          // silently fall through unexcluded — reviews.json got duplicate
-          // URLs and validate-data.js's NEW-duplicate-URL gate failed on main
-          // + all 17 open PRs (loves-labours-lost-globe-west-end-2026,
-          // 2026-08-26). refData.duplicateOf, by contrast, IS a real
-          // unresolved verdict regardless of content, so it always counts.
-          refAlsoDupe = !!refData.duplicateOf;
-          isCircular = refData.duplicateOf === file || refData.duplicateTextOf === file;
-          // Only tiebreak on TRUE duplicates — same content fingerprint, OR the
-          // identical source URL (same show+outlet+url can never legitimately be
-          // two separate reviews — that's validate-data.js's own duplicate-URL
-          // gate). The fingerprint alone is fragile: it hashes only the first 500
-          // normalized chars, so a scrape artifact prepended to just one copy (a
-          // Times quiz-widget prefix, task #1627/loves-labours-lost-globe-west-end-2026,
-          // recurred 2026-08-17 -> 2026-08-22 fix -> 2026-08-25) shifts the real
-          // review text out of the hashed window and makes two copies of the SAME
-          // article fingerprint as different, silently defeating this tiebreak and
-          // letting both land in reviews.json under one URL. Same-URL is a strictly
-          // stronger same-article signal than the fingerprint and closes that gap
-          // without weakening the "different text = legitimate separate reviews"
-          // protection this tiebreak exists for.
-          // Named-critic pairs with DIFFERENT text are legitimate separate reviews;
-          // duplicateOf was wrongly set on them. Preserve them (pre-fix behavior).
-          const sameUrl = !!(data.url && refData.url && data.url === refData.url);
-          if (isCircular && data.fullText && refData.fullText) {
-            const a = computeContentFingerprint(data.fullText);
-            const b = computeContentFingerprint(refData.fullText);
-            circularSameText = !!(a && b && a === b) || sameUrl;
-          } else if (isCircular && sameUrl) {
-            circularSameText = true;
-          }
-          // Walk with the same shared helper the write-time guard and the
-          // audit use, so all three call sites agree on what counts as a cycle.
-          if (!isCircular) {
-            const walk = findDuplicateOfCycle(file, _loadDupCycleSibling, allJsonFiles.length);
-            if (walk.cycleFound) {
-              nCycleFound = true;
-              // chain's last entry duplicates an earlier one (the loop-closing
-              // hop) — drop it so `members` lists each cycle participant once.
-              const members = walk.chain.slice(0, -1);
-              const loadForTiebreak = (m) => (m === file ? data : _loadDupCycleSibling(m));
-              const { sameText, survivor } = resolveCycleTiebreak(members, loadForTiebreak, computeContentFingerprint);
-              nCycleSameText = sameText;
-              nCycleExcludeFile = file !== survivor;
-            }
-          }
-          // Check if reference would be excluded by later guards
-          refExcluded = !isIncludableForRebuild(refData, showById[showId], refPath);
-          if (!refExcluded && refData.publishDate && showDateMap[showId] && !refData.allowEarlyDate) {
-            // Same predicate as the main inclusion pass (evaluatePreWindowInclusion,
-            // incl. the priorRuns exemption) — a threshold drift here would let a
-            // duplicate's excluded reference block the surviving copy's recovery.
-            const preWindow = evaluatePreWindowInclusion({
+        const dupe = duplicateOfExclusion(data, filePath, {
+          readSibling: _loadDupCycleSibling,
+          fileCount: allJsonFiles.length,
+          referenceExcluded: (refData, refPath) => {
+            if (!isIncludableForRebuild(refData, showById[showId], refPath)) return true;
+            if (!refData.publishDate || !showDateMap[showId] || refData.allowEarlyDate) return false;
+            return evaluatePreWindowInclusion({
               pubDate: parseDate(refData.publishDate),
               showEarliest: showDateMap[showId],
               isFlexCategory: showCat === 'off-broadway' || isLondonMarket(showCat),
               priorRuns: preWindowPriorRuns(showId),
               tourLegs: showById[showId]?.tourLegs,
-            });
-            if (preWindow.exclude) refExcluded = true;
-          }
-          if (refExcluded) stats.dupeRefExcludedRecovered = (stats.dupeRefExcludedRecovered || 0) + 1;
-          // Task #1256 — duplicate-of-flagged-twin inheritance. refExcluded
-          // above treats ANY exclusion reason on the reference as a recovery
-          // signal (see the block comment above this try). That's wrong when
-          // the reference is excluded because its OWN CONTENT is flagged
-          // wrong (wrongShow/wrongProduction/isNonReview) — this file is
-          // often just a second copy of that same bad content under a
-          // different filename (confirmed live on The Play That Goes Wrong
-          // West End 2021). duplicateOfInheritedFlag narrows the recovery:
-          // it returns non-null only for those content-wrongness reasons,
-          // and respects data.duplicateOfFlagInheritanceCleared as an
-          // explicit human override for the legitimate-divergent-content case.
-          refInheritedFlag = duplicateOfInheritedFlag(data, refData, showById[showId], refPath);
-        } catch {
-          refAlsoDupe = true; // Reference file missing — stale flag
-        }
-        if (!refAlsoDupe && !refExcluded) {
-          logExclusion("skippedDuplicateOf", showId, file, data);
-          stats.skippedDuplicateOf = (stats.skippedDuplicateOf || 0) + 1;
+            }).exclude;
+          },
+          inheritedFlag: (d, ref, refPath) => duplicateOfInheritedFlag(d, ref, showById[showId], refPath),
+        });
+        if (dupe.refExcluded) stats.dupeRefExcludedRecovered = (stats.dupeRefExcludedRecovered || 0) + 1;
+        if (dupe.reason) {
+          const details = dupe.reason === 'skippedDuplicateOfInheritedFlag'
+            ? { inheritedFrom: data.duplicateOf, inheritedReason: dupe.inheritedReason } : undefined;
+          logExclusion(dupe.reason, showId, file, data, details);
+          stats[dupe.reason] = (stats[dupe.reason] || 0) + 1;
           return;
         }
-        // ship-check finding: a mutual circular pair (A<->B) with CONFIRMED
-        // different text is the exact case circularSameText/oneHopTiebreakExclude
-        // below exists to protect (duplicateOf wrongly set on two legitimately
-        // separate reviews) — B independently carrying wrongShow for reasons
-        // unrelated to A must not exclude A here. Only apply inheritance when
-        // NOT circular (the ordinary A->B pointer, where a non-circular
-        // duplicateOf has always meant "same content" — the ungated
-        // `!refAlsoDupe && !refExcluded` skip above makes that same assumption
-        // with no fingerprint check), or when circular AND content is
-        // CONFIRMED the same. An unconfirmed circular pair (missing fullText
-        // on either side) also skips inheritance here — conservative, matches
-        // this block's existing bias toward not dropping possibly-legitimate
-        // reviews on uncertain evidence.
-        if (refInheritedFlag && !(isCircular && !circularSameText)) {
-          logExclusion("skippedDuplicateOfInheritedFlag", showId, file, data, { inheritedFrom: data.duplicateOf, inheritedReason: refInheritedFlag });
-          stats.skippedDuplicateOfInheritedFlag = (stats.skippedDuplicateOfInheritedFlag || 0) + 1;
-          return;
-        }
-        // Circular tiebreaker: when A.duplicateOf=B AND B.duplicateOf=A AND texts match,
-        // both files would be double-counted. Exclude the lexicographically-greater filename;
-        // the other side keeps itself. Only applied when content fingerprints match —
-        // otherwise duplicateOf is wrongly set and we keep both to avoid regressing real reviews.
-        // The nCycle* branch is the N-node generalization (3+ members): same
-        // "only tiebreak on true duplicates, keep exactly one" rule, extended
-        // from a pair to the full cycle via the lexicographic-minimum survivor.
-        const oneHopTiebreakExclude = isCircular && circularSameText && !refExcluded && file > data.duplicateOf;
-        const nHopTiebreakExclude = nCycleFound && nCycleSameText && !refExcluded && nCycleExcludeFile;
-        if (oneHopTiebreakExclude || nHopTiebreakExclude) {
-          logExclusion("skippedCircularDuplicateTiebreak", showId, file, data);
-          stats.skippedCircularDuplicateTiebreak = (stats.skippedCircularDuplicateTiebreak || 0) + 1;
-          return;
-        }
-        // Circular (kept side, different-text, stale, or ref excluded) — let through
         stats.circularDuplicateRecovered = (stats.circularDuplicateRecovered || 0) + 1;
       }
 

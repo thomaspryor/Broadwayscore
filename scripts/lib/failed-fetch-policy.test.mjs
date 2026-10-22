@@ -12,6 +12,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
+const policy = require('./failed-fetch-policy.js');
 const { shouldCountFailure, isPermanentlyFailed, isNonEvidenceFailure } = require('./failed-fetch-policy.js');
 
 /** Replays recordFailedFetch's counter arithmetic over a sequence of reasons. */
@@ -105,4 +106,61 @@ test('shouldReopenStaleContentMismatch: old-version mismatch on a textless unfla
   assert.equal(shouldReopenStaleContentMismatch(entry, { ...data, fullText: 'x'.repeat(2000) }, 2), false);
   assert.equal(shouldReopenStaleContentMismatch(entry, { ...data, wrongShow: true }, 2), false);
   assert.equal(shouldReopenStaleContentMismatch({ failureReason: 'url_dead' }, data, 2), false);
+});
+
+// BRO-5933: a JS exception in our own fetch code is not evidence about the URL.
+test('code_error: judged from the error object, never from the waterfall aggregate', () => {
+  const crash = "Cannot read properties of undefined (reading 'length')";
+  assert.equal(policy.isOwnCodeException(new TypeError(crash)), true);
+  assert.equal(policy.isOwnCodeException(new ReferenceError('foo is not defined')), true);
+  assert.equal(policy.isOwnCodeException(new Error(crash)), false);
+  // A page-side Playwright error quoted inside "All tiers failed" is evidence about the page.
+  assert.equal(policy.isOwnCodeException(new TypeError(`All tiers failed: [{"error":"${crash}"}]`)), false);
+  assert.equal(policy.classifyFetchFailure({ message: crash, codeError: true }), 'code_error');
+  assert.equal(policy.classifyFetchFailure({ message: crash }), 'fetch_error');
+  assert.equal(policy.classifyFetchFailure({ message: 'HTTP 404', codeError: true }), 'url_dead_404');
+  assert.equal(policy.isNonEvidenceFailure('code_error'), true);
+});
+
+test('legacy fetch_error rows whose whole message is an exception read as code_error', () => {
+  const crash = "Cannot read properties of undefined (reading 'length')";
+  assert.equal(policy.effectiveFailureReason({ failureReason: 'fetch_error', errorMessage: crash }), 'code_error');
+  assert.equal(policy.effectiveFailureReason({ failureReason: 'fetch_error', errorMessage: 'x.map is not a function' }), 'code_error');
+  assert.equal(policy.effectiveFailureReason({ failureReason: 'fetch_error', errorMessage: `All tiers failed: [{"error":"${crash}"}]` }), 'fetch_error');
+  assert.equal(policy.effectiveFailureReason({ failureReason: 'all_tiers_failed', errorMessage: crash }), 'all_tiers_failed');
+  // Once the deferral budget is spent the row is an ordinary failure again.
+  assert.equal(policy.effectiveFailureReason({ failureReason: 'fetch_error', errorMessage: crash, codeErrorDeferrals: 4 }), 'fetch_error');
+  assert.equal(policy.isPermanentlyFailed({ failureReason: 'fetch_error', failureCount: 9, errorMessage: crash }), false);
+  assert.equal(policy.isPermanentlyFailed({ failureReason: 'fetch_error', failureCount: 9, errorMessage: 'socket hang up' }), true);
+});
+
+test('code_error deferrals are capped, then the row counts as fetch_error', () => {
+  let existing = {};
+  const seen = [];
+  for (let i = 0; i < policy.MAX_CODE_ERROR_DEFERRALS + 1; i++) {
+    const r = policy.applyRouteCapDeferralLimit('code_error', existing);
+    seen.push(r.reason);
+    existing = { codeErrorDeferrals: r.codeErrorDeferrals };
+  }
+  assert.deepEqual(seen, [...Array(policy.MAX_CODE_ERROR_DEFERRALS).fill('code_error'), 'fetch_error']);
+});
+
+test('shouldRetryFetch on the collector-projected entry retries a closed show whose failures were a code exception', () => {
+  const { shouldRetryFetch } = require('./review-guards.js');
+  const show = { id: 's', status: 'closed', closingDate: '2019-01-01', openingDate: '2018-10-01' };
+  const ledgerRow = { reviewId: 's/guardian--x.json', failureReason: 'fetch_error', failureCount: 3, errorMessage: "Cannot read properties of undefined (reading 'length')" };
+  // Same projection collect-review-texts.js builds for the per-file gate (no errorMessage carried).
+  const projected = { failureReason: policy.effectiveFailureReason(ledgerRow), failureCount: ledgerRow.failureCount, url: null, lastFailedAt: null, lastCappedAt: null };
+  assert.equal(shouldRetryFetch(show, { url: 'https://www.theguardian.com/stage/x' }, projected).shouldRetry, true);
+  const real = { failureReason: policy.effectiveFailureReason({ failureReason: 'fetch_error', errorMessage: 'socket hang up' }), failureCount: 9 };
+  assert.equal(shouldRetryFetch(show, { url: 'https://www.theguardian.com/stage/x' }, real).shouldRetry, false);
+});
+
+test('code_error review fixes: Node network TypeErrors are not code errors; the deferral count survives other failures; incomplete reason reads legacy crash rows', () => {
+  assert.equal(policy.isOwnCodeException(new TypeError('fetch failed')), false);
+  assert.equal(policy.isOwnCodeException(new TypeError('Invalid URL')), false);
+  assert.equal(policy.applyRouteCapDeferralLimit('fetch_error', { codeErrorDeferrals: 2 }).codeErrorDeferrals, 2);
+  const { classifyIncompleteReason } = require('./incomplete-reason.js');
+  const r = classifyIncompleteReason({ url: 'https://www.theguardian.com/stage/x' }, { failureReason: 'fetch_error', failureCount: 2, errorMessage: "Cannot read properties of undefined (reading 'length')" });
+  assert.equal(r && r.incompleteReason, 'code_error');
 });

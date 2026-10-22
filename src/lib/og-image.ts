@@ -4,11 +4,12 @@
  * PNG→JPEG re-encode lives in src/lib/og-jpeg.ts.
  */
 import { BASE_URL } from '@/lib/seo';
+import sharp from 'sharp';
 
 /**
  * Fetch a show image as a data URI Satori can embed. Satori can't decode
- * WebP, so it goes through Next's /_next/image optimizer, which returns JPEG
- * to clients that don't ask for WebP. Returns null on any failure.
+ * WebP. Ask the optimizer for JPEG/PNG, but convert WebP locally when the
+ * optimizer passes the original format through. Returns null on any failure.
  */
 export async function fetchImageDataUri(imagePath: string, width: number): Promise<string | null> {
   // Same-origin /images/** only: the optimizer's GHSA-2xp9-vwfh-vxw4 exposure
@@ -18,11 +19,15 @@ export async function fetchImageDataUri(imagePath: string, width: number): Promi
   if (!isSameOriginImagePath(imagePath)) return null;
   try {
     const url = `${BASE_URL}/_next/image?url=${encodeURIComponent(imagePath)}&w=${width}&q=75`;
-    const res = await fetch(url, { headers: { Accept: 'image/jpeg,image/png,*/*' } });
+    const res = await fetch(url, { headers: { Accept: 'image/jpeg,image/png' } });
     if (!res.ok) return null;
-    const contentType = res.headers.get('content-type') || '';
-    if (!/^image\/(jpeg|png)$/.test(contentType)) return null;
-    const buf = Buffer.from(await res.arrayBuffer());
+    let contentType = (res.headers.get('content-type') || '').split(';')[0].trim().toLowerCase();
+    if (!/^image\/(jpeg|png|webp)$/.test(contentType)) return null;
+    let buf = Buffer.from(await res.arrayBuffer());
+    if (contentType === 'image/webp') {
+      buf = await sharp(buf).resize({ width, withoutEnlargement: true }).jpeg({ quality: 75 }).toBuffer();
+      contentType = 'image/jpeg';
+    }
     return `data:${contentType};base64,${buf.toString('base64')}`;
   } catch {
     return null;

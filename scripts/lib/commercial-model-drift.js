@@ -1,3 +1,24 @@
+const COMMERCIAL_HISTORY_MAX_AGE_HOURS = 200;
+
+/** Pure check shared by the weekly writer (pre-write) and daily digest. */
+function commercialHistoryIssue(history, nowMs = Date.now()) {
+  if (!Array.isArray(history) || !history.length) return 'No persisted commercial model history';
+  const time = (entry) => typeof entry?.date === 'string' && entry.date.trim() ? Date.parse(entry.date) : NaN;
+  const latest = time(history[history.length - 1]);
+  const hour = 3600000;
+  if (!Number.isFinite(latest) || latest > nowMs + hour) return 'Invalid latest commercial model history date';
+  if (nowMs - latest > COMMERCIAL_HISTORY_MAX_AGE_HOURS * hour) {
+    return `Commercial model history is ${((nowMs - latest) / hour).toFixed(1)}h old (>${COMMERCIAL_HISTORY_MAX_AGE_HOURS}h)`;
+  }
+  if (history.length > 1) {
+    const prior = time(history[history.length - 2]);
+    if (!Number.isFinite(prior) || prior > latest) return 'Invalid prior commercial model history date';
+    const gap = (latest - prior) / hour;
+    if (gap > COMMERCIAL_HISTORY_MAX_AGE_HOURS) return `Commercial model history has a ${gap.toFixed(1)}h gap between its latest observations`;
+  }
+  return null;
+}
+
 /**
  * Pure drift-detection logic for the commercial-model rolling history
  * (data/audit/commercial-data-history.json, written by
@@ -20,12 +41,18 @@
  *   has modelDesignationFlagCount, aiEstimatedCount, modelMethodBreakdown, etc.
  * @returns {{status: 'pass'|'warn', message: string}}
  */
-function computeCommercialModelDriftStatus(history) {
+function computeCommercialModelDriftStatus(history, nowMs = Date.now()) {
   if (!Array.isArray(history) || history.length === 0) {
     return {
       status: 'warn',
       message: 'No commercial model drift history yet (commercial-weekly.yml may not have run --write-history)',
     };
+  }
+
+  const ledgerIssue = commercialHistoryIssue(history, nowMs);
+  if (ledgerIssue) {
+    return { status: 'warn', message: ledgerIssue,
+      hint: 'Check commercial-weekly.yml --write-history and persistence of data/audit/commercial-data-history.json; workflow success alone does not prove its writes survived.' };
   }
 
   const latest = history[history.length - 1];
@@ -64,4 +91,4 @@ function computeCommercialModelDriftStatus(history) {
   };
 }
 
-module.exports = { computeCommercialModelDriftStatus };
+module.exports = { computeCommercialModelDriftStatus, commercialHistoryIssue, COMMERCIAL_HISTORY_MAX_AGE_HOURS };

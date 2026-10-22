@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5851-fc2425",
   "planId": "ff88d0f2-a3a2-4a58-8b55-b0e332815e25",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-22T08:22:14.853Z",
   "submitter": {
     "name": null,
@@ -158,5 +158,74 @@
         "description": "every-brilliant-thing-west-end-2025: mark no reliable art so the image sweep does not re-fetch the Broadway art just cleared"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T11:08:14.899Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for unicorn-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for inside-no-9-stage-fright-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for the-curious-case-of-benjamin-button-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for waiting-for-godot-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for waiting-for-godot-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-deep-blue-sea-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for unicorn-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for manhunt-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for my-master-builder-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for waiting-for-godot-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for every-brilliant-thing-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for waiting-for-godot-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for every-brilliant-thing-west-end-2025"
+    }
+  ],
+  "executedIn": "ci"
 }

@@ -39,8 +39,8 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { runWeeklyMonitor } = require('./lib/weekly-monitor-runner');
-const { assertProgress } = require('./lib/progress-watch');
+const { runWeeklyMonitor, loadState } = require('./lib/weekly-monitor-runner');
+const { assertProgress, progressLedgerAlert } = require('./lib/progress-watch');
 const { computeRescoreQueueDepth } = require('./lib/rescore-queue-depth');
 
 const USAGE = `check-progress-stalls.js — liveness monitor: has a registered pipeline counter stopped moving?
@@ -101,10 +101,10 @@ async function loadData() {
 
 /**
  * Pure decideFn for weekly-monitor-runner's runWeeklyMonitor({loadData,
- * decideFn, statePath}). No alerts of its own — health-check.js's
- * progressWatchResults() is the one owner-facing surface (matching the
- * existing backlog-report pattern: obClosingBacklogResults et al also don't
- * alert directly). Unit tested directly, independent of the runner.
+ * decideFn, statePath}). No alerts of its own. health-check.js surfaces
+ * stalled queues through progressWatchResults() and persisted-history
+ * failures through its audit-freshness table. Unit tested directly,
+ * independent of the runner.
  *
  * @param {Object} data - current value per surface key, from loadData()
  * @param {Object} state - prior state (state.surfaces[key].history)
@@ -123,7 +123,9 @@ function decideProgress(data, state, now) {
     });
     surfaces[s.key] = { label: s.label, hint: s.hint, cycles: s.cycles, ...result };
   }
-  return { alerts: [], state: { ...state, surfaces } };
+  // Carry the pre-write finding to the credentialed daily health router.
+  // A new sample must not erase evidence that prior writes were lost.
+  return { alerts: [], state: { ...state, surfaces, priorLedgerAlert: progressLedgerAlert(state, now) } };
 }
 
 async function main() {
@@ -132,6 +134,9 @@ async function main() {
   const dryRun = argv.includes('--dry-run');
   const stateArg = argv.find((a) => a.startsWith('--state='));
   const statePath = stateArg ? stateArg.split('=')[1] : STATE_PATH_DEFAULT;
+  // Capture the committed state before the runner stamps lastRunAt/appends.
+  const ledgerAlert = progressLedgerAlert(loadState(statePath));
+  if (ledgerAlert) console.warn(`[progress-watch] ${ledgerAlert.description}`);
 
   // Computed once and reused below (both for the runner and the breakdown
   // print) — calling loadData() a second time for the dry-run branch used to
