@@ -71,3 +71,13 @@ test('brightDataWasCapped reads bdBlocked', () => {
   assert.equal(brightDataWasCapped(() => ({ bdBlocked: 2 })), true);
   assert.equal(brightDataWasCapped(() => ({ bdBlocked: 0 })), false);
 });
+
+for (const rel of ['scripts/scrape-show-score-audience.js', 'scripts/sweep-we-aggregators.js']) {
+  test(`${rel} raises SB_CREDIT_BUDGET before anything can load scraper.js`, () => {
+    const src = fs.readFileSync(path.join(ROOT, rel), 'utf8');
+    const setAt = src.search(/process\.env\.SB_CREDIT_BUDGET\s*=/);
+    const firstRequire = src.search(/^const .*require\(/m);
+    assert.ok(setAt >= 0, 'budget default missing (fetchPage caps SB at 250cr/run)');
+    assert.ok(setAt < firstRequire, 'must be set before the first require');
+  });
+}

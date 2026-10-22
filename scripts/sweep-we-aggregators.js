@@ -18,6 +18,9 @@
  *   ts             — The Stage review round-ups
  */
 
+// BRO-6008: SB renders now go through fetchPage's per-run budget (default 250cr);
+// the sweep used to be unmetered (30-page TR pagination alone exceeds that).
+process.env.SB_CREDIT_BUDGET = process.env.SB_CREDIT_BUDGET || '2000';
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');

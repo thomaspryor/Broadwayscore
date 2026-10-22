@@ -18,6 +18,9 @@
  *   At least one scraping method must be available (or Playwright installed).
  */
 
+// BRO-6008: SB calls now go through fetchPage's per-run budget (default 250cr = ~50
+// renders); these SB-primary scripts used to be unmetered, so raise the default.
+process.env.SB_CREDIT_BUDGET = process.env.SB_CREDIT_BUDGET || '2000';
 const { canDiscoverShowScoreUrl } = require('./lib/showscore-status-eligibility');
 const { servesUkPageForUsShow, allowsUkShowScorePage, isUkPageForShow, pageRatingOf, storedRatingMatchesPage } = require('./lib/show-score-canonical');
 const { removeSourceWithTombstone } = require('./lib/reconcile-audience-buzz');
@@ -33,7 +36,7 @@ const { removeWrongProductionShowScore } = require('./lib/show-score-wrong-produ
 const { isLondonMarket } = require('./lib/venue-classification');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
-const { fetchPage, isChallengeOrGarbage } = require('./lib/scraper');
+const { fetchPage } = require('./lib/scraper');
 const { findConflictingShowId, isShowScoreNotFoundPage, decideDeadUrlAction, isProductionMismatch, recordProductionMismatch } = require('./lib/show-score-url-map');
 const { fetchWithBrightDataViaFetchPage } = require('./lib/audience-page-fetch');
 const { gateScrapedSynopsis } = require('./lib/synopsis-fact-check');
@@ -222,45 +225,20 @@ async function fetchViaBrightData(url) {
 }
 
 /**
- * Fetch URL with fallback chain and retry logic.
+ * Fetch URL with fallback chain.
  * Chain: ScrapingBee (render_js + wait) → Playwright → Bright Data
  * Returns HTML string or throws if all methods fail.
  */
-async function fetchWithFallback(url, retries = 2) {
-  // Try ScrapingBee first (with retries) — best for Show Score (render_js + wait for hydration)
+async function fetchWithFallback(url) {
+  // ScrapingBee first (single attempt; fetchPage already rejects challenge/
+  // garbage pages) — best for Show Score (render_js + wait for hydration). A
+  // miss, including a 404, falls through to Playwright, which returns the 404
+  // page for isShowScoreNotFoundPage (BRO-4358). No retry loop: each attempt
+  // bills 5 credits and Playwright is free.
   if (SCRAPINGBEE_KEY) {
-    for (let attempt = 1; attempt <= retries + 1; attempt++) {
-      try {
-        const html = await fetchViaScrapingBeeSingle(url);
-        // Challenge/interstitial pages return HTTP 200 with plausible-looking
-        // HTML — dropping premium_proxy (task #66) makes hitting one more
-        // likely than before, and unlike fetchPage()'s tiers this direct call
-        // had no check, so a block page could be accepted as real content and
-        // wipe a valid cached URL downstream. Treat it as a miss and fall
-        // through to Playwright/Bright Data instead of returning it.
-        if (html && isChallengeOrGarbage(html)) {
-          if (verbose) console.log('  ScrapingBee returned challenge/garbage, falling through...');
-          break;
-        }
-        if (html) return html;
-        break; // null = no key, skip retries
-      } catch (error) {
-        // A 404 from the target won't change on retry, and every retry is
-        // billed: fall straight through so Playwright can return the 404 page
-        // for isShowScoreNotFoundPage (BRO-4358 ship-check).
-        if (/^ScrapingBee HTTP 404\b/.test(error.message)) {
-          if (verbose) console.log('  ScrapingBee got HTTP 404, falling through without retrying...');
-          break;
-        }
-        if (attempt > retries) {
-          if (verbose) console.log(`  ScrapingBee exhausted after ${retries + 1} attempts: ${error.message}`);
-          break; // Fall through to next provider
-        }
-        const delay = 5000 * attempt;
-        if (verbose) console.log(`  ScrapingBee retry ${attempt}/${retries} in ${delay / 1000}s: ${error.message}`);
-        await sleep(delay);
-      }
-    }
+    const html = await fetchViaScrapingBeeSingle(url);
+    if (html) return html;
+    if (verbose) console.log('  ScrapingBee missed, falling through...');
   }
 
   // Playwright fallback — renders JS natively, no API credits
