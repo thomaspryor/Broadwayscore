@@ -7203,6 +7203,7 @@
 {"day":"2026-10-21","provider":"scrapingbee","workflow":"Audit Aggregator Review Gap","script":"audit-show-review-gap.js","fn":"render","host":null,"category":null,"calls":7,"credits":35}
 {"day":"2026-10-21","provider":"scrapingdog","workflow":"Enrich Reviews","script":"backfill-unknown-critics.js","fn":"render","host":null,"category":null,"calls":7,"credits":35}
 {"day":"2026-10-21","provider":"scrapingdog","workflow":"Brand Mention Monitor","script":"monitor-brand-mentions.js","fn":"serp","host":null,"category":null,"calls":6,"credits":30}
+{"day":"2026-10-21","provider":"scrapingbee","workflow":null,"script":"unknown","fn":"json","host":null,"category":null,"calls":3,"credits":30}
 {"day":"2026-10-21","provider":"scrapingdog","workflow":"Fetch Show Images","script":"fetch-show-images-auto.js","fn":"stealth","host":null,"category":null,"calls":2,"credits":30}
 {"day":"2026-10-21","provider":"scrapingdog","workflow":"Audit WE Closing Dates","script":"audit-we-closing-dates.js","fn":"page","host":null,"category":null,"calls":30,"credits":29}
 {"day":"2026-10-21","provider":"scrapingdog","workflow":"Enrich IBDB Dates","script":"enrich-ibdb-dates.js","fn":"page","host":null,"category":null,"calls":30,"credits":29}
@@ -7277,6 +7278,7 @@
 {"day":"2026-10-21","provider":"scrapingbee","workflow":"Sweep WE Aggregators","script":"sweep-we-aggregators.js","fn":"json","host":null,"category":null,"calls":1,"credits":1}
 {"day":"2026-10-21","provider":"scrapingdog","workflow":"Outlet Listing Poller","script":"outlet-listing-poller.js","fn":"page","host":null,"category":null,"calls":1,"credits":1}
 {"day":"2026-10-21","provider":"scrapingdog","workflow":"Reddit Engagement Digest","script":"reddit-engagement-digest.js","fn":"plain","host":null,"category":null,"calls":1,"credits":1}
+{"day":"2026-10-21","provider":"scrapingdog","workflow":null,"script":"unknown","fn":"plain","host":null,"category":null,"calls":1,"credits":1}
 {"day":"2026-10-21","provider":"brightdata","workflow":"Opening Night Poller","script":"opening-night-poller.js","fn":"web-unlocker","host":null,"category":null,"calls":1016,"credits":0}
 {"day":"2026-10-21","provider":"brightdata","workflow":"Gather Review Data","script":"gather-reviews.js","fn":"web-unlocker","host":null,"category":null,"calls":362,"credits":0}
 {"day":"2026-10-21","provider":"brightdata","workflow":"Collect Review Texts","script":"collect-review-texts.js","fn":"collector-tier3","host":null,"category":null,"calls":250,"credits":0}
@@ -7350,6 +7352,7 @@
 {"day":"2026-10-21","provider":"browserbase","workflow":"Collect WE/OB Review Texts","script":"collect-review-texts.js","fn":"session","host":"hollywoodreporter.com","category":"review-text","calls":3,"credits":0}
 {"day":"2026-10-21","provider":"browserbase","workflow":"Collect Talkin' Broadway Index","script":"collect-talkinbroadway-index.js","fn":"session","host":"talkinbroadway.com","category":"discovery","calls":3,"credits":0}
 {"day":"2026-10-21","provider":"scrapingdog","workflow":"Fetch Show Images","script":"fetch-show-images-auto.js","fn":"render","host":null,"category":null,"calls":3,"credits":0}
+{"day":"2026-10-21","provider":"scrapingdog","workflow":null,"script":"unknown","fn":"stealth","host":null,"category":null,"calls":3,"credits":0}
 {"day":"2026-10-21","provider":"brightdata","workflow":"Reverse Discovery Audit","script":"audit-reverse-discovery.js","fn":"run-memo-skip","host":null,"category":null,"calls":2,"credits":0}
 {"day":"2026-10-21","provider":"brightdata","workflow":"Backfill Review Dates","script":"backfill-review-dates.js","fn":"web-unlocker","host":null,"category":null,"calls":2,"credits":0}
 {"day":"2026-10-21","provider":"brightdata","workflow":"Enrich Reviews","script":"backfill-unknown-critics.js","fn":"run-memo-skip","host":null,"category":null,"calls":2,"credits":0}
@@ -7379,6 +7382,7 @@
 {"day":"2026-10-21","provider":"brightdata","workflow":"Fetch Show Images","script":"fetch-show-images-auto.js","fn":"run-memo-skip","host":null,"category":null,"calls":1,"credits":0}
 {"day":"2026-10-21","provider":"brightdata","workflow":"Audit Aggregator Review Gap","script":"recover-talkinbroadway-forum-links.js","fn":"web-unlocker","host":null,"category":null,"calls":1,"credits":0}
 {"day":"2026-10-21","provider":"brightdata","workflow":"Enrich Reviews","script":"replay-pending-bylines.js","fn":"run-memo-skip","host":null,"category":null,"calls":1,"credits":0}
+{"day":"2026-10-21","provider":"brightdata","workflow":null,"script":"unknown","fn":"web-unlocker","host":null,"category":null,"calls":1,"credits":0}
 {"day":"2026-10-21","provider":"browserbase","workflow":"Opening Night Poller","script":"collect-review-texts.js","fn":"session","host":"soundsandstage.com","category":"review-text","calls":1,"credits":0}
 {"day":"2026-10-21","provider":"browserbase","workflow":"Opening Night Poller","script":"collect-review-texts.js","fn":"session","host":"openingnight.online","category":"review-text","calls":1,"credits":0}
 {"day":"2026-10-21","provider":"browserbase","workflow":"Opening Night Express","script":"collect-review-texts.js","fn":"session","host":"ft.com","category":"review-text","calls":1,"credits":0}
@@ -7399,3 +7403,4 @@
 {"day":"2026-10-21","provider":"scrapingdog","workflow":"Fetch Show Images","script":"fetch-show-images-auto.js","fn":"run-memo-skip","host":null,"category":null,"calls":1,"credits":0}
 {"day":"2026-10-21","provider":"scrapingdog","workflow":"Discover Tour Stop Reviews","script":"ingest-review-from-url.js","fn":"stealth","host":null,"category":null,"calls":1,"credits":0}
 {"day":"2026-10-21","provider":"scrapingdog","workflow":"Reddit Engagement Digest","script":"reddit-engagement-digest.js","fn":"premium","host":null,"category":null,"calls":1,"credits":0}
+{"day":"2026-10-21","provider":"scrapingdog","workflow":null,"script":"unknown","fn":"premium","host":null,"category":null,"calls":1,"credits":0}
