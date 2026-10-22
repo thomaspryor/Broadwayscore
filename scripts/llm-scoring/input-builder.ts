@@ -54,6 +54,9 @@ export interface ReviewInputData {
   // 'complete' tier over the missing final punctuation a page footer causes (BRO-4804).
   contentTier?: string;
   source?: string;    // collector that wrote the file ('theatre-record' capsules, BRO-5227)
+  // Multi-show split markers (BRO-6000): the text is one show's section of a joint article.
+  multiShowSplitChild?: boolean;
+  multiShowSplitParent?: boolean;
 
   // Text sources
   fullText?: string | null;
