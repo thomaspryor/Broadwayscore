@@ -856,8 +856,12 @@ function childWriteDecision(existing, parentData) {
   const sameUrl = existing.url && parentData.url && urlKey(existing.url) === urlKey(parentData.url);
   const textless = !existing.fullText || String(existing.fullText).length < 300;
   if (sameUrl && textless) return 'fill';
-  // An empty placeholder with no URL at this outlet--critic slot.
-  if (!existing.url && textless && !existing._locked) return 'fill';
+  // An empty placeholder with no URL at this outlet--critic slot, unless a
+  // person or a guard already judged it (lock, hand score, exclusion flag).
+  const judged = existing._locked || existing.humanReviewScore != null || existing.manualContentTier
+    || existing.wrongShow || existing.wrongProduction || existing.isNonReview || existing.duplicateOf
+    || existing.isRoundupArticle;
+  if (!existing.url && textless && !judged) return 'fill';
   // The same article already filed under that show (e.g. the original
   // parent when this section was re-ingested under another show).
   if (sameUrl) return 'held';

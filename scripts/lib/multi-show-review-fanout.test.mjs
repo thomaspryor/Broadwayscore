@@ -169,6 +169,9 @@ test('childWriteDecision: one article across scheme and www; an empty URL-less s
   assert.equal(childWriteDecision({ url: 'https://example.com/A', fullText: 'x'.repeat(400) }, parent), 'skip', 'path case is significant');
   assert.equal(childWriteDecision({ url: null, fullText: '' }, parent), 'fill');
   assert.equal(childWriteDecision({ url: null, fullText: '', _locked: true }, parent), 'skip');
+  for (const mark of [{ humanReviewScore: 70 }, { manualContentTier: 'stub' }, { wrongShow: true }, { wrongProduction: true }, { isNonReview: true }, { duplicateOf: 'x.json' }, { isRoundupArticle: true }]) {
+    assert.equal(childWriteDecision({ url: null, fullText: '', ...mark }, parent), 'skip', JSON.stringify(mark));
+  }
   assert.equal(childWriteDecision({ url: null, fullText: 'x'.repeat(400) }, parent), 'skip', 'a URL-less slot with its own text stays');
 });
 
