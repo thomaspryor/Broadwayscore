@@ -1,25 +1,25 @@
 {
-  "runDate": "2026-10-22T01:39:49.831Z",
+  "runDate": "2026-10-22T01:43:12.879Z",
   "config": {
-    "batchSize": 10,
-    "maxReviews": 10,
+    "batchSize": 2,
+    "maxReviews": 2,
     "priority": "all",
-    "showFilter": "lincoln-in-the-bardo-off-broadway-2026",
+    "showFilter": "lincoln-in-the-bardo-off-broadway-2026,cosi-fan-tutte-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 1,
+    "processed": 0,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
@@ -28,35 +28,36 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 1,
+    "tier1Attempts": 2,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 2,
-    "tier1_5Success": 1,
-    "tier1_9Attempts": 1,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 2,
     "tier1_9Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
+    "tier3_6Attempts": 2,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 1,
-    "scrapingBeePageCredits": 1,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 2,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.7,
+    "browserbaseMinutesUsed": 1.2,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 1,
-    "failed": 1,
+    "processed": 0,
+    "failed": 2,
     "shows": [
+      "cosi-fan-tutte-off-broadway-2026",
       "lincoln-in-the-bardo-off-broadway-2026"
     ],
     "outOfScopeShows": [],
@@ -65,27 +66,22 @@
       "failed": 0
     }
   },
-  "processed": [
-    "lincoln-in-the-bardo-off-broadway-2026/hollywood-reporter--caitlin-huston.json"
-  ],
+  "processed": [],
   "failed": [
-    "lincoln-in-the-bardo-off-broadway-2026/bachtrack--susan-sempleski.json"
+    "lincoln-in-the-bardo-off-broadway-2026/bachtrack--susan-sempleski.json",
+    "cosi-fan-tutte-off-broadway-2026/bachtrack--susan-stempleski.json"
   ],
   "cumulativeResumedState": {
-    "processed": [
-      "lincoln-in-the-bardo-off-broadway-2026/hollywood-reporter--caitlin-huston.json"
-    ],
+    "processed": [],
     "failed": [
-      "lincoln-in-the-bardo-off-broadway-2026/bachtrack--susan-sempleski.json"
+      "lincoln-in-the-bardo-off-broadway-2026/bachtrack--susan-sempleski.json",
+      "cosi-fan-tutte-off-broadway-2026/bachtrack--susan-stempleski.json"
     ]
   },
   "tierDetails": {
     "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/lincoln-in-the-bardo-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
-      "lincoln-in-the-bardo-off-broadway-2026/hollywood-reporter--caitlin-huston.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
@@ -95,7 +91,7 @@
   },
   "failuresByOutlet": {
     "Bachtrack": {
-      "count": 1,
+      "count": 2,
       "domain": "bachtrack.com",
       "hasCredentials": false,
       "isPaywalled": false,
