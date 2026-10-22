@@ -43,7 +43,7 @@ export const GUARDED_REPO = 'thomaspryor/broadwayscore';
 
 // Words that run the next word as the command (shell keywords included, so
 // `if x; then gh pr create; fi` and `{ gh pr create; }` are seen).
-const PREFIX_WORDS = new Set(['command', 'time', 'exec', 'nohup', 'builtin', 'sudo', 'xargs', 'then', 'do', 'else', 'elif', '{', '!']);
+const PREFIX_WORDS = new Set(['command', 'time', 'exec', 'nohup', 'builtin', 'xargs', 'then', 'do', 'else', 'elif', '{', '!']);
 // Prefixes that take a positional or valued argument of their own before the
 // real command, so the flags-only skip above would stop on it and miss the
 // `gh` behind it (ship-check round 2: `timeout 30 gh pr create` was allowed).
@@ -57,7 +57,9 @@ const GH_API_WITH_VALUE = new Set(['-X', '--method', '-H', '--header', '-q', '--
 const GH_API_FIELD = new Set(['-f', '-F', '--field', '--raw-field', '--input']);
 const CURL_DATA = /^(-d|--data(-[a-z]+)?|--json|-F|--form(-string)?|-T|--upload-file)$/;
 const PULLS_PATH = /(?:^|\/)repos\/([^/\s?]+)\/([^/\s?]+)\/pulls(\/\d+\/merge|\/\d+)?\/?(?:\?.*)?$/;
-const UNDRAFT = /draft["']?\s*[:=]\s*false/i;
+// `-f draft=false` (the whole field) or a JSON body's "draft": false; not free text that mentions it.
+const UNDRAFT = /^draft=false$|["']draft["']\s*:\s*false/i;
+const UNDRAFT_ANYWHERE = /\bdraft["']?\s*[:=]\s*false/i;
 const MAX_PAYLOAD_BYTES = 1 << 20;
 const PR_URL = /github\.com\/([^/\s]+)\/([^/\s]+)\/pull\/\d+/;
 const GRAPHQL_WRITE = /\b(createPullRequest|markPullRequestReadyForReview|mergePullRequest|enablePullRequestAutoMerge)\b/;
@@ -113,6 +115,9 @@ export function parsePrWrites(cmd, { home = os.homedir(), depth = 0, cwd = proce
         i++;
         while (i < all.length && all[i].startsWith('-')) i += TIMEOUT_VALUE_FLAG.test(all[i]) ? 2 : 1;
         if (i < all.length && DURATION.test(all[i])) i++;
+      } else if (w === 'sudo' || w === 'doas') {
+        i++;
+        while (i < all.length && all[i].startsWith('-')) i += /^(-u|--user|-g|--group|-C|-h|--host|-p|--prompt|-r|-t|-U)$/.test(all[i]) ? 2 : 1;
       } else if (w === 'nice') {
         i++;
         while (i < all.length && all[i].startsWith('-')) i += NICE_VALUE_FLAG.test(all[i]) ? 2 : 1;
@@ -256,7 +261,8 @@ export function parsePrWrites(cmd, { home = os.homedir(), depth = 0, cwd = proce
   function fileText(file, at) {
     try {
       const f = path.resolve(at.cdDir && !at.dirUnknown ? path.resolve(cwd, at.cdDir) : cwd, file);
-      if (fs.statSync(f).size > MAX_PAYLOAD_BYTES) return null;
+      const st = fs.statSync(f);
+      if (!st.isFile() || st.size > MAX_PAYLOAD_BYTES) return null; // /dev/zero and FIFOs never end
       return fs.readFileSync(f, 'utf8');
     } catch {
       return null;
@@ -266,9 +272,9 @@ export function parsePrWrites(cmd, { home = os.homedir(), depth = 0, cwd = proce
   // A payload file that could not be read may have been written earlier in the
   // same command (a heredoc `cat > q.json`), so the whole command is the next
   // best evidence.
-  function judge(payload, fileInput, re) {
+  function judge(payload, fileInput, re, anywhere = re) {
     if (payload.some((t) => t !== null && re.test(t))) return true;
-    return fileInput && payload.some((t) => t === null) && re.test(rawText);
+    return fileInput && payload.some((t) => t === null) && anywhere.test(rawText);
   }
 
   function graphqlWriteIf(payload, fileInput, via, at) {
@@ -283,7 +289,7 @@ export function parsePrWrites(cmd, { home = os.homedir(), depth = 0, cwd = proce
     const isOne = Boolean(m[3]) && !isMerge;
     if (isOne) {
       // PATCH /pulls/N with draft=false marks the PR ready for review.
-      if (method === 'PATCH' && judge(payload, fileInput, UNDRAFT)) writes.push({ verb: `a PR ready through ${via}`, repo, ...at });
+      if (method === 'PATCH' && judge(payload, fileInput, UNDRAFT, UNDRAFT_ANYWHERE)) writes.push({ verb: `a PR ready through ${via}`, repo, ...at });
       return;
     }
     if ((!isMerge && method === 'POST') || (isMerge && method === 'PUT')) {

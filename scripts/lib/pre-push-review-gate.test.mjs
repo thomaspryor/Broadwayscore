@@ -118,6 +118,9 @@ for (const cmd of [
   'cat <<EOF | sh\ngh pr create --fill\nEOF',
   'eval "$(cat <<\'EOF\'\ngh pr create --fill\nEOF\n)"',
   'bash <<< "gh pr create --fill"',
+  // Ship-check: an unbalanced quote in the body, sudo flag values, a reader of the payload file.
+  'bash <<\'EOF\'\necho it\'s fine\nEOF\ngh pr create --fill',
+  'sudo -u bob gh pr create --fill',
   'echo "gh pr create --fill" | bash',
   'printf \'%s\\n\' "gh pr merge 42" | sh -s',
   'git push origin HEAD:refs/heads/land/x\nbash <<EOF\nGH_REPO=thomaspryor/Broadwayscore gh pr create --fill\nEOF',
@@ -128,6 +131,12 @@ for (const cmd of [
     assert.match(r.stderr, /refs\/heads\/land\/<name>/, 'must say how to land');
   });
 }
+
+test('a payload file that never ends cannot hang the guard (/dev/zero)', () => {
+  const t0 = Date.now();
+  run('gh api graphql --input /dev/zero');
+  assert.ok(Date.now() - t0 < 20000);
+});
 
 test('GH_REPO pointing at Broadwayscore blocks even from another repo', () => {
   assert.ok(blockedByPr(run('gh pr create --fill', { cwd: otherRepo, env: { GH_REPO: 'thomaspryor/Broadwayscore' } })));
@@ -167,6 +176,8 @@ for (const [cmd, opts] of [
   ['ssh host bash <<EOF\ngh pr create --fill\nEOF', {}],
   ['echo "gh pr create --fill" | cat', {}],
   ['bash <<EOF\ngh pr create --fill\nEOF', { cwd: otherRepo }],
+  ['gh api --method PATCH repos/thomaspryor/Broadwayscore/pulls/4 -f title="draft: false alarm"', {}],
+  ["gh api --method PATCH repos/thomaspryor/Broadwayscore/pulls/4 -f body='set draft=false later'", {}],
 ]) {
   test(`does not PR-block: ${cmd}${opts.cwd ? ' (other repo)' : ''}`, () => {
     const r = run(cmd, opts);

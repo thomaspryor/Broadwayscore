@@ -77,6 +77,8 @@ export function readsScriptFromStdin(words) {
       continue;
     }
     if (w === '<<<') { k++; continue; } // here-string: its word is the script, not an operand
+    if (/^[0-9]*>>?$/.test(w)) { k++; continue; } // `> file`: the file is not a script operand
+    if (/^[0-9]*>/.test(w)) continue; // `>file`, `2>log`
     if (w.startsWith('<')) continue; // redirection word
     if (w.startsWith('-') || w.startsWith('+')) continue;
     return false; // a script-file operand
@@ -85,36 +87,52 @@ export function readsScriptFromStdin(words) {
 }
 
 /**
- * Does the command on this heredoc-opening line run the body as a script?
- * Returns 'shell' (`bash <<EOF`, `sudo -u x bash -s <<EOF`, `cat <<EOF | sh`,
- * `source /dev/stdin <<EOF`), 'eval' (`eval "$(cat <<EOF`) or null
- * (`bash script.sh <<EOF`, `ssh host bash <<EOF`, `cat <<EOF`).
+ * Does the command that OWNS the heredoc on this opening line run the body as
+ * a script? Returns 'shell' (`bash <<EOF`, `sudo -u x bash -s <<EOF`,
+ * `cat <<EOF | sh`, `source /dev/stdin <<EOF`), 'eval' (`eval "$(cat <<EOF`)
+ * or null (`bash script.sh <<EOF`, `ssh host bash <<EOF`, `cat <<EOF`, and any
+ * shell/eval elsewhere on the line that does not receive the heredoc).
  */
 function heredocSink(line) {
-  for (const { words } of splitRaw(line)) {
+  const cmds = splitRaw(line);
+  const owner = cmds.findIndex(({ words }) => words.some((w) => w.includes('<<') && !w.includes('<<<')));
+  if (owner === -1) return null;
+  // The owner, then each command its output is piped into.
+  for (let n = owner; n < cmds.length; n++) {
+    const { words } = cmds[n];
     const i = skipWrappers(words);
     const w = path.basename(words[i] || '');
     if (SHELL_SINKS.has(w) && readsScriptFromStdin(words)) return 'shell';
-    if (w === 'eval') return 'eval';
-    if ((w === 'source' || w === '.') && words.some((x) => x === '/dev/stdin' || x === '/dev/fd/0')) return 'shell';
+    if (w === 'eval' && n === owner) return 'eval';
+    if ((w === 'source' || w === '.') && n === owner && words.some((x) => x === '/dev/stdin' || x === '/dev/fd/0')) return 'shell';
+    if (cmds[n].sep !== '|') break;
   }
   return null;
 }
 
+// Placeholder word standing in for a kept heredoc body in the stripped text.
+// Bodies are tokenized on their own (expandBodies), so an unbalanced quote or
+// a `)` inside one cannot reach the commands around it.
+const BODY_MARK = '\u0001BODY';
+
 /**
  * Drop heredoc bodies: everything from the line after `<<TAG` / `<<-'TAG'` up
- * to the line that is TAG. A body that a shell will execute is kept instead,
- * wrapped in `(` `)` so a `cd` inside it stays scoped to that shell.
+ * to the line that is TAG. A body that a shell will execute is kept instead
+ * (pushed onto `bodies`, replaced by a placeholder line).
  */
-function stripHeredocs(cmd, depth = 0) {
+function stripHeredocs(cmd, bodies, depth = 0) {
   const lines = cmd.split('\n');
   const out = [];
   let tag = null;
   let keep = false;
   let evalOpen = false;
   let body = [];
-  for (let n = 0; n < lines.length; n++) {
-    let line = lines[n];
+  const emitBody = () => {
+    bodies.push(body.join('\n'));
+    out.push(`${BODY_MARK}${bodies.length - 1}`);
+  };
+  for (const raw of lines) {
+    let line = raw;
     if (tag === null && evalOpen) {
       // The `)"` that closes `eval "$(cat <<EOF` follows the terminator.
       line = line.replace(/^\s*\)["']?/, '');
@@ -122,7 +140,7 @@ function stripHeredocs(cmd, depth = 0) {
     }
     if (tag !== null) {
       if (line.trim() === tag) {
-        if (keep) out.push('(', stripHeredocs(body.join('\n'), depth + 1), ')');
+        if (keep) emitBody();
         tag = null;
         keep = false;
         body = [];
@@ -131,9 +149,12 @@ function stripHeredocs(cmd, depth = 0) {
     }
     const m = line.match(HEREDOC_OPEN);
     const sink = m && depth < 3 ? heredocSink(line) : null;
-    // `eval "$(cat <<EOF`: the opener's unclosed quote would swallow the body,
-    // so the opener line is dropped and only the body is parsed.
-    out.push(sink === 'eval' ? '' : line);
+    if (sink === 'eval') {
+      // `eval "$(cat <<EOF`: its unclosed quote would swallow the body, so the
+      // line is cut where `eval` starts; anything before it is kept.
+      const e = line.search(/(^|[\s;&|(])eval(\s|$)/);
+      out.push(e > 0 ? line.slice(0, e).replace(/[\s;&|]*$/, '') : '');
+    } else out.push(line);
     if (m) {
       tag = m[2];
       keep = sink !== null;
@@ -141,7 +162,7 @@ function stripHeredocs(cmd, depth = 0) {
     }
   }
   // Unterminated heredoc: the shell still runs what it read.
-  if (keep && tag !== null) out.push('(', stripHeredocs(body.join('\n'), depth + 1), ')');
+  if (keep && tag !== null) emitBody();
   return out.join('\n');
 }
 
@@ -150,8 +171,31 @@ function stripHeredocs(cmd, depth = 0) {
  * comments. Each command is { words, sep } where sep is the separator that
  * ENDED it (';', '&&', '||', '|', '&', '\n', '(' or ')' or '' at the end).
  */
-export function splitShellCommands(cmd) {
-  return expandStdinScripts(splitRaw(stripHeredocs(String(cmd || ''))));
+export function splitShellCommands(cmd, depth = 0) {
+  const bodies = [];
+  const stripped = stripHeredocs(String(cmd || ''), bodies, depth);
+  const commands = [];
+  for (const c of splitRaw(stripped)) {
+    const m = c.words.length === 1 && c.words[0].startsWith(BODY_MARK) ? Number(c.words[0].slice(BODY_MARK.length)) : -1;
+    if (m === -1) commands.push(c);
+    else commands.push({ words: [], sep: '(' }, ...balanced(splitShellCommands(bodies[m], depth + 1)), { words: [], sep: ')' });
+  }
+  return expandStdinScripts(commands, depth);
+}
+
+/** Drop parens in a command list that have no partner in it (`case a)` in a script body). */
+function balanced(commands) {
+  const open = [];
+  const keep = commands.map(() => true);
+  commands.forEach((c, n) => {
+    if (c.sep === '(') open.push(n);
+    else if (c.sep === ')') {
+      if (open.length) open.pop();
+      else keep[n] = false;
+    }
+  });
+  open.forEach((n) => { keep[n] = false; });
+  return commands.filter((_, n) => keep[n]);
 }
 
 /**
@@ -166,8 +210,9 @@ function expandStdinScripts(commands, depth = 0) {
     out.push(c);
     if (!readsScriptFromStdin(c.words)) return;
     let script = null;
-    const hs = c.words.indexOf('<<<');
-    if (hs !== -1 && c.words[hs + 1] !== undefined) script = c.words[hs + 1];
+    const hs = c.words.findIndex((w) => w.startsWith('<<<'));
+    if (hs !== -1 && c.words[hs].length > 3) script = c.words[hs].slice(3);
+    else if (hs !== -1 && c.words[hs + 1] !== undefined) script = c.words[hs + 1];
     else if (n > 0 && commands[n - 1].sep === '|') {
       const prev = commands[n - 1].words;
       const pi = skipWrappers(prev);
@@ -178,7 +223,7 @@ function expandStdinScripts(commands, depth = 0) {
         script = (ph === 'printf' && args.length > 1 ? args.slice(1) : args).join(' ');
       }
     }
-    if (script) out.push({ words: [], sep: '(' }, ...expandStdinScripts(splitRaw(stripHeredocs(script)), depth + 1), { words: [], sep: ')' });
+    if (script) out.push({ words: [], sep: '(' }, ...balanced(splitShellCommands(script, depth + 1)), { words: [], sep: ')' });
   });
   return out;
 }

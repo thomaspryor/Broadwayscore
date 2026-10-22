@@ -65,3 +65,30 @@ test('splitShellCommands never throws on odd input', () => {
     assert.ok(Array.isArray(splitShellCommands(c)));
   }
 });
+
+// Ship-check findings (BRO-5932): a kept body is tokenized on its own.
+test('an unbalanced quote inside a shell-run body cannot hide later commands', () => {
+  assert.deepEqual(pushed(`bash <<'EOF'\necho it's fine\nEOF\n${G}`), ['land/a']);
+  assert.deepEqual(pushed(`bash <<EOF\necho "unterminated\nEOF\n${G}`), ['land/a']);
+});
+
+test('the eval opener keeps the commands before it on the line', () => {
+  assert.deepEqual(pushed(`${G}; eval "$(cat <<'EOF'\ntrue\nEOF\n)"`), ['land/a']);
+});
+
+test('a ")" in a body (case arm) does not pop the surrounding scope or leak cd', () => {
+  const p = parsePushCommand(`bash <<'EOF'\ncase "$1" in a) cd /tmp/x;; esac\nEOF\n${G}`);
+  assert.equal(p.length, 1);
+  assert.equal(p[0].cdDir, null);
+});
+
+test('only the command that owns the heredoc decides whether it is a script', () => {
+  assert.deepEqual(pushed(`echo x | bash; cat > f.md <<EOF\n${G}\nEOF`), []);
+  assert.deepEqual(pushed(`eval "$(ssh-agent -s)" && cat > notes.txt <<EOF\n${G}\nEOF`), []);
+});
+
+test('redirections and a spaceless here-string do not hide the shell', () => {
+  assert.deepEqual(pushed(`bash >log <<EOF\n${G}\nEOF`), ['land/a']);
+  assert.deepEqual(pushed(`bash > log <<EOF\n${G}\nEOF`), ['land/a']);
+  assert.deepEqual(pushed(`bash <<<"${G}"`), ['land/a']);
+});
