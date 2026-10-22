@@ -2455,7 +2455,7 @@ async function _fetchWithBrowserbaseAttempt(url, review) {
     }
 
     // Navigate to the URL
-    await bbPage.goto(url, {
+    const bbResponse = await bbPage.goto(url, {
       waitUntil: 'domcontentloaded',
       timeout: CONFIG.pageTimeout,
     });
@@ -2550,6 +2550,9 @@ async function _fetchWithBrowserbaseAttempt(url, review) {
       return { html, text };
     }
 
+    // BRO-5874: say what the browser got, so a 0-char result reads as a block (403, short page) or an extractor miss.
+    const bbTitle = await bbPage.title().catch(() => '');
+    console.log(`    Browserbase page: HTTP ${bbResponse ? bbResponse.status() : '?'}, ${html.length} bytes, title "${String(bbTitle).slice(0, 80)}"`);
     throw new Error(`Insufficient text: ${text?.length || 0} chars`);
 
   } catch (error) {
