@@ -528,7 +528,8 @@ tmp/
 # Append-only local telemetry for the intake storm breaker. Tracked would mean
 # every session's create conflicts with every other session's on the same lines.
 /data/audit/intake-ledger.jsonl
-# CI-red claim ledger (task #584) — Mac-local, same append-only pattern
+# Retired CI-red claim ledger (task #584, removed BRO-5931) — stale Mac-local file, keep ignored
+/data/audit/ci-red-claims.jsonl
 # Backlog drain engine (task #654) — Mac-local; both producer
 # (scripts/backlog-drain.js) and consumer (send-morning-digest.js) run on
 # this Mac via launchd, so no git commit is needed to bridge them.

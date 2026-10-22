@@ -308,3 +308,16 @@ test('no-base scratch clone fails open (never wedges)', (t) => {
   const r = queryPushAllowed({ repoRoot: repo });
   assert.equal(r.allowed, true);
 });
+
+test('diffHash ignores non-gated paths (data/ changes do not alter the hash)', (t) => {
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  git(repo, 'checkout', '-q', '-b', 'feature');
+  commitLines(repo, 'scripts/feature.js', 60, 'feature work');
+  const base = resolveBase(repo);
+  const before = computeDiffHash(repo, base, 'HEAD');
+  writeFileSync(join(repo, 'data', 'scratch.json'), '{"x": 1}\n'.repeat(5));
+  git(repo, 'add', '-A');
+  git(repo, 'commit', '-q', '-m', 'data only');
+  assert.equal(computeDiffHash(repo, base, 'HEAD'), before);
+});
