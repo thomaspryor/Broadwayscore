@@ -1,26 +1,28 @@
 #!/usr/bin/env node
 /**
- * rebuild-in-flight — how many runs of the given workflows are queued or in
- * progress right now, in 2 GitHub API calls total.
+ * rebuild-in-flight: how many runs of the given workflows are in progress,
+ * queued, or pending right now, in 3 GitHub API calls total.
  *
  * WHY (BRO-4654): the opening-night crons (completeness every 15 min, drift
  * every 30 min) asked this with four `gh run list --workflow=X --status=Y`
  * calls. Each of those is 2 REST calls (workflow lookup, then runs), so 8
  * calls per tick on the shared 1,000/hour GITHUB_TOKEN quota. Listing the
  * repo's runs by status once and filtering by workflow path answers the same
- * question for any number of workflows in 2 calls.
+ * question for any number of workflows in 3 calls.
+ * BRO-5973: concurrency-held runs also appear under status=pending, confirmed
+ * by opening-night-poller run 39842953879 in the repo-wide pending endpoint.
  *
  * CLI: node scripts/lib/rebuild-in-flight.js rebuild-reviews.yml rebuild-fast.yml
  *   prints the count (an integer) on stdout and exits 0. If a status page is
  *   full (100+ active runs), it asks the per-workflow endpoint for an exact
- *   count instead (1 call per workflow per status). On any API error it
+ *   count instead (3 calls per workflow, one per status). On any API error it
  *   prints 0, matching the `|| echo "0"` fallback the workflows used before.
  *   Token from GH_TOKEN or GITHUB_TOKEN; repo from GITHUB_REPOSITORY.
  */
 'use strict';
 
 const PER_PAGE = 100;
-const STATUSES = ['in_progress', 'queued'];
+const STATUSES = ['in_progress', 'queued', 'pending'];
 
 /**
  * Pure: count runs (across the per-status payloads) whose workflow file is in
@@ -64,7 +66,7 @@ function isSaturated(payloads, perPage = PER_PAGE) {
  * Exact count when the repo-wide pages are full: the per-workflow endpoint
  * takes the file name directly (no lookup call) and reports total_count, so
  * this is 1 call per workflow per status. Only used on saturation, which is
- * rare; the 2-call path covers the normal case.
+ * rare; the 3-call path covers the normal case.
  */
 async function fetchExactCount({ repo, token, files, fetchImpl = globalThis.fetch }) {
   let total = 0;
