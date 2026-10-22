@@ -92,11 +92,16 @@
     "the-score-regional-2026/one-minute-critic--teniola-ayoola.json",
     "thelma-and-louise-a-new-musical-off-west-end-2026/bestoftheatre--cecil-glover.json",
     "thelma-and-louise-a-new-musical-off-west-end-2026/jonathan-baz--unknown.json",
-    "golden-boy-off-west-end-2026/the-jewish-chronicle--john-nathan.json"
+    "golden-boy-off-west-end-2026/the-jewish-chronicle--john-nathan.json",
+    "martin-guerre-west-end-2026/london-theatre-reviews--unknown.json",
+    "ilford-boy-west-end-2026/british-theatre--unknown.json",
+    "ilford-boy-west-end-2026/telegraph--fiona-mountford.json",
+    "martin-guerre-west-end-2026/the-recs--unknown.json",
+    "jesus-christ-superstar-off-west-end-2026/musical-theatre-review--unknown.json",
+    "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json"
   ],
   "failed": [
     "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
-    "ilford-boy-west-end-2026/telegraph--fiona-mountford.json",
     "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
     "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
@@ -141,7 +146,17 @@
     "la-boheme-off-broadway-2026/parterre-box--unknown.json",
     "delirium-off-broadway-2026/brooklyneagle--brooklyn-eagle-staff.json",
     "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
-    "darkling-off-west-end-2026/thestage--holly-omahony.json"
+    "darkling-off-west-end-2026/thestage--holly-omahony.json",
+    "ilford-boy-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "triumph-off-west-end-2026/closeupculture--unknown.json",
+    "dog-mom-off-west-end-2026/reviewsgate--william-russell.json",
+    "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
+    "dog-mom-off-west-end-2026/thestage--neil-norman.json",
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "dirty-dancing-the-classic-story-on-stage-west-end-2026/sportswhereiam--unknown.json",
+    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
+    "some-woman-west-end-2026/guardian--unknown.json",
+    "double-bill-tell-me-straight-and-aggy-off-west-end-2026/soundsandstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -193,7 +208,11 @@
       "darkling-off-west-end-2026/londonlivinglarge--london-living-large.json",
       "the-score-regional-2026/one-minute-critic--teniola-ayoola.json",
       "thelma-and-louise-a-new-musical-off-west-end-2026/bestoftheatre--cecil-glover.json",
-      "thelma-and-louise-a-new-musical-off-west-end-2026/jonathan-baz--unknown.json"
+      "thelma-and-louise-a-new-musical-off-west-end-2026/jonathan-baz--unknown.json",
+      "martin-guerre-west-end-2026/london-theatre-reviews--unknown.json",
+      "ilford-boy-west-end-2026/british-theatre--unknown.json",
+      "martin-guerre-west-end-2026/the-recs--unknown.json",
+      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -209,17 +228,20 @@
       "rent-west-end-2026/ground--unknown.json",
       "what-the-animals-say-off-west-end-2026/theartsdispatch--the-arts-dispatch.json",
       "whos-afraid-of-virginia-woolf-west-end-2026/theartsdispatch--the-arts-dispatch.json",
-      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+      "jesus-christ-superstar-off-west-end-2026/musical-theatre-review--unknown.json"
     ],
     "scrapingbee": [
       "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json",
-      "mystic-pizza-tour-2026/broadwayworld--jared-fessler.json"
+      "mystic-pizza-tour-2026/broadwayworld--jared-fessler.json",
+      "ilford-boy-west-end-2026/telegraph--fiona-mountford.json"
     ],
     "brightdata": [
       "billy-crystal-860-2026/talkinbroadway--howard-miller.json",
       "the-curious-case-of-benjamin-button-off-broadway-2026/talkinbroadway--howard-miller.json",
       "the-ferryman-2018/dailybeast--tim-teeman.json",
-      "macbeth-2013/vulture--jesse-green.json"
+      "macbeth-2013/vulture--jesse-green.json",
+      "angels-bone-west-end-2026/sunday-times--rebecca-franks.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -251,7 +273,7 @@
     ]
   },
   "startTime": "2026-10-22T15:08:28.091Z",
-  "lastProcessed": "golden-boy-off-west-end-2026/the-jewish-chronicle--john-nathan.json",
+  "lastProcessed": "double-bill-tell-me-straight-and-aggy-off-west-end-2026/soundsandstage--unknown.json",
   "log": [
     {
       "t": "2026-10-22T15:10:02.371Z",
@@ -368,6 +390,45 @@
       "event": "bb-session",
       "session": "09dd30ad",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-22T16:27:03.755Z",
+      "event": "bb-session",
+      "session": "49cbf260",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-22T16:27:10.821Z",
+      "event": "bb-session",
+      "session": "851bf560",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-22T16:28:15.456Z",
+      "event": "bb-session",
+      "session": "07b5b106",
+      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
+    },
+    {
+      "t": "2026-10-22T16:28:25.223Z",
+      "event": "bb-session",
+      "session": "946a6907",
+      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
+    },
+    {
+      "t": "2026-10-22T16:29:49.759Z",
+      "event": "bb-session",
+      "session": "b43e9ecd",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-22T16:30:28.893Z",
+      "event": "bb-session",
+      "session": "b3a0d63e",
+      "url": "https://soundsandstage.com/show/double-bill-tell-me-straight-aggy-may"
     }
+  ],
+  "recoveredAfterFailure": [
+    "ilford-boy-west-end-2026/telegraph--fiona-mountford.json"
   ]
 }
