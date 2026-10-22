@@ -43,6 +43,7 @@ permissions:
 # Queued, never cancelled: overlapping runs would clobber each other's
 # state file (push-with-retry resolves data/audit/* conflicts keep-local).
 concurrency:
+  # shows-json-writer-exempt: runs 4x daily; as a member it would keep evicting weekly siblings' single pending run. backfill-dates-from-roundups.js only fills date fields, which push-core-data's reconcileShowsJson 3-way merges (BRO-5803)
   group: audit-reverse-discovery
   cancel-in-progress: false
 

@@ -56,6 +56,7 @@ const { pointsAtFile, planCanonicalPointerClear, applyCanonicalPointerClear } = 
 const { quarantineBody } = require('./lib/quarantine-body');
 const { guardianContentToResult, titleHtmlFor, guardianMentionWaiver } = require('./lib/guardian-api-result');
 const fs = require('fs');
+const { readReviewForUpdate, persistReviewSnapshot, renameReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim, applyCrossOutletSkip, setDuplicateTextOf, staleCrossOutletFlagAfterRefetch, staleScoreOverridesAfterRefetch } = require('./lib/review-filter');
@@ -183,7 +184,7 @@ const { pinBrowserbaseFirst } = require('./lib/browserbase-route');
 const { classifyTimeoutPage, isTimeoutUrl, keepsStoredTimeoutReview } = require('./lib/timeout-capsule');
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
 const { logExclusion } = require('./lib/exclusion-logger');
-const { shouldSkipPollerUpdate, safeRenameReview, invalidateWrongShowAutoClear, shouldMarkUrlCollisionDuplicate } = require('./lib/review-write-guard');
+const { shouldSkipPollerUpdate, invalidateWrongShowAutoClear, shouldMarkUrlCollisionDuplicate } = require('./lib/review-write-guard');
 const { updateFileUrlWithInvariant, isDifferentArticleRecovery } = require('./lib/url-change-invariant');
 const { extractDateFromUrl: extractDateFromUrlCanonical } = require('./lib/rebuild-helpers');
 const { verificationPublishDate } = require('./lib/verification-publish-date');
@@ -278,9 +279,9 @@ function renameReviewFileForCriticOverride(review, data, extractedAuthor) {
     return { action: 'conflict', newFile: newFilename };
   }
 
-  // Pass newData=data so the freshly-overridden criticName etc. land at the
-  // new path (the helper writes our in-memory data, not the on-disk source).
-  const result = safeRenameReview(review.filePath, newPath, { newData: data });
+  // Merge our edits onto the current source before moving it, then rebase
+  // data at the new path for updateReviewJson's trailing snapshot write.
+  const result = renameReviewSnapshot({ filePath: review.filePath, data }, newPath);
   if (result.skipped === 'locked') {
     console.warn(`    ⚠ Rename refused: ${currentFile} is _locked. Leaving filename as-is; criticName mismatch will be caught by validate-review-texts on next CI run.`);
     return { action: 'skipped-locked' };
@@ -638,7 +639,7 @@ const UNRELIABLE_TITLE_OUTLETS = new Set(['pages-on-stages']);
 // Domain alias matching — imported from shared lib (scraper.js)
 const { domainMatchesExpected, checkScrapingBeeCredits, getScraperStats, fetchWithScrapingdog, isTollbitGate } = require('./lib/scraper');
 const { isSoft404Body } = require('./lib/soft-404-body');
-const { shouldCountFailure, isPermanentlyFailed, shouldReopenStaleContentMismatch, classifyFetchFailure, routeCapFromBrowserbaseError, applyRouteCapDeferralLimit, isRouteCapCooldownActive } = require('./lib/failed-fetch-policy');
+const { shouldCountFailure, isPermanentlyFailed, shouldReopenStaleContentMismatch, classifyFetchFailure, routeCapFromBrowserbaseError, applyRouteCapDeferralLimit, isRouteCapCooldownActive, effectiveFailureReason, isOwnCodeException } = require('./lib/failed-fetch-policy');
 const { consultBrightData } = require('./lib/brightdata-caps');
 const { recordBdCall } = require('./lib/bd-telemetry');
 const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
@@ -3310,9 +3311,9 @@ async function discoverCorrectUrl(review) {
     // write it now so the next run fast-paths on 'abandoned' without re-evaluating.
     if (gate.updates && review.filePath) {
       try {
-        const fileData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        const fileData = readReviewForUpdate(review.filePath);
         Object.assign(fileData, gate.updates);
-        fs.writeFileSync(review.filePath, JSON.stringify(fileData, null, 2) + '\n');
+        persistReviewSnapshot({ filePath: review.filePath, data: fileData, trailingNewline: true });
       } catch (e) { /* non-fatal — gate will re-evaluate next run */ }
     }
     return null;
@@ -3342,9 +3343,9 @@ async function discoverCorrectUrl(review) {
     try {
       const attemptUpdates = recordSerpAttempt(showMeta, review);
       if (Object.keys(attemptUpdates).length > 0) {
-        const fileData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        const fileData = readReviewForUpdate(review.filePath);
         Object.assign(fileData, attemptUpdates);
-        fs.writeFileSync(review.filePath, JSON.stringify(fileData, null, 2) + '\n');
+        persistReviewSnapshot({ filePath: review.filePath, data: fileData, trailingNewline: true });
       }
     } catch (e) { /* non-fatal — next run re-evaluates */ }
   }
@@ -4554,7 +4555,7 @@ function mapSourceMethod(method) {
 async function updateReviewJson(review, text, validation, archivePath, method, attempts, archiveData = {}, html = '', contentVerification = null, apiMeta = null) {
   // Metadata the publisher's API returned with the text (Guardian Content API).
   const apiScore = (apiMeta && apiMeta.score) || null;
-  const data = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+  const data = readReviewForUpdate(review.filePath);
   // BRO-1431: snapshot the body BEFORE any mutation below, so the stale-flag
   // neutralization call (after contentTier reclassification) can tell "this
   // fetch just filled/replaced the body" apart from an unrelated metadata-only
@@ -4622,7 +4623,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         }
         data.incompleteReason = MULTI_SHOW_NOT_FOUND_REASON;
         data.incompleteDetail = 'multi-show post has no unique section for this show (isolateMultiShowSection)';
-        fs.writeFileSync(review.filePath, JSON.stringify(data, null, 2) + '\n');
+        persistReviewSnapshot({ filePath: review.filePath, data: data, trailingNewline: true });
       }
       return;
     }
@@ -5852,7 +5853,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     const trim = forcedRefetchTrim(fullTextBeforeUpdate, data.fullText);
     if (trim) data.fullTextTrimmed = trim;
   }
-  fs.writeFileSync(review.filePath, JSON.stringify(data, null, 2));
+  persistReviewSnapshot({ filePath: review.filePath, data: data });
 
   // BRO-4431: a multi-show article (photo-caption sections, capsule round-ups
   // split by a rule, or a column that introduces each show in turn) is filed
@@ -5866,12 +5867,12 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       // The fan-out may cut this file down to its own section: the trim
       // breadcrumb must name the text now on disk (BRO-5254).
       if (forcedReplacement) {
-        const after = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        const after = readReviewForUpdate(review.filePath);
         const trim = forcedRefetchTrim(fullTextBeforeUpdate, after.fullText);
         const t = after.fullTextTrimmed;
         if (trim && !(t && t.fromLength === trim.fromLength && t.toLength === trim.toLength)) {
           after.fullTextTrimmed = trim;
-          fs.writeFileSync(review.filePath, JSON.stringify(after, null, 2));
+          persistReviewSnapshot({ filePath: review.filePath, data: after });
         }
       }
     }
@@ -6320,7 +6321,7 @@ function findReviewsToProcess() {
       const failed = JSON.parse(fs.readFileSync(failedPath, 'utf8'));
       for (const f of failed) {
         const id = f.reviewId || `${f.showId}/${f.file}`;
-        const entry = { failureReason: f.failureReason || '', failureCount: f.failureCount || 1, url: f.url || null, lastFailedAt: f.lastFailedAt || null, lastCappedAt: f.lastCappedAt || null };
+        const entry = { failureReason: effectiveFailureReason(f), failureCount: f.failureCount || 1, url: f.url || null, lastFailedAt: f.lastFailedAt || null, lastCappedAt: f.lastCappedAt || null };
         failedFetchesByReviewId.set(id, entry);
         // budget_capped entries are excluded here as well as at write time:
         // belt-and-braces, so a ledger written before this fix still can't
@@ -6365,7 +6366,7 @@ function findReviewsToProcess() {
       if (shouldSkipAlreadyAttempted(state, reviewId, CONFIG.retryFailed)) continue;
 
       try {
-        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        const data = readReviewForUpdate(filePath);
 
         // Skip duplicateOf tombstones: rebuild excludes them entirely, so
         // collecting text is wasted fetch budget — and worse, the
@@ -6584,7 +6585,7 @@ function findReviewsToProcess() {
             if (fetchGate.updates) {
               try {
                 Object.assign(data, fetchGate.updates);
-                fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+                persistReviewSnapshot({ filePath: filePath, data: data, trailingNewline: true });
               } catch (e) {}
             }
             continue;
@@ -6997,6 +6998,7 @@ function recordFailedFetch(review, reason, details = {}) {
     firstFailedAt: existing?.firstFailedAt || new Date().toISOString(),
     ...(counts || reason === 'soft_404' ? {} : { lastCappedAt: new Date().toISOString() }),
     ...(capped.cappedDeferrals ? { cappedDeferrals: capped.cappedDeferrals } : {}),
+    ...(capped.codeErrorDeferrals ? { codeErrorDeferrals: capped.codeErrorDeferrals } : {}),
     ...details,
   };
 
@@ -7025,7 +7027,7 @@ function recordFailedFetch(review, reason, details = {}) {
   const reviewFilePath = path.join(CONFIG.reviewTextsDir, review.reviewId);
   let reviewData = null;
   try {
-    if (fs.existsSync(reviewFilePath)) reviewData = JSON.parse(fs.readFileSync(reviewFilePath, 'utf8'));
+    if (fs.existsSync(reviewFilePath)) reviewData = readReviewForUpdate(reviewFilePath);
   } catch (e) {
     reviewData = null;
   }
@@ -7050,7 +7052,7 @@ function recordFailedFetch(review, reason, details = {}) {
         Object.assign(reviewData, fetchAttemptUpdates);
       }
       if (reasonResult || Object.keys(fetchAttemptUpdates).length > 0) {
-        fs.writeFileSync(reviewFilePath, JSON.stringify(reviewData, null, 2) + '\n');
+        persistReviewSnapshot({ filePath: reviewFilePath, data: reviewData, trailingNewline: true });
       }
     }
   } catch (e) {
@@ -7065,7 +7067,9 @@ function recordFailedFetch(review, reason, details = {}) {
     // ledger count alone must not claim "permanently failed".
     console.log(`    ⚠ Permanently failed (${entry.failureCount} attempts, reason: ${reason}) — will skip on future runs`);
   } else if (!counts && reason !== 'soft_404') {
-    console.log(`    ⏸ Recorded as ${reason} (failureCount held at ${entry.failureCount}) — retried normally once the cap lifts`);
+    console.log(reason === 'code_error'
+      ? `    ⏸ Recorded as code_error (our own exception, deferral ${entry.codeErrorDeferrals}; failureCount held at ${entry.failureCount}) — fix the code, the row is retried`
+      : `    ⏸ Recorded as ${reason} (failureCount held at ${entry.failureCount}) — retried normally once the cap lifts`);
   } else if (fetchAttemptUpdates.fetchRetryAfter) {
     console.log(`    ⏳ Fetch cooldown until ${fetchAttemptUpdates.fetchRetryAfter} (${entry.failureCount} attempts, reason: ${reason})`);
   }
@@ -7097,10 +7101,10 @@ function clearFailedFetch(reviewId) {
 function stampSalvage(review) {
   if (!review || !review.filePath) return;
   try {
-    const d = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+    const d = readReviewForUpdate(review.filePath);
     d.consentSalvageVerifiedHash = salvageSourceHash(d);
     d.consentSalvageVerifiedAt = new Date().toISOString();
-    fs.writeFileSync(review.filePath, JSON.stringify(d, null, 2) + '\n');
+    persistReviewSnapshot({ filePath: review.filePath, data: d, trailingNewline: true });
   } catch (e) {}
 }
 
@@ -7108,9 +7112,9 @@ function stampSalvage(review) {
 // (read by review-slot-guards shouldRetryDatelessHoldFetch).
 function stampDatelessRetry(filePath) {
   try {
-    const d = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    const d = readReviewForUpdate(filePath);
     d.wrongShowRetryAt = new Date().toISOString();
-    fs.writeFileSync(filePath, JSON.stringify(d, null, 2) + '\n');
+    persistReviewSnapshot({ filePath: filePath, data: d, trailingNewline: true });
   } catch (e) { /* non-fatal: next run re-evaluates */ }
 }
 
@@ -7311,19 +7315,19 @@ async function processReview(review) {
     // post-fetch url flip was extracted from the NEW article and must survive
     // the flip (while a pre-existing date is the OLD article's and must clear).
     try {
-      const fileData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+      const fileData = readReviewForUpdate(review.filePath);
       review._hadPublishDateBeforeFetch = !!fileData.publishDate;
       fileData._showNotMentionedDiscoveryAttempted = true;
-      fs.writeFileSync(review.filePath, JSON.stringify(fileData, null, 2) + '\n');
+      persistReviewSnapshot({ filePath: review.filePath, data: fileData, trailingNewline: true });
     } catch (e) {}
 
     const discoveredUrl = await discoverCorrectUrl(review);
     // SERP providers down — don't mark as attempted, let it retry next run
     if (discoveredUrl === '__SERP_UNAVAILABLE__') {
       try {
-        const fileData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        const fileData = readReviewForUpdate(review.filePath);
         delete fileData._showNotMentionedDiscoveryAttempted;
-        fs.writeFileSync(review.filePath, JSON.stringify(fileData, null, 2) + '\n');
+        persistReviewSnapshot({ filePath: review.filePath, data: fileData, trailingNewline: true });
       } catch (e) {}
       stats.totalFailed++;
       return { success: false, error: 'serp_unavailable' };
@@ -7345,9 +7349,9 @@ async function processReview(review) {
   // that this review is really being fetched.
   if (review._mismatchReopen && review.filePath) {
     try {
-      const d = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+      const d = readReviewForUpdate(review.filePath);
       d.contentMismatchReopenedFor = URL_CONTENT_CHECK_VERSION;
-      fs.writeFileSync(review.filePath, JSON.stringify(d, null, 2) + '\n');
+      persistReviewSnapshot({ filePath: review.filePath, data: d, trailingNewline: true });
     } catch (e) {}
   }
 
@@ -7390,7 +7394,7 @@ async function processReview(review) {
     // re-fetch that returns less is never an improvement.
     if ((result.partial || review._paywallRecheck) && review.filePath) {
       try {
-        const stored = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        const stored = readReviewForUpdate(review.filePath);
         const storedLen = (stored.fullText || '').length;
         // A COMPLETE re-fetch always wins over a stored partial; only a
         // partial one has to be strictly longer (ship-check P2, BRO-4334).
@@ -7402,7 +7406,7 @@ async function processReview(review) {
           const patch = truncatedTierPatch(stored);
           if (patch) {
             Object.assign(stored, patch);
-            fs.writeFileSync(review.filePath, JSON.stringify(stored, null, 2) + '\n');
+            persistReviewSnapshot({ filePath: review.filePath, data: stored, trailingNewline: true });
             console.log(`    → Re-labelled stored text: ${patch.tierReason}`);
           }
           // Feed the BRO-787 retry gate, else every collector run re-picks the
@@ -7460,7 +7464,7 @@ async function processReview(review) {
       if (result.html && review.filePath && review.outletId !== 'thestage') {
         try {
           const { pageStarPatch } = require('./lib/paywall-stub-score');
-          const stored = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+          const stored = readReviewForUpdate(review.filePath);
           const showEntry = _showsJsonCache ? _showsJsonCache.shows.find((s) => s.id === review.showId) : null;
           const patch = pageStarPatch(stored, result.html, { show: showEntry });
           if (patch) {
@@ -7636,7 +7640,7 @@ async function processReview(review) {
     // the next collect cycle would re-skip the file via line 5067's isWrongContent guard.
     if (review.incompleteReason === 'wrong_content' && review._urlDiscovered && review.filePath) {
       try {
-        const postData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        const postData = readReviewForUpdate(review.filePath);
         // BRO-2828: this recovery answers ONE question — did re-fetching from
         // the corrected URL produce the right article? A flag set from data
         // that is not the article body and not the URL is not answered by it,
@@ -7685,7 +7689,7 @@ async function processReview(review) {
         if (preserve.wrongShow) {
           postData.wrongShowPreservedOnUrlRecoveryAt = new Date().toISOString();
         }
-        fs.writeFileSync(review.filePath, JSON.stringify(postData, null, 2) + '\n');
+        persistReviewSnapshot({ filePath: review.filePath, data: postData, trailingNewline: true });
         console.log(preserve.wrongProduction || preserve.wrongShow
           ? `    ✓ wrong_content recovered — ${[preserve.wrongProduction && `wrongProduction (${postData.wrongProductionReason})`, preserve.wrongShow && `wrongShow (${postData.wrongShowReason})`].filter(Boolean).join(' + ')} PRESERVED: not a content verdict, re-fetch is no evidence against it`
           : `    ✓ wrong_content recovered — cleared incompleteReason/contentTier so future collects won't re-skip`);
@@ -7700,7 +7704,7 @@ async function processReview(review) {
     // else start the cooldown. See applyVerifiedRetryOutcome.
     if (review._wrongShowRetrying && review.filePath) {
       try {
-        const postData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        const postData = readReviewForUpdate(review.filePath);
         const outcome = applyVerifiedRetryOutcome(postData, new Date().toISOString());
         if (outcome.clearedWrongShow) console.log(`    ✓ wrongShow cleared — retry passed content verification`);
         if (outcome.clearedWrongProduction) console.log(`    ✓ wrongProduction cleared — retry passed content verification (right production)`);
@@ -7708,7 +7712,7 @@ async function processReview(review) {
           console.log(`    ✗ retry did not clear the flag — next retry in 14 days`);
         }
         delete postData._wrongShowRetrying;
-        fs.writeFileSync(review.filePath, JSON.stringify(postData, null, 2) + '\n');
+        persistReviewSnapshot({ filePath: review.filePath, data: postData, trailingNewline: true });
       } catch (e) {}
     }
 
@@ -7723,14 +7727,14 @@ async function processReview(review) {
     // verdict on the stripped article releases it.
     if (review._consentLayerRetry && review.filePath) {
       try {
-        const postData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        const postData = readReviewForUpdate(review.filePath);
         if (shouldReleaseConsentLayerNonReview(postData)) {
           postData.isNonReview = false;
           if (postData.rejectionReason === 'not_a_review') postData.rejectionReason = null;
           postData.isNonReviewReason = null;
           postData.nonReviewOverride = 'collect-review-texts: consent-layer refetch re-verified as a review (BRO-4185 A)';
           postData.nonReviewOverrideAt = new Date().toISOString();
-          fs.writeFileSync(review.filePath, JSON.stringify(postData, null, 2) + '\n');
+          persistReviewSnapshot({ filePath: review.filePath, data: postData, trailingNewline: true });
           console.log('    ✓ isNonReview cleared — consent-layer refetch re-verified as a review');
         }
       } catch (e) {}
@@ -7899,7 +7903,7 @@ async function processReview(review) {
     // Same for a Browserbase route skipped at a session cap (BRO-5222).
     const bdWasCapped = (getScraperStats().bdBlocked || 0) > bdBlockedBefore;
     const routeCapped = review._browserbaseCapSkipped || null;
-    const failReason = classifyFetchFailure({ message: error.message, bdWasCapped, routeCapped });
+    const failReason = classifyFetchFailure({ message: error.message, bdWasCapped, routeCapped, codeError: isOwnCodeException(error) });
     recordFailedFetch(review, failReason, {
       errorMessage: error.message.slice(0, 200),
       ...(routeCapped ? { routeCapped } : {}),
@@ -7925,10 +7929,10 @@ async function processReview(review) {
     // For wrongShow retries that failed: update retry timestamp to enforce cooldown
     if (review._wrongShowRetrying && review.filePath) {
       try {
-        const postData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        const postData = readReviewForUpdate(review.filePath);
         postData.wrongShowRetryAt = new Date().toISOString();
         delete postData._wrongShowRetrying;
-        fs.writeFileSync(review.filePath, JSON.stringify(postData, null, 2) + '\n');
+        persistReviewSnapshot({ filePath: review.filePath, data: postData, trailingNewline: true });
       } catch (e) {}
     }
 

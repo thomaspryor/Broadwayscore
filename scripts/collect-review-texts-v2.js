@@ -14,6 +14,7 @@
 
 const { chromium } = require('playwright');
 const fs = require('fs');
+const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
 const { extractScore } = require('./lib/score-extractors');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
@@ -130,7 +131,7 @@ function findReviewsNeedingText() {
     for (const file of files) {
       const filePath = path.join(showDir, file);
       try {
-        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        const data = readReviewForUpdate(filePath);
 
         // Skip if already has sufficient full text
         if (data.fullText && data.textWordCount && data.textWordCount >= CONFIG.minWordCount) {
@@ -534,7 +535,7 @@ async function updateReviewJson(review, text, archivePath, method) {
     }
   }
 
-  fs.writeFileSync(review.filePath, JSON.stringify(updatedData, null, 2));
+  persistReviewSnapshot({ filePath: review.filePath, data: updatedData });
 }
 
 // Record failed fetch

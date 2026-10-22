@@ -23,9 +23,9 @@ const DRAFTS_PATH = path.join(ROOT, 'data', 'audit', 'reddit-post-drafts.json');
 const AUDIT_PATH = path.join(ROOT, 'data', 'audit', 'show-review-gap.json');
 const REVIEW_TEXTS = path.join(ROOT, 'data', 'review-texts');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
-// No new show starts after this. One show's tools take at most ~27 minutes plus the reader,
-// so the worst case ends well inside the job's 90-minute timeout with the email still to send.
-const START_BUDGET_MS = 25 * 60 * 1000;
+// No new show starts after this. One show's tools take at most ~27 minutes plus the reader, so the
+// worst case (start at 35, finish by ~65) ends inside the job's 90-minute timeout with the email still to send.
+const START_BUDGET_MS = 35 * 60 * 1000;
 
 const MIN = 60 * 1000;
 // Order matters: pending strand first, then ingest (new files), then names and dates for everything.
@@ -88,6 +88,7 @@ async function runShowCheck({ draft, mode, deps, nowIso, startedMs = Date.now() 
   const census = lib.censusFromAudit(deps.readAudit(), showId);
   const verification = lib.buildVerification({
     draft, nowIso, mode, snapshotBefore: before, snapshotAfter: after, census, error, tools, judge, previous: draft.verification, durationMs: Date.now() - startedMs,
+    ownerOf: deps.ownerOf ? url => deps.ownerOf(url, showId) : null,
   });
   // What gets pushed is whatever the tools left in the working tree (unreported metadata, _pending files and all),
   // not just what the owner-facing summary names; a failed check can still have written good files.
@@ -129,8 +130,8 @@ function makeJudge({ reviewTexts, loadShow, callModel, todayIso, fixId = 'reddit
       // (the manual-clear marker without the flag change) can never reach disk.
       const chain = chainEdits(records.get(d.id), v.edits, v.extra, stamp, showId, d.id);
       if (!chain.ok) { rejected.push({ id: d.id, check: 'apply', why: chain.reason }); continue; }
-      if (dryRun) { applied.push({ id: d.id, checks: v.accepted, dryRun: true }); continue; }
-      const w = writeRecordAtomically(reviewTexts, showId, d.id, chain.record, v.edits);
+      if (dryRun) { applied.push({ id: d.id, checks: v.accepted, dryRun: true, changes: describeEdits(v.edits) }); continue; }
+      const w = writeRecordAtomically(reviewTexts, showId, d.id, chain.record, v.edits, v.extra);
       if (!w.ok) { rejected.push({ id: d.id, check: 'apply', why: w.reason }); continue; }
       // Later decisions in this run see the name just given, so two files cannot take the same critic.
       for (const e of v.edits) {
@@ -138,10 +139,15 @@ function makeJudge({ reviewTexts, loadShow, callModel, todayIso, fixId = 'reddit
         const sib = siblings.find(x => x.file === d.id);
         if (sib) sib.criticName = e.newValue;
       }
-      applied.push({ id: d.id, checks: v.accepted });
+      applied.push({ id: d.id, checks: v.accepted, changes: describeEdits(v.edits) });
     }
     return { asked: items.length, applied, rejected };
   };
+}
+
+/** "criticName: Unknown -> Kyle Torrence; publishDate: null -> 2026-10-16" for the log: the audit trail of what the reader changed. */
+function describeEdits(edits) {
+  return edits.map(e => `${e.field}: ${JSON.stringify(e.oldValue)} -> ${JSON.stringify(e.newValue)}`).join('; ');
 }
 
 /** Apply the edits one after another in memory (each is validated by review-field-edit), then the extra stamps. */
@@ -159,7 +165,7 @@ function chainEdits(record, edits, extra, stamp, showId, file) {
  * One safeWriteReview, then read it back: every edited field must hold. If the write guard
  * changed anything or the write threw, the file's original text is put back byte for byte.
  */
-function writeRecordAtomically(reviewTexts, showId, file, record, edits) {
+function writeRecordAtomically(reviewTexts, showId, file, record, edits, extra = null) {
   const abs = resolveReviewPath(reviewTexts, `${showId}/${file}`);
   if (!abs) return { ok: false, reason: `bad review path ${showId}/${file}` };
   const original = fs.readFileSync(abs, 'utf8');
@@ -167,6 +173,8 @@ function writeRecordAtomically(reviewTexts, showId, file, record, edits) {
     safeWriteReview(abs, { ...record }, {});
     const after = JSON.parse(fs.readFileSync(abs, 'utf8'));
     const lost = edits.filter(e => JSON.stringify(after[e.field] === undefined ? null : after[e.field]) !== JSON.stringify(e.newValue)).map(e => e.field);
+    // The machine-clear stamp rides along as `extra`: without it a clear reads as a human verdict that later flag plans refuse to overrule.
+    for (const [k, val] of Object.entries(extra || {})) if (JSON.stringify(after[k] === undefined ? null : after[k]) !== JSON.stringify(val)) lost.push(k);
     if (lost.length) { fs.writeFileSync(abs, original); return { ok: false, reason: `the write guard kept ${lost.join(', ')}; file restored` }; }
     return { ok: true };
   } catch (e) {
@@ -202,18 +210,27 @@ function realDeps({ root = ROOT, reviewTexts = REVIEW_TEXTS, auditPath = AUDIT_P
       if (!quiet) console.log(`  [${tool.name}] ${ok ? 'ok' : `FAILED (${r.error ? r.error.code || r.error.message : `exit ${r.status}`})`} in ${secs}s\n${tail.replace(/^/gm, '    ')}`);
       return { ok, secs };
     },
+    // Another show's folder that already holds this URL (one article reviewing two shows).
+    ownerOf(url, showId) {
+      try {
+        const owners = require('./url-ownership').findCrossShowOwners(url, showId, reviewTexts);
+        const real = owners.find((o) => o.blocking);
+        return real ? real.showId : null;
+      } catch { return null; }
+    },
     readAudit() {
       try { return JSON.parse(fs.readFileSync(auditPath, 'utf8')); } catch { return null; }
     },
     guard(showIds) {
       if (!hasGit) return { ok: true, violations: [] };
-      const r = spawnSync('git', ['-C', reviewTexts, 'status', '--porcelain'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+      // -uall: an untracked directory must list its files, not collapse to "?? _pending/" (which reads as a violation and reverts every show's pending strand).
+      const r = spawnSync('git', ['-C', reviewTexts, 'status', '--porcelain', '-uall'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
       if (r.status !== 0) return { ok: false, violations: ['git status failed in data/review-texts'] };
       return lib.guardChangedPaths(showIds, r.stdout.split('\n').filter(Boolean));
     },
     dirty(showIds) {
       if (!hasGit) return false;
-      const r = spawnSync('git', ['-C', reviewTexts, 'status', '--porcelain'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+      const r = spawnSync('git', ['-C', reviewTexts, 'status', '--porcelain', '-uall'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
       return r.status === 0 && r.stdout.split('\n').filter(Boolean).length > 0;
     },
     revert(paths) {
@@ -230,5 +247,5 @@ function realDeps({ root = ROOT, reviewTexts = REVIEW_TEXTS, auditPath = AUDIT_P
 
 module.exports = {
   ROOT, DRAFTS_PATH, AUDIT_PATH, REVIEW_TEXTS, SHOWS_PATH, START_BUDGET_MS,
-  TOOLS, runShowCheck, makeJudge, chainEdits, writeRecordAtomically, callSonnet, realDeps,
+  TOOLS, runShowCheck, makeJudge, describeEdits, chainEdits, writeRecordAtomically, callSonnet, realDeps,
 };

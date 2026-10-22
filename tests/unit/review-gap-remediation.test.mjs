@@ -117,22 +117,8 @@ describe('NYT Teeman attribution (task #1180)', () => {
       /not fabricated/i.test(source.crossOutletVerifiedNote || ''),
       'expected the task #1180 correction note confirming the live-page byline is genuine'
     );
-
-    // Cross-check against the derived output reviews.json rolls up from this
-    // same source file — if they disagree, the rebuild pipeline itself is
-    // the bug, and that is worth failing loudly on too.
-    const reviewsPath = path.join(REPO_ROOT, 'data', 'reviews.json');
-    let arr;
-    try {
-      const raw = JSON.parse(fs.readFileSync(reviewsPath, 'utf8'));
-      arr = Array.isArray(raw) ? raw : (raw.reviews || Object.values(raw));
-    } catch {
-      return; // reviews.json not populated in this environment — nothing further to assert
-    }
-    const teeman = arr.find(r => r.showId === 'disruption-off-broadway-2026' && r.criticName === 'Tim Teeman');
-    assert.ok(teeman, 'expected a Tim Teeman review for disruption-off-broadway-2026 in data/reviews.json');
-    assert.ok(/nytimes\.com/.test(teeman.url || ''), 'expected the Disruption Teeman review to be an nytimes.com URL');
-    assert.notEqual(teeman.wrongAttribution, true);
+    // BRO-5737: the cross-check against derived data/reviews.json lives in
+    // tests/unit/review-gap-remediation-live-data.test.mjs (check-corpus-drift.yml).
   });
 });
 

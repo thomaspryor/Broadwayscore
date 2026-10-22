@@ -38,6 +38,7 @@ permissions:
 # data/cast/{id}.json files with no lock (ship-check adversarial review,
 # task #712 follow-up). Matches backfill-cast-web.yml's existing pattern.
 concurrency:
+  # shows-json-writer-exempt: dispatched mid-run by update-show-status.yml and discover-historical-shows.yml, and its own Wed 06:00 cron fires with update-show-status (Wed 06:00) and check-show-freshness (06:00), so it would pend behind a member and be evicted by the next sibling; 45-min runs. Only cast fields change (BRO-5803)
   # concurrency-queue-ok: callers (update-show-status.yml, discover-historical-shows.yml)
   # send ONE comma-list dispatch per run (BRO-4870); empty-cast.check.js still dispatches
   # one show at a time (a rare opening-night repair, re-run by the next check), and update-show-status's shows are

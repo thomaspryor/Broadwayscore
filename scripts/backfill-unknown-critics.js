@@ -54,6 +54,7 @@ const { extractAuthorFromHtml, isValidAuthorName, cleanAuthorName } = require('.
 const { resolveOutletFromUrl, getOutletDisplayName } = require('./lib/review-normalization');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 const { isJunkCriticName, nameFromJunkCriticName } = require('./lib/byline-recovery');
+const { extractBylineFromText } = require('./lib/byline-from-text');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
@@ -432,7 +433,11 @@ async function phaseB(unknownCritics) {
     if (u.data.extractedByline && u.data.extractedByline !== 'Unknown' && !isRejectName(u.data.extractedByline)) {
       stored = { critic: u.data.extractedByline, method: 'extractedByline' };
     } else if (u.data.fullText) {
-      const fromText = extractAuthorFromHtml(u.data.fullText, u.data.fullText, { url: u.url });
+      // Outlets that print the critic as a credit line in the article (South London "writes X",
+      // All That Dazzles "Review by X", Time Out "Written by X <role>"): read it from the text first.
+      const printed = extractBylineFromText(u.outletId, u.data.fullText);
+      const fromText = (printed && printed.known && printed.name)
+        || extractAuthorFromHtml(u.data.fullText, u.data.fullText, { url: u.url });
       if (fromText && !isRejectName(fromText)) stored = { critic: fromText, method: 'stored-text' };
     }
     if (stored) {

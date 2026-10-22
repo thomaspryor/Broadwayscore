@@ -11,7 +11,9 @@
  * Checks, rebase gate), so a ref-only loop noticed a refusal only at its ~60
  * min cap. That cost ~1h twice (BRO-4236 on 2026-09-28, BRO-4619 on
  * 2026-10-05). This checks the ref AND the latest push-triggered land.yml run
- * for it on every poll, one REST call per ~60-90s.
+ * for it on every poll, one REST call per ~60-90s. A completed cancelled
+ * attempt also reads its jobs and Land check annotations once, to distinguish
+ * an execution deadline from a queue cancellation (BRO-5131).
  *
  * --prod: main deploys on a 5-min cron behind a content gate, so prod lags a
  * landing by 20-30 min, and a session that stopped at LANDED idled NOT SAFE
@@ -37,7 +39,7 @@
  *      read. The landing stands: do not push the ref again; re-check with the
  *      command it prints.
  *
- * A cancelled run (Land cancelled before it did any work) is not a refusal:
+ * A queue cancellation (Land cancelled before it did any work) is not a refusal:
  * land-retry-cancelled.yml re-runs it after the next Land completes, so this
  * keeps waiting. Since BRO-5112 queued landings wait in the landing mutex
  * instead of being evicted, so this is rare. A run dispatched by hand (`land.yml` with branch=land/<name>)
@@ -49,7 +51,7 @@
 
 const { execFileSync, spawnSync } = require('child_process');
 const path = require('path');
-const { runGhWithFallback } = require('./land-retry-on-cancel');
+const { runGhWithFallback, decideLandRetry } = require('./land-retry-on-cancel');
 const { SITE_PATHS } = require('./should-deploy-gate');
 const { repoDepthArgs } = require('./shallow-fetch-args');
 
@@ -74,9 +76,11 @@ const PROD_MAX_ERRORS = 3;
  */
 function landVerdict({ refSha, lastSha = null, run, nowMs }) {
   const ageMs = run && run.updated_at ? nowMs - Date.parse(run.updated_at) : Infinity;
+  const cancelledFailure = run && run.conclusion === 'cancelled'
+    && ['timeout', 'other'].includes(run.cancellation?.kind);
   if (!refSha) {
     if (lastSha) {
-      if (run && run.head_sha === lastSha && run.status === 'completed' && RED_CONCLUSIONS.has(run.conclusion)) {
+      if (run && run.head_sha === lastSha && run.status === 'completed' && (RED_CONCLUSIONS.has(run.conclusion) || cancelledFailure)) {
         return { verdict: 'unknown', why: `ref deleted but its run ${run.id} was ${run.conclusion}: deleted by hand, not landed` };
       }
       return { verdict: 'landed' };
@@ -90,6 +94,10 @@ function landVerdict({ refSha, lastSha = null, run, nowMs }) {
   }
   if (run.status !== 'completed') return { verdict: 'waiting', why: `run ${run.id} ${run.status}` };
   if (run.conclusion === 'cancelled') {
+    if (cancelledFailure) {
+      return { verdict: 'refused', why: `run ${run.id} ${run.cancellation.kind === 'timeout' ? 'timed out' : 'cancelled'}: ${run.cancellation.why}` };
+    }
+    if (run.cancellation?.kind !== 'eviction') return { verdict: 'waiting', why: `run ${run.id} cancelled; retry eligibility unknown` };
     const retry = `node scripts/land-retry-cancelled.js --run=${run.id}`;
     if (ageMs > STALE_EVICTION_MS) return { verdict: 'waiting', why: `run ${run.id} cancelled 30+ min ago and not re-run (retries spent?): ${retry}` };
     return { verdict: 'waiting', why: `run ${run.id} cancelled (cancelled before landing; the sweep re-runs it, or: ${retry})` };
@@ -145,13 +153,39 @@ function readRefSha(ref) {
   return out.trim().split(/\s+/)[0] || null;
 }
 
-function readLatestRun(ref) {
-  const raw = runGhWithFallback(
-    [`repos/${repo}/actions/workflows/land.yml/runs?branch=${encodeURIComponent(ref)}&event=push&per_page=1`],
-    { exec: execFileSync, fallbackToken: process.env.GH_FALLBACK_TOKEN },
-  );
-  const r = JSON.parse(raw).workflow_runs?.[0];
-  return r ? { id: r.id, head_sha: r.head_sha, status: r.status, conclusion: r.conclusion, updated_at: r.updated_at, url: r.html_url } : null;
+const cancellationCache = new Map();
+const readGhJson = (endpoint) => JSON.parse(runGhWithFallback(
+  [endpoint], { exec: execFileSync, fallbackToken: process.env.GH_FALLBACK_TOKEN },
+));
+
+function readLatestRun(ref, { read = readGhJson, cache = cancellationCache } = {}) {
+  const r = read(`repos/${repo}/actions/workflows/land.yml/runs?branch=${encodeURIComponent(ref)}&event=push&per_page=1`).workflow_runs?.[0];
+  if (!r) return null;
+  let cancellation;
+  if (r.status === 'completed' && r.conclusion === 'cancelled') {
+    const key = `${r.id}:${r.run_attempt}:${r.updated_at}`;
+    cancellation = cache.get(key);
+    if (!cancellation) {
+      // Use this attempt's jobs: a re-run must not inherit a prior timeout.
+      const jobs = read(`repos/${repo}/actions/runs/${r.id}/attempts/${r.run_attempt}/jobs?per_page=50`).jobs;
+      if (!Array.isArray(jobs)) throw new Error(`run ${r.id}: unreadable jobs`);
+      const land = jobs.find((j) => j.name === 'Land');
+      let timedOut = land?.conclusion === 'timed_out';
+      if (land?.conclusion === 'cancelled') {
+        // GitHub reports a job deadline as "cancelled", even at job level.
+        // The runner's annotation is definitive; duration alone is not.
+        const annotations = read(`repos/${repo}/check-runs/${land.id}/annotations?per_page=100`);
+        if (!Array.isArray(annotations)) throw new Error(`run ${r.id}: unreadable Land annotations`);
+        timedOut = annotations.some((a) => /^The job has exceeded the maximum execution time of /.test(a.message || ''));
+      }
+      const retry = decideLandRetry({ run: r, jobs, branchExists: true, branchTip: r.head_sha });
+      cancellation = timedOut
+        ? { kind: 'timeout', why: 'Land job exceeded its execution time limit; inspect the run before retrying' }
+        : { kind: retry.retry ? 'eviction' : 'other', why: retry.reason };
+      cache.set(key, cancellation);
+    }
+  }
+  return { id: r.id, head_sha: r.head_sha, status: r.status, conclusion: r.conclusion, updated_at: r.updated_at, url: r.html_url, cancellation };
 }
 
 function remoteSha(ref) {
@@ -311,4 +345,4 @@ if (require.main === module) {
   );
 }
 
-module.exports = { landVerdict, prodPlan, prodVerdict, parseArgs, sitePathsIn, RED_CONCLUSIONS };
+module.exports = { landVerdict, readLatestRun, prodPlan, prodVerdict, parseArgs, sitePathsIn, RED_CONCLUSIONS };

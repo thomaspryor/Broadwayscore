@@ -37,6 +37,7 @@ on:
 # shows.json comparison, commit step and core-data push as the tour art.
 
 concurrency:
+  # shows-json-writer-exempt: 60-min daily run at 07:47 overlapping update-show-status 08:00 + cron lag; joining would evict pending siblings daily. Writes tour runtime/image fields only (BRO-5803)
   group: fetch-tour-schedules
   # concurrency-cancel-ok: idempotent refresh, latest run wins (BRO-934 audit)
   cancel-in-progress: true

@@ -29,6 +29,7 @@ on:
         default: '20'
 
 concurrency:
+  # shows-json-writer-exempt: per-run group intended (see above) so orchestrator dispatches never drop each other; a static shared group would reintroduce that loss (BRO-5803)
   # per-run group intended: prevents the orchestrator's back-to-back dispatches from
   # dropping each other at GitHub's 1-pending-queue limit. See Cats 2026-04-07
   # poller postmortem — shared groups silently discard the middle runs.

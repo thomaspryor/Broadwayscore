@@ -972,9 +972,10 @@ function pruneUnmatchedAudit(entries, { source, existingSlugs } = {}) {
  *
  * @param {Array} staged  data/audit/ob-venue-candidates.json contents
  * @param {Array} shows  shows.json shows array
+ * @param {object} [options] - Date-validation options for the stub backfill gate.
  * @returns {{kept: Array, pruned: Array}}
  */
-function pruneStagedCandidates(staged, shows) {
+function pruneStagedCandidates(staged, shows, options = {}) {
   const kept = [];
   const pruned = [];
   for (const c of Array.isArray(staged) ? staged : []) {
@@ -982,6 +983,11 @@ function pruneStagedCandidates(staged, shows) {
     if (!c.title) { kept.push(c); continue; }
     const match = findKnownObShow(c.title, c.venue, shows);
     if (match) {
+      // The daily extractor runs before the promoter. Leave dated listings
+      // that can fill an existing stub's null dates for that guarded writer.
+      const { datedBackfillFor } = require('./ob-venue-date-backfill');
+      const row = shows.find(s => s.id === match.id);
+      if (datedBackfillFor(c, row, options)) { kept.push(c); continue; }
       pruned.push({ ...c, matchedShowId: match.id });
     } else {
       kept.push(c);

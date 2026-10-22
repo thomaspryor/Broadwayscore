@@ -359,6 +359,10 @@ if [ "${1:-}" = "--all" ]; then
   # present on every image `git`/`node` already require; strip `.git` and
   # peel off `aggregator-archive` into its own destination first (rsync's
   # `--exclude` behavior) rather than excluding on copy.
+  # The copy has no .git, so record which commit it is (BRO-5892): the resolver
+  # (scripts/lib/review-texts-dir.js) accepts this marker as a checkout, and
+  # cloud-doctor.js compares it with the clone to tell a stale copy.
+  git -C "$TEMP_DIR/review-texts" rev-parse HEAD > "$TEMP_DIR/review-texts/.review-texts-sha" 2>/dev/null || echo unknown > "$TEMP_DIR/review-texts/.review-texts-sha"
   rm -rf "$TEMP_DIR/review-texts/.git"
 
   # Copy aggregator-archive to its own directory (peeled off before the main
@@ -374,7 +378,7 @@ if [ "${1:-}" = "--all" ]; then
       echo "FATAL: cp of aggregator-archive failed — refusing to report a count from stale contents." >&2
       exit 1
     fi
-    AA_COUNT=$(find "$DATA_DIR/aggregator-archive" -type f | wc -l | tr -d ' ')
+    AA_COUNT=$(find "$DATA_DIR/aggregator-archive/" -type f | wc -l | tr -d ' ')
     echo "Aggregator archive: $AA_COUNT files copied to data/aggregator-archive/"
     # Only after a VERIFIED copy — deleting the source on a failed copy loses it.
     rm -rf "$TEMP_DIR/review-texts/aggregator-archive"
@@ -411,7 +415,7 @@ if [ "${1:-}" = "--all" ]; then
     mv "$NEW_RT" "$DATA_DIR/review-texts"
     rm -rf "$OLD_RT"
   fi
-  RT_COUNT=$(find "$DATA_DIR/review-texts" -name "*.json" -type f | wc -l | tr -d ' ')
+  RT_COUNT=$(find "$DATA_DIR/review-texts/" -name "*.json" -type f | wc -l | tr -d ' ')
   echo "Review texts: $RT_COUNT files copied to data/review-texts/"
 fi
 

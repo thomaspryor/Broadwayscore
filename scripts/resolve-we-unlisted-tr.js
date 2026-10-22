@@ -176,7 +176,8 @@ function pdfHeaderFor(text, title, venue, opts = {}) {
       if (d.previewsStartDate || d.openingDate || d.closingDate) return facts;
     }
   }
-  return pdfContentsRowFor(text, want, variants, opts.page) || pdfOpeningsFor(text, want, variants, venue);
+  return pdfContentsRowFor(text, want, variants, opts.page) || pdfIndexRowFor(text, want, variants, opts.volume, opts.page)
+    || pdfOpeningsFor(text, want, variants, venue);
 }
 
 /** "30 Apr 18" -> "2018-04-30"; null for an impossible date. */
@@ -187,6 +188,46 @@ function readPdfDate(day, month, year) {
 }
 
 const CONTENTS_ROW = /^(.+?)\s+[–—-]\s+.*?\s(\d{1,2})\s+([A-Z][a-z]{2,8})\.?\s+(\d{2}|\d{4})(?:\s+(\d{1,2})\s+([A-Z][a-z]{2,8})\.?\s+(\d{2}|\d{4}))?\s+(\d{1,4})$/;
+// 2016 issues print the same table without years: "... Royal Court 16 Nov 23 Dec 1297".
+const CONTENTS_ROW_YEARLESS = /^(.+?)\s+[–—-]\s+.*?\s(\d{1,2})\s+([A-Z][a-z]{2,8})\.?(?:\s+(\d{1,2})\s+([A-Z][a-z]{2,8})\.?)?\s+(\d{1,4})$/;
+const ISSUE_PERIOD = /Theatre Record\s+(\d{1,2})(?:\s+([A-Z][a-z]+))?\s*[–—-]\s*(\d{1,2})\s+([A-Z][a-z]+)\s+(\d{4})/g;
+
+/**
+ * The issue's own covering period from its running head, e.g.
+ * "Theatre Record 04 – 17 November 2016" or "21 October – 03 November 2016".
+ * The most frequent banner wins; null when none prints or two tie.
+ */
+function issuePeriod(text) {
+  const counts = new Map();
+  for (const m of String(text || '').matchAll(ISSUE_PERIOD)) {
+    const end = readPdfDate(m[3], m[4], m[5]);
+    if (!end) continue;
+    let start = readPdfDate(m[1], m[2] || m[4], m[5]);
+    if (start && start > end) start = readPdfDate(m[1], m[2] || m[4], Number(m[5]) - 1);
+    if (!start) continue;
+    const k = `${start}|${end}`;
+    counts.set(k, (counts.get(k) || 0) + 1);
+  }
+  if (!counts.size) return null;
+  const ranked = [...counts.entries()].sort((a, b) => b[1] - a[1]);
+  if (ranked[1] && ranked[1][1] === ranked[0][1]) return null; // a tie names no issue
+  const [start, end] = ranked[0][0].split('|');
+  return { start, end };
+}
+
+/**
+ * A yearless press night takes the year that puts it near the issue's own
+ * period (up to 31 days before it, 7 after): a production is reviewed in the
+ * issue covering its press night. Both or neither year fitting fails closed.
+ */
+function yearFromIssue(day, month, period) {
+  const DAY = 86400000;
+  const lo = Date.parse(period.start) - 31 * DAY;
+  const hi = Date.parse(period.end) + 7 * DAY;
+  const endYear = Number(period.end.slice(0, 4));
+  const fits = [endYear - 1, endYear].map(y => readPdfDate(day, month, y)).filter(d => d && Date.parse(d) >= lo && Date.parse(d) <= hi);
+  return fits.length === 1 ? fits[0] : null;
+}
 
 /**
  * 2017-18 issues (BRO-5851): the production pages print no dates, but the
@@ -207,24 +248,73 @@ function pdfContentsRowFor(text, want, variants, page) {
   const byline = l => /^[A-Z][a-z]+(?: [A-Z][A-Za-z'’-]+)+, /.test(l);
   const secondRow = r => /\s[A-Z][A-Z'’&.]+(?: [A-Z'’&.]+)*\s+[–—-]\s+/.test(r.replace(/^.+?\s+[–—-]\s+/, ' '));
   const maxYear = new Date().getUTCFullYear();
+  let period;
   for (const keys of [new Set([want]), new Set(variants)]) {
     const matches = new Set();
     for (let i = 0; i < lines.length; i++) {
       if (!startsRow(lines[i])) continue;
-      let row = lines[i];
-      for (let k = 1; k <= 2 && !CONTENTS_ROW.test(row) && lines[i + k] && !startsRow(lines[i + k]) && !byline(lines[i + k]); k++) row = `${row} ${lines[i + k]}`;
-      const m = row.match(CONTENTS_ROW);
+      const rows = [lines[i]];
+      for (let k = 1; k <= 2 && lines[i + k] && !startsRow(lines[i + k]) && !byline(lines[i + k]); k++) rows.push(`${rows[k - 1]} ${lines[i + k]}`);
+      // A yeared row cut after its opening year ("... 30 Apr 18") reads as a
+      // complete yearless one, so every join is tried yeared first.
+      let row = rows.find(r => CONTENTS_ROW.test(r));
+      let m = row && row.match(CONTENTS_ROW);
+      if (!m) {
+        row = rows.find(r => CONTENTS_ROW_YEARLESS.test(r));
+        const y = row && row.match(CONTENTS_ROW_YEARLESS);
+        if (y) m = [y[0], y[1], y[2], y[3], null, y[4], y[5], null, y[6]];
+      }
       if (!m || !keys.has(pdfTitleKey(m[1]))) continue;
       if (Number(m[8]) !== Number(page)) continue;
       if (secondRow(row)) return null;
-      const start = readPdfDate(m[2], m[3], m[4]);
+      let start;
+      if (m[4]) start = readPdfDate(m[2], m[3], m[4]);
+      else {
+        period = period === undefined ? issuePeriod(text) : period;
+        start = period && yearFromIssue(m[2], m[3], period);
+      }
       if (!start || Number(start.slice(0, 4)) > maxYear) return null;
       let close = null;
       if (m[5]) {
-        close = readPdfDate(m[5], m[6], m[7]);
-        if (!close || close < start) return null;
+        // A yearless close is in the start's year, or the next when it falls before it.
+        close = readPdfDate(m[5], m[6], m[7] || start.slice(0, 4));
+        if (close && !m[7] && close < start) {
+          // Rolled into the next year: a run past ~10 months, or a typo like
+          // "16 Nov 14 Nov", cannot be told apart from a real date, so no close.
+          close = readPdfDate(m[5], m[6], Number(start.slice(0, 4)) + 1);
+          if (close && Date.parse(close) - Date.parse(start) > 300 * 86400000) close = undefined;
+        }
+        if (close === null || (close && close < start)) return null;
       }
       matches.add(`${want}\nPress night ${m[2]} ${m[3]} ${start.slice(0, 4)}${close ? `\nCloses ${m[5]} ${m[6]} ${close.slice(0, 4)}` : ''}`);
+    }
+    if (matches.size) return matches.size === 1 ? [...matches][0] : null;
+  }
+  return null;
+}
+
+const INDEX_ROW = /^(.+?)\s+[–—-]\s+.*?\s(\d{1,2})\s+([A-Z][a-z]{2,8})\.?\s+(\d{2}|\d{4})\s+(\d{1,3})\/(\d{1,4})(?:\s|$)/;
+
+/**
+ * 2016 volume-end issues carry a cumulative index, one row per production
+ * with its press night and "volume/page" (BRO-5851), e.g.
+ *   "NO MAN'S LAND – Revival of play by Harold Pinter Wyndham's 20 Sep 16 36/1005 Corner Shop 0".
+ * Only a row whose volume/page is the link's own counts; it gives press night
+ * only. Conflicting rows fail closed.
+ */
+function pdfIndexRowFor(text, want, variants, volume, page) {
+  if (volume == null || page == null) return null;
+  const lines = String(text || '').replace(/\f/g, '\n').split('\n').map(l => l.replace(/\s+/g, ' ').trim());
+  const maxYear = new Date().getUTCFullYear();
+  for (const keys of [new Set([want]), new Set(variants)]) {
+    const matches = new Set();
+    for (const line of lines) {
+      const m = line.match(INDEX_ROW);
+      if (!m || !keys.has(pdfTitleKey(m[1]))) continue;
+      if (Number(m[5]) !== Number(volume) || Number(m[6]) !== Number(page)) continue;
+      const start = readPdfDate(m[2], m[3], m[4]);
+      if (!start || Number(start.slice(0, 4)) > maxYear) return null;
+      matches.add(`${want}\nPress night ${m[2]} ${m[3]} ${start.slice(0, 4)}`);
     }
     if (matches.size) return matches.size === 1 ? [...matches][0] : null;
   }
@@ -333,10 +423,15 @@ function logOpeningsContext(lines, want, mode) {
   let hits = 0;
   for (let i = 0; i < lines.length && hits < 6; i++) {
     const key = capsKey(lines[i].trim()).replace(/^THE /, '');
-    if (!key || key === want || !key.includes(want) || lines[i].trim().length > 120) continue;
+    if (!key || key === want || !key.includes(want)) continue;
+    // Only a line that parses as a contents or index row (all facts) prints
+    // past 90 characters; neighbours and other long lines never do.
+    const flat = lines[i].replace(/\s+/g, ' ').trim();
+    const contentsRow = [CONTENTS_ROW, CONTENTS_ROW_YEARLESS, INDEX_ROW].some(re => re.test(flat));
+    if (!contentsRow && flat.length > 120) continue;
     hits++;
     const cut = s => s.replace(/\s+/g, ' ').trim().slice(0, 90);
-    console.log(`    [${mode}] title row @${i}: ${cut(lines[i])} || ${cut(lines[i + 1] || '')} || ${cut(lines[i + 2] || '')}`);
+    console.log(`    [${mode}] title row @${i}: ${contentsRow ? flat.slice(0, 160) : cut(lines[i])} || ${cut(lines[i + 1] || '')} || ${cut(lines[i + 2] || '')}`);
   }
 }
 
@@ -458,7 +553,8 @@ async function main() {
         for (const mode of ['-layout', '-raw']) {
           const text = execFileSync('pdftotext', [mode, tmp, '-'], { maxBuffer: 50 * 1024 * 1024 }).toString();
           const pageNo = (link.match(/\/page\/(\d+)/) || [])[1];
-          const h = pdfHeaderFor(text, title, venue, { page: pageNo ? Number(pageNo) : null });
+          const volNo = (link.match(/\/volume\/(\d+)/) || [])[1];
+          const h = pdfHeaderFor(text, title, venue, { page: pageNo ? Number(pageNo) : null, volume: volNo ? Number(volNo) : null });
           const d = parseTrHeaderDates(h);
           if (!d.closingDate || !d.openingDate) logDateContext(text, title, mode);
           if (h) return h;
@@ -514,4 +610,4 @@ if (require.main === module) {
   main().catch(e => { console.error(e); process.exit(1); });
 }
 
-module.exports = { pdfHeaderFor, pdfContentsRowFor, htmlHeaderFor, pairLabelLines, searchTitles, logDateContext };
+module.exports = { pdfHeaderFor, pdfContentsRowFor, pdfIndexRowFor, htmlHeaderFor, pairLabelLines, searchTitles, logDateContext };

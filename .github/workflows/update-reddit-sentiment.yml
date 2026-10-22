@@ -255,12 +255,46 @@ jobs:
         with:
           workflow-name: update-reddit-sentiment
 
+      # BRO-5916: one alert per incident instead of one failure notice per run.
+      # Ordered before the deploy dispatch and the final push (outputs before
+      # state commits); routeAlert is a no-op while the incident stays open and
+      # resolveCondition closes it on the first fresh Reddit write.
+      - name: Alert once when Reddit data is stale
+        if: always() && steps.freshness.outputs.skip != 'true'
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: node scripts/check-reddit-freshness.js
+
+      - name: Persist alert-router state
+        if: always() && steps.freshness.outputs.skip != 'true'
+        continue-on-error: true
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          for f in data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl data/audit/alert-digest-queue.json; do
+            if [ -e "$f" ]; then git add "$f"; else echo "skip (absent): $f"; fi
+          done
+          if git diff --cached --quiet; then
+            echo "No alert-router state changes to commit"
+          else
+            git commit -m "chore: persist reddit-sentiment alert-router state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
       - name: Dispatch deploy
         if: always() && steps.freshness.outputs.skip != 'true'
         uses: ./.github/actions/dispatch-deploy
 
       - name: Notify on failure
-        if: failure()
+        # The "all Reddit sources unavailable" exit is covered by the one-per-incident
+        # alert above; every other failure still notifies per run.
+        if: failure() && steps.scrape.outputs.reddit_unavailable != 'true'
         uses: ./.github/actions/notify-failure
         with:
           title: 'Update Reddit Sentiment Failed'

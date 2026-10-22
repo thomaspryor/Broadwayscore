@@ -8,6 +8,8 @@ metadata:
   modified: 2026-09-18T12:52:42.773Z
 ---
 
+**Superseded for Broadwayscore (BRO-5915, 2026-10-22):** sessions never open, ready or merge PRs in this repo; `pre-push-review-gate.sh` refuses `gh pr create|ready|merge` and `gh api`/`curl` PR writes, and `github-main-guard.sh` refuses `mcp__github__create_pull_request`. Land instead: `git push origin HEAD:refs/heads/land/<name>` and follow the Land run (`.claude/CLOUD.md` § Landing). The PR steps below are history.
+
 Headless `job/linear-BRO-N-*` worktree branches (dispatched Linear-issue sessions) are never landed on `main` by an external process. The presence of `scripts/autonomous-merge.js` and dozens of concurrently-open `job/*` branches in `git worktree list` looks like evidence of an auto-merge pipeline — it is not; those are just other sessions' unmerged work sitting the same way yours would.
 
 **Why:** A session assumed a "fleet dispatcher" would land its branch and ended the turn after only pushing to the feature branch, reporting Linear status=done. The `exit-status-gate.sh` hook caught it: `git log origin/main..HEAD` was non-empty. The corrected flow (confirmed working): from inside the worktree, `git fetch origin main && git merge origin/main --no-edit` (no conflicts expected for small diffs), rerun tests, then `bash scripts/lib/push-with-retry.sh 7 main` — this pushes current HEAD to `origin/main` directly (the script normalizes the plain branch name `main` to a `HEAD:main` refspec), no need to `git checkout main` or touch the primary repo checkout at `~/Broadwayscore`. Verify with `git log origin/main..HEAD` (must be empty) before claiming done.

@@ -19,12 +19,32 @@ const STAMPED_SOURCE_FIELDS = {
   synopsis: { field: 'synopsisSource', value: 'manual' },
 };
 
+/**
+ * BRO-5886: ingest-html-handoff envelopes the executor would refuse (shape,
+ * a key other than the committed one, total size).
+ */
+function handoffPlanProblems(name, actions, { publicKeyPath } = {}) {
+  const handoff = require('./html-handoff.js');
+  if (!actions.some((a) => a && a.type === handoff.ACTION_TYPE && !handoff.isScrubbed(a))) return [];
+  const fs = require('fs');
+  const file = publicKeyPath || handoff.PUBLIC_KEY_PATH;
+  if (!fs.existsSync(file)) return [`${name}: ${handoff.ACTION_TYPE}: no committed public key; dispatch html-handoff-key.yml`];
+  return handoff.planHandoffProblems(actions, { publicKeyPem: fs.readFileSync(file, 'utf8') }).map((p) => `${name}: ${p}`);
+}
+
 function planShapeProblems(name, plan) {
   if (!isPending(plan)) return [];
   const problems = [];
   if (!plan.planId) problems.push(`${name}: missing planId`);
   const actions = plan.plan && plan.plan.actions;
   if (!Array.isArray(actions)) return [...problems, `${name}: plan.actions is not an array`];
+  // The executor loads data/pending-fixes/<issue_number>.json, and authors
+  // dispatch with the plan's issueNumber; a split plan that kept its parent's
+  // issueNumber re-ran the parent (BRO-5853). Same id both ways (BRO-5892).
+  const base = path.basename(name, '.json');
+  if (plan.issueNumber != null && String(plan.issueNumber) !== base) {
+    problems.push(`${name}: issueNumber ${JSON.stringify(plan.issueNumber)} is not the file name; set it to "${base}" (the executor loads <issue_number>.json)`);
+  }
   if (actions.length > MAX_PLAN_ACTIONS) {
     problems.push(`${name}: ${actions.length} actions (max ${MAX_PLAN_ACTIONS}); split it into ${path.basename(name, '.json')}-b.json`);
   }
@@ -36,6 +56,15 @@ function planShapeProblems(name, plan) {
   // 'partial' (BRO-5843).
   const stamped = new Map(); // `${showId}|${sourceField}` -> stamped value
   for (const a of actions) {
+    // review-file-op paths are relative to the review-texts tree; the
+    // data/review-texts/ prefix is refused as "Source not found" (BRO-5853).
+    if (a && a.type === 'review-file-op') {
+      for (const k of ['sourcePath', 'destPath']) {
+        if (typeof a[k] === 'string' && /^(\.\/)?data\/review-texts\//.test(a[k])) {
+          problems.push(`${name}: review-file-op ${k} "${a[k]}" must be relative to the review-texts tree; drop the data/review-texts/ prefix`);
+        }
+      }
+    }
     if (!a || a.type !== 'data-edit' || a.file !== 'shows.json') continue;
     const stamp = STAMPED_SOURCE_FIELDS[a.field];
     if (stamp && a.newValue) { stamped.set(`${a.showId}|${stamp.field}`, stamp.value); continue; }
@@ -44,6 +73,7 @@ function planShapeProblems(name, plan) {
       problems.push(`${name}: ${a.showId}.${a.field} expects ${JSON.stringify(a.oldValue)} but the earlier edit sets it to "${stamped.get(key)}"`);
     }
   }
+  problems.push(...handoffPlanProblems(name, actions));
   return problems;
 }
 
@@ -97,4 +127,4 @@ function localRunProblems(name, plan) {
   return [`${name}: status "${plan.status}" was written by a local execute-approved-fix run (executedIn: local), so the CI apply would skip it as done; set status back to "pending" and drop executedAt, results, rejectedAt and executedIn`];
 }
 
-module.exports = { pendingPlanProblems, planShapeProblems, planWordingProblems, planStatusWarning, finishedOnBranchProblems, localRunProblems };
+module.exports = { handoffPlanProblems, pendingPlanProblems, planShapeProblems, planWordingProblems, planStatusWarning, finishedOnBranchProblems, localRunProblems };

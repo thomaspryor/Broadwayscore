@@ -3300,8 +3300,13 @@ function extractAuthorFromHtmlUnfiltered(html, text, options = {}) {
   // "Reviewer: Scott Matthewman"; BRO-4431). One reader:
   // byline-extraction.js extractReviewerLine.
   {
-    const reviewer = require('./byline-extraction').extractReviewerLine(html);
+    const bx = require('./byline-extraction');
+    const reviewer = bx.extractReviewerLine(html);
     if (reviewer && isValidAuthorName(reviewer)) return cleanAuthorName(reviewer);
+    // Same shape of problem: the page's meta/rel=author is a house account, the critic is printed in
+    // the body ("Reviewed on <date> by <Name>" headings; a bold-italic sign-off before the share widget).
+    const printed = bx.extractReviewedByLine(html) || bx.extractSignOffBeforeShare(html);
+    if (printed && isValidAuthorName(printed)) return cleanAuthorName(printed);
   }
 
   const metaPatterns = [

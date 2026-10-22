@@ -8,6 +8,8 @@ metadata:
   modified: 2026-07-26T16:08:03.783Z
 ---
 
+**Superseded for Broadwayscore (BRO-5915, 2026-10-22):** sessions never open, ready or merge PRs in this repo; `pre-push-review-gate.sh` refuses `gh pr create|ready|merge` and `gh api`/`curl` PR writes, and `github-main-guard.sh` refuses `mcp__github__create_pull_request`. Land instead: `git push origin HEAD:refs/heads/land/<name>` and follow the Land run (`.claude/CLOUD.md` § Landing). The PR steps below are history.
+
 When main is being hammered by clustered CI commits (LLM ensemble scoring + deploy-watermark + audit/health workflows landing several commits within seconds, then a 2-3 min gap), a local `fetch → merge → push` loop loses the race every time: origin advances during the push's network round-trip. On 2026-07-12 this beat a naive tight loop 8/8 AND `scripts/lib/push-with-retry.sh 8` (its 14-20s random backoff still landed inside bursts), across ~25 attempts, while piling merge commits onto local main.
 
 **Fix:** stop racing. Push your HEAD to a NEW branch (`git push origin HEAD:refs/heads/<branch>` — a fresh ref is always a fast-forward, succeeds instantly regardless of main's movement), then `gh pr create` + `gh pr merge <n> --squash --admin --delete-branch`. GitHub performs the merge server-side, atomically, so there is no local race. `--admin` (owner has it) bypasses the "waiting for checks" gate; `--squash` also collapses the merge-commit spam a failed local loop leaves behind into one clean commit.

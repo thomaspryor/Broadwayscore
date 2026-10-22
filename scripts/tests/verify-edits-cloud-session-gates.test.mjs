@@ -178,7 +178,8 @@ function assertAllowed(result, message) {
 
 const QUALIFYING_EDIT = toolUse('Edit', { file_path: 'src/lib/scoring.ts', old_string: 'a', new_string: 'b' });
 const GIT_PUSH = toolUse('Bash', { command: 'git push -u origin some-branch' });
-const CREATE_PR = toolUse('mcp__github__create_pull_request', { owner: 'thomaspryor', repo: 'Broadwayscore', title: 'x', head: 'a', base: 'main' });
+// The MCP server's success payload: the gate counts a PR only on its URL (BRO-5915).
+const CREATE_PR = toolUse('mcp__github__create_pull_request', { owner: 'thomaspryor', repo: 'Broadwayscore', title: 'x', head: 'a', base: 'main' }, '{"id":"2345","url":"https://github.com/thomaspryor/Broadwayscore/pull/42"}');
 // Real success payload of the GitHub MCP merge tool; only this counts as merged.
 const MERGE_PR = toolUse('mcp__github__merge_pull_request', { owner: 'thomaspryor', repo: 'Broadwayscore', pullNumber: 1 },
   '{"sha":"0123abc","merged":true,"message":"Pull Request successfully merged"}');
@@ -791,6 +792,60 @@ test('OWNERMERGE false-positive guard: "merge conflict" is a stated blocker, not
   const r = runHook(transcript, "Resolving it now.\n\nNOT SAFE TO EXIT — merge conflict on PR #42.");
   assertAllowed(r, 'merge conflict must stay a legitimate blocker');
   fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// BRO-5915: github-main-guard.sh now refuses PR creation, so a refused call
+// must not count as an opened PR; and a Bash `gh pr create` that printed a PR
+// URL must count (it never did, so OWNERMERGE/PRUNMERGED could not fire).
+const REFUSED_CREATE_PR = { ...toolUse('mcp__github__create_pull_request', { owner: 'thomaspryor', repo: 'Broadwayscore', title: 'x', head: 'a', base: 'main' }, 'PreToolUse:mcp__github__create_pull_request hook error: 🛑 BLOCKED: sessions never open Broadwayscore PRs (BRO-5915)'), _isError: true };
+const GH_PR_CREATE = toolUse('Bash', { command: 'gh pr create --draft --fill' }, 'https://github.com/thomaspryor/Broadwayscore/pull/42');
+
+test('BRO-5915: a REFUSED create_pull_request is not an opened PR → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('pr-refused-create');
+  const msg = "Pushed the branch.\n\nSAFE TO EXIT — pushed to branch, no PR opened this session.";
+  assertAllowed(runHook(writeTranscript(dir, [REFUSED_CREATE_PR, GIT_PUSH, BOARD_CLOSEOUT_DONE]), msg), 'a hook-refused PR call opened nothing');
+  // Control: the identical transcript with a successful create blocks.
+  assertBlocked(runHook(writeTranscript(dir, [CREATE_PR, GIT_PUSH, BOARD_CLOSEOUT_DONE]), msg), 'control: a real open PR still blocks');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('BRO-5915: Bash `gh pr create` that printed a PR URL counts as an opened PR (PRUNMERGED)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('pr-gh-create');
+  const r = runHook(writeTranscript(dir, [GH_PR_CREATE, BOARD_CLOSEOUT_DONE]), "Opened PR #42.\n\nSAFE TO EXIT — PR open, nothing else pending.");
+  assertBlocked(r, 'a Bash-opened PR left unmerged must block');
+  assert.match(r.stderr, /land it yourself/i, `got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('BRO-5915: reading PRs (gh api GET …/pulls, …/pulls/N/comments) is not opening one → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('pr-read-only');
+  const listing = '[{"number":42,"html_url":"https://github.com/thomaspryor/Broadwayscore/pull/42","state":"open"}]';
+  const reads = [
+    toolUse('Bash', { command: "gh api 'repos/thomaspryor/Broadwayscore/pulls?state=open'" }, listing),
+    toolUse('Bash', { command: 'gh api repos/thomaspryor/Broadwayscore/pulls/42' }, listing),
+    toolUse('Bash', { command: 'gh api repos/thomaspryor/Broadwayscore/pulls/42/comments -f body=x' }, listing),
+  ];
+  const r = runHook(writeTranscript(dir, [...reads, GIT_PUSH, BOARD_CLOSEOUT_DONE]), "Checked the open PRs.\n\nSAFE TO EXIT — pushed to branch, no PR opened this session.");
+  assertAllowed(r, 'PR reads print PR URLs but open nothing');
+  // Control: a REST create counts.
+  const create = toolUse('Bash', { command: 'gh api -X POST repos/thomaspryor/Broadwayscore/pulls -f head=x -f base=main' }, listing);
+  assertBlocked(runHook(writeTranscript(dir, [create, GIT_PUSH, BOARD_CLOSEOUT_DONE]), "Opened a PR.\n\nSAFE TO EXIT — PR open."), 'control: a REST create still counts');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+for (const ask of ['Please merge PR #42 when you get a chance.', "You'll need to merge both PRs.", 'You need to merge #42 and #43.']) {
+  test(`BRO-5915 OWNERMERGE imperative ask blocks: ${ask}`, skipNoRepoHook, () => {
+    const dir = makeTmpDir('ownermerge-imperative');
+    const r = runHook(writeTranscript(dir, [GH_PR_CREATE]), `${ask}\n\nNOT SAFE TO EXIT — CI still running on PR #42.`);
+    assertBlocked(r, 'an imperative merge ask must block');
+    assert.match(r.stderr, /never merges/i, `OWNERMERGE must be the gate that fired, got: ${r.stderr.slice(0, 300)}`);
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+}
+
+test('BRO-5915 OWNERMERGE false-positive guard: "need to merge conflicts" is not a merge ask', skipNoRepoHook, () => {
+  const r = runOnPr('ownermerge-conflicts', "Rebased; you'll need to merge conflicts only if main moves again.\n\nNOT SAFE TO EXIT — CI still running on PR #42.");
+  assertAllowed(r, 'merging conflicts is not asking the owner to merge a PR');
 });
 
 test('land/** push + checked Land run + Linear close-out → SAFE TO EXIT allowed (PR gate satisfied)', skipNoRepoHook, () => {

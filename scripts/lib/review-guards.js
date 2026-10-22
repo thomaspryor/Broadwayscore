@@ -10,7 +10,7 @@
 
 const crypto = require('crypto');
 const { isLegacyWebSearchOnly } = require('./legacy-web-search');
-const { isNonEvidenceFailure, isStrictFailureReason, SOFT_404_REASON } = require('./failed-fetch-policy');
+const { isNonEvidenceFailure, isStrictFailureReason, effectiveFailureReason, SOFT_404_REASON } = require('./failed-fetch-policy');
 
 // BRO-3116: a soft-404 means "not published yet": short cooldown, never abandoned.
 // Backs off by repeat count (3h, 12h, 2d, then weekly) so a page that never
@@ -3776,7 +3776,7 @@ function shouldRetryFetch(show, review, failureEntry) {
     return { shouldRetry: false, reason: 'abandoned' };
   }
 
-  const failureReason = failureEntry.failureReason || '';
+  const failureReason = effectiveFailureReason(failureEntry);
 
   if (failureReason === SOFT_404_REASON) {
     const after = new Date(review.fetchRetryAfter).getTime();
@@ -3888,7 +3888,7 @@ function isFetchLedgerEntryForOtherUrl(entry, review) {
 function recordFetchAttempt(show, review, failureEntry) {
   if (!failureEntry) return {};
 
-  const failureReason = failureEntry.failureReason || '';
+  const failureReason = effectiveFailureReason(failureEntry);
   if (failureReason === SOFT_404_REASON) {
     const n = _counter(review && review.fetchSoft404Count);
     return {

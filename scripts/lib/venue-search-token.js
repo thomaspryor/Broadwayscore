@@ -31,8 +31,8 @@
  * There is deliberately no generic-word fallback. A generic word is worse than
  * no word: "Theater" appears on every playbill.com/production page, so it looks
  * like it is scoping the query while matching everything. Returning '' leaves a
- * clean title+market query instead. Only 2 of the corpus's 355 distinct venues
- * hit that branch ("The Theater Center", "Playhouse Theatre").
+ * clean title+market query instead. "The Theater Center" hits that branch;
+ * "Playhouse Theatre" returns "Playhouse", which is the venue's name.
  *
  * RELATIONSHIP TO scripts/lib/serp-review-census.js:75 venueQueryToken(). That
  * function solves the same shape for the review census and reaches the same
@@ -127,9 +127,8 @@ function venueSearchToken(venue) {
   // So: return the first token that is neither a stopword nor generic, and
   // otherwise return NOTHING. An empty token means "omit the venue term", which
   // leaves a clean title+market query. A generic token is worse than no token,
-  // because it looks like scoping while matching everything. Only 2 of the 355
-  // distinct venues in the corpus ("The Theater Center", "Playhouse Theatre",
-  // 5 shows between them) have no distinctive word at all.
+  // because it looks like scoping while matching everything. "The Theater
+  // Center" has no distinctive word; "Playhouse Theatre" returns "Playhouse".
   //
   // The length floor is 2, not 3: "WP Theater" and "59E59 Theaters" carry their
   // identity in a two-character token, and "Studio 54" / "Stage 42" carry it in

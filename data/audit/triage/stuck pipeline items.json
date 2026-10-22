@@ -1,15 +1,15 @@
 {
   "system": "stuck pipeline items",
-  "status": "pass",
-  "lastChecked": "2026-10-21T07:39:58.113Z",
+  "status": "warn",
+  "lastChecked": "2026-10-22T07:36:55.562Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Stuck pipeline items",
-      "status": "pass",
-      "message": "No pipeline signals flagged possibly-stuck by the overnight digest."
+      "status": "warn",
+      "message": "1 pipeline signal(s) flagged possibly-stuck by the overnight digest — investigate and unstick. Shows losing scored reviews: billy-crystal-860-2026: 19→16 reviews (scored files exist but being dropped)"
     }
   ]
 }

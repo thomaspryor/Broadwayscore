@@ -6,6 +6,7 @@
  */
 
 const { detectPaywall, TRUNCATION_SIGNALS } = require('./content-quality');
+const { effectiveFailureReason } = require('./failed-fetch-policy');
 
 // Known hard-paywall domains where incomplete content is almost certainly paywall-truncated.
 const KNOWN_PAYWALL_DOMAINS = new Set([
@@ -73,7 +74,7 @@ function classifyIncompleteReason(review, failedFetchEntry) {
   const hasUrl = !!review.url;
   const hasFetchHistory = !!(review.fetchMethod || review.textFetchedAt);
   const fullText = review.fullText || '';
-  const failureReason = failedFetchEntry?.failureReason;
+  const failureReason = failedFetchEntry ? effectiveFailureReason(failedFetchEntry) : undefined;
 
   // Priority 1: Wrong content
   // A wrongShow flag a person cleared (wrongShowExplicitlyCleared) is not wrong
@@ -142,6 +143,14 @@ function classifyIncompleteReason(review, failedFetchEntry) {
     return {
       incompleteReason: 'scraper_timeout',
       incompleteDetail: `${failedFetchEntry.failureCount} timeout attempts`
+    };
+  }
+
+  // Our own code threw (BRO-5933): not the site's doing.
+  if (failureReason === 'code_error') {
+    return {
+      incompleteReason: 'code_error',
+      incompleteDetail: `collector exception (${failedFetchEntry.codeErrorDeferrals || 1} deferrals)`
     };
   }
 

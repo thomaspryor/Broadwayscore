@@ -170,22 +170,21 @@ jobs:
           fi
 
       - name: Cancel competing orchestrator/poller runs
+        shell: bash
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          EXPRESS_SHOW_ID: ${{ inputs.show_id }}
         run: |
           echo "=== Pausing competing workflows to prevent data races ==="
-          CANCELLED=0
           # BRO-4461: orchestrator/poller cancels are recorded so the final step can
           # re-dispatch them (they were silently lost mid embargo-lift window before).
-          node scripts/lib/express-preemption.js cancel "$RUNNER_TEMP/express-preempted.json"
-          CANCELLED=$(node -e "console.log(require('fs').readFileSync('$RUNNER_TEMP/express-preempted.json','utf8').length>2?1:0)")
-          for RUN_ID in $(gh run list --workflow=llm-ensemble-score.yml --status=in_progress --json databaseId --jq '.[].databaseId' 2>/dev/null) $(gh run list --workflow=llm-ensemble-score.yml --status=queued --json databaseId --jq '.[].databaseId' 2>/dev/null); do
-            echo "  Cancelling llm-ensemble-score.yml run $RUN_ID..."
-            gh run cancel "$RUN_ID" && CANCELLED=1 || echo "  ⚠ Could not cancel $RUN_ID"
-          done
-          echo "Express has the data repo to itself."
+          # BRO-5890: runs scoped to another show (targeted pollers, per-show
+          # scoring) are left running; see shouldCancel() in the lib.
+          LOG=$(mktemp)
+          node scripts/lib/express-preemption.js cancel "$RUNNER_TEMP/express-preempted.json" --show="$EXPRESS_SHOW_ID" --scoring | tee "$LOG"
+          echo "Express has this show's data to itself."
           # Wait briefly for cancellations to propagate
-          [ $CANCELLED -gt 0 ] && sleep 15 || true
+          if grep -q '^  Cancelled ' "$LOG"; then sleep 15; fi
 
       - name: Checkout core data (shows.json, reviews.json, etc.)
         uses: ./.github/actions/checkout-core-data
@@ -399,8 +398,9 @@ jobs:
         if: inputs.dry_run != true
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          EXPRESS_SHOW_ID: ${{ inputs.show_id }}
         run: |
-          node scripts/lib/express-preemption.js cancel "$RUNNER_TEMP/express-preempted.json"
+          node scripts/lib/express-preemption.js cancel "$RUNNER_TEMP/express-preempted.json" --show="$EXPRESS_SHOW_ID"
 
       - name: Get review count before rebuild
         id: before

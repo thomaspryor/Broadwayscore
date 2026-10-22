@@ -2,13 +2,16 @@ name: Enrich West End Dates
 
 on:
   schedule:
-    # Weekly Monday 7 AM UTC — fix shows with unconfirmed press night sources
+    # Weekly Monday 2 AM UTC — fix shows with unconfirmed press night sources
     # (todaytix, showscore, unknown). Cut from daily 2026-05-08 to reduce
     # Bright Data SERP spend; manually trigger via workflow_dispatch if a
     # specific WE show needs fast date correction ahead of opening night.
-    - cron: '0 7 * * 1'
-    # Weekly on Thursdays at 8 AM UTC — full enrichment for newly announced WE shows
-    - cron: '0 8 * * 4'
+    - cron: '0 2 * * 1'
+    # Weekly on Thursdays at 2:30 AM UTC — full enrichment for newly announced WE shows
+    # BRO-5803: both crons sit in the 01:00-05:00 UTC window, which has no other
+    # shows-json-writer member, so 30min-3h cron lag cannot queue them behind
+    # update-show-status (08:00) or enrich-off-broadway-dates (Mon 07:15/Thu 08:15).
+    - cron: '30 2 * * 4'
   workflow_dispatch:
     inputs:
       mode:
@@ -29,9 +32,12 @@ on:
 permissions:
   contents: write
 
-# BRO-934: per-workflow group: stops overlapping runs of the same job racing on the private-repo push. Not a shared class group (GH pending-queue depth is 1; see rebuild-fast.yml).
+# Shared shows.json writer group (BRO-5803): enrich-west-end-dates.js
+# read-mutate-writes shows.json, same as its sibling enrich-off-broadway-dates.yml.
+# GitHub keeps ONE pending run per group; the 02:xx crons keep this out of the
+# busy 06:00-16:00 window so it neither evicts nor gets evicted by siblings.
 concurrency:
-  group: enrich-west-end-dates
+  group: shows-json-writer
   cancel-in-progress: false
 
 jobs:
@@ -76,9 +82,9 @@ jobs:
           # live filler. github.event.schedule is the literal cron string that
           # triggered this run, so it is immune to delay.
           if [ -z "$MODE" ] && [ "${{ github.event_name }}" = "schedule" ]; then
-            if [ "${{ github.event.schedule }}" = "0 8 * * 4" ]; then
+            if [ "${{ github.event.schedule }}" = "30 2 * * 4" ]; then
               MODE="enrich"
-              echo "Thursday cron (0 8 * * 4) → enrich mode (full enrichment)"
+              echo "Thursday cron (30 2 * * 4) → enrich mode (full enrichment)"
             else
               MODE="fix-unconfirmed"
               echo "Monday cron (${{ github.event.schedule }}) → fix-unconfirmed mode (correct unconfirmed sources)"

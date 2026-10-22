@@ -22,11 +22,10 @@
  * naive version of this primitive would have done is page forever on every
  * queue it successfully emptied.
  *
- * Deliberately NOT covered: "when did this arm last succeed at all" is a
- * different shape (elapsed time since one event, not a value trajectory
- * across periodic samples) and is already solved by
- * scripts/lib/digest-snapshots.js's fresh/stale/missing/invalid states — do
- * not reimplement that here.
+ * General "when did this arm last succeed" checks belong in
+ * scripts/lib/digest-snapshots.js. The progress ledger guard below checks a
+ * prerequisite for trusting a trajectory: observations must persist across
+ * runs. It checks that history before a new write can hide a persistence gap.
  */
 
 const DEFAULT_CYCLES = 3;
@@ -92,4 +91,60 @@ function assertProgress(history, value, opts = {}) {
   return { history: nextHistory, stalled, reason, direction, value };
 }
 
-module.exports = { recordProgress, isStalled, assertProgress, DEFAULT_CYCLES, DEFAULT_MAX_HISTORY };
+// BRO-3944: this daily monitor needs persisted observations to detect stalls.
+// Three days tolerates delayed scoring runs; a week bounds continuity alerts
+// so repaired history eventually ages out. Check BEFORE appending this run.
+const PROGRESS_LEDGER_MAX_AGE_HOURS = 72;
+const PROGRESS_LEDGER_WINDOW_DAYS = 7;
+
+/** Pure pre-write check of progress-watch-state.json, not the queue value. */
+function progressLedgerAlert(state, nowMs = Date.now()) {
+  const hour = 3600000;
+  const windowStart = nowMs - PROGRESS_LEDGER_WINDOW_DAYS * 24 * hour;
+  const issues = [];
+  const timestamp = (value) => typeof value === 'string' && value.trim() ? Date.parse(value) : NaN;
+  const lastRun = timestamp(state && state.lastRunAt);
+  if (!Number.isFinite(lastRun) || lastRun > nowMs + hour) {
+    issues.push('missing or invalid lastRunAt');
+  } else if (nowMs - lastRun > PROGRESS_LEDGER_MAX_AGE_HOURS * hour) {
+    issues.push(`last persisted run was ${((nowMs - lastRun) / hour).toFixed(1)}h ago`);
+  }
+  const surfaces = Object.entries((state && state.surfaces) || {});
+  if (!surfaces.length) issues.push('no persisted surfaces');
+  for (const [key, surface] of surfaces) {
+    const history = surface && surface.history;
+    if (!Array.isArray(history) || !history.length) {
+      issues.push(`${key}: no persisted observations`);
+      continue;
+    }
+    const times = history.map((row) => timestamp(row && row.ts));
+    if (times.some((t) => !Number.isFinite(t) || t > nowMs + hour)) {
+      issues.push(`${key}: invalid observation timestamp`);
+      continue;
+    }
+    times.sort((a, b) => a - b);
+    // Include the current run as an endpoint, but never as an observation:
+    // its new sample must not hide the age of the pre-write ledger.
+    const endpoints = [...times, nowMs];
+    if (nowMs - times[times.length - 1] > PROGRESS_LEDGER_MAX_AGE_HOURS * hour) {
+      issues.push(`${key}: latest persisted observation is older than ${PROGRESS_LEDGER_MAX_AGE_HOURS}h`);
+    }
+    for (let i = 1; i < endpoints.length; i++) {
+      const end = endpoints[i];
+      const gapHours = (end - Math.max(endpoints[i - 1], windowStart)) / hour;
+      if (end >= windowStart && gapHours > PROGRESS_LEDGER_MAX_AGE_HOURS) {
+        issues.push(`${key}: ${gapHours.toFixed(1)}h gap ending ${new Date(end).toISOString()}`);
+        break;
+      }
+    }
+  }
+  if (!issues.length) return null;
+  return {
+    description: `Before this run writes data/audit/progress-watch-state.json: ${issues.join('; ')}. Missing observations can hide a stalled rescore queue.`,
+  };
+}
+
+module.exports = {
+  recordProgress, isStalled, assertProgress, DEFAULT_CYCLES, DEFAULT_MAX_HISTORY,
+  progressLedgerAlert, PROGRESS_LEDGER_MAX_AGE_HOURS,
+};

@@ -31,6 +31,7 @@ permissions:
   contents: write
 
 concurrency:
+  # shows-json-writer-exempt: manual 60-min job; holding shows-json-writer that long would evict a sibling's pending scheduled run. Only cast fields change; push-core-data reconciles concurrent shows.json pushes (BRO-5803)
   group: backfill-cast-web
   cancel-in-progress: false
 

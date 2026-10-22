@@ -1,8 +1,25 @@
 {
-  "generatedAt": "2026-10-22T02:15:15.469Z",
+  "generatedAt": "2026-10-22T14:27:51.319Z",
   "maxAgeHours": 12,
-  "showsAffected": 0,
-  "strandedFiles": 0,
+  "showsAffected": 1,
+  "strandedFiles": 1,
   "blackoutShows": [],
-  "findings": []
+  "findings": [
+    {
+      "showId": "triumph-off-west-end-2026",
+      "title": "Triumph",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "almeidacouk--unknown.json",
+          "url": "https://almeida.co.uk/whats-on/",
+          "outlet": "Almeida Theatre",
+          "ageHours": 22.46509361111111
+        }
+      ],
+      "usable": 27,
+      "discovered": 32,
+      "totalBlackout": false
+    }
+  ]
 }

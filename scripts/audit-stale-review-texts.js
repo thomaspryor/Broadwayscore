@@ -21,6 +21,7 @@
 'use strict';
 
 const fs = require('fs');
+const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
 const os = require('os');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -88,10 +89,9 @@ function main(argv) {
   if (stats.scanned < 100) { console.error(`only ${stats.scanned} review files scanned in ${dir}; wrong dir or empty clone`); return 2; }
   if (restamp && !argv.includes('--dry-run')) {
     for (const r of rows.filter(r => r.verdict === 'OK')) {
-      const rec = JSON.parse(fs.readFileSync(r.file, 'utf8'));
+      const rec = readReviewForUpdate(r.file);
       rec[field] = restamp;
-      fs.writeFileSync(r.file + '.tmp', JSON.stringify(rec, null, 2) + '\n');
-      fs.renameSync(r.file + '.tmp', r.file);
+      persistReviewSnapshot({ filePath: r.file, data: rec, trailingNewline: true });
     }
   }
   if (argv.includes('--json')) console.log(JSON.stringify(rows, null, 2));

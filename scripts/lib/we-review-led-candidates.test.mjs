@@ -381,6 +381,8 @@ test('htmlHeaderFor reads the Opens/Press Night label as the press night', () =>
 test('cleanReviewTitle puts a Theatre Record trailing article back in front (BRO-5851)', () => {
   assert.equal(cleanReviewTitle('Lehman Trilogy (The)'), 'The Lehman Trilogy');
   assert.equal(cleanReviewTitle('Birthday Party, The'), 'The Birthday Party');
+  assert.equal(cleanReviewTitle('Majority, (The)'), 'The Majority'); // BRO-5851: 2016-17 TR form
+  assert.equal(cleanReviewTitle('Plan A'), 'Plan A');
   assert.equal(cleanReviewTitle('Doll’s House (A)'), 'A Doll’s House');
   assert.equal(cleanReviewTitle('The Theory of Everything'), 'The Theory of Everything');
   assert.equal(cleanReviewTitle('Home, I’m Darling'), 'Home, I’m Darling');

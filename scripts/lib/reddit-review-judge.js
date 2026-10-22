@@ -28,6 +28,7 @@ const HELD_TEXT_CHARS = 3500;
 const META_TEXT_CHARS = 1600;
 const MIN_TEXT_CHARS = 200;
 const HELD_FLAGS = ['wrongProduction'];
+const EXCLUDED_FLAGS = ['wrongProduction', 'wrongShow', 'isNotReview', 'isNonReview', 'isRoundupArticle', 'showNotMentioned', 'fabricatedEntry'];
 const NOT_A_PERSON = /^(staff|editor|editors|team|admin|reviews?|theatre|theater|news|desk|contributor|guest|unknown|anonymous|the\s)/i;
 
 const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
@@ -130,6 +131,9 @@ function selectJudgeItems(records, census, facts = null) {
     if (text.length < MIN_TEXT_CHARS) continue;
     const asks = [];
     if (HELD_FLAGS.some(f => r[f]) && missingOutlets.has(r)) asks.push('held');
+    // A critic or a date on a file the site will not count (another production, a news column, an announcement)
+    // is accurate but changes nothing the owner posts: only a review being released is worth the questions.
+    if (!asks.includes('held') && EXCLUDED_FLAGS.some(f => r[f])) continue;
     const outletLike = norm(r.criticName) && (norm(r.criticName) === norm(r.outlet) || norm(r.criticName) === norm(r.outletId));
     // A name or date is only worth asking about when one is actually printed
     // near the top of the stored text (the recovery tools read the page HTML;
@@ -178,7 +182,7 @@ function dateCandidates(text, facts) {
   const s = String(text);
   const near = [...datesIn(s.slice(0, 900))];
   const cued = [];
-  for (const m of s.matchAll(/\b(published|posted|updated)\b[^.\n]{0,40}/gi)) cued.push(...datesIn(m[0]));
+  for (const m of s.matchAll(/\b(published|posted)\b(?:[^.\n]|(?<=\b(?:Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sept?|Oct|Nov|Dec))\.){0,40}/gi)) cued.push(...datesIn(m[0]));
   return [...new Set([...near, ...cued])].filter(d => !facts || inWindow(d, facts));
 }
 
@@ -249,10 +253,16 @@ function personShaped(name) {
  * next sentence's capital letters), so the model's name may be a whole-word prefix
  * of the first candidate, never longer than it and never a different name.
  */
-function agreesWithFirstByline(name, first) {
+function agreesWithFirstByline(name, first, text = '') {
   if (!first) return true;
   const a = norm(name), b = norm(first);
-  return a === b || b.startsWith(`${a} `);
+  if (a === b) return true;
+  if (!b.startsWith(`${a} `)) return false;
+  // A shorter answer is a truncated name ("Mary Ann" for "Mary Ann Smith") unless the words it drops are
+  // ordinary words the capture ran on into ("Helen Shaw The"): those also appear in lower case in the text,
+  // a surname never does.
+  const lower = String(text);
+  return b.slice(a.length + 1).split(' ').every(w => new RegExp(`(?<![\\p{L}])${escapeRe(w)}(?![\\p{L}])`, 'u').test(lower));
 }
 
 const escapeRe = s => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -348,7 +358,7 @@ function verifyDecision(item, decision, record, facts, siblings = []) {
     else if ((facts.people || []).some(n => norm(n) === norm(name))) reject('critic', 'that person is in the show\'s cast or creative team');
     else if (!quoteInText(quote, text)) reject('critic', 'quote is not in the stored text');
     else if (!printedByline(text, name)) reject('critic', 'no printed "By <name>" byline near the top of the text');
-    else if (!agreesWithFirstByline(name, bylineCandidates(text, facts)[0])) reject('critic', 'a different name is printed first');
+    else if (!agreesWithFirstByline(name, bylineCandidates(text, facts)[0], text)) reject('critic', 'a different name is printed first');
     else if (taken) reject('critic', 'another file from this outlet already has that critic');
     else {
       edits.push({ field: 'criticName', oldValue: record.criticName === undefined ? null : record.criticName, newValue: name.trim() });
@@ -365,7 +375,7 @@ function verifyDecision(item, decision, record, facts, siblings = []) {
     else if (!datesIn(quote).has(value)) reject('date', 'the quote does not spell out that date');
     else if (SCHEDULE_CUE.test(quote)) reject('date', 'the quote reads like a performance or schedule date, not a publication date');
     else if (!inWindow(value, facts)) reject('date', `outside this production's window (${facts.windowFrom || '?'} to ${facts.windowTo || '?'})`);
-    else if (!/\b(published|posted|updated)\b/i.test(quote) && (firstIndex(quote, text) < 0 || firstIndex(quote, text) > 800)) reject('date', 'the date is deep in the text with no publication cue');
+    else if (!/\b(published|posted)\b/i.test(quote) && (firstIndex(quote, text) < 0 || firstIndex(quote, text) > 800)) reject('date', 'the date is deep in the text with no publication cue');
     else {
       edits.push({ field: 'publishDate', oldValue: null, newValue: value });
       edits.push({ field: 'dateSource', oldValue: record.dateSource === undefined ? null : record.dateSource, newValue: 'text-regex' });

@@ -39,7 +39,51 @@ const ROUTE_CAPPED_REASON = 'route_not_attempted_cap';
  * route is capped every day from being retried forever at no evidence cost.
  */
 const MAX_ROUTE_CAPPED_DEFERRALS = 3;
-const NON_EVIDENCE_REASONS = Object.freeze(['budget_capped', SOFT_404_REASON, ROUTE_CAPPED_REASON]);
+/**
+ * A fetch that died on a JavaScript exception in our own code (a TypeError
+ * from a bad response shape, say) says nothing about the URL. Before this
+ * reason existed such rows were recorded as fetch_error and retired: the
+ * Guardian Content API crash ("Cannot read properties of undefined (reading
+ * 'length')") left ~360 Guardian reviews skipped after it was fixed
+ * (BRO-5933). A row may be deferred as code_error MAX_CODE_ERROR_DEFERRALS
+ * times; after that it counts as fetch_error, so a bug that throws after a
+ * paid tier ran cannot re-buy the waterfall every run forever.
+ */
+const CODE_ERROR_REASON = 'code_error';
+const MAX_CODE_ERROR_DEFERRALS = 3;
+
+/**
+ * Did the fetch die on our own code, not on the page or a scraper tier?
+ * Judged from the error object at the throw site: a TypeError/ReferenceError
+ * whose message is not the waterfall's aggregate ("All tiers failed: [...]",
+ * which quotes each tier's error, page-side Playwright errors included) or a
+ * content verdict.
+ * @param {unknown} error
+ */
+function isOwnCodeException(error) {
+  if (!(error instanceof TypeError || error instanceof ReferenceError)) return false;
+  // Node's own network errors are TypeErrors too ("fetch failed", "Invalid URL"):
+  // those are about the URL, not our code.
+  return !/^(All tiers failed|URL returned|fetch failed|Invalid URL)/.test(String(error.message || ''));
+}
+
+// Legacy rows only keep the first 200 chars of the message and no error type,
+// so they are matched on a message that IS a bare exception, start to end.
+const LEGACY_CODE_EXCEPTION_RE = /^(?:Cannot read propert(?:y|ies) of (?:undefined|null)\b|Cannot set propert(?:y|ies) of (?:undefined|null)\b|Cannot destructure\b|[\w$.]+ is not (?:a function|iterable|defined)$)/;
+
+const NON_EVIDENCE_REASONS = Object.freeze(['budget_capped', SOFT_404_REASON, ROUTE_CAPPED_REASON, CODE_ERROR_REASON]);
+
+/**
+ * The reason to judge a failed-fetches entry by. Rows written before
+ * code_error existed carry fetch_error with the exception text in
+ * errorMessage; read those as code_error so they are retried (BRO-5933).
+ * @param {{failureReason?: string, errorMessage?: string}} entry
+ */
+function effectiveFailureReason(entry) {
+  const reason = (entry && entry.failureReason) || '';
+  if (reason === 'fetch_error' && !(entry.codeErrorDeferrals > 0) && LEGACY_CODE_EXCEPTION_RE.test(String(entry.errorMessage || ''))) return CODE_ERROR_REASON;
+  return reason;
+}
 
 /** @param {string} reason */
 function isNonEvidenceFailure(reason) {
@@ -83,7 +127,7 @@ function isStrictFailureReason(reason) {
  * @param {{failureReason?: string, failureCount?: number}} entry
  */
 function isPermanentlyFailed(entry) {
-  const reason = (entry && entry.failureReason) || '';
+  const reason = effectiveFailureReason(entry);
   const count = (entry && entry.failureCount) || 0;
   if (isNonEvidenceFailure(reason)) return false;
   return count >= (isStrictFailureReason(reason) ? 3 : 5);
@@ -101,9 +145,10 @@ function isPermanentlyFailed(entry) {
  *   Browserbase route would have run but a cap blocked it
  * @returns {string}
  */
-function classifyFetchFailure({ message, bdWasCapped = false, routeCapped = null }) {
+function classifyFetchFailure({ message, bdWasCapped = false, routeCapped = null, codeError = false }) {
   const msg = String(message || '');
   if (msg.includes('404')) return 'url_dead_404';
+  if (codeError) return CODE_ERROR_REASON;
   if (bdWasCapped) return 'budget_capped';
   if (routeCapped) return ROUTE_CAPPED_REASON;
   if (msg.includes('timeout') || msg.includes('TIMEOUT')) return 'all_tiers_timeout';
@@ -146,8 +191,15 @@ function routeCapFromBrowserbaseError(message, localBlockReason) {
  * @returns {{reason: string, cappedDeferrals: number}}
  */
 function applyRouteCapDeferralLimit(reason, existing) {
+  if (reason === CODE_ERROR_REASON) {
+    const next = ((existing && existing.codeErrorDeferrals) || 0) + 1;
+    return { reason: next > MAX_CODE_ERROR_DEFERRALS ? 'fetch_error' : reason, cappedDeferrals: (existing && existing.cappedDeferrals) || 0, codeErrorDeferrals: next };
+  }
   const prior = (existing && existing.cappedDeferrals) || 0;
-  if (reason !== ROUTE_CAPPED_REASON) return { reason, cappedDeferrals: prior };
+  // Carried through other failures so a real failure in between does not
+  // hand a row a fresh code_error budget.
+  const codeErrorDeferrals = (existing && existing.codeErrorDeferrals) || 0;
+  if (reason !== ROUTE_CAPPED_REASON) return { reason, cappedDeferrals: prior, ...(codeErrorDeferrals ? { codeErrorDeferrals } : {}) };
   const next = prior + 1;
   return { reason: next > MAX_ROUTE_CAPPED_DEFERRALS ? 'all_tiers_failed' : reason, cappedDeferrals: next };
 }
@@ -197,6 +249,10 @@ module.exports = {
   isRouteCapCooldownActive,
   shouldReopenStaleContentMismatch,
   NON_EVIDENCE_REASONS,
+  CODE_ERROR_REASON,
+  MAX_CODE_ERROR_DEFERRALS,
+  isOwnCodeException,
+  effectiveFailureReason,
   isNonEvidenceFailure,
   shouldCountFailure,
   isStrictFailureReason,

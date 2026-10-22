@@ -187,6 +187,8 @@ on:
       # top-level scripts/ files outside the scripts/lib/** glob.
       - 'scripts/sync-review-texts.sh'
       - 'scripts/sync-review-texts.js'
+      # BRO-5325: multi-show column section copier; its colocated CLI test runs on fixtures.
+      - 'scripts/copy-multishow-section.js'
       # BRO-3375: same gap shape — a top-level scripts/ file outside the
       # scripts/lib/** glob, so a solo edit would trigger ZERO CI. Its decision
       # logic deliberately lives OUTSIDE this repo, in
@@ -355,6 +357,8 @@ on:
       - 'scripts/backfill-lbo-individual-stars.js'
       # tests/unit/backfill-unknown-critics-locked.test.mjs
       - 'scripts/backfill-unknown-critics.js'
+      # scripts/fix-printed-bylines.test.mjs
+      - 'scripts/fix-printed-bylines.js'
       # tests/unit/build-ob-venues.test.mjs
       - 'scripts/build-ob-venues.js'
       # scripts/lib/stuck-card-closer.test.mjs (BRO-4523 CLI exit-code tests)
@@ -736,6 +740,10 @@ on:
       # their tests are not reachable from the globs above.
       - 'scripts/cloud-run-script.js'
       - 'scripts/run-script-sealed.js'
+      # BRO-5892: cloud data-fix tooling (doctor, REST dispatch, plan generator).
+      - 'scripts/cloud-dispatch.js'
+      - 'scripts/cloud-doctor.js'
+      - 'scripts/new-fix-plan.js'
       # Show Score import: the profile parser ships inside the edge function
       # dir but its unit test runs in the tests/unit batch — path-listed so a
       # solo parser edit still triggers CI (plan-review finding, 2026-07-13).
@@ -878,6 +886,8 @@ on:
       # email. Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob;
       # path-listed so a solo edit triggers CI.
       - 'scripts/execute-approved-fix.js'
+      # HTML handoff keygen (BRO-5886), required by scripts/lib/html-handoff.test.mjs.
+      - 'scripts/html-handoff-keygen.js'
       # Fold-and-delete sites guarded by scripts/lib/merged-duplicate-urls.test.mjs
       # (BRO-4414 drift test, runs in the scripts/lib/*.test.mjs glob); top-level
       # scripts sit outside scripts/lib/**, so a solo edit would trigger ZERO CI.
@@ -3202,11 +3212,6 @@ on:
       # here so a solo edit to the lib file still triggers CI
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/check-worktree-collision.js'
-      # CI-red claim ledger (task #584): closes the evaluateCiRedClaim wiring
-      # gap left by #542. Test lives in tests/unit/ (node --test batch, not
-      # globbed) — path-listed so a solo edit still triggers CI
-      # (feedback_test_yml_push_path_allowlist).
-      - 'scripts/claim-ci-red.js'
       # TR wrong-show guard corroboration (card #1227): the title-mention-count
       # and film/TV guards in extract-theatre-record.js false-rejected 6 real
       # T1/T2 Barcelona reviews on a common-word single-word title. Predicates

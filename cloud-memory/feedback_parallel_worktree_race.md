@@ -5,6 +5,8 @@ type: feedback
 originSessionId: ea333588-eda7-4271-bbf8-49081b096e66
 modified: 2026-09-25T04:42:19.040Z
 ---
+**Superseded for Broadwayscore (BRO-5915, 2026-10-22):** sessions never open, ready or merge PRs in this repo; `pre-push-review-gate.sh` refuses `gh pr create|ready|merge` and `gh api`/`curl` PR writes, and `github-main-guard.sh` refuses `mcp__github__create_pull_request`. Land instead: `git push origin HEAD:refs/heads/land/<name>` and follow the Land run (`.claude/CLOUD.md` § Landing). The PR steps below are history.
+
 Three parallel sessions worked on the same parent Notion card (WE long-runner CV hardening 34c637c5-416f-812b) on 2026-04-24. They all implemented the same issues (1-4) independently in their own worktrees. Only the first two to merge won; the third (this session) discarded ~600 lines of duplicate work after a 4-file merge conflict.
 
 **Why:** `EnterWorktree` branches from HEAD at session start. If another session's commit lands on main 20 minutes later, the worktree is silently stale. `git pull origin main` before merge is too late — the duplicate work is already written.

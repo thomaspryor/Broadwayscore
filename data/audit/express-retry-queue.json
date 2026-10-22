@@ -150,7 +150,8 @@
       "outletIds": [
         "telegraph"
       ],
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-10-22T08:51:21.981Z"
     },
     {
       "kind": "truncated-t1-refetch",
@@ -177,7 +178,10 @@
       "outletIds": [
         "wsj"
       ],
-      "attempted": false
+      "attempted": true,
+      "skipped": true,
+      "skipReason": "no-truncated-t1",
+      "attemptedAt": "2026-10-22T08:51:21.981Z"
     },
     {
       "kind": "truncated-t1-refetch",
@@ -189,6 +193,27 @@
       "outletIds": [
         "wsj"
       ],
+      "attempted": false
+    },
+    {
+      "showId": "the-pianist-off-west-end-2026",
+      "market": "west-end",
+      "queuedAt": "2026-10-22T14:14:29.643Z",
+      "dueAt": "2026-10-23T07:00:00.000Z",
+      "attempted": false
+    },
+    {
+      "showId": "derren-brown-only-human-west-end-2026",
+      "market": "west-end",
+      "queuedAt": "2026-10-22T14:14:11.546Z",
+      "dueAt": "2026-10-23T07:00:00.000Z",
+      "attempted": false
+    },
+    {
+      "showId": "derren-brown-only-human-west-end-2026",
+      "market": "west-end",
+      "queuedAt": "2026-10-22T14:14:11.546Z",
+      "dueAt": "2026-10-23T07:00:00.000Z",
       "attempted": false
     }
   ]

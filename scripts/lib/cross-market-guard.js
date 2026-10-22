@@ -67,6 +67,32 @@ const UK_SELF_HEAL_REGIONS = UK_MARKET_REGIONS;
 const outletIsUkMarketRegion = (map, canonical, raw) =>
   outletIsUkSideSelfHealRegion(map, canonical, raw);
 
+/**
+ * Is this registry entry EXPLICITLY not a London outlet, so that a "Cross-market:
+ * London outlet" flag on its NYC review is stale? (BRO-5896)
+ *
+ * True for an explicit Broadway-local region ('us', 'nyc', 'dual', ...: see
+ * isBroadwayLocalRegion) or for a region-less entry whose region was removed on
+ * purpose (regionCorrectedBy: a human correction or
+ * retractContradictedOutletRegions). The plain region-less default is NOT
+ * enough: ~860 outlets have never had a region, and none of them was ever
+ * London, so their old London-outlet flags came from somewhere else (a UK URL)
+ * and are not this predicate's to clear.
+ *
+ * isDualMarket outlets have their own gate in
+ * shouldAutoClearStaleLondonOutletCrossMarket; this covers the outlets a wrong
+ * region:'london' stamp was taken off.
+ *
+ * @param {object|null|undefined} info - the outlet's registry entry
+ * @returns {boolean}
+ */
+function outletRegionExplicitlyNotLondon(info) {
+  if (!info) return false;
+  const { isBroadwayLocalRegion } = require('./outlet-region-map');
+  if (info.region) return isBroadwayLocalRegion(info.region);
+  return !!info.regionCorrectedBy;
+}
+
 function outletIsUkSideSelfHealRegion(outletRegionMap, canonicalOutlet, rawOutlet) {
   if (!outletRegionMap) return false;
   return UK_SELF_HEAL_REGIONS.has(outletRegionMap[canonicalOutlet])
@@ -799,6 +825,7 @@ module.exports = {
   UK_MARKET_REGIONS,
   outletIsUkSideSelfHealRegion,
   outletIsUkMarketRegion,
+  outletRegionExplicitlyNotLondon,
   classifyReverseCrossMarket,
   classifyCrossMarketContamination,
   classifyUsOnWeCrossMarket,

@@ -109,6 +109,14 @@ const NOTION_COUPLING_ALLOWLIST = {
   'scripts/audit-card-verifiability.js': 'Notion leg is opt-in (--source notion/all); its only scheduled caller, card-verifiability-audit.yml, passes --source linear since BRO-3488 dropped the frozen-mirror audit runs',
   'scripts/enrich-card-acceptance.js': 'Notion leg is opt-in (--source notion/both); card-verifiability-audit.yml passes --source linear on both scheduled calls (BRO-3018/BRO-3488), so the schedule never reaches notion-brain.js',
   'scripts/health-check.js': 'its one mirror read, checkDispatchOutcomes -> loadTasksUnioned, returns before reading when data/audit/dispatch-ledger.jsonl is absent, and that ledger is gitignored, so data-health-check.yml never reaches it; the TASKS_DIR hit rides in via lib/autofix-canary.js, of which health-check uses only the pure assessCanaryRow/assessThroughputRow (the mirror-reading runAutofixCanary is called by send-morning-digest.js). Retired Notion report row removed in BRO-4717',
+  // BRO-5845: the launchd half now parses `bash -c` plists, which surfaced these three. Each one's
+  // Notion API call was removed or never existed; what remains is a read of the local task store.
+  'scripts/predispatch-queue-audit.js': 'BRO-5845 removed its per-task Notion card fetch (predispatch tally is Linear-only); the remaining TASKS_DIR read feeds the dispatch-guard tally over the local task store, the same set dispatch-watchdog still unions via loadTasksUnioned. The notion-brain.js/notionIdOf hits ride in from lib/dispatch-guards.js refusal text (text-only in notion-live-write-paths.test.mjs)',
+  'scripts/reconcile-dead-completions.js': 'BRO-5845 removed its Notion card correction + sync-map reset; it reopens local task-store files (TASKS_DIR, imported from bsc-next.js) and Linear issues. The bsc-next.js hits are hint strings (text-only in notion-live-write-paths.test.mjs)',
+  'scripts/send-morning-digest.js': 'reads the local task store only for its autofix-canary/digest-autofix rows; it has no Notion API channel (notion-live-write-paths.test.mjs scans it clean)',
+  'scripts/dispatch-watchdog.js': "unions the frozen local task store (loadTasksUnioned) with Linear by design (BRO-3390); the mirror half is inert: 0 of 41 watchdog-redispatch ledger rows in the 14 days to 2026-10-22 carried a mirror id. The notionIdOf( hit is lib/dispatch-dead-launch-guard.js labelling ledger rows, not an API call",
+  'scripts/linear-brain.js': "is the Linear board CLI; its notion-brain.js hits are USAGE prose naming the retired CLI it replaced (BRO-3018), surfaced once the launchd half followed weekly-retro.sh into the scripts it runs",
+  'scripts/claude-auth-preflight.js': "is the shared Claude-auth check; its notion-action-poll.js hit is USAGE prose listing the callers that already gate on auth, surfaced once the launchd half resolved `$REPO/scripts/...` targets in wrappers",
   'scripts/audit-notion-schedule-coupling.js': 'is this detector itself — its own COUPLING_SIGNALS regexes and this allowlist\'s comments literally contain the 4 signal strings as pattern definitions, which self-matches once data-health-check.yml (its own host workflow) is correctly recognized as scheduled',
 };
 
@@ -130,7 +138,30 @@ function stripComments(code) {
   return code.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
 }
 
-function findSignals(content) {
+// BRO-5845: shell scripts are matched on COMMAND FORM only, after stripping
+// `#` comments. Matching the JS signal strings against a .sh file flagged
+// gc-merged-worktrees.sh (a `# notion-action-poll.js` comment) and
+// weekly-retro.sh (a prompt line that says "never use notion-brain.js") —
+// both false positives — while the real couplings went unseen.
+const SH_COUPLING_SIGNALS = [
+  { name: 'notion-brain.js', re: /\bnode\s+\S*notion-brain(\.js)?\b/ },
+  { name: 'notion-tasks-sync.js', re: /\bnode\s+\S*notion-tasks-sync(\.js)?\b/ },
+  { name: 'notion-action-poll.js', re: /\bnode\s+\S*notion-action-poll(\.js)?\b/ },
+  // Ship-check (BRO-5845): ~/.claude/bin/overhaul-driver.sh read the frozen
+  // store directly and dispatched from it via bsc-next.js, unseen.
+  { name: 'task-store path', re: /\.claude\/tasks\/broadwayscore\b/ },
+  { name: 'bsc-next.js', re: /\bnode\s+\S*bsc-next(\.js)?\b/ },
+];
+
+function stripShellComments(code) {
+  return code.split('\n').map((line) => line.replace(/(^|\s)#.*$/, '$1')).join('\n');
+}
+
+function findSignals(content, file = 'x.js') {
+  if (/\.(sh|bash)$/.test(file)) {
+    const code = stripShellComments(content);
+    return SH_COUPLING_SIGNALS.filter((s) => s.re.test(code)).map((s) => s.name);
+  }
   const code = stripComments(content);
   return COUPLING_SIGNALS.filter((s) => s.re.test(code)).map((s) => s.name);
 }
@@ -301,21 +332,171 @@ function scanWorkflowsForCoupling(opts = {}) {
 // ── Half 2: Mac launchd agents ──────────────────────────────────────────────
 
 /** Minimal ProgramArguments extractor — these plists are simple, hand-authored XML. */
+function decodeXmlEntities(s) {
+  return s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'").replace(/&amp;/g, '&');
+}
+
 function extractProgramArguments(plistXml) {
   const m = /<key>ProgramArguments<\/key>\s*<array>([\s\S]*?)<\/array>/.exec(plistXml);
   if (!m) return [];
   const strs = [];
   const re = /<string>([^<]*)<\/string>/g;
   let sm;
-  while ((sm = re.exec(m[1]))) strs.push(sm[1]);
+  while ((sm = re.exec(m[1]))) strs.push(decodeXmlEntities(sm[1]));
   return strs;
 }
 
-function scriptFromProgramArguments(args) {
-  for (const a of args) {
-    if (/\.(js|mjs|sh)$/.test(a)) return a;
+const INTERPRETERS = new Set(['node', 'bash', 'sh', 'zsh']);
+// Segments starting with these print or match text; an interpreter name later
+// in them is an argument, not an invocation.
+const NON_EXEC_HEADS = new Set(['echo', 'printf', 'grep', 'log', 'cat', 'test', '[']);
+// Interpreter flags whose value is the next word (node -r dotenv/config x.js).
+const FLAGS_WITH_VALUE = new Set(['-r', '--require', '--import', '--env-file', '-o', '--loader']);
+
+// Quote-aware split of a shell command or script into segments (on newline,
+// && || ; | and a lone &) of words. Handles backslash escapes and strips
+// `$(`, `(`, `)` and redirections from words. Enough for plist `bash -c`
+// strings and wrapper scripts; not a shell (no heredocs, no expansion).
+function shellSegments(cmd) {
+  const segments = [];
+  let words = [];
+  let word = '';
+  let inWord = false;
+  let quote = null;
+  const flushWord = () => {
+    if (inWord) {
+      const w = word.replace(/^(?:\$\(|\(|!)+/, '').replace(/\)+$/, '').replace(/^\d*[<>].*$/, '');
+      if (w) words.push(w);
+    }
+    word = ''; inWord = false;
+  };
+  const flushSeg = () => { flushWord(); if (words.length) segments.push(words); words = []; };
+  for (let i = 0; i < cmd.length; i++) {
+    const c = cmd[i];
+    if (quote === "'") { if (c === "'") quote = null; else word += c; continue; }
+    if (c === '\\' && i + 1 < cmd.length) {
+      if (cmd[i + 1] === '\n') { i++; continue; } // line continuation
+      word += cmd[++i]; inWord = true; continue;
+    }
+    if (quote === '"') { if (c === '"') quote = null; else word += c; continue; }
+    if (c === '"' || c === "'") { quote = c; inWord = true; continue; }
+    if (c === '\n') { flushSeg(); continue; }
+    if (/\s/.test(c)) { flushWord(); continue; }
+    if (c === '>' || c === '<') {
+      // redirection: `2>&1`, `>>log`, `>&2` — drop it and its target word
+      flushWord();
+      while (i + 1 < cmd.length && /[>&<\d]/.test(cmd[i + 1])) i++;
+      while (i + 1 < cmd.length && cmd[i + 1] === ' ') i++;
+      while (i + 1 < cmd.length && !/[\s;&|]/.test(cmd[i + 1])) i++;
+      continue;
+    }
+    if (c === ';' || c === '|' || c === '&') {
+      flushSeg();
+      if ((c === '&' || c === '|') && cmd[i + 1] === c) i++;
+      continue;
+    }
+    word += c; inWord = true;
   }
-  return null;
+  flushSeg();
+  return segments;
+}
+
+function expandHome(p) {
+  return p.replace(/^~(?=\/|$)/, os.homedir()).replace(/^\$\{?HOME\}?(?=\/|$)/, os.homedir());
+}
+
+const VAR_PREFIX_RE = /^\$\{?\w+\}?\//;
+
+/**
+ * Every script one shell command runs: each segment with an interpreter word
+ * (`node|bash|sh|zsh`, bare or by absolute path, possibly behind exec, env,
+ * nice, timeout, caffeinate, VAR=x, ...) followed by a script path, resolved
+ * against the latest `cd` before it. `cwd` is the starting directory (null
+ * when unknown). `varCwd` is where a `cd "$VAR"` lands (null = unknown).
+ * `varDir`/`varCwd` resolve `$VAR/rest` targets when that file exists there. Script
+ * paths that still can't be resolved are pushed onto `unresolved`, so the
+ * caller reports incomplete coverage instead of a clean scan (BRO-5845).
+ */
+function scriptsFromShellCommand(cmd, cwd, unresolved = [], { varDir = null, varCwd = null } = {}) {
+  const out = [];
+  for (const w of shellSegments(cmd)) {
+    if (w[0] === 'cd') {
+      const dir = w[1] ? expandHome(w[1]) : os.homedir();
+      if (dir.includes('$')) cwd = varCwd;
+      else if (path.isAbsolute(dir)) cwd = dir;
+      else cwd = cwd ? path.join(cwd, dir) : null;
+      continue;
+    }
+    if (NON_EXEC_HEADS.has(w[0])) continue;
+    // `out=$(node x.js)` reaches here as the word `out=$(node`.
+    const at = w.findIndex((x) => INTERPRETERS.has(path.basename(x.replace(/^\w+=(?:\$\()?/, ''))));
+    if (at === -1) continue;
+    let target = null;
+    for (let j = at + 1; j < w.length; j++) {
+      if (FLAGS_WITH_VALUE.has(w[j])) { j++; continue; }
+      if (w[j].startsWith('-')) continue;
+      target = w[j];
+      break;
+    }
+    if (!target || !/\.(c?js|mjs|sh)$/.test(target)) continue;
+    const t = expandHome(target);
+    if (path.isAbsolute(t)) out.push(t);
+    else if (cwd && !t.includes('$')) out.push(path.join(cwd, t));
+    else {
+      // `$SCRIPT_DIR/lib/x.js` / `$REPO/scripts/x.js` in a wrapper: unknown
+      // variable, so accept the file only where it actually exists, next to
+      // the wrapper or under the repo root those variables point at.
+      const rest = VAR_PREFIX_RE.test(t) ? t.replace(VAR_PREFIX_RE, '') : null;
+      const hit = rest && [varDir, varCwd].filter(Boolean).map((d) => path.join(d, rest)).find((f) => fs.existsSync(f));
+      if (hit) out.push(hit); else unresolved.push(target);
+    }
+  }
+  return out;
+}
+
+/**
+ * Every repo script a plist runs. A bare argument ending in .js/.mjs/.sh is
+ * one target; an argument containing whitespace (a `bash -c "<cmd>"` string)
+ * goes through scriptsFromShellCommand, starting from the plist's
+ * WorkingDirectory when it has one.
+ * BRO-5845: predispatch-queue-audit and reconcile-dead-completions both run
+ * as `bash -c "cd /Users/.../Broadwayscore && exec node scripts/X.js"`, so
+ * the old last-argument-only extractor never saw them and the audit reported
+ * 0 while two Notion-calling launchd jobs were live.
+ */
+function scriptsFromProgramArguments(args, { cwd = null, unresolved = [] } = {}) {
+  const out = [];
+  for (const a of args) {
+    if (!/\s/.test(a)) {
+      if (/\.(c?js|mjs|sh)$/.test(a)) out.push(expandHome(a));
+      continue;
+    }
+    out.push(...scriptsFromShellCommand(a, cwd, unresolved));
+  }
+  return [...new Set(out)];
+}
+
+function extractWorkingDirectory(plistXml) {
+  const m = /<key>WorkingDirectory<\/key>\s*<string>([^<]*)<\/string>/.exec(plistXml);
+  return m ? decodeXmlEntities(m[1]) : null;
+}
+
+// A wrapper .sh is followed into the scripts it runs, as one command so a
+// `cd` carries over to later lines. Wrappers cd to the repo root, usually via
+// a variable (`cd "$REPO"`, `cd "$(dirname "$0")/.."`) this parser can't
+// evaluate, so a variable cd lands on the repo root: the one containing the
+// wrapper, else ~/Broadwayscore for wrappers outside it (~/.claude/bin).
+function scriptsFromShellScript(absShPath, unresolved = []) {
+  let content;
+  try { content = fs.readFileSync(absShPath, 'utf8'); } catch { return []; }
+  const idx = absShPath.lastIndexOf('/scripts/');
+  const root = idx === -1 ? path.join(os.homedir(), 'Broadwayscore') : absShPath.slice(0, idx);
+  return scriptsFromShellCommand(stripShellComments(content), root, unresolved, { varDir: path.dirname(absShPath), varCwd: root });
+}
+
+function scriptFromProgramArguments(args) {
+  return scriptsFromProgramArguments(args)[0] || null;
 }
 
 function scanLaunchdForCoupling() {
@@ -338,6 +519,7 @@ function scanLaunchdForCoupling() {
   const findings = [];
   let scannedAgents = 0;
   let scannedScripts = 0;
+  const unresolvedTargets = [];
   const home = os.homedir();
   for (const label of labels) {
     const plistPath = path.join(home, 'Library', 'LaunchAgents', `${label}.plist`);
@@ -349,21 +531,33 @@ function scanLaunchdForCoupling() {
     }
     scannedAgents++;
     const args = extractProgramArguments(plistXml);
-    const scriptArg = scriptFromProgramArguments(args);
-    if (!scriptArg || !scriptArg.includes('/Broadwayscore/')) continue;
-    const absScript = scriptArg;
-    const rel = repoRelativeStable(absScript);
-    scannedScripts++;
-    if (isAllowlisted(rel)) continue;
-    const combined = readScriptWithLocalDeps(absScript);
-    if (combined === null) continue;
-    const signals = findSignals(combined);
-    if (signals.length) {
-      findings.push({ label, script: rel, signals });
+    const unresolved = [];
+    const queue = scriptsFromProgramArguments(args, { cwd: extractWorkingDirectory(plistXml), unresolved });
+    const seen = new Set();
+    while (queue.length) {
+      const absScript = queue.shift();
+      if (seen.has(absScript)) continue;
+      seen.add(absScript);
+      const isSh = /\.sh$/.test(absScript);
+      // Repo scripts are scanned; a shell wrapper anywhere (~/.claude/bin) is
+      // scanned and followed too, since that is where the overhaul-driver
+      // dispatcher hid (ship-check, BRO-5845).
+      if (!absScript.includes('/Broadwayscore/') && !isSh) continue;
+      const rel = absScript.includes('/Broadwayscore/') ? repoRelativeStable(absScript) : absScript.replace(home, '~');
+      scannedScripts++;
+      if (isSh) queue.push(...scriptsFromShellScript(absScript, unresolved));
+      if (isAllowlisted(rel)) continue;
+      const combined = readScriptWithLocalDeps(absScript);
+      if (combined === null) { unresolvedTargets.push({ label, target: rel, why: 'unreadable' }); continue; }
+      const signals = findSignals(combined, absScript);
+      if (signals.length) {
+        findings.push({ label, script: rel, signals });
+      }
     }
+    for (const t of unresolved) unresolvedTargets.push({ label, target: t, why: 'path not resolvable' });
   }
 
-  return { ok: true, reason: null, findings, scannedAgents, scannedScripts };
+  return { ok: true, reason: null, findings, scannedAgents, scannedScripts, unresolvedTargets };
 }
 
 // write-then-rename, same pattern as predispatch-queue-audit.js's writeFileAtomic.
@@ -398,12 +592,20 @@ function main() {
       reason: launchdResult.reason,
       scannedAgents: launchdResult.scannedAgents || 0,
       scannedScripts: launchdResult.scannedScripts || 0,
+      unresolvedTargets: launchdResult.unresolvedTargets || [],
       findings: launchdResult.findings,
     },
     totalFindings,
-    bannerText: totalFindings === 0
+    // BRO-5845: this snapshot is written by data-health-check.yml on Linux,
+    // where the launchd half cannot run — a bare "0 found" there hid two live
+    // Mac jobs. Name the unscanned half instead of implying it was clean.
+    bannerText: (totalFindings === 0
       ? 'notion-schedule-coupling: 0 live schedules found reading the frozen Notion mirror'
-      : `notion-schedule-coupling: ${totalFindings} live schedule(s) still reference the frozen Notion mirror — see data/audit/notion-schedule-coupling.json`,
+      : `notion-schedule-coupling: ${totalFindings} live schedule(s) still reference the frozen Notion mirror — see data/audit/notion-schedule-coupling.json`)
+      + (launchdResult.ok ? '' : ' (GitHub workflow schedules only; launchd agents NOT scanned on this host — run it on the Mac)')
+      + ((launchdResult.unresolvedTargets || []).length
+        ? ` (INCOMPLETE: ${launchdResult.unresolvedTargets.length} launchd script target(s) could not be resolved or read)`
+        : ''),
   };
 
   console.log(snapshot.bannerText);
@@ -411,6 +613,9 @@ function main() {
   console.log(`[audit-notion-schedule-coupling] launchd half:  ok=${launchdResult.ok} scanned=${launchdResult.scannedAgents || 0} agent(s)/${launchdResult.scannedScripts || 0} script(s)${launchdResult.reason ? ` (${launchdResult.reason})` : ''}`);
   for (const f of workflowResult.findings) {
     console.log(`  [workflow] ${f.workflow} -> ${f.script}: ${f.signals.join(', ')}`);
+  }
+  for (const u of launchdResult.unresolvedTargets || []) {
+    console.log(`  [launchd]  ${u.label} -> ${u.target}: NOT SCANNED (${u.why})`);
   }
   for (const f of launchdResult.findings) {
     console.log(`  [launchd]  ${f.label} -> ${f.script}: ${f.signals.join(', ')}`);
@@ -442,6 +647,10 @@ module.exports = {
   extractScriptTargets,
   extractProgramArguments,
   scriptFromProgramArguments,
+  scriptsFromProgramArguments,
+  scriptsFromShellCommand,
+  scriptsFromShellScript,
+  shellSegments,
   scanWorkflowsForCoupling,
   scanLaunchdForCoupling,
   SNAPSHOT_PATH,

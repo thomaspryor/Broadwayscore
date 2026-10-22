@@ -1,8 +1,8 @@
 {
   "_meta": {
-    "postedDetection": "skipped",
+    "postedDetection": "ok",
     "description": "Reddit \"reviews are in\" post drafts for Broadway, WE/OWE/OB openings (BRO-4333). Written by scripts/draft-reddit-opening-posts.js, shown in the opening digest email.",
-    "lastRun": "2026-10-22T05:01:35.795Z"
+    "lastRun": "2026-10-22T06:37:30.709Z"
   },
   "drafts": {
     "delirium-off-broadway-2026": {
@@ -1248,6 +1248,231 @@
       "emailedAt": "2026-10-22T05:05:12.981Z",
       "reminderAt": "2026-10-22T05:05:12.981Z",
       "emailedScore": 68,
+      "emailedReviewCount": 16
+    },
+    "billy-crystal-860-2026": {
+      "showId": "billy-crystal-860-2026",
+      "showTitle": "Billy Crystal 860",
+      "market": "broadway",
+      "subreddit": "Broadway",
+      "score": 83,
+      "reviewCount": 21,
+      "url": "https://broadwayscorecard.com/show/billy-crystal-860",
+      "notability": 61,
+      "createdAt": "2026-10-22T06:37:16.767Z",
+      "status": "ready",
+      "source": "claude-sonnet-5-5",
+      "lintProblems": [],
+      "title": "Reviews are in for Billy Crystal 860. 83/100 from 21 critics, and not a single negative review!",
+      "body": "I found 21 reviews: 8 raves, 12 positive, 1 mixed, zero negative. It's Crystal's one-man show at the Imperial, built around losing his home in the 2025 Palisades Fire.\n\nhttps://broadwayscorecard.com/show/billy-crystal-860\n\nRoma Torre at New York Stage Review called it \"a wonderful gift to audiences in need of a reason to celebrate life in all its wild incarnations.\" Charles McNulty at the LA Times liked it so much he said he hopes it gets Crystal another Tony. Meanwhile the lone mixed review, Jackson McHenry at Vulture, wrote that the crowd-pleasing material is \"incongruously, fascinatingly, and not so comfortably fitted inside a story about great loss.\"\n\nAudiences are at an A+ (from 257 ratings on Show Score).\n\nI haven't seen this one yet, and I'm leaning toward wanting to go. Anyone seen it?",
+      "why": "Leads with 'not a single negative review' on a beloved-name one-man show, then lets a rave, a Tony hope, and the one Vulture holdout carry it, with the A+ audience grade as the agreement check.",
+      "expectedPushback": "Of course it's an A+ and critics were nice, it's Billy Crystal, everybody's going to love him.",
+      "suggestedReply": "Ha, fair, a beloved name probably doesn't hurt. I just collect what the critics wrote, so I'm curious whether it matches what people who've seen it think.",
+      "personalLines": [
+        "I haven't seen this one yet, and I'm leaning toward wanting to go.",
+        "Haven't seen it yet, but these reviews have me pretty curious.",
+        "Haven't seen it yet. Still undecided, but that A+ is making me think about it."
+      ],
+      "submitUrl": "https://www.reddit.com/r/Broadway/submit?type=TEXT&title=Reviews+are+in+for+Billy+Crystal+860.+83%2F100+from+21+critics%2C+and+not+a+single+negative+review%21&text=I+found+21+reviews%3A+8+raves%2C+12+positive%2C+1+mixed%2C+zero+negative.+It%27s+Crystal%27s+one-man+show+at+the+Imperial%2C+built+around+losing+his+home+in+the+2025+Palisades+Fire.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fbilly-crystal-860%0A%0ARoma+Torre+at+New+York+Stage+Review+called+it+%22a+wonderful+gift+to+audiences+in+need+of+a+reason+to+celebrate+life+in+all+its+wild+incarnations.%22+Charles+McNulty+at+the+LA+Times+liked+it+so+much+he+said+he+hopes+it+gets+Crystal+another+Tony.+Meanwhile+the+lone+mixed+review%2C+Jackson+McHenry+at+Vulture%2C+wrote+that+the+crowd-pleasing+material+is+%22incongruously%2C+fascinatingly%2C+and+not+so+comfortably+fitted+inside+a+story+about+great+loss.%22%0A%0AAudiences+are+at+an+A%2B+%28from+257+ratings+on+Show+Score%29.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I%27m+leaning+toward+wanting+to+go.+Anyone+seen+it%3F",
+      "oldRedditSubmitUrl": "https://old.reddit.com/r/Broadway/submit?selftext=true&title=Reviews+are+in+for+Billy+Crystal+860.+83%2F100+from+21+critics%2C+and+not+a+single+negative+review%21&text=I+found+21+reviews%3A+8+raves%2C+12+positive%2C+1+mixed%2C+zero+negative.+It%27s+Crystal%27s+one-man+show+at+the+Imperial%2C+built+around+losing+his+home+in+the+2025+Palisades+Fire.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fbilly-crystal-860%0A%0ARoma+Torre+at+New+York+Stage+Review+called+it+%22a+wonderful+gift+to+audiences+in+need+of+a+reason+to+celebrate+life+in+all+its+wild+incarnations.%22+Charles+McNulty+at+the+LA+Times+liked+it+so+much+he+said+he+hopes+it+gets+Crystal+another+Tony.+Meanwhile+the+lone+mixed+review%2C+Jackson+McHenry+at+Vulture%2C+wrote+that+the+crowd-pleasing+material+is+%22incongruously%2C+fascinatingly%2C+and+not+so+comfortably+fitted+inside+a+story+about+great+loss.%22%0A%0AAudiences+are+at+an+A%2B+%28from+257+ratings+on+Show+Score%29.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I%27m+leaning+toward+wanting+to+go.+Anyone+seen+it%3F",
+      "crosspostSubreddit": null,
+      "crosspostSubmitUrl": null,
+      "verification": {
+        "checkedAt": "2026-10-22T06:37:46.485Z",
+        "mode": "apply",
+        "score": 83,
+        "reviewCount": 21,
+        "durationMs": 140134,
+        "tools": [
+          {
+            "name": "replay-pending-bylines",
+            "ok": true,
+            "secs": 0
+          },
+          {
+            "name": "gap-ingest",
+            "ok": true,
+            "secs": 43
+          },
+          {
+            "name": "unknown-critics",
+            "ok": true,
+            "secs": 2
+          },
+          {
+            "name": "missing-dates",
+            "ok": true,
+            "secs": 94
+          },
+          {
+            "name": "judge",
+            "ok": true,
+            "secs": 0
+          }
+        ],
+        "judge": {
+          "asked": 0,
+          "applied": 0,
+          "rejected": 0
+        },
+        "status": "gaps",
+        "filesChecked": 28,
+        "unnamedLeft": 1,
+        "undatedLeft": 3,
+        "pendingLeft": 0,
+        "added": [],
+        "named": [],
+        "dated": [
+          {
+            "outlet": "The New York Times"
+          }
+        ],
+        "recovered": [],
+        "flagCleared": [],
+        "pendingResolved": 0,
+        "gaps": [
+          {
+            "outlet": "nytg",
+            "reason": "held back as not a review (needs a look)"
+          }
+        ],
+        "addedThisCheck": false,
+        "pendingScoring": false,
+        "pushFailed": false
+      },
+      "emailedAt": "2026-10-22T06:42:54.282Z",
+      "emailedScore": 83,
+      "emailedReviewCount": 21
+    },
+    "the-curious-case-of-benjamin-button-off-broadway-2026": {
+      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "showTitle": "The Curious Case of Benjamin Button",
+      "market": "off-broadway",
+      "subreddit": "offbroadwayNYC",
+      "score": 77,
+      "reviewCount": 16,
+      "url": "https://broadwayscorecard.com/show/the-curious-case-of-benjamin-button-off-broadway",
+      "notability": 11,
+      "createdAt": "2026-10-22T06:37:30.709Z",
+      "status": "ready",
+      "source": "claude-sonnet-5-5",
+      "lintProblems": [],
+      "title": "Reviews are in for The Curious Case of Benjamin Button. 77/100 from 16 critics, with a WSJ rave and the NYT as the lone pan",
+      "body": "It opened at the Public's Newman Theater, and I found 16 reviews: 8 raves, 6 positive, 1 mixed, 1 negative. Audiences are at an A- (across Mezzanine, Show Score, and Theatr).\n\nhttps://broadwayscorecard.com/show/the-curious-case-of-benjamin-button-off-broadway\n\nHayley Levitt at TheaterMania called it \"one of the most alive musicals you're likely to see this season.\" Charles Isherwood at the WSJ wrote that it has \"the bracing freshness of an ocean breeze.\" Meanwhile Helen Shaw at the NYT, the one negative, wrote \"Unfortunately, I don't think all the time in the world would change 'The Curious Case of Benjamin Button' into my kind of show.\"\n\nThis is the Olivier-winning British import with the folksy Celtic score and actor-musicians. A few critics found the accents tricky, which I get. Anyone seen it?\n\nI haven't seen this one yet, and I'm leaning pretty hard toward going.",
+      "why": "It leads with the show and the number, and the hook is that 14 of 16 critics are positive or better with the NYT as the lone pan, which gives the 77 meaning without calling anything good or bad because of a number.",
+      "expectedPushback": "\"Who cares about a score, it's art, and one NYT pan doesn't make or break a show.\"",
+      "suggestedReply": "Totally fair, I just like having all the reviews in one place, and the quotes are the part I'd actually read. The Critic Score is a weighted average of the published critic reviews, so it's a starting point, not a verdict.",
+      "personalLines": [
+        "I haven't seen this one yet, and I'm leaning pretty hard toward going.",
+        "I haven't seen this one yet, and those raves have me curious.",
+        "I haven't seen this one yet. Still undecided, but the reviews are nudging me toward yes."
+      ],
+      "submitUrl": "https://www.reddit.com/r/offbroadwayNYC/submit?type=TEXT&title=Reviews+are+in+for+The+Curious+Case+of+Benjamin+Button.+77%2F100+from+16+critics%2C+with+a+WSJ+rave+and+the+NYT+as+the+lone+pan&text=It+opened+at+the+Public%27s+Newman+Theater%2C+and+I+found+16+reviews%3A+8+raves%2C+6+positive%2C+1+mixed%2C+1+negative.+Audiences+are+at+an+A-+%28across+Mezzanine%2C+Show+Score%2C+and+Theatr%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fthe-curious-case-of-benjamin-button-off-broadway%0A%0AHayley+Levitt+at+TheaterMania+called+it+%22one+of+the+most+alive+musicals+you%27re+likely+to+see+this+season.%22+Charles+Isherwood+at+the+WSJ+wrote+that+it+has+%22the+bracing+freshness+of+an+ocean+breeze.%22+Meanwhile+Helen+Shaw+at+the+NYT%2C+the+one+negative%2C+wrote+%22Unfortunately%2C+I+don%27t+think+all+the+time+in+the+world+would+change+%27The+Curious+Case+of+Benjamin+Button%27+into+my+kind+of+show.%22%0A%0AThis+is+the+Olivier-winning+British+import+with+the+folksy+Celtic+score+and+actor-musicians.+A+few+critics+found+the+accents+tricky%2C+which+I+get.+Anyone+seen+it%3F%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I%27m+leaning+pretty+hard+toward+going.",
+      "oldRedditSubmitUrl": "https://old.reddit.com/r/offbroadwayNYC/submit?selftext=true&title=Reviews+are+in+for+The+Curious+Case+of+Benjamin+Button.+77%2F100+from+16+critics%2C+with+a+WSJ+rave+and+the+NYT+as+the+lone+pan&text=It+opened+at+the+Public%27s+Newman+Theater%2C+and+I+found+16+reviews%3A+8+raves%2C+6+positive%2C+1+mixed%2C+1+negative.+Audiences+are+at+an+A-+%28across+Mezzanine%2C+Show+Score%2C+and+Theatr%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fthe-curious-case-of-benjamin-button-off-broadway%0A%0AHayley+Levitt+at+TheaterMania+called+it+%22one+of+the+most+alive+musicals+you%27re+likely+to+see+this+season.%22+Charles+Isherwood+at+the+WSJ+wrote+that+it+has+%22the+bracing+freshness+of+an+ocean+breeze.%22+Meanwhile+Helen+Shaw+at+the+NYT%2C+the+one+negative%2C+wrote+%22Unfortunately%2C+I+don%27t+think+all+the+time+in+the+world+would+change+%27The+Curious+Case+of+Benjamin+Button%27+into+my+kind+of+show.%22%0A%0AThis+is+the+Olivier-winning+British+import+with+the+folksy+Celtic+score+and+actor-musicians.+A+few+critics+found+the+accents+tricky%2C+which+I+get.+Anyone+seen+it%3F%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I%27m+leaning+pretty+hard+toward+going.",
+      "crosspostSubreddit": "Broadway",
+      "crosspostSubmitUrl": "https://www.reddit.com/r/Broadway/submit?type=TEXT&title=Reviews+are+in+for+The+Curious+Case+of+Benjamin+Button.+77%2F100+from+16+critics%2C+with+a+WSJ+rave+and+the+NYT+as+the+lone+pan&text=It+opened+at+the+Public%27s+Newman+Theater%2C+and+I+found+16+reviews%3A+8+raves%2C+6+positive%2C+1+mixed%2C+1+negative.+Audiences+are+at+an+A-+%28across+Mezzanine%2C+Show+Score%2C+and+Theatr%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fthe-curious-case-of-benjamin-button-off-broadway%0A%0AHayley+Levitt+at+TheaterMania+called+it+%22one+of+the+most+alive+musicals+you%27re+likely+to+see+this+season.%22+Charles+Isherwood+at+the+WSJ+wrote+that+it+has+%22the+bracing+freshness+of+an+ocean+breeze.%22+Meanwhile+Helen+Shaw+at+the+NYT%2C+the+one+negative%2C+wrote+%22Unfortunately%2C+I+don%27t+think+all+the+time+in+the+world+would+change+%27The+Curious+Case+of+Benjamin+Button%27+into+my+kind+of+show.%22%0A%0AThis+is+the+Olivier-winning+British+import+with+the+folksy+Celtic+score+and+actor-musicians.+A+few+critics+found+the+accents+tricky%2C+which+I+get.+Anyone+seen+it%3F%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I%27m+leaning+pretty+hard+toward+going.",
+      "verification": {
+        "checkedAt": "2026-10-22T06:40:06.758Z",
+        "mode": "apply",
+        "score": 77,
+        "reviewCount": 16,
+        "durationMs": 150399,
+        "tools": [
+          {
+            "name": "replay-pending-bylines",
+            "ok": true,
+            "secs": 2
+          },
+          {
+            "name": "gap-ingest",
+            "ok": true,
+            "secs": 47
+          },
+          {
+            "name": "unknown-critics",
+            "ok": true,
+            "secs": 6
+          },
+          {
+            "name": "missing-dates",
+            "ok": true,
+            "secs": 93
+          },
+          {
+            "name": "judge",
+            "ok": true,
+            "secs": 2
+          }
+        ],
+        "judge": {
+          "asked": 2,
+          "applied": 0,
+          "rejected": 0
+        },
+        "status": "gaps",
+        "filesChecked": 36,
+        "unnamedLeft": 4,
+        "undatedLeft": 4,
+        "pendingLeft": 1,
+        "added": [
+          {
+            "outlet": "Vulture"
+          }
+        ],
+        "named": [],
+        "dated": [
+          {
+            "outlet": "Culture Sauce"
+          },
+          {
+            "outlet": "Josh at the Movies"
+          },
+          {
+            "outlet": "New York Post"
+          },
+          {
+            "outlet": "New York Stage Review"
+          },
+          {
+            "outlet": "New York Stage Review"
+          },
+          {
+            "outlet": "New York Theater"
+          },
+          {
+            "outlet": "New York Theatre Guide"
+          },
+          {
+            "outlet": "The New York Times"
+          },
+          {
+            "outlet": "1 Minute Critic"
+          },
+          {
+            "outlet": "Pages on Stages"
+          },
+          {
+            "outlet": "The Recs"
+          },
+          {
+            "outlet": "TheaterMania"
+          }
+        ],
+        "recovered": [],
+        "flagCleared": [],
+        "pendingResolved": 1,
+        "gaps": [
+          {
+            "outlet": "timeout-london",
+            "reason": "held back as another production (needs a look)"
+          }
+        ],
+        "addedThisCheck": true,
+        "pendingScoring": true,
+        "pushFailed": false
+      },
+      "emailedAt": "2026-10-22T06:42:58.074Z",
+      "emailedScore": 77,
       "emailedReviewCount": 16
     }
   }

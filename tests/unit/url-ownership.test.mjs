@@ -195,3 +195,24 @@ describe('index + createOrMergeReviewFile integration (tender replay)', () => {
     assert.equal(map.has('a.com/x'), false, '_pending must not claim ownership');
   });
 });
+
+// BRO-5890: a retired show's leftover folder must not own a URL.
+describe('retired show folders', () => {
+  const retiredRegistry = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'data', 'retired-show-ids.json');
+  const RETIRED = 'anne-washburns-anon-off-broadway-2026';
+  const hasRegistry = fs.existsSync(retiredRegistry)
+    && JSON.parse(fs.readFileSync(retiredRegistry, 'utf8')).some((e) => e && e.id === RETIRED);
+  test('a live-looking copy under a retired show does not block the canonical show', { skip: !hasRegistry && 'retired-show-ids.json absent' }, () => {
+    const url = 'https://www.nytimes.com/2026/10/14/theater/anon-review-anne-washburn.html';
+    writeOwnerFile(RETIRED, 'nytimes--helen-shaw.json', { url, contentTier: 'complete', fullText: 'x'.repeat(400) });
+    const owners = findCrossShowOwners(url, 'anon-a-tempest-at-our-kitchen-table-off-broadway-2026', tmpDir);
+    assert.equal(owners.length, 1);
+    assert.equal(owners[0].blocking, false);
+    assert.equal(owners[0].retiredShow, true);
+    assert.equal(shouldBlockCrossShowCreate(owners).block, false);
+  });
+  test('a live copy under a non-retired show still blocks', () => {
+    writeOwnerFile(OWNER_SHOW, 'guardian--david-jays.json', { url: SOHO_URL, contentTier: 'complete', fullText: 'x'.repeat(400) });
+    assert.equal(shouldBlockCrossShowCreate(findCrossShowOwners(SOHO_URL, SIBLING_SHOW, tmpDir)).block, true);
+  });
+});

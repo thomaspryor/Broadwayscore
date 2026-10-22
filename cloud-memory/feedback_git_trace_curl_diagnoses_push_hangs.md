@@ -8,6 +8,8 @@ metadata:
   modified: 2026-08-26T14:26:06.145Z
 ---
 
+**Superseded for Broadwayscore (BRO-5915, 2026-10-22):** sessions never open, ready or merge PRs in this repo; `pre-push-review-gate.sh` refuses `gh pr create|ready|merge` and `gh api`/`curl` PR writes, and `github-main-guard.sh` refuses `mcp__github__create_pull_request`. Land instead: `git push origin HEAD:refs/heads/land/<name>` and follow the Land run (`.claude/CLOUD.md` § Landing). The PR steps below are history.
+
 When a `git push` hangs for exactly a configured timeout with no other symptom, don't guess between "network stall" and "local computation slow" — instrument with `GIT_TRACE_CURL=1` (+ `GIT_TRACE_CURL_NO_DATA=1` to suppress the pack payload dump) and read where the trace goes silent. `GIT_TRACE`/`GIT_TRACE_PERFORMANCE` show git's internal phase timers but not HTTP/TLS transport detail, so they can't make this distinction.
 
 **Why:** card #1810 (update-show-status.yml chronic 90s push hangs) was hypothesized as "shallow clone forces a large network transfer." A live diagnostic dispatch with `GIT_TRACE_CURL` showed the `info/refs` ref-advertisement GET completing in ~300ms on every attempt, then a *silent* 90s gap with zero curl trace lines (the pack POST request never even opened) before the timeout killed the process. That's the signature of LOCAL git computation (pack-building against an ambiguous shallow boundary) — not a stalled transfer. Guessing wrong here (e.g. going straight to raising the timeout, or enabling a network-bypass fallback) would have masked the real fix (`fetch-depth: 0` on the checkout) or done nothing at all.

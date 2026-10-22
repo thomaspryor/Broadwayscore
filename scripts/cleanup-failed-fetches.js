@@ -233,7 +233,7 @@ for (let i = 0; i < entries.length; i++) {
   // never reach fetchDiscoveryAbandoned (unbounded retries).
   const prePub = readPrePubFailures(entry.reviewId);
   const effectiveCount = Math.max(0, (entry.failureCount || 1) - prePub);
-  if (isPermanentlyFailed({ failureReason: entry.failureReason, failureCount: effectiveCount })) {
+  if (isPermanentlyFailed({ failureReason: entry.failureReason, errorMessage: entry.errorMessage, failureCount: effectiveCount })) {
     removeReasons.set(key, 'past_threshold');
     stats.pastThreshold++;
   }

@@ -29,6 +29,47 @@ const BOUNCE_MEMORY_MS = 14 * 24 * 3600_000;
 const PARTIAL_MARKER = '<!-- codex-runner-partial -->';
 const HKDF_SALT = 'bsc-codex-runner-auth-v1';
 
+/** Bound card runs to their host; PR landings keep an unlimited default. */
+function runnerTimeLimits({ lane = 'cloud', pr = false, maxMinutes, hardStopMinutes } = {}) {
+  const limits = {
+    maxMinutes: Number(maxMinutes ?? (lane === 'gha' ? 240 : 105)),
+    hardStopMinutes: Number(hardStopMinutes ?? (pr ? 0 : lane === 'gha' ? 290 : 112)),
+  };
+  if (!Number.isFinite(limits.maxMinutes) || limits.maxMinutes <= 0
+    || !Number.isFinite(limits.hardStopMinutes)
+    || ((hardStopMinutes != null || !pr) && limits.hardStopMinutes < 30)) {
+    throw new Error('max-minutes must be positive and hard-stop-minutes must be >= 30; both must be finite');
+  }
+  return limits;
+}
+
+/** Durable, key-free context survives loss of the host and its local log. */
+function runnerLockBody({ run, startedMs, hardEndMs, phase }) {
+  return [
+    `Run: ${run}`,
+    `Started: ${new Date(startedMs).toISOString()}`,
+    `Hard stop: ${new Date(hardEndMs).toISOString()}`,
+    `Phase: ${phase}`,
+  ].join('\n');
+}
+
+/** A stale lock proves a missing finish, not why the host terminated the process. */
+function orphanStopDetails(lock = {}) {
+  const body = String(lock.body || '');
+  const field = (name) => (body.match(new RegExp(`^${name}: (.+)$`, 'm')) || [])[1] || 'not recorded';
+  const phase = field('Phase');
+  const hardStop = field('Hard stop');
+  const overrun = Number.isFinite(lock.ms) && Number.isFinite(Date.parse(hardStop)) && lock.ms >= Date.parse(hardStop);
+  const cause = /^released\b/.test(String(lock.subject || ''))
+    ? 'the previous run released its lock with unfinished cards'
+    : overrun ? 'the run was still active at or beyond its hard stop; the termination cause was not recorded'
+      : 'unreported session termination; no signal or exception was recorded';
+  return `Stop cause: ${cause}.`
+    + ` Previous run: ${lock.run || 'not recorded'}. Started: ${field('Started')}. Last recorded phase: ${phase}.`
+    + ` Last lock stamp: ${Number.isFinite(lock.ms) ? new Date(lock.ms).toISOString() : 'not recorded'}.`
+    + ` Configured hard stop: ${hardStop}.`;
+}
+
 function deriveKey(keyMaterial) {
   if (!keyMaterial || typeof keyMaterial !== 'string') throw new Error('no key material for the Codex login store');
   return Buffer.from(crypto.hkdfSync('sha256', Buffer.from(keyMaterial), Buffer.from(HKDF_SALT), Buffer.from('auth.json'), 32));
@@ -973,8 +1014,11 @@ function runnerSummaryFacts(body) {
     const v = (String(body || '').match(new RegExp(`^- ${label}: (.*)$`, 'm')) || [])[1] || 'none';
     return v.trim() === 'none' ? [] : v.split(',').map((x) => x.trim()).filter(Boolean);
   };
+  const landedIds = [...list('Landed and Done'), ...list('Landed part, back to Todo with what is left')];
   return {
-    landed: list('Landed and Done').length + list('Landed part, back to Todo with what is left').length,
+    landed: landedIds.length,
+    landedIds, // BRO-5671: the ids, for cost per landed card
+    hasCheckLine: /^- Claude check: \d+ review\(s\), \$[\d.]+/m.test(String(body || '')),
     crashed: list('Runner error mid-card \\(back to Todo\\)').length,
     stop: (String(body || '').match(/^- Stopped early: (.*)$/m) || [])[1] || '',
     checkUsd: Number((String(body || '').match(/^- Claude check: \d+ review\(s\), \$([\d.]+)/m) || [])[1]) || 0,
@@ -1167,6 +1211,9 @@ function emptyBatchVerdict(gate, files) {
 }
 
 module.exports = {
+  runnerTimeLimits,
+  runnerLockBody,
+  orphanStopDetails,
   weeklyPctFromSessions,
   emptyBatchVerdict,
   parseCheckOutput,

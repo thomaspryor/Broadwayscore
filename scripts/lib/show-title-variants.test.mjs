@@ -132,6 +132,18 @@ test('curated short name: "Phantom" mentions The Phantom of the Opera only', () 
   assert.equal(validateShowMentioned(text, 'Love Never Dies', 'love-never-dies-2025').valid, false);
 });
 
+// BRO-5895: a joint review section about ANON calls it "Anon", and the 4-letter
+// pre-subtitle prefix is below the generic 5-char floor, so the split row was
+// judged garbage and never scored. "Anonymous" must not count as "Anon".
+test('curated short name: "Anon" mentions ANON, never Anonymous', () => {
+  const title = 'ANON \u2013 a tempest at our kitchen table';
+  const text = `Anon is a quiet family piece. The cast of Anon carries it well.${FILLER}`;
+  assert.equal(textMentionsTitle(text, title), 'anon');
+  assert.equal(validateShowMentioned(text, title, 'anon-a-tempest-at-our-kitchen-table-off-broadway-2026').valid, true);
+  const other = `Anonymous is a quiet family piece. The cast of Anonymous carries it well.${FILLER}`;
+  assert.equal(textMentionsTitle(other, title), null);
+});
+
 test('short names apply to every production title form and subtitles', () => {
   assert.ok(buildShowTitleVariants('Les Mis\u00e9rables').includes('les miz'));
   assert.ok(buildShowTitleVariants('Les Miserables').includes('les mis'));

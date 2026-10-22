@@ -34,6 +34,7 @@ permissions:
   actions: write
 
 concurrency:
+  # shows-json-writer-exempt: manual sharded run up to 350 min; would hold the group for hours and evict every pending sibling. Writes audience-score fields only (BRO-5803)
   group: show-score
   cancel-in-progress: false
 

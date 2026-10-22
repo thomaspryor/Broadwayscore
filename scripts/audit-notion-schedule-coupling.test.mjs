@@ -213,3 +213,117 @@ test('scanLaunchdForCoupling: reports {ok:false} off-darwin instead of silently 
   assert.match(result.reason, /darwin/);
   assert.deepEqual(result.findings, []);
 });
+
+// BRO-5845: both live Notion-calling launchd jobs ran as `bash -c "cd ... && exec node scripts/X.js"`,
+// which the old last-argument-only extractor never resolved, so the audit reported 0.
+test('scriptsFromProgramArguments: resolves every node/bash target inside a bash -c string against its cd', () => {
+  const plist = `<plist><dict><key>ProgramArguments</key><array>
+    <string>/bin/bash</string><string>-c</string>
+    <string>cd /Users/tompryor/Broadwayscore &amp;&amp; SYNC_TAG=x bash scripts/lib/sync-audit-checkout.sh &amp;&amp; exec node scripts/predispatch-queue-audit.js --fix</string>
+  </array></dict></plist>`;
+  const args = src.extractProgramArguments(plist);
+  assert.match(args[2], /&& exec node/);
+  assert.deepEqual(src.scriptsFromProgramArguments(args), [
+    '/Users/tompryor/Broadwayscore/scripts/lib/sync-audit-checkout.sh',
+    '/Users/tompryor/Broadwayscore/scripts/predispatch-queue-audit.js',
+  ]);
+  assert.deepEqual(src.scriptsFromProgramArguments(['/bin/bash', '-c', 'echo hi']), []);
+  // relative target with no cd cannot be resolved; never guess
+  assert.deepEqual(src.scriptsFromProgramArguments(['/bin/bash', '-c', 'node scripts/x.js']), []);
+});
+
+test('findSignals on shell scripts: comments and prose are clean, a real invocation is caught', () => {
+  assert.deepEqual(src.findSignals('# leave notion-action-poll.js worktrees alone\necho ok\n', 'a.sh'), []);
+  assert.deepEqual(src.findSignals('PROMPT="Notion is retired: never use notion-brain.js."\n', 'a.sh'), []);
+  assert.deepEqual(src.findSignals('node "$REPO/scripts/notion-brain.js" update "$ID"\n', 'a.sh'), ['notion-brain.js']);
+  // JS files keep the full signal set
+  assert.deepEqual(src.findSignals("const { TASKS_DIR } = require('./bsc-next.js');", 'a.js'), ['TASKS_DIR']);
+});
+
+// Ship-check (BRO-5845): the first bash -c parser missed `/opt/homebrew/bin/node /abs/x.js`
+// (dispatch-watchdog-health's real plist), quoted targets and `cd ~`, and dropped
+// unresolvable targets silently instead of reporting incomplete coverage.
+test('scriptsFromShellCommand: absolute interpreters, env, quotes, ~, repeated cd', () => {
+  const home = os.homedir();
+  assert.deepEqual(src.scriptsFromShellCommand('/opt/homebrew/bin/node /Users/t/Broadwayscore/scripts/dispatch-watchdog.js --health', null),
+    ['/Users/t/Broadwayscore/scripts/dispatch-watchdog.js']);
+  assert.deepEqual(src.scriptsFromShellCommand('cd /r && /usr/bin/env node --env-file=.env "scripts/a b.js"', null), ['/r/scripts/a b.js']);
+  assert.deepEqual(src.scriptsFromShellCommand('cd ~/Broadwayscore; exec node scripts/x.js || true', null), [`${home}/Broadwayscore/scripts/x.js`]);
+  assert.deepEqual(src.scriptsFromShellCommand('cd /a && node x.js && cd /b && bash y.sh | tee log', null), ['/a/x.js', '/b/y.sh']);
+  assert.deepEqual(src.scriptsFromShellCommand('echo node x.js', '/a'), [], 'node as an argument is not an invocation');
+});
+
+test('scriptsFromShellCommand: unresolvable targets are reported, never guessed', () => {
+  const unresolved = [];
+  assert.deepEqual(src.scriptsFromShellCommand('node scripts/x.js && node "$FOO/y.js"', null, unresolved), []);
+  assert.deepEqual(unresolved, ['scripts/x.js', '$FOO/y.js']);
+});
+
+test('scriptsFromShellScript: follows a wrapper into the scripts it runs', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'nsc-'));
+  fs.mkdirSync(path.join(root, 'scripts', 'lib'), { recursive: true });
+  fs.writeFileSync(path.join(root, 'scripts', 'lib', 'helper.js'), '');
+  const sh = path.join(root, 'scripts', 'wrap.sh');
+  fs.writeFileSync(sh, [
+    '#!/bin/bash',
+    'cd "$(dirname "$0")/.." || exit 1',
+    '# node scripts/commented-out.js',
+    'node scripts/child.js --flag',
+    'node "$SCRIPT_DIR/lib/helper.js"',
+    'node "$SCRIPT_DIR/lib/missing.js"',
+  ].join('\n'));
+  const unresolved = [];
+  assert.deepEqual(src.scriptsFromShellScript(sh, unresolved), [
+    path.join(root, 'scripts', 'child.js'),
+    path.join(root, 'scripts', 'lib', 'helper.js'),
+  ]);
+  assert.deepEqual(unresolved, ['$SCRIPT_DIR/lib/missing.js']);
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+// Second ship-check pass (BRO-5845): forms the first tokenizer dropped with no
+// unresolved report, and the dispatcher that hid in ~/.claude/bin.
+test('scriptsFromShellCommand: wrapper commands, substitutions, redirections, escapes, newlines', () => {
+  const cases = {
+    'X=$(node scripts/a.js; echo)': ['/r/scripts/a.js'],
+    'if ! node scripts/a.js; then x; fi': ['/r/scripts/a.js'],
+    'caffeinate -i node scripts/a.js': ['/r/scripts/a.js'],
+    'timeout 60 nohup node scripts/a.js &': ['/r/scripts/a.js'],
+    'node -r dotenv/config scripts/a.js': ['/r/scripts/a.js'],
+    'node scripts/a.js>>log 2>&1': ['/r/scripts/a.js'],
+    '(node scripts/a.js)': ['/r/scripts/a.js'],
+    '/usr/bin/env -i node scripts/a.js': ['/r/scripts/a.js'],
+    'cd /q\nnode a.js': ['/q/a.js'],
+    'node "scripts/a\\"b.js"': ['/r/scripts/a"b.js'],
+    'VAR=x node a.js': ['/r/a.js'],
+    'echo node x.js; printf "node %s" y.js': [],
+  };
+  for (const [cmd, want] of Object.entries(cases)) {
+    assert.deepEqual(src.scriptsFromShellCommand(cmd, '/r'), want, cmd);
+  }
+});
+
+test('wrapper outside the repo: shell signals catch a frozen-store dispatcher, $REPO targets resolve', () => {
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'nsc-home-'));
+  const repo = path.join(home, 'Broadwayscore');
+  fs.mkdirSync(path.join(repo, 'scripts'), { recursive: true });
+  fs.writeFileSync(path.join(repo, 'scripts', 'bsc-next.js'), '');
+  const wrapper = [
+    '#!/bin/bash',
+    'STORE="$HOME/.claude/tasks/broadwayscore"',
+    `REPO="${repo}"`,
+    'out=$(cd "$REPO" && node scripts/bsc-next.js --id "$id" 2>&1)',
+    'node "$REPO/scripts/bsc-next.js" --list',
+  ].join('\n');
+  assert.deepEqual(src.findSignals(wrapper, 'driver.sh'), ['task-store path', 'bsc-next.js']);
+  const sh = path.join(home, 'driver.sh');
+  fs.writeFileSync(sh, wrapper);
+  const unresolved = [];
+  // outside any repo the variable-cd root is ~/Broadwayscore; $REPO/... resolves only where the file exists
+  const got = src.scriptsFromShellScript(sh, unresolved);
+  // both invocations are accounted for: resolved (to whichever root holds the
+  // file) or reported unresolved, never silently dropped
+  assert.equal(got.length + unresolved.length, 2, JSON.stringify({ got, unresolved }));
+  for (const g of got) assert.match(g, /\/Broadwayscore\/scripts\/bsc-next\.js$/);
+  fs.rmSync(home, { recursive: true, force: true });
+});

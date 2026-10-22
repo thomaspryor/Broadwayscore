@@ -230,6 +230,10 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // use the same shape (/the-invention-of-love/), so only this page is named (BRO-4679).
   { host: /(^|\.)openingnight\.online$/, path: /^\/crazy-mama-a-true-story-of-love-and-madness\/?$/, reason: 'event-listing' },
   { host: /(^|\.)londontheatre\.co\.uk$/, path: /^\/show\/\d+/, reason: 'ticketing-listing' },
+  // BRO-3964: UK Theatre Web show listings, /<City>/<Venue>/<Type>/<Show>/L<id>/
+  // (live or under /archive/). Booking pages, never a review; UKTW's reviews
+  // live under /news/. De Profundis held one as an empty-body "recoverable" row.
+  { host: /(^|\.)uktw\.co\.uk$/, path: /^\/(archive\/)?[^/]+\/[^/]+\/[^/]+\/[^/]+\/L\d+\/?$/i, reason: 'ticketing-listing' },
   // BRO-3719: Variety's ticket-buying guide came in as a "review" for several shows.
   { host: /(^|\.)variety\.com$/, path: /^\/shop\//, reason: 'ticketing-listing' },
   { host: /(^|\.)broadway\.com$/, reason: 'ticketing-reseller' },
@@ -541,6 +545,10 @@ function namedNonReviewReason(url, opts) {
  * listingPageUrlManualClear).
  */
 const LISTING_PAGE_URL_PATTERNS = [
+  // BRO-5925: theatre.reviews linked the Almeida's what's-on index in its
+  // Triumph roundup. The shared writer treated that venue listing as a
+  // critic review, leaving an unfetched stub in the live-review strand audit.
+  { host: /(^|\.)almeida\.co\.uk$/, path: /^\/whats-on\/?$/i, reason: 'venue-listing-page' },
   // Discussion forums / message boards (BRO-3401). A user thread post is not a
   // critic review: theatreboard.com (ProBoards) scored a preview punter 90/Rave.
   // Host-scoped on purpose: a bare /topic/ path is also a real news topic page

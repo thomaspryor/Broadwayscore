@@ -62,6 +62,8 @@ Because :00 / :17 / :37 fire every hour, the largest possible distance from a su
 | 01:00 | daily | reddit-engagement-digest.yml | Reddit engagement digest (evening run) |
 | 01:00 | Sun | rediscover-urls.yml | rediscover dead review URLs |
 | 02:00 | Sun | update-critic-consensus.yml | critic consensus refresh |
+| 02:00 | Mon | enrich-west-end-dates.yml | West End date fix-unconfirmed (moved from 07:00, BRO-5803) |
+| 02:30 | Thu | enrich-west-end-dates.yml | West End full enrichment (moved from 08:00, BRO-5803) |
 | 03:00 | Sun | weekly-integrity.yml | weekly data integrity audit |
 | 03:00 | Mon | generate-guide-editorials.yml | guide editorial generation |
 | 03:00 | 1st | generate-related-shows.yml | related-shows regeneration |
@@ -98,7 +100,6 @@ Because :00 / :17 / :37 fire every hour, the largest possible distance from a su
 | 06:20 | daily | check-corpus-drift.yml | corpus drift check |
 | 07:00 | daily | poll-loureviews.yml | LouReviews UK poll |
 | **16:00** | **daily** | **data-health-check.yml (BSC digest carrier)** | **moved 07:00→16:00 UTC 2026-07-24 (card #409) — ≥3h from the overnight approval email; see check-cron-health.yml 26h note** |
-| 07:00 | Mon | enrich-west-end-dates.yml | West End date enrichment |
 | 07:00 | Mon | scrape-theatre-reviews.yml | theatre.reviews scrape |
 | 07:00 | Mon | enrich-runtimes.yml | runtime enrichment |
 | 07:00 | Tue | scrape-thestage-roundups.yml | The Stage roundup scrape |
@@ -112,7 +113,6 @@ Because :00 / :17 / :37 fire every hour, the largest possible distance from a su
 | 08:00 | Mon | posthog-monday.yml | PostHog Monday analytics |
 | 08:00 | Tue | sweep-we-aggregators.yml | WE aggregator sweep |
 | 08:00 | Wed | fetch-guardian-reviews.yml | Guardian review fetch |
-| 08:00 | Thu | enrich-west-end-dates.yml | WE date enrichment (2nd pass) |
 | 08:00 | Sat | audit-bww-rr-attributions.yml | BWW RR attribution audit |
 | 08:00 | Sun | check-seo-health.yml | SEO health check |
 | 08:15 | Thu | enrich-off-broadway-dates.yml | OB date enrichment (2nd pass) |

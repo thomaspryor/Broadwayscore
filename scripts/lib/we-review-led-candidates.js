@@ -55,7 +55,7 @@ const NON_THEATRE_TITLE = /\b(in concert|concert|on screen|live on screen|screen
  */
 function cleanReviewTitle(title) {
   const t = String(title || '').replace(/[“”„"]/g, '').replace(/\s+/g, ' ').trim();
-  const m = t.match(/^(.+?)(?:\s*\((The|A|An)\)|,\s*(The|A|An))$/);
+  const m = t.match(/^(.+?)(?:,?\s*\((The|A|An)\)|,\s*(The|A|An))$/);
   return m ? `${m[2] || m[3]} ${m[1]}` : t;
 }
 

@@ -138,6 +138,16 @@ const AUDIT_FRESHNESS_CHECKS = [
     workflow: null, urgency: 'this-week',
     humanAction: 'The daily sweep that checks which open backlog cards already pass their acceptance check has stopped updating its report, so the watchdog is reading an old snapshot. Nothing is needed from you; the sweep and commit steps in data-health-check.yml (BRO-4382) are what need a look, and the next board worker will pick that up.',
     hint: 'Check the "Open backlog acceptance sweep (shadow mode)" and "Commit open backlog acceptance sweep" steps in data-health-check.yml (both continue-on-error, so a failure there does not turn the run red); node scripts/sweep-open-backlog-acceptance.js --dry-run confirms it can still plan a sweep.' },
+  // BRO-3944: check-progress-stalls.js writes lastRunAt on the daily 04:30
+  // scoring cron, even when the rescore queue is empty. Its own pre-write
+  // guard catches lost history; this independent reader catches a stopped
+  // writer. Real history includes 96-119h gaps. Allow three days of scoring
+  // lag, then warn. Do not auto-dispatch the paid scoring workflow to repair
+  // telemetry. The existing health digest routes this row for investigation.
+  { file: 'progress-watch-state.json', field: 'lastRunAt', warnH: 72, errorH: 120, preWriteAlertField: 'priorLedgerAlert',
+    workflow: null, urgency: 'this-week',
+    humanAction: 'The rescore progress monitor has stopped persisting observations. Investigate the daily Snapshot progress-watch state step and commit in llm-ensemble-score.yml; no owner action is needed.',
+    hint: 'Check llm-ensemble-score.yml daily 04:30 cron, Snapshot progress-watch state step, and persistence of data/audit/progress-watch-state.json.' },
 ];
 
 /** Exact digest row name for a table row (also the AUTO_FIX_PLAYBOOK key). */
@@ -190,6 +200,14 @@ function evaluateAuditFreshness(row, data, nowMs) {
   }
   if (age > row.warnH) {
     return { status: 'warn', ageH: age, message: `${formatAge(age)} old (warn threshold: ${formatAge(row.warnH)})` };
+  }
+  // BRO-3944: a fresh write carries the writer's PRE-write history finding.
+  // Route here because the daily health job has Linear credentials, while
+  // the scoring snapshot step does not. Never mistake its fresh date for
+  // proof that previous observations persisted.
+  const priorAlert = row.preWriteAlertField && auditFieldValue(data, row.preWriteAlertField);
+  if (priorAlert) {
+    return { status: 'warn', ageH: age, message: priorAlert.description || 'Latest run found stale or discontinuous persisted history' };
   }
   if (row.fetchErrorWarn && data.fetchError) {
     return { status: 'warn', ageH: age, message: `Latest run wrote a failure report (fetchError: ${String(data.fetchError).slice(0, 80)}); consumers read an empty result set` };

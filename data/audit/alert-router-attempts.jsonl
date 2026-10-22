@@ -1,7 +1,3 @@
-{"ts":"2026-09-22T06:55:36.487Z","conditionKey":"bd-circuit-breaker-web_unlocker2","title":"Bright Data daily breaker TRIPPED: web_unlocker2 (438/250 reqs)","ok":false,"error":"LINEAR_API_KEY not set in .env or environment"}
-{"ts":"2026-09-22T12:06:34.502Z","conditionKey":"e2e-canary:main","title":"[E2E Canary] alert chain check 2026-09-22T12:06:30.325Z","ok":true,"error":null}
-{"ts":"2026-09-22T12:06:40.070Z","conditionKey":"e2e-canary:dedup","title":"[E2E Canary] dedup check 2026-09-22T12:06:34.611Z","ok":true,"error":null}
-{"ts":"2026-09-22T12:06:43.437Z","conditionKey":"provider-spend:overspend","title":"Scraping spend over budget","ok":false,"error":"LINEAR_API_KEY not set in .env or environment"}
 {"ts":"2026-09-23T03:49:45.639Z","conditionKey":"test-yml:red:Unit Tests:158d55b0","title":"main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every JOB_EVENTS value is exactly terminal, open, or a named non-job-state exemption\"","ok":true,"error":null}
 {"ts":"2026-09-23T04:20:41.046Z","conditionKey":"test-yml:red:Unit Tests:eb9a92ac","title":"main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every scripts/ root file with the shred signature and no fold is in the frozen baseline\"","ok":true,"error":null}
 {"ts":"2026-09-23T07:26:05.878Z","conditionKey":"opening-night-drift:macbeth-off-broadway-2026","title":"Opening night drift: Macbeth (macbeth-off-broadway-2026)","ok":true,"error":null}
@@ -786,3 +782,9 @@
 {"ts":"2026-10-12T01:39:10.887Z","conditionKey":"cmux-socket:unreachable","title":"cmux is failing in a way this code does not recognise — self-heal may be down","ok":true,"error":null}
 {"ts":"2026-10-18T03:22:29.435Z","conditionKey":"dispatch-flow-dead","title":"Dispatch flow is DEAD — heartbeat is fine but nothing is being dispatched","ok":true,"error":null}
 {"ts":"2026-10-18T19:07:26.072Z","conditionKey":"cmux-reachability:unreachable","title":"cmux socket unreachable for <1h (3 consecutive checks)","ok":true,"error":null}
+{"ts":"2026-10-22T07:06:41.606Z","conditionKey":"reddit-sentiment:stale","title":"Reddit audience data has had no successful write for 206h","ok":true,"error":null}
+{"ts":"2026-10-22T07:37:06.792Z","conditionKey":"health-check:Data: uncollected live review strands","title":"BSC Daily: Data: uncollected live review strands","ok":true,"error":null}
+{"ts":"2026-10-22T07:37:13.199Z","conditionKey":"health-check:Data: published scores outside the critic's rating","title":"BSC Daily: Data: published scores outside the critic's rating","ok":true,"error":null}
+{"ts":"2026-10-22T07:37:33.476Z","conditionKey":"e2e-canary:main","title":"[E2E Canary] alert chain check 2026-10-22T07:37:31.292Z","ok":true,"error":null}
+{"ts":"2026-10-22T07:37:35.920Z","conditionKey":"e2e-canary:dedup","title":"[E2E Canary] dedup check 2026-10-22T07:37:33.909Z","ok":true,"error":null}
+{"ts":"2026-10-22T14:09:27.901Z","conditionKey":"test-yml:red:E2E Tests:fd6209b2","title":"main test.yml red: E2E Tests / Setup Playwright","ok":true,"error":null}

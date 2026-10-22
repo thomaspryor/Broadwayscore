@@ -71,6 +71,10 @@ else
 fi
 
 echo ""
+echo "--- cloud-doctor (data clones/copies, deps, GitHub REST, hooks; BRO-5892) ---"
+node scripts/cloud-doctor.js --check --quick
+
+echo ""
 echo "=== self-test done ==="
 if [ "$IS_CLOUD" = "1" ]; then
   echo "Interpretation: REAL DATA + tsc PASS + both model hosts reachable = fully working."

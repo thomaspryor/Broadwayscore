@@ -92,7 +92,8 @@ Check for:
    **NOT SAFE TO EXIT must have a wake (WAKELESS).** If you are waiting on a
    run, a deploy or a landing, start the wait before ending the turn: a
    `run_in_background` Bash that polls until it finishes (timeout up to
-   7200000; start another if it times out) or Monitor. Its exit wakes you.
+   7200000; start another if it times out) or Monitor. Wait on your own run's
+   id, never on the newest run of a workflow (another session may own it). Its exit wakes you.
    "I'll check it at 14:56" with nothing running never happens: sessions sat
    10-19 hours that way. `send_later` is denied in cloud (phone prompt).
 

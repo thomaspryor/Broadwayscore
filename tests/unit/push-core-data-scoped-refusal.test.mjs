@@ -20,6 +20,8 @@ function fixture(fn) {
   try {
     fs.mkdirSync(path.join(dir, 'scripts'));
     fs.copyFileSync(path.join(ROOT, 'scripts/validate-data.js'), path.join(dir, 'scripts/validate-data.js'));
+    // Image-pointer validation reads the optimizer allow-list from the real config.
+    fs.copyFileSync(path.join(ROOT, 'next.config.js'), path.join(dir, 'next.config.js'));
     fs.symlinkSync(path.join(ROOT, 'scripts/lib'), path.join(dir, 'scripts/lib'));
     fs.symlinkSync(path.join(ROOT, 'node_modules'), path.join(dir, 'node_modules'));
     fs.mkdirSync(path.join(dir, 'data/review-texts/scope-show-2026'), { recursive: true });

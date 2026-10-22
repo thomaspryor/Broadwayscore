@@ -14,7 +14,6 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const FILES = [
   'scripts/bsc-next.test.mjs',
-  'scripts/bsc-next-ci-red-claim.test.mjs',
   'scripts/tests/linear-next-dispatch.test.mjs',
   'scripts/tests/linear-next-overlap-guards.test.mjs',
   'tests/unit/linear-next.test.mjs',

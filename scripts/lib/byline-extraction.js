@@ -32,6 +32,40 @@ function extractReviewerLine(html) {
   return name;
 }
 
+// Reviews that name the critic in a "Reviewed on 20th October 2026 / by Jonathan Evans" heading pair
+// (The Spy in the Stalls: meta author and rel=author are the site account "thespyinthestalls").
+// The tags between "Reviewed on <date>" and "by <Name>" are collapsed so the credit may sit in one
+// element or two. Credits that run on ("by Jonathan Evans Photography by Helen Maybanks") stop at
+// the first photo/picture word.
+const REVIEWED_BY_NAME = String.raw`[A-Z][A-Za-zÀ-ÿ'’-]+(?:\s+[A-Z][A-Za-zÀ-ÿ'’-]*\.?){1,2}`;
+const REVIEWED_BY_RE = new RegExp(String.raw`(?:^|\|)\s*Reviewed(?:\s+on\s+(?:(?!\bby\b)[^|]){3,40}?)?\s*(?:\|[\s|]*|\s+)by\s+(${REVIEWED_BY_NAME}?)\s*(?=\||$|\s+(?:Photo|Picture|Image|Pic)s?(?:graphy)?\b)`);
+function extractReviewedByLine(html) {
+  if (!html) return null;
+  const flat = decodeHtmlEntities(String(html)
+    .replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, ' ')
+    .replace(/<[^>]+>/g, '|')
+    .replace(/&nbsp;|&#160;|&#xa0;/gi, ' ')
+    .replace(/[ \t]+/g, ' '));
+  const m = REVIEWED_BY_RE.exec(flat);
+  if (!m) return null;
+  const name = m[1].replace(/\s+/g, ' ').trim();
+  if (NOT_A_PERSON_RE.test(name)) return null;
+  return name;
+}
+
+// Musical Theatre Review signs each review with a right-aligned bold-italic name just before the
+// share widget, while its page author is the shared "Admin" account:
+//   <p style="text-align: right;"><strong><em>Scott Matthewman</em></strong></p>\nSHARE THIS POST:
+const MTR_SIGN_OFF_RE = /<p\b[^>]*>\s*(?:<(?:strong|em|b|i)\b[^>]*>\s*){1,2}([A-Z][A-Za-zÀ-ÿ'’-]+(?:\s+[A-Z][A-Za-zÀ-ÿ'’-]+){1,2})\s*(?:<\/(?:strong|em|b|i)>\s*){1,2}<\/p>\s*SHARE THIS POST/i;
+function extractSignOffBeforeShare(html) {
+  if (!html) return null;
+  const m = MTR_SIGN_OFF_RE.exec(String(html));
+  if (!m) return null;
+  const name = decodeHtmlEntities(m[1]).replace(/\s+/g, ' ').trim();
+  if (NOT_A_PERSON_RE.test(name)) return null;
+  return name;
+}
+
 // BRO-4475: BroadwayWorld's meta/author markup can carry the author PAGE URL
 // (broadwayworld.com/author/...) as the value; a name is never an href.
 const PUBLISHER_RE = /^(?:cond[eé] nast|the new yorker$|plasa media|dotdash meredith|vox media|penske media|gannett|hearst)\b/i;
@@ -100,7 +134,7 @@ function extractJsonLdAuthor(html) {
 
 function extractByline(html) {
   if (!html) return null;
-  const reviewer = extractReviewerLine(html);
+  const reviewer = extractReviewerLine(html) || extractReviewedByLine(html) || extractSignOffBeforeShare(html);
   if (reviewer) return reviewer;
   const jsonLd = extractJsonLdAuthor(html);
   if (jsonLd) return jsonLd;
@@ -183,4 +217,4 @@ function extractByline(html) {
 }
 
 module.exports = {
-  extractReviewerLine, extractByline, extractJsonLdAuthor, decodeEntities: (s) => decodeHtmlEntities(s || '') };
+  extractReviewerLine, extractReviewedByLine, extractSignOffBeforeShare, extractByline, extractJsonLdAuthor, decodeEntities: (s) => decodeHtmlEntities(s || '') };

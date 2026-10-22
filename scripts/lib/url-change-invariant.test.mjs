@@ -1056,3 +1056,17 @@ test('wouldDiscardScore: a released, restored body copy is not wrong-url evidenc
   assert.equal(wouldDiscardScore({ ...base, fullText: null, wrongFullText: body }), false, 'quarantined body: url is wrong');
   assert.equal(wouldDiscardScore({ ...base, fullText: 'stub', wrongFullText: body }), false, 'different body: url is wrong');
 });
+
+test('BRO-5794: a real URL change clears the old page\'s metaExcerpt and its recheck stamps', () => {
+  const existing = {
+    url: 'https://example.com/review-old-show-2026', outletId: 'example',
+    metaExcerpt: 'Old Show review: a headline and standfirst from the OLD page',
+    metaEvidenceCheckedAt: '2026-10-20T00:00:00Z', metaEvidenceCheckResult: 'no-review-signal', metaEvidenceRulesVersion: 2,
+  };
+  const merged = { ...existing, url: 'https://example.com/other-outlet/new-show-review-2026' };
+  const r = applyUrlChangeInvariant({ ...existing }, merged, {});
+  assert.equal(r.changed, true);
+  for (const f of ['metaExcerpt', 'metaEvidenceCheckedAt', 'metaEvidenceCheckResult', 'metaEvidenceRulesVersion']) {
+    assert.equal(merged[f], undefined, `${f} cleared`);
+  }
+});

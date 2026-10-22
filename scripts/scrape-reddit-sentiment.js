@@ -31,6 +31,13 @@
  */
 
 const fs = require('fs');
+
+// BRO-5916: tell the workflow this is the known "Reddit is down" state so the
+// per-run failure notice is skipped (check-reddit-freshness.js alerts once).
+function markRedditUnavailable() {
+  if (!process.env.GITHUB_OUTPUT) return;
+  try { fs.appendFileSync(process.env.GITHUB_OUTPUT, 'reddit_unavailable=true\n'); } catch (_) {}
+}
 const path = require('path');
 const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/reddit-api');
 const { computeProductionWindow, isPostInProductionWindow } = require('./lib/production-window');
@@ -829,6 +836,7 @@ async function main() {
       console.error(`\nWARN: Only ${Math.round(successRate * 100)}% success rate (${successful}/${processed}). Possible scraper issue.`);
       if (successful === 0) {
         console.error('ABORT: Zero shows scored. Not writing results to avoid data loss.');
+        markRedditUnavailable();
         process.exit(1);
       }
     }
@@ -851,6 +859,7 @@ async function main() {
   if (sessionStats.circuitBroken) {
     console.error(`\n⚠ Circuit breaker tripped after ${sessionStats.consecutiveFailures} consecutive failures.`);
     console.error('All Reddit data sources were unavailable. Exiting with error so retry cron fires.');
+    markRedditUnavailable();
     process.exit(1);
   }
 }

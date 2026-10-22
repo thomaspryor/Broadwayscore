@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { pdfHeaderFor, pdfContentsRowFor } = require('./resolve-we-unlisted-tr.js');
+const { pdfHeaderFor, pdfContentsRowFor, logDateContext } = require('./resolve-we-unlisted-tr.js');
 const { parseTrHeaderDates, pickTrForReview, buildReviewLedCandidates } = require('./lib/we-review-led-candidates.js');
 const { isLondonVenue } = require('./lib/tr-london-venue.js');
 
@@ -124,6 +124,33 @@ test('the real production picker passes PDF context without broadening HTML or i
   }
 });
 
+// BRO-5851: 2016-17 TR search results (volume 36/37) as the resolver saved
+// them in data/audit/we-historical-review-led-2016-2017.json. Bare West End
+// house names, regional houses city-suffixed; 11 of 38 unmatched rows.
+test('PDF-era bare West End names, the Theatre Upstairs and "(An)" titles match their 2016-17 review', () => {
+  const vol = p => `https://www.theatrerecord.com/archive/volume/${p}`;
+  for (const [tr, review] of [
+    [{ title: 'Travesties', venue: 'Apollo', link: vol('37/page/156') }, { title: 'Travesties', venue: 'Apollo Theatre', date: '2017-02-15' }],
+    [{ title: 'Queen Anne', venue: 'Theatre Royal - Haymarket', link: vol('37/page/738') }, { title: 'Queen Anne', venue: 'Theatre Royal Haymarket', date: '2017-07-11' }],
+    [{ title: 'Torn', venue: 'Theatre Upstairs', link: vol('36/page/992') }, { title: 'Torn', venue: 'Royal Court', date: '2016-09-14' }],
+    [{ title: 'Bat Out of Hell', venue: 'London Coliseum', link: vol('37/page/675') }, { title: 'Bat Out of Hell', venue: 'Coliseum', date: '2017-06-20' }],
+    [{ title: 'Inspector Calls (An)', venue: 'Playhouse', link: vol('36/page/1283') }, { title: 'An Inspector Calls', venue: 'Playhouse Theatre', date: '2016-11-10' }],
+  ]) {
+    assert.equal(pickTrForReview([tr], review, { isLondonVenue }), tr, review.title);
+    assert.equal(pickTrForReview([{ ...tr, link: 'https://www.theatrerecord.com/archive/2017/2/156' }], review, { isLondonVenue }), null, `${review.title} HTML-era`);
+  }
+  // City-suffixed regional houses stay out, with or without PDF context.
+  for (const venue of ['Playhouse - Edinburgh', 'Apollo - Hammersmith', 'Lyric - Hammersmith', 'Palace - Watford', 'Theatre Royal - Brighton']) {
+    assert.equal(isLondonVenue(venue, { pdfEra: true }), false, venue);
+  }
+  for (const venue of ['Apollo', 'Phoenix', 'Playhouse', 'Theatre Upstairs', 'Theatre Royal - Haymarket']) {
+    assert.equal(isLondonVenue(venue), false, `${venue} without PDF context`);
+  }
+  // Brodsky/Baryshnikov played the Hammersmith Apollo: not the Apollo Theatre.
+  const hammersmith = { title: 'Brodsky/Baryshnikov', venue: 'Apollo - Hammersmith', link: vol('37/page/495') };
+  assert.equal(pickTrForReview([hammersmith], { title: 'Brodsky/Baryshnikov', venue: 'Apollo Theatre', date: '2017-05-08' }, { isLondonVenue }), null);
+});
+
 // Contents-table rows as pdftotext -raw printed them in the 2017-18 CI log
 // (BRO-5851): Production Venue Opening Closing Page, one row per production.
 const contents = [
@@ -175,4 +202,77 @@ test('two -layout columns on one line fail closed', () => {
 
 test('a year after the current one is rejected', () => {
   assert.equal(pdfContentsRowFor('KING LEAR – Revival Duke of York’s 26 May 97 401', 'King Lear', [], 401), null);
+});
+
+// 2016 contents rows print no years (BRO-5851, pdftotext -raw in the 2016-17
+// CI log); the year comes from the issue's own running head.
+const contents2016 = [
+  'Production Venue Opening Closing Page',
+  'THE SEWING GROUP – A new play by EV Crowe Royal Court 16 Nov 23 Dec 1297',
+  'THE DRESSER – Revival of the play by Ronald Harwood Duke Of York’s 12 Oct 14 Jan 1143',
+  'CATHY – Revival of the play by Ali Taylor Pleasance 13 Oct 15 Oct 1148',
+  'NO PERIOD – A row with nothing to anchor its year Arts 05 Oct 1100',
+  'The Sewing Group 1297 Theatre Record 04 – 17 November 2016',
+  'Deny, Deny, Deny 1232 Theatre Record 21 October – 03 November 2016',
+  '1298 The Sewing Group Theatre Record 04 – 17 November 2016',
+].join('\n');
+const dates2016 = (text, title, page) => parseTrHeaderDates(pdfHeaderFor(text, title, 'x', { page }));
+
+test('2016 yearless contents rows take the year from the issue period; a close before the start rolls over', () => {
+  assert.deepEqual(dates2016(contents2016, 'The Sewing Group', 1297), { previewsStartDate: null, openingDate: '2016-11-16', closingDate: '2016-12-23' });
+  assert.deepEqual(dates2016(contents2016, 'The Dresser', 1143), { previewsStartDate: null, openingDate: '2016-10-12', closingDate: '2017-01-14' });
+  assert.deepEqual(dates2016(contents2016, 'Cathy', 1148), { previewsStartDate: null, openingDate: '2016-10-13', closingDate: '2016-10-15' });
+});
+
+test('a yearless row with no issue period, or far from it, fails closed', () => {
+  const noBanner = contents2016.split('\n').filter(l => !/Theatre Record/.test(l)).join('\n');
+  assert.equal(pdfHeaderFor(noBanner, 'The Sewing Group', 'x', { page: 1297 }), null);
+  const farOff = contents2016.replace('16 Nov 23 Dec 1297', '16 Jun 23 Jul 1297');
+  assert.equal(pdfHeaderFor(farOff, 'The Sewing Group', 'x', { page: 1297 }), null);
+});
+
+test('a January issue period reaches back into December of the year before', () => {
+  const text = 'ALADDIN – Pantomime London Palladium 14 Dec 15 Jan 20\nTheatre Record 30 December – 12 January 2017\nTheatre Record 30 December – 12 January 2017';
+  assert.deepEqual(dates2016(text, 'Aladdin', 20), { previewsStartDate: null, openingDate: '2016-12-14', closingDate: '2017-01-15' });
+});
+
+test('2016 cumulative index row gives press night for the link\'s own volume/page only', () => {
+  const index = [
+    "NO MAN'S LAND – Revival of play by Harold Pinter Wyndham's 20 Sep 16 36/1005 Corner Shop 0",
+    "NO MAN'S LAND – Revival of play by Harold Pinter Wyndham's 01 Jan 08 28/12 Corner Shop 0",
+  ].join('\n');
+  const at = (vol, page) => parseTrHeaderDates(pdfHeaderFor(index, "No Man's Land", 'x', { volume: vol, page }));
+  assert.deepEqual(at(36, 1005), { previewsStartDate: null, openingDate: '2016-09-20', closingDate: null });
+  assert.equal(at(36, 999).openingDate, null);
+  assert.equal(at(null, 1005).openingDate, null);
+});
+
+// Ship-check cases for the yearless reader (BRO-5851).
+test('a wrapped yeared row is not cut short at its opening year', () => {
+  const text = 'NINE NIGHT – Natasha Gordon National, Dorfman 30 Apr 18\n26 May 18 355';
+  assert.deepEqual(dates2016(text, 'Nine Night', 355), { previewsStartDate: null, openingDate: '2018-04-30', closingDate: '2018-05-26' });
+});
+
+test('a yearless close that rolls past ten months is dropped, not mis-yeared', () => {
+  const typo = contents2016.replace('16 Nov 23 Dec 1297', '16 Nov 14 Nov 1297');
+  assert.deepEqual(dates2016(typo, 'The Sewing Group', 1297), { previewsStartDate: null, openingDate: '2016-11-16', closingDate: null });
+});
+
+test('two issue banners printed equally often name no issue', () => {
+  const tie = `${contents2016}\n1299 Theatre Record 10 – 23 November 2016\n1300 Theatre Record 10 – 23 November 2016`;
+  assert.equal(parseTrHeaderDates(pdfHeaderFor(contents2016, 'The Sewing Group', 'x', { page: 1297 })).openingDate, '2016-11-16');
+  assert.equal(pdfHeaderFor(tie, 'The Sewing Group', 'x', { page: 1297 }), null);
+});
+
+test('the diagnostic log never prints review prose past 90 characters', () => {
+  const prose = 'The Sewing Group - EV Crowe’s slight new play at the Royal Court is a curious, quiet piece that never quite finds its feet, says the critic at length here';
+  const text = `THE SEWING GROUP\n${prose}\n${prose}\n${prose}\nTHE SEWING GROUP – A new play by EV Crowe Royal Court 16 Nov 23 Dec 1297`;
+  const out = [];
+  const log = console.log;
+  console.log = s => out.push(String(s));
+  try { logDateContext(text, 'The Sewing Group', 'raw'); } finally { console.log = log; }
+  const rows = out.filter(l => l.includes('title row'));
+  assert.equal(rows.length, 1); // the long prose line is skipped; the contents row prints
+  assert.ok(rows[0].includes('16 Nov 23 Dec 1297'));
+  for (const part of rows[0].split(' || ').slice(1)) assert.ok(part.length <= 90);
 });

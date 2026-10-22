@@ -5,12 +5,13 @@
  * Output: data/audit/multi-production-titles.json keyed by normalizeTitle()
  * output → array of {showId, openingDate, market, venue, status}, restricted
  * to normalized titles shared by 2+ shows. Fixture corpus for the same-title
- * disambiguation sprint.
+ * disambiguation sprint. Uses the runtime router's exact title relation;
+ * title-match.js's broader discovery matching would over-report collisions.
  */
 
 const fs = require('fs');
 const path = require('path');
-const { normalizeTitle } = require('./lib/title-match.js');
+const { normalizeRoutingTitle: normalizeTitle } = require('./lib/routing-title');
 
 const SHOWS = require('../data/shows.json').shows;
 const OUT_DIR = path.join(__dirname, '..', 'data', 'audit');

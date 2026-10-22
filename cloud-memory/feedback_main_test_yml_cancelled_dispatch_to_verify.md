@@ -13,7 +13,7 @@ metadata:
 
 **How to apply:**
 - To get a real CI verdict on your own commit to main, **dispatch a run**: `gh workflow run test.yml --ref main`. Because the concurrency key includes `github.event_name`, a `workflow_dispatch` run is in a SEPARATE group from `push` runs — bot pushes won't cancel it, and it runs to completion.
-- Get its id: `gh run list --workflow=test.yml --branch main --event workflow_dispatch --limit 1 --json databaseId`. Watch with `--exit-status`.
+- Get its id: `gh run list --workflow=test.yml --branch main --event workflow_dispatch --limit 3 --json databaseId,createdAt,actor` and pick the one created right after your dispatch (another session may have dispatched seconds before; BRO-5910). Watch that id with `--exit-status`.
 - **Read the overall conclusion skeptically:** a single job cancelled at its Checkout step (seen: `Awards Data Freshness`, a transient runner cancel) marks the WHOLE run `cancelled` even when every real gate — Lint Workflows, Unit Tests, E2E, Data Validation, **Test Summary** — is `success`. Inspect per-job conclusions (`gh run view <id> --json jobs`), don't trust the top-level status.
 - For a data-independent test (the `node --test` no-data batch), the local `node --test <file>` IS the same command CI runs — local green == CI green for that file, no dispatch needed.
 

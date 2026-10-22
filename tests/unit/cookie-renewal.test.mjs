@@ -227,7 +227,7 @@ print("RESULT " + json.dumps({
 
 function runExtractor(mode) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'renew-ext-'));
-  const out = execFileSync('python3', ['-c', HARNESS, path.join(REPO, 'scripts', 'extract-safari-cookies.py'), root, mode], { encoding: 'utf8' });
+  const out = execFileSync('python3', ['-B', '-c', HARNESS, path.join(REPO, 'scripts', 'extract-safari-cookies.py'), root, mode], { encoding: 'utf8' });
   const line = out.split('\n').find((l) => l.startsWith('RESULT '));
   return { out, result: JSON.parse(line.slice(7)) };
 }

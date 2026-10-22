@@ -52,6 +52,9 @@ const ALWAYS_UNCONFIRMED = new Set([
   // BRO-5080: a WhatsOnStage listing with no preview date gives the first
   // performance, written collapsed (scripts/lib/we-historical-dates.js).
   'whatsonstage-first-performance',
+  // BRO-5851: that first performance kept after a sourced search found no
+  // press night (we-historical-dates.js NO_PRESS_NIGHT_FOUND_SOURCE).
+  'first-performance-no-press-night-found',
   // BRO-5080: press night = most common review date - 1 (81% exact on the
   // sourced sample). Unconfirmed so Theatremonkey/Playbill can overwrite it;
   // infer-press-night-from-reviews.js never re-infers over it.

@@ -101,7 +101,8 @@ function extractPageMeta(html) {
     if (n.reviewRating && typeof n.reviewRating === 'object' && meta.ratingValue == null) {
       const v = parseFloat(n.reviewRating.ratingValue);
       const best = parseFloat(n.reviewRating.bestRating);
-      if (Number.isFinite(v)) { meta.ratingValue = v; meta.ratingBest = Number.isFinite(best) ? best : 5; }
+      // No bestRating and a value above 5 is some other scale (4/10): not a /5 rating.
+      if (Number.isFinite(v) && (Number.isFinite(best) || v <= 5)) { meta.ratingValue = v; meta.ratingBest = Number.isFinite(best) ? best : 5; }
     }
   }
   if (meta.publishedTime) {
@@ -116,6 +117,7 @@ function extractPageMeta(html) {
 const CHALLENGE_PAGE = /\bjust a moment\b|\baccess denied\b|\bchecking your browser\b|\bverify you are human\b|\bpage not found\b/i;
 const BOILERPLATE = [
   /\bview event details\b/i,
+  /\b(?:undated |file )?photo (?:released|provided|supplied|courtesy)\b/i,
   /\bevent information supplied by\b/i,
   /\b(?:sign in|log in|subscribe|subscription|register)\b.{0,40}\b(?:to (?:read|continue|view|access)|now)\b/i,
   /\bcookies?\b/i,
@@ -139,6 +141,11 @@ const REVIEW_WORD_NON_REVIEW = /\b(?:interview|in conversation|chat|talks|on the
 // Regional / foreign cities: a headline naming one is another production.
 const OTHER_CITIES = /\b(?:stratford|edinburgh|manchester|bristol|leeds|birmingham|glasgow|sheffield|chichester|liverpool|cardiff|newcastle|oxford|cambridge|bath|brighton|nottingham|sydney|melbourne|toronto|chicago|boston|washington|philadelphia|los angeles|san francisco|dublin|paris|berlin)\b/i;
 
+// News about a review, roundups of reactions, reader ratings, non-professional productions.
+const NEWS_OR_ROUNDUP = /\b(?:reviews?:\s+(?:the\s+)?critics|critics\s+(?:are\s+)?(?:divided|split|rave|react|weigh)|what\s+(?:the\s+)?critics|the\s+reviews\s+are\s+in|(?:reader|user|audience|customer)\s+reviews|ratings?\s+(?:and|&)\s+reviews|(?:responds?|reacts?|hits?\s+back|fires?\s+back|slams?)\b.{0,30}\b(?:review|critic)|school\s+production|youth\s+theatre|amateur\s+(?:dramatics|production|theatre))\b/i;
+// Australian companies and venues: opera/theatre pages for a same-titled production at home (Victorian Opera's
+// Turn of the Screw vs the London staging). Checked on headline + standfirst, since these pages rarely name a city.
+const FOREIGN_COMPANY = /\b(?:victorian opera|opera australia|state opera south australia|arts centre melbourne|sydney opera house|melbourne theatre company|sydney theatre company|her majesty'?s theatre,? (?:melbourne|adelaide))\b/i;
 const REVIEW_WORD = /\breview(?:s|ed)?\b/i;
 const RATING_TOKEN = /(?:\b[1-5](?:\.5)?\s*(?:\/|out of)\s*5\b|\b[1-5]\s*stars?\b|★|\bfive stars?\b|\bfour stars?\b|\bthree stars?\b)/i;
 
@@ -147,8 +154,17 @@ function starRunRating(text) {
   const t = String(text || '');
   const run = t.match(/[★⭐]{1,5}/);
   if (run) return run[0].length;
-  const m = t.match(/\b([1-5](?:\.5)?)\s*(?:\/\s*5\s*)?stars?\b/i) || t.match(/\b([1-5](?:\.5)?)\s*(?:\/|out of)\s*5\b/i);
+  const m = t.match(/\b([1-5](?:\.5)?)\s*(?:\/|out of)\s*5\b/i)
+    // "N stars" only as the headline's closing rating, never "5 stars who shaped the role".
+    || t.match(/\b([1-5](?:\.5)?)\s*stars?\s*[.!)\]]?\s*$/i);
   return m ? Number(m[1]) : null;
+}
+
+/** A rating the page states in prose or glyphs, strict enough to ignore "the 2 stars of Hamlet". */
+function statesRating(text) {
+  const t = String(text || '');
+  return /★|⭐/.test(t) || /\b[1-5](?:\.5)?\s*(?:\/|out of)\s*5\b/i.test(t)
+    || /\b(?:one|two|three|four|five|[1-5](?:\.5)?)[- ]stars?\b(?=\s*(?:[.,;:)\]!]|$|review|rating|out of))/i.test(t);
 }
 
 /** Distinctive words of a show title (folded, stop words and short words dropped). */
@@ -168,6 +184,66 @@ const MARKET_WORDS = /\b(?:west end|off[- ]broadway|off off broadway|broadway|lo
 function normalizeWords(s) {
   return foldDiacritics(String(s || '')).toLowerCase().replace(MARKET_WORDS, ' ').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
 }
+/**
+ * An outlet that files reviews under a `review-<show>...` first path segment
+ * (bachtrack.com/review-eugene-onegin-...) states "this is a review" in the URL,
+ * while its headline is a plain sentence. Only a segment that BEGINS with
+ * `review-` counts, and round-ups never do.
+ */
+function reviewPathUrl(url) {
+  let seg = '';
+  try { seg = new URL(String(url || '')).pathname.split('/').filter(Boolean)[0] || ''; } catch { return false; }
+  return /^review-[a-z0-9]/i.test(seg) && !/round-?up|reviews?-of-the|best-of|top-\d|^review-(?:hub|section|podcast|preview|news|archive)/i.test(seg);
+}
+
+/**
+ * Version of the acceptance rules. A rejection stamp older than the version that
+ * loosened its reason is stale: the page deserves one more look under the new rule.
+ * (v2: a review-<show> URL path is a review signal. v3: stop-word titles match,
+ * year-only URL dates are read correctly.)
+ */
+const RULES_VERSION = 3;
+const LOOSENED_IN = { 'no-review-signal': 2, 'show-not-named': 3, 'no-date': 3, 'url-date-outside-window': 3 };
+/** Stamp for a page that yielded no HTML: a thrown fetch (all methods failed: walled) vs a clean empty result. */
+function missingHtmlStamp(fetchThrew) {
+  return fetchThrew ? 'fetch-failed' : 'unreachable';
+}
+function stampIsCurrent(data) {
+  const reason = data && data.metaEvidenceCheckResult;
+  const loosened = LOOSENED_IN[reason];
+  if (!loosened) return true;
+  return Number(data.metaEvidenceRulesVersion || 1) >= loosened;
+}
+
+/** The title as the page would write it: folded, market words dropped, leading article dropped, stop words KEPT. */
+function titlePhrase(title) {
+  return normalizeWords(title).replace(/^(?:the|a|an)\s+/, '');
+}
+
+/**
+ * "<Subject> review: ..." names what the page is about. When that subject shares
+ * no distinctive word with the show, the page reviews something else
+ * ("Hamlet review: Macbeth's director tries again").
+ */
+function headlineSubject(headline) {
+  const m = String(headline || '').match(/^(.{1,90}?)\s+reviews?\b\s*[:,\-\u2013|]/i);
+  return m ? m[1] : null;
+}
+
+/** {date|null, year} from the URL path, or null (extractDateFromUrl returns {date, yearOnly, source}). */
+function urlDateOf(url) {
+  const r = require('./rebuild-helpers').extractDateFromUrl(url);
+  if (!r) return null;
+  const date = typeof r === 'string' ? r : r.date;
+  const year = r.yearOnly || (date ? Number(String(date).slice(0, 4)) : null);
+  if (!date && !year) return null;
+  return { date: date || null, year };
+}
+function urlYearOf(url) {
+  const u = urlDateOf(url);
+  return u ? u.year : null;
+}
+
 function evidenceNamesShow(show, headline, description, url) {
   const tokens = showTokens(show && show.title);
   if (!tokens.length) return false;
@@ -175,17 +251,26 @@ function evidenceNamesShow(show, headline, description, url) {
   // The page's own words only: a URL slug alone can't name the show (an outlet's
   // generic path would let any description through).
   const full = ` ${normalizeWords(`${headline || ''} ${description || ''}`)} `;
-  const phrase = ` ${tokens.join(' ')} `;
-  const plural = ` ${tokens.slice(0, -1).concat(`${tokens[tokens.length - 1]}s`).join(' ')} `;
+  const core = titlePhrase(show && show.title);
+  const phrase = ` ${core} `;
+  const plural = ` ${core}s `;
+  const subject = headlineSubject(headline);
+  if (subject) {
+    const subj = new Set(normalizeWords(subject).split(' '));
+    const hit = tokens.filter((t) => subj.has(t) || subj.has(`${t}s`)).length;
+    if (hit < Math.ceil(tokens.length / 2)) return false;
+  }
   if (tokens.length === 1) {
     // "Cape Fear" is not "Fear", and "with a Heart" is not "The Heart": the title
     // must open the headline or follow a review word or punctuation boundary, never
     // an article or preposition inside a sentence.
     const raw = foldDiacritics(String(headline || '')).toLowerCase();
-    const re = new RegExp(`(^(?:the\\s+)?|[:'"\\u2018\\u201c\\-|]\\s*|\\b(?:review|reviews|reviewed)\\s+(?:of\\s+)?)${tokens[0]}s?\\b`);
+    const re = new RegExp(`(^|[:'"\\u2018\\u201c\\-|]\\s*|\\b(?:review|reviews|reviewed)\\s+(?:of\\s+)?)(?:the\\s+)?${tokens[0]}s?\\b`);
     return re.test(raw) && (head.includes(phrase) || head.includes(plural));
   }
-  if (full.includes(phrase) || full.includes(plural)) return true;
+  if (head.includes(phrase) || head.includes(plural)) return true;
+  // Named only in the standfirst: fine when the headline does not announce another subject.
+  if (!subject && (full.includes(phrase) || full.includes(plural))) return true;
   if (tokens.length < 4) return false;
   const words = new Set(normalizeWords(`${headline || ''} ${description || ''}`).split(' '));
   const hit = tokens.filter((t) => words.has(t) || words.has(`${t}s`)).length;
@@ -256,33 +341,44 @@ function evaluatePageMeta({ data, show, meta, inWindow }) {
     return { ok: false, reason: 'boilerplate' };
   }
   if (ALWAYS_NON_REVIEW.test(`${headline} ${description}`)) return { ok: false, reason: 'non-theatre-or-list' };
-  // A ballet review of a same-titled work (Scottish Ballet's Streetcar vs the Old Vic play).
-  if (/\bballet\b/i.test(`${headline} ${description}`) && !/\bballet\b/i.test(`${show && show.title} ${show && show.venue}`)) {
+  // A ballet review of a same-titled work (Scottish Ballet's Streetcar vs the Old Vic play). Headline only:
+  // a musical's standfirst may mention ballet (Billy Elliot, Oklahoma!'s dream ballet).
+  if (/\bballet\b/i.test(headline) && !/\bballet\b/i.test(`${show && show.title} ${show && show.venue}`)) {
     return { ok: false, reason: 'non-theatre-or-list' };
   }
   const stars = starRunRating(headline);
   if (description.length < MIN_EVIDENCE_CHARS && !(stars && description.length >= 20)) return { ok: false, reason: 'description-too-short' };
   if (description.toLowerCase() === headline.toLowerCase()) return { ok: false, reason: 'description-is-headline' };
   if (NON_REVIEW_HEADLINE.test(headline) && !REVIEW_WORD.test(headline)) return { ok: false, reason: 'non-review-headline' };
-  if (REVIEW_WORD_NON_REVIEW.test(headline) || INTERVIEW_TEXT.test(`${headline} ${description}`)) return { ok: false, reason: 'non-review-headline' };
+  if (REVIEW_WORD_NON_REVIEW.test(headline) || INTERVIEW_TEXT.test(`${headline} ${description}`) || NEWS_OR_ROUNDUP.test(`${headline} ${description}`)) return { ok: false, reason: 'non-review-headline' };
   // The page's own words must signal a review; a URL slug or outlet-wide text can't.
   const reviewSignal = REVIEW_WORD.test(headline)
-    || RATING_TOKEN.test(`${headline} ${description}`) || meta.ratingValue != null;
+    || statesRating(headline) || statesRating(description) || meta.ratingValue != null
+    || reviewPathUrl(data.url);
   if (!reviewSignal) return { ok: false, reason: 'no-review-signal' };
   if (!evidenceNamesShow(show, headline, description, data.url)) return { ok: false, reason: 'show-not-named' };
   if (venueConflicts(show, headline)) return { ok: false, reason: 'venue-mismatch' };
+  if (/\b(?:london|west end)\b/i.test(headline) && !/west|london|uk/i.test(`${show && show.category} ${show && show.market} ${show && show.id}`)) return { ok: false, reason: 'other-city' };
+  const foreign = `${headline} ${description}`.match(FOREIGN_COMPANY);
+  if (foreign && !normalizeWords(`${show && show.venue} ${show && show.title}`).includes(normalizeWords(foreign[0]))) return { ok: false, reason: 'other-city' };
   const city = headline.match(OTHER_CITIES);
   if (city && !normalizeWords(`${show && show.venue} ${show && show.title}`).includes(city[0].toLowerCase())) return { ok: false, reason: 'other-city' };
   const date = meta.publishedTime || (/^\d{4}-\d{2}-\d{2}$/.test(String(data.publishDate || '')) ? data.publishDate : null);
   if (date) {
+    if (!meta.publishedTime) {
+      // The date came from the stub itself; a path year far from it means the URL is another era's article.
+      const urlYear = urlYearOf(data.url);
+      if (urlYear && Math.abs(urlYear - Number(date.slice(0, 4))) > 1) return { ok: false, reason: 'date-conflict' };
+    }
     if (!inWindow(show, date)) return { ok: false, reason: 'outside-production-window' };
   } else {
     // No date anywhere: the URL's own year decides (an old production's review
     // filed under a revival carries the old year in its path).
-    const { extractDateFromUrl } = require('./rebuild-helpers');
-    const urlDate = extractDateFromUrl(data.url);
-    if (!urlDate) return { ok: false, reason: 'no-date' };
-    if (!inWindow(show, urlDate)) return { ok: false, reason: 'url-date-outside-window' };
+    const u = urlDateOf(data.url);
+    if (!u) return { ok: false, reason: 'no-date' };
+    const inRange = u.date ? inWindow(show, u.date)
+      : [`${u.year}-01-01`, `${u.year}-06-30`, `${u.year}-12-31`].some((d) => inWindow(show, d));
+    if (!inRange) return { ok: false, reason: 'url-date-outside-window' };
   }
   const excerpt = buildMetaExcerpt(headline, description);
   if (excerpt.length < MIN_EVIDENCE_CHARS) return { ok: false, reason: 'excerpt-too-short' };
@@ -324,5 +420,5 @@ function applyMetaEvidence(data, evidence, now = new Date()) {
 
 module.exports = {
   extractPageMeta, evaluatePageMeta, applyMetaEvidence, isMetaEvidenceCandidate,
-  buildMetaExcerpt, evidenceNamesShow, starRunRating, ALWAYS_NON_REVIEW, venueConflicts, MIN_EVIDENCE_CHARS, NON_REVIEW_HEADLINE, BOILERPLATE,
+  buildMetaExcerpt, evidenceNamesShow, RULES_VERSION, stampIsCurrent, missingHtmlStamp, reviewPathUrl, starRunRating, ALWAYS_NON_REVIEW, venueConflicts, MIN_EVIDENCE_CHARS, NON_REVIEW_HEADLINE, BOILERPLATE,
 };

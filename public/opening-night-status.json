@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T05:21:15.225Z",
+  "generatedAt": "2026-10-22T14:21:43.050Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,31 +9,31 @@
       "category": "off-west-end",
       "type": "play",
       "openingDate": "2026-10-22",
-      "status": "previews",
+      "status": "open",
       "slug": "derren-brown-only-human-west-end",
       "thumbnail": "/images/shows/derren-brown-only-human-west-end-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 78,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 0,
-      "positive": 0,
+      "positive": 1,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
+          "1/8 total",
           "T1:0/3",
-          "T2:0/2",
-          "hi-conf:0/6"
+          "T2:1/2",
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -147,10 +147,20 @@
         {
           "name": "LondonTheatre1",
           "isDualMarket": false
-        },
+        }
+      ],
+      "timeline": [
         {
-          "name": "London Box Office",
-          "isDualMarket": false
+          "t": "2026-10-22T12:34:40.458Z",
+          "rc": 1,
+          "s": 78,
+          "t1": 0,
+          "t2": 1,
+          "t3": 0,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -161,7 +171,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-10-22",
-      "status": "previews",
+      "status": "open",
       "slug": "phyl-off-broadway",
       "thumbnail": "/images/shows/phyl-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -537,7 +547,7 @@
       "category": "off-west-end",
       "type": "musical",
       "openingDate": "2026-10-22",
-      "status": "previews",
+      "status": "open",
       "slug": "the-pianist-off-west-end",
       "thumbnail": "/images/shows/the-pianist-off-west-end-2026/thumbnail.webp",
       "siteScore": null,
@@ -703,31 +713,31 @@
       "category": "broadway",
       "type": "play",
       "openingDate": "2026-10-22",
-      "status": "previews",
+      "status": "open",
       "slug": "the-imaginary-invalid",
       "thumbnail": "/images/shows/the-imaginary-invalid-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 63,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "reviewsNeeded": 6,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
       "t2": 0,
-      "t3": 0,
+      "t3": 1,
       "positive": 0,
-      "mixed": 0,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "1/12 total",
           "T1:0/3",
           "T2:0/3",
-          "hi-conf:0/8"
+          "hi-conf:1/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1070,6 +1080,20 @@
           "name": "The Tennessean",
           "isDualMarket": false
         }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-22T14:04:26.892Z",
+          "rc": 1,
+          "s": 63,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 0,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        }
       ]
     },
     {
@@ -1079,7 +1103,7 @@
       "category": "off-broadway",
       "type": "musical",
       "openingDate": "2026-10-22",
-      "status": "upcoming",
+      "status": "open",
       "slug": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway",
       "thumbnail": "/images/shows/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -1455,7 +1479,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-10-22",
-      "status": "upcoming",
+      "status": "open",
       "slug": "women-who-eat-off-broadway",
       "thumbnail": "/images/shows/women-who-eat-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -1834,25 +1858,23 @@
       "status": "open",
       "slug": "the-curious-case-of-benjamin-button-off-broadway",
       "thumbnail": "/images/shows/the-curious-case-of-benjamin-button-off-broadway-2026/thumbnail.webp",
-      "siteScore": 75.78,
+      "siteScore": 75.79,
       "liveScore": 76,
-      "scoreDrift": 0.21999999999999886,
+      "scoreDrift": 0.20999999999999375,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 15,
-      "t1": 2,
+      "total": 17,
+      "t1": 3,
       "t2": 7,
-      "t3": 6,
-      "positive": 11,
-      "mixed": 3,
+      "t3": 7,
+      "positive": 12,
+      "mixed": 4,
       "negative": 1,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "T1:2/3"
-        ],
-        "highConfidence": 11,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 14,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1862,13 +1884,9 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
-        {
-          "name": "Vulture",
-          "isDualMarket": false
-        },
         {
           "name": "Variety",
           "isDualMarket": true
@@ -2212,6 +2230,208 @@
           "m": 3,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T06:03:43.590Z",
+          "rc": 16,
+          "s": 77.08,
+          "t1": 2,
+          "t2": 7,
+          "t3": 7,
+          "p": 12,
+          "m": 3,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T07:07:35.651Z",
+          "rc": 17,
+          "s": 75.6,
+          "t1": 3,
+          "t2": 7,
+          "t3": 7,
+          "p": 12,
+          "m": 4,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T08:35:05.610Z",
+          "rc": 17,
+          "s": 75.79,
+          "t1": 3,
+          "t2": 7,
+          "t3": 7,
+          "p": 12,
+          "m": 4,
+          "n": 1,
+          "bc": "waiting"
+        }
+      ]
+    },
+    {
+      "id": "surinderella-off-west-end-2026",
+      "title": "Surinderella",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-10-21",
+      "status": "open",
+      "slug": "surinderella-off-west-end",
+      "thumbnail": "/images/shows/surinderella-off-west-end-2026/thumbnail.jpg",
+      "siteScore": null,
+      "liveScore": 61,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 4,
+      "siteFileExists": true,
+      "total": 1,
+      "t1": 0,
+      "t2": 0,
+      "t3": 1,
+      "positive": 0,
+      "mixed": 1,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "1/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:1/6"
+        ],
+        "highConfidence": 1,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Sunday Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Mail on Sunday",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
+          "isDualMarket": false
+        },
+        {
+          "name": "BritishTheatre.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Spectator (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Reviews Hub",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "LondonTheatre1",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Box Office",
+          "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-22T14:04:26.892Z",
+          "rc": 1,
+          "s": 61,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 0,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -2225,17 +2445,17 @@
       "status": "open",
       "slug": "billy-crystal-860",
       "thumbnail": "/images/shows/billy-crystal-860-2026/thumbnail.webp",
-      "siteScore": 82.33,
+      "siteScore": 82.39,
       "liveScore": 82,
-      "scoreDrift": -0.3299999999999983,
+      "scoreDrift": -0.39000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 21,
-      "t1": 7,
-      "t2": 11,
+      "total": 24,
+      "t1": 8,
+      "t2": 13,
       "t3": 3,
-      "positive": 19,
+      "positive": 22,
       "mixed": 2,
       "negative": 0,
       "readiness": {
@@ -2250,8 +2470,8 @@
         }
       },
       "broadcast": {
-        "state": "waiting",
-        "detail": "Ready — awaiting send"
+        "state": "overdue",
+        "detail": "Overdue alert sent at 10/22/2026, 11:07:30 AM"
       },
       "missingT1": [
         {
@@ -2297,10 +2517,6 @@
           "isDualMarket": false
         },
         {
-          "name": "New York Daily News",
-          "isDualMarket": false
-        },
-        {
           "name": "Observer",
           "isDualMarket": true
         },
@@ -2318,10 +2534,6 @@
         },
         {
           "name": "Theatrely",
-          "isDualMarket": false
-        },
-        {
-          "name": "Talkin' Broadway",
           "isDualMarket": false
         },
         {
@@ -2585,6 +2797,54 @@
           "m": 2,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T06:03:43.590Z",
+          "rc": 21,
+          "s": 82.5,
+          "t1": 7,
+          "t2": 11,
+          "t3": 3,
+          "p": 19,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T08:06:25.979Z",
+          "rc": 21,
+          "s": 82.45,
+          "t1": 7,
+          "t2": 11,
+          "t3": 3,
+          "p": 19,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T11:24:40.963Z",
+          "rc": 23,
+          "s": 82.36,
+          "t1": 8,
+          "t2": 12,
+          "t3": 3,
+          "p": 21,
+          "m": 2,
+          "n": 0,
+          "bc": "overdue"
+        },
+        {
+          "t": "2026-10-22T12:34:40.458Z",
+          "rc": 24,
+          "s": 82.39,
+          "t1": 8,
+          "t2": 13,
+          "t3": 3,
+          "p": 22,
+          "m": 2,
+          "n": 0,
+          "bc": "overdue"
         }
       ]
     },
@@ -2974,23 +3234,23 @@
       "status": "open",
       "slug": "ilford-boy-west-end",
       "thumbnail": "/images/shows/ilford-boy-west-end-2026/thumbnail.jpg",
-      "siteScore": 73.48,
-      "liveScore": 73,
-      "scoreDrift": -0.480000000000004,
+      "siteScore": 74.86,
+      "liveScore": 75,
+      "scoreDrift": 0.14000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 11,
-      "t1": 5,
-      "t2": 3,
+      "total": 13,
+      "t1": 6,
+      "t2": 4,
       "t3": 3,
-      "positive": 6,
+      "positive": 8,
       "mixed": 5,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 8,
+        "highConfidence": 10,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3006,14 +3266,6 @@
         {
           "name": "Observer",
           "isDualMarket": true
-        },
-        {
-          "name": "The Sunday Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Evening Standard",
-          "isDualMarket": false
         },
         {
           "name": "The Independent",
@@ -3063,10 +3315,6 @@
         },
         {
           "name": "The Spectator (UK)",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Reviews Hub",
           "isDualMarket": false
         },
         {
@@ -3243,6 +3491,42 @@
           "t2": 3,
           "t3": 3,
           "p": 6,
+          "m": 5,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T08:20:12.927Z",
+          "rc": 12,
+          "s": 73.97,
+          "t1": 5,
+          "t2": 4,
+          "t3": 3,
+          "p": 7,
+          "m": 5,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T12:49:18.477Z",
+          "rc": 13,
+          "s": 74.61,
+          "t1": 6,
+          "t2": 4,
+          "t3": 3,
+          "p": 8,
+          "m": 5,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T14:04:26.892Z",
+          "rc": 13,
+          "s": 74.86,
+          "t1": 6,
+          "t2": 4,
+          "t3": 3,
+          "p": 8,
           "m": 5,
           "n": 0,
           "bc": "waiting"
@@ -3738,23 +4022,23 @@
       "status": "open",
       "slug": "martin-guerre-west-end",
       "thumbnail": "/images/shows/martin-guerre-west-end-2026/thumbnail.webp",
-      "siteScore": 68.48,
-      "liveScore": 68,
-      "scoreDrift": -0.480000000000004,
+      "siteScore": 69.22,
+      "liveScore": 69,
+      "scoreDrift": -0.21999999999999886,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 16,
-      "t1": 5,
+      "total": 18,
+      "t1": 6,
       "t2": 5,
-      "t3": 6,
-      "positive": 6,
-      "mixed": 9,
+      "t3": 7,
+      "positive": 7,
+      "mixed": 10,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 14,
+        "highConfidence": 16,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3767,10 +4051,6 @@
         "detail": "Last preview: 2026-10-21 (14 reviews)"
       },
       "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -4034,6 +4314,42 @@
           "m": 9,
           "n": 1,
           "bc": "preview-sent-earlier"
+        },
+        {
+          "t": "2026-10-22T08:06:25.979Z",
+          "rc": 16,
+          "s": 68.54,
+          "t1": 5,
+          "t2": 5,
+          "t3": 6,
+          "p": 6,
+          "m": 9,
+          "n": 1,
+          "bc": "preview-sent-earlier"
+        },
+        {
+          "t": "2026-10-22T11:24:40.963Z",
+          "rc": 17,
+          "s": 68.92,
+          "t1": 6,
+          "t2": 5,
+          "t3": 6,
+          "p": 6,
+          "m": 10,
+          "n": 1,
+          "bc": "preview-sent-earlier"
+        },
+        {
+          "t": "2026-10-22T12:34:40.458Z",
+          "rc": 18,
+          "s": 69.22,
+          "t1": 6,
+          "t2": 5,
+          "t3": 7,
+          "p": 7,
+          "m": 10,
+          "n": 1,
+          "bc": "preview-sent-earlier"
         }
       ]
     },
@@ -4048,27 +4364,27 @@
       "slug": "machine-learning-off-broadway",
       "thumbnail": "/images/shows/machine-learning-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": 60,
+      "liveScore": 70,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 1,
+      "total": 2,
       "t1": 0,
-      "t2": 1,
+      "t2": 2,
       "t3": 0,
-      "positive": 0,
+      "positive": 1,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/12 total",
+          "2/12 total",
           "T1:0/3",
-          "T2:1/3",
-          "hi-conf:1/8"
+          "T2:2/3",
+          "hi-conf:2/8"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -4221,10 +4537,6 @@
         },
         {
           "name": "The New York Sun",
-          "isDualMarket": false
-        },
-        {
-          "name": "Theater Scene",
           "isDualMarket": false
         },
         {
@@ -4420,6 +4732,18 @@
           "m": 1,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T09:16:49.586Z",
+          "rc": 2,
+          "s": 70,
+          "t1": 0,
+          "t2": 2,
+          "t3": 0,
+          "p": 1,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -4433,27 +4757,26 @@
       "status": "open",
       "slug": "lincoln-in-the-bardo-off-broadway",
       "thumbnail": "/images/shows/lincoln-in-the-bardo-off-broadway-2026/thumbnail.webp",
-      "siteScore": 76.5,
-      "liveScore": 76,
-      "scoreDrift": -0.5,
+      "siteScore": 77.78,
+      "liveScore": 78,
+      "scoreDrift": 0.21999999999999886,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 8,
-      "t1": 2,
+      "total": 9,
+      "t1": 3,
       "t2": 2,
       "t3": 4,
-      "positive": 6,
+      "positive": 7,
       "mixed": 1,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "8/12 total",
-          "T1:2/3",
+          "9/12 total",
           "T2:2/3"
         ],
-        "highConfidence": 8,
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -4480,10 +4803,6 @@
         },
         {
           "name": "The New Yorker",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Wall Street Journal",
           "isDualMarket": false
         },
         {
@@ -4894,6 +5213,18 @@
           "t2": 2,
           "t3": 4,
           "p": 6,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T12:34:40.458Z",
+          "rc": 9,
+          "s": 77.78,
+          "t1": 3,
+          "t2": 2,
+          "t3": 4,
+          "p": 7,
           "m": 1,
           "n": 1,
           "bc": "waiting"

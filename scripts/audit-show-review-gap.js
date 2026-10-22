@@ -181,7 +181,7 @@ const WE_REFERENCE_WINDOW_DAYS = 45;
 // The one predicate for "citation from an earlier production of this title".
 // Every count a human reads goes through it — see that module's docstring for
 // why five scattered `!m.priorRun` filters were not enough.
-const { collectCarriedFiles, collectHousedSiblingFiles, urlNamesPriorRunVenue, urlDatedInPriorRun } = require('./lib/prior-run-sibling');
+const { collectCarriedFiles, collectHousedSiblingFiles, collectSameTitleProductionFiles, urlNamesPriorRunVenue, urlDatedInPriorRun } = require('./lib/prior-run-sibling');
 const {
   isPriorProductionCitation,
   currentRunOnly,
@@ -1391,8 +1391,14 @@ async function auditShow(show, opts = {}) {
   // carries here) is that run's review, not a gap in this one. Report-only, like every prior-run row.
   try {
     const housed = new Map();
-    for (const d of collectHousedSiblingFiles(show, opts.allShows, { loadFiles: loadDirFiles, isCovered: isCoveredFile })) {
+    const housedDeps = { loadFiles: loadDirFiles, isCovered: isCoveredFile };
+    for (const d of collectHousedSiblingFiles(show, opts.allShows, housedDeps)) {
       if (d.url) housed.set(gapUrlIdentity(d.url), d._housedOnShowId);
+    }
+    // BRO-5489: an unlinked, earlier-starting same-title production holding it, dated in its own run.
+    for (const d of collectSameTitleProductionFiles(show, opts.allShows, housedDeps)) {
+      const k = d.url && gapUrlIdentity(d.url);
+      if (k && !housed.has(k)) housed.set(k, d._housedOnShowId);
     }
     if (housed.size) {
       for (const m of [...result.missing, ...result.flaggedMisses]) {

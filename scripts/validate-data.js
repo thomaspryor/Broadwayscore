@@ -13,13 +13,14 @@
  * 5. Logical consistency (status vs dates)
  * 6. Catastrophic change detection
  *
- * Usage: node scripts/validate-data.js [--strict] [--dry-run]
+ * Usage: node scripts/validate-data.js [--strict] [--dry-run] [--write]
  * Exit codes: 0 = OK, 1 = Errors found
  */
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
+const { showsMissingOrigin, ORIGIN_GRACE_DAYS } = require('./lib/show-origins');
 const { tourImageProblems, tourLinkProblems } = require('./lib/tour-family');
 const { findCrossShowImages, CROSS_SHOW_IMAGES_BASELINE } = require('./lib/cross-show-images');
 const { findSharedSources } = require('./lib/shared-image-source');
@@ -44,7 +45,9 @@ const { taxCreditNoteConflicts } = require('./lib/ny-tax-credit');
 const { closedStillTbd, recoupedModelDisagreements, recoupedDateNoteConflicts } = require('./lib/commercial-consistency');
 const { nonSundayWeekKeys } = require('./lib/grosses-history-repair');
 const { checkGrossOutsideRun } = require('./lib/grosses-integrity');
-const DRY_RUN = process.argv.includes('--dry-run');
+const auditMode = require('./lib/cloud-data-copy').cloudAuditDryRun(process.argv);
+if (auditMode.note) console.log(auditMode.note);
+const DRY_RUN = auditMode.dryRun;
 const dryRunLedger = { showsWrites: null, artifactWrites: [] };
 let dryRunSummaryPrinted = false;
 
@@ -64,6 +67,7 @@ const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
 const { criticKey } = require('./lib/manual-entry-merge');
 const { sameUrlDuplicateKey } = require('./lib/review-url-collision');
 const { hasRealImage, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
+const { findImagePointerProblems, imagePointerSeverity } = require('./lib/image-pointers');
 const { buildOutletMaps } = require('./lib/outlet-region-map');
 const { previewsAfterOpening, excessivePreviewGap, inheritedDateFromSibling, suspiciousInheritedYear, normTitle } = require('./lib/show-date-integrity');
 
@@ -183,6 +187,8 @@ Options:
               push-refusal sentinel are all suppressed. Each suppressed write
               is logged where it would have happened and summarised at exit as
               "DRY RUN: N shows.json writes suppressed" (0 when none).
+  --write     In a cloud session (CLAUDE_CODE_REMOTE=true, outside CI) the
+              default is --dry-run; --write turns writes back on.
   --strict    Label the run STRICT in the header. Accepted for CI/workflow
               compatibility; no check currently changes severity under it.
 
@@ -1445,6 +1451,15 @@ function validateTheaterAddress(shows) {
 // ===========================================
 
 function validateImageFiles(shows) {
+  const problems = findImagePointerProblems(shows, {
+    publicDir: path.join(__dirname, '..', 'public'),
+    remotePatterns: require('../next.config.js').images.remotePatterns,
+  });
+  for (const problem of problems) {
+    const { id, key, value, reason } = problem;
+    const report = imagePointerSeverity(problem) === 'warn' ? warn : error;
+    report(`Show "${id}" images.${key}: ${reason} (${JSON.stringify(value)})`);
+  }
   info('Checking local image files exist on disk...');
   const IMAGES_DIR = path.join(__dirname, '..', 'public');
   let missing = 0;
@@ -1453,6 +1468,8 @@ function validateImageFiles(shows) {
   for (const show of shows) {
     if (!show.images) continue;
     for (const [key, url] of Object.entries(show.images)) {
+      // Hero/poster were checked above, including remote URL restrictions.
+      if (key === 'hero' || key === 'poster') continue;
       if (!url || typeof url !== 'string' || !url.startsWith('/images/')) continue;
       const filePath = path.join(IMAGES_DIR, url);
       if (!fs.existsSync(filePath)) {
@@ -1471,7 +1488,7 @@ function validateImageFiles(shows) {
     }
   }
 
-  if (missing === 0 && upgradeable === 0) {
+  if (problems.length === 0 && missing === 0 && upgradeable === 0) {
     ok('All local image paths resolve to files on disk');
   }
 }
@@ -3573,6 +3590,18 @@ function validateReviewTextDuplicates(shows) {
 // ===========================================
 
 
+/** BRO-5671: data/audit/claude-session-cost.jsonl rows must parse and carry every field the digest reads. */
+function validateClaudeSessionCostLedger() {
+  const costLedger = require('./lib/claude-session-cost.js');
+  info('Checking Claude session cost ledger...');
+  const { rows, errors: bad, missing } = costLedger.readLedger({ file: costLedger.ledgerPath(path.join(__dirname, '..')) });
+  if (missing) { warn(`${costLedger.LEDGER_REL} does not exist yet (written by record-claude-session-cost.js)`); return; }
+  // warn, not error: a telemetry file must never set the push-refusal sentinel for core data.
+  for (const b of bad.slice(0, 10)) warn(`${costLedger.LEDGER_REL} line ${b.line}: ${b.problems.join('; ')}`);
+  if (bad.length > 10) warn(`${costLedger.LEDGER_REL}: ${bad.length - 10} more invalid row(s)`);
+  if (!bad.length) ok(`${costLedger.LEDGER_REL}: ${rows.length} valid row(s)`);
+}
+
 function validateCommercialJson() {
   info('Checking commercial.json...');
 
@@ -5435,6 +5464,23 @@ function validateNoHardcodedOutletLists() {
   else console.log(`  ⚠️  ${flagged} hardcoded outlet list(s) found — consider migrating to outlet-registry.json`);
 }
 
+// BRO-5867: buildOriginFindings drops shows with no origin record, so an
+// unlabeled opening vanishes from /path-to-broadway. The weekly workflow
+// (weekly-show-origins.yml) labels new openings; this catches it failing.
+// warn(), not error(): an error here would reach exitWithError and wedge the
+// core-data push of the very workflows that add shows (the classifier reads
+// the pushed shows.json), so the gap could never close.
+function validateShowOrigins(shows) {
+  const file = path.join(DATA_DIR, 'show-origins.json');
+  if (!fs.existsSync(file)) { warn('data/show-origins.json missing, skipping origin coverage check'); return; }
+  const origins = JSON.parse(fs.readFileSync(file, 'utf8')).shows || {};
+  const missing = showsMissingOrigin(shows, origins, new Date().toISOString().slice(0, 10));
+  for (const s of missing) {
+    warn(`Show "${s.title}" (${s.id}, ${s.status}, opened ${s.openingDate}) has no record in data/show-origins.json — run node scripts/classify-show-origins.js (weekly-show-origins.yml does this; ${ORIGIN_GRACE_DAYS}-day grace).`);
+  }
+  if (!missing.length) ok('Every opened Broadway show has a show-origins record');
+}
+
 function runValidation() {
   console.log('='.repeat(60));
   console.log('BROADWAY SCORECARD DATA VALIDATION');
@@ -5502,6 +5548,7 @@ function runValidation() {
   validateSchedulesJson(shows);
   console.log('');
   validateCommercialJson();
+  validateClaudeSessionCostLedger();
   console.log('');
   validateReviewData(shows);
   console.log('');
@@ -5577,6 +5624,8 @@ function runValidation() {
   validateLastUpdatedFormats();
   console.log('');
   validateTodayTixShowtimes(shows);
+  console.log('');
+  validateShowOrigins(shows);
 
   // Summary
   console.log('');

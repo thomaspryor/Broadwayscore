@@ -19,6 +19,7 @@
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
+const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
 const { execSync } = require('child_process');
 const { OUTLET_DOMAINS, DOMAIN_REDIRECTS, discoverCorrectUrl } = require('./lib/url-discovery');
@@ -100,7 +101,7 @@ function loadCandidates() {
     for (const file of files) {
       try {
         const filePath = path.join(showDir, file);
-        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        const data = readReviewForUpdate(filePath);
 
         // When reason filter is active, use it as the primary filter
         if (CONFIG.reasonFilter) {
@@ -247,7 +248,7 @@ function updateReviewUrl(candidate, newUrl, method) {
       // reset (matches this branch's original intent).
       delete data.contentTier;
     }
-    fs.writeFileSync(candidate.filePath, JSON.stringify(data, null, 2));
+    persistReviewSnapshot({ filePath: candidate.filePath, data: data });
   } else {
     candidate.data = updated;
   }
@@ -442,7 +443,7 @@ async function runPhase2(candidates) {
   const phase2Candidates = candidates.filter(c => {
     // Re-read the file to get latest state (Phase 1 may have updated it)
     try {
-      const fresh = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
+      const fresh = readReviewForUpdate(c.filePath);
       if (fresh.urlDiscoveryMethod) return false; // Already processed
       if (!fresh.url) return false;
       c.url = fresh.url; // Use updated URL
@@ -496,7 +497,7 @@ async function runPhase2(candidates) {
             // Skip the rewrite when already recorded, or every weekly run churns a commit.
             if (!CONFIG.dryRun && !(c.data.redirectRefused && c.data.redirectRefused.to === newUrl)) {
               c.data.redirectRefused = { to: newUrl, reason: plausible.reason, at: new Date().toISOString() };
-              fs.writeFileSync(c.filePath, JSON.stringify(c.data, null, 2) + '\n');
+              persistReviewSnapshot({ filePath: c.filePath, data: c.data, trailingNewline: true });
             }
           } else if (newUrl !== c.url) {
             console.log(`  [301/302] ${c.reviewId}`);
@@ -511,7 +512,7 @@ async function runPhase2(candidates) {
         // Mark for Phase 3
         if (!CONFIG.dryRun) {
           c.data.httpStatus = status;
-          fs.writeFileSync(c.filePath, JSON.stringify(c.data, null, 2));
+          persistReviewSnapshot({ filePath: c.filePath, data: c.data });
         }
         stats.phase2.dead404++;
         if (CONFIG.dryRun) {
@@ -586,7 +587,7 @@ async function runPhase3(candidates) {
 
   for (const c of candidates) {
     try {
-      const fresh = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
+      const fresh = readReviewForUpdate(c.filePath);
       if (fresh.urlDiscoveryMethod) continue;
       // When filtering by reason, skip default guards (no_url has no URL, wrong_content has text)
       if (!CONFIG.reasonFilter) {
@@ -645,7 +646,7 @@ async function runPhase3(candidates) {
         if (gate.updates && c.data && c.filePath && !CONFIG.dryRun) {
           try {
             Object.assign(c.data, gate.updates);
-            fs.writeFileSync(c.filePath, JSON.stringify(c.data, null, 2) + '\n');
+            persistReviewSnapshot({ filePath: c.filePath, data: c.data, trailingNewline: true });
           } catch (e) { /* non-fatal */ }
         }
         continue;
@@ -663,7 +664,7 @@ async function runPhase3(candidates) {
           const attemptUpdates = recordSerpAttempt(showMeta, c.data);
           if (Object.keys(attemptUpdates).length > 0) {
             Object.assign(c.data, attemptUpdates);
-            fs.writeFileSync(c.filePath, JSON.stringify(c.data, null, 2) + '\n');
+            persistReviewSnapshot({ filePath: c.filePath, data: c.data, trailingNewline: true });
           }
         } catch (e) { /* non-fatal */ }
       }

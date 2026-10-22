@@ -27,6 +27,7 @@ const DIGEST_CRONS = [
   { workflow: 'update-cast-changes.yml', maxHours: 120, name: 'Update Cast Changes' },
   { workflow: 'weekly-nyt-critics-picks.yml', maxHours: 72, name: 'NYT Critics Picks' },
   { workflow: 'weekly-video-reviews.yml', maxHours: 192, name: 'Weekly Video Reviews' },
+  { workflow: 'weekly-show-origins.yml', maxHours: 192, name: 'Weekly Show Origins' }, // BRO-5867
   // 6-hourly; 24h = four missed runs. If this goes dark the evidence layer
   // (roundup-anchored selection + missing-show candidates) silently stops.
   { workflow: 'audit-reverse-discovery.yml', maxHours: 24, name: 'Reverse Discovery' },

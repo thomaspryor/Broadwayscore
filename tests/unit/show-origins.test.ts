@@ -17,7 +17,7 @@ const rec = (o: Partial<OriginRecord> = {}): OriginRecord => ({
   path: [], pathNote: null, source: 'original', sourceTitle: null, confidence: 'high', evidence: ['https://www.ibdb.com/x'], ...o,
 });
 const show = (o: Partial<OriginShowInput> & { id: string; openingDate: string }): OriginShowInput => ({
-  type: 'musical', isRevival: false, status: 'closed', criticScore: null, commercial: { designation: 'TBD' },
+  type: 'musical', isRevival: false, status: 'closed', criticScore: null, commercial: { designation: 'TBD', recouped: false },
   slug: o.id, title: o.id.toUpperCase(), ...o,
 });
 

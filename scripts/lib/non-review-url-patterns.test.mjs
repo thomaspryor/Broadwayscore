@@ -41,6 +41,12 @@ test('namedNonReviewReason: host+path pairs only exclude the specific path, not 
   // londontheatre.co.uk publishes real reviews under /reviews/ — only /show/NNNN is excluded.
   assert.equal(namedNonReviewReason('https://www.londontheatre.co.uk/show/1234/the-car-man'), 'ticketing-listing');
   assert.equal(namedNonReviewReason('https://www.londontheatre.co.uk/reviews/the-car-man'), null);
+  // BRO-3964: UKTW show listings (live and /archive/) are booking pages; /news/ articles stay candidates.
+  assert.equal(namedNonReviewReason('https://www.uktw.co.uk/London/The-Coronet/Play/De-Profundis/L1410119577/'), 'ticketing-listing');
+  assert.equal(namedNonReviewReason('https://www.uktw.co.uk/archive/Chichester/Minerva-Theatre/Play/Antigone-Exits/L350214576/'), 'ticketing-listing');
+  assert.equal(namedNonReviewReason('https://www.uktw.co.uk/Kingston/Rose-Theatre-Kingston/Play/Three-Men-In-a-Boat/L0539480084'), 'ticketing-listing');
+  assert.equal(namedNonReviewReason('https://www.uktw.co.uk/news/What-The-Animals-Say/7599.html'), null);
+  assert.equal(classifyGapCandidateUrl('https://www.uktw.co.uk/London/BAC/Play/Nina/L0470592871/').ok, false);
   // theatermania publishes real reviews under /news/review-.../ — only /shows/ is excluded.
   assert.equal(namedNonReviewReason('https://www.theatermania.com/news/review-camping-a-romantic-tragedy_1842335/'), null);
 });

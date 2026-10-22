@@ -160,7 +160,7 @@ async function main(argv = process.argv.slice(2)) {
       severity: 'warning',
       title: `Off-Broadway source coverage: ${fresh.length} current production(s) missing from shows.json`,
       description: fresh.map(g =>
-        `**${g.title}** @ ${g.venue} (${g.date || 'no date'}) — TheaterMania lists it; shows.json doesn't${g.closedMatch ? ` (only a closed row matches: ${g.closedMatch}; a return run needs a hand-added row, see .claude/CLOUD.md add-show)` : ''}.\n${g.url}`
+        `**${g.title}** @ ${g.venue} (${g.date || 'no date'}) — TheaterMania lists it; shows.json doesn't${g.closedMatch ? ` (only a closed row matches: ${g.closedMatch}; a return run needs a hand-added row, see scripts/pending-fix-actions.md add-show)` : ''}.\n${g.url}`
       ).join('\n\n').slice(0, 3500),
     });
   }

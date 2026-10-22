@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { copyUrlOwnerFolder } = require('./preflight-review-fix-plan.js');
+const { copyUrlOwnerFolder, preflight, filesChangedByUnreplayed } = require('./preflight-review-fix-plan.js');
 
 // BRO-3065: a url repair proven by another show's folder holding the url must
 // replay with that folder present, or preflight reports a false FAIL.
@@ -121,4 +121,75 @@ test('preflight() fails a run-script action whose args the executor would refuse
   const { failed } = preflight([planPath], { reviewTextsDir: tree, log: (l) => lines.push(l) });
   assert.equal(failed, 1);
   assert.ok(lines.some((l) => /FAIL bro-y run-script x\.js: .*both args and arguments/.test(l)));
+});
+
+// BRO-5892: data-edit actions used to print "skip data-edit (not replayed)", so a
+// stale oldValue only failed at apply time, after a ~45 min land.
+function dataEditFixture() {
+  const core = fs.mkdtempSync(path.join(os.tmpdir(), 'pf-core-'));
+  fs.writeFileSync(path.join(core, 'shows.json'), JSON.stringify({ shows: [{ id: 'a-2026', venue: 'Old' }] }));
+  const rt = fs.mkdtempSync(path.join(os.tmpdir(), 'pf-rt-'));
+  const planDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pf-plan-'));
+  const write = (name, actions) => {
+    const p = path.join(planDir, `${name}.json`);
+    fs.writeFileSync(p, JSON.stringify({ issueNumber: name, status: 'pending', plan: { actions } }));
+    return p;
+  };
+  return { core, rt, write };
+}
+const edit = (oldValue, newValue) => ({ type: 'data-edit', file: 'shows.json', showId: 'a-2026', field: 'venue', oldValue, newValue });
+
+test('preflight replays data-edits in order, chaining oldValue', () => {
+  const { core, rt, write } = dataEditFixture();
+  const lines = [];
+  const { failed } = preflight([write('p1', [edit('Old', 'Mid'), edit('Mid', 'New')])], { reviewTextsDir: rt, coreDataDir: core, log: (l) => lines.push(l) });
+  assert.equal(failed, 0, lines.join('\n'));
+  assert.ok(!lines.some((l) => /skip data-edit/.test(l)));
+  // The copy is in memory only.
+  assert.equal(JSON.parse(fs.readFileSync(path.join(core, 'shows.json'), 'utf8')).shows[0].venue, 'Old');
+});
+
+test('preflight FAILs a stale data-edit oldValue and a field off the allowlist', () => {
+  const { core, rt, write } = dataEditFixture();
+  const lines = [];
+  const bad = { ...edit('Old', 'x'), field: 'tags' };
+  const { failed } = preflight([write('p2', [edit('Stale', 'New'), bad])], { reviewTextsDir: rt, coreDataDir: core, log: (l) => lines.push(l) });
+  assert.equal(failed, 2, lines.join('\n'));
+  assert.ok(lines.some((l) => /FAIL p2 shows.json a-2026.venue/.test(l)));
+});
+
+test('a data-edit after an unreplayed change to the same file is a WARN, not a FAIL', () => {
+  const { core, rt, write } = dataEditFixture();
+  const lines = [];
+  const { failed } = preflight([write('p3', [{ type: 'retitle-show', showId: 'a-2026' }, edit('Stale', 'New')])], { reviewTextsDir: rt, coreDataDir: core, log: (l) => lines.push(l) });
+  assert.equal(failed, 0, lines.join('\n'));
+  assert.ok(lines.some((l) => /WARN p3 shows.json/.test(l)));
+});
+
+test('filesChangedByUnreplayed names the files each unreplayed action may change', () => {
+  assert.deepEqual(filesChangedByUnreplayed({ type: 'retire-show' }), ['shows.json', 'audience-buzz.json']);
+  assert.deepEqual(filesChangedByUnreplayed({ type: 'add-commercial-entry' }), ['commercial.json']);
+  assert.equal(filesChangedByUnreplayed({ type: 'run-script' }).length, 3);
+  assert.deepEqual(filesChangedByUnreplayed({ type: 'review-file-op' }), []);
+});
+
+// BRO-5886: an ingest-html-handoff envelope the executor would refuse FAILs before the land.
+test('preflight FAILs a handoff encrypted to a stale key and passes one for the committed key', () => {
+  const { preflight } = require('./preflight-review-fix-plan.js');
+  const h = require('./html-handoff.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pf-hh-'));
+  const tree = path.join(dir, 'tree'); fs.mkdirSync(path.join(tree, 'show-a'), { recursive: true });
+  const committed = h.generateKeyPair(); const stale = h.generateKeyPair();
+  const pemPath = path.join(dir, 'pub.pem'); fs.writeFileSync(pemPath, committed.publicKey);
+  const url = 'https://bachtrack.com/review-x';
+  const html = `<html><head><link rel="canonical" href="${url}"></head><body>${'text '.repeat(200)}</body></html>`;
+  const plan = (pub) => {
+    const p = path.join(dir, `plan-${Math.random().toString(36).slice(2)}.json`);
+    fs.writeFileSync(p, JSON.stringify({ issueNumber: 'bro-1', status: 'pending', plan: { actions: [h.buildAction({ showId: 'show-a', url, html, publicKeyPem: pub })] } }));
+    return p;
+  };
+  const run = (p, pem = pemPath) => { const lines = []; const r = preflight([p], { reviewTextsDir: tree, log: (l) => lines.push(l), htmlHandoffPublicKeyPath: pem }); return { r, out: lines.join('\n') }; };
+  assert.doesNotMatch(run(plan(committed.publicKey)).out, /FAIL/);
+  assert.match(run(plan(stale.publicKey)).out, /FAIL .*committed key/);
+  assert.match(run(plan(committed.publicKey), path.join(dir, 'missing.pem')).out, /FAIL .*dispatch html-handoff-key/);
 });

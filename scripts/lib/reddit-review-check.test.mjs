@@ -48,6 +48,7 @@ test('selectDueChecks: new and update drafts only, reminders skipped, cap and fr
   const ids = chk.selectDueChecks(drafts, NOW, { max: 99 }).map(x => x.draft.showId).sort();
   assert.deepEqual(ids, ['brandNew', 'failedBefore', 'moved', 'stale', 'updateDue']);
   assert.equal(chk.selectDueChecks(drafts, NOW, { max: 2 }).length, 2, 'cap');
+  assert.equal(chk.selectDueChecks(drafts, NOW, { only: ['fresh', 'reminderDue', 'brandNew', 'updateDue'], max: 3 }).length, 4, 'a list the owner named is never cut by the daily cap');
   // the owner's resend list is checked whatever the email state, even a fresh check
   assert.deepEqual(chk.selectDueChecks(drafts, NOW, { only: ['fresh', 'reminderDue', 'ghost'] }).map(x => x.draft.showId).sort(), ['fresh', 'reminderDue']);
   assert.deepEqual(chk.selectDueChecks(null, NOW), []);
@@ -130,6 +131,22 @@ test('censusFromAudit + explainGaps give the owner a reason per missing review',
   assert.match(why.edge, /different name/);
 });
 
+test('explainGaps: a census-missing review owned by another show is "filed under another show"', () => {
+  const missing = [{ outletId: 'nytimes', outlet: 'nytimes', url: 'https://www.nytimes.com/2026/10/21/theater/a-b-review.html?smid=x' },
+    { outletId: 'timeout', outlet: 'timeout', url: 'https://timeout.com/a' }];
+  const owners = { 'nytimes.com/2026/10/21/theater/a-b-review.html': 'other-show-2026' };
+  const ownerOf = u => owners[String(u).replace(/^https?:\/\/(www\.)?/, '').replace(/[?#].*$/, '')] || null;
+  const why = Object.fromEntries(chk.explainGaps(missing, new Map(), new Set(), ownerOf).map(g => [g.outlet, g.reason]));
+  assert.equal(why.nytimes, 'filed under another show (one article reviewing both)');
+  assert.equal(why.timeout, 'not found yet', 'unowned stays "not found yet"');
+  const noLookup = Object.fromEntries(chk.explainGaps(missing, new Map()).map(g => [g.outlet, g.reason]));
+  assert.equal(noLookup.nytimes, 'not found yet', 'no lookup supplied: old wording');
+  // and it flows through buildVerification into the draft's record
+  const same = new Map();
+  const v = chk.buildVerification({ draft: baseDraft(), nowIso: 'T', mode: 'apply', snapshotBefore: same, snapshotAfter: same, census: { verdict: 'incomplete', missing }, ownerOf });
+  assert.equal(v.gaps.find(g => g.outlet === 'nytimes').reason, 'filed under another show (one article reviewing both)');
+});
+
 // ── guard ────────────────────────────────────────────────────────────────────
 
 test('guardChangedPaths: only the checked shows and their _pending folders', () => {
@@ -154,6 +171,9 @@ test('buildVerification statuses and pendingScoring', () => {
   const fixed = mk({ snapshotAfter: withNew });
   assert.deepEqual([fixed.status, fixed.pendingScoring, fixed.added], ['fixed', true, [{ outlet: 'Guardian' }]]);
   assert.deepEqual([fixed.unnamedLeft, fixed.undatedLeft], [0, 0]);
+  // excluded files never count toward "still on file"
+  const withExcluded = mk({ snapshotBefore: snapOf({ 'a.json': {} }), snapshotAfter: snapOf({ 'a.json': {}, 'x.json': { criticName: 'Unknown', publishDate: '', flags: ['wrongShow'] } }) });
+  assert.deepEqual([withExcluded.unnamedLeft, withExcluded.undatedLeft], [0, 0]);
   const leftovers = mk({ snapshotBefore: snapOf({ 'a.json': { criticName: 'Unknown', publishDate: '' } }), snapshotAfter: snapOf({ 'a.json': { criticName: 'Unknown', publishDate: '' }, 'b.json': {} }) });
   assert.deepEqual([leftovers.unnamedLeft, leftovers.undatedLeft], [1, 1]);
   const named = mk({ snapshotBefore: snapOf({ 'a.json': { criticName: 'Unknown' } }), snapshotAfter: snapOf({ 'a.json': { criticName: 'Jane Roe' } }) });
@@ -399,6 +419,7 @@ test('makeJudge: valid decisions are written through review-field-edit, invalid 
   assert.deepEqual([dated.publishDate, dated.dateSource], ['2026-10-18', 'text-regex']);
   assert.equal(read(dir, 'bad.json').criticName, 'Unknown', 'the made-up byline never reached disk');
   assert.ok(read(dir, 'held.json').approvedFixes.some(f => f.fixId === 'reddit-review-check'), 'edits carry their provenance');
+  assert.match(r.applied.find(a => a.id === 'nocritic.json').changes, /criticName: "Unknown" -> "Kyle Torrence"/, 'the log says exactly what changed');
   // the snapshot diff sees exactly these changes
   const before = chk.snapshotShow(mkDir(), id);
   const s = chk.summarizeChanges(before, chk.snapshotShow(dir, id));
@@ -546,4 +567,14 @@ test('makeJudge: one atomic write stamped as a script clear; a guard that keeps 
   assert.equal(bad.ok, false);
   assert.match(bad.reason, /file restored/);
   assert.equal(fs.readFileSync(path.join(dir, id, 'two.json'), 'utf8'), original, 'byte-for-byte restore');
+});
+
+test('review of BRO-5887 ship-check: with no owner list the freshness skip applies (a checked-today draft is not re-run)', () => {
+  const mk = (id, over) => baseDraft({ showId: id, ...over });
+  const drafts = { drafts: {
+    fresh: mk('fresh', { verification: { status: 'clean', checkedAt: hoursAgo(2), score: 74, reviewCount: 14 } }),
+    brandNew: mk('brandNew'),
+  } };
+  assert.deepEqual(chk.selectDueChecks(drafts, NOW, { only: [], max: 9 }).map(x => x.draft.showId), ['brandNew']);
+  assert.deepEqual(chk.selectDueChecks(drafts, NOW, { max: 9 }).map(x => x.draft.showId), ['brandNew']);
 });

@@ -23,6 +23,9 @@
  *                       (scripts/lib/review-field-edit.js; BRO-4216)
  *   drop-orphan-key: Remove an orphan commercial.json or audience-buzz.json
  *                    key, or move an audience key (scripts/lib/orphan-key-action.js)
+ *   ingest-html-handoff: Decrypt page HTML a session fetched outside CI and run
+ *                    ingest-review-from-url.js --html-file on it
+ *                    (scripts/lib/html-handoff.js; BRO-5886). Needs HTML_HANDOFF_PRIVATE_KEY.
  *
  * Env vars:
  *   ISSUE_NUMBER       - GitHub issue number (reader feedback), or bro-N[-x] for
@@ -34,7 +37,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { execSync } from 'child_process';
+import { execSync, execFileSync } from 'child_process';
 import https from 'https';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
@@ -48,7 +51,6 @@ const { planStatusAction, planRunOrigin, alreadyAppliedResult } = require('./lib
 const audienceBuzzWriteGuard = require('./lib/audience-buzz-write-guard.js');
 const { MAX_PLAN_ACTIONS } = require('./lib/pending-fix-limits.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
 const { applyAddShow } = require('./lib/add-show-action.js');
 const { applyRetireShow } = require('./lib/retire-show-action.js');
 const { isReviewTextFile } = require('./lib/review-text-sidecars.js');
@@ -60,6 +62,7 @@ const { unretireId, loadRetiredIds } = require('./lib/retired-show-ids.js');
 const { executeReviewFieldEditIn } = require('./lib/review-field-edit.js');
 const { shouldEmailOwnerOnFix, readerFromDiagnosis, sendReaderFixOwnerEmail } = require('./lib/owner-fix-email.js');
 const { loadIssueDiagnosis } = require('./lib/feedback-submitter-store.js');
+const htmlHandoff = require('./lib/html-handoff.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -74,10 +77,9 @@ Usage:
 
 // --- Safety rails ---
 
-// awards.json excluded: executeDataEdit() below has no handler for it.
-const EDITABLE_DATA_FIELDS = pickEditableFields([
-  'shows.json', 'commercial.json', 'audience-buzz.json',
-]);
+// The data-edit allowlist (feedback-pipeline-fields.js) and the edit itself
+// live in lib/data-edit-action.js (BRO-5892).
+const { applyDataEdit, dataEditAllowProblem } = require('./lib/data-edit-action.js');
 
 const ALLOWED_SCRIPTS = [
   // BRO-5276: delete Theatr audience data attached to shows that closed before
@@ -322,123 +324,16 @@ async function sendEmail(to, from, subject, html) {
 // --- Action executors ---
 
 function executeDataEdit(action) {
-  const { file, showId, field, oldValue, newValue } = action;
-
-  // Validate allowed
-  if (!EDITABLE_DATA_FIELDS[file]) {
-    return { ok: false, reason: `File "${file}" not allowed for data-edit` };
-  }
-  if (!EDITABLE_DATA_FIELDS[file].includes(field)) {
-    return { ok: false, reason: `Field "${field}" not allowed in ${file}` };
-  }
-
-  const relPath = `data/${file}`;
+  const notAllowed = dataEditAllowProblem(action);
+  if (notAllowed) return { ok: false, reason: notAllowed };
+  const relPath = `data/${action.file}`;
+  // Load and save stay here (write guards); the edit itself is shared with
+  // preflight-review-fix-plan.js so a plan is checked before it lands (BRO-5892).
+  // `data` is mutated in place, so shows-write-guard's identity lookup still matches.
   const data = loadJsonFile(relPath);
-
-  if (file === 'shows.json') {
-    const shows = data.shows || data;
-    const idx = shows.findIndex(s => s.id === showId);
-    if (idx === -1) return { ok: false, reason: `Show "${showId}" not found in shows.json` };
-
-    // JSON plans cannot say `undefined`: an absent field is written as
-    // oldValue null, so compare it as null (BRO-4623).
-    const currentVal = shows[idx][field] ?? null;
-    if (JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
-      return { ok: false, reason: `${field}: current value doesn't match expected (data changed since plan was created)` };
-    }
-    if (field === 'images') {
-      const { crossShowImageProblems } = require('./lib/cross-show-images.js');
-      if (!newValue || typeof newValue !== 'object' || Array.isArray(newValue)) {
-        return { ok: false, reason: 'images: newValue must be an object' };
-      }
-      for (const [k, v] of Object.entries(newValue)) {
-        if (!['thumbnail', 'poster', 'hero'].includes(k)) return { ok: false, reason: `images: unexpected key "${k}"` };
-        // Only values the plan changes are checked: a plan that fixes one key
-        // must not be refused over an untouched (e.g. already missing) path.
-        if (oldValue && typeof oldValue === 'object' && JSON.stringify(oldValue[k]) === JSON.stringify(v)) continue;
-        if (v !== null && typeof v !== 'string') return { ok: false, reason: `images.${k}: must be a string or null` };
-        if (typeof v === 'string' && !v.startsWith('/images/shows/')) return { ok: false, reason: `images.${k}: only local /images/shows/ paths or null` };
-        if (typeof v === 'string' && !fs.existsSync(path.join(ROOT, 'public', v))) return { ok: false, reason: `images.${k}: ${v} does not exist` };
-      }
-      const cross = crossShowImageProblems({ id: showId, images: newValue }, shows);
-      if (cross.length) {
-        return { ok: false, reason: `images: ${cross.map(c => `${c.key} -> ${c.owner}`).join(', ')} is another show's art (BRO-4380)` };
-      }
-    }
-
-    if (field === 'cast') {
-      const { castValueProblem } = require('./lib/feedback-pipeline-fields.js');
-      const castProblem = castValueProblem(newValue);
-      if (castProblem) return { ok: false, reason: castProblem };
-    }
-
-    if (field === 'rejectedImageUrls') {
-      const { rejectedUrlsValueProblem } = require('./lib/feedback-pipeline-fields.js');
-      const problem = rejectedUrlsValueProblem(newValue, oldValue);
-      if (problem) return { ok: false, reason: problem };
-    }
-
-    if (field === 'officialUrl') {
-      const { officialUrlValueProblem } = require('./lib/feedback-pipeline-fields.js');
-      const problem = officialUrlValueProblem(newValue);
-      if (problem) return { ok: false, reason: problem };
-    }
-
-    if (field === 'firstRunStart') {
-      const { firstRunStartValueProblem } = require('./lib/feedback-pipeline-fields.js');
-      const problem = firstRunStartValueProblem(newValue, shows[idx]);
-      if (problem) return { ok: false, reason: problem };
-    }
-
-    if (field === 'priorRuns') {
-      const { priorRunsValueProblem } = require('./lib/feedback-pipeline-fields.js');
-      const problem = priorRunsValueProblem(newValue, oldValue, shows[idx]);
-      if (problem) return { ok: false, reason: problem };
-    }
-
-    if (field === 'noReliableArt') {
-      const { validateNoReliableArtValue } = require('./lib/no-reliable-art.js');
-      const problem = validateNoReliableArtValue(newValue, shows[idx]);
-      if (problem) return { ok: false, reason: problem };
-    }
-
-    shows[idx][field] = newValue;
-    // A person-approved synopsis is manual provenance (BRO-4856).
-    if (field === 'synopsis') require('./lib/synopsis-source.js').setSynopsis(shows[idx], newValue, 'manual');
-    // An approved plan is a person's correction: pin it so the date enrichers
-    // cannot put the old value back (BRO-4911; closingDate cousin).
-    if (field === 'openingDate') require('./lib/opening-date-guard.js').stampHumanCorrectedOpeningDate(shows[idx], newValue);
-    if (field === 'closingDate' && newValue) shows[idx].humanCorrectedClosingDate = true;
-    // The site also reads tags:'revival', so the flag alone can't clear it (BRO-4436).
-    if (field === 'isRevival') require('./lib/revival-tags.js').syncRevivalTags(shows[idx]);
-    // `shows` was mutated in place and (for the object-root shape) IS
-    // `data.shows` — pass `data` itself, not a rebuilt `{...data, shows}`
-    // copy, so shows-write-guard's object-identity snapshot lookup still
-    // matches and the concurrent-writer merge fires.
-    saveJsonFile(relPath, Array.isArray(data) ? shows : data);
-    const tagNote = field === 'isRevival' ? ` (tags: ${JSON.stringify(shows[idx].tags)})` : '';
-    return { ok: true, msg: `shows.json: ${field} updated for ${showId}${tagNote}` };
-
-  } else if (file === 'commercial.json') {
-    const { applyCommercialFieldEdit } = require('./lib/commercial-field-edit.js');
-    const result = applyCommercialFieldEdit(data, action.showSlug || showId, field, oldValue, newValue);
-    if (result.ok) saveJsonFile(relPath, data);
-    return result;
-
-  } else if (file === 'audience-buzz.json') {
-    if (!data.shows?.[showId]) return { ok: false, reason: `No audience-buzz entry for "${showId}"` };
-
-    const currentVal = data.shows[showId][field] ?? null;
-    if (JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
-      return { ok: false, reason: `audience-buzz.json:${field}: value changed since plan` };
-    }
-
-    data.shows[showId][field] = newValue;
-    saveJsonFile(relPath, data);
-    return { ok: true, msg: `audience-buzz.json: ${field} updated for ${showId}` };
-  }
-
-  return { ok: false, reason: `Unhandled file: ${file}` };
+  const result = applyDataEdit(data, action, { root: ROOT });
+  if (result.ok) saveJsonFile(relPath, data);
+  return result;
 }
 
 function executeAddCommercialEntry(action) {
@@ -661,6 +556,9 @@ function executeBatchTransform(action) {
 async function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+  // BRO-5886: read the handoff key and delete its file before any action runs,
+  // so no child script can read it.
+  const handoffKeyPem = htmlHandoff.takePrivateKey();
   const issueNumber = process.env.ISSUE_NUMBER;
   if (!issueNumber) {
     console.error('ISSUE_NUMBER not set');
@@ -723,6 +621,7 @@ async function main() {
   // 2b. Reject mode: the owner clicked Reject — persist the rejection so an
   // unexpired Approve link for the same plan can no longer execute it.
   if (process.env.EXEC_MODE === 'reject') {
+    planData.plan.actions = (planData.plan.actions || []).map(htmlHandoff.scrubAction);
     planData.status = 'rejected';
     planData.rejectedAt = new Date().toISOString();
     planData.executedIn = planRunOrigin();
@@ -739,6 +638,12 @@ async function main() {
     output('result', 'error');
     return;
   }
+  const handoffProblems = htmlHandoff.planHandoffProblems(planData.plan.actions);
+  if (handoffProblems.length) {
+    console.error(`Refusing plan: ${handoffProblems.join('; ')}`);
+    output('result', 'error');
+    return;
+  }
 
   console.log(`Executing plan for issue #${issueNumber}`);
   console.log(`  Summary: ${planData.plan.summary}`);
@@ -750,6 +655,7 @@ async function main() {
   const results = [];
   const applied = [];
   const failed = [];
+  const ingestedHandoffs = new Set(); // BRO-5886: only these lose their ciphertext
 
   for (const action of planData.plan.actions) {
     console.log(`\nExecuting: ${action.type} — ${action.description || action.field || action.script || action.operation}`);
@@ -787,6 +693,15 @@ async function main() {
       case 'batch-transform':
         result = executeBatchTransform(action);
         break;
+      case htmlHandoff.ACTION_TYPE:
+        if (htmlHandoff.isScrubbed(action)) { result = { ok: true, msg: `Already ingested ${action.url} (envelope scrubbed)` }; break; }
+        // argv array, no shell: the action's fields never reach a command line parser.
+        result = htmlHandoff.executeHandoff(action, {
+          privateKeyPem: handoffKeyPem,
+          run: (args) => execFileSync(process.execPath, args, { cwd: ROOT, stdio: 'inherit', timeout: 300000 }),
+        });
+        if (result.ok) ingestedHandoffs.add(action);
+        break;
       default:
         result = { ok: false, reason: `Unknown action type: ${action.type}` };
     }
@@ -800,6 +715,10 @@ async function main() {
       console.log(`  FAILED: ${result.reason}`);
     }
   }
+
+  // BRO-5886: the plan is written back to main below; an ingested handoff keeps
+  // only a hash. A failed one keeps its (already public) envelope for a retry.
+  planData.plan.actions = planData.plan.actions.map((a) => (ingestedHandoffs.has(a) ? htmlHandoff.scrubAction(a) : a));
 
   // 4. Validate if we made data changes. batch-transform mutates data files
   // too — it must NOT bypass validation (it previously did, so a bad bulk

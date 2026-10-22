@@ -25,6 +25,7 @@
  */
 
 const fs = require('fs');
+const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
 const https = require('https');
 const { extractScore: extractScoreRuleBased } = require('./lib/score-extractors');
@@ -83,7 +84,7 @@ function findSSDowngradedReviews() {
     for (const file of files) {
       const filePath = path.join(showDir, file);
       try {
-        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        const data = readReviewForUpdate(filePath);
         // Only process files sourced from Show Score
         if (data.source !== 'show-score' && data.source !== 'show-score-playwright') continue;
         results.push({
@@ -471,7 +472,7 @@ function applyResult(review, result, extractedFrom) {
     review.data.scoreExtractedFrom = extractedFrom;
     review.data.scoreVerifiedAt = new Date().toISOString();
     review.data.previousShowScoreRating = review.ssOriginal;
-    fs.writeFileSync(review.filePath, JSON.stringify(review.data, null, 2));
+    persistReviewSnapshot({ filePath: review.filePath, data: review.data });
   }
 }
 

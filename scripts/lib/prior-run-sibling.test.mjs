@@ -371,3 +371,53 @@ test('urlDatedInPriorRun: path date inside the earlier run and before this run s
   assert.equal(urlDatedInPriorRun('https://x.com/review-into-the-woods/', nc), false); // undated fails open
   assert.equal(urlDatedInPriorRun('https://x.com/2026/03/29/r/', { ...nc, priorRuns: [] }), false);
 });
+
+// BRO-5489: two unrelated productions sharing a title in one market (Southwark
+// musical Aug-Oct 2026, Rose Kingston play from Oct 13 2026). No priorRuns link.
+const { collectSameTitleProductionFiles } = require('./prior-run-sibling');
+const SOUTHWARK = { id: 'jane-eyre-off-west-end-2026', title: 'Jane Eyre', category: 'off-west-end',
+  venue: 'Southwark Playhouse Elephant', previewsStartDate: '2026-08-28', openingDate: '2026-09-08', closingDate: '2026-10-24' };
+const KINGSTON = { id: 'jane-eyre-rose-kingston-off-west-end-2026', title: 'Jane Eyre', category: 'off-west-end',
+  venue: 'Rose Theatre Kingston', previewsStartDate: '2026-10-13', openingDate: '2026-10-15', closingDate: '2026-10-24' };
+const sameTitleFiles = {
+  [SOUTHWARK.id]: [
+    { _file: 'aysp.json', url: 'https://ayoungishperspective.co.uk/2026/09/11/review-jane-eyre/', publishDate: '2026-09-11' },
+    { _file: 'late.json', url: 'https://x.uk/kingston-review', publishDate: '2026-10-16' },
+    { _file: 'undated.json', url: 'https://x.uk/undated' },
+    { _file: 'flagged.json', url: 'https://x.uk/flagged', publishDate: '2026-09-10', wrongShow: true },
+  ],
+};
+const sameTitleDeps = { loadFiles: id => sameTitleFiles[id] || [], isCovered: d => !d.wrongShow };
+
+test('collectSameTitleProductionFiles: earlier same-title production holds its own dated reviews', () => {
+  const got = collectSameTitleProductionFiles(KINGSTON, [SOUTHWARK, KINGSTON], sameTitleDeps);
+  assert.deepEqual(got.map(d => d._file), ['aysp.json']);
+  assert.equal(got[0]._housedOnShowId, SOUTHWARK.id);
+});
+
+test('collectSameTitleProductionFiles: never for the earlier show, another market, another title, or no dates', () => {
+  assert.deepEqual(collectSameTitleProductionFiles(SOUTHWARK, [SOUTHWARK, KINGSTON], sameTitleDeps), []);
+  assert.deepEqual(collectSameTitleProductionFiles({ ...KINGSTON, category: 'off-broadway' }, [SOUTHWARK, KINGSTON], sameTitleDeps), []);
+  assert.deepEqual(collectSameTitleProductionFiles({ ...KINGSTON, title: 'Wuthering Heights' }, [SOUTHWARK, KINGSTON], sameTitleDeps), []);
+  assert.deepEqual(collectSameTitleProductionFiles({ ...KINGSTON, previewsStartDate: undefined, openingDate: undefined }, [SOUTHWARK, KINGSTON], sameTitleDeps), []);
+  assert.deepEqual(collectSameTitleProductionFiles(KINGSTON, undefined, sameTitleDeps), []);
+});
+
+test('collectSameTitleProductionFiles: a review dated after the earlier run closed does not match', () => {
+  const closedEarly = { ...SOUTHWARK, closingDate: '2026-09-10' };
+  assert.deepEqual(collectSameTitleProductionFiles(KINGSTON, [closedEarly, KINGSTON], sameTitleDeps), []);
+});
+
+test('collectSameTitleProductionFiles: date boundaries and an earlier show with no start date', () => {
+  const files = {
+    [SOUTHWARK.id]: [
+      { _file: 'onstart.json', url: 'https://x.uk/onstart', publishDate: '2026-10-13' },
+      { _file: 'before.json', url: 'https://x.uk/before', publishDate: '2026-08-01' },
+      { _file: 'ok.json', url: 'https://x.uk/ok', publishDate: '2026-10-12' },
+    ],
+  };
+  const deps = { loadFiles: id => files[id] || [], isCovered: () => true };
+  assert.deepEqual(collectSameTitleProductionFiles(KINGSTON, [SOUTHWARK, KINGSTON], deps).map(d => d._file), ['ok.json']);
+  const noStart = { ...SOUTHWARK, previewsStartDate: undefined, openingDate: undefined };
+  assert.deepEqual(collectSameTitleProductionFiles(KINGSTON, [noStart, KINGSTON], deps), []);
+});

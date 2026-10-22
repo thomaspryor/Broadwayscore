@@ -1050,6 +1050,12 @@ function saveCommercialHistory() {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
   const history = loadCommercialHistory();
+  // BRO-3944: inspect the persisted ledger before today's date masks a lost
+  // write. The digest uses the same check independently, including the gap
+  // between the newest two rows after this write, via its existing router.
+  const { commercialHistoryIssue } = require('./lib/commercial-model-drift');
+  const ledgerIssue = commercialHistoryIssue(history);
+  if (ledgerIssue) console.warn(`::warning::${ledgerIssue}`);
   const priorEntry = history.length > 0 ? history[history.length - 1] : null;
   const priorAiEstimated = new Set(priorEntry?.aiEstimatedShows || []);
 

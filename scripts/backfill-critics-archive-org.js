@@ -13,6 +13,8 @@
  */
 
 const fs = require('fs');
+const { readReviewForUpdate, persistReviewSnapshot, renameReviewSnapshot } = require('./lib/persist-review-snapshot');
+const { safeUnlinkReview } = require('./lib/review-write-guard');
 const path = require('path');
 const { extractAuthorFromHtml } = require('./lib/content-quality');
 const { normalizeCritic, normalizeOutlet, generateReviewFilename } = require('./lib/review-normalization');
@@ -72,7 +74,7 @@ for (const sid of listShowDirs(reviewsDir)) {
   } catch { continue; }
   for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json') && x.includes('--unknown'))) {
     try {
-      const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
+      const d = readReviewForUpdate(path.join(sDir, f));
       if (d.criticName && d.criticName !== 'Unknown') continue;
       if (d.archiveOrgUrl) {
         candidates.push({ sid, file: f, filePath: path.join(sDir, f), archiveUrl: d.archiveOrgUrl, data: d });
@@ -115,26 +117,28 @@ async function processAll() {
       const newPath = path.join(reviewsDir, c.sid, newFilename);
 
       if (!dryRun) {
+        // Rebase the slow fetch's edits before merging or moving the source.
+        // In particular, an operator clear on the source must survive a rename.
+        persistReviewSnapshot({ filePath: c.filePath, data: c.data, trailingNewline: true });
         if (c.file !== newFilename) {
           if (fs.existsSync(newPath)) {
             // Merge unique fields from --unknown into named file, then delete.
             // Guarded: a flagged source never folds into the named sibling
             // (merge-review-fields.js, Notion 39b637c5-416f-815e) — leave it.
-            const existing = JSON.parse(fs.readFileSync(newPath, 'utf8'));
+            const existing = readReviewForUpdate(newPath);
             const mergeResult = mergeUniqueReviewFields(existing, c.data);
             if (mergeResult.action !== 'merged') continue;
             if (mergeResult.changed) {
-              fs.writeFileSync(newPath, JSON.stringify(existing, null, 2) + '\n');
+              persistReviewSnapshot({ filePath: newPath, data: existing, trailingNewline: true });
             }
-            fs.unlinkSync(c.filePath);
+            const removed = safeUnlinkReview(c.filePath);
+            if (!removed.wrote) continue;
             dupes++;
           } else {
-            fs.writeFileSync(newPath, JSON.stringify(c.data, null, 2) + '\n');
-            fs.unlinkSync(c.filePath);
+            const moved = renameReviewSnapshot(c, newPath);
+            if (!moved.wrote) continue;
             renamed++;
           }
-        } else {
-          fs.writeFileSync(c.filePath, JSON.stringify(c.data, null, 2) + '\n');
         }
       }
 

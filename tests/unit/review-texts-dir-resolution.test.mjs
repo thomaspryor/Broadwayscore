@@ -29,7 +29,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { resolveReviewTextsDir, isReviewTextsCheckout } = require('../../scripts/lib/review-texts-dir.js');
+const { resolveReviewTextsDir, isReviewTextsCheckout, isStampedReviewTextsCopy } = require('../../scripts/lib/review-texts-dir.js');
 const SCRIPTS_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'scripts');
 
 const tmp = () => mkdtempSync(path.join(tmpdir(), 'rt-resolve-'));
@@ -166,6 +166,37 @@ test('review-texts resolution — main-worktree lookup identical to repoRoot is 
 
 test('review-texts resolution — isReviewTextsCheckout tolerates a missing path', () => {
   assert.equal(isReviewTextsCheckout('/definitely/not/here'), false);
+});
+
+// BRO-5892: a cloud session's data/review-texts is a copy without .git, stamped
+// with .review-texts-sha by setup-local-data.sh. It must resolve, so tools stop
+// falling back to a ~/broadway-review-texts that does not exist when HOME=/root.
+// But it is never committed, so the guard writing tools use must refuse it, and a
+// real checkout must win over it wherever each sits (review finding, BRO-5892).
+test('review-texts resolution — a stamped copy resolves only as a fallback and never passes the write guard', () => {
+  const dir = mkdtempSync(path.join(tmpdir(), 'rt-stamp-'));
+  mkdirSync(path.join(dir, 'show-2026'));
+  assert.equal(isStampedReviewTextsCopy(dir), false);
+  writeFileSync(path.join(dir, '.review-texts-sha'), 'abc\n');
+  assert.equal(isStampedReviewTextsCopy(dir), true);
+  assert.equal(isReviewTextsCheckout(dir), false);
+  const empty = mkdtempSync(path.join(tmpdir(), 'rt-stamp-empty-'));
+  writeFileSync(path.join(empty, '.review-texts-sha'), 'abc\n');
+  assert.equal(isStampedReviewTextsCopy(empty), false);
+
+  const root = '/wt', main = '/main';
+  const nested = path.join(root, 'data', 'review-texts');
+  const fromMain = path.join(main, 'data', 'review-texts');
+  const resolve = (checkouts, stamped) => resolveReviewTextsDir({}, root, '/home/u', {
+    mainWorktree: () => main,
+    isCheckout: (d) => checkouts.includes(d),
+    isStampedCopy: (d) => stamped.includes(d),
+  });
+  // Stamped copy here, real clone in the main checkout: the clone wins.
+  assert.equal(resolve([fromMain], [nested]), fromMain);
+  // Only a stamped copy: it resolves rather than the missing legacy clone.
+  assert.equal(resolve([], [nested]), nested);
+  assert.equal(resolve([], []), path.join('/home/u', 'broadway-review-texts'));
 });
 
 test('review-texts resolution — the resolver is a leaf module with no CLI side effects', () => {

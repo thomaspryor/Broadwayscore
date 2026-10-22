@@ -69,3 +69,85 @@ test('BRO-5276: removeSourceWithTombstone deletes the source and the reconcile t
   reconcileAudienceBuzz(current, { shows: { 'show-1': { sources: { reddit: { score: 50, reviewCount: 20 } } } } }, { liveIds: live() });
   assert.equal(current.shows['show-1'].sources.reddit, undefined);
 });
+
+test('BRO-5337: a source ours deleted (in base and remote) stays deleted on a live show', () => {
+  const base = { shows: { 'show-4': { sources: { showScore: { score: 90 }, mezzanine: { score: 70 } } } } };
+  const current = { shows: { 'show-4': { sources: { mezzanine: { score: 70 } } } } };
+  const remote = { shows: { 'show-4': { sources: { showScore: { score: 90 }, mezzanine: { score: 70 } } } } };
+  const r = reconcileAudienceBuzz(current, remote, { liveIds: live(), base });
+  assert.equal(current.shows['show-4'].sources.showScore, undefined);
+  assert.equal(r.recovered, 0);
+  assert.deepEqual(r.skippedDeleted, ['show-4/showScore']);
+});
+
+test('BRO-5337: a live key ours deleted (in base and remote) is not re-added', () => {
+  const base = { shows: { 'show-5': { sources: {} } } };
+  const current = { shows: {} };
+  const remote = { shows: { 'show-5': { sources: {} } } };
+  const r = reconcileAudienceBuzz(current, remote, { liveIds: live(), base });
+  assert.equal(current.shows['show-5'], undefined);
+  assert.deepEqual(r.skippedDeleted, ['show-5']);
+});
+
+test('BRO-5337: a key and a source added only on remote are still kept', () => {
+  const base = { shows: { 'show-6': { sources: { mezzanine: { score: 70 } } } } };
+  const current = { shows: { 'show-6': { sources: { mezzanine: { score: 70 } } } } };
+  const remote = { shows: { 'show-6': { sources: { mezzanine: { score: 70 }, showScore: { score: 88 } } }, 'show-7': { sources: {} } } };
+  const r = reconcileAudienceBuzz(current, remote, { liveIds: live(), base });
+  assert.equal(current.shows['show-6'].sources.showScore.score, 88);
+  assert.ok(current.shows['show-7']);
+  assert.equal(r.recovered, 2);
+  assert.deepEqual(r.skippedDeleted, []);
+});
+
+test('BRO-5337: without a base the old refill behavior is unchanged', () => {
+  const current = { shows: { 'show-8': { sources: {} } } };
+  const remote = { shows: { 'show-8': { sources: { showScore: { score: 90 } } } } };
+  reconcileAudienceBuzz(current, remote, { liveIds: live() });
+  assert.equal(current.shows['show-8'].sources.showScore.score, 90);
+});
+
+test('BRO-5337: a deletion that -X ours reverted (source back in current) is re-applied from base minus ours', () => {
+  const base = { shows: { 'show-9': { sources: { showScore: { score: 90 }, mezzanine: { score: 70 } } } } };
+  const ours = { shows: { 'show-9': { sources: { mezzanine: { score: 70 } } } } };
+  const current = { shows: { 'show-9': { sources: { showScore: { score: 90 }, mezzanine: { score: 70 } } } } };
+  const remote = { shows: { 'show-9': { sources: { showScore: { score: 91 }, mezzanine: { score: 70 } } } } };
+  const r = reconcileAudienceBuzz(current, remote, { liveIds: live(), base, ours });
+  assert.equal(current.shows['show-9'].sources.showScore, undefined);
+  assert.ok(current.shows['show-9'].sources.mezzanine);
+  assert.deepEqual(r.skippedDeleted, ['show-9/showScore']);
+});
+
+test('BRO-5337: a whole key ours deleted is removed again when the rebase brought it back', () => {
+  const base = { shows: { 'show-10': { sources: {} } } };
+  const current = { shows: { 'show-10': { sources: {} } } };
+  const remote = { shows: { 'show-10': { sources: {} } } };
+  reconcileAudienceBuzz(current, remote, { liveIds: live(), base, ours: { shows: {} } });
+  assert.equal(current.shows['show-10'], undefined);
+});
+
+test('BRO-5337: tombstoned sources are not double counted and orphans still drop with a base', () => {
+  const base = { shows: { 'show-11': { sources: { showScore: { score: 90 } } } } };
+  const current = { shows: { 'show-11': { sources: {}, sourcesRemoved: { showScore: 'x' } } } };
+  const remote = { shows: { 'show-11': { sources: { showScore: { score: 90 } } }, 'orphan-z': { sources: {} } } };
+  const r = reconcileAudienceBuzz(current, remote, { liveIds: live(), base, ours: current });
+  assert.equal(current.shows['show-11'].sources.showScore, undefined);
+  assert.deepEqual(r.skippedOrphans, ['orphan-z']);
+});
+
+test('BRO-5337: an empty "ours" is treated as implausible, not a mass delete', () => {
+  const ids = Array.from({ length: 20 }, (_, i) => `show-${i}`);
+  const mk = () => ({ shows: Object.fromEntries(ids.map(i => [i, { sources: {} }])) });
+  const current = mk();
+  const r = reconcileAudienceBuzz(current, mk(), { liveIds: live(), base: mk(), ours: { shows: {} } });
+  assert.equal(Object.keys(current.shows).length, 20);
+  assert.match(r.skippedDeleted[0], /IMPLAUSIBLE/);
+});
+
+test('BRO-5337: a source name containing a slash is re-removed', () => {
+  const base = { shows: { 'show-12': { sources: { 'p/q': { score: 1 }, keep: { score: 2 } } } } };
+  const ours = { shows: { 'show-12': { sources: { keep: { score: 2 } } } } };
+  const current = JSON.parse(JSON.stringify(base));
+  reconcileAudienceBuzz(current, base, { liveIds: live(), base, ours });
+  assert.equal(current.shows['show-12'].sources['p/q'], undefined);
+});

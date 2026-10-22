@@ -1,0 +1,872 @@
+{
+  "issueNumber": "bro-5851-promote-2016-2017",
+  "planId": "dc05fc98-f5d2-4f00-802a-72c1bacfc6b2",
+  "status": "applied",
+  "createdAt": "2026-10-22T12:30:51.793Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 25 closed West End production(s) for 2016-2017 found through Theatre Record (reviewed on WOS, never listed there; BRO-5851).",
+    "steps": [
+      "Append the-majority-west-end-2017 (Dorfman Theatre, 2017-08-14 to 2017-08-28)",
+      "Append evita-west-end-2017 (Phoenix Theatre, 2017-08-02 to 2017-10-14)",
+      "Append girl-from-the-north-country-west-end-2017 (The Old Vic, 2017-07-26 to 2017-10-07)",
+      "Append cat-on-a-hot-tin-roof-west-end-2017 (Apollo Theatre, 2017-07-24 to 2017-10-07)",
+      "Append bodies-west-end-2017 (Royal Court, 2017-07-11 to 2017-08-12)",
+      "Append queen-anne-west-end-2017 (Theatre Royal Haymarket, 2017-07-10 to 2017-09-30)",
+      "Append the-mentor-west-end-2017 (Vaudeville Theatre, 2017-07-04 to 2017-09-02)",
+      "Append the-wind-in-the-willows-west-end-2017 (London Palladium, 2017-06-29 to 2017-09-09)",
+      "Append lady-day-at-emersons-bar-and-grill-west-end-2017 (Wyndham's Theatre, 2017-06-27 to 2017-09-09)",
+      "Append rotterdam-west-end-2017 (Arts Theatre, 2017-06-22 to 2017-07-15)",
+      "Append bat-out-of-hell-west-end-2017 (London Coliseum, 2017-06-20 to 2017-08-05)",
+      "Append anatomy-of-a-suicide-west-end-2017 (Royal Court, 2017-06-08 to 2017-07-08)",
+      "Append annie-west-end-2017 (Piccadilly Theatre, 2017-06-05 to 2018-01-06)",
+      "Append woyzeck-west-end-2017 (The Old Vic, 2017-05-23 to 2017-06-24)",
+      "Append angels-in-america-west-end-2017 (Lyttelton Theatre, 2017-05-04 to 2017-08-19)",
+      "Append the-ferryman-west-end-2017 (Royal Court, 2017-05-03 to 2017-05-20)",
+      "Append carousel-west-end-2017 (London Coliseum, 2017-04-11 to 2017-05-13)",
+      "Append consent-west-end-2017 (Dorfman Theatre, 2017-04-04 to 2017-05-17)",
+      "Append don-juan-in-soho-west-end-2017 (Wyndham's Theatre, 2017-03-28 to 2017-06-10)",
+      "Append the-kid-stays-in-the-picture-west-end-2017 (Royal Court, 2017-03-23 to 2017-04-08)",
+      "Append stepping-out-west-end-2017 (Vaudeville Theatre, 2017-03-14 to 2017-06-17)",
+      "Append the-miser-west-end-2017 (Garrick Theatre, 2017-03-13 to 2017-06-03)",
+      "Append rosencrantz-and-guildenstern-are-dead-west-end-2017 (The Old Vic, 2017-03-07 to 2017-05-06)",
+      "Append travesties-west-end-2017 (Apollo Theatre, 2017-02-15 to 2017-04-29)",
+      "Append the-glass-menagerie-west-end-2017 (Duke of York's Theatre, 2017-02-02 to 2017-04-29)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-majority-west-end-2017",
+          "title": "The Majority",
+          "slug": "the-majority-west-end-2017",
+          "venue": "Dorfman Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2017-08-14",
+          "closingDate": "2017-08-28",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.119Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-the-majority-national-theatre_44383/",
+            "https://www.theatrerecord.com/archive/volume/37/page/843"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "evita-west-end-2017",
+          "title": "Evita",
+          "slug": "evita-west-end-2017",
+          "venue": "Phoenix Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2017-08-02",
+          "closingDate": "2017-10-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.150Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-evita-phoenix-theatre_44266/",
+            "https://www.theatrerecord.com/archive/volume/37/page/833"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "girl-from-the-north-country-west-end-2017",
+          "title": "Girl From the North Country",
+          "slug": "girl-from-the-north-country-west-end-2017",
+          "venue": "The Old Vic",
+          "previewsStartDate": null,
+          "openingDate": "2017-07-26",
+          "closingDate": "2017-10-07",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.171Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-girl-from-the-north-country-old-vic_44209/",
+            "https://www.theatrerecord.com/archive/volume/37/page/782"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "cat-on-a-hot-tin-roof-west-end-2017",
+          "title": "Cat On a Hot Tin Roof",
+          "slug": "cat-on-a-hot-tin-roof-west-end-2017",
+          "venue": "Apollo Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2017-07-24",
+          "closingDate": "2017-10-07",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.191Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-cat-on-a-hot-tin-roof-apollo-theatre_44191/",
+            "https://www.theatrerecord.com/archive/volume/37/page/771"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "bodies-west-end-2017",
+          "title": "Bodies",
+          "slug": "bodies-west-end-2017",
+          "venue": "Royal Court",
+          "previewsStartDate": null,
+          "openingDate": "2017-07-11",
+          "closingDate": "2017-08-12",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.211Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-bodies-royal-court_44090/",
+            "https://www.theatrerecord.com/archive/volume/37/page/743"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "queen-anne-west-end-2017",
+          "title": "Queen Anne",
+          "slug": "queen-anne-west-end-2017",
+          "venue": "Theatre Royal Haymarket",
+          "previewsStartDate": null,
+          "openingDate": "2017-07-10",
+          "closingDate": "2017-09-30",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.227Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-queen-anne-theatre-royal-haymarket_44083/",
+            "https://www.theatrerecord.com/archive/volume/37/page/738"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-mentor-west-end-2017",
+          "title": "The Mentor",
+          "slug": "the-mentor-west-end-2017",
+          "venue": "Vaudeville Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2017-07-04",
+          "closingDate": "2017-09-02",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.246Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-the-mentor-vaudeville-theatre_44040/",
+            "https://www.theatrerecord.com/archive/volume/37/page/730"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-wind-in-the-willows-west-end-2017",
+          "title": "The Wind in the Willows",
+          "slug": "the-wind-in-the-willows-west-end-2017",
+          "venue": "London Palladium",
+          "previewsStartDate": null,
+          "openingDate": "2017-06-29",
+          "closingDate": "2017-09-09",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.265Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-the-wind-in-the-willows-london-palladium_44003/",
+            "https://www.theatrerecord.com/archive/volume/37/page/703"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "lady-day-at-emersons-bar-and-grill-west-end-2017",
+          "title": "Lady Day at Emerson's Bar and Grill",
+          "slug": "lady-day-at-emersons-bar-and-grill-west-end-2017",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2017-06-27",
+          "closingDate": "2017-09-09",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.284Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-lady-day-at-emersons-bar-grill-wyndhams-theatre_43977/",
+            "https://www.theatrerecord.com/archive/volume/37/page/692"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "rotterdam-west-end-2017",
+          "title": "Rotterdam",
+          "slug": "rotterdam-west-end-2017",
+          "venue": "Arts Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2017-06-22",
+          "closingDate": "2017-07-15",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.304Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-rotterdam-arts-theatre_43945/",
+            "https://www.theatrerecord.com/archive/volume/37/page/689"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "bat-out-of-hell-west-end-2017",
+          "title": "Bat Out of Hell",
+          "slug": "bat-out-of-hell-west-end-2017",
+          "venue": "London Coliseum",
+          "previewsStartDate": null,
+          "openingDate": "2017-06-20",
+          "closingDate": "2017-08-05",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.322Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-bat-out-of-hell-coliseum_43917/",
+            "https://www.theatrerecord.com/archive/volume/37/page/675"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "anatomy-of-a-suicide-west-end-2017",
+          "title": "Anatomy of a Suicide",
+          "slug": "anatomy-of-a-suicide-west-end-2017",
+          "venue": "Royal Court",
+          "previewsStartDate": null,
+          "openingDate": "2017-06-08",
+          "closingDate": "2017-07-08",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.341Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-anatomy-of-a-suicide-royal-court_43823/",
+            "https://www.theatrerecord.com/archive/volume/37/page/617"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "annie-west-end-2017",
+          "title": "Annie",
+          "slug": "annie-west-end-2017",
+          "venue": "Piccadilly Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2017-06-05",
+          "closingDate": "2018-01-06",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.366Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-annie-piccadilly-theatre_43775/",
+            "https://www.theatrerecord.com/archive/volume/37/page/601"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "woyzeck-west-end-2017",
+          "title": "Woyzeck",
+          "slug": "woyzeck-west-end-2017",
+          "venue": "The Old Vic",
+          "previewsStartDate": null,
+          "openingDate": "2017-05-23",
+          "closingDate": "2017-06-24",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.388Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-woyzeck-old-vic-theatre_43674/",
+            "https://www.theatrerecord.com/archive/volume/37/page/534"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "angels-in-america-west-end-2017",
+          "title": "Angels in America",
+          "slug": "angels-in-america-west-end-2017",
+          "venue": "Lyttelton Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2017-05-04",
+          "closingDate": "2017-08-19",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.407Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-angels-in-america-national-theatre_43519/",
+            "https://www.theatrerecord.com/archive/volume/37/page/496"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-ferryman-west-end-2017",
+          "title": "The Ferryman",
+          "slug": "the-ferryman-west-end-2017",
+          "venue": "Royal Court",
+          "previewsStartDate": null,
+          "openingDate": "2017-05-03",
+          "closingDate": "2017-05-20",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.435Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-the-ferryman-royal-court_43504/",
+            "https://www.theatrerecord.com/archive/volume/37/page/488"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "carousel-west-end-2017",
+          "title": "Carousel",
+          "slug": "carousel-west-end-2017",
+          "venue": "London Coliseum",
+          "previewsStartDate": null,
+          "openingDate": "2017-04-11",
+          "closingDate": "2017-05-13",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.462Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-carousel-london-coliseum_43359/",
+            "https://www.theatrerecord.com/archive/volume/37/page/377"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "consent-west-end-2017",
+          "title": "Consent",
+          "slug": "consent-west-end-2017",
+          "venue": "Dorfman Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2017-04-04",
+          "closingDate": "2017-05-17",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.488Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-consent-national-theatre_43292/",
+            "https://www.theatrerecord.com/archive/volume/37/page/358"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "don-juan-in-soho-west-end-2017",
+          "title": "Don Juan in Soho",
+          "slug": "don-juan-in-soho-west-end-2017",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2017-03-28",
+          "closingDate": "2017-06-10",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.506Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-don-juan-in-soho-wyndhams-theatre_43228/",
+            "https://www.theatrerecord.com/archive/volume/37/page/311"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-kid-stays-in-the-picture-west-end-2017",
+          "title": "The Kid Stays in the Picture",
+          "slug": "the-kid-stays-in-the-picture-west-end-2017",
+          "venue": "Royal Court",
+          "previewsStartDate": null,
+          "openingDate": "2017-03-23",
+          "closingDate": "2017-04-08",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.526Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-the-kid-stays-in-the-picture-royal-court_43191/",
+            "https://www.theatrerecord.com/archive/volume/37/page/303"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "stepping-out-west-end-2017",
+          "title": "Stepping Out",
+          "slug": "stepping-out-west-end-2017",
+          "venue": "Vaudeville Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2017-03-14",
+          "closingDate": "2017-06-17",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.543Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-stepping-out-vaudeville-theatre_43123/",
+            "https://www.theatrerecord.com/archive/volume/37/page/251"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-miser-west-end-2017",
+          "title": "The Miser",
+          "slug": "the-miser-west-end-2017",
+          "venue": "Garrick Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2017-03-13",
+          "closingDate": "2017-06-03",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.562Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-the-miser-garrick-theatre_43087/",
+            "https://www.theatrerecord.com/archive/volume/37/page/247"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "rosencrantz-and-guildenstern-are-dead-west-end-2017",
+          "title": "Rosencrantz and Guildenstern are Dead",
+          "slug": "rosencrantz-and-guildenstern-are-dead-west-end-2017",
+          "venue": "The Old Vic",
+          "previewsStartDate": null,
+          "openingDate": "2017-03-07",
+          "closingDate": "2017-05-06",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.580Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-rosencrantz-and-guildenstern-are-dead-the-old-vic_43069/",
+            "https://www.theatrerecord.com/archive/volume/37/page/224"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "travesties-west-end-2017",
+          "title": "Travesties",
+          "slug": "travesties-west-end-2017",
+          "venue": "Apollo Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2017-02-15",
+          "closingDate": "2017-04-29",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.597Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-travesties-apollo-theatre_42902/",
+            "https://www.theatrerecord.com/archive/volume/37/page/156"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-glass-menagerie-west-end-2017",
+          "title": "The Glass Menagerie",
+          "slug": "the-glass-menagerie-west-end-2017",
+          "venue": "Duke of York's Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2017-02-02",
+          "closingDate": "2017-04-29",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.615Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-the-glass-menagerie-duke-of-yorks-theatre_42798/",
+            "https://www.theatrerecord.com/archive/volume/37/page/93"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T13:04:20.544Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-majority-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added evita-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added girl-from-the-north-country-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added cat-on-a-hot-tin-roof-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added bodies-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added queen-anne-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-mentor-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-wind-in-the-willows-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added lady-day-at-emersons-bar-and-grill-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added rotterdam-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added bat-out-of-hell-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added anatomy-of-a-suicide-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added annie-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added woyzeck-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added angels-in-america-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-ferryman-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added carousel-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added consent-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added don-juan-in-soho-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-kid-stays-in-the-picture-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added stepping-out-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-miser-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added rosencrantz-and-guildenstern-are-dead-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added travesties-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-glass-menagerie-west-end-2017"
+    }
+  ],
+  "executedIn": "ci"
+}

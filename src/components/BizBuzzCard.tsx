@@ -48,6 +48,8 @@ interface BizBuzzCardProps {
   trend?: RecoupmentTrend;
   weeklyGross?: number | null;
   showStatus?: 'open' | 'closed' | 'previews' | 'upcoming';
+  /** Show closing date (YYYY-MM-DD): lets a recoup report month after closing read "reported" (BRO-5779). */
+  closingDate?: string | null;
   allTimeGross?: number | null;
   /** BRO-5007 v3 break-even section (unreleased): null unless commercial && boxOfficeV2 and it has something to show. */
   breakEvenCard?: BoxOfficeV2Card | null;
@@ -158,7 +160,7 @@ function TrendIndicator({ trend }: { trend: RecoupmentTrend }) {
   );
 }
 
-export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross, showStatus, allTimeGross, breakEvenCard = null }: BizBuzzCardProps) {
+export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross, showStatus, allTimeGross, breakEvenCard = null, closingDate }: BizBuzzCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   void showTitle;
 
@@ -185,7 +187,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
   const reportedReturnLine = getReportedReturnLine({ ...commercial, status: showStatus });
   const analystRange = displayMode === 'analyst' && !reportedReturnLine ? getDisplayableAnalystRange({ ...commercial, status: showStatus }) : null;
   const showModelBar = displayMode === 'model' && !reportedReturnLine;
-  const attribution = displayMode === 'announced' ? getRecoupmentAttribution(commercial) : null;
+  const attribution = displayMode === 'announced' ? getRecoupmentAttribution(commercial, closingDate) : null;
   // One link with no raw URL text: the line is clamped to two lines (BRO-5520).
   const attributionLink = attribution?.sourceText ? sourceTextLink(attribution.sourceText, attribution.sourceUrl) : null;
 

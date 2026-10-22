@@ -173,6 +173,14 @@ const TESTS_UNIT_QUARANTINE = new Map([
     'tests/unit/critic-spelling-duplicates-live-data.test.mjs',
     'BRO-5729 (BRO-3425 pattern) — runs in check-corpus-drift.yml (data-health), not test.yml: ceiling / zero-count assertions split out of critic-spelling-duplicates.test.mjs over bot-rewritten data/review-texts. In the unit batch they turn main red with no code change.',
   ],
+  [
+    'tests/unit/duplicate-show-dedup-live-data.test.mjs',
+    'BRO-5737 (BRO-3425 pattern) — runs in check-corpus-drift.yml (data-health), not test.yml: live shows.json alias/id-clash check split out of duplicate-show-dedup.test.mjs. In the unit batch it can turn main red with no code change.',
+  ],
+  [
+    'tests/unit/review-gap-remediation-live-data.test.mjs',
+    'BRO-5737 (BRO-3425 pattern) — runs in check-corpus-drift.yml (data-health), not test.yml: live reviews.json cross-check split out of review-gap-remediation.test.mjs. In the unit batch it can turn main red with no code change.',
+  ],
 ]);
 
 // Every per-file opt-out. Single source of truth. Each entry must exist and

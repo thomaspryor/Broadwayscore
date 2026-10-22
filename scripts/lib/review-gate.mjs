@@ -50,28 +50,8 @@ import { createRequire } from 'node:module';
 import { isMainModule } from './is-main-module.mjs';
 import { isVisualByPath, patchTouchesVisualSurface } from './ui-paths.mjs';
 
-// CJS libs — ci-red-claims.js/duplicate-dispatch-guard.js predate this file's
-// ESM conversion and are shared with scripts/claim-ci-red.js, so require()
-// rather than porting them to ESM.
+// CJS libs (shell lexer etc.) are require()d rather than ported to ESM.
 const require = createRequire(import.meta.url);
-// The CI-red-claim libs (task #584) are optional enhancements: a checkout
-// that carries this file without its newer siblings (pre-#584 worktree
-// branch, the hook test suite's scratch repo, any partial copy) must degrade
-// to "CI-red claim checks skipped", NOT crash. An uncaught require error
-// here killed the whole module, and pre-push-review-gate.sh read the empty
-// output as "couldn't evaluate → allow" — silently disabling the entire push
-// gate in that checkout (found 2026-07-31, Notion card 3ae637c5).
-let readClaims = null, CLAIM_TTL_MS = 0, evaluateCiRedClaim = null;
-try {
-  ({ readClaims, CLAIM_TTL_MS } = require('./ci-red-claims.js'));
-} catch (e) {
-  process.stderr.write(`review-gate: ci-red-claims.js unavailable (${e.code || e.message}) — CI-red claim checks degraded to no-op\n`);
-}
-try {
-  ({ evaluateCiRedClaim } = require('./duplicate-dispatch-guard.js'));
-} catch (e) {
-  process.stderr.write(`review-gate: duplicate-dispatch-guard.js unavailable (${e.code || e.message}) — CI-red claim checks degraded to no-op\n`);
-}
 // Shallow-checkout guard (task #1497, same false-negative class as #1489):
 // degrade to no-op rather than crash if landing-verify.js is missing from a
 // partial/old checkout, same reasoning as the two requires above.
@@ -332,7 +312,7 @@ export function dropNonVisualFiles(repoRoot, base, ref, files) {
 // Patch text for the gated files only: split on "diff --git" headers and
 // keep hunks whose post-image path matches GATED_PATH_RE. Paths with
 // spaces/unicode are C-quoted (`diff --git "a/x y" "b/x y"`). Shared by
-// computeDiffHash (below) and gatedDiffPatchText (CI-red claim matching).
+// computeDiffHash (below).
 function gatedPatchChunks(repoRoot, base, ref) {
   let patch;
   try {
@@ -354,13 +334,6 @@ export function computeDiffHash(repoRoot, base, ref) {
   const chunks = gatedPatchChunks(repoRoot, base, ref);
   if (chunks.length === 0) return 'empty';
   return createHash('sha256').update(chunks.join('')).digest('hex').slice(0, 16);
-}
-
-// Full patch text of the gated diff (not hashed) — used by
-// queryCiRedClaimConflict to substring-match a claimed symbol/runId against
-// what this push actually changes.
-export function gatedDiffPatchText(repoRoot, base, ref) {
-  return gatedPatchChunks(repoRoot, base, ref).join('');
 }
 
 // Shallow-checkout guard (task #1497, same false-negative class as #1489):
@@ -1037,8 +1010,8 @@ const MERGE_CONTROL_FLAGS = new Set(['--abort', '--continue', '--quit']);
 const GIT_GLOBAL_VALUE_OPTS = new Set(['-C', '-c', '--exec-path', '--git-dir', '--work-tree', '--namespace']);
 
 // Lazily loaded shell tokenizer, shared with infra-review-scope.js so there is
-// exactly one definition of "where does one command end". Same degrade-don't-
-// crash contract as the ci-red-claims require above: a checkout carrying this
+// exactly one definition of "where does one command end". Degrade-don't-
+// crash contract: a checkout carrying this
 // file without its sibling must fail OPEN, not throw.
 let _shellLex = null;
 function shellLex() {
@@ -1440,82 +1413,6 @@ export function queryMergeGate({ repoRoot, ledgerRoot = null, command, currentBr
   return { ...queryMergeAllowed({ repoRoot, ledgerRoot, sources: ingress.sources }), ingress };
 }
 
-// ── CI-red claim conflict (task #584) ───────────────────────────────────────
-// Closes the gap task #542's evaluateCiRedClaim shipped with: nothing called
-// it, because a PreToolUse hook can't query the shared task-list tool.
-// scripts/lib/ci-red-claims.js is the file-based ledger a hook CAN read
-// (data/audit/ci-red-claims.jsonl, appended by scripts/claim-ci-red.js).
-// This query is deliberately independent of queryPushAllowed above (its own
-// function, its own CLI query, its own bash-hook block) — the goal is to add
-// duplicate-fix detection without touching the existing, working review gate.
-
-// Unexpired claims, excluding the caller's own (ownTaskId) — same TTL +
-// exclude semantics as ci-red-claims.js's activeClaimsAsTasks, but returning
-// raw {symbol, runId, taskId} entries so the diff-text substring match below
-// has the literal values to search for (activeClaimsAsTasks only returns a
-// folded subject string, which is lossy when both symbol and runId are set).
-export function activeCiRedClaims({ now = Date.now(), excludeTaskId = null, claimsPath = undefined } = {}) {
-  // CLAIM_TTL_MS > 0 too: an older ci-red-claims.js revision without that
-  // export would leave readClaims truthy but TTL 0, silently expiring every
-  // claim — report degraded instead (reviewer P2, card 3ae637c5).
-  if (!readClaims || !(CLAIM_TTL_MS > 0)) return [];
-  return readClaims(claimsPath)
-    .filter(c => c && c.taskId && now - new Date(c.ts).getTime() < CLAIM_TTL_MS)
-    .filter(c => excludeTaskId == null || String(c.taskId) !== String(excludeTaskId));
-}
-
-// Minimum needle length for the substring match below. Without a floor, a
-// short generic claimed symbol (e.g. "run", "main", "config") would match
-// almost any diff — adversarial review (task #584) flagged this as a
-// realistic false-positive source. 4 chars matches this codebase's shortest
-// real CI-red symbol names seen in practice (e.g. "fold", still excludes
-// single tokens like "run"/"id").
-const MIN_NEEDLE_LEN = 4;
-
-// Blocks when the pushed diff's gated-file content contains the symbol
-// and/or runId of another in_progress task's claim — the same substring-
-// match heuristic duplicate-dispatch-guard.js's taskClaimsTarget already
-// uses for task subject/description, applied here to diff patch text
-// instead. Best-effort: a fix that doesn't literally reference the symbol
-// name won't be caught, same known limitation evaluateCiRedClaim already
-// has for task subjects.
-export function queryCiRedClaimConflict({ repoRoot, ref = 'HEAD', ownTaskId = null, claimsPath = undefined, now = Date.now() }) {
-  if (!readClaims || !evaluateCiRedClaim || !(CLAIM_TTL_MS > 0)) {
-    return { blocked: false, reason: 'ci-red claim libs unavailable in this checkout — check skipped' };
-  }
-  const base = resolveBase(repoRoot);
-  if (!base) return { blocked: false, reason: 'no origin/main or main ref — fail open' };
-  const patchText = gatedDiffPatchText(repoRoot, base, ref).toLowerCase();
-  if (!patchText) return { blocked: false, reason: 'no gated diff text' };
-  const claims = activeCiRedClaims({ now, excludeTaskId: ownTaskId, claimsPath });
-  for (const claim of claims) {
-    // Check symbol AND runId independently — a claim can carry both, and a
-    // diff that names only one of them (e.g. references the CI run number
-    // but not the failing symbol) must still be caught (adversarial review,
-    // task #584: `symbol || runId` here previously meant a claim with both
-    // set never matched on runId content at all).
-    const symbolNeedle = String(claim.symbol || '').toLowerCase();
-    const runIdNeedle = String(claim.runId || '').toLowerCase();
-    const symbolHit = symbolNeedle.length >= MIN_NEEDLE_LEN && patchText.includes(symbolNeedle);
-    const runIdHit = runIdNeedle.length >= MIN_NEEDLE_LEN && patchText.includes(runIdNeedle);
-    if (!symbolHit && !runIdHit) continue;
-    const asTask = {
-      id: claim.taskId,
-      status: 'in_progress',
-      subject: [claim.symbol, claim.runId].filter(Boolean).join(' '),
-      description: '',
-    };
-    const verdict = evaluateCiRedClaim(
-      { symbol: symbolHit ? claim.symbol : null, runId: runIdHit ? claim.runId : null },
-      [asTask]
-    );
-    if (!verdict.allow) {
-      return { blocked: true, reason: verdict.reason, claimedBy: verdict.claimedBy };
-    }
-  }
-  return { blocked: false, reason: 'no active CI-red claim conflicts with this diff' };
-}
-
 // ── CLI ──────────────────────────────────────────────────────────────────────
 
 function parseCliArgs(argv) {
@@ -1546,9 +1443,6 @@ Queries:
                    --current-branch=<b>  branch the command runs on (default:
                                          read from --repo)
                    --default-branch=<b>  merge destination to gate (default: main)
-  ci-red-claim-conflict   does --ref's gated diff conflict with an active
-                   CI-red claim from another task? --own-task=<id> excludes
-                   the caller's own claim (task #584).
   changed-files  own-merge-scoped changed file paths matching --pattern
                    (default: all). --pattern=<regex>
 
@@ -1620,9 +1514,6 @@ if (__isMain) {
             defaultBranch: args['default-branch'] || 'main',
           })
         : { allowed: true, reason: 'no --command given — fail open' };
-      break;
-    case 'ci-red-claim-conflict':
-      result = queryCiRedClaimConflict({ repoRoot, ref, ownTaskId: args['own-task'] || null });
       break;
     case 'changed-files': {
       const base = resolveBase(repoRoot);

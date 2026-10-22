@@ -28,7 +28,7 @@
 'use strict';
 
 const { isUnconfirmedDateSource } = require('./date-source-confidence');
-const { MODE_INFERENCE_SOURCE } = require('./we-historical-dates');
+const { MODE_INFERENCE_SOURCE, NO_PRESS_NIGHT_FOUND_SOURCE } = require('./we-historical-dates');
 const { normalizeDate } = require('./date-utils');
 const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
 
@@ -271,6 +271,10 @@ function inferPressNightFromReviews({ candidateShows, reviews, enabled = true, s
     // night was on or before it). A later straggler wave must not move it
     // forward and stamp the confirmed 'inferred-from-reviews'.
     if (show.openingDateSource === 'guardian-review') continue;
+    // BRO-5851: a sourced search found no press night (a reopening or transfer
+    // with none). A review wave must not invent one and stamp the confirmed
+    // 'inferred-from-reviews'; only an authoritative source may replace it.
+    if (show.openingDateSource === NO_PRESS_NIGHT_FOUND_SOURCE) continue;
 
     const openingMs = new Date(show.openingDate).getTime();
     if (Number.isNaN(openingMs)) continue;

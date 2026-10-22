@@ -69,6 +69,7 @@ permissions:
   actions: write
 
 concurrency:
+  # shows-json-writer-exempt: per-show / time-critical opening-night group (see above); queueing behind a 133-min update-show-status run would delay review ingestion on opening night (BRO-5803)
   # Per-show concurrency when show_id is set, otherwise a single shared
   # auto-discovery group. Per-show groups serialize multiple targeted dispatches
   # for the SAME show (watcher + orchestrator + update-show-status all converging

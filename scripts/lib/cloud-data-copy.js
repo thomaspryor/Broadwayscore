@@ -29,4 +29,18 @@ function assertNotCloudCopy(targetPath, env = process.env) {
   if (why) throw new Error(why);
 }
 
-module.exports = { cloudCopyWriteRefusal, assertNotCloudCopy };
+/**
+ * BRO-5892: read-only audits (validate-data.js) default to their dry run in a cloud
+ * session, where their auto-fixes and data/audit/ rewrites land on disposable copies
+ * and dirty the tree. `--write` opts back in; CI (GITHUB_ACTIONS) is never affected.
+ * @returns {{dryRun: boolean, note: string|null}}
+ */
+function cloudAuditDryRun(argv, env = process.env) {
+  if (argv.includes('--dry-run')) return { dryRun: true, note: null };
+  if (env.CLAUDE_CODE_REMOTE !== 'true' || env.GITHUB_ACTIONS === 'true' || argv.includes('--write')) {
+    return { dryRun: false, note: null };
+  }
+  return { dryRun: true, note: 'Cloud session: running as --dry-run (no writes). Pass --write to let it write.' };
+}
+
+module.exports = { cloudCopyWriteRefusal, assertNotCloudCopy, cloudAuditDryRun };

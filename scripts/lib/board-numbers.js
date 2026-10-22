@@ -29,6 +29,7 @@ const cardDedupe = require('./card-dedupe.js');
 const { countRecentLinearOpusLaunches, linearOpusDailyCap } = require('./bsc-next-model.js');
 const { fetchOpusClaimEntries, withCloudOpusClaims } = require('./cloud-worker-pick.js');
 const { readDispatchLedgers, PRIMARY_LEDGER } = require('./board-targeting-sources.js');
+const sessionCost = require('./claude-session-cost.js');
 
 const TEAM_KEY = 'BRO';
 const PRIORITY_LABELS = [[1, 'Urgent'], [2, 'High'], [3, 'Medium'], [4, 'Low'], [0, 'No priority']];
@@ -221,8 +222,46 @@ async function fetchOpusUsage({ now = new Date(), env = process.env, readLedger 
   };
 }
 
+const CODEX_RUNNER_CARD = process.env.CODEX_RUNNER_CARD || 'BRO-4745';
+const RUNNER_COMMENTS_QUERY = `query RunnerComments($id: String!, $since: DateTimeOrDuration!, $after: String) {
+  issue(id: $id) { comments(first: 100, after: $after, filter: { createdAt: { gte: $since } }) { pageInfo { hasNextPage endCursor } nodes { body createdAt } } }
+}`;
+
+/**
+ * BRO-5671: 7-day Claude spend from data/audit/claude-session-cost.jsonl (written by cloud sessions
+ * via record-claude-session-cost.js) and the Codex lane's Claude-check spend from the runner card's
+ * run summaries. Each half fails soft to null on its own. -> { claude, codex, days }
+ */
+async function fetchClaudeCost({ graphql, now = new Date(), cwd, days = 7, readLedger = sessionCost.readLedger, graphqlOpts = GRAPHQL_OPTS } = {}) {
+  const nowMs = now.getTime();
+  let claude = null;
+  try {
+    // A missing ledger is "nothing recorded" (no session has written a row yet), not unknown.
+    const { rows } = readLedger({ file: sessionCost.ledgerPath(cwd) });
+    claude = sessionCost.summarizeCost(rows, { nowMs, days });
+  } catch { /* n/a */ }
+  let codex = null;
+  try {
+    const since = new Date(nowMs - days * 86400 * 1000).toISOString();
+    const nodes = [];
+    let after = null;
+    let complete = false;
+    for (let page = 0; page < MAX_PAGES; page++) {
+      const data = await graphql(RUNNER_COMMENTS_QUERY, { id: CODEX_RUNNER_CARD, since, after }, graphqlOpts);
+      const conn = data && data.issue && data.issue.comments;
+      if (!conn || !Array.isArray(conn.nodes)) break;
+      nodes.push(...conn.nodes);
+      if (!conn.pageInfo || !conn.pageInfo.hasNextPage) { complete = true; break; }
+      after = conn.pageInfo.endCursor;
+    }
+    // A partial walk would understate spend and per-card cost: unknown, not a smaller number.
+    if (complete) codex = sessionCost.summarizeCodexCheck(nodes, { nowMs, days });
+  } catch { /* n/a */ }
+  return { claude, codex, days };
+}
+
 /** Every live read, each fail-soft on its own: a missing piece renders "n/a", never blocks the digest. */
-async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLandedFn = readLanded, fetchInflow = fetchInflowCounts, fetchOpen = fetchOpenByPriority, fetchStuck = fetchStuckCards, fetchBySource = fetchInflowBySource, fetchParked = fetchParkedCards, fetchOpus = fetchOpusUsage } = {}) {
+async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLandedFn = readLanded, fetchInflow = fetchInflowCounts, fetchOpen = fetchOpenByPriority, fetchStuck = fetchStuckCards, fetchBySource = fetchInflowBySource, fetchParked = fetchParkedCards, fetchOpus = fetchOpusUsage, fetchCost = fetchClaudeCost } = {}) {
   const soft = async (fn) => { try { return await fn(); } catch (err) { return { error: String(err && err.message || err).slice(0, 120) }; } };
   // Sequential on purpose: backlog-inflow-ratio.js walks one at a time because of Linear rate limits.
   const open = await soft(() => fetchOpen({ graphql }));
@@ -232,6 +271,7 @@ async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLande
   const bySource = await soft(() => fetchBySource({ graphql, now }));
   const parked = await soft(() => fetchParked({ graphql }));
   const opus = await soft(() => fetchOpus({ now }));
+  const cost = await soft(() => fetchCost({ graphql, now, cwd }));
   let landed = null;
   try { landed = readLandedFn({ cwd, nowMs: now.getTime() }); } catch { /* n/a */ }
   return {
@@ -242,6 +282,7 @@ async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLande
     bySource,
     parked,
     opus,
+    cost,
     landed1: landed ? landed.d1 : null,
     landed7: landed ? landed.d7 : null,
   };
@@ -277,6 +318,7 @@ function buildBoardNumbers({ data = {}, waiting = null, stuck = null, technicalI
     bySource: ok(data.bySource) ? data.bySource : null,
     opus: { count: pick(data.opus, 'count'), cap: ok(data.opus) ? num(data.opus.cap) : linearOpusDailyCap() },
     lanes: { d1: data.landed1 || null, d7: data.landed7 || null },
+    cost: ok(data.cost) ? data.cost : null,
     floors,
   };
 }
@@ -307,6 +349,7 @@ function renderBoardNumbersLines(m) {
   lines.push(`Landed on main, 24h: ${lane(m.lanes.d1)}`);
   lines.push(`Landed on main, 7 days: ${lane(m.lanes.d7)}`);
   lines.push(`Opus in last 24h: ${show(m.opus.count)} of ${show(m.opus.cap)}`);
+  lines.push(m.cost ? sessionCost.renderCostLine(m.cost) : 'Claude cost, 7 days: n/a');
   if (m.floors) lines.push('Some counts hit the page limit and are minimums.');
   return lines;
 }
@@ -322,5 +365,5 @@ function renderBoardNumbersHtml(m, esc = (s) => String(s)) {
 }
 
 module.exports = {
-  fetchOpenByPriority, fetchStuckCards, fetchParkedCards, fetchInflowBySource, summarizeInflowBySource, readLanded, fetchOpusUsage, fetchBoardNumbersData, buildBoardNumbers, renderBoardNumbersLines, renderBoardNumbersHtml, PRIORITY_LABELS,
+  fetchOpenByPriority, fetchStuckCards, fetchParkedCards, fetchInflowBySource, summarizeInflowBySource, readLanded, fetchOpusUsage, fetchClaudeCost, fetchBoardNumbersData, buildBoardNumbers, renderBoardNumbersLines, renderBoardNumbersHtml, PRIORITY_LABELS,
 };

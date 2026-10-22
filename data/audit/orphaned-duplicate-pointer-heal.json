@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-22T05:14:51.974Z",
+  "generated": "2026-10-22T14:11:45.813Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 35,
+  "count": 33,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -78,13 +78,6 @@
       "loserFile": "huffpost--unknown.json",
       "targetFile": "huffpost--steven-suskin.json",
       "reason": "orphaned-duplicate-heal: huffpost--steven-suskin.json was flagged invalid after huffpost--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "macbeth-2013",
-      "loserFile": "newsday--unknown.json",
-      "targetFile": "newsday--linda-winer.json",
-      "reason": "orphaned-duplicate-heal: newsday--linda-winer.json was flagged invalid after newsday--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -240,13 +233,6 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "jesus-christ-superstar-off-west-end-2026",
-      "loserFile": "britishtheatrecom--unknown.json",
-      "targetFile": "britishtheatrecom--british-theatre.json",
-      "reason": "orphaned-duplicate-heal: britishtheatrecom--british-theatre.json was flagged invalid after britishtheatrecom--unknown.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }

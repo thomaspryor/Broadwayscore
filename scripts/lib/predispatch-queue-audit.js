@@ -182,8 +182,30 @@ function buildQueueAuditSnapshot({
   };
 }
 
+/**
+ * BRO-5845: Linear is the only classification source, so a failed fetch has
+ * nothing to tally. Say so in a fresh snapshot rather than publishing
+ * "0 of 0 blocked" (reads as a quiet day) or leaving yesterday's numbers in
+ * place (still inside the digest's 36h freshness window). No history row is
+ * written for such a run.
+ */
+function buildSourceUnavailableSnapshot({ reason, now = Date.now() } = {}) {
+  const why = String(reason || 'unknown error').slice(0, 200);
+  return {
+    generatedAt: new Date(now).toISOString(),
+    bannerText: `Linear unavailable this run (${why}); backlog tally not computed`,
+    items: [{ title: 'LINEAR UNAVAILABLE', detail: why }],
+    moreCount: 0,
+    tally: null,
+    blockedCount: null,
+    skippedCount: 0,
+    jump: null,
+    sourceUnavailable: true,
+  };
+}
+
 module.exports = {
-  tallyVerdicts, findWeekAgoEntry, buildQueueAuditSnapshot,
+  tallyVerdicts, findWeekAgoEntry, buildQueueAuditSnapshot, buildSourceUnavailableSnapshot,
   JUMP_THRESHOLD_PCT, WOW_MIN_AGE_MS, WOW_MAX_AGE_MS, VERDICTS,
   BLOCKED_VERDICTS, DEFAULT_MAX_ITEMS,
 };

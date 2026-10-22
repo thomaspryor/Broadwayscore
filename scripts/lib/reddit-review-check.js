@@ -46,7 +46,10 @@ function selectDueChecks(draftsFile, nowMs, { only = null, max = MAX_SHOWS_PER_R
   const due = only && only.length
     ? resendEmails(draftsFile, only).due
     : dueEmails(draftsFile, nowMs).filter(x => x.kind === 'new' || x.kind === 'update');
-  return due.filter(x => only || !alreadyChecked(x.draft, nowMs)).slice(0, max);
+  // The cap bounds the unattended daily run; a list the owner named is checked in full.
+  const cap = only && only.length ? Math.max(max, only.length) : max;
+  const named = !!(only && only.length);
+  return due.filter(x => named || !alreadyChecked(x.draft, nowMs)).slice(0, cap);
 }
 
 // ── Snapshots and what changed ───────────────────────────────────────────────
@@ -131,9 +134,12 @@ function censusFromAudit(audit, showId) {
 
 /**
  * Why each census-missing review is still not counted, in the owner's words.
- * `snapshot` is the show's files after the recovery tools ran.
+ * `snapshot` is the show's files after the recovery tools ran. `ownerOf(url)`
+ * (optional) names another show whose folder already holds that URL: one
+ * article reviewing two shows is filed under only one of them (BRO-5924), so
+ * it is "filed under another show", not "not found yet".
  */
-function explainGaps(missing, snapshot, fixedFiles = new Set()) {
+function explainGaps(missing, snapshot, fixedFiles = new Set(), ownerOf = null) {
   const files = [...snapshot.entries()].filter(([f]) => !f.startsWith('_pending/'));
   const out = [];
   for (const m of missing) {
@@ -142,7 +148,11 @@ function explainGaps(missing, snapshot, fixedFiles = new Set()) {
     const name = m.outlet || m.outletId || m.url;
     // Released or recovered by this very check: no longer a gap, it is "being scored".
     if (hit && fixedFiles.has(hit[0])) continue;
-    if (!hit) { out.push({ outlet: name, reason: 'not found yet' }); continue; }
+    if (!hit) {
+      const owner = ownerOf && m.url ? ownerOf(m.url) : null;
+      out.push({ outlet: name, reason: owner ? 'filed under another show (one article reviewing both)' : 'not found yet' });
+      continue;
+    }
     const r = hit[1];
     if (r.flags.length) out.push({ outlet: name, reason: `held back as ${r.flags.includes('wrongProduction') ? 'another production' : 'not a review'} (needs a look)` });
     else if (r.textLen < SHORT_TEXT_CHARS) out.push({ outlet: name, reason: 'page blocked, only part of the text came through' });
@@ -184,7 +194,7 @@ function escapeRe(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); 
  *         'failed'  the check could not finish (reason in `error`)
  *         'skipped' report-only or switched off
  */
-function buildVerification({ draft, nowIso, mode, snapshotBefore, snapshotAfter, census, error = null, durationMs = 0, tools = [], judge = null, previous = null }) {
+function buildVerification({ draft, nowIso, mode, snapshotBefore, snapshotAfter, census, error = null, durationMs = 0, tools = [], judge = null, previous = null, ownerOf = null }) {
   const base = {
     checkedAt: nowIso, mode, score: draft.score, reviewCount: draft.reviewCount, durationMs, tools,
     ...(judge ? { judge: { asked: judge.asked, applied: judge.applied.length, rejected: judge.rejected.length, ...(judge.error ? { error: String(judge.error).slice(0, 200) } : {}) } } : {}),
@@ -194,7 +204,7 @@ function buildVerification({ draft, nowIso, mode, snapshotBefore, snapshotAfter,
   if (error) return { ...base, status: 'failed', error: String(error).slice(0, 300), pendingScoring: carried, addedThisCheck: false };
   const changes = summarizeChanges(snapshotBefore, snapshotAfter);
   const fixedFiles = new Set([...changes.added, ...changes.flagCleared, ...changes.recovered].map(x => x.file));
-  const gaps = census ? explainGaps(census.missing, snapshotAfter, fixedFiles) : [];
+  const gaps = census ? explainGaps(census.missing, snapshotAfter, fixedFiles, ownerOf) : [];
   const incomplete = !!census && census.verdict !== 'complete' && gaps.length > 0;
   const status = mode !== 'apply' ? 'skipped' : incomplete ? 'gaps' : changes.changed ? 'fixed' : 'clean';
   return {
@@ -202,8 +212,9 @@ function buildVerification({ draft, nowIso, mode, snapshotBefore, snapshotAfter,
     status,
     filesChecked: [...snapshotAfter.keys()].filter(f => !f.startsWith('_pending/')).length,
     // What the tools could not fix: said plainly so "checked" never reads as "all correct".
-    unnamedLeft: [...snapshotAfter.entries()].filter(([f, r]) => !f.startsWith('_pending/') && isUnknownCritic(r.criticName)).length,
-    undatedLeft: [...snapshotAfter.entries()].filter(([f, r]) => !f.startsWith('_pending/') && !r.publishDate).length,
+    // Only files the site counts: names and dates on excluded files (another production, news columns) change nothing posted.
+    unnamedLeft: [...snapshotAfter.entries()].filter(([f, r]) => !f.startsWith('_pending/') && !r.flags.length && isUnknownCritic(r.criticName)).length,
+    undatedLeft: [...snapshotAfter.entries()].filter(([f, r]) => !f.startsWith('_pending/') && !r.flags.length && !r.publishDate).length,
     pendingLeft: [...snapshotAfter.keys()].filter(f => f.startsWith('_pending/')).length,
     added: changes.added.map(x => ({ outlet: x.outlet })),
     named: changes.named.map(x => ({ outlet: x.outlet, name: x.to })),

@@ -9,6 +9,8 @@
 #   - merge_pull_request / enable_pr_auto_merge merge a PR server-side, skipping
 #     land.yml's gates. The PR's base branch is not in the tool input, so they
 #     are refused for this repo outright (PRs here target main).
+#   - create_pull_request (BRO-5915): the owner never reviews or merges PRs.
+#     Bash routes: pr-write-guard.sh. Narrow override: PR_GUARD_OFF.
 # Sessions land instead: `git push origin HEAD:refs/heads/land/<name>` (or
 # create a land/<name> branch with the MCP tools) and follow the Land run.
 #
@@ -23,7 +25,7 @@
 input=$(cat)
 tool_name=$(printf '%s' "$input" | jq -r '.tool_name // empty' 2>/dev/null) || exit 0
 case "$tool_name" in
-  mcp__github__create_or_update_file|mcp__github__push_files|mcp__github__delete_file|mcp__github__merge_pull_request|mcp__github__enable_pr_auto_merge) ;;
+  mcp__github__create_or_update_file|mcp__github__push_files|mcp__github__delete_file|mcp__github__merge_pull_request|mcp__github__enable_pr_auto_merge|mcp__github__create_pull_request) ;;
   *) exit 0 ;;
 esac
 
@@ -38,6 +40,10 @@ repo=${repo%.git}
 [ "$owner/$repo" = "thomaspryor/broadwayscore" ] || exit 0
 
 case "$tool_name" in
+  mcp__github__create_pull_request)
+    { [ "${PR_GUARD_OFF:-0}" = "1" ] || [ -e "$HOME/.claude/PR_GUARD_OFF" ]; } && exit 0
+    echo "🛑 BLOCKED: sessions never open Broadwayscore PRs (BRO-5915): the owner never reviews or merges them, so a PR just parks the work. Land it yourself: git push origin HEAD:refs/heads/land/<name> (or create a land/<name> branch with the GitHub tools), then follow the Land run to green (CLOUD.md § Landing). Emergency override: create \$HOME/.claude/PR_GUARD_OFF (this check only)." >&2
+    exit 2 ;;
   mcp__github__merge_pull_request|mcp__github__enable_pr_auto_merge)
     echo "🛑 BLOCKED: PRs in thomaspryor/Broadwayscore are never merged directly (BRO-4238): a server-side merge skips land.yml's gates. Land the branch instead: git push origin HEAD:refs/heads/land/<name> (or create a land/<name> branch at the PR head with the GitHub tools), follow the Land run, then close the PR. Emergency override: create \$HOME/.claude/LAND_ENFORCE_OFF." >&2
     exit 2 ;;

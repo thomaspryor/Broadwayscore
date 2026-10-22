@@ -64,7 +64,6 @@ const SHARED_EXPORTS = {
   'cmux-launch-state.js': ['decideLaunchWait'],
   'dispatch-card-drift.js': ['detectDrift', 'looksUnsafeToType'],
   'dispatch-overlap-check.js': ['findOverlappingCards'],
-  'ci-red-dispatch-heuristic.js': ['extractCiRedTarget'],
   'autonomous-eligibility.js': ['isExcludedCategory', 'EXCLUDED_CATEGORIES'],
   'worktree-branch-guard.js': ['listWorkBranchStatuses'],
 };
@@ -93,7 +92,7 @@ test('table references real functions defined in scripts/bsc-next.js', () => {
   const CLI_FNS = [
     'completedLaunchGuard', 'successionRefusal', 'acquireSuccessionLock',
     'releaseSuccessionLock', 'pageSuccessionCapExceeded', 'runAmend',
-    'occupantStillThisTask', 'recordCiRedClaim', 'actionable',
+    'occupantStillThisTask', 'actionable',
   ];
   for (const fn of CLI_FNS) {
     assert.match(src, new RegExp(`function ${fn}\\b|${fn}\\s*=`),
@@ -143,7 +142,6 @@ const PORT_TODO_ABSENT_IN_LINEAR = [
   'detectLauncherOutage',     // C6
   'successionRefusal',        // D1
   'runAmend',                 // E1
-  'recordCiRedClaim',         // E3
 ];
 
 test('PORT — TODO / DELETE rows are not yet wired into scripts/linear-next.js', () => {

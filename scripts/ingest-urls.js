@@ -21,6 +21,7 @@ const { pushReviewTexts, dispatchDownstream } = require('./lib/land-ingested-rev
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { applyMultiShowFanoutToFile } = require('./lib/multi-show-review-fanout');
 const { resolveOutletFromUrl, findExistingReviewFile } = require('./lib/review-normalization');
 const { findStaleFieldsAfterUpdate } = require('./lib/stale-merge-check');
 const { extractArticleTextFromUrl, extractPublishDate } = require('./lib/article-extractor');
@@ -64,6 +65,27 @@ if (!showId || !urlsFile) {
   console.error('Optional: append outlet ID after space: https://example.com/review my-outlet');
   process.exit(1);
 }
+
+// BRO-5874: read and write the review-texts git CHECKOUT, not a copy of it.
+// data/review-texts IS the checkout on CI and in most worktrees — there
+// resolveReviewTextsDir() returns exactly that path and nothing changes. On the
+// owner's Mac it is a plain gitignored COPY and the clone is
+// ~/broadway-review-texts, so the hardcoded join this replaced meant `git add`
+// ran inside the Broadwayscore repo where that path is gitignored: every
+// Mac-local ingest failed its push with "paths are ignored by one of your
+// .gitignore files" and, because a failed push skips the dispatch, the reviews
+// sat unscored behind one warning line (hit 2026-10-22 recovering 7 Bachtrack
+// reviews).
+//
+// Writing INTO the checkout rather than writing to the copy and mirroring
+// across is deliberate: the Mac copy lags the clone badly (1002 of 1857 sampled
+// shared files differ, in llmScore, assignedScore, fullText, wrongProduction,
+// duplicateOf and humanReviewScore), so copying from it would roll those back
+// and resurrect upstream-deleted reviews — worse than the push failure being
+// fixed. The merge, dedup and collision guards now read the FRESH corpus too.
+// Trade-off: on the Mac data/review-texts does not receive the new file until
+// ./scripts/setup-local-data.sh re-syncs. That copy is already 54% divergent.
+const reviewTextsDir = resolveReviewTextsDir();
 
 // Verify show exists
 const showsData = require('../data/shows.json');
@@ -116,7 +138,7 @@ async function main() {
     }
   }
 
-  const results = { created: 0, updated: 0, skipped: 0, failed: 0, warnings: [], touchedPaths: [] };
+  const results = { created: 0, updated: 0, skipped: 0, failed: 0, warnings: [], touchedPaths: [], fanShowIds: new Set() };
 
   for (let i = 0; i < entries.length; i++) {
     let { url, outletOverride } = entries[i];
@@ -251,9 +273,11 @@ async function main() {
     // ingest-manual-review.js / ingest-review-from-url.js).
     let preExisting = null;
     if (!dryRun) {
-      try { preExisting = findExistingReviewFile(path.join(__dirname, '..', 'data', 'review-texts', showId), outletId, criticName || 'Unknown', originalUrl || url); } catch { preExisting = null; }
+      try { preExisting = findExistingReviewFile(path.join(reviewTextsDir, showId), outletId, criticName || 'Unknown', originalUrl || url); } catch { preExisting = null; }
     }
-    const writeResult = createOrMergeReviewFile(showId, input, { dryRun });
+    const writeResult = createOrMergeReviewFile(showId, input, {
+      dryRun, reviewTextsDir, knownShowIds: showsData.shows.map((s) => s.id),
+    });
     if (!dryRun && writeResult.action === 'updated' && writeResult.filepath) {
       let staleFields = [];
       try {
@@ -287,6 +311,27 @@ async function main() {
       if (verbose) console.log(`    — Skipped: ${writeResult.reason || 'already exists'}`);
     }
 
+    // BRO-5895: a multi-show article is filed under every show it reviews,
+    // same as ingest-review-from-url.js (BRO-4431).
+    if (!dryRun && writeResult.filepath && (writeResult.action === 'new' || writeResult.action === 'updated')) {
+      try {
+        // BRO-5936: children go in the same resolved checkout as the parent,
+        // for the reasons the BRO-5874 block above gives. No second root.
+        const fan = applyMultiShowFanoutToFile(writeResult.filepath, { reviewTextsDir });
+        if (fan.applied) {
+          // Only a child this run wrote: a skipped, held or refused one is not ours to push or score.
+          const WROTE_CHILD = new Set(['create', 'fill']);
+          for (const c of fan.children) {
+            const childFile = path.join(reviewTextsDir, c.showId, path.basename(writeResult.filepath));
+            if (WROTE_CHILD.has(c.action) && fs.existsSync(childFile)) { results.touchedPaths.push(childFile); results.fanShowIds.add(c.showId); }
+          }
+          console.log(`    ↔ Multi-show article (${fan.strategy}): own section kept, ${fan.children.map((c) => `${c.showId}=${c.action}`).join(', ')}`);
+        }
+      } catch (e) {
+        console.warn(`    ⚠ multi-show fan-out failed: ${e.message}`);
+      }
+    }
+
     console.log('');
   }
 
@@ -317,44 +362,40 @@ async function main() {
   // pass and silently skipped. Fixed 2026-04-23 after 3 user-submitted
   // Schmigadoon reviews took 4 hours to land.
   const newReviews = results.created + results.updated;
+  let pushFailed = false;
   if (newReviews > 0 && !noPushReviewTexts && !dryRun && results.touchedPaths.length > 0) {
-    const writeDir = path.join(__dirname, '..', 'data', 'review-texts');
-    // data/review-texts is a git checkout on CI and in most worktrees, but on
-    // the owner's Mac it is a plain gitignored COPY and the clone lives at
-    // ~/broadway-review-texts. Staging the copy ran `git add` inside the
-    // Broadwayscore repo, where the path is gitignored, so every Mac-local
-    // ingest failed its push with "paths are ignored by .gitignore" and — since
-    // a failed push skips the dispatch — left the reviews unscored and silent
-    // (hit 2026-10-22 recovering 7 Bachtrack reviews). resolveReviewTextsDir()
-    // is the canonical resolver and already handles this; mirror the touched
-    // files into it when it is somewhere else.
-    const reviewTextsDir = resolveReviewTextsDir();
-    let touchedPaths = results.touchedPaths;
-    if (path.resolve(reviewTextsDir) !== path.resolve(writeDir)) {
-      console.log(`\nreview-texts checkout is ${reviewTextsDir} (data/review-texts is a copy) — mirroring ${touchedPaths.length} file(s) there before pushing.`);
-      touchedPaths = touchedPaths.map((p) => {
-        const dest = path.join(reviewTextsDir, path.relative(writeDir, p));
-        fs.mkdirSync(path.dirname(dest), { recursive: true });
-        if (fs.existsSync(p)) fs.copyFileSync(p, dest);
-        return dest;
-      });
-    }
+    // reviewTextsDir IS the checkout the files were written into (BRO-5874,
+    // see its definition at the top), so they are already staged where git
+    // runs and a byline rename is a real git rename.
     console.log('\nPushing review-texts to private repo...');
     const push = pushReviewTexts({
-      reviewTextsDir, touchedPaths,
+      reviewTextsDir, touchedPaths: results.touchedPaths,
       message: `ingest-urls: ${newReviews} review(s) for ${showId}`,
     });
     if (!push.pushed) {
-      console.log('  The CI workflows below will not see the new files.');
-      console.log(`  Fix: cd ${reviewTextsDir} && git status, resolve, then push manually.`);
+      // BRO-5890: dispatching anyway scored a clone without the files (run
+      // 39714821272 dispatched 50s before its files landed). Same contract as
+      // landIngestedReviews(): a failed push never dispatches.
+      pushFailed = true;
+      console.log(`::warning::Review-texts push failed for ${showId}: the CI workflows will not see the new files, so scoring/rebuild are NOT dispatched yet. Push ${reviewTextsDir}, then: gh workflow run llm-ensemble-score.yml -f show_id=${showId}`);
+      // In CI the workflow's commit step pushes the stranded commit and then
+      // dispatches downstream from this marker (ingest-urls.yml).
+      if (process.env.INGEST_DISPATCH_MARKER && !noRebuild) {
+        fs.writeFileSync(process.env.INGEST_DISPATCH_MARKER, String(newReviews));
+      } else {
+        process.exitCode = 1;
+      }
     }
   }
 
   // Trigger downstream pipelines
-  if (newReviews > 0 && !noRebuild && !dryRun) {
+  if (newReviews > 0 && !noRebuild && !dryRun && !pushFailed) {
     console.log('\nTriggering downstream pipelines...');
 
     dispatchDownstream({ showId, newReviews });
+    // Shows a multi-show article was fanned out to need their own scoring run;
+    // scoring runs its own rebuild afterwards, so one rebuild dispatch is enough.
+    for (const id of results.fanShowIds) dispatchDownstream({ showId: id, newReviews: 1, only: ['llm-ensemble-score.yml'] });
 
     console.log('\nMonitor with:');
     console.log(`  gh run list --workflow=llm-ensemble-score.yml --limit=1`);
@@ -362,7 +403,7 @@ async function main() {
   } else if (newReviews > 0 && noRebuild) {
     console.log('\n--no-rebuild: skipping scoring/rebuild/deploy triggers');
     console.log('When ready, run:');
-    console.log(`  gh workflow run llm-ensemble-score.yml -f show_id=${showId}`);
+    for (const id of [showId, ...results.fanShowIds]) console.log(`  gh workflow run llm-ensemble-score.yml -f show_id=${id}`);
     console.log(`  gh workflow run rebuild-reviews.yml -f reason="Manual ingest for ${showId}"`);
   } else if (dryRun && newReviews > 0) {
     console.log(`\nWould trigger: scoring for ${showId}, rebuild, deploy`);

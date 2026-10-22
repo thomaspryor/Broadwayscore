@@ -11,9 +11,12 @@ on:
         type: boolean
         default: false
 
-# BRO-934: per-workflow group: stops overlapping runs of the same job racing on the private-repo push. Not a shared class group (GH pending-queue depth is 1; see rebuild-fast.yml).
+# BRO-5803: only a manual `apply: true` run writes shows.json (the push step is
+# gated on inputs.apply), so only that run joins the shared shows-json-writer
+# group. The read-only Monday cron keeps its own group and so can never evict a
+# pending sibling writer (GitHub keeps ONE pending run per group).
 concurrency:
-  group: weekly-stubhub-validate
+  group: ${{ inputs.apply && 'shows-json-writer' || 'weekly-stubhub-validate' }}
   cancel-in-progress: false
 
 jobs:

@@ -46,6 +46,7 @@ permissions:
 # first instead of cancelling — cancel-in-progress would kill a run
 # mid-commit and leave partial state (same reasoning as vercel-demo.yml).
 concurrency:
+  # shows-json-writer-exempt: multi-job 75-min run at 14:00 daily, overlapping audit-closing-dates/audit-we-closing-dates; new show entries survive via push-core-data show recovery (BRO-5803)
   group: scrape-new-aggregators
   cancel-in-progress: false
 

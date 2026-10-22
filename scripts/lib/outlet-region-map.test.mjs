@@ -135,3 +135,89 @@ test('backfill: mutates the outlets object in place and returns only the changed
   assert.equal(outlets.a.region, 'london');
   assert.equal(outlets.b.region, 'us');
 });
+
+// ── BRO-5896: stamps are re-checked against the outlet's own evidence ────────
+const { retractContradictedOutletRegions, regionEvidenceMarket } = require('./outlet-region-map.js');
+const isLdn = (c) => c === 'west-end' || c === 'off-west-end';
+
+test('backfill never re-stamps an outlet carrying regionCorrectedBy', () => {
+  const outlets = { outinjersey: { regionCorrectedBy: 'BRO-5896' } };
+  const out = backfillMissingOutletRegions(outlets, { outinjersey: new Set(['west-end']) }, isLdn, '2026-10-22T00:00:00.000Z');
+  assert.deepEqual(out, []);
+  assert.equal(outlets.outinjersey.region, undefined);
+});
+
+test('retract: NYC shows outnumber London shows -> region removed, marked corrected', () => {
+  const outlets = { outinjersey: { region: 'london', regionInferredBy: 'backfillMissingOutletRegions (BRO-133)', regionInferredAt: 'x' } };
+  const r = retractContradictedOutletRegions(outlets, { outinjersey: { london: new Set(), nyc: new Set(['a', 'b']) } }, 'T');
+  assert.deepEqual(r, [{ id: 'outinjersey', londonShows: 0, nycShows: 2 }]);
+  assert.equal(outlets.outinjersey.region, undefined);
+  assert.equal(outlets.outinjersey.regionInferredBy, undefined);
+  assert.equal(outlets.outinjersey.isDualMarket, undefined);
+  assert.match(outlets.outinjersey.regionCorrectedBy, /2 NYC show\(s\) vs 0 London/);
+  assert.equal(outlets.outinjersey.regionCorrectedAt, 'T');
+  // and the backfill then leaves it alone
+  assert.deepEqual(backfillMissingOutletRegions(outlets, { outinjersey: new Set(['west-end']) }, isLdn), []);
+});
+
+test('retract: any London show keeps the stamp (stale NYC flags may be true positives)', () => {
+  const outlets = { olr: { region: 'london', regionInferredBy: 'b' } };
+  assert.deepEqual(retractContradictedOutletRegions(outlets, { olr: { london: ['w1'], nyc: ['n1', 'n2', 'n3'] } }), []);
+  assert.equal(outlets.olr.region, 'london');
+  assert.equal(outlets.olr.isDualMarket, undefined);
+});
+
+test('retract: a single NYC show is not enough', () => {
+  const outlets = { one: { region: 'london', regionInferredBy: 'b' } };
+  assert.deepEqual(retractContradictedOutletRegions(outlets, { one: { nyc: ['n1'] } }), []);
+});
+
+test('retract: ties, London majority, hand-set and dual outlets are untouched', () => {
+  const outlets = {
+    tie: { region: 'london', regionInferredBy: 'b' },
+    ukblog: { region: 'london', regionInferredBy: 'b' },
+    hand: { region: 'london' },
+    dual: { region: 'london', regionInferredBy: 'b', isDualMarket: true },
+    corrected: { region: 'london', regionInferredBy: 'b', regionCorrectedBy: 'x' },
+  };
+  const ev = {
+    tie: { london: ['w'], nyc: ['n'] },
+    ukblog: { london: ['w1', 'w2', 'w3'], nyc: ['n1'] },
+    hand: { nyc: ['n1', 'n2'] },
+    dual: { nyc: ['n1', 'n2'] },
+    corrected: { nyc: ['n1', 'n2'] },
+  };
+  assert.deepEqual(retractContradictedOutletRegions(outlets, ev), []);
+  for (const id of Object.keys(outlets)) assert.equal(outlets[id].region, 'london', id);
+});
+
+test('retract: counts distinct shows, not files', () => {
+  const outlets = { x: { region: 'london', regionInferredBy: 'b' } };
+  // three NYC files on one show: one show, below the 2-show floor
+  assert.deepEqual(retractContradictedOutletRegions(outlets, { x: { nyc: ['n', 'n', 'n'] } }), []);
+});
+
+test('regionEvidenceMarket: London side is trustworthy-only', () => {
+  const base = { isLondonMarket: isLdn, trustworthyApartFromWrongProduction: true };
+  assert.equal(regionEvidenceMarket({ ...base, category: 'west-end', trustworthy: true }), 'london');
+  assert.equal(regionEvidenceMarket({ ...base, category: 'west-end', trustworthy: false,
+    wrongProductionNote: 'Cross-market: London outlet "x" reviewing west-end show' }), null);
+});
+
+test('regionEvidenceMarket: NYC side also counts the stale London-outlet flag', () => {
+  const base = { isLondonMarket: isLdn, category: 'broadway' };
+  assert.equal(regionEvidenceMarket({ ...base, trustworthy: true, trustworthyApartFromWrongProduction: true }), 'nyc');
+  const stale = { ...base, trustworthy: false, trustworthyApartFromWrongProduction: true,
+    wrongProductionNote: 'Cross-market: London outlet "outinjersey" reviewing broadway show' };
+  assert.equal(regionEvidenceMarket(stale), 'nyc');
+  assert.equal(regionEvidenceMarket({ ...stale, urlIsUk: true }), null, 'UK URL stays out');
+  assert.equal(regionEvidenceMarket({ ...stale, trustworthyApartFromWrongProduction: false }), null, 'other defects stay out');
+  assert.equal(regionEvidenceMarket({ ...stale, wrongProductionNote: 'Title collision' }), null, 'other flags stay out');
+  assert.equal(regionEvidenceMarket({ ...stale, category: 'off-broadway' }), 'nyc');
+});
+
+test('regionEvidenceMarket: other categories are no evidence', () => {
+  for (const category of ['regional', 'tour', undefined]) {
+    assert.equal(regionEvidenceMarket({ isLondonMarket: isLdn, category, trustworthy: true, trustworthyApartFromWrongProduction: true }), null);
+  }
+});

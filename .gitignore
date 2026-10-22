@@ -20,6 +20,8 @@
 # misc
 .DS_Store
 *.pem
+# BRO-5886: the html-handoff PUBLIC key is meant to be committed (the private key is a secret).
+!scripts/lib/html-handoff-public-key.pem
 
 # debug
 npm-debug.log*
@@ -86,7 +88,9 @@ data/followers.json
 # files ({issue}.json, digit-leading) are trackable again; everything else in
 # the dir stays ignored so a stray `git add -A` can't stage arbitrary files.
 data/pending-fixes/*
+!data/pending-fixes/bro-3204.json
 !data/pending-fixes/bro-5839.json
+!data/pending-fixes/bro-5919.json
 !data/pending-fixes/[0-9]*.json
 !data/pending-fixes/bro-3964.json
 !data/pending-fixes/bro-3986.json
@@ -306,6 +310,8 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # PARENT directory is itself excluded, so a blanket `/docs/` would make
 # `!/docs/experiments/` a no-op (git never traverses into an excluded dir).
 /docs/*
+# BRO-2880 requires the accepted core-data CI cadence in writing on main.
+!/docs/bro-2880-core-data-ci-cadence.md
 !/docs/bro-4623-commercial-readiness.md
 # Feature specs are cross-session deliverables (Notion cards + PRs point at
 # them) — durable-path rule, same rationale as /docs/experiments/ below.
@@ -328,6 +334,8 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # BRO-4907 outlet tier audit: the card's acceptance criteria require these committed.
 !/docs/audits/
 /docs/audits/*
+# BRO-3944 acceptance requires the complete ledger triage on fresh checkouts.
+!/docs/audits/bro-3944-audit-ledger-triage.md
 # BRO-5743: retain the written decision for every directory-list consumer.
 !/docs/audits/bro-5743-holding-directory-consumers.md
 !/docs/audits/outlet-tier-audit-2026-10.*
@@ -521,7 +529,7 @@ tmp/
 # Append-only local telemetry for the intake storm breaker. Tracked would mean
 # every session's create conflicts with every other session's on the same lines.
 /data/audit/intake-ledger.jsonl
-# CI-red claim ledger (task #584) — Mac-local, same append-only pattern
+# Retired CI-red claim ledger (task #584, removed BRO-5931) — stale Mac-local file, keep ignored
 /data/audit/ci-red-claims.jsonl
 # Backlog drain engine (task #654) — Mac-local; both producer
 # (scripts/backlog-drain.js) and consumer (send-morning-digest.js) run on

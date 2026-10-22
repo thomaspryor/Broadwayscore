@@ -7,6 +7,7 @@
 
 const { chromium } = require('playwright');
 const fs = require('fs');
+const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
@@ -72,7 +73,7 @@ function findGoodOutletReviews() {
     for (const file of files) {
       const filePath = path.join(showDir, file);
       try {
-        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        const data = readReviewForUpdate(filePath);
 
         // Skip if already has text
         if (data.fullText && data.textWordCount >= CONFIG.minWordCount) continue;
@@ -212,7 +213,7 @@ function updateReviewJson(review, text, archivePath) {
     archivePath: archivePath,
   };
 
-  fs.writeFileSync(review.filePath, JSON.stringify(updatedData, null, 2));
+  persistReviewSnapshot({ filePath: review.filePath, data: updatedData });
 }
 
 async function processReview(browser, review) {

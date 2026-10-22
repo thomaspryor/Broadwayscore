@@ -56,7 +56,7 @@ const { resolveGuardReviewDate } = require('./lib/backfill-publish-date');
 // shouldAutoClearWrongProductionUkDualMarket's ctx (task #1190) — same
 // rationale as isLondonMarket/isUkOutletUrl above, the predicate itself
 // (baseline vs working) is what's replayed per-side via __priorRunLib.
-const { buildOutletRegionMap } = require('./lib/cross-market-guard');
+const { buildOutletRegionMap, outletRegionExplicitlyNotLondon } = require('./lib/cross-market-guard');
 const { normalizeOutlet: normalizeOutletCanonical } = require('./lib/review-normalization');
 const { isEvergreenListingUrl } = require('./lib/cross-production-guards');
 // Working-tree copy: pure classification helper (ingest-time gate), not on
@@ -79,6 +79,7 @@ const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const dataInputs = require('./lib/scoring-delta-data-inputs');
+const { loadDedupGuards, createBaselineShowSnapshot } = require('./lib/scoring-delta-dedup');
 
 const USAGE = `scoring-delta.js — mandatory local verification for scoring/exclusion logic changes.
 
@@ -112,7 +113,7 @@ const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
 // same way here as in the rebuild it's replaying.
 const outletRegistry = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'outlet-registry.json'), 'utf8'));
 const outletRegionMap = buildOutletRegionMap(outletRegistry);
-const { internationalTradeOutlets } = require('./lib/outlet-region-map').buildOutletMaps(outletRegistry);
+const { canonicalOutletId: OUTLET_CANONICAL_ID_MAP, internationalTradeOutlets } = require('./lib/outlet-region-map').buildOutletMaps(outletRegistry);
 const DUAL_MARKET_OUTLETS = new Set();
 for (const [id, info] of Object.entries(outletRegistry.outlets || {})) {
   if (info.isDualMarket) {
@@ -198,6 +199,11 @@ const FLAG_FIELDS = new Set([
   'scoreSource', 'humanReviewScore', 'firstSeenAt', 'outletHeadline', 'outletStandfirst',
   // BRO-5238: decideInclusion's rejectionReason / rejectedBy branches.
   'rejectionReason', 'rejectedBy',
+  // BRO-3963: cycle edges/evidence, inherited-flag override, and syndication.
+  'duplicateTextOf', 'duplicateOfFlagInheritanceCleared', 'fullText',
+  'isSyndicatedDuplicate', 'crossOutletDuplicate', 'crossOutletPrimaryFile',
+  'criticName', 'outletId', 'outlet',
+  'publishDate', // A reference's pre-window exclusion can recover its copy.
 ]);
 
 // Detect flag-field changes in data/review-texts/ (a separate git repo from
@@ -654,6 +660,10 @@ function loadBaselineGuards() {
   // failed-fetch-policy.js, BRO-4258 title-match.js/url-slug.js: each time a
   // guard gained a require, this list lagged and every run died on
   // MODULE_NOT_FOUND).
+  // A pre-BRO-3963 baseline has the same gate inline in the rebuild. Use the
+  // extracted gate with that baseline's own guard/dependency versions.
+  const dedupPath = path.join(baselineLibDir, 'duplicate-of-exclusion.js');
+  if (!fs.existsSync(dedupPath)) fs.copyFileSync(path.join(__dirname, 'lib/duplicate-of-exclusion.js'), dedupPath);
   materializeSiblingRequires(baselineLibDir);
 
   // Clear require cache and load baseline
@@ -677,6 +687,7 @@ function loadBaselineGuards() {
     __priorRunLib: require(prPath),
     __crossMarketLib: require(cmPath),
     __priorRunSiblingLib: require(prsPath),
+    ...loadDedupGuards(baselineLibDir),
   };
 }
 
@@ -698,6 +709,7 @@ function loadWorkingTreeGuards() {
     __priorRunLib: require(prPath),
     __crossMarketLib: require(cmPath),
     __priorRunSiblingLib: require(prsPath),
+    ...loadDedupGuards(path.join(REPO_ROOT, 'scripts/lib')),
   };
 }
 
@@ -870,7 +882,7 @@ function directorGuardMapFor(guards) {
   return _directorGuardMaps.get(guards);
 }
 
-function decideInclusion(review, show, guards) {
+function decideInclusion(review, show, guards, filePath) {
   // BRO-4890: mirrors rebuild-all-reviews.js skippedCancelledBeforeOpening /
   // skippedUnverifiableWebSearchRow (same predicates, same order as explainExclusion).
   // The row predicate reads review.sources, review.humanReviewScore and
@@ -1160,7 +1172,8 @@ function decideInclusion(review, show, guards) {
     try {
       const revRawOutlet = (review.outletId || review.outlet || '').toLowerCase();
       const revCanonical = normalizeOutletCanonical(revRawOutlet);
-      const revInfo = (outletRegistry.outlets || {})[revCanonical] || {};
+      const revId = OUTLET_CANONICAL_ID_MAP[revCanonical] || OUTLET_CANONICAL_ID_MAP[revRawOutlet] || revCanonical;
+      const revInfo = (outletRegistry.outlets || {})[revId] || {};
       const revHost = (new URL(review.url).hostname || '').toLowerCase().replace(/^www\./, '');
       const revPrimary = String(revInfo.domain || '').toLowerCase().replace(/^www\./, '');
       let revDateMismatch = false;
@@ -1173,7 +1186,9 @@ function decideInclusion(review, show, guards) {
       const urlKey = urlKeyForCrossShowIndex(review.url, guards);
       wrongProductionCleared = autoClear.shouldAutoClearStaleLondonOutletCrossMarket(review, {
         isNycMarketShow: true,
-        outletIsDualMarket: DUAL_MARKET_OUTLETS.has(revCanonical) || DUAL_MARKET_OUTLETS.has(revRawOutlet),
+        outletIsDualMarket: DUAL_MARKET_OUTLETS.has(revCanonical) || DUAL_MARKET_OUTLETS.has(revRawOutlet)
+          || DUAL_MARKET_OUTLETS.has(revId),
+        outletRegionNotLondon: outletRegionExplicitlyNotLondon(revInfo),
         urlOnOutletPrimaryDomain: !!revPrimary && (revHost === revPrimary || revHost.endsWith('.' + revPrimary)),
         isUkUrl: isUkOutletUrl(review.url) || /\.(co|org)\.uk$/.test(revHost),
         isDateMismatch: revDateMismatch,
@@ -1264,7 +1279,25 @@ function decideInclusion(review, show, guards) {
       return { included: false, reason: 'rejectedAt' };
     }
   }
-  if (review.duplicateOf) return { included: false, reason: 'duplicateOf' };
+  // duplicateTextOf is a cycle edge, not a flat exclusion. fullText + url
+  // confirm matching copies; duplicateOfFlagInheritanceCleared lifts a twin's
+  // wrong-content flag. Delegate the exact gate the rebuild runs.
+  if (review.duplicateOf) {
+    const dupeLib = guards.__duplicateOfLib || require('./lib/duplicate-of-exclusion');
+    const dupe = dupeLib.duplicateOfExclusion(review, filePath, {
+      referenceExcluded: (ref, refPath) => {
+        if (!guards.isIncludableForRebuild(ref, show?.raw || show, refPath)) return true;
+        if (!ref.publishDate || !show?.earliestDate || ref.allowEarlyDate) return false;
+        return !!guards.__dateGuard?.evaluatePreWindowInclusion({
+          pubDate: parseDate(ref.publishDate), showEarliest: new Date(show.earliestDate),
+          isFlexCategory: show.category === 'off-broadway' || isLondonMarket(show.category),
+          priorRuns: preWindowPriorRunsFor(show, guards), tourLegs: show.tourLegs,
+        }).exclude;
+      },
+      inheritedFlag: (d, ref, refPath) => guards.duplicateOfInheritedFlag(d, ref, show?.raw || show, refPath),
+    });
+    if (dupe.reason) return { included: false, reason: 'duplicateOf' };
+  }
   if (review.isRoundupArticle && !laneOk('roundupUrlSwap')) {
     const isStale = typeof guards.isLikelyStaleRoundupFlag === 'function'
       ? guards.isLikelyStaleRoundupFlag(review)
@@ -1289,6 +1322,26 @@ function decideInclusion(review, show, guards) {
     : false;
   if (((review.isNonReview === true && !isNonReviewDemoted) || review.nonReviewFlag === true || review.nonReviewContent === true) && !laneOk('nonReview')) {
     return { included: false, reason: 'isNonReview' };
+  }
+  if (review.isSyndicatedDuplicate === true) return { included: false, reason: 'isSyndicatedDuplicate' };
+  // The runtime syndication rule also excludes unflagged secondary copies.
+  // criticName/outletId/outlet identify the primary in this side's directory.
+  if (filePath) {
+    const synd = guards.__syndicationLib || require('./lib/syndication-pairs');
+    const normalize = guards.__dedupNormalizeOutlet || normalizeOutletCanonical;
+    const primaries = synd.getSyndicationPrimaries(review.criticName, normalize(review.outletId || review.outlet || ''));
+    if (primaries.length && synd.hasLiveSyndicationPrimary(path.dirname(filePath), primaries, review.criticName)) {
+      return { included: false, reason: 'knownSyndicationSecondary' };
+    }
+  }
+  // crossOutletPrimaryFile can close a mutual cycle. The shared tiebreak
+  // probes each row's other guards and its own byline before filename order.
+  if (review.crossOutletDuplicate === true) {
+    const cross = guards.__crossOutletCycleLib || require('./lib/cross-outlet-cycle');
+    if (cross.excludeAsCrossOutletCopy(review, filePath, (d, p) =>
+      !guards.isIncludableForRebuild(d, show?.raw || show, p, { ignoreCrossOutletDuplicate: true }))) {
+      return { included: false, reason: 'crossOutletDuplicate' };
+    }
   }
   if (review.contentTier === 'invalid' && !laneOk('headlineBackstop')) {
     // Mirror review-guards.js:3507-3514: a contentTier of 'invalid' set BECAUSE of
@@ -1620,6 +1673,9 @@ function main() {
       }
       const guardsIdentical =
         baseline.applyTemporalOverrides.toString() === working.applyTemporalOverrides.toString()
+        // BRO-3963: includes the dedup predicates' transitive helpers and
+        // constants, not just the exported functions' source strings.
+        && baseline.__dedupFingerprint === working.__dedupFingerprint
         && baseline.isLikelyWrongProduction.toString() === working.isLikelyWrongProduction.toString()
         && baseline.isLikelyTourReview.toString() === working.isLikelyTourReview.toString()
         && baseline.shouldSkipWrongProductionAudit.toString() === working.shouldSkipWrongProductionAudit.toString()
@@ -1909,6 +1965,23 @@ function main() {
   const flipsIncluded = [];   // newly included (Phase A)
   const scoreFlips = [];      // assignedScore/source flips (Phase B)
   let processed = 0;
+  // A flag change on a reference can flip an unchanged sibling. Replay the
+  // entire affected show and give baseline guards the old sibling corpus.
+  const changedShows = new Set([...changedReviewFiles.keys()].map(key => key.split('/')[0]));
+  const baselineShowDirs = new Map();
+  let baselineCorpusRoot;
+  const baselineDirFor = (showId) => {
+    const dir = path.join(REVIEW_TEXTS_DIR, showId);
+    if (!changedShows.has(showId)) return dir;
+    if (!baselineShowDirs.has(showId)) {
+      if (!baselineCorpusRoot) {
+        baselineCorpusRoot = fs.mkdtempSync(path.join(require('os').tmpdir(), 'scoring-delta-corpus-'));
+        TMP_DIRS_TO_CLEAN.push(baselineCorpusRoot);
+      }
+      baselineShowDirs.set(showId, createBaselineShowSnapshot(dir, changedReviewFiles, baselineCorpusRoot));
+    }
+    return baselineShowDirs.get(showId);
+  };
 
   for (const showId of showDirs) {
     const show = showById.get(showId);
@@ -1975,7 +2048,7 @@ function main() {
       const changedFile = changedReviewFiles.get(relPath);
 
       // Skip files unaffected by either sub-phase
-      if (!changedFile && !inclusionDiff) continue;
+      if (!changedShows.has(showId) && !inclusionDiff) continue;
 
       // Determine before/after state:
       // - Data-flag change: old data vs new data, same (working) guards
@@ -1985,10 +2058,10 @@ function main() {
       const baselineGuards = (inclusionDiff && baseline) ? baseline : working;
 
       const baselineDecision = baselineData
-        ? decideInclusion(baselineData, show, baselineGuards)
+        ? decideInclusion(baselineData, show, baselineGuards, path.join(baselineDirFor(showId), f))
         : { included: false, reason: 'new file' };
       const workingDecision = review
-        ? decideInclusion(review, show, working)
+        ? decideInclusion(review, show, working, path.join(showDir, f))
         : { included: false, reason: 'deleted' };
 
       if (baselineDecision.included === workingDecision.included) continue;
@@ -2028,7 +2101,7 @@ function main() {
       const show = showById.get(showId);
       if (!show) continue;
       const baselineGuards = (inclusionDiff && baseline) ? baseline : working;
-      const baselineDecision = decideInclusion(oldData, show, baselineGuards);
+      const baselineDecision = decideInclusion(oldData, show, baselineGuards, path.join(baselineDirFor(showId), path.basename(relPath)));
       if (!baselineDecision.included) continue; // was already excluded — no flip
       const outletKey = (oldData.outletId || oldData.outlet || '').toLowerCase().replace(/\s+/g, '-');
       flipsExcluded.push({

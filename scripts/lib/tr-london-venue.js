@@ -30,14 +30,17 @@ const NON_LONDON_CITIES = [
   'liverpool', 'plymouth', 'norwich', 'canterbury',
 ];
 
+const PDF_ERA_BARE_LONDON = /^(?:royal court|theatre upstairs|arts|apollo|phoenix|playhouse|lyceum|palace|cambridge|aldwych|lyric|shaftesbury|queen's|theatre royal - haymarket)$/;
+
 function isLondonVenue(venueText, { pdfEra = false } = {}) {
   if (!venueText) return false;
   const lower = venueText.toLowerCase();
   // Reject if a non-London city is mentioned
   if (NON_LONDON_CITIES.some(city => lower.includes(city))) return false;
-  // PDF-era TR omits London on these two houses. Accept only the bare
-  // names with explicit PDF context, never a similarly named regional venue.
-  if (pdfEra && /^(?:royal court|arts)$/.test(lower.trim())) return true;
+  // PDF-era TR omits London on its own houses and suffixes the city on
+  // regional ones ("Playhouse - Edinburgh", "Apollo - Hammersmith"). Accept
+  // only these exact bare names, and only with explicit PDF context (BRO-5851).
+  if (pdfEra && PDF_ERA_BARE_LONDON.test(lower.trim())) return true;
   return LONDON_VENUES.some(v => lower.includes(v));
 }
 

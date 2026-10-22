@@ -83,3 +83,37 @@ describe('shouldAutoClearStaleLondonOutletCrossMarket', () => {
     }
   });
 });
+
+// BRO-5896: a US outlet the BRO-133 backfill wrongly stamped london, since
+// corrected to a Broadway-local region (or cleared by hand / retraction), is not
+// dual-market. Its stale flags clear when the caller says the region is
+// explicitly not London; the plain region-less default never qualifies.
+describe('non-dual outlet with a corrected Broadway-local region (BRO-5896)', () => {
+  const outinjersey = () => ({
+    outletId: 'outinjersey',
+    url: 'https://outinjersey.net/broadway-review-some-show/',
+    publishDate: 'May 1, 2024',
+    wrongProduction: true,
+    wrongProductionNote: 'Cross-market: London outlet "outinjersey" reviewing broadway show',
+  });
+
+  it('clears when outletRegionNotLondon is true', () => {
+    assert.strictEqual(shouldAutoClearStaleLondonOutletCrossMarket(outinjersey(),
+      { ...baseCtx, outletIsDualMarket: false, outletRegionNotLondon: true }), true);
+  });
+
+  it('keeps the flag when neither dual-market nor explicitly non-London', () => {
+    assert.strictEqual(shouldAutoClearStaleLondonOutletCrossMarket(outinjersey(),
+      { ...baseCtx, outletIsDualMarket: false, outletRegionNotLondon: false }), false);
+    assert.strictEqual(shouldAutoClearStaleLondonOutletCrossMarket(outinjersey(),
+      { ...baseCtx, outletIsDualMarket: false }), false);
+  });
+
+  it('every other gate still applies on the new path', () => {
+    const ctx = { ...baseCtx, outletIsDualMarket: false, outletRegionNotLondon: true };
+    assert.strictEqual(shouldAutoClearStaleLondonOutletCrossMarket(outinjersey(), { ...ctx, isUkUrl: true }), false);
+    assert.strictEqual(shouldAutoClearStaleLondonOutletCrossMarket(outinjersey(), { ...ctx, urlOnOutletPrimaryDomain: false }), false);
+    assert.strictEqual(shouldAutoClearStaleLondonOutletCrossMarket(outinjersey(), { ...ctx, urlFiledUnderOtherShow: true }), false);
+    assert.strictEqual(shouldAutoClearStaleLondonOutletCrossMarket(outinjersey(), { ...ctx, inOwnProductionWindow: false }), false);
+  });
+});
