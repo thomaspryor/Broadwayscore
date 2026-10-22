@@ -26,7 +26,7 @@
  *   node scripts/split-multi-show-roundups.js --show=ID    # one show only
  *   node scripts/split-multi-show-roundups.js --show=ID --file=NAME.json   # one file
  *   node scripts/split-multi-show-roundups.js --scan-all --joint --shard=0/4  # every 4th show dir
- *   node scripts/split-multi-show-roundups.js --scan-all --joint   # also try the opt-in joint strategy
+ *   node scripts/split-multi-show-roundups.js --scan-all --joint   # force the joint strategy on (default unless MULTI_SHOW_JOINT=0)
  *
  * E2E sequence (manual until CI-wired):
  *   1. node scripts/split-multi-show-roundups.js --scan-all                    # dry-run audit
@@ -58,7 +58,7 @@ const VERBOSE = args.has('--verbose') || args.has('-v');
 // ones. Catches manually-ingested multi-show articles (e.g. /ingest UI brings
 // in a Vulture roundup but doesn't auto-flag it). Slower (~14k files vs ~85).
 const SCAN_ALL = args.has('--scan-all');
-// --joint: also try the opt-in joint-review strategy (BRO-5895).
+// --joint: force the joint-review strategy on even if MULTI_SHOW_JOINT=0 (BRO-5895).
 const JOINT = args.has('--joint');
 let onlyShow = null;
 // --file=<name>: only this file inside --show (one data-fix target).

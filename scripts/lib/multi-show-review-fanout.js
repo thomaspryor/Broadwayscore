@@ -626,15 +626,16 @@ function captionSectionsCrossTalk(sections, shows) {
 }
 
 /**
- * The joint strategy is opt-in (opts.joint, or MULTI_SHOW_JOINT=1) until a
- * corpus-wide dry run has shown it splits no single-show review (BRO-5895).
+ * The joint strategy is on by default since the corpus-wide dry run showed it
+ * splits no single-show review (BRO-5895). opts.joint=false or
+ * MULTI_SHOW_JOINT=0 turns it off.
  */
 function jointEnabled(opts, data) {
   // A parent the joint strategy split re-trims the same way, or a refetch
   // that puts the whole article back would leave it holding every section.
   if (data && data.multiShowSplitParent === true && data.multiShowSplitAnchorKind === 'joint') return true;
   if (typeof opts.joint === 'boolean') return opts.joint;
-  return process.env.MULTI_SHOW_JOINT === '1';
+  return process.env.MULTI_SHOW_JOINT !== '0';
 }
 
 /**
@@ -670,12 +671,15 @@ function planMultiShowFanout(data, shows, opts = {}) {
 
   let strategy = 'caption';
   let sections = splitMultiShowArticle(text, shows).filter((s) => showIds.has(s.showId));
-  if (sections.length >= 2 && captionSectionsCrossTalk(sections, shows)) sections = [];
+  // Captions already showed one essay moving between the shows (BRO-4431):
+  // no later strategy may cut it either.
+  const interwoven = sections.length >= 2 && captionSectionsCrossTalk(sections, shows);
+  if (interwoven) sections = [];
   if (sections.length < 2 || !sections.some((s) => s.showId === ownShowId)) {
     strategy = 'intro';
     sections = introSections(text, shows, ownShowId, data.publishDate);
   }
-  if (sections.length < 2 && jointEnabled(opts, data)) {
+  if (sections.length < 2 && !interwoven && jointEnabled(opts, data)) {
     strategy = 'joint';
     sections = jointSections(text, shows, ownShowId, data.publishDate || data.firstSeenAt, { dateIsFirstSeen: !data.publishDate });
   }

@@ -156,13 +156,17 @@ test('Theater Life three-show column: star header, star-rated listings', () => {
   assert.doesNotMatch(section(p, ID['Good Time Charlie']), /\*\*\*\*/, 'header with Fish stars dropped');
 });
 
-test('the joint strategy is opt-in until the corpus dry run (no opts.joint, no env)', () => {
+test('the joint strategy is on by default; MULTI_SHOW_JOINT=0 and opts.joint=false turn it off', () => {
   const prev = process.env.MULTI_SHOW_JOINT;
-  delete process.env.MULTI_SHOW_JOINT;
+  const rec = () => base({ showId: ID['Good Time Charlie'], publishDate: '2026-10-16', fullText: THEATER_LIFE });
   try {
-    const p = planMultiShowFanout(base({ showId: ID['Good Time Charlie'], publishDate: '2026-10-16', fullText: THEATER_LIFE }), SHOWS);
-    assert.equal(p, null);
+    delete process.env.MULTI_SHOW_JOINT;
+    assert.ok(planMultiShowFanout(rec(), SHOWS));
+    assert.equal(planMultiShowFanout(rec(), SHOWS, { joint: false }), null);
+    process.env.MULTI_SHOW_JOINT = '0';
+    assert.equal(planMultiShowFanout(rec(), SHOWS), null);
   } finally {
+    delete process.env.MULTI_SHOW_JOINT;
     if (prev !== undefined) process.env.MULTI_SHOW_JOINT = prev;
   }
 });
