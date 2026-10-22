@@ -240,6 +240,8 @@ test('duplicateOf + evidenceUrl: a differently-titled undated stray of the same 
   assert.match(refused([{ ...kept, status: 'announced' }, { ...stray }]), /does not match/);
   assert.match(refused([{ ...kept }, { ...stray, venue: 'Sadler\'s Wells' }]), /not the same house/);
   assert.match(refused([{ ...kept }, { ...stray }], action, () => 2), /review/);
+  // Rep house: another opera closing the same day shares no title word, so it refuses.
+  assert.match(refused([{ ...kept }, { ...stray, title: 'The Magic Flute' }], { ...action, expectTitle: 'The Magic Flute' }), /does not match/);
   const shows = [{ ...kept }, { ...stray }];
   const r = applyRetireShow(shows, action, { retire: scratch().retire, reviewCount: none });
   assert.equal(r.ok, true, r.reason);

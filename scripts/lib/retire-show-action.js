@@ -93,11 +93,18 @@ function sameRun(kept, row, ticketDup) {
 // National Opera" vs "Angel's Bone"). Accepted only with an https evidenceUrl (the venue
 // listing) and: undated announced/upcoming stray, kept row open and dated, identical
 // closing date. House, market and zero reviews are checked by the caller.
+function titleStems(t) {
+  return new Set(normalizeTitle(t).split(/[^a-z0-9]+/).filter(w => w.length >= 4).map(w => w.replace(/s$/, '')));
+}
+
 function evidenceDuplicate(kept, row, evidenceUrl) {
   if (typeof evidenceUrl !== 'string' || !/^https:\/\/[^\s/]+\.[^\s]+$/.test(evidenceUrl)) return false;
   if (!NON_PRODUCTION_STATUSES.has(row.status) || isoOrNull(row.openingDate) || isoOrNull(row.previewsStartDate)) return false;
   if (kept.status !== 'open' || !isoOrNull(kept.openingDate)) return false;
-  return !!isoOrNull(row.closingDate) && row.closingDate === kept.closingDate;
+  if (!isoOrNull(row.closingDate) || row.closingDate !== kept.closingDate) return false;
+  // Rep houses close several productions on one date: the titles must still share a word.
+  const kw = titleStems(kept.title);
+  return [...titleStems(row.title)].some(w => kw.has(w));
 }
 
 function duplicateRefusal(row, duplicateOf, shows, reviewCount, evidenceUrl) {
@@ -172,7 +179,7 @@ function applyRetireShow(shows, action, { retire, now, reviewCount, isRetired } 
   }
   const doRetire = typeof retire === 'function' ? retire : require('./retired-show-ids').retireId;
   try {
-    doRetire(a.id, { reason: a.nonProduction === true ? `${a.reason.trim()} (evidence: ${a.evidenceUrl})` : a.reason.trim(), archivedRow: row, blockTitleVenue: a.blockTitleVenue === true, ...(now ? { now } : {}) });
+    doRetire(a.id, { reason: (a.nonProduction === true || (a.duplicateOf !== undefined && a.evidenceUrl)) ? `${a.reason.trim()} (evidence: ${a.evidenceUrl})` : a.reason.trim(), archivedRow: row, blockTitleVenue: a.blockTitleVenue === true, ...(now ? { now } : {}) });
   } catch (e) {
     return { ok: false, reason: `retire-show ${a.id}: ${e.message}` };
   }
