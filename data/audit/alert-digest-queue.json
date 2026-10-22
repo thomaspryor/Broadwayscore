@@ -543,6 +543,48 @@
     "queuedAt": "2026-10-22T13:51:49.687Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:ceilidh-the-musical-off-west-end-2026",
+    "title": "Review gap — \"Ceilidh The Musical\" missing 2 cited review(s)",
+    "description": "Ceilidh The Musical (ceilidh-the-musical-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=ceilidh-the-musical-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T14:24:48.441Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:garry-starr-classic-penguins-off-west-end-2026",
+    "title": "Review gap — \"Garry Starr Classic Penguins\" missing 10 cited review(s)",
+    "description": "Garry Starr Classic Penguins (garry-starr-classic-penguins-off-west-end-2026): 10 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=garry-starr-classic-penguins-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T14:24:48.490Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:girls-off-west-end-2026",
+    "title": "Review gap — \"Girls\" missing 27 cited review(s)",
+    "description": "Girls (girls-off-west-end-2026): 27 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=girls-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T14:24:48.504Z"
+  },
+  {
     "conditionKey": "corpus-drift:orphaned-wrongprod-provenance",
     "title": "Corpus drift: review files with wrongProduction provenance but the flag dropped (would score silently; baseline-diff)",
     "description": "check-corpus-drift.js audit \"orphaned-wrongprod-provenance\" (node scripts/audit-orphaned-wrongprod-provenance.js --gate) has been drifting. Latest output:\n\nScanned 58957 files: 15 orphaned (14 baselined, 1 NEW, 6 baseline entries now fixed)\nNEW orphaned wrongProduction provenance (flag dropped, file would score):\n  cats-2016/northjerseycom--robert-feldberg.json\nFix: restore wrongProduction:true if the detection was right, else delete the wrongProduction* provenance fields.\n(run --update-baseline to drop 6 fixed entries)",

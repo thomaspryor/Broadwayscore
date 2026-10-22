@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-22T11:18:19.008Z",
+  "generatedAt": "2026-10-22T14:24:55.470Z",
   "windowDays": 45,
-  "showsScanned": 202,
+  "showsScanned": 201,
   "gaps": [
     {
       "showId": "other-desert-cities-2026",
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=other-desert-cities-2026",
       "firstSeen": "2026-10-20T01:24:52.774Z",
-      "fileAgeHours": 57.88952305555556,
+      "fileAgeHours": 60.999610833333335,
       "gapSeenAt": "2026-10-20T16:46:29.082Z",
-      "nonTerminalAgeHours": 42.530535
+      "nonTerminalAgeHours": 45.640663333333336
     },
     {
       "showId": "slam-frank-off-broadway-2026",
@@ -36,9 +36,9 @@
       "forumLinkRecoveryCount": 6,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=slam-frank-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-18T14:14:33.814Z",
-      "fileAgeHours": 93.06152,
+      "fileAgeHours": 96.17160833333334,
       "gapSeenAt": "2026-10-18T18:09:48.486Z",
-      "nonTerminalAgeHours": 89.14181166666667
+      "nonTerminalAgeHours": 92.25194
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -54,9 +54,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 714.62911,
+      "fileAgeHours": 717.7392063888889,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 265.64889055555557
+      "nonTerminalAgeHours": 268.7590188888889
     },
     {
       "showId": "all-male-as-you-like-it-regional-2026",
@@ -72,9 +72,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=all-male-as-you-like-it-regional-2026 --url=https://www.talkinbroadway.com/page/regional/minn/minn1539.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-19T17:17:56.172Z",
-      "fileAgeHours": 66.00623388888889,
+      "fileAgeHours": 69.11635833333334,
       "gapSeenAt": "2026-10-19T18:06:42.214Z",
-      "nonTerminalAgeHours": 65.19355388888889
+      "nonTerminalAgeHours": 68.30368222222222
     }
   ],
   "contradictions": []

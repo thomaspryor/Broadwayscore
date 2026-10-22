@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T11:18:35.706Z",
+  "generatedAt": "2026-10-22T14:28:06.185Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -26,6 +26,11 @@
     {
       "id": "the-curious-case-of-benjamin-button-off-broadway-2026",
       "title": "The Curious Case of Benjamin Button",
+      "openingDate": "2026-10-21"
+    },
+    {
+      "id": "surinderella-off-west-end-2026",
+      "title": "Surinderella",
       "openingDate": "2026-10-21"
     },
     {
@@ -119,9 +124,19 @@
       "openingDate": "2026-10-18"
     },
     {
+      "id": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
+      "title": "Queeney Todd: The Demon Bottom of Fleet Street",
+      "openingDate": "2026-10-22"
+    },
+    {
       "id": "the-dog-show-come-sit-stay-off-broadway-2026",
       "title": "The Dog Show: Come. Sit. Stay.",
       "openingDate": "2026-10-18"
+    },
+    {
+      "id": "women-who-eat-off-broadway-2026",
+      "title": "Women Who Eat",
+      "openingDate": "2026-10-22"
     },
     {
       "id": "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026",
@@ -159,16 +174,21 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 723,
-  "matchedGaps": 4,
+  "itemsScanned": 757,
+  "matchedGaps": 7,
   "possibleGaps": 2,
   "gaps": [
+    {
+      "showId": "derren-brown-only-human-west-end-2026",
+      "title": "Derren Brown: Only Human",
+      "level": "matched",
+      "outletId": "north-west-end",
+      "url": "https://northwestend.com/derren-brown-only-human-apollo-theatre/",
+      "headline": "Derren Brown: Only Human – Apollo Theatre",
+      "publishDate": "2026-10-22"
+    },
     {
       "showId": "ilford-boy-west-end-2026",
       "title": "Ilford Boy",
@@ -195,6 +215,24 @@
       "url": "https://stageandcinema.com/2026/10/21/machine-learning-off-broadway-review/",
       "headline": "Off-Broadway Review: MACHINE LEARNING (Little Engine Theater)",
       "publishDate": "2026-10-21"
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
+      "title": "Martin Guerre",
+      "level": "matched",
+      "outletId": "the-recs",
+      "url": "https://therecs.co.uk/martin-guerre-old-vic-theatre/",
+      "headline": "Martin Guerre &#8211; Old Vic Theatre ★★★★★",
+      "publishDate": "2026-10-22"
+    },
+    {
+      "showId": "phyl-off-broadway-2026",
+      "title": "Phyl",
+      "level": "matched",
+      "outletId": "theater-pizzazz",
+      "url": "https://theaterpizzazz.com/phyl-charm-with-a-message/",
+      "headline": "&#8216;Phyl&#8217; – Charm with a Message",
+      "publishDate": "2026-10-22"
     },
     {
       "showId": "triumph-off-west-end-2026",
