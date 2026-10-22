@@ -122,5 +122,36 @@
       }
     ],
     "queuedAt": "2026-10-22T19:30:26.347Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5967-review-schema",
+    "title": "Landing blocked: rebase red on land/bro-5967-review-schema",
+    "description": "land.yml did not land land/bro-5967-review-schema: the rebase gate went red at 143263c7af. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39841918021",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5967-review-schema"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "143263c7af9da2f24cd665ccbe0c15774e7a1680"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39841918021"
+      }
+    ],
+    "queuedAt": "2026-10-22T19:41:05.885Z"
   }
 ]
