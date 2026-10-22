@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5895",
   "planId": "16754d31-9d17-4440-9e56-a342cc2cf0db",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-22T06:30:00.000Z",
   "submitter": {
     "name": null,
@@ -46,5 +46,34 @@
         "description": "Theater Life David Sheward: Good Time Charlie -> Fish and ANON sections"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T08:10:53.574Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
