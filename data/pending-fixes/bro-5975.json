@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5975",
   "planId": "79e37c61-0eed-45b3-a85d-3bb2501ccc2b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-22T14:38:58.026Z",
   "submitter": {
     "name": null,
@@ -114,5 +114,59 @@
         "description": "shows.json: school-pictures-off-broadway-2023.statusBackfillSource"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T18:02:32.964Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for the-good-thief-off-broadway-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for a-kidman-carol-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for arias-with-a-twist-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noPlaybillProductionPage updated for mystic-pizza-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noPlaybillProductionPage updated for purpose-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: statusBackfillSource updated for purpose-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noPlaybillProductionPage updated for topdog-underdog-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: statusBackfillSource updated for topdog-underdog-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noPlaybillProductionPage updated for school-pictures-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: statusBackfillSource updated for school-pictures-off-broadway-2023"
+    }
+  ],
+  "executedIn": "ci"
 }
