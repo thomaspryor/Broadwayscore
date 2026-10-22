@@ -240,6 +240,15 @@ test('an overall deadline stops a slow pass and defers the rest instead of dropp
   assert.equal(r.deadlineHit, true);
 });
 
+test('a pass past its deadline still admits what the aggregators cite; only fetch-needing date checks are deferred', async () => {
+  // Shadow run 39803830568 (860): slow adapters pushed every pass past 90 s, and the admission loop deferred every
+  // candidate, so the lane admitted nothing all night.
+  const slow = { name: 'slow', phase: 'cheap', async discover() { await new Promise((r) => setTimeout(r, 80)); return []; } };
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, adapters: [allAdapters()[0], slow], ...pages(baseMap()), deadlineMs: 50 });
+  assert.ok(r.admitted.length > 0, 'roundup-cited reviews are admitted although the pass ran over');
+  assert.ok(r.admitted.every((a) => a.source === 'aggregator'));
+});
+
 test('outlet-index finds outside opening night +/- 1 day are rejected with a reason, and dateless ones are checked per article', async () => {
   const map = baseMap();
   map[GUARDIAN_RAW] = '<meta property="article:published_time" content="2026-10-25T10:00:00Z">';
