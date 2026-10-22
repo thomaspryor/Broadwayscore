@@ -978,5 +978,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-22T18:21:15.157Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2427-withtimeout",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2427-withtimeout",
+    "description": "land.yml did not land land/bro-2427-withtimeout: the unit-tests-node gate went red at 73a18368f3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39834374996",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2427-withtimeout"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "73a18368f398f3d8967dd425284cfc4c80dbd2ea"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39834374996"
+      }
+    ],
+    "queuedAt": "2026-10-22T19:05:41.447Z"
   }
 ]
