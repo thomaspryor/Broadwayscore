@@ -23,6 +23,7 @@ const https = require('https');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket, isBroadwayCategory } = require('./lib/venue-classification');
 const { normalizeTitle } = require('./lib/title-match');
+const { matchesAlias } = require('./lib/aka-title-match');
 const { closedBeforeTheatr } = require('./lib/theatr-stale-attachment');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 const { buildTheatrCoverageFlags } = require('./lib/theatr-coverage-audit');
@@ -300,6 +301,21 @@ function matchTheatrToShows(theatrShows, ourShows) {
         matches.push({ theatr, show: best, confidence: 'exact' });
         continue;
       }
+    }
+
+    // Press-title alias at the same venue (BRO-5943): Theatr lists "860" where our
+    // title is "Billy Crystal 860" (akaTitles ["860"]); the prefix rule below needs
+    // 8+ characters, so a bare alias never matched.
+    const aliasCandidates = ourShows.filter(show => {
+      if (!matchesAlias(show, theatr.name, theatr.venue && theatr.venue.name)) return false;
+      if (closedBeforeTheatr(show)) return false;
+      const start = show.previewsStartDate || show.openingDate;
+      return !start || start <= today;
+    });
+    if (aliasCandidates.length > 0) {
+      const best = aliasCandidates.sort((a, b) => (b.openingDate || '').localeCompare(a.openingDate || ''))[0];
+      matches.push({ theatr, show: best, confidence: 'alias' });
+      continue;
     }
 
     // Prefix matching (handles "Two Strangers (Carry a Cake Across New York)" vs "Two Strangers")

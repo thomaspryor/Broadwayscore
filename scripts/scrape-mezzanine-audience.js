@@ -21,6 +21,7 @@ const { classifyParseResponse } = require('./lib/mezzanine-parse-client');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { normalizeTitle, titleTokens, jaccard, foldDiacritics } = require('./lib/title-match');
+const { aliasNorms } = require('./lib/aka-title-match');
 const { differentProductionReason, isEarlierClosedRun } = require('./lib/audience-coverage-gaps');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 
@@ -520,6 +521,7 @@ function matchProductions(productions, shows) {
     const overrideName = typeof override === 'string' ? override : (override && override.name);
     const overrideVenue = (override && typeof override === 'object') ? override.venue : null;
     const normOverride = overrideName ? normalize(overrideName) : null;
+    const aliases = aliasNorms(show);
     const siblings = siblingsByNormTitle.get(normTitle) || [];
     const hasSiblings = siblings.length > 1;
 
@@ -555,6 +557,13 @@ function matchProductions(productions, shows) {
       // Without this guard Strategy 1 fires unconditionally and bypasses the
       // pin entirely, since it runs independent of MEZZANINE_OVERRIDES.
       if (confidence === 'none' && !overrideVenue && mName === normTitle) {
+        confidence = 'high';
+      }
+
+      // Strategy 1b (BRO-5943): press-title alias. Mezzanine lists "860" where our
+      // title is "Billy Crystal 860" (akaTitles ["860"]). A bare alias is a short,
+      // collision-prone string, so it counts only at the same house.
+      if (confidence === 'none' && aliases.has(mName) && venuesMatch(show.venue, p.theater?.name || p.theaterName)) {
         confidence = 'high';
       }
 
