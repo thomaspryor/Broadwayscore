@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-10-22T10:36:31.795Z",
-  "processed": 131,
-  "failed": 71,
+  "updatedAt": "2026-10-22T10:55:32.157Z",
+  "processed": 135,
+  "failed": 73,
   "successRate": "64.9%",
   "tierBreakdown": {
-    "playwright": 62,
+    "playwright": 63,
     "amp": 2,
-    "browserbase": 5,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingdog": 9,
-    "scrapingbee": 4,
-    "brightdata": 0,
+    "scrapingbee": 5,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 49
   },
@@ -43,6 +43,23 @@
       "t": "2026-10-22T10:29:37.788Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-22T10:52:17.533Z",
+      "event": "bb-session",
+      "session": "e45d4cba",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-22T10:54:47.295Z",
+      "event": "bb-session",
+      "session": "aa631da0",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/ilford-boy-review-donmar-"
+    },
+    {
+      "t": "2026-10-22T10:54:47.774Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
