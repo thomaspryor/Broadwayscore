@@ -72,6 +72,12 @@ function stampsFor(kind, draft, stamp, { resend = false } = {}) {
 function afterSend(entry, stamps) {
   const out = { ...entry, ...stamps };
   for (const k of ['refreshedAt', 'previousReviewCount', 'previousScore']) delete out[k];
+  // An update email carries the numbers earlier additions produced, so the "still
+  // being scored" watch (lower update threshold) ends, unless the check that ran
+  // just before this very send added more reviews: those are not live yet (BRO-5887).
+  if (stamps.updateCount !== undefined && out.verification && out.verification.pendingScoring) {
+    out.verification = { ...out.verification, pendingScoring: !!out.verification.addedThisCheck };
+  }
   return out;
 }
 
@@ -143,6 +149,14 @@ function buildHtml(d, kind, images = [], { siteBehind = false } = {}) {
   const note = (label, text) => text
     ? `<div style="margin-top:12px;color:${TOKENS.textMuted};font-size:14px;line-height:1.5;"><strong style="color:${TOKENS.text};">${label}</strong> ${text}</div>`
     : '';
+  // Pre-send review check (BRO-5887). Lazy require: reddit-review-check requires this module.
+  const checked = require('./reddit-review-check').describeVerification(d.verification, d);
+  const banner = checked && checked.banner
+    ? `<div style="margin:14px 0 0 0;padding:10px 12px;border-radius:8px;border:1px solid ${TOKENS.brand};color:${TOKENS.text};font-size:13px;line-height:1.5;"><strong>Heads up.</strong> ${esc(checked.banner)}</div>`
+    : '';
+  const reviewsChecked = checked && checked.lines.length
+    ? note('Reviews checked:', checked.lines.map(l => esc(l)).join('<br>'))
+    : '';
   const personal = (d.personalLines || []).length
     ? note('Different ending?', `Swap the last line for one of these, if it fits how you feel:<br>${d.personalLines.map(l => `&bull; ${esc(l)}`).join('<br>')}`)
     : '';
@@ -154,7 +168,7 @@ function buildHtml(d, kind, images = [], { siteBehind = false } = {}) {
   <div style="max-width:600px;margin:0 auto;padding:24px 18px;background:${TOKENS.surfaceRaised};border:1px solid ${TOKENS.border};">
     <div style="font-size:11px;letter-spacing:0.10em;text-transform:uppercase;color:${TOKENS.brand};font-weight:600;">Reddit post ${kind === 'update' ? 'updated' : 'ready'} · r/${esc(d.subreddit)}</div>
     <h1 style="margin:6px 0 8px 0;font-size:22px;line-height:1.25;color:${TOKENS.text};">${esc(d.showTitle)} · ${esc(d.score)}/100 from ${esc(d.reviewCount)} reviews</h1>
-    <div style="color:${TOKENS.textMuted};font-size:14px;line-height:1.5;">${intro}</div>
+    <div style="color:${TOKENS.textMuted};font-size:14px;line-height:1.5;">${intro}</div>${banner}
     <div style="margin:18px 0 6px 0;">
       <a href="${esc(d.submitUrl)}" style="display:inline-block;background:${TOKENS.brand};color:#1a1a1a;text-decoration:none;font-weight:800;font-size:16px;padding:13px 20px;border-radius:8px;">Open Reddit with this post filled in</a>
     </div>
@@ -164,7 +178,7 @@ function buildHtml(d, kind, images = [], { siteBehind = false } = {}) {
       <div style="color:${TOKENS.text};font-size:16px;font-weight:700;line-height:1.35;">${esc(d.title)}</div>
       <div style="margin-top:10px;color:${TOKENS.text};font-size:15px;line-height:1.55;">${textBlock(d.body)}</div>
     </div>
-    ${shots}
+    ${shots}${reviewsChecked}
     ${note('Why it should land:', esc(d.why))}
     ${pushback}
     ${personal}

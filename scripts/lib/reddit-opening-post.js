@@ -314,7 +314,7 @@ function emailedNumbers(d) {
  */
 function carryOverState(prev, entry, nowIso) {
   if (!prev) return entry;
-  for (const k of ['createdAt', 'emailedAt', 'reminderAt', 'emailedScore', 'emailedReviewCount', 'updateCount', 'status', 'postedAt', 'postedUrl', 'postedSubreddit', 'postedScore']) {
+  for (const k of ['createdAt', 'emailedAt', 'reminderAt', 'emailedScore', 'emailedReviewCount', 'updateCount', 'verification', 'status', 'postedAt', 'postedUrl', 'postedSubreddit', 'postedScore']) {
     if (prev[k] !== undefined) entry[k] = prev[k];
   }
   if (prev.emailedAt) {
@@ -332,7 +332,10 @@ function carryOverState(prev, entry, nowIso) {
 function numbersMoved(d) {
   const was = emailedNumbers(d);
   if (![was.score, was.reviewCount, d.score, d.reviewCount].every(Number.isFinite)) return false;
-  return d.score !== was.score || Math.abs(d.reviewCount - was.reviewCount) >= MATERIAL_REVIEW_DELTA;
+  // While reviews the pre-send check added are still being scored (BRO-5887),
+  // any count change is the news, not just a bunch.
+  const delta = d.verification && d.verification.pendingScoring ? 1 : MATERIAL_REVIEW_DELTA;
+  return d.score !== was.score || Math.abs(d.reviewCount - was.reviewCount) >= delta;
 }
 
 /**
