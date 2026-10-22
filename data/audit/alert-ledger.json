@@ -244,16 +244,15 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-22T17:15:09.574Z",
-      "lastSeen": "2026-10-22T18:26:18.208Z",
-      "lastNotifiedAt": "2026-10-22T17:15:09.574Z",
-      "lastSurfacedAt": "2026-10-22T17:15:09.574Z",
-      "notifyCount": 153,
+      "incidentOpenedAt": "2026-10-22T18:29:58.168Z",
+      "lastSeen": "2026-10-22T18:29:58.168Z",
+      "lastNotifiedAt": "2026-10-22T18:29:58.168Z",
+      "lastSurfacedAt": "2026-10-22T18:29:58.168Z",
+      "notifyCount": 154,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 142,
-      "sweptTracker": "BRO-5554",
-      "silentRefires": 2
+      "sweptTracker": "BRO-5554"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -22274,7 +22273,7 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"real active target-outlet critics have author-page overrides\"",
       "firstSeen": "2026-10-20T20:23:23.923Z",
       "incidentOpenedAt": "2026-10-20T22:02:19.935Z",
-      "lastSeen": "2026-10-22T18:26:18.157Z",
+      "lastSeen": "2026-10-22T18:29:58.156Z",
       "lastNotifiedAt": "2026-10-20T22:02:19.935Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
@@ -23650,7 +23649,8 @@
         "runId": "39790224688",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39790224688"
       },
-      "silentRefires": 1
+      "resolvedAt": "2026-10-22T18:29:58.140Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-5943-theatr-alias": {
       "status": "open",
