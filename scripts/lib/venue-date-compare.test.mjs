@@ -988,3 +988,12 @@ test('BRO-5975: venueVariantMatch accepts room/institution labels, rejects other
   assert.ok(!venueVariantMatch('Theatre Row', 'Theatre Five @ Signature Center'));
   assert.ok(!venueVariantMatch('Paper Mill Playhouse, Millburn, NJ', 'Riverside Theatre - Stark Stage'));
 });
+
+test('BRO-5975: undated announced show is not year-mismatched against a page for a closed earlier run', async () => {
+  const { compareShow } = await import('./venue-date-compare.js');
+  const parsed = { titleParse: { venue: 'Music Box Theatre', market: 'Broadway', year: 2003 }, dates: { openingDate: '2003-11-02', closingDate: '2004-03-07' }, tagLine: null };
+  const url = 'https://playbill.com/production/cat-on-a-hot-tin-roof-music-box-theatre-vault-0000002570';
+  const base = { id: 'cat-on-a-hot-tin-roof-2027', category: 'broadway', venue: null, openingDate: null };
+  assert.equal(compareShow({ ...base, status: 'announced' }, parsed, url).mismatches.length, 0);
+  assert.equal(compareShow({ ...base, status: 'open', openingDate: '2027-04-01' }, parsed, url).mismatches.length, 1);
+});

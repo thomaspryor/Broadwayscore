@@ -191,7 +191,12 @@ function compareShow(show, parsed, playbillUrl) {
     const idy = (show.id || '').match(/\d{4}/);
     return idy ? parseInt(idy[0], 10) : null;
   })();
-  if (pbYear && showYear && pbYear !== showYear) {
+  // An undated announced/upcoming show whose Playbill page describes a run that already
+  // closed is being compared with an EARLIER production (cat-on-a-hot-tin-roof-2027 vs the
+  // 2003 Music Box page, BRO-5975): the id year is all we have, so the year says nothing.
+  const pageRunClosed = !show.openingDate && ['announced', 'upcoming'].includes(show.status)
+    && parsed.dates?.closingDate && parsed.dates.closingDate < new Date().toISOString().slice(0, 10);
+  if (pbYear && showYear && pbYear !== showYear && !pageRunClosed) {
     record({ field: 'opening-year', shows: showYear, playbill: pbYear });
   }
 
