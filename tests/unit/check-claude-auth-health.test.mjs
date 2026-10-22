@@ -286,7 +286,7 @@ test('usage cap: stored login capped but API-key fallback works -> digest billin
   assert.equal(p.disposition, 'digest');
   assert.doesNotMatch(p.description + p.hint, /auth logout/);
   assert.doesNotMatch(p.hint, /auth login/);
-  assert.match(p.description, /do NOT re-run/);
+  assert.match(p.description, /Do NOT re-run/);
 });
 
 test('usage cap: opening-night monitor routing digests a cap instead of paging auth', () => {
