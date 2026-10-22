@@ -20,6 +20,7 @@ const https = require('https');
 const { recordSbCall, recordSdCall, recordBdCall, sbBilledCredits, sdBilledCredits } = require('./provider-telemetry');
 const { consultScrapingdog } = require('./scrapingdog-caps');
 const { consultBrightData } = require('./brightdata-caps');
+const { sbRedditVerdict, sbRunBreakerOpen, readLedgerTail } = require('./reddit-dispatch-cooldown');
 
 const USER_AGENT = 'web:broadwayscorecard:v1.0 (by /u/bwayscorecard)';
 const MAX_RETRIES = 3;
@@ -148,6 +149,28 @@ async function enforceRateLimit() {
   lastRequestTime = Date.now();
 }
 
+// BRO-5916: ScrapingBee premium is 10 credits a call and was timing out on every
+// call for days while every dispatch re-burned ~290 credits. Two breakers:
+// cross-run (spend ledger says the last N SB Reddit calls all failed, so wait for
+// a probe window) and in-run (SB_RUN_FAILURE_LIMIT straight failures).
+let sbCrossRunVerdict = null; // computed once per process, lazily
+let sbRunConsecutiveFailures = 0;
+
+function sbBreakerBlock() {
+  if (process.env.REDDIT_SB_COOLDOWN_DISABLED === '1') return null;
+  if (sbRunBreakerOpen(sbRunConsecutiveFailures)) {
+    return `ScrapingBee breaker open (${sbRunConsecutiveFailures} consecutive failures this run) — skipping`;
+  }
+  if (!sbCrossRunVerdict) {
+    sbCrossRunVerdict = sbRedditVerdict(readLedgerTail());
+    if (!sbCrossRunVerdict.allowed || sbCrossRunVerdict.probe) {
+      console.warn(`  ScrapingBee Reddit cooldown: ${sbCrossRunVerdict.reason}`);
+    }
+  }
+  if (!sbCrossRunVerdict.allowed) return `ScrapingBee cooling down across runs — ${sbCrossRunVerdict.reason}`;
+  return null;
+}
+
 /**
  * Fetch via ScrapingBee (fallback)
  */
@@ -156,6 +179,9 @@ async function fetchViaScrapingBee(url) {
   if (!apiKey) {
     throw new Error('SCRAPINGBEE_API_KEY not set and direct Reddit access failed');
   }
+
+  const blocked = sbBreakerBlock();
+  if (blocked) throw new Error(blocked);
 
   stats.scrapingBee++;
 
@@ -171,6 +197,7 @@ async function fetchViaScrapingBee(url) {
   const _rec = (success, status) => {
     if (_recorded) return;
     _recorded = true;
+    sbRunConsecutiveFailures = success ? 0 : sbRunConsecutiveFailures + 1;
     try { recordSbCall({ url, fn: 'json', success, status, credits: sbBilledCredits(status, 10) }); } catch (_) {}
   };
 
@@ -184,6 +211,7 @@ async function fetchViaScrapingBee(url) {
           try {
             resolve(JSON.parse(data));
           } catch (e) {
+            sbRunConsecutiveFailures += 1; // a 200 with a non-JSON body is not a working route
             reject(new Error(`ScrapingBee JSON parse failed: ${data.slice(0, 100)}`));
           }
         } else if (res.statusCode === 401 || res.statusCode === 402) {
@@ -1022,6 +1050,8 @@ function resetFallbackState() {
   sdTierIndex = 0;
   sdConsecutiveFailures = 0;
   sdBreakerSkips = 0;
+  sbCrossRunVerdict = null;
+  sbRunConsecutiveFailures = 0;
   scrapingBeeSwitchTime = 0;
   rateLimitCount = 0;
   lastRequestTime = 0;
