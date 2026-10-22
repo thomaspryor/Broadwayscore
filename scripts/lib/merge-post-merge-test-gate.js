@@ -594,6 +594,7 @@ function defaultStaleCopies(cwd) {
       dataDir: path.join(cwd, 'data'),
       coreDataDir,
       files: [...getLocalCopyFiles(), ...getLocalSymlinkFiles()],
+      repoDir: cwd,
     });
   } catch {
     return [];

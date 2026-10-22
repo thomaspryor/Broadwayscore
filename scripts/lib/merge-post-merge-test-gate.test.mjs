@@ -1326,3 +1326,21 @@ test('runTestGate: a throwing staleCopiesFn falls back to the original wording, 
   assert.equal(r.passed, true);
   assert.match(r.output, /still real bugs, file a card/);
 });
+
+test('runTestGate: stale data plus a NEW failure still blocks (the label never softens a block)', () => {
+  const baselineDir = makeScratchRepo();
+  writeFailingTest(baselineDir, 'old.test.mjs');
+  const mergedDir = makeScratchRepo();
+  writeFailingTest(mergedDir, 'old.test.mjs');
+  writeFailingTest(mergedDir, 'new.test.mjs');
+  const r = runTestGate({
+    cwd: mergedDir,
+    changedFiles: ['scripts/lib/review-file-writer.js'],
+    makeBaselineCheckout: () => ({ dir: baselineDir, prepared: true }),
+    removeBaselineCheckout: () => {},
+    staleCopiesFn: () => ['shows.json'],
+  });
+  assert.equal(r.passed, false);
+  assert.match(r.output, /NEW since origin\/main/);
+  assert.match(r.output, /ENV: likely stale local data/);
+});
