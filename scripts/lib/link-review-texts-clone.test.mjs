@@ -139,3 +139,32 @@ test('the writer warns once when it writes into a stamped copy, never into a che
   assert.equal(warnIfStampedCopy(clone, (m) => seen.push(m)), false);
   assert.equal(seen.length, 1);
 });
+
+test('a clone with uncommitted writes is linked but never pulled over', () => {
+  const { clone, data } = fixture();
+  git(clone, '-c', 'user.email=t@t', '-c', 'user.name=t', 'add', '-A');
+  git(clone, '-c', 'user.email=t@t', '-c', 'user.name=t', 'commit', '-qm', 'base');
+  const f = path.join(clone, 'hamilton-2015', 'nytimes--ben-brantley.json');
+  fs.writeFileSync(f, '{"mac-edit":true}\n');
+  stampedCopy(data, { 'a/b.json': '{}' });
+  const { code, out } = run(data, clone);
+  assert.equal(code, 0, out);
+  assert.match(out, /uncommitted changes; not updating/);
+  assert.equal(fs.readFileSync(f, 'utf8'), '{"mac-edit":true}\n');
+  assert.equal(execFileSync('git', ['stash', 'list'], { cwd: clone, encoding: 'utf8' }), '');
+});
+
+test('an earlier backup is never overwritten', () => {
+  const { clone, data } = fixture();
+  const old = path.join(data, '.review-texts.copy-backup');
+  fs.mkdirSync(path.join(old, 'x'), { recursive: true });
+  fs.writeFileSync(path.join(old, 'x', 'older.json'), '{}');
+  stampedCopy(data, { 'y/newer.json': '{}' });
+  const { code, out } = run(data, clone);
+  assert.equal(code, 0, out);
+  assert.ok(fs.existsSync(path.join(old, 'x', 'older.json')));
+  const fresh = fs.readdirSync(data).filter((n) => n.startsWith('.review-texts.copy-backup.'));
+  assert.equal(fresh.length, 1);
+  assert.ok(fs.existsSync(path.join(data, fresh[0], 'y', 'newer.json')));
+  assert.match(out, new RegExp(`moved to data/${fresh[0].replace(/\./g, '\\.')}`));
+});

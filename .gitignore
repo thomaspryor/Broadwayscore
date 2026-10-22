@@ -50,6 +50,8 @@ data/review-texts/
 # setup-local-data.sh --all builds the fresh mirror beside the old one, then swaps
 data/.review-texts.new.*
 data/.review-texts.old.*
+# BRO-5938: the old copy kept when data/review-texts becomes a link to the clone
+data/.review-texts.copy-backup*/
 data/.*.cloudcopy.*
 data/.core-data-sha
 # BRO-4241: setup-local-data.sh --link-only makes data/review-texts a symlink in
