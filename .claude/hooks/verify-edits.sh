@@ -336,7 +336,11 @@ def _session_has_card():
 _MERGE_ASK_RE = re.compile(
     r"\byour\s+(merge|to merge)\b|\bfor you to merge\b"
     r"|\bready (for you )?to merge\b|\bwaiting on your merge\b"
-    r"|\bonce you merge\b|\bafter you merge\b|\bmerge it when\b",
+    r"|\bonce you merge\b|\bafter you merge\b|\bmerge it when\b"
+    # BRO-5915: imperative asks. Object required after "need to merge" so
+    # "you'll need to merge conflicts" (a description) doesn't match.
+    r"|\bplease merge\b"
+    r"|\byou(?:['’]ll| will)?\s+(?:need|have)\s+to\s+merge\s+(?:the\s+|this\s+|these\s+|both\s+|my\s+)?(?:PRs?\b|pull\s+requests?\b|#\d)",
     re.IGNORECASE,
 )
 _REVIEW_Q = r"((a|an|the|human|owner'?s?|your)\s+){0,2}"
@@ -893,12 +897,24 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
         # Anchored: `git push origin HEAD:refs/heads/land/x`, `... HEAD:land/x`,
         # `git push origin land/x` — not `foo-land/`.
         _land_push_re = re.compile(r'git\s+push\b[^\n;&|]*\s(\S*:)?(refs/heads/)?land/')
+        _gh_pr_create_re = re.compile(r'\bgh\s+pr\s+create\b|\b(gh\s+api|curl)\b[^\n;&|]*/pulls\b')
         for _kind, _payload in events:
             if _kind != 'tool':
                 continue
             _name, _inp, _tid = _payload
             _inp = _inp if isinstance(_inp, dict) else {}
             if _name == 'mcp__github__create_pull_request':
+                # Only a PR that exists counts (BRO-5915): github-main-guard.sh
+                # refuses Broadwayscore PR creation, and a refused or failed
+                # call (is_error) must not demand a blocker for a PR that
+                # never opened.
+                if _tid not in tool_error_ids:
+                    _opened_pr = True
+            elif (_name == 'Bash' and _tid not in tool_error_ids
+                  and _gh_pr_create_re.search(_inp.get('command') or '')
+                  and re.search(r'/pull/\d+', tool_results_by_id.get(_tid, '') or '')):
+                # `gh pr create` / a REST POST …/pulls that printed a PR URL
+                # (BRO-5915: the Bash route was never counted, in any repo).
                 _opened_pr = True
             elif _name == 'mcp__github__merge_pull_request':
                 # Only a merge that happened counts (BRO-4238): github-main-guard.sh
