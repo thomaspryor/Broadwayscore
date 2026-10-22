@@ -1,4 +1,7 @@
 name: Execute Approved Fix
+# The plan id in the title lets scripts/cloud-dispatch.js find this run when split
+# plans (bro-N, bro-N-b) are dispatched together (BRO-5892).
+run-name: "execute-approved-fix ${{ inputs.issue_number }} [${{ inputs.mode }}]"
 
 on:
   workflow_dispatch:
