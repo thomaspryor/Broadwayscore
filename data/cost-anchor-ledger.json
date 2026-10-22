@@ -1,0 +1,96 @@
+{
+  "_meta": {
+    "card": "BRO-5018",
+    "status": "incomplete",
+    "researchedAt": "2026-10-22",
+    "minimumPairsPerEra": 10,
+    "eraBasis": "The era of asOfA, the earlier cost observation. Cross-era pairs count once, in their starting era. This is not the production's opening era.",
+    "dateBasis": "asOf describes the cost, reportedAt describes publication. Period averages use the documented period midpoint or end, explained in each source note. Neither dates nor amounts are extracted from URLs.",
+    "scope": "Public amounts and source paraphrases only. No source quotations. These are research observations, never model inputs or permission to enable datedCosts. Coverage alone cannot establish no-worse recoupment categories or zero new false recoupments.",
+    "caveat": "The long Phantom interval and the short Good Night budget-to-actual comparison are disclosed rather than treated as independent annual inflation measurements. More dated observations are needed in every era."
+  },
+  "pairs": [
+    {
+      "show": "the-phantom-of-the-opera-1988",
+      "era": "pre-2010",
+      "kind": "running-cost",
+      "currency": "USD",
+      "costBasis": "reported weekly running costs for the original Broadway production",
+      "asOfA": "1988-01-24",
+      "amountA": 375000,
+      "sourceA": {
+        "url": "https://www.washingtonpost.com/archive/lifestyle/style/1988/01/24/phantom/44b67604-8ed5-4706-a952-f87c802d6809/",
+        "sourceType": "producer-confirmed",
+        "publisher": "The Washington Post",
+        "reportedAt": "1988-01-24",
+        "dateBasis": "reported-current",
+        "confirmedBy": "Cameron Mackintosh",
+        "note": "Mackintosh's contemporary Broadway weekly running-cost statement."
+      },
+      "asOfB": "2023-04-13",
+      "amountB": 950000,
+      "sourceB": {
+        "url": "https://variety.com/2023/legit/news/phantom-of-the-opera-closing-broadway-come-back-cameron-mackintosh-1235580960/",
+        "sourceType": "trade",
+        "publisher": "Variety",
+        "reportedAt": "2023-04-13",
+        "dateBasis": "reported-current",
+        "note": "General manager Aaron Lustbader's current weekly cost; indexed Yahoo syndication also confirms this amount."
+      }
+    },
+    {
+      "show": "hamilton",
+      "era": "2010-2019",
+      "kind": "running-cost",
+      "currency": "USD",
+      "costBasis": "fixed weekly expenses excluding royalties and percentage rent",
+      "asOfA": "2016-02-01",
+      "amountA": 658000,
+      "sourceA": {
+        "url": "https://www.broadwayjournal.com/p/lavish-dolly-earns-modest-returns",
+        "sourceType": "trade",
+        "publisher": "Broadway Journal",
+        "reportedAt": "2018-08-23",
+        "dateBasis": "period-midpoint",
+        "note": "First-year average in the corrected article. February 2016 represents the midpoint of the first Broadway year, matching the researched seeds. The correction removes variable theater rent."
+      },
+      "asOfB": "2017-01-31",
+      "amountB": 643000,
+      "sourceB": {
+        "url": "https://www.broadwayjournal.com/p/hamilton-inc-update-creators-producers-clean-up-as-muzzled-cast-waits-for-it",
+        "sourceType": "trade",
+        "publisher": "Broadway Journal",
+        "reportedAt": "2018-04-25",
+        "dateBasis": "period-midpoint",
+        "note": "Annual fixed-expense average for the year ended July 2017. January 2017 represents that period's midpoint, matching the researched seeds. April 2018 is the publication date, not another cost observation."
+      }
+    },
+    {
+      "show": "good-night-and-good-luck-2025",
+      "era": "2020+",
+      "kind": "running-cost",
+      "currency": "USD",
+      "costBasis": "weekly operating costs before royalties, production budget versus run average",
+      "asOfA": "2025-04-30",
+      "amountA": 1000000,
+      "sourceA": {
+        "url": "https://www.broadwayjournal.com/p/inside-broadways-rocky-rebound",
+        "sourceType": "trade",
+        "publisher": "Broadway Journal",
+        "reportedAt": "2025-04-30",
+        "dateBasis": "reported-current",
+        "note": "Current operating-paper budget reported during the Broadway run. This is the production's budget, not a category estimate."
+      },
+      "asOfB": "2025-06-08",
+      "amountB": 1100000,
+      "sourceB": {
+        "url": "https://www.broadwayjournal.com/p/clooneys-broadway-windfall",
+        "sourceType": "trade",
+        "publisher": "Broadway Journal",
+        "reportedAt": "2026-03-31",
+        "dateBasis": "period-end",
+        "note": "Financial statements give the 13-week 2025 run average plus royalties. The cost date is the run's end, not March 2026. This checks budget fidelity over the run, not a year's inflation after closing."
+      }
+    }
+  ]
+}
