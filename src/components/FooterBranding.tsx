@@ -36,6 +36,11 @@ export default function FooterBranding({ totalReviews }: { totalReviews: number 
         </p>
       </div>
       <div className="mt-4 pt-4 border-t border-white/5 text-center text-xs text-gray-500 space-y-1">
+        <p>
+          From the makers of Broadway Scorecard:{' '}
+          <a href="https://www.thetechscorecard.com/" className="text-gray-400 hover:text-white transition-colors underline underline-offset-2">Tech Scorecard</a>
+          , professional tech reviews in one score.
+        </p>
         <p>All ratings and reviews belong to their respective sources.</p>
         <p>Some ticket links are affiliate links. We may earn a commission at no extra cost to you.</p>
         <p>&copy; 2026 Broadway Scorecard™ LLC. All rights reserved.</p>
