@@ -977,6 +977,17 @@ function recordSuccessionLaunchRow(opts, res, appendEntry = null) {
 function pageAuthPreflightFailure(detail, reason) {
   try {
     const { routeAlert } = require('./owner-alert-router.js');
+    if (reason === 'usage-cap') {
+      routeAlert({
+        conditionKey: 'cmux-launch:usage-cap',
+        title: 'cmux launch refused — plan usage cap reached, not a revoked credential',
+        description: `${detail} The credential is valid; do NOT re-run \`claude auth login\`. Raise the spend limit at claude.ai/settings/usage or wait for the reset.`,
+        severity: 'warning',
+        disposition: 'digest',
+        cooldownHours: 6,
+      }).catch(() => {});
+      return;
+    }
     if (reason === 'spawn-starved' || reason === 'spawn-error') {
       const starved = reason === 'spawn-starved';
       routeAlert({

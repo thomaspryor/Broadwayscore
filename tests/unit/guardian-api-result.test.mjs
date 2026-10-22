@@ -91,3 +91,43 @@ test('publish date is the London calendar day', () => {
   assert.equal(londonDay('nope'), null);
   assert.equal(londonDay(undefined), null);
 });
+
+test('a Guardian API headline that leads with the show title is a dedicated review', () => {
+  const { apiHeadlineLeadsWithShow, titleHtmlFor, guardianContentToResult: g } = require('../../scripts/lib/guardian-api-result.js');
+  assert.equal(apiHeadlineLeadsWithShow('King Lear review – Ian McKellen is a fiery, mischievous king', 'King Lear'), true);
+  assert.equal(apiHeadlineLeadsWithShow('Translations review – Friel’s masterpiece', 'Translations'), true);
+  assert.equal(apiHeadlineLeadsWithShow('The Great Wave review – a tsunami of feeling', 'The Great Wave'), true);
+  assert.equal(apiHeadlineLeadsWithShow('Great Wave review – ...', 'The Great Wave'), true);
+  assert.equal(apiHeadlineLeadsWithShow('Pitying the Pity Party: theatre this week', 'Pity'), false, 'roundup / not leading');
+  assert.equal(apiHeadlineLeadsWithShow('Pitying review', 'Pity'), false, 'prefix of another word');
+  assert.equal(apiHeadlineLeadsWithShow('Five shows to see: King Lear and more', 'King Lear'), false);
+  assert.equal(apiHeadlineLeadsWithShow('Hamlet review – Andrew Scott', 'King Lear'), false);
+  assert.equal(apiHeadlineLeadsWithShow('King Lear: Ian McKellen on playing the king one last time', 'King Lear'), false, 'interview, not a review');
+  assert.equal(apiHeadlineLeadsWithShow('Pity Party review – a riot', 'Pity'), false, 'a longer title that begins with this one');
+  assert.equal(apiHeadlineLeadsWithShow('King Lear', 'King Lear'), false, 'bare title is not a review headline');
+  assert.equal(apiHeadlineLeadsWithShow(null, 'King Lear'), false);
+  const { result } = g({ webTitle: 'King Lear review – <a> & b', fields: { bodyText: body } });
+  assert.equal(result.pageTitle, 'King Lear review – <a> & b');
+  assert.equal(titleHtmlFor(result), '<title>King Lear review – &lt;a&gt; &amp; b</title>');
+  assert.equal(titleHtmlFor({ html: '<html>x</html>', pageTitle: 'y' }), '<html>x</html>');
+  assert.equal(titleHtmlFor({ html: '' }), null);
+});
+
+test('the mention check accepts the API title html for a body that names the show once', () => {
+  const { validateContentMentionsShow } = require('../../scripts/lib/content-quality.js');
+  const { titleHtmlFor } = require('../../scripts/lib/guardian-api-result.js');
+  const text = 'Ian McKellen returns to King Lear at the Duke of York’s. '.concat('The production is lucid and urgent. '.repeat(60));
+  const html = titleHtmlFor({ html: '', pageTitle: 'King Lear review – Ian McKellen is a fiery, mischievous king' });
+  assert.equal(validateContentMentionsShow(text, null, 'King Lear', 'king-lear-west-end-2018').valid, false, 'body alone fails (the BRO-5851 rejection)');
+  assert.equal(validateContentMentionsShow(text, html, 'King Lear', 'king-lear-west-end-2018').valid, true);
+});
+
+test('the mention waiver applies only to guardian-api results with a review headline', () => {
+  const { guardianMentionWaiver, titleHtmlFor } = require('../../scripts/lib/guardian-api-result.js');
+  const r = { method: 'guardian-api', pageTitle: 'King Lear review – Ian McKellen', text: 'x' };
+  assert.equal(guardianMentionWaiver(r, 'King Lear'), true);
+  assert.equal(guardianMentionWaiver({ ...r, method: 'scrapingbee' }, 'King Lear'), false, 'scraped pages keep the full check');
+  assert.equal(guardianMentionWaiver(r, 'Hamlet'), false);
+  assert.equal(guardianMentionWaiver(null, 'King Lear'), false);
+  assert.equal(titleHtmlFor({ html: '', pageTitle: 'Five shows to see this autumn: King Lear and more' }), null, 'roundup headline never relaxes the check');
+});

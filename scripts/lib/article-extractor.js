@@ -40,10 +40,10 @@ function stripHtml(s) {
     .replace(/<figcaption[^>]*>[\s\S]*?<\/figcaption>/g, ' ')
     .replace(/<[^>]+>/g, ' ')
     .replace(/&nbsp;/g, ' ')
-    .replace(/&#039;|&#x27;|&apos;/g, "'")
+    .replace(/&#0?39;|&#x27;|&apos;/gi, "'")
     .replace(/&amp;/g, '&')
     .replace(/&quot;|&ldquo;|&rdquo;|&#8220;|&#8221;/g, '"')
-    .replace(/&#8217;|&rsquo;|&lsquo;|&#8216;/g, "'")
+    .replace(/&#8217;|&#x2019;|&rsquo;|&lsquo;|&#8216;/gi, "'")
     .replace(/&mdash;|&#8212;/g, '—')
     .replace(/&ndash;|&#8211;/g, '–')
     .replace(/&hellip;|&#8230;/g, '…')
@@ -582,7 +582,7 @@ function extractRadioTimesBody(html) {
 }
 
 /**
- * londontheatre.co.uk (Official London Theatre, BRO-5904). Class names are
+ * londontheatre.co.uk (LondonTheatre.co.uk, BRO-5904). Class names are
  * CSS-in-JS (jssNNN) and change per build, so anchor on the stable
  * data-test-id="markdown-content" sections. The review is the standfirst
  * section plus the body section; the FAQ block (id="faq-section") and the
@@ -595,7 +595,8 @@ function extractLondonTheatreBody(html) {
   const paras = [];
   for (const sec of sections) {
     for (const m of sec[1].matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)) {
-      const text = stripHtml(m[1]);
+      // The closing line is "<Show> is at <Venue> to <date>. Book <Show> tickets on LondonTheatre.co.uk"; keep the dates, drop the ticket promo.
+      const text = stripHtml(m[1]).replace(/\s*Book\b[^.]*?\btickets on LondonTheatre\.co\.uk\s*$/i, '').trim();
       if (!text || /^Photo credit\b/i.test(text)) continue;
       paras.push(text);
     }
@@ -609,7 +610,7 @@ function extractLondonTheatreBody(html) {
  * minLength gates against accidental shell-match (e.g. matching 200 chars of nav).
  */
 const PATTERNS = [
-  // Official London Theatre: see extractLondonTheatreBody (BRO-5904).
+  // LondonTheatre.co.uk: see extractLondonTheatreBody (BRO-5904).
   ['londontheatre.co.uk', extractLondonTheatreBody, 300],
   // Radio Times: the body nests ratings, ads and image divs. Balanced matching
   // keeps every paragraph and excludes the pension/sidebar and disclosure copy.

@@ -265,6 +265,39 @@ function pruneStale(entries, nowIso, maxAgeDays = DEFAULT_MAX_QUEUE_AGE_DAYS) {
   );
 }
 
+// Billy Crystal 860 (2026-10-21): update-show-status auto-fires Express on the
+// previews->open flip (~12:00Z on opening day), ten hours before a Broadway
+// embargo lifts. That run found one early blog review with full text,
+// shouldRetryExpress judged 1/1 as not thin, and Express never ran again on
+// press night. A run that finishes before the show's press-night window opens
+// (opening-night-windows.js computeWindow) has seen no press reviews, whatever
+// the ratio says, so it always queues a retry for the market's
+// PRESS_NIGHT_RETRY_LOCAL slot. Returns that due time (ISO), or null
+// when the window is already open, the show has no usable date/market, or the
+// due time is more than 48h away (a stale openingDate).
+// Broadway embargoes lift ~21:30-23:00 ET and the hourly :50 dispatcher adds up
+// to an hour, so 23:15 runs the retry around 23:50 ET. West End press reviews
+// mostly land the next morning, so London retries at 08:00 the day after.
+const PRESS_NIGHT_RETRY_LOCAL = {
+  'America/New_York': { dayOffset: 0, hour: 23, minute: 15 },
+  'Europe/London': { dayOffset: 1, hour: 8, minute: 0 },
+};
+
+function pressNightRetryDueAt(show, nowIso) {
+  if (!show) return null;
+  const { computeWindow, utcFromZoned, nextDay, MARKET_TZ } = require('./opening-night-windows');
+  const category = show.category || 'broadway';
+  const now = new Date(nowIso);
+  const w = computeWindow({ ...show, category }, { now });
+  if (!w || w.anchor !== 'openingDate' || now >= w.windowStart) return null;
+  const tz = MARKET_TZ[category];
+  const slot = PRESS_NIGHT_RETRY_LOCAL[tz];
+  if (!slot) return null;
+  const due = utcFromZoned(slot.dayOffset ? nextDay(w.openingDate) : w.openingDate, slot.hour, slot.minute, tz);
+  if (due.getTime() - now.getTime() > 48 * 3600 * 1000) return null;
+  return due.toISOString();
+}
+
 module.exports = {
   RETRY_RATIO_THRESHOLD,
   DEFAULT_RETRY_DELAY_HOURS,
@@ -272,6 +305,8 @@ module.exports = {
   DEFAULT_MAX_QUEUE_AGE_DAYS,
   hasRealText,
   shouldRetryExpress,
+  pressNightRetryDueAt,
+  PRESS_NIGHT_RETRY_LOCAL,
   computeDueAt,
   enqueueRetry,
   selectDueRetries,

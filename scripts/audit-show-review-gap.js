@@ -206,6 +206,7 @@ const { normalizeOutlet: normalizeOutletId } = require('./lib/review-normalizati
 // prior-run URLs are ingest-blocked on EVERY path (see lib/gap-ingest-policy.js).
 const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, pendingPriorRunUrls, flaggedFilePriorRunDate, isRoundupSelfCitation } = require('./lib/gap-ingest-policy');
 const { otherProductionSignal } = require('./lib/other-production-signal');
+const { priorRunUrlSignal, phillyFringeUrlSignal } = require('./lib/prior-run-url-signal');
 const { isLikelyTourReview } = require('./lib/review-guards');
 const { ingestRefusalReason } = require('./lib/non-review-url-patterns');
 const { classifyIngestSkip, describeSkip } = require('./lib/ingest-skip-classify');
@@ -601,7 +602,7 @@ function isBookPageUrl(href) {
 // Broadway"), so the house signal only counts on a UK-domain outlet, and never
 // for a show that declares prior runs. Returns the signal or null.
 const TRANSFERRING_COMPANIES = new Set(['national theatre', 'royal shakespeare company']);
-function otherProductionUrlSignal(u, show, serpTitle) {
+function otherProductionUrlSignal(u, show, serpTitle, { census = false } = {}) {
   let slug = '';
   let host = '';
   try {
@@ -624,7 +625,8 @@ function otherProductionUrlSignal(u, show, serpTitle) {
     { only: venueTextApplies ? ['url-edition-market', 'venue-text'] : ['url-edition-market'], useText: true },
   );
   if (sig && sig.signal === 'venue-text' && [...TRANSFERRING_COMPANIES].some((c) => sig.detail.includes(`"${c}"`))) return null;
-  return sig;
+  // BRO-5512: a same-year earlier run (declared priorRuns) the year-only checks cannot see.
+  return sig || priorRunUrlSignal(u, show, { useVenue: census });
 }
 
 // BRO-5132: a New York show that transferred from the Edinburgh Fringe drags its
@@ -722,7 +724,7 @@ function acceptSerpCensusResult(sr, { show, showInfo, priorVetted = false }) {
   if (isUrlYearOutOfWindow(u, show)) return null;
   // Same-title production elsewhere (BRO-4190): the URL or SERP title names
   // another market's edition or a London house on a New York show.
-  if (otherProductionUrlSignal(u, show, sr.title) || edinburghFringeUrlSignal(u, show)) return null;
+  if (otherProductionUrlSignal(u, show, sr.title, { census: true }) || edinburghFringeUrlSignal(u, show) || phillyFringeUrlSignal(u, show)) return null;
   // Weak-specificity gate (ship-check 2026-07-24): isGenericShowTitle's raw
   // word-count test misses titles that are 2+ words on paper but reduce to a
   // SINGLE significant token once titleTokens() strips stopwords/short words

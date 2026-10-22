@@ -435,7 +435,9 @@ const STARVED_PREFLIGHT_PAGE_AFTER = 3;
  * @returns {{page: boolean, kind: 'auth'|'starved'}}
  */
 function authFailureRouting({ reason, consecutiveStarved }) {
-  if (reason !== cliAuth.AUTH_PING_REASONS.SPAWN_STARVED && reason !== cliAuth.AUTH_PING_REASONS.SPAWN_ERROR) {
+  // A plan usage cap is not a credential outage: digest it like starvation, not a page.
+  if (reason !== cliAuth.AUTH_PING_REASONS.SPAWN_STARVED && reason !== cliAuth.AUTH_PING_REASONS.SPAWN_ERROR
+    && reason !== cliAuth.AUTH_PING_REASONS.USAGE_CAP) {
     return { page: true, kind: 'auth' };
   }
   return { page: consecutiveStarved >= STARVED_PREFLIGHT_PAGE_AFTER, kind: 'starved' };

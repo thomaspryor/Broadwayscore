@@ -392,3 +392,12 @@ test('verifyContent call sites no longer hardcode isLongRunningProduction: false
 
 // BRO-4427: temporal-override warning downgrade (the card's acceptance file imports its tests).
 import './cv-wrongproduction-temporal-override.test.mjs';
+
+test('heuristicVerify: a press title (akaTitles) counts as the show being mentioned (BRO-5891, 860)', () => {
+  const text = "There are very few comedians left who can do what Billy Crystal can do. In 860, named for the house he lost in the Palisades fire, he is funny and moving for ninety minutes. ".repeat(4);
+  const without = heuristicVerify({ scrapedText: text, showTitle: 'Billy Crystal 860' });
+  assert.equal(without.wrongArticle, true);
+  const withAka = heuristicVerify({ scrapedText: text, showTitle: 'Billy Crystal 860', akaTitles: ['860'] });
+  assert.equal(withAka.wrongArticle, false);
+  assert.ok(!withAka.issues.some((i) => /not found in content/.test(i)));
+});

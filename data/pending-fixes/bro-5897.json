@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5897",
   "planId": "a18ee092-c475-4e9a-908c-1db70af9f5f5",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-22T03:42:18.816Z",
   "submitter": {
     "name": null,
@@ -30,5 +30,21 @@
         "description": "Stranded by the 2026-10-17 retirement of anne-washburns-anon-off-broadway-2026 (duplicateOf anon-a-tempest-at-our-kitchen-table-off-broadway-2026, BRO-5557): the review belongs on the kept show page"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T04:38:33.474Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved anne-washburns-anon-off-broadway-2026/nytimes--helen-shaw.json → anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nytimes--helen-shaw.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved anne-washburns-anon-off-broadway-2026/vulture--sara-holdren.json → anon-a-tempest-at-our-kitchen-table-off-broadway-2026/vulture--sara-holdren.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
 }

@@ -332,9 +332,9 @@ jobs:
             echo "No changes to reviews.json"
           else
             git commit -m "data: Auto-rebuild reviews.json (hard-paywall collection)"
-            git pull --rebase origin main || {
+            git -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull --rebase origin main || {
               git rebase --abort 2>/dev/null || true
-              git pull --no-rebase -X ours origin main
+              git -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' A %O %A %B %P" pull --no-rebase -X ours origin main
             }
             bash scripts/lib/push-with-retry.sh
           fi
@@ -794,9 +794,9 @@ jobs:
             echo "No changes to reviews.json"
           else
             git commit -m "data: Auto-rebuild reviews.json (hard-paywall collection — all domains)"
-            git pull --rebase origin main || {
+            git -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull --rebase origin main || {
               git rebase --abort 2>/dev/null || true
-              git pull --no-rebase -X ours origin main
+              git -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' A %O %A %B %P" pull --no-rebase -X ours origin main
             }
             bash scripts/lib/push-with-retry.sh
           fi

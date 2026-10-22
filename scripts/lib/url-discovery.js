@@ -251,6 +251,7 @@ function getShowInfo(showId) {
         cast: Array.isArray(showEntry.cast) ? showEntry.cast : [],
         creativeNames,
         leadActor,
+        akaTitles: Array.isArray(showEntry.akaTitles) ? showEntry.akaTitles : [],
       };
     }
   } catch (e) { /* fall through */ }
@@ -1156,6 +1157,14 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   const primaryTitle = showInfo.title.includes(' - ')
     ? showInfo.title.split(' - ')[0].trim()
     : null;
+  // Press titles (shows.json akaTitles): "Billy Crystal 860" is reviewed as
+  // "860", so a quoted listing-title query found almost none of its reviews
+  // (2026-10-21). Tried in turn after the full title and accepted as a match.
+  const altTitles = [primaryTitle, ...(showInfo.akaTitles || [])]
+    .filter((t, i, a) => typeof t === 'string' && t.trim().length >= 3
+      && t.toLowerCase() !== showInfo.title.toLowerCase()
+      && a.findIndex((u) => typeof u === 'string' && u.toLowerCase() === t.toLowerCase()) === i)
+    .map((t) => t.trim());
 
   // Sanitize title for SERP: replace & with "and" to avoid URL encoding issues
   const serpTitle = showInfo.title.replace(/\s*&\s*/g, ' and ');
@@ -1182,14 +1191,15 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   if (!results.length) {
     // Fallback 1: retry with stripped title (e.g., "The Tempest" instead of "The Tempest - Globe")
     // Reviewers omit venue/subtitle suffixes, causing 0 SERP hits for the full title
-    if (primaryTitle && primaryTitle.length >= 3) {
+    for (const altTitle of altTitles) {
+      if (results.length) break;
       let strippedQuery;
       if (domain) {
-        strippedQuery = `${buildSiteClause(domain)} "${primaryTitle}" ${marketTerm}${yearClause}${criticClause}`;
+        strippedQuery = `${buildSiteClause(domain)} "${altTitle}" ${marketTerm}${yearClause}${criticClause}`;
       } else {
-        strippedQuery = `"${primaryTitle}" ${marketTerm}${yearClause} "${outletName}"${criticClause}`;
+        strippedQuery = `"${altTitle}" ${marketTerm}${yearClause} "${outletName}"${criticClause}`;
       }
-      log(`    Retry with stripped title: ${strippedQuery}`);
+      log(`    Retry with alternate title: ${strippedQuery}`);
       ({ results, provider } = await _serpWithChain(strippedQuery, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, undefined, undefined, emptyAuthoritative, negativeCacheTtlMs));
       provider = provider ? provider + '-stripped' : null;
       if (results === null) {
@@ -1350,9 +1360,9 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     // prose title as if it were a URL (see urlOrTitleLooksLikeReview).
     // [BRO-1351]
     const titleHasShow = urlLooksLikeReview(title, showInfo.title)
-      || (primaryTitle && urlLooksLikeReview(title, primaryTitle));
+      || altTitles.some((t) => urlLooksLikeReview(title, t));
     const urlHasShow = urlLooksLikeReview(urlLower, showInfo.title)
-      || (primaryTitle && urlLooksLikeReview(urlLower, primaryTitle));
+      || altTitles.some((t) => urlLooksLikeReview(urlLower, t));
     const reviewTerms = ['review', 'theater', 'theatre', 'stage', 'musical', 'broadway', 'west end',
       'culture', 'arts', 'entertainment', 'article'];
     const titleHasReview = reviewTerms.some(t => title.includes(t));

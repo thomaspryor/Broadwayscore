@@ -227,3 +227,14 @@ test('discovers a Telegraph review whose headline omits the word review', async 
   assert.equal(results[0].outletId, 'telegraph');
   assert.equal(results[0].url, publisher);
 });
+
+test('akaTitles: the press title is searched and matched (Billy Crystal 860 is reviewed as "860")', () => {
+  const { searchTitles, googleNewsRssUrl, isReviewHeadline } = createRequire(import.meta.url)('./google-news-rss.js');
+  const show = { id: 'billy-crystal-860-2026', title: 'Billy Crystal 860', akaTitles: ['860', 'billy crystal 860', ''], category: 'broadway', openingDate: '2026-10-21' };
+  assert.deepEqual(searchTitles(show), ['Billy Crystal 860', '860']);
+  assert.equal(new URL(googleNewsRssUrl(show)).searchParams.get('q'), '"Billy Crystal 860" OR "860" review');
+  assert.ok(isReviewHeadline({ title: "'860' Broadway Review: Billy Crystal Remembers The Good Stuff And The Bad - Deadline", pubDate: 'Thu, 22 Oct 2026 02:00:00 GMT' }, show));
+  assert.ok(!isReviewHeadline({ title: 'New Balance Fresh Foam X 860 v15 Review (2026) - Doctors of Running', pubDate: 'Thu, 22 Oct 2026 02:00:00 GMT' }, show));
+  assert.ok(isReviewHeadline({ title: '860: Billy Crystal Brings Down the House - New York Stage Review', pubDate: 'Thu, 22 Oct 2026 02:00:00 GMT' }, show));
+  assert.equal(new URL(googleNewsRssUrl({ title: 'Hamlet', category: 'broadway' })).searchParams.get('q'), '"Hamlet" review');
+});

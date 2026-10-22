@@ -236,20 +236,25 @@ jobs:
                 d.setHours(0,0,0,0);
                 return d >= cutoff && d <= now;
               });
-              // BRO-5861: newest openers first (null openingDate = stuck-preview backstop, last).
+              // Order (poller-loop-budget.js orderPollShows): shows in their press-night
+              // window first (main stage before Off), local-date future openers last.
               // The poll loop is time-budgeted and keeps the first POLL_PRIORITY_SHOWS in
               // this order, so tonight's opener is never the one a budget cut drops.
-              const ts = s => s.openingDate ? new Date(s.openingDate).getTime() : -Infinity;
-              opened.sort((x, y) => ts(y) - ts(x));
-              if (opened.length > 0) console.log(opened.map(s => s.id).join(','));
+              const { orderPollShows } = require('./scripts/lib/poller-loop-budget');
+              const r = orderPollShows(opened, now);
+              if (r.order.length > 0) console.log([r.order.join(','), r.hot.join(','), r.front].join('|'));
             ")
 
             if [ -z "$SHOWS" ]; then
               echo "No recently opened shows"
               echo "has_shows=false" >> $GITHUB_OUTPUT
             else
-              echo "Recently opened shows: $SHOWS"
-              echo "shows=$SHOWS" >> $GITHUB_OUTPUT
+              IFS='|' read -r ORDERED HOT FRONT <<< "$SHOWS"
+              echo "Recently opened shows: $ORDERED"
+              echo "Press-night shows re-polled during the loop: ${HOT:-none}"
+              echo "shows=$ORDERED" >> $GITHUB_OUTPUT
+              echo "hot=$HOT" >> $GITHUB_OUTPUT
+              echo "front=${FRONT:-0}" >> $GITHUB_OUTPUT
               echo "has_shows=true" >> $GITHUB_OUTPUT
             fi
           fi
@@ -365,9 +370,16 @@ jobs:
           # First N shows (newest openers, see the Find step) are never rotated away
           # from the front, so a budget cut can only drop older / stuck-preview shows.
           POLL_PRIORITY_SHOWS: '8'
+          # Minutes between polls of a press-night show inside one run (see the loop).
+          HOT_REPOLL_SEC: '900'
+          HOT_MAX_REPOLLS: '3'
         run: |
           LOOP_START=$SECONDS
-          ROTATED_SHOWS=$(node scripts/lib/poller-loop-budget.js rotate "${{ steps.find.outputs.shows }}" "$GITHUB_RUN_NUMBER" "$POLL_PRIORITY_SHOWS" || echo "${{ steps.find.outputs.shows }}")
+          # Keep every front show (tonight's / last night's openers) out of the rotation.
+          KEEP_FRONT="${{ steps.find.outputs.front }}"
+          case "$KEEP_FRONT" in ''|*[!0-9]*) KEEP_FRONT=0 ;; esac
+          [ "$KEEP_FRONT" -gt "$POLL_PRIORITY_SHOWS" ] || KEEP_FRONT="$POLL_PRIORITY_SHOWS"
+          ROTATED_SHOWS=$(node scripts/lib/poller-loop-budget.js rotate "${{ steps.find.outputs.shows }}" "$GITHUB_RUN_NUMBER" "$KEEP_FRONT" || echo "${{ steps.find.outputs.shows }}")
           IFS=',' read -ra SHOW_ARRAY <<< "$ROTATED_SHOWS"
           SKIPPED_SHOWS=""
           ANY_NEW=false
@@ -391,6 +403,123 @@ jobs:
           # step near the end of this job — see scripts/lib/opening-night-pipeline-stages.js.
           GATHER_FAILED=0
           GATHER_TOTAL=0
+          # Press-night re-poll (Billy Crystal 860, 2026-10-21): HOT_SHOWS (find step,
+          # orderPollShows) are main-stage shows in the first 8h of their press-night
+          # window. One pass over ~40 shows takes ~70 min, so a single look per run
+          # missed the 22:00 ET embargo lift by an hour. Each hot show is polled again
+          # once HOT_REPOLL_SEC has passed since its last poll ENDED (at most
+          # HOT_MAX_REPOLLS times a run), between tail shows. Once a hot show has new
+          # review files and the front of the order (tonight's and last night's
+          # openers) is done, the loop stops so collect/score/rebuild/deploy run now;
+          # the tail waits for the next run (at most one night, the hot span).
+          HOT_SHOWS="${{ steps.find.outputs.hot }}"
+          FRONT="${{ steps.find.outputs.front }}"
+          case "$FRONT" in ''|*[!0-9]*) FRONT=0 ;; esac
+          IFS=',' read -ra HOT_ARRAY <<< "$HOT_SHOWS"
+          declare -A LAST_POLL=()
+          declare -A REPOLLS=()
+          HOT_NEW=false
+          POLLED=0
+
+          poll_one() {
+            SHOW_ID="$1"
+            SHOW_TIMEOUT="$2"
+            local HOT_BEFORE=""
+            if [[ ",$HOT_SHOWS," == *",$SHOW_ID,"* ]]; then
+              HOT_BEFORE=$(cd data/review-texts && git status --porcelain --untracked-files=all -- "$SHOW_ID" | grep -c '^??' || true)
+            fi
+              echo "════════════════════════════════════════"
+              echo "Polling: $SHOW_ID"
+              echo "════════════════════════════════════════"
+              BWW_ARG=""
+              TB_ARG=""
+              if [ -n "${INPUT_BWW_ROUNDUP_URL}" ]; then
+                BWW_ARG="--bww-roundup-url=${INPUT_BWW_ROUNDUP_URL}"
+              fi
+              if [ -n "${INPUT_TB_REVIEW_URL}" ]; then
+                TB_ARG="--tb-review-url=${INPUT_TB_REVIEW_URL}"
+              fi
+              # Capture poller output to a per-show file so we can grep for
+              # guardian_redispatch_needed below. --force-serp is derived from workflow input.
+              PER_SHOW_OUT="$RUNNER_TEMP/poller-$SHOW_ID.log"
+              GATHER_TOTAL=$((GATHER_TOTAL + 1))
+              POLLER_RC=0
+              timeout "$SHOW_TIMEOUT" node scripts/opening-night-poller.js --show="$SHOW_ID" $SKIP_SERP_FLAG $FORCE_SERP_FLAG $BWW_ARG $TB_ARG 2>&1 | tee "$PER_SHOW_OUT" || POLLER_RC=${PIPESTATUS[0]}
+              if [ "$POLLER_RC" -eq 124 ] && [ "$SHOW_TIMEOUT" -lt 600 ]; then
+                # Cut short by the loop budget, not a crash: retried next run.
+                echo "  ⏱️ $SHOW_ID hit the loop-budget timeout (${SHOW_TIMEOUT}s) — not counted as a gather failure"
+                SKIPPED_SHOWS="$SKIPPED_SHOWS $SHOW_ID(partial)"
+              elif [ "$POLLER_RC" -ne 0 ]; then
+                GATHER_FAILED=$((GATHER_FAILED + 1))
+                echo "  ⚠️ poller exited $POLLER_RC for $SHOW_ID — counted as a gather-stage failure"
+              fi
+
+              # Check if files were created (review-texts is a separate git checkout)
+              CREATED=$(cd data/review-texts && git status --porcelain | wc -l | tr -d ' ')
+              if [ "$CREATED" -gt 0 ]; then
+                ANY_NEW=true
+                echo "  → $CREATED new review files"
+              fi
+              # Joe Turner 2026-04-25 postmortem: a poll that returns 0 NEW files
+              # but has UNSCORED existing reviews used to skip the entire scoring
+              # + rebuild + deploy chain — leaving openings with collected-but-
+              # unscored reviews stranded under the 5-review llm-ensemble auto-
+              # trigger threshold. Detect that case here so the scoring + rebuild
+              # gates can fire.
+              UNSCORED=$(node -e "
+                const fs = require('fs');
+                const path = require('path');
+                const { isStaleScoreInput } = require('./scripts/lib/rescore-flagging');
+                const { isActionableRescore, loadShowsById } = require('./scripts/lib/scoring-queue-counts');
+                const dir = path.join('data', 'review-texts', '$SHOW_ID');
+                if (!fs.existsSync(dir)) { console.log(0); process.exit(0); }
+                // Full record, not just filePath: a tour's own reviews say
+                // 'national tour', and the guard needs category to know (BRO-4563).
+                const show = loadShowsById().get('$SHOW_ID');
+                let n = 0;
+                for (const f of fs.readdirSync(dir)) {
+                  // _blocklist.json and other _-prefixed files are show metadata,
+                  // not reviews (counting them kept any_action true every poll).
+                  if (!f.endsWith('.json') || f.startsWith('_')) continue;
+                  try {
+                    const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+                    // 'Unscored' = no llmScore AND no humanReviewScore AND no
+                    // originalScore. originalScore alone (e.g., a star rating)
+                    // does NOT count as scored — composite still needs LLM.
+                    const hasScore = d.llmScore != null || d.humanReviewScore != null;
+                    if (!hasScore && !d.wrongProduction && !d.wrongShow && !d.isRoundupArticle) n++;
+                    // Scored off a roundup excerpt but full text is now on disk
+                    // (or already queued for that rescore). School Girls 2026:
+                    // 6 of 19 reviews sat at excerpt scores for hours because
+                    // nothing counted them as work.
+                    // Counts only what the scorer would actually take
+                    // (isActionableRescore mirrors index.ts's --needs-rescore
+                    // filter: text-gate blocks, cooldowns), so a stuck flag
+                    // cannot force a rebuild + deploy on every poll.
+                    else if (hasScore && (isActionableRescore(d, { show, showTitle: show && show.title, filePath: path.join(dir, f) }) || isStaleScoreInput(d, show, path.join(dir, f)))) n++;
+                  } catch (_) {}
+                }
+                console.log(n);
+              " 2>/dev/null || echo 0)
+              if [ "$UNSCORED" -gt 0 ]; then
+                ANY_READY=true
+                echo "  → $UNSCORED unscored or excerpt-scored review(s) waiting for $SHOW_ID"
+              fi
+              # Balusters postmortem CLASS 4 — collect shows needing Guardian redispatch
+              if grep -q "\[GUARDIAN\] Guardian URL discovered without originalScore" "$PER_SHOW_OUT" 2>/dev/null; then
+                [[ ",$GUARDIAN_REDISPATCH_SHOWS," == *",$SHOW_ID,"* ]] || GUARDIAN_REDISPATCH_SHOWS="$GUARDIAN_REDISPATCH_SHOWS,$SHOW_ID"
+              fi
+            if [ -n "$HOT_BEFORE" ]; then
+              local HOT_AFTER
+              HOT_AFTER=$(cd data/review-texts && git status --porcelain --untracked-files=all -- "$SHOW_ID" | grep -c '^??' || true)
+              if [ "$HOT_AFTER" -gt "$HOT_BEFORE" ]; then
+                HOT_NEW=true
+                echo "  🔥 $SHOW_ID (press night) has $((HOT_AFTER - HOT_BEFORE)) new review file(s)"
+              fi
+            fi
+            LAST_POLL[$SHOW_ID]=$SECONDS
+          }
+
           for SHOW_ID in "${SHOW_ARRAY[@]}"; do
             SHOW_TIMEOUT=$(node scripts/lib/poller-loop-budget.js timeout $((POLL_LOOP_BUDGET_SEC - (SECONDS - LOOP_START))) 600 || echo 600)
             case "$SHOW_TIMEOUT" in ''|*[!0-9]*) SHOW_TIMEOUT=600 ;; esac
@@ -398,86 +527,25 @@ jobs:
               SKIPPED_SHOWS="$SKIPPED_SHOWS $SHOW_ID"
               continue
             fi
-            echo "════════════════════════════════════════"
-            echo "Polling: $SHOW_ID"
-            echo "════════════════════════════════════════"
-            BWW_ARG=""
-            TB_ARG=""
-            if [ -n "${INPUT_BWW_ROUNDUP_URL}" ]; then
-              BWW_ARG="--bww-roundup-url=${INPUT_BWW_ROUNDUP_URL}"
-            fi
-            if [ -n "${INPUT_TB_REVIEW_URL}" ]; then
-              TB_ARG="--tb-review-url=${INPUT_TB_REVIEW_URL}"
-            fi
-            # Capture poller output to a per-show file so we can grep for
-            # guardian_redispatch_needed below. --force-serp is derived from workflow input.
-            PER_SHOW_OUT="$RUNNER_TEMP/poller-$SHOW_ID.log"
-            GATHER_TOTAL=$((GATHER_TOTAL + 1))
-            POLLER_RC=0
-            timeout "$SHOW_TIMEOUT" node scripts/opening-night-poller.js --show="$SHOW_ID" $SKIP_SERP_FLAG $FORCE_SERP_FLAG $BWW_ARG $TB_ARG 2>&1 | tee "$PER_SHOW_OUT" || POLLER_RC=${PIPESTATUS[0]}
-            if [ "$POLLER_RC" -eq 124 ] && [ "$SHOW_TIMEOUT" -lt 600 ]; then
-              # Cut short by the loop budget, not a crash: retried next run.
-              echo "  ⏱️ $SHOW_ID hit the loop-budget timeout (${SHOW_TIMEOUT}s) — not counted as a gather failure"
-              SKIPPED_SHOWS="$SKIPPED_SHOWS $SHOW_ID(partial)"
-            elif [ "$POLLER_RC" -ne 0 ]; then
-              GATHER_FAILED=$((GATHER_FAILED + 1))
-              echo "  ⚠️ poller exited $POLLER_RC for $SHOW_ID — counted as a gather-stage failure"
-            fi
-
-            # Check if files were created (review-texts is a separate git checkout)
-            CREATED=$(cd data/review-texts && git status --porcelain | wc -l | tr -d ' ')
-            if [ "$CREATED" -gt 0 ]; then
-              ANY_NEW=true
-              echo "  → $CREATED new review files"
-            fi
-            # Joe Turner 2026-04-25 postmortem: a poll that returns 0 NEW files
-            # but has UNSCORED existing reviews used to skip the entire scoring
-            # + rebuild + deploy chain — leaving openings with collected-but-
-            # unscored reviews stranded under the 5-review llm-ensemble auto-
-            # trigger threshold. Detect that case here so the scoring + rebuild
-            # gates can fire.
-            UNSCORED=$(node -e "
-              const fs = require('fs');
-              const path = require('path');
-              const { isStaleScoreInput } = require('./scripts/lib/rescore-flagging');
-              const { isActionableRescore, loadShowsById } = require('./scripts/lib/scoring-queue-counts');
-              const dir = path.join('data', 'review-texts', '$SHOW_ID');
-              if (!fs.existsSync(dir)) { console.log(0); process.exit(0); }
-              // Full record, not just filePath: a tour's own reviews say
-              // 'national tour', and the guard needs category to know (BRO-4563).
-              const show = loadShowsById().get('$SHOW_ID');
-              let n = 0;
-              for (const f of fs.readdirSync(dir)) {
-                // _blocklist.json and other _-prefixed files are show metadata,
-                // not reviews (counting them kept any_action true every poll).
-                if (!f.endsWith('.json') || f.startsWith('_')) continue;
-                try {
-                  const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
-                  // 'Unscored' = no llmScore AND no humanReviewScore AND no
-                  // originalScore. originalScore alone (e.g., a star rating)
-                  // does NOT count as scored — composite still needs LLM.
-                  const hasScore = d.llmScore != null || d.humanReviewScore != null;
-                  if (!hasScore && !d.wrongProduction && !d.wrongShow && !d.isRoundupArticle) n++;
-                  // Scored off a roundup excerpt but full text is now on disk
-                  // (or already queued for that rescore). School Girls 2026:
-                  // 6 of 19 reviews sat at excerpt scores for hours because
-                  // nothing counted them as work.
-                  // Counts only what the scorer would actually take
-                  // (isActionableRescore mirrors index.ts's --needs-rescore
-                  // filter: text-gate blocks, cooldowns), so a stuck flag
-                  // cannot force a rebuild + deploy on every poll.
-                  else if (hasScore && (isActionableRescore(d, { show, showTitle: show && show.title, filePath: path.join(dir, f) }) || isStaleScoreInput(d, show, path.join(dir, f)))) n++;
-                } catch (_) {}
-              }
-              console.log(n);
-            " 2>/dev/null || echo 0)
-            if [ "$UNSCORED" -gt 0 ]; then
-              ANY_READY=true
-              echo "  → $UNSCORED unscored or excerpt-scored review(s) waiting for $SHOW_ID"
-            fi
-            # Balusters postmortem CLASS 4 — collect shows needing Guardian redispatch
-            if grep -q "\[GUARDIAN\] Guardian URL discovered without originalScore" "$PER_SHOW_OUT" 2>/dev/null; then
-              GUARDIAN_REDISPATCH_SHOWS="$GUARDIAN_REDISPATCH_SHOWS,$SHOW_ID"
+            poll_one "$SHOW_ID" "$SHOW_TIMEOUT"
+            POLLED=$((POLLED + 1))
+            for HOT_ID in "${HOT_ARRAY[@]}"; do
+              [ -n "$HOT_ID" ] || continue
+              [ -n "${LAST_POLL[$HOT_ID]:-}" ] || continue
+              [ $((SECONDS - ${LAST_POLL[$HOT_ID]})) -ge "$HOT_REPOLL_SEC" ] || continue
+              [ "${REPOLLS[$HOT_ID]:-0}" -lt "$HOT_MAX_REPOLLS" ] || continue
+              HOT_TIMEOUT=$(node scripts/lib/poller-loop-budget.js timeout $((POLL_LOOP_BUDGET_SEC - (SECONDS - LOOP_START))) 600 || echo 0)
+              case "$HOT_TIMEOUT" in ''|*[!0-9]*) HOT_TIMEOUT=0 ;; esac
+              [ "$HOT_TIMEOUT" -gt 0 ] || continue
+              echo "↻ Press-night re-poll of $HOT_ID ($(( (SECONDS - ${LAST_POLL[$HOT_ID]}) / 60 )) min since last poll)"
+              REPOLLS[$HOT_ID]=$(( ${REPOLLS[$HOT_ID]:-0} + 1 ))
+              poll_one "$HOT_ID" "$HOT_TIMEOUT"
+            done
+            if [ "$HOT_NEW" = "true" ] && [ "$POLLED" -ge "$FRONT" ] && [ "$POLLED" -lt "${#SHOW_ARRAY[@]}" ]; then
+              echo "::notice::Press-night show has new reviews; ending the poll loop early so they are scored and deployed now (the rest are polled next run)"
+              DEFERRED_SHOWS="${SHOW_ARRAY[*]:$POLLED}"
+              echo "Deferred to the next run (press-night publish first): $DEFERRED_SHOWS" >> "$GITHUB_STEP_SUMMARY"
+              break
             fi
           done
 

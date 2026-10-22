@@ -2776,6 +2776,8 @@ on:
       - 'scripts/audit-alert-senders.js'
       - 'scripts/.alert-sender-baseline.json'
       - 'scripts/.human-caller-digest-baseline.json'
+      # BRO-3015: feedback-overnight branch disposition audit (test globbed by scripts/*.test.mjs)
+      - 'scripts/audit-feedback-overnight-branches.js'
       # BRO-2221: pins time-bomb fixes under the +45d clock shift
       - 'scripts/audit-time-bomb-tests.js'
       # Outlet stub-rate monitor (card #100): detects a broken article

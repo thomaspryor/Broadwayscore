@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T04:19:46.223Z",
+  "generatedAt": "2026-10-22T05:10:03.603Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -2225,23 +2225,23 @@
       "status": "open",
       "slug": "billy-crystal-860",
       "thumbnail": "/images/shows/billy-crystal-860-2026/thumbnail.webp",
-      "siteScore": 81.61,
+      "siteScore": 82.34,
       "liveScore": 82,
-      "scoreDrift": 0.39000000000000057,
+      "scoreDrift": -0.3400000000000034,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 17,
-      "t1": 5,
-      "t2": 9,
+      "total": 22,
+      "t1": 7,
+      "t2": 12,
       "t3": 3,
-      "positive": 15,
+      "positive": 20,
       "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 15,
+        "highConfidence": 19,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2275,10 +2275,6 @@
           "isDualMarket": false
         },
         {
-          "name": "Time Out New York",
-          "isDualMarket": false
-        },
-        {
           "name": "Newsday",
           "isDualMarket": false
         },
@@ -2290,10 +2286,6 @@
       "missingT2": [
         {
           "name": "The Baltimore Sun",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Post",
           "isDualMarket": false
         },
         {
@@ -2319,10 +2311,6 @@
         {
           "name": "The Daily Beast",
           "isDualMarket": false
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
         },
         {
           "name": "Theatrely",
@@ -2429,10 +2417,6 @@
           "isDualMarket": false
         },
         {
-          "name": "People",
-          "isDualMarket": false
-        },
-        {
           "name": "Slate",
           "isDualMarket": false
         },
@@ -2483,10 +2467,6 @@
         {
           "name": "Evening Standard",
           "isDualMarket": false
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
         },
         {
           "name": "The i",
@@ -2574,6 +2554,18 @@
           "t2": 9,
           "t3": 3,
           "p": 15,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T04:46:21.158Z",
+          "rc": 22,
+          "s": 82.34,
+          "t1": 7,
+          "t2": 12,
+          "t3": 3,
+          "p": 20,
           "m": 2,
           "n": 0,
           "bc": "waiting"
@@ -4425,28 +4417,28 @@
       "status": "open",
       "slug": "lincoln-in-the-bardo-off-broadway",
       "thumbnail": "/images/shows/lincoln-in-the-bardo-off-broadway-2026/thumbnail.webp",
-      "siteScore": 74,
-      "liveScore": 75,
-      "scoreDrift": 1,
+      "siteScore": 75.71,
+      "liveScore": 76,
+      "scoreDrift": 0.29000000000000625,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 6,
+      "total": 7,
       "t1": 2,
       "t2": 2,
-      "t3": 2,
-      "positive": 4,
+      "t3": 3,
+      "positive": 5,
       "mixed": 1,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "6/12 total",
+          "7/12 total",
           "T1:2/3",
           "T2:2/3",
-          "hi-conf:6/8"
+          "hi-conf:7/8"
         ],
-        "highConfidence": 6,
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -4863,6 +4855,18 @@
           "t2": 2,
           "t3": 2,
           "p": 4,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T04:46:21.158Z",
+          "rc": 7,
+          "s": 75.71,
+          "t1": 2,
+          "t2": 2,
+          "t3": 3,
+          "p": 5,
           "m": 1,
           "n": 1,
           "bc": "waiting"

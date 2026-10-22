@@ -245,7 +245,16 @@ const AUTH_PING_REASONS = Object.freeze({
   SPAWN_STARVED: 'spawn-starved',
   SPAWN_ERROR: 'spawn-error',
   AUTH_REJECTED: 'auth-rejected',
+  USAGE_CAP: 'usage-cap',
 });
+
+// 2026-10-21: the plan's monthly spend cap made every probe fail with a valid
+// token and paged "log in again". The CLI reports the cap only as prose in the
+// result envelope, so this one string match is unavoidable (structural fields
+// are identical to a rejection); it is isolated here so a reword is a one-line fix.
+function isUsageCapMessage(text) {
+  return /hit your (monthly spend|usage|weekly|session|5-hour)?\s*limit|spend limit|usage limit reached/i.test(String(text || ''));
+}
 
 /**
  * Classify a failed authPing() spawnSync result: did the process never even
@@ -254,7 +263,7 @@ const AUTH_PING_REASONS = Object.freeze({
  * itself said no (a real auth rejection)? Exported for tests (CLAUDE.md rule
  * 15) — never re-derive this classification elsewhere.
  * @param {{error?: Error, status?: number|null, signal?: string|null}} r
- * @returns {'spawn-starved'|'spawn-error'|'auth-rejected'}
+ * @returns {'spawn-starved'|'spawn-error'|'usage-cap'|'auth-rejected'}
  */
 function classifyAuthPingFailure(r) {
   if (r.error) {
@@ -263,6 +272,8 @@ function classifyAuthPingFailure(r) {
   }
   if (r.signal) return SPAWN_STARVATION_SIGNALS.has(r.signal) ? AUTH_PING_REASONS.SPAWN_STARVED : AUTH_PING_REASONS.SPAWN_ERROR;
   if (SIGNAL_EXIT_CODES.has(r.status)) return AUTH_PING_REASONS.SPAWN_STARVED;
+  // Spawn-level failures win above; only a process that ran to completion can have been capped.
+  if (isUsageCapMessage(`${r.stdout || ''} ${r.stderr || ''}`)) return AUTH_PING_REASONS.USAGE_CAP;
   return AUTH_PING_REASONS.AUTH_REJECTED;
 }
 
@@ -278,6 +289,10 @@ function classifyAuthPingFailure(r) {
 function worseAuthPingReason(a, b) {
   if (a === AUTH_PING_REASONS.SPAWN_STARVED || b === AUTH_PING_REASONS.SPAWN_STARVED) return AUTH_PING_REASONS.SPAWN_STARVED;
   if (a === AUTH_PING_REASONS.SPAWN_ERROR || b === AUTH_PING_REASONS.SPAWN_ERROR) return AUTH_PING_REASONS.SPAWN_ERROR;
+  // a is the stored-login probe (the primary credential). A cap on it means that
+  // login was accepted, so it outranks a rejection from the API-key probe (often
+  // just 'no key'). A cap on the key alone must NOT mask a rejected stored login.
+  if (a === AUTH_PING_REASONS.USAGE_CAP) return AUTH_PING_REASONS.USAGE_CAP;
   return AUTH_PING_REASONS.AUTH_REJECTED;
 }
 
@@ -341,7 +356,7 @@ function authPing(extraEnv) {
   try {
     const body = JSON.parse(r.stdout);
     if (body.is_error === false && /pong/i.test(String(body.result || ''))) return { ok: true, reason: AUTH_PING_REASONS.OK };
-    return { ok: false, reason: AUTH_PING_REASONS.AUTH_REJECTED, detail: `ping returned no pong: ${String(body.result || r.stdout).slice(0, 200)}` };
+    return { ok: false, reason: isUsageCapMessage(body.result) ? AUTH_PING_REASONS.USAGE_CAP : AUTH_PING_REASONS.AUTH_REJECTED, detail: `ping returned no pong: ${String(body.result || r.stdout).slice(0, 200)}` };
   } catch {
     return { ok: false, reason: AUTH_PING_REASONS.AUTH_REJECTED, detail: `unparseable ping output: ${String(r.stdout || r.stderr).slice(0, 200)}` };
   }
@@ -362,7 +377,7 @@ function resolvePassAuth({ storedLoginOk, apiKeyPresent, apiKeyPingOk }) {
  * @param {boolean} [opts.allowApiKeyFallback=true] set false to require OAuth only
  * @param {(msg:string)=>void} [opts.log] optional logger for the fallback notice
  * @returns {{ok:boolean, mode:'oauth'|'api-key'|'fail', detail?:string, reason?:string, storedReason?:string}}
- *   `reason` (only on ok:false) is 'spawn-starved'|'spawn-error'|'auth-rejected'
+ *   `reason` (only on ok:false) is 'spawn-starved'|'spawn-error'|'usage-cap'|'auth-rejected'
  *   (BRO-2971) — see classifyAuthPingFailure. `storedReason` (only on
  *   mode:'api-key') carries the stored-login probe's own reason through even
  *   on a successful fallback, so a caller can tell a real revoked stored
@@ -801,7 +816,7 @@ function runClaudeCli(opts) {
 module.exports = {
   runClaudeCli, parseEnvelope, strippedEnv, STAGES, FORBIDDEN_MODEL_RE,
   authPing, authPingArgs, AUTH_PING_SETTINGS, resolvePassAuth, preflightAuth, resolveAuthEnv, AUTH_KEYS,
-  classifyAuthPingFailure, pingFailureDetail, AUTH_PING_REASONS, worseAuthPingReason,
+  classifyAuthPingFailure, isUsageCapMessage, pingFailureDetail, AUTH_PING_REASONS, worseAuthPingReason,
   parseStreamLine, addUsage, estimateCostUSD, APPROX_MODEL_RATES_PER_MTOK,
   resolveClaudeBin, pathWithClaudeBinDir,
 };

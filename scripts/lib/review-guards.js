@@ -4720,6 +4720,63 @@ function isRejectedAtExclusion(data) {
 }
 
 /**
+ * BRO-5129: rebuild-all-reviews.js exclusions a per-file mirror cannot derive, so
+ * explainExclusion() defers to the rebuild's own per-show list for them (opt-in,
+ * opts.rebuildExclusions). Two kinds:
+ *   - cross-file passes: which of two files survives depends on the other file, the
+ *     processing order, or the whole corpus (dedup by text fingerprint, byline twins,
+ *     N-hop duplicate cycles, post-processing outlet dedup, prior-run supersession);
+ *   - score state: skippedNoScore is "includable, not scored yet". The scorer's
+ *     eligibility delegates to explainExclusion, so the mirror must keep these
+ *     includable or they would never get scored.
+ * Every per-file rule (cross-market, invalid URL, pre-opening date, ...) stays OUT of
+ * this list: those disagreements are real mirror gaps and the census must keep
+ * counting them. tests/unit/explain-exclusion-mirror-inventory.test.mjs pins each
+ * name to a real logExclusion key in the rebuild.
+ */
+const REBUILD_ONLY_PASS_REASONS = new Set([
+  'skippedDuplicateText',
+  'skippedDuplicateTextInheritedFlag',
+  'skippedUnknownCriticDedup',
+  'skippedCrossShowDupe',
+  'skippedWithinShowDupe',
+  'skippedSameArticleNamedTwin',
+  'skippedPlaceholderBylineTwin',
+  'skippedGluedBylineTwin',
+  'skippedCircularDuplicateTiebreak',
+  'skippedCrossOutletFingerprintDedup',
+  'skippedMultiCriticOutletDedup',
+  'skippedOutletNameDedup',
+  'priorRunSuperseded',
+  'skippedNoScore',
+]);
+
+// BRO-5129: mirror rules meaning "this file is a copy of another review". A
+// duplicateOf copy whose reference is excluded for one of these is not
+// recovered on the census path (it would double-count the original).
+const DUPLICATE_OF_COPY_REF_REASONS = new Set([
+  'personalRepost',
+  'crossOutletDuplicate',
+  'isSyndicatedDuplicate',
+  'knownSyndicationSecondary',
+  'duplicateOfCircularTiebreak',
+]);
+
+/**
+ * The rebuild's reason for a file it dropped in one of REBUILD_ONLY_PASS_REASONS, or null.
+ * @param {string} filePath - review file path (only the basename is used)
+ * @param {Object<string,string>} rebuildExclusions - { file: statKey } for the file's show
+ * @returns {string|null}
+ */
+function rebuildOnlyPassExclusion(filePath, rebuildExclusions) {
+  if (!filePath || !rebuildExclusions) return null;
+  const file = require('path').basename(filePath);
+  if (!Object.prototype.hasOwnProperty.call(rebuildExclusions, file)) return null;
+  const reason = rebuildExclusions[file];
+  return REBUILD_ONLY_PASS_REASONS.has(reason) ? reason : null;
+}
+
+/**
  * Show-level skips the rebuild applies before it reads any review file: an 'upcoming' show, or a
  * Broadway-category show still in 'previews'. explainExclusion is per-review and returns null for
  * these, so a file could read "includable" yet be absent from reviews.json (BRO-5795: zeal-nyc on
@@ -4742,8 +4799,18 @@ function explainShowLevelExclusion(show) {
  *   scoreable, so it can be rescored (BRO-5222). Never pass it from a rebuild/inclusion path.
  * @param {boolean} [opts.ignoreCrossOutletDuplicate] - internal (BRO-5265): skip the
  *   crossOutletDuplicate gate. Only cross-outlet-cycle.js's "excluded otherwise" probe passes it.
+ * @param {Object<string,string>} [opts.rebuildExclusions] - BRO-5129: the rebuild's own per-show
+ *   list ({ file: statKey }, data/audit/rebuild-exclusions-<show>.json). When the per-file chain
+ *   says "included", a file the rebuild dropped in a pass this function cannot see (see
+ *   rebuildOnlyPassExclusion) returns that statKey. Read-only consumers (exclusion-rule-census.js)
+ *   only; never pass it from the rebuild or the scorer, it would feed a run's output back into it.
  */
 function explainExclusion(data, show, filePath, opts) {
+  if (opts && opts.rebuildExclusions) {
+    const { rebuildExclusions, ...rest } = opts;
+    const own = explainExclusion(data, show, filePath, { ...rest, alignDuplicateOfWithRebuild: true });
+    return own !== null ? own : rebuildOnlyPassExclusion(filePath, rebuildExclusions);
+  }
   if (!data) return 'no-data';
   // BRO-4890: show-level and unverifiable-row exclusions run first; the rebuild loop and
   // scoring-delta.js decideInclusion mirror them in the same order.
@@ -4985,6 +5052,26 @@ function explainExclusion(data, show, filePath, opts) {
         if (refData.duplicateOf) {
           // Reference also a dupe but pointing elsewhere (not back at us) —
           // rebuild's `refAlsoDupe` branch lets this through. Fall through.
+        } else if (opts && opts.alignDuplicateOfWithRebuild) {
+          // BRO-5129, census path only (set by the opts.rebuildExclusions
+          // wrapper): model the rebuild's refExcluded recovery. Every other
+          // caller (scorer, rebuild's own reference checks, audits) takes the
+          // unchanged branch below.
+          const refReason = explainExclusion(refData, show, refPath);
+          if (refReason === null) return 'duplicateOf';
+          // Reference excluded for wrong content this copy shares — the
+          // rebuild's skippedDuplicateOfInheritedFlag (BRO-5501 different
+          // text still opts out inside duplicateOfInheritedFlag).
+          if (duplicateOfInheritedFlag(data, refData, show, refPath)) return 'duplicateOf';
+          // Reference excluded because it is itself a copy of another
+          // review: recovering this copy would ship that review twice, so
+          // the mirror keeps it out even where the rebuild recovers it, and
+          // the census reports the disagreement.
+          if (DUPLICATE_OF_COPY_REF_REASONS.has(refReason)) return 'duplicateOf';
+          // Any other reference exclusion (wrongAttribution, bodyless score,
+          // ...): the rebuild recovers this copy. Fall through to its own
+          // guards. Known gap: the rebuild also counts a pre-window
+          // publishDate on the reference as refExcluded; this does not.
         } else if (
           // BRO-5501 parity with rebuild-all-reviews.js: a pointer at a
           // content-flagged twin whose text is a DIFFERENT article no longer
@@ -6038,6 +6125,8 @@ module.exports = {
   isRejectedAtExclusion,
   isFullTextWrongAuthorActive,
   explainShowLevelExclusion,
+  REBUILD_ONLY_PASS_REASONS,
+  rebuildOnlyPassExclusion,
   buildMultiProdYearGuard,
   shouldSkipScoredReview,
   pickBestDtliSlug,

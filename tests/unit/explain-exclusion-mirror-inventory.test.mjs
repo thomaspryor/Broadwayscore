@@ -44,6 +44,8 @@ const INVENTORY = {
   isUnverifiableWebSearchRow: 'live',
   // BRO-5501: the rebuild decides duplicateOf inheritance through duplicateOfInheritedFlag, which runs this text test.
   textsConfirmedDifferent: 'live-via:duplicateOfInheritedFlag',
+  // BRO-5129: the census-path duplicateOf branch asks it directly, same as the rebuild's refInheritedFlag.
+  duplicateOfInheritedFlag: 'live',
   wrongShowCleared: 'live',
   wrongShowExplicitlyCleared: 'live',
   // The rebuild has no cvWrongArticle exclusion of its own: it promotes a
@@ -71,6 +73,76 @@ const INVENTORY = {
   getMultiProdGuards: 'mirror-only: lazy shows.json cache feeding the three guards above; the rebuild builds the same maps itself with buildMultiProdYearGuard/buildMultiProdDirectorGuard (BRO-3179, 2026-10-12)',
   wrongProductionClearLiftsInvalidTier: 'mirror-only: rebuild never gates on contentTier invalid, same as invalidTierClearedByHuman; a garbage tier is no longer lifted by a wrongProduction clear (BRO-3584, 2026-10-12)',
   isLikelyStaleWrongShow: 'mirror-only: heuristic (~75% precision) deferred to clear-stale-wrong-show-flags.js; 48 matching files, 0 verdict changes (2026-10-12)',
+  // BRO-5129: opt-in (opts.rebuildExclusions) read of the rebuild's own per-show list,
+  // for the cross-file dedup and score-state passes a per-file mirror cannot derive.
+  rebuildOnlyPassExclusion: 'mirror-only: reads the rebuild\'s own output, so the rebuild must never call it; only the census passes the list (BRO-5129, 2026-10-22)',
+};
+
+// BRO-5129: rules where the mirror excludes and the rebuild includes, after the
+// census consults the rebuild lists (local full rebuild + census, 2026-10-22:
+// 372/57,667 disagree = 0.65%, 117 of them mirror-only). Each is a deliberate
+// carve-out, or a known gap with its cause, plus up to 3 live example files
+// (fewer only when fewer exist). Re-measure with
+// `node scripts/exclusion-rule-census.js --compare-rebuild --no-diff`.
+const MIRROR_ONLY_RULES = {
+  cvWrongArticleHighConfidence: {
+    count: 59,
+    why: 'carve-out: the rebuild treats a high-confidence CV wrongArticle as advisory once the ensemble scored the text as a review (hasHighConfidenceLlmScore), on a partial-window verdict (BRO-4429) or a deferred outlet style; the mirror stays strict so the scorer does not spend on CV-flagged non-reviews',
+    examples: [
+      'a-beautiful-noise-the-neil-diamond-musical-tour-2024/broadwayworld--scott-rawson.json',
+      'a-midsummer-nights-dream-west-end-2026/london-box-office--eve-jawara.json',
+      'after-midnight-2013/timeout--adam-feldman.json',
+    ],
+  },
+  contentTierInvalid: {
+    count: 36,
+    why: 'carve-out: the rebuild never gates on contentTier invalid (diagnostic count only, see invalidTierClearedByHuman); these ship on an llm or star score',
+    examples: [
+      'american-buffalo-2022/nysr--frank-scheck.json',
+      'bad-cinderella-2023/thestage--lane-williamson.json',
+      'bandstand-2017/talkinbroadway--matthew-murray.json',
+    ],
+  },
+  noTextOrScoreSignal: {
+    count: 10,
+    why: 'carve-out: stub files whose only score is an aggregator fallback the rebuild\'s getBestScore uses (bwwScore, dtliThumb, adjudication) and the mirror\'s signal check does not count',
+    examples: [
+      'a-beautiful-noise-the-neil-diamond-musical-2022/timeout--adam-feldman.json',
+      'caroline-or-change-west-end-2018/a-younger-theatre--unknown.json',
+      'come-fly-away-2010/backstage--david-sheward.json',
+    ],
+  },
+  previewPlaceholder: {
+    count: 3,
+    why: 'carve-out: the rebuild\'s inline loop has no isPreviewPlaceholder gate; the mirror keeps BRO-931\'s guard so the scorer skips uncleared placeholders',
+    examples: [
+      'a-midsummer-nights-dream-globe-west-end-2026/timeout-london--andrzej-lukowski.json',
+      'pride-west-end-2026/broadwayworld--jay-irwin.json',
+      'thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--susannah-butter.json',
+    ],
+  },
+  duplicateOf: {
+    count: 6,
+    why: 'known gap: the reference is itself a syndicated / cross-outlet copy (DUPLICATE_OF_COPY_REF_REASONS); the rebuild\'s refExcluded branch recovers the duplicateOf copy anyway, which may ship the original review twice. The mirror keeps it out on purpose',
+    examples: [
+      'catch-me-if-you-can-2011/hollywood-reporter--unknown.json',
+      'cabaret-at-the-kit-kat-club-west-end-2021/london-theatre--chris-omaweng.json',
+      'the-phantom-of-the-opera-west-end-1986/sunday-express--stefan-kyriazis.json',
+    ],
+  },
+  wrongProduction: {
+    count: 2,
+    why: 'known gap: the rebuild honors any truthy wrongProductionManualClear (a dated note string); the mirror\'s clears require === true',
+    examples: [
+      'oliver-west-end-2024/thestage--sam-marlowe.json',
+      'the-holy-rosenbergs-west-end-2026/london-theatre--matt-wolf.json',
+    ],
+  },
+  rejectionReason: {
+    count: 1,
+    why: 'known gap: a not_a_review rejection on an aggregator-relay row the rebuild ships on aggregatorStars (the only live case)',
+    examples: ['krapps-last-tape-godots-todo-list-west-end-2026/london-box-office--stuart-king.json'],
+  },
 };
 
 function functionBody(src, name) {
@@ -117,6 +189,31 @@ describe('explainExclusion mirror inventory (BRO-3592)', () => {
         assert.match(status, /^mirror-only: \S/, 'mirror-only entries need a reason');
         assert.ok(!calls(REBUILD_SRC, fn), `${fn} is now called by rebuild; mark it live`);
       }
+    });
+  }
+});
+
+describe('rebuild-only passes and mirror-only rules (BRO-5129)', () => {
+  test('every REBUILD_ONLY_PASS_REASONS name is a reason the rebuild really logs', async () => {
+    const { REBUILD_ONLY_PASS_REASONS } = (await import('../../scripts/lib/review-guards.js')).default;
+    assert.ok(REBUILD_ONLY_PASS_REASONS.size >= 10);
+    for (const reason of REBUILD_ONLY_PASS_REASONS) {
+      assert.match(REBUILD_SRC, new RegExp(`log(?:PostDedup)?Exclusion\\(\\s*['"]${reason}['"]`), `${reason} is not a rebuild exclusion reason`);
+    }
+  });
+
+  test('per-file rules never ride the rebuild list (they are real mirror gaps the census must count)', async () => {
+    const { REBUILD_ONLY_PASS_REASONS } = (await import('../../scripts/lib/review-guards.js')).default;
+    for (const perFile of ['skippedCrossMarket', 'skippedInvalidUrl', 'skippedPreOpening', 'skippedShowNotMentioned', 'skippedWrongProduction', 'skippedWrongShow', 'skippedDuplicateOf']) {
+      assert.ok(!REBUILD_ONLY_PASS_REASONS.has(perFile), `${perFile} must stay a measured disagreement`);
+    }
+  });
+
+  for (const [rule, entry] of Object.entries(MIRROR_ONLY_RULES)) {
+    test(`mirror-only rule ${rule} is documented with its live examples`, () => {
+      assert.match(entry.why, /^(carve-out|known gap): \S/);
+      assert.ok(entry.examples.length === Math.min(3, entry.count), `${rule}: list min(3, count) examples`);
+      assert.ok(entry.examples.every((f) => /^[a-z0-9-]+\/[^/]+\.json$/.test(f)));
     });
   }
 });

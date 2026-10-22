@@ -446,7 +446,7 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
 
   if (!result) {
     // No LLM providers available — fall back to heuristics
-    return { ...heuristicVerify({ scrapedText, excerpt, showTitle }), urlYearConflict };
+    return { ...heuristicVerify({ scrapedText, excerpt, showTitle, akaTitles: show && show.akaTitles }), urlYearConflict };
   }
 
   try {
@@ -585,11 +585,11 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
     }
 
     console.log(`    LLM verify (${result.provider}): could not parse JSON, falling back to heuristic`);
-    return { ...heuristicVerify({ scrapedText, excerpt, showTitle }), urlYearConflict };
+    return { ...heuristicVerify({ scrapedText, excerpt, showTitle, akaTitles: show && show.akaTitles }), urlYearConflict };
 
   } catch (error) {
     console.error(`    LLM verify parse error: ${error.message}`);
-    return { ...heuristicVerify({ scrapedText, excerpt, showTitle }), urlYearConflict };
+    return { ...heuristicVerify({ scrapedText, excerpt, showTitle, akaTitles: show && show.akaTitles }), urlYearConflict };
   }
 }
 
@@ -939,7 +939,7 @@ function buildPriorRunHint(priorRuns, tourLegs) {
  * Heuristic-based content verification (no API needed)
  * Used as fallback when all LLM providers are unavailable
  */
-function heuristicVerify({ scrapedText, excerpt, showTitle }) {
+function heuristicVerify({ scrapedText, excerpt, showTitle, akaTitles }) {
   const issues = [];
   let truncated = false;
   let wrongArticle = false;
@@ -963,13 +963,17 @@ function heuristicVerify({ scrapedText, excerpt, showTitle }) {
   // an accented body never matches an unaccented title or vice versa
   // (task #648/#760 class — see title-match.js:foldDiacritics).
   const text = foldDiacritics(scrapedText).toLowerCase();
-  const showLower = foldDiacritics(showTitle || '').toLowerCase();
 
-  // Check if show title appears in text
-  const showMentioned = showLower && (
-    text.includes(showLower) ||
-    text.includes(showLower.replace(/[^a-z0-9]/g, ''))
-  );
+  // Check if show title appears in text. A press title (shows.json akaTitles)
+  // counts too: "Billy Crystal 860" is reviewed as "860", and this check
+  // alone stamped five real 860 reviews wrongArticle, which the rebuild then
+  // promoted to isNonReview (BRO-5891).
+  const titleIn = (t) => {
+    const l = foldDiacritics(t || '').toLowerCase();
+    return Boolean(l) && (text.includes(l) || text.includes(l.replace(/[^a-z0-9]/g, '')));
+  };
+  const showMentioned = titleIn(showTitle)
+    || (Array.isArray(akaTitles) && akaTitles.some((t) => typeof t === 'string' && t.trim().length >= 3 && titleIn(t.trim())));
 
   if (!showMentioned && showTitle && showTitle.length > 3) {
     issues.push(`Show title "${showTitle}" not found in content`);

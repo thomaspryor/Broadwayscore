@@ -55,8 +55,11 @@ function evaluateAuthHealth({ preflight, authStatus = null }) {
     // login, and buildBillingFallbackAlertPayload told on-call to re-login
     // for a hiccup that needed no action.
     const storedWasStarved = preflight.storedReason === 'spawn-starved' || preflight.storedReason === 'spawn-error';
+    const storedWasCapped = preflight.storedReason === 'usage-cap';
     const reason = preflight.mode === 'api-key'
-      ? (storedWasStarved
+      ? (storedWasCapped
+        ? `real call succeeded via ANTHROPIC_API_KEY fallback (pay-per-token) — the stored login hit its plan usage cap (${preflight.storedDetail || 'unknown'}), NOT a revoked credential`
+        : storedWasStarved
         ? `real call succeeded via ANTHROPIC_API_KEY fallback (pay-per-token) — the stored-login probe itself failed to run (${preflight.storedReason}: ${preflight.storedDetail || 'unknown'}), NOT a confirmed revoked credential`
         : `real call succeeded via ANTHROPIC_API_KEY fallback (pay-per-token) — stored OAuth login failed: ${preflight.storedDetail || 'unknown'}`)
       : 'real call succeeded via stored OAuth login';
@@ -67,7 +70,7 @@ function evaluateAuthHealth({ preflight, authStatus = null }) {
   // rides through untouched — this is the ONLY signal buildAlertPayload uses
   // to pick which alert to build. Do not re-derive it from `preflight.detail`
   // text (a reworded error message would silently misroute the page).
-  const mode = preflight.reason === 'spawn-starved' || preflight.reason === 'spawn-error' ? preflight.reason : 'fail';
+  const mode = ['spawn-starved', 'spawn-error', 'usage-cap'].includes(preflight.reason) ? preflight.reason : 'fail';
   return {
     ok: false,
     mode,
@@ -105,6 +108,7 @@ function probeWithConfirm({ probe, sleep, attempts = 2, delayMs = 45000, log = (
   return { preflight, attemptsUsed: attempts };
 }
 
+const USAGE_CAP_STEPS = 'raise the spend limit at claude.ai/settings/usage or wait for the reset; no re-login needed';
 const REPAIR_STEPS = 'claude auth logout && claude auth login && claude -p "say ok"';
 const SPAWN_STARVATION_REPAIR_STEPS = 'free memory (check for the BRO-2789 OOM plateau) or prune cmux sessions (cmux is at/near its ~33-runtime ceiling) — then re-run scripts/check-claude-auth-health.js';
 const SPAWN_ERROR_REPAIR_STEPS = 'check that the `claude` binary is installed and executable at the resolved path (CLAUDE_BIN / candidate list in scripts/lib/claude-cli.js) — this is a missing/broken binary, not a credential problem — then re-run scripts/check-claude-auth-health.js';
@@ -122,6 +126,16 @@ const SPAWN_ERROR_REPAIR_STEPS = 'check that the `claude` binary is installed an
  * instead of the credential one.
  */
 function buildAlertPayload(health) {
+  if (health.mode === 'usage-cap') {
+    return {
+      conditionKey: 'claude-usage-cap',
+      title: "Claude plan usage cap reached, the token is fine",
+      description: `check-claude-auth-health.js's real API call was answered with a usage-limit message: ${health.reason}. The credential is valid, so do NOT re-run \`claude auth login\`. Headless launches fail until the cap resets or is raised at claude.ai/settings/usage.`,
+      severity: 'warning',
+      disposition: 'digest',
+      hint: USAGE_CAP_STEPS,
+    };
+  }
   if (health.mode === 'spawn-starved') {
     return {
       conditionKey: 'claude-spawn-starved',
@@ -165,6 +179,16 @@ function buildAlertPayload(health) {
  * pay-per-token spend indefinitely with zero owner visibility.
  */
 function buildBillingFallbackAlertPayload(health) {
+  if (health.storedReason === 'usage-cap') {
+    return {
+      conditionKey: 'claude-auth:api-key-fallback',
+      title: 'Claude launches are on pay-per-token because the plan usage cap is reached',
+      description: `check-claude-auth-health.js: ${health.reason}. Launches work but bill per token until the cap resets or is raised. Do NOT re-run \`claude auth login\`. Repair: ${USAGE_CAP_STEPS}`,
+      severity: 'warning',
+      disposition: 'digest',
+      hint: USAGE_CAP_STEPS,
+    };
+  }
   return {
     conditionKey: 'claude-auth:api-key-fallback',
     title: 'Claude launches are running on pay-per-token, not the subscription',

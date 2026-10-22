@@ -1,22 +1,47 @@
 {
   "processed": [
     "the-lehman-trilogy-west-end-2018/guardian--michael-billington.json",
-    "killer-joe-west-end-2018/guardian--michael-billington.json"
-  ],
-  "failed": [
+    "killer-joe-west-end-2018/guardian--michael-billington.json",
     "king-lear-west-end-2018/guardian--arifa-akbar.json",
+    "exit-the-king-west-end-2018/guardian--susannah-clapp.json",
     "pity-west-end-2018/guardian--michael-billington.json",
+    "the-king-and-i-west-end-2018/guardian--michael-billington.json",
     "the-jungle-west-end-2018/guardian--michael-billington.json",
     "pressure-west-end-2018/guardian--michael-billington.json",
     "translations-west-end-2018/guardian--michael-billington.json",
     "consent-west-end-2018/guardian--natalie-haynes.json",
-    "the-great-wave-west-end-2018/guardian--michael-billington.json"
+    "the-great-wave-west-end-2018/guardian--michael-billington.json",
+    "billy-crystal-860-2026/deadline--greg-evans.json",
+    "billy-crystal-860-2026/culturesauce--unknown.json",
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/stageandcinema--unknown.json",
+    "ilford-boy-west-end-2026/guardian--kate-wyver.json",
+    "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
+    "jesus-christ-superstar-off-west-end-2026/britishtheatrecom--unknown.json",
+    "buffy-revamped-west-end-2026/ticketswitch--unknown.json"
+  ],
+  "failed": [
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "ilford-boy-west-end-2026/telegraph--fiona-mountford.json",
+    "double-bill-tell-me-straight-and-aggy-off-west-end-2026/soundsandstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "billy-crystal-860-2026/culturesauce--unknown.json",
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
+      "the-curious-case-of-benjamin-button-off-broadway-2026/stageandcinema--unknown.json",
+      "ilford-boy-west-end-2026/guardian--kate-wyver.json",
+      "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
+      "jesus-christ-superstar-off-west-end-2026/britishtheatrecom--unknown.json",
+      "buffy-revamped-west-end-2026/ticketswitch--unknown.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/billy-crystal-860-2026/deadline--greg-evans.json",
+      "billy-crystal-860-2026/deadline--greg-evans.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
@@ -25,6 +50,28 @@
     "archive": []
   },
   "startTime": "2026-10-22T03:41:50.001Z",
-  "lastProcessed": "the-great-wave-west-end-2018/guardian--michael-billington.json",
-  "log": []
+  "lastProcessed": "buffy-revamped-west-end-2026/ticketswitch--unknown.json",
+  "log": [
+    {
+      "t": "2026-10-22T05:06:17.624Z",
+      "event": "bb-session",
+      "session": "d118e146",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-22T05:06:28.603Z",
+      "event": "bb-session",
+      "session": "e19f79b1",
+      "url": "https://deadline.com/2026/10/billy-crystal-860-broadway-review-1237168548/"
+    }
+  ],
+  "recoveredAfterFailure": [
+    "king-lear-west-end-2018/guardian--arifa-akbar.json",
+    "pity-west-end-2018/guardian--michael-billington.json",
+    "the-jungle-west-end-2018/guardian--michael-billington.json",
+    "pressure-west-end-2018/guardian--michael-billington.json",
+    "translations-west-end-2018/guardian--michael-billington.json",
+    "consent-west-end-2018/guardian--natalie-haynes.json",
+    "the-great-wave-west-end-2018/guardian--michael-billington.json"
+  ]
 }

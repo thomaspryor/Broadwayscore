@@ -125,7 +125,7 @@ jobs:
             # other analytics/ writer is this workflow, serialized by its
             # concurrency group). A rebase that still stops must not fall
             # through to a no-op "successful" push of the remote tip.
-            if ! git pull --rebase -X theirs origin main; then
+            if ! git -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull --rebase -X theirs origin main; then
               git rebase --abort 2>/dev/null || true
               git reset --hard "@{u}" 2>/dev/null || true
               echo "::error::rebase onto the new private main failed; history not saved this run"

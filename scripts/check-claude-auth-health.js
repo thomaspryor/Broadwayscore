@@ -101,6 +101,7 @@ async function main(argv = process.argv.slice(2)) {
   resolveCondition('claude-auth:revoked');
   resolveCondition('claude-spawn-starved');
   resolveCondition('claude-spawn-error');
+  resolveCondition('claude-usage-cap');
 
   if (health.mode === 'api-key') {
     // Not a launch-blocking failure (preflightAuth's fallback still lets

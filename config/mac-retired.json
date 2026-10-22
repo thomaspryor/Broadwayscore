@@ -16,6 +16,34 @@
           "note": "Only runs inside the launcher itself, and already skips on the RETIRED: marker in data/opening-night-monitor/DISABLED (BRO-4638). After bootout the launcher never runs, so it cannot page."
         }
       ]
+    },
+    {
+      "label": "com.bwsc.weekly-retro",
+      "retiredAt": "2026-10-21",
+      "replacedBy": [
+        "cloud Routine: Weekly retro (cloud), docs/cloud-routines/weekly-retro.md"
+      ],
+      "watchers": [
+        {
+          "conditionKey": "weekly-retro",
+          "file": "scripts/local-triggers/weekly-retro.sh",
+          "note": "No pager watched the Mac job. Cloud run proven 2026-10-18: it filed BRO-5630 at 13:57Z, before the Mac run at 14:01Z, which found it and filed nothing (BRO-5846)."
+        }
+      ]
+    },
+    {
+      "label": "com.broadwayscore.overhaul-driver",
+      "retiredAt": "2026-10-21",
+      "replacedBy": [
+        "nothing: the overhaul program finished, no replacement needed"
+      ],
+      "watchers": [
+        {
+          "conditionKey": "overhaul-driver",
+          "file": "scripts/claude-auth-preflight.js",
+          "note": "Session-system overhaul chain (S3/V1-V3) finished in September; log stops 2026-09-15 and every launchd tick since failed with node: command not found. No pager watched it (BRO-5846)."
+        }
+      ]
     }
   ]
 }

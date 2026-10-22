@@ -90,7 +90,7 @@ jobs:
             echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
             git checkout -- . 2>/dev/null || true
             git clean -fd 2>/dev/null || true
-            if git pull --rebase -X theirs origin main; then
+            if git -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull --rebase -X theirs origin main; then
               if git push origin main; then
                 echo "Successfully pushed changes"
                 exit 0
@@ -369,7 +369,7 @@ jobs:
             echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
             git checkout -- . 2>/dev/null || true
             git clean -fd 2>/dev/null || true
-            if git pull --rebase -X theirs origin main; then
+            if git -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull --rebase -X theirs origin main; then
               if git push origin main; then
                 echo "Successfully pushed changes"
                 exit 0
