@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T16:29:06.022Z",
+  "timestamp": "2026-10-22T17:05:44.989Z",
   "stats": {
-    "totalReviews": 58939,
-    "alreadyFlagged": 21277,
+    "totalReviews": 58989,
+    "alreadyFlagged": 21295,
     "dateGuardCatches": 201,
     "directorMismatch": 2054,
     "tvFilmSignals": 1659,
-    "londonSignals": 2705,
-    "offBroadwaySignals": 528,
+    "londonSignals": 2706,
+    "offBroadwaySignals": 529,
     "yearMismatch": 169,
-    "noPublishDate": 5261
+    "noPublishDate": 5277
   },
   "findings": [
     {
@@ -71793,6 +71793,20 @@
       ]
     },
     {
+      "showId": "king-of-the-yees-off-broadway-2026",
+      "file": "theater-scene--tony-marinelli.json",
+      "score": 87,
+      "publishDate": "2026-10-21",
+      "url": "https://www.theaterscene.net/plays/offbway-plays/king-of-the-yees/tony-marinelli/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
       "showId": "kiss-me-kate-2019",
       "file": "the-komisar-scoop--lucy-komisar.json",
       "score": 88,
@@ -74183,6 +74197,20 @@
       "score": 55,
       "publishDate": "2026-10-21",
       "url": "https://www.standard.co.uk/culture/theatre/martin-guerre-at-the-old-vic-b1301716.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
+      "file": "the-recs--unknown.json",
+      "score": 96,
+      "publishDate": "2026-10-22",
+      "url": "https://therecs.co.uk/martin-guerre-old-vic-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

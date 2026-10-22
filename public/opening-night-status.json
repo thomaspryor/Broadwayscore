@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T16:29:20.537Z",
+  "generatedAt": "2026-10-22T17:06:00.048Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -202,27 +202,27 @@
       "slug": "phyl-off-broadway",
       "thumbnail": "/images/shows/phyl-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 88,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 4,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
       "t2": 0,
-      "t3": 0,
-      "positive": 0,
+      "t3": 1,
+      "positive": 1,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "1/12 total",
           "T1:0/3",
           "T2:0/3",
-          "hi-conf:0/8"
+          "hi-conf:1/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -564,6 +564,20 @@
         {
           "name": "The Tennessean",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-22T17:06:00.048Z",
+          "rc": 1,
+          "s": 88,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -1885,23 +1899,23 @@
       "status": "open",
       "slug": "the-curious-case-of-benjamin-button-off-broadway",
       "thumbnail": "/images/shows/the-curious-case-of-benjamin-button-off-broadway-2026/thumbnail.webp",
-      "siteScore": 75.94,
-      "liveScore": 76,
-      "scoreDrift": 0.060000000000002274,
+      "siteScore": 78.18,
+      "liveScore": 78,
+      "scoreDrift": -0.18000000000000682,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 18,
+      "total": 22,
       "t1": 3,
-      "t2": 8,
-      "t3": 7,
-      "positive": 13,
+      "t2": 10,
+      "t3": 9,
+      "positive": 17,
       "mixed": 4,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 15,
+        "highConfidence": 18,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2010,10 +2024,6 @@
         },
         {
           "name": "Slant Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "Lighting & Sound America",
           "isDualMarket": false
         },
         {
@@ -2306,6 +2316,18 @@
           "t2": 8,
           "t3": 7,
           "p": 13,
+          "m": 4,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T17:06:00.048Z",
+          "rc": 22,
+          "s": 78.18,
+          "t1": 3,
+          "t2": 10,
+          "t3": 9,
+          "p": 17,
           "m": 4,
           "n": 1,
           "bc": "waiting"
@@ -3313,17 +3335,17 @@
       "status": "open",
       "slug": "ilford-boy-west-end",
       "thumbnail": "/images/shows/ilford-boy-west-end-2026/thumbnail.jpg",
-      "siteScore": 74.62,
+      "siteScore": 75.21,
       "liveScore": 75,
-      "scoreDrift": 0.37999999999999545,
+      "scoreDrift": -0.20999999999999375,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 14,
+      "total": 15,
       "t1": 6,
-      "t2": 4,
+      "t2": 5,
       "t3": 4,
-      "positive": 8,
+      "positive": 9,
       "mixed": 6,
       "negative": 0,
       "readiness": {
@@ -3641,6 +3663,18 @@
           "m": 6,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T17:06:00.048Z",
+          "rc": 15,
+          "s": 75.21,
+          "t1": 6,
+          "t2": 5,
+          "t3": 4,
+          "p": 9,
+          "m": 6,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -3654,17 +3688,17 @@
       "status": "open",
       "slug": "king-of-the-yees",
       "thumbnail": "/images/shows/king-of-the-yees-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 78.46,
-      "liveScore": 78,
-      "scoreDrift": -0.45999999999999375,
+      "siteScore": 79.13,
+      "liveScore": 79,
+      "scoreDrift": -0.12999999999999545,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 13,
+      "total": 14,
       "t1": 2,
-      "t2": 9,
+      "t2": 10,
       "t3": 2,
-      "positive": 9,
+      "positive": 10,
       "mixed": 4,
       "negative": 0,
       "readiness": {
@@ -3672,7 +3706,7 @@
         "reasons": [
           "T1:2/3"
         ],
-        "highConfidence": 13,
+        "highConfidence": 14,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -4116,6 +4150,18 @@
           "m": 4,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T17:06:00.048Z",
+          "rc": 14,
+          "s": 79.13,
+          "t1": 2,
+          "t2": 10,
+          "t3": 2,
+          "p": 10,
+          "m": 4,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -4129,23 +4175,23 @@
       "status": "open",
       "slug": "martin-guerre-west-end",
       "thumbnail": "/images/shows/martin-guerre-west-end-2026/thumbnail.webp",
-      "siteScore": 69.22,
-      "liveScore": 69,
-      "scoreDrift": -0.21999999999999886,
+      "siteScore": 69.76,
+      "liveScore": 70,
+      "scoreDrift": 0.23999999999999488,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 18,
+      "total": 20,
       "t1": 6,
       "t2": 5,
-      "t3": 7,
-      "positive": 7,
+      "t3": 9,
+      "positive": 8,
       "mixed": 10,
-      "negative": 1,
+      "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 16,
+        "highConfidence": 18,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -4457,6 +4503,18 @@
           "m": 10,
           "n": 1,
           "bc": "preview-sent-earlier"
+        },
+        {
+          "t": "2026-10-22T17:06:00.048Z",
+          "rc": 20,
+          "s": 69.76,
+          "t1": 6,
+          "t2": 5,
+          "t3": 9,
+          "p": 8,
+          "m": 10,
+          "n": 2,
+          "bc": "preview-sent-earlier"
         }
       ]
     },
@@ -4470,28 +4528,28 @@
       "status": "open",
       "slug": "machine-learning-off-broadway",
       "thumbnail": "/images/shows/machine-learning-off-broadway-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 70,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "siteScore": 72.97,
+      "liveScore": 73,
+      "scoreDrift": 0.030000000000001137,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 2,
+      "total": 3,
       "t1": 0,
       "t2": 2,
-      "t3": 0,
-      "positive": 1,
+      "t3": 1,
+      "positive": 2,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/12 total",
+          "3/12 total",
           "T1:0/3",
           "T2:2/3",
-          "hi-conf:2/8"
+          "hi-conf:3/8"
         ],
-        "highConfidence": 2,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -4848,6 +4906,18 @@
           "t2": 2,
           "t3": 0,
           "p": 1,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T17:06:00.048Z",
+          "rc": 3,
+          "s": 72.97,
+          "t1": 0,
+          "t2": 2,
+          "t3": 1,
+          "p": 2,
           "m": 1,
           "n": 0,
           "bc": "waiting"
