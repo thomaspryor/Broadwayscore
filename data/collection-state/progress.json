@@ -189,7 +189,13 @@
     "wicked-tour-2021/heyrhody--shay-costa.json",
     "little-shop-of-horrors-off-broadway-2019/ew--maureen-lee-lenker.json",
     "little-shop-of-horrors-off-broadway-2019/amny--matt-windman.json",
-    "the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json"
+    "the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json",
+    "derren-brown-only-human-west-end-2026/london-box-office--stuart-king.json",
+    "ilford-boy-west-end-2026/sunday-times--clive-davis.json",
+    "ilford-boy-west-end-2026/telegraph--fiona-mountford.json",
+    "martin-guerre-west-end-2026/musicomh--sam-smith.json",
+    "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
+    "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json"
   ],
   "failed": [
     "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json",
@@ -303,7 +309,13 @@
     "hadestown-2019/theater-life--isa-goldberg.json",
     "the-play-that-goes-wrong-off-broadway-2019/talkinbroadway--unknown.json",
     "six-the-musical-west-end-2021/musical-theatre-review--angela-thomas.json",
-    "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json"
+    "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
+    "ilford-boy-west-end-2026/standard--nick-curtis.json",
+    "triumph-off-west-end-2026/closeupculture--unknown.json",
+    "dog-mom-off-west-end-2026/reviewsgate--william-russell.json",
+    "dog-mom-off-west-end-2026/thestage--neil-norman.json",
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -388,7 +400,10 @@
       "abba-voyage-off-west-end-2026/fairypoweredproductions--unknown.json",
       "the-lion-king-tour-2021/south-florida-sun-sentinel--stafford-hagwood.json",
       "wicked-tour-2021/heyrhody--shay-costa.json",
-      "little-shop-of-horrors-off-broadway-2019/ew--maureen-lee-lenker.json"
+      "little-shop-of-horrors-off-broadway-2019/ew--maureen-lee-lenker.json",
+      "derren-brown-only-human-west-end-2026/london-box-office--stuart-king.json",
+      "martin-guerre-west-end-2026/musicomh--sam-smith.json",
+      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json"
     ],
     "amp": [
       "data/review-texts/lincoln-in-the-bardo-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
@@ -401,7 +416,9 @@
       "data/review-texts/dirty-dancing-tour-2026/nytimes--michael-paulson.json",
       "dirty-dancing-tour-2026/nytimes--michael-paulson.json",
       "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json",
-      "the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json"
+      "the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json",
+      "data/review-texts/ilford-boy-west-end-2026/sunday-times--clive-davis.json",
+      "ilford-boy-west-end-2026/sunday-times--clive-davis.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -427,7 +444,8 @@
       "hadestown-tour-2024/san-francisco-chronicle--lily-janiak.json",
       "oh-mary-2024/broadwaynews--brittani-samuel.json",
       "oh-mary-2024/cititour--unknown.json",
-      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
+      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
+      "ilford-boy-west-end-2026/telegraph--fiona-mountford.json"
     ],
     "brightdata": [
       "two-strangers-bway-2025/deadline--greg-evans.json",
@@ -512,11 +530,12 @@
       "abba-voyage-off-west-end-2026/times-uk--will-hodgkinson.json",
       "wicked-tour-2021/baltimoremediablog--nfrisone.json",
       "little-shop-of-horrors-off-broadway-2019/amny--matt-windman.json",
-      "hadestown-2019/theater-life--isa-goldberg.json"
+      "hadestown-2019/theater-life--isa-goldberg.json",
+      "angels-bone-west-end-2026/sunday-times--rebecca-franks.json"
     ]
   },
   "startTime": "2026-10-22T09:18:56.460Z",
-  "lastProcessed": "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
+  "lastProcessed": "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
   "log": [
     {
       "t": "2026-10-22T09:19:53.724Z",
@@ -556,6 +575,53 @@
       "t": "2026-10-22T11:05:30.844Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-22T11:14:14.884Z",
+      "event": "bb-session",
+      "session": "e2b3696a",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/ilford-boy-review-donmar-"
+    },
+    {
+      "t": "2026-10-22T11:14:15.235Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-22T11:17:40.774Z",
+      "event": "bb-session",
+      "session": "224b1c5b",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-22T11:17:47.719Z",
+      "event": "bb-session",
+      "session": "b241fd5a",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-22T11:19:55.640Z",
+      "event": "bb-session",
+      "session": "230efe35",
+      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
+    },
+    {
+      "t": "2026-10-22T11:20:04.925Z",
+      "event": "bb-session",
+      "session": "a9c46c1f",
+      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
+    },
+    {
+      "t": "2026-10-22T11:21:39.035Z",
+      "event": "bb-session",
+      "session": "0cc3d5e3",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-22T11:21:45.664Z",
+      "event": "bb-session",
+      "session": "748e0cfc",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
     }
   ]
 }
