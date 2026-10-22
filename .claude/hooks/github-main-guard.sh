@@ -9,12 +9,8 @@
 #   - merge_pull_request / enable_pr_auto_merge merge a PR server-side, skipping
 #     land.yml's gates. The PR's base branch is not in the tool input, so they
 #     are refused for this repo outright (PRs here target main).
-#   - create_pull_request (BRO-5915): the owner never reviews or merges PRs, and
-#     cloud sessions following the harness's draft-PR default left PRs parked on
-#     the owner. Refused for this repo; the Bash routes (gh pr create/ready/
-#     merge, gh api …/pulls) are refused by pre-push-review-gate.sh. This also
-#     applies on the Mac, where the project Bash copy self-skips: intended, Mac
-#     sessions land via merge-worktree-to-main.sh, not PRs.
+#   - create_pull_request (BRO-5915): the owner never reviews or merges PRs.
+#     Bash routes: pre-push-review-gate.sh. Narrow override: PR_GUARD_OFF.
 # Sessions land instead: `git push origin HEAD:refs/heads/land/<name>` (or
 # create a land/<name> branch with the MCP tools) and follow the Land run.
 #
@@ -45,7 +41,6 @@ repo=${repo%.git}
 
 case "$tool_name" in
   mcp__github__create_pull_request)
-    # Narrow override: this check only, not the main-write/merge guards.
     { [ "${PR_GUARD_OFF:-0}" = "1" ] || [ -e "$HOME/.claude/PR_GUARD_OFF" ]; } && exit 0
     echo "🛑 BLOCKED: sessions never open Broadwayscore PRs (BRO-5915): the owner never reviews or merges them, so a PR just parks the work. Land it yourself: git push origin HEAD:refs/heads/land/<name> (or create a land/<name> branch with the GitHub tools), then follow the Land run to green (CLOUD.md § Landing). Emergency override: create \$HOME/.claude/PR_GUARD_OFF (this check only)." >&2
     exit 2 ;;

@@ -54,30 +54,15 @@ tool_use_id=$(echo "$input" | jq -r '.tool_use_id // empty' 2>/dev/null)
 
 [ -z "$command" ] && exit 0
 
-# Command-boundary prefix shared by the executed-command checks below: line
-# start or a separator, then env assignments, `env`, command/time/exec.
-_CMD_PFX='(^|[;&|(][[:space:]]*|&&[[:space:]]*|\|\|[[:space:]]*)([A-Z_][A-Z0-9_]*=[^[:space:]]*[[:space:]]+)*(env[[:space:]]+([A-Z_][A-Z0-9_]*=[^[:space:]]*[[:space:]]+)*)?((command|time|exec)[[:space:]]+)*'
-# Quoted strings dropped, so `grep "gh pr create" f` is not an executed command.
-_CMD_STRIPPED=$(printf '%s' "$command" | sed -E "s/\"[^\"]*\"//g; s/'[^']*'//g")
-
-# ── Sessions never open, ready or merge a Broadwayscore PR (BRO-5915) ───────
-# The owner never reviews or merges PRs; a session lands its own work via
-# `git push origin HEAD:refs/heads/land/<name>`. Cloud sessions twice left
-# draft PRs for the owner instead, so PR writes are refused at the tool call:
-# gh pr create|ready|merge, gh api/curl PR creates and merges, gh api graphql
-# PR mutations. Logic + per-command parsing: scripts/lib/pr-command.mjs (the
-# MCP route is github-main-guard.sh). Runs before the transcript fail-open: it
-# needs no transcript. Cheap pre-filter so most commands skip node. Overrides:
-# PR_GUARD_OFF=1 / LAND_ENFORCE_OFF=1 (prefix or env) or the same-named file
-# under $HOME/.claude/; REVIEW_GATE_DISABLE=1 skips this whole hook.
+# BRO-5915: sessions never open/ready/merge Broadwayscore PRs (the owner never
+# merges; land via land/<name>). gh pr, gh api/curl and graphql PR writes are
+# parsed per command in scripts/lib/pr-command.mjs (MCP: github-main-guard.sh).
+# Before the transcript fail-open. Override: PR_GUARD_OFF=1 or LAND_ENFORCE_OFF=1.
 _PRC="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." 2>/dev/null && pwd)/scripts/lib/pr-command.mjs"
-if [ -f "$_PRC" ] && command -v node >/dev/null 2>&1 \
-   && printf '%s' "$command" | grep -qE 'gh|curl' \
+if [ -f "$_PRC" ] && command -v node >/dev/null 2>&1 && printf '%s' "$command" | grep -qE 'gh|curl' \
    && printf '%s' "$command" | grep -qiE '(^|[^a-z])pr([^a-z]|$)|pulls|PullRequest'; then
-  printf '%s' "$input" | node "$_PRC" --hook
-  [ $? -eq 2 ] && exit 2
+  printf '%s' "$input" | node "$_PRC" --hook || [ $? -ne 2 ] || exit 2
 fi
-
 # No transcript → we can't offer the NO-SHIP-CHECK escape hatch; fail open
 # rather than wedge (matches pre-push-visual-gate.sh).
 [ -z "$transcript" ] && exit 0
@@ -230,10 +215,11 @@ fi
 # pushes are not seen (push-ingress). Overrides: LAND_ENFORCE_OFF=1 (prefix
 # or env); REVIEW_GATE_DISABLE=1 skips this whole hook, block included.
 _DPA_REMOTE=$(git -C "$EVAL_ROOT" remote get-url origin 2>/dev/null | tr '[:upper:]' '[:lower:]')
+_DPA_STRIPPED=$(printf '%s' "$command" | sed -E "s/\"[^\"]*\"//g; s/'[^']*'//g")
 if printf '%s' "$_DPA_REMOTE" | grep -qE 'thomaspryor/broadwayscore(\.git)?/?$' \
    && [ "${LAND_ENFORCE_OFF:-0}" != "1" ] \
    && ! printf '%s' "$command" | grep -qE '(^|[[:space:];&|(])LAND_ENFORCE_OFF=1([[:space:]]|;|$)' \
-   && printf '%s' "$_CMD_STRIPPED" | grep -qE "${_CMD_PFX}"'(git([[:space:]]+(-[Cc][[:space:]]+[^[:space:]]+|--?[^[:space:]]+))*[[:space:]]+push|(bash[[:space:]]+)?[^[:space:]]*push-with-retry\.sh|gh[[:space:]]+pr[[:space:]]+merge)'; then
+   && printf '%s' "$_DPA_STRIPPED" | grep -qE '(^|[;&|(][[:space:]]*|&&[[:space:]]*|\|\|[[:space:]]*)([A-Z_][A-Z0-9_]*=[^[:space:]]*[[:space:]]+)*(env[[:space:]]+([A-Z_][A-Z0-9_]*=[^[:space:]]*[[:space:]]+)*)?((command|time|exec)[[:space:]]+)*(git([[:space:]]+(-[Cc][[:space:]]+[^[:space:]]+|--?[^[:space:]]+))*[[:space:]]+push|(bash[[:space:]]+)?[^[:space:]]*push-with-retry\.sh|gh[[:space:]]+pr[[:space:]]+merge)'; then
   echo "🛑 BLOCKED: sessions never push main directly (BRO-4238). Land it instead: git push origin HEAD:refs/heads/land/<name>, then follow the Land run (CLOUD.md § Landing); land.yml runs the gates on the rebased tree and fast-forwards main. Data-only changes land the same way. Emergency override only: LAND_ENFORCE_OFF=1 git push …" >&2
   exit 2
 fi

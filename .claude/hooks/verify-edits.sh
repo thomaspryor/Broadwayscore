@@ -337,8 +337,7 @@ _MERGE_ASK_RE = re.compile(
     r"\byour\s+(merge|to merge)\b|\bfor you to merge\b"
     r"|\bready (for you )?to merge\b|\bwaiting on your merge\b"
     r"|\bonce you merge\b|\bafter you merge\b|\bmerge it when\b"
-    # BRO-5915: imperative asks. Object required after "need to merge" so
-    # "you'll need to merge conflicts" (a description) doesn't match.
+    # BRO-5915 imperatives; an object is required ("need to merge conflicts" is not an ask).
     r"|\bplease merge\b"
     r"|\byou(?:['’]ll| will)?\s+(?:need|have)\s+to\s+merge\s+(?:the\s+|this\s+|these\s+|both\s+|my\s+)?(?:PRs?\b|pull\s+requests?\b|#\d)",
     re.IGNORECASE,
@@ -898,37 +897,24 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
         # `git push origin land/x` — not `foo-land/`.
         _land_push_re = re.compile(r'git\s+push\b[^\n;&|]*\s(\S*:)?(refs/heads/)?land/')
         _pr_url_re = re.compile(r'github\.com/[^/\s"]+/[^/\s"]+/pull/\d+')
-
-        def _gh_pr_create_cmd(cmd):
-            if re.search(r'\bgh\s+pr\s+create\b', cmd):
-                return True
-            # One command segment that POSTs to …/pulls (the list endpoint itself).
-            for seg in re.split(r'&&|\|\||[;|\n]', cmd):
-                if (re.search(r'\b(gh\s+api|curl)\b', seg)
-                        and re.search(r'/pulls/?(?=[\s\'"?]|$)', seg)
-                        and not re.search(r'(-X|--method|--request)[\s=]*GET\b', seg, re.I)
-                        and re.search(r'(-X|--method|--request)[\s=]*POST\b|\s(-f|-F|-d|--field|--raw-field|--input|--data[a-z-]*|--json)[\s=]', seg, re.I)):
-                    return True
-            return False
+        def _gh_pr_create_cmd(cmd):  # gh pr create, or one segment POSTing to …/pulls itself
+            return bool(re.search(r'\bgh\s+pr\s+create\b', cmd)) or any(
+                re.search(r'\b(gh\s+api|curl)\b', g) and re.search(r'/pulls/?(?=[\s\'"?]|$)', g)
+                and not re.search(r'(-X|--method|--request)[\s=]*GET\b', g, re.I)
+                and re.search(r'(-X|--method|--request)[\s=]*POST\b|\s(-f|-F|-d|--field|--raw-field|--input|--data[a-z-]*|--json)[\s=]', g, re.I)
+                for g in re.split(r'&&|\|\||[;|\n]', cmd))
         for _kind, _payload in events:
             if _kind != 'tool':
                 continue
             _name, _inp, _tid = _payload
             _inp = _inp if isinstance(_inp, dict) else {}
             if _name == 'mcp__github__create_pull_request':
-                # Only a PR that exists counts (BRO-5915): github-main-guard.sh
-                # refuses Broadwayscore PR creation, and a refused or failed
-                # call must not demand a blocker for a PR that never opened.
-                # Positive match on the new PR's URL, like the merge branch
-                # below.
+                # BRO-5915: only a PR that exists (its URL; a refused call opened nothing).
                 if _tid not in tool_error_ids and _pr_url_re.search(tool_results_by_id.get(_tid, '') or ''):
                     _opened_pr = True
             elif (_name == 'Bash' and _gh_pr_create_cmd(_inp.get('command') or '')
                   and _pr_url_re.search(tool_results_by_id.get(_tid, '') or '')):
-                # `gh pr create` / a REST POST …/pulls that printed a PR URL
-                # (BRO-5915: the Bash route was never counted). Reads (GET
-                # …/pulls, …/pulls/N/comments) also print PR URLs, so the
-                # command itself must be a create.
+                # BRO-5915: Bash creates count too (reads print PR URLs, so the command must create).
                 _opened_pr = True
             elif _name == 'mcp__github__merge_pull_request':
                 # Only a merge that happened counts (BRO-4238): github-main-guard.sh
