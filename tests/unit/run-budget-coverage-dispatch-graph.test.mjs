@@ -88,6 +88,7 @@ function makeCorpus(workflows, scripts) {
   const workflowDir = path.join(root, 'workflows');
   const scriptsDir = path.join(root, 'scripts');
   fs.mkdirSync(workflowDir);
+  for (let i = 0; i < 50; i++) fs.writeFileSync(path.join(workflowDir, `inert-${i}.yml`), 'jobs: {}\n');
   fs.mkdirSync(path.join(scriptsDir, 'lib'), { recursive: true });
   for (const [name, body] of Object.entries(workflows)) fs.writeFileSync(path.join(workflowDir, name), body);
   for (const [name, body] of Object.entries(scripts)) fs.writeFileSync(path.join(scriptsDir, name), body);

@@ -215,6 +215,7 @@
  *     Exempt with `# hygiene-stage-no-commit-ok: <reason>`.
  */
 const fs = require('fs');
+const { readWorkflowFilesOrFailClosed } = require('./lib/workflow-glob-guard.js');
 const path = require('path');
 const https = require('https');
 const { findNeverRunWorkflows } = require('./lib/workflow-run-coverage');
@@ -799,9 +800,7 @@ function neverRunCliScanDecision(env = {}) {
 }
 
 async function main() {
-  const files = fs
-    .readdirSync(WORKFLOW_DIR)
-    .filter((f) => f.endsWith('.yml') || f.endsWith('.yaml'))
+  const files = readWorkflowFilesOrFailClosed(WORKFLOW_DIR, { includeYaml: true })
     .sort();
 
   // BRO-5431: advisory first. Keep this separate from the blocking total and

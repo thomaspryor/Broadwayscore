@@ -11,6 +11,7 @@
  * memory/feedback_test_yml_cancel_in_progress.md for the incident history.
  */
 const fs = require('fs');
+const { readWorkflowFilesOrFailClosed } = require('./lib/workflow-glob-guard.js');
 const path = require('path');
 const { findConcurrencyViolation, ANNOTATION } = require('./lib/ci-cancellation-guard.js');
 const {
@@ -24,9 +25,7 @@ const WORKFLOW_DIR = path.join(__dirname, '..', '.github', 'workflows');
 const MEMORY_REF = 'memory/feedback_test_yml_cancel_in_progress.md';
 
 function main() {
-  const files = fs
-    .readdirSync(WORKFLOW_DIR)
-    .filter((f) => f.endsWith('.yml') || f.endsWith('.yaml'));
+  const files = readWorkflowFilesOrFailClosed(WORKFLOW_DIR, { includeYaml: true });
 
   const violations = [];
 

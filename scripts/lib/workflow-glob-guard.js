@@ -1,7 +1,7 @@
 'use strict';
 /**
- * Shared floor guard for every lint-workflow-guards.sh check_* function that
- * scans `.github/workflows/*.yml` (BRO-3686).
+ * Shared floor guard for workflow verdict scans, including every
+ * lint-workflow-guards.sh check_* function (BRO-3686, BRO-3689).
  *
  * BRO-3684 fixed exactly ONE call site (check_alert_ledger_commit) for the
  * failure where `fs.readdirSync(dir).filter(f => f.endsWith('.yml'))` against
@@ -26,13 +26,15 @@ const TOO_FEW_WORKFLOWS_PREFIX = '__TOO_FEW_WORKFLOWS__:';
 
 /**
  * @param {string} dir - directory of workflow files (e.g. '.github/workflows')
- * @returns {string[]} the `.yml` filenames in dir
+ * @param {{includeYaml?: boolean}} [options] - include .yaml for callers that scan both extensions
+ * @returns {string[]} the matching workflow filenames in dir
  * @throws {Error} message `${TOO_FEW_WORKFLOWS_PREFIX}${count}` if dir yields
  *   fewer than MIN_EXPECTED_WORKFLOWS files — callers must treat this as
  *   "refuse to report a verdict", never as a clean scan.
  */
-function readWorkflowFilesOrFailClosed(dir) {
-  const files = fs.readdirSync(dir).filter((f) => f.endsWith('.yml'));
+function readWorkflowFilesOrFailClosed(dir, { includeYaml = false } = {}) {
+  const files = fs.readdirSync(dir).filter((f) =>
+    f.endsWith('.yml') || (includeYaml && f.endsWith('.yaml')));
   if (files.length < MIN_EXPECTED_WORKFLOWS) {
     throw new Error(TOO_FEW_WORKFLOWS_PREFIX + files.length);
   }

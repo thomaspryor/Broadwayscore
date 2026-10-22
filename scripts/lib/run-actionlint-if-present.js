@@ -16,7 +16,7 @@
 // including `.yaml` here would block on a file CI itself never checks.
 
 const { spawnSync } = require('node:child_process');
-const fs = require('node:fs');
+const { readWorkflowFilesOrFailClosed } = require('./workflow-glob-guard.js');
 const path = require('node:path');
 
 const has = spawnSync('command', ['-v', 'actionlint'], { shell: true });
@@ -32,13 +32,8 @@ if (log.status === 0 && log.stdout.includes('[skip-actionlint]')) {
 }
 
 const workflowDir = path.join(process.cwd(), '.github', 'workflows');
-if (!fs.existsSync(workflowDir)) process.exit(0);
-
-const files = fs
-  .readdirSync(workflowDir)
-  .filter((f) => f.endsWith('.yml'))
+const files = readWorkflowFilesOrFailClosed(workflowDir)
   .map((f) => path.join('.github', 'workflows', f));
-if (files.length === 0) process.exit(0);
 
 const result = spawnSync(
   'actionlint',

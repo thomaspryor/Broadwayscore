@@ -146,6 +146,7 @@ test('scanWorkflowsForCoupling: a schedule whose target script is clean is not r
     const workflowsDir = path.join(dir, '.github', 'workflows');
     const scriptsDir = path.join(dir, 'scripts');
     fs.mkdirSync(workflowsDir, { recursive: true });
+    for (let i = 0; i < 50; i++) fs.writeFileSync(path.join(workflowsDir, `inert-${i}.yml`), 'jobs: {}\n');
     fs.mkdirSync(scriptsDir, { recursive: true });
     fs.writeFileSync(
       path.join(workflowsDir, 'clean.yml'),
@@ -165,6 +166,7 @@ test('scanWorkflowsForCoupling: a schedule whose target script reads TASKS_DIR i
     const workflowsDir = path.join(dir, '.github', 'workflows');
     const scriptsDir = path.join(dir, 'scripts');
     fs.mkdirSync(workflowsDir, { recursive: true });
+    for (let i = 0; i < 50; i++) fs.writeFileSync(path.join(workflowsDir, `inert-${i}.yml`), 'jobs: {}\n');
     fs.mkdirSync(scriptsDir, { recursive: true });
     fs.writeFileSync(
       path.join(workflowsDir, 'coupled.yml'),
@@ -185,6 +187,7 @@ test('readScriptWithLocalDeps (via scanWorkflowsForCoupling): an allowlisted dep
     const scriptsDir = path.join(dir, 'scripts');
     const libDir = path.join(scriptsDir, 'lib');
     fs.mkdirSync(workflowsDir, { recursive: true });
+    for (let i = 0; i < 50; i++) fs.writeFileSync(path.join(workflowsDir, `inert-${i}.yml`), 'jobs: {}\n');
     fs.mkdirSync(libDir, { recursive: true });
     fs.writeFileSync(
       path.join(workflowsDir, 'caller.yml'),

@@ -53,6 +53,7 @@
 'use strict';
 
 const fs = require('fs');
+const { readWorkflowFilesOrFailClosed } = require('./lib/workflow-glob-guard.js');
 const path = require('path');
 const os = require('os');
 const { execFileSync } = require('child_process');
@@ -294,7 +295,7 @@ function scanWorkflowsForCoupling(opts = {}) {
   const findings = [];
   let workflowFiles;
   try {
-    workflowFiles = fs.readdirSync(workflowsDir).filter((f) => f.endsWith('.yml') || f.endsWith('.yaml'));
+    workflowFiles = readWorkflowFilesOrFailClosed(workflowsDir, { includeYaml: true });
   } catch (e) {
     return { ok: false, reason: `cannot list ${workflowsDir}: ${e.message}`, findings: [], scannedWorkflows: 0, scannedScripts: 0 };
   }

@@ -18,6 +18,7 @@
 'use strict';
 
 const fs = require('fs');
+const { readWorkflowFilesOrFailClosed } = require('./lib/workflow-glob-guard.js');
 const path = require('path');
 const {
   auditWorkflowText, countRawCallSites,
@@ -36,7 +37,7 @@ function main() {
   const failOnJobTimeout = args.includes('--fail-on-job-timeout');
   const topN = topArg ? parseInt(topArg.split('=')[1], 10) : 15;
 
-  const files = fs.readdirSync(WORKFLOWS_DIR).filter((f) => /\.ya?ml$/.test(f)).sort();
+  const files = readWorkflowFilesOrFailClosed(WORKFLOWS_DIR, { includeYaml: true }).sort();
 
   let allResults = [];
   let filesWithPushCalls = 0;

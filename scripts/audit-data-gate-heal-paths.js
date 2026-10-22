@@ -20,6 +20,7 @@
 'use strict';
 
 const fs = require('fs');
+const { readWorkflowFilesOrFailClosed } = require('./lib/workflow-glob-guard.js');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { auditDataValidationGates, auditCorpusDriftGates, findStaleHealExemptions } = require('./lib/data-gate-heal-paths.js');
@@ -52,9 +53,7 @@ function readScriptSource(scriptName) {
 }
 
 function loadWorkflowFiles() {
-  return fs
-    .readdirSync(WORKFLOWS_DIR)
-    .filter((f) => f.endsWith('.yml') || f.endsWith('.yaml'))
+  return readWorkflowFilesOrFailClosed(WORKFLOWS_DIR, { includeYaml: true })
     .map((filename) => ({
       filename,
       content: fs.readFileSync(path.join(WORKFLOWS_DIR, filename), 'utf8'),

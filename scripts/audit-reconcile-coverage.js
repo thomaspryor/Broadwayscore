@@ -32,6 +32,7 @@
 'use strict';
 
 const fs = require('fs');
+const { readWorkflowFilesOrFailClosed } = require('./lib/workflow-glob-guard.js');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { findCoverageGaps } = require('./lib/reconcile-coverage.js');
@@ -50,9 +51,7 @@ const REPO_ROOT = path.resolve(__dirname, '..');
 const WORKFLOWS_DIR = path.join(REPO_ROOT, '.github', 'workflows');
 
 function main() {
-  if (!fs.existsSync(WORKFLOWS_DIR)) { console.log('No .github/workflows dir — nothing to audit.'); return; }
-
-  const files = fs.readdirSync(WORKFLOWS_DIR).filter((f) => /\.ya?ml$/.test(f));
+  const files = readWorkflowFilesOrFailClosed(WORKFLOWS_DIR, { includeYaml: true });
   const fileMap = files.map((f) => {
     const rel = path.relative(REPO_ROOT, path.join(WORKFLOWS_DIR, f));
     return [rel, fs.readFileSync(path.join(WORKFLOWS_DIR, f), 'utf8')];

@@ -27,6 +27,7 @@
 'use strict';
 
 const fs = require('fs');
+const { readWorkflowFilesOrFailClosed } = require('./lib/workflow-glob-guard.js');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help');
@@ -109,6 +110,7 @@ function makeIsIgnored(root, unanswered) {
 }
 
 function main() {
+  readWorkflowFilesOrFailClosed(path.join(ROOT, '.github', 'workflows'), { includeYaml: true });
   const files = [];
   for (const rel of SCAN_DIRS) {
     const dir = path.join(ROOT, rel);

@@ -53,6 +53,7 @@
 'use strict';
 
 const fs = require('fs');
+const { readWorkflowFilesOrFailClosed } = require('./lib/workflow-glob-guard.js');
 const path = require('path');
 const { decideOrphanGate } = require('./lib/orphan-test-gate.js');
 const { MANIFESTS, NODE_RUNNABLE_TEST_EXTENSIONS, testFileRegex, testReferenceRegex, validateManifest, readManifest, COLLECTOR_FAILURE } = require('./lib/test-manifest.js');
@@ -332,6 +333,7 @@ function extractRunBlocks(content) {
 // there would satisfy the audit while guaranteeing a run-time failure.
 // ciCoverageOf() ignores manifests for .sh for exactly that reason.
 function collectCiCoverage(root = ROOT) {
+  readWorkflowFilesOrFailClosed(path.join(root, '.github', 'workflows'), { includeYaml: true });
   // Lazy: bash-integration-test-list.js (pulled in by ci-test-coverage.js)
   // require()s this module for extractRunBlocks.
   const { ciCoverageOf } = require('./lib/ci-test-coverage.js');

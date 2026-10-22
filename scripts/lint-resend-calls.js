@@ -20,6 +20,7 @@
  */
 
 const fs = require('fs');
+const { readWorkflowFilesOrFailClosed } = require('./lib/workflow-glob-guard.js');
 const path = require('path');
 
 const REPO_ROOT = path.join(__dirname, '..');
@@ -123,6 +124,7 @@ function walk(dir, files) {
 }
 
 function main() {
+  readWorkflowFilesOrFailClosed(path.join(REPO_ROOT, '.github', 'workflows'), { includeYaml: true });
   const files = [];
   for (const dir of SCAN_DIRS) walk(path.join(REPO_ROOT, dir), files);
 

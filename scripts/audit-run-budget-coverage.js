@@ -65,6 +65,7 @@
  */
 require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
+const { readWorkflowFilesOrFailClosed } = require('./lib/workflow-glob-guard.js');
 const path = require('path');
 
 const WORKFLOW_DIR = path.join(__dirname, '..', '.github', 'workflows');
@@ -875,9 +876,7 @@ function partitionByBaseline(findings, baseline) {
  * invocation doesn't pass it, so it runs with no budget at all.
  */
 function collectFindings({ workflowDir = WORKFLOW_DIR, scriptsDir = SCRIPTS_DIR } = {}) {
-  const files = fs
-    .readdirSync(workflowDir)
-    .filter((f) => f.endsWith('.yml') || f.endsWith('.yaml'))
+  const files = readWorkflowFilesOrFailClosed(workflowDir, { includeYaml: true })
     .sort();
   const workflows = files.map((file) => ({ file, raw: fs.readFileSync(path.join(workflowDir, file), 'utf8') }));
   const dispatchGraph = buildDispatchGraph(workflows);

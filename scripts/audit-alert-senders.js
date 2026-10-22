@@ -109,6 +109,7 @@
 'use strict';
 
 const fs = require('fs');
+const { readWorkflowFilesOrFailClosed } = require('./lib/workflow-glob-guard.js');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -434,6 +435,7 @@ const BASELINE_PATH = path.join(__dirname, '.alert-sender-baseline.json');
 const HUMAN_DIGEST_BASELINE_PATH = path.join(__dirname, '.human-caller-digest-baseline.json');
 
 function collectFindings() {
+  readWorkflowFilesOrFailClosed(path.join(REPO_ROOT, '.github', 'workflows'), { includeYaml: true });
   const files = [];
   for (const dir of SCAN_DIRS) walk(path.join(REPO_ROOT, dir), files);
 

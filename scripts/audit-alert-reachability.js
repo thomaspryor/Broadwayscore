@@ -82,6 +82,7 @@
 'use strict';
 
 const fs = require('fs');
+const { readWorkflowFilesOrFailClosed } = require('./lib/workflow-glob-guard.js');
 const path = require('path');
 
 const WORKFLOW_DIR = path.join(__dirname, '..', '.github', 'workflows');
@@ -296,9 +297,7 @@ function findUnreachableAlerts(jobs) {
  * tests require() the real function, never re-implement its scan logic).
  */
 function collectFindings(workflowDir = WORKFLOW_DIR) {
-  const files = fs
-    .readdirSync(workflowDir)
-    .filter((f) => f.endsWith('.yml') || f.endsWith('.yaml'))
+  const files = readWorkflowFilesOrFailClosed(workflowDir, { includeYaml: true })
     .sort();
 
   const findings = [];
@@ -330,7 +329,7 @@ function main() {
       console.log(`Exempt (false positive): add  # ${ANNOTATION}: <reason>  anywhere in the workflow file.`);
     }
   } catch (err) {
-    console.log(`::warning::audit-alert-reachability crashed (${err.message}) — treating as no findings rather than failing the job (see file header).`);
+    console.log(`::warning::audit-alert-reachability crashed (${err.message}); scan incomplete, no verdict available (advisory).`);
   }
   process.exit(0); // advisory — never fails CI (see file header)
 }

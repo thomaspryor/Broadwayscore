@@ -144,6 +144,7 @@ test('collector tree: collected tests are covered without a manifest line; verif
   const root = tempRepo();
   fs.mkdirSync(path.join(root, 'scripts/lib'), { recursive: true });
   fs.mkdirSync(path.join(root, '.github/workflows'), { recursive: true });
+  for (let i = 0; i < 50; i++) fs.writeFileSync(path.join(root, '.github/workflows', `inert-${i}.yml`), 'jobs: {}\n');
   fs.writeFileSync(path.join(root, '.github/workflows/test.yml'), 'jobs: {}\n');
   fs.copyFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'lib', 'unit-test-collection.js'), path.join(root, 'scripts/lib/unit-test-collection.js'));
   fs.writeFileSync(path.join(root, 'scripts/new.test.mjs'), '');
@@ -166,6 +167,7 @@ test('collector tree: a throwing or empty collection is a blocking COLLECTOR FAI
     fs.mkdirSync(path.join(root, 'scripts/lib'), { recursive: true });
     fs.mkdirSync(path.join(root, 'tests/unit'), { recursive: true });
     fs.mkdirSync(path.join(root, '.github/workflows'), { recursive: true });
+    for (let i = 0; i < 50; i++) fs.writeFileSync(path.join(root, '.github/workflows', `inert-${i}.yml`), 'jobs: {}\n');
     fs.writeFileSync(path.join(root, '.github/workflows/test.yml'), 'jobs: {}\n');
     if (withTests) fs.writeFileSync(path.join(root, 'tests/unit/a.test.mjs'), '');
     fs.writeFileSync(path.join(root, 'scripts/lib/unit-test-collection.js'), collectorSrc);
@@ -193,6 +195,7 @@ function coverageRepo() {
     fs.mkdirSync(path.dirname(path.join(root, rel)), { recursive: true });
     fs.writeFileSync(path.join(root, rel), body);
   };
+  for (let i = 0; i < 50; i++) write(`.github/workflows/inert-${i}.yml`, 'jobs: {}\n');
   write('.github/workflows/test.yml', [
     'on:',
     '  push:',
@@ -270,7 +273,7 @@ test('CLI: a collector failure is the only finding, exit 1, JSON parseable (fail
   const here = path.dirname(fileURLToPath(import.meta.url));
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'orphan-cli-collector-'));
   try {
-    for (const f of ['audit-orphan-tests.js', 'lib/orphan-test-gate.js', 'lib/test-manifest.js', 'lib/ci-test-coverage.js', 'lib/bash-integration-test-list.js']) {
+    for (const f of ['audit-orphan-tests.js', 'lib/orphan-test-gate.js', 'lib/test-manifest.js', 'lib/ci-test-coverage.js', 'lib/bash-integration-test-list.js', 'lib/workflow-glob-guard.js', 'lib/scan-alert-ledger-gaps.js']) {
       fs.mkdirSync(path.dirname(path.join(root, 'scripts', f)), { recursive: true });
       fs.copyFileSync(path.join(here, f), path.join(root, 'scripts', f));
     }
@@ -278,6 +281,7 @@ test('CLI: a collector failure is the only finding, exit 1, JSON parseable (fail
       "const real = { NODE_MANIFEST_REL: 'tests/unit-test-manifest.txt', TSX_MANIFEST_REL: 'tests/unit-test-manifest-tsx.txt', E2E_MANIFEST_REL: 'tests/e2e-unit-test-manifest.txt', TOMBSTONE_FIX: 'x' };\n" +
       "module.exports = { ...real, treeUsesCollector: () => true, nodeUnitTestsForTree() { throw new Error('boom'); }, collectNodeUnitTests() { throw new Error('boom'); }, tombstoneProblem: () => null };\n");
     fs.mkdirSync(path.join(root, '.github/workflows'), { recursive: true });
+    for (let i = 0; i < 50; i++) fs.writeFileSync(path.join(root, '.github/workflows', `inert-${i}.yml`), 'jobs: {}\n');
     fs.writeFileSync(path.join(root, '.github/workflows/test.yml'), 'jobs: {}\n');
     fs.mkdirSync(path.join(root, 'tests/unit'), { recursive: true });
     for (let i = 0; i < 5; i++) fs.writeFileSync(path.join(root, `tests/unit/t${i}.test.mjs`), '');
