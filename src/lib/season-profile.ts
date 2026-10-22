@@ -18,6 +18,8 @@ export interface SeasonShowInput {
   type: string | null | undefined;
   isRevival: boolean | null | undefined;
   openingDate: string;
+  /** shows.json status; a closed show with only a research placeholder counts as untracked (trackedRecord). */
+  status?: string | null;
   /** commercial.json record, null when the show is not tracked there. */
   commercial: {
     capitalization?: number | null;
@@ -32,6 +34,7 @@ export interface SeasonShowInput {
     weeklyCost?: number | null;
     recouped?: boolean | null;
     designation?: string | null;
+    sources?: unknown[] | null;
     productionType?: string | null;
     /** Producing nonprofit (Roundabout, MTC, LCT...), also set on enhancement and converted runs. */
     nonprofitOrg?: string | null;
@@ -161,12 +164,39 @@ export function isOwnEstimate(c: Pick<NonNullable<SeasonShowInput['commercial']>
     && (c.isEstimate?.capitalization === true || sourceOpensAsEstimate(c.capitalizationSource));
 }
 
+interface RecordFacts {
+  designation?: string | null;
+  recouped?: boolean | null;
+  capitalization?: number | null;
+  sources?: unknown[] | null;
+}
+
+/**
+ * The record a show counts with, null when it counts as untracked. Research
+ * leaves a TBD placeholder (attempt bookkeeping, no sources, no figures) on
+ * every show it looks at; on a closed show that is an unknown outcome, not a
+ * show that failed to recoup, and counting it would make an unresearched
+ * season look tracked with almost nothing recouped. A running show's
+ * placeholder still counts (not recouped yet).
+ */
+export function trackedRecord<C extends RecordFacts>(show: { status?: string | null; commercial: C | null }): C | null {
+  const c = show.commercial;
+  if (c && show.status === 'closed' && isResearchPlaceholder(c)) return null;
+  return c;
+}
+
+function isResearchPlaceholder(c: RecordFacts): boolean {
+  return c.designation === 'TBD' && typeof c.recouped !== 'boolean'
+    && !(typeof c.capitalization === 'number' && c.capitalization > 0)
+    && !(Array.isArray(c.sources) && c.sources.length > 0);
+}
+
 /** One profile per season (July 1 - June 30), newest first. */
 export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
   const disclosed: DisclosedCap[] = [];
   for (const show of shows) {
     const season = getSeason(show.openingDate);
-    const c = show.commercial;
+    const c = trackedRecord(show);
     if (!season || !c || isExcludedFromSeasonStats(c) || c.nonprofitOrg) continue;
     if (typeof c.capitalization === 'number' && c.capitalization > 0 && !isOwnEstimate(c)) {
       disclosed.push({
@@ -208,7 +238,7 @@ export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
       }
     }
 
-    const c = show.commercial;
+    const c = trackedRecord(show);
     if (!c) continue;
     p.tracked++;
     if (c.nonprofitOrg) p.nonprofit++;
@@ -729,8 +759,9 @@ export function buildRecoupFindings(shows: RecoupShowInput[], asOf: string): Rec
 
   for (const s of shows) {
     const season = getSeason(s.openingDate);
-    if (!season || !seasons.has(season) || !s.commercial || isExcludedFromSeasonStats(s.commercial)) continue;
-    const recouped = s.commercial.recouped === true;
+    const c = trackedRecord(s);
+    if (!season || !seasons.has(season) || !c || isExcludedFromSeasonStats(c)) continue;
+    const recouped = c.recouped === true;
     const b = buckets[`${s.type}|${s.isRevival === true}`];
     if (b && typeof s.isRevival === 'boolean') {
       b.total++;
