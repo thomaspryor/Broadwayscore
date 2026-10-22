@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T01:16:23.401Z",
+  "timestamp": "2026-10-22T01:48:36.565Z",
   "stats": {
-    "totalReviews": 58637,
-    "alreadyFlagged": 21211,
+    "totalReviews": 58677,
+    "alreadyFlagged": 21213,
     "dateGuardCatches": 197,
-    "directorMismatch": 2088,
-    "tvFilmSignals": 1657,
-    "londonSignals": 2635,
+    "directorMismatch": 2093,
+    "tvFilmSignals": 1659,
+    "londonSignals": 2648,
     "offBroadwaySignals": 530,
     "yearMismatch": 166,
-    "noPublishDate": 5336
+    "noPublishDate": 5313
   },
   "findings": [
     {
@@ -25245,6 +25245,19 @@
       ]
     },
     {
+      "showId": "long-days-journey-into-night-west-end-2018",
+      "file": "sunday-express--michael-arditti.json",
+      "publishDate": "2018-02-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jonathan miller\" from long-days-journey-into-night-1986"
+        }
+      ]
+    },
+    {
       "showId": "long-days-journey-into-night-west-end-2024",
       "file": "daily-mail--patrick-marmion.json",
       "score": 36,
@@ -28908,15 +28921,19 @@
     },
     {
       "showId": "network-west-end-2017",
-      "file": "guardian--michael-billington.json",
-      "score": null,
-      "publishDate": "November 13th, 2017",
-      "url": "https://www.theguardian.com/stage/2017/nov/13/network-review-bryan-cranston-lyttelton-national-theatre-lee-hall",
+      "file": "daily-mail--quentin-letts.json",
+      "publishDate": "2017-11-17",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"ivo van hove\" from network-2018"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
@@ -28940,6 +28957,34 @@
       "score": null,
       "publishDate": "November 19th, 2017",
       "url": "https://www.thetimes.co.uk/article/theatre-review-bryan-cranston-in-network-lyttelton-national-theatre-9fb8clzjc",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from network-2018"
+        }
+      ]
+    },
+    {
+      "showId": "network-west-end-2017",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 97,
+      "publishDate": "November 14th, 2017",
+      "url": "https://www.timeout.com/london/theatre/network-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from network-2018"
+        }
+      ]
+    },
+    {
+      "showId": "network-west-end-2017",
+      "file": "times-uk--ann-treneman.json",
+      "score": null,
+      "publishDate": "November 15th, 2017",
+      "url": "https://www.thetimes.co.uk/article/theatre-network-at-the-lyttelton-theatre-se1-36tbsdwf2",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -42902,6 +42947,20 @@
       ]
     },
     {
+      "showId": "the-great-wave-west-end-2018",
+      "file": "london-box-office--justin-murray.json",
+      "score": null,
+      "publishDate": "2018-03-23",
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-great-wave-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "the-gruffalo-west-end-2026",
       "file": "curtain-call-reviews--unknown.json",
       "score": 78,
@@ -49694,6 +49753,25 @@
       ]
     },
     {
+      "showId": "translations-west-end-2018",
+      "file": "fringereview--simon-jenner.json",
+      "score": null,
+      "publishDate": "2018-06-08",
+      "url": "https://fringereview.co.uk/review/fringereview-uk/2018/translations/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "trash-off-broadway-2026",
       "file": "nytimes--laura-collins-hughes.json",
       "score": 63,
@@ -53992,6 +54070,33 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "young-frankenstein-west-end-2017",
+      "file": "sunday-times--patricia-nicol.json",
+      "publishDate": "2017-10-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"susan stroman\" from young-frankenstein-2007"
+        }
+      ]
+    },
+    {
+      "showId": "young-frankenstein-west-end-2017",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 76,
+      "publishDate": "October 10th, 2017",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/want-howl-laughter-walk-way-young-frankenstein-garrick-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"susan stroman\" from young-frankenstein-2007"
         }
       ]
     },
@@ -65843,6 +65948,33 @@
       ]
     },
     {
+      "showId": "girls-and-boys-west-end-2018",
+      "file": "nytimes--matt-wolf.json",
+      "score": null,
+      "publishDate": "2018-02-24",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "girls-and-boys-west-end-2018",
+      "file": "tribune--aleks-sierz.json",
+      "publishDate": "2018-02-23",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "glass-kill-bluebeard-and-imp-west-end-2019",
       "file": "a-younger-theatre--unknown.json",
       "score": 91,
@@ -76170,6 +76302,20 @@
       ]
     },
     {
+      "showId": "network-west-end-2017",
+      "file": "guardian--michael-billington.json",
+      "score": null,
+      "publishDate": "November 13th, 2017",
+      "url": "https://www.theguardian.com/stage/2017/nov/13/network-review-bryan-cranston-lyttelton-national-theatre-lee-hall",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
       "showId": "next-fall-2010",
       "file": "broadwayworld--stephanie-zacharek.json",
       "score": 66,
@@ -78833,9 +78979,36 @@
     },
     {
       "showId": "pinocchio-west-end-2017",
-      "file": "financialtimes--unknown.json",
+      "file": "financialtimes--ian-shuttleworth.json",
       "publishDate": "2017-12-15",
       "url": "https://www.ft.com/content/5f579352-e0bc-11e7-8f9f-de1c2175f5ce?syn-25a6b1a6=1",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "pinocchio-west-end-2017",
+      "file": "sunday-express--michael-arditti.json",
+      "publishDate": "2017-12-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "pinocchio-west-end-2017",
+      "file": "times-uk--ann-treneman.json",
+      "score": 70,
+      "publishDate": "2017-12-15T07:46:34+00:00",
+      "url": "https://www.thetimes.co.uk/article/theatre-review-pinocchio-at-the-lyttelton-theatre-se1-lrgqhmccp",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -86734,6 +86907,62 @@
       ]
     },
     {
+      "showId": "the-great-wave-west-end-2018",
+      "file": "britishtheatrecom--douglas-mayo.json",
+      "score": null,
+      "publishDate": "2018-03-20",
+      "url": "https://www.britishtheatre.com/posts/review-the-great-wave-dorfman-theatre-national",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "the-great-wave-west-end-2018",
+      "file": "london-theatre--will-longman.json",
+      "score": null,
+      "publishDate": "2018-03-19",
+      "url": "https://www.londontheatre.co.uk/reviews/review-the-great-wave-at-the-national-theatre-dorfman",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-great-wave-west-end-2018",
+      "file": "londontheatre1--chris-omaweng.json",
+      "score": null,
+      "publishDate": "2018-03-20",
+      "url": "https://www.londontheatre1.com/reviews/review-the-great-wave/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "the-great-wave-west-end-2018",
+      "file": "variety--matt-trueman.json",
+      "score": null,
+      "publishDate": "2018-03-20",
+      "url": "https://variety.com/2018/legit/reviews/the-great-wave-review-play-national-theatre-1202731746/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-gruffalo-west-end-2026",
       "file": "westend--unknown.json",
       "publishDate": null,
@@ -88429,7 +88658,7 @@
       "file": "theatre-weekly--greg-stewart.json",
       "score": 87,
       "publishDate": "2023-11-20",
-      "url": null,
+      "url": "https://theatreweekly.com/review-the-mongol-khan-at-the-london-coliseum/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -92421,6 +92650,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "translations-west-end-2018",
+      "file": "london-theatre--will-longman.json",
+      "score": null,
+      "publishDate": "2018-05-31",
+      "url": "https://www.londontheatre.co.uk/reviews/review-translations-starring-colin-morgan-at-the-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "translations-west-end-2018",
+      "file": "londontheatre1--terry-eastham.json",
+      "score": null,
+      "publishDate": "2018-06-01",
+      "url": "https://www.londontheatre1.com/reviews/review-of-translations-at-the-olivier-theatre-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
