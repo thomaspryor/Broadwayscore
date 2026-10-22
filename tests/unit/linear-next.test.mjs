@@ -1015,7 +1015,7 @@ test('parseArgs: a flag immediately followed by another flag is boolean, not a v
 // This drives main() end-to-end IN A REAL SUBPROCESS, not an in-process call
 // with process.exit stubbed to throw: the guard's own `try { ... } catch (e)
 // { console.error('...continuing...') }` wraps the process.exit(1) call, so a
-// throwing stub is swallowed by that SAME catch (bsc-next-ci-red-claim.test.mjs
+// throwing stub is swallowed by that SAME catch (the since-removed bsc-next CI-red claim suite
 // documents this exact unobservability for bsc-next.js's identical guard
 // shape, which is why that suite uses structural source assertions instead).
 // A real child process lets process.exit(1) actually terminate — genuine

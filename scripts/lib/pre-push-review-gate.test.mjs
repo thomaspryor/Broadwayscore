@@ -287,3 +287,15 @@ test('settings.json registers github-main-guard.sh on create_pull_request', () =
   assert.ok(re.test('mcp__github__create_pull_request'));
   assert.ok(!re.test('mcp__github__update_pull_request'), 'closing PRs must stay unguarded');
 });
+
+// BRO-5931: the task #584 CI-red claim check sat below this hook's self-skip
+// preamble (dead on the Mac) with a Mac-local ledger (dead in cloud), and never
+// ran. The whole mechanism was removed; this keeps a guard that must hold
+// everywhere from being re-added behind the preamble under the same names.
+test('pre-push-review-gate.sh carries no CI-red claim check behind the self-skip preamble', () => {
+  const src = fs.readFileSync(REVIEW_GATE, 'utf8');
+  assert.doesNotMatch(src, /claim-ci-red|ci-red-claim|CI_RED_CLAIM|CI-RED-TASK/);
+  for (const dead of ['scripts/claim-ci-red.js', 'scripts/lib/ci-red-claims.js']) {
+    assert.ok(!fs.existsSync(path.join(REPO_ROOT, dead)), `${dead} should stay deleted (BRO-5931)`);
+  }
+});

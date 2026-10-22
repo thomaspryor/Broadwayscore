@@ -3210,11 +3210,6 @@ on:
       # here so a solo edit to the lib file still triggers CI
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/check-worktree-collision.js'
-      # CI-red claim ledger (task #584): closes the evaluateCiRedClaim wiring
-      # gap left by #542. Test lives in tests/unit/ (node --test batch, not
-      # globbed) — path-listed so a solo edit still triggers CI
-      # (feedback_test_yml_push_path_allowlist).
-      - 'scripts/claim-ci-red.js'
       # TR wrong-show guard corroboration (card #1227): the title-mention-count
       # and film/TV guards in extract-theatre-record.js false-rejected 6 real
       # T1/T2 Barcelona reviews on a common-word single-word title. Predicates
