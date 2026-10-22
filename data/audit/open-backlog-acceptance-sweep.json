@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-22T18:26:05.069Z",
+  "generatedAt": "2026-10-22T19:20:59.912Z",
   "shadow": true,
-  "checkoutSha": "3f063d8127a951c31732e1ae03f62d813146c193",
-  "totalCandidates": 558,
-  "eligibleCandidates": 80,
+  "checkoutSha": "5e3350d892cf74bd601bcf079f2840282c74c527",
+  "totalCandidates": 557,
+  "eligibleCandidates": 79,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 19,
-    "fail": 2,
-    "unverifiable": 9
+    "pass": 17,
+    "fail": 5,
+    "unverifiable": 8
   },
   "alreadyDone": [
     {
@@ -44,9 +44,21 @@
       "detail": null
     },
     {
+      "id": "BRO-5975",
+      "name": "Four scheduled workflows red on real data findings: IBDB revivals gate, provisional venue mismatches, stage-alert gaps, OWE duplicate",
+      "verifyCmd": "node --test tests/unit/ibdb-revival-title-match.test.mjs",
+      "detail": null
+    },
+    {
       "id": "BRO-5973",
       "name": "rebuild-in-flight.js misses concurrency-pending runs (status=pending)",
       "verifyCmd": "node --test scripts/lib/rebuild-in-flight.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5950",
+      "name": "Broadway.com audience scraper matches titles only: press-title shows like 'Billy Crystal 860' (alias '860') never attach",
+      "verifyCmd": "node --test scripts/aka-title-audience-match.test.mjs",
       "detail": null
     },
     {
@@ -68,15 +80,15 @@
       "detail": null
     },
     {
-      "id": "BRO-5909",
-      "name": "Rebuild ships a duplicateOf copy whose reference is excluded as a copy of another review (possible double count, 6 files)",
-      "verifyCmd": "node --test tests/unit/explain-exclusion-mirror-inventory.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-5905",
       "name": "the watchdog's own crowned tab launches UNVERIFIED — createTab bypasses the hardened cmux launcher",
       "verifyCmd": "node --test scripts/lib/cmux-launch.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5896",
+      "name": "Outlet region inference is permanent: US outlets tagged london lose every NYC review (121 inferred-london outlets to audit)",
+      "verifyCmd": "node --test scripts/lib/outlet-region-map.test.mjs",
       "detail": null
     },
     {
@@ -86,21 +98,9 @@
       "detail": null
     },
     {
-      "id": "BRO-5874",
-      "name": "Bachtrack blocks GitHub runners: CI fetches get a 175-char page, so Met reviews cannot be ingested",
-      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=lincoln-in-the-bardo-off-broadway-2026,innocence-off-broadway-2026 --reviews=2",
-      "detail": null
-    },
-    {
-      "id": "BRO-5850",
-      "name": "Date the remaining ~97 closed West End rows with no opening night (53 we-historical + ~44 others) from Theatre Record press-night headers",
-      "verifyCmd": "node scripts/validate-data.js --strict",
-      "detail": null
-    },
-    {
-      "id": "BRO-5816",
-      "name": "Midnight in the Garden of Good and Evil (2024 id): confirm Broadway run dates and venue, retitle landed in BRO-5776",
-      "verifyCmd": "node scripts/validate-data.js --strict",
+      "id": "BRO-5839",
+      "name": "Older-revival pages follow-up: rehome Osage 2008 National Theatre reviews, refetch blurb/boilerplate rows, add Three Days of Rain 2027 revival entry (from BRO-4889)",
+      "verifyCmd": "node --test tests/unit/revival-promo-older-broadway.test.mjs",
       "detail": null
     },
     {
@@ -113,18 +113,6 @@
       "id": "BRO-5783",
       "name": "Land: trim the in-lock full re-check tail (7 of 43 lands >5 min on 2026-10-20, max 16 min; queued lands wait up to 22 min)",
       "verifyCmd": "node --test scripts/lib/land-branch.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5745",
-      "name": "Poller review-texts push burns 20 attempts on a false rename/delete conflict (git pairs unrelated _pending files)",
-      "verifyCmd": "node --test scripts/lib/push-with-retry.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5736",
-      "name": "Version remaining image paths (site pages, search-shows, show-lookup, mobile detail hero) so replaced art busts caches",
-      "verifyCmd": "node --test scripts/lib/versioned-image-path.test.mjs",
       "detail": null
     }
   ],
@@ -139,7 +127,25 @@
       "id": "BRO-5916",
       "name": "Reddit sentiment scrape dead since 2026-10-19: every dispatch trips the breaker and burns ScrapingBee credits (no audience Reddit data for new openings)",
       "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 cmVkZGl0LXNlbnRpbWVudDpzdGFsZQ",
-      "detail": "[check-alert-condition-absent] FAIL: \"reddit-sentiment:stale\" still firing — open, last fired 2026-10-22T14:44:24.754Z (3.7h ago, within 168h)\n"
+      "detail": "[check-alert-condition-absent] FAIL: \"reddit-sentiment:stale\" still firing — open, last fired 2026-10-22T14:44:24.754Z (4.6h ago, within 168h)\n"
+    },
+    {
+      "id": "BRO-5869",
+      "name": "BRO-5849 follow-up: leave-one-out constant fits for the comparables model, plus musicals rough-estimate range",
+      "verifyCmd": "node scripts/validate-data.js --strict",
+      "detail": "⚠️  WARNING: 96 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025...\n⚠️  WARNING: 75 Off-Broadway shows missing \"off-broadway\" in slug: kramerfauci-st-anns, the-good-thief, petra...\n⚠️  WARNING: Show \"The Little Prince and the Aviator\" has closingDate (1982-01-17) before openingDate (1982-01-20). If it never o"
+    },
+    {
+      "id": "BRO-5855",
+      "name": "Closing date audit: 1 show need review (2026-10-21)",
+      "verifyCmd": "node scripts/validate-data.js --strict",
+      "detail": "⚠️  WARNING: 96 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025...\n⚠️  WARNING: 75 Off-Broadway shows missing \"off-broadway\" in slug: kramerfauci-st-anns, the-good-thief, petra...\n⚠️  WARNING: Show \"The Little Prince and the Aviator\" has closingDate (1982-01-17) before openingDate (1982-01-20). If it never o"
+    },
+    {
+      "id": "BRO-5816",
+      "name": "Midnight in the Garden of Good and Evil (2024 id): confirm Broadway run dates and venue, retitle landed in BRO-5776",
+      "verifyCmd": "node scripts/validate-data.js --strict",
+      "detail": "⚠️  WARNING: 96 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025...\n⚠️  WARNING: 75 Off-Broadway shows missing \"off-broadway\" in slug: kramerfauci-st-anns, the-good-thief, petra...\n⚠️  WARNING: Show \"The Little Prince and the Aviator\" has closingDate (1982-01-17) before openingDate (1982-01-20). If it never o"
     }
   ],
   "unverifiable": [
@@ -162,22 +168,16 @@
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/opening-night-retry-decision.test.mjs"
     },
     {
-      "id": "BRO-5950",
-      "name": "Broadway.com audience scraper matches titles only: press-title shows like 'Billy Crystal 860' (alias '860') never attach",
-      "verifyCmd": "node --test scripts/aka-title-audience-match.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/aka-title-audience-match.test.mjs"
-    },
-    {
       "id": "BRO-5935",
       "name": "Stale pending fix plans: four approved data plans never applied, and nothing reports them",
       "verifyCmd": "node --test scripts/lib/pending-fixes-stale-check.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/pending-fixes-stale-check.test.mjs"
     },
     {
-      "id": "BRO-5839",
-      "name": "Older-revival pages follow-up: rehome Osage 2008 National Theatre reviews, refetch blurb/boilerplate rows, add Three Days of Rain 2027 revival entry (from BRO-4889)",
-      "verifyCmd": "node --test tests/unit/revival-promo-older-broadway.test.mjs",
-      "detail": "ran no passing tests (all skipped or none ran)"
+      "id": "BRO-5832",
+      "name": "Board workers unhealthy: last run failed on usage limit, Codex lock 8h old",
+      "verifyCmd": "node --test scripts/board-workers-health.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/board-workers-health.test.mjs"
     },
     {
       "id": "BRO-5813",
@@ -200,11 +200,25 @@
   ],
   "landedButOpen": [
     {
+      "id": "BRO-5975",
+      "name": "Four scheduled workflows red on real data findings: IBDB revivals gate, provisional venue mismatches, stage-alert gaps, OWE duplicate",
+      "branch": "land/bro-5975-ibdb-followup",
+      "sha": "a057dfb1c2e2ad360c6a2f2869c8d3053166ad58",
+      "landedAt": "2026-10-22T18:32:26.232Z"
+    },
+    {
       "id": "BRO-5919",
       "name": "Queen of Hearts (Theatre XIV) has no opening/closing dates and may be stale",
       "branch": "land/codex-bro-5919",
       "sha": "0aa2c6ff7f61869566f8870746a5fb5053520ddc",
       "landedAt": "2026-10-22T12:42:50.239Z"
+    },
+    {
+      "id": "BRO-5896",
+      "name": "Outlet region inference is permanent: US outlets tagged london lose every NYC review (121 inferred-london outlets to audit)",
+      "branch": "land/bro-5896-london-outlet-regions",
+      "sha": "34ddd327e67bfb294fae8bad4436a2060145c4e2",
+      "landedAt": "2026-10-22T05:53:52.624Z"
     },
     {
       "id": "BRO-5879",
@@ -214,11 +228,11 @@
       "landedAt": "2026-10-22T00:16:42.130Z"
     },
     {
-      "id": "BRO-5874",
-      "name": "Bachtrack blocks GitHub runners: CI fetches get a 175-char page, so Met reviews cannot be ingested",
-      "branch": "land/bro-5874-bachtrack-probe",
-      "sha": "694c5569d22bb35db414f020039edec5585b98be",
-      "landedAt": "2026-10-22T02:30:24.615Z"
+      "id": "BRO-5839",
+      "name": "Older-revival pages follow-up: rehome Osage 2008 National Theatre reviews, refetch blurb/boilerplate rows, add Three Days of Rain 2027 revival entry (from BRO-4889)",
+      "branch": "land/codex-bro-5839",
+      "sha": "1285538ccb236a898524a318eb7ed0833dface41",
+      "landedAt": "2026-10-22T01:58:37.506Z"
     },
     {
       "id": "BRO-5783",
