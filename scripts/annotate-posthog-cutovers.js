@@ -17,6 +17,7 @@ async function api(path, init = {}) {
   const res = await fetch(`${HOST}/api/projects/${process.env.POSTHOG_PROJECT_ID}${path}`, {
     ...init,
     headers: { Authorization: `Bearer ${process.env.POSTHOG_PERSONAL_API_KEY}`, 'Content-Type': 'application/json' },
+    signal: AbortSignal.timeout(30000),
   });
   const text = await res.text();
   if (!res.ok) throw new Error(`PostHog API ${res.status}: ${text.slice(0, 200)}`);
