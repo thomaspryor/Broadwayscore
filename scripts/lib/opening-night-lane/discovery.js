@@ -562,7 +562,10 @@ async function runDiscoveryPass({
     // An aggregator citation overrides rejections that only concerned an index sighting (no review word, wrong day).
     const stands = memoed && (c.aggregatorCited ? AGGREGATOR_FINAL.has(memoed.reason) : FINAL_REASONS.has(memoed.reason));
     if (stands || (memoed && memoed.attempts >= MAX_DATE_CHECK_ATTEMPTS && !c.aggregatorCited)) continue; // decided before
-    if (overDeadline()) { deadlineHit = true; deferredDateChecks.push(c.url); continue; }
+    // The deadline guards fetches only (the date check below). The checks before it are synchronous, so a candidate an
+    // aggregator already cites is admitted even when the adapters ran long. Deferring every candidate on a late pass
+    // starved the lane: each pass re-runs every adapter, so a night whose adapters take more than 90 s never admitted
+    // anything (shadow run 39803830568, Billy Crystal 860: Google News link resolution took 108 s, 0 admitted).
 
     const bad = nonReviewReason(c.url);
     if (bad) { reject(c, key, bad); continue; }
@@ -576,6 +579,7 @@ async function runDiscoveryPass({
     let publishDate = c.publishDate || null;
     if (c.source === 'outlet-index' && !publishDate && c.needsDate) {
       if (dateChecks >= maxDateChecks) { deferredDateChecks.push(c.url); continue; } // tried first next pass: attempts is still 0
+      if (overDeadline()) { deadlineHit = true; deferredDateChecks.push(c.url); continue; }
       dateChecks++;
       try { publishDate = extractPublishDate(await fetchText(c.fetchUrl || c.url)) || c.fallbackDate || null; } catch (e) {
         errors.push({ adapter: c.adapter, error: `date check ${c.url}: ${String((e && e.message) || e).slice(0, 150)}` });
