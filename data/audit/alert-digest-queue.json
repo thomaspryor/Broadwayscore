@@ -1293,76 +1293,6 @@
     "queuedAt": "2026-10-22T16:26:30.595Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:dog-mom-off-west-end-2026",
-    "title": "1 review(s) for dog-mom-off-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--70d4480d.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/dog-mom-review-southwark-playhouse-borough-london",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-22T17:10:34.392Z"
-  },
-  {
-    "conditionKey": "pending-unrecoverable:stories-the-tap-dance-sensation-west-end-2026",
-    "title": "1 review(s) for stories-the-tap-dance-sensation-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--15d1902b.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/rb-dance-company-stories-review-peacock-theatre-london",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-22T17:10:53.210Z"
-  },
-  {
-    "conditionKey": "pending-unrecoverable:into-the-woods-noel-coward-west-end-2026",
-    "title": "2 review(s) for into-the-woods-noel-coward-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- noel-coward-theatre--333fba17.json (noel-coward-theatre): no byline in page and no recoverable body https://delfontmackintosh.co.uk/\n- thestage--4d5a441.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/into-the-woods-review-bridge-theatre-london-stephen-sondheim-jordan-fein",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-22T17:11:02.707Z"
-  },
-  {
-    "conditionKey": "pending-unrecoverable:bull-off-west-end-2026",
-    "title": "1 review(s) for bull-off-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--unknown.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/bull",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-22T17:11:04.176Z"
-  },
-  {
-    "conditionKey": "pending-unrecoverable:hay-fever-west-end-2026",
-    "title": "1 review(s) for hay-fever-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- broadwayworld--379d8495.json (broadwayworld): fetch failed: All scraping methods failed https://www.broadwayworld.com/westend/article/Review-HAY-FEVER-Starring-Christine-Baranski-Richard-E-Grant-20261002",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-22T17:11:13.911Z"
-  },
-  {
     "conditionKey": "land:land/bro-5975-red-crons",
     "title": "Landing blocked: rebase red on land/bro-5975-red-crons",
     "description": "land.yml did not land land/bro-5975-red-crons: the rebase gate went red at 08220d94f7. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5975-red-crons @ 08220d94f7 (origin/land/bro-5975-red-crons) → origin/main @ 1a52878557 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 1a52878557: Rebasing (1/1) error: could not apply 08220d94f70... fix: four red scheduled workflows (BRO-5975) hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <conflicted_files>\", then run \"git  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39810046587",
@@ -1454,6 +1384,107 @@
       }
     ],
     "queuedAt": "2026-10-22T17:39:49.959Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39825660103",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "tracked": null,
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39825660103)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39821641259)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "31"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "Unit Tests"
+      }
+    ],
+    "queuedAt": "2026-10-22T18:17:37.416Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:dog-mom-off-west-end-2026",
+    "title": "1 review(s) for dog-mom-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--70d4480d.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/dog-mom-review-southwark-playhouse-borough-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T17:10:34.392Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:stories-the-tap-dance-sensation-west-end-2026",
+    "title": "1 review(s) for stories-the-tap-dance-sensation-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--15d1902b.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/rb-dance-company-stories-review-peacock-theatre-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T17:10:53.210Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:into-the-woods-noel-coward-west-end-2026",
+    "title": "2 review(s) for into-the-woods-noel-coward-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- noel-coward-theatre--333fba17.json (noel-coward-theatre): no byline in page and no recoverable body https://delfontmackintosh.co.uk/\n- thestage--4d5a441.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/into-the-woods-review-bridge-theatre-london-stephen-sondheim-jordan-fein",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T17:11:02.707Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:bull-off-west-end-2026",
+    "title": "1 review(s) for bull-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--unknown.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/bull",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T17:11:04.176Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:hay-fever-west-end-2026",
+    "title": "1 review(s) for hay-fever-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- broadwayworld--379d8495.json (broadwayworld): fetch failed: All scraping methods failed https://www.broadwayworld.com/westend/article/Review-HAY-FEVER-Starring-Christine-Baranski-Richard-E-Grant-20261002",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T17:11:13.911Z"
   },
   {
     "conditionKey": "land:land/bro-5901-inclusion-diff",
