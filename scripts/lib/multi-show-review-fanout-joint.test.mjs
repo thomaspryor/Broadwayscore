@@ -411,3 +411,20 @@ test('a split parent drops a rating an LLM read off the whole article, keeps a s
   assert.equal(scraped.originalScore, '2/5 stars');
   assert.equal(scraped.originalScoreSource, 'guardian-api');
 });
+
+test('a web address in ordinary prose never moves the cut into the next show\'s sentence', () => {
+  const shows = [
+    { id: 'midnight', title: 'Midnight', category: 'off-broadway', openingDate: '2026-10-15' },
+    { id: 'school', title: 'School Pictures', category: 'off-broadway', openingDate: '2026-10-18' },
+  ];
+  const filler = (t, n) => Array.from({ length: n }, (_, i) => `The ${t} passage number ${i + 1} moves along at a patient, deliberate pace that the cast keeps up with real care.`).join(' ');
+  const fullText = [
+    'Two shows this week: “School Pictures” and “Midnight”.',
+    `“School Pictures” is a quiet piece. ${filler('portrait', 8)} “School Pictures” never raises its voice.`,
+    `Fans who found it via Broadway.com will love “Midnight” which is a long night watch. ${filler('dream', 10)} By its last scene “Midnight” has earned its length.`,
+  ].join(' ');
+  const plan = planMultiShowFanout({ showId: 'midnight', outletId: 'x', criticName: 'c', url: 'https://e.com/a', contentTier: 'complete', publishDate: '2026-10-20', fullText }, shows, { joint: true });
+  assert.ok(plan, 'expected a joint plan');
+  const mid = [plan.ownSection, ...plan.otherSections].find((s) => s.showId === 'midnight');
+  assert.ok(mid.sectionText.startsWith('Fans who found it via Broadway.com'), mid.sectionText.slice(0, 60));
+});
