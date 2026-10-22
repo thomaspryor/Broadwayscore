@@ -355,6 +355,7 @@ test('P0-8: neutral wording, high confidence only with a trade or SEC link', () 
   // BRO-5779: a report month after closing reads "reported", never as the date it happened.
   const late = getRecoupmentAttribution({ ...base, recouped: true, recoupedDate: '2026-04' }, '2024-04-27');
   assert.equal(late.headline, 'Recouped, reported April 2026');
+  assert.equal(getRecoupmentAttribution({ ...base, recouped: true, recoupedDate: '2026-04' }, null).headline, 'Recouped, April 2026');
   assert.equal(getRecoupmentAttribution({ ...base, recouped: true, recoupedDate: '2024-04' }, '2024-04-27').headline, 'Recouped, April 2024');
   assert.equal(getRecoupmentAttribution({ ...base, recouped: true, recoupedDate: '2026-04', isEstimate: { recoupedDate: true } }, '2024-04-27').headline, 'Recouped, ~April 2026');
   const reported = getRecoupmentAttribution({ ...base, recouped: true, recoupedDate: '1997-03', isEstimate: { recoupedDate: false } });

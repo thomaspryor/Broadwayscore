@@ -502,7 +502,7 @@ export function isUnannouncedRecoupment(
 }
 
 export interface RecoupmentAttribution {
-  /** "Recouped, December 2014" (or "Recouped" when the date is unknown). */
+  /** "Recouped, December 2014", "Recouped, reported April 2026" (report month after closing), or "Recouped" when the date is unknown. */
   headline: string;
   /** "Not publicly announced" or null. */
   qualifier: string | null;
