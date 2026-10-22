@@ -1,5 +1,10 @@
 name: Autonomous Merge
 
+# RETIRED (BRO-5845, 2026-10-22): the autonomous loop was retired 2026-07-27 and
+# its card source, the Notion board, on 2026-08-20. NOTION_API_KEY is no longer
+# passed, so a dispatch fails at autonomous-merge.js's first notion-brain get,
+# before any git operation. Kept only as history; nothing dispatches it.
+#
 # Sprint 3 (Notion 39b637c5-416f-81c4-9258-f8821c066e24): the ONLY place a
 # branch the autonomous nightly loop produced reaches main. Dispatched either
 # by the signed-endpoint tap (src/app/api/autonomous-action/route.ts, approve
@@ -23,7 +28,7 @@ on:
   workflow_dispatch:
     inputs:
       card_id:
-        description: 'Notion card id'
+        description: 'Notion card id (retired board, BRO-5845)'
         required: true
         type: string
       branch:
@@ -139,7 +144,6 @@ jobs:
 
       - name: Run merge/revert
         env:
-          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           GH_TOKEN: ${{ github.token }}
