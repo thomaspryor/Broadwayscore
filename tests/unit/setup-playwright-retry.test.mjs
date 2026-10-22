@@ -39,8 +39,10 @@ function installScript({ cacheHit = false } = {}) {
 // npx stub: exit code per call taken from $NPX_CODES (space-separated).
 // Both stubs append to $ORDER so a test can check what ran first; sudo also
 // records its stdin (the apt conf body piped into `sudo tee`).
-function runWith(codes, { cacheHit = false, sudoTeeFail = false } = {}) {
+function runWith(codes, { cacheHit = false, sudoTeeFail = false, nodeCode = null } = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pw-retry-'));
+  // node stub: stands in for the chromium launch probe (BRO-5818).
+  if (nodeCode !== null) fs.writeFileSync(path.join(dir, 'node'), `#!/bin/bash\necho "node probe" >> "${path.join(dir, 'order')}"\nexit ${nodeCode}\n`, { mode: 0o755 });
   const counter = path.join(dir, 'calls');
   const order = path.join(dir, 'order');
   fs.writeFileSync(path.join(dir, 'npx'), `#!/bin/bash
@@ -119,4 +121,25 @@ test('apt conf write failure warns and still installs', () => {
   assert.equal(r.status, 0, r.out);
   assert.equal(r.calls, 1);
   assert.match(r.out, /::warning::could not write apt timeout conf/);
+});
+
+// BRO-5818: install-deps (cache-hit path) stalled on the apt mirror for 13
+// straight Test Suite runs while Chromium itself was fine. A launchable
+// browser makes the stall a warning; an unlaunchable one (or a cache miss,
+// where the browser download itself failed) stays fatal.
+test('cache-hit + both attempts fail + chromium launches: warning, exit 0', () => {
+  const r = runWith('124 124', { cacheHit: true, nodeCode: 0 });
+  assert.equal(r.status, 0, r.out);
+  assert.match(r.out, /::warning::install-deps failed but chromium launches/);
+});
+
+test('cache-hit + both attempts fail + chromium does not launch: still exit 1', () => {
+  const r = runWith('124 124', { cacheHit: true, nodeCode: 1 });
+  assert.equal(r.status, 1, r.out);
+});
+
+test('cache-miss + both attempts fail: never probes, still exit 1', () => {
+  const r = runWith('124 124', { cacheHit: false, nodeCode: 0 });
+  assert.equal(r.status, 1, r.out);
+  assert.doesNotMatch(r.order, /node probe/);
 });

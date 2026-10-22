@@ -72,6 +72,15 @@ runs:
           else
             echo "::error::${cmd[*]} ${what} on both attempts — full output of attempt 2:"
             cat "$log"
+            # Cache-hit path only: install-deps just tops up fonts/xvfb, and the
+            # Azure apt mirror stalls mid-download (Test Suite failed 13x in 24h,
+            # BRO-5818). If Chromium already launches, the stall is not fatal.
+            if [ "${{ steps.playwright-cache.outputs.cache-hit }}" = "true" ] \
+               && [[ " ${INPUT_BROWSERS} " == *" chromium "* ]] \
+               && timeout 60 node -e "require('playwright').chromium.launch().then(b=>b.close()).then(()=>process.exit(0),e=>{console.error(e.message);process.exit(1)})"; then
+              echo "::warning::install-deps failed but chromium launches; continuing (BRO-5818)"
+              break
+            fi
             exit 1
           fi
         done
