@@ -28,7 +28,7 @@ if (!fs.existsSync(outputDir)) {
 const showsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'shows.json'), 'utf-8'));
 const reviewsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'reviews.json'), 'utf-8'));
 
-const shows = showsData.shows;
+const shows = require('./lib/show-row-guard').partitionShowRows(showsData.shows).valid; // BRO-6016
 const reviews = reviewsData.reviews;
 
 // Build set of show IDs that have at least one scored review — unioned with

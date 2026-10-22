@@ -16,7 +16,7 @@ if (hasHelpFlag(process.argv.slice(2))) {
 
 const ROOT = path.resolve(__dirname, '..');
 const related = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'related-shows.json'), 'utf8'));
-const { shows } = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
+const shows = require('./lib/show-row-guard').partitionShowRows(JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8')).shows).valid; // BRO-6016
 const out = buildMobileRelated(related.shows, shows);
 const outPath = path.join(ROOT, 'public', 'data', 'related-shows-mobile.json');
 fs.mkdirSync(path.dirname(outPath), { recursive: true });

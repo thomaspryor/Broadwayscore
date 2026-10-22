@@ -41,7 +41,8 @@ const grossesHistory = require(path.join(dataDir, 'grosses-history.json'));
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const reviewsList = loadReviewsWithBlog();
 
-const shows = Array.isArray(showsRaw) ? showsRaw : (showsRaw.shows || Object.values(showsRaw));
+// BRO-6016: drop malformed rows (null title/venue) instead of crashing prebuild.
+const shows = require('./lib/show-row-guard').partitionShowRows(Array.isArray(showsRaw) ? showsRaw : (showsRaw.shows || Object.values(showsRaw))).valid;
 const showById = {};
 const showBySlug = {};
 shows.forEach(s => { showById[s.id] = s; if (s.slug) showBySlug[s.slug] = s; });

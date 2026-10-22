@@ -28,7 +28,8 @@ function main() {
   const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   const slugToId = new Map();
   const showsByNormTitle = new Map();
-  for (const show of showsData.shows) {
+  // BRO-6016: skip malformed rows (null title) instead of crashing prebuild.
+  for (const show of require('./lib/show-row-guard').partitionShowRows(showsData.shows).valid) {
     slugToId.set(show.slug, show.id);
     const norm = normalizeTitle(show.title);
     if (!showsByNormTitle.has(norm)) showsByNormTitle.set(norm, []);
