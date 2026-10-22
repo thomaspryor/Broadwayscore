@@ -206,6 +206,7 @@ const EXCLUDED_FILES = new Set([
   'scripts/lib/domain-filters.js',  // BRO-5876
   'scripts/lib/non-review-url-patterns.js',  // BRO-5876
   'scripts/lib/prior-runs-note.js',
+  'scripts/lib/split-excerpt-note.js',
   'scripts/lib/stale-flag-after-url-correction.js',
   'scripts/lib/date-plausibility.js',
   'scripts/lib/review-write-guard.js',
