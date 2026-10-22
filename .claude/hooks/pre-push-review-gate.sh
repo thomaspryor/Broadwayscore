@@ -54,15 +54,13 @@ tool_use_id=$(echo "$input" | jq -r '.tool_use_id // empty' 2>/dev/null)
 
 [ -z "$command" ] && exit 0
 
-# BRO-5915: sessions never open/ready/merge Broadwayscore PRs (the owner never
-# merges; land via land/<name>). gh pr, gh api/curl and graphql PR writes are
-# parsed per command in scripts/lib/pr-command.mjs (MCP: github-main-guard.sh).
-# Before the transcript fail-open. Override: PR_GUARD_OFF=1 or LAND_ENFORCE_OFF=1.
-_PRC="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." 2>/dev/null && pwd)/scripts/lib/pr-command.mjs"
-if [ -f "$_PRC" ] && command -v node >/dev/null 2>&1 && printf '%s' "$command" | grep -qE 'gh|curl' \
-   && printf '%s' "$command" | grep -qiE '(^|[^a-z])pr([^a-z]|$)|pulls|PullRequest'; then
-  printf '%s' "$input" | node "$_PRC" --hook || [ $? -ne 2 ] || exit 2
-fi
+# BRO-5915's PR-write refusal (gh pr create/ready/merge, the gh api / curl /
+# graphql equivalents) used to sit HERE, and was therefore dead on the Mac: the
+# self-skip preamble above hands local CLI to ~/.claude/hooks's master copy,
+# which has no such check, so the refusal only ever fired in cloud sandboxes
+# (BRO-5926). It now lives in .claude/hooks/pr-write-guard.sh, a repo-only hook
+# with no ~/.claude twin — the github-main-guard.sh pattern. Do not re-add it
+# here: a guard that must hold everywhere cannot live behind that preamble.
 # No transcript → we can't offer the NO-SHIP-CHECK escape hatch; fail open
 # rather than wedge (matches pre-push-visual-gate.sh).
 [ -z "$transcript" ] && exit 0

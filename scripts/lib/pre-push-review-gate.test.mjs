@@ -1,7 +1,16 @@
 // BRO-5915: sessions never open, ready or merge Broadwayscore PRs (the owner
 // never reviews or merges them; work lands via land/<name>). Drives the real
-// .claude/hooks/pre-push-review-gate.sh (Bash routes) and
+// .claude/hooks/pr-write-guard.sh (Bash routes) and
 // .claude/hooks/github-main-guard.sh (MCP route) (CLAUDE.md §15).
+//
+// The Bash routes used to live in .claude/hooks/pre-push-review-gate.sh, and
+// this file pointed there — which is how BRO-5926 hid: that hook is a project
+// copy of a ~/.claude/hooks master and self-skips whenever the master exists,
+// the master has no PR check, and these tests ran under a HOME with no
+// ~/.claude/hooks at all. So the suite was green while `gh pr create` was
+// unguarded on the owner's Mac, where the master DOES exist. The guard now
+// lives in its own repo-only hook with no master twin, and the Mac-shaped-HOME
+// test below fails if it ever moves back behind a self-skip.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -12,12 +21,14 @@ import { fileURLToPath } from 'node:url';
 import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
-const HOOK = path.join(REPO_ROOT, '.claude', 'hooks', 'pre-push-review-gate.sh');
+const HOOK = path.join(REPO_ROOT, '.claude', 'hooks', 'pr-write-guard.sh');
+const REVIEW_GATE = path.join(REPO_ROOT, '.claude', 'hooks', 'pre-push-review-gate.sh');
 const GUARD = path.join(REPO_ROOT, '.claude', 'hooks', 'github-main-guard.sh');
 
 const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-5915-pr-'));
 test.after(() => fs.rmSync(scratch, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
-// A HOME without ~/.claude/hooks so the repo copy never self-skips (a Mac HOME would).
+// A cloud-shaped HOME: no ~/.claude/hooks at all. The Mac-shaped one is built
+// in the self-skip test below, which is the case that BRO-5926 needed.
 const fakeHome = path.join(scratch, 'home');
 fs.mkdirSync(fakeHome);
 function repo(name, origin) {
@@ -139,6 +150,56 @@ test('overrides: LAND_ENFORCE_OFF=1 (prefix, env) and the $HOME/.claude/LAND_ENF
   fs.mkdirSync(path.join(home, '.claude'), { recursive: true });
   fs.writeFileSync(path.join(home, '.claude', 'LAND_ENFORCE_OFF'), '');
   assert.ok(!blockedByPr(run('gh pr create --fill', { env: { HOME: home } })));
+});
+
+// ── BRO-5926: the guard must not depend on a self-skip preamble ─────────────
+
+test('a Mac-shaped HOME (a ~/.claude/hooks master present) still blocks', () => {
+  // The hole this test exists for: pre-push-review-gate.sh self-skips to the
+  // user-level master whenever one exists, and that master carries no PR
+  // check. Every other case here runs under a HOME with no ~/.claude/hooks, so
+  // none of them can see it. Build the Mac shape explicitly: a master copy of
+  // the review gate on disk, which is the condition that silenced the guard.
+  const macHome = path.join(scratch, 'home-mac-shaped');
+  fs.mkdirSync(path.join(macHome, '.claude', 'hooks'), { recursive: true });
+  fs.copyFileSync(REVIEW_GATE, path.join(macHome, '.claude', 'hooks', 'pre-push-review-gate.sh'));
+  const r = run('gh pr create --fill', { env: { HOME: macHome } });
+  assert.ok(
+    blockedByPr(r),
+    'the PR guard must fire with a ~/.claude/hooks master present — if this fails, the check has moved '
+    + `back behind a self-skip preamble (BRO-5926). Got exit ${r.status}: ${r.stderr.slice(0, 200)}`,
+  );
+});
+
+test('pr-write-guard.sh has no ~/.claude/hooks twin to self-skip to', () => {
+  const src = fs.readFileSync(HOOK, 'utf8');
+  assert.doesNotMatch(
+    src,
+    /\$HOME\/\.claude\/hooks\/pr-write-guard\.sh|HOME"?\/\.claude\/hooks/,
+    'pr-write-guard.sh must not grow a self-skip preamble: a master twin would reopen BRO-5926',
+  );
+});
+
+test('the PR check is not re-added to pre-push-review-gate.sh', () => {
+  // Two owners would mean one of them can rot unnoticed, and the one in the
+  // review gate is the one that cannot fire on the Mac.
+  const src = fs.readFileSync(REVIEW_GATE, 'utf8')
+    .split('\n')
+    .filter((l) => !/^\s*#/.test(l))
+    .join('\n');
+  assert.doesNotMatch(
+    src,
+    /pr-command\.mjs/,
+    'the PR-write check belongs in .claude/hooks/pr-write-guard.sh only — pre-push-review-gate.sh self-skips '
+    + 'to a master that has no such check, so a copy here is dead on the Mac (BRO-5926)',
+  );
+});
+
+test('settings.json registers pr-write-guard.sh on Bash', () => {
+  const settings = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, '.claude', 'settings.json'), 'utf8'));
+  const entry = settings.hooks.PreToolUse.find((h) => (h.hooks || []).some((x) => /pr-write-guard\.sh/.test(x.command)));
+  assert.ok(entry, 'pr-write-guard.sh must be registered as a PreToolUse hook, or it never runs');
+  assert.ok(new RegExp(`^(?:${entry.matcher})$`).test('Bash'), `matcher ${entry.matcher} must cover Bash`);
 });
 
 // ── MCP route: github-main-guard.sh ─────────────────────────────────────────

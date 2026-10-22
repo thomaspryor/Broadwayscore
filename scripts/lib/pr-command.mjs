@@ -240,7 +240,13 @@ if (isMainModule(import.meta.url) && process.argv.includes('--hook')) {
   try {
     const input = JSON.parse(fs.readFileSync(0, 'utf8') || '{}');
     const command = input?.tool_input?.command;
-    const hit = command ? refusedPrWrite(command) : null;
+    // The hook JSON carries the session's cwd; prefer it over this process's
+    // own. They are usually the same, but repo scoping for a command that
+    // names no repo reads the cwd's origin remote, so taking the session's
+    // answer keeps the decision right wherever the hook happens to be spawned
+    // from (BRO-5926).
+    const cwd = typeof input?.cwd === 'string' && input.cwd ? input.cwd : process.cwd();
+    const hit = command ? refusedPrWrite(command, { cwd }) : null;
     if (hit) {
       process.stderr.write(refusalMessage(hit) + '\n');
       process.exit(2);
