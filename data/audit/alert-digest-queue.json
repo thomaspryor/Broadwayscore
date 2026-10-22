@@ -93,6 +93,37 @@
     "queuedAt": "2026-10-22T19:30:26.347Z"
   },
   {
+    "conditionKey": "land:land/bro-5968-page-weight",
+    "title": "Landing blocked: merged-tree-tests red on land/bro-5968-page-weight",
+    "description": "land.yml did not land land/bro-5968-page-weight: the merged-tree-tests gate went red at 55223452f3. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5968-page-weight @ 55223452f3 (origin/land/bro-5968-page-weight) → origin/main @ f2bd549034 [land] attempt 1/3: rebased onto f2bd549034, 21 file(s) changed — running checks [land] verified-base: main moved 8d22123e26 → f2bd549034 across 730 file(s), substantive — re-checking on the merged tree (+44 test file(s) changed on main since the verified base); full re-check: branch and mai Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39813485834",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5968-page-weight"
+      },
+      {
+        "name": "gate",
+        "value": "merged-tree-tests"
+      },
+      {
+        "name": "tip",
+        "value": "55223452f3c6beaf14a547ca625a9269461453a1"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39813485834"
+      }
+    ],
+    "queuedAt": "2026-10-22T20:10:43.872Z"
+  },
+  {
     "conditionKey": "land:land/bro-5967-review-schema",
     "title": "Landing blocked: rebase red on land/bro-5967-review-schema",
     "description": "land.yml did not land land/bro-5967-review-schema: the rebase gate went red at 143263c7af. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39841918021",
