@@ -23,11 +23,11 @@ test('no workflow passes the retired NOTION_TOKEN secret', () => {
 // BRO-3018: the same for NOTION_API_KEY. After the stuck-work rows were
 // retired no scheduled script reads it; the steps that still passed it were
 // leftovers from when owner-alert-router shelled out to notion-brain.js.
-// autonomous-merge.yml is the retired nightly loop, dispatch-only and kept
-// as history.
-const NOTION_KEY_ALLOWED = new Set(['autonomous-merge.yml']);
+// BRO-5845: autonomous-merge.yml (the retired nightly loop) stopped passing
+// it too, so the allowlist is empty: no workflow may pass the key.
+const NOTION_KEY_ALLOWED = new Set();
 
-test('no workflow passes secrets.NOTION_API_KEY outside the retired-loop allowlist', () => {
+test('no workflow passes secrets.NOTION_API_KEY', () => {
   const files = fs.readdirSync(DIR).filter((f) => /\.ya?ml$/.test(f));
   const hits = [];
   for (const f of files) {
