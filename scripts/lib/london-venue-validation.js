@@ -97,6 +97,26 @@ function parseLondonEvidence(html, show) {
     // Preserve separate runs; never merge same-title events across years or
     // venues. Prefer the requested house and closest date when a listing has
     // several runs, while retaining a wrong-house candidate as a mismatch.
+    // Many venue pages publish one Event per PERFORMANCE (startDate ==
+    // endDate == that night). Taken one at a time, the first performance read
+    // as the whole run, so the closing date came back as the first night
+    // (stick-man-off-west-end-2026 "closes" 2026-12-03, speculations 10-30;
+    // BRO-5975). Fold events at one venue whose dates run on with gaps of at
+    // most RUN_GAP_DAYS into one run. A return season months or years later
+    // stays a separate candidate.
+    const RUN_GAP_DAYS = 14;
+    const runs = [];
+    for (const e of [...events].sort((a, b) => a.dates.openingDate.localeCompare(b.dates.openingDate))) {
+      const run = runs.find(r => (r.titleParse.venue || '') === (e.titleParse.venue || '')
+        && (Date.parse(e.dates.openingDate) - Date.parse(r.dates.closingDate)) / 86400000 <= RUN_GAP_DAYS);
+      if (run) {
+        if (e.dates.closingDate > run.dates.closingDate) run.dates.closingDate = e.dates.closingDate;
+      } else {
+        runs.push({ ...e, dates: { ...e.dates } });
+      }
+    }
+    events.length = 0;
+    events.push(...runs);
     if (events.length) {
       const rank = e => (venuesMatch(e.titleParse.venue || '', show.venue || '') ? 0 : 1e7)
         + (show.openingDate ? Math.abs(Date.parse(e.dates.openingDate) - Date.parse(show.openingDate)) / 86400000 : 0);

@@ -1,0 +1,268 @@
+{
+  "issueNumber": "bro-5975",
+  "planId": "e7fc8c00-419b-4615-b204-a3cdf1d279d1",
+  "status": "pending",
+  "createdAt": "2026-10-22T15:05:24.394Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "IBDB revival verdicts from the 2026-10-21 detect-revivals-ibdb run (12 proposals > the >5 gate). Revivals, sourced: La Boheme x3, Carmen, Porgy and Bess, Macbeth (Verdi), Othello, Miss Julie (Strindberg) -> isRevival true. Not revivals: Caroline (2025 MCC world premiere, Preston Max Allen), All The Way Home (new Ahrens/Flaherty/Galati musical, York NEW2NY), You Go On (matched IBDB Before You Go by word overlap). Flight (59E59, MB Adaptors) has no public description; an exact IBDB title match alone is not revival evidence, so it is marked checked with isRevival left unset. Provisional-venue audit (2026-10-22 run, BRO-5975): The Good Thief is a revival (Keen Company 2001), so isRevival true. Speculations extended to 2027-01-17 (Theatre Weekly). Arias with a Twist extended to 2026-12-20 (BroadwayWorld 2026-10-05). A Kidman Carol is a play (TDF listing). Playbill exemptions where the only Playbill page is another production: Mystic Pizza (page is the Riverside Vero Beach leg; existing source already names the Paper Mill proof), School Pictures 2023 (page is the 2026 Cherry Lane run), Cat on a Hot Tin Roof 2027 (only the 2003 vault page exists). (part 1 of 2)",
+    "steps": [
+      "shows.json: la-boheme-off-broadway-2024.isRevival",
+      "shows.json: la-boheme-off-broadway-2024.ibdbRevivalChecked",
+      "shows.json: la-boheme-off-broadway-2025.isRevival",
+      "shows.json: la-boheme-off-broadway-2025.ibdbRevivalChecked",
+      "shows.json: la-boheme-off-broadway-2026.isRevival",
+      "shows.json: la-boheme-off-broadway-2026.ibdbRevivalChecked",
+      "shows.json: carmen-off-broadway-2025.isRevival",
+      "shows.json: carmen-off-broadway-2025.ibdbRevivalChecked",
+      "shows.json: porgy-and-bess-off-broadway-2025.isRevival",
+      "shows.json: porgy-and-bess-off-broadway-2025.ibdbRevivalChecked",
+      "shows.json: macbeth-off-broadway-2026.isRevival",
+      "shows.json: macbeth-off-broadway-2026.ibdbRevivalChecked",
+      "shows.json: othello-off-broadway-2026.isRevival",
+      "shows.json: othello-off-broadway-2026.ibdbRevivalChecked",
+      "shows.json: miss-julie-off-broadway-2026.isRevival",
+      "shows.json: miss-julie-off-broadway-2026.ibdbRevivalChecked",
+      "shows.json: caroline-off-broadway-2026.ibdbRevivalChecked",
+      "shows.json: all-the-way-home-off-broadway-2027.ibdbRevivalChecked",
+      "shows.json: you-go-on-off-broadway-2027.ibdbRevivalChecked",
+      "shows.json: flight-off-broadway-2027.ibdbRevivalChecked",
+      "shows.json: the-good-thief-off-broadway-2026.isRevival",
+      "shows.json: speculations-off-west-end-2026.closingDate",
+      "shows.json: arias-with-a-twist-off-broadway-2026.closingDate",
+      "shows.json: a-kidman-carol-off-broadway-2026.type",
+      "shows.json: mystic-pizza-regional-2025.noPlaybillProductionPage"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-boheme-off-broadway-2024",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: la-boheme-off-broadway-2024.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-boheme-off-broadway-2024",
+        "field": "ibdbRevivalChecked",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: la-boheme-off-broadway-2024.ibdbRevivalChecked"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-boheme-off-broadway-2025",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: la-boheme-off-broadway-2025.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-boheme-off-broadway-2025",
+        "field": "ibdbRevivalChecked",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: la-boheme-off-broadway-2025.ibdbRevivalChecked"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-boheme-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: la-boheme-off-broadway-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-boheme-off-broadway-2026",
+        "field": "ibdbRevivalChecked",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: la-boheme-off-broadway-2026.ibdbRevivalChecked"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "carmen-off-broadway-2025",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: carmen-off-broadway-2025.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "carmen-off-broadway-2025",
+        "field": "ibdbRevivalChecked",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: carmen-off-broadway-2025.ibdbRevivalChecked"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "porgy-and-bess-off-broadway-2025",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: porgy-and-bess-off-broadway-2025.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "porgy-and-bess-off-broadway-2025",
+        "field": "ibdbRevivalChecked",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: porgy-and-bess-off-broadway-2025.ibdbRevivalChecked"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "macbeth-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: macbeth-off-broadway-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "macbeth-off-broadway-2026",
+        "field": "ibdbRevivalChecked",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: macbeth-off-broadway-2026.ibdbRevivalChecked"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "othello-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: othello-off-broadway-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "othello-off-broadway-2026",
+        "field": "ibdbRevivalChecked",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: othello-off-broadway-2026.ibdbRevivalChecked"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "miss-julie-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: miss-julie-off-broadway-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "miss-julie-off-broadway-2026",
+        "field": "ibdbRevivalChecked",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: miss-julie-off-broadway-2026.ibdbRevivalChecked"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "caroline-off-broadway-2026",
+        "field": "ibdbRevivalChecked",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: caroline-off-broadway-2026.ibdbRevivalChecked"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-the-way-home-off-broadway-2027",
+        "field": "ibdbRevivalChecked",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: all-the-way-home-off-broadway-2027.ibdbRevivalChecked"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "you-go-on-off-broadway-2027",
+        "field": "ibdbRevivalChecked",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: you-go-on-off-broadway-2027.ibdbRevivalChecked"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "flight-off-broadway-2027",
+        "field": "ibdbRevivalChecked",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: flight-off-broadway-2027.ibdbRevivalChecked"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-good-thief-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": true,
+        "description": "shows.json: the-good-thief-off-broadway-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "speculations-off-west-end-2026",
+        "field": "closingDate",
+        "oldValue": "2027-01-03",
+        "newValue": "2027-01-17",
+        "description": "shows.json: speculations-off-west-end-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "arias-with-a-twist-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": "2026-11-01",
+        "newValue": "2026-12-20",
+        "description": "shows.json: arias-with-a-twist-off-broadway-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-kidman-carol-off-broadway-2026",
+        "field": "type",
+        "oldValue": "musical",
+        "newValue": "play",
+        "description": "shows.json: a-kidman-carol-off-broadway-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mystic-pizza-regional-2025",
+        "field": "noPlaybillProductionPage",
+        "oldValue": false,
+        "newValue": true,
+        "description": "shows.json: mystic-pizza-regional-2025.noPlaybillProductionPage"
+      }
+    ]
+  }
+}

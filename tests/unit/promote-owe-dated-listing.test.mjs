@@ -274,6 +274,20 @@ test('dedupe: contained titles need an overlapping run; the London-wide title ma
   assert.equal(findDuplicate(dated("A Doll's House", 'Barbican Theatre', '2027-02-03', '2027-02-06'), pool), null);
 });
 
+test('dedupe: a one-word contained title matches only a row with the same run to the day (BRO-5975)', () => {
+  const { findSameHouseTokenMatch, findDuplicate } = require('../../scripts/promote-owe-venue-candidates.js');
+  const pool = [
+    { id: 'the-inequalities-trilogy-off-west-end-2027', title: 'The Inequalities Trilogy', venue: 'Almeida Theatre', previewsStartDate: '2027-03-22', closingDate: '2027-05-22' },
+    { id: 'medea-season', title: 'Medea Season', venue: 'Almeida Theatre', previewsStartDate: '2027-01-10', closingDate: '2027-02-20' },
+  ];
+  const dated = (title, first, last) => ({ title, venue: 'Almeida Theatre', category: 'off-west-end', source: 'venue-page:almeida-theatre', listingFirstDate: first, listingLastDate: last, listingPerformanceCount: 30 });
+  assert.equal(findDuplicate(dated('The Inequalities', '2027-03-22', '2027-05-22'), pool)?.match.id, 'the-inequalities-trilogy-off-west-end-2027');
+  assert.match(findSameHouseTokenMatch(dated('The Inequalities', '2027-03-22', '2027-05-22'), pool).reason, /same run/);
+  assert.equal(findSameHouseTokenMatch(dated('The Inequalities', '2027-03-29', '2027-05-22'), pool), null, 'an overlapping run is not enough for one word');
+  assert.equal(findSameHouseTokenMatch(dated('Medea', '2027-01-12', '2027-02-20'), pool), null);
+  assert.equal(findSameHouseTokenMatch({ title: 'The Inequalities', venue: 'Almeida Theatre' }, pool), null, 'an undated candidate needs equal words');
+});
+
 test('an undated row at a venue with a dated reader is dropped, not confirmed by the link page', () => {
   // 2026-09-30: Kiln's cinema screenings ("Sense And Sensibility") and The
   // Other Palace's "Scribbles Concert" reached shows.json this way.

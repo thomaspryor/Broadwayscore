@@ -255,3 +255,17 @@ test('CLI resolves the named Off-West End show and keeps three Broadway exit cod
     }
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
+
+test('folds one-Event-per-performance JSON-LD into a single run (BRO-5975)', () => {
+  // Bloomsbury-style listing: one Event per night. The run is Dec 3 to Jan 3,
+  // not the first night alone.
+  const show = { id: 'stick-man-off-west-end-2026', title: 'Stick Man', venue: 'Bloomsbury Theatre', category: 'off-west-end' };
+  const night = (d) => ({ '@type': 'TheaterEvent', name: 'Stick Man', startDate: d, endDate: d, location: { name: 'Bloomsbury Theatre' } });
+  const nights = ['2026-12-03', '2026-12-04', '2026-12-10', '2026-12-20', '2027-01-03'].map(night);
+  // A return season a year earlier stays a separate run.
+  const earlier = night('2025-12-05');
+  const html = `<script type="application/ld+json">${JSON.stringify({ '@graph': [...nights, earlier] })}</script>`;
+  const parsed = parseLondonEvidence(html, { ...show, openingDate: '2026-12-03' });
+  assert.equal(parsed.dates.openingDate, '2026-12-03');
+  assert.equal(parsed.dates.closingDate, '2027-01-03');
+});

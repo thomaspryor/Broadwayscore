@@ -394,7 +394,8 @@ function shiftDay(iso, days) {
  *   - Equal word sets (season years and punctuation ignored): the same
  *     show, unless the row closed more than 180 days before this run starts
  *     (an earlier production).
- *   - One title's words contained in the other's (two words at least):
+ *   - One title's words contained in the other's (two words at least,
+ *     or one when the row's run matches this one to the day):
  *     only for a dated candidate, and only when the row is undated (a stub
  *     minted from a slug) or its own run overlaps this one within 30 days.
  *     "Private Lives" is not "Private Lives of the Royals" three months
@@ -423,10 +424,14 @@ function findSameHouseTokenMatch(candidate, pool) {
     }
     if (!dated) continue;
     const [small, big] = ct.size <= et.size ? [ct, et] : [et, ct];
-    if (small.size < 2 || ![...small].every(t => big.has(t))) continue;
+    if (small.size === 0 || ![...small].every(t => big.has(t))) continue;
     const w = rowWindow(e);
+    // One shared word ("The Inequalities" in "The Inequalities Trilogy") only
+    // counts when the row's run is this candidate's to the day (BRO-5975).
+    const sameRun = !!w && w.first === start && w.last === end;
+    if (small.size < 2 && !sameRun) continue;
     if (w && !(w.first <= shiftDay(end, 30) && w.last >= shiftDay(start, -30))) continue;
-    return { match: e, reason: `same house, title words contained, ${w ? 'overlapping run' : 'undated catalog row'} ("${e.title}" vs "${candidate.title}")` };
+    return { match: e, reason: `same house, title words contained, ${sameRun ? 'same run' : w ? 'overlapping run' : 'undated catalog row'} ("${e.title}" vs "${candidate.title}")` };
   }
   return null;
 }

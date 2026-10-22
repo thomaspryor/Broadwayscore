@@ -1,0 +1,58 @@
+{
+  "issueNumber": "bro-5975-b",
+  "planId": "62d38b38-dea7-4752-91ae-01f8c68b2044",
+  "status": "pending",
+  "createdAt": "2026-10-22T15:05:24.394Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "IBDB revival verdicts from the 2026-10-21 detect-revivals-ibdb run (12 proposals > the >5 gate). Revivals, sourced: La Boheme x3, Carmen, Porgy and Bess, Macbeth (Verdi), Othello, Miss Julie (Strindberg) -> isRevival true. Not revivals: Caroline (2025 MCC world premiere, Preston Max Allen), All The Way Home (new Ahrens/Flaherty/Galati musical, York NEW2NY), You Go On (matched IBDB Before You Go by word overlap). Flight (59E59, MB Adaptors) has no public description; an exact IBDB title match alone is not revival evidence, so it is marked checked with isRevival left unset. Provisional-venue audit (2026-10-22 run, BRO-5975): The Good Thief is a revival (Keen Company 2001), so isRevival true. Speculations extended to 2027-01-17 (Theatre Weekly). Arias with a Twist extended to 2026-12-20 (BroadwayWorld 2026-10-05). A Kidman Carol is a play (TDF listing). Playbill exemptions where the only Playbill page is another production: Mystic Pizza (page is the Riverside Vero Beach leg; existing source already names the Paper Mill proof), School Pictures 2023 (page is the 2026 Cherry Lane run), Cat on a Hot Tin Roof 2027 (only the 2003 vault page exists). (part 2 of 2)",
+    "steps": [
+      "shows.json: school-pictures-off-broadway-2023.noPlaybillProductionPage",
+      "shows.json: school-pictures-off-broadway-2023.statusBackfillSource",
+      "shows.json: cat-on-a-hot-tin-roof-2027.noPlaybillProductionPage",
+      "shows.json: cat-on-a-hot-tin-roof-2027.statusBackfillSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "school-pictures-off-broadway-2023",
+        "field": "noPlaybillProductionPage",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: school-pictures-off-broadway-2023.noPlaybillProductionPage"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "school-pictures-off-broadway-2023",
+        "field": "statusBackfillSource",
+        "oldValue": null,
+        "newValue": "manual research 2026-10-22 (BRO-5975): Playwrights Horizons run confirmed by the Playbill article Sad Boys in Harpy Land and School Pictures Extend at Playwrights Horizons and the Equity listing for the 2023-24 season (first preview 11/8/2023). The only Playbill /production/ page for this title is the 2026 Cherry Lane run (school-pictures-off-broadway-2026), a different production.",
+        "description": "shows.json: school-pictures-off-broadway-2023.statusBackfillSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cat-on-a-hot-tin-roof-2027",
+        "field": "noPlaybillProductionPage",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: cat-on-a-hot-tin-roof-2027.noPlaybillProductionPage"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cat-on-a-hot-tin-roof-2027",
+        "field": "statusBackfillSource",
+        "oldValue": null,
+        "newValue": "manual research 2026-10-22 (BRO-5975): Seaview spring 2027 Broadway revival directed by Sam Gold, announced 2026-04-21 (Broadway.com buzz 206996, New York Theatre Guide, Broadway News); theatre and dates not yet announced. Playbill has no /production/ page for it yet; the only match is the 2003 vault page. Clear this flag once Playbill lists the 2027 production.",
+        "description": "shows.json: cat-on-a-hot-tin-roof-2027.statusBackfillSource"
+      }
+    ]
+  }
+}

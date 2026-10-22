@@ -66,6 +66,7 @@ jobs:
         uses: ./.github/actions/setup-playwright
 
       - name: Run IBDB revival detection
+        id: detect
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
@@ -91,16 +92,13 @@ jobs:
           # run for manual review, not silently apply a large batch unattended.
 
       - name: Push core data to private repo
-        # success() only, NOT always(): the script checkpoints (writes +
-        # applies) every 10 shows DURING the loop, before the final >5-change
-        # safety gate is evaluated — so a gate-triggered exit 1 still leaves
-        # partially-applied changes in the local checkout. Pushing on
-        # `always()` would publish that partial batch despite the run being
-        # red (ship-check adversarial review, #982). A failed run now
-        # publishes nothing; the next scheduled run re-checks the same shows
-        # (ibdbRevivalChecked was checkpointed locally but never pushed) and a human can
-        # `--show=` a subset or `--force` manually in the meantime.
-        if: success()
+        # On success, or when the >5-change safety gate tripped (gated=true).
+        # A gate trip saves only the ibdbRevivalChecked marks of shows with no
+        # finding; revival edits are applied only after the gate passes, so
+        # nothing unreviewed is published while the run stays red for review
+        # (BRO-5975: discarding the marks re-queried 123 shows weekly). Never
+        # always(): a crash mid-loop must not publish anything (#982).
+        if: success() || steps.detect.outputs.gated == 'true'
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}

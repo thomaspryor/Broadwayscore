@@ -10,8 +10,108 @@
 
 'use strict';
 
-const { canonicalVenue } = require('./title-match');
+const { canonicalVenue, foldDiacritics } = require('./title-match');
 const { venuesMatch } = require('./deduplication');
+const { sameVenueOrRoom } = require('./show-duplicate-detection');
+
+// Validator-only "same house" test (BRO-5975). venuesMatch() is strict on
+// purpose (sibling rooms stay distinct for dedup and venue pages), but here the
+// question is only "is this Playbill page about a production in this house?",
+// and Playbill and shows.json name rooms differently: "Theatre Row" vs "Theatre
+// Five @ Theatre Row", "New World Stages" vs "New World Stages Stage 3".
+// Widening VENUE_ALIASES would collapse sibling rooms for every venuesMatch
+// caller (title-match.js keeps bare BAM unaliased for that reason), so the
+// looser rule lives here and nowhere else.
+function venueCanon(v) {
+  return foldDiacritics(String(v || ''))
+    .toLowerCase()
+    .replace(/@/g, ' at ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/^the /, '');
+}
+
+// Words that name a room, not a house. A room part made only of these (plus
+// articles and numbers) is too generic to identify a venue on its own.
+const GENERIC_ROOM_WORDS = new Set(['main', 'stage', 'studio', 'theatre', 'theater', 'house', 'hall', 'room', 'space', 'upstairs', 'downstairs', 'the', 'a', 'black', 'box', 'little', 'big', 'mainstage', 'cabaret', 'lab', 'loft']);
+function isSpecificRoomName(room) {
+  return room.split(' ').some((w) => w && !GENERIC_ROOM_WORDS.has(w) && !/^\d+$|^[a-z]$/.test(w));
+}
+const NUMBER_WORDS = { one: '1', two: '2', three: '3', four: '4', five: '5', six: '6', seven: '7', eight: '8', nine: '9' };
+// "Theatre Five" and "Theatre 5" are one room; "Stage I" and "Stage II" are not.
+function roomKey(room) {
+  return room.split(' ').map((w) => NUMBER_WORDS[w] || w).filter((w) => !['the', 'theatre', 'theater'].includes(w)).join(' ');
+}
+const looksLikeRoom = (part) => /\b(stage|studio|theat(?:re|er)|hall|room|space|upstairs|downstairs|club|loft|lab|\d+)\b/.test(part);
+
+// Split a venue string into the house and the room it names, if any:
+// "Room at House" / "Room @ House", "House (Room)", "House, Room",
+// "House/Room", "House - Room". The first comma part after the house that
+// looks like a room is the room ("Arena Stage, Kreeger Theater, Washington");
+// the other comma parts are the place ("Goodman Theatre, Chicago").
+function houseAndRoom(raw) {
+  let s = String(raw || '');
+  let room = null;
+  const paren = s.match(/\(([^)]*)\)/);
+  if (paren) { room = venueCanon(paren[1]); s = s.replace(/\s*\([^)]*\)\s*/g, ' '); }
+  const parts = s.split(',').map((x) => venueCanon(x)).filter(Boolean);
+  s = parts[0] || '';
+  const rest = parts.slice(1);
+  const roomIdx = room ? -1 : rest.findIndex(looksLikeRoom);
+  if (roomIdx !== -1) room = rest[roomIdx];
+  const place = rest.filter((_, i) => i !== roomIdx).join(' ') || null;
+  const at = s.match(/^(.+?) at (.+)$/);
+  if (at) return { house: at[2].replace(/^the /, ''), room: room || at[1].replace(/^the /, ''), place };
+  const dash = String(raw || '').replace(/\s*\([^)]*\)\s*/g, ' ').split(',')[0].split(/\s*\/\s*|\s+[-–—]\s+/);
+  if (dash.length === 2 && venueCanon(dash[0]) && venueCanon(dash[1])) {
+    return { house: venueCanon(dash[0]), room: room || venueCanon(dash[1]), place };
+  }
+  return { house: s, room, place };
+}
+
+// What is left of `name` after the house it shares with `house`, as a room:
+// "soho playhouse main stage" beyond "soho playhouse" is "main stage".
+function roomSuffix(name, house) {
+  return name.startsWith(`${house} `) ? name.slice(house.length).trim() : null;
+}
+
+// An arts organisation whose shows.json rows use the room names ("BAM Fisher
+// (Fishman Space)", "BAM Harvey Theater") while a listing names only the
+// organisation. data/venue-complexes.json is not used for this because it
+// drives the public theater pages and slug redirects; adding a complex there
+// changes the site.
+const ORGANISATION_HOUSES = [
+  { name: 'brooklyn academy of music', rooms: /^bam( |$)/ },
+];
+
+function sameHouseForValidator(a, b) {
+  if (!a || !b) return false;
+  if (venuesMatch(a, b)) return true;
+  const A = houseAndRoom(a);
+  const B = houseAndRoom(b);
+  if (!A.house || !B.house || A.house === 'tba' || B.house === 'tba') return false;
+  // A place named on either side must agree: "Theatre Royal, Bath" is not
+  // "Theatre Royal, Brighton", and a bare "Playhouse Theatre" may not be the
+  // one in Edinburgh. venuesMatch above already accepted the known spellings.
+  if ((A.place || B.place) && A.place !== B.place) return false;
+  for (const org of ORGANISATION_HOUSES) {
+    if ((A.house === org.name && org.rooms.test(venueCanon(b))) || (B.house === org.name && org.rooms.test(venueCanon(a)))) return true;
+  }
+  // A specific room named on one side may be the whole venue on the other
+  // ("Marjorie S. Deane Little Theater" vs "... @ The West Side Y").
+  if ((A.room && !B.room && A.room === B.house && isSpecificRoomName(A.room))
+    || (B.room && !A.room && B.room === A.house && isSpecificRoomName(B.room))) return true;
+  if (!(A.house === B.house || sameVenueOrRoom(A.house, B.house))) return false;
+  // Same house. Two different named rooms are sibling auditoria, which
+  // venuesMatch keeps apart on purpose (59E59 Theater A vs Theater B).
+  const [short, long] = A.house.length <= B.house.length ? [A.house, B.house] : [B.house, A.house];
+  const suffix = roomSuffix(long, short);
+  const roomA = A.room || (A.house === long ? suffix : null);
+  const roomB = B.room || (B.house === long ? suffix : null);
+  if (roomA && roomB && roomKey(roomA) !== roomKey(roomB)) return false;
+  return true;
+}
 
 const DATE_DELTA_DAYS = 30;
 
@@ -57,7 +157,7 @@ function findCorroboratingPriorRun(show, parsed) {
   const pbVenue = parsed?.titleParse?.venue;
   if (!priorRuns.length || !pbVenue) return null;
   return priorRuns.find(run => {
-    if (!run || !run.venue || !venuesMatch(run.venue, pbVenue)) return false;
+    if (!run || !run.venue || !sameHouseForValidator(run.venue, pbVenue)) return false;
     const openDelta = daysBetween(run.openingDate, parsed.dates?.openingDate);
     const closeDelta = daysBetween(run.closingDate, parsed.dates?.closingDate);
     return (openDelta !== null && openDelta <= DATE_DELTA_DAYS)
@@ -139,7 +239,7 @@ function compareShow(show, parsed, playbillUrl) {
     venueCheck = 'not-applicable';
   } else if (!parsed.titleParse?.venue) {
     venueCheck = 'unverified';
-  } else if (venuesMatch(show.venue, parsed.titleParse.venue)) {
+  } else if (sameHouseForValidator(show.venue, parsed.titleParse.venue)) {
     venueCheck = 'match';
   } else {
     venueCheck = 'different';
@@ -175,7 +275,15 @@ function compareShow(show, parsed, playbillUrl) {
     const idy = (show.id || '').match(/\d{4}/);
     return idy ? parseInt(idy[0], 10) : null;
   })();
-  if (pbYear && showYear && pbYear !== showYear) {
+  // A run that starts previews in one year and has no opening date yet
+  // carries that previews year on its Playbill page while its id may still
+  // name the year it was announced (bluebirds-off-west-end-2026, previews
+  // 2027-03-30, BRO-5975). Accept the previews year as well, rather than
+  // replacing the id year with it: 25 rows have previews stamped in another
+  // year than their id, some of them stale, and a page that matches either
+  // year is plausibly this production.
+  const previewsYear = show.previewsStartDate ? parseInt(show.previewsStartDate.slice(0, 4), 10) : null;
+  if (pbYear && showYear && pbYear !== showYear && !(previewsYear && !show.openingDate && pbYear === previewsYear)) {
     record({ field: 'opening-year', shows: showYear, playbill: pbYear });
   }
 
@@ -704,6 +812,7 @@ module.exports = {
   daysBetween,
   urlYear,
   findCorroboratingPriorRun,
+  sameHouseForValidator,
   compareShow,
   classifyComparison,
   orderProvisionalTargets,

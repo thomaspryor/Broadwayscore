@@ -32,13 +32,45 @@ function etDateYesterday(now = new Date()) {
   return etDateParts(d);
 }
 
-// Covered window: shows that opened today OR yesterday (accounts for late-evening ET
-// openings where reviews don't stage-latency-log until the next UTC day).
-function selectOpeningWindowShows(shows, { today, yesterday }) {
+// Covered window: shows that opened yesterday (ET). The cron runs at 9 AM ET,
+// so a show opening today has not had its curtain yet and its reviews cannot
+// exist; checking it flagged every evening opening as a failure (BRO-5975:
+// Benjamin Button failed at 13:42 ET on 10-21, its reviews scored at 23:18 ET).
+// `today` is accepted so a caller passing both keeps working; it never selects.
+function selectOpeningWindowShows(shows, { yesterday }) {
   return shows.filter(
-    (s) => (s.openingDate === today || s.openingDate === yesterday)
-      && COVERED_CATEGORIES.has(s.category),
+    (s) => s.openingDate === yesterday && COVERED_CATEGORIES.has(s.category),
   );
+}
+
+// Shows with at least one collected review that was not later excluded. The
+// alert's signature (bucket D) is reviews that arrived but never scored; an
+// off-Broadway or off-West-End show whose only rows are a ticket listing or a
+// wrong-production hit, or that no critic reviewed, has nothing to score
+// (BRO-5975: Jest to Impress, a donyc listing page). Broadway and West End
+// openings are always reviewed, so for them no score by the next morning
+// stays an alert even with nothing collected (a collection lag is stale data
+// too). Review keys differ in author case between stages, so compare
+// lowercased.
+const COLLECTED_STAGES = new Set(['review-first-seen', 'review-text-collected', 'scored']);
+const EVIDENCE_REQUIRED_CATEGORIES = new Set(['off-broadway', 'off-west-end']);
+
+function reviewEvidenceShowIds(latencyLines) {
+  const collected = new Map();
+  const excluded = new Set();
+  for (const line of latencyLines) {
+    if (!line) continue;
+    try {
+      const e = JSON.parse(line);
+      if (!e.showId || !e.reviewKey) continue;
+      const key = `${e.showId}|${String(e.reviewKey).toLowerCase()}`;
+      if (e.stage === 'excluded') excluded.add(key);
+      else if (COLLECTED_STAGES.has(e.stage)) collected.set(key, e.showId);
+    } catch { /* skip malformed line */ }
+  }
+  const ids = new Set();
+  for (const [key, showId] of collected) if (!excluded.has(key)) ids.add(showId);
+  return ids;
 }
 
 function scoredShowIds(latencyLines, cutoffMs) {
@@ -55,8 +87,13 @@ function scoredShowIds(latencyLines, cutoffMs) {
   return scoredSet;
 }
 
-function findMissingScored(openingShows, scoredSet) {
-  return openingShows.filter((s) => !scoredSet.has(s.id));
+// With no evidence set every unscored show counts (the original behaviour).
+function needsEvidence(show, evidenceSet) {
+  return !!evidenceSet && EVIDENCE_REQUIRED_CATEGORIES.has(show.category) && !evidenceSet.has(show.id);
+}
+
+function findMissingScored(openingShows, scoredSet, evidenceSet = null) {
+  return openingShows.filter((s) => !scoredSet.has(s.id) && !needsEvidence(s, evidenceSet));
 }
 
 module.exports = {
@@ -65,5 +102,7 @@ module.exports = {
   etDateYesterday,
   selectOpeningWindowShows,
   scoredShowIds,
+  reviewEvidenceShowIds,
+  needsEvidence,
   findMissingScored,
 };

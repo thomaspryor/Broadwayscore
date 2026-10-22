@@ -38,6 +38,18 @@ const FEEDBACK_EDITABLE_FIELDS = {
     // stop refilling it with the next wrong hit. execute-approved-fix checks
     // the shape and the key (lib/no-reliable-art.js).
     'noReliableArt',
+    // BRO-5975: a person's IBDB revival verdict. true on a show whose IBDB
+    // title match is a different work, so the weekly detect-revivals-ibdb run
+    // stops proposing it. Human-approved plans only; data-edit-action checks
+    // the boolean shape.
+    'ibdbRevivalChecked',
+    // BRO-5975: the Playbill exemption pair isExemptFromPlaybillCheck reads
+    // (validate-show-venue.js). Set together on a row whose only Playbill
+    // /production/ page is another production of the same title; the source
+    // names the third-party proof. Human-approved plans only; data-edit-action
+    // checks the shapes.
+    'noPlaybillProductionPage',
+    'statusBackfillSource',
     // BRO-5000: whole array, compare-and-set; human-approved plans only. A plan may set a
     // boolean inheritReviews on an existing entry (carry or stop carrying that earlier
     // run's reviews, lib/prior-run-sibling.js), and (BRO-5687) APPEND one new earlier run

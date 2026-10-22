@@ -977,3 +977,57 @@ __t('BRO-3903: Royal Court sub-stage names match the bare building name', () => 
     assert.deepEqual(vdc.missingUrlOutcome({ anyQueryCompleted: false, rejectedTitleCandidates: cands }), { source: 'serp-error', result: 'serp-error' });
   });
 }
+
+{
+  const vdc = __cr(import.meta.url)('./venue-date-compare.js');
+  __t('sameHouseForValidator: room spellings of one house match, sibling rooms do not (BRO-5975)', () => {
+    const same = [
+      ['BAM Fisher (Fishman Space)', 'Brooklyn Academy of Music'],
+      ['Theatre Row', 'Theatre Five @ Theatre Row'],
+      ['Theatre Five at Theatre Row', 'Theatre Five @ Theatre Row'],
+      ['The Marjorie S. Deane Little Theater', 'The Marjorie S. Deane Little Theater @ The West Side Y'],
+      ['New World Stages', 'New World Stages Stage 3'],
+      ['Theatre Row, Theatre 5', 'Theatre Row'],
+      ['Theatre Five at Theatre Row', 'Theatre Row (Theatre 5)'],
+    ];
+    for (const [a, b] of same) __assert.equal(vdc.sameHouseForValidator(a, b), true, `${a} | ${b}`);
+    const different = [
+      ['59E59 Theaters Theater A', '59E59 Theaters Theater B'],
+      ['New York City Center – Stage I', 'New York City Center - Stage II'],
+      // A city on one side, or two different cities, is a different building.
+      ['Theatre Royal, Bath', 'Theatre Royal, Brighton'],
+      ['Playhouse Theatre', 'Playhouse Theatre, Edinburgh'],
+      // Sibling rooms in the "Org, Room, City" form.
+      ['Arena Stage, Kreeger Theater, Washington, DC', 'Arena Stage, Fichandler Stage, Washington, DC'],
+      ['Berkeley Repertory Theatre, Roda Theatre, Berkeley, CA', "Berkeley Repertory Theatre, Peet's Theatre, Berkeley, CA"],
+      ['BAM Harvey Theater', 'BAM Fisher'],
+      // Sibling rooms spelled with commas, parentheses or suffixes (real
+      // shows.json strings).
+      ['59E59 Theaters Theater B', '59E59 Theaters, Theater C'],
+      ['Theatre Row (Theatre 5)', 'Theatre Row, Theatre Four'],
+      ['Berkeley Repertory Theatre (Roda Theatre), Berkeley, CA', "Berkeley Repertory Theatre (Peet's Theatre), Berkeley, CA"],
+      ['Huron Club at the SoHo Playhouse', 'Soho Playhouse Main Stage'],
+      // A generic room name never stands in for a whole venue elsewhere.
+      ['Studio Theatre', 'Studio Theatre @ Theatre Row'],
+      // A city after a comma is not a room.
+      ['Chicago', 'Goodman Theatre, Chicago'],
+      ['Atlantic Theater', 'Atlantic Stage 2'],
+      ['Park', 'Park Avenue Armory'],
+      ['Paper Mill Playhouse', 'Riverside Theatre'],
+    ];
+    for (const [a, b] of different) __assert.equal(vdc.sameHouseForValidator(a, b), false, `${a} | ${b}`);
+  });
+
+  __t('compareShow: a page in the previews year is not an opening-year mismatch when no opening date is set (BRO-5975)', () => {
+    const show = { id: 'bluebirds-off-west-end-2026', venue: 'Finborough Theatre', category: 'off-west-end', previewsStartDate: '2027-03-30', openingDate: null };
+    const parsed = { titleParse: { venue: 'Finborough Theatre', year: 2027 }, dates: {}, tagLine: '' };
+    const { mismatches } = vdc.compareShow(show, parsed, '');
+    __assert.equal(mismatches.filter((m) => m.field === 'opening-year').length, 0);
+    // A page from neither year still mismatches.
+    const other = vdc.compareShow(show, { ...parsed, titleParse: { venue: 'Finborough Theatre', year: 2019 } }, '');
+    __assert.equal(other.mismatches.filter((m) => m.field === 'opening-year').length, 1);
+    // With an opening date set, the opening year alone decides.
+    const opened = vdc.compareShow({ ...show, openingDate: '2026-12-01' }, parsed, '');
+    __assert.equal(opened.mismatches.filter((m) => m.field === 'opening-year').length, 1);
+  });
+}

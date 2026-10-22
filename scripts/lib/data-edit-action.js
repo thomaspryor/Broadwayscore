@@ -102,6 +102,16 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
       if (problem) return { ok: false, reason: problem };
     }
 
+    // Both are read as booleans; a plan writing "true" would pass every guard (BRO-5975).
+    if ((field === 'isRevival' || field === 'ibdbRevivalChecked' || field === 'noPlaybillProductionPage') && typeof newValue !== 'boolean') {
+      return { ok: false, reason: `${field}: must be true or false, got ${JSON.stringify(newValue)}` };
+    }
+    // The exemption only counts with a source over 50 characters; a shorter
+    // one would land a flag that silently does nothing.
+    if (field === 'statusBackfillSource' && newValue !== null && (typeof newValue !== 'string' || newValue.trim().length <= 50)) {
+      return { ok: false, reason: 'statusBackfillSource: must name the proof in more than 50 characters, or be null' };
+    }
+
     shows[idx][field] = newValue;
     // A person-approved synopsis is manual provenance (BRO-4856).
     if (field === 'synopsis') require('./synopsis-source.js').setSynopsis(shows[idx], newValue, 'manual');
