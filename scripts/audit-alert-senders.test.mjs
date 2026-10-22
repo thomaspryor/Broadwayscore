@@ -285,6 +285,103 @@ test('scanFile flags a .then() promise-chain caller that checks .action without 
   assert.strictEqual(digestFindings[0].resultVar, 'result');
 });
 
+// BRO-3360: dotted `router.routeAlert(...)` callers get the same digest check.
+const DOTTED_HUMAN_CALL = [
+  "  conditionKey: 'x',",
+  "  title: 'y',",
+  "  disposition: 'human',",
+];
+test('scanFile flags a dotted router.routeAlert same-line-assigned result ignoring digest', () => {
+  const findings = scanFixture('scripts/dotted-assign.js', [
+    'const result = await router.routeAlert({',
+    ...DOTTED_HUMAN_CALL,
+    '});',
+    "if (result.action === 'human' && result.delivered) { console.log('told'); }",
+  ].join('\n'));
+  const d = findings.filter(f => f.kind === 'human-caller-ignores-digest');
+  assert.strictEqual(d.length, 1);
+  assert.strictEqual(d[0].resultVar, 'result');
+});
+
+test('scanFile flags a dotted destructured routeAlert result ignoring digest', () => {
+  const findings = scanFixture('scripts/dotted-destructure.js', [
+    'const { action, delivered } = await require("./lib/owner-alert-router.js").routeAlert({',
+    ...DOTTED_HUMAN_CALL,
+    '});',
+    "if (action === 'human' && delivered) { console.log('told'); }",
+  ].join('\n'));
+  assert.strictEqual(findings.filter(f => f.kind === 'human-caller-ignores-digest').length, 1);
+});
+
+test('scanFile does not flag a dotted routeAlert caller that mentions digest', () => {
+  const findings = scanFixture('scripts/dotted-digest-aware.js', [
+    'const result = await router.routeAlert({',
+    ...DOTTED_HUMAN_CALL,
+    '});',
+    "if (result.action === 'human' || result.action === 'digest') { console.log('told'); }",
+  ].join('\n'));
+  assert.strictEqual(findings.filter(f => f.kind === 'human-caller-ignores-digest').length, 0);
+});
+
+test('scanFile ends the dotted caller window at the next dotted routeAlert call', () => {
+  // The second call's own .action check must not be attributed to the first
+  // call; the first call's window stops at the next routeAlert( line.
+  const findings = scanFixture('scripts/dotted-next-call.js', [
+    'const a = await router.routeAlert({',
+    ...DOTTED_HUMAN_CALL,
+    '});',
+    "console.log('sent', a.cardId);",
+    'const b = await router.routeAlert({',
+    ...DOTTED_HUMAN_CALL,
+    '});',
+    "if (b.action === 'digest') { console.log('downgraded'); }",
+  ].join('\n'));
+  assert.strictEqual(findings.filter(f => f.kind === 'human-caller-ignores-digest').length, 0);
+});
+
+test('scanFile flags a dotted routeAlert .then() chain ignoring digest', () => {
+  const findings = scanFixture('scripts/dotted-then.js', [
+    'router.routeAlert({',
+    ...DOTTED_HUMAN_CALL,
+    '}).then((result) => {',
+    "  if (result.action === 'human' && result.delivered) console.log('ok');",
+    '});',
+  ].join('\n'));
+  assert.strictEqual(findings.filter(f => f.kind === 'human-caller-ignores-digest').length, 1);
+});
+
+test('scanFile: comment prose mentioning router.routeAlert( does not end the caller window', () => {
+  const findings = scanFixture('scripts/dotted-comment-prose.js', [
+    'const result = await router.routeAlert({',
+    ...DOTTED_HUMAN_CALL,
+    '});',
+    ' * router.routeAlert( was here before the refactor',
+    "if (result.action === 'human' && result.delivered) { console.log('told'); }",
+  ].join('\n'));
+  assert.strictEqual(findings.filter(f => f.kind === 'human-caller-ignores-digest').length, 1);
+});
+
+test('scanFile flags a reassigned (no const) dotted routeAlert result ignoring digest', () => {
+  const findings = scanFixture('scripts/dotted-reassign.js', [
+    'let result;',
+    'result = await router.routeAlert({',
+    ...DOTTED_HUMAN_CALL,
+    '});',
+    "if (result.action === 'human') { console.log('told'); }",
+  ].join('\n'));
+  assert.strictEqual(findings.filter(f => f.kind === 'human-caller-ignores-digest').length, 1);
+});
+
+test('scanFile does not treat foo.routeAlertX( as a routeAlert call', () => {
+  const findings = scanFixture('scripts/dotted-lookalike.js', [
+    'const result = await foo.routeAlertX({',
+    ...DOTTED_HUMAN_CALL,
+    '});',
+    "if (result.action === 'human') { console.log('told'); }",
+  ].join('\n'));
+  assert.strictEqual(findings.filter(f => f.kind === 'human-caller-ignores-digest').length, 0);
+});
+
 test('scanFile checks the raw (unstripped) lines for "digest", not the comment-blanked ones', () => {
   // stripTrailingComment blanks whole `//`-only comment lines (it treats
   // leading whitespace + `//` as a trailing-comment marker at index 0) — the

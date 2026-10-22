@@ -66,14 +66,13 @@
  *   collision has never been observed, and even if it occurred it would only
  *   inflate the 'router' inventory count, not suppress a real 'direct'
  *   sendAlert(email:true) finding in the same file (that detection is
- *   independent). A DOTTED call assigned to a variable and inspected for
- *   `disposition:'human'` result handling (scanHumanDispositionCaller's
- *   assignMatch/destructureMatch/nextCallRe) is NOT yet covered by this same
- *   dot-tolerance — those regexes still require a bare `await routeAlert(`.
- *   No known caller hits this gap today; tracked as a follow-up rather than
- *   fixed alongside this change, since extending it risks the exact kind of
- *   regex-interaction bug this file's own "Known accepted limitations" are
- *   full of.
+ *   independent). The same dot-tolerance applies inside
+ *   scanHumanDispositionCaller (BRO-3360): assignMatch, destructureMatch and
+ *   nextCallRe accept a member chain before the literal `routeAlert`, so a
+ *   dotted call assigned to a variable is inspected for digest handling too.
+ *   Known gaps (false negatives, line-based regex): optional chaining
+ *   (`router?.routeAlert(`), nested parens in a require() chain, a leading
+ *   `(await import(...)).routeAlert(`, and a chain split across lines.
  *
  * Second check (card #616): routeAlert()'s disposition='human' path can now
  * silently downgrade to result.action==='digest' (the page-worthy allowlist
@@ -262,8 +261,17 @@ function scanHumanDispositionCaller(lines, callLineIdx, relPath, rawLines, calle
   // `logger.alert(...)`/`window.alert(...)` member access and prematurely
   // truncating the window before a real .action check (adversarial-review
   // find, card #616 follow-up).
-  const nextCallRe = new RegExp(`(?<!\\.)\\b(?:${callee}|sendAlert)\\s*\\(`);
+  // BRO-3360: the literal `routeAlert` is dot-tolerant here too (same
+  // reasoning as callSiteRe in the main scan); wrappers and sendAlert are not.
+  const wrappers = callee.split('|').filter((n) => n !== 'routeAlert');
+  const nextCallRe = new RegExp(`\\brouteAlert\\s*\\(|(?<!\\.)\\b(?:${[...wrappers, 'sendAlert'].join('|')})\\s*\\(`);
+  // Callee as written after `await`: routeAlert may be reached through a member
+  // chain (`router.routeAlert(`, `require('./x.js').routeAlert(`); wrappers may not.
+  const memberPrefix = '(?:[\\w$]+(?:\\([^)]*\\))?\\s*\\.\\s*)*';
+  const calleeCall = `(?:${memberPrefix}routeAlert${wrappers.length ? '|' + wrappers.join('|') : ''})`;
   for (let j = bodyEnd + 1; j < windowEnd; j++) {
+    const t = lines[j].trim();
+    if (t.startsWith('//') || t.startsWith('#') || t.startsWith('*')) continue; // prose, not a call
     if (nextCallRe.test(lines[j])) { windowEnd = j; break; }
   }
   const postCall = lines.slice(bodyEnd, windowEnd).join('\n');
@@ -273,8 +281,8 @@ function scanHumanDispositionCaller(lines, callLineIdx, relPath, rawLines, calle
   // reassignment to a pre-declared variable `x = await routeAlert(` (no
   // const/let/var — the injectable-for-tests pattern some callers use); or a
   // later `.then((x) => ...)` promise chain.
-  const assignMatch = lines[callLineIdx].match(new RegExp(`(?:(?:const|let|var)\\s+)?(\\w+)\\s*=\\s*await\\s+(?:${callee})\\s*\\(`));
-  const destructureMatch = !assignMatch && lines[callLineIdx].match(new RegExp(`(?:const|let|var)\\s*\\{\\s*([^}]*)\\}\\s*=\\s*await\\s+(?:${callee})\\s*\\(`));
+  const assignMatch = lines[callLineIdx].match(new RegExp(`(?:(?:const|let|var)\\s+)?(\\w+)\\s*=\\s*await\\s+${calleeCall}\\s*\\(`));
+  const destructureMatch = !assignMatch && lines[callLineIdx].match(new RegExp(`(?:const|let|var)\\s*\\{\\s*([^}]*)\\}\\s*=\\s*await\\s+${calleeCall}\\s*\\(`));
   const thenMatch = !assignMatch && !destructureMatch && (
     postCall.match(/\.then\s*\(\s*(?:async\s*)?\(?\s*(\w+)\s*\)?\s*=>/) ||
     postCall.match(/\.then\s*\(\s*function\s*\(\s*(\w+)\s*\)/)

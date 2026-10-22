@@ -134,6 +134,10 @@ async function main(argv = process.argv.slice(2)) {
     console.log(`[owner-decisions] emailed ${plan.listed.length} decision(s)`);
   } else if (result && result.action === 'human') {
     await reportBroken('the decision email was not delivered (check RESEND_API_KEY / OWNER_EMAIL); will retry next run');
+  } else if (result && result.action === 'digest') {
+    // The page-worthy gate downgraded 'human' to the digest: nothing was
+    // emailed now, and notifiedIds stays unchanged so the cards re-list next run.
+    await reportBroken('the decision email was downgraded to the digest (check the page-worthy allowlist); will retry next run');
   } else {
     console.log(`[owner-decisions] not sent (${result ? result.action : 'no result'}); will retry next run`);
   }
