@@ -261,6 +261,10 @@ test('usage cap: real CLI cap envelope classifies as usage-cap, not auth-rejecte
   assert.equal(classifyAuthPingFailure({ status: 1, stdout: JSON.stringify({ is_error: true, result: msg }), stderr: '' }), 'usage-cap');
   assert.equal(classifyAuthPingFailure({ status: 1, stdout: '', stderr: 'Not logged in' }), 'auth-rejected');
   assert.equal(worseAuthPingReason('usage-cap', 'auth-rejected'), 'usage-cap');
+  // A capped API key must not mask a rejected stored login.
+  assert.equal(worseAuthPingReason('auth-rejected', 'usage-cap'), 'auth-rejected');
+  // Process-level kills win over cap text in the output.
+  assert.equal(classifyAuthPingFailure({ status: 137, signal: null, stdout: '', stderr: 'spend limit' }), 'spawn-starved');
   assert.equal(worseAuthPingReason('usage-cap', 'spawn-starved'), 'spawn-starved');
 
   const health = evaluateAuthHealth({ preflight: { ok: false, mode: 'fail', reason: 'usage-cap', detail: msg }, authStatus: { loggedIn: true } });
@@ -272,4 +276,22 @@ test('usage cap: real CLI cap envelope classifies as usage-cap, not auth-rejecte
   assert.doesNotMatch(payload.hint, /auth login/);
   const { isPageWorthy } = require('../../scripts/lib/page-worthy-alerts.js');
   assert.equal(isPageWorthy(payload.conditionKey), false);
+});
+
+test('usage cap: stored login capped but API-key fallback works -> digest billing alert with no re-login advice', () => {
+  const { buildBillingFallbackAlertPayload } = require('../../scripts/lib/claude-auth-health.js');
+  const health = evaluateAuthHealth({ preflight: { ok: true, mode: 'api-key', storedReason: 'usage-cap', storedDetail: 'hit your monthly spend limit' }, authStatus: null });
+  assert.match(health.reason, /usage cap/);
+  const p = buildBillingFallbackAlertPayload(health);
+  assert.equal(p.disposition, 'digest');
+  assert.doesNotMatch(p.description + p.hint, /auth logout/);
+  assert.doesNotMatch(p.hint, /auth login/);
+  assert.match(p.description, /do NOT re-run/);
+});
+
+test('usage cap: opening-night monitor routing digests a cap instead of paging auth', () => {
+  const { authFailureRouting } = require('../../scripts/opening-night-monitor-launch.js');
+  if (typeof authFailureRouting !== 'function') return;
+  assert.equal(authFailureRouting({ reason: 'usage-cap', consecutiveStarved: 1 }).page, false);
+  assert.equal(authFailureRouting({ reason: 'auth-rejected', consecutiveStarved: 1 }).page, true);
 });

@@ -86,6 +86,14 @@ function formatPreflightResult(auth) {
       stdoutLine: null,
     };
   }
+  if (auth && auth.reason === 'usage-cap') {
+    return {
+      exitCode: 1,
+      stderrMessage: `[claude-auth-preflight] REFUSING: the plan usage cap is reached, the credential is valid — ${detail}\n`
+        + `[claude-auth-preflight] Do NOT run \`claude auth login\`. Raise the spend limit at claude.ai/settings/usage or wait for the reset.`,
+      stdoutLine: null,
+    };
+  }
   return {
     exitCode: 1,
     stderrMessage: `[claude-auth-preflight] REFUSING: claude cannot authenticate — ${detail}\n`

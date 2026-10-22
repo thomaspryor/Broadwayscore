@@ -263,16 +263,17 @@ function isUsageCapMessage(text) {
  * itself said no (a real auth rejection)? Exported for tests (CLAUDE.md rule
  * 15) — never re-derive this classification elsewhere.
  * @param {{error?: Error, status?: number|null, signal?: string|null}} r
- * @returns {'spawn-starved'|'spawn-error'|'auth-rejected'}
+ * @returns {'spawn-starved'|'spawn-error'|'usage-cap'|'auth-rejected'}
  */
 function classifyAuthPingFailure(r) {
-  if (!r.error && !r.signal && isUsageCapMessage(`${r.stdout || ''} ${r.stderr || ''}`)) return AUTH_PING_REASONS.USAGE_CAP;
   if (r.error) {
     const code = r.error.code || '';
     return SPAWN_STARVATION_ERROR_CODES.has(code) ? AUTH_PING_REASONS.SPAWN_STARVED : AUTH_PING_REASONS.SPAWN_ERROR;
   }
   if (r.signal) return SPAWN_STARVATION_SIGNALS.has(r.signal) ? AUTH_PING_REASONS.SPAWN_STARVED : AUTH_PING_REASONS.SPAWN_ERROR;
   if (SIGNAL_EXIT_CODES.has(r.status)) return AUTH_PING_REASONS.SPAWN_STARVED;
+  // Spawn-level failures win above; only a process that ran to completion can have been capped.
+  if (isUsageCapMessage(`${r.stdout || ''} ${r.stderr || ''}`)) return AUTH_PING_REASONS.USAGE_CAP;
   return AUTH_PING_REASONS.AUTH_REJECTED;
 }
 
@@ -288,9 +289,10 @@ function classifyAuthPingFailure(r) {
 function worseAuthPingReason(a, b) {
   if (a === AUTH_PING_REASONS.SPAWN_STARVED || b === AUTH_PING_REASONS.SPAWN_STARVED) return AUTH_PING_REASONS.SPAWN_STARVED;
   if (a === AUTH_PING_REASONS.SPAWN_ERROR || b === AUTH_PING_REASONS.SPAWN_ERROR) return AUTH_PING_REASONS.SPAWN_ERROR;
-  // A cap on either probe means the credential itself was accepted (the server
-  // answered with a limit message), so it outranks a plain rejection from the other.
-  if (a === AUTH_PING_REASONS.USAGE_CAP || b === AUTH_PING_REASONS.USAGE_CAP) return AUTH_PING_REASONS.USAGE_CAP;
+  // a is the stored-login probe (the primary credential). A cap on it means that
+  // login was accepted, so it outranks a rejection from the API-key probe (often
+  // just 'no key'). A cap on the key alone must NOT mask a rejected stored login.
+  if (a === AUTH_PING_REASONS.USAGE_CAP) return AUTH_PING_REASONS.USAGE_CAP;
   return AUTH_PING_REASONS.AUTH_REJECTED;
 }
 
@@ -375,7 +377,7 @@ function resolvePassAuth({ storedLoginOk, apiKeyPresent, apiKeyPingOk }) {
  * @param {boolean} [opts.allowApiKeyFallback=true] set false to require OAuth only
  * @param {(msg:string)=>void} [opts.log] optional logger for the fallback notice
  * @returns {{ok:boolean, mode:'oauth'|'api-key'|'fail', detail?:string, reason?:string, storedReason?:string}}
- *   `reason` (only on ok:false) is 'spawn-starved'|'spawn-error'|'auth-rejected'
+ *   `reason` (only on ok:false) is 'spawn-starved'|'spawn-error'|'usage-cap'|'auth-rejected'
  *   (BRO-2971) — see classifyAuthPingFailure. `storedReason` (only on
  *   mode:'api-key') carries the stored-login probe's own reason through even
  *   on a successful fallback, so a caller can tell a real revoked stored

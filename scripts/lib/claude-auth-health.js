@@ -55,8 +55,11 @@ function evaluateAuthHealth({ preflight, authStatus = null }) {
     // login, and buildBillingFallbackAlertPayload told on-call to re-login
     // for a hiccup that needed no action.
     const storedWasStarved = preflight.storedReason === 'spawn-starved' || preflight.storedReason === 'spawn-error';
+    const storedWasCapped = preflight.storedReason === 'usage-cap';
     const reason = preflight.mode === 'api-key'
-      ? (storedWasStarved
+      ? (storedWasCapped
+        ? `real call succeeded via ANTHROPIC_API_KEY fallback (pay-per-token) — the stored login hit its plan usage cap (${preflight.storedDetail || 'unknown'}), NOT a revoked credential`
+        : storedWasStarved
         ? `real call succeeded via ANTHROPIC_API_KEY fallback (pay-per-token) — the stored-login probe itself failed to run (${preflight.storedReason}: ${preflight.storedDetail || 'unknown'}), NOT a confirmed revoked credential`
         : `real call succeeded via ANTHROPIC_API_KEY fallback (pay-per-token) — stored OAuth login failed: ${preflight.storedDetail || 'unknown'}`)
       : 'real call succeeded via stored OAuth login';
@@ -176,6 +179,16 @@ function buildAlertPayload(health) {
  * pay-per-token spend indefinitely with zero owner visibility.
  */
 function buildBillingFallbackAlertPayload(health) {
+  if (health.storedReason === 'usage-cap') {
+    return {
+      conditionKey: 'claude-auth:api-key-fallback',
+      title: 'Claude launches are on pay-per-token because the plan usage cap is reached',
+      description: `check-claude-auth-health.js: ${health.reason}. Launches work but bill per token until the cap resets or is raised. Do NOT re-run \`claude auth login\`. Repair: ${USAGE_CAP_STEPS}`,
+      severity: 'warning',
+      disposition: 'digest',
+      hint: USAGE_CAP_STEPS,
+    };
+  }
   return {
     conditionKey: 'claude-auth:api-key-fallback',
     title: 'Claude launches are running on pay-per-token, not the subscription',
