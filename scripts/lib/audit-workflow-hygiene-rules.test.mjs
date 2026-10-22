@@ -627,7 +627,7 @@ ${timeout === null ? '' : `    timeout-minutes: ${timeout}\n`}${extra}    steps:
   });
 });
 
-describe('findRestFallbackUnprovenPaths (rule v, BRO-3341)', () => {
+describe('findRestFallbackUnprovenPaths (rule z, BRO-3341)', () => {
   const wf = (env, adds) => `
 name: Fixture
 on:
@@ -655,8 +655,25 @@ ${adds.map((a) => `          git add ${a}`).join('\n')}
     assert.deepStrictEqual(findRestFallbackUnprovenPaths(wf(ENV1, ['data/audit/imageless-scored-shows.json', 'data/commercial-pending-review.json'])), []);
   });
 
-  test('a restricted-path glob (code file) is clean', () => {
+  test('a restricted-path glob (code file) is clean, a non-data non-restricted file is flagged', () => {
     assert.deepStrictEqual(findRestFallbackUnprovenPaths(wf(ENV1, ['scripts/some-script.js'])), []);
+    const hits = findRestFallbackUnprovenPaths(wf(ENV1, ['public/some-asset.json']));
+    assert.deepStrictEqual(hits[0]?.paths, ['public/some-asset.json']);
+  });
+
+  test('unresolvable adds (., -A, bare directory) in an opted-in step are flagged', () => {
+    for (const a of ['.', '-A', 'data/audit/']) {
+      assert.strictEqual(findRestFallbackUnprovenPaths(wf(ENV1, [a])).length, 1, a);
+    }
+  });
+
+  test('only a literal 1 opts in (true/01/False do not; export and inline forms do)', () => {
+    const add = ['data/audit/some-totally-unregistered-file.json'];
+    for (const v of ["'true'", "'01'", 'False']) {
+      assert.deepStrictEqual(findRestFallbackUnprovenPaths(wf(`        env:\n          PUSH_API_REST_REF_UPDATE: ${v}\n`, add)), [], v);
+    }
+    const exp = wf('', add).replace('          bash scripts', '          export PUSH_API_REST_REF_UPDATE=1\n          bash scripts');
+    assert.strictEqual(findRestFallbackUnprovenPaths(exp).length, 1);
   });
 
   test('a hygiene-rest-fallback-ok: exemption comment passes an otherwise flagged step', () => {

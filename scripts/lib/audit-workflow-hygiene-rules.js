@@ -1080,7 +1080,7 @@ function findMaskedPushFailures(raw) {
 }
 
 /**
- * Rule (v) (BRO-3341): a step that opts into the Git Data API REST ref-update
+ * Rule (z) (BRO-3341): a step that opts into the Git Data API REST ref-update
  * fallback (`PUSH_API_REST_REF_UPDATE` set to anything but 0/false) stages
  * files the fallback has not been proven safe for. "Proven" means the path is
  * in core-data-merge-registry (apiFallbackSafe or apiFallbackMerge) or is a
@@ -1092,7 +1092,25 @@ function findRestFallbackUnprovenPaths(raw) {
   if (raw.includes('hygiene-rest-fallback-ok:')) return []; // file-level exemption
   const { extractStagedPaths, classifyPushFallbackSafety } = require('./audit-push-retry-budgets.js');
   const { matchesRestrictedPath } = require('./branch-ruleset-paths.js');
-  const OPT_IN = /\bPUSH_API_REST_REF_UPDATE\b\s*[:=]\s*['"]?(?!0\b|false\b|['"]?\s*$)[^\s'"]/m;
+  // push-via-git-api.sh engages only on exactly "1".
+  const OPT_IN = /(?:^|\s)(?:export\s+)?PUSH_API_REST_REF_UPDATE\s*[:=]\s*['"]?1['"]?(?=\s|#|$)/m;
+  // Literal git-add args extractStagedPaths drops (non-data/ files, and
+  // adds it cannot resolve statically: `.`, `-A`, bare directories).
+  const extraTokens = (text) => {
+    const toks = [];
+    for (const m of text.matchAll(/(?<![\w.-])git\s+add\b([^\n]*)/g)) {
+      let rest = m[1];
+      const stop = rest.match(/\|\||&&|;|(?:^|\s)#/);
+      if (stop) rest = rest.slice(0, stop.index);
+      for (const raw of rest.trim().split(/\s+/)) {
+        const t = raw.replace(/^['"]|['"]$/g, '');
+        if (!t || t.includes('$') || /[<>|]/.test(t)) continue;
+        if (t === '.' || t === '-A' || t === '--all' || t === '-a' || t.endsWith('/')) toks.push(t);
+        else if (!t.startsWith('-') && !t.startsWith('data/')) toks.push(t);
+      }
+    }
+    return toks;
+  };
   const out = [];
   const steps = splitWorkflowSteps(raw);
   // Workflow- or job-level `env:` (outside every step) opts in all push steps.
@@ -1104,7 +1122,7 @@ function findRestFallbackUnprovenPaths(raw) {
     const text = stripComments(step.lines).join('\n');
     if (!globalOptIn && !OPT_IN.test(text)) continue;
     if (globalOptIn && !/push-with-retry\.sh/.test(text)) continue;
-    const unproven = extractStagedPaths(text).filter((p) => {
+    const unproven = [...new Set([...extractStagedPaths(text), ...extraTokens(text)])].filter((p) => {
       const c = classifyPushFallbackSafety(p);
       return !c.isApiFallbackSafe && !c.isApiFallbackMerge && !matchesRestrictedPath(p);
     });

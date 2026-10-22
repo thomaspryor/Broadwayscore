@@ -850,7 +850,7 @@ async function main() {
     stageWithoutCommit: [],
     nodeTeeNoPipefail: [],
     maskedPush: [],
-    restFallback: [], // rule (v), warn-only (BRO-3341)
+    restFallback: [], // rule (z), warn-only (BRO-3341)
     stringInput: [],
     shortBatchPollTimeout: [],
     shortRebuildTimeout: [],
@@ -1045,7 +1045,7 @@ async function main() {
       if (hits.length > 0) violations.maskedPush.push({ file, hits });
     }
 
-    // ── Rule (v): PUSH_API_REST_REF_UPDATE step stages paths not proven safe (BRO-3341, warn-only) ─
+    // ── Rule (z): PUSH_API_REST_REF_UPDATE step stages paths not proven safe (BRO-3341, warn-only) ─
     if (!raw.includes('hygiene-rest-fallback-ok:')) {
       const hits = findRestFallbackUnprovenPaths(raw);
       if (hits.length > 0) violations.restFallback.push({ file, hits });
@@ -1256,6 +1256,18 @@ async function main() {
     // the CLI's exit code.
     violations.runIdKeyedCache.length;
 
+  // Advisory: printed before the total check so it shows on an otherwise clean run.
+  if (violations.restFallback.length) {
+    console.error('── (z) WARN: PUSH_API_REST_REF_UPDATE step stages paths not proven safe for the REST fallback ─');
+    console.error('Not in core-data-merge-registry (apiFallbackSafe/apiFallbackMerge) and not a restricted-path glob (BRO-3341). Advisory only.\n');
+    for (const { file, hits } of violations.restFallback) {
+      console.error(`  • ${file}`);
+      for (const h of hits) console.error(`      "${h.name}" line ${h.lineNum}: ${h.paths.join(', ')}`);
+    }
+    console.error('\nFix: register the file in core-data-merge-registry.js, or drop PUSH_API_REST_REF_UPDATE from the step.');
+    console.error('Exempt (legitimate): add  # hygiene-rest-fallback-ok: <reason>  anywhere in the file.\n');
+  }
+
   if (total === 0) {
     console.log(`✅ Workflow hygiene guard passed (${files.length} workflows checked).`);
     return;
@@ -1450,17 +1462,6 @@ async function main() {
     }
     console.error('\nFix: drop the handler. For a non-critical push add step-level  continue-on-error: true.');
     console.error('Exempt (legitimate): add  # hygiene-masked-push-ok: <reason>  anywhere in the file.\n');
-  }
-
-  if (violations.restFallback.length) {
-    console.error('── (v) WARN: PUSH_API_REST_REF_UPDATE step stages paths not proven safe for the REST fallback ─');
-    console.error('Not in core-data-merge-registry (apiFallbackSafe/apiFallbackMerge) and not a restricted-path glob (BRO-3341). Advisory only.\n');
-    for (const { file, hits } of violations.restFallback) {
-      console.error(`  • ${file}`);
-      for (const h of hits) console.error(`      "${h.name}" line ${h.lineNum}: ${h.paths.join(', ')}`);
-    }
-    console.error('\nFix: register the file in core-data-merge-registry.js, or drop PUSH_API_REST_REF_UPDATE from the step.');
-    console.error('Exempt (legitimate): add  # hygiene-rest-fallback-ok: <reason>  anywhere in the file.\n');
   }
 
   if (violations.stringInput.length) {
