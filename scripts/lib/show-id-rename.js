@@ -622,10 +622,11 @@ function loadShowsJson(showsPath) {
  *
  * @param {string} oldId
  * @param {string} newId
- * @param {{web?: string, coreData?: string|null, reviewTexts?: string|null, scanCode?: boolean}} [treesIn]
+ * @param {{web?: string, coreData?: string|null, reviewTexts?: string|null, scanCode?: boolean, scanResidual?: boolean}} [treesIn]
  *   web defaults to this repo's root. coreData/reviewTexts default to null /
  *   the web checkout's data/review-texts. `scanCode: false` skips the
- *   src/scripts mention scan (tests).
+ *   src/scripts mention scan (tests); `scanResidual: false` skips the
+ *   full-tree scan for unregistered mentions.
  * @returns {object} plan — `ok` is false when `refusals` is non-empty.
  */
 function planShowIdRename(oldId, newId, treesIn = {}) {
@@ -775,7 +776,9 @@ function planShowIdRename(oldId, newId, treesIn = {}) {
   // prefix them so they read as repo-relative.
   const residualRaw = [];
   for (const r of roots) {
-    if (!r.root) continue;
+    // scanResidual:false skips the full-tree read (rename-show-ids-batch.js
+    // plans up to 25 ids against a full review-texts checkout).
+    if (!r.root || treesIn.scanResidual === false) continue;
     for (const hit of scanResidual([r], oldId, handled)) {
       const rel = hit.path.slice(r.label.length + 1);
       const prefix = r.label === 'web' ? path.relative(trees.web, r.root) + '/' : '';
