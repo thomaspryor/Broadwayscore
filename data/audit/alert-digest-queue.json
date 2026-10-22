@@ -60,5 +60,137 @@
       }
     ],
     "queuedAt": "2026-10-22T18:17:42.445Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:dog-mom-off-west-end-2026",
+    "title": "1 review(s) for dog-mom-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--70d4480d.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/dog-mom-review-southwark-playhouse-borough-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T17:10:34.392Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:stories-the-tap-dance-sensation-west-end-2026",
+    "title": "1 review(s) for stories-the-tap-dance-sensation-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--15d1902b.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/rb-dance-company-stories-review-peacock-theatre-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T17:10:53.210Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:into-the-woods-noel-coward-west-end-2026",
+    "title": "2 review(s) for into-the-woods-noel-coward-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- noel-coward-theatre--333fba17.json (noel-coward-theatre): no byline in page and no recoverable body https://delfontmackintosh.co.uk/\n- thestage--4d5a441.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/into-the-woods-review-bridge-theatre-london-stephen-sondheim-jordan-fein",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T17:11:02.707Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:bull-off-west-end-2026",
+    "title": "1 review(s) for bull-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--unknown.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/bull",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T17:11:04.176Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:hay-fever-west-end-2026",
+    "title": "1 review(s) for hay-fever-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- broadwayworld--379d8495.json (broadwayworld): fetch failed: All scraping methods failed https://www.broadwayworld.com/westend/article/Review-HAY-FEVER-Starring-Christine-Baranski-Richard-E-Grant-20261002",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T17:11:13.911Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5901-inclusion-diff",
+    "title": "Landing blocked: lint-workflows red on land/bro-5901-inclusion-diff",
+    "description": "land.yml did not land land/bro-5901-inclusion-diff: the lint-workflows gate went red at 1c25e61389. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39823444261",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5901-inclusion-diff"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "1c25e61389029d1f610910cbb51b3040747f3a71"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39823444261"
+      }
+    ],
+    "queuedAt": "2026-10-22T18:00:23.175Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5962-health-failure-streak",
+    "title": "Landing blocked: rebase red on land/bro-5962-health-failure-streak",
+    "description": "land.yml did not land land/bro-5962-health-failure-streak: the rebase gate went red at 87bdb10ad5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39830190442",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5962-health-failure-streak"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "87bdb10ad5ff5b9cb02ffbf1471ec59870033f3b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39830190442"
+      }
+    ],
+    "queuedAt": "2026-10-22T18:21:00.263Z"
   }
 ]
