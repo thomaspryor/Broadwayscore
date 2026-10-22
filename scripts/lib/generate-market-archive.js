@@ -80,7 +80,7 @@ function generateMarketArchive({ outputFilename, entryCategory, belongsToMarket,
 
   try {
     const showsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'shows.json'), 'utf-8'));
-    shows = showsData.shows || [];
+    shows = require('./show-row-guard').partitionShowRows(showsData.shows || []).valid; // BRO-6016
   } catch (err) {
     console.warn(`⚠ shows.json not found — generating empty ${outputFilename}`);
   }

@@ -31,13 +31,24 @@ test('prebuild.sh lists generators (scanner sanity)', () => {
   assert.ok(prebuildScripts().length > 10);
 });
 
+// Source of a script plus the local ./lib/*.js modules it requires (one level),
+// so wrappers that delegate to a shared lib (e.g. the market-archive generators) are covered.
+function sourceWithLibs(s) {
+  let src = read(s);
+  for (const m of src.matchAll(/require\(\s*['"]\.\/(lib\/[\w.-]+?)(?:\.js)?['"]\s*\)/g)) {
+    const lib = path.join('scripts', `${m[1]}.js`);
+    if (fs.existsSync(path.join(ROOT, lib))) src += '\n' + read(lib);
+  }
+  return src;
+}
+
 test('every prebuild generator reading shows.json uses show-row-guard or is allowlisted', () => {
   const offenders = prebuildScripts().filter((s) => {
-    if (!fs.existsSync(path.join(ROOT, s))) return false;
-    const src = read(s);
-    // Reads shows.json directly, or via the BLOG_SHOWS_PATH-style SHOWS_PATH constant.
-    const reads = /['"`]shows\.json['"`]|\.\.\/data\/shows\.json/.test(src);
-    return reads && !src.includes('show-row-guard') && !(s in ALLOWLIST);
+    if (!fs.existsSync(path.join(ROOT, s)) || s in ALLOWLIST) return false;
+    const src = sourceWithLibs(s);
+    const reads = /['"`]shows\.json['"`]|data\/shows\.json/.test(src);
+    // A real call, not just a mention in a comment.
+    return reads && !/show-row-guard['"`]\)\.partitionShowRows\(|partitionShowRows\(/.test(src.replace(/\/\/.*$/gm, ''));
   });
   assert.deepEqual(offenders, [], `read data/shows.json without show-row-guard: ${offenders.join(', ')}`);
 });
