@@ -27,12 +27,15 @@
  *   --limit=N       Process at most N shows
  *   --skip=N        Skip first N shows (for continuation after timeout)
  *   --verbose       Extra logging
+ *   --ignore-cooldown  Run even if the last runs found every Reddit route down (BRO-5916)
  *   --shard=N --total-shards=M   Parallel shard mode
  */
 
 const fs = require('fs');
 const path = require('path');
 const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/reddit-api');
+const cooldown = require('./lib/reddit-dispatch-cooldown');
+const { sendAlert } = require('./lib/discord-notify');
 const { computeProductionWindow, isPostInProductionWindow } = require('./lib/production-window');
 const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey, isOwnerComment, isRedditFresh, redditBackoffReason, redditSaveDecision, partitionRequestedShows } = require('./lib/reddit-post-filters');
 
@@ -53,6 +56,7 @@ const args = process.argv.slice(2);
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const showsArg = args.find(a => a.startsWith('--shows='))?.split('=')[1];
 const dryRun = args.includes('--dry-run');
+const ignoreCooldown = args.includes('--ignore-cooldown');
 const verbose = args.includes('--verbose');
 const includeAll = args.includes('--all');
 const limitArg = args.find(a => a.startsWith('--limit='));
@@ -248,7 +252,7 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { cat
 
     try {
       // Fetch up to 300 per query (3 pages) to compensate for date filtering
-      const posts = await searchAllPosts(subreddit, query, 300);
+      const posts = await searchAllPosts(subreddit, query, 300, { allowRss: true }); // BRO-5916: free RSS when JSON is blocked
       totalSearched += posts.length;
 
       // Track raw volume before dedup (for display: "Based on ~X Reddit discussions")
@@ -592,6 +596,36 @@ function saveAudienceBuzz() {
   return true;
 }
 
+// BRO-5916: alert once per outage when Reddit has had no successful run for 48h.
+async function maybeAlertRedditStale() {
+  const rows = cooldown.readLedger();
+  const verdict = cooldown.shouldAlertStale(rows);
+  if (!verdict.alert) return;
+  cooldown.appendRow({ ts: new Date().toISOString(), outcome: 'alerted', note: verdict.reason });
+  await sendAlert({
+    title: 'Reddit sentiment scrape has been down 48h+',
+    description: `${verdict.reason}. Every route (direct, RSS, Bright Data, Scrapingdog, ScrapingBee) failed, so new openings get no Reddit audience data. Dispatches are on cooldown to stop burning credits; one probe runs every ${cooldown.DEFAULTS.probeAfterHours}h and clears it on success.`,
+    severity: 'error',
+    email: true,
+    idempotencyKey: `reddit-stale-${verdict.sinceTs}`,
+  });
+}
+
+// Record the run for the cross-run cooldown. "unavailable" = every fetch this
+// run failed (or the breaker tripped); any successful fetch counts as healthy.
+async function recordRunHealth(processed, successful) {
+  const sessionStats = getStats();
+  const attemptedFetches = sessionStats.fetchOk + sessionStats.fetchFail;
+  if (dryRun || attemptedFetches === 0) return;
+  const unavailable = sessionStats.circuitBroken || sessionStats.fetchOk === 0;
+  cooldown.appendRow({
+    ts: new Date().toISOString(),
+    outcome: unavailable ? 'unavailable' : 'ok',
+    note: `fetchOk=${sessionStats.fetchOk} fetchFail=${sessionStats.fetchFail} rss=${sessionStats.redditRss} shows=${processed} withData=${successful}`,
+  });
+  if (unavailable) await maybeAlertRedditStale();
+}
+
 /**
  * Main function
  */
@@ -611,6 +645,19 @@ async function main() {
   if (!process.env.OPENROUTER_API_KEY && !process.env.GEMINI_API_KEY && !process.env.OPENAI_API_KEY && !process.env.ANTHROPIC_API_KEY) {
     console.error('Error: At least one of OPENROUTER_API_KEY, GEMINI_API_KEY, OPENAI_API_KEY, or ANTHROPIC_API_KEY must be set');
     process.exit(1);
+  }
+
+  // Cross-run cooldown (BRO-5916): when the last runs all ended with every
+  // Reddit route unavailable, skip instead of re-burning proxy credits. Manual
+  // single-show runs, dry runs and --ignore-cooldown always go through.
+  if (!dryRun && !showFilter && !ignoreCooldown) {
+    const verdict = cooldown.decideCooldown(cooldown.readLedger());
+    if (verdict.skip) {
+      console.log(`⏸ ${verdict.reason}. Skipping this run (no credits spent). Use --ignore-cooldown to force.`);
+      await maybeAlertRedditStale();
+      process.exit(0);
+    }
+    if (verdict.consecutiveUnavailable > 0) console.log(`Reddit health: ${verdict.reason}`);
   }
 
   // All active shows (open + previews + closed)
@@ -821,6 +868,8 @@ async function main() {
       if (verbose) console.error(e.stack);
     }
   }
+
+  await recordRunHealth(processed, successful); // before any exit path below
 
   // Validation guard for full runs
   if (!showFilter && !showsArg && !shardMode && shows.length > 5) {
