@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-22T14:24:48.125Z",
-  "windowDays": 1095,
-  "targets": 622,
-  "auditedThisRun": 15,
-  "carriedForward": 759,
+  "generatedAt": "2026-10-22T15:09:01.446Z",
+  "windowDays": 21,
+  "targets": 3,
+  "auditedThisRun": 3,
+  "carriedForward": 774,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
@@ -16,7 +16,7 @@
     "humanExcluded": 4,
     "automatedExcluded": 258,
     "automatedExcludedListed": 221,
-    "priorProductionCitations": 5287
+    "priorProductionCitations": 5325
   },
   "results": [
     {
@@ -119429,6 +119429,43 @@
       "computedAt": "2026-10-22T14:24:48.125Z"
     },
     {
+      "showId": "menopause-the-musical-tour-2026",
+      "title": "Menopause The Musical",
+      "openingDate": "2026-07-14",
+      "status": "open",
+      "category": "tour",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-22T15:09:01.446Z"
+    },
+    {
       "showId": "meow-meow-off-broadway-2026",
       "title": "Meow Meow",
       "openingDate": null,
@@ -133172,6 +133209,400 @@
         "candidateCount": 15
       },
       "computedAt": "2026-09-26T20:27:22.812Z"
+    },
+    {
+      "showId": "oedipus-west-end-2024",
+      "title": "Oedipus",
+      "openingDate": "2024-10-15",
+      "status": "closed",
+      "category": "west-end",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-reviews-for-oedipus-el-rey-at-the-public-theater",
+        "https://www.broadwayworld.com/article/Review-Roundup-Mark-Strong-and-Lesley-Manville-Star-in-OEDIPUS-on-Broadway-20251113"
+      ],
+      "aggregatorListedUrls": [
+        "http://www.nj.com/entertainment/index.ssf/2017/10/oedipus_el_rey_the_last_match_jesus_hopped_reviews.html",
+        "http://www.timeout.com/newyork/theater/oedipus-el-rey",
+        "http://www.vulture.com/2017/10/theater-review-in-oedipus-el-rey-fate-falls-a-tad-flat.html",
+        "http://t2conline.com/oedipus-el-rey-an-exciting-bare-assed-re-focusing-of-greek-destino-y-amor-maternal/",
+        "http://www.thewrap.com/oedipus-el-rey-theater-review-happens-sophocles-takes-viagra/",
+        "https://www.nytimes.com/2025/11/13/theater/oedipus-review-strong-manville.html",
+        "https://www.wsj.com/articles/oedipus-review-brilliantly-reimagining-sophocles-on-broadway-b9416144",
+        "https://www.latimes.com/entertainment-arts/story/2025-11-13/review-theater-mark-strong-lesley-manville-robert-ickes-sophocles-oedipus-broadway",
+        "https://www.chicagotribune.com/2025/11/13/review-oedipus-broadway/",
+        "https://www.timeout.com/newyork/theater/oedipus-broadway-review-mark-strong-lesley-manville-robert-icke",
+        "https://nystagereview.com/2025/11/13/oedipus-fate-comes-for-us-all/",
+        "https://nystagereview.com/2025/11/13/oedipus-all-about-my-mother/",
+        "https://www.thewrap.com/oedipus-broadway-review-mark-strong-lesley-manville/",
+        "https://nypost.com/2025/11/13/entertainment/oedipus-review-mark-strong-lesley-manville-are-ferocious-in-pulse-pounding-broadway-tragedy/",
+        "https://cititour.com/NYC_Broadway/Oedipus/1340",
+        "https://culturesauce.com/2025/11/13/oedipus-the-mother-of-all-tragedies-gets-a-mesmerizing-update-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/oedipus-broadway-review-mark-strong-lesley-manville",
+        "https://www.vulture.com/article/theater-review-robert-icke-sophocles-oedipus-broadway.html",
+        "https://www.theatrely.com/post/f-cked-up-families-oedipus-the-burning-cauldron-of-fiery-fire-review"
+      ],
+      "dirFiles": 41,
+      "dirClean": 16,
+      "inReviewsJson": 23,
+      "missing": [
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2017/10/oedipus_el_rey_the_last_match_jesus_hopped_reviews.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.vulture.com/2017/10/theater-review-in-oedipus-el-rey-fate-falls-a-tad-flat.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://t2conline.com/oedipus-el-rey-an-exciting-bare-assed-re-focusing-of-greek-destino-y-amor-maternal/",
+          "host": "t2conline.com",
+          "knownOutletId": "times-square-chronicles",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.thewrap.com/oedipus-el-rey-theater-review-happens-sophocles-takes-viagra/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2025/11/13/theater/oedipus-review-strong-manville.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.wsj.com/articles/oedipus-review-brilliantly-reimagining-sophocles-on-broadway-b9416144",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2025-11-13/review-theater-mark-strong-lesley-manville-robert-ickes-sophocles-oedipus-broadway",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.chicagotribune.com/2025/11/13/review-oedipus-broadway/",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2025/11/13/oedipus-fate-comes-for-us-all/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2025/11/13/oedipus-all-about-my-mother/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/oedipus-broadway-review-mark-strong-lesley-manville/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2025/11/13/entertainment/oedipus-review-mark-strong-lesley-manville-are-ferocious-in-pulse-pounding-broadway-tragedy/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Oedipus/1340",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://culturesauce.com/2025/11/13/oedipus-the-mother-of-all-tragedies-gets-a-mesmerizing-update-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/oedipus-broadway-review-mark-strong-lesley-manville",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/article/theater-review-robert-icke-sophocles-oedipus-broadway.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/f-cked-up-families-oedipus-the-burning-cauldron-of-fiery-fire-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "1883magazine.com",
+          "count": 1
+        },
+        {
+          "host": "theartsdesk.com",
+          "count": 1
+        },
+        {
+          "host": "dailymail.co.uk",
+          "count": 1
+        },
+        {
+          "host": "ft.com",
+          "count": 1
+        },
+        {
+          "host": "theguardian.com",
+          "count": 1
+        },
+        {
+          "host": "inews.co.uk",
+          "count": 1
+        },
+        {
+          "host": "independent.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "standard.co.uk",
+          "count": 1
+        },
+        {
+          "host": "telegraph.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatreweekly.com",
+          "count": 1
+        },
+        {
+          "host": "thestage.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thetimes.com",
+          "count": 1
+        },
+        {
+          "host": "whatsonstage.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 477,
+        "byReason": {
+          "aggregator-internal-nav": 278,
+          "not-http-url": 140,
+          "production-database-listing": 10,
+          "aggregator-section-root": 10,
+          "non-review-host": 39
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-reviews-for-oedipus-el-rey-at-the-public-theater",
+          "publishDate": "2017-10-25"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Mark-Strong-and-Lesley-Manville-Star-in-OEDIPUS-on-Broadway-20251113",
+          "publishDate": "2025-11-13"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2017/10/oedipus_el_rey_the_last_match_jesus_hopped_reviews.html",
+          "host": "nj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.vulture.com/2017/10/theater-review-in-oedipus-el-rey-fate-falls-a-tad-flat.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://t2conline.com/oedipus-el-rey-an-exciting-bare-assed-re-focusing-of-greek-destino-y-amor-maternal/",
+          "host": "t2conline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.thewrap.com/oedipus-el-rey-theater-review-happens-sophocles-takes-viagra/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2025/11/13/theater/oedipus-review-strong-manville.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.wsj.com/articles/oedipus-review-brilliantly-reimagining-sophocles-on-broadway-b9416144",
+          "host": "wsj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2025-11-13/review-theater-mark-strong-lesley-manville-robert-ickes-sophocles-oedipus-broadway",
+          "host": "latimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.chicagotribune.com/2025/11/13/review-oedipus-broadway/",
+          "host": "chicagotribune.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2025/11/13/oedipus-fate-comes-for-us-all/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2025/11/13/oedipus-all-about-my-mother/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/oedipus-broadway-review-mark-strong-lesley-manville/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2025/11/13/entertainment/oedipus-review-mark-strong-lesley-manville-are-ferocious-in-pulse-pounding-broadway-tragedy/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Oedipus/1340",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://culturesauce.com/2025/11/13/oedipus-the-mother-of-all-tragedies-gets-a-mesmerizing-update-broadway-review/",
+          "host": "culturesauce.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/oedipus-broadway-review-mark-strong-lesley-manville",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/article/theater-review-robert-icke-sophocles-oedipus-broadway.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/f-cked-up-families-oedipus-the-burning-cauldron-of-fiery-fire-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.timeout.com/newyork/theater/oedipus-el-rey",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-22T15:09:01.446Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/oedipus-broadway-review-mark-strong-lesley-manville-robert-icke",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-22T15:09:01.446Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 1,
+        "candidateCount": 1
+      },
+      "computedAt": "2026-10-22T15:09:01.446Z"
     },
     {
       "showId": "oh-mary-2024",
@@ -204452,6 +204883,457 @@
         "candidateCount": 7
       },
       "computedAt": "2026-09-23T17:46:27.589Z"
+    },
+    {
+      "showId": "the-pass-off-west-end-2026",
+      "title": "The Pass",
+      "openingDate": "2026-09-17",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-pass-over-on-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-PASS-Opens-at-La-MaMa-20260804"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.amny.com/entertainment/ambroadway-review-pass-over-helps-give-broadway-a-rousing-restart/",
+        "http://broadwayjournal.com/pass-over-is-tense-taut-drama-review/",
+        "https://cititour.com/NYC_News/REVIEW-DO-NOT-PASS-ON-BROADWAYS-PASS-OVER/5643",
+        "https://www.thedailybeast.com/pass-over-brilliantly-heralds-the-return-of-the-broadway-play",
+        "https://deadline.com/2021/08/pass-over-broadway-review-antoinette-chinonye-nwandu-1234818794/",
+        "https://www.nydailynews.com/entertainment/broadway/ny-pass-over-review-broadway-20210822-netq3fijxbbytillnfmjfvgfle-story.html",
+        "https://www.vulture.com/2021/08/theater-review-pass-over-broadway-antoinette-nwandu.html",
+        "https://nypost.com/2021/08/22/pass-over-broadway-review-an-enticing-uneven-play/",
+        "http://nystagereview.com/2021/08/22/pass-over-waiting-for-the-po-po-hoping-for-the-promised-land/",
+        "http://nystagereview.com/2021/08/22/pass-over-a-play-that-speaks-to-our-times/",
+        "https://www.newyorktheatreguide.com/reviews/pass-over-broadway-review-no-one-is-off-the-hook-in-this-challenging-yet-optimistic-play",
+        "https://www.nytimes.com/2021/08/22/theater/pass-over-review.html",
+        "https://observer.com/2021/09/pass-over-theatre-review-broadway/",
+        "https://www.theatrely.com/post/a-new-dawn-with-pass-over-review",
+        "https://www.timeout.com/newyork/theater/pass-over-1",
+        "https://variety.com/2021/legit/reviews/pass-over-antoinette-nwandu-broadway-1235046615/",
+        "https://www.washingtonpost.com/entertainment/theater_dance/pass-over-broadway/2021/08/22/01ba1088-0298-11ec-ba7e-2cf966e88e93_story.html",
+        "https://www.thewrap.com/pass-over-broadway-review-antoinette-chinonye-nwandu/",
+        "https://www.theatermania.com/news/review-the-pass-is-not-the-heated-rivalry-we-want-but-the-one-we-deserve_1847996/",
+        "https://culturesauce.com/the-pass-off-broadway-review/",
+        "https://newyorktheater.me/2026/08/03/the-pass-review-a-heated-rivalry-but-in-soccer-and-short-lived/",
+        "https://www.londonboxoffice.co.uk/news/post/the-pass-pearly-queen-theatre-review"
+      ],
+      "dirFiles": 6,
+      "dirClean": 2,
+      "inReviewsJson": 2,
+      "missing": [
+        {
+          "url": "https://www.amny.com/entertainment/ambroadway-review-pass-over-helps-give-broadway-a-rousing-restart/",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://broadwayjournal.com/pass-over-is-tense-taut-drama-review/",
+          "host": "broadwayjournal.com",
+          "knownOutletId": "broadway-journal",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://cititour.com/NYC_News/REVIEW-DO-NOT-PASS-ON-BROADWAYS-PASS-OVER/5643",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/pass-over-brilliantly-heralds-the-return-of-the-broadway-play",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://deadline.com/2021/08/pass-over-broadway-review-antoinette-chinonye-nwandu-1234818794/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-pass-over-review-broadway-20210822-netq3fijxbbytillnfmjfvgfle-story.html",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/2021/08/theater-review-pass-over-broadway-antoinette-nwandu.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2021/08/22/pass-over-broadway-review-an-enticing-uneven-play/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2021/08/22/pass-over-waiting-for-the-po-po-hoping-for-the-promised-land/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2021/08/22/pass-over-a-play-that-speaks-to-our-times/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/pass-over-broadway-review-no-one-is-off-the-hook-in-this-challenging-yet-optimistic-play",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2021/08/22/theater/pass-over-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2021/09/pass-over-theatre-review-broadway/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/a-new-dawn-with-pass-over-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/pass-over-1",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2021/legit/reviews/pass-over-antoinette-nwandu-broadway-1235046615/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/pass-over-broadway/2021/08/22/01ba1088-0298-11ec-ba7e-2cf966e88e93_story.html",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/pass-over-broadway-review-antoinette-chinonye-nwandu/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://culturesauce.com/the-pass-off-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://newyorktheater.me/2026/08/03/the-pass-review-a-heated-rivalry-but-in-soccer-and-short-lived/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "redbuslondinium.uk",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatermania.com/news/review-the-pass-is-not-the-heated-rivalry-we-want-but-the-one-we-deserve_1847996/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--henderson-zachary-stewart.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatermania.com/news/review-the-pass-is-not-the-heated-rivalry-we-want-but-the-one-we-deserve_1847996/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 1,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": true,
+            "rows": 1,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "bestoftheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 1,
+        "corroborated": 1,
+        "perSource": {
+          "lbo-roundup": {
+            "cited": 1,
+            "corroborated": 1
+          }
+        }
+      },
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 456,
+        "byReason": {
+          "aggregator-internal-nav": 269,
+          "not-http-url": 78,
+          "production-database-listing": 11,
+          "aggregator-section-root": 10,
+          "non-review-host": 38,
+          "roundup-page": 50
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-the-reviews-for-pass-over-on-broadway",
+          "publishDate": "2021-08-22"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-PASS-Opens-at-La-MaMa-20260804",
+          "publishDate": "2026-08-04"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.amny.com/entertainment/ambroadway-review-pass-over-helps-give-broadway-a-rousing-restart/",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://broadwayjournal.com/pass-over-is-tense-taut-drama-review/",
+          "host": "broadwayjournal.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://cititour.com/NYC_News/REVIEW-DO-NOT-PASS-ON-BROADWAYS-PASS-OVER/5643",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/pass-over-brilliantly-heralds-the-return-of-the-broadway-play",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://deadline.com/2021/08/pass-over-broadway-review-antoinette-chinonye-nwandu-1234818794/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-pass-over-review-broadway-20210822-netq3fijxbbytillnfmjfvgfle-story.html",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2021/08/theater-review-pass-over-broadway-antoinette-nwandu.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2021/08/22/pass-over-broadway-review-an-enticing-uneven-play/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2021/08/22/pass-over-waiting-for-the-po-po-hoping-for-the-promised-land/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2021/08/22/pass-over-a-play-that-speaks-to-our-times/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/pass-over-broadway-review-no-one-is-off-the-hook-in-this-challenging-yet-optimistic-play",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2021/08/22/theater/pass-over-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://observer.com/2021/09/pass-over-theatre-review-broadway/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/a-new-dawn-with-pass-over-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/pass-over-1",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2021/legit/reviews/pass-over-antoinette-nwandu-broadway-1235046615/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/pass-over-broadway/2021/08/22/01ba1088-0298-11ec-ba7e-2cf966e88e93_story.html",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/pass-over-broadway-review-antoinette-chinonye-nwandu/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://culturesauce.com/the-pass-off-broadway-review/",
+          "host": "culturesauce.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://newyorktheater.me/2026/08/03/the-pass-review-a-heated-rivalry-but-in-soccer-and-short-lived/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/the-pass-pearly-queen-theatre-review",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-22T15:09:01.446Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 1,
+        "candidateCount": 1
+      },
+      "computedAt": "2026-10-22T15:09:01.446Z"
     },
     {
       "showId": "the-peculiar-patriot-off-broadway-2026",
