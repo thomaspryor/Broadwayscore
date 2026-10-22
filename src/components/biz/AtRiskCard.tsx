@@ -55,7 +55,8 @@ export default function AtRiskCard({
   const trendLabel = TREND_LABELS[trend];
   const deficit = Math.max(0, breakEven - avgWeeklyGross);
   const closingText = formatDataDate(closingDate);
-  const optimistic = Math.max(0, Math.round(modelRecoupmentPct[2]));
+  // To the nearest 5, as every recoupment figure is shown (owner 2026-10-22).
+  const optimistic = Math.max(0, Math.round(modelRecoupmentPct[2] / 5) * 5);
 
   return (
     <Link

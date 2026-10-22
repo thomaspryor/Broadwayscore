@@ -855,9 +855,12 @@ export function getModelRecoupmentLabels(
   const isModel = estimatedPct.length === 3;
   // Clamp at 0: the model can emit negative percentages for deep flops
   // (e.g. cabaret-2024 [-168, -120, -74]); "-120% recouped" is nonsense copy.
-  const low = Math.max(0, Math.round(Math.min(...estimatedPct)));
-  const high = Math.max(0, Math.round(Math.max(...estimatedPct)));
-  const central = Math.max(0, isModel ? Math.round(estimatedPct[1]) : Math.round((low + high) / 2));
+  // Shown to the nearest 5, as the estimate range is (owner 2026-10-22: "23 to 40%
+  // is false accuracy"); a figure under 100 never rounds up to it (BRO-5073).
+  const shown = (v: number) => Math.max(0, v >= PCT_CAP ? roundToFive(v) : Math.min(roundToFive(v), Math.floor((PCT_CAP - 1) / 5) * 5));
+  const low = shown(Math.min(...estimatedPct));
+  const high = shown(Math.max(...estimatedPct));
+  const central = isModel ? shown(estimatedPct[1]) : Math.max(0, Math.round((low + high) / 2));
   const valueText = pctText(central);
 
   let label: string;

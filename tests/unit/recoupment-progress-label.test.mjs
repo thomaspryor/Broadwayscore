@@ -30,11 +30,11 @@ test('Hamilton (central 15926%): "100%+", never a raw percent or an investor mul
   }
 });
 
-test('Proof (still running, ~2% recouped): estimate label + range, negative low clamps to 0', () => {
+test('Proof (still running, ~2% recouped): estimate label + range to the nearest 5, negative low clamps to 0', () => {
   const l = getModelRecoupmentLabels([-17.7, 1.5, 19.4]);
-  assert.equal(l.label, 'Est. 2% recouped');
-  assert.equal(l.rangeLabel, 'Range: 0–19%');
-  assert.equal(l.barWidth, 2);
+  assert.equal(l.label, 'Est. 0% recouped');
+  assert.equal(l.rangeLabel, 'Range: 0–20%');
+  assert.equal(l.barWidth, 0);
 });
 
 test('just past capitalization (central 105%): "100%+" with a range that crosses 100', () => {
@@ -88,10 +88,18 @@ test('BRO-5502: a closed run below costs "lost money"; a running one is "losing 
   assert.equal(closed.belowCostsNote, 'lost money');
   assert.ok(closed.ariaLabel.includes('lost money'));
   // Not below costs: the final flag changes nothing.
-  assert.equal(getModelRecoupmentLabels([57, 78, 97], { final: true }).label, 'Est. 78% recouped');
+  assert.equal(getModelRecoupmentLabels([57, 78, 97], { final: true }).label, 'Est. 80% recouped');
 });
 
 test('BRO-5502: an analyst range is read out as its range, not a midpoint it never stated', () => {
   assert.equal(getModelRecoupmentLabels([10, 30]).ariaLabel, 'Estimated 10% to 30% recouped');
   assert.equal(getModelRecoupmentLabels([0, 0]).ariaLabel, 'Estimated 0% recouped (range 0% to 0%)');
+});
+
+test('owner 2026-10-22: model figures show to the nearest 5, and under 100 never round up to it', () => {
+  const l = getModelRecoupmentLabels([23.4, 41, 98.6]);
+  assert.equal(l.label, 'Est. 40% recouped');
+  assert.equal(l.rangeLabel, 'Range: 25–95%');
+  assert.equal(getModelRecoupmentLabels([80, 98, 99]).label, 'Est. 95% recouped');
+  assert.equal(getModelRecoupmentLabels([90, 105, 120]).rangeLabel, 'Range: 90%–100%+');
 });
