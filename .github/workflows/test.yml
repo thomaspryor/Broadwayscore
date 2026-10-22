@@ -355,6 +355,8 @@ on:
       - 'scripts/backfill-lbo-individual-stars.js'
       # tests/unit/backfill-unknown-critics-locked.test.mjs
       - 'scripts/backfill-unknown-critics.js'
+      # scripts/fix-printed-bylines.test.mjs
+      - 'scripts/fix-printed-bylines.js'
       # tests/unit/build-ob-venues.test.mjs
       - 'scripts/build-ob-venues.js'
       # scripts/lib/stuck-card-closer.test.mjs (BRO-4523 CLI exit-code tests)
