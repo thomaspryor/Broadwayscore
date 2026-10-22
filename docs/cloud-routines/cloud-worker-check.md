@@ -83,4 +83,5 @@ one exists, otherwise create one:
 ## 5. Reply
 
 One line per check (healthy / unhealthy and why), the card URL if one was
-filed, then `SAFE TO EXIT`.
+filed, then `KEEP OPEN — the daily worker check fires into this session` (this
+is a persistent host session: archiving it breaks the routine).

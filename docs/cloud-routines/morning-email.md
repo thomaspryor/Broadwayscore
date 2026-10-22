@@ -40,4 +40,4 @@ Run it once. If it fails, do not retry: the CI zero-send floor
 ## 4. Reply
 
 One line: sent (with the Resend id the script prints) or skipped/failed and
-why. End with `SAFE TO EXIT`.
+why. End with `SAFE TO ARCHIVE`.

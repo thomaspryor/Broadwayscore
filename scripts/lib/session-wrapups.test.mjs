@@ -65,6 +65,11 @@ test('statusLine grabs the LAST SAFE/NOT-SAFE line, prefers NOT SAFE when final'
     'NOT SAFE TO EXIT — CI still running',
   );
   assert.equal(statusLine('no verdict here'), '');
+  // BRO-6020 cloud verdicts.
+  assert.equal(statusLine('x\nSAFE TO ARCHIVE — landed and live'), 'SAFE TO ARCHIVE — landed and live');
+  assert.equal(statusLine('x\nKEEP OPEN — waiting on the worker session'), 'KEEP OPEN — waiting on the worker session');
+  assert.equal(statusLine('x\nACTION NEEDED FROM YOU — pick a tier'), 'ACTION NEEDED FROM YOU — pick a tier');
+  assert.equal(statusLine('x\nSAFE TO ARCHIVE'), 'SAFE TO ARCHIVE', 'a bare verdict the hook allows');
   // A quoted TEMPLATE (placeholders in <>) is not a real verdict — a killed
   // session restating the required format must not read as safely exited.
   assert.equal(statusLine('I must end with a SAFE TO EXIT — <what finished> line per the hook.'), '');

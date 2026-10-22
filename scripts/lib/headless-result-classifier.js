@@ -69,6 +69,12 @@ function lastContentLine(text) {
 const BLOCKED_RE = /^\s*[^\w\s]{0,6}\s*THIS SESSION\s*:\s*(?:CLOSE ME|IDLE)\s*[—–:-]*\s*BLOCKED:\s*(.*)$/i;
 const KEEP_OPEN_RE = /^\s*[^\w\s]{0,6}\s*(?:THIS SESSION\s*:\s*KEEP OPEN|NOT SAFE TO EXIT)\b/i;
 const CLEAN_CLOSE_RE = /^\s*[^\w\s]{0,6}\s*THIS SESSION\s*:\s*(?:CLOSE ME|IDLE)\b/i;
+// BRO-6020: the cloud verdicts (SAFE TO ARCHIVE / KEEP OPEN / ACTION NEEDED
+// FROM YOU, verify-edits.sh). Uppercase only, so prose like "Keep open ..." is
+// not a verdict. ACTION NEEDED is the owner-only stop, like BLOCKED.
+const CLOUD_ACTION_RE = /^\s*[^\w\s]{0,6}\s*ACTION NEEDED FROM YOU\s*[—–:-]*\s*(.*)$/;
+const CLOUD_KEEP_OPEN_RE = /^\s*[^\w\s]{0,6}\s*KEEP OPEN\b/;
+const CLOUD_CLEAN_RE = /^\s*[^\w\s]{0,6}\s*SAFE TO ARCHIVE\b/;
 
 // BRO-4064: the 3 plain-English closing templates (CLAUDE.md's owner-facing
 // verdict rules), matched on their LEADING phrase only — sessions routinely
@@ -102,14 +108,19 @@ function classifyHeadlessResult(resultText) {
     return { outcome: 'blocked', reason: blocked[1].trim() || 'no reason given' };
   }
 
-  if (KEEP_OPEN_RE.test(line)) {
+  const action = CLOUD_ACTION_RE.exec(line);
+  if (action) {
+    return { outcome: 'blocked', reason: action[1].trim() || 'no reason given' };
+  }
+
+  if (KEEP_OPEN_RE.test(line) || CLOUD_KEEP_OPEN_RE.test(line)) {
     return {
       outcome: 'stopped-short',
       reason: 'ended on THIS SESSION: KEEP OPEN (or legacy NOT SAFE TO EXIT) — a headless -p session is never resumed by a background notification',
     };
   }
 
-  if (CLEAN_CLOSE_RE.test(line)) {
+  if (CLEAN_CLOSE_RE.test(line) || CLOUD_CLEAN_RE.test(line)) {
     return { outcome: 'clean' };
   }
 

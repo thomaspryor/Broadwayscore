@@ -11,7 +11,7 @@
  *   1. Open workspaces — verdict per tab (SAFE TO CLOSE / WORKING / DONE
  *      still open / DIED un-marked), with dispatch-ledger task attribution.
  *   2. Recently finished sessions (default 24h) whose tab may already be
- *      gone — session label + the final "SAFE TO EXIT — …" wrap-up line,
+ *      gone — session label + the final "SAFE TO ARCHIVE — …" (legacy "SAFE TO EXIT — …") wrap-up line,
  *      recovered from the jsonl transcripts that survive tab closure.
  *
  * Never closes, marks, or dispatches anything. Closing stays owner-run via

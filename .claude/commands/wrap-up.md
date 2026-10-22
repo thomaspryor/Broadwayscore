@@ -67,29 +67,44 @@ Check for:
    Also count this session's own background agents (no hand-back yet) and
    any `send_later` / `create_trigger` check-in scheduled into THIS session
    that has not fired or been deleted. The Stop hook enforces that part
-   (INFLIGHT): SAFE TO EXIT with any of them live is blocked, because the
-   owner reads SAFE TO EXIT as "I can close or kill this session now".
+   (INFLIGHT): SAFE TO ARCHIVE with any of them live is blocked, because the
+   owner reads SAFE TO ARCHIVE as "I can archive this session now".
 
-   **SAFE TO EXIT means every piece of work discussed in this session is
-   finished and verified, carded, or owned by a session you started**
-   (BRO-5040, BRO-5881, owner 2026-10-22). A started session lands and
-   verifies its own work, so it does not make this session unsafe to close
-   unless this session must act on its result or the change is high-risk.
-   A card handed to the board worker (queue weeks deep) is unfinished
-   (OPENWORK); `BACKLOG-OK: <why it can wait>` covers a card that can wait.
-   A SAFE TO EXIT message must not also offer more work, name a call only
-   the owner can make, or mention work left unfinished or uncarded
-   (LOOSEENDS): finish it, card it, decide it, or end NOT SAFE with a
-   DECISION NEEDED block.
+   **The last line is one of three verdicts (BRO-6020, owner 2026-10-22):**
+   - `SAFE TO ARCHIVE — <why>`: every piece of work discussed is finished
+     and verified, carded, or owned end to end by a session you started.
+     This session waits on nothing.
+   - `KEEP OPEN — <what it waits on, and what wakes it>`: the owner can walk
+     away and nothing is needed from them, but archiving would lose a
+     follow-up (a run, a landing, or another session's result this session
+     must act on). A wake must be armed (WAKELESS, below). A session a
+     routine fires into (a persistent host) ends `KEEP OPEN — <routine> fires
+     into this session`: the routine is its wake.
+   - `ACTION NEEDED FROM YOU — <what>`: the owner must do or decide
+     something. Always paired with a DECISION NEEDED block or a
+     `You need to: <the one thing>` line (VERDICTMISMATCH checks both ways).
+   The old single exit line could not tell "walk away"
+   from "archive"; the hook asks for the new form once (LEGACYSTATUS).
+
+   **A session you started** (create_session) lands and verifies its own
+   work, so it does not stop SAFE TO ARCHIVE by itself (BRO-5040, BRO-5881).
+   If this session must act on its result, or the change is high-risk, end
+   KEEP OPEN with a wake on it instead. A card handed to the board worker
+   (queue weeks deep) is unfinished (OPENWORK); `BACKLOG-OK: <why it can
+   wait>` covers a card that can wait. A SAFE TO ARCHIVE message must not
+   also offer more work, name a call only the owner can make, still be
+   waiting on something, or mention work left unfinished or uncarded
+   (LOOSEENDS): finish it, card it, decide it, end KEEP OPEN with a wake,
+   or end ACTION NEEDED FROM YOU with a DECISION NEEDED block.
 
    **The closing block must be clear (CLEARCLOSE, BRO-5910).** After real
    work the message ends with: one or two plain sentences on what changed;
    `Still running: <what, and what wakes you>` or `Nothing is still running.`;
-   `You need to: <the one thing>` or `Nothing needed from you.`; then
-   `SAFE TO EXIT` or `NOT SAFE TO EXIT — <what is pending and how you follow
-   it>`. No card ids, commit hashes, file paths or code in those last lines.
+   `You need to: <the one thing>` or `Nothing needed from you.`; then the
+   verdict line, with a reason after KEEP OPEN or ACTION NEEDED FROM YOU.
+   No card ids, commit hashes, file paths or code in those last lines.
 
-   **NOT SAFE TO EXIT must have a wake (WAKELESS).** If you are waiting on a
+   **KEEP OPEN must have a wake (WAKELESS).** If you are waiting on a
    run, a deploy or a landing, start the wait before ending the turn: a
    `run_in_background` Bash that polls until it finishes (timeout up to
    7200000; start another if it times out) or Monitor. Wait on your own run's
@@ -301,7 +316,7 @@ The user pastes the prompt into a fresh session and it works with zero extra con
 
 **Close with a plain-English message for the owner, and record the machine block separately** (owner escalation 2026-09-20, BRO-3914; `exit-status-gate.sh` reads the recorded block, never the chat, when one is fresh):
 
-**Cloud sessions: `wrapup-block` does not exist and nothing reads it. Skip step 1 and Phase 7 (cmux). Close with the plain-English message and the final `SAFE TO EXIT` / `NOT SAFE TO EXIT` line instead (.claude/CLOUD.md). Post the Linear close-out AFTER your last landing is verified, not before: a later landing makes an earlier close-out stale.**
+**Cloud sessions: `wrapup-block` does not exist and nothing reads it. Skip step 1 and Phase 7 (cmux). Close with the plain-English message and the final verdict line instead: `SAFE TO ARCHIVE`, `KEEP OPEN` or `ACTION NEEDED FROM YOU` (.claude/CLOUD.md). Post the Linear close-out AFTER your last landing is verified, not before: a later landing makes an earlier close-out stale.**
 
 1. Write the machine block to a file (scratchpad is fine), then record it as your LAST tool call: `wrapup-block --file <path>`. Lines, plain prose, never in a code fence:
 

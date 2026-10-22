@@ -281,7 +281,7 @@ export function evaluateChain(events, { lastMessage = '' } = {}) {
 const MAX_STOP_BLOCKS = 3;
 
 /**
- * Pure Stop-hook decision. Blocks only a final "SAFE TO EXIT" message when the session's last
+ * Pure Stop-hook decision. Blocks only a final "SAFE TO ARCHIVE" (legacy "SAFE TO EXIT") message when the session's last
  * /ship-check or /code-review run lacks its reviewers. A session with no strong review run at
  * all is left to verify-edits.sh's chain gate (it asks for the review itself).
  * -> { decision: 'allow'|'block', reason, message? }
@@ -290,8 +290,9 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   if (env.CLAUDE_CODE_REMOTE !== 'true') return { decision: 'allow', reason: 'not a cloud session' };
   if (env.SHIP_CHECK_COVERAGE_DISABLE === '1') return { decision: 'allow', reason: 'SHIP_CHECK_COVERAGE_DISABLE=1' };
   const text = String(lastMessage || '').replace(/```[\s\S]*?```/g, '');
-  const lines = text.split('\n').map((l) => l.trim().replace(/^[*_>#\s]+/, '').replace(/[*_\s]+$/, '')).filter((l) => l && !/^[-=_*~\s\u2500-\u257f\u2022\u00b7]+$/.test(l));
-  if (!lines.length || !/^SAFE TO EXIT\b/.test(lines[lines.length - 1])) return { decision: 'allow', reason: 'not claiming SAFE TO EXIT' };
+  const lines = text.split('\n').map((l) => l.trim().replace(/^[*_>#\s•-]+/, '').replace(/[*_\s]+$/, '')).filter((l) => l && !/^[-=_*~\s\u2500-\u257f\u2022\u00b7]+$/.test(l));
+  // BRO-6020: SAFE TO ARCHIVE is the current claim; legacy SAFE TO EXIT stays an alias.
+  if (!lines.length || !/^SAFE TO (?:ARCHIVE|EXIT)\b/.test(lines[lines.length - 1])) return { decision: 'allow', reason: 'not claiming SAFE TO ARCHIVE' };
   if (!events || events.length === 0) return { decision: 'allow', reason: 'no transcript (fails open)' };
   const cov = evaluateCoverage(events);
   // Only a session that did reviewed code work is held to the rest of the chain.

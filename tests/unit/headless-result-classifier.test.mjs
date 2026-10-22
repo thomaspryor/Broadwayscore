@@ -57,6 +57,15 @@ test('classifyHeadlessResult: legacy NOT SAFE TO EXIT is also stopped-short', ()
   assert.equal(classifyHeadlessResult(text).outcome, 'stopped-short');
 });
 
+test('classifyHeadlessResult: BRO-6020 cloud verdicts', () => {
+  assert.deepEqual(classifyHeadlessResult('Landed and live.\n\nSAFE TO ARCHIVE — done.'), { outcome: 'clean' });
+  assert.equal(classifyHeadlessResult('KEEP OPEN — waiting on the land run').outcome, 'stopped-short');
+  assert.deepEqual(classifyHeadlessResult('ACTION NEEDED FROM YOU — pick a pricing tier'), { outcome: 'blocked', reason: 'pick a pricing tier' });
+  // Prose that merely starts with the words is not a verdict.
+  assert.equal(classifyHeadlessResult('Keep open the old page for now.').outcome, 'stopped-short');
+  assert.match(classifyHeadlessResult('Keep open the old page for now.').reason, /no THIS SESSION/);
+});
+
 test('classifyHeadlessResult: no THIS SESSION line at all is stopped-short', () => {
   const text = 'Branch pushed; CI run dispatched.';
   assert.deepEqual(classifyHeadlessResult(text), {

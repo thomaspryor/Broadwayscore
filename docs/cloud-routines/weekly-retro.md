@@ -84,4 +84,4 @@ back to Notion.
 ## 9. Reply
 
 The issue URL and three plain-English lines: issues closed this week, the one
-pattern worth attention, anything stale. End with `SAFE TO EXIT`.
+pattern worth attention, anything stale. End with `SAFE TO ARCHIVE`.

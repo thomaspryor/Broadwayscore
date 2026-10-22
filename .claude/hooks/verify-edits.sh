@@ -351,11 +351,39 @@ _REVIEW_ASK_RE = re.compile(
     r"|\bneeds? (a|an|your|human|owner'?s?)\s+" + _REVIEW_N + r"\b",
     re.IGNORECASE,
 )
+# ─── Closing verdict (BRO-6020, owner 2026-10-22) ───────────────────────────
+# The last line of a work turn is SAFE TO ARCHIVE — <why> (all discussed work
+# finished and verified, waits on nothing), KEEP OPEN — <what, what wakes it>
+# (nothing needed from the owner, but archiving loses a follow-up) or ACTION
+# NEEDED FROM YOU — <what>. SAFE TO EXIT could not say "walk away, don't
+# archive". Legacy SAFE TO EXIT / NOT SAFE TO EXIT stay aliases so no gate goes
+# quiet; LEGACYSTATUS asks once. Bold/bullets tolerated (as review-coverage.mjs).
+_VERDICT_PREFIX = r'^[\s*_•-]{0,4}'  # no '>': _closing() drops quoted lines
+_SAFE_RE = re.compile(_VERDICT_PREFIX + r'(?:SAFE TO ARCHIVE|SAFE TO EXIT)\b')
+_KEEP_RE = re.compile(_VERDICT_PREFIX + r'(?:KEEP OPEN|NOT SAFE TO EXIT)\b')
+_ACTION_RE = re.compile(_VERDICT_PREFIX + r'ACTION NEEDED FROM YOU\b')
+_STATUS_RE = re.compile(_VERDICT_PREFIX + r'(?:SAFE TO ARCHIVE|SAFE TO EXIT|KEEP OPEN|NOT SAFE TO EXIT|ACTION NEEDED FROM YOU)\b')
+_LEGACY_STATUS_RE = re.compile(_VERDICT_PREFIX + r'(?:NOT )?SAFE TO EXIT\b')
+_VERDICT_TOKEN_RE = re.compile(r'\b(?:(?:NOT )?SAFE TO (?:EXIT|ARCHIVE)|KEEP OPEN|ACTION NEEDED FROM YOU)\b')
+
+def _owner_must_act(text, strict=False):
+    """The closing asks the owner for something: a DECISION NEEDED block, or a
+    "You need to:" line that is not "nothing" (shared by WAKELESS and
+    VERDICTMISMATCH so the two never drift). strict=True needs the template's
+    colon, so prose like "you need to merge ..." is left to OWNERMERGE."""
+    text = '\n'.join(ln for ln in re.sub(r'`[^`\n]*`', '', text or '').splitlines() if not ln.lstrip().startswith('>'))
+    if _DECISION_LINE_RE.search(text):
+        return True
+    for m in re.finditer(r'^\W*You need to' + (':' if strict else ':?') + r'\s*(.*)$', text, re.MULTILINE | re.IGNORECASE):
+        if not re.match(r'^\W*(?:nothing|n/?a|none|no(?: action)?\b|$)', m.group(1).strip(), re.IGNORECASE):
+            return True
+    return False
+
 _NEGATION_RE = re.compile(r"\b(no|not|never|without)\b|n't\b", re.IGNORECASE)
 
 def _owner_ask(text):
     # The status line's own "NOT" is not a negation of what follows it.
-    text = re.sub(r'\b(NOT )?SAFE TO EXIT\b', ' ', text or '')
+    text = _VERDICT_TOKEN_RE.sub(' ', text or '')
     for rx in (_MERGE_ASK_RE, _REVIEW_ASK_RE):
         for m in rx.finditer(text):
             clause = re.split(r'[.;:!?\n—–]', text[max(0, m.start() - 30):m.start()])[-1]
@@ -626,8 +654,8 @@ if os.environ.get('SESSION_STATUS_GATE_DISABLE', '0') != '1':
             while _content_lines and _divider_re.match(_content_lines[-1]):
                 _content_lines.pop()
             _last_line = _content_lines[-1] if _content_lines else ''
-            _has_status_line = bool(re.match(r'^(NOT )?SAFE TO EXIT\b', _last_line))
-            _claims_safe = bool(re.match(r'^SAFE TO EXIT\b', _last_line))
+            _has_status_line = bool(_STATUS_RE.match(_last_line))
+            _claims_safe = bool(_SAFE_RE.match(_last_line))
             # Line-anchored + colon-suffixed to match the canonical template
             # token exactly (wrap-up.md's "DECISION NEEDED:" block header) —
             # a bare substring match wrongly tripped on prose like "there's no
@@ -635,8 +663,18 @@ if os.environ.get('SESSION_STATUS_GATE_DISABLE', '0') != '1':
             _has_decision_needed = bool(re.search(r'^DECISION NEEDED:', _stripped, re.MULTILINE))
             if not _has_status_line:
                 _ve_block("NOSTATUSLINE")
+            # BRO-6020: asked once per chain; then the legacy line is its alias.
+            if _LEGACY_STATUS_RE.match(_last_line):
+                _ve_block("LEGACYSTATUS")
             if _has_decision_needed and _claims_safe:
                 _ve_block("FALSESAFE")
+            # The verdict must match who acts next: an owner ask needs ACTION
+            # NEEDED FROM YOU, and ACTION NEEDED needs an actual ask.
+            if _has_status_line and not _LEGACY_STATUS_RE.match(_last_line):
+                _vm_action = bool(_ACTION_RE.match(_last_line))
+                if (_owner_must_act(_stripped, strict=True) and not _vm_action) or (
+                        _vm_action and not _owner_must_act(_stripped)):
+                    _ve_block("VERDICTMISMATCH")
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
@@ -835,7 +873,7 @@ def _live_work():
 # no edit yet still dies if closed. Kill switch: INFLIGHT_GATE_DISABLE=1.
 if os.environ.get('INFLIGHT_GATE_DISABLE', '0') != '1':
     try:
-        if re.match(r'^SAFE TO EXIT\b', _closing()[1]) and 'NO-VERIFY:' not in (_last_msg or ''):
+        if _SAFE_RE.match(_closing()[1]) and 'NO-VERIFY:' not in (_last_msg or ''):
             _lw = _live_work()
             _live = _lw['triggers'] + _lw['agents']
             if _live and not _ve_seen('INFLIGHT'):
@@ -866,7 +904,7 @@ _OPENWORK_HANDOFF_RE = re.compile(
 if os.environ.get('OPENWORK_GATE_DISABLE', '0') != '1':
     try:
         _ow_stripped, _ow_last = _closing()
-        if (re.match(r'^SAFE TO EXIT\b', _ow_last)
+        if (_SAFE_RE.match(_ow_last)
                 and 'NO-VERIFY:' not in (_last_msg or '') and not _ve_seen('OPENWORK')
                 and not re.search(r'^\s*BACKLOG-OK:\s*\S', _ow_stripped, re.MULTILINE)):
             _hm = _OPENWORK_HANDOFF_RE.search(_ow_stripped)
@@ -957,7 +995,7 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
         # A land/** push is follow-through, but not proof it landed (land.yml
         # can refuse): SAFE TO EXIT additionally needs a later run check.
         if (_msg_ok and _landed_pushed and not _land_followed and not _merged_pr
-                and re.search(r'^SAFE TO EXIT\b', _stripped_owner.strip().splitlines()[-1] if _stripped_owner.strip() else '')):
+                and _SAFE_RE.match(_closing()[1])):
             _ve_block("LANDUNCHECKED")
         if _landed_pushed:
             _merged_pr = True
@@ -1066,13 +1104,7 @@ if os.environ.get('WRAPUP_GATE_DISABLE', '0') != '1':
                        and not _session_has_card())
         if (_last_work_idx is not None and _last_msg and 'NO-VERIFY:' not in _last_msg
                 and not _wu_no_card):
-            _wu_stripped = re.sub(r'```.*?```', '', _last_msg, flags=re.DOTALL)
-            _wu_lines = [ln.strip() for ln in _wu_stripped.strip().splitlines() if ln.strip()]
-            _wu_divider_re = re.compile(r'^[\-=_*~─━│┃┌┐└┘•·\s]+$')
-            while _wu_lines and _wu_divider_re.match(_wu_lines[-1]):
-                _wu_lines.pop()
-            _wu_last_line = _wu_lines[-1] if _wu_lines else ''
-            _wu_claims_safe = bool(re.match(r'^SAFE TO EXIT\b', _wu_last_line))
+            _wu_claims_safe = bool(_SAFE_RE.match(_closing()[1]))
             if _wu_claims_safe:
                 _wrapup_closed_out = False
                 for _i2 in range(_last_work_idx + 1, len(events)):
@@ -1211,21 +1243,25 @@ _LOOSE_HARD_RE = re.compile(
 # your answer"), so they are skipped when one precedes them.
 _LOOSE_NEGATABLE_RE = re.compile(
     r"\b(?:needs? (?:an? |your )?(?:owner|human)(?:'s)? (?:call|decision|approval|answer|input)"
-    r"|or (?:the owner|you) decides?|waiting (?:on|for) (?:your|the owner(?:'s)?|owner) "
-    r"|waiting (?:on|for) [^.\n]{0,40}\bapproval)",
+    r"|or (?:the owner|you) decides?"
+    # BRO-6020: SAFE TO ARCHIVE while still waiting on a run or another
+    # session's result is exactly the case KEEP OPEN exists for.
+    r"|(?<!was )(?<!were )(?<!been )(?<!after )(?<!stopped )(?<!done )\bwaiting (?:on|for)\b"
+    r"|\b(?:once|when|after) (?:it|that|they|the (?:other|child|worker|started) sessions?) (?:finishes|lands|reports back|comes back|is done)\b"
+    r")",
     re.IGNORECASE)
 _LOOSE_DEFER_RE = re.compile(
     r"\b(?:(?:left|leave|leaving|saved?|saving|parked?|held|kept)\b[^.\n]{0,50}\bfor later"
     r"|still (?:open|unresolved|broken|failing)|still (?:has|needs) to\b)",
     re.IGNORECASE)
-_LOOSE_NEG_RE = re.compile(r"\b(?:no|nothing|not|never|none|zero|no longer|without)\b", re.IGNORECASE)
+_LOOSE_NEG_RE = re.compile(r"\b(?:no|nothing|nobody|not|never|none|zero|no longer|without)\b|n't\b", re.IGNORECASE)
 
 def _loose_end(body, backlog_ok):
     m = _LOOSE_HARD_RE.search(body)
     if m:
         return m
     for m in _LOOSE_NEGATABLE_RE.finditer(body):
-        sent = re.split(r'[.!?\n]', body[:m.start()])[-1]
+        sent = re.split(r'[.!?;\n]', body[:m.start()])[-1]
         if not _LOOSE_NEG_RE.search(sent):
             return m
     return None if backlog_ok else _LOOSE_DEFER_RE.search(body)
@@ -1233,10 +1269,10 @@ def _loose_end(body, backlog_ok):
 if os.environ.get('LOOSEENDS_GATE_DISABLE', '0') != '1':
     try:
         _le_text, _le_last = _closing()
-        if (re.match(r'^SAFE TO EXIT\b', _le_last) and 'NO-VERIFY:' not in (_last_msg or '')
+        if (_SAFE_RE.match(_le_last) and 'NO-VERIFY:' not in (_last_msg or '')
                 and not _ve_seen('LOOSEENDS')):
             _le_body = '\n'.join(ln for ln in _le_text.splitlines()
-                                 if not re.match(r'^\s*(?:NOT )?SAFE TO EXIT\b', ln))
+                                 if not _STATUS_RE.match(ln.strip()))
             _le_m = _loose_end(_le_body, bool(re.search(r'^\s*BACKLOG-OK:\s*\S', _le_text, re.MULTILINE)))
             if _le_m:
                 _s = max(0, _le_m.start() - 40)
@@ -1260,13 +1296,9 @@ if os.environ.get('LOOSEENDS_GATE_DISABLE', '0') != '1':
 if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1':
     try:
         _wk_text, _wk_last = _closing()
-        if (re.match(r'^NOT SAFE TO EXIT\b', _wk_last) and 'NO-VERIFY:' not in (_last_msg or '')
-                and not _ve_seen('WAKELESS')
-                and not _DECISION_LINE_RE.search(_wk_text)):
-            _wk_owner = False
-            for _m in re.finditer(r'^\W*You need to:?\s*(.*)$', _wk_text, re.MULTILINE | re.IGNORECASE):
-                if not re.match(r'^\W*(?:nothing|n/?a|none)\b', _m.group(1).strip(), re.IGNORECASE):
-                    _wk_owner = True
+        if (_KEEP_RE.match(_wk_last) and 'NO-VERIFY:' not in (_last_msg or '')
+                and not _ve_seen('WAKELESS')):
+            _wk_owner = _owner_must_act(_wk_text) or bool(re.search(r'\bfires into this session\b', _wk_last, re.I))  # routine host (BRO-6020)
             _lw = _live_work()
             if not _wk_owner and not (_lw['triggers'] or _lw['agents'] or _lw['children']
                                       or _lw['waits'] or _lw['pr_watch']):
@@ -1290,7 +1322,7 @@ _CC_TOKEN_RE = re.compile(r'^\W*(?:NO-[A-Z-]+|BACKLOG-OK|PR-BLOCKER|DISPATCHED)\
 if os.environ.get('CLEARCLOSE_GATE_DISABLE', '0') != '1':
     try:
         _cc_text, _cc_last = _closing()
-        if (re.match(r'^(?:NOT )?SAFE TO EXIT\b', _cc_last) and 'NO-VERIFY:' not in (_last_msg or '')
+        if (_STATUS_RE.match(_cc_last) and 'NO-VERIFY:' not in (_last_msg or '')
                 and not _ve_seen('CLEARCLOSE')
                 and (total_qualifying_edits > 0 or any(_k == 'tool' and _is_work_tool(_p[0], _p[1], _p[2])
                                                        for _k, _p in events))):
@@ -1299,8 +1331,8 @@ if os.environ.get('CLEARCLOSE_GATE_DISABLE', '0') != '1':
                 _cc_miss.append('a "Still running: ..." (or "Nothing is still running.") line')
             if not re.search(r'(?im)^\W*you need to:|nothing (?:is )?needed from you', _cc_text):
                 _cc_miss.append('a "You need to: ..." (or "Nothing needed from you.") line')
-            if _cc_last.startswith('NOT') and len(re.findall(r'\w+', _cc_last)) < 6:
-                _cc_miss.append('a reason on the NOT SAFE TO EXIT line (what is still pending and what wakes you)')
+            if not _SAFE_RE.match(_cc_last) and len(re.findall(r'\w+', _STATUS_RE.sub('', _cc_last, count=1))) < 2:
+                _cc_miss.append('a reason on the KEEP OPEN / ACTION NEEDED FROM YOU line (what is pending and what wakes you, or what the owner must do)')
             # Last four plain lines: fenced blocks dropped, and the gate tokens other
             # hooks require in the closing (NO-SHIP-CHECK:, BACKLOG-OK:, ...) skipped.
             _cc_raw = [ln.strip() for ln in re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL).splitlines()
@@ -1363,12 +1395,7 @@ def _skill_ran(inp, tid):
     return (inp.get('skill') or '').split(':')[-1] or None
 
 def _chain_result():
-    stripped = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
-    lines = [ln.strip() for ln in stripped.strip().splitlines() if ln.strip()]
-    divider = re.compile(r'^[\-=_*~─━│┃┌┐└┘•·\s]+$')
-    while lines and divider.match(lines[-1]):
-        lines.pop()
-    if not lines or not re.match(r'^SAFE TO EXIT\b', lines[-1]):
+    if not _SAFE_RE.match(_closing()[1]):
         return None
     def is_trigger(fp):
         return (fp.endswith(CHAIN_TRIGGER_EXTS) and '/node_modules/' not in fp
@@ -2204,17 +2231,27 @@ if [[ "$result" == NOCHAIN:* ]]; then
       bypass="${bypass:+$bypass / }NO-$(echo "$s" | tr 'a-z' 'A-Z'): <reason>" ;;
     esac
   done
-  echo "🛑 BLOCKED: SAFE TO EXIT after code edits (latest: \`${fname}\`), but the finish chain is incomplete. Still to run, as real skill calls (an Agent \"review\", a codex call or doing the steps by hand does not count): ${todo}. Fix what they find, then close. If a Skill call fails with Unknown skill (the project's commands did not load), Read .claude/commands/<name>.md and follow it fully by hand: that counts, and \"not loaded\" is not a bypass reason. Step truly n/a: ${bypass}." >&2
+  echo "🛑 BLOCKED: SAFE TO ARCHIVE after code edits (latest: \`${fname}\`), but the finish chain is incomplete. Still to run, as real skill calls (an Agent \"review\", a codex call or doing the steps by hand does not count): ${todo}. Fix what they find, then close. If a Skill call fails with Unknown skill (the project's commands did not load), Read .claude/commands/<name>.md and follow it fully by hand: that counts, and \"not loaded\" is not a bypass reason. Step truly n/a: ${bypass}." >&2
   exit 2
 fi
 
 if [[ "$result" == "NOSTATUSLINE" ]]; then
-  echo "🛑 BLOCKED: session did real work (edit/commit/push/PR) but the final message has no closing SAFE TO EXIT / NOT SAFE TO EXIT line. Close with the SESSION STATUS block per .claude/commands/wrap-up.md. Bypass: NO-VERIFY: <reason>." >&2
+  echo "🛑 BLOCKED: session did real work (edit/commit/push/PR) but the final message has no closing verdict line. End with exactly one of: SAFE TO ARCHIVE — <why> (everything finished and verified, nothing this session waits on); KEEP OPEN — <what it waits on and what wakes it> (nothing needed from the owner, but don't archive); ACTION NEEDED FROM YOU — <what the owner must do>. See .claude/commands/wrap-up.md. Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "LEGACYSTATUS" ]]; then
+  echo "🛑 BLOCKED: SAFE TO EXIT / NOT SAFE TO EXIT were replaced (BRO-6020, owner 2026-10-22): the old line could not say 'you can walk away, but don't archive this session'. End with exactly one of: SAFE TO ARCHIVE — <why> (all discussed work finished and verified; this session waits on nothing, including another session's result it must act on); KEEP OPEN — <what it waits on and what wakes it> (nothing needed from the owner, a background wait is running); ACTION NEEDED FROM YOU — <what the owner must do or decide>. Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "VERDICTMISMATCH" ]]; then
+  echo "🛑 BLOCKED: the closing verdict doesn't match the message (BRO-6020). A DECISION NEEDED block or a 'You need to: <something>' line means the owner must act, so end ACTION NEEDED FROM YOU — <what>. ACTION NEEDED FROM YOU with 'Nothing needed from you.' (and no DECISION NEEDED) is contradictory: end KEEP OPEN — <what you wait on, what wakes you> or SAFE TO ARCHIVE — <why>. Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 
 if [[ "$result" == "FALSESAFE" ]]; then
-  echo "🛑 BLOCKED: message has a DECISION NEEDED block but claims SAFE TO EXIT — a pending decision is always NOT SAFE TO EXIT. If it's a technical/implementation call, decide it yourself instead (cloud-memory/feedback_decide_technical_calls_myself.md) rather than asking. Bypass: NO-VERIFY: <reason>." >&2
+  echo "🛑 BLOCKED: message has a DECISION NEEDED block but claims SAFE TO ARCHIVE. A pending decision always ends ACTION NEEDED FROM YOU — <what they must decide>. If it's a technical/implementation call, decide it yourself instead (cloud-memory/feedback_decide_technical_calls_myself.md) rather than asking. Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 
@@ -2223,11 +2260,11 @@ if [[ "$result" == "OWNERMERGE" ]]; then
   exit 2
 fi
 if [[ "$result" == "LANDUNCHECKED" ]]; then
-  echo "🛑 BLOCKED: you pushed to land/** but claim SAFE TO EXIT without checking the Land run. land.yml can refuse a branch. Check the run (mcp__github__actions_list / actions_get on land.yml) and report LANDED or the refusal. To also wait for production, run node scripts/lib/wait-for-land.js land/<name> 60 --prod as a background Bash (timeout 7200000) instead of ending the turn. Bypass: NO-VERIFY: <reason>." >&2
+  echo "🛑 BLOCKED: you pushed to land/** but claim SAFE TO ARCHIVE without checking the Land run. land.yml can refuse a branch. Check the run (mcp__github__actions_list / actions_get on land.yml) and report LANDED or the refusal. To also wait for production, run node scripts/lib/wait-for-land.js land/<name> 60 --prod as a background Bash (timeout 7200000) instead of ending the turn. Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 if [[ "$result" == "PRUNMERGED" ]]; then
-  echo "🛑 BLOCKED: a PR was opened via the GitHub MCP connector this session but never landed, with no stated blocker. This project's owner does not review or merge PRs — once CI is green, land it yourself: git push origin HEAD:refs/heads/land/<name> (land.yml rebases, re-runs the gates, fast-forwards main), follow the Land run, then close the PR. Or state the blocker: CI still running, CI red, a merge conflict, a DECISION NEEDED:, or a line PR-BLOCKER: <specific reason>. NOT SAFE TO EXIT alone, or waiting on review, is not a blocker (cloud-memory/feedback_no_review_offers_user_not_technical.md). Bypass: NO-VERIFY: <reason>." >&2
+  echo "🛑 BLOCKED: a PR was opened via the GitHub MCP connector this session but never landed, with no stated blocker. This project's owner does not review or merge PRs — once CI is green, land it yourself: git push origin HEAD:refs/heads/land/<name> (land.yml rebases, re-runs the gates, fast-forwards main), follow the Land run, then close the PR. Or state the blocker: CI still running, CI red, a merge conflict, a DECISION NEEDED:, or a line PR-BLOCKER: <specific reason>. KEEP OPEN alone, or waiting on review, is not a blocker (cloud-memory/feedback_no_review_offers_user_not_technical.md). Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 
@@ -2237,32 +2274,32 @@ if [[ "$result" == "NOCARD" ]]; then
 fi
 
 if [[ "$result" == "INFLIGHT" ]]; then
-  echo "🛑 BLOCKED: claiming SAFE TO EXIT while this session still has work in flight (listed above). SAFE TO EXIT tells the owner this session can be closed or killed right now; a background agent or a Routine scheduled to wake this session dies with it. Collect the agent's hand-back (or TaskStop it) and delete_trigger any check-in you no longer need, or end with: NOT SAFE TO EXIT — <what is still running and what happens when it finishes>. Bypass: NO-VERIFY: <reason>." >&2
+  echo "🛑 BLOCKED: claiming SAFE TO ARCHIVE while this session still has work in flight (listed above). SAFE TO ARCHIVE tells the owner this session can be closed or killed right now; a background agent or a Routine scheduled to wake this session dies with it. Collect the agent's hand-back (or TaskStop it) and delete_trigger any check-in you no longer need, or end with: KEEP OPEN — <what is still running and what happens when it finishes>. SAFE TO ARCHIVE tells the owner they can archive this session; KEEP OPEN tells them they can walk away but must not archive. Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 
 if [[ "$result" == "OPENWORK" ]]; then
-  echo "🛑 BLOCKED: SAFE TO EXIT, but the closing message hands work to the board worker (quoted above), whose queue is weeks deep (BRO-5040). Do it now, or start it in its own session with create_session (.claude/CLOUD.md 'Starting a worker session'): once that session is running and owns the work, SAFE TO EXIT is fine. A card that can honestly wait weeks: add BACKLOG-OK: <why it can wait>. Bypass: NO-VERIFY: <reason>." >&2
+  echo "🛑 BLOCKED: SAFE TO ARCHIVE, but the closing message hands work to the board worker (quoted above), whose queue is weeks deep (BRO-5040). Do it now, or start it in its own session with create_session (.claude/CLOUD.md 'Starting a worker session'): once that session is running and owns the work, SAFE TO ARCHIVE is fine. A card that can honestly wait weeks: add BACKLOG-OK: <why it can wait>. Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 
 if [[ "$result" == "LOOSEENDS" ]]; then
-  echo "🛑 BLOCKED: SAFE TO EXIT, but this message still has a loose end (quoted above): an offer or question to the owner, a call only the owner can make, or work that is not finished, verified or carded (BRO-5881, owner 2026-10-22). Pick one: finish it now; decide it yourself if it is technical; file a card for it (and add BACKLOG-OK: <why it can wait> if it can wait); start a session for it; or, if it truly needs the owner, write the DECISION NEEDED block and end NOT SAFE TO EXIT. Promising to check something later needs a running background wait and NOT SAFE TO EXIT. Then rewrite the message without the loose end. Bypass: NO-VERIFY: <reason>." >&2
+  echo "🛑 BLOCKED: SAFE TO ARCHIVE, but this message still has a loose end (quoted above): an offer or question to the owner, a call only the owner can make, or work that is not finished, verified or carded (BRO-5881, owner 2026-10-22). Pick one: finish it now; decide it yourself if it is technical; file a card for it (and add BACKLOG-OK: <why it can wait> if it can wait); start a session for it; or, if it truly needs the owner, write the DECISION NEEDED block and end ACTION NEEDED FROM YOU. Waiting on a run, a landing or another session's result, or promising to check something later, needs a running background wait and KEEP OPEN — <what, and what wakes you>. Then rewrite the message without the loose end. Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 
 if [[ "$result" == "CLEARCLOSE" ]]; then
-  echo "🛑 BLOCKED: the closing message is not clear enough for the owner, who reads only its end (BRO-5910, owner 2026-10-22). Rewrite the end of the message as: one or two plain sentences on what changed for them; Still running: <what, and what wakes you> (or Nothing is still running.); You need to: <the one thing> (or Nothing needed from you.); then SAFE TO EXIT, or NOT SAFE TO EXIT — <what is pending and how you will follow it>. Keep card ids, commit hashes, file paths and code out of those last lines (they belong in the Linear comment). Bypass: NO-VERIFY: <reason>." >&2
+  echo "🛑 BLOCKED: the closing message is not clear enough for the owner, who reads only its end (BRO-5910, owner 2026-10-22). Rewrite the end of the message as: one or two plain sentences on what changed for them; Still running: <what, and what wakes you> (or Nothing is still running.); You need to: <the one thing> (or Nothing needed from you.); then one verdict: SAFE TO ARCHIVE — <why>, KEEP OPEN — <what is pending and what wakes you>, or ACTION NEEDED FROM YOU — <what they must do>. Keep card ids, commit hashes, file paths and code out of those last lines (they belong in the Linear comment). Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 
 if [[ "$result" == "WAKELESS" ]]; then
-  echo "🛑 BLOCKED: NOT SAFE TO EXIT says this session is waiting on something, but nothing will wake it to check (BRO-5881: sessions sat 10-19 hours on 'I will check it at 14:56'). Before ending the turn, start the wait: a Bash with run_in_background: true and timeout up to 7200000 that polls until the thing finishes (land: node scripts/lib/wait-for-land.js land/<name> 60 --prod; a workflow run: loop on that run's own id (actions/runs/<id>), never on the newest run of the workflow, which another session may have started; a deploy: node scripts/check-prod-deploy.js <sha> --wait), or Monitor. Its exit wakes you; if it times out, start another. send_later is denied here (it prompts the owner's phone). If you are waiting on the owner, say so: DECISION NEEDED block, or a 'You need to:' line naming what they must do. If nothing is actually pending, finish the work or end SAFE TO EXIT. Bypass: NO-VERIFY: <reason>." >&2
+  echo "🛑 BLOCKED: KEEP OPEN says this session is waiting on something, but nothing will wake it to check (BRO-5881: sessions sat 10-19 hours on 'I will check it at 14:56'). Before ending the turn, start the wait: a Bash with run_in_background: true and timeout up to 7200000 that polls until the thing finishes (land: node scripts/lib/wait-for-land.js land/<name> 60 --prod; a workflow run: loop on that run's own id (actions/runs/<id>), never on the newest run of the workflow, which another session may have started; a deploy: node scripts/check-prod-deploy.js <sha> --wait), or Monitor. Its exit wakes you; if it times out, start another. send_later is denied here (it prompts the owner's phone). If you are waiting on the owner, end ACTION NEEDED FROM YOU with a DECISION NEEDED block or a 'You need to:' line naming what they must do. If nothing is actually pending, finish the work or end SAFE TO ARCHIVE. Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 
 if [[ "$result" == "NOWRAPUP" ]]; then
-  echo "🛑 BLOCKED: claiming SAFE TO EXIT after real work, but this session's Linear card was never closed out after that work. Run: node scripts/linear-brain.js update BRO-N --state Done (needs a PR-EVIDENCE line citing the landed commit URL, https://github.com/thomaspryor/Broadwayscore/commit/<sha on main>, which verifies through GitHub even in a shallow cloud clone, or an Acceptance-criteria check; a refused update doesn't count). Landed but not live yet? Don't stop and idle: re-run node scripts/check-prod-deploy.js <sha> from a background Bash every few minutes (wait-for-land.js land/<name> 60 --prod does this too, within 6h of the landing) and close out once it is live. To pause, or when Done is refused: node scripts/linear-session.js report --issue=BRO-N --status=paused --summary=\"...\" (sets the Paused state if the team has one, else Backlog). Invoking /wrap-up is required but not enough on its own, and a notion-brain.js update does not count (Notion is retired). Bypass: NO-VERIFY: <reason> (or NO-CARD: <reason> if this session has no card by design)." >&2
+  echo "🛑 BLOCKED: claiming SAFE TO ARCHIVE after real work, but this session's Linear card was never closed out after that work. Run: node scripts/linear-brain.js update BRO-N --state Done (needs a PR-EVIDENCE line citing the landed commit URL, https://github.com/thomaspryor/Broadwayscore/commit/<sha on main>, which verifies through GitHub even in a shallow cloud clone, or an Acceptance-criteria check; a refused update doesn't count). Landed but not live yet? Don't stop and idle: re-run node scripts/check-prod-deploy.js <sha> from a background Bash every few minutes (wait-for-land.js land/<name> 60 --prod does this too, within 6h of the landing) and close out once it is live. To pause, or when Done is refused: node scripts/linear-session.js report --issue=BRO-N --status=paused --summary=\"...\" (sets the Paused state if the team has one, else Backlog). Invoking /wrap-up is required but not enough on its own, and a notion-brain.js update does not count (Notion is retired). Bypass: NO-VERIFY: <reason> (or NO-CARD: <reason> if this session has no card by design)." >&2
   exit 2
 fi
 
