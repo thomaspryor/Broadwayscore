@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T08:19:57.799Z",
+  "timestamp": "2026-10-22T08:34:50.801Z",
   "stats": {
-    "totalReviews": 58738,
+    "totalReviews": 58752,
     "alreadyFlagged": 21235,
     "dateGuardCatches": 197,
-    "directorMismatch": 2054,
+    "directorMismatch": 2055,
     "tvFilmSignals": 1659,
-    "londonSignals": 2705,
+    "londonSignals": 2708,
     "offBroadwaySignals": 531,
     "yearMismatch": 166,
-    "noPublishDate": 5192
+    "noPublishDate": 5193
   },
   "findings": [
     {
@@ -34756,6 +34756,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"episode 7\""
+        }
+      ]
+    },
+    {
+      "showId": "school-pictures-off-broadway-2026",
+      "file": "front-row-center--kendra-jones.json",
+      "publishDate": "2026-10-21",
+      "url": "https://thefrontrowcenter.com/2026/10/school-pictures-2/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"morgan green\" from school-pictures-off-broadway-2023"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
@@ -74956,20 +74974,6 @@
       ]
     },
     {
-      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
-      "file": "vulture--jackson-mchenry.json",
-      "score": 51,
-      "publishDate": "2026-10-15",
-      "url": "https://www.vulture.com/article/reviews-memoirs-of-amorous-gentlemen-and-a-ghost-in-your-ear.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"minetta lane\""
-        }
-      ]
-    },
-    {
       "showId": "merrily-we-roll-along-2023",
       "file": "cititour--brian-scott-lipton.json",
       "score": 93,
@@ -81638,6 +81642,19 @@
     },
     {
       "showId": "some-woman-west-end-2026",
+      "file": "a-youngish-perspective--unknown.json",
+      "publishDate": "2026-10-21",
+      "url": "https://ayoungishperspective.co.uk/2026/10/21/review-some-woman/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
       "file": "artsdesk--aleks-sierz.json",
       "score": 55,
       "publishDate": "2026-10-16",
@@ -81697,6 +81714,19 @@
       "score": 39,
       "publishDate": "2026-10-16",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/some-woman-national-theatre-review-b3068031.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "file": "lbc--johnny-jenkins.json",
+      "publishDate": "2026-10-20",
+      "url": "https://www.lbc.co.uk/article/some-woman-review-dorfman-theatre-london-5Hjdk9Y_2/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -81868,6 +81898,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "file": "theatreandtonic--ziwen.json",
+      "publishDate": "2026-10-21",
+      "url": "https://theatreandtonic.co.uk/blog/some-woman-at-the-national-theatre-dorfman-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
