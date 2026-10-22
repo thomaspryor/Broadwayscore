@@ -30,6 +30,7 @@ const { humanScoreOutsideStarBand } = require('./lib/human-score-star-guard');
 const { shouldUseAnchoredMode, adjudicationStandsAgainstRating } = require('./lib/star-reliability');
 const { publishedScoreViolation } = require('./lib/published-score-star-band');
 const { canonicalizeUrlForDedup } = require('./lib/review-guards');
+const { canJudgePublished } = require('./lib/published-join-eligibility');
 
 const ROOT = path.join(__dirname, '..');
 const tolArg = process.argv.find(a => a.startsWith('--tol='));
@@ -47,7 +48,7 @@ try {
   const doc = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'reviews.json'), 'utf8'));
   for (const r of doc.reviews || []) {
     if (!r || !r.showId || !r.url || typeof r.assignedScore !== 'number') continue;
-    published.set(`${r.showId}|${canonicalizeUrlForDedup(r.url)}`, { score: r.assignedScore, source: r.scoreSource || 'unknown' });
+    published.set(`${r.showId}|${canonicalizeUrlForDedup(r.url)}`, { score: r.assignedScore, source: r.scoreSource || 'unknown', criticName: r.criticName });
   }
 } catch { /* no reviews.json: the published check reports 0 joined rows, which the summary line makes visible */ }
 
@@ -61,7 +62,9 @@ for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json')
   try { d = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { continue; }
   const rel = `${showId}/${path.basename(f)}`;
   // Published-score check first: it applies in every market, unlike the anchored-market inventory below.
-  const pub = d.url ? published.get(`${showId}|${canonicalizeUrlForDedup(d.url)}`) : null;
+  // Duplicates and different-byline twins of a URL are not the published record (BRO-5927, published-join-eligibility.js).
+  const joined = d.url ? published.get(`${showId}|${canonicalizeUrlForDedup(d.url)}`) : null;
+  const pub = canJudgePublished(d, joined) ? joined : null;
   if (pub) {
     out.publishedJoined++;
     const v = publishedScoreViolation(d, pub.score, { tol: TOL });
