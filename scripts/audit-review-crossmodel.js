@@ -164,15 +164,15 @@ function fetchPage(url) {
 
 // ---------- normalisation ----------
 const fold = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').trim();
-const host = (u) => { try { return new URL(u).hostname.replace(/^www\./, '').split('.').slice(-2).join('.'); } catch (_) { return ''; } };
+const host = (u) => { try { const h = new URL(u).hostname.replace(/^www\./, ''); const p = h.split('.'); const sl = /^(co|com|org|net|ac|gov)$/.test(p[p.length - 2] || '') && p[p.length - 1].length === 2; return p.slice(sl ? -3 : -2).join('.'); } catch (_) { return ''; } };
 const OUTLET_STOP = new Set(['the', 'new', 'york', 'london', 'uk', 'com', 'online', 'theatre', 'theater', 'review', 'reviews']);
 const outletKey = (s) => fold(s).split(' ').filter((w) => !OUTLET_STOP.has(w)).join('');
-function sameOutlet(a, b) { const x = outletKey(a); const y = outletKey(b); return !!x && !!y && (x === y || x.includes(y) || y.includes(x)); }
+function sameOutlet(a, b) { const x = outletKey(a) || fold(a).replace(/ /g, ''); const y = outletKey(b) || fold(b).replace(/ /g, ''); return !!x && !!y && (x === y || (Math.min(x.length, y.length) >= 6 && (x.includes(y) || y.includes(x)))); }
 function nameTokens(s) { return fold(s).split(' ').filter((w) => w.length > 1); }
 function sameCritic(a, b) {
   const x = nameTokens(a); const y = nameTokens(b); if (!x.length || !y.length) return false;
   const lastX = x[x.length - 1]; const lastY = y[y.length - 1];
-  return lastX === lastY || x.every((t) => y.includes(t)) || y.every((t) => x.includes(t));
+  if (lastX === lastY) return x.length < 2 || y.length < 2 || x[0] === y[0] || x[0].startsWith(y[0]) || y[0].startsWith(x[0]); return x.every((t) => y.includes(t)) || y.every((t) => x.includes(t));
 }
 
 function wilson(k, n) {
@@ -191,10 +191,11 @@ function reviewsByShow() {
 }
 const registry = () => { const o = loadJson('data/outlet-registry.json').outlets || {}; return o; };
 
+const rowKey = (r) => (r.key ? `${r.key}|${r.outletId || ''}|${r.ours ?? ''}` : r.id);
 function readRows(file) {
   const m = new Map();
   if (!fs.existsSync(file)) return m;
-  for (const line of fs.readFileSync(file, 'utf8').split('\n')) { if (!line.trim()) continue; try { const r = JSON.parse(line); m.set(r.key || r.id, r); } catch (_) { /* torn */ } }
+  for (const line of fs.readFileSync(file, 'utf8').split('\n')) { if (!line.trim()) continue; try { const r = JSON.parse(line); m.set(rowKey(r), r); } catch (_) { /* torn */ } }
   return m;
 }
 const outFile = (check, c) => path.join(OUT, `${check}-${c}.jsonl`);
@@ -281,12 +282,12 @@ async function cmdPages() {
   const shows = loadShows(); const rv = reviewsByShow(); const byId = new Map(shows.map((s) => [s.id, s]));
   const { picked } = drawShows(shows, c, 1e9, seed, (s) => rv.has(s.id));
   const pool0 = [];
-  for (const { show } of picked) for (const r of rv.get(show.id)) if (/^https?:/.test(r.url || '')) pool0.push({ show, r, key: `${show.id}|${r.url}` });
+  for (const { show } of picked) for (const r of rv.get(show.id)) if (/^https?:/.test(r.url || '')) pool0.push({ show, r, key: `${show.id}|${r.url}`, rk: rowKey({ key: `${show.id}|${r.url}`, outletId: r.outletId, ours: r.assignedScore }) });
   pool0.sort((a, b) => h(seed, a.key).localeCompare(h(seed, b.key)));
   const sample = pool0.slice(0, n);
   const file = outFile('pages', c); fs.mkdirSync(OUT, { recursive: true });
   const done = readRows(file);
-  const todo = sample.filter((p) => !done.has(p.key));
+  const todo = sample.filter((p) => !done.has(p.rk));
   console.log(`${c}: reviews with urls ${pool0.length}, sample ${sample.length}, to check ${todo.length}, cap $${maxUsd}`);
   await pool(todo, Number(arg('concurrency', 4)), async ({ show, r, key }) => {
     try {
@@ -316,12 +317,41 @@ async function cmdPages() {
 function judge(rec) {
   const out = {};
   const ms = [rec.gemini, rec.openai].filter(Boolean);
-  const vote = (fn) => { const v = ms.map(fn).filter((x) => x !== null); if (!v.length) return null; return v.every((x) => x === false) ? 'wrong' : v.some((x) => x === false) ? 'disputed' : 'ok'; };
-  out.date = vote((m) => (m.publishDate ? Math.abs((Date.parse(m.publishDate) - Date.parse(rec.ours.date)) / 864e5) <= 1 : null));
-  out.critic = vote((m) => (m.critic ? sameCritic(m.critic, rec.ours.critic) : null));
-  out.outlet = vote((m) => (m.outlet ? sameOutlet(m.outlet, rec.ours.outlet) : null));
-  out.belongs = vote((m) => (m.reviewsProduction === 'yes' ? true : m.reviewsProduction === 'no' ? false : null));
+  const vote = (fn, have) => { if (!have) return 'missing'; const v = ms.map(fn).filter((x) => x !== null); if (!v.length) return null; if (v.every((x) => x === false)) return v.length > 1 ? 'wrong' : 'single'; return v.some((x) => x === false) ? 'disputed' : 'ok'; };
+  const ym = (d) => String(d || '').slice(0, 7);
+  out.date = vote((m) => (m.publishDate ? (String(rec.ours.date).length <= 7 || String(m.publishDate).length <= 7 ? ym(m.publishDate) === ym(rec.ours.date) : Math.abs((Date.parse(m.publishDate) - Date.parse(rec.ours.date)) / 864e5) <= 1) : null), !!rec.ours.date);
+  out.critic = vote((m) => (m.critic ? sameCritic(m.critic, rec.ours.critic) : null), !!rec.ours.critic);
+  out.outlet = vote((m) => (m.outlet ? sameOutlet(m.outlet, rec.ours.outlet) : null), !!rec.ours.outlet);
+  out.belongs = vote((m) => (m.reviewsProduction === 'yes' ? true : m.reviewsProduction === 'no' ? false : null), true);
   return out;
+}
+let rvCache; function rematch(rows) {
+  rvCache = rvCache || reviewsByShow();
+  for (const r of rows) { const ours = rvCache.get(r.id) || []; for (const x of r.found) { const have = ours.some((o) => (o.url && host(o.url) === host(x.url) && host(x.url)) || sameOutlet(o.outlet, x.outlet)); if (x.inOurs && !have) { x.inOurs = false; x.rematched = true; } } }
+}
+/** Fetch pages for completeness rows the old host matcher wrongly marked as ours (no model spend). */
+async function cmdReverify() {
+  const only = arg('cohort'); const sh = new Map(loadShows().map((x) => [x.id, x]));
+  for (const f of fs.readdirSync(OUT).filter((x) => /^completeness-.*\.jsonl$/.test(x))) {
+    const cohort = f.slice(13, -6); if (only && cohort !== only) continue;
+    const file = path.join(OUT, f); const map = readRows(file); const rows = [...map.values()]; rematch(rows);
+    let n = 0;
+    for (const r of rows) {
+      const show = sh.get(r.id); if (!show) continue;
+      for (const x of r.found.filter((y) => y.rematched && !y.fetch)) {
+        const pg = await fetchPage(x.url); x.fetch = pg.error || 'ok'; n++;
+        if (!pg.error) {
+          const t = fold(pg.text.slice(0, 200000)); const tw = fold(show.title).split(' ').filter((w) => w.length > 2);
+          x.titleOnPage = tw.length > 0 && tw.every((w) => t.includes(w));
+          x.venueOnPage = show.venue ? fold(show.venue).split(' ').filter((w) => w.length > 3).some((w) => t.includes(w)) : null;
+          const y = String(show.openingDate || '').slice(0, 4); x.yearOnPage = y ? t.includes(y) : null;
+        }
+        x.inTextsDir = false; delete x.rematched; x.inOurs = false; x.reverified = true;
+      }
+    }
+    if (n) fs.writeFileSync(file, rows.map((r) => JSON.stringify(r)).join('\n') + '\n');
+    console.log(cohort + ': reverified ' + n);
+  }
 }
 function cmdReport() {
   const only = arg('cohort');
@@ -329,7 +359,7 @@ function cmdReport() {
   const res = {};
   for (const f of files) {
     const [, check, cohort] = /^(\w+?)-(.*)\.jsonl$/.exec(f); if (only && cohort !== only) continue;
-    const rows = [...readRows(path.join(OUT, f)).values()]; const R = (res[cohort] = res[cohort] || {});
+    const rows = [...readRows(path.join(OUT, f)).values()]; if (check === 'completeness') rematch(rows); const R = (res[cohort] = res[cohort] || {});
     if (check === 'completeness') {
       const t12 = (x) => x.tierHint === 1 || x.tierHint === 2;
       let shows = 0; let showsMiss = 0; let found = 0; let miss = 0; let missVerified = 0; let missExcluded = 0; let foundT12 = 0; let missT12 = 0; let unfetchable = 0; const list = [];
@@ -344,13 +374,13 @@ function cmdReport() {
       R.completeness = { shows, showsWithVerifiedMiss: pct(showsMiss, shows), modelFoundReviews: found, notInOurs: miss, verifiedMisses: missVerified, unfetchable, ingestedButExcluded: missExcluded, verifiedMissRate: pct(missVerified, found), t1t2MissRate: pct(missT12, foundT12) };
       R.misses = list;
     } else {
-      const fields = { date: [0, 0, 0], critic: [0, 0, 0], outlet: [0, 0, 0], belongs: [0, 0, 0] }; let fetchOk = 0; let n = 0; const bad = [];
+      const fields = { date: [0, 0, 0, 0, 0], critic: [0, 0, 0, 0, 0], outlet: [0, 0, 0, 0, 0], belongs: [0, 0, 0, 0, 0] }; let fetchOk = 0; let n = 0; const bad = [];
       for (const r of rows) {
         n++; if (r.fetch !== 'ok' && !String(r.fetch).startsWith('urlctx')) continue; fetchOk++;
         const j = judge(r);
-        for (const k of Object.keys(fields)) { if (!j[k]) continue; fields[k][1]++; if (j[k] === 'wrong') { fields[k][0]++; bad.push({ id: r.id, field: k, url: r.url }); } if (j[k] === 'disputed') fields[k][2]++; }
+        for (const k of Object.keys(fields)) { if (!j[k]) continue; if (j[k] === 'missing') { fields[k][3]++; continue; } if (j[k] === 'single') fields[k][4]++; fields[k][1]++; if (j[k] === 'wrong') { fields[k][0]++; bad.push({ id: r.id, field: k, url: r.url }); } if (j[k] === 'disputed') fields[k][2]++; }
       }
-      R.pages = { reviews: n, fetched: fetchOk, ...Object.fromEntries(Object.entries(fields).map(([k, [w, t, d]]) => [k, `${pct(w, t)} wrong by both models; ${d} disputed`])) };
+      R.pages = { reviews: n, fetched: fetchOk, ...Object.fromEntries(Object.entries(fields).map(([k, [w, t, d, ms, sg]]) => [k, `${pct(w, t)} wrong by both models; ${d} disputed; ${sg} wrong by the one model that answered (excluded from rate); ${ms} our field empty (excluded)`])) };
       R.pageErrors = bad;
     }
   }
@@ -360,7 +390,7 @@ function cmdReport() {
 
 
 // ---------- scoring correctness (score only; prose never leaves memory) ----------
-const bucketOf = (x) => (x < 35 ? 'Pan' : x < 55 ? 'Negative' : x < 70 ? 'Mixed' : x < 85 ? 'Positive' : 'Rave');
+const bucketOf = (x) => (x < 31 ? 'Pan' : x < 51 ? 'Negative' : x < 71 ? 'Mixed' : x < 91 ? 'Positive' : 'Rave'); // same bands as scorePrompt
 function textsDirOf() {
   return ['data/review-texts', '/home/user/broadway-review-texts/data/review-texts', '/home/user/broadway-review-texts'].map((p) => path.isAbsolute(p) ? p : path.join(ROOT, p)).find((p) => fs.existsSync(p));
 }
@@ -435,6 +465,7 @@ function cmdInventory() {
   if (cmd === 'completeness') await cmdCompleteness();
   else if (cmd === 'pages') await cmdPages();
   else if (cmd === 'score') await cmdScore();
+  else if (cmd === 'reverify') await cmdReverify();
   else if (cmd === 'score-report') { const only = arg('cohort'); const o = {}; for (const f of fs.readdirSync(OUT).filter((x) => /^score-.*\.jsonl$/.test(x))) { const c = f.slice(6, -6); if (only && c !== only) continue; o[c] = scoreStats([...readRows(path.join(OUT, f)).values()]); } console.log(JSON.stringify(o, null, 1)); }
   else if (cmd === 'report') cmdReport();
   else if (cmd === 'inventory') cmdInventory();
