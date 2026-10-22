@@ -228,6 +228,17 @@ describe('classifyStaleClosure', () => {
     assert.equal(r.action, 'flag-needs-loss-evidence');
   });
 
+  it('never labels a loss while a pending research row says the show recouped, at any age', () => {
+    const entry = { designation: 'TBD', researchAttempts: 1, lastResearchedAt: daysBefore(400), estimatedRecoupmentPct: [10, 30] };
+    const base = { show: { status: 'closed', closingDate: daysBefore(3000) }, entry, archive: null, now: NOW };
+    assert.equal(classifyStaleClosure({ ...base, pending: null }).action, 'classify-fizzle'); // labels without the claim
+    const blocked = classifyStaleClosure({ ...base, pending: { recouped: true, researchedAt: daysBefore(400) } });
+    assert.equal(blocked.action, 'flag-needs-loss-evidence');
+    assert.ok(blocked.reason.includes('pending research row says it recouped'));
+    const owner = classifyStaleClosure({ ...base, entry: { ...entry, ownerDesignationAfterWindow: 'Flop' }, pending: { recouped: true, researchedAt: daysBefore(400) } });
+    assert.equal(owner.action, 'classify-fizzle'); // an owner verdict still wins
+  });
+
   it('handles missing closingDate', () => {
     const r = classifyStaleClosure({
       show: { status: 'closed' }, entry: {}, now: NOW,

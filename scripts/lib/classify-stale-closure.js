@@ -208,6 +208,15 @@ function classifyStaleClosure({ show, entry, pending, archive, now, thresholds }
       reason: `closed ${Math.floor(daysClosed)}d ago (< ${lossLabelMinDays}d), ${reviewEvidence}, no trade-press recoupment found yet`,
     };
   }
+  // An unreviewed pending row saying the show recouped blocks a loss label at
+  // any age: "no recoupment found" is false while our own research says it did
+  // (BRO-5894 backfill: Waitress, The Humans sat pending past the signal window).
+  if (!ownerDesignation && pending && (pending.recouped === true || pending._recoupedClaim === true)) {
+    return {
+      action: 'flag-needs-loss-evidence',
+      reason: `closed ${Math.floor(daysClosed)}d ago; a pending research row says it recouped, so no loss label until it is reviewed`,
+    };
+  }
   const designation = ownerDesignation || lossLabelFor(entry);
   if (!designation) {
     return {
