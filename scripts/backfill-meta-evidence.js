@@ -47,7 +47,7 @@ const cacheKey = (u) => crypto.createHash('sha1').update(String(u)).digest('hex'
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const budget = createRunBudget(parseTimeBudgetMin(args));
 const { explainExclusion, isReviewWithinOwnProductionWindow } = require('./lib/review-guards');
-const { isMetaEvidenceCandidate, extractPageMeta, evaluatePageMeta, applyMetaEvidence, RULES_VERSION, stampIsCurrent } = require('./lib/page-meta-evidence');
+const { isMetaEvidenceCandidate, extractPageMeta, evaluatePageMeta, applyMetaEvidence, RULES_VERSION, stampIsCurrent, missingHtmlStamp } = require('./lib/page-meta-evidence');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
 const showsJson = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
@@ -122,7 +122,9 @@ async function main() {
     if (!html) {
       unreachable++;
       // Stamp so a permanently walled URL doesn't take a slot in every weekly run.
-      if (!dryRun && !fromCache && !fetchThrew) { try { stampChecked(fp, d.url, 'unreachable'); } catch { /* best effort */ } }
+      // A throw ("all scraping methods failed": walled pages, the target population) is stamped too,
+      // else the newest-first sort re-spends the whole paid fetch chain on the same URLs every week.
+      if (!dryRun && !fromCache) { try { stampChecked(fp, d.url, missingHtmlStamp(fetchThrew)); } catch { /* best effort */ } }
       continue;
     }
     const evidence = evaluatePageMeta({
