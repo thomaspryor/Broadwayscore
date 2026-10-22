@@ -51,6 +51,7 @@ const TASKS_DIR = path.join(os.homedir(), '.claude', 'tasks', LIST_ID);
 
 const { loadTasks, notionIdOf } = require('./bsc-next.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
+const { withFileLock } = require('./lib/file-lock.js');
 const dispatchReconcile = require('./lib/dispatch-reconcile.js');
 const { evaluateVerifiability } = require('./lib/verify-gate.js');
 const { classifyHeadlessDispatchability } = require('./lib/headless-dispatchability.js');
@@ -437,6 +438,56 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
   return newEntries;
 }
 
+// BRO-2513: two overlapping drain processes (launchd fire + manual rerun) both
+// read the same unresolved dispatch, both computed the same outcome and both
+// appended it, double-counting spend (computeSpendCircuitBreaker) and the
+// attempt-memory failure streak. The ledger read, reconcile and append now
+// run as ONE critical section under a file lock, and the read happens INSIDE
+// it, so the second process sees the first one's outcome row and resolves
+// nothing. withFileLock is fully synchronous (busy-spin, sync finally
+// unlink): fn must stay synchronous — an await or returned promise here
+// would release the lock before the work runs.
+// A lock we cannot take means a live holder exists: skip and let the next tick
+// reconcile, never append (fail-open here would re-open the double-count).
+// The key (cardId, judgedDispatchTs, event) is a second line of defence.
+const ABANDONED_LOCK_MS = 15 * 60 * 1000;
+function reconcileAndAppend(ledgerPath, tasksById, dispatchLedgerEntries, opts = {}) {
+  const { dryRun = false, lockOpts = {}, beforeAppend, ...reconcileOpts } = opts;
+  const body = () => {
+    const entries = readLedger(ledgerPath);
+    const seen = new Set(entries.filter(e => e.judgedDispatchTs !== undefined)
+      .map(e => `${e.cardId}|${e.judgedDispatchTs}|${e.event}`));
+    const newOutcomes = reconcileOutcomes(entries, tasksById, dispatchLedgerEntries, new Date(), reconcileOpts)
+      .filter(o => !seen.has(`${o.cardId}|${o.judgedDispatchTs}|${o.event}`));
+    if (typeof beforeAppend === 'function') beforeAppend(newOutcomes);
+    if (dryRun) return { newOutcomes, ledgerEntries: entries.concat(newOutcomes) };
+    for (const o of newOutcomes) appendLedger(ledgerPath, o);
+    return { newOutcomes, ledgerEntries: readLedger(ledgerPath) };
+  };
+  if (dryRun) return body();
+  fs.mkdirSync(path.dirname(ledgerPath), { recursive: true });
+  const result = withFileLock(`${ledgerPath}.lock`, held => {
+    if (!held) return null;
+    return body();
+  }, lockOpts);
+  if (result === null) {
+    // A lock still unreleased long past withFileLock's staleMs is an abandoned
+    // .steal-gate or a recycled PID (file-lock.js never self-heals either), not
+    // a live holder: skipping forever would stop outcomes ever reaching the
+    // spend breaker. Past ABANDONED_LOCK_MS run unlocked, loudly.
+    const ageMs = Math.max(...[`${ledgerPath}.lock`, `${ledgerPath}.lock.steal-gate`].map(f => {
+      try { return Date.now() - fs.statSync(f).mtimeMs; } catch { return 0; }
+    }));
+    if (ageMs > ABANDONED_LOCK_MS) {
+      console.error(`[backlog-drain] reconcile lock abandoned (${Math.round(ageMs / 60000)}min old) — reconciling unlocked`);
+      return body();
+    }
+    console.error('[backlog-drain] reconcile lock busy — skipping reconcile this tick (next tick retries)');
+    return { newOutcomes: [], ledgerEntries: readLedger(ledgerPath), skipped: true };
+  }
+  return result;
+}
+
 async function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
   const args = parseArgs(argv);
@@ -451,16 +502,12 @@ async function main(argv = process.argv.slice(2)) {
   }
   const tasksById = new Map(tasks.map(t => [String(t.id), t]));
 
-  let drainLedgerEntries = readLedger(DRAIN_LEDGER_PATH);
   const dispatchLedgerEntries = dispatchLedger.readEntries();
 
-  // 1. Reconcile.
-  const newOutcomes = reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries);
-  for (const o of newOutcomes) {
-    console.log(`[backlog-drain] reconciled #${o.cardId}: ${o.event} (${o.note})`);
-    if (!dryRun) appendLedger(DRAIN_LEDGER_PATH, o);
-  }
-  drainLedgerEntries = dryRun ? drainLedgerEntries.concat(newOutcomes) : readLedger(DRAIN_LEDGER_PATH);
+  // 1. Reconcile (BRO-2513: read-reconcile-append under a cross-process lock).
+  const { newOutcomes, ledgerEntries } = reconcileAndAppend(DRAIN_LEDGER_PATH, tasksById, dispatchLedgerEntries, { dryRun });
+  let drainLedgerEntries = ledgerEntries;
+  for (const o of newOutcomes) console.log(`[backlog-drain] reconciled #${o.cardId}: ${o.event} (${o.note})`);
 
   // 2. Concurrency.
   const drainDispatchedTaskIds = new Set(
@@ -629,7 +676,7 @@ if (require.main === module) {
 
 module.exports = {
   parseArgs, readLedger, appendLedger, readJson, writeJsonAtomic, fetchCard,
-  findMyJob, reconcileOutcomes, main, USAGE, jobBranchLanded, taskCommitLandedInWindow, RESOLVING_EVENTS,
+  findMyJob, reconcileOutcomes, reconcileAndAppend, main, USAGE, jobBranchLanded, taskCommitLandedInWindow, RESOLVING_EVENTS,
   AUDIT_DIR, DRAIN_LEDGER_PATH, METRIC_PATH, VERIFIABILITY_REPORT_PATH, LOG_DIR,
   MAX_CANDIDATE_SCAN, ORPHAN_TIMEOUT_H,
   loadSkipCache, saveSkipCache, skipCacheFresh, HUMAN_GATED_CACHE_PATH, HUMAN_GATED_CACHE_TTL_MS,

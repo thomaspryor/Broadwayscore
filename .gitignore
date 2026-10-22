@@ -540,6 +540,8 @@ tmp/
 # every warn/block the hook emits. Local observability, not shared state.
 /data/audit/infra-review-gate.jsonl
 /data/audit/backlog-drain-ledger.jsonl
+/data/audit/backlog-drain-ledger.jsonl.lock
+/data/audit/backlog-drain-ledger.jsonl.lock.steal-gate
 /data/audit/backlog-drain-metric.json
 /data/audit/backlog-drain-logs/
 /data/audit/job-leases/
