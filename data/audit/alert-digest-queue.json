@@ -1186,5 +1186,36 @@
     "tracked": "BRO-5882",
     "fields": [],
     "queuedAt": "2026-10-22T01:46:14.596Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5706-retire-eno-dup",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5706-retire-eno-dup",
+    "description": "land.yml did not land land/bro-5706-retire-eno-dup: the unit-tests-node gate went red at aab2887803. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39708906191",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5706-retire-eno-dup"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "aab288780372edb3d03161f57c30d0d970d7bcd6"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39708906191"
+      }
+    ],
+    "queuedAt": "2026-10-22T02:15:12.389Z"
   }
 ]
