@@ -20,6 +20,8 @@
 # misc
 .DS_Store
 *.pem
+# BRO-5886: the html-handoff PUBLIC key is meant to be committed (the private key is a secret).
+!scripts/lib/html-handoff-public-key.pem
 
 # debug
 npm-debug.log*

@@ -22,6 +22,7 @@ import {
   seasonBaseline,
   seasonHistoryAverage,
   showGroup,
+  trackedRecord,
   type SeasonShowInput,
 } from '../../src/lib/season-profile';
 
@@ -143,6 +144,30 @@ test('recoupment average leaves out seasons still playing out', () => {
   assert.equal(r.avgSeasons, 1); // but only 2024-25 is averaged
 });
 
+test('a closed show with only a research placeholder is untracked; a TBD show with facts still counts', () => {
+  assert.equal(trackedRecord({ status: 'closed', commercial: com() }), null);
+  assert.deepEqual(trackedRecord({ status: 'open', commercial: com() }), com()); // running: not recouped yet
+  assert.deepEqual(trackedRecord({ status: 'closed', commercial: com({ designation: 'Flop' }) }), com({ designation: 'Flop' }));
+  assert.deepEqual(trackedRecord({ status: 'closed', commercial: com({ recouped: false }) }), com({ recouped: false }));
+  assert.deepEqual(trackedRecord({ status: 'closed', commercial: com({ capitalization: 5e6 }) }), com({ capitalization: 5e6 }));
+  assert.deepEqual(trackedRecord({ status: 'closed', commercial: com({ sources: ['x'] }) }), com({ sources: ['x'] }));
+  const shows = [
+    show({ openingDate: '2016-01-10', status: 'closed', commercial: com({ designation: 'Easy Winner', recouped: true }) }),
+    show({ openingDate: '2016-02-10', status: 'closed', commercial: com() }),
+    show({ openingDate: '2016-03-10', status: 'closed', commercial: com() }),
+    show({ openingDate: '2016-04-10', status: 'open', commercial: com() }),
+  ];
+  const p = buildSeasonProfiles(shows).find((x) => x.season === '2015-2016')!;
+  assert.equal(p.productions, 4);
+  assert.equal(p.tracked, 2); // the two closed placeholders are unknown, not "did not recoup"
+  assert.equal(p.commercial, 2);
+  assert.equal(p.recouped, 1);
+  // 2 of 4 tracked is under MIN_TRACKED_SHARE: placeholders no longer make the season count for who-recoups.
+  const f = buildRecoupFindings(shows.map((x) => ({ ...x, status: x.status ?? null, criticScore: null })), '2026-10-20');
+  assert.equal(f.buckets.find((b) => b.label === 'Original plays')!.total, 0);
+  assert.equal(f.range, null);
+});
+
 test('an in-progress season compares openings at the same point in the season', () => {
   const shows = [
     show({ openingDate: '2026-08-25' }),
@@ -219,7 +244,7 @@ test('shares of fewer than 3 shows are not stated; a disrupted last season still
 
 test('who recoups: buckets over finished, well-tracked seasons; critic bands over decided shows', () => {
   const r = (o: Partial<Parameters<typeof buildRecoupFindings>[0][number]> & { openingDate: string }) => ({
-    type: 'play', isRevival: false, status: 'closed', criticScore: 70, commercial: com({}), ...o,
+    type: 'play', isRevival: false, status: 'closed', criticScore: 70, commercial: com({ recouped: false }), ...o,
   });
   const shows = [
     r({ openingDate: '2024-10-01', isRevival: true, commercial: com({ recouped: true }), criticScore: 85 }),
@@ -397,7 +422,7 @@ test('recouped show names are listed per bucket; shows that did not recoup are n
   const shows = [
     { ...show({ openingDate: '2022-10-01', type: 'play', isRevival: true, commercial: com({ recouped: true }) }), status: 'closed', criticScore: 80, slug: 'b-show', title: 'B Show' },
     { ...show({ openingDate: '2022-10-02', type: 'play', isRevival: true, commercial: com({ recouped: true }) }), status: 'closed', criticScore: 80, slug: 'a-show', title: 'A Show' },
-    { ...show({ openingDate: '2022-10-03', type: 'play', isRevival: true, commercial: com({}) }), status: 'closed', criticScore: 40, slug: 'flop', title: 'Flop' },
+    { ...show({ openingDate: '2022-10-03', type: 'play', isRevival: true, commercial: com({ recouped: false }) }), status: 'closed', criticScore: 40, slug: 'flop', title: 'Flop' },
   ];
   const f = buildRecoupFindings(shows, '2026-10-20');
   const pr = f.buckets.find((b) => b.label === 'Play revivals')!;

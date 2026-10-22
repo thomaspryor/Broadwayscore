@@ -57,7 +57,7 @@ import {
 } from './commercial-display';
 import { reportedReturn } from '../../scripts/lib/reported-return';
 import type { TopicShowInput } from './investment-topics';
-import { buildSeasonProfiles, buildRecoupFindings, compareSeason, isOwnEstimate, type SeasonProfile, type SeasonComparison, type RecoupFindings } from './season-profile';
+import { buildSeasonProfiles, buildRecoupFindings, compareSeason, isOwnEstimate, trackedRecord, type SeasonProfile, type SeasonComparison, type RecoupFindings } from './season-profile';
 import { getMarketDate } from './date-utils';
 import { isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { conversionOf, isConvertedToCommercial, commercialRunWeeks, recoupClockStart } from '../../scripts/lib/commercial-conversion';
@@ -273,9 +273,9 @@ export function getRecentGrosses(slug: string, weeks: number = 8): Array<number 
 export function getSeasonsWithCommercialData(): string[] {
   const seasonsSet = new Set<string>();
 
-  for (const slug of Object.keys(commercial.shows)) {
+  for (const [slug, data] of Object.entries(commercial.shows)) {
     const show = rawShows.find(s => s.slug === slug);
-    if (!show) continue;
+    if (!show || !trackedRecord({ status: show.status, commercial: data })) continue;
 
     const season = getSeason(show.openingDate);
     if (season) {
@@ -310,7 +310,8 @@ export function getSeasonStats(season: string): SeasonStats {
 
     // Pure nonprofits and tour stops are left out; enhancement deals stay in
     // (isExcludedFromSeasonStats, tested in tests/unit/season-stats-enhancement-filter.test.mjs).
-    if (isExcludedFromSeasonStats(data)) continue;
+    // A closed show with only a research placeholder is untracked and left out too (trackedRecord).
+    if (isExcludedFromSeasonStats(data) || !trackedRecord({ status: show.status, commercial: data })) continue;
 
     totalShows++;
     // Our own budget estimate counts as undisclosed here, as in getSeasonProfiles.
@@ -376,6 +377,7 @@ export function getSeasonProfiles(): SeasonProfile[] {
           type: s.type,
           isRevival: s.isRevival,
           openingDate: s.openingDate,
+          status: s.status,
           commercial: shows[s.slug] ? { ...shows[s.slug], weeklyCost: shows[s.slug].weeklyRunningCost } : null,
         })),
     );
@@ -899,7 +901,7 @@ export function getShowsBySeasonWithCommercial(season: string): CommercialShowRo
     if (!show) continue;
 
     const showSeason = getSeason(show.openingDate);
-    if (showSeason !== season) continue;
+    if (showSeason !== season || !trackedRecord({ status: show.status, commercial: data })) continue;
 
     results.push(toCommercialShowRow(slug, show, data));
   }

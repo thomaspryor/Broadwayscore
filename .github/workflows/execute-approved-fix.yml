@@ -81,6 +81,17 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      # BRO-5886: hand the ingest-html-handoff key to the executor as a 0600 file,
+      # not as step env (a child could read the step shell's /proc/<pid>/environ).
+      - name: Stage html handoff key
+        env:
+          HTML_HANDOFF_PRIVATE_KEY: ${{ secrets.HTML_HANDOFF_PRIVATE_KEY }}
+        run: |
+          if [ -n "$HTML_HANDOFF_PRIVATE_KEY" ]; then
+            umask 077
+            printf '%s\n' "$HTML_HANDOFF_PRIVATE_KEY" > "$RUNNER_TEMP/html-handoff-key.pem"
+          fi
+
       - name: Execute approved fix
         id: exec
         env:
@@ -100,7 +111,14 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          # BRO-5886: the executor reads and deletes this file before any action
+          # runs, so the key is in no process environment of this step.
+          HTML_HANDOFF_KEY_FILE: ${{ runner.temp }}/html-handoff-key.pem
         run: node scripts/execute-approved-fix.js
+
+      - name: Remove html handoff key file
+        if: always()
+        run: rm -f "$RUNNER_TEMP/html-handoff-key.pem"
 
       - name: Refresh recoupment model after a commercial.json fix
         # A fixed weekly cost or capitalization changes break-even and

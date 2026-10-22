@@ -884,6 +884,8 @@ on:
       # email. Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob;
       # path-listed so a solo edit triggers CI.
       - 'scripts/execute-approved-fix.js'
+      # HTML handoff keygen (BRO-5886), required by scripts/lib/html-handoff.test.mjs.
+      - 'scripts/html-handoff-keygen.js'
       # Fold-and-delete sites guarded by scripts/lib/merged-duplicate-urls.test.mjs
       # (BRO-4414 drift test, runs in the scripts/lib/*.test.mjs glob); top-level
       # scripts sit outside scripts/lib/**, so a solo edit would trigger ZERO CI.
