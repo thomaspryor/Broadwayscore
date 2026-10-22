@@ -87,7 +87,7 @@ jobs:
             gpg --batch --yes --pinentry-mode loopback --passphrase "$GPG_PASSPHRASE" \
               --output "${name}.bundle" --decrypt "$f"
             rm -f "$f"
-            git bundle verify "${name}.bundle"
+            # git bundle verify needs a repository; the bare clone below checks the pack itself
             git clone --bare --quiet "${name}.bundle" "${name}.git"
             rm -f "${name}.bundle"
             git -C "${name}.git" rev-parse --verify --quiet "refs/heads/main^{commit}" > /dev/null \
