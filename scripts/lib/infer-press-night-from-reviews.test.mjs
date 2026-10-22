@@ -559,3 +559,20 @@ test('BRO-2489: forward: month-only publishDates never fabricate a press night',
   const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
   assert.equal(out.length, 0, 'month-only dates are not evidence of a press night');
 });
+
+test('BRO-5851: a sourced no-press-night-found row is never re-dated by a review cluster', () => {
+  const show = {
+    id: 'reopening-we-2021',
+    title: 'Reopening',
+    slug: 'reopening-we-2021',
+    category: 'west-end',
+    openingDate: '2021-07-22',
+    previewsStartDate: '2021-07-22', // collapsed: the first performance, no press night on record
+    openingDateSource: 'first-performance-no-press-night-found',
+  };
+  const reviews = reviewsOn('reopening-we-2021', '2021-07-27', 4);
+  assert.equal(inferPressNightFromReviews({ candidateShows: [show], reviews }).length, 0);
+  // Same row under the WOS first-performance source is still corrected.
+  const wos = { ...show, openingDateSource: 'whatsonstage-first-performance' };
+  assert.equal(inferPressNightFromReviews({ candidateShows: [wos], reviews }).length, 1);
+});

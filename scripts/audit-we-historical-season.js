@@ -160,9 +160,13 @@ function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheck
     else if (synopsisNeedsLook(show.synopsis)) synopsisLook.push({ showId: show.id, synopsis: String(show.synopsis).slice(0, 120) });
   }
 
-  const firstPerformanceOpenings = promoted.filter(s => s.openingDateSource === WOS_FIRST_PERFORMANCE_SOURCE)
+  // The searched-none source vouches only for a collapsed row (opening = first
+  // performance); on any other shape the label means nothing, so it fails.
+  const collapsed = s => Boolean(s.previewsStartDate) && s.openingDate === s.previewsStartDate;
+  const firstPerformanceOpenings = promoted.filter(s => s.openingDateSource === WOS_FIRST_PERFORMANCE_SOURCE
+    || (s.openingDateSource === NO_PRESS_NIGHT_FOUND_SOURCE && !collapsed(s)))
     .map(s => ({ showId: s.id, openingDate: s.openingDate }));
-  const noPressNightFound = promoted.filter(s => s.openingDateSource === NO_PRESS_NIGHT_FOUND_SOURCE).length;
+  const noPressNightFound = promoted.filter(s => s.openingDateSource === NO_PRESS_NIGHT_FOUND_SOURCE && collapsed(s)).length;
 
   const displayableShare = promoted.length ? perShow.filter(s => s.displayable).length / promoted.length : 0;
   const checks = {
