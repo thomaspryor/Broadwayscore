@@ -25,7 +25,7 @@ const { extractRunBlocks } = require('../../scripts/lib/audit-workflow-hygiene-r
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ACTION = path.join(__dirname, '..', '..', '.github', 'actions', 'setup-playwright', 'action.yml');
 
-function installScript(cacheHit = 'false') {
+function installScript(cacheHit = 'false', allow = 'true') {
   const raw = fs.readFileSync(ACTION, 'utf8');
   const block = extractRunBlocks(raw).find((b) => b.lines.some((l) => l.text.includes('playwright install')));
   assert.ok(block, 'Install Playwright browsers run: block not found');
@@ -34,11 +34,12 @@ function installScript(cacheHit = 'false') {
     .map((l) => l.text.slice(indent))
     .join('\n')
     .replace(/\$\{\{\s*steps\.playwright-cache\.outputs\.cache-hit\s*\}\}/g, cacheHit)
-    .replace(/\$\{\{\s*inputs\.browsers\s*\}\}/g, 'chromium');
+    .replace(/\$\{\{\s*inputs\.browsers\s*\}\}/g, 'chromium')
+    .replace(/^/, `ALLOW_DEPS_FAILURE=${allow}\n`);
 }
 
 // npx stub: exit code per call taken from $NPX_CODES (space-separated).
-function runWith(codes, cacheHit = 'false') {
+function runWith(codes, cacheHit = 'false', allow = 'true') {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pw-retry-'));
   const counter = path.join(dir, 'calls');
   fs.writeFileSync(path.join(dir, 'npx'), `#!/bin/bash
@@ -49,7 +50,7 @@ exit "\${code:-0}"
 `, { mode: 0o755 });
   fs.writeFileSync(path.join(dir, 'sudo'), '#!/bin/bash\nexit 0\n', { mode: 0o755 });
   const script = path.join(dir, 'step.sh');
-  fs.writeFileSync(script, installScript(cacheHit));
+  fs.writeFileSync(script, installScript(cacheHit, allow));
   const r = spawnSync('bash', ['-e', script], {
     encoding: 'utf8',
     env: { ...process.env, PATH: `${dir}:${process.env.PATH}`, NPX_CODES: codes },
@@ -101,4 +102,15 @@ test('cache HIT + both install-deps attempts fail: warns and exits 0 (browsers a
 test('cache MISS + both attempts fail still exits 1 (no browser to launch)', () => {
   const r = runWith('1 1', 'false');
   assert.equal(r.status, 1, r.out);
+});
+
+test('cache HIT + both fail but allow-deps-failure not set: still exits 1', () => {
+  const r = runWith('1 1', 'true', 'false');
+  assert.equal(r.status, 1, r.out);
+});
+
+test('cache HIT + attempt 2 succeeds: no continue-anyway warning', () => {
+  const r = runWith('1 0', 'true');
+  assert.equal(r.status, 0, r.out);
+  assert.doesNotMatch(r.out, /continuing without apt deps/);
 });

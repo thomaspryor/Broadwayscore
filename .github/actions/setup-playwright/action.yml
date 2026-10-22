@@ -7,6 +7,11 @@ inputs:
     required: false
     default: 'chromium'
 
+  allow-deps-failure:
+    description: 'BRO-6001: on a browser-cache hit, continue (warning) if apt install-deps fails twice. Opt-in; never set for screenshot/baseline jobs, where missing fonts would corrupt snapshots.'
+    required: false
+    default: 'false'
+
 runs:
   using: composite
   steps:
@@ -22,6 +27,7 @@ runs:
       env:
         DEBIAN_FRONTEND: noninteractive
         INPUT_BROWSERS: ${{ inputs.browsers }}
+        ALLOW_DEPS_FAILURE: ${{ inputs.allow-deps-failure }}
       run: |
         log=$(mktemp)
         if [ "${{ steps.playwright-cache.outputs.cache-hit }}" != "true" ]; then
@@ -63,8 +69,11 @@ runs:
             # and install-deps only tops up apt packages (ubuntu runners ship
             # every shared lib; the stalled run needed fonts only). A flaky apt
             # mirror must not fail the whole job then. Cache MISS still fails:
-            # there is no browser to launch. Adds no time to the 500s ceiling.
-            if [ "${{ steps.playwright-cache.outputs.cache-hit }}" = "true" ]; then
+            # there is no browser to launch. Opt-in (allow-deps-failure): missing fonts
+            # would corrupt screenshot baselines. Adds no time to the 500s ceiling.
+            if [ "$ALLOW_DEPS_FAILURE" = "true" ] && [ "${{ steps.playwright-cache.outputs.cache-hit }}" = "true" ]; then
+              sudo pkill -f '[a]pt-get|[d]pkg' || true
+              timeout 30 sudo dpkg --configure -a || true
               echo "::warning::${cmd[*]} ${what} on both attempts; browsers are cached, continuing without apt deps. Output of attempt 2:"
               tail -n 40 "$log"
               exit 0

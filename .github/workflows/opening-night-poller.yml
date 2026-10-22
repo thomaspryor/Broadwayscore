@@ -301,6 +301,8 @@ jobs:
       - name: Setup Playwright
         if: steps.find.outputs.has_shows == 'true'
         uses: ./.github/actions/setup-playwright
+        with:
+          allow-deps-failure: 'true' # BRO-6001: poller needs no fonts; a stalled apt mirror must not fail it
 
       # BRO-4408: drain the _pending/ no-byline sink for the in-window shows
       # BEFORE the poll loop. Site-search hits without a byline (TheWrap /
