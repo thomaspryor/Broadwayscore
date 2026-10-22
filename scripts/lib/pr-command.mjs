@@ -24,7 +24,7 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { isMainModule } from './is-main-module.mjs';
 import { splitShellCommands } from './push-command.mjs';
 
 export const GUARDED_REPO = 'thomaspryor/broadwayscore';
@@ -236,7 +236,7 @@ export function refusalMessage(w) {
   return `🛑 BLOCKED: sessions never open, ready or merge Broadwayscore PRs (BRO-5915, refused: ${w.verb}). The owner never reviews or merges PRs. Land the work yourself: git push origin HEAD:refs/heads/land/<name>, then follow the Land run to green (CLOUD.md § Landing). Emergency override only: PR_GUARD_OFF=1 (this check only) or LAND_ENFORCE_OFF=1 (all land guards).`;
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1] || '').href && process.argv.includes('--hook')) {
+if (isMainModule(import.meta.url) && process.argv.includes('--hook')) {
   try {
     const input = JSON.parse(fs.readFileSync(0, 'utf8') || '{}');
     const command = input?.tool_input?.command;
