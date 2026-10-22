@@ -30,6 +30,8 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'module';
+import { readFileSync, readdirSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const {
@@ -40,6 +42,7 @@ const {
   findBareAuditDirectoryGlobs,
   findFullBlobFullHistoryCheckouts,
   findShortCoreDataJobTimeouts,
+  findRestFallbackUnprovenPaths,
 } = require('./audit-workflow-hygiene-rules.js');
 
 const CORE_FILES = ['shows.json', 'reviews.json'];
@@ -621,5 +624,79 @@ ${timeout === null ? '' : `    timeout-minutes: ${timeout}\n`}${extra}    steps:
       const raw = fs.readFileSync(new URL(`../../.github/workflows/${f}`, import.meta.url), 'utf8');
       assert.deepStrictEqual(findShortCoreDataJobTimeouts(raw), [], f);
     }
+  });
+});
+
+describe('findRestFallbackUnprovenPaths (rule v, BRO-3341)', () => {
+  const wf = (env, adds) => `
+name: Fixture
+on:
+  workflow_dispatch: {}
+jobs:
+  j:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Commit stuff
+${env}        run: |
+${adds.map((a) => `          git add ${a}`).join('\n')}
+          git commit -m x
+          bash scripts/lib/push-with-retry.sh 14 main
+`;
+  const ENV1 = "        env:\n          PUSH_API_REST_REF_UPDATE: '1'\n";
+
+  test('flags an opted-in step that stages an unregistered, unrestricted path', () => {
+    const hits = findRestFallbackUnprovenPaths(wf(ENV1, ['data/audit/imageless-scored-shows.json', 'data/audit/some-totally-unregistered-file.json']));
+    assert.strictEqual(hits.length, 1);
+    assert.deepStrictEqual(hits[0].paths, ['data/audit/some-totally-unregistered-file.json']);
+    assert.strictEqual(hits[0].name, 'Commit stuff');
+  });
+
+  test('registered apiFallbackSafe and apiFallbackMerge paths are clean', () => {
+    assert.deepStrictEqual(findRestFallbackUnprovenPaths(wf(ENV1, ['data/audit/imageless-scored-shows.json', 'data/commercial-pending-review.json'])), []);
+  });
+
+  test('a restricted-path glob (code file) is clean', () => {
+    assert.deepStrictEqual(findRestFallbackUnprovenPaths(wf(ENV1, ['scripts/some-script.js'])), []);
+  });
+
+  test('a hygiene-rest-fallback-ok: exemption comment passes an otherwise flagged step', () => {
+    const flagged = wf(ENV1, ['data/audit/some-totally-unregistered-file.json']);
+    assert.strictEqual(findRestFallbackUnprovenPaths(flagged).length, 1);
+    assert.deepStrictEqual(findRestFallbackUnprovenPaths('# hygiene-rest-fallback-ok: owner-only file, no hand edits\n' + flagged), []);
+  });
+
+  test('a step without the opt-in env is never flagged', () => {
+    assert.deepStrictEqual(findRestFallbackUnprovenPaths(wf('', ['data/audit/some-totally-unregistered-file.json'])), []);
+  });
+
+  test('an explicit opt-out (0 / false) is not an opt-in', () => {
+    for (const v of ["'0'", 'false', '0']) {
+      const env = `        env:\n          PUSH_API_REST_REF_UPDATE: ${v}\n`;
+      assert.deepStrictEqual(findRestFallbackUnprovenPaths(wf(env, ['data/audit/some-totally-unregistered-file.json'])), [], v);
+    }
+  });
+
+  test('a commented-out opt-in is ignored', () => {
+    const env = "        env:\n          # PUSH_API_REST_REF_UPDATE: '1'\n          FOO: bar\n";
+    assert.deepStrictEqual(findRestFallbackUnprovenPaths(wf(env, ['data/audit/some-totally-unregistered-file.json'])), []);
+  });
+
+  test('data-health-check.yml current usage is clean', () => {
+    const root = fileURLToPath(new URL('../../', import.meta.url));
+    const raw = readFileSync(root + '.github/workflows/data-health-check.yml', 'utf8');
+    assert.ok(/PUSH_API_REST_REF_UPDATE:\s*'1'/.test(raw), 'fixture sanity: workflow still opts in');
+    assert.deepStrictEqual(findRestFallbackUnprovenPaths(raw), []);
+  });
+
+  test('every real workflow is clean or explicitly exempt', () => {
+    const root = fileURLToPath(new URL('../../', import.meta.url));
+    const dir = root + '.github/workflows/';
+    const bad = [];
+    for (const f of readdirSync(dir).filter((n) => n.endsWith('.yml'))) {
+      const raw = readFileSync(dir + f, 'utf8');
+      if (raw.includes('hygiene-rest-fallback-ok:')) continue;
+      if (findRestFallbackUnprovenPaths(raw).length) bad.push(f);
+    }
+    assert.deepStrictEqual(bad, []);
   });
 });

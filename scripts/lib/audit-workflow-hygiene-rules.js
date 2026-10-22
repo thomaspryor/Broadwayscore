@@ -1080,6 +1080,32 @@ function findMaskedPushFailures(raw) {
 }
 
 /**
+ * Rule (v) (BRO-3341): a step that opts into the Git Data API REST ref-update
+ * fallback (`PUSH_API_REST_REF_UPDATE` set to anything but 0/false) stages
+ * files the fallback has not been proven safe for. "Proven" means the path is
+ * in core-data-merge-registry (apiFallbackSafe or apiFallbackMerge) or is a
+ * branch-ruleset RESTRICTED_FILE_PATHS glob (the fallback's own admission
+ * check handles those). Anything else may race the contents API and clobber a
+ * concurrent writer. Warn-only: the CLI lists hits without failing.
+ */
+function findRestFallbackUnprovenPaths(raw) {
+  if (raw.includes('hygiene-rest-fallback-ok:')) return []; // file-level exemption
+  const { extractStagedPaths, classifyPushFallbackSafety } = require('./audit-push-retry-budgets.js');
+  const { matchesRestrictedPath } = require('./branch-ruleset-paths.js');
+  const out = [];
+  for (const step of splitWorkflowSteps(raw)) {
+    const text = stripComments(step.lines).join('\n');
+    if (!/\bPUSH_API_REST_REF_UPDATE\b\s*[:=]\s*['"]?(?!0\b|false\b|['"]?\s*$)[^\s'"]/m.test(text)) continue;
+    const unproven = extractStagedPaths(text).filter((p) => {
+      const c = classifyPushFallbackSafety(p);
+      return !c.isApiFallbackSafe && !c.isApiFallbackMerge && !matchesRestrictedPath(p);
+    });
+    if (unproven.length > 0) out.push({ name: step.name, lineNum: step.startLine + 1, paths: unproven });
+  }
+  return out;
+}
+
+/**
  * Rule (u) (BRO-4621): a STRING workflow_dispatch/workflow_call input
  * interpolated straight into a `run:` script (`${{ inputs.x }}`) is a shell
  * injection sink: the value is pasted into the script before bash parses it.
@@ -1373,6 +1399,7 @@ module.exports = {
   findNodeTeeWithoutPipefail,
   maskedPushHandler,
   findMaskedPushFailures,
+  findRestFallbackUnprovenPaths,
   declaredInputTypes,
   findStringInputInterpolation,
   CORE_DATA_JOB_MIN_TIMEOUT,
