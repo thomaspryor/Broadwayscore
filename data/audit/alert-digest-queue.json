@@ -252,20 +252,6 @@
     "queuedAt": "2026-10-21T14:08:29.801Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:fish-off-broadway-2026",
-    "title": "Review gap — \"Fish\" missing 1 cited review(s)",
-    "description": "Fish (fish-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=fish-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-21T14:08:29.822Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:some-woman-west-end-2026",
     "title": "Review gap — \"Some Woman\" missing 1 cited review(s)",
     "description": "Some Woman (some-woman-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=some-woman-west-end-2026 --checkpoint --ingest-missing",
@@ -1664,6 +1650,20 @@
       }
     ],
     "queuedAt": "2026-10-22T04:59:03.674Z"
+  },
+  {
+    "conditionKey": "outlet-ground-truth:midnight-off-broadway-2026:https://www.nytimes.com/2026/10/21/theater/midnight-todrick-hall-benjamin-button-review.html",
+    "title": "Missing review from a tracked outlet: midnight-off-broadway-2026 — nytimes",
+    "description": "nytimes lists a review we don't hold (https://www.nytimes.com/2026/10/21/theater/midnight-todrick-hall-benjamin-button-review.html), and automatic ingest did not recover it.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T05:48:49.941Z"
   },
   {
     "conditionKey": "express-retry-still-thin:rope-off-broadway-2026",

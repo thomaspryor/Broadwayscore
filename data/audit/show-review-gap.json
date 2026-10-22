@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-22T02:10:58.478Z",
+  "generatedAt": "2026-10-22T05:46:18.377Z",
   "windowDays": 1095,
-  "targets": 618,
-  "auditedThisRun": 10,
-  "carriedForward": 759,
+  "targets": 626,
+  "auditedThisRun": 8,
+  "carriedForward": 761,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 437,
-    "missingCurrentRun": 788,
+    "withGap": 401,
+    "missingCurrentRun": 569,
     "totalCitedNoUrl": 3,
-    "totalFlaggedMisses": 895,
-    "totalRecoverable": 13,
+    "totalFlaggedMisses": 734,
+    "totalRecoverable": 3,
     "totalRecovered": 18,
     "humanExcluded": 4,
-    "automatedExcluded": 279,
-    "automatedExcludedListed": 236,
-    "priorProductionCitations": 5202
+    "automatedExcluded": 270,
+    "automatedExcludedListed": 229,
+    "priorProductionCitations": 5154
   },
   "results": [
     {
@@ -36545,9 +36545,10 @@
         "https://www.londontheatre1.com/reviews/cirque-berserk-at-the-garrick-theatre-review/",
         "https://www.londontheatre.co.uk/reviews/cirque-berserk",
         "https://www.thestage.co.uk/reviews/cirque-berserk-garrick-london",
-        "https://www.thesun.co.uk/tvandshowbiz/16011072/circus-review-cirque-berserk-west-end-theatre/",
-        "https://soundsandstage.com/show/cirque-berserk",
-        "https://whatsgoodtodo.com/cirque-berserk-at-the-harold-pinter-theatre-london-review/"
+        "https://asiw.co.uk/reviews/cirque-berserk-jaw-dropping",
+        "https://www.roamingrequired.com/review-cirque-berserk/",
+        "https://www.voicemag.uk/review/11651/cirque-berserk",
+        "https://www.whatsonstage.com/news/cirque-berserk-to-have-west-end-stay-this-autumn_1727774/"
       ],
       "dirFiles": 0,
       "dirClean": 0,
@@ -36557,42 +36558,56 @@
           "url": "https://theatreweekly.com/review-cirque-berserk-at-the-garrick-theatre/",
           "host": "theatreweekly.com",
           "knownOutletId": "theatre-weekly",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2021-08-25",
           "serpCensus": true
         },
         {
           "url": "https://www.londontheatre1.com/reviews/cirque-berserk-at-the-garrick-theatre-review/",
           "host": "londontheatre1.com",
           "knownOutletId": "londontheatre1",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2021-08-25",
           "serpCensus": true
         },
         {
           "url": "https://www.londontheatre.co.uk/reviews/cirque-berserk",
           "host": "londontheatre.co.uk",
           "knownOutletId": "london-theatre",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2016-06-08",
           "serpCensus": true
         },
         {
           "url": "https://www.thestage.co.uk/reviews/cirque-berserk-garrick-london",
           "host": "thestage.co.uk",
           "knownOutletId": "thestage",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2021-09-01",
           "serpCensus": true
         },
         {
-          "url": "https://www.thesun.co.uk/tvandshowbiz/16011072/circus-review-cirque-berserk-west-end-theatre/",
-          "host": "thesun.co.uk",
-          "knownOutletId": "the-sun",
+          "url": "https://asiw.co.uk/reviews/cirque-berserk-jaw-dropping",
+          "host": "asiw.co.uk",
+          "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://soundsandstage.com/show/cirque-berserk",
-          "host": "soundsandstage.com",
-          "knownOutletId": "soundsandstage",
+          "url": "https://www.roamingrequired.com/review-cirque-berserk/",
+          "host": "roamingrequired.com",
+          "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://whatsgoodtodo.com/cirque-berserk-at-the-harold-pinter-theatre-london-review/",
-          "host": "whatsgoodtodo.com",
-          "knownOutletId": "whatsgoodtodo",
+          "url": "https://www.voicemag.uk/review/11651/cirque-berserk",
+          "host": "voicemag.uk",
+          "knownOutletId": "voice-magazine",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/cirque-berserk-to-have-west-end-stay-this-autumn_1727774/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
           "serpCensus": true
         }
       ],
@@ -36695,83 +36710,68 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 7,
+        "resultCount": 8,
         "error": null
       },
       "candidatesRejected": {
         "count": 32,
         "byReason": {
+          "non-review-host": 19,
           "aggregator-internal-nav": 3,
-          "non-review-host": 17,
-          "ticketing-reseller": 4,
-          "bare-host": 2,
-          "event-listing": 1,
-          "non-review-path": 1,
+          "ticketing-listing": 1,
           "write-path-blocked": 2,
-          "no-review-evidence": 1,
+          "bare-host": 1,
+          "ticketing-reseller": 3,
+          "non-review-path": 1,
+          "census-junk-host": 1,
           "ticket-seller-product-page": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
+      "weIngestBlocked": [
         {
           "url": "https://theatreweekly.com/review-cirque-berserk-at-the-garrick-theatre/",
           "host": "theatreweekly.com",
-          "outletId": "theatre-weekly",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: cirque-berserk-west-end-2026/theatre-weekly--rory-howes.json → quarantined to _pending/cirque-berserk-west-end-2026/theatre-weekly--rory-howes.json (1883d before earliest date, not within priorRuns)\n\n❌ Write-guard refused the write — nothing changed on disk (date_implausible)\n   quarantined to: /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/_pending/cirque-berserk-west-end-2026/theatre-weekly--rory-howes.json"
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.londontheatre1.com/reviews/cirque-berserk-at-the-garrick-theatre-review/",
           "host": "londontheatre1.com",
-          "outletId": "londontheatre1",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: cirque-berserk-west-end-2026/londontheatre1--chris-omaweng.json → quarantined to _pending/cirque-berserk-west-end-2026/londontheatre1--chris-omaweng.json (1883d before earliest date, not within priorRuns)\n\n❌ Write-guard refused the write — nothing changed on disk (date_implausible)\n   quarantined to: /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/_pending/cirque-berserk-west-end-2026/londontheatre1--chris-omaweng.json"
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.londontheatre.co.uk/reviews/cirque-berserk",
           "host": "londontheatre.co.uk",
-          "outletId": "london-theatre",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: cirque-berserk-west-end-2026/london-theatre--unknown.json → quarantined to _pending/cirque-berserk-west-end-2026/london-theatre--unknown.json (3787d before earliest date, not within priorRuns)\n\n❌ Write-guard refused the write — nothing changed on disk (date_implausible)\n   quarantined to: /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/_pending/cirque-berserk-west-end-2026/london-theatre--unknown.json"
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.thestage.co.uk/reviews/cirque-berserk-garrick-london",
           "host": "thestage.co.uk",
-          "outletId": "thestage",
-          "provisional": false,
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://asiw.co.uk/reviews/cirque-berserk-jaw-dropping",
+          "host": "asiw.co.uk",
+          "outletId": "asiw",
+          "provisional": true,
           "ok": false,
           "noop": false,
           "conflict": false,
@@ -36780,13 +36780,13 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: cirque-berserk-west-end-2026/thestage--paul-vale.json → quarantined to _pending/cirque-berserk-west-end-2026/thestage--paul-vale.json (1876d before earliest date, not within priorRuns)\n\n❌ Write-guard refused the write — nothing changed on disk (date_implausible)\n   quarantined to: /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/_pending/cirque-berserk-west-end-2026/thestage--paul-vale.json"
+          "reason": "⚠️  provisional outlet \"asiw\" (not in registry) — onboard to outlet-registry.json after review.\n  ⚠️  Unvalidated domain for cirque-berserk-west-end-2026/asiw: no registered domain for outlet \"asiw\" — URL host not checked\n[review-write-guard] date-implausible: cirque-berserk-west-end-2026/asiw--steve-stratford.json → quarantined to _pending/cirque-berserk-west-end-2026/asiw--steve-stratford.json (4254d before earliest date, not within priorRuns)\n\n❌ Write-guard refused the write — nothing changed on disk (date_implausible)\n   quarantined to: /home/runner/work/Broadwayscore/Broadwayscore/data/re"
         },
         {
-          "url": "https://www.thesun.co.uk/tvandshowbiz/16011072/circus-review-cirque-berserk-west-end-theatre/",
-          "host": "thesun.co.uk",
-          "outletId": "the-sun",
-          "provisional": false,
+          "url": "https://www.roamingrequired.com/review-cirque-berserk/",
+          "host": "roamingrequired.com",
+          "outletId": "roamingrequired",
+          "provisional": true,
           "ok": false,
           "noop": false,
           "conflict": false,
@@ -36795,131 +36795,108 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: cirque-berserk-west-end-2026/the-sun--thea-jacobs.json → quarantined to _pending/cirque-berserk-west-end-2026/the-sun--thea-jacobs.json (1877d before earliest date, not within priorRuns)\n\n❌ Write-guard refused the write — nothing changed on disk (date_implausible)\n   quarantined to: /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/_pending/cirque-berserk-west-end-2026/the-sun--thea-jacobs.json"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://soundsandstage.com/show/cirque-berserk",
-          "host": "soundsandstage.com",
-          "outletId": "soundsandstage"
+          "reason": "⚠️  provisional outlet \"roamingrequired\" (not in registry) — onboard to outlet-registry.json after review.\n  ⚠️  Unvalidated domain for cirque-berserk-west-end-2026/roamingrequired: no registered domain for outlet \"roamingrequired\" — URL host not checked\n[review-write-guard] date-implausible: cirque-berserk-west-end-2026/roamingrequired--roma.json → quarantined to _pending/cirque-berserk-west-end-2026/roamingrequired--roma.json (3900d before earliest date, not within priorRuns)\n\n❌ Write-guard refused the write — nothing changed on disk (date_implausible)\n   quarantined to: /home/runner/work/Br"
         },
         {
-          "url": "https://whatsgoodtodo.com/cirque-berserk-at-the-harold-pinter-theatre-london-review/",
-          "host": "whatsgoodtodo.com",
-          "outletId": "whatsgoodtodo"
+          "url": "https://www.voicemag.uk/review/11651/cirque-berserk",
+          "host": "voicemag.uk",
+          "outletId": "voice-magazine",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "cirque-berserk-west-end-2026: https://www.voicemag.uk/review/11651/cirque-berserk has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/cirque-berserk-to-have-west-end-stay-this-autumn_1727774/",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "cirque-berserk-west-end-2026: https://www.whatsonstage.com/news/cirque-berserk-to-have-west-end-stay-this-autumn_1727774/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         }
       ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "theatre-weekly",
-            "outlet": "theatre-weekly",
+            "outletId": "asiw.co.uk",
+            "outlet": "asiw.co.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://theatreweekly.com/review-cirque-berserk-at-the-garrick-theatre/"
+            "url": "https://asiw.co.uk/reviews/cirque-berserk-jaw-dropping"
           },
           {
-            "outletId": "londontheatre1",
-            "outlet": "londontheatre1",
+            "outletId": "roamingrequired.com",
+            "outlet": "roamingrequired.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.londontheatre1.com/reviews/cirque-berserk-at-the-garrick-theatre-review/"
+            "url": "https://www.roamingrequired.com/review-cirque-berserk/"
           },
           {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
+            "outletId": "voice-magazine",
+            "outlet": "voice-magazine",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/cirque-berserk"
+            "url": "https://www.voicemag.uk/review/11651/cirque-berserk"
           },
           {
-            "outletId": "thestage",
-            "outlet": "thestage",
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.thestage.co.uk/reviews/cirque-berserk-garrick-london"
-          },
-          {
-            "outletId": "the-sun",
-            "outlet": "the-sun",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thesun.co.uk/tvandshowbiz/16011072/circus-review-cirque-berserk-west-end-theatre/"
-          },
-          {
-            "outletId": "soundsandstage",
-            "outlet": "soundsandstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://soundsandstage.com/show/cirque-berserk"
-          },
-          {
-            "outletId": "whatsgoodtodo",
-            "outlet": "whatsgoodtodo",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://whatsgoodtodo.com/cirque-berserk-at-the-harold-pinter-theatre-london-review/"
+            "url": "https://www.whatsonstage.com/news/cirque-berserk-to-have-west-end-stay-this-autumn_1727774/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://theatreweekly.com/review-cirque-berserk-at-the-garrick-theatre/",
-            "outletId": "theatre-weekly",
+            "url": "https://asiw.co.uk/reviews/cirque-berserk-jaw-dropping",
+            "outletId": "asiw.co.uk",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
+            "firstSeenAt": "2026-10-22T05:46:18.377Z"
           },
           {
-            "url": "https://www.londontheatre1.com/reviews/cirque-berserk-at-the-garrick-theatre-review/",
-            "outletId": "londontheatre1",
+            "url": "https://www.roamingrequired.com/review-cirque-berserk/",
+            "outletId": "roamingrequired.com",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
+            "firstSeenAt": "2026-10-22T05:46:18.377Z"
           },
           {
-            "url": "https://www.londontheatre.co.uk/reviews/cirque-berserk",
-            "outletId": "london-theatre",
+            "url": "https://www.voicemag.uk/review/11651/cirque-berserk",
+            "outletId": "voice-magazine",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
+            "firstSeenAt": "2026-10-22T05:46:18.377Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/cirque-berserk-garrick-london",
-            "outletId": "thestage",
+            "url": "https://www.whatsonstage.com/news/cirque-berserk-to-have-west-end-stay-this-autumn_1727774/",
+            "outletId": "whatsonstage",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
-          },
-          {
-            "url": "https://www.thesun.co.uk/tvandshowbiz/16011072/circus-review-cirque-berserk-west-end-theatre/",
-            "outletId": "the-sun",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
-          },
-          {
-            "url": "https://soundsandstage.com/show/cirque-berserk",
-            "outletId": "soundsandstage",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
-          },
-          {
-            "url": "https://whatsgoodtodo.com/cirque-berserk-at-the-harold-pinter-theatre-london-review/",
-            "outletId": "whatsgoodtodo",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
+            "firstSeenAt": "2026-10-22T05:46:18.377Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 7
+        "candidateCount": 4
       },
-      "computedAt": "2026-10-21T14:08:29.336Z"
+      "computedAt": "2026-10-22T05:46:18.377Z"
     },
     {
       "showId": "clara-sex-love-and-classical-music-off-broadway-2026",
@@ -55950,462 +55927,35 @@
       "openingDate": "2026-10-11",
       "status": "open",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-NICE-FISH-Starring-Mark-Rylance-Opens-at-St-Anns-Warehouse-20160222",
-        "https://www.broadwayworld.com/article/Review-Roundup-FISH-IN-THE-DARK-Opens-on-Broadway-Updating-LIVE-20150305",
-        "https://www.broadwayworld.com/article/Review-Roundup-BIG-FISH-Fights-the-Dragons-in-London-20171112"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "http://www.nytimes.com/2016/02/22/theater/review-nice-fish-mark-rylance-and-louis-jenkinss-quirky-ice-fishing-tale.html",
-        "http://variety.com/2016/legit/reviews/nice-fish-review-mark-rylance-1201711495/",
-        "http://www.hollywoodreporter.com/review/mark-rylances-nice-fish-theater-868076",
-        "http://www.timeout.com/newyork/theater/nice-fish",
-        "http://www.amny.com/entertainment/nice-fish-review-mark-rylance-reliant-on-louis-jenkins-poetry-1.11496431",
-        "http://www.vulture.com/2016/02/theater-review-nice-fish.html",
-        "http://deadline.com/2016/02/mark-rylance-bridge-of-spies-oscar-nominee-nice-fish-review-1201706733/",
-        "http://www.thewrap.com/nice-fish-theater-review-mark-rylance-takes-the-plunge-as-actor-and-author/",
-        "https://www.theguardian.com/stage/2016/feb/22/nice-fish-review-mark-rylance-icy-absurdist-drama",
-        "http://www.nytimes.com/2015/03/06/theater/review-fish-in-the-dark-larry-davids-antic-broadway-debut.html",
-        "http://www.nydailynews.com/entertainment/theater-arts/fish-dark-review-larry-david-hooks-fun-comedy-article-1.2137659",
-        "http://www.vulture.com/2015/03/theater-review-fish-in-the-dark.html",
-        "http://www.ny1.com/nyc/brooklyn/theater-reviews/2015/03/5/theater-review---fish-in-the-dark-.html",
-        "http://www.wsj.com/articles/fish-in-the-dark-review-enthusiasm-curbed-1425612431",
-        "http://abcnews.go.com/Entertainment/wireStory/review-larry-davids-broadway-play-tedious-dead-fish-29429599",
-        "http://www.hollywoodreporter.com/review/larry-davids-fish-dark-theater-779483",
-        "http://variety.com/2015/legit/reviews/fish-in-the-dark-review-larry-david-broadway-1201446406/",
-        "http://www.newsday.com/entertainment/theater/fish-in-the-dark-review-larry-david-s-toilet-jokes-1.10011559",
-        "http://www.usatoday.com/story/life/theater/2015/03/05/fish-in-the-dark-broadway-review/24323929/",
-        "http://www.timeout.com/newyork/theater/fish-in-the-dark",
-        "http://www.nbcnewyork.com/entertainment/the-scene/larry-david-fish-dark-review-295167591.html",
-        "http://deadline.com/2015/03/larry-david-fish-in-the-dark-review-broadway-1201386962/",
-        "http://www.amny.com/entertainment/fish-in-the-dark-review-larry-david-s-show-is-prett-ay-prett-ay-prett-ay-good-1.10019819",
-        "http://nypost.com/2015/03/05/larry-david-delivers-larry-david-ness-in-broadway-debut-fish-in-the-dark/",
-        "http://time.com/3732099/larry-david-fish-in-the-dark-broadway-review/",
-        "http://www.latimes.com/entertainment/arts/la-et-cm-larry-david-fish-in-the-dark-review-20150306-column.html",
-        "http://www.chicagotribune.com/entertainment/theater/broadway/sc-fish-in-the-dark-broadway-review-20150305-column.html",
-        "http://www.nj.com/entertainment/index.ssf/2015/03/review_larry_davids_fish_in_the_dark_on_broadway.html",
-        "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11445440/Fish-in-the-Dark-Cort-Theatre-New-York-review-adrift.html",
-        "https://www.theguardian.com/stage/2015/mar/05/fish-in-the-dark-review-larry-david-broadway-death-etiquette",
-        "http://www.independent.co.uk/arts-entertainment/theatre-dance/news/fish-in-the-dark-theatre-review-clichridden-play-will-curb-the-enthusiasm-of-larry-david-fans-10089433.html",
-        "http://www.ew.com/article/2015/03/05/larry-david-fish-dark-ew-review",
-        "http://www.huffingtonpost.com/steven-suskin/aisle-view-whose-fish-is-it-anyway-_b_6813108.html",
-        "http://flavorwire.com/507874/curb-your-enthusiasm-meets-moliere-in-larry-davids-fish-in-the-dark",
-        "https://www.standard.co.uk/goingout/theatre/big-fish-theatre-review-kelsey-grammer-makes-a-splash-in-this-strange-and-sentimental-show-a3686061.html",
-        "https://www.thetimes.co.uk/article/theatre-review-big-fish-at-the-other-palace-sw1-8b80gpzdn",
-        "https://www.thestage.co.uk/reviews/2017/big-fish-starring-kelsey-grammer-review-palace-london/",
-        "http://www.express.co.uk/entertainment/theatre/877887/Big-Fish-The-Musical-review-London-The-Other-Palace",
-        "http://www.telegraph.co.uk/theatre/what-to-see/evening-battered-schmaltz-big-fish-palace-review/",
-        "https://www.theatermania.com/news/review-in-fish-kia-corthron-pulls-back-the-curtain-on-the-new-york-city-public-school-system_1736276/",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-6PSPE3",
-        "http://www.theaterscene.net/plays/offbway-plays/fish/victor-gluck/",
-        "https://www.theaterpizzazz.com/fish/",
-        "https://pagesonstages.wordpress.com/2024/04/12/fish/",
+        "https://www.theaterscene.net/plays/offbway-plays/fish-2/tony-marinelli/",
+        "https://pagesonstages.com/2026/10/11/fish-2/",
+        "https://www.offoffonline.com/offoffonline/2026/10/7/fish",
         "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/",
         "https://www.theatermania.com/news/review-fish-a-coming-of-age-comedy-about-isis_1856705/",
         "https://www.timeout.com/newyork/theater/fish",
-        "https://totaltheater1.wordpress.com/2026/10/16/fish-2/",
-        "https://news.frombroadway.com/post/review-roundup-fish-wp-theater",
-        "https://synthesizer-accordion-e2w3.squarespace.com/fish-at-wp-theater"
+        "https://totaltheater1.wordpress.com/2026/10/16/fish-2/"
       ],
       "dirFiles": 20,
       "dirClean": 9,
       "inReviewsJson": 9,
-      "missing": [
-        {
-          "url": "http://www.nytimes.com/2016/02/22/theater/review-nice-fish-mark-rylance-and-louis-jenkinss-quirky-ice-fishing-tale.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://variety.com/2016/legit/reviews/nice-fish-review-mark-rylance-1201711495/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/mark-rylances-nice-fish-theater-868076",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.timeout.com/newyork/theater/nice-fish",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.amny.com/entertainment/nice-fish-review-mark-rylance-reliant-on-louis-jenkins-poetry-1.11496431",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.vulture.com/2016/02/theater-review-nice-fish.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://deadline.com/2016/02/mark-rylance-bridge-of-spies-oscar-nominee-nice-fish-review-1201706733/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.thewrap.com/nice-fish-theater-review-mark-rylance-takes-the-plunge-as-actor-and-author/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2016/feb/22/nice-fish-review-mark-rylance-icy-absurdist-drama",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nytimes.com/2015/03/06/theater/review-fish-in-the-dark-larry-davids-antic-broadway-debut.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/theater-arts/fish-dark-review-larry-david-hooks-fun-comedy-article-1.2137659",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.vulture.com/2015/03/theater-review-fish-in-the-dark.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.ny1.com/nyc/brooklyn/theater-reviews/2015/03/5/theater-review---fish-in-the-dark-.html",
-          "host": "ny1.com",
-          "knownOutletId": "ny1",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.wsj.com/articles/fish-in-the-dark-review-enthusiasm-curbed-1425612431",
-          "host": "wsj.com",
-          "knownOutletId": "wsj",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://abcnews.go.com/Entertainment/wireStory/review-larry-davids-broadway-play-tedious-dead-fish-29429599",
-          "host": "go.com",
-          "knownOutletId": "abc-news",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/larry-davids-fish-dark-theater-779483",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://variety.com/2015/legit/reviews/fish-in-the-dark-review-larry-david-broadway-1201446406/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/fish-in-the-dark-review-larry-david-s-toilet-jokes-1.10011559",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.usatoday.com/story/life/theater/2015/03/05/fish-in-the-dark-broadway-review/24323929/",
-          "host": "usatoday.com",
-          "knownOutletId": "usatoday",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.timeout.com/newyork/theater/fish-in-the-dark",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nbcnewyork.com/entertainment/the-scene/larry-david-fish-dark-review-295167591.html",
-          "host": "nbcnewyork.com",
-          "knownOutletId": "nbcny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://deadline.com/2015/03/larry-david-fish-in-the-dark-review-broadway-1201386962/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.amny.com/entertainment/fish-in-the-dark-review-larry-david-s-show-is-prett-ay-prett-ay-prett-ay-good-1.10019819",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://nypost.com/2015/03/05/larry-david-delivers-larry-david-ness-in-broadway-debut-fish-in-the-dark/",
-          "host": "nypost.com",
-          "knownOutletId": "nypost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://time.com/3732099/larry-david-fish-in-the-dark-broadway-review/",
-          "host": "time.com",
-          "knownOutletId": "time",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.latimes.com/entertainment/arts/la-et-cm-larry-david-fish-in-the-dark-review-20150306-column.html",
-          "host": "latimes.com",
-          "knownOutletId": "latimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-fish-in-the-dark-broadway-review-20150305-column.html",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nj.com/entertainment/index.ssf/2015/03/review_larry_davids_fish_in_the_dark_on_broadway.html",
-          "host": "nj.com",
-          "knownOutletId": "njcom",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11445440/Fish-in-the-Dark-Cort-Theatre-New-York-review-adrift.html",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2015/mar/05/fish-in-the-dark-review-larry-david-broadway-death-etiquette",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/news/fish-in-the-dark-theatre-review-clichridden-play-will-curb-the-enthusiasm-of-larry-david-fans-10089433.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.ew.com/article/2015/03/05/larry-david-fish-dark-ew-review",
-          "host": "ew.com",
-          "knownOutletId": "ew",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.huffingtonpost.com/steven-suskin/aisle-view-whose-fish-is-it-anyway-_b_6813108.html",
-          "host": "huffingtonpost.com",
-          "knownOutletId": "huffpost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://flavorwire.com/507874/curb-your-enthusiasm-meets-moliere-in-larry-davids-fish-in-the-dark",
-          "host": "flavorwire.com",
-          "knownOutletId": "flavorwire",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.standard.co.uk/goingout/theatre/big-fish-theatre-review-kelsey-grammer-makes-a-splash-in-this-strange-and-sentimental-show-a3686061.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thetimes.co.uk/article/theatre-review-big-fish-at-the-other-palace-sw1-8b80gpzdn",
-          "host": "thetimes.co.uk",
-          "knownOutletId": "sunday-times",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/2017/big-fish-starring-kelsey-grammer-review-palace-london/",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.express.co.uk/entertainment/theatre/877887/Big-Fish-The-Musical-review-London-The-Other-Palace",
-          "host": "express.co.uk",
-          "knownOutletId": "sunday-express",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.telegraph.co.uk/theatre/what-to-see/evening-battered-schmaltz-big-fish-palace-review/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://synthesizer-accordion-e2w3.squarespace.com/fish-at-wp-theater",
-          "host": "synthesizer-accordion-e2w3.squarespace.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "newyorktheatreguide.com",
           "count": 1
         },
         {
-          "host": "offoffonline.com",
-          "count": 1
-        },
-        {
-          "host": "pagesonstages.com",
-          "count": 1
-        },
-        {
           "host": "the100wordreview.com",
+          "count": 1
+        },
+        {
+          "host": "theaterpizzazz.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.theatermania.com/news/review-in-fish-kia-corthron-pulls-back-the-curtain-on-the-new-york-city-public-school-system_1736276/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--christian-lewis.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatermania.com/news/review-in-fish-kia-corthron-pulls-back-the-curtain-on-the-new-york-city-public-school-system_1736276/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:April 2nd, 2024",
-          "reverify": false
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-6PSPE3",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-6PSPE3"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:April 2nd, 2024",
-          "reverify": false
-        },
-        {
-          "url": "http://www.theaterscene.net/plays/offbway-plays/fish/victor-gluck/",
-          "host": "theaterscene.net",
-          "knownOutletId": "theater-scene",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theater-scene--victor-gluck.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.theaterscene.net/plays/offbway-plays/fish/victor-gluck/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:April 12th, 2024",
-          "reverify": false
-        },
-        {
-          "url": "https://www.theaterpizzazz.com/fish/",
-          "host": "theaterpizzazz.com",
-          "knownOutletId": "theater-pizzazz",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theater-pizzazz--samuel-l-leiter.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theaterpizzazz.com/fish/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:April 3rd, 2024",
-          "reverify": false
-        },
         {
           "url": "https://www.timeout.com/newyork/theater/fish",
           "host": "timeout.com",
@@ -56429,29 +55979,6 @@
           "confirmedNonReview": true,
           "serpCensus": true,
           "reverify": false
-        },
-        {
-          "url": "https://news.frombroadway.com/post/review-roundup-fish-wp-theater",
-          "host": "frombroadway.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "frombroadway--zachary-stewart.json",
-              "flag": "clean",
-              "urlInDir": "https://news.frombroadway.com/post/review-roundup-fish-wp-theater"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "serpCensus": true,
-          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -56508,381 +56035,61 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 6,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 913,
+        "count": 36,
         "byReason": {
-          "aggregator-internal-nav": 669,
-          "non-review-host": 65,
-          "write-path-blocked": 2,
-          "no-review-evidence": 2,
-          "not-http-url": 153,
-          "aggregator-section-root": 12,
-          "roundup-page": 3,
-          "production-database-listing": 4,
+          "non-review-host": 21,
           "venue-production-page": 1,
           "show-listing-page": 1,
-          "ticketing-listing": 1
+          "production-database-listing": 4,
+          "roundup-page": 5,
+          "ticketing-listing": 1,
+          "write-path-blocked": 1,
+          "bare-host": 2
         }
       },
-      "dedupedVariants": [
-        {
-          "url": "https://pagesonstages.wordpress.com/2024/04/12/fish/",
-          "host": "pagesonstages.wordpress.com",
-          "matchedUrl": "https://pagesonstages.com/2026/10/11/fish-2/",
-          "outletId": "pages-on-stages",
-          "reason": "same outlet \"pages-on-stages\" already held at pagesonstages.com; pagesonstages.wordpress.com is a registered alias of it"
-        }
-      ],
-      "priorRunArticles": [
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-NICE-FISH-Starring-Mark-Rylance-Opens-at-St-Anns-Warehouse-20160222",
-          "publishDate": "2016-02-22"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-FISH-IN-THE-DARK-Opens-on-Broadway-Updating-LIVE-20150305",
-          "publishDate": "2015-03-05"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-BIG-FISH-Fights-the-Dragons-in-London-20171112",
-          "publishDate": "2017-11-12"
-        }
-      ],
-      "automatedExcludedListed": 1,
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "http://www.nytimes.com/2016/02/22/theater/review-nice-fish-mark-rylance-and-louis-jenkinss-quirky-ice-fishing-tale.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://variety.com/2016/legit/reviews/nice-fish-review-mark-rylance-1201711495/",
-          "host": "variety.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/mark-rylances-nice-fish-theater-868076",
-          "host": "hollywoodreporter.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.timeout.com/newyork/theater/nice-fish",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.amny.com/entertainment/nice-fish-review-mark-rylance-reliant-on-louis-jenkins-poetry-1.11496431",
-          "host": "amny.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.vulture.com/2016/02/theater-review-nice-fish.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://deadline.com/2016/02/mark-rylance-bridge-of-spies-oscar-nominee-nice-fish-review-1201706733/",
-          "host": "deadline.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.thewrap.com/nice-fish-theater-review-mark-rylance-takes-the-plunge-as-actor-and-author/",
-          "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2016/feb/22/nice-fish-review-mark-rylance-icy-absurdist-drama",
-          "host": "theguardian.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.nytimes.com/2015/03/06/theater/review-fish-in-the-dark-larry-davids-antic-broadway-debut.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/theater-arts/fish-dark-review-larry-david-hooks-fun-comedy-article-1.2137659",
-          "host": "nydailynews.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.vulture.com/2015/03/theater-review-fish-in-the-dark.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.ny1.com/nyc/brooklyn/theater-reviews/2015/03/5/theater-review---fish-in-the-dark-.html",
-          "host": "ny1.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.wsj.com/articles/fish-in-the-dark-review-enthusiasm-curbed-1425612431",
-          "host": "wsj.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://abcnews.go.com/Entertainment/wireStory/review-larry-davids-broadway-play-tedious-dead-fish-29429599",
-          "host": "go.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/larry-davids-fish-dark-theater-779483",
-          "host": "hollywoodreporter.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://variety.com/2015/legit/reviews/fish-in-the-dark-review-larry-david-broadway-1201446406/",
-          "host": "variety.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/fish-in-the-dark-review-larry-david-s-toilet-jokes-1.10011559",
-          "host": "newsday.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.usatoday.com/story/life/theater/2015/03/05/fish-in-the-dark-broadway-review/24323929/",
-          "host": "usatoday.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.timeout.com/newyork/theater/fish-in-the-dark",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.nbcnewyork.com/entertainment/the-scene/larry-david-fish-dark-review-295167591.html",
-          "host": "nbcnewyork.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://deadline.com/2015/03/larry-david-fish-in-the-dark-review-broadway-1201386962/",
-          "host": "deadline.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.amny.com/entertainment/fish-in-the-dark-review-larry-david-s-show-is-prett-ay-prett-ay-prett-ay-good-1.10019819",
-          "host": "amny.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://nypost.com/2015/03/05/larry-david-delivers-larry-david-ness-in-broadway-debut-fish-in-the-dark/",
-          "host": "nypost.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://time.com/3732099/larry-david-fish-in-the-dark-broadway-review/",
-          "host": "time.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.latimes.com/entertainment/arts/la-et-cm-larry-david-fish-in-the-dark-review-20150306-column.html",
-          "host": "latimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-fish-in-the-dark-broadway-review-20150305-column.html",
-          "host": "chicagotribune.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.nj.com/entertainment/index.ssf/2015/03/review_larry_davids_fish_in_the_dark_on_broadway.html",
-          "host": "nj.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11445440/Fish-in-the-Dark-Cort-Theatre-New-York-review-adrift.html",
-          "host": "telegraph.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2015/mar/05/fish-in-the-dark-review-larry-david-broadway-death-etiquette",
-          "host": "theguardian.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/news/fish-in-the-dark-theatre-review-clichridden-play-will-curb-the-enthusiasm-of-larry-david-fans-10089433.html",
-          "host": "independent.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.ew.com/article/2015/03/05/larry-david-fish-dark-ew-review",
-          "host": "ew.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.huffingtonpost.com/steven-suskin/aisle-view-whose-fish-is-it-anyway-_b_6813108.html",
-          "host": "huffingtonpost.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://flavorwire.com/507874/curb-your-enthusiasm-meets-moliere-in-larry-davids-fish-in-the-dark",
-          "host": "flavorwire.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.standard.co.uk/goingout/theatre/big-fish-theatre-review-kelsey-grammer-makes-a-splash-in-this-strange-and-sentimental-show-a3686061.html",
-          "host": "standard.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thetimes.co.uk/article/theatre-review-big-fish-at-the-other-palace-sw1-8b80gpzdn",
-          "host": "thetimes.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/2017/big-fish-starring-kelsey-grammer-review-palace-london/",
-          "host": "thestage.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.express.co.uk/entertainment/theatre/877887/Big-Fish-The-Musical-review-London-The-Other-Palace",
-          "host": "express.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.telegraph.co.uk/theatre/what-to-see/evening-battered-schmaltz-big-fish-palace-review/",
-          "host": "telegraph.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://synthesizer-accordion-e2w3.squarespace.com/fish-at-wp-theater",
-          "host": "synthesizer-accordion-e2w3.squarespace.com",
-          "outletId": "synthesizer-accordion-e2w3",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "Fetch failed: All scraping methods failed"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "synthesizer-accordion-e2w3.squarespace.com",
-            "outlet": "synthesizer-accordion-e2w3.squarespace.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://synthesizer-accordion-e2w3.squarespace.com/fish-at-wp-theater"
-          },
           {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/newyork/theater/fish"
-          },
-          {
-            "outletId": "frombroadway.com",
-            "outlet": "frombroadway.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://news.frombroadway.com/post/review-roundup-fish-wp-theater"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://pagesonstages.wordpress.com/2024/04/12/fish/",
-            "outletId": "pagesonstages.wordpress.com",
+            "url": "https://www.theaterscene.net/plays/offbway-plays/fish-2/tony-marinelli/",
+            "outletId": "theaterscene.net",
             "state": "live",
-            "firstSeenAt": "2026-10-12T13:33:42.598Z"
+            "firstSeenAt": "2026-10-22T05:46:18.377Z"
+          },
+          {
+            "url": "https://pagesonstages.com/2026/10/11/fish-2/",
+            "outletId": "pagesonstages.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-22T05:46:18.377Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2026/10/7/fish",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-22T05:46:18.377Z"
           },
           {
             "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/",
@@ -56903,32 +56110,18 @@
             "firstSeenAt": "2026-10-18T14:06:35.764Z"
           },
           {
-            "url": "https://synthesizer-accordion-e2w3.squarespace.com/fish-at-wp-theater",
-            "outletId": "synthesizer-accordion-e2w3.squarespace.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T22:59:21.861Z"
-          },
-          {
             "url": "https://www.timeout.com/newyork/theater/fish",
             "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
-          },
-          {
-            "url": "https://news.frombroadway.com/post/review-roundup-fish-wp-theater",
-            "outletId": "frombroadway.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-21T14:08:29.336Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 4,
+        "liveCount": 6,
         "candidateCount": 7
       },
-      "computedAt": "2026-10-21T14:08:29.336Z"
+      "computedAt": "2026-10-22T05:46:18.377Z"
     },
     {
       "showId": "fishing-for-alaska-off-broadway-2026",
@@ -90230,7 +89423,6 @@
         "https://playbill.com/article/what-did-critics-think-of-nbcs-jesus-christ-superstar-live-in-concert-starring-john-legend",
         "https://playbill.com/article/read-reviews-for-jesus-christ-superstar-at-lyric-opera-of-chicago",
         "https://www.broadwayworld.com/article/Review-Roundup-JESUS-CHRIST-SUPERSTAR-at-the-Hollywood-Bowl-Starring-Cynthia-Erivo-Adam-Lambert-and-More-20250804",
-        "https://www.broadwayworld.com/article/Review-Roundup-JESUS-CHRIST-SUPERSTAR-on-Broadway-Updating-LIVE-20120322",
         "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-in-on-the-50th-Anniversary-Tour-of-JESUS-CHRIST-SUPERSTAR-20191017",
         "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-JESUS-CHRIST-SUPERSTAR-Resumes-What-Are-the-Critics-Saying-20211110"
       ],
@@ -90249,16 +89441,6 @@
         "https://www.thewrap.com/jesus-christ-superstar-review-cynthia-erivo-adam-lambert-hollywood-bowl/",
         "https://www.theguardian.com/stage/2025/aug/04/jesus-christ-superstar-review-cynthia-erivo",
         "https://weliveentertainment.com/we-live-entertainment/concerts/theater-review-jesus-christ-superstar-hollywood-bowl-absolutely-divine-spectacle/",
-        "http://theater.nytimes.com/2012/03/23/theater/reviews/jesus-christ-superstar-at-the-neil-simon-theater.html",
-        "http://www.usatoday.com/life/theater/reviews/story/2012-03-22/jesus-christ-superstar-once-musicals/53713214/1",
-        "http://www.crescent-news.com/ap%20entertainment/2012/03/22/ap-review-jesus-christ-superstar-overly-flashy",
-        "http://www.hollywoodreporter.com/review/jesus-christ-superstar-theater-review-andrew-lloyd-webber-303387",
-        "http://www.backstage.com/bso/reviews-movie-tv-reviews/ny-review-jesus-christ-superstar-1006552952.story",
-        "http://www.amny.com/urbanite-1.812039/theater-review-jesus-christ-superstar-3-5-stars-1.3618340",
-        "http://www.chicagotribune.com/entertainment/chi-ent-jesus-christ-superstar-review-20120322,0,1543035.column",
-        "http://www.newsday.com/entertainment/theater/a-very-serious-jesus-christ-superstar-1.3616182",
-        "http://blogs.villagevoice.com/dailymusto/2012/03/jesus_christ_su.php",
-        "http://www.nydailynews.com/entertainment/jesus-christ-superstar-rocks-broadway-article-1.1048973",
         "https://www.austin360.com/entertainmentlife/20191010/why-this-jesus-christ-superstar-is-one-of-great-revivals-in-musical-theater-history",
         "https://www.austinchronicle.com/daily/arts/2019-10-15/review-jesus-christ-superstar/",
         "https://www.latimes.com/entertainment-arts/story/2019-10-31/jesus-christ-superstar-national-tour-pantages",
@@ -90294,16 +89476,17 @@
         "https://attractionsmagazine.com/theater-review-the-50th-anniversary-tour-of-jesus-christ-superstar-breathes-new-life-into-a-modern-classic/",
         "https://www.newcitystage.com/2022/07/26/the-passion-of-the-superstar-a-review-of-jesus-christ-superstar-at-broadway-in-chicago/",
         "https://chicago.suntimes.com/2022/7/21/23273090/jesus-christ-superstar-review-cadillac-palace-chicago",
+        "https://eastmidlandstheatre.com/2026/10/21/review-jesus-christ-superstar-greasepaint-productions-loughborough-town-hall/comment-page-1/",
         "https://musicaltheatrereview.com/glenn-close-to-play-herod-for-the-final-drury-lane-performances-of-jesus-christ-superstar/",
+        "https://www.theatrebookings.com/musical/jesus-christ-superstar",
         "https://www.londontheatre.co.uk/reviews/jesus-christ-superstar-review-theatre-royal-drury-lane",
-        "https://littlelondonwhispers.substack.com/p/london-theatre-review-jesus-christ",
+        "https://rolandcat.substack.com/p/review-jesus-christ-superstar-palladium",
         "https://www.whatsonstage.com/news/full-cast-for-jesus-christ-superstar-at-theatre-royal-drury-lane-confirmed-with-on-stage-ticket-plans-revealed_1731065/",
-        "https://musicaltheatrereview.com/second-london-season-for-jesus-christ-superstar/",
-        "https://www.britishtheatreguide.info/reviews/jesus-christ-su-the-london-pall-25719",
         "https://www.afridiziak.com/reviews/jesus-christ-superstar/",
-        "https://www.allthatdazzles.co.uk/post/review-jesus-christ-superstar-london-palladium",
+        "https://www.britishtheatreguide.info/reviews/jesus-christ-su-the-london-pall-25719",
+        "https://littlelondonwhispers.substack.com/p/london-theatre-review-jesus-christ",
         "https://musicaltheatrereview.com/tag/jesus-christ-superstar/",
-        "https://matineemouse.substack.com/p/jesus-christ-superstar-review",
+        "https://www.whatsonstage.com/news/cast-for-jesus-christ-superstar-at-theatre-royal-drury-lane-revealed_1721315/",
         "https://www.broadwayworld.com/westend/article/Review-JESUS-CHRIST-SUPERSTAR-Starring-Sam-Ryder-20260707",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html",
         "https://www.standard.co.uk/culture/theatre/jesus-christ-superstar-review-b1289073.html",
@@ -90313,7 +89496,7 @@
         "https://www.telegraph.co.uk/theatre/what-to-see/jesus-christ-superstar-review/",
         "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-in-london-and-on-tour-review_1726828/"
       ],
-      "dirFiles": 11,
+      "dirFiles": 13,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
@@ -90412,76 +89595,6 @@
           "url": "https://weliveentertainment.com/we-live-entertainment/concerts/theater-review-jesus-christ-superstar-hollywood-bowl-absolutely-divine-spectacle/",
           "host": "weliveentertainment.com",
           "knownOutletId": "weliveentertainment",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://theater.nytimes.com/2012/03/23/theater/reviews/jesus-christ-superstar-at-the-neil-simon-theater.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.usatoday.com/life/theater/reviews/story/2012-03-22/jesus-christ-superstar-once-musicals/53713214/1",
-          "host": "usatoday.com",
-          "knownOutletId": "usatoday",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.crescent-news.com/ap%20entertainment/2012/03/22/ap-review-jesus-christ-superstar-overly-flashy",
-          "host": "crescent-news.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/jesus-christ-superstar-theater-review-andrew-lloyd-webber-303387",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.backstage.com/bso/reviews-movie-tv-reviews/ny-review-jesus-christ-superstar-1006552952.story",
-          "host": "backstage.com",
-          "knownOutletId": "backstage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.amny.com/urbanite-1.812039/theater-review-jesus-christ-superstar-3-5-stars-1.3618340",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.chicagotribune.com/entertainment/chi-ent-jesus-christ-superstar-review-20120322,0,1543035.column",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/a-very-serious-jesus-christ-superstar-1.3616182",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://blogs.villagevoice.com/dailymusto/2012/03/jesus_christ_su.php",
-          "host": "villagevoice.com",
-          "knownOutletId": "village-voice",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/jesus-christ-superstar-rocks-broadway-article-1.1048973",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -90731,9 +89844,21 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://eastmidlandstheatre.com/2026/10/21/review-jesus-christ-superstar-greasepaint-productions-loughborough-town-hall/comment-page-1/",
+          "host": "eastmidlandstheatre.com",
+          "knownOutletId": "east-midlands-theatre",
+          "serpCensus": true
+        },
+        {
           "url": "https://www.londontheatre.co.uk/reviews/jesus-christ-superstar-review-theatre-royal-drury-lane",
           "host": "londontheatre.co.uk",
           "knownOutletId": "london-theatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://rolandcat.substack.com/p/review-jesus-christ-superstar-palladium",
+          "host": "rolandcat.substack.com",
+          "knownOutletId": "rolandcat",
           "serpCensus": true
         },
         {
@@ -90749,21 +89874,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.allthatdazzles.co.uk/post/review-jesus-christ-superstar-london-palladium",
-          "host": "allthatdazzles.co.uk",
-          "knownOutletId": "all-that-dazzles-uk",
-          "serpCensus": true
-        },
-        {
           "url": "https://musicaltheatrereview.com/tag/jesus-christ-superstar/",
           "host": "musicaltheatrereview.com",
           "knownOutletId": "musical-theatre-review",
-          "serpCensus": true
-        },
-        {
-          "url": "https://matineemouse.substack.com/p/jesus-christ-superstar-review",
-          "host": "matineemouse.substack.com",
-          "knownOutletId": "matineemouse",
           "serpCensus": true
         },
         {
@@ -90810,6 +89923,54 @@
       "dirOnly": [],
       "flaggedMisses": [
         {
+          "url": "https://www.theatrebookings.com/musical/jesus-christ-superstar",
+          "host": "theatrebookings.com",
+          "knownOutletId": "theatrebookings",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrebookings--tube.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrebookings.com/musical/jesus-christ-superstar"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/jesus-christ-su-the-london-pall-25719",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "british-theatre--anita-marguerite-butler.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.britishtheatreguide.info/reviews/jesus-christ-su-the-london-pall-25719"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-07-08",
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
           "url": "https://littlelondonwhispers.substack.com/p/london-theatre-review-jesus-christ",
           "host": "littlelondonwhispers.substack.com",
           "knownOutletId": "littlelondonwhispers",
@@ -90835,9 +89996,9 @@
           "reverify": false
         },
         {
-          "url": "https://www.britishtheatreguide.info/reviews/jesus-christ-su-the-london-pall-25719",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
+          "url": "https://www.whatsonstage.com/news/cast-for-jesus-christ-superstar-at-theatre-royal-drury-lane-revealed_1721315/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -90845,9 +90006,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "british-theatre--anita-marguerite-butler.json",
+              "file": "whatsonstage--alex-wood.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.britishtheatreguide.info/reviews/jesus-christ-su-the-london-pall-25719"
+              "urlInDir": "https://www.whatsonstage.com/news/cast-for-jesus-christ-superstar-at-theatre-royal-drury-lane-revealed_1721315/"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -90855,7 +90016,7 @@
             "wrongProduction"
           ],
           "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-07-08",
+          "priorRunSource": "flagged-file-date:2026-05-14",
           "serpCensus": true,
           "reverify": false
         },
@@ -90995,7 +90156,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -91025,7 +90186,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -91041,25 +90202,24 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 10,
+        "resultCount": 11,
         "error": null
       },
       "candidatesRejected": {
-        "count": 1589,
+        "count": 1231,
         "byReason": {
-          "aggregator-internal-nav": 1051,
-          "non-review-host": 125,
-          "bare-host": 2,
+          "non-review-host": 114,
           "event-listing": 1,
-          "non-review-path": 1,
-          "write-path-blocked": 5,
-          "ticket-seller-product-page": 1,
-          "not-http-url": 343,
-          "aggregator-section-root": 24,
-          "roundup-page": 1,
+          "aggregator-internal-nav": 818,
           "production-database-listing": 30,
+          "roundup-page": 9,
+          "ticketing-listing": 1,
+          "write-path-blocked": 6,
+          "bare-host": 2,
           "census-junk-host": 3,
-          "unparseable-url": 1,
+          "ticket-seller-product-page": 1,
+          "not-http-url": 225,
+          "aggregator-section-root": 20,
           "show-hub": 1
         }
       },
@@ -91078,10 +90238,6 @@
           "publishDate": "2025-08-04"
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-JESUS-CHRIST-SUPERSTAR-on-Broadway-Updating-LIVE-20120322",
-          "publishDate": "2012-03-22"
-        },
-        {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-in-on-the-50th-Anniversary-Tour-of-JESUS-CHRIST-SUPERSTAR-20191017",
           "publishDate": "2019-10-17"
         },
@@ -91090,7 +90246,7 @@
           "publishDate": "2021-11-10"
         }
       ],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [
         {
           "url": "https://musicaltheatrereview.com/glenn-close-to-play-herod-for-the-final-drury-lane-performances-of-jesus-christ-superstar/",
@@ -91098,13 +90254,6 @@
           "knownOutletId": "musical-theatre-review",
           "serpCensus": true,
           "zeroCharAttempts": 5
-        },
-        {
-          "url": "https://musicaltheatrereview.com/second-london-season-for-jesus-christ-superstar/",
-          "host": "musicaltheatrereview.com",
-          "knownOutletId": "musical-theatre-review",
-          "serpCensus": true,
-          "zeroCharAttempts": 3
         }
       ],
       "weIngestBlocked": [
@@ -91202,76 +90351,6 @@
         {
           "url": "https://weliveentertainment.com/we-live-entertainment/concerts/theater-review-jesus-christ-superstar-hollywood-bowl-absolutely-divine-spectacle/",
           "host": "weliveentertainment.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://theater.nytimes.com/2012/03/23/theater/reviews/jesus-christ-superstar-at-the-neil-simon-theater.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.usatoday.com/life/theater/reviews/story/2012-03-22/jesus-christ-superstar-once-musicals/53713214/1",
-          "host": "usatoday.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.crescent-news.com/ap%20entertainment/2012/03/22/ap-review-jesus-christ-superstar-overly-flashy",
-          "host": "crescent-news.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/jesus-christ-superstar-theater-review-andrew-lloyd-webber-303387",
-          "host": "hollywoodreporter.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.backstage.com/bso/reviews-movie-tv-reviews/ny-review-jesus-christ-superstar-1006552952.story",
-          "host": "backstage.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.amny.com/urbanite-1.812039/theater-review-jesus-christ-superstar-3-5-stars-1.3618340",
-          "host": "amny.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.chicagotribune.com/entertainment/chi-ent-jesus-christ-superstar-review-20120322,0,1543035.column",
-          "host": "chicagotribune.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/a-very-serious-jesus-christ-superstar-1.3616182",
-          "host": "newsday.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://blogs.villagevoice.com/dailymusto/2012/03/jesus_christ_su.php",
-          "host": "villagevoice.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/jesus-christ-superstar-rocks-broadway-article-1.1048973",
-          "host": "nydailynews.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -91559,6 +90638,21 @@
       ],
       "ingestResults": [
         {
+          "url": "https://eastmidlandstheatre.com/2026/10/21/review-jesus-christ-superstar-greasepaint-productions-loughborough-town-hall/comment-page-1/",
+          "host": "eastmidlandstheatre.com",
+          "outletId": "east-midlands-theatre",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
           "url": "https://www.londontheatre.co.uk/reviews/jesus-christ-superstar-review-theatre-royal-drury-lane",
           "host": "londontheatre.co.uk",
           "outletId": "london-theatre",
@@ -91574,9 +90668,9 @@
           "reason": "jesus-christ-superstar-off-west-end-2026: https://www.londontheatre.co.uk/reviews/jesus-christ-superstar-review-theatre-royal-drury-lane is already owned by jesus-christ-superstar-west-end-2026 — one of the two is contaminated. Inspect data/review-texts/jesus-christ-superstar-west-end-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
         },
         {
-          "url": "https://www.whatsonstage.com/news/full-cast-for-jesus-christ-superstar-at-theatre-royal-drury-lane-confirmed-with-on-stage-ticket-plans-revealed_1731065/",
-          "host": "whatsonstage.com",
-          "outletId": "whatsonstage",
+          "url": "https://rolandcat.substack.com/p/review-jesus-christ-superstar-palladium",
+          "host": "rolandcat.substack.com",
+          "outletId": "rolandcat",
           "provisional": false,
           "ok": false,
           "noop": false,
@@ -91586,7 +90680,22 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "❌ Refusing to ingest — collision with whatsonstage--alex-wood.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://www.whatsonstage.com/news/cast-for-jesus-christ-superstar-at-theatre-royal-drury-lane-revealed_1721315/\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": \"2026-05-14\",\n  \"incomingUrl\": \"https://www.whatsonstage.com/news/full-cast-for-jesus-christ-superstar-at-theatre-royal-drury-lane-confirmed-with-on-stage-ticket-plans-revealed_1731065/\",\n  \"incomingPublis"
+          "reason": "⚠️  Cross-market reroute: jesus-christ-superstar-off-west-end-2026 → jesus-christ-superstar-west-end-2026 (same-title-sibling: publish-date, venue-substring)\n\n❌ Stale merge: fullText still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/jesus-christ-superstar-west-end-2026/rolandcat--roviews.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/full-cast-for-jesus-christ-superstar-at-theatre-royal-drury-lane-confirmed-with-on-stage-ticket-plans-revealed_1731065/",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "jesus-christ-superstar-off-west-end-2026: https://www.whatsonstage.com/news/full-cast-for-jesus-christ-superstar-at-theatre-royal-drury-lane-confirmed-with-on-stage-ticket-plans-revealed_1731065/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         },
         {
           "url": "https://www.afridiziak.com/reviews/jesus-christ-superstar/",
@@ -91602,54 +90711,38 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "jesus-christ-superstar-off-west-end-2026: https://www.afridiziak.com/reviews/jesus-christ-superstar/ is already owned by jesus-christ-superstar-west-end-2026 — one of the two is contaminated. Inspect data/review-texts/jesus-christ-superstar-west-end-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-jesus-christ-superstar-london-palladium",
-          "host": "allthatdazzles.co.uk",
-          "outletId": "all-that-dazzles-uk",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  Cross-market reroute: jesus-christ-superstar-off-west-end-2026 → jesus-christ-superstar-west-end-2026 (sibling-venue-in-url: \"london-palladium\")\n\n❌ Stale merge: fullText still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/jesus-christ-superstar-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
-        },
-        {
-          "url": "https://musicaltheatrereview.com/tag/jesus-christ-superstar/",
-          "host": "musicaltheatrereview.com",
-          "outletId": "musical-theatre-review",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "jesus-christ-superstar-off-west-end-2026: https://musicaltheatrereview.com/tag/jesus-christ-superstar/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         }
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://matineemouse.substack.com/p/jesus-christ-superstar-review",
-          "host": "matineemouse.substack.com",
-          "outletId": "matineemouse"
+          "url": "https://musicaltheatrereview.com/tag/jesus-christ-superstar/",
+          "host": "musicaltheatrereview.com",
+          "outletId": "musical-theatre-review"
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "east-midlands-theatre",
+            "outlet": "east-midlands-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://eastmidlandstheatre.com/2026/10/21/review-jesus-christ-superstar-greasepaint-productions-loughborough-town-hall/comment-page-1/"
+          },
+          {
             "outletId": "london-theatre",
             "outlet": "london-theatre",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.londontheatre.co.uk/reviews/jesus-christ-superstar-review-theatre-royal-drury-lane"
+          },
+          {
+            "outletId": "rolandcat",
+            "outlet": "rolandcat",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://rolandcat.substack.com/p/review-jesus-christ-superstar-palladium"
           },
           {
             "outletId": "whatsonstage",
@@ -91666,13 +90759,6 @@
             "url": "https://www.afridiziak.com/reviews/jesus-christ-superstar/"
           },
           {
-            "outletId": "all-that-dazzles-uk",
-            "outlet": "all-that-dazzles-uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.allthatdazzles.co.uk/post/review-jesus-christ-superstar-london-palladium"
-          },
-          {
             "outletId": "musical-theatre-review",
             "outlet": "musical-theatre-review",
             "critic": "Unknown",
@@ -91680,21 +90766,35 @@
             "url": "https://musicaltheatrereview.com/tag/jesus-christ-superstar/"
           },
           {
-            "outletId": "matineemouse",
-            "outlet": "matineemouse",
+            "outletId": "theatrebookings",
+            "outlet": "theatrebookings",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://matineemouse.substack.com/p/jesus-christ-superstar-review"
+            "url": "https://www.theatrebookings.com/musical/jesus-christ-superstar"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://eastmidlandstheatre.com/2026/10/21/review-jesus-christ-superstar-greasepaint-productions-loughborough-town-hall/comment-page-1/",
+            "outletId": "east-midlands-theatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-22T05:46:18.377Z"
+          },
           {
             "url": "https://www.londontheatre.co.uk/reviews/jesus-christ-superstar-review-theatre-royal-drury-lane",
             "outletId": "london-theatre",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-19T14:57:03.324Z"
+          },
+          {
+            "url": "https://rolandcat.substack.com/p/review-jesus-christ-superstar-palladium",
+            "outletId": "rolandcat",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-22T05:46:18.377Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/full-cast-for-jesus-christ-superstar-at-theatre-royal-drury-lane-confirmed-with-on-stage-ticket-plans-revealed_1731065/",
@@ -91711,13 +90811,6 @@
             "firstSeenAt": "2026-10-19T14:57:03.324Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-jesus-christ-superstar-london-palladium",
-            "outletId": "all-that-dazzles-uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-19T14:57:03.324Z"
-          },
-          {
             "url": "https://musicaltheatrereview.com/tag/jesus-christ-superstar/",
             "outletId": "musical-theatre-review",
             "state": "IN_FLIGHT",
@@ -91725,18 +90818,18 @@
             "firstSeenAt": "2026-10-21T14:08:29.336Z"
           },
           {
-            "url": "https://matineemouse.substack.com/p/jesus-christ-superstar-review",
-            "outletId": "matineemouse",
+            "url": "https://www.theatrebookings.com/musical/jesus-christ-superstar",
+            "outletId": "theatrebookings",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
+            "firstSeenAt": "2026-10-22T05:46:18.377Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 6
+        "candidateCount": 7
       },
-      "computedAt": "2026-10-21T14:08:29.336Z"
+      "computedAt": "2026-10-22T05:46:18.377Z"
     },
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
@@ -127571,39 +126664,60 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.theguardian.com/stage/2026/oct/20/ts-eliot-murder-in-the-cathedral-review-david-suchet",
-        "https://www.whatsonstage.com/news/murder-in-the-cathedral-with-david-suchet-review_1735285/",
-        "https://www.londontheatre1.com/reviews/murder-in-the-cathedral-st-john-the-divine-richmond/",
         "https://thespyinthestalls.com/2026/10/murder-in-the-cathedral/",
+        "https://www.londontheatre1.com/reviews/murder-in-the-cathedral-st-john-the-divine-richmond/",
         "https://www.thetimes.com/culture/theatre-dance/article/murder-in-the-cathedral-review-david-suchet-7mvrc5g08",
-        "https://www.standard.co.uk/culture/theatre/murder-in-the-cathedral-review-b1301555.html",
-        "https://www.thereviewshub.com/murder-in-the-cathedral-st-john-the-divine-london/",
-        "https://fringereview.co.uk/review/fringereview-uk/2026/murder-in-the-cathedral/",
         "https://www.thestage.co.uk/reviews/murder-in-the-cathedral-review-st-johns-the-divine-london",
+        "https://www.thereviewshub.com/murder-in-the-cathedral-st-john-the-divine-london/",
+        "https://www.standard.co.uk/culture/theatre/murder-in-the-cathedral-review-b1301555.html",
+        "https://www.whatsonstage.com/news/murder-in-the-cathedral-with-david-suchet-review_1735285/",
+        "https://fringereview.co.uk/review/fringereview-uk/2026/murder-in-the-cathedral/",
         "https://www.myviewfromthestalls.co.uk/post/review-murder-in-the-cathedral-oxford-playhouse",
-        "https://theatreweekly.com/review-murder-in-the-cathedral-at-st-john-the-divine-church/",
-        "https://theatrecat.com/2026/10/20/murder-in-the-cathedral-orange-tree-richmond/",
-        "https://www.westendbestfriend.co.uk/news/review-murder-in-the-cathedral-st-john-the-divine-richmond",
-        "https://www.theatre-news.com/review/UK/6683/Theatre/Murder-At-The-Cathedral-Orange-Tree-Theatre",
-        "https://therecs.co.uk/t-s-eliots-murder-in-the-cathedral/"
+        "https://www.broadwayworld.com/westend/article/Review-MURDER-IN-THE-CATHEDRAL-Starring-David-Suchet-20261020",
+        "https://www.aol.co.uk/articles/ts-eliot-murder-cathedral-review-115030000.html"
       ],
-      "dirFiles": 25,
-      "dirClean": 13,
-      "inReviewsJson": 13,
+      "dirFiles": 30,
+      "dirClean": 18,
+      "inReviewsJson": 18,
       "missing": [
         {
-          "url": "https://www.theatre-news.com/review/UK/6683/Theatre/Murder-At-The-Cathedral-Orange-Tree-Theatre",
-          "host": "theatre-news.com",
-          "knownOutletId": "theatre-news",
+          "url": "https://www.aol.co.uk/articles/ts-eliot-murder-cathedral-review-115030000.html",
+          "host": "aol.co.uk",
+          "knownOutletId": null,
           "serpCensus": true
         }
       ],
       "dirOnly": [
+        {
+          "host": "britishtheatreguide.info",
+          "count": 1
+        },
         {
           "host": "dailymail.com",
           "count": 1
         },
         {
           "host": "telegraph.co.uk",
+          "count": 1
+        },
+        {
+          "host": "therecs.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatreweekly.com",
+          "count": 1
+        },
+        {
+          "host": "theatrecat.com",
+          "count": 1
+        },
+        {
+          "host": "viewfromthegods.co.uk",
+          "count": 1
+        },
+        {
+          "host": "westendbestfriend.co.uk",
           "count": 1
         }
       ],
@@ -127691,7 +126805,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 7,
+            "accepted": 6,
             "error": null
           },
           {
@@ -127701,7 +126815,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -127731,21 +126845,24 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 15,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
-        "count": 15,
+        "count": 17,
         "byReason": {
           "non-review-host": 8,
-          "write-path-blocked": 5,
-          "no-review-evidence": 2
+          "roundup-page": 2,
+          "write-path-blocked": 1,
+          "non-review-path": 1,
+          "no-review-evidence": 4,
+          "event-listings-page": 1
         }
       },
       "dedupedVariants": [],
@@ -127753,25 +126870,10 @@
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://www.londontheatre1.com/reviews/murder-in-the-cathedral-st-john-the-divine-richmond/",
-          "host": "londontheatre1.com",
-          "outletId": "londontheatre1",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://fringereview.co.uk/review/fringereview-uk/2026/murder-in-the-cathedral/",
-          "host": "fringereview.co.uk",
-          "outletId": "fringereview",
-          "provisional": false,
+          "url": "https://www.aol.co.uk/articles/ts-eliot-murder-cathedral-review-115030000.html",
+          "host": "aol.co.uk",
+          "outletId": "aol",
+          "provisional": true,
           "ok": false,
           "noop": false,
           "conflict": false,
@@ -127779,23 +126881,8 @@
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-        },
-        {
-          "url": "https://www.theatre-news.com/review/UK/6683/Theatre/Murder-At-The-Cathedral-Orange-Tree-Theatre",
-          "host": "theatre-news.com",
-          "outletId": "theatre-news",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
-          "unclassified": false,
           "zeroChar": false,
-          "reason": "murder-cathedral-off-west-end-2026: https://www.theatre-news.com/review/UK/6683/Theatre/Murder-At-The-Cathedral-Orange-Tree-Theatre has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+          "reason": "⚠️  Bright Data failed: Bright Data request timeout\nFetch failed: All scraping methods failed"
         }
       ],
       "ingestSkippedByCap": [],
@@ -127803,11 +126890,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "theatre-news",
-            "outlet": "theatre-news",
+            "outletId": "aol.co.uk",
+            "outlet": "aol.co.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theatre-news.com/review/UK/6683/Theatre/Murder-At-The-Cathedral-Orange-Tree-Theatre"
+            "url": "https://www.aol.co.uk/articles/ts-eliot-murder-cathedral-review-115030000.html"
           }
         ],
         "suppressedMissing": [],
@@ -127819,8 +126906,8 @@
             "firstSeenAt": "2026-10-21T14:08:29.336Z"
           },
           {
-            "url": "https://www.whatsonstage.com/news/murder-in-the-cathedral-with-david-suchet-review_1735285/",
-            "outletId": "whatsonstage.com",
+            "url": "https://thespyinthestalls.com/2026/10/murder-in-the-cathedral/",
+            "outletId": "thespyinthestalls.com",
             "state": "live",
             "firstSeenAt": "2026-10-21T14:08:29.336Z"
           },
@@ -127831,32 +126918,8 @@
             "firstSeenAt": "2026-10-21T14:08:29.336Z"
           },
           {
-            "url": "https://thespyinthestalls.com/2026/10/murder-in-the-cathedral/",
-            "outletId": "thespyinthestalls.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
-          },
-          {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/murder-in-the-cathedral-review-david-suchet-7mvrc5g08",
             "outletId": "thetimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/murder-in-the-cathedral-review-b1301555.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/murder-in-the-cathedral-st-john-the-divine-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
-          },
-          {
-            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/murder-in-the-cathedral/",
-            "outletId": "fringereview.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-21T14:08:29.336Z"
           },
@@ -127867,42 +126930,48 @@
             "firstSeenAt": "2026-10-21T14:08:29.336Z"
           },
           {
-            "url": "https://theatreweekly.com/review-murder-in-the-cathedral-at-st-john-the-divine-church/",
-            "outletId": "theatreweekly.com",
+            "url": "https://www.thereviewshub.com/murder-in-the-cathedral-st-john-the-divine-london/",
+            "outletId": "thereviewshub.com",
             "state": "live",
             "firstSeenAt": "2026-10-21T14:08:29.336Z"
           },
           {
-            "url": "https://theatrecat.com/2026/10/20/murder-in-the-cathedral-orange-tree-richmond/",
-            "outletId": "theatrecat.com",
+            "url": "https://www.standard.co.uk/culture/theatre/murder-in-the-cathedral-review-b1301555.html",
+            "outletId": "standard.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-21T14:08:29.336Z"
           },
           {
-            "url": "https://www.westendbestfriend.co.uk/news/review-murder-in-the-cathedral-st-john-the-divine-richmond",
-            "outletId": "westendbestfriend.co.uk",
+            "url": "https://www.whatsonstage.com/news/murder-in-the-cathedral-with-david-suchet-review_1735285/",
+            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-10-21T14:08:29.336Z"
           },
           {
-            "url": "https://therecs.co.uk/t-s-eliots-murder-in-the-cathedral/",
-            "outletId": "therecs.co.uk",
+            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/murder-in-the-cathedral/",
+            "outletId": "fringereview.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-21T14:08:29.336Z"
           },
           {
-            "url": "https://www.theatre-news.com/review/UK/6683/Theatre/Murder-At-The-Cathedral-Orange-Tree-Theatre",
-            "outletId": "theatre-news",
+            "url": "https://www.broadwayworld.com/westend/article/Review-MURDER-IN-THE-CATHEDRAL-Starring-David-Suchet-20261020",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-22T05:46:18.377Z"
+          },
+          {
+            "url": "https://www.aol.co.uk/articles/ts-eliot-murder-cathedral-review-115030000.html",
+            "outletId": "aol.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
+            "firstSeenAt": "2026-10-22T05:46:18.377Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 13,
-        "candidateCount": 14
+        "liveCount": 10,
+        "candidateCount": 11
       },
-      "computedAt": "2026-10-21T14:08:29.336Z"
+      "computedAt": "2026-10-22T05:46:18.377Z"
     },
     {
       "showId": "murder-she-didnt-write-west-end-2025",
@@ -148478,35 +147547,179 @@
       "status": "upcoming",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://donyc.com/events/2026/10/22/queeney-todd-the-demon-bottom-of-fleet-street-tickets",
+        "https://www.picturethispost.com/heartbeat-opera-presents-queeney-todd-the-demon-bottom-of-fleet-street-preview/"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://donyc.com/events/2026/10/22/queeney-todd-the-demon-bottom-of-fleet-street-tickets",
+          "host": "donyc.com",
+          "knownOutletId": "donyc",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.picturethispost.com/heartbeat-opera-presents-queeney-todd-the-demon-bottom-of-fleet-street-preview/",
+          "host": "picturethispost.com",
+          "knownOutletId": "picture-this-post",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Queeney Todd: The Demon Bottom of Fleet Street\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Queeney Todd: The Demon Bottom of Fleet Street\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Queeney Todd: The Demon Bottom of Fleet Street\" review judson",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Queeney Todd: The Demon Bottom of Fleet Street Judson Memorial Church review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Queeney Todd: The Demon Bottom of Fleet Street Judson Memorial Church review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Queeney Todd: The Demon Bottom of Fleet Street Judson Memorial Church review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 27,
+        "byReason": {
+          "non-review-host": 21,
+          "venue-production-page": 2,
+          "show-listing-page": 1,
+          "event-listing": 1,
+          "aggregator-internal-nav": 1,
+          "review-hub-page": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://donyc.com/events/2026/10/22/queeney-todd-the-demon-bottom-of-fleet-street-tickets",
+          "host": "donyc.com",
+          "outletId": "donyc",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.picturethispost.com/heartbeat-opera-presents-queeney-todd-the-demon-bottom-of-fleet-street-preview/",
+          "host": "picturethispost.com",
+          "outletId": "picture-this-post",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "donyc",
+            "outlet": "donyc",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://donyc.com/events/2026/10/22/queeney-todd-the-demon-bottom-of-fleet-street-tickets"
+          },
+          {
+            "outletId": "picture-this-post",
+            "outlet": "picture-this-post",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.picturethispost.com/heartbeat-opera-presents-queeney-todd-the-demon-bottom-of-fleet-street-preview/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://donyc.com/events/2026/10/22/queeney-todd-the-demon-bottom-of-fleet-street-tickets",
+            "outletId": "donyc",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-22T05:46:18.377Z"
+          },
+          {
+            "url": "https://www.picturethispost.com/heartbeat-opera-presents-queeney-todd-the-demon-bottom-of-fleet-street-preview/",
+            "outletId": "picture-this-post",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-22T05:46:18.377Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 2
       },
-      "computedAt": "2026-10-21T10:53:45.610Z"
+      "computedAt": "2026-10-22T05:46:18.377Z"
     },
     {
       "showId": "race-the-movie-the-play-off-broadway-2026",
@@ -173539,7 +172752,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 5,
+            "results": 6,
             "accepted": 0,
             "error": null
           },
@@ -173580,11 +172793,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 39,
+        "count": 40,
         "byReason": {
-          "aggregator-internal-nav": 8,
           "non-review-host": 4,
-          "venue-production-page": 26,
+          "venue-production-page": 28,
+          "aggregator-internal-nav": 7,
           "census-junk-host": 1
         }
       },
@@ -173599,7 +172812,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-21T14:08:29.336Z"
+      "computedAt": "2026-10-22T05:46:18.377Z"
     },
     {
       "showId": "tammy-faye-2024",
@@ -190038,10 +189251,9 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://here.app.getcuebox.com/o/CCTQ0T6B/shows/BN9WR68F",
+        "https://www.discogs.com/release/414374-Kate-Bush-The-Kick-Inside",
         "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/14/",
-        "https://musicboard.app/erickstarr/review/album/the-kick-inside/kate-bush/",
-        "https://www.allmusic.com/album/the-kick-inside-mw0000189382",
-        "https://pitchfork.com/reviews/albums/kate-bush-the-kick-inside/"
+        "https://musicboard.app/erickstarr/review/album/the-kick-inside/kate-bush/"
       ],
       "dirFiles": 0,
       "dirClean": 0,
@@ -190053,6 +189265,12 @@
           "knownOutletId": null
         },
         {
+          "url": "https://www.discogs.com/release/414374-Kate-Bush-The-Kick-Inside",
+          "host": "discogs.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
           "url": "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/14/",
           "host": "rateyourmusic.com",
           "knownOutletId": null,
@@ -190061,18 +189279,6 @@
         {
           "url": "https://musicboard.app/erickstarr/review/album/the-kick-inside/kate-bush/",
           "host": "musicboard.app",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.allmusic.com/album/the-kick-inside-mw0000189382",
-          "host": "allmusic.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://pitchfork.com/reviews/albums/kate-bush-the-kick-inside/",
-          "host": "pitchfork.com",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -190103,7 +189309,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -190133,24 +189339,24 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 39,
+        "count": 35,
         "byReason": {
-          "aggregator-internal-nav": 4,
-          "non-review-host": 24,
-          "bare-host": 2,
-          "write-path-blocked": 2,
-          "no-review-evidence": 4,
-          "not-http-url": 3
+          "non-review-host": 22,
+          "show-listing-page": 1,
+          "aggregator-internal-nav": 3,
+          "write-path-blocked": 3,
+          "bare-host": 3,
+          "no-review-evidence": 3
         }
       },
       "dedupedVariants": [],
@@ -190173,6 +189379,21 @@
           "reason": "⚠️  provisional outlet \"getcuebox\" (not in registry) — onboard to outlet-registry.json after review.\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         },
         {
+          "url": "https://www.discogs.com/release/414374-Kate-Bush-The-Kick-Inside",
+          "host": "discogs.com",
+          "outletId": "discogs",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
           "url": "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/14/",
           "host": "rateyourmusic.com",
           "outletId": "rateyourmusic",
@@ -190184,7 +189405,7 @@
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
-          "zeroChar": true,
+          "zeroChar": false,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=rateyourmusic.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=rateyourmusic.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  Bright D"
         },
         {
@@ -190201,36 +189422,6 @@
           "unclassified": false,
           "zeroChar": true,
           "reason": "⚠️  provisional outlet \"musicboard\" (not in registry) — onboard to outlet-registry.json after review.\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-        },
-        {
-          "url": "https://www.allmusic.com/album/the-kick-inside-mw0000189382",
-          "host": "allmusic.com",
-          "outletId": "allmusic",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  provisional outlet \"allmusic\" (not in registry) — onboard to outlet-registry.json after review.\n  ⚠️  Unvalidated domain for the-kick-inside-off-broadway-2026/allmusic: no registered domain for outlet \"allmusic\" — URL host not checked\n[review-write-guard] date-implausible: the-kick-inside-off-broadway-2026/allmusic--rob-dwyer.json → quarantined to _pending/the-kick-inside-off-broadway-2026/allmusic--rob-dwyer.json (17778d before earliest date, not within priorRuns)\n\n❌ Write-guard refused the write — nothing changed on disk (date_implausible)\n   quarantined to: /home/runner/work/Broadwaysco"
-        },
-        {
-          "url": "https://pitchfork.com/reviews/albums/kate-bush-the-kick-inside/",
-          "host": "pitchfork.com",
-          "outletId": "pitchfork",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  provisional outlet \"pitchfork\" (not in registry) — onboard to outlet-registry.json after review.\n  ⚠️  Unvalidated domain for the-kick-inside-off-broadway-2026/pitchfork: no registered domain for outlet \"pitchfork\" — URL host not checked\n[review-write-guard] date-implausible: the-kick-inside-off-broadway-2026/pitchfork--laura-snapes.json → quarantined to _pending/the-kick-inside-off-broadway-2026/pitchfork--laura-snapes.json (2832d before earliest date, not within priorRuns)\n\n❌ Write-guard refused the write — nothing changed on disk (date_implausible)\n   quarantined to: /home/runner/work/B"
         }
       ],
       "ingestSkippedByCap": [],
@@ -190245,6 +189436,13 @@
             "url": "https://here.app.getcuebox.com/o/CCTQ0T6B/shows/BN9WR68F"
           },
           {
+            "outletId": "discogs.com",
+            "outlet": "discogs.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.discogs.com/release/414374-Kate-Bush-The-Kick-Inside"
+          },
+          {
             "outletId": "rateyourmusic.com",
             "outlet": "rateyourmusic.com",
             "critic": "Unknown",
@@ -190257,20 +189455,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://musicboard.app/erickstarr/review/album/the-kick-inside/kate-bush/"
-          },
-          {
-            "outletId": "allmusic.com",
-            "outlet": "allmusic.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.allmusic.com/album/the-kick-inside-mw0000189382"
-          },
-          {
-            "outletId": "pitchfork.com",
-            "outlet": "pitchfork.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://pitchfork.com/reviews/albums/kate-bush-the-kick-inside/"
           }
         ],
         "suppressedMissing": [],
@@ -190281,6 +189465,13 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-21T14:08:29.336Z"
+          },
+          {
+            "url": "https://www.discogs.com/release/414374-Kate-Bush-The-Kick-Inside",
+            "outletId": "discogs.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-22T05:46:18.377Z"
           },
           {
             "url": "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/14/",
@@ -190295,27 +189486,13 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-21T14:08:29.336Z"
-          },
-          {
-            "url": "https://www.allmusic.com/album/the-kick-inside-mw0000189382",
-            "outletId": "allmusic.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
-          },
-          {
-            "url": "https://pitchfork.com/reviews/albums/kate-bush-the-kick-inside/",
-            "outletId": "pitchfork.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 5
+        "candidateCount": 4
       },
-      "computedAt": "2026-10-21T14:08:29.336Z"
+      "computedAt": "2026-10-22T05:46:18.377Z"
     },
     {
       "showId": "the-last-five-years-2025",
@@ -237774,12 +236951,77 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Women Who Eat\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Women Who Eat\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Women Who Eat\" review theaterlab",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Women Who Eat Theaterlab review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Women Who Eat Theaterlab review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Women Who Eat Theaterlab review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 35,
+        "byReason": {
+          "non-review-host": 24,
+          "venue-production-page": 1,
+          "aggregator-internal-nav": 2,
+          "ticketing-listing": 1,
+          "write-path-blocked": 4,
+          "bare-host": 2,
+          "feature-not-review": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -237809,7 +237051,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-21T14:08:29.336Z"
+      "computedAt": "2026-10-22T05:46:18.377Z"
     },
     {
       "showId": "working-girl-la-jolla-regional-2025",
@@ -239015,22 +238257,21 @@
     }
   ],
   "staleness": {
-    "at": "2026-10-22T02:10:58.477Z",
+    "at": "2026-10-22T05:46:18.376Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "fences-off-west-end-2026",
-      "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "king-lear-royal-exchange-regional-2026"
+      "fish-off-broadway-2026",
+      "murder-cathedral-off-west-end-2026"
     ],
     "oldestDueRowAtStart": {
       "showId": "hamlet-off-broadway-2026",
       "computedAt": "2026-09-05T17:16:12.711Z",
-      "ageHours": 1112.6
+      "ageHours": 1116.2
     },
     "oldestDueRowAfterRun": {
       "showId": "hamlet-off-broadway-2026",
       "computedAt": "2026-09-05T17:16:12.711Z",
-      "ageHours": 1112.9
+      "ageHours": 1116.5
     }
   }
 }

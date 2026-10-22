@@ -1,42 +1,56 @@
 {
-  "generatedAt": "2026-10-21T23:25:13.403Z",
+  "generatedAt": "2026-10-22T05:48:49.947Z",
   "phase": "done",
   "days": 21,
-  "shows": 81,
+  "shows": 74,
   "sources": {
     "theatermania": {
-      "queries": 42,
-      "listed": 17,
+      "queries": 39,
+      "listed": 18,
       "errors": 0
     },
     "whatsonstage": {
-      "queries": 39,
+      "queries": 35,
       "listed": 11,
       "errors": 0
     },
     "nysr": {
-      "queries": 42,
-      "listed": 14,
+      "queries": 39,
+      "listed": 15,
       "errors": 0
     },
     "newyorktheater": {
-      "queries": 42,
-      "listed": 5,
+      "queries": 39,
+      "listed": 6,
       "errors": 0
     },
     "nytimes": {
       "queries": 4,
-      "listed": 2,
+      "listed": 3,
       "errors": 0
     },
     "theatre-reviews": {
-      "queries": 39,
-      "listed": 62,
+      "queries": 35,
+      "listed": 54,
       "errors": 0
     }
   },
   "listingTruncated": false,
-  "listed": 111,
-  "ingested": [],
-  "missing": []
+  "listed": 107,
+  "ingested": [
+    {
+      "showId": "midnight-off-broadway-2026",
+      "url": "https://www.nytimes.com/2026/10/21/theater/midnight-todrick-hall-benjamin-button-review.html",
+      "ok": true
+    }
+  ],
+  "missing": [
+    {
+      "source": "nytimes",
+      "showId": "midnight-off-broadway-2026",
+      "outletId": "nytimes",
+      "url": "https://www.nytimes.com/2026/10/21/theater/midnight-todrick-hall-benjamin-button-review.html",
+      "date": "2026-10-21"
+    }
+  ]
 }
