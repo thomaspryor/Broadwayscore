@@ -370,13 +370,8 @@ fi
 if grep -qE "\.(ts|tsx)$" <<<"$ALL_CHANGED_FILES"; then
   if [ -f data/reviews.json ] && [ -f data/shows.json ]; then
     echo "pre-push: tsc --noEmit (push touches TypeScript)…"
-    # Node's default ~2GB old-space cap OOMs full-repo tsc in cloud containers
-    # (BRO-6004). Raise it unless the caller already chose a heap size.
-    TSC_NODE_OPTIONS="${NODE_OPTIONS:-}"
-    case "$TSC_NODE_OPTIONS" in
-      *max-old-space-size*) ;;
-      *) TSC_NODE_OPTIONS="$TSC_NODE_OPTIONS --max-old-space-size=6144" ;;
-    esac
+    # Raise the heap for full-repo tsc; default ~2GB OOMs in cloud (BRO-6004).
+    TSC_NODE_OPTIONS="$(bash "$(git rev-parse --show-toplevel)/scripts/lib/tsc-node-options.sh")"
     if ! NODE_OPTIONS="$TSC_NODE_OPTIONS" npx tsc --noEmit >/tmp/pre-push-tsc.out 2>&1; then
       echo ""
       echo "=== PRE-PUSH BLOCKED: tsc --noEmit failed ==="

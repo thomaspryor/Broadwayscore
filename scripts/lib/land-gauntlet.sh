@@ -186,14 +186,10 @@ if [ "${GAUNTLET_PARALLEL:-0}" = "1" ] && [ -z "${GAUNTLET_CHILD:-}" ]; then
 fi
 
 # ── TypeScript Check ───────────────────────────────────────────────────────
-# Default ~2GB old-space cap OOMs full-repo tsc in cloud containers (BRO-6004);
-# keep a caller-chosen heap size, otherwise raise it for the tsc/lint gates.
-case "${NODE_OPTIONS:-}" in
-  *max-old-space-size*) ;;
-  *) export NODE_OPTIONS="${NODE_OPTIONS:-} --max-old-space-size=6144" ;;
-esac
-gate tsc npx tsc --noEmit
-gate tsc-llm-scoring npx tsc --noEmit -p scripts/llm-scoring/tsconfig.json
+# Full-repo tsc OOMs at the default ~2GB heap in cloud containers (BRO-6004).
+TSC_NODE_OPTIONS="$(bash "$(dirname "${BASH_SOURCE[0]}")/tsc-node-options.sh")"
+gate tsc env NODE_OPTIONS="$TSC_NODE_OPTIONS" npx tsc --noEmit
+gate tsc-llm-scoring env NODE_OPTIONS="$TSC_NODE_OPTIONS" npx tsc --noEmit -p scripts/llm-scoring/tsconfig.json
 gate next-lint npx next lint
 
 # ── Unit Tests: the two in-repo batches, each its own gate, BOTH always run ──

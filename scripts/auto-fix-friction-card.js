@@ -248,7 +248,8 @@ function revertFile(filePath) {
 
 function runValidation() {
   try {
-    execSync('npx tsc --noEmit', { cwd: ROOT, stdio: 'pipe', timeout: 60000 });
+    const tscNodeOptions = execSync('bash scripts/lib/tsc-node-options.sh', { cwd: ROOT }).toString().trim();
+    execSync('npx tsc --noEmit', { cwd: ROOT, stdio: 'pipe', timeout: 60000, env: { ...process.env, NODE_OPTIONS: tscNodeOptions } });
     execSync('npx next lint --max-warnings 0', { cwd: ROOT, stdio: 'pipe', timeout: 60000 });
     return { ok: true };
   } catch (e) {
