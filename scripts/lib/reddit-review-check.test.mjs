@@ -48,6 +48,7 @@ test('selectDueChecks: new and update drafts only, reminders skipped, cap and fr
   const ids = chk.selectDueChecks(drafts, NOW, { max: 99 }).map(x => x.draft.showId).sort();
   assert.deepEqual(ids, ['brandNew', 'failedBefore', 'moved', 'stale', 'updateDue']);
   assert.equal(chk.selectDueChecks(drafts, NOW, { max: 2 }).length, 2, 'cap');
+  assert.equal(chk.selectDueChecks(drafts, NOW, { only: ['fresh', 'reminderDue', 'brandNew', 'updateDue'], max: 3 }).length, 4, 'a list the owner named is never cut by the daily cap');
   // the owner's resend list is checked whatever the email state, even a fresh check
   assert.deepEqual(chk.selectDueChecks(drafts, NOW, { only: ['fresh', 'reminderDue', 'ghost'] }).map(x => x.draft.showId).sort(), ['fresh', 'reminderDue']);
   assert.deepEqual(chk.selectDueChecks(null, NOW), []);
@@ -399,6 +400,7 @@ test('makeJudge: valid decisions are written through review-field-edit, invalid 
   assert.deepEqual([dated.publishDate, dated.dateSource], ['2026-10-18', 'text-regex']);
   assert.equal(read(dir, 'bad.json').criticName, 'Unknown', 'the made-up byline never reached disk');
   assert.ok(read(dir, 'held.json').approvedFixes.some(f => f.fixId === 'reddit-review-check'), 'edits carry their provenance');
+  assert.match(r.applied.find(a => a.id === 'nocritic.json').changes, /criticName: "Unknown" -> "Kyle Torrence"/, 'the log says exactly what changed');
   // the snapshot diff sees exactly these changes
   const before = chk.snapshotShow(mkDir(), id);
   const s = chk.summarizeChanges(before, chk.snapshotShow(dir, id));

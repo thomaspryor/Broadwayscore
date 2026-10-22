@@ -92,7 +92,7 @@ async function main() {
     deps.allowedShows.push(draft.showId);
     const v = result.verification;
     if (result.judge) {
-      for (const a of result.judge.applied) console.log(`  reader ${a.dryRun ? 'would apply' : 'applied'}: ${a.id} (${a.checks.join(', ')})`);
+      for (const a of result.judge.applied) console.log(`  reader ${a.dryRun ? 'would apply' : 'applied'}: ${a.id} (${a.checks.join(', ')}) ${a.changes || ''}`);
       for (const r of result.judge.rejected) console.log(`  reader refused ${r.id} ${r.check}: ${r.why}`);
       if (result.judge.error) console.log(`::warning::the Sonnet reader failed for ${draft.showId}: ${result.judge.error}`);
     }

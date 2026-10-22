@@ -23,9 +23,9 @@ const DRAFTS_PATH = path.join(ROOT, 'data', 'audit', 'reddit-post-drafts.json');
 const AUDIT_PATH = path.join(ROOT, 'data', 'audit', 'show-review-gap.json');
 const REVIEW_TEXTS = path.join(ROOT, 'data', 'review-texts');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
-// No new show starts after this. One show's tools take at most ~27 minutes plus the reader,
-// so the worst case ends well inside the job's 90-minute timeout with the email still to send.
-const START_BUDGET_MS = 25 * 60 * 1000;
+// No new show starts after this. One show's tools take at most ~27 minutes plus the reader, so the
+// worst case (start at 35, finish by ~65) ends inside the job's 90-minute timeout with the email still to send.
+const START_BUDGET_MS = 35 * 60 * 1000;
 
 const MIN = 60 * 1000;
 // Order matters: pending strand first, then ingest (new files), then names and dates for everything.
@@ -129,7 +129,7 @@ function makeJudge({ reviewTexts, loadShow, callModel, todayIso, fixId = 'reddit
       // (the manual-clear marker without the flag change) can never reach disk.
       const chain = chainEdits(records.get(d.id), v.edits, v.extra, stamp, showId, d.id);
       if (!chain.ok) { rejected.push({ id: d.id, check: 'apply', why: chain.reason }); continue; }
-      if (dryRun) { applied.push({ id: d.id, checks: v.accepted, dryRun: true }); continue; }
+      if (dryRun) { applied.push({ id: d.id, checks: v.accepted, dryRun: true, changes: describeEdits(v.edits) }); continue; }
       const w = writeRecordAtomically(reviewTexts, showId, d.id, chain.record, v.edits);
       if (!w.ok) { rejected.push({ id: d.id, check: 'apply', why: w.reason }); continue; }
       // Later decisions in this run see the name just given, so two files cannot take the same critic.
@@ -138,10 +138,15 @@ function makeJudge({ reviewTexts, loadShow, callModel, todayIso, fixId = 'reddit
         const sib = siblings.find(x => x.file === d.id);
         if (sib) sib.criticName = e.newValue;
       }
-      applied.push({ id: d.id, checks: v.accepted });
+      applied.push({ id: d.id, checks: v.accepted, changes: describeEdits(v.edits) });
     }
     return { asked: items.length, applied, rejected };
   };
+}
+
+/** "criticName: Unknown -> Kyle Torrence; publishDate: null -> 2026-10-16" for the log: the audit trail of what the reader changed. */
+function describeEdits(edits) {
+  return edits.map(e => `${e.field}: ${JSON.stringify(e.oldValue)} -> ${JSON.stringify(e.newValue)}`).join('; ');
 }
 
 /** Apply the edits one after another in memory (each is validated by review-field-edit), then the extra stamps. */
@@ -230,5 +235,5 @@ function realDeps({ root = ROOT, reviewTexts = REVIEW_TEXTS, auditPath = AUDIT_P
 
 module.exports = {
   ROOT, DRAFTS_PATH, AUDIT_PATH, REVIEW_TEXTS, SHOWS_PATH, START_BUDGET_MS,
-  TOOLS, runShowCheck, makeJudge, chainEdits, writeRecordAtomically, callSonnet, realDeps,
+  TOOLS, runShowCheck, makeJudge, describeEdits, chainEdits, writeRecordAtomically, callSonnet, realDeps,
 };
