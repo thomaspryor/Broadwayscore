@@ -64,7 +64,7 @@ test('auditBranch: multi-commit branch audits every commit; merged and empty are
     assert.strictEqual(auditBranch(dir, N(2)).disposition, 'empty');
     assert.strictEqual(auditBranch(dir, N(3)).disposition, 'merged');
   } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -126,5 +126,5 @@ test('auditBranch against a real repo: superseded, mergeable, conflicts', () => 
   assert.strictEqual(r(4).disposition, 'conflicts'); // add/add on b.txt
   assert.strictEqual(r(5).disposition, 'mergeable');
   assert.ok(r(1).files.includes('a.txt'));
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
