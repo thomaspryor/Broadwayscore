@@ -63,9 +63,10 @@ async function main() {
     body: { timeout: 60 + urls.length * (48 + waitSeconds), browserSettings: { solveCaptchas: true } },
   });
   console.log(`session ${String(session.id).slice(0, 8)}… created`);
+  // A failed connect leaves the session to expire at its timeout (at most 10 minutes).
   const browser = await chromium.connectOverCDP(session.connectUrl);
   const context = browser.contexts()[0] || await browser.newContext();
-  const page = await context.newPage();
+  const page = await context.newPage().catch(async (e) => { await browser.close().catch(() => {}); throw e; });
   const failed = [];
   const note = (line) => { if (failed.length < 15) failed.push(line); };
   page.on('response', r => {
