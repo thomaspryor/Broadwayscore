@@ -20,4 +20,62 @@ function gatherPurposeForShow(show, nowMs = Date.now()) {
   return nowMs - closed > BACKFILL_CLOSED_DAYS * 86400 * 1000 ? HISTORICAL_BACKFILL : '';
 }
 
-module.exports = { HISTORICAL_BACKFILL, BACKFILL_CLOSED_DAYS, gatherPurposeForShow };
+
+/**
+ * Press-night tag (BRO-5914): 'press-night:<showId>:<YYYY-MM-DD>', where the
+ * date is the show's stored opening date. One tag = one show-night, which is
+ * the key scrapingdog-caps.js's per-night spend cap counts ledger rows by.
+ */
+const PRESS_NIGHT_PREFIX = 'press-night';
+
+function pressNightPurpose(showId, night) {
+  return `${PRESS_NIGHT_PREFIX}:${showId}:${night}`;
+}
+
+/**
+ * Parse a purpose tag. null = not a press-night tag (cap does not apply);
+ * 'malformed' = starts with the prefix but is unusable (the cap fails closed
+ * for that tag); otherwise { showId, night }.
+ */
+function parsePressNightPurpose(tag) {
+  if (typeof tag !== 'string') return null;
+  if (tag !== PRESS_NIGHT_PREFIX && !tag.startsWith(`${PRESS_NIGHT_PREFIX}:`)) return null;
+  const m = /^press-night:([^:\s]+):(\d{4}-\d{2}-\d{2})$/.exec(tag);
+  return m ? { showId: m[1], night: m[2] } : 'malformed';
+}
+
+/**
+ * Pure: press-night tag for `show` at `nowMs`, or '' when the show is not inside
+ * its press-night window. Uses the stored opening date only (no evidence): a
+ * show whose date is evidence-only stays untagged, so it is neither capped nor
+ * switched to the extra-spend empty-SERP handling.
+ */
+function pressNightPurposeForShow(show, nowMs = Date.now()) {
+  if (!show || !show.id) return '';
+  const { computeWindow } = require('./opening-night-windows');
+  const now = new Date(nowMs);
+  const w = computeWindow(show, { now });
+  if (!w || w.anchor !== 'openingDate') return '';
+  if (!(w.windowStart <= now && now <= w.windowEnd)) return '';
+  return pressNightPurpose(show.id, w.openingDate);
+}
+
+/**
+ * Is an empty Scrapingdog SERP a final answer for this gather query? On press
+ * night it is not: Google has not indexed the reviews yet, so 0 results means
+ * "not yet" and the query must keep falling through to ScrapingBee/Bright Data
+ * and must not be cached (BRO-5914; the 860 gather accepted '0 organic
+ * results' on 106 of 107 queries ~45 min after the embargo). Only opening-night
+ * gathers of a show carrying the press-night tag, so every such query's spend
+ * sits under that show-night's cap. Everything else keeps today's behaviour.
+ */
+function emptySerpAuthoritativeForGather({ openingNight, show, nowMs = Date.now() } = {}) {
+  if (!openingNight) return true;
+  return pressNightPurposeForShow(show, nowMs) === '';
+}
+
+module.exports = {
+  emptySerpAuthoritativeForGather,
+  HISTORICAL_BACKFILL, BACKFILL_CLOSED_DAYS, gatherPurposeForShow,
+  PRESS_NIGHT_PREFIX, pressNightPurpose, parsePressNightPurpose, pressNightPurposeForShow,
+};

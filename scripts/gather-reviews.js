@@ -182,7 +182,7 @@ try {
 
 // Paths
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
-const { gatherPurposeForShow } = require('./lib/spend-purpose');
+const { gatherPurposeForShow, pressNightPurposeForShow, emptySerpAuthoritativeForGather } = require('./lib/spend-purpose');
 // A dispatch-level tag (gather-reviews.yml spend_purpose input) wins over the per-show one.
 const _DISPATCH_SPEND_PURPOSE = process.env.SCRAPER_SPEND_PURPOSE || '';
 let _showsByIdCache = null;
@@ -625,6 +625,10 @@ async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightData
     // (see url-discovery.js's preferSpeed doc: "time-sensitive flows like
     // opening night polling").
     preferSpeed: openingNight,
+    // BRO-5914: on press night an empty Scrapingdog SERP means "not indexed
+    // yet", not "no reviews" — keep falling through to SB/BD (under the
+    // per-show-night cap) and never cache the empty answer.
+    emptyAuthoritative: emptySerpAuthoritativeForGather({ openingNight, show: _showsById().get(showId) }),
   });
 
   if (result === '__SERP_UNAVAILABLE__') {
@@ -6110,7 +6114,10 @@ async function main() {
     const showId = showIds[i];
     // BRO-4146: tag this show's provider-ledger rows when it is a historical
     // backfill (closed >90d) so the daily-credit probe can exclude them.
-    process.env.SCRAPER_SPEND_PURPOSE = _DISPATCH_SPEND_PURPOSE || gatherPurposeForShow(_showsById().get(showId));
+    // BRO-5914: a show inside its press-night window carries the press-night tag
+    // (per-show-night spend cap, scrapingdog-caps.js); it wins over a dispatch tag.
+    process.env.SCRAPER_SPEND_PURPOSE = pressNightPurposeForShow(_showsById().get(showId))
+      || _DISPATCH_SPEND_PURPOSE || gatherPurposeForShow(_showsById().get(showId));
     let result;
     try {
       // BRO-3386: stamp showId on this show's spend-ledger rows.

@@ -29,7 +29,7 @@ const { isBlockedReviewUrl } = require('./domain-filters');
 const { recordBdCall, recordSdCall, recordSbCall } = require('./bd-telemetry');
 const { sdBilledCredits, withSpendFallback } = require('./provider-telemetry');
 const { consultBrightData } = require('./brightdata-caps');
-const { consultScrapingdog } = require('./scrapingdog-caps');
+const { consultScrapingdog, pressNightCapStatus } = require('./scrapingdog-caps');
 const { consultScrapingbee } = require('./scrapingbee-caps');
 const { creditsFor } = require('./provider-credits');
 
@@ -952,6 +952,17 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
       log(`    📦 SERP negative-cache hit (45min): "${query.slice(0, 60)}..."`);
       return { results: negCached.results, provider: `${negCached.provider}-negcached` };
     }
+  }
+
+  // Press-night per-show cap (BRO-5914). Check-only, and AFTER the cache reads
+  // so a capped show still gets free cached answers. Covers every provider in
+  // the chain: SD can be skipped (breaker, quota, flag) without lifting it.
+  // null = "all providers unavailable" -> '__SERP_UNAVAILABLE__', which ends
+  // this show's SERP phase only; the tag is per show-night, so other shows run.
+  const _pnCap = pressNightCapStatus();
+  if (_pnCap.exceeded) {
+    log(`    ⛔ Press-night spend cap (${_pnCap.reason}) — no SERP providers called for this show`);
+    return { results: null, provider: 'press-night-capped' };
   }
 
   // Scrapingdog first (flag-gated, ~3x cheaper than BD SERP). On a real fetch
@@ -1999,6 +2010,7 @@ async function serpImagesQuery(query, options = {}) {
 }
 
 module.exports = {
+  _serpWithChainForTests: _serpWithChain,
   OUTLET_DOMAINS,
   REGISTRY_DOMAIN_ALIASES,
   DOMAIN_REDIRECTS,
