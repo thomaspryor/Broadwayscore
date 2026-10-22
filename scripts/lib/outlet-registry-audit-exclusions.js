@@ -46,9 +46,10 @@ function outletRegistryAuditExclusionBranch(review) {
   if (review.url && isBlockedReviewUrl(review.url)) return 3;
 
   // 4. Confidently rejected as wrong_production/wrong_show, never manually cleared.
+  // rejectionReason alone excludes scoring: the manual cross-show URL audit
+  // writes wrong_show without rejectedAt (BRO-3323).
   if (
     WRONG_PRODUCTION_REJECTION_REASONS.has(review.rejectionReason) &&
-    review.rejectedAt &&
     !wrongShowCleared(review)
   ) return 4;
 
