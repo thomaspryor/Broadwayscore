@@ -1,32 +1,5 @@
 [
   {
-    "recordedAt": "2026-10-18T18:03:45.461Z",
-    "fromShowId": "little-shop-of-horrors-off-broadway-2019",
-    "toShowId": "little-shop-of-horrors-2003",
-    "file": "nytimes--ben-brantley.json",
-    "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9803efd9173cf930a35753c1a9659c8b63",
-    "publishDate": "October 3, 2003",
-    "reason": "sibling opening 1d from publishDate vs current 5828d"
-  },
-  {
-    "recordedAt": "2026-10-18T18:03:46.565Z",
-    "fromShowId": "man-of-la-mancha-west-end-2019",
-    "toShowId": "man-of-la-mancha-2002",
-    "file": "nytimes--ben-brantley.json",
-    "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9b05e1da123bf935a35751c1a9649c8b63",
-    "publishDate": "December 6, 2002",
-    "reason": "sibling opening 1d from publishDate vs current 5989d"
-  },
-  {
-    "recordedAt": "2026-10-18T18:03:46.745Z",
-    "fromShowId": "mary-poppins-west-end-2019",
-    "toShowId": "mary-poppins-2006",
-    "file": "nypost--unknown.json",
-    "url": "http://www.nypost.com/seven/11172006/entertainment/theater/no_stoppin_this_poppins_theater_clive_barnes.htm",
-    "publishDate": "November 16, 2006",
-    "reason": "sibling opening 0d from publishDate vs current 4745d"
-  },
-  {
     "recordedAt": "2026-10-18T18:03:49.673Z",
     "fromShowId": "othello-west-end-2025",
     "toShowId": "othello-west-end-2022",
@@ -4478,5 +4451,31 @@
     "file": "guardian--arifa-akbar.json",
     "url": "https://www.theguardian.com/stage/2025/dec/12/into-the-woods-review-bridge-theatre-london",
     "reason": "same-title-sibling: url-year, venue-substring"
+  },
+  {
+    "recordedAt": "2026-10-22T12:21:26.960Z",
+    "fromShowId": "jesus-christ-superstar-off-west-end-2026",
+    "toShowId": "jesus-christ-superstar-west-end-2026",
+    "file": "independent--alice-saville.json",
+    "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html",
+    "publishDate": "",
+    "reason": "sibling-venue-in-url: \"london-palladium\""
+  },
+  {
+    "recordedAt": "2026-10-22T12:21:27.701Z",
+    "fromShowId": "jesus-christ-superstar-off-west-end-2026",
+    "toShowId": "jesus-christ-superstar-west-end-2026",
+    "file": "thestage--sam-marlowe.json",
+    "url": "https://www.thestage.co.uk/long-reviews/jesus-christ-superstar-review-london-palladium-sam-ryder",
+    "publishDate": "",
+    "reason": "sibling-venue-in-url: \"london-palladium\""
+  },
+  {
+    "recordedAt": "2026-10-22T12:21:34.138Z",
+    "fromShowId": "jesus-christ-superstar-off-west-end-2026",
+    "toShowId": "jesus-christ-superstar-west-end-2026",
+    "file": "times-uk--unknown.json",
+    "url": "https://www.thetimes.com/culture/theatre-dance/article/jesus-christ-superstar-review-sam-ryder-london-palladium-tim-sheader-zfqtxmj8b",
+    "reason": "sibling-venue-in-url: \"london-palladium\""
   }
 ]
