@@ -15,7 +15,9 @@
 # Callers: .github/actions/push-core-data/action.yml ("Commit and push core data"),
 # .github/actions/checkout-core-data/action.yml ("Clone core data repo", BRO-3074),
 # .github/actions/push-review-texts/action.yml and
-# .github/actions/push-aggregator-archive/action.yml (their git pushes, BRO-5261).
+# .github/actions/push-aggregator-archive/action.yml (their git pushes, BRO-5261),
+# .github/actions/checkout-review-texts/action.yml and
+# .github/actions/checkout-aggregator-archive/action.yml (their clones, BRO-5338).
 git_net() {
   local secs="$1"; shift
   local bin

@@ -2114,6 +2114,10 @@ on:
       # Run-budget coverage guard (#425) — advisory scan for BD/SB cron scripts
       # missing scripts/lib/run-budget.js. Without this path entry, edits get ZERO CI.
       - 'scripts/audit-run-budget-coverage.js'
+      # Run-budget slack ratchet (BRO-5338), advisory. Top-level scripts/*.js need their own entry.
+      - 'scripts/audit-run-budget-slack.js'
+      - 'scripts/audit-run-budget-slack.test.mjs'
+      - 'scripts/lib/run-budget-slack-baseline.json'
       # Alert-reachability guard (BRO-2817) — advisory scan for page-worthy
       # alert steps unreachable after an earlier hard-fail gate (BRO-2815
       # class). Root-level scripts/*.js and *.test.mjs are NOT covered by any
@@ -3745,6 +3749,14 @@ jobs:
         # always exits 0 (see script header for why). Exempt a workflow with
         # # hygiene-run-budget-ok: <reason>.
         run: node scripts/audit-run-budget-coverage.js
+
+      - name: Audit — exceeded()-only loop heads without a reserve (advisory, BRO-5338)
+        if: always() && steps.deps.outcome == 'success'
+        continue-on-error: true
+        # A script whose loop head checks only budget.exceeded() runs out the clock:
+        # the worst item must fit the workflow slack. New ones must use canStartItem
+        # or carry `// run-budget-slack-ok: <reason>`. Exits 0 unless --strict.
+        run: node scripts/audit-run-budget-slack.js
 
       - name: Audit — page-worthy alert steps unreachable after a hard-fail gate (advisory, BRO-2817)
         if: always() && steps.deps.outcome == 'success'

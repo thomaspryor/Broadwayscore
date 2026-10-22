@@ -54,6 +54,12 @@ const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const DRY_RUN = process.argv.includes('--dry-run');
 const LIMIT = Number((process.argv.find((a) => a.startsWith('--limit=')) || '').split('=')[1]) || 15;
 const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
+// BRO-5338: update-show-status.yml runs this with --time-budget-min=6 under a
+// step timeout-minutes of 8, so 2 min of slack. One show's worst case is a SERP
+// fetchPage() chain (~2.5 min, run-budget.js header) plus the 0.5s pause, so an
+// item started inside the last 30s (2.5 min minus the 2 min slack) can carry
+// the step past its timeout.
+const MIN_REMAINING_MS_TO_START = 30_000;
 
 async function main() {
   const showsData = loadShows();
@@ -81,7 +87,7 @@ async function main() {
   let stillMissing = 0;
 
   for (const show of targets) {
-    if (timeBudget.exceeded()) {
+    if (!timeBudget.canStartItem(MIN_REMAINING_MS_TO_START)) {
       console.log(`\n⏱ Time budget (${timeBudget.minutes} min) reached — remaining shows deferred to next run.`);
       break;
     }

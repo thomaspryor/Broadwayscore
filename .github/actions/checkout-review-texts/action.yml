@@ -68,11 +68,27 @@ runs:
 
         rm -rf data/review-texts
         MAX_RETRIES=3
+        . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh"
+        # BRO-5338: bound the clone so a transport hang counts as a failed
+        # attempt instead of waiting for the job timeout (BRO-3074 did core
+        # data only). Sized from 97 recent step timings across 6 workflows
+        # (2026-10-22): p50 49s, p95 52s, max 66s, which include the action's
+        # own sparse-checkout and cache work, so this is an upper bound on the
+        # clone itself. 240s = 3.6x the worst seen, 5x the median, and three
+        # attempts (3 x 250s + 20s sleeps, ~13 min) still fit the 15-20 min jobs
+        # that use this action (review: BRO-5261 sized core-data the same way);
+        # a stall is
+        # caught far sooner by git_net's http.lowSpeed flags (45s under 1000 B/s).
+        NET_SEC="${CHECKOUT_REVIEW_TEXTS_NET_TIMEOUT_SEC:-240}"
         STDERR_FILE=$(mktemp)
         for ATTEMPT in $(seq 1 $MAX_RETRIES); do
           : > "$STDERR_FILE"
           START=$(date +%s)
-          if git clone $DEPTH_ARGS $SPARSE_ARGS --branch main "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts 2>>"$STDERR_FILE"; then
+          # `|| CLONE_RC=$?` because this step runs under bash -e.
+          CLONE_RC=0
+          # shellcheck disable=SC2086 # DEPTH_ARGS / SPARSE_ARGS are validated flag lists
+          git_net "$NET_SEC" clone $DEPTH_ARGS $SPARSE_ARGS --branch main "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts 2>>"$STDERR_FILE" || CLONE_RC=$?
+          if [ "$CLONE_RC" -eq 0 ]; then
             ELAPSED=$(($(date +%s) - START))
             echo "review-texts cloned in ${ELAPSED}s"
             break
@@ -80,6 +96,16 @@ runs:
 
           cat "$STDERR_FILE" >&2
           rm -rf data/review-texts
+
+          if [ "$CLONE_RC" -eq 124 ] || [ "$CLONE_RC" -eq 137 ]; then
+            if [ "$ATTEMPT" -lt "$MAX_RETRIES" ]; then
+              echo "::warning::review-texts clone hung, killed after ${NET_SEC}s (attempt $ATTEMPT/$MAX_RETRIES, rc=$CLONE_RC) — retrying in 10s"
+              sleep 10
+              continue
+            fi
+            echo "::error::review-texts clone hung on all $MAX_RETRIES attempts (killed after ${NET_SEC}s each)"
+            exit 1
+          fi
 
           # Guarded with `|| DECISION=stop:decision-error`: this step runs
           # under bash -e, and an unguarded command substitution assigned to
@@ -126,7 +152,7 @@ runs:
         if [ -n "${SPARSE_PATHS}" ]; then
           # shellcheck disable=SC2086 # word-splitting the validated list is intended
           set -f
-          git -C data/review-texts sparse-checkout set -- ${SPARSE_PATHS}
+          git_net "$NET_SEC" -C data/review-texts sparse-checkout set -- ${SPARSE_PATHS}
           set +f
           echo "review-texts sparse checkout: ${SPARSE_PATHS}"
         fi

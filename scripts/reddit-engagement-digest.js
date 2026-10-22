@@ -47,6 +47,13 @@ const DRY_RUN = process.argv.includes('--dry-run');
 const VERBOSE = process.argv.includes('--verbose');
 // Usage: node scripts/reddit-engagement-digest.js [--dry-run] [--verbose] [--time-budget-min=N]
 const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
+// BRO-5338: reddit-engagement-digest.yml runs this with --time-budget-min=16 under
+// a JOB timeout-minutes of 20: 4 min of slack, minus ~1 min of checkout/install
+// before the step starts (measured: checkout 18-47s, core data 7-14s), minus the
+// post-loop Claude call (evaluateThreads) and the commit step (~1-2 min).
+// One thread fetch can take ~2.5 min (60s request, Reddit cooldown retry, proxy
+// fallback), so an item started with under 2 min left can carry the job past its timeout.
+const MIN_REMAINING_MS_TO_START = 120_000;
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const HISTORY_PATH = path.join(DATA_DIR, 'reddit-digest-history.json');
@@ -246,7 +253,7 @@ async function enrichWithComments(threads) {
 
   for (let ti = 0; ti < threads.length; ti++) {
     const post = threads[ti];
-    if (timeBudget.exceeded()) {
+    if (!timeBudget.canStartItem(MIN_REMAINING_MS_TO_START)) {
       console.log(`  ⏱ Time budget (${timeBudget.minutes} min) reached — ${threads.length - ti} thread(s) skipped this run.`);
       break;
     }

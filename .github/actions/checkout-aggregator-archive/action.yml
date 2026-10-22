@@ -58,6 +58,14 @@ runs:
         # data-safety-guards job in test.yml, so a single-attempt clone here
         # is a bigger CI-red risk than before this change.
         MAX_RETRIES=3
+        . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh"
+        # BRO-5338: bound the clone + sparse-checkout (BRO-3074 did core data
+        # only). Sized from 37 recent step timings (2026-10-22): p50 14s,
+        # p95 21s, max 22s for the whole step. The cap applies to the clone and
+        # to the sparse-checkout separately, so an attempt is at most 2 x 90s
+        # and three attempts fit a 15 min job; 90s = ~4x the worst whole step.
+        # A true stall is caught sooner by git_net's http.lowSpeed flags.
+        NET_SEC="${CHECKOUT_AGGREGATOR_ARCHIVE_NET_TIMEOUT_SEC:-90}"
         STDERR_FILE=$(mktemp)
         for ATTEMPT in $(seq 1 $MAX_RETRIES); do
           START=$(date +%s)
@@ -65,10 +73,14 @@ runs:
           : > "$STDERR_FILE"
 
           rm -rf /tmp/aggregator-archive-checkout
-          if git clone --depth 1 --filter=blob:none --sparse --branch main \
+          # `|| CLONE_RC=$?` because this step runs under bash -e.
+          CLONE_RC=0
+          git_net "$NET_SEC" clone --depth 1 --filter=blob:none --sparse --branch main \
               "https://x-access-token:${REPO_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" \
               /tmp/aggregator-archive-checkout 2>>"$STDERR_FILE" \
-            && (cd /tmp/aggregator-archive-checkout && git sparse-checkout set aggregator-archive) 2>>"$STDERR_FILE"; then
+            && git_net "$NET_SEC" -C /tmp/aggregator-archive-checkout sparse-checkout set aggregator-archive 2>>"$STDERR_FILE" \
+            || CLONE_RC=$?
+          if [ "$CLONE_RC" -eq 0 ]; then
             ELAPSED=$(($(date +%s) - START))
             echo "Aggregator archive cloned fresh (sparse) in ${ELAPSED}s"
             SUCCESS=true
@@ -79,6 +91,17 @@ runs:
           fi
 
           cat "$STDERR_FILE" >&2
+
+          if [ "$CLONE_RC" -eq 124 ] || [ "$CLONE_RC" -eq 137 ]; then
+            rm -rf /tmp/aggregator-archive-checkout
+            if [ "$ATTEMPT" -lt "$MAX_RETRIES" ]; then
+              echo "::warning::Aggregator archive clone hung, killed after ${NET_SEC}s (attempt $ATTEMPT/$MAX_RETRIES, rc=$CLONE_RC) — retrying in 10s"
+              sleep 10
+              continue
+            fi
+            echo "::error::Aggregator archive clone hung on all $MAX_RETRIES attempts (killed after ${NET_SEC}s each)"
+            exit 1
+          fi
 
           # Guarded with `|| DECISION=stop:decision-error`, same fix/reason as
           # checkout-core-data/action.yml and push-core-data/action.yml
