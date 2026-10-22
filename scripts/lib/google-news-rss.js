@@ -11,10 +11,38 @@ const { isBroadwayLocalRegion, isWestEndLocalRegion } = require('./outlet-region
 const { extractByline } = require('./byline-extraction');
 const { resolveCritic } = require('./resolve-critic');
 
+// Press titles that differ from the listing title (shows.json akaTitles), e.g.
+// "Billy Crystal 860" is reviewed as "860". Searching only the listing title in
+// quotes missed most of that show's opening-night reviews (2026-10-21).
+function searchTitles(show) {
+  const out = [];
+  for (const t of [show && show.title, ...((show && Array.isArray(show.akaTitles)) ? show.akaTitles : [])]) {
+    const v = typeof t === 'string' ? t.trim() : '';
+    if (v.length >= 3 && !out.some((o) => o.toLowerCase() === v.toLowerCase())) out.push(v);
+  }
+  return out;
+}
+
+// A headline that matches only a short press title ("860") must also carry a
+// word of the listing title that the press title lacks ("Billy", "Crystal"),
+// or "New Balance 860 v15 Review" passes for Billy Crystal 860.
+const words = (t) => String(t || '').toLowerCase().normalize('NFKD').replace(/[^a-z0-9 ]+/g, ' ').split(/\s+/).filter((w) => w.length >= 3);
+function headlineNamesShow(headline, show) {
+  if (titleMatchesShow(headline, show.title, { fuzzy: true })) return true;
+  const listing = words(show.title);
+  const head = new Set(words(headline));
+  return searchTitles(show).slice(1).some((aka) => {
+    if (!titleMatchesShow(headline, aka, { fuzzy: true })) return false;
+    const extra = listing.filter((w) => !words(aka).includes(w));
+    return extra.length === 0 || extra.some((w) => head.has(w));
+  });
+}
+
 function googleNewsRssUrl(show) {
   const london = isLondonMarket(show.category);
+  const titles = searchTitles(show);
   const params = new URLSearchParams({
-    q: `"${show.title}" review`,
+    q: `${titles.map((t) => `"${t}"`).join(' OR ')} review`,
     hl: london ? 'en-GB' : 'en-US',
     gl: london ? 'GB' : 'US',
     ceid: london ? 'GB:en' : 'US:en',
@@ -46,7 +74,7 @@ const REVIEW_FREE_POST_DAYS = 2;
 const NON_REVIEW_HEADLINE = /\b(interviews?|previews?|tickets|roundups?|reviews|first[- ]look|photos?|images|pictures|trailer|cast announced|full cast|meet the cast|best shows|to book|what the critics|critics (?:praise|say|react)|box office|grosses|lottery)\b/i;
 
 function isReviewHeadline(item, show) {
-  if (!titleMatchesShow(item.title, show.title, { fuzzy: true })) return false;
+  if (!headlineNamesShow(item.title, show)) return false;
   if (NON_REVIEW_HEADLINE.test(item.title)) return false;
   if (/\breview\b/i.test(item.title)) return true;
   return isWithinOpeningWindow(item.pubDate, show.openingDate, 0, REVIEW_FREE_POST_DAYS);
@@ -172,4 +200,4 @@ async function discoverGoogleNewsReviews(show, options = {}) {
   return results;
 }
 
-module.exports = { discoverGoogleNewsReviews, googleNewsRssUrl, parseGoogleNewsItems, publisherUrlFromPage, isReviewHeadline };
+module.exports = { searchTitles, discoverGoogleNewsReviews, googleNewsRssUrl, parseGoogleNewsItems, publisherUrlFromPage, isReviewHeadline };
