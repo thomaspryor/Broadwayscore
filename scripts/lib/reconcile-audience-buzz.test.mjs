@@ -134,3 +134,20 @@ test('BRO-5337: tombstoned sources are not double counted and orphans still drop
   assert.equal(current.shows['show-11'].sources.showScore, undefined);
   assert.deepEqual(r.skippedOrphans, ['orphan-z']);
 });
+
+test('BRO-5337: an empty "ours" is treated as implausible, not a mass delete', () => {
+  const ids = Array.from({ length: 20 }, (_, i) => `show-${i}`);
+  const mk = () => ({ shows: Object.fromEntries(ids.map(i => [i, { sources: {} }])) });
+  const current = mk();
+  const r = reconcileAudienceBuzz(current, mk(), { liveIds: live(), base: mk(), ours: { shows: {} } });
+  assert.equal(Object.keys(current.shows).length, 20);
+  assert.match(r.skippedDeleted[0], /IMPLAUSIBLE/);
+});
+
+test('BRO-5337: a source name containing a slash is re-removed', () => {
+  const base = { shows: { 'show-12': { sources: { 'p/q': { score: 1 }, keep: { score: 2 } } } } };
+  const ours = { shows: { 'show-12': { sources: { keep: { score: 2 } } } } };
+  const current = JSON.parse(JSON.stringify(base));
+  reconcileAudienceBuzz(current, base, { liveIds: live(), base, ours });
+  assert.equal(current.shows['show-12'].sources['p/q'], undefined);
+});
