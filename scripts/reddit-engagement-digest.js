@@ -189,7 +189,12 @@ function callClaude(systemPrompt, userMessage, maxTokens = 4000, timeoutMs = 120
 
 async function getSubredditListing(sort) {
   const url = `https://www.reddit.com/r/${SUBREDDIT}/${sort}.json?limit=${MAX_LISTING}&raw_json=1`;
-  return fetchWithFallback(url);
+  return fetchWithFallback(url, 0, { allowRss: true });
+}
+
+/** score x comments; RSS-route posts have no score, so rank by comment count alone. */
+function engagementRank(p) {
+  return (p.score ?? 1) * (p.num_comments ?? 0);
 }
 
 /**
@@ -229,7 +234,7 @@ async function fetchRecentThreads(history) {
     if (seen.has(post.id)) continue;
     // Skip posts with no engagement
     if (post.num_comments < 1) continue;
-    // Skip extremely low-effort
+    // Skip extremely low-effort (RSS-route posts carry no score: undefined passes)
     if (post.score < 2) continue;
 
     filtered.push(post);
@@ -238,7 +243,7 @@ async function fetchRecentThreads(history) {
   console.log(`  After filtering: ${filtered.length} threads`);
 
   // Sort by engagement (score × comments)
-  filtered.sort((a, b) => (b.score * b.num_comments) - (a.score * a.num_comments));
+  filtered.sort((a, b) => engagementRank(b) - engagementRank(a));
 
   // Cap at reasonable number for evaluation
   return filtered.slice(0, 30);
@@ -259,7 +264,7 @@ async function enrichWithComments(threads) {
     }
     try {
       const url = `https://www.reddit.com/r/${SUBREDDIT}/comments/${post.id}.json?limit=${MAX_COMMENTS_PER_THREAD}&depth=2&raw_json=1`;
-      const response = await fetchWithFallback(url);
+      const response = await fetchWithFallback(url, 0, { allowRss: true });
       const comments = flattenComments(response);
 
       // Check if user already commented
@@ -477,7 +482,7 @@ function formatThreadsForClaude(threads) {
     return `--- THREAD ${i + 1} ---
 ID: ${t.id}
 Title: ${t.title}
-Author: u/${t.author} | ↑${t.score} | ${t.num_comments} comments | ${age}
+Author: u/${t.author} | ↑${t.score ?? '?'} | ${t.num_comments ?? '?'} comments | ${age}
 Flair: ${t.link_flair_text || 'none'}
 Body: ${body}
 Top comments:

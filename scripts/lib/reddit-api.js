@@ -404,7 +404,31 @@ const XML_ENTITIES = [
   [/&lt;/g, '<'], [/&gt;/g, '>'], [/&amp;/g, '&'],
 ];
 function decodeXmlEntities(text) {
-  return XML_ENTITIES.reduce((t, [re, rep]) => t.replace(re, rep), text || '');
+  // Numeric refs first (Reddit emits `&#32;` around "submitted by", `&#x200B;`, `&#8217;`)
+  const codePoint = (m, n) => (n <= 0x10ffff ? String.fromCodePoint(n) : m);
+  const numeric = (text || '')
+    .replace(/&#(\d+);/g, (m, d) => { const c = Number(d); return codePoint(m, c); })
+    .replace(/&#x([0-9a-f]+);/gi, (m, h) => { const c = Number('0x' + h); return codePoint(m, c); });
+  return XML_ENTITIES.reduce((t, [re, rep]) => t.replace(re, rep), numeric);
+}
+
+/**
+ * HTML (already XML-unescaped once) to line-preserving markdown-ish text:
+ * block tags become newlines and bold/italic become ** / *, so callers that
+ * parse selftext line by line (e.g. "***Show***" headings in the Boring Waltz
+ * posts) still see line structure. The trailing "submitted by /u/x" footer
+ * Reddit appends to every entry is cut.
+ */
+function htmlToMarkdownText(html) {
+  const withBreaks = (html || '')
+    .replace(/<\/?(strong|b)>/gi, '**')
+    .replace(/<\/?(em|i)>/gi, '*')
+    .replace(/<br\s*\/?>|<\/(p|li|h[1-6]|tr|div|blockquote)>/gi, '\n')
+    .replace(/<[^>]+>/g, ' ');
+  const lines = decodeXmlEntities(withBreaks).split('\n').map((l) => l.replace(/[ \t]+/g, ' ').trim());
+  const footer = lines.findIndex((l) => /^submitted by\s+\/?u\//i.test(l));
+  const body = footer >= 0 ? lines.slice(0, footer) : lines;
+  return body.join('\n').replace(/\n{3,}/g, '\n\n').trim();
 }
 
 function stripHtmlTags(html) {
@@ -415,8 +439,9 @@ function stripHtmlTags(html) {
 function toRssUrl(jsonUrl) {
   const u = new URL(jsonUrl);
   // /comments/<id>.json -> /comments/<id>/.rss (the `<id>.rss` form does not exist)
-  u.pathname = /\/comments\/[a-z0-9]+\.json$/i.test(u.pathname)
-    ? u.pathname.replace(/\.json$/, '/.rss')
+  // Listings (/r/x/new.json, /user/x/submitted.json) use the same <path>/.rss form (BRO-5987)
+  u.pathname = (/\/comments\/[a-z0-9]+\.json$/i.test(u.pathname) || isListingUrl(jsonUrl))
+    ? u.pathname.replace(/\/?\.json$/, '/.rss')
     : u.pathname.replace(/\.json$/, '.rss');
   const limit = parseInt(u.searchParams.get('limit'), 10);
   if (Number.isFinite(limit) && limit > 25) u.searchParams.set('limit', '25');
@@ -462,10 +487,11 @@ function parseRedditAtom(xml) {
         subreddit: subredditMatch ? subredditMatch[1] : undefined,
         permalink: href ? new URL(href).pathname : undefined,
         title: titleMatch ? decodeXmlEntities(titleMatch[1]).trim() : '',
-        selftext: contentText,
+        selftext: contentMatch ? htmlToMarkdownText(decodeXmlEntities(contentMatch[1])) : '',
         author,
         created_utc: Number.isFinite(parsedTs) ? parsedTs / 1000 : undefined,
         num_comments: numCommentsMatch ? parseInt(numCommentsMatch[1], 10) : undefined,
+        _viaRss: true, // no score, `\~` arrives unescaped, capped at 25 with no cursor
       },
     };
   }).filter((c) => c.data.id); // drop entries we couldn't extract a post ID from
@@ -490,7 +516,16 @@ function parseRedditAtom(xml) {
 // opt in (opts.allowRss) so score-ranking callers never get silently degraded data.
 function rssEligible(url, opts = {}) {
   if (process.env.REDDIT_RSS_DISABLED === '1') return false; // kill switch
-  return Boolean(opts.allowRss) && (url.includes('/search.json') || isCommentsUrl(url));
+  return Boolean(opts.allowRss) && (url.includes('/search.json') || isCommentsUrl(url) || isListingUrl(url));
+}
+
+// Subreddit sort listings and a user's submitted posts (BRO-5987). Capped at 25
+// with no cursor, so callers that page (Boring Waltz page 2) simply get one page.
+function isListingUrl(url) {
+  let path;
+  try { path = new URL(url).pathname; } catch { return false; }
+  return /^\/r\/[^/]+\/(hot|new|rising|top|controversial)\/?\.json$/i.test(path)
+    || /^\/user\/[^/]+\/submitted\/?\.json$/i.test(path);
 }
 
 function isCommentsUrl(url) {
@@ -1145,6 +1180,9 @@ module.exports = {
   shouldAttemptScrapingdog,
   fetchViaRedditRSS,
   toRssUrl,
+  isListingUrl,
+  rssEligible,
+  htmlToMarkdownText,
   parseRedditAtom,
   parseRedditCommentsAtom,
   isCommentsUrl,

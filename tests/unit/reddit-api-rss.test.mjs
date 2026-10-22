@@ -336,3 +336,87 @@ test('toRssUrl maps <id>.json to <id>/.rss for comments and leaves search urls a
   assert.equal(toRssUrl('https://www.reddit.com/r/B/comments/abc123.json?limit=500&raw_json=1'), 'https://www.reddit.com/r/B/comments/abc123/.rss?limit=25');
   assert.equal(toRssUrl('https://www.reddit.com/r/B/search.json?q=x&raw_json=1'), 'https://www.reddit.com/r/B/search.rss?q=x');
 });
+
+// ── BRO-5987: listing / user-submitted routes, line-preserving selftext ─────
+
+const WALTZ_FEED = `<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+<entry>
+<author><name>/u/boringwaltz</name></author>
+<content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;&lt;strong&gt;&lt;em&gt;Hamilton&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt; &lt;p&gt;Estimated Weekly Operating Cost: $850k/week&lt;/p&gt; &lt;p&gt;&lt;strong&gt;&lt;em&gt;Wicked&lt;/em&gt;&lt;/strong&gt;&lt;br/&gt;Estimated Weekly Operating Cost: $1.2m/week&lt;/p&gt;&lt;/div&gt;&lt;!-- SC_ON --&gt;&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/boringwaltz"&gt; /u/boringwaltz &lt;/a&gt; &lt;span&gt;&lt;a href="https://www.reddit.com/r/Broadway/comments/9waltz1/grosses_analysis/"&gt;[12 comments]&lt;/a&gt;&lt;/span&gt;</content>
+<id>t3_9waltz1</id>
+<link href="https://www.reddit.com/r/Broadway/comments/9waltz1/grosses_analysis/" />
+<published>2026-10-19T14:00:00+00:00</published>
+<title>Grosses Analysis: Week Ending 10/12</title>
+</entry>
+</feed>`;
+
+test('isListingUrl / rssEligible: listings and user-submitted opt in; others stay out', () => {
+  const { isListingUrl, rssEligible } = load();
+  for (const sort of ['hot', 'new', 'rising']) {
+    assert.equal(isListingUrl(`https://www.reddit.com/r/Broadway/${sort}.json?limit=50&raw_json=1`), true);
+  }
+  assert.equal(isListingUrl('https://www.reddit.com/user/boringwaltz/submitted.json?limit=100'), true);
+  assert.equal(isListingUrl('https://www.reddit.com/r/Broadway/top/.json'), true);
+  assert.equal(isListingUrl('https://www.reddit.com/r/Broadway/about.json'), false);
+  assert.equal(rssEligible('https://www.reddit.com/r/Broadway/new.json', { allowRss: true }), true);
+  assert.equal(rssEligible('https://www.reddit.com/r/Broadway/new.json', {}), false, 'still opt-in only');
+  assert.equal(rssEligible('https://www.reddit.com/r/Broadway/about.json', { allowRss: true }), false);
+});
+
+test('toRssUrl maps listings to the <path>/.rss form', () => {
+  const { toRssUrl } = load();
+  assert.equal(new URL(toRssUrl('https://www.reddit.com/r/Broadway/new.json?limit=50&raw_json=1')).pathname, '/r/Broadway/new/.rss');
+  assert.equal(new URL(toRssUrl('https://www.reddit.com/user/boringwaltz/submitted.json?limit=100')).pathname, '/user/boringwaltz/submitted/.rss');
+  assert.equal(new URL(toRssUrl('https://www.reddit.com/r/Broadway/top/.json')).pathname, '/r/Broadway/top/.rss');
+});
+
+test('user-submitted feed keeps ***Show*** headings and lines for extractCostsFromPost, footer cut', async () => {
+  const { fetchViaRedditRSS, resetFallbackState } = load();
+  resetFallbackState();
+  const srv = http.createServer((req, res) => {
+    assert.equal(new URL(req.url, 'http://x').pathname, '/user/boringwaltz/submitted/.rss');
+    res.writeHead(200, { 'Content-Type': 'application/atom+xml' });
+    res.end(WALTZ_FEED);
+  });
+  await new Promise((r) => srv.listen(0, '127.0.0.1', r));
+  try {
+    const json = await fetchViaRedditRSS(`http://127.0.0.1:${srv.address().port}/user/boringwaltz/submitted.json?limit=100`);
+    const post = json.data.children[0].data;
+    assert.equal(json.data.after, null);
+    assert.equal(post._viaRss, true);
+    assert.ok(!/submitted by/i.test(post.selftext), `footer must be cut: ${post.selftext}`);
+    const require = createRequire(import.meta.url);
+    const { extractCostsFromPost } = require('../../scripts/lib/reddit-grosses.js');
+    assert.deepEqual(extractCostsFromPost(post.selftext), [
+      { showName: 'Hamilton', cost: 850000 },
+      { showName: 'Wicked', cost: 1200000 },
+    ]);
+  } finally {
+    srv.close();
+  }
+});
+
+test('htmlToMarkdownText cuts the real footer (numeric &#32;) but keeps a body line starting "Submitted by"', () => {
+  const { htmlToMarkdownText } = load();
+  const html = '<div class="md"><p>Submitted by fans: casting rumor</p><p>More&#39;s here</p></div>&#32; submitted by &#32; <a href="x"> /u/foo </a> <span>[link]</span>';
+  assert.equal(htmlToMarkdownText(html), "Submitted by fans: casting rumor\nMore's here");
+});
+
+test('numeric entities decode, and out-of-range ones are left alone instead of throwing', () => {
+  const { parseRedditAtom, htmlToMarkdownText } = load();
+  const feed = SAMPLE_FEED.replace('Hamilton &amp; Playbill tickets question', 'Don&#8217;t miss &#x41;');
+  assert.equal(parseRedditAtom(feed).data.children[0].data.title, 'Don’t miss A');
+  assert.equal(htmlToMarkdownText('<p>a &#99999999; b &#x110000; c</p>'), 'a &#99999999; b &#x110000; c');
+});
+
+test('every reddit-api fetchWithFallback caller passes allowRss (BRO-5987 guard)', () => {
+  const require = createRequire(import.meta.url);
+  const fs = require('node:fs');
+  for (const f of ['reddit-engagement-digest.js', 'scrape-cast-changes.js', 'scrape-boring-waltz-costs.js']) {
+    const src = fs.readFileSync(new URL(`../../scripts/${f}`, import.meta.url), 'utf8');
+    const calls = (src.match(/(fetchWithFallback|fetchRedditWithFallback)\([^)]*\)/g) || []).filter((c) => /\burl\b/.test(c));
+    assert.ok(calls.length > 0, `${f}: no calls found`);
+    for (const c of calls) assert.match(c, /allowRss:\s*true/, `${f}: ${c} must opt into the RSS route`);
+  }
+});
