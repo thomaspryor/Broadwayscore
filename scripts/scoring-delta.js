@@ -1294,6 +1294,8 @@ function decideInclusion(review, show, guards, filePath) {
           priorRuns: preWindowPriorRunsFor(show, guards), tourLegs: show.tourLegs,
         }).exclude;
       },
+      // Baseline snapshots from before BRO-5909 lack the predicate: no copy check there.
+      referenceIsCopy: typeof guards.duplicateOfRefIsCopy !== 'function' ? undefined : (ref, refPath) => guards.duplicateOfRefIsCopy(ref, show?.raw || show, refPath, review),
       inheritedFlag: (d, ref, refPath) => guards.duplicateOfInheritedFlag(d, ref, show?.raw || show, refPath),
     });
     if (dupe.reason) return { included: false, reason: 'duplicateOf' };

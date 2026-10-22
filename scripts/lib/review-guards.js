@@ -4753,7 +4753,10 @@ const REBUILD_ONLY_PASS_REASONS = new Set([
 
 // BRO-5129: mirror rules meaning "this file is a copy of another review". A
 // duplicateOf copy whose reference is excluded for one of these is not
-// recovered on the census path (it would double-count the original).
+// recovered (it would double-count the original), unless the copy's text is
+// confirmed different (duplicateOfCopyRefVerdict, BRO-5909). Known risk,
+// unmeasured without review texts: isSyndicatedDuplicate and personalRepost do
+// not confirm the original is on file, so a mis-pointed copy could ship zero.
 const DUPLICATE_OF_COPY_REF_REASONS = new Set([
   'personalRepost',
   'crossOutletDuplicate',
@@ -4761,6 +4764,32 @@ const DUPLICATE_OF_COPY_REF_REASONS = new Set([
   'knownSyndicationSecondary',
   'duplicateOfCircularTiebreak',
 ]);
+
+/**
+ * BRO-5909: true when a duplicateOf reference is excluded because it is itself
+ * a copy of another review. The rebuild, scoring-delta and the census mirror
+ * all ask this one predicate, so a duplicateOf copy of such a reference stays
+ * out everywhere instead of shipping the original review twice.
+ * @param {object} refData - the parsed reference file
+ * @param {object} show - the show record the file belongs to
+ * @param {string} refPath - reference file path
+ * @param {object} data - the duplicateOf copy being judged
+ * @returns {boolean}
+ */
+function duplicateOfRefIsCopy(refData, show, refPath, data) {
+  return duplicateOfCopyRefVerdict(explainExclusion(refData, show, refPath), data, refData);
+}
+
+/**
+ * The decision half of duplicateOfRefIsCopy, for callers that already hold the
+ * reference's exclusion reason (the census mirror). A pointer whose text is
+ * confirmed to be a DIFFERENT article is stale (BRO-5501): the copy is its own
+ * review and ships, so a wrong duplicateOf cannot drop the only copy.
+ */
+function duplicateOfCopyRefVerdict(refReason, data, refData) {
+  if (!DUPLICATE_OF_COPY_REF_REASONS.has(refReason)) return false;
+  return !(data && refData && textsConfirmedDifferent(data.fullText, refData.fullText));
+}
 
 /**
  * The rebuild's reason for a file it dropped in one of REBUILD_ONLY_PASS_REASONS, or null.
@@ -5067,7 +5096,7 @@ function explainExclusion(data, show, filePath, opts) {
           // review: recovering this copy would ship that review twice, so
           // the mirror keeps it out even where the rebuild recovers it, and
           // the census reports the disagreement.
-          if (DUPLICATE_OF_COPY_REF_REASONS.has(refReason)) return 'duplicateOf';
+          if (duplicateOfCopyRefVerdict(refReason, data, refData)) return 'duplicateOf';
           // Any other reference exclusion (wrongAttribution, bodyless score,
           // ...): the rebuild recovers this copy. Fall through to its own
           // guards. Known gap: the rebuild also counts a pre-window
@@ -6273,6 +6302,9 @@ module.exports = {
   isBodylessAggregatorScoreUncorroborated,
   bodylessCorroboratedByProduction,
   explainExclusion,
+  duplicateOfRefIsCopy,
+  duplicateOfCopyRefVerdict,
+  DUPLICATE_OF_COPY_REF_REASONS,
   duplicateOfInheritedFlag,
   textsConfirmedDifferent,
   hasStructuralStarScore,

@@ -47,6 +47,8 @@ const INVENTORY = {
   textsConfirmedDifferent: 'live-via:duplicateOfInheritedFlag',
   // BRO-5129: the census-path duplicateOf branch asks it directly, same as the rebuild's refInheritedFlag.
   duplicateOfInheritedFlag: 'live',
+  // BRO-5909: the rebuild asks duplicateOfRefIsCopy, which decides through this verdict; the mirror calls it directly.
+  duplicateOfCopyRefVerdict: 'live-via:duplicateOfRefIsCopy',
   wrongShowCleared: 'live',
   wrongShowExplicitlyCleared: 'live',
   // The rebuild has no cvWrongArticle exclusion of its own: it promotes a
@@ -120,15 +122,6 @@ const MIRROR_ONLY_RULES = {
       'a-midsummer-nights-dream-globe-west-end-2026/timeout-london--andrzej-lukowski.json',
       'pride-west-end-2026/broadwayworld--jay-irwin.json',
       'thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--susannah-butter.json',
-    ],
-  },
-  duplicateOf: {
-    count: 6,
-    why: 'known gap: the reference is itself a syndicated / cross-outlet copy (DUPLICATE_OF_COPY_REF_REASONS); the rebuild\'s refExcluded branch recovers the duplicateOf copy anyway, which may ship the original review twice. The mirror keeps it out on purpose',
-    examples: [
-      'catch-me-if-you-can-2011/hollywood-reporter--unknown.json',
-      'cabaret-at-the-kit-kat-club-west-end-2021/london-theatre--chris-omaweng.json',
-      'the-phantom-of-the-opera-west-end-1986/sunday-express--stefan-kyriazis.json',
     ],
   },
   wrongProduction: {
