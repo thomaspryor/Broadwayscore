@@ -1,11 +1,6 @@
 {
-  "generatedAt": "2026-10-21T19:24:12.130Z",
+  "generatedAt": "2026-10-22T18:43:22.549Z",
   "promoted": [
-    {
-      "id": "the-inequalities-off-west-end-2027",
-      "source": "venue-page:almeida-theatre",
-      "sourceUrl": "https://almeida.co.uk/whats-on/the-inequalities-trilogy/"
-    },
     {
       "id": "beyond-caring-off-west-end-2027",
       "source": "venue-page:almeida-theatre",
@@ -22,12 +17,27 @@
       "sourceUrl": "https://almeida.co.uk/whats-on/love/"
     },
     {
+      "id": "birdcatcher-off-west-end-2027",
+      "source": "venue-page:park-theatre",
+      "sourceUrl": "https://parktheatre.co.uk/whats-on/"
+    },
+    {
       "id": "dickens-christmas-off-west-end-2026",
       "source": "venue-page:park-theatre",
       "sourceUrl": "https://parktheatre.co.uk/whats-on/"
     },
     {
-      "id": "birdcatcher-off-west-end-2027",
+      "id": "the-gentleman-of-wimbledon-off-west-end-2027",
+      "source": "venue-page:park-theatre",
+      "sourceUrl": "https://parktheatre.co.uk/whats-on/"
+    },
+    {
+      "id": "mother-ignacia-off-west-end-2027",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": "https://riversidestudios.co.uk/whats-on/"
+    },
+    {
+      "id": "let-the-whale-die-off-west-end-2027",
       "source": "venue-page:park-theatre",
       "sourceUrl": "https://parktheatre.co.uk/whats-on/"
     },
@@ -77,6 +87,14 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as three-and-a-bit-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "The Inequalities",
+      "venue": "Almeida Theatre",
+      "source": "venue-page:almeida-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as the-inequalities-trilogy-off-west-end-2027 (same house, title words contained, overlapping run (\"The Inequalities Trilogy\" vs \"The Inequalities\"))"
     },
     {
       "title": "Boy Blue: 25 Stories",
@@ -367,12 +385,12 @@
       "reason": "already in shows.json as the-radium-girls-off-west-end-2026 (normalized-equal)"
     },
     {
-      "title": "An Oak Tree",
+      "title": "Garry Starr Classic Penguins",
       "venue": "The Other Palace",
       "source": "venue-page:the-other-palace",
       "sourceUrl": null,
       "kind": "skip-duplicate",
-      "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
+      "reason": "already in shows.json as garry-starr-classic-penguins-garrick-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"Garrick Theatre\"))"
     },
     {
       "title": "The Graddys London Semi Finals",
@@ -383,12 +401,12 @@
       "reason": "already in shows.json as the-graddys-london-semi-finals-off-west-end-2026 (normalized-equal)"
     },
     {
-      "title": "Garry Starr Classic Penguins",
+      "title": "An Oak Tree",
       "venue": "The Other Palace",
       "source": "venue-page:the-other-palace",
       "sourceUrl": null,
       "kind": "skip-duplicate",
-      "reason": "already in shows.json as garry-starr-classic-penguins-garrick-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"Garrick Theatre\"))"
+      "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
     },
     {
       "title": "Monsters A Killer New Musical Comedy",
@@ -957,14 +975,6 @@
       "sourceUrl": null,
       "kind": "skip-unconfirmed",
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-22))"
-    },
-    {
-      "title": "Cultivate: The Other Half",
-      "venue": "Riverside Studios",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-21))"
     },
     {
       "title": "Eucharist",
