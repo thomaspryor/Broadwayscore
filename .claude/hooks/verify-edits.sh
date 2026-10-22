@@ -1069,49 +1069,20 @@ if os.environ.get('WRAPUP_GATE_DISABLE', '0') != '1':
 # use it before this point in the file executes) — see that definition's
 # comment for the stripping rationale and known gaps.
 
-# Each alternation requires BOTH the write primitive AND the review-texts path
-# to be locally adjacent in the same statement. Bare `sed -i` is no longer
-# enough — an echo string like `echo "=== T2: real sed -i on review-texts"`
-# embeds the bytes but never executes them. Statement-boundary anchor
-# `(?:^|[\n;&|]\s*)` requires the primitive to start a fresh shell statement
-# (not be mid-string).
-_STMT = r'(?:^|[\n;&|]\s*)'
-_audit_write_re = re.compile(
-    r'(?:'
-    # In-place edit ON a review-texts path (within the same statement; bounded
-    # by the next statement separator)
-    rf'{_STMT}sed\s+-i[^\n;&|]{{0,300}}review-texts/'
-    rf'|{_STMT}perl\s+-(?:pi|i)[^\n;&|]{{0,300}}review-texts/'
-    # find ... data/review-texts ... -exec sed/rm/mv/cp/perl
-    rf'|{_STMT}find\s+\S*review-texts\S*[^;&|]*-exec\s+\S*(?:sed|rm|mv|cp|perl)'
-    # xargs sed/rm/mv/cp/perl operating on review-texts
-    rf'|{_STMT}xargs\s+\S*(?:sed|rm|mv|cp|perl)\b[^\n;&|]{{0,300}}review-texts/'
-    # mv/cp/rm/tee targeting review-texts
-    rf'|{_STMT}(?:mv|cp|rm)\s+[^|;&\n]{{0,300}}review-texts/'
-    rf'|{_STMT}tee\s+\S*review-texts/'
-    # Shell redirect into review-texts (write side of `>` and `>>`)
-    r'|>>?\s*\S*review-texts/'
-    # Node/Bun writer calls — must include review-texts in args (locality is
-    # natural because these are single function-call expressions)
-    r'|writeFileSync\([^)]*review-texts'
-    r'|appendFileSync\([^)]*review-texts'
-    r'|createWriteStream\([^)]*review-texts'
-    r'|fs\.(?:writeFile|appendFile|rename|cp)[^(]*\([^)]*review-texts'
-    r'|Bun\.write\([^)]*review-texts'
-    # python -c "...open('.../review-texts/...', 'w')..."
-    rf"|{_STMT}python3?\s+-c\s+['\"][^'\"]*open\([^)]*review-texts"
-    r')',
-    re.MULTILINE,
-)
+# Keep the matcher outside the hook's line budget. The cwd fallback also
+# supports the controlled hook copies used by the heredoc regression tests.
+import runpy
+_audit_lib = os.path.join(os.environ.get('VE_REPO_ROOT', ''), 'scripts/lib/verify_edits_writes.py')
+if not os.path.isfile(_audit_lib):
+    _audit_lib = os.path.join(os.getcwd(), 'scripts/lib/verify_edits_writes.py')
+try:
+    _audit_match = runpy.run_path(_audit_lib)['is_review_texts_write']
+except Exception:
+    print('AUDIT_MATCHER_MISSING')
+    sys.exit(0)
+
 def _is_review_texts_write(cmd: str) -> bool:
-    if not cmd:
-        return False
-    # Heredoc bodies are data, not executable commands. Strip them before
-    # scanning so test fixtures and JSONL transcripts don't trigger.
-    cmd = _strip_heredocs(cmd)
-    # Each alternation now embeds the review-texts requirement, so the prior
-    # outer `'review-texts' in cmd` shortcut is no longer needed.
-    return bool(_audit_write_re.search(cmd))
+    return _audit_match(_strip_heredocs(cmd)) if cmd else False
 
 sweep_write_count = sum(
     1 for kind, payload in events
@@ -1988,6 +1959,11 @@ trap '_ve_record_block $?' EXIT
 if [[ "$result" == HUMAN_TIME_ESTIMATE:* ]]; then
   phrase="${result#HUMAN_TIME_ESTIMATE:}"
   echo "🛑 BLOCKED: human-time estimate detected (\"${phrase}\") for work you're doing. Quote Claude-pace wall-clock (minutes, not hours/days) — bad sessions follow bad estimates. Bypass: NO-VERIFY: <why this estimate is for external/human time, not your own work>." >&2
+  exit 2
+fi
+
+if [[ "$result" == AUDIT_MATCHER_MISSING ]]; then
+  echo "BLOCKED: cannot load scripts/lib/verify_edits_writes.py; restore the review-text write matcher before finishing." >&2
   exit 2
 fi
 
