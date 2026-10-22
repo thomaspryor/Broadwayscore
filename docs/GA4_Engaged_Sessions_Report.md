@@ -50,7 +50,7 @@ pattern so it's runnable in CI/cron without a browser session.
 
 - **Shared logic:** `scripts/lib/ga4-engaged-sessions.js` — `fetchEngagedSessionsSummary(client, propertyId, dateRange)` runs the query above; `summarizeChannelRows(rows)` is the pure aggregation (unit-tested in the colocated `.test.mjs`).
 - **Manual/ad-hoc query:** `node scripts/query-analytics.js sessions-engaged [--days=N | --start=... --end=...]`
-- **Automated cron:** `scripts/audit-geo-bots.js` (run weekly by `.github/workflows/weekly-geo-audit.yml`) now logs the headline KPI — engaged sessions, raw sessions, inflation ratio, and the Direct-channel breakdown — at the top of every run, before its existing per-country bot audit. This is the one recurring scheduled job in the repo that queries GA4 traffic, so it's the default location for the headline number.
+- **Automated cron:** `scripts/audit-geo-bots.js` (run weekly by `.github/workflows/weekly-geo-audit.yml`) logs the headline KPI and queues a `Traffic (7d)` FYI line for the next morning digest. It reuses `fetchEngagedSessionsSummary()` through `scripts/lib/daily-digest-ga4-traffic.js`, querying the seven completed days ending yesterday. The email shows engaged sessions, raw-session inflation, raw sessions, and the weekly update date. The existing digest queue commit and health snapshot carry it to the morning email without an extra GA4 request, email, or cron. This statistic never creates a fix task or an owner decision.
 
 ### Output shape
 
