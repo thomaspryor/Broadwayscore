@@ -93,7 +93,13 @@
     "witness-for-the-prosecution-west-end-2022/everything-theatre--mary-pollard.json",
     "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
     "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
-    "witness-for-the-prosecution-west-end-2022/standard--henry-hitchings.json"
+    "witness-for-the-prosecution-west-end-2022/standard--henry-hitchings.json",
+    "derren-brown-only-human-west-end-2026/telegraph--chris-harvey.json",
+    "ilford-boy-west-end-2026/telegraph--fiona-mountford.json",
+    "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
+    "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json",
+    "some-woman-west-end-2026/sunday-times--clive-davis.json",
+    "some-woman-west-end-2026/times-uk--clive-davis.json"
   ],
   "failed": [
     "equus-west-end-2026/standard--nick-curtis.json",
@@ -122,7 +128,6 @@
     "romeo-and-juliet-west-end-2026/ap--mark-kennedy.json",
     "hadestown-west-end-2024/times-square-chronicles--unknown.json",
     "mamma-mia-west-end-2021/whatsonstage--sarah-crompton.json",
-    "ilford-boy-west-end-2026/telegraph--fiona-mountford.json",
     "triumph-off-west-end-2026/thestage--david-benedict.json",
     "some-woman-west-end-2026/thestage--sam-marlowe.json",
     "some-woman-west-end-2026/tixculture--unknown.json",
@@ -151,7 +156,20 @@
     "cabaret-at-the-kit-kat-club-west-end-2021/whatsonstage--sarah-crompton.json",
     "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
     "hamilton-west-end-2021/ew--unknown.json",
-    "hamilton-west-end-2021/theatermania--zachary-stewart.json"
+    "hamilton-west-end-2021/theatermania--zachary-stewart.json",
+    "triumph-off-west-end-2026/closeupculture--unknown.json",
+    "dog-mom-off-west-end-2026/reviewsgate--william-russell.json",
+    "dog-mom-off-west-end-2026/thestage--neil-norman.json",
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "dirty-dancing-the-classic-story-on-stage-west-end-2026/sportswhereiam--unknown.json",
+    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
+    "some-woman-west-end-2026/guardian--unknown.json",
+    "double-bill-tell-me-straight-and-aggy-off-west-end-2026/soundsandstage--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/alltrippers--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
+    "some-woman-west-end-2026/momentsapp--unknown.json",
+    "baby-off-west-end-2026/afridiziak-theatre-news--basil-g-lumsden.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -207,10 +225,16 @@
       "witness-for-the-prosecution-west-end-2022/everything-theatre--mary-pollard.json",
       "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
       "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
-      "witness-for-the-prosecution-west-end-2022/standard--henry-hitchings.json"
+      "witness-for-the-prosecution-west-end-2022/standard--henry-hitchings.json",
+      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/some-woman-west-end-2026/sunday-times--clive-davis.json",
+      "some-woman-west-end-2026/sunday-times--clive-davis.json",
+      "data/review-texts/some-woman-west-end-2026/times-uk--clive-davis.json",
+      "some-woman-west-end-2026/times-uk--clive-davis.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "fences-off-west-end-2026/ground--unknown.json",
@@ -221,7 +245,9 @@
     ],
     "scrapingbee": [
       "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json",
-      "sinatra-the-musical-west-end-2026/daily-mail--bethan-edwards.json"
+      "sinatra-the-musical-west-end-2026/daily-mail--bethan-edwards.json",
+      "derren-brown-only-human-west-end-2026/telegraph--chris-harvey.json",
+      "ilford-boy-west-end-2026/telegraph--fiona-mountford.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -251,10 +277,49 @@
       "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
       "stranger-things-the-first-shadow-west-end-2023/times-uk--dominic-maxwell.json",
       "abba-voyage-off-west-end-2026/times-uk--will-hodgkinson.json",
-      "witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json"
+      "witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json",
+      "angels-bone-west-end-2026/sunday-times--rebecca-franks.json"
     ]
   },
   "startTime": "2026-10-22T14:11:55.137Z",
-  "lastProcessed": "witness-for-the-prosecution-west-end-2022/standard--henry-hitchings.json",
-  "log": []
+  "lastProcessed": "baby-off-west-end-2026/afridiziak-theatre-news--basil-g-lumsden.json",
+  "log": [
+    {
+      "t": "2026-10-22T15:00:16.110Z",
+      "event": "bb-session",
+      "session": "8b54faf5",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/some-woman-review-anne-ma"
+    },
+    {
+      "t": "2026-10-22T15:00:16.832Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-22T15:01:56.753Z",
+      "event": "bb-session",
+      "session": "e7f408e0",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/some-woman-review-anne-ma"
+    },
+    {
+      "t": "2026-10-22T15:01:57.441Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-22T15:02:46.884Z",
+      "event": "bb-session",
+      "session": "21b80949",
+      "url": "https://www.afridiziak.com/offers/access-10-ticket-offer-to-see-baby-in-previews"
+    },
+    {
+      "t": "2026-10-22T15:02:57.314Z",
+      "event": "bb-session",
+      "session": "ee813d1e",
+      "url": "https://www.afridiziak.com/offers/access-10-ticket-offer-to-see-baby-in-previews"
+    }
+  ],
+  "recoveredAfterFailure": [
+    "ilford-boy-west-end-2026/telegraph--fiona-mountford.json"
+  ]
 }
