@@ -1,14 +1,14 @@
 # Sprint Plan: AdSense Launch (low-effort, low-clutter ads), revised after /plan-review
 
 ## Overview
-Add Google AdSense to broadwayscorecard.com (which also serves West End Scorecard at `/west-end`): one fixed-size, clearly labeled ad on show pages, no pop-ups, sticky ads, video or Auto ads, and no ads for signed-in members. The work ramps in three phases:
+Add Google AdSense to broadwayscorecard.com (which also serves West End Scorecard at `/west-end`): one fixed-size, clearly labeled ad on show pages, no pop-ups, sticky ads, video or Auto ads, no ads for signed-in members, and no ads for visitors in the UK, EEA or Switzerland (so no cookie-consent pop-up for anyone). The work ramps in three phases:
 - **Phase A:** a tiny change that gets the site approved by Google.
 - **Phase B:** one ad slot behind a single runtime PostHog flag that is both the kill switch and a 50/50 test.
 - **Phase C:** optional extras, only if the test says ads are worth keeping.
 
 Agents (Claude or Codex) do all code work. The owner spends about 45 minutes in total in the AdSense and Vercel dashboards.
 
-**Expected revenue:** about $35–135/month with one ad on show pages at today's ~56k real pageviews a month (bot-filtered PostHog, 30 days to Oct 19, 2026; ~90% of human traffic is US/UK/CA/AU/NZ/IE). This drops by about half during the 4-week 50/50 test. It is a planning estimate, not a quote. If Vercel needs an upgrade to Pro ($20/month), that cost comes out of it. [CHANGED: subtract Pro cost; structure reviewer]
+**Expected revenue:** about $30–115/month with one ad on show pages, after leaving out UK/EEA/CH visitors (~15% of real pageviews, at lower ad rates than the US) [CHANGED: owner decision 2026-10-22, no ads for UK/EEA/CH] at today's ~56k real pageviews a month (bot-filtered PostHog, 30 days to Oct 19, 2026; ~90% of human traffic is US/UK/CA/AU/NZ/IE). This drops by about half during the 4-week 50/50 test. It is a planning estimate, not a quote. If Vercel needs an upgrade to Pro ($20/month), that cost comes out of it. [CHANGED: subtract Pro cost; structure reviewer]
 
 **Decision metric (owner-agreed):** total revenue per 1,000 real pageviews (AdSense + TodayTix/Impact commission, minus any Vercel Pro upgrade), ads group vs no-ads group, alongside ticket-click rate.
 
@@ -35,10 +35,10 @@ The review found one P0 (our own automation would generate invalid ad traffic) a
 | Phase | Goal | Tasks | Complexity |
 |---|---|---|---|
 | A | Approval-ready site; no ad code | 2 | 2S |
-| B | One show-page slot behind the runtime `ads` flag, automation opt-out, 50/50 test, readout | 8 | 4S, 3M, 1L |
+| B | One show-page slot behind the runtime `ads` flag, UK/EEA/CH region gate, automation opt-out, 50/50 test, readout | 9 | 5S, 3M, 1L |
 | C | Optional, only if Phase B says keep: browse-list slot, weekly ad-revenue line | 2 | 2M |
 
-Total: **10 required tasks** (A+B), down from 18. Phase A is about one hour of agent work. Phase B is one session after approval. Phase C is optional. [CHANGED: scope cut from 18 tasks/4 sprints; ramp restructured; structure reviewer, external GPT reviewer, design reviewer, Phase 0]
+Total: **11 required tasks** (A+B), down from 18. Phase A is about one hour of agent work. Phase B is one session after approval. Phase C is optional. [CHANGED: scope cut from 18 tasks/4 sprints; ramp restructured; structure reviewer, external GPT reviewer, design reviewer, Phase 0]
 
 **Who can run what:** Phases A and B code suit either a Claude cloud session (lands via `land/bro-N-<slug>`) or a Codex task (edit in place, then the owner's "Create PR"; the branch must be `codex/<slug>` if one is created). B-T6 (firewall) and B-T7 (flag rollout) need the Vercel and PostHog connectors, so they suit a Claude session. Every phase gets a Linear issue (CLAUDE.md §6).
 
@@ -69,7 +69,7 @@ Total: **10 required tasks** (A+B), down from 18. Phase A is about one hour of a
 - **Files:** `src/app/privacy/page.tsx`
 - **Description:**
   - Replace the sentence at ~line 152 ("We don't show third-party ads…"). Google's review looks at the site as-is, and the sentence would be false once ads run.
-  - Use wording that is true **before and after** launch [CHANGED: no claims that are false during the review window; user-impact reviewer]: "We may show ads from Google AdSense on some pages. If we do, Google and its partners may use cookies or device identifiers to serve and measure ads. Visitors in the UK, EEA and Switzerland are asked for consent first, and US visitors can opt out of personalized ads. Signed-in members don't see ads."
+  - Use wording that is true **before and after** launch [CHANGED: no claims that are false during the review window; user-impact reviewer]: "We may show ads from Google AdSense on some pages. If we do, Google and its partners may use cookies or device identifiers to serve and measure ads. We don't show ads to visitors in the UK, the EEA or Switzerland. US visitors can opt out of personalized ads. Signed-in members don't see ads."
   - Link to Google's "How Google uses information from sites or apps that use our services" page and to the ad personalization settings.
   - Add AdSense to "Services We Use" (~159–171) and bump "Last updated" (line 31). Leave the Impact affiliate wording alone.
 - **Acceptance criteria:**
@@ -103,7 +103,7 @@ Removed from the original Sprint 1:
   2. **Ads → By site → broadwayscorecard.com:** turn **Auto ads off**. Also confirm each Auto ads format is off: anchor, vignette, side rail, multiplex, and "ad intents" (which turns page text into ad links). The fixed unit's script can otherwise switch them on. [CHANGED; user-impact reviewer]
   3. **Optimization:** turn off "Allow Google to run experiments" / auto-optimize, if offered. It can change ad formats without notice. [CHANGED; user-impact reviewer; confirm the current label in the UI]
   4. **Privacy & messaging:**
-     - Create a **European regulations** message (covers UK, EEA, CH) with the `/privacy` URL. Make sure it shows a clear "Do not consent" choice and a way to change consent later.
+     - Create a **European regulations** message (covers UK, EEA, CH) with the `/privacy` URL, as a **safety net only**. The site won't serve ads to those visitors (B-T9), but if the region check ever misses someone (for example, a traveller on a VPN), Google's consent message still protects you. Make sure it shows a clear "Do not consent" choice.
      - Create a **US state regulations** message targeted at "All current and future supported US states."
      - Preview both, ideally from a UK VPN.
   5. **Brand safety → Blocking controls → Advertiser URLs:** paste the blocklist below.
@@ -155,11 +155,12 @@ Removed from the original Sprint 1:
     - a `bwsc_noads=1` cookie is set
 
     [CHANGED: global automation opt-out; P0, pre-mortem + structure reviewer]
-  - **`decideAdRender({ variant, authLoading, isAuthenticated, automated })`:** a pure function. It returns `true` **only** when all hold:
+  - **`decideAdRender({ variant, authLoading, isAuthenticated, automated, region })`:** a pure function. It returns `true` **only** when all hold:
     - `variant === 'ads'`
     - `!authLoading`
     - `!isAuthenticated`
     - `!automated`
+    - `region === 'ads-ok'` (from the B-T9 cookie; a missing or unknown value means **no ads**)
 
     An unresolved flag (`undefined`) means **no ads**. [CHANGED: wait for auth to finish loading; user-impact reviewer, structure reviewer; unresolved flag means no ads, so the kill switch works; design reviewer, pre-mortem]
 - **Acceptance criteria:**
@@ -192,7 +193,7 @@ Removed from the original Sprint 1:
 
 ### Task B-T5: `AdSlot` component + show-page placement
 - **Complexity:** L
-- **Depends on:** B-T2, B-T3
+- **Depends on:** B-T2, B-T3, B-T9
 - **Parallel:** No
 - **Files:** `src/components/ads/AdSlot.tsx` (new), `src/app/show/[slug]/page.tsx`, `memory/design-system.md`
 - **Description:**
@@ -255,6 +256,26 @@ Removed from the original Sprint 1:
 - **Acceptance criteria:**
   - VERIFY: running on the real 4 weeks prints both groups with sample sizes and a confidence interval; running on a 1-day window doesn't crash and says "not enough data"
 
+
+### Task B-T9: Region gate: no ads for UK/EEA/CH visitors
+- **Complexity:** S
+- **Depends on:** None
+- **Parallel:** Yes (with B-T2, B-T3)
+- **Files:** `src/middleware.ts`, `src/lib/ads.ts` (export `NO_AD_COUNTRIES` and a pure `adRegionForCountry(code)`), `tests/unit/ads-decision.test.ts`
+- **Description:** [CHANGED: new task; owner decision 2026-10-22]
+  - **Where:** `src/middleware.ts` already runs on `/show/:slug+`. On requests it does **not** redirect, return `NextResponse.next()` and set a first-party cookie `bwsc_ad_region`:
+    - `ads-ok` when the `x-vercel-ip-country` header is a country outside the list
+    - `no-ads` when it's in the list or missing
+    - `Path=/`, `Max-Age=86400`, `SameSite=Lax`, not HttpOnly, so `AdSlot` can read it
+  - **The list:** the EU-27, plus Iceland, Liechtenstein, Norway, the UK and Switzerland: `AT BE BG HR CY CZ DK EE FI FR DE GR HU IE IT LV LT LU MT NL PL PT RO SK SI ES SE IS LI NO GB CH`.
+  - **Matcher:** do **not** change the middleware `matcher`. `tests/unit/middleware-slug-redirects.test.mjs` asserts it matches the redirect route families, and show pages are already covered. The redirect path stays exactly as it is.
+  - **No cookie banner:** the cookie stores no identifier, only a yes/no for ad eligibility. It exists to keep tracking cookies away from UK/EEA visitors.
+  - **Ireland:** IE is in the list (EU). That removes a small slice of the CA/AU/NZ/IE premium traffic counted earlier.
+- **Acceptance criteria:**
+  - VERIFY: the unit test covers `adRegionForCountry` for GB, IE, DE, CH, NO, US, CA, AU and an empty value, and `decideAdRender` returns false for `region: 'no-ads'` and `undefined`
+  - VERIFY: `tests/unit/middleware-slug-redirects.test.mjs` still passes unchanged
+  - VERIFY: after deploy, a browser on a UK VPN gets `bwsc_ad_region=no-ads` on `/show/<slug>`, and a US browser gets `ads-ok`. Vercel sets the country header at its edge, so a curl with a fake header won't test this.
+
 ---
 
 ## Phase C: Optional, only if Phase B says keep
@@ -278,7 +299,7 @@ Owner Step 0 → A-T1 ─┐
                A-T2 ─┴→ Phase A lands → Owner Step 1 (Request review) ──→ Google approval
 Phase A lands → B-T6 (Log 3 days → Challenge)
 Google approval → B-T1 (owner runbook) → B-T2 ─┐
-                                 B-T3 ─────────┼→ B-T5 ─┐
+                                 B-T3, B-T9 ───┼→ B-T5 ─┐
                                  B-T2 → B-T4 ──┴────────┼→ B-T7 (owner "go") → 4 weeks → B-T8 → keep? → Phase C
                                  B-T6 (Challenge active) ┘
 ```
@@ -287,7 +308,7 @@ Google approval → B-T1 (owner runbook) → B-T2 ─┐
 ```
 Session A (now, ~1 hour):     A-T1 ∥ A-T2 → land → start B-T6 in Log mode
 Session B (after approval):   track 1: B-T2 → B-T5
-                              track 2: B-T3, then B-T4 (after B-T2)
+                              track 2: B-T3, B-T9, then B-T4 (after B-T2)
                               sync → land → B-T7 at 0% → owner "go" → 50/50
 Session C (week 4):           B-T8
 Session D (optional):         C-T1, C-T2
@@ -296,12 +317,12 @@ Session D (optional):         C-T1, C-T2
 **Max subagent parallelism:** 2.
 
 ## Known Edge Cases
-- **UK/EEA consent dialog.** Google's consent message is delivered by the ad script, so it appears when the script loads. That happens as the reader scrolls toward the ad, which is a pop-up mid-scroll and contradicts "no pop-ups". It's required for UK/EEA ads. Options for the owner (decide before B-T5):
-  - (a) accept it
-  - (b) for visitors whose browser timezone/locale suggests UK/EEA, call `loadAdSense()` on page load so the dialog appears at arrival rather than mid-read
-  - (c) serve no ads to UK/EEA visitors at first, which means no dialog and roughly 15% fewer ad impressions
+- **UK/EEA/CH visitors (owner decision 2026-10-22: no ads).** Google's consent message would otherwise appear mid-scroll on West End pages, contradicting "no pop-ups". B-T9 keeps the ad script from ever loading for those visitors, so no consent dialog appears. Edge cases:
+  - travellers and VPN users are classified by IP country at request time
+  - a missing country header means no ads
+  - the European consent message in B-T1 is a safety net, not the plan
 
-  Separately, GA4 and PostHog session replay already run without consent for UK visitors. That gap predates this plan; file it in Linear. [CHANGED: listed as a UX decision; user-impact reviewer, structure reviewer]
+  Separately, GA4 and PostHog session replay already run without consent for UK visitors. That gap predates this plan; file it in Linear. [CHANGED: UX decision resolved by the owner; raised by user-impact reviewer, structure reviewer]
 - **CSP is report-only.** AdSense iframes will log `frame-src 'none'` violations. Harmless now. Add the AdSense domains in B-T5 if the report noise matters, or before the CSP is ever switched to enforcing. Avoid `img-src https:`; prefer listing domains. [CHANGED; external GPT reviewer]
 - **Ad blockers and PostHog blockers** get no ads and no flag, so they're absent from both test groups. This is fair, because the two blockers overlap heavily.
 - **Members during auth loading** never load the script, because the decision waits for `!authLoading`.
@@ -331,6 +352,7 @@ Session D (optional):         C-T1, C-T2
 | Firewall rule scoped to HTML pages and started early in Log mode | Don't challenge `/ads.txt` or APIs; the 3-day Log window was unscheduled | User-impact reviewer, structure reviewer, external GPT reviewer |
 | More AdSense defaults to turn off (all Auto ads formats, ad intents, experiments) | Platform defaults can add ads the code never asked for | User-impact reviewer |
 | Privacy wording true before and after launch | Original wording claimed consent prompts weeks before they existed | User-impact reviewer |
+| No ads for UK/EEA/CH visitors (new B-T9 region gate) | Avoids Google's consent pop-up entirely; costs ~15% of impressions at lower-than-US rates | Owner decision 2026-10-22, after user-impact and structure reviewers raised the pop-up |
 | Vercel Pro cost subtracted in the decision metric | $20/month is 15–57% of projected revenue | Structure reviewer |
 | Dropped CSP edits and robots allow from the pre-approval path | Report-only CSP; `*` already allows the crawler | External GPT reviewer, structure reviewer |
 
