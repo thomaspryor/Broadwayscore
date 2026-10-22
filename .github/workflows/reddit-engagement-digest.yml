@@ -254,7 +254,14 @@ jobs:
           if [ -n "$RESEND_SHOWS" ]; then
             ARGS="$ARGS --show=$RESEND_SHOWS"
           fi
-          node scripts/verify-reddit-draft-reviews.js $ARGS
+          # Bounded in the shell, not by timeout-minutes (a step timeout reports "cancelled" and the
+          # job's own 90 minutes must still leave room for the email step and its screenshots). The
+          # script publishes changed=true as soon as a show changed, so a kill still pushes it.
+          status=0
+          timeout 3300 node scripts/verify-reddit-draft-reviews.js $ARGS || status=$?
+          if [ "$status" -ne 0 ]; then
+            echo "::warning::review check ended with status $status (124 = timed out); the emails go out with what it recorded"
+          fi
 
       # Same pair of steps as audit-aggregator-gap.yml: push what the tools wrote to
       # the private repo, then start a rebuild so the new reviews get scored. The email

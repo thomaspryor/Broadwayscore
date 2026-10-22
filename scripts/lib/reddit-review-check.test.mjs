@@ -568,3 +568,13 @@ test('makeJudge: one atomic write stamped as a script clear; a guard that keeps 
   assert.match(bad.reason, /file restored/);
   assert.equal(fs.readFileSync(path.join(dir, id, 'two.json'), 'utf8'), original, 'byte-for-byte restore');
 });
+
+test('review of BRO-5887 ship-check: with no owner list the freshness skip applies (a checked-today draft is not re-run)', () => {
+  const mk = (id, over) => baseDraft({ showId: id, ...over });
+  const drafts = { drafts: {
+    fresh: mk('fresh', { verification: { status: 'clean', checkedAt: hoursAgo(2), score: 74, reviewCount: 14 } }),
+    brandNew: mk('brandNew'),
+  } };
+  assert.deepEqual(chk.selectDueChecks(drafts, NOW, { only: [], max: 9 }).map(x => x.draft.showId), ['brandNew']);
+  assert.deepEqual(chk.selectDueChecks(drafts, NOW, { max: 9 }).map(x => x.draft.showId), ['brandNew']);
+});

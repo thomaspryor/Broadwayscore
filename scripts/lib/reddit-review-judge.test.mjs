@@ -245,3 +245,17 @@ test('the production a show follows (originalProductionId) counts as another ven
   const r = j.verifyDecision(it, { production: { verdict: 'this-production', quote: 'Reviewed at the Daryl Roth Theatre after the Booth Theatre run' } }, rec(), f, []);
   assert.match(r.rejected.map(x => x.why).join('|'), /earlier production/);
 });
+
+test('review of BRO-5887 ship-check: a truncated critic name is refused, an overrun into ordinary words is not', () => {
+  const full = item({ asks: ['critic'], flags: [], text: text('Review. By Mary Ann Smith The review goes on.', 'Smith appears elsewhere only capitalised.') });
+  const ask = (it, name) => verify(it, { critic: { name, quote: `By ${name}` } }, rec({ wrongProduction: false }));
+  assert.deepEqual(ask(full, 'Mary Ann Smith').accepted, ['critic']);
+  assert.deepEqual(ask(full, 'Mary Ann').accepted, [], '"Mary Ann" drops a surname, which never appears in lower case');
+  const overrun = item({ asks: ['critic'], flags: [], text: text('Review. By Jane Roe The review goes on.') });
+  assert.deepEqual(ask(overrun, 'Jane Roe').accepted, ['critic'], '"the" is an ordinary word the capture ran on into');
+});
+
+test('review of BRO-5887 ship-check: an abbreviated month ("Oct.") does not end the publication-cue window, and "Updated" is not a publication date', () => {
+  assert.deepEqual(j.dateCandidates(`${'filler '.repeat(200)} Published Oct. 20, 2026`, facts), ['2026-10-20']);
+  assert.deepEqual(j.dateCandidates(`${'filler '.repeat(200)} Updated October 20, 2026`, facts), [], 'an edit stamp is not the date the review ran');
+});

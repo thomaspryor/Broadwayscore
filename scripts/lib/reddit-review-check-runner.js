@@ -131,7 +131,7 @@ function makeJudge({ reviewTexts, loadShow, callModel, todayIso, fixId = 'reddit
       const chain = chainEdits(records.get(d.id), v.edits, v.extra, stamp, showId, d.id);
       if (!chain.ok) { rejected.push({ id: d.id, check: 'apply', why: chain.reason }); continue; }
       if (dryRun) { applied.push({ id: d.id, checks: v.accepted, dryRun: true, changes: describeEdits(v.edits) }); continue; }
-      const w = writeRecordAtomically(reviewTexts, showId, d.id, chain.record, v.edits);
+      const w = writeRecordAtomically(reviewTexts, showId, d.id, chain.record, v.edits, v.extra);
       if (!w.ok) { rejected.push({ id: d.id, check: 'apply', why: w.reason }); continue; }
       // Later decisions in this run see the name just given, so two files cannot take the same critic.
       for (const e of v.edits) {
@@ -165,7 +165,7 @@ function chainEdits(record, edits, extra, stamp, showId, file) {
  * One safeWriteReview, then read it back: every edited field must hold. If the write guard
  * changed anything or the write threw, the file's original text is put back byte for byte.
  */
-function writeRecordAtomically(reviewTexts, showId, file, record, edits) {
+function writeRecordAtomically(reviewTexts, showId, file, record, edits, extra = null) {
   const abs = resolveReviewPath(reviewTexts, `${showId}/${file}`);
   if (!abs) return { ok: false, reason: `bad review path ${showId}/${file}` };
   const original = fs.readFileSync(abs, 'utf8');
@@ -173,6 +173,8 @@ function writeRecordAtomically(reviewTexts, showId, file, record, edits) {
     safeWriteReview(abs, { ...record }, {});
     const after = JSON.parse(fs.readFileSync(abs, 'utf8'));
     const lost = edits.filter(e => JSON.stringify(after[e.field] === undefined ? null : after[e.field]) !== JSON.stringify(e.newValue)).map(e => e.field);
+    // The machine-clear stamp rides along as `extra`: without it a clear reads as a human verdict that later flag plans refuse to overrule.
+    for (const [k, val] of Object.entries(extra || {})) if (JSON.stringify(after[k] === undefined ? null : after[k]) !== JSON.stringify(val)) lost.push(k);
     if (lost.length) { fs.writeFileSync(abs, original); return { ok: false, reason: `the write guard kept ${lost.join(', ')}; file restored` }; }
     return { ok: true };
   } catch (e) {
@@ -221,13 +223,14 @@ function realDeps({ root = ROOT, reviewTexts = REVIEW_TEXTS, auditPath = AUDIT_P
     },
     guard(showIds) {
       if (!hasGit) return { ok: true, violations: [] };
-      const r = spawnSync('git', ['-C', reviewTexts, 'status', '--porcelain'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+      // -uall: an untracked directory must list its files, not collapse to "?? _pending/" (which reads as a violation and reverts every show's pending strand).
+      const r = spawnSync('git', ['-C', reviewTexts, 'status', '--porcelain', '-uall'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
       if (r.status !== 0) return { ok: false, violations: ['git status failed in data/review-texts'] };
       return lib.guardChangedPaths(showIds, r.stdout.split('\n').filter(Boolean));
     },
     dirty(showIds) {
       if (!hasGit) return false;
-      const r = spawnSync('git', ['-C', reviewTexts, 'status', '--porcelain'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+      const r = spawnSync('git', ['-C', reviewTexts, 'status', '--porcelain', '-uall'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
       return r.status === 0 && r.stdout.split('\n').filter(Boolean).length > 0;
     },
     revert(paths) {

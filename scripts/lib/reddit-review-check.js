@@ -48,7 +48,8 @@ function selectDueChecks(draftsFile, nowMs, { only = null, max = MAX_SHOWS_PER_R
     : dueEmails(draftsFile, nowMs).filter(x => x.kind === 'new' || x.kind === 'update');
   // The cap bounds the unattended daily run; a list the owner named is checked in full.
   const cap = only && only.length ? Math.max(max, only.length) : max;
-  return due.filter(x => only || !alreadyChecked(x.draft, nowMs)).slice(0, cap);
+  const named = !!(only && only.length);
+  return due.filter(x => named || !alreadyChecked(x.draft, nowMs)).slice(0, cap);
 }
 
 // ── Snapshots and what changed ───────────────────────────────────────────────

@@ -99,6 +99,9 @@ async function main() {
     console.log(`  => ${v.status}${v.error ? ` (${v.error})` : ''}: added ${v.added ? v.added.length : 0}, named ${v.named ? v.named.length : 0}, dated ${v.dated ? v.dated.length : 0}, still not counted ${v.gaps ? v.gaps.length : 0}`);
     if (v.status === 'failed') console.log(`::warning::review check failed for ${draft.showId}: ${v.error}`);
     changedAny = changedAny || result.changed;
+    // Publish it now, not only at the end: a crash or a step timeout later in this run must still push what is already on disk,
+    // because the checkpointed verification below already says those fixes exist.
+    if (result.changed && process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, 'changed=true\n');
     if (mode === 'apply') {
       file.drafts[draft.showId] = { ...file.drafts[draft.showId], verification: v };
       fs.writeFileSync(DRAFTS_PATH, JSON.stringify(file, null, 2) + '\n'); // checkpoint
