@@ -118,11 +118,16 @@ function render(workflows) {
   const groups = new Map();
   for (const w of workflows) {
     for (const c of w.concurrency) {
-      const key = c.group.replace(/\$\{\{.*?\}\}/g, '*').replace(/-$/, '');
-      const e = groups.get(key) || { members: [], cancel: new Set() };
-      e.members.push(w.file);
-      e.cancel.add(cancelOf(c));
-      groups.set(key, e);
+      // `${{ cond && 'a' || 'b' }}` picks one of two literal groups: list the
+      // workflow under both rather than folding it into a shared `*` bucket.
+      const branches = c.group.match(/^\$\{\{[^}]*&&\s*'([^']+)'\s*\|\|\s*'([^']+)'\s*\}\}$/);
+      const keys = branches ? [branches[1], branches[2]] : [c.group.replace(/\$\{\{.*?\}\}/g, '*').replace(/-$/, '')];
+      for (const key of keys) {
+        const e = groups.get(key) || { members: [], cancel: new Set() };
+        e.members.push(w.file);
+        e.cancel.add(cancelOf(c));
+        groups.set(key, e);
+      }
     }
   }
   const shared = [...groups].filter(([, v]) => v.members.length > 1).sort();

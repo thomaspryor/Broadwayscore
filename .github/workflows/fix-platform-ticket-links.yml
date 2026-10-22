@@ -2,8 +2,10 @@ name: Fix Platform Ticket Links
 
 on:
   schedule:
-    # Monthly on 1st Monday at 4 PM UTC (11 AM EST)
-    - cron: '0 16 1-7 * 1'
+    # Monthly on 1st Monday at 4 PM UTC (11 AM EST). Cron ORs day-of-month with
+    # day-of-week, so the old '0 16 1-7 * 1' fired on days 1-7 AND every Monday
+    # (~11 paid BD/SB runs a month). Fire every Monday; the gate job keeps day 1-7.
+    - cron: '0 16 * * 1'
   workflow_dispatch:
     inputs:
       time_budget_min:
@@ -11,18 +13,35 @@ on:
         required: false
         default: '9'
 
-# Shared shows.json writer group (BRO-5803): fix-platform-ticket-links.js,
-# enrich-seatplan-links.js and enrich-official-urls.js all save shows.json.
-# cancel-in-progress must be false here: in a shared group `true` would cancel
-# whichever sibling writer is mid-run, not just an older run of this workflow.
-concurrency:
-  group: shows-json-writer
-  cancel-in-progress: false
-
 jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    outputs:
+      run: ${{ steps.g.outputs.run }}
+    steps:
+      - id: g
+        run: |
+          # Scheduled runs: first Monday of the month only (day 1-7). Cron lag is
+          # at most ~3h from 16:00 UTC, so the UTC date is still the scheduled one.
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$(date -u +%-d)" -gt 7 ]; then
+            echo "run=false" >> "$GITHUB_OUTPUT"; echo "Not the first Monday; skipping."
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
   fix-links:
+    needs: gate
+    if: needs.gate.outputs.run == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    # Shared shows.json writer group (BRO-5803): fix-platform-ticket-links.js,
+    # enrich-seatplan-links.js and enrich-official-urls.js all save shows.json.
+    # Job-level so the skipped-Monday gate never pends in the group. cancel must
+    # be false: in a shared group `true` would cancel a sibling writer mid-run.
+    concurrency:
+      group: shows-json-writer
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v5
         with:

@@ -216,7 +216,7 @@ Every workflow that pushes to a private repo. Each must carry a concurrency grou
 | `fetch-tour-schedules.yml` | scraping | broadway-scorecard-data | `fetch-tour-schedules` (true) |
 | `fix-autoclear-ensemble-conflicts.yml` | other | broadway-review-texts | `fix-autoclear-ensemble-conflicts` (false) |
 | `fix-circular-duplicate-pairs.yml` | other | broadway-review-texts | `fix-circular-duplicate-pairs` (false) |
-| `fix-platform-ticket-links.yml` | other | broadway-scorecard-data | `shows-json-writer` (false) |
+| `fix-platform-ticket-links.yml` | other | broadway-scorecard-data | `shows-json-writer` (false, job-level) |
 | `fix-todaytix-links.yml` | other | broadway-scorecard-data | `fix-todaytix-links` (true) |
 | `gather-reviews.yml` | scraping | broadway-scorecard-data, broadway-review-texts | `gather-reviews-${{ github.run_id }}` (false); `rebuild-reviews` (false, job-level) |
 | `llm-ensemble-score.yml` | scoring | broadway-scorecard-data, broadway-review-texts | `scoring-reviews${{ inputs.rescore_reason && format('-{0}', inputs.rescore_reason) || (inputs.show_id && format('-show-{0}', inputs.show_id)) || '' }}` (false) |
@@ -300,7 +300,6 @@ Groups shared by 2+ workflows:
 
 | Group | cancel-in-progress | Members |
 |---|---|---|
-| `*` | false | `ingest-urls.yml`, `weekly-stubhub-validate.yml` |
 | `auto-fix-feedback-bug-*` | false | `auto-fix-feedback-bug.yml`, `execute-approved-fix.yml` |
 | `commercial-data-write` | false | `commercial-friday.yml`, `commercial-release-held.yml`, `commercial-rss-poll.yml`, `commercial-stale-closures.yml`, `commercial-weekly.yml`, `deep-research-commercial.yml`, `scrape-waltz-costs.yml`, `update-commercial.yml` |
 | `data-grosses-writers` | false | `backfill-grosses.yml`, `scrape-alltime-grosses.yml`, `weekly-grosses.yml` |
@@ -310,7 +309,7 @@ Groups shared by 2+ workflows:
 | `reconcile-broadcast-state` | false | `discard-broadcast-draft.yml`, `reconcile-broadcast-state.yml` |
 | `reverify-cv-promoted-nonreview` | false | `reverify-cv-promoted-nonreview.yml`, `reverify-cv-promoted-weekly.yml` |
 | `review-texts-backfill-write` | false | `audit-cross-production.yml`, `recover-wayback-reviews.yml` |
-| `shows-json-writer` | false | `audit-closing-dates.yml`, `audit-cross-production-weekly.yml`, `audit-we-closing-dates.yml`, `backfill-historical-metadata.yml`, `backfill-playwright-credits.yml`, `check-show-freshness.yml`, `detect-ob-closings.yml`, `detect-revivals-ibdb.yml`, `enrich-ibdb-dates.yml`, `enrich-off-broadway-dates.yml`, `enrich-west-end-dates.yml`, `fix-platform-ticket-links.yml`, `promote-owe-venue-candidates.yml`, `update-show-status.yml` |
+| `shows-json-writer` | false | `audit-closing-dates.yml`, `audit-cross-production-weekly.yml`, `audit-we-closing-dates.yml`, `backfill-historical-metadata.yml`, `backfill-playwright-credits.yml`, `check-show-freshness.yml`, `detect-ob-closings.yml`, `detect-revivals-ibdb.yml`, `enrich-ibdb-dates.yml`, `enrich-off-broadway-dates.yml`, `enrich-west-end-dates.yml`, `fix-platform-ticket-links.yml`, `promote-owe-venue-candidates.yml`, `update-show-status.yml`, `weekly-stubhub-validate.yml` |
 | `theatr` | false | `rotate-theatr-token.yml`, `update-theatr.yml` |
 
 Workflows without any concurrency block, by class (read-only / alerting / test jobs mostly):
