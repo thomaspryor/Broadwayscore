@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5890",
   "planId": "38e3afcc-fe85-4164-b497-ab82368d1942",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-22T03:33:06.000Z",
   "submitter": {
     "name": null,
@@ -39,5 +39,24 @@
         "description": "BRO-5890: the not-a-review rejection rode on the same false positive."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T07:59:00.374Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json rejectionReason: \"not_a_review\" -> null"
+    }
+  ],
+  "executedIn": "ci"
 }
