@@ -62,7 +62,7 @@ function fixture() {
   put('act-one-2014/wsj--terry-teachout.json', column('act-one-2014', `${BOX.actone} ${ACTONE} ${BOX.mice} ${MICE}`));
   // The 9 to 5 box sits in a cluster before both reviews: ambiguous, not splittable.
   put('waiting-for-godot-2009/wsj--terry-teachout.json', column('waiting-for-godot-2009', `${BOX.godot} ${BOX.nine} ${GODOT} ${NINE}`));
-  const showsPath = path.join(dir, 'shows.json');
+  const showsPath = path.join(dir, 'show-list-fixture.json');
   fs.writeFileSync(showsPath, JSON.stringify({ shows: SHOWS }));
   return { dir, root, showsPath };
 }
