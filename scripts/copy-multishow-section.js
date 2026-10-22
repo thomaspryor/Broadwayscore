@@ -15,6 +15,9 @@
  * the source row down to ITS section too, so neither row scores the other
  * show's verdict (BRO-5924). Both rows are queued for a rescore.
  *
+ * --dir=<review-texts root> and --shows=<shows.json> point it at fixtures
+ * (scripts/copy-multishow-section.test.mjs); production uses the defaults.
+ *
  * Markers use `_` for spaces (run-script splits args on spaces). Without
  * --apply it prints the plan. Exit 1 when the copy is refused, so a plan
  * action fails loudly. Then rescore the target show (llm-ensemble-score.yml
@@ -32,10 +35,18 @@ Usage:
   ... --method=markers [--own-start=w1_w2_w3_w4 --own-end=w1_w2_w3_w4]   (no venue boxes: cut by markers, optionally trim the source to its own section)
 `;
 
-function loadSectionExtractor() {
+function loadSectionExtractor(showsPath) {
   // The section logic is the scorer's (TypeScript); tsx/cjs lets plain node load it.
   createRequire(__filename)('tsx/cjs');
-  return require('./llm-scoring/venue-box-sections.ts').extractVenueBoxSectionForShowId;
+  const vbs = require('./llm-scoring/venue-box-sections.ts');
+  if (!showsPath) return vbs.extractVenueBoxSectionForShowId;
+  // --shows=<file> (tests): the same extractor against a fixture shows list.
+  const raw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+  const shows = raw.shows || raw;
+  return (text, showId) => {
+    const target = shows.find((s) => s.id === showId);
+    return target ? vbs.extractVenueBoxSection(text, target, shows) : { ok: false, reason: 'unknown show', boxes: 0 };
+  };
 }
 
 function main() {
@@ -50,8 +61,9 @@ function main() {
   const fileName = path.basename(from);
   const sourcePath = path.join(root, from);
   if (!fs.existsSync(sourcePath)) { console.error(`not found: ${from}`); return 1; }
+  const showsPath = arg('shows');
   const { loadLiveShowIds, filterToLiveShowIds } = require('./lib/live-show-ids');
-  if (filterToLiveShowIds([toShow], loadLiveShowIds()).dropped.length) { console.error(`REFUSED ${toShow}: not a show id in shows.json (BRO-5789: no orphan review folders)`); return 1; }
+  if (filterToLiveShowIds([toShow], showsPath ? loadLiveShowIds(showsPath) : loadLiveShowIds()).dropped.length) { console.error(`REFUSED ${toShow}: not a show id in shows.json (BRO-5789: no orphan review folders)`); return 1; }
   const targetDir = path.join(root, toShow);
   const targetPath = path.join(targetDir, fileName);
 
@@ -74,7 +86,7 @@ function main() {
   }
   const section = method === 'markers'
     ? sectionByMarkers(source.fullText || '', arg('expect-start'), arg('expect-end'))
-    : loadSectionExtractor()(source.fullText || '', toShow);
+    : loadSectionExtractor(showsPath)(source.fullText || '', toShow);
   const ownStart = arg('own-start');
   const ownEnd = arg('own-end');
   if ((ownStart || ownEnd) && (method !== 'markers' || !ownStart || !ownEnd)) { console.error('--own-start and --own-end go together and need --method=markers'); return 2; }

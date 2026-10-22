@@ -187,6 +187,8 @@ on:
       # top-level scripts/ files outside the scripts/lib/** glob.
       - 'scripts/sync-review-texts.sh'
       - 'scripts/sync-review-texts.js'
+      # BRO-5325: multi-show column section copier; its colocated CLI test runs on fixtures.
+      - 'scripts/copy-multishow-section.js'
       # BRO-3375: same gap shape — a top-level scripts/ file outside the
       # scripts/lib/** glob, so a solo edit would trigger ZERO CI. Its decision
       # logic deliberately lives OUTSIDE this repo, in
