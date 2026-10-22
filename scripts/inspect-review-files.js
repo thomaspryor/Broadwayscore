@@ -72,7 +72,7 @@ function exclusionFor(r, show, filePath) {
 // BRO-5395: every field explainExclusion / isScoreable can drop a file on
 // (rejectionReason, incompleteReason, the other non-review flags,
 // showNotMentioned, the scorer's text-gate block), so a skip can be read here.
-const FLAGS = ['wrongProduction', 'wrongProductionReason', 'wrongProductionManualClear', 'wrongProductionOverride', 'allowEarlyDate', 'isRoundupArticle', 'isNonReview', 'wrongShow', 'dateSource', 'duplicateOf',
+const FLAGS = ['wrongProduction', 'wrongProductionReason', 'wrongProductionManualClear', 'wrongProductionOverride', 'wrongProductionDetectedBy', '_wrongProductionDetectedBy', 'wrongProductionProvenance', 'wrongProductionDetail', 'wrongProductionAutoCleared', 'wrongProductionAuditCleared', 'humanReviewedWrongProduction', 'allowEarlyDate', 'isRoundupArticle', 'isNonReview', 'wrongShow', 'dateSource', 'duplicateOf',
   'isNotReview', 'nonReviewFlag', 'nonReviewContent', 'nonReviewManualClear', 'rejectionReason', 'rejectedBy', 'rejectedAt', 'incompleteReason', 'showNotMentioned', 'rescoreBlockedReason', 'contentTierReason'];
 for (const show of shows) {
   const dir = path.join(root, show);
