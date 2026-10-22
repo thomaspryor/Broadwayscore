@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5892",
   "planId": "ab16e4e4-b982-46dc-84c4-efa2b151ba06",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-22T06:59:09.619Z",
   "submitter": {
     "name": null,
@@ -44,5 +44,24 @@
         "description": "shows.json: two-strangers-carry-a-cake-across-new-york-at-art-regional-2025.closingDate"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T08:21:31.812Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for the-high-rollers-social-and-pleasure-club-1992"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for the-outsiders-world-premiere-regional-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for two-strangers-carry-a-cake-across-new-york-at-art-regional-2025"
+    }
+  ],
+  "executedIn": "ci"
 }
