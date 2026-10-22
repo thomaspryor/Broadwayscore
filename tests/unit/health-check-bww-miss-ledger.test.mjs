@@ -58,11 +58,11 @@ test('summarizeBwwRoundupMisses: pre-opening misses without reviews are expected
     { showId: 'a', ts: new Date(NOW - 2 * 60 * 60 * 1000).toISOString() },
   ];
   assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, NOW, []), []);
-  assert.equal(summarizeBwwRoundupMisses(entries, shows, NOW, REVIEWS).length, 1,
-    'early reviews make discovery misses actionable even before opening');
+  assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, NOW, REVIEWS), [],
+    'a preview review does not make an unpublished press-night roundup overdue');
 });
 
-test('summarizeBwwRoundupMisses: opening-day misses wait for the first reviews', () => {
+test('summarizeBwwRoundupMisses: opening-day midnight is before the local press window', () => {
   const shows = [{ id: 'a', openingDate: '2026-08-01' }];
   const entries = [
     { showId: 'a', ts: new Date(NOW - 6 * 60 * 60 * 1000).toISOString() },
@@ -71,7 +71,67 @@ test('summarizeBwwRoundupMisses: opening-day misses wait for the first reviews',
   for (const reviews of [undefined, null, [], [{ showId: 'b' }]]) {
     assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, NOW, reviews), []);
   }
+  assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, NOW, REVIEWS), [],
+    'opening-day midnight is still before the local press window');
+});
+
+test('summarizeBwwRoundupMisses: post-press misses still wait for the first reviews', () => {
+  const shows = [{ id: 'a', openingDate: '2026-07-30' }];
+  const entries = [
+    { showId: 'a', ts: '2026-07-31T18:00:00.000Z' },
+    { showId: 'a', ts: '2026-07-31T20:00:00.000Z' },
+  ];
+  for (const reviews of [undefined, null, [], [{ showId: 'b' }]]) {
+    assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, NOW, reviews), []);
+  }
   assert.equal(summarizeBwwRoundupMisses(entries, shows, NOW, REVIEWS).length, 1);
+});
+
+test('summarizeBwwRoundupMisses: a persisted roundup resolves historical discovery misses', () => {
+  const show = { id: 'a', openingDate: '2026-07-30', bwwRoundupUrl: 'https://example.com/roundup' };
+  const entries = [
+    { showId: 'a', ts: '2026-07-31T18:00:00.000Z' },
+    { showId: 'a', ts: '2026-07-31T20:00:00.000Z' },
+  ];
+  assert.deepEqual(summarizeBwwRoundupMisses(entries, [show], NOW, REVIEWS), []);
+  // The poller clears stale URLs after failed revalidation. That must restore the alert.
+  assert.equal(summarizeBwwRoundupMisses(entries, [{ ...show, bwwRoundupUrl: null }], NOW, REVIEWS).length, 1);
+});
+
+test('summarizeBwwRoundupMisses: pre-press misses never become a backlog after opening', () => {
+  const shows = [{ id: 'a', openingDate: '2026-07-31', category: 'broadway' }];
+  const entries = [
+    { showId: 'a', ts: '2026-07-31T12:00:00.000Z' },
+    { showId: 'a', ts: '2026-07-31T20:59:59.999Z' },
+    { showId: 'a', ts: '2026-07-31T21:00:00.000Z' },
+  ];
+  assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, NOW, REVIEWS), [],
+    'only one miss is after the 17:00 EDT window start');
+  entries.push({ showId: 'a', ts: '2026-07-31T22:00:00.000Z' });
+  const [result] = summarizeBwwRoundupMisses(entries, shows, NOW, REVIEWS);
+  assert.equal(result.missCount, 2);
+  assert.equal(result.firstMissTs, '2026-07-31T21:00:00.000Z');
+});
+
+test('summarizeBwwRoundupMisses: press window follows market time and daylight saving', () => {
+  for (const [category, openingDate, start] of [
+    ['broadway', '2026-07-31', '2026-07-31T21:00:00.000Z'],
+    ['off-broadway', '2026-01-15', '2026-01-15T22:00:00.000Z'],
+    ['west-end', '2026-07-31', '2026-07-31T16:00:00.000Z'],
+    ['off-west-end', '2026-01-15', '2026-01-15T17:00:00.000Z'],
+  ]) {
+    const shows = [{ id: 'a', openingDate, category }];
+    const startMs = Date.parse(start);
+    const entries = [
+      { showId: 'a', ts: new Date(startMs - 2).toISOString() },
+      { showId: 'a', ts: new Date(startMs - 1).toISOString() },
+    ];
+    assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, startMs + 3600000, REVIEWS), [], category);
+    entries.push({ showId: 'a', ts: start }, { showId: 'a', ts: new Date(startMs + 1).toISOString() });
+    const [result] = summarizeBwwRoundupMisses(entries, shows, startMs + 3600000, REVIEWS);
+    assert.equal(result.missCount, 2, category);
+    assert.equal(result.firstMissTs, start, category);
+  }
 });
 
 test('summarizeBwwRoundupMisses: misses older than the trailing window are excluded from the count', () => {
@@ -118,7 +178,7 @@ test('summarizeBwwRoundupMisses: multiple flagged shows sort by missCount desc',
   const entries = [
     { showId: 'a', ts: new Date(NOW - 6 * 60 * 60 * 1000).toISOString() },
     { showId: 'a', ts: new Date(NOW - 2 * 60 * 60 * 1000).toISOString() },
-    { showId: 'b', ts: new Date(NOW - 5 * 60 * 60 * 1000).toISOString() },
+    { showId: 'b', ts: new Date(NOW - 2 * 60 * 60 * 1000).toISOString() },
     { showId: 'b', ts: new Date(NOW - 3 * 60 * 60 * 1000).toISOString() },
     { showId: 'b', ts: new Date(NOW - 1 * 60 * 60 * 1000).toISOString() },
   ];

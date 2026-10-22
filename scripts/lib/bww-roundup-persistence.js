@@ -26,6 +26,7 @@
 const fs = require('fs');
 const path = require('path');
 const { loadShows: defaultLoadShows, saveShows: defaultSaveShows } = require('./shows-write-guard');
+const { MARKET_TZ, WINDOW_START_HOUR_LOCAL, utcFromZoned } = require('./opening-night-windows');
 
 const MISS_LEDGER_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'bww-roundup-miss-ledger.jsonl');
 
@@ -150,9 +151,15 @@ const MISS_SUMMARY_WINDOW_HOURS = 48;
  * 14, wait for the first reviews in reviews.json before treating a missing
  * roundup as a discovery problem. Opening dates alone do not prove that
  * reviews have dropped, especially during the morning of opening day.
+ * Only count misses after the local opening-night monitor starts: an early
+ * preview review does not make a press-night roundup overdue, and normal
+ * pre-opening misses must not become a backlog when reviews arrive later.
+ * A persisted, validated roundup URL resolves the discovery gap. The poller
+ * clears that field if revalidation fails, making new misses visible again.
  *
  * `entries` is the raw ledger (readRoundupMisses() output: {ts, showId}[]).
- * `shows` is the shows.json shows array (only `id`/`openingDate` are read).
+ * `shows` is the shows.json shows array (reads `id`, `openingDate`,
+ * `category`, and `bwwRoundupUrl`).
  * `reviews` is the reviews.json reviews array (only `showId` is read).
  * Returns entries sorted by missCount desc, then most-recent-miss desc.
  */
@@ -169,14 +176,19 @@ function summarizeBwwRoundupMisses(entries, shows, now = Date.now(), reviews = [
     byShow.get(e.showId).push(ts);
   }
   const results = [];
-  for (const [showId, timestamps] of byShow) {
-    if (timestamps.length < 2) continue;
+  for (const [showId, allTimestamps] of byShow) {
+    if (allTimestamps.length < 2) continue;
     if (!reviewedShowIds.has(showId)) continue; // unpublished roundups are expected
     const show = showsById.get(showId);
+    if (show && show.bwwRoundupUrl) continue; // discovery already succeeded
     const openingMs = show && show.openingDate ? new Date(show.openingDate).getTime() : NaN;
     if (!Number.isFinite(openingMs)) continue; // no opening date on record — can't confirm the window
     const daysFromOpening = Math.abs(now - openingMs) / 86400000;
     if (daysFromOpening >= OPENING_WINDOW_DAYS) continue; // outside opening window — expected cooldown territory
+    const tz = MARKET_TZ[show.category] || MARKET_TZ.broadway;
+    const pressStartMs = utcFromZoned(show.openingDate, WINDOW_START_HOUR_LOCAL, 0, tz).getTime();
+    const timestamps = allTimestamps.filter(ts => ts >= pressStartMs);
+    if (timestamps.length < 2) continue;
     timestamps.sort((a, b) => a - b);
     results.push({
       showId,
