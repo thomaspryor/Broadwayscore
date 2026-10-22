@@ -130,6 +130,32 @@
           "hero": null
         },
         "description": "every-brilliant-thing-west-end-2025: clear art from the Broadway production (Godot art names Keanu Reeves and Alex Winter; Every Brilliant Thing art names Daniel Radcliffe), BRO-5851 2024-25 fact-check"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "waiting-for-godot-west-end-2024",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-22",
+          "reason": "BRO-5851: stored art was the Broadway production; cleared",
+          "key": "waiting for godot|theatre royal haymarket|2024-09-19"
+        },
+        "description": "waiting-for-godot-west-end-2024: mark no reliable art so the image sweep does not re-fetch the Broadway art just cleared"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "every-brilliant-thing-west-end-2025",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-22",
+          "reason": "BRO-5851: stored art was the Broadway production; cleared",
+          "key": "every brilliant thing|soho place|"
+        },
+        "description": "every-brilliant-thing-west-end-2025: mark no reliable art so the image sweep does not re-fetch the Broadway art just cleared"
       }
     ]
   }

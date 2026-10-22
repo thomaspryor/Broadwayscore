@@ -371,4 +371,8 @@ test('auditSeason (BRO-5851): a WOS first performance stored as openingDate fail
   const searched = auditSeason({ shows: [row('killer-joe', { openingDateSource: 'first-performance-no-press-night-found' })], reviews: [], season: SEASON });
   assert.equal(searched.checks.opening.pass, true);
   assert.equal(searched.checks.opening.noPressNightFound, 1);
+  // ...but only on a collapsed row: on any other shape the label vouches for nothing.
+  const misused = auditSeason({ shows: [row('killer-joe', { openingDate: '2018-05-29', openingDateSource: 'first-performance-no-press-night-found' })], reviews: [], season: SEASON });
+  assert.equal(misused.checks.opening.pass, false);
+  assert.equal(misused.checks.opening.noPressNightFound, 0);
 });
