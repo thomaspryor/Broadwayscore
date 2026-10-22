@@ -12,6 +12,7 @@
 //   node scripts/audit-push-retry-budgets.js            # full report
 //   node scripts/audit-push-retry-budgets.js --json      # machine-readable
 //   node scripts/audit-push-retry-budgets.js --top=10    # limit ranked list (default 15)
+//   node scripts/audit-push-retry-budgets.js --annotate  # BRO-2456: also emit one ::warning per mixed-safety-bundle site on stderr (advisory, never changes exit code)
 //   node scripts/audit-push-retry-budgets.js --fail-on-job-timeout  # BRO-2322: exit 1 on job-timeout-margin-undersized (CI hard gate; other flags advisory)
 // BRO-5312: residual-inclusive budgets warn separately, including with the
 // existing hard-gate flag. Resize callers before arming that advisory.
@@ -21,7 +22,7 @@ const fs = require('fs');
 const { readWorkflowFilesOrFailClosed } = require('./lib/workflow-glob-guard.js');
 const path = require('path');
 const {
-  auditWorkflowText, countRawCallSites,
+  auditWorkflowText, countRawCallSites, buildMixedBundleAnnotations,
   GIT_NET_TIMEOUT_SEC, MIN_TIMED_OUT_ATTEMPT_SEC, MIN_FUNDABLE_ATTEMPTS,
 } = require('./lib/audit-push-retry-budgets.js');
 
@@ -35,6 +36,7 @@ function main() {
   // about contention): the job ceiling is below the summed step budgets, so
   // the job timeout can SIGKILL a push step before its own deadline/fallback.
   const failOnJobTimeout = args.includes('--fail-on-job-timeout');
+  const annotate = args.includes('--annotate');
   const topN = topArg ? parseInt(topArg.split('=')[1], 10) : 15;
 
   const files = readWorkflowFilesOrFailClosed(WORKFLOWS_DIR, { includeYaml: true }).sort();
@@ -72,9 +74,21 @@ function main() {
     console.error(`::error::${jobTimeoutViolations.length} push-with-retry.sh call site(s) have a job timeout below the summed step budgets (job-timeout-margin-undersized): ${[...new Set(jobTimeoutViolations.map((r) => `${r.file}:${r.job}`))].join(', ')}. Raise the job's timeout-minutes (see node scripts/audit-push-retry-budgets.js).`);
   }
 
+  const report = { totalFiles: files.length, filesWithPushCalls, totalCalls: allResults.length, flaggedCount: flagged.length, mixedSafetyBundleCount: mixedBundles.length, fallbackEarlyTriggerUnreachableCount: fallbackEarlyTriggerUnreachable.length, underParsedFiles, ranked: [...ranked],
+    residualJobTimeoutViolationCount: residualJobTimeoutViolations.length, residualJobTimeoutViolations };
+  // Annotations are advisory even under --fail-on-job-timeout (whose catch
+  // rethrows), so a failure here must only log, never fail the gate.
+  if (annotate) {
+    try {
+      for (const line of buildMixedBundleAnnotations(report)) console.error(line);
+      // GitHub shows at most 10 warning annotations per step; the count keeps truncation visible.
+      if (mixedBundles.length > 0) console.error(`ℹ️  ${mixedBundles.length} mixed-safety-bundle call site(s) annotated (GitHub displays at most 10 per step).`);
+    }
+    catch (err) { console.error(`ℹ️  mixed-safety-bundle annotations skipped (advisory): ${err.message}`); }
+  }
+
   if (jsonOut) {
-    console.log(JSON.stringify({ totalFiles: files.length, filesWithPushCalls, totalCalls: allResults.length, flaggedCount: flagged.length, mixedSafetyBundleCount: mixedBundles.length, fallbackEarlyTriggerUnreachableCount: fallbackEarlyTriggerUnreachable.length, underParsedFiles, ranked,
-      residualJobTimeoutViolationCount: residualJobTimeoutViolations.length, residualJobTimeoutViolations }, null, 2));
+    console.log(JSON.stringify(report, null, 2));
     return;
   }
 

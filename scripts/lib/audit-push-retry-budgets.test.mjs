@@ -2,9 +2,12 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const {
+  buildMixedBundleAnnotations,
   computeBackoffSum,
   parseWorkflow,
   findPushRetryCalls,
@@ -937,4 +940,51 @@ test('computeOtherStepsBudgetSec: capped sibling counted once by its cap; uncapp
   const a = { timeoutMinutes: null }; const b = { timeoutMinutes: 5 }; const c = { timeoutMinutes: null };
   const pushCalls = [{ step: a, stepBudgetSec: 240 }, { step: b, stepBudgetSec: 900 }, { step: c, stepBudgetSec: 600 }];
   assert.equal(computeOtherStepsBudgetSec([b], pushCalls, pushCalls[0]), 300 + 600);
+});
+
+// ── BRO-2456: advisory --annotate wiring for lint-workflows ──
+
+const CLI = fileURLToPath(new URL('../audit-push-retry-budgets.js', import.meta.url));
+
+test('buildMixedBundleAnnotations: zero mixed bundles -> no annotations', () => {
+  assert.deepEqual(buildMixedBundleAnnotations({ ranked: [{ file: 'a.yml', mixedSafetyBundle: false }] }), []);
+  assert.deepEqual(buildMixedBundleAnnotations({}), []);
+  assert.deepEqual(buildMixedBundleAnnotations(null), []);
+});
+
+test('buildMixedBundleAnnotations: one ::warning per mixed bundle, escaped, lists capped', () => {
+  const out = buildMixedBundleAnnotations({ ranked: [
+    { file: 'x.yml', job: 'j', step: 'Commit: a,b\nc', mixedSafetyBundle: true,
+      mixedSafetyBundleSafeFiles: ['s1', 's2', 's3', 's4'], mixedSafetyBundleDisqualifyingFiles: ['bad'] },
+    { file: 'y.yml', job: 'j', step: 's', mixedSafetyBundle: false },
+  ] });
+  assert.equal(out.length, 1);
+  assert.match(out[0], /^::warning file=\.github\/workflows\/x\.yml,title=push-retry mixed-safety-bundle::/);
+  assert.ok(!out[0].includes('\n'));
+  assert.match(out[0], /\+1 more/);
+  assert.match(out[0], /%0A/);
+});
+
+test('CLI --json --annotate: stdout stays parseable, annotations go to stderr, exit 0', () => {
+  const r = spawnSync(process.execPath, [CLI, '--json', '--annotate'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  assert.equal(r.status, 0);
+  const report = JSON.parse(r.stdout);
+  const warnings = r.stderr.split('\n').filter((l) => l.startsWith('::warning '));
+  assert.equal(warnings.length, report.mixedSafetyBundleCount);
+  assert.equal(warnings.length, buildMixedBundleAnnotations(report).length);
+});
+
+test('CLI without --annotate emits no annotations', () => {
+  const r = spawnSync(process.execPath, [CLI, '--json'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  assert.equal(r.status, 0);
+  assert.ok(!r.stderr.includes('::warning'));
+});
+
+test('buildMixedBundleAnnotations: escapes % in the message and , : in the file property', () => {
+  const [line] = buildMixedBundleAnnotations({ ranked: [
+    { file: 'a,b:c.yml', job: 'j', step: '100% done', mixedSafetyBundle: true,
+      mixedSafetyBundleSafeFiles: ['s'], mixedSafetyBundleDisqualifyingFiles: ['d'] },
+  ] });
+  assert.match(line, /file=\.github\/workflows\/a%2Cb%3Ac\.yml,/);
+  assert.match(line, /100%25 done/);
 });

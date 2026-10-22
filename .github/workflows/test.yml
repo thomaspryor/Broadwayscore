@@ -3844,7 +3844,12 @@ jobs:
         # the build on "flagged" would block unrelated PRs on pre-existing,
         # already-triaged debt. Script wraps main() in try/catch so a crash
         # can't turn "advisory" into an accidental hard gate (see its header).
-        run: node scripts/audit-push-retry-budgets.js --fail-on-job-timeout
+        # BRO-2456: --annotate also emits one ::warning per mixed-safety-bundle
+        # call site (stderr, advisory; an annotation failure only logs). These
+        # are existing debt in the listed workflows, shown on every run whether
+        # or not the PR touched them; no line= so they appear in the run
+        # summary, not inline on the diff.
+        run: node scripts/audit-push-retry-budgets.js --fail-on-job-timeout --annotate
 
       - name: Audit — blanket stage-data-changes.sh sweeps vs unregistered data/audit writes (BRO-2805)
         if: always() && steps.deps.outcome == 'success'

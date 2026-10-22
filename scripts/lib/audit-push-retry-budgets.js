@@ -1002,7 +1002,28 @@ function auditWorkflowText(text, filePath) {
   return results;
 }
 
+// BRO-2456: one GitHub Actions `::warning` per mixed-safety-bundle call site,
+// built from the audit's --json report shape ({ranked: [...]}). Advisory only:
+// the caller prints these and never changes its exit code from them.
+function escapeAnnotationData(v) {
+  return String(v).replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A');
+}
+function escapeAnnotationProp(v) {
+  return escapeAnnotationData(v).replace(/:/g, '%3A').replace(/,/g, '%2C');
+}
+function buildMixedBundleAnnotations(report) {
+  const ranked = (report && Array.isArray(report.ranked)) ? report.ranked : [];
+  return ranked.filter((r) => r && r.mixedSafetyBundle).map((r) => {
+    const list = (a) => { const f = a || []; return f.slice(0, 3).join(', ') + (f.length > 3 ? `, +${f.length - 3} more` : ''); };
+    const safe = list(r.mixedSafetyBundleSafeFiles);
+    const bad = list(r.mixedSafetyBundleDisqualifyingFiles);
+    const msg = `mixed-safety-bundle in job "${r.job}" step "${r.step}": apiFallbackSafe file(s) [${safe}] share one commit+push with disqualifying file(s) [${bad}], which defeats the Git Data API fallback for both (BRO-2435 shape). Split into separate git-add-existing.sh + push-with-retry.sh calls.`;
+    return `::warning file=.github/workflows/${escapeAnnotationProp(r.file)},title=${escapeAnnotationProp('push-retry mixed-safety-bundle')}::${escapeAnnotationData(msg)}`;
+  });
+}
+
 module.exports = {
+  buildMixedBundleAnnotations,
   computeOtherStepsBudgetSec,
   DEFAULT_MAX_RETRIES,
   DEFAULT_DEADLINE_SEC,
