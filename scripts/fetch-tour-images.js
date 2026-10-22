@@ -27,6 +27,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { IMAGE_WIDTH_CAPS } = require('./lib/show-image-caps');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { isTourShow, tourImageProblems, tourFallbackArt } = require('./lib/tour-family');
 const { TOUR_LOCATIONS } = require('./lib/todaytix-tour-tickets');
@@ -120,7 +121,7 @@ async function archive(tour, role, buffer, ctx) {
   const abs = path.join(PUBLIC_DIR, rel);
   fs.mkdirSync(path.dirname(abs), { recursive: true });
   const tmp = `${abs}.tmp`;
-  await ctx.sharp(buffer).webp({ quality: 85 }).toFile(tmp);
+  await ctx.sharp(buffer).resize({ width: IMAGE_WIDTH_CAPS[role] || IMAGE_WIDTH_CAPS.poster, withoutEnlargement: true }).webp({ quality: 85 }).toFile(tmp);
   if (isPlaceholderFile(tmp)) { fs.unlinkSync(tmp); return null; }
   fs.renameSync(tmp, abs);
   return rel;

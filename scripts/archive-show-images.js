@@ -19,6 +19,7 @@ const crypto = require('crypto');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { encodeToCap, exceedsWidthCap } = require('./lib/show-image-caps');
 
 const USAGE = `archive-show-images.js — Archive show images locally.
 
@@ -91,7 +92,7 @@ const PINNED_IMAGES = new Set([
 
 // Contentful transformation parameters for each format
 const CONTENTFUL_PARAMS = {
-  poster:    'w=720&h=1080&fit=fill&f=face&fm=webp&q=85',
+  poster:    'w=480&h=720&fit=fill&f=face&fm=webp&q=85',
   thumbnail: 'w=540&h=540&fit=fill&f=face&fm=webp&q=85',
   hero:      'w=1920&h=800&fit=fill&f=center&fm=webp&q=85',
 };
@@ -111,7 +112,7 @@ function getLocalExtension(url) {
   return match ? match[1].toLowerCase() : 'webp';
 }
 
-async function downloadImage(url, filepath) {
+async function downloadImage(url, dest, format) {
   const response = await fetch(url, {
     headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)' },
     signal: AbortSignal.timeout(30000),
@@ -127,9 +128,23 @@ async function downloadImage(url, filepath) {
     throw new Error(`Suspiciously small file (${buffer.length} bytes)`);
   }
 
-  fs.mkdirSync(path.dirname(filepath), { recursive: true });
-  fs.writeFileSync(filepath, buffer);
-  return buffer.length;
+  // BRO-5990: cap width for non-Contentful sources too (and Contentful if params change).
+  const role = format;
+  let out = buffer;
+  if (role) {
+    try {
+      const ext = path.extname(dest.replace(/\.incoming$/, '')).slice(1).toLowerCase().replace('jpeg', 'jpg');
+      const meta = await require('sharp')(buffer).metadata();
+      if (exceedsWidthCap(role, meta.width)) {
+        const resized = await encodeToCap(buffer, role, ext);
+        if (resized.length < buffer.length) out = resized;
+      }
+    } catch { /* unreadable here: keep raw bytes, downstream validation decides */ }
+  }
+
+  fs.mkdirSync(path.dirname(dest), { recursive: true });
+  fs.writeFileSync(dest, out);
+  return out.length;
 }
 
 async function main() {
@@ -244,7 +259,7 @@ async function main() {
         const filepath = path.join(OUTPUT_DIR, show.id, `${format}.${ext}`);
         try {
           const dlUrl = getDownloadUrl(sourceUrl, format);
-          const size = await downloadImage(dlUrl, filepath);
+          const size = await downloadImage(dlUrl, filepath, format);
           // Aspect-check: reject wide-landscape posters / portrait heroes / etc.
           // The source URL can produce a wrong-shape file (Evita case) — fall through
           // to fetch-show-images-auto on the next run rather than persisting bad shape.
@@ -307,7 +322,7 @@ async function main() {
       // rejected download must not delete the art already on disk.
       const tmpPath = `${filepath}.incoming`;
       try {
-        const size = await downloadImage(dlUrl, tmpPath);
+        const size = await downloadImage(dlUrl, tmpPath, format);
 
         // Reject known placeholder images — don't let them overwrite real art
         if (isPlaceholderFile(tmpPath)) {

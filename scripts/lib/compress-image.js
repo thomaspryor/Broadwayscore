@@ -3,10 +3,14 @@
  * Resizes and compresses image buffers before saving to disk.
  *
  * Size targets:
- *   thumbnail: 400px wide, ≤50KB
+ *   thumbnail: 400px wide, ≤50KB (over-byte-limit path)
+ *   Any image wider than IMAGE_WIDTH_CAPS (show-image-caps.js) is resized regardless of bytes (BRO-5990)
  *   poster:    300px wide, ≤60KB  (largest display: 160px CSS × 2x retina = 320px)
  *   hero:      1200px wide, ≤300KB
  */
+
+const { IMAGE_WIDTH_CAPS } = require('./show-image-caps');
+const { PLACEHOLDER_FILE_HASHES } = require('./show-images');
 
 let sharp;
 try {
@@ -34,12 +38,24 @@ async function compressImage(buffer, type = 'thumbnail') {
 
   const limits = SIZE_LIMITS[type] || SIZE_LIMITS.thumbnail;
 
-  // Skip if already under size limit
-  if (buffer.length <= limits.maxBytes) return buffer;
+  // Known placeholders must stay byte-identical so the callers' exact-MD5
+  // rejection (fetch-show-images-auto.js) still matches them (BRO-5990).
+  if (PLACEHOLDER_FILE_HASHES.has(require('crypto').createHash('md5').update(buffer).digest('hex'))) return buffer;
+
+  // Skip only when under the byte limit AND within the display-width cap (BRO-5990:
+  // a 100KB-or-less 800px poster used to pass through untouched).
+  let targetWidth = limits.maxWidth;
+  if (buffer.length <= limits.maxBytes) {
+    // Already small in bytes: only trim to the display cap, never below it.
+    targetWidth = IMAGE_WIDTH_CAPS[type] || limits.maxWidth;
+    let width = 0;
+    try { width = (await sharp(buffer).metadata()).width || 0; } catch { return buffer; }
+    if (!(width > (IMAGE_WIDTH_CAPS[type] || Infinity))) return buffer;
+  }
 
   try {
     const compressed = await sharp(buffer)
-      .resize({ width: limits.maxWidth, withoutEnlargement: true })
+      .resize({ width: targetWidth, withoutEnlargement: true })
       .webp({ quality: limits.quality })
       .toBuffer();
 

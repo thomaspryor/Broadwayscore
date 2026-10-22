@@ -28,6 +28,7 @@
  *   node scripts/remediate-duplicate-images.js --show=ID      # one show
  */
 
+const { encodeToCap, exceedsWidthCap, imageRoleFromFilename } = require('./lib/show-image-caps');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -189,8 +190,16 @@ async function downloadImage(url, filepath) {
     signal: AbortSignal.timeout(30000),
   });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  const buffer = Buffer.from(await response.arrayBuffer());
+  let buffer = Buffer.from(await response.arrayBuffer());
   if (buffer.length < 1000) throw new Error(`Suspiciously small (${buffer.length} bytes)`);
+  // BRO-5990: keep remediated downloads within the display-width caps.
+  const role = imageRoleFromFilename(path.basename(filepath));
+  try {
+    if (role && exceedsWidthCap(role, (await require('sharp')(buffer).metadata()).width)) {
+      const resized = await encodeToCap(buffer, role, path.extname(filepath).slice(1).toLowerCase().replace('jpeg', 'jpg'));
+      if (resized.length < buffer.length) buffer = resized;
+    }
+  } catch { /* unreadable here: keep raw bytes */ }
   fs.mkdirSync(path.dirname(filepath), { recursive: true });
   fs.writeFileSync(filepath, buffer);
   return buffer.length;

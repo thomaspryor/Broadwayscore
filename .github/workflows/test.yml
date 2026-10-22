@@ -169,6 +169,10 @@ on:
       # it walks require/import literals, and that test reads the caller with
       # readFileSync, so this hand-listing is load-bearing.
       - 'scripts/ux-walkthrough.mjs'
+      - 'scripts/resize-show-images.js'
+      - 'scripts/archive-show-images.js'
+      - 'scripts/lib/show-image-caps.js'
+      - 'public/images/shows/**'
       # BRO-2955 review: the two remaining guard-escalation callers. Both are
       # top-level scripts/ files (outside the scripts/lib/** glob) that decide
       # whether a hard-blocking pipeline guard auto-recovers — a solo edit to
@@ -4888,6 +4892,14 @@ jobs:
           rc=${PIPESTATUS[0]}
           bash scripts/lib/summarize-failing-tests.sh "copy voice" /tmp/copy-voice.log "$rc" warning
           exit "$rc"
+
+      - name: Show image width caps (BRO-5990, advisory)
+        # Posters wider than 480px, thumbnails wider than 540px or heroes wider
+        # than 1920px in public/images/shows. Caps live in
+        # scripts/lib/show-image-caps.js; fix with `node scripts/resize-show-images.js`.
+        # Advisory first (CLAUDE.md section 19).
+        continue-on-error: true
+        run: node scripts/resize-show-images.js --check
 
       - name: Run scripts/lib tests (visual-qa transcript-scan etc.)
         # Tests colocated with the helpers they cover (scripts/lib/*.test.mjs)
