@@ -386,7 +386,7 @@ if (reviewsData) {
     if (fileInReviews(data)) {
       inReviews++;
       info(`${file} — found in reviews.json`);
-    } else if (findSameArticleTwin(data, includable.map((f) => parsed.get(f)).filter((d) => d && !isUnknownCritic(d.criticName) && fileInReviews(d)))) {
+    } else if (findSameArticleTwin(data, includable.map((f) => parsed.get(f)), fileInReviews, isUnknownCritic)) {
       // Rebuild SAME-ARTICLE TWIN keeps the first near-identical file per outlet (BRO-5726).
       inReviews++;
       info(`${file} — deduped by the rebuild (same text as another file at ${data.outletId})`);
