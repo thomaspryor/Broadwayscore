@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T17:45:11.936Z",
+  "timestamp": "2026-10-22T18:37:19.369Z",
   "stats": {
-    "totalReviews": 58996,
-    "alreadyFlagged": 21316,
+    "totalReviews": 59125,
+    "alreadyFlagged": 21320,
     "dateGuardCatches": 201,
-    "directorMismatch": 2056,
+    "directorMismatch": 2057,
     "tvFilmSignals": 1659,
-    "londonSignals": 2708,
+    "londonSignals": 2709,
     "offBroadwaySignals": 529,
-    "yearMismatch": 170,
-    "noPublishDate": 5244
+    "yearMismatch": 169,
+    "noPublishDate": 5363
   },
   "findings": [
     {
@@ -8022,7 +8022,7 @@
       "file": "thereviewshub--sonny-waheed.json",
       "score": 89,
       "publishDate": "2025-09-26",
-      "url": null,
+      "url": "https://www.thereviewshub.com/clarkston-trafalgar-theatre-london/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -9396,6 +9396,20 @@
           "severity": "MEDIUM",
           "detail": "Published 248d before show (2025-10-08 vs 2026-06-13)"
         },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from cyrano-de-bergerac-2012"
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "file": "liamodell--liam-odell.json",
+      "score": null,
+      "publishDate": "2026-06-26",
+      "url": "https://liamodell.com/2026/06/27/cyrano-de-bergerac-review-noel-coward-theatre-london-west-end-adrian-lester-levi-brown-susannah-fielding-about-book-who-wrote/",
+      "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -30859,11 +30873,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"joe mantello\" from other-desert-cities-2011"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2011 (3x) more than 2026 (2x). 2011 matches production: other-desert-cities-2011"
         }
       ]
     },
@@ -43454,7 +43463,7 @@
       "file": "times-uk--dominic-maxwell.json",
       "score": 59,
       "publishDate": "2024-02-11",
-      "url": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/jez-butterworths-the-hills-of-california-metoo-in-blackpool-nxtk9kwmd",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -49581,7 +49590,7 @@
       "file": "artsdesk--helen-hawkins.json",
       "score": 75,
       "publishDate": "2026-09-29",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre/tru-menier-chocolate-factory-review-gem-turn-superlative-set",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -54338,7 +54347,7 @@
       "file": "financialtimes--sarah-hemming.json",
       "score": 74,
       "publishDate": "2019-10-18",
-      "url": null,
+      "url": "https://www.ft.com/content/ce1e5044-f0ca-11e9-bfa4-b25f11f42901",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -55350,7 +55359,7 @@
       "file": "i-paper--fiona-mountford.json",
       "score": 79,
       "publishDate": "2025-05-26",
-      "url": null,
+      "url": "https://inews.co.uk/culture/arts/after-the-act-triumph-royal-court-revived-3714419?srsltid=AYCX9vLd-fG8zFqBF8DwWSu4pwfmRqVW0t0N-FZ3y47Q-HGbqBsghhiJ",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -59096,7 +59105,7 @@
       "file": "broadwayworld--gary-naylor.json",
       "score": 71,
       "publishDate": "2024-05-30",
-      "url": null,
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-BOYS-FROM-THE-BLACKSTUFF-National-Theatre-20240530",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -61259,7 +61268,7 @@
       "file": "thereviewshub--richard-maguire.json",
       "score": 45,
       "publishDate": "2025-09-11",
-      "url": null,
+      "url": "https://www.thereviewshub.com/cow-deer-royal-court-london/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -69526,6 +69535,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": null,
+      "publishDate": "2026-10-22",
+      "url": "https://theatreandtonic.co.uk/blog/ilford-boy-donmar-warehouse-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -80538,7 +80561,7 @@
       "file": "sunday-times--quentin-letts.json",
       "score": 56,
       "publishDate": "2019-06-02",
-      "url": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-rutherford-and-son-the-starry-messenger-jjps7n6r9",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
