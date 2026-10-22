@@ -16,7 +16,7 @@
  *   --show-filter=ID   Process a single show, or several as a comma-separated list (no spaces)
  *   --limit=N          Max shows to process (default: unlimited)
  *
- * Requires: SCRAPINGBEE_API_KEY, ANTHROPIC_API_KEY (or GEMINI_API_KEY)
+ * Requires: a scraping provider key, ANTHROPIC_API_KEY (or GEMINI_API_KEY)
  */
 
 const fs = require('fs');
@@ -140,7 +140,16 @@ async function fetchPageTextViaChain(url, fetchOpts = {}) {
     const { stripHtml } = require('./lib/article-extractor');
     const r = await fetchPage(url, fetchOpts);
     if (!r || !r.content) return null;
-    const text = r.format === 'html' ? stripHtml(r.content) : r.content;
+    let text;
+    if (r.format === 'html') {
+      // Same targeted sections the old ScrapingBee extract_rules pulled, so nav/footer
+      // noise does not eat the 20k budget on long pages.
+      const $ = require('cheerio').load(r.content);
+      const picked = $('main, article, .cast, .credits, .people, [class*="cast"], [class*="credit"], [id*="cast"], .show-detail, .production-detail').text();
+      text = picked && picked.trim().length > 200 ? picked : stripHtml(r.content);
+    } else {
+      text = r.content;
+    }
     return text.replace(/\s+/g, ' ').substring(0, 20000);
   } catch (e) {
     console.log(`  Provider-chain fetch failed: ${e.message}`);
@@ -643,5 +652,5 @@ if (require.main === module) {
   main().catch(e => {
     console.error('Fatal error:', e);
     process.exit(1);
-  });
+  }).finally(() => require('./lib/scraper').cleanup());
 }

@@ -11,7 +11,7 @@
  * 3. Extract excerpts by outlet from "The Reviews" section
  * 4. Add nycTheatreExcerpt to existing reviews or create new minimal files
  *
- * Requires: SCRAPINGBEE_API_KEY for Google searches
+ * Requires: a SERP provider key (SCRAPINGBEE_API_KEY or BRIGHTDATA_TOKEN) for Google searches
  *
  * Output: Updates/creates review files in data/review-texts/{showId}/
  * Archives: Saves HTML to data/aggregator-archive/nyc-theatre/
@@ -36,7 +36,7 @@ const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const archiveDir = path.join(__dirname, '../data/aggregator-archive/nyc-theatre');
 
 const { serpQuery } = require('./lib/url-discovery');
-const { fetchPage, fetchWithScrapingdog, isChallengeOrGarbage } = require('./lib/scraper');
+const { fetchPage, fetchWithScrapingdog, isChallengeOrGarbage, cleanup: cleanupScraper } = require('./lib/scraper');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `scrape-nyc-theatre-roundups.js — NYC Theatre Review Roundups Scraper.
@@ -76,8 +76,7 @@ const SD_MIN_HTML_BYTES = 500;
 // ScrapingBee directly with no other tier, so NYC Theatre traffic never
 // touched Scrapingdog even after the SD migration — one of the
 // direct-provider-call sites in data/audit/direct-provider-calls-baseline.json.
-// Purely additive: any SD miss/failure falls straight through to the
-// pre-existing SB retry loop below, unchanged.
+// Purely additive: any SD miss/failure falls straight through to fetchPage().
 async function fetchHtmlViaSD(url, renderJs) {
   if (!process.env.SCRAPINGDOG_API_KEY) return null;
   try {
@@ -91,7 +90,9 @@ async function fetchHtmlViaSD(url, renderJs) {
   }
 }
 
-async function fetchHtml(url, renderJs = true, maxRetries = 2) {
+// One pass only: fetchPage() already falls through every paid tier, so an outer
+// retry loop would multiply credit spend per URL.
+async function fetchHtml(url, renderJs = true, maxRetries = 0) {
   const sdHtml = await fetchHtmlViaSD(url, renderJs);
   if (sdHtml) return sdHtml;
 
@@ -624,4 +625,4 @@ async function scrapeNYCTheatreRoundups() {
 scrapeNYCTheatreRoundups().catch(err => {
   console.error('Fatal error:', err);
   process.exit(1);
-});
+}).finally(() => cleanupScraper());
