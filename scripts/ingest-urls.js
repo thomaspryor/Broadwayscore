@@ -315,18 +315,14 @@ async function main() {
     // same as ingest-review-from-url.js (BRO-4431).
     if (!dryRun && writeResult.filepath && (writeResult.action === 'new' || writeResult.action === 'updated')) {
       try {
-        // BRO-5936: the children go in the SAME resolved checkout as the
-        // parent. There is no mirror step — writing them into the gitignored
-        // data/review-texts copy on the Mac meant `git add` ran inside the
-        // Broadwayscore repo, the push failed, and a failed push skips the
-        // dispatch, so the children sat local-only and unscored.
-        const fanDir = reviewTextsDir;
-        const fan = applyMultiShowFanoutToFile(writeResult.filepath, { reviewTextsDir: fanDir });
+        // BRO-5936: children go in the same resolved checkout as the parent,
+        // for the reasons the BRO-5874 block above gives. No second root.
+        const fan = applyMultiShowFanoutToFile(writeResult.filepath, { reviewTextsDir });
         if (fan.applied) {
           // Only a child this run wrote: a skipped, held or refused one is not ours to push or score.
           const WROTE_CHILD = new Set(['create', 'fill']);
           for (const c of fan.children) {
-            const childFile = path.join(fanDir, c.showId, path.basename(writeResult.filepath));
+            const childFile = path.join(reviewTextsDir, c.showId, path.basename(writeResult.filepath));
             if (WROTE_CHILD.has(c.action) && fs.existsSync(childFile)) { results.touchedPaths.push(childFile); results.fanShowIds.add(c.showId); }
           }
           console.log(`    ↔ Multi-show article (${fan.strategy}): own section kept, ${fan.children.map((c) => `${c.showId}=${c.action}`).join(', ')}`);

@@ -128,6 +128,20 @@ test('the write dir and the dir handed to the push helper are the same variable'
       /copyFileSync/,
       `${relPath} copies review-text files between dirs; it must write straight into the checkout (BRO-5874)`,
     );
+    // BRO-5936: banning NAMES let a second root in under a fourth one
+    // (`fanDir`, from BRO-5895's multi-show fan-out). Ban the value: every
+    // reviewTextsDir option a caller passes must be the resolved variable
+    // itself, shorthand `{ reviewTextsDir }` or `reviewTextsDir: reviewTextsDir`.
+    const aliased = [...code.matchAll(/reviewTextsDir\s*:\s*([A-Za-z_$][\w$]*)/g)]
+      .map((m) => m[1])
+      .filter((name) => name !== 'reviewTextsDir');
+    assert.deepEqual(
+      aliased,
+      [],
+      `${relPath} passes a reviewTextsDir option that is not the resolved variable `
+      + `(${aliased.join(', ')}) — a second root is how BRO-5936 happened; pass `
+      + 'the one dir resolveReviewTextsDir() returned',
+    );
   }
 });
 
