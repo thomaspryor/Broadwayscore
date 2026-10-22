@@ -1376,6 +1376,37 @@
     "queuedAt": "2026-10-22T02:17:23.900Z"
   },
   {
+    "conditionKey": "land:land/job/linear-BRO-5885-mvix9tb3",
+    "title": "Landing blocked: merged-tree-tests red on land/job/linear-BRO-5885-mvix9tb3",
+    "description": "land.yml did not land land/job/linear-BRO-5885-mvix9tb3: the merged-tree-tests gate went red at 91dbc7e314. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-5885-mvix9tb3 @ 91dbc7e314 (origin/land/job/linear-BRO-5885-mvix9tb3) → origin/main @ 369a40ce47 [land] train: + land/exit-line-rules @ 72ac6dcceb (6 commit(s)) [land] train: + land/bro-5794-ballet-guard @ 39e6c25763 (1 commit(s)) [land] attempt 1/3: rebased onto 369a40ce47, 26 file(s) changed (train: land/job/linear-BRO-5885-mvix9tb3 + land/exit-line-rules, land/bro-579 Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39712940059",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-5885-mvix9tb3"
+      },
+      {
+        "name": "gate",
+        "value": "merged-tree-tests"
+      },
+      {
+        "name": "tip",
+        "value": "91dbc7e314f63422c69262c89b0104856c6b061b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39712940059"
+      }
+    ],
+    "queuedAt": "2026-10-22T03:29:35.771Z"
+  },
+  {
     "conditionKey": "land:land/bro-5886-html-handoff",
     "title": "Landing blocked: unit-tests-node red on land/bro-5886-html-handoff",
     "description": "land.yml did not land land/bro-5886-html-handoff: the unit-tests-node gate went red at b2732adfbf. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39714671716",
