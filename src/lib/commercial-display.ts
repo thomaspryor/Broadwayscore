@@ -162,25 +162,30 @@ export function getDisplayableEstimateRange(commercial: RecoupmentSignals): { ra
   const analyst = analystRange(commercial);
   if (!analyst) return null;
   const finalClosed = isFinalClosedOutcome(commercial);
-  if (finalClosed && !estimateFitsDesignation(analyst, commercial.designation)) return null;
-  let [lo, hi] = analyst;
-  let withModel = false;
+  // The label check reads the rounded range the reader sees: rounding can move
+  // a midpoint across the Fizzle line (Flop 0-58, mid 29, shows 0-60, mid 30).
+  const fits = (range: [number, number]) => !finalClosed || estimateFitsDesignation(range, commercial.designation);
+  const analystShown = roundedRange(analyst);
+  if (!fits(analystShown)) return null;
   const model = rangeModel(commercial);
   if (model && meetsModelQualityFloor(commercial) && (!finalClosed || estimateFitsDesignation(model, commercial.designation))) {
     const central = Math.max(0, model[1]);
-    const spanned: [number, number] = [Math.min(lo, central), Math.max(hi, central)];
+    const spanned = roundedRange([Math.min(analyst[0], central), Math.max(analyst[1], central)]);
     // Widened, the range must still agree with a closed label; else the analyst's alone.
-    if (!finalClosed || estimateFitsDesignation(spanned, commercial.designation)) {
-      [lo, hi] = spanned;
-      withModel = true;
-    }
+    if (fits(spanned)) return { range: spanned, withModel: true };
   }
-  // A low end of 100+ stays: it reads "Est. recouped, not yet announced". Else
-  // the range tops out below 100, as the model's does (BRO-5073), at the
-  // highest multiple of 5 under it.
-  if (lo >= 100) return { range: [roundToFive(lo), roundToFive(hi)], withModel };
+  return { range: analystShown, withModel: false };
+}
+
+/**
+ * Both ends to the nearest 5. A low end of 100+ stays: it reads "Est. recouped,
+ * not yet announced". Else the range tops out below 100, as the model's does
+ * (BRO-5073), at the highest multiple of 5 under it.
+ */
+function roundedRange([lo, hi]: [number, number]): [number, number] {
+  if (lo >= 100) return [roundToFive(lo), roundToFive(hi)];
   const top = Math.floor(RUNNING_SHOWN_MAX / 5) * 5;
-  return { range: [Math.min(roundToFive(lo), top), Math.min(roundToFive(hi), top)], withModel };
+  return [Math.min(roundToFive(lo), top), Math.min(roundToFive(hi), top)];
 }
 
 /** The range of getDisplayableEstimateRange, for callers that need only the numbers. */

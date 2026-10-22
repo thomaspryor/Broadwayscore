@@ -558,3 +558,10 @@ test('owner 2026-10-22: the estimate range spans the analyst and our model, roun
   // The /biz cell carries the flag for its credit.
   assert.equal(getRecoupedCellSummary({ ...run, analystRecoupPct: [20, 20], modelRecoupmentPct: [30, 57, 80] }).withModel, true);
 });
+
+test('owner 2026-10-22: a closed label is checked on the rounded range the reader sees', () => {
+  const closed = { status: 'closed', designation: 'Flop', analystRecoupPct: [0, 58] };
+  // Mid 29 fits Flop, but it shows as 0-60 (mid 30, a Fizzle's): nothing shown.
+  assert.equal(getDisplayableEstimateRange(closed), null);
+  assert.deepEqual(getDisplayableEstimateRange({ ...closed, analystRecoupPct: [0, 50] }), { range: [0, 50], withModel: false });
+});
