@@ -124,6 +124,13 @@ for (const show of shows) {
       permanent: true,
     };
   }
+  // A renamed id (BRO-4315) also loses its year-less base URL, which the
+  // base-name loop above now builds from the new id. Keep the old one.
+  for (const alias of aliases) {
+    const m = typeof alias === 'string' && alias.match(/^(.+)-\d{4}$/);
+    if (!m || existingSlugs.has(m[1]) || redirects[m[1]] || groups[m[1]]) continue;
+    redirects[m[1]] = { target: show.slug, permanent: true };
+  }
 }
 
 // Critic-slug aliases: retired /critics/<slug> URLs → canonical slug. A

@@ -76,6 +76,9 @@ test('pairState: pending, resume, refusals', () => {
   assert.equal(pairState(pair, [row({ id: NEW, aliases: [OLD] })]).state, 'resume');
   assert.match(pairState(pair, [row({ id: NEW })]).problem, /not a resumable/);
   assert.match(pairState(pair, [row(), row({ id: NEW })]).problem, /both/);
+  // A merge re-added the old row beside its renamed twin: resumable.
+  assert.equal(pairState(pair, [row(), row({ id: NEW, aliases: [OLD] })]).state, 'reappeared');
+  assert.match(pairState(pair, [row({ title: 'Edited' }), row({ id: NEW, aliases: [OLD] })]).problem, /re-added old row/);
   assert.match(pairState(pair, [row({ title: 'Other' })]).problem, /title/);
   assert.match(pairState(pair, [row({ category: 'west-end' })]).problem, /already agrees/);
   assert.match(pairState({ ...pair, newId: 'fixture-play-2026' }, [row()]).problem, /still disagree/);
@@ -145,4 +148,39 @@ test('CLI: one bad pair refuses the whole batch', () => {
   assert.match(r.stderr, /already agrees/);
   assert.equal(fs.readFileSync(path.join(f.core, 'shows.json'), 'utf8'), before);
   assert.ok(fs.existsSync(path.join(f.rt, OLD)));
+});
+
+test('CLI: an old row re-added by a merge is dropped on rerun', () => {
+  const f = buildFixture();
+  assert.equal(run(f, ['--apply']).status, 0);
+  const file = path.join(f.core, 'shows.json');
+  const doc = JSON.parse(fs.readFileSync(file, 'utf8'));
+  doc.shows.push({ ...row(), status: 'closed' });
+  writeJson(file, doc);
+  assert.equal(run(f, ['--check']).status, 1, 'check sees the re-added row');
+  const dry = run(f);
+  assert.equal(dry.status, 0, dry.stdout + dry.stderr);
+  assert.match(dry.stdout, /reappeared/);
+  assert.equal(shows(f).filter((x) => x.id === OLD).length, 1, 'dry run keeps it');
+  const r = run(f, ['--apply']);
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  assert.ok(!shows(f).some((x) => x.id === OLD));
+  assert.equal(run(f, ['--check']).status, 0);
+});
+
+test('build-slug-redirects keeps the year-less URL of a renamed id', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rename-redirects-'));
+  writeJson(path.join(dir, 'shows.json'), { shows: [
+    { id: NEW, slug: NEW, title: 'Fixture Play', category: 'off-west-end', aliases: [OLD] },
+    { id: OTHER, slug: OTHER, title: 'Other Play', category: 'west-end' },
+  ] });
+  const env = { ...process.env, SLUG_REDIRECTS_SHOWS_PATH: path.join(dir, 'shows.json'), SLUG_REDIRECTS_OUT_DIR: dir, SLUG_REDIRECTS_CAST_MANIFEST_PATH: path.join(dir, 'none.json'), SLUG_REDIRECTS_COMPLEXES_DIR: dir, CRITIC_SLUG_ALIASES_PATH: path.join(dir, 'none.json') };
+  const r = spawnSync(process.execPath, [path.join(ROOT, 'scripts', 'build-slug-redirects.js')], { env, encoding: 'utf8' });
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  const out = JSON.parse(fs.readFileSync(path.join(dir, 'slug-redirects.json'), 'utf8'));
+  const map = out.redirects || out;
+  assert.equal(map[OLD].target, NEW, 'old id');
+  assert.equal(map['fixture-play-west-end'].target, NEW, 'old year-less base');
+  assert.equal(map['fixture-play-off-west-end'].target, NEW, 'new year-less base');
+  assert.equal(map['other-play-west-end'].target, OTHER, 'untouched show keeps its base');
 });

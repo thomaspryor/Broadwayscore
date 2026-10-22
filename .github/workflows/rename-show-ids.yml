@@ -38,6 +38,13 @@ permissions:
   contents: write
   actions: write
 
+# A step without `shell:` runs `bash -e` with no pipefail, so
+# `validate-data.js | tail` could never fail it; validate-data's push-skip
+# sentinel would then let review-texts and web push while core-data stayed put.
+defaults:
+  run:
+    shell: bash
+
 jobs:
   rename:
     runs-on: ubuntu-latest
@@ -104,6 +111,15 @@ jobs:
         if: inputs.mode == 'apply'
         run: node scripts/validate-data.js 2>&1 | tail -30
 
+      # validate-data writes this when the data is bad; push-core-data then
+      # skips quietly, so refuse here before any of the three repos moves.
+      - name: Refuse to push flagged data
+        if: inputs.mode == 'apply'
+        run: |
+          if [ -f "${RUNNER_TEMP}/.skip-push-core-data" ]; then
+            echo "::error::validate-data flagged the renamed data; nothing pushed"; exit 1
+          fi
+
       - name: Push core data
         if: success() && inputs.mode == 'apply'
         timeout-minutes: 15
@@ -142,6 +158,12 @@ jobs:
       - name: Re-check all three trees after the pushes
         if: success() && inputs.mode == 'apply'
         run: |
+          # Each tree must be on its remote, or --check would pass on an unpushed copy.
+          for repo in /tmp/core-data-checkout data/review-texts .; do
+            git -C "$repo" fetch -q origin HEAD
+            ahead=$(git -C "$repo" rev-list --count FETCH_HEAD..HEAD)
+            [ "$ahead" = 0 ] || { echo "::error::$repo has $ahead unpushed commit(s)"; exit 1; }
+          done
           node scripts/rename-show-ids-batch.js --batch="$BATCH" \
             --core-data=/tmp/core-data-checkout --review-texts=data/review-texts --check
 

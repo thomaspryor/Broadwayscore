@@ -23,7 +23,10 @@
  *
  * A pair whose shows.json row is already renamed (new id row carrying the old
  * id in `aliases`) resumes: a rerun after a push that died between repos
- * finishes the remaining files.
+ * finishes the remaining files. If push-core-data's 3-way merge brought the
+ * old row back beside it (a concurrent writer edited that row), the rerun
+ * drops the old row again ('reappeared') and resumes; that writer's edit is
+ * lost and its next run redoes it.
  *
  * Slugs: the row keeps its slug unless slug === old id (7 of the BRO-4315
  * rows); then the slug becomes the new id and the old one survives as an
@@ -33,8 +36,8 @@
  * trees (no old-id row, exactly one new-id row with the old id in aliases,
  * its slug unique, nothing left to rewrite or move). The workflow runs it
  * after the pushes, against trees rebased onto origin: push-core-data's 3-way
- * merge can re-add a row a concurrent writer edited, and push-with-retry.sh
- * takes the remote side of a conflicting web data file.
+ * merge can re-add a row a concurrent writer edited, and a web writer that
+ * pushes after us from a pre-rename checkout can put old ids back.
  *
  * Exit codes: 0 ok, 2 refused (nothing written), 1 failed.
  */
@@ -76,12 +79,17 @@ function batchProblems(batch) {
 function pairState(pair, shows) {
   const oldRow = shows.find((s) => s && s.id === pair.oldId);
   const newRow = shows.find((s) => s && s.id === pair.newId);
-  const row = oldRow || newRow;
+  const row = newRow || oldRow;
   if (!row) return { problem: `${pair.oldId}: no row under the old or the new id` };
-  if (oldRow && newRow) return { problem: `${pair.oldId}: both ${pair.oldId} and ${pair.newId} rows exist (a merge, not a rename)` };
+  const reappeared = Boolean(oldRow && newRow && Array.isArray(newRow.aliases) && newRow.aliases.includes(pair.oldId));
+  if (oldRow && newRow && !reappeared) return { problem: `${pair.oldId}: both ${pair.oldId} and ${pair.newId} rows exist (a merge, not a rename)` };
   if (row.title !== pair.expectTitle) return { problem: `${pair.oldId}: title is "${row.title}", batch expected "${pair.expectTitle}"` };
   if (!marketSuffixMismatch({ id: pair.oldId, category: row.category })) return { problem: `${pair.oldId}: id already agrees with category ${row.category}; nothing to fix` };
   if (marketSuffixMismatch({ id: pair.newId, category: row.category })) return { problem: `${pair.newId}: would still disagree with category ${row.category}` };
+  if (reappeared) {
+    if (oldRow.title !== pair.expectTitle) return { problem: `${pair.oldId}: re-added old row is titled "${oldRow.title}", batch expected "${pair.expectTitle}"` };
+    return { state: 'reappeared', row };
+  }
   if (newRow) {
     if (!Array.isArray(newRow.aliases) || !newRow.aliases.includes(pair.oldId)) return { problem: `${pair.newId}: row exists without ${pair.oldId} in aliases (not a resumable rename)` };
     return { state: 'resume', row };
@@ -127,6 +135,18 @@ function readShows(file) {
   return Array.isArray(doc) ? doc : doc.shows;
 }
 
+/** Remove a re-added old-id row (its renamed twin already carries the alias). */
+function dropReappearedRow(showsPath, oldId) {
+  const doc = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+  const list = Array.isArray(doc) ? doc : doc.shows;
+  const kept = list.filter((s) => !(s && s.id === oldId));
+  if (kept.length !== list.length - 1) throw new Error(`${oldId}: expected one re-added row, found ${list.length - kept.length}`);
+  if (Array.isArray(doc)) doc.splice(0, doc.length, ...kept); else doc.shows = kept;
+  const { createShowsWriteGuard } = require('./lib/shows-write-guard');
+  createShowsWriteGuard(showsPath).saveShows(doc, { allowShrink: true, reason: 'rename-show-ids-batch: drop re-added old row' });
+  console.warn(`  warning: dropped re-added ${oldId} row (a concurrent edit to it is lost)`);
+}
+
 function main() {
   let f;
   try { f = parseArgs(process.argv.slice(2)); } catch (e) { console.error(e.message); process.exit(1); }
@@ -134,6 +154,7 @@ function main() {
   const problems = batchProblems(batch);
   if (problems.length) { console.error(`refused: ${problems.join('; ')}`); process.exit(2); }
   const pairs = batch.renames;
+  const states = new Map();
 
   const { planShowIdRename, applyShowIdRename, buildSqlMigration } = require('./lib/show-id-rename.js');
   const trees = {
@@ -167,6 +188,9 @@ function main() {
   for (const p of pairs) {
     const st = pairState(p, shows);
     if (st.problem) { refused.push(st.problem); continue; }
+    states.set(p.oldId, st.state);
+    // The engine refuses while both rows exist; the old one goes in Phase B.
+    if (st.state === 'reappeared') { console.log(`reappeared ${p.oldId} -> ${p.newId}: old row re-added by a merge; --apply drops it and resumes`); continue; }
     const plan = planShowIdRename(p.oldId, p.newId, trees);
     if (!plan.ok) refused.push(...plan.refusals.map((r) => `${p.oldId}: ${r}`));
     console.log(`${st.state.padEnd(7)} ${p.oldId} -> ${p.newId}  slug ${plan.oldSlug}${plan.slugChanged ? ` -> ${plan.newSlug}` : ' (kept)'}  ${plan.summary ? `${plan.summary.filesRewritten} files, ${plan.summary.dirsMoved + plan.summary.filesMoved} moves` : ''}`);
@@ -176,6 +200,7 @@ function main() {
 
   // Phase B: apply one by one.
   for (const p of pairs) {
+    if (states.get(p.oldId) === 'reappeared') dropReappearedRow(showsPath, p.oldId);
     const plan = planShowIdRename(p.oldId, p.newId, trees);
     if (!plan.ok) { console.error(`::error::${p.oldId}: refused at apply time: ${plan.refusals.join('; ')}`); process.exit(1); }
     const r = applyShowIdRename(plan, { log: (line) => console.log(`  ${line}`) });
