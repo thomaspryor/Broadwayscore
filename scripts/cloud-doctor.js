@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync, spawnSync } = require('child_process');
+const { stalePlans, readPlans, describeStale } = require('./lib/pending-fixes-stale-check');
 
 const ROOT = path.join(__dirname, '..');
 const REPO = 'thomaspryor/Broadwayscore';
@@ -86,6 +87,7 @@ function gather({ quick }) {
   facts.ghError = repo.code === 0 ? null : (repo.err || repo.out).split('\n').pop();
   const wf = sh('gh', ['api', `repos/${REPO}/actions/workflows/execute-approved-fix.yml`, '--jq', '.state']);
   facts.fixWorkflowState = wf.code === 0 ? wf.out : null;
+  facts.stalePendingPlans = stalePlans(readPlans(path.join(ROOT, 'data', 'pending-fixes')));
   facts.secretsOk = sh('node', [path.join(ROOT, 'scripts', 'check-cloud-secrets.js')]).code === 0;
   // Run from the main checkout: from a worktree it compares against the worktree and misreports DRIFT.
   const hooks = sh('node', [path.join(main, 'scripts', 'install-home-claude-config.js'), '--check'], { cwd: main });
@@ -167,6 +169,11 @@ function evaluate(f, { now = Date.now() } = {}) {
 
   add('secrets', f.secretsOk ? 'ok' : 'warn', f.secretsOk ? 'Tier 1 secrets present' : 'Tier 1 secrets missing (node scripts/check-cloud-secrets.js)');
   add('hooks', f.hooks && f.hooks.ok ? 'ok' : 'warn', (f.hooks && f.hooks.detail) || 'install-home-claude-config --check did not run', f.hooks && f.hooks.ok ? null : 'install-hooks');
+
+  if (f.stalePendingPlans) {
+    const d = describeStale(f.stalePendingPlans);
+    add('pending-fixes', d ? 'warn' : 'ok', d || 'no pending fix plan older than 7 days');
+  }
 
   if (f.auditTreeClean) {
     const a = f.auditTreeClean;
