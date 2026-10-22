@@ -269,6 +269,7 @@ export default function ShowPageBelowFold({
             trend={recoupmentTrend}
             weeklyGross={grosses?.thisWeek?.gross}
             showStatus={show.status as 'open' | 'closed' | 'previews' | 'upcoming'}
+            closingDate={show.closingDate}
             allTimeGross={grosses?.allTime?.gross}
             breakEvenCard={featureFlags.commercial && featureFlags.boxOfficeV2 ? breakEvenCard : null}
           />

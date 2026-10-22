@@ -26,6 +26,7 @@ import {
 import { hasNoInvestorsToRepay, isLossDesignation, likelyOutcomeDesignation, ownReturnedEstimatePct } from '../../scripts/lib/commercial-designations';
 import { publicSourceText, isEstimatedCapitalization, isMaximumCapitalization, saysRecoupmentUnannounced } from '../../scripts/lib/public-source-text';
 import { conversionOf } from '../../scripts/lib/commercial-conversion';
+import { recoupReportedAfterClosing } from '../../scripts/lib/recoup-reported-after-closing';
 
 export type RecoupmentDisplayMode = 'announced' | 'analyst' | 'model' | 'none';
 
@@ -519,10 +520,16 @@ export interface RecoupmentAttribution {
  * source says Disney never announces), and only "High confidence" when the
  * record carries a trade-press or SEC source URL.
  */
-export function getRecoupmentAttribution(commercial: ShowCommercial): RecoupmentAttribution {
+export function getRecoupmentAttribution(commercial: ShowCommercial, closingDate?: string | null): RecoupmentAttribution {
   const date = formatRecoupedDate(commercial.recoupedDate);
   // A date we estimated (isEstimate.recoupedDate) prints "~": the source reports the recoupment, not when (BRO-5568).
-  const headline = date ? `Recouped, ${commercial.isEstimate?.recoupedDate === true ? '~' : ''}${date}` : 'Recouped';
+  // A report month after the run closed is when it was reported, not when it happened (BRO-5779).
+  const reportedLate = commercial.isEstimate?.recoupedDate !== true && recoupReportedAfterClosing(commercial.recoupedDate, closingDate);
+  const headline = date
+    ? reportedLate
+      ? `Recouped, reported ${date}`
+      : `Recouped, ${commercial.isEstimate?.recoupedDate === true ? '~' : ''}${date}`
+    : 'Recouped';
   const sourceUrl = getCitedSourceUrl(commercial.sources);
   const notAnnounced = isUnannouncedRecoupment(commercial);
   const qualifier = notAnnounced ? NOT_ANNOUNCED_LABEL : null;
