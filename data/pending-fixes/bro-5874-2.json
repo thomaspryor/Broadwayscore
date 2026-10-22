@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5874-2",
   "planId": "81d166b5-e584-4863-a0f1-ffff7110c099",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-22T01:54:45.000Z",
   "submitter": {
     "name": null,
@@ -64,5 +64,39 @@
         "description": "BRO-5874: page JSON-LD author is Susan Stempleski"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T02:40:21.195Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pinocchio-west-end-2017/bachtrack--mark-pullinger.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pinocchio-west-end-2017/bachtrack--mark-pullinger.json wrongProductionReason: null -> \"Bachtrack reviews the Boesmans opera at the Aix Festival (July 2017), not the National Theatre Pinocchio at the Lyttelton\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-turn-of-the-screw-off-west-end-2026/bachtrack--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-turn-of-the-screw-off-west-end-2026/bachtrack--unknown.json wrongProductionReason: null -> \"Bachtrack reviews Victorian Opera's Melbourne staging, not the Arcola production\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted table-17-off-west-end-2026/bachtrack--unknown.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lincoln-in-the-bardo-off-broadway-2026/bachtrack--susan-sempleski.json criticName: \"Susan Sempleski\" -> \"Susan Stempleski\""
+    }
+  ],
+  "executedIn": "ci"
 }
