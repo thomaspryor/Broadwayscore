@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5908",
   "planId": "a8be3c45-0e5c-4ce1-81f8-6eeb064c46e3",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -55,5 +55,14 @@
         "description": "Add Petite Rouge (Company XIV, Theatre XIV Brooklyn); sources: TheaterMania listing (previews 2026-02-14, opening 2026-03-01), New York Theatre Guide and Time Out reviews. Closing date omitted: sources conflict (May 24 vs extended to Oct 31)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T04:27:54.563Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added petite-rouge-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
