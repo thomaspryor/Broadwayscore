@@ -200,6 +200,14 @@ function main(argv) {
   const plans = buildPlans(id, summary, actions, { risk: get('risk') || 'low' });
   const files = plans.map((p) => path.join(PLAN_DIR, `${p.name}.json`));
   const existing = files.filter((f) => fs.existsSync(f));
+  // --force re-writes a plan still being drafted; an executed plan is the audit
+  // record of what was applied, so it is never overwritten (BRO-4490: a second
+  // round nearly replaced the applied bro-4490.json). Use a new --id (bro-N-2).
+  const executed = executedPlanFiles(existing);
+  if (executed.length && !dryRun) {
+    console.error(`Already executed: ${executed.map((f) => path.relative(ROOT, f)).join(', ')} (pick a new --id, e.g. ${id}-2)`);
+    return 2;
+  }
   if (existing.length && !argv.includes('--force') && !dryRun) {
     console.error(`Already exists: ${existing.map((f) => path.relative(ROOT, f)).join(', ')} (--force to overwrite)`);
     return 2;
@@ -225,7 +233,19 @@ function main(argv) {
   return 0;
 }
 
-module.exports = { actionsFromArgs, completeActions, buildPlans, splitName, parseDotted };
+// Statuses execute-approved-fix.js leaves on a plan that ran (or was turned
+// down): the record of what reached the private repos. 'validation-failed'
+// changed nothing, so a --force repair of it stays allowed.
+const EXECUTED_PLAN_STATUSES = new Set(['applied', 'partial', 'rejected']);
+
+/** Plan files that already ran: never overwritten, even with --force. */
+function executedPlanFiles(files) {
+  return files.filter((f) => {
+    try { return EXECUTED_PLAN_STATUSES.has(JSON.parse(fs.readFileSync(f, 'utf8')).status); } catch { return false; }
+  });
+}
+
+module.exports = { executedPlanFiles, actionsFromArgs, completeActions, buildPlans, splitName, parseDotted };
 
 if (require.main === module) {
   const argv = process.argv.slice(2);

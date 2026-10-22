@@ -160,6 +160,13 @@ const ALLOWED_SCRIPTS = [
   // another show planted (page judged by scripts/lib/aggregator-page-show-guard.js),
   // then delete that archive page. Idempotent.
   'clear-wrong-show-roundup-excerpts.js',
+  // BRO-4490: refetch named tier-1.5-cleared rows and keep a star only when the
+  // page structure shows it (plans pass --outlet=X --tier15-cleared --execute
+  // --files=<show>/<file>.json,...; --limit keeps a chunk inside the 5-minute cap).
+  'recollect-for-scores.js',
+  // BRO-4490: stamp textFetchedAt on review texts that lack it (git history first,
+  // then firstSeenAt/addedAt/collectedAt; plans pass --apply).
+  'backfill-text-fetched-at.js',
 ];
 
 // --- Helpers ---

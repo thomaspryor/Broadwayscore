@@ -104,7 +104,9 @@ async function processReview(filePath, showId) {
       scoreResult = await extractExplicitScore({
         text: data.fullText || combinedText,
         html: html || '',
-        outletId
+        outletId,
+        showTitle: data.showTitle,
+        showId
       });
       if (scoreResult) scoreSource = data.fullText ? 'fullText' : 'excerpt';
     } catch (e) {

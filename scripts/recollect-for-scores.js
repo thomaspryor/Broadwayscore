@@ -21,6 +21,9 @@
  *                star is written only when it comes from the page structure
  *                (isScoreClearSupersededBy), which retires the clear; then
  *                late-star-anchor queues the anchored re-score.
+ *   --files=<show>/<file>.json,...  only consider these files (an approved-fix
+ *                plan names the exact rows to refetch instead of the outlet's
+ *                whole backlog).
  *   --time-budget-min=N  (BRO-5675) stop starting new reviews once less than
  *                one worst-case item is left in N minutes; exit 0 with the
  *                remaining count. The weekly workflow passes what is left of
@@ -74,6 +77,8 @@ const execute = args.includes('--execute');
 const dryRun = args.includes('--dry-run');
 const replaceAggregator = args.includes('--replace-aggregator');
 const tier15Cleared = args.includes('--tier15-cleared');
+const filesArg = args.find(a => a.startsWith('--files='));
+const onlyFiles = filesArg ? new Set(filesArg.slice('--files='.length).split(',').filter(Boolean)) : null;
 const outlet = outletArg ? outletArg.split('=')[1] : null;
 const limit = limitArg ? parseInt(limitArg.split('=')[1]) : 5;
 const delay = delayArg ? parseInt(delayArg.split('=')[1]) : 2000;
@@ -290,6 +295,7 @@ async function main() {
       .filter(f => f.startsWith(outlet + '--') && f.endsWith('.json'));
 
     for (const file of files) {
+      if (onlyFiles && !onlyFiles.has(`${dir}/${file}`)) continue;
       const fp = path.join(REVIEW_DIR, dir, file);
       try {
         const data = JSON.parse(fs.readFileSync(fp, 'utf8'));

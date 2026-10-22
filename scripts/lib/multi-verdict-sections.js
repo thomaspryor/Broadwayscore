@@ -93,6 +93,27 @@ function pickShowVerdict(text, showTitle) {
   };
 }
 
+/**
+ * The score both star extractors (score-extractors extractScore and
+ * llm-score-extractor extractExplicitScore) take for a multi-review column, so
+ * neither reads a page-level rating or another show's run (BRO-4490).
+ * @returns {undefined|null|{originalScore: string, normalizedScore: number, source: string, raw: string}}
+ *   undefined: not a multi-review article here, extract as usual.
+ *   null: multi-review and this show's section can't be told apart; extract nothing.
+ */
+function multiVerdictScore(text, outletId, showTitle) {
+  if (!text || !isMultiVerdictOutlet(outletId)) return undefined;
+  const verdict = pickShowVerdict(text, showTitle);
+  if (verdict.status === 'single') return undefined;
+  if (verdict.status === 'ambiguous') return null;
+  return {
+    originalScore: verdict.originalScore,
+    normalizedScore: Math.round((verdict.filled / 5) * 100),
+    source: 'unicode-stars',
+    raw: verdict.originalScore,
+  };
+}
+
 /** True when this outlet publishes multi-review columns this module splits. */
 function isMultiVerdictOutlet(outletId) {
   return MULTI_VERDICT_OUTLETS.has(String(outletId || '').toLowerCase());
@@ -120,4 +141,4 @@ function multiVerdictStarStatus(data, showTitle) {
   return { kind: 'mismatch', stored, want: verdict.originalScore, verdict };
 }
 
-module.exports = { MULTI_VERDICT_OUTLETS, findVerdictRuns, splitVerdictSections, pickShowVerdict, isMultiVerdictOutlet, multiVerdictStarStatus };
+module.exports = { MULTI_VERDICT_OUTLETS, findVerdictRuns, splitVerdictSections, pickShowVerdict, isMultiVerdictOutlet, multiVerdictStarStatus, multiVerdictScore };

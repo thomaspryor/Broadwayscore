@@ -372,7 +372,9 @@ async function phase1ExtractLocal(reviews) {
     if (!result) {
       result = await extractExplicitScore({
         text,
-        outletId: review.data.outletId || ''
+        outletId: review.data.outletId || '',
+        showTitle: review.data.showTitle,
+        showId: review.data.showId
       });
     }
     if (result) {
@@ -793,7 +795,9 @@ async function phase3ScrapeURLs(reviews) {
           result = await extractExplicitScore({
             text: review.data.fullText || '',
             html: html || '',
-            outletId: review.data.outletId || ''
+            outletId: review.data.outletId || '',
+            showTitle: review.data.showTitle,
+            showId: review.data.showId
           });
         }
         if (result) {

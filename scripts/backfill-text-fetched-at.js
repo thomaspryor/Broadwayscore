@@ -80,8 +80,13 @@ function main() {
       bySource[choice.source] = (bySource[choice.source] || 0) + 1;
       console.log(`${apply ? 'write' : 'would write'} ${dir}/${file} textFetchedAt=${choice.value} (${choice.source})`);
       if (apply) {
-        require('./lib/review-write-guard').safeWriteReview(fp, { ...data, ...backfillFields(choice) });
-        counts.written++;
+        // The guard can refuse a write (locked, quarantined, sparse checkout);
+        // count only writes that landed so the summary matches the corpus.
+        const res = require('./lib/review-write-guard').safeWriteReview(fp, { ...data, ...backfillFields(choice) });
+        if (res && res.wrote === false) {
+          counts.refused = (counts.refused || 0) + 1;
+          console.log(`refused ${dir}/${file} (${res.skipped})`);
+        } else counts.written++;
       }
     }
   }
