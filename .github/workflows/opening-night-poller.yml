@@ -727,6 +727,12 @@ jobs:
           # memory/browserbase-cap-stepdown-runbook.md.
           BROWSERBASE_MAX_SESSIONS_PER_DAY: ${{ vars.BROWSERBASE_MAX_SESSIONS_PER_DAY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # BRO-5891: collect-review-texts.js verifies each text with an LLM
+          # (Haiku first, per content-verifier.js getProviderChain) and falls
+          # back to a title-match heuristic when every provider fails. With
+          # only OpenAI here, one OpenAI failure meant the heuristic.
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
           NYTIMES_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
           VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}

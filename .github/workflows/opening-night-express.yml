@@ -321,6 +321,14 @@ jobs:
           # so the mid-run checkpoint is the only safety net for an opening-
           # night run that runs long.
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          # BRO-5891: content-verifier.js checks every fetched text with an LLM
+          # (Haiku first) and drops to a title-match heuristic when no key is
+          # set. This step had none, so every Express run used the heuristic;
+          # on Billy Crystal 860 it called five real reviews "not a review"
+          # because they say "860", not "Billy Crystal 860".
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           INPUT_SHOW_ID: ${{ inputs.show_id }}
         run: |
           echo "=== Collecting review texts for ${INPUT_SHOW_ID} ==="
