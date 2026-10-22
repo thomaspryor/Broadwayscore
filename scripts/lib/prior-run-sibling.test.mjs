@@ -407,3 +407,17 @@ test('collectSameTitleProductionFiles: a review dated after the earlier run clos
   const closedEarly = { ...SOUTHWARK, closingDate: '2026-09-10' };
   assert.deepEqual(collectSameTitleProductionFiles(KINGSTON, [closedEarly, KINGSTON], sameTitleDeps), []);
 });
+
+test('collectSameTitleProductionFiles: date boundaries and an earlier show with no start date', () => {
+  const files = {
+    [SOUTHWARK.id]: [
+      { _file: 'onstart.json', url: 'https://x.uk/onstart', publishDate: '2026-10-13' },
+      { _file: 'before.json', url: 'https://x.uk/before', publishDate: '2026-08-01' },
+      { _file: 'ok.json', url: 'https://x.uk/ok', publishDate: '2026-10-12' },
+    ],
+  };
+  const deps = { loadFiles: id => files[id] || [], isCovered: () => true };
+  assert.deepEqual(collectSameTitleProductionFiles(KINGSTON, [SOUTHWARK, KINGSTON], deps).map(d => d._file), ['ok.json']);
+  const noStart = { ...SOUTHWARK, previewsStartDate: undefined, openingDate: undefined };
+  assert.deepEqual(collectSameTitleProductionFiles(KINGSTON, [noStart, KINGSTON], deps), []);
+});
