@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T03:36:07.690Z",
+  "timestamp": "2026-10-22T04:00:18.805Z",
   "stats": {
-    "totalReviews": 58724,
+    "totalReviews": 58727,
     "alreadyFlagged": 21231,
     "dateGuardCatches": 197,
-    "directorMismatch": 2119,
+    "directorMismatch": 2124,
     "tvFilmSignals": 1660,
-    "londonSignals": 2686,
+    "londonSignals": 2688,
     "offBroadwaySignals": 531,
     "yearMismatch": 166,
-    "noPublishDate": 5264
+    "noPublishDate": 5250
   },
   "findings": [
     {
@@ -29123,6 +29123,20 @@
     },
     {
       "showId": "network-west-end-2017",
+      "file": "standard--henry-hitchings.json",
+      "score": null,
+      "publishDate": "2017-11-14",
+      "url": "https://www.standard.co.uk/go/london/theatre/network-theatre-review-bryan-cranston-is-astonishing-in-uk-theatre-debut-a3710751.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from network-2018"
+        }
+      ]
+    },
+    {
+      "showId": "network-west-end-2017",
       "file": "sunday-times--christopher-hart.json",
       "score": null,
       "publishDate": "November 19th, 2017",
@@ -29186,7 +29200,7 @@
       "showId": "network-west-end-2017",
       "file": "times-uk--ann-treneman.json",
       "score": null,
-      "publishDate": "November 15th, 2017",
+      "publishDate": "2017-11-15",
       "url": "https://www.thetimes.co.uk/article/theatre-network-at-the-lyttelton-theatre-se1-36tbsdwf2",
       "findings": [
         {
@@ -44292,6 +44306,25 @@
     },
     {
       "showId": "the-lehman-trilogy-west-end-2018",
+      "file": "guardian--michael-billington.json",
+      "score": null,
+      "publishDate": "2018-07-13",
+      "url": "https://www.theguardian.com/stage/2018/jul/13/the-lehman-trilogy-review-lyttelton-sam-mendes",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-lehman-trilogy-2021"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lehman-trilogy-west-end-2018",
       "file": "independent--paul-taylor.json",
       "score": 88,
       "publishDate": "2018-07-13",
@@ -54434,8 +54467,21 @@
       "showId": "young-frankenstein-west-end-2017",
       "file": "camdennewjournal--unknown.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "2017-10-20",
       "url": "https://www.camdennewjournal.co.uk/article/review-young-frankenstein-at-garrick-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"susan stroman\" from young-frankenstein-2007"
+        }
+      ]
+    },
+    {
+      "showId": "young-frankenstein-west-end-2017",
+      "file": "london-box-office--christian-durham.json",
+      "publishDate": "2018-05-03",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-young-frankenstein",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -54479,6 +54525,20 @@
     },
     {
       "showId": "young-frankenstein-west-end-2017",
+      "file": "standard--henry-hitchings.json",
+      "score": null,
+      "publishDate": "2017-12-12",
+      "url": "https://www.standard.co.uk/culture/theatre/young-frankenstein-theatre-review-old-fashioned-entertainment-full-of-bawdy-delight-a3683311.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"susan stroman\" from young-frankenstein-2007"
+        }
+      ]
+    },
+    {
+      "showId": "young-frankenstein-west-end-2017",
       "file": "sunday-times--patricia-nicol.json",
       "publishDate": "2017-10-15",
       "url": null,
@@ -54496,6 +54556,20 @@
       "score": 76,
       "publishDate": "October 10th, 2017",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/want-howl-laughter-walk-way-young-frankenstein-garrick-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"susan stroman\" from young-frankenstein-2007"
+        }
+      ]
+    },
+    {
+      "showId": "young-frankenstein-west-end-2017",
+      "file": "thestage--natasha-tripney.json",
+      "score": 39,
+      "publishDate": "2017-10-11",
+      "url": "https://www.thestage.co.uk/reviews/mel-brooks-young-frankenstein-review-at-the-garrick-theatre-london",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -57522,6 +57596,7 @@
     {
       "showId": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
       "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 49,
       "publishDate": null,
       "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TN69NS",
       "findings": [
@@ -72759,6 +72834,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "labour-of-love-west-end-2017",
+      "file": "london-box-office--phil-willmott.json",
+      "publishDate": "2017-10-13",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-ink-labour-of-love",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
