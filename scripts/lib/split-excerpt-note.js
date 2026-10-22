@@ -29,10 +29,10 @@ function buildSplitExcerptNote(review, showTitle) {
   return 'NOTE: This text is only the section about ' + subject + ' from a longer article in which the critic '
     + 'reviewed several productions. The paragraphs about the other shows were removed, so the text can open '
     + 'mid-argument and point back to something that is no longer there ("that approach", "similarly", '
-    + '"the other production", "the first show"). Advice about, or a comparison with, ANOTHER production in '
-    + 'such a sentence is not a verdict on ' + subject + '. Score what the critic says about ' + subject
-    + ' itself, and do not treat an unexplained back-reference as criticism. A verdict the section states '
-    + 'plainly about ' + subject + ' counts in full, favorable or not.';
+    + '"the other production", "the first show"). Advice about ANOTHER production in such a sentence is not '
+    + 'a verdict on ' + subject + ', and a back-reference whose target you cannot see is not criticism by '
+    + 'itself. Score what the critic says about ' + subject + ' itself. A verdict or comparison that plainly '
+    + 'judges ' + subject + ' counts in full, favorable or not.';
 }
 
 module.exports = { buildSplitExcerptNote, isSplitSection };
