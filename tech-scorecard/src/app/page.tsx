@@ -19,7 +19,7 @@ export default function HomePage() {
       <section aria-labelledby="newest" className="pb-10">
         <div className="mb-3 flex items-baseline justify-between">
           <h2 id="newest" className="text-lg font-bold">Newest Releases</h2>
-          <span className="text-sm text-ink-faint">Phones · Fall 2026</span>
+          <span className="text-sm text-ink-faint">Phones · 2026</span>
         </div>
         <div className="grid grid-cols-3 gap-3 sm:gap-5">
           {newest.map((p) => <MiniProductCard key={p.id} product={p} />)}

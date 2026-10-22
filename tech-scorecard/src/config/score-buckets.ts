@@ -27,11 +27,12 @@ export function getScoreTier(score: number) {
   return SCORE_TIERS[getTierKey(score)];
 }
 
-/** Per-review sentiment bands used by the breakdown bar. */
-export type Sentiment = 'rave' | 'positive' | 'mixed' | 'negative';
-export function getSentiment(score: number): Sentiment {
-  if (score >= 85) return 'rave';
-  if (score >= 70) return 'positive';
-  if (score >= 50) return 'mixed';
-  return 'negative';
-}
+/** Breakdown-bar labels per tier, so the bar and the badge colors always agree. */
+export const BREAKDOWN_LABELS: Record<TierKey, { label: string; color: string }> = {
+  gold: { label: 'Rave', color: '#f5c518' },
+  recommended: { label: 'Positive', color: '#22c55e' },
+  worthIt: { label: 'Favorable', color: '#14b8a6' },
+  mixed: { label: 'Mixed', color: '#f59e0b' },
+  miss: { label: 'Negative', color: '#ef4444' },
+};
+export const TIER_ORDER: TierKey[] = ['gold', 'recommended', 'worthIt', 'mixed', 'miss'];

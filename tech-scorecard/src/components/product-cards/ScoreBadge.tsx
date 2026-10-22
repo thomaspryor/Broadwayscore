@@ -14,7 +14,7 @@ export function ScoreBadge({ score, size = 'md' }: { score: number | null; size?
   const rounded = Math.round(score);
   const tier = getScoreTier(rounded);
   return (
-    <div className={`score-badge ${tier.badgeClass} ${SIZE[size]}`} title={tier.label} aria-label={`Score ${rounded}, ${tier.label}`}>
+    <div className={`score-badge ${tier.badgeClass} ${SIZE[size]}`} role="img" title={tier.label} aria-label={`Score ${rounded}, ${tier.label}`}>
       {rounded}
     </div>
   );

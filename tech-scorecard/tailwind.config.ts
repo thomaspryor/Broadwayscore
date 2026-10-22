@@ -26,7 +26,7 @@ const config: Config = {
         ink: {
           DEFAULT: '#14141a',
           muted: '#5b5b66',
-          faint: '#8a8a96',
+          faint: '#6b6b77',
         },
         line: {
           DEFAULT: '#e6e6ec',
@@ -36,6 +36,7 @@ const config: Config = {
           DEFAULT: '#d4a574',
           hover: '#c4956a',
           ink: '#94632e',
+          logo: '#b98048',
           muted: 'rgba(212, 165, 116, 0.18)',
         },
         status: {

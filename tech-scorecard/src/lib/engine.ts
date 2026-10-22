@@ -1,5 +1,5 @@
 import { TIER_WEIGHTS, MIN_REVIEWS_FOR_SCORE } from '@/config/scoring';
-import { getSentiment, type Sentiment } from '@/config/score-buckets';
+import { getTierKey, type TierKey } from '@/config/score-buckets';
 import type { Outlet, Product, Review } from './data-types';
 
 export interface ScoredReview extends Review {
@@ -12,10 +12,9 @@ export interface ComputedProduct extends Product {
   reviewCount: number;
   /** Reviews whose outlet published a score (the rest are scored from text). */
   ratedCount: number;
-  /** Tier-weighted mean of review scores, null below MIN_REVIEWS_FOR_SCORE. */
+  /** Tier-weighted mean of review scores (unrounded; round once for display), null below MIN_REVIEWS_FOR_SCORE. */
   criticScore: number | null;
-  breakdown: Record<Sentiment, number>;
-  tierCounts: Record<1 | 2 | 3 | 4, number>;
+  breakdown: Record<TierKey, number>;
   latestReviewDate: string | null;
 }
 
@@ -28,7 +27,7 @@ export function computeCriticScore(reviews: ScoredReview[]): number | null {
     num += r.score * r.weight;
     den += r.weight;
   }
-  return den === 0 ? null : Math.round((num / den) * 10) / 10;
+  return den === 0 ? null : num / den;
 }
 
 export function computeProduct(product: Product, allReviews: Review[], outlets: Record<string, Outlet>): ComputedProduct {
@@ -41,12 +40,8 @@ export function computeProduct(product: Product, allReviews: Review[], outlets: 
     })
     .sort((a, b) => b.score - a.score || a.outlet.tier - b.outlet.tier);
 
-  const breakdown: Record<Sentiment, number> = { rave: 0, positive: 0, mixed: 0, negative: 0 };
-  const tierCounts: Record<1 | 2 | 3 | 4, number> = { 1: 0, 2: 0, 3: 0, 4: 0 };
-  for (const r of reviews) {
-    breakdown[getSentiment(r.score)]++;
-    tierCounts[r.outlet.tier]++;
-  }
+  const breakdown: Record<TierKey, number> = { gold: 0, recommended: 0, worthIt: 0, mixed: 0, miss: 0 };
+  for (const r of reviews) breakdown[getTierKey(r.score)]++;
   const latestReviewDate = reviews.reduce<string | null>((max, r) => (!max || r.date > max ? r.date : max), null);
 
   return {
@@ -56,7 +51,6 @@ export function computeProduct(product: Product, allReviews: Review[], outlets: 
     ratedCount: reviews.filter((r) => r.scoreSource === 'rating').length,
     criticScore: computeCriticScore(reviews),
     breakdown,
-    tierCounts,
     latestReviewDate,
   };
 }

@@ -3,7 +3,7 @@ import Link from 'next/link';
 export function Logo({ className = '' }: { className?: string }) {
   return (
     <span className={`font-extrabold tracking-tight ${className}`}>
-      <span className="text-ink">Tech</span><span className="text-brand">Scorecard</span>
+      <span className="text-ink">Tech</span><span className="text-brand-logo">Scorecard</span>
       <span className="align-top text-[0.35em] font-semibold text-ink-faint">™</span>
     </span>
   );

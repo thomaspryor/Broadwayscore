@@ -5,15 +5,22 @@
 const fs = require('fs');
 const path = require('path');
 
+const errors = [];
 const read = (f) => JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', f), 'utf8'));
 const products = read('products.json');
 const reviews = read('reviews.json');
 const outlets = read('outlets.json');
 
-const errors = [];
 const outletIds = new Set(outlets.map((o) => o.id));
 const productIds = new Set(products.map((p) => p.id));
-const ISO = /^\d{4}-\d{2}-\d{2}$/;
+const ISO_RE = /^\d{4}-\d{2}-\d{2}$/;
+// Real calendar dates only (2026-13-40 fails).
+const ISO = { test: (s) => ISO_RE.test(s) && new Date(`${s}T00:00:00Z`).toISOString().slice(0, 10) === s };
+
+for (const [label, ids] of [['product id', products.map((p) => p.id)], ['product slug', products.map((p) => p.slug)], ['outlet id', outlets.map((o) => o.id)]]) {
+  const dupes = ids.filter((x, i) => ids.indexOf(x) !== i);
+  if (dupes.length) errors.push(`duplicate ${label}: ${[...new Set(dupes)].join(', ')}`);
+}
 
 for (const o of outlets) {
   if (![1, 2, 3, 4].includes(o.tier)) errors.push(`outlet ${o.id}: tier must be 1-4`);
@@ -25,7 +32,7 @@ for (const p of products) {
 
 /** "4.5/5" -> 90, "9/10" -> 90, "4 stars" (out of 5) -> 80. null when the format is not numeric. */
 function ratingToScore(rating) {
-  const frac = rating.match(/(\d+(?:\.\d+)?)\s*(?:\/|out of)\s*(\d+(?:\.\d+)?)/i);
+  const frac = rating.match(/^(\d+(?:\.\d+)?)\s*(?:\/|out of)\s*(\d+(?:\.\d+)?)(?:\s*stars?)?$/i);
   if (frac) return Math.round((parseFloat(frac[1]) / parseFloat(frac[2])) * 100);
   const pct = rating.match(/^(\d+(?:\.\d+)?)\s*%$/);
   if (pct) return Math.round(parseFloat(pct[1]));

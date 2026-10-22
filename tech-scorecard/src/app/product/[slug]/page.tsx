@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import { getAllProducts, getProduct } from '@/lib/data';
 import { getScoreTier } from '@/config/score-buckets';
 import { TIER_WEIGHTS } from '@/config/scoring';
-import { formatDate, formatPrice, releaseLabel, CATEGORY_LABEL } from '@/lib/format';
+import { formatDate, formatPrice, releaseLabel } from '@/lib/format';
 import { DeviceArt, MiniProductCard, OutletTierChip, ProductChips, ScoreBadge, ScoreBreakdownBar } from '@/components/product-cards';
 import { ReviewList } from '@/components/ReviewRow';
 
@@ -34,7 +34,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
       <nav aria-label="Breadcrumb" className="mb-4 text-sm text-ink-faint">
         <Link href="/" className="hover:text-ink">Home</Link>
         <span className="mx-2">/</span>
-        <Link href="/" className="hover:text-ink">{CATEGORY_LABEL[product.category]}s</Link>
+        <Link href="/" className="hover:text-ink">Phones</Link>
         <span className="mx-2">/</span>
         <span className="text-ink">{product.name}</span>
       </nav>
@@ -74,7 +74,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           <div className="mt-5 flex flex-wrap gap-2">
             <a href={product.officialUrl} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 rounded-lg bg-brand px-4 py-2.5 text-sm font-semibold text-[#1a1a1a] hover:bg-brand-hover">
-              Official specs and pricing <span aria-hidden="true">→</span>
+              From the manufacturer <span aria-hidden="true">→</span>
             </a>
           </div>
         )}
@@ -102,7 +102,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           <h2 id="scorecard" className="section-label">Critic Scorecard</h2>
           <span className="text-xs text-ink-faint">{product.reviewCount} reviews</span>
         </div>
-        <div className="sort-toggle mt-3">
+        <div className="sort-toggle relative mt-3" role="radiogroup" aria-label="Sort reviews">
           <input type="radio" name={`sort-${product.slug}`} id={`sort-score-${product.slug}`} className="by-score" defaultChecked />
           <input type="radio" name={`sort-${product.slug}`} id={`sort-date-${product.slug}`} className="by-date" />
           <div className="sort-labels flex items-center gap-3 text-sm">
@@ -111,7 +111,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
             <label htmlFor={`sort-date-${product.slug}`} className="lbl-date">By Date</label>
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-ink-faint">
-            <span>Weighted by outlet tier · Counts</span>
+            <span>Weighted by outlet tier:</span>
             {([1, 2, 3, 4] as const).map((t) => (
               <span key={t} className="inline-flex items-center gap-1"><OutletTierChip tier={t} />{Math.round(TIER_WEIGHTS[t] * 100)}%</span>
             ))}
