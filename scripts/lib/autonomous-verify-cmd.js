@@ -191,7 +191,9 @@ function extractVerifyCmd(notes, isSafeCheckCommand, explainUnsafeCheckCommand) 
   const hint = (explain.find(e => e && e.hint) || {}).hint;
   return {
     cmd: null,
-    reason: `no acceptance-criteria command passed safe-form validation (first candidate: ${candidates[0].slice(0, 120)})`,
+    // The hint rides in `reason` too: every consumer (verify-gate, enricher,
+    // ack-landed) prints only `reason`, so a separate field alone reaches nobody.
+    reason: `no acceptance-criteria command passed safe-form validation (first candidate: ${candidates[0].slice(0, 120)})${hint ? `. ${hint}` : ''}`,
     kind,
     ...(hint ? { hint } : {}),
   };

@@ -181,3 +181,8 @@ test('no hint when the rewrite would itself be refused, and the tsx form still a
   assert.equal(extractExplained('VERIFY: node --test tests/unit/x.test.tsx').hint, undefined);
   assert.equal(extract('VERIFY: npx tsx --test tests/unit/x.test.ts').cmd, 'npx tsx --test tests/unit/x.test.ts');
 });
+
+test('the tsx hint is part of the refusal reason, which is all most callers print', () => {
+  const r = extractExplained('VERIFY: node --test tests/unit/x.test.ts');
+  assert.match(r.reason, /first candidate: node --test tests\/unit\/x\.test\.ts\)\. .*use: npx tsx --test tests\/unit\/x\.test\.ts$/);
+});
