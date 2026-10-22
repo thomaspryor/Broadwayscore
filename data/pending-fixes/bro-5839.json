@@ -8,11 +8,10 @@
     "email": null
   },
   "plan": {
-    "summary": "BRO-5839: create the 2008 National Theatre August: Osage County page and rehome its five reviews, with the Imperial Broadway engagement preserved.",
+    "summary": "BRO-5839: create the 2008 National Theatre August: Osage County page and rehome its five reviews.",
     "steps": [
       "Add the separate Lyttelton show, confirmed by the National Theatre catalogue and Playbill.",
       "For each named review, clear the verdict about its old folder, then immediately move it through the review-file writer. Do not rebuild between these actions.",
-      "Preserve the Imperial engagement as a prior run of the existing Broadway production.",
       "Rebuild reviews only after every action succeeds, then verify review recovery on the new show."
     ],
     "riskLevel": "low",
@@ -171,21 +170,6 @@
         "sourcePath": "august-osage-county-2007/observer--susannah-clapp.json",
         "destPath": "august-osage-county-national-theatre-2008/observer--susannah-clapp.json",
         "description": "Rehome the 2008 National Theatre review, preserve its text and score, and restamp showId through moveReviewFile."
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "august-osage-county-2007",
-        "field": "priorRuns",
-        "oldValue": null,
-        "newValue": [
-          {
-            "venue": "Imperial Theatre",
-            "openingDate": "2007-12-04",
-            "closingDate": "2008-04-20"
-          }
-        ],
-        "description": "Record the Imperial engagement before the April 29, 2008 Music Box transfer. Keep the existing October 30, 2007 previews and Broadway opening date. Source: https://www.ibdb.com/broadway-production/august-osage-county-467754 and https://playbill.com/article/august-osage-county-exits-imperial-april-20-moving-next-door-to-music-box-com-149355"
       }
     ]
   }

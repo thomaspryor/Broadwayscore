@@ -126,7 +126,6 @@ test('BRO-5839 rehomes exactly five National Theatre reviews through the real wr
   const raw = JSON.parse(fs.readFileSync(SHOWS, 'utf8'));
   const shows = structuredClone(Array.isArray(raw) ? raw : raw.shows);
   const beforeShows = structuredClone(shows);
-  const tmp = fs.mkdtempSync(path.join(ROOT, '.tmp-bro-5839-'));
   const oldId = 'august-osage-county-2007';
   const expectedFiles = [
     'express-uk--markshenton.json', 'financialtimes--sarah-hemming.json',
@@ -137,11 +136,11 @@ test('BRO-5839 rehomes exactly five National Theatre reviews through the real wr
   assert.deepEqual(moves.map(a => path.basename(a.sourcePath)).sort(), expectedFiles);
   const alreadyMoved = moves.every(a => !fs.existsSync(path.join(TEXTS, a.sourcePath))
     && fs.existsSync(path.join(TEXTS, a.destPath)));
-  const imperial = plan.plan.actions.find(a => a.type === 'data-edit');
-  assert.equal(imperial.file, 'shows.json');
-  assert.equal(imperial.showId, oldId);
-  assert.equal(imperial.field, 'priorRuns');
-  assert.deepEqual(imperial.newValue, [{ venue: 'Imperial Theatre', openingDate: '2007-12-04', closingDate: '2008-04-20' }]);
+  assert.deepEqual(plan.plan.actions.map(a => a.type), [
+    'add-show',
+    ...expectedFiles.flatMap(() => ['review-field-edit', 'review-field-edit', 'review-file-op']),
+  ], 'every action must run through an add-show, field-edit or move writer');
+  const tmp = fs.mkdtempSync(path.join(ROOT, '.tmp-bro-5839-'));
   try {
     // Copy only the two affected folders. Never write the private mount.
     for (const id of [oldId, NATIONAL]) {
@@ -166,11 +165,6 @@ test('BRO-5839 rehomes exactly five National Theatre reviews through the real wr
         } else if (action.type === 'review-file-op') {
           assert.equal(action.operation, 'move');
           result = moveReviewFile(tmp, action.sourcePath, action.destPath);
-        } else if (action.type === 'data-edit') {
-          // Check the plan's compare-and-set precondition without duplicating
-          // the top-level executor's data-edit implementation in this test.
-          assert.deepEqual(shows.find(s => s.id === oldId).priorRuns ?? null, action.oldValue);
-          continue;
         } else assert.fail(`Unexpected action ${action.type}`);
         assert.ok(result.ok, `${action.type}: ${result.reason}`);
       }
@@ -202,8 +196,7 @@ test('BRO-5839 rehomes exactly five National Theatre reviews through the real wr
     const broadway = shows.find(s => s.id === oldId);
     assert.equal(broadway.venue, 'Music Box Theatre');
     assert.equal(broadway.previewsStartDate, '2007-10-30');
-    if (alreadyMoved) assert.deepEqual(broadway.priorRuns, imperial.newValue);
-    console.log('BRO-5839 real-data replay: 5 reviews excluded on Broadway before, 5 included on the new National Theatre page after; 1 show added; Imperial prior-run action verified; unrelated records unchanged. Examples: FT, Independent, Observer.');
+    console.log('BRO-5839 real-data replay: 5 reviews excluded on Broadway before, 5 included on the new National Theatre page after; 1 show added; all 16 actions use real writers; unrelated records unchanged. Examples: FT, Independent, Observer.');
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
