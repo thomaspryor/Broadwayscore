@@ -611,5 +611,47 @@
       }
     ],
     "queuedAt": "2026-10-22T22:52:46.498Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-the-curious-case-of-benjamin-button-off-broadway-2026",
+    "title": "Unhandled CV.wrongProduction on The Curious Case of Benjamin Button",
+    "description": "ground/Unknown (ground--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] This is a Playhill review aggregator/roundup summariz — https://ground.news/article/curious-case-of-benjamin-button-review-a-sweet-and-folksy-musical-that-wants-to-go-to-broadway_e4145e",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T23:27:50.510Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:surinderella-off-west-end-2026",
+    "title": "Auto-remediation gave up on surinderella-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"surinderella-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T23:27:50.556Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:surinderella-off-west-end-2026",
+    "title": "Auto-remediation gave up on surinderella-off-west-end-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"surinderella-off-west-end-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T23:27:50.579Z"
   }
 ]
