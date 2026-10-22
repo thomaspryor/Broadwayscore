@@ -1264,10 +1264,13 @@ if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1':
 # commit hashes in the last lines, 7 never said what is still running, 7 never
 # said whether the owner must act, 4 ended on a bare "NOT SAFE TO EXIT".
 # After real work, the closing block must carry (CLOUD.md "Talking to the
-# owner"): a Still running line, a You need to line, a reason on NOT SAFE,
-# and no ids, hashes, paths or code in its last lines. Blocks once per turn
+# owner", mirrored in .claude/commands/wrap-up.md): a Still running line, a You need to line, a reason on NOT SAFE,
+# and no ids, hashes, paths or code in its last lines (one URL is fine). Blocks once per turn
 # chain. Kill switch CLEARCLOSE_GATE_DISABLE=1. Fail-open.
-_CC_ID_RE = re.compile(r'\bBRO-\d+\b|\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b|`|\b[\w.-]+/[\w./-]+\.\w{1,5}\b|\bsession_[0-9A-Za-z]{10,}')
+_CC_ID_RE = re.compile(r'\bBRO-\d+\b|\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b|`'
+                       r'|\b[\w.-]*[A-Za-z][\w.-]*/[\w./-]+\.[A-Za-z]\w{0,4}\b|\bsession_[0-9A-Za-z]{10,}')
+# Gate tokens other hooks require in the closing; they are not prose for the owner.
+_CC_TOKEN_RE = re.compile(r'^\W*(?:NO-[A-Z-]+|BACKLOG-OK|PR-BLOCKER|DISPATCHED)\**:')
 if os.environ.get('CLEARCLOSE_GATE_DISABLE', '0') != '1':
     try:
         _cc_text, _cc_last = _closing()
@@ -1280,15 +1283,15 @@ if os.environ.get('CLEARCLOSE_GATE_DISABLE', '0') != '1':
                 _cc_miss.append('a "Still running: ..." (or "Nothing is still running.") line')
             if not re.search(r'(?im)^\W*you need to:|nothing (?:is )?needed from you', _cc_text):
                 _cc_miss.append('a "You need to: ..." (or "Nothing needed from you.") line')
-            if re.match(r'^NOT SAFE TO EXIT\W*$', _cc_last) or len(re.findall(r'\w+', _cc_last)) < 7 and _cc_last.startswith('NOT'):
+            if _cc_last.startswith('NOT') and len(re.findall(r'\w+', _cc_last)) < 6:
                 _cc_miss.append('a reason on the NOT SAFE TO EXIT line (what is still pending and what wakes you)')
             # Last four plain lines: fenced blocks dropped, and the gate tokens other
             # hooks require in the closing (NO-SHIP-CHECK:, BACKLOG-OK:, ...) skipped.
             _cc_raw = [ln.strip() for ln in re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL).splitlines()
-                       if ln.strip() and not re.match(r'^\W*[A-Z][A-Z-]+:', ln.strip())
-                       and not _CLOSE_DIVIDER_RE.match(ln)]
+                       if ln.strip() and not _CC_TOKEN_RE.match(ln.strip())
+                       and not ln.lstrip().startswith('>') and not _CLOSE_DIVIDER_RE.match(ln)]
             _cc_tail = '\n'.join(_cc_raw[-4:])
-            _cc_id = _CC_ID_RE.search(_cc_tail)
+            _cc_id = _CC_ID_RE.search(re.sub(r'https?://\S+', ' ', _cc_tail))  # the one allowed URL
             if _cc_id:
                 _cc_miss.append('plain words in the last lines (found "%s": no card ids, commit hashes, file paths or code there)' % _cc_id.group(0))
             if _cc_miss:

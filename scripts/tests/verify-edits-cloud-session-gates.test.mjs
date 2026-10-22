@@ -2078,6 +2078,7 @@ test('CLEARCLOSE: real unclear endings → BLOCKED, naming what is missing', ski
   assertUnclear(runHook(t, 'Shipped.\n\nNothing is still running.\n\nSAFE TO EXIT', CC_ON), 'no you-need line', /You need to/);
   assertUnclear(runHook(t, 'Shipped.\n\nNothing is still running.\n\nNothing needed from you; closed BRO-5717 (commit e66ac2363).\n\nSAFE TO EXIT', CC_ON), 'ids in the last lines', /BRO-5717/);
   assertUnclear(runHook(t, 'Shipped.\n\nNothing is still running.\n\nNothing needed from you.\n\nSAFE TO EXIT — see `scripts/lib/x.js`', CC_ON), 'code on the status line');
+  assertUnclear(runHook(t, 'Shipped.\n\nNothing is still running.\nNOTE: closed BRO-1 in e66ac23.\nNothing needed from you.\n\nSAFE TO EXIT', CC_ON), 'a NOTE: line is prose, not a gate token', /BRO-1/);
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
@@ -2088,6 +2089,10 @@ test('CLEARCLOSE: clear endings pass, including technical detail higher up and a
   assertAllowed(runHook(t, 'Fixed BRO-5717 in scripts/lib/x.js (commit e66ac2363).\n\nThe early-date audit now counts only reachable reviews.\n\nNothing is still running.\n\nYou need to: nothing.\n\nSAFE TO EXIT', CC_ON), 'ids higher up are fine');
   assertAllowed(runHook(t, 'The cleanup is landing.\n\nStill running: the landing; a background wait wakes me when it finishes.\n\nNothing needed from you.\n\nNOT SAFE TO EXIT — waiting for the cleanup to land, then I run it and check the shows.', CC_ON), 'NOT SAFE with reason');
   assertAllowed(runHook(t, '**Still running:** nothing.\n\n**You need to:** nothing.\n\nSAFE TO EXIT', CC_ON), 'bold labels');
+  assertAllowed(runHook(t, 'The show page now lists the new critics: https://broadwayscorecard.com/shows/hamilton.html\n\nNothing is still running.\n\nNothing needed from you.\n\nSAFE TO EXIT', CC_ON), 'one URL with an extension');
+  assertAllowed(runHook(t, 'The new score is 85/90.5 for critics, up from 1.5/2.0 stars.\n\nNothing is still running.\n\nNothing needed from you.\n\nSAFE TO EXIT', CC_ON), 'score ratios are not paths');
+  assertAllowed(runHook(t, 'Two ways to go.\n\nDECISION NEEDED: keep or drop the old page?\nWhy this is your call: taste.\nOption A — keep: familiar / clutter\nOption B — drop: cleaner / loses links\nMy recommendation: B because nobody visits it.\nDefault: I keep it.\n\nNothing is still running.\n\nYou need to: answer the decision above.\n\nNOT SAFE TO EXIT (decision above)', CC_ON), 'DECISION NEEDED template');
+  assertAllowed(runHook(t, 'Shipped.\n\nNothing is still running.\n\nNothing needed from you.\nNO-SHIP-CHECK: docs-only change, no code to review in BRO-1\n\nSAFE TO EXIT', CC_ON), 'gate token lines are skipped');
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
