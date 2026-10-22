@@ -172,3 +172,24 @@ test('filesChangedByUnreplayed names the files each unreplayed action may change
   assert.equal(filesChangedByUnreplayed({ type: 'run-script' }).length, 3);
   assert.deepEqual(filesChangedByUnreplayed({ type: 'review-file-op' }), []);
 });
+
+// BRO-5886: an ingest-html-handoff envelope the executor would refuse FAILs before the land.
+test('preflight FAILs a handoff encrypted to a stale key and passes one for the committed key', () => {
+  const { preflight } = require('./preflight-review-fix-plan.js');
+  const h = require('./html-handoff.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pf-hh-'));
+  const tree = path.join(dir, 'tree'); fs.mkdirSync(path.join(tree, 'show-a'), { recursive: true });
+  const committed = h.generateKeyPair(); const stale = h.generateKeyPair();
+  const pemPath = path.join(dir, 'pub.pem'); fs.writeFileSync(pemPath, committed.publicKey);
+  const url = 'https://bachtrack.com/review-x';
+  const html = `<html><head><link rel="canonical" href="${url}"></head><body>${'text '.repeat(200)}</body></html>`;
+  const plan = (pub) => {
+    const p = path.join(dir, `plan-${Math.random().toString(36).slice(2)}.json`);
+    fs.writeFileSync(p, JSON.stringify({ issueNumber: 'bro-1', status: 'pending', plan: { actions: [h.buildAction({ showId: 'show-a', url, html, publicKeyPem: pub })] } }));
+    return p;
+  };
+  const run = (p, pem = pemPath) => { const lines = []; const r = preflight([p], { reviewTextsDir: tree, log: (l) => lines.push(l), htmlHandoffPublicKeyPath: pem }); return { r, out: lines.join('\n') }; };
+  assert.doesNotMatch(run(plan(committed.publicKey)).out, /FAIL/);
+  assert.match(run(plan(stale.publicKey)).out, /FAIL .*committed key/);
+  assert.match(run(plan(committed.publicKey), path.join(dir, 'missing.pem')).out, /FAIL .*dispatch html-handoff-key/);
+});

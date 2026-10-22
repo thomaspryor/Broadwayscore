@@ -27,6 +27,8 @@ const { planStatusAction } = require('./plan-status');
 const { resolveReviewTextsDir } = require('./review-texts-dir');
 const { runScriptArgs } = require('./run-script-args');
 const { applyDataEdit, dataEditAllowProblem } = require('./data-edit-action');
+const htmlHandoff = require('./html-handoff');
+const { handoffPlanProblems } = require('./pending-fix-plan-checks');
 
 const ROOT = path.join(__dirname, '..', '..');
 
@@ -97,7 +99,7 @@ function filesChangedByUnreplayed(a) {
   }
 }
 
-function preflight(planPaths, { reviewTextsDir = pickReviewTextsTree(), coreDataDir = pickCoreDataDir(), log = console.log } = {}) {
+function preflight(planPaths, { reviewTextsDir = pickReviewTextsTree(), coreDataDir = pickCoreDataDir(), log = console.log, htmlHandoffPublicKeyPath = htmlHandoff.PUBLIC_KEY_PATH } = {}) {
   log(`  review-texts tree: ${reviewTextsDir}`);
   // Loaded lazily, once, and shared across plans so later plans see earlier plans' edits.
   const dataCopies = {};
@@ -128,6 +130,8 @@ function preflight(planPaths, { reviewTextsDir = pickReviewTextsTree(), coreData
         failed++;
         log(`  FAIL ${id}: ${actions.length} actions (max ${MAX_PLAN_ACTIONS}); split it into more plans`);
       }
+      // BRO-5886: a handoff envelope the executor will refuse (bad shape, stale key, too big).
+      for (const p of handoffPlanProblems(id, actions, { publicKeyPath: htmlHandoffPublicKeyPath })) { failed++; log(`  FAIL ${p}`); }
       let ok = 0;
       for (const a of actions) {
         const problem = fileOpSourceProblem(a, (rel) => fs.existsSync(path.join(reviewTextsDir, rel)), removed, created);

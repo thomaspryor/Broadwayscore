@@ -23,6 +23,9 @@
  *                       (scripts/lib/review-field-edit.js; BRO-4216)
  *   drop-orphan-key: Remove an orphan commercial.json or audience-buzz.json
  *                    key, or move an audience key (scripts/lib/orphan-key-action.js)
+ *   ingest-html-handoff: Decrypt page HTML a session fetched outside CI and run
+ *                    ingest-review-from-url.js --html-file on it
+ *                    (scripts/lib/html-handoff.js; BRO-5886). Needs HTML_HANDOFF_PRIVATE_KEY.
  *
  * Env vars:
  *   ISSUE_NUMBER       - GitHub issue number (reader feedback), or bro-N[-x] for
@@ -34,7 +37,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { execSync } from 'child_process';
+import { execSync, execFileSync } from 'child_process';
 import https from 'https';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
@@ -59,6 +62,7 @@ const { unretireId, loadRetiredIds } = require('./lib/retired-show-ids.js');
 const { executeReviewFieldEditIn } = require('./lib/review-field-edit.js');
 const { shouldEmailOwnerOnFix, readerFromDiagnosis, sendReaderFixOwnerEmail } = require('./lib/owner-fix-email.js');
 const { loadIssueDiagnosis } = require('./lib/feedback-submitter-store.js');
+const htmlHandoff = require('./lib/html-handoff.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -552,6 +556,9 @@ function executeBatchTransform(action) {
 async function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+  // BRO-5886: read the handoff key and delete its file before any action runs,
+  // so no child script can read it.
+  const handoffKeyPem = htmlHandoff.takePrivateKey();
   const issueNumber = process.env.ISSUE_NUMBER;
   if (!issueNumber) {
     console.error('ISSUE_NUMBER not set');
@@ -614,6 +621,7 @@ async function main() {
   // 2b. Reject mode: the owner clicked Reject — persist the rejection so an
   // unexpired Approve link for the same plan can no longer execute it.
   if (process.env.EXEC_MODE === 'reject') {
+    planData.plan.actions = (planData.plan.actions || []).map(htmlHandoff.scrubAction);
     planData.status = 'rejected';
     planData.rejectedAt = new Date().toISOString();
     planData.executedIn = planRunOrigin();
@@ -630,6 +638,12 @@ async function main() {
     output('result', 'error');
     return;
   }
+  const handoffProblems = htmlHandoff.planHandoffProblems(planData.plan.actions);
+  if (handoffProblems.length) {
+    console.error(`Refusing plan: ${handoffProblems.join('; ')}`);
+    output('result', 'error');
+    return;
+  }
 
   console.log(`Executing plan for issue #${issueNumber}`);
   console.log(`  Summary: ${planData.plan.summary}`);
@@ -641,6 +655,7 @@ async function main() {
   const results = [];
   const applied = [];
   const failed = [];
+  const ingestedHandoffs = new Set(); // BRO-5886: only these lose their ciphertext
 
   for (const action of planData.plan.actions) {
     console.log(`\nExecuting: ${action.type} — ${action.description || action.field || action.script || action.operation}`);
@@ -678,6 +693,15 @@ async function main() {
       case 'batch-transform':
         result = executeBatchTransform(action);
         break;
+      case htmlHandoff.ACTION_TYPE:
+        if (htmlHandoff.isScrubbed(action)) { result = { ok: true, msg: `Already ingested ${action.url} (envelope scrubbed)` }; break; }
+        // argv array, no shell: the action's fields never reach a command line parser.
+        result = htmlHandoff.executeHandoff(action, {
+          privateKeyPem: handoffKeyPem,
+          run: (args) => execFileSync(process.execPath, args, { cwd: ROOT, stdio: 'inherit', timeout: 300000 }),
+        });
+        if (result.ok) ingestedHandoffs.add(action);
+        break;
       default:
         result = { ok: false, reason: `Unknown action type: ${action.type}` };
     }
@@ -691,6 +715,10 @@ async function main() {
       console.log(`  FAILED: ${result.reason}`);
     }
   }
+
+  // BRO-5886: the plan is written back to main below; an ingested handoff keeps
+  // only a hash. A failed one keeps its (already public) envelope for a retry.
+  planData.plan.actions = planData.plan.actions.map((a) => (ingestedHandoffs.has(a) ? htmlHandoff.scrubAction(a) : a));
 
   // 4. Validate if we made data changes. batch-transform mutates data files
   // too — it must NOT bypass validation (it previously did, so a bad bulk

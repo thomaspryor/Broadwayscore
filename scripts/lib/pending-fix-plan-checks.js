@@ -19,6 +19,19 @@ const STAMPED_SOURCE_FIELDS = {
   synopsis: { field: 'synopsisSource', value: 'manual' },
 };
 
+/**
+ * BRO-5886: ingest-html-handoff envelopes the executor would refuse (shape,
+ * a key other than the committed one, total size).
+ */
+function handoffPlanProblems(name, actions, { publicKeyPath } = {}) {
+  const handoff = require('./html-handoff.js');
+  if (!actions.some((a) => a && a.type === handoff.ACTION_TYPE && !handoff.isScrubbed(a))) return [];
+  const fs = require('fs');
+  const file = publicKeyPath || handoff.PUBLIC_KEY_PATH;
+  if (!fs.existsSync(file)) return [`${name}: ${handoff.ACTION_TYPE}: no committed public key; dispatch html-handoff-key.yml`];
+  return handoff.planHandoffProblems(actions, { publicKeyPem: fs.readFileSync(file, 'utf8') }).map((p) => `${name}: ${p}`);
+}
+
 function planShapeProblems(name, plan) {
   if (!isPending(plan)) return [];
   const problems = [];
@@ -60,6 +73,7 @@ function planShapeProblems(name, plan) {
       problems.push(`${name}: ${a.showId}.${a.field} expects ${JSON.stringify(a.oldValue)} but the earlier edit sets it to "${stamped.get(key)}"`);
     }
   }
+  problems.push(...handoffPlanProblems(name, actions));
   return problems;
 }
 
@@ -113,4 +127,4 @@ function localRunProblems(name, plan) {
   return [`${name}: status "${plan.status}" was written by a local execute-approved-fix run (executedIn: local), so the CI apply would skip it as done; set status back to "pending" and drop executedAt, results, rejectedAt and executedIn`];
 }
 
-module.exports = { pendingPlanProblems, planShapeProblems, planWordingProblems, planStatusWarning, finishedOnBranchProblems, localRunProblems };
+module.exports = { handoffPlanProblems, pendingPlanProblems, planShapeProblems, planWordingProblems, planStatusWarning, finishedOnBranchProblems, localRunProblems };

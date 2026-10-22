@@ -10,7 +10,9 @@
  * Needs scraper keys, so from cloud run it through cloud-run-script.js.
  *
  * Usage:
- *   node scripts/fetch-page-probe.js <url> [--expect=<regex>] [--render]
+ *   node scripts/fetch-page-probe.js <url> [--expect=<regex>] [--render] [--browserbase]
+ *   --browserbase: skip fetchPage and load the page in one Browserbase session
+ *   with proxies:true (residential IP), to test a site that blocks the chain (BRO-5886).
  * Exit: 0 content (and >=1 match when --expect is given), 1 otherwise.
  */
 
@@ -19,10 +21,32 @@
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { summarizeFetchResult } = require('./lib/fetch-page-probe.js');
 
+async function fetchViaBrowserbase(url) {
+  const { createBbSession } = require('./lib/browserbase-session');
+  const { chromium } = require('playwright');
+  const session = await createBbSession({
+    caller: 'fetch-page-probe.js',
+    purpose: 'probe a page that blocks the fetch chain (BRO-5886)',
+    host: new URL(url).hostname,
+    category: 'review-text',
+    body: { proxies: true, browserSettings: { solveCaptchas: true } },
+  });
+  const browser = await chromium.connectOverCDP(session.connectUrl);
+  try {
+    const context = browser.contexts()[0] || await browser.newContext();
+    const page = context.pages()[0] || await context.newPage();
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
+    return { content: await page.content(), format: 'html', source: 'browserbase-proxies' };
+  } finally {
+    await browser.close().catch(() => {});
+  }
+}
+
 async function main() {
   const argv = process.argv.slice(2);
   if (hasHelpFlag(argv)) {
-    console.log('Usage: node scripts/fetch-page-probe.js <url> [--expect=<regex>] [--render]');
+    console.log('Usage: node scripts/fetch-page-probe.js <url> [--expect=<regex>] [--render] [--browserbase]');
     return 0;
   }
   const url = argv.find(a => !a.startsWith('--'));
@@ -35,9 +59,10 @@ async function main() {
   const options = argv.includes('--render') ? { renderJs: true } : {};
 
   const { fetchPage, cleanup } = require('./lib/scraper.js');
+  const fetchOne = argv.includes('--browserbase') ? fetchViaBrowserbase : (u) => fetchPage(u, options);
   let summary;
   try {
-    summary = summarizeFetchResult(await fetchPage(url, options), expect);
+    summary = summarizeFetchResult(await fetchOne(url), expect);
   } catch (err) {
     console.log(JSON.stringify({ url, ok: false, error: err.message }));
     return 1;
