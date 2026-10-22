@@ -30,6 +30,7 @@ function normalizeTitle(t) {
     .replace(/&/g, 'and')                   // & → and before stripping punctuation
     .replace(/^the\s+/, '')
     .replace(/\s*\(the\)\s*$/, '')           // TR uses "Lion King (The)" format
+    .replace(/^(.+?)\s*\((an?)\)\s*$/, '$2 $1') // and "Inspector Calls (An)": the article moves back to the front
     .replace(/\s*\([^)]{5,}\)\s*$/, '')      // Strip trailing parenthetical venue qualifiers
     // Strip venue suffixes BEFORE punctuation removal (so "- Globe" matches)
     .replace(new RegExp(`\\s*[-–—]\\s*(?:${VENUE_NAMES.join('|')})$`, 'i'), '')

@@ -124,6 +124,33 @@ test('the real production picker passes PDF context without broadening HTML or i
   }
 });
 
+// BRO-5851: 2016-17 TR search results (volume 36/37) as the resolver saved
+// them in data/audit/we-historical-review-led-2016-2017.json. Bare West End
+// house names, regional houses city-suffixed; 11 of 38 unmatched rows.
+test('PDF-era bare West End names, the Theatre Upstairs and "(An)" titles match their 2016-17 review', () => {
+  const vol = p => `https://www.theatrerecord.com/archive/volume/${p}`;
+  for (const [tr, review] of [
+    [{ title: 'Travesties', venue: 'Apollo', link: vol('37/page/156') }, { title: 'Travesties', venue: 'Apollo Theatre', date: '2017-02-15' }],
+    [{ title: 'Queen Anne', venue: 'Theatre Royal - Haymarket', link: vol('37/page/738') }, { title: 'Queen Anne', venue: 'Theatre Royal Haymarket', date: '2017-07-11' }],
+    [{ title: 'Torn', venue: 'Theatre Upstairs', link: vol('36/page/992') }, { title: 'Torn', venue: 'Royal Court', date: '2016-09-14' }],
+    [{ title: 'Bat Out of Hell', venue: 'London Coliseum', link: vol('37/page/675') }, { title: 'Bat Out of Hell', venue: 'Coliseum', date: '2017-06-20' }],
+    [{ title: 'Inspector Calls (An)', venue: 'Playhouse', link: vol('36/page/1283') }, { title: 'An Inspector Calls', venue: 'Playhouse Theatre', date: '2016-11-10' }],
+  ]) {
+    assert.equal(pickTrForReview([tr], review, { isLondonVenue }), tr, review.title);
+    assert.equal(pickTrForReview([{ ...tr, link: 'https://www.theatrerecord.com/archive/2017/2/156' }], review, { isLondonVenue }), null, `${review.title} HTML-era`);
+  }
+  // City-suffixed regional houses stay out, with or without PDF context.
+  for (const venue of ['Playhouse - Edinburgh', 'Apollo - Hammersmith', 'Lyric - Hammersmith', 'Palace - Watford', 'Theatre Royal - Brighton']) {
+    assert.equal(isLondonVenue(venue, { pdfEra: true }), false, venue);
+  }
+  for (const venue of ['Apollo', 'Phoenix', 'Playhouse', 'Theatre Upstairs', 'Theatre Royal - Haymarket']) {
+    assert.equal(isLondonVenue(venue), false, `${venue} without PDF context`);
+  }
+  // Brodsky/Baryshnikov played the Hammersmith Apollo: not the Apollo Theatre.
+  const hammersmith = { title: 'Brodsky/Baryshnikov', venue: 'Apollo - Hammersmith', link: vol('37/page/495') };
+  assert.equal(pickTrForReview([hammersmith], { title: 'Brodsky/Baryshnikov', venue: 'Apollo Theatre', date: '2017-05-08' }, { isLondonVenue }), null);
+});
+
 // Contents-table rows as pdftotext -raw printed them in the 2017-18 CI log
 // (BRO-5851): Production Venue Opening Closing Page, one row per production.
 const contents = [

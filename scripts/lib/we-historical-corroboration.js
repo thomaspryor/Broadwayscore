@@ -60,10 +60,11 @@ function venueFamily(venue) {
   const v = normalizeVenueName(String(venue || '')).toLowerCase();
   const nt = /\bnational theatre\b|\blyttelton\b|\bdorfman\b|^olivier\b|\bolivier \(|\bolivier theatre\b/;
   if (nt.test(raw) || nt.test(v) || v === 'national') return 'national-theatre';
-  if (/\broyal court\b|\bjerwood\b/.test(raw)) return 'royal-court';
+  // PDF-era Theatre Record names the Royal Court's studio "Theatre Upstairs".
+  if (/\broyal court\b|\bjerwood\b|^theatre upstairs$/.test(raw)) return 'royal-court';
   // Fold accents first: "Noël Coward" and "Noel Coward" are one building.
   return v.normalize('NFD').replace(/[̀-ͯ]/g, '')
-    .replace(/^the\s+/, '').replace(/\s+theatre$/, '').replace(/[^a-z0-9]/g, '');
+    .replace(/^the\s+/, '').replace(/^london\s+(?=coliseum|palladium)/, '').replace(/\s+theatre$/, '').replace(/[^a-z0-9]/g, '');
 }
 
 function signalVenueAgrees(a, b) {
