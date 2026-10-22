@@ -1,4 +1,5 @@
 // show-id market suffix + year guard (BRO-4315, 2026 data audit S8-T1).
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural rule (id suffix agrees with category); shows.json is the source of truth for both fields, no facts pinned
 //
 // Every shows.json id's market suffix must match its category, and every
 // live (non-closed) id's trailing year should match its opening or previews
