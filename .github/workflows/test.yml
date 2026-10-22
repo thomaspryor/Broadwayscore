@@ -103,6 +103,8 @@ on:
       # scripts/add-verified-tours.test.mjs (manifest) tests this CLI's planVerifiedTours (BRO-4601).
       - 'scripts/add-verified-tours.js'
       # BRO-2237: report-only essay-intro sweep + its manifest test (run daily by check-corpus-drift.yml).
+      # BRO-2427: CLI over scripts/lib/timeout-pattern-audit.js; with-timeout.test.mjs runs its audit().
+      - 'scripts/audit-timeout-patterns.js'
       - 'scripts/audit-exclusion-flags.js'
       - 'scripts/audit-multi-verdict-stars.js'
       # tests/unit/run-contamination.test.mjs requires class2/3/5 from this audit (BRO-5261).

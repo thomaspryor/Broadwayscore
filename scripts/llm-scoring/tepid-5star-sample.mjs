@@ -25,6 +25,7 @@ for (const line of envText.split('\n')) {
   if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, '');
 }
 
+const { withTimeout } = require('../lib/with-timeout');
 const { starToBand } = require('./config');
 const { EnsembleReviewScorer } = require('./ensemble-scorer');
 
@@ -48,10 +49,7 @@ for (const c of candidates) {
   const t0 = Date.now();
   try {
     const TIMEOUT_MS = 90_000;
-    const result = await Promise.race([
-      ensemble.scoreReview(review.fullText, context, band, c.raw),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), TIMEOUT_MS)),
-    ]);
+    const result = await withTimeout(ensemble.scoreReview(review.fullText, context, band, c.raw), TIMEOUT_MS, { message: 'timeout' });
     const ms = Date.now() - t0;
     const newScore = result.rejected ? null : result.score;
     results.push({ ...c, newScore, newBucket: result.bucket, confidence: result.confidence, verdict: result.verdict, reasoning: result.reasoning, keyQuote: result.keyQuote, ms });

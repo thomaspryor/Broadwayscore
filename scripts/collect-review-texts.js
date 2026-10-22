@@ -54,6 +54,7 @@
 
 const { pointsAtFile, planCanonicalPointerClear, applyCanonicalPointerClear } = require('./lib/canonical-duplicate-pointers');
 const { quarantineBody } = require('./lib/quarantine-body');
+const { withTimeout: sharedWithTimeout } = require('./lib/with-timeout');
 const { guardianContentToResult, titleHtmlFor, guardianMentionWaiver } = require('./lib/guardian-api-result');
 const fs = require('fs');
 const { readReviewForUpdate, persistReviewSnapshot, renameReviewSnapshot } = require('./lib/persist-review-snapshot');
@@ -3410,16 +3411,8 @@ function checkContentQuality(text) {
  */
 function withTimeout(promise, ms, tierName) {
   if (!ms) return promise;
-  // Clear the timer once the race settles (BRO-4273): a pending setTimeout
-  // keeps node's event loop alive, so every uncleared one held the process
-  // open for up to `ms` after its work was already done.
-  let timer;
-  return Promise.race([
-    promise,
-    new Promise((_, reject) => {
-      timer = setTimeout(() => reject(new Error(`${tierName} timed out after ${ms}ms`)), ms);
-    })
-  ]).finally(() => clearTimeout(timer));
+  // Shared helper clears its timer once the race settles (BRO-4273, BRO-2427).
+  return sharedWithTimeout(promise, ms, { message: tierName === 'REVIEW_TIMEOUT' ? tierName : `${tierName} timed out after ${ms}ms` });
 }
 
 // ============================================================================
@@ -8293,15 +8286,9 @@ async function main() {
 
       // Hard timeout per review - prevents hung Playwright from killing entire run
       let result;
-      let reviewTimer;
       try {
         review._reviewStartedAt = Date.now(); // BRO-4334: fetchReviewText's partial-text deadline
-        result = await Promise.race([
-          processReview(review),
-          new Promise((_, reject) => {
-            reviewTimer = setTimeout(() => reject(new Error('REVIEW_TIMEOUT')), CONFIG.reviewTimeout);
-          })
-        ]);
+        result = await withTimeout(processReview(review), CONFIG.reviewTimeout, 'REVIEW_TIMEOUT');
       } catch (e) {
         if (e.message === 'REVIEW_TIMEOUT') {
           console.log(`  ✗ TIMEOUT: Review took >${CONFIG.reviewTimeout/1000}s - skipping (${review.outlet} - ${review.critic})`);
@@ -8315,8 +8302,6 @@ async function main() {
           try { await withTimeout(setupBrowser(), 60000, 'setupBrowser'); } catch(_) {}
         }
         result = { success: false, error: e.message };
-      } finally {
-        clearTimeout(reviewTimer);
       }
 
       if (result.success) {

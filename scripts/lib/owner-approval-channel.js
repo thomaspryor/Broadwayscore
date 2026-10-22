@@ -27,6 +27,7 @@
 'use strict';
 
 const { issueLabelNames } = require('./linear-dispatch.js');
+const { withTimeout } = require('./with-timeout.js');
 
 const AWAITING_OWNER_LABEL = 'awaiting-owner';
 
@@ -174,21 +175,12 @@ function buildAwaitingOwnerSection(issues, { now = new Date() } = {}) {
 // trusting the earlier snapshot's label set (ship-check finding, BRO-420).
 async function enrichWithComments(issues, { getIssue, timeoutMs = 15_000, onError } = {}) {
   if (!issues || !issues.length) return issues || [];
-  // Timer handle captured so it can be cleared once the race settles either
-  // way — an uncleared setTimeout keeps the event loop (and, under `node
-  // --test`, the whole process) alive for the full timeoutMs even after
-  // Promise.all already won the race, turning what should be a sub-ms call
-  // into a real timeoutMs-long hang (caught by this file's own tests: the
-  // "merges comments" happy-path test took 15s wall-clock before this fix,
-  // with a passing assertion the whole time — the timer, not the logic, was
-  // the problem).
-  let timer;
-  const timeout = (ms) =>
-    new Promise((_, reject) => {
-      timer = setTimeout(() => reject(new Error(`timed out after ${ms}ms`)), ms);
-    });
+  // The shared helper clears its timer once the race settles (BRO-420,
+  // BRO-2427): an uncleared setTimeout kept the event loop (and under
+  // `node --test` the whole process) alive for the full timeoutMs even when
+  // Promise.all won instantly.
   try {
-    return await Promise.race([
+    return await withTimeout(
       Promise.all(
         issues.map(async (issue) => {
           try {
@@ -200,8 +192,9 @@ async function enrichWithComments(issues, { getIssue, timeoutMs = 15_000, onErro
           }
         })
       ),
-      timeout(timeoutMs),
-    ]);
+      timeoutMs,
+      { message: `timed out after ${timeoutMs}ms` },
+    );
   } catch (err) {
     // Whole-batch timeout: even issues whose fetch already resolved are
     // discarded along with the slow one(s) — Promise.race has no way to keep
@@ -209,8 +202,6 @@ async function enrichWithComments(issues, { getIssue, timeoutMs = 15_000, onErro
     // updatedAt-based dating together, not just the slow issue's row.
     if (onError) onError(null, err);
     return issues;
-  } finally {
-    clearTimeout(timer);
   }
 }
 

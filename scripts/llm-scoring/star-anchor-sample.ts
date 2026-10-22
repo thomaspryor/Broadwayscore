@@ -26,6 +26,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { starToBand, letterGradeToBand, buildSystemPromptV6, buildPromptV6, scoreToBucket, ScoreBand } from './config';
 const { MAIN_REPO_ROOT } = require('../lib/repo-root.js') as { MAIN_REPO_ROOT: string };
+const { withTimeout } = require('../lib/with-timeout.js') as { withTimeout: <T>(work: Promise<T> | (() => Promise<T>), ms: number, opts?: { label?: string; message?: string; resolveWith?: unknown }) => Promise<T> };
 
 // ============================================================================
 // Paths
@@ -433,12 +434,11 @@ async function runScore(): Promise<void> {
       // during initial run, killed manually. Anthropic/OpenAI clients lack their
       // own request timeouts here; this prevents another stall.)
       const TIMEOUT_MS = 90_000;
-      const result = await Promise.race([
+      const result = await withTimeout(
         ensemble.scoreReview(reviewText, context, band, starsRaw),
-        new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error(`timeout:${TIMEOUT_MS}ms`)), TIMEOUT_MS)
-        ),
-      ]) as any;
+        TIMEOUT_MS,
+        { message: `timeout:${TIMEOUT_MS}ms` },
+      ) as any;
       const scored: ScoredEntry = {
         ...entry,
         newScore: result.rejected ? null : (typeof result.score === 'number' ? result.score : null),

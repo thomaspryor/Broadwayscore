@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const { TERMINAL_STATE_TYPES } = require('./linear-state-types.js');
+const { withTimeout } = require('./with-timeout.js');
 
 const STOPWORDS = new Set(('a an and are as at be by for from has have how in is it its of on or so that the this to was we when ' +
   'with not no new add fix card cards owner user users page show shows sign get gets got can will should must into out up decision decisions owner option paused waiting need needs tap press todo done close closed rage click clicks funnel drop conversion low after first ready board triage plan').split(/\s+/));
@@ -310,7 +311,6 @@ async function warnPriorAnswers(topic, { fetchCards, timeoutMs = 8000, warn = co
   // Tests never read live Linear (linear-brain.js main()'s deps contract);
   // under `node --test` only an injected fetcher runs.
   if (!fetchCards && env.NODE_TEST_CONTEXT) return;
-  let timer;
   try {
     const lookup = fetchCards
       ? Promise.resolve().then(() => fetchCards({ timeoutMs })).then((cards) => ({ cards, complete: true }))
@@ -319,10 +319,7 @@ async function warnPriorAnswers(topic, { fetchCards, timeoutMs = 8000, warn = co
         if (!readCache({ cacheFile, teamKey: client.TEAM_KEY })) startCacheWarmer({ cacheFile, spawnFn, env });
         return readAnsweredCards({ linear: client, cacheFile, timeoutMs: Math.max(timeoutMs - 500, 1) });
       });
-    const { cards, complete, error } = await Promise.race([
-      lookup,
-      new Promise((_, reject) => { timer = setTimeout(() => reject(new Error(`timed out after ${timeoutMs}ms`)), timeoutMs); }),
-    ]);
+    const { cards, complete, error } = await withTimeout(lookup, timeoutMs, { message: `timed out after ${timeoutMs}ms` });
     for (const prior of findPriorAnswers(topic, cards).slice(0, 3)) {
       warn(`[linear-brain] prior owner answer: ${prior.identifier} (${prior.date || 'undated'}) ${prior.url || ''}\n  ${prior.text}`);
     }
@@ -331,8 +328,6 @@ async function warnPriorAnswers(topic, { fetchCards, timeoutMs = 8000, warn = co
     }
   } catch (err) {
     warn(`[linear-brain] owner-answer recall skipped (issue was still created): ${err.message}`);
-  } finally {
-    clearTimeout(timer);
   }
 }
 

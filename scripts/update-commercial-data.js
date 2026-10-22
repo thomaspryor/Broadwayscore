@@ -38,6 +38,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { isRelevantPost, extractWeeklyFinancialsFromPost } = require('./lib/reddit-grosses');
+const { withTimeout } = require('./lib/with-timeout');
 const { truthClassOf } = require('./lib/recoupment-ground-truth');
 const {
   isReportedWeeklyCost, citedSections, costSourceBasis, methodologyForCostSource, isReportedSource,
@@ -987,10 +988,7 @@ async function fetchWithFallback(url, timeoutMs = 30000) {
   // Fall back to universal scraper if available
   if (universalScraper) {
     try {
-      const result = await Promise.race([
-        universalScraper.fetchPage(url),
-        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), timeoutMs))
-      ]);
+      const result = await withTimeout(universalScraper.fetchPage(url), timeoutMs, { message: 'Timeout' });
       if (result && result.content) {
         return result.content;
       }

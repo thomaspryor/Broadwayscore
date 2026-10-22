@@ -40,6 +40,7 @@
 'use strict';
 
 const fs = require('fs');
+const { withTimeout } = require('./lib/with-timeout');
 const os = require('os');
 const path = require('path');
 const { spawn, spawnSync } = require('child_process');
@@ -1198,12 +1199,7 @@ async function health() {
           // fresh process, so both depths stay -1 ("cannot prove"). Never
           // "fix" the lingering fetch with process.exit(): pageOwner does not
           // await routeAlert, so an early exit would drop a page.
-          let linearTimer;
-          const timedOut = await Promise.race([
-            refreshLinearTasks().then(() => false),
-            new Promise((resolve) => { linearTimer = setTimeout(() => resolve(true), LINEAR_HEALTH_TIMEOUT_MS); }),
-          ]);
-          clearTimeout(linearTimer);
+          const timedOut = await withTimeout(refreshLinearTasks().then(() => false), LINEAR_HEALTH_TIMEOUT_MS, { resolveWith: true });
           if (timedOut) {
             linearNote = ', linear=timeout';
             // The race does not cancel the fetch; left alone the process

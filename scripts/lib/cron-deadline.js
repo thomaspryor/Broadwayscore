@@ -1,18 +1,10 @@
 'use strict';
 
+const { withTimeout } = require('./with-timeout');
+
 // Callers own cancellation: browser operations close their page in finally.
 async function withDeadline(operation, timeoutMs, label) {
-  let timer;
-  try {
-    return await Promise.race([
-      Promise.resolve().then(operation),
-      new Promise((_, reject) => {
-        timer = setTimeout(() => reject(new Error(`${label} wall-clock timeout`)), timeoutMs);
-      }),
-    ]);
-  } finally {
-    clearTimeout(timer);
-  }
+  return withTimeout(operation, timeoutMs, { message: `${label} wall-clock timeout` });
 }
 
 async function closeBrowserServer(server, timeoutMs = 5000) {

@@ -38,6 +38,7 @@ const os = require('os');
 const path = require('path');
 const https = require('https');
 const { MAIN_REPO_ROOT } = require('./lib/repo-root');
+const { withTimeout } = require('./lib/with-timeout');
 
 const REPO = path.join(__dirname, '..');
 
@@ -1045,13 +1046,7 @@ async function main() {
   const linearDecisionsPromise = (async () => {
     const { fetchOpenIssues } = require('./notify-owner-decisions.js');
     const { buildDecisionsSection } = require('./lib/owner-decision-notify.js');
-    let timer;
-    const timeout = new Promise((_, reject) => { timer = setTimeout(() => reject(new Error('timed out after 15000ms')), 15_000); });
-    try {
-      return buildDecisionsSection(await Promise.race([fetchOpenIssues(), timeout]));
-    } finally {
-      clearTimeout(timer);
-    }
+    return buildDecisionsSection(await withTimeout(fetchOpenIssues(), 15_000, { message: 'timed out after 15000ms' }));
   })();
   linearDecisionsPromise.catch(() => {}); // handled where awaited
 
@@ -1074,8 +1069,7 @@ async function main() {
   try {
     const linear = require('./lib/linear-client.js');
     const { buildAwaitingOwnerSection, isAwaitingOwner, enrichWithComments } = require('./lib/owner-approval-channel.js');
-    const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error(`timed out after ${ms}ms`)), ms));
-    const issues = await Promise.race([linear.listOpenIssues(), timeout(15_000)]);
+    const issues = await withTimeout(linear.listOpenIssues(), 15_000, { message: 'timed out after 15000ms' });
     openIssues = issues;
     const awaiting = (issues || []).filter(isAwaitingOwner);
     // BRO-420: "waiting since" is derived from linear-attach-approval.js's
@@ -1223,13 +1217,12 @@ async function main() {
   let inflowCounts = null;
   try {
     const { graphql } = require('./lib/linear-client.js');
-    const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error(`timed out after ${ms}ms`)), ms));
     // `new Date()` inline, NOT the `now` binding — that const is declared ~140
     // lines below this block, so referencing it here is a TDZ ReferenceError
     // that the catch would swallow into one WARN line and a row that never
     // renders. Exactly the fail-soft-hides-breakage shape that let every
     // consumer of the Notion read-only flip report success while dead.
-    const counts = await Promise.race([fetchInflowCounts({ graphql, now: new Date() }), timeout(20_000)]);
+    const counts = await withTimeout(fetchInflowCounts({ graphql, now: new Date() }), 20_000, { message: 'timed out after 20000ms' });
     inflow = assessInflowRatio(counts);
     inflowCounts = counts;
   } catch (err) {
@@ -1258,8 +1251,7 @@ async function main() {
   let drainThroughputLine = null;
   try {
     const { graphql } = require('./lib/linear-client.js');
-    const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error(`timed out after ${ms}ms`)), ms));
-    const unarmed = await Promise.race([fetchUnarmedUrgentHighCount({ graphql }), timeout(20_000)]);
+    const unarmed = await withTimeout(fetchUnarmedUrgentHighCount({ graphql }), 20_000, { message: 'timed out after 20000ms' });
 
     let eligible = null;
     let eligibleOk = false;
@@ -1460,8 +1452,7 @@ async function main() {
   // Board numbers (BRO-5482): fail-soft, each piece degrades to "n/a" on its own.
   let boardNumbersData = null;
   try {
-    const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error(`timed out after ${ms}ms`)), ms));
-    boardNumbersData = await Promise.race([require('./lib/board-numbers.js').fetchBoardNumbersData({ graphql: require('./lib/linear-client.js').graphql, now, cwd: REPO }), timeout(330_000)]);
+    boardNumbersData = await withTimeout(require('./lib/board-numbers.js').fetchBoardNumbersData({ graphql: require('./lib/linear-client.js').graphql, now, cwd: REPO }), 330_000, { message: 'timed out after 330000ms' });
   } catch (err) {
     console.error(`[digest] WARN board numbers failed: ${String(err.message).slice(0, 120)}`);
   }

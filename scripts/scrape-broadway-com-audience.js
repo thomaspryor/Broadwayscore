@@ -20,6 +20,7 @@ const path = require('path');
 const { calculateCombinedScore, getDesignation, isBroadwayComMarket } = require('./lib/audience-weighting');
 const { matchBroadwayComToShows } = require('./lib/broadway-com-audience-match');
 const { fetchPage } = require('./lib/scraper');
+const { withTimeout } = require('./lib/with-timeout');
 const { discoverShows, discoverFromSitemap } = require('./lib/broadway-com-discovery');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 const {
@@ -84,12 +85,9 @@ function sleep(ms) {
  * Wrapper around fetchPage with a hard timeout to prevent hanging.
  */
 async function fetchPageWithTimeout(url, options = {}, timeoutMs = 30000) {
-  return Promise.race([
-    fetchPage(url, options),
-    new Promise((_, reject) =>
-      setTimeout(() => reject(new Error(`fetchPage timeout after ${timeoutMs / 1000}s`)), timeoutMs)
-    ),
-  ]);
+  return withTimeout(fetchPage(url, options), timeoutMs, {
+    message: `fetchPage timeout after ${timeoutMs / 1000}s`,
+  });
 }
 
 // ---- Score conversion ----

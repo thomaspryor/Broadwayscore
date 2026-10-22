@@ -50,7 +50,8 @@ if (skipped.length === 0) {
   if (process.env.SKIP_ROW_ALERT !== 'true') {
     try {
       const { routeAlert } = require('./lib/owner-alert-router');
-      Promise.race([
+      const { withTimeout } = require('./lib/with-timeout');
+      withTimeout(
         routeAlert({
           conditionKey: SKIPPED_ROWS_CONDITION,
           title: `Build skipped ${skipped.length} malformed shows.json row(s)`,
@@ -58,8 +59,9 @@ if (skipped.length === 0) {
           severity: 'warning',
           disposition: 'auto',
         }),
-        new Promise((r) => setTimeout(r, 10000)),
-      ]).catch((e) => console.error('row-skip alert failed (non-fatal):', e.message))
+        10000,
+        { resolveWith: null },
+      ).catch((e) => console.error('row-skip alert failed (non-fatal):', e.message))
         .finally(() => process.exit(process.exitCode || 0));
     } catch (e) { console.error('row-skip alert unavailable (non-fatal):', e.message); }
   }

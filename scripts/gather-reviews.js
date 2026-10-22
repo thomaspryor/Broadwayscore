@@ -39,6 +39,7 @@
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
+const { withTimeout } = require('./lib/with-timeout');
 const path = require('path');
 const https = require('https');
 const {
@@ -1532,13 +1533,11 @@ async function scrapeShowScoreWithPlaywright(url, options = {}) {
     };
 
     // Wrap carousel scrolling in a hard 30s timeout
-    await Promise.race([
-      scrollCarousel(),
-      new Promise(resolve => setTimeout(() => {
-        console.log(`    ⏱ Carousel scroll timeout (30s) — stopping with ${reviews.length} reviews`);
-        resolve();
-      }, 30000))
-    ]);
+    const scrollTimedOut = Symbol('carousel-timeout');
+    const scrollResult = await withTimeout(scrollCarousel(), 30000, { resolveWith: scrollTimedOut });
+    if (scrollResult === scrollTimedOut) {
+      console.log(`    ⏱ Carousel scroll timeout (30s) — stopping with ${reviews.length} reviews`);
+    }
 
     // Date-aware validation: check if review dates match this production
     // Uses median review date — if >2 years from opening, it's likely a different production
