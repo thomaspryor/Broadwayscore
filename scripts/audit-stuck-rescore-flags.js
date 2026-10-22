@@ -67,9 +67,7 @@ function loadShowTitles() {
 function findStuck(reviewTextsDir, titleById) {
   const stuck = [];
   let total = 0;
-  const showDirs = listShowDirs(reviewTextsDir).filter((f) =>
-    fs.statSync(path.join(reviewTextsDir, f)).isDirectory()
-  );
+  const showDirs = listShowDirs(reviewTextsDir);
   for (const showDir of showDirs) {
     const showPath = path.join(reviewTextsDir, showDir);
     const files = fs

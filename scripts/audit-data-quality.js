@@ -115,11 +115,7 @@ function collectMetrics() {
   const badDisplayNamesByOutlet = {};
 
   if (fs.existsSync(reviewTextsDir)) {
-    const showDirs = listShowDirs(reviewTextsDir)
-      .filter(f => {
-        const fullPath = path.join(reviewTextsDir, f);
-        return fs.statSync(fullPath).isDirectory();
-      });
+    const showDirs = listShowDirs(reviewTextsDir);
 
     for (const showDir of showDirs) {
       const showPath = path.join(reviewTextsDir, showDir);

@@ -158,10 +158,6 @@ async function main() {
   const candidates = [];
 
   const showDirs = listShowDirs(REVIEW_TEXTS_DIR)
-    .filter(d => {
-      const fullPath = path.join(REVIEW_TEXTS_DIR, d);
-      return fs.statSync(fullPath).isDirectory();
-    })
     .filter(d => !SHOW_FILTER || d === SHOW_FILTER);
 
   for (const showId of showDirs) {

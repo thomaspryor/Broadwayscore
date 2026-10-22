@@ -137,11 +137,7 @@ function auditReviewDuplicates() {
   const allReviews = [];                // All review data for analysis
 
   // Get all show directories
-  const showDirs = listShowDirs(REVIEW_TEXTS_DIR, { skipHolding: true })
-    .filter(f => {
-      const fullPath = path.join(REVIEW_TEXTS_DIR, f);
-      return fs.statSync(fullPath).isDirectory();
-    });
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR, { skipHolding: true });
 
   report.summary.total_shows = showDirs.length;
   console.log(`Scanning ${showDirs.length} show directories...\n`);
