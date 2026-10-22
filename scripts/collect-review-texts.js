@@ -54,6 +54,7 @@
 
 const { pointsAtFile, planCanonicalPointerClear, applyCanonicalPointerClear } = require('./lib/canonical-duplicate-pointers');
 const { quarantineBody } = require('./lib/quarantine-body');
+const { guardianFieldsToResult } = require('./lib/guardian-api-result');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -3834,24 +3835,11 @@ async function fetchReviewText(review) {
       const resp = await fetch(apiUrl, { signal: AbortSignal.timeout(60000) });
       if (resp.ok) {
         const json = await resp.json();
-        const fields = json.response?.content?.fields;
-        if (fields && (fields.bodyText || fields.body)) {
-          // Prefer bodyText (plain text) over body (HTML)
-          let text = fields.bodyText || '';
-          if (!text && fields.body) {
-            // Strip HTML tags from body field
-            text = fields.body.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-          }
-          if (text.length > 200) {
-            console.log(`  ✓ Guardian Content API: ${text.length} chars` +
-              (fields.starRating ? ` (${fields.starRating}/5 stars)` : ''));
-            return {
-              fullText: text,
-              contentTier: 'complete',
-              collectedVia: 'guardian-api',
-              starRating: fields.starRating ? parseInt(fields.starRating) : undefined,
-            };
-          }
+        const result = guardianFieldsToResult(json.response?.content?.fields);
+        if (result) {
+          console.log(`  ✓ Guardian Content API: ${result.text.length} chars` +
+            (result.starRating ? ` (${result.starRating}/5 stars)` : ''));
+          return result;
         }
       }
       console.log(`  ⚠ Guardian API returned no usable body, falling back to scraper chain...`);
