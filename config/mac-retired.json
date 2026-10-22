@@ -25,7 +25,7 @@
       ],
       "watchers": [
         {
-          "conditionKey": "none",
+          "conditionKey": "weekly-retro",
           "file": "scripts/local-triggers/weekly-retro.sh",
           "note": "No pager watched the Mac job. Cloud run proven 2026-10-18: it filed BRO-5630 at 13:57Z, before the Mac run at 14:01Z, which found it and filed nothing (BRO-5846)."
         }
@@ -37,8 +37,8 @@
       "replacedBy": [],
       "watchers": [
         {
-          "conditionKey": "none",
-          "file": "~/.claude/bin/overhaul-driver.sh",
+          "conditionKey": "overhaul-driver",
+          "file": "scripts/claude-auth-preflight.js",
           "note": "Session-system overhaul chain (S3/V1-V3) finished in September; log stops 2026-09-15 and every launchd tick since failed with node: command not found. No pager watched it (BRO-5846)."
         }
       ]
