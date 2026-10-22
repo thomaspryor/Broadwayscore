@@ -13,8 +13,10 @@ function stalePlans(plans, { now = Date.now(), maxDays = STALE_PENDING_DAYS } = 
   for (const p of plans) {
     if (!p || p.status !== 'pending') continue;
     const created = Date.parse(p.createdAt);
-    // An unparseable date cannot prove the plan is fresh: report it as stale.
-    const ageDays = Number.isNaN(created) ? Infinity : (now - created) / 864e5;
+    // No usable date means the age is unknown, so it cannot be called stale
+    // (plans filed without createdAt, e.g. bro-4623-*, were flagged on day one).
+    if (Number.isNaN(created)) continue;
+    const ageDays = (now - created) / 864e5;
     if (ageDays > maxDays) out.push({ id: String(p.file || p.planId || p.issueNumber || '?'), ageDays });
   }
   return out.sort((a, b) => b.ageDays - a.ageDays);
@@ -38,7 +40,7 @@ function readPlans(dir) {
 /** One-line WARN text, or null when nothing is stale. */
 function describeStale(stale) {
   if (!stale.length) return null;
-  const list = stale.slice(0, 6).map((s) => `${s.id} (${Number.isFinite(s.ageDays) ? Math.floor(s.ageDays) + 'd' : 'no date'})`).join(', ');
+  const list = stale.slice(0, 6).map((s) => `${s.id} (${Math.floor(s.ageDays) + 'd'})`).join(', ');
   return `${stale.length} pending fix plan(s) older than ${STALE_PENDING_DAYS} days, never applied: ${list}${stale.length > 6 ? ', ...' : ''}`;
 }
 

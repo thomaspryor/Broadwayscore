@@ -21,10 +21,12 @@ test('only pending plans older than 7 days are stale, oldest first', () => {
   assert.deepEqual(s.map((x) => x.id), ['d', 'a']);
 });
 
-test('a pending plan with a bad date is reported, not trusted as fresh', () => {
-  const s = stalePlans([{ planId: 'x', status: 'pending', createdAt: 'nope' }], { now: NOW });
-  assert.equal(s.length, 1);
-  assert.match(describeStale(s), /x \(no date\)/);
+test('a pending plan with no usable date is not called stale', () => {
+  assert.deepEqual(stalePlans([{ planId: 'x', status: 'pending', createdAt: 'nope' }, { planId: 'y', status: 'pending' }], { now: NOW }), []);
+});
+
+test('evaluate skips the row when stalePendingPlans is absent', () => {
+  assert.equal(evaluate({ cloud: false, showsJson: true, coreSymlink: true, reviewCopyIsCheckout: true, resolvedReviewTexts: '/x', deps: {}, ghPush: true, fixWorkflowState: 'active', secretsOk: true, hooks: { ok: true } }, { now: NOW }).find((r) => r.id === 'pending-fixes'), undefined);
 });
 
 test('describeStale is null when nothing is stale and names ids when it is', () => {
