@@ -1,19 +1,34 @@
 {
-  "generatedAt": "2026-10-21T07:56:09.485Z",
+  "generatedAt": "2026-10-22T07:56:04.829Z",
   "apply": true,
-  "auditGeneratedAt": "2026-10-21T07:46:23.771Z",
+  "auditGeneratedAt": "2026-10-22T07:44:50.558Z",
   "counts": {
-    "bounce:no-auto-worker": 2,
+    "bounce:no-auto-worker": 4,
+    "bounce:recheck-after-pending": 1,
     "bounce:recent-activity": 1,
-    "recent-activity": 7,
-    "state-changed-since-audit": 1,
-    "closed": 1,
-    "sweep:eligible": 3,
-    "sweep:refused-recently": 1,
-    "sweep:no-auto-worker": 1,
-    "sweep:bounced": 1
+    "recent-activity": 16,
+    "sweep:eligible": 1,
+    "sweep:refused-recently": 1
   },
   "rows": [
+    {
+      "id": "BRO-5720",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "no-auto-worker"
+    },
+    {
+      "id": "BRO-5711",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "no-auto-worker"
+    },
+    {
+      "id": "BRO-5629",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "no-auto-worker"
+    },
     {
       "id": "BRO-4689",
       "state": "In Review",
@@ -24,13 +39,31 @@
       "id": "BRO-3425",
       "state": "In Review",
       "action": "leave",
+      "reason": "recheck-after-pending"
+    },
+    {
+      "id": "BRO-5820",
+      "state": "In Review",
+      "action": "leave",
       "reason": "recent-activity"
     },
     {
-      "id": "BRO-5629",
-      "state": "In Review",
+      "id": "BRO-5435",
+      "state": "In Progress",
       "action": "leave",
-      "reason": "no-auto-worker"
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5131",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-4448",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
     },
     {
       "id": "BRO-4308",
@@ -45,7 +78,19 @@
       "reason": "recent-activity"
     },
     {
-      "id": "BRO-3549",
+      "id": "BRO-3015",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-2880",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-2873",
       "state": "In Progress",
       "action": "leave",
       "reason": "recent-activity"
@@ -57,7 +102,37 @@
       "reason": "recent-activity"
     },
     {
-      "id": "BRO-305",
+      "id": "BRO-5924",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5915",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5887",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5885",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5861",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5800",
       "state": "In Progress",
       "action": "leave",
       "reason": "recent-activity"
@@ -69,39 +144,10 @@
       "reason": "recent-activity"
     },
     {
-      "id": "BRO-5646",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "state-changed-since-audit"
-    },
-    {
-      "id": "BRO-5610",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "recent-activity"
-    },
-    {
-      "id": "BRO-5328",
-      "state": "In Review",
-      "action": "closed",
-      "sha": "3958d31080f5fe0c2807a3defc1504a5542050f3"
-    },
-    {
       "id": "BRO-5108",
       "state": "In Review",
       "action": "sweep-leave",
       "reason": "refused-recently"
-    },
-    {
-      "id": "BRO-5355",
-      "state": "In Review",
-      "action": "sweep-leave",
-      "reason": "gate-refused, no-auto-worker"
-    },
-    {
-      "id": "BRO-4889",
-      "state": "In Review",
-      "action": "sweep-bounced"
     }
   ]
 }
