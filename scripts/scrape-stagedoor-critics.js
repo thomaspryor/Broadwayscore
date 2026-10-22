@@ -33,6 +33,13 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { londonAggregatorCandidates } = require('./lib/other-production-signal');
 const { discoverCorrectUrl } = require('./lib/url-discovery');
 const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
+const { resolveIntEnv } = require('./lib/resolve-int-env');
+
+// Validate before opening a browser or making any requests.
+const SERP_DISCOVERY_CAP = resolveIntEnv(process.env.SD_SERP_DISCOVERY_CAP, {
+  fallback: 20,
+  name: 'SD_SERP_DISCOVERY_CAP',
+});
 
 const SB_KEY = process.env.SCRAPINGBEE_API_KEY || '';
 const BD_KEY = process.env.BRIGHTDATA_TOKEN || '';
@@ -400,7 +407,7 @@ async function main() {
       const candidateShows = ourShows.filter(s =>
         isLondonMarket(s.category) && s.status === 'open' && !matchedIds.has(s.id)
       );
-      const cap = parseInt(process.env.SD_SERP_DISCOVERY_CAP || '20', 10);
+      const cap = SERP_DISCOVERY_CAP;
       // Ship-check P1-5 fix: when candidateShows > cap, the same prefix
       // gets retried every cron run while the tail never gets SERP'd.
       // Rotate the window by day-of-year so every show eventually rolls

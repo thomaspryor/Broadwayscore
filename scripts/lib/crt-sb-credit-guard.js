@@ -24,6 +24,7 @@
 'use strict';
 
 const { creditsFor, assertFiniteCost } = require('./provider-credits');
+const { resolveIntEnv } = require('./resolve-int-env');
 
 /**
  * Parse SB_PAGE_CREDIT_BUDGET at STARTUP, strictly.
@@ -46,16 +47,7 @@ const { creditsFor, assertFiniteCost } = require('./provider-credits');
  * @returns {number}
  */
 function resolveSbPageCreditBudget(raw, fallback = 200) {
-  if (raw === undefined || raw === null || String(raw).trim() === '') return fallback;
-  const text = String(raw).trim();
-  if (!/^\d+$/.test(text)) {
-    throw new Error(
-      `SB_PAGE_CREDIT_BUDGET must be a non-negative integer, got "${raw}". ` +
-        'Refusing to start: an unparseable budget silently disables the ScrapingBee ' +
-        'spend cap and reroutes those fetches to Bright Data.',
-    );
-  }
-  return Number(text);
+  return resolveIntEnv(raw, { fallback, name: 'SB_PAGE_CREDIT_BUDGET' });
 }
 
 /**

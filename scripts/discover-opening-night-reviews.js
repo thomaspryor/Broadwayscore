@@ -31,6 +31,13 @@ const { OUTLET_DOMAINS: _OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES: _REGISTRY_DOMA
 const { isLondonMarket } = require('./lib/venue-classification');
 const { getLondonSupplementalOutlets, reviewSearchKeyword } = require('./lib/opening-night-discovery-policy');
 const { isSyndicationHost, makeRegisteredOutletPredicate, resolveSyndicatedHit } = require('./lib/syndication-canonical');
+const { resolveIntEnv } = require('./lib/resolve-int-env');
+
+// Validate before the help exit so a bad override is visible even in a dry check.
+const SERP_CALL_BUDGET = resolveIntEnv(process.env.OPENING_NIGHT_SERP_BUDGET, {
+  fallback: 80,
+  name: 'OPENING_NIGHT_SERP_BUDGET',
+});
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const SHOW_ARG = process.argv.find(a => a.startsWith('--show='));
@@ -120,7 +127,6 @@ let _scrapingBeeExhausted = false;
 // Counts every SERP call across Strategy 1 + 2 + 2b. The broad web query (2b)
 // is gated on remaining budget so it can never be the thing that blows the
 // cap. Override via OPENING_NIGHT_SERP_BUDGET.
-const SERP_CALL_BUDGET = parseInt(process.env.OPENING_NIGHT_SERP_BUDGET || '80', 10);
 let _serpCallsUsed = 0;
 function underSerpBudget() {
   return _serpCallsUsed < SERP_CALL_BUDGET;
