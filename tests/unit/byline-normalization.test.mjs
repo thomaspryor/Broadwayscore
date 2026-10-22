@@ -179,3 +179,15 @@ test('sanitizeCriticName never returns a URL — .org/.net/.co.uk contract (dete
   assert.equal(sanitizeCriticName('Jane Doe | Outlet.org'), 'Jane Doe');
   assert.equal(sanitizeCriticName('Jane Doe — Outlet.net'), 'Jane Doe');
 });
+
+// BRO-5791: null-ish scraper bylines canonicalise to the transitional 'Unknown'
+test('sanitizeCriticName: null-ish placeholder spellings become Unknown', async () => {
+  const { createRequire } = await import('node:module');
+  const { sanitizeCriticName } = createRequire(import.meta.url)('../../scripts/lib/byline-normalization.js');
+  for (const n of ['unknown', 'N/A', 'null', 'undefined', 'None', 'TBD', 'Unknown Critic', '-', '—', 'Not Listed']) {
+    assert.equal(sanitizeCriticName(n), 'Unknown', n);
+  }
+  for (const n of ['Jesse Green', 'Naomi Nathan', 'Nonie Smith', 'Unknown Pleasures']) {
+    assert.equal(sanitizeCriticName(n), n, n);
+  }
+});
