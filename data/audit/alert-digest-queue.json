@@ -1160,5 +1160,36 @@
       }
     ],
     "queuedAt": "2026-10-22T15:53:16.812Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4315-batch-renamer",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4315-batch-renamer",
+    "description": "land.yml did not land land/bro-4315-batch-renamer: the unit-tests-node gate went red at 03e68d6d6e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39807182567",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4315-batch-renamer"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "03e68d6d6e0edb45e84bfc13b39f4b8117b28608"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39807182567"
+      }
+    ],
+    "queuedAt": "2026-10-22T16:12:50.444Z"
   }
 ]
