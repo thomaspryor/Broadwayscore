@@ -1,0 +1,69 @@
+name: Audit Live Show Art
+
+# BRO-5744: weekly vision sweep of the thumbnail actually served for every
+# open/previews/upcoming/announced show. ADVISORY (CLAUDE.md section 19): the
+# audit step is continue-on-error, nothing is nulled or committed, and the
+# report is an artifact (data/audit/live-art-audit.json) plus a step summary.
+# ~745 Gemini Flash calls, ~10 min, ~$0.2.
+
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: audit-live-show-art
+      cancel-in-progress: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run live art audit (advisory)
+        continue-on-error: true
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/audit-live-show-art.js | tee live-art-audit.log
+
+      - name: Summarize
+        if: always()
+        run: |
+          {
+            echo "### Live show art audit (advisory)"
+            if [ -f data/audit/live-art-audit.json ]; then
+              node -e 'const r=require("./data/audit/live-art-audit.json");console.log(`Checked ${r.totalChecked}, flagged ${r.flaggedCount} ${JSON.stringify(r.byKind)}, errors ${r.errorCount}`);for(const f of r.flagged)console.log(`- ${f.kind} \`${f.id}\`: ${String(f.description).slice(0,120)}`)'
+            else
+              echo "No report written (see the audit step log)."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: live-art-audit
+          path: data/audit/live-art-audit.json
+          if-no-files-found: ignore
+          retention-days: 30
