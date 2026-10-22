@@ -86,6 +86,13 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           SKIP_HEAVY_PREBUILD: ${{ steps.check-data.outputs.data_changed == 'false' && 'true' || '' }}
+          # Sanity public config: the preview Vercel env lacks these, so
+          # /blog/[slug] fails with "Configuration must contain projectId".
+          # Same non-secret values and same mechanism as vercel-demo.yml's
+          # Build step (its file backfill does not reach `vercel build`).
+          NEXT_PUBLIC_SANITY_PROJECT_ID: fp1ft8k8
+          NEXT_PUBLIC_SANITY_DATASET: production
+          NEXT_PUBLIC_SANITY_API_VERSION: '2024-10-01'
         run: |
           # /what-else sweep after card #90 (vercel-deploy.yml): this job has
           # NO job-level timeout-minutes at all, so if Vercel server-side
