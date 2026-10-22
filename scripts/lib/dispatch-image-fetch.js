@@ -16,6 +16,8 @@
 
 'use strict';
 
+const { dispatchWorkflow } = require('./gh-api-client.js');
+
 const REPO_OWNER = process.env.GITHUB_REPOSITORY?.split('/')?.[0] || 'thomaspryor';
 const REPO_NAME = process.env.GITHUB_REPOSITORY?.split('/')?.[1] || 'Broadwayscore';
 
@@ -37,35 +39,11 @@ async function dispatchImageFetch(showId) {
   if (!showId || typeof showId !== 'string') {
     return { ok: false, error: 'no-show-id' };
   }
-  const body = {
-    ref: 'main',
-    inputs: {
-      show_id: showId,
-      only_missing: 'true',
-    },
+  const inputs = {
+    show_id: showId,
+    only_missing: 'true',
   };
-  try {
-    const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/workflows/fetch-all-image-formats.yml/dispatches`;
-    const res = await fetch(url, {
-      signal: AbortSignal.timeout(60000),
-      method: 'POST',
-      headers: {
-        Accept: 'application/vnd.github+json',
-        Authorization: `Bearer ${token}`,
-        'X-GitHub-Api-Version': '2022-11-28',
-        'User-Agent': 'broadwayscorecard-dispatch-image-fetch',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
-    if (!res.ok) {
-      const text = await res.text();
-      return { ok: false, error: `${res.status} ${text}` };
-    }
-    return { ok: true };
-  } catch (err) {
-    return { ok: false, error: err && err.message ? err.message : String(err) };
-  }
+  return dispatchWorkflow({ workflow: 'fetch-all-image-formats.yml', inputs, token, caller: 'dispatch-image-fetch', repo: `${REPO_OWNER}/${REPO_NAME}` });
 }
 
 module.exports = { dispatchImageFetch };

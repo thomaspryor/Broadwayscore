@@ -2784,6 +2784,13 @@ on:
       # only (exit 0 on the repo-wide scan) — not --gate-wired, so no
       # baseline JSON entry needed here.
       - 'scripts/audit-fetch-timeouts.js'
+      # Direct GitHub API call audit (BRO-134), advisory; its baseline and the
+      # shared client must also trigger CI on a solo edit.
+      - 'scripts/audit-direct-github-api.js'
+      - 'scripts/lib/direct-github-api-scan.js'
+      - 'scripts/lib/gh-api-client.js'
+      - 'data/audit/direct-github-api-baseline.json'
+      - 'tests/unit/gh-api-wrapper.test.mjs'
       # Browserbase daily-cap constant (Scraping v2 T13). Its own doc comment
       # names it as THE single edit site for the 250->100->60 step-down, so a
       # solo edit must not get zero CI (feedback_test_yml_push_path_allowlist).
@@ -4879,6 +4886,15 @@ jobs:
           rc=${PIPESTATUS[0]}
           bash scripts/lib/summarize-failing-tests.sh "opening-night live" /tmp/opening-night-live-batch.log "$rc" warning
           exit "$rc"
+
+      - name: Direct GitHub API call audit (BRO-134, advisory)
+        # Flags scripts that call api.github.com with their own fetch helper
+        # instead of scripts/lib/gh-api-client.js (uninstrumented, off the
+        # shared rate-limit guard). Advisory first (CLAUDE.md section 19).
+        continue-on-error: true
+        run: |
+          node scripts/audit-direct-github-api.js
+          node --test --test-timeout 120000 tests/unit/gh-api-wrapper.test.mjs
 
       - name: Rendered copy voice guard (BRO-5812, advisory)
         # Owner voice rules for on-screen copy: no em dashes, no AI-flavored

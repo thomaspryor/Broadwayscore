@@ -39,6 +39,7 @@ const path = require('path');
 const https = require('https');
 const { postJSON } = require('./lib/email-templates.js'); // GitHub issue comments only
 const { routeAlert } = require('./lib/owner-alert-router.js');
+const { fetchGitHubJSON } = require('./lib/gh-api-client.js');
 const {
   evaluateEntry,
   staleEntries,
@@ -167,23 +168,16 @@ function showUrl(entry, showId, shows) {
   return `${BASE}/show/${slug}`;
 }
 
-function githubJSON(apiPath) {
-  const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
-  return new Promise((resolve) => {
-    const headers = {
-      'User-Agent': 'broadwayscorecard-feedback-verifier',
-      Accept: 'application/vnd.github+json',
-    };
-    if (token) headers.Authorization = `Bearer ${token}`;
-    const req = https.get(`https://api.github.com${apiPath}`, { headers, timeout: 20000 }, (res) => {
-      if (res.statusCode < 200 || res.statusCode >= 300) { res.resume(); return resolve(null); }
-      let body = '';
-      res.on('data', (c) => (body += c));
-      res.on('end', () => { try { resolve(JSON.parse(body)); } catch { resolve(null); } });
+async function githubJSON(apiPath) {
+  try {
+    return await fetchGitHubJSON(`https://api.github.com${apiPath}`, {
+      caller: 'verify-feedback-requests-live.js',
+      timeoutMs: 20000,
+      headers: { 'User-Agent': 'broadwayscorecard-feedback-verifier' },
     });
-    req.on('error', () => resolve(null));
-    req.on('timeout', () => { req.destroy(); resolve(null); });
-  });
+  } catch {
+    return null; // callers treat null as "could not check"
+  }
 }
 
 /**

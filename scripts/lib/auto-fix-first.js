@@ -30,6 +30,7 @@
 
 const { parseSessionReportStatus } = require('./linear-session-reporting.js');
 const { parseRecheckAfter } = require('./recheck-stamp.js');
+const { fetchGitHubJSON } = require('./gh-api-client.js');
 
 const HOUR_MS = 3600000;
 const WINDOW_MS = 3 * HOUR_MS;
@@ -531,13 +532,7 @@ async function latestRedAtFromRuns(runs, fetchJobs) {
 
 async function githubGet(urlPath) {
   const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
-  const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
-  const res = await fetch(`https://api.github.com/repos/${repo}${urlPath}`, {
-    signal: AbortSignal.timeout(20000),
-    headers: { Accept: 'application/vnd.github+json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
-  });
-  if (!res.ok) throw new Error(`GitHub ${urlPath}: HTTP ${res.status}`);
-  return res.json();
+  return fetchGitHubJSON(`https://api.github.com/repos/${repo}${urlPath}`, { caller: 'auto-fix-first.js', timeoutMs: 20000, token: process.env.GITHUB_TOKEN || process.env.GH_TOKEN });
 }
 
 function defaultDeps() {

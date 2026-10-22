@@ -127,7 +127,47 @@ async function fetchGitHubJSONCached(cacheKey, url, opts = {}, ttlMs) {
   return cachedFetch(cacheKey, () => fetchGitHubJSON(url, opts), ttlMs ? { ttlMs } : undefined);
 }
 
+/**
+ * workflow_dispatch against the repo's public workflows. Replaces the four
+ * near-identical dispatch fetch() blocks (dispatch-rescore, dispatch-express-
+ * retry, dispatch-image-fetch, opening-night-remediation). Never throws:
+ * resolves {ok:true} or {ok:false, error} where error is `${status} ${body}`
+ * for an HTTP failure and the message otherwise (the shape every old copy
+ * returned, so callers' logging is unchanged).
+ *
+ * @param {object} p
+ * @param {string} p.workflow - workflow file name, e.g. 'llm-ensemble-score.yml'
+ * @param {object} [p.inputs]
+ * @param {string} p.token
+ * @param {string} p.caller - ledger attribution + User-Agent suffix
+ * @param {string} [p.repo] - owner/name (default GITHUB_REPOSITORY or thomaspryor/Broadwayscore)
+ * @param {number} [p.timeoutMs=60000]
+ */
+async function dispatchWorkflow({ workflow, inputs = {}, token, caller, repo, timeoutMs = 60000 }) {
+  const target = repo || process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
+  const url = `https://api.github.com/repos/${target}/actions/workflows/${workflow}/dispatches`;
+  try {
+    await fetchGitHubJSON(url, {
+      method: 'POST',
+      token,
+      caller,
+      timeoutMs,
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28',
+        'User-Agent': `broadwayscorecard-${caller}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ref: 'main', inputs }),
+    });
+    return { ok: true };
+  } catch (err) {
+    if (err && err.status) return { ok: false, error: `${err.status} ${err.body || ''}` };
+    return { ok: false, error: err && err.message ? err.message : String(err) };
+  }
+}
+
 module.exports = {
+  dispatchWorkflow,
   fetchGitHubJSON,
   fetchGitHubJSONCached,
   hasLowHeadroom,
