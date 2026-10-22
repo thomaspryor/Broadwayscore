@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { mergeTheatrShows, filterBroadwayCategories } = require('./theatr-genre-merge.js');
+const { mergeTheatrShows, filterBroadwayCategories, fetchExtraBroadwayShows } = require('./theatr-genre-merge.js');
 
 const billy = { id: 860, name: 'Billy Crystal', eventCategory: 'Broadway', genreCategory: 'Other' };
 
@@ -39,4 +39,21 @@ test('scraper wires the helper and warns-not-fails on extra query', async () => 
   const src = fs.readFileSync(new URL('../scrape-theatr-audience.js', import.meta.url), 'utf8');
   assert.match(src, /require\('\.\/lib\/theatr-genre-merge'\)/);
   assert.match(src, /mergeTheatrShows\(/);
+  assert.match(src, /fetchExtraBroadwayShows\(/);
+});
+
+test('one failing category warns and keeps the other; never throws', async () => {
+  const warns = [];
+  const out = await fetchExtraBroadwayShows(async (cat) => {
+    if (cat === 'Off & Off-Off Broadway') throw new Error('boom');
+    return [billy];
+  }, m => warns.push(m));
+  assert.deepEqual(out, [billy]);
+  assert.equal(warns.length, 1);
+  assert.match(warns[0], /boom/);
+});
+
+test('all categories failing returns [] (primary results preserved)', async () => {
+  const out = await fetchExtraBroadwayShows(async () => { throw new Error('x'); }, () => {});
+  assert.deepEqual(mergeTheatrShows([{ id: 1 }], out), [{ id: 1 }]);
 });

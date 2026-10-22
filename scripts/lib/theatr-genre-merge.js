@@ -25,4 +25,19 @@ function mergeTheatrShows(primary, extra) {
   return merged;
 }
 
-module.exports = { BROADWAY_EVENT_CATEGORIES, filterBroadwayCategories, mergeTheatrShows };
+// Fetch Broadway-category records via queryCategory(category) -> records[].
+// Each category is isolated: a failure warns and skips only that category, so
+// the run never fails because of the extra query.
+async function fetchExtraBroadwayShows(queryCategory, warn = console.warn) {
+  const extra = [];
+  for (const category of BROADWAY_EVENT_CATEGORIES) {
+    try {
+      extra.push(...await queryCategory(category));
+    } catch (err) {
+      warn(`WARN: extra Theatr query for eventCategory '${category}' failed (${err.message}); skipping`);
+    }
+  }
+  return extra;
+}
+
+module.exports = { BROADWAY_EVENT_CATEGORIES, filterBroadwayCategories, mergeTheatrShows, fetchExtraBroadwayShows };
