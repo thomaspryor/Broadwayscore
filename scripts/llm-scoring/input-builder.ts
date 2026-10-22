@@ -22,6 +22,7 @@ const { getMarketLabel, isNonMetroMarket, getRegionalPromptContext, isTourMarket
 const { otherVenueNames } = require('../lib/venue-aliases');
 const { isShortPartialReview } = require('../lib/scorable-text');
 const { buildPriorRunsNote } = require('../lib/prior-runs-note');
+const { buildSplitExcerptNote } = require('../lib/split-excerpt-note');
 
 // ========================================
 // TYPES
@@ -218,6 +219,12 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
       }
     }
   }
+
+  // A section cut from a multi-show article loses the paragraphs its first
+  // sentences refer back to (BRO-6000: NYT "I don't recommend that tack" read
+  // as a pan of Two Girls). Say so once; every ensemble leg gets this context.
+  const splitNote = buildSplitExcerptNote(review, review.showTitle);
+  if (splitNote) contextParts.push(splitNote);
 
   // 2. Original rating (if present)
   const originalRating = review.originalRating || review.originalScore;
