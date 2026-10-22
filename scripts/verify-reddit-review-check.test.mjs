@@ -7,6 +7,12 @@
  * check step on its own schedule. A red run is the claim being disproven (or no
  * draft having come due yet), not a code regression; the logic is unit-tested in
  * scripts/lib/reddit-review-check.test.mjs.
+ *
+ * The scheduled-run check is skipped before CHECKABLE_FROM (the card's
+ * RECHECK-AFTER): land's colocated-tests gate runs every test a branch adds, so
+ * a probe that is red by design would refuse its own landing. Top-level
+ * scripts/verify-* are not collected into CI; only
+ * scripts/autonomous-acceptance-recheck.js runs this, after that date.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -20,6 +26,7 @@ const DRAFTS = path.join(HERE, '..', 'data', 'audit', 'reddit-post-drafts.json')
 const LIVE_SINCE = '2026-10-22T04:21:00Z';
 // The owner's manual resends ran on the 22nd; scheduled runs resume on the 23rd.
 const SCHEDULED_FROM = '2026-10-23T00:00:00Z';
+const CHECKABLE_FROM = Date.parse('2026-10-24T00:00:00Z'); // = the card's RECHECK-AFTER
 
 function load() {
   try {
@@ -36,7 +43,7 @@ test('every draft emailed since the check went live carries a review-check recor
   assert.deepEqual(bare, [], 'drafts emailed with no review-check record');
 });
 
-test('a scheduled run (not a manual resend) has run the check', () => {
+test('a scheduled run (not a manual resend) has run the check', { skip: Date.now() < CHECKABLE_FROM && 'not checkable before the RECHECK-AFTER date' }, () => {
   const checked = load().filter(d => d.verification && d.verification.mode === 'apply' && d.verification.checkedAt >= SCHEDULED_FROM);
   assert.ok(checked.length > 0, 'no draft has been checked since scheduled runs resumed: no draft has come due yet, or the step is not running');
 });
