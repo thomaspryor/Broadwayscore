@@ -3,11 +3,10 @@
  * audit-split-section-scores.js — find multi-show split sections whose score may
  * rest on a misread back-reference (BRO-6000). Read-only.
  *
- * A section cut from a joint article can open on "I don't recommend that tack
- * for the other production", whose antecedent was removed with the other show's
- * section. Two of three ensemble models read it as a pan; the majority branch
- * published 46 for an NYT review whose only evaluative words were "jauntily
- * unpleasant" and "strangely chilly".
+ * A section cut from a joint article can open on "I don't recommend that
+ * approach for the other production", whose antecedent was removed with the
+ * other show's section. Two of three ensemble models can read that as a pan and
+ * the majority branch then publishes a Negative score the text does not support.
  *
  * USAGE (cloud: via scripts/cloud-run-script.js --review-texts):
  *   node scripts/audit-split-section-scores.js [--json] [--all] [--max=N]

@@ -221,8 +221,8 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
   }
 
   // A section cut from a multi-show article loses the paragraphs its first
-  // sentences refer back to (BRO-6000: NYT "I don't recommend that tack" read
-  // as a pan of Two Girls). Say so once; every ensemble leg gets this context.
+  // sentences refer back to (BRO-6000: an opening that advised against
+  // another production's approach was read as a pan of this one). Say so once; every ensemble leg gets this context.
   const splitNote = buildSplitExcerptNote(review, review.showTitle);
   if (splitNote) contextParts.push(splitNote);
 

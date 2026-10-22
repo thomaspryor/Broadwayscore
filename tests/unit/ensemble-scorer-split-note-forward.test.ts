@@ -13,16 +13,15 @@ import { EnsembleReviewScorer } from '../../scripts/llm-scoring/ensemble-scorer'
 
 const BODY =
   'Though it is similarly portable, I would not recommend that approach for the other production on the block. ' +
-  'The two performers sit on plain chairs and take turns voicing the playwright, reciting recorded interviews with every hesitation intact. ' +
-  'The men being questioned recall a notorious video from their school years, and their descriptions are vivid enough to linger. ' +
-  'The staging is spare and the tone is cool, and the evening turns toward a quiet discussion of how a girl first learns to feel disgust at her own body. ' +
-  'Late in the hour the playwright talks about her own body now, and the conversation widens past what two actors can carry. ' +
-  'The company plays it deadpan, the sound design keeps the in-ear microphones audible, and the hour runs without a wasted minute. ' +
-  'The lighting stays flat and white, the chairs never move, and the only change in the room comes from the voices and the pauses between them. ' +
-  'Some of the recollections are funny, some are uncomfortable, and the piece is careful never to settle on one reaction for long. ' +
-  'It asks what a group of boys passed along in a lunchroom, and what the girls around them absorbed without ever seeing it. ' +
-  'The final stretch is the least certain, trading the clean structure of the interviews for a looser conversation that raises more than it answers. ' +
-  'It is an odd, cool, carefully made hour of theater that will suit some audiences far more than others.';
+  'Two performers sit on plain chairs and take turns reading from a script built out of recorded conversations. ' +
+  'The staging is spare, the lighting stays flat, and the chairs never move during the whole evening. ' +
+  'The company plays it deadpan and the sound design keeps every pause audible. ' +
+  'Some passages are funny, some are uncomfortable, and the piece is careful never to settle on one mood for long. ' +
+  'The middle stretch holds together well, and the performers trade lines with an ease that reads as rehearsed freedom. ' +
+  'The final stretch is the least certain, trading the clean structure of the opening for a looser conversation. ' +
+  'The program runs about an hour without an intermission, and the house was quiet throughout. ' +
+  'The design team keeps the room simple and lets the voices carry the evening from the first line to the last. ' +
+  'It is an odd, carefully made hour of theater that will suit some audiences more than others.';
 
 function context(extra: Record<string, unknown>): string {
   const scorer = Object.create(EnsembleReviewScorer.prototype) as EnsembleReviewScorer;
@@ -50,6 +49,7 @@ test('a split child gets the section note in the scoring context', () => {
   const ctx = context({ multiShowSplitChild: true });
   assert.match(ctx, /only the section about "Sample Show"/, 'prepareScoringInput must forward multiShowSplitChild (allowlist bug)');
   assert.match(ctx, /not a verdict on "Sample Show"/);
+  assert.match(ctx, /counts in full, favorable or not/);
 });
 
 test('a split parent that kept its own section gets the note too', () => {

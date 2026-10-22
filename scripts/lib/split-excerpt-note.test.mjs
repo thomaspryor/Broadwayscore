@@ -17,8 +17,8 @@ test('child and parent get a note naming the show', () => {
     const note = buildSplitExcerptNote({ [marker]: true, showTitle: 'Two Girls' });
     assert.match(note, /^NOTE: /);
     assert.match(note, /only the section about "Two Girls"/);
-    assert.match(note, /"I don't recommend that tack"/);
-    assert.match(note, /Do not read the absence of a recommendation as a negative one/);
+    assert.match(note, /not a verdict on "Two Girls"/);
+    assert.match(note, /counts in full, favorable or not/);
   }
 });
 
