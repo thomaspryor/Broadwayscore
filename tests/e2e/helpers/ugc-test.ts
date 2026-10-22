@@ -1,4 +1,4 @@
-import { test as base, expect } from '@playwright/test';
+import { test as base, expect } from './test';
 
 /**
  * `test` for every spec that renders My Shows mock data (`/my-shows?mock=1`)

@@ -89,6 +89,22 @@ const REGISTERED_FLAGS = [
     note: 'Concluded — pinned todaytix:100/stubhub:0. Not a live split; flag stays active so cached client state keeps resolving deterministically.',
   },
   {
+    key: 'ads',
+    expected: {
+      exists: true,
+      active: true,
+      // Ships dark at 0% ads (BRO-5893). The owner's "go" moves it to 50/50
+      // for the 4-week test: update this split in the same change.
+      variants: [{ key: 'ads', pct: 0 }, { key: 'no-ads', pct: 100 }],
+      rollout: 100,
+      // FALSE: ads only render for signed-out visitors (anonymous-only), so
+      // sticky bucketing would be a no-op.
+      ensure_experience_continuity: false,
+    },
+    ownerDoc: 'docs/experiments/ads.md',
+    note: 'AdSense show-page slot: kill switch + 50/50 test. Pre-launch at 0% ads; no-ads = kill switch.',
+  },
+  {
     key: 'mobile-gate-timing',
     expected: { exists: false },
     ownerDoc: null,
@@ -98,7 +114,11 @@ const REGISTERED_FLAGS = [
 
 // --- Static scan: which flag keys does src/ actually reference? ---
 
-const CALL_RE = /getFeatureFlag\??\.?\(\s*([^)]+?)\s*\)/g;
+// usePostHogFlag(key) (src/lib/hooks/usePostHogFlag.ts) is a flag read too.
+// Its own definition file forwards a variable to getFeatureFlag(), so it is
+// skipped (FLAG_HOOK_FILES); every call site of the hook is scanned instead.
+const CALL_RE = /(?:getFeatureFlag|usePostHogFlag)\??\.?\(\s*([^),]+?)\s*[,)]/g;
+const FLAG_HOOK_FILES = new Set([path.join('lib', 'hooks', 'usePostHogFlag.ts')]);
 const LITERAL_RE = /^['"]([^'"]+)['"]$/;
 const IDENT_RE = /^[A-Za-z_$][A-Za-z0-9_$]*$/;
 const SCAN_EXTS = ['.ts', '.tsx'];
@@ -157,6 +177,7 @@ function extractReferencedFlagKeys(srcDir = SRC_DIR) {
   const unresolved = [];
 
   for (const file of files) {
+    if (FLAG_HOOK_FILES.has(path.relative(srcDir, file))) continue;
     const content = fileCache.get(file);
     CALL_RE.lastIndex = 0;
     let m;

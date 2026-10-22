@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './helpers/test';
 
 /**
  * Regression test for the "Skip to main content" DEAD CONTROL (card #325,

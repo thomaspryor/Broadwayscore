@@ -16,6 +16,11 @@
  * (network hiccup, robots.txt/sitemap shape change) — this gate must never
  * silently drop to zero show-page coverage.
  *
+ * Every URL carries ?noads=1 (NOADS_QUERY): Lighthouse audits production
+ * daily, and an AdSense impression from it is invalid traffic (BRO-5893,
+ * sprint-plan-adsense.md B-T4). AdSlot also skips Lighthouse by user agent;
+ * this is the belt to that brace.
+ *
  * Usage: node scripts/print-sample-show-urls.js [count]   (default 2)
  */
 
@@ -24,6 +29,11 @@ const { SITE_HOST } = require('./submit-google-indexing');
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 const FALLBACK_SLUG = 'wicked';
+const NOADS_QUERY = '?noads=1';
+
+function showUrl(slug) {
+  return `${SITE_HOST}/show/${slug}${NOADS_QUERY}`;
+}
 
 function getDayIndex(date = new Date()) {
   return Math.floor(date.getTime() / MS_PER_DAY);
@@ -46,15 +56,15 @@ async function main() {
     console.error(`::warning::print-sample-show-urls.js found 0 live show slugs — falling back to /show/${FALLBACK_SLUG}`);
   }
   for (const slug of pickRotatingWindow(slugs, count)) {
-    console.log(`${SITE_HOST}/show/${slug}`);
+    console.log(showUrl(slug));
   }
 }
 
 if (require.main === module) {
   main().catch(err => {
     console.error(`::warning::print-sample-show-urls.js failed (${err.message}) — falling back to /show/${FALLBACK_SLUG}`);
-    console.log(`${SITE_HOST}/show/${FALLBACK_SLUG}`);
+    console.log(showUrl(FALLBACK_SLUG));
   });
 }
 
-module.exports = { pickRotatingWindow, getDayIndex, FALLBACK_SLUG };
+module.exports = { pickRotatingWindow, getDayIndex, showUrl, FALLBACK_SLUG, NOADS_QUERY };

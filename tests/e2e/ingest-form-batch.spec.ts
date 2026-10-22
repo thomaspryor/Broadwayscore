@@ -1,4 +1,5 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect } from './helpers/test';
+import { type Page } from '@playwright/test';
 
 /**
  * Component-level regression test for BatchPasteForm submit wiring

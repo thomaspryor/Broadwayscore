@@ -4,6 +4,7 @@ src/app/api/__tests__/gmail-reauth-route.test.mjs
 src/app/api/__tests__/mezzanine-token-route.test.mjs
 src/app/api/__tests__/submit-review-pii-route.test.mjs
 tests/unit/HoverRateStars.test.mjs
+tests/unit/ads-decision.test.ts
 tests/unit/analytics-redaction.test.ts
 tests/unit/anchored-markets-consistency.test.ts
 tests/unit/api-approve-fix.test.mjs
@@ -45,6 +46,7 @@ tests/unit/data-staleness-banner.test.mjs
 tests/unit/device-saved-shows.test.ts
 tests/unit/diary-show-stubs.test.ts
 tests/unit/diary-upcoming.test.ts
+tests/unit/e2e-ad-block-fixture.test.ts
 tests/unit/eeat-entity-consolidation.test.mjs
 tests/unit/email-gate-conversion.test.mjs
 tests/unit/email-gate-copy-version.test.mjs

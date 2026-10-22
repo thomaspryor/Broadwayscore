@@ -49,6 +49,10 @@ function loadDotenv(path = '.env') {
 }
 loadDotenv();
 
+// Same hosts as tests/e2e/helpers/test.ts AD_NETWORK_URL_RE (BRO-5893).
+const AD_NETWORK_URL_RE =
+  /^https?:\/\/([^/?#]+\.)?(googlesyndication\.com|doubleclick\.net|adtrafficquality\.google|googleadservices\.com)(?=[/:?#]|$)/i;
+
 const WIDTHS = [360, 414, 768, 1024, 1440];
 
 function parseArgs(argv) {
@@ -309,6 +313,10 @@ async function captureScreenshots({ url, paths, branch, outDir, elements }) {
         const dir = join(outDir, pathSlug);
         mkdirSync(dir, { recursive: true });
         const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: 1 });
+        // Never load or count a real ad (BRO-5893): the bwsc_noads cookie
+        // opts AdSlot out, and Google's ad hosts are aborted outright.
+        await context.addCookies([{ name: 'bwsc_noads', value: '1', url }]);
+        await context.route(AD_NETWORK_URL_RE, (route) => route.abort('blockedbyclient'));
         const page = await context.newPage();
         try {
           await captureWithRetry(page, 2, async () => {

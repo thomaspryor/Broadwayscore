@@ -47,3 +47,11 @@ test('pickRotatingWindow eventually surfaces every slug over consecutive days', 
 test('pickRotatingWindow falls back to the guaranteed slug when given no live slugs', () => {
   assert.deepEqual(pickRotatingWindow([], 2, 1), [FALLBACK_SLUG]);
 });
+
+// BRO-5893: Lighthouse audits production daily; every show URL must opt out
+// of AdSense so the audit never counts as an (invalid) ad impression.
+test('showUrl opts every audited show page out of ads', () => {
+  const { showUrl, NOADS_QUERY } = require('./print-sample-show-urls.js');
+  assert.equal(NOADS_QUERY, '?noads=1');
+  assert.match(showUrl('wicked'), /\/show\/wicked\?noads=1$/);
+});

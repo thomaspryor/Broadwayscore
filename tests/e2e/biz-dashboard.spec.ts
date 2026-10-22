@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './helpers/test';
 import { filterNonCriticalErrors } from './helpers/console-errors';
 import { requireFeature } from './helpers/feature-flags';
 

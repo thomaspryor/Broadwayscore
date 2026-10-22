@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import slugRedirects from '../data/slug-redirects-compact.json';
 import { resolvePathRedirect } from './lib/slug-redirects';
+import { AD_REGION_COOKIE, adRegionForCountry } from './lib/ads';
 
 const redirectMap = slugRedirects as Record<string, string>;
 
@@ -16,9 +17,26 @@ const redirectMap = slugRedirects as Record<string, string>;
 // page, which 404s on its own. Resolution lives in src/lib/slug-redirects.ts
 // so the data-*.ts slug lookups (getCriticBySlug, getUnifiedCreativeProfile,
 // getTheaterBySlug, …) share it.
+//
+// Ad region (BRO-5893, sprint-plan-adsense.md B-T9): on /show/* requests that
+// don't redirect, set `bwsc_ad_region` from Vercel's x-vercel-ip-country so
+// AdSlot can skip UK/EEA/CH visitors. No identifier, only a yes/no. Written
+// only when the value changes. An absent cookie already reads as no-ads, so a
+// no-ads visitor (UK/EEA/CH, or a missing header: never on Vercel, always in
+// local runs) only gets a write when downgrading an existing cookie; the
+// fall-through stays `undefined`.
 export function middleware(request: NextRequest) {
   const hit = resolvePathRedirect(redirectMap, request.nextUrl.pathname);
-  if (!hit) return;
+  if (!hit) {
+    if (!request.nextUrl.pathname.startsWith('/show/')) return;
+    const country = request.headers.get('x-vercel-ip-country');
+    const current = request.cookies.get(AD_REGION_COOKIE)?.value;
+    const region = adRegionForCountry(country);
+    if (current === region || (current === undefined && region === 'no-ads')) return;
+    const res = NextResponse.next();
+    res.cookies.set(AD_REGION_COOKIE, region, { path: '/', maxAge: 86400, sameSite: 'lax' });
+    return res;
+  }
 
   const url = request.nextUrl.clone();
   url.pathname = hit.pathname;

@@ -1,4 +1,7 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, AD_NETWORK_URL_RE } from './helpers/test';
+
+// AdSense script and ad-serving hosts (subset of AD_NETWORK_URL_RE).
+const ADSENSE_HOST_RE = /googlesyndication\.com|adtrafficquality\.google/i;
 
 /**
  * Post-deploy smoke tests — verify critical pages render content, not just HTTP 200.
@@ -62,6 +65,45 @@ test.describe('Post-deploy smoke tests', () => {
     // No rendering bugs
     expect(visibleText).not.toMatch(/\bundefined\b/);
     expect(visibleText).not.toContain('NaN');
+  });
+
+  // AdSense invalid-traffic guard (BRO-5893, B-T4). Even with the PostHog
+  // `ads` flag forced to `ads` and a US region cookie, an automated browser
+  // must never render an ad unit or request Google's ad script: our own CI
+  // impressions count as invalid traffic. helpers/test.ts aborts these
+  // requests, but the 'request' event still fires, so this counts attempts.
+  test('show page loads no ads for automation, even with the ads flag forced on', async ({ page, context, baseURL }) => {
+    await context.addCookies([{ name: 'bwsc_ad_region', value: 'ads-ok', url: baseURL || 'https://broadwayscorecard.com' }]);
+    await page.addInitScript(() => {
+      type PH = { getFeatureFlag?: (k: string) => unknown; __adsForced?: boolean };
+      let ph: PH | undefined;
+      const force = (v: PH | undefined) => {
+        if (v && typeof v.getFeatureFlag === 'function' && !v.__adsForced) {
+          const orig = v.getFeatureFlag.bind(v);
+          v.getFeatureFlag = (k: string) => (k === 'ads' ? 'ads' : orig(k));
+          v.__adsForced = true;
+        }
+        return v;
+      };
+      Object.defineProperty(window, 'posthog', {
+        configurable: true,
+        get: () => force(ph),
+        set: (v: PH) => { ph = v; },
+      });
+    });
+    const adRequests: string[] = [];
+    page.on('request', (r) => {
+      // AdSense hosts only: gtag can beacon stats.g.doubleclick.net (Google
+      // Signals), which is analytics, not ads.
+      if (AD_NETWORK_URL_RE.test(r.url()) && ADSENSE_HOST_RE.test(r.url())) adRequests.push(r.url());
+    });
+    await page.goto('/show/wicked');
+    await expect(page.locator('h1')).toBeVisible({ timeout: 15000 });
+    await page.locator('#critic-reviews').scrollIntoViewIfNeeded();
+    await page.evaluate(() => window.scrollBy(0, 3000)); // mouse.wheel throws in mobile WebKit
+    await page.waitForTimeout(6000); // past usePostHogFlag's 5s poll window
+    await expect(page.locator('ins.adsbygoogle, [data-testid="ad-slot"]')).toHaveCount(0);
+    expect(adRequests, 'requests to Google ad networks').toEqual([]);
   });
 
   // Accounts are live on prod (BRO-4525). A deploy that ships the flag but

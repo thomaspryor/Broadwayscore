@@ -1,4 +1,5 @@
-import { test, expect, Page } from '@playwright/test';
+import { test, expect } from './helpers/test';
+import { type Page } from '@playwright/test';
 
 /**
  * Beat the Critics — E2E feature tests
