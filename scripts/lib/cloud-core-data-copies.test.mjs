@@ -14,7 +14,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const SCRIPTS = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const { cloudCopyWriteRefusal } = require('./cloud-data-copy.js');
+const { cloudCopyWriteRefusal, cloudAuditDryRun } = require('./cloud-data-copy.js');
 const { getLocalSymlinkFiles, findStaleCopies } = require('./core-data-files.js');
 const { atomicWriteShowsJson } = require('./atomic-shows-write.js');
 
@@ -164,4 +164,14 @@ test('bootstrap never copies a review-texts clone from outside the fixture (BRO-
     }).trim();
     assert.equal(found, rt);
   } finally { fs.rmSync(fx.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+test('BRO-5892: read-only audits default to dry run in a cloud session only', () => {
+  const cloud = { CLAUDE_CODE_REMOTE: 'true' };
+  assert.equal(cloudAuditDryRun([], cloud).dryRun, true);
+  assert.match(cloudAuditDryRun([], cloud).note, /--write/);
+  assert.deepEqual(cloudAuditDryRun(['--write'], cloud), { dryRun: false, note: null });
+  assert.deepEqual(cloudAuditDryRun([], { ...cloud, GITHUB_ACTIONS: 'true' }), { dryRun: false, note: null });
+  assert.deepEqual(cloudAuditDryRun([], {}), { dryRun: false, note: null });
+  assert.deepEqual(cloudAuditDryRun(['--dry-run'], {}), { dryRun: true, note: null });
 });

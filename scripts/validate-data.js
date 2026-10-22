@@ -13,7 +13,7 @@
  * 5. Logical consistency (status vs dates)
  * 6. Catastrophic change detection
  *
- * Usage: node scripts/validate-data.js [--strict] [--dry-run]
+ * Usage: node scripts/validate-data.js [--strict] [--dry-run] [--write]
  * Exit codes: 0 = OK, 1 = Errors found
  */
 
@@ -44,7 +44,9 @@ const { taxCreditNoteConflicts } = require('./lib/ny-tax-credit');
 const { closedStillTbd, recoupedModelDisagreements, recoupedDateNoteConflicts } = require('./lib/commercial-consistency');
 const { nonSundayWeekKeys } = require('./lib/grosses-history-repair');
 const { checkGrossOutsideRun } = require('./lib/grosses-integrity');
-const DRY_RUN = process.argv.includes('--dry-run');
+const auditMode = require('./lib/cloud-data-copy').cloudAuditDryRun(process.argv);
+if (auditMode.note) console.log(auditMode.note);
+const DRY_RUN = auditMode.dryRun;
 const dryRunLedger = { showsWrites: null, artifactWrites: [] };
 let dryRunSummaryPrinted = false;
 
@@ -183,6 +185,8 @@ Options:
               push-refusal sentinel are all suppressed. Each suppressed write
               is logged where it would have happened and summarised at exit as
               "DRY RUN: N shows.json writes suppressed" (0 when none).
+  --write     In a cloud session (CLAUDE_CODE_REMOTE=true, outside CI) the
+              default is --dry-run; --write turns writes back on.
   --strict    Label the run STRICT in the header. Accepted for CI/workflow
               compatibility; no check currently changes severity under it.
 
