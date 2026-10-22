@@ -733,3 +733,9 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Concurrency:** `vercel-demo-deploy` group, `cancel-in-progress: false` (queued). **DO NOT change to `true`** — cancelling mid-build leaves the demo alias pointing at stale production content without feature flags. Queuing adds ~13min delay but guarantees the alias always points at a flag-rewritten build.
 - **Requires:** VERCEL_TOKEN, REVIEW_TEXTS_TOKEN (for checkout-core-data)
 - **Manual trigger:** `gh workflow run "Deploy Demo Site"`
+
+## `backup-restore-drill.yml`
+- **Runs:** 2nd of each month 09:23 UTC, or manually. Registered in `check-cron-health.yml` `CRITICAL_CRONS` at 756h (31 days + 12h; the coverage audit only simulates 60 days and would accept 684h, which false-alarms before most monthly runs).
+- **Does:** BRO-5963. Picks the newest COMPLETE weekly git-bundle set and daily Supabase set in R2 (`scripts/lib/backup-drill.js` `pickLatestSet`; fails if the newest complete set is older than 8d weekly / 2d daily), checks each sha256 line, decrypts, bare-clones each of the four bundles one at a time (runner disk ~14GB) and checks `refs/heads/main` resolves and `git fsck --connectivity-only`, then recounts the Supabase export against `BACKUP_MANIFEST.json` and the uploaded copy of it (`recountExport`, shared with `supabase-backup-verify.js`). Prints names and counts only.
+- **Retention:** no workflow deletes from R2. The upload key has no bucket-admin rights on purpose; expiry and lock rules are set on the bucket by the owner.
+- **Failure:** `severity: 'warning'`; the alarm is staleness in `check-cron-health.yml`.

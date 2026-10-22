@@ -6,6 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 const core = require('./lib/supabase-backup-core');
+const { countLines } = require('./lib/backup-drill');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 if (hasHelpFlag(process.argv.slice(2))) {
@@ -24,9 +25,8 @@ async function main() {
   // Independently recount the ndjson so a truncated file can't hide behind the manifest.
   const exported = {}; const live = {};
   for (const name of Object.keys(manifest.tables)) {
-    const lines = fs.readFileSync(path.join(dir, 'tables', `${name}.ndjson`), 'utf8').split('\n').filter(Boolean);
-    exported[name] = lines.length;
-    if (lines.length !== manifest.tables[name].rows) { console.error(`${name}: file has ${lines.length} rows, manifest says ${manifest.tables[name].rows}`); process.exit(1); }
+    exported[name] = countLines(path.join(dir, 'tables', `${name}.ndjson`));
+    if (exported[name] !== manifest.tables[name].rows) { console.error(`${name}: file has ${exported[name]} rows, manifest says ${manifest.tables[name].rows}`); process.exit(1); }
     const res = await fetch(`${url}/rest/v1/${name}?select=*&limit=1`, { headers: { ...headers, Prefer: 'count=exact' }, signal: AbortSignal.timeout(60000) });
     if (!res.ok) { console.error(`${name}: live count HTTP ${res.status}`); process.exit(1); }
     live[name] = Number((res.headers.get('content-range') || '').split('/')[1]);
@@ -42,7 +42,7 @@ async function main() {
       console.error(`table ${t.name} is live but absent from the backup`); process.exit(1);
     }
   }
-  const authLines = fs.readFileSync(path.join(dir, 'auth_users.ndjson'), 'utf8').split('\n').filter(Boolean).length;
+  const authLines = countLines(path.join(dir, 'auth_users.ndjson'));
   let liveAuth = 0;
   for (let page = 1; page < 1000; page++) {
     const res = await fetch(`${url}/auth/v1/admin/users?page=${page}&per_page=1000`, { headers, signal: AbortSignal.timeout(60000) });
