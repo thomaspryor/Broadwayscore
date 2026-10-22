@@ -637,144 +637,193 @@ if os.environ.get('SESSION_STATUS_GATE_DISABLE', '0') != '1':
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
+# ─── Shared closing-message + live-work helpers (BRO-5881) ──────────────────
+# INFLIGHT, OPENWORK, LOOSEENDS and WAKELESS all read the closing message's
+# last line and what is still running. One parse each, computed lazily, so a
+# gate's kill switch never leaves another gate without its inputs.
+_CLOSE_DIVIDER_RE = re.compile(r'^[\-=_*~─━│┃┌┐└┘•·\s]+$')
+
+def _closing():
+    """(prose, last_line) of the final message: fenced code, inline code and
+    blockquote lines removed (quoted text is not a claim), trailing divider
+    rules dropped (wrap-up.md's SESSION STATUS block ends with one)."""
+    t = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
+    t = re.sub(r'`[^`\n]*`', '', t)
+    t = '\n'.join(ln for ln in t.splitlines() if not ln.lstrip().startswith('>'))
+    lines = [ln.strip() for ln in t.strip().splitlines() if ln.strip()]
+    while lines and _CLOSE_DIVIDER_RE.match(lines[-1]):
+        lines.pop()
+    return t, (lines[-1] if lines else '')
+
+_live_cache = []
+
+def _live_work():
+    """What is still running for this session, from the transcript alone:
+      triggers  self-bound send_later/create_trigger still to fire
+      agents    background Agents with no completion yet
+      children  sessions started here not seen COMPLETED/REVIEW_READY/archived
+      waits     run_in_background Bash / Monitor with no <task-notification>
+      pr_watch  subscribe_pr_activity was called (PR events wake the session)
+    Each list holds human-readable labels. Background Bash sometimes finishes
+    with no notice (INFLIGHT review, 2026-09-28), so `waits` errs toward live:
+    INFLIGHT ignores it, WAKELESS treats it as an armed wake (a false pass,
+    the safe direction for that gate)."""
+    if _live_cache:
+        return _live_cache[0]
+    from datetime import datetime, timezone
+
+    def _parse_ts(s):
+        try:
+            return datetime.fromisoformat(str(s).strip().replace('Z', '+00:00')).timestamp()
+        except Exception:
+            return None
+
+    now = datetime.now(timezone.utc).timestamp()
+    trig_id_re = re.compile(r'"(?:trigger_id|id)"\s*:\s*"(trig_[0-9A-Za-z]+)"')
+    sid_re = re.compile(r'\b((?:session|cse)_[0-9A-Za-z]{10,})\b')
+    # The new session's own "id" field first; a bare token only as fallback.
+    idfield_re = re.compile(r'"id"\s*:\s*"((?:session|cse)_[0-9A-Za-z]{10,})"')
+    bucket_re = re.compile(r'status_bucket\\?"?\s*[:=]\s*\\?"?(?:SESSION_STATUS_BUCKET_)?([A-Za-z_]+)', re.IGNORECASE)
+    bg_id_re = re.compile(r'\bID:\s*([0-9A-Za-z_-]{4,})')
+    R = 'mcp__Claude_Code_Remote__'
+    trig = {}          # trig id -> {'idx', 'label', 'fire' (ts|None for cron), 'done' (idx)}
+    agent_start = {}   # agent id -> (idx, label)
+    task_done = {}     # agent / background task id -> idx of its completion
+    child = {}         # session id -> {'idx', 'label', 'done': idx, 'archived': bool}
+    waits = {}         # background task id -> (idx, label)
+    pr_watch = False
+
+    for i, (kind, payload) in enumerate(events):
+        if kind == 'tool':
+            name, inp, tid = payload
+            # Cloud exposes this server under both spellings (BRO-5040: the
+            # in-flight gate matched only Claude_Code_Remote and missed every
+            # mcp__claude-code-remote__* send_later / create_trigger).
+            name = (name or '').replace('mcp__claude-code-remote__', R)
+            inp = inp if isinstance(inp, dict) else {}
+            res = tool_results_by_id.get(tid, '') or ''
+            ok = tid not in tool_error_ids
+            if name in (R + 'send_later', R + 'create_trigger'):
+                if inp.get('persistent_session_id') or inp.get('create_new_session_on_fire'):
+                    continue  # fires into another session — this one's death does not lose it
+                m = trig_id_re.search(res)
+                if not m:
+                    continue  # the call failed or was denied (no id in its result) — nothing was scheduled
+                fire = None
+                if name.endswith('send_later'):
+                    fm = re.search(r'"fire_at"\s*:\s*"([^"]+)"', res)
+                    fire = _parse_ts(fm.group(1)) if fm else now + 1
+                elif inp.get('run_once_at'):
+                    fire = _parse_ts(inp.get('run_once_at'))
+                label = inp.get('name') or re.sub(r'\s+', ' ', inp.get('message') or inp.get('prompt') or '')[:60]
+                trig[m.group(1)] = {'idx': i, 'label': label, 'fire': fire, 'done': -1}
+            elif name == R + 'update_trigger':
+                uid = str(inp.get('trigger_id') or '')
+                if uid in trig and 'error' not in res[:200].lower():
+                    if inp.get('run_once_at'):
+                        trig[uid]['fire'] = _parse_ts(inp.get('run_once_at'))
+                        trig[uid]['idx'] = i
+                    if inp.get('cron_expression'):
+                        trig[uid]['fire'] = None
+                        trig[uid]['idx'] = i
+                    if inp.get('enabled') is False:
+                        trig[uid]['done'] = i
+                    elif inp.get('enabled') is True:
+                        trig[uid]['idx'] = i
+            elif name == R + 'delete_trigger':
+                did = str(inp.get('trigger_id') or '')
+                if did in trig and 'error' not in res[:200].lower():
+                    trig[did]['done'] = i
+            elif name == 'Agent':
+                m = re.search(r'\bagentId:\s*([0-9a-z]{6,})', res)
+                # A foreground Agent's result also carries "agentId: X (use
+                # SendMessage ...)" after its inline report, so only the async
+                # launch receipt starts a live agent (BRO-5040: every
+                # /second-opinion run read as in flight on a real transcript).
+                if m and re.search(r'Async agent launched|working in the background', res):
+                    agent_start[m.group(1)] = (i, 'Agent "%s"' % (inp.get('description') or '')[:50])
+            elif name == 'SendMessage':
+                to = str(inp.get('to') or '').strip()
+                if to in agent_start and 'error' not in res[:200].lower():
+                    agent_start[to] = (i, agent_start[to][1].replace(' (resumed)', '') + ' (resumed)')
+            elif name == 'TaskStop':
+                stop = str(inp.get('task_id') or inp.get('taskId') or '').strip()
+                if stop:
+                    task_done[stop] = i
+            elif (name == 'Bash' and inp.get('run_in_background')) or name == 'Monitor':
+                if ok:
+                    m = bg_id_re.search(res)
+                    label = '%s "%s"' % (name, (inp.get('description') or inp.get('command') or '')[:50])
+                    waits[m.group(1) if m else 'call-%d' % i] = (i, label)
+            elif name == 'mcp__github__subscribe_pr_activity' or name.endswith('subscribe_pr_activity'):
+                if ok and not name.endswith('unsubscribe_pr_activity'):
+                    pr_watch = True
+                elif ok:
+                    pr_watch = False
+            elif name == R + 'create_session':
+                m = idfield_re.search(res) or sid_re.search(res)
+                if m and ok:
+                    child[m.group(1)] = {'idx': i, 'done': -1, 'archived': False,
+                        'label': (inp.get('title') or re.sub(r'\s+', ' ', inp.get('prompt') or ''))[:60]}
+            elif name in (R + 'get_session', R + 'archive_session'):
+                sid = str(inp.get('session_id') or '')
+                if sid not in child:
+                    continue
+                if name.endswith('archive_session'):
+                    if 'error' not in res[:200].lower():
+                        child[sid]['done'] = i
+                        child[sid]['archived'] = True
+                elif not child[sid]['archived']:
+                    bm = bucket_re.search(res)
+                    if not bm:
+                        continue  # errored / unreadable result: keeps the last real reading
+                    child[sid]['done'] = i if bm.group(1).upper() in ('COMPLETED', 'REVIEW_READY') else -1
+        elif kind in ('user_notice', 'user_text'):
+            for mn in re.finditer(r'<task-notification>(.*?)</task-notification>', payload or '', flags=re.DOTALL):
+                idm = re.search(r'<task-id>\s*([^<\s]+)\s*</task-id>', mn.group(1))
+                if idm:
+                    task_done[idm.group(1)] = i
+            for mh in re.finditer(r'<agent-message\s+from="([^"]+)"', payload or ''):
+                task_done[mh.group(1)] = i
+
+    out = {'triggers': [], 'agents': [], 'children': [], 'waits': [], 'pr_watch': pr_watch}
+    for k, t in trig.items():
+        if t['done'] >= t['idx']:
+            continue
+        if t['fire'] is not None and t['fire'] <= now:
+            continue  # a one-shot that has already fired
+        when = ('fires %s' % datetime.fromtimestamp(t['fire'], timezone.utc).strftime('%Y-%m-%dT%H:%MZ')) if t['fire'] else 'recurring'
+        out['triggers'].append('trigger %s "%s" (%s)' % (k, t['label'], when))
+    for k, (idx, lab) in agent_start.items():
+        if task_done.get(k, -1) < idx:
+            out['agents'].append('%s [%s]' % (lab, k))
+    for k, v in child.items():
+        if v['done'] < v['idx']:
+            out['children'].append('session %s "%s"' % (k, v['label']))
+    for k, (idx, lab) in waits.items():
+        if task_done.get(k, -1) < idx:
+            out['waits'].append(lab)
+    _live_cache.append(out)
+    return out
+
 # ─── In-flight-work gate (INFLIGHT, added 2026-09-28) ───────────────────────
 # Owner evidence (session 01JhF7pK, 2026-09-28): a session with ten background
 # agents running, a Land run in progress and two scheduled check-ins ended a
 # turn on "SAFE TO EXIT". The owner reads that line as "I may close or kill
-# this session now" — and had been doing exactly that to earlier sessions that
-# were still mid-work. Every gate above checks the status LINE'S SHAPE or the
-# board close-out; none asks whether anything is still running that would die
-# with the session. This one does, from the transcript alone (there is no
-# live state to read — /second-opinion review a5a8923c):
-#   - a self-bound Routine still to fire: mcp__Claude_Code_Remote__send_later
-#     (a one-shot into THIS session) or create_trigger without
-#     persistent_session_id / create_new_session_on_fire. Its id comes from
-#     the tool's own result ("trigger_id":"trig_…" or {"trigger":{"id":…}}).
-#     A one-shot is live while its fire time (send_later's fire_at, or
-#     run_once_at, as last set by update_trigger) is still ahead of now; a
-#     cron Routine is live until delete_trigger or update_trigger
-#     enabled:false. The firing itself never echoes the id (it arrives as a
-#     queued-notifications notice plus a ReadNotifications body), so time is
-#     the only honest signal.
-#   - a background Agent without a completion: "agentId: X" in the Agent
-#     result (a foreground Agent returns its report inline and never
-#     matches). Completed by a later <task-notification> whose <task-id> is X
-#     (any status — failed counts), an <agent-message from="X"> hand-back, or
-#     TaskStop(X). A later SendMessage(to=X) resumes it: live again until the
-#     next completion, so each id keeps its latest start and completion index.
-#     Background Bash is deliberately NOT tracked: the review found two of
-#     four background commands in a real transcript finished without any
-#     notice — a guaranteed false positive.
-#   Those notices arrive as user messages whose content is a plain STRING
-#   (session idle) or as `attachment` / `queue-operation` records (delivered
-#   mid-turn) — none of which the parser above used to read — hence the
-#   separate 'user_notice' event kind it now emits, consumed only here.
-# Placed right after the status-line gate: a live id with SAFE TO EXIT as the
-# closing line blocks before any board/PR gate can, and the demanded rewrite
-# (NOT SAFE TO EXIT — <what is still running>) passes every gate below. Own
-# block, own try/except, own last-line parse (never the status-line gate's
-# locals, which SESSION_STATUS_GATE_DISABLE=1 leaves undefined). Not gated on
-# "did substantial work": a session that only spawned agents did no edit yet
-# still dies if closed. Kill switch: INFLIGHT_GATE_DISABLE=1. Fail-open.
+# this session now". This gate asks whether anything still running would die
+# with the session, from the transcript alone (_live_work): a self-bound
+# Routine still to fire, or a background Agent without a completion.
+# Background Bash is deliberately NOT counted here: two of four background
+# commands in a real transcript finished without any notice, a guaranteed
+# false positive. Sessions started with create_session are not counted
+# either: they run on their own and land their own work (BRO-5881).
+# Not gated on "did substantial work": a session that only spawned agents did
+# no edit yet still dies if closed. Kill switch: INFLIGHT_GATE_DISABLE=1.
 if os.environ.get('INFLIGHT_GATE_DISABLE', '0') != '1':
     try:
-        _if_stripped = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
-        _if_lines = [ln.strip() for ln in _if_stripped.strip().splitlines() if ln.strip()]
-        _if_divider_re = re.compile(r'^[\-=_*~─━│┃┌┐└┘•·\s]+$')
-        while _if_lines and _if_divider_re.match(_if_lines[-1]):
-            _if_lines.pop()
-        _if_last_line = _if_lines[-1] if _if_lines else ''
-        if re.match(r'^SAFE TO EXIT\b', _if_last_line) and 'NO-VERIFY:' not in (_last_msg or ''):
-            from datetime import datetime, timezone
-
-            def _if_parse_ts(s):
-                try:
-                    return datetime.fromisoformat(str(s).strip().replace('Z', '+00:00')).timestamp()
-                except Exception:
-                    return None
-
-            _if_now = datetime.now(timezone.utc).timestamp()
-            _if_trig_id_re = re.compile(r'"(?:trigger_id|id)"\s*:\s*"(trig_[0-9A-Za-z]+)"')
-            _TRIG_CREATE = ('mcp__Claude_Code_Remote__send_later', 'mcp__Claude_Code_Remote__create_trigger')
-            _trig = {}          # trig id -> {'idx', 'label', 'fire' (ts|None for cron), 'done' (idx)}
-            _agent_start = {}   # agent id -> (idx, label)
-            _agent_done = {}    # agent id -> idx
-
-            for _i3, (_kind3, _payload3) in enumerate(events):
-                if _kind3 == 'tool':
-                    _name3, _inp3, _tid3 = _payload3
-                    # Cloud exposes this server under both spellings (BRO-5040: this
-                    # gate matched only Claude_Code_Remote and missed every
-                    # mcp__claude-code-remote__* send_later / create_trigger).
-                    _name3 = (_name3 or '').replace('mcp__claude-code-remote__', 'mcp__Claude_Code_Remote__')
-                    _inp3 = _inp3 if isinstance(_inp3, dict) else {}
-                    _res3 = tool_results_by_id.get(_tid3, '') or ''
-                    if _name3 in _TRIG_CREATE:
-                        if _inp3.get('persistent_session_id') or _inp3.get('create_new_session_on_fire'):
-                            continue  # fires into another session — this one's death does not lose it
-                        _m3 = _if_trig_id_re.search(_res3)
-                        if not _m3:
-                            continue  # the call failed (no id in its result) — nothing was scheduled
-                        _fire3 = None
-                        if _name3.endswith('send_later'):
-                            _fm = re.search(r'"fire_at"\s*:\s*"([^"]+)"', _res3)
-                            _fire3 = _if_parse_ts(_fm.group(1)) if _fm else _if_now + 1
-                        elif _inp3.get('run_once_at'):
-                            _fire3 = _if_parse_ts(_inp3.get('run_once_at'))
-                        _label3 = _inp3.get('name') or re.sub(r'\s+', ' ', _inp3.get('message') or _inp3.get('prompt') or '')[:60]
-                        _trig[_m3.group(1)] = {'idx': _i3, 'label': _label3, 'fire': _fire3, 'done': -1}
-                    elif _name3 == 'mcp__Claude_Code_Remote__update_trigger':
-                        _uid3 = str(_inp3.get('trigger_id') or '')
-                        if _uid3 in _trig and 'error' not in _res3[:200].lower():
-                            if _inp3.get('run_once_at'):
-                                _trig[_uid3]['fire'] = _if_parse_ts(_inp3.get('run_once_at'))
-                                _trig[_uid3]['idx'] = _i3
-                            if _inp3.get('cron_expression'):
-                                _trig[_uid3]['fire'] = None
-                                _trig[_uid3]['idx'] = _i3
-                            if _inp3.get('enabled') is False:
-                                _trig[_uid3]['done'] = _i3
-                            elif _inp3.get('enabled') is True:
-                                _trig[_uid3]['idx'] = _i3
-                    elif _name3 == 'mcp__Claude_Code_Remote__delete_trigger':
-                        _did3 = str(_inp3.get('trigger_id') or '')
-                        if _did3 in _trig and 'error' not in _res3[:200].lower():
-                            _trig[_did3]['done'] = _i3
-                    elif _name3 == 'Agent':
-                        _m3 = re.search(r'\bagentId:\s*([0-9a-z]{6,})', _res3)
-                        # A foreground Agent's result also carries "agentId: X (use
-                        # SendMessage ...)" after its inline report, so only the async
-                        # launch receipt starts a live agent (BRO-5040: every
-                        # /second-opinion run read as in flight on a real transcript).
-                        if _m3 and re.search(r'Async agent launched|working in the background', _res3):
-                            _agent_start[_m3.group(1)] = (_i3, 'Agent "%s"' % (_inp3.get('description') or '')[:50])
-                    elif _name3 == 'SendMessage':
-                        _to3 = str(_inp3.get('to') or '').strip()
-                        if _to3 in _agent_start and 'error' not in _res3[:200].lower():
-                            _agent_start[_to3] = (_i3, _agent_start[_to3][1].replace(' (resumed)', '') + ' (resumed)')
-                    elif _name3 == 'TaskStop':
-                        _stop3 = str(_inp3.get('task_id') or _inp3.get('taskId') or '').strip()
-                        if _stop3:
-                            _agent_done[_stop3] = _i3
-                elif _kind3 in ('user_notice', 'user_text'):
-                    for _mn in re.finditer(r'<task-notification>(.*?)</task-notification>', _payload3 or '', flags=re.DOTALL):
-                        _idm = re.search(r'<task-id>\s*([^<\s]+)\s*</task-id>', _mn.group(1))
-                        if _idm:
-                            _agent_done[_idm.group(1)] = _i3
-                    for _mh in re.finditer(r'<agent-message\s+from="([^"]+)"', _payload3 or ''):
-                        _agent_done[_mh.group(1)] = _i3
-
-            _live = []
-            for _tid_l, _t in _trig.items():
-                if _t['done'] >= _t['idx']:
-                    continue
-                if _t['fire'] is not None and _t['fire'] <= _if_now:
-                    continue  # a one-shot that has already fired
-                _when = ('fires %s' % datetime.fromtimestamp(_t['fire'], timezone.utc).strftime('%Y-%m-%dT%H:%MZ')) if _t['fire'] else 'recurring'
-                _live.append('trigger %s "%s" (%s)' % (_tid_l, _t['label'], _when))
-            for _aid_l, (_idx_l, _lab_l) in _agent_start.items():
-                if _agent_done.get(_aid_l, -1) < _idx_l:
-                    _live.append('%s [%s]' % (_lab_l, _aid_l))
+        if re.match(r'^SAFE TO EXIT\b', _closing()[1]) and 'NO-VERIFY:' not in (_last_msg or ''):
+            _lw = _live_work()
+            _live = _lw['triggers'] + _lw['agents']
             if _live and not _ve_seen('INFLIGHT'):
                 sys.stderr.write('   still in flight: ' + '; '.join(_live[:8])
                                  + ('; +%d more' % (len(_live) - 8) if len(_live) > 8 else '') + '\n')
@@ -782,11 +831,14 @@ if os.environ.get('INFLIGHT_GATE_DISABLE', '0') != '1':
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
-# ─── Open-work gate (OPENWORK, BRO-5040, 2026-10-11) ────────────────────────
-# Owner: SAFE TO EXIT only when all discussed work is done. Blocks it while a
-# session started here (create_session) was not seen COMPLETED/REVIEW_READY via
-# get_session (or archived), or when the closing message hands work to the
-# board worker, whose queue is weeks deep. Escape: BACKLOG-OK: <why it can wait>.
+# ─── Open-work gate (OPENWORK, BRO-5040, 2026-10-11; narrowed BRO-5881) ─────
+# Blocks SAFE TO EXIT when the closing message hands work to the board
+# worker, whose queue is weeks deep. Escape: BACKLOG-OK: <why it can wait>.
+# It used to also block while a session started here (create_session) had not
+# been seen finished. Owner, 2026-10-22: a session whose remaining work is
+# owned by another session it started IS safe to exit; that session lands and
+# verifies its own work. NOT SAFE is for a real dependency (this session must
+# act on the result) or a high-risk change, and that is the session's call.
 # Kill switch: OPENWORK_GATE_DISABLE=1. Bypass: NO-VERIFY: <reason>. Fail-open.
 # Hand-off phrasing only: naming the worker ("fixed the cloud worker's
 # picker") must not trip it (code-review, BRO-5040).
@@ -799,54 +851,13 @@ _OPENWORK_HANDOFF_RE = re.compile(
     re.IGNORECASE)
 if os.environ.get('OPENWORK_GATE_DISABLE', '0') != '1':
     try:
-        _ow_stripped = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
-        _ow_stripped = re.sub(r'`[^`\n]*`', '', _ow_stripped)
-        _ow_lines = [ln.strip() for ln in _ow_stripped.strip().splitlines() if ln.strip()]
-        _ow_divider_re = re.compile(r'^[\-=_*~─━│┃┌┐└┘•·\s]+$')
-        while _ow_lines and _ow_divider_re.match(_ow_lines[-1]):
-            _ow_lines.pop()
-        if (_ow_lines and re.match(r'^SAFE TO EXIT\b', _ow_lines[-1])
-                and 'NO-VERIFY:' not in (_last_msg or '') and not _ve_seen('OPENWORK')):
-            _ow_child = {}   # session id -> {'idx', 'label', 'done': idx, 'archived': bool}
-            _ow_sid_re = re.compile(r'\b((?:session|cse)_[0-9A-Za-z]{10,})\b')
-            # The new session's own "id" field first; a bare token only as fallback.
-            _ow_idfield_re = re.compile(r'"id"\s*:\s*"((?:session|cse)_[0-9A-Za-z]{10,})"')
-            _ow_bucket_re = re.compile(r'status_bucket\\?"?\s*[:=]\s*\\?"?(?:SESSION_STATUS_BUCKET_)?([A-Za-z_]+)', re.IGNORECASE)
-            for _i4, (_kind4, _payload4) in enumerate(events):
-                if _kind4 != 'tool':
-                    continue
-                _name4, _inp4, _tid4 = _payload4
-                _name4 = (_name4 or '').replace('mcp__claude-code-remote__', 'mcp__Claude_Code_Remote__')
-                _inp4 = _inp4 if isinstance(_inp4, dict) else {}
-                _res4 = tool_results_by_id.get(_tid4, '') or ''
-                if _name4 == 'mcp__Claude_Code_Remote__create_session':
-                    _m4 = _ow_idfield_re.search(_res4) or _ow_sid_re.search(_res4)
-                    if _m4:
-                        _ow_child[_m4.group(1)] = {'idx': _i4, 'done': -1, 'archived': False,
-                            'label': (_inp4.get('title') or re.sub(r'\s+', ' ', _inp4.get('prompt') or ''))[:60]}
-                elif _name4 in ('mcp__Claude_Code_Remote__get_session', 'mcp__Claude_Code_Remote__archive_session'):
-                    _sid4 = str(_inp4.get('session_id') or '')
-                    if _sid4 not in _ow_child:
-                        continue
-                    if _name4.endswith('archive_session'):
-                        if 'error' not in _res4[:200].lower():
-                            _ow_child[_sid4]['done'] = _i4
-                            _ow_child[_sid4]['archived'] = True
-                    elif not _ow_child[_sid4]['archived']:
-                        _bm = _ow_bucket_re.search(_res4)
-                        if not _bm:
-                            continue  # errored / unreadable result: keeps the last real reading
-                        _ow_child[_sid4]['done'] = _i4 if _bm.group(1).upper() in ('COMPLETED', 'REVIEW_READY') else -1
-            _ow_open = ['session %s "%s"' % (k, v['label']) for k, v in _ow_child.items() if v['done'] < v['idx']]
-            _ow_handoff = None
-            if not re.search(r'^\s*BACKLOG-OK:\s*\S', _ow_stripped, re.MULTILINE):
-                _hm = _OPENWORK_HANDOFF_RE.search(_ow_stripped)
-                _ow_handoff = _hm.group(0) if _hm else None
-            if _ow_open or _ow_handoff:
-                if _ow_open:
-                    sys.stderr.write('   started sessions not yet checked finished: ' + '; '.join(_ow_open[:6]) + '\n')
-                if _ow_handoff:
-                    sys.stderr.write('   work handed to the queue: "%s"\n' % _ow_handoff)
+        _ow_stripped, _ow_last = _closing()
+        if (re.match(r'^SAFE TO EXIT\b', _ow_last)
+                and 'NO-VERIFY:' not in (_last_msg or '') and not _ve_seen('OPENWORK')
+                and not re.search(r'^\s*BACKLOG-OK:\s*\S', _ow_stripped, re.MULTILINE)):
+            _hm = _OPENWORK_HANDOFF_RE.search(_ow_stripped)
+            if _hm:
+                sys.stderr.write('   work handed to the queue: "%s"\n' % _hm.group(0))
                 _ve_block("OPENWORK")
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
@@ -1145,6 +1156,79 @@ def _write_verify_state(fp):
             json.dump({'bypassSatisfiedAt': fp}, f)
     except OSError:
         pass
+
+# ─── Loose-ends gate (LOOSEENDS, BRO-5881, 2026-10-22) ──────────────────────
+# Owner: sessions say SAFE TO EXIT while the same message still holds an open
+# decision, an offer to do more, or work that was not finished or carded.
+# Real closings from 40 sessions (2026-10-21): "Tell me if you want even that
+# one turned off", "BRO-5582 is paused because it needs an owner call ...
+# nothing is needed from you", "committed locally but not pushed or landed",
+# "I could not confirm that the final follow-up commit has deployed", "I left
+# it unfiled", "left three minor review notes for later", "I'll recheck it on
+# Oct 22" (nothing armed to do so), "Both will happen naturally". Each phrase
+# below is one of those families. The closing line itself is not scanned.
+# Deferrals ("for later", "still open") pass with a BACKLOG-OK: line (carded,
+# can wait); offers, hidden owner calls and unfinished work never do.
+# Loop guard: blocks once per turn chain. Kill switch LOOSEENDS_GATE_DISABLE=1.
+_LOOSE_HARD_RE = re.compile(
+    r"\b(?:want me to|should I|shall I|would you like(?: me)? to|do you want(?: me)? to"
+    r"|(?:tell me|let me know) (?:if|whether) you(?:'d)? (?:want|like|prefer)"
+    r"|needs? (?:an? |your )?(?:owner|human)(?:'s)? (?:call|decision|approval|answer|input)"
+    r"|or (?:the owner|you) decides?|waiting (?:on|for) (?:your|the owner(?:'s)?|owner) "
+    r"|waiting (?:on|for) [^.\n]{0,40}\bapproval"
+    r"|committed locally|not (?:yet )?(?:pushed|landed)|(?:could not|couldn't|was unable to|unable to) (?:confirm|verify|check)"
+    r"|verified:? partly|partly verified|(?:didn't|did not|not) (?:get )?fix(?:ed)?\b|left (?:it|them|this|that|those) (?:alone|unfiled|open|unfixed)"
+    r"|\bunfiled\b|\bI'll (?:re-?)?check\b|\bI will (?:re-?)?check\b|will happen naturally)",
+    re.IGNORECASE)
+_LOOSE_DEFER_RE = re.compile(
+    r"\b(?:(?:left|leave|leaving|saved?|saving|parked?|held|kept)\b[^.\n]{0,50}\bfor later"
+    r"|still (?:open|unresolved|broken|failing)|still (?:has|needs) to\b|unresolved)",
+    re.IGNORECASE)
+if os.environ.get('LOOSEENDS_GATE_DISABLE', '0') != '1':
+    try:
+        _le_text, _le_last = _closing()
+        if (re.match(r'^SAFE TO EXIT\b', _le_last) and 'NO-VERIFY:' not in (_last_msg or '')
+                and not _ve_seen('LOOSEENDS')):
+            _le_body = '\n'.join(ln for ln in _le_text.splitlines()
+                                 if not re.match(r'^\s*(?:NOT )?SAFE TO EXIT\b', ln))
+            _le_m = _LOOSE_HARD_RE.search(_le_body)
+            if not _le_m and not re.search(r'^\s*BACKLOG-OK:\s*\S', _le_text, re.MULTILINE):
+                _le_m = _LOOSE_DEFER_RE.search(_le_body)
+            if _le_m:
+                _s = max(0, _le_m.start() - 40)
+                sys.stderr.write('   loose end: "...%s..."\n' % re.sub(r'\s+', ' ', _le_body[_s:_le_m.end() + 40]).strip())
+                _ve_block("LOOSEENDS")
+    except Exception:
+        pass  # fail-open — never let this gate crash the rest of the script
+
+# ─── Wake gate (WAKELESS, BRO-5881, 2026-10-22) ─────────────────────────────
+# Owner: sessions end "NOT SAFE TO EXIT — waiting on X" and never come back;
+# a day later X is long done and nobody checked. Real case (session 014vS4Wn,
+# 2026-10-21): "I'll check it at 14:56 and wrap up if it passes ... NOT SAFE
+# TO EXIT", nothing armed, idle 11h. Self-scheduled send_later/create_trigger
+# are denied in cloud (block-prompting-remote-tools.sh: each prompts the
+# owner's phone), so the wake must come from something already running:
+# a background Bash or Monitor without a completion notice, a background
+# Agent, a started session (it reports back), a self-bound Routine the owner
+# asked for, or a PR subscription. A NOT SAFE that waits on the owner
+# (DECISION NEEDED:, or a "You need to:" line that is not "nothing") needs no
+# wake. Kill switch WAKELESS_GATE_DISABLE=1. Fail-open.
+if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1':
+    try:
+        _wk_text, _wk_last = _closing()
+        if (re.match(r'^NOT SAFE TO EXIT\b', _wk_last) and 'NO-VERIFY:' not in (_last_msg or '')
+                and not _ve_seen('WAKELESS')
+                and not re.search(r'^DECISION NEEDED:', _wk_text, re.MULTILINE)):
+            _wk_owner = False
+            for _m in re.finditer(r'^\W*You need to:?\s*(.*)$', _wk_text, re.MULTILINE | re.IGNORECASE):
+                if not re.match(r'^\W*(?:nothing|n/?a|none)\b', _m.group(1).strip(), re.IGNORECASE):
+                    _wk_owner = True
+            _lw = _live_work()
+            if not _wk_owner and not (_lw['triggers'] or _lw['agents'] or _lw['children']
+                                      or _lw['waits'] or _lw['pr_watch']):
+                _ve_block("WAKELESS")
+    except Exception:
+        pass  # fail-open — never let this gate crash the rest of the script
 
 # ─── Cloud finish-line chain (BRO-4238 phase 2) ──────────────────────────────
 # Port of the Mac finish-line-gate's Gates 1 and 4 into the cloud Stop hook.
@@ -2072,7 +2156,17 @@ if [[ "$result" == "INFLIGHT" ]]; then
 fi
 
 if [[ "$result" == "OPENWORK" ]]; then
-  echo "🛑 BLOCKED: SAFE TO EXIT means every piece of work discussed in this session is finished and verified (BRO-5040, owner 2026-10-11). Listed above is work that is not: a session you started that you have not seen finish, or work handed to the board worker, whose queue is weeks deep. Important work gets its own session now: start it with create_session (see .claude/CLOUD.md 'Starting a worker session'), check it with get_session, and verify its landing yourself before SAFE TO EXIT. Until then end with: NOT SAFE TO EXIT — <which session is doing what, and how you will check it>. A card that can honestly wait weeks: add BACKLOG-OK: <why it can wait>. Bypass: NO-VERIFY: <reason>." >&2
+  echo "🛑 BLOCKED: SAFE TO EXIT, but the closing message hands work to the board worker (quoted above), whose queue is weeks deep (BRO-5040). Do it now, or start it in its own session with create_session (.claude/CLOUD.md 'Starting a worker session'): once that session is running and owns the work, SAFE TO EXIT is fine. A card that can honestly wait weeks: add BACKLOG-OK: <why it can wait>. Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "LOOSEENDS" ]]; then
+  echo "🛑 BLOCKED: SAFE TO EXIT, but this message still has a loose end (quoted above): an offer or question to the owner, a call only the owner can make, or work that is not finished, verified or carded (BRO-5881, owner 2026-10-22). Pick one: finish it now; decide it yourself if it is technical; file a card for it (and add BACKLOG-OK: <why it can wait> if it can wait); start a session for it; or, if it truly needs the owner, write the DECISION NEEDED block and end NOT SAFE TO EXIT. Promising to check something later needs a running background wait and NOT SAFE TO EXIT. Then rewrite the message without the loose end. Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "WAKELESS" ]]; then
+  echo "🛑 BLOCKED: NOT SAFE TO EXIT says this session is waiting on something, but nothing will wake it to check (BRO-5881: sessions sat 10-19 hours on 'I will check it at 14:56'). Before ending the turn, start the wait: a Bash with run_in_background: true and timeout up to 7200000 that polls until the thing finishes (land: node scripts/lib/wait-for-land.js land/<name> 60 --prod; a workflow run: loop on its status; a deploy: node scripts/check-prod-deploy.js <sha> --wait), or Monitor. Its exit wakes you; if it times out, start another. send_later is denied here (it prompts the owner's phone). If you are waiting on the owner, say so: DECISION NEEDED block, or a 'You need to:' line naming what they must do. If nothing is actually pending, finish the work or end SAFE TO EXIT. Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 

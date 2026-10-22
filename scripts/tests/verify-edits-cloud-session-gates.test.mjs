@@ -157,7 +157,9 @@ function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive 
       encoding: 'utf8',
       // BRO-5359: the review-coverage gate has its own tests (scripts/lib/review-coverage.test.mjs); these cases model
       // bare Skill calls and must not depend on whether the host session sets CLAUDE_CODE_REMOTE.
-      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', ...env, HOME: fakeHomeDir },
+      // BRO-5881: LOOSEENDS and WAKELESS read every closing message, so the older fixtures (written for
+      // other gates) run with them off; their own section below switches them back on.
+      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1', ...env, HOME: fakeHomeDir },
       timeout: HOOK_TIMEOUT_MS,
       killSignal: 'SIGKILL',
     });
@@ -1779,35 +1781,17 @@ const ARCHIVE_CHILD = toolUse('mcp__claude-code-remote__archive_session', { sess
 
 function assertOpenwork(r, message) {
   assertBlocked(r, message);
-  assert.match(r.stderr, /every piece of work discussed/i, `expected the OPENWORK message, got: ${r.stderr.slice(0, 400)}`);
+  assert.match(r.stderr, /hands work to the board worker/i, `expected the OPENWORK message, got: ${r.stderr.slice(0, 400)}`);
 }
 
-test('OPENWORK: started a session, never checked it, SAFE TO EXIT → BLOCKED and names the session', skipNoRepoHook, () => {
+// BRO-5881 (owner 2026-10-22): a started session owns its work and lands it
+// itself, so it no longer blocks SAFE TO EXIT, whatever its last status.
+test('OPENWORK: a started session that is still working does not block SAFE TO EXIT (BRO-5881)', skipNoRepoHook, () => {
   const dir = makeTmpDir('openwork-child');
-  const r = runHook(writeTranscript(dir, [CREATE_CHILD, LINEAR_CLOSEOUT_DONE]), SAFE_MSG);
-  assertOpenwork(r, 'a started session is unfinished work');
-  assert.match(r.stderr, new RegExp(CHILD_ID));
-  fs.rmSync(dir, { recursive: true, force: true });
-});
-
-test('OPENWORK: child last seen WORKING, BLOCKED or FAILED → BLOCKED; COMPLETED, REVIEW_READY or archived → ALLOWED', skipNoRepoHook, () => {
-  const dir = makeTmpDir('openwork-child-status');
+  assertAllowed(runHook(writeTranscript(dir, [CREATE_CHILD, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'never checked');
   for (const b of ['WORKING', 'BLOCKED', 'FAILED']) {
-    assertOpenwork(runHook(writeTranscript(dir, [CREATE_CHILD, GET_CHILD(b), LINEAR_CLOSEOUT_DONE]), SAFE_MSG), `${b} is not finished`);
+    assertAllowed(runHook(writeTranscript(dir, [CREATE_CHILD, GET_CHILD(b), LINEAR_CLOSEOUT_DONE]), SAFE_MSG), `${b}`);
   }
-  for (const b of ['COMPLETED', 'REVIEW_READY']) {
-    assertAllowed(runHook(writeTranscript(dir, [CREATE_CHILD, GET_CHILD(b), LINEAR_CLOSEOUT_DONE]), SAFE_MSG), `${b} is finished`);
-  }
-  assertAllowed(runHook(writeTranscript(dir, [CREATE_CHILD, ARCHIVE_CHILD, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'archived ends it');
-  // The latest check wins: finished, then seen working again after a send_message.
-  assertOpenwork(runHook(writeTranscript(dir, [CREATE_CHILD, GET_CHILD('COMPLETED'), GET_CHILD('WORKING'), LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'latest status wins');
-  fs.rmSync(dir, { recursive: true, force: true });
-});
-
-test('OPENWORK: a running child with NOT SAFE TO EXIT → ALLOWED', skipNoRepoHook, () => {
-  const dir = makeTmpDir('openwork-child-notsafe');
-  assertAllowed(runHook(writeTranscript(dir, [CREATE_CHILD, GET_CHILD('WORKING')]),
-    'Started the fix in its own session.\n\nNOT SAFE TO EXIT — the BRO-5033 session is still working; I check it before closing.'), 'the honest line');
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
@@ -1842,24 +1826,6 @@ test('OPENWORK false-positive guards: ordinary closings, and phrases inside code
   ]) {
     assertAllowed(runHook(t, msg), msg.slice(0, 60));
   }
-  fs.rmSync(dir, { recursive: true, force: true });
-});
-
-test('OPENWORK: an errored get_session keeps the last real reading; archive is final', skipNoRepoHook, () => {
-  const dir = makeTmpDir('openwork-child-errors');
-  const err = toolUse('mcp__claude-code-remote__get_session', { session_id: CHILD_ID }, 'Error: 429 rate limited');
-  assertAllowed(runHook(writeTranscript(dir, [CREATE_CHILD, GET_CHILD('COMPLETED'), err, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'a failed check does not reopen a finished child');
-  assertAllowed(runHook(writeTranscript(dir, [CREATE_CHILD, ARCHIVE_CHILD, GET_CHILD('WORKING'), LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'archived stays closed');
-  fs.rmSync(dir, { recursive: true, force: true });
-});
-
-test('OPENWORK: child id comes from the result\'s own "id" field, not another session token', skipNoRepoHook, () => {
-  const dir = makeTmpDir('openwork-child-id');
-  const create = toolUse('mcp__claude-code-remote__create_session', { title: 'x', prompt: 'y' },
-    `{"ccr":{"parent_session_id":"session_01PARENTPARENTPARENT","id":"${CHILD_ID}"}}`);
-  assertAllowed(runHook(writeTranscript(dir, [create, GET_CHILD('COMPLETED'), LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'keyed on the new id');
-  const plain = toolUse('mcp__claude-code-remote__get_session', { session_id: CHILD_ID }, 'status_bucket: completed');
-  assertAllowed(runHook(writeTranscript(dir, [CREATE_CHILD, plain, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'a plain-text rendering is read too');
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
@@ -1938,4 +1904,117 @@ test('BRO-5068: honest reasons that say "missing"/"unknown" pass; reworded "did 
 test('BRO-5068: a fallback Read that itself failed does not count', skipNoRepoHook, () => {
   const badRead = { ...readCmd('ship-check'), _result: '<tool_use_error>File does not exist.</tool_use_error>', _isError: true };
   assertBlocked(chain('cmd-badread', [HOOK_EDIT, HOOK_RUN, unknownSkill('ship-check'), badRead, WHAT_ELSE, WRAP_UP, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED), 'an errored read ran nothing');
+});
+
+// ─── Loose-ends gate (LOOSEENDS, BRO-5881, 2026-10-22) ──────────────────────
+// Owner: SAFE TO EXIT claimed while the same message still had an offer, a
+// hidden owner call, or unfinished/uncarded work. Closings below are real
+// ones from 2026-10-21 sessions, lightly trimmed.
+const LE_ON = { LOOSEENDS_GATE_DISABLE: '0' };
+function assertLoose(r, message) {
+  assertBlocked(r, message);
+  assert.match(r.stderr, /loose end/i, `expected the LOOSEENDS message, got: ${r.stderr.slice(0, 400)}`);
+}
+
+test('LOOSEENDS: real loose-end closings + SAFE TO EXIT → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('loose-block');
+  const t = writeTranscript(dir, [LINEAR_CLOSEOUT_DONE]);
+  for (const body of [
+    'Turned the poller alert off. Tell me if you want even that one turned off.',
+    'Want me to also clean up the old rows?',
+    'BRO-5582 is paused because it needs an owner call. Nothing is needed from you.',
+    'The change is committed locally but not pushed or landed.',
+    'Production verified: partly. I could not confirm that the final follow-up commit has deployed.',
+    'Two helper scripts still sort pushes by path. I left it unfiled because the mismatch is rare.',
+    'The daily collection runs by itself, and I\'ll recheck it on Oct 22.',
+    'Checked only with simulated inputs. Both will happen naturally the next time it runs.',
+    'BRO-5003 is paused, waiting on the checking session\'s approval.',
+    'The topic-pages session left three minor review notes for later.',
+  ]) {
+    assertLoose(runHook(t, `${body}\n\nNothing needed from you.\n\nSAFE TO EXIT`, LE_ON), body);
+  }
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('LOOSEENDS: the honest rewrites pass (NOT SAFE, BACKLOG-OK for deferrals) but BACKLOG-OK never excuses an offer', skipNoRepoHook, () => {
+  const dir = makeTmpDir('loose-allow');
+  const t = writeTranscript(dir, [LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(t, 'Want me to also clean up the old rows?\n\nNOT SAFE TO EXIT — waiting on your answer.', LE_ON), 'NOT SAFE is not gated by LOOSEENDS');
+  assertAllowed(runHook(t, 'Left three minor review notes for later on their own card.\nBACKLOG-OK: cosmetic wording, fine to wait\n\nSAFE TO EXIT', LE_ON), 'carded deferral');
+  assertLoose(runHook(t, 'Want me to also clean up the old rows?\nBACKLOG-OK: cosmetic\n\nSAFE TO EXIT', LE_ON), 'an offer is never backlog');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('LOOSEENDS false-positive guards: ordinary finished closings', skipNoRepoHook, () => {
+  const dir = makeTmpDir('loose-fp');
+  const t = writeTranscript(dir, [LINEAR_CLOSEOUT_DONE]);
+  for (const msg of [
+    'The fix is live on the site.\n\nStill running: nothing.\n\nYou need to: nothing.\n\nSAFE TO EXIT',
+    'Fixed the scorer and landed it; checked the live page.\n\nNothing is still running.\n\nNothing needed from you.\n\nSAFE TO EXIT — landed and verified.',
+    'Ran:\n```\nnode x.js --check  # I\'ll check later\n```\nAll landed.\n\nSAFE TO EXIT',
+    '> Want me to keep going?\nYou asked that earlier; it is done now and landed.\n\nSAFE TO EXIT',
+    'Saved the report; the old rows were fixed and verified on main.\n\nSAFE TO EXIT',
+    'The card rechecks real poller runs on 10/22 by itself.\n\nSAFE TO EXIT',
+  ]) {
+    assertAllowed(runHook(t, msg, LE_ON), msg.slice(0, 60));
+  }
+  assertAllowed(runHook(t, 'Want me to do more?\n\nSAFE TO EXIT', { ...LE_ON, LOOSEENDS_GATE_DISABLE: '1' }), 'kill switch');
+  assertAllowed(runHook(t, 'Want me to do more?\nNO-VERIFY: owner asked for a menu of options\n\nSAFE TO EXIT', LE_ON), 'bypass');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// ─── Wake gate (WAKELESS, BRO-5881, 2026-10-22) ─────────────────────────────
+// Owner: "NOT SAFE TO EXIT — waiting on X" with nothing armed to wake the
+// session; found idle 10-19 hours later. Real closing (session 014vS4Wn).
+const WK_ON = { WAKELESS_GATE_DISABLE: '0' };
+const STALE = 'The second landing is still running. I\'ll check it at 14:56 and wrap up if it passes.\n\nStill running: the second landing.\n\nYou need to: nothing.\n\nNOT SAFE TO EXIT, the landing isn\'t confirmed on main.';
+function assertWakeless(r, message) {
+  assertBlocked(r, message);
+  assert.match(r.stderr, /nothing will wake it/i, `expected the WAKELESS message, got: ${r.stderr.slice(0, 400)}`);
+}
+const BG_WAIT = toolUse('Bash', { command: 'node scripts/lib/wait-for-land.js land/x 60 --prod', run_in_background: true, description: 'wait for land' },
+  'Command running in background with ID: b1e9y745t. Output is being written to: /tmp/x.output.');
+const BG_DONE = notice('<task-notification>\n<task-id>b1e9y745t</task-id>\n<status>completed</status>\n</task-notification>');
+
+test('WAKELESS: incident replay — NOT SAFE, waiting, nothing armed → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wake-stale');
+  assertWakeless(runHook(writeTranscript(dir, [GIT_PUSH]), STALE, WK_ON), 'the 11-hour idle session');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('WAKELESS: each real wake passes — background Bash, Monitor, background Agent, started session, PR subscription, owner-asked send_later', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wake-armed');
+  const monitor = toolUse('Monitor', { command: 'until gh-free-check; do sleep 60; done', description: 'land run' }, 'Monitor started with ID: m0n1t0r9.');
+  const agent = toolUse('Agent', { description: 'scan', prompt: 'x', run_in_background: true }, 'Async agent launched successfully.\nagentId: a1b2c3d4e5f6');
+  const sub = toolUse('mcp__claude-code-remote__subscribe_pr_activity', { owner: 'thomaspryor', repo: 'Broadwayscore', pullNumber: 42 }, 'subscribed');
+  const later = toolUse('mcp__claude-code-remote__send_later', { delay_minutes: 60, message: 'check', initiation: 'human_request' }, `{"fire_at":"${FAR}","trigger_id":"trig_01OWNER"}`);
+  for (const [label, calls] of [['bg bash', [BG_WAIT]], ['monitor', [monitor]], ['agent', [agent]],
+    ['child', [CREATE_CHILD, GET_CHILD('WORKING')]], ['pr', [sub]], ['send_later', [later]]]) {
+    assertAllowed(runHook(writeTranscript(dir, [GIT_PUSH, ...calls]), STALE, WK_ON), label);
+  }
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('WAKELESS: a wake that already finished is not a wake', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wake-done');
+  assertWakeless(runHook(writeTranscript(dir, [GIT_PUSH, BG_WAIT, BG_DONE]), STALE, WK_ON), 'background wait already exited');
+  assertWakeless(runHook(writeTranscript(dir, [GIT_PUSH, CREATE_CHILD, GET_CHILD('COMPLETED')]), STALE, WK_ON), 'child already finished');
+  const denied = toolUse('mcp__claude-code-remote__send_later', { delay_minutes: 60, message: 'check' }, 'PreToolUse: Blocked: send_later and create_trigger put an approval prompt');
+  assertWakeless(runHook(writeTranscript(dir, [GIT_PUSH, denied]), STALE, WK_ON), 'a denied send_later arms nothing');
+  // A stop-hook block between the wait and the closing does not hide the wait.
+  const fb = notice('Stop hook feedback: something else first');
+  assertAllowed(runHook(writeTranscript(dir, [GIT_PUSH, BG_WAIT, fb]), STALE, WK_ON), 'wait survives a re-fired Stop');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('WAKELESS: waiting on the owner needs no wake; bypass and kill switch', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wake-owner');
+  const t = writeTranscript(dir, [GIT_PUSH]);
+  assertAllowed(runHook(t, 'Two ways to go.\n\nDECISION NEEDED: keep or drop the old page?\nWhy this is your call: taste.\n\nNOT SAFE TO EXIT — waiting on your decision.', WK_ON), 'decision');
+  assertAllowed(runHook(t, 'You need to: paste the new password into App Store Connect.\n\nNOT SAFE TO EXIT — waiting on the password.', WK_ON), 'owner action');
+  assertWakeless(runHook(t, 'You need to: nothing.\n\nNOT SAFE TO EXIT — CI still running.', WK_ON), '"nothing" is not an owner action');
+  assertAllowed(runHook(t, STALE, { WAKELESS_GATE_DISABLE: '1' }), 'kill switch');
+  assertAllowed(runHook(t, STALE.replace('NOT SAFE', 'NO-VERIFY: container restarting\n\nNOT SAFE'), WK_ON), 'bypass');
+  assert.doesNotMatch(runHook(t, 'Done and landed.\n\nSAFE TO EXIT', WK_ON).stderr, /nothing will wake it/i, 'SAFE is not this gate');
+  fs.rmSync(dir, { recursive: true, force: true });
 });
