@@ -937,23 +937,10 @@ jobs:
             GIT_NET_TIMEOUT_SEC=30 bash scripts/lib/push-with-retry.sh 5 main
           fi
 
-      - name: Cancel competing rebuilds (fast_path)
-        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && (steps.poll.outputs.any_action == 'true' || steps.nyt_picks.outputs.picks_added == 'true')
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "Fast path: cancelling any in-progress rebuilds..."
-          for id in $(gh run list --workflow=rebuild-reviews.yml --limit=5 --json databaseId,status \
-            -q '.[] | select(.status=="in_progress" or .status=="queued") | .databaseId'); do
-            echo "  Cancelling rebuild run $id"
-            gh run cancel "$id" 2>/dev/null || true
-          done
-          for id in $(gh run list --workflow=rebuild-fast.yml --limit=3 --json databaseId,status \
-            -q '.[] | select(.status=="in_progress" or .status=="queued") | .databaseId'); do
-            echo "  Cancelling fast rebuild run $id"
-            gh run cancel "$id" 2>/dev/null || true
-          done
-        continue-on-error: true
+      # BRO-5952: the old "Cancel competing rebuilds (fast_path)" step cancelled every
+      # in-progress/queued rebuild-reviews and rebuild-fast run for ANY show. Removed:
+      # rebuild-fast now coalesces itself (shared group), reviews.json merges on push
+      # (mergeReviewsJson) and BRO-3162 syncs drift below, so overlap is safe.
 
       # Stale-checkout race guard, pre-rebuild (BRO-3162): sync review-texts
       # files pushed by other jobs since this job's checkout (never files
