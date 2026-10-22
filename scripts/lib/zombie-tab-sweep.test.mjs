@@ -510,3 +510,16 @@ test('linear: a failed or malformed lookup is reported, not revived and not clos
     assert.equal(r.revive.length + r.corpses.length, 0);
   }
 });
+
+test('linear: a numeric task whose subject LEADS with the card key is looked up; a key mid-title is not (BRO-5712)', () => {
+  const run = (subject, fn) => classifyZombieTabs({
+    deadAutoTabs: [dead('workspace:8', '🤖⚡ Data·card')], liveWorkspaces: [],
+    launchByRef: () => ({ taskId: 914, subject }), taskStatusById: () => 'pending',
+    hasAutoDispatchMarker: isAuto, linearStateByKey: fn,
+  });
+  const done = () => ({ type: 'completed', name: 'Done' });
+  assert.equal(run('BRO-200 P2: fix thing', done).corpses[0].reason, 'linear-done');
+  assert.equal(run('[Data] P1 BRO-200: fix thing', done).corpses[0].reason, 'linear-done');
+  assert.equal(run('Follow-up to BRO-200: fix thing', () => { throw new Error('must not be called'); }).revive.length, 1);
+  assert.equal(run('BRO-200 dup', () => ({ type: 'duplicate', name: 'Duplicate' })).corpses[0].reason, 'linear-done');
+});

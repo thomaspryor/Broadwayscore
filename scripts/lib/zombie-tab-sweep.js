@@ -26,8 +26,8 @@
  *             fan-out cap AFTER that guard, so guarded tasks never burn
  *             cap slots (ship-check catch).
  *             BRO-5712: when the caller injects `linearStateByKey` and the
- *             task's ledger taskId is "linear:BRO-N", the card is looked up
- *             first. Done/Canceled there → corpse ('linear-done': the work
+ *             task names its card (ledger taskId "linear:BRO-N" or a subject leading with BRO-N), the card is looked up
+ *             first. Done/Canceled/Duplicate there → corpse ('linear-done': the work
  *             finished, the pending local task is stale; the husk goes through
  *             the SAME corpse close path, no new one). A failed lookup → report
  *             ('linear-unverified'): never revive on a guess. Any other state,
@@ -103,7 +103,7 @@ function classifyZombieTabs({ deadAutoTabs, liveWorkspaces, launchByRef, taskSta
     const isDup = (taskId && liveTaskIds.has(taskId)) || (!taskId && liveByTitle.has(normalizeTitle(w.title)));
     if (isDup) { corpses.push({ ...entry, reason: 'live-duplicate' }); continue; }
     if (status === 'pending') {
-      const verdict = linearVerdict(linearStateByKey, taskId);
+      const verdict = linearVerdict(linearStateByKey, taskId, entry.subject);
       if (verdict === 'done') { corpses.push({ ...entry, reason: 'linear-done' }); continue; }
       if (verdict === 'unverified') { report.push({ ...entry, reason: 'linear-unverified' }); continue; }
       revive.push(entry);
@@ -117,24 +117,35 @@ function classifyZombieTabs({ deadAutoTabs, liveWorkspaces, launchByRef, taskSta
   return { corpses, revive, report };
 }
 
-// Only the key the dispatcher itself wrote into the ledger ("linear:BRO-N") counts;
-// a subject or title can name several issues (same rule as cmux-triage dispatchLinearKey).
+const { isTerminalStateType } = require('./linear-state-types.js');
+
+// The card a dead tab was working on: the dispatcher's own "linear:BRO-N" taskId, or a subject
+// that LEADS with the key ("BRO-5712 P2: ..."). Task files are numeric ids whose subject is the
+// card title, so the subject is the usual route. A key buried mid-title ("Follow-up to BRO-100")
+// names a different card and is never used (same multi-key hazard as cmux-triage dispatchLinearKey).
 const DISPATCH_LINEAR_KEY_RE = /^linear:([A-Z]+-\d+)$/;
+const SUBJECT_LEADING_KEY_RE = /^\s*(?:\[[^\]]*\]\s*)?(?:P\d\s*:?\s*)?([A-Z]+-\d+)\b/;
+function linearKeyFor(taskId, subject) {
+  const m = DISPATCH_LINEAR_KEY_RE.exec(taskId || '');
+  if (m) return m[1];
+  const s = SUBJECT_LEADING_KEY_RE.exec(subject || '');
+  return s ? s[1] : null;
+}
 
 /**
  * 'none' = no signal (no injected fn, no dispatcher key, or no such issue);
  * 'done' = the Linear card is completed/canceled; 'unverified' = the lookup
  * threw, answered {error}, or returned a state without a type.
  */
-function linearVerdict(linearStateByKey, taskId) {
-  if (typeof linearStateByKey !== 'function' || !taskId) return 'none';
-  const m = DISPATCH_LINEAR_KEY_RE.exec(taskId);
-  if (!m) return 'none';
+function linearVerdict(linearStateByKey, taskId, subject) {
+  if (typeof linearStateByKey !== 'function') return 'none';
+  const key = linearKeyFor(taskId, subject);
+  if (!key) return 'none';
   let state;
-  try { state = linearStateByKey(m[1]); } catch { return 'unverified'; }
+  try { state = linearStateByKey(key); } catch { return 'unverified'; }
   if (state == null) return 'none';
   if (state.error || !state.type) return 'unverified';
-  return state.type === 'completed' || state.type === 'canceled' ? 'done' : 'none';
+  return isTerminalStateType(state.type) ? 'done' : 'none';
 }
 
 function safeLaunch(launchByRef, ref) {

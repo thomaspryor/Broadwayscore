@@ -570,17 +570,25 @@ function taskStatusById(taskId, dir = ZOMBIE_TASKS_DIR) {
 // BRO-5712: sync Linear lookup for the zombie sweep, only ever called for a dead tab whose
 // local task is still pending (rare). One `linear-brain get`; a failure is {error}, which the
 // sweep treats as unverified (reported, not revived).
-function linearStateByKeySync(key) {
-  try {
-    const out = require('child_process').execFileSync(process.execPath, [path.join(__dirname, 'linear-brain.js'), 'get', key], { encoding: 'utf8', timeout: 20000, stdio: ['ignore', 'pipe', 'ignore'] });
-    const j = JSON.parse(out.slice(out.indexOf('{')));
-    return j && j.state ? { type: j.state.type, name: j.state.name } : { error: 'no state in linear-brain get output' };
-  } catch (e) {
-    return { error: e.message || String(e) };
-  }
+// Capped per sweep: each call can wait 20s and the prune lock goes stale at 4 minutes; past the cap
+// the answer is {error}, so the tab is reported rather than revived.
+const LINEAR_LOOKUP_CAP_PER_SWEEP = 5;
+function makeLinearStateByKeySync() {
+  let calls = 0;
+  return (key) => {
+    if (++calls > LINEAR_LOOKUP_CAP_PER_SWEEP) return { error: 'linear lookup cap reached this sweep' };
+    try {
+      const out = require('child_process').execFileSync(process.execPath, [path.join(__dirname, 'linear-brain.js'), 'get', key], { encoding: 'utf8', timeout: 20000, stdio: ['ignore', 'pipe', 'ignore'] });
+      const j = JSON.parse(out.slice(out.indexOf('{')));
+      return j && j.state ? { type: j.state.type, name: j.state.name } : { error: 'no state in linear-brain get output' };
+    } catch (e) {
+      if (e && e.status === 2) return null; // linear-brain get exits 2 when the issue does not exist
+      return { error: e.message || String(e) };
+    }
+  };
 }
 
-function sweepZombieTabs({ all, idle, dryRun, closeWorkspaceFn, appendLedgerEntryFn, readLedgerEntriesFn, listWorkspacesFn = listWorkspaces, claudeAliveInFn = claudeAliveIn, surfaceAliveInFn = terminalSurfaceAliveIn, taskStatusByIdFn = taskStatusById, redispatchFn = redispatchHeadless, pageFn = pageZombieSweep, linearStateByKeyFn = linearStateByKeySync }) {
+function sweepZombieTabs({ all, idle, dryRun, closeWorkspaceFn, appendLedgerEntryFn, readLedgerEntriesFn, listWorkspacesFn = listWorkspaces, claudeAliveInFn = claudeAliveIn, surfaceAliveInFn = terminalSurfaceAliveIn, taskStatusByIdFn = taskStatusById, redispatchFn = redispatchHeadless, pageFn = pageZombieSweep, linearStateByKeyFn = makeLinearStateByKeySync() }) {
   if (process.env.ZOMBIE_TAB_SWEEP_DISABLED === '1') return;
 
   const idleRefs = new Set(idle.map(w => w.ref));
