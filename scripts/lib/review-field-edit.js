@@ -47,6 +47,10 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // It also switches off the content-verifier wrongShow / nonReview / film-TV promotions for that review, and a plan
   // cannot clear it (a manual edit is needed to undo a mistake), so set it only after reading the page.
   'allowCrossMarket',
+  // BRO-4305: the rebuild already supports this per-record exception for
+  // genuine joint reviews. Approved fixes may enable it with combined-show
+  // evidence, without relaxing cross-show text dedup for other articles.
+  'allowCrossShowDuplicate',
   'wrongShow', 'wrongShowManualClear',
   // showId (BRO-4317): only to repair a stale id left by a move, and only to the
   // folder the file lives in (FIELD_VALUE_CHECKS.showId). A mismatch can also
@@ -143,6 +147,10 @@ const FIELD_VALUE_CHECKS = {
     && typeof record.crossOutletVerifiedNote === 'string' && record.crossOutletVerifiedNote.trim().length >= 20
     ? null : 'crossOutletVerified may only be set true after an evidence note, with no wrongAttribution flag'),
   allowCrossMarket: (v) => (v === true ? null : 'allowCrossMarket may only be set to true'),
+  allowCrossShowDuplicate: (v, record) => (v === true && record.isCombinedReview === true
+    && Array.isArray(record.combinedWith)
+    && record.combinedWith.some(id => typeof id === 'string' && id.trim() && id !== record.showId)
+    ? null : 'allowCrossShowDuplicate requires true and an existing combined review naming another show'),
   fabricatedEntry: (v) => (v === false ? null : 'fabricatedEntry may only be cleared (false)'),
   // BRO-4415: or when the executor's syndicated-duplicate-heal decision (ctx.syndicatedHeal) is 'clear':
   // the primary is excluded for a reason that does not apply to this copy.

@@ -1,0 +1,45 @@
+{
+  "issueNumber": "bro-4305",
+  "planId": "bda826af-9b0d-4e84-a58a-d5bd1f50bb85",
+  "status": "pending",
+  "createdAt": "2026-10-22T06:59:19.358Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Count the La Voce di New York three-play review under Disruption and The Pass as well as Benevolent, using the existing joint-review fingerprint exception. Preserve all per-show scores.",
+    "steps": [
+      "Clear the mistaken Disruption roundup flag.",
+      "Enable the existing cross-show duplicate exception only on the two missing show copies.",
+      "Rebuild reviews.json and verify one URL entry per show, with the existing same-show duplicate still excluded."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "disruption-off-broadway-2026/la-voce-di-new-york--jk-clarke.json",
+        "field": "isRoundupArticle",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4305: Original criticism by one named critic covering three plays, not an aggregation of other outlets. The manual 2026-09-25 roundup exclusion was incorrect."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "disruption-off-broadway-2026/la-voce-di-new-york--jk-clarke.json",
+        "field": "allowCrossShowDuplicate",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4305: JK Clarke reviews this production in the shared three-play article. Retain its existing per-show score despite the identical full article text."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pass-off-broadway-2026/la-voce-di-new-york--jk-clarke.json",
+        "field": "allowCrossShowDuplicate",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4305: JK Clarke reviews this production in the shared three-play article. Retain its existing per-show score despite the identical full article text."
+      }
+    ]
+  }
+}
