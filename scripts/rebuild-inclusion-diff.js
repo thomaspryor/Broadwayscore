@@ -34,6 +34,7 @@ const os = require('os');
 const path = require('path');
 const { execFileSync, execFile } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { listShowDirs } = require('./lib/list-show-dirs.js');
 
 const ROOT = path.resolve(__dirname, '..');
 const TEXTS = path.join(ROOT, 'data', 'review-texts');
@@ -123,7 +124,7 @@ async function pool(items, n, fn) {
 }
 
 (async () => {
-  const shows = (ONLY.length ? ONLY : fs.readdirSync(TEXTS).filter(d => !d.startsWith('.') && fs.statSync(path.join(TEXTS, d)).isDirectory()))
+  const shows = (ONLY.length ? ONLY : listShowDirs(TEXTS))
     .sort().slice(0, LIMIT);
   const logDir = fs.mkdtempSync(path.join(os.tmpdir(), 'rebuild-diff-logs-'));
   tempDirs.push(logDir);
