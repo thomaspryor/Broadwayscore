@@ -542,3 +542,25 @@ test('promotion: region-corroborated contamination carries sibId, reason and dif
   assert.equal(typeof v.thisDiff, 'number');
   assert.equal(typeof v.sibDiff, 'number');
 });
+
+// ── outletRegionExplicitlyNotLondon (BRO-5896) ─────────────────────────────
+const { outletRegionExplicitlyNotLondon } = require('./cross-market-guard.js');
+
+test('outletRegionExplicitlyNotLondon: explicit Broadway-local region qualifies', () => {
+  for (const region of ['us', 'nyc', 'new-york', 'national', 'dual']) {
+    assert.equal(outletRegionExplicitlyNotLondon({ region }), true, region);
+  }
+});
+
+test('outletRegionExplicitlyNotLondon: London / UK regions never qualify', () => {
+  for (const region of ['london', 'uk']) {
+    assert.equal(outletRegionExplicitlyNotLondon({ region }), false, region);
+  }
+  assert.equal(outletRegionExplicitlyNotLondon({ region: 'london', regionCorrectedBy: 'x' }), false);
+});
+
+test('outletRegionExplicitlyNotLondon: region-less qualifies only after an explicit correction', () => {
+  assert.equal(outletRegionExplicitlyNotLondon({}), false);
+  assert.equal(outletRegionExplicitlyNotLondon(null), false);
+  assert.equal(outletRegionExplicitlyNotLondon({ regionCorrectedBy: 'BRO-5896' }), true);
+});

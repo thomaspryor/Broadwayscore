@@ -56,7 +56,7 @@ const { resolveGuardReviewDate } = require('./lib/backfill-publish-date');
 // shouldAutoClearWrongProductionUkDualMarket's ctx (task #1190) — same
 // rationale as isLondonMarket/isUkOutletUrl above, the predicate itself
 // (baseline vs working) is what's replayed per-side via __priorRunLib.
-const { buildOutletRegionMap } = require('./lib/cross-market-guard');
+const { buildOutletRegionMap, outletRegionExplicitlyNotLondon } = require('./lib/cross-market-guard');
 const { normalizeOutlet: normalizeOutletCanonical } = require('./lib/review-normalization');
 const { isEvergreenListingUrl } = require('./lib/cross-production-guards');
 // Working-tree copy: pure classification helper (ingest-time gate), not on
@@ -112,7 +112,7 @@ const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
 // same way here as in the rebuild it's replaying.
 const outletRegistry = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'outlet-registry.json'), 'utf8'));
 const outletRegionMap = buildOutletRegionMap(outletRegistry);
-const { internationalTradeOutlets } = require('./lib/outlet-region-map').buildOutletMaps(outletRegistry);
+const { canonicalOutletId: OUTLET_CANONICAL_ID_MAP, internationalTradeOutlets } = require('./lib/outlet-region-map').buildOutletMaps(outletRegistry);
 const DUAL_MARKET_OUTLETS = new Set();
 for (const [id, info] of Object.entries(outletRegistry.outlets || {})) {
   if (info.isDualMarket) {
@@ -1160,7 +1160,8 @@ function decideInclusion(review, show, guards) {
     try {
       const revRawOutlet = (review.outletId || review.outlet || '').toLowerCase();
       const revCanonical = normalizeOutletCanonical(revRawOutlet);
-      const revInfo = (outletRegistry.outlets || {})[revCanonical] || {};
+      const revId = OUTLET_CANONICAL_ID_MAP[revCanonical] || OUTLET_CANONICAL_ID_MAP[revRawOutlet] || revCanonical;
+      const revInfo = (outletRegistry.outlets || {})[revId] || {};
       const revHost = (new URL(review.url).hostname || '').toLowerCase().replace(/^www\./, '');
       const revPrimary = String(revInfo.domain || '').toLowerCase().replace(/^www\./, '');
       let revDateMismatch = false;
@@ -1173,7 +1174,9 @@ function decideInclusion(review, show, guards) {
       const urlKey = urlKeyForCrossShowIndex(review.url, guards);
       wrongProductionCleared = autoClear.shouldAutoClearStaleLondonOutletCrossMarket(review, {
         isNycMarketShow: true,
-        outletIsDualMarket: DUAL_MARKET_OUTLETS.has(revCanonical) || DUAL_MARKET_OUTLETS.has(revRawOutlet),
+        outletIsDualMarket: DUAL_MARKET_OUTLETS.has(revCanonical) || DUAL_MARKET_OUTLETS.has(revRawOutlet)
+          || DUAL_MARKET_OUTLETS.has(revId),
+        outletRegionNotLondon: outletRegionExplicitlyNotLondon(revInfo),
         urlOnOutletPrimaryDomain: !!revPrimary && (revHost === revPrimary || revHost.endsWith('.' + revPrimary)),
         isUkUrl: isUkOutletUrl(review.url) || /\.(co|org)\.uk$/.test(revHost),
         isDateMismatch: revDateMismatch,

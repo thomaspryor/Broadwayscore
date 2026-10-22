@@ -1218,7 +1218,11 @@ function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
  * the publish date inside this production's own run AND the URL filed under no
  * other show.
  *
- * ctx: { isNycMarketShow, outletIsDualMarket, urlOnOutletPrimaryDomain,
+ * BRO-5896 widened the outlet gate: outletRegionNotLondon (cross-market-guard.js
+ * outletRegionExplicitlyNotLondon) also qualifies, for US outlets that a
+ * one-review region backfill wrongly tagged london (outinjersey, consequence).
+ *
+ * ctx: { isNycMarketShow, outletIsDualMarket, outletRegionNotLondon, urlOnOutletPrimaryDomain,
  *        isUkUrl, isDateMismatch, isShowListingUrl, cvBlocksClear,
  *        inOwnProductionWindow, urlFiledUnderOtherShow }
  */
@@ -1234,7 +1238,9 @@ function shouldAutoClearStaleLondonOutletCrossMarket(data, ctx = {}) {
   if (data.wrongProductionProvenance === 'content') return false;
   if (data.wrongProductionReason) return false;
   if (ctx.isDateMismatch) return false;
-  if (!ctx.outletIsDualMarket) return false;
+  // BRO-5896: an outlet whose wrong region:'london' stamp was corrected is as
+  // stale as one later registered dual-market (outletRegionExplicitlyNotLondon).
+  if (!ctx.outletIsDualMarket && !ctx.outletRegionNotLondon) return false;
   if (!ctx.urlOnOutletPrimaryDomain || ctx.isUkUrl) return false;
   if (ctx.cvBlocksClear) return false;
   if (ctx.isShowListingUrl) return false;

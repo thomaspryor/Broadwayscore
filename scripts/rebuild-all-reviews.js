@@ -46,7 +46,7 @@ function parseReviewFileText(raw) {
   }
 }
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
-const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, evaluateLateDualMarketUkOnBroadway, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion, buildCrossMarketCriticIndex, findSiblingInOtherMarket, classifyDualMarketNullUrl } = require('./lib/cross-market-guard');
+const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, evaluateLateDualMarketUkOnBroadway, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion, buildCrossMarketCriticIndex, findSiblingInOtherMarket, classifyDualMarketNullUrl, outletRegionExplicitlyNotLondon } = require('./lib/cross-market-guard');
 const { computeContentFingerprint } = require('./lib/content-quality');
 const { textMentionsTitle, textMentionsShortTitle } = require('./lib/show-title-variants');
 const { classifyTierWriteBack } = require('./lib/content-tier-reason-sync');
@@ -265,6 +265,10 @@ const outletRegionMap = buildOutletRegionMap(outletRegistry);  // outletId -> re
 // prove an outlet's market when that outlet's only reviews are the ones being excluded.
 const { canonicalOutletId: OUTLET_CANONICAL_ID_MAP, internationalTradeOutlets } = require('./lib/outlet-region-map').buildOutletMaps(outletRegistry);
 const outletShowCategoriesRaw = {};
+// outlet id -> { london: Set<showId>, nyc: Set<showId> } for retracting a london
+// stamp the outlet's own reviews contradict (BRO-5896, retractContradictedOutletRegions).
+const outletMarketShowsRaw = {};
+const { regionEvidenceMarket } = require('./lib/outlet-region-map');
 // All registered outlet ids + aliases (lowercased) — lets the cross-market guard
 // distinguish "registered but region-less" (US nationals; keep flagging) from
 // "not in the registry at all" (brand-new outlet; bootstrap exemption, task #817).
@@ -2829,6 +2833,26 @@ showDirs.forEach(showId => {
             || OUTLET_CANONICAL_ID_MAP[rawOutletForCategory] || canonicalOutletForCategory;
           (outletShowCategoriesRaw[canonicalId] = outletShowCategoriesRaw[canonicalId] || new Set()).add(cat);
         }
+        // BRO-5896: per-market distinct-show evidence for retracting a wrong
+        // london stamp. Wider than the trustworthy gate above on the NYC side
+        // only; see regionEvidenceMarket in lib/outlet-region-map.js.
+        if (rawOutletForCategory && cat) {
+          const market = regionEvidenceMarket({
+            trustworthy: isReviewContentTrustworthy(data),
+            trustworthyApartFromWrongProduction: isReviewContentTrustworthy({ ...data, wrongProduction: false }),
+            category: cat,
+            isLondonMarket,
+            wrongProductionNote: data.wrongProductionNote,
+            urlIsUk: !!data.url && isUkOutletUrl(data.url),
+          });
+          if (market) {
+            const canonicalOutletForEvidence = normalizeOutletCanonical(rawOutletForCategory);
+            const evidenceId = OUTLET_CANONICAL_ID_MAP[canonicalOutletForEvidence]
+              || OUTLET_CANONICAL_ID_MAP[rawOutletForCategory] || canonicalOutletForEvidence;
+            const ev = (outletMarketShowsRaw[evidenceId] = outletMarketShowsRaw[evidenceId] || { london: new Set(), nyc: new Set() });
+            ev[market].add(showId);
+          }
+        }
       }
 
       // Auto-migrate aggregator-sourced originalScore → aggregatorStars, and
@@ -3600,7 +3624,12 @@ showDirs.forEach(showId => {
         try {
           const revRawOutlet = (data.outletId || data.outlet || '').toLowerCase();
           const revCanonical = normalizeOutletCanonical(revRawOutlet);
-          const revInfo = (outletRegistry.outlets || {})[revCanonical] || {};
+          // Alias-aware lookup, as the evidence collector does: the registry key
+          // is the canonical id, which a raw alias does not normalize to.
+          const revId = OUTLET_CANONICAL_ID_MAP[revCanonical] || OUTLET_CANONICAL_ID_MAP[revRawOutlet] || revCanonical;
+          const revInfo = (outletRegistry.outlets || {})[revId] || {};
+          const revDual = DUAL_MARKET_OUTLETS.has(revCanonical) || DUAL_MARKET_OUTLETS.has(revRawOutlet)
+            || DUAL_MARKET_OUTLETS.has(revId);
           const revHost = (new URL(data.url).hostname || '').toLowerCase().replace(/^www\./, '');
           const revPrimary = String(revInfo.domain || '').toLowerCase().replace(/^www\./, '');
           let revDateMismatch = false;
@@ -3610,7 +3639,8 @@ showDirs.forEach(showId => {
           }
           if (shouldAutoClearStaleLondonOutletCrossMarket(data, {
             isNycMarketShow: true,
-            outletIsDualMarket: DUAL_MARKET_OUTLETS.has(revCanonical) || DUAL_MARKET_OUTLETS.has(revRawOutlet),
+            outletIsDualMarket: revDual,
+            outletRegionNotLondon: outletRegionExplicitlyNotLondon(revInfo),
             urlOnOutletPrimaryDomain: !!revPrimary && (revHost === revPrimary || revHost.endsWith('.' + revPrimary)),
             isUkUrl: isUkOutletUrl(data.url) || /\.(co|org)\.uk$/.test(revHost),
             isDateMismatch: revDateMismatch,
@@ -3621,9 +3651,13 @@ showDirs.forEach(showId => {
           })) {
             delete data.wrongProduction;
             delete data.wrongProductionNote;
-            data.wrongProductionAutoCleared = `rebuild: dual-market outlet on its own US domain (${revHost})`;
+            // Distinct stamp for the BRO-5896 path so audit-london-outlet-flags.js
+            // can count the NYC reviews a corrected region released.
+            data.wrongProductionAutoCleared = revDual
+              ? `rebuild: dual-market outlet on its own US domain (${revHost})`
+              : `rebuild: non-London region outlet on its own domain (${revHost})`;
             data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
-            if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) markRescoreNeeded(data, 'wrongProduction false-positive cleared (dual-market outlet US domain)');
+            if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) markRescoreNeeded(data, revDual ? 'wrongProduction false-positive cleared (dual-market outlet US domain)' : 'wrongProduction false-positive cleared (non-London region outlet)');
             try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
             stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
           }
@@ -7185,7 +7219,7 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
   // the per-file loop above (not just allReviews' included-only set) — see that
   // collector's declaration for why: an outlet whose reviews are excluded (the
   // exact bug this backfill fixes) must still be able to prove its own market.
-  const { backfillMissingOutletRegions } = require('./lib/outlet-region-map');
+  const { backfillMissingOutletRegions, retractContradictedOutletRegions } = require('./lib/outlet-region-map');
   const outletShowCategories = outletShowCategoriesRaw;
 
   const skippedAliasCollisionOutlets = [];
@@ -7354,6 +7388,13 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
 
   // Backfill region on outlets that are registered but region-less — covers
   // both the newOutlets just added above and pre-existing entries (BRO-133).
+  // Retract first: a retracted outlet is marked regionCorrectedBy, which the
+  // backfill skips, so the stamp cannot come straight back (BRO-5896). Skipped on
+  // a --show= run: its evidence covers one show, not the outlet's whole corpus.
+  const retractedOutlets = SHOW_FILTER ? [] : retractContradictedOutletRegions(outletRegistry.outlets, outletMarketShowsRaw);
+  if (retractedOutlets.length > 0) {
+    console.log(`\n↩️  RETRACTED wrong region:'london' on ${retractedOutlets.length} outlet(s) (BRO-5896): ${retractedOutlets.map(r => `${r.id} (${r.nycShows} NYC / ${r.londonShows} London shows)`).join(', ')}`);
+  }
   const backfilledOutlets = backfillMissingOutletRegions(outletRegistry.outlets, outletShowCategories, isLondonMarket);
 
   // Staged ids were NOT written to the registry — counting them here would
@@ -7362,7 +7403,7 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
   const stagedOutletIdSet = new Set(stagedOutlets.map((s) => s.outletId));
   const registeredOutlets = newOutlets.filter(id => !skippedAliasCollisionOutlets.includes(id) && !stagedOutletIdSet.has(id));
 
-  if (registeredOutlets.length > 0 || backfilledOutlets.length > 0) {
+  if (registeredOutlets.length > 0 || backfilledOutlets.length > 0 || retractedOutlets.length > 0) {
     if (outletRegistry._meta) {
       outletRegistry._meta.lastUpdated = new Date().toISOString();
     }
