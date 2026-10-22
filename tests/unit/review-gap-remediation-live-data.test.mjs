@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: cross-checks the derived reviews.json against its review-texts source for one pinned review (pipeline-consistency guard)
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural: asserts the derived reviews.json still carries one pinned review; pins no show fact
 // BRO-5737 (BRO-3425 pattern): live-data assertion split out of tests/unit/review-gap-remediation.test.mjs. data/reviews.json is
 // rebuilt by bots many times a day, so in a code-test batch it can redden main with no code change. Runs in
 // check-corpus-drift.yml's "Live-data assertions" step, excluded from the unit batches in scripts/lib/unit-test-collection.js.

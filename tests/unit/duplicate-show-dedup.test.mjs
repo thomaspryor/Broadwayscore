@@ -2,7 +2,7 @@
 // BRO-4049: crazy-mama-off-broadway-2026 (TodayTix stub) duplicated
 // crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026 (59E59 venue
 // page). Discovery filed opening-night reviews under the stub id. Requires the
-// real dedup functions; asserts against the real shows.json.
+// real dedup functions (the live shows.json check is split out, see line 1).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
