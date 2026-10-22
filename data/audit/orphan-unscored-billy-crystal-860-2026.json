@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "billy-crystal-860-2026",
   "openingDate": "2026-10-21",
-  "detectedAt": "2026-10-22T15:33:31.499Z",
+  "detectedAt": "2026-10-22T15:49:33.242Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "goldderby--ethan-alter.json",
-      "outletId": "goldderby",
-      "criticName": "Ethan Alter",
-      "url": "https://www.goldderby.com/theater/2026/billy-crystal-860-broadway-reviews-palisades-fire-rob-reiner/",
-      "fullTextLen": 5581,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "hollywood-reporter--caitlin-huston.json",
       "outletId": "hollywood-reporter",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
