@@ -239,7 +239,7 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -253,7 +253,8 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 142,
       "sweptTracker": "BRO-5554",
-      "silentRefires": 35
+      "silentRefires": 34,
+      "resolvedAt": "2026-10-22T16:15:55.949Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -23630,7 +23631,8 @@
         "runId": "39790224688",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39790224688"
       },
-      "silentRefires": 1
+      "resolvedAt": "2026-10-22T16:15:58.336Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-5943-theatr-alias": {
       "status": "open",
