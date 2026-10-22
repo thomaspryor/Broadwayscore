@@ -736,6 +736,10 @@ on:
       # their tests are not reachable from the globs above.
       - 'scripts/cloud-run-script.js'
       - 'scripts/run-script-sealed.js'
+      # BRO-5892: cloud data-fix tooling (doctor, REST dispatch, plan generator).
+      - 'scripts/cloud-dispatch.js'
+      - 'scripts/cloud-doctor.js'
+      - 'scripts/new-fix-plan.js'
       # Show Score import: the profile parser ships inside the edge function
       # dir but its unit test runs in the tests/unit batch — path-listed so a
       # solo parser edit still triggers CI (plan-review finding, 2026-07-13).
