@@ -450,7 +450,8 @@ function normalizeForTitleMatch(title) {
     .replace(/\s*\(.*?\)/g, '')        // Remove parentheticals
     .replace(/[''']s\b/g, 's')        // Possessive 's → s (before punctuation strip)
     .replace(/['''`]/g, '')            // Remove apostrophes (keep contractions: ain't → aint)
-    .replace(/[.:!?,/&]/g, ' ')        // Other punctuation → spaces (preserves compound words)
+    .replace(/\s*&\s*/g, ' and ')       // "Romeo & Juliet" matches IBDB's "romeo-and-juliet" slug (BRO-5975)
+    .replace(/[.:!?,/]/g, ' ')         // Other punctuation → spaces (preserves compound words)
     .replace(/^(the|a|an)\s+/i, '')    // Remove leading articles
     .replace(/[^a-z0-9\s]/g, '')       // Remove remaining non-alphanumeric
     .replace(/\s+/g, ' ')
@@ -723,6 +724,26 @@ function sleep(ms) {
 }
 
 /**
+ * Whether one IBDB search result names the same title closely enough to count
+ * as a prior production. Stricter than titleMatchScore's general floor (8):
+ * only an exact (15) or contained (12) title counts, because the word-overlap
+ * score let "You Go On" match "Before You Go" (BRO-5975). The length checks
+ * stop "The Unknown" matching "The Unknown Soldier and His Wife".
+ */
+function isRevivalTitleMatch(title, result) {
+  if (titleMatchScore(title, result.url, result.title) < 12) return false;
+
+  const normSearch = normalizeForTitleMatch(title);
+  const normUrl = normalizeForTitleMatch(extractTitleFromIBDBUrl(result.url));
+
+  // If slug is >50% longer than our title, it's likely a different show
+  if (normUrl.length > normSearch.length * 1.5 && normSearch.length < 20) return false;
+  // If our title is >50% longer than slug, also suspicious
+  if (normSearch.length > normUrl.length * 1.5 && normUrl.length < 20) return false;
+  return true;
+}
+
+/**
  * Check IBDB for prior productions of a given title to detect revivals.
  * Uses SERP to find production pages — if multiple distinct productions exist,
  * the current show is a revival. Does NOT scrape individual pages.
@@ -757,6 +778,10 @@ async function checkIBDBForPriorProductions(title, options = {}) {
     ];
 
     let results = [];
+    // A query that throws or returns null (no key, every provider down) found
+    // nothing because it never ran; the caller must not record "not a revival"
+    // for that title (BRO-5975).
+    let failedQueries = 0;
 
     for (const prodPath of prodPaths) {
       const query = `site:${prodPath} "${title}"`;
@@ -769,8 +794,11 @@ async function checkIBDBForPriorProductions(title, options = {}) {
             .filter(r => r.url && (r.url.includes('/broadway-production/') || r.url.includes('/off-broadway-production/') || r.url.includes('/tour-production/')))
             .map(r => ({ url: r.url, title: r.title || '' }));
           results.push(...pageResults);
+        } else {
+          failedQueries++;
         }
       } catch (e) {
+        failedQueries++;
         console.log(`  ⚠️  SERP search failed: ${e.message}`);
       }
 
@@ -781,6 +809,10 @@ async function checkIBDBForPriorProductions(title, options = {}) {
     }
 
     if (results.length === 0) {
+      if (failedQueries === prodPaths.length) {
+        console.log(`  ⚠️  Every IBDB search failed for "${title}"; not a finding`);
+        return { ...notFound, searchFailed: true };
+      }
       console.log(`  📎 No IBDB production results for "${title}"`);
       return notFound;
     }
@@ -788,27 +820,7 @@ async function checkIBDBForPriorProductions(title, options = {}) {
     // Filter to results that actually match the title
     // Stricter than general titleMatchScore: require exact or near-exact match
     // to prevent "The Unknown" matching "The Unknown Soldier and His Wife"
-    const validResults = results.filter(r => {
-      const score = titleMatchScore(title, r.url, r.title);
-      if (score < 8) return false;
-
-      // Additional check: the URL slug title must be close in length to our title
-      // This prevents short titles from matching longer, unrelated titles
-      const urlTitle = extractTitleFromIBDBUrl(r.url);
-      const normSearch = normalizeForTitleMatch(title);
-      const normUrl = normalizeForTitleMatch(urlTitle);
-
-      // If slug is >50% longer than our title, it's likely a different show
-      if (normUrl.length > normSearch.length * 1.5 && normSearch.length < 20) {
-        return false;
-      }
-      // If our title is >50% longer than slug, also suspicious
-      if (normSearch.length > normUrl.length * 1.5 && normUrl.length < 20) {
-        return false;
-      }
-
-      return true;
-    });
+    const validResults = results.filter(r => isRevivalTitleMatch(title, r));
 
     // Deduplicate by URL (SERP can return same page twice)
     const uniqueUrls = [...new Set(validResults.map(r => r.url))];
@@ -963,5 +975,6 @@ module.exports = {
   extractTitleFromIBDBUrl,
   normalizeForTitleMatch,
   titleMatchScore,
+  isRevivalTitleMatch,
   checkIBDBForPriorProductions
 };

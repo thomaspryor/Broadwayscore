@@ -82,3 +82,30 @@ test('audience-buzz.json checks oldValue', () => {
   assert.equal(applyDataEdit(data, { file: 'audience-buzz.json', showId: 'a-2026', field, oldValue: 1, newValue: 3 }).ok, true);
   assert.equal(data.shows['a-2026'][field], 3);
 });
+
+test('IBDB revival verdict fields: allowed, boolean only, isRevival syncs tags (BRO-5975)', () => {
+  const data = { shows: [{ id: 'a-2026', tags: ['new'] }] };
+  const checked = { file: 'shows.json', showId: 'a-2026', field: 'ibdbRevivalChecked', oldValue: null, newValue: true };
+  assert.equal(dataEditAllowProblem(checked), null);
+  assert.equal(applyDataEdit(data, { ...checked, newValue: 'true' }).ok, false);
+  assert.equal(data.shows[0].ibdbRevivalChecked, undefined);
+  assert.equal(applyDataEdit(data, checked).ok, true);
+  assert.equal(data.shows[0].ibdbRevivalChecked, true);
+  assert.equal(applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'isRevival', oldValue: null, newValue: 1 }).ok, false);
+  assert.equal(applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'isRevival', oldValue: null, newValue: true }).ok, true);
+  assert.deepEqual(data.shows[0].tags, ['revival']);
+});
+
+test('Playbill exemption pair: allowed, shapes checked, and the result exempts the row (BRO-5975)', async () => {
+  const { isExemptFromPlaybillCheck } = await import('../validate-show-venue.js');
+  const data = { shows: [{ id: 'a-2026' }] };
+  const flag = { file: 'shows.json', showId: 'a-2026', field: 'noPlaybillProductionPage', oldValue: null, newValue: true };
+  const src = { file: 'shows.json', showId: 'a-2026', field: 'statusBackfillSource', oldValue: null, newValue: 'Venue page and two dated trade listings confirm the run; Playbill has no page.' };
+  assert.equal(dataEditAllowProblem(flag), null);
+  assert.equal(dataEditAllowProblem(src), null);
+  assert.equal(applyDataEdit(data, { ...flag, newValue: 'yes' }).ok, false);
+  assert.equal(applyDataEdit(data, { ...src, newValue: 'too short' }).ok, false);
+  assert.equal(applyDataEdit(data, flag).ok, true);
+  assert.equal(applyDataEdit(data, src).ok, true);
+  assert.equal(isExemptFromPlaybillCheck(data.shows[0]), true);
+});

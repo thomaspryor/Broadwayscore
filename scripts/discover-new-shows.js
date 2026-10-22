@@ -3262,8 +3262,10 @@ async function discoverShows() {
         det.revivalSource = 'ibdb';
         console.log(`  🔄 IBDB revival confirmed: "${det.show.title}" (${result.priorProductionCount} prior productions)`);
       }
-      // Mark as checked so nightly runs don't re-query
-      det.show._ibdbRevivalChecked = true;
+      // Mark as checked so nightly runs don't re-query. A search that never
+      // ran is not a check: the weekly detect-revivals-ibdb run picks it up
+      // (BRO-5975).
+      if (!result.searchFailed) det.show._ibdbRevivalChecked = true;
       if (i < undetected.length - 1) {
         await new Promise(r => setTimeout(r, RATE_LIMIT_MS));
       }

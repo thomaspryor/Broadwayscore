@@ -498,6 +498,13 @@ function scorePlaybillUrl(url, show) {
     if (!staged || !staged.has(marketOf(show.category))) return null;
   }
   if (!isLondonUrl && isLondon && (urlMarket === 'broadway' || urlMarket === 'off-broadway')) return null;
+  // Same rule for a regional run: a Broadway, Off-Broadway or London page is a
+  // different production (purpose-regional-2026 drew the 2025 Broadway page,
+  // topdog-underdog-regional-2026 the 2022 revival, BRO-5975). A regional show
+  // whose earlier run really was in New York can still pin that page in
+  // data/playbill-urls.json, which is read before this scorer and which
+  // isCrossMarketPlaybillUrl leaves alone (it only polices London vs NYC).
+  if (show.category === 'regional' && (isLondonUrl || urlMarket === 'broadway' || urlMarket === 'off-broadway')) return null;
   if (urlMarket === 'off-broadway') s += isOB ? 5 : -5;
   else if (urlMarket === 'broadway') s += isOB ? -5 : 5;
   else if (isLondonUrl) s += 5;

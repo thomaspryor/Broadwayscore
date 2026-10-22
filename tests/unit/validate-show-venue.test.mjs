@@ -874,3 +874,20 @@ test('BRO-2896: off-Broadway accepts Off-Off-Broadway, London categories accept 
   assert.deepEqual(compareShow(owe, tp('West End'), '').mismatches, []);
   assert.deepEqual(compareShow(owe, tp('Off-Broadway'), '').mismatches.map((m) => m.field), ['market']);
 });
+
+test('scorePlaybillUrl rejects Broadway pages for a regional run of the same title (BRO-5975)', () => {
+  // Both URLs are what the 2026-10-22 provisional-venue audit picked for these
+  // regional rows; each is an earlier New York production.
+  const purpose = { id: 'purpose-regional-2026', title: 'Purpose', venue: 'Huntington Theatre Company (Calderwood Pavilion), Boston, MA', category: 'regional' };
+  const topdog = { id: 'topdog-underdog-regional-2026', title: 'Topdog/Underdog', venue: 'Steppenwolf Theatre Company, Chicago, IL', category: 'regional' };
+  assert.equal(scorePlaybillUrl('https://playbill.com/production/purpose-broadway-helen-hayes-theatre-2025', purpose), null);
+  assert.equal(scorePlaybillUrl('https://playbill.com/production/topdog-underdog-broadway-john-golden-theatre-2022', topdog), null);
+  // The Broadway show itself still accepts its own page.
+  const purposeBway = { id: 'purpose-2025', title: 'Purpose', venue: 'Helen Hayes Theater', category: 'broadway' };
+  assert.notEqual(scorePlaybillUrl('https://playbill.com/production/purpose-broadway-helen-hayes-theatre-2025', purposeBway), null);
+  // Off-Broadway and London pages are other productions too; the regional run
+  // still takes its own regional page.
+  assert.equal(scorePlaybillUrl('https://playbill.com/production/purpose-off-broadway-the-public-theater-2024', purpose), null);
+  assert.equal(scorePlaybillUrl('https://playbill.com/production/topdog-underdog-london-ambassadors-theatre-2023', topdog), null);
+  assert.notEqual(scorePlaybillUrl('https://playbill.com/production/purpose-regional-huntington-theatre-company-2026', purpose), null);
+});

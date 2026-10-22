@@ -79,6 +79,10 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
     if (field === 'noPlaybillProductionPage' || field === 'ibdbRevivalChecked') {
       if (newValue !== true) return { ok: false, reason: `${field}: plans may only set true` };
     }
+    // Read as a boolean by the site and syncRevivalTags; "true" would pass every other guard.
+    if (field === 'isRevival' && typeof newValue !== 'boolean') {
+      return { ok: false, reason: `isRevival: must be true or false, got ${JSON.stringify(newValue)}` };
+    }
     if (field === 'statusBackfillSource') {
       if (typeof newValue !== 'string' || newValue.length <= 50) return { ok: false, reason: 'statusBackfillSource: needs a substantive (51+ char) source string' };
     }

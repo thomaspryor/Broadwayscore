@@ -62,6 +62,16 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+/** Mark checked shows done, except the ones whose revival finding is pending. */
+function markChecked(data, checked, pending) {
+  const pendingIds = new Set(pending.map(c => c.id));
+  for (const id of checked) {
+    if (pendingIds.has(id)) continue;
+    const showRecord = data.shows.find(s => s.id === id);
+    if (showRecord) showRecord.ibdbRevivalChecked = true;
+  }
+}
+
 async function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
@@ -122,6 +132,13 @@ async function main() {
     const showCategory = show.category || 'broadway';
     const result = await checkIBDBForPriorProductions(show.title, { currentYear: showYear, showCategory });
 
+    // Unsearched is not checked: leave it for the next run.
+    if (result.searchFailed) {
+      console.log(`  ⚠️  Search failed; "${show.title}" stays unchecked`);
+      if (i < shows.length - 1) await sleep(RATE_LIMIT_MS);
+      continue;
+    }
+
     if (result.isRevival && !shouldAcceptIbdbRevival(result, show)) {
       console.log(`  ➡️  IBDB title match ignored: synopsis describes a new work`);
     } else if (result.isRevival) {
@@ -138,21 +155,13 @@ async function main() {
 
     checked.push(show.id);
 
-    // Checkpoint every N shows (write ibdbRevivalChecked even in dry-run to track progress)
+    // Checkpoint every N shows. Only shows with no finding are marked: revival
+    // edits wait for the >5 safety gate below, so a gate trip never leaves a
+    // partly applied batch behind and the workflow can still push the marks
+    // (BRO-5975: discarding them re-queried the same 123 shows every week).
     if (!dryRun && checked.length % CHECKPOINT_INTERVAL === 0) {
       console.log(`\n💾 Checkpoint: saving progress (${checked.length} checked)...`);
-      for (const id of checked) {
-        const showRecord = data.shows.find(s => s.id === id);
-        if (showRecord) showRecord.ibdbRevivalChecked = true;
-      }
-      // Apply revival changes found so far
-      for (const c of changes) {
-        const showRecord = data.shows.find(s => s.id === c.id);
-        if (showRecord) {
-          showRecord.isRevival = true;
-          syncRevivalTags(showRecord);
-        }
-      }
+      markChecked(data, checked, changes);
       saveShows(data);
     }
 
@@ -184,15 +193,18 @@ async function main() {
   if (apply && changes.length > 5 && !force) {
     console.log(`⚠️  ${changes.length} shows would change. Use --force to confirm this many changes.`);
     console.log('   Review the list above first.');
+    // Keep the shows that had no finding, so the next run re-checks only the
+    // ones a human still has to review. The workflow pushes on gated=true.
+    markChecked(data, checked, changes);
+    saveShows(data);
+    if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, 'gated=true\n');
+    console.log(`   Saved ${checked.length - changes.length} no-finding show(s) as checked; the ${changes.length} above stay pending.`);
     process.exit(1);
   }
 
   // Apply changes
   if (apply) {
-    for (const id of checked) {
-      const showRecord = data.shows.find(s => s.id === id);
-      if (showRecord) showRecord.ibdbRevivalChecked = true;
-    }
+    markChecked(data, checked, []);
     for (const c of changes) {
       const showRecord = data.shows.find(s => s.id === c.id);
       if (showRecord) {
