@@ -12,12 +12,12 @@ on:
 
 concurrency:
   group: gitlab-mirror-review-texts
-  cancel-in-progress: true
+  cancel-in-progress: false  # BRO-5883: a superseded run is now a cancelled() alert
 
 jobs:
   mirror:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - name: Mirror clone from GitHub
         run: |
@@ -42,6 +42,19 @@ jobs:
           GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
           GITLAB_NAMESPACE: ${{ vars.GITLAB_NAMESPACE }}
 
+      - name: Verify mirror is in sync
+        run: |
+          GITHUB_SHA=$(cd repo.git && git rev-parse refs/heads/main)
+          GITLAB_SHA=$(git ls-remote "https://oauth2:${GITLAB_TOKEN}@gitlab.com/${GITLAB_NAMESPACE}/broadway-review-texts.git" main | cut -f1)
+          if [ "$GITHUB_SHA" != "$GITLAB_SHA" ]; then
+            echo "::error::Mirror out of sync! GitHub=$GITHUB_SHA GitLab=$GITLAB_SHA"
+            exit 1
+          fi
+          echo "Mirror verified: $GITHUB_SHA"
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
+          GITLAB_NAMESPACE: ${{ vars.GITLAB_NAMESPACE }}
+
       - name: Checkout for notify action
         if: failure() || cancelled()
         uses: actions/checkout@v5
@@ -58,16 +71,3 @@ jobs:
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
-
-      - name: Verify mirror is in sync
-        run: |
-          GITHUB_SHA=$(cd repo.git && git rev-parse refs/heads/main)
-          GITLAB_SHA=$(git ls-remote "https://oauth2:${GITLAB_TOKEN}@gitlab.com/${GITLAB_NAMESPACE}/broadway-review-texts.git" main | cut -f1)
-          if [ "$GITHUB_SHA" != "$GITLAB_SHA" ]; then
-            echo "::error::Mirror out of sync! GitHub=$GITHUB_SHA GitLab=$GITLAB_SHA"
-            exit 1
-          fi
-          echo "Mirror verified: $GITHUB_SHA"
-        env:
-          GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
-          GITLAB_NAMESPACE: ${{ vars.GITLAB_NAMESPACE }}

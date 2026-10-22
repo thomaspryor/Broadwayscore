@@ -22,6 +22,7 @@ for (const file of files) {
     const steps = Object.values(doc.jobs).flatMap((j) => j.steps || []);
     const gated = steps.filter((s) => /notify-failure/.test(String(s.uses || '')) || /notify action/i.test(String(s.name || '')));
     assert.ok(gated.length >= 2, 'expected checkout + notify steps');
+    assert.equal(steps[steps.length - 1].uses, './.github/actions/notify-failure', `${file}: notify must be the last step so a failing verify step alerts`);
     for (const s of gated) assert.match(String(s.if), /cancelled\(\)/, `${file} / ${s.name}: if=${s.if}`);
   });
 }
