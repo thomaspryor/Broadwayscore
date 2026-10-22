@@ -255,31 +255,6 @@ jobs:
         with:
           workflow-name: update-reddit-sentiment
 
-      - name: Alert once if Reddit has been down 48h
-        # BRO-5916: digest line (not an email) after 48h without a successful scrape;
-        # resolves on the first success. Also covers runs that skipped on cooldown.
-        if: always()
-        env:
-          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
-        run: node scripts/reddit-stale-alert.js
-
-      - name: Commit Reddit run-health ledger
-        # BRO-5916: cross-run cooldown state (scripts/lib/reddit-dispatch-cooldown.js).
-        # The scraper appends one row per run ('ok' | 'unavailable' | 'alerted'); the
-        # next dispatch reads it from main and skips instead of burning proxy credits.
-        # always(): the circuit-breaker exit 1 still has to persist its row.
-        if: always()
-        continue-on-error: true
-        run: |
-          # alert state from reddit-stale-alert.js (alert-ledger-commit-check)
-          git add data/audit/reddit-run-health.jsonl data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl data/audit/alert-digest-queue.json 2>/dev/null || true
-          if git diff --staged --quiet; then
-            echo "No Reddit run-health rows to commit"
-          else
-            git commit -m "chore: Record Reddit run-health ledger"
-            PUSH_RECONCILE_MERGED_JSON=1 bash scripts/lib/push-with-retry.sh
-          fi
-
       - name: Dispatch deploy
         if: always() && steps.freshness.outputs.skip != 'true'
         uses: ./.github/actions/dispatch-deploy

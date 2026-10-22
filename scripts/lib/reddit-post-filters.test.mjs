@@ -10,7 +10,6 @@ const {
   commentAnchorsToShow,
   otherSourceReviewCounts,
   buildAudienceSearchQueries,
-  selectPostsForComments,
   isPreFixReddit,
   isRefreshStaleCandidate,
   refreshStaleSortKey,
@@ -333,17 +332,4 @@ test('partitionRequestedShows (BRO-5094): not-yet-started shows are skipped, unk
   const onlyUpcoming = partitionRequestedShows(['c-2027'], all);
   assert.equal(onlyUpcoming.active.length, 0);
   assert.equal(onlyUpcoming.unknown.length, 0, 'an all-upcoming dispatch is not an error');
-});
-
-test('selectPostsForComments keeps unknown-count (RSS) posts, capped, after known >=3 ones (BRO-5916)', () => {
-  const posts = [
-    { id: 'a', num_comments: 1 },
-    { id: 'b', num_comments: 9 },
-    ...Array.from({ length: 20 }, (_, i) => ({ id: `u${i}` })), // RSS: no count
-  ];
-  const ids = selectPostsForComments(posts).map(p => p.id);
-  assert.equal(ids[0], 'b');
-  assert.ok(!ids.includes('a'), 'known low-count post still dropped');
-  assert.equal(ids.length, 1 + 12, 'unknown capped at 12');
-  assert.deepEqual(selectPostsForComments([{ id: 'z', num_comments: 0 }]), []);
 });

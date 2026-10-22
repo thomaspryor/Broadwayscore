@@ -27,16 +27,14 @@
  *   --limit=N       Process at most N shows
  *   --skip=N        Skip first N shows (for continuation after timeout)
  *   --verbose       Extra logging
- *   --ignore-cooldown  Run even if the last runs found every Reddit route down (BRO-5916)
  *   --shard=N --total-shards=M   Parallel shard mode
  */
 
 const fs = require('fs');
 const path = require('path');
 const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/reddit-api');
-const cooldown = require('./lib/reddit-dispatch-cooldown');
 const { computeProductionWindow, isPostInProductionWindow } = require('./lib/production-window');
-const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey, isOwnerComment, isRedditFresh, redditBackoffReason, redditSaveDecision, partitionRequestedShows, selectPostsForComments } = require('./lib/reddit-post-filters');
+const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey, isOwnerComment, isRedditFresh, redditBackoffReason, redditSaveDecision, partitionRequestedShows } = require('./lib/reddit-post-filters');
 
 // A single roundup/megathread can hold hundreds of comments about dozens of
 // shows. Even after excluding such posts by title, cap how many comments any
@@ -55,7 +53,6 @@ const args = process.argv.slice(2);
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const showsArg = args.find(a => a.startsWith('--shows='))?.split('=')[1];
 const dryRun = args.includes('--dry-run');
-const ignoreCooldown = args.includes('--ignore-cooldown');
 const verbose = args.includes('--verbose');
 const includeAll = args.includes('--all');
 const limitArg = args.find(a => a.startsWith('--limit='));
@@ -251,7 +248,7 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { cat
 
     try {
       // Fetch up to 300 per query (3 pages) to compensate for date filtering
-      const posts = await searchAllPosts(subreddit, query, 300, { allowRss: true }); // BRO-5916: free RSS when JSON is blocked
+      const posts = await searchAllPosts(subreddit, query, 300);
       totalSearched += posts.length;
 
       // Track raw volume before dedup (for display: "Based on ~X Reddit discussions")
@@ -416,7 +413,8 @@ async function collectShowComments(show) {
   // Don't re-sort by engagement (that drowns out good posts with high-engagement meta threads)
   // The LLM will filter out irrelevant comments - we just need to give it good posts to work with
   // Filter out posts with very few comments (saves API calls on comment fetching)
-  const topPosts = selectPostsForComments(posts);  // <=75: broad enough for statistical stability; unknown-count (RSS) posts kept, capped
+  const postsWithComments = posts.filter(p => (p.num_comments || 0) >= 3);
+  const topPosts = postsWithComments.slice(0, 75);  // Broad enough for statistical stability
 
   if (verbose) {
     console.log(`  Top 5 posts (by Reddit search relevance):`);
@@ -438,7 +436,7 @@ async function collectShowComments(show) {
   let comments = [];
   for (const [sr, srPosts] of postsBySubreddit) {
     try {
-      const srComments = await collectCommentsFromPosts(sr, srPosts, 10000, MAX_COMMENTS_PER_POST, { allowRss: true });
+      const srComments = await collectCommentsFromPosts(sr, srPosts, 10000, MAX_COMMENTS_PER_POST);
       comments.push(...srComments);
     } catch (e) {
       console.error(`  Comment collection failed in r/${sr}: ${e.message}`);
@@ -594,20 +592,6 @@ function saveAudienceBuzz() {
   return true;
 }
 
-// Record the run for the cross-run cooldown. "unavailable" = every fetch this
-// run failed (or the breaker tripped); any successful fetch counts as healthy.
-function recordRunHealth(processed, successful) {
-  const sessionStats = getStats();
-  const attemptedFetches = sessionStats.fetchOk + sessionStats.fetchFail;
-  if (dryRun || attemptedFetches === 0) return;
-  const unavailable = sessionStats.circuitBroken || sessionStats.fetchOk === 0;
-  cooldown.appendRow({
-    ts: new Date().toISOString(),
-    outcome: unavailable ? 'unavailable' : 'ok',
-    note: `fetchOk=${sessionStats.fetchOk} fetchFail=${sessionStats.fetchFail} rss=${sessionStats.redditRss} shows=${processed} withData=${successful}`,
-  });
-}
-
 /**
  * Main function
  */
@@ -627,18 +611,6 @@ async function main() {
   if (!process.env.OPENROUTER_API_KEY && !process.env.GEMINI_API_KEY && !process.env.OPENAI_API_KEY && !process.env.ANTHROPIC_API_KEY) {
     console.error('Error: At least one of OPENROUTER_API_KEY, GEMINI_API_KEY, OPENAI_API_KEY, or ANTHROPIC_API_KEY must be set');
     process.exit(1);
-  }
-
-  // Cross-run cooldown (BRO-5916): when the last runs all ended with every
-  // Reddit route unavailable, skip instead of re-burning proxy credits. Manual
-  // single-show runs, dry runs and --ignore-cooldown always go through.
-  if (!dryRun && !showFilter && !ignoreCooldown) {
-    const verdict = cooldown.decideCooldown(cooldown.readLedger());
-    if (verdict.skip) {
-      console.log(`⏸ ${verdict.reason}. Skipping this run (no credits spent). Use --ignore-cooldown to force.`);
-      process.exit(0); // the workflow's stale-alert step (scripts/reddit-stale-alert.js) still runs
-    }
-    if (verdict.consecutiveUnavailable > 0) console.log(`Reddit health: ${verdict.reason}`);
   }
 
   // All active shows (open + previews + closed)
@@ -790,7 +762,6 @@ async function main() {
   for (const show of shows) {
     try {
       const errorsBefore = getStats().errors;
-      const rssBefore = getStats().redditRss;
       const redditData = await processShow(show);
       processed++;
       // reddit-api swallows per-post comment failures and breaker-open skips
@@ -798,9 +769,6 @@ async function main() {
       // result can't be trusted as "no discussion".
       const after = getStats();
       if (after.errors > errorsBefore || after.circuitBroken) showFetchFailed = true;
-      // RSS-served data is truncated (25 search results, unscored comments): never let
-      // it demote a healthy prior sample or grow the no-data backoff streak (BRO-5916).
-      if (after.redditRss > rssBefore) showFetchFailed = true;
 
       const prevReddit = audienceBuzz.shows[show.id] && audienceBuzz.shows[show.id].sources
         ? audienceBuzz.shows[show.id].sources.reddit : undefined;
@@ -853,8 +821,6 @@ async function main() {
       if (verbose) console.error(e.stack);
     }
   }
-
-  recordRunHealth(processed, successful); // before any exit path below
 
   // Validation guard for full runs
   if (!showFilter && !showsArg && !shardMode && shows.length > 5) {
