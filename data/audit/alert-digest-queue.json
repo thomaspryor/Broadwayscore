@@ -580,5 +580,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-22T22:14:02.245Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5744-live-art-audit",
+    "title": "Landing blocked: rebase red on land/bro-5744-live-art-audit",
+    "description": "land.yml did not land land/bro-5744-live-art-audit: the rebase gate went red at 5a4030e3af. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39867784086",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5744-live-art-audit"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "5a4030e3af62e28809c46636d451b8a827c28953"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39867784086"
+      }
+    ],
+    "queuedAt": "2026-10-22T22:52:46.498Z"
   }
 ]
