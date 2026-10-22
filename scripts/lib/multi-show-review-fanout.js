@@ -467,6 +467,24 @@ const HEAD_ONLY_MIN_SHARE = 0.25;
  * (where a capsule column puts its star rating). The shared head is dropped:
  * it can hold the other shows' verdicts and stars.
  */
+// Full names and surnames of the show's cast and creative team, normalised.
+function creditedNames(show) {
+  const out = new Set();
+  for (const p of [...(show.cast || []), ...(show.creativeTeam || [])]) {
+    const name = normTitle(String((p && (p.name || p.actor)) || p || ''));
+    if (!name) continue;
+    out.add(name);
+    const parts = name.split(' ');
+    if (parts.length > 1) out.add(parts[parts.length - 1]);
+  }
+  return out;
+}
+
+function normTitle(t) {
+  return String(t).toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
 function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
   const ownShow = shows.find((s) => s.id === ownShowId) || null;
   if (!ownShow) return [];
@@ -480,8 +498,12 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
   if (!ownOpen || ownOpen < pub - before * DAY_MS || ownOpen > pub + WINDOW_AFTER_DAYS * DAY_MS) return [];
   const cands = dedupeProductions(candidateShows(shows, ownShow, publishDate), ownShowId, publishDate);
 
+  const people = creditedNames(ownShow);
   const byShow = new Map();
   for (const show of cands) {
+    // Another show titled after someone credited on this one ("Sting" for
+    // The Last Ship) is that person, not a second review.
+    if (show.id !== ownShowId && people.has(normTitle(show.title))) continue;
     const m = buildJointMatcher(show);
     if (!m) continue;
     const ms = jointMentions(m, text);

@@ -261,6 +261,16 @@ test('no head route with a tail: a closing listing must name every show', () => 
   assert.equal(plan(ID.Midnight, text), null);
 });
 
+test('a show titled after someone credited on the reviewed show is that person, not a second review', () => {
+  // "Sting" (a play) vs Sting, songwriter of The Last Ship: here the
+  // Benjamin Button company credits someone surnamed Midnight.
+  const shows = SHOWS.map((s) => (s.id === ID['The Curious Case of Benjamin Button']
+    ? { ...s, creativeTeam: [{ name: 'Ava Midnight', role: 'Composer' }] } : s));
+  const doc = base({ showId: ID['The Curious Case of Benjamin Button'], publishDate: '2026-10-20', fullText: NYT_TWO });
+  assert.ok(planMultiShowFanout(doc, SHOWS, { joint: true }));
+  assert.equal(planMultiShowFanout(doc, shows, { joint: true }), null);
+});
+
 test('a one-word title opening ordinary sentences is not a mention', () => {
   const text = [
     `“Midnight” is a long night out. ${filler('lantern', 6)} “Midnight” never rests.`,
