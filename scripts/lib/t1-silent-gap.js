@@ -23,27 +23,19 @@
 'use strict';
 
 const { isEmptyBodyFile, isRecoverableFlaggedFile } = require('./flagged-recovery');
-const { isRoundupPageAsReview, isIncludableForRebuild, hasValidScore, hasAggregatorExcerpt, explainExclusion } = require('./review-guards');
+const { isRoundupPageAsReview, isIncludableForRebuild, hasValidScore, hasAggregatorExcerpt, explainExclusion, hasIncludableSyndicationPrimary } = require('./review-guards');
 
 // explainExclusion() reasons where a SIBLING file carries the same review into
 // the score, so this file's absence is resolved, not a gap (BRO-4457).
 const SIBLING_SHIELDED_REASONS = new Set(['knownSyndicationSecondary']);
 
-// explainExclusion's 'knownSyndicationSecondary' only checks the primary is not
-// flagged wrongShow/duplicate/etc. COLLECTED must mean the review actually
-// reaches the score, so also require a sibling primary that rebuild includes
-// AND that carries a valid score (ship-check BRO-4457: an isRoundupArticle /
-// fabricatedEntry / unscored primary must leave the card OPEN).
+// explainExclusion's 'knownSyndicationSecondary' needs an includable primary
+// (BRO-5901) but not a scored one. COLLECTED must mean the review actually
+// reaches the score, so also require that primary to carry a valid score
+// (ship-check BRO-4457: an unscored primary must leave the card OPEN).
 function siblingPrimaryReachesScore(file, filePath, show) {
-  const path = require('path');
-  const synd = require('./syndication-pairs');
-  const { normalizeOutlet } = require('./review-normalization');
-  try {
-    const primaries = synd.getSyndicationPrimaries(file.criticName, normalizeOutlet(file.outletId || file.outlet || ''));
-    return synd.hasLiveSyndicationPrimary(path.dirname(filePath), primaries, file.criticName, {
-      extraCheck: (p, pPath) => isIncludableForRebuild(p, show, pPath) && hasValidScore(p),
-    });
-  } catch { return false; }
+  // BRO-5901: one shared rule with explainExclusion's knownSyndicationSecondary.
+  try { return hasIncludableSyndicationPrimary(file, show, filePath, { requireScore: true }); } catch { return false; }
 }
 const { classifyReviewUrl, listingPageUrlReason } = require('./non-review-url-patterns');
 const { isForumLinkRecoverable } = require('./talkinbroadway-forum-link');

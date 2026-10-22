@@ -41,8 +41,9 @@ function mkShowDir(files) {
 
 test('rebuild guard excludes a group-secondary copy when the primary exists', () => {
   const { show } = mkShowDir({
-    'chicagotribune--jane-roe.json': { criticName: 'Jane Roe', outletId: 'chicagotribune', url: 'https://chicagotribune.com/a' },
-    'baltimoresun--jane-roe.json': { criticName: 'Jane Roe', outletId: 'baltimoresun', url: 'https://baltimoresun.com/a' },
+    // BRO-5901: the primary only shields when it is itself includable (has text).
+    'chicagotribune--jane-roe.json': { criticName: 'Jane Roe', outletId: 'chicagotribune', url: 'https://chicagotribune.com/a', fullText: 'Review body.' },
+    'baltimoresun--jane-roe.json': { criticName: 'Jane Roe', outletId: 'baltimoresun', url: 'https://baltimoresun.com/a', fullText: 'Review body.' },
   });
   const sec = JSON.parse(fs.readFileSync(path.join(show, 'baltimoresun--jane-roe.json'), 'utf8'));
   assert.equal(explainExclusion(sec, null, path.join(show, 'baltimoresun--jane-roe.json')), 'knownSyndicationSecondary');

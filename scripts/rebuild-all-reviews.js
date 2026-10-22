@@ -68,7 +68,7 @@ const emitExcludedStage = createExcludedStageEmitter();
 let _heldTrackedShows = null; // lazy: readTrackedShowIds() once per run, only if a held show is seen
 const { buildMultiProdDirectorGuard, inheritPriorRunReviews, findPriorRunSiblings, supersededPriorRunReviews, preWindowExemptPriorRuns } = require('./lib/prior-run-sibling');
 const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isSoft404Body } = require('./lib/soft-404-body');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
@@ -123,6 +123,7 @@ const { rebuildPreWindowHold } = require('./lib/date-guard-hold');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
 const { safeWriteReview, writeReviewOrThrow, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear, retractScriptWrongProductionClear } = require('./lib/review-write-guard');
 const { KNOWN_SYNDICATION_PAIRS, getSyndicationPrimaries, hasLiveSyndicationPrimary } = require('./lib/syndication-pairs');
+const { createClaimLedger, primaryFilesFor, unknownOutletShadowTargets, orderAfterDependencies, syndicationShieldDecision, shadowShieldDecision } = require('./lib/dedup-survivor');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
 const { writeShowExclusionsFile, writeDailyExclusionTotals } = require('./lib/rebuild-exclusion-audit');
 const { isRebuildPaused, readRebuildPause, REBUILD_PAUSE_PATH } = require('./lib/rebuild-pause');
@@ -369,7 +370,10 @@ function flagForHumanReview(data, reason, detail) {
 // Rebuild only consumes pre-stored originalScore via parseOriginalScore().
 
 // Paths
-const reviewTextsDir = path.join(__dirname, '../data/review-texts');
+// REBUILD_REVIEW_TEXTS_DIR (tests only, with --show= diagnostic mode): read a
+// fixture tree instead of data/review-texts. Same convention as
+// REBUILD_EXCLUSION_AUDIT_DIR. BRO-5901's end-to-end test uses it.
+const reviewTextsDir = process.env.REBUILD_REVIEW_TEXTS_DIR || path.join(__dirname, '../data/review-texts');
 
 // BRO-5398: the one "is this byline a placeholder?" test shared by the dedup sort
 // and the placeholder-twin dedup, fed exactly what the emit-time displayCriticName
@@ -2733,10 +2737,19 @@ showDirs.forEach(showId => {
   // Priority: non-duplicate > scored > named (not Unknown) > non-outlet-as-critic >
   // verified > byline-attested > ensemble-scored > alphabetical. See compareFilesForDedupPriority's
   // doc comment (task #1406) for why "scored" outranks "named".
-  const files = allJsonFiles.sort((a, b) => {
+  allJsonFiles.sort((a, b) => {
     const am = sortMeta.get(a), bm = sortMeta.get(b);
     return compareFilesForDedupPriority({ file: a, ...am }, { file: b, ...bm });
   });
+  // BRO-5901: a file whose fate depends on another file's (a syndicated
+  // secondary on its primary, an unknown-outlet shadow on the named-outlet
+  // copy) is processed after it, so the decision below can use what was
+  // really emitted instead of guessing from the file on disk.
+  const dedupMetaByFile = new Map(bylineRecoveryRecords.map(r => [r.file, { criticName: r.criticName, outletKey: r.outletId }]));
+  const files = orderAfterDependencies(allJsonFiles, (f, list) => [
+    ...primaryFilesFor(f, dedupMetaByFile.get(f), list),
+    ...unknownOutletShadowTargets(f, list),
+  ]);
 
   // Preserve any exclusions already buffered for this showId (e.g. a prior
   // skippedPreviewsShows/skippedUpcomingShows logExclusion call for the same
@@ -2770,7 +2783,18 @@ showDirs.forEach(showId => {
     console.log(`  [TWIN URL CARRY:${statKey}] ${fromLabel} -> ${target.file}: ${url}`);
   };
 
+  // BRO-5901: dedup claims are only kept by files that are emitted. A file
+  // that wins dedup and then dies at a later gate (contamination,
+  // skippedNoScore) gives its claims back and is recorded as released, so the
+  // next copy in priority order can still ship.
+  const ledger = createClaimLedger();
+  const processedFiles = new Set();
+  const emittedFiles = new Set();
+  const releasedFiles = new Set();
+
   files.forEach(file => {
+    processedFiles.add(file);
+    ledger.begin();
     try {
       const filePath = path.join(showDir, file);
       const rawContent = fs.readFileSync(filePath, 'utf8');
@@ -4258,11 +4282,20 @@ showDirs.forEach(showId => {
         const outletSynd = normalizeOutletCanonical(data.outletId || data.outlet || '');
         const syndPrimaries = getSyndicationPrimaries(criticSynd, outletSynd);
         if (syndPrimaries.length) {
-          // Only skip secondary if the primary file is unflagged (not wrongProduction/wrongShow).
-          // A flagged primary shouldn't block a valid secondary — e.g., OB theatermania flagged
-          // but Broadway whatsonstage is the real review for this production.
-          const hasPrimary = hasLiveSyndicationPrimary(showDir, syndPrimaries, criticSynd, { fileNames: allJsonFiles });
-          if (hasPrimary) {
+          // Skip the secondary only if a primary copy actually ships. Primaries
+          // are processed first (orderAfterDependencies above), so this is
+          // their real fate: a flagged primary (OB theatermania flagged while
+          // Broadway whatsonstage is the real review) or one that died at a
+          // later gate such as skippedNoScore (BRO-5901, paranormal-activity-2026
+          // Tribune/NYDN) no longer takes the secondary down with it.
+          const shield = syndicationShieldDecision({
+            primaryFiles: primaryFilesFor(file, { criticName: criticSynd, outletKey: outletSynd }, files),
+            processed: processedFiles,
+            emitted: emittedFiles,
+            fallback: () => hasLiveSyndicationPrimary(showDir, syndPrimaries, criticSynd, { fileNames: allJsonFiles }),
+          });
+          if (shield.basis === 'fallback') stats.syndicationShieldFallback = (stats.syndicationShieldFallback || 0) + 1;
+          if (shield.skip) {
             logExclusion("skippedSyndicated", showId, file, data);
             stats.skippedSyndicated = (stats.skippedSyndicated || 0) + 1;
             return;
@@ -5052,9 +5085,13 @@ showDirs.forEach(showId => {
       // filtered by other guards (e.g., duplicateOf).
       if (/^(unknown|unnamed)$/.test(outletKey) && !/^(unknown|unnamed)$/.test(criticKey)) {
         const criticSuffix = `--${criticKey}.json`;
-        const knownOutletFileExists = files.some(f =>
-          f !== file && f.endsWith(criticSuffix) && !(/^(unknown|unnamed)--/.test(f))
-        );
+        // BRO-5901: a known-outlet file that won dedup and then died at a
+        // later gate (released) no longer shields; one dropped earlier (e.g.
+        // duplicateOf) or not yet processed still does.
+        const knownOutletFileExists = shadowShieldDecision({
+          targets: files.filter(f => f !== file && f.endsWith(criticSuffix) && !(/^(unknown|unnamed)--/.test(f))),
+          released: releasedFiles,
+        });
         if (knownOutletFileExists) {
           console.log(`  [UNKNOWN-OUTLET DEDUP] ${showId}/${file}: critic ${criticKey} has known-outlet file in directory (skipping)`);
           logExclusion("skippedUnknownOutletDedup", showId, file, data);
@@ -5115,7 +5152,7 @@ showDirs.forEach(showId => {
         return;
       }
 
-      seenKeys.add(dedupKey);
+      ledger.addClaim(seenKeys, dedupKey);
 
       // URL dedup: same URL at same outlet under different critic names
       if (data.url) {
@@ -5159,7 +5196,7 @@ showDirs.forEach(showId => {
             return;
           }
         } else {
-          seenUrlsByOutlet.set(urlDedupKey, { file, critic: currentCritic });
+          ledger.setClaim(seenUrlsByOutlet, urlDedupKey, { file, critic: currentCritic });
         }
 
         // Cross-outlet URL dedup: same URL filed under different outlets (e.g., unknown + nytimes)
@@ -5185,7 +5222,7 @@ showDirs.forEach(showId => {
             return;
           }
         } else {
-          seenUrlsGlobal.set(normalizedUrl, { file, critic: currentCritic });
+          ledger.setClaim(seenUrlsGlobal, normalizedUrl, { file, critic: currentCritic });
         }
       }
 
@@ -5230,7 +5267,7 @@ showDirs.forEach(showId => {
                 reason: `swapped for ${file} (critic matches outlet.defaultCritic)`,
               });
               stats.swappedFingerprintToDefault = (stats.swappedFingerprintToDefault || 0) + 1;
-              seenFingerprintsByOutlet.set(fpKey, { file, criticKey: incomingCriticKey });
+              ledger.setClaim(seenFingerprintsByOutlet, fpKey, { file, criticKey: incomingCriticKey });
               // Don't `return` — let the incoming file flow through to output below.
             } else {
               console.log(`  [FINGERPRINT DEDUP] ${showId}/${file}: same text as ${winnerFile} at ${outletKey2} (keeping ${winnerFile})`);
@@ -5239,7 +5276,7 @@ showDirs.forEach(showId => {
               return;
             }
           } else {
-            seenFingerprintsByOutlet.set(fpKey, { file, criticKey: incomingCriticKey });
+            ledger.setClaim(seenFingerprintsByOutlet, fpKey, { file, criticKey: incomingCriticKey });
           }
 
           // Cross-outlet fingerprint dedup: same article filed under different outlet names
@@ -5251,9 +5288,13 @@ showDirs.forEach(showId => {
             stats.skippedCrossOutletFingerprintDedup = (stats.skippedCrossOutletFingerprintDedup || 0) + 1;
             return;
           }
-          seenFingerprintsGlobal.set(fingerprint, { file, criticKey: incomingCriticKey });
+          ledger.setClaim(seenFingerprintsGlobal, fingerprint, { file, criticKey: incomingCriticKey });
         }
       }
+
+      // BRO-5901: this file has won every dedup check. From here on, any drop
+      // (contamination, skippedNoScore, a thrown error) gives the claims back.
+      ledger.arm();
 
       // CONTAMINATION SAFETY NET: Check fullText for tour/film signals on reviews
       // that haven't been through the LLM ensemble's Step 0 rejection check.
@@ -5595,6 +5636,8 @@ showDirs.forEach(showId => {
 
       allReviews.push(review);
       reviewSourceFile.set(review, file);
+      emittedFiles.add(file);
+      ledger.commit();
       if (!/^(unknown|unnamed)$/.test(criticKey)) {
         if (!keptNamedByOutlet.has(outletKey)) keptNamedByOutlet.set(outletKey, []);
         keptNamedByOutlet.get(outletKey).push({ review, fullText: data.fullText, file });
@@ -5619,6 +5662,13 @@ showDirs.forEach(showId => {
         console.error(`  Error processing ${file}: ${e.message}`);
         logExclusion("skippedProcessingError", showId, file, null, { error: e.message.substring(0, 200) });
         stats.skippedProcessingError = (stats.skippedProcessingError || 0) + 1;
+      }
+    } finally {
+      const undone = ledger.rollback();
+      if (undone !== null) {
+        releasedFiles.add(file);
+        stats.dedupClaimsReleased = (stats.dedupClaimsReleased || 0) + 1;
+        if (undone > 0) console.log(`  [DEDUP RELEASE] ${showId}/${file}: won dedup but was dropped later; ${undone} claim(s) released for the next copy`);
       }
     }
   });
@@ -5871,7 +5921,7 @@ if (fs.existsSync(reviewsJsonPath)) {
                   const criticLc = (d.criticName || '').toLowerCase().trim();
                   const outletLc = normalizeOutletCanonical(d.outletId || d.outlet || '');
                   const prims = getSyndicationPrimaries(criticLc, outletLc);
-                  if (prims.length && hasLiveSyndicationPrimary(showDir, prims, criticLc)) wouldBeExcluded = true;
+                  if (prims.length && hasIncludableSyndicationPrimary(d, showById[showId], path.join(showDir, f), { primaries: prims })) wouldBeExcluded = true;
                 }
                 if (wouldBeExcluded) {
                   inlineGuardWouldExclude++;
@@ -6734,6 +6784,7 @@ if (stats.wrongProductionInWindowVetoed || stats.wrongShowInWindowVetoed) {
 console.log(`  Outlet id vs URL host mismatches (audit-only, outletHostMismatch:true on the row): ${stats.outletHostMismatch || 0} (${stats.outletHostMismatchTierDiffers || 0} with differing tiers)`);
 console.log(`  Skipped (non-review): ${stats.skippedNonReview || 0}`);
 console.log(`  Skipped (syndicated duplicate): ${stats.skippedSyndicated || 0}`);
+console.log(`  Dedup winners dropped later, claims released (BRO-5901): ${stats.dedupClaimsReleased || 0}`);
 console.log(`  Skipped (cross-outlet duplicate): ${stats.skippedCrossOutletDupe || 0}`);
 console.log(`  Skipped (previews shows): ${stats.skippedPreviewsShows || 0}`);
 console.log(`  Skipped (upcoming shows): ${stats.skippedUpcomingShows || 0}`);

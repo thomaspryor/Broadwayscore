@@ -5197,7 +5197,7 @@ function explainExclusion(data, show, filePath, opts) {
       if (syndPrimaries.length) {
         let hasPrimary = false;
         try {
-          hasPrimary = synd.hasLiveSyndicationPrimary(require('path').dirname(filePath), syndPrimaries, data.criticName);
+          hasPrimary = hasIncludableSyndicationPrimary(data, show, filePath, { primaries: syndPrimaries, opts });
         } catch { /* show dir unreadable — fall through, don't exclude */ }
         if (hasPrimary) return 'knownSyndicationSecondary';
       }
@@ -5342,6 +5342,37 @@ function explainExclusion(data, show, filePath, opts) {
   if (!hasText && !hasAggregatorSignal) return 'noTextOrScoreSignal';
 
   return null;
+}
+
+/**
+ * BRO-5901: a syndication primary shields its secondary only when the primary
+ * can itself reach the site: explainExclusion(primary) === null (scored OR still
+ * scoreable). isLiveSyndicationPrimary alone checks a handful of flags, so a
+ * primary excluded by any other guard dropped BOTH copies. The score is NOT
+ * required by default: on opening night both copies arrive unscored, and the
+ * secondary must stay out of the scorer and the broadcast gate while the
+ * primary waits for its score (verify-all-scored.js isScoreableSurvivor, Other
+ * Desert Cities 2026). The rebuild loop decides on the primary's real fate
+ * instead (scripts/lib/dedup-survivor.js), which covers the unscored window.
+ * `requireScore` is the stricter "reaches the score today" form
+ * (t1-silent-gap.js, BRO-4457). Recursion is bounded: a primary's own
+ * primaries sit strictly earlier in the syndication order.
+ * @param {object} data the secondary's review-text JSON
+ * @param {object} show
+ * @param {string} filePath the secondary's path (its directory is scanned)
+ * @param {{primaries?: string[], requireScore?: boolean, opts?: object}} [options]
+ *   primaries: precomputed getSyndicationPrimaries result; opts: explainExclusion opts for the primary
+ * @returns {boolean}
+ */
+function hasIncludableSyndicationPrimary(data, show, filePath, { primaries, requireScore = false, opts } = {}) {
+  if (!data || !filePath) return false;
+  const synd = require('./syndication-pairs');
+  const prims = primaries || synd.getSyndicationPrimaries(data.criticName,
+    require('./review-normalization').normalizeOutlet(data.outletId || data.outlet || ''));
+  if (!prims.length) return false;
+  return synd.hasLiveSyndicationPrimary(require('path').dirname(filePath), prims, data.criticName, {
+    extraCheck: (p, pPath) => (!requireScore || hasValidScore(p)) && explainExclusion(p, show, pPath, opts) === null,
+  });
 }
 
 /**
@@ -6231,6 +6262,7 @@ module.exports = {
   resolveStaleWrongProductionRecovery,
   pickRerouteTarget,
   isIncludableForRebuild,
+  hasIncludableSyndicationPrimary,
   isNamedNonReviewUrlRecord,
   isCancelledBeforeOpeningShow,
   isUnverifiableWebSearchRow,
