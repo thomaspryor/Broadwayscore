@@ -36,8 +36,18 @@ on:
         required: false
         type: boolean
         default: false
+      time_budget_min:
+        description: 'Research wall-clock budget in minutes (0 = unlimited). Under the 90-min job timeout so the push steps still run.'
+        required: false
+        type: number
+        default: 70
   workflow_call:
     inputs:
+      time_budget_min:
+        description: 'Research wall-clock budget in minutes (0 = unlimited). Under the 90-min job timeout so the push steps still run.'
+        required: false
+        type: number
+        default: 70
       shows:
         required: false
         type: string
@@ -114,6 +124,13 @@ jobs:
           fi
           ARGS="$ARGS --budget=${{ inputs.budget || '50' }}"
           ARGS="$ARGS --max-shows=${{ inputs.max_shows || '10' }}"
+          # Stop researching before the 90-min job timeout so the core-data push
+          # step still runs (run 39717682536 timed out at 32/76 shows and pushed
+          # nothing). Default in bash, not a GHA ||, so a literal 0 (= unlimited)
+          # is not coerced to the default (same pattern as commercial-weekly.yml).
+          TB="${{ inputs.time_budget_min }}"
+          [ -z "$TB" ] && TB=70
+          ARGS="$ARGS --time-budget-min=$TB"
 
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
