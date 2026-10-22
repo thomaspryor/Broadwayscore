@@ -204,6 +204,16 @@ export function generateBreadcrumbSchema(items: { name: string; url: string }[])
   };
 }
 
+/**
+ * eventStatus for a run: EventScheduled only while it is still running.
+ * schema.org has no "ended" value, so a closed run (or one whose endDate has
+ * passed) omits the field rather than claim it is scheduled (BRO-5967).
+ */
+export function eventStatusField(status?: string, endDate?: string | null, today = new Date().toISOString().slice(0, 10)) {
+  if (status === 'closed' || (endDate && endDate < today)) return {};
+  return { eventStatus: 'https://schema.org/EventScheduled' };
+}
+
 // TheaterEvent Schema with full details (enhanced)
 /** Upcoming engagements emitted as subEvents of a tour's TheaterEvent. */
 const TOUR_SUB_EVENTS_MAX = 10;
@@ -296,7 +306,7 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
     ...(show.closingDate && { endDate: show.closingDate }),
     ...(show.images?.hero && { image: toAbsoluteUrl(show.images.hero) }),
     ...(lastUpdated && { dateModified: lastUpdated }),
-    eventStatus: 'https://schema.org/EventScheduled',
+    ...eventStatusField(show.status, show.closingDate),
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
     // @id makes this entity referenceable by @id from critic Review schemas
     // in the same @graph document (see show page injection in page.tsx).
@@ -343,8 +353,8 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
     const onSaleBy = onSaleCandidate && onSaleCandidate <= new Date().toISOString().slice(0, 10)
       ? onSaleCandidate
       : undefined;
-    if (visibleLinks.length > 0) {
-      schema.offers = visibleLinks.map(link => ({
+    if (visibleLinks.some(link => link.priceFrom)) {
+      schema.offers = visibleLinks.filter(link => link.priceFrom).map(link => ({
         '@type': 'Offer',
         url: link.url,
         priceCurrency: currency,
@@ -381,110 +391,9 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
   return schema;
 }
 
-// Contrastive openers signal a mid-review qualifier (e.g. "But the second act
-// drags...") rather than a blurb-quality quote. Strip these because Google
-// review snippets show the quote next to the show title in SERPs.
-const CONTRASTIVE_OPENER_RE = /^\s*(but|however|still|yet|though|although|granted|unfortunately|fortunately|sadly|alas|nevertheless|nonetheless|honestly)\b/i;
-
-// Buckets that signal a positive critical reception. Used to gate which
-// reviews are eligible for SERP-facing CriticReview snippets.
-const POSITIVE_BUCKETS = new Set(['rave', 'positive']);
-
-// CriticReview Schema - Top-level Review objects pointing back to the show.
-//
-// This is the supported pattern for Google's "review snippet" rich result on
-// Event types. The earlier attempt nested `review` arrays inside TheaterEvent
-// (commit de1f2cba09) and was rejected by GSC with "Invalid object type for
-// field '<parent_node>'". Top-level Review objects with `itemReviewed` are the
-// correct shape per https://developers.google.com/search/docs/appearance/structured-data/review-snippet
-//
-// Eligible reviews:
-//   - T1/T2 outlets only
-//   - Score >= 70 OR positive bucket (Rave/Positive). Negative quotes will hurt
-//     CTR if Google renders them next to the show title — better no snippet
-//     than a bad snippet.
-//   - Excerpt >= 30 chars and doesn't open with a contrastive conjunction
-//     ("But...", "However...", etc) which signals a mid-review qualifier.
-// Capped at 8 to keep JSON-LD payload small. Each Review references the show
-// via itemReviewed so Google can associate the rating with the correct entity.
-export function generateCriticReviewsSchema(
-  show: ComputedShow,
-  reviews: Array<{
-    outlet: string;
-    criticName?: string;
-    url: string;
-    publishDate: string;
-    tier: 1 | 2 | 3 | 4;
-    reviewScore: number;
-    bucket?: string;
-    quote?: string;
-    summary?: string;
-    pullQuote?: string;
-  }>,
-): Record<string, unknown>[] {
-  if (!reviews || reviews.length === 0) return [];
-
-  // Reference the main TheaterEvent entity by @id rather than inlining a new
-  // incomplete TheaterEvent object. Each Review's itemReviewed previously created
-  // 8 additional TheaterEvent candidates missing startDate/location → GSC FAIL.
-  // The @id reference resolves within the @graph document emitted by the show page.
-  const itemReviewed = { '@id': `${BASE_URL}/show/${show.slug}#event` };
-
-  const eligible = reviews
-    .filter(r => r.tier === 1 || r.tier === 2)
-    .filter(r => {
-      // Sentiment gate: require positive critical reception
-      const bucket = (r.bucket || '').toLowerCase();
-      return r.reviewScore >= 70 || POSITIVE_BUCKETS.has(bucket);
-    })
-    .filter(r => {
-      // Note: only pullQuote is currently populated by the pipeline. The
-      // quote/summary fields are reserved on the type for future use.
-      const text = (r.quote || r.summary || r.pullQuote || '').trim();
-      if (text.length < 30) return false;
-      // Reject contrastive openers — they signal mid-review qualifiers, not
-      // blurb-quality opening lines.
-      if (CONTRASTIVE_OPENER_RE.test(text)) return false;
-      return true;
-    })
-    .filter(r => r.outlet && r.publishDate)
-    .slice(0, 8);
-
-  return eligible.map(r => {
-    const rawBody = (r.quote || r.summary || r.pullQuote || '').trim();
-    // Cap excerpt length so JSON-LD doesn't bloat the page
-    const reviewBody = rawBody.length > 300 ? `${rawBody.slice(0, 297)}...` : rawBody;
-
-    const review: Record<string, unknown> = {
-      '@context': 'https://schema.org',
-      '@type': 'Review',
-      itemReviewed,
-      author: r.criticName
-        ? { '@type': 'Person', name: r.criticName }
-        : { '@type': 'Organization', name: r.outlet },
-      datePublished: r.publishDate,
-      reviewBody,
-      reviewRating: {
-        '@type': 'Rating',
-        ratingValue: toFiveStarScale(r.reviewScore),
-        bestRating: 5,
-        worstRating: 1,
-      },
-    };
-
-    // Add publisher only when distinct from author (i.e. when we have a critic name)
-    if (r.criticName && r.outlet) {
-      review.publisher = { '@type': 'Organization', name: r.outlet };
-    }
-
-    if (r.url) {
-      review.url = r.url;
-    }
-
-    return review;
-  });
-}
-
+// Per-critic Review nodes are intentionally not emitted (BRO-5967): Google's
+// review-snippet policy bars aggregating other sites' reviews, and our per-critic
+// ratings are site-assigned conversions, not ratings the critic gave.
 
 // PerformingArtsTheater Schema - For theater pages.
 // /theater/[slug] (the only caller) draws theaters exclusively from
@@ -584,7 +493,7 @@ export function generateItemListSchema(items: {
       }
 
       // Event status (required for TheaterEvent per Google structured data)
-      event.eventStatus = 'https://schema.org/EventScheduled';
+      Object.assign(event, eventStatusField(item.status, item.endDate));
       event.eventAttendanceMode = 'https://schema.org/OfflineEventAttendanceMode';
 
       // Organizer
@@ -594,26 +503,15 @@ export function generateItemListSchema(items: {
         url: BASE_URL,
       };
 
-      // Aggregate rating (with required reviewCount, minimum 3)
-      // Uses 1-5 star scale for Google rich snippet compatibility
-      // Callers pass `score` only when displaysCriticScore(show) holds, so a TBD
-      // card never gets a rating here. display-gate-ok: Google's ItemList floor.
-      if (item.score && item.reviewCount && item.reviewCount >= 3) {
-        event.aggregateRating = {
-          '@type': 'AggregateRating',
-          ratingValue: toFiveStarScale(item.score),
-          bestRating: 5,
-          worstRating: 1,
-          reviewCount: item.reviewCount,
-        };
-      }
+      // No aggregateRating on list items (BRO-5967): Google's review-snippet
+      // policy wants ratings about a specific item, not entries in a list.
 
       // Ticket offers (excluding hidden platforms)
       if (item.ticketLinks && item.ticketLinks.length > 0) {
         const itemCurrency = getMarketCurrency(item.category, item.venue);
         const visibleLinks = getVisibleTicketLinks(item.ticketLinks);
-        if (visibleLinks.length > 0) {
-          event.offers = visibleLinks.map(link => ({
+        if (visibleLinks.some(link => link.priceFrom)) {
+          event.offers = visibleLinks.filter(link => link.priceFrom).map(link => ({
             '@type': 'Offer',
             url: link.url,
             priceCurrency: itemCurrency,

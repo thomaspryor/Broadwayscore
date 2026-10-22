@@ -28,7 +28,7 @@ import { getShowCastTonyMap } from '@/lib/data-tony-noms';
 import { getOutletSlugById, getCriticSlugByName } from '@/lib/data-reviews';
 import { getBlogReviewByShowSlug } from '@/lib/data-reviews-blog';
 import { featureFlags } from '@/config/feature-flags';
-import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, generateCriticReviewsSchema, getShowFAQs, BASE_URL } from '@/lib/seo';
+import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, getShowFAQs, BASE_URL } from '@/lib/seo';
 import { isLondonMarket } from '@/lib/venue-classification';
 import { getCurrencySymbol, isUkRegionalShow } from '@/lib/market-utils';
 import { isOperaShow } from '@/lib/show-market';
@@ -303,12 +303,6 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
         { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
       ]);
   const faqSchema = generateShowFAQSchema(show, getCriticConsensus(show.id)?.text ?? null, isTour ? getTourNowNextForShow(show) : null);
-  // Top-level Review objects with itemReviewed → TheaterEvent. Eligible for
-  // Google's review snippet rich result; safer than nesting reviews inside Event
-  // (which GSC rejected — see seo.ts comment + commit de1f2cba09).
-  const criticReviewSchemas = show.criticScore?.reviews
-    ? generateCriticReviewsSchema(show, show.criticScore.reviews)
-    : [];
   const score = show.criticScore?.score;
   const grosses = getShowGrosses(params.slug);
   const weekEnding = getGrossesWeekEnding();
@@ -444,7 +438,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
     : [];
 
   // Combine schemas, filtering out null FAQ schema
-  const schemas = [showSchema, breadcrumbSchema, faqSchema, ...criticReviewSchemas].filter(Boolean);
+  const schemas = [showSchema, breadcrumbSchema, faqSchema].filter(Boolean);
 
   // Pre-compute score variables for redesigned mobile header
   const reviewCount = show.criticScore?.reviewCount || 0;

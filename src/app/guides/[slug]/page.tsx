@@ -19,6 +19,7 @@ import {
   generateBreadcrumbSchema,
   generateItemListSchema,
   generateBrowseFAQSchema,
+  eventStatusField,
   BASE_URL,
   toAbsoluteUrl,
 } from '@/lib/seo';
@@ -194,12 +195,13 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
           } : undefined,
           description: show.synopsis || undefined,
           image: show.images?.hero || undefined,
-          eventStatus: 'https://schema.org/EventScheduled',
+          ...eventStatusField(show.status, show.closingDate),
           eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-          offers: primaryTicket ? {
+          offers: primaryTicket?.priceFrom ? {
             '@type': 'Offer',
             url: primaryTicket.url,
             priceCurrency: 'USD',
+            price: primaryTicket.priceFrom,
             availability: 'https://schema.org/InStock',
           } : undefined,
         };
