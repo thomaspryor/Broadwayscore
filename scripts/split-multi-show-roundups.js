@@ -25,6 +25,7 @@
  *   node scripts/split-multi-show-roundups.js --apply --scan-all
  *   node scripts/split-multi-show-roundups.js --show=ID    # one show only
  *   node scripts/split-multi-show-roundups.js --show=ID --file=NAME.json   # one file
+ *   node scripts/split-multi-show-roundups.js --scan-all --joint --shard=0/4  # every 4th show dir
  *   node scripts/split-multi-show-roundups.js --scan-all --joint   # also try the opt-in joint strategy
  *
  * E2E sequence (manual until CI-wired):
@@ -62,9 +63,13 @@ const JOINT = args.has('--joint');
 let onlyShow = null;
 // --file=<name>: only this file inside --show (one data-fix target).
 let onlyFile = null;
+// --shard=k/n: only every n-th show dir starting at k (0-based), so a
+// --scan-all corpus pass can run as n parallel jobs (~0.5 s a file).
+let shard = null;
 for (const a of process.argv.slice(2)) {
   if (a.startsWith('--show=')) onlyShow = a.slice(7);
   if (a.startsWith('--file=')) onlyFile = a.slice(7);
+  if (a.startsWith('--shard=')) shard = a.slice(8);
 }
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -92,7 +97,15 @@ function main() {
     console.error('Error: --file must be a bare <name>.json file name and needs --show=<id>');
     process.exit(2);
   }
-  const targetDirs = onlyShow ? [onlyShow] : showDirs;
+  let targetDirs = onlyShow ? [onlyShow] : showDirs;
+  if (shard) {
+    const m = /^(\d+)\/(\d+)$/.exec(shard);
+    if (!m || +m[2] < 1 || +m[1] >= +m[2]) {
+      console.error('Error: --shard must be k/n with 0 <= k < n');
+      process.exit(2);
+    }
+    targetDirs = targetDirs.filter((_, i) => i % +m[2] === +m[1]);
+  }
   const stats = {
     scanned: 0,
     flagged: 0,
@@ -148,7 +161,8 @@ function main() {
           console.log(`  ✗ child exists, skip: ${c.showId}/${file}`);
         } else {
           stats.childrenCreated++;
-          console.log(`  ✓ child ${c.action === 'fill' ? 'filled' : 'created'}: ${c.showId}/${file} (${c.chars} chars)`);
+          const verb = c.action === 'fill' ? 'filled' : c.action === 'held' ? 'held (same article already filed there)' : 'created';
+          console.log(`  ✓ child ${verb}: ${c.showId}/${file} (${c.chars} chars)`);
         }
       }
     }
