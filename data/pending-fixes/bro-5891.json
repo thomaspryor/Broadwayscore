@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5891",
   "planId": "a819e284-0242-4777-815c-5f8f6be7e837",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-22T04:20:00.000Z",
   "submitter": {
     "name": null,
@@ -145,5 +145,89 @@
         "description": "BRO-5891: Vulture byline is Jackson McHenry (capital H); ingest-urls title-cased it"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T04:27:18.722Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/nypost--johnny-oleksinski.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/nypost--johnny-oleksinski.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/nypost--johnny-oleksinski.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/timeout--adam-feldman.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/timeout--adam-feldman.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/timeout--adam-feldman.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/nytg--joe-dziemianowicz.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/nytg--joe-dziemianowicz.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/nytg--joe-dziemianowicz.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/independent--caitlin-hornik.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/independent--caitlin-hornik.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/independent--caitlin-hornik.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/people--dave-quinn.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/people--dave-quinn.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/people--dave-quinn.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/vulture--jackson-mchenry.json criticName: \"Jackson Mchenry\" -> \"Jackson McHenry\""
+    }
+  ],
+  "executedIn": "ci"
 }
