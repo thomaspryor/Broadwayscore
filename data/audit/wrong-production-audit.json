@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T18:37:19.369Z",
+  "timestamp": "2026-10-22T19:22:33.788Z",
   "stats": {
-    "totalReviews": 59125,
-    "alreadyFlagged": 21320,
+    "totalReviews": 59157,
+    "alreadyFlagged": 21325,
     "dateGuardCatches": 201,
     "directorMismatch": 2057,
-    "tvFilmSignals": 1659,
+    "tvFilmSignals": 1660,
     "londonSignals": 2709,
     "offBroadwaySignals": 529,
     "yearMismatch": 169,
-    "noPublishDate": 5363
+    "noPublishDate": 5367
   },
   "findings": [
     {
@@ -30714,6 +30714,20 @@
       "score": 79,
       "publishDate": "2026-10-19",
       "url": "https://ew.com/other-desert-cities-review-family-dysfunction-on-broadway-12178243",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "file": "ew--unknown.json",
+      "score": 77,
+      "publishDate": "2026-10-19",
+      "url": "https://ew.com/other-desert-cities-review-family-dysfunction-on-broadway-12178243?srsltid=AYCX9vJnuy-mrNRqRjusaQ_1WQeECKE3gE7LaSEsUaMDIxOTVVxd52fe",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -64218,7 +64232,7 @@
     {
       "showId": "evita-2012",
       "file": "exeunt-magazine--unknown.json",
-      "score": null,
+      "score": 39,
       "publishDate": "2012-04-17",
       "url": "https://exeuntnyc.com/reviews/evita/",
       "findings": [
@@ -69541,7 +69555,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": null,
+      "score": 79,
       "publishDate": "2026-10-22",
       "url": "https://theatreandtonic.co.uk/blog/ilford-boy-donmar-warehouse-review",
       "findings": [
