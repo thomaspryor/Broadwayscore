@@ -18,6 +18,7 @@ const os = require('node:os');
 const path = require('node:path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { assessDelegations } = require('./lib/linear-delegation-health.js');
+const { assessCodexForStatusFile } = require('./lib/codex-status-line.js');
 
 const USAGE = `check-linear-delegations.js — find delegated Linear issues that are silently doing nothing.
 
@@ -28,7 +29,7 @@ Writes ~/.cyrus/linear-delegation-status.json for the morning digest.
 Exit 0 = nothing stalled. Exit 1 = at least one delegated agent is dead.`;
 
 const args = process.argv.slice(2);
-if (hasHelpFlag(args)) {
+if (require.main === module && hasHelpFlag(args)) {
   console.log(USAGE);
   process.exit(0);
 }
@@ -74,6 +75,16 @@ const SESSION_PAGE = (after) => `query {
   }
 }`;
 
+// Open issues with a delegate. Needed because an issue whose delegation never
+// produced a session (the BRO-256 Codex signature) is absent from agentSessions.
+// Filtered to Codex client-side: the delegate name filter is unverified.
+const OPEN_DELEGATED = (after) => `query {
+  issues(first: 100${after ? `, after: "${after}"` : ''}, filter: { delegate: { null: false }, state: { type: { nin: ["completed", "canceled", "duplicate"] } } }) {
+    pageInfo { hasNextPage endCursor }
+    nodes { identifier updatedAt delegate { displayName } }
+  }
+}`;
+
 // Bounded so a runaway workspace cannot loop forever; 10 pages = 500 sessions.
 const MAX_PAGES = 10;
 
@@ -98,6 +109,47 @@ async function main() {
   if (truncated) {
     console.warn(`WARN stopped after ${MAX_PAGES} pages — older sessions were not examined`);
   }
+
+  // Advisory input: if this query fails, the stall alarm below must still run
+  // and refresh the status file, so Codex just reads "unknown".
+  const openDelegated = [];
+  let openDelegatedFailed = false;
+  try {
+    let issuesAfter = null;
+    for (let pages = 0; pages < MAX_PAGES; pages += 1) {
+      const page = (await gql(OPEN_DELEGATED(issuesAfter))).issues;
+      for (const n of page.nodes) {
+        if (n.delegate) openDelegated.push({ identifier: n.identifier, delegateName: n.delegate.displayName, updatedAt: n.updatedAt });
+      }
+      if (!page.pageInfo.hasNextPage) break;
+      issuesAfter = page.pageInfo.endCursor;
+    }
+  } catch (err) {
+    openDelegatedFailed = true;
+    console.warn(`WARN open delegated issues query failed, Codex status unknown: ${err.message}`);
+  }
+
+  // Every delegated issue incl. closed ones, for the Codex connection check
+  // only: a finished Codex run is the proof Codex is reachable.
+  const allByIssue = new Map();
+  for (const s of sessionNodes) {
+    const iss = s.issue;
+    if (!iss || !iss.delegate) continue;
+    if (!allByIssue.has(iss.identifier)) {
+      allByIssue.set(iss.identifier, {
+        identifier: iss.identifier,
+        delegateName: iss.delegate.displayName,
+        open: !['completed', 'canceled', 'duplicate'].includes(iss.state?.type),
+        sessions: [],
+      });
+    }
+    allByIssue.get(iss.identifier).sessions.push({
+      createdAt: s.createdAt,
+      status: s.status,
+      activities: s.activities.nodes.map((a) => ({ createdAt: a.createdAt, typename: a.content.__typename, body: a.content.body || a.content.action || '' })),
+    });
+  }
+  const codex = assessCodexForStatusFile([...allByIssue.values()], openDelegated, { truncated: truncated || openDelegatedFailed });
 
   // Group sessions by issue, keeping only issues still delegated and open.
   const byIssue = new Map();
@@ -129,20 +181,23 @@ async function main() {
   // which is the failure this whole script exists to prevent.
   fs.mkdirSync(path.dirname(STATUS_PATH), { recursive: true });
   const tmp = `${STATUS_PATH}.tmp`;
-  fs.writeFileSync(tmp, `${JSON.stringify({ at: new Date().toISOString(), alarm, truncated, verdicts }, null, 2)}\n`);
+  fs.writeFileSync(tmp, `${JSON.stringify({ at: new Date().toISOString(), alarm, truncated, codex, verdicts }, null, 2)}\n`);
   fs.renameSync(tmp, STATUS_PATH);
 
   if (args.includes('--json')) {
-    console.log(JSON.stringify({ alarm, verdicts }, null, 2));
+    console.log(JSON.stringify({ alarm, codex, verdicts }, null, 2));
   } else {
     for (const v of verdicts) console.log(`${v.verdict.padEnd(14)} ${v.identifier}  ${v.detail}`);
+    console.log(`codex: ${codex.status} — ${codex.detail}`);
     console.log(alarm ? `\nALARM: ${alarm}` : '\nno stalled delegations');
   }
 
   process.exit(verdicts.some((v) => v.verdict === 'stalled' || v.verdict === 'never-started') ? 1 : 0);
 }
 
-main().catch((err) => {
-  console.error(`FATAL ${err.message}`);
-  process.exit(2);
-});
+if (require.main === module) {
+  main().catch((err) => {
+    console.error(`FATAL ${err.message}`);
+    process.exit(2);
+  });
+}

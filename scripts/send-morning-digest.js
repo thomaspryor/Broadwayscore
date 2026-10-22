@@ -79,6 +79,7 @@ const { fetchInflowCounts, assessInflowRatio } = require('./lib/backlog-inflow-r
 const { doneRatePerDay, fetchUnarmedUrgentHighCount, formatDrainThroughputLine, isHeartbeatFresh } = require('./lib/linear-drain-throughput.js');
 const { readBoardGateFailopen } = require('./lib/summarize-board-gate-failopen.js');
 const { collectCmuxTriage, renderCmuxTriageLine } = require('./lib/cmux-triage-digest.js');
+const { codexLineFromStatus } = require('./lib/codex-status-line.js');
 
 // Task #1220/BRO-230 (ship-check adversarial finding): health.errors can
 // NEVER carry the "Autofix: jobs actually succeeding" row in the normal case
@@ -171,6 +172,13 @@ const LINEAR_DELEGATION_STATUS_PATH = path.join(
   process.env.CYRUS_HOME || path.join(os.homedir(), '.cyrus'),
   'linear-delegation-status.json'
 );
+function localCodexConnectionLine() {
+  try {
+    return codexLineFromStatus(JSON.parse(fs.readFileSync(LINEAR_DELEGATION_STATUS_PATH, 'utf8')));
+  } catch {
+    return null; // missing or unreadable: localLinearDelegationMessage already reports that
+  }
+}
 function localLinearDelegationMessage() {
   let raw;
   try {
@@ -621,6 +629,10 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   const delegationMsg = localLinearDelegationMessage();
   if (delegationMsg) {
     parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(delegationMsg)}</p>`);
+  }
+  const codexLine = localCodexConnectionLine();
+  if (codexLine) {
+    parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${esc(codexLine)}</p>`);
   }
   const cyrusMsg = localCyrusRelayMessage();
   if (cyrusMsg) {
