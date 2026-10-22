@@ -178,7 +178,8 @@ function assertAllowed(result, message) {
 
 const QUALIFYING_EDIT = toolUse('Edit', { file_path: 'src/lib/scoring.ts', old_string: 'a', new_string: 'b' });
 const GIT_PUSH = toolUse('Bash', { command: 'git push -u origin some-branch' });
-const CREATE_PR = toolUse('mcp__github__create_pull_request', { owner: 'thomaspryor', repo: 'Broadwayscore', title: 'x', head: 'a', base: 'main' });
+// The MCP server's success payload: the gate counts a PR only on its URL (BRO-5915).
+const CREATE_PR = toolUse('mcp__github__create_pull_request', { owner: 'thomaspryor', repo: 'Broadwayscore', title: 'x', head: 'a', base: 'main' }, '{"id":"2345","url":"https://github.com/thomaspryor/Broadwayscore/pull/42"}');
 // Real success payload of the GitHub MCP merge tool; only this counts as merged.
 const MERGE_PR = toolUse('mcp__github__merge_pull_request', { owner: 'thomaspryor', repo: 'Broadwayscore', pullNumber: 1 },
   '{"sha":"0123abc","merged":true,"message":"Pull Request successfully merged"}');
@@ -813,6 +814,22 @@ test('BRO-5915: Bash `gh pr create` that printed a PR URL counts as an opened PR
   const r = runHook(writeTranscript(dir, [GH_PR_CREATE, BOARD_CLOSEOUT_DONE]), "Opened PR #42.\n\nSAFE TO EXIT — PR open, nothing else pending.");
   assertBlocked(r, 'a Bash-opened PR left unmerged must block');
   assert.match(r.stderr, /land it yourself/i, `got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('BRO-5915: reading PRs (gh api GET …/pulls, …/pulls/N/comments) is not opening one → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('pr-read-only');
+  const listing = '[{"number":42,"html_url":"https://github.com/thomaspryor/Broadwayscore/pull/42","state":"open"}]';
+  const reads = [
+    toolUse('Bash', { command: "gh api 'repos/thomaspryor/Broadwayscore/pulls?state=open'" }, listing),
+    toolUse('Bash', { command: 'gh api repos/thomaspryor/Broadwayscore/pulls/42' }, listing),
+    toolUse('Bash', { command: 'gh api repos/thomaspryor/Broadwayscore/pulls/42/comments -f body=x' }, listing),
+  ];
+  const r = runHook(writeTranscript(dir, [...reads, GIT_PUSH, BOARD_CLOSEOUT_DONE]), "Checked the open PRs.\n\nSAFE TO EXIT — pushed to branch, no PR opened this session.");
+  assertAllowed(r, 'PR reads print PR URLs but open nothing');
+  // Control: a REST create counts.
+  const create = toolUse('Bash', { command: 'gh api -X POST repos/thomaspryor/Broadwayscore/pulls -f head=x -f base=main' }, listing);
+  assertBlocked(runHook(writeTranscript(dir, [create, GIT_PUSH, BOARD_CLOSEOUT_DONE]), "Opened a PR.\n\nSAFE TO EXIT — PR open."), 'control: a REST create still counts');
   fs.rmSync(dir, { recursive: true, force: true });
 });
 

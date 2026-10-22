@@ -897,7 +897,19 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
         # Anchored: `git push origin HEAD:refs/heads/land/x`, `... HEAD:land/x`,
         # `git push origin land/x` — not `foo-land/`.
         _land_push_re = re.compile(r'git\s+push\b[^\n;&|]*\s(\S*:)?(refs/heads/)?land/')
-        _gh_pr_create_re = re.compile(r'\bgh\s+pr\s+create\b|\b(gh\s+api|curl)\b[^\n;&|]*/pulls\b')
+        _pr_url_re = re.compile(r'github\.com/[^/\s"]+/[^/\s"]+/pull/\d+')
+
+        def _gh_pr_create_cmd(cmd):
+            if re.search(r'\bgh\s+pr\s+create\b', cmd):
+                return True
+            # One command segment that POSTs to …/pulls (the list endpoint itself).
+            for seg in re.split(r'&&|\|\||[;|\n]', cmd):
+                if (re.search(r'\b(gh\s+api|curl)\b', seg)
+                        and re.search(r'/pulls/?(?=[\s\'"?]|$)', seg)
+                        and not re.search(r'(-X|--method|--request)[\s=]*GET\b', seg, re.I)
+                        and re.search(r'(-X|--method|--request)[\s=]*POST\b|\s(-f|-F|-d|--field|--raw-field|--input|--data[a-z-]*|--json)[\s=]', seg, re.I)):
+                    return True
+            return False
         for _kind, _payload in events:
             if _kind != 'tool':
                 continue
@@ -906,15 +918,17 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
             if _name == 'mcp__github__create_pull_request':
                 # Only a PR that exists counts (BRO-5915): github-main-guard.sh
                 # refuses Broadwayscore PR creation, and a refused or failed
-                # call (is_error) must not demand a blocker for a PR that
-                # never opened.
-                if _tid not in tool_error_ids:
+                # call must not demand a blocker for a PR that never opened.
+                # Positive match on the new PR's URL, like the merge branch
+                # below.
+                if _tid not in tool_error_ids and _pr_url_re.search(tool_results_by_id.get(_tid, '') or ''):
                     _opened_pr = True
-            elif (_name == 'Bash' and _tid not in tool_error_ids
-                  and _gh_pr_create_re.search(_inp.get('command') or '')
-                  and re.search(r'/pull/\d+', tool_results_by_id.get(_tid, '') or '')):
+            elif (_name == 'Bash' and _gh_pr_create_cmd(_inp.get('command') or '')
+                  and _pr_url_re.search(tool_results_by_id.get(_tid, '') or '')):
                 # `gh pr create` / a REST POST …/pulls that printed a PR URL
-                # (BRO-5915: the Bash route was never counted, in any repo).
+                # (BRO-5915: the Bash route was never counted). Reads (GET
+                # …/pulls, …/pulls/N/comments) also print PR URLs, so the
+                # command itself must be a create.
                 _opened_pr = True
             elif _name == 'mcp__github__merge_pull_request':
                 # Only a merge that happened counts (BRO-4238): github-main-guard.sh

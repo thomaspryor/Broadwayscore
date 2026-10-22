@@ -59,46 +59,25 @@ tool_use_id=$(echo "$input" | jq -r '.tool_use_id // empty' 2>/dev/null)
 _CMD_PFX='(^|[;&|(][[:space:]]*|&&[[:space:]]*|\|\|[[:space:]]*)([A-Z_][A-Z0-9_]*=[^[:space:]]*[[:space:]]+)*(env[[:space:]]+([A-Z_][A-Z0-9_]*=[^[:space:]]*[[:space:]]+)*)?((command|time|exec)[[:space:]]+)*'
 # Quoted strings dropped, so `grep "gh pr create" f` is not an executed command.
 _CMD_STRIPPED=$(printf '%s' "$command" | sed -E "s/\"[^\"]*\"//g; s/'[^']*'//g")
-# Quotes dropped but contents kept, for reading argument values.
-_CMD_UNQUOTED=$(printf '%s' "$command" | tr -d "\"'")
 
 # ── Sessions never open, ready or merge a Broadwayscore PR (BRO-5915) ───────
 # The owner never reviews or merges PRs; a session lands its own work via
 # `git push origin HEAD:refs/heads/land/<name>`. Cloud sessions twice left
-# draft PRs for the owner instead, so PR creation is refused at the tool call.
-# Covers `gh pr create|ready|merge` and the REST routes that still work when
-# gh's GraphQL is blocked (`gh api`/`curl` POST …/pulls, PUT …/pulls/N/merge);
-# the MCP route is github-main-guard.sh. Runs before the transcript fail-open:
-# it needs no transcript. Repo = -R/--repo, else GH_REPO, else the cwd's
-# origin. Overrides: LAND_ENFORCE_OFF=1 (prefix or env),
-# $HOME/.claude/LAND_ENFORCE_OFF; REVIEW_GATE_DISABLE=1 skips this whole hook.
-if [ "${LAND_ENFORCE_OFF:-0}" != "1" ] && [ ! -e "$HOME/.claude/LAND_ENFORCE_OFF" ] \
-   && ! printf '%s' "$command" | grep -qE '(^|[[:space:];&|(])LAND_ENFORCE_OFF=1([[:space:]]|;|$)'; then
-  _PR_VERB=""
-  _PR_REPO=""
-  if printf '%s' "$_CMD_STRIPPED" | grep -qE "${_CMD_PFX}gh[[:space:]]+([^[:space:];&|]+[[:space:]]+){0,4}pr[[:space:]]+(create|ready|merge)([[:space:]]|$)"; then
-    _PR_VERB="gh pr $(printf '%s' "$_CMD_STRIPPED" | grep -oE 'pr[[:space:]]+(create|ready|merge)' | head -1 | awk '{print $2}')"
-    _PR_REPO=$(printf '%s' "$_CMD_UNQUOTED" | grep -oE '(^|[[:space:]])(-R|--repo)(=|[[:space:]]+)[^[:space:];&|)]+' | head -1 | sed -E 's/^[[:space:]]*(-R|--repo)(=|[[:space:]]+)//')
-  elif printf '%s' "$_CMD_STRIPPED" | grep -qE "${_CMD_PFX}(gh[[:space:]]+api|curl)[[:space:]]" \
-       && printf '%s' "$_CMD_UNQUOTED" | grep -qiE 'repos/[^/[:space:]]+/[^/[:space:]]+/pulls(/[0-9]+/merge)?/?([[:space:]?]|$)' \
-       && ! printf '%s' "$_CMD_UNQUOTED" | grep -qiE '(-X|--method|--request)(=|[[:space:]]*)(GET|PATCH)([^A-Za-z]|$)' \
-       && printf '%s' "$_CMD_UNQUOTED" | grep -qiE '(-X|--method|--request)(=|[[:space:]]*)(POST|PUT)([^A-Za-z]|$)|(^|[[:space:]])(-f|-F|--field|--raw-field|--input|-d|--data[a-z-]*)([[:space:]]|=)'; then
-    _PR_VERB="a PR write through the GitHub API"
-    _PR_REPO=$(printf '%s' "$_CMD_UNQUOTED" | grep -oiE 'repos/[^/[:space:]]+/[^/[:space:]]+/pulls' | head -1 | sed -E 's#^repos/##; s#/pulls$##')
-    case "$_PR_REPO" in *'{'*|*':'*) _PR_REPO="" ;; esac   # {owner}/{repo} placeholders → resolve below
-  fi
-  if [ -n "$_PR_VERB" ]; then
-    [ -z "$_PR_REPO" ] && _PR_REPO=$(printf '%s' "$command" | grep -oE '(^|[[:space:];&|(])GH_REPO=[^[:space:];&|)]+' | head -1 | sed -E 's/^.*GH_REPO=//' | tr -d "\"'")
-    [ -z "$_PR_REPO" ] && _PR_REPO="${GH_REPO:-}"
-    [ -z "$_PR_REPO" ] && _PR_REPO=$(git remote get-url origin 2>/dev/null)
-    _PR_REPO=$(printf '%s' "$_PR_REPO" | tr '[:upper:]' '[:lower:]' | sed -E 's#\.git/?$##; s#/$##')
-    case "$_PR_REPO" in
-      thomaspryor/broadwayscore|*[/:]thomaspryor/broadwayscore)
-        echo "🛑 BLOCKED: sessions never open, ready or merge Broadwayscore PRs (BRO-5915, refused: $_PR_VERB). The owner never reviews or merges PRs. Land the work yourself: git push origin HEAD:refs/heads/land/<name>, then follow the Land run to green (CLOUD.md § Landing). Emergency override only: LAND_ENFORCE_OFF=1 (REVIEW_GATE_DISABLE=1 also skips this hook)." >&2
-        exit 2 ;;
-    esac
-  fi
+# draft PRs for the owner instead, so PR writes are refused at the tool call:
+# gh pr create|ready|merge, gh api/curl PR creates and merges, gh api graphql
+# PR mutations. Logic + per-command parsing: scripts/lib/pr-command.mjs (the
+# MCP route is github-main-guard.sh). Runs before the transcript fail-open: it
+# needs no transcript. Cheap pre-filter so most commands skip node. Overrides:
+# PR_GUARD_OFF=1 / LAND_ENFORCE_OFF=1 (prefix or env) or the same-named file
+# under $HOME/.claude/; REVIEW_GATE_DISABLE=1 skips this whole hook.
+_PRC="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." 2>/dev/null && pwd)/scripts/lib/pr-command.mjs"
+if [ -f "$_PRC" ] && command -v node >/dev/null 2>&1 \
+   && printf '%s' "$command" | grep -qE 'gh|curl' \
+   && printf '%s' "$command" | grep -qiE '(^|[^a-z])pr([^a-z]|$)|pulls|PullRequest'; then
+  printf '%s' "$input" | node "$_PRC" --hook
+  [ $? -eq 2 ] && exit 2
 fi
+
 # No transcript → we can't offer the NO-SHIP-CHECK escape hatch; fail open
 # rather than wedge (matches pre-push-visual-gate.sh).
 [ -z "$transcript" ] && exit 0

@@ -39,7 +39,7 @@ function run(command, { cwd = bwsRepo, env = {} } = {}) {
     cwd,
     input: JSON.stringify({ tool_input: { command }, session_id: 'bro-5915-test', tool_use_id: 'tu-1' }),
     encoding: 'utf8',
-    env: { ...process.env, HOME: fakeHome, CLAUDE_PROJECT_DIR: cwd, LAND_ENFORCE_OFF: '', REVIEW_GATE_DISABLE: '', GH_REPO: '', ...env },
+    env: { ...process.env, HOME: fakeHome, CLAUDE_PROJECT_DIR: cwd, LAND_ENFORCE_OFF: '', PR_GUARD_OFF: '', REVIEW_GATE_DISABLE: '', GH_REPO: '', ...env },
     timeout: 60000,
   });
   return { status: r.status, stderr: r.stderr || '' };
@@ -59,6 +59,24 @@ for (const cmd of [
   'gh api repos/{owner}/{repo}/pulls -F head=x',
   'gh api --method PUT repos/thomaspryor/Broadwayscore/pulls/42/merge',
   'curl -sS -X POST -H "Authorization: token $T" https://api.github.com/repos/thomaspryor/Broadwayscore/pulls -d @body.json',
+  // Ship-check round 1: each command is judged on its own arguments.
+  'gh pr list -R thomaspryor/BroadwayScorecard-app; gh pr create --fill',
+  'gh run list --repo other/x && gh pr create --fill',
+  'gh api -X GET user; gh api -X POST repos/thomaspryor/Broadwayscore/pulls --input body.json',
+  'gh api -X GET repos/thomaspryor/Broadwayscore/pulls; gh api repos/thomaspryor/Broadwayscore/pulls -f head=x -f base=main',
+  // …and wherever the command starts.
+  '   gh pr create --fill',
+  'bash -lc \'gh pr create --fill\'',
+  'sh -c "cd /tmp && GH_REPO=thomaspryor/Broadwayscore gh pr create --fill"',
+  '\\gh pr create --fill',
+  '/usr/local/bin/gh pr create --fill',
+  'if true; then gh pr create --fill; fi',
+  '{ gh pr create --fill; }',
+  'for i in 1; do\n  gh pr merge 42 --squash\ndone',
+  'echo $(gh pr create --fill)',
+  'env -u FOO gh pr ready 42',
+  'gh pr merge https://github.com/thomaspryor/Broadwayscore/pull/42 --squash',
+  'gh api graphql -f query=\'mutation { createPullRequest(input: {}) { pullRequest { url } } }\'',
 ]) {
   test(`blocks a Broadwayscore PR write: ${cmd}`, () => {
     const r = run(cmd);
@@ -85,12 +103,34 @@ for (const [cmd, opts] of [
   ['gh pr create --fill', { cwd: otherRepo }],
   ['gh pr create --repo thomaspryor/BroadwayScorecard-app --fill', {}],
   ['gh api -X POST repos/thomaspryor/BroadwayScorecard-app/pulls -f head=x', {}],
+  // Ship-check round 1 false positives.
+  ["gh api 'repos/thomaspryor/Broadwayscore/pulls?state=open' && gh api -X POST repos/thomaspryor/Broadwayscore/issues/5/comments -f body=x", {}],
+  ['gh api repos/thomaspryor/Broadwayscore/pulls/42/comments -f body=looks-good', {}],
+  ['gh label create pr merge', {}],
+  ['gh api graphql -f query=\'{ repository(owner:"a", name:"b") { pullRequests(first:5) { nodes { url } } } }\'', {}],
+  ['git commit -q -F - <<EOF\nBRO-5915: refuse PRs\n\ngh pr merge is refused now\ngh api repos/thomaspryor/Broadwayscore/pulls -f head=x\nEOF', {}],
+  ['git commit -m "gh pr create is refused; land instead"', {}],
+  [`cd ${otherRepo} && gh pr create --fill`, {}],
 ]) {
   test(`does not PR-block: ${cmd}${opts.cwd ? ' (other repo)' : ''}`, () => {
     const r = run(cmd, opts);
     assert.ok(!blockedByPr(r), `must not trip the PR block, got: ${r.stderr.slice(0, 200)}`);
   });
 }
+
+test('the command\'s own cd decides the repo', () => {
+  assert.ok(blockedByPr(run(`cd ${bwsRepo} && gh pr create --fill`, { cwd: otherRepo })));
+  assert.ok(blockedByPr(run(`(cd ${otherRepo}) && gh pr create --fill`)), 'a subshell cd does not leak out');
+});
+
+test('PR_GUARD_OFF=1 is the narrow override (prefix, env, file)', () => {
+  assert.ok(!blockedByPr(run('PR_GUARD_OFF=1 gh pr create --fill')));
+  assert.ok(!blockedByPr(run('gh pr create --fill', { env: { PR_GUARD_OFF: '1' } })));
+  const home = path.join(scratch, 'home-prguard-off');
+  fs.mkdirSync(path.join(home, '.claude'), { recursive: true });
+  fs.writeFileSync(path.join(home, '.claude', 'PR_GUARD_OFF'), '');
+  assert.ok(!blockedByPr(run('gh pr create --fill', { env: { HOME: home } })));
+});
 
 test('overrides: LAND_ENFORCE_OFF=1 (prefix, env) and the $HOME/.claude/LAND_ENFORCE_OFF file', () => {
   assert.ok(!blockedByPr(run('LAND_ENFORCE_OFF=1 gh pr create --fill')));
@@ -107,7 +147,7 @@ function guard(tool, input, env = {}) {
     cwd: REPO_ROOT,
     input: JSON.stringify({ tool_name: `mcp__github__${tool}`, tool_input: input, session_id: 'bro-5915-test' }),
     encoding: 'utf8',
-    env: { ...process.env, HOME: fakeHome, LAND_ENFORCE_OFF: '', ...env },
+    env: { ...process.env, HOME: fakeHome, LAND_ENFORCE_OFF: '', PR_GUARD_OFF: '', ...env },
     timeout: 60000,
   });
   return { status: r.status, stderr: r.stderr || '' };
@@ -129,6 +169,15 @@ test('MCP create_pull_request on another repo, or with the override file, passes
   fs.mkdirSync(path.join(home, '.claude'), { recursive: true });
   fs.writeFileSync(path.join(home, '.claude', 'LAND_ENFORCE_OFF'), '');
   assert.equal(guard('create_pull_request', { owner: 'thomaspryor', repo: 'Broadwayscore', ...PR }, { HOME: home }).status, 0);
+});
+
+test('MCP: PR_GUARD_OFF file lifts only the PR check; main writes stay refused', () => {
+  const home = path.join(scratch, 'home-prguard-mcp');
+  fs.mkdirSync(path.join(home, '.claude'), { recursive: true });
+  fs.writeFileSync(path.join(home, '.claude', 'PR_GUARD_OFF'), '');
+  assert.equal(guard('create_pull_request', { owner: 'thomaspryor', repo: 'Broadwayscore', ...PR }, { HOME: home }).status, 0);
+  assert.equal(guard('merge_pull_request', { owner: 'thomaspryor', repo: 'Broadwayscore', pullNumber: 42 }, { HOME: home }).status, 2);
+  assert.equal(guard('push_files', { owner: 'thomaspryor', repo: 'Broadwayscore', branch: 'main', files: [] }, { HOME: home }).status, 2);
 });
 
 test('closing an old PR via update_pull_request still works (CLOUD.md § Landing step 3)', () => {

@@ -45,7 +45,9 @@ repo=${repo%.git}
 
 case "$tool_name" in
   mcp__github__create_pull_request)
-    echo "🛑 BLOCKED: sessions never open Broadwayscore PRs (BRO-5915): the owner never reviews or merges them, so a PR just parks the work. Land it yourself: git push origin HEAD:refs/heads/land/<name> (or create a land/<name> branch with the GitHub tools), then follow the Land run to green (CLOUD.md § Landing). Emergency override: create \$HOME/.claude/LAND_ENFORCE_OFF." >&2
+    # Narrow override: this check only, not the main-write/merge guards.
+    { [ "${PR_GUARD_OFF:-0}" = "1" ] || [ -e "$HOME/.claude/PR_GUARD_OFF" ]; } && exit 0
+    echo "🛑 BLOCKED: sessions never open Broadwayscore PRs (BRO-5915): the owner never reviews or merges them, so a PR just parks the work. Land it yourself: git push origin HEAD:refs/heads/land/<name> (or create a land/<name> branch with the GitHub tools), then follow the Land run to green (CLOUD.md § Landing). Emergency override: create \$HOME/.claude/PR_GUARD_OFF (this check only)." >&2
     exit 2 ;;
   mcp__github__merge_pull_request|mcp__github__enable_pr_auto_merge)
     echo "🛑 BLOCKED: PRs in thomaspryor/Broadwayscore are never merged directly (BRO-4238): a server-side merge skips land.yml's gates. Land the branch instead: git push origin HEAD:refs/heads/land/<name> (or create a land/<name> branch at the PR head with the GitHub tools), follow the Land run, then close the PR. Emergency override: create \$HOME/.claude/LAND_ENFORCE_OFF." >&2
