@@ -20,7 +20,7 @@
  * within the star's band.
  */
 
-const { extractScore, KNOWN_STAR_OUTLETS, OUTLET_EXTRACTORS } = require('./score-extractors');
+const { extractScore, extractLeadEmojiStars, KNOWN_STAR_OUTLETS, OUTLET_EXTRACTORS } = require('./score-extractors');
 const { AGGREGATOR_SCORE_SOURCES } = require('./review-normalization');
 
 const MIN_TEXT_LENGTH = 100;
@@ -64,9 +64,20 @@ function findPublishedStarInText(data, ctx = {}) {
   if (!isIncludable(data, show, ctx.filePath)) return null;
   const outletId = data.outletId;
   if (!outletId) return null;
-  if (!KNOWN_STAR_OUTLETS.has(outletId) && !hasRealExtractor(outletId)) return null;
   const text = typeof data.fullText === 'string' ? data.fullText : '';
   if (text.length < MIN_TEXT_LENGTH) return null;
+  // A star-emoji verdict under the headline ("⭐⭐⭐⭐") is deliberate at any outlet, so it is read
+  // even where the outlet has no extractor and is not a known star outlet (Staged Theatre,
+  // Pink Prince Theatre, Reviews Gate: ~100 files were scored with no star anchor).
+  const emoji = extractLeadEmojiStars(text);
+  if (emoji) {
+    return {
+      originalScore: emoji.originalScore,
+      originalScoreSource: emoji.source,
+      originalScoreNormalized: emoji.normalizedScore,
+    };
+  }
+  if (!KNOWN_STAR_OUTLETS.has(outletId) && !hasRealExtractor(outletId)) return null;
   let found;
   try {
     // The show record's title, not data.showTitle: older files have none, and

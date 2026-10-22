@@ -80,22 +80,99 @@ function extractTheaterSceneByline(text) {
 
 const { extractBodyByline } = require("./byline-normalization");
 
+// A printed person name: 2 to 4 capitalised words (accents, apostrophes, hyphens, initials allowed),
+// matched case-sensitively so a lowercase sentence fragment ("writes about the") never qualifies.
+const PRINTED_NAME = String.raw`\p{Lu}[\p{L}'’-]*\.?(?:\s+\p{Lu}[\p{L}'’-]*\.?){1,3}`;
+const PRINTED_NAME_NOT_PERSON_RE = /\b(?:theatre|theater|review|reviews|reviewer|photo|photos|photography|picture|pictures|credit|more|updated|published|posted|rating|stars?|share|admin|staff|team|editor|news|magazine|london|the)\b/i;
+
+function printedPerson(raw) {
+  const name = String(raw || "").replace(/\s+/g, " ").trim().replace(/[.,;:]+$/, "");
+  if (!name || PRINTED_NAME_NOT_PERSON_RE.test(name)) return null;
+  return name;
+}
+
+// South London (southlondon.co.uk) publishes every review under one CMS account, "Michael Holland"
+// (JSON-LD author, rel=author link, the registry's old defaultCritic), while the real critic is named
+// in the standfirst: "The Old Vic never disappoints, writes Lizzie Paul." (14 of 14 scanned reviews
+// disagreed with the CMS name, Martin Guerre 2026 among them.)
+const SL_WRITES_RE = new RegExp(String.raw`(?:^|[.!?,]\s+)(?:[a-z][^.!?]{0,160}?,\s*)?writes\s+(${PRINTED_NAME})\s*[.!?]`, "u");
+function extractSouthLondonByline(text) {
+  if (!text) return null;
+  const m = SL_WRITES_RE.exec(String(text).slice(0, 700).replace(/\s+/g, " "));
+  const name = m && printedPerson(m[1]);
+  return name ? { name, known: true } : null;
+}
+
+// All That Dazzles prints "Review by Daz Gale ⭐⭐⭐⭐⭐" under the headline; the page's own author is the
+// shared site account ("Sam - Admin"), and scraped files were filed as "Unknown" or "All That Dazzles".
+const ATD_REVIEW_BY_RE = new RegExp(String.raw`\bReview(?:ed)? by\s+(${PRINTED_NAME}?)\s*(?:⭐|🌟|★|\n|$)`, "u");
+function extractAllThatDazzlesByline(text) {
+  if (!text) return null;
+  const m = ATD_REVIEW_BY_RE.exec(String(text).slice(0, 400));
+  const name = m && printedPerson(m[1]);
+  return name ? { name, known: true } : null;
+}
+
+// Talkin' Broadway: "Theatre Review by Matthew Murray \n - December 11, 2005".
+const TB_REVIEW_BY_RE = new RegExp(String.raw`\bTheatre Review by[ \t]+(${PRINTED_NAME}?)[ \t]*\n`, "u");
+function extractTalkinBroadwayByline(text) {
+  if (!text) return null;
+  const m = TB_REVIEW_BY_RE.exec(String(text).slice(0, 600));
+  const name = m && printedPerson(m[1]);
+  return name ? { name, known: true } : null;
+}
+
+// New York Theatre Guide: "Review by Kathleen Campion 7 June 2016 <review...>".
+const NYTG_REVIEW_BY_RE = new RegExp(String.raw`^\s*Review by\s+(${PRINTED_NAME}?)\s+\d{1,2}\s+[A-Z][a-z]+\s+\d{4}\b`, "u");
+function extractNewYorkTheatreGuideByline(text) {
+  if (!text) return null;
+  const m = NYTG_REVIEW_BY_RE.exec(String(text).slice(0, 200));
+  const name = m && printedPerson(m[1]);
+  return name ? { name, known: true } : null;
+}
+
+// Time Out (US and London): "...WhatsAppBuy ticketWritten by Adam FeldmanTheater and Dance Editor, Time Out USA".
+// Only the role-qualified credit counts; a bare "Written by" in the body names a show's author.
+const TO_WRITTEN_BY_RE = new RegExp(String.raw`Written by\s+(${PRINTED_NAME}?)(?=\s*(?:Theat(?:er|re)|Associate|Senior|Chief|Deputy|Features?|Head|Global|Arts|Film|Travel|Editor|Critic|Contributing|Staff|Writer|Reporter|Advertising))`, "u");
+// The scraped text glues the role onto the name ("Andrzej LukowskiTheatre Editor"); cut it back off.
+const TO_GLUED_ROLE_RE = /(?<=\p{Ll})(?:Theat(?:er|re)|Associate|Senior|Chief|Deputy|Features?|Head|Global|Arts|Film|Travel|Editor|Critic|Contributing|Staff|Writer|Reporter|Advertising)$/u;
+function extractTimeOutByline(text) {
+  if (!text) return null;
+  const m = TO_WRITTEN_BY_RE.exec(String(text).slice(0, 1200));
+  const name = m && printedPerson(m[1].replace(TO_GLUED_ROLE_RE, ""));
+  return name ? { name, known: true } : null;
+}
+
 const BYLINE_EXTRACTORS = {
   "plays-international": extractPlaysInternationalByline,
   "theater-scene": extractTheaterSceneByline,
+  "south-london": extractSouthLondonByline,
+  "all-that-dazzles-uk": extractAllThatDazzlesByline,
+  "talkinbroadway": extractTalkinBroadwayByline,
+  "nytg": extractNewYorkTheatreGuideByline,
+  "timeout": extractTimeOutByline,
+  "timeout-london": extractTimeOutByline,
 };
 
 /**
  * Outlets whose printed byline line is authoritative over a scraped / aggregator-supplied name, so a
- * different stored name is replaced rather than only filled when missing.
+ * different stored name is replaced rather than only filled when missing. `requireUrlSlug` outlets
+ * (TheaterScene's "Posted by" can name the uploader) only replace when the url's critic slug agrees;
+ * the others print a per-article credit that is never the uploader.
  */
-const PRINTED_BYLINE_OVERRIDES = new Set(["theater-scene"]);
+const PRINTED_BYLINE_OVERRIDES = new Map([
+  ["theater-scene", { requireUrlSlug: true }],
+  ["south-london", { requireUrlSlug: false }],
+  ["all-that-dazzles-uk", { requireUrlSlug: false }],
+]);
 
 /** The critic the article itself prints, for outlets in PRINTED_BYLINE_OVERRIDES; else null. */
 function printedBylineOverride(outletId, text, url) {
-  if (!PRINTED_BYLINE_OVERRIDES.has(outletId)) return null;
+  const rule = PRINTED_BYLINE_OVERRIDES.get(outletId);
+  if (!rule) return null;
   const hit = BYLINE_EXTRACTORS[outletId](text);
   if (!hit || !hit.known) return null;
+  if (!rule.requireUrlSlug) return hit.name;
   // "Posted by" can name whoever uploaded the post (5 of 129 TheaterScene pages disagree with the
   // critic slug in their own url). Replace a stored name only when the url's critic slug agrees.
   const slug = hit.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -143,5 +220,10 @@ module.exports = {
   printedBylineOverride,
   extractTheaterSceneByline,
   extractPlaysInternationalByline,
+  extractSouthLondonByline,
+  extractAllThatDazzlesByline,
+  extractTalkinBroadwayByline,
+  extractNewYorkTheatreGuideByline,
+  extractTimeOutByline,
   PI_KNOWN_CRITICS,
 };

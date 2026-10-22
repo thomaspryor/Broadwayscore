@@ -72,7 +72,7 @@ const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribu
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isSoft404Body } = require('./lib/soft-404-body');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
-const { extractBylineFromText, otherNamedCriticAtOutlet } = require('./lib/byline-from-text');
+const { extractBylineFromText, otherNamedCriticAtOutlet, printedBylineOverride } = require('./lib/byline-from-text');
 const { isPlaceholderByline } = require('./lib/placeholder-byline');
 const { isBylineAttestedInText } = require('./lib/byline-attestation');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, truncateAtSentenceBoundary, isOverlongExcerpt, hardCutExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl, compareFilesForDedupPriority, applyScoreRelevantMigrations, SCORE_SOURCE_LABELS } = require('./lib/rebuild-helpers');
@@ -5019,7 +5019,14 @@ showDirs.forEach(showId => {
       {
         const oid = normalizeOutletCanonical(data.outletId || data.outlet);
         const crit = (data.criticName || '').trim().toLowerCase();
-        if (!crit || crit === 'unknown' || crit === 'unnamed' || crit === 'ri-admin' || isPlaceholderByline(data.criticName, data.outlet, { defaultCritic: (outletRegistry.outlets[oid] || {}).defaultCritic })) {
+        // Outlets whose article prints the real critic while the page/CMS credits a shared account
+        // (South London: "writes Lizzie Paul" under the staff user "Michael Holland"): the printed
+        // credit replaces a stored name that disagrees with it, not just a missing one.
+        const printedName = printedBylineOverride(oid, data.fullText, data.url);
+        if (printedName && normalizeCriticCanonical(printedName) !== normalizeCriticCanonical(data.criticName || 'unknown')) {
+          data.criticName = printedName;
+          stats.resolvedBylineFromText = (stats.resolvedBylineFromText || 0) + 1;
+        } else if (!crit || crit === 'unknown' || crit === 'unnamed' || crit === 'ri-admin' || isPlaceholderByline(data.criticName, data.outlet, { defaultCritic: (outletRegistry.outlets[oid] || {}).defaultCritic })) {
           const parsed = extractBylineFromText(oid, data.fullText, { showTitle: showById[showId] && showById[showId].title });
           // An Unknown file at an outlet that already has a DIFFERENT named critic in
           // this show collapses into it in the unknown-critic dedup below. Naming it

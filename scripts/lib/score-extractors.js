@@ -1075,7 +1075,32 @@ function extractUSATodayScore(html, text) {
  * Validation: X/5 must appear near rating-related context, near
  * the start/end of the text, or NOT be followed by date/prose patterns.
  */
+/**
+ * A run of star EMOJI ("⭐⭐⭐⭐") in the review's opening 300 characters, as Staged Theatre,
+ * Pink Prince Theatre, Reviews Gate and a dozen other London blogs print their verdict under the
+ * headline ("A Beautifully Performed Production but Less Is Not Always More ⭐⭐⭐⭐ What's it about?").
+ * Only the ★/☆ glyphs were read before, so ~100 emoji-rated reviews were scored with no star anchor
+ * (Martin Guerre / Staged Theatre: 4 stars, originalScore null). One contiguous run of 1 to 5; a
+ * second separate run in the lead (a quoted rating of another show) is ambiguous and returns null.
+ * @returns {{originalScore: string, normalizedScore: number, source: string} | null}
+ */
+function extractLeadEmojiStars(text) {
+  if (!text) return null;
+  const lead = String(text).slice(0, 300);
+  const runs = lead.match(/(?:⭐️?[\s\u00a0]*){1,6}/gu);
+  if (!runs || runs.length !== 1) return null;
+  const count = (runs[0].match(/⭐/gu) || []).length;
+  if (count < 1 || count > 5) return null;
+  return {
+    originalScore: `${count}/5 stars`,
+    normalizedScore: starsToNumeric(count, 5),
+    source: 'unicode-stars',
+  };
+}
+
 function extractGenericStarRating(html, text) {
+  const emojiLead = extractLeadEmojiStars(text);
+  if (emojiLead) return emojiLead;
   // "X stars" and "X out of 5" are unambiguous — try them first
   const unambiguousPatterns = [
     // "4/5 stars" or "4.0/5.0 stars" — X/Y stars format, unambiguous with "stars" keyword
@@ -2073,6 +2098,7 @@ const HOST_GATED_STAR_OUTLETS = new Set(['british-theatre', 'britishtheatrecom']
 
 module.exports = {
   extractScore,
+  extractLeadEmojiStars,
   HOST_GATED_STAR_OUTLETS,
   extractObserverScore,
   extractBritishTheatreScore,
