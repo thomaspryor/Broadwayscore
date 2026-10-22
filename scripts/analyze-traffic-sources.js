@@ -40,6 +40,7 @@ const path = require('path');
 require('./lib/load-env').loadEnv();
 const { getGaClient, hasGaCredentials } = require('./lib/ga4-client');
 const { phQuery, REAL_USERS_WHERE } = require('./lib/posthog-query');
+const { cutoverWeeks, cutoversAffecting } = require('./lib/analytics-cutovers');
 
 // GA4 runReport returns at most 250k rows per call; rowCount is the size of
 // the COMPLETE result regardless of limit, so rowCount > limit means the rows
@@ -50,6 +51,7 @@ const GA_ROW_LIMIT = 250000;
 // would silently drop the most RECENT days (which then read as zero traffic).
 // Treat a full page as truncation.
 const PH_ROW_LIMIT = 100000;
+const SEARCH_QUALITY_DAYS = 42;
 
 // ---------- pure helpers (exported for tests) ----------
 
@@ -93,13 +95,17 @@ function bucketWeekly(rows) {
  * `weeks` is the full ordered list of week starts for the window, so a source
  * with no rows in a week is treated as 0 (not missing).
  * The partial current week is excluded from spike detection but kept in the series.
+ * Weeks in `suppressWeeks` (analytics measurement cutovers) are never flagged.
  */
-function detectSpikes(series, weeks, { minAbs = 30, ratio = 3, currentWeek = null } = {}) {
+function detectSpikes(series, weeks, { minAbs = 30, ratio = 3, currentWeek = null, suppressWeeks = cutoverWeeks() } = {}) {
   const spikes = [];
   for (const [key, byWeek] of Object.entries(series)) {
     const values = weeks.map((w) => byWeek[w] || 0);
     for (let i = 1; i < weeks.length; i++) {
       if (currentWeek && weeks[i] === currentWeek) continue;
+      // Measurement cutover weeks (analytics-cutovers.js): the lift is the
+      // instrument, not the traffic.
+      if (suppressWeeks.has(weeks[i])) continue;
       const v = values[i];
       if (v < minAbs) continue;
       const prior = values.slice(0, i);
@@ -287,6 +293,16 @@ async function fetchPostHog(range) {
     country: [`coalesce(properties.$geoip_country_name, '(unknown)')`, ''],
     landing: [`coalesce(session.$entry_pathname, '(none)')`,
       `AND coalesce(session.$entry_referring_domain, '') NOT LIKE '%broadwayscorecard.com%'`],
+    // Search-quality lines for the owner email (BRO-5984), all Organic Search sessions.
+    // Only the last SEARCH_QUALITY_DAYS are queried: the report compares the last week with the
+    // four before it, and the full 91-day window timed out in PostHog (504).
+    searchEngine: [`multiIf(session.$entry_referring_domain LIKE '%google.%', 'Google', session.$entry_referring_domain LIKE '%bing.com%', 'Bing', 'Other')`,
+      `AND session.$channel_type = 'Organic Search'`, SEARCH_QUALITY_DAYS],
+    searchLanding: [`coalesce(session.$entry_pathname, '(none)')`,
+      `AND session.$channel_type = 'Organic Search'`, SEARCH_QUALITY_DAYS],
+    // Search sessions that landed on a show page: 'multi' viewed 2+ pages.
+    searchShowDepth: [`if(session.$pageview_count > 1, 'multi', 'single')`,
+      `AND session.$channel_type = 'Organic Search' AND session.$entry_pathname LIKE '/show/%'`, SEARCH_QUALITY_DAYS],
     // Referrer × landing page, for non-search referrers only: this is what
     // ties "Reddit sent 300 visits" to the show page the post was about.
     referralLanding: [`concat(session.$entry_referring_domain, ' → ', coalesce(session.$entry_pathname, '(none)'))`,
@@ -304,8 +320,9 @@ async function fetchPostHog(range) {
   const out = { errors: {} };
   // Sequential on purpose: each query joins sessions + persons over the whole
   // window; six in parallel is how HogQL query timeouts happen.
-  for (const [name, [expr, where]] of Object.entries(specs)) {
-    try { out[name] = await withRetry(() => phDaily(expr, range, where)); }
+  for (const [name, [expr, where, days]] of Object.entries(specs)) {
+    const r = days ? { ...range, startDate: weekStart(new Date(Date.parse(range.endDate) - days * 86400000).toISOString().slice(0, 10)) } : range;
+    try { out[name] = await withRetry(() => phDaily(expr, r, where)); }
     catch (e) { out[name] = []; out.errors[name] = e.message; }
   }
   if (Object.keys(out.errors).length === Object.keys(specs).length) {
@@ -400,7 +417,7 @@ function trendsFor(series, weeks, currentWeek, { minWeekly = 20, pct = 40 } = {}
  * list. Deliberately low threshold: a blog that sent 6 visits is worth a look.
  * Exported for tests.
  */
-function newSources(series, weeks, currentWeek, { minTotal = 5 } = {}) {
+function newSources(series, weeks, currentWeek, { minTotal = 5, suppressWeeks = cutoverWeeks() } = {}) {
   const full = weeks.filter((w) => w !== currentWeek);
   const half = Math.floor(full.length / 2);
   const early = full.slice(0, half);
@@ -408,6 +425,9 @@ function newSources(series, weeks, currentWeek, { minTotal = 5 } = {}) {
   return Object.entries(series)
     .map(([key, bw]) => ({ key, early: sumWeeks(bw, early), late: sumWeeks(bw, late), lateWeeks: late, firstWeek: full.find((w) => bw[w]) || null, current: bw[currentWeek] || 0 }))
     .filter((x) => x.early === 0 && x.late >= minTotal)
+    // A source first seen in a measurement-cutover week is the instrument
+    // newly seeing it (ad-blocked visitors), not a new site linking to us.
+    .filter((x) => !(x.firstWeek && suppressWeeks.has(x.firstWeek)))
     .sort((a, b) => b.late - a.late);
 }
 
@@ -491,6 +511,9 @@ function buildReport({ ga, ph, startDate, endDate, weeks, currentWeek }) {
     seen.add(id); return true;
   });
   const refIdx = indexReferralLanding(ph.skipped ? [] : ph.referralLanding);
+  for (const c of cutoversAffecting(weeks)) {
+    md += `> **Measurement change on ${c.date}:** ${c.label}. Visit counts step up from that week without any change in real traffic, so spike flags are suppressed for ${[...cutoverWeeks([c])].map(fmtDate).join(' and ')}.\n\n`;
+  }
   if (headline.length) {
     md += `Biggest jumps in the window, across both tools (each is a source that did at least 3x its usual weekly volume, or appeared from nothing):\n\n`;
     for (const s of headline.slice(0, 12)) {
@@ -725,7 +748,7 @@ async function main() {
   }
 }
 
-module.exports = { weekStart, median, bucketWeekly, detectSpikes, allWeeks, recentChange, trendsFor, newSources, indexReferralLanding, buildReport, mdCell, normalizeCampaign, withRetry, isTransientPostHogError };
+module.exports = { phDaily, fetchPostHog, weekStart, median, bucketWeekly, detectSpikes, allWeeks, recentChange, trendsFor, newSources, indexReferralLanding, buildReport, mdCell, normalizeCampaign, withRetry, isTransientPostHogError };
 
 if (require.main === module) {
   main().catch((e) => { console.error(e); process.exit(1); });

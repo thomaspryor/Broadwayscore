@@ -3,8 +3,9 @@
 // timer; a same-origin Link click would lose the batched XHR). Mirrors the
 // pattern in TicketLink.tsx — same PostHog project key.
 
+import { POSTHOG_CAPTURE_URL } from './posthog-proxy';
 const POSTHOG_KEY = 'phc_xVenlxA1HzyJz0Yjlj3UkF9JVLCPe86Td6vQEK41SF7';
-const POSTHOG_HOST = 'https://us.i.posthog.com/capture/';
+const POSTHOG_HOST = POSTHOG_CAPTURE_URL;
 
 export function trackPromoClick(
   placement: string,
