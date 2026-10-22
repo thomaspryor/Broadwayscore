@@ -62,6 +62,28 @@ function isReviewTextsCheckout(dir) {
 }
 
 /**
+ * isReviewTextsCheckout proves only that SOME repo is there. An adversarial
+ * review of BRO-5936 pointed reviewTextsDir at the Broadwayscore checkout
+ * itself: it passed, and the staging command would then have run inside the
+ * PUBLIC repo with review paths as arguments. Writing tools that are about to
+ * commit need the stronger question — is this the review-texts clone? — so the
+ * origin remote has to name that repo.
+ */
+function isReviewTextsClone(dir, remoteUrlOf = originUrl) {
+  if (!isReviewTextsCheckout(dir)) return false;
+  return /review-texts/i.test(remoteUrlOf(dir) || '');
+}
+
+function originUrl(dir) {
+  try {
+    return execFileSync('git', ['remote', 'get-url', 'origin'],
+      { cwd: dir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+  } catch {
+    return '';
+  }
+}
+
+/**
  * A cloud session's data/review-texts is a copy without .git, stamped with .review-texts-sha by
  * setup-local-data.sh (BRO-5892). It is read-only material: the resolver falls back to it only
  * when no real checkout exists, and isReviewTextsCheckout (the guard writing tools use) refuses it,
@@ -130,4 +152,7 @@ function resolveReviewTextsDir(
   return path.join(homedir, 'broadway-review-texts');
 }
 
-module.exports = { resolveReviewTextsDir, isReviewTextsCheckout, isStampedReviewTextsCopy, mainWorktreeOf, REVIEW_TEXTS_SHA_FILE };
+module.exports = {
+  resolveReviewTextsDir, isReviewTextsCheckout, isReviewTextsClone, originUrl,
+  isStampedReviewTextsCopy, mainWorktreeOf, REVIEW_TEXTS_SHA_FILE,
+};

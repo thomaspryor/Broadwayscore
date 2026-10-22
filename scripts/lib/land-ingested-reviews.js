@@ -17,7 +17,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 const { execErrorDetail } = require('./exec-error-detail');
 const { downstreamWorkflows } = require('./ingest-downstream');
-const { isReviewTextsCheckout } = require('./review-texts-dir');
+const { isReviewTextsClone } = require('./review-texts-dir');
 
 /**
  * Push the given absolute file paths. Returns {pushed: boolean, error?: string}.
@@ -35,22 +35,25 @@ const { isReviewTextsCheckout } = require('./review-texts-dir');
  * Refusing is strictly better than letting git run: `git -C <copy>` walks UP to
  * the enclosing Broadwayscore repo, where these paths are gitignored, so the
  * add fails with a message about .gitignore and the real cause (wrong root)
- * never appears.
+ * never appears. And the dir must be the review-texts CLONE, not merely some
+ * checkout — pointed at the Broadwayscore checkout itself, a `.git`-only test
+ * passes and the add then runs in the PUBLIC repo (caught in review).
  */
 function pushReviewTexts({
   reviewTextsDir, touchedPaths, message, exec = execSync, log = console.log,
-  isCheckout = isReviewTextsCheckout,
+  isCheckout = isReviewTextsClone,
 }) {
   if (!isCheckout(reviewTextsDir)) {
-    const error = `review-texts dir is not a git checkout: ${reviewTextsDir}`;
+    const error = `not the review-texts clone: ${reviewTextsDir}`;
     log(`  ⚠️  Refusing to push: ${error}`);
-    log('     A gitignored copy or stamped mirror cannot be committed, and git would');
-    log('     walk up into the enclosing repo. Point REVIEW_TEXTS_DIR at the clone');
-    log('     (scripts/lib/review-texts-dir.js, BRO-5874).');
+    log('     It must be a checkout whose origin is broadway-review-texts. A gitignored');
+    log('     copy cannot be committed, and any other repo would take these paths as its');
+    log('     own. Point REVIEW_TEXTS_DIR at the clone (scripts/lib/review-texts-dir.js).');
     return { pushed: false, error };
   }
   const relPaths = touchedPaths.map((p) => path.relative(reviewTextsDir, p));
-  const escaped = relPaths.filter((p) => p === '' || p.startsWith('..') || path.isAbsolute(p));
+  const escaped = relPaths.filter((p) => p === '' || path.isAbsolute(p)
+    || p === '..' || p.startsWith(`..${path.sep}`));
   if (escaped.length) {
     const error = `${escaped.length} path(s) are outside ${reviewTextsDir}: ${escaped.slice(0, 3).join(', ')}`;
     log(`  ⚠️  Refusing to push: ${error}`);
