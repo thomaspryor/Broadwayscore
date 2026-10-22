@@ -35,7 +35,6 @@ const fs = require('fs');
 const path = require('path');
 const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/reddit-api');
 const cooldown = require('./lib/reddit-dispatch-cooldown');
-const { sendAlert } = require('./lib/discord-notify');
 const { computeProductionWindow, isPostInProductionWindow } = require('./lib/production-window');
 const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey, isOwnerComment, isRedditFresh, redditBackoffReason, redditSaveDecision, partitionRequestedShows, selectPostsForComments } = require('./lib/reddit-post-filters');
 
@@ -595,25 +594,9 @@ function saveAudienceBuzz() {
   return true;
 }
 
-// BRO-5916: alert once per outage when Reddit has had no successful run for 48h.
-async function maybeAlertRedditStale() {
-  const rows = cooldown.readLedger();
-  const verdict = cooldown.shouldAlertStale(rows);
-  if (!verdict.alert) return;
-  const delivered = await sendAlert({
-    title: 'Reddit sentiment scrape has been down 48h+',
-    description: `${verdict.reason}. Every route (direct, RSS, Bright Data, Scrapingdog, ScrapingBee) failed, so new openings get no Reddit audience data. Dispatches are on cooldown to stop burning credits; one probe runs every ${cooldown.DEFAULTS.probeAfterHours}h and clears it on success.`,
-    severity: 'error',
-    email: true,
-    idempotencyKey: `reddit-stale-${verdict.sinceTs}`,
-  });
-  // Only mark the outage alerted once delivery is confirmed, so a failed send retries next run.
-  if (delivered) cooldown.appendRow({ ts: new Date().toISOString(), outcome: 'alerted', note: verdict.reason });
-}
-
 // Record the run for the cross-run cooldown. "unavailable" = every fetch this
 // run failed (or the breaker tripped); any successful fetch counts as healthy.
-async function recordRunHealth(processed, successful) {
+function recordRunHealth(processed, successful) {
   const sessionStats = getStats();
   const attemptedFetches = sessionStats.fetchOk + sessionStats.fetchFail;
   if (dryRun || attemptedFetches === 0) return;
@@ -623,7 +606,6 @@ async function recordRunHealth(processed, successful) {
     outcome: unavailable ? 'unavailable' : 'ok',
     note: `fetchOk=${sessionStats.fetchOk} fetchFail=${sessionStats.fetchFail} rss=${sessionStats.redditRss} shows=${processed} withData=${successful}`,
   });
-  if (unavailable) await maybeAlertRedditStale();
 }
 
 /**
@@ -654,8 +636,7 @@ async function main() {
     const verdict = cooldown.decideCooldown(cooldown.readLedger());
     if (verdict.skip) {
       console.log(`⏸ ${verdict.reason}. Skipping this run (no credits spent). Use --ignore-cooldown to force.`);
-      await maybeAlertRedditStale();
-      process.exit(0);
+      process.exit(0); // the workflow's stale-alert step (scripts/reddit-stale-alert.js) still runs
     }
     if (verdict.consecutiveUnavailable > 0) console.log(`Reddit health: ${verdict.reason}`);
   }
@@ -873,7 +854,7 @@ async function main() {
     }
   }
 
-  await recordRunHealth(processed, successful); // before any exit path below
+  recordRunHealth(processed, successful); // before any exit path below
 
   // Validation guard for full runs
   if (!showFilter && !showsArg && !shardMode && shows.length > 5) {

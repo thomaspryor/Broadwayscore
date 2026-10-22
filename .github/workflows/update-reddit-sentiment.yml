@@ -124,8 +124,6 @@ jobs:
           REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}   # BRO-5916 48h-down alert
-          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           INPUT_SHOW_ID: ${{ github.event.inputs.show_id }}
           INPUT_SHOWS: ${{ github.event.inputs.shows }}
           INPUT_SKIP_FRESH_HOURS: ${{ github.event.inputs.skip_fresh_hours || '20' }}
@@ -257,6 +255,14 @@ jobs:
         with:
           workflow-name: update-reddit-sentiment
 
+      - name: Alert once if Reddit has been down 48h
+        # BRO-5916: digest line (not an email) after 48h without a successful scrape;
+        # resolves on the first success. Also covers runs that skipped on cooldown.
+        if: always()
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/reddit-stale-alert.js
+
       - name: Commit Reddit run-health ledger
         # BRO-5916: cross-run cooldown state (scripts/lib/reddit-dispatch-cooldown.js).
         # The scraper appends one row per run ('ok' | 'unavailable' | 'alerted'); the
@@ -265,7 +271,8 @@ jobs:
         if: always()
         continue-on-error: true
         run: |
-          git add data/audit/reddit-run-health.jsonl 2>/dev/null || true
+          # alert state from reddit-stale-alert.js (alert-ledger-commit-check)
+          git add data/audit/reddit-run-health.jsonl data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl data/audit/alert-digest-queue.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No Reddit run-health rows to commit"
           else

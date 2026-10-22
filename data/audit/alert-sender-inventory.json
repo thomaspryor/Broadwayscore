@@ -1,29 +1,29 @@
 {
-  "generatedAt": "2026-10-21T19:05:44.780Z",
+  "generatedAt": "2026-10-22T05:01:14.279Z",
   "counts": {
     "router": 193,
     "digest": 1,
-    "direct": 0,
+    "direct": 1,
     "humanCallerIgnoresDigest": 0
   },
   "senders": [
     {
       "file": ".github/workflows/check-cron-health.yml",
-      "line": 681,
+      "line": 688,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": ".github/workflows/check-cron-health.yml",
-      "line": 733,
+      "line": 740,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": ".github/workflows/check-cron-health.yml",
-      "line": 782,
+      "line": 789,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
@@ -100,21 +100,21 @@
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 4336,
+      "line": 4351,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 4345,
+      "line": 4360,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 6412,
+      "line": 6439,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
@@ -310,14 +310,14 @@
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 3096,
+      "line": 3106,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 3190,
+      "line": 3200,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
@@ -380,7 +380,7 @@
     },
     {
       "file": "scripts/bsc-prune.js",
-      "line": 775,
+      "line": 798,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
@@ -464,14 +464,14 @@
     },
     {
       "file": "scripts/check-corpus-drift.js",
-      "line": 695,
+      "line": 713,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/check-corpus-drift.js",
-      "line": 806,
+      "line": 824,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
@@ -1273,6 +1273,13 @@
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
+    },
+    {
+      "file": "scripts/scrape-reddit-sentiment.js",
+      "line": 603,
+      "kind": "sendAlert-direct",
+      "classification": "direct",
+      "severity": "error"
     },
     {
       "file": "scripts/send-opening-night-broadcast.js",
