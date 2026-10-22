@@ -122,5 +122,6 @@ test('real active target-outlet critics have author-page overrides', {
 }, () => {
   const [reg, rev, out] = coreFiles.map(file => JSON.parse(fs.readFileSync(file, 'utf8')));
   const missing = discoveryCandidates(selectActiveCritics(reg, rev.reviews, out), pages);
-  assert.deepEqual(missing.map(c => `${c.slug}:${c.key}`), []);
+  assert.deepEqual(missing.map(c => `${c.slug}:${c.key}`), [],
+    'active T1/T2 critic(s) lack author-page overrides: run `node scripts/audit-critic-coverage.js --discover-author-pages` (or add the slug to data/critic-author-pages.json) and commit');
 });
