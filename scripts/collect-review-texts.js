@@ -639,7 +639,7 @@ const UNRELIABLE_TITLE_OUTLETS = new Set(['pages-on-stages']);
 // Domain alias matching — imported from shared lib (scraper.js)
 const { domainMatchesExpected, checkScrapingBeeCredits, getScraperStats, fetchWithScrapingdog, isTollbitGate } = require('./lib/scraper');
 const { isSoft404Body } = require('./lib/soft-404-body');
-const { shouldCountFailure, isPermanentlyFailed, shouldReopenStaleContentMismatch, classifyFetchFailure, routeCapFromBrowserbaseError, applyRouteCapDeferralLimit, isRouteCapCooldownActive } = require('./lib/failed-fetch-policy');
+const { shouldCountFailure, isPermanentlyFailed, shouldReopenStaleContentMismatch, classifyFetchFailure, routeCapFromBrowserbaseError, applyRouteCapDeferralLimit, isRouteCapCooldownActive, effectiveFailureReason, isOwnCodeException } = require('./lib/failed-fetch-policy');
 const { consultBrightData } = require('./lib/brightdata-caps');
 const { recordBdCall } = require('./lib/bd-telemetry');
 const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
@@ -6321,7 +6321,7 @@ function findReviewsToProcess() {
       const failed = JSON.parse(fs.readFileSync(failedPath, 'utf8'));
       for (const f of failed) {
         const id = f.reviewId || `${f.showId}/${f.file}`;
-        const entry = { failureReason: f.failureReason || '', failureCount: f.failureCount || 1, url: f.url || null, lastFailedAt: f.lastFailedAt || null, lastCappedAt: f.lastCappedAt || null };
+        const entry = { failureReason: effectiveFailureReason(f), failureCount: f.failureCount || 1, url: f.url || null, lastFailedAt: f.lastFailedAt || null, lastCappedAt: f.lastCappedAt || null };
         failedFetchesByReviewId.set(id, entry);
         // budget_capped entries are excluded here as well as at write time:
         // belt-and-braces, so a ledger written before this fix still can't
@@ -6998,6 +6998,7 @@ function recordFailedFetch(review, reason, details = {}) {
     firstFailedAt: existing?.firstFailedAt || new Date().toISOString(),
     ...(counts || reason === 'soft_404' ? {} : { lastCappedAt: new Date().toISOString() }),
     ...(capped.cappedDeferrals ? { cappedDeferrals: capped.cappedDeferrals } : {}),
+    ...(capped.codeErrorDeferrals ? { codeErrorDeferrals: capped.codeErrorDeferrals } : {}),
     ...details,
   };
 
@@ -7066,7 +7067,9 @@ function recordFailedFetch(review, reason, details = {}) {
     // ledger count alone must not claim "permanently failed".
     console.log(`    ⚠ Permanently failed (${entry.failureCount} attempts, reason: ${reason}) — will skip on future runs`);
   } else if (!counts && reason !== 'soft_404') {
-    console.log(`    ⏸ Recorded as ${reason} (failureCount held at ${entry.failureCount}) — retried normally once the cap lifts`);
+    console.log(reason === 'code_error'
+      ? `    ⏸ Recorded as code_error (our own exception, deferral ${entry.codeErrorDeferrals}; failureCount held at ${entry.failureCount}) — fix the code, the row is retried`
+      : `    ⏸ Recorded as ${reason} (failureCount held at ${entry.failureCount}) — retried normally once the cap lifts`);
   } else if (fetchAttemptUpdates.fetchRetryAfter) {
     console.log(`    ⏳ Fetch cooldown until ${fetchAttemptUpdates.fetchRetryAfter} (${entry.failureCount} attempts, reason: ${reason})`);
   }
@@ -7900,7 +7903,7 @@ async function processReview(review) {
     // Same for a Browserbase route skipped at a session cap (BRO-5222).
     const bdWasCapped = (getScraperStats().bdBlocked || 0) > bdBlockedBefore;
     const routeCapped = review._browserbaseCapSkipped || null;
-    const failReason = classifyFetchFailure({ message: error.message, bdWasCapped, routeCapped });
+    const failReason = classifyFetchFailure({ message: error.message, bdWasCapped, routeCapped, codeError: isOwnCodeException(error) });
     recordFailedFetch(review, failReason, {
       errorMessage: error.message.slice(0, 200),
       ...(routeCapped ? { routeCapped } : {}),

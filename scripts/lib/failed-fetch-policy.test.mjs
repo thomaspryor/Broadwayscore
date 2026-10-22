@@ -109,23 +109,49 @@ test('shouldReopenStaleContentMismatch: old-version mismatch on a textless unfla
 });
 
 // BRO-5933: a JS exception in our own fetch code is not evidence about the URL.
-test('code exceptions classify as code_error, never retire, and legacy fetch_error rows are read as code_error', () => {
+test('code_error: judged from the error object, never from the waterfall aggregate', () => {
   const crash = "Cannot read properties of undefined (reading 'length')";
-  assert.equal(policy.classifyFetchFailure({ message: crash }), 'code_error');
-  assert.equal(policy.classifyFetchFailure({ message: 'HTTP 404 Not Found' }), 'url_dead_404');
-  assert.equal(policy.classifyFetchFailure({ message: 'socket hang up' }), 'fetch_error');
+  assert.equal(policy.isOwnCodeException(new TypeError(crash)), true);
+  assert.equal(policy.isOwnCodeException(new ReferenceError('foo is not defined')), true);
+  assert.equal(policy.isOwnCodeException(new Error(crash)), false);
+  // A page-side Playwright error quoted inside "All tiers failed" is evidence about the page.
+  assert.equal(policy.isOwnCodeException(new TypeError(`All tiers failed: [{"error":"${crash}"}]`)), false);
+  assert.equal(policy.classifyFetchFailure({ message: crash, codeError: true }), 'code_error');
+  assert.equal(policy.classifyFetchFailure({ message: crash }), 'fetch_error');
+  assert.equal(policy.classifyFetchFailure({ message: 'HTTP 404', codeError: true }), 'url_dead_404');
   assert.equal(policy.isNonEvidenceFailure('code_error'), true);
-  assert.equal(policy.isPermanentlyFailed({ failureReason: 'fetch_error', failureCount: 9, errorMessage: crash }), false);
-  assert.equal(policy.isPermanentlyFailed({ failureReason: 'fetch_error', failureCount: 9, errorMessage: 'socket hang up' }), true);
-  assert.equal(policy.effectiveFailureReason({ failureReason: 'fetch_error', errorMessage: 'x.map is not a function' }), 'code_error');
-  assert.equal(policy.effectiveFailureReason({ failureReason: 'all_tiers_failed', errorMessage: crash }), 'all_tiers_failed');
 });
 
-test('shouldRetryFetch retries a closed show whose only failures were code exceptions', () => {
+test('legacy fetch_error rows whose whole message is an exception read as code_error', () => {
+  const crash = "Cannot read properties of undefined (reading 'length')";
+  assert.equal(policy.effectiveFailureReason({ failureReason: 'fetch_error', errorMessage: crash }), 'code_error');
+  assert.equal(policy.effectiveFailureReason({ failureReason: 'fetch_error', errorMessage: 'x.map is not a function' }), 'code_error');
+  assert.equal(policy.effectiveFailureReason({ failureReason: 'fetch_error', errorMessage: `All tiers failed: [{"error":"${crash}"}]` }), 'fetch_error');
+  assert.equal(policy.effectiveFailureReason({ failureReason: 'all_tiers_failed', errorMessage: crash }), 'all_tiers_failed');
+  // Once the deferral budget is spent the row is an ordinary failure again.
+  assert.equal(policy.effectiveFailureReason({ failureReason: 'fetch_error', errorMessage: crash, codeErrorDeferrals: 4 }), 'fetch_error');
+  assert.equal(policy.isPermanentlyFailed({ failureReason: 'fetch_error', failureCount: 9, errorMessage: crash }), false);
+  assert.equal(policy.isPermanentlyFailed({ failureReason: 'fetch_error', failureCount: 9, errorMessage: 'socket hang up' }), true);
+});
+
+test('code_error deferrals are capped, then the row counts as fetch_error', () => {
+  let existing = {};
+  const seen = [];
+  for (let i = 0; i < policy.MAX_CODE_ERROR_DEFERRALS + 1; i++) {
+    const r = policy.applyRouteCapDeferralLimit('code_error', existing);
+    seen.push(r.reason);
+    existing = { codeErrorDeferrals: r.codeErrorDeferrals };
+  }
+  assert.deepEqual(seen, [...Array(policy.MAX_CODE_ERROR_DEFERRALS).fill('code_error'), 'fetch_error']);
+});
+
+test('shouldRetryFetch on the collector-projected entry retries a closed show whose failures were a code exception', () => {
   const { shouldRetryFetch } = require('./review-guards.js');
   const show = { id: 's', status: 'closed', closingDate: '2019-01-01', openingDate: '2018-10-01' };
-  const crash = { failureReason: 'fetch_error', failureCount: 3, errorMessage: "Cannot read properties of undefined (reading 'length')" };
-  assert.equal(shouldRetryFetch(show, { url: 'https://www.theguardian.com/stage/x' }, crash).shouldRetry, true);
-  const real = { failureReason: 'fetch_error', failureCount: 9, errorMessage: 'socket hang up' };
+  const ledgerRow = { reviewId: 's/guardian--x.json', failureReason: 'fetch_error', failureCount: 3, errorMessage: "Cannot read properties of undefined (reading 'length')" };
+  // Same projection collect-review-texts.js builds for the per-file gate (no errorMessage carried).
+  const projected = { failureReason: policy.effectiveFailureReason(ledgerRow), failureCount: ledgerRow.failureCount, url: null, lastFailedAt: null, lastCappedAt: null };
+  assert.equal(shouldRetryFetch(show, { url: 'https://www.theguardian.com/stage/x' }, projected).shouldRetry, true);
+  const real = { failureReason: policy.effectiveFailureReason({ failureReason: 'fetch_error', errorMessage: 'socket hang up' }), failureCount: 9 };
   assert.equal(shouldRetryFetch(show, { url: 'https://www.theguardian.com/stage/x' }, real).shouldRetry, false);
 });

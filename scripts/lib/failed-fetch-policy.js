@@ -44,16 +44,30 @@ const MAX_ROUTE_CAPPED_DEFERRALS = 3;
  * from a bad response shape, say) says nothing about the URL. Before this
  * reason existed such rows were recorded as fetch_error and retired: the
  * Guardian Content API crash ("Cannot read properties of undefined (reading
- * 'length')") left 266 Guardian reviews skipped for good after the crash was
- * fixed (BRO-5933).
+ * 'length')") left ~360 Guardian reviews skipped after it was fixed
+ * (BRO-5933). A row may be deferred as code_error MAX_CODE_ERROR_DEFERRALS
+ * times; after that it counts as fetch_error, so a bug that throws after a
+ * paid tier ran cannot re-buy the waterfall every run forever.
  */
 const CODE_ERROR_REASON = 'code_error';
-const CODE_EXCEPTION_RE = /Cannot read propert(?:y|ies) of (?:undefined|null)|Cannot destructure|is not a function|is not iterable|is not defined\b|Cannot set propert(?:y|ies) of (?:undefined|null)/;
+const MAX_CODE_ERROR_DEFERRALS = 3;
 
-/** @param {string} message */
-function isCodeException(message) {
-  return CODE_EXCEPTION_RE.test(String(message || ''));
+/**
+ * Did the fetch die on our own code, not on the page or a scraper tier?
+ * Judged from the error object at the throw site: a TypeError/ReferenceError
+ * whose message is not the waterfall's aggregate ("All tiers failed: [...]",
+ * which quotes each tier's error, page-side Playwright errors included) or a
+ * content verdict.
+ * @param {unknown} error
+ */
+function isOwnCodeException(error) {
+  if (!(error instanceof TypeError || error instanceof ReferenceError)) return false;
+  return !/^(All tiers failed|URL returned)/.test(String(error.message || ''));
 }
+
+// Legacy rows only keep the first 200 chars of the message and no error type,
+// so they are matched on a message that IS a bare exception, start to end.
+const LEGACY_CODE_EXCEPTION_RE = /^(?:Cannot read propert(?:y|ies) of (?:undefined|null)\b|Cannot set propert(?:y|ies) of (?:undefined|null)\b|Cannot destructure\b|[\w$.]+ is not (?:a function|iterable|defined)$)/;
 
 const NON_EVIDENCE_REASONS = Object.freeze(['budget_capped', SOFT_404_REASON, ROUTE_CAPPED_REASON, CODE_ERROR_REASON]);
 
@@ -65,7 +79,7 @@ const NON_EVIDENCE_REASONS = Object.freeze(['budget_capped', SOFT_404_REASON, RO
  */
 function effectiveFailureReason(entry) {
   const reason = (entry && entry.failureReason) || '';
-  if (reason === 'fetch_error' && isCodeException(entry && entry.errorMessage)) return CODE_ERROR_REASON;
+  if (reason === 'fetch_error' && !(entry.codeErrorDeferrals > 0) && LEGACY_CODE_EXCEPTION_RE.test(String(entry.errorMessage || ''))) return CODE_ERROR_REASON;
   return reason;
 }
 
@@ -129,10 +143,10 @@ function isPermanentlyFailed(entry) {
  *   Browserbase route would have run but a cap blocked it
  * @returns {string}
  */
-function classifyFetchFailure({ message, bdWasCapped = false, routeCapped = null }) {
+function classifyFetchFailure({ message, bdWasCapped = false, routeCapped = null, codeError = false }) {
   const msg = String(message || '');
   if (msg.includes('404')) return 'url_dead_404';
-  if (isCodeException(msg)) return CODE_ERROR_REASON;
+  if (codeError) return CODE_ERROR_REASON;
   if (bdWasCapped) return 'budget_capped';
   if (routeCapped) return ROUTE_CAPPED_REASON;
   if (msg.includes('timeout') || msg.includes('TIMEOUT')) return 'all_tiers_timeout';
@@ -175,6 +189,10 @@ function routeCapFromBrowserbaseError(message, localBlockReason) {
  * @returns {{reason: string, cappedDeferrals: number}}
  */
 function applyRouteCapDeferralLimit(reason, existing) {
+  if (reason === CODE_ERROR_REASON) {
+    const next = ((existing && existing.codeErrorDeferrals) || 0) + 1;
+    return { reason: next > MAX_CODE_ERROR_DEFERRALS ? 'fetch_error' : reason, cappedDeferrals: (existing && existing.cappedDeferrals) || 0, codeErrorDeferrals: next };
+  }
   const prior = (existing && existing.cappedDeferrals) || 0;
   if (reason !== ROUTE_CAPPED_REASON) return { reason, cappedDeferrals: prior };
   const next = prior + 1;
@@ -227,7 +245,8 @@ module.exports = {
   shouldReopenStaleContentMismatch,
   NON_EVIDENCE_REASONS,
   CODE_ERROR_REASON,
-  isCodeException,
+  MAX_CODE_ERROR_DEFERRALS,
+  isOwnCodeException,
   effectiveFailureReason,
   isNonEvidenceFailure,
   shouldCountFailure,

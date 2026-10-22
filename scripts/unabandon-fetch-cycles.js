@@ -60,6 +60,7 @@ const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { shouldRetryFetch } = require('./lib/review-guards');
+const { effectiveFailureReason } = require('./lib/failed-fetch-policy');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -124,7 +125,7 @@ try {
   for (const f of failedFetches) {
     const id = f.reviewId || (f.showId && f.file ? `${f.showId}/${f.file}` : null);
     if (!id) continue;
-    failedFetchesByReviewId.set(id, { failureReason: f.failureReason || '', failureCount: f.failureCount || 1 });
+    failedFetchesByReviewId.set(id, { failureReason: effectiveFailureReason(f), failureCount: f.failureCount || 1 });
   }
 } catch (e) {
   // No ledger file at all — proceed with an empty map.

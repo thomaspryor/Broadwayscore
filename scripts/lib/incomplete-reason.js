@@ -145,6 +145,14 @@ function classifyIncompleteReason(review, failedFetchEntry) {
     };
   }
 
+  // Our own code threw (BRO-5933): not the site's doing.
+  if (failureReason === 'code_error') {
+    return {
+      incompleteReason: 'code_error',
+      incompleteDetail: `collector exception (${failedFetchEntry.codeErrorDeferrals || 1} deferrals)`
+    };
+  }
+
   // Priority 6: Bot blocked / fetch error
   if (failureReason === 'all_tiers_failed' || failureReason === 'fetch_error') {
     return {
