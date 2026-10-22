@@ -50,7 +50,9 @@ async function main() {
   const publish = require('./lib/opening-night-lane/publish');
   const { fetchPage } = require('./lib/scraper');
   const { EnsembleReviewScorer } = require('./llm-scoring/ensemble-scorer.ts');
-  const scorer = new EnsembleReviewScorer(env.ANTHROPIC_API_KEY, env.OPENAI_API_KEY, env.GEMINI_API_KEY, env.OPENROUTER_API_KEY);
+  // Three models, like production (llm-ensemble-score.yml leaves OPENROUTER_API_KEY out: "Kimi disabled"). With the key
+  // the scorer adds Kimi, whose 300 s OpenRouter timeouts and retries cost ~15 minutes per review in the first CI run.
+  const scorer = new EnsembleReviewScorer(env.ANTHROPIC_API_KEY, env.OPENAI_API_KEY, env.GEMINI_API_KEY);
   const scoring = inline.createInlineScoring({ show, night, ledgerDir, now: Date.now, ...inline.realFetchPorts(), scoreText: inline.ensembleScoreText(scorer) });
   const fetchText = async (url, opts) => {
     const r = await fetchPage(url, opts);

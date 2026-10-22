@@ -187,7 +187,8 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          # No OPENROUTER_API_KEY: it adds Kimi to the ensemble, which production scoring leaves out
+          # (llm-ensemble-score.yml) and which took ~15 minutes per review in the first shadow run (BRO-5201).
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
@@ -262,6 +263,10 @@ jobs:
 
       - uses: ./.github/actions/setup-node
 
+      # fetchPage's free Playwright tier; without a browser every fetch falls through to paid providers.
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
       # shows.json (the show record, Show Score's same-title guards) comes from core data.
       - name: Checkout core data (root JSON only)
         uses: ./.github/actions/checkout-core-data
@@ -285,7 +290,6 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         run: npx tsx scripts/opening-night-lane-shadow.js "--show=${SHOW}" "--night=${NIGHT}" "--window-min=${WINDOW}" "--out=${RUNNER_TEMP}/shadow"
 
       - name: Upload shadow report and ledger
