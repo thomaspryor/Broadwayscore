@@ -444,6 +444,7 @@ lint_workflows() {
     audit-review-texts-test-yml-coverage \
     audit-toplevel-script-test-yml-coverage \
     audit-run-budget-coverage \
+    audit-run-budget-slack \
     audit-alert-reachability \
     audit-core-data-writers \
     audit-push-core-data-audit-gap \
