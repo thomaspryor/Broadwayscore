@@ -12,7 +12,9 @@
  *   node scripts/audit-live-show-art.js                  # all live shows, 4 workers
  *   node scripts/audit-live-show-art.js --show=ID        # one show
  *   node scripts/audit-live-show-art.js --limit=N        # first N shows (smoke test)
- *   node scripts/audit-live-show-art.js --workers=N --no-write
+ *   node scripts/audit-live-show-art.js --workers=N --no-write --no-alert
+ *
+ * Flagged rows fold into ONE rollup alert card (stable key, 7-day cooldown).
  *
  * Output: data/audit/live-art-audit.json (needs GEMINI_API_KEY).
  */
@@ -23,7 +25,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const USAGE = `audit-live-show-art.js — vision sweep of live show thumbnails (advisory).
 
 Usage:
-  node scripts/audit-live-show-art.js [--show=ID] [--limit=N] [--workers=N] [--no-write]
+  node scripts/audit-live-show-art.js [--show=ID] [--limit=N] [--workers=N] [--no-write] [--no-alert]
   node scripts/audit-live-show-art.js --help, -h    print this usage and exit
 `;
 
@@ -33,7 +35,7 @@ if (hasHelpFlag(process.argv)) {
 }
 
 const { verifyImage, createRateLimiter, creativesForVerify, resolveMarketSlug } = require('./lib/verify-image');
-const { selectLiveShows, classifyResult, buildReport } = require('./lib/live-art-audit');
+const { selectLiveShows, classifyResult, buildReport, buildLiveArtAlert, LIVE_ART_ALERT_KEY } =require('./lib/live-art-audit');
 
 const ROOT = path.join(__dirname, '..');
 const OUTPUT = path.join(ROOT, 'data', 'audit', 'live-art-audit.json');
@@ -56,6 +58,7 @@ async function auditShow(show, rateLimiter) {
   const result = await verifyImage(fs.readFileSync(file), show.title, {
     year: show.openingDate ? show.openingDate.slice(0, 4) : undefined,
     openingDate: show.openingDate,
+    closingDate: show.status === 'closed' ? show.closingDate || null : null,
     market: resolveMarketSlug(show.category, show.market),
     venue: show.venue,
     creatives: creativesForVerify(show),
@@ -111,8 +114,29 @@ async function main() {
     fs.writeFileSync(OUTPUT, JSON.stringify(report, null, 2) + '\n');
     console.log(`Wrote ${path.relative(ROOT, OUTPUT)}`);
   }
-  // Advisory: a flagged row never fails the run. Only an all-errors run does.
-  if (shows.length > 0 && report.errorCount === shows.length) process.exit(1);
+  // One rollup card per week (stable key); nothing is nulled or blocked.
+  if (!process.argv.includes('--no-alert')) {
+    const { routeAlert, resolveQuietConditions } = require('./lib/owner-alert-router.js');
+    const { syncRollup, snapshotRollupMembers } = require('./lib/rollup-alert');
+    try {
+      const opts = buildLiveArtAlert(report.flagged);
+      if (!opts) {
+        resolveQuietConditions([LIVE_ART_ALERT_KEY], { quietHours: 48, reason: 'no live show art flagged' });
+      } else {
+        const priorMembers = snapshotRollupMembers(LIVE_ART_ALERT_KEY);
+        const routed = await routeAlert(opts);
+        await syncRollup({
+          priorMembers, key: LIVE_ART_ALERT_KEY, items: report.flagged, itemId: (r) => r.id,
+          itemBlock: (r) => `- ${r.title || r.id} (${r.id}) [${r.kind}]`,
+          header: (added) => `More live shows flagged (${added.length} new):`,
+        }, routed);
+      }
+    } catch (err) {
+      console.error(`routeAlert (${LIVE_ART_ALERT_KEY}) failed: ${err.message}`);
+    }
+  }
+  // Advisory: a flagged row never fails the run. Only a run where most checks errored does.
+  if (shows.length > 0 && report.errorCount * 2 > shows.length) process.exit(1);
 }
 
 main().catch(err => { console.error(err); process.exit(1); });

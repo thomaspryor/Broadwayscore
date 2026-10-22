@@ -5,7 +5,10 @@
  * against the real functions (CLAUDE.md section 15).
  */
 
+const { applyStrictVerdict } = require('./verify-image');
+
 const LIVE_STATUSES = ['open', 'previews', 'upcoming', 'announced'];
+const LIVE_ART_ALERT_KEY = 'live-show-art:wrong-work';
 
 // verifyImage issue categories that mean the art shows another work or no work.
 const WRONG_WORK_ISSUES = {
@@ -19,8 +22,6 @@ const WRONG_WORK_ISSUES = {
   ticket_listing: 'generic_image',
 };
 
-const ERROR_ISSUES = ['api_error', 'download_error', 'parse_error', 'invalid_input'];
-
 /** Live shows that carry a thumbnail path, in shows.json order. */
 function selectLiveShows(shows, { statuses = LIVE_STATUSES, showId = null } = {}) {
   return (Array.isArray(shows) ? shows : []).filter(s =>
@@ -31,20 +32,17 @@ function selectLiveShows(shows, { statuses = LIVE_STATUSES, showId = null } = {}
 
 /**
  * Map a verifyImage result to an audit row kind, or null when the art is fine.
- * production_still / headshot_cast rejections are not wrong-work art (press
- * stills are common off-West End), so they are dropped, as in the BRO-5739
- * sweep. Low-confidence rejections are dropped to keep the report short.
+ * Verifier errors use the verifier's own predicate (applyStrictVerdict). A
+ * production_still / headshot_cast rejection is only dropped when it names no
+ * wrong-work issue: a press still of ANOTHER show still carries wrong_show.
+ * Low-confidence rejections are dropped; medium and high are kept.
  * @returns {{kind: string, errored: boolean}|null}
  */
 function classifyResult(result) {
   const r = result || {};
+  if (applyStrictVerdict(r, { strict: true }).errored) return { kind: 'error', errored: true };
+  if (r.match !== false || r.confidence === 'low') return null;
   const issues = Array.isArray(r.issues) ? r.issues : [];
-  if (r.skipped || issues.some(i => ERROR_ISSUES.includes(i))) {
-    return { kind: 'error', errored: true };
-  }
-  if (r.match !== false) return null;
-  if (r.confidence === 'low') return null;
-  if (r.imageType === 'production_still' || r.imageType === 'headshot_cast') return null;
   for (const i of issues) {
     if (WRONG_WORK_ISSUES[i]) return { kind: WRONG_WORK_ISSUES[i], errored: false };
   }
@@ -70,4 +68,20 @@ function buildReport(rows, { generatedAt, totalChecked, statuses = LIVE_STATUSES
   };
 }
 
-module.exports = { LIVE_STATUSES, selectLiveShows, classifyResult, buildReport };
+/** One rollup alert for the run's flagged rows, or null when none. */
+function buildLiveArtAlert(flagged) {
+  const { buildRollupAlert } = require('./rollup-alert');
+  return buildRollupAlert({
+    key: LIVE_ART_ALERT_KEY,
+    items: flagged,
+    itemId: (r) => r.id,
+    itemBlock: (r) => `- ${r.title || r.id} (${r.id}) [${r.kind}]: ${String(r.description || '').slice(0, 140)}`,
+    title: (xs) => `${xs.length} live show(s) carry art of another work`,
+    intro: (xs) => `The weekly vision sweep of served thumbnails flagged ${xs.length} live show(s). Check each on its show page; fix with an approved-fix plan (null the field AND git rm the file, or the orphan auto-fix re-attaches it).`,
+    hint: () => 'node scripts/audit-live-show-art.js --show=<id> --no-write --no-alert   # re-check one show',
+    severity: 'warn',
+    cooldownHours: 168,
+  });
+}
+
+module.exports = { LIVE_STATUSES, LIVE_ART_ALERT_KEY, selectLiveShows, classifyResult, buildReport, buildLiveArtAlert };

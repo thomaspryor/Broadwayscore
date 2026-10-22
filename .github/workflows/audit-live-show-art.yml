@@ -2,9 +2,11 @@ name: Audit Live Show Art
 
 # BRO-5744: weekly vision sweep of the thumbnail actually served for every
 # open/previews/upcoming/announced show. ADVISORY (CLAUDE.md section 19): the
-# audit step is continue-on-error, nothing is nulled or committed, and the
-# report is an artifact (data/audit/live-art-audit.json) plus a step summary.
-# ~745 Gemini Flash calls, ~10 min, ~$0.2.
+# audit step is continue-on-error, nothing is nulled, and the report is an
+# artifact (data/audit/live-art-audit.json, never committed) plus a step
+# summary. Flagged rows fold into ONE rollup alert card (stable key); only the
+# alert ledger is committed so the weekly cooldown holds.
+# ~745 Gemini Flash calls, ~15 min, ~$0.2.
 
 on:
   schedule:
@@ -12,12 +14,12 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
     concurrency:
       group: audit-live-show-art
       cancel-in-progress: false
@@ -43,9 +45,12 @@ jobs:
 
       - name: Run live art audit (advisory)
         continue-on-error: true
+        shell: bash
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node scripts/audit-live-show-art.js | tee live-art-audit.log
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/audit-live-show-art.js
 
       - name: Summarize
         if: always()
@@ -67,3 +72,30 @@ jobs:
           path: data/audit/live-art-audit.json
           if-no-files-found: ignore
           retention-days: 30
+
+      # The alert router's cooldown ledger must persist or every week re-files.
+      # Ledger files only: the report itself stays an artifact.
+      - name: Commit alert ledger
+        if: always()
+        env:
+          PUSH_DEADLINE_SEC: '600'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes"
+          else
+            git commit -m "data: live-show-art audit alert ledger [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Audit Live Show Art Failed'
+          severity: 'warning'
