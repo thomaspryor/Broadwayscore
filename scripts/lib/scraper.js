@@ -740,6 +740,7 @@ async function fetchWithScrapingdog(url, options = {}) {
   });
   if (premium) params.set('premium', 'true');
   if (stealthMode) params.set('stealth_mode', 'true');
+  for (const [k, v] of new URLSearchParams(_providerPassthroughParams(options, 'sd', renderJs))) params.set(k, v);
   // Attach subscriber cookies so the proxied request carries them (same as SB/BD).
   const cookieHeader = buildCookieHeaderForUrl(url);
   if (cookieHeader) params.set('cookies', cookieHeader);
@@ -1017,6 +1018,7 @@ async function fetchWithScrapingBee(url, options = {}) {
   try {
     let apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=${renderJs}`;
     if (premium) apiUrl += '&premium_proxy=true';
+    apiUrl += _providerPassthroughParams(options, 'sb', renderJs);
     // Attach subscriber cookies so SB's proxied request carries them. SB expects
     // semicolon-separated "name=value" pairs URL-encoded as one value. WSJ cookie
     // payloads can be large (~1-2KB); SB caps URL length around 8KB so this is fine.
@@ -1407,6 +1409,25 @@ function unwrapRedirectUrl(url) {
  * @returns {Promise<{content: string, format: 'html'|'markdown', source: string}>}
  */
 /**
+ * Pure: query-string suffix (leading '&', or '') carrying fetchPage's
+ * `wait` / `countryCode` options to a provider (BRO-6008).
+ *   wait        ms to settle after load. Only meaningful with JS rendering, so
+ *               it is dropped when renderJs is false. SB `wait`; SD `wait`.
+ *   countryCode 2-letter geo pin. SB `country_code` (SB honors it reliably only
+ *               with premium:true); SD `country`.
+ * Invalid values are dropped silently rather than sent to a billed endpoint.
+ */
+function _providerPassthroughParams(options, provider, renderJs) {
+  const out = new URLSearchParams();
+  const wait = Number(options && options.wait);
+  if (renderJs && Number.isFinite(wait) && wait > 0 && wait <= 35000) out.set('wait', String(Math.round(wait)));
+  const cc = options && typeof options.countryCode === 'string' ? options.countryCode.trim().toLowerCase() : '';
+  if (/^[a-z]{2}$/.test(cc)) out.set(provider === 'sd' ? 'country' : 'country_code', cc);
+  const q = out.toString();
+  return q ? '&' + q : '';
+}
+
+/**
  * Pure decision function: ordered tier names for fetchPage's fallback chain.
  * Extracted for testability (CLAUDE.md rule 15), mirroring serpChainOrder in
  * url-discovery.js. Reproduces fetchPage's if-chain EXACTLY — each condition
@@ -1458,6 +1479,9 @@ function pageChainOrder(flags) {
  * @param {boolean} [options.skipVerify] - skip the canonical/url_mismatch guard
  * @param {boolean} [options.preferPlaywright]
  * @param {string} [options.playwrightWaitForSelector]
+ * @param {string[]} [options.tiers] - only run these chain tiers (e.g. ['brightdata'])
+ * @param {number} [options.wait] - ms settle time (SD/SB, JS-render only)
+ * @param {string} [options.countryCode] - 2-letter geo pin (SD country / SB country_code)
  * @returns {Promise<{content: string, format: string, source: string}>}
  */
 async function fetchPage(url, options = {}) {
@@ -1570,6 +1594,15 @@ async function fetchPage(url, options = {}) {
     // ScrapingBee: skip if credits exhausted, budget exceeded, or page-exhausted.
     sbAllowed: !!SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted,
   });
+
+  // options.tiers (BRO-6008): restrict the chain to the named tiers, in chain
+  // order. For callers that must stay on one provider (e.g. BD-only audience
+  // scrapers) but still want fetchPage's budget/breaker/telemetry. An empty
+  // result throws 'All scraping methods failed' like any exhausted chain.
+  if (Array.isArray(options.tiers)) {
+    const allowed = new Set(options.tiers);
+    for (let i = chain.length - 1; i >= 0; i--) if (!allowed.has(chain[i])) chain.splice(i, 1);
+  }
 
   // Original code logged this the instant it decided to skip Playwright for a
   // domain-tier-skipped host; pageChainOrder just omits the tier, so log it
@@ -2265,6 +2298,7 @@ function recordUrlMismatch(requestedUrl, actualUrl, source, hostname) {
 module.exports = {
   fetchPage,
   pageChainOrder,
+  _providerPassthroughParams,
   fetchJSON,
   fetchWithCookiesPlain,
   fetchWithBrightData,

@@ -30,13 +30,11 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { recordBdCall } = require('./lib/provider-telemetry');
-const { consultBrightData } = require('./lib/brightdata-caps');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildLondonSlugVariants } = require('./lib/show-matching');
 const { batchDiscoverSlugs } = require('./lib/serp-slug-discovery');
-const { fetchAudiencePage } = require('./lib/audience-page-fetch');
+const { fetchAudiencePage, fetchWithBrightDataViaFetchPage: fetchWithBrightData, brightDataWasCapped } = require('./lib/audience-page-fetch');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
@@ -44,46 +42,6 @@ const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { parseJsonLd, hasJsonLdType } = require('./lib/jsonld');
 
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
-const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
-// Set once BD refuses a call for the breaker/budget: a zero-match run is then
-// a deferral, not a URL-pattern change.
-let bdCapped = false;
-
-function fetchWithBrightData(url) {
-  if (!BRIGHTDATA_TOKEN) return Promise.resolve(null);
-  // BRO-5261 (BRO-3067 cousin): daily breaker / per-run budget, same consult
-  // as scraper.js fetchWithBrightData. A capped call is a BD miss, not a bill.
-  const bdVerdict = consultBrightData({ zone: BRIGHTDATA_ZONE });
-  if (!bdVerdict.allowed) {
-    if (bdVerdict.firstBlock) {
-      try { recordBdCall({ url, fn: 'web-unlocker', success: false, status: 'budget_capped', purpose: 'budget_capped' }); } catch (_) {}
-    }
-    bdCapped = true;
-    return Promise.resolve(null);
-  }
-  const body = JSON.stringify({ zone: BRIGHTDATA_ZONE, url, format: 'raw' });
-  return new Promise((resolve, reject) => {
-    const req = https.request('https://api.brightdata.com/request', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${BRIGHTDATA_TOKEN}`,
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(body),
-      },
-    }, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        recordBdCall({ url, fn: 'web-unlocker', success: res.statusCode === 200, status: res.statusCode });
-        if (res.statusCode === 200) resolve({ content: data });
-        else reject(new Error(`BrightData HTTP ${res.statusCode}`));
-      });
-    });
-    req.on('error', reject);
-    req.setTimeout(30000, () => { req.destroy(); reject(new Error('BrightData timeout')); });
-    req.end(body);
-  });
-}
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -442,7 +400,7 @@ async function main() {
 
   // Skip when the budget exit fired early — that's a clean deferral, not a
   // URL-pattern-change signal (same exemption as #369/#415's fix).
-  if (stats.found === 0 && toProcess.length > 3 && !stats.budgetExit && bdCapped) {
+  if (stats.found === 0 && toProcess.length > 3 && !stats.budgetExit && brightDataWasCapped()) {
     console.warn('\n⚠️  ZERO shows matched while Bright Data was capped (breaker/budget) — deferring, not a URL-pattern change.');
     // Results are already saved above. Stop here: the coverage block below
     // would treat every show as missing and SERP each one (BRO-5261).

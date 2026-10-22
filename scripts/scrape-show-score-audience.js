@@ -23,7 +23,6 @@ const { servesUkPageForUsShow, allowsUkShowScorePage, isUkPageForShow, pageRatin
 const { removeSourceWithTombstone } = require('./lib/reconcile-audience-buzz');
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 const { JSDOM } = require('jsdom');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isSourceFresh } = require('./lib/audience-freshness');
@@ -36,8 +35,7 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 const { fetchPage, isChallengeOrGarbage } = require('./lib/scraper');
 const { findConflictingShowId, isShowScoreNotFoundPage, decideDeadUrlAction, isProductionMismatch, recordProductionMismatch } = require('./lib/show-score-url-map');
-const { recordSbCall, recordBdCall } = require('./lib/provider-telemetry');
-const { consultBrightData } = require('./lib/brightdata-caps');
+const { fetchWithBrightDataViaFetchPage } = require('./lib/audience-page-fetch');
 const { gateScrapedSynopsis } = require('./lib/synopsis-fact-check');
 const { setSynopsis } = require('./lib/synopsis-source');
 const { extractShowScoreSynopsis } = require('./lib/show-score-synopsis');
@@ -165,58 +163,22 @@ function sleep(ms) {
 }
 
 /**
- * Fetch URL through ScrapingBee (single attempt).
- * Returns HTML string or throws on failure. Returns null if no API key.
- *
- * Kept as a direct ScrapingBee call rather than routed through fetchPage()
- * (task #5) — Show Score is a React SPA and this endpoint depends on SB's
- * `wait=3000` param to let scores hydrate before the HTML is captured;
- * fetchPage()'s Scrapingdog/Bright Data tiers have no equivalent settle-time
- * option, so routing through them risked silently capturing pre-hydration
- * HTML and under-counting audience scores. premium_proxy=true (10cr,
- * $2.48/1k) is dropped — render_js=true (5cr, ~$0.12/1k) is the cheapest
- * tier that still gets the wait param, well under Bright Data's $1.50/1k.
+ * Fetch URL through ScrapingBee (single attempt), via fetchPage() restricted to
+ * the scrapingbee tier (BRO-6008). Show Score is a React SPA, so the call needs
+ * render_js + wait=3000 for scores to hydrate; fetchPage forwards `wait` to SB
+ * and keeps the SB budget/credit guards + spend ledger in one place.
+ * premium_proxy stays off (render_js=true, 5cr, is the cheapest tier with wait).
+ * Returns HTML string, or null on no key / SB miss (a miss falls through to
+ * Playwright, so there is no retry loop spending 5 credits per attempt).
  */
-function fetchViaScrapingBeeSingle(url) {
-  return new Promise((resolve, reject) => {
-    if (!SCRAPINGBEE_KEY) {
-      resolve(null); // No key — skip gracefully
-      return;
-    }
-
-    const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=true&wait=3000`;
-
-    // render_js=true bills 5 credits whatever the response status — record the
-    // spend on EVERY outcome, not just success (ledger-blindspot fix: this
-    // allowlisted direct-SB caller emitted no telemetry at all, so the weekly
-    // cost report could not attribute its credits to any workflow).
-    let _recorded = false;
-    // ScrapingBee bills only requests it actually proxied: 401/402 (bad key /
-    // no credits) and connection errors cost 0, everything else costs the tier
-    // price whatever the target returned.
-    const _rec = (success, status) => {
-      if (_recorded) return;
-      _recorded = true;
-      const billed = (status === 401 || status === 402 || status === 'error') ? 0 : 5;
-      try { recordSbCall({ url, fn: 'render', success, status, credits: billed }); } catch (_) {}
-    };
-
-    const req = https.get(apiUrl, { timeout: 60000 }, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode === 200) {
-          _rec(true, 200);
-          resolve(data);
-        } else {
-          _rec(false, res.statusCode);
-          reject(new Error(`ScrapingBee HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
-        }
-      });
-    });
-    req.on('error', (err) => { _rec(false, 'error'); reject(err); });
-    req.on('timeout', () => { req.destroy(); _rec(false, 'timeout'); reject(new Error('ScrapingBee request timeout')); });
-  });
+async function fetchViaScrapingBeeSingle(url) {
+  if (!SCRAPINGBEE_KEY) return null; // No key — skip gracefully
+  try {
+    const r = await fetchPage(url, { tiers: ['scrapingbee'], renderJs: true, wait: 3000, skipVerify: true });
+    return r && r.content ? r.content : null;
+  } catch (_) {
+    return null;
+  }
 }
 
 /**
@@ -254,51 +216,9 @@ async function fetchViaPlaywright(url) {
  * Returns HTML string or null on failure.
  * Note: Web Unlocker may not fully render JS-heavy SPAs like Show Score.
  */
-function fetchViaBrightData(url) {
-  const token = process.env.BRIGHTDATA_TOKEN;
-  if (!token) return Promise.resolve(null);
-
-  const zone = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
-  // BRO-5261 (BRO-3067 cousin): daily breaker / per-run budget, same consult
-  // as scraper.js fetchWithBrightData. A capped call is a BD miss, not a bill.
-  const bdVerdict = consultBrightData({ zone: zone });
-  if (!bdVerdict.allowed) {
-    if (bdVerdict.firstBlock) {
-      try { recordBdCall({ url, fn: 'web-unlocker', success: false, status: 'budget_capped', purpose: 'budget_capped' }); } catch (_) {}
-    }
-    return Promise.resolve(null);
-  }
-  const apiUrl = 'https://api.brightdata.com/request';
-  const body = JSON.stringify({ zone, url, format: 'raw' });
-
-  return new Promise((resolve, reject) => {
-    const req = https.request(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(body),
-      },
-      timeout: 60000,
-    }, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        recordBdCall({ url, fn: 'web-unlocker', success: res.statusCode === 200, status: res.statusCode });
-        if (res.statusCode === 200) {
-          resolve(data);
-        } else {
-          reject(new Error(`BrightData HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
-        }
-      });
-    });
-    req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('BrightData request timeout')); });
-    req.end(body);
-  }).catch(error => {
-    console.error(`  BrightData failed: ${error.message}`);
-    return null;
-  });
+async function fetchViaBrightData(url) {
+  const r = await fetchWithBrightDataViaFetchPage(url);
+  return r ? r.content : null;
 }
 
 /**
