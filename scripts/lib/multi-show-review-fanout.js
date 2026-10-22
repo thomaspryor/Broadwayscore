@@ -492,11 +492,18 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
   // One title inside another ("Fish" in "Big Fish") keeps the longer match.
   const all = [...byShow.values()].flatMap((v) => v.mentions)
     .sort((a, b) => a.at - b.at || (b.end - b.at) - (a.end - a.at));
-  const mentions = [];
+  const kept = [];
   for (const mn of all) {
-    if (mentions.length && mn.at < mentions[mentions.length - 1].end) continue;
-    mentions.push(mn);
+    if (kept.length && mn.at < kept[kept.length - 1].end) continue;
+    kept.push(mn);
   }
+  // A show whose mentions were all inside a longer title drops out, and the
+  // 2-mention floor applies again to what survived.
+  const survived = new Map();
+  for (const mn of kept) survived.set(mn.id, (survived.get(mn.id) || 0) + 1);
+  for (const id of [...byShow.keys()]) if ((survived.get(id) || 0) < 2) byShow.delete(id);
+  if (byShow.size < 2 || !byShow.has(ownShowId)) return [];
+  const mentions = kept.filter((mn) => byShow.has(mn.id));
 
   // Runs of consecutive mentions of one show.
   const runs = [];

@@ -275,6 +275,15 @@ test('a common-word title split off by a dash never matches bare', () => {
   assert.equal(buildJointMatcher({ id: 'y', title: 'Six' }), null);
 });
 
+test('a show named only inside a longer title drops out instead of crashing', () => {
+  // Corpus dry run crash: a show whose every mention sat inside a longer
+  // title had no mentions left after the overlap rule and no run to point at.
+  const shows = [...SHOWS, { id: 'your-ear-off-broadway-2026', title: 'Your Ear', category: 'off-broadway', openingDate: '2026-10-12' }];
+  const p = planMultiShowFanout(base({ showId: ID['A Ghost in Your Ear'], publishDate: '2026-10-15', fullText: WSJ }), shows, { joint: true });
+  assert.ok(p);
+  assert.deepEqual(ids(p), [ID['A Ghost in Your Ear'], ID['ANON – a tempest at our kitchen table']].sort());
+});
+
 test('applying the plan writes each show its own section (Theater Life)', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'joint-fanout-'));
   try {
