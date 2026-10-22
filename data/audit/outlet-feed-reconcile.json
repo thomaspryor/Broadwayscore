@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T08:16:13.583Z",
+  "generatedAt": "2026-10-22T11:18:35.706Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -133,6 +133,10 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -155,12 +159,25 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 757,
-  "matchedGaps": 6,
-  "possibleGaps": 3,
+  "itemsScanned": 723,
+  "matchedGaps": 4,
+  "possibleGaps": 2,
   "gaps": [
+    {
+      "showId": "ilford-boy-west-end-2026",
+      "title": "Ilford Boy",
+      "level": "matched",
+      "outletId": "british-theatre",
+      "url": "https://www.britishtheatreguide.info/reviews/ilford-boy-donmar-warehous-26145",
+      "headline": "Ilford Boy",
+      "publishDate": "2026-10-22"
+    },
     {
       "showId": "king-of-the-yees-off-broadway-2026",
       "title": "King of the Yees",
@@ -180,33 +197,6 @@
       "publishDate": "2026-10-21"
     },
     {
-      "showId": "machine-learning-off-broadway-2026",
-      "title": "Machine Learning",
-      "level": "matched",
-      "outletId": "theater-scene",
-      "url": "https://www.theaterscene.net/plays/offbway-plays/machine-learning/christopher-caz/",
-      "headline": "Machine Learning",
-      "publishDate": "2026-10-22"
-    },
-    {
-      "showId": "other-desert-cities-2026",
-      "title": "Other Desert Cities",
-      "level": "matched",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/other-desert-cities/",
-      "headline": "Other Desert Cities ***",
-      "publishDate": "2026-10-21"
-    },
-    {
-      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
-      "title": "The Curious Case of Benjamin Button",
-      "level": "matched",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/the-curious-case-of-benjamin-button/",
-      "headline": "The Curious Case of Benjamin Button *****",
-      "publishDate": "2026-10-21"
-    },
-    {
       "showId": "triumph-off-west-end-2026",
       "title": "Triumph",
       "level": "matched",
@@ -214,15 +204,6 @@
       "url": "https://culturesauce.com/caryl-churchill-triumph-off-broadway-review/",
       "headline": "Caryl Churchill&#8217;s &#8216;Triumph&#8217; views imperial Rome through a Foxy blond flack (Off Broadway review)",
       "publishDate": "2026-10-18"
-    },
-    {
-      "showId": "copperfield-the-new-musical-off-broadway-2026",
-      "title": "Copperfield! The New Musical",
-      "level": "possible",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/the-curious-case-of-benjamin-button/",
-      "headline": "The Curious Case of Benjamin Button *****",
-      "publishDate": "2026-10-21"
     },
     {
       "showId": "the-pianist-off-west-end-2026",

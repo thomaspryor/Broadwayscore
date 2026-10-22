@@ -1,27 +1,8 @@
 {
-  "generatedAt": "2026-10-22T08:15:58.598Z",
+  "generatedAt": "2026-10-22T11:18:19.008Z",
   "windowDays": 45,
   "showsScanned": 202,
   "gaps": [
-    {
-      "showId": "ilford-boy-west-end-2026",
-      "title": "Ilford Boy",
-      "openingDate": "2026-10-20",
-      "file": "thereviewshub--maryam-philpott.json",
-      "outletId": "thereviewshub",
-      "tier": 2,
-      "type": "unscored",
-      "dispatchable": true,
-      "url": "https://www.thereviewshub.com/ilford-boy-donmar-warehouse-london/",
-      "recovery": null,
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=ilford-boy-west-end-2026",
-      "firstSeen": "2026-10-22T07:21:27.749Z",
-      "fileAgeHours": 0.9074166666666666,
-      "gapSeenAt": "2026-10-22T08:15:58.598Z",
-      "nonTerminalAgeHours": 0
-    },
     {
       "showId": "other-desert-cities-2026",
       "title": "Other Desert Cities",
@@ -37,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=other-desert-cities-2026",
       "firstSeen": "2026-10-20T01:24:52.774Z",
-      "fileAgeHours": 54.85072916666667,
+      "fileAgeHours": 57.88952305555556,
       "gapSeenAt": "2026-10-20T16:46:29.082Z",
-      "nonTerminalAgeHours": 39.49153222222222
+      "nonTerminalAgeHours": 42.530535
     },
     {
       "showId": "slam-frank-off-broadway-2026",
@@ -55,9 +36,9 @@
       "forumLinkRecoveryCount": 6,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=slam-frank-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-18T14:14:33.814Z",
-      "fileAgeHours": 90.02271333333333,
+      "fileAgeHours": 93.06152,
       "gapSeenAt": "2026-10-18T18:09:48.486Z",
-      "nonTerminalAgeHours": 86.10280888888889
+      "nonTerminalAgeHours": 89.14181166666667
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -73,9 +54,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 711.5902488888889,
+      "fileAgeHours": 714.62911,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 262.6098877777778
+      "nonTerminalAgeHours": 265.64889055555557
     },
     {
       "showId": "all-male-as-you-like-it-regional-2026",
@@ -91,9 +72,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=all-male-as-you-like-it-regional-2026 --url=https://www.talkinbroadway.com/page/regional/minn/minn1539.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-19T17:17:56.172Z",
-      "fileAgeHours": 62.96725361111111,
+      "fileAgeHours": 66.00623388888889,
       "gapSeenAt": "2026-10-19T18:06:42.214Z",
-      "nonTerminalAgeHours": 62.15455111111111
+      "nonTerminalAgeHours": 65.19355388888889
     }
   ],
   "contradictions": []

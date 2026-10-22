@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-22T08:15:51.969Z",
-  "windowDays": 1095,
-  "targets": 628,
-  "auditedThisRun": 14,
-  "carriedForward": 755,
+  "generatedAt": "2026-10-22T11:18:11.739Z",
+  "windowDays": 21,
+  "targets": 7,
+  "auditedThisRun": 7,
+  "carriedForward": 762,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 400,
-    "missingCurrentRun": 573,
+    "missingCurrentRun": 565,
     "totalCitedNoUrl": 3,
-    "totalFlaggedMisses": 729,
-    "totalRecoverable": 3,
-    "totalRecovered": 18,
+    "totalFlaggedMisses": 723,
+    "totalRecoverable": 1,
+    "totalRecovered": 16,
     "humanExcluded": 4,
-    "automatedExcluded": 265,
+    "automatedExcluded": 263,
     "automatedExcludedListed": 226,
-    "priorProductionCitations": 5157
+    "priorProductionCitations": 5167
   },
   "results": [
     {
@@ -162,40 +162,18 @@
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
       "title": "2:22 - A Ghost Story",
-      "openingDate": null,
+      "openingDate": "2026-11-05",
       "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theatermania.com/news/interview-danny-robins-on-how-222-a-ghost-story-escaped-dear-evan-hansens-theater-and-took-over-the-world_1855474/",
-        "https://www.theatrely.com/post/2-22-a-ghost-story-sets-new-york-premiere-this-fall",
-        "https://alwaystimefortheatre.com/2026/03/31/review-222-a-ghost-story-touring-2/",
-        "https://www.mixuptheatre.com/post/theatre-review-2-22-a-ghost-story-1",
-        "https://www.lisainthetheatre.com/post/review-2-22-a-ghost-story",
         "https://www.londontheatre.co.uk/reviews/222-a-ghost-story-review-lyric-theatre-cheryl",
-        "https://ew.com/theater/222-a-ghost-story-review-constance-wu/",
-        "https://www.allthatdazzles.co.uk/post/review-2-22-a-ghost-story-lyric-theatre"
+        "https://ew.com/theater/222-a-ghost-story-review-constance-wu/"
       ],
-      "dirFiles": 5,
+      "dirFiles": 6,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
-        {
-          "url": "https://alwaystimefortheatre.com/2026/03/31/review-222-a-ghost-story-touring-2/",
-          "host": "alwaystimefortheatre.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2026-03-31",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.lisainthetheatre.com/post/review-2-22-a-ghost-story",
-          "host": "lisainthetheatre.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2023-11-22",
-          "serpCensus": true
-        },
         {
           "url": "https://www.londontheatre.co.uk/reviews/222-a-ghost-story-review-lyric-theatre-cheryl",
           "host": "londontheatre.co.uk",
@@ -206,168 +184,24 @@
           "url": "https://ew.com/theater/222-a-ghost-story-review-constance-wu/",
           "host": "ew.com",
           "knownOutletId": "ew",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-2-22-a-ghost-story-lyric-theatre",
-          "host": "allthatdazzles.co.uk",
-          "knownOutletId": "all-that-dazzles-uk",
           "priorRun": true,
-          "priorRunSource": "pending-file-date:2023-02-02",
+          "priorRunSource": "pending-file-date:2022-11-07",
           "serpCensus": true
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.theatermania.com/news/interview-danny-robins-on-how-222-a-ghost-story-escaped-dear-evan-hansens-theater-and-took-over-the-world_1855474/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--david-gordon.json",
-              "flag": "clean",
-              "urlInDir": "https://www.theatermania.com/news/interview-danny-robins-on-how-222-a-ghost-story-escaped-dear-evan-hansens-theater-and-took-over-the-world_1855474/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://www.theatrely.com/post/2-22-a-ghost-story-sets-new-york-premiere-this-fall",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatrely--kobi-kassal.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.theatrely.com/post/finn-jones-is-ready-for-2-22-a-ghost-story-to-scare-audiences-into-the-present"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "duplicateOf"
-          ],
-          "confirmedNonReview": true,
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://www.mixuptheatre.com/post/theatre-review-2-22-a-ghost-story-1",
-          "host": "mixuptheatre.com",
-          "knownOutletId": "mixuptheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "mixuptheatre--mix-up-theatre-stewart.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.mixuptheatre.com/post/theatre-review-2-22-a-ghost-story-1"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-04-29",
-          "serpCensus": true,
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"2:22 - A Ghost Story\" Off-Broadway review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"2:22 - A Ghost Story\" Off-Broadway review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"2:22 - A Ghost Story\" review lucille",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "2:22 - A Ghost Story Lucille Lortel Theatre review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "2:22 - A Ghost Story Lucille Lortel Theatre review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "2:22 - A Ghost Story Lucille Lortel Theatre review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 8,
-        "error": null
+        "ran": false,
+        "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 31,
+        "count": 3,
         "byReason": {
-          "non-review-host": 16,
-          "venue-production-page": 1,
           "write-path-blocked": 1,
-          "census-junk-host": 3,
-          "non-review-path": 3,
-          "aggregator-internal-nav": 3,
-          "ticketing-reseller": 2,
-          "show-listing-page": 1,
-          "ticketing-listing": 1
+          "show-blocklist": 2
         }
       },
       "dedupedVariants": [],
@@ -375,22 +209,8 @@
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://alwaystimefortheatre.com/2026/03/31/review-222-a-ghost-story-touring-2/",
-          "host": "alwaystimefortheatre.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.lisainthetheatre.com/post/review-2-22-a-ghost-story",
-          "host": "lisainthetheatre.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-2-22-a-ghost-story-lyric-theatre",
-          "host": "allthatdazzles.co.uk",
+          "url": "https://ew.com/theater/222-a-ghost-story-review-constance-wu/",
+          "host": "ew.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -411,37 +231,9 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "222-a-ghost-story-off-broadway-2026: https://www.londontheatre.co.uk/reviews/222-a-ghost-story-review-lyric-theatre-cheryl is already owned by 2-22-a-ghost-story-west-end-2023 — one of the two is contaminated. Inspect data/review-texts/2-22-a-ghost-story-west-end-2023/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
-        },
-        {
-          "url": "https://ew.com/theater/222-a-ghost-story-review-constance-wu/",
-          "host": "ew.com",
-          "outletId": "ew",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: 222-a-ghost-story-off-broadway-2026/ew--maureen-lee-lenker.json → quarantined to _pending/222-a-ghost-story-off-broadway-2026/ew--maureen-lee-lenker.json (1443d before earliest date, not within priorRuns)\n\n❌ Write-guard refused the write — nothing changed on disk (date_implausible)\n   quarantined to: /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/_pending/222-a-ghost-story-off-broadway-2026/ew--maureen-lee-lenker.json"
         }
       ],
       "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.theatrely.com/post/2-22-a-ghost-story-sets-new-york-premiere-this-fall",
-          "host": "theatrely.com",
-          "file": "theatrely--kobi-kassal.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -451,27 +243,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.londontheatre.co.uk/reviews/222-a-ghost-story-review-lyric-theatre-cheryl"
-          },
-          {
-            "outletId": "ew",
-            "outlet": "ew",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://ew.com/theater/222-a-ghost-story-review-constance-wu/"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/interview-danny-robins-on-how-222-a-ghost-story-escaped-dear-evan-hansens-theater-and-took-over-the-world_1855474/"
-          },
-          {
-            "outletId": "theatrely",
-            "outlet": "theatrely",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatrely.com/post/2-22-a-ghost-story-sets-new-york-premiere-this-fall"
           }
         ],
         "suppressedMissing": [],
@@ -482,34 +253,13 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-20T16:46:22.541Z"
-          },
-          {
-            "url": "https://ew.com/theater/222-a-ghost-story-review-constance-wu/",
-            "outletId": "ew",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-21T03:55:05.990Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/interview-danny-robins-on-how-222-a-ghost-story-escaped-dear-evan-hansens-theater-and-took-over-the-world_1855474/",
-            "outletId": "theatermania",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-20T16:46:22.541Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/2-22-a-ghost-story-sets-new-york-premiere-this-fall",
-            "outletId": "theatrely",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-20T16:46:22.541Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 4
+        "candidateCount": 1
       },
-      "computedAt": "2026-10-21T03:55:05.990Z"
+      "computedAt": "2026-10-22T11:18:11.739Z"
     },
     {
       "showId": "3-summers-of-lincoln-regional-2025",
@@ -5228,21 +4978,18 @@
         "https://www.nytimes.com/2026/10/07/theater/as-you-like-it-review-jonathan-groff.html",
         "https://www.theguardian.com/stage/2026/oct/07/as-you-like-it-review-rsc",
         "https://www.elementaltheatre.com/post/as-you-like-it-rsc-review",
-        "https://www.telegraph.co.uk/theatre/what-to-see/all-male-as-you-like-it-at-royal-shakespeare-theatre-review/",
-        "https://www.allthatdazzles.co.uk/post/review-as-you-like-it-royal-shakespeare-theatre",
-        "https://therealchrisparkle.com/2026/10/11/review-as-you-like-it-rsc-at-the-royal-shakespeare-theatre-stratford-upon-avon-10th-october-2026/",
         "http://boycottingtrends.blogspot.com/2026/10/theatre-review-as-you-like-it-rsc-2026.html",
-        "https://www.rsc.org.uk/as-you-like-it/about-the-play",
-        "https://www.britishtheatreguide.info/reviews/as-you-like-it-royal-shakespea-26102",
-        "https://kirkville.com/theater-review-as-you-like-it-by-the-royal-shakespeare-company/",
-        "https://www.beyondthecurtain.co.uk/2026/10/as-you-like-it-royal-shakespeare.html",
+        "https://www.allthatdazzles.co.uk/post/review-as-you-like-it-royal-shakespeare-theatre",
+        "https://theartsdispatch.substack.com/p/as-you-like-it-review-royal-shakespeare",
         "https://www.thereviewshub.com/draft-as-you-like-it-the-royal-shakespeare-theatre-stratford-upon-avon/",
         "https://www.weekendnotes.co.uk/rsc-as-you-like-it-royal-shakespeare-theatre/",
+        "https://marquee.tv/videos/as-you-like-it-royal-shakespeare-company",
+        "https://www.telegraph.co.uk/theatre/what-to-see/all-male-as-you-like-it-at-royal-shakespeare-theatre-review/",
         "https://www.allthatdazzles.co.uk/post/review-as-you-like-it-royal-shakespeare-theatre-rsc"
       ],
-      "dirFiles": 27,
-      "dirClean": 17,
-      "inReviewsJson": 17,
+      "dirFiles": 34,
+      "dirClean": 23,
+      "inReviewsJson": 22,
       "missing": [
         {
           "url": "https://cititour.com/NYC_News/Review-A-Likeable-As-You-Like-It/6684",
@@ -5308,22 +5055,11 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.thestage.co.uk/reviews/2017/as-you-like-it-ellen-burstyn-new-york-review/",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://kirkville.com/theater-review-as-you-like-it-by-the-royal-shakespeare-company/",
-          "host": "kirkville.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://www.thereviewshub.com/draft-as-you-like-it-the-royal-shakespeare-theatre-stratford-upon-avon/",
           "host": "thereviewshub.com",
           "knownOutletId": "thereviewshub",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2023-06-30",
           "serpCensus": true
         }
       ],
@@ -5333,7 +5069,23 @@
           "count": 1
         },
         {
+          "host": "beyondthecurtain.co.uk",
+          "count": 1
+        },
+        {
+          "host": "britishtheatreguide.info",
+          "count": 1
+        },
+        {
           "host": "ft.com",
+          "count": 1
+        },
+        {
+          "host": "jackstage.co.uk",
+          "count": 1
+        },
+        {
+          "host": "mycultural.life",
           "count": 1
         },
         {
@@ -5345,7 +5097,15 @@
           "count": 1
         },
         {
+          "host": "morningstaronline.co.uk",
+          "count": 1
+        },
+        {
           "host": "theatretradge.com",
+          "count": 1
+        },
+        {
+          "host": "therealchrisparkle.com",
           "count": 1
         },
         {
@@ -5354,24 +5114,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.rsc.org.uk/as-you-like-it/about-the-play",
-          "host": "rsc.org.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "rsc--william-shakespeare.json",
-              "flag": "clean",
-              "urlInDir": "https://www.rsc.org.uk/as-you-like-it/about-the-play"
-            }
-          ],
-          "serpCensus": true
-        },
         {
           "url": "https://www.weekendnotes.co.uk/rsc-as-you-like-it-royal-shakespeare-theatre/",
           "host": "weekendnotes.co.uk",
@@ -5388,7 +5130,35 @@
               "urlInDir": "https://www.weekendnotes.co.uk/rsc-as-you-like-it-royal-shakespeare-theatre/"
             }
           ],
-          "serpCensus": true
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongShow"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://marquee.tv/videos/as-you-like-it-royal-shakespeare-company",
+          "host": "marquee.tv",
+          "knownOutletId": "marquee",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "marquee--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://marquee.tv/videos/as-you-like-it-royal-shakespeare-company"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -5405,7 +5175,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -5434,8 +5204,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 2,
             "error": null
           },
           {
@@ -5445,7 +5215,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 2,
             "error": null
           },
           {
@@ -5455,24 +5225,27 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 16,
+        "resultCount": 15,
         "error": null
       },
       "candidatesRejected": {
-        "count": 963,
+        "count": 975,
         "byReason": {
-          "aggregator-internal-nav": 618,
+          "aggregator-internal-nav": 614,
           "not-http-url": 142,
           "production-database-listing": 62,
           "aggregator-section-root": 23,
-          "non-review-host": 110,
-          "roundup-page": 8
+          "non-review-host": 117,
+          "roundup-page": 14,
+          "no-review-evidence": 1,
+          "write-path-blocked": 1,
+          "show-blocklist": 1
         }
       },
       "dedupedVariants": [],
@@ -5490,141 +5263,98 @@
           "publishDate": "2022-08-30"
         }
       ],
+      "automatedExcludedListed": 2,
       "unextractable": [],
       "weIngestBlocked": [
         {
           "url": "https://cititour.com/NYC_News/Review-A-Likeable-As-You-Like-It/6684",
           "host": "cititour.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://nystagereview.com/2022/08/30/as-you-like-it-a-pastoral-musical-comedy-delight/",
           "host": "nystagereview.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.nysun.com/article/shakespeare-himself-nodded-toward-this-as-you-like-it",
           "host": "nysun.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://newyorktheater.me/2022/08/30/as-you-like-it-review/",
           "host": "newyorktheater.me",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.newyorktheatreguide.com/reviews/as-you-like-it-off-broadway-review-shakespeare-in-the-park",
           "host": "newyorktheatreguide.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://variety.com/2022/legit/reviews/as-you-like-it-review-public-works-central-park-shaina-taub-1235354601/",
           "host": "variety.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.thewrap.com/as-you-like-it-off-broadway-review-the-bards-comedy-gets-a-musical-update/",
           "host": "thewrap.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://deadline.com/2017/09/review-as-you-like-it-hannah-cabell-stephen-schwartz-ellen-burstyn-1202178984/",
           "host": "deadline.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://www.hollywoodreporter.com/review/as-you-like-it-theater-1043704",
           "host": "hollywoodreporter.com",
           "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/2017/as-you-like-it-ellen-burstyn-new-york-review/",
-          "host": "thestage.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/as-you-like-it-royal-shakespea-26102",
-          "host": "britishtheatreguide.info",
-          "outletId": "british-theatre",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://kirkville.com/theater-review-as-you-like-it-by-the-royal-shakespeare-company/",
-          "host": "kirkville.com",
-          "outletId": "kirkville",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  provisional outlet \"kirkville\" (not in registry) — onboard to outlet-registry.json after review."
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.thereviewshub.com/draft-as-you-like-it-the-royal-shakespeare-theatre-stratford-upon-avon/",
           "host": "thereviewshub.com",
-          "outletId": "thereviewshub",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: all-male-as-you-like-it-regional-2026/thereviewshub--the-revi"
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         }
       ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "kirkville.com",
-            "outlet": "kirkville.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://kirkville.com/theater-review-as-you-like-it-by-the-royal-shakespeare-company/"
-          },
-          {
-            "outletId": "thereviewshub",
-            "outlet": "thereviewshub",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thereviewshub.com/draft-as-you-like-it-the-royal-shakespeare-theatre-stratford-upon-avon/"
-          },
-          {
-            "outletId": "rsc.org.uk",
-            "outlet": "rsc.org.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.rsc.org.uk/as-you-like-it/about-the-play"
-          },
           {
             "outletId": "weekendnotes.co.uk",
             "outlet": "weekendnotes.co.uk",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.weekendnotes.co.uk/rsc-as-you-like-it-royal-shakespeare-theatre/"
+          },
+          {
+            "outletId": "marquee",
+            "outlet": "marquee",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://marquee.tv/videos/as-you-like-it-royal-shakespeare-company"
           }
         ],
         "suppressedMissing": [],
@@ -5666,6 +5396,12 @@
             "firstSeenAt": "2026-10-10T01:33:56.739Z"
           },
           {
+            "url": "https://www.thestage.co.uk/reviews/2017/as-you-like-it-ellen-burstyn-new-york-review/",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-22T11:18:11.739Z"
+          },
+          {
             "url": "https://www.nytimes.com/2026/10/07/theater/as-you-like-it-review-jonathan-groff.html",
             "outletId": "nytimes.com",
             "state": "live",
@@ -5684,8 +5420,8 @@
             "firstSeenAt": "2026-10-12T02:07:28.826Z"
           },
           {
-            "url": "https://www.telegraph.co.uk/theatre/what-to-see/all-male-as-you-like-it-at-royal-shakespeare-theatre-review/",
-            "outletId": "telegraph.co.uk",
+            "url": "http://boycottingtrends.blogspot.com/2026/10/theatre-review-as-you-like-it-rsc-2026.html",
+            "outletId": "boycottingtrends.blogspot.com",
             "state": "live",
             "firstSeenAt": "2026-10-12T02:07:28.826Z"
           },
@@ -5696,28 +5432,16 @@
             "firstSeenAt": "2026-10-12T02:07:28.826Z"
           },
           {
-            "url": "https://therealchrisparkle.com/2026/10/11/review-as-you-like-it-rsc-at-the-royal-shakespeare-theatre-stratford-upon-avon-10th-october-2026/",
-            "outletId": "therealchrisparkle.com",
+            "url": "https://theartsdispatch.substack.com/p/as-you-like-it-review-royal-shakespeare",
+            "outletId": "theartsdispatch.substack.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-22T11:18:11.739Z"
+          },
+          {
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/all-male-as-you-like-it-at-royal-shakespeare-theatre-review/",
+            "outletId": "telegraph.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-12T02:07:28.826Z"
-          },
-          {
-            "url": "http://boycottingtrends.blogspot.com/2026/10/theatre-review-as-you-like-it-rsc-2026.html",
-            "outletId": "boycottingtrends.blogspot.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-12T02:07:28.826Z"
-          },
-          {
-            "url": "https://www.britishtheatreguide.info/reviews/as-you-like-it-royal-shakespea-26102",
-            "outletId": "britishtheatreguide.info",
-            "state": "live",
-            "firstSeenAt": "2026-10-12T19:37:31.912Z"
-          },
-          {
-            "url": "https://www.beyondthecurtain.co.uk/2026/10/as-you-like-it-royal-shakespeare.html",
-            "outletId": "beyondthecurtain.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-12T19:37:31.912Z"
           },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-as-you-like-it-royal-shakespeare-theatre-rsc",
@@ -5726,45 +5450,25 @@
             "firstSeenAt": "2026-10-12T19:37:31.912Z"
           },
           {
-            "url": "https://kirkville.com/theater-review-as-you-like-it-by-the-royal-shakespeare-company/",
-            "outletId": "kirkville.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T19:37:31.912Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/draft-as-you-like-it-the-royal-shakespeare-theatre-stratford-upon-avon/",
-            "outletId": "thereviewshub",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T19:37:31.912Z"
-          },
-          {
-            "url": "https://www.rsc.org.uk/as-you-like-it/about-the-play",
-            "outletId": "rsc.org.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T02:07:28.826Z"
-          },
-          {
             "url": "https://www.weekendnotes.co.uk/rsc-as-you-like-it-royal-shakespeare-theatre/",
             "outletId": "weekendnotes.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-12T19:37:31.912Z"
+          },
+          {
+            "url": "https://marquee.tv/videos/as-you-like-it-royal-shakespeare-company",
+            "outletId": "marquee",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-22T11:18:11.739Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 13,
-        "candidateCount": 17
+        "liveCount": 11,
+        "candidateCount": 13
       },
-      "computedAt": "2026-10-12T19:37:31.912Z",
-      "quarantine": {
-        "nextState": "incomplete:9:11",
-        "since": "2026-10-18T10:12:15.957Z",
-        "lastAt": "2026-10-18T10:12:15.957Z"
-      },
-      "automatedExcludedListed": 0
+      "computedAt": "2026-10-22T11:18:11.739Z"
     },
     {
       "showId": "all-my-sons-west-end-2025",
@@ -38275,17 +37979,15 @@
         "https://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/",
         "https://frontmezzjunkies.com/2026/10/08/cosi-fan-tutte-has-me-questioning-the-wisdom-of-testing-love/",
         "https://operawire.com/metropolitan-opera-2026-27-review-cosi-fan-tutte/",
-        "https://www.thestar.com/entertainment/stage/atom-egoyan-s-cos-fan-tutte-is-back-why-the-coc-production-still-stumbles/article_48d2ed25-ba4e-4c46-bc41-6e3d8767dce7.html",
-        "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-new-york-september-2026",
-        "https://operacanada.ca/the-metropolitan-opera-cosi-fan-tuttea-riot-of-colourful-invention/",
-        "https://www.nytimes.com/2026/09/23/nyregion/snake-metropolitan-opera-cosi-fan-tutte.html",
-        "https://www.thetimes.com/culture/classical-opera/article/cosi-fan-tutte-review-royal-northern-sinfonia-lammermuir-festival-xr33g90bn",
         "https://www.fandango.com/the-metropolitan-opera-cosi-fan-tutte-2026-246261/movie-reviews",
-        "https://artsreviewhub.com/cosi-fan-tutte-the-metropolitan-opera-new-york/"
+        "https://artsreviewhub.com/cosi-fan-tutte-the-metropolitan-opera-new-york/",
+        "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-new-york-september-2026",
+        "https://www.nytimes.com/2026/09/23/nyregion/snake-metropolitan-opera-cosi-fan-tutte.html",
+        "https://www.thetimes.com/culture/classical-opera/article/cosi-fan-tutte-review-royal-northern-sinfonia-lammermuir-festival-xr33g90bn"
       ],
-      "dirFiles": 28,
-      "dirClean": 6,
-      "inReviewsJson": 6,
+      "dirFiles": 29,
+      "dirClean": 9,
+      "inReviewsJson": 9,
       "missing": [
         {
           "url": "https://www.nationalreview.com/2018/03/cosi-fan-tutte-metropolitan-opera-review-great-entertainment/",
@@ -38333,6 +38035,10 @@
           "count": 1
         },
         {
+          "host": "operacanada.ca",
+          "count": 1
+        },
+        {
           "host": "parterre.com",
           "count": 1
         }
@@ -38354,8 +38060,13 @@
               "urlInDir": "https://www.theepochtimes.com/opera-review-cosi-fan-tutte_2468625.html"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://www.wsj.com/articles/cosi-fan-tutte-review-a-carnival-of-deception-1521485960",
@@ -38373,44 +38084,13 @@
               "urlInDir": "https://www.wsj.com/articles/cosi-fan-tutte-review-a-carnival-of-deception-1521485960"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thestar.com/entertainment/stage/atom-egoyan-s-cos-fan-tutte-is-back-why-the-coc-production-still-stumbles/article_48d2ed25-ba4e-4c46-bc41-6e3d8767dce7.html",
-          "host": "thestar.com",
-          "knownOutletId": "toronto-star",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "toronto-star--glenn-sumi.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thestar.com/entertainment/stage/atom-egoyan-s-cos-fan-tutte-is-back-why-the-coc-production-still-stumbles/article_48d2ed25-ba4e-4c46-bc41-6e3d8767dce7.html"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-new-york-september-2026",
-          "host": "bachtrack.com",
-          "knownOutletId": "bachtrack",
-          "recoverable": true,
-          "recoverableFile": "bachtrack--susan-stempleski.json",
-          "recoverableOutletId": "bachtrack",
-          "recoverableCritic": "Susan Stempleski",
-          "recoverableCount": 2,
-          "dirFlags": [
-            {
-              "file": "bachtrack--unknown.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-new-york-september-2026"
-            }
-          ],
-          "serpCensus": true
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://www.nytimes.com/2026/09/23/nyregion/snake-metropolitan-opera-cosi-fan-tutte.html",
@@ -38428,12 +38108,18 @@
               "urlInDir": "https://www.nytimes.com/2026/09/23/nyregion/snake-metropolitan-opera-cosi-fan-tutte.html"
             }
           ],
-          "serpCensus": true
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongShow"
+          ],
+          "confirmedNonReview": true,
+          "serpCensus": true,
+          "reverify": false
         },
         {
           "url": "https://www.thetimes.com/culture/classical-opera/article/cosi-fan-tutte-review-royal-northern-sinfonia-lammermuir-festival-xr33g90bn",
           "host": "thetimes.com",
-          "knownOutletId": "times-uk",
+          "knownOutletId": "sunday-times",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -38446,94 +38132,29 @@
               "urlInDir": "https://www.thetimes.com/culture/classical-opera/article/cosi-fan-tutte-review-royal-northern-sinfonia-lammermuir-festival-xr33g90bn"
             }
           ],
-          "serpCensus": true
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Così fan tutte\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Così fan tutte\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Così fan tutte\" review metropolitan",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Così fan tutte\" Mozart review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Così fan tutte Metropolitan Opera House review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Così fan tutte Metropolitan Opera House review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Così fan tutte Metropolitan Opera House review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 9,
-        "error": null
+        "ran": false,
+        "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 413,
+        "count": 384,
         "byReason": {
-          "non-review-host": 60,
-          "aggregator-internal-nav": 278,
+          "aggregator-internal-nav": 276,
           "not-http-url": 49,
           "production-database-listing": 10,
           "aggregator-section-root": 8,
-          "ticketing-listing": 1,
-          "census-junk-host": 4,
-          "review-hub-page": 2,
-          "roundup-page": 1
+          "non-review-host": 39,
+          "roundup-page": 2
         }
       },
       "dedupedVariants": [],
@@ -38547,98 +38168,50 @@
           "publishDate": "2018-03-16"
         }
       ],
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
         {
           "url": "https://www.nationalreview.com/2018/03/cosi-fan-tutte-metropolitan-opera-review-great-entertainment/",
           "host": "nationalreview.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://www.vulture.com/2018/03/cos-fan-tutte-kelli-ohara-and-the-shadow-of-levine.html",
           "host": "vulture.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.nytimes.com/2018/03/16/arts/music/cosi-fan-tutte-review-met-opera.html",
           "host": "nytimes.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "http://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/",
           "host": "observer.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/",
           "host": "observer.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://www.fandango.com/the-metropolitan-opera-cosi-fan-tutte-2026-246261/movie-reviews",
-          "host": "fandango.com",
-          "outletId": "fandango",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://artsreviewhub.com/cosi-fan-tutte-the-metropolitan-opera-new-york/",
-          "host": "artsreviewhub.com",
-          "outletId": "artsreviewhub",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-new-york-september-2026",
-          "host": "bachtrack.com",
-          "file": "bachtrack--unknown.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "Article extraction returned 152 chars — pattern may be missing for this outlet. Add an entry to scri",
-          "recoveryCount": 2
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "toronto-star",
-            "outlet": "toronto-star",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestar.com/entertainment/stage/atom-egoyan-s-cos-fan-tutte-is-back-why-the-coc-production-still-stumbles/article_48d2ed25-ba4e-4c46-bc41-6e3d8767dce7.html"
-          },
-          {
-            "outletId": "bachtrack",
-            "outlet": "bachtrack",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-new-york-september-2026"
-          },
           {
             "outletId": "nytimes",
             "outlet": "nytimes",
@@ -38647,8 +38220,8 @@
             "url": "https://www.nytimes.com/2026/09/23/nyregion/snake-metropolitan-opera-cosi-fan-tutte.html"
           },
           {
-            "outletId": "times-uk",
-            "outlet": "times-uk",
+            "outletId": "sunday-times",
+            "outlet": "sunday-times",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thetimes.com/culture/classical-opera/article/cosi-fan-tutte-review-royal-northern-sinfonia-lammermuir-festival-xr33g90bn"
@@ -38669,12 +38242,6 @@
             "firstSeenAt": "2026-10-12T00:42:40.641Z"
           },
           {
-            "url": "https://operacanada.ca/the-metropolitan-opera-cosi-fan-tuttea-riot-of-colourful-invention/",
-            "outletId": "operacanada.ca",
-            "state": "live",
-            "firstSeenAt": "2026-10-12T00:42:40.641Z"
-          },
-          {
             "url": "https://www.fandango.com/the-metropolitan-opera-cosi-fan-tutte-2026-246261/movie-reviews",
             "outletId": "fandango.com",
             "state": "live",
@@ -38687,17 +38254,9 @@
             "firstSeenAt": "2026-10-12T08:45:07.198Z"
           },
           {
-            "url": "https://www.thestar.com/entertainment/stage/atom-egoyan-s-cos-fan-tutte-is-back-why-the-coc-production-still-stumbles/article_48d2ed25-ba4e-4c46-bc41-6e3d8767dce7.html",
-            "outletId": "toronto-star",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T08:45:07.198Z"
-          },
-          {
             "url": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-new-york-september-2026",
-            "outletId": "bachtrack",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "bachtrack.com",
+            "state": "live",
             "firstSeenAt": "2026-10-12T00:42:40.641Z"
           },
           {
@@ -38709,7 +38268,7 @@
           },
           {
             "url": "https://www.thetimes.com/culture/classical-opera/article/cosi-fan-tutte-review-royal-northern-sinfonia-lammermuir-festival-xr33g90bn",
-            "outletId": "times-uk",
+            "outletId": "sunday-times",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-12T00:42:40.641Z"
@@ -38717,10 +38276,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 5,
-        "candidateCount": 9
+        "candidateCount": 7
       },
-      "computedAt": "2026-10-12T08:45:07.198Z",
-      "automatedExcludedListed": 0
+      "computedAt": "2026-10-22T11:18:11.739Z"
     },
     {
       "showId": "cowbois-west-end-2024",
@@ -41472,9 +41030,10 @@
         "https://ayoungishperspective.co.uk/2026/10/05/review-berliner-ensemble-de-profundis/",
         "https://thespyinthestalls.com/2026/10/de-profundis/",
         "https://playstosee.com/reviews/uk-reviews/de-profundis-2/",
-        "https://www.broadwayworld.com/westend/article/Review-DE-PROFUNDIS-The-Coronet-Theatre-20261003",
         "https://www.uktw.co.uk/London/The-Coronet/Play/De-Profundis/L1410119577/",
         "https://playsinternational.org.uk/de-profundis-coronet-theatre/",
+        "https://theatreweekly.com/berliner-ensembles-acclaimed-production-of-de-profundis-receives-uk-premiere-at-the-coronet-theatre/",
+        "https://www.broadwayworld.com/westend/article/Review-DE-PROFUNDIS-The-Coronet-Theatre-20261003",
         "https://viewfromthegods.co.uk/2026/10/07/10-6-26-de-profundis-coronet/"
       ],
       "dirFiles": 16,
@@ -41503,7 +41062,7 @@
           "recoverableFile": "uktw--unknown.json",
           "recoverableOutletId": "uktw",
           "recoverableCritic": "Unknown",
-          "recoverableCount": 0,
+          "recoverableCount": 1,
           "dirFlags": [
             {
               "file": "uktw--unknown.json",
@@ -41563,7 +41122,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 2
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -41649,7 +41208,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -41659,7 +41218,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
@@ -41669,14 +41228,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 22,
+        "count": 20,
         "byReason": {
           "non-review-host": 11,
-          "venue-production-page": 1,
           "roundup-page": 2,
-          "show-listing-page": 1,
-          "write-path-blocked": 5,
-          "event-listings-page": 2
+          "write-path-blocked": 4,
+          "event-listings-page": 2,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
@@ -41709,8 +41267,8 @@
           "skipped": false,
           "provisional": false,
           "starFallback": false,
-          "reason": "⚠️  Bright Data failed: Bright Data request timeout\nFetch failed: All scraping methods failed",
-          "recoveryCount": 1
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=uktw.co.uk): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=uktw.co.uk): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  ScrapingBee failed (re",
+          "recoveryCount": 2
         },
         {
           "url": "https://www.thestage.co.uk/reviews/de-profundis-review-coronet-theatre-london-oscar-wilde-berliner-ensemble",
@@ -41721,7 +41279,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 1,
+          "recoveryCount": 2,
           "uncited": true
         }
       ],
@@ -41819,14 +41377,20 @@
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-DE-PROFUNDIS-The-Coronet-Theatre-20261003",
-            "outletId": "broadwayworld.com",
+            "url": "https://playsinternational.org.uk/de-profundis-coronet-theatre/",
+            "outletId": "playsinternational.org.uk",
             "state": "live",
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
           },
           {
-            "url": "https://playsinternational.org.uk/de-profundis-coronet-theatre/",
-            "outletId": "playsinternational.org.uk",
+            "url": "https://theatreweekly.com/berliner-ensembles-acclaimed-production-of-de-profundis-receives-uk-premiere-at-the-coronet-theatre/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-22T11:18:11.739Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-DE-PROFUNDIS-The-Coronet-Theatre-20261003",
+            "outletId": "broadwayworld.com",
             "state": "live",
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
           },
@@ -41856,7 +41420,7 @@
         "liveCount": 13,
         "candidateCount": 16
       },
-      "computedAt": "2026-10-21T19:01:58.243Z"
+      "computedAt": "2026-10-22T11:18:11.739Z"
     },
     {
       "showId": "dead-outlaw-2025",
@@ -73724,67 +73288,81 @@
       "status": "previews",
       "category": "west-end",
       "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-condensed-one-part-harry-potter-and-the-cursed-child-on-broadway",
+        "https://playbill.com/article/reviews-of-harry-potter-and-the-cursed-child-in-london",
+        "https://playbill.com/article/read-the-reviews-for-harry-potter-and-the-cursed-child-on-broadway",
+        "https://playbill.com/article/what-do-critics-think-of-harry-potter-and-the-cursed-child-in-san-francisco",
         "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
         "https://www.broadwayworld.com/article/Review-Roundup-HARRY-POTTER-AND-THE-CURSED-CHILD-Reopens-on-Broadway-20211207",
         "https://www.broadwayworld.com/article/Review-Roundup-HARRY-POTTER-AND-THE-CURSED-CHILD-Opens-in-San-Francisco-Read-All-The-Reviews-20191204"
       ],
       "aggregatorListedUrls": [
-        "https://www.nytimes.com/2018/04/22/theater/review-harry-potter-and-the-cursed-child-raises-the-bar-for-broadway-magic.html",
-        "https://www.amny.com/entertainment/harry-potter-and-the-cursed-child-review-1.18207087",
+        "https://broadwaynews.com/2021/12/07/review-harry-potter-and-the-cursed-child-retains-its-magic-and-its-heart/",
+        "https://cititour.com/NYC_Broadway/Harry-Potter-and-the-Cursed-Child/133",
+        "https://didtheylikeit.com/shows/harry-potter-and-the-cursed-child/harry-potter-and-the-cursed-child-come-for-the-nostalgia-stay-for-the-spectacle/",
+        "https://www.nytimes.com/2021/12/07/theater/harry-potter-cursed-child-broadway-review.html",
+        "https://www.theatrely.com/post/harry-potter-and-the-cursed-child-magic-reworked-review",
         "https://www.timeout.com/newyork/theater/harry-potter-cursed-child-broadway-review",
-        "https://www.hollywoodreporter.com/review/harry-potter-cursed-child-theater-review-1104812",
-        "https://www.thewrap.com/harry-potter-cursed-child-broadway-review-rowling-john-thorne/",
-        "http://variety.com/2018/legit/reviews/harry-potter-and-the-cursed-child-review-broadway-1202757827/",
-        "http://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/",
-        "http://beta.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034",
-        "http://nystagereview.com/2018/04/22/harry-potter-and-the-cursed-child-broadways-enchanted-kingdom/",
-        "http://deadline.com/2018/04/harry-potter-and-the-cursed-child-broadway-review-j-k-rowling-jack-thorne-1202367117/",
-        "https://mashable.com/2018/04/22/harry-potter-cursed-child-broadway-review/",
-        "https://forward.com/culture/theater/399247/harry-potter-and-the-cursed-child-is-jewish-and-dark/",
-        "https://www.theguardian.com/stage/2018/apr/22/harry-potter-and-the-cursed-child-review-thrilling-broadway-transfer-is-magic",
-        "https://www.telegraph.co.uk/theatre/what-to-see/could-become-longest-running-broadway-play-harry-potter-cursed/",
-        "https://www.vanityfair.com/style/2018/04/harry-potter-and-the-cursed-child-broadway-review",
-        "https://www.thetimes.co.uk/article/theatre-review-harry-potter-and-the-cursed-child-i-and-ii-at-the-lyric-theatre-new-york-jsc7khbbf",
+        "http://www.chicagotribune.com/entertainment/theater/beyondchicago/sc-ent-0726-harry-potter-cursed-child-london-review-20160726-column.html",
+        "http://www.ew.com/article/2016/07/25/harry-potter-cursed-child-review",
+        "http://www.standard.co.uk/goingout/theatre/harry-potter-and-the-cursed-child-review-a-magical-experience-a3304191.html",
+        "https://www.theguardian.com/stage/2016/jul/26/harry-potter-cursed-child-review-palace-theatre-london",
+        "http://www.hollywoodreporter.com/review/harry-potter-cursed-child-parts-914055",
+        "http://www.independent.co.uk/arts-entertainment/tv/reviews/harry-potter-and-the-cursed-child-review-palace-theatre-a-magical-experience-tailor-made-for-the-a7155381.html",
+        "http://www.mirror.co.uk/tv/tv-reviews/harry-potter-cursed-child-review-8136339",
+        "http://www.nytimes.com/2016/07/26/theater/review-harry-potter-and-the-cursed-child-casts-a-spell-onstage.html",
+        "http://www.telegraph.co.uk/theatre/what-to-see/harry-potter-and-the-cursed-child-opening-night-of-part-one---li/",
+        "http://time.com/4422192/harry-potter-cursed-child-play-review/",
+        "http://www.usatoday.com/story/life/theater/2016/07/25/review-cursed-child-brings-harry-potter-into-future-but-past-present/87482170/",
+        "http://variety.com/2016/legit/reviews/harry-potter-and-the-cursed-child-review-play-london-1201822087/",
+        "http://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two-review-the-spell-of-friendship-1469487661",
+        "https://www.amny.com/entertainment/harry-potter-and-the-cursed-child-review-1.18207087",
+        "https://broadway.news/2018/04/22/review-harry-potter-cursed-child-brings-magic-broadway/",
         "https://www.thedailybeast.com/harry-potter-and-the-cursed-child-on-broadway-is-a-stunning-magical-tour-de-force",
+        "http://deadline.com/2018/04/harry-potter-and-the-cursed-child-broadway-review-j-k-rowling-jack-thorne-1202367117/",
+        "http://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/",
+        "https://www.theguardian.com/stage/2018/apr/22/harry-potter-and-the-cursed-child-review-thrilling-broadway-transfer-is-magic",
+        "https://www.hollywoodreporter.com/review/harry-potter-cursed-child-theater-review-1104812",
+        "https://mashable.com/2018/04/22/harry-potter-cursed-child-broadway-review/",
         "http://www.nj.com/entertainment/index.ssf/2018/04/harry_potter_cursed_child_broadway_review.html",
         "https://www.newsday.com/entertainment/theater/harry-potter-cursed-child-review-1.18173469",
-        "https://www.nytimes.com/2021/12/07/theater/harry-potter-cursed-child-broadway-review.html",
-        "https://datebook.sfchronicle.com/theater/review-whiz-bang-effects-of-cursed-child-zap-new-life-into-harry-potter",
+        "http://www.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034",
+        "http://nystagereview.com/2018/04/22/harry-potter-and-the-cursed-child-broadways-enchanted-kingdom/",
+        "https://www.nytimes.com/2018/04/22/theater/review-harry-potter-and-the-cursed-child-raises-the-bar-for-broadway-magic.html",
+        "https://slate.com/culture/2018/04/harry-potter-and-the-cursed-child-on-broadway-reviewed.html",
+        "https://www.telegraph.co.uk/theatre/what-to-see/could-become-longest-running-broadway-play-harry-potter-cursed/",
+        "https://www.thetimes.co.uk/article/theatre-review-harry-potter-and-the-cursed-child-i-and-ii-at-the-lyric-theatre-new-york-jsc7khbbf",
+        "https://www.vanityfair.com/style/2018/04/harry-potter-and-the-cursed-child-broadway-review",
+        "http://variety.com/2018/legit/reviews/harry-potter-and-the-cursed-child-review-broadway-1202757827/",
+        "https://www.thewrap.com/harry-potter-cursed-child-broadway-review-rowling-john-thorne/",
         "https://www.mercurynews.com/2019/12/02/review-spellbinding-harry-potter-and-the-cursed-child-soars-into-sf/",
+        "https://datebook.sfchronicle.com/theater/review-whiz-bang-effects-of-cursed-child-zap-new-life-into-harry-potter",
+        "http://beta.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034",
+        "https://forward.com/culture/theater/399247/harry-potter-and-the-cursed-child-is-jewish-and-dark/",
         "http://www.mugglenet.com/2019/12/theater-review-harry-potter-and-the-cursed-child-opens-in-san-francisco/",
-        "https://www.theguardian.com/stage/2016/jul/26/harry-potter-cursed-child-review-palace-theatre-london",
-        "https://sueinthestalls.wordpress.com/2016/10/09/review-harry-potter-and-the-cursed-child/",
-        "https://tanstopics.com/2021/12/11/theatre-review-harry-potter-and-the-cursed-child/",
         "https://www.timeout.com/london/theatre/harry-potter-and-the-cursed-child-review",
-        "https://www.artsbeatla.com/2025/02/review-harry-potter-cursed-child/",
         "https://www.londonforkidz.com/post/review-harry-potter-and-the-cursed-child-london",
-        "https://lovelondonloveculture.com/2017/02/04/review-harry-potter-and-the-cursed-child-palace-theatre/",
-        "https://imlovingbooks.com/review-harry-potter-and-the-cursed-child-j-k-rowling-john-tiffany-jack-thorne/",
-        "https://theoverstuffedbookcasecom.wordpress.com/2016/08/09/review-harry-potter-cursed-child-j-k-rowling-john-tiffany-jack-thorne/",
-        "https://www.whatsonstage.com/news/review-harry-potter-and-the-cursed-child-palace-theatre_41360/",
-        "https://thetheatretwittic.com/2016/07/25/harry-potter-and-the-cursed-child-at-the-palace-theatre-london/",
-        "https://www.theatermania.com/news/j-k-rowling-john-tiffany-jack-thorne-talk-harry-potter-and-the-cursed-child_82561/",
+        "https://www.stageleft.nyc/blog/2018/4/22/review-harry-potter-and-the-cursed-child-is-pure-magic",
+        "https://exeuntnyc.com/reviews/review-harry-potter-cursed-child/",
         "https://www.theguardian.com/stage/2016/jul/31/harry-potter-and-the-cursed-child-review-palace-theatre",
-        "https://www.inkpellet.co.uk/2016/10/theatre-review-harry-potter-and-the-cursed-child-palace-theatre-london/",
         "https://www.londontheatre1.com/reviews/review-harry-potter-and-the-cursed-child-parts-1-and-2/",
-        "https://bakchormeeboy.com/2019/02/18/in-londons-west-end-2018-harry-potter-and-the-cursed-child-at-the-palace-theatre-review/",
         "https://holliebolina.co.uk/lifestyle/harry-potter-and-the-cursed-child-review/"
       ],
-      "dirFiles": 26,
+      "dirFiles": 29,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://www.nytimes.com/2018/04/22/theater/review-harry-potter-and-the-cursed-child-raises-the-bar-for-broadway-magic.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
+          "url": "https://cititour.com/NYC_Broadway/Harry-Potter-and-the-Cursed-Child/133",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.amny.com/entertainment/harry-potter-and-the-cursed-child-review-1.18207087",
-          "host": "amny.com",
-          "knownOutletId": "amny",
+          "url": "https://www.nytimes.com/2021/12/07/theater/harry-potter-cursed-child-broadway-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -73796,23 +73374,114 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.hollywoodreporter.com/review/harry-potter-cursed-child-theater-review-1104812",
+          "url": "http://www.ew.com/article/2016/07/25/harry-potter-cursed-child-review",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.standard.co.uk/goingout/theatre/harry-potter-and-the-cursed-child-review-a-magical-experience-a3304191.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2016/jul/26/harry-potter-cursed-child-review-palace-theatre-london",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/harry-potter-cursed-child-parts-914055",
           "host": "hollywoodreporter.com",
           "knownOutletId": "hollywood-reporter",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.thewrap.com/harry-potter-cursed-child-broadway-review-rowling-john-thorne/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
+          "url": "http://www.independent.co.uk/arts-entertainment/tv/reviews/harry-potter-and-the-cursed-child-review-palace-theatre-a-magical-experience-tailor-made-for-the-a7155381.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://variety.com/2018/legit/reviews/harry-potter-and-the-cursed-child-review-broadway-1202757827/",
+          "url": "http://www.mirror.co.uk/tv/tv-reviews/harry-potter-cursed-child-review-8136339",
+          "host": "mirror.co.uk",
+          "knownOutletId": "mirror",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nytimes.com/2016/07/26/theater/review-harry-potter-and-the-cursed-child-casts-a-spell-onstage.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.telegraph.co.uk/theatre/what-to-see/harry-potter-and-the-cursed-child-opening-night-of-part-one---li/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://time.com/4422192/harry-potter-cursed-child-play-review/",
+          "host": "time.com",
+          "knownOutletId": "time",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/theater/2016/07/25/review-cursed-child-brings-harry-potter-into-future-but-past-present/87482170/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://variety.com/2016/legit/reviews/harry-potter-and-the-cursed-child-review-play-london-1201822087/",
           "host": "variety.com",
           "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two-review-the-spell-of-friendship-1469487661",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.amny.com/entertainment/harry-potter-and-the-cursed-child-review-1.18207087",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://broadway.news/2018/04/22/review-harry-potter-cursed-child-brings-magic-broadway/",
+          "host": "broadway.news",
+          "knownOutletId": "broadwaynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/harry-potter-and-the-cursed-child-on-broadway-is-a-stunning-magical-tour-de-force",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://deadline.com/2018/04/harry-potter-and-the-cursed-child-broadway-review-j-k-rowling-jack-thorne-1202367117/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -73824,7 +73493,35 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://beta.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034",
+          "url": "https://www.theguardian.com/stage/2018/apr/22/harry-potter-and-the-cursed-child-review-thrilling-broadway-transfer-is-magic",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/harry-potter-cursed-child-theater-review-1104812",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://mashable.com/2018/04/22/harry-potter-cursed-child-broadway-review/",
+          "host": "mashable.com",
+          "knownOutletId": "mashable",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2018/04/harry_potter_cursed_child_broadway_review.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034",
           "host": "nydailynews.com",
           "knownOutletId": "nydailynews",
           "priorRun": true,
@@ -73838,30 +73535,16 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://deadline.com/2018/04/harry-potter-and-the-cursed-child-broadway-review-j-k-rowling-jack-thorne-1202367117/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
+          "url": "https://www.nytimes.com/2018/04/22/theater/review-harry-potter-and-the-cursed-child-raises-the-bar-for-broadway-magic.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://mashable.com/2018/04/22/harry-potter-cursed-child-broadway-review/",
-          "host": "mashable.com",
-          "knownOutletId": "mashable",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://forward.com/culture/theater/399247/harry-potter-and-the-cursed-child-is-jewish-and-dark/",
-          "host": "forward.com",
-          "knownOutletId": "forward",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2018/apr/22/harry-potter-and-the-cursed-child-review-thrilling-broadway-transfer-is-magic",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
+          "url": "https://slate.com/culture/2018/04/harry-potter-and-the-cursed-child-on-broadway-reviewed.html",
+          "host": "slate.com",
+          "knownOutletId": "slate",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -73873,13 +73556,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.vanityfair.com/style/2018/04/harry-potter-and-the-cursed-child-broadway-review",
-          "host": "vanityfair.com",
-          "knownOutletId": "vanityfair",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://www.thetimes.co.uk/article/theatre-review-harry-potter-and-the-cursed-child-i-and-ii-at-the-lyric-theatre-new-york-jsc7khbbf",
           "host": "thetimes.co.uk",
           "knownOutletId": "sunday-times",
@@ -73887,30 +73563,23 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.thedailybeast.com/harry-potter-and-the-cursed-child-on-broadway-is-a-stunning-magical-tour-de-force",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
+          "url": "https://www.vanityfair.com/style/2018/04/harry-potter-and-the-cursed-child-broadway-review",
+          "host": "vanityfair.com",
+          "knownOutletId": "vanityfair",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://www.nj.com/entertainment/index.ssf/2018/04/harry_potter_cursed_child_broadway_review.html",
-          "host": "nj.com",
-          "knownOutletId": "njcom",
+          "url": "http://variety.com/2018/legit/reviews/harry-potter-and-the-cursed-child-review-broadway-1202757827/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.nytimes.com/2021/12/07/theater/harry-potter-cursed-child-broadway-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://datebook.sfchronicle.com/theater/review-whiz-bang-effects-of-cursed-child-zap-new-life-into-harry-potter",
-          "host": "sfchronicle.com",
-          "knownOutletId": "san-francisco-chronicle",
+          "url": "https://www.thewrap.com/harry-potter-cursed-child-broadway-review-rowling-john-thorne/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -73922,41 +73591,32 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://datebook.sfchronicle.com/theater/review-whiz-bang-effects-of-cursed-child-zap-new-life-into-harry-potter",
+          "host": "sfchronicle.com",
+          "knownOutletId": "san-francisco-chronicle",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://beta.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://forward.com/culture/theater/399247/harry-potter-and-the-cursed-child-is-jewish-and-dark/",
+          "host": "forward.com",
+          "knownOutletId": "forward",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "http://www.mugglenet.com/2019/12/theater-review-harry-potter-and-the-cursed-child-opens-in-san-francisco/",
           "host": "mugglenet.com",
           "knownOutletId": null,
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2016/jul/26/harry-potter-cursed-child-review-palace-theatre-london",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "serpCensus": true
-        },
-        {
-          "url": "https://sueinthestalls.wordpress.com/2016/10/09/review-harry-potter-and-the-cursed-child/",
-          "host": "sueinthestalls.wordpress.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "url-dated-in-prior-run",
-          "serpCensus": true
-        },
-        {
-          "url": "https://tanstopics.com/2021/12/11/theatre-review-harry-potter-and-the-cursed-child/",
-          "host": "tanstopics.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "url-dated-in-prior-run",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.artsbeatla.com/2025/02/review-harry-potter-cursed-child/",
-          "host": "artsbeatla.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "url-dated-in-prior-run",
-          "serpCensus": true
         },
         {
           "url": "https://www.londonforkidz.com/post/review-harry-potter-and-the-cursed-child-london",
@@ -73967,43 +73627,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://lovelondonloveculture.com/2017/02/04/review-harry-potter-and-the-cursed-child-palace-theatre/",
-          "host": "lovelondonloveculture.com",
-          "knownOutletId": "lovelondonloveculture",
-          "priorRun": true,
-          "priorRunSource": "url-dated-in-prior-run",
-          "serpCensus": true
-        },
-        {
-          "url": "https://imlovingbooks.com/review-harry-potter-and-the-cursed-child-j-k-rowling-john-tiffany-jack-thorne/",
-          "host": "imlovingbooks.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://theoverstuffedbookcasecom.wordpress.com/2016/08/09/review-harry-potter-cursed-child-j-k-rowling-john-tiffany-jack-thorne/",
-          "host": "theoverstuffedbookcasecom.wordpress.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "url-dated-in-prior-run",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/review-harry-potter-and-the-cursed-child-palace-theatre_41360/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "serpCensus": true
-        },
-        {
-          "url": "https://thetheatretwittic.com/2016/07/25/harry-potter-and-the-cursed-child-at-the-palace-theatre-london/",
-          "host": "thetheatretwittic.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theatermania.com/news/j-k-rowling-john-tiffany-jack-thorne-talk-harry-potter-and-the-cursed-child_82561/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
+          "url": "https://www.stageleft.nyc/blog/2018/4/22/review-harry-potter-and-the-cursed-child-is-pure-magic",
+          "host": "stageleft.nyc",
+          "knownOutletId": "stage-left",
           "serpCensus": true
         },
         {
@@ -74015,25 +73641,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.inkpellet.co.uk/2016/10/theatre-review-harry-potter-and-the-cursed-child-palace-theatre-london/",
-          "host": "inkpellet.co.uk",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "url-dated-in-prior-run",
-          "serpCensus": true
-        },
-        {
           "url": "https://www.londontheatre1.com/reviews/review-harry-potter-and-the-cursed-child-parts-1-and-2/",
           "host": "londontheatre1.com",
           "knownOutletId": "londontheatre1",
-          "serpCensus": true
-        },
-        {
-          "url": "https://bakchormeeboy.com/2019/02/18/in-londons-west-end-2018-harry-potter-and-the-cursed-child-at-the-palace-theatre-review/",
-          "host": "bakchormeeboy.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "url-dated-in-prior-run",
           "serpCensus": true
         },
         {
@@ -74045,6 +73655,78 @@
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://broadwaynews.com/2021/12/07/review-harry-potter-and-the-cursed-child-retains-its-magic-and-its-heart/",
+          "host": "broadwaynews.com",
+          "knownOutletId": "broadwaynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadwaynews--charles-isherwood.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://broadwaynews.com/2021/12/07/review-harry-potter-and-the-cursed-child-retains-its-magic-and-its-heart/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://didtheylikeit.com/shows/harry-potter-and-the-cursed-child/harry-potter-and-the-cursed-child-come-for-the-nostalgia-stay-for-the-spectacle/",
+          "host": "didtheylikeit.com",
+          "knownOutletId": "dtli",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dtli--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://didtheylikeit.com/shows/harry-potter-and-the-cursed-child/harry-potter-and-the-cursed-child-come-for-the-nostalgia-stay-for-the-spectacle/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.theatrely.com/post/harry-potter-and-the-cursed-child-magic-reworked-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrely--joey-sims.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/harry-potter-and-the-cursed-child-magic-reworked-review"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
         {
           "url": "https://www.newsday.com/entertainment/theater/harry-potter-cursed-child-review-1.18173469",
           "host": "newsday.com",
@@ -74093,6 +73775,31 @@
           "priorRunSource": "flagged-file-date:2016-08-02",
           "serpCensus": true,
           "reverify": false
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-harry-potter-cursed-child/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "exeunt-magazine--kev-berry.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://exeuntnyc.com/reviews/review-harry-potter-cursed-child/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2018-05-01",
+          "serpCensus": true,
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -74111,7 +73818,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -74152,7 +73859,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 7,
+            "accepted": 3,
             "error": null
           },
           {
@@ -74172,7 +73879,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 2,
             "error": null
           },
           {
@@ -74192,7 +73899,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -74202,35 +73909,52 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 17,
+        "resultCount": 8,
         "error": null
       },
       "candidatesRejected": {
-        "count": 951,
+        "count": 1481,
         "byReason": {
-          "aggregator-internal-nav": 649,
-          "not-http-url": 213,
-          "aggregator-section-root": 14,
-          "non-review-host": 64,
-          "bare-host": 2,
-          "roundup-page": 2,
-          "show-hub": 1,
-          "census-junk-host": 1,
-          "ticketing-listing": 1,
+          "aggregator-internal-nav": 892,
+          "not-http-url": 239,
+          "production-database-listing": 46,
+          "aggregator-section-root": 30,
+          "non-review-host": 158,
+          "roundup-page": 106,
           "no-review-evidence": 1,
+          "census-junk-host": 1,
           "write-path-blocked": 1,
+          "bare-host": 3,
+          "ticketing-listing": 1,
           "ugc-platform": 1,
-          "review-hub-page": 1
+          "review-hub-page": 1,
+          "show-hub": 1
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-the-reviews-for-condensed-one-part-harry-potter-and-the-cursed-child-on-broadway",
+          "publishDate": "2021-12-07"
+        },
+        {
+          "url": "https://playbill.com/article/reviews-of-harry-potter-and-the-cursed-child-in-london",
+          "publishDate": "2016-07-26"
+        },
+        {
+          "url": "https://playbill.com/article/read-the-reviews-for-harry-potter-and-the-cursed-child-on-broadway",
+          "publishDate": "2018-04-22"
+        },
+        {
+          "url": "https://playbill.com/article/what-do-critics-think-of-harry-potter-and-the-cursed-child-in-san-francisco",
+          "publishDate": "2019-12-05"
+        },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
           "publishDate": "2018-04-22"
@@ -74245,18 +73969,27 @@
         }
       ],
       "automatedExcludedListed": 0,
-      "unextractable": [],
+      "unextractable": [
+        {
+          "url": "http://www.chicagotribune.com/entertainment/theater/beyondchicago/sc-ent-0726-harry-potter-cursed-child-london-review-20160726-column.html",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "zeroCharAttempts": 4
+        }
+      ],
       "weIngestBlocked": [
         {
-          "url": "https://www.nytimes.com/2018/04/22/theater/review-harry-potter-and-the-cursed-child-raises-the-bar-for-broadway-magic.html",
-          "host": "nytimes.com",
+          "url": "https://cititour.com/NYC_Broadway/Harry-Potter-and-the-Cursed-Child/133",
+          "host": "cititour.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.amny.com/entertainment/harry-potter-and-the-cursed-child-review-1.18207087",
-          "host": "amny.com",
+          "url": "https://www.nytimes.com/2021/12/07/theater/harry-potter-cursed-child-broadway-review.html",
+          "host": "nytimes.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -74269,22 +74002,113 @@
           "censusGateOn": true
         },
         {
-          "url": "https://www.hollywoodreporter.com/review/harry-potter-cursed-child-theater-review-1104812",
+          "url": "http://www.ew.com/article/2016/07/25/harry-potter-cursed-child-review",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.standard.co.uk/goingout/theatre/harry-potter-and-the-cursed-child-review-a-magical-experience-a3304191.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2016/jul/26/harry-potter-cursed-child-review-palace-theatre-london",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/harry-potter-cursed-child-parts-914055",
           "host": "hollywoodreporter.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.thewrap.com/harry-potter-cursed-child-broadway-review-rowling-john-thorne/",
-          "host": "thewrap.com",
+          "url": "http://www.independent.co.uk/arts-entertainment/tv/reviews/harry-potter-and-the-cursed-child-review-palace-theatre-a-magical-experience-tailor-made-for-the-a7155381.html",
+          "host": "independent.co.uk",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "http://variety.com/2018/legit/reviews/harry-potter-and-the-cursed-child-review-broadway-1202757827/",
+          "url": "http://www.mirror.co.uk/tv/tv-reviews/harry-potter-cursed-child-review-8136339",
+          "host": "mirror.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nytimes.com/2016/07/26/theater/review-harry-potter-and-the-cursed-child-casts-a-spell-onstage.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.telegraph.co.uk/theatre/what-to-see/harry-potter-and-the-cursed-child-opening-night-of-part-one---li/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://time.com/4422192/harry-potter-cursed-child-play-review/",
+          "host": "time.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/theater/2016/07/25/review-cursed-child-brings-harry-potter-into-future-but-past-present/87482170/",
+          "host": "usatoday.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://variety.com/2016/legit/reviews/harry-potter-and-the-cursed-child-review-play-london-1201822087/",
           "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two-review-the-spell-of-friendship-1469487661",
+          "host": "wsj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.amny.com/entertainment/harry-potter-and-the-cursed-child-review-1.18207087",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://broadway.news/2018/04/22/review-harry-potter-cursed-child-brings-magic-broadway/",
+          "host": "broadway.news",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/harry-potter-and-the-cursed-child-on-broadway-is-a-stunning-magical-tour-de-force",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://deadline.com/2018/04/harry-potter-and-the-cursed-child-broadway-review-j-k-rowling-jack-thorne-1202367117/",
+          "host": "deadline.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -74297,7 +74121,35 @@
           "censusGateOn": true
         },
         {
-          "url": "http://beta.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034",
+          "url": "https://www.theguardian.com/stage/2018/apr/22/harry-potter-and-the-cursed-child-review-thrilling-broadway-transfer-is-magic",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/harry-potter-cursed-child-theater-review-1104812",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://mashable.com/2018/04/22/harry-potter-cursed-child-broadway-review/",
+          "host": "mashable.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2018/04/harry_potter_cursed_child_broadway_review.html",
+          "host": "nj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034",
           "host": "nydailynews.com",
           "priorRun": true,
           "reason": "prior-run",
@@ -74311,29 +74163,15 @@
           "censusGateOn": true
         },
         {
-          "url": "http://deadline.com/2018/04/harry-potter-and-the-cursed-child-broadway-review-j-k-rowling-jack-thorne-1202367117/",
-          "host": "deadline.com",
+          "url": "https://www.nytimes.com/2018/04/22/theater/review-harry-potter-and-the-cursed-child-raises-the-bar-for-broadway-magic.html",
+          "host": "nytimes.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://mashable.com/2018/04/22/harry-potter-cursed-child-broadway-review/",
-          "host": "mashable.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://forward.com/culture/theater/399247/harry-potter-and-the-cursed-child-is-jewish-and-dark/",
-          "host": "forward.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2018/apr/22/harry-potter-and-the-cursed-child-review-thrilling-broadway-transfer-is-magic",
-          "host": "theguardian.com",
+          "url": "https://slate.com/culture/2018/04/harry-potter-and-the-cursed-child-on-broadway-reviewed.html",
+          "host": "slate.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -74346,13 +74184,6 @@
           "censusGateOn": true
         },
         {
-          "url": "https://www.vanityfair.com/style/2018/04/harry-potter-and-the-cursed-child-broadway-review",
-          "host": "vanityfair.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
           "url": "https://www.thetimes.co.uk/article/theatre-review-harry-potter-and-the-cursed-child-i-and-ii-at-the-lyric-theatre-new-york-jsc7khbbf",
           "host": "thetimes.co.uk",
           "priorRun": true,
@@ -74360,29 +74191,22 @@
           "censusGateOn": true
         },
         {
-          "url": "https://www.thedailybeast.com/harry-potter-and-the-cursed-child-on-broadway-is-a-stunning-magical-tour-de-force",
-          "host": "thedailybeast.com",
+          "url": "https://www.vanityfair.com/style/2018/04/harry-potter-and-the-cursed-child-broadway-review",
+          "host": "vanityfair.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "http://www.nj.com/entertainment/index.ssf/2018/04/harry_potter_cursed_child_broadway_review.html",
-          "host": "nj.com",
+          "url": "http://variety.com/2018/legit/reviews/harry-potter-and-the-cursed-child-review-broadway-1202757827/",
+          "host": "variety.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.nytimes.com/2021/12/07/theater/harry-potter-cursed-child-broadway-review.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://datebook.sfchronicle.com/theater/review-whiz-bang-effects-of-cursed-child-zap-new-life-into-harry-potter",
-          "host": "sfchronicle.com",
+          "url": "https://www.thewrap.com/harry-potter-cursed-child-broadway-review-rowling-john-thorne/",
+          "host": "thewrap.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -74395,29 +74219,29 @@
           "censusGateOn": true
         },
         {
+          "url": "https://datebook.sfchronicle.com/theater/review-whiz-bang-effects-of-cursed-child-zap-new-life-into-harry-potter",
+          "host": "sfchronicle.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://beta.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://forward.com/culture/theater/399247/harry-potter-and-the-cursed-child-is-jewish-and-dark/",
+          "host": "forward.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
           "url": "http://www.mugglenet.com/2019/12/theater-review-harry-potter-and-the-cursed-child-opens-in-san-francisco/",
           "host": "mugglenet.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://sueinthestalls.wordpress.com/2016/10/09/review-harry-potter-and-the-cursed-child/",
-          "host": "sueinthestalls.wordpress.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://tanstopics.com/2021/12/11/theatre-review-harry-potter-and-the-cursed-child/",
-          "host": "tanstopics.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.artsbeatla.com/2025/02/review-harry-potter-cursed-child/",
-          "host": "artsbeatla.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -74430,36 +74254,8 @@
           "censusGateOn": true
         },
         {
-          "url": "https://lovelondonloveculture.com/2017/02/04/review-harry-potter-and-the-cursed-child-palace-theatre/",
-          "host": "lovelondonloveculture.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://theoverstuffedbookcasecom.wordpress.com/2016/08/09/review-harry-potter-cursed-child-j-k-rowling-john-tiffany-jack-thorne/",
-          "host": "theoverstuffedbookcasecom.wordpress.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
           "url": "https://www.theguardian.com/stage/2016/jul/31/harry-potter-and-the-cursed-child-review-palace-theatre",
           "host": "theguardian.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.inkpellet.co.uk/2016/10/theatre-review-harry-potter-and-the-cursed-child-palace-theatre-london/",
-          "host": "inkpellet.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://bakchormeeboy.com/2019/02/18/in-londons-west-end-2018-harry-potter-and-the-cursed-child-at-the-palace-theatre-review/",
-          "host": "bakchormeeboy.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -74467,9 +74263,9 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.theguardian.com/stage/2016/jul/26/harry-potter-cursed-child-review-palace-theatre-london",
-          "host": "theguardian.com",
-          "outletId": "guardian",
+          "url": "https://www.stageleft.nyc/blog/2018/4/22/review-harry-potter-and-the-cursed-child-is-pure-magic",
+          "host": "stageleft.nyc",
+          "outletId": "stage-left",
           "provisional": false,
           "ok": false,
           "noop": true,
@@ -74479,118 +74275,49 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "harry-potter-and-the-cursed-child-one-part-west-end-2026: https://www.theguardian.com/stage/2016/jul/26/harry-potter-cursed-child-review-palace-theatre-london is already owned by harry-potter-and-the-cursed-child-both-parts-west-end-2021 — one of the two is contaminated. Inspect data/review-texts/harry-potter-and-the-cursed-child-both-parts-west-end-2021/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+          "reason": "harry-potter-and-the-cursed-child-one-part-west-end-2026: https://www.stageleft.nyc/blog/2018/4/22/review-harry-potter-and-the-cursed-child-is-pure-magic is already owned by harry-potter-2021 — one of the two is contaminated. Inspect data/review-texts/harry-potter-2021/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
         },
-        {
-          "url": "https://imlovingbooks.com/review-harry-potter-and-the-cursed-child-j-k-rowling-john-tiffany-jack-thorne/",
-          "host": "imlovingbooks.com",
-          "outletId": "imlovingbooks",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/review-harry-potter-and-the-cursed-child-palace-theatre_41360/",
-          "host": "whatsonstage.com",
-          "outletId": "whatsonstage",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: harry-potter-and-the-cursed-child-one-part-west-end-2026/whatsonstage--sarah-crompton.json → quarantined to _pending/harry-potter-and-the-cursed-child-one-part-west-end-2026/whatsonstage--sarah-crompton.json (3727d before earliest date, not within priorRuns)\n\n❌ Write-guard refused the write — nothing changed on disk (date_implausible)\n   quarantined to: /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/_pending/harry-potter-and-the-cursed-child-one-part-west-end-2026/whatsonstage--sarah-crompton.json"
-        },
-        {
-          "url": "https://thetheatretwittic.com/2016/07/25/harry-potter-and-the-cursed-child-at-the-palace-theatre-london/",
-          "host": "thetheatretwittic.com",
-          "outletId": "thetheatretwittic",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.theatermania.com/news/j-k-rowling-john-tiffany-jack-thorne-talk-harry-potter-and-the-cursed-child_82561/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "spawnSync node ETIMEDOUT | ⚠️  Scrapingdog failed (dynamic=true, domain=theatermania.com): read ECONNRESET\n⚠️  Bright Data failed: Bright Data request timeout"
-        }
-      ],
-      "ingestSkippedByCap": [
         {
           "url": "https://www.londontheatre1.com/reviews/review-harry-potter-and-the-cursed-child-parts-1-and-2/",
           "host": "londontheatre1.com",
-          "outletId": "londontheatre1"
+          "outletId": "londontheatre1",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "[review-write-guard] date-implausible: harry-potter-and-the-cursed-child-one-part-west-end-2026/londontheatre1--terry-eastham.json → quarantined to _pending/harry-potter-and-the-cursed-child-one-part-west-end-2026/londontheatre1--terry-eastham.json (3725d before earliest date, not within priorRuns)\n\n❌ Write-guard refused the write — nothing changed on disk (date_implausible)\n   quarantined to: /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/_pending/harry-potter-and-the-cursed-child-one-part-west-end-2026/londontheatre1--terry-eastham.json"
         },
         {
           "url": "https://holliebolina.co.uk/lifestyle/harry-potter-and-the-cursed-child-review/",
           "host": "holliebolina.co.uk",
-          "outletId": "holliebolina"
+          "outletId": "holliebolina",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  provisional outlet \"holliebolina\" (not in registry) — onboard to outlet-registry.json after review.\n  ⚠️  Unvalidated domain for harry-potter-and-the-cursed-child-one-part-west-end-2026/holliebolina: no registered domain for outlet \"holliebolina\" — URL host not checked\n[review-write-guard] date-implausible: harry-potter-and-the-cursed-child-one-part-west-end-2026/holliebolina--hollie.json → quarantined to _pending/harry-potter-and-the-cursed-child-one-part-west-end-2026/holliebolina--hollie.json (1707d before earliest date, not within priorRuns)\n\n❌ Write-guard refused the write — nothing c"
         }
       ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "guardian",
-            "outlet": "guardian",
+            "outletId": "stage-left",
+            "outlet": "stage-left",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theguardian.com/stage/2016/jul/26/harry-potter-cursed-child-review-palace-theatre-london"
-          },
-          {
-            "outletId": "imlovingbooks.com",
-            "outlet": "imlovingbooks.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://imlovingbooks.com/review-harry-potter-and-the-cursed-child-j-k-rowling-john-tiffany-jack-thorne/"
-          },
-          {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/news/review-harry-potter-and-the-cursed-child-palace-theatre_41360/"
-          },
-          {
-            "outletId": "thetheatretwittic.com",
-            "outlet": "thetheatretwittic.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thetheatretwittic.com/2016/07/25/harry-potter-and-the-cursed-child-at-the-palace-theatre-london/"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/j-k-rowling-john-tiffany-jack-thorne-talk-harry-potter-and-the-cursed-child_82561/"
+            "url": "https://www.stageleft.nyc/blog/2018/4/22/review-harry-potter-and-the-cursed-child-is-pure-magic"
           },
           {
             "outletId": "londontheatre1",
@@ -74610,39 +74337,11 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.theguardian.com/stage/2016/jul/26/harry-potter-cursed-child-review-palace-theatre-london",
-            "outletId": "guardian",
+            "url": "https://www.stageleft.nyc/blog/2018/4/22/review-harry-potter-and-the-cursed-child-is-pure-magic",
+            "outletId": "stage-left",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-22T02:10:58.478Z"
-          },
-          {
-            "url": "https://imlovingbooks.com/review-harry-potter-and-the-cursed-child-j-k-rowling-john-tiffany-jack-thorne/",
-            "outletId": "imlovingbooks.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-22T02:10:58.478Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/review-harry-potter-and-the-cursed-child-palace-theatre_41360/",
-            "outletId": "whatsonstage",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-15T23:35:34.762Z"
-          },
-          {
-            "url": "https://thetheatretwittic.com/2016/07/25/harry-potter-and-the-cursed-child-at-the-palace-theatre-london/",
-            "outletId": "thetheatretwittic.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-21T09:46:32.652Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/j-k-rowling-john-tiffany-jack-thorne-talk-harry-potter-and-the-cursed-child_82561/",
-            "outletId": "theatermania",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-22T02:10:58.478Z"
+            "firstSeenAt": "2026-10-22T11:18:11.739Z"
           },
           {
             "url": "https://www.londontheatre1.com/reviews/review-harry-potter-and-the-cursed-child-parts-1-and-2/",
@@ -74661,9 +74360,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 7
+        "candidateCount": 3
       },
-      "computedAt": "2026-10-22T02:10:58.478Z"
+      "computedAt": "2026-10-22T11:18:11.739Z"
     },
     {
       "showId": "harry-potter-tour-2024",
@@ -99131,22 +98830,18 @@
         "https://www.nytimes.com/2023/04/23/arts/music/la-boheme-yannick-nezet-seguin-met-opera-review.html",
         "https://www.nytimes.com/2021/11/10/arts/music/boheme-met-opera-review.html",
         "https://thefrontrowcenter.com/2022/06/la-boheme-by-the-metropolitan-opera-at-lincoln-center-an-audience-member-chimes-in/",
+        "https://operawire.com/metropolitan-opera-2026-27-review-la-boheme/",
+        "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
+        "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
+        "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
         "https://asiw.co.uk/reviews/la-boheme-puccini-welsh-national-opera-wales-millennium-centre",
         "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/",
         "https://www.buzzmag.co.uk/la-boheme-2026-stage-review-welsh-national-opera-wales-millennium-centre-cardiff/",
-        "https://operawire.com/metropolitan-opera-2026-27-review-la-boheme/",
-        "https://parterre.com/broadcast/109261/la-boheme/",
-        "https://www.thetimes.com/culture/classical-opera/article/la-boheme-review-death-stalks-puccinis-bohemians-hfkrqjm90",
-        "https://operascene.co.uk/reviews/a-new-and-different-la-boheme-welsh-national-opera/",
-        "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
-        "https://operamylove.com/reviews/zeffirellis-production-of-la-boheme-at-the-metropolitan-opera-shines/",
-        "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
-        "https://www.classicalsource.com/concert/the-metropolitan-opera-la-boheme/",
-        "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
+        "https://operascene.co.uk/reviews/a-new-and-different-la-boheme-welsh-national-opera/"
       ],
-      "dirFiles": 20,
-      "dirClean": 3,
-      "inReviewsJson": 3,
+      "dirFiles": 21,
+      "dirClean": 5,
+      "inReviewsJson": 5,
       "missing": [
         {
           "url": "https://www.nytimes.com/2023/04/23/arts/music/la-boheme-yannick-nezet-seguin-met-opera-review.html",
@@ -99156,31 +98851,11 @@
           "priorRunSource": "show-score-url-year"
         },
         {
-          "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
-          "host": "newcriterion.com",
-          "knownOutletId": "the-new-criterion",
-          "serpCensus": true
-        },
-        {
-          "url": "https://operamylove.com/reviews/zeffirellis-production-of-la-boheme-at-the-metropolitan-opera-shines/",
-          "host": "operamylove.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2014-12-28",
-          "serpCensus": true
-        },
-        {
           "url": "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
           "host": "britishtheatreguide.info",
           "knownOutletId": "british-theatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-la-boheme/",
-          "host": "classicalsource.com",
-          "knownOutletId": "classical-source",
           "priorRun": true,
-          "priorRunSource": "pending-file-date:2010-02-24",
+          "priorRunSource": "pending-file-date:2020-05-10",
           "serpCensus": true
         },
         {
@@ -99193,7 +98868,7 @@
       "dirOnly": [
         {
           "host": "newyorkclassicalreview.com",
-          "count": 1
+          "count": 2
         },
         {
           "host": "seenandheard-international.com",
@@ -99222,7 +98897,7 @@
             "wrongProduction"
           ],
           "priorRun": true,
-          "priorRunSource": "show-score-url-year",
+          "priorRunSource": "flagged-file-date:2021-11-10",
           "reverify": false
         },
         {
@@ -99246,7 +98921,7 @@
             "wrongProduction"
           ],
           "priorRun": true,
-          "priorRunSource": "show-score-url-year",
+          "priorRunSource": "flagged-file-date:2022-06-17",
           "reverify": false
         },
         {
@@ -99292,8 +98967,10 @@
           "basis": [
             "wrongProduction"
           ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:venue-verified:Kauffman Center for the Performing Arts",
           "serpCensus": true,
-          "reverify": true
+          "reverify": false
         },
         {
           "url": "https://www.buzzmag.co.uk/la-boheme-2026-stage-review-welsh-national-opera-wales-millennium-centre-cardiff/",
@@ -99314,29 +98991,6 @@
           "exclusion": "automatedExcluded",
           "basis": [
             "wrongProduction"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://parterre.com/broadcast/109261/la-boheme/",
-          "host": "parterre.com",
-          "knownOutletId": "parterre-box",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "parterre-box--unknown.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://parterre.com/broadcast/104107/la-boheme/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "noTextOrScoreSignal"
           ],
           "serpCensus": true,
           "reverify": true
@@ -99368,159 +99022,35 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"La Bohème\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"La Bohème\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"La Bohème\" review metropolitan",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"La Bohème\" Puccini review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "La Bohème Metropolitan Opera House review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "La Bohème Metropolitan Opera House review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "La Bohème Metropolitan Opera House review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 12,
-        "error": null
+        "ran": false,
+        "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 33,
+        "count": 1,
         "byReason": {
-          "ticketing-listing": 2,
-          "non-review-host": 26,
-          "aggregator-internal-nav": 1,
-          "show-listing-page": 1,
-          "census-junk-host": 1,
-          "ticketing-reseller": 1,
-          "write-path-blocked": 1
+          "show-blocklist": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 5,
-      "unextractable": [
-        {
-          "url": "https://www.thetimes.com/culture/classical-opera/article/la-boheme-review-death-stalks-puccinis-bohemians-hfkrqjm90",
-          "host": "thetimes.com",
-          "knownOutletId": "times-uk",
-          "serpCensus": true,
-          "zeroCharAttempts": 3
-        }
-      ],
+      "automatedExcludedListed": 3,
+      "unextractable": [],
       "weIngestBlocked": [
         {
           "url": "https://www.nytimes.com/2023/04/23/arts/music/la-boheme-yannick-nezet-seguin-met-opera-review.html",
           "host": "nytimes.com",
           "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://operamylove.com/reviews/zeffirellis-production-of-la-boheme-at-the-metropolitan-opera-shines/",
-          "host": "operamylove.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-la-boheme/",
-          "host": "classicalsource.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://www.thetimes.com/culture/classical-opera/article/la-boheme-review-death-stalks-puccinis-bohemians-hfkrqjm90",
-          "host": "thetimes.com",
-          "outletId": "times-uk",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        },
-        {
-          "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
-          "host": "newcriterion.com",
-          "outletId": "the-new-criterion",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
           "host": "britishtheatreguide.info",
-          "outletId": "british-theatre",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: la-boheme-off-broadway-2026/british-theatre--philip-fisher.js"
-        },
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
         {
           "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
           "host": "wsj.com",
@@ -99530,42 +99060,17 @@
           "noop": false,
           "conflict": false,
           "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Cross-market reroute: la-boheme-off-broadway-2026 → la-boheme-off-broadway-2025 (sibling opening"
+          "reason": "⚠️  Cross-market reroute: la-boheme-off-broadway-2026 → la-boheme-off-broadway-2025 (sibling opening 8d from publishDate vs current 347d)\n\n❌ Stale merge: fullText still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/la-boheme-off-broadway-2025/wsj--by-tim-page.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
         }
       ],
       "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://parterre.com/broadcast/109261/la-boheme/",
-          "host": "parterre.com",
-          "file": "parterre-box--unknown.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "the-new-criterion",
-            "outlet": "the-new-criterion",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/"
-          },
-          {
-            "outletId": "british-theatre",
-            "outlet": "british-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976"
-          },
           {
             "outletId": "asiw.co.uk",
             "outlet": "asiw.co.uk",
@@ -99574,25 +99079,11 @@
             "url": "https://asiw.co.uk/reviews/la-boheme-puccini-welsh-national-opera-wales-millennium-centre"
           },
           {
-            "outletId": "kcindependent.com",
-            "outlet": "kcindependent.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/"
-          },
-          {
             "outletId": "buzzmag.co.uk",
             "outlet": "buzzmag.co.uk",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.buzzmag.co.uk/la-boheme-2026-stage-review-welsh-national-opera-wales-millennium-centre-cardiff/"
-          },
-          {
-            "outletId": "parterre-box",
-            "outlet": "parterre-box",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://parterre.com/broadcast/109261/la-boheme/"
           },
           {
             "outletId": "operascene.co.uk",
@@ -99620,17 +99111,9 @@
           },
           {
             "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
-            "outletId": "the-new-criterion",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "newcriterion.com",
+            "state": "live",
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
-          },
-          {
-            "url": "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
-            "outletId": "british-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-13T06:51:16.690Z"
           },
           {
             "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
@@ -99647,25 +99130,11 @@
             "firstSeenAt": "2026-10-12T00:42:40.641Z"
           },
           {
-            "url": "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/",
-            "outletId": "kcindependent.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T06:01:12.911Z"
-          },
-          {
             "url": "https://www.buzzmag.co.uk/la-boheme-2026-stage-review-welsh-national-opera-wales-millennium-centre-cardiff/",
             "outletId": "buzzmag.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-12T06:01:12.911Z"
-          },
-          {
-            "url": "https://parterre.com/broadcast/109261/la-boheme/",
-            "outletId": "parterre-box",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-13T06:51:16.690Z"
           },
           {
             "url": "https://operascene.co.uk/reviews/a-new-and-different-la-boheme-welsh-national-opera/",
@@ -99676,10 +99145,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 1,
-        "candidateCount": 9
+        "liveCount": 2,
+        "candidateCount": 6
       },
-      "computedAt": "2026-10-13T06:51:16.690Z"
+      "computedAt": "2026-10-22T11:18:11.739Z"
     },
     {
       "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
@@ -102897,46 +102366,34 @@
         "https://www.theatermania.com/news/review-lincoln-in-the-bardo-at-the-met-opera-spooky-for-the-wrong-reasons_1857674/",
         "https://www.thetimes.com/culture/classical-opera/article/lincoln-in-the-bardo-review-opera-8z28bfrs9",
         "https://www.npr.org/2026/10/19/nx-s1-6003649/lincoln-bardo-metropolitan-opera-mazzoli-saunders",
-        "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera",
         "https://slippedisc.com/2026/10/lincoln-in-the-bardo-first-review-from-the-met/",
+        "https://www.wsj.com/arts-culture/theater/lincoln-in-the-bardo-review-an-opera-of-presidential-grief-83cfed8b",
         "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html",
-        "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661",
-        "https://operawire.com/tag/lincoln-in-the-bardo/",
-        "https://www.newyorker.com/culture/goings-on/lincoln-in-the-bardo-gets-an-opera-at-the-met"
+        "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera",
+        "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661"
       ],
-      "dirFiles": 27,
-      "dirClean": 6,
-      "inReviewsJson": 6,
-      "missing": [],
+      "dirFiles": 30,
+      "dirClean": 8,
+      "inReviewsJson": 8,
+      "missing": [
+        {
+          "url": "https://www.wsj.com/arts-culture/theater/lincoln-in-the-bardo-review-an-opera-of-presidential-grief-83cfed8b",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [
         {
           "host": "broadwayworld.com",
           "count": 1
+        },
+        {
+          "host": "seenandheard-international.com",
+          "count": 1
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://bachtrack.com/review-mazzoli-lincoln-in-the-bardo-blain-cruz-mattei-metropolitan-opera-new-york-october-2026",
-          "host": "bachtrack.com",
-          "knownOutletId": "bachtrack",
-          "recoverable": true,
-          "recoverableFile": "bachtrack--unknown.json",
-          "recoverableOutletId": "bachtrack",
-          "recoverableCritic": "Unknown",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bachtrack--susan-sempleski.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://bachtrack.com/review-mazzoli-lincoln-in-the-bardo-blain-cruz-mattei-metropolitan-opera-new-york-october-2026"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "noTextOrScoreSignal"
-          ],
-          "reverify": true
-        },
         {
           "url": "https://www.npr.org/2026/10/19/nx-s1-6003649/lincoln-bardo-metropolitan-opera-mazzoli-saunders",
           "host": "npr.org",
@@ -102959,30 +102416,6 @@
           ],
           "serpCensus": true,
           "reverify": true
-        },
-        {
-          "url": "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera",
-          "host": "vogue.com",
-          "knownOutletId": "vogue",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "vogue--alexis-okeowo.json",
-              "flag": "clean",
-              "urlInDir": "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "serpCensus": true,
-          "reverify": false
         },
         {
           "url": "https://slippedisc.com/2026/10/lincoln-in-the-bardo-first-review-from-the-met/",
@@ -103031,6 +102464,30 @@
           "reverify": true
         },
         {
+          "url": "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera",
+          "host": "vogue.com",
+          "knownOutletId": "vogue",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "vogue--alexis-okeowo.json",
+              "flag": "clean",
+              "urlInDir": "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
           "url": "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661",
           "host": "apnews.com",
           "knownOutletId": "ap",
@@ -103044,30 +102501,6 @@
               "file": "ap--mike-silverman.json",
               "flag": "clean",
               "urlInDir": "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://www.newyorker.com/culture/goings-on/lincoln-in-the-bardo-gets-an-opera-at-the-met",
-          "host": "newyorker.com",
-          "knownOutletId": "newyorker",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "newyorker--jane-bua.json",
-              "flag": "clean",
-              "urlInDir": "https://www.newyorker.com/culture/goings-on/lincoln-in-the-bardo-gets-an-opera-at-the-met"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -103092,8 +102525,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 6,
+            "results": 10,
+            "accepted": 0,
             "error": null
           },
           {
@@ -103103,7 +102536,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 7,
             "error": null
           },
           {
@@ -103113,7 +102546,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -103153,46 +102586,43 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 125,
+        "count": 131,
         "byReason": {
           "aggregator-internal-nav": 45,
-          "show-listing-page": 1,
-          "non-review-host": 40,
-          "census-junk-host": 2,
-          "no-review-evidence": 2,
-          "roundup-page": 4,
-          "ticketing-reseller": 1,
           "not-http-url": 20,
           "production-database-listing": 6,
-          "aggregator-section-root": 5
+          "aggregator-section-root": 5,
+          "non-review-host": 41,
+          "roundup-page": 2,
+          "no-review-evidence": 7,
+          "census-junk-host": 4,
+          "ticketing-reseller": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 4,
+      "automatedExcludedListed": 3,
       "unextractable": [],
-      "recoveryResults": [
+      "ingestResults": [
         {
-          "url": "https://bachtrack.com/review-mazzoli-lincoln-in-the-bardo-blain-cruz-mattei-metropolitan-opera-new-york-october-2026",
-          "host": "bachtrack.com",
-          "file": "bachtrack--susan-sempleski.json",
-          "recovered": false,
-          "skipped": false,
+          "url": "https://www.wsj.com/arts-culture/theater/lincoln-in-the-bardo-review-an-opera-of-presidential-grief-83cfed8b",
+          "host": "wsj.com",
+          "outletId": "wsj",
           "provisional": false,
-          "starFallback": false,
-          "reason": "Article extraction returned 183 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
-          "recoveryCount": 1
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         }
       ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "bachtrack",
-            "outlet": "bachtrack",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://bachtrack.com/review-mazzoli-lincoln-in-the-bardo-blain-cruz-mattei-metropolitan-opera-new-york-october-2026"
-          },
           {
             "outletId": "npr",
             "outlet": "npr",
@@ -103201,25 +102631,25 @@
             "url": "https://www.npr.org/2026/10/19/nx-s1-6003649/lincoln-bardo-metropolitan-opera-mazzoli-saunders"
           },
           {
-            "outletId": "vogue",
-            "outlet": "vogue",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera"
-          },
-          {
-            "outletId": "vogue",
-            "outlet": "vogue",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera"
-          },
-          {
             "outletId": "slippedisc",
             "outlet": "slippedisc",
             "critic": "Unknown",
             "stars": null,
+            "url": "https://slippedisc.com/2026/10/lincoln-in-the-bardo-first-review-from-the-met/"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
             "url": "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html"
+          },
+          {
+            "outletId": "vogue",
+            "outlet": "vogue",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera"
           },
           {
             "outletId": "ap",
@@ -103231,14 +102661,20 @@
         ],
         "suppressedMissing": [
           {
-            "outletId": "newyorker",
-            "outlet": "newyorker",
+            "outletId": "wsj",
+            "outlet": "wsj",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.newyorker.com/culture/goings-on/lincoln-in-the-bardo-gets-an-opera-at-the-met"
+            "url": "https://www.wsj.com/arts-culture/theater/lincoln-in-the-bardo-review-an-opera-of-presidential-grief-83cfed8b"
           }
         ],
         "candidates": [
+          {
+            "url": "https://bachtrack.com/review-mazzoli-lincoln-in-the-bardo-blain-cruz-mattei-metropolitan-opera-new-york-october-2026",
+            "outletId": "bachtrack.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-21T23:22:16.944Z"
+          },
           {
             "url": "https://newyorkclassicalreview.com/2026/10/great-music-moving-moments-vie-with-libretto-structural-issues-in-mets-lincoln-in-the-bardo/",
             "outletId": "newyorkclassicalreview.com",
@@ -103270,17 +102706,11 @@
             "firstSeenAt": "2026-10-20T17:50:39.724Z"
           },
           {
-            "url": "https://operawire.com/tag/lincoln-in-the-bardo/",
-            "outletId": "operawire.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-21T09:46:32.652Z"
-          },
-          {
-            "url": "https://bachtrack.com/review-mazzoli-lincoln-in-the-bardo-blain-cruz-mattei-metropolitan-opera-new-york-october-2026",
-            "outletId": "bachtrack",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-21T23:22:16.944Z"
+            "url": "https://www.wsj.com/arts-culture/theater/lincoln-in-the-bardo-review-an-opera-of-presidential-grief-83cfed8b",
+            "outletId": "wsj",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-10-22T11:18:11.739Z"
           },
           {
             "url": "https://www.npr.org/2026/10/19/nx-s1-6003649/lincoln-bardo-metropolitan-opera-mazzoli-saunders",
@@ -103288,13 +102718,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-20T10:25:19.110Z"
-          },
-          {
-            "url": "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera",
-            "outletId": "vogue",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-19T04:06:17.625Z"
           },
           {
             "url": "https://slippedisc.com/2026/10/lincoln-in-the-bardo-first-review-from-the-met/",
@@ -103311,25 +102734,25 @@
             "firstSeenAt": "2026-10-21T23:22:16.944Z"
           },
           {
+            "url": "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera",
+            "outletId": "vogue",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-19T04:06:17.625Z"
+          },
+          {
             "url": "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661",
             "outletId": "ap",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-21T23:22:16.944Z"
-          },
-          {
-            "url": "https://www.newyorker.com/culture/goings-on/lincoln-in-the-bardo-gets-an-opera-at-the-met",
-            "outletId": "newyorker",
-            "state": "SUPPRESSED",
-            "reason": "ci-unfetchable",
-            "firstSeenAt": "2026-10-21T23:22:16.944Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 5,
+        "liveCount": 6,
         "candidateCount": 12
       },
-      "computedAt": "2026-10-21T23:22:16.944Z"
+      "computedAt": "2026-10-22T11:18:11.739Z"
     },
     {
       "showId": "little-bear-ridge-road-2025",
