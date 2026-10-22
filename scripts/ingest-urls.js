@@ -66,6 +66,27 @@ if (!showId || !urlsFile) {
   process.exit(1);
 }
 
+// BRO-5874: read and write the review-texts git CHECKOUT, not a copy of it.
+// data/review-texts IS the checkout on CI and in most worktrees — there
+// resolveReviewTextsDir() returns exactly that path and nothing changes. On the
+// owner's Mac it is a plain gitignored COPY and the clone is
+// ~/broadway-review-texts, so the hardcoded join this replaced meant `git add`
+// ran inside the Broadwayscore repo where that path is gitignored: every
+// Mac-local ingest failed its push with "paths are ignored by one of your
+// .gitignore files" and, because a failed push skips the dispatch, the reviews
+// sat unscored behind one warning line (hit 2026-10-22 recovering 7 Bachtrack
+// reviews).
+//
+// Writing INTO the checkout rather than writing to the copy and mirroring
+// across is deliberate: the Mac copy lags the clone badly (1002 of 1857 sampled
+// shared files differ, in llmScore, assignedScore, fullText, wrongProduction,
+// duplicateOf and humanReviewScore), so copying from it would roll those back
+// and resurrect upstream-deleted reviews — worse than the push failure being
+// fixed. The merge, dedup and collision guards now read the FRESH corpus too.
+// Trade-off: on the Mac data/review-texts does not receive the new file until
+// ./scripts/setup-local-data.sh re-syncs. That copy is already 54% divergent.
+const reviewTextsDir = resolveReviewTextsDir();
+
 // Verify show exists
 const showsData = require('../data/shows.json');
 const { isTbObIndexUrl, resolveTbObIndexUrl } = require('./lib/tb-direct-url');
@@ -252,9 +273,11 @@ async function main() {
     // ingest-manual-review.js / ingest-review-from-url.js).
     let preExisting = null;
     if (!dryRun) {
-      try { preExisting = findExistingReviewFile(path.join(__dirname, '..', 'data', 'review-texts', showId), outletId, criticName || 'Unknown', originalUrl || url); } catch { preExisting = null; }
+      try { preExisting = findExistingReviewFile(path.join(reviewTextsDir, showId), outletId, criticName || 'Unknown', originalUrl || url); } catch { preExisting = null; }
     }
-    const writeResult = createOrMergeReviewFile(showId, input, { dryRun });
+    const writeResult = createOrMergeReviewFile(showId, input, {
+      dryRun, reviewTextsDir, knownShowIds: showsData.shows.map((s) => s.id),
+    });
     if (!dryRun && writeResult.action === 'updated' && writeResult.filepath) {
       let staleFields = [];
       try {
@@ -341,30 +364,12 @@ async function main() {
   const newReviews = results.created + results.updated;
   let pushFailed = false;
   if (newReviews > 0 && !noPushReviewTexts && !dryRun && results.touchedPaths.length > 0) {
-    const writeDir = path.join(__dirname, '..', 'data', 'review-texts');
-    // data/review-texts is a git checkout on CI and in most worktrees, but on
-    // the owner's Mac it is a plain gitignored COPY and the clone lives at
-    // ~/broadway-review-texts. Staging the copy ran `git add` inside the
-    // Broadwayscore repo, where the path is gitignored, so every Mac-local
-    // ingest failed its push with "paths are ignored by .gitignore" and — since
-    // a failed push skips the dispatch — left the reviews unscored and silent
-    // (hit 2026-10-22 recovering 7 Bachtrack reviews). resolveReviewTextsDir()
-    // is the canonical resolver and already handles this; mirror the touched
-    // files into it when it is somewhere else.
-    const reviewTextsDir = resolveReviewTextsDir();
-    let touchedPaths = results.touchedPaths;
-    if (path.resolve(reviewTextsDir) !== path.resolve(writeDir)) {
-      console.log(`\nreview-texts checkout is ${reviewTextsDir} (data/review-texts is a copy) — mirroring ${touchedPaths.length} file(s) there before pushing.`);
-      touchedPaths = touchedPaths.map((p) => {
-        const dest = path.join(reviewTextsDir, path.relative(writeDir, p));
-        fs.mkdirSync(path.dirname(dest), { recursive: true });
-        if (fs.existsSync(p)) fs.copyFileSync(p, dest);
-        return dest;
-      });
-    }
+    // reviewTextsDir IS the checkout the files were written into (BRO-5874,
+    // see its definition at the top), so they are already staged where git
+    // runs and a byline rename is a real git rename.
     console.log('\nPushing review-texts to private repo...');
     const push = pushReviewTexts({
-      reviewTextsDir, touchedPaths,
+      reviewTextsDir, touchedPaths: results.touchedPaths,
       message: `ingest-urls: ${newReviews} review(s) for ${showId}`,
     });
     if (!push.pushed) {

@@ -1,4 +1,4 @@
-// Guards the review-texts PUSH path in scripts/ingest-urls.js.
+// Guards the review-texts dir scripts/ingest-urls.js reads, writes and pushes.
 //
 // BRO-5874 (2026-10-22): the push step hardcoded
 // path.join(__dirname, '..', 'data', 'review-texts') as the git checkout. That
@@ -11,8 +11,9 @@
 // unscored with no louder signal than one warning line.
 //
 // scripts/lib/review-texts-dir.js::resolveReviewTextsDir() is the canonical
-// resolver and already handles this shape. This test fails if the push dir ever
-// goes back to a hardcoded join.
+// resolver; it returns data/review-texts when that IS the checkout, so CI
+// behaviour is unchanged. The cross-caller version of these checks lives in
+// scripts/lib/review-texts-push-dir.test.mjs.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -31,31 +32,59 @@ test('ingest-urls imports the canonical review-texts resolver', () => {
   );
 });
 
-test('the push dir comes from resolveReviewTextsDir(), not a hardcoded join', () => {
+test('the review-texts dir comes from resolveReviewTextsDir(), not a hardcoded join', () => {
   const m = src.match(/const\s+reviewTextsDir\s*=\s*([^;\n]+)/);
-  assert.ok(m, 'expected a `const reviewTextsDir = ...` assignment feeding pushReviewTexts');
+  assert.ok(m, 'expected a `const reviewTextsDir = ...` assignment');
   assert.match(
     m[1],
     /resolveReviewTextsDir\(\)/,
-    `push dir must be resolveReviewTextsDir(); found: ${m[1].trim()}`,
+    `review-texts dir must be resolveReviewTextsDir(); found: ${m[1].trim()}`,
   );
   assert.doesNotMatch(
     m[1],
     /path\.join\(/,
-    'push dir must not be a hardcoded path.join — that is the BRO-5874 regression',
+    'the dir must not be a hardcoded path.join — that is the BRO-5874 regression',
   );
 });
 
-test('touched files are mirrored into the checkout when it differs from the write dir', () => {
-  // The files are written under data/review-texts; when the checkout is
-  // elsewhere they must be copied there before staging, or the push stages
-  // nothing and CI never sees them.
+test('the writer and the pre-existing-file lookup use that same resolved dir', () => {
+  // Writing to one dir and pushing from another means copying files between
+  // them, and the copy direction that fixes the push (stale copy -> fresh
+  // checkout) rolls back llmScore/assignedScore/wrongProduction and
+  // resurrects upstream-deleted reviews. One resolved dir for read, write and
+  // push removes the hazard, so nothing here may reintroduce a second dir.
   assert.match(
     src,
-    /path\.resolve\(reviewTextsDir\)\s*!==\s*path\.resolve\(writeDir\)/,
-    'expected an explicit writeDir-vs-checkout comparison before pushing',
+    /createOrMergeReviewFile\(showId,\s*input,\s*\{[\s\S]{0,160}?reviewTextsDir/,
+    'createOrMergeReviewFile must be given the resolved reviewTextsDir',
   );
-  assert.match(src, /copyFileSync/, 'expected touched files to be copied into the checkout');
+  assert.match(
+    src,
+    /findExistingReviewFile\(path\.join\(reviewTextsDir,/,
+    'the pre-existing-file lookup must read the same resolved dir the writer writes to',
+  );
+  assert.match(
+    src,
+    /pushReviewTexts\(\{\s*\n?\s*reviewTextsDir,/,
+    'pushReviewTexts must be handed that same dir',
+  );
+  assert.doesNotMatch(
+    src,
+    /copyFileSync|mirrorIntoCheckout/,
+    'review-text files must be written straight into the checkout, never copied between dirs',
+  );
+});
+
+test('the non-default dir keeps the unknown-show guard alive', () => {
+  // unknownShowFolderRefused() (review-file-writer.js:299) stands its guard
+  // down for any reviewTextsDir that is not the writer's hardcoded default, so
+  // moving off that default without passing knownShowIds would silently allow
+  // a review folder for a show id that is not in shows.json.
+  assert.match(
+    src,
+    /knownShowIds:\s*showsData\.shows\.map/,
+    'createOrMergeReviewFile must get knownShowIds from shows.json',
+  );
 });
 
 test('a failed push still warns that CI will not see the files', () => {
