@@ -245,6 +245,37 @@
     "queuedAt": "2026-10-22T20:59:52.373Z"
   },
   {
+    "conditionKey": "land:land/bro-5969-index-bloat-v3",
+    "title": "Landing blocked: rebase red on land/bro-5969-index-bloat-v3",
+    "description": "land.yml did not land land/bro-5969-index-bloat-v3: the rebase gate went red at 0e3fa099d9. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5969-index-bloat-v3 @ 0e3fa099d9 (origin/land/bro-5969-index-bloat-v3) → origin/main @ 86c69b9f24 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 86c69b9f24: Rebasing (1/2) error: could not apply d66337ceaa6... SEO: fold duplicate venues with 308s; thin-page noindex rules ship OFF behind SEO_THIN_NOINDEX; advisory sitemap-count guard (BRO-5969) hint: Resolve all Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39817735548",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5969-index-bloat-v3"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "0e3fa099d91f9d68c78619469dca8c77df83e531"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39817735548"
+      }
+    ],
+    "queuedAt": "2026-10-22T21:53:25.002Z"
+  },
+  {
     "conditionKey": "land:land/job/linear-BRO-6001-mvjrh8ha",
     "title": "Landing blocked: rebase red on land/job/linear-BRO-6001-mvjrh8ha",
     "description": "land.yml did not land land/job/linear-BRO-6001-mvjrh8ha: the rebase gate went red at c98976a20b. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-6001-mvjrh8ha @ c98976a20b (origin/land/job/linear-BRO-6001-mvjrh8ha) → origin/main @ cf5999c8b2 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ cf5999c8b2: Rebasing (1/2) error: could not apply 5dfda323697... fix(ci): setup-playwright continues on cache hit when apt install-deps stalls twice (BRO-6001) hint: Resolve all conflicts manually, mark them  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39815819132",
