@@ -116,6 +116,7 @@ function extractPageMeta(html) {
 const CHALLENGE_PAGE = /\bjust a moment\b|\baccess denied\b|\bchecking your browser\b|\bverify you are human\b|\bpage not found\b/i;
 const BOILERPLATE = [
   /\bview event details\b/i,
+  /\b(?:undated |file )?photo (?:released|provided|supplied|courtesy)\b/i,
   /\bevent information supplied by\b/i,
   /\b(?:sign in|log in|subscribe|subscription|register)\b.{0,40}\b(?:to (?:read|continue|view|access)|now)\b/i,
   /\bcookies?\b/i,
@@ -168,6 +169,18 @@ const MARKET_WORDS = /\b(?:west end|off[- ]broadway|off off broadway|broadway|lo
 function normalizeWords(s) {
   return foldDiacritics(String(s || '')).toLowerCase().replace(MARKET_WORDS, ' ').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
 }
+/**
+ * An outlet that files reviews under a `review-<show>...` first path segment
+ * (bachtrack.com/review-eugene-onegin-...) states "this is a review" in the URL,
+ * while its headline is a plain sentence. Only a segment that BEGINS with
+ * `review-` counts, and round-ups never do.
+ */
+function reviewPathUrl(url) {
+  let seg = '';
+  try { seg = new URL(String(url || '')).pathname.split('/').filter(Boolean)[0] || ''; } catch { return false; }
+  return /^review-[a-z0-9]/i.test(seg) && !/round-?up|reviews?-of-the|best-of|top-\d/i.test(seg);
+}
+
 function evidenceNamesShow(show, headline, description, url) {
   const tokens = showTokens(show && show.title);
   if (!tokens.length) return false;
@@ -267,7 +280,8 @@ function evaluatePageMeta({ data, show, meta, inWindow }) {
   if (REVIEW_WORD_NON_REVIEW.test(headline) || INTERVIEW_TEXT.test(`${headline} ${description}`)) return { ok: false, reason: 'non-review-headline' };
   // The page's own words must signal a review; a URL slug or outlet-wide text can't.
   const reviewSignal = REVIEW_WORD.test(headline)
-    || RATING_TOKEN.test(`${headline} ${description}`) || meta.ratingValue != null;
+    || RATING_TOKEN.test(`${headline} ${description}`) || meta.ratingValue != null
+    || reviewPathUrl(data.url);
   if (!reviewSignal) return { ok: false, reason: 'no-review-signal' };
   if (!evidenceNamesShow(show, headline, description, data.url)) return { ok: false, reason: 'show-not-named' };
   if (venueConflicts(show, headline)) return { ok: false, reason: 'venue-mismatch' };
@@ -324,5 +338,5 @@ function applyMetaEvidence(data, evidence, now = new Date()) {
 
 module.exports = {
   extractPageMeta, evaluatePageMeta, applyMetaEvidence, isMetaEvidenceCandidate,
-  buildMetaExcerpt, evidenceNamesShow, starRunRating, ALWAYS_NON_REVIEW, venueConflicts, MIN_EVIDENCE_CHARS, NON_REVIEW_HEADLINE, BOILERPLATE,
+  buildMetaExcerpt, evidenceNamesShow, reviewPathUrl, starRunRating, ALWAYS_NON_REVIEW, venueConflicts, MIN_EVIDENCE_CHARS, NON_REVIEW_HEADLINE, BOILERPLATE,
 };

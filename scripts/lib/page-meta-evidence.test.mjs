@@ -133,3 +133,22 @@ test('a ballet review of a same-titled work is not the play (BRO-5794 live run: 
     '<meta property="article:published_time" content="2026-09-20T10:00:00Z">'));
   assert.equal(ok.ok, true);
 });
+
+test('a review-<show> path segment is a review signal for a plain-sentence headline (Bachtrack: Eugene Onegin, Così)', () => {
+  const { reviewPathUrl } = require('./page-meta-evidence.js');
+  assert.equal(reviewPathUrl('https://bachtrack.com/review-eugene-onegin-zangiev-metropolitan-opera-new-york-april-2026'), true);
+  assert.equal(reviewPathUrl('https://example.com/theatre/review-roundup-spring-2026'), false);
+  assert.equal(reviewPathUrl('https://example.com/news/review-of-the-year'), false);
+  assert.equal(reviewPathUrl('https://example.com/features/eugene-onegin-profile'), false);
+  const html = page('Asmik Grigorian strengthens the Met’s revival of Eugene Onegin', 'The Lithuanian soprano’s riveting performance as the central character in Tchaikovsky’s operatic masterpiece lights up Deborah Warner’s mostly bland production.',
+    '<meta property="article:published_time" content="2026-09-20T10:00:00Z">');
+  const s = show('Eugene Onegin', { venue: 'Metropolitan Opera' });
+  assert.equal(judge(s, html, 'https://bachtrack.com/review-eugene-onegin-zangiev-metropolitan-opera-new-york-april-2026').ok, true);
+  assert.equal(judge(s, html, 'https://bachtrack.com/features/eugene-onegin-guide').reason, 'no-review-signal');
+});
+
+test('a photo-caption description is boilerplate, not a standfirst (SFGate After Midnight)', () => {
+  const html = page("Review: 'After Midnight' celebrates thrilling jazz", 'This undated photo released by O&M Co. shows, from left, Dulé Hill and Adriane Lenox in a scene from the musical.',
+    '<meta property="article:published_time" content="2026-09-20T10:00:00Z">');
+  assert.equal(judge(show('After Midnight'), html).reason, 'boilerplate');
+});
