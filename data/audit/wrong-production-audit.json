@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T12:34:25.240Z",
+  "timestamp": "2026-10-22T12:49:03.457Z",
   "stats": {
-    "totalReviews": 58770,
-    "alreadyFlagged": 21250,
+    "totalReviews": 58783,
+    "alreadyFlagged": 21253,
     "dateGuardCatches": 197,
     "directorMismatch": 2056,
     "tvFilmSignals": 1659,
-    "londonSignals": 2705,
+    "londonSignals": 2706,
     "offBroadwaySignals": 532,
     "yearMismatch": 167,
-    "noPublishDate": 5170
+    "noPublishDate": 5169
   },
   "findings": [
     {
@@ -69460,6 +69460,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": null,
+      "publishDate": "2026-10-22",
+      "url": "https://www.standard.co.uk/culture/theatre/ilford-boy-donmar-review-b1301897.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
