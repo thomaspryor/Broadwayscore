@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5924",
   "planId": "15eed66e-b4f6-4a96-b1ac-21ee02ccd8aa",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-22T07:54:59.561Z",
   "submitter": {
     "name": null,
@@ -28,5 +28,19 @@
         "args": "--from=school-pictures-off-broadway-2026/nytimes--helen-shaw.json --to-show=two-girls-off-broadway-2026 --method=markers --expect-start=Though_it_s_similarly_portable --expect-end=answers_for_just_two_girls_to_give --own-start=I_hope_Milo_Cramer_the_performer --own-end=or_at_a_City_Council_meeting --apply"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T10:28:34.508Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script copy-multishow-section.js failed: Command failed: node scripts/copy-multishow-section.js --from=the-curious-case-of-benjamin-button-off-broadway-2026/nytimes--helen-shaw.json --to-show=midnight-off-broadway-2026 --method=markers --expect-start=The_more_compelling_is_the_sprawling --expect-end=There_s_still_time --own-start=Unfortunately_I_don_t_think --own-end=are_getting_any_younger --apply"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script copy-multishow-section.js failed: Command failed: node scripts/copy-multishow-section.js --from=school-pictures-off-broadway-2026/nytimes--helen-shaw.json --to-show=two-girls-off-broadway-2026 --method=markers --expect-start=Though_it_s_similarly_portable --expect-end=answers_for_just_two_girls_to_give --own-start=I_hope_Milo_Cramer_the_performer --own-end=or_at_a_City_Council_meeting --apply"
+    }
+  ],
+  "executedIn": "ci"
 }
