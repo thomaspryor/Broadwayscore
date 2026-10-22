@@ -186,6 +186,12 @@ if [ "${GAUNTLET_PARALLEL:-0}" = "1" ] && [ -z "${GAUNTLET_CHILD:-}" ]; then
 fi
 
 # ── TypeScript Check ───────────────────────────────────────────────────────
+# Default ~2GB old-space cap OOMs full-repo tsc in cloud containers (BRO-6004);
+# keep a caller-chosen heap size, otherwise raise it for the tsc/lint gates.
+case "${NODE_OPTIONS:-}" in
+  *max-old-space-size*) ;;
+  *) export NODE_OPTIONS="${NODE_OPTIONS:-} --max-old-space-size=6144" ;;
+esac
 gate tsc npx tsc --noEmit
 gate tsc-llm-scoring npx tsc --noEmit -p scripts/llm-scoring/tsconfig.json
 gate next-lint npx next lint
