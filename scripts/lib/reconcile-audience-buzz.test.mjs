@@ -69,3 +69,40 @@ test('BRO-5276: removeSourceWithTombstone deletes the source and the reconcile t
   reconcileAudienceBuzz(current, { shows: { 'show-1': { sources: { reddit: { score: 50, reviewCount: 20 } } } } }, { liveIds: live() });
   assert.equal(current.shows['show-1'].sources.reddit, undefined);
 });
+
+test('BRO-5337: a source ours deleted (in base and remote) stays deleted on a live show', () => {
+  const base = { shows: { 'show-4': { sources: { showScore: { score: 90 }, mezzanine: { score: 70 } } } } };
+  const current = { shows: { 'show-4': { sources: { mezzanine: { score: 70 } } } } };
+  const remote = { shows: { 'show-4': { sources: { showScore: { score: 90 }, mezzanine: { score: 70 } } } } };
+  const r = reconcileAudienceBuzz(current, remote, { liveIds: live(), base });
+  assert.equal(current.shows['show-4'].sources.showScore, undefined);
+  assert.equal(r.recovered, 0);
+  assert.deepEqual(r.skippedDeleted, ['show-4/showScore']);
+});
+
+test('BRO-5337: a live key ours deleted (in base and remote) is not re-added', () => {
+  const base = { shows: { 'show-5': { sources: {} } } };
+  const current = { shows: {} };
+  const remote = { shows: { 'show-5': { sources: {} } } };
+  const r = reconcileAudienceBuzz(current, remote, { liveIds: live(), base });
+  assert.equal(current.shows['show-5'], undefined);
+  assert.deepEqual(r.skippedDeleted, ['show-5']);
+});
+
+test('BRO-5337: a key and a source added only on remote are still kept', () => {
+  const base = { shows: { 'show-6': { sources: { mezzanine: { score: 70 } } } } };
+  const current = { shows: { 'show-6': { sources: { mezzanine: { score: 70 } } } } };
+  const remote = { shows: { 'show-6': { sources: { mezzanine: { score: 70 }, showScore: { score: 88 } } }, 'show-7': { sources: {} } } };
+  const r = reconcileAudienceBuzz(current, remote, { liveIds: live(), base });
+  assert.equal(current.shows['show-6'].sources.showScore.score, 88);
+  assert.ok(current.shows['show-7']);
+  assert.equal(r.recovered, 2);
+  assert.deepEqual(r.skippedDeleted, []);
+});
+
+test('BRO-5337: without a base the old refill behavior is unchanged', () => {
+  const current = { shows: { 'show-8': { sources: {} } } };
+  const remote = { shows: { 'show-8': { sources: { showScore: { score: 90 } } } } };
+  reconcileAudienceBuzz(current, remote, { liveIds: live() });
+  assert.equal(current.shows['show-8'].sources.showScore.score, 90);
+});
