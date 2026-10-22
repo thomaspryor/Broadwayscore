@@ -1,5 +1,36 @@
 # BRO-3689: workflow directory scan classification
 
+Follow-up verification after the runner reported 11 new failures:
+
+- Reproduced with `node --test --test-timeout 300000 scripts/audit-missing-deps.test.mjs tests/unit/land-preflight.test.mjs tests/unit/workflow-readdir-guard-classification.test.mjs`: 100 passed, 11 failed.
+- The failing fixtures produced the incomplete inputs. The hygiene CLI fixture
+  had one workflow. The land-preflight repo builder copied the real orphan
+  audit without its new guard dependencies and also had only one workflow.
+  Both fixture builders now provide the production minimum of inert workflows;
+  the repo builder also copies the guard and its floor-constant dependency.
+  No production guard or audit rule changes were necessary.
+- The same command now reports 111 passed, zero failed. The exact card command,
+  `node --test tests/unit/workflow-readdir-guard-classification.test.mjs`,
+  separately reports 63 passed, zero failed.
+- `node --test --test-timeout 300000 scripts/audit-orphan-tests.test.mjs scripts/lib/workflow-glob-guard.test.mjs`: 23 passed, zero failed.
+- `GAUNTLET_GATES=lint-workflows bash scripts/lib/land-gauntlet.sh /tmp/gauntlet`:
+  all audits passed. The gate recorded exit 1 solely because actionlint was
+  unavailable (`actionlint: command not found`, exit 127), the environment
+  exception allowed by the runner instructions.
+- Re-ran the real-data commands below before and after the fixture fix.
+  `cmp` returned zero for all three output pairs: 291 workflow records,
+  zero changed records or findings. The three named push-budget examples below
+  each still have one push call; totals remain 258 calls and 242 flagged calls.
+- `git cat-file -e origin/main:tests/unit/workflow-readdir-guard-classification.test.mjs`
+  confirms the acceptance path is absent on main. The bounded history check
+  `git log origin/main..HEAD -S 'readWorkflowFilesOrFailClosed' --oneline -5`
+  finds this branch's original fix, `73458890a55`.
+- Existing callers remain the hygiene CLI subprocess and land-preflight's
+  `checkTestRegistration`/`collectCiCoverage` path. Both changed test files are
+  collected by `scripts/lib/unit-test-collection.js`; no scripts, flags, or
+  production functions were added. Additional paid fetches, LLM calls, API
+  calls, and cron invocations per run: zero.
+
 Audited against the current checkout: 291 workflow files. All 32 files named
 by the card are below. `verdict-risk` includes advisory checks: a warning-only
 audit must still distinguish an incomplete scan from a clean result.

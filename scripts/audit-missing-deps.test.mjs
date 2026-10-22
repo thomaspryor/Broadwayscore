@@ -8,6 +8,7 @@ import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const { sourceRequires, dependencyGraph, commandEvents, conditionCovered, auditWorkflow, auditDirectory } = require('./lib/missing-deps.js');
+const { MIN_EXPECTED_WORKFLOWS } = require('./lib/workflow-glob-guard.js');
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const scratch = fs.mkdtempSync(path.join(root, '.tmp-missing-deps-'));
 after(() => fs.rmSync(scratch, { recursive: true, force: true }));
@@ -180,6 +181,11 @@ test('existing hygiene caller emits missing-deps warnings without failing its ga
   const dir = fixture({
     'workflows/check.yml': workflow('      - run: node scripts/probe-scrapingdog-billing.js'),
   });
+  // Exercise the advisory rule within a complete workflow inventory, as the
+  // production caller now rejects small inventories before evaluating rules.
+  for (let i = 1; i < MIN_EXPECTED_WORKFLOWS; i++) {
+    fs.writeFileSync(path.join(dir, 'workflows', `padding-${i}.yml`), 'jobs: {}\n');
+  }
   const result = spawnSync(process.execPath, [path.join(root, 'scripts/audit-workflow-hygiene.js')], {
     cwd: root,
     env: { ...process.env, HYGIENE_WORKFLOW_DIR: path.join(dir, 'workflows'), HYGIENE_NEVER_RUN_SCAN: '0' },

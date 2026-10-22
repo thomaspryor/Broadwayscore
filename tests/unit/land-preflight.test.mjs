@@ -11,6 +11,7 @@ import { fileURLToPath } from 'node:url';
 import { parsePushCommand, landPushTargets } from '../../scripts/lib/push-command.mjs';
 import { previewRebase, checkTestRegistration, runHook, blockMessage } from '../../scripts/lib/land-preflight.mjs';
 import collection from '../../scripts/lib/unit-test-collection.js';
+import { MIN_EXPECTED_WORKFLOWS } from '../../scripts/lib/workflow-glob-guard.js';
 import { spawnSyncStdinFile } from '../helpers/spawn-stdin-file.mjs';
 const HEADER = collection.RETIRED_HEADER.join('\n') + '\n';
 
@@ -157,10 +158,15 @@ function auditRepo({ collector = false } = {}) {
   // BRO-2483: a tree carrying the collector reads its node batch from it.
   if (collector) write(d, 'scripts/lib/unit-test-collection.js', fs.readFileSync(path.join(ROOT, 'scripts/lib/unit-test-collection.js'), 'utf8'));
   // ci-test-coverage.js + bash-integration-test-list.js: the audit's coverage rule (BRO-2778).
-  for (const f of ['scripts/audit-orphan-tests.js', 'scripts/lib/orphan-test-gate.js', 'scripts/lib/test-manifest.js', 'scripts/lib/ci-test-coverage.js', 'scripts/lib/bash-integration-test-list.js']) {
+  for (const f of ['scripts/audit-orphan-tests.js', 'scripts/lib/orphan-test-gate.js', 'scripts/lib/test-manifest.js', 'scripts/lib/ci-test-coverage.js', 'scripts/lib/bash-integration-test-list.js', 'scripts/lib/workflow-glob-guard.js', 'scripts/lib/scan-alert-ledger-gaps.js']) {
     write(d, f, fs.readFileSync(path.join(ROOT, f), 'utf8'));
   }
   write(d, '.github/workflows/test.yml', 'name: t\n');
+  // Keep the real audit and its dependency chain in this isolated repo. Inert
+  // workflows satisfy its inventory floor without registering any tests.
+  for (let i = 1; i < MIN_EXPECTED_WORKFLOWS; i++) {
+    write(d, `.github/workflows/padding-${i}.yml`, 'jobs: {}\n');
+  }
   write(d, '.gitattributes', 'tests/unit-test-manifest.txt merge=union\n'); // as in the real repo
   write(d, 'scripts/tests/.gitkeep', ''); // the audit scans this dir unconditionally
   write(d, 'tests/unit/old.test.mjs', '');
