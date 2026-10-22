@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5942-b",
   "planId": "a00fdf5c-0733-4272-9780-fba6bd9ca189",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-22T15:44:56.952Z",
   "submitter": {
     "name": null,
@@ -124,5 +124,99 @@
         "description": "Joint split of network-2018/wsj--terry-teachout.json (read in full on the BRO-5942 main-branch dry run)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T20:15:27.969Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
