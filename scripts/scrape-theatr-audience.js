@@ -478,6 +478,14 @@ async function main() {
   if (showFilter) {
     toProcess = matches.filter(m => m.show.id === showFilter);
     console.log(`Filtered to show: ${showFilter} (${toProcess.length} matches)`);
+    if (toProcess.length === 0) {
+      // BRO-5943 diagnostic: show the Theatr listings sharing the show's first title word
+      const target = showMapById[showFilter];
+      const word = target ? normalize(target.title).split(' ')[0] : null;
+      const near = word ? theatrShows.filter(t => normalize(t.name).split(' ').includes(word)) : [];
+      console.log(`No match for ${showFilter}; Theatr listings containing '${word}': ${near.length}`);
+      for (const t of near.slice(0, 10)) console.log(`  id=${t.id} "${t.name}" (${t.eventCategory}, genre=${t.genreCategory}, watched=${t.totalWatchedUsers})`);
+    }
   }
   if (showsFilter) {
     toProcess = toProcess.filter(m => showsFilter.has(m.show.id));
