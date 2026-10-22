@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5291-b",
   "planId": "104009a6-3edf-4795-a159-9d24f1cbb3ee",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-22T12:07:00.401Z",
   "submitter": {
     "name": null,
@@ -177,5 +177,34 @@
         "description": "commercial.json: prince-of-broadway-2017.notes"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T13:07:00.646Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for maybe-happy-ending"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-balusters"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-kite-runner-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for prince-of-broadway-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for prince-of-broadway-2017"
+    }
+  ],
+  "executedIn": "ci"
 }
