@@ -17,8 +17,9 @@ const { SKIP_DOMAINS } = require('./lib/date-backfill-skip-domains');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
 const maxArg = process.argv.find(a => a.startsWith('--max='));
-const max = maxArg ? Number(maxArg.split('=')[1]) : 40;
-if (!Number.isFinite(max) || max < 0) { console.error(`Bad --max value: ${maxArg}`); process.exit(2); }
+const maxText = maxArg ? maxArg.split('=')[1] : '40';
+const max = /^\d+$/.test(maxText) ? Number(maxText) : NaN;
+if (!Number.isFinite(max)) { console.error(`Bad --max value: ${maxArg}`); process.exit(2); }
 const root = path.join(__dirname, '..', 'data', 'review-texts');
 if (!fs.existsSync(root)) { console.log('data/review-texts not present: skipping'); process.exit(0); }
 let byId;
@@ -33,12 +34,12 @@ for (const d of listShowDirs(root, { silent: true })) {
   for (const f of fs.readdirSync(dir)) {
     if (!f.endsWith('.json')) continue;
     let r; try { r = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
-    if (r.wrongProduction || r.wrongShow || !r.url) continue;
+    if (!r || r.wrongProduction || r.wrongShow || !r.url) continue;
     if (!isDateRecheckCandidate(r, byId.get(d))) continue;
+    if (r.dateRecheckAttempted) { attempted++; continue; }
     let domain;
     try { domain = new URL(r.url).hostname.replace(/^www\./, ''); } catch { unreachable++; continue; }
     if (SKIP_DOMAINS.has(domain)) { unreachable++; continue; }
-    if (r.dateRecheckAttempted) { attempted++; continue; }
     pending++;
     const k = r.source || r.sourceType || 'unknown';
     bySource[k] = (bySource[k] || 0) + 1;
