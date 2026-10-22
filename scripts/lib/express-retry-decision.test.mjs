@@ -7,6 +7,7 @@
 import { test } from 'node:test';
 import { strict as assert } from 'node:assert';
 import {
+  pressNightRetryDueAt,
   RETRY_RATIO_THRESHOLD,
   shouldRetryExpress,
   computeDueAt,
@@ -238,4 +239,21 @@ test('refetch entries: due selection, single-entry marking, no interference with
   entries = markAttempted(entries, 'school-girls-2026', REFETCH_NOW, '2026-09-29T12:31:00.000Z');
   assert.deepEqual(entries.filter((e) => e.kind === TRUNCATED_REFETCH_KIND).map((e) => e.attempted), [true, false, false]);
   assert.equal(entries.find((e) => !e.kind).attempted, true);
+});
+
+test('pressNightRetryDueAt: a run before the press-night window queues a retry for the market press-night slot', () => {
+  const bw = { id: 'billy-crystal-860-2026', category: 'broadway', openingDate: '2026-10-21' };
+  // 860: auto-fired at 12:15Z on opening day, embargo lifted 02:00Z
+  // Broadway: 23:15 ET on opening night (EDT, UTC-4)
+  assert.equal(pressNightRetryDueAt(bw, '2026-10-21T12:15:00Z'), '2026-10-22T03:15:00.000Z');
+  // after the US clocks change (EST, UTC-5)
+  assert.equal(pressNightRetryDueAt({ ...bw, openingDate: '2026-11-05' }, '2026-11-05T12:00:00Z'), '2026-11-06T04:15:00.000Z');
+  // window (17:00 ET = 21:00Z) already open: the normal coverage rule applies
+  assert.equal(pressNightRetryDueAt(bw, '2026-10-21T21:01:00Z'), null);
+  // West End: 08:00 London the morning after (BST, UTC+1)
+  assert.equal(pressNightRetryDueAt({ id: 'w', category: 'west-end', openingDate: '2026-10-21' }, '2026-10-21T08:00:00Z'), '2026-10-22T07:00:00.000Z');
+  // stale date far ahead, no date, no show
+  assert.equal(pressNightRetryDueAt({ ...bw, openingDate: '2026-11-30' }, '2026-10-21T12:00:00Z'), null);
+  assert.equal(pressNightRetryDueAt({ id: 'x', category: 'broadway' }, '2026-10-21T12:00:00Z'), null);
+  assert.equal(pressNightRetryDueAt(null, '2026-10-21T12:00:00Z'), null);
 });

@@ -49,6 +49,7 @@ const fs = require('fs');
 const path = require('path');
 const {
   shouldRetryExpress,
+  pressNightRetryDueAt,
   enqueueRetry,
   selectDueRetries,
   markAttempted,
@@ -187,6 +188,17 @@ async function cmdEvaluate() {
   }
 
   const show = loadShow(showId);
+  const nowIso = new Date().toISOString();
+  // Ran before press night: reviews have not dropped yet, so queue the retry for
+  // the press-night slot regardless of coverage (pressNightRetryDueAt).
+  const pressNightDue = isRetry ? null : pressNightRetryDueAt(show, nowIso);
+  if (pressNightDue) {
+    const delayHours = (new Date(pressNightDue).getTime() - new Date(nowIso).getTime()) / 3600000;
+    const { entries, changed } = enqueueRetry(readQueueEntries(), { showId, market, nowIso, delayHours });
+    if (changed) writeQueueEntries(entries);
+    console.log(`[express-retry-queue] ${showId}: ran before press night — ${changed ? 'queued' : 'already has'} a retry due ${changed ? entries[entries.length - 1].dueAt : '(outstanding)'}`);
+    return;
+  }
   if (isShowCoverageComplete(showId, market, show)) {
     console.log(`[express-retry-queue] ${showId}: coverage already complete — nothing to do`);
     return;
@@ -202,7 +214,6 @@ async function cmdEvaluate() {
   }
   if (!decision.retry) return;
 
-  const nowIso = new Date().toISOString();
   const current = readQueueEntries();
   const { entries, changed } = enqueueRetry(current, { showId, market, nowIso, delayHours });
   if (changed) {
