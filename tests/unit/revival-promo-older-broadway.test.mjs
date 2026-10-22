@@ -20,6 +20,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
@@ -233,4 +234,118 @@ test('plan bro-4889-e excludes the 2012 Cumming Macbeth review and the 2008 Osag
   ]) {
     assert.ok(verdict(rel, withPlanD(rel, PLAN_E)), `${rel} would still be counted`);
   }
+});
+
+// The tests above need the private review texts, so on a fresh checkout (the Done gate, CI)
+// they all skip. These need only core data (data/shows.json, data/reviews.json), which the
+// acceptance checkout copies in: they check what the site actually counts after the rebuild,
+// and run the real write-time cross-production cast guard (BRO-5499) on these titles.
+const REVIEWS = path.join(ROOT, 'data', 'reviews.json');
+const CORE_SKIP = !fs.existsSync(SHOWS) ? 'data/shows.json absent'
+  : !fs.existsSync(REVIEWS) ? 'data/reviews.json absent' : false;
+
+let counted = null;
+function rows(showId) {
+  if (!counted) {
+    const raw = JSON.parse(fs.readFileSync(REVIEWS, 'utf8'));
+    counted = Array.isArray(raw) ? raw : raw.reviews;
+  }
+  return counted.filter((r) => r.showId === showId);
+}
+const has = (showId, re, field = 'outlet') => rows(showId).filter((r) => re.test(String(r[field] || '')));
+
+test('reviews.json: other productions\' reviews are not counted on the older pages', { skip: CORE_SKIP }, () => {
+  for (const id of ['private-lives-1975', 'private-lives-1983', 'private-lives-1992', 'private-lives-2002']) {
+    assert.deepEqual(has(id, /vulture/i), [], `${id} counts the 2011 Vulture review`);
+  }
+  assert.deepEqual(has('cat-on-a-hot-tin-roof-2003', /washington post/i), [], 'Cat 2003 counts the 2013 WaPo review');
+  assert.deepEqual(has('august-osage-county-2007', /financial times|independent|express|observer|telegraph/i), [],
+    'Osage 2007 counts a 2008 National Theatre review');
+  assert.deepEqual(has('august-osage-county-2007', /^2008-07/, 'publishDate'), [], 'Osage 2007 counts the July 2008 replacement-cast piece');
+});
+
+test('reviews.json: Evita 2012 junk and duplicate rows are gone, Dreamgirls 1981 is the AP rave', { skip: CORE_SKIP }, () => {
+  assert.deepEqual(has('evita-2012', /ricky martin/i), [], 'NYT topics page counted as an outlet');
+  const variety = has('evita-2012', /variety/i);
+  assert.equal(variety.length, 1, 'Variety counted more than once');
+  assert.equal(variety[0].criticName, 'Steven Suskin');
+  assert.deepEqual(has('evita-2012', /jesse green/i, 'criticName'), [], 'Vulture review credited to Jesse Green');
+  assert.deepEqual(has('evita-2012', /thom geier/i, 'criticName'), [], 'textless EW row counted');
+  assert.equal(has('evita-1979', /new york times/i).length, 1, 'genuine 1979 NYT review dropped');
+  const dg = rows('dreamgirls-1981');
+  assert.ok(dg.some((r) => r.outlet === 'Associated Press' && r.criticName === 'Mary Campbell' && r.assignedScore >= 90),
+    'Dreamgirls 1981 AP Mary Campbell rave missing or under-scored');
+  assert.deepEqual(dg.filter((r) => /douglas watt/i.test(r.criticName || '')), [], 'AP wire story still credited to Douglas Watt');
+});
+
+test('reviews.json: genuine reviews cleared of false verdicts are counted', { skip: CORE_SKIP }, () => {
+  const want = [
+    ['evita-2012', /amnewyork/i], ['evita-2012', /backstage/i], ['evita-2012', /entertainment weekly/i],
+    ['evita-2012', /philadelphia inquirer/i],
+    ['cat-on-a-hot-tin-roof-2013', /new york times/i], ['cat-on-a-hot-tin-roof-2013', /new york post/i],
+    ['cat-on-a-hot-tin-roof-2013', /vulture/i], ['cat-on-a-hot-tin-roof-2013', /financial times/i],
+    ['private-lives-2011', /vulture/i], ['private-lives-2011', /daily news/i],
+    ['august-osage-county-2007', /new yorker/i], ['august-osage-county-2007', /theatermania/i],
+  ];
+  for (const [id, re] of want) assert.ok(has(id, re).length >= 1, `${id} ${re} not counted`);
+  const dn = has('private-lives-2011', /daily news/i)[0];
+  assert.ok(dn.assignedScore <= 55, `Private Lives 2011 Daily News scored ${dn.assignedScore} on a negative review`);
+  assert.equal(has('cat-on-a-hot-tin-roof-2013', /usa today/i)[0]?.publishDate, '2013-01-17');
+});
+
+// Write-time prevention (scripts/lib/review-file-writer.js Guard L): run the real writer
+// against the real shows.json entries in a temp dir. Never touches data/review-texts.
+const { createOrMergeReviewFile } = require('../../scripts/lib/review-file-writer.js');
+const filler = 'The staging moves briskly and the design is handsome, though the second act sags. ';
+function writeReview(showId, names, url, outletId = 'vulture', outlet = 'Vulture') {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-4889-'));
+  try {
+    const res = createOrMergeReviewFile(showId, {
+      outletId, outlet, criticName: 'Unknown', url,
+      source: 'submit-review-form',
+      fields: { fullText: `${names} lead the cast. ${filler.repeat(8)}${names} are the reason to go.` },
+    }, { reviewTextsDir: dir });
+    assert.equal(res && res.action, 'new', `write refused: ${JSON.stringify(res)}`);
+    const folder = path.join(dir, showId);
+    return JSON.parse(fs.readFileSync(path.join(folder, fs.readdirSync(folder)[0]), 'utf8'));
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+}
+
+test('a review naming another production\'s cast is stamped wrongProduction and excluded', { skip: CORE_SKIP }, () => {
+  // The 2011 Paul Gross / Kim Cattrall review filed on the 2002 Rickman / Duncan page.
+  const d = writeReview('private-lives-2002', 'Kim Cattrall and Paul Gross', 'https://www.vulture.com/theater/private-lives-test-a.html');
+  assert.equal(d.wrongProduction, true);
+  assert.match(d.wrongProductionReason, /private-lives-2011/);
+  assert.ok(explainExclusion(d, show('private-lives-2002'), 'data/review-texts/private-lives-2002/x.json'));
+  // The 2013 Johansson review filed on the 2003 Ashley Judd page.
+  const c = writeReview('cat-on-a-hot-tin-roof-2003', 'Scarlett Johansson and Ciarán Hinds', 'https://www.vulture.com/theater/cat-test-b.html');
+  assert.equal(c.wrongProduction, true);
+  assert.match(c.wrongProductionReason, /cat-on-a-hot-tin-roof-2013/);
+});
+
+test('no wrongProduction flag when URL year and cast match the production', { skip: CORE_SKIP }, () => {
+  const url = 'https://www.nytimes.com/2013/01/18/theater/reviews/cat-on-a-hot-tin-roof-test.html';
+  assert.equal(getWrongProductionReasonFromUrl(url, show('cat-on-a-hot-tin-roof-2013')), null);
+  assert.ok(getWrongProductionReasonFromUrl(url, show('cat-on-a-hot-tin-roof-2003')), 'a 2013 URL on the 2003 page must be caught');
+  const d = writeReview('cat-on-a-hot-tin-roof-2013', 'Scarlett Johansson and Ciarán Hinds', url, 'nytimes', 'The New York Times');
+  assert.notEqual(d.wrongProduction, true, `stale flag: ${d.wrongProductionReason}`);
+  const p = writeReview('private-lives-2011', 'Kim Cattrall and Paul Gross', 'https://www.nytimes.com/2011/11/18/theater/reviews/private-lives-test.html', 'nytimes', 'The New York Times');
+  assert.notEqual(p.wrongProduction, true, `stale flag: ${p.wrongProductionReason}`);
+});
+
+// Plan bro-4889-f corrects two Evita bylines (verified on the outlet pages). The rows are asserted
+// once the executor recorded status "applied" and reviews.json was scanned 15+ minutes later (the
+// review-texts push lands after executedAt is stamped); before that, only the plan's shape.
+test('plan bro-4889-f: Evita bylines are David Finkle (TheaterMania 2012) and Walter Kerr (NYT 1979)', { skip: CORE_SKIP }, () => {
+  const plan = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'pending-fixes', 'bro-4889-f.json'), 'utf8'));
+  assert.deepEqual(plan.plan.actions.map((a) => [a.file, a.field, a.newValue]), [
+    ['evita-2012/theatermania--david-rooney.json', 'criticName', 'David Finkle'],
+    ['evita-1979/nytimes--ben-brantley.json', 'criticName', 'Walter Kerr'],
+  ]);
+  const meta = JSON.parse(fs.readFileSync(REVIEWS, 'utf8'))._meta || {};
+  const rebuiltAfter = plan.status === 'applied' && plan.executedAt
+    && Date.parse(meta.reviewTextsScannedAt || 0) > Date.parse(plan.executedAt) + 15 * 60 * 1000;
+  if (!rebuiltAfter) return;
+  assert.deepEqual(has('evita-2012', /theatermania/i).map((r) => r.criticName), ['David Finkle']);
+  assert.deepEqual(has('evita-1979', /new york times/i).map((r) => r.criticName), ['Walter Kerr']);
 });
