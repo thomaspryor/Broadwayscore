@@ -11,7 +11,7 @@ each silently fail independently:
 2. **Push to review-texts repo** (fails silently if parallel session creates conflicts)
 3. **Collect/scrape content** (collect-review-texts fills fullText)
 4. **LLM score the review** (LLM Ensemble Score Reviews workflow)
-5. **Rebuild reviews.json + deploy** (Refresh Review Data → Deploy to Vercel)
+5. **Rebuild reviews.json + deploy** (rebuild-reviews.yml "Rebuild Reviews Data" → Deploy to Vercel; "Refresh Review Data" is the scraper)
 
 **Failure modes observed (Mamma Mia WE, 2026-04-12):**
 - Step 2: `git stash pop` left conflict markers in 5 JSON files. They pushed to

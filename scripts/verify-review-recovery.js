@@ -398,7 +398,7 @@ if (reviewsData) {
 
   if (inReviews > 0) pass(`${inReviews} scored reviews found in reviews.json`);
   if (missingFromReviews > 0) {
-    console.log(`  ${FAIL} ${missingFromReviews} scored reviews missing — run: gh workflow run "Refresh Review Data"`);
+    console.log(`  ${FAIL} ${missingFromReviews} scored reviews missing — run: gh workflow run rebuild-reviews.yml`);
   }
 }
 }
@@ -484,7 +484,7 @@ if (totalFail > 0) {
     });
     if (missing.length > 0) {
       console.log(`\n  Trigger rebuild:`);
-      console.log(`    gh workflow run "Refresh Review Data"`);
+      console.log(`    gh workflow run rebuild-reviews.yml`);
     }
   }
   console.log('');
