@@ -13,10 +13,15 @@ const { scanSourceForDirectProviderCalls } = require('../../scripts/lib/direct-p
 const { _providerPassthroughParams } = require('../../scripts/lib/scraper');
 const { fetchWithBrightDataViaFetchPage, brightDataWasCapped } = require('../../scripts/lib/audience-page-fetch');
 
-const MIGRATED = [
+// LBO/LTD/SeatPlan are guarded by the baseline assertion below (audit --strict
+// fails CI on a regression); their sources are not in test.yml's push paths, so
+// this test must not read them (audit-toplevel-script-test-yml-coverage).
+const BASELINE_MIGRATED = [
   'scripts/scrape-lbo-audience.js',
   'scripts/scrape-ltd-audience.js',
   'scripts/scrape-seatplan-audience.js',
+];
+const MIGRATED = [
   'scripts/scrape-show-score-audience.js',
   'scripts/sweep-we-aggregators.js',
 ];
@@ -31,7 +36,7 @@ for (const rel of MIGRATED) {
 
 test('baseline no longer lists the migrated scripts', () => {
   const base = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/audit/direct-provider-calls-baseline.json'), 'utf8'));
-  for (const rel of MIGRATED) assert.ok(!(rel in base.files), `${rel} still baselined`);
+  for (const rel of [...BASELINE_MIGRATED, ...MIGRATED]) assert.ok(!(rel in base.files), `${rel} still baselined`);
   assert.ok(Object.keys(base.files).length <= 10, 'baseline must only shrink');
 });
 
