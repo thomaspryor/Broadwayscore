@@ -25,6 +25,13 @@ function planShapeProblems(name, plan) {
   if (!plan.planId) problems.push(`${name}: missing planId`);
   const actions = plan.plan && plan.plan.actions;
   if (!Array.isArray(actions)) return [...problems, `${name}: plan.actions is not an array`];
+  // The executor loads data/pending-fixes/<issue_number>.json, and authors
+  // dispatch with the plan's issueNumber; a split plan that kept its parent's
+  // issueNumber re-ran the parent (BRO-5853). Same id both ways (BRO-5892).
+  const base = path.basename(name, '.json');
+  if (plan.issueNumber != null && String(plan.issueNumber) !== base) {
+    problems.push(`${name}: issueNumber ${JSON.stringify(plan.issueNumber)} is not the file name; set it to "${base}" (the executor loads <issue_number>.json)`);
+  }
   if (actions.length > MAX_PLAN_ACTIONS) {
     problems.push(`${name}: ${actions.length} actions (max ${MAX_PLAN_ACTIONS}); split it into ${path.basename(name, '.json')}-b.json`);
   }
@@ -36,6 +43,15 @@ function planShapeProblems(name, plan) {
   // 'partial' (BRO-5843).
   const stamped = new Map(); // `${showId}|${sourceField}` -> stamped value
   for (const a of actions) {
+    // review-file-op paths are relative to the review-texts tree; the
+    // data/review-texts/ prefix is refused as "Source not found" (BRO-5853).
+    if (a && a.type === 'review-file-op') {
+      for (const k of ['sourcePath', 'destPath']) {
+        if (typeof a[k] === 'string' && /^(\.\/)?data\/review-texts\//.test(a[k])) {
+          problems.push(`${name}: review-file-op ${k} "${a[k]}" must be relative to the review-texts tree; drop the data/review-texts/ prefix`);
+        }
+      }
+    }
     if (!a || a.type !== 'data-edit' || a.file !== 'shows.json') continue;
     const stamp = STAMPED_SOURCE_FIELDS[a.field];
     if (stamp && a.newValue) { stamped.set(`${a.showId}|${stamp.field}`, stamp.value); continue; }

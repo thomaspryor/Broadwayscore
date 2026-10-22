@@ -93,3 +93,13 @@ test('finishedOnBranchProblems and localRunProblems (fixtures, BRO-5647)', () =>
   assert.deepEqual(localRunProblems('bro-1.json', p('applied', { executedIn: 'ci' })), []);
   assert.deepEqual(localRunProblems('bro-1.json', p('applied')), []);
 });
+
+// BRO-5892: two BRO-5853 authoring traps, caught before land.
+test('planShapeProblems: issueNumber must name the file, review-file-op paths carry no data/review-texts/ prefix', () => {
+  assert.deepEqual(planShapeProblems('bro-9-b.json', plan(many(1), { issueNumber: 'bro-9-b' })), []);
+  assert.deepEqual(planShapeProblems('bro-9-b.json', plan(many(1))), []);
+  assert.equal(planShapeProblems('bro-9-b.json', plan(many(1), { issueNumber: 'bro-9' })).length, 1);
+  const op = (sourcePath) => ({ type: 'review-file-op', operation: 'delete', sourcePath });
+  assert.deepEqual(planShapeProblems('bro-9.json', plan([op('show-2026/nyt--a.json')])), []);
+  assert.match(planShapeProblems('bro-9.json', plan([op('data/review-texts/show-2026/nyt--a.json')]))[0], /drop the data\/review-texts\/ prefix/);
+});
