@@ -9,7 +9,7 @@ import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const { shouldRunTestGate, listColocatedTestFiles, runTestGate, diffFailingSets, baselineCheckoutOptions } = require('./merge-post-merge-test-gate.js');
+const { shouldRunTestGate, listColocatedTestFiles, runTestGate, describePreExisting, diffFailingSets, baselineCheckoutOptions } = require('./merge-post-merge-test-gate.js');
 const { parseTapOutput } = require('./tap-failure-parser.js');
 
 // --- baselineCheckoutOptions: pure, no I/O (BRO-3962) ---
@@ -1276,4 +1276,53 @@ test('runTestGate threads onlyListed into the test selection', () => {
   assert.ok(ran && !ran.includes('scripts/lib/merge-post-merge-test-gate.test.mjs'));
   runTestGate({ cwd: REPO_ROOT, changedFiles: ['scripts/lib/land-branch.js'], execFn });
   assert.ok(ran.includes('scripts/lib/merge-post-merge-test-gate.test.mjs'));
+});
+
+// --- BRO-5940: stale worktree data must read as ENV, not "real bugs, file a card" ---
+
+const PRE = [{ file: 'scripts/lib/outlet-mismatch-heal.test.mjs', name: 'keeps the label' }];
+
+test('describePreExisting: no stale copies keeps the original real-bug wording', () => {
+  const out = describePreExisting(PRE, []);
+  assert.match(out, /pre-existing on origin\/main/);
+  assert.match(out, /still real bugs, file a card/);
+  assert.doesNotMatch(out, /ENV/);
+});
+
+test('describePreExisting: stale copies are labelled ENV with the refresh command and keep the escalation', () => {
+  const out = describePreExisting(PRE, ['shows.json', 'reviews.json']);
+  assert.match(out, /pre-existing on origin\/main/);
+  assert.match(out, /ENV: likely stale local data/);
+  assert.match(out, /shows\.json reviews\.json/);
+  assert.match(out, /\.\/scripts\/setup-local-data\.sh/);
+  assert.match(out, /still fail are real bugs: file a card/);
+  assert.doesNotMatch(out, /but still real bugs, file a card:/);
+  assert.match(out, /outlet-mismatch-heal\.test\.mjs::keeps the label/);
+});
+
+function gateWith(staleCopiesFn) {
+  const baselineDir = makeScratchRepo();
+  writeFailingTest(baselineDir, 'old.test.mjs');
+  const mergedDir = makeScratchRepo();
+  writeFailingTest(mergedDir, 'old.test.mjs');
+  return runTestGate({
+    cwd: mergedDir,
+    changedFiles: ['scripts/lib/review-file-writer.js'],
+    makeBaselineCheckout: () => ({ dir: baselineDir, prepared: true }),
+    removeBaselineCheckout: () => {},
+    staleCopiesFn,
+  });
+}
+
+test('runTestGate: stale data labels the pre-existing block ENV and never changes the verdict', () => {
+  const r = gateWith(() => ['shows.json']);
+  assert.equal(r.passed, true);
+  assert.match(r.output, /ENV: likely stale local data/);
+  assert.match(r.output, /old\.test\.mjs::/);
+});
+
+test('runTestGate: a throwing staleCopiesFn falls back to the original wording, verdict unchanged', () => {
+  const r = gateWith(() => { throw new Error('boom'); });
+  assert.equal(r.passed, true);
+  assert.match(r.output, /still real bugs, file a card/);
 });
