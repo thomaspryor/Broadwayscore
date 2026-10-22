@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-21T20:27:29.946Z",
+    "lastUpdated": "2026-10-22T11:58:27.647Z",
     "version": "2.1.0",
     "lastChange": "BRO-5373: split The Mail on Sunday (mail-on-sunday, splitFrom daily-mail) out of daily-mail"
   },
@@ -13353,6 +13353,14 @@
       "isDualMarket": true,
       "regionCorrectedBy": "BRO-5896",
       "regionCorrectedEvidence": "Registered in Baku, Azerbaijan (soz6.com/haqqimizda)"
+    },
+    "nashvilleparent": {
+      "displayName": "Nashville Parent",
+      "tier": 3,
+      "aliases": [
+        "nashvilleparent"
+      ],
+      "domain": "nashvilleparent.com"
     }
   },
   "_aliasIndex": {
