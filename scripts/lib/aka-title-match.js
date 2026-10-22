@@ -7,10 +7,10 @@
  * only when the venue also agrees, because bare aliases like "860" are exactly
  * the short, collision-prone strings that must not attach to another production.
  */
-const { normalizeTitle } = require('./title-match');
+const { normalizeTitle, foldDiacritics } = require('./title-match');
 
 function normVenue(v) {
-  return String(v || '')
+  return foldDiacritics(String(v || ''))
     .toLowerCase()
     .replace(/\b(theatre|theater|the)\b/g, ' ')
     .replace(/[^a-z0-9]+/g, ' ')

@@ -16,6 +16,7 @@ test('alias needs the same house', () => {
   assert.ok(venueAgrees('Imperial Theatre', 'Imperial'));
   assert.ok(!venueAgrees('New Amsterdam Theatre', 'New'), 'short bare prefix must not match');
   assert.ok(!venueAgrees('', 'Imperial Theatre'));
+  assert.ok(venueAgrees('Théâtre Marigny', 'Theatre Marigny'), 'accented venue names fold before matching');
 });
 
 test('Theatr "860" at the Imperial attaches; same title elsewhere does not', () => {
