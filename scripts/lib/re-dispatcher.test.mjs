@@ -22,7 +22,7 @@ test('parses the live CRITICAL_CRONS registry, including the two BRO-4282 crons'
   const entries = parseCriticalCronEntries(yaml);
   assert.ok(entries.length > 40, `expected the full registry, got ${entries.length}`);
   const byWf = Object.fromEntries(entries.map((e) => [e.workflow, e]));
-  assert.equal(byWf['audit-aggregator-gap.yml'].maxHours * 60, 180);
+  assert.equal(byWf['audit-aggregator-gap.yml'].maxHours * 60, 720); // BRO-3867: 12h band
   assert.ok(byWf['clear-stale-wrong-production-flags.yml'], 'clear-stale-wrong-production-flags.yml must be in CRITICAL_CRONS');
   for (const e of entries) {
     const wf = path.join(ROOT, '.github/workflows', e.workflow);
