@@ -20,3 +20,8 @@ The original card counted 16 branches from 2026-09-08; 6 more batches landed 202
 ## Nightly job decision
 
 `com.broadwayscorecard.feedback-overnight` (launchd, 02:00, `scripts/feedback/overnight-launchd.sh`) is still loaded. Last exit status is 2 (last run 2026-10-20 02:15, empty logs) and the newest branch is 2026-09-16, so output stopped growing about five weeks ago. Decision: keep the job (it turns real TestFlight reports into fixes), but it must not leave branches stranded. Required before re-enabling normal operation: each night rebases onto origin/main, then merges its own clean batch or files a card if it conflicts; the audit script above is the disposition check (non-zero unmerged TestFlight batches older than 3 days = alert). Diagnosing the exit-2 failure and adding the rebase/auto-merge step live in the app repo and are tracked on the porting card.
+
+## Resolution (BRO-5900, 2026-10-21)
+
+Exit 2 cause: `overnight.js` preflight aborts (exit 2) while the newest `worktree-feedback-overnight-*` branch is not an ancestor of origin/main; the 2026-09-16 batch conflicted at merge time and wedged every run after it. Fix (app repo): `strandedBranchAction` lets the run proceed once the unlanded branch is 3+ days old and writes `~/.claude/broadwayscore-feedback/STRANDED`.
+Ported: every unmerged batch was merged into app main newest first. 09-15/09-16/08-12 carried real code; the other 20 had every feedback id already cited in the merged tree, so they were recorded with `merge -s ours` (needed so `--is-ancestor` passes). Audit now reports 0 unmerged TestFlight batches. Not run: Maestro e2e (needs simulator); CI maestro workflow runs on main.
