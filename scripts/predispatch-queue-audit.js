@@ -5,9 +5,11 @@
  * across every pending/in_progress task in the local mirror, write the
  * digest snapshots scripts/send-morning-digest.js reads.
  *
- * Same card-fetch pattern as scripts/predispatch-check.js: resolve each
- * task's Notion id via notionIdOf() (the structured `[notion:<uuid>]` tag),
- * never search, then `notion-brain.js get <uuid>` and classifyCandidate().
+ * The predispatch tally (task #1801) is Linear-sourced only since BRO-5845:
+ * the per-task Notion card fetch (a `get` against the retired Notion
+ * board CLI) was removed, so the frozen local mirror now feeds only the
+ * dispatch-guard tally below (card === null, which every card guard already
+ * treats as fail-open).
  * Mac-local producer, same as scripts/backlog-drain.js — both this script
  * and send-morning-digest.js run on the same Mac via launchd
  * (com.broadwayscore.predispatch-queue-audit.plist, scheduled before the
@@ -23,7 +25,7 @@
  * processes cannot share fetchCard()'s in-memory result, so a second script
  * would double Notion API load (300-400 sequential execFileSync calls
  * instead of 150-200) in the same pre-digest window instead of "reusing"
- * anything. One fetch pass, two tallies, two snapshot files.
+ * anything. (The Notion fetch itself was removed in BRO-5845.)
  *
  * Usage:
  *   node scripts/predispatch-queue-audit.js
@@ -37,10 +39,9 @@ const os = require('os');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
-  notionIdOf, loadLinearMirrorMapping,
+  loadLinearMirrorMapping,
   matchesTaskWorkBranch, findWorkBranchCollisions,
 } = require('./lib/dispatch-guards.js');
-const { classifyCandidate, resolveNotionUuid } = require('./lib/predispatch-guard.js');
 const { buildQueueAuditSnapshot } = require('./lib/predispatch-queue-audit.js');
 const { buildDispatchGuardQueueAuditSnapshot, simulateDispatchGuards } = require('./lib/dispatch-guard-queue-audit.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
@@ -85,23 +86,6 @@ function loadQueuedTasks() {
     } catch { /* skip unreadable/corrupt task mirror file — one bad file must not kill the audit */ }
   }
   return tasks;
-}
-
-// 30s timeout (ship-check adversarial finding): this loop runs one
-// execFileSync per queued task (150-200+ sequential calls at 6:50am,
-// before the 7:30am digest). Without a bound, a single hung
-// `notion-brain.js get` call — a stalled Notion API request — wedges the
-// whole launchd job indefinitely, leaving the snapshot un-refreshed for
-// every downstream card too. execFileSync throws on timeout, which the
-// caller already treats as a per-card fetch error (fetchErrors++), so one
-// slow card degrades the count instead of hanging the run.
-const NOTION_FETCH_TIMEOUT_MS = 30_000;
-
-function fetchCard(uuid) {
-  const out = execFileSync('node', [path.join(REPO, 'scripts', 'notion-brain.js'), 'get', uuid], {
-    encoding: 'utf8', timeout: NOTION_FETCH_TIMEOUT_MS,
-  });
-  return JSON.parse(out);
 }
 
 function loadHistory(file = HISTORY_FILE) {
@@ -193,28 +177,10 @@ async function main() {
     .map((t) => ({ id: t.id, subject: t.subject, notes: t.description }));
   const branchStatuses = computeBranchStatuses(tasks, REPO);
 
-  const classifications = [];
   const guardResults = [];
-  let skippedNoUuid = 0;
-  let fetchErrors = 0;
   for (const task of tasks) {
-    const uuid = notionIdOf(task) || resolveNotionUuid(task.description || '');
-    // #1803: card fetch no longer short-circuits with `continue` on a
-    // missing uuid/failed fetch — #1802's 6 non-card guards below still need
-    // to evaluate every task. `id: task.id` on the pushed classification is
-    // #1803's own addition (feeds predispatch-queue-audit.js's named
-    // blocked-card items) — preserved here across the #1802 merge.
-    let card = null;
-    if (!uuid) {
-      skippedNoUuid++;
-    } else {
-      try { card = fetchCard(uuid); }
-      catch (err) { fetchErrors++; console.error(`[predispatch-queue-audit] fetch failed for #${task.id}: ${String(err.message).slice(0, 160)}`); }
-    }
-    if (card) {
-      try { classifications.push({ ...classifyCandidate({ card, task }), id: task.id }); }
-      catch (err) { fetchErrors++; console.error(`[predispatch-queue-audit] classify failed for #${task.id}: ${String(err.message).slice(0, 160)}`); }
-    }
+    // BRO-5845: no Notion card fetch any more; card is always null here.
+    const card = null;
 
     // Task #1802: the 9 dispatch-guards.js predicates. Run with
     // opts={} (no force/dry-run/print-prompt) so this reports REAL refusal
@@ -231,9 +197,8 @@ async function main() {
 
   // BRO-3431: the local task mirror above is the FROZEN Notion board (source
   // of the "135 queued cards" undercount — the real backlog lives in Linear).
-  // Union in the Linear-sourced classifications the same way
-  // dispatch-watchdog.js unions Linear tasks into its own sweep: never throw,
-  // never let a Linear outage take down the Notion-sourced half of this tally.
+  // BRO-5845: Linear is now the ONLY source of predispatch classifications;
+  // never throw — a Linear outage yields an empty tally plus a logged reason.
   let linearClassifications = [];
   try {
     const { fetchLinearBacklogClassifications } = require('./lib/linear-predispatch-audit.js');
@@ -243,16 +208,16 @@ async function main() {
       linearClassifications = res.classifications;
       console.log(`[predispatch-queue-audit] Linear scan: ${res.scanned} issue(s) scanned, ${linearClassifications.length} counted toward the backlog tally`);
     } else {
-      console.error(`[predispatch-queue-audit] Linear source unavailable (${res.reason}) — banner reflects the Notion mirror only this run`);
+      console.error(`[predispatch-queue-audit] Linear source unavailable (${res.reason}) — predispatch tally is empty this run`);
     }
   } catch (err) {
-    console.error(`[predispatch-queue-audit] Linear source error (${String(err.message).slice(0, 160)}) — banner reflects the Notion mirror only this run`);
+    console.error(`[predispatch-queue-audit] Linear source error (${String(err.message).slice(0, 160)}) — predispatch tally is empty this run`);
   }
 
   const history = loadHistory(HISTORY_FILE);
   const snapshot = buildQueueAuditSnapshot({
-    classifications: [...classifications, ...linearClassifications],
-    history, now, skippedNoUuid, fetchErrors,
+    classifications: linearClassifications,
+    history, now,
   });
   console.log(`predispatch-queue-audit: ${snapshot.bannerText}`);
 
@@ -292,6 +257,6 @@ if (require.main === module) {
 }
 
 module.exports = {
-  loadQueuedTasks, fetchCard, loadHistory, TASKS_DIR, SNAPSHOT_FILE, HISTORY_FILE,
+  loadQueuedTasks, loadHistory, TASKS_DIR, SNAPSHOT_FILE, HISTORY_FILE,
   GUARD_SNAPSHOT_FILE, GUARD_HISTORY_FILE, computeBranchStatuses, listAllWorkBranchNames,
 };

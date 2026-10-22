@@ -28,7 +28,6 @@ const ALLOW = {
   'scripts/audit-orphan-inprogress.js': 'dead',
   'scripts/bsc-prune.js': 'mirror-update',               // local task store -> Notion card updates, never creates
   'scripts/bsc-reconcile.js': 'mirror-update',
-  'scripts/reconcile-dead-completions.js': 'mirror-update',
   'scripts/notion-tasks-sync.js': 'mirror-update',
   'scripts/enrich-card-acceptance.js': 'mirror-update',  // Notion leg is opt-in (--source); workflow now passes linear
   'scripts/freeze-ledgers.js': 'read-only',

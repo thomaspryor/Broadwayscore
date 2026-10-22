@@ -23,7 +23,7 @@ Of the 388 files that mention "notion", 25 had a live code channel at the sweep;
 | `scripts/autonomous-merge.js`, `scripts/autonomous-run.js`, `scripts/autonomous-triage.js` | dead | autonomous loop retired 2026-07-27; `autonomous-merge.yml` is dispatch-only |
 | `scripts/audit-archived-in-progress.js`, `scripts/audit-orphan-inprogress.js` | dead | no scheduler, only `test.yml` |
 | ~~`scripts/notify-pending-commercial-notion.js`, `scripts/sync-pending-review-to-notion.js`~~ | deleted 2026-10-14 | workflows call the `-linear` twins |
-| `scripts/bsc-prune.js`, `scripts/bsc-reconcile.js`, `scripts/reconcile-dead-completions.js`, `scripts/notion-tasks-sync.js` | mirror-update | live launchd; local task store → Notion card UPDATES, never creates. See C |
+| `scripts/bsc-prune.js`, `scripts/bsc-reconcile.js`, `scripts/notion-tasks-sync.js` | mirror-update | live launchd; local task store → Notion card UPDATES, never creates. See C |
 | `scripts/enrich-card-acceptance.js` | mirror-update | Notion leg was live daily via `card-verifiability-audit.yml`. **Fixed**: workflow now `--source linear` |
 | `scripts/freeze-ledgers.js` | read-only | list/get/query only (`lib/stuck-work.js` deleted 2026-10-14 with the digest rows) |
 | `scripts/bsc-next.js`, `scripts/linear-brain.js`, `scripts/lib/dispatch-guards.js` | text-only | hint/refusal strings naming the legacy command |
@@ -76,9 +76,12 @@ No fail-soft `notion-brain.js create` caller remains: `notion-write-paths-retire
   by live sessions but no longer mirrors a live board. Linear orphans are covered
   separately by its Linear-'started' zombie sweep (BRO-3925), `dispatch-watchdog`,
   `check-linear-drain-*`. Verdict: live but narrowed; no change.
-- `predispatch-queue-audit` (launchd) audits that same task store via
-  `notion-brain get`: audits the legacy queue, not Linear. Dormant-by-source.
-- `reconcile-dead-completions` (launchd): same mirror. Dormant-by-source.
+- `predispatch-queue-audit` (launchd): **Fixed BRO-5845** — the per-task Notion
+  card fetch is gone; the predispatch tally is Linear-only, the frozen mirror
+  feeds only the dispatch-guard tally (card = null).
+- `reconcile-dead-completions` (launchd): **Fixed BRO-5845** — the Notion card
+  correction + sync-map pushed-flag reset were removed; it reopens local tasks
+  and Linear issues only.
 - `health-check.js` row "Data: undispatchable backlog cards" read the
   Notion-only `card-verifiability.json`, regenerated daily from the frozen mirror.
   **Retired** (BRO-4717): only the Linear rows (`card-verifiability-linear.json`) remain,
