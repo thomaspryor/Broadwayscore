@@ -27,6 +27,7 @@ const { closedBeforeTheatr } = require('./lib/theatr-stale-attachment');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 const { buildTheatrCoverageFlags } = require('./lib/theatr-coverage-audit');
 const { assertShowsQuerySuccess } = require('./lib/theatr-api-response');
+const { mergeTheatrShows, BROADWAY_EVENT_CATEGORIES } = require('./lib/theatr-genre-merge');
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -188,7 +189,33 @@ async function fetchAllShows() {
     },
   });
 
-  return assertShowsQuerySuccess(data);
+  const theatreGenre = assertShowsQuerySuccess(data);
+
+  // BRO-5943: Theatr files some Broadway shows under other genres (e.g. Billy
+  // Crystal 860 = 'Other'). Pull those too; failure here warns, never fails.
+  try {
+    // Only the proven '==' operator is used; one query per category, and
+    // mergeTheatrShows dedupes against the Theatre-genre records by id.
+    const extra = [];
+    for (const category of BROADWAY_EVENT_CATEGORIES) {
+      const { data: extraData } = await httpsRequest('https://appapi.theatr-app.com/shows/query', {
+        method: 'POST',
+        headers: authHeaders(),
+        body: {
+          filters: [{ field: 'eventCategory', op: '==', value: category }],
+          orderBy: [{ field: 'totalWatchedUsers', direction: 'desc' }],
+          pageSize: 9999,
+        },
+      });
+      extra.push(...assertShowsQuerySuccess(extraData));
+    }
+    const merged = mergeTheatrShows(theatreGenre, extra);
+    console.log(`Broadway-category extra query: ${extra.length} records, ${merged.length - theatreGenre.length} new after merge`);
+    return merged;
+  } catch (err) {
+    console.warn(`WARN: non-Theatre genre query failed (${err.message}); continuing with Theatre genre only`);
+    return theatreGenre;
+  }
 }
 
 async function fetchShowStats(showId) {
