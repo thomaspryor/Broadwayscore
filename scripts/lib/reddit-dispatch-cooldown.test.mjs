@@ -62,6 +62,13 @@ test('a new outage after a success re-arms the alert', () => {
   assert.equal(shouldAlertStale(rows, NOW).alert, true);
 });
 
+test('rows are evaluated in time order even if the file is interleaved (merge=union)', () => {
+  const lines = [row(1, 'unavailable'), row(4, 'unavailable'), row(3, 'unavailable'), row(10, 'ok')].map(r => JSON.stringify(r)).join('\n');
+  const rows = parseLedger(lines);
+  assert.deepEqual(rows.map(r => r.outcome), ['ok', 'unavailable', 'unavailable', 'unavailable']);
+  assert.equal(decideCooldown(rows, NOW).skip, true);
+});
+
 test('ledger round-trips and ignores corrupt lines', () => {
   const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'rcd-')), 'l.jsonl');
   appendRow(row(2, 'unavailable'), f);

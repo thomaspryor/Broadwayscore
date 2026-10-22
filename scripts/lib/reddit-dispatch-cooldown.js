@@ -28,7 +28,9 @@ function parseLedger(text) {
     .map(l => l.trim())
     .filter(Boolean)
     .map(l => { try { return JSON.parse(l); } catch { return null; } })
-    .filter(r => r && Number.isFinite(Date.parse(r.ts)) && ['ok', 'unavailable', 'alerted'].includes(r.outcome));
+    .filter(r => r && Number.isFinite(Date.parse(r.ts)) && ['ok', 'unavailable', 'alerted'].includes(r.outcome))
+    // merge=union can interleave concurrent runs' rows: always evaluate in time order
+    .sort((a, b) => Date.parse(a.ts) - Date.parse(b.ts));
 }
 
 function readLedger(file = LEDGER_PATH) {
