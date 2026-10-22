@@ -306,7 +306,7 @@ function taskCommitLandedInWindow(taskId, fromTs, toTs) {
     const out = execFileSync('git', ['-C', REPO, 'log', 'origin/main', '--since', new Date(fromTs).toISOString(),
       ...(toTs ? ['--until', new Date(toTs).toISOString()] : []),
       '--format=%s%n%b', '--regexp-ignore-case', '--grep', `task #${taskId}\\b`],
-      { stdio: ['ignore', 'pipe', 'ignore'], encoding: 'utf8' });
+      { stdio: ['ignore', 'pipe', 'ignore'], encoding: 'utf8', maxBuffer: 512 * 1024 * 1024 });
     return String(out).trim().length > 0;
   } catch {
     return false;

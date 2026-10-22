@@ -154,7 +154,7 @@ function gitLogRefSearch(ref, sinceIso, untilIso) {
       '-C', REPO, 'log', 'origin/main',
       `--since=${sinceIso}`, `--until=${untilIso}`,
       '--fixed-strings', `--grep=${ref}`, '--format=%H',
-    ], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    ], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 512 * 1024 * 1024 }).trim();
     const lines = out.split('\n').filter(Boolean);
     return lines[0] || null; // git log's default order is newest-first
   } catch {

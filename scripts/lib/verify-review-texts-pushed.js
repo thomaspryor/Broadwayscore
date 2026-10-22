@@ -103,6 +103,7 @@ function verifyReviewTextsPushed(filePaths, opts = {}) {
         cwd: dir,
         encoding: 'utf8',
         stdio: ['ignore', 'pipe', 'pipe'],
+        maxBuffer: 512 * 1024 * 1024, // BRO-3156: review-text files can exceed the 1MB default
       });
     } catch {
       notPushed.push(rel); // file doesn't exist on origin/main at all

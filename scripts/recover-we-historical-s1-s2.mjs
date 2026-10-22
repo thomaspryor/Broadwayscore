@@ -67,7 +67,7 @@ function getNotionCard(id) {
 }
 
 function gitLog(args) {
-  return execFileSync('git', ['log', ...args], { cwd: REPO_ROOT, encoding: 'utf8' }).trim();
+  return execFileSync('git', ['log', ...args], { cwd: REPO_ROOT, encoding: 'utf8', maxBuffer: 512 * 1024 * 1024 }).trim();
 }
 
 function fileOnMain(relPath) {

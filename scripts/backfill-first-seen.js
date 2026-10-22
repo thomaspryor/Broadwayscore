@@ -41,7 +41,7 @@ function firstAddDate(dir, relPath) {
   let out = '';
   try {
     out = execFileSync('git', ['-C', dir, 'log', '--diff-filter=A', '--format=%aI', '--', relPath],
-      { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+      { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 512 * 1024 * 1024 });
   } catch (_) { return null; }
   const lines = out.split('\n').map((s) => s.trim()).filter(Boolean);
   return lines.length ? lines[lines.length - 1] : null; // oldest add = last line

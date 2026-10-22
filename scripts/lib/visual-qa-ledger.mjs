@@ -104,7 +104,7 @@ function commitsInRange(repoRoot, base, head = 'HEAD') {
   const baseRef = base || defaultBranchRef(repoRoot);
   try {
     const out = execFileSync('git', ['-C', repoRoot, 'log', '--format=%H %P', `${baseRef}..${head}`], {
-      encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],
+      encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 512 * 1024 * 1024,
     });
     return out.split('\n').filter(Boolean).map(line => {
       const [sha, ...parents] = line.split(' ');

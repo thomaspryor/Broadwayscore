@@ -64,7 +64,7 @@ function fetchOriginLandings(repoDir) {
     return null;
   }
   try {
-    const text = execFileSync('git', ['show', `FETCH_HEAD:${LANDINGS_REL}`], { cwd: repoDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 30_000 });
+    const text = execFileSync('git', ['show', `FETCH_HEAD:${LANDINGS_REL}`], { cwd: repoDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 30_000, maxBuffer: 512 * 1024 * 1024 });
     return { available: true, rows: parseLandings(text) };
   } catch {
     return { available: false, rows: [] };

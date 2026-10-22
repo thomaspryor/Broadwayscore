@@ -77,7 +77,7 @@ function readOriginLandings(cwd) {
   // origin/main's copy first (fresh after the fetch the caller did), then the
   // canonical checkout's working copy as a fallback.
   try {
-    return parseLandings(execFileSync('git', ['-C', cwd, 'show', 'origin/main:data/audit/landings.jsonl'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }));
+    return parseLandings(execFileSync('git', ['-C', cwd, 'show', 'origin/main:data/audit/landings.jsonl'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 512 * 1024 * 1024 }));
   } catch { /* fall through */ }
   try {
     const common = execFileSync('git', ['-C', cwd, 'rev-parse', '--git-common-dir'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
