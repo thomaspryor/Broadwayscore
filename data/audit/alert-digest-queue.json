@@ -141,5 +141,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-22T08:21:30.011Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5794-url-invariant",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5794-url-invariant",
+    "description": "land.yml did not land land/bro-5794-url-invariant: the unit-tests-node gate went red at abdbb58d04. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39748974179",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5794-url-invariant"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "abdbb58d0461fd7d2da8c4a878b704463c5d2b35"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39748974179"
+      }
+    ],
+    "queuedAt": "2026-10-22T08:51:18.929Z"
   }
 ]
