@@ -12,6 +12,10 @@
  *   A review-file-op delete/move whose source is not in the tree FAILs here (BRO-5386: eight of seventeen actions
  *   were refused at apply time as "Source not found" because they were planned against a two-day-old local copy
  *   of review-texts). The tree checked is the live review-texts clone when the session has one.
+ *   data-edit actions are replayed too (BRO-5892), through the executor's own applyDataEdit, on in-memory copies of
+ *   shows.json / commercial.json / audience-buzz.json from the core-data clone (else data/). After an action this
+ *   script does not replay has changed the same file (add-show, retitle-show, run-script, ...) a data-edit failure
+ *   is a WARN: the real data at apply time may differ from the copy.
  */
 const fs = require('fs');
 const { orphanFilesAfterNulling } = require('./image-null-orphan-files');
@@ -22,6 +26,7 @@ const { MAX_PLAN_ACTIONS } = require('./pending-fix-limits');
 const { planStatusAction } = require('./plan-status');
 const { resolveReviewTextsDir } = require('./review-texts-dir');
 const { runScriptArgs } = require('./run-script-args');
+const { applyDataEdit, dataEditAllowProblem } = require('./data-edit-action');
 
 const ROOT = path.join(__dirname, '..', '..');
 
@@ -69,8 +74,38 @@ function pickReviewTextsTree(candidates = [
   return path.join(ROOT, 'data', 'review-texts');
 }
 
-function preflight(planPaths, { reviewTextsDir = pickReviewTextsTree(), log = console.log } = {}) {
+/** Where the core data files live: the cloud/Mac core-data clone when present (what CI applies against), else data/. */
+function pickCoreDataDir(candidates = [
+  path.join(os.homedir(), 'broadway-scorecard-data'),
+  '/home/user/broadway-scorecard-data',
+  path.join(ROOT, 'data'),
+]) {
+  for (const dir of candidates) if (dir && fs.existsSync(path.join(dir, 'shows.json'))) return dir;
+  return path.join(ROOT, 'data');
+}
+
+// Action types this script does not replay, and the core data files each may change.
+const DATA_FILES = ['shows.json', 'commercial.json', 'audience-buzz.json'];
+function filesChangedByUnreplayed(a) {
+  switch (a && a.type) {
+    case 'add-show': case 'retitle-show': return ['shows.json'];
+    case 'retire-show': return ['shows.json', 'audience-buzz.json'];
+    case 'add-commercial-entry': return ['commercial.json'];
+    case 'drop-orphan-key': case 'batch-transform': return a.file ? [path.basename(String(a.file))] : DATA_FILES;
+    case 'run-script': return DATA_FILES;
+    default: return [];
+  }
+}
+
+function preflight(planPaths, { reviewTextsDir = pickReviewTextsTree(), coreDataDir = pickCoreDataDir(), log = console.log } = {}) {
   log(`  review-texts tree: ${reviewTextsDir}`);
+  // Loaded lazily, once, and shared across plans so later plans see earlier plans' edits.
+  const dataCopies = {};
+  const loadData = (file) => {
+    if (!(file in dataCopies)) dataCopies[file] = JSON.parse(fs.readFileSync(path.join(coreDataDir, file), 'utf8'));
+    return dataCopies[file];
+  };
+  const stale = new Set();
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'preflight-fix-'));
   const copied = new Set();
   const removed = new Set();
@@ -104,7 +139,19 @@ function preflight(planPaths, { reviewTextsDir = pickReviewTextsTree(), log = co
           const parsed = runScriptArgs(a);
           if (!parsed.ok) { failed++; log(`  FAIL ${id} run-script ${a.script}: ${parsed.reason}`); continue; }
         }
-        if (a.type !== 'review-field-edit') { log(`  skip ${a.type} (not replayed)`); continue; }
+        if (a.type === 'data-edit') {
+          const notAllowed = dataEditAllowProblem(a);
+          const res = notAllowed ? { ok: false, reason: notAllowed } : applyDataEdit(loadData(a.file), a);
+          if (res.ok) { ok++; continue; }
+          if (stale.has(a.file)) log(`  WARN ${id} ${a.file} ${a.showSlug || a.showId}.${a.field}: ${res.reason} (an earlier unreplayed action changes ${a.file}; re-check after it applies)`);
+          else { failed++; log(`  FAIL ${id} ${a.file} ${a.showSlug || a.showId}.${a.field}: ${res.reason}`); }
+          continue;
+        }
+        if (a.type !== 'review-field-edit') {
+          for (const f of filesChangedByUnreplayed(a)) stale.add(f);
+          log(`  skip ${a.type} (not replayed)`);
+          continue;
+        }
         const showId = String(a.file || '').split('/')[0];
         if (showId && !copied.has(showId) && fs.existsSync(path.join(reviewTextsDir, showId))) {
           fs.cpSync(path.join(reviewTextsDir, showId), path.join(tmp, showId), { recursive: true });
@@ -139,7 +186,7 @@ function copyUrlOwnerFolder(reviewTextsDir, tmp, file, copied, { detect } = {}) 
   }
 }
 
-module.exports = { preflight, copyUrlOwnerFolder, fileOpSourceProblem, pickReviewTextsTree };
+module.exports = { preflight, copyUrlOwnerFolder, fileOpSourceProblem, pickReviewTextsTree, pickCoreDataDir, filesChangedByUnreplayed };
 
 const USAGE = 'Usage: node scripts/lib/preflight-review-fix-plan.js <plan.json> [...]';
 
