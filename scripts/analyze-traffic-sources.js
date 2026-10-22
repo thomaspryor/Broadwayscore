@@ -491,7 +491,10 @@ function buildReport({ ga, ph, startDate, endDate, weeks, currentWeek }) {
   if (ga.skipped) problems.push(`GA4 skipped: ${ga.skipped}`);
   if (ph.skipped) problems.push(`PostHog skipped: ${ph.skipped}`);
   for (const [k, v] of Object.entries(ga.errors || {})) problems.push(`GA4 ${k} query failed: ${v}`);
-  for (const [k, v] of Object.entries(ph.errors || {})) problems.push(`PostHog ${k} query failed: ${v}`);
+  // Optional search-quality lines: a failed query drops its email line (see
+  // traffic-report-human.js) instead of turning the whole weekly run red.
+  const SOFT_PH_QUERIES = new Set(['searchEngine', 'searchLanding', 'searchShowDepth']);
+  for (const [k, v] of Object.entries(ph.errors || {})) if (!SOFT_PH_QUERIES.has(k)) problems.push(`PostHog ${k} query failed: ${v}`);
   if (problems.length) md += `> ⚠️ **Incomplete report**\n${problems.map((p) => `> - ${p}`).join('\n')}\n\n`;
 
   // ---- What changed (plain English) ----
@@ -512,7 +515,7 @@ function buildReport({ ga, ph, startDate, endDate, weeks, currentWeek }) {
   });
   const refIdx = indexReferralLanding(ph.skipped ? [] : ph.referralLanding);
   for (const c of cutoversAffecting(weeks)) {
-    md += `> **Measurement change on ${c.date}:** ${c.label}. Visit counts step up from that week without any change in real traffic, so spike flags are suppressed for ${[...cutoverWeeks([c])].map(fmtDate).join(' and ')}.\n\n`;
+    md += `> **Measurement change on ${c.date}:** ${c.label}. Visit counts step up from that week without any change in real traffic, so spike flags are suppressed for ${[...cutoverWeeks([c])].map(fmtDate).join(' and ')}, and sites first seen in those weeks are left out of the new-referrer list.\n\n`;
   }
   if (headline.length) {
     md += `Biggest jumps in the window, across both tools (each is a source that did at least 3x its usual weekly volume, or appeared from nothing):\n\n`;
