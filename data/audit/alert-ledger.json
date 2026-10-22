@@ -244,16 +244,15 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-20T22:02:20.883Z",
-      "lastSeen": "2026-10-22T14:06:39.229Z",
-      "lastNotifiedAt": "2026-10-21T22:11:21.358Z",
-      "lastSurfacedAt": "2026-10-21T22:11:21.358Z",
-      "notifyCount": 151,
+      "incidentOpenedAt": "2026-10-22T14:09:27.911Z",
+      "lastSeen": "2026-10-22T14:09:27.911Z",
+      "lastNotifiedAt": "2026-10-22T14:09:27.911Z",
+      "lastSurfacedAt": "2026-10-22T14:09:27.911Z",
+      "notifyCount": 152,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 142,
-      "sweptTracker": "BRO-5554",
-      "silentRefires": 34
+      "sweptTracker": "BRO-5554"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -23595,6 +23594,25 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:E2E Tests:fd6209b2": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: E2E Tests / Setup Playwright",
+      "firstSeen": "2026-10-22T14:09:25.726Z",
+      "incidentOpenedAt": "2026-10-22T14:09:25.726Z",
+      "lastSeen": "2026-10-22T14:09:25.726Z",
+      "lastNotifiedAt": "2026-10-22T14:09:25.726Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-5964",
+      "dispatch": {
+        "requestedAt": "2026-10-22T14:09:25.726Z",
+        "mode": "dispatch-at-filing",
+        "runId": "39790224688",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39790224688"
+      }
     },
     "land:land/bro-5943-theatr-alias": {
       "status": "open",
