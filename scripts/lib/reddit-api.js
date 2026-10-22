@@ -378,9 +378,9 @@ function scrapingDogRequest(apiKey, url, tier) {
  * public, unauthenticated, and (per 2026-07-21 probe from a residential IP,
  * see Notion 3a5637c5) return 200 with real entries where the `.json` API
  * hard-403s. Free and independent of every proxy budget (BD/SD/SB) — tried
- * BEFORE the paid proxy chain in switchToProxy(). Only search endpoints have
- * an `.rss` sibling (comments/listing endpoints don't), so callers gate on
- * `/search.json` before invoking this.
+ * BEFORE the paid proxy chain in switchToProxy(). Search and post-comments
+ * URLs have an RSS sibling (comments: BRO-5916, `<id>/.rss`); listings don't,
+ * so callers gate on rssEligible() (opt-in via opts.allowRss) before invoking.
  */
 const XML_ENTITIES = [
   [/&quot;/g, '"'], [/&#0?39;/g, "'"], [/&apos;/g, "'"],
@@ -397,7 +397,7 @@ function stripHtmlTags(html) {
 /** Rewrite a reddit `.json` search URL to its `.rss` equivalent, capping limit at 25 (RSS feed cap). */
 function toRssUrl(jsonUrl) {
   const u = new URL(jsonUrl);
-  // /comments/<id>.json -> /comments/<id>/.rss (RSS has no <id>.rss form)
+  // /comments/<id>.json -> /comments/<id>/.rss (the `<id>.rss` form does not exist)
   u.pathname = /\/comments\/[a-z0-9]+\.json$/i.test(u.pathname)
     ? u.pathname.replace(/\.json$/, '/.rss')
     : u.pathname.replace(/\.json$/, '.rss');
@@ -468,10 +468,11 @@ function parseRedditAtom(xml) {
  * backoff the JSON path uses — RSS getting rate-limited is still "Reddit is
  * rate-limiting us," not a separate problem.
  */
-// RSS is free and independent of every proxy budget. Comments pages are one
-// unpaginated call; search needs the caller's opt-in (RSS caps at 25, no cursor).
+// RSS is free and independent of every proxy budget, but lossy: search caps at
+// 25 results with no cursor, comments carry no score/nesting. Every caller must
+// opt in (opts.allowRss) so score-ranking callers never get silently degraded data.
 function rssEligible(url, opts = {}) {
-  return (Boolean(opts.allowRss) && url.includes('/search.json')) || isCommentsUrl(url);
+  return Boolean(opts.allowRss) && (url.includes('/search.json') || isCommentsUrl(url));
 }
 
 function isCommentsUrl(url) {
@@ -984,9 +985,9 @@ async function searchSubreddit(subreddit, query, options = {}) {
  * Get comments from a specific post
  */
 async function getPostComments(subreddit, postId, options = {}) {
-  const { limit = 500, depth = 10 } = options;
+  const { limit = 500, depth = 10, allowRss = false } = options;
   const url = `https://www.reddit.com/r/${subreddit}/comments/${postId}.json?limit=${limit}&depth=${depth}&raw_json=1`;
-  return fetchWithFallback(url);
+  return fetchWithFallback(url, 0, { allowRss });
 }
 
 /**
@@ -1045,14 +1046,14 @@ async function searchAllPosts(subreddit, query, maxResults = 500, { allowRss = f
 /**
  * Collect comments from multiple posts
  */
-async function collectCommentsFromPosts(subreddit, posts, maxComments = 1000, perPostMax = Infinity) {
+async function collectCommentsFromPosts(subreddit, posts, maxComments = 1000, perPostMax = Infinity, { allowRss = false } = {}) {
   const allComments = [];
 
   for (const post of posts) {
     if (allComments.length >= maxComments) break;
 
     try {
-      const response = await getPostComments(subreddit, post.id);
+      const response = await getPostComments(subreddit, post.id, { allowRss });
       const comments = flattenComments(response);
       // Cap any single post's contribution — a high-comment roundup/megathread
       // that slips past the title guard can't dominate the sentiment sample.

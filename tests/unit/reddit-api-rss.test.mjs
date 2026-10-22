@@ -284,7 +284,7 @@ test('switchToProxy serves a post-comments url from free RSS (BRO-5916), parsed 
   resetFallbackState();
   for (const k of ['SCRAPINGBEE_API_KEY', 'SCRAPINGDOG_API_KEY', 'BRIGHTDATA_TOKEN']) delete process.env[k];
   commentsRssHit = false;
-  const resp = await switchToProxy(`${base}/r/Broadway/comments/1abcxyz.json?limit=500&depth=10&raw_json=1`);
+  const resp = await switchToProxy(`${base}/r/Broadway/comments/1abcxyz.json?limit=500&depth=10&raw_json=1`, { allowRss: true });
   assert.equal(commentsRssHit, true);
   const comments = flattenComments(resp);
   assert.equal(comments.length, 1, 'the post entry (t3_) is dropped, only t1_ comments remain');
@@ -302,6 +302,18 @@ test('fetchViaRedditRSS waits out a 429 using the rate-limit reset header, then 
   assert.equal(flakyHits, 2);
   assert.equal(resp.data.children.length, 1);
   assert.equal(getStats().rateLimits, 1);
+});
+
+test('switchToProxy does NOT use RSS for comments without opt-in (score-ranking callers must not get degraded data)', async () => {
+  const { switchToProxy, resetFallbackState } = load();
+  resetFallbackState();
+  for (const k of ['SCRAPINGBEE_API_KEY', 'SCRAPINGDOG_API_KEY', 'BRIGHTDATA_TOKEN']) delete process.env[k];
+  commentsRssHit = false;
+  await assert.rejects(
+    () => switchToProxy(`${base}/r/Broadway/comments/1abcxyz.json`),
+    /Reddit blocked and all proxies unavailable/
+  );
+  assert.equal(commentsRssHit, false);
 });
 
 test('toRssUrl maps <id>.json to <id>/.rss for comments and leaves search urls alone', () => {

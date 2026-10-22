@@ -37,7 +37,7 @@ const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/re
 const cooldown = require('./lib/reddit-dispatch-cooldown');
 const { sendAlert } = require('./lib/discord-notify');
 const { computeProductionWindow, isPostInProductionWindow } = require('./lib/production-window');
-const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey, isOwnerComment, isRedditFresh, redditBackoffReason, redditSaveDecision, partitionRequestedShows } = require('./lib/reddit-post-filters');
+const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey, isOwnerComment, isRedditFresh, redditBackoffReason, redditSaveDecision, partitionRequestedShows, selectPostsForComments } = require('./lib/reddit-post-filters');
 
 // A single roundup/megathread can hold hundreds of comments about dozens of
 // shows. Even after excluding such posts by title, cap how many comments any
@@ -417,8 +417,7 @@ async function collectShowComments(show) {
   // Don't re-sort by engagement (that drowns out good posts with high-engagement meta threads)
   // The LLM will filter out irrelevant comments - we just need to give it good posts to work with
   // Filter out posts with very few comments (saves API calls on comment fetching)
-  const postsWithComments = posts.filter(p => (p.num_comments || 0) >= 3);
-  const topPosts = postsWithComments.slice(0, 75);  // Broad enough for statistical stability
+  const topPosts = selectPostsForComments(posts);  // <=75: broad enough for statistical stability; unknown-count (RSS) posts kept, capped
 
   if (verbose) {
     console.log(`  Top 5 posts (by Reddit search relevance):`);
@@ -440,7 +439,7 @@ async function collectShowComments(show) {
   let comments = [];
   for (const [sr, srPosts] of postsBySubreddit) {
     try {
-      const srComments = await collectCommentsFromPosts(sr, srPosts, 10000, MAX_COMMENTS_PER_POST);
+      const srComments = await collectCommentsFromPosts(sr, srPosts, 10000, MAX_COMMENTS_PER_POST, { allowRss: true });
       comments.push(...srComments);
     } catch (e) {
       console.error(`  Comment collection failed in r/${sr}: ${e.message}`);
@@ -601,14 +600,15 @@ async function maybeAlertRedditStale() {
   const rows = cooldown.readLedger();
   const verdict = cooldown.shouldAlertStale(rows);
   if (!verdict.alert) return;
-  cooldown.appendRow({ ts: new Date().toISOString(), outcome: 'alerted', note: verdict.reason });
-  await sendAlert({
+  const delivered = await sendAlert({
     title: 'Reddit sentiment scrape has been down 48h+',
     description: `${verdict.reason}. Every route (direct, RSS, Bright Data, Scrapingdog, ScrapingBee) failed, so new openings get no Reddit audience data. Dispatches are on cooldown to stop burning credits; one probe runs every ${cooldown.DEFAULTS.probeAfterHours}h and clears it on success.`,
     severity: 'error',
     email: true,
     idempotencyKey: `reddit-stale-${verdict.sinceTs}`,
   });
+  // Only mark the outage alerted once delivery is confirmed, so a failed send retries next run.
+  if (delivered) cooldown.appendRow({ ts: new Date().toISOString(), outcome: 'alerted', note: verdict.reason });
 }
 
 // Record the run for the cross-run cooldown. "unavailable" = every fetch this
@@ -809,6 +809,7 @@ async function main() {
   for (const show of shows) {
     try {
       const errorsBefore = getStats().errors;
+      const rssBefore = getStats().redditRss;
       const redditData = await processShow(show);
       processed++;
       // reddit-api swallows per-post comment failures and breaker-open skips
@@ -816,6 +817,9 @@ async function main() {
       // result can't be trusted as "no discussion".
       const after = getStats();
       if (after.errors > errorsBefore || after.circuitBroken) showFetchFailed = true;
+      // RSS-served data is truncated (25 search results, unscored comments): never let
+      // it demote a healthy prior sample or grow the no-data backoff streak (BRO-5916).
+      if (after.redditRss > rssBefore) showFetchFailed = true;
 
       const prevReddit = audienceBuzz.shows[show.id] && audienceBuzz.shows[show.id].sources
         ? audienceBuzz.shows[show.id].sources.reddit : undefined;

@@ -428,7 +428,21 @@ function partitionRequestedShows(requestedIds, allShows) {
   return { active, notStarted, unknown };
 }
 
+/**
+ * Pick which posts to fetch comments for. Posts with a known comment count need
+ * >=minComments. RSS search results carry NO count (num_comments undefined), and
+ * treating unknown as 0 dropped every RSS post, so the scrape "succeeded" with
+ * zero comments (BRO-5916). Unknown-count posts are kept, capped (RSS comment
+ * fetches are ~1/min) and placed after the known ones.
+ */
+function selectPostsForComments(posts, { minComments = 3, maxPosts = 75, unknownCap = 12 } = {}) {
+  const known = posts.filter(p => Number.isFinite(p.num_comments) && p.num_comments >= minComments);
+  const unknown = posts.filter(p => p.num_comments == null).slice(0, unknownCap);
+  return [...known, ...unknown].slice(0, maxPosts);
+}
+
 module.exports = {
+  selectPostsForComments,
   lastRedditTouchMs,
   isRedditFresh,
   redditBackoffReason,
