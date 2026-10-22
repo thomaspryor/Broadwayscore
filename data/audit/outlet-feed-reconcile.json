@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T23:25:23.798Z",
+  "generatedAt": "2026-10-22T02:15:28.482Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -29,11 +29,6 @@
       "openingDate": "2026-10-21"
     },
     {
-      "id": "some-woman-west-end-2026",
-      "title": "Some Woman",
-      "openingDate": "2026-10-15"
-    },
-    {
       "id": "lincoln-in-the-bardo-off-broadway-2026",
       "title": "Lincoln in the Bardo",
       "openingDate": "2026-10-19"
@@ -44,6 +39,11 @@
       "openingDate": "2026-10-20"
     },
     {
+      "id": "phyl-off-broadway-2026",
+      "title": "Phyl",
+      "openingDate": "2026-10-22"
+    },
+    {
       "id": "other-desert-cities-2026",
       "title": "Other Desert Cities",
       "openingDate": "2026-10-18"
@@ -52,11 +52,6 @@
       "id": "billy-crystal-860-2026",
       "title": "Billy Crystal 860",
       "openingDate": "2026-10-21"
-    },
-    {
-      "id": "midnight-off-broadway-2026",
-      "title": "Midnight",
-      "openingDate": "2026-10-15"
     },
     {
       "id": "jest-to-impress-off-broadway-2026",
@@ -89,11 +84,6 @@
       "openingDate": "2026-10-17"
     },
     {
-      "id": "memoirs-of-amorous-gentlemen-off-broadway-2026",
-      "title": "Memoirs of Amorous Gentlemen",
-      "openingDate": "2026-10-15"
-    },
-    {
       "id": "school-pictures-off-broadway-2026",
       "title": "School Pictures",
       "openingDate": "2026-10-18"
@@ -102,11 +92,6 @@
       "id": "sea-wall-off-broadway-2026",
       "title": "Sea Wall",
       "openingDate": "2026-10-16"
-    },
-    {
-      "id": "jane-eyre-rose-kingston-off-west-end-2026",
-      "title": "Jane Eyre",
-      "openingDate": "2026-10-15"
     },
     {
       "id": "triumph-off-west-end-2026",
@@ -139,31 +124,12 @@
       "openingDate": "2026-10-18"
     },
     {
-      "id": "the-bodyguard-tour-2026",
-      "title": "The Bodyguard",
-      "openingDate": "2026-10-15"
-    },
-    {
-      "id": "unconditional-a-new-musical-memoir-off-broadway-2026",
-      "title": "UNCONDITIONAL, a new musical memoir",
-      "openingDate": "2026-10-15"
-    },
-    {
       "id": "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026",
       "title": "The Nicest Body Ever Seen Around These Parts",
       "openingDate": "2026-10-19"
     }
   ],
-  "skipped": [
-    {
-      "showId": "phyl-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
-      "showId": "doll-day-afternoon-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    }
-  ],
+  "skipped": [],
   "feedsChecked": 73,
   "feedsFailed": [
     {
@@ -183,10 +149,6 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
-      "outletId": "viewfromthegods",
-      "error": "AggregateError"
-    },
-    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -199,10 +161,46 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 724,
-  "matchedGaps": 4,
-  "possibleGaps": 4,
+  "itemsScanned": 749,
+  "matchedGaps": 14,
+  "possibleGaps": 3,
   "gaps": [
+    {
+      "showId": "billy-crystal-860-2026",
+      "title": "Billy Crystal 860",
+      "level": "matched",
+      "outletId": "one-minute-critic",
+      "url": "https://1minutecritic.com/billy-crystal-860-broadway-review/",
+      "headline": "Billy Crystal returns to Broadway with the one thing the Palisades Fire couldn’t take",
+      "publishDate": "2026-10-21"
+    },
+    {
+      "showId": "billy-crystal-860-2026",
+      "title": "Billy Crystal 860",
+      "level": "matched",
+      "outletId": "culturesauce",
+      "url": "https://culturesauce.com/billy-crystal-860-broadway-review/",
+      "headline": "Billy Crystal&#8217;s &#8216;860&#8217; rummages through the past for a comfy cardigan of a show (Broadway review)",
+      "publishDate": "2026-10-21"
+    },
+    {
+      "showId": "billy-crystal-860-2026",
+      "title": "Billy Crystal 860",
+      "level": "matched",
+      "outletId": "chicagotribune",
+      "url": "https://www.chicagotribune.com/2026/10/21/review-billy-crystal-860-broadway/",
+      "headline": "Review: Home is where the memories are in Billy Crystal&#8217;s &#8216;860&#8217; on Broadway",
+      "publishDate": "2026-10-21"
+    },
+    {
+      "showId": "billy-crystal-860-2026",
+      "title": "Billy Crystal 860",
+      "level": "matched",
+      "outletId": "vulture",
+      "url": "https://www.vulture.com/article/theater-broadway-review-billy-crystal-860.html",
+      "headline": null,
+      "publishDate": "2026-10-21"
+    },
     {
       "showId": "king-of-the-yees-off-broadway-2026",
       "title": "King of the Yees",
@@ -222,13 +220,67 @@
       "publishDate": "2026-10-21"
     },
     {
-      "showId": "some-woman-west-end-2026",
-      "title": "Some Woman",
+      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "title": "The Curious Case of Benjamin Button",
       "level": "matched",
-      "outletId": "a-youngish-perspective",
-      "url": "https://ayoungishperspective.co.uk/2026/10/21/review-some-woman/",
-      "headline": "REVIEW: Some Woman",
+      "outletId": "one-minute-critic",
+      "url": "https://1minutecritic.com/benjamin-button-musical-public-theater-review/",
+      "headline": "Andrew Durand grows younger by the minute in ‘The Curious Case of Benjamin Button’",
       "publishDate": "2026-10-21"
+    },
+    {
+      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "title": "The Curious Case of Benjamin Button",
+      "level": "matched",
+      "outletId": "culturesauce",
+      "url": "https://culturesauce.com/curious-case-of-benjamin-button-musical-off-broadway-review/",
+      "headline": "&#8216;The Curious Case of Benjamin Button&#8217; ages backward to a folksy British beat (Off Broadway review)",
+      "publishDate": "2026-10-21"
+    },
+    {
+      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "title": "The Curious Case of Benjamin Button",
+      "level": "matched",
+      "outletId": "nypost",
+      "url": "https://nypost.com/2026/10/21/entertainment/curious-case-of-benjamin-button-review-a-sweet-and-folksy-musical-that-wants-to-go-to-broadway/",
+      "headline": "‘Curious Case of Benjamin Button’ review: A sweet and folksy musical that wants to go to Broadway",
+      "publishDate": "2026-10-21"
+    },
+    {
+      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "title": "The Curious Case of Benjamin Button",
+      "level": "matched",
+      "outletId": "nysr",
+      "url": "https://nystagereview.com/2026/10/21/the-curious-case-of-benjamin-button-a-musical-fable-that-will-make-you-feel-younger/",
+      "headline": "The Curious Case of Benjamin Button: A Musical Fable That Will Make You Feel Younger",
+      "publishDate": "2026-10-21"
+    },
+    {
+      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "title": "The Curious Case of Benjamin Button",
+      "level": "matched",
+      "outletId": "nysr",
+      "url": "https://nystagereview.com/2026/10/21/the-curious-case-of-benjamin-button-new-musical-pushes-button/",
+      "headline": "The Curious Case of Benjamin Button: New Musical Pushes Button",
+      "publishDate": "2026-10-21"
+    },
+    {
+      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "title": "The Curious Case of Benjamin Button",
+      "level": "matched",
+      "outletId": "pages-on-stages",
+      "url": "https://pagesonstages.com/2026/10/21/the-curious-case-of-benjamin-button/",
+      "headline": "The Tide Is Comin’ In",
+      "publishDate": "2026-10-21"
+    },
+    {
+      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "title": "The Curious Case of Benjamin Button",
+      "level": "matched",
+      "outletId": "the-recs",
+      "url": "https://therecs.co.uk/the-curious-case-of-benjamin-button-the-public-theater/",
+      "headline": "The Curious Case of Benjamin Button &#8211; The Public Theater ★★★★★",
+      "publishDate": "2026-10-22"
     },
     {
       "showId": "triumph-off-west-end-2026",
@@ -240,21 +292,12 @@
       "publishDate": "2026-10-18"
     },
     {
-      "showId": "jane-eyre-rose-kingston-off-west-end-2026",
-      "title": "Jane Eyre",
+      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "title": "The Curious Case of Benjamin Button",
       "level": "possible",
-      "outletId": "artsdesk",
-      "url": "https://theartsdesk.com/theatre/jane-eyre-southwark-playhouse-elephant-review-self-actualization-gothic-gloom",
-      "headline": "Jane Eyre, Southwark Playhouse Elephant review - self-actualization in the gothic gloom",
-      "publishDate": null
-    },
-    {
-      "showId": "midnight-off-broadway-2026",
-      "title": "Midnight",
-      "level": "possible",
-      "outletId": "standard",
-      "url": "https://standard.co.uk/culture/theatre/midnight-at-the-never-get-review-b1290727.html",
-      "headline": "Midnight at the Never Get: Polished if schmaltzy musical",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-the-curious-case-of-benjamin-button-is-a-musical-fable-that-jigs-to-the-rhythm-of-life_1857723/",
+      "headline": "Review: The Curious Case of Benjamin Button Is a Musical Fable That Jigs to the Rhythm of Life",
       "publishDate": null
     },
     {
