@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T07:59:58.430Z",
+  "generatedAt": "2026-10-22T18:40:17.480Z",
   "scope": "2 opening window(s): derren-brown-only-human-west-end-2026 (2026-10-22), phyl-off-broadway-2026 (2026-10-22)",
   "degraded": null,
   "windows": [
@@ -17,23 +17,84 @@
     }
   ],
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "logEntryCount": 250679,
-  "logOldestEntryAt": "2026-10-18T23:13:07.604Z",
+  "logEntryCount": 154946,
+  "logOldestEntryAt": "2026-10-20T20:23:38.074Z",
   "publishTimesLoaded": 0,
   "verdict": {
     "verdict": "insufficient-data",
     "pass": false,
-    "evaluated": 0,
+    "evaluated": 2,
     "inFlight": 0,
     "compliant": 0,
-    "compliancePct": null,
-    "p50Ms": null,
-    "p90Ms": null,
+    "compliancePct": 0,
+    "p50Ms": 4871055,
+    "p90Ms": 12908792,
     "targetMinutes": 15,
     "targetPct": 90,
     "minSample": 5,
-    "breaches": [],
-    "byBasis": {}
+    "breaches": [
+      {
+        "showId": "derren-brown-only-human-west-end-2026",
+        "reviewKey": "london-box-office:stuart-king:https://www.londonboxoffice.co.uk/news/post/derren-brown-only-human-apollo-theatre-review",
+        "outletId": "london-box-office",
+        "publishedAt": null,
+        "publishedAtAssumedZone": false,
+        "firstSeenAt": "2026-10-22T10:05:41.208Z",
+        "collectedAt": null,
+        "scoredAt": null,
+        "rebuiltAt": "2026-10-22T11:33:48.364Z",
+        "liveAt": "2026-10-22T13:30:50.000Z",
+        "pipelineMs": 12308792,
+        "publishedToLiveMs": 12908792,
+        "basis": "poller-bounded",
+        "stuckAtStage": null
+      },
+      {
+        "showId": "derren-brown-only-human-west-end-2026",
+        "reviewKey": "london-theatre:matt-wolf:https://www.londontheatre.co.uk/reviews/derren-brown-only-human-review-apollo-theatre",
+        "outletId": "london-theatre",
+        "publishedAt": null,
+        "publishedAtAssumedZone": false,
+        "firstSeenAt": "2026-10-22T13:36:02.945Z",
+        "collectedAt": null,
+        "scoredAt": null,
+        "rebuiltAt": "2026-10-22T13:42:48.459Z",
+        "liveAt": "2026-10-22T14:47:14.000Z",
+        "pipelineMs": 4271055,
+        "publishedToLiveMs": 4871055,
+        "basis": "poller-bounded",
+        "stuckAtStage": null
+      }
+    ],
+    "byBasis": {
+      "poller-bounded": {
+        "evaluated": 2,
+        "compliant": 0
+      }
+    }
   },
-  "records": []
+  "records": [
+    {
+      "showId": "derren-brown-only-human-west-end-2026",
+      "outletId": "london-box-office",
+      "reviewKey": "london-box-office:stuart-king:https://www.londonboxoffice.co.uk/news/post/derren-brown-only-human-apollo-theatre-review",
+      "basis": "poller-bounded",
+      "firstSeenAt": "2026-10-22T10:05:41.208Z",
+      "liveAt": "2026-10-22T13:30:50.000Z",
+      "pipelineMinutes": 205.1,
+      "publishedToLiveMinutes": 215.1,
+      "stuckAtStage": null
+    },
+    {
+      "showId": "derren-brown-only-human-west-end-2026",
+      "outletId": "london-theatre",
+      "reviewKey": "london-theatre:matt-wolf:https://www.londontheatre.co.uk/reviews/derren-brown-only-human-review-apollo-theatre",
+      "basis": "poller-bounded",
+      "firstSeenAt": "2026-10-22T13:36:02.945Z",
+      "liveAt": "2026-10-22T14:47:14.000Z",
+      "pipelineMinutes": 71.2,
+      "publishedToLiveMinutes": 81.2,
+      "stuckAtStage": null
+    }
+  ]
 }
