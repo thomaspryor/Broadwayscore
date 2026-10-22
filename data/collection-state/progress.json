@@ -632,7 +632,8 @@
     "player-off-west-end-2026/times-uk--james-gheerbrant.json",
     "mj-the-musical-west-end-2024/daily-mail--sean-ogrady.json",
     "a-beautiful-noise-the-neil-diamond-musical-2022/timeout--adam-feldman.json",
-    "water-for-elephants-tour-2025/orlando-sentinel--matthew-j-palm.json"
+    "water-for-elephants-tour-2025/orlando-sentinel--matthew-j-palm.json",
+    "phyl-off-broadway-2026/theatermania--linda-buchwald.json"
   ],
   "failed": [
     "seagull-true-story-off-broadway-2026/nysr--frank-scheck.json",
@@ -1048,7 +1049,21 @@
     "funny-girl-2002/wsj--charles-isherwood.json",
     "larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026/littlelondoner--little-londoner.json",
     "all-male-as-you-like-it-regional-2026/talkinbroadway--unknown.json",
-    "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/talkinbroadway--unknown.json"
+    "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/talkinbroadway--unknown.json",
+    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json",
+    "other-desert-cities-2026/cbsnews--unknown.json",
+    "school-pictures-off-broadway-2026/airmail--air-mail.json",
+    "the-dog-show-come-sit-stay-off-broadway-2026/talkalmanmusic--unknown.json",
+    "two-girls-off-broadway-2026/howdidimissthat--unknown.json",
+    "midnight-off-broadway-2026/timeout--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "midnight-off-broadway-2026/openingnight--edward-a-kliszus.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theatermania--zachary-stewart.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/timeout--unknown.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/culturesauce--thom-geier.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--roma-torre.json",
+    "fish-off-broadway-2026/timeout--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1322,12 +1337,16 @@
       "franz-and-marie-west-end-2026/londonlivinglarge--london-living-large.json",
       "mj-the-musical-west-end-2024/daily-mail--sean-ogrady.json",
       "a-beautiful-noise-the-neil-diamond-musical-2022/timeout--adam-feldman.json",
-      "water-for-elephants-tour-2025/orlando-sentinel--matthew-j-palm.json"
+      "water-for-elephants-tour-2025/orlando-sentinel--matthew-j-palm.json",
+      "phyl-off-broadway-2026/theatermania--linda-buchwald.json"
     ],
     "amp": [
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json"
+    ],
     "directCookies": [
       "the-glenn-miller-story-west-end-2018/standard--henry-hitchings.json"
     ],
@@ -1351,7 +1370,7 @@
     ]
   },
   "startTime": "2026-10-21T14:15:44.320Z",
-  "lastProcessed": "and-juliet-2022/wsj--charles-isherwood.json",
+  "lastProcessed": "fish-off-broadway-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-10-22T01:57:46.521Z",
@@ -1376,6 +1395,24 @@
       "event": "bb-session",
       "session": "3c3dbd65",
       "url": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-n"
+    },
+    {
+      "t": "2026-10-22T02:19:06.504Z",
+      "event": "bb-session",
+      "session": "2189fc63",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-22T02:20:02.863Z",
+      "event": "bb-session",
+      "session": "7a2fa7cc",
+      "url": "https://bachtrack.com/review-mazzoli-lincoln-in-the-bardo-blain-cruz-mattei-metr"
+    },
+    {
+      "t": "2026-10-22T02:21:33.426Z",
+      "event": "bb-session",
+      "session": "f27b2a8b",
+      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
     }
   ]
 }
