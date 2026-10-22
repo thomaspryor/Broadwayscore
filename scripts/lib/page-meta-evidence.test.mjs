@@ -161,3 +161,16 @@ test('a no-review-signal stamp from before rules v2 is stale; other reasons stay
   assert.equal(stampIsCurrent({ metaEvidenceCheckResult: 'boilerplate' }), true);
   assert.equal(stampIsCurrent({ metaEvidenceCheckResult: 'unreachable' }), true);
 });
+
+test('second-opinion regressions: "Review: The X" names the show; musical standfirst may mention ballet; hub URLs are not review slugs', () => {
+  const { reviewPathUrl } = require('./page-meta-evidence.js');
+  assert.equal(evidenceNamesShow(show('The Heart'), 'Review: The Heart, a tender new play', 'x', ''), true);
+  assert.equal(evidenceNamesShow(show('The Heart'), "'The Heart' review: tender and strange", 'x', ''), true);
+  assert.equal(evidenceNamesShow(show('The Heart'), "'Wildwood' Review: A Technical Marvel with a Heart", 'x', ''), false);
+  const html = page('Billy Elliot review: a joyous revival', 'A miner’s son who dreams of ballet leaps onto the stage in a thrilling, heartfelt revival of the musical.',
+    '<meta property="article:published_time" content="2026-09-20T10:00:00Z">');
+  assert.equal(judge(show('Billy Elliot'), html).ok, true);
+  assert.equal(reviewPathUrl('https://example.com/review-hub/hamlet'), false);
+  assert.equal(reviewPathUrl('https://example.com/review-podcast-episode-12'), false);
+  assert.equal(reviewPathUrl('https://example.com/review-hamlet-globe'), true);
+});

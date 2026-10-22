@@ -178,7 +178,7 @@ function normalizeWords(s) {
 function reviewPathUrl(url) {
   let seg = '';
   try { seg = new URL(String(url || '')).pathname.split('/').filter(Boolean)[0] || ''; } catch { return false; }
-  return /^review-[a-z0-9]/i.test(seg) && !/round-?up|reviews?-of-the|best-of|top-\d/i.test(seg);
+  return /^review-[a-z0-9]/i.test(seg) && !/round-?up|reviews?-of-the|best-of|top-\d|^review-(?:hub|section|podcast|preview|news|archive)/i.test(seg);
 }
 
 /**
@@ -209,7 +209,7 @@ function evidenceNamesShow(show, headline, description, url) {
     // must open the headline or follow a review word or punctuation boundary, never
     // an article or preposition inside a sentence.
     const raw = foldDiacritics(String(headline || '')).toLowerCase();
-    const re = new RegExp(`(^(?:the\\s+)?|[:'"\\u2018\\u201c\\-|]\\s*|\\b(?:review|reviews|reviewed)\\s+(?:of\\s+)?)${tokens[0]}s?\\b`);
+    const re = new RegExp(`(^|[:'"\\u2018\\u201c\\-|]\\s*|\\b(?:review|reviews|reviewed)\\s+(?:of\\s+)?)(?:the\\s+)?${tokens[0]}s?\\b`);
     return re.test(raw) && (head.includes(phrase) || head.includes(plural));
   }
   if (full.includes(phrase) || full.includes(plural)) return true;
@@ -283,8 +283,9 @@ function evaluatePageMeta({ data, show, meta, inWindow }) {
     return { ok: false, reason: 'boilerplate' };
   }
   if (ALWAYS_NON_REVIEW.test(`${headline} ${description}`)) return { ok: false, reason: 'non-theatre-or-list' };
-  // A ballet review of a same-titled work (Scottish Ballet's Streetcar vs the Old Vic play).
-  if (/\bballet\b/i.test(`${headline} ${description}`) && !/\bballet\b/i.test(`${show && show.title} ${show && show.venue}`)) {
+  // A ballet review of a same-titled work (Scottish Ballet's Streetcar vs the Old Vic play). Headline only:
+  // a musical's standfirst may mention ballet (Billy Elliot, Oklahoma!'s dream ballet).
+  if (/\bballet\b/i.test(headline) && !/\bballet\b/i.test(`${show && show.title} ${show && show.venue}`)) {
     return { ok: false, reason: 'non-theatre-or-list' };
   }
   const stars = starRunRating(headline);
