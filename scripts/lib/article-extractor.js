@@ -40,7 +40,7 @@ function stripHtml(s) {
     .replace(/<figcaption[^>]*>[\s\S]*?<\/figcaption>/g, ' ')
     .replace(/<[^>]+>/g, ' ')
     .replace(/&nbsp;/g, ' ')
-    .replace(/&#039;|&apos;/g, "'")
+    .replace(/&#039;|&#x27;|&apos;/g, "'")
     .replace(/&amp;/g, '&')
     .replace(/&quot;|&ldquo;|&rdquo;|&#8220;|&#8221;/g, '"')
     .replace(/&#8217;|&rsquo;|&lsquo;|&#8216;/g, "'")
@@ -582,11 +582,35 @@ function extractRadioTimesBody(html) {
 }
 
 /**
+ * londontheatre.co.uk (Official London Theatre, BRO-5904). Class names are
+ * CSS-in-JS (jssNNN) and change per build, so anchor on the stable
+ * data-test-id="markdown-content" sections. The review is the standfirst
+ * section plus the body section; the FAQ block (id="faq-section") and the
+ * related-article rail follow it and are cut off.
+ */
+function extractLondonTheatreBody(html) {
+  const faq = html.search(/<section\b[^>]*id=["']faq-section["']/i);
+  const head = faq >= 0 ? html.slice(0, faq) : html;
+  const sections = [...head.matchAll(/<section\b[^>]*data-test-id=["']markdown-content["'][^>]*>([\s\S]*?)<\/section>/gi)];
+  const paras = [];
+  for (const sec of sections) {
+    for (const m of sec[1].matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)) {
+      const text = stripHtml(m[1]);
+      if (!text || /^Photo credit\b/i.test(text)) continue;
+      paras.push(text);
+    }
+  }
+  return paras.length ? paras.join('\n\n') : null;
+}
+
+/**
  * Per-outlet patterns. Order matters: most specific first.
  * Each entry: [hostnameMatch, regex or text extractor function, minLength].
  * minLength gates against accidental shell-match (e.g. matching 200 chars of nav).
  */
 const PATTERNS = [
+  // Official London Theatre: see extractLondonTheatreBody (BRO-5904).
+  ['londontheatre.co.uk', extractLondonTheatreBody, 300],
   // Radio Times: the body nests ratings, ads and image divs. Balanced matching
   // keeps every paragraph and excludes the pension/sidebar and disclosure copy.
   ['radiotimes.com', extractRadioTimesBody, 300],
@@ -1199,4 +1223,4 @@ function isDedicatedExtractorHost(urlOrHost) {
   return DEDICATED_EXTRACTOR_HOSTS.some((d) => h.includes(d));
 }
 
-module.exports = { isDedicatedExtractorHost, extractArticleText, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody };
+module.exports = { isDedicatedExtractorHost, extractArticleText, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody };
