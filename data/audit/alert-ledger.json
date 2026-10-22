@@ -244,11 +244,11 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-22T18:29:58.168Z",
-      "lastSeen": "2026-10-22T19:55:40.665Z",
-      "lastNotifiedAt": "2026-10-22T18:29:58.168Z",
-      "lastSurfacedAt": "2026-10-22T18:29:58.168Z",
-      "notifyCount": 154,
+      "incidentOpenedAt": "2026-10-22T20:09:47.160Z",
+      "lastSeen": "2026-10-22T20:09:47.160Z",
+      "lastNotifiedAt": "2026-10-22T20:09:47.160Z",
+      "lastSurfacedAt": "2026-10-22T20:09:47.160Z",
+      "notifyCount": 156,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 142,
@@ -22280,13 +22280,13 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"real active target-outlet critics have author-page overrides\"",
       "firstSeen": "2026-10-20T20:23:23.923Z",
       "incidentOpenedAt": "2026-10-20T22:02:19.935Z",
-      "lastSeen": "2026-10-22T19:55:40.618Z",
+      "lastSeen": "2026-10-22T20:09:47.145Z",
       "lastNotifiedAt": "2026-10-20T22:02:19.935Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-5792",
-      "silentRefires": 81
+      "silentRefires": 82
     },
     "land:land/bro-5788-probe-input": {
       "status": "resolved",
@@ -23641,7 +23641,7 @@
       "silentRefires": 3
     },
     "test-yml:red:E2E Tests:fd6209b2": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Setup Playwright",
       "firstSeen": "2026-10-22T14:09:25.726Z",
@@ -23657,7 +23657,9 @@
         "mode": "dispatch-at-filing",
         "runId": "39790224688",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39790224688"
-      }
+      },
+      "resolvedAt": "2026-10-22T20:09:47.126Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-5943-theatr-alias": {
       "status": "resolved",
