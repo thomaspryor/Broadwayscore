@@ -974,5 +974,36 @@
       }
     ],
     "queuedAt": "2026-10-22T15:02:15.240Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5939-tap-detail",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-5939-tap-detail",
+    "description": "land.yml did not land land/bro-5939-tap-detail: the scripts-lib-tests gate went red at 7af09e6a17. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39801180047",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5939-tap-detail"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "7af09e6a178f8a8f4e3d7fb9b2ae0965de2c05d2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39801180047"
+      }
+    ],
+    "queuedAt": "2026-10-22T15:21:18.760Z"
   }
 ]
