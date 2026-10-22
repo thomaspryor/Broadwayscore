@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-22T11:58:27.647Z",
+    "lastUpdated": "2026-10-22T15:01:52.187Z",
     "version": "2.1.0",
     "lastChange": "BRO-5373: split The Mail on Sunday (mail-on-sunday, splitFrom daily-mail) out of daily-mail"
   },
@@ -13361,6 +13361,17 @@
         "nashvilleparent"
       ],
       "domain": "nashvilleparent.com"
+    },
+    "nick-holmes-music": {
+      "displayName": "Nick Holmes Music",
+      "tier": 3,
+      "aliases": [
+        "nick-holmes-music"
+      ],
+      "domain": "nick-holmes-music.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-22T15:01:52.187Z"
     }
   },
   "_aliasIndex": {
