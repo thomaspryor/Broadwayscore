@@ -22,6 +22,10 @@ const ROOT = path.join(__dirname, '..', '..');
 const EDITABLE_DATA_FIELDS = pickEditableFields([
   'shows.json', 'commercial.json', 'audience-buzz.json',
 ]);
+// Plan-only (owner-approved) extras, not user-feedback fields (BRO-5975): the exemption a
+// show earns when Playbill's page is a different production, which validate-show-venue.js
+// honors only alongside a substantive statusBackfillSource.
+EDITABLE_DATA_FIELDS['shows.json'] = [...EDITABLE_DATA_FIELDS['shows.json'], 'noPlaybillProductionPage', 'statusBackfillSource'];
 
 /** null when the file and field are editable by a plan, else the refusal reason. */
 function dataEditAllowProblem({ file, field }) {
