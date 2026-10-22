@@ -48,7 +48,7 @@ defaults:
 jobs:
   rename:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 75
     env:
       BATCH: ${{ inputs.batch }}
       MODE: ${{ inputs.mode }}
