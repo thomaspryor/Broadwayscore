@@ -289,3 +289,27 @@ export function getOutletConfigById(outletId?: string | null, outletName?: strin
   }
   return outletName ? getOutletConfig(outletName) : null;
 }
+
+/**
+ * What ReviewsList draws for one outlet: the logo; if it fails or is absent,
+ * a colored abbreviation circle for a known outlet (`known` set), else a
+ * plain first-letter circle.
+ */
+export interface OutletBadge {
+  logoUrl: string | null;
+  known: { abbrev: string | null; color: string | null } | null;
+}
+
+/**
+ * Resolve an outlet's badge on the server. The registry behind it is ~115kB
+ * of JSON (~28kB gz); ReviewsList is a client component, so importing the
+ * lookups there shipped the whole registry on every show page (BRO-5985).
+ * Pass the result in as a prop instead.
+ */
+export function getOutletBadge(outletId?: string | null, outletName?: string): OutletBadge {
+  const config = getOutletConfigById(outletId, outletName);
+  return {
+    logoUrl: getOutletLogoUrlById(outletId, outletName),
+    known: config ? { abbrev: config.abbrev ?? null, color: config.color ?? null } : null,
+  };
+}

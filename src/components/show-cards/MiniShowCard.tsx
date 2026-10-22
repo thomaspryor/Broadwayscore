@@ -14,13 +14,16 @@ import type { ShowCardShow } from './types';
 
 export interface MiniShowCardProps {
   show: ShowCardShow;
+  /** fetchPriority=high: only the page's LCP image. */
   priority?: boolean;
+  /** Load without waiting for scroll (above the fold); priority implies it. */
+  eager?: boolean;
 }
 
 // Compact card for featured/horizontal scroll rows
 // NOTE: Poster images use 2:3 aspect ratio (standard Broadway poster format, e.g., 480x720)
 // Never use a landscape/hero image as a poster — source proper portrait images instead
-const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: MiniShowCardProps) {
+const MiniShowCard = memo(function MiniShowCard({ show, priority = false, eager = false }: MiniShowCardProps) {
   const category = show.category ?? 'broadway';
   const reviewCount = show.criticScore?.reviewCount ?? 0;
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
@@ -71,7 +74,7 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: Mini
             ]}
             alt={`${show.title} ${marketLabel} ${show.type}`}
             priority={priority}
-            loading={priority ? "eager" : "lazy"}
+            loading={priority || eager ? "eager" : "lazy"}
             sizes="(min-width: 640px) 128px, 112px"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             fallback={

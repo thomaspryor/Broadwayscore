@@ -27,7 +27,7 @@ function broadcastWatchlist(userId: string, entries: WatchlistEntry[]) {
 let watchlistCache: { userId: string; promise: Promise<WatchlistEntry[]> } | null = null;
 
 async function fetchWatchlist(userId: string): Promise<WatchlistEntry[]> {
-  const client = getSupabaseClient();
+  const client = await getSupabaseClient();
   if (!client) return [];
   const { data, error: err } = await client
     .from('watchlist')
@@ -65,7 +65,7 @@ let localMigration: { userId: string; promise: Promise<WatchlistEntry[] | null> 
 async function migrateLocalWatchlist(userId: string): Promise<WatchlistEntry[] | null> {
   const local = getLocalWatchlist();
   if (local.length === 0) return null;
-  const client = getSupabaseClient();
+  const client = await getSupabaseClient();
   if (!client) return null;
   const [account, rated] = await Promise.all([
     fetchWatchlist(userId),
@@ -158,7 +158,7 @@ export function useWatchlist(userId: string | null) {
   // rows directly rather than through addToWatchlist). Mount effects should
   // omit it so 30 cards dedupe to one GET.
   const getWatchlist = useCallback(async (force = false): Promise<WatchlistEntry[]> => {
-    const client = getSupabaseClient();
+    const client = await getSupabaseClient();
     if (!client || !userId) return [];
 
     setLoading(true);

@@ -24,7 +24,7 @@ export function useUserLists(userId: string | null) {
   const [error, setError] = useState<string | null>(null);
 
   const getLists = useCallback(async (): Promise<UserList[]> => {
-    const client = getSupabaseClient();
+    const client = await getSupabaseClient();
     if (!client || !userId) return [];
 
     setLoading(true);
@@ -83,7 +83,7 @@ export function useUserLists(userId: string | null) {
   }, [userId]);
 
   const getListItems = useCallback(async (listId: string): Promise<ListItem[]> => {
-    const client = getSupabaseClient();
+    const client = await getSupabaseClient();
     if (!client || !userId) return [];
 
     try {

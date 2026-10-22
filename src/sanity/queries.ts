@@ -1,4 +1,5 @@
-import { groq } from 'next-sanity';
+// 'groq' directly, not the next-sanity barrel (see client.ts).
+import groq from 'groq';
 
 export const postsListQuery = groq`
   *[_type == "post" && defined(slug.current) && publishedAt <= now()]

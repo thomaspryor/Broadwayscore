@@ -533,7 +533,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
               <p className="text-xs text-gray-500 mb-2">Ranked by critical consensus</p>
               <ScrollRow>
                 {topMusicals.map((show, index) => (
-                  <MiniShowCard key={show.id} show={show} priority={index < 2} />
+                  <MiniShowCard key={show.id} show={show} priority={index === 0} eager={index < 4} />
                 ))}
               </ScrollRow>
             </section>

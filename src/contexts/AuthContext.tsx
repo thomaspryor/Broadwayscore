@@ -1,7 +1,9 @@
 'use client';
 
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
-import { getSupabaseClient } from '@/lib/supabase';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { getSupabaseClient, hasStoredSupabaseSession, isSupabaseConfigured, onSupabaseClientReady, SUPABASE_STORAGE_KEY, urlHasAuthResult } from '@/lib/supabase';
+import { isAuthCallbackPath } from '@/lib/analytics/redact-url';
 import { saveReturnUrl, clearReturnUrl, clearPendingAction, safeReturnPath, takeSignInParam } from '@/lib/deferred-auth';
 import { oauthRedirectUrl } from '@/lib/auth-redirect';
 import { autoSubscribeOnSignIn } from '@/lib/auto-subscribe';
@@ -88,63 +90,96 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener('pageshow', onPageShow);
   }, []);
 
-  // Initialize auth state on mount
+  // Initialize auth state on mount.
+  // The Supabase SDK is loaded only when it can matter: a saved sign-in on
+  // this device, an OAuth return page or OAuth result in the URL, or (later)
+  // a sign-in, import or any other caller of getSupabaseClient(). Anonymous
+  // visitors never download it, and their auth state settles at once
+  // (signed out).
   useEffect(() => {
-    const client = getSupabaseClient();
-    if (!client) {
+    if (!isSupabaseConfigured()) {
       setLoading(false);
       return;
     }
 
-    // Get existing session
-    client.auth.getSession().then(({ data: { session } }) => {
-      setAnalyticsUser(session?.user?.id ?? null);
-      if (session?.user) {
-        setUser({ id: session.user.id, email: session.user.email || '' });
-        loadProfile(session.user.id);
-        // Restored sessions too (not just fresh SIGNED_IN): users who signed
-        // up before auto-subscribe shipped must still land on the list.
-        // Fire-and-forget; internally idempotent.
-        if (session.user.email) autoSubscribeOnSignIn(session.user.email);
-      }
+    let unsubscribe: (() => void) | undefined;
+    let cancelled = false;
+
+    const attach = (client: SupabaseClient) => {
+      if (cancelled || unsubscribe) return;
+      // Get existing session
+      client.auth.getSession().then(({ data: { session } }) => {
+        setAnalyticsUser(session?.user?.id ?? null);
+        if (session?.user) {
+          setUser({ id: session.user.id, email: session.user.email || '' });
+          loadProfile(session.user.id);
+          // Restored sessions too (not just fresh SIGNED_IN): users who signed
+          // up before auto-subscribe shipped must still land on the list.
+          // Fire-and-forget; internally idempotent.
+          if (session.user.email) autoSubscribeOnSignIn(session.user.email);
+        }
+        setLoading(false);
+      });
+
+      // Listen for auth state changes
+      const { data: { subscription } } = client.auth.onAuthStateChange((event, session) => {
+        if (event === 'SIGNED_IN' && session?.user) {
+          setUser({ id: session.user.id, email: session.user.email || '' });
+          setAnalyticsUser(session.user.id);
+          // No-op unless a sign-in was started on this device (SIGNED_IN also
+          // fires for restored sessions and tab refocus).
+          markSignInCompleted(session.user);
+          // IMPORTANT: Do NOT await Supabase queries here.
+          // _notifyAllSubscribers awaits this callback during initialize(),
+          // but getSession() awaits initializePromise — creating a deadlock.
+          // Fire-and-forget is safe; loadProfile has its own error handling.
+          loadProfile(session.user.id);
+          // Signing in = joining the main mailing list (owner decision 2026-07-13).
+          // Also fire-and-forget — never await inside this callback (deadlock note above).
+          if (session.user.email) autoSubscribeOnSignIn(session.user.email);
+          setModalOpen(false);
+          setSignInLoading(false);
+
+          // Pending action execution handled by consuming components
+          // (e.g. ShowHeroRedesign reads and clears the pending action)
+        } else if (event === 'SIGNED_OUT') {
+          setAnalyticsUser(null);
+          setUser(null);
+          setProfile(null);
+        }
+      });
+
+      unsubscribe = () => subscription.unsubscribe();
+    };
+
+    // Whoever loads the client first, attach to it then.
+    const stopWaiting = onSupabaseClientReady(attach);
+
+    if (hasStoredSupabaseSession() || isAuthCallbackPath(window.location.pathname) || urlHasAuthResult()) {
+      getSupabaseClient().then((client) => {
+        if (!client && !cancelled) setLoading(false);
+      });
+    } else {
+      setAnalyticsUser(null);
       setLoading(false);
-    });
+    }
 
-    // Listen for auth state changes
-    const { data: { subscription } } = client.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session?.user) {
-        setUser({ id: session.user.id, email: session.user.email || '' });
-        setAnalyticsUser(session.user.id);
-        // No-op unless a sign-in was started on this device (SIGNED_IN also
-        // fires for restored sessions and tab refocus).
-        markSignInCompleted(session.user);
-        // IMPORTANT: Do NOT await Supabase queries here.
-        // _notifyAllSubscribers awaits this callback during initialize(),
-        // but getSession() awaits initializePromise — creating a deadlock.
-        // Fire-and-forget is safe; loadProfile has its own error handling.
-        loadProfile(session.user.id);
-        // Signing in = joining the main mailing list (owner decision 2026-07-13).
-        // Also fire-and-forget — never await inside this callback (deadlock note above).
-        if (session.user.email) autoSubscribeOnSignIn(session.user.email);
-        setModalOpen(false);
-        setSignInLoading(false);
-
-        // Pending action execution handled by consuming components
-        // (e.g. ShowHeroRedesign reads and clears the pending action)
-      } else if (event === 'SIGNED_OUT') {
-        setAnalyticsUser(null);
-        setUser(null);
-        setProfile(null);
-      }
-    });
+    // Signed in from another tab: load the SDK so this tab follows.
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === SUPABASE_STORAGE_KEY && e.newValue) void getSupabaseClient();
+    };
+    window.addEventListener('storage', onStorage);
 
     return () => {
-      subscription.unsubscribe();
+      cancelled = true;
+      stopWaiting();
+      window.removeEventListener('storage', onStorage);
+      unsubscribe?.();
     };
   }, []);
 
   const loadProfile = async (userId: string) => {
-    const client = getSupabaseClient();
+    const client = await getSupabaseClient();
     if (!client) return;
 
     try {
@@ -174,7 +209,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const ensureProfile = async (userId: string) => {
-    const client = getSupabaseClient();
+    const client = await getSupabaseClient();
     if (!client) return;
 
     try {
@@ -207,8 +242,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signIn = useCallback(async (provider: 'google' | 'apple', source: string = 'unknown', returnTo?: string) => {
-    const client = getSupabaseClient();
-    if (!client) return;
+    if (!isSupabaseConfigured()) return;
+    // Start the SDK load now but don't await it yet: Apple's popup must open
+    // with no await before it (Safari blocks it otherwise, see apple-auth.ts).
+    const clientReady = getSupabaseClient();
     markSignInStarted(provider, source);
 
     if (provider === 'apple') {
@@ -216,6 +253,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       try {
         setSignInLoading(true);
         const result = await signInWithAppleSDK();
+        const client = await clientReady;
+        if (!client) throw new Error('Supabase client not available');
 
         const { data, error } = await client.auth.signInWithIdToken({
           provider: 'apple',
@@ -263,6 +302,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Google: standard OAuth redirect flow. The requested page wins; the
     // current page otherwise.
     saveReturnUrl(returnTo);
+    const client = await clientReady;
+    if (!client) {
+      setSignInLoading(false);
+      markSignInFailed('google', source, 'client_unavailable');
+      return;
+    }
     const { error } = await client.auth.signInWithOAuth({
       provider,
       options: {
@@ -278,7 +323,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signOut = useCallback(async () => {
-    const client = getSupabaseClient();
+    const client = await getSupabaseClient();
     if (!client) return;
 
     trackUgc('sign_out');
@@ -294,7 +339,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const deleteAccount = useCallback(async (): Promise<DeleteAccountResult> => {
-    const client = getSupabaseClient();
+    const client = await getSupabaseClient();
     if (!client) return 'failed';
 
     trackUgc('account_delete_started');
@@ -332,6 +377,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setModalSource(src);
     setModalReturnTo(options?.returnTo ?? null);
     setModalOpen(true);
+    // Warm the SDK while they choose a provider.
+    void getSupabaseClient();
     trackUgc('sign_in_prompt_shown', { context, source: src });
   }, []);
 
@@ -341,7 +388,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // BRO-4597). Strip the param first: Google sign-in returns to the saved URL,
   // and a param left in place would reopen the modal after signing in.
   useEffect(() => {
-    if (loading || !getSupabaseClient()) return;
+    if (loading || !isSupabaseConfigured()) return;
     const signInLinkSource = takeSignInParam();
     if (signInLinkSource && !user) showSignIn('generic', signInLinkSource);
   }, [loading, user, showSignIn]);

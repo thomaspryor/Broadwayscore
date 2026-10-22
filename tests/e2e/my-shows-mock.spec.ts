@@ -186,6 +186,7 @@ test.describe('My Shows — Diary Sections', () => {
 
   test('venue is displayed in diary list view', async ({ page }) => {
     await goToMock(page);
+    await switchToListView(page); // diary default is grid (2026-07-17); venues show in list rows
     // Diary list view should show venue names instead of badges
     const venues = page.locator('.text-gray-500').filter({ hasText: /Theatre|Theater/ });
     expect(await venues.count()).toBeGreaterThan(0);

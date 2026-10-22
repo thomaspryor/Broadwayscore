@@ -32,7 +32,7 @@ export interface ServerShelfShow {
   criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };
 }
 
-function ServerMiniShowCard({ show, priority }: { show: ServerShelfShow; priority: boolean }) {
+function ServerMiniShowCard({ show, priority, eager }: { show: ServerShelfShow; priority: boolean; eager: boolean }) {
   const reviewCount = show.criticScore?.reviewCount ?? 0;
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
   const rawScore = show.criticScore?.score;
@@ -65,7 +65,7 @@ function ServerMiniShowCard({ show, priority }: { show: ServerShelfShow; priorit
               srcSet={srcSet || undefined}
               sizes={srcSet ? '(min-width: 640px) 128px, 112px' : undefined}
               alt={`${show.title} ${getMarketLabel(show.category)} ${show.type}`}
-              loading={priority ? 'eager' : 'lazy'}
+              loading={eager ? 'eager' : 'lazy'}
               fetchPriority={priority ? 'high' : undefined}
               decoding="async"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -135,7 +135,9 @@ export default function FeaturedRowServer({
       {subtitle && <p className="text-xs text-gray-500 mb-2">{subtitle}</p>}
       <ScrollRow>
         {shows.map((show, index) => (
-          <ServerMiniShowCard key={show.id} show={show} priority={index < 4} />
+          // One high-priority image per page: the LCP poster. Four high
+          // ones (plus the list below) split the bandwidth and delayed it.
+          <ServerMiniShowCard key={show.id} show={show} priority={index === 0} eager={index < 4} />
         ))}
       </ScrollRow>
     </section>

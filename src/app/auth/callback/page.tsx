@@ -46,65 +46,80 @@ export default function AuthCallbackPage() {
       return;
     }
 
-    const client = getSupabaseClient();
-    if (!client) {
-      reportUgcError('auth.callback', { message: 'Supabase client not available', code: 'no_client' });
-      setErrorDetail('Supabase client not available: env vars may be missing');
-      setError(true);
-      return;
-    }
-
-    let redirected = false;
-
-    const doRedirect = () => {
-      if (redirected) return;
-      redirected = true;
-      const returnUrl = getReturnUrl();
-      clearReturnUrl();
-      setTimeout(() => {
-        // The profile fetch AuthContext started is still in flight; the
-        // navigation cancels it, which is not a failure.
-        markPageLeaving();
-        window.location.href = returnUrl;
-      }, 100);
-    };
-
-    // Strategy 1: Listen for auth state change event
-    const { data: { subscription } } = client.auth.onAuthStateChange((event) => {
-      if (event === 'SIGNED_IN') {
-        doRedirect();
-      }
-    });
-
-    // Strategy 2: Poll getSession() to catch already-completed auth
-    // (handles race condition where AuthProvider caught the event first)
-    const pollInterval = setInterval(async () => {
-      try {
-        const { data: { session } } = await client.auth.getSession();
-        if (session?.user) {
-          clearInterval(pollInterval);
-          doRedirect();
-        }
-      } catch {
-        // ignore polling errors
-      }
-    }, 500);
-
-    // Timeout after 10s
+    // Timeout, started before the SDK loads so a stalled chunk load still
+    // ends in the error screen rather than a spinner forever. 15s: the old
+    // 10s budget started after a synchronous client, this one includes the
+    // SDK download.
+    let pollInterval: ReturnType<typeof setInterval> | undefined;
+    let timedOut = false;
     const timeout = setTimeout(() => {
-      clearInterval(pollInterval);
+      timedOut = true;
+      if (pollInterval) clearInterval(pollInterval);
       // Never echo the hash: it holds the access token.
       const hashPresent = hash.length > 1;
       markSignInFailed('google', null, 'timeout');
       reportUgcError('auth.callback', { message: `Timed out waiting for session (hash present: ${hashPresent})`, code: 'timeout' });
       setErrorDetail(`Timed out waiting for sign-in to finish (token ${hashPresent ? 'received' : 'missing'}).`);
       setError(true);
-    }, 10000);
+    }, 15000);
+
+    // The SDK loads on demand (lib/supabase.ts); wait for it here.
+    let cancelled = false;
+    let cleanup: (() => void) | undefined;
+    getSupabaseClient().then((client) => {
+      if (cancelled || timedOut) return;
+      if (!client) {
+        clearTimeout(timeout);
+        reportUgcError('auth.callback', { message: 'Supabase client not available', code: 'no_client' });
+        setErrorDetail('Supabase client not available: env vars missing or the sign-in code failed to load');
+        setError(true);
+        return;
+      }
+
+      let redirected = false;
+
+      const doRedirect = () => {
+        if (redirected) return;
+        redirected = true;
+        const returnUrl = getReturnUrl();
+        clearReturnUrl();
+        setTimeout(() => {
+          // The profile fetch AuthContext started is still in flight; the
+          // navigation cancels it, which is not a failure.
+          markPageLeaving();
+          window.location.href = returnUrl;
+        }, 100);
+      };
+
+      // Strategy 1: Listen for auth state change event
+      const { data: { subscription } } = client.auth.onAuthStateChange((event) => {
+        if (event === 'SIGNED_IN') {
+          doRedirect();
+        }
+      });
+
+      // Strategy 2: Poll getSession() to catch already-completed auth
+      // (handles race condition where AuthProvider caught the event first)
+      pollInterval = setInterval(async () => {
+        try {
+          const { data: { session } } = await client.auth.getSession();
+          if (session?.user) {
+            clearInterval(pollInterval);
+            doRedirect();
+          }
+        } catch {
+          // ignore polling errors
+        }
+      }, 500);
+
+      cleanup = () => subscription.unsubscribe();
+    });
 
     return () => {
+      cancelled = true;
       clearTimeout(timeout);
-      clearInterval(pollInterval);
-      subscription.unsubscribe();
+      if (pollInterval) clearInterval(pollInterval);
+      cleanup?.();
     };
   }, []);
 

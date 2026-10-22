@@ -11,7 +11,7 @@ export function useUserReviews(userId: string | null) {
   const [error, setError] = useState<string | null>(null);
 
   const getReviewsForShow = useCallback(async (showId: string): Promise<UserReview[]> => {
-    const client = getSupabaseClient();
+    const client = await getSupabaseClient();
     if (!client || !userId) return [];
 
     setLoading(true);
@@ -38,7 +38,7 @@ export function useUserReviews(userId: string | null) {
   }, [userId]);
 
   const getAllReviews = useCallback(async (): Promise<UserReview[]> => {
-    const client = getSupabaseClient();
+    const client = await getSupabaseClient();
     if (!client || !userId) return [];
 
     setLoading(true);

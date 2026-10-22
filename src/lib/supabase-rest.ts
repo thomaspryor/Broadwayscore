@@ -23,7 +23,7 @@ interface RestResult<T = Record<string, unknown>> {
  * Uses getUser() to validate the token server-side, then reads the session.
  */
 async function getAccessToken(): Promise<string | null> {
-  const client = getSupabaseClient();
+  const client = await getSupabaseClient();
   if (!client) return null;
 
   // getUser() validates the token with Supabase auth server

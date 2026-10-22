@@ -63,7 +63,7 @@ export default function SharedListClient({ slug }: { slug: string }) {
     let cancelled = false;
 
     async function loadList() {
-      const client = getSupabaseClient();
+      const client = await getSupabaseClient();
       if (!client) {
         setError('Unable to load list data.');
         setLoading(false);

@@ -23,6 +23,8 @@ import type { ShowCardShow, ScoreModeParam } from './types';
 export interface ShowListCardProps {
   show: ShowCardShow;
   index: number;
+  /** First card's image gets fetchPriority=high. Set it where the list is the page's first content (no featured row or hero above it). */
+  priorityFirstImage?: boolean;
   scoreMode: ScoreModeParam;
   hideStatus?: boolean;
   /** 'default' for homepage/market pages, 'compact' for browse lists */
@@ -62,6 +64,7 @@ function RankBadge({ rank }: { rank: number }) {
 const ShowListCard = memo(function ShowListCard({
   show,
   index,
+  priorityFirstImage = false,
   scoreMode,
   hideStatus = false,
   variant = 'default',
@@ -434,7 +437,10 @@ const ShowListCard = memo(function ShowListCard({
           show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'thumbnail') : null,
         ]}
         alt={`${show.title} ${marketLabel} ${show.type}`}
-        priority={index < 2}
+        // High priority only where the caller says the list is the first
+        // content: on home and the market pages a featured row above it holds
+        // the LCP image, and a second high-priority image slowed that one.
+        priority={priorityFirstImage && index === 0}
         loading={index < 2 ? 'eager' : 'lazy'}
         width={112}
         height={112}

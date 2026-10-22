@@ -9,6 +9,7 @@ import { isAuthCallbackPath, isPrivateSharePath, posthogBeforeSend, sentryScrub,
 import { gaInitScript } from '@/lib/analytics/ga-init-script';
 import { applyAnalyticsUser, flushUgcOutbox, reportStaleDeployReload } from '@/lib/ugc-analytics';
 import { installStaleDeployReload } from '@/lib/stale-deploy-reload';
+import { sampledForReplay } from '@/lib/analytics/replay-sample';
 
 interface SentryEvent {
   exception?: { values?: Array<{ stacktrace?: { frames?: Array<{ filename?: string }> } }> };
@@ -27,6 +28,7 @@ declare global {
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN;
 const POSTHOG_KEY = 'phc_xVenlxA1HzyJz0Yjlj3UkF9JVLCPe86Td6vQEK41SF7';
+
 
 export default function AnalyticsWrapper() {
   // Shared Plans privacy (BRO-4481): /plans/<token> is a private link. Every
@@ -118,11 +120,18 @@ export default function AnalyticsWrapper() {
             session_recording: {
               maskAllInputs: false,
               maskInputOptions: { password: true, email: true, textarea: true },
-              sampleRate: 0.1,
+              // Sampling already happened (sampledForReplay); a tab that gets
+              // here records in full rather than being sampled a second time.
+              sampleRate: 1,
             },
             // Shared Plans privacy (BRO-4481): no replay of a plans page, and
             // every event's URLs/properties go through the token redactor.
-            disable_session_recording: isPrivateSharePath(window.location.pathname) || isAuthCallbackPath(window.location.pathname),
+            // Unsampled tabs disable replay so the recorder never downloads.
+            disable_session_recording: isPrivateSharePath(window.location.pathname) || isAuthCallbackPath(window.location.pathname) || !sampledForReplay(),
+            // The project runs no surveys; this skips the ~33kB surveys
+            // script every page otherwise fetched. Turn it back on with the
+            // first survey.
+            disable_surveys: true,
             before_send: posthogBeforeSend,
             loaded: (ph) => {
               if (process.env.NODE_ENV === 'development') ph.opt_out_capturing();

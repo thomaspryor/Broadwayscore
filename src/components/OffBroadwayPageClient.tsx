@@ -518,7 +518,7 @@ function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, ma
               </div>
               <ScrollRow>
                 {topRecentShows.map((show, index) => (
-                  <MiniShowCard key={show.id} show={show} priority={index < 2} />
+                  <MiniShowCard key={show.id} show={show} priority={index === 0} eager={index < 4} />
                 ))}
               </ScrollRow>
             </section>

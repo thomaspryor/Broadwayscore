@@ -1,4 +1,5 @@
 import ReviewsList from '@/components/ReviewsList';
+import { getOutletBadge } from '@/config/outlet-logos';
 
 /**
  * Visual regression test fixture page.
@@ -101,7 +102,7 @@ export default function VisualFixturePage() {
         {/* Review Cards — uses real ReviewsList component */}
         <div>
           <h2 className="text-lg font-bold text-white mb-4">Critic Reviews</h2>
-          <ReviewsList reviews={MOCK_REVIEWS} initialCount={10} />
+          <ReviewsList reviews={MOCK_REVIEWS.map(r => ({ ...r, outletBadge: getOutletBadge(r.outletId, r.outlet) }))} initialCount={10} />
         </div>
 
       </div>

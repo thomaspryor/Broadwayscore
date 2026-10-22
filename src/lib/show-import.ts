@@ -201,7 +201,7 @@ export async function acquireFromShowScore(profileInput: string): Promise<Import
   const slug = extractMemberSlug(profileInput);
   if (!slug) throw new Error(SHOW_SCORE_ERROR_COPY.invalid_slug);
 
-  const supabase = getSupabaseClient();
+  const supabase = await getSupabaseClient();
   if (!supabase) throw new Error(SHOW_SCORE_ERROR_COPY.unauthorized);
 
   const { data, error } = await supabase.functions.invoke<ShowScoreProxyResponse>('show-score-proxy', {
@@ -701,7 +701,7 @@ export async function acquireFromTheatrScreenshots(
   onProgress?: (done: number, total: number) => void,
 ): Promise<ImportAcquireResult> {
   if (files.length === 0) throw new Error(THEATR_ERROR_COPY.no_shows);
-  const supabase = getSupabaseClient();
+  const supabase = await getSupabaseClient();
   if (!supabase) throw new Error(THEATR_ERROR_COPY.unauthorized);
 
   // Picker order: the feed walk needs screenshots top to bottom, which is the

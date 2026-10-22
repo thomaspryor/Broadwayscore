@@ -694,7 +694,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
           </div>
           <ScrollRow>
             {bestRecentShows.map((show, index) => (
-              <MiniShowCard key={show.id} show={show} priority={index < 4} />
+              <MiniShowCard key={show.id} show={show} priority={index === 0} eager={index < 4} />
             ))}
           </ScrollRow>
         </section>

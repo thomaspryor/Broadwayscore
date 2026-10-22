@@ -26,6 +26,7 @@ import { getActorSlugMap } from '@/lib/data-actors';
 import { getCreativeLink } from '@/lib/data-creative';
 import { getShowCastTonyMap } from '@/lib/data-tony-noms';
 import { getOutletSlugById, getCriticSlugByName } from '@/lib/data-reviews';
+import { getOutletBadge } from '@/config/outlet-logos';
 import { getBlogReviewByShowSlug } from '@/lib/data-reviews-blog';
 import { featureFlags } from '@/config/feature-flags';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, getShowFAQs, BASE_URL } from '@/lib/seo';
@@ -944,6 +945,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
             <ReviewsList reviews={show.criticScore.reviews.map(r => ({
               ...r,
               outletSlug: getOutletSlugById(r.outletId) || undefined,
+              outletBadge: getOutletBadge(r.outletId, r.outlet),
               criticSlug: r.criticName ? getCriticSlugByName(r.criticName) : null,
               priorRunLabel: show.priorRuns ? getPriorRunLabel(show.priorRuns, r.publishDate) : null,
               stopLabel: tourStops.length ? (stopForReview(tourStops, r.publishDate)?.city ?? null) : null,

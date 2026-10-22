@@ -276,6 +276,7 @@ export default function BrowseListClient({
                 <ShowListCard
                   show={show}
                   index={index}
+                  priorityFirstImage
                   variant="compact"
                   rank={showRankNumbers ? index + 1 : undefined}
                   showFormatPill={isMixedType && typeFilter === 'all'}

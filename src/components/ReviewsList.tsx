@@ -2,7 +2,7 @@
 
 import { useState, useMemo, memo, Fragment, useEffect, useId, useLayoutEffect, useRef } from 'react';
 import Link from 'next/link';
-import { getOutletLogoUrlById, getOutletConfigById } from '@/config/outlet-logos';
+import type { OutletBadge } from '@/config/outlet-logos';
 import { featureFlags } from '@/config/feature-flags';
 import { getScoreColorClass } from '@/components/show-cards';
 import { getGoldThreshold } from '@/config/score-buckets';
@@ -18,6 +18,9 @@ interface Review {
   outletId: string;
   outlet: string;
   outletSlug?: string;
+  // Resolved on the server with getOutletBadge(); see that function for why.
+  // Required so a new caller can't silently drop every outlet logo.
+  outletBadge: OutletBadge | null;
   criticName?: string;
   criticSlug?: string | null;
   url: string | null;
@@ -86,13 +89,10 @@ function formatDate(dateStr: string | null | undefined): string {
 }
 
 
-function OutletLogo({ outlet, outletId }: { outlet: string; outletId?: string }) {
+function OutletLogo({ outlet, badge }: { outlet: string; badge?: OutletBadge | null }) {
   const [imageError, setImageError] = useState(false);
 
-  // Resolve by canonical outletId first (covers every registry outlet with a
-  // domain), then fall back to the legacy name-keyed map.
-  const logoUrl = getOutletLogoUrlById(outletId, outlet);
-  const config = getOutletConfigById(outletId, outlet);
+  const logoUrl = badge?.logoUrl ?? null;
 
   if (logoUrl && !imageError) {
     return (
@@ -108,9 +108,9 @@ function OutletLogo({ outlet, outletId }: { outlet: string; outletId?: string })
   }
 
   // Fallback to colored circle with abbreviation
-  if (config) {
-    const abbrev = config.abbrev || outlet.charAt(0).toUpperCase();
-    const bgColor = config.color || '#374151';
+  if (badge?.known) {
+    const abbrev = badge.known.abbrev || outlet.charAt(0).toUpperCase();
+    const bgColor = badge.known.color || '#374151';
     const textSize = abbrev.length > 2 ? 'text-[9px]' : abbrev.length > 1 ? 'text-[10px]' : 'text-sm';
 
     return (
@@ -337,7 +337,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
         >
           <span aria-hidden="true">{review.reviewScore}</span>
         </div>
-        <OutletLogo outlet={review.outlet} outletId={review.outletId} />
+        <OutletLogo outlet={review.outlet} badge={review.outletBadge} />
         {/* Name + tier chip share the flex-1 slot so the chip hugs the name.
             The wrapper is a <span> (see the comment above); the name span
             keeps the ellipsis, and the chip never truncates. */}

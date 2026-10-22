@@ -18,6 +18,7 @@
  *   - Any page: FAIL if First Load JS exceeds 260kB absolute cap
  */
 
+const { parseBuildOutput: parseBuildTable } = require('./lib/bundle-size-parse.js');
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
@@ -72,6 +73,10 @@ function computeStalePages(baseline, liveRoutes, { staticRoutes = false } = {}) 
 const SHARED_JS_WARN_DELTA = 5; // kB
 const PAGE_JS_WARN_DELTA = 10;  // kB
 const PAGE_JS_ABSOLUTE_CAP = 260; // kB — no page should exceed this (updated 2026-05-20 after below-fold lazy split reduced /show/[slug] from 332→253kB)
+// Internal tools no visitor loads (Sanity Studio is ~1.6MB by design). The
+// cap guards public pages; these became visible to it once the parser stopped
+// skipping rows (BRO-5985).
+const CAP_EXEMPT_RE = /^\/(studio|admin|test|dev)(\/|$)/;
 
 const CI_MODE = process.argv.includes('--ci');
 const UPDATE_BASELINE = process.argv.includes('--update-baseline');
@@ -99,21 +104,9 @@ function parseBuildOutput() {
     }
   }
 
-  const pages = {};
-  let sharedJS = null;
-
-  for (const line of output.split('\n')) {
-    // Match page lines: ├ ○ /path    1.23 kB    94.5 kB
-    const pageMatch = line.match(/[├└]\s+[○●ƒ]\s+(\S+)\s+[\d.]+\s+kB\s+([\d.]+)\s+kB/);
-    if (pageMatch) {
-      pages[pageMatch[1]] = parseFloat(pageMatch[2]);
-    }
-    // Match shared JS: + First Load JS shared by all    87.2 kB
-    const sharedMatch = line.match(/First Load JS shared by all\s+([\d.]+)\s+kB/);
-    if (sharedMatch) {
-      sharedJS = parseFloat(sharedMatch[1]);
-    }
-  }
+  // Shared parser: the old inline regex skipped the homepage (┌ row) and
+  // every route whose own code printed in bytes, show pages included.
+  const { pages, sharedJS } = parseBuildTable(output);
 
   return { pages, sharedJS, timestamp: new Date().toISOString() };
 }
@@ -197,7 +190,7 @@ function compare(current, baseline) {
     if (!cur) continue; // Page removed — reported as stale baseline in main()
 
     // Absolute cap
-    if (cur > PAGE_JS_ABSOLUTE_CAP) {
+    if (cur > PAGE_JS_ABSOLUTE_CAP && !CAP_EXEMPT_RE.test(page)) {
       failures.push(`${page}: ${cur}kB exceeds ${PAGE_JS_ABSOLUTE_CAP}kB absolute cap`);
     }
 
@@ -315,4 +308,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { listAppPageRoutes, computeStalePages, loadBaseline, BASELINE_PATH };
+module.exports = { listAppPageRoutes, computeStalePages, loadBaseline, compare, BASELINE_PATH };

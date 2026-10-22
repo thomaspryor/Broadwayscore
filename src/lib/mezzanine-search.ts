@@ -40,7 +40,7 @@ export const MEZZANINE_SEARCH_ERROR_COPY: Record<string, string> = {
 /** Search Mezzanine's full catalog by free-text title. Throws Error with
  *  user-ready copy on any handled failure. */
 export async function searchMezzanineCatalog(query: string): Promise<MezzanineCandidate[]> {
-  const supabase = getSupabaseClient();
+  const supabase = await getSupabaseClient();
   if (!supabase) throw new Error(MEZZANINE_SEARCH_ERROR_COPY.unauthorized);
 
   const { data, error } = await supabase.functions.invoke<MezzanineSearchResponse>('mezzanine-search', {
@@ -55,7 +55,7 @@ export async function searchMezzanineCatalog(query: string): Promise<MezzanineCa
  *  by the import flow's per-row "find it" button when the export already
  *  carries entry.show.id, so no fuzzy title search is needed). */
 export async function resolveMezzanineShow(mezzShowId: string): Promise<MezzanineCandidate[]> {
-  const supabase = getSupabaseClient();
+  const supabase = await getSupabaseClient();
   if (!supabase) throw new Error(MEZZANINE_SEARCH_ERROR_COPY.unauthorized);
 
   const { data, error } = await supabase.functions.invoke<MezzanineSearchResponse>('mezzanine-search', {

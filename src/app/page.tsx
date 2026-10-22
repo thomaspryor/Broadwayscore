@@ -338,8 +338,10 @@ export default function HomePage() {
     { title: 'Closing Soon', shows: closingSoonShowsList, viewAllHref: '/browse/broadway-shows-closing-soon' },
   ];
 
+  // Preload the LCP poster only; the other first-row posters load eagerly
+  // from the markup without competing with it.
   const featuredPosterUrls = bestRecentShows
-    .slice(0, 4)
+    .slice(0, 1)
     .map(s => {
       const img = s.images?.poster || s.images?.thumbnail;
       return img ? getOptimizedImageUrl(img, 'card') : null;
@@ -349,7 +351,7 @@ export default function HomePage() {
   return (
     <>
       {featuredPosterUrls.map((url, i) => (
-        <link key={`preload-${i}`} rel="preload" as="image" href={url} fetchPriority={i === 0 ? 'high' : undefined} />
+        <link key={`preload-${i}`} rel="preload" as="image" href={url} fetchPriority="high" />
       ))}
       <script
         type="application/ld+json"

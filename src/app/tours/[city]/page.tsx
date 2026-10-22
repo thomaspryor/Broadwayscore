@@ -131,7 +131,7 @@ export default async function TourCityPage(props: { params: Promise<{ city: stri
             </>
           )}
         </p>
-        <ShowListCard show={show} index={i} scoreMode="critics" variant="compact" showReviewCount />
+        <ShowListCard show={show} index={i} priorityFirstImage scoreMode="critics" variant="compact" showReviewCount />
       </li>
     );
   };
