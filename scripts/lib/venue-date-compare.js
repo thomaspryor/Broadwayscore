@@ -15,6 +15,22 @@ const { venuesMatch } = require('./deduplication');
 
 const DATE_DELTA_DAYS = 30;
 
+// A Playbill page names the house, sometimes with its room ("Theatre Five @ Theatre Row",
+// "New World Stages Stage 3") or only the institution ("Brooklyn Academy of Music" for a
+// BAM Fisher run); shows.json carries the house alone. Same venue, finer or coarser label
+// (BRO-5975: 5 of 14 provisional-audit mismatches). Kept here, not in venuesMatch(), which
+// 19 modules import for dedup where room-level collapse would merge distinct productions.
+const INSTITUTION_PARENTS = [{ show: /^bam\b/i, page: /^brooklyn academy of music$/i }];
+
+function venueVariantMatch(showVenue, pageVenue) {
+  if (!showVenue || !pageVenue) return false;
+  if (venuesMatch(showVenue, pageVenue)) return true;
+  if (INSTITUTION_PARENTS.some(p => p.show.test(showVenue.trim()) && p.page.test(pageVenue.trim()))) return true;
+  const parts = String(pageVenue).split(/\s+@\s+/).map(x => x.trim()).filter(Boolean);
+  const roomless = String(pageVenue).replace(/\s+(stage|studio|theat(?:er|re)|room)\s+(?:\d+|[a-z]|one|two|three|four|five|six)$/i, '').trim();
+  return [...parts, roomless].some(c => c !== pageVenue && venuesMatch(showVenue, c));
+}
+
 function daysBetween(a, b) {
   if (!a || !b) return null;
   const da = new Date(a);
@@ -139,7 +155,7 @@ function compareShow(show, parsed, playbillUrl) {
     venueCheck = 'not-applicable';
   } else if (!parsed.titleParse?.venue) {
     venueCheck = 'unverified';
-  } else if (venuesMatch(show.venue, parsed.titleParse.venue)) {
+  } else if (venueVariantMatch(show.venue, parsed.titleParse.venue)) {
     venueCheck = 'match';
   } else {
     venueCheck = 'different';
@@ -698,6 +714,7 @@ function rowIsStillAboutShow(row, byId, showId) {
 }
 
 module.exports = {
+  venueVariantMatch,
   playbillMarketConflict,
   PLAYBILL_MARKETS_FOR_CATEGORY,
   DATE_DELTA_DAYS,

@@ -977,3 +977,14 @@ __t('BRO-3903: Royal Court sub-stage names match the bare building name', () => 
     assert.deepEqual(vdc.missingUrlOutcome({ anyQueryCompleted: false, rejectedTitleCandidates: cands }), { source: 'serp-error', result: 'serp-error' });
   });
 }
+
+test('BRO-5975: venueVariantMatch accepts room/institution labels, rejects other houses', async () => {
+  const { venueVariantMatch } = await import('./venue-date-compare.js');
+  assert.ok(venueVariantMatch('New World Stages', 'New World Stages Stage 3'));
+  assert.ok(venueVariantMatch('Theatre Row', 'Theatre Five @ Theatre Row'));
+  assert.ok(venueVariantMatch('The Marjorie S. Deane Little Theater', 'Marjorie S. Deane Little Theater @ The West Side Y'));
+  assert.ok(venueVariantMatch('BAM Fisher (Fishman Space)', 'Brooklyn Academy of Music'));
+  assert.ok(!venueVariantMatch('Playwrights Horizons', 'Cherry Lane Theatre'));
+  assert.ok(!venueVariantMatch('Theatre Row', 'Theatre Five @ Signature Center'));
+  assert.ok(!venueVariantMatch('Paper Mill Playhouse, Millburn, NJ', 'Riverside Theatre - Stark Stage'));
+});
