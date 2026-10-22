@@ -12,14 +12,14 @@
  * count only ever grew (34 -> 100 keys across audience-buzz/show-score).
  *
  * 3-way rule (BRO-5337): with opts.base (the checkout snapshot both sides started
- * from), a key or source present in base but absent from current was deliberately
+ * from) and opts.ours (our file before the rebase), a key or source in base but absent from ours was deliberately
  * removed by our side, so remote's copy is not refilled, whether or not the show
  * is live. Only keys/sources that are absent from base (added by a concurrent
  * writer) are recovered. Without opts.base the old live-id rule alone applies.
  *
  * @param {object} current  post-rebase audience-buzz.json (mutated)
  * @param {object} remote   origin/main audience-buzz.json before the rebase
- * @param {{liveIds?: Set<string>, retiredIds?: Set<string>, base?: object}} [opts]
+ * @param {{liveIds?: Set<string>, retiredIds?: Set<string>, base?: object, ours?: object}} [opts]
  *   liveIds below the plausibility floor (or absent) = no orphan filtering
  * @returns {{recovered: number, skippedOrphans: string[], skippedDeleted: string[]}}
  */
@@ -28,10 +28,31 @@ function reconcileAudienceBuzz(current, remote, opts = {}) {
   const shows = current.shows || (current.shows = {});
   const remoteShows = (remote && remote.shows) || {};
   const baseShows = (opts.base && opts.base.shows) || null;
+  // "Ours" is the job's own file (captured before any rebase), because `-X ours`
+  // resolves a conflicting hunk to remote and can bring a deleted source back into
+  // `current` before this runs. Without opts.ours, current stands in for it.
+  const oursShows = (opts.ours && opts.ours.shows) || shows;
   const skippedDeleted = [];
+  const deletedKeys = new Set();
+  const deletedSrcs = new Set();
+  if (baseShows) {
+    for (const [id, b] of Object.entries(baseShows)) {
+      if (!oursShows[id]) { deletedKeys.add(id); continue; }
+      const ourSrc = oursShows[id].sources || {};
+      for (const [src, d] of Object.entries((b && b.sources) || {})) {
+        if (d && d.score != null && !ourSrc[src]) deletedSrcs.add(id + '/' + src);
+      }
+    }
+  }
+  // Re-apply our deletions that the rebase reverted.
+  for (const id of deletedKeys) if (shows[id] && remoteShows[id]) { delete shows[id]; skippedDeleted.push(id); }
+  for (const k of deletedSrcs) {
+    const [id, src] = k.split('/');
+    if (shows[id] && shows[id].sources && shows[id].sources[src]) { delete shows[id].sources[src]; skippedDeleted.push(k); }
+  }
   const remoteOnly = Object.keys(remoteShows).filter(id => {
     if (shows[id]) return false;
-    if (baseShows && baseShows[id]) { skippedDeleted.push(id); return false; }
+    if (deletedKeys.has(id)) { if (!skippedDeleted.includes(id)) skippedDeleted.push(id); return false; }
     return true;
   });
   const remoteOnlySet = new Set(remoteOnly);
@@ -43,15 +64,16 @@ function reconcileAudienceBuzz(current, remote, opts = {}) {
   }
   for (const [id, entry] of Object.entries(remoteShows)) {
     if (remoteOnlySet.has(id) || !shows[id]) continue;
-    const baseSrc = (baseShows && baseShows[id] && baseShows[id].sources) || {};
     const ourSrc = shows[id].sources || {};
     const remoteSrc = (entry && entry.sources) || {};
     // BRO-5276: a source our side removed on purpose (sourcesRemoved tombstone) is not refilled.
-    // Without this a deleted source came straight back on the next push (108 Theatr rows did).
     const removed = shows[id].sourcesRemoved || {};
     for (const [src, data] of Object.entries(remoteSrc)) {
       if (removed[src]) continue;
-      if (baseSrc[src] && baseSrc[src].score != null && !ourSrc[src]) { skippedDeleted.push(id + '/' + src); continue; }
+      if (deletedSrcs.has(id + '/' + src)) {
+        if (!skippedDeleted.includes(id + '/' + src)) skippedDeleted.push(id + '/' + src);
+        continue;
+      }
       if (data && data.score != null && (!ourSrc[src] || ourSrc[src].score == null)) {
         ourSrc[src] = data;
         recovered++;
