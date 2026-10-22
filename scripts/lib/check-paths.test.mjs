@@ -36,3 +36,14 @@ test('loading dispatch guards does not load autonomous triage', () => {
   `], { encoding: 'utf8' });
   assert.equal(result.status, 0, result.stderr);
 });
+
+// BRO-5930
+test('plain node --test on a .test.ts file stays refused (shape) but carries a verified tsx hint', () => {
+  const { explainUnsafeCheckCommand } = require('./check-paths.js');
+  const r = explainUnsafeCheckCommand('node --test --test-timeout 60 scripts/lib/x.test.ts');
+  assert.equal(r.ok, false);
+  assert.equal(r.kind, 'shape');
+  assert.match(r.hint, /use: npx tsx --test --test-timeout 60 scripts\/lib\/x\.test\.ts$/);
+  assert.equal(explainUnsafeCheckCommand('node --test scripts/lib/x.test.mjs').ok, true);
+  assert.equal(explainUnsafeCheckCommand('node --test scripts/lib/x.test.ts.bak').hint, undefined);
+});

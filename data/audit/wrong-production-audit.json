@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T17:22:34.256Z",
+  "timestamp": "2026-10-22T17:45:11.936Z",
   "stats": {
-    "totalReviews": 59009,
-    "alreadyFlagged": 21309,
+    "totalReviews": 58996,
+    "alreadyFlagged": 21316,
     "dateGuardCatches": 201,
-    "directorMismatch": 2057,
+    "directorMismatch": 2056,
     "tvFilmSignals": 1659,
     "londonSignals": 2708,
     "offBroadwaySignals": 529,
-    "yearMismatch": 169,
-    "noPublishDate": 5266
+    "yearMismatch": 170,
+    "noPublishDate": 5244
   },
   "findings": [
     {
@@ -30850,6 +30850,25 @@
     },
     {
       "showId": "other-desert-cities-2026",
+      "file": "theater-life--unknown.json",
+      "score": 74,
+      "publishDate": "2026-10-21",
+      "url": "https://theaterlife.com/other-desert-cities/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from other-desert-cities-2011"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2011 (3x) more than 2026 (2x). 2011 matches production: other-desert-cities-2011"
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
       "file": "theatrely--joey-sims.json",
       "score": 63,
       "publishDate": "2026-10-19",
@@ -40170,7 +40189,7 @@
     {
       "showId": "the-cherry-orchard-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2026-10-13",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-cherry-orchard-review/",
       "findings": [
@@ -40286,34 +40305,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "file": "nbcny--robert-kahn.json",
-      "score": null,
-      "publishDate": "2015-12-09",
-      "url": "https://www.nbcnewyork.com/broadway/review-color-purple-doyle/838462/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "file": "newsday--linda-winer.json",
-      "score": null,
-      "publishDate": "2015-12-10",
-      "url": "https://www.newsday.com/entertainment/theater/the-color-purple-review-showstopper-stuns-on-broadway-f82820",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
         }
       ]
     },
@@ -69403,7 +69394,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "afridiziak-theatre-news--elana-joseph.json",
-      "score": 95,
+      "score": 94,
       "publishDate": "2026-10-22",
       "url": "https://www.afridiziak.com/reviews/ilford-boy-by-danny-lee-wynter-donmar-warehouse/",
       "findings": [
@@ -74278,7 +74269,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "the-recs--unknown.json",
-      "score": 96,
+      "score": 95,
       "publishDate": "2026-10-22",
       "url": "https://therecs.co.uk/martin-guerre-old-vic-theatre/",
       "findings": [
@@ -74292,7 +74283,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "theatreandtonic--annie.json",
-      "score": 96,
+      "score": 98,
       "publishDate": "2026-10-21",
       "url": "https://theatreandtonic.co.uk/blog/martin-guerre-the-old-vic-review",
       "findings": [
@@ -85283,7 +85274,7 @@
     {
       "showId": "the-cherry-orchard-west-end-2026",
       "file": "theatreandtonic--annie.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "2026-10-16",
       "url": "https://theatreandtonic.co.uk/blog/the-cherry-orchard-starring-kristin-scott-thomas-review",
       "findings": [

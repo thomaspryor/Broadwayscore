@@ -153,7 +153,9 @@ function rawCandidates(text) {
  *   board-wide; this is what lets it report WHY). Optional and separate from
  *   isSafeCheckCommand so this module stays dependency-free when a caller
  *   doesn't need the breakdown.
- * @returns {{cmd: string|null, reason: string|null, kind?: string|null}}
+ * @returns {{cmd: string|null, reason: string|null, kind?: string|null, hint?: string}}
+ *   `hint` (BRO-5930) names the `npx tsx --test` rewrite when a candidate was a
+ *   plain `node --test <x>.test.ts`.
  */
 function extractVerifyCmd(notes, isSafeCheckCommand, explainUnsafeCheckCommand) {
   const text = String(notes || '');
@@ -180,13 +182,20 @@ function extractVerifyCmd(notes, isSafeCheckCommand, explainUnsafeCheckCommand) 
     const best = safe.slice().sort((a, b) => rank(a) - rank(b))[0];
     return { cmd: best, reason: null };
   }
-  const kind = typeof explainUnsafeCheckCommand === 'function'
-    ? explainUnsafeCheckCommand(candidates[0]).kind
-    : null;
+  // BRO-5930: explain every candidate, not just the first, so a
+  // `node --test x.test.ts` anywhere on the card yields the tsx hint.
+  const explain = typeof explainUnsafeCheckCommand === 'function'
+    ? candidates.map(c => explainUnsafeCheckCommand(c))
+    : [];
+  const kind = explain.length ? explain[0].kind : null;
+  const hint = (explain.find(e => e && e.hint) || {}).hint;
   return {
     cmd: null,
-    reason: `no acceptance-criteria command passed safe-form validation (first candidate: ${candidates[0].slice(0, 120)})`,
+    // The hint rides in `reason` too: every consumer (verify-gate, enricher,
+    // ack-landed) prints only `reason`, so a separate field alone reaches nobody.
+    reason: `no acceptance-criteria command passed safe-form validation (first candidate: ${candidates[0].slice(0, 120)})${hint ? `. ${hint}` : ''}`,
     kind,
+    ...(hint ? { hint } : {}),
   };
 }
 

@@ -310,7 +310,8 @@ function buildAddShowPlans(name, season, entries, uuid) {
   const plans = [];
   for (let i = 0; i * MAX_PLAN_ACTIONS < entries.length; i++) {
     const part = splitName(name, i);
-    plans.push({ name: part, plan: buildAddShowPlan(part, season, entries.slice(i * MAX_PLAN_ACTIONS, (i + 1) * MAX_PLAN_ACTIONS), uuid()) });
+    const slice = entries.slice(i * MAX_PLAN_ACTIONS, (i + 1) * MAX_PLAN_ACTIONS);
+    plans.push({ name: part, entries: slice, plan: buildAddShowPlan(part, season, slice, uuid()) });
   }
   return plans;
 }
@@ -323,7 +324,7 @@ function writeAddShowPlan(name, season, entries) {
   const taken = files.find(f => fs.existsSync(f));
   if (taken) { console.error(`${path.relative(ROOT, taken)} already exists; pick another --plan name.`); process.exit(1); }
   plans.forEach((p, i) => fs.writeFileSync(files[i], JSON.stringify(p.plan, null, 2) + '\n'));
-  return files;
+  return plans.map((p, i) => ({ file: files[i], name: p.name, entries: p.entries }));
 }
 
 function save(showsData, apply) {
@@ -400,9 +401,10 @@ function main() {
   if (planName) {
     // Cloud sessions can't push the private data repo; execute-approved-fix.yml
     // applies this plan's add-show actions instead (.claude/CLOUD.md).
-    const files = writeAddShowPlan(planName, season, toPromote);
-    console.log(`Wrote ${files.map(f => path.relative(ROOT, f)).join(', ')} (${toPromote.length} add-show). git add -f them (pending-fixes is gitignored), land them, then dispatch execute-approved-fix.yml once per file.`);
-    for (const e of toPromote) logEntry({ kind: 'promote-historical-we', id: e.id, title: e.title, venue: e.venue, season, plan: planName, planned: true });
+    const written = writeAddShowPlan(planName, season, toPromote);
+    console.log(`Wrote ${written.map(w => path.relative(ROOT, w.file)).join(', ')} (${toPromote.length} add-show). git add -f them (pending-fixes is gitignored), land them, then dispatch execute-approved-fix.yml once per file.`);
+    // Each row names the plan file it went into, so a -b row is traced to the -b plan.
+    for (const w of written) for (const e of w.entries) logEntry({ kind: 'promote-historical-we', id: e.id, title: e.title, venue: e.venue, season, plan: w.name, planned: true });
     return;
   }
   showsData.shows.push(...toPromote);

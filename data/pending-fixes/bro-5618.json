@@ -1,0 +1,49 @@
+{
+  "issueNumber": "bro-5618",
+  "planId": "8ecc8628-a020-440e-99e6-610ce7488436",
+  "status": "applied",
+  "createdAt": "2026-10-22T15:19:21.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5618: record the wrongProduction clear on Cats 2016 NJ.com Feldberg review (stale legacy provenance, flag dropped; review is of the 2016 revival; scoring unchanged).",
+    "steps": [
+      "Set wrongProduction=false and wrongProductionManualClear=true on one verified review"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/northjerseycom--robert-feldberg.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": false,
+        "description": "BRO-5618: read the stored text and url (northjersey.com Aug 2016 Cats review): it reviews the 2016 Broadway revival, so the production is right. The only trace is stale legacy dedup-cleanup provenance with no flag. Record the clear; the file already scores, so scoring is unchanged."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/northjerseycom--robert-feldberg.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so detectors skip it"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T17:52:06.004Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/northjerseycom--robert-feldberg.json wrongProduction: null -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/northjerseycom--robert-feldberg.json wrongProductionManualClear: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

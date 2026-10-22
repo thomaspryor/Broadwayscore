@@ -1,6 +1,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { execFile } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const { findMyJob, reconcileOutcomes, ORPHAN_TIMEOUT_H } = require('./backlog-drain.js');
@@ -335,4 +340,87 @@ test('skipCacheFresh: fresh within TTL, stale past it, garbage never fresh', () 
 
 test('loadSkipCache: missing/corrupt file degrades to empty (cache is an optimization only)', () => {
   assert.deepEqual(loadSkipCache('/nonexistent/path/cache.json'), {});
+});
+
+// ── BRO-2513: concurrent read-reconcile-append produces ONE outcome ────────
+// Each child holds a barrier INSIDE the critical section (between the ledger
+// read and the append) so the two processes genuinely overlap; without the
+// lock both read the unresolved dispatch and both append (verified by running
+// with the lock removed, checked by hand when the test was written).
+// Orphan fixture (dispatch older than ORPHAN_TIMEOUT_H, no job events) keeps
+// reconcileOutcomes off git, since injected stubs cannot cross a process.
+const DRAIN = path.join(path.dirname(fileURLToPath(import.meta.url)), 'backlog-drain.js');
+
+function runRacer(ledger, tag) {
+  const code = `
+    const { reconcileAndAppend } = require(${JSON.stringify(DRAIN)});
+    const tasksById = new Map([['4', { id: '4', status: 'pending' }]]);
+    const started = Date.now();
+    const r = reconcileAndAppend(${JSON.stringify(ledger)}, tasksById, [], {
+      lockOpts: { timeoutMs: 20000, waitMs: 10 },
+      beforeAppend: () => { const u = Date.now() + 400; while (Date.now() < u) {} },
+    });
+    console.log(JSON.stringify({ tag: ${JSON.stringify(tag)}, started, ended: Date.now(), n: r.newOutcomes.length, skipped: !!r.skipped }));
+  `;
+  return new Promise((resolve, reject) => execFile(process.execPath, ['-e', code],
+    (err, stdout, stderr) => (err ? reject(new Error(err.message + stderr)) : resolve(JSON.parse(stdout.trim().split('\n').pop())))));
+}
+
+test('reconcileAndAppend: two concurrent processes append exactly one outcome per resolved dispatch', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro2513-'));
+  const ledger = path.join(dir, 'ledger.jsonl');
+  fs.writeFileSync(ledger, JSON.stringify(
+    { ts: '2026-07-30T11:00:00Z', event: 'drain-dispatch', taskId: '4', subject: 'x', contentHash: 'abc' }) + '\n');
+  const results = await Promise.all([runRacer(ledger, 'a'), runRacer(ledger, 'b')]);
+  // Prove the racers really overlapped, else this test would pass without the lock.
+  assert.ok(Math.max(...results.map(r => r.started)) < Math.min(...results.map(r => r.ended)),
+    'children did not overlap; test proves nothing');
+  const rows = fs.readFileSync(ledger, 'utf8').trim().split('\n').map(l => JSON.parse(l));
+  const outcomes = rows.filter(r => r.event === 'card-fail');
+  assert.equal(outcomes.length, 1, `expected one outcome row, got ${outcomes.length}`);
+  assert.equal(results.reduce((n, r) => n + r.n, 0), 1, 'exactly one process reports the outcome');
+  assert.equal(fs.existsSync(`${ledger}.lock`), false, 'lock released');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('reconcileAndAppend: lock busy skips the tick instead of appending', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro2513-'));
+  const ledger = path.join(dir, 'ledger.jsonl');
+  fs.writeFileSync(ledger, JSON.stringify(
+    { ts: '2026-07-30T11:00:00Z', event: 'drain-dispatch', taskId: '4', subject: 'x', contentHash: 'abc' }) + '\n');
+  fs.writeFileSync(`${ledger}.lock`, `${process.pid} live\n`); // live holder: this very process
+  const { reconcileAndAppend } = require('./backlog-drain.js');
+  const r = reconcileAndAppend(ledger, new Map([['4', { id: '4', status: 'pending' }]]), [], { lockOpts: { timeoutMs: 150, waitMs: 10 } });
+  assert.equal(r.skipped, true);
+  assert.equal(fs.readFileSync(ledger, 'utf8').trim().split('\n').length, 1, 'nothing appended');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('reconcileAndAppend: a second pass over the same ledger is idempotent', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro2513-'));
+  const ledger = path.join(dir, 'ledger.jsonl');
+  const { reconcileAndAppend } = require('./backlog-drain.js');
+  fs.writeFileSync(ledger, JSON.stringify(
+    { ts: '2026-07-30T11:00:00Z', event: 'drain-dispatch', taskId: '4', subject: 'x', contentHash: 'abc' }) + '\n');
+  const t = new Map([['4', { id: '4', status: 'pending' }]]);
+  assert.equal(reconcileAndAppend(ledger, t, []).newOutcomes.length, 1);
+  assert.equal(reconcileAndAppend(ledger, t, []).newOutcomes.length, 0, 'second pass resolves nothing');
+  assert.equal(fs.readFileSync(ledger, 'utf8').trim().split('\n').length, 2);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('reconcileAndAppend: an abandoned lock (older than 15min) reconciles unlocked instead of skipping forever', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro2513-'));
+  try {
+    const ledger = path.join(dir, 'ledger.jsonl');
+    fs.writeFileSync(ledger, JSON.stringify(
+      { ts: '2026-07-30T11:00:00Z', event: 'drain-dispatch', taskId: '4', subject: 'x', contentHash: 'abc' }) + '\n');
+    fs.writeFileSync(`${ledger}.lock.steal-gate`, 'abandoned\n');
+    const old = new Date(Date.now() - 30 * 60_000);
+    fs.utimesSync(`${ledger}.lock.steal-gate`, old, old);
+    const { reconcileAndAppend } = require('./backlog-drain.js');
+    const r = reconcileAndAppend(ledger, new Map([['4', { id: '4', status: 'pending' }]]), [], { lockOpts: { timeoutMs: 150, waitMs: 10 } });
+    assert.equal(r.skipped, undefined);
+    assert.equal(r.newOutcomes.length, 1);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });

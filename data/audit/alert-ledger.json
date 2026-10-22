@@ -245,14 +245,15 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-22T17:15:09.574Z",
-      "lastSeen": "2026-10-22T17:15:09.574Z",
+      "lastSeen": "2026-10-22T17:57:49.797Z",
       "lastNotifiedAt": "2026-10-22T17:15:09.574Z",
       "lastSurfacedAt": "2026-10-22T17:15:09.574Z",
       "notifyCount": 153,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 142,
-      "sweptTracker": "BRO-5554"
+      "sweptTracker": "BRO-5554",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -3666,13 +3667,13 @@
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
       "incidentOpenedAt": "2026-10-08T11:25:20.258Z",
-      "lastSeen": "2026-10-22T17:13:38.170Z",
+      "lastSeen": "2026-10-22T17:46:15.800Z",
       "lastNotifiedAt": "2026-10-22T09:40:42.574Z",
       "lastSurfacedAt": "2026-10-16T18:32:46.181Z",
       "notifyCount": 32,
       "cardId": null,
       "linearIdentifier": "BRO-4515",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "resolved",
@@ -4437,13 +4438,13 @@
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
       "incidentOpenedAt": "2026-10-05T11:20:30.123Z",
-      "lastSeen": "2026-10-22T17:13:38.148Z",
+      "lastSeen": "2026-10-22T17:46:15.782Z",
       "lastNotifiedAt": "2026-10-21T18:16:17.793Z",
       "lastSurfacedAt": "2026-10-21T18:16:17.793Z",
       "notifyCount": 29,
       "cardId": null,
       "linearIdentifier": "BRO-4795",
-      "silentRefires": 14
+      "silentRefires": 15
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -4854,13 +4855,13 @@
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
       "incidentOpenedAt": "2026-10-20T02:48:04.645Z",
-      "lastSeen": "2026-10-22T17:13:38.130Z",
+      "lastSeen": "2026-10-22T17:46:15.766Z",
       "lastNotifiedAt": "2026-10-22T09:40:42.110Z",
       "lastSurfacedAt": "2026-10-17T22:22:42.482Z",
       "notifyCount": 25,
       "cardId": null,
       "linearIdentifier": "BRO-5563",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "resolved",
@@ -5476,13 +5477,13 @@
       "title": "Data audits failing (non-blocking): Run BRO-1397 prior-run former-cast sweep (needs review-texts)",
       "firstSeen": "2026-09-23T19:33:16.776Z",
       "incidentOpenedAt": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-10-22T17:28:04.756Z",
+      "lastSeen": "2026-10-22T17:58:10.003Z",
       "lastNotifiedAt": "2026-10-22T01:46:13.995Z",
       "lastSurfacedAt": "2026-10-22T01:46:13.995Z",
       "notifyCount": 23,
       "cardId": null,
       "linearIdentifier": "BRO-5882",
-      "silentRefires": 49
+      "silentRefires": 50
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "resolved",
@@ -6612,13 +6613,13 @@
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
       "incidentOpenedAt": "2026-10-17T16:13:23.493Z",
-      "lastSeen": "2026-10-22T17:13:38.075Z",
+      "lastSeen": "2026-10-22T17:46:15.711Z",
       "lastNotifiedAt": "2026-10-22T09:40:41.737Z",
       "lastSurfacedAt": "2026-10-16T13:37:57.729Z",
       "notifyCount": 20,
       "cardId": null,
       "linearIdentifier": "BRO-5484",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -6677,13 +6678,13 @@
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
       "incidentOpenedAt": "2026-10-19T16:00:04.306Z",
-      "lastSeen": "2026-10-22T17:13:38.106Z",
+      "lastSeen": "2026-10-22T17:46:15.745Z",
       "lastNotifiedAt": "2026-10-21T18:16:17.511Z",
       "lastSurfacedAt": "2026-10-21T18:16:17.511Z",
       "notifyCount": 20,
       "cardId": null,
       "linearIdentifier": "BRO-5314",
-      "silentRefires": 14
+      "silentRefires": 15
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -10261,13 +10262,13 @@
       "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets",
       "firstSeen": "2026-10-03T11:51:42.151Z",
       "incidentOpenedAt": "2026-10-20T00:27:08.931Z",
-      "lastSeen": "2026-10-22T17:13:38.159Z",
+      "lastSeen": "2026-10-22T17:46:15.790Z",
       "lastNotifiedAt": "2026-10-22T09:40:42.353Z",
       "lastSurfacedAt": "2026-10-21T09:29:31.216Z",
       "notifyCount": 16,
       "cardId": null,
       "linearIdentifier": "BRO-5823",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "broadcast-gate:checklist:hay-fever-west-end-2026": {
       "status": "resolved",
@@ -12246,13 +12247,13 @@
       "title": "Star-band detector: 102 review(s) flagged for anchored re-score",
       "firstSeen": "2026-10-06T14:36:11.815Z",
       "incidentOpenedAt": "2026-10-06T14:36:11.815Z",
-      "lastSeen": "2026-10-22T12:34:00.101Z",
+      "lastSeen": "2026-10-22T17:45:59.691Z",
       "lastNotifiedAt": "2026-10-22T05:29:12.122Z",
       "lastSurfacedAt": "2026-10-22T05:29:12.122Z",
       "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/job/linear-BRO-4786-muwt2lon": {
       "status": "resolved",
@@ -16076,13 +16077,13 @@
       "title": "Corpus drift: exclusion flag whose own stated basis (a date-guard claim) is contradicted by the current record (zero-tolerance)",
       "firstSeen": "2026-10-12T12:34:40.002Z",
       "incidentOpenedAt": "2026-10-22T14:17:35.428Z",
-      "lastSeen": "2026-10-22T17:13:38.186Z",
+      "lastSeen": "2026-10-22T17:46:15.814Z",
       "lastNotifiedAt": "2026-10-22T14:17:35.428Z",
       "lastSurfacedAt": "2026-10-22T14:17:35.428Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-3999-empty-body-sweep": {
       "status": "resolved",
@@ -16479,13 +16480,13 @@
       "title": "Corpus drift: data/review-texts folder whose name is not a shows.json id (rebuild skips every review in it)",
       "firstSeen": "2026-10-13T03:27:49.763Z",
       "incidentOpenedAt": "2026-10-13T18:12:08.276Z",
-      "lastSeen": "2026-10-22T17:13:38.216Z",
+      "lastSeen": "2026-10-22T17:46:15.839Z",
       "lastNotifiedAt": "2026-10-22T14:17:35.458Z",
       "lastSurfacedAt": "2026-10-22T14:17:35.458Z",
       "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "review-gap:opening-window:red-riding-hood-off-broadway-2026": {
       "status": "resolved",
@@ -17388,13 +17389,13 @@
       "title": "Corpus drift: review files with wrongProduction provenance but the flag dropped (would score silently; baseline-diff)",
       "firstSeen": "2026-10-13T19:33:47.105Z",
       "incidentOpenedAt": "2026-10-13T19:33:47.105Z",
-      "lastSeen": "2026-10-22T17:13:38.090Z",
+      "lastSeen": "2026-10-22T17:46:15.724Z",
       "lastNotifiedAt": "2026-10-22T14:17:35.327Z",
       "lastSurfacedAt": "2026-10-22T14:17:35.327Z",
       "notifyCount": 9,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-5288-dtli-ingest-guards": {
       "status": "resolved",
@@ -18284,13 +18285,12 @@
       "title": "1 review(s) for bull-off-west-end-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-10-14T19:54:00.422Z",
       "incidentOpenedAt": "2026-10-14T19:54:00.422Z",
-      "lastSeen": "2026-10-20T17:14:28.134Z",
-      "lastNotifiedAt": "2026-10-19T23:47:13.987Z",
-      "lastSurfacedAt": "2026-10-19T23:47:13.987Z",
-      "notifyCount": 6,
+      "lastSeen": "2026-10-22T17:11:04.176Z",
+      "lastNotifiedAt": "2026-10-22T17:11:04.176Z",
+      "lastSurfacedAt": "2026-10-22T17:11:04.176Z",
+      "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 5
+      "linearIdentifier": null
     },
     "pending-unrecoverable:hay-fever-west-end-2026": {
       "status": "open",
@@ -18299,13 +18299,12 @@
       "title": "1 review(s) for hay-fever-west-end-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-10-14T19:54:11.800Z",
       "incidentOpenedAt": "2026-10-14T19:54:11.800Z",
-      "lastSeen": "2026-10-20T17:14:40.987Z",
-      "lastNotifiedAt": "2026-10-19T23:47:20.292Z",
-      "lastSurfacedAt": "2026-10-19T23:47:20.292Z",
-      "notifyCount": 6,
+      "lastSeen": "2026-10-22T17:11:13.910Z",
+      "lastNotifiedAt": "2026-10-22T17:11:13.910Z",
+      "lastSurfacedAt": "2026-10-22T17:11:13.910Z",
+      "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 5
+      "linearIdentifier": null
     },
     "pending-unrecoverable:into-the-woods-noel-coward-west-end-2026": {
       "status": "open",
@@ -18314,13 +18313,12 @@
       "title": "2 review(s) for into-the-woods-noel-coward-west-end-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-10-14T19:54:29.577Z",
       "incidentOpenedAt": "2026-10-14T19:54:29.577Z",
-      "lastSeen": "2026-10-20T17:14:26.691Z",
-      "lastNotifiedAt": "2026-10-19T23:47:12.363Z",
-      "lastSurfacedAt": "2026-10-19T23:47:12.363Z",
-      "notifyCount": 6,
+      "lastSeen": "2026-10-22T17:11:02.706Z",
+      "lastNotifiedAt": "2026-10-22T17:11:02.706Z",
+      "lastSurfacedAt": "2026-10-22T17:11:02.706Z",
+      "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 5
+      "linearIdentifier": null
     },
     "outlet-ground-truth:a-ghost-in-your-ear-off-broadway-2026:https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/": {
       "status": "open",
@@ -18477,13 +18475,13 @@
       "title": "1 review(s) for midnight-off-broadway-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-10-15T02:11:38.953Z",
       "incidentOpenedAt": "2026-10-15T02:11:38.953Z",
-      "lastSeen": "2026-10-22T16:00:28.331Z",
+      "lastSeen": "2026-10-22T17:17:23.105Z",
       "lastNotifiedAt": "2026-10-22T14:28:46.556Z",
       "lastSurfacedAt": "2026-10-22T14:28:46.556Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "imageless-scored-show:still-imageless:anything-goes-2002": {
       "status": "resolved",
@@ -18638,13 +18636,13 @@
       "title": "LLM scoring daily spend over budget",
       "firstSeen": "2026-10-15T09:31:55.528Z",
       "incidentOpenedAt": "2026-10-19T11:53:05.157Z",
-      "lastSeen": "2026-10-22T17:24:13.066Z",
+      "lastSeen": "2026-10-22T17:57:04.564Z",
       "lastNotifiedAt": "2026-10-22T08:21:30.011Z",
       "lastSurfacedAt": "2026-10-22T08:21:30.011Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 51
+      "silentRefires": 53
     },
     "feedback-outcomes:2026-10-15T05:05:16.652944+00:00": {
       "status": "resolved",
@@ -18685,13 +18683,13 @@
       "title": "4 review(s) for baby-off-west-end-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-10-15T11:04:23.299Z",
       "incidentOpenedAt": "2026-10-15T11:04:23.299Z",
-      "lastSeen": "2026-10-22T15:59:33.287Z",
+      "lastSeen": "2026-10-22T17:10:19.401Z",
       "lastNotifiedAt": "2026-10-21T23:50:30.082Z",
       "lastSurfacedAt": "2026-10-21T23:50:30.082Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "land:land/bro-4335-shouldskip": {
       "status": "resolved",
@@ -20124,13 +20122,12 @@
       "title": "1 review(s) for stories-the-tap-dance-sensation-west-end-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-10-17T20:28:42.487Z",
       "incidentOpenedAt": "2026-10-17T20:28:42.487Z",
-      "lastSeen": "2026-10-20T17:14:15.771Z",
-      "lastNotifiedAt": "2026-10-19T22:17:16.630Z",
-      "lastSurfacedAt": "2026-10-19T22:17:16.630Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-10-22T17:10:53.210Z",
+      "lastNotifiedAt": "2026-10-22T17:10:53.210Z",
+      "lastSurfacedAt": "2026-10-22T17:10:53.210Z",
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 8
+      "linearIdentifier": null
     },
     "opening-night-remediation-exhausted-empty-cast:stories-the-tap-dance-sensation-west-end-2026": {
       "status": "open",
@@ -20263,13 +20260,13 @@
       "title": "Placeholder synopsis on Martin Guerre",
       "firstSeen": "2026-10-18T01:08:21.219Z",
       "incidentOpenedAt": "2026-10-18T01:08:21.219Z",
-      "lastSeen": "2026-10-21T23:25:53.335Z",
+      "lastSeen": "2026-10-22T17:35:46.936Z",
       "lastNotifiedAt": "2026-10-18T01:08:21.219Z",
       "lastSurfacedAt": "2026-10-18T01:08:21.219Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 40
+      "silentRefires": 41
     },
     "test-yml:red:Unit Tests:4fb7ef20": {
       "status": "resolved",
@@ -20961,13 +20958,13 @@
       "title": "1 review(s) for the-ask-off-broadway-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-10-19T02:20:52.234Z",
       "incidentOpenedAt": "2026-10-19T02:20:52.234Z",
-      "lastSeen": "2026-10-22T16:01:31.590Z",
+      "lastSeen": "2026-10-22T17:18:28.993Z",
       "lastNotifiedAt": "2026-10-22T01:09:01.605Z",
       "lastSurfacedAt": "2026-10-22T01:09:01.605Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "land:land/worktree-week-voice-count-and-lede": {
       "status": "resolved",
@@ -21222,13 +21219,12 @@
       "title": "1 review(s) for dog-mom-off-west-end-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-10-19T12:11:41.639Z",
       "incidentOpenedAt": "2026-10-19T12:11:41.639Z",
-      "lastSeen": "2026-10-20T17:13:58.529Z",
-      "lastNotifiedAt": "2026-10-20T12:24:16.228Z",
-      "lastSurfacedAt": "2026-10-20T12:24:16.228Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-10-22T17:10:34.392Z",
+      "lastNotifiedAt": "2026-10-22T17:10:34.392Z",
+      "lastSurfacedAt": "2026-10-22T17:10:34.392Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 4
+      "linearIdentifier": null
     },
     "broadcast:overdue:other-desert-cities-2026": {
       "status": "open",
@@ -21983,12 +21979,13 @@
       "title": "1 review(s) for murder-cathedral-off-west-end-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-10-20T10:53:31.984Z",
       "incidentOpenedAt": "2026-10-20T10:53:31.984Z",
-      "lastSeen": "2026-10-21T23:47:13.024Z",
+      "lastSeen": "2026-10-22T17:10:32.174Z",
       "lastNotifiedAt": "2026-10-21T23:47:13.024Z",
       "lastSurfacedAt": "2026-10-21T23:47:13.024Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-empty-cast:derren-brown-only-human-west-end-2026": {
       "status": "open",
@@ -22196,13 +22193,13 @@
       "title": "1 review(s) for lincoln-in-the-bardo-off-broadway-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-10-20T17:14:20.779Z",
       "incidentOpenedAt": "2026-10-20T17:14:20.779Z",
-      "lastSeen": "2026-10-22T15:59:48.104Z",
+      "lastSeen": "2026-10-22T17:17:12.326Z",
       "lastNotifiedAt": "2026-10-21T21:44:55.011Z",
       "lastSurfacedAt": "2026-10-21T21:44:55.011Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "land:land/bro-5784-sync-partial": {
       "status": "resolved",
@@ -22263,13 +22260,13 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"real active target-outlet critics have author-page overrides\"",
       "firstSeen": "2026-10-20T20:23:23.923Z",
       "incidentOpenedAt": "2026-10-20T22:02:19.935Z",
-      "lastSeen": "2026-10-22T17:15:09.529Z",
+      "lastSeen": "2026-10-22T17:57:49.784Z",
       "lastNotifiedAt": "2026-10-20T22:02:19.935Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-5792",
-      "silentRefires": 77
+      "silentRefires": 78
     },
     "land:land/bro-5788-probe-input": {
       "status": "resolved",
@@ -22695,13 +22692,13 @@
       "title": "Unverified revival on Martin Guerre",
       "firstSeen": "2026-10-21T13:48:27.970Z",
       "incidentOpenedAt": "2026-10-21T13:48:27.970Z",
-      "lastSeen": "2026-10-21T23:25:53.346Z",
+      "lastSeen": "2026-10-22T17:35:46.948Z",
       "lastNotifiedAt": "2026-10-21T13:48:27.970Z",
       "lastSurfacedAt": "2026-10-21T13:48:27.970Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "opening-night-remediation-exhausted-t1-missing:martin-guerre-west-end-2026": {
       "status": "open",
@@ -23110,13 +23107,13 @@
       "title": "Corpus drift: one Show Score URL mapped to 2+ showIds (baseline-diff)",
       "firstSeen": "2026-10-22T02:01:04.201Z",
       "incidentOpenedAt": "2026-10-22T02:01:04.201Z",
-      "lastSeen": "2026-10-22T17:13:38.118Z",
+      "lastSeen": "2026-10-22T17:46:15.757Z",
       "lastNotifiedAt": "2026-10-22T02:01:04.201Z",
       "lastSurfacedAt": "2026-10-22T02:01:04.201Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "land:land/bro-5706-retire-eno-dup": {
       "status": "open",
@@ -23320,13 +23317,13 @@
       "title": "1 review(s) for the-curious-case-of-benjamin-button-off-broadway-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-10-22T05:45:57.052Z",
       "incidentOpenedAt": "2026-10-22T05:45:57.052Z",
-      "lastSeen": "2026-10-22T15:51:14.339Z",
+      "lastSeen": "2026-10-22T17:17:10.614Z",
       "lastNotifiedAt": "2026-10-22T05:45:57.052Z",
       "lastSurfacedAt": "2026-10-22T05:45:57.052Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "land:land/bro-5890-express-ingest-fixes": {
       "status": "resolved",
@@ -23391,13 +23388,13 @@
       "title": "1 user request(s) stuck — not live after 3 days",
       "firstSeen": "2026-10-22T07:05:54.815Z",
       "incidentOpenedAt": "2026-10-22T07:05:54.815Z",
-      "lastSeen": "2026-10-22T12:56:38.034Z",
+      "lastSeen": "2026-10-22T17:56:08.386Z",
       "lastNotifiedAt": "2026-10-22T07:05:54.815Z",
       "lastSurfacedAt": "2026-10-22T07:05:54.815Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "reddit-sentiment:stale": {
       "status": "open",
@@ -23568,13 +23565,13 @@
       "title": "Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
       "firstSeen": "2026-10-22T11:49:37.833Z",
       "incidentOpenedAt": "2026-10-22T11:49:37.833Z",
-      "lastSeen": "2026-10-22T17:17:32.213Z",
+      "lastSeen": "2026-10-22T17:49:45.587Z",
       "lastNotifiedAt": "2026-10-22T11:49:37.833Z",
       "lastSurfacedAt": "2026-10-22T11:49:37.833Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/bro-5325-wsj-section": {
       "status": "resolved",
@@ -23619,15 +23616,15 @@
       "silentRefires": 2
     },
     "test-yml:red:E2E Tests:fd6209b2": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Setup Playwright",
       "firstSeen": "2026-10-22T14:09:25.726Z",
-      "incidentOpenedAt": "2026-10-22T14:09:25.726Z",
-      "lastSeen": "2026-10-22T16:07:59.247Z",
-      "lastNotifiedAt": "2026-10-22T14:09:25.726Z",
+      "incidentOpenedAt": "2026-10-22T17:34:39.811Z",
+      "lastSeen": "2026-10-22T17:34:39.811Z",
+      "lastNotifiedAt": "2026-10-22T17:34:39.811Z",
       "lastSurfacedAt": null,
-      "notifyCount": 1,
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-5964",
       "dispatch": {
@@ -23635,9 +23632,7 @@
         "mode": "dispatch-at-filing",
         "runId": "39790224688",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39790224688"
-      },
-      "resolvedAt": "2026-10-22T16:25:14.596Z",
-      "resolveReason": "job-green"
+      }
     },
     "land:land/bro-5943-theatr-alias": {
       "status": "open",
@@ -23768,13 +23763,13 @@
       "title": "Landing blocked: unit-tests-node red on land/bro-5744-live-art-audit",
       "firstSeen": "2026-10-22T14:34:34.682Z",
       "incidentOpenedAt": "2026-10-22T14:34:34.682Z",
-      "lastSeen": "2026-10-22T16:16:47.810Z",
+      "lastSeen": "2026-10-22T17:31:43.781Z",
       "lastNotifiedAt": "2026-10-22T14:34:34.682Z",
       "lastSurfacedAt": "2026-10-22T14:34:34.682Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-5201-lane-shadow": {
       "status": "open",
@@ -24051,6 +24046,32 @@
       "lastSeen": "2026-10-22T17:03:24.670Z",
       "lastNotifiedAt": "2026-10-22T17:03:24.670Z",
       "lastSurfacedAt": "2026-10-22T17:03:24.670Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/job/linear-BRO-5952-mvjraza9": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: rebase red on land/job/linear-BRO-5952-mvjraza9",
+      "firstSeen": "2026-10-22T17:39:49.958Z",
+      "incidentOpenedAt": "2026-10-22T17:39:49.958Z",
+      "lastSeen": "2026-10-22T17:39:49.958Z",
+      "lastNotifiedAt": "2026-10-22T17:39:49.958Z",
+      "lastSurfacedAt": "2026-10-22T17:39:49.958Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-5901-inclusion-diff": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: lint-workflows red on land/bro-5901-inclusion-diff",
+      "firstSeen": "2026-10-22T18:00:23.174Z",
+      "incidentOpenedAt": "2026-10-22T18:00:23.174Z",
+      "lastSeen": "2026-10-22T18:00:23.174Z",
+      "lastNotifiedAt": "2026-10-22T18:00:23.174Z",
+      "lastSurfacedAt": "2026-10-22T18:00:23.174Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

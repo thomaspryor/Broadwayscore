@@ -370,6 +370,8 @@ test('buildAddShowPlans: a season past the action cap splits into <name>, <name>
   assert.deepEqual(plans.map(p => p.name), ['bro-5851-promote-2016-2017', 'bro-5851-promote-2016-2017-b']);
   assert.deepEqual(plans.map(p => p.plan.plan.actions.length), [MAX_PLAN_ACTIONS, 8]);
   assert.notEqual(plans[0].plan.planId, plans[1].plan.planId);
+  // The promotion log reads each row's plan from here: the -b rows are the last 8, not the first plan's.
+  assert.deepEqual(plans[1].entries.map(e => e.id), rows.slice(MAX_PLAN_ACTIONS).map(e => e.id));
   for (const p of plans) assert.deepEqual(planShapeProblems(`${p.name}.json`, p.plan), []);
 });
 
