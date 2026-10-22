@@ -92,7 +92,10 @@ for (const show of shows) {
       continue;
     }
     const flags = {};
-    for (const k of FLAGS) if (r[k] !== undefined && r[k] !== null && r[k] !== false) flags[k] = r[k];
+    // An explicit false on these two is a recorded decision the orphaned-provenance
+// gate honours (wrongProduction:false, humanReviewedWrongProduction:false), so keep it.
+const KEEP_FALSE = new Set(['wrongProduction', 'humanReviewedWrongProduction']);
+for (const k of FLAGS) if (r[k] !== undefined && r[k] !== null && (r[k] !== false || KEEP_FALSE.has(k))) flags[k] = r[k];
     console.log(JSON.stringify({
       show, file: f, outletId: r.outletId, critic: r.criticName, pub: r.publishDate,
       url: r.url, flags,
