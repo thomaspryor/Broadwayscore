@@ -511,7 +511,7 @@ function explainUnsafeCheckCommand(cmd) {
     kind: 'shape',
     path: null,
     reason: `command matches none of the allowed safe-check forms: ${s.slice(0, 120)}`,
-    ...(rewrite ? { hint: `plain node cannot run a .test.ts file; use: ${rewrite}` } : {}),
+    ...(rewrite ? { hint: `\`${s.slice(0, 120)}\` cannot run under plain node (a .test.ts file needs the TS loader); use: ${rewrite}` } : {}),
   };
 }
 
