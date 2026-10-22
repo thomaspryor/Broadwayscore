@@ -89,9 +89,12 @@ function parseLondonEvidence(html, show) {
         const start = isoDate(ev.startDate);
         const end = isoDate(ev.endDate);
         if (!start || !end || end < start) continue;
+        // A same-day Event is one performance (OLT lists the first date), not the run's
+        // end: stick-man and speculations read as closing on their opening day (BRO-5975).
+        const runEnd = end === start ? null : end;
         const locations = Array.isArray(ev.location) ? ev.location : [ev.location];
         const venue = locations.map(l => typeof l === 'string' ? l : l?.name).find(Boolean) || null;
-        events.push(parsedEvidence(ev.name, venue, start, end));
+        events.push(parsedEvidence(ev.name, venue, start, runEnd));
       }
     }
     // Preserve separate runs; never merge same-title events across years or
@@ -169,7 +172,11 @@ async function validateLondonShow(show, {
       // year from the record ID, and the source year from the actual event
       // date. Numeric titles must not supply the record's production year.
       if (!show.openingDate) {
-        const expectedYear = show.id?.match(/(?:^|-)((?:19|20)\d{2})$/)?.[1];
+        // The announced previews date beats the id year: an id minted in 2026 for a
+        // run that starts 2027-03-30 (bluebirds-off-west-end-2026) is not a wrong year.
+        const expectedYear = (typeof show.previewsStartDate === 'string' && /^\d{4}-/.test(show.previewsStartDate))
+          ? show.previewsStartDate.slice(0, 4)
+          : show.id?.match(/(?:^|-)((?:19|20)\d{2})$/)?.[1];
         const sourceYear = parsed.dates.openingDate.slice(0, 4);
         if (expectedYear && expectedYear !== sourceYear) {
           comparison.mismatches.push({ field: 'opening-year', shows: Number(expectedYear), playbill: Number(sourceYear) });

@@ -255,3 +255,15 @@ test('CLI resolves the named Off-West End show and keeps three Broadway exit cod
     }
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
+
+test('BRO-5975: a same-day OLT Event is one performance, not the run end; previews year beats id year', async () => {
+  const stick = { id: 'stick-man-off-west-end-2026', title: 'Stick Man', venue: 'Bloomsbury Theatre', category: 'off-west-end', market: 'west-end', openingDate: null, previewsStartDate: '2026-12-03', closingDate: '2027-01-03' };
+  const one = parseLondonEvidence(eventHtml(stick, { startDate: '2026-12-03', endDate: '2026-12-03' }), stick);
+  assert.equal(one.dates.closingDate, null);
+  const bluebirds = { id: 'bluebirds-off-west-end-2026', title: 'Bluebirds', venue: 'Finborough Theatre', category: 'off-west-end', market: 'west-end', openingDate: null, previewsStartDate: '2027-03-30', closingDate: '2027-04-24' };
+  const row = await validateLondonShow(bluebirds, {
+    serpQuery: async () => [{ url: 'https://www.finboroughtheatre.co.uk/productions/bluebirds' }],
+    fetchPage: async () => ({ content: eventHtml(bluebirds, { startDate: '2027-03-30', endDate: '2027-04-24' }) }),
+  });
+  assert.equal(row.mismatches.length, 0, JSON.stringify(row.mismatches));
+});
