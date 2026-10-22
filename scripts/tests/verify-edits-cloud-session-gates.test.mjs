@@ -2003,7 +2003,7 @@ test('WAKELESS: a wake that already finished is not a wake', skipNoRepoHook, () 
   const denied = toolUse('mcp__claude-code-remote__send_later', { delay_minutes: 60, message: 'check' }, 'PreToolUse: Blocked: send_later and create_trigger put an approval prompt');
   assertWakeless(runHook(writeTranscript(dir, [GIT_PUSH, denied]), STALE, WK_ON), 'a denied send_later arms nothing');
   // A stop-hook block between the wait and the closing does not hide the wait.
-  const fb = notice('Stop hook feedback: something else first');
+  const fb = { _notice: 'Stop hook feedback: something else first', _isMeta: true }; // real Stop feedback is isMeta
   assertAllowed(runHook(writeTranscript(dir, [GIT_PUSH, BG_WAIT, fb]), STALE, WK_ON), 'wait survives a re-fired Stop');
   fs.rmSync(dir, { recursive: true, force: true });
 });
@@ -2017,5 +2017,44 @@ test('WAKELESS: waiting on the owner needs no wake; bypass and kill switch', ski
   assertAllowed(runHook(t, STALE, { WAKELESS_GATE_DISABLE: '1' }), 'kill switch');
   assertAllowed(runHook(t, STALE.replace('NOT SAFE', 'NO-VERIFY: container restarting\n\nNOT SAFE'), WK_ON), 'bypass');
   assert.doesNotMatch(runHook(t, 'Done and landed.\n\nSAFE TO EXIT', WK_ON).stderr, /nothing will wake it/i, 'SAFE is not this gate');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('LOOSEENDS false-positive guards from the ship-check review: negations and descriptions', skipNoRepoHook, () => {
+  const dir = makeTmpDir('loose-fp2');
+  const t = writeTranscript(dir, [LINEAR_CLOSEOUT_DONE]);
+  for (const body of [
+    'Nothing here needs an owner decision.',
+    'Landed with zero unresolved review threads. Nothing unresolved.',
+    'This does not fix the iOS app, which never had the bug.',
+    'The stale branch was deleted; nothing else to push.',
+    'No longer waiting on your answer: you replied and it is done.',
+  ]) {
+    assertAllowed(runHook(t, `${body}\n\nSAFE TO EXIT`, LE_ON), body);
+  }
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('WAKELESS: a bold or bulleted DECISION NEEDED counts as waiting on the owner', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wake-bold');
+  const t = writeTranscript(dir, [GIT_PUSH]);
+  assertAllowed(runHook(t, '**DECISION NEEDED:** keep or drop the page?\n\nNOT SAFE TO EXIT — waiting on your decision.', WK_ON), 'bold');
+  assertAllowed(runHook(t, '- DECISION NEEDED: keep or drop the page?\n\nNOT SAFE TO EXIT — waiting on your decision.', WK_ON), 'bulleted');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('WAKELESS: a background wait from before the owner\'s latest message does not count', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wake-old');
+  const owner = { _notice: 'is it done yet?', _extra: { origin: { kind: 'human' } } };
+  assertWakeless(runHook(writeTranscript(dir, [GIT_PUSH, BG_WAIT, owner]), STALE, WK_ON), 'stale wait from an earlier turn');
+  assertAllowed(runHook(writeTranscript(dir, [GIT_PUSH, owner, BG_WAIT]), STALE, WK_ON), 'wait started after it');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT/LOOSEENDS: a TESTED status box after the closing line does not hide the line', skipNoRepoHook, () => {
+  const dir = makeTmpDir('box-after');
+  const agent = toolUse('Agent', { description: 'scan', prompt: 'x', run_in_background: true }, 'Async agent launched successfully.\nagentId: a1b2c3d4e5f6');
+  const msg = 'All landed.\n\nSAFE TO EXIT\n```\n━━━ TESTED ━━━\nProduction verified: yes\n━━━━━━\n```';
+  assertBlocked(runHook(writeTranscript(dir, [agent, LINEAR_CLOSEOUT_DONE]), msg), 'the live agent still blocks SAFE');
   fs.rmSync(dir, { recursive: true, force: true });
 });

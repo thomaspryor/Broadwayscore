@@ -654,7 +654,11 @@ def _closing():
                _last_msg or '', flags=re.DOTALL)
     t = re.sub(r'`[^`\n]*`', '', t)
     t = '\n'.join(ln for ln in t.splitlines() if not ln.lstrip().startswith('>'))
-    lines = [ln.strip() for ln in t.strip().splitlines() if ln.strip()]
+    # The last line comes from the text with every fence removed, so a status
+    # box printed after the closing line never hides it.
+    bare = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
+    bare = '\n'.join(ln for ln in bare.splitlines() if not ln.lstrip().startswith('>'))
+    lines = [ln.strip() for ln in bare.strip().splitlines() if ln.strip()]
     while lines and _CLOSE_DIVIDER_RE.match(lines[-1]):
         lines.pop()
     return t, (lines[-1] if lines else '')
@@ -696,6 +700,7 @@ def _live_work():
     child = {}         # session id -> {'idx', 'label', 'done': idx, 'archived': bool}
     waits = {}         # background task id -> (idx, label)
     pr_watch = False
+    last_owner = max([j for j, (k, _p) in enumerate(events) if k == 'user_human'] or [-1])
 
     for i, (kind, payload) in enumerate(events):
         if kind == 'tool':
@@ -755,7 +760,9 @@ def _live_work():
                 if stop:
                     task_done[stop] = i
             elif (name == 'Bash' and inp.get('run_in_background')) or name == 'Monitor':
-                if ok:
+                # Only waits started since the owner's latest message: one that
+                # finished earlier with no notice must not count forever.
+                if ok and i > last_owner:
                     m = bg_id_re.search(res)
                     label = '%s "%s"' % (name, (inp.get('description') or inp.get('command') or '')[:50])
                     waits[m.group(1) if m else 'call-%d' % i] = (i, label)
@@ -1177,17 +1184,36 @@ def _write_verify_state(fp):
 _LOOSE_HARD_RE = re.compile(
     r"\b(?:want me to|should I|shall I|would you like(?: me)? to|do you want(?: me)? to"
     r"|(?:tell me|let me know) (?:if|whether) you(?:'d)? (?:want|like|prefer)"
-    r"|needs? (?:an? |your )?(?:owner|human)(?:'s)? (?:call|decision|approval|answer|input)"
+    r"|committed locally|(?:I|it|this|that|they|the \w+) (?:has|have|was|were|is|are)(?:n't| not) (?:yet )?(?:been )?(?:pushed|landed|deployed)"
+    r"|(?:could not|couldn't|was unable to|unable to) (?:confirm|verify)|verified:? partly|partly verified"
+    r"|(?:didn't|did not|couldn't|could not) (?:get )?fix\b|(?:isn't|wasn't|aren't|not yet|still not) fixed"
+    r"|left (?:it|them|this|that|those) (?:alone|unfiled|unfixed)|\bunfiled\b"
+    r"|\bI(?:'ll| will) (?:re-?)?check\b|will happen naturally)",
+    re.IGNORECASE)
+# Phrases that a negation earlier in the same sentence turns into a finished
+# statement ("Nothing here needs an owner decision", "No longer waiting on
+# your answer"), so they are skipped when one precedes them.
+_LOOSE_NEGATABLE_RE = re.compile(
+    r"\b(?:needs? (?:an? |your )?(?:owner|human)(?:'s)? (?:call|decision|approval|answer|input)"
     r"|or (?:the owner|you) decides?|waiting (?:on|for) (?:your|the owner(?:'s)?|owner) "
-    r"|waiting (?:on|for) [^.\n]{0,40}\bapproval"
-    r"|committed locally|not (?:yet )?(?:pushed|landed)|(?:could not|couldn't|was unable to|unable to) (?:confirm|verify|check)"
-    r"|verified:? partly|partly verified|(?:didn't|did not|not) (?:get )?fix(?:ed)?\b|left (?:it|them|this|that|those) (?:alone|unfiled|open|unfixed)"
-    r"|\bunfiled\b|\bI'll (?:re-?)?check\b|\bI will (?:re-?)?check\b|will happen naturally)",
+    r"|waiting (?:on|for) [^.\n]{0,40}\bapproval)",
     re.IGNORECASE)
 _LOOSE_DEFER_RE = re.compile(
     r"\b(?:(?:left|leave|leaving|saved?|saving|parked?|held|kept)\b[^.\n]{0,50}\bfor later"
-    r"|still (?:open|unresolved|broken|failing)|still (?:has|needs) to\b|unresolved)",
+    r"|still (?:open|unresolved|broken|failing)|still (?:has|needs) to\b)",
     re.IGNORECASE)
+_LOOSE_NEG_RE = re.compile(r"\b(?:no|nothing|not|never|none|zero|no longer|without)\b", re.IGNORECASE)
+
+def _loose_end(body, backlog_ok):
+    m = _LOOSE_HARD_RE.search(body)
+    if m:
+        return m
+    for m in _LOOSE_NEGATABLE_RE.finditer(body):
+        sent = re.split(r'[.!?\n]', body[:m.start()])[-1]
+        if not _LOOSE_NEG_RE.search(sent):
+            return m
+    return None if backlog_ok else _LOOSE_DEFER_RE.search(body)
+
 if os.environ.get('LOOSEENDS_GATE_DISABLE', '0') != '1':
     try:
         _le_text, _le_last = _closing()
@@ -1195,9 +1221,7 @@ if os.environ.get('LOOSEENDS_GATE_DISABLE', '0') != '1':
                 and not _ve_seen('LOOSEENDS')):
             _le_body = '\n'.join(ln for ln in _le_text.splitlines()
                                  if not re.match(r'^\s*(?:NOT )?SAFE TO EXIT\b', ln))
-            _le_m = _LOOSE_HARD_RE.search(_le_body)
-            if not _le_m and not re.search(r'^\s*BACKLOG-OK:\s*\S', _le_text, re.MULTILINE):
-                _le_m = _LOOSE_DEFER_RE.search(_le_body)
+            _le_m = _loose_end(_le_body, bool(re.search(r'^\s*BACKLOG-OK:\s*\S', _le_text, re.MULTILINE)))
             if _le_m:
                 _s = max(0, _le_m.start() - 40)
                 sys.stderr.write('   loose end: "...%s..."\n' % re.sub(r'\s+', ' ', _le_body[_s:_le_m.end() + 40]).strip())
@@ -1222,7 +1246,7 @@ if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1':
         _wk_text, _wk_last = _closing()
         if (re.match(r'^NOT SAFE TO EXIT\b', _wk_last) and 'NO-VERIFY:' not in (_last_msg or '')
                 and not _ve_seen('WAKELESS')
-                and not re.search(r'^DECISION NEEDED:', _wk_text, re.MULTILINE)):
+                and not _DECISION_LINE_RE.search(_wk_text)):
             _wk_owner = False
             for _m in re.finditer(r'^\W*You need to:?\s*(.*)$', _wk_text, re.MULTILINE | re.IGNORECASE):
                 if not re.match(r'^\W*(?:nothing|n/?a|none)\b', _m.group(1).strip(), re.IGNORECASE):
