@@ -8,6 +8,7 @@
  */
 
 const fs = require('fs');
+const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const Anthropic = require('@anthropic-ai/sdk').default;
@@ -327,7 +328,7 @@ async function main() {
       break;
     }
 
-    const review = JSON.parse(fs.readFileSync(item.filePath, 'utf8'));
+    const review = readReviewForUpdate(item.filePath);
 
     // Skip if already has LLM score (unless force)
     if (review.llmScore?.score !== undefined && !force) {
@@ -379,7 +380,7 @@ async function main() {
         };
 
         if (!dryRun) {
-          fs.writeFileSync(item.filePath, JSON.stringify(review, null, 2));
+          persistReviewSnapshot({ filePath: item.filePath, data: review });
         }
 
         // Also save to llm-scores directory

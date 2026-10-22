@@ -25,6 +25,7 @@
  */
 
 const fs = require('fs');
+const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
 const { shouldRetryFetch } = require('./lib/review-guards');
 
@@ -151,11 +152,11 @@ const errorSamples = [];
 
 for (const c of limited) {
   try {
-    const review = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
+    const review = readReviewForUpdate(c.filePath);
     review.fetchDiscoveryAbandoned = true;
     review.fetchAbandonmentReason = `backfill:${c.failureReason}:${c.failureCount}`;
     review.fetchAbandonmentDate = new Date().toISOString().slice(0, 10);
-    fs.writeFileSync(c.filePath, JSON.stringify(review, null, 2) + '\n');
+    persistReviewSnapshot({ filePath: c.filePath, data: review, trailingNewline: true });
     written++;
     if (written % 1000 === 0) {
       console.log(`  ... ${written}/${limited.length}`);

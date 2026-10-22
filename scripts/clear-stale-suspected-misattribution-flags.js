@@ -24,6 +24,7 @@
  */
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
+const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
 const { isLikelyStaleSuspectedMisattribution, getCriticRegistry } = require('./lib/review-guards');
 
@@ -86,10 +87,10 @@ if (!APPLY) {
   for (const c of cleared) {
     const orig = fs.readFileSync(c.filePath, 'utf8');
     const hadTrailingNewline = orig.endsWith('\n');
-    const data = JSON.parse(orig);
+    const data = readReviewForUpdate(c.filePath);
     data.suspectedMisattribution = false;
     data.suspectedMisattributionClearedNote = clearedNote;
-    fs.writeFileSync(c.filePath, JSON.stringify(data, null, 2) + (hadTrailingNewline ? '\n' : ''));
+    persistReviewSnapshot({ filePath: c.filePath, data: data, trailingNewline: hadTrailingNewline });
   }
   console.log(`\nAPPLIED — cleared ${stale} files.`);
 }

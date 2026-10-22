@@ -14,7 +14,18 @@
  * score fields are dropped and disk's are kept (BRO-3171 regression class).
  */
 const fs = require('fs');
+const path = require('path');
 const { approvedUrlFixListingReason } = require('./approved-url-fix');
+
+// Enumerable so {...data} carries the baseline through collector updates.
+// Symbols never appear in JSON, including the on-disk review record.
+const READ_SNAPSHOT = Symbol('review read snapshot');
+
+function readReviewForUpdate(filePath) {
+  const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  data[READ_SNAPSHOT] = { filePath: path.resolve(filePath), data: _clone(data) };
+  return data;
+}
 
 // Fields a score recovery writes (setExtractedScore + recover-explicit-ratings).
 const RECOVERED_SCORE_FIELDS = [
@@ -87,12 +98,19 @@ function mergeOntoDisk(snapshot, data, disk) {
  * Re-read filePath, merge the caller's edits onto it, write it. Updates
  * review.data and review.snapshot to what was written, so a later write in
  * the same run diffs against the new baseline.
- * @param {{filePath:string, data:object, snapshot:object}} review
+ * Use readReviewForUpdate() for data, or supply an explicit read-time snapshot.
+ * @param {{filePath:string, data:object, snapshot?:object, trailingNewline?:boolean}} review
  */
-function persistReviewSnapshot(review, log = console.log) {
+function prepareReviewSnapshot(review, log) {
+  const read = review.data[READ_SNAPSHOT];
+  if (read && read.filePath !== path.resolve(review.filePath)) {
+    throw new Error('Review snapshot belongs to a different file; persist before renaming');
+  }
+  const snapshot = review.snapshot || (read && read.data);
+  if (!snapshot) throw new Error('Review write requires a snapshot captured before editing');
   let disk = null;
   try { disk = JSON.parse(fs.readFileSync(review.filePath, 'utf8')); } catch { /* absent or unreadable */ }
-  const { merged, droppedScore, droppedUrl, keptDiskFields } = mergeOntoDisk(review.snapshot || {}, review.data, disk);
+  const { merged, droppedScore, droppedUrl, keptDiskFields } = mergeOntoDisk(snapshot, review.data, disk);
   if (droppedUrl) {
     log(`    [persist] ${review.filePath}: listing URL would undo an approved URL fix; candidate snapshot not written (BRO-5693)`);
   }
@@ -102,12 +120,36 @@ function persistReviewSnapshot(review, log = console.log) {
   if (keptDiskFields.length) {
     log(`    [persist] ${review.filePath}: kept concurrent on-disk change to ${keptDiskFields.join(', ')}`);
   }
-  fs.writeFileSync(review.filePath, JSON.stringify(merged, null, 2));
+  return { merged, droppedScore, droppedUrl: !!droppedUrl, keptDiskFields };
+}
+
+function adoptSnapshot(review, merged) {
+  const carriesSnapshot = !!review.data[READ_SNAPSHOT];
   // In place: callers may hold a reference to review.data.
   for (const key of Object.keys(review.data)) if (!(key in merged)) delete review.data[key];
   Object.assign(review.data, merged);
   review.snapshot = _clone(merged);
-  return { droppedScore, droppedUrl: !!droppedUrl, keptDiskFields };
+  if (carriesSnapshot) review.data[READ_SNAPSHOT] = { filePath: path.resolve(review.filePath), data: _clone(merged) };
 }
 
-module.exports = { mergeOntoDisk, persistReviewSnapshot, RECOVERED_SCORE_FIELDS };
+function persistReviewSnapshot(review, log = console.log) {
+  const { merged, ...result } = prepareReviewSnapshot(review, log);
+  fs.writeFileSync(review.filePath, JSON.stringify(merged, null, 2) + (review.trailingNewline ? '\n' : ''));
+  adoptSnapshot(review, merged);
+  return result;
+}
+
+// The collector can identify the byline midway through an update. Merge at
+// the source before the guarded rename, then carry the new path's baseline
+// into the collector's trailing write. A refused rename changes nothing.
+function renameReviewSnapshot(review, newPath, options = {}, log = console.log) {
+  const { merged } = prepareReviewSnapshot(review, log);
+  const result = require('./review-write-guard').safeRenameReview(review.filePath, newPath, { ...options, newData: merged });
+  if (result.wrote) {
+    review.filePath = newPath;
+    adoptSnapshot(review, readReviewForUpdate(newPath));
+  }
+  return result;
+}
+
+module.exports = { readReviewForUpdate, renameReviewSnapshot, mergeOntoDisk, persistReviewSnapshot, RECOVERED_SCORE_FIELDS };

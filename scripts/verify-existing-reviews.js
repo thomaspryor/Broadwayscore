@@ -27,6 +27,7 @@ const { quarantineBody } = require('./lib/quarantine-body');
 const { OTHER_PRODUCTION_URL_REASON } = require('./lib/other-production-signal');
 const { verifierExcerpt } = require('./lib/excerpt-fields');
 const fs = require('fs');
+const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { execSync } = require('child_process');
@@ -222,7 +223,7 @@ async function processVerify(items) {
         });
 
         if (!CLI.dryRun && (result.confidence === 'high' || result.confidence === 'medium')) {
-          const data = JSON.parse(fs.readFileSync(item.filePath, 'utf8'));
+          const data = readReviewForUpdate(item.filePath);
           data.verifiedBy = provider;
 
           let setFlag = false;
@@ -252,14 +253,14 @@ async function processVerify(items) {
             quarantineBody(data); // BRO-2788: records quarantinedWordCount
           }
 
-          fs.writeFileSync(item.filePath, JSON.stringify(data, null, 2) + '\n');
+          persistReviewSnapshot({ filePath: item.filePath, data: data, trailingNewline: true });
         }
       } else {
         // Mark as verified
         if (!CLI.dryRun) {
-          const data = JSON.parse(fs.readFileSync(item.filePath, 'utf8'));
+          const data = readReviewForUpdate(item.filePath);
           data.verifiedBy = provider;
-          fs.writeFileSync(item.filePath, JSON.stringify(data, null, 2) + '\n');
+          persistReviewSnapshot({ filePath: item.filePath, data: data, trailingNewline: true });
         }
         verified++;
       }
@@ -326,7 +327,7 @@ async function processRecover(items) {
         });
 
         if (!CLI.dryRun && (result.confidence === 'high' || result.confidence === 'medium')) {
-          const data = JSON.parse(fs.readFileSync(item.filePath, 'utf8'));
+          const data = readReviewForUpdate(item.filePath);
           // The url itself proves another production (BRO-5015); an LLM reading
           // the body cannot outrank that, and its override would exempt the
           // file from the guard for good.
@@ -394,7 +395,7 @@ async function processRecover(items) {
           data.recoveredBy = `retroactive-llm-verify`;
           data.recoveredAt = new Date().toISOString().split('T')[0];
 
-          fs.writeFileSync(item.filePath, JSON.stringify(data, null, 2) + '\n');
+          persistReviewSnapshot({ filePath: item.filePath, data: data, trailingNewline: true });
         }
       } else {
         // LLM confirms the flag was correct
@@ -407,9 +408,9 @@ async function processRecover(items) {
 
         // Stamp verification on the file
         if (!CLI.dryRun) {
-          const data = JSON.parse(fs.readFileSync(item.filePath, 'utf8'));
+          const data = readReviewForUpdate(item.filePath);
           data.verifiedBy = provider;
-          fs.writeFileSync(item.filePath, JSON.stringify(data, null, 2) + '\n');
+          persistReviewSnapshot({ filePath: item.filePath, data: data, trailingNewline: true });
         }
       }
     } catch (e) {

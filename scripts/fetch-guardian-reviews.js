@@ -31,6 +31,7 @@
  */
 
 const fs = require('fs');
+const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const https = require('https');
@@ -235,7 +236,7 @@ function findGuardianReviews() {
       const filePath = path.join(showDir, file);
 
       try {
-        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        const data = readReviewForUpdate(filePath);
 
         // In backfill-ratings mode, also process reviews that have fullText but no originalScore
         const hasFullText = data.fullText && data.fullText.length > CONFIG.minTextLength;
@@ -314,7 +315,7 @@ function updateReviewFile(review, apiResult) {
     stats.failed++;
     console.log(`  ⛔ Stale-slug guard: ${review.showId}/${review.file} — article dated ${apiResult.webPublicationDate} outside window; not storing body`);
     if (!CLI.dryRun) {
-      fs.writeFileSync(review.filePath, JSON.stringify(data, null, 2));
+      persistReviewSnapshot({ filePath: review.filePath, data: data });
     }
     return;
   }
@@ -355,7 +356,7 @@ function updateReviewFile(review, apiResult) {
   };
 
   if (!CLI.dryRun) {
-    fs.writeFileSync(review.filePath, JSON.stringify(data, null, 2));
+    persistReviewSnapshot({ filePath: review.filePath, data: data });
   }
 }
 

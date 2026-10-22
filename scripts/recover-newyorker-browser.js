@@ -25,6 +25,7 @@
  */
 
 const fs = require('fs');
+const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
 
 const args = process.argv.slice(2);
@@ -176,9 +177,9 @@ async function main() {
       stats.dead++;
       deadEntries.push({ reviewId: c.reviewId, url: c.url, reason: result.error || 'no text extracted' });
       if (!dryRun) {
-        const data = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
+        const data = readReviewForUpdate(c.filePath);
         data.incompleteReason = `newyorker-browser-recovery: ${result.error || 'no text extracted'} (${new Date().toISOString()})`;
-        fs.writeFileSync(c.filePath, JSON.stringify(data, null, 2) + '\n');
+        persistReviewSnapshot({ filePath: c.filePath, data: data, trailingNewline: true });
       }
       continue;
     }

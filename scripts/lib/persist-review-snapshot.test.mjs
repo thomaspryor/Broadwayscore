@@ -10,12 +10,96 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { mergeOntoDisk, persistReviewSnapshot } = require('./persist-review-snapshot.js');
+const { readReviewForUpdate, renameReviewSnapshot, mergeOntoDisk, persistReviewSnapshot } = require('./persist-review-snapshot.js');
 const { setExtractedScore } = require('./score-routing.js');
 
 const read = () => ({
   outletId: 'theaterlife', criticName: 'Gary Wien', url: 'https://theaterlife.com/x',
   originalScore: null, assignedScore: 72, scoreSource: 'llm-v6',
+});
+
+function scratchReview(t) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'review-update-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const filePath = path.join(dir, 'review.json');
+  fs.writeFileSync(filePath, JSON.stringify(read()));
+  return filePath;
+}
+
+test('read helper captures the baseline before slow work and object spreads', t => {
+  const filePath = scratchReview(t);
+  const data = readReviewForUpdate(filePath);
+  const updated = { ...data, fullText: 'Recovered article body', originalScore: '4/5' };
+  const disk = { ...read(), originalScoreCleared: true, originalScoreClearedReason: 'operator', assignedScore: 63 };
+  fs.writeFileSync(filePath, JSON.stringify(disk));
+  const result = persistReviewSnapshot({ filePath, data: updated }, () => {});
+  assert.equal(result.droppedScore, true);
+  assert.deepEqual(JSON.parse(fs.readFileSync(filePath, 'utf8')), { ...disk, fullText: updated.fullText });
+  assert.deepEqual(JSON.parse(JSON.stringify(data)), read(), 'baseline metadata never enters JSON');
+});
+
+test('successive writes using a spread rebase the carried baseline', t => {
+  const filePath = scratchReview(t);
+  const data = { ...readReviewForUpdate(filePath), textFetchedAt: 'today' };
+  persistReviewSnapshot({ filePath, data, trailingNewline: true }, () => {});
+  assert.equal(fs.readFileSync(filePath, 'utf8').endsWith('\n'), true);
+  const disk = { ...JSON.parse(fs.readFileSync(filePath, 'utf8')), textFetchedAt: 'newer', assignedScore: 69 };
+  fs.writeFileSync(filePath, JSON.stringify(disk));
+  data.httpStatus = 404;
+  persistReviewSnapshot({ filePath, data }, () => {});
+  assert.deepEqual(JSON.parse(fs.readFileSync(filePath, 'utf8')), { ...disk, httpStatus: 404 });
+});
+
+test('one-shot writes retain intentional deletions and unrelated concurrent fields', t => {
+  const filePath = scratchReview(t);
+  const data = readReviewForUpdate(filePath);
+  delete data.scoreSource;
+  fs.writeFileSync(filePath, JSON.stringify({ ...read(), contentVerification: { isValid: true } }));
+  persistReviewSnapshot({ filePath, data }, () => {});
+  const disk = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  assert.equal(disk.scoreSource, undefined);
+  assert.deepEqual(disk.contentVerification, { isValid: true });
+});
+
+test('missing baselines and cross-file snapshots fail before writing', t => {
+  const filePath = scratchReview(t);
+  assert.throws(() => persistReviewSnapshot({ filePath, data: read() }), /requires a snapshot/);
+  const data = readReviewForUpdate(filePath);
+  assert.throws(() => persistReviewSnapshot({ filePath: `${filePath}.other`, data }), /different file/);
+  assert.equal(fs.existsSync(`${filePath}.other`), false);
+  assert.deepEqual(JSON.parse(fs.readFileSync(filePath, 'utf8')), read());
+});
+
+test('a mid-update byline rename preserves concurrent clears and rebases later writes', t => {
+  const filePath = scratchReview(t);
+  const newPath = path.join(path.dirname(filePath), 'named-review.json');
+  const data = readReviewForUpdate(filePath);
+  data.criticName = 'Recovered Byline';
+  const disk = { ...read(), originalScore: null, originalScoreCleared: true, originalScoreClearedReason: 'operator' };
+  fs.writeFileSync(filePath, JSON.stringify(disk));
+  const result = renameReviewSnapshot({ filePath, data }, newPath, {}, () => {});
+  assert.equal(result.wrote, true);
+  assert.equal(fs.existsSync(filePath), false);
+  assert.equal(data.originalScoreCleared, true);
+  assert.equal(data.criticName, 'Recovered Byline');
+  const renamed = JSON.parse(fs.readFileSync(newPath, 'utf8'));
+  assert.ok(renamed._renamedFrom);
+  data.httpStatus = 200;
+  persistReviewSnapshot({ filePath: newPath, data }, () => {});
+  assert.deepEqual(JSON.parse(fs.readFileSync(newPath, 'utf8')), { ...renamed, httpStatus: 200 });
+});
+
+test('a snapshot rename honors a concurrently locked source without writing it', t => {
+  const filePath = scratchReview(t);
+  const data = readReviewForUpdate(filePath);
+  data.criticName = 'Recovered Byline';
+  const locked = { ...read(), _locked: true };
+  fs.writeFileSync(filePath, JSON.stringify(locked));
+  const newPath = path.join(path.dirname(filePath), 'locked-target.json');
+  const result = renameReviewSnapshot({ filePath, data }, newPath, {}, () => {});
+  assert.equal(result.skipped, 'locked');
+  assert.equal(fs.existsSync(newPath), false);
+  assert.deepEqual(JSON.parse(fs.readFileSync(filePath, 'utf8')), locked);
 });
 
 test('a clear that landed on disk mid-run beats the recovered score', () => {
@@ -67,8 +151,9 @@ test('without a concurrent clear the recovered score is written', () => {
   assert.equal(merged.originalScore, '4/5');
 });
 
-test('a clear picked up by an earlier write in the run still blocks a later score', () => {
+test('a clear picked up by an earlier write in the run still blocks a later score', t => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'persist-snap-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
   const filePath = path.join(dir, 'theaterlife--gary-wien.json');
   fs.writeFileSync(filePath, JSON.stringify(read()));
   const data = read();
@@ -98,8 +183,9 @@ test('a structural star retiring the clear it read is written', () => {
   assert.equal(merged.originalScoreClearSupersededBy, 'timeout-svg-stars');
 });
 
-test('persist re-reads the file, writes the merge, and rebases the snapshot', () => {
+test('persist re-reads the file, writes the merge, and rebases the snapshot', t => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'persist-snap-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
   const filePath = path.join(dir, 'theaterlife--gary-wien.json');
   fs.writeFileSync(filePath, JSON.stringify(read()));
   const data = read();
