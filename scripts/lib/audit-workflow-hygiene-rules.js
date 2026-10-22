@@ -370,7 +370,7 @@ function findDeadCommitSteps(raw) {
  * commands and can never contain a `set -o pipefail` + later-line `echo $?`
  * pair, so they're not tracked here.
  */
-function extractRunBlocks(raw) {
+function extractRunBlocks(raw, { includeInline = false } = {}) {
   const lines = raw.split('\n');
   const blocks = [];
   let inRunBlock = false;
@@ -399,6 +399,7 @@ function extractRunBlocks(raw) {
         current = { lines: [] };
       } else {
         inRunBlock = false;
+        if (includeInline) blocks.push({ lines: [{ lineNum: i + 1, text: content }] });
       }
       continue;
     }
@@ -593,6 +594,134 @@ function extractSingleQuotedEvalBodies(raw) {
   }
 
   return results;
+}
+
+/**
+ * BRO-4047: detect a double-quoted eval argument escaping into bare shell
+ * text. JS comments offer no protection from bash's quote processing.
+ *
+ * Walk shell quote state, not YAML text matches: # comments, quoted shell
+ * documentation, heredocs and github-script source are not eval commands.
+ * Inside an eval, backslash pairs are consumed before quote transitions.
+ * A closing quote followed by bare text is suspicious; adjacent quoted
+ * segments and parameter expansions are valid shell word concatenation.
+ * For multiline evals with a standalone closing delimiter, an earlier
+ * quote followed by whitespace is also premature (even if the truncated
+ * JS happens to be syntactically valid). Report once per eval, recovering
+ * at that delimiter so one bad comment cannot hide the next command.
+ *
+ * This is a literal-argument guard, not a complete bash or JS validator.
+ * It does not evaluate shell expansions or dynamically generated source.
+ */
+function findUnescapedDoubleQuotesInDoubleQuotedEval(raw) {
+  const hits = [];
+  for (const block of extractRunBlocks(raw.replace(/\r\n?/g, '\n'), { includeInline: true })) {
+    const source = block.lines.map(l => l.text).join('\n');
+    let quote = null;
+    const substitutions = [];
+    const heredocs = [];
+    const lineAt = pos => block.lines[(source.slice(0, pos).match(/\n/g) || []).length];
+
+    for (let i = 0; i < source.length; i++) {
+      const ch = source[i];
+      if (quote === "'") {
+        if (ch === "'") quote = null;
+        continue;
+      }
+      if (ch === '\\' && (!quote || /[\n$`"\\]/.test(source[i + 1] || ''))) { i++; continue; }
+      // $(...) has its own quoting context even inside "...".
+      if (ch === '$' && source[i + 1] === '(') {
+        substitutions.push({ quote, depth: 1 });
+        quote = null;
+        i++;
+        continue;
+      }
+      if (quote) {
+        if (ch === quote) quote = null;
+        continue;
+      }
+      if (substitutions.length && (ch === '(' || ch === ')')) {
+        const sub = substitutions[substitutions.length - 1];
+        sub.depth += ch === '(' ? 1 : -1;
+        if (sub.depth === 0) { quote = sub.quote; substitutions.pop(); }
+        continue;
+      }
+      if (ch === '#' && (i === 0 || /[\s;|&()]/.test(source[i - 1]))) {
+        const end = source.indexOf('\n', i);
+        i = end === -1 ? source.length : end - 1;
+        continue;
+      }
+      if (ch === '<' && source[i - 1] !== '<' && source[i + 1] === '<' && source[i + 2] !== '<') {
+        const doc = source.slice(i).match(/^<<-?\s*(['"]?)([\w-]+)\1/);
+        if (doc) { heredocs.push(doc[2]); i += doc[0].length - 1; continue; }
+      }
+      if (ch === '\n' && heredocs.length) {
+        for (const delimiter of heredocs.splice(0)) {
+          let end = i + 1;
+          while (end < source.length) {
+            const next = source.indexOf('\n', end);
+            const stop = next === -1 ? source.length : next;
+            if (source.slice(end, stop).trim() === delimiter) { i = stop; break; }
+            end = stop + 1;
+          }
+          if (end >= source.length) i = source.length;
+        }
+        continue;
+      }
+      if (ch !== '"' || !EVAL_OPENER_TAIL_RE.test(source.slice(0, i))) {
+        if (ch === '"' || ch === "'" || ch === '`') quote = ch;
+        continue;
+      }
+
+      const startLine = lineAt(i).lineNum;
+      // Only an opener whose body starts on the next line has a separate
+      // closing-delimiter convention. Inline commands can have later evals.
+      const rest = source.slice(i + 1);
+      const closing = /^[ \t]*\n/.test(rest) ? /^[ \t]*"(?=[\s);|&<>]|$)/m.exec(rest) : null;
+      const closeAt = closing ? i + 1 + closing.index + closing[0].length - 1 : -1;
+      let state = '"';
+      let badQuote = -1;
+      let lastClose = -1;
+      let pos = i + 1;
+      for (; pos < source.length; pos++) {
+        const c = source[pos];
+        if (state === "'") {
+          if (c === "'") state = null;
+          continue;
+        }
+        if (c === '\\' && (!state || /[\n$`"\\]/.test(source[pos + 1] || ''))) { pos++; continue; }
+        if (c === '"') {
+          if (state === '"') {
+            state = null;
+            lastClose = pos;
+            if (pos < closeAt && SHELL_WORD_BREAK_RE.test(source[pos + 1] || '')) badQuote = pos;
+          } else state = '"';
+          continue;
+        }
+        if (state) continue;
+        if (SHELL_WORD_BREAK_RE.test(c)) break;
+        if (c === "'") { state = "'"; continue; }
+        // Legitimate "source"$VAR"source" concatenation must not be
+        // mistaken for an unescaped JS comment or string literal.
+        const parameter = c === '$' && source.slice(pos).match(/^\$(?:[A-Za-z_]\w*|\d+|\{[^}]*\})/);
+        if (parameter) { pos += parameter[0].length - 1; continue; }
+        badQuote = lastClose;
+        break;
+      }
+      if (badQuote !== -1) {
+        const line = lineAt(badQuote);
+        hits.push({ startLine, lineNum: line.lineNum, text: line.text.trim(), message: 'Unescaped double quote ends the eval string before its source is complete; escape it as \\".' });
+        // Recover only within this run block, never into another YAML step.
+        if (closeAt > badQuote) pos = closeAt;
+        else {
+          const end = source.indexOf('\n', badQuote);
+          pos = end === -1 ? source.length : end;
+        }
+      }
+      i = pos;
+    }
+  }
+  return hits;
 }
 
 // Every `data/audit/...` token on a `git add`/`git-add-existing.sh` line,
@@ -1262,6 +1391,7 @@ module.exports = {
   extractRunBlocks,
   findPipefailDeadExitCodeEcho,
   extractSingleQuotedEvalBodies,
+  findUnescapedDoubleQuotesInDoubleQuotedEval,
   findBareAuditDirectoryGlobs,
   findPushWithoutWritePermission,
   ROOT_PUSH_COMPOSITES,

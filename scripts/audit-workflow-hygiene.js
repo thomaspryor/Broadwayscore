@@ -135,6 +135,12 @@
  *     and the cron-health-chronic escalation condition could never self-clear
  *     (run 32253007200).
  *
+ * (z) DOUBLE-QUOTE-EVAL (BRO-4047): an unescaped double quote inside a
+ *     double-quoted eval sends the remaining source to bash, including JS
+ *     comments. The pure detector walks shell quote state and escapes,
+ *     excluding shell comments, heredocs and actions/github-script blocks.
+ *     Validated against the full workflow corpus before enabling the rule.
+ *
  * (l) PAID-PROVIDER-ON-PUSH (BRO-2984): a workflow that triggers `on: push:`
  *     must not hand a paid provider's credentials to any step, and must not
  *     invoke a known paid sweep command. test.yml's `data-validation` job ran
@@ -237,6 +243,7 @@ const {
   findDeadCommitSteps,
   findPipefailDeadExitCodeEcho,
   extractSingleQuotedEvalBodies,
+  findUnescapedDoubleQuotesInDoubleQuotedEval,
   findBareAuditDirectoryGlobs,
   findFullBlobFullHistoryCheckouts,
   findShortCoreDataJobTimeouts,
@@ -846,6 +853,7 @@ async function main() {
     shortBatchPollTimeout: [],
     shortRebuildTimeout: [],
     quoteApostrophe: [],
+    quoteDouble: [],
     paidProviderOnPush: [],
     runIdKeyedCache: [],
   };
@@ -1063,6 +1071,12 @@ async function main() {
       }
     }
 
+    // Rule (z): bare double quote inside a double-quoted eval (BRO-4047).
+    {
+      const hits = findUnescapedDoubleQuotesInDoubleQuotedEval(raw);
+      if (hits.length > 0) violations.quoteDouble.push({ file, hits });
+    }
+
     // ── Rule (n): bare `data/audit/` directory glob in git add (advisory) ─────
     if (!raw.includes('hygiene-audit-glob-ok:')) {
       const hits = findBareAuditDirectoryGlobs(raw);
@@ -1225,6 +1239,7 @@ async function main() {
     violations.shortBatchPollTimeout.length +
     violations.shortRebuildTimeout.length +
     violations.quoteApostrophe.length +
+    violations.quoteDouble.length +
     violations.paidProviderOnPush.length +
     // Rule (m) MUST be summed here or the whole guard is decorative: the report
     // block below would print and then `total === 0` would still return 0.
@@ -1516,6 +1531,14 @@ async function main() {
     console.error('\nFix: reword the offending line to remove the embedded apostrophe/single-quote');
     console.error('(a rephrase, not an escape — bash single-quotes cannot escape anything).');
     console.error("Exempt (legitimate): add  # hygiene-quote-apostrophe-ok: <reason>  anywhere in the file.\n");
+  }
+
+  if (violations.quoteDouble.length) {
+    console.error('(z) Unescaped double quote inside a double-quoted eval (BRO-4047)');
+    for (const { file, hits } of violations.quoteDouble) {
+      for (const h of hits) console.error(`  ${file}:${h.lineNum} (eval starts at ${h.startLine}): ${h.message}\n    ${h.text}`);
+    }
+    console.error('Fix: escape source double quotes for bash, including quotes in JS comments.');
   }
 
   if (violations.paidProviderOnPush.length) {
