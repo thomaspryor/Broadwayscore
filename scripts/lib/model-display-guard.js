@@ -34,7 +34,8 @@
 //                   the card says "Estimated to have recouped, not yet
 //                   announced" instead of a bar (owner decision, BRO-5073:
 //                   estimates are the point; 3 wrong early calls in 28 replay
-//                   checkpoints, all musicals, which stay off).
+//                   checkpoints, all musicals; BRO-5872 moved the musical
+//                   checkpoints down, timing MAE 13.9 -> 11.5).
 // Otherwise shown. An investor cannot get back less than nothing, so a
 // negative value displays as 0 with "losing money so far"; the negative
 // number stays internal.
@@ -113,8 +114,9 @@ function isFinalClosed(comm, show) {
 /**
  * Does the site show the analyst's figure for this record today? Mirrors
  * getRecoupmentDisplayMode(...) === 'analyst' in src/lib/commercial-display.ts.
- * The analyst's figure leads wherever there is one (they cover musicals, where our model
- * stays off); a closed show's final designation must not contradict it.
+ * The analyst's figure leads wherever there is one (they cover musicals, where it
+ * was checked against outcomes; BRO-5502); a closed show's final designation must
+ * not contradict it.
  */
 function displaysAnalyst(comm, show) {
   if (!comm || !show) return false;

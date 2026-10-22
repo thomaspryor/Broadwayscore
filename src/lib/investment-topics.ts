@@ -5,8 +5,8 @@
 //
 // Pure: no data imports. data-commercial.ts feeds it shows.json + commercial.json
 // + canonical critic scores + audience buzz; tests/unit/investment-topics.test.ts
-// calls it with fixtures. No model figures here: musicals' model stays off
-// (BRO-5849), and the only range shown is the analyst's, through
+// calls it with fixtures. No model figures here (BRO-5849: a topic total mixes
+// many shows, so it sums only published figures): the only range shown is the analyst's, through
 // displaysAnalyst / analystRange (model-display-guard).
 
 import { calculateWeeksToRecoup, isExcludedFromSeasonStats } from './commercial-metrics';

@@ -93,9 +93,9 @@ export function isClosedWithoutRecouping(
  *  - 'none' for a Nonprofit production (no investors to repay, BRO-4721) or a
  *    Tour Stop (its investors are repaid across the tour).
  *  - 'analyst': u/Boring_Waltz_9545's published estimate (BRO-5502). It leads
- *    wherever there is one: the analyst covers musicals, where our model stays off.
+ *    wherever there is one (the analyst covers musicals).
  *  - 'model': model output exists and clears the quality floor (the guarded
- *    copy has already held musicals, wide ranges and short runs).
+ *    copy has already held solo shows, wide ranges and short runs).
  *    A closed TBD ("Undisclosed") shows either estimate as its final figure,
  *    labelled; owner 2026-10-16, replacing BRO-5020's blanket hide. A closed
  *    Fizzle or Flop shows one only when it agrees with the label

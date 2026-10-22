@@ -535,11 +535,14 @@ function getPreviewGrossMultiplier(previewWeek) {
  *                       flat deduction, and an all-in or breakeven figure
  *                       already holds the gross-linked costs
  *   varBandMusicalsWaltz, varBandMusicalsReported (BRO-5872) the same band on
- *                       an analyst's (Boring Waltz) cost and on a reported
- *                       musical cost with no public cite (trade-reported or
- *                       SEC filing): those leave royalties out too, so the
- *                       flat ~11% read musicals about 2x high. A flagged
- *                       estimate (isEstimate) keeps the flat path.
+ *                       an analyst's (Boring Waltz) cost and on every
+ *                       reported musical cost (trade-reported, SEC filing,
+ *                       producer-confirmed), cited or not: those leave
+ *                       royalties out too, so the flat ~11% read musicals
+ *                       about 2x high. While Reported is on, Cited adds
+ *                       nothing; each stays a separate switch for shadow
+ *                       runs. A flagged estimate (isEstimate) keeps the flat
+ *                       path, and the lifetime tier keeps its blended rate.
  * Timing backtest, musicals: MAE 18.4 -> 14.1 -> 11.5 (BRO-5872), inside 34 ->
  * 37 -> 39; reported truth musicals 4.6 -> 3.7 -> 3.2; displayed closed-musical
  * finals with a reported outcome 14.3 -> 5.8; 0 new false recouped. An
@@ -679,9 +682,9 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   // posts deduct on this band, so the flat ~11% undercharged every such run.
   // Musicals only (classifyShow): calcWeeklyProfit's band counts a solo show as one.
   const waltzCost = !!opts.varBandMusicalsWaltz && /^musical/.test(category) && isWaltzWeeklyCost(commercial);
-  // opts.varBandMusicalsReported (live for musicals, BRO-5872): the band on a
-  // reported musical cost (trade-reported, SEC filing) with no public cite,
-  // never on one flagged as an estimate.
+  // opts.varBandMusicalsReported (live for musicals, BRO-5872): the band on any
+  // reported musical cost (isReportedWeeklyCost, cited or not), never on one
+  // flagged as an estimate.
   const otherReported = !!opts.varBandMusicalsReported && /^musical/.test(category) && isReportedWeeklyCost(commercial)
     && commercial.isEstimate?.weeklyRunningCost !== true;
   const citedBand = (!!opts.varBandMusicalsCited && isCitedReportedWeeklyCost(commercial) || waltzCost || otherReported) && !['all-in', 'breakeven'].includes(commercial.weeklyRunningCostBasis);
