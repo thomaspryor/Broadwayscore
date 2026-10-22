@@ -59,6 +59,16 @@ runs:
             sudo pkill -f '[a]pt-get|[d]pkg' || true
             timeout 30 sudo dpkg --configure -a || true
           else
+            # BRO-6001: on a browser-cache HIT the browsers are already on disk
+            # and install-deps only tops up apt packages (ubuntu runners ship
+            # every shared lib; the stalled run needed fonts only). A flaky apt
+            # mirror must not fail the whole job then. Cache MISS still fails:
+            # there is no browser to launch. Adds no time to the 500s ceiling.
+            if [ "${{ steps.playwright-cache.outputs.cache-hit }}" = "true" ]; then
+              echo "::warning::${cmd[*]} ${what} on both attempts; browsers are cached, continuing without apt deps. Output of attempt 2:"
+              tail -n 40 "$log"
+              exit 0
+            fi
             echo "::error::${cmd[*]} ${what} on both attempts — full output of attempt 2:"
             cat "$log"
             exit 1

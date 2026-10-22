@@ -25,7 +25,7 @@ const { extractRunBlocks } = require('../../scripts/lib/audit-workflow-hygiene-r
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ACTION = path.join(__dirname, '..', '..', '.github', 'actions', 'setup-playwright', 'action.yml');
 
-function installScript() {
+function installScript(cacheHit = 'false') {
   const raw = fs.readFileSync(ACTION, 'utf8');
   const block = extractRunBlocks(raw).find((b) => b.lines.some((l) => l.text.includes('playwright install')));
   assert.ok(block, 'Install Playwright browsers run: block not found');
@@ -33,12 +33,12 @@ function installScript() {
   return block.lines
     .map((l) => l.text.slice(indent))
     .join('\n')
-    .replace(/\$\{\{\s*steps\.playwright-cache\.outputs\.cache-hit\s*\}\}/g, 'false')
+    .replace(/\$\{\{\s*steps\.playwright-cache\.outputs\.cache-hit\s*\}\}/g, cacheHit)
     .replace(/\$\{\{\s*inputs\.browsers\s*\}\}/g, 'chromium');
 }
 
 // npx stub: exit code per call taken from $NPX_CODES (space-separated).
-function runWith(codes) {
+function runWith(codes, cacheHit = 'false') {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pw-retry-'));
   const counter = path.join(dir, 'calls');
   fs.writeFileSync(path.join(dir, 'npx'), `#!/bin/bash
@@ -49,7 +49,7 @@ exit "\${code:-0}"
 `, { mode: 0o755 });
   fs.writeFileSync(path.join(dir, 'sudo'), '#!/bin/bash\nexit 0\n', { mode: 0o755 });
   const script = path.join(dir, 'step.sh');
-  fs.writeFileSync(script, installScript());
+  fs.writeFileSync(script, installScript(cacheHit));
   const r = spawnSync('bash', ['-e', script], {
     encoding: 'utf8',
     env: { ...process.env, PATH: `${dir}:${process.env.PATH}`, NPX_CODES: codes },
@@ -86,4 +86,19 @@ test('both attempts fail: exit 1 with ::error:: and the log (the dead-code bug t
   assert.equal(r.calls, 2);
   assert.match(r.out, /::error::.*timed out after 220s on both attempts/);
   assert.match(r.out, /npx attempt 2 output/);
+});
+
+// BRO-6001: run 39803872602 failed on two stalled apt downloads although the
+// browsers were cached and the runner already had every shared lib.
+test('cache HIT + both install-deps attempts fail: warns and exits 0 (browsers are on disk)', () => {
+  const r = runWith('124 124', 'true');
+  assert.equal(r.status, 0, r.out);
+  assert.equal(r.calls, 2);
+  assert.match(r.out, /::warning::.*on both attempts; browsers are cached, continuing/);
+  assert.doesNotMatch(r.out, /::error::/);
+});
+
+test('cache MISS + both attempts fail still exits 1 (no browser to launch)', () => {
+  const r = runWith('1 1', 'false');
+  assert.equal(r.status, 1, r.out);
 });
