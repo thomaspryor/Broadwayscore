@@ -34,10 +34,10 @@ function isTerminalStateType(stateType) {
  * state NAMES, which drifted: it admitted a phantom "Paused" and omitted
  * "Duplicate"). Empty string for a non-terminal move or no move, so only a
  * state move that actually landed in a terminal TYPE counts as a report.
- * Same marker convention as **BOARD_CARD_ID** / **LINEAR_ISSUE_ID**.
+ * Same marker convention as __BOARD_CARD_ID__ / __LINEAR_ISSUE_ID__.
  */
 function reportedMarker(identifier, stateType) {
-  return identifier && isTerminalStateType(stateType) ? `**LINEAR_REPORTED**=${identifier}` : '';
+  return identifier && isTerminalStateType(stateType) ? `__LINEAR_REPORTED__=${identifier}` : '';
 }
 
 module.exports = { TERMINAL_STATE_TYPES, isTerminalStateType, reportedMarker };

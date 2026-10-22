@@ -8,7 +8,7 @@ const { reportedMarker, isTerminalStateType } = require('./linear-state-types.js
 
 test('reportedMarker: every terminal type reports, including duplicate', () => {
   for (const type of ['completed', 'canceled', 'duplicate']) {
-    assert.equal(reportedMarker('BRO-1', type), '**LINEAR_REPORTED**=BRO-1');
+    assert.equal(reportedMarker('BRO-1', type), '__LINEAR_REPORTED__=BRO-1');
   }
 });
 

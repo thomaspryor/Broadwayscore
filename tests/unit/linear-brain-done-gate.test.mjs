@@ -126,6 +126,40 @@ test('allowed: a safe-form verify command in the acceptance criteria', () => {
   // allowed the move without consulting it would still pass the two asserts
   // above.
   assert.match(res.stderr, /VERIFY_CMD_CALLED:node --test tests\/unit\/done-semantics-gate\.test\.mjs/);
+  // BRO-2857: a terminal-type move prints the state-type-keyed proof line.
+  assert.match(res.stderr, /^__LINEAR_REPORTED__=BRO-9457$/m);
+});
+
+// BRO-2857: the __LINEAR_REPORTED__ line is proof a card was closed, so it must
+// not print on a failed write or a non-terminal move.
+function runMarker({ state, updateThrows }) {
+  const script = `
+    const { main } = require('./scripts/linear-brain.js');
+    const issue = ${JSON.stringify(makeIssue('Fixture'))};
+    main(['update', 'BRO-9457', '--state', ${JSON.stringify(state)}, '--force'], {
+      verifyEvidence: () => ({ verified: true, reason: 'stub' }),
+      verifyCmdEvidence: () => ({ allowed: true, verdict: 'own-verify-passed', reason: 'stub', notOnMain: false, sha: 'stub000000' }),
+      getIssue: async () => issue,
+      getTeam: async () => ({ states: ${JSON.stringify(TEAM_STATES)} }),
+      appendBypassRow: () => {},
+      updateIssue: async () => { ${updateThrows ? "throw new Error('write failed');" : ''} },
+      createComment: async () => {},
+    });
+  `;
+  return spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+}
+
+test('BRO-2857: no __LINEAR_REPORTED__ line when the state write throws', () => {
+  const res = runMarker({ state: 'Done', updateThrows: true });
+  assert.notEqual(res.status, 0, res.stderr);
+  assert.doesNotMatch(res.stderr, /__LINEAR_REPORTED__/);
+});
+
+test('BRO-2857: no __LINEAR_REPORTED__ line for a non-terminal move', () => {
+  const res = runMarker({ state: 'Todo', updateThrows: false });
+  assert.equal(res.status, 0, res.stderr);
+  assert.match(res.stderr, /ISSUE-UPDATED: BRO-9457/);
+  assert.doesNotMatch(res.stderr, /__LINEAR_REPORTED__/);
 });
 
 test('refused: the recorded acceptance command is executed and FAILS', () => {
