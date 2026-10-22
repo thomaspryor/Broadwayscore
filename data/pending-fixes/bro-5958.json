@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5958",
   "planId": "ae138d91-43cc-4208-bb91-e10a9181ce74",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-22T14:00:00.000Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,19 @@
         "description": "BRO-5958: owner chose to stop counting the pre-opening preview as a review."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T14:04:11.349Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "arias-with-a-twist-off-broadway-2026/broadwayworld--peter-danish.json isNonReviewReason: null -> \"manual (not a review): BroadwayWorld 'Previews:' feature dated 2026-09-18, before the 2026-09-23 opening, promotional preview with a ticket link, isFullReview false. Owner decision, BRO-5958.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "arias-with-a-twist-off-broadway-2026/broadwayworld--peter-danish.json isNonReview: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
