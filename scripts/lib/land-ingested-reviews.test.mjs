@@ -7,7 +7,13 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { landIngestedReviews } = require('./land-ingested-reviews.js');
 
-const base = { showId: 'rent-west-end-2026', reviewTextsDir: '/rt', touchedPaths: ['/rt/rent-west-end-2026/a.json'], newReviews: 1, message: 'm', log: () => {} };
+// isCheckout is injected: /rt is not a real clone, and the refusal below is the
+// point of the last two tests, so the other four say explicitly that it is one.
+const base = {
+  showId: 'rent-west-end-2026', reviewTextsDir: '/rt',
+  touchedPaths: ['/rt/rent-west-end-2026/a.json'], newReviews: 1, message: 'm',
+  log: () => {}, isCheckout: () => true,
+};
 
 test('pushes before dispatching scoring, scoped to the show', () => {
   const calls = [];
@@ -43,4 +49,33 @@ test('multi-show fan-out dispatches scoring per child show', () => {
   const r = landIngestedReviews({ ...base, exec, extraShowIds: ['other-show'], only: ['llm-ensemble-score.yml'] });
   assert.equal(r.dispatched.length, 2);
   assert.ok(calls.some((c) => c.includes('show_id=other-show')));
+});
+
+// BRO-5936: the static source guard (review-texts-push-dir.test.mjs) only catches
+// the shapes it knows, and in CI both review-texts roots are the same path, so
+// nothing there can tell a wrong root from a right one. These two checks run
+// against the dir and the paths themselves, which is what fails on the Mac.
+test('refuses to push a review-texts dir that is not a checkout', () => {
+  const calls = [];
+  const r = landIngestedReviews({
+    ...base, isCheckout: () => false,
+    exec: (c) => { calls.push(c); return 'A  x'; },
+  });
+  assert.equal(r.push.pushed, false);
+  assert.match(r.push.error, /not a git checkout/);
+  assert.deepEqual(calls, [], 'git must not run at all — git -C <copy> walks up to the enclosing repo');
+  assert.equal(r.dispatched.length, 0);
+});
+
+test('refuses to push paths written outside the dir being pushed', () => {
+  const calls = [];
+  const r = landIngestedReviews({
+    ...base,
+    touchedPaths: ['/Users/x/Broadwayscore/data/review-texts/rent-west-end-2026/a.json'],
+    exec: (c) => { calls.push(c); return 'A  x'; },
+  });
+  assert.equal(r.push.pushed, false);
+  assert.match(r.push.error, /outside \/rt/);
+  assert.deepEqual(calls, []);
+  assert.equal(r.dispatched.length, 0);
 });

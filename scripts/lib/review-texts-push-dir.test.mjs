@@ -35,6 +35,9 @@ const SCRIPTS = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 // land-ingested-reviews.js is where they are DEFINED, so it is not itself a
 // caller; a *.test.mjs exercises them with injected dirs and is not one either.
 const PUSH_HELPERS = /\b(pushReviewTexts|landIngestedReviews)\s*[(:]/;
+// A caller that renames the helper on import (`const { pushReviewTexts: publish }`)
+// matches neither form above, so importing the module at all counts as calling it.
+const PUSH_IMPORT = /(?:require\(|from\s*)['"][^'"]*land-ingested-reviews(?:\.js)?['"]/;
 const DEFINITION_FILE = 'lib/land-ingested-reviews.js';
 const SOURCE_EXT = /\.(js|mjs|cjs)$/;
 
@@ -66,7 +69,7 @@ function callers() {
       if (entry.name.includes('.test.')) continue;
       if (relPath === DEFINITION_FILE) continue;
       const code = stripComments(fs.readFileSync(abs, 'utf8'));
-      if (PUSH_HELPERS.test(code)) found.push({ relPath, code });
+      if (PUSH_HELPERS.test(code) || PUSH_IMPORT.test(code)) found.push({ relPath, code });
     }
   };
   walk(SCRIPTS);
@@ -99,14 +102,23 @@ test('no push-helper caller hardcodes a data/review-texts path', () => {
   // The whole bug was a hardcoded join standing in for the checkout. Allow it
   // nowhere in these files: the resolver returns exactly this path when it is
   // the checkout, so there is never a reason to write it out.
-  const bad = /path\.join\(\s*__dirname\s*,\s*['"]\.\.['"]\s*,\s*['"]data['"]\s*,\s*['"]review-texts['"]/;
+  // Matching only the exact join shape that caused BRO-5874 let the same path
+  // back in as path.resolve(...), path.join(process.cwd(), ...) and a template
+  // literal. Ban the PATH, in either of the two ways it can be written: as
+  // adjacent join/resolve arguments, or as a literal containing data/review-texts.
+  const bad = [
+    /['"`]data['"`]\s*,\s*['"`]review-texts['"`]/,
+    /['"`][^'"`\n]*data\/review-texts/,
+  ];
   for (const { relPath, code } of callers()) {
-    assert.doesNotMatch(
-      code,
-      bad,
-      `${relPath} hardcodes path.join(__dirname, '..', 'data', 'review-texts') — `
-      + 'use resolveReviewTextsDir(); that hardcoded path is the BRO-5874 regression',
-    );
+    for (const re of bad) {
+      assert.doesNotMatch(
+        code,
+        re,
+        `${relPath} builds a data/review-texts path by hand (${re}) — `
+        + 'use resolveReviewTextsDir(); that hardcoded path is the BRO-5874 regression',
+      );
+    }
   }
 });
 
@@ -132,15 +144,26 @@ test('the write dir and the dir handed to the push helper are the same variable'
     // (`fanDir`, from BRO-5895's multi-show fan-out). Ban the value: every
     // reviewTextsDir option a caller passes must be the resolved variable
     // itself, shorthand `{ reviewTextsDir }` or `reviewTextsDir: reviewTextsDir`.
-    const aliased = [...code.matchAll(/reviewTextsDir\s*:\s*([A-Za-z_$][\w$]*)/g)]
-      .map((m) => m[1])
-      .filter((name) => name !== 'reviewTextsDir');
+    // Matching an IDENTIFIER after the colon let every non-identifier shape
+    // through — `(path.resolve(...))`, a template literal, `process.env.X`, a
+    // call — and parentheses hid plain aliases too. Capture the whole value and
+    // require it to be the resolved variable itself.
+    const aliased = [...code.matchAll(/reviewTextsDir\s*:\s*([^,}\n]+)/g)]
+      .map((m) => m[1].trim().replace(/^\(+|\)+$/g, '').trim())
+      .filter((value) => value !== 'reviewTextsDir');
     assert.deepEqual(
       aliased,
       [],
       `${relPath} passes a reviewTextsDir option that is not the resolved variable `
       + `(${aliased.join(', ')}) — a second root is how BRO-5936 happened; pass `
       + 'the one dir resolveReviewTextsDir() returned',
+    );
+    // Setting the option after the fact dodges every check above.
+    assert.doesNotMatch(
+      code,
+      /\.reviewTextsDir\s*=[^=]/,
+      `${relPath} assigns a reviewTextsDir option after building it — pass the dir `
+      + 'resolveReviewTextsDir() returned at the call site (BRO-5936)',
     );
   }
 });
