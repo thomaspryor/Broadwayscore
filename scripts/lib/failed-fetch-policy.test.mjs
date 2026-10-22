@@ -12,6 +12,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
+const policy = require('./failed-fetch-policy.js');
 const { shouldCountFailure, isPermanentlyFailed, isNonEvidenceFailure } = require('./failed-fetch-policy.js');
 
 /** Replays recordFailedFetch's counter arithmetic over a sequence of reasons. */
@@ -105,4 +106,26 @@ test('shouldReopenStaleContentMismatch: old-version mismatch on a textless unfla
   assert.equal(shouldReopenStaleContentMismatch(entry, { ...data, fullText: 'x'.repeat(2000) }, 2), false);
   assert.equal(shouldReopenStaleContentMismatch(entry, { ...data, wrongShow: true }, 2), false);
   assert.equal(shouldReopenStaleContentMismatch({ failureReason: 'url_dead' }, data, 2), false);
+});
+
+// BRO-5933: a JS exception in our own fetch code is not evidence about the URL.
+test('code exceptions classify as code_error, never retire, and legacy fetch_error rows are read as code_error', () => {
+  const crash = "Cannot read properties of undefined (reading 'length')";
+  assert.equal(policy.classifyFetchFailure({ message: crash }), 'code_error');
+  assert.equal(policy.classifyFetchFailure({ message: 'HTTP 404 Not Found' }), 'url_dead_404');
+  assert.equal(policy.classifyFetchFailure({ message: 'socket hang up' }), 'fetch_error');
+  assert.equal(policy.isNonEvidenceFailure('code_error'), true);
+  assert.equal(policy.isPermanentlyFailed({ failureReason: 'fetch_error', failureCount: 9, errorMessage: crash }), false);
+  assert.equal(policy.isPermanentlyFailed({ failureReason: 'fetch_error', failureCount: 9, errorMessage: 'socket hang up' }), true);
+  assert.equal(policy.effectiveFailureReason({ failureReason: 'fetch_error', errorMessage: 'x.map is not a function' }), 'code_error');
+  assert.equal(policy.effectiveFailureReason({ failureReason: 'all_tiers_failed', errorMessage: crash }), 'all_tiers_failed');
+});
+
+test('shouldRetryFetch retries a closed show whose only failures were code exceptions', () => {
+  const { shouldRetryFetch } = require('./review-guards.js');
+  const show = { id: 's', status: 'closed', closingDate: '2019-01-01', openingDate: '2018-10-01' };
+  const crash = { failureReason: 'fetch_error', failureCount: 3, errorMessage: "Cannot read properties of undefined (reading 'length')" };
+  assert.equal(shouldRetryFetch(show, { url: 'https://www.theguardian.com/stage/x' }, crash).shouldRetry, true);
+  const real = { failureReason: 'fetch_error', failureCount: 9, errorMessage: 'socket hang up' };
+  assert.equal(shouldRetryFetch(show, { url: 'https://www.theguardian.com/stage/x' }, real).shouldRetry, false);
 });

@@ -39,7 +39,35 @@ const ROUTE_CAPPED_REASON = 'route_not_attempted_cap';
  * route is capped every day from being retried forever at no evidence cost.
  */
 const MAX_ROUTE_CAPPED_DEFERRALS = 3;
-const NON_EVIDENCE_REASONS = Object.freeze(['budget_capped', SOFT_404_REASON, ROUTE_CAPPED_REASON]);
+/**
+ * A fetch that died on a JavaScript exception in our own code (a TypeError
+ * from a bad response shape, say) says nothing about the URL. Before this
+ * reason existed such rows were recorded as fetch_error and retired: the
+ * Guardian Content API crash ("Cannot read properties of undefined (reading
+ * 'length')") left 266 Guardian reviews skipped for good after the crash was
+ * fixed (BRO-5933).
+ */
+const CODE_ERROR_REASON = 'code_error';
+const CODE_EXCEPTION_RE = /Cannot read propert(?:y|ies) of (?:undefined|null)|Cannot destructure|is not a function|is not iterable|is not defined\b|Cannot set propert(?:y|ies) of (?:undefined|null)/;
+
+/** @param {string} message */
+function isCodeException(message) {
+  return CODE_EXCEPTION_RE.test(String(message || ''));
+}
+
+const NON_EVIDENCE_REASONS = Object.freeze(['budget_capped', SOFT_404_REASON, ROUTE_CAPPED_REASON, CODE_ERROR_REASON]);
+
+/**
+ * The reason to judge a failed-fetches entry by. Rows written before
+ * code_error existed carry fetch_error with the exception text in
+ * errorMessage; read those as code_error so they are retried (BRO-5933).
+ * @param {{failureReason?: string, errorMessage?: string}} entry
+ */
+function effectiveFailureReason(entry) {
+  const reason = (entry && entry.failureReason) || '';
+  if (reason === 'fetch_error' && isCodeException(entry && entry.errorMessage)) return CODE_ERROR_REASON;
+  return reason;
+}
 
 /** @param {string} reason */
 function isNonEvidenceFailure(reason) {
@@ -83,7 +111,7 @@ function isStrictFailureReason(reason) {
  * @param {{failureReason?: string, failureCount?: number}} entry
  */
 function isPermanentlyFailed(entry) {
-  const reason = (entry && entry.failureReason) || '';
+  const reason = effectiveFailureReason(entry);
   const count = (entry && entry.failureCount) || 0;
   if (isNonEvidenceFailure(reason)) return false;
   return count >= (isStrictFailureReason(reason) ? 3 : 5);
@@ -104,6 +132,7 @@ function isPermanentlyFailed(entry) {
 function classifyFetchFailure({ message, bdWasCapped = false, routeCapped = null }) {
   const msg = String(message || '');
   if (msg.includes('404')) return 'url_dead_404';
+  if (isCodeException(msg)) return CODE_ERROR_REASON;
   if (bdWasCapped) return 'budget_capped';
   if (routeCapped) return ROUTE_CAPPED_REASON;
   if (msg.includes('timeout') || msg.includes('TIMEOUT')) return 'all_tiers_timeout';
@@ -197,6 +226,9 @@ module.exports = {
   isRouteCapCooldownActive,
   shouldReopenStaleContentMismatch,
   NON_EVIDENCE_REASONS,
+  CODE_ERROR_REASON,
+  isCodeException,
+  effectiveFailureReason,
   isNonEvidenceFailure,
   shouldCountFailure,
   isStrictFailureReason,
