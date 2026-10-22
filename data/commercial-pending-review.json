@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T05:05:36.721Z",
+  "generatedAt": "2026-10-22T06:07:14.109Z",
   "shows": {
     "860": {
       "capitalization": null,
@@ -5819,6 +5819,852 @@
       "openingDate": "2016-12-01",
       "status": "closed",
       "researchedAt": "2026-10-22T05:05:36.721Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "les-liaisons-dangereuses-2016": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Did Not Recoup",
+      "notes": "Limited Broadway engagement at the Booth Theatre; I could verify run dates, 81 performances, and total grosses, but not a public capitalization or weekly nut. No public recoupment announcement was located in the sources checked.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/les-liaisons-dangereuses-506985",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/les-liaisons-dangereuses-will-end-broadway-run-early",
+          "date": "2016-11-23"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/LES-LIAISONS-DANGEREUSES",
+          "date": null
+        }
+      ],
+      "title": "Les Liaisons Dangereuses",
+      "slug": "les-liaisons-dangereuses-2016",
+      "openingDate": "2016-10-30",
+      "status": "closed",
+      "researchedAt": "2026-10-22T05:14:19.723Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "falsettos-2016": {
+      "capitalization": 5000000,
+      "capitalizationSource": "Playbill reported the revival had a budget 'pushing $5 million' before the Broadway move (best public figure found; not an exact cap disclosure).",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Did Not Recoup",
+      "notes": "Best public capitalization figure found was about $5 million. No verified weekly nut or recoupment announcement surfaced; the 2025 Oxford/Significance paper only classifies Falsettos as having a plausible chance of recoupment, not a confirmed one.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/article/planned-broadway-falsettos-revival-postpones-to-2016-17-com-361023",
+          "date": "2015-09-03"
+        },
+        {
+          "type": "trade",
+          "url": "https://academic.oup.com/jrssig/article/22/4/6/8151666",
+          "date": "2025-05-27"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/production/falsettos-walter-kerr-theatre-2016-2017",
+          "date": null
+        }
+      ],
+      "title": "Falsettos",
+      "slug": "falsettos-2016",
+      "openingDate": "2016-10-27",
+      "status": "closed",
+      "researchedAt": "2026-10-22T05:16:58.727Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "the-front-page-2016": {
+      "capitalization": 4875000,
+      "capitalizationSource": "Playbill reported that 'The Front Page' recouped its entire $4.875 million capitalization.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": true,
+      "recoupedDate": "2017-01",
+      "recoupedSource": "Playbill reported recoupment during the week ending January 1, 2017.",
+      "estimatedRecoupmentPct": null,
+      "designation": "Easy Winner",
+      "notes": "Limited Broadway engagement at the Broadhurst Theatre; recouped in January 2017. Public trade press gave an operating-cost estimate north of $800,000/week, but no exact weekly nut was verified.",
+      "confidence": "high",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/front-page-revival-starring-nathan-lane-recoups-broadway-investment",
+          "date": "2017-01-09"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.forbes.com/sites/leeseymour/2017/01/10/scott-rudins-broadway-run-continues-as-the-front-page-recoups-investment/",
+          "date": "2017-01-10"
+        }
+      ],
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
+      "title": "The Front Page",
+      "slug": "the-front-page-2016",
+      "openingDate": "2016-10-20",
+      "status": "closed",
+      "researchedAt": "2026-10-22T05:18:50.519Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "the-cherry-orchard-2016": {
+      "capitalization": null,
+      "capitalizationSource": "No verified public capitalization found.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "Roundabout Theatre Company is a nonprofit; The Cherry Orchard is listed on Roundabout’s past-shows page as a 2016–2017 production. Playbill’s production page shows the run opened Oct. 16, 2016 and closed Dec. 4, 2016, with total gross of $3,899,477.80 over 57 performances. No verified public capitalization or weekly running cost was found.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.roundabouttheatre.org/about/financial-information/",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.roundabouttheatre.org/about/past-shows/",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/production/the-cherry-orchard-american-airlines-theatre-vault-0000014151",
+          "date": null
+        }
+      ],
+      "title": "The Cherry Orchard",
+      "slug": "the-cherry-orchard-2016",
+      "openingDate": "2016-10-16",
+      "status": "closed",
+      "researchedAt": "2026-10-22T05:21:28.812Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "heisenberg-2016": {
+      "capitalization": null,
+      "capitalizationSource": "No verified public capitalization found in official MTC/IBDB materials; MTC identifies itself as a not-for-profit theatre and is listed as producer of Heisenberg. ([manhattantheatreclub.com](https://www.manhattantheatreclub.com/who-we-are/about-mtc/?utm_source=openai))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "MTC is a not-for-profit theatre and IBDB lists it as the producer and owner/operator of the Samuel J. Friedman Theatre production; because this is a nonprofit production, traditional investor recoupment is not applicable. Public pages show performance/gross statistics, but no disclosed capitalization or weekly operating cost. ([manhattantheatreclub.com](https://www.manhattantheatreclub.com/who-we-are/about-mtc/?utm_source=openai))",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/heisenberg-504820",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.manhattantheatreclub.com/who-we-are/about-mtc/",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.manhattantheatreclub.com/who-we-are/about-mtc/financial-info/",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://playbill.com/production/heisenberg-samuel-j-friedman-theatre-vault-0000014158",
+          "date": null
+        }
+      ],
+      "title": "Heisenberg",
+      "slug": "heisenberg-2016",
+      "openingDate": "2016-10-13",
+      "status": "closed",
+      "researchedAt": "2026-10-22T05:23:34.339Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "oh-hello-on-broadway-2016": {
+      "capitalization": 2900000,
+      "capitalizationSource": "Trade press report (AP/Yahoo Entertainment) stating the show had a $2.9 million capitalization.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": true,
+      "recoupedDate": "2017-01",
+      "recoupedSource": "Playbill and TheaterMania reported that the production had recouped by Jan. 18, 2017 and would close Jan. 22 in the black.",
+      "estimatedRecoupmentPct": null,
+      "designation": "Easy Winner",
+      "notes": "Limited Broadway engagement at the Lyceum Theatre. Verified $2.9M capitalization and recoupment before the Jan. 22, 2017 close; no public weekly nut confirmed.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.yahoo.com/entertainment/oh-hello-recoups-broadway-150013430.html",
+          "date": "2017-01-18"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/oh-hello-recoups-investment-and-will-be-filmed",
+          "date": "2017-01-18"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.theatermania.com/news/oh-hello-becomes-a-broadway-hit_79722/",
+          "date": "2017-01-18"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.nytix.com/news/oh-hello-on-broadway-completes-its-run",
+          "date": "2017-01-27"
+        }
+      ],
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
+      "title": "Oh, Hello on Broadway",
+      "slug": "oh-hello-on-broadway-2016",
+      "openingDate": "2016-10-10",
+      "status": "closed",
+      "researchedAt": "2026-10-22T05:25:38.341Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "holiday-inn-the-new-irving-berlin-musical-2016": {
+      "capitalization": null,
+      "capitalizationSource": "No exact public capitalization found in the searched sources; a producer said the production \"doesn't cost $15 million\". ([americantheatre.org](https://www.americantheatre.org/2016/12/05/bobs-broadway-broadcast/))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "Roundabout is a not-for-profit/501(c)(3), so traditional investor recoupment does not apply. Playbill reports total Broadway gross of $10,143,047.35 across 117 performances. ([roundabouttheatre.org](https://www.roundabouttheatre.org/?utm_source=openai))",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/holiday-inn-the-new-irving-berlin-musical-503850",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.roundabouttheatre.org/",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.roundabouttheatre.org/about/financial-information/",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.americantheatre.org/2016/12/05/bobs-broadway-broadcast/",
+          "date": "2016-12-05"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/holiday-inn-studio-54-2016-2017",
+          "date": null
+        }
+      ],
+      "title": "Holiday Inn, The New Irving Berlin Musical",
+      "slug": "holiday-inn-the-new-irving-berlin-musical-2016",
+      "openingDate": "2016-10-06",
+      "status": "closed",
+      "researchedAt": "2026-10-22T05:28:34.066Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "the-encounter-2016": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "IBDB confirms the production ran at John Golden Theatre from 2016-09-29 to 2017-01-08. The only hard financial data I could verify publicly was box office grossing: Playbill shows $4,370,569.81 lifetime gross across 16 weeks, but I found no verified public capitalization, weekly nut, or recoupment statement.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.ibdb.com/broadway-production/the-encounter-508470",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/the-encounter-john-golden-theatre-2016-2017",
+          "date": null
+        }
+      ],
+      "title": "The Encounter",
+      "slug": "the-encounter-2016",
+      "openingDate": "2016-09-29",
+      "status": "closed",
+      "researchedAt": "2026-10-22T05:31:47.099Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "cats-2016": {
+      "capitalization": 11000000,
+      "capitalizationSource": "SEC Form D for New Cats Broadway Ltd Liability Co (CIK 0001675859), total offering amount $11,000,000.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Academic source citing the production as having recovered only $759,699 after nearly a year; later post-closing writeup says it finished with a modest loss.",
+      "estimatedRecoupmentPct": [
+        0,
+        10
+      ],
+      "designation": "Flop",
+      "notes": "Publicly verifiable capitalization is $11M. I could not confirm a public weekly nut. Available sources indicate the revival had only recovered a small fraction of its costs by roughly the one-year mark and closed with a modest loss, so it did not recoup.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/1675859/000167585916000001/0001675859-16-000001.txt",
+          "date": "2016-05-31"
+        },
+        {
+          "type": "trade",
+          "url": "https://edoc.ub.uni-muenchen.de/28744/1/Bonin_Christin.pdf",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.nytix.com/news/cats-the-jellicle-ball-aims-to-rewrite-broadway-history-in-2026-after-past-misfires",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/article/cats-set-to-close-on-broadway-december-30",
+          "date": "2017-06-21"
+        }
+      ],
+      "title": "Cats",
+      "slug": "cats-2016",
+      "openingDate": "2016-07-31",
+      "status": "closed",
+      "researchedAt": "2026-10-22T05:34:21.304Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "motown-the-musical-2016": {
+      "capitalization": null,
+      "capitalizationSource": "No separate public capitalization figure found for the 2016 return engagement in the sources checked.",
+      "weeklyRunningCost": 675000,
+      "costMethodology": "trade-reported",
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Inferred from reported weekly production cost ($675,000) and BroadwayWorld weekly grosses that stayed below that level; no direct recoupment disclosure found for this engagement.",
+      "estimatedRecoupmentPct": null,
+      "designation": "Did Not Recoup",
+      "notes": "2016 Broadway return engagement at the Nederlander Theatre. Publicly reported weekly cost was $675,000; no separate capitalization or direct recoupment statement was found.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/motowns-back-on-broadwayheres-why-and-whats-changed",
+          "date": "2016-07-13"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/MOTOWN-THE-MUSICAL",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.ibdb.com/broadway-production/motown-the-musical-503905",
+          "date": null
+        }
+      ],
+      "title": "Motown The Musical",
+      "slug": "motown-the-musical-2016",
+      "openingDate": "2016-07-12",
+      "status": "closed",
+      "researchedAt": "2026-10-22T05:36:05.036Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "an-act-of-god-2016": {
+      "capitalization": null,
+      "capitalizationSource": "No separate public capitalization source found for the 2016 Booth Theatre return engagement.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "The 2016 Booth Theatre return engagement ran June 6 to September 4, 2016 as a 14-week limited engagement, and the production page reports $4,566,857.10 in gross by closing. I could not verify a separate capitalization or weekly nut for this engagement; the only public recoupment figure I found was for the original 2015 Studio 54 production, which recouped its $2.9 million capitalization in 10 weeks, but that does not establish this 2016 run's economics. ([shubert.nyc](https://shubert.nyc/press/sean-hayes-to-star-in-broadways-an-act-of-god-summer-2016/?utm_source=openai))",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://shubert.nyc/press/sean-hayes-to-star-in-broadways-an-act-of-god-summer-2016/",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/15003",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.theatermania.com/news/holy-moses-jim-parsons-led-an-act-of-god-recoups-investment_73551/",
+          "date": "2015-07-15"
+        }
+      ],
+      "title": "An Act of God",
+      "slug": "an-act-of-god-2016",
+      "openingDate": "2016-06-06",
+      "status": "closed",
+      "researchedAt": "2026-10-22T05:38:48.454Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "cirque-du-soleil-paramour-2016": {
+      "capitalization": 25000000,
+      "capitalizationSource": "Broadway Direct reported Paramour as Cirque's new $25 million production. ([broadwaydirect.com](https://broadwaydirect.com/cirque-du-soleil-flies-paramour/))",
+      "weeklyRunningCost": 385561,
+      "costMethodology": "industry-estimate",
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "2024 Oxford study: Cirque du Soleil Paramour had a $25 million capitalization, grossed $50,071,361 over 53 weeks, and was deemed unlikely to have recouped. ([academic.oup.com](https://academic.oup.com/jrssig/article/22/4/6/8151666?utm_source=openai))",
+      "estimatedRecoupmentPct": null,
+      "designation": "Did Not Recoup",
+      "notes": "Opened May 25, 2016 and closed April 16, 2017. The best public finance source I found gives a $25 million capitalization and a maximum weekly running cost estimate of $385,561, but not an exact disclosed weekly nut. ([playbill.com](https://playbill.com/article/paramour-ends-broadway-run-april-16?utm_source=openai))",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://broadwaydirect.com/cirque-du-soleil-flies-paramour/",
+          "date": "2015-11-17"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/paramour-ends-broadway-run-april-16",
+          "date": "2017-04-16"
+        },
+        {
+          "type": "trade",
+          "url": "https://academic.oup.com/jrssig/article/22/4/6/8151666",
+          "date": "2024-01-01"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        }
+      ],
+      "title": "Cirque du Soleil Paramour",
+      "slug": "cirque-du-soleil-paramour-2016",
+      "openingDate": "2016-05-25",
+      "status": "closed",
+      "researchedAt": "2026-10-22T05:41:16.408Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016": {
+      "capitalization": 12000000,
+      "capitalizationSource": "SEC Form D/A for Shuffle Along Ltd Liability Co; maximum capitalization $12,000,000, minimum $10,500,000.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Playbill reported the producers said the show was already running at a loss before closing on July 24, 2016.",
+      "estimatedRecoupmentPct": null,
+      "designation": "Did Not Recoup",
+      "notes": "Verified capitalization is $12M. No public weekly nut was found. The show closed after 100 performances and the public record supports that it was not recouped.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/1645882/000164588215000002/xslFormDX01/primary_doc.xml",
+          "date": "2015-07-17"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/shuffle-along-producers-sue-lloyds-of-london",
+          "date": "2016-06-28"
+        },
+        {
+          "type": "manual",
+          "url": "https://arts.princeton.edu/wp-content/uploads/2021/09/The-Performance-and-Politics-of-Concurrent-Temporalities-in-George-C-Wolfe-Young.pdf",
+          "date": null
+        }
+      ],
+      "title": "Shuffle Along, Or The Making of the Musical Sensation of 1921 and All That Followed",
+      "slug": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
+      "openingDate": "2016-04-28",
+      "status": "closed",
+      "researchedAt": "2026-10-22T05:44:12.098Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "long-days-journey-into-night-2016": {
+      "capitalization": null,
+      "capitalizationSource": "Not publicly verified; no match on the NYC tax-credit list and I found no public budget disclosure. ([investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": "Not applicable for Roundabout’s not-for-profit production model. ([roundabouttheatre.org](https://www.roundabouttheatre.org/about/financial-information/?utm_source=openai))",
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "Public box-office data show a total gross of $5,153,916.50 over 61 performances, but I found no public capitalization or weekly nut. Roundabout is a 501(c)(3) not-for-profit, so conventional investor recoupment is not publicly applicable. ([playbill.com](https://playbill.com/production/long-days-journey-into-night-american-airlines-theatre-vault-0000014129?utm_source=openai))",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.roundabouttheatre.org/about/financial-information/",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/production/long-days-journey-into-night-american-airlines-theatre-vault-0000014129",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/long-days-journey-into-night-501115",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": null
+        }
+      ],
+      "title": "Long Day's Journey Into Night",
+      "slug": "long-days-journey-into-night-2016",
+      "openingDate": "2016-04-27",
+      "status": "closed",
+      "researchedAt": "2026-10-22T05:47:00.939Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "tuck-everlasting-2016": {
+      "capitalization": 11000000,
+      "capitalizationSource": "Houston Chronicle / New York Times article 'Anatomy of a Broadway Flop: Why These 4 Shows Failed' (cost to produce)",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Houston Chronicle / New York Times article describing the show as a total loss to investors (inference: not recouped)",
+      "estimatedRecoupmentPct": null,
+      "designation": "Did Not Recoup",
+      "notes": "Verified capitalization was $11 million. AP reported the show never grossed more than $340k in a week against a $1.1 million potential; I could not verify a public weekly nut.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.houstonchronicle.com/culture/main/article/Anatomy-of-a-Broadway-Flop-Why-These-4-Shows-8344686.php",
+          "date": "2016-07-06"
+        },
+        {
+          "type": "trade",
+          "url": "https://toronto.citynews.ca/2016/05/24/broadway-musical-tuck-everlasting-no-longer-everlasting/",
+          "date": "2016-05-24"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/tuck-everlasting-501949",
+          "date": null
+        }
+      ],
+      "title": "Tuck Everlasting",
+      "slug": "tuck-everlasting-2016",
+      "openingDate": "2016-04-26",
+      "status": "closed",
+      "researchedAt": "2026-10-22T05:49:26.720Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "fully-committed-2016": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Ken Davenport's \"The \"Will It Recoup\" winner announced! Who won the $500?\" post included Fully Committed and reported that none of the five shows recouped. ([kendavenport.com](https://kendavenport.com/the-will-it-recoup-winner-announced-who-won-the-500/))",
+      "estimatedRecoupmentPct": null,
+      "designation": "Did Not Recoup",
+      "notes": "I could not verify a public capitalization or weekly running cost. Playbill lists the production's final gross at $7,068,655.14 over 112 performances, while trade coverage says the run did not recoup. ([playbill.com](https://playbill.com/production/fully-committed-lyceum-theatre-vault-0000014150?utm_source=openai))",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.kendavenport.com/the-will-it-recoup-winner-announced-who-won-the-500/",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.nytix.com/news/fully-committed-is-fully-concluded-on-broadway",
+          "date": "2016-07-28"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/fully-committed-lyceum-theatre-vault-0000014150",
+          "date": null
+        }
+      ],
+      "title": "Fully Committed",
+      "slug": "fully-committed-2016",
+      "openingDate": "2016-04-25",
+      "status": "closed",
+      "researchedAt": "2026-10-22T05:51:47.996Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "waitress-2016": {
+      "capitalization": 12000000,
+      "capitalizationSource": "Forbes (2016-08-16) reported producers confirmed a $12 million capitalization; Broadway Journal (2021-07-07) reiterated the $12 million figure for the original run.",
+      "weeklyRunningCost": 575000,
+      "costMethodology": "trade-reported",
+      "recouped": true,
+      "recoupedDate": "2017-01",
+      "recoupedSource": "Playbill recoupment announcement (2017-01-26), reported as less than 10 months after opening.",
+      "estimatedRecoupmentPct": null,
+      "designation": "Windfall",
+      "notes": "Original Broadway production at the Brooks Atkinson/Lena Horne Theatre. Capitalized at $12M, recouped in under 10 months, and Forbes estimated weekly expenses at $550k-$600k; midpoint used here.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.forbes.com/sites/leeseymour/2016/08/16/broadways-the-humans-and-waitress-on-fast-track-to-recoup-costs/",
+          "date": "2016-08-16"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/article/waitress-wraps-12-million-the-day-sara-bareilles-announced-as-new-lead",
+          "date": "2017-01-26"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/waitress-scores-10-million-tip-from-feds",
+          "date": "2021-07-07"
+        }
+      ],
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
+      "title": "Waitress",
+      "slug": "waitress-2016",
+      "openingDate": "2016-04-24",
+      "status": "closed",
+      "researchedAt": "2026-10-22T05:54:11.554Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "the-father-2016": {
+      "capitalization": null,
+      "capitalizationSource": "No reliable public capitalization source found; MTC is a nonprofit theatre and IBDB credits MTC as producer of this production at the Samuel J. Friedman Theatre. ([manhattantheatreclub.com](https://www.manhattantheatreclub.com/who-we-are/about-mtc/financial-info/))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "MTC is a not-for-profit theatre, and IBDB lists The Father at the Samuel J. Friedman Theatre from 2016-04-14 to 2016-06-19. I could not verify a public capitalization or weekly nut, so those fields are null and recoupment is not applicable in the usual investor sense. ([manhattantheatreclub.com](https://www.manhattantheatreclub.com/who-we-are/about-mtc/financial-info/))",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.manhattantheatreclub.com/who-we-are/about-mtc/financial-info/",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/the-father-502234",
+          "date": null
+        }
+      ],
+      "title": "The Father",
+      "slug": "the-father-2016",
+      "openingDate": "2016-04-14",
+      "status": "closed",
+      "researchedAt": "2026-10-22T05:56:03.577Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "the-crucible-2016": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Ken Davenport's recap of the spring 2016 limited-run plays says none of the five shows, including The Crucible, recouped.",
+      "estimatedRecoupmentPct": null,
+      "designation": "Did Not Recoup",
+      "notes": "No public capitalization or weekly nut could be verified. Ken Davenport's recap says none of the five spring 2016 limited-run plays, including The Crucible, recouped, and BroadwayWorld lists the show at $11,687,115 in 2016 grosses. ([kendavenport.com](https://kendavenport.com/the-will-it-recoup-winner-announced-who-won-the-500/))",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/shows/Arthur-Millers-The-Crucible-331368.html",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://kendavenport.com/the-will-it-recoup-winner-announced-who-won-the-500/",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grossesbyyear.php?year=2016",
+          "date": null
+        }
+      ],
+      "title": "The Crucible",
+      "slug": "the-crucible-2016",
+      "openingDate": "2016-03-31",
+      "status": "closed",
+      "researchedAt": "2026-10-22T05:59:39.542Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "bright-star-2016": {
+      "capitalization": 11500000,
+      "capitalizationSource": "SEC Form D for Sun Is Gonna Shine Ltd Liability Co, the producer of Bright Star, lists a total offering amount / maximum capitalization of $11,500,000. ([sec.gov](https://www.sec.gov/Archives/edgar/data/1645228/000164522815000001/xslFormDX07/primary_doc.xml))",
+      "weeklyRunningCost": 500000,
+      "costMethodology": "trade-reported",
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Reuters/AP syndicated closing coverage described the show as a near-total loss on its $11.5 million investment. ([kuwaittimes.com](https://kuwaittimes.com/uploads/imported_images/pdf/2016/jun/16/kt.pdf?utm_source=openai))",
+      "estimatedRecoupmentPct": [
+        0,
+        30
+      ],
+      "designation": "Flop",
+      "notes": "BroadwayJournal reported weekly operating expenses of about $500,000 and production costs of about $10 million; Playbill said the show closed June 26, 2016 after 30 previews and 109 regular performances. ([broadwayjournal.com](https://www.broadwayjournal.com/p/bright-star-producer-plans-priority-loan-as-five-tony-award-nominations-offer-pricey-lifeline?utm_source=openai))",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/1645228/000164522815000001/xslFormDX07/primary_doc.xml",
+          "date": "2015-06-16"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/bright-star-producer-plans-priority-loan-as-five-tony-award-nominations-offer-pricey-lifeline",
+          "date": "2016-05-06"
+        },
+        {
+          "type": "trade",
+          "url": "https://kuwaittimes.com/uploads/imported_images/pdf/2016/jun/16/kt.pdf",
+          "date": "2016-06-16"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/bright-star-plays-final-broadway-performance-today",
+          "date": "2016-06-26"
+        }
+      ],
+      "title": "Bright Star",
+      "slug": "bright-star-2016",
+      "openingDate": "2016-03-24",
+      "status": "closed",
+      "researchedAt": "2026-10-22T06:01:28.637Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "she-loves-me-2016": {
+      "capitalization": null,
+      "capitalizationSource": "No public capitalization figure found in the sources checked; Roundabout’s upstage guide says the show was much more expensive than the company’s prior productions, but gives no dollar amount.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "Roundabout produced the 2016 revival at Studio 54. Public sources I checked did not disclose a capitalization or weekly nut; Playbill’s vault page gives gross totals, but that does not establish recoupment.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/she-loves-me-studio-54-vault-0000014138",
+          "date": "2016-07-10"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.mtishows.com/sites/default/files/shelovesme_upstageguide_web.pdf",
+          "date": null
+        }
+      ],
+      "title": "She Loves Me",
+      "slug": "she-loves-me-2016",
+      "openingDate": "2016-03-17",
+      "status": "closed",
+      "researchedAt": "2026-10-22T06:03:50.120Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "blackbird-2016": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Ken Davenport, “The “Will It Recoup” winner announced! Who won the $500?” says none of the five spring 2016 limited-run plays, including Blackbird, recouped. ([kendavenport.com](https://kendavenport.com/the-will-it-recoup-winner-announced-who-won-the-500/))",
+      "estimatedRecoupmentPct": null,
+      "designation": "Did Not Recoup",
+      "notes": "Verified run dates and cumulative 2016 gross, but no public capitalization or weekly nut was located in the sources I checked. Ken Davenport later said none of the five spring 2016 limited-run plays, including Blackbird, recouped. ([ibdb.com](https://www.ibdb.com/broadway-show/blackbird-502792))",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-show/blackbird-502792",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/BLACKBIRD",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://kendavenport.com/the-will-it-recoup-winner-announced-who-won-the-500/",
+          "date": null
+        }
+      ],
+      "title": "Blackbird",
+      "slug": "blackbird-2016",
+      "openingDate": "2016-03-10",
+      "status": "closed",
+      "researchedAt": "2026-10-22T06:07:14.109Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     }
