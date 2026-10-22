@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5851-wosfp",
   "planId": "83ef636b-f643-4b4b-83d3-638d0c6ffe74",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-22T08:06:39.051Z",
   "submitter": {
     "name": null,
@@ -224,5 +224,114 @@
         "description": "shows.json: leopoldstadt-west-end-2021.openingDateSource whatsonstage-first-performance -> first-performance-no-press-night-found (no press night found after a sourced search; 2021 reopening; press night was 12 Feb 2020 (whatsonstage.com/news/leopoldstadt-at-wyndhams-theatre-in-the-west-end-first-look-photos_50894))"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T11:03:58.048Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-prisoner-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for caroline-or-change-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-fishermen-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for ghost-stories-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for my-brilliant-friend-part-1-part-2-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for white-christmas-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for girl-from-the-north-country-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for a-christmas-carol-west-end-2020"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for amelie-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for amelie-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-band-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for still-no-idea-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for war-horse-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for mischief-movie-night-west-end-2020"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for love-letters-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for east-is-east-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for magic-goes-wrong-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for 2-22-a-ghost-story-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for a-streetcar-named-desire-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for pretty-woman-the-musical-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for leopoldstadt-west-end-2021"
+    }
+  ],
+  "executedIn": "ci"
 }
