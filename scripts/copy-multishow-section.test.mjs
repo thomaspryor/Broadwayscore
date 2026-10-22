@@ -68,6 +68,10 @@ function fixture() {
 }
 
 const run = (fx, args) => spawnSync(process.execPath, [CLI, `--dir=${fx.root}`, `--shows=${fx.showsPath}`, ...args], { encoding: 'utf8' });
+// Every file under the fixture root, path -> content: a refusal or dry run must leave it identical.
+const snapshot = (fx) => Object.fromEntries(fs.readdirSync(fx.root, { recursive: true })
+  .filter((rel) => fs.statSync(path.join(fx.root, rel)).isFile()).sort()
+  .map((rel) => [rel, fs.readFileSync(path.join(fx.root, rel), 'utf8')]));
 const read = (fx, rel) => JSON.parse(fs.readFileSync(path.join(fx.root, rel), 'utf8'));
 
 const VENUS_ARGS = ['--from=godspell-2011/wsj--terry-teachout.json', '--to-show=venus-in-fur-2011',
@@ -78,17 +82,17 @@ const MICE_ARGS = ['--from=act-one-2014/wsj--terry-teachout.json', '--to-show=of
 test('venus-in-fur-2011: the short own row is filled from the godspell column, with provenance', (t) => {
   const fx = fixture();
   t.after(() => fs.rmSync(fx.dir, { recursive: true, force: true }));
+  const before = snapshot(fx);
   const dry = run(fx, VENUS_ARGS);
   assert.equal(dry.status, 0, dry.stderr);
   assert.match(dry.stdout, /WOULD COPY/);
-  assert.equal(read(fx, 'venus-in-fur-2011/wsj--terry-teachout.json').fullText.length, 220, 'dry run writes nothing');
+  assert.deepEqual(snapshot(fx), before, 'dry run writes nothing');
 
   const r = run(fx, [...VENUS_ARGS, '--apply']);
   assert.equal(r.status, 0, r.stderr);
   const row = read(fx, 'venus-in-fur-2011/wsj--terry-teachout.json');
   assert.ok(row.fullText.length >= 800, `fullText is ${row.fullText.length} chars`);
-  assert.ok(row.fullText.startsWith('Venus in Fur opens'));
-  assert.doesNotMatch(row.fullText, /Godspell/);
+  assert.equal(row.fullText, VENUS.trim(), 'exactly the Venus section, nothing of the Godspell review');
   assert.ok(row.multiShowSource, 'multiShowSource written');
   assert.equal(row.multiShowSectionCopy.fromShowId, 'godspell-2011');
   assert.equal(row.publishDate, '2011-11-11');
@@ -110,7 +114,7 @@ test('of-mice-and-men-2014: a Teachout row is created from the act-one column, w
   assert.equal(row.showId, 'of-mice-and-men-2014');
   assert.equal(row.criticName, 'Terry Teachout');
   assert.ok(row.fullText.length >= 800, `fullText is ${row.fullText.length} chars`);
-  assert.doesNotMatch(row.fullText, /Act One is a long memoir/);
+  assert.equal(row.fullText, MICE.trim(), 'exactly the Of Mice and Men section');
   assert.ok(row.multiShowSource, 'multiShowSource written');
   assert.equal(row.multiShowSectionCopy.fromShowId, 'act-one-2014');
 });
@@ -118,19 +122,23 @@ test('of-mice-and-men-2014: a Teachout row is created from the act-one column, w
 test('9-to-5-2009: a clustered venue box refuses and writes nothing', (t) => {
   const fx = fixture();
   t.after(() => fs.rmSync(fx.dir, { recursive: true, force: true }));
+  const before = snapshot(fx);
   const r = run(fx, ['--from=waiting-for-godot-2009/wsj--terry-teachout.json', '--to-show=9-to-5-2009',
     '--expect-start=9_to_5_is_a', '--expect-end=the_set_is_busy', '--apply']);
   assert.equal(r.status, 1);
-  assert.match(r.stderr, /REFUSED 9-to-5-2009/);
-  assert.equal(fs.existsSync(path.join(fx.root, '9-to-5-2009/wsj--terry-teachout.json')), false);
+  assert.match(r.stderr, /REFUSED 9-to-5-2009\/wsj--terry-teachout\.json: no unambiguous section: (section also names boxed show|.*cluster|.*ambiguous)/);
+  assert.equal(fs.existsSync(path.join(fx.root, '9-to-5-2009')), false);
+  assert.deepEqual(snapshot(fx), before);
 });
 
 test('marker mismatch refuses: a plan can not file the wrong stretch of the column', (t) => {
   const fx = fixture();
   t.after(() => fs.rmSync(fx.dir, { recursive: true, force: true }));
+  const before = snapshot(fx);
   const r = run(fx, ['--from=act-one-2014/wsj--terry-teachout.json', '--to-show=of-mice-and-men-2014',
     '--expect-start=Act_One_is_a', '--expect-end=trip_for_the_ending', '--apply']);
   assert.equal(r.status, 1);
-  assert.match(r.stderr, /REFUSED/);
-  assert.equal(fs.existsSync(path.join(fx.root, 'of-mice-and-men-2014/wsj--terry-teachout.json')), false);
+  assert.match(r.stderr, /REFUSED of-mice-and-men-2014\/wsj--terry-teachout\.json: section does not start with the expected words/);
+  assert.equal(fs.existsSync(path.join(fx.root, 'of-mice-and-men-2014')), false);
+  assert.deepEqual(snapshot(fx), before);
 });
