@@ -29,6 +29,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { isBroadwayCategory } = require('./lib/venue-classification');
 
 const ROOT = path.join(__dirname, '..');
 const OUT = path.join(ROOT, 'data', 'audit', 'crossmodel');
@@ -53,7 +54,7 @@ function loadShows() { const j = loadJson('data/shows.json'); return Array.isArr
 // ---------- cohorts ----------
 const isHist = (s) => Array.isArray(s.tags) && s.tags.includes('historical');
 const COHORT_FILTERS = {
-  'bw-historical': (s) => s.market === 'broadway' && s.category === 'broadway' && isHist(s),
+  'bw-historical': (s) => s.market === 'broadway' && isBroadwayCategory(s) && isHist(s),
   'ob-historical': (s) => s.market === 'broadway' && s.category === 'off-broadway' && isHist(s),
 };
 function cohortFilter(c) {
