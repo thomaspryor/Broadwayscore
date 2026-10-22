@@ -1,228 +1,115 @@
-# Sprint Plan: AdSense Launch (low-effort, low-clutter ads)
+# Sprint Plan: AdSense Launch (low-effort, low-clutter ads), revised after /plan-review
 
 ## Overview
-Add Google AdSense to broadwayscorecard.com (which also serves West End Scorecard at `/west-end`) with at most one manually placed ad per page, no pop-ups, sticky ads, video or Auto ads, and no ads for signed-in users. Agents (Claude or Codex) do all code work behind a build-time kill switch. The owner spends about 45 minutes in total, in four short sittings, in the AdSense and Vercel dashboards. A PostHog holdout group measures whether ads reduce TodayTix ticket clicks, so the 30-day keep/pull decision rests on data instead of guesswork.
+Add Google AdSense to broadwayscorecard.com (which also serves West End Scorecard at `/west-end`): one fixed-size, clearly labeled ad on show pages, no pop-ups, sticky ads, video or Auto ads, and no ads for signed-in members. The work ramps in three phases:
+- **Phase A:** a tiny change that gets the site approved by Google.
+- **Phase B:** one ad slot behind a single runtime PostHog flag that is both the kill switch and a 50/50 test.
+- **Phase C:** optional extras, only if the test says ads are worth keeping.
 
-**Expected revenue at launch:** about $35–135/month with one ad per eligible page at today's ~56k real pageviews a month (bot-filtered PostHog, 30 days to Oct 19, 2026; ~89–90% of human traffic is US/UK/CA/AU/NZ/IE). Revenue scales roughly linearly with traffic. These are planning estimates, not quotes.
+Agents (Claude or Codex) do all code work. The owner spends about 45 minutes in total in the AdSense and Vercel dashboards.
 
-**Decision metric (owner-agreed):** total revenue per 1,000 real pageviews = AdSense revenue + TodayTix/Impact commission, compared between the ads group and the no-ads holdout, alongside ticket-click rate and CLS.
+**Expected revenue:** about $35–135/month with one ad on show pages at today's ~56k real pageviews a month (bot-filtered PostHog, 30 days to Oct 19, 2026; ~90% of human traffic is US/UK/CA/AU/NZ/IE). This drops by about half during the 4-week 50/50 test. It is a planning estimate, not a quote. If Vercel needs an upgrade to Pro ($20/month), that cost comes out of it. [CHANGED: subtract Pro cost; structure reviewer]
+
+**Decision metric (owner-agreed):** total revenue per 1,000 real pageviews (AdSense + TodayTix/Impact commission, minus any Vercel Pro upgrade), ads group vs no-ads group, alongside ticket-click rate.
+
+## Review status
+`/plan-review` ran 2026-10-22 with six reviewers:
+- Codex lens: the Codex CLI was missing in the cloud container, so it fell back to the OpenAI API without codebase access. The output guard flagged that review as "refused", but it was a full critique, so it was used.
+- Gemini: ran; it has no codebase access.
+- Four Claude reviewers: structure, pre-mortem, user impact and code design. These ran as general-purpose agents because the `review-panelist` type was unavailable.
+
+The review found one P0 (our own automation would generate invalid ad traffic) and a restructure finding (request Google review before building any ad code). Both are folded in below. The original plan is in git history (commit 08e79e4c).
 
 ## Owner Checklist (the only manual work)
 
 | When | What | Time |
 |---|---|---|
-| **Step 0, before Sprint 1** | (a) Confirm the Vercel team "thomaspryor's projects" is on **Pro**, not Hobby. Vercel's fair-use rules ban commercial use on Hobby and name AdSense explicitly; a Hobby site with ads can be paused. (b) Sign up at adsense.google.com, add `broadwayscorecard.com`, and send the agent your publisher ID (`ca-pub-…`). It is public, not a secret. | 15 min |
-| **Step 1, after Sprint 1 is live** | In AdSense → Sites, click **Request review**. Approval usually takes days to a couple of weeks. | 2 min |
-| **Step 2, after approval** | Follow the S3-T1 runbook: create 2 display ad units and send the agent their slot IDs, confirm Auto ads are off, turn on the two consent messages, paste the blocklist, and link AdSense to GA4. Payment and tax details can wait until AdSense asks (it pays out at $100). | 15 min |
-| **Step 3, at launch** | Reply "go" to flip the `ads` flag on in production (S3-T4). | 1 min |
-| **Step 4, day 30** | Read the decision report (S4-T3) and choose keep, expand or pull. | 10 min |
+| **Step 0, now** | (a) Check the Vercel team "thomaspryor's projects" is on **Pro**, not Hobby. Vercel's fair-use rules ban commercial use on Hobby and name AdSense explicitly. If it's Hobby, upgrading costs $20/month; decide whether that's worth it before continuing. (b) Sign up at adsense.google.com, add `broadwayscorecard.com` and send the agent your publisher ID (`ca-pub-…`). It is public, not a secret. | 15 min |
+| **Step 1, after Phase A is live** | In AdSense → Sites, click **Request review**. Approval usually takes days to a couple of weeks. | 2 min |
+| **Step 2, after approval** | Follow the B-T1 runbook: create one 300×250 display unit, turn off every Auto ads format and Google's optimization experiments, turn on the consent messages, paste the blocklist, and preview the UK consent message. | 20 min |
+| **Step 3, at launch** | Reply "go". The agent sets the PostHog `ads` flag to 50/50 (B-T7). | 1 min |
+| **Step 4, week 4** | Read the one-page result (B-T8) and choose: roll ads to 100%, pull them (0%), or run longer. | 10 min |
 
-## Sprint Summary
+## Phase Summary
 
-| Sprint | Goal | Tasks | Complexity |
+| Phase | Goal | Tasks | Complexity |
 |---|---|---|---|
-| 1 | Verification-ready site: ads.txt, meta tag, privacy policy, CSP, robots | 5 | 4S, 1M |
-| 2 | `AdSlot` component + two placements behind the `ads` flag (off in prod) | 6 | 2S, 3M, 1L |
-| 3 | Post-approval launch: dashboard runbook, bot challenge, holdout flag, flip flag | 4 | 3S, 1M |
-| 4 | Measurement: ad revenue in weekly email, guardrails, 30-day decision report | 3 | 1S, 2M |
+| A | Approval-ready site; no ad code | 2 | 2S |
+| B | One show-page slot behind the runtime `ads` flag, automation opt-out, 50/50 test, readout | 8 | 4S, 3M, 1L |
+| C | Optional, only if Phase B says keep: browse-list slot, weekly ad-revenue line | 2 | 2M |
 
-Total: **18 tasks**, about 2–3 agent sessions. Sprints 1 and 2 can run in one session; Sprint 3 waits on Google's approval; Sprint 4 can start as soon as Sprint 3 lands.
+Total: **10 required tasks** (A+B), down from 18. Phase A is about one hour of agent work. Phase B is one session after approval. Phase C is optional. [CHANGED: scope cut from 18 tasks/4 sprints; ramp restructured; structure reviewer, external GPT reviewer, design reviewer, Phase 0]
 
-**Who can run what:** Sprints 1, 2 and 4 are plain repo work, which suits either a Claude cloud session (lands via `land/bro-N-<slug>`) or a Codex task (edit in place, then the owner's "Create PR" button; the branch must be `codex/<slug>` if one is created). S3-T2 and S3-T4 need the Vercel connector, so they suit a Claude session. Every sprint gets a Linear issue (`linear-brain.js create`) per CLAUDE.md §6.
+**Who can run what:** Phases A and B code suit either a Claude cloud session (lands via `land/bro-N-<slug>`) or a Codex task (edit in place, then the owner's "Create PR"; the branch must be `codex/<slug>` if one is created). B-T6 (firewall) and B-T7 (flag rollout) need the Vercel and PostHog connectors, so they suit a Claude session. Every phase gets a Linear issue (CLAUDE.md §6).
 
 ---
 
-## Sprint 1: Verification-ready site (no ads shown)
-**Demo:** `curl https://broadwayscorecard.com/ads.txt` returns the Google line. The homepage `<head>` contains `<meta name="google-adsense-account" content="ca-pub-…">`. `/privacy` describes AdSense. No ad renders anywhere.
-**Depends on:** Owner Step 0 (publisher ID).
-**Risks:** Editing `vercel.json` headers may count as shared infrastructure (CLAUDE.md §18). Mitigation: run `/second-opinion` before S1-T4 if the infra-review gate fires.
+## Phase A: Approval-ready site (no ad code)
+**Demo:** `curl https://broadwayscorecard.com/ads.txt` returns the Google line. The homepage `<head>` has the `google-adsense-account` meta tag. `/privacy` mentions advertising. No ad code exists anywhere.
+**Depends on:** Owner Step 0.
+**Why this is first:** Google approval is the riskiest assumption (data-heavy sites can be rejected as "low value content"). Request review before building anything that only matters if Google says yes. [CHANGED: review requested before any ad code is written; structure reviewer, Phase 0]
 
-### Task S1-T1: Ads config module
+### Task A-T1: ads.txt route + verification meta tag
 - **Complexity:** S
 - **Depends on:** Owner Step 0
-- **Parallel:** No (everything else imports it)
-- **Files:** `src/config/ads.ts` (new)
-- **Description:** Single source of truth for ads. Export:
-  - `ADSENSE_CLIENT` (the `ca-pub-…` string, committed; it is public)
-  - `AD_SLOTS = { showInline: '', listInline: '' }`, filled in S3-T1 once the owner creates the units
-  - `isAdEligiblePath(pathname: string): boolean`, an allowlist: `/show/[slug]` and `/browse/[slug]` only. Everything else returns false, including `/`, `/west-end`, `/off-broadway`, `/opera` landings, methodology pages, `/privacy`, `/terms`, all discount/lottery/rush/standing-room pages (both markets), `/diary-show/*`, `/my-shows`, `/seen/*`, `/plans/*`, `/admin/*`, `/auth/*`, `/embed/*`, `/studio`, `/dev`, `/test`, `/unsubscribe`, `/unfollow`, `/feedback`, `/submit-review`.
-  - `adsEnabled()`: true only when `featureFlags.ads` is on AND `ADSENSE_CLIENT` is non-empty
-- Add `ads` to `src/config/feature-flags.ts` as a normal build-time flag read from `NEXT_PUBLIC_FEATURES`. Confirm it is **not** in `PROD_HELD_FEATURES` (`scripts/lib/prod-held-flags-guard.js`), so the owner can turn it on later.
-- **Acceptance criteria:**
-  - VERIFY: `npx tsc --noEmit` has zero errors in changed files
-  - VERIFY: the unit test from S2-T6 passes for at least 20 allow/deny paths
-
-### Task S1-T2: ads.txt route + verification meta tag
-- **Complexity:** S
-- **Depends on:** S1-T1
-- **Parallel:** Yes (with S1-T3, S1-T4, S1-T5)
-- **Files:** `src/app/ads.txt/route.ts` (new), `src/app/layout.tsx` (modify the `metadata` export)
+- **Files:** `src/lib/ads.ts` (new; holds only `ADSENSE_CLIENT` for now), `src/app/ads.txt/route.ts` (new), `src/app/layout.tsx` (modify the `metadata` export)
 - **Description:**
-  - The route handler returns `google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0` as `text/plain`, with `export const dynamic = 'force-static'`. Derive `pub-…` by stripping the `ca-` prefix from `ADSENSE_CLIENT`, and return 404 when the client ID is empty.
-  - Add `other: { 'google-adsense-account': ADSENSE_CLIENT }` to the root metadata. This is Google's meta-tag verification method, so review can proceed without loading any ad script.
-  - Both ship **independently of the `ads` flag**, because Google must see them before approval.
+  - `ADSENSE_CLIENT` is the committed `ca-pub-…` string.
+  - The `ads.txt` route mirrors `src/app/llms.txt/route.ts`. It returns `google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0` as `text/plain`, with `pub-…` derived by stripping `ca-` from `ADSENSE_CLIENT`.
+  - Add `other: { 'google-adsense-account': ADSENSE_CLIENT }` to the root metadata.
+  - Both are unconditional: the ID is committed, so there is no empty case to handle. [CHANGED: removed the empty-ID branch, since the constant never changes at runtime; design reviewer, external GPT reviewer]
+  - **Demo host:** in the route and the meta tag, skip output when the request host is `demo.broadwayscorecard.com`, so the demo site never claims the publisher account. [CHANGED: demo host; coordinator conflict check]
 - **Acceptance criteria:**
   - VERIFY: after deploy, `curl -s https://broadwayscorecard.com/ads.txt` prints exactly one Google line
   - VERIFY: `curl -s https://broadwayscorecard.com/ | grep -c 'google-adsense-account'` returns 1
 
-### Task S1-T3: Privacy policy update
-- **Complexity:** M
+### Task A-T2: Privacy policy wording
+- **Complexity:** S
 - **Depends on:** None
-- **Parallel:** Yes
 - **Files:** `src/app/privacy/page.tsx`
 - **Description:**
-  - Replace the sentence at ~line 152 ("We don't show third-party ads or share your data with ad networks."). It must not stay up once ads can render.
-  - Add a short "Advertising" section: some pages show ads from Google AdSense; Google and its partners may use cookies or device identifiers to serve and measure ads; visitors in the UK, EEA and Switzerland are asked for consent first; US visitors can opt out of personalized ads; signed-in members see no ads.
-  - Link to Google's "How Google uses information from sites or apps that use our services" page and to Google's ad personalization settings.
-  - Add Google AdSense to the "Services We Use" list (~159–171) and bump "Last updated" (line 31).
-  - Keep the tone and structure of the existing page. Do not touch the affiliate (Impact) wording.
+  - Replace the sentence at ~line 152 ("We don't show third-party ads…"). Google's review looks at the site as-is, and the sentence would be false once ads run.
+  - Use wording that is true **before and after** launch [CHANGED: no claims that are false during the review window; user-impact reviewer]: "We may show ads from Google AdSense on some pages. If we do, Google and its partners may use cookies or device identifiers to serve and measure ads. Visitors in the UK, EEA and Switzerland are asked for consent first, and US visitors can opt out of personalized ads. Signed-in members don't see ads."
+  - Link to Google's "How Google uses information from sites or apps that use our services" page and to the ad personalization settings.
+  - Add AdSense to "Services We Use" (~159–171) and bump "Last updated" (line 31). Leave the Impact affiliate wording alone.
 - **Acceptance criteria:**
   - VERIFY: `grep -c "don&apos;t show third-party ads" src/app/privacy/page.tsx` returns 0
-  - VERIFY: the page builds and `/visual-qa` passes on `/privacy`
+  - VERIFY: `/visual-qa` passes on `/privacy`
 
-### Task S1-T4: CSP (report-only) allowances for AdSense
-- **Complexity:** S
-- **Depends on:** None
-- **Parallel:** Yes
-- **Files:** `vercel.json` (the CSP at ~line 1572; the policy is `Content-Security-Policy-Report-Only`)
-- **Description:** The policy is report-only, so nothing breaks today. Still, keep it accurate so a future switch to enforcing does not silently kill ads. Add:
-  - `script-src`: `https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://*.gstatic.com https://*.adtrafficquality.google`
-  - `frame-src`: replace `'none'` with `https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://*.googlesyndication.com https://*.doubleclick.net https://www.google.com https://*.adtrafficquality.google`
-  - `img-src`: add `https:` (ad creatives come from many CDNs)
-  - `connect-src`: `https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com`
-  - Do not touch the `/embed/(.*)` override, `X-Frame-Options: DENY` (it only controls framing *of* our pages) or `Permissions-Policy`.
-- **Acceptance criteria:**
-  - VERIFY: `node -e "JSON.parse(require('fs').readFileSync('vercel.json','utf8'))"` exits 0
-  - VERIFY: `grep -o "frame-src[^;]*" vercel.json` no longer contains `'none'` for the `/(.*)` rule
+**Phase A ship:** CLAUDE.md §12 checks, land, then `node scripts/check-prod-deploy.js HEAD --wait`. Then tell the owner to do Step 1. **Do not start Phase B until Google approves.**
 
-### Task S1-T5: robots: explicit Mediapartners-Google allow
-- **Complexity:** S
-- **Depends on:** None
-- **Parallel:** Yes
-- **Files:** `src/app/robots.ts`, `tests/unit/robots-api-disallow.test.ts`
-- **Description:** AdSense's crawler (`Mediapartners-Google`) is allowed today only through the `*` rule. Add an explicit rule giving it the same `CRAWLABLE_SURFACE`, so a future tightening of `*` or of the AI-bot list cannot accidentally block it. Leave `Google-Extended` disallowed; it has no effect on AdSense. Extend the existing unit test.
-- **Acceptance criteria:**
-  - VERIFY: the robots unit test passes and asserts that `Mediapartners-Google` is not disallowed from `/show/`
+Removed from the original Sprint 1:
+- **CSP edits:** the policy is report-only, so nothing breaks without them. They move to the Phase B edge cases.
+- **robots.txt explicit allow:** `*` already allows the AdSense crawler.
 
-**Sprint 1 ship:** tsc, lint and build per CLAUDE.md §12; `/visual-qa` for the privacy page; land; confirm with `node scripts/check-prod-deploy.js HEAD --wait`. Then tell the owner to do Step 1 (Request review).
+[CHANGED: dropped from the pre-approval path; external GPT reviewer, structure reviewer]
 
 ---
 
-## Sprint 2: AdSlot component + placements (flag off in production)
-**Demo:** On a preview deploy built with `NEXT_PUBLIC_FEATURES=...,ads`, a show page shows one labeled ad box below the critic reviews; a long browse list shows one box after the 6th card. Signed-in users and excluded routes show nothing. Production is unchanged because the flag is off.
-**Risks:** (1) Layout shift hurting SEO (73% of visits come from search). Mitigation: fixed reserved height, below the fold only, lazy-loaded. (2) Ads near the TodayTix button cannibalizing clicks. Mitigation: placement rules plus the holdout in S3-T3. (3) App Router client-side navigation reusing a stale `<ins>`. Mitigation: re-key the slot on pathname.
+## Phase B: One show-page ad, runtime flag, 50/50 test
+**Demo:** With the PostHog flag `ads` forced to `ads` for your own browser, a logged-out show page shows one labeled 300×250 ad below the critic reviews. With the flag unresolved, or set to `no-ads`, or for a signed-in member, or for headless or automated browsers, nothing renders and no ad script loads.
+**Depends on:** Google approval (after Step 1) and Owner Step 2.
+**Risks:**
+1. Our own CI and monitoring loading real ads, which AdSense counts as invalid traffic (**P0**). Mitigation: B-T4.
+2. A slow kill switch. Mitigation: a runtime flag, with no rebuild needed.
+3. Ad clipping or layout shift. Mitigation: a fixed 300×250 box.
 
-### Task S2-T1: AdSense script loader (load once, on demand)
-- **Complexity:** M
-- **Depends on:** S1-T1
-- **Parallel:** Yes (with S2-T2)
-- **Files:** `src/components/ads/AdSenseLoader.tsx` (new)
-- **Description:**
-  - The loader injects `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=<ADSENSE_CLIENT>` (async, `crossorigin="anonymous"`) **only** when the first `AdSlot` mounts and becomes near-visible. The script never loads on excluded routes or for signed-in users, which also keeps their pages lighter.
-  - Use a module-level promise so the script is injected at most once per page lifecycle.
-  - Prefer a plain injected `<script>` over `next/script`. `next/script` adds a `data-nscript` attribute that AdSense logs a warning about. Either works if the warning is accepted.
-  - Do **not** mount the loader in `AnalyticsWrapper`. The ads code stays separate from analytics.
-- **Acceptance criteria:**
-  - VERIFY: on a preview with the flag on, DevTools shows exactly one `adsbygoogle.js` request on a show page, and none on `/`, `/privacy` or `/my-shows`
-
-### Task S2-T2: `AdSlot` component
-- **Complexity:** L
-- **Depends on:** S1-T1
-- **Parallel:** Yes (with S2-T1)
-- **Files:** `src/components/ads/AdSlot.tsx` (new), `memory/design-system.md` (document the component)
-- **Description:** A client component, `<AdSlot slot="showInline" | "listInline" />`. It renders null unless **all** of these are true:
-  - `adsEnabled()`
-  - `isAdEligiblePath(usePathname())`
-  - `!useAuth().isAuthenticated` (ad-free for members)
-  - the holdout variant is not `no-ads` (wired in S3-T3; until then, treat as eligible)
-
-  Behavior:
-  - **Reserved space:** the wrapper gets a fixed `min-height` per breakpoint (mobile ~300px for a 300×250 creative plus label; desktop ~280px for responsive). It also gets `max-width: 100%` and `overflow: hidden` so no horizontal scroll.
-  - **Label:** a small "Advertisement" label above the ad, using design-system text tokens and `bg-surface-raised`. No custom colors, no `zinc-*`/`slate-*`.
-  - **Lazy:** an IntersectionObserver with `rootMargin: '600px'`. Only when it fires does the slot call the loader, render `<ins class="adsbygoogle" data-ad-client data-ad-slot data-ad-format="auto" data-full-width-responsive="true">` and push `(window.adsbygoogle = window.adsbygoogle || []).push({})` once.
-  - **Route changes:** key the inner `<ins>` on `pathname`, so client-side navigation creates a fresh unit instead of pushing into a filled one.
-  - **Unfilled:** when the `ins` gets `data-ad-status="unfilled"`, collapse the wrapper. This is safe because the slot is below the fold and loads before it scrolls into view.
-  - **Signed-in hydration:** the server renders the reserved box (most visitors are anonymous); for signed-in users the client removes it. The shift happens below the fold and affects few users. Document this in Known Edge Cases.
-  - **Analytics:** fire a PostHog `ad_slot_rendered` event (slot name, path) when the unit fills, for per-slot coverage numbers.
-- **Acceptance criteria:**
-  - VERIFY: `npx tsc --noEmit` and `npx next lint` are clean
-  - VERIFY: the Playwright spec from S2-T5 passes on a flag-on preview
-
-### Task S2-T3: Show page placement
-- **Complexity:** M
-- **Depends on:** S2-T2
-- **Parallel:** Yes (with S2-T4)
-- **Files:** `src/app/show/[slug]/page.tsx`
-- **Description:**
-  - Insert `<AdSlot slot="showInline" />` **after the Critic Scorecard `<section id="critic-reviews">` (~line 1010) and before `TourScheduleCard` / `ShowPageBelowFoldLoader` (~1014–1039)**. That puts it well below `ShowHeroRedesign`'s score and `TicketButtonsAB` (~821 in the hero), and above `ShowtimesCard` and `LotteryRushCard`, which carry ticket links.
-  - Do not place ads inside the hero, the score cards, the reviews list, `ShowtimesCard`, `LotteryRushCard`, `TourScheduleCard` or any component that renders a `TicketLink`.
-  - Update the section-ordering comment (~1017–1036).
-  - Score badges are untouched (`w-20 sm:w-24`).
-- **Acceptance criteria:**
-  - VERIFY: the Playwright spec asserts the ad wrapper's top is at least 800px below the first `TicketLink` on a 390×844 viewport
-  - VERIFY: `/visual-qa` passes on one Broadway, one West End and one Off-Broadway show page with the flag on
-
-### Task S2-T4: Browse list placement
-- **Complexity:** S
-- **Depends on:** S2-T2
-- **Parallel:** Yes (with S2-T3)
-- **Files:** `src/components/BrowseListClient.tsx` (the `filteredAndSorted.map` at ~259–276)
-- **Description:** Render one `<AdSlot slot="listInline" />` after the 6th `ShowListCard`, and only when the filtered list has at least 10 items. Never more than one per page. Wrap it in a list-appropriate element so list semantics and keyboard order stay sane.
-- **Acceptance criteria:**
-  - VERIFY: the Playwright spec finds exactly one ad wrapper on `/browse/best-musicals` and zero on a list with fewer than 10 items
-
-### Task S2-T5: Playwright spec for ad rules
-- **Complexity:** M
-- **Depends on:** S2-T3, S2-T4
-- **Parallel:** No
-- **Files:** `tests/e2e/ads.spec.ts` (new)
-- **Description:** Run against a flag-on preview (`TEST_BASE_URL`), on the `chromium` and `mobile` projects. Assert:
-  - excluded routes have no `.adsbygoogle` and no `adsbygoogle.js` request
-  - show and browse pages have exactly one wrapper with the expected `min-height`
-  - the distance rule from S2-T3 holds
-  - the page has no horizontal overflow
-  - a stubbed signed-in session has no wrapper
-
-  Block the real ad script with `page.route` so the test never generates ad impressions. **That matters: fake impressions from test runs count as invalid traffic in AdSense.**
-
-  Land the spec advisory first per CLAUDE.md §19 (`continue-on-error: true` if it is wired into CI).
-- **Acceptance criteria:**
-  - VERIFY: `npx playwright test tests/e2e/ads.spec.ts` passes against the preview
-
-### Task S2-T6: Unit test for route eligibility
-- **Complexity:** S
-- **Depends on:** S1-T1
-- **Parallel:** Yes
-- **Files:** `tests/unit/ads-eligibility.test.ts` (new; same style as `robots-api-disallow.test.ts`)
-- **Description:** Import the real `isAdEligiblePath` (CLAUDE.md §15: never copy logic into tests). Cover every excluded route family from S1-T1, West End show slugs, trailing slashes, query strings and an unknown future route (must default to false).
-- **Acceptance criteria:**
-  - VERIFY: the unit test passes with at least 20 cases
-
-**Sprint 2 ship:** CLAUDE.md §12 checks, an auth-aware build with `ads` on, `/visual-qa` on show and browse pages, land. The flag stays **off** in production. Also check the page-weight budget spec (`tests/e2e/page-weight-budget.spec.ts`): the ad script is lazy and third-party, so document bytes should barely change.
-
----
-
-## Sprint 3: Post-approval launch
-**Demo:** Ads render in production on show and browse pages for anonymous visitors; UK visitors see Google's consent message; 15% of visitors are a no-ads holdout; China/Hong Kong bot traffic gets a challenge.
-**Depends on:** Google approval (after owner Step 1).
-**Risks:** (1) Account-level invalid-traffic flags. Mitigation: the bot challenge, never clicking your own ads, and keeping test runs from loading real ads. (2) The env-var flip not deploying, because the deploy gate is content-aware. Mitigation: see S3-T4.
-
-### Task S3-T1: Owner dashboard runbook (agent prepares, owner clicks)
+### Task B-T1: Owner dashboard runbook (agent sends it, owner clicks)
 - **Complexity:** S
 - **Depends on:** Approval
-- **Parallel:** No
-- **Files:** none (the agent sends the owner this checklist, then commits the slot IDs to `src/config/ads.ts`)
-- **Description:** The owner does this in AdSense, about 15 minutes:
-  1. **Ads → By ad unit → Display ads.** Create `bwsc-show-inline` and `bwsc-list-inline`, both responsive. Send the agent the two `data-ad-slot` numbers.
-  2. **Ads → By site → broadwayscorecard.com:** confirm **Auto ads is OFF**, which also turns off anchor and vignette (full-screen) formats.
-  3. **Privacy & messaging:**
-     - Create a **European regulations** message (covers UK, EEA and Switzerland), using Google's certified consent tool, with the site name and the `/privacy` URL.
+- **Files:** none (the agent then commits the slot ID in B-T2)
+- **Description:** The owner does this in AdSense, about 20 minutes:
+  1. **Ads → By ad unit → Display ads:** create one unit, `bwsc-show-inline`, at a **fixed 300×250** size (not responsive). Send the agent its `data-ad-slot` number. [CHANGED: fixed size; a responsive unit can be taller than its box and get clipped, which breaks AdSense policy; structure reviewer, user-impact reviewer]
+  2. **Ads → By site → broadwayscorecard.com:** turn **Auto ads off**. Also confirm each Auto ads format is off: anchor, vignette, side rail, multiplex, and "ad intents" (which turns page text into ad links). The fixed unit's script can otherwise switch them on. [CHANGED; user-impact reviewer]
+  3. **Optimization:** turn off "Allow Google to run experiments" / auto-optimize, if offered. It can change ad formats without notice. [CHANGED; user-impact reviewer; confirm the current label in the UI]
+  4. **Privacy & messaging:**
+     - Create a **European regulations** message (covers UK, EEA, CH) with the `/privacy` URL. Make sure it shows a clear "Do not consent" choice and a way to change consent later.
      - Create a **US state regulations** message targeted at "All current and future supported US states."
-     - Publish both.
-  4. **Brand safety → Blocking controls → Advertiser URLs:** paste the competing ticket sellers below.
-  5. **Brand safety → Sensitive categories:** block Gambling & Betting, Dating, Get Rich Quick, Weight Loss and Cosmetic Procedures. Each block trims revenue slightly; the holdout data will show whether this list matters.
-  6. **Account → Access and authorization → Google Analytics integration:** link the GA4 property, so AdSense revenue appears in GA4 for S4-T1.
-  7. Payments and tax info can wait until AdSense prompts for it.
+     - Preview both, ideally from a UK VPN.
+  5. **Brand safety → Blocking controls → Advertiser URLs:** paste the blocklist below.
+  6. **Sensitive categories:** block gambling, dating and get-rich-quick style categories. The names may differ in the current UI; pick the closest matches.
+  7. **Emergency stop (for later):** AdSense → Sites lets you stop ads on the site from the dashboard. The PostHog flag (B-T7) is the faster switch.
+  8. Payments and tax info can wait until AdSense asks; it pays out at $100.
 
   **Advertiser URL blocklist (copy-paste):**
   ```
@@ -249,170 +136,205 @@ Total: **18 tasks**, about 2–3 agent sessions. Sprints 1 and 2 can run in one 
   delfontmackintosh.co.uk
   viagogo.com
   ```
-  TodayTix is intentionally **not** blocked: its ads send buyers to the partner you already earn from.
+  TodayTix is not blocked: its ads send buyers to the partner you already earn from. Watch item: one reviewer raised a low-confidence concern that a click on a TodayTix Google ad could override your Impact last-click credit. Check Impact attribution in week 4.
 - **Acceptance criteria:**
-  - VERIFY: `AD_SLOTS.showInline` and `AD_SLOTS.listInline` are non-empty numeric strings in `src/config/ads.ts`
+  - VERIFY: the slot ID is committed in `src/lib/ads.ts` (B-T2)
 
-### Task S3-T2: Bot challenge in the Vercel firewall
-- **Complexity:** S
-- **Depends on:** None (can happen any time before launch)
-- **Parallel:** Yes
-- **Files:** none (Vercel firewall custom rule, applied through the Vercel connector with owner approval, or by the owner in the dashboard)
-- **Description:**
-  - Add one custom rule: **Challenge** requests whose country is `CN` or `HK`.
-  - Evidence: in the 28 days to Oct 22, 2026, PostHog recorded 7,112 sessions from CN/HK/SG with only 26 showing any interaction, against 7,513 engaged US sessions.
-  - Use Challenge, not Deny, so the few real visitors can still get through. Leave SG out at first, since it has some real traffic.
-  - Run the rule in **Log** mode for 3 days first, then switch it to Challenge.
-  - The project has no firewall config today. Hobby allows 3 custom rules, Pro allows 40.
-- **Acceptance criteria:**
-  - VERIFY: the Vercel firewall config shows the rule active
-  - VERIFY: one week later, PostHog CN+HK pageviews drop by at least 80%
-
-### Task S3-T3: No-ads holdout flag
+### Task B-T2: `src/lib/ads.ts`: decision function, loader, slot config
 - **Complexity:** M
-- **Depends on:** S2-T2
-- **Parallel:** Yes (with S3-T1)
-- **Files:** `src/components/ads/AdSlot.tsx`; PostHog flag `ads-holdout` created through the API **before** the code (per `docs/experiments/README.md` and `cloud-memory/feedback_ab_test_guardrails.md`)
-- **Description:**
-  - Create a multivariate flag with variants `ads` (85%) and `no-ads` (15%). Bucket on the person, so a visitor stays in one group.
-  - In `AdSlot`, read it the way the repo already does, polling `window.posthog?.getFeatureFlag('ads-holdout')` (the `TicketButtonsAB.tsx:95–125` pattern, every 250ms up to about 5s). The slot is below the fold, so waiting costs nothing.
-  - **Fallback:** if PostHog never answers (it is usually blocked by the same ad blockers that block AdSense), treat the visitor as `ads` and do not log exposure.
-  - **Reserved box:** keep it in both groups until the flag resolves, then collapse it for `no-ads`. The shift is below the fold.
-  - Never delete either variant's code path while the experiment runs.
-- **Acceptance criteria:**
-  - VERIFY: the PostHog flag exists with an 85/15 split before the code lands
-  - VERIFY: on a preview with the flag forced to `no-ads`, no ad wrapper or script loads
+- **Depends on:** B-T1
+- **Parallel:** Yes (with B-T3)
+- **Files:** `src/lib/ads.ts` (extend), `tests/unit/ads-decision.test.ts` (new)
+- **Description:** [CHANGED: split the original L-sized AdSlot; logic moved to `src/lib` per existing patterns; design reviewer]
+  - **`AD_SLOTS`:** `{ showInline: { id: '<slot>', width: 300, height: 250 } }`. Size lives with the slot, not in the component.
+  - **`loadAdSense(): Promise<boolean>`:** a module-level promise that injects `adsbygoogle.js?client=…` once (async, `crossorigin="anonymous"`). It resolves `false` when the script fails or is blocked. It follows `src/lib/apple-auth.ts:43-62` (`loadAppleSDK`).
+  - **`isAutomatedBrowser(): boolean`:** true when any of these hold:
+    - `navigator.webdriver === true`
+    - the user agent matches `/HeadlessChrome|Lighthouse|PageSpeed|Chrome-Lighthouse|GTmetrix|Playwright/`
+    - the URL has `?noads=1`
+    - a `bwsc_noads=1` cookie is set
 
-### Task S3-T4: Flip the flag in production
-- **Complexity:** S
-- **Depends on:** S3-T1, S3-T3 landed and deployed; owner "go" (Step 3)
-- **Parallel:** No
-- **Files:** Vercel production env var `NEXT_PUBLIC_FEATURES` (add `ads`)
-- **Description:**
-  - Add `ads` to the production `NEXT_PUBLIC_FEATURES` through the Vercel connector, after owner approval.
-  - Because it is a `NEXT_PUBLIC_` build-time variable, it only takes effect on the next build. The content-aware deploy gate may not rebuild for an env-only change, but its 6-hour backstop will.
-  - If the owner wants it live sooner, land a trivial site-relevant change. Do not hand-dispatch `vercel-deploy.yml` (CLAUDE.md §2).
-  - **Rollback:** remove `ads` from the variable, and ads disappear on the next build. `ads.txt` and the meta tag stay up, which is harmless.
+    [CHANGED: global automation opt-out; P0, pre-mortem + structure reviewer]
+  - **`decideAdRender({ variant, authLoading, isAuthenticated, automated })`:** a pure function. It returns `true` **only** when all hold:
+    - `variant === 'ads'`
+    - `!authLoading`
+    - `!isAuthenticated`
+    - `!automated`
+
+    An unresolved flag (`undefined`) means **no ads**. [CHANGED: wait for auth to finish loading; user-impact reviewer, structure reviewer; unresolved flag means no ads, so the kill switch works; design reviewer, pre-mortem]
 - **Acceptance criteria:**
-  - VERIFY: `node scripts/check-prod-deploy.js HEAD --wait` exits 0 after the flip
-  - VERIFY: a logged-out mobile visit to a show page shows one labeled ad below the reviews; a signed-in visit shows none
+  - VERIFY: the unit test imports the real `decideAdRender` and `isAutomatedBrowser` (CLAUDE.md §15) and passes at least 12 cases, including undefined variant, auth loading, a signed-in member, `no-ads`, each automation signal, and the happy path
+
+### Task B-T3: `usePostHogFlag` hook (shared)
+- **Complexity:** S
+- **Depends on:** None
+- **Parallel:** Yes
+- **Files:** `src/lib/hooks/usePostHogFlag.ts` (new), `src/lib/hooks/index.ts`
+- **Description:** Extract the existing polling loop (`TicketButtonsAB.tsx:95-125`, `ProGateContext.tsx:350-362`): poll `window.posthog?.getFeatureFlag(key)` every 250ms, 20 tries, and return `undefined` until it resolves. Do **not** rewrite the two existing call sites in this plan; file a Linear issue to migrate them. [CHANGED: no third copy of the polling loop; design reviewer]
+- **Acceptance criteria:**
+  - VERIFY: `npx tsc --noEmit` is clean; `AdSlot` uses the hook
+
+### Task B-T4: Keep our own automation from loading real ads (P0)
+- **Complexity:** M
+- **Depends on:** B-T2
+- **Parallel:** Yes (with B-T5)
+- **Files:** a shared Playwright fixture or `playwright.config.ts` (`use.extraHTTPHeaders` won't do it; use a global `page.route` in a fixture applied to every project), plus the scripts behind `/visual-qa` and `lighthouse-post-deploy.yml` where they open pages
+- **Description:** [CHANGED: new task; P0 from the pre-mortem, structure reviewer and external GPT reviewer]
+  - Today, `test.yml:6592` and `:6699` run e2e tests with `TEST_BASE_URL: https://broadwayscorecard.com`. `vercel-deploy.yml:641` runs `smoke.spec.ts` against production after every deploy. `lighthouse-post-deploy.yml` audits `/show/*` pages daily.
+  - Belt and braces:
+    - (a) `isAutomatedBrowser()` in B-T2 already stops the slot from rendering for headless and Lighthouse runs
+    - (b) block `**/*googlesyndication.com/**`, `**/*doubleclick.net/**` and `**/*adtrafficquality.google/**` in a fixture shared by every Playwright project
+    - (c) add `?noads=1` or the cookie to the Lighthouse URL list and to the `/visual-qa` page loader
+  - Touching `.github/workflows/**` is shared infrastructure: run `/second-opinion` first (CLAUDE.md §18). Prefer changing scripts and fixtures over workflows where possible.
+- **Acceptance criteria:**
+  - VERIFY: `grep -rn "googlesyndication" tests/` shows the block in the shared fixture, not just one spec
+  - VERIFY: with the flag forced to `ads`, `npx playwright test tests/e2e/smoke.spec.ts` against a local `next start` makes zero requests to `googlesyndication.com` (asserted in a test)
+
+### Task B-T5: `AdSlot` component + show-page placement
+- **Complexity:** L
+- **Depends on:** B-T2, B-T3
+- **Parallel:** No
+- **Files:** `src/components/ads/AdSlot.tsx` (new), `src/app/show/[slug]/page.tsx`, `memory/design-system.md`
+- **Description:**
+  - **API:** `<AdSlot slot="showInline" />`. Placement belongs to the caller, so there is no route allowlist. [CHANGED: removed `isAdEligiblePath` and its 20-case test; the page decides by including the component; design reviewer]
+  - **Render decision:** render when `decideAdRender({ variant: usePostHogFlag('ads'), ...useAuth(), automated: isAutomatedBrowser() })` is true. When it's false, render **nothing**: no reserved box, no label.
+  - **Load sequence:** when it's true and an IntersectionObserver (`rootMargin: '400px'`) fires, call `loadAdSense()`. Only if that resolves `true`, render the labeled box at a fixed 300×250 (centered, `max-width: 100%`) with the `<ins>`, then push once. [CHANGED: no empty box for ad-blocker users or the no-ads group; user-impact reviewer; no `overflow:hidden` clipping and no responsive full-width; structure reviewer]
+  - **Layout shift:** the box appears below the fold, before the reader reaches it, so the shift is not visible.
+    - Measure at **both** 390×844 and 1440×900. If on desktop the slot's position is within the first viewport + 400px on load, move it further down. [CHANGED: check desktop too; structure reviewer]
+    - If an approved creative comes back `unfilled`, collapse the box. This is still invisible, for the same reason.
+  - **Label:** "Advertisement", using design-system text tokens and `bg-surface-raised`. Score badges are untouched.
+  - **Route changes:** key the `<ins>` on `usePathname()` so client-side navigation gets a fresh unit.
+  - **Analytics:** fire `captureEvent('ad_slot_rendered', { slot })` from `src/lib/posthog-events.ts` when the unit fills.
+  - **Placement:** in `src/app/show/[slug]/page.tsx`, after the Critic Scorecard `<section id="critic-reviews">` (~line 1010) and before `TourScheduleCard` / `ShowPageBelowFoldLoader` (~1014–1039). That keeps it far from the hero's `TicketButtonsAB` and above `ShowtimesCard` and `LotteryRushCard`, which carry ticket links. Update the section-order comment.
+- **Acceptance criteria:**
+  - VERIFY: a local `NODE_ENV=production next build && next start` with the flag forced to `ads` in your browser shows one 300×250 labeled ad on one Broadway, one West End and one Off-Broadway show page. [CHANGED: run locally; there is no flag-on preview environment; `vercel-preview.yml` builds only `staging`; structure reviewer]
+  - VERIFY: the same pages show **no** box with the flag unresolved, with `no-ads`, when signed in, or with uBlock enabled
+  - VERIFY: `/visual-qa` passes; the ad's top is at least 800px below the first `TicketLink` at 390×844
+
+### Task B-T6: Bot challenge in the Vercel firewall (start early)
+- **Complexity:** S
+- **Depends on:** None. **Start in Log mode as soon as Phase A lands**, so the 3-day observation is done before launch. [CHANGED: moved earlier; the Log→Challenge switch was unassigned; structure reviewer]
+- **Files:** none (Vercel firewall custom rule, through the Vercel connector with owner approval, or by the owner in the dashboard)
+- **Description:**
+  - **The rule:** challenge requests from `CN` or `HK`, **excluding** `/ads.txt`, `/api/*`, `/embed/*`, `/robots.txt`, `/sitemap*` and feeds. [CHANGED: scoped to HTML pages; user-impact reviewer, external GPT reviewer]
+  - **Evidence:** 7,112 CN/HK/SG sessions in 28 days, with 26 showing any interaction. These bots run JavaScript (PostHog recorded them), so they would load ads.
+  - **Rollout:** run in Log mode for 3 days, then switch to Challenge. The agent that ran Phase A sets a Linear due date for the switch.
+  - **Rollback:** disable the rule in the dashboard.
+- **Acceptance criteria:**
+  - VERIFY: the rule is active and excludes the listed paths
+  - VERIFY: one week after Challenge, PostHog CN+HK pageviews are down at least 80%, and `curl -s https://broadwayscorecard.com/ads.txt` still returns 200 from an HK test (if a VPN is available)
+
+### Task B-T7: Register the flag, then launch at 50/50
+- **Complexity:** S
+- **Depends on:** B-T4, B-T5 landed and deployed; owner "go"
+- **Files:** `scripts/lib/flag-registry.js` (add `ads`), `docs/experiments/ads.md` (new, short: hypothesis, metric, duration, end states); PostHog flag `ads` created through the API before the code lands (`docs/experiments/README.md`)
+- **Description:** [CHANGED: one runtime flag replaces the build-time `ads` flag plus `ads-holdout`; design reviewer, pre-mortem, structure reviewer; 50/50 instead of 85/15 because 15% of ~1,500 ticket clicks a month can't detect anything; structure reviewer]
+  - The flag has variants `ads` / `no-ads`, bucketed per person, with a release condition covering 100% of users. It ships at **0% `ads`**.
+  - At launch, set it to 50/50 for 4 weeks.
+  - **Kill switch:** set it to 100% `no-ads`. It takes effect on the next page load with no rebuild, and anyone whose PostHog fails to load gets no ads anyway.
+  - **End states:**
+    - **Keep:** 100% `ads`; the flag stays as the kill switch.
+    - **Pull:** 0% `ads`, then remove `AdSlot`, `src/lib/ads.ts`, `src/app/ads.txt`, the meta tag, the flag-registry entry and the firewall rule. [CHANGED: end state written down; design reviewer]
+- **Acceptance criteria:**
+  - VERIFY: the flag exists in PostHog with both variants; `flag-registry.test.mjs` passes
+  - VERIFY: after launch, PostHog shows `$feature_flag_called` for `ads` with a roughly 50/50 split within 48 hours
+
+### Task B-T8: Week-4 readout (one-off, no new pipeline)
+- **Complexity:** M
+- **Depends on:** 4 weeks after B-T7
+- **Files:** `scripts/analyze-ads-test.js` (new, `--json`), following `docs/experiments/README.md` (f) analyzer conventions; no monitor workflow
+- **Description:** [CHANGED: replaces S4-T1/T2/T3 (weekly email block, guardrails, decision script) with one readout; the weekly email already reaches the owner and $35–135/month doesn't justify a new pipeline; structure reviewer, external GPT reviewer, design reviewer]
+  - **From PostHog:** for each variant, real show-page pageviews and `ticket_click` per 1,000 show-page pageviews, with a 95% confidence interval. Join on `$feature/ads` on the events, and only count people who resolved the flag.
+  - **Ad revenue:** enter the AdSense earnings for the 4 weeks by hand from the dashboard, as `--adsense=<dollars>` on the command line. It's one number. Use Impact tracked actions by `subId1`/distinct_id for the commission split, not paid commission (paid lags ~2 months).
+  - **Output:**
+    - total revenue per 1,000 pageviews for each group, minus the Vercel Pro cost if it was an upgrade
+    - the click-rate ratio and its confidence interval
+    - CLS p75 from the existing `check-cwv-health`
+    - a plain-English recommendation: keep / pull / run 4 more weeks if the confidence interval straddles the threshold
+  - Email it to the owner via the transactional `--send-to` path (CLAUDE.md §17).
+- **Acceptance criteria:**
+  - VERIFY: running on the real 4 weeks prints both groups with sample sizes and a confidence interval; running on a 1-day window doesn't crash and says "not enough data"
 
 ---
 
-## Sprint 4: Measurement and the 30-day decision
-**Demo:** The Monday traffic email has an "Ads" block. The day-30 report gives a keep/expand/pull recommendation with numbers.
-**Risks:** TodayTix commission is paid on a roughly 2-month cycle (actions lock 27 days after month end and pay 20 days later), so paid commission cannot judge a 30-day test. Mitigation: use `ticket_click` events and Impact *tracked actions* (pending and locked), not payouts.
+## Phase C: Optional, only if Phase B says keep
+- **C-T1 Browse-list slot:**
+  - `browse/[slug]/page.tsx` passes an `adSlot` prop to `BrowseListClient`; `best/[category]` does not.
+  - Render the slot **outside** `filteredAndSorted.map`, at a fixed position (for example after the list header or after a fixed first chunk), so changing filters or sort doesn't remount it and re-request an ad.
 
-### Task S4-T1: Ad revenue in the weekly traffic email
-- **Complexity:** M
-- **Depends on:** S3-T1 step 6 (AdSense linked to GA4); GA4 service-account secrets in GitHub (`GA4_SERVICE_ACCOUNT_JSON_B64`, `GA4_PROPERTY_ID`, the same names the owner was given for cloud sessions)
-- **Parallel:** Yes (with S4-T2)
-- **Files:** `scripts/lib/ga4-ad-revenue.js` (new), `scripts/lib/traffic-report-human.js` (~line 219), `scripts/analyze-traffic-sources.js`, `.github/workflows/analyze-traffic-sources.yml` (add the two secrets to `env:`). The workflow edit is shared infrastructure, so run `/second-opinion` first (CLAUDE.md §18).
-- **Description:**
-  - Query the GA4 Data API for `totalAdRevenue`, `publisherAdImpressions` and `publisherAdClicks` by week.
-  - Join it with PostHog real pageviews (already in `traffic-history.json`) and `ticket_click` counts.
-  - Pull Impact tracked actions and commission through the existing `scripts/lib/affiliate-stats.js`.
-  - Add an "Ads" block to the email:
-    - ad revenue this week
-    - ad revenue per 1,000 real pageviews
-    - TodayTix clicks per 1,000 pageviews, ads group vs holdout
-    - total revenue per 1,000 pageviews (ads + Impact)
-  - Persist the weekly numbers in `traffic-history.json` so `/admin/traffic` can chart them later.
-  - Degrade gracefully: if the GA4 secrets are missing, print "Ads: not connected" instead of failing the email.
-- **Acceptance criteria:**
-  - VERIFY: running the report locally with real credentials prints the Ads block with non-null numbers, for at least 3 different weeks of data
-  - VERIFY: running it with the GA4 env vars unset still produces the email, showing "not connected"
+  [CHANGED: no slot inside the filtered map; placement by prop, not URL; structure reviewer, design reviewer]
+- **C-T2 Weekly ad-revenue line:**
+  - Add one "Ads this week" line to the traffic email.
+  - Read GA4 `totalAdRevenue` through a new `scripts/lib/ga4-ad-revenue.js` (pure aggregation, a sibling of `ga4-engaged-sessions.js`) using the existing `getGaClient()` and the **existing** `GA4_PROPERTY_ID` / `GA_SERVICE_ACCOUNT_KEY` secrets (`analyze-traffic-sources.yml:56-57`). No new secrets, no workflow edit.
+  - Keep it out of the `traffic-history.json` all-or-nothing write. A GA4 failure prints "Ads: unavailable" and never blocks the history store.
 
-### Task S4-T2: Guardrail alerts
-- **Complexity:** S
-- **Depends on:** S3-T4
-- **Parallel:** Yes
-- **Files:** `scripts/lib/ga4-ad-revenue.js` or the traffic report, plus existing `check-cwv-health.yml` thresholds (no workflow change needed if CLS > 0.1 already alerts)
-- **Description:** Flag these in the weekly email's "Keep an eye on" section:
-  - (a) TodayTix clicks per 1,000 pageviews in the ads group fall more than 15% below the holdout, over at least 2 weeks and at least 300 clicks per group
-  - (b) mobile CLS p75 goes above 0.1 (the existing CWV check)
-  - (c) AdSense revenue is $0 for a full week while the flag is on (broken slot or account issue)
-- **Acceptance criteria:**
-  - VERIFY: a unit test feeds synthetic weekly rows that trip each guardrail and asserts the warning text appears
-
-### Task S4-T3: Day-30 decision report
-- **Complexity:** M
-- **Depends on:** S4-T1, 30 days after launch
-- **Parallel:** No
-- **Files:** `scripts/ads-decision-report.js` (new); the output goes to the owner by email via the existing transactional path (`--send-to`, never a broadcast; CLAUDE.md §17)
-- **Description:** Compare the ads group and the holdout on:
-  - total revenue per 1,000 real pageviews (AdSense + Impact tracked commission)
-  - TodayTix click rate, with a confidence interval
-  - pages per visit and return-visit rate
-  - CLS
-
-  Then recommend one of:
-  - **Keep** if total revenue per 1,000 pageviews is at least as high in the ads group and click rate is within 10% of the holdout
-  - **Expand** if both hold comfortably: test a second show-page slot after `ShowFAQSection`, behind its own flag
-  - **Pull** if TodayTix losses exceed ad income
-
-  Also note when Mediavine Journey becomes worth re-evaluating (sustained ~150k+ real pageviews a month).
-- **Acceptance criteria:**
-  - VERIFY: the script runs on the real 30 days and prints all four metrics for both groups, with sample sizes
+  [CHANGED: reuse existing GA4 client and secrets; isolated from history writes; design reviewer, structure reviewer]
 
 ---
 
 ## Dependencies Graph
 ```
-Owner Step 0 → S1-T1 → S1-T2 ─┐
-               S1-T3 ─────────┤
-               S1-T4 ─────────┼→ Sprint 1 lands → Owner Step 1 (Request review) → Google approval
-               S1-T5 ─────────┘
-S1-T1 → S2-T1 ─┐
-S1-T1 → S2-T2 ─┼→ S2-T3 ─┐
-               │  S2-T4 ─┼→ S2-T5
-S1-T1 → S2-T6  │         │
-               └→ S3-T3 ─┤
-Google approval → S3-T1 ─┼→ S3-T4 (Owner Step 3) → S4-T2
-S3-T2 (any time) ────────┘
-S3-T1 step 6 + GA4 secrets → S4-T1 → (30 days) → S4-T3
+Owner Step 0 → A-T1 ─┐
+               A-T2 ─┴→ Phase A lands → Owner Step 1 (Request review) ──→ Google approval
+Phase A lands → B-T6 (Log 3 days → Challenge)
+Google approval → B-T1 (owner runbook) → B-T2 ─┐
+                                 B-T3 ─────────┼→ B-T5 ─┐
+                                 B-T2 → B-T4 ──┴────────┼→ B-T7 (owner "go") → 4 weeks → B-T8 → keep? → Phase C
+                                 B-T6 (Challenge active) ┘
 ```
 
-## Subagent Execution Map (within one /execute-plan session)
+## Subagent Execution Map
 ```
-Session A (Sprints 1+2, before approval):
-  Subagent track 1:  S1-T1 → S1-T2 → S2-T1 → S2-T2 → S2-T3 → S2-T5
-  Subagent track 2:  S1-T3 (privacy) → S1-T5 (robots) → S2-T6
-  Subagent track 3:  S1-T4 (CSP) → S2-T4 (after S2-T2 lands in track 1)
-  Sync:              ── land Sprint 1 first (unblocks review) ── then Sprint 2 ──
-Session B (after approval):  S3-T1 → S3-T3 → S3-T2 → S3-T4
-Session C (any time after B): S4-T1 ∥ S4-T2;  S4-T3 at day 30
+Session A (now, ~1 hour):     A-T1 ∥ A-T2 → land → start B-T6 in Log mode
+Session B (after approval):   track 1: B-T2 → B-T5
+                              track 2: B-T3, then B-T4 (after B-T2)
+                              sync → land → B-T7 at 0% → owner "go" → 50/50
+Session C (week 4):           B-T8
+Session D (optional):         C-T1, C-T2
 ```
-**Parallel sprints:** Sprint 2 code can be written while Sprint 1 awaits deploy, but land Sprint 1 first so the owner can request review as early as possible.
-**Critical path:** Step 0 → S1 → Google review (days to weeks, the real bottleneck) → S3 → 30 days → S4-T3.
-**Max subagent parallelism:** 3.
-**Cross-session plan:** A = Sprints 1+2; B = Sprint 3; C = Sprint 4.
+**Critical path:** Step 0 → Phase A → Google review (the real bottleneck) → Phase B → 4 weeks → B-T8.
+**Max subagent parallelism:** 2.
 
 ## Known Edge Cases
-- **Signed-in hydration shift:** the server renders the reserved box, and the client collapses it for members. It's below the fold, so CLS impact is minimal, but watch `check-cwv-health`.
-- **Unfilled ads:** AdSense sometimes returns no ad, especially for UK visitors who decline consent (non-personalized inventory is thinner). The wrapper collapses on `data-ad-status="unfilled"`.
-- **Consent banner appears only on ad pages,** because the Google consent message is delivered by the ad script, which loads only on eligible routes. That's fine legally for ads. GA4 and PostHog consent for UK visitors is a separate, pre-existing gap. File it in Linear; it is not blocking here.
-- **App Router navigation:** pushing into an already-filled `<ins>` throws "All ins elements already have ads". Keying on `pathname` prevents it.
-- **Tests must never load real ads.** The Playwright spec blocks `adsbygoogle.js`, and visual-QA runs on previews should also block it, or AdSense can flag invalid traffic.
-- **Owner must never click own ads.** Self-clicks are the most common cause of AdSense suspensions.
-- **iOS app:** native (separate repo), so it's unaffected. If any web view in the app loads show pages, it should pass a signal that excludes ads.
-- **`/embed/*`** is excluded, so ads never appear inside other sites' embeds.
-- **PostHog blocked:** the holdout can't bucket visitors who block PostHog. They default to the ads group and are absent from the comparison. Since AdSense is usually blocked for them too, the comparison stays fair.
-- **ISR pages:** show pages revalidate daily, but ad rendering is fully client-side, so slot or flag changes don't wait for ISR. The `NEXT_PUBLIC_FEATURES` change does need a rebuild.
-- **CLAUDE.md drift:** CLAUDE.md says "Next.js 14, static export", but the repo runs Next.js 15.5 with ISR and middleware. File a Linear issue to correct it; don't fix it inside this plan.
+- **UK/EEA consent dialog.** Google's consent message is delivered by the ad script, so it appears when the script loads. That happens as the reader scrolls toward the ad, which is a pop-up mid-scroll and contradicts "no pop-ups". It's required for UK/EEA ads. Options for the owner (decide before B-T5):
+  - (a) accept it
+  - (b) for visitors whose browser timezone/locale suggests UK/EEA, call `loadAdSense()` on page load so the dialog appears at arrival rather than mid-read
+  - (c) serve no ads to UK/EEA visitors at first, which means no dialog and roughly 15% fewer ad impressions
+
+  Separately, GA4 and PostHog session replay already run without consent for UK visitors. That gap predates this plan; file it in Linear. [CHANGED: listed as a UX decision; user-impact reviewer, structure reviewer]
+- **CSP is report-only.** AdSense iframes will log `frame-src 'none'` violations. Harmless now. Add the AdSense domains in B-T5 if the report noise matters, or before the CSP is ever switched to enforcing. Avoid `img-src https:`; prefer listing domains. [CHANGED; external GPT reviewer]
+- **Ad blockers and PostHog blockers** get no ads and no flag, so they're absent from both test groups. This is fair, because the two blockers overlap heavily.
+- **Members during auth loading** never load the script, because the decision waits for `!authLoading`.
+- **Self-clicks:** the owner must never click their own ads. Use `?noads=1` or the `bwsc_noads` cookie when browsing your own site.
+- **iOS app:** native (separate repo). If any app web view loads show pages, it should add `?noads=1`. Confirm in that repo.
+- **`/embed/*`** never includes `AdSlot`.
+- **Holdout join:** `subId2` on ticket links is already used for the ticket-button test (`affiliate-utils.ts`). Join Impact actions by `subId1`/distinct_id instead.
+- **CLAUDE.md drift:** it says "Next.js 14, static export", but the repo runs Next.js 15.5 with ISR and middleware. File a Linear issue; don't fix it in this plan.
 
 ## Changes from Critique
+
 | Change | Reason | Source |
 |---|---|---|
-| One ad per page type instead of 2–3 | Lower clutter, protects TodayTix clicks; revenue estimate set at $35–135/month accordingly | Codex comparison |
-| AdSense manual units instead of Mediavine Journey | Least owner effort: no application review or support back-and-forth over how ads refresh on Next.js page changes | Owner: "very little effort" |
-| Direct sponsorship deferred | Sales and servicing are ongoing owner work | Owner: "very little effort" |
-| Privacy policy fix made a launch blocker | `/privacy` currently states the site shows no third-party ads | Codex, verified in `src/app/privacy/page.tsx:152` |
-| Holdout group added | Before/after comparison is confounded by Nov–Dec seasonality and openings | Author's own check (`/plan-review` not yet run) |
-| Bot challenge for CN/HK | 7,112 bot-like sessions in 28 days; invalid-traffic risk | PostHog query, Oct 22 |
-| Vercel Pro check added as Step 0 | Hobby plan bans AdSense explicitly | Vercel fair use guidelines |
+| Phase A = ads.txt + meta + privacy only; request review before writing ad code | Google approval can end the plan; don't build first | Structure reviewer, Phase 0 |
+| Global automation opt-out (UA/webdriver/`?noads=1`/cookie + shared Playwright block) | CI e2e, post-deploy smoke and Lighthouse all hit production; would create invalid ad traffic (P0, verified at `test.yml:6592,6699`, `vercel-deploy.yml:641`) | Pre-mortem, structure reviewer, external GPT reviewer |
+| One runtime PostHog flag replaces the build-time flag + holdout flag | Kill switch must work in seconds; build flag waited up to 6h; two gates overlapped | Design reviewer, pre-mortem, structure reviewer, external GPT reviewer |
+| Unresolved flag = no ads | So the kill switch reaches everyone, and every ad viewer is bucketed | Design reviewer |
+| 50/50 for 4 weeks instead of 85/15 | ~1,531 ticket clicks / 28 days; a 15% holdout can't detect a 10% drop | Structure reviewer |
+| Fixed 300×250, no `overflow:hidden`, no full-width responsive | Clipped ads break AdSense policy; responsive units can be taller than their box | Structure reviewer, user-impact reviewer |
+| Render nothing until the script loads | Ad-blocker users would otherwise see an empty "Advertisement" box | User-impact reviewer |
+| Gate on `!authLoading` | Members could load ads before auth resolves, breaking the privacy promise | User-impact reviewer, structure reviewer |
+| Removed `isAdEligiblePath` route allowlist | The page that includes `AdSlot` already decides placement | Design reviewer |
+| Logic in `src/lib/ads.ts`; shared `usePostHogFlag` hook | Match the `apple-auth.ts` loader pattern; avoid a third polling copy; testable pure function | Design reviewer |
+| Browse slot moved to optional Phase C, outside the filtered map | Filter changes would re-request ads (policy risk) | Structure reviewer |
+| Weekly email block, guardrails and decision script replaced by one week-4 readout | Not worth a pipeline at $35–135/month; guardrail could never fire at this volume | Structure reviewer, external GPT reviewer, design reviewer |
+| GA4 work reuses `ga4-client.js` and existing secrets | `GA_SERVICE_ACCOUNT_KEY` / `GA4_PROPERTY_ID` already wired | Design reviewer |
+| Firewall rule scoped to HTML pages and started early in Log mode | Don't challenge `/ads.txt` or APIs; the 3-day Log window was unscheduled | User-impact reviewer, structure reviewer, external GPT reviewer |
+| More AdSense defaults to turn off (all Auto ads formats, ad intents, experiments) | Platform defaults can add ads the code never asked for | User-impact reviewer |
+| Privacy wording true before and after launch | Original wording claimed consent prompts weeks before they existed | User-impact reviewer |
+| Vercel Pro cost subtracted in the decision metric | $20/month is 15–57% of projected revenue | Structure reviewer |
+| Dropped CSP edits and robots allow from the pre-approval path | Report-only CSP; `*` already allows the crawler | External GPT reviewer, structure reviewer |
 
 ## Key Risks
-1. **AdSense rejects the site** (for example as "low value content", since show pages are data-heavy). Mitigation: show pages already carry substantial original text (critic summaries, FAQ, quick facts). If rejected, apply again after 2–4 weeks with the editorial guide pages most visible. Mediavine Journey (1,000 premium sessions a month) is the fallback.
-2. **Ads reduce TodayTix conversions by more than they earn.** Mitigation: placement far from ticket CTAs, the competitor blocklist, the 15% holdout with a guardrail alert, and a one-variable rollback.
-3. **Invalid-traffic action against the account.** Mitigation: the CN/HK challenge, real ads blocked in tests, no self-clicks, and watching AdSense policy-center emails.
+1. **AdSense rejects the site** as low-value content, since show pages are data-heavy. Mitigation: Phase A costs about an hour, so a rejection wastes little. Reapply after 2–4 weeks with editorial guide pages prominent. Mediavine Journey is the fallback.
+2. **Invalid-traffic action against the account.** Mitigation: B-T4 automation opt-out, the B-T6 bot challenge, the self-click rule, and checking AdSense impressions against PostHog `ad_slot_rendered` in the week-4 readout.
+3. **Ads cost more TodayTix revenue than they earn.** Mitigation: placement far from ticket links, the competitor blocklist, the 50/50 test with a confidence interval, and an instant flag-based kill switch.
