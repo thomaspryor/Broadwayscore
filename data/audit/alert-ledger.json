@@ -5475,13 +5475,13 @@
       "title": "Data audits failing (non-blocking): Run BRO-1397 prior-run former-cast sweep (needs review-texts)",
       "firstSeen": "2026-09-23T19:33:16.776Z",
       "incidentOpenedAt": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-10-22T11:07:02.877Z",
+      "lastSeen": "2026-10-22T11:27:56.809Z",
       "lastNotifiedAt": "2026-10-22T01:46:13.995Z",
       "lastSurfacedAt": "2026-10-22T01:46:13.995Z",
       "notifyCount": 23,
       "cardId": null,
       "linearIdentifier": "BRO-5882",
-      "silentRefires": 31
+      "silentRefires": 32
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "resolved",
@@ -18629,13 +18629,13 @@
       "title": "LLM scoring daily spend over budget",
       "firstSeen": "2026-10-15T09:31:55.528Z",
       "incidentOpenedAt": "2026-10-19T11:53:05.157Z",
-      "lastSeen": "2026-10-22T11:18:53.732Z",
+      "lastSeen": "2026-10-22T11:28:09.049Z",
       "lastNotifiedAt": "2026-10-22T08:21:30.011Z",
       "lastSurfacedAt": "2026-10-22T08:21:30.011Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "feedback-outcomes:2026-10-15T05:05:16.652944+00:00": {
       "status": "resolved",
@@ -23442,7 +23442,7 @@
       "linearIdentifier": null
     },
     "land:land/worktree-fix-ingest-url-push-dir": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: colocated-tests red on land/worktree-fix-ingest-url-push-dir",
       "firstSeen": "2026-10-22T10:00:54.142Z",
@@ -23452,7 +23452,8 @@
       "lastSurfacedAt": "2026-10-22T10:00:54.142Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-22T11:27:23.762Z"
     },
     "land:land/bro-5794-url-invariant": {
       "status": "resolved",

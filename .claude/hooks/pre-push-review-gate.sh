@@ -313,22 +313,22 @@ log_bypass() {
   mkdir -p "$HOME/.claude/logs" 2>/dev/null
   printf '%s\t%s\t%s\t%s\n' "$(date +%s)" "$1" "$transcript" "$2" \
     >> "$HOME/.claude/logs/finish-line-bypass.log" 2>/dev/null
+  local log_file="$HOME/.claude/logs/finish-line-bypass.log"
+  if [ -f "$log_file" ] && [ "$(wc -l < "$log_file")" -gt 5000 ]; then
+    tail -n 2000 "$log_file" > "$log_file.tmp" 2>/dev/null && mv "$log_file.tmp" "$log_file"
+  fi
 }
 
 # NO-SHIP-CHECK override in the gated command itself, as a shell comment:
 #   git push ...  # NO-SHIP-CHECK: <reason ≥15 chars>
-# Needed because assistant text blocks are flushed to the transcript AFTER
-# PreToolUse fires — and blocked-tool turns' text can be dropped entirely —
-# so the bypass-token transcript scan below can never see an in-flight
-# NO-SHIP-CHECK (same structural gap found + fixed in pre-push-visual-gate.sh
-# 2026-07-20, session e1dca052; Notion 39c637c5 audit card #233). The command
-# string is the one channel guaranteed visible at gate time. Anchored to a
-# `#` preceded by whitespace/line-start (byte-identical to the
-# pre-push-visual-gate.sh precedent) so a bare mid-string mention can't
-# match — note this does NOT make it immune to a `#`-prefixed line inside a
-# commit message or heredoc body in the same command; that's an accepted gap
-# since this guards Claude's own discipline, not a hostile actor, and every
-# use is logged. ≥15-char reason matches the queryBypassToken convention.
+# Assistant transcript text is flushed after PreToolUse; blocked turns can be lost.
+# Read in-flight overrides from the command, as in pre-push-visual-gate.sh
+# (2026-07-20 audit #233). Match a `#` preceded by whitespace/line-start,
+# using the same visual-gate pattern, so a bare mid-string mention cannot match.
+# A `#`-prefixed line inside a commit message or heredoc can still match.
+# This accepted gap guards Claude's discipline, not hostile actors.
+# Every use is logged. The reason must be at least 15 characters,
+# matching the queryBypassToken convention.
 _NSC_MATCH=$(printf '%s' "$command" | grep -oE '(^|[[:space:]])#[[:space:]]*NO-SHIP-CHECK:[[:space:]]+.{15,}' | head -1)
 if [ -n "$_NSC_MATCH" ]; then
   log_bypass "NO-SHIP-CHECK-CMD" "$_NSC_MATCH"

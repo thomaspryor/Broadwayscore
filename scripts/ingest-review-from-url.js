@@ -68,6 +68,7 @@ const { isStalePublishDate } = require('./lib/stale-publish-date');
 const { extractByline } = require('./lib/byline-extraction');
 const { resolveCritic, nameFromAuthorUrl } = require('./lib/resolve-critic');
 const { pageMentionsShowTitle } = require('./lib/submission-show-match');
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 
 const args = process.argv.slice(2);
 function getArg(name) {
@@ -101,8 +102,34 @@ const dryRun = hasFlag('dry-run');
 // exposes ("Override data/review-texts root (for tests)"). Flows to BOTH the
 // blocklist lookup below and the writer, so a test can exercise the real script
 // against a temp corpus instead of the live one.
-const reviewTextsDir = getArg('data-dir')
-  || path.join(__dirname, '..', 'data', 'review-texts');
+const dataDirArg = getArg('data-dir');
+// BRO-5874: read and write the review-texts git CHECKOUT, not a copy of it.
+// data/review-texts IS the checkout on CI and in most worktrees — there
+// resolveReviewTextsDir() returns exactly that path and nothing changes. On the
+// owner's Mac it is a plain gitignored COPY and the clone is
+// ~/broadway-review-texts, so a hardcoded join meant `git add` ran inside the
+// Broadwayscore repo where that path is gitignored: every Mac-local --land
+// failed its push with "paths are ignored by one of your .gitignore files" and,
+// because landIngestedReviews() skips the dispatch on a failed push, the review
+// sat local-only and unscored behind one warning line.
+//
+// Writing INTO the checkout (rather than writing to the copy and mirroring
+// across) is deliberate. The copy on the Mac lags the clone badly — 1002 of
+// 1857 sampled shared files differ, in llmScore, assignedScore, fullText,
+// wrongProduction, duplicateOf and humanReviewScore — so copying from it would
+// roll those back and resurrect upstream-deleted reviews, which is worse than
+// the push failure being fixed. It also means the merge, dedup and collision
+// guards now read the FRESH corpus instead of the stale snapshot.
+//
+// Trade-off: on the Mac data/review-texts does not receive the new file, so
+// local audits reading it will not see it until ./scripts/setup-local-data.sh
+// re-syncs. That copy is already 54% divergent, so this changes nothing about
+// how much it can be trusted.
+const reviewTextsDir = dataDirArg || resolveReviewTextsDir();
+// unknownShowFolderRefused() (review-file-writer.js:299) stands its guard down
+// for any dir that is not the hardcoded default, so pass the ids explicitly or
+// moving off that default would silently allow a folder for an unknown show id.
+const knownShowIds = () => showsData.shows.map((s) => s.id);
 const forceClearStale = hasFlag('force-clear-stale-flag');
 const allowNonReviewUrl = hasFlag('allow-non-review-url');
 // Provisional onboarding: use --outlet verbatim as a slug WITHOUT fuzzy alias
@@ -361,7 +388,7 @@ if (!show) {
       url,
       source: 'submit-review-form',
       fields: buildRetryStubFields(reason, { publishDate: publishDateArg }),
-    }, { dryRun, reviewTextsDir });
+    }, { dryRun, reviewTextsDir, knownShowIds: knownShowIds() });
     if (stubResult.guardRefused === true || WRITE_GUARD_REFUSED_REASONS.has(stubResult.reason)) {
       console.error(`\n❌ Retry stub refused by the write guard (${stubResult.reason})`);
       process.exit(1);
@@ -621,7 +648,7 @@ if (!show) {
     // BRO-4431: this is one explicit url, so a longer copy of the same
     // article may replace a truncated stored body (issue 908).
     replaceBadBody: true,
-  }, { dryRun, reviewTextsDir });
+  }, { dryRun, reviewTextsDir, knownShowIds: knownShowIds() });
 
   // BRO-3790: createOrMergeReviewFile's merge-into-existing path only fills
   // BLANK fields (review-file-writer.js _mergeIntoExisting) — a merge onto a
@@ -752,6 +779,11 @@ if (!show) {
     if (land) {
       console.log('\nLanding (push review-texts, then dispatch scoring)...');
       const { landIngestedReviews } = require('./lib/land-ingested-reviews');
+      // reviewTextsDir IS the checkout (BRO-5874, see its definition), so the
+      // files are already staged where git runs and a rename is a real git
+      // rename. An explicit --data-dir still flows through here: a test
+      // pointing at a temp corpus pushes nothing, because that dir is not a
+      // git repo, rather than reaching the real private repo.
       const landed = landIngestedReviews({
         showId, extraShowIds: landShowIds, reviewTextsDir, touchedPaths: landPaths, newReviews: 1,
         message: `ingest-review-from-url: 1 review for ${showId}`,

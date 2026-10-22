@@ -170,16 +170,16 @@ log_bypass() {
   mkdir -p "$HOME/.claude/logs" 2>/dev/null
   printf '%s\t%s\t%s\t%s\n' "$(date +%s)" "$1" "$transcript" "$2" \
     >> "$HOME/.claude/logs/finish-line-bypass.log" 2>/dev/null
+  local log_file="$HOME/.claude/logs/finish-line-bypass.log"
+  if [ -f "$log_file" ] && [ "$(wc -l < "$log_file")" -gt 5000 ]; then
+    tail -n 2000 "$log_file" > "$log_file.tmp" 2>/dev/null && mv "$log_file.tmp" "$log_file"
+  fi
 }
 
 # NO-SHIP-CHECK override in the gated command itself, as a shell comment:
 #   git merge my-branch  # NO-SHIP-CHECK: <reason ≥15 chars>
-# Needed because assistant text blocks are flushed to the transcript AFTER
-# PreToolUse fires — and blocked-tool turns' text can be dropped entirely — so
-# the transcript scan below can never see an in-flight NO-SHIP-CHECK. The
-# command string is the one channel guaranteed visible at gate time. Anchored to
-# a `#` preceded by whitespace/line-start, byte-identical to the
-# pre-push-review-gate.sh precedent.
+# Transcript text arrives after PreToolUse; read in-flight overrides from the
+# command. Match `#` after whitespace/line-start, as in pre-push-review-gate.sh.
 _NSC_MATCH=$(printf '%s' "$command" | grep -oE '(^|[[:space:]])#[[:space:]]*NO-SHIP-CHECK:[[:space:]]+.{15,}' | head -1)
 if [ -n "$_NSC_MATCH" ]; then
   log_bypass "NO-SHIP-CHECK-MERGE-CMD" "$_NSC_MATCH"

@@ -24,9 +24,11 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const DRAFTS = path.join(HERE, '..', 'data', 'audit', 'reddit-post-drafts.json');
 // The check step reached main at about 04:21 UTC on 2026-10-22.
 const LIVE_SINCE = '2026-10-22T04:21:00Z';
-// The owner's manual resends ran on the 22nd; scheduled runs resume on the 23rd.
-const SCHEDULED_FROM = '2026-10-23T00:00:00Z';
-const CHECKABLE_FROM = Date.parse('2026-10-24T00:00:00Z'); // = the card's RECHECK-AFTER
+// The owner's manual resends ran 04:22-05:05 UTC on the 22nd; the first
+// scheduled run after them (run 39734765252, 06:34 UTC) checked two drafts.
+// Anything checked after 06:00 UTC that day came from a scheduled run or later.
+const SCHEDULED_FROM = '2026-10-22T06:00:00Z';
+const CHECKABLE_FROM = Date.parse(SCHEDULED_FROM);
 
 function load() {
   try {

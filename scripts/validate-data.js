@@ -20,6 +20,7 @@
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
+const { showsMissingOrigin, ORIGIN_GRACE_DAYS } = require('./lib/show-origins');
 const { tourImageProblems, tourLinkProblems } = require('./lib/tour-family');
 const { findCrossShowImages, CROSS_SHOW_IMAGES_BASELINE } = require('./lib/cross-show-images');
 const { findSharedSources } = require('./lib/shared-image-source');
@@ -5451,6 +5452,23 @@ function validateNoHardcodedOutletLists() {
   else console.log(`  ⚠️  ${flagged} hardcoded outlet list(s) found — consider migrating to outlet-registry.json`);
 }
 
+// BRO-5867: buildOriginFindings drops shows with no origin record, so an
+// unlabeled opening vanishes from /path-to-broadway. The weekly workflow
+// (weekly-show-origins.yml) labels new openings; this catches it failing.
+// warn(), not error(): an error here would reach exitWithError and wedge the
+// core-data push of the very workflows that add shows (the classifier reads
+// the pushed shows.json), so the gap could never close.
+function validateShowOrigins(shows) {
+  const file = path.join(DATA_DIR, 'show-origins.json');
+  if (!fs.existsSync(file)) { warn('data/show-origins.json missing, skipping origin coverage check'); return; }
+  const origins = JSON.parse(fs.readFileSync(file, 'utf8')).shows || {};
+  const missing = showsMissingOrigin(shows, origins, new Date().toISOString().slice(0, 10));
+  for (const s of missing) {
+    warn(`Show "${s.title}" (${s.id}, ${s.status}, opened ${s.openingDate}) has no record in data/show-origins.json — run node scripts/classify-show-origins.js (weekly-show-origins.yml does this; ${ORIGIN_GRACE_DAYS}-day grace).`);
+  }
+  if (!missing.length) ok('Every opened Broadway show has a show-origins record');
+}
+
 function runValidation() {
   console.log('='.repeat(60));
   console.log('BROADWAY SCORECARD DATA VALIDATION');
@@ -5593,6 +5611,8 @@ function runValidation() {
   validateLastUpdatedFormats();
   console.log('');
   validateTodayTixShowtimes(shows);
+  console.log('');
+  validateShowOrigins(shows);
 
   // Summary
   console.log('');

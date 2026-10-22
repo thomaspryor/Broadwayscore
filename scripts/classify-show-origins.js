@@ -229,7 +229,10 @@ async function main() {
   }
   await Promise.all(Array.from({ length: CONCURRENCY }, worker));
   console.log(JSON.stringify({ done, failed: failures.length, spentUsd: Number(spent.toFixed(2)) }));
-  if (failures.length) console.log('Failures:\n' + failures.slice(0, 40).join('\n'));
+  if (failures.length) {
+    console.log('Failures:\n' + failures.slice(0, 40).join('\n'));
+    process.exitCode = 1; // progress is saved; a red run lets the workflow's failure notice fire (BRO-5867)
+  }
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });
