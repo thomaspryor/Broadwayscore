@@ -188,7 +188,10 @@
     "wicked-west-end-2021/firstnightmagazine--unknown.json",
     "wicked-west-end-2021/west-end-wilma--unknown.json",
     "wicked-2003/theatrely--kobi-kassal.json",
-    "the-lion-king-1997/timeout--adam-feldman.json"
+    "the-lion-king-1997/timeout--adam-feldman.json",
+    "derren-brown-only-human-west-end-2026/telegraph--chris-harvey.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/ground--unknown.json",
+    "ilford-boy-west-end-2026/afridiziak-theatre-news--unknown.json"
   ],
   "failed": [
     "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
@@ -219,7 +222,6 @@
     "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
     "ceilidh-the-musical-off-west-end-2026/lsbo--unknown.json",
     "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
-    "derren-brown-only-human-west-end-2026/telegraph--chris-harvey.json",
     "triumph-off-west-end-2026/thestage--david-benedict.json",
     "some-woman-west-end-2026/thestage--sam-marlowe.json",
     "some-woman-west-end-2026/times-uk--clive-davis.json",
@@ -311,7 +313,8 @@
     "wicked-2003/rough-draft-atlanta--sammie-purcell.json",
     "wicked-2003/trib-live--alexis-papalia.json",
     "the-lion-king-1997/calgary-herald--louis-b-hobson.json",
-    "the-lion-king-1997/familyvacationcritic--unknown.json"
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "ilford-boy-west-end-2026/theatreandtonic--emmie-newitt.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -403,7 +406,8 @@
       "book-of-mormon-2011/financialtimes--brendan-lemon.json",
       "wicked-west-end-2021/firstnightmagazine--unknown.json",
       "wicked-west-end-2021/west-end-wilma--unknown.json",
-      "the-lion-king-1997/timeout--adam-feldman.json"
+      "the-lion-king-1997/timeout--adam-feldman.json",
+      "ilford-boy-west-end-2026/afridiziak-theatre-news--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -429,7 +433,8 @@
       "golden-boy-off-west-end-2026/daily-mail--patrick-marmion.json",
       "the-story-west-end-2026/ground--unknown.json",
       "the-great-gatsby-2024/musical-theatre-review--rebecca-sinclair.json",
-      "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json"
+      "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json",
+      "the-curious-case-of-benjamin-button-off-broadway-2026/ground--unknown.json"
     ],
     "scrapingbee": [
       "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json",
@@ -440,7 +445,8 @@
       "oh-mary-2024/broadwaynews--brittani-samuel.json",
       "oh-mary-2024/cititour--unknown.json",
       "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
-      "wicked-2003/theatrely--kobi-kassal.json"
+      "wicked-2003/theatrely--kobi-kassal.json",
+      "derren-brown-only-human-west-end-2026/telegraph--chris-harvey.json"
     ],
     "brightdata": [
       "billy-crystal-860-2026/talkinbroadway--howard-miller.json",
@@ -516,7 +522,7 @@
     ]
   },
   "startTime": "2026-10-22T15:08:28.091Z",
-  "lastProcessed": "the-lion-king-1997/familyvacationcritic--unknown.json",
+  "lastProcessed": "ilford-boy-west-end-2026/theatreandtonic--emmie-newitt.json",
   "log": [
     {
       "t": "2026-10-22T15:10:02.371Z",
@@ -590,6 +596,15 @@
       "t": "2026-10-22T16:36:49.752Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-22T16:56:40.631Z",
+      "event": "bb-session",
+      "session": "8e7b50f0",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
     }
+  ],
+  "recoveredAfterFailure": [
+    "derren-brown-only-human-west-end-2026/telegraph--chris-harvey.json"
   ]
 }
