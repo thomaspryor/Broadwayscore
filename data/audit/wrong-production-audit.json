@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T20:24:48.502Z",
+  "timestamp": "2026-10-22T20:44:44.344Z",
   "stats": {
-    "totalReviews": 59183,
-    "alreadyFlagged": 21327,
+    "totalReviews": 59245,
+    "alreadyFlagged": 21331,
     "dateGuardCatches": 201,
-    "directorMismatch": 2057,
-    "tvFilmSignals": 1660,
-    "londonSignals": 2707,
-    "offBroadwaySignals": 529,
+    "directorMismatch": 2059,
+    "tvFilmSignals": 1661,
+    "londonSignals": 2708,
+    "offBroadwaySignals": 528,
     "yearMismatch": 169,
-    "noPublishDate": 5369
+    "noPublishDate": 5408
   },
   "findings": [
     {
@@ -6668,6 +6668,19 @@
       ]
     },
     {
+      "showId": "cat-on-a-hot-tin-roof-west-end-2017",
+      "file": "nytg--unknown.json",
+      "publishDate": "2017-09-22",
+      "url": "https://www.newyorktheatreguide.com/reviews/cat-on-a-hot-tin-roof-0",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"debbie allen\" from cat-on-a-hot-tin-roof-2008"
+        }
+      ]
+    },
+    {
       "showId": "catch-me-if-you-can-2011",
       "file": "ew--thom-geier.json",
       "score": 42,
@@ -9406,7 +9419,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "liamodell--liam-odell.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2026-06-26",
       "url": "https://liamodell.com/2026/06/27/cyrano-de-bergerac-review-noel-coward-theatre-london-west-end-adrian-lester-levi-brown-susannah-fielding-about-book-who-wrote/",
       "findings": [
@@ -22075,6 +22088,19 @@
       ]
     },
     {
+      "showId": "jekyll-and-hyde-2013",
+      "file": "nyt-theater--unknown.json",
+      "publishDate": null,
+      "url": "https://newyorktheater.me/2013/04/18/jekyll-and-hyde-review-good-vs-bad-on-broadway/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
       "showId": "jesa-off-broadway-2026",
       "file": "broadwayworld--stephi-wild.json",
       "score": null,
@@ -25169,7 +25195,7 @@
     {
       "showId": "little-shop-of-horrors-off-broadway-2019",
       "file": "theater-life--david-sheward.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "2019-10-23",
       "url": "https://theaterlife.com/scotland-pa-little-shop-of-horrors-forbidden-broadway-the-next-generation-the-lightning-thief-the-percy-jackson-musical/",
       "findings": [
@@ -26887,7 +26913,7 @@
     {
       "showId": "miss-saigon-2017",
       "file": "talkinbroadway--matthew-murray.json",
-      "score": null,
+      "score": 35,
       "publishDate": "2017-03-23",
       "url": "http://www.talkinbroadway.com/page/world/MissSaigon2017.html",
       "findings": [
@@ -32843,11 +32869,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john benjamin hickey\" from plaza-suite-2022"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -50687,6 +50708,20 @@
     },
     {
       "showId": "vanya-off-broadway-2025",
+      "file": "newyorker--helen-shaw.json",
+      "score": 95,
+      "publishDate": "March 20, 2025",
+      "url": "https://www.newyorker.com/magazine/2025/03/31/vanya-and-purpose-theatre-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam yates\" from vanya-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
       "file": "nysr--melissa-rose-bernardo.json",
       "score": 79,
       "publishDate": "2025-03-18",
@@ -59972,6 +60007,58 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-west-end-2017",
+      "file": "british-theatre--philip-fisher.json",
+      "publishDate": "2017-07-25",
+      "url": "https://www.britishtheatreguide.info/reviews/cat-on-a-hot-ti-apollo-shafte-14625",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-west-end-2017",
+      "file": "london-box-office--phil-willmott.json",
+      "publishDate": "2017-08-24",
+      "url": "https://www.londonboxoffice.co.uk/news/post/reiew-cat-on-a-hot-tin-roof",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-west-end-2017",
+      "file": "london-theatre--tom-millward.json",
+      "publishDate": "2017-07-27",
+      "url": "https://www.londontheatre.co.uk/reviews/review-of-cat-on-a-hot-tin-roof-starring-sienna-miller-and-jack-oconnell",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-west-end-2017",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2017-07-24",
+      "url": "https://www.timeout.com/london/theatre/cat-on-a-hot-tin-roof-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -79697,20 +79784,6 @@
     },
     {
       "showId": "purpose-2025",
-      "file": "newyorker--helen-shaw.json",
-      "score": 77,
-      "publishDate": "March 20, 2025",
-      "url": "https://www.newyorker.com/magazine/2025/03/31/vanya-and-purpose-theatre-review",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "purpose-2025",
       "file": "vulture--jackson-mchenry.json",
       "score": 72,
       "publishDate": "March 17, 2025",
@@ -79859,20 +79932,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "red-pitch-west-end-2024",
-      "file": "guardian--susannah-clapp.json",
-      "score": 78,
-      "publishDate": "2024-04-23",
-      "url": "https://www.theguardian.com/stage/2024/apr/14/the-week-in-theatre-player-kings-robert-icke-ian-mckellen-noel-coward-theatre-review-red-pitch-tyrell-williams-sohoplace-underdog-the-other-other-bronte-sarah-gordon-dorfman-national-theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -81420,20 +81479,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "six-degrees-of-separation-2017",
-      "file": "njcom--christopher-kelly.json",
-      "score": 41,
-      "publishDate": "2017-04-25",
-      "url": "https://www.nj.com/entertainment/index.ssf/2017/04/6_degrees_of_separation_charlie_and_chocolate_fact.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
         }
       ]
     },
@@ -85998,20 +86043,6 @@
       ]
     },
     {
-      "showId": "the-crucible-west-end-2022",
-      "file": "observer--susannah-clapp.json",
-      "score": 77,
-      "publishDate": "2022-10-09",
-      "url": "https://www.theguardian.com/stage/2022/oct/09/blues-for-an-alabama-sky-lyttelton-national-theatre-lynette-linton-review-the-crucible-olivier-didos-bar-royal-docks",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
       "showId": "the-crucible-west-end-2023",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 97,
@@ -89777,7 +89808,7 @@
     {
       "showId": "the-pillowman-west-end-2023",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 65,
+      "score": 66,
       "publishDate": "2023-07-05",
       "url": "https://www.ft.com/content/93d2651a-d28d-41e5-afe3-c6fa6fd29b10",
       "findings": [
@@ -90099,6 +90130,20 @@
       "file": "thewrap--unknown.json",
       "publishDate": "2026-07-14",
       "url": "https://www.thewrap.com/creative-content/theater/the-potluck-off-broadway-review/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "the-potluck-off-broadway-2026",
+      "file": "vulture--jackson-mchenry.json",
+      "score": 67,
+      "publishDate": "2026-07-20",
+      "url": "https://www.vulture.com/article/theater-review-whoopi-monologues-goldberg-potluck-alvarez.html",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
