@@ -168,6 +168,20 @@ test('review-texts resolution — isReviewTextsCheckout tolerates a missing path
   assert.equal(isReviewTextsCheckout('/definitely/not/here'), false);
 });
 
+// BRO-5892: a cloud session's data/review-texts is a copy without .git, stamped
+// with .review-texts-sha by setup-local-data.sh. It must resolve, so tools stop
+// falling back to a ~/broadway-review-texts that does not exist when HOME=/root.
+test('review-texts resolution — a stamped copy counts; an unstamped or empty one does not', () => {
+  const dir = mkdtempSync(path.join(tmpdir(), 'rt-stamp-'));
+  mkdirSync(path.join(dir, 'show-2026'));
+  assert.equal(isReviewTextsCheckout(dir), false);
+  writeFileSync(path.join(dir, '.review-texts-sha'), 'abc\n');
+  assert.equal(isReviewTextsCheckout(dir), true);
+  const empty = mkdtempSync(path.join(tmpdir(), 'rt-stamp-empty-'));
+  writeFileSync(path.join(empty, '.review-texts-sha'), 'abc\n');
+  assert.equal(isReviewTextsCheckout(empty), false);
+});
+
 test('review-texts resolution — the resolver is a leaf module with no CLI side effects', () => {
   // It lives in scripts/lib/ precisely so a test can require it without the
   // repair CLI's "Refusing to run unscoped" exit(2) firing on import.

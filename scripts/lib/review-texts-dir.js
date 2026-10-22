@@ -49,10 +49,14 @@ const { execFileSync } = require('child_process');
  * an ambiguous or silently-empty target is the whole bug class.
  */
 
-/** A directory only counts if it is an actual checkout, not a bare/empty dir. */
+const REVIEW_TEXTS_SHA_FILE = '.review-texts-sha';
+
+/** A directory only counts if it is an actual checkout (or a stamped copy), not a bare/empty dir. */
 function isReviewTextsCheckout(dir) {
   try {
-    if (!fs.existsSync(path.join(dir, '.git'))) return false;
+    // A cloud session's data/review-texts is a copy without .git; setup-local-data.sh
+    // stamps it with .review-texts-sha instead (BRO-5892).
+    if (!fs.existsSync(path.join(dir, '.git')) && !fs.existsSync(path.join(dir, REVIEW_TEXTS_SHA_FILE))) return false;
     // `.git` itself is an entry, so `readdirSync(dir).length > 0` was true for
     // a freshly-inited/sparse clone containing NOTHING but `.git` — the exact
     // false-all-clear shape this function exists to reject, just with `.git`
@@ -110,4 +114,4 @@ function resolveReviewTextsDir(
   return path.join(homedir, 'broadway-review-texts');
 }
 
-module.exports = { resolveReviewTextsDir, isReviewTextsCheckout, mainWorktreeOf };
+module.exports = { resolveReviewTextsDir, isReviewTextsCheckout, mainWorktreeOf, REVIEW_TEXTS_SHA_FILE };
