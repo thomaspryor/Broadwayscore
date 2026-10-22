@@ -4,6 +4,7 @@
  * the live site's (BRO-5969). Warns (never fails) on a drop over 3%.
  * Usage: node scripts/check-sitemap-count-delta.js [builtSitemapDir]
  */
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { fetchSitemapIndexUrls } = require('./lib/sitemap-urls');

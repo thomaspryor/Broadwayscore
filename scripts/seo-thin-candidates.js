@@ -5,6 +5,7 @@
  * Uses data/shows.json status and per-show review counts from reviews.json
  * (an approximation of the page's criticScore.reviewCount).
  */
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { isThinClosedShow, hasSearchLanding, loadSearchLandings } = require('./lib/seo-indexability');

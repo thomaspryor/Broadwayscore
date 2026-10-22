@@ -6,6 +6,7 @@
  * seo-indexability.js) keep any page listed here indexable (BRO-5969).
  * Needs POSTHOG_PERSONAL_API_KEY + POSTHOG_PROJECT_ID.
  */
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 
@@ -22,6 +23,7 @@ async function main() {
     method: 'POST',
     headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: { kind: 'HogQLQuery', query } }),
+    signal: AbortSignal.timeout(120000),
   });
   if (!res.ok) { console.error('PostHog', res.status); process.exit(1); }
   const rows = (await res.json()).results || [];
