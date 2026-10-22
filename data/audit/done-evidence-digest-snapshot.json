@@ -1,16 +1,26 @@
 {
-  "generatedAt": "2026-10-22T18:26:31.694Z",
-  "bannerText": "142/193 Done(14d) verified on main · 15 FAILED · 2 vacuous · 31 stuck-but-done — PARTIAL RUN: 16 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-22T19:21:20.337Z",
+  "bannerText": "83/156 Done(14d) verified on main · 17 FAILED · 0 vacuous · 27 stuck-but-done — PARTIAL RUN: 53 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
+      "title": "FAILED BRO-5838 — Weekly costs labelled trade-reported with no source (15 records)",
+      "detail": "⚠️ WARNING: 96 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025... ⚠️ WARNING: 75 Off-Bro…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5838/weekly-costs-labelled-trade-reported-with-no-source-15-records"
+    },
+    {
       "title": "FAILED BRO-5814 — Show pages 500 for announced shows with no theater (toPostalAddress(null)); Private Lives cast file holds the 1948 cast",
-      "detail": "not ok 1 - <checkout>/tests/unit/seo-show-no-venue.test.mjs (Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/tmp/done-evidence-K9Xvth/main)",
+      "detail": "not ok 1 - <checkout>/tests/unit/seo-show-no-venue.test.mjs (Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/tmp/done-evidence-tMJ7jW/main)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5814/show-pages-500-for-announced-shows-with-no-theater-topostaladdressnull"
     },
     {
       "title": "FAILED BRO-5812 — Site-wide copy pass to the owner's voice rules (em dashes, AI tropes) plus an advisory guard",
       "detail": "not ok 2 - on-screen copy in src/app, src/components, src/config and src/lib follows the voice rules (rewrite with commas, periods or parentheses, and plain wording:)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5812/site-wide-copy-pass-to-the-owners-voice-rules-em-dashes-ai-tropes-plus"
+    },
+    {
+      "title": "FAILED BRO-5799 — Cursed Child one-part WE 2026: 2 old-production reviews filed by rss-discovery and show-score; make both writers apply the wrong-production-by-date rule",
+      "detail": "⚠️ WARNING: 96 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025... ⚠️ WARNING: 75 Off-Bro…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5799/cursed-child-one-part-we-2026-2-old-production-reviews-filed-by-rss"
     },
     {
       "title": "FAILED BRO-5788 — Data-health live-data failures get no card and no fix: route each failing test to the alert router (auto-card + worker)",
@@ -31,17 +41,7 @@
       "title": "FAILED BRO-5677 — Recoupment model treats Form D maximum capitalization as actual raise",
       "detail": "not ok 1 - timing backtest: musicals hold MAE <= 15.5 and >= 35 inside; plays MAE <= 12 and >= 13 inside (play timing MAE 13.2 (17.8 before BRO-5651); worst: sea-wall-a-life-2019 …",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5677/recoupment-model-treats-form-d-maximum-capitalization-as-actual-raise"
-    },
-    {
-      "title": "FAILED BRO-5663 — Methodology: explain NY Post / Daily News T2 outlet vs T1 top critics",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/methodology-outlet-tiers.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5663/methodology-explain-ny-post-daily-news-t2-outlet-vs-t1-top-critics"
-    },
-    {
-      "title": "FAILED BRO-5601 — Sourced weekly running costs for the musicals the recoupment model still misses",
-      "detail": "not ok 1 - timing backtest: musicals hold MAE <= 15.5 and >= 35 inside; plays MAE <= 12 and >= 13 inside (play timing MAE 13.2 (17.8 before BRO-5651); worst: sea-wall-a-life-2019 …",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5601/sourced-weekly-running-costs-for-the-musicals-the-recoupment-model"
     }
   ],
-  "moreCount": 40
+  "moreCount": 36
 }
