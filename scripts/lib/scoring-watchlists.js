@@ -47,6 +47,11 @@ const INCLUSION_FILES = [
   // review-headline exemption flipped 20+ reviews into reviews.json without
   // tripping this gate.
   'scripts/lib/cross-production-guards.js',
+  // BRO-5876 what-else: the other two url gates of the same loop.
+  // isBlockedReviewRecord decides skippedBlockedUrl and listingPageUrlReason
+  // decides skippedListingPage (rebuild-all-reviews.js), and neither was watched.
+  'scripts/lib/domain-filters.js',
+  'scripts/lib/non-review-url-patterns.js',
   // Historical miss (2026-08-14): rebuild-all-reviews.js consumes
   // shouldWithholdStaleExclusionFlag from here at ten producer sites to decide
   // whether a guard may write an exclusion flag at all — an inclusion decision

@@ -198,6 +198,8 @@ const EXCLUDED_FILES = new Set([
   'scripts/lib/show-title-variants.js',
   'scripts/lib/prior-run-sibling.js',
   'scripts/lib/cross-production-guards.js',  // BRO-5876
+  'scripts/lib/domain-filters.js',  // BRO-5876
+  'scripts/lib/non-review-url-patterns.js',  // BRO-5876
   'scripts/lib/prior-runs-note.js',
   'scripts/lib/stale-flag-after-url-correction.js',
   'scripts/lib/date-plausibility.js',
