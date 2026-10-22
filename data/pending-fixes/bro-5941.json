@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5941",
   "planId": "37578bcb-da6a-4941-ad0d-f3f1dfe1c825",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-22T11:16:55.143Z",
   "submitter": {
     "name": null,
@@ -41,5 +41,24 @@
         "description": "billy-crystal-860-2026/nytg--joe-dziemianowicz.json: wrongArticleManualClear"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T11:50:54.169Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/nytg--joe-dziemianowicz.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/nytg--joe-dziemianowicz.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/nytg--joe-dziemianowicz.json wrongArticleManualClear: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
