@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5908-b",
   "planId": "acf241a4-96b7-41b8-8ecc-89cb8a3ae054",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -33,5 +33,19 @@
         "description": "Match site runtime format"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T05:45:53.054Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for petite-rouge-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for petite-rouge-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
