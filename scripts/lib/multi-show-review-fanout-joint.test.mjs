@@ -376,3 +376,26 @@ test('no head, and the second stretch opens in the first one\'s closing sentence
     body[3]];
   assert.equal(plan(ID.Midnight, withHead.join('\n\n')).strategy, 'joint');
 });
+
+test('a credits block with no sentence end stays with its own show (Flipside)', () => {
+  // Flipside "King Charles III / Thérèse Raquin": each review closes on a
+  // credits block (writer, director, dates, theatre, web address) with no
+  // full stop, then the next review opens on a photo caption. The cut used
+  // to fall at the last full stop, so the first show's credits opened the
+  // second show's section and the scorer rejected it as the wrong production.
+  const text = [
+    'Two Broadway imports arrive this month, “Midnight” and “School Pictures.”',
+    `“Midnight” is a long night watch in a city of dreams. ${filler('dream', 6)} By its last scene “Midnight” has earned its length.`,
+    'Written by A. Writer; directed by B. Director Performances through January 31, 2026 Daryl Roth Theatre, 101 East 15th Street, New York, NY midnightshow.com',
+    `Actor One and Actor Two in School Pictures (photo: C. Photographer) “School Pictures” is a quieter piece about a class photographer. ${filler('portrait', 6)} “School Pictures” never raises its voice.`,
+    'Written by D. Writer; directed by E. Director Performances through March 1, 2026 Playwrights Horizons, 416 West 42nd Street, New York, NY schoolpictures.org',
+  ].join(' ');
+  const p = plan(ID.Midnight, text);
+  assert.ok(p, 'expected a plan');
+  assert.equal(p.strategy, 'joint');
+  const m = section(p, ID.Midnight);
+  const s = section(p, ID['School Pictures']);
+  assert.match(m, /midnightshow\.com$/, 'Midnight keeps its own credits');
+  assert.match(s, /^Actor One and Actor Two in School Pictures/);
+  assert.doesNotMatch(s, /midnightshow\.com|Daryl Roth/, 'no Midnight credits in the School Pictures section');
+});

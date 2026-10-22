@@ -417,6 +417,8 @@ function buildJointMatcher(show) {
 
 // Rating stars and list punctuation right after a title ("Fish ****, Anon").
 const AFTER_TITLE_RE = /^[\s*★☆½,;:]+/;
+// A bare web address followed by a space: the last line of a credits block.
+const WEB_ADDRESS_RE = /(?<![\w@/.-])(?:www\.)?[a-z0-9-]+(?:\.[a-z0-9-]+)*\.(?:com|org|net|info|nyc|co\.uk|org\.uk)(?:\/[^\s]*)?(?=\s)/gi;
 // What may follow a one-word title that opens a sentence for it to count:
 // a star rating or a run listing ("Midnight Through Jan. 3 at ...").
 const ONE_WORD_LEAD_OK_RE = /^\s*(?:[*★☆]|(?:Through|Until|Closes|Extended|is (?:at|playing|running|now))\b)/;
@@ -596,6 +598,18 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
     const floor = runIdx > 0 ? runs[runIdx - 1].lastEnd : 0;
     let c = Math.max(sentenceStart(text, r.at), floor);
     if (c === floor && floor > 0) c += (text.slice(c).match(AFTER_TITLE_RE) || [''])[0].length;
+    // A credits block closing the previous review has no sentence end of its
+    // own ("...New York, NY kingcharlesiiibroadway.com Keira Knightley in
+    // Thérèse Raquin"): its web address ends it, so the cut goes after it
+    // and the credits stay with their show (Flipside, BRO-5942).
+    if (runIdx > 0) {
+      let m;
+      WEB_ADDRESS_RE.lastIndex = c;
+      while ((m = WEB_ADDRESS_RE.exec(text)) && m.index < r.at) {
+        if (m.index + m[0].length <= r.at) c = m.index + m[0].length;
+      }
+      while (c < r.at && /\s/.test(text[c])) c++;
+    }
     return Math.min(c, r.at);
   };
   // With nothing before the first stretch, a second stretch that opens in
