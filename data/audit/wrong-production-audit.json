@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T02:03:01.185Z",
+  "timestamp": "2026-10-22T02:15:04.967Z",
   "stats": {
     "totalReviews": 58678,
     "alreadyFlagged": 21221,
     "dateGuardCatches": 197,
-    "directorMismatch": 2114,
+    "directorMismatch": 2115,
     "tvFilmSignals": 1660,
-    "londonSignals": 2676,
+    "londonSignals": 2677,
     "offBroadwaySignals": 530,
     "yearMismatch": 166,
-    "noPublishDate": 5272
+    "noPublishDate": 5264
   },
   "findings": [
     {
@@ -49322,6 +49322,20 @@
     },
     {
       "showId": "tina-the-tina-turner-musical-west-end-2018",
+      "file": "artsdesk--marianka-swain.json",
+      "score": 58,
+      "publishDate": "April 18th, 2018",
+      "url": "https://theartsdesk.com/theatre/tina-aldwych-theatre-review-new-tina-turner-bio-musical-simply-ok",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"phyllida lloyd\" from tina-2019"
+        }
+      ]
+    },
+    {
+      "showId": "tina-the-tina-turner-musical-west-end-2018",
       "file": "express-uk--neil-norman.json",
       "score": 91,
       "publishDate": "2018-04-20",
@@ -49449,7 +49463,7 @@
       "showId": "tina-the-tina-turner-musical-west-end-2018",
       "file": "standard--fiona-mountford.json",
       "score": 65,
-      "publishDate": "April 18th, 2018",
+      "publishDate": "2018-04-18",
       "url": "https://www.standard.co.uk/go/london/theatre/tina-review-tina-turner-musical-is-not-quite-better-than-all-the-rest-a3816741.html",
       "findings": [
         {
@@ -79586,6 +79600,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "pity-west-end-2018",
+      "file": "maturetimes--unknown.json",
+      "score": null,
+      "publishDate": "2018-07-20",
+      "url": "http://www.maturetimes.co.uk/robert-tanitch-reviews-pity/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },

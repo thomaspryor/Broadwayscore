@@ -1,23 +1,23 @@
 {
-  "generatedAt": "2026-10-22T02:02:45.112Z",
+  "generatedAt": "2026-10-22T02:14:51.703Z",
   "totalScanned": 58786,
-  "totalExcluded": 27442,
+  "totalExcluded": 27438,
   "ruleCounts": {
     "wrongProduction": 18288,
     "duplicateOf": 2045,
     "wrongShow": 1840,
     "rejectionReason": 1054,
     "unverifiableWebSearchRow": 957,
-    "noTextOrScoreSignal": 634,
-    "nonReview": 544,
+    "noTextOrScoreSignal": 627,
+    "nonReview": 546,
     "wrongAttribution": 311,
     "isRoundupArticle": 223,
     "blockedReviewUrl": 213,
-    "bodylessAggregatorScoreUncorroborated": 185,
+    "bodylessAggregatorScoreUncorroborated": 184,
     "crossOutletDuplicate": 183,
     "isSyndicatedDuplicate": 133,
     "previewPlaceholder": 127,
-    "cvWrongArticleHighConfidence": 96,
+    "cvWrongArticleHighConfidence": 98,
     "scoreStatusToBeCalculated": 91,
     "listingPageUrl": 78,
     "knownSyndicationSecondary": 72,
@@ -42,24 +42,24 @@
     "suspectedMisattribution": 1
   },
   "ruleDeltas": {
-    "wrongProduction": 8,
-    "duplicateOf": 2,
-    "noTextOrScoreSignal": -54,
-    "bodylessAggregatorScoreUncorroborated": -19
+    "noTextOrScoreSignal": -7,
+    "nonReview": 2,
+    "bodylessAggregatorScoreUncorroborated": -1,
+    "cvWrongArticleHighConfidence": 2
   },
-  "previousGeneratedAt": "2026-10-22T01:48:20.250Z",
+  "previousGeneratedAt": "2026-10-22T02:02:45.112Z",
   "mirror": {
     "comparedShows": 2606,
     "comparedFiles": 58227,
-    "agreeExcluded": 26684,
-    "agreeIncluded": 30419,
-    "mirrorOnly": 204,
-    "rebuildOnly": 920,
-    "disagreements": 1124,
-    "disagreementRate": 0.0193,
+    "agreeExcluded": 26678,
+    "agreeIncluded": 30420,
+    "mirrorOnly": 206,
+    "rebuildOnly": 923,
+    "disagreements": 1129,
+    "disagreementRate": 0.0194,
     "mirrorOnlyByRule": {
       "duplicateOf": 80,
-      "cvWrongArticleHighConfidence": 64,
+      "cvWrongArticleHighConfidence": 66,
       "contentTierInvalid": 37,
       "noTextOrScoreSignal": 8,
       "wrongProduction": 8,
@@ -71,7 +71,7 @@
     "rebuildOnlyByReason": {
       "skippedUnknownCriticDedup": 234,
       "skippedDuplicateText": 196,
-      "skippedNoScore": 171,
+      "skippedNoScore": 174,
       "skippedCrossMarket": 80,
       "skippedInvalidUrl": 63,
       "skippedPreOpening": 46,
@@ -99,5 +99,5 @@
     "notComparedShows": 80,
     "notComparedFiles": 559
   },
-  "previousDisagreementRate": 0.0184
+  "previousDisagreementRate": 0.0193
 }
