@@ -30,7 +30,7 @@ const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows, buildSiblingCategoriesFromShows } = require('./lib/show-matching');
-const { checkArchiveCategory } = require('./lib/archive-cache-guard');
+const { checkArchiveCategory, readCachedArchiveIfValid } = require('./lib/archive-cache-guard');
 const { normalizeOutlet } = require('./lib/review-normalization');
 const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
 const { isLondonMarket } = require('./lib/venue-classification');
@@ -509,9 +509,12 @@ async function main() {
     const archivePath = path.join(ARCHIVE_DIR, `${show.id}.html`);
 
     // Skip if already archived (unless --force)
-    if (!FORCE && fs.existsSync(archivePath)) {
+    // A cached file is re-validated; a poisoned one is purged and refetched (BRO-2550).
+    const cached = !FORCE ? readCachedArchiveIfValid(archivePath, Infinity, show, siblingCategoriesByShowId()[show.id]) : null;
+    if (cached && !cached.valid) console.log(`  [PURGED] ${show.title}: cached archive failed ${cached.check.reason}`);
+    if (cached && cached.valid) {
       console.log(`  [CACHED] ${show.title}`);
-      const html = fs.readFileSync(archivePath, 'utf8');
+      const html = cached.html;
       const reviews = extractReviews(html, show.id);
       const { created, updated, skipped } = writeReviewFiles(reviews, show.id);
       stats.reviewsExtracted += reviews.length;
@@ -533,7 +536,7 @@ async function main() {
       // Validate page title matches the show before archiving — Stuart King 2026-04-25
       const v = checkArchiveCategory(html, show, siblingCategoriesByShowId()[show.id]);
       if (!v.ok) {
-        console.log(`    ✗ page-title mismatch (${v.reason}): "${(v.pageTitle||'').substring(0,60)}" — skipped`);
+        console.log(`    ✗ archive guard (${v.reason}): "${(v.pageTitle||'').substring(0,60)}" — skipped`);
         stats.errors++;
         continue;
       }

@@ -22,7 +22,8 @@ const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 
 // WET archives a WordPress-API JSON (no page <title>) and matches only
 // west-end-market shows, so it has no HTML title to validate.
-const EXEMPT = { 'scrape-westendtheatre-roundups.js': 'JSON archive, market-scoped match' };
+const EXEMPT = {
+  'scrape-stagedoor-critics.js': 'critic-page archive, not a per-show roundup title page', 'scrape-westendtheatre-roundups.js': 'JSON archive, market-scoped match' };
 const GUARDED = [
   'scrape-bww-reviews.js', 'scrape-dtli.js', 'scrape-nyc-theatre-roundups.js',
   'scrape-playbill-verdict.js', 'scrape-london-box-office-roundups.js',
@@ -33,7 +34,8 @@ let fail = 0;
 const check = (ok, msg) => { if (!ok) { fail++; console.error('FAIL: ' + msg); } else console.log('ok: ' + msg); };
 
 for (const f of GUARDED) {
-  const src = fs.readFileSync(path.join(__dirname, f), 'utf8');
+  // Strip comments so a mention in prose cannot satisfy the check.
+  const src = fs.readFileSync(path.join(__dirname, f), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
   check(/checkArchive(Category|PageIdentity)\(/.test(src), `${f} calls the shared guard`);
   check(/siblingCategoriesByShowId\(\)\[/.test(src), `${f} passes sibling categories`);
   check(!/validateRoundupPageTitle\(/.test(src), `${f} has no bare validateRoundupPageTitle call`);
@@ -41,13 +43,15 @@ for (const f of GUARDED) {
 // A new archive-writing scraper must be added to GUARDED or EXEMPT.
 for (const f of fs.readdirSync(__dirname).filter(n => /^scrape-.*\.js$/.test(n))) {
   const src = fs.readFileSync(path.join(__dirname, f), 'utf8');
-  if (/aggregator-archive\/(bww|dtli|nyc-theatre|playbill|theatre-reviews|thestage|lbo|westendtheatre)/.test(src.replace(/\\/g, '/'))
+  if (/aggregator-archive['"/,\s]+(bww|dtli|nyc-theatre|playbill|theatre-reviews|thestage|lbo|westendtheatre|stagedoor)/.test(src)
       && /writeFileSync/.test(src)) {
     check(GUARDED.includes(f) || EXEMPT[f], `${f} is registered as guarded or exempt`);
   }
 }
 
-// Behavioural: real shows with a same-title sibling in another category.
+// Behavioural (Broadway/Off-Broadway coverage arrives with BRO-2551; today the
+// sibling check keys on regional shows, and the London-only scrapers get the
+// title, punctuation and containing-title checks from the same guard): real shows with a same-title sibling in another category.
 const shows = loadShows();
 const siblings = buildSiblingCategoriesFromShows(shows);
 // The cross-market check currently fires for regional shows only (BRO-2551 widens it).

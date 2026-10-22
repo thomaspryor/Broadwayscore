@@ -27,7 +27,7 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, loadShows, buildSiblingCategoriesFromShows } = require('./lib/show-matching');
-const { checkArchiveCategory } = require('./lib/archive-cache-guard');
+const { checkArchiveCategory, readCachedArchiveIfValid } = require('./lib/archive-cache-guard');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { filterToLiveShowIds, loadLiveShowIds } = require('./lib/live-show-ids');
 const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
@@ -222,7 +222,10 @@ async function scrapeRoundups(page, urls, weShows) {
     const archivePath = path.join(ARCHIVE_DIR, `${showId}.html`);
 
     // Skip if already archived (unless --force)
-    if (!FORCE && fs.existsSync(archivePath)) {
+    // A cached file is re-validated; a poisoned one is purged and refetched (BRO-2550).
+    const cached = !FORCE ? readCachedArchiveIfValid(archivePath, Infinity, match.show, siblingCategoriesByShowId()[showId]) : null;
+    if (cached && !cached.valid) console.log(`  [PURGED] ${match.show.title}: cached archive failed ${cached.check.reason}`);
+    if (cached && cached.valid) {
       console.log(`  [CACHED] ${match.show.title}`);
       matched.push({ showId, show: match.show, archivePath });
       stats.cached++;
@@ -239,7 +242,7 @@ async function scrapeRoundups(page, urls, weShows) {
       // Validate page title matches the show before archiving — Stuart King 2026-04-25
       const v = checkArchiveCategory(html, match.show, siblingCategoriesByShowId()[match.show.id]);
       if (!v.ok) {
-        console.log(`    ✗ page-title mismatch (${v.reason}): "${(v.pageTitle||'').substring(0,60)}" — skipped`);
+        console.log(`    ✗ archive guard (${v.reason}): "${(v.pageTitle||'').substring(0,60)}" — skipped`);
         stats.errors++;
         continue;
       }
