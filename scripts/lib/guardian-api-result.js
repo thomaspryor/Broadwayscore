@@ -45,8 +45,10 @@ const squash = (t) => String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/
   .replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').trim();
 
 /**
- * True when a Guardian API headline is a dedicated review of this show: it LEADS
- * with the show title ("King Lear review – Ian McKellen ...", "Pity review – ...").
+ * True when a Guardian API headline is a dedicated review of this show: it reads
+ * "<show title> review ..." ("King Lear review – Ian McKellen ...", "Pity review – ...").
+ * Out-of-window articles (a revival's stale slug) never reach this: the date
+ * guard in guardianContentToResult refuses them first.
  * The API returns the article stored at the exact path, so the CDN-misroute case
  * the URL→content mention count guards against cannot occur; a critic who names a
  * one-word title only in the headline ("Translations", "Pity") is otherwise
@@ -58,7 +60,10 @@ function apiHeadlineLeadsWithShow(pageTitle, showTitle) {
   const title = squash(showTitle);
   if (!head || !title || ROUNDUP_HEADLINE.test(String(pageTitle))) return false;
   const variants = new Set([title, title.replace(/^the /, '')]);
-  return [...variants].some((t) => t.length > 2 && (head === t || head.startsWith(`${t} `)));
+  // Guardian review headlines read "<Title> review – <standfirst>"; requiring the
+  // word "review" right after the title excludes interviews/features ("King Lear:
+  // Ian McKellen on ...") and longer titles that begin with this one ("Pity Party").
+  return [...variants].some((t) => t.length > 2 && (head === `${t} review` || head.startsWith(`${t} review `)));
 }
 
 function guardianContentToResult(content, { show = null } = {}) {
