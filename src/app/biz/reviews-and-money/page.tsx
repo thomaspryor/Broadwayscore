@@ -64,7 +64,7 @@ export default function ReviewsAndMoneyPage() {
   const bandIds = ['high', 'mid', 'low'] as const;
 
   return (
-    <TopicPageShell title={TITLE} subtitle="Share of Broadway shows that recouped, by critic score, audience score and Tony results, for shows opened since September 2021. Each kind of show is counted on its own.">
+    <TopicPageShell title={TITLE} subtitle="Share of Broadway shows that recouped, by critic score, audience score and Tony results, for shows opened since September 2021. Only shows with a final verdict (recouped or lost) are counted, so these totals are smaller than the show counts on the other pages. Each kind of show is counted on its own.">
       <section className="mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4" data-testid="bucket-panels">
           {data.buckets.map((b) => (
