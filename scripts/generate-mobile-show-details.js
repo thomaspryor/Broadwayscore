@@ -210,7 +210,7 @@ try {
 } catch { /* no recorded sources: disk heroes are served as before */ }
 
 try {
-  shows = JSON.parse(fs.readFileSync(path.join(dataDir, 'shows.json'), 'utf-8')).shows || [];
+  shows = require('./lib/show-row-guard').partitionShowRows(JSON.parse(fs.readFileSync(path.join(dataDir, 'shows.json'), 'utf-8')).shows || []).valid;
 } catch (err) {
   console.warn('⚠ shows.json not found');
   process.exit(1);

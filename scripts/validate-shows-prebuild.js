@@ -10,15 +10,60 @@
 
 const fs = require('fs');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/validate-shows-prebuild.js\nPrebuild gate: fails on duplicate shows, skips + reports malformed rows (no flags).');
+  process.exit(0);
+}
 const { checkForDuplicate, slugify, normalizeTitle } = require('./lib/deduplication');
 const { getMarketPool } = require('./lib/venue-classification');
 // Shared id-base rule (S5-T3) — the private regex that lived here listed only
 // west-end|off-broadway, so `-off-west-end-2026` ids kept a dangling `-off`.
 const { stripIdSuffix } = require('./lib/market-slug');
 
-const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
+const { partitionShowRows, formatSkipped } = require('./lib/show-row-guard');
+
+const SKIPPED_ROWS_CONDITION = 'shows-json:skipped-rows';
+const SHOWS_FILE = process.env.SHOWS_FILE_OVERRIDE || path.join(__dirname, '..', 'data', 'shows.json');
 const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
-const allShows = data.shows || data;
+
+// BRO-5954: a malformed row is skipped loudly, never fatal. src/lib/data-core.ts
+// applies the same partition, so the export builds without those rows.
+const { valid: allShows, skipped } = partitionShowRows(data.shows || data);
+if (skipped.length === 0) {
+  // Clean again: close the incident so the next bad row notifies immediately.
+  try {
+    require('./lib/owner-alert-router').resolveCondition(SKIPPED_ROWS_CONDITION, { reason: 'prebuild: no malformed shows.json rows' });
+  } catch (_) { /* alert ledger unavailable in this build env: non-fatal */ }
+} else {
+  const lines = formatSkipped(skipped);
+  console.error(`\x1b[33mWARNING: skipping ${skipped.length} malformed shows.json row(s) (BRO-5954):\x1b[0m`);
+  lines.forEach((l) => console.error(`  - ${l}`));
+  lines.forEach((l) => console.log(`::warning title=Skipped malformed shows.json row::${l}`));
+  try {
+    const reportDir = process.env.SHOWS_FILE_OVERRIDE ? path.dirname(SHOWS_FILE) : path.join(__dirname, '..', 'data', 'audit');
+    fs.mkdirSync(reportDir, { recursive: true });
+    fs.writeFileSync(path.join(reportDir, 'skipped-show-rows.json'),
+      JSON.stringify({ at: new Date().toISOString(), skipped }, null, 2));
+  } catch (_) { /* report file is best-effort */ }
+  if (process.env.SKIP_ROW_ALERT !== 'true') {
+    try {
+      const { routeAlert } = require('./lib/owner-alert-router');
+      Promise.race([
+        routeAlert({
+          conditionKey: SKIPPED_ROWS_CONDITION,
+          title: `Build skipped ${skipped.length} malformed shows.json row(s)`,
+          description: `The build skipped these rows instead of failing:\n${lines.join('\n')}\n\nFix the rows in shows.json; until then those shows are absent from the build.`,
+          severity: 'warning',
+          disposition: 'auto',
+        }),
+        new Promise((r) => setTimeout(r, 10000)),
+      ]).catch((e) => console.error('row-skip alert failed (non-fatal):', e.message))
+        .finally(() => process.exit(process.exitCode || 0));
+    } catch (e) { console.error('row-skip alert unavailable (non-fatal):', e.message); }
+  }
+}
 
 // Exempt Express E2E test fixtures — they intentionally clone real titles.
 const isTestFixture = (s) => /(^|-)express-test(-|$)/.test(s.id || '');

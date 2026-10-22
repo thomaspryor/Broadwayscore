@@ -5,6 +5,7 @@
 import type { AudienceBuzzDesignation, AudienceBuzzData } from './data-types';
 import audienceBuzzData from '../../data/audience-buzz.json';
 import showsData from '../../data/shows.json';
+import { partitionShowRows } from '../../scripts/lib/show-row-guard';
 import showScoreUrlsData from '../../data/show-score-urls.json';
 import { isBroadwayComMarket, isRedditMarket, calculateCombinedScore, getDesignation } from '../../scripts/lib/audience-weighting';
 
@@ -22,7 +23,7 @@ interface AudienceBuzzFile {
 }
 
 const audienceBuzzRaw = audienceBuzzData as unknown as AudienceBuzzFile;
-const rawShows = showsData.shows as Array<{ id: string; slug: string; category?: string }>;
+const rawShows = partitionShowRows(showsData.shows).valid as Array<{ id: string; slug: string; category?: string }>;
 const showScoreUrls = (showScoreUrlsData as Record<string, unknown>).shows as Record<string, string> | undefined;
 
 /**

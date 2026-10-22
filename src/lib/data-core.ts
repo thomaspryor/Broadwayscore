@@ -27,6 +27,7 @@ import { getShowAwards } from './data-awards';
 import { BROWSE_PAGES, BrowsePageConfig, BrowseFilterContext, getAllBrowseSlugs as getBrowseSlugsFromConfig, getBrowsePageConfig } from '@/config/browse-pages';
 import { slugify as urlSlugify } from '../../scripts/lib/url-slug';
 import { broadwayTheaterNames, stubTheaterName, HIDDEN_LONDON_IDS } from '../../scripts/lib/page-name-sources';
+import { partitionShowRows } from '../../scripts/lib/show-row-guard';
 import { readCoverageFloorInputs, coverageFloorOptsForShow } from '../../scripts/lib/coverage-floor-inputs';
 import { resolveNameRedirect, type SlugRedirectMap } from './slug-redirects';
 // Import raw data (loaded at build time for static generation)
@@ -49,7 +50,13 @@ import venueComplexesWestEndData from '../../data/venue-complexes-west-end.json'
 import { displaysCriticScore } from './critic-score-display';
 
 // Type the imported data
-const shows: RawShow[] = showsData.shows as RawShow[];
+// BRO-5954: rows that page generation would crash on are dropped here (and named
+// in the prebuild log by scripts/validate-shows-prebuild.js) rather than failing the build.
+const showRowPartition = partitionShowRows(showsData.shows);
+for (const s of showRowPartition.skipped) {
+  console.warn(`[data-core] skipping malformed shows.json row ${s.id}: ${s.problems.join('; ')}`);
+}
+const shows: RawShow[] = showRowPartition.valid as RawShow[];
 const baseReviews: RawReview[] = reviewsData.reviews as RawReview[];
 const audience: RawAudience[] = audienceData.audience as RawAudience[];
 const buzz: RawBuzzThread[] = buzzData.threads as RawBuzzThread[];

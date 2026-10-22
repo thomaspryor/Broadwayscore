@@ -30,7 +30,7 @@ if (!fs.existsSync(outputDir)) {
 let shows = [];
 try {
   const showsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'shows.json'), 'utf-8'));
-  shows = showsData.shows || [];
+  shows = require('./lib/show-row-guard').partitionShowRows(showsData.shows || []).valid;
 } catch (err) {
   console.warn('⚠ shows.json not found or invalid — generating empty show-lookup.json');
 }

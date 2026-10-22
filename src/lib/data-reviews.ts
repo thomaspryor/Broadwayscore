@@ -10,6 +10,7 @@ import { criticProfileKey as sharedCriticProfileKey } from '../../scripts/lib/ur
 
 import reviewsData from '../../data/reviews.json';
 import showsData from '../../data/shows.json';
+import { partitionShowRows } from '../../scripts/lib/show-row-guard';
 // Retired critic slugs → canonical (2026 data audit, S5-T9). The same compact
 // map src/middleware.ts 301s from; entries originate in
 // data/critic-slug-aliases.json (core data) via scripts/build-slug-redirects.js
@@ -178,12 +179,12 @@ interface ShowMeta {
 }
 
 const showMetaMap = new Map<string, ShowMeta>();
-for (const show of (showsData as { shows: Array<{
+for (const show of (partitionShowRows(showsData.shows).valid as unknown as Array<{
   id: string; title: string; slug: string; venue: string;
   openingDate: string; status: string; type: string;
   category?: string;
   images?: { thumbnail?: string };
-}> }).shows) {
+}>)) {
   showMetaMap.set(show.id, {
     id: show.id,
     title: show.title,

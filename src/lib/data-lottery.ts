@@ -4,6 +4,7 @@
 import type { ShowLotteryRush } from './data-types';
 import lotteryRushData from '../../data/lottery-rush.json';
 import showsData from '../../data/shows.json';
+import { partitionShowRows } from '../../scripts/lib/show-row-guard';
 import { ticketPolicyCheckedAt } from './lottery-rush-freshness';
 
 interface LotteryRushFile {
@@ -15,7 +16,7 @@ interface LotteryRushFile {
 }
 
 const lotteryRush = lotteryRushData as unknown as LotteryRushFile;
-const rawShows = showsData.shows as Array<{ id: string; slug: string }>;
+const rawShows = partitionShowRows(showsData.shows).valid as Array<{ id: string; slug: string }>;
 
 /**
  * Get lottery/rush data for a specific show by ID

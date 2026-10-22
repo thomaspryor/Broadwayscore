@@ -1,6 +1,7 @@
 import videoCreatorsData from '@/../data/video-creators.json';
 import videoReviewsData from '@/../data/video-reviews.json';
 import showsData from '@/../data/shows.json';
+import { partitionShowRows } from '../../scripts/lib/show-row-guard';
 
 export interface VideoCreatorProfile {
   id: string;
@@ -35,7 +36,7 @@ export interface VideoCreatorReview {
 
 const { _meta, ...showReviews } = videoReviewsData as Record<string, any>;
 const creators = videoCreatorsData.creators;
-const showsList = (showsData as any).shows as any[];
+const showsList = partitionShowRows((showsData as any).shows).valid as any[];
 
 function parsePublishedAt(dateStr: string | null | undefined): number {
   if (!dateStr) return 0;

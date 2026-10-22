@@ -79,6 +79,7 @@ import showOriginsData from '../../data/show-origins.json';
 import { buildOriginFindings, type OriginFindings, type OriginRecord } from './show-origins';
 import grossesHistoryData from '../../data/grosses-history.json';
 import showsData from '../../data/shows.json';
+import { partitionShowRows } from '../../scripts/lib/show-row-guard';
 import { showFacts, type MarketInput, type MarketShow, type ShowFacts } from './box-office-market';
 import type { HistoryWeeks } from './box-office-weeks';
 import { buildMarketPage, type MarketPage } from './box-office-display';
@@ -118,7 +119,7 @@ interface GrossesHistoryFile {
 }
 
 const grossesHistory = grossesHistoryData as unknown as GrossesHistoryFile;
-const rawShows = showsData.shows as RawShow[];
+const rawShows = partitionShowRows(showsData.shows).valid as RawShow[];
 
 // Every page reads the model bar through this one guarded copy (BRO-4989):
 // hidden when too early, off its rails or when two independent estimates disagree, and

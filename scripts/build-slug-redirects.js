@@ -59,7 +59,8 @@ const compactPath = path.join(outDir, 'slug-redirects-compact.json');
 // at a temp dir never reads the real core-data reviews.
 const reviewsPath = process.env.SLUG_REDIRECTS_REVIEWS_PATH || path.join(path.dirname(showsPath), 'reviews.json');
 
-const { shows } = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+// BRO-5954: skip rows this script can't key (the full row guard runs in validate-shows-prebuild.js)
+const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows.filter((s) => s && typeof s.id === 'string' && typeof s.slug === 'string');
 
 // Set of all existing slugs (these already resolve to a page)
 const existingSlugs = new Set(shows.map(s => s.slug));
