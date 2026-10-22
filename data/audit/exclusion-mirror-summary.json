@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-10-22T20:44:28.024Z",
-  "totalScanned": 59350,
-  "totalExcluded": 27726,
+  "generatedAt": "2026-10-22T21:09:54.710Z",
+  "totalScanned": 59363,
+  "totalExcluded": 27736,
   "ruleCounts": {
     "wrongProduction": 18389,
     "duplicateOf": 2053,
-    "wrongShow": 1851,
+    "wrongShow": 1849,
     "rejectionReason": 1084,
     "unverifiableWebSearchRow": 955,
-    "noTextOrScoreSignal": 759,
+    "noTextOrScoreSignal": 770,
     "nonReview": 547,
     "wrongAttribution": 311,
     "isRoundupArticle": 218,
     "blockedReviewUrl": 216,
     "bodylessAggregatorScoreUncorroborated": 195,
     "crossOutletDuplicate": 183,
-    "isSyndicatedDuplicate": 133,
+    "isSyndicatedDuplicate": 134,
     "previewPlaceholder": 126,
     "cvWrongArticleHighConfidence": 99,
     "scoreStatusToBeCalculated": 91,
@@ -27,7 +27,7 @@
     "contentTierInvalid": 50,
     "cancelledBeforeOpening": 30,
     "directorMismatch": 24,
-    "combinedReviewOfOtherMemberOnly": 18,
+    "combinedReviewOfOtherMemberOnly": 19,
     "fabricatedEntry": 13,
     "urlYearReroute": 13,
     "wrongContentFlagsUncleared": 13,
@@ -37,22 +37,21 @@
     "outletDomainUnvalidated": 2,
     "prematureForUnopenedShow": 2,
     "previewFirstLookPiece": 2,
-    "suspectedMisattribution": 2,
-    "personalRepost": 1
-  },
-  "ruleDeltas": {
-    "wrongProduction": 4,
-    "wrongShow": 1,
-    "rejectionReason": 9,
-    "noTextOrScoreSignal": 38,
-    "bodylessAggregatorScoreUncorroborated": 4,
+    "personalRepost": 1,
     "suspectedMisattribution": 1
   },
-  "previousGeneratedAt": "2026-10-22T20:24:37.167Z",
+  "ruleDeltas": {
+    "wrongShow": -2,
+    "noTextOrScoreSignal": 11,
+    "isSyndicatedDuplicate": 1,
+    "combinedReviewOfOtherMemberOnly": 1,
+    "suspectedMisattribution": -1
+  },
+  "previousGeneratedAt": "2026-10-22T20:44:28.024Z",
   "mirror": {
     "comparedShows": 2644,
-    "comparedFiles": 58794,
-    "agreeExcluded": 27553,
+    "comparedFiles": 58807,
+    "agreeExcluded": 27566,
     "agreeIncluded": 30868,
     "mirrorOnly": 117,
     "rebuildOnly": 256,
@@ -85,5 +84,5 @@
     "notComparedShows": 75,
     "notComparedFiles": 556
   },
-  "previousDisagreementRate": 0.0064
+  "previousDisagreementRate": 0.0063
 }
