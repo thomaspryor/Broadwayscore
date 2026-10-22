@@ -72,8 +72,9 @@ jobs:
       - name: Install dependencies
         run: npm ci || npm install
 
+      # Always installed: IBDB/Broadway.com fetches go Playwright-first
+      # through fetchPage() even with --skip-runtimes (BRO-6013).
       - name: Setup Playwright
-        if: ${{ inputs.skip_runtimes != 'true' }}
         uses: ./.github/actions/setup-playwright
 
       # Pre-discovery validation snapshot. Runs the same validator that gates
@@ -83,7 +84,7 @@ jobs:
       # commit. Skipped on dry_run since the commit gate never applies there.
       - name: Pre-validate existing data (baseline error snapshot)
         id: pre-validate
-        if: inputs.dry_run != 'true'
+        if: inputs.dry_run != true
         continue-on-error: true
         run: |
           set -o pipefail
@@ -131,7 +132,7 @@ jobs:
       # that case only.
       - name: Validate data
         id: validate
-        if: inputs.dry_run != 'true'
+        if: inputs.dry_run != true
         continue-on-error: true
         run: |
           set -o pipefail
@@ -156,7 +157,7 @@ jobs:
       # tests/unit/discovery-validation-setdiff.test.mjs.
       - name: Compute validation error set-diff
         id: setdiff
-        if: always() && inputs.dry_run != 'true'
+        if: always() && inputs.dry_run != true
         run: node scripts/check-validation-setdiff.js --pre=/tmp/pre-validate-output.txt --post=/tmp/post-validate-output.txt --post-exit-code="$(cat /tmp/post-validate-exitcode.txt 2>/dev/null || echo '')" >> "$GITHUB_OUTPUT"
 
       # Fails the job — WITHOUT continue-on-error — only when the set-diff
@@ -166,7 +167,7 @@ jobs:
       # (task #649/#663).
       - name: Commit gate — block only on NEW validation errors
         id: commit-gate
-        if: always() && inputs.dry_run != 'true'
+        if: always() && inputs.dry_run != true
         run: |
           # Discovery itself (not just validate-data.js) can fail before
           # "Validate data" ever runs — that step has no always(), so a failed
@@ -186,7 +187,7 @@ jobs:
 
       - name: Check for changes
         id: git-check
-        if: inputs.dry_run != 'true' && steps.commit-gate.outcome != 'failure'
+        if: inputs.dry_run != true && steps.commit-gate.outcome != 'failure'
         run: |
           # BRO-5033: shows.json is gitignored core data; `git diff` on it is always
           # empty. Compare to the checkout-core-data snapshot instead.
@@ -213,7 +214,7 @@ jobs:
           workflow-name: discover-historical-shows
 
       - name: Commit and push changes
-        if: always() && steps.git-check.outputs.changes == 'true' && inputs.dry_run != 'true' && steps.commit-gate.outcome != 'failure'
+        if: always() && steps.git-check.outputs.changes == 'true' && inputs.dry_run != true && steps.commit-gate.outcome != 'failure'
         env:
           INPUT_SEASONS: ${{ inputs.seasons }}
         run: |
@@ -280,7 +281,7 @@ jobs:
         # on that sentinel existing, which isn't true if commit-gate failed
         # for a reason other than validate-data.js itself erroring (e.g. the
         # set-diff step crashing) — adversarial-review finding, task #663.
-        if: always() && steps.commit-gate.outcome != 'failure'
+        if: always() && steps.commit-gate.outcome != 'failure' && inputs.dry_run != true
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
@@ -288,7 +289,7 @@ jobs:
 
       - name: Mark data pushed (gates downstream jobs)
         id: mark-pushed
-        if: always() && steps.core-push.outcome == 'success' && steps.commit-gate.outcome != 'failure' && inputs.dry_run != 'true'
+        if: always() && steps.core-push.outcome == 'success' && steps.commit-gate.outcome != 'failure' && inputs.dry_run != true
         run: echo "data_pushed=true" >> "$GITHUB_OUTPUT"
   create-issue:
     needs: discover-historical

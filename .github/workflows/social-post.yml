@@ -113,7 +113,7 @@ jobs:
           node scripts/generate-social-post.js $ARGS
 
       - name: Commit post history
-        if: always() && inputs.dry_run != 'true'
+        if: always() && inputs.dry_run != true
         # Task #574: commits social-post-history.json (union-merged managed
         # file) — see push-with-retry.sh's reconcile_merged_json(). This
         # workflow runs per-run-group per show (see comment at top of file),

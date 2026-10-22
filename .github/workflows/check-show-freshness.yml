@@ -75,7 +75,7 @@ jobs:
       # continue-on-error: auto-fix errors must not block status change commits
       - name: Auto-fix show data
         id: autofix
-        if: inputs.skip_auto_fix != 'true'
+        if: inputs.skip_auto_fix != true
         continue-on-error: true
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}

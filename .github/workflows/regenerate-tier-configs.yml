@@ -79,7 +79,7 @@ jobs:
           node scripts/regenerate-tier-configs.js $FLAGS
 
       - name: Commit and push
-        if: inputs.dry_run != 'true'
+        if: inputs.dry_run != true
         env:
           # BRO-3334: the inline `git pull --rebase && git push` retry loop
           # below hit this job's 15-min timeout ("cancelled") 4 consecutive

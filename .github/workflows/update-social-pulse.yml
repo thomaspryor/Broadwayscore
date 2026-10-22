@@ -164,13 +164,13 @@ jobs:
           node scripts/fetch-social-pulse.js "${ARGS[@]}"
 
       - name: Compute cross-show ranks
-        if: inputs.dry_run != 'true'
+        if: inputs.dry_run != true
         run: |
           set -euo pipefail
           node scripts/compute-social-pulse-ranks.js
 
       - name: Stage and commit pulse data
-        if: inputs.dry_run != 'true'
+        if: inputs.dry_run != true
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
@@ -208,7 +208,7 @@ jobs:
           push-retry-args: '5 main'
 
       - name: Weekly smoke test — verify known-high-volume shows have data
-        if: inputs.dry_run != 'true' && inputs.show == ''
+        if: inputs.dry_run != true && inputs.show == ''
         run: |
           set -euo pipefail
           # Canary: if these high-buzz shows all got 0 mentions, something

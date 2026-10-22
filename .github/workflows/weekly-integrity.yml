@@ -333,7 +333,7 @@ jobs:
           push-retry-args: '25 main'
 
       - name: Create issue if problems found
-        if: steps.check.outputs.has_issues == 'true' || inputs.force_issue == 'true'
+        if: steps.check.outputs.has_issues == 'true' || inputs.force_issue == true
         uses: actions/github-script@v7
         with:
           script: |

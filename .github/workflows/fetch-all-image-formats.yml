@@ -263,7 +263,9 @@ jobs:
           echo "**Images fetched:** ${{ steps.fetch.outputs.images_fetched || 'see logs' }}" >> $GITHUB_STEP_SUMMARY
           echo "**Failed:** ${{ steps.fetch.outputs.images_failed || 'see logs' }}" >> $GITHUB_STEP_SUMMARY
           echo "**LLM rejected:** ${{ steps.fetch.outputs.images_rejected || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Verification:** ${{ inputs.verify != 'false' && 'Enabled' || 'Disabled' }}" >> $GITHUB_STEP_SUMMARY
+          # Same test as the fetch step: scheduled runs have no input and verify.
+          if [ "${{ inputs.verify }}" != "false" ]; then VERIFY_LABEL=Enabled; else VERIFY_LABEL=Disabled; fi
+          echo "**Verification:** $VERIFY_LABEL" >> $GITHUB_STEP_SUMMARY
           if [ -n "${{ steps.fetch.outputs.promotional_art }}" ]; then
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "**Image Types:** Promotional art: ${{ steps.fetch.outputs.promotional_art }}, Production stills: ${{ steps.fetch.outputs.production_stills }}" >> $GITHUB_STEP_SUMMARY

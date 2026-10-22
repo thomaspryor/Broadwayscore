@@ -61,7 +61,7 @@ jobs:
           fi
 
       - name: Commit updated baseline
-        if: inputs.update_baseline == 'true'
+        if: inputs.update_baseline == true
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -71,7 +71,7 @@ jobs:
 
       - name: Commit size history
         continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
-        if: always() && inputs.update_baseline != 'true'
+        if: always() && inputs.update_baseline != true
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
