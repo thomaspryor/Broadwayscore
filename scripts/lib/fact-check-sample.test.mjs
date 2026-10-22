@@ -199,3 +199,12 @@ test('a weaker season verdict never hides a definitive one; street numbers are n
   assert.equal(s.table.openingNight.wrong, 1);
   assert.equal(fc.sameVenue('Garrick Theatre, 2 Charing Cross Road', 'Garrick Theatre'), true);
 });
+
+// BRO-6019: the Off-Broadway historical cohort matches the cross-model audit's ob-historical rows.
+test('off-broadway-historical cohort selects historical Off-Broadway rows only', () => {
+  const f = fc.COHORTS['off-broadway-historical'].filter;
+  assert.equal(f({ market: 'broadway', category: 'off-broadway', tags: ['historical'] }), true);
+  assert.equal(f({ market: 'broadway', category: 'off-broadway', tags: [] }), false);
+  assert.equal(f({ market: 'broadway', category: 'broadway', tags: ['historical'] }), false);
+  assert.equal(f({ market: 'west-end', category: 'off-west-end', tags: ['historical'] }), false);
+});

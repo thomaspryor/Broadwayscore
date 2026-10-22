@@ -48,6 +48,16 @@ const COHORTS = {
       return Number.isFinite(y) ? `${Math.floor(y / 10) * 10}s` : 'undated';
     },
   },
+  'off-broadway-historical': {
+    label: 'Off-Broadway historical backfill (tag "historical")',
+    market: 'Off-Broadway (New York)',
+    // Same rows as audit-review-crossmodel.js 'ob-historical' (BRO-6019).
+    filter: (s) => s.market === 'broadway' && s.category === 'off-broadway' && Array.isArray(s.tags) && s.tags.includes('historical'),
+    stratum: (s) => {
+      const y = parseInt(String(s.openingDate || s.previewsStartDate || '').slice(0, 4), 10);
+      return Number.isFinite(y) ? `${Math.floor(y / 10) * 10}s` : 'undated';
+    },
+  },
 };
 
 /** mulberry32: tiny seeded PRNG, so a sample re-draws identically from the same seed. */
