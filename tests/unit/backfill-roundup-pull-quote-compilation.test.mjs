@@ -31,3 +31,34 @@ describe('selectPullQuoteCompilation', () => {
     assert.equal(selectPullQuoteCompilation({}), null);
   });
 });
+
+describe('backfill script contract + safety', () => {
+  const { spawnSync } = require('node:child_process');
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const path = require('node:path');
+  const { isLikelyStaleRoundupFlag } = require('../../scripts/lib/review-guards.js');
+  const script = path.join(process.cwd(), 'scripts/backfill-roundup-pull-quote-compilation.js');
+  const rec = { fullText: compilation, outletId: 'nyt-theater', criticName: 'Jonathan Mandell', url: 'https://newyorktheater.me/2014/11/20/x-reviews/' };
+
+  test('respects a manual clear (false or cleared note)', () => {
+    assert.equal(selectPullQuoteCompilation({ ...rec, isRoundupArticle: false }), null);
+    assert.equal(selectPullQuoteCompilation({ ...rec, roundupArticleClearedNote: 'human' }), null);
+  });
+  test('backfill reason is not reverted by the weekly stale-flag clearer', () => {
+    const flagged = { ...rec, isRoundupArticle: true, roundupArticleReason: 'auto: backfill (BRO-2638) — pull-quote compilation: x' };
+    assert.equal(isLikelyStaleRoundupFlag(flagged), false);
+  });
+  test('stdout contract: dry run prints Would flag, --apply prints APPLIED and writes', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bf-'));
+    fs.mkdirSync(path.join(dir, 'show-a'));
+    const f = path.join(dir, 'show-a', 'nyt-theater--jonathan-mandell.json');
+    fs.writeFileSync(f, JSON.stringify(rec));
+    const dry = spawnSync('node', [script, `--dir=${dir}`], { encoding: 'utf8' });
+    assert.match(dry.stdout, /Would flag: 1/);
+    assert.equal(JSON.parse(fs.readFileSync(f, 'utf8')).isRoundupArticle, undefined);
+    const live = spawnSync('node', [script, `--dir=${dir}`, '--apply'], { encoding: 'utf8' });
+    assert.match(live.stdout, /APPLIED — flagged 1 file/);
+    assert.equal(JSON.parse(fs.readFileSync(f, 'utf8')).isRoundupArticle, true);
+  });
+});

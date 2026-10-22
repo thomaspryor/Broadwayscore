@@ -18,6 +18,8 @@ const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { selectPullQuoteCompilation } = require('./lib/pull-quote-compilation-backfill');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const SURGE_LIMIT = 50;
 
@@ -40,27 +42,28 @@ const SHOW_FILTER = (args.find(a => a.startsWith('--show=')) || '').split('=')[1
 const DIR_OVERRIDE = (args.find(a => a.startsWith('--dir=')) || '').split('=')[1] || '';
 const REVIEW_TEXTS_DIR = DIR_OVERRIDE || path.join(__dirname, '..', 'data', 'review-texts');
 
-const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR, { withFileTypes: true })
-  .filter(d => d.isDirectory() && !d.name.startsWith('.') && !d.name.startsWith('_'));
+// listShowDirs skips dangling symlinks instead of crashing the run (card #1610).
+const showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter(name => !name.startsWith('.') && !name.startsWith('_'));
 
 let scanned = 0;
+let unreadable = 0;
 const toFlag = [];
-for (const d of showDirs) {
-  if (SHOW_FILTER && d.name !== SHOW_FILTER) continue;
-  const showDir = path.join(REVIEW_TEXTS_DIR, d.name);
+for (const name of showDirs) {
+  if (SHOW_FILTER && name !== SHOW_FILTER) continue;
+  const showDir = path.join(REVIEW_TEXTS_DIR, name);
   let files;
-  try { files = fs.readdirSync(showDir).filter(f => f.endsWith('.json')); } catch { continue; }
+  try { files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f)); } catch { continue; }
   for (const f of files) {
     const filePath = path.join(showDir, f);
     let data;
-    try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
+    try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { unreadable++; continue; }
     scanned++;
     const hit = selectPullQuoteCompilation(data);
-    if (hit) toFlag.push({ showId: d.name, file: f, filePath, reason: hit.reason });
+    if (hit) toFlag.push({ showId: name, file: f, filePath, reason: hit.reason });
   }
 }
 
-console.log(`Scanned ${scanned} review files across ${showDirs.length} show dirs.`);
+console.log(`Scanned ${scanned} review files across ${showDirs.length} show dirs (${unreadable} unreadable).`);
 console.log(`Would flag: ${toFlag.length}\n`);
 for (const item of toFlag) {
   console.log(`  ${item.showId}/${item.file}`);
@@ -79,10 +82,11 @@ if (toFlag.length > SURGE_LIMIT && !FORCE_BULK) {
 let written = 0;
 for (const item of toFlag) {
   // safeWriteReview re-reads the file at write time and merges, so a concurrent CI commit isn't clobbered.
-  safeWriteReview(item.filePath, {
+  const res = safeWriteReview(item.filePath, {
     isRoundupArticle: true,
     roundupArticleReason: `auto: backfill (BRO-2638) — ${item.reason}`,
   });
+  if (res && res.wrote === false) { console.error(`  NOT WRITTEN: ${item.showId}/${item.file}`); continue; }
   written++;
 }
 console.log(`\nAPPLIED — flagged ${written} file(s).`);
