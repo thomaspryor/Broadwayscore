@@ -1386,35 +1386,35 @@
     "queuedAt": "2026-10-22T17:39:49.959Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "conditionKey": "land:land/bro-5963-restore-drill",
+    "title": "Landing blocked: merged-tree-tests red on land/bro-5963-restore-drill",
+    "description": "land.yml did not land land/bro-5963-restore-drill: the merged-tree-tests gate went red at e6cc4d12f1. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5963-restore-drill @ e6cc4d12f1 (origin/land/bro-5963-restore-drill) → origin/main @ 89e62221cd [land] train: land/bro-5982-cite-score not taken — would not rebase onto the train: Rebasing (1/1) error: could not apply 207ce0c5a5b... VISUAL-OK-1440: feat(show-page): Cite this score control in hero (BRO-5982) [land] train: + land/bro-5975-ibdb-followup @ d8f7f8fe33 (1 commit(s)) [lan Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39799348581",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39825981521",
+    "url": null,
     "decision": false,
     "info": false,
     "decisionPrompt": null,
-    "model": "opus",
+    "model": null,
     "tracked": null,
     "fields": [
       {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39825981521)"
+        "name": "branch",
+        "value": "land/bro-5963-restore-drill"
       },
       {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39821641259)"
+        "name": "gate",
+        "value": "merged-tree-tests"
       },
       {
-        "name": "Consecutive failures",
-        "value": "31"
+        "name": "tip",
+        "value": "e6cc4d12f1e0927d8688157839988fddbcdb1a4d"
       },
       {
-        "name": "Currently failing job(s)",
-        "value": "Unit Tests"
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39799348581"
       }
     ],
-    "queuedAt": "2026-10-22T18:18:09.238Z"
+    "queuedAt": "2026-10-22T18:17:42.445Z"
   },
   {
     "conditionKey": "pending-unrecoverable:dog-mom-off-west-end-2026",
