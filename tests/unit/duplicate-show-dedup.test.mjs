@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: shows.json is itself the source of truth (discovery/hand-edited); structural alias/id-clash check plus one retired-id regression pin
+// BRO-5737: the live shows.json alias/id-clash check lives in tests/unit/duplicate-show-dedup-live-data.test.mjs (check-corpus-drift.yml)
 // BRO-4049: crazy-mama-off-broadway-2026 (TodayTix stub) duplicated
 // crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026 (59E59 venue
 // page). Discovery filed opening-night reviews under the stub id. Requires the
@@ -6,7 +6,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import fs from 'node:fs';
 
 const require = createRequire(import.meta.url);
 const { checkForDuplicate, venuesMatch, normalizeTitle } = require('../../scripts/lib/deduplication.js');
@@ -32,17 +31,6 @@ test('same-venue title-prefix stub is flagged as a duplicate (comma and dash ven
 
 test('sibling rooms at the same venue stay distinct', () => {
   assert.equal(venuesMatch('59E59 Theaters, Theater A', '59E59 Theaters, Theater C'), false);
-});
-
-test('shows.json has no live entry for an id another show lists as an alias', () => {
-  const raw = JSON.parse(fs.readFileSync(new URL('../../data/shows.json', import.meta.url), 'utf8'));
-  const shows = raw.shows || raw;
-  const ids = new Set(shows.map(s => s.id));
-  const clashes = [];
-  for (const s of shows) for (const a of s.aliases || []) if (a !== s.id && ids.has(a)) clashes.push(`${a} (alias of ${s.id})`);
-  assert.deepEqual(clashes, []);
-  assert.equal(ids.has('crazy-mama-off-broadway-2026'), false);
-  assert.equal(ids.has(CANON.id), true);
 });
 
 // BRO-5557: a spaced en/em dash tagline ("ANON – a tempest at our kitchen table")
