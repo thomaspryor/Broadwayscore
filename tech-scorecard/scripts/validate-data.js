@@ -50,6 +50,12 @@ reviews.forEach((r, i) => {
   if (seen.has(key)) errors.push(`${at}: duplicate outlet for product`);
   seen.add(key);
   if (!/^https:\/\/[^\s]+$/.test(r.url || '')) errors.push(`${at}: url must be https`);
+  else if (outletIds.has(r.outletId)) {
+    // The link must go to the outlet the review is credited to (catches a swapped or pasted-wrong URL).
+    const host = new URL(r.url).hostname.replace(/^www\./, '');
+    const domain = outlets.find((o) => o.id === r.outletId).domain;
+    if (host !== domain && !host.endsWith(`.${domain}`)) errors.push(`${at}: url host ${host} is not ${domain}`);
+  }
   if (!ISO.test(r.date || '')) errors.push(`${at}: bad date`);
   if (!(Number.isInteger(r.score) && r.score >= 0 && r.score <= 100)) errors.push(`${at}: score must be an integer 0-100`);
   if (!['rating', 'text'].includes(r.scoreSource)) errors.push(`${at}: scoreSource must be rating|text`);
