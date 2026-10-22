@@ -49,6 +49,22 @@ test('a confirmed eviction keeps waiting, names the retry, and flags it once sta
   assert.match(stale.why, /30\+ min ago and not re-run/);
 });
 
+// BRO-6015: sessions told to hand-retry, or re-pushing a new ref, lost their place in line.
+test('a parked run keeps waiting and says not to re-push or hand-retry, even when old', () => {
+  const parked = { id: 39837811040, conclusion: 'cancelled', cancellation: { kind: 'eviction', why: 'land-parked-behind-deep-queue' } };
+  const stuck = verdict({ refSha: TIP, run: run({ ...parked, updated_at: minsAgo(200) }) });
+  assert.equal(stuck.verdict, 'waiting');
+  assert.match(stuck.why, /parked 3\+ h.*--run=39837811040/);
+  assert.match(stuck.why, /Do not push a new land ref/);
+  for (const r of [run(parked), run({ ...parked, updated_at: minsAgo(120) })]) {
+    const v = verdict({ refSha: TIP, run: r });
+    assert.equal(v.verdict, 'waiting');
+    assert.match(v.why, /parked in the landing line/);
+    assert.match(v.why, /do not push a new land ref/);
+    assert.doesNotMatch(v.why, /--run=/);
+  }
+});
+
 test('a deadline cancellation is refused immediately and cannot prove a landing after ref deletion', () => {
   const timed = run({ conclusion: 'cancelled', cancellation: { kind: 'timeout', why: 'Land job exceeded its execution time limit' } });
   const v = verdict({ refSha: TIP, run: timed });

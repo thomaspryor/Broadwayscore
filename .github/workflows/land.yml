@@ -653,6 +653,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           LAND_MUTEX_DISABLED: ${{ vars.LAND_MUTEX_DISABLED }}
           LAND_MUTEX_PARK_DEPTH: ${{ vars.LAND_MUTEX_PARK_DEPTH }}
+          LAND_MUTEX_RESUME_HEADROOM: ${{ vars.LAND_MUTEX_RESUME_HEADROOM }}
         run: |
           cap="${LAND_MUTEX_PARK_DEPTH:-4}"
           if [ "$LAND_MUTEX_DISABLED" = "true" ] || [ "$cap" = "0" ]; then echo "parking disabled; proceeding"; exit 0; fi
@@ -665,8 +666,20 @@ jobs:
           # ms): a dead run's leaked ticket must not hold the park depth forever.
           cutoff=$(( ($(date +%s) - 5400) * 1000 ))
           depth=$(printf '%s\n' "$queue" | awk -v c="$cutoff" '{ n = split($2, p, "/"); split(p[n], f, "-"); if (f[2] + 0 >= c) k++ } END { print k + 0 }')
-          if [ "$depth" -lt "$cap" ]; then echo "queue is $depth deep (park at $cap); proceeding"; exit 0; fi
-          echo "::notice::landing queue is $depth deep (park at $cap): parking this run; the Land retry sweep re-runs it when there is room"
+          # BRO-6015: a resumed run (attempt > 1: the sweep re-ran it after it
+          # parked, or another re-run) parks only past RESUME_HEADROOM more
+          # tickets, so runs that already waited go ahead of fresh pushes.
+          # Fresh pushes park at the plain cap and resume in order. Default
+          # and variable match scripts/lib/land-mutex.js resumeHeadroom().
+          # Same fallback as land-mutex.js parkDepth() for a malformed value
+          # (and keeps $(( )) below from failing the job).
+          case "$cap" in *[!0-9]*) cap=4 ;; esac
+          headroom="${LAND_MUTEX_RESUME_HEADROOM:-2}"
+          case "$headroom" in ''|*[!0-9]*) headroom=2 ;; esac
+          limit="$cap"
+          if [ "${GITHUB_RUN_ATTEMPT:-1}" -gt 1 ]; then limit=$(( cap + headroom )); fi
+          if [ "$depth" -lt "$limit" ]; then echo "queue is $depth deep (park at $limit, attempt ${GITHUB_RUN_ATTEMPT:-1}); proceeding"; exit 0; fi
+          echo "::notice::landing queue is $depth deep (park at $limit): parking this run; the Land retry sweep re-runs it when there is room"
           if gh api -X POST "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/cancel" > /dev/null; then
             sleep 600
             echo "::warning::cancel was accepted but this job is still running; proceeding to the in-runner wait"

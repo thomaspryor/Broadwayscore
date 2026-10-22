@@ -90,7 +90,7 @@
  * re-run that many times, is not resumed again: the same card would otherwise
  * win every firing ahead of fresh work. A `cancelled` run was cancelled before
  * it did any work (an eviction under the pre-BRO-5112 shared landing group).
- * land-retry-cancelled.yml re-runs those, one per sweep, so one still cancelled
+ * land-retry-cancelled.yml re-runs those in order (BRO-6015), so one still cancelled
  * here is waiting for the sweep or was declined; its resume kind is 'evicted':
  * nothing to fix, the retry decides (re-run now or re-push).
  *

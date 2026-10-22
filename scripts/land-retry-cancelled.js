@@ -10,10 +10,11 @@
  * slot check. Run by land-retry-cancelled.yml.
  *
  *   node scripts/land-retry-cancelled.js --sweep [--dry-run]
- *     Re-run at most ONE stranded cancelled Land run, oldest first (main-red
- *     lanes first).
+ *     Re-run stranded cancelled Land runs, oldest first (main-red lanes
+ *     first): one per sweep, or for parked runs as many as the landing queue
+ *     has resume room for (BRO-6015, land-mutex.js resumeSlots).
  *   node scripts/land-retry-cancelled.js --run=<id> [--dry-run]
- *     Targeted retry of one run.
+ *     Targeted retry of one run (a parked run waits for queue room too).
  *   node scripts/land-retry-cancelled.js --stranded [--only=<land/branch>] [--dry-run]
  *     Hourly pass over every land/** ref still on origin (BRO-4802): a ref
  *     evicted outside the fast-retry window gets a FULL re-run (Checks again
@@ -28,7 +29,7 @@
 const { execFileSync, spawnSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { decideLandRetry, runGhWithFallback, isRefNotFound, decideCancelledWait } = require('./lib/land-retry-on-cancel');
-const { supersededByNewerRun, decideSweep, MAX_AGE_HOURS } = require('./lib/land-queue-backoff');
+const { supersededByNewerRun, decideSweep, sweepStep, MAX_AGE_HOURS } = require('./lib/land-queue-backoff');
 
 const USAGE = 'usage: node scripts/land-retry-cancelled.js --sweep | --run=<id> | --stranded [--only=<land/branch>] [--dry-run]';
 if (hasHelpFlag(process.argv.slice(2))) {
@@ -83,6 +84,9 @@ function runTargeted() {
   const d = decideLandRetry({ run, jobs, branchExists, branchTip });
   console.log(`run ${runId} ${run.head_branch} attempt ${run.run_attempt}: ${d.retry ? 'eligible' : 'skip'} (${d.reason})`);
   if (!d.retry) return;
+  // BRO-6015: resuming a parked run into a full queue re-parks it and spends
+  // an attempt, the same check the sweep makes.
+  if (d.parked && resumeSlotsNow() === 0) { console.log(`run ${runId}: parked, landing queue has no resume room yet; the sweep resumes it in order (nothing to do)`); return; }
   rerun(runId, run.run_attempt);
 }
 
@@ -90,18 +94,32 @@ function runTargeted() {
  * Tickets under refs/land-mutex/queue on origin (BRO-5196), or null when the
  * remote is unreadable (callers resume: a parked run is never held on a guess).
  */
-let depthMemo; // one ls-remote per sweep, however many parked candidates
-function queueDepth() {
-  if (depthMemo !== undefined) return depthMemo;
-  depthMemo = queueDepthUncached();
-  return depthMemo;
-}
-
-function queueDepthUncached() {
+function queueTickets() {
   const r = spawnSync('git', ['ls-remote', process.env.LAND_MUTEX_REMOTE || 'origin', 'refs/land-mutex/*'], { encoding: 'utf8', timeout: 60000 });
   if (r.status !== 0) return null;
+  return require('./lib/land-mutex').parseLsRemote(r.stdout).tickets;
+}
+
+/** Land runs re-run and still queued or running (they may not hold a ticket yet). */
+function inflightResumedRunIds() {
+  const ids = [];
+  for (const status of ['queued', 'in_progress']) {
+    const runs = gh([`repos/${repo}/actions/workflows/land.yml/runs?status=${status}&per_page=100`]).workflow_runs || [];
+    ids.push(...runs.filter((r) => (r.run_attempt || 1) > 1).map((r) => r.id));
+  }
+  return ids;
+}
+
+/** Parked runs that may be resumed right now (one ls-remote + two run listings). */
+function resumeSlotsNow() {
   const lm = require('./lib/land-mutex');
-  return lm.liveTicketCount(lm.parseLsRemote(r.stdout).tickets);
+  const tickets = queueTickets();
+  let inflight = [];
+  // Unreadable listing: count nothing in flight; the headroom cap still bounds the sweep.
+  if (tickets) { try { inflight = inflightResumedRunIds(); } catch (err) { console.log(`could not list in-flight Land runs (${err.message.split('\n')[0]}); counting none`); } }
+  const slots = lm.resumeSlots({ tickets, inflightResumedRunIds: inflight, cap: lm.parkDepth(), headroom: lm.resumeHeadroom() });
+  console.log(`landing queue: ${tickets ? lm.liveTicketCount(tickets) : 'unreadable'} live ticket(s), ${inflight.length} resumed run(s) in flight, resume room ${slots}`);
+  return slots;
 }
 
 function runSweep() {
@@ -117,6 +135,11 @@ function runSweep() {
   const refs = landRefs();
   const d = decideSweep({ cancelledRuns, refs, now: Date.now() });
   if (d.action !== 'inspect') { console.log(d.reason); return; }
+  // Resume room is read once, on the first parked candidate (one ls-remote +
+  // two listings); until then it is unknown, so a parked step reads it.
+  let slots;
+  let resumed = 0;
+  let evictionRerun = false;
   for (const run of d.candidates) {
     const latest = (gh([`repos/${repo}/actions/workflows/land.yml/runs?branch=${encodeURIComponent(run.head_branch)}&per_page=1`]).workflow_runs || [])[0];
     if (supersededByNewerRun(run, latest)) {
@@ -128,15 +151,19 @@ function runSweep() {
     const fresh = latest || run;
     const r = decideLandRetry({ run: fresh, jobs: jobsOf(run.id), branchExists: true, branchTip: refs.get(run.head_branch) });
     console.log(`run ${run.id} ${run.head_branch} attempt ${fresh.run_attempt}: ${r.retry ? 'RETRY' : 'skip'} (${r.reason})`);
-    if (r.retry && r.parked) {
-      // A parked run resumes only when the queue has room; resuming into a full
-      // queue just parks it again and spends an attempt (BRO-5196).
-      const depth = queueDepth();
-      const cap = require('./lib/land-mutex').parkDepth();
-      if (depth !== null && cap > 0 && depth >= cap) { console.log(`run ${run.id} ${run.head_branch}: parked, queue still ${depth} deep (>= ${cap}); not resumed yet`); continue; }
-    }
-    if (r.retry) { rerun(run.id, fresh.run_attempt); return; } // one per sweep: the next Land completion sweeps again
+    if (!r.retry) continue;
+    // A parked run resumes only when the queue has room; resuming into a full
+    // queue just parks it again and spends an attempt (BRO-5196). Parked runs
+    // fill every free resume slot, oldest first (BRO-6015: one per sweep lost
+    // each freed slot to a fresh push); one eviction re-run per sweep.
+    if (r.parked && slots === undefined) slots = resumeSlotsNow();
+    const step = sweepStep({ parked: Boolean(r.parked), slots, resumed, evictionRerun });
+    if (step === 'stop') break;
+    if (step === 'skip') { if (r.parked) console.log(`run ${run.id} ${run.head_branch}: parked, no resume room left this sweep; not resumed yet`); continue; }
+    rerun(run.id, fresh.run_attempt);
+    if (step === 'resume') resumed += 1; else evictionRerun = true;
   }
+  if (resumed) console.log(`resumed ${resumed} parked run(s) this sweep`);
 }
 
 // ---- --stranded (BRO-4802) ----

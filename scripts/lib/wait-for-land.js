@@ -56,6 +56,8 @@ const { SITE_PATHS } = require('./should-deploy-gate');
 const { repoDepthArgs } = require('./shallow-fetch-args');
 
 const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
+// BRO-6015: past this, a parked run likely means the sweep itself is down.
+const PARKED_STUCK_MS = 3 * 60 * 60 * 1000;
 const USAGE = 'usage: node scripts/lib/wait-for-land.js land/<name> [timeout-min] [--prod[=min]]';
 const RED_CONCLUSIONS = new Set(['failure', 'timed_out', 'action_required', 'startup_failure', 'stale']);
 
@@ -98,6 +100,12 @@ function landVerdict({ refSha, lastSha = null, run, nowMs }) {
       return { verdict: 'refused', why: `run ${run.id} ${run.cancellation.kind === 'timeout' ? 'timed out' : 'cancelled'}: ${run.cancellation.why}` };
     }
     if (run.cancellation?.kind !== 'eviction') return { verdict: 'waiting', why: `run ${run.id} cancelled; retry eligibility unknown` };
+    // BRO-6015: a parked run resumes in order when the queue has room. A new
+    // land ref or a hand retry only puts the change at the back of the line.
+    if (run.cancellation.why === 'land-parked-behind-deep-queue') {
+      if (ageMs > PARKED_STUCK_MS) return { verdict: 'waiting', why: `run ${run.id} parked 3+ h; if the Land retry sweep is not running, resume it with node scripts/land-retry-cancelled.js --run=${run.id} (it waits for queue room). Do not push a new land ref` };
+      return { verdict: 'waiting', why: `run ${run.id} parked in the landing line (queue full); the sweep resumes it in order. Keep waiting: do not push a new land ref or retry by hand` };
+    }
     const retry = `node scripts/land-retry-cancelled.js --run=${run.id}`;
     if (ageMs > STALE_EVICTION_MS) return { verdict: 'waiting', why: `run ${run.id} cancelled 30+ min ago and not re-run (retries spent?): ${retry}` };
     return { verdict: 'waiting', why: `run ${run.id} cancelled (cancelled before landing; the sweep re-runs it, or: ${retry})` };

@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
 
 const require = createRequire(import.meta.url);
-const { pickStrandedCandidates, supersededByNewerRun, decideSweep, MAX_INSPECT } = require('./land-queue-backoff.js');
+const { pickStrandedCandidates, supersededByNewerRun, decideSweep, sweepStep, MAX_INSPECT } = require('./land-queue-backoff.js');
 const { MAX_ATTEMPTS } = require('./land-retry-on-cancel.js');
 
 const NOW = Date.parse('2026-10-05T02:00:00Z');
@@ -98,4 +98,40 @@ test('wiring (BRO-5112): per-branch Land group, mutex around land.js, sweep with
   assert.match(js, /supersededByNewerRun\(/);
   // the retry decision uses the fresh per-branch run, not the possibly stale listing
   assert.match(js, /decideLandRetry\(\{ run: fresh,/);
+});
+
+// BRO-6015: walk a sweep's eligible candidates through sweepStep, as runSweep does.
+// Like runSweep, the resume room is only read on the first parked candidate.
+const walk = (kinds, room) => {
+  const st = { resumed: 0, evictionRerun: false };
+  let slots;
+  const out = [];
+  for (const k of kinds) {
+    if (k === 'P' && slots === undefined) slots = room;
+    const step = sweepStep({ parked: k === 'P', slots, ...st });
+    out.push(step);
+    if (step === 'stop') break;
+    if (step === 'resume') st.resumed += 1;
+    if (step === 'rerun') st.evictionRerun = true;
+  }
+  return out.join(',');
+};
+
+test('sweepStep: parked runs fill the resume slots oldest first; extra ones wait', () => {
+  assert.equal(walk(['P', 'P', 'P'], 2), 'resume,resume,skip');
+  assert.equal(walk(['P', 'P'], 0), 'skip,skip');
+});
+
+test('sweepStep: an eviction behind parked runs still re-runs, full queue or not (review P1)', () => {
+  assert.equal(walk(['P', 'P', 'E'], 0), 'skip,skip,rerun');
+  assert.equal(walk(['P', 'E', 'P'], 1), 'resume,rerun,stop');
+  assert.equal(walk(['E', 'P', 'P'], 2), 'rerun,resume,resume');
+});
+
+test('sweepStep: at most one eviction re-run per sweep', () => {
+  assert.equal(walk(['E', 'E', 'P'], 1), 'rerun,skip,resume');
+  assert.equal(walk(['E', 'E'], 0), 'rerun,skip');
+  // room not read yet when the second eviction comes up: it skips, never stopping the scan
+  assert.equal(walk(['E', 'E', 'P'], 0), 'rerun,skip,stop');
+  assert.equal(walk(['E', 'E', 'P', 'P'], 1), 'rerun,skip,resume,stop');
 });

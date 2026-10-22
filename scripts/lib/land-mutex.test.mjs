@@ -255,13 +255,53 @@ test('liveTicketCount ignores leaked tickets; parkDepth reads the repo variable'
   assert.equal(m.parkDepth({ LAND_MUTEX_DISABLED: 'true', LAND_MUTEX_PARK_DEPTH: '7' }), 0);
 });
 
+test('resumeHeadroom reads the repo variable; resumeSlots fills room, capped, counting unticketed resumes (BRO-6015)', () => {
+  assert.equal(m.resumeHeadroom({}), m.RESUME_HEADROOM);
+  assert.equal(m.resumeHeadroom({ LAND_MUTEX_RESUME_HEADROOM: '' }), m.RESUME_HEADROOM);
+  assert.equal(m.resumeHeadroom({ LAND_MUTEX_RESUME_HEADROOM: '3' }), 3);
+  assert.equal(m.resumeHeadroom({ LAND_MUTEX_RESUME_HEADROOM: '0' }), 0);
+  assert.equal(m.resumeHeadroom({ LAND_MUTEX_RESUME_HEADROOM: '-1' }), m.RESUME_HEADROOM);
+  const q = (n) => Array.from({ length: n }, (_, i) => T(String(100 + i)));
+  const slots = (o) => m.resumeSlots({ cap: 4, headroom: 2, now: NOW, ...o });
+  assert.equal(slots({ tickets: q(0) }), 2, 'empty queue: at most headroom per sweep');
+  assert.equal(slots({ tickets: q(4) }), 2, 'queue at the fresh-push cap still has resume room');
+  assert.equal(slots({ tickets: q(5) }), 1);
+  assert.equal(slots({ tickets: q(6) }), 0);
+  assert.equal(slots({ tickets: q(9) }), 0, 'never negative');
+  // A resumed run in flight with no ticket yet takes a slot; a ticketed one is counted once.
+  assert.equal(slots({ tickets: q(4), inflightResumedRunIds: ['900'] }), 1);
+  assert.equal(slots({ tickets: q(4), inflightResumedRunIds: ['900', 901] }), 0);
+  assert.equal(slots({ tickets: q(4), inflightResumedRunIds: ['100', '101'] }), 2, 'already ticketed: not double-counted');
+  // A second sweep right after the first resumed 2 sees them in flight and resumes nothing.
+  assert.equal(slots({ tickets: q(3), inflightResumedRunIds: ['900', '901'] }), 1);
+  assert.equal(slots({ tickets: q(4), inflightResumedRunIds: ['900', '901'] }), 0);
+  const leaked = T('7', { at: NOW - m.PARK_TICKET_MAX_AGE_MS - 1000 });
+  assert.equal(slots({ tickets: [...q(4), leaked] }), 2, 'leaked tickets do not count');
+  assert.equal(slots({ tickets: null }), 1, 'unreadable queue: old one-per-sweep');
+  assert.equal(slots({ tickets: q(9), cap: 0 }), 1, 'parking off: old one-per-sweep');
+  // Headroom 0 is the rollback: one per sweep while below the cap, never stuck at 0.
+  assert.equal(slots({ tickets: q(0), headroom: 0 }), 1);
+  assert.equal(slots({ tickets: q(3), headroom: 0 }), 1);
+  assert.equal(slots({ tickets: q(4), headroom: 0 }), 0);
+});
+
+test('land.yml admit step uses the same resume headroom default and variable as land-mutex.js (BRO-6015)', () => {
+  const read = (f) => readFileSync(new URL(`../../.github/workflows/${f}`, import.meta.url), 'utf8');
+  const land = read('land.yml');
+  const admit = land.slice(land.indexOf(`- name: ${m.PARK_STEP_NAME}`));
+  const body = admit.slice(0, admit.indexOf('- name: Checkout main'));
+  assert.ok(body.includes('LAND_MUTEX_RESUME_HEADROOM: ${{ vars.LAND_MUTEX_RESUME_HEADROOM }}'));
+  assert.ok(body.includes(`headroom="\${LAND_MUTEX_RESUME_HEADROOM:-${m.RESUME_HEADROOM}}"`), 'bash default matches RESUME_HEADROOM');
+  assert.match(body, /GITHUB_RUN_ATTEMPT:-1\}" -gt 1 \]; then limit=\$\(\( cap \+ headroom \)\)/);
+});
+
 // Review P1 (2026-10-13): the sweep read parkDepth() without the repo variables,
 // so a non-default depth made admit and sweep disagree and re-park in a loop.
 test('the sweep step gets the same park-depth variables as the admit step', () => {
   const read = (f) => readFileSync(new URL(`../../.github/workflows/${f}`, import.meta.url), 'utf8');
   const land = read('land.yml');
   const sweep = read('land-retry-cancelled.yml');
-  for (const v of ['LAND_MUTEX_PARK_DEPTH', 'LAND_MUTEX_DISABLED']) {
+  for (const v of ['LAND_MUTEX_PARK_DEPTH', 'LAND_MUTEX_DISABLED', 'LAND_MUTEX_RESUME_HEADROOM']) {
     const line = `${v}: \${{ vars.${v} }}`;
     assert.ok(land.includes(line), `land.yml passes ${v}`);
     const step = sweep.slice(sweep.indexOf('- name: Sweep for a stranded Land run'));

@@ -13,7 +13,8 @@
  * fast-forward is serialized by the git-ref landing mutex
  * (scripts/lib/land-mutex.js), so a re-run waits in that queue and evicts
  * nobody. The sweep now just re-runs the oldest stranded run (main-red lanes
- * first), one per sweep. Cancelled Land runs still come from a human cancel
+ * first), one per sweep; parked runs fill every free resume slot (BRO-6015).
+ * Cancelled Land runs still come from a human cancel
  * (refused by decideLandRetry once work started), a same-branch run queued
  * behind another, and land.yml definitions older than BRO-5112 (a branch cut
  * before it still carries `group: landing`) during the changeover.
@@ -66,4 +67,20 @@ function decideSweep({ cancelledRuns, refs, now, maxInspect = MAX_INSPECT } = {}
   return { action: 'inspect', candidates };
 }
 
-module.exports = { MAX_AGE_HOURS, MAX_INSPECT, pickStrandedCandidates, supersededByNewerRun, decideSweep };
+/**
+ * What the sweep does with one retry-eligible candidate, walking oldest first
+ * (BRO-6015). Parked runs fill the resume slots; at most one eviction re-run
+ * per sweep, as before, and it is never blocked by parked runs ahead of it
+ * (a full queue skips the parked run and keeps scanning).
+ *   state: { slots, resumed, evictionRerun }   slots: resume room this sweep,
+ *   undefined until the first parked candidate reads it (never 'stop' then)
+ * Returns 'resume' (re-run a parked run), 'rerun' (re-run an eviction),
+ * 'skip', or 'stop' (nothing left this sweep can do).
+ */
+function sweepStep({ parked, slots, resumed, evictionRerun }) {
+  if (!parked) return evictionRerun ? (resumed >= slots ? 'stop' : 'skip') : 'rerun';
+  if (resumed < slots) return 'resume';
+  return evictionRerun ? 'stop' : 'skip';
+}
+
+module.exports = { MAX_AGE_HOURS, MAX_INSPECT, pickStrandedCandidates, supersededByNewerRun, decideSweep, sweepStep };

@@ -57,6 +57,16 @@ const DEADLINE_MINUTES = 75;
 // eviction; land.yml's step must carry exactly this name.
 const PARK_DEPTH = 4;
 const PARK_STEP_NAME = 'Admit to the landing queue';
+// BRO-6015: a resumed run (run_attempt > 1) parks only at PARK_DEPTH +
+// RESUME_HEADROOM. With one threshold for both, fresh pushes (arriving every
+// few minutes after their Checks job) took each freed slot before a resumed
+// run reached its admit step, and 42 parked runs waited 3-5 h on 2026-10-22
+// while their sessions re-pushed new refs. The headroom gives runs that
+// already waited first claim on room; it also covers other attempt>1 runs
+// (stranded full re-runs, hand re-runs), which are older work too. land.yml's
+// admit step reads the same repo variable with the same default (pinned by
+// land-mutex.test.mjs).
+const RESUME_HEADROOM = 2;
 // Parked runs resume only when the queue has room, so re-parks are rare; the
 // budget is still bounded and stays below land-stranded-refs STRANDED_MAX_ATTEMPT.
 const PARKED_MAX_ATTEMPTS = 15;
@@ -188,6 +198,29 @@ function parkDepth(env = process.env) {
   return env.LAND_MUTEX_PARK_DEPTH !== undefined && env.LAND_MUTEX_PARK_DEPTH !== '' && Number.isInteger(n) && n >= 0 ? n : PARK_DEPTH;
 }
 
+/** Extra depth a resumed run may join at (LAND_MUTEX_RESUME_HEADROOM, default RESUME_HEADROOM). */
+function resumeHeadroom(env = process.env) {
+  const n = Number(env.LAND_MUTEX_RESUME_HEADROOM);
+  return env.LAND_MUTEX_RESUME_HEADROOM !== undefined && env.LAND_MUTEX_RESUME_HEADROOM !== '' && Number.isInteger(n) && n >= 0 ? n : RESUME_HEADROOM;
+}
+
+/**
+ * How many parked runs one sweep may resume (BRO-6015). A resumed run takes
+ * no ticket until after its setup steps, so runs this sweep or an earlier one
+ * already resumed (in flight at attempt > 1, no ticket yet) count against the
+ * room, and one sweep resumes at most `headroom` runs (at least 1, so
+ * LAND_MUTEX_RESUME_HEADROOM=0 is the old behavior: one per sweep below the
+ * cap); otherwise every Land completion's sweep would see the same low depth
+ * and over-admit. Unreadable queue (tickets null) or parking off: 1.
+ */
+function resumeSlots({ tickets, inflightResumedRunIds = [], cap, headroom, now = Date.now() }) {
+  if (!tickets || !(cap > 0)) return 1;
+  const ticketed = new Set(tickets.map((t) => String(t.runId)));
+  const pending = [...new Set(inflightResumedRunIds.map(String))].filter((id) => !ticketed.has(id)).length;
+  const room = cap + headroom - liveTicketCount(tickets, now) - pending;
+  return Math.max(0, Math.min(Math.max(1, headroom), room));
+}
+
 /** Tickets that count toward the park depth: recent enough to belong to a live waiter. */
 function liveTicketCount(tickets, now = Date.now()) {
   return (tickets || []).filter((t) => now - t.enqueuedAt <= PARK_TICKET_MAX_AGE_MS).length;
@@ -213,6 +246,6 @@ function ownTickets(state, self) {
 }
 
 module.exports = {
-  QUEUE_PREFIX, LOCK_REF, PARK_DEPTH, PARK_STEP_NAME, PARKED_MAX_ATTEMPTS, PARK_TICKET_MAX_AGE_MS, parkDepth, liveTicketCount, isParkedLandJob, GRACE_MS, STALE_AGE_MS, LIVENESS_TTL_MS, POLL_MIN_MS, POLL_MAX_MS, DEADLINE_MINUTES,
+  QUEUE_PREFIX, LOCK_REF, PARK_DEPTH, PARK_STEP_NAME, PARKED_MAX_ATTEMPTS, PARK_TICKET_MAX_AGE_MS, RESUME_HEADROOM, parkDepth, resumeHeadroom, resumeSlots, liveTicketCount, isParkedLandJob, GRACE_MS, STALE_AGE_MS, LIVENESS_TTL_MS, POLL_MIN_MS, POLL_MAX_MS, DEADLINE_MINUTES,
   ticketName, parseTicket, parseLsRemote, ticketLiveness, decideStep, blockerRef, nextPollMs, ownTickets,
 };

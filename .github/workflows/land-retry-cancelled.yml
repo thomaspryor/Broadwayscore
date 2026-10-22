@@ -49,7 +49,7 @@ permissions:
 
 jobs:
   sweep:
-    name: Re-run one stranded Land job
+    name: Re-run stranded Land jobs
     if: github.event.schedule != '23 * * * *' && (github.event_name != 'workflow_dispatch' || inputs.mode == 'sweep')
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -80,6 +80,8 @@ jobs:
           # non-default depth re-parks resumed runs in a loop.
           LAND_MUTEX_PARK_DEPTH: ${{ vars.LAND_MUTEX_PARK_DEPTH }}
           LAND_MUTEX_DISABLED: ${{ vars.LAND_MUTEX_DISABLED }}
+          # BRO-6015: resumed runs join up to park depth + this headroom.
+          LAND_MUTEX_RESUME_HEADROOM: ${{ vars.LAND_MUTEX_RESUME_HEADROOM }}
         run: node scripts/land-retry-cancelled.js --sweep
 
       - name: Notify on failure
