@@ -28,6 +28,7 @@ const HELD_TEXT_CHARS = 3500;
 const META_TEXT_CHARS = 1600;
 const MIN_TEXT_CHARS = 200;
 const HELD_FLAGS = ['wrongProduction'];
+const EXCLUDED_FLAGS = ['wrongProduction', 'wrongShow', 'isNotReview', 'isNonReview', 'isRoundupArticle', 'showNotMentioned', 'fabricatedEntry'];
 const NOT_A_PERSON = /^(staff|editor|editors|team|admin|reviews?|theatre|theater|news|desk|contributor|guest|unknown|anonymous|the\s)/i;
 
 const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
@@ -130,6 +131,9 @@ function selectJudgeItems(records, census, facts = null) {
     if (text.length < MIN_TEXT_CHARS) continue;
     const asks = [];
     if (HELD_FLAGS.some(f => r[f]) && missingOutlets.has(r)) asks.push('held');
+    // A critic or a date on a file the site will not count (another production, a news column, an announcement)
+    // is accurate but changes nothing the owner posts: only a review being released is worth the questions.
+    if (!asks.includes('held') && EXCLUDED_FLAGS.some(f => r[f])) continue;
     const outletLike = norm(r.criticName) && (norm(r.criticName) === norm(r.outlet) || norm(r.criticName) === norm(r.outletId));
     // A name or date is only worth asking about when one is actually printed
     // near the top of the stored text (the recovery tools read the page HTML;

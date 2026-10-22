@@ -62,6 +62,8 @@ test('selectJudgeItems: held only for census-missing outlets; a name or date is 
     ['nodate-none.json', full({ publishDate: '' })],
     ['nodate-old.json', full({ publishDate: '', fullText: `Home 12 February 2025 review. ${pad}` })],
     ['short.json', full({ criticName: '', fullText: 'By Jane Doe, tiny' })],
+    ['excluded-news.json', full({ criticName: 'Unknown', wrongShow: true, fullText: `Classical news. By Kyle Torrence. ${pad}` })],
+    ['excluded-other.json', full({ outletId: 'other2', criticName: 'Unknown', wrongProduction: true, fullText: `Announcement. By Lily Brown. ${pad}` })],
     ['fine.json', full()],
   ]);
   const census = { verdict: 'incomplete', missing: [{ outletId: 'airmail', outlet: 'airmail', url: 'https://airmail.news/x' }] };

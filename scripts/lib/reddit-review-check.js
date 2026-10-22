@@ -204,8 +204,9 @@ function buildVerification({ draft, nowIso, mode, snapshotBefore, snapshotAfter,
     status,
     filesChecked: [...snapshotAfter.keys()].filter(f => !f.startsWith('_pending/')).length,
     // What the tools could not fix: said plainly so "checked" never reads as "all correct".
-    unnamedLeft: [...snapshotAfter.entries()].filter(([f, r]) => !f.startsWith('_pending/') && isUnknownCritic(r.criticName)).length,
-    undatedLeft: [...snapshotAfter.entries()].filter(([f, r]) => !f.startsWith('_pending/') && !r.publishDate).length,
+    // Only files the site counts: names and dates on excluded files (another production, news columns) change nothing posted.
+    unnamedLeft: [...snapshotAfter.entries()].filter(([f, r]) => !f.startsWith('_pending/') && !r.flags.length && isUnknownCritic(r.criticName)).length,
+    undatedLeft: [...snapshotAfter.entries()].filter(([f, r]) => !f.startsWith('_pending/') && !r.flags.length && !r.publishDate).length,
     pendingLeft: [...snapshotAfter.keys()].filter(f => f.startsWith('_pending/')).length,
     added: changes.added.map(x => ({ outlet: x.outlet })),
     named: changes.named.map(x => ({ outlet: x.outlet, name: x.to })),

@@ -155,6 +155,9 @@ test('buildVerification statuses and pendingScoring', () => {
   const fixed = mk({ snapshotAfter: withNew });
   assert.deepEqual([fixed.status, fixed.pendingScoring, fixed.added], ['fixed', true, [{ outlet: 'Guardian' }]]);
   assert.deepEqual([fixed.unnamedLeft, fixed.undatedLeft], [0, 0]);
+  // excluded files never count toward "still on file"
+  const withExcluded = mk({ snapshotBefore: snapOf({ 'a.json': {} }), snapshotAfter: snapOf({ 'a.json': {}, 'x.json': { criticName: 'Unknown', publishDate: '', flags: ['wrongShow'] } }) });
+  assert.deepEqual([withExcluded.unnamedLeft, withExcluded.undatedLeft], [0, 0]);
   const leftovers = mk({ snapshotBefore: snapOf({ 'a.json': { criticName: 'Unknown', publishDate: '' } }), snapshotAfter: snapOf({ 'a.json': { criticName: 'Unknown', publishDate: '' }, 'b.json': {} }) });
   assert.deepEqual([leftovers.unnamedLeft, leftovers.undatedLeft], [1, 1]);
   const named = mk({ snapshotBefore: snapOf({ 'a.json': { criticName: 'Unknown' } }), snapshotAfter: snapOf({ 'a.json': { criticName: 'Jane Roe' } }) });
