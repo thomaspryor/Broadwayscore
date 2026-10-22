@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import fs from 'fs';
 import path from 'path';
 import { getWestEndShows, getUkRegionalShows, getMarketStats } from '@/lib/data-core';
+import { SHELF_MAX_ITEMS } from '@/lib/market-list-window';
 import { getAwardWinnerSets } from '@/lib/data-awards';
 import { pickRegionalShelf } from '@/lib/regional-shelf';
 import { getUkRegionalVenueCity } from '@/lib/market-utils';
@@ -53,6 +54,7 @@ export default function WestEndPage() {
     return serialize(show, {
       isOffWestEnd: show.category === 'off-west-end',
       category: (show.category as string) || 'west-end',
+      slim: true,
     }) as WestEndShow;
   }
 
@@ -105,12 +107,13 @@ export default function WestEndPage() {
   const beyondLondonShows = featureFlags.regional
     ? pickRegionalShelf(getUkRegionalShows(), { requireEnoughReviews: true })
         .map(s => ({
-          ...(serialize(s, { isOffWestEnd: false, category: 'regional' }) as WestEndShow),
+          ...(serialize(s, { isOffWestEnd: false, category: 'regional', slim: true }) as WestEndShow),
           // The card has no market pill, so name the city under the title.
           subtitle: getUkRegionalVenueCity(s.category, s.venue),
           subtitleColor: 'text-gray-400',
         }))
     : [];
+  const beyondLondonShelf = beyondLondonShows.slice(0, SHELF_MAX_ITEMS);
 
   // WE Lottery/Rush shelves
   const lotteryShowsList = shows
@@ -119,7 +122,8 @@ export default function WestEndPage() {
     .map(s => {
       const price = lrShows[s.id]?.specialLottery?.price ?? lrShows[s.id]?.lottery?.price;
       return { ...serializeShow(s), subtitle: price ? `£${price} lottery` : undefined, subtitleColor: 'text-emerald-400' };
-    });
+    })
+    .slice(0, SHELF_MAX_ITEMS);
 
   const rushShowsList = shows
     .filter(s => (s.status === 'open' || s.status === 'previews') && (lrShows[s.id]?.rush || lrShows[s.id]?.digitalRush))
@@ -128,7 +132,8 @@ export default function WestEndPage() {
       const prices = [lrShows[s.id]?.rush?.price, lrShows[s.id]?.digitalRush?.price].filter((p): p is number => p != null);
       const price = prices.length ? Math.min(...prices) : undefined;
       return { ...serializeShow(s), subtitle: price ? `£${price} rush` : undefined, subtitleColor: 'text-emerald-400' };
-    });
+    })
+    .slice(0, SHELF_MAX_ITEMS);
 
   // Count reviews across all scored shows (WE + OWE)
   const totalReviews = scoredShows.reduce((sum, s) => sum + (s.criticScore?.reviewCount ?? 0), 0);
@@ -186,7 +191,7 @@ export default function WestEndPage() {
           </p>
         </div>
         {topMusicals.length > 0 && (
-          <FeaturedRowServer shows={topMusicals} title="Top Musicals" subtitle="Ranked by critical consensus" />
+          <FeaturedRowServer shows={topMusicals.slice(0, SHELF_MAX_ITEMS)} title="Top Musicals" subtitle="Ranked by critical consensus" />
         )}
       </div>
 
@@ -199,7 +204,7 @@ export default function WestEndPage() {
           scoredShows={scoredShows.length}
           lotteryShows={lotteryShowsList}
           rushShows={rushShowsList}
-          beyondLondonShows={beyondLondonShows}
+          beyondLondonShows={beyondLondonShelf}
           marketOpenCounts={marketOpenCounts}
           awardWinnerSets={getAwardWinnerSets()}
           skipAboveFold

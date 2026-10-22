@@ -47,6 +47,8 @@ export function serializeShowForClient(
     /** Market-specific fields */
     isOffWestEnd?: boolean;
     performances?: number;
+    /** Market list pages: drop fields no card or filter reads and send creative-team names only (BRO-5991). */
+    slim?: boolean;
   },
 ): ShowCardShow {
   // Compute audience data from buzz unless overrides provided
@@ -81,8 +83,9 @@ export function serializeShowForClient(
     genre: show.genre,
     tags: show.tags,
     ageRecommendation: show.ageRecommendation ?? undefined,
-    creativeTeam: show.creativeTeam,
-    runtime: show.runtime ?? undefined,
+    creativeTeam: overrides?.slim ? undefined : show.creativeTeam,
+    creativeTeamNames: overrides?.slim && show.creativeTeam?.length ? show.creativeTeam.map(m => m.name).join(', ') : undefined,
+    runtime: overrides?.slim ? undefined : (show.runtime ?? undefined),
     ticketLinks: show.ticketLinks?.length || show.category !== 'tour' ? show.ticketLinks : getTourTicketLinks(show),
     subtitle: show.subtitle,
     subtitleColor: show.subtitleColor,

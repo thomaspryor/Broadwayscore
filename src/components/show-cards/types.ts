@@ -38,6 +38,8 @@ export interface ShowCardShow {
   tags?: string[];
   ageRecommendation?: string;
   creativeTeam?: Array<{ name: string; role: string }>;
+  /** Slim market-list payload: comma-joined creative team names, search only. */
+  creativeTeamNames?: string;
   // Market-specific optional fields
   isOffWestEnd?: boolean; // West End only
   performances?: number; // Browse only

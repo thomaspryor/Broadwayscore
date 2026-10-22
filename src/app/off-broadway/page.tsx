@@ -12,6 +12,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import OffBroadwayPageClient from '@/components/OffBroadwayPageClient';
 import type { OffBroadwayShow } from '@/components/OffBroadwayPageClient';
+import { SHELF_MAX_ITEMS } from '@/lib/market-list-window';
 import FeaturedRowServer from '@/components/FeaturedRowServer';
 import { featureFlags } from '@/config/feature-flags';
 import { formatShowDate } from '@/lib/date-utils';
@@ -45,7 +46,7 @@ export default function OffBroadwayPage() {
   // occurrences (#965).
   const serialize = createShowSerializer();
   function serializeShow(show: ReturnType<typeof getOffBroadwayShows>[number]): OffBroadwayShow {
-    return serialize(show, { category: 'off-broadway' }) as OffBroadwayShow;
+    return serialize(show, { category: 'off-broadway', slim: true }) as OffBroadwayShow;
   }
 
   const shows = getOffBroadwayShows();
@@ -104,7 +105,8 @@ export default function OffBroadwayPage() {
     .map(s => {
       const startDate = s.previewsStartDate || s.openingDate;
       return { ...serializeShow(s), subtitle: `Starts ${shortDate(startDate)}`, subtitleColor: 'text-gray-400' };
-    });
+    })
+    .slice(0, SHELF_MAX_ITEMS);
 
   // Recently Opened · Awaiting Reviews — open OB shows that opened within the
   // recency window but don't yet have enough reviews to display a score. These
@@ -119,7 +121,8 @@ export default function OffBroadwayPage() {
   const justOpenedShows = shows
     .filter(s => isRecentlyOpenedAwaitingReviews(s))
     .sort((a, b) => openMs(b) - openMs(a))
-    .map(s => ({ ...serializeShow(s), subtitle: `Opened ${shortDate(s.openingDate)}`, subtitleColor: 'text-emerald-400' }));
+    .map(s => ({ ...serializeShow(s), subtitle: `Opened ${shortDate(s.openingDate)}`, subtitleColor: 'text-emerald-400' }))
+    .slice(0, SHELF_MAX_ITEMS);
 
   // Top Recent Shows shelf — computed here (not in the client) so the LCP poster
   // lands in the static HTML. The client renders `skipAboveFold` to avoid a
@@ -176,7 +179,7 @@ export default function OffBroadwayPage() {
           </p>
         </div>
         {showServerShelf && (
-          <FeaturedRowServer shows={topRecentShows} title="Top Recent Shows" />
+          <FeaturedRowServer shows={topRecentShows.slice(0, SHELF_MAX_ITEMS)} title="Top Recent Shows" />
         )}
       </div>
 

@@ -22,3 +22,5 @@ export { CostStatusPill } from './CostStatusPill';
 export { OutletTierChip } from './OutletTierChip';
 export { DataStalenessBanner } from './DataStalenessBanner';
 export type { DataStalenessBannerProps } from './DataStalenessBanner';
+export { default as WindowedShowCardList } from './WindowedShowCardList';
+export type { WindowedShowCardListProps } from './WindowedShowCardList';

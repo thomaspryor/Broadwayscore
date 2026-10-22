@@ -4,7 +4,7 @@ import { useMemo, useCallback, useState, useRef, useEffect, startTransition, Sus
 import { replaceLocationSearch } from '@/lib/hooks/useLocationSearch';
 import Link from 'next/link';
 import type Fuse from 'fuse.js';
-import { SCORE_TIERS, getScoreTierRange, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
+import { SCORE_TIERS, getScoreTierRange, ToggleBar, ScoreToggle, WindowedShowCardList, MiniShowCard } from '@/components/show-cards';
 import MarketFilterBar from '@/components/MarketFilterBar';
 import type { ScoreModeParam } from '@/components/show-cards';
 import type { AwardWinnerSets } from '@/lib/data-awards';
@@ -17,6 +17,7 @@ import { hasEnoughReviews } from '@/config/score-buckets';
 import { getNextSort, getSortArrow, normalizeSort } from '@/lib/sort-toggle';
 import { getShowListEmptyState } from '@/lib/show-list-empty-state';
 import ScrollRow from '@/components/ScrollRow';
+import { SHELF_MAX_ITEMS } from '@/lib/market-list-window';
 import { useHydrationSafeNow } from '@/hooks/useHydrationSafeNow';
 
 // Serialized show data passed from server component
@@ -37,7 +38,8 @@ export interface OffWestEndShow {
   criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };
   audienceCombinedScore: number | null;
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
-  creativeTeam?: Array<{ name: string; role: string }>;
+  /** Comma-joined creative team names (search only); the full team is not shipped to market list pages (BRO-5991). */
+  creativeTeamNames?: string;
   category?: string;
   genre?: string;
 }
@@ -91,16 +93,6 @@ function SearchIcon() {
   );
 }
 
-function ShowCardList({ shows, hideStatus, scoreMode }: { shows: OffWestEndShow[]; hideStatus: boolean; scoreMode: ScoreModeParam }) {
-  return (
-    <div className="space-y-3" role="list" aria-label="Off-West End shows">
-      {shows.map((show, index) => (
-        <ShowListCard key={show.id} show={show} index={index} hideStatus={hideStatus} scoreMode={scoreMode} />
-      ))}
-    </div>
-  );
-}
-
 // Featured row with horizontal scroll
 function FeaturedRow({ title, shows }: { title: string; shows: OffWestEndShow[] }) {
   if (shows.length <= 3) return null;
@@ -111,7 +103,7 @@ function FeaturedRow({ title, shows }: { title: string; shows: OffWestEndShow[] 
         <h2 className="text-base font-bold text-white">{title}</h2>
       </div>
       <ScrollRow>
-        {shows.map((show) => (
+        {shows.slice(0, SHELF_MAX_ITEMS).map((show) => (
           <MiniShowCard key={show.id} show={show} />
         ))}
       </ScrollRow>
@@ -272,7 +264,7 @@ function OffWestEndPageInner({ shows, archiveHash, totalShows, totalReviews, mar
       getFn: (obj, path) => {
         const key = Array.isArray(path) ? path[0] : path;
         if (key === 'creativeTeamSearch') {
-          return (obj as OffWestEndShow).creativeTeam?.map(m => m.name).join(', ') || '';
+          return ((obj as OffWestEndShow).creativeTeamNames ?? '');
         }
         return FuseModule.config.getFn(obj, path);
       },
@@ -630,7 +622,7 @@ function OffWestEndPageInner({ shows, archiveHash, totalShows, totalReviews, mar
 
       {/* Show List */}
       <h2 className="sr-only">Off-West End Shows</h2>
-      <ShowCardList shows={panel.filteredShows} hideStatus={shouldHideStatus} scoreMode={scoreMode} />
+      <WindowedShowCardList shows={panel.filteredShows} hideStatus={shouldHideStatus} scoreMode={scoreMode} ariaLabel="Off-West End shows" />
 
       {showListEmptyState === 'loading' && (
         <div className="space-y-3" role="status" aria-label="Loading shows">

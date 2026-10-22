@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 };
 
 function serializeShow(show: ReturnType<typeof getOffWestEndShows>[number]): OffWestEndShow {
-  return serializeShowForClient(show, { category: 'off-west-end' });
+  return serializeShowForClient(show, { category: 'off-west-end', slim: true });
 }
 
 export default function OffWestEndPage() {
