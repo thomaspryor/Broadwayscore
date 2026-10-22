@@ -140,7 +140,9 @@ const STALE_RESERVE_EVERY = 4;
 // shows; runs audit 8-20) go to the head of the tier-2 queue in priority
 // order: never-audited first, then oldest checkpoint. Those slots are
 // stale-lane slots (5 % 4 === 1), so the back catalogue's share is split
-// between its two lanes and opening-week shows lose nothing: replaying 14
+// between its two lanes and opening-week shows lose nothing while the stale
+// queue has rows (with no gap file, or the stale queue used up, the slot comes
+// from tier 0 instead: at most 1 in 12). Replaying 14
 // days over the 2026-10-22 queue at 8, 12 and 20 shows per run, hot-show
 // waits were identical to today's, never-audited went 191 -> ~105 instead of
 // growing to ~210. Placing the lane on a tier-0 slot (3) instead pushed the

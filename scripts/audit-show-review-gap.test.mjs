@@ -994,6 +994,8 @@ test('BRO-4061: never-audited back-catalogue shows get slots while opening shows
   assert.ok(!reserveStalestSlots(ordered, ts).targets.slice(0, 12).some(s => s.id === 'inala-west-end-2026'));
   const { targets, reservedIds, catalogueReservedIds } = reserveStalestSlots(ordered, ts, { catalogueIds });
   const firstTwelve = targets.slice(0, 12).map(s => s.id);
+  // The lane must sit on a stale-lane slot, or it takes slots from opening-week shows.
+  assert.equal(CATALOGUE_RESERVE_AT % STALE_RESERVE_EVERY, 1);
   assert.equal(firstTwelve[CATALOGUE_RESERVE_AT], 'inala-west-end-2026');
   assert.equal(targets[CATALOGUE_RESERVE_AT + CATALOGUE_RESERVE_EVERY].id, 'menopause-the-musical-tour-2026');
   // The catalogue slot is taken from the stale lane, which keeps the rest.

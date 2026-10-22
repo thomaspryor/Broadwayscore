@@ -30,6 +30,17 @@ test('parses the live CRITICAL_CRONS registry, including the two BRO-4282 crons'
   }
 });
 
+test('BRO-3867: widened opening-night bands keep the old re-dispatch window', () => {
+  const yaml = fs.readFileSync(path.join(ROOT, '.github/workflows/check-cron-health.yml'), 'utf8');
+  const byWf = Object.fromEntries(parseCriticalCronEntries(yaml).map((e) => [e.workflow, e]));
+  const want = { 'audit-aggregator-gap.yml': 3, 'check-opening-night-drift.yml': 2, 'opening-night-checklist.yml': 3, 'opening-night-express-retry-check.yml': 3 };
+  for (const [wf, h] of Object.entries(want)) {
+    const text = fs.readFileSync(path.join(ROOT, '.github/workflows', wf), 'utf8');
+    assert.ok(acceptsRedispatch(text), `${wf} must accept redispatch`);
+    assert.equal(redispatchBandHours(text, byWf[wf].maxHours), h, wf);
+  }
+});
+
 test('commented-out entries are ignored; seasonal months parse', () => {
   const yaml = '#  "a.yml|3|A"\n  CRITICAL_CRONS=(\n    "b.yml|36|B"\n    "c.yml|72|C|4-6"\n  )';
   assert.deepEqual(parseCriticalCronEntries(yaml).map((e) => [e.workflow, e.months]), [['b.yml', null], ['c.yml', [4, 6]]]);

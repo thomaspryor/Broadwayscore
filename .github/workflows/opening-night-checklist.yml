@@ -7,6 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       redispatched:
+        # redispatch-after-hours: 3  (BRO-3867: the paging band is now measured-wide; re-dispatch a dropped tick at the old 3h)
         # BRO-5152: set by scripts/cron-redispatch.js when GitHub dropped the scheduled run.
         # Input defaults (no show_id, dry_run false) equal the cron's; nothing branches
         # on the trigger.
