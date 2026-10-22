@@ -23417,7 +23417,7 @@
       "silentRefires": 2
     },
     "reddit-sentiment:stale": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Reddit audience data has had no successful write for 206h",
       "firstSeen": "2026-10-22T07:06:39.460Z",
@@ -23428,7 +23428,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-5921",
-      "silentRefires": 12
+      "silentRefires": 12,
+      "resolvedAt": "2026-10-22T19:59:26.003Z",
+      "resolveReason": "reddit-freshness: fresh Reddit data written"
     },
     "coverage-holes:lincoln-in-the-bardo-off-broadway-2026": {
       "status": "resolved",
