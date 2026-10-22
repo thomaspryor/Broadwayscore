@@ -146,3 +146,20 @@ test('prior records are per plan: a later plan repeating an earlier plan\'s text
   assert.ok(lines.some((l) => /FAIL c5a commercial rules: .*doubled quotation/.test(l)), lines.join('\n'));
   assert.equal(lines.some((l) => /FAIL c5b commercial rules/.test(l)), false, lines.join('\n'));
 });
+
+test('touchedRecordProblems checks only the named records and uses priorShows', () => {
+  const { touchedRecordProblems } = require('../../scripts/lib/commercial-record-checks.js');
+  const shows = [{ id: 'a-1', slug: 'a', category: 'broadway', status: 'open' }];
+  const data = { shows: { a: { designation: 'TBD', notes: 'Per the GPT summary' }, b: { designation: 'TBD', notes: 'Per the GPT summary' } } };
+  assert.equal(touchedRecordProblems(data, shows, ['a'], null).length > 0, true);
+  assert.deepEqual(touchedRecordProblems(data, shows, ['zzz'], null), []);
+  assert.deepEqual(touchedRecordProblems(data, shows, [], null), []);
+});
+
+test('a commercial plan with no shows.json in the core dir FAILs the add cleanly instead of crashing', () => {
+  const { run, lines, core } = commercialFixture([['c6', [addBeta()]]]);
+  fs.rmSync(path.join(core, 'shows.json'));
+  const { failed } = run();
+  assert.equal(failed, 1, lines.join('\n'));
+  assert.ok(lines.some((l) => /FAIL c6 add-commercial-entry beta: .*shows.json not found/.test(l)));
+});

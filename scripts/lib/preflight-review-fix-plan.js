@@ -110,6 +110,8 @@ function preflight(planPaths, { reviewTextsDir = pickReviewTextsTree(), coreData
     if (!(file in dataCopies)) dataCopies[file] = JSON.parse(fs.readFileSync(path.join(coreDataDir, file), 'utf8'));
     return dataCopies[file];
   };
+  // shows.json's list, or null when the core dir has none (a commercial-only plan used not to need it).
+  const showsList = () => { try { const sd = loadData('shows.json'); return sd.shows || sd; } catch { return null; } };
   const stale = new Set();
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'preflight-fix-'));
   const copied = new Set();
@@ -155,8 +157,8 @@ function preflight(planPaths, { reviewTextsDir = pickReviewTextsTree(), coreData
         }
         if (a.type === 'add-commercial-entry') {
           notePriorCommercial();
-          const sd = loadData('shows.json');
-          const res = applyAddCommercialEntry(loadData('commercial.json'), sd.shows || sd, a);
+          const list = showsList();
+          const res = list ? applyAddCommercialEntry(loadData('commercial.json'), list, a) : { ok: false, reason: `shows.json not found in ${coreDataDir}` };
           touchedCommercial.add(a.slug);
           if (res.ok) { ok++; continue; }
           const label = `${id} add-commercial-entry ${a.slug}: ${res.reason}`;
@@ -193,8 +195,7 @@ function preflight(planPaths, { reviewTextsDir = pickReviewTextsTree(), coreData
       }
       // The record rules execute-approved-fix.js runs after the plan and rolls the WHOLE plan back on (BRO-5528).
       if (touchedCommercial.size) {
-        const sd = loadData('shows.json');
-        const problems = touchedRecordProblems(loadData('commercial.json'), sd.shows || sd, [...touchedCommercial], priorCommercial);
+        const problems = touchedRecordProblems(loadData('commercial.json'), showsList() || [], [...touchedCommercial], priorCommercial);
         for (const p of problems) {
           if (stale.has('commercial.json') || stale.has('shows.json')) log(`  WARN ${id} commercial rules: ${p} (an earlier unreplayed action changes the core data; re-check after it applies)`);
           else { failed++; log(`  FAIL ${id} commercial rules: ${p} (apply-time validation would roll back the whole plan)`); }
