@@ -669,6 +669,20 @@
     "queuedAt": "2026-10-22T14:15:31.698Z"
   },
   {
+    "conditionKey": "pending-unrecoverable:midnight-off-broadway-2026",
+    "title": "1 review(s) for midnight-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nypost--37bdc3ba.json (nypost): no byline in page and no recoverable body https://nypost.com/2026/10/14/scooter-braun-and-todrick-hall-join-forces-to-produce-star-studded-off-broadway-musical-midnight-to-rave-reviews/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T14:28:46.557Z"
+  },
+  {
     "conditionKey": "land:land/bro-5338-bound-run-out-the-clock",
     "title": "Landing blocked: unit-tests-node red on land/bro-5338-bound-run-out-the-clock",
     "description": "land.yml did not land land/bro-5338-bound-run-out-the-clock: the unit-tests-node gate went red at 550e81b4fd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39794512569",
