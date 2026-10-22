@@ -82,6 +82,8 @@ const EXEMPT_NEVER_CI = {
   'scripts/verify-bro-3490-recheck.test.mjs': 'BRO-3490',
   // BRO-5879 RECHECK-AFTER probe: live data, red until the daily Reddit draft job has run the update-email code.
   'scripts/verify-reddit-update-emails.test.mjs': 'BRO-5879',
+  // BRO-5887 RECHECK-AFTER probe: live data, red until a scheduled run has used the pre-send review check.
+  'scripts/verify-reddit-review-check.test.mjs': 'BRO-5887',
   // BRO-4993 live-data check of hand-verified director credits; reads data/shows.json.
   'scripts/verify-directors.test.mjs': 'BRO-4993',
   // BRO-4491 acceptance-command shim; re-imports the CI-registered tests/unit copy.
