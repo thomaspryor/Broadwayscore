@@ -1,8 +1,7 @@
 // Tests for scripts/lib/venue-search-token.js (BRO-2821).
 //
-// CLAUDE.md rule 15: this require()s the real function. It does not restate the
-// stopword list — a test carrying its own copy of the table would pass forever
-// while the shipped table rotted.
+// CLAUDE.md rule 15: this require()s the real function. The independent table
+// expectations below are fixtures, not copies of the selection logic.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -56,6 +55,9 @@ test('REGRESSION: diacritics are FOLDED, not shredded, when testing membership',
   // corpus currently carries an accent, so the sweep was blind to the whole
   // class. That is the lesson: a sweep over today's data cannot prove a
   // matcher correct.
+  // Raw spelling is the output contract: fold membership checks, but preserve
+  // the selected token's accents and case. A future output-folding change must
+  // update these expectations deliberately.
   assert.equal(venueSearchToken('Théâtre du Châtelet'), 'Châtelet');
   assert.equal(venueSearchToken('Théâtre Marigny'), 'Marigny');
   assert.equal(venueSearchToken('Café Carlyle'), 'Carlyle');
@@ -102,65 +104,59 @@ test('empty and missing venues return an empty string rather than throwing', () 
 // contains: leading stopword, saint abbreviation, "New" prefix, nested "at
 // the" venues, a generic-plus-number identity, a slash-joined double name, and
 // a lowercase venue. Not hypotheticals — each of these exists.
-const REAL_VENUES = [
-  'New World Stages – Stage 5',
-  'New Amsterdam Theatre',
-  'New York Theatre Workshop',
-  'St. James Theatre',
-  'The Irene Diamond Stage at the Pershing Square Signature Center',
-  'The Griffin Theater at The Shed',
-  'The Public Theater',
-  'The Theater Center',
-  'Theatre for a New Audience/Polonsky Shakespeare Center',
-  'Studio 54',
-  'Stage 42',
-  'Booth Theatre',
-  'the cell',
+const REAL_VENUE_CASES = [
+  ['New World Stages – Stage 5', 'World'],
+  ['New Amsterdam Theatre', 'Amsterdam'],
+  ['New York Theatre Workshop', 'York'],
+  ['St. James Theatre', 'James'],
+  ['The Irene Diamond Stage at the Pershing Square Signature Center', 'Irene'],
+  ['The Griffin Theater at The Shed', 'Griffin'],
+  ['The Public Theater', 'Public'],
+  ['The Theater Center', ''],
+  ['Theatre for a New Audience/Polonsky Shakespeare Center', 'Audience'],
+  ['Studio 54', '54'],
+  ['Stage 42', '42'],
+  ['Booth Theatre', 'Booth'],
+  ['the cell', 'cell'],
 ];
 
-// The old implementation, verbatim, so the two can be compared on real shapes.
-const oldToken = (venue) => String(venue || '').split(/[\s\-,—/]/)[0];
-
-test('CONTRACT: the token is never a function word — the shape that broke the never-worse promise', () => {
-  // Codex adversarial review, 2026-09-05: 'Theatre for a New Audience/Polonsky
-  // Shakespeare Center' returned 'for'. It skipped the generic 'Theatre' and
-  // landed on a preposition, which is strictly worse than what the old code
-  // produced. This is the guard for that whole class, not just that one string.
-  // CLAUDE.md rule 15: assert against the module's OWN exported table, never a
-  // restated copy. An audit (2026-09-05) found the copy that used to live here
-  // had already drifted — it was missing all 13 non-English and abbreviation
-  // stopwords, so deleting one from the real set would have passed.
-  for (const v of REAL_VENUES) {
-    const token = venueSearchToken(v);
-    assert.ok(
-      !STOPWORDS.has(token.toLowerCase()),
-      `venueSearchToken(${JSON.stringify(v)}) returned the stopword ${JSON.stringify(token)}`,
-    );
+test('CONTRACT: every stopword is skipped before a distinctive venue name', () => {
+  // Pin membership independently: iterating only the exported table would
+  // silently lose a case when an entry is deleted. This also guards redundant
+  // spellings such as "mt.", whose dotless form still excludes it, and "a",
+  // which the length floor already excludes.
+  assert.deepEqual(STOPWORDS, new Set([
+    'a', 'an', 'the', 'at', 'of', 'on', 'in', 'and', 'new',
+    'for', 'with', 'from', 'by', 'to', 'its',
+    'du', 'de', 'des', 'la', 'le', 'les', 'el', 'il', 'al', 'am',
+    'st', 'st.', 'ste', 'ste.', 'mt', 'mt.',
+  ]));
+  // Use the table as INPUT, with an independently specified output.
+  for (const word of STOPWORDS) {
+    const venue = `${word} Amsterdam Theatre`;
+    assert.equal(venueSearchToken(venue), 'Amsterdam', venue);
   }
   assert.equal(venueSearchToken('Theatre for a New Audience/Polonsky Shakespeare Center'), 'Audience');
 });
 
-test('CONTRACT: the token is never invented and is never a generic venue noun', () => {
-  // Same rule-15 point as above: use the module's exported GENERIC, not a copy.
-  // The copy that used to sit here had already gone stale, omitting
-  // cafe/salle/teatro/opera.
-  for (const v of REAL_VENUES) {
-    const token = venueSearchToken(v);
-    // The token must actually come FROM the venue — never invented.
-    assert.ok(v.toLowerCase().includes(token.toLowerCase()), `${token} is not a substring of ${v}`);
-    assert.ok(
-      !GENERIC.has(token.toLowerCase()),
-      `venueSearchToken(${JSON.stringify(v)}) returned the generic noun ${JSON.stringify(token)}, which matches every playbill.com/production page`,
-    );
+test('CONTRACT: every generic venue noun yields an empty token', () => {
+  assert.deepEqual(GENERIC, new Set([
+    'theatre', 'theater', 'theatres', 'theaters',
+    'stage', 'stages', 'center', 'centre', 'hall', 'house',
+    'studio', 'space', 'room', 'club', 'arts', 'complex', 'auditorium',
+    'cafe', 'salle', 'teatro', 'opera',
+  ]));
+  for (const word of GENERIC) {
+    const venue = `The ${word}`;
+    assert.equal(venueSearchToken(venue), '', venue);
   }
 });
 
-test('REGRESSION GUARD: the fix still changes the token for the known-bad venues', () => {
-  const changed = REAL_VENUES.filter((v) => venueSearchToken(v) !== oldToken(v));
-  // 'Booth Theatre' is the one deliberate no-op in the fixture — its first
-  // token was already the best single word available. If this figure collapses
-  // toward 0 a future edit has silently undone the fix, which is exactly the
-  // "absence of a signal looks safe" shape.
-  assert.ok(changed.length >= 10, `expected the fix to still improve >=10 real venues, got ${changed.length}`);
-  assert.equal(venueSearchToken('Booth Theatre'), oldToken('Booth Theatre'), 'Booth Theatre must stay a no-op');
+test('REGRESSION GUARD: real venues return the expected first distinctive token', () => {
+  // Merely differing from the old first-token result does not prove an
+  // improvement: choosing the LAST distinctive token passed that threshold.
+  // Pin every result, including venues that should stay unchanged.
+  for (const [venue, expected] of REAL_VENUE_CASES) {
+    assert.equal(venueSearchToken(venue), expected, venue);
+  }
 });
