@@ -326,3 +326,10 @@ test('planCompletion: paused with neither name still lands on a backlog-type sta
   const renamed = STATES.map((s) => (s.type === 'backlog' ? { ...s, name: 'Icebox' } : s));
   assert.equal(planCompletion({ status: 'paused', states: renamed }).stateName, 'Icebox');
 });
+
+test('paused reports and parked creates agree: Paused vs plain Backlog are chosen on purpose (BRO-2857)', () => {
+  const { pickStateForMode } = require('./linear-issue-create.js');
+  const states = [...STATES, PAUSED];
+  assert.equal(planCompletion({ status: 'paused', states }).stateName, 'Paused');
+  assert.equal(pickStateForMode(states, 'park').name, 'Backlog');
+});

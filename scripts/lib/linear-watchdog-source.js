@@ -361,7 +361,7 @@ async function fetchLinearWatchdogTasks(client, opts = {}) {
 // ── write-back leak detection (BRO-3390) ───────────────────────────────────
 //
 // THE SEAM. A dispatched session is supposed to finish by moving its Linear
-// card out of In Progress (linear-brain.js update --state Done, or linear-session.js report --status=paused; Linear has no Paused state). When
+// card out of In Progress (linear-brain.js update --state Done, or linear-session.js report --status=paused; a pause lands in Paused, or Backlog if the team has no such state). When
 // it doesn't, the job still writes `job-done` to the dispatch ledger, so the
 // work IS complete and the board says otherwise — the card sits In Progress
 // forever and the owner sees no progress. Measured 2026-09-15 across 327
