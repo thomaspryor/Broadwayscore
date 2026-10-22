@@ -358,3 +358,13 @@ test('buildAddShowPlan: each promoted row passes the add-show action', () => {
   assert.equal(shows[0].season, '2019-2020');
   assert.equal(shows[0].closingDate, '2020-03-16');
 });
+
+test('auditSeason (BRO-5851): a WOS first performance stored as openingDate fails the season', () => {
+  const row = (id, extra) => ({ id, title: id, venue: 'Trafalgar Studios', previewsStartDate: '2018-05-18', openingDate: '2018-05-18', closingDate: '2018-08-18', status: 'closed', category: 'west-end', market: 'west-end', season: SEASON, discoverySource: 'we-historical:wos', ...extra });
+  const shows = [row('killer-joe', { openingDateSource: 'whatsonstage-first-performance' }), row('consent', { openingDate: '2018-05-29', openingDateSource: 'human-correction' })];
+  const r = auditSeason({ shows, reviews: [], season: SEASON });
+  assert.equal(r.checks.opening.pass, false);
+  assert.deepEqual(r.checks.opening.rows, [{ showId: 'killer-joe', openingDate: '2018-05-18' }]);
+  assert.equal(r.pass, false);
+  assert.equal(auditSeason({ shows: [shows[1]], reviews: [], season: SEASON }).checks.opening.pass, true);
+});
