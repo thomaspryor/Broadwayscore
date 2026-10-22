@@ -75,7 +75,7 @@ const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 
-const { runSafeChecks, checksEnv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
+const { defaultDetail, tapDetail, runSafeChecks, checksEnv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
 const { checkLanded } = require('./landing-verify.js');
 const { isRunnableTestFile } = require('./merge-post-merge-test-gate.js');
 const { segmentHeads } = require('./land-train.js');
@@ -460,14 +460,6 @@ function defaultChecks({ cwd, changedFiles, interveningTests = [], recheckScope 
         } catch { logPath = null; }
         extra.push({ name, pass: false, detail: `${(opts.detail || defaultDetail)(err)}${logPath ? ` [full output: ${logPath}]` : ''}` });
       }
-    };
-    const defaultDetail = (err) => String(err.stderr || err.stdout || err.message).slice(0, 400);
-    // TAP output: the failing subtests are the signal, not the passing head.
-    const tapDetail = (err) => {
-      const out = String(err.stdout || '');
-      const failing = out.split('\n').filter(l => /^\s*not ok\b/.test(l)).map(l => l.trim());
-      const summary = `${err.stderr || ''}\n${out.split('\n').slice(-40).join('\n')}`.split('\n').filter(l => /FAILED|test floor|ENOBUFS|exceeded/.test(l)).slice(-1)[0] || '';
-      return [summary, ...failing.slice(0, 8), failing.length > 8 ? `… ${failing.length - 8} more` : ''].filter(Boolean).join(' | ').slice(0, 600) || defaultDetail(err);
     };
     // Syntax floor for shell — tier 3's node --check has no shell counterpart.
     for (const f of files.filter(f => /\.sh$/.test(f)).sort()) {

@@ -39,7 +39,7 @@ const { shallowFetchArgs } = require('./shallow-fetch-args.js');
 // SAFE_CHECK_FORMS matches on (CLAUDE.md §15 — one copy, reused here rather
 // than a second regex over the command string).
 const { isSafeCheckCommand, extractCheckPaths } = require('./check-paths.js');
-const { checksEnv, cardCheckArgv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
+const { defaultDetail, tapDetail, checksEnv, cardCheckArgv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
 const { refreshDataClone } = require('./data-clone-refresh.js');
 
 const DEFAULT_REPO = path.join(__dirname, '..', '..');
@@ -334,7 +334,7 @@ function runVerify(cwd, cmd, { attempts = 2, timeoutMs = CHECK_TIMEOUT_MS, prepa
       if (err.status == null && err.code) {
         return { status: 'unverifiable', detail: `command could not be started (${err.code}): ${argv[0]}` };
       }
-      last = String(err.stderr || err.stdout || err.message).slice(0, 400);
+      last = (argv.includes('--test') ? tapDetail : defaultDetail)(err);
     }
   }
   return { status: 'fail', detail: last };

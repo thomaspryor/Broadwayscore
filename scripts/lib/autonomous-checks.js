@@ -222,8 +222,11 @@ function decideChecks(changedFiles, existsFn, opts = {}) {
     if (colocatedTs !== f && existsFn(colocatedTs)) tsxTestFiles.add(colocatedTs);
     else if (colocatedMjs !== f && existsFn(colocatedMjs)) addMjs(colocatedMjs);
   }
-  if (testFiles.size) add('colocated-tests', ['node', '--test', ...[...testFiles].sort()]);
-  if (tsxTestFiles.size) add('colocated-tests-tsx', ['npx', 'tsx', '--test', ...[...tsxTestFiles].sort()]);
+  // Colocated tests are the changed files' own tests, so they are absolute on
+  // purpose (no baseline, unlike merged-tree-tests): a failure there is the
+  // branch's to fix. `tap: true` makes runSafeChecks report `not ok` lines.
+  if (testFiles.size) add('colocated-tests', ['node', '--test', ...[...testFiles].sort()], { tap: true });
+  if (tsxTestFiles.size) add('colocated-tests-tsx', ['npx', 'tsx', '--test', ...[...tsxTestFiles].sort()], { tap: true });
 
   // Syntax floor for tier-3 script edits: most scripts/ files have no
   // colocated test, and "it parses" is the cheapest true statement we can
@@ -638,10 +641,12 @@ function runSafeChecks(o) {
           cwd, stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf8',
           timeout: c.timeoutMs || CHECK_TIMEOUT_MS,
           env: c.build ? buildEnv : plainEnv,
+          maxBuffer: 256 * 1024 * 1024,
         });
         results.push({ name: c.name, pass: true });
       } catch (err) {
-        results.push({ name: c.name, pass: false, detail: String(err.stderr || err.stdout || err.message).slice(0, 400) });
+        if (err && err.code === 'ENOBUFS') err.stderr = `${err.stderr || ''}\ncheck output exceeded maxBuffer — the check was killed, this is NOT a verdict on the code`;
+        results.push({ name: c.name, pass: false, detail: (c.tap ? tapDetail : defaultDetail)(err) });
       }
     }
   } finally {
@@ -650,7 +655,53 @@ function runSafeChecks(o) {
   return results;
 }
 
+// BRO-5939: one place that turns a failed check's execFileSync error into the
+// short REASON a landing session reads. `node --test` folds each test file's
+// stderr into `#` comment lines on STDOUT, so the head of the output is the
+// TAP header plus any passing test's warning; the failure is a later
+// `not ok` line. Dependency rule (land-branch.js): node built-ins only.
+const defaultDetail = (err) => String((err && (err.stderr || err.stdout || err.message)) || '').slice(0, 400);
+
+// A file-level `not ok` (syntax error, crash) carries only `error: 'test
+// failed'` in its YAML block; the cause is the stderr `#` lines or an `error:`
+// / `message:` line near it. Return the best one-line cause after line i.
+function causeAfter(lines, i) {
+  for (let j = i + 1; j < Math.min(lines.length, i + 30); j++) {
+    if (/^\s*not ok\b|^\s*ok\b/.test(lines[j])) break;
+    const m = lines[j].match(/^\s*(?:error|message):\s*(.*)$/);
+    if (!m) continue;
+    let val = m[1].trim();
+    // `error: |-` is a YAML block scalar: the text is on the next line.
+    if (/^[|>][-+]?$/.test(val)) val = (lines[j + 1] || '').trim();
+    val = val.replace(/^['"]|['"]$/g, '').trim();
+    if (val && val !== 'test failed') return val.slice(0, 80);
+  }
+  // File-level crashes print the exception as `#` lines BEFORE the `not ok`.
+  for (let j = i - 1; j >= Math.max(0, i - 40); j--) {
+    if (/^\s*(?:not )?ok\b/.test(lines[j])) break;
+    const m = lines[j].match(/^#\s*((?:\w+\.)*\w*Error\b.*)$/);
+    if (m) return m[1].trim().slice(0, 80);
+  }
+  return '';
+}
+
+// TAP output: the failing subtests are the signal, not the passing head.
+const tapDetail = (err) => {
+  const out = String((err && err.stdout) || '');
+  const lines = out.split('\n');
+  const failing = [];
+  lines.forEach((l, i) => {
+    if (!/^\s*not ok\b/.test(l)) return;
+    const cause = causeAfter(lines, i);
+    failing.push(cause ? `${l.trim()} (${cause})` : l.trim());
+  });
+  const summary = `${(err && err.stderr) || ''}\n${lines.slice(-40).join('\n')}`.split('\n').filter(l => /FAILED|test floor|ENOBUFS|exceeded/.test(l)).slice(-1)[0] || '';
+  return [summary, ...failing.slice(0, 8), failing.length > 8 ? `… ${failing.length - 8} more` : ''].filter(Boolean).join(' | ').slice(0, 600) || defaultDetail(err);
+};
+
 module.exports = {
+  defaultDetail,
+  tapDetail,
   CHECK_TIMEOUT_MS,
   BUILD_TIMEOUT_MS,
   KEEP_ENV,
