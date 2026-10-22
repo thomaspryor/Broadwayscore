@@ -42,9 +42,11 @@ const BOX = {
   nine: 'Marquis Theatre, 1535 Broadway ($41-$126), 877-250-2929',
   godot: 'Studio 54, 254 W. 54th St. ($41-$111), 212-719-1300, closes July 5',
 };
-const column = (showId, fullText) => ({
+// Each column is dated inside its shows' runs: safeWriteReview quarantines a
+// row dated far from the show's opening (date_implausible) when shows.json exists, as in CI.
+const column = (showId, fullText, publishDate) => ({
   showId, outletId: 'wsj', outlet: 'The Wall Street Journal', criticName: 'Terry Teachout',
-  url: `https://www.wsj.com/articles/${showId}-column`, publishDate: '2011-11-11', contentTier: 'complete', fullText,
+  url: `https://www.wsj.com/articles/${showId}-column`, publishDate, contentTier: 'complete', fullText,
 });
 
 function fixture() {
@@ -54,14 +56,14 @@ function fixture() {
     fs.mkdirSync(path.dirname(path.join(root, rel)), { recursive: true });
     fs.writeFileSync(path.join(root, rel), JSON.stringify(obj, null, 2));
   };
-  put('godspell-2011/wsj--terry-teachout.json', column('godspell-2011', `${BOX.godspell} ${GODSPELL} ${BOX.venus} ${VENUS}`));
+  put('godspell-2011/wsj--terry-teachout.json', column('godspell-2011', `${BOX.godspell} ${GODSPELL} ${BOX.venus} ${VENUS}`, '2011-11-11'));
   put('venus-in-fur-2011/wsj--terry-teachout.json', {
     showId: 'venus-in-fur-2011', outletId: 'wsj', outlet: 'The Wall Street Journal', criticName: 'Terry Teachout',
     url: 'https://www.wsj.com/articles/godspell-2011-column', publishDate: '2011-11-11', contentTier: 'truncated', fullText: VENUS.slice(0, 220),
   });
-  put('act-one-2014/wsj--terry-teachout.json', column('act-one-2014', `${BOX.actone} ${ACTONE} ${BOX.mice} ${MICE}`));
+  put('act-one-2014/wsj--terry-teachout.json', column('act-one-2014', `${BOX.actone} ${ACTONE} ${BOX.mice} ${MICE}`, '2014-04-18'));
   // The 9 to 5 box sits in a cluster before both reviews: ambiguous, not splittable.
-  put('waiting-for-godot-2009/wsj--terry-teachout.json', column('waiting-for-godot-2009', `${BOX.godot} ${BOX.nine} ${GODOT} ${NINE}`));
+  put('waiting-for-godot-2009/wsj--terry-teachout.json', column('waiting-for-godot-2009', `${BOX.godot} ${BOX.nine} ${GODOT} ${NINE}`, '2009-05-01'));
   const showsPath = path.join(dir, 'show-list-fixture.json');
   fs.writeFileSync(showsPath, JSON.stringify({ shows: SHOWS }));
   return { dir, root, showsPath };
@@ -117,6 +119,7 @@ test('of-mice-and-men-2014: a Teachout row is created from the act-one column, w
   assert.equal(row.fullText, MICE.trim(), 'exactly the Of Mice and Men section');
   assert.ok(row.multiShowSource, 'multiShowSource written');
   assert.equal(row.multiShowSectionCopy.fromShowId, 'act-one-2014');
+  assert.equal(row.publishDate, '2014-04-18');
 });
 
 test('9-to-5-2009: a clustered venue box refuses and writes nothing', (t) => {
