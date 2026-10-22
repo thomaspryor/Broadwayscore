@@ -85,6 +85,7 @@ const ROOT = process.cwd();
 // Resolved via the shared helper: a plain (non-git) data/review-texts copy goes stale
 // (BRO-4500: 3 files vs 15 in the live clone mid-opening) and must not be trusted.
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
+const { findSameArticleTwin } = require('./lib/same-article-twin');
 const REVIEW_TEXTS_ROOT = resolveReviewTextsDir(process.env, ROOT);
 const REVIEW_TEXTS_DIR = path.join(REVIEW_TEXTS_ROOT, showId);
 const REVIEWS_JSON = path.join(ROOT, 'data', 'reviews.json');
@@ -385,6 +386,10 @@ if (reviewsData) {
     if (fileInReviews(data)) {
       inReviews++;
       info(`${file} — found in reviews.json`);
+    } else if (findSameArticleTwin(data, includable.map((f) => parsed.get(f)).filter((d) => d && fileInReviews(d)))) {
+      // Rebuild SAME-ARTICLE TWIN keeps the first near-identical file per outlet (BRO-5726).
+      inReviews++;
+      info(`${file} — deduped by the rebuild (same text as another file at ${data.outletId})`);
     } else {
       fail(`${file} — scored but MISSING from reviews.json (rebuild needed)`);
       missingFromReviews++;

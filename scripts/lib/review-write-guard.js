@@ -2547,8 +2547,9 @@ function safeWriteReview(filePath, newData, options = {}) {
       } else if (newData.showId !== dirName) {
         // Don't auto-correct: a mismatch means the file is misfiled or carries
         // a stale id after a move — both need eyes, not silent rewriting.
-        // rebuild groups by data.showId, so this file is being counted under a
-        // show it doesn't live in.
+        // rebuild files it under the directory show and ignores data.showId
+        // (rebuild-all-reviews.js "ALWAYS use directory showId"), but other
+        // readers trust data.showId, so the two disagreeing is still a defect.
         console.warn(`[review-write-guard] showId mismatch in ${path.basename(filePath)}: field says "${newData.showId}" but file lives in "${dirName}"`);
       }
     }
@@ -3432,9 +3433,9 @@ function safeRenameReview(srcPath, dstPath, options = {}) {
       console.log(`[review-write-guard] stripped self-referential ${field} on rename → ${dstBasename}`);
     }
   }
-  // Re-stamp showId to the destination show dir. rebuild-all-reviews groups by
-  // data.showId (not by directory), so a cross-show move that keeps the source
-  // id verbatim files the review under the WRONG show — and validate-review-
+  // Re-stamp showId to the destination show dir. rebuild-all-reviews files by
+  // directory (not data.showId), but a cross-show move that keeps the source
+  // id verbatim leaves a wrong id for every other reader — and validate-review-
   // texts won't catch it (it derives its key from the directory). The dir name
   // is the show id by corpus layout (same rule as safeWriteReview's backstop);
   // skip dirs whose own name can't be a show id (test/tmp/hidden).
