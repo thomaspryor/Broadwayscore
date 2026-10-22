@@ -1454,5 +1454,36 @@
       }
     ],
     "queuedAt": "2026-10-22T17:39:49.959Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5901-inclusion-diff",
+    "title": "Landing blocked: lint-workflows red on land/bro-5901-inclusion-diff",
+    "description": "land.yml did not land land/bro-5901-inclusion-diff: the lint-workflows gate went red at 1c25e61389. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39823444261",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5901-inclusion-diff"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "1c25e61389029d1f610910cbb51b3040747f3a71"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39823444261"
+      }
+    ],
+    "queuedAt": "2026-10-22T18:00:23.175Z"
   }
 ]
