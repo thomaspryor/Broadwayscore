@@ -288,6 +288,7 @@ function isIsoDay(v) {
  * @param {string} [options.todayIso]
  * @param {(venue: string) => boolean} [options.isKnownVenue]
  * @param {{isNonTheaterContent?: Function, isOneNightShow?: Function}} [options.gates]
+ * @param {boolean} [options.allowFirstDateOnly=false] - Existing undated rows only.
  * @returns {{ confirmed: boolean, source: string|null, reason: string }}
  */
 function decideVenueListingPromotion(candidate, options = {}) {
@@ -295,6 +296,7 @@ function decideVenueListingPromotion(candidate, options = {}) {
     todayIso = new Date().toISOString().slice(0, 10),
     isKnownVenue = isKnownOffBroadwayVenue,
     gates = {},
+    allowFirstDateOnly = false,
   } = options;
   const no = reason => ({ confirmed: false, source: null, reason });
   if (!candidate || !candidate.title || !normalizeTitle(candidate.title)) return no('candidate missing title');
@@ -312,13 +314,16 @@ function decideVenueListingPromotion(candidate, options = {}) {
   }
   const first = candidate.listingFirstDate;
   const last = candidate.listingLastDate;
-  if (!isIsoDay(first) || !isIsoDay(last)) return no('venue listing has no run dates (undated reader)');
+  // An already catalogued stub can take an explicit future first performance
+  // even when the venue has not announced a closing date. New rows stay strict.
+  const firstOnly = allowFirstDateOnly && last == null && !candidate.listingFirstDateIsNext;
+  if (!isIsoDay(first) || (!isIsoDay(last) && !firstOnly)) return no('venue listing has no run dates (undated reader)');
   if (last < first) return no(`listing dates out of order (${first} > ${last})`);
-  if (last < todayIso) return no(`run already ended (${last})`);
+  if ((firstOnly ? first : last) < todayIso) return no(`run already ended (${firstOnly ? first : last})`);
   const lead = (Date.parse(`${first}T00:00:00Z`) - Date.parse(`${todayIso}T00:00:00Z`)) / DAY_MS;
   if (lead > MAX_LISTING_LEAD_DAYS) return no(`first performance ${first} is more than ${MAX_LISTING_LEAD_DAYS}d out`);
   const count = candidate.listingPerformanceCount;
-  const spanDays = (Date.parse(`${last}T00:00:00Z`) - Date.parse(`${first}T00:00:00Z`)) / DAY_MS;
+  const spanDays = firstOnly ? 0 : (Date.parse(`${last}T00:00:00Z`) - Date.parse(`${first}T00:00:00Z`)) / DAY_MS;
   if (typeof count === 'number') {
     if (count < MIN_LISTING_PERFORMANCES) return no(`only ${count} performance(s) listed — a short booking, not a run`);
     // A handful of dates spread over weeks is a recurring night (a monthly
@@ -329,7 +334,7 @@ function decideVenueListingPromotion(candidate, options = {}) {
     }
   } else if (first === last) {
     return no(`one-night event (${first})`);
-  } else if (spanDays < MIN_UNCOUNTED_SPAN_DAYS) {
+  } else if (!firstOnly && spanDays < MIN_UNCOUNTED_SPAN_DAYS) {
     return no(`listed ${first} to ${last} only — a short booking, not a run`);
   }
 
@@ -340,7 +345,7 @@ function decideVenueListingPromotion(candidate, options = {}) {
   return {
     confirmed: true,
     source: 'venue-listing',
-    reason: `${evidence}: ${first} to ${last}${typeof count === 'number' ? `, ${count} performances` : ''}`,
+    reason: `${evidence}: ${first}${firstOnly ? ' (first performance only)' : ` to ${last}`}${typeof count === 'number' ? `, ${count} performances` : ''}`,
   };
 }
 

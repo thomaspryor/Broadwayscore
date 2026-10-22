@@ -12,7 +12,7 @@
  *      safe defaults (status:'announced', all dates null); TheaterMania or
  *      venue-listing confirmations carry their dates and the status those
  *      dates imply (statusFromDates)
- *   4. De-dupe against existing shows.json by id/slug — skip if already present
+ *   4. De-dupe by id/slug; confirmed listings date undated announced OB stubs
  *   5. Atomic-write shows.json (via scripts/lib/atomic-shows-write.js)
  *   6. Append promotion log to data/audit/ob-promotion-log.jsonl
  *
@@ -59,7 +59,8 @@ const { recordParseResult } = require('./lib/source-last-success');
 const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
 const { decideReviewThresholdPromotion } = require('./lib/review-threshold');
 const { decideUkFlagshipPromotion, stageUkRegionalCandidates, ukFlagshipShows, findSameProduction } = require('./lib/uk-regional-guardian');
-const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { createShowsWriteGuard } = require('./lib/shows-write-guard');
+const { datedBackfillFor } = require('./lib/ob-venue-date-backfill');
 const { productionIdYear } = require('./lib/todaytix-dates');
 const { venuesMatch } = require('./lib/deduplication');
 
@@ -93,43 +94,10 @@ const PROMOTION_LOG = path.join(__dirname, '..', 'data', 'audit', 'ob-promotion-
 // same-run targeted review scrape without parsing stdout.
 const LAST_PROMOTION_FILE = path.join(__dirname, '..', 'data', 'audit', 'last-promotion-ids.json');
 
-const args = process.argv.slice(2);
-const dryRun = args.includes('--dry-run');
-const adminPromoteAll = args.includes('--admin-promote-all');
-// --regional-only: the DAILY CI path (scrape-new-aggregators.yml). Considers
-// category:'regional' candidates AND off-broadway candidates sourced directly
-// from a PV/BWW roundup page (owner rule 2026-08-13) — no Playbill-OB/Lortel
-// fetches for either, no venue-page-sourced OB promotions (those keep the
-// operator-run path via health-check). Both classes validate off the
-// aggregator roundup page itself (user rule 2026-07-08: a PV Verdict / BWW
-// Review Roundup page IS the go-live signal) — for the regional class, the
-// roundup must ALSO name 3+ distinct review outlets (owner rule 2026-07-30,
-// BRO-125: see decideRegionalPromotion / scripts/lib/review-threshold.js).
-// Name kept for backward compat with existing CI invocations even though it
-// now covers a second class.
-const regionalOnly = args.includes('--regional-only');
-// --email: send the owner a "went live" notification for promoted regional /
-// off-broadway-via-roundup shows (best-effort — the promotion does NOT depend
-// on delivery).
-const emailAlerts = args.includes('--email');
-const adminForceArgs = args
-  .filter(a => a.startsWith('--admin-force='))
-  .map(a => a.split('=').slice(1).join('=').toLowerCase());
-// --only-hash=<candidateHash>: scope this run to ONE staged candidate.
-// add-requested-show.js (task #722) stages exactly one candidate per
-// dispatch and must promote only that one — without this, a single
-// feedback-driven request would sweep and promote every OTHER already-staged
-// regional candidate too (ship-check adversarial review caught this: the
-// default --regional-only loop below iterates the whole staging file).
-const onlyHash = args.find(a => a.startsWith('--only-hash='))?.split('=')[1] || null;
-
-function logEntry(entry) {
-  // A --dry-run must not append to the tracked promotion log (BRO-4396: every
-  // dry run left data/audit/*promotion-log.jsonl modified in the checkout).
-  if (process.argv.includes('--dry-run')) return;
+function appendLogEntry(entry, promotionLog = PROMOTION_LOG) {
   try {
-    fs.mkdirSync(path.dirname(PROMOTION_LOG), { recursive: true });
-    fs.appendFileSync(PROMOTION_LOG, JSON.stringify({ timestamp: new Date().toISOString(), ...entry }) + '\n');
+    fs.mkdirSync(path.dirname(promotionLog), { recursive: true });
+    fs.appendFileSync(promotionLog, JSON.stringify({ timestamp: new Date().toISOString(), ...entry }) + '\n');
   } catch (e) {
     console.warn(`Failed to append promotion log: ${e.message}`);
   }
@@ -681,37 +649,74 @@ function buildRegionalShowEntry(candidate) {
   };
 }
 
-function writeLastPromotionFile(promoted) {
+function writeLastPromotionFile(promoted, lastPromotionFile = LAST_PROMOTION_FILE) {
   const out = {
     generatedAt: new Date().toISOString(),
     promoted: promoted.map(p => ({ id: p.entry.id, source: p.candidate.source, sourceUrl: p.candidate.sourceUrl || null })),
   };
-  const tmp = LAST_PROMOTION_FILE + '.tmp.' + process.pid;
+  const tmp = lastPromotionFile + '.tmp.' + process.pid;
   fs.writeFileSync(tmp, JSON.stringify(out, null, 2) + '\n');
-  fs.renameSync(tmp, LAST_PROMOTION_FILE);
+  fs.renameSync(tmp, lastPromotionFile);
 }
 
-async function main() {
+// Optional paths and source readers keep integration runs isolated from production data.
+async function main(args = process.argv.slice(2), io = {}) {
+  const dryRun = args.includes('--dry-run');
+  const adminPromoteAll = args.includes('--admin-promote-all');
+  // --regional-only: the DAILY CI path (scrape-new-aggregators.yml). Considers
+  // category:'regional' candidates AND off-broadway candidates sourced directly
+  // from a PV/BWW roundup page (owner rule 2026-08-13) — no Playbill-OB/Lortel
+  // fetches for either, no venue-page-sourced OB promotions (those keep the
+  // operator-run path via health-check). Both classes validate off the
+  // aggregator roundup page itself (user rule 2026-07-08: a PV Verdict / BWW
+  // Review Roundup page IS the go-live signal) — for the regional class, the
+  // roundup must ALSO name 3+ distinct review outlets (owner rule 2026-07-30,
+  // BRO-125: see decideRegionalPromotion / scripts/lib/review-threshold.js).
+  // Name kept for backward compat with existing CI invocations even though it
+  // now covers a second class.
+  const regionalOnly = args.includes('--regional-only');
+  // --email: send the owner a "went live" notification for promoted regional /
+  // off-broadway-via-roundup shows (best-effort — the promotion does NOT depend
+  // on delivery).
+  const emailAlerts = args.includes('--email');
+  const adminForceArgs = args
+    .filter(a => a.startsWith('--admin-force='))
+    .map(a => a.split('=').slice(1).join('=').toLowerCase());
+  // --only-hash=<candidateHash>: scope this run to ONE staged candidate.
+  // add-requested-show.js (task #722) stages exactly one candidate per
+  // dispatch and must promote only that one — without this, a single
+  // feedback-driven request would sweep and promote every OTHER already-staged
+  // regional candidate too (ship-check adversarial review caught this: the
+  // default --regional-only loop below iterates the whole staging file).
+  const onlyHash = args.find(a => a.startsWith('--only-hash='))?.split('=')[1] || null;
+
+  const showsPath = io.showsPath || SHOWS_FILE;
+  const { loadShows, saveShows } = createShowsWriteGuard(showsPath, { dryRun });
+  // Dry runs never append to the audit log, even with injected argv.
+  const logEntry = entry => { if (!dryRun) appendLogEntry(entry, io.promotionLog); };
+  const recordPromotions = promoted => writeLastPromotionFile(promoted, io.lastPromotionFile);
+  const todayIso = io.todayIso || new Date().toISOString().slice(0, 10);
+
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
-  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+  if (hasHelpFlag(args)) { console.log(USAGE); return; }
   // Flagship UK houses the Guardian feed found missing (BRO-4923) join the
   // staging file before it is read, so the one regional loop below handles
   // them. Candidates the audit already matched are not in its report.
   let ukRows = [];
   if (regionalOnly) {
     try {
-      const rd = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'audit', 'reverse-discovery-candidates.json'), 'utf8'));
+      const rd = JSON.parse(fs.readFileSync(io.reverseDiscoveryPath || path.join(__dirname, '..', 'data', 'audit', 'reverse-discovery-candidates.json'), 'utf8'));
       // Rows for shows already in shows.json are dropped here: the audit report
       // is refreshed every 6h, so without this they would re-stage and re-skip daily.
       const have = ukFlagshipShows(loadShows().shows);
       ukRows = stageUkRegionalCandidates(rd.candidates).filter(r => !findSameProduction(r, have));
-      if (ukRows.length && !dryRun) writeStagingCandidates(ukRows);
+      if (ukRows.length && !dryRun) writeStagingCandidates(ukRows, io.stagingPath);
       if (ukRows.length) console.log(`${dryRun ? 'Would stage' : 'Staged'} ${ukRows.length} flagship-UK Guardian candidate(s): ${ukRows.map(r => r.title).join('; ')}`);
     } catch (e) {
       if (e.code !== 'ENOENT') console.warn(`UK Guardian staging skipped: ${e.message}`);
     }
   }
-  let staged = loadStaging();
+  let staged = loadStaging(io.stagingPath);
   // --dry-run writes nothing, so preview the Guardian rows in memory.
   if (dryRun && ukRows.length) {
     const have = new Set(staged.map(c => c.candidateHash));
@@ -720,7 +725,7 @@ async function main() {
   // Reset the promotion record up front so a crash mid-run can never leave a
   // STALE file claiming yesterday's promotions happened again (the workflow
   // reads it to decide targeted scrapes and commits it).
-  if (!dryRun) writeLastPromotionFile([]);
+  if (!dryRun) recordPromotions([]);
   if (staged.length === 0) {
     console.log('No staged candidates to promote.');
     return;
@@ -732,7 +737,7 @@ async function main() {
   try {
     showsData = loadShows();
   } catch (e) {
-    console.error(`Failed to load ${SHOWS_FILE}: ${e.message}`);
+    console.error(`Failed to load ${showsPath}: ${e.message}`);
     process.exit(1);
   }
   const existingIds = new Set(showsData.shows.map(s => s.id));
@@ -792,7 +797,7 @@ async function main() {
   let theatermaniaEntries = [];
   if (!adminPromoteAll && staged.some(isVenuePageOB)) {
     try {
-      const tm = await fetchTmOffBroadway();
+      const tm = await (io.fetchTmOffBroadway || fetchTmOffBroadway)();
       for (const row of tm.rows) {
         const r = parseTmOffBroadwayRow(row, { venuesById: tm.venuesById, genresById: tm.genresById });
         if (!r.skip) theatermaniaEntries.push(r.candidate);
@@ -814,7 +819,17 @@ async function main() {
   };
 
   const promoted = [];
+  const backfills = [];
   const skipped = [];
+  const result = { promoted, backfills, skipped };
+  const backfillDuplicate = (candidate, match) => {
+    if (!isVenuePageOB(candidate)) return;
+    const row = showsData.shows.find(s => s.id === match.match.id);
+    const patch = datedBackfillFor(candidate, row, { todayIso, gates: getDiscoveryGates() });
+    if (!patch) return;
+    Object.assign(row, patch);
+    backfills.push({ candidate, id: row.id, patch });
+  };
   const remainingStaged = [];
   // Guardian-triggered rows are matched by production (house + title + run
   // dates), not the generic title/venue dedup, which has no date check and would
@@ -856,6 +871,7 @@ async function main() {
     // AND word-order variants ("Musical Parody" vs "Parody Musical").
     const existingMatch = findDuplicate(c);
     if (existingMatch) {
+      backfillDuplicate(c, existingMatch);
       skipped.push({ candidate: c, reason: `already in shows.json as ${existingMatch.match.id} (${existingMatch.reason})` });
       logEntry({ kind: 'skip-duplicate', title: c.title, venue: c.venue, matchedTo: existingMatch.match.id, matchReason: existingMatch.reason });
       continue;
@@ -943,6 +959,7 @@ async function main() {
     if (confirmed) {
       const renamedMatch = findDuplicate(c);
       if (renamedMatch) {
+        backfillDuplicate(c, renamedMatch);
         skipped.push({ candidate: c, reason: `already in shows.json as ${renamedMatch.match.id} (${renamedMatch.reason}, after ${source} rename)` });
         logEntry({ kind: 'skip-duplicate', title: c.title, venue: c.venue, matchedTo: renamedMatch.match.id, matchReason: renamedMatch.reason });
         continue;
@@ -1040,10 +1057,14 @@ async function main() {
     throw e;
   }
 
+  if (backfills.length) {
+    console.log(`Dating ${backfills.length} existing undated row(s):`);
+    for (const b of backfills) console.log(`  = ${b.id}: ${JSON.stringify(b.patch)}`);
+  }
   if (dryRun) {
     console.log('');
     console.log('(dry-run: no writes)');
-    return;
+    return result;
   }
 
   // Staging rewrite must NOT be gated on promotions: dedup-matched entries
@@ -1065,20 +1086,20 @@ async function main() {
     const removedHashes = new Set(
       staged.filter((c) => !remainingHashes.has(c.candidateHash)).map((c) => c.candidateHash)
     );
-    const next = updateStaging((current) => current.filter((c) => !removedHashes.has(c.candidateHash)));
+    const next = updateStaging((current) => current.filter((c) => !removedHashes.has(c.candidateHash)), io.stagingPath);
     console.log(`Staging file: ${next.length} unpromoted candidates remain.`);
   };
 
-  if (promoted.length === 0) {
+  if (promoted.length === 0 && backfills.length === 0) {
     console.log('Nothing to promote; shows.json unchanged.');
     if (remainingStaged.length !== staged.length) rewriteStaging();
-    return;
+    return result;
   }
 
   // Append to shows.json and atomic-write
   for (const p of promoted) showsData.shows.push(p.entry);
   try {
-    const r = saveShows(showsData);
+    const r = saveShows(showsData, { reason: `promote-ob-venue-candidates: ${promoted.length} promotion(s), ${backfills.length} dated backfill(s)` });
     console.log(`Wrote shows.json: ${r.lineCountBefore} → ${r.lineCountAfter} lines.`);
   } catch (e) {
     if (e instanceof AtomicWriteShrinkError) {
@@ -1091,12 +1112,16 @@ async function main() {
   // Record promotions ONLY after the shows.json write landed — written before,
   // a shrink-gate abort would leave a file claiming promotions that never
   // happened, and the workflow would targeted-scrape ghosts (QA 2026-07-08).
-  writeLastPromotionFile(promoted);
+  recordPromotions(promoted);
 
   // An over-cap abort or failed save must never claim successful promotions.
   // Regional and aggregator-roundup reviewCount is the actual threshold count; other sources omit it.
   for (const p of promoted) {
     logEntry({ kind: 'promote', title: p.candidate.title, venue: p.candidate.venue, id: p.entry.id, confirmationSource: p.confirmationSource, reviewCount: (p.candidate.category === 'regional' || p.confirmationSource === 'aggregator-roundup') ? p.candidate.reviewCount : undefined });
+  }
+
+  for (const b of backfills) {
+    logEntry({ kind: 'backfill-dates', title: b.candidate.title, venue: b.candidate.venue, id: b.id, set: b.patch, source: b.candidate.source, sourceUrl: b.candidate.listingUrl || null });
   }
 
   // Rewrite staging file with only the unpromoted candidates.
@@ -1165,6 +1190,7 @@ async function main() {
       }
     }
   }
+  return result;
 }
 
 if (require.main === module) {
@@ -1173,7 +1199,7 @@ if (require.main === module) {
     // Self-monitoring: a silently-failing daily promotion means shows never go
     // live and nobody notices (the CI step is continue-on-error). Email the
     // failure when --email is on; best-effort.
-    if (emailAlerts) {
+    if (process.argv.includes('--email')) {
       try {
         const { sendEmailAlert } = require('./lib/discord-notify');
         await sendEmailAlert({
@@ -1187,4 +1213,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildShowEntry, statusFromDates, findExistingOB, applyConfirmationDates, resolveCandidateCategory, buildRegionalShowEntry, decideRegionalPromotion, decideOffBroadwayAggregatorPromotion, buildOffBroadwayAggregatorShowEntry, findExistingMatch };
+module.exports = { main, buildShowEntry, statusFromDates, findExistingOB, applyConfirmationDates, resolveCandidateCategory, buildRegionalShowEntry, decideRegionalPromotion, decideOffBroadwayAggregatorPromotion, buildOffBroadwayAggregatorShowEntry, findExistingMatch };

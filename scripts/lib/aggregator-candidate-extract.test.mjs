@@ -466,6 +466,21 @@ test('pruneStagedCandidates tolerates junk input + missing shows', () => {
   assert.deepEqual(r.kept.map(c => c.title), ['Real Show']);
 });
 
+test('pruneStagedCandidates leaves confirmed dates for the OB promoter, then prunes after backfill', () => {
+  const row = { id: 'wild-rose-off-broadway-2026', title: 'Wild Rose', venue: 'New York Theatre Workshop', category: 'off-broadway', status: 'announced', previewsStartDate: null, openingDate: null, closingDate: null };
+  const c = { title: row.title, venue: row.venue, category: 'off-broadway', source: 'venue-page:new-york-theatre-workshop', listingFirstDate: '2026-11-24', listingLastDate: '2027-01-10' };
+  const options = { todayIso: '2026-09-30' };
+  assert.deepEqual(pruneStagedCandidates([c], [row], options), { kept: [c], pruned: [] });
+  for (const changed of [
+    { ...row, previewsStartDate: '2026-11-24' }, { ...row, status: 'upcoming' }, { ...row, id: 'wild-rose-off-broadway-2024' },
+  ]) {
+    assert.deepEqual(pruneStagedCandidates([c], [changed], options).kept, []);
+  }
+  for (const changed of [{ ...c, source: 'bww-roundup' }, { ...c, listingEvidence: 'needs-corroboration' }]) {
+    assert.deepEqual(pruneStagedCandidates([changed], [row], options).kept, []);
+  }
+});
+
 test('low-confidence PV entries are not new candidates', () => {
   const r = classifyCandidate({
     source: 'playbill-verdict',
