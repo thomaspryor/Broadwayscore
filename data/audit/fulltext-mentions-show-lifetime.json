@@ -1,21 +1,10 @@
 {
-  "updatedAt": "2026-10-22T18:37:59.388Z",
-  "scanned": 2701,
-  "showsWithViolations": 365,
-  "totalViolations": 567,
-  "newSinceLastRun": 10,
-  "newViolationKeys": [
-    "take-me-out-2022::variety--frank-rizzo.json",
-    "sweat-2017::newsday--linda-winer.json",
-    "sweat-2017::timeout--david-cote.json",
-    "macbeth-2013::northjerseycom--robert-feldberg.json",
-    "macbeth-2013::nydailynews--joe-dziemianowicz.json",
-    "the-enormous-crocodile-west-end-2026::guardian--chris-wiegand.json",
-    "operation-mincemeat-west-end-2024::guardian--emma-john.json",
-    "firewing-off-west-end-2026::guardian--arifa-akbar.json",
-    "what-the-animals-say-off-west-end-2026::reviewsgate--william-russell.json",
-    "dog-mom-off-west-end-2026::firstnightmagazine--unknown.json"
-  ],
+  "updatedAt": "2026-10-22T19:32:06.856Z",
+  "scanned": 2717,
+  "showsWithViolations": 364,
+  "totalViolations": 566,
+  "newSinceLastRun": 0,
+  "newViolationKeys": [],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
     "schmigadoon-2026::nytimes--jesse-green.json",
@@ -386,7 +375,6 @@
     "dear-liar-off-west-end-2026::guardian--david-jays.json",
     "the-outsiders-tour-2025::the-rapidian--john-kissane.json",
     "the-world-is-full-of-married-men-off-west-end-2026::thestage--dave-fargnoli.json",
-    "a-world-elsewhere-off-west-end-2026::guardian--miriam-gillinson.json",
     "youre-so-special-off-west-end-2026::thestage--holly-omahony.json",
     "palesteenian-off-west-end-2026::guardian--arifa-akbar.json",
     "the-score-regional-2026::standard--tim-bano.json",
@@ -8412,30 +8400,6 @@
       ]
     },
     {
-      "showId": "a-world-elsewhere-off-west-end-2026",
-      "title": "A World Elsewhere",
-      "openingDate": "2026-07-25",
-      "message": "guardian/Miriam Gillinson (guardian--miriam-gillinson.json) SHIPPED but fullText never mentions 'A World Elsewhere' (2252 chars, textIssues flag set): https://www.theguardian.com/stage/2026/jul/31/a-world-elsewhere-review-sam-wanamaker-theatre-globe\n⚠️  thestage/Oliver Jones (thestage--oliver-jones.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/a-world-elsewhere-review-splendid-productions",
-      "violations": [
-        {
-          "filename": "guardian--miriam-gillinson.json",
-          "url": "https://www.theguardian.com/stage/2026/jul/31/a-world-elsewhere-review-sam-wanamaker-theatre-globe",
-          "outletId": "guardian",
-          "criticName": "Miriam Gillinson",
-          "haystackLength": 2252,
-          "textIssuesFlag": true,
-          "triage": {
-            "bucket": "truncated",
-            "evidence": [
-              "contentTier=truncated"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        }
-      ]
-    },
-    {
       "showId": "youre-so-special-off-west-end-2026",
       "title": "You're So Special",
       "openingDate": "2026-09-08",
@@ -12581,12 +12545,12 @@
     }
   ],
   "triage": {
-    "total": 567,
+    "total": 566,
     "counts": {
       "excerpt": 160,
       "wrong-production": 12,
       "unresolved": 317,
-      "truncated": 78
+      "truncated": 77
     },
     "outletPlans": [
       {
@@ -14055,10 +14019,10 @@
       },
       {
         "outletId": "guardian",
-        "total": 89,
+        "total": 88,
         "counts": {
           "unresolved": 66,
-          "truncated": 22,
+          "truncated": 21,
           "excerpt": 1
         },
         "requiresArticleReview": true,
@@ -14119,15 +14083,6 @@
           },
           {
             "file": "a-tupperware-of-ashes-west-end-2024/guardian--anya-ryan.json",
-            "bucket": "truncated",
-            "evidence": [
-              "contentTier=truncated"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "a-world-elsewhere-off-west-end-2026/guardian--miriam-gillinson.json",
             "bucket": "truncated",
             "evidence": [
               "contentTier=truncated"
