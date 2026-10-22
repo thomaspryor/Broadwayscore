@@ -893,6 +893,37 @@
     "queuedAt": "2026-10-22T18:00:23.175Z"
   },
   {
+    "conditionKey": "land:land/bro-5962-health-failure-streak",
+    "title": "Landing blocked: rebase red on land/bro-5962-health-failure-streak",
+    "description": "land.yml did not land land/bro-5962-health-failure-streak: the rebase gate went red at 87bdb10ad5. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5962-health-failure-streak @ 87bdb10ad5 (origin/land/bro-5962-health-failure-streak) → origin/main @ f0c23bf11d REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 166a71f048: Rebasing (1/1) error: could not apply 87bdb10ad5f... fix(health): flag scheduled workflows failing their last 3 runs; root-cause 6 dead workflows (BRO-5962) hint: Resolve all conflicts manuall Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39801400516",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5962-health-failure-streak"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "87bdb10ad5ff5b9cb02ffbf1471ec59870033f3b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39801400516"
+      }
+    ],
+    "queuedAt": "2026-10-22T18:48:34.050Z"
+  },
+  {
     "conditionKey": "review-gap:opening-window:billy-crystal-860-2026",
     "title": "Review gap — \"Billy Crystal 860\" missing 1 cited review(s)",
     "description": "Billy Crystal 860 (billy-crystal-860-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=billy-crystal-860-2026 --checkpoint --ingest-missing",
@@ -947,36 +978,5 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-22T18:21:15.157Z"
-  },
-  {
-    "conditionKey": "land:land/bro-5962-health-failure-streak",
-    "title": "Landing blocked: rebase red on land/bro-5962-health-failure-streak",
-    "description": "land.yml did not land land/bro-5962-health-failure-streak: the rebase gate went red at 87bdb10ad5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39830190442",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/bro-5962-health-failure-streak"
-      },
-      {
-        "name": "gate",
-        "value": "rebase"
-      },
-      {
-        "name": "tip",
-        "value": "87bdb10ad5ff5b9cb02ffbf1471ec59870033f3b"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39830190442"
-      }
-    ],
-    "queuedAt": "2026-10-22T18:21:00.263Z"
   }
 ]
