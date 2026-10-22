@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: asserts one-way floors (no show drops below its backfilled count), not exact facts; review-texts source is absent from most checkouts.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
