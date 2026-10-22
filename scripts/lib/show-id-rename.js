@@ -814,6 +814,8 @@ function planMove(plan, g, ctx, handled) {
     const from = path.join(g.abs, name);
     const toName = isGlob ? name.replace(ctx.oldId, ctx.newId) : newName;
     const to = path.join(g.abs, toName);
+    // A kept old copy next to the renamed one is the finished state, not a pending move.
+    if (entry.keepOldCopy && exists(to) && plan.resume) { plan.skipped.push({ path: disp(name), reason: 'old copy kept' }); continue; }
     if (exists(to)) { plan.refusals.push(`${disp(toName)} already exists — cannot move ${name} onto it`); plan.ok = false; }
     const rel = path.relative(g.root, from);
     const isDirMove = isDir(from);
@@ -838,6 +840,7 @@ function planMove(plan, g, ctx, handled) {
       kind: 'move', repo: entry.repo, root: g.root, path: disp(name), from, to, toPath: disp(toName),
       relFrom: rel, relTo: path.relative(g.root, to), isDir: isDirMove, method: tracked ? 'git mv' : 'rename',
       writeGuard: entry.writeGuard || 'atomic', inner, generated: entry.generated || null,
+      keepOldCopy: Boolean(entry.keepOldCopy),
     });
   }
 }
@@ -871,7 +874,11 @@ function writeThroughGuard(change, doc, originalText) {
 }
 
 function moveTree(move) {
-  if (move.method === 'git mv') {
+  if (move.keepOldCopy) {
+    fs.mkdirSync(path.dirname(move.to), { recursive: true });
+    fs.cpSync(move.from, move.to, { recursive: true });
+    if (move.method === 'git mv') execFileSync('git', ['-C', move.root, 'add', '--', move.relTo], { stdio: ['ignore', 'pipe', 'pipe'] });
+  } else if (move.method === 'git mv') {
     execFileSync('git', ['-C', move.root, 'mv', '--', move.relFrom, move.relTo], { stdio: ['ignore', 'pipe', 'pipe'] });
   } else {
     fs.mkdirSync(path.dirname(move.to), { recursive: true });

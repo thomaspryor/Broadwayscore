@@ -319,6 +319,7 @@ test('apply renames everything; grep over the copies finds only aliases and redi
     assert.equal(readJson(path.join(fx.web, 'data', `social-pulse/${NEW}.json`)).showId, NEW);
     assert.ok(fs.existsSync(path.join(fx.web, 'data', `collection-state/serp-last-run-${NEW}.json`)));
     assert.ok(fs.existsSync(path.join(fx.web, 'public', `images/shows/${NEW}/hero.webp`)));
+    assert.ok(fs.existsSync(path.join(fx.web, 'public', `images/shows/${OLD}/hero.webp`)), 'old image URL stays live (copied, not moved)');
     const timeline = fs.readFileSync(path.join(fx.web, 'data', `opening-night-timeline/${NEW}.jsonl`), 'utf8');
     assert.ok(timeline.includes(`"showId":"${NEW}"`));
     assert.equal(timeline.split('\n')[0], '{"t":"2026-05-12T08:49:41.471Z","rc":1}', 'untouched jsonl lines stay verbatim');

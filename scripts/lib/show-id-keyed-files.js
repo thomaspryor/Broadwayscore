@@ -188,8 +188,8 @@ const SHOW_ID_KEYED_FILES = [
     generated: 'node scripts/rebuild-all-reviews.js (slim per-show file; `hi` is the /images/shows/<id>/ hero path)' },
   { repo: 'web', path: 'public/data/shows', shape: 'file', pattern: '{id}.social.json',
     generated: 'node scripts/fetch-social-pulse.js' },
-  { repo: 'web', path: 'public/images/shows', shape: 'dir',
-    note: 'hero/poster/thumbnail.webp; shows.json images.* paths point here' },
+  { repo: 'web', path: 'public/images/shows', shape: 'dir', keepOldCopy: true,
+    note: 'hero/poster/thumbnail.webp; shows.json images.* paths point here. Copied, not moved: the old /images/shows/<old-id>/ URLs stay live for hotlinks and image search (the middleware only redirects /show/*).' },
 
   // ---------------------------------------------------------------------
   // core-data repo (private; CLAUDE.md §11). `webMirror` = the path a local
