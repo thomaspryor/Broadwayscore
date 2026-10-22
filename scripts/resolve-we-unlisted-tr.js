@@ -195,7 +195,7 @@ const ISSUE_PERIOD = /Theatre Record\s+(\d{1,2})(?:\s+([A-Z][a-z]+))?\s*[–—-
 /**
  * The issue's own covering period from its running head, e.g.
  * "Theatre Record 04 – 17 November 2016" or "21 October – 03 November 2016".
- * The most frequent banner wins; null when none prints.
+ * The most frequent banner wins; null when none prints or two tie.
  */
 function issuePeriod(text) {
   const counts = new Map();
@@ -209,7 +209,9 @@ function issuePeriod(text) {
     counts.set(k, (counts.get(k) || 0) + 1);
   }
   if (!counts.size) return null;
-  const [start, end] = [...counts.entries()].sort((a, b) => b[1] - a[1])[0][0].split('|');
+  const ranked = [...counts.entries()].sort((a, b) => b[1] - a[1]);
+  if (ranked[1] && ranked[1][1] === ranked[0][1]) return null; // a tie names no issue
+  const [start, end] = ranked[0][0].split('|');
   return { start, end };
 }
 
@@ -251,11 +253,15 @@ function pdfContentsRowFor(text, want, variants, page) {
     const matches = new Set();
     for (let i = 0; i < lines.length; i++) {
       if (!startsRow(lines[i])) continue;
-      let row = lines[i];
-      for (let k = 1; k <= 2 && !CONTENTS_ROW.test(row) && !CONTENTS_ROW_YEARLESS.test(row) && lines[i + k] && !startsRow(lines[i + k]) && !byline(lines[i + k]); k++) row = `${row} ${lines[i + k]}`;
-      let m = row.match(CONTENTS_ROW);
+      const rows = [lines[i]];
+      for (let k = 1; k <= 2 && lines[i + k] && !startsRow(lines[i + k]) && !byline(lines[i + k]); k++) rows.push(`${rows[k - 1]} ${lines[i + k]}`);
+      // A yeared row cut after its opening year ("... 30 Apr 18") reads as a
+      // complete yearless one, so every join is tried yeared first.
+      let row = rows.find(r => CONTENTS_ROW.test(r));
+      let m = row && row.match(CONTENTS_ROW);
       if (!m) {
-        const y = row.match(CONTENTS_ROW_YEARLESS);
+        row = rows.find(r => CONTENTS_ROW_YEARLESS.test(r));
+        const y = row && row.match(CONTENTS_ROW_YEARLESS);
         if (y) m = [y[0], y[1], y[2], y[3], null, y[4], y[5], null, y[6]];
       }
       if (!m || !keys.has(pdfTitleKey(m[1]))) continue;
@@ -272,8 +278,13 @@ function pdfContentsRowFor(text, want, variants, page) {
       if (m[5]) {
         // A yearless close is in the start's year, or the next when it falls before it.
         close = readPdfDate(m[5], m[6], m[7] || start.slice(0, 4));
-        if (close && !m[7] && close < start) close = readPdfDate(m[5], m[6], Number(start.slice(0, 4)) + 1);
-        if (!close || close < start) return null;
+        if (close && !m[7] && close < start) {
+          // Rolled into the next year: a run past ~10 months, or a typo like
+          // "16 Nov 14 Nov", cannot be told apart from a real date, so no close.
+          close = readPdfDate(m[5], m[6], Number(start.slice(0, 4)) + 1);
+          if (close && Date.parse(close) - Date.parse(start) > 300 * 86400000) close = undefined;
+        }
+        if (close === null || (close && close < start)) return null;
       }
       matches.add(`${want}\nPress night ${m[2]} ${m[3]} ${start.slice(0, 4)}${close ? `\nCloses ${m[5]} ${m[6]} ${close.slice(0, 4)}` : ''}`);
     }
@@ -413,13 +424,14 @@ function logOpeningsContext(lines, want, mode) {
   for (let i = 0; i < lines.length && hits < 6; i++) {
     const key = capsKey(lines[i].trim()).replace(/^THE /, '');
     if (!key || key === want || !key.includes(want)) continue;
-    // A contents row ("TITLE – description venue dates page") is all facts,
-    // so it prints whole up to 160 characters; any other long line is skipped.
-    const contentsRow = capsKey(lines[i].trim().split(/\s*[–—]\s+|\s+-\s+|-\s+(?=[A-Z])/)[0]).replace(/^THE /, '') === want;
-    if (!contentsRow && lines[i].trim().length > 120) continue;
+    // Only a line that parses as a contents or index row (all facts) prints
+    // past 90 characters; neighbours and other long lines never do.
+    const flat = lines[i].replace(/\s+/g, ' ').trim();
+    const contentsRow = [CONTENTS_ROW, CONTENTS_ROW_YEARLESS, INDEX_ROW].some(re => re.test(flat));
+    if (!contentsRow && flat.length > 120) continue;
     hits++;
-    const cut = s => s.replace(/\s+/g, ' ').trim().slice(0, contentsRow ? 160 : 90);
-    console.log(`    [${mode}] title row @${i}: ${cut(lines[i])} || ${cut(lines[i + 1] || '')} || ${cut(lines[i + 2] || '')}`);
+    const cut = s => s.replace(/\s+/g, ' ').trim().slice(0, 90);
+    console.log(`    [${mode}] title row @${i}: ${contentsRow ? flat.slice(0, 160) : cut(lines[i])} || ${cut(lines[i + 1] || '')} || ${cut(lines[i + 2] || '')}`);
   }
 }
 

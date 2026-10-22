@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { pdfHeaderFor, pdfContentsRowFor } = require('./resolve-we-unlisted-tr.js');
+const { pdfHeaderFor, pdfContentsRowFor, logDateContext } = require('./resolve-we-unlisted-tr.js');
 const { parseTrHeaderDates, pickTrForReview, buildReviewLedCandidates } = require('./lib/we-review-led-candidates.js');
 const { isLondonVenue } = require('./lib/tr-london-venue.js');
 
@@ -245,4 +245,34 @@ test('2016 cumulative index row gives press night for the link\'s own volume/pag
   assert.deepEqual(at(36, 1005), { previewsStartDate: null, openingDate: '2016-09-20', closingDate: null });
   assert.equal(at(36, 999).openingDate, null);
   assert.equal(at(null, 1005).openingDate, null);
+});
+
+// Ship-check cases for the yearless reader (BRO-5851).
+test('a wrapped yeared row is not cut short at its opening year', () => {
+  const text = 'NINE NIGHT – Natasha Gordon National, Dorfman 30 Apr 18\n26 May 18 355';
+  assert.deepEqual(dates2016(text, 'Nine Night', 355), { previewsStartDate: null, openingDate: '2018-04-30', closingDate: '2018-05-26' });
+});
+
+test('a yearless close that rolls past ten months is dropped, not mis-yeared', () => {
+  const typo = contents2016.replace('16 Nov 23 Dec 1297', '16 Nov 14 Nov 1297');
+  assert.deepEqual(dates2016(typo, 'The Sewing Group', 1297), { previewsStartDate: null, openingDate: '2016-11-16', closingDate: null });
+});
+
+test('two issue banners printed equally often name no issue', () => {
+  const tie = `${contents2016}\n1299 Theatre Record 10 – 23 November 2016\n1300 Theatre Record 10 – 23 November 2016`;
+  assert.equal(parseTrHeaderDates(pdfHeaderFor(contents2016, 'The Sewing Group', 'x', { page: 1297 })).openingDate, '2016-11-16');
+  assert.equal(pdfHeaderFor(tie, 'The Sewing Group', 'x', { page: 1297 }), null);
+});
+
+test('the diagnostic log never prints review prose past 90 characters', () => {
+  const prose = 'The Sewing Group - EV Crowe’s slight new play at the Royal Court is a curious, quiet piece that never quite finds its feet, says the critic at length here';
+  const text = `THE SEWING GROUP\n${prose}\n${prose}\n${prose}\nTHE SEWING GROUP – A new play by EV Crowe Royal Court 16 Nov 23 Dec 1297`;
+  const out = [];
+  const log = console.log;
+  console.log = s => out.push(String(s));
+  try { logDateContext(text, 'The Sewing Group', 'raw'); } finally { console.log = log; }
+  const rows = out.filter(l => l.includes('title row'));
+  assert.equal(rows.length, 1); // the long prose line is skipped; the contents row prints
+  assert.ok(rows[0].includes('16 Nov 23 Dec 1297'));
+  for (const part of rows[0].split(' || ').slice(1)) assert.ok(part.length <= 90);
 });
