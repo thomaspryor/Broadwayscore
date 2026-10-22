@@ -23,6 +23,7 @@
  *       # re-ask about disputed shows ({ showId: objection }), keeping the audit trail in the cache
  */
 'use strict';
+require('./lib/cli-help').exitOnHelp(module);
 
 const fs = require('fs');
 const os = require('os');
