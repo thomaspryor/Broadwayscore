@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5873-b",
   "planId": "8bf6f309-6f72-4631-a239-ecdb8d2a2fc4",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -47,5 +47,19 @@
         "description": "BRO-5873: correct Lightning Thief source date"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T05:08:28.237Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-lightning-thief-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-lightning-thief-2019"
+    }
+  ],
+  "executedIn": "ci"
 }
