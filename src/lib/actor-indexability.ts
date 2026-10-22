@@ -3,7 +3,13 @@
 import type { ActorProfile } from './data-types';
 import { getPersonTonyStats } from './data-tony-noms';
 import { isThinActorProfile } from '../../scripts/lib/actor-indexability';
+import { hasSearchLanding, thinRulesEnabled } from '../../scripts/lib/seo-indexability';
 
 export function isThinActor(profile: ActorProfile): boolean {
-  return isThinActorProfile(profile, getPersonTonyStats(profile.ibdbPersonId)?.nominations ?? 0);
+  return isThinActorProfile(
+    profile,
+    getPersonTonyStats(profile.ibdbPersonId)?.nominations ?? 0,
+    thinRulesEnabled() && hasSearchLanding(`/cast/${profile.slug}`),
+    thinRulesEnabled(),
+  );
 }

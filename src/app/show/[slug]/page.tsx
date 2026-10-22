@@ -1,11 +1,12 @@
 import { notFound } from 'next/navigation';
+import { foldVenueName } from '@/lib/venue-fold';
 import { noCriticReviewsExpected } from '@/lib/review-expectation';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import { isCategoryEnabled } from '@/lib/markets';
 import { HIDDEN_LONDON_IDS } from '../../../../scripts/lib/page-name-sources';
-import { getShowBySlug, getRecentShowSlugs, getShowLastUpdated, slugify, isTourIndexableShow, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug, getSharedTitleYear } from '@/lib/data-core';
+import { getShowBySlug, getRecentShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug, getSharedTitleYear } from '@/lib/data-core';
 import { getTourReviewYears } from '@/lib/tour-display';
 import { isLiveTour } from '@/lib/tour-listing';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
@@ -69,6 +70,7 @@ import { stopForReview, stopKey } from '@/lib/tour-schedule';
 import TourScheduleCard from '@/components/show-page/TourScheduleCard';
 import AdSlot from '@/components/ads/AdSlot';
 import { getTourCities } from '@/lib/data-tour-cities';
+import { isShowIndexable } from '@/lib/seo-indexability';
 
 // Group A: personalized, auth-dependent, client-only (see ShowPageUserButtons).
 import { ShowPageWatchlistButton, ShowPageAddToListButton } from '@/components/user/ShowPageUserButtons';
@@ -214,7 +216,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
     // An unscored tour is indexed once it is live with a schedule (the page's
     // own content); a closed or unscheduled one with no score stays out of
     // search, the sitemap and the search index (isTourIndexableShow, BRO-4931).
-    ...(isTourMeta && !isTourIndexableShow(show) ? { robots: { index: false, follow: true } } : {}),
+    ...(!isShowIndexable(show, params.slug) ? { robots: { index: false, follow: true } } : {}),
     description: truncatedDescription,
     alternates: {
       canonical: canonicalUrl,
@@ -276,11 +278,11 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   const isOpera = isOperaShow(show);
 
   // Theater scorecard lookup (Broadway only) — regional/off-broadway/tour venues aren't Broadway houses
-  const theater = !isWestEnd && !isOffBroadway && !isRegional && !isTour && show.venue ? getTheaterBySlug(slugify(show.venue)) : undefined;
+  const theater = !isWestEnd && !isOffBroadway && !isRegional && !isTour && show.venue ? getTheaterBySlug(slugify(foldVenueName(show.venue))) : undefined;
   // Off-Broadway venue page lookup — undefined if the venue string didn't resolve
   // (freeform data entry, unlike the curated Broadway/West End venue lists), in
   // which case the venue name renders as plain text rather than a dead link.
-  const offBroadwayTheater = isOffBroadway && show.venue ? getOffBroadwayTheaterBySlug(slugify(show.venue)) : undefined;
+  const offBroadwayTheater = isOffBroadway && show.venue ? getOffBroadwayTheaterBySlug(slugify(foldVenueName(show.venue))) : undefined;
   const showSchema = generateShowSchema(show, lastUpdated || undefined, performers, theater ? `${BASE_URL}/theater/${theater.slug}` : undefined,
     show.category === 'tour' ? { stops: getTourSchedule(show.id), today: new Date().toISOString().slice(0, 10), tickets: getTourStopTickets(show) } : undefined);
 
@@ -437,7 +439,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   const recoupmentTrend = featureFlags.commercial ? getRecoupmentTrend(show.slug) : 'unknown';
   // A hidden London id (ABBA Arena) has no /west-end/theater page: render the venue as text, not a 404 link (BRO-5970).
   const londonVenueHidden = HIDDEN_LONDON_IDS.has(show.id);
-  const venueSlug = show.venue ? slugify(show.venue) : null;
+  const venueSlug = show.venue ? slugify(foldVenueName(show.venue)) : null;
   const PRINCIPAL_ROLES = /^(director|co-director|book|music|lyrics|playwright|composer|lyricist|book writer|co-writer|author|translator|adaptation|english lyrics)/i;
   const creativePrincipals = featureFlags.creativePages && show.creativeTeam
     ? show.creativeTeam
@@ -728,13 +730,13 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                 ) : isWestEnd ? (
                   londonVenueHidden
                     ? <span className="text-gray-300">{show.venue}</span>
-                    : <Link href={`/west-end/theater/${slugify(show.venue)}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
+                    : <Link href={`/west-end/theater/${slugify(foldVenueName(show.venue))}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
                 ) : isOffBroadway && offBroadwayTheater ? (
                   <Link href={`/off-broadway/theater/${offBroadwayTheater.slug}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
                 ) : isOffBroadway || isRegional || isTour ? (
                   <span className="text-gray-300">{show.venue}</span>
                 ) : (
-                  <Link href={`/theater/${slugify(show.venue)}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
+                  <Link href={`/theater/${slugify(foldVenueName(show.venue))}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
                 )}
                 {show.runtime && (
                   <span className="whitespace-nowrap"> <span className="text-gray-500">·</span> {show.runtime}</span>

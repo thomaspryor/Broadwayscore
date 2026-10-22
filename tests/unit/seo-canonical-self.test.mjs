@@ -80,7 +80,9 @@ test('a thin actor with Tony nominations stays indexable', () => {
 });
 
 test('actor pages with a score or more than one credit stay indexable', () => {
+  // creatives keep the legacy rule; /cast uses singleCreditIsThin (BRO-5969)
   assert.equal(isThinActorProfile({ showCount: 1, scoredShowCount: 1, avgScore: 64 }), false);
+  assert.equal(isThinActorProfile({ showCount: 1, scoredShowCount: 1, avgScore: 64 }, 0, false, true), true);
   assert.equal(isThinActorProfile({ showCount: 2, scoredShowCount: 0, avgScore: null }), false);
   assert.equal(isThinActorProfile({ showCount: 4, scoredShowCount: 4, avgScore: 68 }), false);
 });

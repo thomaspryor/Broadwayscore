@@ -395,6 +395,12 @@ jobs:
           fi
           echo "Build completed in ${BUILD_SECS}s"
 
+      - name: Sitemap URL count vs live (advisory)
+        # BRO-5969: warns when the built sitemap lists >3% fewer URLs than live,
+        # i.e. a noindex rule or filter is dropping pages by accident.
+        continue-on-error: true
+        run: node scripts/check-sitemap-count-delta.js
+
       - name: Guard — held-feature copy absent from the build (advisory)
         # BRO-5007: prod builds run with commercial/boxOfficeV2 off, so copy
         # from those held sections must not be in any page or JS chunk. A

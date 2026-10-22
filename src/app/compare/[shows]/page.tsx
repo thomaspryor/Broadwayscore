@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import { foldVenueName } from '@/lib/venue-fold';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getShowBySlug, getTheaterBySlug, slugify } from '@/lib/data-core';
@@ -190,8 +191,8 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
   const currency = currencyA;
 
   // Theater data (Broadway only — WE theaters don't have pages)
-  const theaterA = !isLondonA && showA.venue ? getTheaterBySlug(slugify(showA.venue)) : undefined;
-  const theaterB = !isLondonB && showB.venue ? getTheaterBySlug(slugify(showB.venue)) : undefined;
+  const theaterA = !isLondonA && showA.venue ? getTheaterBySlug(slugify(foldVenueName(showA.venue))) : undefined;
+  const theaterB = !isLondonB && showB.venue ? getTheaterBySlug(slugify(foldVenueName(showB.venue))) : undefined;
 
   const scoreA = showA.criticScore?.score ?? null;
   const scoreB = showB.criticScore?.score ?? null;

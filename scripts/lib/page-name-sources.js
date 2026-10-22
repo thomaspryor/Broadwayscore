@@ -101,7 +101,7 @@ function broadwayTheaterNames(shows) {
   const seen = new Set();
   const names = [];
   for (const show of shows) {
-    const venue = show.venue;
+    const venue = foldVenueName(show.venue);
     if (!venue || seen.has(venue)) continue;
     seen.add(venue);
     if (venue.startsWith('_')) continue;
@@ -115,6 +115,29 @@ function broadwayTheaterNames(shows) {
 const STUB_THEATER_PLACEHOLDER_VENUES = new Set(['TBA', 'TBD', 'tba', 'tbd', 'Unknown', 'unknown']);
 
 /**
+ * Hand-entered spellings of one house that each got their own self-canonical
+ * venue page (BRO-5969 SEO audit): folded to the spelling with the most shows.
+ * The retired slugs 308 to the canonical page in vercel.json.
+ */
+const VENUE_PAGE_NAME_FOLDS = {
+  'Vivian Beaumont Theater - Lincoln Center Theater': 'Vivian Beaumont Theater',
+  'Lyttelton Theatre (National Theatre)': 'Lyttelton Theatre',
+  'National Theatre (Lyttelton)': 'Lyttelton Theatre',
+  'National Theatre (Olivier)': 'Olivier Theatre',
+  'Dorfman Theatre (National Theatre)': 'Dorfman Theatre',
+  'National Theatre (Dorfman)': 'Dorfman Theatre',
+  'County Hall': 'London County Hall',
+  'Lower E Side': 'Lower Eastside Girls Club',
+};
+
+/** @param {string} venue @returns {string} the canonical page name for a raw venue string */
+function foldVenueName(venue) {
+  if (typeof venue !== 'string') return venue;
+  const name = venue.trim().replace(/\s+/g, ' ');
+  return VENUE_PAGE_NAME_FOLDS[name] || venue;
+}
+
+/**
  * The page name for a West End / Off-Broadway venue string, or null when it
  * gets no page (src/lib/data-core.ts buildStubTheaterIndex): trimmed,
  * whitespace collapsed; "_"-prefixed internals and placeholders excluded.
@@ -123,7 +146,7 @@ const STUB_THEATER_PLACEHOLDER_VENUES = new Set(['TBA', 'TBD', 'tba', 'tbd', 'Un
  */
 function stubTheaterName(venue) {
   if (typeof venue !== 'string' || !venue) return null;
-  const name = venue.trim().replace(/\s+/g, ' ');
+  const name = foldVenueName(venue.trim().replace(/\s+/g, ' '));
   if (!name || name.startsWith('_') || STUB_THEATER_PLACEHOLDER_VENUES.has(name)) return null;
   return name;
 }
@@ -188,5 +211,7 @@ module.exports = {
   broadwayTheaterNames,
   stubTheaterName,
   stubTheaterNames,
+  foldVenueName,
+  VENUE_PAGE_NAME_FOLDS,
   actorIdentitiesInPageOrder,
 };

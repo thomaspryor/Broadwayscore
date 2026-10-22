@@ -26,7 +26,7 @@ import { getShowCommercial } from './data-commercial';
 import { getShowAwards } from './data-awards';
 import { BROWSE_PAGES, BrowsePageConfig, BrowseFilterContext, getAllBrowseSlugs as getBrowseSlugsFromConfig, getBrowsePageConfig } from '@/config/browse-pages';
 import { slugify as urlSlugify } from '../../scripts/lib/url-slug';
-import { broadwayTheaterNames, stubTheaterName, HIDDEN_LONDON_IDS } from '../../scripts/lib/page-name-sources';
+import { broadwayTheaterNames, stubTheaterName, foldVenueName, HIDDEN_LONDON_IDS } from '../../scripts/lib/page-name-sources';
 import { partitionShowRows } from '../../scripts/lib/show-row-guard';
 import { readCoverageFloorInputs, coverageFloorOptsForShow } from '../../scripts/lib/coverage-floor-inputs';
 import { resolveNameRedirect, type SlugRedirectMap } from './slug-redirects';
@@ -816,11 +816,12 @@ export function getAllTheaters(): Theater[] {
   const theaterMap = new Map<string, { shows: ComputedShow[]; address?: string }>();
 
   for (const show of allShows) {
-    if (!theaterNames.has(show.venue)) continue;
-    const existing = theaterMap.get(show.venue) || { shows: [], address: show.theaterAddress };
+    const venueName = foldVenueName(show.venue);
+    if (!theaterNames.has(venueName)) continue;
+    const existing = theaterMap.get(venueName) || { shows: [], address: show.theaterAddress };
     existing.shows.push(show);
     if (show.theaterAddress) existing.address = show.theaterAddress;
-    theaterMap.set(show.venue, existing);
+    theaterMap.set(venueName, existing);
   }
 
   const meta = theaterMetaData as unknown as Record<string, { capacity?: number; tips?: string; yearBuilt?: number; operator?: string; formerNames?: string[]; structuredTips?: TheaterStructuredTips; images?: { exterior?: string; interior?: string; attribution?: string }; venueScores?: Omit<TheaterVenueScores, 'overall'>; accessibility?: TheaterAccessibility; externalLinks?: TheaterExternalLinks }>;
@@ -870,8 +871,8 @@ export function getAllTheaters(): Theater[] {
   const theaterSlugs = new Set(_theatersCache.map(t => t.slug));
   const metaKeys = new Set(Object.keys(meta).filter(k => k !== '_meta'));
   for (const show of allShows) {
-    if (show.venue && !metaKeys.has(show.venue) && show.category !== 'west-end' && show.category !== 'off-west-end' && show.category !== 'off-broadway') {
-      const venueSlug = slugify(show.venue);
+    if (foldVenueName(show.venue) && !metaKeys.has(foldVenueName(show.venue)) && show.category !== 'west-end' && show.category !== 'off-west-end' && show.category !== 'off-broadway') {
+      const venueSlug = slugify(foldVenueName(show.venue));
       if (!theaterSlugs.has(venueSlug)) {
         console.warn(`[Theater Scorecard] Unmatched theater: "${show.venue}" (show: ${show.id})`);
       }

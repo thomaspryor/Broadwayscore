@@ -28,6 +28,7 @@
  * resumed when the user lands back on this page authenticated.
  */
 
+import { foldVenueName } from '@/lib/venue-fold';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { trackUgc } from '@/lib/ugc-analytics';
@@ -439,14 +440,14 @@ function Inner({
 
   // An announced show may have no theater yet (BRO-5814): no link, no empty label.
   const venueLink = !show.venue || (isWestEnd && londonVenueHidden) ? null : isWestEnd
-    ? `/west-end/theater/${slugify(show.venue)}`
+    ? `/west-end/theater/${slugify(foldVenueName(show.venue))}`
     // Off-Broadway links only when the venue resolved to a page (freeform venue strings).
     // Regional and tour venues have no /theater page ("North American Tour" is not a house).
     : isOffBroadway
       ? (offBroadwayVenueSlug ? `/off-broadway/theater/${offBroadwayVenueSlug}` : null)
       : show.category === 'regional' || show.category === 'tour'
         ? null
-        : `/theater/${slugify(show.venue)}`;
+        : `/theater/${slugify(foldVenueName(show.venue))}`;
 
   // Market + format in the poster alt text (image search / a11y), as the legacy header had.
   const posterMarketLabel = isOperaShow(show) ? 'Met Opera'

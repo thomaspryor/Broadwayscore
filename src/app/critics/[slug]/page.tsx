@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { getCriticBySlug } from '@/lib/data-reviews';
 import { generateBreadcrumbSchema, generateCriticSchema, generateCriticFAQSchema, BASE_URL } from '@/lib/seo';
 import { criticMarketLabel, showCountPhrase } from '@/lib/critic-market';
+import { isThinCriticPage } from '@/lib/seo-indexability';
 import CriticDetailClient from './CriticDetailClient';
 
 export const revalidate = 43200;
@@ -20,6 +21,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   return {
     title: `${critic.name} - ${market} Critic at ${critic.primaryOutlet}`,
     description,
+    ...(isThinCriticPage(critic, params.slug) ? { robots: { index: false, follow: true } } : {}),
     alternates: { canonical: canonicalUrl },
     openGraph: {
       title: `${critic.name} - ${market} Critic`,

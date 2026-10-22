@@ -14,13 +14,13 @@ import {
   getDataFreshness,
   getOperaShows,
   getOperaTitleSlug,
-  isTourIndexableShow,
   getShowSitemapLastmod,
 } from '@/lib/data-core';
 import { getAllCriticSlugs, getAllOutletSlugs, getCriticBySlug } from '@/lib/data-reviews';
 import { getAllVideoCreatorSlugs } from '@/lib/data-video-critics';
 import { getAllActorProfiles } from '@/lib/data-actors';
 import { isThinActor } from '@/lib/actor-indexability';
+import { isShowIndexable, isThinCriticPage } from '@/lib/seo-indexability';
 import { isThinCreative } from '@/lib/creative-indexability';
 import { getAllUnifiedCreativeProfiles, ALL_CREATIVE_CATEGORIES, CREATIVE_CATEGORY_CONFIG } from '@/lib/data-creative';
 import { getAllGuideSlugs, parseGuideSlug } from '@/config/guide-pages';
@@ -74,7 +74,8 @@ function buildShowsShard(ctx: DateContext): MetadataRoute.Sitemap {
   const operaSlugs = new Set(getOperaShows().map(s => s.slug));
   return getAllShowSlugs()
     .filter(slug => !operaSlugs.has(slug))
-    .filter(slug => { const s = getShowBySlug(slug); return !s || isTourIndexableShow(s); })
+    // Same predicate as the page's robots tag: tour rule + thin rule (BRO-5969)
+    .filter(slug => { const s = getShowBySlug(slug); return !s || isShowIndexable(s, slug); })
     .map((slug) => {
       const show = getShowBySlug(slug);
       const isOpen = show?.status === 'open';
@@ -184,7 +185,7 @@ function buildCriticsShard(ctx: DateContext): MetadataRoute.Sitemap {
       changeFrequency: 'weekly' as const,
       priority: 0.85,
     },
-    ...getAllCriticSlugs().map((slug) => ({
+    ...getAllCriticSlugs().filter((slug) => { const c = getCriticBySlug(slug); return !c || !isThinCriticPage(c, slug); }).map((slug) => ({
       url: `${BASE_URL}/critics/${slug}`,
       lastModified: criticLastmod(slug, ctx),
       changeFrequency: 'monthly' as const,
