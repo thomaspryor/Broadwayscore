@@ -198,6 +198,13 @@ test('stop hook decision: only a SAFE TO EXIT after an uncovered ship-check bloc
   assert.equal(d({ lastMessage: 'NO-SHIP-CHECK: reviewers cannot run in this container\n\nSAFE TO EXIT' }), 'block', 'one bypass must not waive did-it-work');
   assert.equal(d({ lastMessage: 'NO-SHIP-CHECK: short\n\nSAFE TO EXIT' }), 'block');
   assert.equal(d({ events: ev(tool('Bash', { command: 'ls' })) }), 'allow', 'no strong run: verify-edits asks for the review itself');
+  // BRO-6020: SAFE TO ARCHIVE is the current claim (legacy SAFE TO EXIT stays an alias); the hold verdicts never block.
+  assert.equal(d({ lastMessage: 'All landed.\n\nSAFE TO ARCHIVE — done.' }), 'block');
+  assert.equal(d({ lastMessage: 'All landed.\n\n**SAFE TO ARCHIVE** — done.' }), 'block');
+  assert.equal(d({ lastMessage: 'All landed.\n\n- SAFE TO ARCHIVE — done.' }), 'block', 'a bullet must not skip the gate');
+  assert.equal(d({ lastMessage: 'All landed.\n\n• SAFE TO ARCHIVE — done.' }), 'block');
+  assert.equal(d({ lastMessage: 'Working.\n\nKEEP OPEN — CI still running.' }), 'allow');
+  assert.equal(d({ lastMessage: 'DECISION NEEDED: x\n\nACTION NEEDED FROM YOU — answer it.' }), 'allow');
   assert.equal(d({ events: null }), 'allow');
   assert.equal(d({ env: {} }), 'allow');
   assert.equal(d({ env: { ...CLOUD, SHIP_CHECK_COVERAGE_DISABLE: '1' } }), 'allow');

@@ -35,4 +35,4 @@ If the repo is missing, put the error in the reply instead.
 
 ## 3. Reply
 
-One line per market: dispatched, or failed with the error. End with `SAFE TO EXIT`.
+One line per market: dispatched, or failed with the error. End with `SAFE TO ARCHIVE`.

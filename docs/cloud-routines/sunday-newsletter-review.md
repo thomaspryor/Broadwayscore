@@ -49,4 +49,4 @@ cloud substitutions:
 ## 3. Reply
 
 Three plain-English lines: what you reviewed, what you fixed, how the owner was
-told. End with `SAFE TO EXIT`.
+told. End with `SAFE TO ARCHIVE`.

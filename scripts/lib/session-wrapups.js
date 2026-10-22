@@ -76,11 +76,13 @@ function finalAssistantText(entries) {
 // message ends with a "THIS SESSION: KEEP OPEN/CLOSE ME/IDLE — …" line
 // (format since 2026-07-27; legacy "SAFE TO EXIT — …" / "NOT SAFE TO EXIT — …"
 // accepted for older sessions — the exit-status-gate hook enforces both).
+// BRO-6020: cloud sessions end SAFE TO ARCHIVE / KEEP OPEN / ACTION NEEDED
+// FROM YOU — … (verify-edits.sh).
 // Grab the LAST occurrence so quoted or restated earlier ones don't win.
 // 2026-07-31: THIS SESSION variant added after the format change left this
 // extractor (and workspace-mark-done.js, fixed same day) matching nothing.
 function statusLine(text) {
-  const matches = String(text).match(/(?:THIS SESSION\s*:\s*(?:KEEP OPEN|CLOSE ME|IDLE)|(?:NOT )?SAFE TO EXIT)\s*—[^\n]*/g);
+  const matches = String(text).match(/(?:THIS SESSION\s*:\s*(?:KEEP OPEN|CLOSE ME|IDLE)|(?:NOT )?SAFE TO EXIT|SAFE TO ARCHIVE|KEEP OPEN|ACTION NEEDED FROM YOU)(?:\s*—[^\n]*|[ \t*]*(?=\n|$))/g);
   if (!matches) return '';
   const line = matches[matches.length - 1].trim();
   // A killed session's last message may merely QUOTE the required format

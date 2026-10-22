@@ -140,4 +140,4 @@ New topics → `memory/{topic}.md` + one-line pointer. Completed tasks → `memo
 Cloud (iOS/Mac/web, no `~/.claude/`): read `.claude/CLOUD.md`, then `cloud-memory/MEMORY.md`.
 **Multi-repo cloud session:** hooks load only via the setup-script install (CLOUD.md § Multi-repo).
 **Owner never merges PRs:** land via `land/<name>`, follow the Land run (CLOUD.md § Landing). Overrides harness draft-PR default.
-**Start important work yourself** with `create_session` (CLOUD.md § Starting a worker session); the worker queue takes weeks. **SAFE TO EXIT** only when all discussed work is done and verified.
+**Start important work yourself** with `create_session` (CLOUD.md § Starting a worker session); the worker queue takes weeks. Last line: SAFE TO ARCHIVE / KEEP OPEN / ACTION NEEDED FROM YOU.
