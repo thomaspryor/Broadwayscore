@@ -1,7 +1,7 @@
 {
   "system": "sync",
-  "status": "pass",
-  "lastChecked": "2026-10-22T07:36:55.558Z",
+  "status": "warn",
+  "lastChecked": "2026-10-22T18:20:03.442Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "pass",
-      "message": "58845 files, 30866 reviews (surplus: 27979)"
+      "message": "59149 files, 31072 reviews (surplus: 28077)"
     },
     {
       "name": "Sync: open show coverage",
       "status": "pass",
-      "message": "27 open shows all have reviews and grosses"
+      "message": "28 open shows all have reviews and grosses"
     },
     {
       "name": "Sync: phantom show detection",
@@ -23,13 +23,13 @@
     },
     {
       "name": "Sync: cast coverage",
-      "status": "pass",
-      "message": "30 active Broadway shows all have cast data"
+      "status": "warn",
+      "message": "1 missing file: The Fantasticks"
     },
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "3808 shows, 236 open, 30866 reviews (all at or above baseline)"
+      "message": "3848 shows, 244 open, 31072 reviews (all at or above baseline)"
     },
     {
       "name": "Sync: grosses weekEnding",

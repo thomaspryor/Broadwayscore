@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-10-22T07:36:55.559Z",
+  "lastChecked": "2026-10-22T18:20:03.444Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -64,37 +64,37 @@
     {
       "name": "Data: uncollected live review strands",
       "status": "warn",
-      "message": "4 discovered review URL(s) across 4 live show(s) were never fetched. First: the-great-gatsby-2024 (1 stranded)"
+      "message": "1 discovered review URL(s) across 1 live show(s) were never fetched. First: triumph-off-west-end-2026 (1 stranded)"
     },
     {
       "name": "Data: armed-but-vacuous backlog cards",
       "status": "warn",
-      "message": "1 Linear card(s) carry an acceptance check that cannot tell done from not done (1 can never fail, 0 can never pass). First: BRO-2938 P2: 58 review-text filenames carry a URL where the critic slug belongs, and six call sites parse identity by splitting that filename on '--'"
+      "message": "3 Linear card(s) carry an acceptance check that cannot tell done from not done (3 can never fail, 0 can never pass). First: BRO-5919 Queen of Hearts (Theatre XIV) has no opening/closing dates and may be stale"
     },
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "1 of 504 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-5680 Awards data audit runs nowhere: wire audit-awards-data.js into CI (advisory) and fix its FAILs"
+      "message": "17 of 564 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-6000 NYT Two Girls scored 46 on a mostly descriptive review (critic protest)"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-10-21"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-10-22"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "96 review(s) with no usable text, 52 rejected although verified as a review, 37 never scored, 29 with a blocked URL (0 published on the site), across 439 current shows"
+      "message": "71 review(s) with no usable text, 53 rejected although verified as a review, 43 never scored, 29 with a blocked URL (0 published on the site), across 440 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "warn",
-      "message": "62 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 29923 checked"
+      "message": "64 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 30330 checked"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "pass",
-      "message": "11 early publish date(s) awaiting recheck (limit 40); 62 already attempted and not yet confirmed"
+      "message": "25 early publish date(s) awaiting recheck (limit 40); 62 already attempted and not yet confirmed"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -104,7 +104,7 @@
     {
       "name": "Data: stale-slot squatters (current-year review slots held by another production)",
       "status": "pass",
-      "message": "audit ran: 589 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+      "message": "audit ran: 586 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
     },
     {
       "name": "Data: T1/T2 silent review gaps",
@@ -114,12 +114,12 @@
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "error",
-      "message": "4 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Dance Is Not for Us\" (guardian-review — missing 3d) — 1 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
+      "message": "5 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Dance Is Not for Us\" (guardian-review — missing 3d) — 1 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
     },
     {
       "name": "Data: BWW roundup discovery misses near opening",
       "status": "warn",
-      "message": "1 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: billy-crystal-860-2026 (12 misses, last 2026-10-22T05:49:55.549Z)."
+      "message": "2 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: the-imaginary-invalid-2026 (15 misses, last 2026-10-22T17:32:48.891Z)."
     }
   ]
 }
