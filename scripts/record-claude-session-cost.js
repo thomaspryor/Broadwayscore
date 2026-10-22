@@ -21,6 +21,7 @@
 const fs = require('fs');
 const path = require('path');
 const C = require('./lib/claude-session-cost.js');
+const { appendRows } = require('./lib/claude-session-cost-writer.js');
 
 const REPO = path.resolve(__dirname, '..');
 
@@ -61,7 +62,7 @@ function main() {
     rows.push({ date, session: p.session, model: p.model, origin: p.origin, costUsd: p.costUsd, cards: e ? [...e.cards].sort() : [] });
   }
   if (args['dry-run']) { rows.forEach((r) => console.log(JSON.stringify(r))); return failed ? 1 : 0; }
-  const r = rows.length ? C.appendRows(rows, { file: C.ledgerPath(REPO) }) : { written: 0, replaced: 0 };
+  const r = rows.length ? appendRows(rows, { file: C.ledgerPath(REPO) }) : { written: 0, replaced: 0 };
   console.log(`${C.LEDGER_REL}: ${r.written} row(s) written (${r.replaced} replaced same-day rows), ${failed} skipped`);
   return failed ? 1 : 0;
 }

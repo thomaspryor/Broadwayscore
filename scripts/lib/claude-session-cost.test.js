@@ -5,7 +5,7 @@ const assert = require('node:assert/strict');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const C = require('./claude-session-cost.js');
+const C = { ...require('./claude-session-cost.js'), ...require('./claude-session-cost-writer.js') };
 const bn = require('./board-numbers.js');
 
 const S1 = 'session_0138fRRtkaUF3YUHfGsqT13p';

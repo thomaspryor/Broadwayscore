@@ -11,7 +11,8 @@
  *   1. `node scripts/record-claude-session-cost.js --list` prints the sessions that landed commits in
  *      the last 24h (Claude-Session trailers) and the cards each landed;
  *   2. it calls get_session for each and pipes the results to `--from-json`.
- * The digest (board-numbers.js) only reads the ledger, so it works from Actions.
+ * The digest (board-numbers.js) and validate-data.js only read the ledger, so it works from Actions;
+ * the one writer is claude-session-cost-writer.js (kept apart so readers carry no write path).
  *
  * COST IS CUMULATIVE. A session alive for days is recorded on several days with a growing cost_usd,
  * so a window's spend per session is (latest cost in the window) - (latest cost before it), never a sum.
@@ -142,34 +143,6 @@ function parseGetSession(result) {
 }
 
 /**
- * Append rows (validated). One row per (date, session): a re-run the same day replaces that
- * day's row for the session instead of adding a second one. -> { written, replaced }.
- */
-function appendRows(newRows, { file = ledgerPath(), fsImpl = fs } = {}) {
-  for (const r of newRows) {
-    const problems = validateRow(r);
-    if (problems.length) throw new Error(`refusing invalid ledger row for ${r && r.session}: ${problems.join('; ')}`);
-  }
-  let existing = '';
-  try { existing = fsImpl.readFileSync(file, 'utf8'); } catch (e) { if (!e || e.code !== 'ENOENT') throw e; }
-  const keyOf = (r) => `${r.date}\u0000${r.session}`;
-  const incoming = new Map(newRows.map((r) => [keyOf(r), r]));
-  let replaced = 0;
-  const kept = [];
-  for (const raw of existing.split('\n')) {
-    if (!raw.trim()) continue;
-    let row = null;
-    try { row = JSON.parse(raw); } catch { /* keep unparseable lines as-is so validate-data reports them */ }
-    if (row && incoming.has(keyOf(row))) { replaced += 1; continue; }
-    kept.push(raw);
-  }
-  const lines = [...kept, ...[...incoming.values()].map((r) => JSON.stringify(r))];
-  fsImpl.mkdirSync(path.dirname(file), { recursive: true });
-  fsImpl.writeFileSync(file, `${lines.join('\n')}\n`);
-  return { written: incoming.size, replaced };
-}
-
-/**
  * PURE. Spend over the `days` before `nowMs` from ledger rows.
  * Per session: latest cost on a window date minus latest cost before the window (cumulative cost).
  * Cards: distinct BRO ids on the window's rows. -> { totalUsd, sessions, cards, perCardUsd, byModel:{family:{usd,sessions}} }
@@ -250,5 +223,5 @@ function renderCostLine({ claude, codex, days = 7 } = {}) {
 
 module.exports = {
   LEDGER_REL, modelFamily, validateRow, parseLedger, ledgerPath, readLedger, sessionsFromGitLog, landedSessions,
-  parseGetSession, appendRows, summarizeCost, summarizeCodexCheck, renderCostLine,
+  parseGetSession, summarizeCost, summarizeCodexCheck, renderCostLine,
 };
