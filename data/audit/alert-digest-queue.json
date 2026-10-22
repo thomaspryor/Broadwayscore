@@ -667,5 +667,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-22T14:15:31.698Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5338-bound-run-out-the-clock",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5338-bound-run-out-the-clock",
+    "description": "land.yml did not land land/bro-5338-bound-run-out-the-clock: the unit-tests-node gate went red at 550e81b4fd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39794512569",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5338-bound-run-out-the-clock"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "550e81b4fd582a9a0e7b4470834e88ec39fc8a78"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39794512569"
+      }
+    ],
+    "queuedAt": "2026-10-22T14:32:41.386Z"
   }
 ]
