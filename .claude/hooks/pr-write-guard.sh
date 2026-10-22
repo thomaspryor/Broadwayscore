@@ -2,10 +2,13 @@
 # pr-write-guard.sh — PreToolUse hook on Bash (BRO-5915).
 #
 # Refuses `gh pr create` / `gh pr ready` / `gh pr merge` and the equivalent
-# `gh api` / `curl` writes to a `repos/<owner>/<repo>/pulls` path, on
-# thomaspryor/Broadwayscore. (Not every route: a bare `curl
-# https://api.github.com/graphql` mutation, `hub`, and an API client written in
-# node or python are not parsed — see BRO-5932 for those.)
+# `gh api` / `curl` writes to a `repos/<owner>/<repo>/pulls` path (including a
+# PATCH with draft=false), GraphQL PR mutations (inline or from a file),
+# `hub pull-request`, and the same commands run through `bash <<EOF`,
+# `bash <<< '…'` or `echo '…' | bash`, on thomaspryor/Broadwayscore.
+# NOT covered (BRO-5932): an API client written in node/python/ruby, a script
+# file written in one command and run in another, and a GraphQL mutation that
+# names the repository by id rather than by cwd/GH_REPO.
 # The owner never reviews or merges PRs, so a PR just parks the work: sessions
 # land it themselves with `git push origin HEAD:refs/heads/land/<name>` and
 # follow the Land run (CLOUD.md § Landing). The MCP route is covered by
@@ -48,10 +51,10 @@ LIB="$HERE/../../scripts/lib/pr-command.mjs"
 
 input=$(cat)
 # Cheap pre-filter: most Bash calls name no PR at all, so skip node entirely.
-# Mirrors the lib's own surface — `gh`/`curl`, plus a `pr`/`pulls`/PullRequest
-# token. Deliberately loose: the lib makes the real decision.
-printf '%s' "$input" | grep -qE 'gh|curl' || exit 0
-printf '%s' "$input" | grep -qiE '(^|[^a-z])pr([^a-z]|$)|pulls|PullRequest' || exit 0
+# Mirrors the lib's own surface — `gh`/`hub`/`curl`, plus a `pr`/`pulls`/PullRequest/
+# pull-request/graphql token (a graphql payload may live in a file). Deliberately loose: the lib makes the real decision.
+printf '%s' "$input" | grep -qE 'gh|hub|curl' || exit 0
+printf '%s' "$input" | grep -qiE '(^|[^a-z])pr([^a-z]|$)|pulls|PullRequest|pull-request|graphql' || exit 0
 
 # Stock macOS has no `timeout`; fall back to gtimeout, then to no wrapper
 # (the settings.json hook timeout still bounds it).

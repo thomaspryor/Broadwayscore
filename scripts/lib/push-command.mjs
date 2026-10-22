@@ -11,7 +11,10 @@
 // Only a `git push` that STARTS a shell command counts: after the start of the
 // string, `;`, `&&`, `||`, `|`, `&`, a newline or a paren. Text that merely
 // mentions a push (a commit message, echo, grep pattern, heredoc body) is
-// never a push. Heredoc bodies and `#` comments are dropped before parsing.
+// never a push. `#` comments are dropped before parsing, and so are heredoc
+// bodies, EXCEPT a body fed to a shell (`bash <<EOF`, `cat <<EOF | sh`,
+// `eval "$(cat <<EOF`): that is a script the shell will run, so it is parsed
+// as one, inside a subshell scope (BRO-5932).
 
 import path from 'node:path';
 
@@ -25,20 +28,120 @@ const GIT_GLOBAL_WITH_VALUE = new Set(['-C', '-c', '--git-dir', '--work-tree', '
 const GIT_REPO_OPTS = /^--(git-dir|work-tree)(=|$)/;
 const GIT_REPO_ENV = /^(GIT_DIR|GIT_WORK_TREE)=/;
 
-/** Drop heredoc bodies: everything from the line after `<<TAG` / `<<-'TAG'` up to the line that is TAG. */
-function stripHeredocs(cmd) {
+const SHELL_SINKS = new Set(['bash', 'sh', 'zsh', 'dash', 'ksh']);
+// Commands that run the next command, and the flags of theirs that take a value.
+const WRAPPERS = {
+  sudo: /^(-u|--user|-g|--group|-C|-h|--host|-p|--prompt|-r|-t|-U)$/,
+  doas: /^(-u|-C)$/,
+  env: /^(-u|--unset|-C|--chdir|-S|--split-string)$/,
+  timeout: /^(-k|--kill-after|-s|--signal)$/,
+  gtimeout: /^(-k|--kill-after|-s|--signal)$/,
+  nice: /^(-n|--adjustment)$/,
+  exec: /^(-a)$/,
+  command: /^$/,
+  time: /^$/,
+  nohup: /^$/,
+};
+const DURATION = /^[0-9]+(\.[0-9]+)?[smhd]?$/;
+// `<<TAG`, `<<-TAG`, `<<'TAG'`, `<<\TAG`. Not `<<<` (a here-string), whose
+// second and third `<` would otherwise read as a heredoc opener.
+const HEREDOC_OPEN = /(?<!<)<<(?!<)-?\s*(['"]?)\\?([A-Za-z_][A-Za-z0-9_]*)\1/;
+
+/** Index of the real command in a word list, past VAR=x prefixes and wrappers (sudo -u bob, env -u X, timeout 30, nice -n 5, …). */
+export function skipWrappers(words) {
+  let i = 0;
+  for (;;) {
+    while (i < words.length && /^[A-Za-z_][A-Za-z0-9_]*=/.test(words[i])) i++;
+    const w = path.basename(words[i] || '');
+    if (!Object.hasOwn(WRAPPERS, w)) return i;
+    i++;
+    while (i < words.length && words[i].startsWith('-')) i += WRAPPERS[w].test(words[i]) ? 2 : 1;
+    if ((w === 'timeout' || w === 'gtimeout') && DURATION.test(words[i] || '')) i++;
+  }
+}
+
+/**
+ * Does this command read its script from stdin? `bash`, `bash -s`, `bash -s -- a b`,
+ * `bash -e -o pipefail`, `bash -`: yes. `bash script.sh`, `bash -c '…'`: no.
+ */
+export function readsScriptFromStdin(words) {
+  const i = skipWrappers(words);
+  if (!SHELL_SINKS.has(path.basename(words[i] || ''))) return false;
+  for (let k = i + 1; k < words.length; k++) {
+    const w = words[k];
+    if (w === '--') return true; // no script operand came first; the rest are $1..$n
+    if (/^-[A-Za-z]*c[A-Za-z]*$/.test(w)) return false;
+    if (/^-[A-Za-z]*s[A-Za-z]*$/.test(w)) return true;
+    if (w === '-' || w === '+o' || w === '-o' || w === '+O' || w === '-O') {
+      if (/^[-+][oO]$/.test(w)) k++; // takes an option name
+      continue;
+    }
+    if (w === '<<<') { k++; continue; } // here-string: its word is the script, not an operand
+    if (w.startsWith('<')) continue; // redirection word
+    if (w.startsWith('-') || w.startsWith('+')) continue;
+    return false; // a script-file operand
+  }
+  return true;
+}
+
+/**
+ * Does the command on this heredoc-opening line run the body as a script?
+ * Returns 'shell' (`bash <<EOF`, `sudo -u x bash -s <<EOF`, `cat <<EOF | sh`,
+ * `source /dev/stdin <<EOF`), 'eval' (`eval "$(cat <<EOF`) or null
+ * (`bash script.sh <<EOF`, `ssh host bash <<EOF`, `cat <<EOF`).
+ */
+function heredocSink(line) {
+  for (const { words } of splitRaw(line)) {
+    const i = skipWrappers(words);
+    const w = path.basename(words[i] || '');
+    if (SHELL_SINKS.has(w) && readsScriptFromStdin(words)) return 'shell';
+    if (w === 'eval') return 'eval';
+    if ((w === 'source' || w === '.') && words.some((x) => x === '/dev/stdin' || x === '/dev/fd/0')) return 'shell';
+  }
+  return null;
+}
+
+/**
+ * Drop heredoc bodies: everything from the line after `<<TAG` / `<<-'TAG'` up
+ * to the line that is TAG. A body that a shell will execute is kept instead,
+ * wrapped in `(` `)` so a `cd` inside it stays scoped to that shell.
+ */
+function stripHeredocs(cmd, depth = 0) {
   const lines = cmd.split('\n');
   const out = [];
   let tag = null;
-  for (const line of lines) {
+  let keep = false;
+  let evalOpen = false;
+  let body = [];
+  for (let n = 0; n < lines.length; n++) {
+    let line = lines[n];
+    if (tag === null && evalOpen) {
+      // The `)"` that closes `eval "$(cat <<EOF` follows the terminator.
+      line = line.replace(/^\s*\)["']?/, '');
+      evalOpen = false;
+    }
     if (tag !== null) {
-      if (line.trim() === tag) tag = null;
+      if (line.trim() === tag) {
+        if (keep) out.push('(', stripHeredocs(body.join('\n'), depth + 1), ')');
+        tag = null;
+        keep = false;
+        body = [];
+      } else if (keep) body.push(line);
       continue;
     }
-    out.push(line);
-    const m = line.match(/<<-?\s*(['"]?)([A-Za-z_][A-Za-z0-9_]*)\1/);
-    if (m) tag = m[2];
+    const m = line.match(HEREDOC_OPEN);
+    const sink = m && depth < 3 ? heredocSink(line) : null;
+    // `eval "$(cat <<EOF`: the opener's unclosed quote would swallow the body,
+    // so the opener line is dropped and only the body is parsed.
+    out.push(sink === 'eval' ? '' : line);
+    if (m) {
+      tag = m[2];
+      keep = sink !== null;
+      evalOpen = sink === 'eval';
+    }
   }
+  // Unterminated heredoc: the shell still runs what it read.
+  if (keep && tag !== null) out.push('(', stripHeredocs(body.join('\n'), depth + 1), ')');
   return out.join('\n');
 }
 
@@ -48,7 +151,40 @@ function stripHeredocs(cmd) {
  * ENDED it (';', '&&', '||', '|', '&', '\n', '(' or ')' or '' at the end).
  */
 export function splitShellCommands(cmd) {
-  const src = stripHeredocs(String(cmd || ''));
+  return expandStdinScripts(splitRaw(stripHeredocs(String(cmd || ''))));
+}
+
+/**
+ * Scripts handed to a shell on stdin without a heredoc: `bash <<< 'gh pr
+ * create'` and `echo 'gh pr create' | bash`. Each is parsed as a nested script
+ * inside its own `(` `)` scope, right after the shell command.
+ */
+function expandStdinScripts(commands, depth = 0) {
+  if (depth >= 3) return commands;
+  const out = [];
+  commands.forEach((c, n) => {
+    out.push(c);
+    if (!readsScriptFromStdin(c.words)) return;
+    let script = null;
+    const hs = c.words.indexOf('<<<');
+    if (hs !== -1 && c.words[hs + 1] !== undefined) script = c.words[hs + 1];
+    else if (n > 0 && commands[n - 1].sep === '|') {
+      const prev = commands[n - 1].words;
+      const pi = skipWrappers(prev);
+      const ph = path.basename(prev[pi] || '');
+      if (ph === 'echo' || ph === 'printf') {
+        const args = prev.slice(pi + 1).filter((w) => !/^-[neE]+$/.test(w));
+        // printf FORMAT ARG…: the format is not the script once there are args.
+        script = (ph === 'printf' && args.length > 1 ? args.slice(1) : args).join(' ');
+      }
+    }
+    if (script) out.push({ words: [], sep: '(' }, ...expandStdinScripts(splitRaw(stripHeredocs(script)), depth + 1), { words: [], sep: ')' });
+  });
+  return out;
+}
+
+/** The tokenizer under splitShellCommands, without the heredoc pass. */
+function splitRaw(src) {
   const commands = [];
   let words = [];
   let word = '';

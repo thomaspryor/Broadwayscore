@@ -99,6 +99,28 @@ for (const cmd of [
   'env -u FOO gh pr ready 42',
   'gh pr merge https://github.com/thomaspryor/Broadwayscore/pull/42 --squash',
   'gh api graphql -f query=\'mutation { createPullRequest(input: {}) { pullRequest { url } } }\'',
+  // BRO-5932: routes the first parser missed.
+  'gh api --method PATCH repos/thomaspryor/Broadwayscore/pulls/4 -f draft=false',
+  'gh api -X PATCH repos/thomaspryor/Broadwayscore/pulls/4 -F draft=false',
+  'curl -X PATCH -H "Authorization: token $T" https://api.github.com/repos/thomaspryor/Broadwayscore/pulls/4 -d \'{"draft": false}\'',
+  'curl -X POST https://api.github.com/graphql -d \'{"query":"mutation{createPullRequest(input:{}){clientMutationId}}"}\'',
+  'curl -sS -H "Authorization: bearer $T" --data \'{"query":"mutation { markPullRequestReadyForReview(input:{pullRequestId:\\"x\\"}) { clientMutationId } }"}\' https://api.github.com/graphql',
+  // …payload in a file that is written earlier in the same command, or exists already.
+  'cat > q.json <<EOF\n{"query":"mutation { mergePullRequest(input:{pullRequestId:\\"x\\"}) { clientMutationId } }"}\nEOF\ngh api graphql --input q.json',
+  'echo \'{"query":"mutation { enablePullRequestAutoMerge(input:{}) { clientMutationId } }"}\' > q.json && gh api graphql --input q.json',
+  'curl -X POST https://api.github.com/graphql -d @q.json; echo createPullRequest > q.json',
+  'hub pull-request -m "x"',
+  'hub api repos/thomaspryor/Broadwayscore/pulls -f head=x -f base=main',
+  // A shell that runs the script: heredoc, here-string, pipe.
+  'bash <<EOF\ngh pr create --fill\nEOF',
+  'bash <<\'EOF\'\ngh pr merge 42 --squash\nEOF',
+  'sudo -u bob bash -s <<EOF\ngh pr ready 42\nEOF',
+  'cat <<EOF | sh\ngh pr create --fill\nEOF',
+  'eval "$(cat <<\'EOF\'\ngh pr create --fill\nEOF\n)"',
+  'bash <<< "gh pr create --fill"',
+  'echo "gh pr create --fill" | bash',
+  'printf \'%s\\n\' "gh pr merge 42" | sh -s',
+  'git push origin HEAD:refs/heads/land/x\nbash <<EOF\nGH_REPO=thomaspryor/Broadwayscore gh pr create --fill\nEOF',
 ]) {
   test(`blocks a Broadwayscore PR write: ${cmd}`, () => {
     const r = run(cmd);
@@ -133,6 +155,18 @@ for (const [cmd, opts] of [
   ['git commit -q -F - <<EOF\nBRO-5915: refuse PRs\n\ngh pr merge is refused now\ngh api repos/thomaspryor/Broadwayscore/pulls -f head=x\nEOF', {}],
   ['git commit -m "gh pr create is refused; land instead"', {}],
   [`cd ${otherRepo} && gh pr create --fill`, {}],
+  // BRO-5932 false-positive guards.
+  ['gh api --method PATCH repos/thomaspryor/Broadwayscore/pulls/4 -f title=new', {}],
+  ['gh api --method PATCH repos/thomaspryor/Broadwayscore/pulls/4 -f draft=true', {}],
+  ['curl -X POST https://api.github.com/graphql -d \'{"query":"{ viewer { login } }"}\'', {}],
+  ['gh api graphql --input q.json', {}],
+  ['hub pr list', {}],
+  ['bash <<EOF\necho gh pr create is refused\nEOF', {}],
+  ['cat <<EOF\ngh pr create --fill\nEOF', {}],
+  ['bash script.sh <<EOF\ngh pr create --fill\nEOF', {}],
+  ['ssh host bash <<EOF\ngh pr create --fill\nEOF', {}],
+  ['echo "gh pr create --fill" | cat', {}],
+  ['bash <<EOF\ngh pr create --fill\nEOF', { cwd: otherRepo }],
 ]) {
   test(`does not PR-block: ${cmd}${opts.cwd ? ' (other repo)' : ''}`, () => {
     const r = run(cmd, opts);

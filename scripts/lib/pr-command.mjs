@@ -10,6 +10,18 @@
 //   gh pr create|ready|merge
 //   gh api … repos/O/R/pulls (POST) / …/pulls/N/merge (PUT) / graphql mutations
 //   curl … api.github.com/repos/O/R/pulls (POST) / …/merge (PUT)
+//   gh api / curl -X PATCH …/pulls/N with draft=false (undrafting = ready)
+//   curl … api.github.com/graphql carrying a PR mutation
+//   gh api graphql --input FILE / -F query=@FILE (the file is read; a file not
+//     there yet, written earlier in the same command, falls back to scanning
+//     the whole command for a PR mutation)
+//   hub pull-request, hub api (as gh api)
+//   `bash <<EOF … EOF`, `bash <<< '…'` and `echo '…' | bash` bodies (BRO-5932,
+//     via push-command.mjs's splitter)
+//
+// NOT covered, on purpose (BRO-5932): a node/python/ruby script that calls the
+// GitHub API itself, a script file written and run in separate commands, and
+// a GraphQL mutation scoped by repository id rather than by cwd/GH_REPO.
 //
 // Commands are split with push-command.mjs's splitShellCommands (quotes,
 // separators, comments, heredocs), so a mention inside an echo, grep pattern
@@ -44,7 +56,9 @@ const OVERRIDE_ASSIGN = /^(LAND_ENFORCE_OFF|PR_GUARD_OFF)=1$/;
 const GH_API_WITH_VALUE = new Set(['-X', '--method', '-H', '--header', '-q', '--jq', '-t', '--template', '--hostname', '--cache', '-p', '--preview']);
 const GH_API_FIELD = new Set(['-f', '-F', '--field', '--raw-field', '--input']);
 const CURL_DATA = /^(-d|--data(-[a-z]+)?|--json|-F|--form(-string)?|-T|--upload-file)$/;
-const PULLS_PATH = /(?:^|\/)repos\/([^/\s?]+)\/([^/\s?]+)\/pulls(\/\d+\/merge)?\/?(?:\?.*)?$/;
+const PULLS_PATH = /(?:^|\/)repos\/([^/\s?]+)\/([^/\s?]+)\/pulls(\/\d+\/merge|\/\d+)?\/?(?:\?.*)?$/;
+const UNDRAFT = /draft["']?\s*[:=]\s*false/i;
+const MAX_PAYLOAD_BYTES = 1 << 20;
 const PR_URL = /github\.com\/([^/\s]+)\/([^/\s]+)\/pull\/\d+/;
 const GRAPHQL_WRITE = /\b(createPullRequest|markPullRequestReadyForReview|mergePullRequest|enablePullRequestAutoMerge)\b/;
 
@@ -66,7 +80,7 @@ export function normalizeRepo(s) {
  * repo null means "the repo of the directory the command runs in" (cdDir, or
  * the caller's cwd when cdDir is null), after ghRepoEnv for gh commands.
  */
-export function parsePrWrites(cmd, { home = os.homedir(), depth = 0 } = {}) {
+export function parsePrWrites(cmd, { home = os.homedir(), depth = 0, cwd = process.cwd(), rawText = String(cmd || '') } = {}) {
   const writes = [];
   let cdDir = null;
   let dirUnknown = false;
@@ -122,7 +136,7 @@ export function parsePrWrites(cmd, { home = os.homedir(), depth = 0 } = {}) {
     const at = { ghRepoEnv, cdDir, dirUnknown, override };
     if (head === 'eval' && depth < 3 && words[1]) {
       // `eval "gh pr create"`: the script is the next word, same as bash -c.
-      for (const inner of parsePrWrites(words[1], { home, depth: depth + 1 })) {
+      for (const inner of parsePrWrites(words[1], { home, depth: depth + 1, cwd, rawText })) {
         writes.push({
           ...inner,
           ghRepoEnv: inner.ghRepoEnv ?? ghRepoEnv,
@@ -137,7 +151,7 @@ export function parsePrWrites(cmd, { home = os.homedir(), depth = 0 } = {}) {
       // bash -c '…' / bash -lc '…': the script is the word after the c-flag.
       const ci = words.findIndex((x, k) => k > 0 && /^-[a-z]*c[a-z]*$/.test(x));
       if (ci > 0 && words[ci + 1]) {
-        for (const inner of parsePrWrites(words[ci + 1], { home, depth: depth + 1 })) {
+        for (const inner of parsePrWrites(words[ci + 1], { home, depth: depth + 1, cwd, rawText })) {
           writes.push({
             ...inner,
             ghRepoEnv: inner.ghRepoEnv ?? ghRepoEnv,
@@ -150,6 +164,11 @@ export function parsePrWrites(cmd, { home = os.homedir(), depth = 0 } = {}) {
       return;
     }
     if (head === 'gh') return gh(words.slice(1), at);
+    if (head === 'hub') {
+      if (words[1] === 'pull-request') { writes.push({ verb: 'hub pull-request', repo: null, ...at }); return; }
+      if (words[1] === 'api') return gh(words.slice(1), at);
+      return;
+    }
     if (head === 'curl') return curl(words.slice(1), at);
   }
 
@@ -179,7 +198,8 @@ export function parsePrWrites(cmd, { home = os.homedir(), depth = 0 } = {}) {
     let method = null;
     let fields = false;
     let endpoint = null;
-    let graphqlWrite = false;
+    const payload = [];
+    let fileInput = false;
     for (let j = 0; j < rest.length; j++) {
       const a = rest[j];
       const eq = a.match(/^(--method|-X)=?(.+)$/);
@@ -187,8 +207,11 @@ export function parsePrWrites(cmd, { home = os.homedir(), depth = 0 } = {}) {
       if (eq && !a.startsWith('-X-')) { method = eq[2].toUpperCase(); continue; }
       if (GH_API_FIELD.has(a) || /^(--field|--raw-field|--input)=/.test(a)) {
         fields = true;
-        const v = GH_API_FIELD.has(a) ? rest[++j] : a;
-        if (GRAPHQL_WRITE.test(String(v || ''))) graphqlWrite = true;
+        const v = String(GH_API_FIELD.has(a) ? rest[++j] : a.slice(a.indexOf('=') + 1));
+        if (a === '--input' || a.startsWith('--input=')) { payload.push(fileText(v, at)); fileInput = true; continue; }
+        // `-F query=@q.graphql` reads the file; `-f draft=false` is the value itself.
+        const at_ = v.match(/^[^=]*=@(.+)$/);
+        if (at_) { payload.push(fileText(at_[1], at)); fileInput = true; } else payload.push(v);
         continue;
       }
       if (GH_API_WITH_VALUE.has(a)) { j++; continue; }
@@ -197,34 +220,73 @@ export function parsePrWrites(cmd, { home = os.homedir(), depth = 0 } = {}) {
     if (!endpoint) return;
     method = method || (fields ? 'POST' : 'GET');
     if (endpoint === 'graphql') {
-      if (graphqlWrite) writes.push({ verb: 'a PR write through gh api graphql', repo: null, ...at });
+      graphqlWriteIf(payload, fileInput, 'gh api graphql', at);
       return;
     }
-    pullsWrite(endpoint, method, 'gh api', at);
+    pullsWrite(endpoint, method, 'gh api', at, payload, fileInput);
   }
 
   function curl(args, at) {
     let method = null;
     let data = false;
     let url = null;
+    let graphql = false;
+    let fileInput = false;
+    const payload = [];
     for (let j = 0; j < args.length; j++) {
       const a = args[j];
       if (a === '-X' || a === '--request') { method = String(args[j + 1] || '').toUpperCase(); j++; continue; }
       const eq = a.match(/^(?:-X|--request=)(.+)$/);
       if (eq) { method = eq[1].toUpperCase(); continue; }
-      if (CURL_DATA.test(a) || /^--(data(-[a-z]+)?|json|form)=/.test(a)) { data = true; continue; }
-      if (/api\.github\.com\/repos\//.test(a)) url = a.replace(/^https?:\/\/api\.github\.com\//, '');
+      if (CURL_DATA.test(a) || /^--(data(-[a-z]+)?|json|form)=/.test(a)) {
+        data = true;
+        const v = String(/^--[a-z-]+=/.test(a) ? a.slice(a.indexOf('=') + 1) : args[++j] || '');
+        if (v.startsWith('@')) { payload.push(fileText(v.slice(1), at)); fileInput = true; } else payload.push(v);
+        continue;
+      }
+      if (/api\.github\.com\/graphql/.test(a)) graphql = true;
+      else if (/api\.github\.com\/repos\//.test(a)) url = a.replace(/^https?:\/\/api\.github\.com\//, '');
     }
+    if (graphql) { graphqlWriteIf(payload, fileInput, 'curl graphql', at); return; }
     if (!url) return;
-    pullsWrite(url, method || (data ? 'POST' : 'GET'), 'curl', at);
+    pullsWrite(url, method || (data ? 'POST' : 'GET'), 'curl', at, payload, fileInput);
   }
 
-  function pullsWrite(endpoint, method, via, at) {
+  /** Contents of a payload file, or null when it cannot be read (not there yet, too big, a directory). */
+  function fileText(file, at) {
+    try {
+      const f = path.resolve(at.cdDir && !at.dirUnknown ? path.resolve(cwd, at.cdDir) : cwd, file);
+      if (fs.statSync(f).size > MAX_PAYLOAD_BYTES) return null;
+      return fs.readFileSync(f, 'utf8');
+    } catch {
+      return null;
+    }
+  }
+
+  // A payload file that could not be read may have been written earlier in the
+  // same command (a heredoc `cat > q.json`), so the whole command is the next
+  // best evidence.
+  function judge(payload, fileInput, re) {
+    if (payload.some((t) => t !== null && re.test(t))) return true;
+    return fileInput && payload.some((t) => t === null) && re.test(rawText);
+  }
+
+  function graphqlWriteIf(payload, fileInput, via, at) {
+    if (judge(payload, fileInput, GRAPHQL_WRITE)) writes.push({ verb: `a PR write through ${via}`, repo: null, ...at });
+  }
+
+  function pullsWrite(endpoint, method, via, at, payload = [], fileInput = false) {
     const m = String(endpoint).replace(/^\//, '').match(PULLS_PATH);
     if (!m) return;
-    const isMerge = Boolean(m[3]);
+    const repo = m[1].includes('{') ? null : normalizeRepo(`${m[1]}/${m[2]}`);
+    const isMerge = Boolean(m[3]) && m[3].endsWith('/merge');
+    const isOne = Boolean(m[3]) && !isMerge;
+    if (isOne) {
+      // PATCH /pulls/N with draft=false marks the PR ready for review.
+      if (method === 'PATCH' && judge(payload, fileInput, UNDRAFT)) writes.push({ verb: `a PR ready through ${via}`, repo, ...at });
+      return;
+    }
     if ((!isMerge && method === 'POST') || (isMerge && method === 'PUT')) {
-      const repo = m[1].includes('{') ? null : normalizeRepo(`${m[1]}/${m[2]}`);
       writes.push({ verb: `a PR ${isMerge ? 'merge' : 'create'} through ${via}`, repo, ...at });
     }
   }
@@ -247,7 +309,7 @@ function originRepo(dir) {
 export function refusedPrWrite(command, { cwd = process.cwd(), env = process.env, home = os.homedir() } = {}) {
   if (env.LAND_ENFORCE_OFF === '1' || env.PR_GUARD_OFF === '1') return null;
   if (fs.existsSync(path.join(home, '.claude', 'LAND_ENFORCE_OFF')) || fs.existsSync(path.join(home, '.claude', 'PR_GUARD_OFF'))) return null;
-  for (const w of parsePrWrites(command, { home })) {
+  for (const w of parsePrWrites(command, { home, cwd })) {
     if (w.override) continue;
     let repo = w.repo;
     if (!repo && !w.verb.startsWith('a PR') && !w.verb.includes('graphql')) repo = normalizeRepo(w.ghRepoEnv);
