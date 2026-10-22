@@ -1,44 +1,132 @@
 {
-  "updatedAt": "2026-10-22T02:00:32.192Z",
-  "processed": 0,
-  "failed": 2,
-  "successRate": "0%",
+  "updatedAt": "2026-10-22T02:14:11.811Z",
+  "processed": 633,
+  "failed": 414,
+  "successRate": "60.5%",
   "tierBreakdown": {
-    "playwright": 0,
-    "amp": 0,
+    "playwright": 270,
+    "amp": 1,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 1,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 5
+    "archive": 7
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
-      "t": "2026-10-22T01:57:46.521Z",
+      "t": "2026-10-21T15:07:45.444Z",
       "event": "bb-session",
-      "session": "f2250f2a",
-      "url": "https://bachtrack.com/review-angels-bone-du-yun-vavrek-english-national-opera-lo"
+      "session": "4e7f1c63",
+      "url": "https://www.nytimes.com/2026/04/03/theater/burnout-paradise-treadmills-theater-o"
     },
     {
-      "t": "2026-10-22T01:58:04.764Z",
-      "event": "bb-session",
-      "session": "85fbdd74",
-      "url": "https://bachtrack.com/review-angels-bone-du-yun-vavrek-english-national-opera-lo"
+      "t": "2026-10-21T15:07:46.079Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-22T01:59:54.489Z",
+      "t": "2026-10-21T16:12:08.782Z",
       "event": "bb-session",
-      "session": "2aa9a672",
-      "url": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-n"
+      "session": "05d874b3",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
     },
     {
-      "t": "2026-10-22T02:00:02.047Z",
+      "t": "2026-10-21T16:12:09.095Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-21T16:24:56.482Z",
       "event": "bb-session",
-      "session": "3c3dbd65",
-      "url": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-n"
+      "session": "c478b989",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-10-21T16:31:49.387Z",
+      "event": "bb-session",
+      "session": "bb8bcbd9",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-21T16:31:49.668Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-21T16:33:55.741Z",
+      "event": "bb-session",
+      "session": "a34b6831",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dirty-dancing-the-musical-comin"
+    },
+    {
+      "t": "2026-10-21T16:34:34.589Z",
+      "event": "bb-session",
+      "session": "e19d3b09",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-21T16:34:34.797Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-21T16:49:16.088Z",
+      "event": "bb-session",
+      "session": "5e0521d7",
+      "url": "https://musicaltheatrereview.com/music-review-maybe-happy-ending-original-broadw"
+    },
+    {
+      "t": "2026-10-21T16:51:50.394Z",
+      "event": "bb-session",
+      "session": "b90e6719",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-10-21T16:51:50.623Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-21T16:54:23.157Z",
+      "event": "bb-session",
+      "session": "3a1d9fd0",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-10-21T17:08:36.743Z",
+      "event": "bb-session",
+      "session": "05881c98",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/harry-potter-and-the-curs"
+    },
+    {
+      "t": "2026-10-21T17:08:37.075Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-21T17:35:44.002Z",
+      "event": "bb-session",
+      "session": "6f78b2f9",
+      "url": "https://www.wsj.com/articles/a-beautiful-noise-the-neil-diamond-musical-review-b"
+    },
+    {
+      "t": "2026-10-21T17:35:44.787Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-21T21:59:46.386Z",
+      "event": "bb-session",
+      "session": "189e19dc",
+      "url": "https://www.nytimes.com/2026/09/23/arts/music/macbeth-review-met-opera-nyc.html?"
+    },
+    {
+      "t": "2026-10-21T21:59:46.676Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
