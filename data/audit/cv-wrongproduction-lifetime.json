@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-10-22T07:57:03.300Z",
-  "scanned": 2690,
+  "updatedAt": "2026-10-22T18:37:36.522Z",
+  "scanned": 2701,
   "showsWithViolations": 114,
   "totalViolations": 145,
   "newSinceLastRun": 1,
   "handled": {
-    "temporal-override-low-confidence": 783,
+    "temporal-override-low-confidence": 784,
     "not-shipped": 55,
     "duplicate-not-shipped": 54,
     "rebuild-skip-audit": 31,
     "manual-clear-reason": 14,
-    "prior-run-or-tour-leg": 41
+    "prior-run-or-tour-leg": 40
   },
   "newViolationKeys": [
-    "trainspotting-the-musical-west-end-2026::musical-theatre-review--scott-matthewman.json"
+    "cyrano-de-bergerac-west-end-2026::london-theatre--matt-wolf.json"
   ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
@@ -55,7 +55,7 @@
     "all-my-sons-west-end-2025::guardian--arifa-akbar.json",
     "sinatra-the-musical-west-end-2026::musical-theatre-review--unknown.json",
     "cyrano-de-bergerac-west-end-2026::artsdesk--unknown.json",
-    "cyrano-de-bergerac-west-end-2026::standard--fiona-mountford.json",
+    "cyrano-de-bergerac-west-end-2026::london-theatre--matt-wolf.json",
     "wicked-west-end-2021::timeout--honour-bayes.json",
     "the-phantom-of-the-opera-west-end-1986::britishtheatrecom--douglas-mayo.json",
     "the-phantom-of-the-opera-west-end-1986::guardian--lyndsey-winship.json",
@@ -907,7 +907,7 @@
       "showId": "cyrano-de-bergerac-west-end-2026",
       "title": "Cyrano de Bergerac",
       "openingDate": "2026-06-25",
-      "message": "artsdesk/Unknown (artsdesk--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 4d of opening, likely correct production] The review discusses a production directed by Simon E — https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks\nstandard/Nick Curtis (standard--fiona-mountford.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review discusses a Royal Shakespeare Company revival of 'Cyrano de Bergerac', indicating it is not evaluating the We — https://www.standard.co.uk/culture/theatre/cyrano-de-bergerac-noel-coward-theatre-review-b1287720.html",
+      "message": "artsdesk/Unknown (artsdesk--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 4d of opening, likely correct production] The review discusses a production directed by Simon E — https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks\nlondon-theatre/Matt Wolf (london-theatre--matt-wolf.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses an RSC revival of 'Cyrano de Ber — https://www.londontheatre.co.uk/reviews/cyrano-de-bergerac-review-noel-coward-theatre",
       "violations": [
         {
           "filename": "artsdesk--unknown.json",
@@ -922,16 +922,15 @@
           ]
         },
         {
-          "filename": "standard--fiona-mountford.json",
-          "url": "https://www.standard.co.uk/culture/theatre/cyrano-de-bergerac-noel-coward-theatre-review-b1287720.html",
-          "outletId": "standard",
-          "criticName": "Nick Curtis",
-          "matchedBy": "outlet+critic",
-          "cvConfidence": "high",
-          "cvReasoning": "The review discusses a Royal Shakespeare Company revival of 'Cyrano de Bergerac', indicating it is not evaluating the We",
+          "filename": "london-theatre--matt-wolf.json",
+          "url": "https://www.londontheatre.co.uk/reviews/cyrano-de-bergerac-review-noel-coward-theatre",
+          "outletId": "london-theatre",
+          "criticName": "Matt Wolf",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 1d of opening, likely correct production] The review discusses an RSC revival of 'Cyrano de Ber",
           "cvIssues": [
-            "Review describes a Royal Shakespeare Company revival, which is not a West End production.",
-            "The review does not mention the Noël Coward Theatre as the venue."
+            "Review describes a production that is not the West End run of 'Cyrano de Bergerac' but rather an RSC revival that took place in Stratford last autumn."
           ]
         }
       ]
@@ -1860,7 +1859,7 @@
     {
       "showId": "waiting-for-godot-west-end-2024",
       "title": "Waiting for Godot",
-      "openingDate": null,
+      "openingDate": "2024-09-19",
       "message": "timeout-london/Andrzej Lukowski (timeout-london--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a legitimate theater review with strong critical assessment ('brilliant play,' 'acerbically funny and infinitesi — https://www.timeout.com/london/theatre/waiting-for-godot-3-review",
       "violations": [
         {
