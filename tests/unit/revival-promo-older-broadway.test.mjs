@@ -12,6 +12,9 @@
 // Plan -d is applied in memory with the real applyReviewFieldEdit when the
 // files do not carry it yet, so the test holds before and after the plan runs
 // (and fails if the plan stops applying cleanly).
+// BRO-5839 replays the five National Theatre moves on temporary copies using
+// the actual field-edit, add-show and move writers. It also holds after the
+// pending plan is applied to the private repositories.
 //
 // Skips when data/shows.json or the private review texts are absent (CI).
 import { test } from 'node:test';
@@ -27,6 +30,8 @@ const TEXTS = path.join(ROOT, 'data/review-texts/');
 const SHOWS = path.join(ROOT, 'data', 'shows.json');
 const PLAN_D = path.join(ROOT, 'data', 'pending-fixes', 'bro-4889-d.json');
 const PLAN_E = path.join(ROOT, 'data', 'pending-fixes', 'bro-4889-e.json');
+const PLAN_REHOME = path.join(ROOT, 'data', 'pending-fixes', 'bro-5839.json');
+const NATIONAL = 'august-osage-county-national-theatre-2008';
 
 const { explainExclusion, getWrongProductionReasonFromUrl } = require('../../scripts/lib/review-guards.js');
 const { applyReviewFieldEdit } = require('../../scripts/lib/review-field-edit.js');
@@ -104,7 +109,103 @@ const PLAN_D_INCLUDE = [
 test('other productions\' reviews and junk rows stay out of older pages', { skip: SKIP }, () => {
   for (const rel of MUST_EXCLUDE) {
     if (rel === 'evita-2012/ricky-martin--unknown.json' && !fs.existsSync(path.join(TEXTS, rel))) continue; // junk row deleted outright
+    if (rel.startsWith('august-osage-county-2007/') && !fs.existsSync(path.join(TEXTS, rel))) {
+      const moved = `${NATIONAL}/${path.basename(rel)}`;
+      assert.equal(verdict(moved), null, `${moved} excluded after rehoming`);
+      continue;
+    }
     assert.ok(verdict(rel), `${rel} would be counted`);
+  }
+});
+
+test('BRO-5839 rehomes exactly five National Theatre reviews through the real writers', { skip: SKIP }, () => {
+  const { applyAddShow } = require('../../scripts/lib/add-show-action.js');
+  const { executeReviewFieldEditIn } = require('../../scripts/lib/review-field-edit.js');
+  const { moveReviewFile } = require('../../scripts/lib/review-file-move.js');
+  const plan = JSON.parse(fs.readFileSync(PLAN_REHOME, 'utf8'));
+  const raw = JSON.parse(fs.readFileSync(SHOWS, 'utf8'));
+  const shows = structuredClone(Array.isArray(raw) ? raw : raw.shows);
+  const beforeShows = structuredClone(shows);
+  const tmp = fs.mkdtempSync(path.join(ROOT, '.tmp-bro-5839-'));
+  const oldId = 'august-osage-county-2007';
+  const expectedFiles = [
+    'express-uk--markshenton.json', 'financialtimes--sarah-hemming.json',
+    'independent--michaelcoveney.json', 'observer--susannah-clapp.json',
+    'sunday-telegraph--timauld.json',
+  ];
+  const moves = plan.plan.actions.filter(a => a.type === 'review-file-op');
+  assert.deepEqual(moves.map(a => path.basename(a.sourcePath)).sort(), expectedFiles);
+  const alreadyMoved = moves.every(a => !fs.existsSync(path.join(TEXTS, a.sourcePath))
+    && fs.existsSync(path.join(TEXTS, a.destPath)));
+  const imperial = plan.plan.actions.find(a => a.type === 'data-edit');
+  assert.equal(imperial.file, 'shows.json');
+  assert.equal(imperial.showId, oldId);
+  assert.equal(imperial.field, 'priorRuns');
+  assert.deepEqual(imperial.newValue, [{ venue: 'Imperial Theatre', openingDate: '2007-12-04', closingDate: '2008-04-20' }]);
+  try {
+    // Copy only the two affected folders. Never write the private mount.
+    for (const id of [oldId, NATIONAL]) {
+      if (fs.existsSync(path.join(TEXTS, id))) fs.cpSync(path.join(TEXTS, id), path.join(tmp, id), { recursive: true });
+    }
+    const originals = new Map(moves.map(a => [a.destPath,
+      read(alreadyMoved ? a.destPath : a.sourcePath)]));
+    if (!alreadyMoved) {
+      for (const action of moves) {
+        assert.ok(verdict(action.sourcePath), `${action.sourcePath} unexpectedly counted before rehoming`);
+      }
+    }
+    const unchanged = new Map(fs.readdirSync(path.join(tmp, oldId))
+      .filter(f => !expectedFiles.includes(f))
+      .map(f => [f, fs.readFileSync(path.join(tmp, oldId, f))]));
+    if (!alreadyMoved) {
+      for (const action of plan.plan.actions) {
+        let result;
+        if (action.type === 'add-show') result = applyAddShow(shows, action);
+        else if (action.type === 'review-field-edit') {
+          result = executeReviewFieldEditIn(tmp, action, { fixId: plan.planId, at: plan.createdAt });
+        } else if (action.type === 'review-file-op') {
+          assert.equal(action.operation, 'move');
+          result = moveReviewFile(tmp, action.sourcePath, action.destPath);
+        } else if (action.type === 'data-edit') {
+          // Check the plan's compare-and-set precondition without duplicating
+          // the top-level executor's data-edit implementation in this test.
+          assert.deepEqual(shows.find(s => s.id === oldId).priorRuns ?? null, action.oldValue);
+          continue;
+        } else assert.fail(`Unexpected action ${action.type}`);
+        assert.ok(result.ok, `${action.type}: ${result.reason}`);
+      }
+      const changed = beforeShows.filter(s => JSON.stringify(s) !== JSON.stringify(shows.find(after => after.id === s.id)));
+      assert.deepEqual(changed, []);
+      assert.equal(shows.length, beforeShows.length + 1);
+    }
+    const national = shows.find(s => s.id === NATIONAL);
+    assert.ok(national, 'the review destination must have a show entry');
+    assert.equal(national.category, 'west-end');
+    assert.equal(national.market, 'west-end');
+    assert.equal(national.venue, 'Lyttelton Theatre');
+    assert.equal(national.previewsStartDate, '2008-11-21');
+    assert.equal(national.openingDate, '2008-11-26');
+    assert.equal(national.closingDate, '2009-01-21');
+    for (const action of moves) {
+      assert.ok(!fs.existsSync(path.join(tmp, action.sourcePath)), `${action.sourcePath} left behind`);
+      const moved = JSON.parse(fs.readFileSync(path.join(tmp, action.destPath), 'utf8'));
+      const original = originals.get(action.destPath);
+      assert.equal(moved.showId, NATIONAL);
+      for (const field of ['fullText', 'assignedScore', 'originalScore', 'humanReviewScore', 'llmScore', 'publishDate', 'criticName', 'url']) {
+        assert.deepEqual(moved[field], original[field], `${action.destPath}: ${field} changed`);
+      }
+      assert.equal(explainExclusion(moved, national, path.join(tmp, action.destPath)), null, `${action.destPath} still excluded`);
+    }
+    for (const [file, contents] of unchanged) {
+      assert.deepEqual(fs.readFileSync(path.join(tmp, oldId, file)), contents, `${file} unexpectedly changed`);
+    }
+    const broadway = shows.find(s => s.id === oldId);
+    assert.equal(broadway.venue, 'Music Box Theatre');
+    assert.equal(broadway.previewsStartDate, '2007-10-30');
+    if (alreadyMoved) assert.deepEqual(broadway.priorRuns, imperial.newValue);
+    console.log('BRO-5839 real-data replay: 5 reviews excluded on Broadway before, 5 included on the new National Theatre page after; 1 show added; Imperial prior-run action verified; unrelated records unchanged. Examples: FT, Independent, Observer.');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
 
