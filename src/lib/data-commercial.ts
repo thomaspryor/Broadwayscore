@@ -849,6 +849,7 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
     modelRecoupmentPct: data.modelRecoupmentPct || null,
     ...(data.modelBelowCosts ? { modelBelowCosts: true } : {}),
     ...(data.modelDisplayHold ? { modelDisplayHold: data.modelDisplayHold } : {}),
+    ...(data.modelHeldRange ? { modelHeldRange: data.modelHeldRange } : {}),
     ...(data.analystRecoupPct ? {
       analystRecoupPct: data.analystRecoupPct,
       analystRecoupAsOf: data.analystRecoupAsOf ?? null,

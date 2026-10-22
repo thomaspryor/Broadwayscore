@@ -1,7 +1,8 @@
 /**
  * Credit line for an estimate published by u/Boring_Waltz_9545 (BRO-5502):
  * names the source and links the post it came from. compact: the /biz table
- * cell ("Analyst est. · Oct 2026"); full: the show-page card.
+ * cell ("Analyst est. · Oct 2026"); full: the show-page card. withModel: the
+ * range also spans our model's figure (getDisplayableEstimateRange), and says so.
  */
 import { ANALYST_FULL_LABEL, ANALYST_SHORT_LABEL, formatEstimateDate } from '@/lib/commercial-display';
 
@@ -9,16 +10,20 @@ interface AnalystEstimateCreditProps {
   asOf: string | null | undefined;
   url: string | null | undefined;
   compact?: boolean;
+  withModel?: boolean;
 }
 
-export default function AnalystEstimateCredit({ asOf, url, compact = false }: AnalystEstimateCreditProps) {
+export default function AnalystEstimateCredit({ asOf, url, compact = false, withModel = false }: AnalystEstimateCreditProps) {
   const when = formatEstimateDate(asOf, compact ? 'short' : 'long');
   // The date never splits; a narrow table cell breaks before it instead of
   // clipping it (a one-line credit overflowed its 144px cell at 360-414px).
   const text = (
     <>
-      {compact ? ANALYST_SHORT_LABEL : `Estimate by ${ANALYST_FULL_LABEL}`}
+      {compact
+        ? `${ANALYST_SHORT_LABEL}${withModel ? ' + our model' : ''}`
+        : `${withModel ? 'Range spans an estimate' : 'Estimate'} by ${ANALYST_FULL_LABEL}`}
       {when && <>{compact ? ' · ' : ', '}<span className="whitespace-nowrap">{when}</span></>}
+      {withModel && !compact && ', and our model'}
     </>
   );
   const className = compact ? 'text-[10px] text-gray-500 mt-1' : 'text-[11px] text-gray-500';

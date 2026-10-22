@@ -137,19 +137,21 @@ function RecoupedCell({ show }: { show: CommercialShowRow }) {
   }
 
   if (cell.kind === 'analyst') {
-    const title = `Estimate published by an r/Broadway analyst (u/Boring_Waltz_9545), not a reported figure. See methodology.`;
+    const title = cell.withModel
+      ? `Range spanning an r/Broadway analyst's estimate (u/Boring_Waltz_9545) and our model, not a reported figure. See methodology.`
+      : `Estimate published by an r/Broadway analyst (u/Boring_Waltz_9545), not a reported figure. See methodology.`;
     if (cell.range[0] >= 100) {
       return (
         <div title={title}>
           <div className="text-xs text-gray-300">Est. recouped, not yet announced</div>
-          <AnalystEstimateCredit asOf={cell.asOf} url={cell.url} compact />
+          <AnalystEstimateCredit asOf={cell.asOf} url={cell.url} withModel={cell.withModel} compact />
         </div>
       );
     }
     return (
       <div className="w-36 sm:w-40" title={title}>
         <RecoupmentProgressBar estimatedPct={cell.range} />
-        <AnalystEstimateCredit asOf={cell.asOf} url={cell.url} compact />
+        <AnalystEstimateCredit asOf={cell.asOf} url={cell.url} withModel={cell.withModel} compact />
       </div>
     );
   }

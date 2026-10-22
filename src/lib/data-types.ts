@@ -645,6 +645,8 @@ export interface CommercialShowRow {
   modelBelowCosts?: boolean;
   /** ShowCommercial.modelDisplayHold: why the guard hid the bar (getModelHoldLabel). */
   modelDisplayHold?: ShowCommercial['modelDisplayHold'];
+  /** ShowCommercial.modelHeldRange: the held model, for the analyst + model range (getDisplayableEstimateRange). */
+  modelHeldRange?: ShowCommercial['modelHeldRange'];
   /** 'enhancement' marks a nonprofit production with commercial money to recoup. */
   productionType?: ShowCommercial['productionType'] | null;
   /** The analyst's estimate (ShowCommercial.analystRecoupPct/AsOf/Url, BRO-5502). */
