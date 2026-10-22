@@ -51,6 +51,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
 const { applyAddShow } = require('./lib/add-show-action.js');
 const { applyRetireShow } = require('./lib/retire-show-action.js');
+const { isReviewTextFile } = require('./lib/review-text-sidecars.js');
 const { applyDropOrphanKey, DROP_ORPHAN_KEY_FILES } = require('./lib/orphan-key-action.js');
 const { applyRetitleShow } = require('./lib/retitle-show-action.js');
 const { applyAddCommercialEntry } = require('./lib/commercial-entry-action.js');
@@ -466,7 +467,7 @@ function reviewCountFor(showId) {
   // Collected texts not yet rebuilt into reviews.json (unscored, or newer
   // than the last rebuild) live here and would be orphaned too.
   const dir = path.join(ROOT, 'data/review-texts', showId);
-  const texts = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => f.endsWith('.json')).length : 0;
+  const texts = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => isReviewTextFile(f)).length : 0;
   return scored + texts;
 }
 

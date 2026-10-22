@@ -129,7 +129,20 @@ function normalizeUrl(u) {
     .replace(/[?#].*$/, '').replace(/\/+$/, '');
 }
 
+/**
+ * Orphan folders whose name is a retired show id (BRO-5897): reviews stranded by a retirement,
+ * as opposed to a never-registered id. Each keeps its registry entry for the move target.
+ * @param {{folder: string}[]} orphans  findOrphanReviewFolders() output
+ * @param {Iterable<{id: string}>} retiredEntries  retired-show-ids.json rows
+ */
+function retiredOrphanFolders(orphans, retiredEntries) {
+  const byId = new Map();
+  for (const r of retiredEntries || []) if (r && r.id) byId.set(r.id, r);
+  return orphans.filter((o) => byId.has(o.folder)).map((o) => ({ ...o, retired: byId.get(o.folder) }));
+}
+
 module.exports = {
+  retiredOrphanFolders,
   findOrphanReviewFolders,
   candidateShows,
   isExactCandidate,

@@ -19,7 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
-  findOrphanReviewFolders, candidateShows, isExactCandidate, idTwin, inWindow, normalizeUrl, toMs,
+  findOrphanReviewFolders, retiredOrphanFolders, candidateShows, isExactCandidate, idTwin, inWindow, normalizeUrl, toMs,
 } = require('./lib/orphan-review-folders');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 
@@ -106,12 +106,15 @@ function main() {
   }
   const byKind = {};
   for (const f of files) byKind[f.kind] = (byKind[f.kind] || 0) + 1;
-  const summary = { folders: orphans.length, files: files.length, byKind };
+  const stranded = retiredOrphanFolders(orphans, retired.values());
+  const summary = { folders: orphans.length, files: files.length, byKind, retiredFolders: stranded.length, retiredFiles: stranded.reduce((n, o) => n + o.files.length, 0) };
   if (args.includes('--json')) {
     process.stdout.write(`${JSON.stringify({ summary, files }, null, 1)}\n`);
   } else {
     console.log(`Orphan review-text folders: ${orphans.length} (${files.length} files)`);
     for (const [k, n] of Object.entries(byKind).sort((a, b) => b[1] - a[1])) console.log(`  ${k}: ${n}`);
+    console.log(`  of which retired ids (stranded by a retirement): ${summary.retiredFolders} folders, ${summary.retiredFiles} files`);
+    for (const o of stranded) console.log(`  RETIRED ${o.folder} (${o.files.length}) ${String(o.retired.reason || '').slice(0, 100)}`);
     for (const o of orphans.slice(0, 40)) console.log(`  ${o.folder} (${o.files.length})`);
   }
   return args.includes('--strict') && orphans.length ? 1 : 0;
