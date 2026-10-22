@@ -810,10 +810,10 @@ jobs:
           #   - rebuild-reviews.yml (default): full ~15 min pipeline. Shared
           #     concurrency group → "skip if active" is correct (a queued
           #     rebuild would just cancel-in-progress=false serialize anyway).
-          #   - rebuild-fast.yml (fast_rebuild=true): ~5 min, per-run concurrency.
-          #     Multiple concurrent runs are SAFE and intended — the per-run
-          #     group exists exactly so opening-night ingests don't queue
-          #     behind unrelated rebuild-fast runs (memory/feedback_gha_concurrency_queue_limit.md).
+          #   - rebuild-fast.yml (fast_rebuild=true): ~5 min, shared depth-1
+          #     group (BRO-5913): one running + one pending, a newer dispatch
+          #     replaces the pending run, whose later checkout covers it
+          #     (whole-tree rebuild; memory/feedback_gha_concurrency_queue_limit.md).
           #     So we MUST NOT skip if another rebuild-fast is in flight —
           #     ship-check 2026-04-27 caught that the old code silently
           #     swallowed the dispatch when an unrelated fast rebuild was
@@ -833,7 +833,7 @@ jobs:
           if [ "${{ github.event.inputs.fast_rebuild }}" = "true" ]; then
             REBUILD_WF="rebuild-fast.yml"
             REASON="Auto-triggered after LLM scoring (fast path — admin ingest)"
-            echo "Triggering $REBUILD_WF to incorporate new scores (per-run concurrency, no skip-if-active check)..."
+            echo "Triggering $REBUILD_WF to incorporate new scores (shared group coalesces; no skip-if-active check)..."
             dispatch_with_retry "$REBUILD_WF" -f reason="$REASON" || true
             exit 0
           fi
@@ -872,7 +872,7 @@ jobs:
             # not the local commit time — push-review-texts can retry for tens
             # of seconds before landing, so commit time would wrongly clear a
             # run dispatched in that gap); if uncertain, dispatch anyway (fail
-            # safe). rebuild-fast.yml has PER-RUN concurrency so this can never
+            # safe). rebuild-fast.yml has its own group (separate from rebuild-reviews) so this can never
             # collide with the in-flight rebuild-reviews run.
             if [ "${{ steps.check-changes.outputs.has_scored_reviews }}" = "true" ]; then
               SCORE_COMMIT_TIME="${{ steps.score-push-time.outputs.timestamp }}"
