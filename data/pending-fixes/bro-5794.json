@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5794",
   "planId": "36af4f5a-653b-4f85-83f0-e86d07505e1b",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -21,5 +21,14 @@
         "description": "Wrong production: ballet review of a same-titled work, accepted by the first meta-evidence run before the ballet guard."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T04:23:31.183Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-streetcar-named-desire-west-end-2023/financialtimes--unknown.json"
+    }
+  ],
+  "executedIn": "ci"
 }
