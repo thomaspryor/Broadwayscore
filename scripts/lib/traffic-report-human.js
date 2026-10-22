@@ -21,6 +21,7 @@
 const fs = require('fs');
 const path = require('path');
 
+const { CUTOVERS, cutoverWeeks, weekStart } = require('./analytics-cutovers');
 function helpers() { return require('../analyze-traffic-sources'); } // lazy: that file requires nothing from here
 
 // ---------- naming ----------
@@ -231,7 +232,52 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
   const search = channel['Organic Search'] || {};
   const searchLast = search[last] || 0;
   const searchAvg = monthAvgWeeks.length ? sumWeeks(search, monthAvgWeeks) / monthAvgWeeks.length : 0;
+  // Search quality (BRO-5984): Google vs Bing, how many different pages search
+  // lands on, and how many show-page search visitors look at a second page.
+  // Each line is skipped when its query did not return rows, never zeroed.
+  const searchQualityLines = () => {
+    const out = [];
+    const has = (k) => phOk && Array.isArray(ph[k]) && ph[k].length > 0 && !(ph.errors && ph.errors[k]);
+    if (has('searchEngine')) {
+      const eng = S(ph.searchEngine);
+      const g = (eng.Google || {})[last] || 0;
+      const b = (eng.Bing || {})[last] || 0;
+      if (g + b > 0) {
+        const bAvg = monthAvgWeeks.length ? Math.round(sumWeeks(eng.Bing || {}, monthAvgWeeks) / monthAvgWeeks.length) : 0;
+        const gAvg = monthAvgWeeks.length ? Math.round(sumWeeks(eng.Google || {}, monthAvgWeeks) / monthAvgWeeks.length) : 0;
+        out.push(`Google sent ${fmtN(g)} visits${gAvg ? ` (usually ${fmtN(gAvg)})` : ''} and Bing sent ${fmtN(b)}${bAvg ? ` (usually ${fmtN(bAvg)})` : ''}.`);
+      }
+    }
+    if (has('searchLanding')) {
+      const sl = S(ph.searchLanding);
+      const distinct = (w) => Object.values(sl).filter((byWeek) => (byWeek[w] || 0) > 0).length;
+      const n = distinct(last);
+      if (n > 0) {
+        const avg = monthAvgWeeks.length ? Math.round(monthAvgWeeks.reduce((t, w) => t + distinct(w), 0) / monthAvgWeeks.length) : 0;
+        out.push(`Search landed people on ${fmtN(n)} different pages${avg ? ` (usually ${fmtN(avg)})` : ''}.`);
+      }
+    }
+    if (has('searchShowDepth')) {
+      const dp = S(ph.searchShowDepth);
+      const rate = (ws) => {
+        const m = sumWeeks(dp.multi || {}, ws);
+        const t = m + sumWeeks(dp.single || {}, ws);
+        return t >= 20 ? Math.round((m / t) * 100) : null;
+      };
+      const r = rate([last]);
+      if (r !== null) {
+        const prev = monthAvgWeeks.length ? rate(monthAvgWeeks) : null;
+        out.push(`Of the people who came from search straight to a show page, ${r}% went on to look at a second page${prev !== null ? ` (usually ${prev}%)` : ''}.`);
+      }
+    }
+    return out;
+  };
   const inShort = [];
+  // A measurement cutover inside the comparison window makes "vs a typical
+  // week" a step change in what we can see, not in real traffic.
+  for (const c of CUTOVERS.filter((x) => [...monthAvgWeeks, last, currentWeek].includes(weekStart(x.date)))) {
+    inShort.push(`Heads up: on ${fmtDate(c.date)} ${c.label}. Expect visit counts to step up from that week without any real change in traffic, so the comparisons below overstate growth and no source is flagged as a spike for ${[...cutoverWeeks([c])].map(fmtDate).join(' and ')}.`);
+  }
   if (phOk && lastTotal) {
     const p = pctChange(lastTotal, avgTotal);
     const vs = (pc) => (pc === null ? '' : Math.abs(pc) < 3 ? 'about the same as' : pc > 0 ? `${pc}% more than` : `${Math.abs(pc)}% fewer than`);
@@ -241,6 +287,7 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
       const move = sp === null ? '' : Math.abs(sp) < 3 ? ', about the same as usual' : `, ${sp > 0 ? 'up' : 'down'} ${Math.abs(sp)}%`;
       const share = Math.round((searchLast / lastTotal) * 100);
       inShort.push(`Search brought ${fmtN(searchLast)} of them (${share}%)${move}.${share >= 50 ? ' Search is where most of your traffic comes from, so that number is the one to watch.' : ''}`);
+      inShort.push(...searchQualityLines());
     }
   } else if (!phOk) {
     inShort.push('PostHog (the trustworthy visitor count) did not load this week, so the summary is limited.');

@@ -4,6 +4,7 @@
 // scripts/verify-affiliate-links.js (link integrity probe). Edit the JSON,
 // not this file, when a platform's IDs or enabled state change.
 import affiliatePlatforms from '@/config/affiliate-platforms.json';
+import { POSTHOG_CAPTURE_URL } from './posthog-proxy';
 
 type AffiliateType = 'utm' | 'impact' | 'partnerize';
 
@@ -124,7 +125,7 @@ export function trackTicketClick(event: TicketClickEvent): void {
   if (typeof window === 'undefined') return;
   try {
     const distinctId = window.posthog?.get_distinct_id?.() ?? 'anonymous';
-    navigator.sendBeacon('https://us.i.posthog.com/capture/', JSON.stringify({
+    navigator.sendBeacon(POSTHOG_CAPTURE_URL, JSON.stringify({
       api_key: POSTHOG_API_KEY,
       event: 'ticket_click',
       properties: {

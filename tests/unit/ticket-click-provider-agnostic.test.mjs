@@ -63,7 +63,7 @@ for (const [platform, url, isAffiliate] of [
         platform, pageType: 'show', isAffiliate: built.isAffiliate,
       });
       assert.equal(beacons.length, 1);
-      assert.equal(beacons[0].destination, 'https://us.i.posthog.com/capture/');
+      assert.equal(beacons[0].destination, '/ingest/capture/');
       const { event, properties } = JSON.parse(beacons[0].body);
       assert.equal(event, 'ticket_click');
       assert.equal(properties.platform, platform);

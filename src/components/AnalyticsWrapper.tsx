@@ -6,6 +6,7 @@ import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { isAuthCallbackPath, isPrivateSharePath, posthogBeforeSend, sentryScrub, vercelBeforeSend } from '@/lib/analytics/redact-url';
+import { POSTHOG_PROXY_PATH, POSTHOG_UI_HOST } from '@/lib/posthog-proxy';
 import { gaInitScript } from '@/lib/analytics/ga-init-script';
 import { applyAnalyticsUser, flushUgcOutbox, reportStaleDeployReload } from '@/lib/ugc-analytics';
 import { installStaleDeployReload } from '@/lib/stale-deploy-reload';
@@ -87,7 +88,8 @@ export default function AnalyticsWrapper() {
       import('posthog-js').then(({ default: posthog }) => {
         if (!posthog.__loaded) {
           posthog.init(POSTHOG_KEY, {
-            api_host: 'https://us.i.posthog.com',
+            api_host: POSTHOG_PROXY_PATH,
+            ui_host: POSTHOG_UI_HOST,
             autocapture: true,
             // 'history_change' captures $pageview on client-side route changes
             // (pushState/popstate). `true` only fires on initial load, which
