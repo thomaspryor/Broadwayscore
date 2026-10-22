@@ -858,7 +858,7 @@ function childWriteDecision(existing, parentData) {
   if (sameUrl && textless) return 'fill';
   // An empty placeholder with no URL at this outlet--critic slot, unless a
   // person or a guard already judged it (lock, hand score, exclusion flag).
-  const judged = existing._locked || existing.humanReviewScore != null || existing.manualContentTier
+  const judged = existing._locked || existing.humanReviewScore != null || existing.originalScore != null || existing.manualContentTier
     || existing.wrongShow || existing.wrongProduction || existing.isNonReview || existing.duplicateOf
     || existing.isRoundupArticle;
   if (!existing.url && textless && !judged) return 'fill';
@@ -924,7 +924,7 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
     // A filled stub keeps its discovery source but records where its text came
     // from (BRO-5325: a web-search-only stub stays unscoreable otherwise).
     const toWrite = decision === 'fill'
-      ? { ...existing, ...child, source: existing.source || child.source, sources: [...new Set([].concat(existing.sources || [], existing.source || [], 'multi-show-split').filter(Boolean))] }
+      ? { ...existing, ...child, source: existing.source || child.source, publishDate: child.publishDate || existing.publishDate, sources: [...new Set([].concat(existing.sources || [], existing.source || [], 'multi-show-split').filter(Boolean))] }
       : child;
     fs.mkdirSync(childDir, { recursive: true });
     const w = safeWriteReview(childPath, toWrite);
