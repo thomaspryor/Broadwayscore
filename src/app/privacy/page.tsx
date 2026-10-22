@@ -28,7 +28,7 @@ export default function PrivacyPage() {
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       <div className="text-center mb-10">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-white">Privacy Policy</h1>
-        <p className="text-gray-400 mt-3">Last updated: October 2, 2026</p>
+        <p className="text-gray-400 mt-3">Last updated: October 22, 2026</p>
       </div>
 
       <div className="card p-6 sm:p-8 space-y-6">
@@ -146,10 +146,38 @@ export default function PrivacyPage() {
         </section>
 
         <section>
+          <h2 className={h2}>Advertising</h2>
+          <p className="text-gray-300">
+            We may show ads from Google AdSense on some pages. If we do, Google and its partners may use cookies
+            or device identifiers to serve and measure ads. We don&apos;t show ads to visitors in the UK, the EEA
+            or Switzerland. To decide, we check which country your connection comes from (never your precise
+            location) and remember only the yes/no answer in a cookie for a day. You can opt out of personalized
+            ads. Signed-in members don&apos;t see ads. Learn more about{' '}
+            <a
+              href="https://policies.google.com/technologies/partner-sites"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={linkClass}
+            >
+              how Google uses information from sites that use its services
+            </a>
+            , or change your{' '}
+            <a
+              href="https://adssettings.google.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={linkClass}
+            >
+              ad personalization settings
+            </a>
+            .
+          </p>
+        </section>
+
+        <section>
           <h2 className={h2}>What We Don&apos;t Do</h2>
           <ul className="list-disc pl-5 space-y-2 text-gray-300">
             <li>We don&apos;t sell or rent your personal information.</li>
-            <li>We don&apos;t show third-party ads or share your data with ad networks.</li>
             <li>We don&apos;t collect your precise location or your contacts.</li>
           </ul>
         </section>
@@ -168,6 +196,7 @@ export default function PrivacyPage() {
               <li>Formspree receives email sign-ups and form submissions, and Resend sends our emails.</li>
               <li>Expo delivers app notifications and app updates.</li>
               <li>Impact runs affiliate tracking for ticket links.</li>
+              <li>Google AdSense may serve ads on some pages (see Advertising above).</li>
             </ul>
           </div>
         </section>
