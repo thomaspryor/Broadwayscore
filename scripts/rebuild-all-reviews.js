@@ -128,7 +128,8 @@ const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
 const { writeShowExclusionsFile, writeDailyExclusionTotals } = require('./lib/rebuild-exclusion-audit');
 const { isRebuildPaused, readRebuildPause, REBUILD_PAUSE_PATH } = require('./lib/rebuild-pause');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { duplicateOfExclusion } = require('./lib/duplicate-of-exclusion');
+const { duplicateOfExclusion, duplicateTextOfDecision } = require('./lib/duplicate-of-exclusion');
+const { cycleTiebreakFor } = require('./lib/duplicate-cycle');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { evaluateReviewCountRegression, isRunningInCI, WARN_THRESHOLD_PCT, LOCAL_HARD_BLOCK_PCT } = require('./lib/regression-guard');
 
@@ -3035,6 +3036,7 @@ showDirs.forEach(showId => {
         let staleFlag = false;
         let isCircular = false;
         let circularSameText = false;
+        let nCycle = null; // BRO-5907: a longer cycle entered through duplicateTextOf
         // Task #1256 — same inheritance rule as the duplicateOf block above,
         // ported here (ship-check finding: this sibling field had the
         // identical unpatched "any exclusion reason on the reference =
@@ -3060,6 +3062,7 @@ showDirs.forEach(showId => {
           } else if (isCircular && sameUrl) {
             circularSameText = true;
           }
+          if (!isCircular) nCycle = cycleTiebreakFor(file, data, _loadDupCycleSibling, allJsonFiles.length, computeContentFingerprint);
           // Check if reference would be excluded by later guards
           refWouldBeExcluded = !isIncludableForRebuild(refData, showById[showId], refPath);
           if (!refWouldBeExcluded && refData.publishDate && showDateMap[showId] && !refData.allowEarlyDate) {
@@ -3091,34 +3094,33 @@ showDirs.forEach(showId => {
         } catch {
           refAlsoDupe = true; // Reference file missing — stale flag
         }
+        // Decision ladder shared with the tests (duplicate-of-exclusion.js).
+        // A mutual same-text pair (A.duplicateTextOf=B, B.duplicateTextOf=A)
+        // or a longer same-text cycle (BRO-5907) keeps exactly one member:
+        // skipping every member as a plain duplicate dropped the review
+        // (BRO-5261 S11: the Times review of Stranger Things: The First
+        // Shadow, clive-davis <-> dominic-maxwell, was off the site).
+        // Inherited flags: same content-wrongness-vs-structural-exclusion
+        // distinction as the duplicateOf block above; staleFlag already
+        // handles "content genuinely diverged".
+        const dtoReason = duplicateTextOfDecision({
+          staleFlag, refAlsoDupe, refExcluded: refWouldBeExcluded, isCircular, circularSameText,
+          refInheritedFlag, file, target: data.duplicateTextOf, nCycle,
+        });
         if (staleFlag) {
           // Texts no longer match — flag is stale, let this file through
           stats.staleDuplicateTextCleared = (stats.staleDuplicateTextCleared || 0) + 1;
-        } else if (!refAlsoDupe && !refWouldBeExcluded && !(isCircular && circularSameText)) {
-          // A mutual same-text pair (A.duplicateTextOf=B, B.duplicateTextOf=A)
-          // falls through to the circular tiebreak below: skipping here dropped
-          // BOTH files (BRO-5261 S11: the Times review of Stranger Things: The
-          // First Shadow, clive-davis <-> dominic-maxwell, was off the site).
-          logExclusion("skippedDuplicateText", showId, file, data);
-          stats.skippedDuplicateText = (stats.skippedDuplicateText || 0) + 1;
-          return;
-        } else if (refInheritedFlag && !(isCircular && !circularSameText)) {
-          // Same content-wrongness-vs-structural-exclusion distinction as the
-          // duplicateOf block above. staleFlag already handles "content
-          // genuinely diverged" for the non-circular case here (unlike plain
-          // duplicateOf, which has no fingerprint check at all) — reaching
-          // this branch means content still matches (or comparison wasn't
-          // possible), so inheriting the twin's content-wrongness flag is safe.
+        } else if (dtoReason === 'skippedDuplicateTextInheritedFlag') {
           logExclusion("skippedDuplicateTextInheritedFlag", showId, file, data, { inheritedFrom: data.duplicateTextOf, inheritedReason: refInheritedFlag });
           stats.skippedDuplicateTextInheritedFlag = (stats.skippedDuplicateTextInheritedFlag || 0) + 1;
           return;
-        } else if (isCircular && circularSameText && !refWouldBeExcluded && file > data.duplicateTextOf) {
-          // Circular tiebreaker — only when texts truly match (avoid dropping legitimate separate critics)
-          logExclusion("skippedCircularDuplicateTiebreak", showId, file, data);
-          stats.skippedCircularDuplicateTiebreak = (stats.skippedCircularDuplicateTiebreak || 0) + 1;
+        } else if (dtoReason) {
+          logExclusion(dtoReason, showId, file, data);
+          stats[dtoReason] = (stats[dtoReason] || 0) + 1;
           return;
         } else {
-          // Circular (kept side), stale, or ref excluded — let through
+          // Circular (kept side), ref excluded, or stale pointer — let through
+          if (nCycle && nCycle.inCycle && nCycle.sameText) stats.dupTextNCycleSurvivor = (stats.dupTextNCycleSurvivor || 0) + 1;
           stats.circularDuplicateRecovered = (stats.circularDuplicateRecovered || 0) + 1;
         }
       }

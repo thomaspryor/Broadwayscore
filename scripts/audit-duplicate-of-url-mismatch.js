@@ -311,7 +311,28 @@ function audit() {
         }
       }
 
-      if (!data.duplicateOf) continue;
+      // BRO-5907: a file carrying only duplicateTextOf never reached the cycle
+      // walk below, so a pure duplicateTextOf cycle (A -> B -> C -> A) was
+      // never reported. findDuplicateOfCycle already follows both fields.
+      if (!data.duplicateOf) {
+        if (typeof data.duplicateTextOf === 'string' && data.duplicateTextOf.endsWith('.json')
+            && data.duplicateTextOf !== file && load(data.duplicateTextOf)) {
+          const { cycleFound, chain } = findDuplicateOfCycle(file, load, files.length);
+          if (cycleFound) {
+            mismatches.push({
+              showId: path.basename(showDir),
+              file,
+              field: 'duplicateTextOf',
+              duplicateOf: data.duplicateTextOf,
+              reason: 'duplicateOf-cycle',
+              url: data.url || null,
+              siblingUrl: null,
+              chain,
+            });
+          }
+        }
+        continue;
+      }
       if (typeof data.duplicateOf !== 'string' || !data.duplicateOf.endsWith('.json')) continue;
 
       if (data.duplicateOf === file) {

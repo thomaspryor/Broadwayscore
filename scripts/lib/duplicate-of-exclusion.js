@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const { computeContentFingerprint } = require('./content-quality');
-const { findDuplicateOfCycle, resolveCycleTiebreak } = require('./duplicate-cycle');
+const { cycleTiebreakFor } = require('./duplicate-cycle');
 
 /**
  * The rebuild's duplicateOf gate, shared with scoring-delta's replay.
@@ -34,12 +34,7 @@ function duplicateOfExclusion(data, filePath, { readSibling, fileCount, referenc
       circularSameText = true;
     }
     if (!isCircular) {
-      const walk = findDuplicateOfCycle(file, read, fileCount ?? fs.readdirSync(showDir).length);
-      if (walk.cycleFound) {
-        const members = walk.chain.slice(0, -1);
-        const tie = resolveCycleTiebreak(members, name => name === file ? data : read(name), computeContentFingerprint);
-        nCycleExclude = tie.sameText && file !== tie.survivor;
-      }
+      nCycleExclude = cycleTiebreakFor(file, data, read, fileCount ?? fs.readdirSync(showDir).length, computeContentFingerprint).exclude;
     }
     const refPath = path.join(showDir, data.duplicateOf);
     refExcluded = referenceExcluded(ref, refPath);
@@ -54,4 +49,29 @@ function duplicateOfExclusion(data, filePath, { readSibling, fileCount, referenc
   return { reason, refExcluded, inheritedReason: refInheritedFlag, recovered: reason === null };
 }
 
-module.exports = { duplicateOfExclusion };
+/**
+ * The rebuild's duplicateTextOf decision ladder (BRO-5907), given the facts the
+ * rebuild gathered about this file and its reference. Returns the exclusion
+ * reason, or null to let the file through.
+ *  - staleFlag: texts no longer match (or this copy lost its text) → through.
+ *  - a plain one-way duplicate of an includable, non-duplicate reference → skippedDuplicateText.
+ *  - a same-text cycle, one-hop (isCircular) or longer (nCycle), keeps exactly
+ *    one member: the rest get skippedCircularDuplicateTiebreak. Before BRO-5907
+ *    the longer cycle fell into the plain-duplicate branch for every member.
+ * @param {{staleFlag:boolean, refAlsoDupe:boolean, refExcluded:boolean, isCircular:boolean,
+ *   circularSameText:boolean, refInheritedFlag:string|null, file:string, target:string,
+ *   nCycle:{inCycle:boolean, sameText:boolean, exclude:boolean}|null}} f   nCycle from cycleTiebreakFor
+ * @returns {null|'skippedDuplicateText'|'skippedDuplicateTextInheritedFlag'|'skippedCircularDuplicateTiebreak'}
+ */
+function duplicateTextOfDecision(f) {
+  if (f.staleFlag) return null;
+  const nCycle = f.nCycle && f.nCycle.inCycle ? f.nCycle : null; // a tail stays a plain duplicate
+  const inSameTextCycle = (f.isCircular && f.circularSameText) || !!(nCycle && nCycle.sameText);
+  if (!f.refAlsoDupe && !f.refExcluded && !inSameTextCycle) return 'skippedDuplicateText';
+  if (f.refInheritedFlag && !(f.isCircular && !f.circularSameText)) return 'skippedDuplicateTextInheritedFlag';
+  if (!f.refExcluded && f.isCircular && f.circularSameText && f.file > f.target) return 'skippedCircularDuplicateTiebreak';
+  if (!f.refExcluded && !f.isCircular && nCycle && nCycle.exclude) return 'skippedCircularDuplicateTiebreak';
+  return null;
+}
+
+module.exports = { duplicateOfExclusion, duplicateTextOfDecision };

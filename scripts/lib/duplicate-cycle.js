@@ -141,4 +141,33 @@ function resolveCycleTiebreak(members, load, fingerprintFn) {
   return { sameText, survivor };
 }
 
-module.exports = { findDuplicateOfCycle, wouldFormDuplicateCycle, resolveCycleTiebreak };
+/**
+ * The rebuild's N-cycle tiebreak for one file, shared by the duplicateOf gate
+ * (duplicate-of-exclusion.js) and the duplicateTextOf branch of
+ * rebuild-all-reviews.js so both pointer fields resolve a cycle the same way.
+ * Before BRO-5907 only the duplicateOf gate walked the graph: a cycle entered
+ * through duplicateTextOf-only nodes (A.duplicateTextOf=B, B=C, C=A) had every
+ * member skipped as a plain duplicate, so the review vanished.
+ * The walk reads siblings through `read`; the tiebreak sees `data` in memory
+ * for `file` itself (the rebuild may have corrected it this pass).
+ * @param {string} file basename
+ * @param {object} data this file's in-memory record
+ * @param {(basename: string) => object|null} read
+ * @param {number} maxHops
+ * @param {(text: string) => string} fingerprintFn
+ * inCycle is false when `file` only points INTO a cycle (a tail): the
+ * duplicateOf gate has always tiebroken tails with the cycle, but the
+ * duplicateTextOf branch keeps treating a tail as a plain duplicate.
+ * @returns {{cycleFound: boolean, inCycle: boolean, sameText: boolean, survivor: string|null, exclude: boolean}}
+ */
+function cycleTiebreakFor(file, data, read, maxHops, fingerprintFn) {
+  const walk = findDuplicateOfCycle(file, read, maxHops);
+  if (!walk.cycleFound) return { cycleFound: false, inCycle: false, sameText: false, survivor: null, exclude: false };
+  const members = walk.chain.slice(0, -1);
+  const closing = walk.chain[walk.chain.length - 1];
+  const inCycle = walk.chain.indexOf(closing) === 0;
+  const tie = resolveCycleTiebreak(members, name => (name === file ? data : read(name)), fingerprintFn);
+  return { cycleFound: true, inCycle, sameText: tie.sameText, survivor: tie.survivor, exclude: tie.sameText && file !== tie.survivor };
+}
+
+module.exports = { findDuplicateOfCycle, wouldFormDuplicateCycle, resolveCycleTiebreak, cycleTiebreakFor };
