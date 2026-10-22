@@ -260,6 +260,18 @@ const EXEMPT_LEDGERS = [
   },
 ];
 
+// BRO-5951 cross-model audit caches: single-writer one-off audit outputs. readRows()
+// in scripts/audit-review-crossmodel.js keeps the LAST row per key and the reverify
+// subcommand rewrites whole files, so a union merge could resurrect superseded rows.
+{
+  const reason = '2026-10-22 (BRO-5951): audit-review-crossmodel.js readRows() is last-row-wins per key and reverify rewrites the file in place, so union could resurrect superseded rows; one writer, no concurrent-append race.';
+  const cohorts = ['bw-historical', 'ob-historical', 'we-2017-2018', 'we-2018-2019', 'we-2019-2020', 'we-2020-2021', 'we-2021-2022', 'we-2022-2023', 'we-2023-2024', 'we-2024-2025', 'we-2025-2026'];
+  for (const check of ['completeness', 'pages', 'score']) {
+    for (const c of cohorts) if (!(check !== 'completeness' && c === 'we-2017-2018')) EXEMPT_LEDGERS.push({ file: `data/audit/crossmodel/${check}-${c}.jsonl`, reason });
+  }
+  EXEMPT_LEDGERS.push({ file: 'data/audit/crossmodel/spend.jsonl', reason });
+}
+
 const EXEMPT_LEDGER_PATHS = new Set(EXEMPT_LEDGERS.map((e) => e.file));
 
 function isExemptLedgerPath(file) {
