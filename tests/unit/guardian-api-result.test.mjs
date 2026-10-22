@@ -102,6 +102,9 @@ test('a Guardian API headline that leads with the show title is a dedicated revi
   assert.equal(apiHeadlineLeadsWithShow('Pitying review', 'Pity'), false, 'prefix of another word');
   assert.equal(apiHeadlineLeadsWithShow('Five shows to see: King Lear and more', 'King Lear'), false);
   assert.equal(apiHeadlineLeadsWithShow('Hamlet review – Andrew Scott', 'King Lear'), false);
+  assert.equal(apiHeadlineLeadsWithShow('King Lear: Ian McKellen on playing the king one last time', 'King Lear'), false, 'interview, not a review');
+  assert.equal(apiHeadlineLeadsWithShow('Pity Party review – a riot', 'Pity'), false, 'a longer title that begins with this one');
+  assert.equal(apiHeadlineLeadsWithShow('King Lear', 'King Lear'), false, 'bare title is not a review headline');
   assert.equal(apiHeadlineLeadsWithShow(null, 'King Lear'), false);
   const { result } = g({ webTitle: 'King Lear review – <a> & b', fields: { bodyText: body } });
   assert.equal(result.pageTitle, 'King Lear review – <a> & b');
