@@ -11,7 +11,7 @@
  *     Talkin' Broadway "Theatre Review by", NYTG "Review by", Time Out "Written by <name><role>").
  *   - page (--fetch): the credit lives only in the page HTML, not in the stored text (The Spy in the
  *     Stalls "Reviewed on <date> / by <name>", Musical Theatre Review's sign-off before the share
- *     widget). The page is read once over plain HTTP and run through extractAuthorFromHtml.
+ *     widget). The page is read once over plain HTTP and run through that outlet's one credit extractor.
  *
  * Fills go through applyPageByline (every guard of the Unknown-byline backfill: flagged/locked files,
  * credited creatives, sibling collisions). Overrides rename through safeRenameReview and are refused
@@ -29,9 +29,8 @@ const path = require('path');
 const https = require('https');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { extractBylineFromText, printedBylineOverride } = require('./lib/byline-from-text');
-const { extractAuthorFromHtml } = require('./lib/content-quality');
 const { applyPageByline } = require('./lib/review-file-writer');
-const { safeRenameReview } = require('./lib/review-write-guard');
+const { safeRenameReview, safeWriteReview } = require('./lib/review-write-guard');
 const { generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
 const { isJunkCriticName } = require('./lib/byline-recovery');
 
@@ -42,9 +41,17 @@ Usage:
   node scripts/fix-printed-bylines.js --help, -h    print this usage and exit
 `;
 
-// Outlets whose critic is only in the page HTML (the stored text drops it).
-const PAGE_ONLY_OUTLETS = new Set(['musical-theatre-review', 'the-spy-in-the-stalls']);
-const TEXT_OUTLETS = new Set(['south-london', 'all-that-dazzles-uk', 'talkinbroadway', 'nytg', 'timeout', 'timeout-london']);
+// Outlets whose critic is only in the page HTML (the stored text drops it), each with the ONE
+// extractor that reads its printed credit. The page's generic author is a house account there
+// (Musical Theatre Review: "Admin", and "Angela Thomas" on press-release posts; Spy in the Stalls:
+// the site name), so the generic extractor chain is deliberately not used.
+const { extractSignOffBeforeShare, extractReviewedByLine } = require('./lib/byline-extraction');
+const PAGE_EXTRACTORS = {
+  'musical-theatre-review': extractSignOffBeforeShare,
+  'the-spy-in-the-stalls': extractReviewedByLine,
+};
+const PAGE_ONLY_OUTLETS = new Set(Object.keys(PAGE_EXTRACTORS));
+const TEXT_OUTLETS = new Set(['south-london', 'theatreandtonic', 'all-that-dazzles-uk', 'talkinbroadway', 'nytg', 'timeout', 'timeout-london']);
 
 function isUnnamed(name) {
   return !name || /^(unknown|unnamed)$/i.test(String(name).trim()) || isJunkCriticName(name);
@@ -76,7 +83,7 @@ function decideByline(outletId, data, page) {
   if (!data || data.wrongProduction || data.duplicateOf || data.criticNameManual || data._locked === true) return null;
   const text = typeof data.fullText === 'string' ? data.fullText : '';
   const stored = data.criticName;
-  const override = printedBylineOverride(outletId, text, data.url);
+  const override = printedBylineOverride(outletId, text, data.url, isUnnamed(stored) ? null : stored);
   // A stored real name that disagrees with the printed credit is replaced (override); an unnamed file
   // takes the credit through the guarded Unknown-byline path (fill).
   if (override && !isUnnamed(stored) && String(override).toLowerCase() !== String(stored || '').toLowerCase()) return { kind: 'override', name: override };
@@ -84,8 +91,8 @@ function decideByline(outletId, data, page) {
   if (override) return { kind: 'fill', name: override };
   const hit = TEXT_OUTLETS.has(outletId) ? extractBylineFromText(outletId, text) : null;
   if (hit && hit.known) return { kind: 'fill', name: hit.name };
-  if (page) {
-    const name = extractAuthorFromHtml(page, text, { url: data.url });
+  if (page && PAGE_EXTRACTORS[outletId]) {
+    const name = PAGE_EXTRACTORS[outletId](page);
     if (name && !isUnnamed(name)) return { kind: 'page', name };
   }
   return null;
@@ -129,8 +136,14 @@ async function main() {
         if (!apply) result = { applied: true, newPath: dst };
         else {
           const updated = { ...data, criticName: decision.name, criticEnrichedFrom: 'printed-byline:text-override' };
-          const r = safeRenameReview(filePath, dst, { newData: updated });
-          result = r && r.wrote ? { applied: true, newPath: dst } : { applied: false, reason: `rename-${(r && r.skipped) || 'failed'}` };
+          if (path.resolve(dst) === path.resolve(filePath)) {
+            // The slug already names the critic; only the stored criticName is stale.
+            const w = safeWriteReview(filePath, updated);
+            result = w && w.wrote !== false ? { applied: true, newPath: dst } : { applied: false, reason: 'write-failed' };
+          } else {
+            const r = safeRenameReview(filePath, dst, { newData: updated });
+            result = r && r.wrote ? { applied: true, newPath: dst } : { applied: false, reason: `rename-${(r && r.skipped) || 'failed'}` };
+          }
         }
       } else {
         result = applyPageByline(filePath, data, { showId: show, criticName: decision.name, source: decision.kind === 'page' ? 'printed-page' : 'printed-text', dryRun: !apply });

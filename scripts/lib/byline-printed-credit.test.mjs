@@ -73,6 +73,10 @@ test('star emoji verdict under the headline is captured at any outlet', () => {
   assert.deepEqual(extractLeadEmojiStars(t), { originalScore: '4/5 stars', normalizedScore: 80, source: 'unicode-stars' });
   assert.deepEqual(extractLeadEmojiStars('Review by Daz Gale ⭐️⭐️⭐️⭐️⭐️ When it comes to'), { originalScore: '5/5 stars', normalizedScore: 100, source: 'unicode-stars' });
   assert.equal(extractLeadEmojiStars('No rating here at all.'), null);
+  // "⭐️ 3 Stars" (Pink Prince Theatre): the number after a lone star is the rating
+  assert.deepEqual(extractLeadEmojiStars('REVIEW: DARKLING @ BUSH THEATRE 🗓 Tuesday 15 September 2026 ⭐️ 3 Stars A DAZZLING DESIGN'), { originalScore: '3/5 stars', normalizedScore: 60, source: 'unicode-stars' });
+  // a lone star icon in scraped page chrome is not a one-star review
+  assert.equal(extractLeadEmojiStars("'Dead Outlaw' review: best of the decade TV you need 2026 reads Celeb news ⭐ U.S. Politics Sports"), null);
   // two separate runs in the lead is a quoted rating, not this critic's verdict
   assert.equal(extractLeadEmojiStars('⭐⭐⭐ Our verdict. Elsewhere critics gave it ⭐⭐⭐⭐⭐ and more.'), null);
   // a run far down the page is page chrome
@@ -90,4 +94,23 @@ test('capture stamps originalScore on an emoji-rated file from an outlet with no
   });
   // an explicit rating already stored is left alone
   assert.equal(findPublishedStarInText({ ...data, originalScore: '3/5 stars' }, { show: { title: 'Martin Guerre' } }), null);
+});
+
+test('Theatre and Tonic: "Written by <first name> for Theatre and Tonic" beats the CMS account holder', () => {
+  const t1 = 'It is an extraordinarily moving evening. Written by Annie for Theatre and Tonic, October 2026.';
+  assert.deepEqual(text.extractTheatreAndTonicByline(t1), { name: 'Annie', known: true });
+  assert.equal(text.printedBylineOverride('theatreandtonic', t1, '', 'Emmie Newitt'), 'Annie');
+  // the credit names the stored person by first name: not an override
+  assert.equal(text.printedBylineOverride('theatreandtonic', 'Written by Penny for Theatre and Tonic', '', 'Penny Walshe'), null);
+  assert.equal(text.printedBylineOverride('theatreandtonic', 'Written by Emmie for Theatre & Tonic', '', 'Emmie Newitt'), null);
+  assert.equal(text.extractTheatreAndTonicByline('Nothing credited here.'), null);
+});
+
+test('sameCriticName: one person under a first name, initial or diacritics; never two people', () => {
+  assert.equal(text.sameCriticName('Penny Walshe', 'Penny'), true);
+  assert.equal(text.sameCriticName('Kimberly Ramírez', 'Kimberly Ramirez'), true);
+  assert.equal(text.sameCriticName('Becky K', 'Becky Kennedy'), true);
+  assert.equal(text.sameCriticName('Michael Holland', 'Lizzie Paul'), false);
+  assert.equal(text.sameCriticName('Emmie Newitt', 'Annie'), false);
+  assert.equal(text.sameCriticName('', 'Annie'), false);
 });

@@ -143,10 +143,23 @@ function extractTimeOutByline(text) {
   return name ? { name, known: true } : null;
 }
 
+// Theatre and Tonic (Squarespace): the CMS author is the account holder ("Emmie Newitt" on ~50 reviews)
+// while each review ends "Written by Annie for Theatre and Tonic, October 2026." The writer is credited
+// by first name (sometimes first name and initial or a full name), so a single capitalised word counts.
+const TT_WRITTEN_BY_RE = new RegExp(String.raw`Written by\s+(\p{Lu}[\p{L}'’-]*\.?(?:\s+\p{Lu}[\p{L}'’-]*\.?){0,2})\s+for Theatre (?:and|&) Tonic`, "gu");
+function extractTheatreAndTonicByline(text) {
+  if (!text) return null;
+  let last = null;
+  for (const m of String(text).replace(/\s+/g, " ").matchAll(TT_WRITTEN_BY_RE)) last = m;
+  const name = last && printedPerson(last[1]);
+  return name ? { name, known: true } : null;
+}
+
 const BYLINE_EXTRACTORS = {
   "plays-international": extractPlaysInternationalByline,
   "theater-scene": extractTheaterSceneByline,
   "south-london": extractSouthLondonByline,
+  "theatreandtonic": extractTheatreAndTonicByline,
   "all-that-dazzles-uk": extractAllThatDazzlesByline,
   "talkinbroadway": extractTalkinBroadwayByline,
   "nytg": extractNewYorkTheatreGuideByline,
@@ -163,15 +176,38 @@ const BYLINE_EXTRACTORS = {
 const PRINTED_BYLINE_OVERRIDES = new Map([
   ["theater-scene", { requireUrlSlug: true }],
   ["south-london", { requireUrlSlug: false }],
+  ["theatreandtonic", { requireUrlSlug: false }],
   ["all-that-dazzles-uk", { requireUrlSlug: false }],
 ]);
 
-/** The critic the article itself prints, for outlets in PRINTED_BYLINE_OVERRIDES; else null. */
-function printedBylineOverride(outletId, text, url) {
+const foldName = (n) => String(n || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z ]/g, " ").replace(/\s+/g, " ").trim();
+
+/**
+ * True when a stored critic name and a printed credit are the same person: equal names, or the credit
+ * is a first/last name or initial-form of the stored full name ("Penny" for "Penny Walshe").
+ */
+function sameCriticName(stored, printed) {
+  const a = foldName(stored), b = foldName(printed);
+  if (!a || !b) return false;
+  if (a === b) return true;
+  const at = a.split(" "), bt = b.split(" ");
+  const shorter = at.length <= bt.length ? at : bt;
+  const longer = at.length <= bt.length ? bt : at;
+  if (shorter.length === 1) return longer[0] === shorter[0] || longer[longer.length - 1] === shorter[0];
+  return shorter.every((t, i) => longer[i] !== undefined && (longer[i] === t || (t.length === 1 && longer[i][0] === t)));
+}
+
+/**
+ * The critic the article itself prints, for outlets in PRINTED_BYLINE_OVERRIDES; else null.
+ * `stored` (optional): the name already on the record; a credit that names the same person (a first
+ * name for a stored full name) is not an override.
+ */
+function printedBylineOverride(outletId, text, url, stored) {
   const rule = PRINTED_BYLINE_OVERRIDES.get(outletId);
   if (!rule) return null;
   const hit = BYLINE_EXTRACTORS[outletId](text);
   if (!hit || !hit.known) return null;
+  if (stored && sameCriticName(stored, hit.name)) return null;
   if (!rule.requireUrlSlug) return hit.name;
   // "Posted by" can name whoever uploaded the post (5 of 129 TheaterScene pages disagree with the
   // critic slug in their own url). Replace a stored name only when the url's critic slug agrees.
@@ -220,7 +256,9 @@ module.exports = {
   printedBylineOverride,
   extractTheaterSceneByline,
   extractPlaysInternationalByline,
+  sameCriticName,
   extractSouthLondonByline,
+  extractTheatreAndTonicByline,
   extractAllThatDazzlesByline,
   extractTalkinBroadwayByline,
   extractNewYorkTheatreGuideByline,
