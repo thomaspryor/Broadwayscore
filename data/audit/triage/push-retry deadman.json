@@ -1,7 +1,7 @@
 {
   "system": "push-retry deadman",
   "status": "error",
-  "lastChecked": "2026-10-21T07:39:58.112Z",
+  "lastChecked": "2026-10-22T07:36:55.561Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Push-retry deadman",
       "status": "error",
-      "message": "8 push-retry failure(s) in the last 7d across Broadwayscore:main [LLM Ensemble Score Reviews x6, Opening Night Poller x1, Check Cookie Health x1]. Most recent reason: api-fallback-exhausted(race-or-other,early-fallback). 32 committed file(s) discarded across 7 run(s). 460 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line)."
+      "message": "5 push-retry failure(s) in the last 7d across Broadwayscore:main [LLM Ensemble Score Reviews x3, Check Cookie Health x1, unknown x1]. Most recent reason: hook-rejected. 9 committed file(s) discarded across 4 run(s). 419 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line)."
     }
   ]
 }
