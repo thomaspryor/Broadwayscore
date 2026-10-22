@@ -111,7 +111,8 @@
       "market": "broadway",
       "queuedAt": "2026-10-21T11:59:01.563Z",
       "dueAt": "2026-10-22T03:59:01.563Z",
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-10-22T05:27:07.524Z"
     },
     {
       "kind": "truncated-t1-refetch",
@@ -161,7 +162,10 @@
       "outletIds": [
         "wsj"
       ],
-      "attempted": false
+      "attempted": true,
+      "skipped": true,
+      "skipReason": "no-truncated-t1",
+      "attemptedAt": "2026-10-22T05:27:07.524Z"
     },
     {
       "kind": "truncated-t1-refetch",
