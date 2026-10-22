@@ -1099,5 +1099,33 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-21T22:56:47.385Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:murder-cathedral-off-west-end-2026",
+    "title": "1 review(s) for murder-cathedral-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--7b99d1e7.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/murder-in-the-cathedral-review-st-johns-the-divine-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T23:47:13.025Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:baby-off-west-end-2026",
+    "title": "4 review(s) for baby-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--36e041bc.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/tyler-cameron-fiancee-tate-madden-baby-dwts-dedication-night-routine/6561611/\n- nbcny--3e3bac2.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/news/national-international/top-baby-names-trends-odyssey-yellowstone-heated-rivalry/6561184/\n- nbcny--5f72cba5.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/alex-cooper-welcomes-baby-boy-husband-matt-kaplan/6561122/\n- nbcny--581da98c.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/hilary-swank-pregnancy-age-52-addresses-backlash/6560204/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T23:50:30.083Z"
   }
 ]
