@@ -10,6 +10,8 @@ export interface ScoredReview extends Review {
 export interface ComputedProduct extends Product {
   reviews: ScoredReview[];
   reviewCount: number;
+  /** Reviews whose outlet published a score (the rest are scored from text). */
+  ratedCount: number;
   /** Tier-weighted mean of review scores, null below MIN_REVIEWS_FOR_SCORE. */
   criticScore: number | null;
   breakdown: Record<Sentiment, number>;
@@ -51,6 +53,7 @@ export function computeProduct(product: Product, allReviews: Review[], outlets: 
     ...product,
     reviews,
     reviewCount: reviews.length,
+    ratedCount: reviews.filter((r) => r.scoreSource === 'rating').length,
     criticScore: computeCriticScore(reviews),
     breakdown,
     tierCounts,

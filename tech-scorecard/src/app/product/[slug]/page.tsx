@@ -152,6 +152,10 @@ function ScoreSummary({ product, tier }: { product: ReturnType<typeof getAllProd
     <div className="min-w-0">
       <p className={`text-xl font-bold sm:text-2xl ${tier?.textClass ?? 'text-ink-faint'}`}>{tier?.label ?? 'Not Yet Rated'}</p>
       <p className="text-sm text-ink-muted">Based on {product.reviewCount} Critic Reviews</p>
+      <p className="text-xs text-ink-faint">
+        {product.ratedCount} with a published score, {product.reviewCount - product.ratedCount} scored from text ·{' '}
+        <Link href="/methodology/" className="underline underline-offset-2 hover:text-ink">How it works</Link>
+      </p>
       {product.latestReviewDate && <p className="text-xs text-ink-faint">Latest review {formatDate(product.latestReviewDate)}</p>}
     </div>
   );

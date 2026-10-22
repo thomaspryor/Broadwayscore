@@ -41,14 +41,14 @@ export function ReviewList({ reviews }: { reviews: ScoredReview[] }) {
   const rest = reviews.slice(VISIBLE);
   return (
     <div>
-      {head.map((r) => <ReviewRow key={r.outletId} review={r} />)}
+      {head.map((r) => <ReviewRow key={`${r.outletId}|${r.url}`} review={r} />)}
       {rest.length > 0 && (
         <details className="more">
           <summary className="mt-2 cursor-pointer rounded-xl border border-line bg-surface-overlay py-3 text-center text-sm font-semibold text-brand-ink hover:border-line-strong">
             <span className="more-closed">Show {rest.length} more reviews ▾</span>
             <span className="more-open">Show fewer ▴</span>
           </summary>
-          {rest.map((r) => <ReviewRow key={r.outletId} review={r} />)}
+          {rest.map((r) => <ReviewRow key={`${r.outletId}|${r.url}`} review={r} />)}
         </details>
       )}
     </div>
