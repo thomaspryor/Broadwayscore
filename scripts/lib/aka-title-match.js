@@ -22,7 +22,12 @@ function venueAgrees(a, b) {
   const x = normVenue(a);
   const y = normVenue(b);
   if (!x || !y) return false;
-  return x === y || x.startsWith(y + ' ') || y.startsWith(x + ' ');
+  if (x === y) return true;
+  // Same rule as Mezzanine's venuesMatch: a bare prefix must be 8+ chars so
+  // "New" cannot match "New Amsterdam" ("Imperial" ~ "Imperial Ballroom" still does).
+  const shorter = x.length <= y.length ? x : y;
+  const longer = x.length <= y.length ? y : x;
+  return shorter.length >= 8 && longer.startsWith(shorter + ' ');
 }
 
 /** Normalized alias titles of a show that differ from its main title. */

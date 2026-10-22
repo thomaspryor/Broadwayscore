@@ -14,6 +14,8 @@ test('alias needs the same house', () => {
   assert.ok(!matchesAlias(show, '860', 'Gershwin Theatre'));
   assert.ok(!matchesAlias(show, '861', 'Imperial Theatre'));
   assert.ok(venueAgrees('Imperial Theatre', 'Imperial'));
+  assert.ok(!venueAgrees('New Amsterdam Theatre', 'New'), 'short bare prefix must not match');
+  assert.ok(!venueAgrees('', 'Imperial Theatre'));
 });
 
 test('Theatr "860" at the Imperial attaches; same title elsewhere does not', () => {
