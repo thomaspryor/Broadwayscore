@@ -359,6 +359,20 @@ test('buildAddShowPlan: each promoted row passes the add-show action', () => {
   assert.equal(shows[0].closingDate, '2020-03-16');
 });
 
+test('buildAddShowPlans: a season past the action cap splits into <name>, <name>-b, each passing the plan checks', () => {
+  const { buildAddShowPlans } = require('../promote-historical-we.js');
+  const { MAX_PLAN_ACTIONS } = require('./pending-fix-limits.js');
+  const { planShapeProblems } = require('./pending-fix-plan-checks.js');
+  const rows = Array.from({ length: MAX_PLAN_ACTIONS + 8 }, (_, i) => buildShowEntry({ title: `Show ${i}`, venue: 'Gielgud Theatre', openingDate: '2017-02-17', closingDate: '2017-03-16',
+    season: '2016-2017', discoverySource: 'we-historical:tr', evidenceUrls: ['https://www.theatrerecord.com/x'] }, new Set()));
+  let n = 0;
+  const plans = buildAddShowPlans('bro-5851-promote-2016-2017', '2016-2017', rows, () => `pid${n++}`);
+  assert.deepEqual(plans.map(p => p.name), ['bro-5851-promote-2016-2017', 'bro-5851-promote-2016-2017-b']);
+  assert.deepEqual(plans.map(p => p.plan.plan.actions.length), [MAX_PLAN_ACTIONS, 8]);
+  assert.notEqual(plans[0].plan.planId, plans[1].plan.planId);
+  for (const p of plans) assert.deepEqual(planShapeProblems(`${p.name}.json`, p.plan), []);
+});
+
 test('auditSeason (BRO-5851): a WOS first performance stored as openingDate fails the season', () => {
   const row = (id, extra) => ({ id, title: id, venue: 'Trafalgar Studios', previewsStartDate: '2018-05-18', openingDate: '2018-05-18', closingDate: '2018-08-18', status: 'closed', category: 'west-end', market: 'west-end', season: SEASON, discoverySource: 'we-historical:wos', ...extra });
   const shows = [row('killer-joe', { openingDateSource: 'whatsonstage-first-performance' }), row('consent', { openingDate: '2018-05-29', openingDateSource: 'human-correction' })];

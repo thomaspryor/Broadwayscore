@@ -300,14 +300,30 @@ function buildAddShowPlan(name, season, entries, planId) {
   };
 }
 
+/**
+ * One plan per MAX_PLAN_ACTIONS rows: <name>, <name>-b, <name>-c. A season of
+ * 33 rows went out as one 33-action plan the land gate refuses (BRO-5851).
+ */
+function buildAddShowPlans(name, season, entries, uuid) {
+  const { MAX_PLAN_ACTIONS } = require('./lib/pending-fix-limits');
+  const { splitName } = require('./new-fix-plan');
+  const plans = [];
+  for (let i = 0; i * MAX_PLAN_ACTIONS < entries.length; i++) {
+    const part = splitName(name, i);
+    plans.push({ name: part, plan: buildAddShowPlan(part, season, entries.slice(i * MAX_PLAN_ACTIONS, (i + 1) * MAX_PLAN_ACTIONS), uuid()) });
+  }
+  return plans;
+}
+
 function writeAddShowPlan(name, season, entries) {
   // execute-approved-fix.js takes the file stem as its plan id and refuses anything else.
   if (!/^[a-z0-9][a-z0-9-]*$/i.test(name)) { console.error(`--plan=${name}: use letters, digits and dashes (e.g. bro-5031-2019-20).`); process.exit(1); }
-  const file = path.join(ROOT, 'data', 'pending-fixes', `${name}.json`);
-  if (fs.existsSync(file)) { console.error(`${path.relative(ROOT, file)} already exists; pick another --plan name.`); process.exit(1); }
-  const plan = buildAddShowPlan(name, season, entries, require('crypto').randomUUID());
-  fs.writeFileSync(file, JSON.stringify(plan, null, 2) + '\n');
-  return file;
+  const plans = buildAddShowPlans(name, season, entries, require('crypto').randomUUID);
+  const files = plans.map(p => path.join(ROOT, 'data', 'pending-fixes', `${p.name}.json`));
+  const taken = files.find(f => fs.existsSync(f));
+  if (taken) { console.error(`${path.relative(ROOT, taken)} already exists; pick another --plan name.`); process.exit(1); }
+  plans.forEach((p, i) => fs.writeFileSync(files[i], JSON.stringify(p.plan, null, 2) + '\n'));
+  return files;
 }
 
 function save(showsData, apply) {
@@ -384,8 +400,8 @@ function main() {
   if (planName) {
     // Cloud sessions can't push the private data repo; execute-approved-fix.yml
     // applies this plan's add-show actions instead (.claude/CLOUD.md).
-    const file = writeAddShowPlan(planName, season, toPromote);
-    console.log(`Wrote ${path.relative(ROOT, file)} (${toPromote.length} add-show). git add -f it (pending-fixes is gitignored), land it, then dispatch execute-approved-fix.yml.`);
+    const files = writeAddShowPlan(planName, season, toPromote);
+    console.log(`Wrote ${files.map(f => path.relative(ROOT, f)).join(', ')} (${toPromote.length} add-show). git add -f them (pending-fixes is gitignored), land them, then dispatch execute-approved-fix.yml once per file.`);
     for (const e of toPromote) logEntry({ kind: 'promote-historical-we', id: e.id, title: e.title, venue: e.venue, season, plan: planName, planned: true });
     return;
   }
@@ -400,4 +416,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { buildAddShowPlan, buildShowEntry, buildVenueSpellings, planPromotions, effectiveDecision, fixAllCapsTitle, inferShowType };
+module.exports = { buildAddShowPlan, buildAddShowPlans, buildShowEntry, buildVenueSpellings, planPromotions, effectiveDecision, fixAllCapsTitle, inferShowType };
