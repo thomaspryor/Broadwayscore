@@ -156,7 +156,7 @@ function RecoupedCell({ show }: { show: CommercialShowRow }) {
 
   if (cell.kind === 'model') {
     return (
-      <div className="w-36 sm:w-40" title="Model estimate, not a reported figure. See methodology.">
+      <div className="w-36 sm:w-40" title="Our model estimate, not a reported figure. See methodology.">
         <RecoupmentProgressBar estimatedPct={cell.pct} modelMethod={show.modelMethod} belowCosts={show.modelBelowCosts} final={show.status === 'closed'} />
       </div>
     );

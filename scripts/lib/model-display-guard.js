@@ -59,15 +59,18 @@ const RUNNING_SHOWN_MAX = 99;
 // Owner turned it on for plays, 2026-10-11 (BRO-5073 timing test; strict
 // backtest passes). Still inside the held Commercial Scorecard build.
 const RUNNING_MODEL_BAR_ENABLED = true;
-// Show types that get the model bar once the flag is on (BRO-5073): plays
-// only. The timing backtest finds the model crosses 100% a median 1.5 weeks
-// before a play's announcement (never more than 10 early) but up to a year
-// early for musicals. Add 'musical' when the weekly revisit bar is met for them.
-// Closed shows follow the same rule (BRO-5502): the model's final figure ran
-// high on closed musicals too (Hell's Kitchen 91 vs a reported 55-60, Death
-// Becomes Her 45 vs a reported total loss). Musicals show an analyst's figure
-// instead (analystRecoupPct, scripts/lib/waltz-recoup-estimates.js).
-const RUNNING_MODEL_BAR_TYPES = ['play'];
+// Show types that get the model bar once the flag is on. Plays since
+// 2026-10-11 (BRO-5073). Musicals since BRO-5872: they were held because the
+// model ran about 2x high on them (BRO-5502: Hell's Kitchen 91 vs a reported
+// 55-60, Death Becomes Her 45 vs a reported total loss). The cause was the
+// flat ~11% gross-linked deduction on costs that leave royalties out; with
+// the band on every reported musical cost (MUSICAL_LIVE_OPTS) closed-musical
+// finals with a reported outcome read MAE 14.3 -> 5.8 as displayed (largest
+// miss 47 -> 17, every reported figure inside the printed range), timing
+// musicals 13.9 -> 11.5 (plays 13.2), 0 new false or early recouped. An
+// analyst's figure still leads where there is one (displaysAnalyst).
+// A null type counts as a musical; 'special' and 'opera' stay held.
+const RUNNING_MODEL_BAR_TYPES = ['play', 'musical'];
 // Notes stand in for a source only when they state a figure for the money
 // returned or lost ("$6M loss (~40% of cap)"); notes without one ("No trade
 // report of the capitalization") are no estimate (checker (c), 2026-10-10).

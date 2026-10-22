@@ -61,14 +61,17 @@ describe('modelDisplayGuard', () => {
     assert.equal(modelDisplayGuard({ ...on, runningEnabled: false, pct: [130, 144, 150] }).reason, 'awaiting-truth');
     assert.deepEqual(modelDisplayGuard({ ...on, running: false, pct: [80, 92, 110] }).shown, [80, 92, 110]);
   });
-  test('per-type running switch: on for plays only (owner, 2026-10-11, BRO-5073)', () => {
+  test('per-type running switch: plays (BRO-5073) and musicals (BRO-5872)', () => {
     assert.equal(RUNNING_MODEL_BAR_ENABLED, true);
-    assert.deepEqual(RUNNING_MODEL_BAR_TYPES, ['play']);
+    assert.deepEqual(RUNNING_MODEL_BAR_TYPES, ['play', 'musical']);
     const on = { pct: [40, 55, 70], playedWeeks: 30, running: true, runningEnabled: true };
     assert.equal(modelDisplayGuard({ ...on, showType: 'play' }).show, true);
-    assert.equal(modelDisplayGuard({ ...on, showType: 'musical' }).reason, 'awaiting-truth');
-    assert.equal(modelDisplayGuard({ ...on, showType: null }).reason, 'awaiting-truth');
-    assert.equal(modelDisplayGuard({ ...on, showType: 'musical', runningTypes: ['play', 'musical'] }).show, true);
+    assert.equal(modelDisplayGuard({ ...on, showType: 'musical' }).show, true);
+    assert.equal(modelDisplayGuard({ ...on, showType: null }).show, true);
+    // Solo shows and opera stay held.
+    assert.equal(modelDisplayGuard({ ...on, showType: 'special' }).reason, 'awaiting-truth');
+    assert.equal(modelDisplayGuard({ ...on, showType: 'opera' }).reason, 'awaiting-truth');
+    assert.equal(modelDisplayGuard({ ...on, showType: 'musical', runningTypes: ['play'] }).reason, 'awaiting-truth');
     // flag off: plays are held too; closed shows ignore the switch
     assert.equal(modelDisplayGuard({ ...on, runningEnabled: false, showType: 'play' }).reason, 'awaiting-truth');
     assert.equal(modelDisplayGuard({ ...on, running: false, showType: 'musical' }).show, true);
@@ -169,10 +172,11 @@ describe('analyst figure (BRO-5502)', () => {
     assert.equal(displaysAnalyst({ designation: 'TBD' }, { status: 'open' }), false);
     assert.equal(displaysAnalyst(null, { status: 'open' }), false);
   });
-  test('a closed show is never "too early", while musicals stay off and past-100 holds apply', () => {
+  test('a closed show is never "too early", while held types stay off and past-100 holds apply', () => {
     assert.equal(modelDisplayGuard({ pct: [10, 20, 30], playedWeeks: 4, closed: true }).show, true);
     assert.equal(modelDisplayGuard({ pct: [10, 20, 30], playedWeeks: 4 }).reason, 'few-weeks');
-    assert.equal(modelDisplayGuard({ pct: [10, 20, 30], playedWeeks: 40, closed: true, showType: 'musical' }).reason, 'awaiting-truth');
+    assert.equal(modelDisplayGuard({ pct: [10, 20, 30], playedWeeks: 40, closed: true, showType: 'musical' }).show, true);
+    assert.equal(modelDisplayGuard({ pct: [10, 20, 30], playedWeeks: 40, closed: true, showType: 'special' }).reason, 'awaiting-truth');
     assert.equal(modelDisplayGuard({ pct: [10, 20, 30], playedWeeks: 40, closed: true, showType: 'play' }).show, true);
     assert.equal(modelDisplayGuard({ pct: [100, 120, 140], playedWeeks: 40, closed: true, showType: 'play' }).reason, 'estimated-recouped');
     assert.equal(modelDisplayGuard({ pct: [80, 105, 140], playedWeeks: 40, closed: true, showType: 'play' }).reason, 'past-100-unannounced');

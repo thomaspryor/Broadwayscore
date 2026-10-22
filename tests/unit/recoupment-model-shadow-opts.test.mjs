@@ -150,7 +150,8 @@ describe('varBandMusicalsCited (BRO-5598, live for musicals)', () => {
   const cited = { ...comm, costMethodology: 'trade-reported', weeklyRunningCostSource: 'Broadway Journal (Jan 9, 2024): "weekly running costs of $800,000" https://www.broadwayjournal.com/p/example' };
   const pct = (s, c, opts) => calculateRecoupment(s, c, null, weekly, opts).recoupmentPctCentral;
   test('a cited running cost on a musical takes the band by default', () => {
-    assert.ok(pct(show, cited) < pct(show, cited, { varBandMusicalsCited: false }));
+    // varBandMusicalsReported (BRO-5872) also bands a reported cost, so turn it off to see this one.
+    assert.ok(pct(show, cited) < pct(show, cited, { varBandMusicalsCited: false, varBandMusicalsReported: false }));
     assert.equal(pct(show, cited), pct(show, cited, { varBandMusicals: true, varBandMusicalsCited: false }));
   });
   test('an uncited, all-in or breakeven cost, and any play, skip it', () => {
@@ -164,15 +165,15 @@ describe('varBandMusicalsCited (BRO-5598, live for musicals)', () => {
   });
 });
 
-describe('varBandMusicalsWaltz (BRO-5872, shadow)', () => {
+describe('varBandMusicalsWaltz (BRO-5872, live for musicals)', () => {
   const waltz = { ...comm, costMethodology: 'reddit-standard', weeklyRunningCostSource: 'Estimate by u/Boring_Waltz_9545 on r/Broadway, "GROSSES ANALYSIS"' };
   const bySource = { ...comm, weeklyRunningCostSource: 'Section C: Reddit Grosses Analysis' };
   const pct = (s, c, opts) => calculateRecoupment(s, c, null, weekly, opts).recoupmentPctCentral;
-  test('off by default: a Reddit cost keeps the flat deduction', () => {
-    assert.equal(pct(show, waltz), pct(show, waltz, { varBandMusicalsWaltz: false }));
+  test('on by default: a Reddit cost takes the band; false keeps the flat deduction', () => {
+    assert.ok(pct(show, waltz) < pct(show, waltz, { varBandMusicalsWaltz: false }));
+    assert.equal(pct(show, waltz), pct(show, waltz, { varBandMusicalsWaltz: true }));
   });
   test('on: a Reddit cost on a musical takes the same band as a cited one', () => {
-    assert.ok(pct(show, waltz, { varBandMusicalsWaltz: true }) < pct(show, waltz));
     assert.equal(pct(show, waltz, { varBandMusicalsWaltz: true }), pct(show, waltz, { varBandMusicals: true }));
     assert.equal(pct(show, bySource, { varBandMusicalsWaltz: true }), pct(show, bySource, { varBandMusicals: true }));
   });
@@ -194,5 +195,35 @@ describe('varBandMusicalsWaltz (BRO-5872, shadow)', () => {
     const cited = { ...comm, costMethodology: 'trade-reported', weeklyRunningCostSource: 'Broadway Journal (Jan 9, 2024): "weekly running costs of $800,000" https://www.broadwayjournal.com/p/example' };
     assert.equal(pct(show, cited, { varBandMusicalsWaltz: true }), pct(show, cited));
     assert.equal(pct(show, waltz, { varBandMusicalsWaltz: true, varBandMusicalsCited: false }), pct(show, waltz, { varBandMusicalsWaltz: true }));
+  });
+});
+
+describe('varBandMusicalsReported (BRO-5872, live for musicals)', () => {
+  const uncited = { ...comm, costMethodology: 'trade-reported', weeklyRunningCostSource: 'Industry sources' };
+  const pct = (s, c, opts) => calculateRecoupment(s, c, null, weekly, opts).recoupmentPctCentral;
+  const banded = (s, c) => pct(s, c, { varBandMusicals: true });
+  test('an uncited trade or SEC-filing cost on a musical takes the band by default', () => {
+    assert.ok(pct(show, uncited) < pct(show, uncited, { varBandMusicalsReported: false }));
+    assert.equal(pct(show, uncited), banded(show, uncited));
+    const sec = { ...uncited, costMethodology: 'sec-filing' };
+    assert.equal(pct(show, sec), banded(show, sec));
+  });
+  test('a flagged estimate, our own methodologies, no methodology, all-in and breakeven keep the flat deduction', () => {
+    const flat = (c) => assert.equal(pct(show, c), pct(show, c, { varBandMusicalsReported: false }));
+    flat({ ...uncited, isEstimate: { weeklyRunningCost: true } });
+    flat({ ...uncited, costMethodology: 'industry-estimate' });
+    flat({ ...uncited, costMethodology: 'deep-research' });
+    flat(comm);
+    for (const weeklyRunningCostBasis of ['all-in', 'breakeven']) flat({ ...uncited, weeklyRunningCostBasis });
+  });
+  test('plays and solo shows are untouched', () => {
+    for (const type of ['play', 'special']) {
+      const s = { ...show, type };
+      assert.equal(pct(s, uncited), pct(s, uncited, { varBandMusicalsReported: false }), type);
+    }
+  });
+  test('the live musical defaults are pinned', () => {
+    const { MUSICAL_LIVE_OPTS } = require('../../scripts/lib/recoupment-model');
+    assert.deepEqual({ ...MUSICAL_LIVE_OPTS }, { previewsFromWeekly: true, datedCosts: true, varBandMusicalsCited: true, varBandMusicalsWaltz: true, varBandMusicalsReported: true });
   });
 });

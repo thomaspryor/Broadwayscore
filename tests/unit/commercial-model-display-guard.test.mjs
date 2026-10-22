@@ -22,8 +22,7 @@ const {
 const now = new Date('2026-10-10');
 const running = { previewsStartDate: '2025-10-01', openingDate: '2025-11-01' }; // ~53 weeks played
 // Closed play with designation TBD: the bar still shows, and the running-show
-// launch switch does not apply, so the shown-copy tests use it. A play: closed
-// musicals keep the model off too (BRO-5502).
+// launch switch does not apply, so the shown-copy tests use it.
 const closedTbd = { ...running, closingDate: '2026-10-01', status: 'closed', type: 'play' };
 const rec = (over) => ({ designation: 'TBD', recouped: null, modelMethod: 'weekly-model', modelDataQuality: 'medium', ...over });
 
@@ -149,20 +148,23 @@ test('the guard output feeds the hold label end to end', () => {
   assert.equal(getModelHoldLabel({ ...toPublicShowCommercial(held), status: 'open' }), 'Losing money so far');
 });
 
-// Launch (owner, 2026-10-11, BRO-5073): the running bar is on for plays only.
-// A running musical (or a show with no type) still says "Not enough reported
-// data yet"; a running play prints the estimate, capped at 99.
-test('running bar: plays print an estimate, musicals stay held', () => {
+// Launch (owner, 2026-10-11, BRO-5073): the running bar is on for plays, and
+// for musicals since BRO-5872. A held type (a solo show) still says "Not
+// enough reported data yet"; a running play or musical prints the estimate,
+// capped at 99.
+test('running bar: plays and musicals print an estimate, solo shows stay held', () => {
   const { RUNNING_MODEL_BAR_ENABLED, RUNNING_MODEL_BAR_TYPES } = require('../../scripts/lib/model-display-guard');
   assert.equal(RUNNING_MODEL_BAR_ENABLED, true);
-  assert.deepEqual(RUNNING_MODEL_BAR_TYPES, ['play']);
+  assert.deepEqual(RUNNING_MODEL_BAR_TYPES, ['play', 'musical']);
   const lostBoys = rec({ modelRecoupmentPct: [-13.9, 0.5, 14] });
   const musical = applyModelDisplayGuard(lostBoys, { ...running, type: 'musical' }, now);
-  assert.equal(musical.modelRecoupmentPct, null);
-  assert.equal(musical.modelDisplayHold, 'awaiting-truth');
-  assert.equal(getRecoupmentDisplayMode(musical), 'none');
-  assert.equal(getModelHoldLabel({ ...musical, status: 'open' }), 'Not enough reported data yet');
-  assert.equal(applyModelDisplayGuard(lostBoys, { ...running, type: null }, now).modelDisplayHold, 'awaiting-truth');
+  assert.deepEqual(musical.modelRecoupmentPct, [0, 0.5, 14]);
+  assert.equal(getRecoupmentDisplayMode({ ...musical, status: 'open' }), 'model');
+  const solo = applyModelDisplayGuard(lostBoys, { ...running, type: 'special' }, now);
+  assert.equal(solo.modelRecoupmentPct, null);
+  assert.equal(solo.modelDisplayHold, 'awaiting-truth');
+  assert.equal(getRecoupmentDisplayMode(solo), 'none');
+  assert.equal(getModelHoldLabel({ ...solo, status: 'open' }), 'Not enough reported data yet');
   // A running play prints; a closing date still ahead is running too.
   const play = { ...running, type: 'play' };
   assert.deepEqual(applyModelDisplayGuard(rec({ modelRecoupmentPct: [40, 55, 70] }), play, now).modelRecoupmentPct, [40, 55, 70]);

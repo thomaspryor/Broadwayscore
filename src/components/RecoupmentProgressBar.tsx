@@ -25,8 +25,8 @@ function getBarColor(value: number): string {
 }
 
 const METHOD_LABELS: Record<string, string> = {
-  'weekly-model': 'Model estimate',
-  'simplified-lifetime': 'Lifetime model estimate',
+  'weekly-model': 'Our model estimate',
+  'simplified-lifetime': 'Our lifetime model estimate',
   'ai-estimated': 'AI-estimated',
 };
 

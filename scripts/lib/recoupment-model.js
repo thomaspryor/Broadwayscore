@@ -17,7 +17,7 @@
  * - Three-scenario output (optimistic/central/pessimistic)
  */
 
-const { isCitedReportedWeeklyCost, REPORTED_COST_METHODOLOGIES, costSourceBasis } = require('./waltz-cost-gap-fill');
+const { isCitedReportedWeeklyCost, isReportedWeeklyCost, REPORTED_COST_METHODOLOGIES, costSourceBasis } = require('./waltz-cost-gap-fill');
 const { previewWeeksFromWeekly } = require('./preview-weeks');
 const { runWindow, weeksInOwnRun, COVID_DARK_START, COVID_DARK_END } = require('./run-window');
 const { taxCreditCited } = require('./tax-credit-cited');
@@ -534,11 +534,18 @@ function getPreviewGrossMultiplier(previewWeek) {
  *                       running cost: an estimated cost was fitted to the old
  *                       flat deduction, and an all-in or breakeven figure
  *                       already holds the gross-linked costs
- * Timing backtest, musicals: MAE 18.4 -> 14.1, inside 34 -> 37 of 60; reported
- * truth musicals 4.6 -> 3.7, 0 new false recouped. An explicit false in opts
- * turns one off (shadow comparisons).
+ *   varBandMusicalsWaltz, varBandMusicalsReported (BRO-5872) the same band on
+ *                       an analyst's (Boring Waltz) cost and on a reported
+ *                       musical cost with no public cite (trade-reported or
+ *                       SEC filing): those leave royalties out too, so the
+ *                       flat ~11% read musicals about 2x high. A flagged
+ *                       estimate (isEstimate) keeps the flat path.
+ * Timing backtest, musicals: MAE 18.4 -> 14.1 -> 11.5 (BRO-5872), inside 34 ->
+ * 37 -> 39; reported truth musicals 4.6 -> 3.7 -> 3.2; displayed closed-musical
+ * finals with a reported outcome 14.3 -> 5.8; 0 new false recouped. An
+ * explicit false in opts turns one off (shadow comparisons).
  */
-const MUSICAL_LIVE_OPTS = Object.freeze({ previewsFromWeekly: true, datedCosts: true, varBandMusicalsCited: true });
+const MUSICAL_LIVE_OPTS = Object.freeze({ previewsFromWeekly: true, datedCosts: true, varBandMusicalsCited: true, varBandMusicalsWaltz: true, varBandMusicalsReported: true });
 // Keyed on classifyShow (the category the variable-cost rates use), so opera
 // counts as a musical and a solo show ('special') keeps the old path.
 // An explicit undefined in opts leaves the default on.
@@ -667,12 +674,17 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   const split = opts.costSplit && !basisNut ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null;
   const baseVarRate = split ? split.varRate : getBaseVariableRate(category);
   const runNut = split ? split.fixedNut : weeklyNut;
-  // opts.varBandMusicalsWaltz (shadow, BRO-5872): the band on a Reddit
+  // opts.varBandMusicalsWaltz (live for musicals, BRO-5872): the band on a Reddit
   // analyst's cost too. His weekly cost leaves out the gross-linked items his
   // posts deduct on this band, so the flat ~11% undercharged every such run.
   // Musicals only (classifyShow): calcWeeklyProfit's band counts a solo show as one.
   const waltzCost = !!opts.varBandMusicalsWaltz && /^musical/.test(category) && isWaltzWeeklyCost(commercial);
-  const citedBand = (!!opts.varBandMusicalsCited && isCitedReportedWeeklyCost(commercial) || waltzCost) && !['all-in', 'breakeven'].includes(commercial.weeklyRunningCostBasis);
+  // opts.varBandMusicalsReported (live for musicals, BRO-5872): the band on a
+  // reported musical cost (trade-reported, SEC filing) with no public cite,
+  // never on one flagged as an estimate.
+  const otherReported = !!opts.varBandMusicalsReported && /^musical/.test(category) && isReportedWeeklyCost(commercial)
+    && commercial.isEstimate?.weeklyRunningCost !== true;
+  const citedBand = (!!opts.varBandMusicalsCited && isCitedReportedWeeklyCost(commercial) || waltzCost || otherReported) && !['all-in', 'breakeven'].includes(commercial.weeklyRunningCostBasis);
   const costPath = opts.stepSmall || opts.stepLate || opts.costGrowth || opts.varBand || opts.varOverage || opts.varBandMusicals || opts.varOverageMusicals || opts.varBandMusicalsRamp || citedBand
     ? { stepSmall: !!opts.stepSmall, stepLate: !!opts.stepLate, costGrowth: !!opts.costGrowth, varBand: !!opts.varBand, varOverage: !!opts.varOverage, varBandMusicals: !!opts.varBandMusicals || citedBand, varOverageMusicals: !!opts.varOverageMusicals, varBandMusicalsRamp: !!opts.varBandMusicalsRamp } : null; // shadow, BRO-5073/5091
 
