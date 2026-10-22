@@ -13459,19 +13459,17 @@
       "resolveReason": "audit-tour-pages: no longer reported"
     },
     "cron-health-chronic:Weekly A/B Monitors": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Weekly A/B Monitors",
       "firstSeen": "2026-10-08T18:17:10.037Z",
-      "incidentOpenedAt": "2026-10-08T18:17:10.037Z",
-      "lastSeen": "2026-10-11T17:10:44.414Z",
-      "lastNotifiedAt": "2026-10-08T18:17:10.037Z",
+      "incidentOpenedAt": "2026-10-22T16:27:21.412Z",
+      "lastSeen": "2026-10-22T16:27:21.412Z",
+      "lastNotifiedAt": "2026-10-22T16:27:21.412Z",
       "lastSurfacedAt": null,
-      "notifyCount": 1,
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-4879",
-      "silentRefires": 3,
-      "resolvedAt": "2026-10-12T20:42:23.591Z"
+      "linearIdentifier": "BRO-5998"
     },
     "we-aggregator-go-live:jfod-west-end-2025": {
       "status": "resolved",
@@ -17370,7 +17368,7 @@
       "resolveReason": "absent"
     },
     "cron-health-failed:Update Mezzanine": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Cron's latest run failed (not yet stale): Update Mezzanine",
       "firstSeen": "2026-10-13T18:44:50.742Z",
@@ -17380,7 +17378,9 @@
       "lastSurfacedAt": "2026-10-18T15:12:15.202Z",
       "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-22T16:27:21.303Z",
+      "resolveReason": "latest run no longer failing"
     },
     "corpus-drift:orphaned-wrongprod-provenance": {
       "status": "open",
@@ -20643,7 +20643,7 @@
       "silentRefires": 1
     },
     "cron-health-failed:Commercial Weekly Orchestrator": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Cron's latest run failed (not yet stale): Commercial Weekly Orchestrator",
       "firstSeen": "2026-10-18T15:12:15.173Z",
@@ -20653,10 +20653,12 @@
       "lastSurfacedAt": "2026-10-18T15:12:15.173Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-22T16:27:21.303Z",
+      "resolveReason": "latest run no longer failing"
     },
     "cron-health-failed:Account Metrics": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Cron's latest run failed (not yet stale): Account Metrics",
       "firstSeen": "2026-10-18T15:12:15.186Z",
@@ -20666,10 +20668,12 @@
       "lastSurfacedAt": "2026-10-18T15:12:15.186Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-22T16:27:21.303Z",
+      "resolveReason": "latest run no longer failing"
     },
     "cron-health-failed:Audit Aggregator Review Gap": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Cron's latest run failed (not yet stale): Audit Aggregator Review Gap",
       "firstSeen": "2026-10-18T15:12:15.211Z",
@@ -20679,7 +20683,9 @@
       "lastSurfacedAt": "2026-10-18T15:12:15.211Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-22T16:27:21.303Z",
+      "resolveReason": "latest run no longer failing"
     },
     "land:land/bro-5632-uncited-cost": {
       "status": "resolved",
@@ -23974,6 +23980,32 @@
       "lastSeen": "2026-10-22T16:14:30.448Z",
       "lastNotifiedAt": "2026-10-22T16:14:30.448Z",
       "lastSurfacedAt": "2026-10-22T16:14:30.448Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health-failed:Commercial Pending Review Notify": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Cron's latest run failed (not yet stale): Commercial Pending Review Notify",
+      "firstSeen": "2026-10-22T16:27:21.269Z",
+      "incidentOpenedAt": "2026-10-22T16:27:21.269Z",
+      "lastSeen": "2026-10-22T16:27:21.269Z",
+      "lastNotifiedAt": "2026-10-22T16:27:21.269Z",
+      "lastSurfacedAt": "2026-10-22T16:27:21.269Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health-failed:Update Lottery/Rush": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Cron's latest run failed (not yet stale): Update Lottery/Rush",
+      "firstSeen": "2026-10-22T16:27:21.287Z",
+      "incidentOpenedAt": "2026-10-22T16:27:21.287Z",
+      "lastSeen": "2026-10-22T16:27:21.287Z",
+      "lastNotifiedAt": "2026-10-22T16:27:21.287Z",
+      "lastSurfacedAt": "2026-10-22T16:27:21.287Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
