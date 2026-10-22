@@ -1436,5 +1436,36 @@
       }
     ],
     "queuedAt": "2026-10-22T03:21:09.343Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5887-reddit-review-check",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5887-reddit-review-check",
+    "description": "land.yml did not land land/bro-5887-reddit-review-check: the unit-tests-node gate went red at f89a0d7eb4. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39715733940",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5887-reddit-review-check"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "f89a0d7eb46575b5a3a9eb6e881ad4ea539a3530"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39715733940"
+      }
+    ],
+    "queuedAt": "2026-10-22T03:32:45.156Z"
   }
 ]
