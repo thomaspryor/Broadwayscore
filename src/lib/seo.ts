@@ -220,8 +220,8 @@ const TOUR_SUB_EVENTS_MAX = 10;
 
 /**
  * A national tour's upcoming stops as TheaterEvents, each at its real theater
- * (BRO-4601). The tour-level event keeps the aggregateRating; each stop gets
- * a TodayTix offer only when that stop is on sale there.
+ * (BRO-4601). The tour-level event keeps the aggregateRating; stops carry no Offer
+ * (we have no price for them, and Google requires one, BRO-5967).
  */
 export function tourSubEvents(
   show: Pick<ComputedShow, 'title' | 'slug' | 'images'>,
@@ -231,7 +231,6 @@ export function tourSubEvents(
 ) {
   return stops.filter(s => s.end >= today).slice(0, TOUR_SUB_EVENTS_MAX).map(s => {
     const place = stopPlace(s.city);
-    const ticket = tickets[stopKey(s)];
     return {
       '@type': 'TheaterEvent',
       name: `${show.title} in ${shortCity(s.city)}`,
@@ -251,14 +250,6 @@ export function tourSubEvents(
         },
       },
       ...(show.images?.hero && { image: toAbsoluteUrl(show.images.hero) }),
-      ...(ticket && {
-        offers: {
-          '@type': 'Offer',
-          url: ticket,
-          availability: 'https://schema.org/InStock',
-          seller: { '@type': 'Organization', name: 'TodayTix' },
-        },
-      }),
     };
   });
 }
@@ -308,8 +299,7 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
     ...(lastUpdated && { dateModified: lastUpdated }),
     ...eventStatusField(show.status, show.closingDate),
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-    // @id makes this entity referenceable by @id from critic Review schemas
-    // in the same @graph document (see show page injection in page.tsx).
+    // @id keeps this entity referenceable within the page's @graph.
     '@id': `${BASE_URL}/show/${show.slug}#event`,
   };
   if (isTour && tour && show.status !== 'closed') {
@@ -358,7 +348,7 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
         '@type': 'Offer',
         url: link.url,
         priceCurrency: currency,
-        ...(link.priceFrom && { price: link.priceFrom }),
+        price: link.priceFrom,
         ...(onSaleBy && { validFrom: onSaleBy }),
         availability: 'https://schema.org/InStock',
         seller: {
@@ -515,7 +505,7 @@ export function generateItemListSchema(items: {
             '@type': 'Offer',
             url: link.url,
             priceCurrency: itemCurrency,
-            ...(link.priceFrom && { price: link.priceFrom }),
+            price: link.priceFrom,
             availability: 'https://schema.org/InStock',
             seller: {
               '@type': 'Organization',

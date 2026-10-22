@@ -425,7 +425,7 @@ export default async function TonySeasonPredictionsPage(props: { params: Promise
             name: show.venue || 'Broadway Theater',
             address: show.venue || 'New York, NY',
           },
-          eventStatus: 'https://schema.org/EventScheduled',
+          ...(isCurrent && { eventStatus: 'https://schema.org/EventScheduled' }),
           eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
         },
       })),

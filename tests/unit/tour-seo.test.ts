@@ -82,7 +82,7 @@ test('stopPlace: US state, Canadian province, Mexico, no suffix', () => {
   assert.deepEqual(stopPlace('Honolulu'), { locality: 'Honolulu', country: 'US' });
 });
 
-test('tourSubEvents: upcoming stops only, real theaters, offer only where on sale', () => {
+test('tourSubEvents: upcoming stops only, real theaters, no price-less offers', () => {
   const stops = [
     { city: 'Los Angeles, CA', venue: 'Pantages Theatre', start: '2026-09-30', end: '2026-10-04' },
     { city: 'Toronto, ON', venue: 'Princess of Wales Theatre', start: '2026-10-06', end: '2026-10-18' },
@@ -94,7 +94,7 @@ test('tourSubEvents: upcoming stops only, real theaters, offer only where on sal
   assert.deepEqual(subs[0].location.address, { '@type': 'PostalAddress', addressLocality: 'Toronto', addressRegion: 'ON', addressCountry: 'CA' });
   assert.equal(subs[0].location['@type'], 'PerformingArtsTheater');
   assert.equal('offers' in subs[0], false);
-  assert.equal((subs[1] as { offers?: { url: string } }).offers?.url, 'https://www.todaytix.com/los-angeles/shows/1-x');
+  assert.equal('offers' in subs[1], false, 'no price, so no Offer (BRO-5967)');
   const many = Array.from({ length: 15 }, (_, i) => ({ city: 'Austin, TX', venue: 'Bass Concert Hall', start: `2027-01-${String(i + 10)}`, end: `2027-01-${String(i + 10)}` }));
   assert.equal(tourSubEvents(tour, many, '2026-10-05').length, 10);
 });
