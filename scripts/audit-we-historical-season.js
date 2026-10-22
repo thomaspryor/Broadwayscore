@@ -30,6 +30,12 @@
  *                    sourced two-checker sample (fact-check-historical-sample.js)
  *                    for this season's rows, or a note that none was run.
  *                    Proposed to gate once a season sample pass is routine.
+ *   9. opening       no row still stores a WhatsOnStage first performance as
+ *                    its openingDate (openingDateSource
+ *                    'whatsonstage-first-performance', the fallback when
+ *                    review-mode inference finds no press night). BRO-5851:
+ *                    the 2017-18 sample found all 5 such rows wrong; set a
+ *                    sourced press night with a fix plan.
  *
  * Usage:
  *   node scripts/audit-we-historical-season.js --season=2024-2025 [--json] [--ids=a,b]
@@ -48,6 +54,7 @@ const { nonStoryReason } = require('./lib/todaytix-page-identity');
 const { isRejectedImage } = require('./lib/image-source-match');
 const { WE_HISTORICAL_DISCOVERY_SOURCES } = require('./lib/we-historical-corroboration');
 const { seasonSummary } = require('./lib/fact-check-sample');
+const { WOS_FIRST_PERFORMANCE_SOURCE } = require('./lib/we-historical-dates');
 
 const NYC_ONLY_IMAGE_HOST_RE = /theatr-app\.appspot\.com/;
 const CENSORED_TITLE_RE = /[a-z]\*+[a-z]/i;
@@ -150,6 +157,9 @@ function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheck
     else if (synopsisNeedsLook(show.synopsis)) synopsisLook.push({ showId: show.id, synopsis: String(show.synopsis).slice(0, 120) });
   }
 
+  const firstPerformanceOpenings = promoted.filter(s => s.openingDateSource === WOS_FIRST_PERFORMANCE_SOURCE)
+    .map(s => ({ showId: s.id, openingDate: s.openingDate }));
+
   const displayableShare = promoted.length ? perShow.filter(s => s.displayable).length / promoted.length : 0;
   const checks = {
     displayable: { pass: displayableShare >= MIN_DISPLAYABLE_SHARE, value: Math.round(displayableShare * 100) / 100, threshold: MIN_DISPLAYABLE_SHARE },
@@ -159,6 +169,7 @@ function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheck
     poster: { pass: badPosters.length === 0, value: badPosters.length, rows: badPosters, missing: noPoster },
     titles: { pass: censored.length === 0, value: censored.length, rows: censored },
     synopsis: { pass: null, value: synopsisLook.length, rows: synopsisLook, missing: noSynopsis },
+    opening: { pass: firstPerformanceOpenings.length === 0, value: firstPerformanceOpenings.length, rows: firstPerformanceOpenings },
     factCheck: { pass: null, ...seasonSummary(factCheckVerdicts, promoted.map(s => s.id)) },
   };
   const gated = Object.values(checks).filter(c => c.pass !== null);
@@ -215,6 +226,8 @@ function main() {
     for (const r of c.titles.rows) console.log(`    ${r.showId}: "${r.title}" (set the real title)`);
     console.log(`${mark(c.synopsis.pass)} synopsis: ${c.synopsis.value} to look at (pitch/billing/quotes); ${c.synopsis.missing.length} missing`);
     for (const r of c.synopsis.rows) console.log(`    ${r.showId}: ${r.synopsis}`);
+    console.log(`${mark(c.opening.pass)} opening: ${c.opening.value} row(s) whose openingDate is a WhatsOnStage first performance, not a press night`);
+    for (const r of c.opening.rows) console.log(`    ${r.showId}: ${r.openingDate} (set a sourced press night)`);
     if (!c.factCheck.sampled) {
       console.log(`INFO fact-check: no sourced sample pass covers this season (node scripts/fact-check-historical-sample.js sample --cohort=we-historical --season=${season} --n=30, then check + report)`);
     } else {
