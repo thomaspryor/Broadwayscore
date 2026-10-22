@@ -1,91 +1,140 @@
 {
-  "generatedAt": "2026-10-22T10:25:04.598Z",
-  "total": 541,
-  "armedCount": 530,
-  "refusedCount": 11,
+  "generatedAt": "2026-10-22T16:30:33.252Z",
+  "total": 564,
+  "armedCount": 547,
+  "refusedCount": 17,
   "byKind": {
-    "shape": 5,
-    "no-section": 6
+    "shape": 13,
+    "path-prefix": 3,
+    "no-command": 1
   },
   "refused": [
     {
-      "id": "BRO-5935",
-      "name": "Stale pending fix plans: four approved data plans never applied, and nothing reports them",
+      "id": "BRO-6000",
+      "name": "NYT Two Girls scored 46 on a mostly descriptive review (critic protest)",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5935/stale-pending-fix-plans-four-approved-data-plans-never-applied-and",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const fs=require('fs');const d='data/pending-fixes';const old=fs.readdirSync(d).filter(f=>f.endsWith('.json')).)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6000/nyt-two-girls-scored-46-on-a-mostly-descriptive-review-critic-protest",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/validate-data.js --show=two-girls-off-broadway-2026)",
       "kind": "shape"
     },
     {
-      "id": "BRO-5934",
-      "name": "Five review-row data oddities from the BRO-5890 coverage sweep (GTC T2C/Cititour, Copperfield, Lincoln in the Bardo, Dog Show)",
+      "id": "BRO-5999",
+      "name": "NYT Two Girls scored 46 on a mostly descriptive review (critic protest): fix score + audit same class",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5934/five-review-row-data-oddities-from-the-bro-5890-coverage-sweep-gtc",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/lib/preflight-review-fix-plan.js data/pending-fixes/<plan>.json)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5999/nyt-two-girls-scored-46-on-a-mostly-descriptive-review-critic-protest",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/validate-data.js --show=two-girls-off-broadway-2026)",
       "kind": "shape"
     },
     {
-      "id": "BRO-5922",
-      "name": "r2-cold-backup.yml: raise job timeout 60 to 120 min (weekly run took 56 min)",
+      "id": "BRO-5996",
+      "name": "Tech Scorecard: manufacturer press photos for every product (owner chose option B)",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5922/r2-cold-backupyml-raise-job-timeout-60-to-120-min-weekly-run-took-56",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: git show origin/main:.github/workflows/r2-cold-backup.yml | grep -c 'timeout-minutes: 120')",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5996/tech-scorecard-manufacturer-press-photos-for-every-product-owner-chose",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: test -f /home/user/tech-scorecard/docs/PIPELINE.md)",
+      "kind": "path-prefix"
+    },
+    {
+      "id": "BRO-5995",
+      "name": "Review-text writers count guard-refused safeWriteReview calls as written; Cleveland tour row has the wrong outletId",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5995/review-text-writers-count-guard-refused-safewritereview-calls-as",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test tests/unit/)",
       "kind": "shape"
     },
     {
-      "id": "BRO-5914",
-      "name": "gather-reviews/Express: treat an empty Scrapingdog SERP as not-yet-indexed (emptyAuthoritative:false) for shows inside their press-night window",
+      "id": "BRO-5993",
+      "name": "Opening-night lane: score candidates in parallel and publish as each is scored, not after the whole pass",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5914/gather-reviewsexpress-treat-an-empty-scrapingdog-serp-as-not-yet",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5993/opening-night-lane-score-candidates-in-parallel-and-publish-as-each-is",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test tests/unit/opening-night-lane-\\*.test.mjs)",
+      "kind": "shape"
     },
     {
-      "id": "BRO-5913",
-      "name": "Opening night: coalesce the publish chain (one score + rebuild + deploy per show per few minutes) instead of each step re-dispatching the next",
+      "id": "BRO-5989",
+      "name": "SEO: A/B a higher related-shows row on show pages (85% of search landers view one page)",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5913/opening-night-coalesce-the-publish-chain-one-score-rebuild-deploy-per",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5989/seo-ab-a-higher-related-shows-row-on-show-pages-85percent-of-search",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: grep -rq 'related-shows-position' src/components)",
+      "kind": "shape"
     },
     {
-      "id": "BRO-5912",
-      "name": "Opening night: measure each press night end to end (first outlet publish, first live, last live) and gate opening-night card closure on it",
+      "id": "BRO-5986",
+      "name": "iOS: users with a planned date get two 'How was X?' reminders (local 10pm + server push)",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5912/opening-night-measure-each-press-night-end-to-end-first-outlet-publish",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5986/ios-users-with-a-planned-date-get-two-how-was-x-reminders-local-10pm",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
-      "id": "BRO-5907",
-      "name": "rebuild + audit duplicate-cycle detection never fires for duplicateTextOf-only entry nodes",
+      "id": "BRO-5984",
+      "name": "Analytics: PostHog reverse proxy + search-landing lines in the weekly traffic email",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5907/rebuild-audit-duplicate-cycle-detection-never-fires-for",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5984/analytics-posthog-reverse-proxy-search-landing-lines-in-the-weekly",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: curl -s -o /dev/null -w '%{http_code}' [https://broadwayscorecard.com/ingest/decide/?v=3](<https://broadwayscorecard.com)",
+      "kind": "shape"
     },
     {
-      "id": "BRO-5906",
-      "name": "submit-review-form ingests outlets with no registered domain; LLM then scores marketing copy as a review",
+      "id": "BRO-5983",
+      "name": "SEO: refresh data/seo-search-landings.json on a schedule (PostHog 90-day window)",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5906/submit-review-form-ingests-outlets-with-no-registered-domain-llm-then",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5983/seo-refresh-dataseo-search-landingsjson-on-a-schedule-posthog-90-day",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const j=require('./data/seo-search-landings.json');process.exit(j.paths.length>0?0:1)\")",
+      "kind": "shape"
     },
     {
-      "id": "BRO-5905",
-      "name": "the watchdog's own crowned tab launches UNVERIFIED — createTab bypasses the hardened cmux launcher",
+      "id": "BRO-5982",
+      "name": "SEO: Cite this score on show pages (earn links without outreach)",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5905/the-watchdogs-own-crowned-tab-launches-unverified-createtab-bypasses",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5982/seo-cite-this-score-on-show-pages-earn-links-without-outreach",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: curl -s [https://broadwayscorecard.com/show/hamilton](<https://broadwayscorecard.com/show/hamilton>) | grep -qi 'cite th)",
+      "kind": "shape"
     },
     {
-      "id": "BRO-5874",
-      "name": "Bachtrack blocks GitHub runners: CI fetches get a 175-char page, so Met reviews cannot be ingested",
+      "id": "BRO-5980",
+      "name": "Tech Scorecard: carry Broadway Scorecard improvements over (catch-up port + weekly porting routine)",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5874/bachtrack-blocks-github-runners-ci-fetches-get-a-175-char-page-so-met",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/verify-review-recovery.js --show=lincoln-in-the-bardo-off-broadway-2026 --production shows a bachtrack file)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5980/tech-scorecard-carry-broadway-scorecard-improvements-over-catch-up",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: test -f /home/user/tech-scorecard/docs/PIPELINE.md)",
+      "kind": "path-prefix"
+    },
+    {
+      "id": "BRO-5978",
+      "name": "SEO: /cast and /composers ItemLists emit people as TheaterEvent with EventScheduled",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5978/seo-cast-and-composers-itemlists-emit-people-as-theaterevent-with",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: curl -s [https://broadwayscorecard.com/cast](<https://broadwayscorecard.com/cast>) | grep -c TheaterEvent | grep -qx 0)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-5976",
+      "name": "Tech Scorecard: engineering-quality pass (public repo shared with owner's day-job team)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5976/tech-scorecard-engineering-quality-pass-public-repo-shared-with-owners",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: test -f /home/user/tech-scorecard/docs/PIPELINE.md)",
+      "kind": "path-prefix"
+    },
+    {
+      "id": "BRO-5970",
+      "name": "SEO: metadata and internal-link hygiene (duplicate guide titles, revival years, redirecting links, broken links, sitemap lastmod)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5970/seo-metadata-and-internal-link-hygiene-duplicate-guide-titles-revival",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: curl -s [https://broadwayscorecard.com/guides/best-broadway-shows-2024](<https://broadwayscorecard.com/guides/best-broad)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-5969",
+      "name": "SEO: index bloat, half the sitemap is thin pages (0-review closed shows, 1-credit actors, duplicate venues)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5969/seo-index-bloat-half-the-sitemap-is-thin-pages-0-review-closed-shows-1",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: curl -s [https://broadwayscorecard.com/show/stanley-1997](<https://broadwayscorecard.com/show/stanley-1997>) | grep -q ')",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-5951",
+      "name": "Cross-model audit of all historical backfill (GPT + Gemini), full coverage",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5951/cross-model-audit-of-all-historical-backfill-gpt-gemini-full-coverage",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/fact-check-historical-sample.js report --cohort=we-historical)",
       "kind": "shape"
     },
     {
@@ -99,12 +148,147 @@
   ],
   "missingCheckPaths": [
     {
-      "id": "BRO-5936",
-      "name": "P1: BRO-5895 multi-show fan-out writes review-text children to the gitignored copy, so they never push or score",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5936/p1-bro-5895-multi-show-fan-out-writes-review-text-children-to-the",
-      "cmd": "node --test scripts/lib/review-texts-push-dir.test.mjs scripts/ingest-urls.test.mjs scripts/ingest-review-from-url.test.mjs",
+      "id": "BRO-5992",
+      "name": "SEO: staged noindex of thin show/cast/critic pages, gated on Search Console impressions",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5992/seo-staged-noindex-of-thin-showcastcritic-pages-gated-on-search",
+      "cmd": "test -f scripts/lib/show-indexability.js",
       "missingPaths": [
-        "scripts/lib/review-texts-push-dir.test.mjs"
+        "scripts/lib/show-indexability.js"
+      ]
+    },
+    {
+      "id": "BRO-5988",
+      "name": "SEO: one search-intent map to stop ranking pages competing (/guides vs /browse vs /best)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5988/seo-one-search-intent-map-to-stop-ranking-pages-competing-guides-vs",
+      "cmd": "test -f src/config/search-intents.ts",
+      "missingPaths": [
+        "src/config/search-intents.ts"
+      ]
+    },
+    {
+      "id": "BRO-5985",
+      "name": "Site performance: cut per-page JS (lazy Supabase for anonymous visitors, PostHog recorder/surveys) + homepage LCP priority",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5985/site-performance-cut-per-page-js-lazy-supabase-for-anonymous-visitors",
+      "cmd": "npx tsx --test tests/unit/perf-lazy-loading.test.ts",
+      "missingPaths": [
+        "tests/unit/perf-lazy-loading.test.ts"
+      ]
+    },
+    {
+      "id": "BRO-5977",
+      "name": "Extend the press-night spend cap to the opening-night lane, poller and collect-outlet-reviews (untagged today)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5977/extend-the-press-night-spend-cap-to-the-opening-night-lane-poller-and",
+      "cmd": "node --test scripts/lib/scrapingdog-press-night-cap.test.mjs",
+      "missingPaths": [
+        "scripts/lib/scrapingdog-press-night-cap.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5968",
+      "name": "SEO: 5 hub pages exceed Googlebot's 2MB fetch limit (all-time list is 7.3MB)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5968/seo-5-hub-pages-exceed-googlebots-2mb-fetch-limit-all-time-list-is",
+      "cmd": "node --test scripts/validate-page-size.test.mjs",
+      "missingPaths": [
+        "scripts/validate-page-size.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5967",
+      "name": "SEO: remove review markup that breaks Google review-snippet policy (invented critic stars, list ratings)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5967/seo-remove-review-markup-that-breaks-google-review-snippet-policy",
+      "cmd": "node --test scripts/validate-schema-removal.test.mjs",
+      "missingPaths": [
+        "scripts/validate-schema-removal.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5963",
+      "name": "Backup restore drill (monthly, all R2 bundles + Supabase export) and drop the R2 lifecycle step that silently fails",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5963/backup-restore-drill-monthly-all-r2-bundles-supabase-export-and-drop",
+      "cmd": "node --test scripts/restore-drill.test.mjs",
+      "missingPaths": [
+        "scripts/restore-drill.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5962",
+      "name": "Exempt-from-cron-health workflows failing every run go unreported (12 dead weekly/daily jobs)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5962/exempt-from-cron-health-workflows-failing-every-run-go-unreported-12",
+      "cmd": "node --test scripts/lib/health-digest-crons.test.mjs",
+      "missingPaths": [
+        "scripts/lib/health-digest-crons.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5956",
+      "name": "Opening-night lane: West End fixture and adapters (WET, theatre.reviews, Stagedoor, The Stage, LBO) captured from The Lives of Others",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5956/opening-night-lane-west-end-fixture-and-adapters-wet-theatrereviews",
+      "cmd": "node --test tests/unit/west-end-fixture-replay.test.mjs",
+      "missingPaths": [
+        "tests/unit/west-end-fixture-replay.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5955",
+      "name": "Opening-night lane cutover: LANE_ONLY_MARKETS switch that gates Express and poller press-night roles off per market, with rollback",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5955/opening-night-lane-cutover-lane-only-markets-switch-that-gates-express",
+      "cmd": "node --test tests/unit/lane-only-markets.test.mjs",
+      "missingPaths": [
+        "tests/unit/lane-only-markets.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5954",
+      "name": "Build guard: one bad shows.json row (null venue) must skip that show, not fail every prod deploy",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5954/build-guard-one-bad-showsjson-row-null-venue-must-skip-that-show-not",
+      "cmd": "node --test scripts/lib/shows-validator.test.mjs",
+      "missingPaths": [
+        "scripts/lib/shows-validator.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5953",
+      "name": "Opening night: Express auto-run that scores under 3 reviews on an embargo night should retry, not finish",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5953/opening-night-express-auto-run-that-scores-under-3-reviews-on-an",
+      "cmd": "node --test scripts/lib/opening-night-retry-decision.test.mjs",
+      "missingPaths": [
+        "scripts/lib/opening-night-retry-decision.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5952",
+      "name": "Opening night: stop Express and the poller cancelling each other's runs (scope gh run cancel to same show and run kind, or remove)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5952/opening-night-stop-express-and-the-poller-cancelling-each-others-runs",
+      "cmd": "node --test tests/unit/opening-night-cancel-scope.test.mjs",
+      "missingPaths": [
+        "tests/unit/opening-night-cancel-scope.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5950",
+      "name": "Broadway.com audience scraper matches titles only: press-title shows like 'Billy Crystal 860' (alias '860') never attach",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5950/broadwaycom-audience-scraper-matches-titles-only-press-title-shows",
+      "cmd": "node --test scripts/aka-title-audience-match.test.mjs",
+      "missingPaths": [
+        "scripts/aka-title-audience-match.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5939",
+      "name": "P2: land.yml colocated-tests refusal names a passing test's warning, not the failing test (defaultDetail vs tapDetail)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5939/p2-landyml-colocated-tests-refusal-names-a-passing-tests-warning-not",
+      "cmd": "node --test scripts/tests/land-branch-detail.test.mjs",
+      "missingPaths": [
+        "scripts/tests/land-branch-detail.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5935",
+      "name": "Stale pending fix plans: four approved data plans never applied, and nothing reports them",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5935/stale-pending-fix-plans-four-approved-data-plans-never-applied-and",
+      "cmd": "node --test scripts/lib/pending-fixes-stale-check.test.mjs",
+      "missingPaths": [
+        "scripts/lib/pending-fixes-stale-check.test.mjs"
       ]
     },
     {
@@ -114,6 +298,15 @@
       "cmd": "node --test scripts/lib/pre-push-review-gate.test.mjs scripts/lib/push-command.test.mjs",
       "missingPaths": [
         "scripts/lib/push-command.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5914",
+      "name": "gather-reviews/Express: treat an empty Scrapingdog SERP as not-yet-indexed (emptyAuthoritative:false) for shows inside their press-night window",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5914/gather-reviewsexpress-treat-an-empty-scrapingdog-serp-as-not-yet",
+      "cmd": "node --test scripts/lib/opening-night-window.test.mjs",
+      "missingPaths": [
+        "scripts/lib/opening-night-window.test.mjs"
       ]
     },
     {
@@ -486,15 +679,6 @@
       ]
     },
     {
-      "id": "BRO-5325",
-      "name": "WSJ: copy target show's venue-box section from sibling multi-show column into its own WSJ row (venus-in-fur-2011, of-mice-and-men-2014)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5325/wsj-copy-target-shows-venue-box-section-from-sibling-multi-show-column",
-      "cmd": "node --test scripts/copy-multishow-section.test.mjs",
-      "missingPaths": [
-        "scripts/copy-multishow-section.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-5319",
       "name": "Hardcoded year cap 2027 in date extractors stops working in 2028",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5319/hardcoded-year-cap-2027-in-date-extractors-stops-working-in-2028",
@@ -756,15 +940,6 @@
       ]
     },
     {
-      "id": "BRO-4672",
-      "name": "National tours follow-ups: upcoming-tour support, city links, TodayTix coverage",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4672/national-tours-follow-ups-upcoming-tour-support-city-links-todaytix",
-      "cmd": "node --test tests/unit/upcoming-tour-support.test.mjs",
-      "missingPaths": [
-        "tests/unit/upcoming-tour-support.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-4670",
       "name": "iOS app: log sign_in_started and sign_in_completed under the same PostHog distinct_id",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4670/ios-app-log-sign-in-started-and-sign-in-completed-under-the-same",
@@ -972,24 +1147,6 @@
       ]
     },
     {
-      "id": "BRO-3963",
-      "name": "scoring-delta.js decideInclusion doesn't model circular-duplicateOf recovery, syndicated/cross-outlet dedup, or ensemble-rejection",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3963/scoring-deltajs-decideinclusion-doesnt-model-circular-duplicateof",
-      "cmd": "node --test scripts/scoring-delta-circular-dedup.test.mjs",
-      "missingPaths": [
-        "scripts/scoring-delta-circular-dedup.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-3944",
-      "name": "Audit single-writer data/audit/ ledgers for BRO-3227-class staleness blind spots",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3944/audit-single-writer-dataaudit-ledgers-for-bro-3227-class-staleness",
-      "cmd": "node --test tests/unit/audit-ledger-staleness.test.mjs",
-      "missingPaths": [
-        "tests/unit/audit-ledger-staleness.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-3916",
       "name": "P1: 2,511 dead pages are stored as reviews and mislabelled isNonReview — detector landed, corpus sweep not run",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-3916/p1-2511-dead-pages-are-stored-as-reviews-and-mislabelled-isnonreview",
@@ -1032,15 +1189,6 @@
       "cmd": "node --test tests/unit/commercial-weekly-claude-timeout.test.mjs",
       "missingPaths": [
         "tests/unit/commercial-weekly-claude-timeout.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-3689",
-      "name": "Audit ~30 non-lint-workflow-guards scripts that readdirSync .github/workflows for the BRO-3686 no-floor bug class",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3689/audit-30-non-lint-workflow-guards-scripts-that-readdirsync",
-      "cmd": "node --test tests/unit/workflow-readdir-guard-classification.test.mjs",
-      "missingPaths": [
-        "tests/unit/workflow-readdir-guard-classification.test.mjs"
       ]
     },
     {
@@ -1131,24 +1279,6 @@
       "cmd": "node --test tests/unit/health-check-repeat-failure-grouping.test.mjs",
       "missingPaths": [
         "tests/unit/health-check-repeat-failure-grouping.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-3156",
-      "name": "Audit script: flag execFileSync('git', ['show'...]) calls missing maxBuffer",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3156/audit-script-flag-execfilesyncgit-show-calls-missing-maxbuffer",
-      "cmd": "node --test tests/unit/audit-git-show-maxbuffer.test.mjs",
-      "missingPaths": [
-        "tests/unit/audit-git-show-maxbuffer.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-3109",
-      "name": "P2: two per-run caps still parse env with bare parseInt — NaN silently disables them (fail-closed cousin of BRO-3009)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3109/p2-two-per-run-caps-still-parse-env-with-bare-parseint-nan-silently",
-      "cmd": "node --test scripts/lib/resolve-int-env.test.mjs",
-      "missingPaths": [
-        "scripts/lib/resolve-int-env.test.mjs"
       ]
     },
     {
@@ -1431,15 +1561,6 @@
       ]
     },
     {
-      "id": "BRO-2417",
-      "name": "finish-line-bypass.log has grown to ~39MB with no trim",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2417/finish-line-bypasslog-has-grown-to-39mb-with-no-trim",
-      "cmd": "test -f scripts/lib/finish-line-log-trim.test.mjs",
-      "missingPaths": [
-        "scripts/lib/finish-line-log-trim.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-2263",
       "name": "BSC Daily: Quality: outlet domain moves",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2263/bsc-daily-quality-outlet-domain-moves",
@@ -1617,6 +1738,18 @@
         "scripts/lib/review-normalization.test.mjs"
       ],
       "reason": "`test -f scripts/lib/review-normalization.test.mjs` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
+    },
+    {
+      "id": "BRO-2417",
+      "name": "finish-line-bypass.log has grown to ~39MB with no trim",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2417/finish-line-bypasslog-has-grown-to-39mb-with-no-trim",
+      "cmd": "test -f scripts/lib/finish-line-log-trim.test.mjs",
+      "kind": "test-f-satisfied",
+      "polarity": "never-fails",
+      "paths": [
+        "scripts/lib/finish-line-log-trim.test.mjs"
+      ],
+      "reason": "`test -f scripts/lib/finish-line-log-trim.test.mjs` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
     }
   ]
 }
