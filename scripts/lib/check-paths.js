@@ -433,6 +433,18 @@ const MUTATING_SCRIPT_RE = /(^|\/)(rebuild-all-reviews|gather-reviews|collect-re
 // A command matching several forms is safe if ANY form fully accepts it, so
 // the failure reported is the first matching form's — the most specific
 // diagnosis available, and never a refusal for a command that is in fact ok.
+// BRO-5930: plain `node --test x.test.ts` can never run (no TS loader, `@/`
+// aliases), so SAFE_CHECK_FORMS refuse it. The refusal stays kind 'shape'
+// (consumers branch on it); this names the form that WOULD arm. Only offered
+// when the rewritten command itself passes the gate, so the hint is never a
+// second refusal.
+function suggestTsxRewrite(cmd) {
+  const m = /^node --test((?: --test-timeout \d+)?(?: [\w@./-]+\.test\.(?:m?js|ts))+)$/.exec(String(cmd || '').trim());
+  if (!m || !/\.test\.ts(?= |$)/.test(m[1])) return null;
+  const rewrite = `npx tsx --test${m[1]}`;
+  return explainUnsafeCheckCommand(rewrite).ok ? rewrite : null;
+}
+
 function explainUnsafeCheckCommand(cmd) {
   const s = String(cmd || '').trim();
   let firstFailure = null;
@@ -493,11 +505,13 @@ function explainUnsafeCheckCommand(cmd) {
     if (!firstFailure) firstFailure = failure;
   }
   if (firstFailure) return { ok: false, ...firstFailure };
+  const rewrite = suggestTsxRewrite(s);
   return {
     ok: false,
     kind: 'shape',
     path: null,
     reason: `command matches none of the allowed safe-check forms: ${s.slice(0, 120)}`,
+    ...(rewrite ? { hint: `plain node cannot run a .test.ts file; use: ${rewrite}` } : {}),
   };
 }
 

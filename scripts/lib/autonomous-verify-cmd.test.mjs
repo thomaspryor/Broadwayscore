@@ -158,3 +158,26 @@ test('stripDecoration leaves undecorated commands and unknown trailing words alo
   assert.equal(stripDecoration('node --test a.test.mjs and then some'), 'node --test a.test.mjs and then some');
   assert.equal(stripDecoration('node --test a.test.mjs passes.'), 'node --test a.test.mjs');
 });
+
+// BRO-5930: plain `node --test x.test.ts` can never run (no TS loader), so it
+// must stay refused AND the refusal must name the tsx form that would arm.
+const { explainUnsafeCheckCommand } = require('./autonomous-triage-core.js');
+const extractExplained = notes => extractVerifyCmd(notes, isSafeCheckCommand, explainUnsafeCheckCommand);
+
+test('node --test on a .test.ts file is refused with an npx tsx --test hint', () => {
+  const r = extractExplained('VERIFY: node --test tests/unit/x.test.ts');
+  assert.equal(r.cmd, null);
+  assert.equal(r.kind, 'shape');
+  assert.match(r.hint, /npx tsx --test tests\/unit\/x\.test\.ts$/);
+});
+
+test('the tsx hint is found even when the .test.ts command is not the first candidate', () => {
+  const r = extractExplained('VERIFY: echo hi\nVERIFY: node --test tests/unit/x.test.ts');
+  assert.match(r.hint || '', /npx tsx --test tests\/unit\/x\.test\.ts/);
+});
+
+test('no hint when the rewrite would itself be refused, and the tsx form still arms', () => {
+  assert.equal(extractExplained('VERIFY: node --test ../x.test.ts').hint, undefined);
+  assert.equal(extractExplained('VERIFY: node --test tests/unit/x.test.tsx').hint, undefined);
+  assert.equal(extract('VERIFY: npx tsx --test tests/unit/x.test.ts').cmd, 'npx tsx --test tests/unit/x.test.ts');
+});
