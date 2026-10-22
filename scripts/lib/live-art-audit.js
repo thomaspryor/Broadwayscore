@@ -80,7 +80,7 @@ function buildLiveArtAlert(flagged) {
     intro: (xs) => `The weekly vision sweep of served thumbnails flagged ${xs.length} live show(s). Check each on its show page; fix with an approved-fix plan (null the field AND git rm the file, or the orphan auto-fix re-attaches it).`,
     hint: () => 'node scripts/audit-live-show-art.js --show=<id> --no-write --no-alert   # re-check one show',
     severity: 'warn',
-    cooldownHours: 168,
+    cooldownHours: 144,
   });
 }
 

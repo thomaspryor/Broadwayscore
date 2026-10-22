@@ -25,7 +25,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const USAGE = `audit-live-show-art.js — vision sweep of live show thumbnails (advisory).
 
 Usage:
-  node scripts/audit-live-show-art.js [--show=ID] [--limit=N] [--workers=N] [--no-write] [--no-alert]
+  node scripts/audit-live-show-art.js [--show=ID] [--limit=N] [--workers=N] [--rpm=N] [--no-write] [--no-alert]
   node scripts/audit-live-show-art.js --help, -h    print this usage and exit
 `;
 
@@ -83,7 +83,11 @@ async function main() {
   }
   const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
   let shows = selectLiveShows(Array.isArray(raw) ? raw : raw.shows, { showId: arg('show') });
-  if (arg('limit')) shows = shows.slice(0, parseInt(arg('limit'), 10));
+  if (arg('limit')) {
+    const n = parseInt(arg('limit'), 10);
+    if (!(n > 0)) { console.error('--limit needs a positive number'); process.exit(2); }
+    shows = shows.slice(0, n);
+  }
   const workers = Math.max(1, parseInt(arg('workers') || '4', 10));
   const rateLimiter = createRateLimiter(parseInt(arg('rpm') || '60', 10));
   console.log(`Auditing ${shows.length} live thumbnails with ${workers} workers...`);
@@ -115,7 +119,9 @@ async function main() {
     console.log(`Wrote ${path.relative(ROOT, OUTPUT)}`);
   }
   // One rollup card per week (stable key); nothing is nulled or blocked.
-  if (!process.argv.includes('--no-alert')) {
+  // A --show/--limit run is a partial sample: it must not rewrite or resolve the weekly card.
+  const partial = Boolean(arg('show') || arg('limit'));
+  if (!process.argv.includes('--no-alert') && !partial) {
     const { routeAlert, resolveQuietConditions } = require('./lib/owner-alert-router.js');
     const { syncRollup, snapshotRollupMembers } = require('./lib/rollup-alert');
     try {
