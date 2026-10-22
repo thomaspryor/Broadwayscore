@@ -89,7 +89,15 @@ function redditStaleVerdict({ lastWriteMs, attemptsInWindow, nowMs = Date.now() 
  * in chunks until the oldest row parsed is older than sinceMs (or the file start),
  * so a "last 48h" window really is 48h (a fixed 2MB tail only reached ~7h).
  */
-function readLedgerTail(file = LEDGER_PATH, { sinceMs = Date.now() - REDDIT_STALE_HOURS * 3600e3, chunk = 2 * 1024 * 1024 } = {}) {
+function defaultLedgerPath() {
+  if (process.env.SCRAPER_SPEND_LEDGER_PATH) return process.env.SCRAPER_SPEND_LEDGER_PATH;
+  // Same rule as provider-telemetry._ledgerPath (BRO-4220): a test process never
+  // reads the real committed ledger, whose live outage would block SB in unit tests.
+  if (process.env.NODE_TEST_CONTEXT) return path.join(require('os').tmpdir(), `rdc-no-ledger-${process.pid}.jsonl`);
+  return LEDGER_PATH;
+}
+
+function readLedgerTail(file = defaultLedgerPath(), { sinceMs = Date.now() - REDDIT_STALE_HOURS * 3600e3, chunk = 2 * 1024 * 1024 } = {}) {
   let fd;
   try {
     fd = fs.openSync(file, 'r');
