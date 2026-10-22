@@ -245,6 +245,37 @@
     "queuedAt": "2026-10-22T20:59:52.373Z"
   },
   {
+    "conditionKey": "land:land/bro-5969-index-bloat-v4",
+    "title": "Landing blocked: rebase red on land/bro-5969-index-bloat-v4",
+    "description": "land.yml did not land land/bro-5969-index-bloat-v4: the rebase gate went red at 17a7ead962. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5969-index-bloat-v4 @ 17a7ead962 (origin/land/bro-5969-index-bloat-v4) → origin/main @ fd124b8783 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ c78201919d: Rebasing (1/2) error: could not apply 5952b19ec3d... SEO: fold duplicate venues with 308s; thin-page noindex rules ship OFF behind SEO_THIN_NOINDEX; advisory sitemap-count guard (BRO-5969) hint: Resolve all Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39840187450",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5969-index-bloat-v4"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "17a7ead96277cd7fde4fb133175d6a0fc2117c76"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39840187450"
+      }
+    ],
+    "queuedAt": "2026-10-22T21:45:46.129Z"
+  },
+  {
     "conditionKey": "land:land/bro-5984-posthog-proxy",
     "title": "Landing blocked: unit-tests-node red on land/bro-5984-posthog-proxy",
     "description": "land.yml did not land land/bro-5984-posthog-proxy: the unit-tests-node gate went red at d3fdb9d663. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39856346577",
