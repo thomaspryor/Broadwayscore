@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-22T02:02:34.160Z",
+  "generatedAt": "2026-10-22T03:29:18.755Z",
   "summary": {
-    "total": 9,
-    "high": 4,
+    "total": 11,
+    "high": 5,
     "medium": 4,
-    "low": 1
+    "low": 2
   },
   "collisions": [
     {
@@ -31,6 +31,33 @@
         }
       ],
       "suggestedWinner": "an-american-in-paris-tour-2022",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TN69NS",
+      "normalizedUrl": "https://lightingandsoundamerica.com/news/story.asp",
+      "candidates": [
+        {
+          "showId": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": null,
+          "openingDate": "2026-10-14",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "lighting-and-sound-america"
+        },
+        {
+          "showId": "good-time-charlie-off-broadway-2026",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": null,
+          "openingDate": "2026-10-09",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "lighting-and-sound-america"
+        }
+      ],
+      "suggestedWinner": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
     },
@@ -168,6 +195,33 @@
       "suggestedWinner": "giant-royal-court-off-west-end-2024",
       "reason": "publishDate 2024-09-26 is 1 days from giant-royal-court-off-west-end-2024 but also 2 days from giant-west-end-2025",
       "confidence": "medium"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/noises-off-review-1",
+      "normalizedUrl": "https://timeout.com/london/theatre/noises-off-review-1",
+      "candidates": [
+        {
+          "showId": "noises-off-west-end-2019",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": null,
+          "openingDate": "2019-10-03",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        },
+        {
+          "showId": "noises-off-west-end-2023",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "2023-01-26",
+          "openingDate": "2023-01-25",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        }
+      ],
+      "suggestedWinner": "noises-off-west-end-2023",
+      "reason": "publishDate 2023-01-26 is 1 days from noises-off-west-end-2023 opening (2023-01-25)",
+      "confidence": "high"
     },
     {
       "url": "https://www.theatrely.com/post/punch-redemption-and-runarounds-review",
