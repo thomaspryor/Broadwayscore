@@ -19,6 +19,7 @@ import { hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { FIZZLE_MIN_RETURNED_PCT, isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { displaysCriticScore } from '@/lib/critic-score-display';
+import { getSeason } from '@/lib/commercial-metrics';
 
 // Context object passed to dataFilter/customSort — avoids importing heavy data modules here
 export interface BrowseFilterContext {
@@ -125,20 +126,16 @@ export function isAnnouncedCurrent(show: ComputedShow): boolean {
 }
 
 // Helper to check if show opened in year
+// Reads the date string's own year: new Date("2025-01-01") is UTC midnight,
+// which local getters read as Dec 31 west of UTC (BRO-5848).
 function openedInYear(show: ComputedShow, year: number): boolean {
-  const openDate = new Date(show.openingDate);
-  return openDate.getFullYear() === year;
+  return !!show.openingDate && Number(show.openingDate.slice(0, 4)) === year;
 }
 
-// Compute Broadway season (Jul-Jun) from opening date.
-// Keep in sync with getSeason() in data-commercial.ts:95
+// Broadway season (Jul-Jun) from opening date: the same helper the
+// Commercial Scorecard uses, so the two can never disagree.
 function getShowSeason(show: ComputedShow): string | null {
-  if (!show.openingDate) return null;
-  const date = new Date(show.openingDate);
-  if (isNaN(date.getTime())) return null;
-  const year = date.getFullYear();
-  const month = date.getMonth();
-  return month >= 6 ? `${year}-${year + 1}` : `${year - 1}-${year}`;
+  return getSeason(show.openingDate);
 }
 
 // Generate browse page configs for decades (skip 2010s/2020s — covered by guide pages)

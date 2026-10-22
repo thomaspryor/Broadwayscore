@@ -453,6 +453,13 @@ async function buildCoreShard(ctx: DateContext): Promise<MetadataRoute.Sitemap> 
       changeFrequency: 'weekly' as const,
       priority: 0.7,
     }] : []),
+    // Public research page (owner released it ahead of /biz, 2026-10-21).
+    {
+      url: `${BASE_URL}/biz/stunt-casting`,
+      lastModified: ctx.showsDate,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    },
     // /season-report is a 404 until the owner releases it (BRO-5777).
     ...(featureFlags.seasonReport ? [{
       url: `${BASE_URL}/season-report`,

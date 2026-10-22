@@ -261,3 +261,13 @@ test('flops page: closed Flops and Fizzles are listed; other closed outcomes are
   assert.equal(flopsFilter('closed', 'Easy Winner'), false);
   assert.equal(flopsFilter('closed', 'TBD'), false);
 });
+
+// ── getSeason: a July 1 opening is the new season in every timezone (BRO-5848) ──
+test('getSeason: reads the date string, not a UTC-parsed Date', async () => {
+  const { getSeason } = await import('../../src/lib/commercial-metrics');
+  assert.equal(getSeason('2025-07-01'), '2025-2026');
+  assert.equal(getSeason('2025-06-30'), '2024-2025');
+  assert.equal(getSeason('2026-01-15T00:00:00.000Z'), '2025-2026');
+  assert.equal(getSeason('2025-13-01'), null);
+  assert.equal(getSeason(null), null);
+});
