@@ -15,7 +15,9 @@
  * from) and opts.ours (our file before the rebase), a key or source in base but absent from ours was deliberately
  * removed by our side, so remote's copy is not refilled, whether or not the show
  * is live. Only keys/sources that are absent from base (added by a concurrent
- * writer) are recovered. Without opts.base the old live-id rule alone applies.
+ * writer) are recovered. Our deletion wins over a concurrent remote edit of the same
+ * key or source. If more than max(5, 10% of keys) keys or max(25, 50% of keys) sources look
+ * deleted (a truncated 'ours'), the rule is skipped for the run. Without opts.base the old live-id rule alone applies.
  *
  * @param {object} current  post-rebase audience-buzz.json (mutated)
  * @param {object} remote   origin/main audience-buzz.json before the rebase
@@ -35,20 +37,27 @@ function reconcileAudienceBuzz(current, remote, opts = {}) {
   const skippedDeleted = [];
   const deletedKeys = new Set();
   const deletedSrcs = new Set();
+  const deletedSrcPairs = [];
   if (baseShows) {
     for (const [id, b] of Object.entries(baseShows)) {
       if (!oursShows[id]) { deletedKeys.add(id); continue; }
       const ourSrc = oursShows[id].sources || {};
       for (const [src, d] of Object.entries((b && b.sources) || {})) {
-        if (d && d.score != null && !ourSrc[src]) deletedSrcs.add(id + '/' + src);
+        if (d && d.score != null && !ourSrc[src]) { deletedSrcs.add(id + '\u0000' + src); deletedSrcPairs.push([id, src]); }
       }
     }
   }
+  // Plausibility floor: a truncated or empty "ours" looks like a mass delete. Past the floor
+  // the 3-way rule is dropped for this run (old live-id behaviour) rather than pushing it.
+  const baseCount = baseShows ? Object.keys(baseShows).length : 0;
+  if (deletedKeys.size > Math.max(5, baseCount * 0.1) || deletedSrcs.size > Math.max(25, baseCount * 0.5)) {
+    deletedKeys.clear(); deletedSrcs.clear(); deletedSrcPairs.length = 0;
+    skippedDeleted.push('IMPLAUSIBLE-MASS-DELETE: 3-way rule skipped');
+  }
   // Re-apply our deletions that the rebase reverted.
   for (const id of deletedKeys) if (shows[id] && remoteShows[id]) { delete shows[id]; skippedDeleted.push(id); }
-  for (const k of deletedSrcs) {
-    const [id, src] = k.split('/');
-    if (shows[id] && shows[id].sources && shows[id].sources[src]) { delete shows[id].sources[src]; skippedDeleted.push(k); }
+  for (const [id, src] of deletedSrcPairs) {
+    if (shows[id] && shows[id].sources && shows[id].sources[src]) { delete shows[id].sources[src]; skippedDeleted.push(id + '/' + src); }
   }
   const remoteOnly = Object.keys(remoteShows).filter(id => {
     if (shows[id]) return false;
@@ -70,7 +79,7 @@ function reconcileAudienceBuzz(current, remote, opts = {}) {
     const removed = shows[id].sourcesRemoved || {};
     for (const [src, data] of Object.entries(remoteSrc)) {
       if (removed[src]) continue;
-      if (deletedSrcs.has(id + '/' + src)) {
+      if (deletedSrcs.has(id + '\u0000' + src)) {
         if (!skippedDeleted.includes(id + '/' + src)) skippedDeleted.push(id + '/' + src);
         continue;
       }
