@@ -365,6 +365,9 @@ function tokensWithoutYears(title) {
   return new Set([...titleTokens(String(title || '').replace(/_/g, ' '))].filter(t => !/^(?:19|20)\d\d$/.test(t)));
 }
 
+/** Format words that do not make a different production ("The Inequalities Trilogy"). */
+const GENERIC_TITLE_TAGS = new Set(['trilogy', 'play', 'musical', 'live', 'cycle', 'show']);
+
 /** Same house: normalized venue equal, or one is the other plus a room ("Southwark Playhouse Elephant"). */
 function sameLondonHouse(a, b) {
   const ka = normalizeVenueName(a);
@@ -423,7 +426,10 @@ function findSameHouseTokenMatch(candidate, pool) {
     }
     if (!dated) continue;
     const [small, big] = ct.size <= et.size ? [ct, et] : [et, ct];
-    if (small.size < 2 || ![...small].every(t => big.has(t))) continue;
+    if (small.size === 0 || ![...small].every(t => big.has(t))) continue;
+    // One shared word only counts when the extra words are a generic format tag
+    // ("The Inequalities" vs "The Inequalities Trilogy", BRO-5975).
+    if (small.size < 2 && ![...big].filter(t => !small.has(t)).every(t => GENERIC_TITLE_TAGS.has(t))) continue;
     const w = rowWindow(e);
     if (w && !(w.first <= shiftDay(end, 30) && w.last >= shiftDay(start, -30))) continue;
     return { match: e, reason: `same house, title words contained, ${w ? 'overlapping run' : 'undated catalog row'} ("${e.title}" vs "${candidate.title}")` };
