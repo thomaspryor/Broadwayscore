@@ -18,7 +18,12 @@
     "lincoln-in-the-bardo-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
     "other-desert-cities-2026/new-york-city-theatre--unknown.json",
     "the-dog-show-come-sit-stay-off-broadway-2026/theater-pizzazz--adam-cohen.json",
-    "memoirs-of-amorous-gentlemen-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+    "memoirs-of-amorous-gentlemen-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "ilford-boy-west-end-2026/guardian--kate-wyver.json",
+    "ilford-boy-west-end-2026/telegraph--fiona-mountford.json",
+    "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
+    "buffy-revamped-west-end-2026/ticketswitch--unknown.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/donyc--the-heartbeat-opera-presents.json"
   ],
   "failed": [
     "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
@@ -31,7 +36,8 @@
     "midnight-off-broadway-2026/timeout--unknown.json",
     "midnight-off-broadway-2026/chicagotribune--unknown.json",
     "midnight-off-broadway-2026/eventsfy--unknown.json",
-    "midnight-off-broadway-2026/openingnight--edward-a-kliszus.json"
+    "midnight-off-broadway-2026/openingnight--edward-a-kliszus.json",
+    "double-bill-tell-me-straight-and-aggy-off-west-end-2026/soundsandstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -40,7 +46,11 @@
       "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
       "the-curious-case-of-benjamin-button-off-broadway-2026/stageandcinema--unknown.json",
       "the-dog-show-come-sit-stay-off-broadway-2026/theater-pizzazz--adam-cohen.json",
-      "memoirs-of-amorous-gentlemen-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+      "memoirs-of-amorous-gentlemen-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "ilford-boy-west-end-2026/guardian--kate-wyver.json",
+      "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
+      "buffy-revamped-west-end-2026/ticketswitch--unknown.json",
+      "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/donyc--the-heartbeat-opera-presents.json"
     ],
     "amp": [],
     "browserbase": [
@@ -53,7 +63,9 @@
     ],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "ilford-boy-west-end-2026/telegraph--fiona-mountford.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
@@ -61,7 +73,7 @@
     ]
   },
   "startTime": "2026-10-22T03:41:50.001Z",
-  "lastProcessed": "midnight-off-broadway-2026/openingnight--edward-a-kliszus.json",
+  "lastProcessed": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/donyc--the-heartbeat-opera-presents.json",
   "log": [
     {
       "t": "2026-10-22T05:06:54.213Z",
@@ -116,6 +128,18 @@
       "event": "bb-session",
       "session": "d020d5cc",
       "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07"
+    },
+    {
+      "t": "2026-10-22T06:53:54.165Z",
+      "event": "bb-session",
+      "session": "82af1b56",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-22T06:55:03.918Z",
+      "event": "bb-session",
+      "session": "10294d4e",
+      "url": "https://soundsandstage.com/show/double-bill-tell-me-straight-aggy-may"
     }
   ],
   "recoveredAfterFailure": [
