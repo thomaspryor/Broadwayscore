@@ -8,6 +8,7 @@ const { execFileSync, spawnSync } = require('child_process');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const BRANCH_RE = /^(?:origin\/)?worktree-feedback-overnight-\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}$/;
 const EMPTY_TREE = '4b825dc642cb6eb9a060e54bf8d69288fbee4904';
@@ -89,7 +90,10 @@ function auditBranch(repo, branch, base = 'origin/main') {
   };
 }
 
+const USAGE = 'Usage: node scripts/audit-feedback-overnight-branches.js [--repo=~/BroadwayScorecard-app] [--json]\nRead-only: classifies feedback-overnight branches vs origin/main (merged/superseded/mergeable/conflicts/empty).';
+
 function main() {
+  if (hasHelpFlag(process.argv.slice(2))) return console.log(USAGE);
   const arg = process.argv.find((a) => a.startsWith('--repo='));
   const repo = arg ? arg.slice(7).replace(/^~/, os.homedir()) : path.join(os.homedir(), 'BroadwayScorecard-app');
   const branches = parseBranchList(git(repo, ['branch', '-a', '--format=%(refname:short)']));
