@@ -20,6 +20,8 @@ test('waiver needs a reason', () => {
 test('baseline file lists only scripts that still exist and still use exceeded() alone', () => {
   const base = [...loadBaseline()];
   assert.ok(base.length > 0);
+  const found = findExceededOnly();
+  assert.deepEqual(base.filter((f) => !found.includes(f)), [], 'stale baseline entries: remove them');
   // Advisory ratchet: new offenders are reported by the CLI (continue-on-error in test.yml), not failed here.
   assert.ok(Array.isArray(newFindings(findExceededOnly(), loadBaseline())));
 });

@@ -75,11 +75,14 @@ runs:
         # (2026-10-22): p50 49s, p95 52s, max 66s, which include the action's
         # own sparse-checkout and cache work, so this is an upper bound on the
         # clone itself. 240s = 3.6x the worst seen, 5x the median, and three
-        # attempts (3 x 250s + 20s sleeps, ~13 min) still fit the 15-20 min jobs
-        # that use this action (review: BRO-5261 sized core-data the same way);
-        # a stall is
+        # attempts are ~13 min worst case. Jobs with timeout-minutes 10 still end
+        # at the job timeout on a triple hang (no worse than before); the cap
+        # exists so one hung attempt is retried instead. A stall is
         # caught far sooner by git_net's http.lowSpeed flags (45s under 1000 B/s).
         NET_SEC="${CHECKOUT_REVIEW_TEXTS_NET_TIMEOUT_SEC:-240}"
+        # Full-history clones (fetch-depth 0, run-script.yml review_texts_depth)
+        # were not in the timing sample: give them 4x.
+        if [ "${FETCH_DEPTH}" = "0" ] && [ -z "${CHECKOUT_REVIEW_TEXTS_NET_TIMEOUT_SEC:-}" ]; then NET_SEC=900; fi
         STDERR_FILE=$(mktemp)
         for ATTEMPT in $(seq 1 $MAX_RETRIES); do
           : > "$STDERR_FILE"
