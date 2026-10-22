@@ -1,25 +1,25 @@
 {
-  "runDate": "2026-10-22T08:43:57.633Z",
+  "runDate": "2026-10-22T09:20:57.032Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "ilford-boy-west-end-2026,the-curious-case-of-benjamin-button-off-broadway-2026,lincoln-in-the-bardo-off-broadway-2026,king-of-the-yees-off-broadway-2026,billy-crystal-860-2026,jest-to-impress-off-broadway-2026,martin-guerre-west-end-2026,copperfield-the-new-musical-off-broadway-2026,machine-learning-off-broadway-2026,the-nicest-body-ever-seen-around-these-parts-off-broadway-2026",
+    "showFilter": "martin-guerre-west-end-2026,the-nicest-body-ever-seen-around-these-parts-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 5,
+    "processed": 1,
+    "failed": 1,
     "skipped": 0,
     "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 1,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
@@ -28,40 +28,35 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 4,
+    "tier1Attempts": 2,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 3,
-    "tier1_5Success": 3,
-    "tier1_9Attempts": 1,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 3,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 5,
-    "scrapingBeePageCredits": 10,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 0.6,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 5,
-    "failed": 5,
+    "processed": 1,
+    "failed": 1,
     "shows": [
-      "billy-crystal-860-2026",
-      "ilford-boy-west-end-2026",
-      "king-of-the-yees-off-broadway-2026",
-      "lincoln-in-the-bardo-off-broadway-2026",
-      "machine-learning-off-broadway-2026",
       "martin-guerre-west-end-2026",
       "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026"
     ],
@@ -72,46 +67,25 @@
     }
   },
   "processed": [
-    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
-    "ilford-boy-west-end-2026/guardian--kate-wyver.json",
-    "machine-learning-off-broadway-2026/theater-scene--unknown.json",
-    "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
-    "lincoln-in-the-bardo-off-broadway-2026/hollywood-reporter--caitlin-huston.json"
+    "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json"
   ],
   "failed": [
-    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
-    "king-of-the-yees-off-broadway-2026/timeout--unknown.json",
-    "ilford-boy-west-end-2026/sunday-times--clive-davis.json",
-    "ilford-boy-west-end-2026/telegraph--fiona-mountford.json",
     "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
-      "ilford-boy-west-end-2026/guardian--kate-wyver.json",
-      "machine-learning-off-broadway-2026/theater-scene--unknown.json",
-      "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
-      "lincoln-in-the-bardo-off-broadway-2026/hollywood-reporter--caitlin-huston.json"
+      "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json"
     ],
     "failed": [
-      "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
-      "king-of-the-yees-off-broadway-2026/timeout--unknown.json",
-      "ilford-boy-west-end-2026/sunday-times--clive-davis.json",
-      "ilford-boy-west-end-2026/telegraph--fiona-mountford.json",
       "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
-      "machine-learning-off-broadway-2026/theater-scene--unknown.json",
       "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
-      "data/review-texts/lincoln-in-the-bardo-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
-      "lincoln-in-the-bardo-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
       "data/review-texts/the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json"
     ],
     "directCookies": [],
@@ -121,21 +95,6 @@
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {
-    "The Sunday Times": {
-      "count": 1,
-      "domain": "thetimes.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Telegraph": {
-      "count": 1,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
