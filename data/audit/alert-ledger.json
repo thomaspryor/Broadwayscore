@@ -23591,13 +23591,13 @@
       "title": "Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
       "firstSeen": "2026-10-22T11:49:37.833Z",
       "incidentOpenedAt": "2026-10-22T11:49:37.833Z",
-      "lastSeen": "2026-10-22T19:09:00.080Z",
+      "lastSeen": "2026-10-22T20:59:52.389Z",
       "lastNotifiedAt": "2026-10-22T11:49:37.833Z",
       "lastSurfacedAt": "2026-10-22T11:49:37.833Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "land:land/bro-5325-wsj-section": {
       "status": "resolved",
@@ -24310,6 +24310,19 @@
       "lastSeen": "2026-10-22T20:10:43.871Z",
       "lastNotifiedAt": "2026-10-22T20:10:43.871Z",
       "lastSurfacedAt": "2026-10-22T20:10:43.871Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "live-data-test:tests/unit/bro3887-cache-fix-acceptance.test.mjs::BRO-3887: repo Actions cache stays below the size that evicts the SERP cache": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
+      "firstSeen": "2026-10-22T20:59:52.372Z",
+      "incidentOpenedAt": "2026-10-22T20:59:52.372Z",
+      "lastSeen": "2026-10-22T20:59:52.372Z",
+      "lastNotifiedAt": "2026-10-22T20:59:52.372Z",
+      "lastSurfacedAt": "2026-10-22T20:59:52.372Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
