@@ -96,7 +96,8 @@ describe('feedback-pipeline-fields', () => {
     const consumers = [
       'scripts/auto-fix-feedback-bug.js',
       'scripts/generate-remediation-plan.js',
-      'scripts/execute-approved-fix.js',
+      // execute-approved-fix.js applies data-edits through lib/data-edit-action.js (BRO-5892)
+      'scripts/lib/data-edit-action.js',
       'scripts/diagnose-feedback-bug.js',
     ];
     for (const rel of consumers) {
