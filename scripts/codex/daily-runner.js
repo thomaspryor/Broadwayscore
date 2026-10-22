@@ -7,7 +7,7 @@
  * hand); no Claude session supervises the work itself.
  *
  *   node scripts/codex/daily-runner.js [--limit 10] [--ids BRO-1,BRO-2]
- *        [--max-minutes 420] [--max-weekly-pct 60] [--no-land] [--dry-run]
+ *        [--max-minutes 105] [--max-weekly-pct 60] [--no-land] [--dry-run]
  *        [--check-max-usd 4] [--check-budget-usd 30] [--card-max-minutes 120]
  *        [--hard-stop-minutes 112] [--slots 3] [--lane cloud|gha]
  *   node scripts/codex/daily-runner.js --lock-status [--lane cloud|gha|all]   (exit 0 free, 3 a live run holds it, 4 unreadable)
@@ -91,10 +91,14 @@ function arg(name, def) {
   const v = process.argv[i + 1];
   return v === undefined || v.startsWith('--') ? true : v;
 }
+let timeLimits;
+try {
+  timeLimits = R.runnerTimeLimits({ lane: String(arg('lane', 'cloud')), maxMinutes: arg('max-minutes'), hardStopMinutes: arg('hard-stop-minutes') });
+} catch (err) { console.error(err.message); process.exit(2); }
 const OPTS = {
   limit: Number(arg('limit', 10)),
   ids: arg('ids', '') ? String(arg('ids')).split(',').map((s) => s.trim()).filter(Boolean) : null,
-  maxMinutes: Number(arg('max-minutes', 420)),
+  maxMinutes: timeLimits.maxMinutes,
   maxWeeklyPct: Number(arg('max-weekly-pct', 60)),
   land: !process.argv.includes('--no-land'),
   dryRun: process.argv.includes('--dry-run'),
@@ -107,12 +111,13 @@ const OPTS = {
   // One card's wall clock: a fix-round exec starts only with 15+ min of exec plus the
   // review still inside it, and is cut to fit, so fix rounds cannot run past the budget.
   cardMaxMinutes: Number(arg('card-max-minutes', 120)),
-  // The wall clock the run must be fully done by (summary posted, lock released); absent = none, else >= 30.
+  // The wall clock the run must be fully done by (summary posted, lock released).
+  // Defaults are host-bounded even when a launcher forgets the flags (BRO-5694).
   // The routine's background task is killed at 120 min, and a kill during a Codex exec or a
   // check never reaches the SIGTERM handler (spawnSync blocks it): on 2026-10-13 the 20:47
   // firing's runner died mid-card, posted no summary and left its lock and BRO-4277 stranded
   // (BRO-5287). Cards, fix rounds and landing waits are all cut to fit inside it.
-  hardStopMinutes: Number(arg('hard-stop-minutes', 0)),
+  hardStopMinutes: timeLimits.hardStopMinutes,
   slots: Number(arg('slots', 1)) || 1,
   // --lane cloud|gha (BRO-5730): which slots a launch runs (R.LANES). The cloud routine is cloud, the GitHub runner gha.
   lane: String(arg('lane', 'cloud')),
@@ -130,10 +135,6 @@ const WRAP_UP_MS = 8 * 60_000;
 // fit, and 18 of them were handed back unjudged on 2026-10-17/18 (BRO-5384).
 // Last measured land-check run, mutex wait included; sizes the exec and card-start reserves (R.execBudgetMs).
 let landChecksMs = R.LAND_CHECKS_MS;
-if (process.argv.includes('--hard-stop-minutes') && !(OPTS.hardStopMinutes >= 30)) {
-  console.error(`--hard-stop-minutes needs a number of minutes >= 30 (got ${arg('hard-stop-minutes')})`);
-  process.exit(2);
-}
 /** True while `ms` more still fits before the hard stop's wrap-up time. */
 const fitsBeforeHardStop = (ms) => HARD_END_MS - WRAP_UP_MS - Date.now() >= ms;
 const CODEX_TIMEOUT_MS = 45 * 60_000;
@@ -730,6 +731,7 @@ async function workCard(pick, stats, inFlight) {
   let handedBack = false;
   let crashReason = '';
   try {
+    lockPhase = 'prepare-card';
     // Record the claim in the lock, so a run that dies from here on leaves this card named.
     if (!refreshLock(MAX_STAMP_GAP_MS)) throw new Error('lost the run lock (another run took it, or it could not be re-stamped before going stale)');
     const branch = `codex/${id.toLowerCase()}`;
@@ -793,7 +795,7 @@ async function workCard(pick, stats, inFlight) {
     const exec = async (text, timeoutMs = fixExecMs()) => {
       const base = git(['rev-parse', 'HEAD']);
       for (let retry = 0; ; retry++) {
-        keepLock();
+        keepLock(MAX_STAMP_GAP_MS, 'codex');
         const cx = runCodex(id, text, `codex${++execs}`, retry ? Math.min(timeoutMs, fixExecMs()) : timeoutMs);
         const transient = cx.code !== 0 ? R.codexExitTransient(cx.out) : null;
         if (!transient || retry >= 2 || roundDeadline - Date.now() < 15 * 60_000) return cx;
@@ -816,7 +818,7 @@ async function workCard(pick, stats, inFlight) {
       // Land refuses new unit/audit failures half an hour after the push, when the worktree has
       // moved on; catch them here and hand them straight back to Codex in the same attempt.
       if (c.hasDiff && !fitsBeforeHardStop(landChecksMs + REVIEW_RESERVE_MS)) { outOfTime = 'the land checks and the review'; break; }
-      keepLock();
+      keepLock(MAX_STAMP_GAP_MS, 'land-checks');
       let landFails = c.hasDiff ? throwIfDisk(newLandFailures(), 'the land checks') : null;
       if (landFails && execFits()) {
         log(`${id}: attempt ${attempt} land checks red, back to Codex`);
@@ -825,7 +827,7 @@ async function workCard(pick, stats, inFlight) {
         report = `${report}\n\n--- after fixing the land-check failures ---\n${fx.report}`;
         c = commitAttempt(card, attempt);
         if (c.blocked) { check = { verdict: 'REJECT', text: `Blocked before review: ${c.blocked}.` }; step = 'bounce'; break; }
-        keepLock();
+        keepLock(MAX_STAMP_GAP_MS, 'land-checks');
         landFails = throwIfDisk(newLandFailures(), 'the land checks');
       }
       envBlocked = null;
@@ -838,7 +840,7 @@ async function workCard(pick, stats, inFlight) {
         outOfTime = 'the review';
         break;
       } else {
-        keepLock();
+        keepLock(MAX_STAMP_GAP_MS, 'review');
         check = runCheck(card, body, report, `check${execs}`, data);
         if (check.verdict !== 'SHIP') throwIfDisk(check.text, 'the Claude check');
         log(`${id}: attempt ${attempt} verdict ${check.verdict}${c.hasDiff ? '' : ' (no diff)'}`);
@@ -1008,10 +1010,13 @@ const LOCK_GIT_MS = 120_000; // one lock push/read; the 600 s default let a hung
 const openCards = new Set();
 let orphanCards = [];
 let orphanLockMs = NaN;
+let orphanLock = {};
+let lockPhase = 'startup';
 const lockStamp = () => R.lockMessage(new Date().toISOString(), [...openCards]);
 function lockCommit(msg) {
   const tree = git(['rev-parse', 'origin/main^{tree}'], ROOT);
-  const sha = git(['-c', 'user.name=Codex runner', '-c', 'user.email=codex-runner@broadwayscorecard.com', 'commit-tree', tree, '-m', msg, '-m', `Run: ${RUN_ID}`], ROOT);
+  const body = R.runnerLockBody({ run: RUN_ID, startedMs: RUN_STARTED_MS, hardEndMs: HARD_END_MS, phase: lockPhase });
+  const sha = git(['-c', 'user.name=Codex runner', '-c', 'user.email=codex-runner@broadwayscorecard.com', 'commit-tree', tree, '-m', msg, '-m', body], ROOT);
   // %ct is whole seconds; flooring keeps our idea of the stamp's age never younger than theirs.
   ownLockShas.set(sha, Number(git(['log', '-1', '--format=%ct', sha], ROOT)) * 1000);
   return sha;
@@ -1061,7 +1066,7 @@ function readLock(ref = LOCK_REF) {
   const meta = sh('git', ['log', '-1', '--format=%ct%n%s%n%b', sha], { cwd: ROOT });
   const [ct, subject, ...body] = meta.stdout.split('\n');
   if (meta.code !== 0 || !Number.isFinite(Number(ct)) || !Number(ct)) return { error: `cannot read the lock commit: ${tail(meta.out.trim(), 200)}` };
-  return { sha, subject: subject || '', run: R.lockRun(body.join('\n')), ms: Number(ct) * 1000 };
+  return { sha, subject: subject || '', run: R.lockRun(body.join('\n')), body: body.join('\n'), ms: Number(ct) * 1000 };
 }
 const lockHeld = (l) => !!l.sha && l.subject.startsWith('locked') && Date.now() - l.ms < LOCK_STALE_MS;
 const describeLock = (l) => (l.error ? `unreadable (${l.error})` : !l.sha ? 'free (no lock yet)'
@@ -1088,6 +1093,7 @@ function takeLock() {
   lastStampOkMs = ownLockShas.get(sha);
   orphanCards = stale;
   orphanLockMs = cur.sha ? cur.ms : NaN;
+  orphanLock = cur;
   log(`took the run lock as ${RUN_ID}${cur.sha ? ` (was: ${describeLock(cur)})` : ''}`);
   return null;
 }
@@ -1098,7 +1104,8 @@ function takeLock() {
 // Longest stretch between two stamps: a Codex exec, the login save after it (up to 15 min) and a
 // provider-error retry wait (5 min); unit batches (40 min) and the check (30 min) are shorter.
 const MAX_STAMP_GAP_MS = CODEX_TIMEOUT_MS + 20 * 60_000;
-function keepLock(nextBlockMs = MAX_STAMP_GAP_MS) {
+function keepLock(nextBlockMs = MAX_STAMP_GAP_MS, phase) {
+  if (phase) lockPhase = phase;
   let held = true;
   try { held = refreshLock(nextBlockMs); } catch { /* transient: the next stamp retries */ }
   if (!held) throw new Error('lost the run lock (another run took it, or it could not be re-stamped before going stale)');
@@ -1347,7 +1354,10 @@ async function recoverOrphans(stats) {
       handled = (await linearBrain(['update', id, '--comment', `## Codex runner: landing did not finish (an earlier run stopped)\n\nThe land ref \`${ref}\` is left for the cloud worker's resume step.${partial ? `\n\n${R.PARTIAL_MARKER}` : ''}`])).code === 0;
     } else if (action === 'todo') {
       stats.crashed.push(id);
-      handled = (await moveCard(id, 'Todo', '## Codex runner: stopped mid-card\n\nAn earlier run ended (its session stopped) before finishing this card, and nothing reached main. Back to Todo.')).code === 0;
+      const details = R.orphanStopDetails(orphanLock);
+      stats.recoveredStops.push(`${id}: ${details}`);
+      log(`${id}: ${details}`);
+      handled = (await moveCard(id, 'Todo', `## Codex runner: stopped mid-card\n\nAn earlier run ended before finishing this card, and nothing reached main. Back to Todo.\n\n${details}`)).code === 0;
     }
     if (handled) openCards.delete(id);
   }
@@ -1355,7 +1365,7 @@ async function recoverOrphans(stats) {
 }
 
 async function runLocked(startedMs) {
-  const stats = { claimed: [], landed: [], landedPartial: [], alreadyFixed: [], bounced: [], inReview: [], landFailed: [], crashed: [], outOfTime: [], carried: [], wouldLand: [], rejectStreak: 0, doneRefusals: 0 };
+  const stats = { claimed: [], landed: [], landedPartial: [], alreadyFixed: [], bounced: [], inReview: [], landFailed: [], crashed: [], recoveredStops: [], outOfTime: [], carried: [], wouldLand: [], rejectStreak: 0, doneRefusals: 0 };
   // Tidying an earlier run's cards needs only git and Linear, so it runs even without a Codex login.
   // reconcileLanded scans every runner commit on main, so one slot does it (two would settle a card twice).
   if (!OPTS.dryRun) { if (SLOT === 0) await reconcileLanded(stats); await recoverOrphans(stats); }
@@ -1422,6 +1432,7 @@ async function runLocked(startedMs) {
     `- In Review (the Done gate would not close it): ${list(stats.inReview)}`,
     `- Landing did not finish (left In Progress for resume): ${list(stats.landFailed)}`,
     `- Runner error mid-card (back to Todo): ${list(stats.crashed)}`,
+    ...stats.recoveredStops.map((details) => `- Recovered stopped session: ${details}`),
     ...(stats.carried.length ? [`- SHIP-WITH-FIXES, fix round carried to the next run: ${list(stats.carried)}`] : []),
     ...(stats.outOfTime.length ? [`- Out of time before review, not judged (back to Todo): ${list(stats.outOfTime)}`] : []),
     ...(stats.wouldLand.length ? [`- Passed, not landed (--no-land): ${list(stats.wouldLand)}`] : []),
