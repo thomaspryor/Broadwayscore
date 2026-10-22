@@ -25,7 +25,7 @@ const { extractRunBlocks } = require('../../scripts/lib/audit-workflow-hygiene-r
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ACTION = path.join(__dirname, '..', '..', '.github', 'actions', 'setup-playwright', 'action.yml');
 
-function installScript() {
+function installScript({ cacheHit = false } = {}) {
   const raw = fs.readFileSync(ACTION, 'utf8');
   const block = extractRunBlocks(raw).find((b) => b.lines.some((l) => l.text.includes('playwright install')));
   assert.ok(block, 'Install Playwright browsers run: block not found');
@@ -33,30 +33,39 @@ function installScript() {
   return block.lines
     .map((l) => l.text.slice(indent))
     .join('\n')
-    .replace(/\$\{\{\s*steps\.playwright-cache\.outputs\.cache-hit\s*\}\}/g, 'false')
-    .replace(/\$\{\{\s*inputs\.browsers\s*\}\}/g, 'chromium');
+    .replace(/\$\{\{\s*steps\.playwright-cache\.outputs\.cache-hit\s*\}\}/g, String(cacheHit));
 }
 
 // npx stub: exit code per call taken from $NPX_CODES (space-separated).
-function runWith(codes) {
+// Both stubs append to $ORDER so a test can check what ran first; sudo also
+// records its stdin (the apt conf body piped into `sudo tee`).
+function runWith(codes, { cacheHit = false, sudoTeeFail = false } = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pw-retry-'));
   const counter = path.join(dir, 'calls');
+  const order = path.join(dir, 'order');
   fs.writeFileSync(path.join(dir, 'npx'), `#!/bin/bash
 n=$(( $(cat "${counter}" 2>/dev/null || echo 0) + 1 )); echo "$n" > "${counter}"
 code=$(echo "$NPX_CODES" | cut -d' ' -f"$n")
+echo "npx $*" >> "${order}"
 echo "npx attempt $n output"
 exit "\${code:-0}"
 `, { mode: 0o755 });
-  fs.writeFileSync(path.join(dir, 'sudo'), '#!/bin/bash\nexit 0\n', { mode: 0o755 });
+  fs.writeFileSync(path.join(dir, 'sudo'), `#!/bin/bash
+echo "sudo $*" >> "${order}"
+[ "$1" = tee ] && cat >> "${order}"
+[ "$1" = tee ] && [ -n "$SUDO_TEE_FAIL" ] && exit 1
+exit 0
+`, { mode: 0o755 });
   const script = path.join(dir, 'step.sh');
-  fs.writeFileSync(script, installScript());
+  fs.writeFileSync(script, installScript({ cacheHit }));
   const r = spawnSync('bash', ['-e', script], {
     encoding: 'utf8',
-    env: { ...process.env, PATH: `${dir}:${process.env.PATH}`, NPX_CODES: codes },
+    env: { ...process.env, PATH: `${dir}:${process.env.PATH}`, NPX_CODES: codes, INPUT_BROWSERS: 'chromium', SUDO_TEE_FAIL: sudoTeeFail ? '1' : '' },
   });
   const calls = Number(fs.existsSync(counter) ? fs.readFileSync(counter, 'utf8') : 0);
+  const log = fs.existsSync(order) ? fs.readFileSync(order, 'utf8') : '';
   fs.rmSync(dir, { recursive: true, force: true });
-  return { status: r.status, out: `${r.stdout}${r.stderr}`, calls };
+  return { status: r.status, out: `${r.stdout}${r.stderr}`, calls, order: log };
 }
 
 test('first attempt succeeds: one call, exit 0, no warning', () => {
@@ -86,4 +95,28 @@ test('both attempts fail: exit 1 with ::error:: and the log (the dead-code bug t
   assert.equal(r.calls, 2);
   assert.match(r.out, /::error::.*timed out after 220s on both attempts/);
   assert.match(r.out, /npx attempt 2 output/);
+});
+
+// BRO-5964: a stalled apt mirror read used apt's 120s default timeout and ate
+// both 220s attempts (main run 39790224688). The short timeout must be in place
+// before the first install on both the cache-miss and cache-hit paths.
+for (const cacheHit of [false, true]) {
+  test(`apt net timeout conf is written before the first npx call (cache-hit=${cacheHit})`, () => {
+    const r = runWith('0', { cacheHit });
+    assert.equal(r.status, 0, r.out);
+    const teeAt = r.order.indexOf('sudo tee /etc/apt/apt.conf.d/99-bsc-net-timeouts');
+    const npxAt = r.order.indexOf('npx playwright');
+    assert.ok(teeAt >= 0, `conf not written:\n${r.order}`);
+    assert.ok(npxAt > teeAt, `npx ran before the conf was written:\n${r.order}`);
+    assert.match(r.order, /Acquire::http::Timeout "20";/);
+    assert.match(r.order, cacheHit ? /npx playwright install-deps chromium/ : /npx playwright install chromium --with-deps/);
+    assert.doesNotMatch(r.out, /Acquire::/, 'tee must not echo the conf into the step log');
+  });
+}
+
+test('apt conf write failure warns and still installs', () => {
+  const r = runWith('0', { sudoTeeFail: true });
+  assert.equal(r.status, 0, r.out);
+  assert.equal(r.calls, 1);
+  assert.match(r.out, /::warning::could not write apt timeout conf/);
 });

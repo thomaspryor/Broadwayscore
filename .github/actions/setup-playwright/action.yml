@@ -29,6 +29,17 @@ runs:
         else
           cmd=(npx playwright install-deps ${INPUT_BROWSERS})
         fi
+        # BRO-5964: apt's default per-connection timeout is 120s, so one
+        # stalled mirror fetch ("Ign:" on azure.archive.ubuntu.com, main run
+        # 39790224688) burned most of each 220s attempt and both timed out.
+        # 20s makes apt give up on a stalled read and move to its built-in
+        # retry (default Acquire::Retries 3) inside the attempt. It is an
+        # inactivity timeout, not a speed floor; the 220s `timeout` below stays the
+        # backstop. The file stays for the rest of the job, so later
+        # apt-get steps (poppler-utils) get it too.
+        printf 'Acquire::http::Timeout "20";\nAcquire::https::Timeout "20";\n' \
+          | sudo tee /etc/apt/apt.conf.d/99-bsc-net-timeouts > /dev/null \
+          || echo "::warning::could not write apt timeout conf; apt keeps its 120s default"
         # timeout-minutes isn't supported on composite-action steps, so the
         # `timeout` command is what stops this from silently eating the
         # parent job's entire budget on a hung apt-get/dpkg lock (task #1815).
