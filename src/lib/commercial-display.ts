@@ -148,7 +148,7 @@ function rangeModel(commercial: RecoupmentSignals): [number, number, number] | n
  * server-only (a negative or unannounced-recoupment figure never reaches a page).
  */
 export function publicHeldRange(commercial: RecoupmentSignals): [number, number, number] | null {
-  if (commercial.modelRecoupmentPct) return null;
+  if (commercial.modelRecoupmentPct || commercial.recouped === true || hasNoInvestorsToRepay(commercial)) return null;
   const model = rangeModel(commercial);
   if (!model) return null;
   const central = Math.max(0, model[1]);

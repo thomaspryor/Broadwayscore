@@ -560,6 +560,7 @@ test('owner 2026-10-22: the estimate range spans the analyst and our model, roun
   assert.deepEqual(toPublicShowCommercial({ ...gatsby, modelDisplayHold: 'too-uncertain' }).modelHeldRange, [57, 57, 57]);
   assert.deepEqual(toPublicShowCommercial(outOfBounds).modelHeldRange, [0, 0, 0]);
   for (const hold of ['few-weeks', 'past-100-unannounced']) assert.equal('modelHeldRange' in toPublicShowCommercial({ ...gatsby, modelDisplayHold: hold }), false, hold);
+  assert.equal('modelHeldRange' in toPublicShowCommercial({ ...gatsby, modelDisplayHold: 'too-uncertain', recouped: true }), false);
   // A held central of 100+ never joins: it would hint at an unannounced recoupment (BRO-5073).
   const past100 = { ...gatsby, analystRecoupPct: [60, 70], modelHeldRange: [80, 130, 180], modelDisplayHold: 'too-uncertain' };
   assert.deepEqual(getDisplayableEstimateRange(past100), { range: [60, 70], withModel: false });
