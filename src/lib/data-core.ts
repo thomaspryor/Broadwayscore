@@ -1369,7 +1369,9 @@ export function getRelatedShows(show: ComputedShow, limit = 6): ComputedShow[] {
 // algorithmic ranking for the same pool instead of showing fewer cards (BRO-5122).
 function topUpRelated(curated: ComputedShow[], show: ComputedShow, limit: number, statusFilter?: 'open' | 'closed'): ComputedShow[] {
   if (curated.length >= limit) return curated.slice(0, limit);
-  const extra = getRelatedShowsAlgorithmic(show, limit + curated.length, statusFilter).filter(s => !curated.some(c => isSameShow(c, s)));
+  // minScore 0: a curated top-up must fill the card row even for a type with no
+  // same-type peers (specials), which the strict >=12 relevance floor leaves empty.
+  const extra = getRelatedShowsAlgorithmic(show, limit + curated.length, statusFilter, 0).filter(s => !curated.some(c => isSameShow(c, s)));
   return [...curated, ...extra].slice(0, limit);
 }
 
@@ -1450,7 +1452,7 @@ export function getOtherProductions(show: ComputedShow): ComputedShow[] {
 // actually liked. (Unscored candidates stay eligible, they are rare in this pool.)
 const RELATED_CLOSED_MIN_SCORE = 60;
 
-export function getRelatedShowsAlgorithmic(show: ComputedShow, limit = 6, statusFilter?: 'open' | 'closed'): ComputedShow[] {
+export function getRelatedShowsAlgorithmic(show: ComputedShow, limit = 6, statusFilter?: 'open' | 'closed', minScore = 12): ComputedShow[] {
   const allShows = getAllShows();
 
   // Precompute creative team lookup (name → role)
@@ -1542,7 +1544,7 @@ export function getRelatedShowsAlgorithmic(show: ComputedShow, limit = 6, status
 
       return { show: candidate, score };
     })
-    .filter(({ score }) => score >= 12) // Minimum threshold — must match on type + at least one other signal
+    .filter(({ score }) => score >= minScore) // Minimum threshold — must match on type + at least one other signal
     .sort((a, b) => b.score - a.score)
     .slice(0, limit);
 
