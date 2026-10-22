@@ -41,7 +41,7 @@ function markRedditUnavailable() {
 const path = require('path');
 const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/reddit-api');
 const { computeProductionWindow, isPostInProductionWindow } = require('./lib/production-window');
-const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey, isOwnerComment, isRedditFresh, redditBackoffReason, redditSaveDecision, partitionRequestedShows } = require('./lib/reddit-post-filters');
+const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey, isOwnerComment, isRedditFresh, redditBackoffReason, redditSaveDecision, partitionRequestedShows, selectPostsForComments, runDeadlineReached, REDDIT_RUN_DEADLINE_MIN } = require('./lib/reddit-post-filters');
 
 // A single roundup/megathread can hold hundreds of comments about dozens of
 // shows. Even after excluding such posts by title, cap how many comments any
@@ -255,7 +255,7 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { cat
 
     try {
       // Fetch up to 300 per query (3 pages) to compensate for date filtering
-      const posts = await searchAllPosts(subreddit, query, 300);
+      const posts = await searchAllPosts(subreddit, query, 300, { allowRss: true }); // BRO-5916: free RSS when JSON is blocked
       totalSearched += posts.length;
 
       // Track raw volume before dedup (for display: "Based on ~X Reddit discussions")
@@ -420,8 +420,7 @@ async function collectShowComments(show) {
   // Don't re-sort by engagement (that drowns out good posts with high-engagement meta threads)
   // The LLM will filter out irrelevant comments - we just need to give it good posts to work with
   // Filter out posts with very few comments (saves API calls on comment fetching)
-  const postsWithComments = posts.filter(p => (p.num_comments || 0) >= 3);
-  const topPosts = postsWithComments.slice(0, 75);  // Broad enough for statistical stability
+  const topPosts = selectPostsForComments(posts);  // <=75: broad enough for statistical stability; unknown-count (RSS) posts kept, capped
 
   if (verbose) {
     console.log(`  Top 5 posts (by Reddit search relevance):`);
@@ -443,7 +442,7 @@ async function collectShowComments(show) {
   let comments = [];
   for (const [sr, srPosts] of postsBySubreddit) {
     try {
-      const srComments = await collectCommentsFromPosts(sr, srPosts, 10000, MAX_COMMENTS_PER_POST);
+      const srComments = await collectCommentsFromPosts(sr, srPosts, 10000, MAX_COMMENTS_PER_POST, { allowRss: true });
       comments.push(...srComments);
     } catch (e) {
       console.error(`  Comment collection failed in r/${sr}: ${e.message}`);
@@ -766,9 +765,17 @@ async function main() {
   let processed = 0;
   let successful = 0;
 
+  const runStartMs = Date.now();
+  const parsedDeadline = parseFloat(process.env.REDDIT_RUN_DEADLINE_MIN);
+  const deadlineMin = Number.isFinite(parsedDeadline) ? parsedDeadline : REDDIT_RUN_DEADLINE_MIN;
   for (const show of shows) {
+    if (runDeadlineReached(runStartMs, Date.now(), deadlineMin)) {
+      console.warn(`⏱ Run deadline (${deadlineMin} min) reached after ${processed}/${shows.length} shows — stopping; the rest go next run.`);
+      break;
+    }
     try {
       const errorsBefore = getStats().errors;
+      const rssBefore = getStats().redditRss;
       const redditData = await processShow(show);
       processed++;
       // reddit-api swallows per-post comment failures and breaker-open skips
@@ -776,13 +783,17 @@ async function main() {
       // result can't be trusted as "no discussion".
       const after = getStats();
       if (after.errors > errorsBefore || after.circuitBroken) showFetchFailed = true;
+      // RSS-served data is truncated (25 search results, unscored comments): it
+      // never replaces a larger stored sample (BRO-5916). An empty RSS search is
+      // still a real "no discussion", so it backs off like the JSON path.
+      const rssServed = after.redditRss > rssBefore;
 
       const prevReddit = audienceBuzz.shows[show.id] && audienceBuzz.shows[show.id].sources
         ? audienceBuzz.shows[show.id].sources.reddit : undefined;
       const saveDecision = redditData && !dryRun && !shardMode
-        ? redditSaveDecision(prevReddit, redditData, { fetchFailed: showFetchFailed }) : null;
+        ? redditSaveDecision(prevReddit, redditData, { fetchFailed: showFetchFailed, lossy: rssServed }) : null;
       if (saveDecision === 'keep-existing') {
-        console.warn(`  ⚠️  Fetch errors left only ${redditData.reviewCount} Reddit items (stored sample: ${prevReddit.reviewCount}) — keeping the stored sample`);
+        console.warn(`  ⚠️  ${rssServed && !showFetchFailed ? 'Truncated RSS sample' : 'Fetch errors left only'} ${redditData.reviewCount} Reddit items (stored sample: ${prevReddit.reviewCount}) — keeping the stored sample`);
       } else if (redditData && !dryRun) {
         successful++;
 

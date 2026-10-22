@@ -395,9 +395,9 @@ function scrapingDogRequest(apiKey, url, tier) {
  * public, unauthenticated, and (per 2026-07-21 probe from a residential IP,
  * see Notion 3a5637c5) return 200 with real entries where the `.json` API
  * hard-403s. Free and independent of every proxy budget (BD/SD/SB) — tried
- * BEFORE the paid proxy chain in switchToProxy(). Only search endpoints have
- * an `.rss` sibling (comments/listing endpoints don't), so callers gate on
- * `/search.json` before invoking this.
+ * BEFORE the paid proxy chain in switchToProxy(). Search and post-comments
+ * URLs have an RSS sibling (comments: BRO-5916, `<id>/.rss`); listings don't,
+ * so callers gate on rssEligible() (opt-in via opts.allowRss) before invoking.
  */
 const XML_ENTITIES = [
   [/&quot;/g, '"'], [/&#0?39;/g, "'"], [/&apos;/g, "'"],
@@ -414,7 +414,10 @@ function stripHtmlTags(html) {
 /** Rewrite a reddit `.json` search URL to its `.rss` equivalent, capping limit at 25 (RSS feed cap). */
 function toRssUrl(jsonUrl) {
   const u = new URL(jsonUrl);
-  u.pathname = u.pathname.replace(/\.json$/, '.rss');
+  // /comments/<id>.json -> /comments/<id>/.rss (the `<id>.rss` form does not exist)
+  u.pathname = /\/comments\/[a-z0-9]+\.json$/i.test(u.pathname)
+    ? u.pathname.replace(/\.json$/, '/.rss')
+    : u.pathname.replace(/\.json$/, '.rss');
   const limit = parseInt(u.searchParams.get('limit'), 10);
   if (Number.isFinite(limit) && limit > 25) u.searchParams.set('limit', '25');
   u.searchParams.delete('raw_json'); // JSON-only param, meaningless for RSS
@@ -482,31 +485,88 @@ function parseRedditAtom(xml) {
  * backoff the JSON path uses — RSS getting rate-limited is still "Reddit is
  * rate-limiting us," not a separate problem.
  */
+// RSS is free and independent of every proxy budget, but lossy: search caps at
+// 25 results with no cursor, comments carry no score/nesting. Every caller must
+// opt in (opts.allowRss) so score-ranking callers never get silently degraded data.
+function rssEligible(url, opts = {}) {
+  if (process.env.REDDIT_RSS_DISABLED === '1') return false; // kill switch
+  return Boolean(opts.allowRss) && (url.includes('/search.json') || isCommentsUrl(url));
+}
+
+function isCommentsUrl(url) {
+  return /\/comments\/[a-z0-9]+\.json(\?|$)/i.test(url);
+}
+
+/**
+ * Parse a post's comments.rss Atom feed into the JSON API's two-listing shape
+ * ([postListing, commentsListing]) so flattenComments() works unchanged.
+ * Entries carry no score (0) and no reply nesting; the first entry is the
+ * post itself (t3_) and is dropped. Returns null when the body has no <entry>.
+ */
+function parseRedditCommentsAtom(xml) {
+  const entryBlocks = xml.match(/<entry>[\s\S]*?<\/entry>/g);
+  if (!entryBlocks || entryBlocks.length === 0) return null;
+  const children = [];
+  for (const block of entryBlocks) {
+    const idMatch = block.match(/<id>t1_([a-z0-9]+)<\/id>/i);
+    if (!idMatch) continue;
+    const authorMatch = block.match(/<author>[\s\S]*?<name>([\s\S]*?)<\/name>/);
+    const contentMatch = block.match(/<content[^>]*>([\s\S]*?)<\/content>/);
+    const body = contentMatch ? stripHtmlTags(decodeXmlEntities(contentMatch[1])) : '';
+    const author = authorMatch ? decodeXmlEntities(authorMatch[1]).trim().replace(/^\/u\//, '') : undefined;
+    children.push({ kind: 't1', data: { id: idMatch[1], author, body, score: 0 } });
+  }
+  return [{ data: { children: [] } }, { data: { children } }];
+}
+
 async function fetchViaRedditRSS(url) {
-  await enforceRateLimit();
   const rssUrl = toRssUrl(url);
-  const res = await fetch(rssUrl, {
-    signal: AbortSignal.timeout(60000),
-    headers: {
-      'User-Agent': USER_AGENT,
-      'Accept': 'application/atom+xml, application/rss+xml, text/xml',
-    },
-  });
-  if (res.status === 429) {
-    rateLimitCount++;
-    stats.rateLimits++;
-    throw new Error('Reddit RSS HTTP 429 rate limited');
+  // Reddit's unauthenticated RSS bucket is ~1 request/minute per IP
+  // (x-ratelimit-remaining 0 after one call, x-ratelimit-reset ~60s). Honour
+  // the reset header instead of failing: a 429 just means "wait N seconds".
+  const parsedWaits = parseInt(process.env.REDDIT_RSS_429_MAX_WAITS, 10);
+  const MAX_RSS_WAITS = Number.isFinite(parsedWaits) ? parsedWaits : 2;
+  for (let attempt = 0; ; attempt++) {
+    await enforceRateLimit();
+    const res = await fetch(rssUrl, {
+      signal: AbortSignal.timeout(60000),
+      headers: {
+        'User-Agent': USER_AGENT,
+        'Accept': 'application/atom+xml, application/rss+xml, text/xml',
+      },
+    });
+    if (res.status === 429) {
+      rateLimitCount++;
+      stats.rateLimits++;
+      const resetS = parseFloat(res.headers.get('x-ratelimit-reset'));
+      if (attempt < MAX_RSS_WAITS) {
+        const waitS = Math.min(90, (Number.isFinite(resetS) ? resetS : 30) + 1);
+        console.warn(`  Reddit RSS 429, waiting ${waitS}s for the rate-limit window...`);
+        await sleep(waitS * 1000);
+        continue;
+      }
+      throw new Error('Reddit RSS HTTP 429 rate limited');
+    }
+    if (res.status !== 200) {
+      throw new Error(`Reddit RSS HTTP ${res.status}`);
+    }
+    const xml = await res.text();
+    let parsed = isCommentsUrl(url) ? parseRedditCommentsAtom(xml) : parseRedditAtom(xml);
+    // A well-formed feed with zero entries is a legitimate empty result (no
+    // matching posts/comments), same as the JSON API's empty children. Only a
+    // non-feed body (HTML block page) is a failure — treating empty as failure
+    // sent every no-result query on to the paid proxies (BRO-5916).
+    if (!parsed && /<feed[\s>]/.test(xml)) {
+      parsed = isCommentsUrl(url)
+        ? [{ data: { children: [] } }, { data: { children: [] } }]
+        : { data: { children: [], after: null } };
+    }
+    if (!parsed) {
+      throw new Error(`Reddit RSS response not a parseable Atom feed: ${xml.slice(0, 150)}`);
+    }
+    stats.redditRss++;
+    return parsed;
   }
-  if (res.status !== 200) {
-    throw new Error(`Reddit RSS HTTP ${res.status}`);
-  }
-  const xml = await res.text();
-  const parsed = parseRedditAtom(xml);
-  if (!parsed) {
-    throw new Error(`Reddit RSS response not a parseable Atom feed: ${xml.slice(0, 150)}`);
-  }
-  stats.redditRss++;
-  return parsed;
 }
 
 /**
@@ -778,8 +838,16 @@ async function _fetchWithFallbackInner(url, retryCount = 0, opts = {}) {
     useScrapingBee = false;
   }
 
-  // If in proxy mode, try proxies first
+  // If in proxy mode, try proxies first (free RSS ahead of the paid ones)
   if (useScrapingBee) {
+    if (rssEligible(url, opts)) {
+      try {
+        return await fetchViaRedditRSS(url);
+      } catch (e) {
+        console.warn(`  Reddit RSS failed: ${e.message}`);
+        opts = { ...opts, rssTried: true };
+      }
+    }
     // Try Bright Data (primary proxy)
     if (process.env.BRIGHTDATA_TOKEN && !brightDataDown && !brightDataCapped) {
       try {
@@ -855,11 +923,11 @@ async function switchToProxy(url, opts = {}) {
   // cursor (parseRedditAtom always returns after:null), which would silently
   // truncate callers that paginate for deep result sets (searchAllPosts via
   // searchSubreddit, used by scrape-reddit-sentiment.js requesting up to 300).
-  // Only brand-mention-sources.js's fetchRedditMentions opts in — it already
-  // treats Reddit as a capped counter/sample source, not a paginated corpus.
-  if (opts.allowRss && url.includes('/search.json')) {
+  // Opted in by brand-mention-sources.js (a capped counter) and, since BRO-5916,
+  // scrape-reddit-sentiment.js (search + comments; it guards lossy samples).
+  if (rssEligible(url, opts) && !opts.rssTried) {
     try {
-      console.warn('  Reddit JSON blocked — trying RSS fallback (search.rss)...');
+      console.warn('  Reddit JSON blocked — trying free RSS fallback...');
       return await fetchViaRedditRSS(url);
     } catch (e) {
       console.warn(`  Reddit RSS fallback failed: ${e.message}`);
@@ -912,7 +980,7 @@ async function switchToProxy(url, opts = {}) {
  * Search subreddit for posts matching query
  */
 async function searchSubreddit(subreddit, query, options = {}) {
-  const { sort = 'relevance', time = 'all', limit = 100, after = null } = options;
+  const { sort = 'relevance', time = 'all', limit = 100, after = null, allowRss = false } = options;
 
   const params = new URLSearchParams({
     q: query,
@@ -926,16 +994,16 @@ async function searchSubreddit(subreddit, query, options = {}) {
   if (after) params.set('after', after);
 
   const url = `https://www.reddit.com/r/${subreddit}/search.json?${params}`;
-  return fetchWithFallback(url);
+  return fetchWithFallback(url, 0, { allowRss });
 }
 
 /**
  * Get comments from a specific post
  */
 async function getPostComments(subreddit, postId, options = {}) {
-  const { limit = 500, depth = 10 } = options;
+  const { limit = 500, depth = 10, allowRss = false } = options;
   const url = `https://www.reddit.com/r/${subreddit}/comments/${postId}.json?limit=${limit}&depth=${depth}&raw_json=1`;
-  return fetchWithFallback(url);
+  return fetchWithFallback(url, 0, { allowRss });
 }
 
 /**
@@ -968,12 +1036,12 @@ function flattenComments(response) {
 /**
  * Search for all posts matching query with pagination
  */
-async function searchAllPosts(subreddit, query, maxResults = 500) {
+async function searchAllPosts(subreddit, query, maxResults = 500, { allowRss = false } = {}) {
   const allPosts = [];
   let after = null;
 
   while (allPosts.length < maxResults) {
-    const response = await searchSubreddit(subreddit, query, { after, limit: 100 });
+    const response = await searchSubreddit(subreddit, query, { after, limit: 100, allowRss });
     const posts = response.data?.children || [];
 
     if (posts.length === 0) break;
@@ -994,14 +1062,14 @@ async function searchAllPosts(subreddit, query, maxResults = 500) {
 /**
  * Collect comments from multiple posts
  */
-async function collectCommentsFromPosts(subreddit, posts, maxComments = 1000, perPostMax = Infinity) {
+async function collectCommentsFromPosts(subreddit, posts, maxComments = 1000, perPostMax = Infinity, { allowRss = false } = {}) {
   const allComments = [];
 
   for (const post of posts) {
     if (allComments.length >= maxComments) break;
 
     try {
-      const response = await getPostComments(subreddit, post.id);
+      const response = await getPostComments(subreddit, post.id, { allowRss });
       const comments = flattenComments(response);
       // Cap any single post's contribution — a high-comment roundup/megathread
       // that slips past the title guard can't dominate the sentiment sample.
@@ -1078,5 +1146,7 @@ module.exports = {
   fetchViaRedditRSS,
   toRssUrl,
   parseRedditAtom,
+  parseRedditCommentsAtom,
+  isCommentsUrl,
   switchToProxy
 };

@@ -395,9 +395,15 @@ function isRedditFresh(buzzRecord, hours, nowMs = Date.now(), show = null) {
  *  'save-below-floor'  save it, and grow the backoff streak (unless fetches failed)
  *  'save'              save it; the streak resets
  */
-function redditSaveDecision(prevReddit, nextReddit, { fetchFailed = false } = {}) {
+function redditSaveDecision(prevReddit, nextReddit, { fetchFailed = false, lossy = false } = {}) {
   const nextBelow = isRedditBelowVolumeFloor(nextReddit);
-  if (fetchFailed && nextBelow && prevReddit && prevReddit.score != null && !isRedditBelowVolumeFloor(prevReddit)) {
+  const prevHealthy = prevReddit && prevReddit.score != null && !isRedditBelowVolumeFloor(prevReddit);
+  if (fetchFailed && nextBelow && prevHealthy) {
+    return 'keep-existing';
+  }
+  // BRO-5916: an RSS-served sample is truncated (25 results a search, 25
+  // comments a post), so it never replaces a larger stored sample.
+  if (lossy && prevHealthy && (nextReddit.reviewCount || 0) < (prevReddit.reviewCount || 0)) {
     return 'keep-existing';
   }
   return nextBelow ? 'save-below-floor' : 'save';
@@ -428,7 +434,33 @@ function partitionRequestedShows(requestedIds, allShows) {
   return { active, notStarted, unknown };
 }
 
+/**
+ * Pick which posts to fetch comments for. Posts with a known comment count need
+ * >=minComments. RSS search results carry NO count (num_comments undefined), and
+ * treating unknown as 0 dropped every RSS post, so the scrape "succeeded" with
+ * zero comments (BRO-5916). Unknown-count posts are kept, capped (RSS comment
+ * fetches are ~1/min) and placed after the known ones.
+ */
+function selectPostsForComments(posts, { minComments = 3, maxPosts = 75, unknownCap = 12 } = {}) {
+  const known = posts.filter(p => Number.isFinite(p.num_comments) && p.num_comments >= minComments);
+  const unknown = posts.filter(p => p.num_comments == null).slice(0, unknownCap);
+  return [...known, ...unknown].slice(0, maxPosts);
+}
+
+/**
+ * Wall-clock guard for one scraper run (BRO-5916). Reddit RSS answers about once
+ * a minute per IP, so a show can take ~20 min; stop starting new shows before
+ * the job's 240-min timeout kills the run mid-show.
+ */
+const REDDIT_RUN_DEADLINE_MIN = 200;
+function runDeadlineReached(startMs, nowMs, deadlineMin = REDDIT_RUN_DEADLINE_MIN) {
+  return Number.isFinite(deadlineMin) && deadlineMin > 0 && (nowMs - startMs) >= deadlineMin * 60000;
+}
+
 module.exports = {
+  selectPostsForComments,
+  runDeadlineReached,
+  REDDIT_RUN_DEADLINE_MIN,
   lastRedditTouchMs,
   isRedditFresh,
   redditBackoffReason,

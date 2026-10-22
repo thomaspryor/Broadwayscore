@@ -46,14 +46,35 @@ const FEED_WITH_UNPARSEABLE_ENTRY = `<?xml version="1.0" encoding="UTF-8"?>
 </entry>
 </feed>`;
 
+// A post's comments.rss: first entry is the post (t3_), the rest are comments (t1_).
+const COMMENTS_FEED = `<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+<entry><author><name>/u/op</name></author><content type="html">&lt;p&gt;Loved it&lt;/p&gt;</content><id>t3_1abcxyz</id><link href="https://www.reddit.com/r/Broadway/comments/1abcxyz/x/"/><title>x</title></entry>
+<entry><author><name>/u/kuomodo_g</name></author><content type="html">&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;Wow, so jealous! I love &amp;amp; hear it is good.&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt;</content><id>t1_phjg4gy</id><link href="https://www.reddit.com/r/Broadway/comments/1abcxyz/x/phjg4gy/"/><updated>2026-10-18T18:01:11+00:00</updated><title>c</title></entry>
+</feed>`;
+
+let flakyHits = 0;
 let commentsRssHit = false;
 let rateLimitedHits = 0;
 const server = http.createServer((req, res) => {
   const u = new URL(req.url, 'http://localhost');
-  if (u.pathname === '/r/Broadway/comments/1abcxyz.rss') {
+  if (u.pathname === '/r/Broadway/comments/1abcxyz/.rss') {
+    // BRO-5916: comments go through RSS too (`<id>.json` -> `<id>/.rss`)
     commentsRssHit = true;
-    res.writeHead(404);
-    res.end('not found');
+    res.writeHead(200, { 'Content-Type': 'application/atom+xml' });
+    res.end(COMMENTS_FEED);
+    return;
+  }
+  if (u.pathname === '/r/Broadway/flaky.rss') {
+    // 429 once (reset 0s), then a real feed: fetchViaRedditRSS must wait and retry
+    flakyHits++;
+    if (flakyHits === 1) {
+      res.writeHead(429, { 'x-ratelimit-reset': '0' });
+      res.end('slow down');
+      return;
+    }
+    res.writeHead(200, { 'Content-Type': 'application/atom+xml' });
+    res.end(SAMPLE_FEED);
     return;
   }
   if (u.pathname === '/r/Broadway/search.rss') {
@@ -71,6 +92,11 @@ const server = http.createServer((req, res) => {
   if (u.pathname === '/r/Broadway/empty.rss') {
     res.writeHead(200, { 'Content-Type': 'application/atom+xml' });
     res.end('<feed xmlns="http://www.w3.org/2005/Atom"></feed>');
+    return;
+  }
+  if (u.pathname === '/r/Broadway/html.rss') {
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end('<html><body>blocked</body></html>');
     return;
   }
   if (u.pathname === '/r/Broadway/blocked.rss') {
@@ -190,11 +216,18 @@ test('fetchViaRedditRSS throws on a non-200 response', async () => {
   );
 });
 
-test('fetchViaRedditRSS throws when the feed has no entries', async () => {
+test('fetchViaRedditRSS returns an empty listing for a valid feed with no entries (BRO-5916: no-result query is not a failure)', async () => {
+  const { fetchViaRedditRSS, resetFallbackState } = load();
+  resetFallbackState();
+  const resp = await fetchViaRedditRSS(`${base}/r/Broadway/empty.json`);
+  assert.deepEqual(resp, { data: { children: [], after: null } });
+});
+
+test('fetchViaRedditRSS still throws on a 200 HTML block page', async () => {
   const { fetchViaRedditRSS, resetFallbackState } = load();
   resetFallbackState();
   await assert.rejects(
-    () => fetchViaRedditRSS(`${base}/r/Broadway/empty.json`),
+    () => fetchViaRedditRSS(`${base}/r/Broadway/html.json`),
     /not a parseable Atom feed/
   );
 });
@@ -202,6 +235,7 @@ test('fetchViaRedditRSS throws when the feed has no entries', async () => {
 test('fetchViaRedditRSS treats a 429 as a rate-limit signal, feeding the shared adaptive backoff', async () => {
   const { fetchViaRedditRSS, getStats, resetFallbackState } = load();
   resetFallbackState();
+  process.env.REDDIT_RSS_429_MAX_WAITS = '0'; // no in-call waiting: assert the bare escalation
   const before = getStats().rateLimitCount;
   await assert.rejects(
     () => fetchViaRedditRSS(`${base}/r/Broadway/ratelimited.json`),
@@ -209,6 +243,7 @@ test('fetchViaRedditRSS treats a 429 as a rate-limit signal, feeding the shared 
   );
   assert.equal(getStats().rateLimitCount, before + 1, 'RSS 429 must escalate the same adaptive backoff the JSON path uses');
   assert.equal(getStats().rateLimits, 1);
+  delete process.env.REDDIT_RSS_429_MAX_WAITS;
 });
 
 test('switchToProxy tries RSS first for a search.json url (opted in) and never touches proxies on success', async () => {
@@ -234,6 +269,21 @@ test('switchToProxy does NOT try RSS on a search.json url without explicit opt-i
   );
 });
 
+test('REDDIT_RSS_DISABLED=1 turns the RSS route off even for opted-in callers (kill switch)', async () => {
+  const { switchToProxy, resetFallbackState } = load();
+  resetFallbackState();
+  for (const k of ['SCRAPINGBEE_API_KEY', 'SCRAPINGDOG_API_KEY', 'BRIGHTDATA_TOKEN']) delete process.env[k];
+  process.env.REDDIT_RSS_DISABLED = '1';
+  try {
+    await assert.rejects(
+      () => switchToProxy(`${base}/r/Broadway/search.json?q=Hamilton`, { allowRss: true }),
+      /Reddit blocked and all proxies unavailable/
+    );
+  } finally {
+    delete process.env.REDDIT_RSS_DISABLED;
+  }
+});
+
 test('switchToProxy falls through to the proxy chain when RSS fails', async () => {
   const { switchToProxy, resetFallbackState } = load();
   resetFallbackState();
@@ -244,14 +294,45 @@ test('switchToProxy falls through to the proxy chain when RSS fails', async () =
   );
 });
 
-test('switchToProxy skips the RSS attempt entirely for non-search endpoints even when opted in', async () => {
+test('switchToProxy serves a post-comments url from free RSS (BRO-5916), parsed into flattenComments shape', async () => {
+  const { switchToProxy, flattenComments, getStats, resetFallbackState } = load();
+  resetFallbackState();
+  for (const k of ['SCRAPINGBEE_API_KEY', 'SCRAPINGDOG_API_KEY', 'BRIGHTDATA_TOKEN']) delete process.env[k];
+  commentsRssHit = false;
+  const resp = await switchToProxy(`${base}/r/Broadway/comments/1abcxyz.json?limit=500&depth=10&raw_json=1`, { allowRss: true });
+  assert.equal(commentsRssHit, true);
+  const comments = flattenComments(resp);
+  assert.equal(comments.length, 1, 'the post entry (t3_) is dropped, only t1_ comments remain');
+  assert.equal(comments[0].id, 'phjg4gy');
+  assert.equal(comments[0].author, 'kuomodo_g');
+  assert.equal(comments[0].body, 'Wow, so jealous! I love & hear it is good.');
+  assert.equal(getStats().redditRss, 1);
+});
+
+test('fetchViaRedditRSS waits out a 429 using the rate-limit reset header, then succeeds', async () => {
+  const { fetchViaRedditRSS, getStats, resetFallbackState } = load();
+  resetFallbackState();
+  flakyHits = 0;
+  const resp = await fetchViaRedditRSS(`${base}/r/Broadway/flaky.json?q=x`);
+  assert.equal(flakyHits, 2);
+  assert.equal(resp.data.children.length, 1);
+  assert.equal(getStats().rateLimits, 1);
+});
+
+test('switchToProxy does NOT use RSS for comments without opt-in (score-ranking callers must not get degraded data)', async () => {
   const { switchToProxy, resetFallbackState } = load();
   resetFallbackState();
   for (const k of ['SCRAPINGBEE_API_KEY', 'SCRAPINGDOG_API_KEY', 'BRIGHTDATA_TOKEN']) delete process.env[k];
   commentsRssHit = false;
   await assert.rejects(
-    () => switchToProxy(`${base}/r/Broadway/comments/1abcxyz.json`, { allowRss: true }),
+    () => switchToProxy(`${base}/r/Broadway/comments/1abcxyz.json`),
     /Reddit blocked and all proxies unavailable/
   );
-  assert.equal(commentsRssHit, false, 'non-search endpoints must never hit the .rss path');
+  assert.equal(commentsRssHit, false);
+});
+
+test('toRssUrl maps <id>.json to <id>/.rss for comments and leaves search urls alone', () => {
+  const { toRssUrl } = load();
+  assert.equal(toRssUrl('https://www.reddit.com/r/B/comments/abc123.json?limit=500&raw_json=1'), 'https://www.reddit.com/r/B/comments/abc123/.rss?limit=25');
+  assert.equal(toRssUrl('https://www.reddit.com/r/B/search.json?q=x&raw_json=1'), 'https://www.reddit.com/r/B/search.rss?q=x');
 });

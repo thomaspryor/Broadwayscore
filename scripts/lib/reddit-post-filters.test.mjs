@@ -10,6 +10,7 @@ const {
   commentAnchorsToShow,
   otherSourceReviewCounts,
   buildAudienceSearchQueries,
+  selectPostsForComments,
   isPreFixReddit,
   isRefreshStaleCandidate,
   refreshStaleSortKey,
@@ -332,4 +333,39 @@ test('partitionRequestedShows (BRO-5094): not-yet-started shows are skipped, unk
   const onlyUpcoming = partitionRequestedShows(['c-2027'], all);
   assert.equal(onlyUpcoming.active.length, 0);
   assert.equal(onlyUpcoming.unknown.length, 0, 'an all-upcoming dispatch is not an error');
+});
+
+test('selectPostsForComments keeps unknown-count (RSS) posts, capped, after known >=3 ones (BRO-5916)', () => {
+  const posts = [
+    { id: 'a', num_comments: 1 },
+    { id: 'b', num_comments: 9 },
+    ...Array.from({ length: 20 }, (_, i) => ({ id: `u${i}` })), // RSS: no count
+  ];
+  const ids = selectPostsForComments(posts).map(p => p.id);
+  assert.equal(ids[0], 'b');
+  assert.ok(!ids.includes('a'), 'known low-count post still dropped');
+  assert.equal(ids.length, 1 + 12, 'unknown capped at 12');
+  assert.deepEqual(selectPostsForComments([{ id: 'z', num_comments: 0 }]), []);
+});
+
+test('redditSaveDecision (BRO-5916): a truncated RSS sample never replaces a larger stored one', () => {
+  const { redditSaveDecision } = require('./reddit-post-filters.js');
+  const stored = { score: 80, reviewCount: 300 };
+  const rss = { score: 72, reviewCount: 60 };
+  assert.equal(redditSaveDecision(stored, rss, { lossy: true }), 'keep-existing', '60 RSS items vs 300 stored');
+  assert.equal(redditSaveDecision(stored, rss), 'save', 'a full JSON scrape still replaces it');
+  assert.equal(redditSaveDecision({ score: 80, reviewCount: 55 }, rss, { lossy: true }), 'save', 'RSS sample is the larger one');
+  assert.equal(redditSaveDecision(undefined, rss, { lossy: true }), 'save', 'a new show (billy-crystal-860) still saves');
+  assert.equal(redditSaveDecision(undefined, { score: 70, reviewCount: 10 }, { lossy: true }), 'save-below-floor');
+});
+
+test('runDeadlineReached (BRO-5916): stop starting shows before the 240-min job timeout', () => {
+  const { runDeadlineReached, REDDIT_RUN_DEADLINE_MIN } = require('./reddit-post-filters.js');
+  assert.ok(REDDIT_RUN_DEADLINE_MIN < 240 - 25, 'leaves room for one ~20-min RSS show plus the commit steps');
+  const start = 1_000_000;
+  assert.equal(runDeadlineReached(start, start + 199 * 60000), false);
+  assert.equal(runDeadlineReached(start, start + 200 * 60000), true);
+  assert.equal(runDeadlineReached(start, start + 10 * 60000, 5), true, 'override honoured');
+  assert.equal(runDeadlineReached(start, start + 999 * 60000, 0), false, '0 disables');
+  assert.equal(runDeadlineReached(start, start + 999 * 60000, NaN), false);
 });
