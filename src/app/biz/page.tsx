@@ -325,18 +325,22 @@ export default function BizDashboard() {
               headline={`${newMusicals.tonyNoms.high.recouped} of ${newMusicals.tonyNoms.high.total} new musicals with 5+ Tony nominations recouped`}
               detail="Critic scores, audience scores and Tony results against recoupment, for new musicals, revivals and plays."
             />
+            {flopsTopic.flops[0] && (
             <TopicCard
               href="/biz/biggest-flops"
               title="Biggest flops"
               headline={`${flopsTopic.flops[0].title}: ${formatMillions(flopsTopic.flops[0].capitalization)} raised, labelled ${flopsTopic.flops[0].designation}`}
               detail="Loss-labelled shows since the reopening, ranked by the capital they raised."
             />
+            )}
+            {flopsTopic.recoups[0] && (
             <TopicCard
               href="/biz/fastest-recoups"
               title="Fastest recoupments"
               headline={`${flopsTopic.recoups[0].title} recouped in about ${flopsTopic.recoups[0].weeksToRecoup} weeks`}
               detail="Shows ranked by weeks from opening night to recoupment."
             />
+            )}
             <TopicCard
               href="/biz/tony-winners"
               title="Tony winners"

@@ -10,7 +10,7 @@ import { notFound } from 'next/navigation';
 import { featureFlags } from '@/config/feature-flags';
 import { BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import { getWhatPredictsTheMoney } from '@/lib/data-topic-pages';
-import { SCORE_BAND_LABELS, BAND_LOW, TONY_NOMS_HIGH, type BandCount, type MoneyCallout } from '@/lib/investment-topics';
+import { SCORE_BAND_LABELS, BAND_LOW, TONY_NOMS_HIGH, MIN_RATE_SAMPLE, type BandCount, type MoneyCallout } from '@/lib/investment-topics';
 import { ScoreBadge } from '@/components/show-cards';
 import TopicPageShell from '@/components/biz/TopicPageShell';
 
@@ -30,10 +30,10 @@ function RateRow({ label, count }: { label: string; count: BandCount }) {
     <div className="grid grid-cols-[8.5rem_1fr_auto] sm:grid-cols-[11rem_1fr_auto] items-center gap-3 text-sm">
       <span className="text-gray-300">{label}</span>
       <div className="h-2 rounded-full bg-white/5">
-        <div className="h-2 rounded-full bg-brand" style={{ width: `${(r ?? 0) * 100}%` }} />
+        <div className="h-2 rounded-full bg-brand" style={{ width: `${count.total < MIN_RATE_SAMPLE ? 0 : (r ?? 0) * 100}%` }} />
       </div>
       <span className="text-right whitespace-nowrap">
-        <span className="font-semibold text-white">{r == null ? '—' : `${Math.round(r * 100)}%`}</span>{' '}
+        <span className="font-semibold text-white">{r == null || count.total < MIN_RATE_SAMPLE ? '—' : `${Math.round(r * 100)}%`}</span>{' '}
         <span className="text-xs text-gray-500">{count.recouped} of {count.total}</span>
       </span>
     </div>
@@ -90,7 +90,7 @@ export default function ReviewsAndMoneyPage() {
         </div>
         <p className="text-xs text-gray-500 mt-2">
           Counts shows that recouped or closed with a loss label (Fizzle, Flop or similar). Running shows, and closed shows with no verdict, are left out.
-          Shows without a score, with too few audience reviews, or without a Tony record drop out of that row. Small groups swing a lot, so read the counts beside each percentage.
+          Shows without a score, with too few audience reviews, or without a Tony record drop out of that row. A dash instead of a percentage means fewer than ${MIN_RATE_SAMPLE} shows, too few to give a rate. Small groups swing a lot, so read the counts beside each percentage.
           Top category means Best Musical, Best Play or Best Revival.
         </p>
       </section>

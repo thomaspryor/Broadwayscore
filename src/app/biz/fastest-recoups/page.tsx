@@ -28,9 +28,9 @@ export default function Page() {
   return (
     <TopicPageShell title={TITLE} subtitle="Weeks from opening to recoupment, fastest first.">
       <ul className="space-y-2" data-testid="recoup-list">
-        {data.recoups.map((r, i) => (
+        {data.recoups.map((r) => (
           <li key={r.slug} className="card rounded-xl px-4 py-3 flex items-center gap-3">
-            <span className="w-6 shrink-0 text-center text-sm font-semibold text-gray-500">{i + 1}</span>
+            <span className="w-6 shrink-0 text-center text-sm font-semibold text-gray-500">{r.rank}</span>
             <div className="min-w-0 flex-1">
               <Link href={`/show/${r.slug}`} className="font-semibold text-white hover:text-brand break-words">{r.title}</Link>
               <div className="text-xs text-gray-500">

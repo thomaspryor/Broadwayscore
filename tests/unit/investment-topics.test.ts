@@ -10,6 +10,8 @@ import {
   bucketOf,
   buildWhatPredictsTheMoney,
   buildFlopsAndRecoups,
+  rankWithTies,
+  MIN_RATE_SAMPLE,
   formatMillions,
   buildTonyWinners,
   tonyFromAwards,
@@ -283,4 +285,26 @@ test('formatMillions', () => {
   assert.equal(formatMillions(22_500_000), '$22.5M');
   assert.equal(formatMillions(4_800_000), '$4.8M');
   assert.equal(formatMillions(5_525_000), '$5.53M');
+});
+
+test('rankWithTies: shared ranks, tied rows at the cut-off all stay', () => {
+  const rows = [{ n: 'a', v: 9 }, { n: 'b', v: 7 }, { n: 'c', v: 7 }, { n: 'd', v: 7 }, { n: 'e', v: 5 }];
+  const r = rankWithTies(rows, (x) => x.v, 3);
+  assert.deepEqual(r.map((x) => [x.n, x.rank]), [['a', 1], ['b', 2], ['c', 2], ['d', 2]]);
+  assert.deepEqual(rankWithTies(rows, (x) => x.v, 10).map((x) => x.rank), [1, 2, 2, 2, 5]);
+  assert.deepEqual(rankWithTies([], (x: { v: number }) => x.v, 3), []);
+});
+
+test('flops: capitalization ties share a rank and are not cut alphabetically', () => {
+  const cap = (n: number) => ({ designation: 'Flop', recouped: false, capitalization: n });
+  const shows = Array.from({ length: 12 }, (_, i) => show({ title: `Tie ${String.fromCharCode(65 + i)}`, commercial: cap(15_000_000) }));
+  shows.push(show({ title: 'Top', commercial: cap(30_000_000) }));
+  const r = buildFlopsAndRecoups(shows, AS_OF);
+  assert.equal(r.flops.length, 13);
+  assert.equal(r.flops[0].rank, 1);
+  assert.ok(r.flops.slice(1).every((f) => f.rank === 2));
+});
+
+test('MIN_RATE_SAMPLE is 5', () => {
+  assert.equal(MIN_RATE_SAMPLE, 5);
 });

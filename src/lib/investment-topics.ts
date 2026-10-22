@@ -353,6 +353,8 @@ export interface FlopRow {
   /** Capital raised (reported or estimated by the site); the money at stake, not a computed loss. */
   capitalization: number;
   type: 'musical' | 'play';
+  /** Shared rank: shows with equal capitalization have the same rank. */
+  rank: number;
 }
 
 export interface RecoupRow {
@@ -362,6 +364,8 @@ export interface RecoupRow {
   type: 'musical' | 'play';
   weeksToRecoup: number;
   capitalization: number | null;
+  /** Shared rank: shows with equal weeks have the same rank. */
+  rank: number;
 }
 
 export interface FlopsAndRecoups {
@@ -377,6 +381,19 @@ export interface FlopsAndRecoups {
 
 const RANKED = 10;
 
+/** Minimum shows in a bucket before a rate is shown as a percentage. */
+export const MIN_RATE_SAMPLE = 5;
+
+/** Adds shared ranks (1, 2, 2, 4) and keeps the first n rows plus any rows tied with the last one. */
+export function rankWithTies<T>(rows: T[], valueOf: (r: T) => number, n: number): Array<T & { rank: number }> {
+  const ranked = rows.map((r, i) => {
+    let first = i;
+    while (first > 0 && valueOf(rows[first - 1]) === valueOf(r)) first--;
+    return { ...r, rank: first + 1 };
+  });
+  return ranked.filter((r) => r.rank <= n);
+}
+
 /** Biggest loss-labelled shows by capitalization, and fastest recoupments by weeks from opening. Commercial shows since the reopening. */
 export function buildFlopsAndRecoups(shows: TopicShowInput[], asOf: string): FlopsAndRecoups {
   const scoped = shows.filter((s) => bucketOf(s) && inTopicScope(s, asOf));
@@ -385,7 +402,7 @@ export function buildFlopsAndRecoups(shows: TopicShowInput[], asOf: string): Flo
   const capOf = (s: TopicShowInput) => s.commercial?.capitalization;
   const flops = lost
     .filter((s) => typeof capOf(s) === 'number' && (capOf(s) as number) > 0)
-    .map((s): FlopRow => ({ slug: s.slug, title: s.title, year: s.openingDate.slice(0, 4), designation: s.commercial?.designation as string, capitalization: capOf(s) as number, type: typeOf(s) }))
+    .map((s): FlopRow => ({ slug: s.slug, title: s.title, year: s.openingDate.slice(0, 4), designation: s.commercial?.designation as string, capitalization: capOf(s) as number, type: typeOf(s), rank: 0 }))
     .sort((a, b) => b.capitalization - a.capitalization || a.title.localeCompare(b.title));
   const recouped = scoped.filter((s) => outcomeOf(s) === 'recouped');
   const timed = recouped.flatMap((s) => {
@@ -393,13 +410,13 @@ export function buildFlopsAndRecoups(shows: TopicShowInput[], asOf: string): Flo
     return w == null ? [] : [{ s, w }];
   });
   const recoups = timed
-    .map(({ s, w }): RecoupRow => ({ slug: s.slug, title: s.title, year: s.openingDate.slice(0, 4), type: typeOf(s), weeksToRecoup: w, capitalization: typeof capOf(s) === 'number' ? (capOf(s) as number) : null }))
+    .map(({ s, w }): RecoupRow => ({ slug: s.slug, title: s.title, year: s.openingDate.slice(0, 4), type: typeOf(s), weeksToRecoup: w, capitalization: typeof capOf(s) === 'number' ? (capOf(s) as number) : null, rank: 0 }))
     .sort((a, b) => a.weeksToRecoup - b.weeksToRecoup || a.title.localeCompare(b.title));
   return {
     since: REOPENING_START,
-    flops: flops.slice(0, RANKED),
+    flops: rankWithTies(flops, (f) => f.capitalization, RANKED),
     flopsWithoutCapitalization: lost.length - flops.length,
-    recoups: recoups.slice(0, RANKED),
+    recoups: rankWithTies(recoups, (r) => r.weeksToRecoup, RANKED),
     recoupsWithoutDate: recouped.length - timed.length,
   };
 }
