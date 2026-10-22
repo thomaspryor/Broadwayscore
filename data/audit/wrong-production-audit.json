@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T21:54:28.527Z",
+  "timestamp": "2026-10-22T22:34:09.928Z",
   "stats": {
-    "totalReviews": 59306,
-    "alreadyFlagged": 21339,
-    "dateGuardCatches": 201,
-    "directorMismatch": 2071,
-    "tvFilmSignals": 1663,
-    "londonSignals": 2722,
+    "totalReviews": 59334,
+    "alreadyFlagged": 21350,
+    "dateGuardCatches": 200,
+    "directorMismatch": 2073,
+    "tvFilmSignals": 1664,
+    "londonSignals": 2725,
     "offBroadwaySignals": 528,
     "yearMismatch": 169,
-    "noPublishDate": 5430
+    "noPublishDate": 5441
   },
   "findings": [
     {
@@ -248,20 +248,6 @@
       ]
     },
     {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-      "file": "cleveland-plain-dealer--glenn-anderson.json",
-      "score": 83,
-      "publishDate": null,
-      "url": "https://www.audacy.com/star102cleveland/latest/glenns-review-of-a-beautiful-noise-at-playhouse-square",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (10x) more than 2022 (0x). 2026 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2026"
-        }
-      ]
-    },
-    {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
       "file": "broadwayworld--andrew-burrill.json",
       "score": 90,
@@ -407,6 +393,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "cleveland-plain-dealer--glenn-anderson.json",
+      "score": 83,
+      "publishDate": "2024-10-10",
+      "url": "https://www.audacy.com/star102cleveland/latest/glenns-review-of-a-beautiful-noise-at-playhouse-square",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (10x) more than 2024 (1x). 2026 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2026"
         }
       ]
     },
@@ -4154,6 +4154,37 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "bat-out-of-hell-west-end-2017",
+      "file": "britishtheatrecom--julian-eaves.json",
+      "publishDate": "2017-06-27",
+      "url": "https://www.britishtheatre.com/pt/posts/review-bat-out-of-hell-london-coliseum-5stars",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay scheib\" from bat-out-of-hell-west-end-2018"
+        }
+      ]
+    },
+    {
+      "showId": "bat-out-of-hell-west-end-2017",
+      "file": "nytimes--matt-wolf.json",
+      "publishDate": "2017-07-28",
+      "url": "https://www.nytimes.com/2017/07/28/arts/bat-out-of-hell-wind-willows-yank-london-theater.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay scheib\" from bat-out-of-hell-west-end-2018"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -8760,6 +8791,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"marianne elliott\" from company-2021"
+        }
+      ]
+    },
+    {
+      "showId": "consent-west-end-2018",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/consent-harold-pinter-theatre-review-exhilarating",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -61365,6 +61414,19 @@
       ]
     },
     {
+      "showId": "consent-west-end-2018",
+      "file": "theupcoming--cristiana-ferrauti.json",
+      "publishDate": null,
+      "url": "https://www.theupcoming.co.uk/2018/06/01/consent-at-the-harold-pinter-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "constellations-2015",
       "file": "deadline--jeremy-gerard.json",
       "score": 73,
@@ -80849,20 +80911,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
-      "file": "nyt-theater--jonathan.json",
-      "score": 78,
-      "publishDate": "2026-06-13",
-      "url": "https://newyorktheater.me/2026/06/13/rosie-odonnells-common-knowledge-coming-to-nyc/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 39d before show (2026-06-13 vs 2026-07-22)"
         }
       ]
     },
