@@ -18,7 +18,7 @@ const HOOKS = path.join(ROOT, '.claude', 'hooks');
 
 // Measured on main 2026-10-06: 18 top-level hook scripts, 5049 lines across all hook files including lib/.
 const MAX_HOOK_FILES = 18;
-const MAX_HOOK_LINES = 5313; // BRO-5844: +8 in pre-push-visual-gate.sh calling lib/visual-text-only-diff.js --filter (classifier stays out of hooks/); BRO-5359: +9 review-coverage gate call in verify-edits.sh (the one Stop hook wired in every cloud container); BRO-5228: +9 create_session model guard (an omitted model inherited the parent's Opus); BRO-5221: +lib/home-hook-runner.sh (multi-repo sessions ran no hooks at all); BRO-2394: +3 in github-main-guard.sh calling scripts/lib/mcp-push-visual-gate.sh (the logic stays out of hooks/)
+const MAX_HOOK_LINES = 5434; // BRO-5881: +121 in verify-edits.sh for the LOOSEENDS and WAKELESS Stop gates (owner 2026-10-22: false SAFE claims and NOT SAFE waits nothing wakes), net of the INFLIGHT/OPENWORK parse they now share; BRO-5844: +8 in pre-push-visual-gate.sh calling lib/visual-text-only-diff.js --filter (classifier stays out of hooks/); BRO-5359: +9 review-coverage gate call in verify-edits.sh (the one Stop hook wired in every cloud container); BRO-5228: +9 create_session model guard (an omitted model inherited the parent's Opus); BRO-5221: +lib/home-hook-runner.sh (multi-repo sessions ran no hooks at all); BRO-2394: +3 in github-main-guard.sh calling scripts/lib/mcp-push-visual-gate.sh (the logic stays out of hooks/)
 
 // Retired hooks whose script must STAY: old cloud snapshots still call them, so they are unregistered but never
 // deleted (scripts/tests/cloud-settings-guards.test.mjs asserts the same).
