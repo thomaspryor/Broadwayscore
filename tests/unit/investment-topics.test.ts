@@ -308,3 +308,13 @@ test('flops: capitalization ties share a rank and are not cut alphabetically', (
 test('MIN_RATE_SAMPLE is 5', () => {
   assert.equal(MIN_RATE_SAMPLE, 5);
 });
+
+test('recoups: equal weeks share a rank', () => {
+  const rec = (d: string) => ({ designation: 'Windfall', recouped: true, recoupedDate: d, capitalization: 8_000_000 });
+  const r = buildFlopsAndRecoups([
+    show({ title: 'A', openingDate: '2023-01-05', commercial: rec('2023-03') }),
+    show({ title: 'B', openingDate: '2023-01-05', commercial: rec('2023-03') }),
+    show({ title: 'C', openingDate: '2023-01-05', commercial: rec('2023-12') }),
+  ], AS_OF);
+  assert.deepEqual(r.recoups.map((x) => x.rank), [1, 1, 3]);
+});

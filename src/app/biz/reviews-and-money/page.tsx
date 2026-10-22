@@ -90,7 +90,7 @@ export default function ReviewsAndMoneyPage() {
         </div>
         <p className="text-xs text-gray-500 mt-2">
           Counts shows that recouped or closed with a loss label (Fizzle, Flop or similar). Running shows, and closed shows with no verdict, are left out.
-          Shows without a score, with too few audience reviews, or without a Tony record drop out of that row. A dash instead of a percentage means fewer than ${MIN_RATE_SAMPLE} shows, too few to give a rate. Small groups swing a lot, so read the counts beside each percentage.
+          Shows without a score, with too few audience reviews, or without a Tony record drop out of that row. A dash instead of a percentage means fewer than {MIN_RATE_SAMPLE} shows, too few to give a rate. Small groups swing a lot, so read the counts beside each percentage.
           Top category means Best Musical, Best Play or Best Revival.
         </p>
       </section>
