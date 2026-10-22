@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-10-22T03:43:22.758Z",
+  "runDate": "2026-10-22T04:43:08.419Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 200,
+    "maxReviews": 20,
     "priority": "all",
-    "showFilter": "tina-the-tina-turner-musical-west-end-2018,consent-west-end-2018,killer-joe-west-end-2018,pressure-west-end-2018,imperium-the-cicero-plays-west-end-2018,the-jungle-west-end-2018,knights-of-the-rose-west-end-2018,the-glenn-miller-story-west-end-2018,home-im-darling-west-end-2018,king-lear-west-end-2018,pity-west-end-2018,the-lehman-trilogy-west-end-2018,julie-west-end-2018,mood-music-west-end-2018,nine-night-west-end-2018,translations-west-end-2018,the-king-and-i-west-end-2018,absolute-hell-west-end-2018,exit-the-king-west-end-2018,the-great-wave-west-end-2018",
+    "showFilter": "",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 7,
+    "processed": 9,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "22.2%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -44,7 +44,7 @@
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 7,
+    "totalFailed": 0,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -54,52 +54,52 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 2,
-    "failed": 7,
+    "processed": 9,
+    "failed": 0,
     "shows": [
       "consent-west-end-2018",
-      "killer-joe-west-end-2018",
+      "exit-the-king-west-end-2018",
       "king-lear-west-end-2018",
       "pity-west-end-2018",
       "pressure-west-end-2018",
       "the-great-wave-west-end-2018",
       "the-jungle-west-end-2018",
-      "the-lehman-trilogy-west-end-2018",
+      "the-king-and-i-west-end-2018",
       "translations-west-end-2018"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 0,
-      "failed": 0
+      "processed": 2,
+      "failed": 7
     }
   },
   "processed": [
-    "the-lehman-trilogy-west-end-2018/guardian--michael-billington.json",
-    "killer-joe-west-end-2018/guardian--michael-billington.json"
-  ],
-  "failed": [
     "king-lear-west-end-2018/guardian--arifa-akbar.json",
+    "exit-the-king-west-end-2018/guardian--susannah-clapp.json",
     "pity-west-end-2018/guardian--michael-billington.json",
+    "the-king-and-i-west-end-2018/guardian--michael-billington.json",
     "the-jungle-west-end-2018/guardian--michael-billington.json",
     "pressure-west-end-2018/guardian--michael-billington.json",
     "translations-west-end-2018/guardian--michael-billington.json",
     "consent-west-end-2018/guardian--natalie-haynes.json",
     "the-great-wave-west-end-2018/guardian--michael-billington.json"
   ],
+  "failed": [],
   "cumulativeResumedState": {
     "processed": [
       "the-lehman-trilogy-west-end-2018/guardian--michael-billington.json",
-      "killer-joe-west-end-2018/guardian--michael-billington.json"
-    ],
-    "failed": [
+      "killer-joe-west-end-2018/guardian--michael-billington.json",
       "king-lear-west-end-2018/guardian--arifa-akbar.json",
+      "exit-the-king-west-end-2018/guardian--susannah-clapp.json",
       "pity-west-end-2018/guardian--michael-billington.json",
+      "the-king-and-i-west-end-2018/guardian--michael-billington.json",
       "the-jungle-west-end-2018/guardian--michael-billington.json",
       "pressure-west-end-2018/guardian--michael-billington.json",
       "translations-west-end-2018/guardian--michael-billington.json",
       "consent-west-end-2018/guardian--natalie-haynes.json",
       "the-great-wave-west-end-2018/guardian--michael-billington.json"
-    ]
+    ],
+    "failed": []
   },
   "tierDetails": {
     "playwright": [],
