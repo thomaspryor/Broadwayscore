@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-10-21T07:57:33.611Z",
-  "scanned": 2650,
-  "showsWithViolations": 115,
-  "totalViolations": 146,
+  "updatedAt": "2026-10-22T07:57:03.300Z",
+  "scanned": 2690,
+  "showsWithViolations": 114,
+  "totalViolations": 145,
   "newSinceLastRun": 1,
   "handled": {
-    "temporal-override-low-confidence": 775,
+    "temporal-override-low-confidence": 783,
     "not-shipped": 55,
-    "duplicate-not-shipped": 53,
+    "duplicate-not-shipped": 54,
     "rebuild-skip-audit": 31,
     "manual-clear-reason": 14,
-    "prior-run-or-tour-leg": 42
+    "prior-run-or-tour-leg": 41
   },
   "newViolationKeys": [
-    "paranormal-activity-west-end-2025::financialtimes--sarah-hemming.json"
+    "trainspotting-the-musical-west-end-2026::musical-theatre-review--scott-matthewman.json"
   ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
@@ -52,7 +52,6 @@
     "mj-the-musical-west-end-2024::timeout-london--andrzej-lukowski.json",
     "oliver-west-end-2024::sunday-telegraph--dominic-cavendish.json",
     "grace-pervades-west-end-2026::whatsonstage--kris-hallett.json",
-    "paranormal-activity-west-end-2025::financialtimes--sarah-hemming.json",
     "all-my-sons-west-end-2025::guardian--arifa-akbar.json",
     "sinatra-the-musical-west-end-2026::musical-theatre-review--unknown.json",
     "cyrano-de-bergerac-west-end-2026::artsdesk--unknown.json",
@@ -77,7 +76,7 @@
     "dark-of-the-moon-west-end-2026::artsdesk--unknown.json",
     "dark-of-the-moon-west-end-2026::musical-theatre-review--unknown.json",
     "sherlock-holmes-west-end-2026::standard--nick-curtis.json",
-    "trainspotting-the-musical-west-end-2026::musical-theatre-review--unknown.json",
+    "trainspotting-the-musical-west-end-2026::musical-theatre-review--scott-matthewman.json",
     "now-you-see-me-live-west-end-2026::london-box-office--stuart-king.json",
     "the-oresteia-west-end-2026::artsdesk--unknown.json",
     "celebrity-autobiography-2026::cititour--brian-scott-lipton.json",
@@ -864,27 +863,6 @@
       ]
     },
     {
-      "showId": "paranormal-activity-west-end-2025",
-      "title": "Paranormal Activity",
-      "openingDate": "2025-12-14",
-      "message": "financialtimes/Sarah Hemming (financialtimes--sarah-hemming.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid theater review (high-quality critical assessment), but it reviews the pre-West End production that playe — https://www.ft.com/content/899d1004-3dcb-4958-9b57-b1d2ba6745b2",
-      "violations": [
-        {
-          "filename": "financialtimes--sarah-hemming.json",
-          "url": "https://www.ft.com/content/899d1004-3dcb-4958-9b57-b1d2ba6745b2",
-          "outletId": "financialtimes",
-          "criticName": "Sarah Hemming",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a valid theater review (high-quality critical assessment), but it reviews the pre-West End production that playe",
-          "cvIssues": [
-            "Review describes pre-West End production: explicitly states show was 'first seen in Leeds and then the US' before West End opening",
-            "Text is truncated mid-sentence at character 3332, ending abruptly mid-review"
-          ]
-        }
-      ]
-    },
-    {
       "showId": "all-my-sons-west-end-2025",
       "title": "All My Sons",
       "openingDate": "2025-11-17",
@@ -1342,13 +1320,13 @@
       "showId": "trainspotting-the-musical-west-end-2026",
       "title": "Trainspotting the musical",
       "openingDate": "2026-07-22",
-      "message": "musical-theatre-review/Unknown (musical-theatre-review--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a performance at the Theatre Roy — https://musicaltheatrereview.com/trainspotting-the-musical-theatre-royal-haymarket/",
+      "message": "musical-theatre-review/Scott Matthewman (musical-theatre-review--scott-matthewman.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a performance at the Theatre Roy — https://musicaltheatrereview.com/trainspotting-the-musical-theatre-royal-haymarket/",
       "violations": [
         {
-          "filename": "musical-theatre-review--unknown.json",
+          "filename": "musical-theatre-review--scott-matthewman.json",
           "url": "https://musicaltheatrereview.com/trainspotting-the-musical-theatre-royal-haymarket/",
           "outletId": "musical-theatre-review",
-          "criticName": "Unknown",
+          "criticName": "Scott Matthewman",
           "matchedBy": "url",
           "cvConfidence": "low",
           "cvReasoning": "[OVERRIDE: review within 1d of opening, likely correct production] The review discusses a performance at the Theatre Roy",
@@ -1987,7 +1965,7 @@
     {
       "showId": "clueless-west-end-2025",
       "title": "Clueless",
-      "openingDate": null,
+      "openingDate": "2025-03-13",
       "message": "timeout-london/Andrzej Lukowski (timeout-london--andrzej-lukowski.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a genuine review with critical assessment (\"It's a witty, charming musical that winningly celebrates a great fil — https://www.timeout.com/london/theatre/clueless-review",
       "violations": [
         {
@@ -2042,7 +2020,7 @@
     {
       "showId": "the-deep-blue-sea-west-end-2025",
       "title": "The Deep Blue Sea",
-      "openingDate": null,
+      "openingDate": "2025-05-14",
       "message": "telegraph/Dominic Cavendish (telegraph--dominic-cavendish.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a valid review by Dominic Cavendish of The Deep Blue Sea, but it reviews the Theatre Royal Bath production (date — https://www.telegraph.co.uk/theatre/what-to-see/deep-blue-sea-theatre-royal-bath-review-tamsin-greig/",
       "violations": [
         {
@@ -2267,7 +2245,7 @@
     {
       "showId": "old-friends-west-end-2023",
       "title": "Old Friends",
-      "openingDate": null,
+      "openingDate": "2023-10-03",
       "message": "artsdesk/Helen Hawkins (artsdesk--helen-hawkins.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a valid review (contains critical assessment of performance quality), but it fails the West End venue verificati — https://theartsdesk.com/theatre/stephen-sondheims-old-friends-gielgud-theatre-review-exuberant-gala-nonstop-virtuosity\nlost-in-theatreland/Amy Rye (lost-in-theatreland--amy-rye.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: While this is a legitimate theater review with critical assessment, it reviews a one-night-only gala concert performance — https://lostintheatreland.co.uk/stephen-sondheims-old-friends-review-gielgud-theatre/\nwhatsonstage/Sarah Crompton (whatsonstage--sarah-crompton.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a genuine review of Old Friends (correct show, correct critic Sarah Crompton, correct outlet WhatsOnStage, corre — https://www.whatsonstage.com/news/sondheims-old-friends-review-perfectly-crafted-west-end-love-letter-to-one-of-the-greats_1533027/",
       "violations": [
         {
@@ -2335,7 +2313,7 @@
     {
       "showId": "a-mirror-west-end-2024",
       "title": "A Mirror",
-      "openingDate": null,
+      "openingDate": "2024-02-01",
       "message": "thestage/Anya Ryan (thestage--anya-ryan.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: While this is a legitimate theater review with clear critical assessment, it fails validation because the scraped conten — https://www.thestage.co.uk/reviews/a-mirror-review-trafalgar-theatre-london-jeremy-herrin-sam-holcroft-jonny-lee-miller-samuel-adewunmi-tanya-reynolds",
       "violations": [
         {

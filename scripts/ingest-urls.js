@@ -21,6 +21,7 @@ const { pushReviewTexts, dispatchDownstream } = require('./lib/land-ingested-rev
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { applyMultiShowFanoutToFile } = require('./lib/multi-show-review-fanout');
 const { resolveOutletFromUrl, findExistingReviewFile } = require('./lib/review-normalization');
 const { findStaleFieldsAfterUpdate } = require('./lib/stale-merge-check');
 const { extractArticleTextFromUrl, extractPublishDate } = require('./lib/article-extractor');
@@ -116,7 +117,7 @@ async function main() {
     }
   }
 
-  const results = { created: 0, updated: 0, skipped: 0, failed: 0, warnings: [], touchedPaths: [] };
+  const results = { created: 0, updated: 0, skipped: 0, failed: 0, warnings: [], touchedPaths: [], fanShowIds: new Set() };
 
   for (let i = 0; i < entries.length; i++) {
     let { url, outletOverride } = entries[i];
@@ -287,6 +288,27 @@ async function main() {
       if (verbose) console.log(`    — Skipped: ${writeResult.reason || 'already exists'}`);
     }
 
+    // BRO-5895: a multi-show article is filed under every show it reviews,
+    // same as ingest-review-from-url.js (BRO-4431).
+    if (!dryRun && writeResult.filepath && (writeResult.action === 'new' || writeResult.action === 'updated')) {
+      try {
+        // The write dir, same as the parent; the push step mirrors it to the checkout.
+        const fanDir = path.join(__dirname, '..', 'data', 'review-texts');
+        const fan = applyMultiShowFanoutToFile(writeResult.filepath, { reviewTextsDir: fanDir });
+        if (fan.applied) {
+          // Only a child this run wrote: a skipped, held or refused one is not ours to push or score.
+          const WROTE_CHILD = new Set(['create', 'fill']);
+          for (const c of fan.children) {
+            const childFile = path.join(fanDir, c.showId, path.basename(writeResult.filepath));
+            if (WROTE_CHILD.has(c.action) && fs.existsSync(childFile)) { results.touchedPaths.push(childFile); results.fanShowIds.add(c.showId); }
+          }
+          console.log(`    ↔ Multi-show article (${fan.strategy}): own section kept, ${fan.children.map((c) => `${c.showId}=${c.action}`).join(', ')}`);
+        }
+      } catch (e) {
+        console.warn(`    ⚠ multi-show fan-out failed: ${e.message}`);
+      }
+    }
+
     console.log('');
   }
 
@@ -366,6 +388,9 @@ async function main() {
     console.log('\nTriggering downstream pipelines...');
 
     dispatchDownstream({ showId, newReviews });
+    // Shows a multi-show article was fanned out to need their own scoring run;
+    // scoring runs its own rebuild afterwards, so one rebuild dispatch is enough.
+    for (const id of results.fanShowIds) dispatchDownstream({ showId: id, newReviews: 1, only: ['llm-ensemble-score.yml'] });
 
     console.log('\nMonitor with:');
     console.log(`  gh run list --workflow=llm-ensemble-score.yml --limit=1`);
@@ -373,7 +398,7 @@ async function main() {
   } else if (newReviews > 0 && noRebuild) {
     console.log('\n--no-rebuild: skipping scoring/rebuild/deploy triggers');
     console.log('When ready, run:');
-    console.log(`  gh workflow run llm-ensemble-score.yml -f show_id=${showId}`);
+    for (const id of [showId, ...results.fanShowIds]) console.log(`  gh workflow run llm-ensemble-score.yml -f show_id=${id}`);
     console.log(`  gh workflow run rebuild-reviews.yml -f reason="Manual ingest for ${showId}"`);
   } else if (dryRun && newReviews > 0) {
     console.log(`\nWould trigger: scoring for ${showId}, rebuild, deploy`);

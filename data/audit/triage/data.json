@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-10-21T07:39:58.110Z",
+  "lastChecked": "2026-10-22T07:36:55.559Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -63,8 +63,8 @@
     },
     {
       "name": "Data: uncollected live review strands",
-      "status": "pass",
-      "message": "Every discovered review URL for live shows was fetched"
+      "status": "warn",
+      "message": "4 discovered review URL(s) across 4 live show(s) were never fetched. First: the-great-gatsby-2024 (1 stranded)"
     },
     {
       "name": "Data: armed-but-vacuous backlog cards",
@@ -74,22 +74,27 @@
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "53 of 517 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-5733 Cut theatre.reviews wasted Bright Data calls: negative-cache shows with no roundup"
+      "message": "1 of 504 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-5680 Awards data audit runs nowhere: wire audit-awards-data.js into CI (advisory) and fix its FAILs"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-10-20"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-10-21"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "91 review(s) with no usable text, 52 rejected although verified as a review, 24 never scored, 27 with a blocked URL (0 published on the site), across 440 current shows"
+      "message": "96 review(s) with no usable text, 52 rejected although verified as a review, 37 never scored, 29 with a blocked URL (0 published on the site), across 439 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "warn",
-      "message": "62 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 29825 checked"
+      "message": "62 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 29923 checked"
+    },
+    {
+      "name": "Data: early publish dates awaiting page-date recheck",
+      "status": "pass",
+      "message": "11 early publish date(s) awaiting recheck (limit 40); 62 already attempted and not yet confirmed"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -99,22 +104,22 @@
     {
       "name": "Data: stale-slot squatters (current-year review slots held by another production)",
       "status": "pass",
-      "message": "audit ran: 588 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+      "message": "audit ran: 589 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
     },
     {
       "name": "Data: T1/T2 silent review gaps",
       "status": "error",
-      "message": "5 discovered review(s) not reaching the composite score (1 T1). Oldest: golden-boy-off-west-end-2026 — daily-mail (rejected-unscoreable)"
+      "message": "4 discovered review(s) not reaching the composite score (1 T1). Oldest: golden-boy-off-west-end-2026 — daily-mail (rejected-unscoreable)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
-      "status": "warn",
-      "message": "4 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Dance Is Not for Us\" (guardian-review — missing 2d)"
+      "status": "error",
+      "message": "4 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Dance Is Not for Us\" (guardian-review — missing 3d) — 1 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
     },
     {
       "name": "Data: BWW roundup discovery misses near opening",
       "status": "warn",
-      "message": "1 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: billy-crystal-860-2026 (2 misses, last 2026-10-21T04:13:22.986Z)."
+      "message": "1 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: billy-crystal-860-2026 (12 misses, last 2026-10-22T05:49:55.549Z)."
     }
   ]
 }

@@ -1,14 +1,20 @@
 {
-  "updatedAt": "2026-10-21T07:57:53.188Z",
-  "scanned": 2650,
-  "showsWithViolations": 351,
-  "totalViolations": 553,
-  "newSinceLastRun": 4,
+  "updatedAt": "2026-10-22T07:57:23.549Z",
+  "scanned": 2690,
+  "showsWithViolations": 360,
+  "totalViolations": 560,
+  "newSinceLastRun": 10,
   "newViolationKeys": [
-    "titanique-2026::stageandcinema--paulanne-simmons.json",
-    "blood-of-my-blood-west-end-2026::theatremonkey--unknown.json",
-    "under-the-shadow-off-west-end-2026::guardian--ryan-gilbey.json",
-    "les-miserables-tour-2022::calgary-herald--louis-b-hobson.json"
+    "shucked-2023::village-voice--michael-musto.json",
+    "the-brightening-air-west-end-2025::guardian--arifa-akbar.json",
+    "killer-joe-west-end-2018::times-uk--dominic-maxwell.json",
+    "translations-west-end-2018::guardian--michael-billington.json",
+    "translations-west-end-2018::independent--paul-taylor.json",
+    "home-im-darling-west-end-2018::financialtimes--sarah-hemming.json",
+    "exit-the-king-west-end-2018::independent--david-lister.json",
+    "pity-west-end-2018::guardian--michael-billington.json",
+    "the-great-wave-west-end-2018::guardian--michael-billington.json",
+    "girls-and-boys-west-end-2018::independent--paul-taylor.json"
   ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
@@ -36,6 +42,7 @@
     "here-lies-love-2023::northjerseycom--robert-feldberg.json",
     "grey-house-2023::broadwaynews--brittani-samuel.json",
     "grey-house-2023::cititour--brian-scott-lipton.json",
+    "shucked-2023::village-voice--michael-musto.json",
     "almost-famous-2022::nysr--sandy-macdonald.json",
     "hangmen-2022::nysr--frank-scheck.json",
     "mj-2022::ap--mark-kennedy.json",
@@ -91,7 +98,6 @@
     "eclipsed-2016::the-culture-mom--holly-rosen-fink.json",
     "noises-off-2016::ap--mark-kennedy.json",
     "the-color-purple-2015::bobs-theater-blog--robert-sholiton.json",
-    "the-color-purple-2015::broadwayworld--michael-dale.json",
     "sylvia-2015::talkinbroadway--matthew-murray.json",
     "old-times-2015::ap--mark-kennedy.json",
     "spring-awakening-2015::financialtimes--brendan-lemon.json",
@@ -392,6 +398,7 @@
     "retrograde-west-end-2025::thestage--laurie-yule.json",
     "retrograde-west-end-2025::timeout-london--time-out.json",
     "manhunt-west-end-2025::times-uk--clive-davis.json",
+    "the-brightening-air-west-end-2025::guardian--arifa-akbar.json",
     "the-deep-blue-sea-west-end-2025::thestage--dave-fargnoli.json",
     "the-deep-blue-sea-west-end-2025::times-uk--dominic-maxwell.json",
     "mrs-warrens-profession-west-end-2025::attitude--jamie-tabberer.json",
@@ -420,8 +427,6 @@
     "pygmalion-west-end-2023::standard--nick-curtis.json",
     "pygmalion-west-end-2023::telegraph--marianka-swain.json",
     "pygmalion-west-end-2023::thestage--sam-marlowe.json",
-    "pygmalion-west-end-2023::times-uk--unknown.json",
-    "sunset-boulevard-west-end-2023::bnn--sheena-oberoi.json",
     "sunset-boulevard-west-end-2023::city-am--adam-bloodworth.json",
     "sunset-boulevard-west-end-2023::standard--nick-curtis.json",
     "sunset-boulevard-west-end-2023::thestage--sam-marlowe.json",
@@ -563,7 +568,15 @@
     "les-miserables-tour-2022::equality365--eric-andrews-katz.json",
     "les-miserables-tour-2022::minneapolis-star-tribune--star-tribune-staff.json",
     "les-miserables-tour-2022::new-city-stage--dennis-polkow.json",
-    "les-miserables-tour-2022::rachelsreviewstheatre--unknown.json"
+    "les-miserables-tour-2022::rachelsreviewstheatre--unknown.json",
+    "killer-joe-west-end-2018::times-uk--dominic-maxwell.json",
+    "translations-west-end-2018::guardian--michael-billington.json",
+    "translations-west-end-2018::independent--paul-taylor.json",
+    "home-im-darling-west-end-2018::financialtimes--sarah-hemming.json",
+    "exit-the-king-west-end-2018::independent--david-lister.json",
+    "pity-west-end-2018::guardian--michael-billington.json",
+    "the-great-wave-west-end-2018::guardian--michael-billington.json",
+    "girls-and-boys-west-end-2018::independent--paul-taylor.json"
   ],
   "hits": [
     {
@@ -1074,6 +1087,30 @@
           "outletId": "cititour",
           "criticName": "Brian Scott Lipton",
           "haystackLength": 500,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "shucked-2023",
+      "title": "Shucked",
+      "openingDate": "2023-04-04",
+      "message": "village-voice/Michael Musto (village-voice--michael-musto.json) SHIPPED but fullText never mentions 'Shucked' (303 chars): https://www.villagevoice.com/2023/04/04/review-shucked-brings-the-cornpone-home/",
+      "violations": [
+        {
+          "filename": "village-voice--michael-musto.json",
+          "url": "https://www.villagevoice.com/2023/04/04/review-shucked-brings-the-cornpone-home/",
+          "outletId": "village-voice",
+          "criticName": "Michael Musto",
+          "haystackLength": 303,
           "textIssuesFlag": false,
           "triage": {
             "bucket": "excerpt",
@@ -2242,7 +2279,7 @@
       "showId": "the-color-purple-2015",
       "title": "The Color Purple",
       "openingDate": "2015-12-10",
-      "message": "bobs-theater-blog/Robert Sholiton (bobs-theater-blog--robert-sholiton.json) SHIPPED but fullText never mentions 'The Color Purple' (2068 chars): https://bobs-theater-blog.blogspot.com/2016/06/the-color-purple.html\nbroadwayworld/Michael Dale (broadwayworld--michael-dale.json) SHIPPED but fullText never mentions 'The Color Purple' (521 chars): https://www.broadwayworld.com/article/BWW-Review-Fine-Cast-Saves-THE-COLOR-PURPLE-From-John-Doyles-Bloodless-Direction-20151211",
+      "message": "bobs-theater-blog/Robert Sholiton (bobs-theater-blog--robert-sholiton.json) SHIPPED but fullText never mentions 'The Color Purple' (2068 chars): https://bobs-theater-blog.blogspot.com/2016/06/the-color-purple.html",
       "violations": [
         {
           "filename": "bobs-theater-blog--robert-sholiton.json",
@@ -2257,22 +2294,6 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
-            "requiresArticleReview": true
-          }
-        },
-        {
-          "filename": "broadwayworld--michael-dale.json",
-          "url": "https://www.broadwayworld.com/article/BWW-Review-Fine-Cast-Saves-THE-COLOR-PURPLE-From-John-Doyles-Bloodless-Direction-20151211",
-          "outletId": "broadwayworld",
-          "criticName": "Michael Dale",
-          "haystackLength": 521,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           }
         }
@@ -5971,7 +5992,7 @@
       "showId": "are-you-watching-west-end-2026",
       "title": "Are You Watching?",
       "openingDate": "2026-06-04",
-      "message": "london-theatre/Matt Wolf (london-theatre--matt-wolf.json) SHIPPED but fullText never mentions 'Are You Watching?' (3168 chars): https://www.londontheatre.co.uk/reviews/are-you-watching-review-royal-court",
+      "message": "london-theatre/Matt Wolf (london-theatre--matt-wolf.json) SHIPPED but fullText never mentions 'Are You Watching?' (3168 chars): https://www.londontheatre.co.uk/reviews/are-you-watching-review-royal-court\n⚠️  the-recs/The Recs EM - Erin Muldoon (the-recs--the-recs-em-erin-muldoon.json) also too short to assess (0 chars): https://therecs.co.uk/are-you-watching-royal-court/",
       "violations": [
         {
           "filename": "london-theatre--matt-wolf.json",
@@ -6819,7 +6840,7 @@
       "showId": "a-month-in-the-country-west-end-2026",
       "title": "A Month in the Country",
       "openingDate": "2026-09-02",
-      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'A Month in the Country' (3140 chars): https://www.theguardian.com/stage/2026/sep/03/a-month-in-the-country-review-donmar-warehouse-london-brian-friel-turgenev\nstandard/Nick Curtis (standard--nick-curtis.json) SHIPPED but fullText never mentions 'A Month in the Country' (5071 chars, textIssues flag set): https://www.standard.co.uk/culture/theatre/a-month-in-the-country-review-donmar-warehouse-b1295648.html\nwhatsonstage/Alex Wood (whatsonstage--alex-wood.json) SHIPPED but fullText never mentions 'A Month in the Country' (4166 chars, textIssues flag set): https://www.whatsonstage.com/news/a-month-in-the-country-with-sophie-okonedo-at-donmar-warehouse-review_1730790/\nwhatsonstage/Sarah Crompton (whatsonstage--sarah-crompton.json) SHIPPED but fullText never mentions 'A Month in the Country' (4166 chars, textIssues flag set): https://www.whatsonstage.com/news/a-month-in-the-country-with-sophie-okonedo-at-donmar-warehouse-review_1730790/\n⚠️  thestage/Sam Marlowe (thestage--sam-marlowe.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/a-month-in-the-country-review-donmar-warehouse-london-brian-friel-sophie-okonedo",
+      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'A Month in the Country' (3140 chars): https://www.theguardian.com/stage/2026/sep/03/a-month-in-the-country-review-donmar-warehouse-london-brian-friel-turgenev\nstandard/Nick Curtis (standard--nick-curtis.json) SHIPPED but fullText never mentions 'A Month in the Country' (5071 chars, textIssues flag set): https://www.standard.co.uk/culture/theatre/a-month-in-the-country-review-donmar-warehouse-b1295648.html\nwhatsonstage/Sarah Crompton (whatsonstage--alex-wood.json) SHIPPED but fullText never mentions 'A Month in the Country' (4166 chars, textIssues flag set): https://www.whatsonstage.com/news/a-month-in-the-country-with-sophie-okonedo-at-donmar-warehouse-review_1730790/\nwhatsonstage/Sarah Crompton (whatsonstage--sarah-crompton.json) SHIPPED but fullText never mentions 'A Month in the Country' (4166 chars, textIssues flag set): https://www.whatsonstage.com/news/a-month-in-the-country-with-sophie-okonedo-at-donmar-warehouse-review_1730790/\n⚠️  thestage/Sam Marlowe (thestage--sam-marlowe.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/a-month-in-the-country-review-donmar-warehouse-london-brian-friel-sophie-okonedo",
       "violations": [
         {
           "filename": "guardian--arifa-akbar.json",
@@ -6857,7 +6878,7 @@
           "filename": "whatsonstage--alex-wood.json",
           "url": "https://www.whatsonstage.com/news/a-month-in-the-country-with-sophie-okonedo-at-donmar-warehouse-review_1730790/",
           "outletId": "whatsonstage",
-          "criticName": "Alex Wood",
+          "criticName": "Sarah Crompton",
           "haystackLength": 4166,
           "textIssuesFlag": true,
           "triage": {
@@ -7179,7 +7200,7 @@
       "showId": "the-oresteia-west-end-2026",
       "title": "The Oresteia",
       "openingDate": "2026-07-14",
-      "message": "standard/Nick Curtis (standard--nick-curtis.json) SHIPPED but fullText never mentions 'The Oresteia' (4265 chars): https://www.standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html\nstandard/Tim Bano (standard--tim-bano.json) SHIPPED but fullText never mentions 'The Oresteia' (4265 chars): https://www.standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html\nthestage/Dave Fargnoli (thestage--dave-fargnoli.json) SHIPPED but fullText never mentions 'The Oresteia' (3554 chars): https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker",
+      "message": "standard/Nick Curtis (standard--nick-curtis.json) SHIPPED but fullText never mentions 'The Oresteia' (4265 chars): https://www.standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html\nstandard/Tim Bano (standard--tim-bano.json) SHIPPED but fullText never mentions 'The Oresteia' (4265 chars): https://www.standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html\nthestage/Dave Fargnoli (thestage--dave-fargnoli.json) SHIPPED but fullText never mentions 'The Oresteia' (3554 chars): https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker\n⚠️  the-recs/The Recs JDH (the-recs--the-recs-jdh.json) also too short to assess (0 chars): https://therecs.co.uk/the-oresteia-bridge-theatre/",
       "violations": [
         {
           "filename": "standard--nick-curtis.json",
@@ -8402,7 +8423,7 @@
     {
       "showId": "brace-brace-west-end-2024",
       "title": "Brace Brace",
-      "openingDate": null,
+      "openingDate": "2024-10-09",
       "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'Brace Brace' (2568 chars): https://www.theguardian.com/stage/2024/oct/10/brace-brace-review-hijack-drama-royal-court-london",
       "violations": [
         {
@@ -8546,7 +8567,7 @@
     {
       "showId": "clueless-west-end-2025",
       "title": "Clueless",
-      "openingDate": null,
+      "openingDate": "2025-03-13",
       "message": "times-uk/Clive Davis (times-uk--clive-davis.json) SHIPPED but fullText never mentions 'Clueless' (2588 chars): https://www.thetimes.com/article/5d7b5867-5d5f-4387-b267-c57cd996a210",
       "violations": [
         {
@@ -8672,9 +8693,33 @@
       ]
     },
     {
+      "showId": "the-brightening-air-west-end-2025",
+      "title": "The Brightening Air",
+      "openingDate": "2025-04-24",
+      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'The Brightening Air' (4180 chars): https://www.theguardian.com/stage/2025/apr/25/the-brightening-air-review-conor-mcpherson-chris-o-dowd-rosie-sheehy-old-vic-london",
+      "violations": [
+        {
+          "filename": "guardian--arifa-akbar.json",
+          "url": "https://www.theguardian.com/stage/2025/apr/25/the-brightening-air-review-conor-mcpherson-chris-o-dowd-rosie-sheehy-old-vic-london",
+          "outletId": "guardian",
+          "criticName": "Arifa Akbar",
+          "haystackLength": 4180,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
       "showId": "the-deep-blue-sea-west-end-2025",
       "title": "The Deep Blue Sea",
-      "openingDate": null,
+      "openingDate": "2025-05-14",
       "message": "thestage/Dave Fargnoli (thestage--dave-fargnoli.json) SHIPPED but fullText never mentions 'The Deep Blue Sea' (2854 chars): https://www.thestage.co.uk/reviews/the-deep-blue-sea-review-theatre-royal-haymarket-london-tamsin-greig-terence-rattigan\ntimes-uk/Dominic Maxwell (times-uk--dominic-maxwell.json) SHIPPED but fullText never mentions 'The Deep Blue Sea' (2594 chars): https://www.thetimes.com/culture/theatre-dance/article/the-deep-blue-sea-review-tamsin-greig-k6j9hsjm6",
       "violations": [
         {
@@ -9107,7 +9152,7 @@
       "showId": "pygmalion-west-end-2023",
       "title": "Pygmalion",
       "openingDate": "2023-09-12",
-      "message": "express-uk/Neil Norman (express-uk--neil-norman.json) SHIPPED but fullText never mentions 'Pygmalion' (1787 chars): https://www.express.co.uk/entertainment/theatre/1814610/pygmalion-review-george-bernard-shaw\ni-paper/Fiona Mountford (i-paper--fiona-mountford.json) SHIPPED but fullText never mentions 'Pygmalion' (2949 chars): https://inews.co.uk/culture/arts/pygmalion-old-vic-review-patsy-ferran-bertie-carvel-magnificently-modern-2629391\nstandard/Nick Curtis (standard--nick-curtis.json) SHIPPED but fullText never mentions 'Pygmalion' (2820 chars): https://www.standard.co.uk/culture/theatre/pygmalion-old-vic-review-patsy-ferran-bertie-carvel-b1108191.html\ntelegraph/Marianka Swain (telegraph--marianka-swain.json) SHIPPED but fullText never mentions 'Pygmalion' (2733 chars): https://www.telegraph.co.uk/theatre/what-to-see/pygmalion-old-vic-review/\nthestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Pygmalion' (500 chars): https://www.thestage.co.uk/reviews/reviews/pygmalion-review-old-vic-london-pasty-ferran-bertie-carvel-george-bernard-shaw\ntimes-uk/Unknown (times-uk--unknown.json) SHIPPED but fullText never mentions 'Pygmalion' (360 chars): https://www.thetimes.co.uk/article/pygmalion-review-overacting-drowns-out-the-sting-of-shaw-s-comedy-lvcdnkq3f#:~:text=The%20late%2Dsummer%20heatwaves%20are,Pygmalion%20played%20at%20pantomime%20pitch.",
+      "message": "express-uk/Neil Norman (express-uk--neil-norman.json) SHIPPED but fullText never mentions 'Pygmalion' (1787 chars): https://www.express.co.uk/entertainment/theatre/1814610/pygmalion-review-george-bernard-shaw\ni-paper/Fiona Mountford (i-paper--fiona-mountford.json) SHIPPED but fullText never mentions 'Pygmalion' (2949 chars): https://inews.co.uk/culture/arts/pygmalion-old-vic-review-patsy-ferran-bertie-carvel-magnificently-modern-2629391\nstandard/Nick Curtis (standard--nick-curtis.json) SHIPPED but fullText never mentions 'Pygmalion' (2820 chars): https://www.standard.co.uk/culture/theatre/pygmalion-old-vic-review-patsy-ferran-bertie-carvel-b1108191.html\ntelegraph/Marianka Swain (telegraph--marianka-swain.json) SHIPPED but fullText never mentions 'Pygmalion' (2733 chars): https://www.telegraph.co.uk/theatre/what-to-see/pygmalion-old-vic-review/\nthestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Pygmalion' (500 chars): https://www.thestage.co.uk/reviews/reviews/pygmalion-review-old-vic-london-pasty-ferran-bertie-carvel-george-bernard-shaw",
       "violations": [
         {
           "filename": "express-uk--neil-norman.json",
@@ -9188,22 +9233,6 @@
             "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           }
-        },
-        {
-          "filename": "times-uk--unknown.json",
-          "url": "https://www.thetimes.co.uk/article/pygmalion-review-overacting-drowns-out-the-sting-of-shaw-s-comedy-lvcdnkq3f#:~:text=The%20late%2Dsummer%20heatwaves%20are,Pygmalion%20played%20at%20pantomime%20pitch.",
-          "outletId": "times-uk",
-          "criticName": "Unknown",
-          "haystackLength": 360,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
         }
       ]
     },
@@ -9211,24 +9240,8 @@
       "showId": "sunset-boulevard-west-end-2023",
       "title": "Sunset Boulevard",
       "openingDate": null,
-      "message": "bnn/Sheena Oberoi (bnn--sheena-oberoi.json) SHIPPED but fullText never mentions 'Sunset Boulevard' (303 chars): https://bnn.network/arts/nicole-scherzinger-soars-in-sunset-boulevard-revival/\ncity-am/Adam Bloodworth (city-am--adam-bloodworth.json) SHIPPED but fullText never mentions 'Sunset Boulevard' (500 chars): https://www.cityam.com/sunset-boulevard-review-nicole-scherzinger-roars-but-its-more-star-than-substance/\nstandard/Nick Curtis (standard--nick-curtis.json) SHIPPED but fullText never mentions 'Sunset Boulevard' (303 chars): https://www.standard.co.uk/culture/theatre/sunset-boulevard-at-the-savoy-theatre-review-ready-for-her-close-up-nicole-scherzinger-smashes-it-b1113277.html\nthestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Sunset Boulevard' (233 chars): https://www.thestage.co.uk/long-reviews/sunset-boulevard-review-savoy-theatre-london-nicole-scherzinger-andrew-lloyd-webber-jamie-lloyd",
+      "message": "city-am/Adam Bloodworth (city-am--adam-bloodworth.json) SHIPPED but fullText never mentions 'Sunset Boulevard' (500 chars): https://www.cityam.com/sunset-boulevard-review-nicole-scherzinger-roars-but-its-more-star-than-substance/\nstandard/Nick Curtis (standard--nick-curtis.json) SHIPPED but fullText never mentions 'Sunset Boulevard' (303 chars): https://www.standard.co.uk/culture/theatre/sunset-boulevard-at-the-savoy-theatre-review-ready-for-her-close-up-nicole-scherzinger-smashes-it-b1113277.html\nthestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Sunset Boulevard' (233 chars): https://www.thestage.co.uk/long-reviews/sunset-boulevard-review-savoy-theatre-london-nicole-scherzinger-andrew-lloyd-webber-jamie-lloyd",
       "violations": [
-        {
-          "filename": "bnn--sheena-oberoi.json",
-          "url": "https://bnn.network/arts/nicole-scherzinger-soars-in-sunset-boulevard-revival/",
-          "outletId": "bnn",
-          "criticName": "Sheena Oberoi",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        },
         {
           "filename": "city-am--adam-bloodworth.json",
           "url": "https://www.cityam.com/sunset-boulevard-review-nicole-scherzinger-roars-but-its-more-star-than-substance/",
@@ -9578,7 +9591,7 @@
     {
       "showId": "opening-night-west-end-2024",
       "title": "Opening Night",
-      "openingDate": null,
+      "openingDate": "2024-03-26",
       "message": "express-uk/Stefan Kyriazis (express-uk--stefan-kyriazis.json) SHIPPED but fullText never mentions 'Opening Night' (4936 chars): https://www.express.co.uk/entertainment/theatre/1882032/Opening-Night-review-Sheridan-Smith-play-musical-London-Ivo-Van-Hove\nthestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Opening Night' (3227 chars): https://www.thestage.co.uk/reviews/opening-night-review",
       "violations": [
         {
@@ -9930,7 +9943,7 @@
     {
       "showId": "slave-play-west-end-2024",
       "title": "Slave Play",
-      "openingDate": null,
+      "openingDate": "2024-07-10",
       "message": "express-uk/Neil Norman (express-uk--neil-norman.json) SHIPPED but fullText never mentions 'Slave Play' (2547 chars): https://www.express.co.uk/entertainment/theatre/1921478/Kit-Harington-Slave-play-review-noel-coward-theatre-london\nthestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Slave Play' (3669 chars): https://www.thestage.co.uk/reviews/slave-play-review-at-noel-coward-theatre-london-jeremy-o-harris-olivia-washington-kit-harington",
       "violations": [
         {
@@ -12222,15 +12235,199 @@
           }
         }
       ]
+    },
+    {
+      "showId": "killer-joe-west-end-2018",
+      "title": "Killer Joe",
+      "openingDate": "2018-05-18",
+      "message": "times-uk/Dominic Maxwell (times-uk--dominic-maxwell.json) SHIPPED but fullText never mentions 'Killer Joe' (303 chars): https://www.thetimes.co.uk/article/theatre-review-killer-joe-at-trafalgar-studios-sw1-6xmxtlrqq",
+      "violations": [
+        {
+          "filename": "times-uk--dominic-maxwell.json",
+          "url": "https://www.thetimes.co.uk/article/theatre-review-killer-joe-at-trafalgar-studios-sw1-6xmxtlrqq",
+          "outletId": "times-uk",
+          "criticName": "Dominic Maxwell",
+          "haystackLength": 303,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "translations-west-end-2018",
+      "title": "Translations",
+      "openingDate": "2018-05-22",
+      "message": "guardian/Michael Billington (guardian--michael-billington.json) SHIPPED but fullText never mentions 'Translations' (3462 chars, textIssues flag set): https://www.theguardian.com/stage/2018/may/31/translations-review-brian-friel-culture-clash-language-ireland\nindependent/Paul Taylor (independent--paul-taylor.json) SHIPPED but fullText never mentions 'Translations' (3792 chars, textIssues flag set): https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/translations-review-national-theatre-brian-friel-colin-morgan-olivier-a8378291.html",
+      "violations": [
+        {
+          "filename": "guardian--michael-billington.json",
+          "url": "https://www.theguardian.com/stage/2018/may/31/translations-review-brian-friel-culture-clash-language-ireland",
+          "outletId": "guardian",
+          "criticName": "Michael Billington",
+          "haystackLength": 3462,
+          "textIssuesFlag": true,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "independent--paul-taylor.json",
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/translations-review-national-theatre-brian-friel-colin-morgan-olivier-a8378291.html",
+          "outletId": "independent",
+          "criticName": "Paul Taylor",
+          "haystackLength": 3792,
+          "textIssuesFlag": true,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "home-im-darling-west-end-2018",
+      "title": "Home, I'm Darling",
+      "openingDate": "2018-07-31",
+      "message": "financialtimes/Sarah Hemming (financialtimes--sarah-hemming.json) SHIPPED but fullText never mentions 'Home, I'm Darling' (2658 chars, textIssues flag set): https://www.ft.com/content/c3ef3200-958b-11e8-b67b-b8205561c3fe?syn-25a6b1a6=1",
+      "violations": [
+        {
+          "filename": "financialtimes--sarah-hemming.json",
+          "url": "https://www.ft.com/content/c3ef3200-958b-11e8-b67b-b8205561c3fe?syn-25a6b1a6=1",
+          "outletId": "financialtimes",
+          "criticName": "Sarah Hemming",
+          "haystackLength": 2658,
+          "textIssuesFlag": true,
+          "triage": {
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "exit-the-king-west-end-2018",
+      "title": "Exit the King",
+      "openingDate": "2018-07-25",
+      "message": "independent/David Lister (independent--david-lister.json) SHIPPED but fullText never mentions 'Exit the King' (303 chars): https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/exit-the-king-review-rhys-ifans-national-theatre-patrick-marber-ionesco-indira-varma-a8464351.html",
+      "violations": [
+        {
+          "filename": "independent--david-lister.json",
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/exit-the-king-review-rhys-ifans-national-theatre-patrick-marber-ionesco-indira-varma-a8464351.html",
+          "outletId": "independent",
+          "criticName": "David Lister",
+          "haystackLength": 303,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "pity-west-end-2018",
+      "title": "Pity",
+      "openingDate": "2018-07-18",
+      "message": "guardian/Michael Billington (guardian--michael-billington.json) SHIPPED but fullText never mentions 'Pity' (3244 chars): https://www.theguardian.com/stage/2018/jul/19/pity-review-royal-court-london-rory-mullarkey",
+      "violations": [
+        {
+          "filename": "guardian--michael-billington.json",
+          "url": "https://www.theguardian.com/stage/2018/jul/19/pity-review-royal-court-london-rory-mullarkey",
+          "outletId": "guardian",
+          "criticName": "Michael Billington",
+          "haystackLength": 3244,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "the-great-wave-west-end-2018",
+      "title": "The Great Wave",
+      "openingDate": "2018-03-19",
+      "message": "guardian/Michael Billington (guardian--michael-billington.json) SHIPPED but fullText never mentions 'The Great Wave' (2417 chars, textIssues flag set): https://www.theguardian.com/stage/2018/mar/20/great-wave-francis-turnly-north-korea-kidnap-abductions-japanese",
+      "violations": [
+        {
+          "filename": "guardian--michael-billington.json",
+          "url": "https://www.theguardian.com/stage/2018/mar/20/great-wave-francis-turnly-north-korea-kidnap-abductions-japanese",
+          "outletId": "guardian",
+          "criticName": "Michael Billington",
+          "haystackLength": 2417,
+          "textIssuesFlag": true,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "girls-and-boys-west-end-2018",
+      "title": "Girls and Boys",
+      "openingDate": "2018-02-14",
+      "message": "independent/Paul Taylor (independent--paul-taylor.json) SHIPPED but fullText never mentions 'Girls and Boys' (2842 chars): https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/girls-and-boys-royal-court-review-carey-mulligan-great-gatsby-skylight-david-hare-a8213391.html",
+      "violations": [
+        {
+          "filename": "independent--paul-taylor.json",
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/girls-and-boys-royal-court-review-carey-mulligan-great-gatsby-skylight-david-hare-a8213391.html",
+          "outletId": "independent",
+          "criticName": "Paul Taylor",
+          "haystackLength": 2842,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
     }
   ],
   "triage": {
-    "total": 553,
+    "total": 560,
     "counts": {
       "excerpt": 158,
       "wrong-production": 11,
-      "unresolved": 310,
-      "truncated": 74
+      "unresolved": 315,
+      "truncated": 76
     },
     "outletPlans": [
       {
@@ -12844,25 +13041,6 @@
         ]
       },
       {
-        "outletId": "bnn",
-        "total": 1,
-        "counts": {
-          "excerpt": 1
-        },
-        "requiresArticleReview": true,
-        "candidates": [
-          {
-            "file": "sunset-boulevard-west-end-2023/bnn--sheena-oberoi.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        ]
-      },
-      {
         "outletId": "bobs-theater-blog",
         "total": 5,
         "counts": {
@@ -13052,22 +13230,12 @@
       },
       {
         "outletId": "broadwayworld",
-        "total": 2,
+        "total": 1,
         "counts": {
-          "excerpt": 1,
           "unresolved": 1
         },
         "requiresArticleReview": true,
         "candidates": [
-          {
-            "file": "the-color-purple-2015/broadwayworld--michael-dale.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
           {
             "file": "titanique-west-end-2024/broadwayworld--aliya-al-hassan.json",
             "bucket": "unresolved",
@@ -13588,10 +13756,11 @@
       },
       {
         "outletId": "financialtimes",
-        "total": 9,
+        "total": 10,
         "counts": {
           "unresolved": 7,
-          "excerpt": 2
+          "excerpt": 2,
+          "truncated": 1
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -13609,6 +13778,15 @@
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "home-im-darling-west-end-2018/financialtimes--sarah-hemming.json",
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
             ],
             "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
@@ -13718,9 +13896,9 @@
       },
       {
         "outletId": "guardian",
-        "total": 82,
+        "total": 86,
         "counts": {
-          "unresolved": 61,
+          "unresolved": 65,
           "truncated": 20,
           "excerpt": 1
         },
@@ -14177,6 +14355,15 @@
             "requiresArticleReview": true
           },
           {
+            "file": "pity-west-end-2018/guardian--michael-billington.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
             "file": "player-kings-west-end-2024/guardian--arifa-akbar.json",
             "bucket": "unresolved",
             "evidence": [
@@ -14285,6 +14472,15 @@
             "requiresArticleReview": true
           },
           {
+            "file": "the-brightening-air-west-end-2025/guardian--arifa-akbar.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
             "file": "the-confessions-west-end-2023/guardian--arifa-akbar.json",
             "bucket": "unresolved",
             "evidence": [
@@ -14322,6 +14518,15 @@
           },
           {
             "file": "the-grapes-of-wrath-west-end-2024/guardian--arifa-akbar.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "the-great-wave-west-end-2018/guardian--michael-billington.json",
             "bucket": "unresolved",
             "evidence": [
               "no-conclusive-triage-metadata"
@@ -14426,6 +14631,15 @@
               "contentTier=truncated"
             ],
             "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "translations-west-end-2018/guardian--michael-billington.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
@@ -14661,6 +14875,45 @@
           },
           {
             "file": "titanique-west-end-2024/i-paper--fiona-mountford.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        ]
+      },
+      {
+        "outletId": "independent",
+        "total": 3,
+        "counts": {
+          "unresolved": 1,
+          "excerpt": 1,
+          "truncated": 1
+        },
+        "requiresArticleReview": true,
+        "candidates": [
+          {
+            "file": "exit-the-king-west-end-2018/independent--david-lister.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "girls-and-boys-west-end-2018/independent--paul-taylor.json",
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "translations-west-end-2018/independent--paul-taylor.json",
             "bucket": "unresolved",
             "evidence": [
               "no-conclusive-triage-metadata"
@@ -17755,6 +18008,15 @@
             "requiresArticleReview": true
           },
           {
+            "file": "killer-joe-west-end-2018/times-uk--dominic-maxwell.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
             "file": "man-and-boy-west-end-2026/times-uk--clive-davis.json",
             "bucket": "unresolved",
             "evidence": [
@@ -17833,15 +18095,6 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "pygmalion-west-end-2023/times-uk--unknown.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           },
           {
@@ -18069,14 +18322,23 @@
       },
       {
         "outletId": "village-voice",
-        "total": 2,
+        "total": 3,
         "counts": {
-          "excerpt": 2
+          "excerpt": 3
         },
         "requiresArticleReview": true,
         "candidates": [
           {
             "file": "a-life-in-the-theatre-2010/village-voice--michael-feingold.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "shucked-2023/village-voice--michael-musto.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"

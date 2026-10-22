@@ -245,7 +245,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-20T22:02:20.883Z",
-      "lastSeen": "2026-10-22T07:44:48.710Z",
+      "lastSeen": "2026-10-22T07:59:47.945Z",
       "lastNotifiedAt": "2026-10-21T22:11:21.358Z",
       "lastSurfacedAt": "2026-10-21T22:11:21.358Z",
       "notifyCount": 151,
@@ -253,7 +253,7 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 142,
       "sweptTracker": "BRO-5554",
-      "silentRefires": 20
+      "silentRefires": 21
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -766,12 +766,13 @@
       "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
       "firstSeen": "2026-08-08T11:39:46.729Z",
       "incidentOpenedAt": "2026-10-21T08:00:12.236Z",
-      "lastSeen": "2026-10-21T08:00:12.236Z",
+      "lastSeen": "2026-10-22T07:59:59.247Z",
       "lastNotifiedAt": "2026-10-21T08:00:12.236Z",
       "lastSurfacedAt": "2026-10-21T08:00:12.236Z",
       "notifyCount": 10,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "affiliate:bot-divergence": {
       "status": "resolved",
@@ -5476,13 +5477,13 @@
       "title": "Data audits failing (non-blocking): Run BRO-1397 prior-run former-cast sweep (needs review-texts)",
       "firstSeen": "2026-09-23T19:33:16.776Z",
       "incidentOpenedAt": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-10-22T07:46:51.094Z",
+      "lastSeen": "2026-10-22T08:00:40.220Z",
       "lastNotifiedAt": "2026-10-22T01:46:13.995Z",
       "lastSurfacedAt": "2026-10-22T01:46:13.995Z",
       "notifyCount": 23,
       "cardId": null,
       "linearIdentifier": "BRO-5882",
-      "silentRefires": 21
+      "silentRefires": 22
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "resolved",
@@ -20471,13 +20472,13 @@
       "title": "Opening Night Email Never Reached Subscribers — Some Woman",
       "firstSeen": "2026-10-18T07:33:47.443Z",
       "incidentOpenedAt": "2026-10-18T07:33:47.443Z",
-      "lastSeen": "2026-10-21T07:59:57.719Z",
+      "lastSeen": "2026-10-22T07:59:42.889Z",
       "lastNotifiedAt": "2026-10-18T07:33:47.443Z",
       "lastSurfacedAt": "2026-10-18T07:33:47.443Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "land:land/bro-5396-dangling-syndication": {
       "status": "resolved",
@@ -20930,13 +20931,13 @@
       "title": "Placeholder synopsis on Billy Crystal 860",
       "firstSeen": "2026-10-19T01:25:07.703Z",
       "incidentOpenedAt": "2026-10-19T01:25:07.703Z",
-      "lastSeen": "2026-10-22T04:56:28.076Z",
+      "lastSeen": "2026-10-22T08:04:03.616Z",
       "lastNotifiedAt": "2026-10-19T01:25:07.703Z",
       "lastSurfacedAt": "2026-10-19T01:25:07.703Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 29
+      "silentRefires": 30
     },
     "pending-unrecoverable:the-ask-off-broadway-2026": {
       "status": "open",
@@ -21703,13 +21704,13 @@
       "title": "Placeholder synopsis on The Imaginary Invalid",
       "firstSeen": "2026-10-20T00:10:13.662Z",
       "incidentOpenedAt": "2026-10-20T00:10:13.662Z",
-      "lastSeen": "2026-10-22T04:56:32.085Z",
+      "lastSeen": "2026-10-22T08:04:03.648Z",
       "lastNotifiedAt": "2026-10-20T00:10:13.662Z",
       "lastSurfacedAt": "2026-10-20T00:10:13.662Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 20
+      "silentRefires": 21
     },
     "opening-night-placeholder-synopsis-women-who-eat-off-broadway-2026": {
       "status": "open",
@@ -21717,13 +21718,13 @@
       "title": "Placeholder synopsis on Women Who Eat",
       "firstSeen": "2026-10-20T00:10:17.450Z",
       "incidentOpenedAt": "2026-10-20T00:10:17.450Z",
-      "lastSeen": "2026-10-22T04:56:32.091Z",
+      "lastSeen": "2026-10-22T08:04:03.659Z",
       "lastNotifiedAt": "2026-10-20T00:10:17.450Z",
       "lastSurfacedAt": "2026-10-20T00:10:17.450Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 20
+      "silentRefires": 21
     },
     "auto-fix-first:escalation:BRO-5716": {
       "status": "open",
@@ -21979,13 +21980,13 @@
       "title": "Auto-remediation gave up on derren-brown-only-human-west-end-2026",
       "firstSeen": "2026-10-20T11:46:28.216Z",
       "incidentOpenedAt": "2026-10-20T11:46:28.216Z",
-      "lastSeen": "2026-10-22T02:44:25.920Z",
+      "lastSeen": "2026-10-22T08:04:03.593Z",
       "lastNotifiedAt": "2026-10-20T11:46:28.216Z",
       "lastSurfacedAt": "2026-10-20T11:46:28.216Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "opening-night-remediation-exhausted-empty-cast:the-pianist-off-west-end-2026": {
       "status": "open",
@@ -21993,13 +21994,13 @@
       "title": "Auto-remediation gave up on the-pianist-off-west-end-2026",
       "firstSeen": "2026-10-20T11:46:28.253Z",
       "incidentOpenedAt": "2026-10-20T11:46:28.253Z",
-      "lastSeen": "2026-10-22T02:44:28.414Z",
+      "lastSeen": "2026-10-22T08:04:03.637Z",
       "lastNotifiedAt": "2026-10-20T11:46:28.253Z",
       "lastSurfacedAt": "2026-10-20T11:46:28.253Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "opening-night-remediation-exhausted-t1-missing:copperfield-the-new-musical-off-broadway-2026": {
       "status": "open",
@@ -22246,13 +22247,13 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"real active target-outlet critics have author-page overrides\"",
       "firstSeen": "2026-10-20T20:23:23.923Z",
       "incidentOpenedAt": "2026-10-20T22:02:19.935Z",
-      "lastSeen": "2026-10-22T07:44:48.697Z",
+      "lastSeen": "2026-10-22T07:59:47.921Z",
       "lastNotifiedAt": "2026-10-20T22:02:19.935Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-5792",
-      "silentRefires": 62
+      "silentRefires": 63
     },
     "land:land/bro-5788-probe-input": {
       "status": "resolved",
@@ -23233,12 +23234,13 @@
       "title": "Shipped review missing publishDate on The Curious Case of Benjamin Button",
       "firstSeen": "2026-10-22T04:56:26.854Z",
       "incidentOpenedAt": "2026-10-22T04:56:26.854Z",
-      "lastSeen": "2026-10-22T04:56:26.854Z",
+      "lastSeen": "2026-10-22T08:04:03.604Z",
       "lastNotifiedAt": "2026-10-22T04:56:26.854Z",
       "lastSurfacedAt": "2026-10-22T04:56:26.854Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-publish-date-pre-opening:missing:billy-crystal-860-2026": {
       "status": "open",
@@ -23246,12 +23248,13 @@
       "title": "Shipped review missing publishDate on Billy Crystal 860",
       "firstSeen": "2026-10-22T04:56:28.110Z",
       "incidentOpenedAt": "2026-10-22T04:56:28.110Z",
-      "lastSeen": "2026-10-22T04:56:28.110Z",
+      "lastSeen": "2026-10-22T08:04:03.626Z",
       "lastNotifiedAt": "2026-10-22T04:56:28.110Z",
       "lastSurfacedAt": "2026-10-22T04:56:28.110Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/job/linear-BRO-5915-mvj0ztll": {
       "status": "resolved",
@@ -23336,7 +23339,7 @@
       "linearIdentifier": null
     },
     "land:land/bro-5895-joint-reviews": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: colocated-tests red on land/bro-5895-joint-reviews",
       "firstSeen": "2026-10-22T06:45:38.063Z",
@@ -23346,7 +23349,8 @@
       "lastSurfacedAt": "2026-10-22T06:45:38.063Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-22T08:03:22.964Z"
     },
     "land:land/job/linear-BRO-5916-mvj13hpp": {
       "status": "open",
@@ -23411,6 +23415,19 @@
       "lastSeen": "2026-10-22T07:38:11.543Z",
       "lastNotifiedAt": "2026-10-22T07:38:11.543Z",
       "lastSurfacedAt": "2026-10-22T07:38:11.543Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/codex-bro-4305": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/codex-bro-4305",
+      "firstSeen": "2026-10-22T07:57:54.497Z",
+      "incidentOpenedAt": "2026-10-22T07:57:54.497Z",
+      "lastSeen": "2026-10-22T07:57:54.497Z",
+      "lastNotifiedAt": "2026-10-22T07:57:54.497Z",
+      "lastSurfacedAt": "2026-10-22T07:57:54.497Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

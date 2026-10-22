@@ -47,7 +47,7 @@ const cacheKey = (u) => crypto.createHash('sha1').update(String(u)).digest('hex'
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const budget = createRunBudget(parseTimeBudgetMin(args));
 const { explainExclusion, isReviewWithinOwnProductionWindow } = require('./lib/review-guards');
-const { isMetaEvidenceCandidate, extractPageMeta, evaluatePageMeta, applyMetaEvidence } = require('./lib/page-meta-evidence');
+const { isMetaEvidenceCandidate, extractPageMeta, evaluatePageMeta, applyMetaEvidence, RULES_VERSION, stampIsCurrent } = require('./lib/page-meta-evidence');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
 const showsJson = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
@@ -55,7 +55,7 @@ const showsById = Object.fromEntries((showsJson.shows || showsJson).map((s) => [
 
 function recentlyChecked(d) {
   const t = Date.parse(d.metaEvidenceCheckedAt || '');
-  return !!(t && Date.now() - t < recheckDays * 86400000);
+  return !!(t && Date.now() - t < recheckDays * 86400000 && stampIsCurrent(d));
 }
 
 function findCandidates() {
@@ -90,6 +90,7 @@ function stampChecked(fp, url, reason) {
   if (normalizeUrl(cur.url || '') !== normalizeUrl(url || '')) return;
   cur.metaEvidenceCheckedAt = new Date().toISOString();
   cur.metaEvidenceCheckResult = reason;
+  cur.metaEvidenceRulesVersion = RULES_VERSION;
   safeWriteReview(fp, cur);
 }
 

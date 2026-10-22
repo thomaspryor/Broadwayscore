@@ -24,6 +24,8 @@
  *   node scripts/split-multi-show-roundups.js --apply      # write changes (flagged-only)
  *   node scripts/split-multi-show-roundups.js --apply --scan-all
  *   node scripts/split-multi-show-roundups.js --show=ID    # one show only
+ *   node scripts/split-multi-show-roundups.js --show=ID --file=NAME.json   # one file
+ *   node scripts/split-multi-show-roundups.js --scan-all --joint   # also try the opt-in joint strategy
  *
  * E2E sequence (manual until CI-wired):
  *   1. node scripts/split-multi-show-roundups.js --scan-all                    # dry-run audit
@@ -55,9 +57,14 @@ const VERBOSE = args.has('--verbose') || args.has('-v');
 // ones. Catches manually-ingested multi-show articles (e.g. /ingest UI brings
 // in a Vulture roundup but doesn't auto-flag it). Slower (~14k files vs ~85).
 const SCAN_ALL = args.has('--scan-all');
+// --joint: also try the opt-in joint-review strategy (BRO-5895).
+const JOINT = args.has('--joint');
 let onlyShow = null;
+// --file=<name>: only this file inside --show (one data-fix target).
+let onlyFile = null;
 for (const a of process.argv.slice(2)) {
   if (a.startsWith('--show=')) onlyShow = a.slice(7);
+  if (a.startsWith('--file=')) onlyFile = a.slice(7);
 }
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -81,6 +88,10 @@ function main() {
     }
   }
 
+  if (onlyFile && (!onlyShow || onlyFile.includes('/') || !onlyFile.endsWith('.json'))) {
+    console.error('Error: --file must be a bare <name>.json file name and needs --show=<id>');
+    process.exit(2);
+  }
   const targetDirs = onlyShow ? [onlyShow] : showDirs;
   const stats = {
     scanned: 0,
@@ -100,7 +111,7 @@ function main() {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
     let files;
     try {
-      files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
+      files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && (!onlyFile || f === onlyFile));
     } catch {
       continue;
     }
@@ -125,7 +136,7 @@ function main() {
 
       // BRO-4431: one implementation shared with collect-review-texts.js and
       // ingest-review-from-url.js (caption + intro strategies, child-stub fill).
-      const fan = applyMultiShowFanoutToFile(filePath, { shows, reviewTextsDir: REVIEW_TEXTS_DIR, dryRun: !APPLY });
+      const fan = applyMultiShowFanoutToFile(filePath, { shows, reviewTextsDir: REVIEW_TEXTS_DIR, dryRun: !APPLY, joint: JOINT || undefined });
       if (!fan.applied) continue;
 
       stats.splittable++;

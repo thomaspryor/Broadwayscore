@@ -111,6 +111,7 @@ function _splitShows(data) {
   const out = [];
   if (Array.isArray(data.multiShowSplitChildShowIds)) out.push(...data.multiShowSplitChildShowIds);
   if (data.multiShowSplitParentShowId) out.push(data.multiShowSplitParentShowId);
+  if (Array.isArray(data.multiShowSplitSiblingShowIds)) out.push(...data.multiShowSplitSiblingShowIds);
   return out.length ? out : null;
 }
 

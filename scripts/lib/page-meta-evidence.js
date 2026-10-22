@@ -181,6 +181,20 @@ function reviewPathUrl(url) {
   return /^review-[a-z0-9]/i.test(seg) && !/round-?up|reviews?-of-the|best-of|top-\d/i.test(seg);
 }
 
+/**
+ * Version of the acceptance rules. A rejection stamp older than the version that
+ * loosened its reason is stale: the page deserves one more look under the new rule.
+ * (v2: a review-<show> URL path is a review signal.)
+ */
+const RULES_VERSION = 2;
+const LOOSENED_IN = { 'no-review-signal': 2 };
+function stampIsCurrent(data) {
+  const reason = data && data.metaEvidenceCheckResult;
+  const loosened = LOOSENED_IN[reason];
+  if (!loosened) return true;
+  return Number(data.metaEvidenceRulesVersion || 1) >= loosened;
+}
+
 function evidenceNamesShow(show, headline, description, url) {
   const tokens = showTokens(show && show.title);
   if (!tokens.length) return false;
@@ -338,5 +352,5 @@ function applyMetaEvidence(data, evidence, now = new Date()) {
 
 module.exports = {
   extractPageMeta, evaluatePageMeta, applyMetaEvidence, isMetaEvidenceCandidate,
-  buildMetaExcerpt, evidenceNamesShow, reviewPathUrl, starRunRating, ALWAYS_NON_REVIEW, venueConflicts, MIN_EVIDENCE_CHARS, NON_REVIEW_HEADLINE, BOILERPLATE,
+  buildMetaExcerpt, evidenceNamesShow, RULES_VERSION, stampIsCurrent, reviewPathUrl, starRunRating, ALWAYS_NON_REVIEW, venueConflicts, MIN_EVIDENCE_CHARS, NON_REVIEW_HEADLINE, BOILERPLATE,
 };

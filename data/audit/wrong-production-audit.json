@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T07:07:21.239Z",
+  "timestamp": "2026-10-22T08:06:17.329Z",
   "stats": {
-    "totalReviews": 58736,
-    "alreadyFlagged": 21231,
+    "totalReviews": 58738,
+    "alreadyFlagged": 21235,
     "dateGuardCatches": 197,
-    "directorMismatch": 2053,
-    "tvFilmSignals": 1660,
-    "londonSignals": 2694,
+    "directorMismatch": 2054,
+    "tvFilmSignals": 1659,
+    "londonSignals": 2705,
     "offBroadwaySignals": 531,
     "yearMismatch": 166,
-    "noPublishDate": 5214
+    "noPublishDate": 5192
   },
   "findings": [
     {
@@ -44,7 +44,7 @@
       "showId": "1536-off-west-end-2026",
       "file": "guardian--miriam-gillinson.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2025-05-14",
       "url": "https://www.theguardian.com/stage/2025/may/14/1536-review-almeida-theatre-london",
       "findings": [
         {
@@ -22478,9 +22478,14 @@
       "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
       "findings": [
         {
-          "type": "TV_FILM_SIGNAL",
+          "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -31476,7 +31481,7 @@
       "showId": "paranormal-activity-west-end-2025",
       "file": "guardian--unknown.json",
       "score": 83,
-      "publishDate": null,
+      "publishDate": "2025-12-16",
       "url": "https://www.theguardian.com/stage/2025/dec/16/paranormal-activity-review-ambassadors-theatre-london",
       "findings": [
         {
@@ -32774,6 +32779,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john benjamin hickey\" from plaza-suite-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -40540,7 +40550,7 @@
       "showId": "the-comedy-about-spies-west-end-2025",
       "file": "guardian--ryan-gilbey.json",
       "score": 78,
-      "publishDate": "May 14th, 2025",
+      "publishDate": "2025-05-14",
       "url": "https://www.theguardian.com/stage/2025/may/14/the-comedy-about-spies-review-rapid-fire-gags-in-a-delightfully-silly-show",
       "findings": [
         {
@@ -41859,6 +41869,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"frank galati\" from the-grapes-of-wrath-1990"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
@@ -49676,7 +49691,7 @@
       "showId": "tru-off-west-end-2026",
       "file": "guardian--mark-lawson.json",
       "score": 77,
-      "publishDate": "2026-09-27",
+      "publishDate": "2026-09-28",
       "url": "https://www.theguardian.com/stage/2026/sep/28/tru-review-a-five-star-performance-of-a-three-star-script-about-the-life-of-truman-capote",
       "findings": [
         {
@@ -54740,7 +54755,7 @@
       "showId": "a-tupperware-of-ashes-west-end-2024",
       "file": "guardian--anya-ryan.json",
       "score": 82,
-      "publishDate": "October 3rd, 2024",
+      "publishDate": "2024-10-03",
       "url": "https://www.theguardian.com/stage/2024/oct/03/a-tupperware-of-ashes-review-dorfman-theatre-meera-syal",
       "findings": [
         {
@@ -55121,6 +55136,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "after-life-west-end-2021",
+      "file": "guardian--kate-wyver.json",
+      "score": 74,
+      "publishDate": "2021-06-11",
+      "url": "https://www.theguardian.com/stage/2021/jun/11/after-life-review-jack-thorne-dorfman-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -55737,6 +55766,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "all-of-us-west-end-2022",
+      "file": "guardian--david-jays.json",
+      "score": 96,
+      "publishDate": "2022-08-05",
+      "url": "https://www.theguardian.com/stage/2022/aug/05/all-of-us-review-francesca-martinezs-urgent-call-for-radical-empathy-dorfman-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -58653,7 +58696,7 @@
       "showId": "blue-mist-west-end-2023",
       "file": "guardian--arifa-akbar.json",
       "score": 77,
-      "publishDate": "October 12th, 2023",
+      "publishDate": "2023-10-12",
       "url": "https://www.theguardian.com/stage/2023/oct/12/blue-mist-review-royal-court-upstairs-london",
       "findings": [
         {
@@ -59056,7 +59099,7 @@
       "showId": "brace-brace-west-end-2024",
       "file": "guardian--arifa-akbar.json",
       "score": 40,
-      "publishDate": "October 10th, 2024",
+      "publishDate": "2024-10-10",
       "url": "https://www.theguardian.com/stage/2024/oct/10/brace-brace-review-hijack-drama-royal-court-london",
       "findings": [
         {
@@ -64311,7 +64354,7 @@
       "showId": "expendable-west-end-2024",
       "file": "guardian--arifa-akbar.json",
       "score": 55,
-      "publishDate": "November 29th, 2024",
+      "publishDate": "2024-11-29",
       "url": "https://www.theguardian.com/stage/2024/nov/29/expendable-review-royal-court-theatre-london",
       "findings": [
         {
@@ -65599,7 +65642,7 @@
       "showId": "glass-kill-bluebeard-and-imp-west-end-2019",
       "file": "guardian--michael-billington.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2019-09-26",
       "url": "https://www.theguardian.com/stage/2019/sep/26/glass-kill-bluebeard-imp-review-finding-fascination-in-bloodshot-fables",
       "findings": [
         {
@@ -65613,7 +65656,7 @@
       "showId": "glass-kill-bluebeard-and-imp-west-end-2019",
       "file": "guardian--unknown.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "2019-09-26",
       "url": "https://www.theguardian.com/stage/2019/sep/26/glass-kill-bluebeard-imp-review-finding-fascination-in-bloodshot-fables",
       "findings": [
         {
@@ -69418,6 +69461,19 @@
       ]
     },
     {
+      "showId": "ilford-boy-west-end-2026",
+      "file": "thereviewshub--maryam-philpott.json",
+      "publishDate": "2026-10-22",
+      "url": "https://www.thereviewshub.com/ilford-boy-donmar-warehouse-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
       "showId": "illinoise-2024",
       "file": "culturesauce--thom-geier.json",
       "score": 92,
@@ -70141,6 +70197,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "inside-bitch-west-end-2019",
+      "file": "guardian--arifa-akbar.json",
+      "score": 39,
+      "publishDate": "2019-03-06",
+      "url": "https://www.theguardian.com/stage/2019/mar/06/inside-bitch-review-prison-orange-is-the-new-black-clean-break-royal-court-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -71195,6 +71265,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "julie-west-end-2018",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": "2018-06-08",
+      "url": "https://www.theguardian.com/stage/2018/jun/08/julie-review-polly-stenham-strindberg-lyttelton-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -74775,6 +74859,20 @@
     },
     {
       "showId": "mean-girls-west-end-2024",
+      "file": "observer--susannah-clapp.json",
+      "score": 81,
+      "publishDate": "2024-06-30",
+      "url": "https://www.theguardian.com/stage/article/2024/jun/30/the-week-in-theatre-the-constituent-kyoto-mean-girls-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "mean-girls-west-end-2024",
       "file": "plays-international--maryam-philpott.json",
       "score": 78,
       "publishDate": "2024-06-28",
@@ -76390,6 +76488,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "nine-night-west-end-2018",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": "2018-05-01",
+      "url": "https://www.theguardian.com/stage/2018/may/01/nine-night-review-dorfman-national-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -85726,6 +85838,20 @@
       ]
     },
     {
+      "showId": "the-crucible-west-end-2022",
+      "file": "observer--susannah-clapp.json",
+      "score": 58,
+      "publishDate": "2022-10-09",
+      "url": "https://www.theguardian.com/stage/2022/oct/09/blues-for-an-alabama-sky-lyttelton-national-theatre-lynette-linton-review-the-crucible-olivier-didos-bar-royal-docks",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-crucible-west-end-2023",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 97,
@@ -88075,7 +88201,7 @@
       "showId": "the-legends-of-them-west-end-2024",
       "file": "guardian--arifa-akbar.json",
       "score": 59,
-      "publishDate": "December 11th, 2024",
+      "publishDate": "2024-12-11",
       "url": "https://www.theguardian.com/stage/2024/dec/11/the-legends-of-them-review-sutara-gayle-lorna-gee-royal-court",
       "findings": [
         {
@@ -89029,7 +89155,7 @@
       "showId": "the-old-man-and-the-pool-west-end-2023",
       "file": "guardian--brian-logan.json",
       "score": 82,
-      "publishDate": "September 17th, 2023",
+      "publishDate": "2023-09-17",
       "url": "https://www.theguardian.com/stage/2023/sep/17/mike-birbiglia-the-old-man-and-the-pool-review-plunging-into-the-deep-end-of-mortality-and-middle-age",
       "findings": [
         {
@@ -89215,7 +89341,7 @@
       "showId": "the-other-place-west-end-2024",
       "file": "guardian--arifa-akbar.json",
       "score": 80,
-      "publishDate": "October 9th, 2024",
+      "publishDate": "2024-10-09",
       "url": "https://www.theguardian.com/stage/2024/oct/09/the-other-place-review-national-theatre-alexander-zeldin-antigone",
       "findings": [
         {
@@ -90908,7 +91034,7 @@
       "showId": "the-tell-tale-heart-west-end-2018",
       "file": "guardian--unknown.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "2018-12-13",
       "url": "https://www.theguardian.com/stage/2018/dec/13/the-tell-tale-heart-review-poe-dorfman-anthony-neilson",
       "findings": [
         {
@@ -92499,7 +92625,7 @@
       "showId": "top-girls-west-end-2019",
       "file": "guardian--michael-billington.json",
       "score": 58,
-      "publishDate": "April 4th, 2019",
+      "publishDate": "2019-04-04",
       "url": "https://www.theguardian.com/stage/2019/apr/04/top-girls-review-caryl-churchill-revival-lyttelton-national-theatre",
       "findings": [
         {
@@ -93306,7 +93432,7 @@
       "showId": "under-the-shadow-off-west-end-2026",
       "file": "guardian--ryan-gilbey.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2026-06-10",
       "url": "https://www.theguardian.com/stage/2026/jun/10/under-the-shadow-review-leila-farzad-tehran-almeida-theatre",
       "findings": [
         {

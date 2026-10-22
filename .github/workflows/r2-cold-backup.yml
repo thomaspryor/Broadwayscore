@@ -12,7 +12,8 @@ concurrency:
 jobs:
   backup:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
+    # BRO-5884: the 2026-10-22 run took 56 min (web bundle alone 40) against the old 60 limit.
     # The repo sits at GitHub's hard 100-secret-per-repo cap (verified 2026-07-26:
     # setting a 101st returns HTTP 400). Environment secrets have their own separate
     # quota, so the R2 credentials live in the 'backup' environment rather than
@@ -114,7 +115,7 @@ jobs:
           aws s3 ls "s3://${R2_BUCKET}/weekly/${STAMP}/" --endpoint-url "$R2_ENDPOINT" --human-readable --summarize
 
       - name: Checkout for notify action
-        # BRO-3707: a hang hitting the job's own timeout-minutes: 60 reports
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 120 reports
         # conclusion "cancelled", not "failure" — a bare failure() here would
         # skip this checkout, and the Notify step below would then be unable
         # to resolve ./.github/actions/notify-failure.
