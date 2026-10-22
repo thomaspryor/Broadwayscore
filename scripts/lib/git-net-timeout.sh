@@ -18,6 +18,10 @@
 # .github/actions/push-aggregator-archive/action.yml (their git pushes, BRO-5261),
 # .github/actions/checkout-review-texts/action.yml and
 # .github/actions/checkout-aggregator-archive/action.yml (their clones, BRO-5338).
+# Inline clones (BRO-5972): rebuild-reviews, rebuild-fast, opening-night-poller,
+# fetch-guardian-reviews, scrape-dtli-show-score, finance-ingest and
+# cloud-memory-reconcile workflows. audit-workflow-hygiene.js rule (z) flags new
+# bare clones.
 git_net() {
   local secs="$1"; shift
   local bin

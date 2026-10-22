@@ -1196,7 +1196,45 @@ function findScriptWithoutDispatchToken(raw) {
   return hits;
 }
 
+/**
+ * Rule (z) (BRO-5972): a `git clone` with no wall-clock cap. A clone whose
+ * transfer stalls never returns, so the step waits for the job timeout (or
+ * GitHub's 6h default when the job sets none) instead of failing in minutes.
+ * Wrap it as `git_net <secs> clone ...` (scripts/lib/git-net-timeout.sh,
+ * BRO-4966) or under `timeout`. Scans run-block lines (comments skipped).
+ *
+ * Not flagged: `--mirror`/`--bare` clones (the r2/gitlab archive jobs, whose
+ * size varies too much for one cap and whose job timeout bounds them), lines
+ * that start with `echo`/`printf` (messages that mention a clone), and lines
+ * holding `git_net` or a `timeout` before the `git`. A `git clone` split
+ * across a `\` continuation is judged by its first line only.
+ *
+ * ADVISORY at introduction (CLAUDE.md §19). Exempt one clone with
+ * `# hygiene-unbounded-clone-ok: <reason>` on its line or the line above.
+ *
+ * Returns [{ lineNum, text }].
+ */
+// git's global options may sit before the subcommand (`git -c k=v clone`).
+const GIT_CLONE_RE = /\bgit(?:\s+(?:--no-pager|-[Cc]\s+\S+))*\s+clone\b/;
+const UNBOUNDED_CLONE_OK_RE = /hygiene-unbounded-clone-ok:/;
+function findUnboundedGitClones(raw) {
+  const lines = raw.split('\n');
+  return runLineMatches(raw, GIT_CLONE_RE).filter(({ lineNum, text }) => {
+    // A trailing `# ...` comment is dropped so its words (e.g. "timeout")
+    // cannot vouch for the command.
+    const body = text.replace(/^\s*(?:-\s+)?run:\s*/, '').replace(/\s+#.*$/, '').trim();
+    // A message only when nothing is chained after it (`echo x && git clone` runs).
+    if (/^(?:echo|printf)\b[^;&|]*$/.test(body)) return false;
+    if (/--mirror\b|--bare\b/.test(body)) return false;
+    if (/\bgit_net\b/.test(body)) return false;
+    if (/\btimeout\b[^|;&]*\bgit\b/.test(body)) return false;
+    if (UNBOUNDED_CLONE_OK_RE.test(text) || UNBOUNDED_CLONE_OK_RE.test(lines[lineNum - 2] || '')) return false;
+    return true;
+  });
+}
+
 module.exports = {
+  findUnboundedGitClones,
   findDispatchWithoutActionsWrite,
   findScriptWithoutDispatchToken,
   TOKEN_REQUIRED_SCRIPTS,
