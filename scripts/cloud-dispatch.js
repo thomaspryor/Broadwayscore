@@ -18,7 +18,8 @@ const USAGE = 'Usage: node scripts/cloud-dispatch.js <workflow.yml> [-f key=valu
 // Workflows whose run-name carries an input, so parallel runs are told apart.
 const KNOWN_MATCH = {
   // "[" ends the id, so bro-9 does not also match bro-9-b's run.
-  'execute-approved-fix.yml': (inputs) => inputs.issue_number && `execute-approved-fix ${inputs.issue_number} [`,
+  // With a mode, "]" too, so an apply run is not mixed up with a dry run of the same plan.
+  'execute-approved-fix.yml': (inputs) => inputs.issue_number && `execute-approved-fix ${inputs.issue_number} [${inputs.mode ? `${inputs.mode}]` : ''}`,
 };
 
 function parseArgs(argv) {

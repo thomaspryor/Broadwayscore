@@ -11,7 +11,8 @@ const run = (id, title, created, extra = {}) => ({ id, display_title: title, cre
 test('cloud-dispatch: -f inputs, known run-name match, exit codes', () => {
   const o = parseArgs(['execute-approved-fix', '-f', 'issue_number=bro-3-b', '-f', 'mode=apply', '--wait']);
   assert.equal(o.workflow, 'execute-approved-fix.yml');
-  assert.equal(o.match, 'execute-approved-fix bro-3-b [');
+  assert.equal(o.match, 'execute-approved-fix bro-3-b [apply]');
+  assert.equal(parseArgs(['execute-approved-fix.yml', '-f', 'issue_number=bro-3']).match, 'execute-approved-fix bro-3 [');
   assert.deepEqual(o.inputs, { issue_number: 'bro-3-b', mode: 'apply' });
   assert.throws(() => parseArgs(['w.yml', '-f', 'novalue']));
   assert.equal(parseArgs(['w.yml']).match, null);
