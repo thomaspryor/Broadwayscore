@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T02:33:49.347Z",
+  "timestamp": "2026-10-22T02:59:47.140Z",
   "stats": {
-    "totalReviews": 58685,
-    "alreadyFlagged": 21225,
-    "dateGuardCatches": 198,
+    "totalReviews": 58684,
+    "alreadyFlagged": 21228,
+    "dateGuardCatches": 197,
     "directorMismatch": 2115,
     "tvFilmSignals": 1660,
     "londonSignals": 2677,
     "offBroadwaySignals": 530,
     "yearMismatch": 166,
-    "noPublishDate": 5265
+    "noPublishDate": 5241
   },
   "findings": [
     {
@@ -79490,19 +79490,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "phyl-off-broadway-2026",
-      "file": "theatermania--linda-buchwald.json",
-      "publishDate": "2026-08-13",
-      "url": "https://www.theatermania.com/news/lily-ganser-will-star-in-mint-theaters-phyl_1849251/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 51d before show (2026-08-13 vs 2026-10-03)"
         }
       ]
     },
