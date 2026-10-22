@@ -975,7 +975,10 @@ jobs:
           else
             echo "⚠️  Rebuild failed — re-cloning review-texts and retrying..."
             rm -rf data/review-texts
-            git clone --depth 1 "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts
+            # BRO-5972: git_net caps the re-clone (a normal one takes ~46s) so a
+            # hung transfer fails the step instead of eating the job timeout. 240s keeps two rebuilds plus this inside the 15-min step timeout.
+            . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
+            git_net 240 clone --depth 1 "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts
             node scripts/rebuild-all-reviews.js
           fi
         # BRO-5426: was 5. One rebuild takes 3.5-5 min on CI (2026-10-15), so 5

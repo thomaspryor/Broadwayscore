@@ -183,6 +183,13 @@
  *     needs every historical blob (git filter-repo, blame, log -p) with
  *     `# hygiene-full-blobs-ok: <reason>` on that step.
  *
+ * (z) UNBOUNDED-GIT-CLONE (advisory, BRO-5972): a `git clone` in a run block
+ *     with no wall-clock cap, so a stalled transfer waits for the job timeout.
+ *     Wrap it as `git_net <secs> clone ...` (scripts/lib/git-net-timeout.sh).
+ *     Scans workflows and composite actions. Detector and its limits:
+ *     findUnboundedGitClones() in scripts/lib/audit-workflow-hygiene-rules.js.
+ *     ADVISORY ONLY (CLAUDE.md §19).
+ *
  * Exemption annotations (add inside the workflow YAML — anywhere in the file):
  *   # hygiene-full-blobs-ok: <reason>     — (on the checkout step) skip full-blob-checkout check
  *   # hygiene-notify-ok: <reason>          — skip notify-failure check for this workflow
@@ -201,6 +208,7 @@
  *   # hygiene-cache-runid-ok: <reason>    — skip run-id-keyed actions/cache check for this file
  *   # hygiene-audit-glob-ok: <reason>     — skip bare-audit-dir-glob check for this workflow
  *   # hygiene-short-timeout-ok: <reason>  — (in the job) skip rule (r), short core-data job timeout (BRO-4266)
+ *   # hygiene-unbounded-clone-ok: <reason> — (on the clone line or the line above) skip rule (z) (BRO-5972)
  *
  * No external deps. Parsed with plain regex, consistent with
  * audit-workflow-concurrency.js and audit-cron-health-coverage.js.
@@ -239,6 +247,7 @@ const {
   findScriptWithoutDispatchToken,
   findStringInputInterpolation,
   findCompositeShellHazards,
+  findUnboundedGitClones,
 } = require('./lib/audit-workflow-hygiene-rules');
 const { scanWorkflow: scanPaidProviders } = require('./lib/paid-provider-push-scan');
 const { execFileSync } = require('child_process');
@@ -885,6 +894,8 @@ async function main() {
   // Rule (o) is advisory too (same posture; see its doc comment).
   const fullBlobCheckoutFindings = [];
   const shortCoreDataTimeoutFindings = [];
+  // Rule (z) (BRO-5972) is advisory too: workflows and composite actions.
+  const unboundedCloneFindings = [];
   // Rule (q) (BRO-5033) is advisory too: git diff/status/show on an ignored
   // path. Scans workflows and composite actions; `git check-ignore` decides.
   const ignoredDiffFindings = [];
@@ -1072,6 +1083,12 @@ async function main() {
       if (hits.length > 0) shortCoreDataTimeoutFindings.push({ file, hits });
     }
 
+    // ── Rule (z): git clone with no wall-clock cap (advisory) ──────────────
+    {
+      const hits = findUnboundedGitClones(raw);
+      if (hits.length > 0) unboundedCloneFindings.push({ file, hits });
+    }
+
     // Rule (l): no paid-provider spend in a push-triggered workflow (BRO-2984).
     // Honors its own `# paid-provider-ok:` marker internally (scanWorkflow
     // returns zero violations when present), so no extra guard is needed here.
@@ -1160,17 +1177,32 @@ async function main() {
     console.log('✅ Rule (q): no git diff/status/show on gitignored paths');
   }
 
-  // Rules (t)/(u) also cover composite actions (BRO-4730/4621 cousins).
+  // Rules (t)/(u) also cover composite actions (BRO-4730/4621 cousins), and
+  // so does rule (z) (reported after this loop).
   if (fs.existsSync(ACTIONS_DIR)) {
     for (const dir of fs.readdirSync(ACTIONS_DIR)) {
       const full = path.join(ACTIONS_DIR, dir, 'action.yml');
       if (!fs.existsSync(full)) continue;
       const raw = fs.readFileSync(full, 'utf8');
+      const cloneHits = findUnboundedGitClones(raw);
+      if (cloneHits.length > 0) unboundedCloneFindings.push({ file: `actions/${dir}/action.yml`, hits: cloneHits });
       for (const [kind, key, tag] of [['masked-push', 'maskedPush', 'hygiene-masked-push-ok:'], ['string-input', 'stringInput', 'hygiene-string-input-ok:']]) {
         if (raw.includes(tag)) continue;
         const hits = findCompositeShellHazards(raw).filter((h) => h.kind === kind).map((h) => ({ name: 'composite step', lineNum: h.lineNum, handler: h.detail, input: h.detail.replace(/^inputs\./, '') }));
         if (hits.length) violations[key].push({ file: `actions/${dir}/action.yml`, hits });
       }
+    }
+  }
+
+  // ── Rule (z): unbounded git clones (advisory — never counts toward `total`) ─
+  if (unboundedCloneFindings.length > 0) {
+    const n = unboundedCloneFindings.reduce((acc, { hits }) => acc + hits.length, 0);
+    console.log(
+      `ℹ️  git clone with no wall-clock cap: ${n} across ${unboundedCloneFindings.length} file(s) — a stalled transfer waits for the job timeout instead of failing (BRO-5972). Wrap it as \`git_net <secs> clone ...\` (scripts/lib/git-net-timeout.sh) or add \`# hygiene-unbounded-clone-ok: <reason>\`.`,
+    );
+    for (const { file, hits } of unboundedCloneFindings) {
+      console.log(`   • ${file}`);
+      for (const h of hits) console.log(`       line ${h.lineNum}: ${h.text.trim()}`);
     }
   }
 
