@@ -9,6 +9,7 @@
  *   node scripts/audit-unsafe-show-dir-listing.js            # check (exit 1 on regression)
  *   node scripts/audit-unsafe-show-dir-listing.js --update   # rewrite baseline (ratchet down only)
  */
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { scanScripts, compareToBaseline } = require('./lib/unsafe-show-dir-listing');
