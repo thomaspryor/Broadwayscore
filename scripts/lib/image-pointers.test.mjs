@@ -6,7 +6,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { findImagePointerProblems } = require('./image-pointers');
+const { findImagePointerProblems, imagePointerSeverity } = require('./image-pointers');
 const publicDir = fs.mkdtempSync(path.join(os.tmpdir(), 'image-pointers-'));
 after(() => fs.rmSync(publicDir, { recursive: true, force: true }));
 fs.mkdirSync(path.join(publicDir, 'images', 'shows', 'show'), { recursive: true });
@@ -51,4 +51,23 @@ test('only hero/poster are validated and input records are unchanged', () => {
   const before = JSON.stringify(shows);
   assert.deepEqual(findImagePointerProblems(shows, options), []);
   assert.equal(JSON.stringify(shows), before);
+});
+
+test('an existing missing Ford Hill hero warns, but a new broken pointer errors', () => {
+  const id = 'the-ford-hill-project-off-broadway-2026';
+  const hero = `/images/shows/${id}/hero.webp`;
+  const [known] = findImagePointerProblems([{ id, images: { hero } }], options);
+  assert.equal(imagePointerSeverity(known), 'warn');
+  const [newShow] = findImagePointerProblems([{ id: 'new-show', images: { hero } }], options);
+  assert.equal(imagePointerSeverity(newShow), 'error');
+  const [changedPointer] = findImagePointerProblems([{ id, images: { hero: `${hero}.jpg` } }], options);
+  assert.equal(imagePointerSeverity(changedPointer), 'error');
+  const [newPoster] = findImagePointerProblems([{ id, images: { poster: hero } }], options);
+  assert.equal(imagePointerSeverity(newPoster), 'error');
+  assert.equal(imagePointerSeverity({ ...known, reason: 'invalid or unreadable image pointer' }), 'error');
+});
+
+test('a repaired baseline pointer stops producing warnings', () => {
+  const id = 'the-ford-hill-project-off-broadway-2026';
+  assert.deepEqual(findImagePointerProblems([{ id, images: { hero: poster } }], options), []);
 });

@@ -66,7 +66,7 @@ const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
 const { criticKey } = require('./lib/manual-entry-merge');
 const { sameUrlDuplicateKey } = require('./lib/review-url-collision');
 const { hasRealImage, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
-const { findImagePointerProblems } = require('./lib/image-pointers');
+const { findImagePointerProblems, imagePointerSeverity } = require('./lib/image-pointers');
 const { buildOutletMaps } = require('./lib/outlet-region-map');
 const { previewsAfterOpening, excessivePreviewGap, inheritedDateFromSibling, suspiciousInheritedYear, normTitle } = require('./lib/show-date-integrity');
 
@@ -1454,8 +1454,10 @@ function validateImageFiles(shows) {
     publicDir: path.join(__dirname, '..', 'public'),
     remotePatterns: require('../next.config.js').images.remotePatterns,
   });
-  for (const { id, key, value, reason } of problems) {
-    error(`Show "${id}" images.${key}: ${reason} (${JSON.stringify(value)})`);
+  for (const problem of problems) {
+    const { id, key, value, reason } = problem;
+    const report = imagePointerSeverity(problem) === 'warn' ? warn : error;
+    report(`Show "${id}" images.${key}: ${reason} (${JSON.stringify(value)})`);
   }
   info('Checking local image files exist on disk...');
   const IMAGES_DIR = path.join(__dirname, '..', 'public');

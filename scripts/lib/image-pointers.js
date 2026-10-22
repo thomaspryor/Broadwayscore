@@ -1,6 +1,20 @@
 const fs = require('fs');
 const path = require('path');
 const { matchRemotePattern } = require('next/dist/shared/lib/match-remote-pattern');
+const IMAGE_POINTER_BASELINE = require('./image-pointer-baseline.json');
+
+/**
+ * BRO-3204: existing missing files warn so unrelated data pushes can proceed.
+ * Remove entries from image-pointer-baseline.json as their files/pointers are
+ * repaired. Match the exact pointer and failure, so a baselined show cannot
+ * acquire another broken image without failing validation.
+ */
+function imagePointerSeverity(problem) {
+  return IMAGE_POINTER_BASELINE.some(entry =>
+    entry.id === problem.id && entry.key === problem.key &&
+    entry.value === problem.value && entry.reason === problem.reason
+  ) ? 'warn' : 'error';
+}
 
 /** Validate stored hero/poster pointers without fetching or changing any data. */
 function findImagePointerProblems(shows, { publicDir, remotePatterns = [] }) {
@@ -38,4 +52,4 @@ function findImagePointerProblems(shows, { publicDir, remotePatterns = [] }) {
   return problems;
 }
 
-module.exports = { findImagePointerProblems };
+module.exports = { findImagePointerProblems, imagePointerSeverity };
