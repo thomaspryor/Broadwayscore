@@ -19,14 +19,25 @@ test('cloud-dispatch: -f inputs, known run-name match, exit codes', () => {
 
   const log = console.log; const err = console.error; console.log = () => {}; console.error = () => {};
   try {
-    const mk = (conclusion) => (args) => {
-      if (args[0] === '-X') return null;
-      if (args[0].includes('/runs?')) return { workflow_runs: [run(9, 'execute-approved-fix bro-3 [apply]', new Date().toISOString())] };
-      return { status: 'completed', conclusion, html_url: 'u/9' };
+    // Run 8 already existed before the dispatch (another session's, seconds earlier); run 9 is ours.
+    const mk = (conclusion) => {
+      let dispatched = false;
+      return (args) => {
+        if (args[0] === '-X') { dispatched = true; return null; }
+        const now = new Date().toISOString();
+        if (args[0].includes('/runs?')) return { workflow_runs: [run(8, 'execute-approved-fix bro-3 [apply]', now), ...(dispatched ? [run(9, 'execute-approved-fix bro-3 [apply]', now)] : [])] };
+        if (conclusion === 'api-down') throw new Error('HTTP 502');
+        return { status: 'completed', conclusion, html_url: `u/${args[0].split('/').pop()}` };
+      };
     };
     const argv = ['execute-approved-fix.yml', '-f', 'issue_number=bro-3', '--wait'];
+    const out = [];
+    console.log = (m) => out.push(m);
     assert.equal(main(argv, { api: mk('success'), wait: () => {} }), 0);
+    assert.ok(out.includes('Run: u/9'), out.join('\n'));
     assert.equal(main(argv, { api: mk('failure'), wait: () => {} }), 1);
+    // A GitHub API that keeps failing while we wait is "unknown" (2), never "the run failed" (1).
+    assert.equal(main(argv, { api: mk('api-down'), wait: () => {} }), 2);
     assert.equal(main(['nope.yml', '-f', 'x'], {}), 2);
   } finally { console.log = log; console.error = err; }
 });

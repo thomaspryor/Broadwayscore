@@ -47,6 +47,19 @@ test('refused edits are reported, not written', () => {
   assert.equal(problems.length, 3);
 });
 
+test('a value whose JSON type differs from the current one is refused; quoting keeps a string; review paths stay inside', () => {
+  const [num] = actionsFromArgs(['--edit=a-2026.runtime=150']);
+  assert.equal(num.newValue, 150);
+  const bad = completeActions([num], { loadData: shows, readReview: () => null });
+  assert.match(bad.problems[0], /runtime would change from string to number.*runtime='"150"'/);
+  const [str] = actionsFromArgs(['--edit=a-2026.runtime="150"']);
+  assert.deepEqual(completeActions([str], { loadData: shows, readReview: () => null }).problems, []);
+  // null and a field that was null take any type.
+  assert.deepEqual(completeActions([{ type: 'data-edit', file: 'shows.json', showId: 'a-2026', field: 'venue', newValue: null }], { loadData: shows, readReview: () => null }).problems, []);
+  const review = completeActions([{ type: 'review-field-edit', file: '../../etc/x.json', field: 'criticName', newValue: 'x' }], { loadData: shows, readReview: () => ({}) });
+  assert.match(review.problems[0], /inside the review texts/);
+});
+
 test('plans split at the cap with -b/-c names, issueNumber = name, and pass the land checks', () => {
   const acts = Array.from({ length: 5 }, (_, i) => ({ type: 'data-edit', file: 'commercial.json', showSlug: 's', field: 'notes', oldValue: i, newValue: i + 1 }));
   const plans = buildPlans('bro-7', 'sum', acts, { max: 2, uuid: () => 'u' });

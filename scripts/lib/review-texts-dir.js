@@ -51,20 +51,36 @@ const { execFileSync } = require('child_process');
 
 const REVIEW_TEXTS_SHA_FILE = '.review-texts-sha';
 
-/** A directory only counts if it is an actual checkout (or a stamped copy), not a bare/empty dir. */
+/** A directory only counts if it is an actual checkout, not a bare/empty dir. */
 function isReviewTextsCheckout(dir) {
   try {
-    // A cloud session's data/review-texts is a copy without .git; setup-local-data.sh
-    // stamps it with .review-texts-sha instead (BRO-5892).
-    if (!fs.existsSync(path.join(dir, '.git')) && !fs.existsSync(path.join(dir, REVIEW_TEXTS_SHA_FILE))) return false;
-    // `.git` itself is an entry, so `readdirSync(dir).length > 0` was true for
-    // a freshly-inited/sparse clone containing NOTHING but `.git` — the exact
-    // false-all-clear shape this function exists to reject, just with `.git`
-    // present instead of absent. Require at least one non-dotfile entry.
-    return fs.readdirSync(dir).some((entry) => !entry.startsWith('.'));
+    if (!fs.existsSync(path.join(dir, '.git'))) return false;
+    return hasEntries(dir);
   } catch {
     return false;
   }
+}
+
+/**
+ * A cloud session's data/review-texts is a copy without .git, stamped with .review-texts-sha by
+ * setup-local-data.sh (BRO-5892). It is read-only material: the resolver falls back to it only
+ * when no real checkout exists, and isReviewTextsCheckout (the guard writing tools use) refuses it,
+ * so a repair can never land in a copy that is never committed.
+ */
+function isStampedReviewTextsCopy(dir) {
+  try {
+    return fs.existsSync(path.join(dir, REVIEW_TEXTS_SHA_FILE)) && hasEntries(dir);
+  } catch {
+    return false;
+  }
+}
+
+// `.git` itself is an entry, so `readdirSync(dir).length > 0` was true for
+// a freshly-inited/sparse clone containing NOTHING but `.git`: the exact
+// false-all-clear shape these checks exist to reject. Require at least one
+// non-dotfile entry.
+function hasEntries(dir) {
+  return fs.readdirSync(dir).some((entry) => !entry.startsWith('.'));
 }
 
 /**
@@ -97,21 +113,21 @@ function resolveReviewTextsDir(
   deps = {},
 ) {
   const isCheckout = deps.isCheckout || isReviewTextsCheckout;
+  const isStampedCopy = deps.isStampedCopy || isStampedReviewTextsCopy;
   const mainWorktree = deps.mainWorktree || mainWorktreeOf;
 
   if (env.REVIEW_TEXTS_DIR) return env.REVIEW_TEXTS_DIR;
 
-  const nested = path.join(repoRoot, 'data', 'review-texts');
-  if (isCheckout(nested)) return nested;
-
+  const candidates = [path.join(repoRoot, 'data', 'review-texts')];
   // Inside a worktree the clone lives in the main checkout, not here.
   const main = mainWorktree(repoRoot);
-  if (main && path.resolve(main) !== path.resolve(repoRoot)) {
-    const fromMain = path.join(main, 'data', 'review-texts');
-    if (isCheckout(fromMain)) return fromMain;
-  }
+  if (main && path.resolve(main) !== path.resolve(repoRoot)) candidates.push(path.join(main, 'data', 'review-texts'));
+
+  // A real checkout anywhere beats a stamped copy anywhere.
+  for (const dir of candidates) if (isCheckout(dir)) return dir;
+  for (const dir of candidates) if (isStampedCopy(dir)) return dir;
 
   return path.join(homedir, 'broadway-review-texts');
 }
 
-module.exports = { resolveReviewTextsDir, isReviewTextsCheckout, mainWorktreeOf, REVIEW_TEXTS_SHA_FILE };
+module.exports = { resolveReviewTextsDir, isReviewTextsCheckout, isStampedReviewTextsCopy, mainWorktreeOf, REVIEW_TEXTS_SHA_FILE };

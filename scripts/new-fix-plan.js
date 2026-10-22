@@ -78,6 +78,15 @@ const REVIEW_TEXTS_PREFIX = /^(\.\/)?data\/review-texts\//;
  * applyDataEdit, so a later edit sees an earlier one's value and stamps (openingDate -> openingDateSource).
  * Pure over `loadData` / `readReview`. Returns { actions, problems }.
  */
+/** VALUE is parsed as JSON, so `150` becomes a number. Refuse an edit that changes a set field's type. */
+function typeChangeProblem(a) {
+  const kind = (v) => (v === null || v === undefined ? null : Array.isArray(v) ? 'array' : typeof v);
+  const from = kind(a.oldValue), to = kind(a.newValue);
+  if (!from || !to || from === to) return null;
+  const hint = from === 'string' ? ` (to keep it a string, quote it as JSON: ${a.field}='${JSON.stringify(String(a.newValue))}')` : '';
+  return `${a.field} would change from ${from} to ${to}${hint}`;
+}
+
 function completeActions(actions, { loadData, readReview }) {
   const problems = [];
   const reviewNow = new Map(); // `${file}|${field}` -> value after earlier edits
@@ -90,11 +99,14 @@ function completeActions(actions, { loadData, readReview }) {
       const data = loadData(a.file);
       if (!('oldValue' in a)) a.oldValue = currentDataValue(data, a);
       if (a.oldValue === undefined) { problems.push(`${where}: no ${a.file} entry for ${a.showSlug || a.showId}`); return a; }
+      const typeProblem = typeChangeProblem(a);
+      if (typeProblem) { problems.push(`${where}: ${typeProblem}`); return a; }
       const res = applyDataEdit(data, a);
       if (!res.ok) problems.push(`${where}: ${res.reason}`);
       if (!a.description) a.description = `${a.file}: ${a.showSlug || a.showId}.${a.field}`;
     } else if (a.type === 'review-field-edit') {
       a.file = String(a.file || '').replace(REVIEW_TEXTS_PREFIX, '');
+      if (path.isAbsolute(a.file) || a.file.split(/[\\/]/).includes('..')) { problems.push(`${where}: review file must be <show>/<file>.json inside the review texts: ${a.file}`); return a; }
       const key = `${a.file}|${a.field}`;
       if (!('oldValue' in a)) {
         if (reviewNow.has(key)) a.oldValue = reviewNow.get(key);
@@ -104,6 +116,8 @@ function completeActions(actions, { loadData, readReview }) {
           a.oldValue = rec[a.field] ?? null;
         }
       }
+      const typeProblem = typeChangeProblem(a);
+      if (typeProblem) { problems.push(`${where}: ${typeProblem}`); return a; }
       reviewNow.set(key, a.newValue);
       if (!a.description) a.description = `${a.file}: ${a.field}`;
     } else if (a.type === 'review-file-op') {

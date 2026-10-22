@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { evaluate, plannedFixes, STALE_FAIL_HOURS } = require('./cloud-doctor.js');
+const { evaluate, plannedFixes, snapshotChanges, STALE_FAIL_HOURS } = require('./cloud-doctor.js');
 
 const NOW = Date.parse('2026-10-22T04:00:00Z');
 const hoursAgo = (h) => new Date(NOW - h * 3.6e6).toISOString();
@@ -80,4 +80,11 @@ test('outside cloud a missing clone only warns', () => {
 test('a clone refresh also redoes both copies, since it moves the clones', () => {
   const rs = evaluate(healthy({ reviewClone: clone({ head: 'b'.repeat(40), remoteHead: 'f'.repeat(40) }) }), { now: NOW });
   assert.deepEqual(plannedFixes(rs), ['refresh-clones', 'copy-data', 'copy-review-texts']);
+});
+
+test('snapshotChanges reports rewritten, added and removed data files (gitignored core copies included)', () => {
+  const before = new Map([['data/shows.json', '10:1'], ['data/x.json', '5:1'], ['data/gone.json', '1:1']]);
+  const after = new Map([['data/shows.json', '10:2'], ['data/x.json', '5:1'], ['data/new.json', '1:1']]);
+  assert.deepEqual(snapshotChanges(before, after), ['data/gone.json', 'data/new.json', 'data/shows.json']);
+  assert.deepEqual(snapshotChanges(before, new Map(before)), []);
 });

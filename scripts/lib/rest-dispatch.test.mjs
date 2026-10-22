@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { pickRun, findRun, waitRun, dispatch } = require('./rest-dispatch.js');
+const { pickRun, findRun, waitRun, dispatch, listRunIds, MAX_API_ERRORS } = require('./rest-dispatch.js');
 
 // BRO-5892: REST-only dispatch for cloud, where `gh workflow run` needs GraphQL.
 const run = (id, title, created, extra = {}) => ({ id, display_title: title, created_at: created, event: 'workflow_dispatch', html_url: `u/${id}`, ...extra });
@@ -39,4 +39,21 @@ test('dispatch POSTs ref and string inputs; findRun and waitRun poll until done'
   assert.equal(waitRun({ runId: 7, api, wait: () => {} }).conclusion, 'success');
   let t = 0;
   assert.equal(waitRun({ runId: 8, api: () => ({ status: 'queued' }), wait: () => {}, now: () => (t += 1000), timeoutMs: 3000 }), null);
+});
+
+test('runs listed before the dispatch are never ours, even inside the clock-skew window', () => {
+  const runs = [run(1, 'Run Script', '2026-10-22T03:00:01Z'), run(2, 'Run Script', '2026-10-22T03:00:06Z')];
+  const before = listRunIds({ workflow: 'w.yml', api: () => ({ workflow_runs: [runs[0]] }) });
+  assert.deepEqual([...before], [1]);
+  assert.equal(pickRun(runs, { since, exclude: before }).run.id, 2);
+});
+
+test('a transient API error during a wait is ridden out; a run of them throws', () => {
+  let n = 0;
+  const flaky = () => { n += 1; if (n <= 2) throw new Error('HTTP 502'); return { status: 'completed', conclusion: 'success' }; };
+  assert.equal(waitRun({ runId: 1, api: flaky, wait: () => {} }).conclusion, 'success');
+  assert.throws(() => waitRun({ runId: 1, api: () => { throw new Error('HTTP 502'); }, wait: () => {} }), /502/);
+  let calls = 0;
+  assert.throws(() => findRun({ workflow: 'w.yml', api: () => { calls += 1; throw new Error('rate limit'); }, wait: () => {} }));
+  assert.equal(calls, MAX_API_ERRORS);
 });

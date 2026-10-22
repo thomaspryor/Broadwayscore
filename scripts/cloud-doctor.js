@@ -87,16 +87,46 @@ function gather({ quick }) {
   // Run from the main checkout: from a worktree it compares against the worktree and misreports DRIFT.
   const hooks = sh('node', [path.join(main, 'scripts', 'install-home-claude-config.js'), '--check'], { cwd: main });
   facts.hooks = { ok: hooks.code === 0, detail: (hooks.out || hooks.err).split('\n').slice(-1)[0] };
-  if (!quick) facts.auditTreeClean = auditLeavesTreeClean();
+  // Only in cloud: on a Mac validate-data.js still writes by design, so running it here would edit data.
+  if (!quick && facts.cloud) facts.auditTreeClean = auditLeavesTreeClean();
   return facts;
+}
+
+/**
+ * size+mtime of every file under data/ except the review texts. data/*.json core copies are gitignored, so
+ * `git status` alone cannot see an audit rewriting them, which is the write this check exists to catch.
+ */
+function dataSnapshot(dir = path.join(ROOT, 'data'), rel = 'data', out = new Map()) {
+  let entries;
+  try { entries = fs.readdirSync(dir, { withFileTypes: true }); } catch { return out; }
+  for (const e of entries) {
+    const r = `${rel}/${e.name}`;
+    if (r === 'data/review-texts') continue;
+    if (e.isDirectory()) dataSnapshot(path.join(dir, e.name), r, out);
+    else if (e.isFile() || e.isSymbolicLink()) {
+      try { const st = fs.statSync(path.join(dir, e.name)); out.set(r, `${st.size}:${st.mtimeMs}`); } catch { /* raced away */ }
+    }
+  }
+  return out;
+}
+
+/** Pure: two snapshots -> paths added, removed or rewritten. */
+function snapshotChanges(before, after) {
+  const changed = [];
+  for (const [k, v] of after) if (before.get(k) !== v) changed.push(k);
+  for (const k of before.keys()) if (!after.has(k)) changed.push(k);
+  return changed.sort();
 }
 
 function auditLeavesTreeClean() {
   const status = () => git(ROOT, 'status', '--porcelain', '--untracked-files=no').out;
   const before = status();
+  const dataBefore = dataSnapshot();
   const run = sh('node', [path.join(ROOT, 'scripts', 'validate-data.js')], { timeout: 6 * 60 * 1000 });
   const after = status();
-  return { clean: before === after, changed: after.split('\n').filter((l) => l && !before.split('\n').includes(l)), exit: run.code };
+  const tracked = after.split('\n').filter((l) => l && !before.split('\n').includes(l));
+  const changed = [...new Set([...tracked, ...snapshotChanges(dataBefore, dataSnapshot())])];
+  return { clean: changed.length === 0, changed, exit: run.code };
 }
 
 function ageHours(iso, now) { return iso ? (now - new Date(iso).getTime()) / 3.6e6 : Infinity; }
@@ -195,7 +225,7 @@ function main(argv) {
   return failed.length ? 1 : 0;
 }
 
-module.exports = { evaluate, plannedFixes, STALE_FAIL_HOURS };
+module.exports = { evaluate, plannedFixes, snapshotChanges, STALE_FAIL_HOURS };
 
 if (require.main === module) {
   const argv = process.argv.slice(2);

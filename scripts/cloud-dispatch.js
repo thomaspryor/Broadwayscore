@@ -11,7 +11,7 @@
  *            (execute-approved-fix.yml: "execute-approved-fix <issue_number> [").
  * Exit 0 dispatched (and, with --wait, succeeded); 1 the run failed; 2 bad usage, run not found, ambiguous, or timeout.
  */
-const { dispatch, findRun, waitRun, DEFAULT_REPO } = require('./lib/rest-dispatch');
+const { dispatch, listRunIds, findRun, waitRun, DEFAULT_REPO } = require('./lib/rest-dispatch');
 
 const USAGE = 'Usage: node scripts/cloud-dispatch.js <workflow.yml> [-f key=value ...] [--ref=main] [--wait] [--timeout=MIN] [--match=TEXT] [--repo=owner/name]';
 
@@ -50,14 +50,26 @@ function main(argv, deps = {}) {
   let opts;
   try { opts = parseArgs(argv); } catch (e) { console.error(`${e.message}\n${USAGE}`); return 2; }
   const since = new Date().toISOString();
+  let exclude;
   try {
+    exclude = listRunIds({ workflow: opts.workflow, repo: opts.repo, ...deps });
     dispatch({ workflow: opts.workflow, inputs: opts.inputs, ref: opts.ref, repo: opts.repo, ...deps });
   } catch (e) {
     console.error(`Dispatch failed: ${(e.stderr || e.message || '').toString().trim()}`);
     return 2;
   }
   console.log(`Dispatched ${opts.workflow} on ${opts.ref}${Object.keys(opts.inputs).length ? ` with ${JSON.stringify(opts.inputs)}` : ''}`);
-  const found = findRun({ workflow: opts.workflow, since, match: opts.match, repo: opts.repo, ...deps });
+  // Exit 1 means the run failed. An API that keeps failing while we look or wait is "unknown": 2.
+  try {
+    return follow(opts, since, exclude, deps);
+  } catch (e) {
+    console.error(`GitHub API kept failing, run state unknown: ${(e.stderr || e.message || '').toString().trim()}`);
+    return 2;
+  }
+}
+
+function follow(opts, since, exclude, deps) {
+  const found = findRun({ workflow: opts.workflow, since, match: opts.match, exclude, repo: opts.repo, ...deps });
   if (found.ambiguous) {
     console.error(`More than one new run${opts.match ? ` titled "${opts.match}"` : ''}; pass --match=<text from the run title>:`);
     for (const r of found.ambiguous) console.error(`  ${r.html_url} ${r.display_title}`);
