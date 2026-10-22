@@ -39,7 +39,7 @@ const { recordBdCall, recordSbCall, recordSdCall } = require('./bd-telemetry');
 const { sdBilledCredits } = require('./provider-telemetry');
 const { shouldSkipScrapingdogAtRuntime, isSdQuotaHttpStatus } = require('./scrapingdog-ack');
 const { consultBrightData, getBrightDataRunStats } = require('./brightdata-caps');
-const { consultScrapingdog, getScrapingdogCapStats } = require('./scrapingdog-caps');
+const { consultScrapingdog, getScrapingdogCapStats, pressNightCapStatus } = require('./scrapingdog-caps');
 const { consultScrapingbee } = require('./scrapingbee-caps');
 const { creditsFor } = require('./provider-credits');
 const { usdFor } = require('./provider-pricing');
@@ -565,6 +565,13 @@ async function fetchWithBrightData(url, opts = {}) {
     return null;
   }
 
+  // Press-night per-show cap (BRO-5914): check-only, paid tier only. The free
+  // fetchPage routes (direct, cookie-plain, Playwright) are untouched.
+  if (pressNightCapStatus().exceeded) {
+    onSkip('press-night-cap');
+    return null;
+  }
+
   // Daily circuit breaker + per-run request budget (Scraping cost v3 S2-T3).
   // This helper is the ONLY place a Web Unlocker request is issued, which is
   // why the check lives here rather than at fetchPage()/fetchJSON(): outer-gate
@@ -948,6 +955,12 @@ async function fetchWithScrapingBee(url, options = {}) {
   checkScrapingBeeCredits();
   if (_sbCreditsLow) {
     onSkip('sb-credits-low');
+    return null;
+  }
+
+  // Press-night per-show cap (BRO-5914): check-only, paid tier only.
+  if (pressNightCapStatus().exceeded) {
+    onSkip('press-night-cap');
     return null;
   }
 
