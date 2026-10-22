@@ -187,7 +187,10 @@ fi
 
 # ── TypeScript Check ───────────────────────────────────────────────────────
 # Full-repo tsc OOMs at the default ~2GB heap in cloud containers (BRO-6004).
-TSC_NODE_OPTIONS="$(bash "$(dirname "${BASH_SOURCE[0]}")/tsc-node-options.sh")"
+TSC_NODE_OPTIONS="$(bash "$(dirname "${BASH_SOURCE[0]}")/tsc-node-options.sh")" || TSC_NODE_OPTIONS=""
+# land.yml / land-local-check copy ONLY this script to a temp dir, so the helper may be
+# absent there; fall back to the same floor rather than the 2GB default.
+[ -n "$TSC_NODE_OPTIONS" ] || TSC_NODE_OPTIONS="${NODE_OPTIONS:-} --max-old-space-size=6144"
 gate tsc env NODE_OPTIONS="$TSC_NODE_OPTIONS" npx tsc --noEmit
 gate tsc-llm-scoring env NODE_OPTIONS="$TSC_NODE_OPTIONS" npx tsc --noEmit -p scripts/llm-scoring/tsconfig.json
 gate next-lint npx next lint

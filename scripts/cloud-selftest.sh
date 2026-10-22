@@ -65,7 +65,7 @@ done
 echo ""
 echo "--- typecheck ---"
 if [ -d node_modules/typescript ]; then
-  if npx tsc --noEmit >/tmp/selftest-tsc.out 2>&1; then echo "tsc: PASS"; else echo "tsc: FAIL"; tail -8 /tmp/selftest-tsc.out; fi
+  if NODE_OPTIONS="$(bash "$(dirname "$0")/lib/tsc-node-options.sh" 2>/dev/null || echo "--max-old-space-size=6144")" npx tsc --noEmit >/tmp/selftest-tsc.out 2>&1; then echo "tsc: PASS"; else echo "tsc: FAIL"; tail -8 /tmp/selftest-tsc.out; fi
 else
   echo "tsc: SKIPPED (node_modules not installed — run 'npm install' first)"
 fi

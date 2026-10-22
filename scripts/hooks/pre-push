@@ -371,7 +371,9 @@ if grep -qE "\.(ts|tsx)$" <<<"$ALL_CHANGED_FILES"; then
   if [ -f data/reviews.json ] && [ -f data/shows.json ]; then
     echo "pre-push: tsc --noEmit (push touches TypeScript)…"
     # Raise the heap for full-repo tsc; default ~2GB OOMs in cloud (BRO-6004).
-    TSC_NODE_OPTIONS="$(bash "$(git rev-parse --show-toplevel)/scripts/lib/tsc-node-options.sh")"
+    TSC_NODE_OPTIONS="$(bash "$(git rev-parse --show-toplevel)/scripts/lib/tsc-node-options.sh")" || TSC_NODE_OPTIONS=""
+    # Helper failure must not silently fall back to the 2GB default.
+    [ -n "$TSC_NODE_OPTIONS" ] || TSC_NODE_OPTIONS="${NODE_OPTIONS:-} --max-old-space-size=6144"
     if ! NODE_OPTIONS="$TSC_NODE_OPTIONS" npx tsc --noEmit >/tmp/pre-push-tsc.out 2>&1; then
       echo ""
       echo "=== PRE-PUSH BLOCKED: tsc --noEmit failed ==="

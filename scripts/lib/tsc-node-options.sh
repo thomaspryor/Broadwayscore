@@ -5,7 +5,8 @@
 # otherwise appends the floor (Node honors the last --max-old-space-size).
 MIN_MB=6144
 cur="${NODE_OPTIONS:-}"
-have=$(printf '%s' "$cur" | sed -n 's/.*--max-old-space-size=\([0-9][0-9]*\).*/\1/p' | tail -n1)
+# Node also accepts --max_old_space_size; normalize only for parsing.
+have=$(printf '%s' "$cur" | tr '_' '-' | sed -n 's/.*--max-old-space-size[= ]\([0-9][0-9]*\).*/\1/p' | tail -n1)
 if [ -n "$have" ] && [ "$have" -ge "$MIN_MB" ]; then
   printf '%s\n' "$cur"
 else

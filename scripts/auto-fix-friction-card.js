@@ -248,7 +248,9 @@ function revertFile(filePath) {
 
 function runValidation() {
   try {
-    const tscNodeOptions = execSync('bash scripts/lib/tsc-node-options.sh', { cwd: ROOT }).toString().trim();
+    let tscNodeOptions = '';
+    try { tscNodeOptions = execSync('bash scripts/lib/tsc-node-options.sh', { cwd: ROOT }).toString().trim(); } catch { /* fall through */ }
+    if (!tscNodeOptions) tscNodeOptions = `${process.env.NODE_OPTIONS || ''} --max-old-space-size=6144`;
     execSync('npx tsc --noEmit', { cwd: ROOT, stdio: 'pipe', timeout: 60000, env: { ...process.env, NODE_OPTIONS: tscNodeOptions } });
     execSync('npx next lint --max-warnings 0', { cwd: ROOT, stdio: 'pipe', timeout: 60000 });
     return { ok: true };

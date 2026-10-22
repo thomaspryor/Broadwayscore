@@ -21,3 +21,18 @@ test('pre-push, land-gauntlet and friction-card all use the helper', () => {
   assert.match(g, /^gate tsc env NODE_OPTIONS="\$TSC_NODE_OPTIONS" npx tsc/m);
   assert.match(g, /^gate tsc-llm-scoring env NODE_OPTIONS="\$TSC_NODE_OPTIONS"/m);
 });
+test('underscore spelling is honored when parsing', () => {
+  assert.equal(run('--max_old_space_size=8192'), '--max_old_space_size=8192');
+  assert.equal(run('--max_old_space_size=2048'), '--max_old_space_size=2048 --max-old-space-size=6144');
+});
+test('gauntlet copied alone (as land.yml does) still gets the floor', () => {
+  const dir = fs.mkdtempSync('/tmp/gauntlet-copy.');
+  fs.copyFileSync(new URL('./land-gauntlet.sh', import.meta.url), `${dir}/land-gauntlet.sh`);
+  const sh = fs.readFileSync(`${dir}/land-gauntlet.sh`, 'utf8');
+  assert.match(sh, /\|\| TSC_NODE_OPTIONS=""/);
+  assert.match(sh, /\[ -n "\$TSC_NODE_OPTIONS" \] \|\| TSC_NODE_OPTIONS=".*--max-old-space-size=6144"/);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+test('space-separated heap flag is parsed', () => {
+  assert.equal(run('--max-old-space-size 8192'), '--max-old-space-size 8192');
+});
