@@ -4751,6 +4751,17 @@ const REBUILD_ONLY_PASS_REASONS = new Set([
   'skippedNoScore',
 ]);
 
+// BRO-5129: mirror rules meaning "this file is a copy of another review". A
+// duplicateOf copy whose reference is excluded for one of these is not
+// recovered on the census path (it would double-count the original).
+const DUPLICATE_OF_COPY_REF_REASONS = new Set([
+  'personalRepost',
+  'crossOutletDuplicate',
+  'isSyndicatedDuplicate',
+  'knownSyndicationSecondary',
+  'duplicateOfCircularTiebreak',
+]);
+
 /**
  * The rebuild's reason for a file it dropped in one of REBUILD_ONLY_PASS_REASONS, or null.
  * @param {string} filePath - review file path (only the basename is used)
@@ -4797,7 +4808,7 @@ function explainShowLevelExclusion(show) {
 function explainExclusion(data, show, filePath, opts) {
   if (opts && opts.rebuildExclusions) {
     const { rebuildExclusions, ...rest } = opts;
-    const own = explainExclusion(data, show, filePath, rest);
+    const own = explainExclusion(data, show, filePath, { ...rest, alignDuplicateOfWithRebuild: true });
     return own !== null ? own : rebuildOnlyPassExclusion(filePath, rebuildExclusions);
   }
   if (!data) return 'no-data';
@@ -5041,25 +5052,39 @@ function explainExclusion(data, show, filePath, opts) {
         if (refData.duplicateOf) {
           // Reference also a dupe but pointing elsewhere (not back at us) —
           // rebuild's `refAlsoDupe` branch lets this through. Fall through.
-        } else if (explainExclusion(refData, show, refPath) === null) {
-          // Reference exists, is includable, and carries no unresolved
-          // duplicateOf of its own → legitimate dup, skip.
-          return 'duplicateOf';
-        } else if (duplicateOfInheritedFlag(data, refData, show, refPath)) {
-          // BRO-5129 parity with rebuild-all-reviews.js: the reference is
-          // excluded for wrong content (wrongShow/wrongProduction/nonReview)
-          // this copy shares — the rebuild's skippedDuplicateOfInheritedFlag.
-          // A confirmed-different text (BRO-5501) returns null there and
-          // falls through below, as before.
-          return 'duplicateOf';
+        } else if (opts && opts.alignDuplicateOfWithRebuild) {
+          // BRO-5129, census path only (set by the opts.rebuildExclusions
+          // wrapper): model the rebuild's refExcluded recovery. Every other
+          // caller (scorer, rebuild's own reference checks, audits) takes the
+          // unchanged branch below.
+          const refReason = explainExclusion(refData, show, refPath);
+          if (refReason === null) return 'duplicateOf';
+          // Reference excluded for wrong content this copy shares — the
+          // rebuild's skippedDuplicateOfInheritedFlag (BRO-5501 different
+          // text still opts out inside duplicateOfInheritedFlag).
+          if (duplicateOfInheritedFlag(data, refData, show, refPath)) return 'duplicateOf';
+          // Reference excluded because it is itself a copy of another
+          // review: recovering this copy would ship that review twice, so
+          // the mirror keeps it out even where the rebuild recovers it, and
+          // the census reports the disagreement.
+          if (DUPLICATE_OF_COPY_REF_REASONS.has(refReason)) return 'duplicateOf';
+          // Any other reference exclusion (wrongAttribution, bodyless score,
+          // ...): the rebuild recovers this copy. Fall through to its own
+          // guards. Known gap: the rebuild also counts a pre-window
+          // publishDate on the reference as refExcluded; this does not.
+        } else if (
+          // BRO-5501 parity with rebuild-all-reviews.js: a pointer at a
+          // content-flagged twin whose text is a DIFFERENT article no longer
+          // inherits the flag there, so this predicate must not exclude it
+          // either (it would never get scored otherwise).
+          textsConfirmedDifferent(data.fullText, refData.fullText) &&
+          ['wrongShow', 'wrongProduction', 'nonReview'].includes(explainExclusion(refData, show, refPath))
+        ) {
+          // Fall through to the remaining guards on this file's own fields.
         } else {
-          // BRO-5129: the reference is excluded for any other reason
-          // (wrongAttribution, bodyless score, syndication...). The rebuild's
-          // refExcluded branch recovers this copy so the review is not lost
-          // with its twin; 79 files read "duplicateOf" here yet shipped
-          // (census 2026-10-22). Fall through to this file's own guards.
-          // Known gap: the rebuild also counts a pre-window publishDate on
-          // the reference as refExcluded; this mirror does not.
+          // Reference exists and carries no unresolved duplicateOf of its
+          // own → legitimate dup, skip.
+          return 'duplicateOf';
         }
       }
     }

@@ -73,33 +73,52 @@ describe('census comparison uses alignedRule', () => {
   });
 });
 
-describe('duplicateOf: recover a copy whose reference the rebuild excludes', () => {
+describe('duplicateOf: census path recovers a copy whose reference the rebuild excludes', () => {
   function pair(refExtra, dupExtra = {}) {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5129-'));
     fs.writeFileSync(path.join(dir, 'variety--peter-marks.json'), JSON.stringify(review({ criticName: 'Peter Marks', ...refExtra })));
     const dupPath = path.join(dir, 'variety--frank-rizzo.json');
     const dup = review({ duplicateOf: 'variety--peter-marks.json', ...dupExtra });
     fs.writeFileSync(dupPath, JSON.stringify(dup));
-    return { dup, dupPath };
+    return { dup, dupPath, dir };
   }
+  // The census path: any rebuildExclusions map (even empty) turns the alignment on.
+  const census = (dup, dupPath) => explainExclusion(dup, undefined, dupPath, { rebuildExclusions: {} });
 
-  test('reference includable: copy stays excluded as duplicateOf', () => {
+  test('reference includable: copy excluded on both paths', () => {
     const { dup, dupPath } = pair({});
     assert.equal(explainExclusion(dup, undefined, dupPath), 'duplicateOf');
+    assert.equal(census(dup, dupPath), 'duplicateOf');
   });
 
-  test('reference excluded for wrongAttribution: copy is recovered', () => {
+  test('reference excluded for wrongAttribution: default unchanged (excluded), census path recovers', () => {
     const { dup, dupPath } = pair({ wrongAttribution: true });
-    assert.equal(explainExclusion(dup, undefined, dupPath), null);
+    assert.equal(explainExclusion(dup, undefined, dupPath), 'duplicateOf', 'default behaviour must not change');
+    assert.equal(explainExclusion(dup, undefined, dupPath, { forScoring: true }), 'duplicateOf', 'scorer path unchanged');
+    assert.equal(census(dup, dupPath), null);
   });
 
   test('reference excluded for wrong content the copy shares: copy inherits it', () => {
     const { dup, dupPath } = pair({ wrongShow: true });
     assert.equal(explainExclusion(dup, undefined, dupPath), 'duplicateOf');
+    assert.equal(census(dup, dupPath), 'duplicateOf');
   });
 
-  test('inheritance cleared by a human: copy is recovered', () => {
+  test('inheritance cleared by a human: census path recovers', () => {
     const { dup, dupPath } = pair({ wrongShow: true }, { duplicateOfFlagInheritanceCleared: true });
-    assert.equal(explainExclusion(dup, undefined, dupPath), null);
+    assert.equal(census(dup, dupPath), null);
+  });
+
+  test('reference is itself a copy (crossOutletDuplicate / personalRepost): never recovered, no double count', () => {
+    for (const [expected, refExtra] of [
+      ['crossOutletDuplicate', { crossOutletDuplicate: true }],
+      ['personalRepost', { url: 'https://showriz.com/2026/x-review/', title: 'My Variety Review: X' }],
+    ]) {
+      const { dup, dupPath, dir } = pair(refExtra);
+      const refPath = path.join(dir, 'variety--peter-marks.json');
+      assert.equal(explainExclusion(JSON.parse(fs.readFileSync(refPath, 'utf8')), undefined, refPath), expected, 'fixture must trigger the copy rule');
+      assert.equal(census(dup, dupPath), 'duplicateOf', `${expected} reference must not release its copy`);
+      assert.equal(explainExclusion(dup, undefined, dupPath), 'duplicateOf');
+    }
   });
 });

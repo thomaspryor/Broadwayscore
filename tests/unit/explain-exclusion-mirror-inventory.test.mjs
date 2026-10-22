@@ -42,8 +42,9 @@ const INVENTORY = {
   isRejectedByReasonExclusion: 'live',
   isRoundupPageAsReview: 'live',
   isUnverifiableWebSearchRow: 'live',
-  // BRO-5129: the mirror's duplicateOf branch asks duplicateOfInheritedFlag directly (it
-  // runs BRO-5501's textsConfirmedDifferent), same as the rebuild's refInheritedFlag.
+  // BRO-5501: the rebuild decides duplicateOf inheritance through duplicateOfInheritedFlag, which runs this text test.
+  textsConfirmedDifferent: 'live-via:duplicateOfInheritedFlag',
+  // BRO-5129: the census-path duplicateOf branch asks it directly, same as the rebuild's refInheritedFlag.
   duplicateOfInheritedFlag: 'live',
   wrongShowCleared: 'live',
   wrongShowExplicitlyCleared: 'live',
@@ -79,7 +80,7 @@ const INVENTORY = {
 
 // BRO-5129: rules where the mirror excludes and the rebuild includes, after the
 // census consults the rebuild lists (local full rebuild + census, 2026-10-22:
-// 366/57,667 disagree = 0.63%, 111 of them mirror-only). Each is a deliberate
+// 372/57,667 disagree = 0.65%, 117 of them mirror-only). Each is a deliberate
 // carve-out, or a known gap with its cause, plus up to 3 live example files
 // (fewer only when fewer exist). Re-measure with
 // `node scripts/exclusion-rule-census.js --compare-rebuild --no-diff`.
@@ -118,6 +119,15 @@ const MIRROR_ONLY_RULES = {
       'a-midsummer-nights-dream-globe-west-end-2026/timeout-london--andrzej-lukowski.json',
       'pride-west-end-2026/broadwayworld--jay-irwin.json',
       'thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--susannah-butter.json',
+    ],
+  },
+  duplicateOf: {
+    count: 6,
+    why: 'known gap: the reference is itself a syndicated / cross-outlet copy (DUPLICATE_OF_COPY_REF_REASONS); the rebuild\'s refExcluded branch recovers the duplicateOf copy anyway, which may ship the original review twice. The mirror keeps it out on purpose',
+    examples: [
+      'catch-me-if-you-can-2011/hollywood-reporter--unknown.json',
+      'cabaret-at-the-kit-kat-club-west-end-2021/london-theatre--chris-omaweng.json',
+      'the-phantom-of-the-opera-west-end-1986/sunday-express--stefan-kyriazis.json',
     ],
   },
   wrongProduction: {
