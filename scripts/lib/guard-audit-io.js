@@ -10,6 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const core = require('./guard-audit-core');
 const { readLedger } = require('./breaker-transitions');
+const { checkDailyBreakerPattern } = require('./check-daily-breaker-pattern');
 
 const AUDIT = path.join(__dirname, '..', '..', 'data', 'audit');
 const DEFAULT_SNAPSHOT_PATH = path.join(AUDIT, 'guard-audit-snapshot.json');
@@ -35,8 +36,9 @@ function runGuardAuditFromFiles({ env = process.env, now = new Date(), snapshotP
   };
   // bd-circuit-breaker.json holds one entry per zone under `zones`.
   for (const [zone, z] of Object.entries((bdState && bdState.zones) || {})) states[`bd-circuit-breaker-${zone}`] = z;
-  return core.runGuardAudit({
-    ledger: readLedger(),
+  const ledger = readLedger();
+  const snapshot = core.runGuardAudit({
+    ledger,
     spendRows: readJsonl(path.join(AUDIT, 'scraper-spend-ledger.jsonl')),
     dailyRows: readJsonl(path.join(AUDIT, 'provider-spend-daily.jsonl')),
     states,
@@ -45,6 +47,11 @@ function runGuardAuditFromFiles({ env = process.env, now = new Date(), snapshotP
     nowIso: now.toISOString(),
     bdZone,
   });
+  snapshot.dailyBreakerPattern = checkDailyBreakerPattern(ledger, {
+    untilDay: now.toISOString().slice(0, 10), bdZone,
+  });
+  snapshot.items.push({ title: 'Data Validation fallback risk', detail: snapshot.dailyBreakerPattern.summary });
+  return snapshot;
 }
 
 module.exports = { runGuardAuditFromFiles, DEFAULT_SNAPSHOT_PATH };
