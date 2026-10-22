@@ -5455,13 +5455,16 @@ function validateNoHardcodedOutletLists() {
 // BRO-5867: buildOriginFindings drops shows with no origin record, so an
 // unlabeled opening vanishes from /path-to-broadway. The weekly workflow
 // (weekly-show-origins.yml) labels new openings; this catches it failing.
+// warn(), not error(): an error here would reach exitWithError and wedge the
+// core-data push of the very workflows that add shows (the classifier reads
+// the pushed shows.json), so the gap could never close.
 function validateShowOrigins(shows) {
   const file = path.join(DATA_DIR, 'show-origins.json');
   if (!fs.existsSync(file)) { warn('data/show-origins.json missing, skipping origin coverage check'); return; }
   const origins = JSON.parse(fs.readFileSync(file, 'utf8')).shows || {};
   const missing = showsMissingOrigin(shows, origins, new Date().toISOString().slice(0, 10));
   for (const s of missing) {
-    error(`Show "${s.title}" (${s.id}, ${s.status}, opened ${s.openingDate}) has no record in data/show-origins.json — run node scripts/classify-show-origins.js (weekly-show-origins.yml does this; ${ORIGIN_GRACE_DAYS}-day grace).`);
+    warn(`Show "${s.title}" (${s.id}, ${s.status}, opened ${s.openingDate}) has no record in data/show-origins.json — run node scripts/classify-show-origins.js (weekly-show-origins.yml does this; ${ORIGIN_GRACE_DAYS}-day grace).`);
   }
   if (!missing.length) ok('Every opened Broadway show has a show-origins record');
 }

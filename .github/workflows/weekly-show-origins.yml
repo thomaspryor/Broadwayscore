@@ -44,11 +44,13 @@ jobs:
         run: node scripts/classify-show-origins.js --max-usd=3
 
       - name: Independent check (Gemini)
+        if: ${{ !cancelled() }}
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node scripts/classify-show-origins.js --check --max-usd=2
 
       - name: Resolve disagreements
+        if: ${{ !cancelled() }}
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: node scripts/classify-show-origins.js --resolve --batch=1 --effort=medium --max-usd=3

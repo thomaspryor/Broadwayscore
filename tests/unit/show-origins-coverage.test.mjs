@@ -16,10 +16,3 @@ test('ignores upcoming, recent openings, pre-2000-07 and labeled shows', () => {
   const shows = [mk('u', 'upcoming', '2026-12-06'), mk('r', 'open', '2026-10-20'), mk('old', 'closed', '1999-01-01'), mk('l', 'open', '2026-01-01')];
   assert.deepEqual(showsMissingOrigin(shows, { l: {} }, '2026-10-22'), []);
 });
-
-test('real data: every opened Broadway show has an origin record', () => {
-  const shows = require('../../data/shows.json');
-  const origins = require('../../data/show-origins.json').shows;
-  const missing = showsMissingOrigin(Array.isArray(shows) ? shows : shows.shows, origins, new Date().toISOString().slice(0, 10));
-  assert.deepEqual(missing.map((s) => s.id), []);
-});
