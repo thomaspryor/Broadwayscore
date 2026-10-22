@@ -4939,7 +4939,14 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   }
   // An API rating also supersedes an unverified extracted score (the second-pass
   // supersede below needs page html, which the API path does not have).
-  const apiScoreSupersedes = !!apiScore && !humanVerified && !OUTLET_VERIFIED_SOURCES.has(data.scoreSource);
+  // Not over an aggregator-routed score: setExtractedScore would route the API
+  // rating into aggregatorStars and lose the aggregator's own value.
+  const apiScoreSupersedes = !!apiScore && !humanVerified && !OUTLET_VERIFIED_SOURCES.has(data.scoreSource)
+    && !require('./lib/review-normalization').AGGREGATOR_SCORE_SOURCES.has(data.scoreSource);
+  if (apiScoreSupersedes && data.originalScore && data.originalScore !== apiScore.originalScore) {
+    console.log(`    → Guardian API rating ${apiScore.originalScore} replaces unverified ${data.originalScore} [${data.scoreSource || 'no source'}]`);
+    data.previousExtractedScore = { value: data.originalScore, source: data.scoreSource || null };
+  }
   if (!data.originalScoreCleared && (!data.originalScore || hasUnverifiedSSScore || apiScoreSupersedes) && (html || text)) {
     const outletId = data.outletId || review.outletId || '';
 

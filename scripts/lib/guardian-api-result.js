@@ -21,6 +21,13 @@ const { isArticleOutsideProductionWindow } = require('./date-guard');
  * no usable body, or an article dated outside the production's window (a
  * revival's stale slug serving a prior production, the Glengarry 2017 case).
  */
+/** The Europe/London calendar day of an ISO timestamp (a 00:30 BST post is that day, not the UTC day before). */
+function londonDay(iso) {
+  const d = new Date(iso || '');
+  if (!iso || isNaN(d.getTime())) return null;
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
+}
+
 function guardianContentToResult(content, { show = null } = {}) {
   const fields = content && content.fields;
   if (!fields || !(fields.bodyText || fields.body)) return { result: null, reason: 'no usable body' };
@@ -43,11 +50,11 @@ function guardianContentToResult(content, { show = null } = {}) {
         score: stars
           ? { originalScore: `${stars}/5 stars`, normalizedScore: Math.round((stars / 5) * 100), source: 'guardian-api' }
           : null,
-        publishDate: /^\d{4}-\d{2}-\d{2}/.test(content.webPublicationDate || '') ? content.webPublicationDate.slice(0, 10) : null,
+        publishDate: londonDay(content.webPublicationDate),
       },
     },
     reason: null,
   };
 }
 
-module.exports = { guardianContentToResult };
+module.exports = { guardianContentToResult, londonDay };

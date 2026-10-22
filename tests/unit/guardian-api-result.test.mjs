@@ -57,6 +57,7 @@ test('updateReviewJson stores the API rating and date, replacing an unverified e
   const url = 'https://www.theguardian.com/stage/2018/jul/27/king-lear-review';
   const text = 'Ian McKellen is magnificent in King Lear at the Duke of York Theatre. '.repeat(40);
   const { result } = guardianContentToResult({ webPublicationDate: '2018-07-27T06:00:00Z', fields: { bodyText: text, starRating: '4' } });
+  try {
   for (const seed of [{}, { originalScore: '3/5', scoreSource: 'llm-text' }]) {
     const fp = path.join(dir, `guardian--test-${Object.keys(seed).length}.json`);
     fs.writeFileSync(fp, JSON.stringify({ showId: 'king-lear-west-end-2018', outletId: 'guardian', outlet: 'The Guardian', criticName: 'Michael Billington', url, ...seed }));
@@ -69,6 +70,24 @@ test('updateReviewJson stores the API rating and date, replacing an unverified e
     assert.equal(d.dateSource, 'page-guardian-api');
     assert.equal(d.fetchMethod, 'guardian-api');
     assert.equal(d.fetchTier, 0);
+    if (seed.originalScore) assert.deepEqual(d.previousExtractedScore, { value: '3/5', source: 'llm-text' });
   }
-  fs.rmSync(dir, { recursive: true, force: true });
+  // An aggregator-routed score is left to the aggregator slot logic, not superseded.
+  const fp = path.join(dir, 'guardian--test-agg.json');
+  fs.writeFileSync(fp, JSON.stringify({ showId: 'king-lear-west-end-2018', outletId: 'guardian', url, originalScore: '3/5', scoreSource: 'westendtheatre-star-rating' }));
+  await updateReviewJson({ filePath: fp, file: path.basename(fp), showId: 'king-lear-west-end-2018', outletId: 'guardian', url }, result.text, { isValid: true, issues: [] }, null, result.method, result.attempts, {}, result.html, { isValid: true, issues: [] }, result.apiMeta);
+  const agg = JSON.parse(fs.readFileSync(fp, 'utf8'));
+  assert.notEqual(agg.aggregatorStarsSource, 'guardian-api');
+  assert.equal(agg.originalScore, '3/5', 'aggregator-routed score not superseded');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('publish date is the London calendar day', () => {
+  const { londonDay } = require('../../scripts/lib/guardian-api-result.js');
+  assert.equal(londonDay('2018-07-26T23:30:00Z'), '2018-07-27');
+  assert.equal(londonDay('2018-01-26T23:30:00Z'), '2018-01-26');
+  assert.equal(londonDay('nope'), null);
+  assert.equal(londonDay(undefined), null);
 });
