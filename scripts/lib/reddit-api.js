@@ -505,7 +505,8 @@ async function fetchViaRedditRSS(url) {
   // Reddit's unauthenticated RSS bucket is ~1 request/minute per IP
   // (x-ratelimit-remaining 0 after one call, x-ratelimit-reset ~60s). Honour
   // the reset header instead of failing: a 429 just means "wait N seconds".
-  const MAX_RSS_WAITS = 2;
+  const parsedWaits = parseInt(process.env.REDDIT_RSS_429_MAX_WAITS, 10);
+  const MAX_RSS_WAITS = Number.isFinite(parsedWaits) ? parsedWaits : 2;
   for (let attempt = 0; ; attempt++) {
     await enforceRateLimit();
     const res = await fetch(rssUrl, {
@@ -531,7 +532,16 @@ async function fetchViaRedditRSS(url) {
       throw new Error(`Reddit RSS HTTP ${res.status}`);
     }
     const xml = await res.text();
-    const parsed = isCommentsUrl(url) ? parseRedditCommentsAtom(xml) : parseRedditAtom(xml);
+    let parsed = isCommentsUrl(url) ? parseRedditCommentsAtom(xml) : parseRedditAtom(xml);
+    // A well-formed feed with zero entries is a legitimate empty result (no
+    // matching posts/comments), same as the JSON API's empty children. Only a
+    // non-feed body (HTML block page) is a failure — treating empty as failure
+    // sent every no-result query on to the paid proxies (BRO-5916).
+    if (!parsed && /<feed[\s>]/.test(xml)) {
+      parsed = isCommentsUrl(url)
+        ? [{ data: { children: [] } }, { data: { children: [] } }]
+        : { data: { children: [], after: null } };
+    }
     if (!parsed) {
       throw new Error(`Reddit RSS response not a parseable Atom feed: ${xml.slice(0, 150)}`);
     }
