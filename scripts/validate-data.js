@@ -3596,8 +3596,9 @@ function validateClaudeSessionCostLedger() {
   info('Checking Claude session cost ledger...');
   const { rows, errors: bad, missing } = costLedger.readLedger({ file: costLedger.ledgerPath(path.join(__dirname, '..')) });
   if (missing) { warn(`${costLedger.LEDGER_REL} does not exist yet (written by record-claude-session-cost.js)`); return; }
-  for (const b of bad.slice(0, 10)) error(`${costLedger.LEDGER_REL} line ${b.line}: ${b.problems.join('; ')}`);
-  if (bad.length > 10) error(`${costLedger.LEDGER_REL}: ${bad.length - 10} more invalid row(s)`);
+  // warn, not error: a telemetry file must never set the push-refusal sentinel for core data.
+  for (const b of bad.slice(0, 10)) warn(`${costLedger.LEDGER_REL} line ${b.line}: ${b.problems.join('; ')}`);
+  if (bad.length > 10) warn(`${costLedger.LEDGER_REL}: ${bad.length - 10} more invalid row(s)`);
   if (!bad.length) ok(`${costLedger.LEDGER_REL}: ${rows.length} valid row(s)`);
 }
 

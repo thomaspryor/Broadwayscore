@@ -973,8 +973,11 @@ function runnerSummaryFacts(body) {
     const v = (String(body || '').match(new RegExp(`^- ${label}: (.*)$`, 'm')) || [])[1] || 'none';
     return v.trim() === 'none' ? [] : v.split(',').map((x) => x.trim()).filter(Boolean);
   };
+  const landedIds = [...list('Landed and Done'), ...list('Landed part, back to Todo with what is left')];
   return {
-    landed: list('Landed and Done').length + list('Landed part, back to Todo with what is left').length,
+    landed: landedIds.length,
+    landedIds, // BRO-5671: the ids, for cost per landed card
+    hasCheckLine: /^- Claude check: \d+ review\(s\), \$[\d.]+/m.test(String(body || '')),
     crashed: list('Runner error mid-card \\(back to Todo\\)').length,
     stop: (String(body || '').match(/^- Stopped early: (.*)$/m) || [])[1] || '',
     checkUsd: Number((String(body || '').match(/^- Claude check: \d+ review\(s\), \$([\d.]+)/m) || [])[1]) || 0,

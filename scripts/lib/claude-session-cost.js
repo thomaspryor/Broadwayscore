@@ -16,6 +16,9 @@
  *
  * COST IS CUMULATIVE. A session alive for days is recorded on several days with a growing cost_usd,
  * so a window's spend per session is (latest cost in the window) - (latest cost before it), never a sum.
+ * A session first recorded inside the window has no baseline, so its whole lifetime cost lands there:
+ * that spend went into the cards it landed, and no earlier window counted it. Only sessions that
+ * landed commits are recorded, so this is cost per LANDED card, not total account spend.
  */
 
 const fs = require('fs');
@@ -80,7 +83,7 @@ function readLedger({ file = ledgerPath(), readFile = fs.readFileSync } = {}) {
 
 /**
  * PURE. `git log --format=%ct%x09%B%x00` text -> Map(sessionId -> { cards:Set, lastMs }).
- * A commit counts when its message has a Claude-Session trailer; its cards are the BRO ids in it.
+ * A commit counts when its message has a Claude-Session trailer; its cards are the BRO ids in its subject.
  */
 function sessionsFromGitLog(text) {
   const out = new Map();
@@ -92,8 +95,9 @@ function sessionsFromGitLog(text) {
     const msg = body.slice(tab + 1);
     const sessions = [...msg.matchAll(SESSION_TRAILER_RE)].map((m) => m[1]);
     if (!sessions.length) continue;
-    // Card ids from the message minus the trailer lines (a Claude-Session URL never holds one, but be safe).
-    const cards = (msg.replace(SESSION_TRAILER_RE, '').match(CARD_RE) || []);
+    // Cards from the SUBJECT only, as landedPerLane counts them: bodies cite related cards
+    // ("BRO-5668 sampled ...") that this session did not land.
+    const cards = (msg.split('\n')[0].match(CARD_RE) || []);
     for (const s of sessions) {
       const e = out.get(s) || { cards: new Set(), lastMs: 0 };
       cards.forEach((c) => e.cards.add(c));
@@ -110,18 +114,6 @@ function landedSessions({ cwd, hours = 24, ref = 'origin/main', exec = require('
   return sessionsFromGitLog(text);
 }
 
-/** First value found under any of `keys`, searching nested objects breadth-first. */
-function findKey(obj, keys) {
-  const queue = [obj];
-  while (queue.length) {
-    const cur = queue.shift();
-    if (!cur || typeof cur !== 'object') continue;
-    for (const k of keys) if (cur[k] !== undefined && cur[k] !== null && typeof cur[k] !== 'object') return cur[k];
-    for (const v of Object.values(cur)) if (v && typeof v === 'object') queue.push(v);
-  }
-  return undefined;
-}
-
 /**
  * PURE. One get_session result (object or JSON text) -> { session, costUsd, model, origin } or
  * { error }. Reads ccr.external_metadata.usage.cost_usd; the other fields are best-effort.
@@ -133,12 +125,17 @@ function parseGetSession(result) {
   const ccr = j.ccr || j;
   const session = String(ccr.id || ccr.session_id || '');
   if (!SESSION_RE.test(session)) return { error: 'get_session result has no session id' };
-  const usage = (ccr.external_metadata && ccr.external_metadata.usage) || {};
-  const cost = Number(usage.cost_usd ?? usage.total_cost_usd);
-  if (usage.cost_usd === undefined && usage.total_cost_usd === undefined) return { session, error: 'no external_metadata.usage.cost_usd' };
-  if (!Number.isFinite(cost) || cost < 0) return { session, error: `cost_usd is not a number: ${usage.cost_usd}` };
-  const model = findKey(ccr, ['model', 'model_id', 'modelId']);
-  const origin = findKey(ccr, ['origin', 'initiation', 'source']) || ccr.title || '';
+  const meta = ccr.external_metadata || {};
+  const usage = meta.usage || {};
+  const field = usage.cost_usd !== undefined ? 'cost_usd' : usage.total_cost_usd !== undefined ? 'total_cost_usd' : null;
+  if (!field) return { session, error: 'no external_metadata.usage.cost_usd' };
+  const raw = usage[field];
+  // Only a real number (or numeric text): '' / false / null would read as $0 and understate spend.
+  const cost = typeof raw === 'number' ? raw : (typeof raw === 'string' && /^\d+(\.\d+)?$/.test(raw.trim()) ? Number(raw) : NaN);
+  if (!Number.isFinite(cost) || cost < 0) return { session, error: `usage.${field} is not a number: ${JSON.stringify(raw)}` };
+  // Named fields only (no deep search): a nested tool config's "model" must not label the session.
+  const model = ccr.model || meta.model || usage.model;
+  const origin = ccr.initiation || meta.origin || meta.initiation || ccr.title || '';
   return { session, costUsd: Math.round(cost * 10000) / 10000, model: model ? String(model) : 'unknown', origin: String(origin).slice(0, 120) };
 }
 
@@ -185,6 +182,8 @@ function summarizeCost(rows, { nowMs = Date.now(), days = 7 } = {}) {
  * spend and cards landed. Reads "- Claude check: N review(s), $X API cost" and the two Landed lines.
  */
 function summarizeCodexCheck(comments, { nowMs = Date.now(), days = 7 } = {}) {
+  // One parser for the runner summary (codex-runner.js runnerSummaryFacts), so a format change there is seen here.
+  const { runnerSummaryFacts } = require('./codex-runner.js');
   const since = nowMs - days * DAY_MS;
   let usd = 0;
   let runs = 0;
@@ -192,14 +191,11 @@ function summarizeCodexCheck(comments, { nowMs = Date.now(), days = 7 } = {}) {
   for (const c of comments || []) {
     const t = Date.parse(c.createdAt);
     if (!Number.isFinite(t) || t < since || t > nowMs) continue;
-    const body = String(c.body || '');
-    const m = body.match(/^- Claude check: \d+ review\(s\), \$([\d.]+) API cost/m);
-    if (!m) continue;
+    const f = runnerSummaryFacts(c.body);
+    if (!f.hasCheckLine) continue;
     runs += 1;
-    usd += Number(m[1]) || 0;
-    for (const line of body.split('\n')) {
-      if (/^- Landed (and Done|part, back to Todo)/.test(line)) (line.match(CARD_RE) || []).forEach((id) => landed.add(id));
-    }
+    usd += f.checkUsd;
+    f.landedIds.forEach((id) => landed.add(id));
   }
   return { usd, runs, cards: landed.size, perCardUsd: landed.size ? usd / landed.size : null };
 }

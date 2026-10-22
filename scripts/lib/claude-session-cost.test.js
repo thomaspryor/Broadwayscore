@@ -25,14 +25,14 @@ test('validateRow / parseLedger: valid rows pass, bad rows are reported by line'
 
 test('sessionsFromGitLog: cards per Claude-Session trailer; commits without one are ignored', () => {
   const log = [
-    `1761100000\tfix(BRO-5794): thing\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/${S1}\n`,
+    `1761100000\tfix(BRO-5794): thing\n\nfollows BRO-4312 (cited, not landed)\nCo-Authored-By: Claude <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/${S1}\n`,
     `1761100500\tBRO-5886: plan; also BRO-12\n\nClaude-Session: https://claude.ai/code/${S1}\n`,
     `1761100900\tchore: data refresh BRO-99\n`,
     `1761101000\tBRO-7: x\n\nClaude-Session: https://claude.ai/code/${S2}\n`,
   ].join('\0');
   const m = C.sessionsFromGitLog(log);
   assert.deepEqual([...m.keys()].sort(), [S2, S1].sort());
-  assert.deepEqual([...m.get(S1).cards].sort(), ['BRO-12', 'BRO-5794', 'BRO-5886']);
+  assert.deepEqual([...m.get(S1).cards].sort(), ['BRO-12', 'BRO-5794', 'BRO-5886']); // subject ids only
   assert.deepEqual([...m.get(S2).cards], ['BRO-7']);
 });
 
@@ -43,6 +43,9 @@ test('parseGetSession: reads ccr.external_metadata.usage.cost_usd; missing cost 
   assert.equal(ok.model, 'claude-sonnet-5');
   assert.match(C.parseGetSession({ ccr: { id: S1, session_status: 'X' } }).error, /cost_usd/);
   assert.match(C.parseGetSession('nope').error, /not JSON/);
+  for (const bad of ['', false, null]) assert.match(C.parseGetSession({ ccr: { id: S1, external_metadata: { usage: { cost_usd: bad } } } }).error, /not a number/);
+  // A nested tool config's model never labels the session.
+  assert.equal(C.parseGetSession({ ccr: { id: S1, tools: { model: 'haiku' }, external_metadata: { usage: { cost_usd: 1 } } } }).model, 'unknown');
   assert.match(C.parseGetSession({ ccr: { external_metadata: { usage: { cost_usd: 1 } } } }).error, /session id/);
 });
 
