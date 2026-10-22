@@ -148,7 +148,7 @@ function TicketIcon() {
 const TAG_BROWSE_MAP: Record<string, string> = {
   'comedy': '/browse/best-broadway-comedies',
   'drama': '/browse/best-broadway-dramas',
-  'family': '/browse/broadway-shows-for-kids',
+  'family': '/guides/best-broadway-shows-for-kids',
   'revival': '/browse/best-broadway-revivals',
   'jukebox': '/browse/jukebox-musicals-on-broadway',
 };
@@ -639,22 +639,22 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
               {(bookA || bookB) && (
                 <Row
                   label={bookA?.role === 'Playwright' || bookB?.role === 'Playwright' ? 'Playwright' : 'Book'}
-                  valueA={<CreativeLink member={bookA} roleSlug="playwrights" />}
-                  valueB={<CreativeLink member={bookB} roleSlug="playwrights" />}
+                  valueA={<CreativeLink member={bookA} roleSlug="creative" />}
+                  valueB={<CreativeLink member={bookB} roleSlug="creative" />}
                 />
               )}
               {(showA.type === 'musical' || showB.type === 'musical') && (musicA || musicB) && (
                 <Row
                   label="Music"
-                  valueA={<CreativeLink member={musicA} roleSlug="composers" />}
-                  valueB={<CreativeLink member={musicB} roleSlug="composers" />}
+                  valueA={<CreativeLink member={musicA} roleSlug="creative" />}
+                  valueB={<CreativeLink member={musicB} roleSlug="creative" />}
                 />
               )}
               {(directorA || directorB) && (
                 <Row
                   label="Director"
-                  valueA={<CreativeLink member={directorA} roleSlug="directors" />}
-                  valueB={<CreativeLink member={directorB} roleSlug="directors" />}
+                  valueA={<CreativeLink member={directorA} roleSlug="creative" />}
+                  valueB={<CreativeLink member={directorB} roleSlug="creative" />}
                 />
               )}
             </>
@@ -782,7 +782,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
             <Link href="/browse/best-recent-shows" className="px-4 py-2 rounded-full bg-surface-overlay hover:bg-surface-raised text-sm text-gray-300 hover:text-white transition-colors">
               Best Broadway Shows
             </Link>
-            <Link href="/browse/best-broadway-musicals" className="px-4 py-2 rounded-full bg-surface-overlay hover:bg-surface-raised text-sm text-gray-300 hover:text-white transition-colors">
+            <Link href="/guides/best-broadway-musicals" className="px-4 py-2 rounded-full bg-surface-overlay hover:bg-surface-raised text-sm text-gray-300 hover:text-white transition-colors">
               Best Musicals
             </Link>
             <Link href="/lotteries" className="px-4 py-2 rounded-full bg-surface-overlay hover:bg-surface-raised text-sm text-gray-300 hover:text-white transition-colors">

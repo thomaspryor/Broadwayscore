@@ -163,19 +163,12 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-5 sm:py-12">
       {/* Hero */}
       <div className="mb-4 sm:mb-8">
-        <div className="relative inline-block mb-3">
-          <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white tracking-tight">
+        {/* One responsive h1 (was two CSS-toggled h1s: crawlers counted both, BRO-5970). */}
+        <div className="relative inline-block mb-2 sm:mb-3">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight">
             Opera<span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">Scorecard</span>
           </h1>
-          <span className="hidden sm:inline-block ml-2 align-middle text-[10px] sm:text-xs font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5 absolute -top-3 sm:-top-4 right-0 translate-x-full">
-            Beta
-          </span>
-        </div>
-        <div className="relative inline-block mb-2">
-          <h1 className="block sm:hidden text-3xl font-extrabold text-white tracking-tight">
-            Opera<span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">Scorecard</span>
-          </h1>
-          <span className="sm:hidden ml-2 align-middle inline-block text-[10px] font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5 absolute -top-1 right-0 translate-x-full">
+          <span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5 absolute -top-1 sm:-top-4 right-0 translate-x-full">
             Beta
           </span>
         </div>

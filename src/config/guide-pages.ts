@@ -54,7 +54,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     slug: 'best-broadway-shows',
     title: 'Best Broadway Shows',
     h1Template: 'Best Broadway Shows Right Now ({monthYear})',
-    metaTitleTemplate: 'Best Broadway Shows {monthYear} | Broadway Scorecard',
+    metaTitleTemplate: 'Best Broadway Shows {monthYear} | Top-Rated Right Now',
     metaDescriptionTemplate: 'Discover the {count} best Broadway shows playing right now in {monthYear}. Expert CriticScore ratings, reviews, and ticket info for the top shows on Broadway.',
     introFallback: 'Broadway is currently home to {count} productions spanning musicals, plays, revivals, and world premieres. Our rankings combine scores from top critics including The New York Times, Vulture, and Variety to identify the very best shows playing right now.',
     filter: (show) => show.status === 'open' && (show.criticScore?.score ?? 0) > 0 && displaysCriticScore(show),

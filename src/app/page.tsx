@@ -331,11 +331,11 @@ export default function HomePage() {
     ...(featureFlags.regional ? [{ title: 'Pre-Broadway: Out-of-Town Shows', shows: preBroadwayList, viewAllHref: '/browse/pre-broadway-out-of-town-shows', minCount: 2 }] : []),
     { title: 'Tony Winning Shows', shows: tonyWinnersShows, viewAllHref: '/browse/tony-winners-on-broadway' },
     { title: 'Perfect for Date Night', shows: dateNightShowsList, viewAllHref: '/browse/broadway-shows-for-date-night' },
-    { title: 'Great for Kids', shows: kidsShowsList, viewAllHref: '/browse/broadway-shows-for-kids' },
+    { title: 'Great for Kids', shows: kidsShowsList, viewAllHref: '/guides/best-broadway-shows-for-kids' },
     { title: 'Jukebox Musicals', shows: jukeboxMusicalsList, viewAllHref: '/browse/jukebox-musicals-on-broadway' },
     // Near the bottom per owner (BRO-4757, 2026-10-05).
     ...(featureFlags.tour ? [{ title: 'On Tour Now', shows: onTourList, viewAllHref: '/browse/broadway-national-tours' }] : []),
-    { title: 'Closing Soon', shows: closingSoonShowsList, viewAllHref: '/browse/broadway-shows-closing-soon' },
+    { title: 'Closing Soon', shows: closingSoonShowsList, viewAllHref: '/guides/broadway-shows-closing-soon' },
   ];
 
   // Preload the LCP poster only; the other first-row posters load eagerly

@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { notFound } from 'next/navigation';
 import {
   getAllShowSlugs,
   getShowBySlug,
@@ -14,8 +15,9 @@ import {
   getOperaShows,
   getOperaTitleSlug,
   isTourIndexableShow,
+  getShowSitemapLastmod,
 } from '@/lib/data-core';
-import { getAllCriticSlugs, getAllOutletSlugs } from '@/lib/data-reviews';
+import { getAllCriticSlugs, getAllOutletSlugs, getCriticBySlug } from '@/lib/data-reviews';
 import { getAllVideoCreatorSlugs } from '@/lib/data-video-critics';
 import { getAllActorProfiles } from '@/lib/data-actors';
 import { isThinActor } from '@/lib/actor-indexability';
@@ -52,6 +54,22 @@ function getDateContext(): DateContext {
   return { showsDate, reviewsDate, latestDate, currentYear };
 }
 
+// Newest per-show lastmod across a profile's shows (actor, creative). Memoised: an
+// actor page asks for the same shows hundreds of times per sitemap build.
+const showLastmodCache = new Map<string, number>();
+function latestShowLastmod(showIds: ReadonlyArray<string>, fallback?: Date): Date | undefined {
+  let best = 0;
+  for (const id of showIds) {
+    let t = showLastmodCache.get(id);
+    if (t === undefined) {
+      t = getShowSitemapLastmod(id)?.getTime() ?? 0;
+      showLastmodCache.set(id, t);
+    }
+    if (t > best) best = t;
+  }
+  return best ? new Date(best) : fallback;
+}
+
 function buildShowsShard(ctx: DateContext): MetadataRoute.Sitemap {
   const operaSlugs = new Set(getOperaShows().map(s => s.slug));
   return getAllShowSlugs()
@@ -62,7 +80,8 @@ function buildShowsShard(ctx: DateContext): MetadataRoute.Sitemap {
       const isOpen = show?.status === 'open';
       return {
         url: `${BASE_URL}/show/${slug}`,
-        lastModified: isOpen ? ctx.latestDate : ctx.showsDate,
+        // Per show, not the global shows.json mtime that churns every CI commit (BRO-5970).
+        lastModified: show ? getShowSitemapLastmod(show.id) : undefined,
         changeFrequency: isOpen ? 'weekly' as const : 'monthly' as const,
         priority: isOpen ? 0.9 : 0.6,
       };
@@ -77,7 +96,7 @@ function buildOperaShard(ctx: DateContext): MetadataRoute.Sitemap {
       const isOpen = show.status === 'open';
       return {
         url: `${BASE_URL}/opera/${getOperaTitleSlug(show.slug)}`,
-        lastModified: isOpen ? ctx.latestDate : ctx.showsDate,
+        lastModified: getShowSitemapLastmod(show.id),
         changeFrequency: isOpen ? 'weekly' as const : 'monthly' as const,
         priority: isOpen ? 0.8 : 0.6,
       };
@@ -167,7 +186,7 @@ function buildCriticsShard(ctx: DateContext): MetadataRoute.Sitemap {
     },
     ...getAllCriticSlugs().map((slug) => ({
       url: `${BASE_URL}/critics/${slug}`,
-      lastModified: ctx.reviewsDate,
+      lastModified: criticLastmod(slug, ctx),
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     })),
@@ -196,6 +215,16 @@ function buildCriticsShard(ctx: DateContext): MetadataRoute.Sitemap {
   ];
 }
 
+// A critic page changes when the critic's newest review lands, not on every reviews.json rebuild.
+function criticLastmod(slug: string, ctx: DateContext): Date {
+  const critic = getCriticBySlug(slug);
+  let best = 0;
+  for (const r of critic?.reviews ?? []) {
+    if (r.parsedDate && r.parsedDate > best && r.parsedDate <= ctx.reviewsDate.getTime()) best = r.parsedDate;
+  }
+  return best ? new Date(best) : ctx.reviewsDate;
+}
+
 function buildCreativesShard(ctx: DateContext): MetadataRoute.Sitemap {
   return [
     ...ALL_CREATIVE_CATEGORIES.map(cat => ({
@@ -204,9 +233,9 @@ function buildCreativesShard(ctx: DateContext): MetadataRoute.Sitemap {
       changeFrequency: 'weekly' as const,
       priority: 0.85,
     })),
-    ...getAllUnifiedCreativeProfiles().filter(p => !isThinCreative(p)).map(p => p.slug).map(slug => ({
-      url: `${BASE_URL}/creative/${slug}`,
-      lastModified: ctx.showsDate,
+    ...getAllUnifiedCreativeProfiles().filter(p => !isThinCreative(p)).map(p => ({
+      url: `${BASE_URL}/creative/${p.slug}`,
+      lastModified: latestShowLastmod(p.shows.map(s => s.showId), ctx.showsDate),
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     })),
@@ -219,10 +248,10 @@ function buildActorsShard(ctx: DateContext, bucket: 'actors-ah' | 'actors-iq' | 
   const slugs = getAllActorProfiles()
     .filter(profile => getActorBucket(profile.slug) === bucket)
     .filter(profile => !isThinActor(profile))
-    .map(profile => profile.slug);
-  const pages: MetadataRoute.Sitemap = slugs.map(slug => ({
+    .map(profile => ({ slug: profile.slug, showIds: profile.shows.map(s => s.showId) }));
+  const pages: MetadataRoute.Sitemap = slugs.map(({ slug, showIds }) => ({
     url: `${BASE_URL}/cast/${slug}`,
-    lastModified: ctx.showsDate,
+    lastModified: latestShowLastmod(showIds, ctx.showsDate),
     changeFrequency: 'monthly' as const,
     priority: 0.65,
   }));
@@ -609,7 +638,8 @@ async function buildCoreShard(ctx: DateContext): Promise<MetadataRoute.Sitemap> 
 export default async function sitemap({ id }: { id: number }): Promise<MetadataRoute.Sitemap> {
   const ctx = getDateContext();
   const shard = SITEMAP_SHARDS[id];
-  if (!shard) return [];
+  // Unknown shard id: 404 rather than serving an empty urlset (BRO-5970).
+  if (!shard) notFound();
   const name: ShardName = shard.name;
   switch (name) {
     case 'core': return await buildCoreShard(ctx);

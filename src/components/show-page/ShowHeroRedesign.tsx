@@ -106,6 +106,8 @@ interface ShowHeroRedesignProps {
   /** Slug of the off-Broadway venue page for this show's venue; null when the venue string
    *  didn't resolve to a page (render plain text rather than a dead link). */
   offBroadwayVenueSlug?: string | null;
+  /** True for a London show with no /west-end/theater page (HIDDEN_LONDON_IDS); render the venue as text. */
+  londonVenueHidden?: boolean;
   /** Reviews still needed for a CriticScore; 0 when the gate isn't review count. */
   reviewsRemaining?: number;
   /** Server-computed noCriticReviewsExpected() (src/lib/review-expectation.ts). */
@@ -162,6 +164,7 @@ function Inner({
   isWestEnd,
   isOffBroadway,
   offBroadwayVenueSlug,
+  londonVenueHidden = false,
   reviewsRemaining = 0,
   noReviewsExpected = false,
   criticsTakeMode = 'none',
@@ -435,7 +438,7 @@ function Inner({
   // ─── Render ────────────────────────────────────────────────────────────
 
   // An announced show may have no theater yet (BRO-5814): no link, no empty label.
-  const venueLink = !show.venue ? null : isWestEnd
+  const venueLink = !show.venue || (isWestEnd && londonVenueHidden) ? null : isWestEnd
     ? `/west-end/theater/${slugify(show.venue)}`
     // Off-Broadway links only when the venue resolved to a page (freeform venue strings).
     // Regional and tour venues have no /theater page ("North American Tour" is not a house).

@@ -109,7 +109,7 @@ export default function GuidesIndexPage() {
               { href: '/browse/broadway-ticket-prices', label: 'Ticket Prices' },
               { href: '/browse/most-divisive-broadway-shows', label: 'Most Divisive' },
               { href: '/browse/longest-running-broadway-shows', label: 'Longest-Running' },
-              { href: '/browse/broadway-shows-closing-soon', label: 'Closing Soon' },
+              { href: '/guides/broadway-shows-closing-soon', label: 'Closing Soon' },
               { href: '/browse/best-broadway-show-right-now', label: '#1 Show Right Now' },
             ].map(({ href, label }) => (
               <Link

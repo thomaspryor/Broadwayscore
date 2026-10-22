@@ -127,6 +127,10 @@ export default function RankingsPage() {
     return list?.shows.length || 0;
   };
 
+  // Newest Tony-nominees browse page that exists (current year's is created after
+  // nominations; linking a missing slug 404s, BRO-5970).
+  const tonyNomineeYear = [currentYear, currentYear - 1].find(y => BROWSE_PAGES[`tony-nominated-${y}`]);
+
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
     { name: 'Rankings', url: `${BASE_URL}/rankings` },
@@ -205,7 +209,7 @@ export default function RankingsPage() {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <RankingCard
-              href="/browse/broadway-shows-for-kids"
+              href="/guides/best-broadway-shows-for-kids"
               title="Best for Kids"
               description="Family-friendly shows for young theatergoers"
               showCount={getShowCount('broadway-shows-for-kids')}
@@ -243,14 +247,14 @@ export default function RankingsPage() {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <RankingCard
-              href="/browse/best-broadway-musicals"
+              href="/guides/best-broadway-musicals"
               title="Best Musicals"
               description="Highest-rated musicals playing now"
               showCount={getShowCount('best-broadway-musicals')}
               icon={<span className="text-lg">🎵</span>}
             />
             <RankingCard
-              href="/browse/best-broadway-plays"
+              href="/guides/best-broadway-plays"
               title="Best Plays"
               description="Top-rated dramatic productions"
               showCount={getShowCount('best-broadway-plays')}
@@ -335,7 +339,7 @@ export default function RankingsPage() {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <RankingCard
-              href="/browse/broadway-shows-closing-soon"
+              href="/guides/broadway-shows-closing-soon"
               title="Closing Soon"
               description="Last chance to see these shows"
               showCount={getShowCount('broadway-shows-closing-soon')}
@@ -405,14 +409,16 @@ export default function RankingsPage() {
               icon={<span className="text-lg">🏆</span>}
               color="text-yellow-400"
             />
-            <RankingCard
-              href={`/browse/tony-nominated-${currentYear}`}
-              title={`${currentYear} Tony Nominees`}
-              description="This year's celebrated shows"
-              showCount={getShowCount(`tony-nominated-${currentYear}`)}
-              icon={<span className="text-lg">🎖️</span>}
-              color="text-yellow-400"
-            />
+            {tonyNomineeYear && (
+              <RankingCard
+                href={`/browse/tony-nominated-${tonyNomineeYear}`}
+                title={`${tonyNomineeYear} Tony Nominees`}
+                description="This year's celebrated shows"
+                showCount={getShowCount(`tony-nominated-${tonyNomineeYear}`)}
+                icon={<span className="text-lg">🎖️</span>}
+                color="text-yellow-400"
+              />
+            )}
             <RankingCard
               href="/browse/best-broadway-show-right-now"
               title="The #1 Show"
@@ -442,7 +448,7 @@ export default function RankingsPage() {
             )}
             {featureFlags.commercial && (
             <RankingCard
-              href="/biz-buzz"
+              href="/biz"
               title="Commercial Scorecard"
               description="Which shows make money"
               icon={<span className="text-lg">📊</span>}

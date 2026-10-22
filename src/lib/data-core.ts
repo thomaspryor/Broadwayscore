@@ -525,6 +525,54 @@ export function getRecentShowSlugs(windowDays = 180): string[] {
 }
 
 /**
+ * Production year to append to a show's <title> when another production in the
+ * same market shares its title (macbeth-2013 vs macbeth-2008 both rendered
+ * "Macbeth Reviews on Broadway"; BRO-5970). Undefined for a title that is unique.
+ * Reads raw shows.json rows, so it is cheap enough for generateMetadata.
+ */
+let sharedTitleCounts: Map<string, number> | null = null;
+function sharedTitleKey(s: any): string {
+  const t = String(s.title || '').toLowerCase().replace(/[\u2018\u2019\u2032]/g, "'").replace(/[^\w\s']/g, '').trim();
+  return `${t}|${s.category || 'broadway'}`;
+}
+export function getSharedTitleYear(show: { title: string; category?: string; openingDate?: string; id?: string }): number | undefined {
+  if (!sharedTitleCounts) {
+    sharedTitleCounts = new Map();
+    for (const s of shows as any[]) {
+      if (s._devOnly) continue;
+      const k = sharedTitleKey(s);
+      sharedTitleCounts.set(k, (sharedTitleCounts.get(k) || 0) + 1);
+    }
+  }
+  if ((sharedTitleCounts.get(sharedTitleKey(show)) || 0) < 2) return undefined;
+  // The id year matches the URL; opening date can land a year later (evita-2026 opens 2027).
+  const fromId = show.id?.match(/-(\d{4})$/);
+  if (fromId) return parseInt(fromId[1], 10);
+  const fromDate = show.openingDate ? parseInt(show.openingDate.slice(0, 4), 10) : NaN;
+  return fromDate >= 1700 ? fromDate : undefined;
+}
+
+/**
+ * Per-show sitemap lastmod: the newest of the show's latest review date and its
+ * own lifecycle dates (opening, closing), never in the future. The old value was
+ * the shows.json mtime, which CI bumps every ~30 minutes, so 97% of the sitemap
+ * carried one churning timestamp and Google learned to ignore lastmod (BRO-5970).
+ * Undefined when the show has no usable date.
+ */
+export function getShowSitemapLastmod(showId: string, cap: Date = new Date(BUILD_TIME_NOW)): Date | undefined {
+  const raw: any = (shows as any[]).find(s => s.id === showId);
+  const candidates: (string | null | undefined)[] = [raw?.openingDate, raw?.closingDate];
+  for (const r of reviewsByShowId.get(showId) || []) candidates.push((r as any).publishDate);
+  let best = 0;
+  for (const c of candidates) {
+    if (!c) continue;
+    const t = new Date(c).getTime();
+    if (Number.isFinite(t) && t <= cap.getTime() && t > best) best = t;
+  }
+  return best ? new Date(best) : undefined;
+}
+
+/**
  * Get slugs for the "hot" pre-render set: open or previews only. Used by
  * opengraph-image.tsx to keep high-social-share-volume shows pre-rendered
  * while letting closed/historical shows fall through to ISR (each pre-rendered

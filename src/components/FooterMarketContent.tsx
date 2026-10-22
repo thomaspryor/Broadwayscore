@@ -85,7 +85,7 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
           <div>
             <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">By Category</h4>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li><Link href="/browse/best-broadway-musicals" className="hover:text-white transition-colors">Best Musicals</Link></li>
+              <li><Link href="/guides/best-broadway-musicals" className="hover:text-white transition-colors">Best Musicals</Link></li>
               <li><Link href="/browse/best-broadway-dramas" className="hover:text-white transition-colors">Best Dramas</Link></li>
               <li><Link href="/browse/best-broadway-comedies" className="hover:text-white transition-colors">Comedies</Link></li>
               <li><Link href="/browse/best-broadway-revivals" className="hover:text-white transition-colors">Revivals</Link></li>
@@ -99,14 +99,14 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
           <div>
             <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">By Audience</h4>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li><Link href="/browse/broadway-shows-for-kids" className="hover:text-white transition-colors">Shows for Kids</Link></li>
+              <li><Link href="/guides/best-broadway-shows-for-kids" className="hover:text-white transition-colors">Shows for Kids</Link></li>
               <li><Link href="/browse/broadway-age-guide" className="hover:text-white transition-colors">Age Guide</Link></li>
               <li><Link href="/browse/broadway-shows-for-date-night" className="hover:text-white transition-colors">Date Night</Link></li>
               <li><Link href="/browse/broadway-shows-for-tourists" className="hover:text-white transition-colors">For Tourists</Link></li>
               <li><Link href="/browse/first-time-broadway" className="hover:text-white transition-colors">First-Timers</Link></li>
               <li><Link href="/browse/broadway-show-runtimes" className="hover:text-white transition-colors">Show Runtimes</Link></li>
               {!featureFlags.discountTickets && (
-                <li><Link href="/browse/broadway-shows-closing-soon" className="hover:text-white transition-colors">Closing Soon</Link></li>
+                <li><Link href="/guides/broadway-shows-closing-soon" className="hover:text-white transition-colors">Closing Soon</Link></li>
               )}
             </ul>
           </div>
@@ -119,7 +119,7 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
               <li><Link href="/lotteries" className="hover:text-white transition-colors">Lottery Tickets</Link></li>
               <li><Link href="/rush" className="hover:text-white transition-colors">Rush Tickets</Link></li>
               <li><Link href="/standing-room" className="hover:text-white transition-colors">Standing Room</Link></li>
-              <li><Link href="/browse/broadway-shows-closing-soon" className="hover:text-white transition-colors">Closing Soon</Link></li>
+              <li><Link href="/guides/broadway-shows-closing-soon" className="hover:text-white transition-colors">Closing Soon</Link></li>
             </ul>
           </div>
           )}
@@ -132,7 +132,7 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
               {featureFlags.goldLists && <li><Link href="/lists" className="hover:text-white transition-colors">Gold Lists</Link></li>}
               {featureFlags.boxOffice && <li><Link href="/box-office" className="hover:text-white transition-colors">Box Office Scorecard</Link></li>}
               {marketId === 'nyc' && <li><Link href="/season-report" className="hover:text-white transition-colors">Season Report</Link></li>}
-              {featureFlags.commercial && <li><Link href="/biz-buzz" className="hover:text-white transition-colors">Commercial Scorecard</Link></li>}
+              {featureFlags.commercial && <li><Link href="/biz" className="hover:text-white transition-colors">Commercial Scorecard</Link></li>}
               <li><Link href="/audience-buzz" className="hover:text-white transition-colors">AudienceGrade</Link></li>
               <li><Link href="/broadway-theaters-map" className="hover:text-white transition-colors">Theater Map</Link></li>
               {marketId === 'off-broadway' && <li><Link href="/off-broadway/theater" className="hover:text-white transition-colors">Off-Broadway Theatres</Link></li>}

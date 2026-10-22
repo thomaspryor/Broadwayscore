@@ -85,7 +85,7 @@ ${browseSlugs.slice(0, 12).map(slug => {
 ### Data & Analytics
 - [Box Office Scorecard](${BASE_URL}/box-office): Weekly grosses, capacity, and all-time stats for every show
 - [Broadway Season Report](${BASE_URL}/season-report): This season vs last season and the prior 10 - openings pace, original/revival x musical/play mix, and which kinds of shows recoup
-${featureFlags.commercial ? `- [Commercial Scorecard](${BASE_URL}/biz-buzz): Which shows make money - recoupment data, capitalization, designations\n` : ''}- [AudienceGrade](${BASE_URL}/audience-buzz): What audiences think - Show Score, Mezzanine, Theatr, and Reddit ratings
+${featureFlags.commercial ? `- [Commercial Scorecard](${BASE_URL}/biz): Which shows make money - recoupment data, capitalization, designations\n` : ''}- [AudienceGrade](${BASE_URL}/audience-buzz): What audiences think - Show Score, Mezzanine, Theatr, and Reddit ratings
 
 ### Discount Tickets
 - [Best Value Tickets](${BASE_URL}/best-value): All discount options (lottery, rush, SRO) sorted by cheapest price
@@ -95,7 +95,7 @@ ${featureFlags.commercial ? `- [Commercial Scorecard](${BASE_URL}/biz-buzz): Whi
 
 ### Other Resources
 - [Broadway Theater Map](${BASE_URL}/broadway-theaters-map): Interactive map of all Broadway theaters
-- [Directors Index](${BASE_URL}/director): Browse shows by director
+- [Directors Index](${BASE_URL}/directors): Browse shows by director
 - [Theaters Index](${BASE_URL}/theater): Browse shows by theater
 
 ### West End (London)
