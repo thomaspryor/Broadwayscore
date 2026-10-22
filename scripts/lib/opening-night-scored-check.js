@@ -59,7 +59,33 @@ function findMissingScored(openingShows, scoredSet) {
   return openingShows.filter((s) => !scoredSet.has(s.id));
 }
 
+// Shows the review pipeline has actually collected text for (BRO-5975): a show with no
+// reviews yet has nothing to score, and that gap belongs to the coverage gates.
+function reviewedShowIds(latencyLines) {
+  const set = new Set();
+  for (const line of latencyLines) {
+    if (!line) continue;
+    try {
+      const e = JSON.parse(line);
+      if (e.stage === 'scored'
+        || (e.stage === 'rebuilt' && e.metadata && e.metadata.reviewCount > 0)) set.add(e.showId);
+    } catch { /* skip malformed line */ }
+  }
+  return set;
+}
+
+// The alert is for scoring that is overdue, not scoring still in flight: the cron fires
+// ~1 PM ET, hours before a same-day press night's reviews exist (7 of 8 runs red on
+// openings that scored later that night), so a show that opened today is not yet due,
+// and a show with no collected reviews has nothing to score.
+function findOverdueMissingScored(openingShows, scoredSet, reviewedSet, today) {
+  return findMissingScored(openingShows, scoredSet)
+    .filter((s) => s.openingDate !== today && reviewedSet.has(s.id));
+}
+
 module.exports = {
+  reviewedShowIds,
+  findOverdueMissingScored,
   COVERED_CATEGORIES,
   etDateToday,
   etDateYesterday,

@@ -19,7 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const {
-  etDateToday, etDateYesterday, selectOpeningWindowShows, scoredShowIds, findMissingScored,
+  etDateToday, etDateYesterday, selectOpeningWindowShows, scoredShowIds, reviewedShowIds, findOverdueMissingScored,
 } = require('./lib/opening-night-scored-check.js');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
@@ -44,7 +44,7 @@ const latencyLines = fs.existsSync(LATENCY_FILE)
   : [];
 const scoredSet = scoredShowIds(latencyLines, cutoffMs);
 
-const missing = findMissingScored(openingShows, scoredSet);
+const missing = findOverdueMissingScored(openingShows, scoredSet, reviewedShowIds(latencyLines), today);
 console.log(`Opening window: ${yesterday} → ${today}`);
 console.log(`Shows in window: ${openingShows.map((s) => s.id).join(', ')}`);
 console.log(`Shows with a "scored" entry in the last 48h: ${openingShows.filter((s) => scoredSet.has(s.id)).map((s) => s.id).join(', ') || '(none)'}`);
