@@ -250,7 +250,7 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
     }
     if (has('searchLanding')) {
       const sl = S(ph.searchLanding);
-      const distinct = (w) => Object.values(sl).filter((byWeek) => (byWeek[w] || 0) > 0).length;
+      const distinct = (w) => Object.entries(sl).filter(([k, byWeek]) => k !== '(none)' && (byWeek[w] || 0) > 0).length;
       const n = distinct(last);
       if (n > 0) {
         const avg = monthAvgWeeks.length ? Math.round(monthAvgWeeks.reduce((t, w) => t + distinct(w), 0) / monthAvgWeeks.length) : 0;
