@@ -29,14 +29,15 @@ const BOUNCE_MEMORY_MS = 14 * 24 * 3600_000;
 const PARTIAL_MARKER = '<!-- codex-runner-partial -->';
 const HKDF_SALT = 'bsc-codex-runner-auth-v1';
 
-/** Bare cloud launches must finish before the host's 120-minute task limit. */
-function runnerTimeLimits({ lane = 'cloud', maxMinutes, hardStopMinutes } = {}) {
+/** Bound card runs to their host; PR landings keep an unlimited default. */
+function runnerTimeLimits({ lane = 'cloud', pr = false, maxMinutes, hardStopMinutes } = {}) {
   const limits = {
     maxMinutes: Number(maxMinutes ?? (lane === 'gha' ? 240 : 105)),
-    hardStopMinutes: Number(hardStopMinutes ?? (lane === 'gha' ? 290 : 112)),
+    hardStopMinutes: Number(hardStopMinutes ?? (pr ? 0 : lane === 'gha' ? 290 : 112)),
   };
   if (!Number.isFinite(limits.maxMinutes) || limits.maxMinutes <= 0
-    || !Number.isFinite(limits.hardStopMinutes) || limits.hardStopMinutes < 30) {
+    || !Number.isFinite(limits.hardStopMinutes)
+    || ((hardStopMinutes != null || !pr) && limits.hardStopMinutes < 30)) {
     throw new Error('max-minutes must be positive and hard-stop-minutes must be >= 30; both must be finite');
   }
   return limits;

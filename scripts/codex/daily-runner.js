@@ -91,9 +91,11 @@ function arg(name, def) {
   const v = process.argv[i + 1];
   return v === undefined || v.startsWith('--') ? true : v;
 }
+// --pr N (BRO-5646): land one Codex cloud pull request instead of working cards (runPr).
+const PR_NUM = Number(arg('pr', 0)) || 0;
 let timeLimits;
 try {
-  timeLimits = R.runnerTimeLimits({ lane: String(arg('lane', 'cloud')), maxMinutes: arg('max-minutes'), hardStopMinutes: arg('hard-stop-minutes') });
+  timeLimits = R.runnerTimeLimits({ lane: String(arg('lane', 'cloud')), pr: PR_NUM, maxMinutes: arg('max-minutes'), hardStopMinutes: arg('hard-stop-minutes') });
 } catch (err) { console.error(err.message); process.exit(2); }
 const OPTS = {
   limit: Number(arg('limit', 10)),
@@ -112,7 +114,8 @@ const OPTS = {
   // review still inside it, and is cut to fit, so fix rounds cannot run past the budget.
   cardMaxMinutes: Number(arg('card-max-minutes', 120)),
   // The wall clock the run must be fully done by (summary posted, lock released).
-  // Defaults are host-bounded even when a launcher forgets the flags (BRO-5694).
+  // Card defaults are host-bounded even when a launcher forgets the flags (BRO-5694).
+  // PR mode has no hard stop unless explicitly requested, preserving its full landing wait.
   // The routine's background task is killed at 120 min, and a kill during a Codex exec or a
   // check never reaches the SIGTERM handler (spawnSync blocks it): on 2026-10-13 the 20:47
   // firing's runner died mid-card, posted no summary and left its lock and BRO-4277 stranded
@@ -123,8 +126,6 @@ const OPTS = {
   lane: String(arg('lane', 'cloud')),
   pickList: Number(arg('pick-list', 0)) || 0,
 };
-// --pr N (BRO-5646): land one Codex cloud pull request instead of working cards (runPr).
-const PR_NUM = Number(arg('pr', 0)) || 0;
 // A slot's hard stop counts from the launch, not from its own (staggered) start.
 const RUN_STARTED_MS = Number(arg('run-started', 0)) || Date.now();
 const HARD_END_MS = OPTS.hardStopMinutes > 0 ? RUN_STARTED_MS + OPTS.hardStopMinutes * 60_000 : Infinity;
