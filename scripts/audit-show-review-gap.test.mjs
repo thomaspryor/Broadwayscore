@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 
@@ -1080,7 +1081,7 @@ test('BRO-5732: a prior-census URL is not re-judged on a bare URL; multilingual 
     const ingest = fs.readFileSync(new URL('./ingest-review-from-url.js', import.meta.url), 'utf8');
     const audit = fs.readFileSync(new URL('./audit-show-review-gap.js', import.meta.url), 'utf8');
     // The ingester refuses blocked (ticket/booking/social) hosts before it fetches...
-    const blockedAt = ingest.indexOf('if (isBlockedReviewUrl(url))');
+    const blockedAt = ingest.search(/\bisBlockedReviewUrl\(/);
     assert.ok(blockedAt > 0, 'ingest-review-from-url.js must check isBlockedReviewUrl');
     assert.ok(blockedAt < ingest.search(/await\s+fetchPage\(/), 'blocked-host check must run before the fetch');
     // ...and writes review files only through the guarded writer.
@@ -1092,17 +1093,17 @@ test('BRO-5732: a prior-census URL is not re-judged on a bare URL; multilingual 
   });
 
   test('BRO-5902: only ingest-review-from-url.js tags writes as submit-review-form', () => {
-    const scriptsDir = new URL('.', import.meta.url);
+    const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
     const offenders = [];
     const walk = (dir) => {
       for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
         const p = path.join(dir, e.name);
         if (e.isDirectory()) { if (e.name !== 'node_modules') walk(p); continue; }
         if (!/\.(c|m)?js$/.test(e.name) || /\.test\./.test(e.name)) continue;
-        if (/\bsource:\s*['"]submit-review-form['"]/.test(fs.readFileSync(p, 'utf8'))) offenders.push(path.relative(scriptsDir.pathname, p));
+        if (/\bsource:\s*['"]submit-review-form['"]/.test(fs.readFileSync(p, 'utf8'))) offenders.push(path.relative(scriptsDir, p));
       }
     };
-    walk(scriptsDir.pathname);
+    walk(scriptsDir);
     assert.deepEqual(offenders, ['ingest-review-from-url.js']);
   });
 }

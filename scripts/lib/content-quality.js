@@ -423,48 +423,59 @@ function detectListingPageText(text) {
  * before they are gone" and the LLM scored it 78. Domain lists can't keep up
  * with booking sites, so catch the page itself.
  *
- * Each phrase is a sales call-to-action a critic never writes. A real review
- * can still end with one ticket line ("Book now at ..."), so the detector
- * needs PROMO_BOOKING_COPY_MIN_HITS distinct patterns and ignores any hit in
- * the trailing 40% of a text that has substantial review content.
+ * Strong phrases are sales calls-to-action a critic never writes. Weak ones
+ * are booking-widget phrases that plain English also produces ("before they
+ * are all gone", "choose a date"), so they only count alongside a strong hit.
+ * A real review can still end with one ticket line, so any hit whose first
+ * occurrence sits in the trailing 40% of a text with substantial review
+ * content is ignored.
  * @type {RegExp[]}
  */
-const PROMO_BOOKING_COPY_PATTERNS = [
+const PROMO_BOOKING_COPY_STRONG_PATTERNS = [
   /\b(?:get\s+)?your\s+booking\s+(?:is\s+)?confirmed\s+instantly\b/i,
   /\binstant\s+(?:booking\s+)?confirmation\b/i,
   /\bgrab\s+(?:great|the\s+best|amazing|exclusive)\s+deals\b/i,
-  /\bbefore\s+(?:they(?:'|\u2019)re|they\s+are)\s+(?:all\s+)?gone\b/i,
   /\bbest\s+price\s+guarante(?:e|ed)\b/i,
-  /\bfree\s+cancell?ation\b/i,
-  /\bskip\s+the\s+(?:ticket\s+)?(?:line|queue)\b/i,
-  /\b(?:select|choose)\s+(?:a|your)\s+(?:preferred\s+)?(?:date|time\s+slot)\b/i,
-  /\bcheck\s+availability\b/i,
   /\bsecure\s+(?:your|the\s+best)\s+seats\s+(?:now|today)\b/i,
   /\bhassle[\s-]free\s+booking\b/i,
   /\bbook\s+(?:your\s+)?tickets?\s+(?:now|today|online)\s+(?:and|to|for|with)\s+(?:save|get|enjoy|unlock)\b/i,
   /\b(?:lowest|unbeatable)\s+(?:ticket\s+)?prices?\s+(?:guaranteed|online)\b/i,
   /\bmobile\s+(?:e-?)?tickets?\s+accepted\b/i,
 ];
+const PROMO_BOOKING_COPY_WEAK_PATTERNS = [
+  /\bbefore\s+(?:they(?:'|\u2019)re|they\s+are)\s+(?:all\s+)?gone\b/i,
+  /\bfree\s+cancell?ation\b/i,
+  /\bskip\s+the\s+(?:ticket\s+)?(?:line|queue)\b/i,
+  /\b(?:select|choose)\s+(?:a|your)\s+(?:preferred\s+)?(?:date|time\s+slot)\b/i,
+  /\bcheck\s+availability\b/i,
+];
+/** Both lists, for audit-regex-patterns.js. */
+const PROMO_BOOKING_COPY_PATTERNS = [...PROMO_BOOKING_COPY_STRONG_PATTERNS, ...PROMO_BOOKING_COPY_WEAK_PATTERNS];
 const PROMO_BOOKING_COPY_MIN_HITS = 2;
 
 /**
- * Count distinct booking-marketing phrases outside trailing junk.
+ * Detected when at least one strong phrase and PROMO_BOOKING_COPY_MIN_HITS
+ * distinct phrases in total appear outside trailing junk.
  * Pure: callers decide what a hit means. Not yet wired into
  * isGarbageContent (BRO-5906 lands it advisory; the corpus FP run decides).
  * @param {string} text
- * @returns {{ detected: boolean, matches: string[] }}
+ * @returns {{ detected: boolean, matches: string[], strongHits: number }}
  */
 function detectPromoBookingCopy(text) {
   const t = (typeof text === 'string') ? text : '';
   const substantial = t.trim().length >= 500 && _countTheaterKeywords(t) >= 3;
   const matches = [];
+  let strongHits = 0;
   for (const pattern of PROMO_BOOKING_COPY_PATTERNS) {
     const m = t.match(pattern);
     if (!m) continue;
-    if (substantial && _isPatternInTrailingJunk(t, m[0])) continue;
+    // m.index is the FIRST occurrence: a phrase repeated in the body and the
+    // footer is not excused as footer text.
+    if (substantial && m.index > t.length * 0.6) continue;
     matches.push(m[0]);
+    if (PROMO_BOOKING_COPY_STRONG_PATTERNS.includes(pattern)) strongHits++;
   }
-  return { detected: matches.length >= PROMO_BOOKING_COPY_MIN_HITS, matches };
+  return { detected: strongHits >= 1 && matches.length >= PROMO_BOOKING_COPY_MIN_HITS, matches, strongHits };
 }
 
 const STRONG_CHROME_DUMP_PATTERNS = [
@@ -4006,6 +4017,8 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
 
 module.exports = {
   PROMO_BOOKING_COPY_PATTERNS,
+  PROMO_BOOKING_COPY_STRONG_PATTERNS,
+  PROMO_BOOKING_COPY_WEAK_PATTERNS,
   PROMO_BOOKING_COPY_MIN_HITS,
   detectPromoBookingCopy,
   LISTING_PAGE_TEXT_PATTERNS,

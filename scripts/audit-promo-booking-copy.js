@@ -27,17 +27,19 @@ const { hasHelpFlag } = require('./lib/cli-help');
 const { detectPromoBookingCopy } = require('./lib/content-quality');
 const { isBlockedReviewRecord } = require('./lib/domain-filters');
 const { classifyReviewUrl } = require('./lib/non-review-url-patterns');
+const { normalizeReviewUrl } = require('./lib/ingest-collision');
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 
 function isLive(data) {
   return !(data.contentTier === 'invalid' || data.isNonReview || data.excludeFromScoring
     || data.wrongShow || data.wrongProduction || data.isRoundupArticle);
 }
 
+// The writer's normaliser (tracking params dropped, real query kept), plus
+// scheme and www folded so http/https and www twins are reported too.
 function normUrl(u) {
-  try {
-    const x = new URL(u);
-    return (x.hostname.replace(/^www\./, '') + x.pathname.replace(/\/+$/, '')).toLowerCase();
-  } catch { return null; }
+  if (typeof u !== 'string' || !u) return null;
+  return normalizeReviewUrl(u).replace(/^https?:\/\/(?:www\.)?/i, '');
 }
 
 /**
@@ -48,15 +50,16 @@ function auditShowFiles(showId, files) {
   const out = { promo: [], blocked: [], showHub: [], twins: [] };
   const byUrl = new Map();
   for (const { file, data } of files) {
+    if (!data || typeof data !== 'object') continue;
     const id = `${showId}/${file}`;
     const live = isLive(data);
     const base = { id, outletId: data.outletId || null, source: data.source || null, contentTier: data.contentTier || null, live };
     const promo = detectPromoBookingCopy(data.fullText || '');
     if (promo.detected) out.promo.push({ ...base, matches: promo.matches });
     if (isBlockedReviewRecord(data)) out.blocked.push(base);
-    const cls = data.url ? classifyReviewUrl(data.url) : null;
+    const cls = typeof data.url === 'string' ? classifyReviewUrl(data.url) : null;
     if (cls && cls.reason === 'show-hub') out.showHub.push(base);
-    const key = data.url ? normUrl(data.url) : null;
+    const key = normUrl(data.url);
     if (key && live) {
       if (!byUrl.has(key)) byUrl.set(key, []);
       byUrl.get(key).push(id);
@@ -81,7 +84,7 @@ function main(argv) {
   for (const showId of shows) {
     const sd = path.join(dir, showId);
     let names;
-    try { names = fs.readdirSync(sd).filter(f => f.endsWith('.json') && !f.startsWith('_')); } catch { continue; }
+    try { names = fs.readdirSync(sd).filter(isReviewTextFile); } catch { continue; }
     const files = [];
     for (const file of names) {
       try { files.push({ file, data: JSON.parse(fs.readFileSync(path.join(sd, file), 'utf8')) }); } catch { unreadable++; }

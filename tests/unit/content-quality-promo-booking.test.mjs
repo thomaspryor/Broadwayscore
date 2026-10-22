@@ -55,6 +55,21 @@ test('review prose using ordinary words ("before they are gone") is not flagged'
   assert.equal(detectPromoBookingCopy(t).detected, false);
 });
 
+test('plain-English weak phrases alone are not flagged (ship-check FP)', () => {
+  const prose = 'In the second act the lovers choose a date for the wedding, and the townsfolk race to see the fireworks before they are all gone.';
+  assert.equal(detectPromoBookingCopy(prose).detected, false);
+  const capsule = 'Skip the line at TKTS, choose a date midweek and catch this revival before they are gone.';
+  const r = detectPromoBookingCopy(capsule);
+  assert.equal(r.strongHits, 0);
+  assert.equal(r.detected, false);
+});
+
+test('a phrase repeated in the body and the footer is not excused as footer text', () => {
+  const body = 'Get your booking confirmed instantly. Grab great deals today. ';
+  const t = body + REVIEW + ' ' + body;
+  assert.equal(detectPromoBookingCopy(t).detected, true);
+});
+
 test('non-string input is safe', () => {
   assert.equal(detectPromoBookingCopy(null).detected, false);
   assert.equal(detectPromoBookingCopy(undefined).detected, false);
@@ -72,6 +87,9 @@ test('sweep: reports promo, blocked, show-hub and live same-URL twins', () => {
     { file: 'people--dave-quinn.json', data: { outletId: 'people', url: 'https://people.com/review-1', contentTier: 'complete', fullText: REVIEW } },
     { file: 'people--unknown.json', data: { outletId: 'people', url: 'https://www.people.com/review-1/', contentTier: 'complete', fullText: REVIEW } },
     { file: 'old--unknown.json', data: { outletId: 'old', url: 'https://people.com/review-1', contentTier: 'invalid', fullText: REVIEW } },
+    { file: 'nullfile.json', data: null },
+    { file: 'q1--unknown.json', data: { outletId: 'q', url: 'https://example.com/review?p=1', contentTier: 'complete', fullText: REVIEW } },
+    { file: 'q2--unknown.json', data: { outletId: 'q', url: 'https://example.com/review?p=2&utm_source=x', contentTier: 'complete', fullText: REVIEW } },
   ];
   const r = auditShowFiles(show, files);
   assert.deepEqual(r.promo.map(x => x.id), [`${show}/staybook--staybook.json`]);
