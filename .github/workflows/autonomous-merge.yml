@@ -2,8 +2,9 @@ name: Autonomous Merge
 
 # RETIRED (BRO-5845, 2026-10-22): the autonomous loop was retired 2026-07-27 and
 # its card source, the Notion board, on 2026-08-20. NOTION_API_KEY is no longer
-# passed, so a dispatch fails at autonomous-merge.js's first notion-brain get,
-# before any git operation. Kept only as history; nothing dispatches it.
+# passed, and the first step after checkout refuses, before the landing mutex
+# or any git operation. Kept only as history; no schedule or endpoint
+# dispatches it (scripts/autonomous-run.js still could, but nothing runs it).
 #
 # Sprint 3 (Notion 39b637c5-416f-81c4-9258-f8821c066e24): the ONLY place a
 # branch the autonomous nightly loop produced reaches main. Dispatched either
@@ -100,6 +101,14 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
           filter: blob:none
+
+      # Ship-check (BRO-5845): refuse before npm ci and the landing mutex, so a
+      # stray dispatch never contends with real landings. Restoring the
+      # credential alone must not bring the retired merge path back.
+      - name: Refuse (workflow retired)
+        run: |
+          echo "::error::Autonomous Merge is retired (BRO-5845); land via land/** instead."
+          exit 1
 
       - name: Configure git
         run: |

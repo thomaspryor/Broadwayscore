@@ -60,6 +60,8 @@ const GUARD_HISTORY_FILE = path.join(AUDIT_DIR, 'dispatch-guard-queue-audit-hist
 // ~3 weeks of daily entries — always leaves a usable 5-9 day-old comparator
 // for findWeekAgoEntry even if a run or two is missed.
 const HISTORY_MAX = 21;
+// BRO-5845: history rows tagged with the population they counted.
+const HISTORY_SOURCE = 'linear';
 
 const USAGE = `predispatch-queue-audit — tally predispatch-guard AND every sibling dispatch-guards.js verdict across every queued task, write the digest snapshots.
 
@@ -198,23 +200,29 @@ async function main() {
   // BRO-3431: the local task mirror above is the FROZEN Notion board (source
   // of the "135 queued cards" undercount — the real backlog lives in Linear).
   // BRO-5845: Linear is now the ONLY source of predispatch classifications;
-  // never throw — a Linear outage yields an empty tally plus a logged reason.
+  // Never throw. A Linear outage leaves the previous snapshot in place
+  // (ship-check P1): writing an empty tally would read as a fresh "0 of 0
+  // blocked" in the morning digest, indistinguishable from a quiet day.
   let linearClassifications = [];
+  let linearOk = false;
   try {
     const { fetchLinearBacklogClassifications } = require('./lib/linear-predispatch-audit.js');
     const linearClient = require('./lib/linear-client.js');
     const res = await fetchLinearBacklogClassifications(linearClient, {});
     if (res.ok) {
+      linearOk = true;
       linearClassifications = res.classifications;
       console.log(`[predispatch-queue-audit] Linear scan: ${res.scanned} issue(s) scanned, ${linearClassifications.length} counted toward the backlog tally`);
     } else {
-      console.error(`[predispatch-queue-audit] Linear source unavailable (${res.reason}) — predispatch tally is empty this run`);
+      console.error(`[predispatch-queue-audit] Linear source unavailable (${res.reason}) — keeping the previous predispatch snapshot`);
     }
   } catch (err) {
-    console.error(`[predispatch-queue-audit] Linear source error (${String(err.message).slice(0, 160)}) — predispatch tally is empty this run`);
+    console.error(`[predispatch-queue-audit] Linear source error (${String(err.message).slice(0, 160)}) — keeping the previous predispatch snapshot`);
   }
 
-  const history = loadHistory(HISTORY_FILE);
+  // Rows written before BRO-5845 counted the Notion mirror plus Linear; a
+  // week-over-week jump against them compares two different populations.
+  const history = loadHistory(HISTORY_FILE).filter((h) => h && h.source === HISTORY_SOURCE);
   const snapshot = buildQueueAuditSnapshot({
     classifications: linearClassifications,
     history, now,
@@ -228,9 +236,11 @@ async function main() {
   if (dryRun) return;
 
   fs.mkdirSync(AUDIT_DIR, { recursive: true });
-  writeFileAtomic(SNAPSHOT_FILE, JSON.stringify(snapshot, null, 2) + '\n');
-  const newHistory = [...history, { at: snapshot.generatedAt, blockedCount: snapshot.blockedCount }].slice(-HISTORY_MAX);
-  writeFileAtomic(HISTORY_FILE, JSON.stringify(newHistory, null, 2) + '\n');
+  if (linearOk) {
+    writeFileAtomic(SNAPSHOT_FILE, JSON.stringify(snapshot, null, 2) + '\n');
+    const newHistory = [...history, { at: snapshot.generatedAt, blockedCount: snapshot.blockedCount, source: HISTORY_SOURCE }].slice(-HISTORY_MAX);
+    writeFileAtomic(HISTORY_FILE, JSON.stringify(newHistory, null, 2) + '\n');
+  }
 
   writeFileAtomic(GUARD_SNAPSHOT_FILE, JSON.stringify(guardSnapshot, null, 2) + '\n');
   const newGuardHistory = [...guardHistory, { at: guardSnapshot.generatedAt, blockedCount: guardSnapshot.blockedCount }].slice(-HISTORY_MAX);

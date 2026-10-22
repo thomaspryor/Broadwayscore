@@ -239,3 +239,44 @@ test('findSignals on shell scripts: comments and prose are clean, a real invocat
   // JS files keep the full signal set
   assert.deepEqual(src.findSignals("const { TASKS_DIR } = require('./bsc-next.js');", 'a.js'), ['TASKS_DIR']);
 });
+
+// Ship-check (BRO-5845): the first bash -c parser missed `/opt/homebrew/bin/node /abs/x.js`
+// (dispatch-watchdog-health's real plist), quoted targets and `cd ~`, and dropped
+// unresolvable targets silently instead of reporting incomplete coverage.
+test('scriptsFromShellCommand: absolute interpreters, env, quotes, ~, repeated cd', () => {
+  const home = os.homedir();
+  assert.deepEqual(src.scriptsFromShellCommand('/opt/homebrew/bin/node /Users/t/Broadwayscore/scripts/dispatch-watchdog.js --health', null),
+    ['/Users/t/Broadwayscore/scripts/dispatch-watchdog.js']);
+  assert.deepEqual(src.scriptsFromShellCommand('cd /r && /usr/bin/env node --env-file=.env "scripts/a b.js"', null), ['/r/scripts/a b.js']);
+  assert.deepEqual(src.scriptsFromShellCommand('cd ~/Broadwayscore; exec node scripts/x.js || true', null), [`${home}/Broadwayscore/scripts/x.js`]);
+  assert.deepEqual(src.scriptsFromShellCommand('cd /a && node x.js && cd /b && bash y.sh | tee log', null), ['/a/x.js', '/b/y.sh']);
+  assert.deepEqual(src.scriptsFromShellCommand('echo node x.js', '/a'), [], 'node as an argument is not an invocation');
+});
+
+test('scriptsFromShellCommand: unresolvable targets are reported, never guessed', () => {
+  const unresolved = [];
+  assert.deepEqual(src.scriptsFromShellCommand('node scripts/x.js && node "$FOO/y.js"', null, unresolved), []);
+  assert.deepEqual(unresolved, ['scripts/x.js', '$FOO/y.js']);
+});
+
+test('scriptsFromShellScript: follows a wrapper into the scripts it runs', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'nsc-'));
+  fs.mkdirSync(path.join(root, 'scripts', 'lib'), { recursive: true });
+  fs.writeFileSync(path.join(root, 'scripts', 'lib', 'helper.js'), '');
+  const sh = path.join(root, 'scripts', 'wrap.sh');
+  fs.writeFileSync(sh, [
+    '#!/bin/bash',
+    'cd "$(dirname "$0")/.." || exit 1',
+    '# node scripts/commented-out.js',
+    'node scripts/child.js --flag',
+    'node "$SCRIPT_DIR/lib/helper.js"',
+    'node "$SCRIPT_DIR/lib/missing.js"',
+  ].join('\n'));
+  const unresolved = [];
+  assert.deepEqual(src.scriptsFromShellScript(sh, unresolved), [
+    path.join(root, 'scripts', 'child.js'),
+    path.join(root, 'scripts', 'lib', 'helper.js'),
+  ]);
+  assert.deepEqual(unresolved, ['$SCRIPT_DIR/lib/missing.js']);
+  fs.rmSync(root, { recursive: true, force: true });
+});
