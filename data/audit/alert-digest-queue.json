@@ -642,7 +642,7 @@
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
     "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39797456823",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39798258368",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -651,11 +651,11 @@
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39797456823)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39798258368)"
       },
       {
         "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39792028357)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39797738695)"
       },
       {
         "name": "Consecutive failures",
@@ -666,7 +666,7 @@
         "value": "Unit Tests"
       }
     ],
-    "queuedAt": "2026-10-22T15:57:03.291Z"
+    "queuedAt": "2026-10-22T16:17:02.580Z"
   },
   {
     "conditionKey": "pending-unrecoverable:midnight-off-broadway-2026",
