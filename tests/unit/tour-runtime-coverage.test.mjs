@@ -30,6 +30,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+// BRO-4763: run the parent/tour backfill assertion in the existing live-data
+// workflow step, without adding it to test.yml's code-only batch.
+import './sound-of-music-synopsis.test.mjs';
 
 const require = createRequire(import.meta.url);
 const { extractTourRuntime, pageIsTour } = require('../../scripts/lib/tour-runtime.js');

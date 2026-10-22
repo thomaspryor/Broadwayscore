@@ -9,6 +9,29 @@
 
 const { stripWikiMarkup, hasWikiMarkup } = require('./wiki-utils');
 const { cleanSearchTitle, titlesMatch } = require('./title-normalization');
+const { classifyBadSynopsis } = require('./synopsis-validation');
+const { isTourShow } = require('./tour-family');
+
+/**
+ * Prioritize parents linked from active tours before applying the daily cap.
+ * BRO-4763: the closed 1998 Sound of Music revival sat behind 84 historical
+ * candidates, so repeatedly retrying the first 20 never reached it. A tour
+ * with its own synopsis still links readers to its parent. Preserve source
+ * order within each group and keep the existing verification gate unchanged.
+ */
+function selectSynopsisTargets(shows, { onlyShow = null, category = null, limit = 0 } = {}) {
+  const activeTourParents = new Set(shows
+    .filter(s => isTourShow(s) && ['open', 'upcoming', 'previews'].includes(s.status))
+    .map(s => s.tourOf)
+    .filter(Boolean));
+  const targets = shows.filter(s => !isTourShow(s) && classifyBadSynopsis(s).bad &&
+    (!onlyShow || s.id === onlyShow) && (!category || (s.category || 'broadway') === category));
+  const ordered = [
+    ...targets.filter(s => activeTourParents.has(s.id)),
+    ...targets.filter(s => !activeTourParents.has(s.id)),
+  ];
+  return limit > 0 ? ordered.slice(0, limit) : ordered;
+}
 
 /**
  * Build an ordered list of Wikipedia page-title guesses for a show.
@@ -181,6 +204,7 @@ function pickSearchCandidate(show, candidateTitles) {
 }
 
 module.exports = {
+  selectSynopsisTargets,
   buildSearchTitles,
   isDisambiguationPage,
   isTheatricalPage,
