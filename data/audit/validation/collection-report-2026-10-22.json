@@ -1,25 +1,25 @@
 {
-  "runDate": "2026-10-22T03:40:52.653Z",
+  "runDate": "2026-10-22T03:43:22.758Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 200,
     "priority": "all",
-    "showFilter": "the-curious-case-of-benjamin-button-off-broadway-2026",
+    "showFilter": "tina-the-tina-turner-musical-west-end-2018,consent-west-end-2018,killer-joe-west-end-2018,pressure-west-end-2018,imperium-the-cicero-plays-west-end-2018,the-jungle-west-end-2018,knights-of-the-rose-west-end-2018,the-glenn-miller-story-west-end-2018,home-im-darling-west-end-2018,king-lear-west-end-2018,pity-west-end-2018,the-lehman-trilogy-west-end-2018,julie-west-end-2018,mood-music-west-end-2018,nine-night-west-end-2018,translations-west-end-2018,the-king-and-i-west-end-2018,absolute-hell-west-end-2018,exit-the-king-west-end-2018,the-great-wave-west-end-2018",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 1,
+    "processed": 2,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "22.2%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
@@ -28,12 +28,12 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 1,
+    "tier1Attempts": 0,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
     "tier1_9Attempts": 0,
     "tier1_9Success": 0,
     "tier2Attempts": 0,
@@ -42,22 +42,30 @@
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 1,
+    "totalFailed": 7,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
-    "urlDiscoveryAttempts": 1,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 1,
-    "failed": 1,
+    "processed": 2,
+    "failed": 7,
     "shows": [
-      "the-curious-case-of-benjamin-button-off-broadway-2026"
+      "consent-west-end-2018",
+      "killer-joe-west-end-2018",
+      "king-lear-west-end-2018",
+      "pity-west-end-2018",
+      "pressure-west-end-2018",
+      "the-great-wave-west-end-2018",
+      "the-jungle-west-end-2018",
+      "the-lehman-trilogy-west-end-2018",
+      "translations-west-end-2018"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,26 +74,37 @@
     }
   },
   "processed": [
-    "the-curious-case-of-benjamin-button-off-broadway-2026/wsj--charles-isherwood.json"
+    "the-lehman-trilogy-west-end-2018/guardian--michael-billington.json",
+    "killer-joe-west-end-2018/guardian--michael-billington.json"
   ],
   "failed": [
-    "the-curious-case-of-benjamin-button-off-broadway-2026/stageandcinema--unknown.json"
+    "king-lear-west-end-2018/guardian--arifa-akbar.json",
+    "pity-west-end-2018/guardian--michael-billington.json",
+    "the-jungle-west-end-2018/guardian--michael-billington.json",
+    "pressure-west-end-2018/guardian--michael-billington.json",
+    "translations-west-end-2018/guardian--michael-billington.json",
+    "consent-west-end-2018/guardian--natalie-haynes.json",
+    "the-great-wave-west-end-2018/guardian--michael-billington.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "the-curious-case-of-benjamin-button-off-broadway-2026/wsj--charles-isherwood.json"
+      "the-lehman-trilogy-west-end-2018/guardian--michael-billington.json",
+      "killer-joe-west-end-2018/guardian--michael-billington.json"
     ],
     "failed": [
-      "the-curious-case-of-benjamin-button-off-broadway-2026/stageandcinema--unknown.json"
+      "king-lear-west-end-2018/guardian--arifa-akbar.json",
+      "pity-west-end-2018/guardian--michael-billington.json",
+      "the-jungle-west-end-2018/guardian--michael-billington.json",
+      "pressure-west-end-2018/guardian--michael-billington.json",
+      "translations-west-end-2018/guardian--michael-billington.json",
+      "consent-west-end-2018/guardian--natalie-haynes.json",
+      "the-great-wave-west-end-2018/guardian--michael-billington.json"
     ]
   },
   "tierDetails": {
     "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/the-curious-case-of-benjamin-button-off-broadway-2026/wsj--charles-isherwood.json",
-      "the-curious-case-of-benjamin-button-off-broadway-2026/wsj--charles-isherwood.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
@@ -93,14 +112,6 @@
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {
-    "Stage and Cinema": {
-      "count": 1,
-      "domain": "stageandcinema.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
