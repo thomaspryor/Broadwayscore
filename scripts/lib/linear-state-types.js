@@ -28,4 +28,16 @@ function isTerminalStateType(stateType) {
   return TERMINAL_STATE_TYPES.includes(stateType);
 }
 
-module.exports = { TERMINAL_STATE_TYPES, isTerminalStateType };
+/**
+ * BRO-2857: the line a Stop/PostToolUse hook greps to learn "this session
+ * closed its card", so bash keeps ZERO state vocabulary (the old hook grepped
+ * state NAMES, which drifted: it admitted a phantom "Paused" and omitted
+ * "Duplicate"). Empty string for a non-terminal move or no move, so only a
+ * state move that actually landed in a terminal TYPE counts as a report.
+ * Same marker convention as **BOARD_CARD_ID** / **LINEAR_ISSUE_ID**.
+ */
+function reportedMarker(identifier, stateType) {
+  return identifier && isTerminalStateType(stateType) ? `**LINEAR_REPORTED**=${identifier}` : '';
+}
+
+module.exports = { TERMINAL_STATE_TYPES, isTerminalStateType, reportedMarker };
