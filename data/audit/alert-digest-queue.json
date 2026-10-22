@@ -745,6 +745,37 @@
     "queuedAt": "2026-10-22T14:34:34.683Z"
   },
   {
+    "conditionKey": "land:land/bro-5201-lane-shadow",
+    "title": "Landing blocked: resolve red on land/bro-5201-lane-shadow",
+    "description": "land.yml did not land land/bro-5201-lane-shadow: the resolve gate went red at 9824f25539. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: land/bro-5201-lane-shadow tip is 928ca81309 (origin/land/bro-5201-lane-shadow), not the verified tip 9824f25539 — a newer push superseded this landing; nothing pushed (attempts 0, 28.4s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39793909567",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5201-lane-shadow"
+      },
+      {
+        "name": "gate",
+        "value": "resolve"
+      },
+      {
+        "name": "tip",
+        "value": "9824f255397181106f79deaefd6fb15aa29225f2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39793909567"
+      }
+    ],
+    "queuedAt": "2026-10-22T15:25:37.912Z"
+  },
+  {
     "conditionKey": "land:land/bro-5954",
     "title": "Landing blocked: unit-tests-node red on land/bro-5954",
     "description": "land.yml did not land land/bro-5954: the unit-tests-node gate went red at b5a75a9f85. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39796375403",
