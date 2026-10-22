@@ -31,7 +31,9 @@ const { getSyndicationPrimaries, isPrimaryFileFor } = require('./syndication-pai
  * it is emitted; rollback() from a try/finally. Only an ARMED, uncommitted
  * file is rolled back: a file dropped BY dedup itself (a URL or fingerprint
  * loser) keeps its earlier claims exactly as before, so only the gates after
- * dedup (contamination, skippedNoScore, a thrown error) re-open the slot.
+ * dedup (contamination, skippedNoScore, or an error thrown after arm())
+ * re-open the slot. Claims taken before arm() by a file that later loses a
+ * dedup check or throws stay held, as they always did.
  * rollback() returns null for a file that was not armed (or was committed),
  * else the number of claims undone; a non-null result means "this file won
  * dedup and then died", which the rebuild records as released.
