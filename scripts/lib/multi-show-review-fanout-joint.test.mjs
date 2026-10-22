@@ -261,14 +261,19 @@ test('no head route with a tail: a closing listing must name every show', () => 
   assert.equal(plan(ID.Midnight, text), null);
 });
 
-test('a show titled after someone credited on the reviewed show is that person, not a second review', () => {
-  // "Sting" (a play) vs Sting, songwriter of The Last Ship: here the
-  // Benjamin Button company credits someone surnamed Midnight.
-  const shows = SHOWS.map((s) => (s.id === ID['The Curious Case of Benjamin Button']
-    ? { ...s, creativeTeam: [{ name: 'Ava Midnight', role: 'Composer' }] } : s));
-  const doc = base({ showId: ID['The Curious Case of Benjamin Button'], publishDate: '2026-10-20', fullText: NYT_TWO });
-  assert.ok(planMultiShowFanout(doc, SHOWS, { joint: true }));
-  assert.equal(planMultiShowFanout(doc, shows, { joint: true }), null);
+test('a show titled after someone credited on the reviewed show: the person never splits, a co-reviewed show still does', () => {
+  const BB = ID['The Curious Case of Benjamin Button'];
+  const credit = (name) => SHOWS.map((s) => (s.id === BB ? { ...s, creativeTeam: [{ name, role: 'Composer' }] } : s));
+  const doc = (fullText) => base({ showId: BB, publishDate: '2026-10-20', fullText });
+  // One-word credit ("Sting" for The Last Ship): the other show drops out.
+  assert.equal(planMultiShowFanout(doc(NYT_TWO), credit('Midnight'), { joint: true }), null);
+  // Surname credit: a real co-review of the show "Midnight" still splits...
+  assert.deepEqual(ids(planMultiShowFanout(doc(NYT_TWO), credit('Ava Midnight'), { joint: true })),
+    [ID['Midnight'], BB].sort());
+  // ...but "Ava Midnight" and "Midnight's score" are the composer.
+  const single = NYT_TWO.replace(/“Midnight,”/g, 'Ava Midnight,').replace(/“Midnight”/g, 'Midnight’s score')
+    .replace(/^Midnight Through/m, 'Ava Midnight wrote through').replace(/Midnight Through/, 'Ava Midnight wrote through');
+  assert.equal(planMultiShowFanout(doc(single), credit('Ava Midnight'), { joint: true }), null);
 });
 
 test('a one-word title opening ordinary sentences is not a mention', () => {

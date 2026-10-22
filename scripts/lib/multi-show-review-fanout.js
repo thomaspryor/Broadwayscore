@@ -448,6 +448,36 @@ const MAX_TAIL_SHARE = 0.25;
 const LISTING_SIGNAL_RE = /[★☆*]|\b(?:through|until|closes|extended|thru|theat(?:er|re)|playhouse|stage|tickets?|running time|\d+ (?:hours?|minutes?|mins?)|\d+\s+[A-Z]\w*\.? (?:St|Street|Ave|Avenue|Pl|Place|Lane))\b/i;
 const HEAD_ONLY_MIN_SHARE = 0.25;
 
+// The reviewed show's cast and creative team, normalised: one-word names
+// ("Sting") and, per surname, the given names that precede it.
+function creditedNames(show) {
+  const single = new Set();
+  const given = new Map();
+  for (const p of [...(show.cast || []), ...(show.creativeTeam || [])]) {
+    const parts = normTitle((p && p.name) || '').split(' ').filter(Boolean);
+    if (parts.length === 1) single.add(parts[0]);
+    if (parts.length < 2) continue;
+    const last = parts[parts.length - 1];
+    if (!given.has(last)) given.set(last, new Set());
+    given.get(last).add(parts.slice(0, -1).join(' '));
+  }
+  return { single, given };
+}
+
+// A mention of a show titled after someone credited on the reviewed show
+// that reads as that person: "Daniel Fish" or "Fish's staging".
+function isCreditedPersonMention(text, mn, givenNames) {
+  if (/^['’]s\b/.test(text.slice(mn.end, mn.end + 3))) return true;
+  const before = normTitle(text.slice(Math.max(0, mn.at - 40), mn.at));
+  for (const g of givenNames) if (before === g || before.endsWith(' ' + g)) return true;
+  return false;
+}
+
+function normTitle(t) {
+  return String(t).toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
 /**
  * Strategy 3: a joint review. One critic covers two or three shows in one
  * running piece (NYT "Midnight" + "The Curious Case of Benjamin Button",
@@ -467,24 +497,6 @@ const HEAD_ONLY_MIN_SHARE = 0.25;
  * (where a capsule column puts its star rating). The shared head is dropped:
  * it can hold the other shows' verdicts and stars.
  */
-// Full names and surnames of the show's cast and creative team, normalised.
-function creditedNames(show) {
-  const out = new Set();
-  for (const p of [...(show.cast || []), ...(show.creativeTeam || [])]) {
-    const name = normTitle(String((p && (p.name || p.actor)) || p || ''));
-    if (!name) continue;
-    out.add(name);
-    const parts = name.split(' ');
-    if (parts.length > 1) out.add(parts[parts.length - 1]);
-  }
-  return out;
-}
-
-function normTitle(t) {
-  return String(t).toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, ' ').trim();
-}
-
 function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
   const ownShow = shows.find((s) => s.id === ownShowId) || null;
   if (!ownShow) return [];
@@ -501,12 +513,16 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
   const people = creditedNames(ownShow);
   const byShow = new Map();
   for (const show of cands) {
-    // Another show titled after someone credited on this one ("Sting" for
-    // The Last Ship) is that person, not a second review.
-    if (show.id !== ownShowId && people.has(normTitle(show.title))) continue;
+    // Another show titled after someone credited on this one is that person,
+    // not a second review: drop it outright for a one-word name ("Sting" for
+    // The Last Ship), and drop the mentions that read as the person for a
+    // surname ("Daniel Fish" directs Kramer/Fauci; "Fish" is also a show).
+    const key = show.id === ownShowId ? '' : normTitle(show.title);
+    if (people.single.has(key)) continue;
     const m = buildJointMatcher(show);
     if (!m) continue;
-    const ms = jointMentions(m, text);
+    let ms = jointMentions(m, text);
+    if (people.given.has(key)) ms = ms.filter((mn) => !isCreditedPersonMention(text, mn, people.given.get(key)));
     if (ms.length >= 2) byShow.set(show.id, { show, mentions: ms });
   }
   if (byShow.size < 2 || !byShow.has(ownShowId)) return [];
@@ -648,9 +664,9 @@ function captionSectionsCrossTalk(sections, shows) {
 }
 
 /**
- * The joint strategy is on by default since the corpus-wide dry run showed it
- * splits no single-show review (BRO-5895). opts.joint=false or
- * MULTI_SHOW_JOINT=0 turns it off.
+ * The joint strategy is on by default after a corpus-wide dry run (BRO-5895).
+ * opts.joint=false or MULTI_SHOW_JOINT=0 turns it off for new splits; a
+ * parent it already split still re-trims with it.
  */
 function jointEnabled(opts, data) {
   // A parent the joint strategy split re-trims the same way, or a refetch
