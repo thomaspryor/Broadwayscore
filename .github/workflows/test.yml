@@ -5893,6 +5893,18 @@ jobs:
           REQUIRE_REVIEW_CORPUS: '1'
         run: node --test scripts/verify-frankie-2002-cleanup.test.mjs
 
+      - name: Run review-text folder orphan guard (needs review-texts)
+        # BRO-5683: scripts/verify-review-text-folders.test.mjs (BRO-5153) asserts
+        # five review-text folders are not orphans and stay deleted, but the
+        # unit-tests job only checks out core data, so both corpus assertions
+        # skipped on every run. Re-run HERE with REQUIRE_REVIEW_CORPUS=1 so a
+        # missing checkout fails instead of skipping. Advisory through this
+        # job's own continue-on-error (failures route to the daily digest).
+        if: always()
+        env:
+          REQUIRE_REVIEW_CORPUS: '1'
+        run: node --test scripts/verify-review-text-folders.test.mjs
+
       - name: Run BRO-1397 prior-run former-cast sweep (needs review-texts)
         # BRO-1397: registered in tests/unit-test-manifest.txt, but that batch
         # runs in the unit-tests job which never checks out data/review-texts,
