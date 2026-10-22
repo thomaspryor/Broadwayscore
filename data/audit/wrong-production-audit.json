@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T04:46:05.748Z",
+  "timestamp": "2026-10-22T05:00:04.369Z",
   "stats": {
-    "totalReviews": 58728,
+    "totalReviews": 58730,
     "alreadyFlagged": 21231,
     "dateGuardCatches": 197,
-    "directorMismatch": 2124,
+    "directorMismatch": 2125,
     "tvFilmSignals": 1660,
-    "londonSignals": 2688,
+    "londonSignals": 2692,
     "offBroadwaySignals": 531,
     "yearMismatch": 166,
-    "noPublishDate": 5252
+    "noPublishDate": 5245
   },
   "findings": [
     {
@@ -44072,6 +44072,20 @@
     },
     {
       "showId": "the-king-and-i-west-end-2018",
+      "file": "guardian--michael-billington.json",
+      "score": 75,
+      "publishDate": "2018-07-03",
+      "url": "https://www.theguardian.com/stage/2018/jul/03/the-king-and-i-review-london-paladium",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from the-king-and-i-2015"
+        }
+      ]
+    },
+    {
+      "showId": "the-king-and-i-west-end-2018",
       "file": "independent--paul-taylor.json",
       "score": 90,
       "publishDate": "2018-07-03",
@@ -65292,6 +65306,20 @@
     },
     {
       "showId": "exit-the-king-west-end-2018",
+      "file": "guardian--susannah-clapp.json",
+      "score": 76,
+      "publishDate": "2018-07-29",
+      "url": "https://www.theguardian.com/stage/2018/jul/29/exit-the-king-olivier-marber-pity-royal-court-mullarkey-river-stage-festival-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "exit-the-king-west-end-2018",
       "file": "london-theatre--georgina-varley.json",
       "score": 80,
       "publishDate": "2018-07-26",
@@ -79845,6 +79873,20 @@
     },
     {
       "showId": "pity-west-end-2018",
+      "file": "guardian--michael-billington.json",
+      "score": null,
+      "publishDate": "2018-07-19",
+      "url": "https://www.theguardian.com/stage/2018/jul/19/pity-review-royal-court-london-rory-mullarkey",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "pity-west-end-2018",
       "file": "london-theatre--will-longman.json",
       "score": 62,
       "publishDate": "2018-07-19",
@@ -87790,6 +87832,20 @@
     },
     {
       "showId": "the-great-wave-west-end-2018",
+      "file": "guardian--michael-billington.json",
+      "score": null,
+      "publishDate": "2018-03-20",
+      "url": "https://www.theguardian.com/stage/2018/mar/20/great-wave-francis-turnly-north-korea-kidnap-abductions-japanese",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "the-great-wave-west-end-2018",
       "file": "london-theatre--will-longman.json",
       "score": null,
       "publishDate": "2018-03-19",
@@ -93541,6 +93597,20 @@
       "score": null,
       "publishDate": "2018-05-28",
       "url": "https://maryamphilpottblog.wordpress.com/2018/05/28/translations-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "translations-west-end-2018",
+      "file": "guardian--michael-billington.json",
+      "score": null,
+      "publishDate": "2018-05-31",
+      "url": "https://www.theguardian.com/stage/2018/may/31/translations-review-brian-friel-culture-clash-language-ireland",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
