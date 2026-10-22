@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-22T21:10:11.601Z",
+  "timestamp": "2026-10-22T21:54:28.527Z",
   "stats": {
-    "totalReviews": 59258,
-    "alreadyFlagged": 21330,
+    "totalReviews": 59306,
+    "alreadyFlagged": 21339,
     "dateGuardCatches": 201,
-    "directorMismatch": 2059,
-    "tvFilmSignals": 1661,
-    "londonSignals": 2708,
+    "directorMismatch": 2071,
+    "tvFilmSignals": 1663,
+    "londonSignals": 2722,
     "offBroadwaySignals": 528,
     "yearMismatch": 169,
-    "noPublishDate": 5421
+    "noPublishDate": 5430
   },
   "findings": [
     {
@@ -3210,6 +3210,189 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"george c. wolfe\" from angels-in-america-perestroika-1993"
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-west-end-2017",
+      "file": "artsdesk--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/angels-america-national-theatre-review-andrew-garfield-and-company-soar-seismic-revival",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-west-end-2017",
+      "file": "britishtheatrecom--paul-t-davies.json",
+      "score": null,
+      "publishDate": "2017-05-05",
+      "url": "https://www.britishtheatre.com/posts/review-angels-in-america-part-one-national-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-west-end-2017",
+      "file": "guardian--michael-billington.json",
+      "score": null,
+      "publishDate": "2017-05-05",
+      "url": "https://www.theguardian.com/stage/2017/may/05/angels-in-america-review-andrew-garfield-nathan-lane-tony-kushner",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-west-end-2017",
+      "file": "hollywood-reporter--demetrios-matheou.json",
+      "score": null,
+      "publishDate": "2017-05-05",
+      "url": "http://www.hollywoodreporter.com/review/angels-in-america-theater-1000480?utm_source=twitter",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-west-end-2017",
+      "file": "independent--paul-taylor.json",
+      "score": null,
+      "publishDate": "2017-05-11",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/angels-in-america-review-national-theatre-marianne-elliott-tony-kushner-andrew-garfield-aids-reagan-new-york-a7725596.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-west-end-2017",
+      "file": "nytimes--ben-brantley.json",
+      "publishDate": "2017-05-05",
+      "url": "https://www.nytimes.com/2017/05/05/arts/angels-in-america-national-theater-review.html?partner=rss&emc=rss&_r=0",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-west-end-2017",
+      "file": "standard--henry-hitchings.json",
+      "score": null,
+      "publishDate": "2017-05-05",
+      "url": "https://www.standard.co.uk/goingout/theatre/angels-in-america-theatre-review-andrew-garfield-makes-a-profound-impression-in-a-true-theatrical-a3530736.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-west-end-2017",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": null,
+      "publishDate": "2017-05-04",
+      "url": "http://www.telegraph.co.uk/theatre/what-to-see/angels-america-national-theatre-reviewdazzling-quirky-often/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-west-end-2017",
+      "file": "thestage--mark-shenton.json",
+      "score": null,
+      "publishDate": "2017-05-05",
+      "url": "https://www.thestage.co.uk/reviews/2017/angels-in-america-review-at-the-lyttelton-national-theatre-london/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-west-end-2017",
+      "file": "timeout-london--andrjez-lukowski.json",
+      "score": null,
+      "publishDate": "2017-05-04",
+      "url": "https://www.timeout.com/london/theatre/angels-in-america",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-west-end-2017",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": null,
+      "publishDate": "2017-05-05",
+      "url": "http://www.whatsonstage.com/london-theatre/reviews/angels-in-america-national-theatre_43519.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -12423,6 +12606,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"apple tv\""
+        }
+      ]
+    },
+    {
+      "showId": "enron-2010",
+      "file": "nyt-theater--unknown.json",
+      "publishDate": null,
+      "url": "https://www.newyorktheater.me/2010/05/02/enron-review-the-future-of-theater/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -43833,6 +44029,19 @@
       ]
     },
     {
+      "showId": "the-kite-runner-west-end-2017",
+      "file": "london-box-office--andrew-bewley.json",
+      "publishDate": "2017-01-20",
+      "url": "https://www.londonboxoffice.co.uk/news/post/kite-runner-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"giles croft\" from the-kite-runner-2022"
+        }
+      ]
+    },
+    {
       "showId": "the-last-five-years-2025",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 35,
@@ -48599,6 +48808,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2024 (2x) more than 2026 (1x). 2024 matches production: the-whos-tommy-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-wind-in-the-willows-west-end-2017",
+      "file": "guardian--michael-billington.json",
+      "score": null,
+      "publishDate": "2017-06-29",
+      "url": "https://www.theguardian.com/stage/2017/jun/29/the-wind-in-the-willows-review-julian-fellowes-rufus-hound-stiles-and-drewe",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -56680,6 +56903,20 @@
       ]
     },
     {
+      "showId": "angels-in-america-west-end-2017",
+      "file": "london-theatre--dom-ohanlon.json",
+      "score": null,
+      "publishDate": "2017-05-05",
+      "url": "https://www.londontheatre.co.uk/reviews/review-of-angels-in-america-at-the-national-theatre-event-theatre-at-its-finest",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
       "showId": "animal-wisdom-off-broadway-2022",
       "file": "theatre-reviews-limited--david-roberts.json",
       "score": 25,
@@ -60046,6 +60283,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-west-end-2017",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 72,
+      "publishDate": "2017-07-24",
+      "url": "http://www.telegraph.co.uk/theatre/what-to-see/cat-hot-tin-roof-apollo-theatre-reviewsienna-miller-andjack/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -79086,6 +79337,20 @@
       ]
     },
     {
+      "showId": "pigeon-english-west-end-2016",
+      "file": "londontheatre1--louise-amelia-czupich.json",
+      "score": null,
+      "publishDate": "2016-09-28",
+      "url": "https://www.londontheatre1.com/reviews/nyt-60th-anniversary-season-pigeon-english-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "pinocchio-west-end-2017",
       "file": "british-theatre--philip-fisher.json",
       "score": 78,
@@ -80514,6 +80779,76 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "rosencrantz-and-guildenstern-are-dead-west-end-2017",
+      "file": "artsdesk--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/rosencrantz-and-guildenstern-are-dead-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "rosencrantz-and-guildenstern-are-dead-west-end-2017",
+      "file": "daily-mail--quentin-letts.json",
+      "score": null,
+      "publishDate": "2017-03-07",
+      "url": "https://www.dailymail.com/tvshowbiz/article-4291830/Quentin-Letts-review-Rosencrantz-Guildenstern-Dead.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "rosencrantz-and-guildenstern-are-dead-west-end-2017",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": "2017-03-08",
+      "url": "https://www.theguardian.com/stage/2017/mar/08/rosencrantz-and-guildenstern-are-dead-review-daniel-radcliffe-stoppard-old-vic-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "rosencrantz-and-guildenstern-are-dead-west-end-2017",
+      "file": "london-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2017-03-08",
+      "url": "https://www.londontheatre.co.uk/reviews/review-of-daniel-radcliffe-in-rosencrantz-and-guidenstern-are-dead-at-the-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "rosencrantz-and-guildenstern-are-dead-west-end-2017",
+      "file": "variety--david-benedict.json",
+      "score": null,
+      "publishDate": "2017-03-08",
+      "url": "https://variety.com/2017/legit/reviews/rosencrantz-and-guildenstern-are-dead-review-daniel-radcliffe-1202002686/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
