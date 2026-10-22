@@ -1,63 +1,75 @@
 {
-  "runDate": "2026-10-22T01:50:36.212Z",
+  "runDate": "2026-10-22T01:57:13.931Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 1000,
+    "maxReviews": 300,
     "priority": "all",
-    "showFilter": "lincoln-in-the-bardo-off-broadway-2026",
+    "showFilter": "tina-the-tina-turner-musical-west-end-2018,consent-west-end-2018,killer-joe-west-end-2018,pressure-west-end-2018,imperium-the-cicero-plays-west-end-2018,the-jungle-west-end-2018,knights-of-the-rose-west-end-2018,the-glenn-miller-story-west-end-2018,home-im-darling-west-end-2018,king-lear-west-end-2018,pity-west-end-2018,the-lehman-trilogy-west-end-2018,julie-west-end-2018,mood-music-west-end-2018,nine-night-west-end-2018",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 1,
+    "processed": 19,
+    "failed": 21,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "47.5%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 12,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 0,
+    "directCookies": 1,
     "scrapingdog": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 5
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
+    "tier1Attempts": 22,
+    "tier1Success": 19,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 1,
-    "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
+    "tier1_5Success": 1,
+    "tier1_9Attempts": 2,
     "tier1_9Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 3,
     "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3Attempts": 3,
+    "tier3Success": 1,
+    "tier3_6Attempts": 2,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 0,
-    "scrapingBeePageCredits": 1,
+    "tier4Attempts": 18,
+    "tier4Success": 9,
+    "totalFailed": 20,
+    "scrapingBeePageCredits": 21,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.6,
+    "browserbaseMinutesUsed": 0.2,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 0,
-    "failed": 1,
+    "processed": 19,
+    "failed": 21,
     "shows": [
-      "lincoln-in-the-bardo-off-broadway-2026"
+      "consent-west-end-2018",
+      "home-im-darling-west-end-2018",
+      "julie-west-end-2018",
+      "killer-joe-west-end-2018",
+      "king-lear-west-end-2018",
+      "knights-of-the-rose-west-end-2018",
+      "nine-night-west-end-2018",
+      "pity-west-end-2018",
+      "pressure-west-end-2018",
+      "the-glenn-miller-story-west-end-2018",
+      "the-jungle-west-end-2018",
+      "the-lehman-trilogy-west-end-2018",
+      "tina-the-tina-turner-musical-west-end-2018"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -65,27 +77,145 @@
       "failed": 0
     }
   },
-  "processed": [],
+  "processed": [
+    "home-im-darling-west-end-2018/financialtimes--sarah-hemming.json",
+    "pity-west-end-2018/city-am--adam-bloodworth.json",
+    "pity-west-end-2018/everything-theatre--polly-allen.json",
+    "pity-west-end-2018/getthechance--hannah-goslin.json",
+    "pity-west-end-2018/maturetimes--unknown.json",
+    "pity-west-end-2018/sierz-co-uk--unknown.json",
+    "the-lehman-trilogy-west-end-2018/camdennewjournal--unknown.json",
+    "the-glenn-miller-story-west-end-2018/standard--henry-hitchings.json",
+    "the-jungle-west-end-2018/nytimes--andrew-r-chow.json",
+    "julie-west-end-2018/standard--henry-hitchings.json",
+    "killer-joe-west-end-2018/timeout-london--andrzej-lukowski.json",
+    "consent-west-end-2018/daily-mail--julia-pritchard.json",
+    "killer-joe-west-end-2018/telegraph--dominic-cavendish.json",
+    "nine-night-west-end-2018/thestage--tom-wicker.json",
+    "tina-the-tina-turner-musical-west-end-2018/artsdesk--marianka-swain.json",
+    "tina-the-tina-turner-musical-west-end-2018/daily-mail--brian-gallagher.json",
+    "tina-the-tina-turner-musical-west-end-2018/london-box-office--miriam-gibson.json",
+    "tina-the-tina-turner-musical-west-end-2018/mail-on-sunday--unknown.json",
+    "tina-the-tina-turner-musical-west-end-2018/standard--fiona-mountford.json"
+  ],
   "failed": [
-    "lincoln-in-the-bardo-off-broadway-2026/bachtrack--susan-sempleski.json"
+    "king-lear-west-end-2018/guardian--arifa-akbar.json",
+    "king-lear-west-end-2018/british-theatre--philip-fisher.json",
+    "king-lear-west-end-2018/standard--fiona-mountford.json",
+    "pity-west-end-2018/guardian--michael-billington.json",
+    "pity-west-end-2018/reviewsgate--rod-dungate.json",
+    "pity-west-end-2018/british-theatre--philip-fisher.json",
+    "the-lehman-trilogy-west-end-2018/guardian--michael-billington.json",
+    "knights-of-the-rose-west-end-2018/britishtheatrecom--julian-eaves.json",
+    "the-jungle-west-end-2018/guardian--michael-billington.json",
+    "julie-west-end-2018/standard--jessie-thompson.json",
+    "pressure-west-end-2018/guardian--michael-billington.json",
+    "pressure-west-end-2018/a-younger-theatre--unknown.json",
+    "pressure-west-end-2018/standard--fiona-mountford.json",
+    "pressure-west-end-2018/telegraph--ben-lawrence.json",
+    "consent-west-end-2018/guardian--natalie-haynes.json",
+    "killer-joe-west-end-2018/guardian--michael-billington.json",
+    "consent-west-end-2018/london-box-office--stuart-king.json",
+    "consent-west-end-2018/standard--dave-speck.json",
+    "killer-joe-west-end-2018/times-uk--dominic-maxwell.json",
+    "nine-night-west-end-2018/standard--henry-hitchings.json",
+    "tina-the-tina-turner-musical-west-end-2018/sunday-times--unknown.json"
   ],
   "cumulativeResumedState": {
-    "processed": [],
+    "processed": [
+      "home-im-darling-west-end-2018/financialtimes--sarah-hemming.json",
+      "pity-west-end-2018/city-am--adam-bloodworth.json",
+      "pity-west-end-2018/everything-theatre--polly-allen.json",
+      "pity-west-end-2018/getthechance--hannah-goslin.json",
+      "pity-west-end-2018/maturetimes--unknown.json",
+      "pity-west-end-2018/sierz-co-uk--unknown.json",
+      "the-lehman-trilogy-west-end-2018/camdennewjournal--unknown.json",
+      "the-glenn-miller-story-west-end-2018/standard--henry-hitchings.json",
+      "the-jungle-west-end-2018/nytimes--andrew-r-chow.json",
+      "julie-west-end-2018/standard--henry-hitchings.json",
+      "killer-joe-west-end-2018/timeout-london--andrzej-lukowski.json",
+      "consent-west-end-2018/daily-mail--julia-pritchard.json",
+      "killer-joe-west-end-2018/telegraph--dominic-cavendish.json",
+      "nine-night-west-end-2018/thestage--tom-wicker.json",
+      "tina-the-tina-turner-musical-west-end-2018/artsdesk--marianka-swain.json",
+      "tina-the-tina-turner-musical-west-end-2018/daily-mail--brian-gallagher.json",
+      "tina-the-tina-turner-musical-west-end-2018/london-box-office--miriam-gibson.json",
+      "tina-the-tina-turner-musical-west-end-2018/mail-on-sunday--unknown.json",
+      "tina-the-tina-turner-musical-west-end-2018/standard--fiona-mountford.json"
+    ],
     "failed": [
-      "lincoln-in-the-bardo-off-broadway-2026/bachtrack--susan-sempleski.json"
+      "king-lear-west-end-2018/guardian--arifa-akbar.json",
+      "king-lear-west-end-2018/british-theatre--philip-fisher.json",
+      "king-lear-west-end-2018/standard--fiona-mountford.json",
+      "pity-west-end-2018/guardian--michael-billington.json",
+      "pity-west-end-2018/reviewsgate--rod-dungate.json",
+      "pity-west-end-2018/british-theatre--philip-fisher.json",
+      "the-lehman-trilogy-west-end-2018/guardian--michael-billington.json",
+      "knights-of-the-rose-west-end-2018/britishtheatrecom--julian-eaves.json",
+      "the-jungle-west-end-2018/guardian--michael-billington.json",
+      "julie-west-end-2018/standard--jessie-thompson.json",
+      "pressure-west-end-2018/guardian--michael-billington.json",
+      "pressure-west-end-2018/a-younger-theatre--unknown.json",
+      "pressure-west-end-2018/standard--fiona-mountford.json",
+      "pressure-west-end-2018/telegraph--ben-lawrence.json",
+      "consent-west-end-2018/guardian--natalie-haynes.json",
+      "killer-joe-west-end-2018/guardian--michael-billington.json",
+      "consent-west-end-2018/london-box-office--stuart-king.json",
+      "consent-west-end-2018/standard--dave-speck.json",
+      "killer-joe-west-end-2018/times-uk--dominic-maxwell.json",
+      "nine-night-west-end-2018/standard--henry-hitchings.json",
+      "tina-the-tina-turner-musical-west-end-2018/sunday-times--unknown.json"
     ]
   },
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "home-im-darling-west-end-2018/financialtimes--sarah-hemming.json",
+      "pity-west-end-2018/city-am--adam-bloodworth.json",
+      "pity-west-end-2018/everything-theatre--polly-allen.json",
+      "pity-west-end-2018/getthechance--hannah-goslin.json",
+      "pity-west-end-2018/maturetimes--unknown.json",
+      "pity-west-end-2018/sierz-co-uk--unknown.json",
+      "the-lehman-trilogy-west-end-2018/camdennewjournal--unknown.json",
+      "killer-joe-west-end-2018/timeout-london--andrzej-lukowski.json",
+      "consent-west-end-2018/daily-mail--julia-pritchard.json",
+      "tina-the-tina-turner-musical-west-end-2018/artsdesk--marianka-swain.json",
+      "tina-the-tina-turner-musical-west-end-2018/daily-mail--brian-gallagher.json",
+      "tina-the-tina-turner-musical-west-end-2018/mail-on-sunday--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
-    "directCookies": [],
+    "directCookies": [
+      "the-glenn-miller-story-west-end-2018/standard--henry-hitchings.json"
+    ],
     "scrapingdog": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "the-jungle-west-end-2018/nytimes--andrew-r-chow.json"
+    ],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "julie-west-end-2018/standard--henry-hitchings.json",
+      "killer-joe-west-end-2018/telegraph--dominic-cavendish.json",
+      "nine-night-west-end-2018/thestage--tom-wicker.json",
+      "tina-the-tina-turner-musical-west-end-2018/london-box-office--miriam-gibson.json",
+      "tina-the-tina-turner-musical-west-end-2018/standard--fiona-mountford.json"
+    ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Guardian": {
+      "count": 7,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "A Younger Theatre": {
+      "count": 1,
+      "domain": "ayoungertheatre.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
