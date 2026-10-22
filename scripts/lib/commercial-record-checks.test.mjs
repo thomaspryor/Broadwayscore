@@ -462,3 +462,14 @@ test('an estimated recoupment date needs the flag, and the flag needs a source t
   assert.equal(warn({ ...prior, notes: 'new note' }, { priorRecord: prior }), 0);
   assert.equal(warn({ ...prior, recoupedSource: chicago + ' Also in Variety.' }, { priorRecord: prior }), 1);
 });
+
+test('a reported-methodology weekly cost needs a weeklyRunningCostSource (BRO-5838)', () => {
+  const warn = (rec) => commercialRecordWarnings('k', { designation: 'Miracle', recouped: true, recoupedDate: '2016-03', weeklyRunningCost: 600000, ...rec })
+    .filter((m) => m.includes('no weeklyRunningCostSource')).length;
+  for (const m of ['trade-reported', 'sec-filing', 'producer-confirmed']) assert.equal(warn({ costMethodology: m }), 1);
+  assert.equal(warn({ costMethodology: 'trade-reported', weeklyRunningCostSource: '  ' }), 1);
+  assert.equal(warn({ costMethodology: 'trade-reported', weeklyRunningCostSource: 'Broadway Journal (Mar 2024): "$600K a week"' }), 0);
+  assert.equal(warn({ costMethodology: 'industry-estimate' }), 0);
+  assert.equal(warn({ costMethodology: 'reddit-standard' }), 0);
+  assert.equal(warn({ costMethodology: 'trade-reported', weeklyRunningCost: undefined }), 0);
+});

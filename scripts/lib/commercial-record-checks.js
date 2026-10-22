@@ -415,6 +415,12 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
   if (['trade-reported', 'sec-filing', 'producer-confirmed'].includes(show.costMethodology) && show.weeklyRunningCost && show.weeklyRunningCostBasis == null && BASIS_CUE_TEXT.test(String(show.weeklyRunningCostSource || '').replace(URL_RE, ' '))) {
     out.push(`commercial.json: "${showId}" has a ${show.costMethodology} weeklyRunningCost whose source mentions all-in or breakeven but no weeklyRunningCostBasis (tag it running, breakeven or all-in)`);
   }
+  // A reported-methodology weekly cost with no weeklyRunningCostSource credits
+  // a report the site cannot show (BRO-5838: 15 records, several with notes
+  // that call the figure an estimate). Cite it, or label it an estimate.
+  if (['trade-reported', 'sec-filing', 'producer-confirmed'].includes(show.costMethodology) && show.weeklyRunningCost && !String(show.weeklyRunningCostSource || '').trim()) {
+    out.push(`commercial.json: "${showId}" has a ${show.costMethodology} weeklyRunningCost but no weeklyRunningCostSource (cite the report, or set costMethodology to industry-estimate or reddit-standard)`);
+  }
   // A source that links a site's homepage, or this site, cites nothing
   // (BRO-5264: Hell's Kitchen's amNY and Broadway Journal entries, two bare
   // sec.gov links; bro-5006 cited broadwayscorecard.com for four stubs).
