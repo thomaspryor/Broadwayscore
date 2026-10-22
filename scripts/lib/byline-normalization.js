@@ -250,7 +250,7 @@ function stripCriticNameDecoration(raw) {
 // BRO-5791: scraper null-ish spellings of "no byline". Left as-is they persist as a
 // distinct critic ("null", "N/A") that never takes the 'Unknown' upgrade path and
 // slips past the empty-unknown guard. Canonicalise to the transitional 'Unknown'.
-const NULLISH_CRITIC_NAME = /^(?:unknown(?:\s+(?:critic|author|reviewer|writer|byline))?|n\/?a|null|undefined|none|tbd|tba|not\s+(?:listed|available|specified)|[-–—?.]+)$/i;
+const NULLISH_CRITIC_NAME = /^(?:unknown(?:\s+(?:critic|author|reviewer|writer|byline))?|n\/?a|null|undefined|none|tbd|tba|tbc|unavailable|no\s+byline|not\s+(?:listed|available|specified)|[-–—?.]+)$/i;
 
 function sanitizeCriticName(raw) {
   if (!raw || typeof raw !== 'string') return raw;

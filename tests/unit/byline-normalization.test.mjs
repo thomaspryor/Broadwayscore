@@ -184,7 +184,7 @@ test('sanitizeCriticName never returns a URL — .org/.net/.co.uk contract (dete
 test('sanitizeCriticName: null-ish placeholder spellings become Unknown', async () => {
   const { createRequire } = await import('node:module');
   const { sanitizeCriticName } = createRequire(import.meta.url)('../../scripts/lib/byline-normalization.js');
-  for (const n of ['unknown', 'N/A', 'null', 'undefined', 'None', 'TBD', 'Unknown Critic', '-', '—', 'Not Listed']) {
+  for (const n of ['unknown', 'N/A', 'null', 'undefined', 'None', 'TBD', 'Unknown Critic', 'TBC', 'Unavailable', 'No byline', '-', '—', 'Not Listed']) {
     assert.equal(sanitizeCriticName(n), 'Unknown', n);
   }
   for (const n of ['Jesse Green', 'Naomi Nathan', 'Nonie Smith', 'Unknown Pleasures']) {
