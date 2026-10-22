@@ -36,6 +36,7 @@
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
+const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
 const { classifyLifecycle, SERP_DISCOVERY_METHODS } = require('./lib/review-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -165,7 +166,7 @@ const errorSamples = [];
 
 for (const c of limited) {
   try {
-    const review = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
+    const review = readReviewForUpdate(c.filePath);
     review.serpDiscoveryAbandoned = true;
     // Record intent in a new field so we can audit later
     review.serpAbandonmentReason = c.hasPriorSerpCycle
@@ -177,7 +178,7 @@ for (const c of limited) {
     if (typeof review.serpRetryCount !== 'number') {
       review.serpRetryCount = c.hasPriorSerpCycle ? 1 : 0;
     }
-    fs.writeFileSync(c.filePath, JSON.stringify(review, null, 2) + '\n');
+    persistReviewSnapshot({ filePath: c.filePath, data: review, trailingNewline: true });
     written++;
     if (written % 1000 === 0) {
       console.log(`  ... ${written}/${limited.length}`);

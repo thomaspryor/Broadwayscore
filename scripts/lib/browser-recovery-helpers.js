@@ -14,6 +14,7 @@
 
 const { isolateMultiShowSectionForShowId } = require('./multi-show-section-extract');
 const fs = require('fs');
+const { readReviewForUpdate, persistReviewSnapshot } = require('./persist-review-snapshot');
 const path = require('path');
 const { execSync } = require('child_process');
 
@@ -180,7 +181,7 @@ function processRecoveredText(candidate, rawText, labels) {
     return { ok: false, reason: `show not mentioned: "${showTitle}"` };
   }
 
-  const data = JSON.parse(fs.readFileSync(candidate.filePath, 'utf8'));
+  const data = readReviewForUpdate(candidate.filePath);
   if (data.fullText && data.fullText.length >= cleanedText.length) {
     return { ok: false, reason: `not longer than existing (${data.fullText.length} >= ${cleanedText.length})` };
   }
@@ -205,7 +206,7 @@ function processRecoveredText(candidate, rawText, labels) {
     require('./rescore-flagging').markRescoreNeeded(data, `fullText recovered via ${labels.sourceMethod} (task #831)`, undefined, { requeue: true });
   }
 
-  fs.writeFileSync(candidate.filePath, JSON.stringify(data, null, 2) + '\n');
+  persistReviewSnapshot({ filePath: candidate.filePath, data: data, trailingNewline: true });
   return { ok: true, newLen: cleanedText.length };
 }
 

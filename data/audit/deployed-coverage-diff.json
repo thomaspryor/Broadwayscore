@@ -1,48 +1,13 @@
 {
-  "generatedAt": "2026-10-22T05:49:03.119Z",
+  "generatedAt": "2026-10-22T08:16:13.278Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 258,
-  "clean": 256,
-  "defective": 2,
-  "byType": {
-    "score-drift": 2
-  },
-  "shows": [
-    {
-      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
-      "title": "The Curious Case of Benjamin Button",
-      "openingDate": "2026-10-21",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 77.08 vs local 75.78 (Δ1.3)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 14,
-      "deployedCount": 15,
-      "firstDefectAt": "2026-10-22T05:49:00.143Z"
-    },
-    {
-      "showId": "billy-crystal-860-2026",
-      "title": "Billy Crystal 860",
-      "openingDate": "2026-10-21",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 82.5 vs local 82.33 (Δ0.17)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 20,
-      "deployedCount": 20,
-      "firstDefectAt": "2026-10-22T05:49:00.143Z"
-    }
-  ],
+  "clean": 258,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

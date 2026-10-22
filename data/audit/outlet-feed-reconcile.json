@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T05:49:03.513Z",
+  "generatedAt": "2026-10-22T08:16:13.583Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -133,10 +133,6 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -149,14 +145,6 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
-      "outletId": "south-london",
-      "error": "Timeout fetching https://southlondon.co.uk/feed/"
-    },
-    {
-      "outletId": "theatre-vibe",
-      "error": "AggregateError"
-    },
-    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -167,25 +155,12 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 718,
-  "matchedGaps": 5,
-  "possibleGaps": 2,
+  "itemsScanned": 757,
+  "matchedGaps": 6,
+  "possibleGaps": 3,
   "gaps": [
-    {
-      "showId": "ilford-boy-west-end-2026",
-      "title": "Ilford Boy",
-      "level": "matched",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/ilford-boy-donmar-warehouse-london/",
-      "headline": "Ilford Boy &#8211; Donmar Warehouse, London",
-      "publishDate": "2026-10-22"
-    },
     {
       "showId": "king-of-the-yees-off-broadway-2026",
       "title": "King of the Yees",
@@ -214,6 +189,24 @@
       "publishDate": "2026-10-22"
     },
     {
+      "showId": "other-desert-cities-2026",
+      "title": "Other Desert Cities",
+      "level": "matched",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/other-desert-cities/",
+      "headline": "Other Desert Cities ***",
+      "publishDate": "2026-10-21"
+    },
+    {
+      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "title": "The Curious Case of Benjamin Button",
+      "level": "matched",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/the-curious-case-of-benjamin-button/",
+      "headline": "The Curious Case of Benjamin Button *****",
+      "publishDate": "2026-10-21"
+    },
+    {
       "showId": "triumph-off-west-end-2026",
       "title": "Triumph",
       "level": "matched",
@@ -221,6 +214,15 @@
       "url": "https://culturesauce.com/caryl-churchill-triumph-off-broadway-review/",
       "headline": "Caryl Churchill&#8217;s &#8216;Triumph&#8217; views imperial Rome through a Foxy blond flack (Off Broadway review)",
       "publishDate": "2026-10-18"
+    },
+    {
+      "showId": "copperfield-the-new-musical-off-broadway-2026",
+      "title": "Copperfield! The New Musical",
+      "level": "possible",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/the-curious-case-of-benjamin-button/",
+      "headline": "The Curious Case of Benjamin Button *****",
+      "publishDate": "2026-10-21"
     },
     {
       "showId": "the-pianist-off-west-end-2026",

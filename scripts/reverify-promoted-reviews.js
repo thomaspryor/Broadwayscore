@@ -14,6 +14,7 @@
  */
 
 const fs = require("fs");
+const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const { verifierExcerpt } = require('./lib/excerpt-fields');
 const path = require("path");
 const { verifyContent, contentHash } = require("./lib/content-verifier");
@@ -47,7 +48,7 @@ async function main() {
       if (!file.endsWith(".json")) continue;
       const filePath = path.join(showPath, file);
       try {
-        const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
+        const data = readReviewForUpdate(filePath);
         // Skip human-approved wrongShow flags (BRO-4599).
         if (data.wrongShow === true && !hasApprovedFlag(data, "wrongShow") &&
             data.contentVerificationPromoted &&
@@ -151,7 +152,7 @@ async function main() {
         confirmed++;
       }
 
-      fs.writeFileSync(c.filePath, JSON.stringify(c.data, null, 2) + "\n");
+      persistReviewSnapshot({ filePath: c.filePath, data: c.data, trailingNewline: true });
       console.log("");
 
       // Small delay to avoid rate limits

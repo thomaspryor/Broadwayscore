@@ -13,6 +13,7 @@
  */
 
 const fs = require('fs');
+const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
 const { parseStarRating, parseLetterGrade, parseNumericRating } = require('./lib/score-parsers');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -176,9 +177,9 @@ if (errors.length > 0) {
 if (WRITE && changes.length > 0) {
   let written = 0;
   for (const c of changes) {
-    const data = JSON.parse(fs.readFileSync(c.filePath, 'utf-8'));
+    const data = readReviewForUpdate(c.filePath);
     data.originalScoreNormalized = c.newNorm;
-    fs.writeFileSync(c.filePath, JSON.stringify(data, null, 2) + '\n');
+    persistReviewSnapshot({ filePath: c.filePath, data: data, trailingNewline: true });
     written++;
   }
   console.log(`\nWrote ${written} files.`);

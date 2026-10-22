@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T08:06:25.979Z",
+  "generatedAt": "2026-10-22T08:35:05.610Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1834,9 +1834,9 @@
       "status": "open",
       "slug": "the-curious-case-of-benjamin-button-off-broadway",
       "thumbnail": "/images/shows/the-curious-case-of-benjamin-button-off-broadway-2026/thumbnail.webp",
-      "siteScore": 75.6,
+      "siteScore": 75.79,
       "liveScore": 76,
-      "scoreDrift": 0.4000000000000057,
+      "scoreDrift": 0.20999999999999375,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -2223,6 +2223,18 @@
           "t": "2026-10-22T07:07:35.651Z",
           "rc": 17,
           "s": 75.6,
+          "t1": 3,
+          "t2": 7,
+          "t3": 7,
+          "p": 12,
+          "m": 4,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T08:35:05.610Z",
+          "rc": 17,
+          "s": 75.79,
           "t1": 3,
           "t2": 7,
           "t3": 7,
@@ -3016,23 +3028,23 @@
       "status": "open",
       "slug": "ilford-boy-west-end",
       "thumbnail": "/images/shows/ilford-boy-west-end-2026/thumbnail.jpg",
-      "siteScore": 73.48,
-      "liveScore": 73,
-      "scoreDrift": -0.480000000000004,
+      "siteScore": 73.97,
+      "liveScore": 74,
+      "scoreDrift": 0.030000000000001137,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 11,
+      "total": 12,
       "t1": 5,
-      "t2": 3,
+      "t2": 4,
       "t3": 3,
-      "positive": 6,
+      "positive": 7,
       "mixed": 5,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 8,
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3280,6 +3292,18 @@
           "m": 5,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-22T08:20:12.927Z",
+          "rc": 12,
+          "s": 73.97,
+          "t1": 5,
+          "t2": 4,
+          "t3": 3,
+          "p": 7,
+          "m": 5,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -3350,10 +3374,6 @@
         },
         {
           "name": "Deadline",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out New York",
           "isDualMarket": false
         },
         {

@@ -28,6 +28,7 @@
  */
 
 const fs = require('fs');
+const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
 const { execSync } = require('child_process');
 
@@ -148,7 +149,7 @@ function processRecoveredText(candidate, rawText) {
     return { ok: false, reason: `show not mentioned: "${showTitle}"` };
   }
 
-  const data = JSON.parse(fs.readFileSync(candidate.filePath, 'utf8'));
+  const data = readReviewForUpdate(candidate.filePath);
   if (data.fullText && data.fullText.length >= cleanedText.length) {
     return { ok: false, reason: `not longer than existing (${data.fullText.length} >= ${cleanedText.length})` };
   }
@@ -177,7 +178,7 @@ function processRecoveredText(candidate, rawText) {
     markRescoreNeeded(data, 'fullText recovered via WSJ subscriber browser session (task #779)', undefined, { requeue: true });
   }
 
-  fs.writeFileSync(candidate.filePath, JSON.stringify(data, null, 2) + '\n');
+  persistReviewSnapshot({ filePath: candidate.filePath, data: data, trailingNewline: true });
   return { ok: true, newLen: cleanedText.length };
 }
 
@@ -314,7 +315,7 @@ async function main() {
       stats.dead++;
       deadEntries.push({ reviewId: c.reviewId, url: c.url, reason });
       if (!dryRun) {
-        const data = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
+        const data = readReviewForUpdate(c.filePath);
         // incompleteReason is a controlled-vocabulary field (see scripts/lib/incomplete-reason.js)
         // that collect-review-texts.js/gather-reviews.js gate SERP re-discovery eligibility on
         // ('wrong_content' -> needsSerpDiscovery). A free-text string here silently disables that
@@ -322,7 +323,7 @@ async function main() {
         // real enum value instead, with our diagnostic in incompleteDetail.
         data.incompleteReason = reason === 'DataDome challenge detected' ? 'bot_blocked' : 'wrong_content';
         data.incompleteDetail = `wsj-browser-recovery: ${reason} (${new Date().toISOString()})`;
-        fs.writeFileSync(c.filePath, JSON.stringify(data, null, 2) + '\n');
+        persistReviewSnapshot({ filePath: c.filePath, data: data, trailingNewline: true });
       }
       continue;
     }
