@@ -98,6 +98,9 @@ jobs:
 
       - name: Validate data
         if: always()
+        # BRO-3194: stays blocking. validate-data.js writes the push-core-data
+        # refusal sentinel; the red step is the only signal that the push below
+        # was refused, so continue-on-error would silently discard the data.
         run: node scripts/validate-data.js
 
       - name: Push core data to private repo
