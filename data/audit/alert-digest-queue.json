@@ -729,5 +729,36 @@
       }
     ],
     "queuedAt": "2026-10-22T14:34:34.683Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5913-coalesce-publish-chain",
+    "title": "Landing blocked: merged-tree-tests red on land/bro-5913-coalesce-publish-chain",
+    "description": "land.yml did not land land/bro-5913-coalesce-publish-chain: the merged-tree-tests gate went red at 56c3e76449. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5913-coalesce-publish-chain @ 56c3e76449 (origin/land/bro-5913-coalesce-publish-chain) → origin/main @ 9698c168a4 [land] attempt 1/3: rebased onto 9698c168a4, 8 file(s) changed — running checks [land] verified-base: main moved a12f557524 → 9698c168a4 across 53 file(s), substantive — re-checking on the merged tree (+4 test file(s) changed on main since the verified base); full re-ch Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39795213223",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5913-coalesce-publish-chain"
+      },
+      {
+        "name": "gate",
+        "value": "merged-tree-tests"
+      },
+      {
+        "name": "tip",
+        "value": "56c3e7644904b4b408a7e0866ecf925e7da1ce51"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39795213223"
+      }
+    ],
+    "queuedAt": "2026-10-22T14:52:55.220Z"
   }
 ]
