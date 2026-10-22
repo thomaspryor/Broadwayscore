@@ -126,7 +126,6 @@
 ## 🎨 UI / design system
 - [Design system reference](design-system.md) — surfaces, score tiers, shared components, banned patterns
 - [Local preview before push](feedback_local_preview_before_push.md) — /visual-qa local, APPROVED:<hash> required; worktree gotchas ([[feedback_visual_qa_dev_server_in_worktree.md]]); preserve parallel colors ([[feedback_preserve_parallel_session_colors.md]])
-- [Tech Scorecard carry-over](feedback_port_tech_flag.md): generic web fix ⇒ `PORT-TECH:` commit line or `port-tech` label
 - [Mobile link min-height](feedback_mobile_link_min_height.md) — a{min-height:44px}; .performer-row/.craft-row opt out; e2e-guarded
 - [App Router rendering](feedback_react_lazy_for_app_router_split.md) — next/dynamic from server = no-op, use 'use client' Loader + Suspense; above-fold renders in page.tsx BEFORE HomePageClient ([[feedback_demo_flags_client_only.md]])
 - [A/B tests](feedback_ab_test_guardrails.md) — PostHog filters/exclusions/stat-sig thresholds
