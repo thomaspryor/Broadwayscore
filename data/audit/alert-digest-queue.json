@@ -1694,6 +1694,20 @@
     "queuedAt": "2026-10-22T05:29:12.123Z"
   },
   {
+    "conditionKey": "pending-unrecoverable:the-curious-case-of-benjamin-button-off-broadway-2026",
+    "title": "1 review(s) for the-curious-case-of-benjamin-button-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- publictheaterorg--40c5d2b3.json (publictheaterorg): no byline in page and no recoverable body https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-button/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-22T05:42:07.876Z"
+  },
+  {
     "conditionKey": "land:land/bro-5890-express-ingest-fixes",
     "title": "Landing blocked: rebase red on land/bro-5890-express-ingest-fixes",
     "description": "land.yml did not land land/bro-5890-express-ingest-fixes: the rebase gate went red at 33e8433abd. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5890-express-ingest-fixes @ 33e8433abd (origin/land/bro-5890-express-ingest-fixes) → origin/main @ b936c48be4 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ b936c48be4: Rebasing (1/1) error: could not apply 33e8433abd9... BRO-5890: stop Express stalling other shows; fix the ingest push race, stranded and misflagged reviews hint: Resolve all conflicts manually,  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39724339379",
