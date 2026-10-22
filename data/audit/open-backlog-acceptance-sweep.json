@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-21T07:46:18.287Z",
+  "generatedAt": "2026-10-22T07:44:44.720Z",
   "shadow": true,
-  "checkoutSha": "8b1cd22a6740838858fc2536a12dd79850cb3ae3",
-  "totalCandidates": 505,
+  "checkoutSha": "3333bddd33819960134451b22219c74848fce937",
+  "totalCandidates": 539,
   "eligibleCandidates": 79,
   "checked": 30,
   "truncated": true,
@@ -14,15 +14,69 @@
   },
   "alreadyDone": [
     {
-      "id": "BRO-5807",
-      "name": "Cloud land-local-check reports missing rsync/actionlint as pre-existing failures ('still real, file an issue')",
-      "verifyCmd": "node --test scripts/cloud-memory-sync.test.mjs",
+      "id": "BRO-5930",
+      "name": "Card VERIFY lines accept 'node --test <file>.test.ts', which cannot run under plain node (@/ aliases)",
+      "verifyCmd": "node --test scripts/lib/autonomous-verify-cmd.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-5803",
-      "name": "Put the remaining shows.json-writing workflows in the shows-json-writer concurrency group (or document why not)",
-      "verifyCmd": "node --test tests/unit/shows-json-writer-concurrency.test.mjs",
+      "id": "BRO-5919",
+      "name": "Queen of Hearts (Theatre XIV) has no opening/closing dates and may be stale",
+      "verifyCmd": "test -f scripts/validate-show-venue.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-5917",
+      "name": "Generalize the ledger-derived ScrapingBee cooldown to other hosts with 0 successes (realmericanmedia.com, null-host calls)",
+      "verifyCmd": "node --test scripts/lib/reddit-dispatch-cooldown.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5916",
+      "name": "Reddit sentiment scrape dead since 2026-10-19: every dispatch trips the breaker and burns ScrapingBee credits (no audience Reddit data for new openings)",
+      "verifyCmd": "node --test scripts/lib/reddit-dispatch-cooldown.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5909",
+      "name": "Rebuild ships a duplicateOf copy whose reference is excluded as a copy of another review (possible double count, 6 files)",
+      "verifyCmd": "node --test tests/unit/explain-exclusion-mirror-inventory.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5903",
+      "name": "Extend rate-limit-aware retry to push-core-data / push-review-texts / push-aggregator-archive",
+      "verifyCmd": "node --test tests/unit/checkout-rate-limit-retry.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5879",
+      "name": "Reddit draft: re-send updated post + screenshots when score or reviews change after first email",
+      "verifyCmd": "node --test scripts/verify-reddit-update-emails.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5868",
+      "name": "BRO-5849 follow-up: hand-enter guess-grade leads (All Out, Pass Over, Little Prince, Carousel, Beetlejuice, Dorian Gray)",
+      "verifyCmd": "node --test tests/unit/commercial-model-coverage.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5816",
+      "name": "Midnight in the Garden of Good and Evil (2024 id): confirm Broadway run dates and venue, retitle landed in BRO-5776",
+      "verifyCmd": "node scripts/validate-data.js --strict",
+      "detail": null
+    },
+    {
+      "id": "BRO-5805",
+      "name": "Talkin' Broadway: seven real reviews excluded by automatic wrong-show/production flags",
+      "verifyCmd": "node scripts/audit-stale-flag-after-url-correction.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-5801",
+      "name": "Retier the 45 registered blog-platform outlets from T3 to T4 after owner-rule review",
+      "verifyCmd": "node --test scripts/lib/tier-migration-verify.test.mjs",
       "detail": null
     },
     {
@@ -50,12 +104,6 @@
       "detail": null
     },
     {
-      "id": "BRO-5737",
-      "name": "Live-data sweep round 2: duplicate-show-dedup alias-clash + review-gap-remediation reviews.json cross-check to drift run",
-      "verifyCmd": "node --test tests/unit/test-yml-code-only-jobs.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-5736",
       "name": "Version remaining image paths (site pages, search-shows, show-lookup, mobile detail hero) so replaced art busts caches",
       "verifyCmd": "node --test scripts/lib/versioned-image-path.test.mjs",
@@ -68,33 +116,9 @@
       "detail": null
     },
     {
-      "id": "BRO-5726",
-      "name": "verify-review-recovery: thereviewshub--reviewer-upload.json in the-comedy-about-spies-west-end-2025 reported MISSING though reviews.json holds a thereviewshub entry (Christine Stanton, 91)",
-      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=the-comedy-about-spies-west-end-2025 --reviews=1",
-      "detail": null
-    },
-    {
       "id": "BRO-5719",
       "name": "Land: decide on fail-fast in the Checks job (BRO-5673 Part 4d)",
       "verifyCmd": "node --test tests/unit/land-retry-cancelled-schedule.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5712",
-      "name": "bsc-prune zombie-tab-sweep: add Linear state signal (BRO-3050 piece 2)",
-      "verifyCmd": "node --test scripts/lib/zombie-tab-sweep.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5706",
-      "name": "Retire duplicate row angel-bones-english-national-opera-west-end-2026 (same ENO run as angels-bone-west-end-2026)",
-      "verifyCmd": "node --test scripts/lib/retire-show-action.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5683",
-      "name": "CI: run verify-review-text-folders orphan assertions with the review-texts corpus (they skip in the unit job)",
-      "verifyCmd": "node --test scripts/verify-review-text-folders.test.mjs",
       "detail": null
     },
     {
@@ -122,18 +146,6 @@
       "detail": null
     },
     {
-      "id": "BRO-5657",
-      "name": "Land preflight: run the top-level-script test.yml push-path audit before land",
-      "verifyCmd": "node --test tests/unit/land-preflight.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5654",
-      "name": "validate-data: duplicate Time Out URL for 1536-west-end-2026 (Isobel Lewis vs Andrjez Lukowski)",
-      "verifyCmd": "node scripts/validate-data.js",
-      "detail": null
-    },
-    {
       "id": "BRO-5652",
       "name": "Guard: scripts that write fullText must stamp textFetchedAt; allow textFetchedAt backfill via CI",
       "verifyCmd": "node --test tests/unit/text-fetched-at-backfill.test.mjs",
@@ -146,58 +158,74 @@
       "detail": null
     },
     {
-      "id": "BRO-5614",
-      "name": "Stop writing URL-derived publishDates: 5 backfill scripts and 666 existing review files",
-      "verifyCmd": "node scripts/validate-data.js --strict",
-      "detail": null
-    },
-    {
-      "id": "BRO-5565",
-      "name": "Investigate Sentry weekly digest: TypeError x8, RangeError x3 (New), UgcError apple_sign_in",
-      "verifyCmd": "node --test tests/unit/sentry-triage-classify.test.js",
-      "detail": null
-    },
-    {
-      "id": "BRO-5561",
-      "name": "Roundup archive pages filed under the wrong production (POTUS 2022, The Pass NYC under a West End id) + schedule audit-roundup-link-coverage",
-      "verifyCmd": "node --test scripts/lib/roundup-link-coverage.test.mjs",
+      "id": "BRO-5646",
+      "name": "Codex PRs land on their own: the owner's only step is pressing Create PR in Codex",
+      "verifyCmd": "node --test tests/unit/codex-runner.test.mjs",
       "detail": null
     }
   ],
   "failing": [],
   "unverifiable": [
     {
+      "id": "BRO-5839",
+      "name": "Older-revival pages follow-up: rehome Osage 2008 National Theatre reviews, refetch blurb/boilerplate rows, add Three Days of Rain 2027 revival entry (from BRO-4889)",
+      "verifyCmd": "node --test tests/unit/revival-promo-older-broadway.test.mjs",
+      "detail": "ran no passing tests (all skipped or none ran)"
+    },
+    {
+      "id": "BRO-5813",
+      "name": "iOS app: deep links that arrive during startup are dropped (root layout renders null until onboarding check + PostHog init)",
+      "verifyCmd": "node --test tests/e2e/ios_maestro_coverage.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/e2e/ios_maestro_coverage.test.mjs"
+    },
+    {
+      "id": "BRO-5806",
+      "name": "iOS app CI never runs its website-parity contracts (no Broadwayscore checkout): add an advisory parity job",
+      "verifyCmd": "node --test tests/unit/web-repo.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/web-repo.test.mjs"
+    },
+    {
+      "id": "BRO-5804",
+      "name": "Weekly-gross history: check 4 missing weeks for three 2017-2022 revivals so their all-time totals can fill",
+      "verifyCmd": "node --test tests/unit/missing-weeks-audit.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/missing-weeks-audit.test.mjs"
+    },
+    {
       "id": "BRO-5662",
       "name": "iOS app To Be Rated hides a past rewatch of an already-rated show",
       "verifyCmd": "node --test scripts/lib/is-watchlist-entry-rated.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/is-watchlist-entry-rated.test.mjs"
-    },
-    {
-      "id": "BRO-5656",
-      "name": "P2: collect-review-texts checkpoint push reverted a fresh refetched fullText to the older longer body (Pride Independent, 2026-10-14)",
-      "verifyCmd": "node --test scripts/lib/review-json-three-way-merge.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/review-json-three-way-merge.test.mjs"
-    },
-    {
-      "id": "BRO-5599",
-      "name": "Business pages: seven closed revivals show no total gross (all-time totals missing, weekly history has them)",
-      "verifyCmd": "node --test scripts/audit-grosses-data.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-grosses-data.test.mjs"
-    },
-    {
-      "id": "BRO-5582",
-      "name": "Backfill provenance for 1,691 legacy wrongProduction flags with no audit trail",
-      "verifyCmd": "node --test tests/unit/wrongproduction-provenance-backfill.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/wrongproduction-provenance-backfill.test.mjs"
-    },
-    {
-      "id": "BRO-5572",
-      "name": "1,514 live reviews show an Unknown or missing critic name: verify byline impact and fix source parsers",
-      "verifyCmd": "node --test tests/unit/unknown-critic-backlog.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/unknown-critic-backlog.test.mjs"
     }
   ],
   "landedButOpen": [
+    {
+      "id": "BRO-5916",
+      "name": "Reddit sentiment scrape dead since 2026-10-19: every dispatch trips the breaker and burns ScrapingBee credits (no audience Reddit data for new openings)",
+      "branch": "land/bro-5916-reddit-cooldown",
+      "sha": "bcf83a161f546317bf88b141223dacb5981a34cb",
+      "landedAt": "2026-10-22T06:30:32.383Z"
+    },
+    {
+      "id": "BRO-5879",
+      "name": "Reddit draft: re-send updated post + screenshots when score or reviews change after first email",
+      "branch": "land/bro-5879-recheck-probe",
+      "sha": "24d1abec7596a10207ce1bf035e4b19cbc3da661",
+      "landedAt": "2026-10-22T00:16:42.130Z"
+    },
+    {
+      "id": "BRO-5801",
+      "name": "Retier the 45 registered blog-platform outlets from T3 to T4 after owner-rule review",
+      "branch": "land/codex-bro-5801",
+      "sha": "b97081f9df3beb2af0a705c38e5836b80e15cc68",
+      "landedAt": "2026-10-21T21:17:01.809Z"
+    },
+    {
+      "id": "BRO-5783",
+      "name": "Land: trim the in-lock full re-check tail (7 of 43 lands >5 min on 2026-10-20, max 16 min; queued lands wait up to 22 min)",
+      "branch": "land/codex-bro-5783",
+      "sha": "6031bdc32bf84b8e84e3986f5047c8b206db0357",
+      "landedAt": "2026-10-21T12:47:28.897Z"
+    },
     {
       "id": "BRO-5770",
       "name": "Morning digest: show Opus cap use (N of 6 in 24h, cards that fell back to Sonnet)",
@@ -213,11 +241,11 @@
       "landedAt": "2026-10-20T00:53:17.277Z"
     },
     {
-      "id": "BRO-5683",
-      "name": "CI: run verify-review-text-folders orphan assertions with the review-texts corpus (they skip in the unit job)",
-      "branch": "land/codex-bro-5683",
-      "sha": "16c79cd00c31f3a0cfe1a18ee511263484cd0dea",
-      "landedAt": "2026-10-19T16:22:08.393Z"
+      "id": "BRO-5678",
+      "name": "Feedback 'missing show' for an older Off-Broadway run has no automatic add path (Love, Love, Love 2016 needed a hand-built plan)",
+      "branch": "land/bro-5678-already-live",
+      "sha": "0e7c907dabe3865f629d355a1c91f6c5bf3cfa9b",
+      "landedAt": "2026-10-21T22:27:27.845Z"
     },
     {
       "id": "BRO-5675",
@@ -227,25 +255,11 @@
       "landedAt": "2026-10-19T06:05:02.621Z"
     },
     {
-      "id": "BRO-5614",
-      "name": "Stop writing URL-derived publishDates: 5 backfill scripts and 666 existing review files",
-      "branch": "land/bro-5614-recover-null",
-      "sha": "aca108dc38d0d1d755dd1aabeef5958e66e25095",
-      "landedAt": "2026-10-21T03:54:21.694Z"
-    },
-    {
-      "id": "BRO-5565",
-      "name": "Investigate Sentry weekly digest: TypeError x8, RangeError x3 (New), UgcError apple_sign_in",
-      "branch": "land/bro-5565-triage-noise",
-      "sha": "6d027a4c0eae33555fe6c01cad5004fb14ef1904",
-      "landedAt": "2026-10-18T03:37:22.215Z"
-    },
-    {
-      "id": "BRO-5561",
-      "name": "Roundup archive pages filed under the wrong production (POTUS 2022, The Pass NYC under a West End id) + schedule audit-roundup-link-coverage",
-      "branch": "land/bro-5561-roundup-health-step",
-      "sha": "2f84835ecadcbaa409a9c68597c5387fd5aed93b",
-      "landedAt": "2026-10-20T15:40:57.647Z"
+      "id": "BRO-5646",
+      "name": "Codex PRs land on their own: the owner's only step is pressing Create PR in Codex",
+      "branch": "land/bro-5646-owner-email",
+      "sha": "c965b05fe3c88bbe5ff37d1b50227f45faee5d4f",
+      "landedAt": "2026-10-19T04:35:44.719Z"
     }
   ]
 }
