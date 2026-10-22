@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { landVerdict, prodPlan, prodVerdict, parseArgs, sitePathsIn } = require('./wait-for-land.js');
+const { landVerdict, readLatestRun, prodPlan, prodVerdict, parseArgs, sitePathsIn } = require('./wait-for-land.js');
 
 const TIP = '057156419a666b690b937354092729af67ceb092';
 const NOW = Date.parse('2026-10-05T05:00:00Z');
@@ -39,13 +39,70 @@ test('a red run for the current tip is a refusal (the case the ref-only loop mis
   }
 });
 
-test('a cancelled run is an eviction: keep waiting, name the retry, flag it once stale', () => {
-  const fresh = verdict({ refSha: TIP, run: run({ id: 37260205885, conclusion: 'cancelled' }) });
+test('a confirmed eviction keeps waiting, names the retry, and flags it once stale', () => {
+  const cancelled = { id: 37260205885, conclusion: 'cancelled', cancellation: { kind: 'eviction' } };
+  const fresh = verdict({ refSha: TIP, run: run(cancelled) });
   assert.equal(fresh.verdict, 'waiting');
   assert.match(fresh.why, /land-retry-cancelled\.js --run=37260205885/);
-  const stale = verdict({ refSha: TIP, run: run({ id: 37260205885, conclusion: 'cancelled', updated_at: minsAgo(45) }) });
+  const stale = verdict({ refSha: TIP, run: run({ ...cancelled, updated_at: minsAgo(45) }) });
   assert.equal(stale.verdict, 'waiting');
   assert.match(stale.why, /30\+ min ago and not re-run/);
+});
+
+test('a deadline cancellation is refused immediately and cannot prove a landing after ref deletion', () => {
+  const timed = run({ conclusion: 'cancelled', cancellation: { kind: 'timeout', why: 'Land job exceeded its execution time limit' } });
+  const v = verdict({ refSha: TIP, run: timed });
+  assert.equal(v.verdict, 'refused');
+  assert.match(v.why, /timed out.*Land/);
+  assert.doesNotMatch(v.why, /retries spent|land-retry-cancelled/);
+  assert.equal(verdict({ refSha: null, lastSha: TIP, run: timed }).verdict, 'unknown');
+  assert.equal(verdict({ refSha: TIP, run: { ...timed, head_sha: 'f'.repeat(40) } }).verdict, 'waiting');
+});
+
+test('unknown cancellations do not promise a queue retry; mid-work cancellations are refused', () => {
+  const unknown = verdict({ refSha: TIP, run: run({ conclusion: 'cancelled' }) });
+  assert.equal(unknown.verdict, 'waiting');
+  assert.doesNotMatch(unknown.why, /sweep|retries spent|land-retry-cancelled/);
+  const v = verdict({ refSha: TIP, run: run({ conclusion: 'cancelled', cancellation: { kind: 'other', why: 'land-started-work' } }) });
+  assert.equal(v.verdict, 'refused');
+  assert.match(v.why, /land-started-work/);
+});
+
+test('readLatestRun uses the timeout annotation, not elapsed time, and caches by attempt', () => {
+  // Actual Land job annotation on both 38184188732 and 38197860150 (BRO-5131).
+  const annotation = { message: 'The job has exceeded the maximum execution time of 15m0s' };
+  const r = run({ id: 38197860150, head_branch: 'land/bro-5073-shipcheck', run_attempt: 1, conclusion: 'cancelled' });
+  let land = { id: 114653977654, name: 'Land', conclusion: 'cancelled', steps: [{ conclusion: 'success' }, { conclusion: 'cancelled' }] };
+  let annotations = [annotation, { message: 'The operation was canceled.' }];
+  const calls = [];
+  const read = (endpoint) => {
+    calls.push(endpoint);
+    if (endpoint.includes('/workflows/land.yml/runs?')) return { workflow_runs: [r] };
+    if (endpoint.includes('/jobs?')) return { jobs: [{ name: 'Checks', conclusion: 'success' }, land] };
+    if (endpoint.includes('/annotations?')) return annotations;
+    assert.fail(`unexpected endpoint: ${endpoint}`);
+  };
+  const opts = { read, cache: new Map() };
+  const poll = () => readLatestRun(r.head_branch, opts);
+  assert.equal(verdict({ refSha: TIP, run: poll() }).verdict, 'refused');
+  assert.equal(poll().cancellation.kind, 'timeout');
+  assert.equal(calls.filter((c) => c.includes('/jobs?')).length, 1);
+  assert.equal(calls.filter((c) => c.includes('/annotations?')).length, 1);
+
+  r.run_attempt = 2;
+  annotations = [{ message: 'The operation was canceled.' }];
+  land = { ...land, steps: [{ conclusion: 'cancelled' }] };
+  assert.equal(poll().cancellation.kind, 'eviction', 'a re-run must not inherit the old timeout');
+  r.run_attempt = 3;
+  land = { ...land, steps: [{ conclusion: 'success' }, { conclusion: 'cancelled' }] };
+  assert.equal(poll().cancellation.kind, 'other', 'a manual mid-work cancel is not a timeout or eviction');
+  r.run_attempt = 4;
+  land = { ...land, conclusion: 'timed_out' };
+  assert.equal(poll().cancellation.kind, 'timeout', 'explicit job timeout also counts');
+  r.conclusion = 'success';
+  const before = calls.length;
+  assert.equal(poll().conclusion, 'success');
+  assert.equal(calls.length - before, 1, 'ordinary polls only list runs');
 });
 
 test('a red run for an OLDER tip says nothing about a fresh push', () => {
