@@ -24,6 +24,7 @@
  *   node scripts/scrape-off-broadway-alliance.js                # dry run, all years
  *   node scripts/scrape-off-broadway-alliance.js --year=2024    # single year
  *   node scripts/scrape-off-broadway-alliance.js --write        # write JSON
+ *   node scripts/scrape-off-broadway-alliance.js --min-year=2020 # skip older years (less SERP spend)
  *   node scripts/scrape-off-broadway-alliance.js --force        # bypass shrink guard
  */
 
@@ -40,7 +41,9 @@ const WRITE = args.includes('--write');
 const FORCE = args.includes('--force');
 const yearArg = args.find((a) => a.startsWith('--year='));
 const SINGLE_YEAR = yearArg ? parseInt(yearArg.split('=')[1], 10) : null;
-const MIN_YEAR = 2011;
+// BRO-5962: --min-year bounds the SERP spend of scheduled runs (3 queries per year); default stays 2011.
+const minYearArg = args.find((a) => a.startsWith('--min-year='));
+const MIN_YEAR = (minYearArg && parseInt(minYearArg.split('=')[1], 10)) || 2011;
 const MAX_YEAR = new Date().getUTCFullYear();
 
 const CATEGORY_PATTERNS = [

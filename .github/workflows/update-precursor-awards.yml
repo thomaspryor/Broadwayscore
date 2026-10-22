@@ -97,6 +97,12 @@ jobs:
           CEREMONY: ${{ inputs.ceremony || 'all' }}
           MIN_YEAR: ${{ inputs.min_year || '2014' }}
           FORCE_FLAG: ${{ inputs.force == true && '--force' || '' }}
+          # BRO-5962: OBA/article discovery goes through the SERP chain; with no keys
+          # every year failed ("No SERP API keys available") and the step exited 2.
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           set -e
           run_scraper() {
@@ -127,10 +133,10 @@ jobs:
             critics-circle)   run_scraper scripts/scrape-critics-circle.js ;;
             lortel)           run_scraper scripts/scrape-lortel.js ;;
             obie)             run_scraper scripts/scrape-obie.js ;;
-            # OBA: Playbill SERP-discovery; does not honor --min-year flag.
+            # OBA: Playbill SERP-discovery; honors --min-year (BRO-5962: bounds SERP spend).
             # Source is one Playbill round-up article per ceremony year; merge-on-write preserves history.
             oba)              echo "::group::scripts/scrape-off-broadway-alliance.js"
-                              node scripts/scrape-off-broadway-alliance.js --write $FORCE_FLAG
+                              node scripts/scrape-off-broadway-alliance.js --write --min-year="$MIN_YEAR" $FORCE_FLAG
                               echo "::endgroup::" ;;
             evening-standard) run_scraper scripts/scrape-evening-standard.js ;;
             whatsonstage)     run_scraper scripts/scrape-whatsonstage.js ;;

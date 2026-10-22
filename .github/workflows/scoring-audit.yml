@@ -118,7 +118,11 @@ jobs:
           # rebase with unstaged tracked changes. That failure mode only became
           # reachable once the review-texts checkout made the rebuild succeed.
           git checkout -- public/data 2>/dev/null || true
-          git add data/audit/scoring-audit.json data/audit/scoring-audit.md data/audit/scoring-audit-history.json data/audit/needs-human-review.json data/audit/rebuild-score-drift.json
+          # BRO-5962: scoring-audit.md is gitignored (/data/audit/*.md), so a plain `git add`
+          # of it exited 1 on every run since March. It is staged on its own with -f; the rest
+          # go through git-add-existing.sh, which stages each path alone.
+          git add -f data/audit/scoring-audit.md
+          bash scripts/lib/git-add-existing.sh data/audit/scoring-audit.json data/audit/scoring-audit-history.json data/audit/needs-human-review.json data/audit/rebuild-score-drift.json
           # BRO-4405: the rebuild above auto-registers / stages outlets; without
           # this they were written to the runner disk and discarded.
           for f in data/outlet-registry.json data/audit/outlet-registry-staging.json; do
@@ -157,8 +161,11 @@ jobs:
       - name: Fail if threshold exceeded
         if: steps.audit.outputs.exceeds == 'true'
         run: |
-          echo "❌ AUDIT THRESHOLD EXCEEDED: ${{ steps.audit.outputs.flag_pct }}% flagged (threshold: 10%)"
-          exit 1
+          # BRO-5962: the audit's output is the GitHub issue above plus the committed JSON.
+          # A breach is a finding for the owner, not a broken job, so it warns instead of
+          # failing (a monthly job red on every run is invisible to the owner).
+          echo "::warning::AUDIT THRESHOLD EXCEEDED: ${{ steps.audit.outputs.flag_pct }}% flagged (threshold: 10%). See the scoring-audit issue."
+          exit 0
 
       - name: Notify on failure
         if: failure()

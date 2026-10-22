@@ -106,7 +106,7 @@ async function loginToTheStage(page) {
 
     // Verify cookies work by loading an actual paywalled roundup page
     await page.goto('https://www.thestage.co.uk/review-round-ups/broken-glass-at-the-young-vic-review-round-up', {
-      waitUntil: 'networkidle', timeout: 30000,
+      waitUntil: 'domcontentloaded', timeout: 30000,
     });
     await page.waitForTimeout(3000);
     const html = await page.content();
@@ -135,7 +135,7 @@ async function discoverRoundupUrls(page) {
 
   // Navigate to the roundups category listing
   await page.goto('https://www.thestage.co.uk/review-round-ups/review-round-ups', {
-    waitUntil: 'networkidle', timeout: 30000,
+    waitUntil: 'domcontentloaded', timeout: 30000,
   });
   await page.waitForTimeout(2000);
 
@@ -234,7 +234,7 @@ async function scrapeRoundups(page, urls, weShows) {
 
     console.log(`  Fetching: ${match.show.title} → ${url}`);
     try {
-      await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
+      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.waitForTimeout(2000);
 
       const html = await page.content();

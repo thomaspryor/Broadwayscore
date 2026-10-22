@@ -373,6 +373,8 @@ const AUTO_FIX_PLAYBOOK = [
     humanFallback: 'Show status updates may be stalled.' },
   { match: /^Cron: Collect Review Texts$/, urgency: 'low', workflow: 'collect-review-texts.yml',
     humanFallback: 'Review text collection may be stalled.' },
+  { match: /^Cron: failing every scheduled run$/, urgency: 'low',
+    humanAction: 'A scheduled job has failed its last 3 runs in a row and nobody is being paged about it. The row names the workflows; a fix session picks it up from the board.' },
   { match: /^Cron:/, urgency: 'low',
     humanAction: "A scheduled job hasn't run recently. It'll likely run on its next schedule. If it persists, open Claude Code and say: \"Check why the cron jobs aren't running.\"" },
 
@@ -2447,6 +2449,59 @@ function checkExemptCronLiveness() {
     }
     if (errors.length > 5) return { name: NAME, status: 'warn', message: `${errors.length} lookups failed: ${errors.slice(0, 3).join('; ')}` };
     return { name: NAME, status: 'pass', message: `${checked - disabled.length} exempt scheduled workflow(s) started on cadence.${off}` };
+  })];
+}
+
+/**
+ * BRO-5962: scheduled workflows that fail on every run. CRITICAL_CRONS and the digest's
+ * success-keyed rows only notice a job once it is stale past its window, and
+ * repeatFailureResults only looks at 24h, so a weekly job red for months stayed silent
+ * (check-seo-health.yml: 9 Sundays). One aggregated row for every non-paged scheduled
+ * workflow whose last 3 finished scheduled runs all failed. Reuses the liveness sweep's
+ * cached run lookups. CI only. Advisory (warn, not paged). A job that times out every
+ * run reads as cancelled and forms no streak here; liveness catches it once it goes stale.
+ */
+function checkScheduledFailureStreak() {
+  const NAME = 'Cron: failing every scheduled run';
+  if (!process.env.GITHUB_ACTIONS || (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN)) {
+    return [{ name: NAME, status: 'pass', message: 'Skipped outside CI (runs in the daily digest)' }];
+  }
+  if (hasLowHeadroom()) {
+    return [{ name: NAME, status: 'warn', message: 'Skipped: GitHub API headroom low' }];
+  }
+  return [runCheck(NAME, () => {
+    const { isScheduledWorkflow, parseExemptEntries, classifyAlertPaths, consecutiveFailureVerdict } = require('./lib/cron-coverage');
+    const wfDir = path.join(__dirname, '..', '.github', 'workflows');
+    const exemptFile = path.join(__dirname, '..', '.cron-health-exempt.txt');
+    const paging = new Set([...fs.readFileSync(path.join(wfDir, 'check-cron-health.yml'), 'utf8')
+      .matchAll(/"([a-z0-9-]+\.yml)\|\d+\|/g)].map(m => m[1]));
+    const digest = require('./lib/health-digest-crons').DIGEST_CRONS.map(d => d.workflow);
+    const scheduled = fs.readdirSync(wfDir).filter(f => f.endsWith('.yml'))
+      .filter(f => isScheduledWorkflow(fs.readFileSync(path.join(wfDir, f), 'utf8')));
+    const paths = classifyAlertPaths(scheduled, paging, digest,
+      parseExemptEntries(fs.existsSync(exemptFile) ? fs.readFileSync(exemptFile, 'utf8') : ''));
+    const failing = [], errors = [];
+    let checked = 0;
+    for (const [wf, p] of paths) {
+      // 'none' (liveness opt-out) still counts: a red job is not a quiet one.
+      // 'digest' workflows already surface a red run as `Cron failed:` (fix-now).
+      if (p === 'paged' || p === 'digest') continue;
+      try {
+        const raw = cachedShell(runCacheKey(`liveness:${wf}`), ghRunsQuery(wf, { limit: 5, event: 'schedule' }));
+        const v = consecutiveFailureVerdict(raw ? JSON.parse(raw) : []);
+        checked++;
+        if (v.failing) failing.push(`${wf} (${v.streak}+ in a row, last ${v.lastFailureAt ? v.lastFailureAt.slice(0, 10) : '?'})`);
+      } catch (err) {
+        errors.push(`${wf}: ${String(err.message).substring(0, 60)}`);
+      }
+    }
+    const lookups = errors.length ? ` ${errors.length} lookup(s) failed: ${errors.slice(0, 3).join('; ')}.` : '';
+    if (failing.length) {
+      return { name: NAME, status: 'warn', message: `${failing.length} of ${checked} scheduled workflow(s) failed their last 3 scheduled runs: ${failing.slice(0, 10).join('; ')}${failing.length > 10 ? `; +${failing.length - 10} more` : ''}.${lookups}`,
+        hint: 'Fix the root cause, or remove its schedule and say why in the workflow header. A job that is red on every run is dead, not flaky.' };
+    }
+    if (errors.length > 5) return { name: NAME, status: 'warn', message: `${errors.length} lookups failed: ${errors.slice(0, 3).join('; ')}` };
+    return { name: NAME, status: 'pass', message: `${checked} scheduled workflow(s) checked, none red on every run.${lookups}` };
   })];
 }
 
@@ -6024,6 +6079,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkSEO(),
     ...checkCronHealth(),
     ...checkExemptCronLiveness(),
+    ...checkScheduledFailureStreak(),
     ...(await checkMainRedStreak(isCI)),
     ...checkCiGreenRate(isCI),
     ...checkSecretsHealth(),
@@ -6258,4 +6314,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness, checkUncollectedStrands };
+module.exports = { checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness, checkUncollectedStrands };

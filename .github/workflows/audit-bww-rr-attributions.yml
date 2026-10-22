@@ -52,6 +52,13 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      # BRO-5962: the audit reads data/aggregator-archive/bww-roundups; without this
+      # checkout it exited 1 ("No archive dir") on every run.
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       - name: Run BWW RR mismatch audit
         id: audit
         env:

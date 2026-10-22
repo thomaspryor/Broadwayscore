@@ -24,6 +24,11 @@ jobs:
       - uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      # BRO-5962: the dashboard scans data/review-texts; without this checkout it
+      # exited 1 ("review-texts directory not found") on every run.
+      - uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Install dependencies
         run: npm ci --ignore-scripts
       - name: Generate coverage report

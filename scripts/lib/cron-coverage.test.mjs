@@ -6,7 +6,7 @@ const require = createRequire(import.meta.url);
 const {
   isScheduledWorkflow, parseExemptList, findUncoveredScheduled, findStaleExempt,
   parseExemptEntries, findUnjustifiedExempt, findFalseDigestClaims, findDigestDrift,
-  worstGapHours, extractCrons, classifyAlertPaths, livenessVerdict,
+  worstGapHours, extractCrons, classifyAlertPaths, livenessVerdict, consecutiveFailureVerdict,
 } = require('./cron-coverage.js');
 const { DIGEST_CRONS, DIGEST_ONLY } = require('./health-digest-crons.js');
 const fs = require('node:fs');
@@ -194,4 +194,17 @@ test('livenessVerdict: a monthly cron is alive late in a 31-day month', () => {
   assert.equal(v.status, 'alive');
   const late = livenessVerdict({ crons: ['0 12 1 * *'], runs: [{ conclusion: 'success', created_at: '2026-09-01T12:05:00Z' }], now: Date.parse('2026-11-01T11:00:00Z') });
   assert.equal(late.status, 'stale');
+});
+
+test('consecutiveFailureVerdict: 3 finished scheduled failures in a row is dead (BRO-5962)', () => {
+  const r = (conclusion, d) => ({ conclusion, created_at: `2026-10-${d}T06:00:00Z` });
+  const red = consecutiveFailureVerdict([r('failure', '04'), r('failure', '11'), r('failure', '18')]);
+  assert.deepEqual(red, { failing: true, streak: 3, lastFailureAt: '2026-10-18T06:00:00Z' });
+  // A success in the newest 3 breaks it; order of input does not matter.
+  assert.equal(consecutiveFailureVerdict([r('failure', '04'), r('success', '18'), r('failure', '11')]).failing, false);
+  // Cancelled / in-flight runs are skipped, not counted and not a break.
+  assert.equal(consecutiveFailureVerdict([r('failure', '04'), r('cancelled', '11'), r('failure', '12'), { created_at: '2026-10-19T06:00:00Z' }, r('failure', '18')]).failing, true);
+  // Too little history is not a streak.
+  assert.equal(consecutiveFailureVerdict([r('failure', '11'), r('failure', '18')]).failing, false);
+  assert.equal(consecutiveFailureVerdict([]).failing, false);
 });
