@@ -544,11 +544,7 @@ function runWrongProductionAudit() {
   const revivalMetadata = extractRevivalMetadata(shows);
 
   // Get all show directories
-  const showDirs = listShowDirs(REVIEW_TEXTS_DIR)
-    .filter(f => {
-      const fullPath = path.join(REVIEW_TEXTS_DIR, f);
-      return fs.statSync(fullPath).isDirectory();
-    });
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR);
 
   for (const showId of showDirs) {
     const showPath = path.join(REVIEW_TEXTS_DIR, showId);

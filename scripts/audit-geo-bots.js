@@ -30,7 +30,7 @@ const fs = require('fs');
 const path = require('path');
 const { getGaClient } = require('./lib/ga4-client');
 const { routeAlert } = require('./lib/owner-alert-router');
-const { fetchEngagedSessionsSummary } = require('./lib/ga4-engaged-sessions');
+const { fetchAndQueueTrafficSummary } = require('./lib/daily-digest-ga4-traffic');
 const { phQuery } = require('./lib/posthog-query');
 const {
   buildPosthogGeoQuery, parsePosthogGeoRows, isPosthogBotGeo, formatPosthogStats,
@@ -106,15 +106,10 @@ async function main() {
 
   const client = getClient();
 
-  // BRO-44 — report the headline traffic KPI (engaged sessions, not raw
-  // sessions) at the top of this cron's output. This is the one recurring
-  // GA4 job in the repo, so it's the natural default location for the
-  // headline number. See scripts/lib/ga4-engaged-sessions.js.
+  // BRO-44 / BRO-2502: query once for the log and the owner's morning digest.
+  // The weekly workflow already persists the digest queue, even on failure.
   try {
-    const engaged = await fetchEngagedSessionsSummary(client, propertyId, {
-      startDate: '7daysAgo',
-      endDate: 'today',
-    });
+    const engaged = await fetchAndQueueTrafficSummary(client, propertyId);
     console.log(
       `Headline KPI — Engaged Sessions (7d): ${engaged.headline.toLocaleString()} ` +
         `(raw sessions: ${engaged.totalSessions.toLocaleString()}, ` +
@@ -123,7 +118,7 @@ async function main() {
         `${engaged.direct.engagedSessions.toLocaleString()} engaged)\n`
     );
   } catch (err) {
-    console.error(`Headline KPI fetch failed (non-fatal): ${err.message}`);
+    console.error(`Headline KPI fetch/digest failed (non-fatal): ${err.message}`);
   }
 
   const stats = await fetchGeoStats(client, propertyId, 7);

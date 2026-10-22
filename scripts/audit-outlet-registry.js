@@ -204,10 +204,7 @@ function getAllReviewFiles() {
     process.exit(1);
   }
 
-  const showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter(f => {
-    const fullPath = path.join(REVIEW_TEXTS_DIR, f);
-    return fs.statSync(fullPath).isDirectory();
-  });
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR);
 
   for (const showDir of showDirs) {
     const showPath = path.join(REVIEW_TEXTS_DIR, showDir);

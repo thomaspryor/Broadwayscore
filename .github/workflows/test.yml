@@ -645,6 +645,8 @@ on:
       # above); this top-level scripts/*.js + *.test.mjs pair needs its own
       # entry (no scripts/** broad glob) so a solo edit triggers CI.
       - 'scripts/audit-test-yml-lib-deps.js'
+      # BRO-5885: ratchet gate for statSync().isDirectory() show-dir listings (baseline is under scripts/lib/**).
+      - 'scripts/audit-unsafe-show-dir-listing.js'
       # BRO-3490: scripts/lib/stale-closure-review-card.test.mjs requires this
       # top-level script (planReportItems); same reason as the entry above.
       - 'scripts/notify-pending-commercial-linear.js'
@@ -3646,6 +3648,17 @@ jobs:
         # own. Heuristic (regex require()/import parsing), non-blocking —
         # always exits 0 (see script header for why).
         run: node scripts/audit-test-yml-lib-deps.js
+
+      - name: Audit — no new fs.statSync().isDirectory() show-dir listings (ratchet, BRO-5885)
+        if: always() && steps.deps.outcome == 'success'
+        # A dangling symlink in data/review-texts made statSync throw ENOENT and
+        # took down collection for ~8h (2026-05-27). Fails only when a script gains
+        # an unsafe listing beyond its own committed baseline
+        # (scripts/lib/unsafe-show-dir-listing-baseline.json), so it cannot fail on
+        # the live tree (rule 19). continue-on-error is banned in this job
+        # (workflow-audit-steps-always.test.mjs). Migrate to listShowDirs() and
+        # lower the baseline with --update.
+        run: node scripts/audit-unsafe-show-dir-listing.js
 
       - name: Gate — every manifest-registered test is reachable by on.push.paths (BRO-2647)
         if: always() && steps.deps.outcome == 'success'

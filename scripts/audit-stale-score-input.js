@@ -87,9 +87,7 @@ function isCandidate(data) {
 
 function scan(reviewTextsDir, titleById, showFilter) {
   const results = { total: 0, fixable: 0, unscoreable: 0, fixableFiles: [], unscoreableFiles: [] };
-  let showDirs = listShowDirs(reviewTextsDir).filter((f) =>
-    fs.statSync(path.join(reviewTextsDir, f)).isDirectory()
-  );
+  let showDirs = listShowDirs(reviewTextsDir);
   if (showFilter) showDirs = showDirs.filter((d) => d === showFilter);
 
   for (const showDir of showDirs) {

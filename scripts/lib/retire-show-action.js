@@ -16,7 +16,7 @@
  *   - `expectTitle` must equal the row's title (compare-and-set: a wrong id
  *     in a plan refuses instead of deleting another show);
  *   - only a `provisional: true` row (an automated, not-yet-corroborated
- *     add) can be retired this way, or a duplicate named with `duplicateOf`
+ *     add; zero reviews, BRO-5897) can be retired this way, or a duplicate named with `duplicateOf`
  *     (same title, same house as the kept row, zero reviews; id-only; a
  *     differently-titled listing of the same run also needs `evidenceUrl`
  *     and the same closing date, BRO-5706), or a
@@ -168,6 +168,12 @@ function applyRetireShow(shows, action, { retire, now, reviewCount, isRetired } 
     if (why) return { ok: false, reason: `retire-show ${a.id}: ${why}` };
   } else if (row.provisional !== true) {
     return { ok: false, reason: `retire-show ${a.id}: only provisional (automated, uncorroborated) rows can be retired by a plan, a duplicate named with duplicateOf, or a non-production named with nonProduction + evidenceUrl` };
+  } else {
+    // BRO-5897: a provisional row's collected reviews were stranded in a retired folder (ANON's
+    // NYT + Vulture sat 5 days off every show page), so this path counts them like the others.
+    if (typeof reviewCount !== 'function') return { ok: false, reason: `retire-show ${a.id}: review count unavailable` };
+    const n = reviewCount(row.id);
+    if (n !== 0) return { ok: false, reason: `retire-show ${a.id}: ${row.id} has ${n} review(s): move or delete them (review-file-op, then a rebuild if they were scored) before retiring` };
   }
   // A row whose id the registry already holds was re-minted after its retirement (the
   // venue-page promoter ignored the registry until BRO-5557). `reMinted: true` removes just

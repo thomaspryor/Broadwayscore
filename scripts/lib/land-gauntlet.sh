@@ -438,6 +438,7 @@ lint_workflows() {
     audit-workflow-hygiene \
     assert-broadcast-step-order \
     audit-test-yml-lib-deps \
+    audit-unsafe-show-dir-listing \
     audit-test-yml-manifest-paths \
     audit-workflow-secret-gaps \
     audit-review-texts-test-yml-coverage \
