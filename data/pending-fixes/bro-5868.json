@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5868",
   "planId": "4fa67a5b-2caa-43f1-b6a6-02e4ae56da00",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-22T14:08:23.147Z",
   "submitter": {
     "name": null,
@@ -45,5 +45,19 @@
         "description": "the-little-prince-2022: capitalization is the Form D offering target, an estimate"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T14:50:58.576Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-little-prince-2022 (TBD)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for the-little-prince-2022"
+    }
+  ],
+  "executedIn": "ci"
 }
