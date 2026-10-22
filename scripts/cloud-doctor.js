@@ -58,7 +58,10 @@ function gather({ quick }) {
     cloud: process.env.CLAUDE_CODE_REMOTE === 'true',
     root: ROOT,
     main,
-    coreClone: cloneFacts(path.join(home, 'broadway-scorecard-data')),
+    // $HOME is not always /home/user (this session: HOME=/root, repos attached under /home/user, BRO-5386):
+    // prefer the session-start clone under $HOME, else the attached one.
+    coreClone: cloneFacts(fs.existsSync(path.join(home, 'broadway-scorecard-data', '.git'))
+      ? path.join(home, 'broadway-scorecard-data') : attachedClone('broadway-scorecard-data')),
     reviewClone: cloneFacts(attachedClone('broadway-review-texts')),
   };
   const dataDir = fs.realpathSync.native(path.join(ROOT, 'data'));
