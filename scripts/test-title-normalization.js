@@ -92,6 +92,14 @@ assert(titlesMatch("Agatha Christie's Witness for the Prosecution", 'Witness for
   "Agatha Christie's prefix stripped");
 
 // Bug 7: (The) suffix vs The prefix
+// BRO-5851: TR prints "Inspector Calls (An)"; the article moves to the front.
+assert(titlesMatch('An Inspector Calls', 'Inspector Calls (An)'),
+  'titlesMatch: TR "(An)" suffix matches the article-first title');
+assert(normalizeTitle('Christmas Carol (A)') === 'a christmas carol',
+  'normalizeTitle: "(A)" suffix moves to the front');
+assert(normalizeTitle('Something (A Musical)') === 'something',
+  'normalizeTitle: a longer parenthetical starting with A is still a qualifier');
+assert(normalizeTitle('(A)') === 'a', 'normalizeTitle: a bare "(A)" does not crash');
 assert(titlesMatch('The Lion King', 'Lion King (The)'),
   'The prefix matches (The) suffix');
 
