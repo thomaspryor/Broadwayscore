@@ -3114,10 +3114,16 @@ showDirs.forEach(showId => {
           logExclusion("skippedDuplicateTextInheritedFlag", showId, file, data, { inheritedFrom: data.duplicateTextOf, inheritedReason: refInheritedFlag });
           stats.skippedDuplicateTextInheritedFlag = (stats.skippedDuplicateTextInheritedFlag || 0) + 1;
           return;
-        } else if (dtoReason) {
-          logExclusion(dtoReason, showId, file, data);
-          stats[dtoReason] = (stats[dtoReason] || 0) + 1;
+        } else if (dtoReason === 'skippedDuplicateText') {
+          logExclusion("skippedDuplicateText", showId, file, data);
+          stats.skippedDuplicateText = (stats.skippedDuplicateText || 0) + 1;
           return;
+        } else if (dtoReason === 'skippedCircularDuplicateTiebreak') {
+          logExclusion("skippedCircularDuplicateTiebreak", showId, file, data);
+          stats.skippedCircularDuplicateTiebreak = (stats.skippedCircularDuplicateTiebreak || 0) + 1;
+          return;
+        } else if (dtoReason) {
+          throw new Error(`duplicateTextOfDecision returned an unhandled reason: ${dtoReason}`);
         } else {
           // Circular (kept side), ref excluded, or stale pointer — let through
           if (nCycle && nCycle.inCycle && nCycle.sameText) stats.dupTextNCycleSurvivor = (stats.dupTextNCycleSurvivor || 0) + 1;

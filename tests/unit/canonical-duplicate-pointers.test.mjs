@@ -147,12 +147,16 @@ test('pointsAtFile detects a sibling that already treats this file as canonical'
 // tiebreak), and the collector's BRO-3102 skip never removed a back-pointer
 // that was already there. Source pins on both sites; the corpus effect is
 // checked by scoring-delta (Stranger Things: The First Shadow, Times).
-test('rebuild lets a mutual same-text duplicateTextOf pair reach the circular tiebreak', () => {
+test('rebuild lets a mutual same-text duplicateTextOf pair reach the circular tiebreak', async () => {
+  // The ladder moved into duplicateTextOfDecision (BRO-5907); the rebuild
+  // calls it, so pin the behaviour on the real function.
   const src = fs.readFileSync(path.join(import.meta.dirname, '..', '..', 'scripts', 'rebuild-all-reviews.js'), 'utf8');
-  const plainSkip = src.indexOf('} else if (!refAlsoDupe && !refWouldBeExcluded && !(isCircular && circularSameText)) {');
-  const tiebreak = src.indexOf('logExclusion("skippedCircularDuplicateTiebreak"', plainSkip);
-  assert.ok(plainSkip > 0, 'plain duplicateTextOf skip excludes mutual same-text pairs');
-  assert.ok(tiebreak > plainSkip);
+  assert.ok(src.includes('duplicateTextOfDecision({'), 'rebuild uses the shared duplicateTextOf decision');
+  const { duplicateTextOfDecision } = (await import('../../scripts/lib/duplicate-of-exclusion.js')).default;
+  const pair = { staleFlag: false, refAlsoDupe: false, refExcluded: false, isCircular: true, circularSameText: true, refInheritedFlag: null, nCycle: null };
+  assert.equal(duplicateTextOfDecision({ ...pair, file: 'a--x.json', target: 'b--y.json' }), null, 'smaller name survives');
+  assert.equal(duplicateTextOfDecision({ ...pair, file: 'b--y.json', target: 'a--x.json' }), 'skippedCircularDuplicateTiebreak');
+  assert.equal(duplicateTextOfDecision({ ...pair, isCircular: false, circularSameText: false, file: 'b--y.json', target: 'a--x.json' }), 'skippedDuplicateText');
 });
 
 test('collector drops its own stale back-pointer at a sibling that points at it', () => {

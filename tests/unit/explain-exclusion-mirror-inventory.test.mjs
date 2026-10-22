@@ -25,6 +25,7 @@ const GUARDS_SRC = fs.readFileSync(new URL('../../scripts/lib/review-guards.js',
 const REBUILD_SRC = fs.readFileSync(new URL('../../scripts/rebuild-all-reviews.js', import.meta.url), 'utf8');
 
 const INVENTORY = {
+  hasIncludableSyndicationPrimary: 'live',
   cvFlagVetoedInWindow: 'live',
   getCriticRegistry: 'live',
   isBodylessAggregatorScoreUncorroborated: 'live',
