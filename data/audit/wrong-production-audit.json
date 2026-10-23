@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T08:29:48.624Z",
+  "timestamp": "2026-10-23T09:03:48.389Z",
   "stats": {
-    "totalReviews": 59312,
-    "alreadyFlagged": 21067,
+    "totalReviews": 59328,
+    "alreadyFlagged": 21070,
     "dateGuardCatches": 200,
     "directorMismatch": 2122,
     "tvFilmSignals": 1684,
-    "londonSignals": 2817,
+    "londonSignals": 2816,
     "offBroadwaySignals": 531,
     "yearMismatch": 175,
-    "noPublishDate": 5301
+    "noPublishDate": 5310
   },
   "findings": [
     {
@@ -71315,19 +71315,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "ilford-boy-west-end-2026",
-      "file": "bestoftheatre--milo-garth.json",
-      "publishDate": "2026-10-19",
-      "url": "https://www.bestoftheatre.co.uk/blog/post/ilford-boy-in-pictures-danny-lee-wynter-donmar-warehouse",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
