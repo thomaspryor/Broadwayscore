@@ -170,7 +170,8 @@ jobs:
             exit "$rc"
           fi
 
-      # Step 4 of 8 — LLM classification: genuine review vs casting news / commentary.
+      # Step 4 of 8 — LLM classification: genuine review vs casting news / commentary,
+      # then re-matching reviews with no show by title + run dates (BRO-6091).
       # Writes to data/video-reviews-transcripts/classified/.
       - name: Classify reviews
         env:
@@ -179,9 +180,12 @@ jobs:
           set -euo pipefail
           node scripts/video-reviews/classify-reviews.js
 
-      # Step 5 of 8 — picks best review per creator per show (by date proximity
-      # to opening + transcript length). Moves from classified/ to per-show dirs.
+      # Step 5 of 8 — picks each creator's review of each show. Several videos:
+      # Claude picks the main standalone review (BRO-6091); without the key it
+      # falls back and re-asks next run. Moves from classified/ to per-show dirs.
       - name: Select best reviews
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           set -euo pipefail
           node scripts/video-reviews/select-best-reviews.js
