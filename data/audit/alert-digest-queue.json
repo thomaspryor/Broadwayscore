@@ -914,6 +914,37 @@
     "queuedAt": "2026-10-23T02:02:40.485Z"
   },
   {
+    "conditionKey": "land:land/bro-2688-audit-triage",
+    "title": "Landing blocked: colocated-tests red on land/bro-2688-audit-triage",
+    "description": "land.yml did not land land/bro-2688-audit-triage: the colocated-tests gate went red at b7d00da698. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-2688-audit-triage @ b7d00da698 (origin/land/bro-2688-audit-triage) → origin/main @ 0ace7251be [land] train: land/bro-5618-inspect-false-3 not taken — nothing left to land after the rebase (already on main or in the train) [land] train: + land/codex-bro-5994 @ 0510f7ef94 (1 commit(s)) [land] train: land/bro-5985-awards-offpage-r2 not taken — would not rebase onto the train: Rebasing Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39885315081",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2688-audit-triage"
+      },
+      {
+        "name": "gate",
+        "value": "colocated-tests"
+      },
+      {
+        "name": "tip",
+        "value": "b7d00da6984b507ae86a408585f77f04c2eb2404"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39885315081"
+      }
+    ],
+    "queuedAt": "2026-10-23T03:07:52.052Z"
+  },
+  {
     "conditionKey": "pending-unrecoverable:lincoln-in-the-bardo-off-broadway-2026",
     "title": "1 review(s) for lincoln-in-the-bardo-off-broadway-2026 stuck in _pending with no text and no byline",
     "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- metopera-org--4e1c5928.json (metopera-org): no byline in page and no recoverable body https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/",
