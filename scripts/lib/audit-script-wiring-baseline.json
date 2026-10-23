@@ -162,294 +162,294 @@
       "reason": "advisory workflow linter (BRO-2945); exits 0 by design, rule 19 forbids arming it"
     },
     "audit-apply-scripts-verify-pushed.js": {
-      "bucket": "u",
+      "bucket": "a",
       "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "reason": "Finds --apply scripts that write review texts without verify-review-texts-pushed, risking fixes left only on disk; schedule as a source-only advisory count, not a blocking gate."
     },
     "audit-audience-scores.js": {
-      "bucket": "u",
+      "bucket": "a",
       "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "reason": "Checks audience-buzz score ranges, source weights, designations and staleness against shows.json; recurring published-data drift merits a digest using report severity counts; no network calls."
     },
     "audit-awards-data.js": {
-      "bucket": "u",
+      "bucket": "a",
       "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "reason": "Checks awards.json for orphan show IDs, duplicate nominations, impossible wins and season gaps; recurring catalog edits can regress these, so schedule severity counts; needs awards.json, no network calls."
     },
     "audit-bro79-ensemble-rejections.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "One-time repair of named July 2026 ensemble rejections and a Wicked excerpt recovery; writes private review files by default unless --dry-run, so never schedule as a recurring audit."
     },
     "audit-close-time-verify.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Pre-rollout experiment that lists cards through retired notion-brain.js and executes their acceptance commands in a fresh checkout; manual migration evidence, not a daily data-health check."
     },
     "audit-content-quality.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Legacy mixed heuristic sweep includes extractYearFromUrl for production guesses and broad byline/domain checks; keep manual without --fix until checks use sourced metadata under CLAUDE.md section 3."
     },
     "audit-coverage-slot-drops.js": {
-      "bucket": "u",
+      "bucket": "a",
       "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "reason": "Finds aggregator URL slots, other-critic URL ownership, dateless holds and stale non-review slots with replacement reviews; recurring ingest losses merit candidate counts; needs review-texts, no fetches."
     },
     "audit-creative-team-serp.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Retro-audits unprovenanced non-Broadway creative credits predating the SERP guard; two searches per member plus optional Opus adjudication and --fix require a scoped, budgeted manual run, not cron."
     },
     "audit-critic-tenure.js": {
-      "bucket": "u",
+      "bucket": "a",
       "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "reason": "Counts unresolved critic/outlet tenure mismatches using findTenureFlags and reviewed exceptions; new attribution errors warrant recurring visibility; needs review-texts, no network calls, supports --max."
     },
     "audit-cross-attribution-by-critic.js": {
-      "bucket": "u",
+      "bucket": "a",
       "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "reason": "Matches stored review content against title, cast, creative and venue fingerprints to detect wrong-show attribution; schedule report-only confidence counts with review-texts; never --apply on cron."
     },
     "audit-doubled-market-ids.js": {
-      "bucket": "u",
+      "bucket": "a",
       "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "reason": "Standing shows.json detector for market words leaking from titles into generated IDs; new discovery rows can repeat BRO-2886, so schedule sweepShows with its reviewed allowlist; core data only."
     },
     "audit-duplicate-images.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Hashes hero, poster and thumbnail files for same-title productions; requires the complete local public/images/shows archive, tolerates absent files and writes a /tmp repair list, so use for image triage."
     },
     "audit-excerpt-only-backfill-queue.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Reports excerpt-only files eligible for the existing daily unscored pipeline; queue size is not a failure or completion guarantee because scoring is capped, so use for manual backfill progress checks."
     },
     "audit-explicit-scores.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Ranks originalScore suspects using positive/negative word lists and extraction-source hints; sentiment disagreement is not proof an explicit rating is wrong, so inspect evidence manually rather than alert on every hit."
     },
     "audit-false-dead-ledger-rows.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Dispatch retry-cap incident probe fetches Linear comments per issue to corroborate dead ledger rows; the live gate already uses classifyDeadRowsForTask, so reserve the extra API scan for investigations."
     },
     "audit-fetch-timeouts.js": {
-      "bucket": "u",
+      "bucket": "a",
       "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "reason": "Scans source for fetch and HTTP request call sites lacking a matched abort or destroy timeout; recurring hang regressions merit source-only advisory counts; full scan intentionally exits 0 on existing debt."
     },
     "audit-field-consistency.js": {
-      "bucket": "u",
+      "bucket": "a",
       "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "reason": "Detects wordCount, contentTier and legacy text-status drift that can change rebuild inclusion; schedule the default report over review-texts, never --fix; no network calls."
     },
     "audit-flag-wipe-signature.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Retroactive scan for the pre-16c834c9 maybeUpgradeUrl exclusion-flag wipe breadcrumb; incident-cohort repair needs per-hit review of legitimate clears, not a standing count of all URL changes."
     },
     "audit-git-show-maxbuffer.js": {
-      "bucket": "u",
+      "bucket": "a",
       "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "reason": "Finds git show/cat-file/ls-tree/diff/log subprocesses missing maxBuffer, which can misread large data files as absent; recurring source regressions merit a cheap offline check."
     },
     "audit-grosses-data.js": {
-      "bucket": "u",
+      "bucket": "a",
       "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "reason": "Adds snapshot staleness, missing open Broadway shows, ATP and all-time consistency checks beyond the wired history-integrity rules; schedule severity counts with shows and both grosses files; no fetches."
     },
     "audit-late-add-corpus-wide.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Historical late-add census deliberately includes closed shows outside the production ledger window; existing opening-night coverage handles current targets, so use this snapshot for scoped historical cleanup."
     },
     "audit-levenshtein-matches.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Pre-migration inventory of fuzzy critic-name matches to decide which true typos belong in CRITIC_ALIASES; pairs require human identity review before changing matching rules, not recurring alerts."
     },
     "audit-llm-hallucinations.js": {
-      "bucket": "u",
+      "bucket": "a",
       "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "reason": "Uses canonical keyword checks to find LLM-verified live text lacking show identity and quarantine-gate contradictions; schedule separate suspect counts with review-texts, not automatic reclassification; no LLM calls."
     },
     "audit-llm-scores.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Blind re-scoring experiment with provider calls, retries, calibration and a spend cap; use --pass1-only or a scoped funded investigation, not an unrestricted daily cron."
     },
     "audit-llm-scoring-parity.js": {
-      "bucket": "u",
+      "bucket": "a",
       "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "reason": "Runs the real rebuild and LLM scoreability predicates over review-texts to expose wasted scoring and orphan-unscored divergences; schedule bucketed report counts, accounting for intentional differences; no LLM calls."
     },
     "audit-london-outlet-flags.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "BRO-5896 recovery diagnostic groups held and self-healed NYC reviews by current outlet region; legitimate London holds and released totals are not defects, so inspect suspect regions manually rather than gate total flags."
     },
     "audit-mirror-status-drift.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Samples local ~/.claude/tasks mirror entries against live Notion statuses; depends on retired Notion tooling and a workstation mirror, so keep as historical investigation tooling, not CI."
     },
     "audit-multi-production-titles.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Generates same-title production groups as fixtures for routing work; revivals and transfers legitimately share titles, so a collision count alone is not an alertable defect."
     },
     "audit-multi-verdict-stars.js": {
-      "bucket": "u",
+      "bucket": "a",
       "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "reason": "Finds stored star ratings borrowed from another section of multi-review articles; schedule mismatch counts separately from ambiguous sections using review-texts; --write-plan stays manual, no fetches."
     },
     "audit-multishow-titlecase.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "A/B replay of titlecase, URL-evidence and flag-clearing rules for BRO-5373/BRO-5395; changed verdicts need cohort adjudication and can retain other exclusions, so run during rule/backfill investigations."
     },
     "audit-nonreview-cv-conflict.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Counts stale isNonReview flags intentionally outranked by fresher verification at read time; these persist on disk and need not drain to zero, so the optional ceiling is diagnostic, not a daily failure signal."
     },
     "audit-nyt-pick-coverage.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Proposes missing NYT Pick reviews using title words in URL slugs and run windows; matches need sourced confirmation under the no-URL-metadata rule before ingestion, so keep candidate research manual."
     },
     "audit-opening-night-extraction.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Post-opening verification requires an explicit --show and live BWW/DTLI pages or cached --no-live inputs; run for a selected opening after reviews exist, not as an unscoped daily catalog scan."
     },
     "audit-opera-discovery-gap.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Replays outlet-site discovery to classify misses for a selected show/category and opening window; live listing fetches can use Bright Data and need a bounded research scope, not a default full-catalog cron."
     },
     "audit-orphan-inprogress.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "One-time drain of local mirrored in-progress tasks using cmux, git evidence and retired Notion cards; --fix mutates tasks and cards, and CI lacks the workstation sessions it must corroborate."
     },
     "audit-orphaned-audit-writes.js": {
-      "bucket": "u",
+      "bucket": "a",
       "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "reason": "Finds workflow audit reports discarded because commit steps never stage them; schedule the source-only --check ratchet against reviewed persistence gaps, with shadow-mode visibility before blocking."
     },
     "audit-outlet-tiers.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Builds outlet volume/evidence tables and simulates proposed tier changes from supplied justifications; tier policy needs sourced human decisions and explicit output files, so no automatic recurring gate."
     },
     "audit-paywall-leaks.js": {
-      "bucket": "u",
+      "bucket": "a",
       "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "reason": "Detects subscriber-login boilerplate stored as fullText via the shared positional paywall detector; recurring cookie failures merit a weekly report with review-texts and --strict in shadow mode; no fetches."
     },
     "audit-registry-nonreview-outlets.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "One-time pre-guard registry cross-check against venue, PR and ticketing host rules; domain collisions can flag real scored outlets, so use findings as manual evidence and never remove registry rows on a cron."
     },
     "audit-reroute-backlog.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "One-time inventory of already-flagged reviews that might fit sibling productions; requires the main checkout and .core-data-checkout/shows.json plus collision/year-only adjudication, so keep repair planning manual."
     },
     "audit-review-pair-anomalies.js": {
-      "bucket": "u",
+      "bucket": "a",
       "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "reason": "Detects identical text under different critics/URLs and stale own-domain roundup flags across sibling files; per-file guards miss these, so schedule report-only pair and roundup counts with review-texts."
     },
     "audit-safe-form-allowlist.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Source-only read-only-allowlist invariants already run in scripts/lib/safe-form-allowlist.test.mjs, including transitive writes and live-gate agreement; CLI --candidates is manual admission research, so no duplicate cron."
     },
     "audit-show-score-url-redirects.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Live per-URL HTTP probe for Show Score mappings redirecting to generic listings; use --show or --limit to investigate a suspected mapping, alongside the offline archive audit, rather than refetch the whole map daily."
     },
     "audit-single-author-mismatches.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Uses critic distribution and staff-turnover exceptions to propose multiAuthor registry changes; low-data and legitimate turnover cases need attribution review, and --apply changes scoring inputs, so keep manual."
     },
     "audit-soft-404-review-texts.js": {
-      "bucket": "u",
+      "bucket": "a",
       "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "reason": "Finds stored soft-404 templates and byte-identical bodies across critics, complementing the collector guard on newly fetched text; schedule read-only finding counts with review-texts, no live fetches."
     },
     "audit-stale-open-premises.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Backlog research runs open cards acceptance commands in a fresh checkout and marks only stale-premise candidates; broad tests and absent private data are inconclusive, so results need owner judgment, not automatic cron action."
     },
     "audit-text-gap-cards.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Card-specific evidence for BRO-4426, BRO-4564 and BRO-4301, selected with --card and named repair plans; each cohort measures a different text-recovery hypothesis, so use for those investigations."
     },
     "audit-truncated-reviews.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Legacy local heuristic inventory of suspicious endings, paywall phrases and short bodies; findings need article inspection and reuse of current collector rules before becoming a recurring alert signal."
     },
     "audit-url-collisions.js": {
-      "bucket": "u",
+      "bucket": "a",
       "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "reason": "Classifies same-show/outlet URL groups to separate legitimate aggregator multi-critic pages from copied-text contamination; schedule contamination counts with review-texts, never --apply; no network calls."
     },
     "audit-url-validation.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Retroactive roundup-URL investigation mixes URL-title guesses, cached archives and potentially paid fetchPage validation; needs a bounded scope and content-based evidence before recurring use, not a default daily sweep."
     },
     "audit-we-historical-season.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Manual release gate for a specified West End backfill --season about seven days after scoring; displayability, run windows, duplicates and provenance determine whether the next season can start, not daily catalog health."
     },
     "audit-we-market-misroutes.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Historical backlog replay of gather-time market routing over flagged West End files; --execute moves private review files and collisions need adjudication, while the standing ingest guard handles new rows."
     },
     "audit-we-reviews.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Live review refetch plus OpenAI and Gemini adjudication per review; default --limit is unbounded and production/sentiment findings need evidence review, so use a funded manual sample, not cron."
     },
     "audit-wet-roundup-bleed.js": {
-      "bucket": "u",
+      "bucket": "a",
       "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "reason": "Cross-checks cached WET roundup rows and review files for borrowed critics/URLs and cross-outlet domains; schedule unflagged contamination counts, keeping weak leads separate; needs WET archive and review-texts, no fetches."
     },
     "audit-workflow-activity.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Whole-workflow inventory complements the existing critical-cron monitor; refresh costs about two GitHub API calls per workflow before retries, so use cached/manual retirement reviews rather than daily duplicate polling."
     },
     "audit-wrong-article-parity.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "BRO-3956 diagnostic compares wrongArticle checks to canonical rejection; medium-confidence and manual-clear disagreements are intentional in URL ownership routing, so a nonzero parity count is not a recurring defect."
     },
     "audit-wt-integ-stashes.js": {
-      "bucket": "u",
-      "rank": 99,
-      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Read-only triage of the shared workstation stash stack, including dangerous truncations; CI has no representative wt-integ recovery stashes, so run during local stash cleanup, never as a catalog cron."
     },
     "audit-timeout-patterns.js": {
-      "bucket": "u",
+      "bucket": "a",
       "rank": 99,
-      "reason": "Landed on main (BRO-2427 ratchet) while this triage was in the queue. Its lib has tests; the CLI itself is not run by CI. Not yet triaged into a or b."
+      "reason": "Finds Promise.race timeout wrappers whose timers are never cleared, causing scripts to linger after work ends; schedule the offline source scan as a regression signal, using withTimeout as the repair."
     }
   }
 }

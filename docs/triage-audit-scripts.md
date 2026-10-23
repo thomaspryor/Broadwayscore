@@ -8,30 +8,35 @@ sweep for the same pattern across the other audit scripts. Detector:
 
 ## What the sweep found
 
-The card's crude grep (filename absent from every workflow except test.yml) flagged about
-120 of the 277 `scripts/audit-*.js` files. Checking each flagged file against every other
-place a script can be reached cuts that to 32:
+BRO-6038 reran `findUnreferencedAuditScripts(process.cwd())` against the real
+checkout. The detector scans workflow run steps, composite actions, package scripts
+and other non-test code. Comment-only mentions, lint-baseline JSON and test.yml
+path triggers do not count as wiring.
 
 | Population | Count |
 | --- | --- |
-| `scripts/audit-*.js` files | 277 |
-| Named in a workflow other than test.yml, a composite action, or package.json | 84 |
-| Run by a `run:` step in test.yml (alert-reachability, delete-without-breadcrumb, direct-github-api, invisible-verification) | 4 |
-| Reached some other way: `require()`d by a wrapper or lib, called from a hook, or run by an orchestrator script (bucket c) | 157 |
-| Referenced nowhere, or only by a test.yml `paths:` trigger line, which runs nothing | 32 |
+| `scripts/audit-*.js` files | 282 |
+| Referenced by workflow/action/package or other non-test code (bucket c) | 192 |
+| Unreferenced and retained in the baseline | 90 |
+| Bucket a: alertable, awaiting wiring | 33 |
+| Bucket b: manual, one-shot, local-only or already covered by tests | 57 |
+| Bucket u: untriaged | 0 |
 
-The 157 bucket (c) scripts were not read one by one. They share a reference from other
-non-test code, which is the mechanism the card named ("invoked indirectly"). A script in that
-group that is only an unused library import would still count as reached; tightening that is
-out of scope here. The 32 are triaged individually below.
+The baseline actually contained **58** bucket-u entries, not the card's 59 or the
+older document's 57. All 58 now have a script-specific a/b decision below: 21 are
+alertable and 37 stay manual. The original 12 bucket-a and 20 bucket-b records are
+unchanged. Classification changes do not run, disable or wire an audit and do not
+change any show, review, score or private-data record.
 
-## Bucket (a): orphaned and worth alerting on (12)
+## Bucket (a): orphaned and worth alerting on (33)
 
-Ranked by consequence: published-score correctness first, ingest hygiene next, then
-history-based and clean-today guards. "Needs review-texts" means the script reads
-`data/review-texts`, which is private; it can only run in a job that has the private-data
-composite action, as `data-health-check.yml` does. This session had no review-texts, so those
-scripts were read but not run; only the three core-data scripts below were run.
+The original 12 retain BRO-2688's priority order and historical sweep evidence below;
+findings labelled "today" are from that sweep, not a new claim about the current corpus.
+The 21 newly classified alertable scripts are listed in the BRO-6038 triage section
+with rank 99 (unranked), leaving the top-eight priority order intact.
+"Needs review-texts" means the job needs the private-data composite action, as
+`data-health-check.yml` has. Bucket a is a scheduling recommendation, not evidence
+that a script already supports `--counts` or has a digest consumer.
 
 | Rank | Script | Why it matters |
 | --- | --- | --- |
@@ -54,7 +59,9 @@ Pattern for every item: add a step to `data-health-check.yml` modelled on the ex
 `audit-star-band-drift.js` and `audit-coverage-holes.js` steps (`--counts=data/audit/<name>.json`),
 shadow mode first (`continue-on-error: true`, rule 19), then one digest row fed from the counts
 file, then arm it after two clean weeks. Workflow edits need a recorded `/second-opinion`
-(CLAUDE.md §18), which is why this card stops at the plan.
+(CLAUDE.md §18). The unattended BRO-6038 worker is prohibited from editing workflows
+or running session skills, so this wiring remains outstanding; the triage below is
+completed independently.
 
 1. `audit-star-bands.js`: wire first. Core data only, and it already reports 1 review out of band
    (`originalScore-priority0`). Check overlap with the wired `audit-star-band-drift.js` before
@@ -78,10 +85,11 @@ file, then arm it after two clean weeks. Workflow edits need a recorded `/second
 Items 9 to 12 (`flagged-file-contamination`, `stale-review-texts`, `shared-url-quote`,
 `form-d-capitalization`) follow the same recipe after the top 8 have a clean baseline.
 
-## Bucket (b): intentionally manual, one-shot, or cannot run in CI (20)
+## Bucket (b): intentionally manual, one-shot, local-only or redundant in CI (57)
 
-Each of these is a diagnostic, a sprint-scoped check, or needs a local environment (worktrees,
-the iOS repo, an image archive, a pasted input). The six BRO-5420 and BRO-5373 cousin sweeps
+The original 20 below are diagnostics, sprint-scoped checks, or need a local environment
+(worktrees, the iOS repo, an image archive, a pasted input). The additional 37 decisions
+appear in the BRO-6038 triage section. The six BRO-5420 and BRO-5373 cousin sweeps
 at the top of the list are read-only follow-ups to incidents; if a run in a job with
 review-texts finds hits, promote that script to (a).
 
@@ -110,8 +118,9 @@ review-texts finds hits, promote that script to (a).
 
 ## Bucket (c): wired some other way
 
-157 scripts; see the table at the top. The four test.yml `run:` scripts above are the ones the
-card's grep missed because it excluded test.yml entirely.
+192 scripts have a non-test reference under the detector's current rules. A reference
+establishes reachability, not that every caller is scheduled or that its report reaches
+a digest. Tightening that indirect-call analysis is outside this triage.
 
 ## Keeping the class closed
 
@@ -119,70 +128,93 @@ card's grep missed because it excluded test.yml entirely.
 `scripts/lib/unit-test-collection.js`, so no workflow edit) fails when a new `scripts/audit-*.js`
 is referenced nowhere and is not in the baseline. A test.yml `paths:` entry does not count as
 wiring, because that line only decides when the test job triggers. The gate is a baseline gate
-(rule 19): the 32 scripts above are listed, so it blocks only new orphans. Wiring one of them
+(rule 19): the 90 unwired scripts are listed, so it blocks only new orphans. Wiring one of them
 removes the need for its baseline entry; delete the entry in the same change.
 
-## Untriaged (bucket u)
+## BRO-6038: completed stricter-detector triage (58)
 
-An independent review found the first detector counted comment-only mentions and lint-baseline JSON lists as wiring. The detector now ignores both, which surfaced 57 more scripts. They are in the baseline as bucket `u` (untriaged): each needs a read, then a move to bucket a (wire it) or b (exempt with a reason).
+Each decision follows the script's CLI, inputs, outputs and write/network paths.
+An advisory exit code is not a reason to exempt a recurring correctness check.
+Bucket-a scripts should first publish meaningful counts in shadow mode; historical
+or intentionally nonzero cohorts need their own semantics rather than a blanket
+zero threshold. Source-only checks can use an advisory CI step instead of a data cron.
+Bucket-b reasons state why a daily cron would be redundant, misleading, expensive
+without a scope, tied to a retired system, or unsafe without manual adjudication.
 
-- `audit-apply-scripts-verify-pushed.js`
-- `audit-audience-scores.js`
-- `audit-awards-data.js`
-- `audit-bro79-ensemble-rejections.js`
-- `audit-close-time-verify.js`
-- `audit-content-quality.js`
-- `audit-coverage-slot-drops.js`
-- `audit-creative-team-serp.js`
-- `audit-critic-tenure.js`
-- `audit-cross-attribution-by-critic.js`
-- `audit-doubled-market-ids.js`
-- `audit-duplicate-images.js`
-- `audit-excerpt-only-backfill-queue.js`
-- `audit-explicit-scores.js`
-- `audit-false-dead-ledger-rows.js`
-- `audit-fetch-timeouts.js`
-- `audit-field-consistency.js`
-- `audit-flag-wipe-signature.js`
-- `audit-git-show-maxbuffer.js`
-- `audit-grosses-data.js`
-- `audit-late-add-corpus-wide.js`
-- `audit-levenshtein-matches.js`
-- `audit-llm-hallucinations.js`
-- `audit-llm-scores.js`
-- `audit-llm-scoring-parity.js`
-- `audit-london-outlet-flags.js`
-- `audit-mirror-status-drift.js`
-- `audit-multi-production-titles.js`
-- `audit-multi-verdict-stars.js`
-- `audit-multishow-titlecase.js`
-- `audit-nonreview-cv-conflict.js`
-- `audit-nyt-pick-coverage.js`
-- `audit-opening-night-extraction.js`
-- `audit-opera-discovery-gap.js`
-- `audit-orphan-inprogress.js`
-- `audit-orphaned-audit-writes.js`
-- `audit-outlet-tiers.js`
-- `audit-paywall-leaks.js`
-- `audit-registry-nonreview-outlets.js`
-- `audit-reroute-backlog.js`
-- `audit-review-pair-anomalies.js`
-- `audit-safe-form-allowlist.js`
-- `audit-show-score-url-redirects.js`
-- `audit-single-author-mismatches.js`
-- `audit-soft-404-review-texts.js`
-- `audit-stale-open-premises.js`
-- `audit-text-gap-cards.js`
-- `audit-truncated-reviews.js`
-- `audit-url-collisions.js`
-- `audit-url-validation.js`
-- `audit-we-historical-season.js`
-- `audit-we-market-misroutes.js`
-- `audit-we-reviews.js`
-- `audit-wet-roundup-bleed.js`
-- `audit-workflow-activity.js`
-- `audit-wrong-article-parity.js`
-- `audit-wt-integ-stashes.js`
-- `audit-timeout-patterns.js`
+### Additional bucket a: alertable (21)
 
-The population figure for "reached some other way" above predates this fix and is overstated by these scripts.
+| Script | Decision and scheduling reason |
+| --- | --- |
+| `audit-apply-scripts-verify-pushed.js` | Finds --apply scripts that write review texts without verify-review-texts-pushed, risking fixes left only on disk; schedule as a source-only advisory count, not a blocking gate. |
+| `audit-audience-scores.js` | Checks audience-buzz score ranges, source weights, designations and staleness against shows.json; recurring published-data drift merits a digest using report severity counts; no network calls. |
+| `audit-awards-data.js` | Checks awards.json for orphan show IDs, duplicate nominations, impossible wins and season gaps; recurring catalog edits can regress these, so schedule severity counts; needs awards.json, no network calls. |
+| `audit-coverage-slot-drops.js` | Finds aggregator URL slots, other-critic URL ownership, dateless holds and stale non-review slots with replacement reviews; recurring ingest losses merit candidate counts; needs review-texts, no fetches. |
+| `audit-critic-tenure.js` | Counts unresolved critic/outlet tenure mismatches using findTenureFlags and reviewed exceptions; new attribution errors warrant recurring visibility; needs review-texts, no network calls, supports --max. |
+| `audit-cross-attribution-by-critic.js` | Matches stored review content against title, cast, creative and venue fingerprints to detect wrong-show attribution; schedule report-only confidence counts with review-texts; never --apply on cron. |
+| `audit-doubled-market-ids.js` | Standing shows.json detector for market words leaking from titles into generated IDs; new discovery rows can repeat BRO-2886, so schedule sweepShows with its reviewed allowlist; core data only. |
+| `audit-fetch-timeouts.js` | Scans source for fetch and HTTP request call sites lacking a matched abort or destroy timeout; recurring hang regressions merit source-only advisory counts; full scan intentionally exits 0 on existing debt. |
+| `audit-field-consistency.js` | Detects wordCount, contentTier and legacy text-status drift that can change rebuild inclusion; schedule the default report over review-texts, never --fix; no network calls. |
+| `audit-git-show-maxbuffer.js` | Finds git show/cat-file/ls-tree/diff/log subprocesses missing maxBuffer, which can misread large data files as absent; recurring source regressions merit a cheap offline check. |
+| `audit-grosses-data.js` | Adds snapshot staleness, missing open Broadway shows, ATP and all-time consistency checks beyond the wired history-integrity rules; schedule severity counts with shows and both grosses files; no fetches. |
+| `audit-llm-hallucinations.js` | Uses canonical keyword checks to find LLM-verified live text lacking show identity and quarantine-gate contradictions; schedule separate suspect counts with review-texts, not automatic reclassification; no LLM calls. |
+| `audit-llm-scoring-parity.js` | Runs the real rebuild and LLM scoreability predicates over review-texts to expose wasted scoring and orphan-unscored divergences; schedule bucketed report counts, accounting for intentional differences; no LLM calls. |
+| `audit-multi-verdict-stars.js` | Finds stored star ratings borrowed from another section of multi-review articles; schedule mismatch counts separately from ambiguous sections using review-texts; --write-plan stays manual, no fetches. |
+| `audit-orphaned-audit-writes.js` | Finds workflow audit reports discarded because commit steps never stage them; schedule the source-only --check ratchet against reviewed persistence gaps, with shadow-mode visibility before blocking. |
+| `audit-paywall-leaks.js` | Detects subscriber-login boilerplate stored as fullText via the shared positional paywall detector; recurring cookie failures merit a weekly report with review-texts and --strict in shadow mode; no fetches. |
+| `audit-review-pair-anomalies.js` | Detects identical text under different critics/URLs and stale own-domain roundup flags across sibling files; per-file guards miss these, so schedule report-only pair and roundup counts with review-texts. |
+| `audit-soft-404-review-texts.js` | Finds stored soft-404 templates and byte-identical bodies across critics, complementing the collector guard on newly fetched text; schedule read-only finding counts with review-texts, no live fetches. |
+| `audit-url-collisions.js` | Classifies same-show/outlet URL groups to separate legitimate aggregator multi-critic pages from copied-text contamination; schedule contamination counts with review-texts, never --apply; no network calls. |
+| `audit-wet-roundup-bleed.js` | Cross-checks cached WET roundup rows and review files for borrowed critics/URLs and cross-outlet domains; schedule unflagged contamination counts, keeping weak leads separate; needs WET archive and review-texts, no fetches. |
+| `audit-timeout-patterns.js` | Finds Promise.race timeout wrappers whose timers are never cleared, causing scripts to linger after work ends; schedule the offline source scan as a regression signal, using withTimeout as the repair. |
+
+### Additional bucket b: manual or exempt (37)
+
+| Script | Decision and scheduling reason |
+| --- | --- |
+| `audit-bro79-ensemble-rejections.js` | One-time repair of named July 2026 ensemble rejections and a Wicked excerpt recovery; writes private review files by default unless --dry-run, so never schedule as a recurring audit. |
+| `audit-close-time-verify.js` | Pre-rollout experiment that lists cards through retired notion-brain.js and executes their acceptance commands in a fresh checkout; manual migration evidence, not a daily data-health check. |
+| `audit-content-quality.js` | Legacy mixed heuristic sweep includes extractYearFromUrl for production guesses and broad byline/domain checks; keep manual without --fix until checks use sourced metadata under CLAUDE.md section 3. |
+| `audit-creative-team-serp.js` | Retro-audits unprovenanced non-Broadway creative credits predating the SERP guard; two searches per member plus optional Opus adjudication and --fix require a scoped, budgeted manual run, not cron. |
+| `audit-duplicate-images.js` | Hashes hero, poster and thumbnail files for same-title productions; requires the complete local public/images/shows archive, tolerates absent files and writes a /tmp repair list, so use for image triage. |
+| `audit-excerpt-only-backfill-queue.js` | Reports excerpt-only files eligible for the existing daily unscored pipeline; queue size is not a failure or completion guarantee because scoring is capped, so use for manual backfill progress checks. |
+| `audit-explicit-scores.js` | Ranks originalScore suspects using positive/negative word lists and extraction-source hints; sentiment disagreement is not proof an explicit rating is wrong, so inspect evidence manually rather than alert on every hit. |
+| `audit-false-dead-ledger-rows.js` | Dispatch retry-cap incident probe fetches Linear comments per issue to corroborate dead ledger rows; the live gate already uses classifyDeadRowsForTask, so reserve the extra API scan for investigations. |
+| `audit-flag-wipe-signature.js` | Retroactive scan for the pre-16c834c9 maybeUpgradeUrl exclusion-flag wipe breadcrumb; incident-cohort repair needs per-hit review of legitimate clears, not a standing count of all URL changes. |
+| `audit-late-add-corpus-wide.js` | Historical late-add census deliberately includes closed shows outside the production ledger window; existing opening-night coverage handles current targets, so use this snapshot for scoped historical cleanup. |
+| `audit-levenshtein-matches.js` | Pre-migration inventory of fuzzy critic-name matches to decide which true typos belong in CRITIC_ALIASES; pairs require human identity review before changing matching rules, not recurring alerts. |
+| `audit-llm-scores.js` | Blind re-scoring experiment with provider calls, retries, calibration and a spend cap; use --pass1-only or a scoped funded investigation, not an unrestricted daily cron. |
+| `audit-london-outlet-flags.js` | BRO-5896 recovery diagnostic groups held and self-healed NYC reviews by current outlet region; legitimate London holds and released totals are not defects, so inspect suspect regions manually rather than gate total flags. |
+| `audit-mirror-status-drift.js` | Samples local ~/.claude/tasks mirror entries against live Notion statuses; depends on retired Notion tooling and a workstation mirror, so keep as historical investigation tooling, not CI. |
+| `audit-multi-production-titles.js` | Generates same-title production groups as fixtures for routing work; revivals and transfers legitimately share titles, so a collision count alone is not an alertable defect. |
+| `audit-multishow-titlecase.js` | A/B replay of titlecase, URL-evidence and flag-clearing rules for BRO-5373/BRO-5395; changed verdicts need cohort adjudication and can retain other exclusions, so run during rule/backfill investigations. |
+| `audit-nonreview-cv-conflict.js` | Counts stale isNonReview flags intentionally outranked by fresher verification at read time; these persist on disk and need not drain to zero, so the optional ceiling is diagnostic, not a daily failure signal. |
+| `audit-nyt-pick-coverage.js` | Proposes missing NYT Pick reviews using title words in URL slugs and run windows; matches need sourced confirmation under the no-URL-metadata rule before ingestion, so keep candidate research manual. |
+| `audit-opening-night-extraction.js` | Post-opening verification requires an explicit --show and live BWW/DTLI pages or cached --no-live inputs; run for a selected opening after reviews exist, not as an unscoped daily catalog scan. |
+| `audit-opera-discovery-gap.js` | Replays outlet-site discovery to classify misses for a selected show/category and opening window; live listing fetches can use Bright Data and need a bounded research scope, not a default full-catalog cron. |
+| `audit-orphan-inprogress.js` | One-time drain of local mirrored in-progress tasks using cmux, git evidence and retired Notion cards; --fix mutates tasks and cards, and CI lacks the workstation sessions it must corroborate. |
+| `audit-outlet-tiers.js` | Builds outlet volume/evidence tables and simulates proposed tier changes from supplied justifications; tier policy needs sourced human decisions and explicit output files, so no automatic recurring gate. |
+| `audit-registry-nonreview-outlets.js` | One-time pre-guard registry cross-check against venue, PR and ticketing host rules; domain collisions can flag real scored outlets, so use findings as manual evidence and never remove registry rows on a cron. |
+| `audit-reroute-backlog.js` | One-time inventory of already-flagged reviews that might fit sibling productions; requires the main checkout and .core-data-checkout/shows.json plus collision/year-only adjudication, so keep repair planning manual. |
+| `audit-safe-form-allowlist.js` | Source-only read-only-allowlist invariants already run in scripts/lib/safe-form-allowlist.test.mjs, including transitive writes and live-gate agreement; CLI --candidates is manual admission research, so no duplicate cron. |
+| `audit-show-score-url-redirects.js` | Live per-URL HTTP probe for Show Score mappings redirecting to generic listings; use --show or --limit to investigate a suspected mapping, alongside the offline archive audit, rather than refetch the whole map daily. |
+| `audit-single-author-mismatches.js` | Uses critic distribution and staff-turnover exceptions to propose multiAuthor registry changes; low-data and legitimate turnover cases need attribution review, and --apply changes scoring inputs, so keep manual. |
+| `audit-stale-open-premises.js` | Backlog research runs open cards acceptance commands in a fresh checkout and marks only stale-premise candidates; broad tests and absent private data are inconclusive, so results need owner judgment, not automatic cron action. |
+| `audit-text-gap-cards.js` | Card-specific evidence for BRO-4426, BRO-4564 and BRO-4301, selected with --card and named repair plans; each cohort measures a different text-recovery hypothesis, so use for those investigations. |
+| `audit-truncated-reviews.js` | Legacy local heuristic inventory of suspicious endings, paywall phrases and short bodies; findings need article inspection and reuse of current collector rules before becoming a recurring alert signal. |
+| `audit-url-validation.js` | Retroactive roundup-URL investigation mixes URL-title guesses, cached archives and potentially paid fetchPage validation; needs a bounded scope and content-based evidence before recurring use, not a default daily sweep. |
+| `audit-we-historical-season.js` | Manual release gate for a specified West End backfill --season about seven days after scoring; displayability, run windows, duplicates and provenance determine whether the next season can start, not daily catalog health. |
+| `audit-we-market-misroutes.js` | Historical backlog replay of gather-time market routing over flagged West End files; --execute moves private review files and collisions need adjudication, while the standing ingest guard handles new rows. |
+| `audit-we-reviews.js` | Live review refetch plus OpenAI and Gemini adjudication per review; default --limit is unbounded and production/sentiment findings need evidence review, so use a funded manual sample, not cron. |
+| `audit-workflow-activity.js` | Whole-workflow inventory complements the existing critical-cron monitor; refresh costs about two GitHub API calls per workflow before retries, so use cached/manual retirement reviews rather than daily duplicate polling. |
+| `audit-wrong-article-parity.js` | BRO-3956 diagnostic compares wrongArticle checks to canonical rejection; medium-confidence and manual-clear disagreements are intentional in URL ownership routing, so a nonzero parity count is not a recurring defect. |
+| `audit-wt-integ-stashes.js` | Read-only triage of the shared workstation stash stack, including dangerous truncations; CI has no representative wt-integ recovery stashes, so run during local stash cleanup, never as a catalog cron. |
+
+### Outstanding workflow deliverable
+
+The top eight ranked audits remain unreferenced by `data-health-check.yml`.
+After the infrastructure review gate in CLAUDE.md section 18 is satisfied, wire each
+with `--counts=data/audit/<name>.json` (adding supported counts output where absent),
+`continue-on-error: true`, a digest row and any required private-data/history checkout.
+Remove each baseline entry when wired, as enforced by the stale-entry test. Preserve
+the recorded star-band-drift overlap check and shadow-mode observation period.
+No new cron, fetch, LLM request or API call is introduced by this classification change.
