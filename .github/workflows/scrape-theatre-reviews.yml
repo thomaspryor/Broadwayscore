@@ -65,6 +65,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
       - name: Run theatre.reviews scraper
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
