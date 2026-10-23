@@ -106,7 +106,12 @@ const isScored = r => typeof r.assignedScore === 'number' && Number.isFinite(r.a
 // evidence. Matched on show + outlet + publish date.
 const windowExceptionKey = (showId, outletId, publishDate) => `${showId}|${outletId}|${String(publishDate || '').slice(0, 10)}`;
 
-function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheckVerdicts = [], windowExceptions = [] }) {
+// A review-text file the gather found but whose text was never fetched: it
+// can never be scored, so a season full of these fails displayable with no
+// other sign of why (2016-17: 215 such files, BRO-5851).
+const isUnfetched = f => f && f.contentTier === 'stub' && f.incompleteReason === 'not_attempted' && !f.wrongProduction;
+
+function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheckVerdicts = [], windowExceptions = [], textFiles = {} }) {
   const excepted = new Map(windowExceptions.map(e => [windowExceptionKey(e.showId, e.outletId, e.publishDate), e]));
   const exempted = [];
   const promoted = shows.filter(s => WE_HISTORICAL_DISCOVERY_SOURCES.has(s.discoverySource) && s.season === season
@@ -168,6 +173,9 @@ function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheck
     .map(s => ({ showId: s.id, openingDate: s.openingDate }));
   const noPressNightFound = promoted.filter(s => s.openingDateSource === NO_PRESS_NIGHT_FOUND_SOURCE && collapsed(s)).length;
 
+  const unfetched = promoted.map(s => ({ showId: s.id, count: (textFiles[s.id] || []).filter(isUnfetched).length }))
+    .filter(r => r.count > 0);
+
   const displayableShare = promoted.length ? perShow.filter(s => s.displayable).length / promoted.length : 0;
   const checks = {
     displayable: { pass: displayableShare >= MIN_DISPLAYABLE_SHARE, value: Math.round(displayableShare * 100) / 100, threshold: MIN_DISPLAYABLE_SHARE },
@@ -178,6 +186,7 @@ function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheck
     titles: { pass: censored.length === 0, value: censored.length, rows: censored },
     synopsis: { pass: null, value: synopsisLook.length, rows: synopsisLook, missing: noSynopsis },
     opening: { pass: firstPerformanceOpenings.length === 0, value: firstPerformanceOpenings.length, rows: firstPerformanceOpenings, noPressNightFound },
+    unfetched: { pass: null, value: unfetched.reduce((n, r) => n + r.count, 0), rows: unfetched },
     factCheck: { pass: null, ...seasonSummary(factCheckVerdicts, promoted.map(s => s.id)) },
   };
   const gated = Object.values(checks).filter(c => c.pass !== null);
@@ -212,7 +221,22 @@ function main() {
   try {
     windowExceptions = JSON.parse(fs.readFileSync(path.join(root, 'data', 'audit', 'we-historical-window-exceptions.json'), 'utf8')).exceptions || [];
   } catch (e) { if (e.code !== 'ENOENT') throw e; }
-  const result = auditSeason({ shows, reviews, season, ids, imageSources, factCheckVerdicts, windowExceptions });
+  // Review-text metadata only (never the text), for the unfetched count. No
+  // review-texts checkout reads as "nothing to report".
+  const textFiles = {};
+  const textsDir = path.join(root, 'data', 'review-texts');
+  for (const s of shows) {
+    if (!WE_HISTORICAL_DISCOVERY_SOURCES.has(s.discoverySource) || s.season !== season) continue;
+    let names = [];
+    try { names = fs.readdirSync(path.join(textsDir, s.id)).filter(n => n.endsWith('.json')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+    textFiles[s.id] = names.map(n => {
+      try {
+        const { contentTier, incompleteReason, wrongProduction } = JSON.parse(fs.readFileSync(path.join(textsDir, s.id, n), 'utf8'));
+        return { contentTier, incompleteReason, wrongProduction };
+      } catch { return null; }
+    });
+  }
+  const result = auditSeason({ shows, reviews, season, ids, imageSources, factCheckVerdicts, windowExceptions, textFiles });
 
   if (args.includes('--json')) { console.log(JSON.stringify(result, null, 2)); }
   else {
@@ -236,6 +260,12 @@ function main() {
     for (const r of c.synopsis.rows) console.log(`    ${r.showId}: ${r.synopsis}`);
     console.log(`${mark(c.opening.pass)} opening: ${c.opening.value} row(s) whose openingDate is a WhatsOnStage first performance, not a press night; ${c.opening.noPressNightFound} kept after a search found no press night`);
     for (const r of c.opening.rows) console.log(`    ${r.showId}: ${r.openingDate} (set a sourced press night)`);
+    if (c.unfetched.value) {
+      console.log(`INFO unfetched: ${c.unfetched.value} review(s) found but never fetched, so they cannot be scored (dispatch collect-review-texts.yml -f show_filter=<ids> -f archive_first=true -f max_reviews=0)`);
+      console.log(`    ${c.unfetched.rows.map(r => `${r.showId} ${r.count}`).join(', ')}`);
+    } else {
+      console.log('INFO unfetched: 0 review(s) waiting for their text');
+    }
     if (!c.factCheck.sampled) {
       console.log(`INFO fact-check: no sourced sample pass covers this season (node scripts/fact-check-historical-sample.js sample --cohort=we-historical --season=${season} --n=30, then check + report)`);
     } else {

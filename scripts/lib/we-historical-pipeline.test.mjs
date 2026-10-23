@@ -205,6 +205,23 @@ test('auditSeason: flags a review of the OTHER same-title production and duplica
   assert.equal(r.pass, false);
 });
 
+test('auditSeason (BRO-5851): counts review texts found but never fetched, without gating', () => {
+  const show = { id: 'travesties-west-end-2017', title: 'Travesties', venue: 'Apollo Theatre', previewsStartDate: '2017-02-03', closingDate: '2017-04-29', status: 'closed', category: 'west-end', market: 'west-end', season: SEASON, discoverySource: 'we-historical:wos' };
+  const textFiles = { [show.id]: [
+    { contentTier: 'stub', incompleteReason: 'not_attempted' },
+    { contentTier: 'stub', incompleteReason: 'not_attempted' },
+    { contentTier: 'stub', incompleteReason: 'not_attempted', wrongProduction: true }, // excluded anyway
+    { contentTier: 'stub', incompleteReason: 'bot_blocked' }, // tried and failed: not "never fetched"
+    { contentTier: 'complete' },
+    null, // unreadable file
+  ] };
+  const r = auditSeason({ shows: [show], reviews: [], season: SEASON, textFiles });
+  assert.equal(r.checks.unfetched.value, 2);
+  assert.deepEqual(r.checks.unfetched.rows, [{ showId: show.id, count: 2 }]);
+  assert.equal(r.checks.unfetched.pass, null);
+  assert.equal(auditSeason({ shows: [show], reviews: [], season: SEASON }).checks.unfetched.value, 0);
+});
+
 test('auditSeason (BRO-5141): reviews of a declared prior run are in window', () => {
   const amelie = { id: 'amelie-west-end-2021', title: 'Amélie', venue: 'Criterion Theatre', previewsStartDate: '2021-06-17', openingDate: '2021-06-17', closingDate: '2021-09-25', status: 'closed', category: 'west-end', market: 'west-end', season: SEASON, discoverySource: 'we-historical:wos',
     priorRuns: [{ openingDate: '2019-11-29', closingDate: '2020-02-01', venue: 'The Other Palace' }] };
