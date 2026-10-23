@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T19:15:26.286Z",
+  "generatedAt": "2026-10-23T19:29:26.802Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -539,27 +539,27 @@
       "status": "open",
       "slug": "phyl-off-broadway",
       "thumbnail": "/images/shows/phyl-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 76.64,
+      "siteScore": 77.06,
       "liveScore": 77,
-      "scoreDrift": 0.35999999999999943,
+      "scoreDrift": -0.060000000000002274,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 6,
+      "total": 7,
       "t1": 0,
       "t2": 4,
-      "t3": 2,
-      "positive": 5,
+      "t3": 3,
+      "positive": 6,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "6/12 total",
+          "7/12 total",
           "T1:0/3",
-          "hi-conf:6/8"
+          "hi-conf:7/8"
         ],
-        "highConfidence": 6,
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -944,6 +944,18 @@
           "t2": 4,
           "t3": 2,
           "p": 5,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-23T19:29:26.802Z",
+          "rc": 7,
+          "s": 77.06,
+          "t1": 0,
+          "t2": 4,
+          "t3": 3,
+          "p": 6,
           "m": 1,
           "n": 0,
           "bc": "waiting"
