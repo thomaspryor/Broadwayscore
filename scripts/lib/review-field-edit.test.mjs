@@ -713,3 +713,39 @@ test('url repair: a tag-index url is repairable to the real review url', () => {
   const keep = applyReviewFieldEdit({ outletId: 'theatermania', url: real }, { field: 'url', oldValue: real, newValue: tags }, stamp);
   assert.equal(keep.ok, false);
 });
+
+test('aggregatorStars: sourceless stars clear and queue a rescore (BRO-6018)', () => {
+  const rec = { outletId: 'mail-on-sunday', aggregatorStars: '4/5', assignedScore: 91, rescoreCompletedAt: '2026-10-01T00:00:00.000Z' };
+  const res = applyReviewFieldEdit(rec, { field: 'aggregatorStars', oldValue: '4/5', newValue: null }, stamp);
+  assert.equal(res.ok, true, res.reason);
+  assert.equal(res.record.aggregatorStars, null);
+  assert.equal(res.record.needsRescore, true);
+  assert.match(res.record.rescoreReason, /sourceless aggregatorStars cleared/);
+  assert.equal(res.record.rescoreCompletedAt, undefined);
+  assert.ok(res.sideEffectKeys.includes('needsRescore'), 'rescore flags are declared side effects, not surprises');
+  assert.equal(rec.needsRescore, undefined, 'input record is not mutated');
+});
+
+test('aggregatorStars: refuses stars with a source, writes, and a stale oldValue', () => {
+  const sourced = { aggregatorStars: '4/5', aggregatorStarsSource: 'json-ld' };
+  assert.equal(applyReviewFieldEdit(sourced, { field: 'aggregatorStars', oldValue: '4/5', newValue: null }, stamp).ok, false);
+  const bare = { aggregatorStars: '4/5' };
+  assert.equal(applyReviewFieldEdit(bare, { field: 'aggregatorStars', oldValue: '4/5', newValue: '5/5' }, stamp).ok, false);
+  assert.equal(applyReviewFieldEdit(bare, { field: 'aggregatorStars', oldValue: '3/5', newValue: null }, stamp).ok, false);
+});
+
+test('aggregatorStars clear survives the real writer and leaves the file queued for rescore (BRO-6018)', async (t) => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'agg-stars-clear-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  fs.mkdirSync(path.join(root, 'show'));
+  const file = 'show/mail-on-sunday--critic.json';
+  fs.writeFileSync(path.join(root, file), JSON.stringify({ showId: 'show', outletId: 'mail-on-sunday', criticName: 'A Critic', assignedScore: 91, aggregatorStars: '5/5' }));
+  const { executeReviewFieldEditIn } = require('./review-field-edit.js');
+  const res = executeReviewFieldEditIn(root, { file, field: 'aggregatorStars', oldValue: '5/5', newValue: null }, stamp);
+  assert.equal(res.ok, true, res.reason);
+  const after = JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
+  assert.equal(after.aggregatorStars == null, true, 'the guard must not restore the cleared stars');
+  assert.equal(after.needsRescore, true);
+});

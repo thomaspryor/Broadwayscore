@@ -114,6 +114,11 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // Shucked's Variety quote), and selectBestExcerpt prints it. A plan may null
   // the field; it may never write excerpt text (see FIELD_VALUE_CHECKS).
   ...EXCERPT_FIELDS,
+  // Sourceless aggregatorStars (BRO-6018): CLEAR ONLY. A relay can copy a sibling row's
+  // stars onto another critic's file (Daily Mail stars on the Mail on Sunday rows), and the
+  // stars then anchor the score. Only stars with no aggregatorStarsSource may be cleared; the
+  // edit queues the file for a normal rescore (see applyReviewFieldEdit).
+  'aggregatorStars',
 ];
 
 // True when a record's syndication pointer names the record's own file
@@ -240,6 +245,12 @@ const FIELD_VALUE_CHECKS = {
     const { isCrossOutletUrl } = require('./review-normalization');
     if (record.outletId && isCrossOutletUrl(record.outletId, v) && !splitRelabelUndo(record, v)) return `url: new value belongs to another outlet than ${record.outletId}`;
     return null;
+  },
+  aggregatorStars: (v, record) => {
+    if (v !== null) return 'aggregatorStars: a plan may only clear it (newValue must be null)';
+    return record && record.aggregatorStarsSource
+      ? 'aggregatorStars: carries an aggregatorStarsSource (stars read from a page); only sourceless stars may be cleared'
+      : null;
   },
   // Excerpts: clear only (BRO-4251). Text written by a plan would bypass the
   // scraper's provenance; a wrong excerpt is removed, never rewritten.
@@ -392,6 +403,14 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
     const r = require('./verified-original-score').applyVerifiedOriginalScore(next, newValue, `approved fix ${stamp.fixId}: rating verified against the outlet page`);
     if (!r.ok) return { ok: false, reason: r.reason };
     sideEffectKeys = unexpectedChanges(beforeRating, next, field);
+  }
+  if (field === 'aggregatorStars') {
+    // The stars were the score's anchor: queue a rescore through the normal path, the same way
+    // the wrong-show round-up star removal does (aggregator-page-show-guard).
+    const beforeRescore = { ...next };
+    require('./rescore-flagging').markRescoreNeeded(next, `approved fix ${stamp.fixId}: sourceless aggregatorStars cleared`, undefined, { requeue: true });
+    delete next.rescoreCompletedAt;
+    sideEffectKeys = [...new Set([...sideEffectKeys, ...unexpectedChanges(beforeRescore, next, field)])].sort();
   }
   const prior = Array.isArray(record.approvedFixes) ? record.approvedFixes : [];
   next.approvedFixes = [...prior, { fixId: stamp.fixId, field, at: stamp.at, newValue }];
