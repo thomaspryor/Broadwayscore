@@ -64,6 +64,7 @@ const { isTestRun } = require('./test-run-guard');
 const { spawn, execFileSync } = require('child_process');
 const dispatchLedger = require('./dispatch-ledger.js');
 const dispatchReconcile = require('./dispatch-reconcile.js');
+const { withFileLock } = require('./file-lock.js');
 const { checkPark, computeContentHash } = require('./attempt-memory.js');
 // BRO-3412: this path had neither of the two guards the sibling backlog
 // drain has (spend circuit breaker, concurrency ceiling) — verified by grep,
@@ -1129,6 +1130,40 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
   return newEntries;
 }
 
+// BRO-6003: read, reconcile and append under one cross-process lock, reading
+// INSIDE the lock. Unlocked, two overlapping digest runs both saw the same
+// unresolved dispatch and both appended its card-pass/card-fail, double-counting
+// the attempt-memory streaks checkPark parks on. Same shape as BRO-2513's
+// scripts/backlog-drain.js reconcileAndAppend. Lock busy: skip the reconcile
+// (the next run retries); lock abandoned past DIGEST_ABANDONED_LOCK_MS:
+// reconcile unlocked, loudly, so outcomes never stop reaching the spend breaker.
+const DIGEST_ABANDONED_LOCK_MS = 15 * 60 * 1000;
+function reconcileAndAppendDigest(ledgerPath, tasksById, dispatchLedgerEntries, now = new Date(), log = () => {}, opts = {}) {
+  const { lockOpts = {}, beforeAppend } = opts;
+  const body = () => {
+    const entries = readJsonlLedger(ledgerPath);
+    const keyOf = o => `${o.cardId}|${o.judgedDispatchTs}|${o.event}`;
+    const seen = new Set(entries.filter(e => e && e.judgedDispatchTs !== undefined).map(keyOf));
+    const newOutcomes = reconcileDigestOutcomes(entries, tasksById, dispatchLedgerEntries, now)
+      .filter(o => !seen.has(keyOf(o)));
+    if (typeof beforeAppend === 'function') beforeAppend(newOutcomes);
+    for (const o of newOutcomes) appendJsonlLedger(ledgerPath, o);
+    return { newOutcomes, ledgerEntries: newOutcomes.length ? entries.concat(newOutcomes) : entries };
+  };
+  fs.mkdirSync(path.dirname(ledgerPath), { recursive: true });
+  const result = withFileLock(`${ledgerPath}.lock`, held => (held ? body() : null), lockOpts);
+  if (result !== null) return result;
+  const ageMs = Math.max(...[`${ledgerPath}.lock`, `${ledgerPath}.lock.steal-gate`].map(f => {
+    try { return Date.now() - fs.statSync(f).mtimeMs; } catch { return 0; }
+  }));
+  if (ageMs > DIGEST_ABANDONED_LOCK_MS) {
+    log(`[digest-autofix] reconcile lock abandoned (${Math.round(ageMs / 60000)}min old) — reconciling unlocked`);
+    return body();
+  }
+  log('[digest-autofix] reconcile lock busy — skipping reconcile this run (next run retries)');
+  return { newOutcomes: [], ledgerEntries: readJsonlLedger(ledgerPath), skipped: true };
+}
+
 /**
  * File missing cards, refresh the task list, dispatch up to `cap`.
  * Mutates each plan row's state to one of:
@@ -1254,14 +1289,10 @@ function runAutofix({
   //    park state known", never blocks the digest.
   let digestLedgerEntries = [];
   try {
-    digestLedgerEntries = readJsonlLedger(ledgerPath);
     const dispatchEntries = dispatchLedgerEntriesFn ? dispatchLedgerEntriesFn() : dispatchLedger.readEntries();
-    const newOutcomes = reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchEntries, now);
-    for (const o of newOutcomes) {
-      appendJsonlLedger(ledgerPath, o);
-      log(`[digest-autofix] attempt-memory: #${o.cardId} ${o.event} (${o.note})`);
-    }
-    if (newOutcomes.length) digestLedgerEntries = digestLedgerEntries.concat(newOutcomes);
+    const rec = reconcileAndAppendDigest(ledgerPath, tasksById, dispatchEntries, now, log);
+    digestLedgerEntries = rec.ledgerEntries;
+    for (const o of rec.newOutcomes) log(`[digest-autofix] attempt-memory: #${o.cardId} ${o.event} (${o.note})`);
   } catch (err) {
     log(`[digest-autofix] WARN attempt-memory reconcile failed (park checks skipped this run): ${String(err.message).slice(0, 120)}`);
   }
@@ -1481,7 +1512,7 @@ function localRollupIssues({ health, freshnessCount = 0, stuckCount = 0, freshne
 module.exports = {
   keepDecisionQueued, localRollupIssues, ROLLUP_ROW_NAMES,
   planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP,
-  DIGEST_LEDGER_PATH, reconcileDigestOutcomes, isDispatchResolved, findMyJob, readJsonlLedger, appendJsonlLedger,
+  DIGEST_LEDGER_PATH, reconcileDigestOutcomes, reconcileAndAppendDigest, isDispatchResolved, findMyJob, readJsonlLedger, appendJsonlLedger,
   persistenceKey, computePersistenceGate, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS, GATE_SLACK_HOURS, DIGEST_SEEN_PATH,
   fileCard, startNowNotes, START_NOW_REFUSED_RE, isVisitorFacingRow, dispatchDetached, familyDisplayName, rowFamilyKey,
   splitOnShowSuffix, MAX_FOLD_PER_CONDITION,

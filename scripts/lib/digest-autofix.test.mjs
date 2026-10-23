@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, execFile } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -1559,3 +1559,72 @@ test('BRO-5486: a grouped per-show card files in the same disposition as the per
   assert.equal(fromQueue.length, 1);
   assert.equal(isVisitorFacingRow(fromQueue[0]), false, 'queued rows keep the parked disposition they always had');
 });
+
+// ── BRO-6003: concurrent read-reconcile-append produces ONE outcome ────────
+// Each child holds a barrier INSIDE the critical section (between the ledger
+// read and the append) so the two processes genuinely overlap. Orphan fixture
+// (dispatch older than ORPHAN_TIMEOUT_H, no job events) keeps the verdict
+// independent of git and of injected stubs, which cannot cross a process.
+const DIGEST_AUTOFIX = path.join(__dirname, 'digest-autofix.js');
+const ORPHAN_DISPATCH = { ts: '2026-07-30T11:00:00Z', event: 'auto-dispatch', taskId: '4', contentHash: 'abc' };
+
+function runDigestRacer(ledger, tag) {
+  const code = `
+    const { reconcileAndAppendDigest } = require(${JSON.stringify(DIGEST_AUTOFIX)});
+    const started = Date.now();
+    const r = reconcileAndAppendDigest(${JSON.stringify(ledger)}, new Map(), [], new Date(), () => {}, {
+      lockOpts: { timeoutMs: 20000, waitMs: 10 },
+      beforeAppend: () => { const u = Date.now() + 400; while (Date.now() < u) {} },
+    });
+    console.log(JSON.stringify({ tag: ${JSON.stringify(tag)}, started, ended: Date.now(), n: r.newOutcomes.length, skipped: !!r.skipped }));
+  `;
+  return new Promise((resolve, reject) => execFile(process.execPath, ['-e', code],
+    (err, stdout, stderr) => (err ? reject(new Error(err.message + stderr)) : resolve(JSON.parse(stdout.trim().split('\n').pop())))));
+}
+
+function withDigestLedger(fn) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6003-'));
+  const ledger = path.join(dir, 'ledger.jsonl');
+  fs.writeFileSync(ledger, JSON.stringify(ORPHAN_DISPATCH) + '\n');
+  return Promise.resolve(fn(ledger)).finally(() => fs.rmSync(dir, { recursive: true, force: true }));
+}
+
+test('reconcileAndAppendDigest: two concurrent processes append exactly one outcome per resolved dispatch (BRO-6003)', () => withDigestLedger(async ledger => {
+  const results = await Promise.all([runDigestRacer(ledger, 'a'), runDigestRacer(ledger, 'b')]);
+  assert.ok(Math.max(...results.map(r => r.started)) < Math.min(...results.map(r => r.ended)),
+    'children did not overlap; test proves nothing');
+  const rows = fs.readFileSync(ledger, 'utf8').trim().split('\n').map(l => JSON.parse(l));
+  assert.equal(rows.filter(r => r.event === 'card-fail').length, 1);
+  assert.equal(results.reduce((n, r) => n + r.n, 0), 1, 'exactly one process reports the outcome');
+  assert.equal(fs.existsSync(`${ledger}.lock`), false, 'lock released');
+}));
+
+test('reconcileAndAppendDigest: lock busy skips instead of appending (BRO-6003)', () => withDigestLedger(ledger => {
+  const { reconcileAndAppendDigest } = require('./digest-autofix.js');
+  fs.writeFileSync(`${ledger}.lock`, `${process.pid} live\n`);
+  const logs = [];
+  const r = reconcileAndAppendDigest(ledger, new Map(), [], new Date(), m => logs.push(m), { lockOpts: { timeoutMs: 150, waitMs: 10 } });
+  assert.equal(r.skipped, true);
+  assert.deepEqual(r.newOutcomes, []);
+  assert.equal(fs.readFileSync(ledger, 'utf8').trim().split('\n').length, 1, 'nothing appended');
+  assert.ok(logs.some(m => /lock busy/.test(m)));
+}));
+
+test('reconcileAndAppendDigest: a second pass is idempotent and returns the fresh ledger (BRO-6003)', () => withDigestLedger(ledger => {
+  const { reconcileAndAppendDigest } = require('./digest-autofix.js');
+  const first = reconcileAndAppendDigest(ledger, new Map(), []);
+  assert.equal(first.newOutcomes.length, 1);
+  assert.equal(first.ledgerEntries.length, 2, 'returned entries include the appended outcome');
+  assert.equal(reconcileAndAppendDigest(ledger, new Map(), []).newOutcomes.length, 0);
+  assert.equal(fs.readFileSync(ledger, 'utf8').trim().split('\n').length, 2);
+}));
+
+test('reconcileAndAppendDigest: an abandoned lock (older than 15min) reconciles unlocked instead of skipping forever (BRO-6003)', () => withDigestLedger(ledger => {
+  const { reconcileAndAppendDigest } = require('./digest-autofix.js');
+  fs.writeFileSync(`${ledger}.lock.steal-gate`, 'abandoned\n');
+  const old = new Date(Date.now() - 30 * 60_000);
+  fs.utimesSync(`${ledger}.lock.steal-gate`, old, old);
+  const r = reconcileAndAppendDigest(ledger, new Map(), [], new Date(), () => {}, { lockOpts: { timeoutMs: 150, waitMs: 10 } });
+  assert.equal(r.skipped, undefined);
+  assert.equal(r.newOutcomes.length, 1);
+}));
