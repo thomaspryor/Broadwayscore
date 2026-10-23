@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6039",
   "planId": "6a81c20d-edc1-4311-a302-6e7e3b488036",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-23T05:04:57.705Z",
   "submitter": {
     "name": null,
@@ -39,5 +39,25 @@
         "description": "Byline: Clive Davis (theatre.reviews roundup https://theatre.reviews/reviews-roundup/thelma-louise-young-vic-reviews/ names The Times (Clive Davis))."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-23T05:23:39.033Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--clive-davis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--susannah-butter.json → thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--clive-davis.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--clive-davis.json criticName: \"Susannah Butter\" -> \"Clive Davis\""
+    }
+  ],
+  "executedIn": "ci"
 }
