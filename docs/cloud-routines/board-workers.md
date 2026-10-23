@@ -60,6 +60,14 @@ the lane. Waiting for Codex is not a reason either: finish (section 3) only
 after this lane is done. On 2026-10-11 a worker paused its first card and then
 only waited for Codex while 68 cards were eligible.
 
+Turn-end rule (BRO-6087): while this lane is open (fewer than 4 cards claimed and the
+pick is not empty), no turn may end. A mid-lane turn end is not the final reply:
+background waiters and test runs wake you later, and a turn that ends on "KEEP OPEN,
+the test run wakes this session" stops the lane with cards still eligible. Claim logs
+for 2026-10-20..23 show the lane averaging 2.69 claims per firing (cap 4).
+`node scripts/worker-firing-stats.js --min-avg 3.0` re-measures that. Section 3 is different: once this lane is done, waiting
+there means ending turns until woken.
+
 Never sit idle while a landing is checked (about 15-30 minutes): push it, start
 its waiter in the background (timeout 4000000), and go straight to the next
 card. Step 6 runs for each card once its waiter reports.
