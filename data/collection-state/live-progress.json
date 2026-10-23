@@ -1,21 +1,32 @@
 {
-  "updatedAt": "2026-10-23T01:17:58.155Z",
-  "processed": 390,
-  "failed": 229,
-  "successRate": "63.0%",
+  "updatedAt": "2026-10-23T01:31:31.515Z",
+  "processed": 422,
+  "failed": 254,
+  "successRate": "62.4%",
   "tierBreakdown": {
-    "playwright": 179,
+    "playwright": 185,
     "amp": 9,
-    "browserbase": 10,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingdog": 21,
+    "scrapingdog": 22,
     "scrapingbee": 17,
-    "brightdata": 2,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 134
+    "archive": 154
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-10-22T21:28:15.347Z",
+      "event": "bb-session",
+      "session": "700dfe08",
+      "url": "https://www.nytimes.com/2017/05/05/arts/angels-in-america-national-theater-revie"
+    },
+    {
+      "t": "2026-10-22T21:28:16.260Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
     {
       "t": "2026-10-22T22:26:59.753Z",
       "event": "bb-session",
@@ -70,64 +81,6 @@
       "t": "2026-10-22T22:48:21.801Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-23T01:04:49.761Z",
-      "event": "bb-session",
-      "session": "a338bd9a",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
-    },
-    {
-      "t": "2026-10-23T01:05:29.917Z",
-      "event": "bb-session",
-      "session": "12556761",
-      "url": "https://ground.news/article/curious-case-of-benjamin-button-review-a-sweet-and-f"
-    },
-    {
-      "t": "2026-10-23T01:06:58.860Z",
-      "event": "bb-session",
-      "session": "0592fc3d",
-      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
-    },
-    {
-      "t": "2026-10-23T01:06:59.707Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-23T01:07:09.407Z",
-      "event": "bb-session",
-      "session": "d6e9751a",
-      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
-    },
-    {
-      "t": "2026-10-23T01:07:10.195Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-23T01:08:22.788Z",
-      "event": "bb-session",
-      "session": "a1a53735",
-      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
-    },
-    {
-      "t": "2026-10-23T01:08:32.744Z",
-      "event": "bb-session",
-      "session": "055ed6ce",
-      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
-    },
-    {
-      "t": "2026-10-23T01:09:34.133Z",
-      "event": "bb-session",
-      "session": "a7d3adc7",
-      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
-    },
-    {
-      "t": "2026-10-23T01:10:35.954Z",
-      "event": "bb-session",
-      "session": "65651fcc",
-      "url": "https://www.cbsnews.com/video/other-desert-cities-on-broadway-family-secrets-lai"
     }
   ]
 }
