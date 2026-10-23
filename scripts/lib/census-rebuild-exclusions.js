@@ -24,20 +24,20 @@ const PERMANENT_REASONS = new Set([
   'tourContaminationInText', 'filmTvContaminationInText',
 ]);
 
-// Reasons that say "this file is a copy of another review": they hold whatever URL the census names.
-// Content reasons (wrongProduction, nonReview, roundup...) only exclude the census entry when the
-// dropped file IS that entry's URL; a different census URL may be the real, not-yet-gathered review.
-const COPY_REASONS = new Set(['knownSyndicationSecondary', 'isSyndicatedDuplicate', 'crossOutletDuplicate', 'personalRepost']);
-
+// An excluded file only closes the census entry that names ITS url: a different census url for
+// the same outlet may be the real, not-yet-gathered review (ship-check BRO-6072).
 function normUrl(u) {
-  return String(u || '').toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
+  const m = String(u || '').trim().match(/^https?:\/\/(?:www\.)?([^/?#]+)([^?#]*)(\?[^#]*)?/i);
+  if (!m) return String(u || '').trim();
+  const q = (m[3] || '').slice(1).split('&').filter((kv) => kv && !/^utm_/i.test(kv)).sort().join('&');
+  return m[1].toLowerCase() + m[2].replace(/\/+$/, '') + (q ? `?${q}` : '');
 }
 
 /**
  * @param {string} showId
  * @param {object} show  shows.json entry
  * @param {{dir?: string}} [opts] dir overrides the show's review-text directory (tests)
- * @returns {Map<string,{urls:Set<string>,copy:boolean}>} outletId -> the dropped files' normalized
+ * @returns {Map<string,{urls:Set<string>}>} outletId -> the dropped files' normalized
  *   urls (and whether any was dropped as a copy) for outlets whose every file is permanently dropped
  */
 function rebuildExcludedOutlets(showId, show, opts = {}) {
@@ -51,15 +51,16 @@ function rebuildExcludedOutlets(showId, show, opts = {}) {
   for (const f of files) {
     const p = path.join(dir, f);
     let data;
-    try { data = JSON.parse(fs.readFileSync(p, 'utf8')); } catch { continue; }
-    const outletId = data && (data.outletId || f.split('--')[0]);
+    const fileOutlet = f.split('--')[0];
+    // Unreadable file = unknown eligibility: it keeps its outlet in the census.
+    try { data = JSON.parse(fs.readFileSync(p, 'utf8')); } catch { for (const v of outletVariants(fileOutlet)) live.add(v); continue; }
+    const outletId = String((data && data.outletId) || fileOutlet);
     if (!outletId) continue;
     let reason;
     try { reason = explainExclusion(data, show, p); } catch { reason = 'error'; }
     if (reason !== null && PERMANENT_REASONS.has(reason)) {
-      const d = dropped.get(outletId) || { urls: new Set(), copy: false };
+      const d = dropped.get(outletId) || { urls: new Set() };
       d.urls.add(normUrl(data.url));
-      if (COPY_REASONS.has(reason)) d.copy = true;
       dropped.set(outletId, d);
     } else for (const v of outletVariants(outletId)) live.add(v);
   }
@@ -69,15 +70,15 @@ function rebuildExcludedOutlets(showId, show, opts = {}) {
 
 /**
  * Census minus entries the rebuild will never satisfy. An entry goes when its outlet (or its
- * -london variant) is excluded AND (a copy reason, no census url, or the census url is a dropped file's).
+ * -london variant) is excluded AND (it names no url or its url is a dropped file's).
  * If everything is dropped the original count is kept so the verdict reads complete, not no-census-yet.
  */
 function filterCensus(census, excluded) {
   if (!census || !excluded || excluded.size === 0 || !Array.isArray(census.entries)) return census;
   const gone = (e) => {
-    for (const v of outletVariants(e.outletId)) {
+    for (const v of outletVariants(String(e.outletId || ''))) {
       const d = excluded.get(v);
-      if (d && (d.copy || !e.url || d.urls.has(normUrl(e.url)))) return true;
+      if (d && (!e.url || d.urls.has(normUrl(e.url)))) return true;
     }
     return false;
   };
