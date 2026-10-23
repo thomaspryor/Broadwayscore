@@ -93,6 +93,7 @@ test('readLatestRun uses the timeout annotation, not elapsed time, and caches by
   const calls = [];
   const read = (endpoint) => {
     calls.push(endpoint);
+    if (endpoint.includes('event=workflow_dispatch')) return { workflow_runs: [] };
     if (endpoint.includes('/workflows/land.yml/runs?')) return { workflow_runs: [r] };
     if (endpoint.includes('/jobs?')) return { jobs: [{ name: 'Checks', conclusion: 'success' }, land] };
     if (endpoint.includes('/annotations?')) return annotations;
@@ -118,7 +119,7 @@ test('readLatestRun uses the timeout annotation, not elapsed time, and caches by
   r.conclusion = 'success';
   const before = calls.length;
   assert.equal(poll().conclusion, 'success');
-  assert.equal(calls.length - before, 1, 'ordinary polls only list runs');
+  assert.equal(calls.length - before, 2, 'ordinary polls list push and dispatch runs');
 });
 
 test('a red run for an OLDER tip says nothing about a fresh push', () => {

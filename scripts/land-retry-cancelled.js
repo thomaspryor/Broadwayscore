@@ -30,6 +30,7 @@ const { execFileSync, spawnSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { decideLandRetry, runGhWithFallback, isRefNotFound, decideCancelledWait } = require('./lib/land-retry-on-cancel');
 const { supersededByNewerRun, decideSweep, sweepStep, MAX_AGE_HOURS } = require('./lib/land-queue-backoff');
+const { resolveLandRun, readLatestLandRun } = require('./lib/land-run-identity');
 
 const USAGE = 'usage: node scripts/land-retry-cancelled.js --sweep | --run=<id> | --stranded [--only=<land/branch>] [--dry-run]';
 if (hasHelpFlag(process.argv.slice(2))) {
@@ -48,6 +49,7 @@ if ([sweep, Boolean(runId), stranded].filter(Boolean).length !== 1 || (runId && 
 const ghRaw = (args) => runGhWithFallback(args, { exec: execFileSync, fallbackToken: process.env.GH_FALLBACK_TOKEN });
 const gh = (args) => JSON.parse(ghRaw(args));
 const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
+const identityOptions = { repo, read: (endpoint) => gh([endpoint]), readText: (endpoint) => ghRaw([endpoint]), cache: new Map() };
 
 // Memoized: the targeted and sweep decisions can ask about the same run.
 const jobsCache = new Map();
@@ -71,7 +73,9 @@ function rerun(id, seenAttempt) {
 }
 
 function runTargeted() {
-  const run = gh([`repos/${repo}/actions/runs/${runId}`]);
+  const raw = gh([`repos/${repo}/actions/runs/${runId}`]);
+  const run = resolveLandRun(raw, identityOptions);
+  if (!run) { console.log(`run ${runId}: skip (dispatched branch and checked tip not readable yet)`); return; }
   const jobs = jobsOf(runId);
   let branchExists = false;
   let branchTip;
@@ -129,7 +133,7 @@ function runSweep() {
   const cancelledRuns = [];
   for (let p = 1; p <= 3; p += 1) {
     const runs = gh([`repos/${repo}/actions/workflows/land.yml/runs?status=cancelled&created=${since}&per_page=100&page=${p}`]).workflow_runs || [];
-    cancelledRuns.push(...runs);
+    cancelledRuns.push(...runs.map((run) => resolveLandRun(run, identityOptions)).filter(Boolean));
     if (runs.length < 100) break;
   }
   const refs = landRefs();
@@ -141,14 +145,15 @@ function runSweep() {
   let resumed = 0;
   let evictionRerun = false;
   for (const run of d.candidates) {
-    const latest = (gh([`repos/${repo}/actions/workflows/land.yml/runs?branch=${encodeURIComponent(run.head_branch)}&per_page=1`]).workflow_runs || [])[0];
+    const latest = readLatestLandRun(run.head_branch, identityOptions);
     if (supersededByNewerRun(run, latest)) {
       console.log(`run ${run.id} ${run.head_branch}: skip (newer run ${latest.id} ${latest.conclusion || latest.status})`);
       continue;
     }
     // Decide on the fresh run, not the listing: a listed run may already have
     // been re-run since (status back to queued/pending, conclusion null → skip).
-    const fresh = latest || run;
+    const fresh = latest || resolveLandRun(gh([`repos/${repo}/actions/runs/${run.id}`]), identityOptions);
+    if (!fresh) continue;
     const r = decideLandRetry({ run: fresh, jobs: jobsOf(run.id), branchExists: true, branchTip: refs.get(run.head_branch) });
     console.log(`run ${run.id} ${run.head_branch} attempt ${fresh.run_attempt}: ${r.retry ? 'RETRY' : 'skip'} (${r.reason})`);
     if (!r.retry) continue;

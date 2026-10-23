@@ -1,7 +1,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { readFileSync } from 'node:fs';
+import { readFileSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { execFileSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const { decideLandRetry, MAX_ATTEMPTS, runGhWithFallback, isRefNotFound, decideCancelledWait } = require('./land-retry-on-cancel.js');
@@ -146,4 +149,167 @@ test('decideCancelledWait: a failed rerun POST is benign only when the run alrea
 
 test('land-branch.js re-exports the same decideCancelledWait (one copy, no drift)', () => {
   assert.equal(require('./land-branch.js').decideCancelledWait, decideCancelledWait);
+});
+
+const { landIdentityFromChecks, resolveLandRun, readLatestLandRun } = require('./land-run-identity.js');
+const { readLatestRun, landVerdict } = require('./wait-for-land.js');
+// Public metadata and the identity-only excerpt of run 39830878697, attempt 1.
+const DISPATCH_TIP = '1315178f3276484f4af6c41f6ff8c5facb3f6b64';
+const DISPATCH_BRANCH = 'land/bro-5943-theatr-alias';
+const DISPATCH = {
+  id: 39830878697, event: 'workflow_dispatch', head_branch: 'main',
+  head_sha: 'd821c82e42e589e916cb8ef9647e8e208afb90a9', display_title: 'Land',
+  status: 'completed', conclusion: 'cancelled', run_attempt: 1,
+  created_at: '2026-10-22T18:23:00Z', updated_at: '2026-10-22T18:44:00Z',
+};
+const CHECKS_LOG = `2026-10-22T18:23:35.7452531Z   BRANCH: ${DISPATCH_BRANCH}
+2026-10-22T18:24:35.2144324Z [command]/usr/bin/git log -1 --format=%H
+2026-10-22T18:24:35.2173902Z ${DISPATCH_TIP}`;
+const dispatchJobs = () => jobs({ id: 120015878755, steps: [
+  { name: 'Set up job', conclusion: 'success' },
+  { name: 'Admit to the landing queue', conclusion: 'cancelled' },
+  { name: 'Checkout main', conclusion: 'skipped' },
+] }, { id: 120006368157 });
+
+function dispatchReader({ push = null, dispatch = DISPATCH, log = CHECKS_LOG, runJobs = dispatchJobs() } = {}) {
+  const calls = [];
+  const read = (endpoint) => {
+    calls.push(endpoint);
+    if (endpoint.includes('event=push')) return { workflow_runs: push ? [push] : [] };
+    if (endpoint.includes('event=workflow_dispatch')) return { workflow_runs: [dispatch] };
+    if (endpoint.includes('/jobs?')) return { jobs: runJobs };
+    if (endpoint.includes('/annotations?')) return [];
+    assert.fail(`unexpected endpoint: ${endpoint}`);
+  };
+  const readText = (endpoint) => { calls.push(endpoint); return log; };
+  return { repo: 'thomaspryor/Broadwayscore', read, readText, cache: new Map(), calls };
+}
+
+test('BRO-6012: real dispatch resolves the checked branch AND tip, then permits a parked retry', () => {
+  const options = dispatchReader();
+  const resolved = resolveLandRun(DISPATCH, options);
+  assert.equal(resolved.head_branch, DISPATCH_BRANCH);
+  assert.equal(resolved.head_sha, DISPATCH_TIP, 'main head_sha is not the verified tip');
+  assert.equal(DISPATCH.head_branch, 'main', 'do not mutate API records');
+  const decide = (tip) => decideLandRetry({ run: resolved, jobs: dispatchJobs(), branchExists: true, branchTip: tip });
+  assert.equal(decide(DISPATCH_TIP).reason, 'land-parked-behind-deep-queue');
+  assert.equal(decide('f'.repeat(40)).reason, 'superseded-tip', 'moved refs never borrow old Checks');
+  assert.equal(decideLandRetry({ run: resolved, jobs: dispatchJobs(), branchExists: false }).reason, 'branch-gone');
+  assert.equal(options.calls.filter((p) => p.endsWith('/logs')).length, 1);
+  resolveLandRun(DISPATCH, options);
+  assert.equal(options.calls.filter((p) => p.endsWith('/logs')).length, 1, 'immutable identity is cached');
+  const live = resolveLandRun({ ...DISPATCH, status: 'in_progress', conclusion: null }, options);
+  assert.equal(live.status, 'in_progress', 'cache identity only, never stale run status');
+  assert.equal(live.conclusion, null);
+});
+
+test('BRO-6012: identity requires a full checkout SHA, never a main SHA or abbreviated rebase message', () => {
+  assert.deepEqual(landIdentityFromChecks(CHECKS_LOG), { branch: DISPATCH_BRANCH, sha: DISPATCH_TIP });
+  assert.equal(landIdentityFromChecks(`BRANCH: ${DISPATCH_BRANCH}\nbranch ${DISPATCH_BRANCH} @ 1315178f32`), null);
+  assert.equal(landIdentityFromChecks(CHECKS_LOG.replace(DISPATCH_TIP, '1315178f32')), null);
+  assert.equal(landIdentityFromChecks(CHECKS_LOG.replace(DISPATCH_BRANCH, 'main')), null);
+  const options = dispatchReader({ log: '' });
+  assert.equal(resolveLandRun(DISPATCH, options), null, 'unreadable logs cannot authorize a retry');
+  const push = { ...DISPATCH, event: 'push' };
+  assert.equal(resolveLandRun(push, options), push, 'pushes use their original metadata');
+});
+
+test('BRO-6012: the sweep sees dispatched cancelled runs as candidates', () => {
+  const { decideSweep } = require('./land-queue-backoff.js');
+  const resolved = resolveLandRun(DISPATCH, dispatchReader());
+  const decision = decideSweep({ cancelledRuns: [resolved], refs: new Map([[DISPATCH_BRANCH, DISPATCH_TIP]]), now: Date.parse('2026-10-22T19:00:00Z') });
+  assert.deepEqual(decision.candidates.map((r) => r.id), [DISPATCH.id]);
+});
+
+test('BRO-6012: waiter follows the newer hand dispatch in queued, running and parked states', () => {
+  const push = { ...DISPATCH, event: 'push', id: 39804089333, head_branch: DISPATCH_BRANCH,
+    head_sha: DISPATCH_TIP, created_at: '2026-10-22T10:00:00Z' };
+  for (const status of ['queued', 'in_progress', 'completed']) {
+    const options = dispatchReader({ push, dispatch: { ...DISPATCH, status, conclusion: status === 'completed' ? 'cancelled' : null } });
+    const followed = readLatestRun(DISPATCH_BRANCH, options);
+    assert.equal(followed.id, DISPATCH.id);
+    assert.equal(followed.head_sha, DISPATCH_TIP);
+    const v = landVerdict({ refSha: DISPATCH_TIP, run: followed, nowMs: Date.parse('2026-10-22T19:00:00Z') });
+    assert.equal(v.verdict, 'waiting');
+    assert.match(v.why, new RegExp(String(DISPATCH.id)), 'output identifies the run being followed');
+    if (status === 'completed') assert.match(v.why, /parked in the landing line/);
+  }
+});
+
+test('BRO-6012: a dispatch for another branch cannot hide this push, nor can an older dispatch', () => {
+  const push = { ...DISPATCH, event: 'push', id: 39804089333, head_branch: 'land/other', created_at: '2026-10-22T10:00:00Z' };
+  assert.equal(readLatestLandRun('land/other', dispatchReader({ push })).id, push.id);
+  const newerPush = { ...push, id: 39840000000, created_at: '2026-10-22T20:00:00Z' };
+  const options = dispatchReader({ push: newerPush });
+  assert.equal(readLatestLandRun('land/other', options).id, newerPush.id);
+  assert.equal(options.calls.filter((p) => p.endsWith('/logs')).length, 0, 'older dispatches cost no log reads');
+});
+
+test('BRO-6012: incomplete Checks and log 404s are retried; permission errors surface', () => {
+  const options = dispatchReader({ runJobs: [{ id: 1, name: 'Checks', conclusion: null }] });
+  assert.equal(resolveLandRun(DISPATCH, options), null);
+  assert.equal(options.calls.filter((p) => p.endsWith('/logs')).length, 0);
+  const missing = dispatchReader();
+  missing.readText = () => { throw new Error('gh: Not Found (HTTP 404)'); };
+  assert.equal(resolveLandRun(DISPATCH, missing), null);
+  missing.readText = () => CHECKS_LOG;
+  assert.equal(resolveLandRun(DISPATCH, missing).head_sha, DISPATCH_TIP);
+  const denied = dispatchReader();
+  denied.readText = () => { throw new Error('gh: Forbidden (HTTP 403)'); };
+  assert.throws(() => resolveLandRun(DISPATCH, denied), /HTTP 403/);
+});
+
+test('BRO-6012: targeted retry and sweep CLI both reach rerun for the dispatched parked run', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'bro-6012-retry-'));
+  try {
+    const prefix = 'repos/thomaspryor/Broadwayscore';
+    const dispatch = { ...DISPATCH, created_at: new Date().toISOString() };
+    const responses = {
+      [`${prefix}/actions/runs/${DISPATCH.id}`]: dispatch,
+      [`${prefix}/actions/runs/${DISPATCH.id}/jobs?filter=latest&per_page=100`]: { jobs: dispatchJobs() },
+      [`${prefix}/actions/runs/${DISPATCH.id}/jobs?filter=latest&per_page=50`]: { jobs: dispatchJobs() },
+      [`${prefix}/actions/jobs/120006368157/logs`]: CHECKS_LOG,
+      [`${prefix}/git/ref/heads/${DISPATCH_BRANCH}`]: { object: { sha: DISPATCH_TIP } },
+      [`${prefix}/git/matching-refs/heads/land`]: [{ ref: `refs/heads/${DISPATCH_BRANCH}`, object: { sha: DISPATCH_TIP } }],
+    };
+    // The shims serve API fixtures only. All retry and selection decisions run
+    // in the real CLI and libraries; dry-run prevents remote writes.
+    writeFileSync(join(dir, 'gh'), `#!${process.execPath}
+const responses = JSON.parse(process.env.BRO_6012_RESPONSES);
+const endpoint = process.argv.at(-1);
+let response = responses[endpoint];
+if (endpoint.includes('/workflows/land.yml/runs?')) {
+  response = { workflow_runs: /status=cancelled|event=workflow_dispatch/.test(endpoint) ? [responses['${prefix}/actions/runs/${DISPATCH.id}']] : [] };
+}
+if (response === undefined) throw new Error('Unexpected API request: ' + endpoint);
+process.stdout.write(typeof response === 'string' ? response : JSON.stringify(response));
+`, { mode: 0o755 });
+    writeFileSync(join(dir, 'git'), '#!/bin/sh\nexit 0\n', { mode: 0o755 });
+    for (const mode of [`--run=${DISPATCH.id}`, '--sweep']) {
+      const output = execFileSync(process.execPath, [new URL('../land-retry-cancelled.js', import.meta.url).pathname, mode, '--dry-run'], {
+        encoding: 'utf8', env: { ...process.env, PATH: `${dir}:${process.env.PATH}`, GITHUB_REPOSITORY: 'thomaspryor/Broadwayscore', BRO_6012_RESPONSES: JSON.stringify(responses) },
+      });
+      assert.match(output, new RegExp(`dry-run: would re-run ${DISPATCH.id}`), mode);
+      assert.doesNotMatch(output, /not-a-land-branch|superseded-tip/);
+    }
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('BRO-6012: dispatch discovery pages past unrelated runs and caches logs across a rerun', () => {
+  const options = dispatchReader();
+  const read = options.read;
+  options.read = (endpoint) => {
+    if (endpoint.includes('event=workflow_dispatch') && endpoint.endsWith('page=1')) {
+      return { workflow_runs: Array.from({ length: 100 }, (_, i) => ({ ...DISPATCH, id: DISPATCH.id + 1 + i })) };
+    }
+    return read(endpoint);
+  };
+  // All newer dispatches are for another branch, the match is on page 2.
+  options.read = ((delegate) => (endpoint) => {
+    if (endpoint.includes('/actions/runs/') && !endpoint.includes(`/${DISPATCH.id}/`)) return { jobs: [{ name: 'Checks', conclusion: null }] };
+    return delegate(endpoint);
+  })(options.read);
+  assert.equal(readLatestLandRun(DISPATCH_BRANCH, options).id, DISPATCH.id);
+  resolveLandRun({ ...DISPATCH, run_attempt: 2 }, options);
+  assert.equal(options.calls.filter((p) => p.endsWith('/logs')).length, 1, 'Checks kept across a Land-only rerun need one log fetch');
 });

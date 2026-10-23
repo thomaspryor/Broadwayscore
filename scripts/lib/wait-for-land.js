@@ -10,9 +10,9 @@
  * disappears when land.yml lands it, but it STAYS when the run is refused (red
  * Checks, rebase gate), so a ref-only loop noticed a refusal only at its ~60
  * min cap. That cost ~1h twice (BRO-4236 on 2026-09-28, BRO-4619 on
- * 2026-10-05). This checks the ref AND the latest push-triggered land.yml run
- * for it on every poll, one REST call per ~60-90s. A completed cancelled
- * attempt also reads its jobs and Land check annotations once, to distinguish
+ * 2026-10-05). This checks the ref AND the latest land.yml run for it on every
+ * poll, including hand dispatches resolved from Checks logs. A completed
+ * cancelled attempt also reads its jobs and Land check annotations once, to distinguish
  * an execution deadline from a queue cancellation (BRO-5131).
  *
  * --prod: main deploys on a 5-min cron behind a content gate, so prod lags a
@@ -42,9 +42,8 @@
  * A queue cancellation (Land cancelled before it did any work) is not a refusal:
  * land-retry-cancelled.yml re-runs it after the next Land completes, so this
  * keeps waiting. Since BRO-5112 queued landings wait in the landing mutex
- * instead of being evicted, so this is rare. A run dispatched by hand (`land.yml` with branch=land/<name>)
- * is listed under head_branch=main and is invisible here; for those the ref
- * check still reports the landing, and a refusal surfaces only at the timeout.
+ * instead of being evicted, so this is rare. Hand dispatches list under main;
+ * once Checks completes, its log identifies the land branch and checked tip.
  */
 
 'use strict';
@@ -52,6 +51,7 @@
 const { execFileSync, spawnSync } = require('child_process');
 const path = require('path');
 const { runGhWithFallback, decideLandRetry } = require('./land-retry-on-cancel');
+const { readLatestLandRun } = require('./land-run-identity');
 const { SITE_PATHS } = require('./should-deploy-gate');
 const { repoDepthArgs } = require('./shallow-fetch-args');
 
@@ -69,8 +69,8 @@ const PROD_MAX_ERRORS = 3;
 /**
  * Decide what one poll means. refSha is the ref's current tip (null when the
  * ref is gone); lastSha the tip an earlier poll saw (null if none did); run
- * the latest push-triggered land.yml run for the ref, or null; nowMs the
- * clock. A run whose head_sha is not the current tip belongs to an older push
+ * the latest push or resolved hand-dispatched land.yml run for the ref, or
+ * null; nowMs the clock. A run whose head_sha is not the current tip belongs to an older push
  * (the new push's run has not registered yet), so it says nothing about it.
  * "Gone" only counts as landed when nothing contradicts it: a ref deleted
  * after a red run was not landed, and a ref missing from the first poll needs
@@ -90,7 +90,7 @@ function landVerdict({ refSha, lastSha = null, run, nowMs }) {
     if (run && run.conclusion === 'success' && ageMs < RECENT_LANDING_MS) return { verdict: 'landed', before: true };
     return { verdict: 'unknown', why: 'not on origin and no recent green land run for it (typo, or the push never reached origin?)' };
   }
-  if (!run) return { verdict: 'waiting', why: 'no push-triggered land run for this ref yet (a [skip ci] tip or a hand-dispatched run never shows here)' };
+  if (!run) return { verdict: 'waiting', why: 'no land run identified for this ref yet (hand dispatches become identifiable when Checks logs are available)' };
   if (run.head_sha !== refSha) {
     return { verdict: 'waiting', why: `latest run ${run.id} is for an older tip; the run for ${refSha.slice(0, 9)} has not registered yet` };
   }
@@ -166,8 +166,12 @@ const readGhJson = (endpoint) => JSON.parse(runGhWithFallback(
   [endpoint], { exec: execFileSync, fallbackToken: process.env.GH_FALLBACK_TOKEN },
 ));
 
-function readLatestRun(ref, { read = readGhJson, cache = cancellationCache } = {}) {
-  const r = read(`repos/${repo}/actions/workflows/land.yml/runs?branch=${encodeURIComponent(ref)}&event=push&per_page=1`).workflow_runs?.[0];
+const readGhText = (endpoint) => runGhWithFallback(
+  [endpoint], { exec: execFileSync, fallbackToken: process.env.GH_FALLBACK_TOKEN },
+);
+
+function readLatestRun(ref, { read = readGhJson, readText = readGhText, cache = cancellationCache } = {}) {
+  const r = readLatestLandRun(ref, { repo, read, readText, cache });
   if (!r) return null;
   let cancellation;
   if (r.status === 'completed' && r.conclusion === 'cancelled') {
