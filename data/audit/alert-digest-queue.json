@@ -714,5 +714,43 @@
       }
     ],
     "queuedAt": "2026-10-23T15:56:22.497Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:GitLab Code Mirror",
+    "title": "Cron's latest run failed (not yet stale): GitLab Code Mirror",
+    "description": "GitLab Code Mirror: Latest run failed (last success 13h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39984962394",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39984962394)"
+      }
+    ],
+    "queuedAt": "2026-10-23T16:15:01.205Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Update Lottery/Rush",
+    "title": "Cron's latest run failed (not yet stale): Update Lottery/Rush",
+    "description": "Update Lottery/Rush: Latest run failed (last success 95h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39984962394",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39984962394)"
+      }
+    ],
+    "queuedAt": "2026-10-23T16:15:01.222Z"
   }
 ]

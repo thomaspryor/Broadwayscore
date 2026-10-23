@@ -13471,12 +13471,13 @@
       "title": "Cron stale 3+ consecutive days: Weekly A/B Monitors",
       "firstSeen": "2026-10-08T18:17:10.037Z",
       "incidentOpenedAt": "2026-10-22T16:27:21.412Z",
-      "lastSeen": "2026-10-22T16:27:21.412Z",
+      "lastSeen": "2026-10-23T16:15:01.350Z",
       "lastNotifiedAt": "2026-10-22T16:27:21.412Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-5998"
+      "linearIdentifier": "BRO-5998",
+      "silentRefires": 1
     },
     "we-aggregator-go-live:jfod-west-end-2025": {
       "status": "resolved",
@@ -24061,10 +24062,10 @@
       "title": "Cron's latest run failed (not yet stale): Update Lottery/Rush",
       "firstSeen": "2026-10-22T16:27:21.287Z",
       "incidentOpenedAt": "2026-10-22T16:27:21.287Z",
-      "lastSeen": "2026-10-22T16:27:21.287Z",
-      "lastNotifiedAt": "2026-10-22T16:27:21.287Z",
-      "lastSurfacedAt": "2026-10-22T16:27:21.287Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-10-23T16:15:01.222Z",
+      "lastNotifiedAt": "2026-10-23T16:15:01.222Z",
+      "lastSurfacedAt": "2026-10-23T16:15:01.222Z",
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -25187,6 +25188,19 @@
       "lastSeen": "2026-10-23T15:56:22.496Z",
       "lastNotifiedAt": "2026-10-23T15:56:22.496Z",
       "lastSurfacedAt": "2026-10-23T15:56:22.496Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health-failed:GitLab Code Mirror": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Cron's latest run failed (not yet stale): GitLab Code Mirror",
+      "firstSeen": "2026-10-23T16:15:01.204Z",
+      "incidentOpenedAt": "2026-10-23T16:15:01.204Z",
+      "lastSeen": "2026-10-23T16:15:01.204Z",
+      "lastNotifiedAt": "2026-10-23T16:15:01.204Z",
+      "lastSurfacedAt": "2026-10-23T16:15:01.204Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
