@@ -81,8 +81,52 @@ function main() {
     t += v.total; u += v.url; o += v.outlet;
   }
   console.log(`TOTAL            ${String(t).padStart(5)} ${String(u).padStart(6)} ${String(o).padStart(12)} ${String(t - u - o).padStart(7)}   present(url+outlet)=${u + o}/${t}, url-only=${u}/${t}`);
+  if (argv.includes('--diagnose')) {
+    const dir = ['data/review-texts', '/home/user/broadway-review-texts/data/review-texts'].map((p) => path.join(ROOT, p)).find((p) => fs.existsSync(p));
+    if (!dir) { console.log('DIAGNOSE: data/review-texts not available (run via cloud-run-script.js --review-texts)'); return; }
+    const tally = {};
+    for (const r of rows.filter((x) => !x.present)) {
+      const g = diagnose(r, loadShowFiles(dir, r.id));
+      const k = g.stuck.split(':')[0];
+      tally[k] = (tally[k] || 0) + 1;
+      console.log(`STUCK ${r.cohort} ${r.id} ${r.outlet} :: ${g.stuck} file=${g.file} by=${g.matchedBy || '-'} textLen=${g.textLen ?? '-'} scores=${JSON.stringify(g.scores || {})}`);
+    }
+    console.log('TALLY', JSON.stringify(tally));
+    return;
+  }
   if (argv.includes('--rows')) for (const r of rows.filter((x) => !x.present)) console.log(`ABSENT ${r.cohort} ${r.id} ${r.outlet} ${r.url} texts=${r.inTextsDir}`);
 }
 
-module.exports = { measure, summarize, normUrl, sameOutlet };
+const PROSE = /text|excerpt|quote|summary|body|content$|snippet|html/i;
+/**
+ * Pure: where is an absent miss stuck? `files` = [{file, data}] from the show's review-texts dir.
+ * Never returns prose: only the file name, truthy flags, scores and text length.
+ */
+function diagnose(miss, files) {
+  const mu = normUrl(miss.url);
+  const hit = files.find((f) => normUrl(f.data.url) === mu)
+    || files.find((f) => sameOutlet(f.data.outlet || f.data.outletId, miss.outlet));
+  if (!hit) return { stuck: 'no-file', file: null };
+  const d = hit.data;
+  const flags = Object.keys(d).filter((k) => d[k] === true && !PROSE.test(k));
+  const text = String(d.fullText || d.text || '');
+  const scoreKeys = ['assignedScore', 'llmScore', 'originalScore', 'scoreSource', 'contentTier', 'aggregatorStars'];
+  const scores = Object.fromEntries(scoreKeys.filter((k) => d[k] != null).map((k) => [k, d[k]]));
+  let stuck = 'unknown';
+  if (flags.length) stuck = `flagged:${flags.join(',')}`;
+  else if (text.length < 200) stuck = 'no-text';
+  else if (d.assignedScore == null && d.llmScore == null && d.originalScore == null) stuck = 'unscored';
+  else stuck = 'scored-not-rebuilt';
+  return { stuck, file: hit.file, matchedBy: normUrl(d.url) === mu ? 'url' : 'outlet', flags, textLen: text.length, scores };
+}
+
+function loadShowFiles(dir, id) {
+  const base = path.join(dir, id);
+  if (!fs.existsSync(base)) return [];
+  return fs.readdirSync(base).filter((f) => f.endsWith('.json')).map((f) => {
+    try { return { file: f, data: JSON.parse(fs.readFileSync(path.join(base, f), 'utf8')) }; } catch (_) { return null; }
+  }).filter(Boolean);
+}
+
+module.exports = { diagnose,  measure, summarize, normUrl, sameOutlet };
 if (require.main === module) main();
