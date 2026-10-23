@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T23:01:01.199Z",
+  "generatedAt": "2026-10-23T23:15:17.147Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -795,10 +795,6 @@
           "isDualMarket": false
         },
         {
-          "name": "Theater Life",
-          "isDualMarket": false
-        },
-        {
           "name": "The Globe and Mail",
           "isDualMarket": false
         },
@@ -972,24 +968,22 @@
       "status": "open",
       "slug": "the-pianist-off-west-end",
       "thumbnail": "/images/shows/the-pianist-off-west-end-2026/thumbnail.webp",
-      "siteScore": 69.54,
-      "liveScore": 70,
-      "scoreDrift": 0.45999999999999375,
+      "siteScore": 70.93,
+      "liveScore": 71,
+      "scoreDrift": 0.06999999999999318,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 13,
-      "t1": 2,
+      "total": 14,
+      "t1": 3,
       "t2": 3,
       "t3": 8,
-      "positive": 8,
+      "positive": 9,
       "mixed": 5,
       "negative": 0,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "T1:2/3"
-        ],
+        "ready": true,
+        "reasons": [],
         "highConfidence": 11,
         "thresholds": {
           "minReviews": 8,
@@ -1000,7 +994,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -1017,10 +1011,6 @@
         },
         {
           "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
           "isDualMarket": true
         },
         {
@@ -1231,6 +1221,18 @@
           "t2": 3,
           "t3": 8,
           "p": 8,
+          "m": 5,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-23T23:15:17.147Z",
+          "rc": 14,
+          "s": 70.93,
+          "t1": 3,
+          "t2": 3,
+          "t3": 8,
+          "p": 9,
           "m": 5,
           "n": 0,
           "bc": "waiting"
