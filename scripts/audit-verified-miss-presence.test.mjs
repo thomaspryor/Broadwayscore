@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { measure, summarize, normUrl } = require('./audit-verified-miss-presence.js');
+const { measure, summarize, normUrl, diagnose } = require('./audit-verified-miss-presence.js');
 
 const miss = (o) => ({ cohort: 'we-2018-2019', id: 'show-a', outlet: 'The Guardian', url: 'https://www.theguardian.com/stage/2019/a', tier: 1, ...o });
 
@@ -35,3 +35,19 @@ test('New York Times is not The Times; Time Out New York is not Time Out London'
   assert.equal(measure([miss({ outlet: 'Time Out New York', url: 'https://timeout.com/newyork/y' })], rv2)[0].present, false);
 });
 test('normUrl is null for empty', () => { assert.equal(normUrl(''), null); });
+
+const long = 'x'.repeat(300);
+test('diagnose: no file, flagged, no text, unscored, scored-not-rebuilt', () => {
+  const m = miss({});
+  assert.equal(diagnose(m, []).stuck, 'no-file');
+  const f = (d) => [{ file: 'a.json', data: { url: m.url, outlet: 'The Guardian', ...d } }];
+  assert.equal(diagnose(m, f({ isRoundupArticle: true, fullText: long })).stuck, 'flagged:isRoundupArticle');
+  assert.equal(diagnose(m, f({ fullText: 'short' })).stuck, 'no-text');
+  assert.equal(diagnose(m, f({ fullText: long })).stuck, 'unscored');
+  assert.equal(diagnose(m, f({ fullText: long, assignedScore: 80 })).stuck, 'scored-not-rebuilt');
+});
+test('diagnose never returns prose', () => {
+  const m = miss({});
+  const g = diagnose(m, [{ file: 'a.json', data: { url: m.url, fullText: long, excerpt: 'SECRET PROSE', assignedScore: 80 } }]);
+  assert.doesNotMatch(JSON.stringify(g), /SECRET PROSE|xxxx/);
+});
