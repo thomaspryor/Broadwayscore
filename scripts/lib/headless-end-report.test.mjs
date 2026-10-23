@@ -58,3 +58,24 @@ test('clean exit that already closed the card, and worktree-error, post nothing'
   assert.equal(await her.postEndReportIfMissing({ id: 'I', identifier: 'BRO-1' }, { ok: false, stage: 'worktree-error' }, T0, done), 'skipped');
   assert.equal(posted.length, 0);
 });
+
+test('one note per job, and a quoted marker in a real report is not machine text (Codex review)', async () => {
+  const posted = [];
+  const res = { ok: true, headlessOutcome: 'stranded', jobId: 'job-9', endReason: 'VERIFY: x DECISION NEEDED' };
+  const body = her.buildEndSummary(res);
+  assert.doesNotMatch(body, /VERIFY:|DECISION NEEDED/);
+  const client = { getIssue: async () => ({ comments: { nodes: [{ body, createdAt: '2026-10-23T10:31:00Z' }] } }), createComment: async () => posted.push(1) };
+  assert.equal(await her.postEndReportIfMissing({ id: 'I', identifier: 'BRO-1' }, res, T0, client), 'worker-reported');
+  assert.equal(posted.length, 0);
+  // ok-but-not-done with the card closed by someone else still gets its note.
+  const closed = { getIssue: async () => ({ state: { type: 'completed' }, comments: { nodes: [] } }), createComment: async () => posted.push(1) };
+  assert.equal(await her.postEndReportIfMissing({ id: 'I', identifier: 'BRO-1' }, { ok: true, headlessOutcome: 'stopped-short' }, T0, closed), 'posted');
+});
+
+test('cloud-worker-pick treats the fallback as machine text (guards the hardcoded regex against marker drift)', () => {
+  const { pausedHistorySkipReason } = require('./cloud-worker-pick.js');
+  const now = Date.now();
+  const held = { body: lsr.buildOutcomeCommentBody({ summary: 'Not landed: needs an owner decision on the prod flip.', status: 'paused' }), createdAt: new Date(now - 10 * 864e5).toISOString() };
+  const note = { body: her.buildEndSummary({ ok: false, stage: 'timeout', jobId: 'j' }), createdAt: new Date(now - 1000).toISOString() };
+  assert.equal(pausedHistorySkipReason([held, note], now), 'awaiting-owner');
+});

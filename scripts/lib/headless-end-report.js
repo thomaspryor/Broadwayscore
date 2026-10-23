@@ -45,8 +45,9 @@ function classifyEnd(res) {
 function buildEndSummary(res) {
   const cls = classifyEnd(res);
   const bits = [`${MARKER} (${cls}).`];
-  if (res && res.endReason) bits.push(`Reason: ${String(res.endReason).replace(/\s+/g, ' ').slice(0, 300)}`);
-  if (res && res.jobId) bits.push(`Job: ${res.jobId}`);
+  // Free text from the worker or CLI: defuse the tokens other gates scan every comment for (verify-gate.js).
+  if (res && res.endReason) bits.push(`Reason: ${String(res.endReason).replace(/\s+/g, ' ').replace(/VERIFY:/gi, 'verify -').replace(/DECISION NEEDED/gi, 'decision-needed').slice(0, 300)}`);
+  if (res && res.jobId) bits.push(`Job: ${res.jobId}`); // keep on its own line: the dedupe check matches it
   if (res && res.logFile) bits.push(`Log: ${res.logFile}`);
   if (res && res.sessionId) bits.push(`Session: ${res.sessionId}`);
   if (res && res.keptWorktree && res.cwd) bits.push(`Worktree kept for resume: ${res.cwd}`);
@@ -60,13 +61,17 @@ function buildEndSummary(res) {
  */
 async function postEndReportIfMissing(issue, res, sinceMs, linearClient) {
   // Nothing ran: the job never got a session to report on.
-  if (res && res.stage === 'worktree-error') return 'skipped';
+  if (res && (res.stage === 'worktree-error' || res.stage === 'runner-disabled')) return 'skipped';
   try {
     const fresh = (await linearClient.getIssue(issue.identifier)) || issue;
     if (hasReportSince(fresh, sinceMs)) return 'worker-reported';
     // The worker closed the card itself: a clean exit, nothing to flag.
     const stateType = fresh.state && fresh.state.type;
-    if (res && res.ok && (stateType === 'completed' || stateType === 'canceled')) return 'worker-reported';
+    const closed = stateType === 'completed' || stateType === 'canceled';
+    // A done exit, or a kill/failure, on a card someone already closed: nothing to flag. (A short-stopped exit still is.)
+    if (closed && (res && res.ok ? res.headlessOutcome === 'done' : true)) return 'worker-reported';
+    // One note per job: a replay (or a second caller) must not stack duplicates.
+    if (res && res.jobId && commentNodes(fresh).some((c) => c && String(c.body || '').startsWith(MARKER) && String(c.body).includes(`Job: ${res.jobId}\n`) )) return 'worker-reported';
     await linearClient.createComment(issue.id, buildEndSummary(res));
     return 'posted';
   } catch (e) {

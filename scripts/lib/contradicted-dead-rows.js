@@ -54,7 +54,7 @@ const DISPATCH_COMMENT_RE = /^Dispatched\b/;
 
 function isAutomationReport(body) {
   const b = String(body || '');
-  return b.includes(ZOMBIE_RESET_MARKER) || b.includes(WATCHDOG_SAFETY_NET_PREFIX) || b.includes(HEADLESS_END_MARKER);
+  return b.includes(ZOMBIE_RESET_MARKER) || b.includes(WATCHDOG_SAFETY_NET_PREFIX) || b.trim().startsWith(HEADLESS_END_MARKER);
 }
 
 function sortedComments(comments) {

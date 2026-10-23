@@ -1187,6 +1187,33 @@ for (const [label, withReport, expectDispatch] of [
   }
 });
 
+// -- BRO-6092: a headless job that ends without a worker report gets the fallback note -------------
+for (const [label, runRes] of [
+  ['failed (killed at the time limit)', "{ ok: false, stage: 'timeout', jobId: 'job6092', logFile: null, errorDetail: 'killed' }"],
+  ['stopped short', "{ ok: true, jobId: 'job6092', logFile: null, headlessOutcome: 'stopped-short', endReason: 'no status line' }"],
+]) test(`BRO-6092: ${label} headless job posts the end-of-job note on the card`, () => {
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    const issue = {
+      id: 'issue-uuid-6092', identifier: 'BRO-9692', title: 'End report wiring fixture',
+      description: '## Acceptance criteria\\n\`node --test tests/unit/some-fixture.test.mjs\`',
+      url: 'https://linear.app/broadway-scorecard/issue/BRO-9692/x', priority: 2,
+      state: { id: 'todo-1', name: 'Todo', type: 'unstarted' }, labels: { nodes: [] }, comments: { nodes: [] },
+    };
+    main(['--id', issue.identifier, '--headless'], {
+      getIssue: async () => issue, readLedgerEntries: () => [], appendLedgerEntry: () => {},
+      runJobFn: async () => (${runRes}),
+      cmuxAvailable: () => true, listWorkspaces: () => [], isDoneTitle: () => false,
+      claudeAliveIn: () => false, terminalSurfaceAliveIn: () => false,
+      listOpenIssuesWithDescriptions: async () => [], loadNotionMirrorTasks: () => [],
+      acquireDispatchClaim: () => true, releaseDispatchClaim: () => {}, listWorkBranchStatuses: () => [],
+      linear: { createComment: async (id, body) => { console.error('COMMENT>>' + body.split('\\n')[0]); }, getTeam: async () => ({ states: [] }), getIssue: async () => issue, updateIssue: async () => {}, TEAM_KEY: 'BRO' },
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.match(res.stderr, /COMMENT>>Headless worker ended without its own session report/, `stderr:\n${res.stderr}`);
+});
+
 // -- --allow-automation-parked wiring, BRO-3060 ------------------------------
 //
 // scripts/linear-drain-parked.js/digest-autofix.js/autofix-canary.js each
