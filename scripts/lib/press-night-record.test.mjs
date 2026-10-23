@@ -373,3 +373,34 @@ test('firstOutletPublish compares instants, not strings, across offsets', () => 
   lib.applySample(rec, { at: at(30), reviews: [rv('NYT', 'A', { date: '2026-10-22T22:05:00-04:00' }), rv('Variety', 'B', { date: '2026-10-23T02:03:00Z' })] });
   assert.equal(rec.firstOutletPublishAt.at, '2026-10-23T02:03:00Z');
 });
+
+test('first-live: a lane discovery well before the assumed embargo never PASSes (the embargo is wrong)', () => {
+  const rec = fresh();
+  lib.applySample(rec, { at: at(-5), reviews: [] });
+  lib.applySample(rec, { at: at(10), reviews: [rv('NYT', 'A')] });
+  const fl = () => lib.evaluateCheck(rec).gates.find((x) => x.name === 'first-live');
+  assert.equal(fl().status, 'pass'); // 10 min after the embargo
+  rec.laneShadow = { liveFirstSeen: [], firstDiscoveredAt: at(-90) };
+  assert.equal(fl().status, 'unknown');
+  assert.match(fl().detail, /before the assumed embargo/);
+  rec.laneShadow = { liveFirstSeen: [], firstDiscoveredAt: at(-20) }; // clock skew within 30 min: still judged
+  assert.equal(fl().status, 'pass');
+});
+
+test('first-live: with an exact publish, an early lane discovery still blocks PASS but keeps a sound FAIL', () => {
+  const quick = fresh();
+  lib.applySample(quick, { at: at(-5), reviews: [] });
+  lib.applySample(quick, { at: at(15), reviews: [rv('NYT', 'A', { date: at(5) })] });
+  quick.firstOutletPublishAt = lib.firstOutletPublish(quick);
+  const fl = (r) => lib.evaluateCheck(r).gates.find((x) => x.name === 'first-live').status;
+  assert.equal(fl(quick), 'pass');
+  quick.laneShadow = { liveFirstSeen: [], firstDiscoveredAt: at(-90) };
+  assert.equal(fl(quick), 'unknown');
+  const slow = fresh();
+  lib.applySample(slow, { at: at(-5), reviews: [] });
+  lib.applySample(slow, { at: at(82), reviews: [] });
+  lib.applySample(slow, { at: at(87), reviews: [rv('NYT', 'A', { date: at(5) })] });
+  slow.firstOutletPublishAt = lib.firstOutletPublish(slow);
+  slow.laneShadow = { liveFirstSeen: [], firstDiscoveredAt: at(-90) };
+  assert.equal(fl(slow), 'fail'); // the first publish was no later than the exact +5, so at least 77 min
+});

@@ -476,6 +476,9 @@ function evaluateCheck(rec, opts = {}) {
     // An exact time is one outlet's publish, not necessarily the first: the first publish is at most
     // min(exact, first discovery) and, reviews being held, at least min(embargo, exact).
     const discHigh = discMs != null && discMs >= embMs - 30 * MIN ? Math.max(discMs, embMs) : null;
+    // A discovery well before the assumed embargo (a market default) means the first publish may be earlier than
+    // pubLow, so delayHigh bounds nothing and cannot PASS. A FAIL from delayLow still holds.
+    const embargoDoubt = discMs != null && discHigh == null;
     const pubLow = exactPub != null ? Math.min(exactPub, embMs) : embMs;
     const highs = [exactPub, discHigh].filter((x) => x != null);
     const pubHigh = highs.length ? Math.min(...highs) : null;
@@ -487,13 +490,13 @@ function evaluateCheck(rec, opts = {}) {
     const detail = `first review of the night (${who}) live ${range} min after ${pubWhat}${pubWhat === 'the embargo' ? '' : `; ${afterEmbargo} min after embargo`} (bar ${g.firstLiveWithinMin})`;
     let status;
     // A baseline first-live time is only an upper bound on when it went live: it can clear the bar, never fail it.
-    if (delayHigh <= g.firstLiveWithinMin) status = 'pass';
+    if (!embargoDoubt && delayHigh <= g.firstLiveWithinMin) status = 'pass';
     else if (fl.baseline) status = 'unknown';
     else if (delayLow != null && delayLow > g.firstLiveWithinMin) status = 'fail';
     else status = 'unknown';
-    const why = status === 'unknown'
-      ? (fl.baseline ? ' (already live at the first sample, so only a bound)' : `; publish time is ${pub.precision || 'unknown'} and no lane discovery bounds it, so the publish-to-live delay cannot be measured`)
-      : '';
+    let why = '';
+    if (status === 'unknown' && embargoDoubt) why = `; the lane found a review at ${rec.laneShadow.firstDiscoveredAt}, more than 30 min before the assumed embargo, so either the embargo (a market default) is wrong or that was an earlier review, and the delay cannot be measured`;
+    else if (status === 'unknown') why = (fl.baseline ? ' (already live at the first sample, so only a bound)' : `; publish time is ${pub.precision || 'unknown'} and no lane discovery bounds it, so the publish-to-live delay cannot be measured`);
     gates.push(gate('first-live', status, detail + why));
   }
 
