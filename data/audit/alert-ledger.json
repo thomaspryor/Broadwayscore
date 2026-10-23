@@ -238,7 +238,7 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -251,7 +251,8 @@
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
-      "sweptTracker": "BRO-6024"
+      "sweptTracker": "BRO-6024",
+      "resolvedAt": "2026-10-23T15:18:07.164Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -25014,7 +25015,7 @@
       "resolvedAt": "2026-10-23T14:29:57.574Z"
     },
     "test-yml:red:Unit Tests:33048faf": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"US/Canadian feeder houses added in BRO-4923 resolve to a city and never match a non-regional show venue\"",
       "firstSeen": "2026-10-23T14:04:48.537Z",
@@ -25034,7 +25035,9 @@
       "silentRefires": 1,
       "absentRunIds": [
         "39970132974"
-      ]
+      ],
+      "resolvedAt": "2026-10-23T15:18:06.950Z",
+      "resolveReason": "job-green"
     },
     "opening-night-remediation-exhausted-t1-missing:derren-brown-only-human-west-end-2026": {
       "status": "open",
@@ -25107,7 +25110,7 @@
       "silentRefires": 1
     },
     "test-yml:red:Unit Tests:97b5a0fd": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every shows.json id suffix matches its category\"",
       "firstSeen": "2026-10-23T14:51:52.424Z",
@@ -25117,7 +25120,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6071"
+      "linearIdentifier": "BRO-6071",
+      "resolvedAt": "2026-10-23T15:18:06.968Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-6070-same-night-gate": {
       "status": "open",
