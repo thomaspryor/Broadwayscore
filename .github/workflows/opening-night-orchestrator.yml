@@ -92,6 +92,12 @@ jobs:
   orchestrate:
     runs-on: ubuntu-latest
     timeout-minutes: 360  # GitHub max — allows ~6 hours of polling
+    env:
+      # Polling-loop wall-clock budget in minutes: the loop's DEADLINE and the
+      # Redundancy guard's coverage cut-off both read it (BRO-6037).
+      LOOP_BUDGET_MIN: 240
+      # Run start -> loop start (checkout, npm ci, budget pre-flight), minutes.
+      PRESTEP_MARGIN_MIN: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -224,6 +230,20 @@ jobs:
                 else OTHER_MARKET=all; fi ;;
             esac
             if [ "$OTHER_MARKET" = "$MY_MARKET" ] || [ "$OTHER_MARKET" = "all" ]; then
+              # BRO-6037: a run past its loop budget starts no new iterations; it is
+              # only finishing its last poll (up to ~90 min). Counting it as coverage
+              # left 01:15-02:20Z of 2026-10-23 unpolled across the Broadway embargo
+              # (run 39842818481, started 19:45Z). Unparseable date: not counted (fail open).
+              # Trade-off: for up to ~90 min the old run's last in-flight poller can
+              # overlap this run's pollers; concurrent review-texts pushes are
+              # push-with-retry.sh's job (see opening-night-poller.yml concurrency).
+              : "${LOOP_BUDGET_MIN:?job env LOOP_BUDGET_MIN missing}" "${PRESTEP_MARGIN_MIN:?job env PRESTEP_MARGIN_MIN missing}"
+              START_S=$(date -u -d "$START" +%s 2>/dev/null) || { echo "Skipping run $ID — unparseable startedAt '$START'"; continue; }
+              AGE_MIN=$(( ($(date -u +%s) - START_S) / 60 ))
+              if [ "$AGE_MIN" -ge $(( LOOP_BUDGET_MIN + PRESTEP_MARGIN_MIN )) ]; then
+                echo "Earlier orchestrator run $ID (started $START, ${AGE_MIN}m ago) is past its ${LOOP_BUDGET_MIN}m loop budget — not counted as coverage."
+                continue
+              fi
               echo "Earlier orchestrator run $ID (started $START, market=$OTHER_MARKET) already covers market=$MY_MARKET."
               REDUNDANT=true
               break
@@ -608,14 +628,15 @@ jobs:
           #      report and the checklist + SLA dispatch tail steps never fired.
           # Exiting cleanly under the cap restores both.
           # 240min, not 300: the deadline is only checked at the TOP of each
-          # iteration, and one iteration can then run ~80min (poller's own 60min
-          # job timeout + POLL_INTERVAL sleep [15min default for scheduled runs
-          # since BRO-66, was 10] + dispatch/verify overhead). So the true worst
-          # case is DEADLINE + ~80min, and 240+80=320 stays under the 360 cap
+          # iteration, and one iteration can then run ~90min (wait-for-run up to
+          # 75min + POLL_INTERVAL sleep [15min default for scheduled runs since
+          # BRO-66, was 10] + dispatch/verify overhead; 23:46->01:15Z measured on
+          # run 39842818481). So the true worst case is DEADLINE + ~90min, and
+          # 240+90=330 stays under the 360 cap
           # with a real reserve for the always() tail steps. It also has to
           # absorb the steps that run BEFORE this one (checkout, npm ci, budget
           # pre-flight), which are not covered by this clock.
-          DEADLINE=$(( $(date +%s) + 240*60 ))
+          DEADLINE=$(( $(date +%s) + LOOP_BUDGET_MIN*60 ))
           COMPLETED_ITERATIONS=0
           DEADLINE_EXIT=false
 
