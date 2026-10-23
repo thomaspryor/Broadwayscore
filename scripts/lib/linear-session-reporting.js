@@ -375,6 +375,7 @@ module.exports = {
   WORKER_MODELS,
   isSessionSpecificRef,
   latestHolderComment,
+  HOLDER_COMMENT_RE,
   CLAIM_STATE_NAME,
   STATUS_TO_STATE_NAME,
   ISSUE_ID_MARKER_PREFIX,

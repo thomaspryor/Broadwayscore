@@ -29,7 +29,7 @@ if (maxArg && !(Number.isInteger(Number(maxArg)) && Number(maxArg) > 0)) { conso
 const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
 
 const ISSUE_QUERY = `query($id: String!) {
-  issue(id: $id) { id identifier title description updatedAt state { name type }
+  issue(id: $id) { id identifier title description updatedAt state { name type } labels { nodes { name } }
     comments(first: 250) { nodes { body createdAt } } }
 }`;
 
