@@ -1,22 +1,46 @@
 {
-  "processed": [],
+  "processed": [
+    "anatomy-of-a-suicide-west-end-2017/guardian--michael-billington.json",
+    "anatomy-of-a-suicide-west-end-2017/independent--paul-taylor.json",
+    "anatomy-of-a-suicide-west-end-2017/standard--fiona-mountford.json",
+    "anatomy-of-a-suicide-west-end-2017/thestage--natasha-tripney.json",
+    "annie-west-end-2017/express-uk--clair-woodward.json",
+    "annie-west-end-2017/hampstead-highgate-express--caroline-david.json",
+    "annie-west-end-2017/times-uk--dominic-maxwell.json",
+    "travesties-west-end-2017/guardian--unknown.json",
+    "travesties-west-end-2017/maturetimes--unknown.json"
+  ],
   "failed": [
-    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
-    "the-imaginary-invalid-2026/talkinbroadway--unknown.json"
+    "anatomy-of-a-suicide-west-end-2017/britishtheatrecom--mark-ludmon.json",
+    "annie-west-end-2017/britishtheatrecom--julian-eaves.json",
+    "travesties-west-end-2017/britishtheatrecom--unknown.json",
+    "travesties-west-end-2017/hampstead-highgate-express--unknown.json",
+    "travesties-west-end-2017/sunday-times--unknown.json",
+    "travesties-west-end-2017/telegraph--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "anatomy-of-a-suicide-west-end-2017/thestage--natasha-tripney.json",
+      "annie-west-end-2017/express-uk--clair-woodward.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "annie-west-end-2017/hampstead-highgate-express--caroline-david.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "anatomy-of-a-suicide-west-end-2017/independent--paul-taylor.json",
+      "anatomy-of-a-suicide-west-end-2017/standard--fiona-mountford.json",
+      "annie-west-end-2017/times-uk--dominic-maxwell.json",
+      "travesties-west-end-2017/maturetimes--unknown.json"
+    ]
   },
-  "startTime": "2026-10-23T04:19:06.104Z",
-  "lastProcessed": "the-imaginary-invalid-2026/talkinbroadway--unknown.json",
+  "startTime": "2026-10-23T04:23:49.820Z",
+  "lastProcessed": "travesties-west-end-2017/telegraph--unknown.json",
   "log": []
 }
