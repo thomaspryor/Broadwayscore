@@ -1,52 +1,5 @@
 [
   {
-    "startedAt": "2026-10-22T15:44:57.404Z",
-    "completedAt": "2026-10-22T15:48:31.718Z",
-    "totalReviews": 59034,
-    "processed": 69,
-    "skipped": 58953,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 341866,
-      "output": 21572,
-      "cacheRead": 52327,
-      "cacheWrite": 242981,
-      "total": 984070
-    },
-    "costUsd": 1.1185628,
-    "runId": "39804577316",
-    "errorDetails": [
-      {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-22T15:48:45.286Z",
-    "completedAt": "2026-10-22T15:49:16.334Z",
-    "totalReviews": 13,
-    "processed": 13,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 26557,
-      "output": 2901,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 29458
-    },
-    "costUsd": 0.07977610000000002,
-    "runId": "39804577316",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-22T16:02:58.261Z",
     "completedAt": "2026-10-22T16:03:00.663Z",
     "totalReviews": 59060,
@@ -1078717,6 +1078670,42 @@
     },
     "costUsd": 0,
     "runId": "39990122208",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-23T17:01:59.235Z",
+    "completedAt": "2026-10-23T17:02:03.130Z",
+    "totalReviews": 31,
+    "processed": 0,
+    "skipped": 30,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 3845,
+      "output": 113,
+      "cacheRead": 0,
+      "cacheWrite": 3741,
+      "total": 11528
+    },
+    "costUsd": 0.026521949999999996,
+    "runId": "39991027681",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-23T17:02:05.239Z",
+    "completedAt": "2026-10-23T17:02:05.260Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "39991027681",
     "errorDetails": []
   }
 ]
