@@ -516,11 +516,11 @@ const CODEX_HARD_SKIPS = [
 // board work, or a sweep over many call sites, which one Codex attempt leaves half done.
 const CODEX_TITLE_SKIPS = [
   // Auto-filed health/incident cards (12 of 98): the fix is a private-data repair or a Linear change.
-  ['auto-filed-alert', /^\W*(?:BSC (?:Daily|Rebuild)\b|P\d:\s*BSC (?:Daily|Rebuild)\b)/i],
+  ['auto-filed-alert', /^\W*(?:P\d:\s*)?BSC (?:Daily|Rebuild):/i],
   // One show's data: research a venue/date/author or recover a review (needs web research + private data).
-  ['show-data-research', /^(?:P\d:\s*)?(?:Verify|Recover|Backfill|Find sources?)\b[^\n]{0,80}\b(?:shows?|reviews?|bylines?|authors?|flags?|provenance|deals?|verdicts?)\b|^[a-z0-9]+(?:-[a-z0-9]+)+-(?:19|20)\d\d\b[^:\n]{0,40}:|\(\d{4} id\)/i],
+  ['show-data-research', /^(?:P\d:\s*)?(?:Verify|Recover|Backfill|Find sources?)\b[^\n]{0,60}(?:\b\d[\d,]*\s+(?:\w+\s+){0,3}(?:shows?|reviews?|flags?|pairs?|deals?)\b|\btrue author\b|\bprovenance\b|\bverdict\b)|^[a-z0-9]+(?:-[a-z0-9]+)+-(?:19|20)\d\d\b[^:\n]{0,40}:|\(\d{4} id\)/i],
   // A sweep over a counted or "remaining" set of call sites: Codex migrates some and stops.
-  ['multi-site-sweep', /^(?:P\d:\s*)?(?:Migrate|Wire|Version|Extend|Generalize|Consolidate|Audit)\b[^\n]{0,50}\b(?:remaining|every|the \d+|\d+ (?:more|baselined|remaining))\b|\brepo-wide\b|\bAudit\b[^\n]{0,40}\bcall sites\b|\bsame\b[^\n]{0,60}\b(?:in|at|across) (?:\d+|several|other|sibling)\b/i],
+  ['multi-site-sweep', /^(?:P\d:\s*)?(?:Migrate|Wire|Version|Extend|Generalize|Consolidate|Audit)\b[^\n]{0,50}\b(?:remaining \d+|remaining (?:\w+ ){0,2}(?:generators|callers|paths|ledgers|sites|scripts)|the \d+)\b|\brepo-wide\b|\bAudit\b[^\n]{0,40}\bcall sites\b|\bsame\b[^\n]{0,60}\b(?:in|at|across) \d+\b/i],
 ];
 // A `CODEX-OK` line (description or a comment) sends a card to Codex despite the hard skips.
 const CODEX_OK_RE = /^[\s>*_#-]*CODEX-OK\b/m;

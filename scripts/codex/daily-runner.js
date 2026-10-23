@@ -338,6 +338,9 @@ function weeklyPct() {
  */
 function forceLoginRefresh() {
   const file = path.join(CODEX_HOME, 'auth.json');
+  // A gha container may hold the pre-refresh copy (it starts up to ~6.6 days in): rotate only when no gha slot is live.
+  const gha = sh('node', [__filename, '--lock-status', '--lane', 'gha'], { timeoutMs: 120_000 });
+  if (gha.code !== 0) { log(`forced login refresh skipped: gha lane lock status exit ${gha.code}`); return; }
   try {
     const next = R.backdateForRefresh({ authText: fs.readFileSync(file, 'utf8'), nowMs: Date.now() });
     if (!next) return;

@@ -1070,7 +1070,7 @@ test('codexCardFit: title shapes behind most Claude-check rejections are skipped
   const fit = (title, description = 'Fix it.') => r.codexCardFit({ title, description, verify: 'node --test tests/unit/x.test.mjs' });
   for (const t of ['BSC Daily: Shipped review too short to verify', '🚨 BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', 'P1: BSC Daily: Stuck pipeline items']) assert.equal(fit(t).skip, 'auto-filed-alert', t);
   for (const t of ['heart-wall-west-end-2026: London Theatre Reviews text (Jack Shaw) misfiled', 'Midnight in the Garden of Good and Evil (2024 id): confirm Broadway run', 'Verify the true author on 18 same-article review pairs', "Recover AP's own verdict for 3 shows", 'Backfill provenance for legacy flags']) assert.equal(fit(t).skip, 'show-data-research', t);
-  for (const t of ['Migrate the 23 baselined direct api.github.com callers onto gh-api-cli', 'Wire remaining 5 ledgers', 'P2: audit routeAlert() call sites repo-wide for write-before-notify', 'Same unclamped freshness idiom in 4 in-memory caches (same bug, same fix)'.replace('(same bug, same fix)', '').replace('Same unclamped freshness idiom in 4', 'Same unclamped idiom in 4')]) assert.equal(fit(t).skip, 'multi-site-sweep', t);
+  for (const t of ['Migrate the 23 baselined direct api.github.com callers onto gh-api-cli', 'Wire remaining 5 ledgers', 'P2: audit routeAlert() call sites repo-wide for write-before-notify', 'Same unclamped freshness idiom in 4 in-memory caches']) assert.equal(fit(t).skip, 'multi-site-sweep', t);
 });
 
 test('codexCardFit: title-shape skips leave ordinary code cards and CODEX-OK cards alone', () => {
@@ -1124,4 +1124,13 @@ test('title-shape skips and back-dating stay narrow (ship-check BRO-6086)', () =
   const now = Date.parse('2026-10-23T12:00:00Z');
   const old = JSON.stringify({ last_refresh: new Date(now - 12 * 24 * 3600_000).toISOString() });
   assert.equal(r.backdateForRefresh({ authText: old, nowMs: now }), null, 'already past the CLI threshold: never moves the stamp forward');
+});
+
+test('ship-check round 2 (BRO-6086): noun-bearing code titles stay with Codex; a failed refresh never saves', () => {
+  const fit = (title) => r.codexCardFit({ title, description: 'Fix it.', verify: 'node --test tests/unit/x.test.mjs' });
+  for (const t of ['Verify isScoreable rejects reviews with null url', 'Backfill script crashes on shows with null category', 'Recover from ENOENT when review dir missing', 'Same-title shows in other markets misroute to Broadway', 'Extend the remaining-time check to slot runners', 'P1: BSC Rebuild crashes on malformed shows.json']) assert.equal(fit(t).skip, null, t);
+  const now = Date.parse('2026-10-23T12:00:00Z');
+  const stored = JSON.stringify({ last_refresh: new Date(now - 6.2 * 24 * 3600_000).toISOString() });
+  const back = r.backdateForRefresh({ authText: stored, nowMs: now });
+  assert.notEqual(r.syncDirection(back, stored), 'save', 'a back-dated login never overwrites the stored one');
 });
