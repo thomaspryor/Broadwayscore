@@ -1,7 +1,173 @@
 {
-  "generatedAt": "2026-10-23T12:31:17.852Z",
+  "generatedAt": "2026-10-23T13:37:43.404Z",
   "lookbackDays": 3,
   "shows": [
+    {
+      "id": "cirque-berserk-west-end-2026",
+      "title": "Cirque Berserk",
+      "market": "west-end",
+      "category": "west-end",
+      "type": "play",
+      "openingDate": "2026-10-23",
+      "status": "open",
+      "slug": "cirque-berserk-west-end",
+      "thumbnail": "/images/shows/cirque-berserk-west-end-2026/thumbnail.jpg",
+      "siteScore": null,
+      "liveScore": 59,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 6,
+      "siteFileExists": true,
+      "total": 1,
+      "t1": 0,
+      "t2": 0,
+      "t3": 1,
+      "positive": 0,
+      "mixed": 1,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "1/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:1/6"
+        ],
+        "highConfidence": 1,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Sunday Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Mail on Sunday",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
+          "isDualMarket": false
+        },
+        {
+          "name": "BritishTheatre.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Spectator (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Reviews Hub",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "LondonTheatre1",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Box Office",
+          "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-23T13:37:43.404Z",
+          "rc": 1,
+          "s": 59,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 0,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        }
+      ]
+    },
     {
       "id": "derren-brown-only-human-west-end-2026",
       "title": "Derren Brown: Only Human",
@@ -758,9 +924,9 @@
       "status": "open",
       "slug": "the-pianist-off-west-end",
       "thumbnail": "/images/shows/the-pianist-off-west-end-2026/thumbnail.webp",
-      "siteScore": 70.96,
+      "siteScore": 71.27,
       "liveScore": 71,
-      "scoreDrift": 0.04000000000000625,
+      "scoreDrift": -0.269999999999996,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -969,6 +1135,18 @@
           "t": "2026-10-23T12:31:17.852Z",
           "rc": 9,
           "s": 70.96,
+          "t1": 1,
+          "t2": 3,
+          "t3": 5,
+          "p": 5,
+          "m": 4,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-23T13:37:43.404Z",
+          "rc": 9,
+          "s": 71.27,
           "t1": 1,
           "t2": 3,
           "t3": 5,

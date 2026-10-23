@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T12:31:08.875Z",
+  "timestamp": "2026-10-23T13:37:30.815Z",
   "stats": {
-    "totalReviews": 59397,
-    "alreadyFlagged": 21083,
-    "dateGuardCatches": 199,
-    "directorMismatch": 2122,
+    "totalReviews": 59448,
+    "alreadyFlagged": 21091,
+    "dateGuardCatches": 203,
+    "directorMismatch": 2120,
     "tvFilmSignals": 1688,
-    "londonSignals": 2832,
-    "offBroadwaySignals": 535,
-    "yearMismatch": 174,
-    "noPublishDate": 5354
+    "londonSignals": 2835,
+    "offBroadwaySignals": 533,
+    "yearMismatch": 176,
+    "noPublishDate": 5358
   },
   "findings": [
     {
@@ -2395,13 +2395,13 @@
       "showId": "amelie-west-end-2021",
       "file": "standard--jessie-thompson.json",
       "score": 78,
-      "publishDate": "December 4th, 2019",
+      "publishDate": "2019-12-04",
       "url": "https://www.standard.co.uk/culture/theatre/amelie-the-musical-review-a-charming-silly-delight-for-when-the-world-feels-merde-a4303876.html",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 533d before show (December 4th, 2019 vs 2021-05-20)"
+          "detail": "Published 533d before show (2019-12-04 vs 2021-05-20)"
         }
       ]
     },
@@ -4806,7 +4806,7 @@
     },
     {
       "showId": "betrayal-2019",
-      "file": "ew--alison-adato.json",
+      "file": "ew--allison-adato.json",
       "score": 79,
       "publishDate": "September 5, 2019",
       "url": "https://ew.com/theater-reviews/2019/09/05/betrayal-broadway-review/",
@@ -4820,24 +4820,9 @@
     },
     {
       "showId": "betrayal-2019",
-      "file": "ew--allison-adato.json",
-      "score": 82,
-      "publishDate": "September 5, 2019",
-      "url": "https://ew.com/theater-reviews/2019/09/05/betrayal-broadway-review/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2019",
       "file": "hollywood-reporter--david-rooney.json",
-      "score": 93,
-      "publishDate": "September 5, 2019",
-      "url": "http://www.hollywoodreporter.com/review/betrayal-theater-review-651132",
+      "publishDate": null,
+      "url": "https://www.hollywoodreporter.com/review/tom-hiddleston-betrayal-theater-review-1234384",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -5203,6 +5188,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"milli bhatia\" from blue-mist-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "bonnie-and-clyde-west-end-2022",
+      "file": "theatre-vibe--lizzie-loveridge.json",
+      "publishDate": null,
+      "url": "https://theatrevibe.co.uk/review-bonnie-and-clyde-the-musical-arts-theatre/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2011 (2x) more than 2022 (0x). 2011 matches production: bonnie-and-clyde-2011"
         }
       ]
     },
@@ -9871,6 +9869,19 @@
       "showId": "cyrano-de-bergerac-west-end-2022",
       "file": "thestage--natasha-tripney.json",
       "score": 97,
+      "publishDate": "2022-02-13",
+      "url": "https://www.thestage.co.uk/reviews/cyrano-de-bergerac-review-harold-pinter-theatre-london-james-mcavoy-martin-crimp-jamie-lloyd",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2019 (2x) more than 2022 (0x). 2019 matches production: cyrano-de-bergerac-west-end-2019"
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2022",
+      "file": "thestage--unknown.json",
       "publishDate": "2022-02-13",
       "url": "https://www.thestage.co.uk/reviews/cyrano-de-bergerac-review-harold-pinter-theatre-london-james-mcavoy-martin-crimp-jamie-lloyd",
       "findings": [
@@ -19109,7 +19120,7 @@
       "showId": "heisenberg-2016",
       "file": "escape-into-life--scott-klavan.json",
       "score": 45,
-      "publishDate": null,
+      "publishDate": "October 13, 2016",
       "url": "https://www.escapeintolife.com/theatre/theatre-review-heisenberg/",
       "findings": [
         {
@@ -21351,20 +21362,6 @@
     },
     {
       "showId": "into-the-woods-2022",
-      "file": "nydailynews--chris-jones.json",
-      "score": 88,
-      "publishDate": "July 10, 2022",
-      "url": "https://www.nydailynews.com/2022/07/10/theater-review-broadway-revival-of-sondheims-into-the-woods-still-makes-for-a-powerful-journey/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-2022",
       "file": "nytg--joe-dziemianowicz.json",
       "score": 91,
       "publishDate": "July 10, 2022",
@@ -21439,20 +21436,6 @@
       "score": 89,
       "publishDate": "July 20th, 2022",
       "url": "http://www.theaterscene.net/musicals/broadway/into-the-woods/victor-gluck/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-2022",
-      "file": "theatermania--hayley-levitt.json",
-      "score": 91,
-      "publishDate": "July 10, 2022",
-      "url": "https://www.theatermania.com/broadway/news/review-into-the-woods-delivers-perfection_94015.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -63363,6 +63346,19 @@
       ]
     },
     {
+      "showId": "cyrano-de-bergerac-west-end-2022",
+      "file": "theatre-vibe--lizzie-loveridge.json",
+      "publishDate": null,
+      "url": "https://theatrevibe.co.uk/review-cyrano-de-bergerac-harold-pinter-theatre-2022/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 95,
@@ -63844,6 +63840,19 @@
       "score": 92,
       "publishDate": "2024-02-24",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "dear-octopus-west-end-2024",
+      "file": "theatre-vibe--lizzie-loveridge.json",
+      "publishDate": null,
+      "url": "https://www.theatrevibe.co.uk/review-dear-octopus-lyttelton-2024/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -64894,6 +64903,19 @@
     },
     {
       "showId": "echo-every-cold-hearted-oxygen-west-end-2024",
+      "file": "british-theatre--unknown.json",
+      "publishDate": "2024-07-13",
+      "url": "https://www.britishtheatreguide.info/reviews/echo-every-cold-hearted-royal-court-22440",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "echo-every-cold-hearted-oxygen-west-end-2024",
       "file": "guardian--kate-wyver.json",
       "score": 61,
       "publishDate": "July 18th, 2024",
@@ -64964,20 +64986,6 @@
     },
     {
       "showId": "eclipsed-2016",
-      "file": "amny--matt-windman.json",
-      "score": 79,
-      "publishDate": "2016-03-06",
-      "url": "https://www.amny.com/entertainment/eclipsed-review-lupita-nyong-o-stuns-in-broadway-transfer-1.11544846",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
-        }
-      ]
-    },
-    {
-      "showId": "eclipsed-2016",
       "file": "dc-theater-arts--richard-seff.json",
       "score": 73,
       "publishDate": "March 14th, 2016",
@@ -65029,20 +65037,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
-        }
-      ]
-    },
-    {
-      "showId": "eclipsed-2016",
-      "file": "wnyc--jennifer-vanasco.json",
-      "score": 88,
-      "publishDate": null,
-      "url": "http://www.wnyc.org/story/eclipsed-review/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -70246,20 +70240,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
-        }
-      ]
-    },
-    {
-      "showId": "heisenberg-2016",
-      "file": "nytg--kathleen-campion.json",
-      "score": 89,
-      "publishDate": "2016-10-18",
-      "url": "https://www.newyorktheatreguide.com/reviews/heisenberg-0",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
@@ -78242,15 +78222,15 @@
     },
     {
       "showId": "network-2018",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 86,
-      "publishDate": "December 7, 2018",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/network-theater-1167200/",
+      "file": "njcom--christopher-kelly.json",
+      "score": 78,
+      "publishDate": "2018-12-06T20:13:05-05:00",
+      "url": "https://www.nj.com/entertainment/2018/12/network-starring-bryan-cranston-review-a-knockout-take-on-the-classic-movie.html",
       "findings": [
         {
-          "type": "LONDON_SIGNAL",
+          "type": "TV_FILM_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
+          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
@@ -80784,6 +80764,19 @@
       ]
     },
     {
+      "showId": "paradise-west-end-2021",
+      "file": "theatre-vibe--lizzie-loveridge.json",
+      "publishDate": null,
+      "url": "https://www.theatrevibe.co.uk/review-paradise-olivier-national-theatre-2021/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"olivier theatre\""
+        }
+      ]
+    },
+    {
       "showId": "paranormal-activity-2026",
       "file": "amny--matt-windman.json",
       "score": 67,
@@ -81358,6 +81351,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "player-kings-west-end-2024",
+      "file": "guardian--susannah-clapp.json",
+      "score": 80,
+      "publishDate": "2024-04-23",
+      "url": "https://www.theguardian.com/stage/2024/apr/14/the-week-in-theatre-player-kings-robert-icke-ian-mckellen-noel-coward-theatre-review-red-pitch-tyrell-williams-sohoplace-underdog-the-other-other-bronte-sarah-gordon-dorfman-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -82883,19 +82890,6 @@
       "file": "west-end-best-friend--sophie-luck.json",
       "publishDate": null,
       "url": "https://www.westendbestfriend.co.uk/news/review-scenes-from-a-repatriation-royal-court",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "scenes-from-a-repatriation-west-end-2025",
-      "file": "westminsterextra--unknown.json",
-      "publishDate": null,
-      "url": "https://www.westminsterextra.co.uk/article/review-scenes-from-a-repatriation-at-the-royal-court",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -88727,7 +88721,7 @@
       "showId": "the-effect-west-end-2023",
       "file": "guardian--unknown.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "2023-08-10",
       "url": "https://www.theguardian.com/stage/2023/aug/10/the-effect-review-lucy-prebble-intense-and-intoxicating-encounter",
       "findings": [
         {
@@ -88754,7 +88748,7 @@
     {
       "showId": "the-effect-west-end-2023",
       "file": "independent--unknown.json",
-      "publishDate": null,
+      "publishDate": "2023-08-10",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-effect-review-national-theatre-b2390767.html",
       "findings": [
         {
@@ -90052,6 +90046,17 @@
     },
     {
       "showId": "the-humans-2016",
+      "file": "curtainup--elyse-sommer.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 90d before show (October 26, 2015 vs 2016-01-24)"
+        }
+      ]
+    },
+    {
+      "showId": "the-humans-2016",
       "file": "deadline--jeremy-gerard.json",
       "score": 90,
       "publishDate": "2016-02-19",
@@ -90061,6 +90066,47 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-humans-2016",
+      "file": "exeunt-magazine--tom-wicker.json",
+      "score": 89,
+      "publishDate": "October 30, 2015",
+      "url": "https://exeuntmagazine.com/reviews/the-humans/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 86d before show (October 30, 2015 vs 2016-01-24)"
+        }
+      ]
+    },
+    {
+      "showId": "the-humans-2016",
+      "file": "newsday--linda-winer.json",
+      "publishDate": "October 25, 2015",
+      "url": "http://www.newsday.com/entertainment/theater/the-humans-review-turkey-gravy-and-a-serving-of-family-tension-1.11003064",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 91d before show (October 25, 2015 vs 2016-01-24)"
+        }
+      ]
+    },
+    {
+      "showId": "the-humans-2016",
+      "file": "theater-pizzazz--sandi-durell.json",
+      "score": 82,
+      "publishDate": "October 30, 2015",
+      "url": "https://www.theaterpizzazz.com/stephen-karams-the-humans/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 86d before show (October 30, 2015 vs 2016-01-24)"
         }
       ]
     },
@@ -95074,20 +95120,6 @@
     },
     {
       "showId": "three-sisters-west-end-2019",
-      "file": "london-box-office--philip-swan.json",
-      "score": 86,
-      "publishDate": "2019-12-12",
-      "url": "https://www.londonboxoffice.co.uk/news/post/review-three-sisters-nt",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "three-sisters-west-end-2019",
       "file": "london-theatre--mark-shenton.json",
       "score": 82,
       "publishDate": "2019-12-11",
@@ -95382,6 +95414,20 @@
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2022",
+      "file": "express-uk--neil-norman.json",
+      "score": null,
+      "publishDate": "2022-04-07",
+      "url": "https://www.express.co.uk/entertainment/theatre/1592850/To-Kill-A-Mockingbird-review-rape-trial-white-woman-black-man",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2022",
       "file": "guardian--arifa-akbar.json",
       "score": 80,
       "publishDate": "2022-04-01",
@@ -95410,10 +95456,9 @@
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2022",
-      "file": "theupcoming--lauren-devine.json",
-      "score": 87,
-      "publishDate": null,
-      "url": "https://www.theupcoming.co.uk/2022/04/26/to-kill-a-mockingbird-at-gielgud-theatre-theatre-review/",
+      "file": "standard--unknown.json",
+      "publishDate": "2022-03-31",
+      "url": "https://www.standard.co.uk/culture/theatre/to-kill-a-mockingbird-gielgud-theatre-review-aaron-sorkin-rafe-spall-london-b991748.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -95424,15 +95469,15 @@
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2022",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 79,
-      "publishDate": "March 31st, 2022",
-      "url": "https://www.whatsonstage.com/london-theatre/reviews/to-kill-a-mockingbird-review-rafe-spall-finch_56225.html",
+      "file": "theupcoming--lauren-devine.json",
+      "score": 87,
+      "publishDate": "2022-04-26",
+      "url": "https://www.theupcoming.co.uk/2022/04/26/to-kill-a-mockingbird-at-gielgud-theatre-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
@@ -98020,6 +98065,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "wuthering-heights-west-end-2022",
+      "file": "theatre-vibe--brian-clover.json",
+      "publishDate": null,
+      "url": "https://theatrevibe.co.uk/review-wuthering-heights-lyttelton-national-theatre-2022/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
