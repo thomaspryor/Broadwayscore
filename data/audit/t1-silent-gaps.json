@@ -1,8 +1,30 @@
 {
-  "generatedAt": "2026-10-23T14:08:13.237Z",
+  "generatedAt": "2026-10-23T17:43:35.215Z",
   "windowDays": 45,
   "showsScanned": 203,
   "gaps": [
+    {
+      "showId": "fences-off-west-end-2026",
+      "title": "Fences",
+      "openingDate": "2026-10-09",
+      "file": "independent--unknown.json",
+      "outletId": "independent",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.independent.co.uk/arts-entertainment/films/news/tom-skerritt-dead-top-gun-picket-fences-b3071792.html",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Fetch failed: All scraping methods failed"
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=fences-off-west-end-2026 --url=https://www.independent.co.uk/arts-entertainment/films/news/tom-skerritt-dead-top-gun-picket-fences-b3071792.html --outlet=independent   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-10-23T15:35:10.357Z",
+      "fileAgeHours": 2.139005,
+      "gapSeenAt": "2026-10-23T17:43:35.215Z",
+      "nonTerminalAgeHours": 0
+    },
     {
       "showId": "other-desert-cities-2026",
       "title": "Other Desert Cities",
@@ -18,9 +40,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=other-desert-cities-2026",
       "firstSeen": "2026-10-20T01:24:52.774Z",
-      "fileAgeHours": 84.71633916666667,
+      "fileAgeHours": 88.31070166666667,
       "gapSeenAt": "2026-10-23T02:17:11.385Z",
-      "nonTerminalAgeHours": 11.850514444444444
+      "nonTerminalAgeHours": 15.439952777777778
     },
     {
       "showId": "slam-frank-off-broadway-2026",
@@ -36,9 +58,9 @@
       "forumLinkRecoveryCount": 7,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=slam-frank-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-18T14:14:33.814Z",
-      "fileAgeHours": 119.88833527777778,
+      "fileAgeHours": 123.48270111111111,
       "gapSeenAt": "2026-10-23T02:17:11.385Z",
-      "nonTerminalAgeHours": 11.850514444444444
+      "nonTerminalAgeHours": 15.439952777777778
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -54,9 +76,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 741.4608280555556,
+      "fileAgeHours": 745.0503002777778,
       "gapSeenAt": "2026-10-23T02:17:11.385Z",
-      "nonTerminalAgeHours": 11.850514444444444
+      "nonTerminalAgeHours": 15.439952777777778
     },
     {
       "showId": "the-score-regional-2026",
@@ -72,9 +94,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=the-score-regional-2026 --url=https://www.thetimes.co.uk/sport/football/article/bayern-munich-arsenal-champions-league-table-result-score-6vmlkkd2n?srsltid=AYCX9vIuyd3DrQDuKn8kJ4R2K-E4OT99VyXC-aVKtGpjC3bbqdpb9p2E --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-22T16:30:56.008Z",
-      "fileAgeHours": 21.621241666666666,
+      "fileAgeHours": 25.210694444444446,
       "gapSeenAt": "2026-10-23T02:17:11.385Z",
-      "nonTerminalAgeHours": 11.850514444444444
+      "nonTerminalAgeHours": 15.439952777777778
     }
   ],
   "contradictions": []

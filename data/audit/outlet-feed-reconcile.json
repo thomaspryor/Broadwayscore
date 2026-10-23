@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T14:08:27.152Z",
+  "generatedAt": "2026-10-23T17:44:00.746Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -154,6 +154,18 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "musical-theatre-review",
+      "error": "Timeout fetching https://musicaltheatrereview.com/feed/"
+    },
+    {
+      "outletId": "south-london",
+      "error": "Timeout fetching https://southlondon.co.uk/feed/"
+    },
+    {
+      "outletId": "theatre-vibe",
+      "error": "AggregateError"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -166,35 +178,26 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 771,
-  "matchedGaps": 11,
-  "possibleGaps": 3,
+  "itemsScanned": 765,
+  "matchedGaps": 6,
+  "possibleGaps": 2,
   "gaps": [
     {
-      "showId": "angels-bone-west-end-2026",
-      "title": "Angel's Bone",
+      "showId": "dog-mom-off-west-end-2026",
+      "title": "Dog Mom",
       "level": "matched",
-      "outletId": "plays-to-see",
-      "url": "https://playstosee.com/reviews/uk-reviews/angels-bone/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=angels-bone",
-      "headline": "Angel&#8217;s Bone",
-      "publishDate": "2026-10-22"
-    },
-    {
-      "showId": "dance-is-not-for-us-off-west-end-2026",
-      "title": "Dance Is Not for Us",
-      "level": "matched",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/cie-omar-rajeh-maqamet-dance-is-not-for-us-barbican-london/",
-      "headline": "Cie Omar Rajeh &#038; Maqamet: Dance is Not For Us – Barbican, London",
-      "publishDate": "2026-10-17"
+      "outletId": "onin",
+      "url": "https://onin.london/dog-mom-at-southwark-playhouse/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=dog-mom-at-southwark-playhouse",
+      "headline": "Dog Mom At Southwark Playhouse",
+      "publishDate": "2026-10-23"
     },
     {
       "showId": "king-of-the-yees-off-broadway-2026",
       "title": "King of the Yees",
       "level": "matched",
-      "outletId": "the-interested-bystander",
-      "url": "https://www.interestedbystander.com/2026/10/theater-reviews-lauren-yees-king-of.html",
-      "headline": "Theater Reviews:  Lauren Yee&#39;s “King of the Yees” Is an Amusing Slice of San Francisco Chinatown Life; Duncan Sheik’s Last Musical, “Memoirs of Amorous Gentlemen,” Is About Sex Workers and Sex Writers; and “Machine Learning” Is “Who’s Afraid of AI Woolf?”",
+      "outletId": "pages-on-stages",
+      "url": "https://pagesonstages.com/2026/10/23/king-of-the-yees/",
+      "headline": "Lost",
       "publishDate": "2026-10-23"
     },
     {
@@ -207,57 +210,21 @@
       "publishDate": "2026-10-23"
     },
     {
-      "showId": "martin-guerre-west-end-2026",
-      "title": "Martin Guerre",
+      "showId": "other-desert-cities-2026",
+      "title": "Other Desert Cities",
       "level": "matched",
-      "outletId": "firstnightmagazine",
-      "url": "https://firstnightmagazine.com/2026/10/22/review-of-martin-guerre-old-vic-2026-new-revival-features-more-historical-accuracy-but-loses-its-identity/",
-      "headline": "Review of &#8216;Martin Guerre&#8217; (Old Vic, 2026): &#8220;New revival features more historical accuracy but loses its identity&#8221;",
-      "publishDate": "2026-10-22"
-    },
-    {
-      "showId": "martin-guerre-west-end-2026",
-      "title": "Martin Guerre",
-      "level": "matched",
-      "outletId": "plays-international",
-      "url": "https://playsinternational.org.uk/martin-guerre-the-old-vic/",
-      "headline": "“Martin Guerre” at the Old Vic",
-      "publishDate": "2026-10-22"
-    },
-    {
-      "showId": "martin-guerre-west-end-2026",
-      "title": "Martin Guerre",
-      "level": "matched",
-      "outletId": "theatrecat",
-      "url": "https://theatrecat.com/2026/10/23/martin-guerre-old-vic-se1/",
-      "headline": "MARTIN GUERRE       Old Vic SE1",
+      "outletId": "theater-pizzazz",
+      "url": "https://theaterpizzazz.com/other-desert-cities-makes-a-welcome-return-to-broadway/",
+      "headline": "“OTHER DESERT CITIES” MAKES A WELCOME RETURN TO BROADWAY",
       "publishDate": "2026-10-23"
-    },
-    {
-      "showId": "martin-guerre-west-end-2026",
-      "title": "Martin Guerre",
-      "level": "matched",
-      "outletId": "all-that-dazzles-uk",
-      "url": "https://www.allthatdazzles.co.uk/post/review-martin-guerre-the-old-vic",
-      "headline": "Review: Martin Guerre (The Old Vic)",
-      "publishDate": "2026-10-23"
-    },
-    {
-      "showId": "phyl-off-broadway-2026",
-      "title": "Phyl",
-      "level": "matched",
-      "outletId": "pages-on-stages",
-      "url": "https://pagesonstages.com/2026/10/22/phyl/",
-      "headline": "Happiness Under a Microscope",
-      "publishDate": "2026-10-22"
     },
     {
       "showId": "the-pianist-off-west-end-2026",
       "title": "The Pianist",
       "level": "matched",
-      "outletId": "the-spy-in-the-stalls",
-      "url": "https://thespyinthestalls.com/2026/10/the-pianist/",
-      "headline": "THE PIANIST★★★★Park Theatre",
+      "outletId": "onin",
+      "url": "https://onin.london/the-pianist-at-park-theatre/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-pianist-at-park-theatre",
+      "headline": "The Pianist At Park Theatre",
       "publishDate": "2026-10-23"
     },
     {
@@ -268,15 +235,6 @@
       "url": "https://culturesauce.com/caryl-churchill-triumph-off-broadway-review/",
       "headline": "Caryl Churchill&#8217;s &#8216;Triumph&#8217; views imperial Rome through a Foxy blond flack (Off Broadway review)",
       "publishDate": "2026-10-18"
-    },
-    {
-      "showId": "ilford-boy-west-end-2026",
-      "title": "Ilford Boy",
-      "level": "possible",
-      "outletId": "artsdesk",
-      "url": "https://theartsdesk.com/theatre/ilford-boy-donmar-warehouse-review-writing-numbers-can-be-fun",
-      "headline": "Ilford Boy, Donmar Warehouse review - writing by numbers can be fun",
-      "publishDate": null
     },
     {
       "showId": "the-pianist-off-west-end-2026",

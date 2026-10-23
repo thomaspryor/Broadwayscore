@@ -28,20 +28,6 @@
     "queuedAt": "2026-10-23T07:34:18.958Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:other-desert-cities-2026",
-    "title": "Review gap — \"Other Desert Cities\" missing 2 cited review(s)",
-    "description": "Other Desert Cities (other-desert-cities-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=other-desert-cities-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-23T08:15:37.756Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:the-kick-inside-off-broadway-2026",
     "title": "Review gap — \"The Kick Inside\" missing 1 cited review(s)",
     "description": "The Kick Inside (the-kick-inside-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-kick-inside-off-broadway-2026 --checkpoint --ingest-missing",
@@ -752,6 +738,48 @@
       }
     ],
     "queuedAt": "2026-10-23T16:15:01.222Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:king-of-the-yees-off-broadway-2026",
+    "title": "Review gap — \"King of the Yees\" missing 1 cited review(s)",
+    "description": "King of the Yees (king-of-the-yees-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-of-the-yees-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-23T17:42:57.945Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:machine-learning-off-broadway-2026",
+    "title": "Review gap — \"Machine Learning\" missing 1 cited review(s)",
+    "description": "Machine Learning (machine-learning-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=machine-learning-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-23T17:42:57.958Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-curious-case-of-benjamin-button-off-broadway-2026",
+    "title": "Review gap — \"The Curious Case of Benjamin Button\" missing 1 cited review(s)",
+    "description": "The Curious Case of Benjamin Button (the-curious-case-of-benjamin-button-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-curious-case-of-benjamin-button-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-23T17:42:58.023Z"
   },
   {
     "conditionKey": "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts",
