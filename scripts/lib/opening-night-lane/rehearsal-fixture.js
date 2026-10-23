@@ -100,9 +100,14 @@ function buildSyntheticFixture() {
   const flakyUrl = reviews.find((r) => r.via === 'section-index').url;
   // When each review's page first showed it (virtual ms after the lane starts): the page-to-live bar counts from here.
   reviews.forEach((r, i) => { r.appearsAfterMs = (r.via === 'bww-roundup' && BWW_OUTLETS.findIndex(([id]) => id === r.outletId) >= LATE_FROM) ? LATE_AFTER_MS : 0; });
-  const expectedKeys = reviews.map((r) => canonicalUrl(r.url));
+  // The syndicated copy (Chris Example's Tribune review reprinted by the NY Daily News) must NOT go live: the rebuild
+  // drops a copy whose primary is live (syndication-pairs.js), and the lane mirrors that (BRO-5993).
+  const { getSyndicationPrimaries } = require('../syndication-pairs');
+  const isCopy = (r) => getSyndicationPrimaries(r.criticName, r.outletId).some((o) => reviews.some((p) => p.outletId === o && p.criticName === r.criticName));
+  const syndicatedCopies = reviews.filter(isCopy).map((r) => canonicalUrl(r.url));
+  const expectedKeys = reviews.filter((r) => !isCopy(r)).map((r) => canonicalUrl(r.url));
   return {
-    kind: 'synthetic', show: SHOW, night: NIGHT, openingDate: NIGHT, pages, waves, flaky: { [flakyUrl]: 1 }, reviews, expectedKeys,
+    kind: 'synthetic', show: SHOW, night: NIGHT, openingDate: NIGHT, pages, waves, flaky: { [flakyUrl]: 1 }, reviews, expectedKeys, syndicatedCopies,
     adapters: { feeds, outlets },
     // Candidates the lane must NOT publish; the runner checks none reaches the ledger.
     decoys: ['https://rehearsal-blog.substack.com/p/the-rehearsal-play-review', `https://www.nytimes.com/2026/10/18/theater/${SLUG}-interview-1`],

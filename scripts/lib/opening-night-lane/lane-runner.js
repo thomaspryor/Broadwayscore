@@ -26,6 +26,9 @@ const discovery = require('./discovery');
 const trust = require('./trust-model');
 const publish = require('./publish');
 const { createLaneReviewWriter } = require('./persist');
+const { getSyndicationPrimaries } = require('../syndication-pairs');
+
+const criticKey = (name) => String(name || '').toLowerCase().trim();
 
 /** Review keys a restarted lane must not redo: those that already reached `scored`, plus URLs already on disk. */
 function loadDone(ledgerDir, show, night, onDiskUrls = []) {
@@ -45,7 +48,7 @@ function loadDone(ledgerDir, show, night, onDiskUrls = []) {
  *   reviewTextsDir? (persist scored rows before marking done, also in a dry-run sandbox),
  *   dryRun?, onDiskUrls?, now() -> ms, wait(ms) -> Promise, forkClock?(startMs) -> {now, wait},
  *   latency {fetchMs, scoreMs}, passIntervalMs, maxPasses, windowMs (how long the lane runs), startedAt?, publishTimeoutMs, pollMs
- * @returns {Promise<{passes, admitted, published, errors, failed, unpublished}>}
+ * @returns {Promise<{passes, admitted, published, errors, failed, skipped, unpublished}>}
  */
 async function runLaneNight({
   show, night, openingDate, timeZone, adapters, fetchText, ledgerDir, fetchReview, scoreReview, publishPorts, makePublishPorts, dryRun = false,
@@ -64,9 +67,12 @@ async function runLaneNight({
   const admitted = [];
   const published = [];
   const failed = [];
+  const skipped = []; // deliberately not published (a syndicated copy whose primary is live), with the reason
   const pending = []; // rows scored but not yet published (or sent back by a failed batch)
   const inflight = new Set(); // real mode: batches publishing now
   const busyUntil = []; // virtual mode: end of each batch's timeline
+  // `${critic}|${outletId}` of every row queued or published tonight, for the syndication check below.
+  const taken = new Set();
 
   const publishBatch = async (batch, clock) => {
     try {
@@ -121,6 +127,15 @@ async function runLaneNight({
           outlet: fetched.outlet, criticName: fetched.criticName, url: a.url, publishDate: a.publishDate || fetched.publishDate || null,
           fullText: fetched.fullText, aggregator: fetched.aggregator || {},
         });
+        // A syndicated copy (Chris Jones's Chicago Tribune review in the NY Daily News) is the rebuild's to drop only
+        // when the primary is present (syndication-pairs.js). Mirror that: skip a copy whose primary is already
+        // scored, and pull a queued copy when its primary arrives. The Oct 22 shadow run would have published one.
+        const copyOf = getSyndicationPrimaries(row.criticName, row.outletId).find((o) => taken.has(`${criticKey(row.criticName)}|${o}`));
+        if (copyOf) {
+          seen.add(a.key);
+          skipped.push({ key: a.key, reason: `syndicated copy of the ${copyOf} review by ${row.criticName}` });
+          continue;
+        }
         if (row.assignedScore == null) { await wait(latency.scoreMs || 0); const scored = await scoreReview(row, fetched);
           if (scored && typeof scored === 'object') { Object.assign(row, scored.extra || {}); row.assignedScore = scored.score; } else row.assignedScore = scored;
         }
@@ -130,7 +145,14 @@ async function runLaneNight({
           row = persistReview(row).row;
         }
         ledger.appendEvent(ledgerDir, { show: show.id, night, reviewKey: a.key, stage: 'scored', at: now() });
+        for (let i = pending.length - 1; i >= 0; i--) {
+          const q = pending.at(i).row;
+          if (criticKey(q.criticName) !== criticKey(row.criticName) || !getSyndicationPrimaries(q.criticName, q.outletId).includes(row.outletId)) continue;
+          skipped.push({ key: pending.at(i).key, reason: `syndicated copy of the ${row.outletId} review by ${row.criticName}` });
+          pending.splice(i, 1);
+        }
         pending.push({ key: a.key, row });
+        taken.add(`${criticKey(row.criticName)}|${row.outletId}`);
         seen.add(a.key);
         admitted.push(a);
       } catch (e) {
@@ -157,7 +179,7 @@ async function runLaneNight({
       else await Promise.race(inflight);
     }
   }
-  return { passes, admitted, published, errors, failed, unpublished: pending.map((r) => r.key), stopped };
+  return { passes, admitted, published, errors, failed, skipped, unpublished: pending.map((r) => r.key), stopped };
 }
 
 module.exports = { runLaneNight, loadDone };
