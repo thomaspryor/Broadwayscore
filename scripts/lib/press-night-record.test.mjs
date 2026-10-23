@@ -285,17 +285,40 @@ test('coverageAt: +2h coverage from the live timeline against a later census', (
   lib.applySample(rec, { at: at(200), reviews: [rv('The New York Times', 'A'), rv('Vulture', 'V')] });
   const census = { hadAnySource: true, count: 4, sourcesPresent: ['bww-roundup-live'],
     entries: [{ outletId: 'nytimes' }, { outletId: 'nydailynews' }, { outletId: 'vulture' }, { outletId: 'variety' }] };
-  rec.laneShadow = { liveFirstSeen: [], discoveredByOutlet: { variety: at(150) } }; // Variety published after +2h
+  // Variety first found after +2h: listed, but kept in the denominator (discovery only bounds publish from above).
+  // The shadow saw the Daily News at +65 but the probe saw it dropped at +70, so it stays missing.
+  rec.laneShadow = { liveFirstSeen: [{ outlet: 'New York Daily News', at: at(65) }], discoveredByOutlet: { variety: at(150) } };
   const ref = lib.coverageAt(rec, census, Date.parse(at(120)), { fetchedAt: at(600) });
   assert.equal(ref.method, 'timeline');
   assert.equal(ref.asOf, at(120));
-  assert.deepEqual(ref.notYetPublished, ['variety']);
-  assert.equal(ref.count, 3);
-  assert.deepEqual(ref.missing.sort(), ['nydailynews', 'vulture']);
+  assert.deepEqual(ref.discoveredAfter, ['variety']);
+  assert.equal(ref.count, 4);
+  assert.deepEqual(ref.missing.sort(), ['nydailynews', 'variety', 'vulture']);
   rec.reference['2h'] = ref;
   const g = lib.evaluateCheck(rec).gates.find((x) => x.name === 'coverage-2h');
-  assert.equal(g.status, 'fail'); // 1/3, and judged as of +2h even though fetched at +10h
-  assert.match(g.detail, /1\/3 census outlets live at \+2h/);
+  assert.equal(g.status, 'fail'); // 1/4, and judged as of +2h even though fetched at +10h
+  assert.match(g.detail, /1\/4 census outlets live at \+2h/);
+});
+
+test('coverageAt: a shadow sighting before the probe saw the outlet counts', () => {
+  const rec = fresh();
+  lib.applySample(rec, { at: at(-5), reviews: [] });
+  lib.applySample(rec, { at: at(125), reviews: [rv('Vulture', 'V')] }); // probe gap until +125
+  rec.laneShadow = { liveFirstSeen: [{ outlet: 'Vulture', at: at(110) }] };
+  const census = { hadAnySource: true, count: 1, sourcesPresent: ['bww-roundup-live'], entries: [{ outletId: 'vulture' }] };
+  assert.equal(lib.coverageAt(rec, census, Date.parse(at(120))).coverage, 1);
+});
+
+test('first-live: failed polls before the first sighting leave no made-up lower bound', () => {
+  const rec = fresh();
+  lib.applySample(rec, { at: at(-5), reviews: [] });
+  for (let m = 5; m <= 80; m += 5) lib.applySample(rec, { at: at(m), reviews: null });
+  lib.applySample(rec, { at: at(85), reviews: [rv('Deadline', 'G')] });
+  assert.equal(rec.perReview[0].prevOkSampleAt, at(-5));
+  rec.laneShadow = { liveFirstSeen: [], firstDiscoveredAt: at(3) };
+  const g = lib.evaluateCheck(rec).gates.find((x) => x.name === 'first-live');
+  assert.equal(g.status, 'unknown'); // live somewhere in (-5, 85]: could have been within the bar
+  assert.match(g.detail, /0-85 min/);
 });
 
 test('laneShadowFrom: earliest discovery, BWW roundup url, per-outlet first discovery', () => {

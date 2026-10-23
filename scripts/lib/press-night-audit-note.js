@@ -32,9 +32,9 @@ function dayBefore(ymd) {
   return d.toISOString().slice(0, 10);
 }
 
-/** The press nights an audit dated D covers: openings of D-1 (the normal case) and of D. */
+/** The press night an audit dated D covers: openings of D-1. D's own night has not happened yet. */
 function auditNights(auditDate) {
-  return auditDate ? [dayBefore(auditDate), auditDate] : [];
+  return auditDate ? [dayBefore(auditDate)] : [];
 }
 
 function pressNightResults({ nights, dir, shows = [] }) {

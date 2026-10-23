@@ -125,6 +125,7 @@ function applySample(rec, sample) {
     rec.probe.failedSamples += 1;
     return rec;
   }
+  const prevOk = rec.probe.lastOkSampleAt;
   rec.probe.lastOkSampleAt = at;
 
   const first = rec.probe.samples - rec.probe.failedSamples === 1;
@@ -143,6 +144,7 @@ function applySample(rec, sample) {
         publishAt: r.date || null,
         publishPrecision: publishPrecision(r.date),
         firstLiveAt: at,
+        prevOkSampleAt: prevOk, // the last sample that saw the site without it: it went live in (prevOk, at]
         baseline: first,
         liveNow: true,
       };
@@ -267,13 +269,20 @@ function firstNightLive(rec) {
   const nightOutlets = new Set(night.map((p) => outletIdOf(p.outlet)).filter(Boolean));
   const previewOutlets = new Set(rec.perReview.filter((p) => !isNightReview(p, rec.night)).map((p) => outletIdOf(p.outlet)).filter(Boolean));
   const cands = [];
+  // Lower bound = the last poll that saw the site without the review. Older records lack prevOkSampleAt:
+  // two intervals back is safe only when no sample failed; otherwise nothing bounds it below but the embargo.
+  const probeLower = (p, ms) => {
+    if (p.prevOkSampleAt !== undefined) return p.prevOkSampleAt ? toMs(p.prevOkSampleAt) : embMs;
+    return rec.probe && rec.probe.failedSamples === 0 ? ms - 2 * intervalMs : embMs;
+  };
   for (const p of night) {
     const ms = toMs(p.firstLiveAt);
-    if (ms != null) cands.push({ ms, lowerMs: ms - intervalMs, outlet: p.outlet, source: 'probe', baseline: !!p.baseline });
+    if (ms != null) cands.push({ ms, lowerMs: Math.min(ms, probeLower(p, ms)), outlet: p.outlet, source: 'probe', baseline: !!p.baseline });
   }
   const ls = rec.laneShadow;
   if (ls && Array.isArray(ls.liveFirstSeen)) {
-    const pollMs = (ls.pollMin || 2) * MIN;
+    // Same rule for the shadow's 2-minute polls: a failed poll leaves no lower bound.
+    const pollMs = ls.pollFailures === 0 ? 2 * (ls.pollMin || 2) * MIN : null;
     for (const r of ls.liveFirstSeen) {
       const ms = toMs(r.at);
       if (ms == null) continue;
@@ -282,7 +291,7 @@ function firstNightLive(rec) {
       // embargo and is not a preview-period outlet the probe already saw.
       const isNight = (oid && nightOutlets.has(oid)) || (embMs != null && ms >= embMs && !(oid && previewOutlets.has(oid)));
       // The shadow's first poll is a bound too (the review may have been live before it started).
-      if (isNight) cands.push({ ms, lowerMs: ms - pollMs, outlet: r.outlet, source: 'lane-shadow', baseline: !!r.baseline });
+      if (isNight) cands.push({ ms, lowerMs: pollMs != null ? ms - pollMs : Math.min(ms, embMs), outlet: r.outlet, source: 'lane-shadow', baseline: !!r.baseline });
     }
   }
   if (!cands.length) return null;
@@ -319,6 +328,7 @@ function laneShadowFrom({ report = null, liveRows = [], ledgerRows = [], importe
     importedAt, runId,
     startedAt: Number.isFinite(startMs) ? new Date(startMs).toISOString() : null,
     pollMin: 2,
+    pollFailures: report && Number.isFinite(Number(report.livePollFailures)) ? Number(report.livePollFailures) : null,
     firstDiscoveredAt,
     discoveredByOutlet,
     bwwRoundupUrl: [...roundups][0] || null,
@@ -329,44 +339,44 @@ function laneShadowFrom({ report = null, liveRows = [], ledgerRows = [], importe
 /**
  * Census coverage AS OF a past moment, from the record's own per-review live series (plus the
  * lane shadow's site-live times). Lets a census fetched later (the roundup was not archived at +2h)
- * still answer "how much was live at +2h". Census outlets the lane first discovered after asOf
- * had not been published yet, so they leave the denominator (listed as notYetPublished).
+ * still answer "how much was live at +2h". The later census can only add outlets, so this is a
+ * conservative (lower) coverage; outlets the lane first found after asOf are listed (discoveredAfter).
  */
 function coverageAt(rec, census, asOfMs, { fetchedAt = null } = {}) {
   const { censusVerdict } = require('./review-census');
   const asOf = new Date(asOfMs).toISOString();
   const liveSet = new Set();
+  const droppedNow = new Set(); // probe-observed drops still open at asOf override any earlier sighting
   for (const p of rec.perReview) {
     const ms = toMs(p.firstLiveAt);
     if (ms == null || ms > asOfMs) continue;
-    const goneAt = rec.dropped.find((d) => d.key === p.key && toMs(d.droppedAt) <= asOfMs && (!d.restoredAt || toMs(d.restoredAt) > asOfMs));
-    if (goneAt) continue;
     const oid = outletIdOf(p.outlet);
+    const gone = rec.dropped.find((d) => d.key === p.key && toMs(d.droppedAt) <= asOfMs && (!d.restoredAt || toMs(d.restoredAt) > asOfMs));
+    if (gone) { if (oid) droppedNow.add(oid); continue; }
     if (oid) liveSet.add(oid);
   }
-  // The shadow does not track drops, so it only fills outlets the probe never saw at all
-  // (e.g. live before a late probe start); the probe's own series, drops included, wins.
-  const probeOutlets = new Set(rec.perReview.map((p) => outletIdOf(p.outlet)).filter(Boolean));
+  // The shadow's site-live times (finer polls) count unless the probe saw that outlet dropped by asOf.
   const ls = rec.laneShadow;
   if (ls && Array.isArray(ls.liveFirstSeen)) {
     for (const r of ls.liveFirstSeen) {
       const oid = outletIdOf(r.outlet);
-      if (oid && !probeOutlets.has(oid) && toMs(r.at) != null && toMs(r.at) <= asOfMs) liveSet.add(oid);
+      if (oid && !droppedNow.has(oid) && toMs(r.at) != null && toMs(r.at) <= asOfMs) liveSet.add(oid);
     }
   }
-  let scoped = census;
+  // Every census outlet stays in the denominator: a lane discovery after asOf bounds the publish time
+  // from above only, so it cannot prove the review was not out yet. Listed for the reader, never excluded.
+  const scoped = census;
   const notYetPublished = [];
+  const discoveredAfter = [];
   const disc = ls && ls.discoveredByOutlet;
   if (census && Array.isArray(census.entries) && disc) {
-    const keep = census.entries.filter((e) => {
+    for (const e of census.entries) {
       const d = disc[e.outletId];
-      if (d && toMs(d) > asOfMs && !liveSet.has(e.outletId)) { notYetPublished.push(e.outletId); return false; }
-      return true;
-    });
-    scoped = { ...census, entries: keep, count: keep.length };
+      if (d && toMs(d) > asOfMs && !liveSet.has(e.outletId)) discoveredAfter.push(e.outletId);
+    }
   }
   const ref = referenceFrom({ census: scoped, verdict: censusVerdict(scoped, liveSet), liveCount: liveSet.size, fetchedAt });
-  return { ...ref, asOf, method: 'timeline', notYetPublished };
+  return { ...ref, asOf, method: 'timeline', notYetPublished, discoveredAfter };
 }
 
 /**
@@ -493,7 +503,7 @@ function evaluateCheck(rec, opts = {}) {
     gates.push(gate('coverage-2h', 'unknown', `no census (${ref2.status || 'missing'}), cannot judge coverage`));
   } else {
     gates.push(gate('coverage-2h', ref2.coverage >= g.coverage2h ? 'pass' : 'fail',
-      `${ref2.covered}/${ref2.count} census outlets live at +2h = ${ref2.coverage} (bar ${g.coverage2h}; census ${(ref2.source || []).join('+') || '?'}${ref2.method === 'timeline' ? `, fetched ${ref2.fetchedAt}, judged on the live timeline` : ''})${ref2.missing.length ? `; missing: ${ref2.missing.join(', ')}` : ''}${ref2.notYetPublished && ref2.notYetPublished.length ? `; not yet published at +2h: ${ref2.notYetPublished.join(', ')}` : ''}`));
+      `${ref2.covered}/${ref2.count} census outlets live at +2h = ${ref2.coverage} (bar ${g.coverage2h}; census ${(ref2.source || []).join('+') || '?'}${ref2.method === 'timeline' ? `, fetched ${ref2.fetchedAt}, judged on the live timeline` : ''})${ref2.missing.length ? `; missing: ${ref2.missing.join(', ')}` : ''}${ref2.discoveredAfter && ref2.discoveredAfter.length ? `; first found by the lane after +2h: ${ref2.discoveredAfter.join(', ')}` : ''}`));
   }
 
   // stability
