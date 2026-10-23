@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5850-b",
   "planId": "64fe8fdb-4418-4d62-a7a9-21562987da1a",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-23T02:02:28.711Z",
   "submitter": {
     "name": null,
@@ -184,5 +184,94 @@
         "description": "the-way-old-friends-do-west-end-2023: openingDate null -> 2023-08-18 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/8/7595-the-way-old-friends-do)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-23T03:30:36.714Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for red-pitch-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for instructions-for-a-teenage-armageddon-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for player-kings-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for two-strangers-carry-a-cake-across-new-york-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for spirited-away-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for dugsi-dayz-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for people-places-and-things-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for bluets-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for kathy-and-stella-solve-a-murder-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for echo-every-cold-hearted-oxygen-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for a-little-life-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for dixon-and-daughters-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for mrs-doubtfire-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for groundhog-day-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for idiots-assemble-spitting-image-the-musical-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-crucible-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-way-old-friends-do-west-end-2023"
+    }
+  ],
+  "executedIn": "ci"
 }
