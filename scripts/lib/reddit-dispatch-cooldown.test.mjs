@@ -14,6 +14,33 @@ const row = (hoursAgo, success, extra = {}) => ({
 });
 const fails = (n, startH = 1) => Array.from({ length: n }, (_, i) => row(startH + i * 0.1, false));
 
+test('host verdict protects other hosts and isolates null-host evidence', () => {
+  const rows = fails(6).map(r => ({ ...r, host: 'realmericanmedia.com' }));
+  assert.equal(c.sbHostVerdict(rows, { host: 'realmericanmedia.com', nowMs: NOW }).allowed, false);
+  assert.equal(c.sbHostVerdict(rows, { host: 'broadwayworld.com', nowMs: NOW }).allowed, true);
+  const missing = fails(6).map(r => ({ ...r, host: null }));
+  assert.equal(c.sbHostVerdict(missing, { host: null, nowMs: NOW }).allowed, false);
+  assert.equal(c.sbHostVerdict(missing, { host: 'realmericanmedia.com', nowMs: NOW }).allowed, true);
+});
+
+test('host verdict normalizes www/case, ignores skips and preserves working hosts', () => {
+  const rows = fails(6).map(r => ({ ...r, host: 'www.Example.com' }));
+  assert.equal(c.sbHostVerdict(rows, { host: 'example.com', nowMs: NOW }).allowed, false);
+  assert.equal(c.sbHostVerdict([...rows, row(10, true, { host: 'example.com' })], { host: 'example.com', nowMs: NOW }).allowed, true);
+  const skips = rows.map(r => ({ ...r, status: 'run-memo-skip', credits: 0 }));
+  assert.equal(c.sbHostVerdict(skips, { host: 'example.com', nowMs: NOW }).allowed, true);
+  assert.equal(c.sbHostVerdict(rows.map(r => ({ ...r, ts: new Date(NOW + 1).toISOString() })), { host: 'example.com', nowMs: NOW }).allowed, true);
+});
+
+test('other-host failed probe re-arms, success reopens, and old rows expire', () => {
+  const rows = fails(6, 7).map(r => ({ ...r, host: 'example.com' }));
+  const verdict = data => c.sbHostVerdict(data, { host: 'example.com', nowMs: NOW });
+  assert.equal(verdict(rows).probe, true);
+  assert.equal(verdict([...rows, row(0.1, false, { host: 'example.com' })]).allowed, false);
+  assert.equal(verdict([...rows, row(0.1, true, { host: 'example.com' })]).allowed, true);
+  assert.equal(verdict(rows.map(r => ({ ...r, ts: new Date(NOW - 49 * 3600e3).toISOString() }))).probe, false);
+});
+
 test('too few SB calls: allowed', () => {
   const v = c.sbRedditVerdict(fails(5), { nowMs: NOW });
   assert.equal(v.allowed, true);
@@ -64,8 +91,10 @@ test('stale verdict: old write + recent attempts = stale; idle scraper = not sta
   assert.equal(c.redditStaleVerdict({ lastWriteMs: null, attemptsInWindow: 1, nowMs: NOW }).stale, true);
 });
 
-test('readLedgerTail skips the torn first line and bad rows', () => {
-  const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'rdc-')), 'l.jsonl');
+test('readLedgerTail skips the torn first line and bad rows', t => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rdc-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const f = path.join(dir, 'l.jsonl');
   const lines = Array.from({ length: 50 }, (_, i) => JSON.stringify({ ts: new Date(NOW).toISOString(), i }));
   lines.splice(10, 0, '{not json');
   fs.writeFileSync(f, lines.join('\n') + '\n');
@@ -76,8 +105,10 @@ test('readLedgerTail skips the torn first line and bad rows', () => {
   assert.deepEqual(c.readLedgerTail('/nonexistent/file'), []);
 });
 
-test('readLedgerTail keeps reading back until it covers the time window', () => {
-  const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'rdc-')), 'l.jsonl');
+test('readLedgerTail keeps reading back until it covers the time window', t => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rdc-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const f = path.join(dir, 'l.jsonl');
   // 200 rows, one per minute ending at NOW; a 300-byte chunk covers ~3 of them
   const lines = Array.from({ length: 200 }, (_, i) =>
     JSON.stringify({ ts: new Date(NOW - (199 - i) * 60e3).toISOString(), i }));

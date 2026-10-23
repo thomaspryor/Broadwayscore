@@ -54,9 +54,20 @@ function isSecondaryOutlet(criticName, outletId) {
  * KNOWN_SYNDICATION_PAIRS — the third Chris Jones/Chicago Tribune recurrence
  * was a sibling of the same class (Tribune-group reprint) the per-critic map
  * could not anticipate.
+ *
+ * Observer/Guardian (BRO-6046): The Observer prints on theguardian.com, so the
+ * Guardian API and web search file the Observer's weekly theatre column as
+ * "guardian" while Theatre Record files the same column as "observer". The
+ * observer copy holds the per-show section and is the primary; a same-critic
+ * guardian copy of the same show is the reprint. Known limit: Broadway files
+ * also use outletId "observer" for the New York Observer (observer.com), which
+ * is not Guardian-owned. A critic who reviewed one show for both the NY
+ * Observer and the Guardian would lose the guardian copy here; none existed
+ * when this group was added (47 same-critic pairs checked, BRO-6046).
  */
 const PUBLISHING_GROUPS = [
   ['chicagotribune', 'nydailynews', 'baltimoresun', 'hartford-courant', 'orlando-sentinel', 'south-florida-sun-sentinel'],
+  ['observer', 'guardian'],
 ];
 
 function _isRealByline(criticName) {
@@ -164,6 +175,9 @@ function isLiveSyndicationPrimary(d) {
  * normalisation. `fileNames` reuses a listing the caller already has;
  * otherwise showDir is read, and an unreadable dir throws (callers decide).
  * `extraCheck(parsedPrimary, fullPath)` adds a caller-specific condition.
+ * The match is by filename, so a primary file whose own byline names a
+ * different critic (a misnamed file, e.g. observer--jesse-green.json holding
+ * David Cote) never shields (BRO-6046).
  */
 function hasLiveSyndicationPrimary(showDir, primaries, criticName, { fileNames, extraCheck } = {}) {
   const fs = require('fs');
@@ -174,6 +188,7 @@ function hasLiveSyndicationPrimary(showDir, primaries, criticName, { fileNames, 
     try {
       const pPath = path.join(showDir, f);
       const p = JSON.parse(fs.readFileSync(pPath, 'utf8'));
+      if (p.criticName && criticFileSlug(p.criticName) !== criticFileSlug(criticName)) return false;
       return isLiveSyndicationPrimary(p) && (!extraCheck || !!extraCheck(p, pPath));
     } catch { return false; }
   });

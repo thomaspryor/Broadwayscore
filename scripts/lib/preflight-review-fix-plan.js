@@ -26,7 +26,7 @@ const path = require('path');
 const { executeReviewFieldEditIn } = require('./review-field-edit');
 const { MAX_PLAN_ACTIONS } = require('./pending-fix-limits');
 const { planStatusAction } = require('./plan-status');
-const { resolveReviewTextsDir } = require('./review-texts-dir');
+const { resolveReviewTextsDir, isReviewTextsCheckout } = require('./review-texts-dir');
 const { runScriptArgs } = require('./run-script-args');
 const { applyDataEdit, dataEditAllowProblem } = require('./data-edit-action');
 const { applyAddCommercialEntry } = require('./commercial-entry-action');
@@ -75,8 +75,19 @@ function pickReviewTextsTree(candidates = [
   path.join(os.homedir(), 'broadway-review-texts'),
   '/home/user/broadway-review-texts',
   path.join(ROOT, 'data', 'review-texts'),
-]) {
-  for (const dir of candidates) if (dir && hasShows(dir)) return dir;
+], { warn = (m) => console.error(m), env = process.env } = {}) {
+  // An operator naming the directory explicitly is never overridden.
+  if (env.REVIEW_TEXTS_DIR && hasShows(env.REVIEW_TEXTS_DIR)) return env.REVIEW_TEXTS_DIR;
+  // BRO-6047: a live git checkout beats a copied snapshot even when the snapshot is listed first.
+  for (const dir of candidates) if (dir && isReviewTextsCheckout(dir)) return dir;
+  for (const dir of candidates) {
+    if (dir && hasShows(dir)) {
+      let age = 'unknown age';
+      try { age = `${Math.round((Date.now() - fs.statSync(dir).mtimeMs) / 3600000)}h old`; } catch {}
+      warn(`WARN review-texts tree ${dir} is a plain snapshot (not a git checkout, ${age}); oldValues may be stale`);
+      return dir;
+    }
+  }
   return path.join(ROOT, 'data', 'review-texts');
 }
 

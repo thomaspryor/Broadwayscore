@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T07:09:36.291Z",
+  "timestamp": "2026-10-23T09:16:25.461Z",
   "stats": {
-    "totalReviews": 59303,
-    "alreadyFlagged": 21067,
+    "totalReviews": 59326,
+    "alreadyFlagged": 21070,
     "dateGuardCatches": 200,
     "directorMismatch": 2122,
     "tvFilmSignals": 1684,
     "londonSignals": 2817,
-    "offBroadwaySignals": 530,
+    "offBroadwaySignals": 531,
     "yearMismatch": 175,
-    "noPublishDate": 5297
+    "noPublishDate": 5313
   },
   "findings": [
     {
@@ -71320,19 +71320,6 @@
     },
     {
       "showId": "ilford-boy-west-end-2026",
-      "file": "bestoftheatre--milo-garth.json",
-      "publishDate": "2026-10-19",
-      "url": "https://www.bestoftheatre.co.uk/blog/post/ilford-boy-in-pictures-danny-lee-wynter-donmar-warehouse",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "ilford-boy-west-end-2026",
       "file": "boycotting-trends--view-my-complete.json",
       "score": 91,
       "publishDate": "2026-10-19",
@@ -88142,6 +88129,19 @@
       ]
     },
     {
+      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "file": "frombroadway--hayley-levitt.json",
+      "publishDate": "2026-10-22",
+      "url": "https://news.frombroadway.com/post/review-roundup-the-curious-case-of-benjamin-button-public-theater",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"cherry lane\""
+        }
+      ]
+    },
+    {
       "showId": "the-curious-case-of-benjamin-button-west-end-2024",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 99,
@@ -95142,6 +95142,19 @@
       "score": 97,
       "publishDate": "2022-04-09",
       "url": "https://www.dailymail.com/home/event/article-10699737/To-Kill-Mockingbird-review-unforgettable-powerfully-moving-evening.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2022",
+      "file": "theupcoming--lauren-devine.json",
+      "publishDate": null,
+      "url": "https://www.theupcoming.co.uk/2022/04/26/to-kill-a-mockingbird-at-gielgud-theatre-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

@@ -1,52 +1,30 @@
 {
-  "generatedAt": "2026-10-22T19:34:18.534Z",
+  "generatedAt": "2026-10-23T07:58:41.913Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "acc36f50e3c8ff8a413e5a9f22d33fb614711ea5",
-  "state": "RED",
-  "consecutiveFailures": 98,
-  "consecutiveSuccesses": 0,
-  "greenSince": null,
-  "greenForHours": null,
+  "latestRunHeadSha": "6a66514f33c749b035e57bb7236a91628f9f1098",
+  "state": "GREEN",
+  "consecutiveFailures": 0,
+  "consecutiveSuccesses": 6,
+  "greenSince": "2026-10-23T06:18:13Z",
+  "greenForHours": 1.6746980555555555,
   "greenDurationIsFloor": false,
-  "redSince": "2026-10-21T22:29:30Z",
-  "redForHours": 21.080148333333334,
-  "redDurationIsFloor": true,
-  "lastSuccessAt": null,
-  "latestFailedRunId": "39834502510",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39834502510",
-  "decidedRuns": 98,
+  "redSince": null,
+  "redForHours": null,
+  "redDurationIsFloor": false,
+  "lastSuccessAt": "2026-10-23T07:41:36Z",
+  "latestFailedRunId": null,
+  "latestFailedRunUrl": null,
+  "decidedRuns": 99,
   "verdictLag": {
-    "verdictSha": "acc36f50e3c8ff8a413e5a9f22d33fb614711ea5",
-    "verdictAt": "2026-10-22T18:47:49Z",
-    "verdictAgeHours": 0.7748705555555555,
-    "newerHeads": 2,
-    "runsInFlight": 2,
+    "verdictSha": "6a66514f33c749b035e57bb7236a91628f9f1098",
+    "verdictAt": "2026-10-23T07:41:36Z",
+    "verdictAgeHours": 0.2849758333333333,
+    "newerHeads": 1,
+    "runsInFlight": 1,
     "lagging": false
   },
-  "failingJobs": [
-    {
-      "name": "Data Validation",
-      "steps": [
-        "Run BRO-1397 prior-run former-cast sweep (needs review-texts)",
-        "Run data validation",
-        "Audit non-review content (weather/sports/junk pages)"
-      ]
-    },
-    {
-      "name": "Test Summary",
-      "steps": [
-        "Check results"
-      ]
-    }
-  ],
-  "failingPaths": [
-    {
-      "path": "scripts/verify-prior-run-former-cast-sweep.test.mjs",
-      "job": "Data Validation",
-      "step": "Run BRO-1397 prior-run former-cast sweep (needs review-texts)",
-      "evidence": "not ok 1 - excerptMentionsFormerCast flags exactly the known-good set across every priorRuns show"
-    }
-  ],
-  "topFailingJob": "Data Validation"
+  "failingJobs": [],
+  "failingPaths": [],
+  "topFailingJob": null
 }

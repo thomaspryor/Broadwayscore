@@ -1642,7 +1642,8 @@ async function main(): Promise<void> {
                 scoredAny.llmScore.reasoning =
                   '[manual-cleared Haiku fallback] ' + (scoredAny.llmScore.reasoning || '');
               }
-              scoredAny.scoreSource = 'manual-cleared-haiku-fallback';
+              // BRO-5055: preserve page-parsed provenance across the label swap.
+              require('../lib/score-source-provenance.js').setScoreSourcePreservingProvenance(scoredAny, 'manual-cleared-haiku-fallback');
               scoredAny.scoreSourceReason =
                 `ensemble rejected as ${rejection} but file is human-cleared (${humanClear}); Haiku single-model scored the text directly`;
               scoredAny.scoredAt = new Date().toISOString();

@@ -1,20 +1,25 @@
 {
   "system": "workflow repeat-failure",
   "status": "error",
-  "lastChecked": "2026-10-22T19:15:16.697Z",
+  "lastChecked": "2026-10-23T07:33:19.264Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Test Suite",
+      "name": "Workflow repeat-failure: Land retry on cancel",
       "status": "error",
-      "message": "Test Suite failed 7 times in the last 24h — likely broken, not transient."
+      "message": "Land retry on cancel failed 25 times in the last 24h — likely broken, not transient."
     },
     {
-      "name": "Workflow repeat-failure: Deploy to Vercel",
+      "name": "Workflow repeat-failure: Test Suite",
       "status": "warn",
-      "message": "Deploy to Vercel failed 3 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+      "message": "Test Suite failed 6 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+    },
+    {
+      "name": "Workflow repeat-failure: Check Corpus Drift",
+      "status": "warn",
+      "message": "Check Corpus Drift failed 2 times in the last 24h — likely broken, not transient."
     }
   ]
 }

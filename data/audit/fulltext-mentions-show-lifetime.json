@@ -1,10 +1,21 @@
 {
-  "updatedAt": "2026-10-22T19:32:06.856Z",
-  "scanned": 2717,
-  "showsWithViolations": 364,
-  "totalViolations": 566,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-10-23T07:56:29.584Z",
+  "scanned": 2721,
+  "showsWithViolations": 370,
+  "totalViolations": 573,
+  "newSinceLastRun": 10,
+  "newViolationKeys": [
+    "la-bete-2010::wsj--terry-teachout.json",
+    "standing-at-the-skys-edge-west-end-2023::standard--nick-curtis.json",
+    "cat-on-a-hot-tin-roof-west-end-2017::nytimes--ben-brantley.json",
+    "bodies-west-end-2017::guardian--unknown.json",
+    "the-wind-in-the-willows-west-end-2017::guardian--michael-billington.json",
+    "lady-day-at-emersons-bar-and-grill-west-end-2017::times-uk--ann-teneman.json",
+    "bat-out-of-hell-west-end-2017::london-box-office--monty-leigh.json",
+    "the-kid-stays-in-the-picture-west-end-2017::guardian--unknown.json",
+    "stepping-out-west-end-2017::guardian--unknown.json",
+    "the-miser-west-end-2017::guardian--unknown.json"
+  ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
     "schmigadoon-2026::nytimes--jesse-green.json",
@@ -31,7 +42,6 @@
     "here-lies-love-2023::northjerseycom--robert-feldberg.json",
     "grey-house-2023::broadwaynews--brittani-samuel.json",
     "grey-house-2023::cititour--brian-scott-lipton.json",
-    "shucked-2023::village-voice--michael-musto.json",
     "take-me-out-2022::variety--frank-rizzo.json",
     "almost-famous-2022::nysr--sandy-macdonald.json",
     "hangmen-2022::nysr--frank-scheck.json",
@@ -192,6 +202,7 @@
     "la-bete-2010::nytimes--charles-isherwood.json",
     "la-bete-2010::usatoday--elysa-gardner.json",
     "la-bete-2010::vulture--scott-brown.json",
+    "la-bete-2010::wsj--terry-teachout.json",
     "a-life-in-the-theatre-2010::backstage--david-sheward.json",
     "a-life-in-the-theatre-2010::bloomberg--john-simon.json",
     "a-life-in-the-theatre-2010::nytheatre--martin-denton.json",
@@ -365,8 +376,6 @@
     "dog-mom-off-west-end-2026::firstnightmagazine--unknown.json",
     "barcelona-west-end-2024::times-uk--clive-davis.json",
     "high-society-west-end-2026::guardian--arifa-akbar.json",
-    "standing-at-the-skys-edge-west-end-2024::express-uk--neil-norman.json",
-    "standing-at-the-skys-edge-west-end-2024::standard--nick-curtis.json",
     "life-of-pi-tour-2024::pioneer-press--rob-hubbard.json",
     "guess-how-much-i-love-you-west-end-2026::i-paper--fiona-mountford.json",
     "ballad-lines-off-west-end-2026::guardian--emma-john.json",
@@ -475,6 +484,7 @@
     "2-22-a-ghost-story-west-end-2023::whatsonstage--alex-wood.json",
     "phaedra-west-end-2023::standard--nick-curtis.json",
     "standing-at-the-skys-edge-west-end-2023::guardian--arifa-akbar.json",
+    "standing-at-the-skys-edge-west-end-2023::standard--nick-curtis.json",
     "standing-at-the-skys-edge-west-end-2023::telegraph--claire-allfree.json",
     "standing-at-the-skys-edge-west-end-2023::thestage--sam-marlowe.json",
     "medea-west-end-2023::times-uk--clive-davis.json",
@@ -571,7 +581,15 @@
     "home-im-darling-west-end-2018::financialtimes--sarah-hemming.json",
     "exit-the-king-west-end-2018::independent--david-lister.json",
     "pity-west-end-2018::guardian--michael-billington.json",
-    "the-great-wave-west-end-2018::guardian--michael-billington.json"
+    "the-great-wave-west-end-2018::guardian--michael-billington.json",
+    "cat-on-a-hot-tin-roof-west-end-2017::nytimes--ben-brantley.json",
+    "bodies-west-end-2017::guardian--unknown.json",
+    "the-wind-in-the-willows-west-end-2017::guardian--michael-billington.json",
+    "lady-day-at-emersons-bar-and-grill-west-end-2017::times-uk--ann-teneman.json",
+    "bat-out-of-hell-west-end-2017::london-box-office--monty-leigh.json",
+    "the-kid-stays-in-the-picture-west-end-2017::guardian--unknown.json",
+    "stepping-out-west-end-2017::guardian--unknown.json",
+    "the-miser-west-end-2017::guardian--unknown.json"
   ],
   "hits": [
     {
@@ -1082,30 +1100,6 @@
           "outletId": "cititour",
           "criticName": "Brian Scott Lipton",
           "haystackLength": 500,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        }
-      ]
-    },
-    {
-      "showId": "shucked-2023",
-      "title": "Shucked",
-      "openingDate": "2023-04-04",
-      "message": "village-voice/Michael Musto (village-voice--michael-musto.json) SHIPPED but fullText never mentions 'Shucked' (303 chars): https://www.villagevoice.com/2023/04/04/review-shucked-brings-the-cornpone-home/",
-      "violations": [
-        {
-          "filename": "village-voice--michael-musto.json",
-          "url": "https://www.villagevoice.com/2023/04/04/review-shucked-brings-the-cornpone-home/",
-          "outletId": "village-voice",
-          "criticName": "Michael Musto",
-          "haystackLength": 303,
           "textIssuesFlag": false,
           "triage": {
             "bucket": "excerpt",
@@ -4458,7 +4452,7 @@
       "showId": "la-bete-2010",
       "title": "La Bête",
       "openingDate": "2010-10-14",
-      "message": "hollywood-reporter/David Rooney (hollywood-reporter--david-rooney.json) SHIPPED but fullText never mentions 'La Bête' (3002 chars, textIssues flag set): https://www.hollywoodreporter.com/news/general-news/la-bete-theater-review-41098/\nnytimes/Charles Isherwood (nytimes--charles-isherwood.json) SHIPPED but fullText never mentions 'La Bête' (7791 chars): https://www.nytimes.com/2010/10/15/theater/reviews/15bete.html\nusatoday/Elysa Gardner (usatoday--elysa-gardner.json) SHIPPED but fullText never mentions 'La Bête' (2914 chars, textIssues flag set): https://www.usatoday.com/life/theater/reviews/2010-10-15-bloody15_ST_N.htm\nvulture/Scott Brown (vulture--scott-brown.json) SHIPPED but fullText never mentions 'La Bête' (5608 chars, textIssues flag set): http://nymag.com/daily/entertainment/2010/10/theater_review_your_comp-lit_t.html",
+      "message": "hollywood-reporter/David Rooney (hollywood-reporter--david-rooney.json) SHIPPED but fullText never mentions 'La Bête' (3002 chars, textIssues flag set): https://www.hollywoodreporter.com/news/general-news/la-bete-theater-review-41098/\nnytimes/Charles Isherwood (nytimes--charles-isherwood.json) SHIPPED but fullText never mentions 'La Bête' (7791 chars): https://www.nytimes.com/2010/10/15/theater/reviews/15bete.html\nusatoday/Elysa Gardner (usatoday--elysa-gardner.json) SHIPPED but fullText never mentions 'La Bête' (2914 chars, textIssues flag set): https://www.usatoday.com/life/theater/reviews/2010-10-15-bloody15_ST_N.htm\nvulture/Scott Brown (vulture--scott-brown.json) SHIPPED but fullText never mentions 'La Bête' (5608 chars, textIssues flag set): http://nymag.com/daily/entertainment/2010/10/theater_review_your_comp-lit_t.html\nwsj/Terry Teachout (wsj--terry-teachout.json) SHIPPED but fullText never mentions 'La Bête' (1612 chars): https://online.wsj.com/article/SB10001424052748704361504575551990855593242.html",
       "violations": [
         {
           "filename": "hollywood-reporter--david-rooney.json",
@@ -4515,6 +4509,22 @@
           "criticName": "Scott Brown",
           "haystackLength": 5608,
           "textIssuesFlag": true,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "wsj--terry-teachout.json",
+          "url": "https://online.wsj.com/article/SB10001424052748704361504575551990855593242.html",
+          "outletId": "wsj",
+          "criticName": "Terry Teachout",
+          "haystackLength": 1612,
+          "textIssuesFlag": false,
           "triage": {
             "bucket": "unresolved",
             "evidence": [
@@ -6658,7 +6668,7 @@
     {
       "showId": "titanique-off-broadway-2022",
       "title": "Titanique",
-      "openingDate": "2022-06-14",
+      "openingDate": "2022-06-23",
       "message": "newyorker/Dan Stahl (newyorker--dan-stahl.json) SHIPPED but fullText never mentions 'Titanique' (2126 chars, textIssues flag set): https://www.newyorker.com/goings-on-about-town/theatre/titanique-07-11-22\ntheatermania/Zachary Stewart (theatermania--zachary-stewart.json) SHIPPED but fullText never mentions 'Titanique' (3849 chars): https://www.theatermania.com/off-broadway/reviews/review-titanque-celine-dion-titanic-musical_93960.html",
       "violations": [
         {
@@ -8168,46 +8178,6 @@
       ]
     },
     {
-      "showId": "standing-at-the-skys-edge-west-end-2024",
-      "title": "Standing at the Sky's Edge",
-      "openingDate": "2024-02-29",
-      "message": "express-uk/Neil Norman (express-uk--neil-norman.json) SHIPPED but fullText never mentions 'Standing at the Sky's Edge' (1734 chars): https://www.express.co.uk/entertainment/theatre/1738843/Standing-at-the-Skys-Edge-national-theatre-review\nstandard/Nick Curtis (standard--nick-curtis.json) SHIPPED but fullText never mentions 'Standing at the Sky's Edge' (3362 chars): https://www.standard.co.uk/culture/theatre/standing-at-the-skys-edge-national-theatre-review-richard-hawley-chris-bush-sheffield-b1060115.html\n⚠️  i-paper/Fiona Mountford (i-paper--fiona-mountford.json) also too short to assess (0 chars): https://inews.co.uk/culture/arts/standing-at-the-skys-edge-national-theatre-review-richard-hawley-perfect-love-letter-to-sheffield-2147627\n⚠️  telegraph/Dominic Cavendish (telegraph--dominic-cavendish.json) also too short to assess (0 chars): https://www.telegraph.co.uk/theatre/what-to-see/standing-at-the-skys-edge-gillian-lynne-theatre-review/\n⚠️  thestage/Dave Fargnoli (thestage--dave-fargnoli.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/standing-at-the-skys-edge-review-at-the-gillian-lynne-theatre-london-chris-bush-richard-hawley",
-      "violations": [
-        {
-          "filename": "express-uk--neil-norman.json",
-          "url": "https://www.express.co.uk/entertainment/theatre/1738843/Standing-at-the-Skys-Edge-national-theatre-review",
-          "outletId": "express-uk",
-          "criticName": "Neil Norman",
-          "haystackLength": 1734,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "truncated",
-            "evidence": [
-              "contentTier=truncated"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        },
-        {
-          "filename": "standard--nick-curtis.json",
-          "url": "https://www.standard.co.uk/culture/theatre/standing-at-the-skys-edge-national-theatre-review-richard-hawley-chris-bush-sheffield-b1060115.html",
-          "outletId": "standard",
-          "criticName": "Nick Curtis",
-          "haystackLength": 3362,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "unresolved",
-            "evidence": [
-              "no-conclusive-triage-metadata"
-            ],
-            "nextStep": "read-article-and-verify-title-and-production",
-            "requiresArticleReview": true
-          }
-        }
-      ]
-    },
-    {
       "showId": "life-of-pi-tour-2024",
       "title": "Life of Pi",
       "openingDate": "2024-12-07",
@@ -8306,7 +8276,7 @@
     {
       "showId": "hole-off-west-end-2026",
       "title": "Hole!",
-      "openingDate": null,
+      "openingDate": "2026-07-17",
       "message": "guardian/Holly O'Mahony (guardian--holly-omahony.json) SHIPPED but fullText never mentions 'Hole!' (2334 chars): https://www.theguardian.com/stage/2026/jul/19/hole-review-soho-theatre-london-edinburgh-fringe",
       "violations": [
         {
@@ -8474,7 +8444,7 @@
     {
       "showId": "the-legends-of-them-west-end-2024",
       "title": "The Legends of Them",
-      "openingDate": null,
+      "openingDate": "2024-12-10",
       "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'The Legends of Them' (2358 chars, textIssues flag set): https://www.theguardian.com/stage/2024/dec/11/the-legends-of-them-review-sutara-gayle-lorna-gee-royal-court",
       "violations": [
         {
@@ -8594,7 +8564,7 @@
     {
       "showId": "expendable-west-end-2024",
       "title": "Expendable",
-      "openingDate": null,
+      "openingDate": "2024-11-27",
       "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'Expendable' (3347 chars, textIssues flag set): https://www.theguardian.com/stage/2024/nov/29/expendable-review-royal-court-theatre-london",
       "violations": [
         {
@@ -8642,7 +8612,7 @@
     {
       "showId": "a-good-house-west-end-2025",
       "title": "A Good House",
-      "openingDate": null,
+      "openingDate": "2025-01-17",
       "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'A Good House' (3248 chars): https://www.theguardian.com/stage/2025/jan/19/a-good-house-review-amy-jephta-royal-court-theatre-london",
       "violations": [
         {
@@ -8818,7 +8788,7 @@
     {
       "showId": "manhunt-west-end-2025",
       "title": "Manhunt",
-      "openingDate": null,
+      "openingDate": "2025-04-08",
       "message": "times-uk/Clive Davis (times-uk--clive-davis.json) SHIPPED but fullText never mentions 'Manhunt' (2871 chars): https://www.thetimes.com/article/5af2b5b1-bbed-41ac-952b-1b34dc926c87",
       "violations": [
         {
@@ -9298,7 +9268,7 @@
     {
       "showId": "pygmalion-west-end-2023",
       "title": "Pygmalion",
-      "openingDate": "2023-09-12",
+      "openingDate": "2023-09-19",
       "message": "express-uk/Neil Norman (express-uk--neil-norman.json) SHIPPED but fullText never mentions 'Pygmalion' (1787 chars): https://www.express.co.uk/entertainment/theatre/1814610/pygmalion-review-george-bernard-shaw\ni-paper/Fiona Mountford (i-paper--fiona-mountford.json) SHIPPED but fullText never mentions 'Pygmalion' (2949 chars): https://inews.co.uk/culture/arts/pygmalion-old-vic-review-patsy-ferran-bertie-carvel-magnificently-modern-2629391\nstandard/Nick Curtis (standard--nick-curtis.json) SHIPPED but fullText never mentions 'Pygmalion' (2820 chars): https://www.standard.co.uk/culture/theatre/pygmalion-old-vic-review-patsy-ferran-bertie-carvel-b1108191.html\ntelegraph/Marianka Swain (telegraph--marianka-swain.json) SHIPPED but fullText never mentions 'Pygmalion' (2733 chars): https://www.telegraph.co.uk/theatre/what-to-see/pygmalion-old-vic-review/\nthestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Pygmalion' (500 chars): https://www.thestage.co.uk/reviews/reviews/pygmalion-review-old-vic-london-pasty-ferran-bertie-carvel-george-bernard-shaw",
       "violations": [
         {
@@ -9386,7 +9356,7 @@
     {
       "showId": "sunset-boulevard-west-end-2023",
       "title": "Sunset Boulevard",
-      "openingDate": null,
+      "openingDate": "2023-10-12",
       "message": "city-am/Adam Bloodworth (city-am--adam-bloodworth.json) SHIPPED but fullText never mentions 'Sunset Boulevard' (500 chars): https://www.cityam.com/sunset-boulevard-review-nicole-scherzinger-roars-but-its-more-star-than-substance/\nstandard/Nick Curtis (standard--nick-curtis.json) SHIPPED but fullText never mentions 'Sunset Boulevard' (303 chars): https://www.standard.co.uk/culture/theatre/sunset-boulevard-at-the-savoy-theatre-review-ready-for-her-close-up-nicole-scherzinger-smashes-it-b1113277.html\nthestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Sunset Boulevard' (233 chars): https://www.thestage.co.uk/long-reviews/sunset-boulevard-review-savoy-theatre-london-nicole-scherzinger-andrew-lloyd-webber-jamie-lloyd",
       "violations": [
         {
@@ -9466,7 +9436,7 @@
     {
       "showId": "lyonesse-west-end-2023",
       "title": "Lyonesse",
-      "openingDate": null,
+      "openingDate": "2023-10-25",
       "message": "daily-mail/Patrick Marmion (daily-mail--patrick-marmion.json) SHIPPED but fullText never mentions 'Lyonesse' (3106 chars): https://www.dailymail.co.uk/tvshowbiz/article-12672947/Lyonesse-review-Sunset-Boulevard-meets-Ab-Fab-set-Cornwall-Lily-James-Kristin-Scott-Thomas-serving-stardust-writes-PATRICK-MARMION.html",
       "violations": [
         {
@@ -9562,7 +9532,7 @@
     {
       "showId": "just-for-one-day-west-end-2024",
       "title": "Just for One Day",
-      "openingDate": "2024-02-02",
+      "openingDate": "2024-02-13",
       "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'Just for One Day' (4248 chars): https://www.theguardian.com/stage/2024/feb/13/just-for-one-day-review-live-aid-musical-bob-geldof\ni-paper/Fiona Mountford (i-paper--fiona-mountford.json) SHIPPED but fullText never mentions 'Just for One Day' (2967 chars): https://inews.co.uk/culture/just-for-one-day-review-2905113\ntelegraph/Dominic Cavendish (telegraph--dominic-cavendish.json) SHIPPED but fullText never mentions 'Just for One Day' (3888 chars, textIssues flag set): https://www.telegraph.co.uk/theatre/what-to-see/just-for-one-day-old-vic-review-live-aid/",
       "violations": [
         {
@@ -9802,7 +9772,7 @@
     {
       "showId": "player-kings-west-end-2024",
       "title": "Player Kings",
-      "openingDate": null,
+      "openingDate": "2024-04-11",
       "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'Player Kings' (3754 chars): https://www.theguardian.com/stage/2024/apr/11/player-kings-review-ian-mckellen-falstaff-noel-coward-theatre-london",
       "violations": [
         {
@@ -9906,7 +9876,7 @@
     {
       "showId": "spirited-away-west-end-2024",
       "title": "Spirited Away",
-      "openingDate": null,
+      "openingDate": "2024-05-07",
       "message": "city-am/Steve Dinneen (city-am--steve-dinneen.json) SHIPPED but fullText never mentions 'Spirited Away' (303 chars): https://www.cityam.com/spirited-away-at-london-coliseum-is-a-spectacular-must-see-show/\nthestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Spirited Away' (303 chars): https://www.thestage.co.uk/reviews/spirited-away-review-london-coliseum-studio-ghibli-john-caird-hayao-miyazaki-studio-ghibli",
       "violations": [
         {
@@ -9946,7 +9916,7 @@
     {
       "showId": "dugsi-dayz-west-end-2024",
       "title": "Dugsi Dayz",
-      "openingDate": null,
+      "openingDate": "2024-05-03",
       "message": "all-that-dazzles-uk/Unknown (all-that-dazzles-uk--unknown.json) SHIPPED but fullText never mentions 'Dugsi Dayz' (7624 chars): https://www.allthatdazzles.co.uk/post/review-dugsi-dayz-royal-court",
       "violations": [
         {
@@ -9970,7 +9940,7 @@
     {
       "showId": "people-places-and-things-west-end-2024",
       "title": "People, Places and Things",
-      "openingDate": null,
+      "openingDate": "2024-05-14",
       "message": "thestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'People, Places and Things' (552 chars, textIssues flag set): https://www.thestage.co.uk/reviews/people-places-things-review-trafalgar-theatre-london-denise-gough",
       "violations": [
         {
@@ -9994,7 +9964,7 @@
     {
       "showId": "bluets-west-end-2024",
       "title": "Bluets",
-      "openingDate": null,
+      "openingDate": "2024-05-24",
       "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'Bluets' (3182 chars): https://www.theguardian.com/stage/article/2024/may/24/bluets-review-maggie-nelsons-blue-riffs-become-left-field-cine-theatre",
       "violations": [
         {
@@ -10130,7 +10100,7 @@
     {
       "showId": "echo-every-cold-hearted-oxygen-west-end-2024",
       "title": "Echo (Every Cold-Hearted Oxygen)",
-      "openingDate": null,
+      "openingDate": "2024-07-14",
       "message": "guardian/Kate Wyver (guardian--kate-wyver.json) SHIPPED but fullText never mentions 'Echo (Every Cold-Hearted Oxygen)' (2173 chars): https://www.theguardian.com/stage/article/2024/jul/18/echo-review-royal-court-theatre-london",
       "violations": [
         {
@@ -10475,7 +10445,7 @@
       "showId": "standing-at-the-skys-edge-west-end-2023",
       "title": "Standing at the Sky's Edge",
       "openingDate": "2023-02-13",
-      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'Standing at the Sky's Edge' (3090 chars): https://www.theguardian.com/stage/2023/feb/14/standing-at-the-skys-edge-review-richard-hawley-pulls-on-the-heartstrings-in-his-sheffield-opus\ntelegraph/Claire Allfree (telegraph--claire-allfree.json) SHIPPED but fullText never mentions 'Standing at the Sky's Edge' (2531 chars): https://www.telegraph.co.uk/theatre/what-to-see/standing-skys-edge-national-theatre-review-concept-trumps-content/\nthestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Standing at the Sky's Edge' (3025 chars): https://www.thestage.co.uk/reviews/standing-at-the-skys-edge-review-national-theatre-london-by-chris-bush-and-richard-hawley",
+      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'Standing at the Sky's Edge' (3090 chars): https://www.theguardian.com/stage/2023/feb/14/standing-at-the-skys-edge-review-richard-hawley-pulls-on-the-heartstrings-in-his-sheffield-opus\nstandard/Nick Curtis (standard--nick-curtis.json) SHIPPED but fullText never mentions 'Standing at the Sky's Edge' (3362 chars): https://www.standard.co.uk/culture/theatre/standing-at-the-skys-edge-national-theatre-review-richard-hawley-chris-bush-sheffield-b1060115.html\ntelegraph/Claire Allfree (telegraph--claire-allfree.json) SHIPPED but fullText never mentions 'Standing at the Sky's Edge' (2531 chars): https://www.telegraph.co.uk/theatre/what-to-see/standing-skys-edge-national-theatre-review-concept-trumps-content/\nthestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Standing at the Sky's Edge' (3025 chars): https://www.thestage.co.uk/reviews/standing-at-the-skys-edge-review-national-theatre-london-by-chris-bush-and-richard-hawley",
       "violations": [
         {
           "filename": "guardian--arifa-akbar.json",
@@ -10483,6 +10453,22 @@
           "outletId": "guardian",
           "criticName": "Arifa Akbar",
           "haystackLength": 3090,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "standard--nick-curtis.json",
+          "url": "https://www.standard.co.uk/culture/theatre/standing-at-the-skys-edge-national-theatre-review-richard-hawley-chris-bush-sheffield-b1060115.html",
+          "outletId": "standard",
+          "criticName": "Nick Curtis",
+          "haystackLength": 3362,
           "textIssuesFlag": false,
           "triage": {
             "bucket": "unresolved",
@@ -10642,7 +10628,7 @@
     {
       "showId": "groundhog-day-west-end-2023",
       "title": "Groundhog Day",
-      "openingDate": null,
+      "openingDate": "2023-06-08",
       "message": "telegraph/Dominic Cavendish (telegraph--dominic-cavendish.json) SHIPPED but fullText never mentions 'Groundhog Day' (3256 chars): https://www.telegraph.co.uk/theatre/what-to-see/groundhog-day-review-its-a-delight-to-have-this-romcom-back/",
       "violations": [
         {
@@ -10666,7 +10652,7 @@
     {
       "showId": "the-crucible-west-end-2023",
       "title": "The Crucible",
-      "openingDate": null,
+      "openingDate": "2023-06-15",
       "message": "standard/Nick Curtis (standard--nick-curtis.json) SHIPPED but fullText never mentions 'The Crucible' (4146 chars): https://www.standard.co.uk/culture/theatre/the-crucible-gielgud-theatre-review-milly-alcock-arthur-miller-b1088241.html",
       "violations": [
         {
@@ -10690,7 +10676,7 @@
     {
       "showId": "the-way-old-friends-do-west-end-2023",
       "title": "The Way Old Friends Do",
-      "openingDate": null,
+      "openingDate": "2023-08-18",
       "message": "standard/Nick Curtis (standard--nick-curtis.json) SHIPPED but fullText never mentions 'The Way Old Friends Do' (3764 chars): https://www.standard.co.uk/culture/theatre/the-way-old-friends-do-criterion-theatre-abba-mark-gatiss-b1101889.html",
       "violations": [
         {
@@ -10874,7 +10860,7 @@
     {
       "showId": "the-human-voice-west-end-2022",
       "title": "The Human Voice",
-      "openingDate": "2022-03-21",
+      "openingDate": "2022-03-22",
       "message": "culture-whisper/Holly O'Mahoney (culture-whisper--holly-omahoney.json) SHIPPED but fullText never mentions 'The Human Voice' (303 chars): https://www.culturewhisper.com/r/theatre/ruth_wilson_ivo_van_hove_the_human_voice_harold_pinter_theatre/16639\ni-paper/Sam Marlowe (i-paper--sam-marlowe.json) SHIPPED but fullText never mentions 'The Human Voice' (500 chars): https://inews.co.uk/culture/the-human-voice-harold-pinter-theatre-review-ruth-wilson-ivo-van-hove-1533937",
       "violations": [
         {
@@ -11746,7 +11732,7 @@
     {
       "showId": "the-american-clock-west-end-2019",
       "title": "The American Clock",
-      "openingDate": "2019-02-14",
+      "openingDate": "2019-02-13",
       "message": "guardian/Michael Billington (guardian--michael-billington.json) SHIPPED but fullText never mentions 'The American Clock' (2460 chars): https://www.theguardian.com/stage/2019/feb/14/the-american-clock-review-arthur-miller-old-vic-london",
       "violations": [
         {
@@ -12066,7 +12052,7 @@
     {
       "showId": "on-your-feet-west-end-2019",
       "title": "On Your Feet!",
-      "openingDate": "2019-06-26",
+      "openingDate": "2019-06-27",
       "message": "thestage/Tim Bano (thestage--tim-bano.json) SHIPPED but fullText never mentions 'On Your Feet!' (230 chars): https://www.thestage.co.uk/reviews/2019/on-your-feet-gloria-estefan-review-at-london-coliseum/",
       "violations": [
         {
@@ -12542,15 +12528,207 @@
           }
         }
       ]
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-west-end-2017",
+      "title": "Cat On a Hot Tin Roof",
+      "openingDate": "2017-07-24",
+      "message": "nytimes/Ben Brantley (nytimes--ben-brantley.json) SHIPPED but fullText never mentions 'Cat On a Hot Tin Roof' (360 chars): https://www.nytimes.com/2017/07/25/theater/cat-on-a-hot-tin-roof-sienna-miller-london-review.html?partner=rss&emc=rss",
+      "violations": [
+        {
+          "filename": "nytimes--ben-brantley.json",
+          "url": "https://www.nytimes.com/2017/07/25/theater/cat-on-a-hot-tin-roof-sienna-miller-london-review.html?partner=rss&emc=rss",
+          "outletId": "nytimes",
+          "criticName": "Ben Brantley",
+          "haystackLength": 360,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "bodies-west-end-2017",
+      "title": "Bodies",
+      "openingDate": "2017-07-11",
+      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED but fullText never mentions 'Bodies' (2552 chars, textIssues flag set): https://www.theguardian.com/stage/2017/jul/12/bodies-review-vivienne-franzmann-royal-court-london-surrogacy",
+      "violations": [
+        {
+          "filename": "guardian--unknown.json",
+          "url": "https://www.theguardian.com/stage/2017/jul/12/bodies-review-vivienne-franzmann-royal-court-london-surrogacy",
+          "outletId": "guardian",
+          "criticName": "Unknown",
+          "haystackLength": 2552,
+          "textIssuesFlag": true,
+          "triage": {
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "the-wind-in-the-willows-west-end-2017",
+      "title": "The Wind in the Willows",
+      "openingDate": "2017-06-29",
+      "message": "guardian/Michael Billington (guardian--michael-billington.json) SHIPPED but fullText never mentions 'The Wind in the Willows' (3336 chars, textIssues flag set): https://www.theguardian.com/stage/2017/jun/29/the-wind-in-the-willows-review-julian-fellowes-rufus-hound-stiles-and-drewe",
+      "violations": [
+        {
+          "filename": "guardian--michael-billington.json",
+          "url": "https://www.theguardian.com/stage/2017/jun/29/the-wind-in-the-willows-review-julian-fellowes-rufus-hound-stiles-and-drewe",
+          "outletId": "guardian",
+          "criticName": "Michael Billington",
+          "haystackLength": 3336,
+          "textIssuesFlag": true,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "lady-day-at-emersons-bar-and-grill-west-end-2017",
+      "title": "Lady Day at Emerson's Bar and Grill",
+      "openingDate": "2017-06-27",
+      "message": "times-uk/Ann Teneman (times-uk--ann-teneman.json) SHIPPED but fullText never mentions 'Lady Day at Emerson's Bar and Grill' (500 chars): https://www.thetimes.co.uk/article/theatre-review-lady-day-at-emersons-bar-grill-at-wyndhams-wc2-g6p8znvbq",
+      "violations": [
+        {
+          "filename": "times-uk--ann-teneman.json",
+          "url": "https://www.thetimes.co.uk/article/theatre-review-lady-day-at-emersons-bar-grill-at-wyndhams-wc2-g6p8znvbq",
+          "outletId": "times-uk",
+          "criticName": "Ann Teneman",
+          "haystackLength": 500,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "bat-out-of-hell-west-end-2017",
+      "title": "Bat Out of Hell",
+      "openingDate": "2017-06-20",
+      "message": "london-box-office/Monty Leigh (london-box-office--monty-leigh.json) SHIPPED but fullText never mentions 'Bat Out of Hell' (2145 chars, textIssues flag set): https://www.londonboxoffice.co.uk/news/post/review-bat-out-of-hell",
+      "violations": [
+        {
+          "filename": "london-box-office--monty-leigh.json",
+          "url": "https://www.londonboxoffice.co.uk/news/post/review-bat-out-of-hell",
+          "outletId": "london-box-office",
+          "criticName": "Monty Leigh",
+          "haystackLength": 2145,
+          "textIssuesFlag": true,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "the-kid-stays-in-the-picture-west-end-2017",
+      "title": "The Kid Stays in the Picture",
+      "openingDate": "2017-03-23",
+      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED but fullText never mentions 'The Kid Stays in the Picture' (3374 chars): https://www.theguardian.com/stage/2017/mar/23/the-kid-stays-in-the-picture-review-robert-evans-royal-court",
+      "violations": [
+        {
+          "filename": "guardian--unknown.json",
+          "url": "https://www.theguardian.com/stage/2017/mar/23/the-kid-stays-in-the-picture-review-robert-evans-royal-court",
+          "outletId": "guardian",
+          "criticName": "Unknown",
+          "haystackLength": 3374,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "stepping-out-west-end-2017",
+      "title": "Stepping Out",
+      "openingDate": "2017-03-14",
+      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED but fullText never mentions 'Stepping Out' (1509 chars): https://www.theguardian.com/stage/2017/mar/15/stepping-out-review-musical-amanda-holden-vaudeville-london",
+      "violations": [
+        {
+          "filename": "guardian--unknown.json",
+          "url": "https://www.theguardian.com/stage/2017/mar/15/stepping-out-review-musical-amanda-holden-vaudeville-london",
+          "outletId": "guardian",
+          "criticName": "Unknown",
+          "haystackLength": 1509,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "the-miser-west-end-2017",
+      "title": "The Miser",
+      "openingDate": "2017-03-13",
+      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED but fullText never mentions 'The Miser' (2916 chars, textIssues flag set): https://www.theguardian.com/stage/2017/mar/13/the-miser-review-griff-rhys-jones-lee-mack-moliere",
+      "violations": [
+        {
+          "filename": "guardian--unknown.json",
+          "url": "https://www.theguardian.com/stage/2017/mar/13/the-miser-review-griff-rhys-jones-lee-mack-moliere",
+          "outletId": "guardian",
+          "criticName": "Unknown",
+          "haystackLength": 2916,
+          "textIssuesFlag": true,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
     }
   ],
   "triage": {
-    "total": 566,
+    "total": 573,
     "counts": {
-      "excerpt": 160,
+      "excerpt": 161,
       "wrong-production": 12,
-      "unresolved": 317,
-      "truncated": 77
+      "unresolved": 322,
+      "truncated": 78
     },
     "outletPlans": [
       {
@@ -13785,9 +13963,9 @@
       },
       {
         "outletId": "express-uk",
-        "total": 5,
+        "total": 4,
         "counts": {
-          "truncated": 3,
+          "truncated": 2,
           "unresolved": 2
         },
         "requiresArticleReview": true,
@@ -13826,15 +14004,6 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "standing-at-the-skys-edge-west-end-2024/express-uk--neil-norman.json",
-            "bucket": "truncated",
-            "evidence": [
-              "contentTier=truncated"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           }
         ]
@@ -14019,10 +14188,10 @@
       },
       {
         "outletId": "guardian",
-        "total": 88,
+        "total": 93,
         "counts": {
-          "unresolved": 66,
-          "truncated": 21,
+          "unresolved": 69,
+          "truncated": 23,
           "excerpt": 1
         },
         "requiresArticleReview": true,
@@ -14178,6 +14347,15 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "bodies-west-end-2017/guardian--unknown.json",
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           },
           {
@@ -14559,6 +14737,15 @@
             "requiresArticleReview": true
           },
           {
+            "file": "stepping-out-west-end-2017/guardian--unknown.json",
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
             "file": "sweetmeats-west-end-2026/guardian--anya-ryan.json",
             "bucket": "unresolved",
             "evidence": [
@@ -14694,6 +14881,15 @@
             "requiresArticleReview": true
           },
           {
+            "file": "the-kid-stays-in-the-picture-west-end-2017/guardian--unknown.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
             "file": "the-legends-of-them-west-end-2024/guardian--arifa-akbar.json",
             "bucket": "truncated",
             "evidence": [
@@ -14704,6 +14900,15 @@
           },
           {
             "file": "the-man-in-the-white-suit-west-end-2019/guardian--michael-billington.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "the-miser-west-end-2017/guardian--unknown.json",
             "bucket": "unresolved",
             "evidence": [
               "no-conclusive-triage-metadata"
@@ -14749,6 +14954,15 @@
           },
           {
             "file": "the-unbelievers-west-end-2025/guardian--arifa-akbar.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "the-wind-in-the-willows-west-end-2017/guardian--michael-billington.json",
             "bucket": "unresolved",
             "evidence": [
               "no-conclusive-triage-metadata"
@@ -15113,14 +15327,23 @@
       },
       {
         "outletId": "london-box-office",
-        "total": 3,
+        "total": 4,
         "counts": {
-          "unresolved": 3
+          "unresolved": 4
         },
         "requiresArticleReview": true,
         "candidates": [
           {
             "file": "amelie-west-end-2021/london-box-office--phil-willmott.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "bat-out-of-hell-west-end-2017/london-box-office--monty-leigh.json",
             "bucket": "unresolved",
             "evidence": [
               "no-conclusive-triage-metadata"
@@ -15912,11 +16135,11 @@
       },
       {
         "outletId": "nytimes",
-        "total": 9,
+        "total": 10,
         "counts": {
           "wrong-production": 2,
           "unresolved": 4,
-          "excerpt": 3
+          "excerpt": 4
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -15927,6 +16150,15 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "cat-on-a-hot-tin-roof-west-end-2017/nytimes--ben-brantley.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           },
           {
@@ -16471,7 +16703,7 @@
             "requiresArticleReview": true
           },
           {
-            "file": "standing-at-the-skys-edge-west-end-2024/standard--nick-curtis.json",
+            "file": "standing-at-the-skys-edge-west-end-2023/standard--nick-curtis.json",
             "bucket": "unresolved",
             "evidence": [
               "no-conclusive-triage-metadata"
@@ -18069,11 +18301,11 @@
       },
       {
         "outletId": "times-uk",
-        "total": 33,
+        "total": 34,
         "counts": {
           "unresolved": 24,
           "truncated": 6,
-          "excerpt": 3
+          "excerpt": 4
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -18187,6 +18419,15 @@
           },
           {
             "file": "killer-joe-west-end-2018/times-uk--dominic-maxwell.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "lady-day-at-emersons-bar-and-grill-west-end-2017/times-uk--ann-teneman.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
@@ -18510,23 +18751,14 @@
       },
       {
         "outletId": "village-voice",
-        "total": 3,
+        "total": 2,
         "counts": {
-          "excerpt": 3
+          "excerpt": 2
         },
         "requiresArticleReview": true,
         "candidates": [
           {
             "file": "a-life-in-the-theatre-2010/village-voice--michael-feingold.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "shucked-2023/village-voice--michael-musto.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
@@ -18780,10 +19012,10 @@
       },
       {
         "outletId": "wsj",
-        "total": 3,
+        "total": 4,
         "counts": {
           "truncated": 2,
-          "unresolved": 1
+          "unresolved": 2
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -18794,6 +19026,15 @@
               "contentTier=truncated"
             ],
             "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "la-bete-2010/wsj--terry-teachout.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {

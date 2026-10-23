@@ -155,19 +155,14 @@ function reconcileShowFields(localShow, remoteShow, baseShow, fields = RECONCILA
 }
 
 /**
- * Normalize the retired-id input to a Set. `undefined` means "consult the
- * registry on disk" (scripts/lib/retired-show-ids.js — [] when the file is
- * absent); a Set or array is used as-is, so push-core-data can hand in the
- * post-rebase checkout's copy and tests can pass in-memory lists.
+ * Normalize the caller's retired-id input to a Set. Require an explicit
+ * list so reconciliation stays pure without silently disabling retirement
+ * protection when a caller forgets to load its registry.
  */
 function toRetiredSet(retiredIds) {
   if (retiredIds instanceof Set) return retiredIds;
   if (Array.isArray(retiredIds)) return new Set(retiredIds);
-  if (retiredIds === undefined || retiredIds === null) {
-    const { loadRetiredIds } = require('./retired-show-ids');
-    return new Set(loadRetiredIds().map((e) => e.id));
-  }
-  throw new TypeError('reconcileShowsJson: retiredIds must be a Set, an array, or undefined');
+  throw new TypeError('reconcileShowsJson: retiredIds must be a Set or an array');
 }
 
 /**
@@ -189,13 +184,14 @@ function toRetiredSet(retiredIds) {
  * @param {{shows: Array}|null} base - the pre-run baseline snapshot, or
  *   null when unavailable (shallow clone with no merge-base, etc.)
  * @param {string[]} [fields] - RECONCILABLE_FIELDS override (tests)
- * @param {Set<string>|string[]} [retiredIds] - retired ids; default reads
- *   the registry from disk via loadRetiredIds()
+ * @param {Set<string>|string[]} retiredIds - required, caller-loaded retired
+ *   ids; pass an empty Set or array when the caller has no registry
  * @returns {{recovered: number, readded: number, baseAvailable: boolean,
  *   retiredSkipped: number}} retiredSkipped counts remote-only shows that
  *   were NOT re-added because their id is retired
  */
-function reconcileShowsJson(local, remote, base, fields = RECONCILABLE_FIELDS, retiredIds = undefined) {
+function reconcileShowsJson(local, remote, base, fields = RECONCILABLE_FIELDS, retiredIds) {
+  const retired = toRetiredSet(retiredIds);
   const localShows = local.shows || (local.shows = []);
   const localMap = new Map();
   for (const s of localShows) if (s && s.id) localMap.set(s.id, s);
@@ -203,8 +199,6 @@ function reconcileShowsJson(local, remote, base, fields = RECONCILABLE_FIELDS, r
   const baseAvailable = !!base;
   const baseMap = new Map();
   if (base) for (const s of base.shows || []) if (s && s.id) baseMap.set(s.id, s);
-
-  const retired = toRetiredSet(retiredIds);
 
   let recovered = 0;
   let readded = 0;

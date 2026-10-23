@@ -35,7 +35,7 @@ const { reconcileShowsJson } = nodeRequire('../../scripts/lib/reconcile-shows-fi
 
 function reconcile({ local, remote, base }) {
   const logs = [];
-  const { readded, baseAvailable } = reconcileShowsJson(local, remote, base);
+  const { readded, baseAvailable } = reconcileShowsJson(local, remote, base, undefined, []);
   if (!baseAvailable) {
     const localIds = new Set((local.shows || []).map((s) => s && s.id).filter(Boolean));
     const remoteOnly = (remote.shows || []).filter((rs) => rs && rs.id && !localIds.has(rs.id)).length;

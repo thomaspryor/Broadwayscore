@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-22T19:17:36.650Z",
+  "generatedAt": "2026-10-23T07:35:34.899Z",
   "window": {
-    "since": "2026-10-16",
-    "until": "2026-10-22"
+    "since": "2026-10-17",
+    "until": "2026-10-23"
   },
   "bannerText": "Spend guard audit (last 7 days): 0 defect(s), 2 cap drift(s).",
   "items": [
@@ -12,7 +12,7 @@
     },
     {
       "title": "bd-circuit-breaker-web_unlocker2",
-      "detail": "ACCEPTED: 5 trip day(s); rerouted spend on trip days $0.04 (389 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 2782"
+      "detail": "ACCEPTED: 5 trip day(s); rerouted spend on trip days $0.04 (367 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 2777"
     },
     {
       "title": "sb-circuit-breaker",
@@ -21,6 +21,10 @@
     {
       "title": "sd-circuit-breaker",
       "detail": "OK: 0 trip day(s); rerouted spend on trip days $0.00 (0 rows)"
+    },
+    {
+      "title": "Data Validation fallback risk",
+      "detail": "Recorded 0/7 day(s) with BD + Scrapingdog trips (web + SD: 0, SERP + SD: 0, all three: 0). Days: none recorded. Same-day trips do not prove simultaneous outages or ScrapingBee coverage; missing observations can undercount trips."
     }
   ],
   "defects": [],
@@ -59,16 +63,16 @@
       "verdict": "ACCEPTED",
       "days": 5,
       "dayList": [
-        "2026-10-16",
         "2026-10-17",
         "2026-10-18",
         "2026-10-19",
-        "2026-10-20"
+        "2026-10-20",
+        "2026-10-22"
       ],
       "lowerBound": false,
       "spend": {
         "usd": 0.04,
-        "rows": 389,
+        "rows": 367,
         "unpriced": 0,
         "label": "bd-budget",
         "partialSince": null,
@@ -79,7 +83,7 @@
         "source": "opening-window-reserve",
         "from": "trip-row",
         "currentZero": false,
-        "median14d": 2782,
+        "median14d": 2777,
         "drift": true,
         "note": null
       }
@@ -102,11 +106,11 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 35362,
+        "ceiling": 36840,
         "source": "plan+opening-window-reserve",
         "from": "state",
         "currentZero": false,
-        "median14d": 17218,
+        "median14d": 16659,
         "drift": false,
         "note": "not enforcing (shadow)"
       }
@@ -129,11 +133,11 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 356787,
+        "ceiling": 394248,
         "source": "plan",
         "from": "state",
         "currentZero": false,
-        "median14d": 66434,
+        "median14d": 65181,
         "drift": false,
         "note": null
       }
@@ -239,8 +243,54 @@
       "guards": {}
     },
     "2026-10-22": {
+      "partial": false,
+      "guards": {
+        "bd-circuit-breaker-web_unlocker2": {
+          "usd": 0.0026,
+          "rows": 26,
+          "unpriced": 0
+        }
+      }
+    },
+    "2026-10-23": {
       "partial": true,
       "guards": {}
     }
+  },
+  "dailyBreakerPattern": {
+    "window": {
+      "sinceDay": "2026-10-17",
+      "untilDay": "2026-10-23",
+      "days": 7
+    },
+    "providers": {
+      "web": {
+        "days": 5,
+        "dayList": [
+          "2026-10-17",
+          "2026-10-18",
+          "2026-10-19",
+          "2026-10-20",
+          "2026-10-22"
+        ],
+        "lowerBound": false
+      },
+      "serp": {
+        "days": 0,
+        "dayList": [],
+        "lowerBound": false
+      },
+      "scrapingdog": {
+        "days": 0,
+        "dayList": [],
+        "lowerBound": false
+      }
+    },
+    "webAndSd": [],
+    "serpAndSd": [],
+    "allThree": [],
+    "observedDays": [],
+    "incomplete": false,
+    "summary": "Recorded 0/7 day(s) with BD + Scrapingdog trips (web + SD: 0, SERP + SD: 0, all three: 0). Days: none recorded. Same-day trips do not prove simultaneous outages or ScrapingBee coverage; missing observations can undercount trips."
   }
 }

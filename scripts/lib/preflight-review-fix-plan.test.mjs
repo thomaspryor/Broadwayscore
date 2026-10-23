@@ -89,10 +89,26 @@ test('pickReviewTextsTree skips a missing or empty directory and falls through t
   fs.mkdirSync(path.join(real, 'show-a'));
   const dotOnly = fs.mkdtempSync(path.join(os.tmpdir(), 'pf-dot-'));
   fs.mkdirSync(path.join(dotOnly, '.git'));
-  assert.equal(pickReviewTextsTree(['/nonexistent/broadway-review-texts', empty, dotOnly, real]), real);
-  assert.equal(pickReviewTextsTree([real, empty]), real);
+  assert.equal(pickReviewTextsTree(['/nonexistent/broadway-review-texts', empty, dotOnly, real], { env: {}, warn() {} }), real);
+  assert.equal(pickReviewTextsTree([real, empty], { env: {}, warn() {} }), real);
   // nothing usable: the data/review-texts default, never undefined
-  assert.match(pickReviewTextsTree(['/nonexistent/a', empty]), /data[\\/]review-texts$/);
+  assert.match(pickReviewTextsTree(['/nonexistent/a', empty], { env: {}, warn() {} }), /data[\\/]review-texts$/);
+});
+
+// BRO-6047: a copied snapshot listed first must not beat a live git clone.
+test('pickReviewTextsTree prefers a git checkout over a plain snapshot and warns when only a snapshot exists', () => {
+  const { pickReviewTextsTree } = require('./preflight-review-fix-plan.js');
+  const snapshot = fs.mkdtempSync(path.join(os.tmpdir(), 'pf-snap-'));
+  fs.mkdirSync(path.join(snapshot, 'show-a'));
+  const clone = fs.mkdtempSync(path.join(os.tmpdir(), 'pf-clone-'));
+  fs.mkdirSync(path.join(clone, '.git'));
+  fs.mkdirSync(path.join(clone, 'show-a'));
+  const warns = [];
+  assert.equal(pickReviewTextsTree([snapshot, clone], { warn: (m) => warns.push(m), env: { REVIEW_TEXTS_DIR: snapshot } }), snapshot);
+  assert.equal(pickReviewTextsTree([snapshot, clone], { warn: (m) => warns.push(m), env: {} }), clone);
+  assert.equal(warns.length, 0);
+  assert.equal(pickReviewTextsTree([snapshot], { warn: (m) => warns.push(m), env: {} }), snapshot);
+  assert.match(warns[0], /plain snapshot.*old/);
 });
 
 test('fileOpSourceProblem refuses a path that escapes the tree and normalizes ./ segments', () => {

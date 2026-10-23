@@ -1,0 +1,190 @@
+{
+  "issueNumber": "bro-6046",
+  "planId": "8cadd2af-0ac6-44fd-8d24-a18e8cee7688",
+  "status": "applied",
+  "createdAt": "2026-10-23T08:03:25.286Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Observer columns filed twice (observer + guardian copy of the same theguardian.com article). Mark the guardian copy duplicateOf the observer copy so the observer row ships once and inherits the url.",
+    "steps": [
+      "absolute-hell-west-end-2018/guardian--susannah-clapp.json: duplicateOf",
+      "labour-of-love-west-end-2017/guardian--susannah-clapp.json: duplicateOf",
+      "red-pitch-west-end-2024/guardian--susannah-clapp.json: duplicateOf",
+      "rose-west-end-2023/guardian--kate-kellaway.json: duplicateOf",
+      "stories-west-end-2018/guardian--susannah-clapp.json: duplicateOf",
+      "stranger-things-the-first-shadow-west-end-2023/guardian--susannah-clapp.json: duplicateOf",
+      "after-life-west-end-2021/guardian--susannah-clapp.json: duplicateOf",
+      "caroline-or-change-west-end-2018/guardian--clare-brennan.json: duplicateOf",
+      "infinite-life-west-end-2023/guardian--susannah-clapp.json: duplicateOf",
+      "the-drifters-girl-west-end-2021/guardian--susannah-clapp.json: duplicateOf",
+      "wise-children-west-end-2018/guardian--kate-kellaway.json: duplicateOf",
+      "don-quixote-west-end-2018/guardian--kate-kellaway.json: duplicateOf"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "absolute-hell-west-end-2018/guardian--susannah-clapp.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "observer--susannah-clapp.json",
+        "description": "absolute-hell-west-end-2018/guardian--susannah-clapp.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "labour-of-love-west-end-2017/guardian--susannah-clapp.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "observer--susannah-clapp.json",
+        "description": "labour-of-love-west-end-2017/guardian--susannah-clapp.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "red-pitch-west-end-2024/guardian--susannah-clapp.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "observer--susannah-clapp.json",
+        "description": "red-pitch-west-end-2024/guardian--susannah-clapp.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rose-west-end-2023/guardian--kate-kellaway.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "observer--kate-kellaway.json",
+        "description": "rose-west-end-2023/guardian--kate-kellaway.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stories-west-end-2018/guardian--susannah-clapp.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "observer--susannah-clapp.json",
+        "description": "stories-west-end-2018/guardian--susannah-clapp.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stranger-things-the-first-shadow-west-end-2023/guardian--susannah-clapp.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "observer--susannah-clapp.json",
+        "description": "stranger-things-the-first-shadow-west-end-2023/guardian--susannah-clapp.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "after-life-west-end-2021/guardian--susannah-clapp.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "observer--susannah-clapp.json",
+        "description": "after-life-west-end-2021/guardian--susannah-clapp.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "caroline-or-change-west-end-2018/guardian--clare-brennan.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "observer--clare-brennan.json",
+        "description": "caroline-or-change-west-end-2018/guardian--clare-brennan.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "infinite-life-west-end-2023/guardian--susannah-clapp.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "observer--susannah-clapp.json",
+        "description": "infinite-life-west-end-2023/guardian--susannah-clapp.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-drifters-girl-west-end-2021/guardian--susannah-clapp.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "observer--susannah-clapp.json",
+        "description": "the-drifters-girl-west-end-2021/guardian--susannah-clapp.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wise-children-west-end-2018/guardian--kate-kellaway.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "observer--kate-kellaway.json",
+        "description": "wise-children-west-end-2018/guardian--kate-kellaway.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "don-quixote-west-end-2018/guardian--kate-kellaway.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "observer--kate-kellaway.json",
+        "description": "don-quixote-west-end-2018/guardian--kate-kellaway.json: duplicateOf"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T09:09:10.825Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "absolute-hell-west-end-2018/guardian--susannah-clapp.json duplicateOf: null -> \"observer--susannah-clapp.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "labour-of-love-west-end-2017/guardian--susannah-clapp.json duplicateOf: null -> \"observer--susannah-clapp.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "red-pitch-west-end-2024/guardian--susannah-clapp.json duplicateOf: null -> \"observer--susannah-clapp.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rose-west-end-2023/guardian--kate-kellaway.json duplicateOf: null -> \"observer--kate-kellaway.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stories-west-end-2018/guardian--susannah-clapp.json duplicateOf: null -> \"observer--susannah-clapp.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-the-first-shadow-west-end-2023/guardian--susannah-clapp.json duplicateOf: null -> \"observer--susannah-clapp.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "after-life-west-end-2021/guardian--susannah-clapp.json duplicateOf: null -> \"observer--susannah-clapp.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "caroline-or-change-west-end-2018/guardian--clare-brennan.json duplicateOf: null -> \"observer--clare-brennan.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "infinite-life-west-end-2023/guardian--susannah-clapp.json duplicateOf: null -> \"observer--susannah-clapp.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-drifters-girl-west-end-2021/guardian--susannah-clapp.json duplicateOf: null -> \"observer--susannah-clapp.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wise-children-west-end-2018/guardian--kate-kellaway.json duplicateOf: null -> \"observer--kate-kellaway.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "don-quixote-west-end-2018/guardian--kate-kellaway.json duplicateOf: null -> \"observer--kate-kellaway.json\""
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,5 +1,5 @@
 {
-  "asOf": "2026-10-20",
+  "asOf": "2026-10-21",
   "shadow": false,
   "checks": [
     {
@@ -11,14 +11,8 @@
     {
       "key": "affiliate:provider-auth:posthog",
       "label": "posthog API",
-      "verdict": "pass",
-      "reason": "reachable"
-    },
-    {
-      "key": "affiliate:dead-man",
-      "label": "Dead-man (both click signals)",
-      "verdict": "pass",
-      "reason": "at least one click signal alive"
+      "verdict": "critical",
+      "reason": "posthog fetch failed: PostHog daily clicks error: HTTP 504"
     },
     {
       "key": "affiliate:conversions-flatline",
@@ -30,39 +24,21 @@
       "key": "affiliate:zero-conversions",
       "label": "7-day zero-conversion ceiling",
       "verdict": "pass",
-      "reason": "33 conversions in trailing 7d"
-    },
-    {
-      "key": "affiliate:click-flow-collapse",
-      "label": "Site ticket-click flow",
-      "verdict": "pass",
-      "reason": "670/703 = 95% of peak, above the 20% floor"
+      "reason": "30 conversions in trailing 7d"
     },
     {
       "key": "affiliate:impact-click-collapse",
       "label": "Impact click ingestion",
       "verdict": "pass",
-      "reason": "594/599 = 99% of peak, above the 20% floor"
-    },
-    {
-      "key": "affiliate:handoff-break",
-      "label": "Click → Impact handoff",
-      "verdict": "pass",
-      "reason": "Impact/PostHog click ratio 84% over 3d"
-    },
-    {
-      "key": "affiliate:bot-divergence",
-      "label": "Bot click divergence",
-      "verdict": "pass",
-      "reason": "Impact/PostHog click ratio 0.8x over 3d"
+      "reason": "580/599 = 97% of peak, above the 20% floor"
     },
     {
       "key": "affiliate:payout-anomaly",
       "label": "Payout economics",
       "verdict": "pass",
-      "reason": "take-rate 2.52%, 0 zero-payout"
+      "reason": "take-rate 2.84%, 0 zero-payout"
     }
   ],
-  "failingCount": 0,
-  "updatedAt": "2026-10-22T19:11:51.339Z"
+  "failingCount": 1,
+  "updatedAt": "2026-10-23T07:29:58.153Z"
 }

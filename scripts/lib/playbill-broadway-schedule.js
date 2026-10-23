@@ -16,8 +16,8 @@
  *      (e.g. "First Preview: February 2027", no day, sometimes no venue)
  *   3. "IN THE WORKS" — speculative titles with a Creative Team but no dates
  *      or venue at all.
- * Entries from tier 3 carry neither a venue nor any preview-date text, so
- * they're dropped automatically — no separate boundary detection needed.
+ * The standalone tier-3 header ends the list. Before it, production labels
+ * distinguish undated announced shows from navigation links.
  *
  * Functions exported:
  *   - parsePlaybillBroadwaySchedule(html) → [{ title, url, venue, firstPreview,
@@ -90,10 +90,6 @@ const SCHEDULE_TITLE_RE = /^[A-Z0-9À-ÖØ-Þ][A-Z0-9À-ÖØ-Þ ,&.'’‘"“�
 // not, and must neither become an entry nor terminate the previous one.
 const BLOCK_TAG_RE = /<(?:p|br|div|li|h[1-6]|td|tr|section|article)\b[^>]*>/gi;
 
-// Tier-3 header. Rendered as `<u>IN&nbsp;THE WORKS</u>` in every capture so
-// far; the &nbsp; is why a plain string search never found it.
-const IN_THE_WORKS_RE = /IN(?:\s|&nbsp;)+THE(?:\s|&nbsp;)+WORKS\b/;
-
 // Visible text of an HTML fragment: tags removed WITHOUT inserting a space
 // (Playbill splits letters across tags — `<strong>S</strong>CHOOL GIRLS` —
 // so a space here would yield "S CHOOL"), entities decoded, whitespace
@@ -102,10 +98,15 @@ function visibleText(fragment) {
   return decodeHtmlEntities(fragment.replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim();
 }
 
-function isBlockStart(html, idx) {
-  const before = html.slice(Math.max(0, idx - 800), idx);
-  const parts = before.split(BLOCK_TAG_RE);
-  return parts.length > 1 && visibleText(parts[parts.length - 1]) === '';
+// Match the entire visible heading, outside links. Titles, descriptions and
+// attributes can contain these words without ending the announced list.
+function findInTheWorksHeader(html) {
+  const headingRe = /<(p|h[1-6])\b[^>]*>([\s\S]*?)<\/\1\s*>/gi;
+  let match;
+  while ((match = headingRe.exec(html)) !== null) {
+    if (!/<a\b/i.test(match[2]) && visibleText(match[2]) === 'IN THE WORKS') return match.index;
+  }
+  return -1;
 }
 
 /**
@@ -118,6 +119,9 @@ function isBlockStart(html, idx) {
  */
 function collectScheduleAnchors(html) {
   const anchorRe = /<a\b([^>]*)>([\s\S]*?)<\/a>/gi;
+  const blockRe = new RegExp(BLOCK_TAG_RE.source, 'gi');
+  let block = blockRe.exec(html);
+  let blockEnd = 0;
   const anchors = [];
   let m;
   while ((m = anchorRe.exec(html)) !== null) {
@@ -134,7 +138,13 @@ function collectScheduleAnchors(html) {
       prev.end = end;
       continue;
     }
-    if (!isBlockStart(html, start)) continue;
+    // Advance through block tags once, without a fixed lookback window.
+    // Long whitespace or editor markup must not hide a production anchor.
+    while (block && block.index < start) {
+      blockEnd = block.index + block[0].length;
+      block = blockRe.exec(html);
+    }
+    if (!blockEnd || visibleText(html.slice(blockEnd, start)) !== '') continue;
     anchors.push({ href, text, start, end });
   }
   return anchors;
@@ -153,10 +163,10 @@ function collectScheduleAnchors(html) {
  * the title class does not anticipate must drop only itself, never leak its
  * venue/dates into its predecessor.
  *
- * Tiers: everything before the `IN THE WORKS` header is a real listing and
- * is kept even when Playbill has published neither a venue nor a date yet
- * (the "ANNOUNCED … WITHOUT CONFIRMED DATE OR VENUE" tier; consumers skip
- * venue-less entries themselves). Everything at/after that header is
+ * Tiers: before the standalone `IN THE WORKS` header, production labels
+ * also identify shows without a venue or date (the "ANNOUNCED … WITHOUT
+ * CONFIRMED DATE OR VENUE" tier). Bare navigation links are dropped.
+ * Everything at/after that header is
  * speculative and dropped. If the header is ever missing, fall back to the
  * old heuristic — drop entries with neither a venue nor a preview signal —
  * so a layout change cannot admit the speculative tail.
@@ -176,7 +186,7 @@ function parsePlaybillBroadwaySchedule(html) {
   }
 
   const anchors = collectScheduleAnchors(html);
-  const inTheWorksIdx = html.search(IN_THE_WORKS_RE);
+  const inTheWorksIdx = findInTheWorksHeader(html);
 
   const entries = [];
   for (let i = 0; i < anchors.length; i++) {
@@ -184,7 +194,7 @@ function parsePlaybillBroadwaySchedule(html) {
     if (inTheWorksIdx >= 0 && start >= inTheWorksIdx) break;
     if (!SCHEDULE_TITLE_RE.test(title)) continue;
 
-    const nextStart = anchors[i + 1] ? anchors[i + 1].start : Math.min(end + 3000, html.length);
+    const nextStart = Math.min(anchors[i + 1]?.start ?? html.length, inTheWorksIdx >= 0 ? inTheWorksIdx : html.length);
     const segment = html.slice(end, nextStart);
     const lines = segment
       .split(/<br\s*\/?>/i)
@@ -205,6 +215,8 @@ function parsePlaybillBroadwaySchedule(html) {
     }
 
     if (inTheWorksIdx < 0 && !venue && !firstPreview && !firstPreviewApprox) continue;
+    if (!venue && !firstPreview && !firstPreviewApprox && !opening
+        && !lines.some(line => /^(?:Writers?|Creative Team|Starring|Director|About):\s*\S/i.test(line))) continue;
 
     entries.push({
       title,

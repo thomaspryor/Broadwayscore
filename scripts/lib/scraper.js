@@ -41,6 +41,7 @@ const { shouldSkipScrapingdogAtRuntime, isSdQuotaHttpStatus } = require('./scrap
 const { consultBrightData, getBrightDataRunStats } = require('./brightdata-caps');
 const { consultScrapingdog, getScrapingdogCapStats, pressNightCapStatus } = require('./scrapingdog-caps');
 const { consultScrapingbee } = require('./scrapingbee-caps');
+const { sbHostCooldown } = require('./scrapingbee-host-cooldown');
 const { creditsFor } = require('./provider-credits');
 const { usdFor } = require('./provider-pricing');
 const { fallbackFromLabel } = require('./fallback-attribution');
@@ -1012,6 +1013,11 @@ async function fetchWithScrapingBee(url, options = {}) {
   }
 
   // Count credit spend BEFORE the call — SB charges even for 404/error responses
+  const hostVerdict = sbHostCooldown.consult(url);
+  if (!hostVerdict.allowed) {
+    onSkip('sb-host-cooldown');
+    return null;
+  }
   _scraperStats.sbRequests++;
   _scraperStats.sbCredits += creditCost;
 
@@ -1048,6 +1054,7 @@ async function fetchWithScrapingBee(url, options = {}) {
       req.on('timeout', () => { req.destroy(); reject(new Error('ScrapingBee request timeout')); });
     });
 
+    sbHostCooldown.record(url, true);
     recordSbCall({ url, fn: sbMode, success: true, status: 200, credits: creditCost, fallbackFrom: options.fallbackFrom || null });
     return {
       content: response,
@@ -1056,6 +1063,7 @@ async function fetchWithScrapingBee(url, options = {}) {
     };
   } catch (error) {
     const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
+    sbHostCooldown.record(url, false);
     recordSbCall({ host: hostname, fn: sbMode, success: false, status: error.message?.slice(0, 80) || 'error', credits: creditCost, fallbackFrom: options.fallbackFrom || null });
     console.error(`⚠️  ScrapingBee failed (render_js=${renderJs}${premium ? ', premium' : ''}, domain=${hostname}): ${error.message}`);
     // Same trigger set as url-discovery.js's _serpViaScrapingBee circuit breaker:
@@ -1925,7 +1933,7 @@ async function fetchJSON(url, options = {}) {
   }
 
   // Last resort: ScrapingBee (render_js=false = 1 credit)
-  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted && !skips.has('scrapingbee')) {
+  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted && !skips.has('scrapingbee') && sbHostCooldown.consult(url).allowed) {
     try {
       const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
       const response = await new Promise((resolve, reject) => {
@@ -1946,9 +1954,11 @@ async function fetchJSON(url, options = {}) {
       });
       _scraperStats.sbRequests++;
       _scraperStats.sbCredits += 1; // render_js=false = 1 credit
+      sbHostCooldown.record(url, true);
       recordSbCall({ url, fn: 'json', success: true, status: 200, credits: 1 });
       return JSON.parse(response);
     } catch (err) {
+      sbHostCooldown.record(url, false);
       recordSbCall({ url, fn: 'json', success: false, status: (err.message || 'error').slice(0, 80), credits: 1 });
       console.log(`  fetchJSON ScrapingBee failed: ${err.message}`);
       if ([401, 403, 429].includes(err.statusCode)) {

@@ -644,6 +644,7 @@ const { shouldCountFailure, isPermanentlyFailed, shouldReopenStaleContentMismatc
 const { consultBrightData } = require('./lib/brightdata-caps');
 const { recordBdCall } = require('./lib/bd-telemetry');
 const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
+const { sbHostCooldown } = require('./lib/scrapingbee-host-cooldown');
 const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt, shouldRetryFetch, recordFetchAttempt, shouldBypassFetchGate, isFetchLedgerEntryForOtherUrl } = require('./lib/review-guards');
 const { clearFailureFlags } = require('./lib/clear-failure-flags');
@@ -2667,6 +2668,8 @@ async function fetchWithScrapingBee(url, useStealth = false) {
     throw new Error(`SB page credit budget exhausted (${stats.scrapingBeePageCredits}/${SB_PAGE_CREDIT_BUDGET})`);
   }
 
+  const hostVerdict = sbHostCooldown.consult(url);
+  if (!hostVerdict.allowed) throw new Error(`ScrapingBee skipped: ${hostVerdict.reason}`);
   stats.tier2Attempts++;
 
   // Guards the catch block below: isBlocked()/insufficient-text throw AFTER a
@@ -2723,6 +2726,7 @@ async function fetchWithScrapingBee(url, useStealth = false) {
 
     stats.scrapingBeePageCredits += credits;
     apiCallRecorded = true;
+    sbHostCooldown.record(url, true);
     recordSbCall({
       url,
       fn: useStealth ? 'stealth' : (needsPremium ? 'premium' : 'page'),
@@ -2760,6 +2764,7 @@ async function fetchWithScrapingBee(url, useStealth = false) {
       const status = error.response.status;
       const message = error.response.data?.message || error.message;
       if (!apiCallRecorded) {
+        sbHostCooldown.record(url, false);
         recordSbCall({
           url,
           fn: useStealth ? 'stealth' : (needsPremium ? 'premium' : 'page'),
@@ -2788,6 +2793,7 @@ async function fetchWithScrapingBee(url, useStealth = false) {
       }
     }
     if (!apiCallRecorded) {
+      sbHostCooldown.record(url, false);
       recordSbCall({
         url,
         fn: useStealth ? 'stealth' : (needsPremium ? 'premium' : 'page'),

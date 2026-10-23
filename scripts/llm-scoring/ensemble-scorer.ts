@@ -897,7 +897,10 @@ export class EnsembleReviewScorer {
     // overwrites scoreSource when the flag is ON; otherwise existing
     // (originalScore-based) scoreSource on the file is preserved by spread.
     if (anchoredBandScoreSource) {
-      (scoredFile as any).scoreSource = anchoredBandScoreSource;
+      // BRO-5055: keep a page-parsed star's provenance when the method label
+      // replaces it, or the rebuild's body-less gate drops the review.
+      const { setScoreSourcePreservingProvenance } = require('../lib/score-source-provenance.js');
+      setScoreSourcePreservingProvenance(scoredFile as any, anchoredBandScoreSource);
       if (band) {
         (scoredFile.llmScore as any).band = {
           floor: band.floor,

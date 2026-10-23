@@ -1,18 +1,78 @@
 {
-  "generatedAt": "2026-10-22T19:20:59.912Z",
+  "generatedAt": "2026-10-23T07:44:58.440Z",
   "shadow": true,
-  "checkoutSha": "5e3350d892cf74bd601bcf079f2840282c74c527",
-  "totalCandidates": 557,
-  "eligibleCandidates": 79,
+  "checkoutSha": "26aaa336b905492b599b36e06b6ad1314f5cf4d0",
+  "totalCandidates": 527,
+  "eligibleCandidates": 81,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 17,
-    "fail": 5,
-    "unverifiable": 8
+    "pass": 24,
+    "fail": 0,
+    "unverifiable": 6
   },
   "alreadyDone": [
+    {
+      "id": "BRO-6040",
+      "name": "wait-for-land.js crashed out of memory in String.split while waiting on a land run",
+      "verifyCmd": "node --test scripts/lib/wait-for-land.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6038",
+      "name": "Wire top bucket-(a) audit-*.js scripts into data-health-check.yml shadow mode and triage bucket u",
+      "verifyCmd": "node --test tests/unit/audit-script-wiring.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6035",
+      "name": "land.js: regenerate .github/workflows/DEPENDENCIES.md on a rebase conflict instead of refusing the landing",
+      "verifyCmd": "test -f scripts/generate-workflow-dependencies.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-6033",
+      "name": "Opening-night poller: publish main-stage first wave without waiting for Off-Broadway/fringe front shows",
+      "verifyCmd": "node --test scripts/lib/poller-loop-budget.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6031",
+      "name": "Land queue holds ~285 land/* refs; runs park and cancel for hours (BRO-5528 and BRO-3552 needed 6 and 2 re-runs)",
+      "verifyCmd": "node --test scripts/lib/land-mutex.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6030",
+      "name": "review-coverage: /what-else board-read check misses cloud Linear MCP (UUID tool name) and searches inside shell loops",
+      "verifyCmd": "node --test scripts/lib/review-coverage.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6029",
+      "name": "Bound the 21 inline git fetch/pull calls in workflows with git_net (BRO-5972 cousin)",
+      "verifyCmd": "node --test tests/unit/audit-workflow-hygiene-unbounded-clone.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6028",
+      "name": "SEO: /reviews/[slug] Review schema marks the reviewed past show EventScheduled",
+      "verifyCmd": "node --test scripts/validate-schema-removal.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6027",
+      "name": "Five more TheaterMania reviews credited to David Rooney (BRO-4889 cousin): verify true bylines and fix",
+      "verifyCmd": "node --test tests/unit/revival-promo-older-broadway.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6012",
+      "name": "Land retry tooling strands hand-dispatched landings: land-retry-cancelled.js skips them and wait-for-land.js never sees them",
+      "verifyCmd": "node --test scripts/lib/land-retry-on-cancel.test.mjs",
+      "detail": null
+    },
     {
       "id": "BRO-6003",
       "name": "digest-autofix reconcileDigestOutcomes has the same unlocked read-reconcile-append race as BRO-2513 (double-counts outcomes)",
@@ -26,39 +86,15 @@
       "detail": null
     },
     {
-      "id": "BRO-5994",
-      "name": "Pull-quote compilation pages without commas slip past roundup detection on non-hub URLs",
-      "verifyCmd": "node --test scripts/audit-show-review-gap.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5981",
-      "name": "Recoupment estimate: range spans analyst + our model, rounded to 5",
-      "verifyCmd": "npx tsx --test tests/unit/commercial-display.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5979",
-      "name": "backlog-drain: concurrency cap and spend breaker run outside the reconcile lock (two overlapping ticks can both dispatch)",
-      "verifyCmd": "node --test scripts/backlog-drain.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-5975",
       "name": "Four scheduled workflows red on real data findings: IBDB revivals gate, provisional venue mismatches, stage-alert gaps, OWE duplicate",
       "verifyCmd": "node --test tests/unit/ibdb-revival-title-match.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-5973",
-      "name": "rebuild-in-flight.js misses concurrency-pending runs (status=pending)",
-      "verifyCmd": "node --test scripts/lib/rebuild-in-flight.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5950",
-      "name": "Broadway.com audience scraper matches titles only: press-title shows like 'Billy Crystal 860' (alias '860') never attach",
-      "verifyCmd": "node --test scripts/aka-title-audience-match.test.mjs",
+      "id": "BRO-5952",
+      "name": "Opening night: stop Express and the poller cancelling each other's runs (scope gh run cancel to same show and run kind, or remove)",
+      "verifyCmd": "node --test tests/unit/opening-night-cancel-scope.test.mjs",
       "detail": null
     },
     {
@@ -68,15 +104,21 @@
       "detail": null
     },
     {
+      "id": "BRO-5935",
+      "name": "Stale pending fix plans: four approved data plans never applied, and nothing reports them",
+      "verifyCmd": "node --test scripts/lib/pending-fixes-stale-check.test.mjs",
+      "detail": null
+    },
+    {
       "id": "BRO-5919",
       "name": "Queen of Hearts (Theatre XIV) has no opening/closing dates and may be stale",
       "verifyCmd": "test -f scripts/validate-show-venue.js",
       "detail": null
     },
     {
-      "id": "BRO-5917",
-      "name": "Generalize the ledger-derived ScrapingBee cooldown to other hosts with 0 successes (realmericanmedia.com, null-host calls)",
-      "verifyCmd": "node --test scripts/lib/reddit-dispatch-cooldown.test.mjs",
+      "id": "BRO-5916",
+      "name": "Reddit sentiment scrape dead since 2026-10-19: every dispatch trips the breaker and burns ScrapingBee credits (no audience Reddit data for new openings)",
+      "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 cmVkZGl0LXNlbnRpbWVudDpzdGFsZQ",
       "detail": null
     },
     {
@@ -98,57 +140,32 @@
       "detail": null
     },
     {
+      "id": "BRO-5869",
+      "name": "BRO-5849 follow-up: leave-one-out constant fits for the comparables model, plus musicals rough-estimate range",
+      "verifyCmd": "node scripts/validate-data.js --strict",
+      "detail": null
+    },
+    {
       "id": "BRO-5839",
       "name": "Older-revival pages follow-up: rehome Osage 2008 National Theatre reviews, refetch blurb/boilerplate rows, add Three Days of Rain 2027 revival entry (from BRO-4889)",
       "verifyCmd": "node --test tests/unit/revival-promo-older-broadway.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-5805",
-      "name": "Talkin' Broadway: seven real reviews excluded by automatic wrong-show/production flags",
-      "verifyCmd": "node scripts/audit-stale-flag-after-url-correction.js",
-      "detail": null
-    },
-    {
-      "id": "BRO-5783",
-      "name": "Land: trim the in-lock full re-check tail (7 of 43 lands >5 min on 2026-10-20, max 16 min; queued lands wait up to 22 min)",
-      "verifyCmd": "node --test scripts/lib/land-branch.test.mjs",
-      "detail": null
-    }
-  ],
-  "failing": [
-    {
-      "id": "BRO-5997",
-      "name": "musical-model-backtest timing backtest fails on main (MAE/inside thresholds)",
-      "verifyCmd": "node --test scripts/lib/musical-model-backtest.test.mjs",
-      "detail": "not ok 1 - timing backtest: musicals hold MAE <= 15.5 and >= 35 inside; plays MAE <= 12 and >= 13 inside (play timing MAE 13.2 (17.8 before BRO-5651); worst: sea-wall-a-life-2019 88, to-)"
-    },
-    {
-      "id": "BRO-5916",
-      "name": "Reddit sentiment scrape dead since 2026-10-19: every dispatch trips the breaker and burns ScrapingBee credits (no audience Reddit data for new openings)",
-      "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 cmVkZGl0LXNlbnRpbWVudDpzdGFsZQ",
-      "detail": "[check-alert-condition-absent] FAIL: \"reddit-sentiment:stale\" still firing — open, last fired 2026-10-22T14:44:24.754Z (4.6h ago, within 168h)\n"
-    },
-    {
-      "id": "BRO-5869",
-      "name": "BRO-5849 follow-up: leave-one-out constant fits for the comparables model, plus musicals rough-estimate range",
-      "verifyCmd": "node scripts/validate-data.js --strict",
-      "detail": "⚠️  WARNING: 96 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025...\n⚠️  WARNING: 75 Off-Broadway shows missing \"off-broadway\" in slug: kramerfauci-st-anns, the-good-thief, petra...\n⚠️  WARNING: Show \"The Little Prince and the Aviator\" has closingDate (1982-01-17) before openingDate (1982-01-20). If it never o"
-    },
-    {
-      "id": "BRO-5855",
-      "name": "Closing date audit: 1 show need review (2026-10-21)",
-      "verifyCmd": "node scripts/validate-data.js --strict",
-      "detail": "⚠️  WARNING: 96 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025...\n⚠️  WARNING: 75 Off-Broadway shows missing \"off-broadway\" in slug: kramerfauci-st-anns, the-good-thief, petra...\n⚠️  WARNING: Show \"The Little Prince and the Aviator\" has closingDate (1982-01-17) before openingDate (1982-01-20). If it never o"
-    },
-    {
       "id": "BRO-5816",
       "name": "Midnight in the Garden of Good and Evil (2024 id): confirm Broadway run dates and venue, retitle landed in BRO-5776",
       "verifyCmd": "node scripts/validate-data.js --strict",
-      "detail": "⚠️  WARNING: 96 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025...\n⚠️  WARNING: 75 Off-Broadway shows missing \"off-broadway\" in slug: kramerfauci-st-anns, the-good-thief, petra...\n⚠️  WARNING: Show \"The Little Prince and the Aviator\" has closingDate (1982-01-17) before openingDate (1982-01-20). If it never o"
+      "detail": null
     }
   ],
+  "failing": [],
   "unverifiable": [
+    {
+      "id": "BRO-6014",
+      "name": "Cloud dev loop: npm run build dirties ~17 tracked data files (swept into commits); land-local-check keeps no per-gate failure output",
+      "verifyCmd": "node scripts/run-unit-tests.js",
+      "detail": "check killed by SIGTERM after 120816ms (timeout — no verdict)"
+    },
     {
       "id": "BRO-5956",
       "name": "Opening-night lane: West End fixture and adapters (WET, theatre.reviews, Stagedoor, The Stage, LBO) captured from The Lives of Others",
@@ -168,18 +185,6 @@
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/opening-night-retry-decision.test.mjs"
     },
     {
-      "id": "BRO-5935",
-      "name": "Stale pending fix plans: four approved data plans never applied, and nothing reports them",
-      "verifyCmd": "node --test scripts/lib/pending-fixes-stale-check.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/pending-fixes-stale-check.test.mjs"
-    },
-    {
-      "id": "BRO-5832",
-      "name": "Board workers unhealthy: last run failed on usage limit, Codex lock 8h old",
-      "verifyCmd": "node --test scripts/board-workers-health.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/board-workers-health.test.mjs"
-    },
-    {
       "id": "BRO-5813",
       "name": "iOS app: deep links that arrive during startup are dropped (root layout renders null until onboarding check + PostHog init)",
       "verifyCmd": "node --test tests/e2e/ios_maestro_coverage.test.mjs",
@@ -190,15 +195,23 @@
       "name": "iOS app CI never runs its website-parity contracts (no Broadwayscore checkout): add an advisory parity job",
       "verifyCmd": "node --test tests/unit/web-repo.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/web-repo.test.mjs"
-    },
-    {
-      "id": "BRO-5804",
-      "name": "Weekly-gross history: check 4 missing weeks for three 2017-2022 revivals so their all-time totals can fill",
-      "verifyCmd": "node --test tests/unit/missing-weeks-audit.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/missing-weeks-audit.test.mjs"
     }
   ],
   "landedButOpen": [
+    {
+      "id": "BRO-6033",
+      "name": "Opening-night poller: publish main-stage first wave without waiting for Off-Broadway/fringe front shows",
+      "branch": "land/bro-6033-poller-first-wave",
+      "sha": "979fa74f85bc25c76d7f23d2b2771df211a14ae5",
+      "landedAt": "2026-10-23T05:02:28.175Z"
+    },
+    {
+      "id": "BRO-6012",
+      "name": "Land retry tooling strands hand-dispatched landings: land-retry-cancelled.js skips them and wait-for-land.js never sees them",
+      "branch": "land/codex-bro-6012",
+      "sha": "504e3fce6ea5c3a9483c0794182d03c7de4a11d5",
+      "landedAt": "2026-10-23T04:17:53.542Z"
+    },
     {
       "id": "BRO-5975",
       "name": "Four scheduled workflows red on real data findings: IBDB revivals gate, provisional venue mismatches, stage-alert gaps, OWE duplicate",
@@ -207,11 +220,32 @@
       "landedAt": "2026-10-22T18:32:26.232Z"
     },
     {
+      "id": "BRO-5952",
+      "name": "Opening night: stop Express and the poller cancelling each other's runs (scope gh run cancel to same show and run kind, or remove)",
+      "branch": "land/job/linear-BRO-5952-mvjraza9",
+      "sha": "cd13599e0627970cbab188177c00baa6616d86b1",
+      "landedAt": "2026-10-23T00:44:37.530Z"
+    },
+    {
+      "id": "BRO-5935",
+      "name": "Stale pending fix plans: four approved data plans never applied, and nothing reports them",
+      "branch": "land/bro-5935-stale-plans",
+      "sha": "504ac848fc33aef48a7468d6326e5ad239afff1c",
+      "landedAt": "2026-10-23T02:36:28.612Z"
+    },
+    {
       "id": "BRO-5919",
       "name": "Queen of Hearts (Theatre XIV) has no opening/closing dates and may be stale",
       "branch": "land/codex-bro-5919",
       "sha": "0aa2c6ff7f61869566f8870746a5fb5053520ddc",
       "landedAt": "2026-10-22T12:42:50.239Z"
+    },
+    {
+      "id": "BRO-5916",
+      "name": "Reddit sentiment scrape dead since 2026-10-19: every dispatch trips the breaker and burns ScrapingBee credits (no audience Reddit data for new openings)",
+      "branch": "land/bro-5916-rss-route",
+      "sha": "289e73a73edecbfa2514d5bca5777eb51bd221ae",
+      "landedAt": "2026-10-22T15:58:23.293Z"
     },
     {
       "id": "BRO-5896",
@@ -233,13 +267,6 @@
       "branch": "land/codex-bro-5839",
       "sha": "1285538ccb236a898524a318eb7ed0833dface41",
       "landedAt": "2026-10-22T01:58:37.506Z"
-    },
-    {
-      "id": "BRO-5783",
-      "name": "Land: trim the in-lock full re-check tail (7 of 43 lands >5 min on 2026-10-20, max 16 min; queued lands wait up to 22 min)",
-      "branch": "land/codex-bro-5783",
-      "sha": "6031bdc32bf84b8e84e3986f5047c8b206db0357",
-      "landedAt": "2026-10-21T12:47:28.897Z"
     }
   ]
 }
