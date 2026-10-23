@@ -31,7 +31,9 @@ const OFFSET_HOURS = [1, 2, 6];
 // postmortem), West End ~21:00 UK. The orchestrator can override with an explicit time.
 const EMBARGO_HOUR_LOCAL = { broadway: 22, 'off-broadway': 22, 'west-end': 21, 'off-west-end': 21 };
 
-const DEFAULT_GATES = { firstLiveWithinMin: 30, coverage2h: 0.8 };
+// sameNight*: BRO-6070. Files first seen between nightStartH before and sameNightEndH after the embargo
+// are "of the night"; those seen by +2h must be live at +2h, later ones within lateLiveWithinMin of first seen.
+const DEFAULT_GATES = { firstLiveWithinMin: 30, coverage2h: 0.8, lateLiveWithinMin: 30, nightStartH: 4, sameNightEndH: 3 };
 
 const MIN = 60000;
 const HOUR = 3600000;
@@ -342,8 +344,9 @@ function laneShadowFrom({ report = null, liveRows = [], ledgerRows = [], importe
  * still answer "how much was live at +2h". The later census can only add outlets, so this is a
  * conservative (lower) coverage; outlets the lane first found after asOf are listed (discoveredAfter).
  */
-function coverageAt(rec, census, asOfMs, { fetchedAt = null } = {}) {
+function coverageAt(rec, census, asOfMs, { fetchedAt = null, excluded = [] } = {}) {
   const { censusVerdict } = require('./review-census');
+  census = filterCensus(census, excluded);
   const asOf = new Date(asOfMs).toISOString();
   const liveSet = new Set();
   const droppedNow = new Set(); // probe-observed drops still open at asOf override any earlier sighting
@@ -376,7 +379,88 @@ function coverageAt(rec, census, asOfMs, { fetchedAt = null } = {}) {
     }
   }
   const ref = referenceFrom({ census: scoped, verdict: censusVerdict(scoped, liveSet), liveCount: liveSet.size, fetchedAt });
-  return { ...ref, asOf, method: 'timeline', notYetPublished, discoveredAfter };
+  return { ...ref, asOf, method: 'timeline', notYetPublished, discoveredAfter, ...(excluded.length ? { excluded } : {}) };
+}
+
+/**
+ * Drop census entries the rebuild correctly keeps off the site (wrongProduction, wrongShow, non-review,
+ * roundup, rejected, or a syndicated copy of a live primary; see press-night-review-state.censusExclusions).
+ * They are not "missing": counting them made a correct night read 14/16 (BRO-6070).
+ */
+function filterCensus(census, excluded) {
+  if (!census || !Array.isArray(census.entries) || !excluded || !excluded.length) return census;
+  const drop = new Set(excluded.map((x) => x.outletId));
+  const entries = census.entries.filter((e) => !drop.has(e.outletId));
+  return { ...census, entries, count: entries.length };
+}
+
+/** Earliest site-live time per outlet id, from the probe series and the lane shadow's finer polls. */
+function outletLiveMs(rec) {
+  const live = new Map();
+  const note = (name, iso) => {
+    const oid = outletIdOf(name); const ms = toMs(iso);
+    if (!oid || ms == null) return;
+    if (!live.has(oid) || ms < live.get(oid)) live.set(oid, ms);
+  };
+  for (const p of rec.perReview) note(p.outlet, p.firstLiveAt);
+  const ls = rec.laneShadow;
+  if (ls && Array.isArray(ls.liveFirstSeen)) for (const r of ls.liveFirstSeen) note(r.outlet, r.at);
+  return live;
+}
+
+const hhmm = (ms) => new Date(ms).toISOString().slice(11, 16) + 'Z';
+
+/**
+ * same-night-completeness (BRO-6070): "all reviews added the night a show opens".
+ *  (a) at embargo +2h every includable listing (census, exclusions applied) and every includable review file
+ *      first seen by +2h is live;
+ *  (b) an includable file first seen later that night (until embargo +sameNightEndH) is live within
+ *      lateLiveWithinMin of first seen.
+ * Needs rec.fileState (the review-text snapshot taken at capture). Without it the gate is unknown.
+ * @returns {{status:string, detail:string}}
+ */
+function sameNightCheck(rec, g) {
+  const embMs = toMs(rec.embargoAt);
+  const fsnap = rec.fileState;
+  if (embMs == null) return { status: 'unknown', detail: 'no embargo time' };
+  if (!fsnap || !Array.isArray(fsnap.files)) return { status: 'unknown', detail: 'no review-file snapshot in the record (private review texts were not available at capture), so late or missing reviews cannot be named' };
+  const live = outletLiveMs(rec);
+  const t2 = embMs + 2 * HOUR;
+  const winStart = embMs - g.nightStartH * HOUR;
+  const winEnd = embMs + g.sameNightEndH * HOUR;
+  const lastOk = toMs(rec.probe && rec.probe.lastOkSampleAt);
+  const missA = new Map(); // outlet -> reason
+  const missB = new Map();
+  const unknownB = [];
+  const ref2 = rec.reference && rec.reference['2h'];
+  const censusKnown = !!(ref2 && ref2.coverage != null && ref2.status !== 'no-census-yet');
+  if (censusKnown) for (const o of ref2.missing) missA.set(o, 'listed by the aggregators, not live at +2h');
+  for (const f of fsnap.files) {
+    if (!f.includable || !f.outletId) continue;
+    const seen = toMs(f.firstSeenAt);
+    if (seen == null || seen < winStart || seen > winEnd) continue;
+    const liveAt = live.get(f.outletId);
+    if (seen <= t2) {
+      if (liveAt == null || liveAt > t2) {
+        const when = liveAt == null ? 'never live in the probe window' : `live at ${hhmm(liveAt)}, after +2h`;
+        missA.set(f.outletId, `review first seen ${hhmm(seen)}, ${when}`);
+      }
+    } else if (liveAt == null) {
+      if (lastOk != null && lastOk >= seen + g.lateLiveWithinMin * MIN) missB.set(f.outletId, `first seen ${hhmm(seen)}, never live in the probe window`);
+      else unknownB.push(f.outletId);
+    } else if (liveAt > seen + g.lateLiveWithinMin * MIN) {
+      missB.set(f.outletId, `first seen ${hhmm(seen)}, live ${hhmm(liveAt)} (${Math.round((liveAt - seen) / MIN)} min later, bar ${g.lateLiveWithinMin})`);
+    }
+  }
+  const list = (m) => [...m].map(([o, why]) => `${o} (${why})`).join('; ');
+  const parts = [];
+  if (missA.size) parts.push(`not live at +2h: ${list(missA)}`);
+  if (missB.size) parts.push(`late-night reviews not live within ${g.lateLiveWithinMin} min: ${list(missB)}`);
+  if (parts.length) return { status: 'fail', detail: parts.join(' | ') };
+  if (!censusKnown) return { status: 'unknown', detail: 'review files all live in time, but no census at +2h to check the aggregator listings against' };
+  if (unknownB.length) return { status: 'unknown', detail: `late-night review(s) not yet live and the probe did not run 30 min past first seen: ${unknownB.join(', ')}` };
+  const excl = ref2.excluded && ref2.excluded.length ? `; excluded from the census: ${ref2.excluded.map((x) => `${x.outletId} (${x.reason})`).join(', ')}` : '';
+  return { status: 'pass', detail: `every listed outlet and every includable review file first seen by +${g.sameNightEndH}h was live on time${excl}` };
 }
 
 /**
@@ -433,6 +517,7 @@ function gate(name, status, detail, required = true) {
  * Verdict against the plan's gates (doc section 2). Pure.
  *   first-live    first review live within N min of the first outlet publish
  *   coverage-2h   census coverage at embargo +2h >= bar
+ *   same-night-completeness  every listed + includable review live by +2h, late-night ones within 30 min, outlets named
  *   stability     no review dropped after going live
  *   coverage-end  coverage when the probe ended (informational, +6h, not +24h)
  * Anything that cannot be established is 'unknown', never 'pass'.
@@ -513,14 +598,25 @@ function evaluateCheck(rec, opts = {}) {
       `${ref2.covered}/${ref2.count} census outlets live at +2h = ${ref2.coverage} (bar ${g.coverage2h}; census ${(ref2.source || []).join('+') || '?'}${ref2.method === 'timeline' ? `, fetched ${ref2.fetchedAt}, judged on the live timeline` : ''})${ref2.missing.length ? `; missing: ${ref2.missing.join(', ')}` : ''}${ref2.discoveredAfter && ref2.discoveredAfter.length ? `; first found by the lane after +2h: ${ref2.discoveredAfter.join(', ')}` : ''}`));
   }
 
+  // same-night-completeness (BRO-6070)
+  const sn = sameNightCheck(rec, g);
+  gates.push(gate('same-night-completeness', sn.status, sn.detail));
+
   // stability
   if (okSamples === 0) {
     gates.push(gate('stability', 'unknown', 'no successful probe samples'));
   } else {
-    const stuck = rec.dropped.filter((d) => !d.restoredAt);
-    const flapped = rec.dropped.length - stuck.length;
-    if (stuck.length) gates.push(gate('stability', 'fail', `${stuck.length} review(s) dropped after going live and not restored: ${stuck.map((d) => d.outlet).join(', ')}`));
-    else gates.push(gate('stability', 'pass', flapped ? `${flapped} drop(s), all restored` : 'no review dropped after going live'));
+    // A drop of a review the rebuild correctly excludes (a syndicated copy that went live first, a wrong-production
+    // file) is the exclusion working, not instability (BRO-6070). Only with the file snapshot to prove it.
+    const excl = new Set(((rec.fileState && rec.fileState.files) || []).filter((f) => !f.includable && f.outletId).map((f) => f.outletId));
+    const isExcluded = (d) => excl.has(outletIdOf(d.outlet)) && !((rec.fileState.files).some((f) => f.includable && f.outletId === outletIdOf(d.outlet)));
+    const open = rec.dropped.filter((d) => !d.restoredAt);
+    const excused = open.filter(isExcluded);
+    const stuck = open.filter((d) => !isExcluded(d));
+    const flapped = rec.dropped.length - open.length;
+    const note = excused.length ? ` (${excused.length} drop(s) of excluded review(s) not counted: ${excused.map((d) => d.outlet).join(', ')})` : '';
+    if (stuck.length) gates.push(gate('stability', 'fail', `${stuck.length} review(s) dropped after going live and not restored: ${stuck.map((d) => d.outlet).join(', ')}${note}`));
+    else gates.push(gate('stability', 'pass', (flapped ? `${flapped} drop(s), all restored` : (excused.length ? 'no counted drops' : 'no review dropped after going live')) + note));
   }
 
   // coverage-end (informational)
@@ -542,4 +638,5 @@ module.exports = {
   SCHEMA_VERSION, OFFSET_HOURS, DEFAULT_GATES, EMBARGO_HOUR_LOCAL,
   defaultEmbargoAt, probeDue, recordPath, emptyRecord, reviewKey, applySample, firstOutletPublish,
   runProbe, referenceFrom, evaluateCheck, isNightReview, firstNightLive, laneShadowFrom, coverageAt,
+  filterCensus, sameNightCheck, outletLiveMs,
 };

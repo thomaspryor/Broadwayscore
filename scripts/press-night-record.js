@@ -131,6 +131,20 @@ function readLaneShadow(dir, showId, night) {
  * none (BRO-6067: the probe waited for another workflow to archive it and read no-census-yet all night).
  * Returns {census, note}.
  */
+/**
+ * Snapshot the show's review-text files (public-safe rows) into the record and return the census
+ * outlets the rebuild keeps off the site (BRO-6070). Without private review texts it keeps any earlier
+ * snapshot and returns what that snapshot excludes, never "nothing excluded".
+ */
+function stampFileState(rec, show, census) {
+  const state = require('./lib/press-night-review-state');
+  const read = show ? state.readReviewFileState(rec.showId, show) : { available: false, files: [] };
+  if (read.available) rec.fileState = { capturedAt: new Date().toISOString(), files: read.files };
+  const files = rec.fileState && rec.fileState.files;
+  if (!files) console.log('[press-night] review-texts not available: census exclusions and same-night-completeness stay unknown');
+  return files ? state.censusExclusions(census, files) : [];
+}
+
 async function buildCensus(rec, show) {
   const { buildCensusFromArchives, unionCensus, parseBwwRoundup } = require('./lib/review-census');
   const market = rec.market || 'broadway';
@@ -247,13 +261,14 @@ async function main() {
   if (has('rebuild-reference')) {
     const show = loadShow(showId);
     const { census, note } = await buildCensus(rec, show);
+    const excluded = stampFileState(rec, show, census);
     const fetchedAt = new Date().toISOString();
     const embMs = new Date(rec.embargoAt).getTime();
     const endMs = new Date(rec.probe.lastOkSampleAt || rec.probe.lastSampleAt).getTime();
     for (const [label, asOfMs] of [['2h', embMs + 2 * 3600000], ['end', endMs]]) {
       if (!Number.isFinite(asOfMs)) continue;
       if (rec.reference[label] && !rec.reference[`${label}-live`] && rec.reference[label].method !== 'timeline') rec.reference[`${label}-live`] = rec.reference[label];
-      rec.reference[label] = { ...lib.coverageAt(rec, census, asOfMs, { fetchedAt }), censusNote: note };
+      rec.reference[label] = { ...lib.coverageAt(rec, census, asOfMs, { fetchedAt, excluded }), censusNote: note };
     }
     writeRecord(file, rec);
     for (const label of ['2h', 'end']) {
@@ -271,6 +286,7 @@ async function main() {
     let ref;
     let census = null;
     let note = '';
+    let excluded = [];
     try {
       const { decodeSlimShow } = require('./show-status');
       const prod = await fetchProdJson(showId, base);
@@ -279,7 +295,9 @@ async function main() {
       const { deployedOutletIds } = require('./lib/deployed-coverage-diff');
       const show = loadShow(showId);
       ({ census, note } = await buildCensus(rec, show));
-      ref = { ...lib.referenceFrom({ census, verdict: censusVerdict(census, deployedOutletIds(prod)), liveCount, fetchedAt }), censusNote: note };
+      excluded = stampFileState(rec, show, census);
+      const kept = lib.filterCensus(census, excluded);
+      ref = { ...lib.referenceFrom({ census: kept, verdict: censusVerdict(kept, deployedOutletIds(prod)), liveCount, fetchedAt }), censusNote: note, ...(excluded.length ? { excluded } : {}) };
     } catch (e) {
       ref = { status: 'error', error: String(e.message || e).slice(0, 200), source: null, count: 0, covered: null, coverage: null, missing: [], fetchedAt };
     }
@@ -289,7 +307,7 @@ async function main() {
     const ref2 = rec.reference['2h'];
     if (label === 'end' && census && census.count && (!hasCoverage(ref2) || census.count > (ref2.count || 0))) {
       if (rec.reference['2h'] && !rec.reference['2h-live']) rec.reference['2h-live'] = rec.reference['2h'];
-      rec.reference['2h'] = { ...lib.coverageAt(rec, census, new Date(rec.embargoAt).getTime() + 2 * 3600000, { fetchedAt }), censusNote: note };
+      rec.reference['2h'] = { ...lib.coverageAt(rec, census, new Date(rec.embargoAt).getTime() + 2 * 3600000, { fetchedAt, excluded }), censusNote: note };
       console.log(`[press-night] reference 2h filled from the live timeline: ${rec.reference['2h'].status} coverage=${rec.reference['2h'].coverage}`);
     }
     writeRecord(file, rec);

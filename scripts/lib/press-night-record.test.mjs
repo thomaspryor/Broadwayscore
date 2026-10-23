@@ -110,11 +110,17 @@ test('evaluateCheck: all gates met is PASS; a stuck drop FAILs; coverage under t
   lib.applySample(rec, { at: at(-5), reviews: [] });
   lib.applySample(rec, { at: at(10), reviews: [rv('NYT', 'A'), rv('Variety', 'B')] });
   rec.reference['2h'] = { status: 'complete', coverage: 1, covered: 2, count: 2, missing: [] };
+  assert.equal(lib.evaluateCheck(rec).verdict, 'UNKNOWN'); // BRO-6070: no review-file snapshot, so same-night-completeness is unknown
+  rec.fileState = { files: [] };
   assert.equal(lib.evaluateCheck(rec).verdict, 'PASS');
 
   rec.reference['2h'] = { status: 'incomplete', coverage: 0.5, covered: 1, count: 2, missing: ['variety'] };
   assert.equal(lib.evaluateCheck(rec, { coverage2h: 0.8 }).verdict, 'FAIL');
-  assert.equal(lib.evaluateCheck(rec, { coverage2h: 0.5 }).verdict, 'PASS');
+  // The 0.8 bar is met at 0.5 here, but same-night-completeness still names the missing listed outlet.
+  const lenient = lib.evaluateCheck(rec, { coverage2h: 0.5 });
+  assert.equal(lenient.gates.find((g) => g.name === 'coverage-2h').status, 'pass');
+  assert.equal(lenient.gates.find((g) => g.name === 'same-night-completeness').status, 'fail');
+  assert.equal(lenient.verdict, 'FAIL');
 
   rec.reference['2h'] = { status: 'complete', coverage: 1, covered: 2, count: 2, missing: [] };
   lib.applySample(rec, { at: at(15), reviews: [rv('NYT', 'A')] });
@@ -403,4 +409,114 @@ test('first-live: with an exact publish, an early lane discovery still blocks PA
   slow.firstOutletPublishAt = lib.firstOutletPublish(slow);
   slow.laneShadow = { liveFirstSeen: [], firstDiscoveredAt: at(-90) };
   assert.equal(fl(slow), 'fail'); // the first publish was no later than the exact +5, so at least 77 min
+});
+
+// ---- BRO-6070: census exclusions and same-night-completeness ----
+
+const file = (outletId, firstMin, extra = {}) => ({ outletId, critic: 'C', firstSeenAt: at(firstMin), includable: true, reason: null, syndicatedUnder: null, ...extra });
+// rec: reviews go live at the given minutes (outlet display name -> minute); probe covers -5..400.
+function nightRec(liveAtMin, files, { census = true, excluded = [] } = {}) {
+  const r = fresh();
+  const names = Object.keys(liveAtMin);
+  for (let m = -5; m <= 400; m += 5) {
+    lib.applySample(r, { at: at(m), reviews: names.filter((n) => liveAtMin[n] <= m).map((n) => rv(n, `crit-${n}`)) });
+  }
+  r.fileState = files ? { capturedAt: at(500), files } : undefined;
+  if (census) r.reference = { '2h': { status: 'complete', source: ['dtli'], count: names.length, covered: names.length, coverage: 1, missing: [], asOf: at(120), fetchedAt: at(500), method: 'timeline', ...(excluded.length ? { excluded } : {}) } };
+  return r;
+}
+const sn = (r, o) => lib.evaluateCheck(r, o).gates.find((g) => g.name === 'same-night-completeness');
+
+test('filterCensus drops excluded outlets from the denominator; coverageAt no longer counts them missing', () => {
+  const census = { entries: [{ outletId: 'nytimes' }, { outletId: 'cititour' }, { outletId: 'nydailynews' }], count: 3, sourcesPresent: ['dtli'], hadAnySource: true };
+  const rec = nightRec({ 'The New York Times': 10 }, null, { census: false });
+  const raw = lib.coverageAt(rec, census, new Date(at(120)).getTime());
+  assert.deepEqual(raw.missing.sort(), ['cititour', 'nydailynews']);
+  const excluded = [{ outletId: 'cititour', reason: 'wrongProduction' }, { outletId: 'nydailynews', reason: 'syndicated copy' }];
+  const ref = lib.coverageAt(rec, census, new Date(at(120)).getTime(), { excluded });
+  assert.equal(ref.count, 1);
+  assert.equal(ref.coverage, 1);
+  assert.deepEqual(ref.missing, []);
+  assert.deepEqual(ref.excluded, excluded);
+});
+
+test('same-night-completeness passes when everything listed and every night file is live in time', () => {
+  const r = nightRec({ 'The New York Times': 10, Vulture: 125 }, [file('nytimes', 5), file('vulture', 122)]);
+  assert.equal(sn(r).status, 'pass', sn(r).detail);
+});
+
+test('same-night-completeness fails (a) and names an outlet whose file existed by +2h but went live after it', () => {
+  const r = nightRec({ 'The New York Times': 10, 'Talkin\' Broadway': 150 }, [file('nytimes', 5), file('talkinbroadway', 20)]);
+  const g = sn(r);
+  assert.equal(g.status, 'fail');
+  assert.match(g.detail, /talkinbroadway \(review first seen 02:20Z|talkinbroadway \(review first seen/);
+  assert.match(g.detail, /after \+2h/);
+});
+
+test('same-night-completeness fails (b) for a late-night review live more than 30 min after first seen, passes within 30', () => {
+  const late = nightRec({ 'The New York Times': 10, Vulture: 170 }, [file('nytimes', 5), file('vulture', 125)]);
+  assert.equal(sn(late).status, 'fail');
+  assert.match(sn(late).detail, /vulture .*45 min later/);
+  const ok = nightRec({ 'The New York Times': 10, Vulture: 150 }, [file('nytimes', 5), file('vulture', 125)]);
+  assert.equal(sn(ok).status, 'pass', sn(ok).detail);
+  assert.equal(sn(ok, { lateLiveWithinMin: 20 }).status, 'fail');
+});
+
+test('same-night-completeness: a late review that never went live is named once the probe ran past the bar', () => {
+  const r = nightRec({ 'The New York Times': 10 }, [file('nytimes', 5), file('vulture', 125)]);
+  assert.equal(sn(r).status, 'fail');
+  assert.match(sn(r).detail, /vulture .*never live/);
+});
+
+test('same-night-completeness ignores excluded files and files outside the night window', () => {
+  const r = nightRec({ 'The New York Times': 10 }, [
+    file('nytimes', 5),
+    file('cititour', 20, { includable: false, reason: 'wrongProduction' }),
+    file('nydailynews', 20, { includable: false, reason: 'knownSyndicationSecondary', syndicatedUnder: 'chicagotribune' }),
+    file('oldoutlet', -60 * 24 * 30), // first seen a month ago
+  ]);
+  assert.equal(sn(r).status, 'pass', sn(r).detail);
+});
+
+test('same-night-completeness is unknown without a file snapshot or without a census, never pass', () => {
+  assert.equal(sn(nightRec({ 'The New York Times': 10 }, null)).status, 'unknown');
+  assert.match(sn(nightRec({ 'The New York Times': 10 }, null)).detail, /no review-file snapshot/);
+  assert.equal(sn(nightRec({ 'The New York Times': 10 }, [file('nytimes', 5)], { census: false })).status, 'unknown');
+  assert.equal(lib.evaluateCheck(nightRec({ 'The New York Times': 10 }, null)).verdict, 'UNKNOWN');
+});
+
+test('same-night-completeness: census outlets still missing at +2h are named even with no file for them', () => {
+  const r = nightRec({ 'The New York Times': 10 }, [file('nytimes', 5)]);
+  r.reference['2h'].missing = ['deadline'];
+  r.reference['2h'].covered = 0;
+  r.reference['2h'].coverage = 0.5;
+  assert.equal(sn(r).status, 'fail');
+  assert.match(sn(r).detail, /deadline \(listed by the aggregators, not live at \+2h\)/);
+});
+
+test('stability does not count the drop of a review the rebuild excludes, but still counts a real one', () => {
+  const r = fresh();
+  lib.applySample(r, { at: at(5), reviews: [rv('New York Daily News', 'Chris Jones'), rv('Vulture', 'S')] });
+  lib.applySample(r, { at: at(10), reviews: [rv('Vulture', 'S')] });
+  const stab = (x) => lib.evaluateCheck(x).gates.find((g) => g.name === 'stability');
+  assert.equal(stab(r).status, 'fail'); // no snapshot: cannot prove the exclusion
+  r.fileState = { files: [file('nydailynews', 0, { includable: false, reason: 'knownSyndicationSecondary' }), file('vulture', 0)] };
+  assert.equal(stab(r).status, 'pass');
+  assert.match(stab(r).detail, /New York Daily News/);
+  lib.applySample(r, { at: at(15), reviews: [] }); // Vulture (includable) now drops too
+  assert.equal(stab(r).status, 'fail');
+});
+
+test('the committed 2026-10-22 record: exclusions applied, same-night gate names Talkin\' Broadway and Vulture', () => {
+  const fs = require('fs');
+  const path = require('path');
+  const f = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'data', 'audit', 'press-night', 'the-imaginary-invalid-2026-2026-10-22.json');
+  const rec = JSON.parse(fs.readFileSync(f, 'utf8'));
+  const ref2 = rec.reference['2h'];
+  assert.ok(!ref2.missing.includes('cititour') && !ref2.missing.includes('nydailynews'), `still missing: ${ref2.missing}`);
+  assert.deepEqual(ref2.excluded.map((x) => x.outletId).sort(), ['cititour', 'nydailynews']);
+  const g = lib.evaluateCheck(rec).gates.find((x) => x.name === 'same-night-completeness');
+  assert.equal(g.status, 'fail');
+  assert.match(g.detail, /talkinbroadway/);
+  assert.match(g.detail, /vulture/);
 });

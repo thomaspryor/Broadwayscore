@@ -23,6 +23,7 @@ function passingRecord(showId) {
   lib.applySample(rec, { at: at(-5), reviews: [] });
   lib.applySample(rec, { at: at(10), reviews: [{ outlet: 'NYT', critic: 'A', tier: 1, date: '2026-10-22' }] });
   rec.reference['2h'] = { status: 'complete', coverage: 1, covered: 1, count: 1, missing: [], fetchedAt: at(120) };
+  rec.fileState = { capturedAt: at(500), files: [{ outletId: 'nytimes', includable: true, firstSeenAt: at(5) }] }; // BRO-6070 gate
   return rec;
 }
 
