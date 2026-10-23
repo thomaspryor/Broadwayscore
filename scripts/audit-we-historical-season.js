@@ -175,6 +175,8 @@ function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheck
 
   const unfetched = promoted.map(s => ({ showId: s.id, count: (textFiles[s.id] || []).filter(isUnfetched).length }))
     .filter(r => r.count > 0);
+  // Files that would not parse are named, not silently counted as fetched.
+  const unreadable = promoted.reduce((n, s) => n + (textFiles[s.id] || []).filter(f => f === null).length, 0);
 
   const displayableShare = promoted.length ? perShow.filter(s => s.displayable).length / promoted.length : 0;
   const checks = {
@@ -186,7 +188,7 @@ function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheck
     titles: { pass: censored.length === 0, value: censored.length, rows: censored },
     synopsis: { pass: null, value: synopsisLook.length, rows: synopsisLook, missing: noSynopsis },
     opening: { pass: firstPerformanceOpenings.length === 0, value: firstPerformanceOpenings.length, rows: firstPerformanceOpenings, noPressNightFound },
-    unfetched: { pass: null, value: unfetched.reduce((n, r) => n + r.count, 0), rows: unfetched },
+    unfetched: { pass: null, value: unfetched.reduce((n, r) => n + r.count, 0), rows: unfetched, unreadable },
     factCheck: { pass: null, ...seasonSummary(factCheckVerdicts, promoted.map(s => s.id)) },
   };
   const gated = Object.values(checks).filter(c => c.pass !== null);
@@ -266,6 +268,7 @@ function main() {
     } else {
       console.log('INFO unfetched: 0 review(s) waiting for their text');
     }
+    if (c.unfetched.unreadable) console.log(`    ${c.unfetched.unreadable} review-text file(s) would not parse; check them by hand`);
     if (!c.factCheck.sampled) {
       console.log(`INFO fact-check: no sourced sample pass covers this season (node scripts/fact-check-historical-sample.js sample --cohort=we-historical --season=${season} --n=30, then check + report)`);
     } else {

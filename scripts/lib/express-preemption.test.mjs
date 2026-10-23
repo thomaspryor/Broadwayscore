@@ -27,6 +27,10 @@ test('shouldCancel: orchestrators and auto pollers are always cancelled', () => 
   assert.equal(shouldCancel(ORCH, 'Opening Night Orchestrator (broadway)', 'billy-crystal-860-2026'), true);
   assert.equal(shouldCancel(POLLER, 'Opening Night Poller — auto', 'billy-crystal-860-2026'), true);
 });
+test('shouldCancel (BRO-5851): a scoring run over a show list is cancelled only when it lists this show', () => {
+  assert.equal(shouldCancel(SCORING, 'LLM Ensemble Score Reviews — a-2026,billy-crystal-860-2026,c-2026', 'billy-crystal-860-2026'), true);
+  assert.equal(shouldCancel(SCORING, 'LLM Ensemble Score Reviews — a-2026,c-2026', 'billy-crystal-860-2026'), false);
+});
 test('shouldCancel: targeted poller for the same show is cancelled, another show is left alone', () => {
   assert.equal(shouldCancel(POLLER, 'Opening Night Poller — billy-crystal-860-2026', 'billy-crystal-860-2026'), true);
   assert.equal(shouldCancel(POLLER, 'Opening Night Poller — the-curious-case-of-benjamin-button-off-broadway-2026', 'billy-crystal-860-2026'), false);

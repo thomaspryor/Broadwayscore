@@ -38,6 +38,9 @@ function shouldCancel(workflow, displayTitle, ownShowId) {
   if (workflow === ORCH) return true;
   const scoped = scopedShowId(displayTitle);
   if (!scoped || !ownShowId) return true;
+  // A scoring run may carry a comma-separated list (BRO-5851); GitHub
+  // truncates a long run-name with "...", so only a listed id is matched.
+  if (scoped.includes(',')) return scoped.split(',').map(s => s.trim()).includes(ownShowId);
   return scoped === ownShowId;
 }
 

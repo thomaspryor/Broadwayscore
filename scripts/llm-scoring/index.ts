@@ -1078,7 +1078,7 @@ async function main(): Promise<void> {
 
   // Get review files
   // Support comma-separated show IDs: --show=foo,bar,baz
-  const showIds = options.showId?.includes(',') ? options.showId.split(',') : undefined;
+  const showIds = options.showId?.includes(',') ? options.showId.split(',').map(s => s.trim()).filter(Boolean) : undefined;
   const allFiles = getAllReviewFiles(showIds ? undefined : options.showId, showIds);
 
   if (allFiles.length === 0) {

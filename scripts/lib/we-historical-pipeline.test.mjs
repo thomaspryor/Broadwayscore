@@ -219,6 +219,7 @@ test('auditSeason (BRO-5851): counts review texts found but never fetched, witho
   assert.equal(r.checks.unfetched.value, 2);
   assert.deepEqual(r.checks.unfetched.rows, [{ showId: show.id, count: 2 }]);
   assert.equal(r.checks.unfetched.pass, null);
+  assert.equal(r.checks.unfetched.unreadable, 1);
   assert.equal(auditSeason({ shows: [show], reviews: [], season: SEASON }).checks.unfetched.value, 0);
 });
 

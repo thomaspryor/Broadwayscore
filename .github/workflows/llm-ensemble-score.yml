@@ -8,7 +8,8 @@ run-name: LLM Ensemble Score Reviews${{ inputs.show_id && format(' — {0}', inp
 # targeted rescores; "scoring-reviews-show-{id}" for any show-targeted dispatch (ingest-urls, opening night)
 # so it never queues behind the 350-min scheduled batch (BRO-4466). A comma-separated show_id list shares one
 # "scoring-reviews-shows-multi" lane: the list itself made the group name so long that a 642-char dispatch
-# failed in 3s with zero jobs and no alert (BRO-5851). Guarded by tests/unit/scoring-concurrency-lane.test.mjs.
+# failed in 3s with zero jobs and no alert (BRO-5851). GitHub keeps one pending run per group, so a third list
+# dispatch replaces the waiting one: dispatch list runs one after another. Guarded by tests/unit/scoring-concurrency-lane.test.mjs.
 concurrency:
   group: scoring-reviews${{ inputs.rescore_reason && format('-{0}', inputs.rescore_reason) || (inputs.show_id && (contains(inputs.show_id, ',') && '-shows-multi' || format('-show-{0}', inputs.show_id))) || '' }}
   cancel-in-progress: false
