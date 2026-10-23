@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T04:57:30.050Z",
+  "timestamp": "2026-10-23T05:17:19.945Z",
   "stats": {
-    "totalReviews": 59668,
-    "alreadyFlagged": 21451,
+    "totalReviews": 59290,
+    "alreadyFlagged": 21068,
     "dateGuardCatches": 200,
     "directorMismatch": 2161,
-    "tvFilmSignals": 1682,
-    "londonSignals": 2815,
+    "tvFilmSignals": 1683,
+    "londonSignals": 2816,
     "offBroadwaySignals": 530,
-    "yearMismatch": 174,
-    "noPublishDate": 5286
+    "yearMismatch": 175,
+    "noPublishDate": 5287
   },
   "findings": [
     {
@@ -50204,6 +50204,25 @@
       ]
     },
     {
+      "showId": "the-upstart-crow-west-end-2022",
+      "file": "timeout-london--unknown.json",
+      "score": 71,
+      "publishDate": "2022-10-03",
+      "url": "https://www.timeout.com/london/theatre/the-upstart-crow-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"pilot episode\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2020 (2x) more than 2022 (0x). 2020 matches production: the-upstart-crow-west-end-2020"
+        }
+      ]
+    },
+    {
       "showId": "the-velocity-of-autumn-2014",
       "file": "newsday--linda-winer.json",
       "score": 44,
@@ -80555,6 +80574,19 @@
       "score": 86,
       "publishDate": "2023-08-09",
       "url": "https://www.nytimes.com/2023/08/09/theater/operation-mincemeat-musical-west-end.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "whatsonstage--alex-wood.json",
+      "publishDate": "2023-06-26",
+      "url": "https://www.whatsonstage.com/news/operation-mincemeat-extends-west-end-run-again-and-unveils-loyalty-scheme_1465642/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
