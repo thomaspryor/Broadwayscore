@@ -43,11 +43,12 @@ test('human summary: search quality lines and cutover note', () => {
     searchShowDepth: [...rows('multi', 10), ...rows('single', 40)],
     errors: {},
   };
-  const out = buildHumanSummary({ ph, ga: { skipped: 'x' }, weeks: wk, currentWeek: '2026-10-26' });
+  // A fixture, not the live CUTOVERS list, so a date fix there cannot break this test.
+  const out = buildHumanSummary({ ph, ga: { skipped: 'x' }, weeks: wk, currentWeek: '2026-10-26', cutovers: cut });
   assert.match(out, /Google sent 70 visits \(usually 70\) and Bing sent 10/);
   assert.match(out, /Search landed people on 2 different pages/);
   assert.match(out, /20% went on to look at a second page/);
-  assert.match(out, /Heads up: on Oct 23/);
+  assert.match(out, /Heads up: on Oct 22/);
   // a failed query drops its line instead of printing zeros
   const out2 = buildHumanSummary({ ph: { ...ph, searchEngine: [], errors: { searchEngine: 'boom' } }, ga: { skipped: 'x' }, weeks: wk, currentWeek: '2026-10-26' });
   assert.doesNotMatch(out2, /Google sent/);

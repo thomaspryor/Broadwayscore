@@ -159,7 +159,7 @@ function mergeSeries(series, nameOf) {
  * @param {object} ctx { ph, ga, weeks, currentWeek, problems?, showsPath? }
  * @returns {string} markdown
  */
-function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPath }) {
+function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPath, cutovers = CUTOVERS }) {
   // showsPath: explicit data/shows.json (CI checks core data out to /tmp/core-data-checkout; locally the repo has it)
   const H = helpers();
   const notes = [];
@@ -275,7 +275,7 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
   const inShort = [];
   // A measurement cutover inside the comparison window makes "vs a typical
   // week" a step change in what we can see, not in real traffic.
-  for (const c of CUTOVERS.filter((x) => [...monthAvgWeeks, last, currentWeek].includes(weekStart(x.date)))) {
+  for (const c of cutovers.filter((x) => [...monthAvgWeeks, last, currentWeek].includes(weekStart(x.date)))) {
     inShort.push(`Heads up: on ${fmtDate(c.date)} ${c.label}. Expect visit counts to step up from that week without any real change in traffic, so the comparisons below overstate growth and no source is flagged as a spike for ${[...cutoverWeeks([c])].map(fmtDate).join(' and ')}.`);
   }
   if (phOk && lastTotal) {
