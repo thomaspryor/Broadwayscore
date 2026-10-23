@@ -492,6 +492,9 @@ function stripHookNoise(text) {
  */
 const CODEX_MIN_SCORE = -6;
 const CODEX_MAC_RE = /\b(?:launchd|launchctl|LaunchAgents?|cmux|Keychain|Mac[- ]only|on the Mac|Mac launcher|~\/Library)\b/i;
+// BRO-6086: work on the Mac's hook files (~/.claude/hooks, the finish-line and exit-status gates) cannot run in
+// the sandbox: 4 such cards rejected, 0 landed. Title only: landed cards cite the hooks path in passing.
+const CODEX_HOOK_TITLE_RE = /~\/\.claude\/hooks|\bexit-status-gate(?![\w.-])|\bfinish-line(?![\w.-])/i;
 const CODEX_PENALTIES = [
   [/\.github\/workflows\/|\b(?:new|weekly|daily|nightly) (?:cron|workflow)\b|\bwire\b[^.\n]{0,60}\b(?:cron|workflow)\b/i, 4, 'workflow'],
   [/\bcredentials?\b|\bcredits\b|\bAPI key\b|\bsecrets?\b/i, 3, 'credentials'],
@@ -510,11 +513,18 @@ const CODEX_HARD_SKIPS = [
   ['private-repo-write', /\bbroadway-(?:review-texts|scorecard-data)\b|\bpending-fixes\b|\bexecute-approved-fix\b|\bapproved-fix\s+plan\b|\bdata repair\b/i],
   ['corpus-wide-data', /\bcorpus[- ]wide\b|\bbulk[- ](?:edit|fix|update|rewrite|repair|rescore)\b|(?<![\d,])(?!(?:19|20)\d\d\b)\d[\d,]{2,}\s+(?:shipped\s+|existing\s+|affected\s+|scored\s+)?(?:reviews|shows|files|rows|records)\b/i],
 ];
+// BRO-6086: title-only penalties. Cards that ask for a measurement or a root cause (find why / re-measure)
+// ended with no change (2 rejected, 0 landed); cards naming a workflow file in the title were bounced by the
+// infra gate or the workflow edit rule (4 rejected, 1 landed). Penalties, not skips, until a bigger sample.
+const CODEX_TITLE_PENALTIES = [
+  [/\bfind why\b|\bre-?measure\w*|\bneeds re-?measurement\b/i, 4, 'measure-only'],
+  [/(?<![\w.-])(?!docker-compose|openapi|pnpm-workspace)[\w.-]+\.ya?ml\b/i, 4, 'workflow-file-title'],
+];
 // A `CODEX-OK` line (description or a comment) sends a card to Codex despite the hard skips.
 const CODEX_OK_RE = /^[\s>*_#-]*CODEX-OK\b/m;
 function codexCardFit({ title = '', description = '', verify = '', comments = [], nowMs = Date.now() } = {}) {
   const text = `${title}\n${description}`;
-  if (CODEX_MAC_RE.test(text)) return { skip: 'mac-only', score: -Infinity, why: ['mac-only'] };
+  if (CODEX_MAC_RE.test(text) || CODEX_HOOK_TITLE_RE.test(String(title))) return { skip: 'mac-only', score: -Infinity, why: ['mac-only'] };
   const ok = CODEX_OK_RE.test(String(description)) || (Array.isArray(comments) ? comments : []).some((c) => c && CODEX_OK_RE.test(String(c.body || '')));
   for (const [name, re] of ok ? [] : CODEX_HARD_SKIPS) {
     const m = re.exec(text);
@@ -524,6 +534,7 @@ function codexCardFit({ title = '', description = '', verify = '', comments = []
   const why = [];
   if (/^node --test (?:--\S+ )*\S+\.test\.m?js$/.test(String(verify || '').trim())) { score += 3; why.push('single-test-verify'); }
   for (const [re, cost, name] of CODEX_PENALTIES) if (re.test(text)) { score -= cost; why.push(name); }
+  for (const [re, cost, name] of CODEX_TITLE_PENALTIES) if (re.test(String(title))) { score -= cost; why.push(name); }
   const extraK = Math.floor(Math.max(0, String(description).length - 1500) / 1000);
   if (extraK) { score -= extraK; why.push(`long+${extraK}k`); }
   const accept = String(description).split(/^##+ *Acceptance[^\n]*$/im)[1] || '';
@@ -587,6 +598,35 @@ function refreshAgeWhy({ authText, nowMs, runMs, marginMs = 30 * 60_000 }) {
   if (!Number.isFinite(last)) return 'the Codex login last_refresh is unreadable';
   if (nowMs + runMs + marginMs - last > REFRESH_AGE_SAFE_MS) return `the Codex login was last refreshed ${new Date(last).toISOString()}, so it could refresh itself during this run`;
   return null;
+}
+
+/**
+ * BRO-6086: the cloud lane refreshes the login itself once last_refresh is this old, well before
+ * REFRESH_AGE_SAFE_MS minus the GHA run (290 min) and margin, so the GHA lane never meets the
+ * window where it stands down (it idled ~29h every 8-day cycle). null: not due (or unreadable,
+ * where forcing a refresh would be unsafe).
+ */
+const REFRESH_DUE_MS = 6 * 24 * 3600_000;
+function refreshDueWhy({ authText, nowMs }) {
+  const last = Date.parse(authLastRefresh(authText));
+  if (!Number.isFinite(last)) return null;
+  const age = nowMs - last;
+  return age > REFRESH_DUE_MS ? `the Codex login was last refreshed ${new Date(last).toISOString()} (${(age / 86400_000).toFixed(1)} days ago)` : null;
+}
+
+/** The CLI refreshes once last_refresh is ~8 days old; this text stamps it 9 days back so its first request does. */
+const CODEX_CLI_REFRESH_AGE_MS = 8 * 24 * 3600_000;
+function staleStampAuth(authText, nowMs) {
+  const j = JSON.parse(authText);
+  j.last_refresh = new Date(nowMs - CODEX_CLI_REFRESH_AGE_MS - 24 * 3600_000).toISOString();
+  return JSON.stringify(j, null, 2);
+}
+
+/** Did a forced refresh happen? Compares as instants (Codex's stamp format can differ from toISOString). */
+function refreshAdvanced(beforeText, afterText) {
+  const before = Date.parse(authLastRefresh(beforeText));
+  const after = Date.parse(authLastRefresh(afterText));
+  return Number.isFinite(before) && Number.isFinite(after) && after > before;
 }
 
 /**
@@ -1242,6 +1282,10 @@ module.exports = {
   laneSlotList,
   laneForLogin,
   refreshAgeWhy,
+  REFRESH_DUE_MS,
+  refreshDueWhy,
+  staleStampAuth,
+  refreshAdvanced,
   cardsInLocks,
   SWF_CARRY_MARKER,
   swfCarryBody,

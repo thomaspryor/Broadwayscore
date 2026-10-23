@@ -1055,6 +1055,58 @@ test('laneForLogin: gha runs on its own slots only when the login outlives the r
   assert.equal(r.laneForLogin({ lane: 'cloud', slots: 3, authText: auth(now + 5 * 24 * 3600_000, '2026-10-01T00:00:00Z'), nowMs: now, runMs }).slots, 3, 'the cloud lane keeps its own rule');
 });
 
+test('codexCardFit (BRO-6086): hook-file work is Mac-only; measure-only and workflow-file-title cards are penalised', () => {
+  for (const title of ['Fix ~/.claude/hooks/finish-line-gate.sh false block', 'exit-status-gate rejects a valid verdict', 'finish-line Gate 3 misreads DISPATCHED lines']) {
+    assert.equal(r.codexCardFit({ title, description: '' }).skip, 'mac-only', title);
+  }
+  assert.equal(r.codexCardFit({ title: 'Fix verify-edits guard', description: 'also see ~/.claude/hooks/x.sh and finish-line' }).skip, null, 'a description that only cites the hooks stays eligible (landed cards do)');
+  assert.equal(r.codexCardFit({ title: 'Stop hook wording in the repo cloud hook', description: '' }).skip, null, 'a plain Stop hook in the repo is still fine');
+  const base = r.codexCardFit({ title: 'Fix the thing', description: '' });
+  for (const [title, tag] of [['Find why the poller misses reviews', 'measure-only'], ['Re-measure the scoring drift', 'measure-only'], ['Needs re-measurement after the rebuild', 'measure-only'], ['Fix codex-runner.yml schedule', 'workflow-file-title']]) {
+    const f = r.codexCardFit({ title, description: '' });
+    assert.ok(f.why.includes(tag), `${title}: ${f.why}`);
+    assert.equal(f.score, base.score - 4, title);
+  }
+  const both = r.codexCardFit({ title: 'Find why codex-runner.yml idles', description: '' });
+  assert.equal(both.score, base.score - 8);
+  assert.equal(both.skip, 'too-broad', 'two weak signals together stand down');
+  assert.equal(r.codexCardFit({ title: 'Find why X', description: 'Phase 2 follow-ups' }).skip, 'too-broad', 'a penalty plus an existing one crosses the line');
+  assert.equal(r.codexCardFit({ title: 'Fix exit-status-gate-taskref parser', description: '' }).skip, null, 'repo test files named after the gates are not hook files');
+  assert.equal(r.codexCardFit({ title: 'finish-line-log-trim drops lines', description: '' }).skip, null);
+  assert.equal(r.codexCardFit({ title: 'Bump docker-compose.yml image', description: '' }).why.includes('workflow-file-title'), false, 'non-workflow yaml is not penalised');
+  assert.equal(r.codexCardFit({ title: 'Fix the digest', description: 'find why it misses, then fix.\n## Acceptance criteria\n- a\n- b\n- c\n- d' }).why.includes('measure-only'), false, 'measure-only reads the title only');
+  assert.equal(r.codexCardFit({ title: 'BSC Daily: fix the digest', description: '' }).skip, null, 'BSC Daily titles stay in');
+  assert.equal(r.codexCardFit({ title: 'Fix the thing', description: 'mentions foo.yml in the body only' }).why.includes('workflow-file-title'), false, 'only the title line counts');
+});
+
+test('refreshDueWhy / staleStampAuth / refreshAdvanced (BRO-6086): the cloud lane refreshes the login before the gha lane would stand down', () => {
+  const day = 86400_000;
+  const now = Date.parse('2026-10-20T10:00:00Z');
+  const at = (ageMs) => JSON.stringify({ last_refresh: new Date(now - ageMs).toISOString(), tokens: { access_token: 'a.b.c', refresh_token: 'r' } });
+  assert.equal(r.REFRESH_DUE_MS, 6 * day);
+  assert.equal(r.refreshDueWhy({ authText: at(6 * day), nowMs: now }), null, 'exactly 6 days is not yet due');
+  assert.match(r.refreshDueWhy({ authText: at(6 * day + 1000), nowMs: now }), /days ago/);
+  assert.equal(r.refreshDueWhy({ authText: at(1 * day), nowMs: now }), null);
+  assert.equal(r.refreshDueWhy({ authText: 'not json', nowMs: now }), null, 'unreadable: never force a refresh');
+  assert.equal(r.refreshDueWhy({ authText: JSON.stringify({ tokens: {} }), nowMs: now }), null, 'no last_refresh: not forced');
+  // Invariant: a login the cloud lane keeps under REFRESH_DUE_MS old still lets the gha lane run a full run.
+  const runMs = 290 * 60_000, marginMs = 30 * 60_000;
+  assert.ok(r.REFRESH_DUE_MS + runMs + marginMs < 7 * day, 'due age + run + margin must stay under REFRESH_AGE_SAFE_MS');
+  const sixDay = r.laneForLogin({ lane: 'gha', slots: 2, authText: JSON.stringify({ last_refresh: new Date(now - 6 * day).toISOString(), tokens: { access_token: `e30.${Buffer.from(JSON.stringify({ exp: Math.floor((now + 5 * day) / 1000) })).toString('base64url')}.s` } }), nowMs: now, runMs });
+  assert.equal(sixDay.slots, 2, 'a 6-day-old login still gives the gha lane both slots');
+  // staleStampAuth changes only last_refresh, to more than 8 days back.
+  const orig = at(0);
+  const stale = JSON.parse(r.staleStampAuth(orig, now));
+  assert.deepEqual({ ...stale, last_refresh: null }, { ...JSON.parse(orig), last_refresh: null });
+  assert.ok(now - Date.parse(stale.last_refresh) > 8 * day);
+  assert.throws(() => r.staleStampAuth('not json', now));
+  // refreshAdvanced compares instants, not strings.
+  assert.equal(r.refreshAdvanced(at(7 * day), at(0)), true);
+  assert.equal(r.refreshAdvanced(JSON.stringify({ last_refresh: '2026-10-20T10:00:00Z' }), JSON.stringify({ last_refresh: '2026-10-20T10:00:00.000Z' })), false, 'same instant, different format');
+  assert.equal(r.refreshAdvanced(at(0), at(7 * day)), false);
+  assert.equal(r.refreshAdvanced('x', at(0)), false);
+});
+
 test('cardsInLocks: the cards other slots\' run locks name', () => {
   const s = r.cardsInLocks(['locked 2026-10-20T10:00:00Z cards=BRO-1,BRO-22', 'released 2026-10-20T09:00:00Z', 'locked 2026-10-20T10:00:00Z cards=BRO-3']);
   assert.deepEqual([...s].sort(), ['BRO-1', 'BRO-22', 'BRO-3']);

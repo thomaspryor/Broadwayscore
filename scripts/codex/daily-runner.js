@@ -1226,6 +1226,59 @@ function ensureTools({ codex = true } = {}) {
   }
 }
 
+/** Write auth.json atomically (tmp + rename, mode 0600) so a kill mid-write never leaves half a login. */
+function writeAuthFile(text) {
+  const file = path.join(CODEX_HOME, 'auth.json');
+  const tmp = `${file}.${process.pid}.tmp`;
+  fs.writeFileSync(tmp, text, { mode: 0o600 });
+  fs.renameSync(tmp, file);
+}
+
+/**
+ * BRO-6086: the cloud lane refreshes the stored login once it is R.REFRESH_DUE_MS old, so the GHA
+ * lane never meets the age window where it stands down (~29h idle per 8-day cycle). Stamps the
+ * local last_refresh 9 days back so Codex's first request refreshes the tokens, runs one tiny
+ * exec, and saves the result. Returns the auth text the lane plan should judge, or null when the
+ * slots must not start (never today: an unsaved refreshed login still runs so the slots' saves retry). The original login is put back
+ * on any failure; no token is ever logged.
+ */
+function refreshLoginIfDue(authText) {
+  if (OPTS.dryRun || OPTS.lane !== 'cloud') return authText;
+  const due = R.refreshDueWhy({ authText, nowMs: Date.now() });
+  if (!due) return authText;
+  // Only the cloud lane's own slots matter: a live GHA lane holds the other slots for hours.
+  const lock = sh('node', [__filename, '--lock-status', '--lane', 'cloud'], { timeoutMs: 180_000 });
+  if (lock.code !== 0) { log(`login refresh skipped: a cloud slot is running or its lock is unreadable (lock-status exit ${lock.code})`); return authText; }
+  log(`refreshing the Codex login: ${due}`);
+  const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'codex-refresh-'));
+  let advanced = false;
+  let after = authText;
+  try {
+    writeAuthFile(R.staleStampAuth(authText, Date.now()));
+    const r = sh('codex', ['exec', '--dangerously-bypass-hook-trust', '--skip-git-repo-check', '--sandbox', codexSandboxMode(), '--color', 'never', '-C', scratch, 'Reply with the single word ok.'],
+      { cwd: scratch, timeoutMs: 5 * 60_000, env: scrubbedEnv(), input: '' });
+    try { after = fs.readFileSync(path.join(CODEX_HOME, 'auth.json'), 'utf8'); } catch { after = authText; }
+    advanced = R.refreshAdvanced(authText, after);
+    log(`login refresh exec: exit ${r.code}, ${advanced ? 'last_refresh advanced' : 'last_refresh did not advance'}`);
+  } catch (e) {
+    log(`login refresh failed: ${String(e.message || e).split('\n')[0].slice(0, 200)}`);
+  } finally {
+    fs.rmSync(scratch, { recursive: true, force: true });
+    if (!advanced) { try { writeAuthFile(authText); } catch (e) { log(`could not put the original login back: ${e.message}`); } }
+  }
+  if (!advanced) return authText;
+  for (let i = 0; i < 3; i++) {
+    const save = sh('node', ['scripts/codex/auth-store.js', 'save'], { timeoutMs: 120_000 });
+    if (save.code === 0) { log('refreshed Codex login saved'); return after; }
+    log(`refreshed login save failed (try ${i + 1}/3): ${tail(save.out, 300)}`);
+    Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 3000 * (i + 1));
+  }
+  // The refresh token is already spent and only this container holds the new login. Keep going so the
+  // slots' own saveLogin (after every exec and at exit) gets more chances to store it; stopping here would strand it.
+  log('REFRESHED LOGIN NOT SAVED YET: Codex may have spent the stored refresh token. Starting the slots anyway so their saves can retry; if none succeeds the stored login needs a fresh codex login.');
+  return after;
+}
+
 /**
  * --slots N: start N slot runners 2 min apart (worktree creation and the first Codex exec do not
  * overlap) and wait for them. One slot when the login could expire mid-run or will not restore.
@@ -1238,6 +1291,10 @@ async function launchSlots() {
   log(restore.out.trim());
   let authText = '';
   try { authText = fs.readFileSync(path.join(CODEX_HOME, 'auth.json'), 'utf8'); } catch { /* slot 0 reports a missing login */ }
+  if (restore.code === 0 && authText) {
+    authText = refreshLoginIfDue(authText);
+    if (authText === null) { process.exitCode = 1; return; }
+  }
   const runMs = (Number.isFinite(HARD_END_MS) ? HARD_END_MS : RUN_STARTED_MS + OPTS.maxMinutes * 60_000) - Date.now();
   // The lane's slots (R.laneForLogin): a later lane falls back to slot 0 when the login may refresh.
   const plan = restore.code === 0 ? R.laneForLogin({ lane: OPTS.lane, slots: OPTS.slots, authText, nowMs: Date.now(), runMs }) : { lane: 'cloud', base: 0, slots: 1, why: 'the Codex login did not restore' };
