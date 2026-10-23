@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-10-22T19:21:20.337Z",
-  "bannerText": "83/156 Done(14d) verified on main · 17 FAILED · 0 vacuous · 27 stuck-but-done — PARTIAL RUN: 53 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-23T07:45:12.602Z",
+  "bannerText": "66/219 Done(14d) verified on main · 7 FAILED · 1 vacuous · 13 stuck-but-done — PARTIAL RUN: 173 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
-      "title": "FAILED BRO-5838 — Weekly costs labelled trade-reported with no source (15 records)",
-      "detail": "⚠️ WARNING: 96 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025... ⚠️ WARNING: 75 Off-Bro…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5838/weekly-costs-labelled-trade-reported-with-no-source-15-records"
+      "title": "FAILED BRO-2496 — iOS Maestro E2E nightly has failed every run for 2+ weeks on 3-4 unrelated flows",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: docs/maestro-e2e-failure-diagnosis.md",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2496/ios-maestro-e2e-nightly-has-failed-every-run-for-2-weeks-on-3-4"
     },
     {
-      "title": "FAILED BRO-5814 — Show pages 500 for announced shows with no theater (toPostalAddress(null)); Private Lives cast file holds the 1948 cast",
-      "detail": "not ok 1 - <checkout>/tests/unit/seo-show-no-venue.test.mjs (Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/tmp/done-evidence-tMJ7jW/main)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5814/show-pages-500-for-announced-shows-with-no-theater-topostaladdressnull"
+      "title": "FAILED BRO-5968 — SEO: 5 hub pages exceed Googlebot's 2MB fetch limit (all-time list is 7.3MB)",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/validate-page-size.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5968/seo-5-hub-pages-exceed-googlebots-2mb-fetch-limit-all-time-list-is"
     },
     {
-      "title": "FAILED BRO-5812 — Site-wide copy pass to the owner's voice rules (em dashes, AI tropes) plus an advisory guard",
-      "detail": "not ok 2 - on-screen copy in src/app, src/components, src/config and src/lib follows the voice rules (rewrite with commas, periods or parentheses, and plain wording:)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5812/site-wide-copy-pass-to-the-owners-voice-rules-em-dashes-ai-tropes-plus"
+      "title": "FAILED BRO-5963 — Backup restore drill (monthly, all R2 bundles + Supabase export) and drop the R2 lifecycle step that silently fails",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/restore-drill.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5963/backup-restore-drill-monthly-all-r2-bundles-supabase-export-and-drop"
     },
     {
-      "title": "FAILED BRO-5799 — Cursed Child one-part WE 2026: 2 old-production reviews filed by rss-discovery and show-score; make both writers apply the wrong-production-by-date rule",
-      "detail": "⚠️ WARNING: 96 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025... ⚠️ WARNING: 75 Off-Bro…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5799/cursed-child-one-part-we-2026-2-old-production-reviews-filed-by-rss"
+      "title": "FAILED BRO-5962 — Exempt-from-cron-health workflows failing every run go unreported (12 dead weekly/daily jobs)",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/health-digest-crons.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5962/exempt-from-cron-health-workflows-failing-every-run-go-unreported-12"
     },
     {
-      "title": "FAILED BRO-5788 — Data-health live-data failures get no card and no fix: route each failing test to the alert router (auto-card + worker)",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/check-corpus-drift.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5788/data-health-live-data-failures-get-no-card-and-no-fix-route-each"
+      "title": "FAILED BRO-5942 — Backfill: split the ~46 existing joint reviews the BRO-5895 corpus dry run found (one article, 2-3 shows)",
+      "detail": "FAIL the-parisian-woman: show missing; scored reviews 0 < 5 PASS my-name-is-lucy-barton-2020: 34 scored reviews PASS the-sound-inside-2019: 21 scored reviews",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5942/backfill-split-the-46-existing-joint-reviews-the-bro-5895-corpus-dry"
     },
     {
-      "title": "FAILED BRO-5779 — Show-page recoupment headline prints the report month as 'Recouped, <month>' (Kimberly Akimbo: April 2026 is the Playbill report date)",
-      "detail": "not ok 1 - <checkout>/tests/unit/commercial-display.test.mjs (TypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extension \".ts\" for /tmp/do)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5779/show-page-recoupment-headline-prints-the-report-month-as-recouped"
+      "title": "FAILED BRO-5939 — P2: land.yml colocated-tests refusal names a passing test's warning, not the failing test (defaultDetail vs tapDetail)",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/tests/land-branch-detail.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5939/p2-landyml-colocated-tests-refusal-names-a-passing-tests-warning-not"
     },
     {
-      "title": "FAILED BRO-5716 — Auto-fix (second try): Opening Night Poller Failed",
-      "detail": "(gh not authenticated; read runs from the public GitHub API) opening-night-poller.yml: MISMATCH — 1/6 of last 6 runs concluded 'success' (min 5, max -)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5716/auto-fix-second-try-opening-night-poller-failed"
+      "title": "FAILED BRO-5887 — Reddit drafts: Sonnet review check (completeness + accuracy, auto-fix) before any draft email is sent",
+      "detail": "not ok 1 - every draft emailed since the check went live carries a review-check record (drafts emailed with no review-check record)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5887/reddit-drafts-sonnet-review-check-completeness-accuracy-auto-fix"
     },
     {
-      "title": "FAILED BRO-5677 — Recoupment model treats Form D maximum capitalization as actual raise",
-      "detail": "not ok 1 - timing backtest: musicals hold MAE <= 15.5 and >= 35 inside; plays MAE <= 12 and >= 13 inside (play timing MAE 13.2 (17.8 before BRO-5651); worst: sea-wall-a-life-2019 …",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5677/recoupment-model-treats-form-d-maximum-capitalization-as-actual-raise"
+      "title": "STUCK BRO-2557 — P2: cloud-memory sync conflicts are preserved into a directory nobody reads, and the warning is piped to /dev/null",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2557/p2-cloud-memory-sync-conflicts-are-preserved-into-a-directory-nobody"
     }
   ],
-  "moreCount": 36
+  "moreCount": 13
 }
