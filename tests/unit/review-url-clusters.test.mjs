@@ -11,6 +11,39 @@ test('canonicalReviewUrl strips query/hash/trailing slash and lowercases', () =>
   assert.equal(canonicalReviewUrl(null), '');
 });
 
+test('BWW Hay Fever section and main article URLs have the same identity', () => {
+  const article = 'Review-HAY-FEVER-Starring-Christine-Baranski-Richard-E-Grant-20261002';
+  for (const host of ['www.broadwayworld.com', 'broadwayworld.com']) {
+    assert.equal(
+      canonicalReviewUrl(`https://${host}/westend/article/${article}`),
+      canonicalReviewUrl(`https://${host}/article/${article}`),
+    );
+    assert.equal(
+      canonicalReviewUrl(`https://${host}/chicago/article/${article}?utm_source=rss#top`),
+      canonicalReviewUrl(`https://${host}/article/${article}`),
+    );
+  }
+});
+
+test('BWW plain article URLs are unchanged and different article slugs stay distinct', () => {
+  const plain = 'https://www.broadwayworld.com/article/review-hay-fever-20261002';
+  assert.equal(canonicalReviewUrl(plain), plain);
+  assert.notEqual(
+    canonicalReviewUrl('https://www.broadwayworld.com/westend/article/review-hay-fever-20261002'),
+    canonicalReviewUrl('https://www.broadwayworld.com/westend/article/review-other-show-20261002'),
+  );
+});
+
+test('section normalization is limited to BWW article paths', () => {
+  for (const url of [
+    'https://example.com/westend/article/review',
+    'https://broadwayworld.com.example.com/westend/article/review',
+    'https://www.broadwayworld.com/westend/reviews/review',
+  ]) {
+    assert.equal(canonicalReviewUrl(url), url);
+  }
+});
+
 test('flags a byline explosion: one URL under many critic names', () => {
   const url = 'https://www.whatsonstage.com/news/midsummer-regents-park-review_1726521';
   const reviews = ['Alun Hood', 'Alex Wood', 'Miriam Sallon', 'Daniel Perks', 'Judi Herman', 'Theo Bosanquet']

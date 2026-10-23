@@ -34,6 +34,9 @@ function canonicalReviewUrl(url) {
   const qi = noHash.indexOf('?');
   const base = (qi === -1 ? noHash : noHash.slice(0, qi)).replace(/\/+$/, '');
   let out = base.toLowerCase();
+  // BWW serves the same article under regional and main-site paths. Without
+  // this, the pending drain cannot recognize a regional stub that already landed.
+  out = out.replace(/^(https?:\/\/(?:www\.)?broadwayworld\.com)\/[^/]+\/article\//, '$1/article/');
   if (qi !== -1) {
     const kept = noHash.slice(qi + 1).split('&')
       .filter((kv) => ARTICLE_ID_QUERY_KEY.test(kv.split('=')[0]))

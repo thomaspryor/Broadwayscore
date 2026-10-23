@@ -77,6 +77,35 @@ async function run(seeded, f, extra = {}) {
   return r;
 }
 
+for (const dryRun of [false, true]) {
+  test(`BWW section stub already landed at /article/ is redundant (dryRun=${dryRun})`, async (t) => {
+    const article = 'Review-ZEPHYR-NIGHTS-20261011';
+    const s = seed(zeroTextStub({
+      outletId: 'broadwayworld', outlet: 'BroadwayWorld',
+      url: `https://www.broadwayworld.com/westend/article/${article}`,
+      pendingUnrecoverableAt: '2026-10-11T00:00:00Z',
+    }), 'broadwayworld--1234abcd.json');
+    t.after(() => fs.rmSync(s.root, { recursive: true, force: true }));
+    const primaryPath = path.join(s.root, SHOW.id, 'broadwayworld--jane-critic.json');
+    const primary = JSON.stringify({
+      showId: SHOW.id, outletId: 'broadwayworld', criticName: 'Jane Critic',
+      url: `https://www.broadwayworld.com/article/${article}`,
+      fullText: 'Zephyr Nights is a gripping evening of theatre. '.repeat(40),
+    });
+    fs.writeFileSync(primaryPath, primary);
+    const stubBefore = fs.readFileSync(s.filepath, 'utf8');
+    const f = fakes({ fetchImpl: () => { throw new Error('redundant stub must never fetch'); } });
+    const result = await run(s, f, { explicitScope: true, dryRun });
+    assert.equal(result.droppedRedundant, 1);
+    assert.equal(result.unrecoverable, 0);
+    assert.equal(result.refetched, 0);
+    assert.deepEqual(f.calls, { fetch: [], alert: [], emit: [] });
+    assert.equal(fs.readFileSync(primaryPath, 'utf8'), primary);
+    assert.equal(fs.existsSync(s.filepath), dryRun);
+    if (dryRun) assert.equal(fs.readFileSync(s.filepath, 'utf8'), stubBefore);
+  });
+}
+
 describe('replay-pending-bylines: zero-text stub is not silently kept (BRO-2735)', () => {
   test('page with no byline and no recoverable body → pending-unrecoverable event + owner alert', async () => {
     const s = seed();
