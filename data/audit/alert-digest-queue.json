@@ -1075,5 +1075,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-23T03:42:42.374Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6033-poller-first-wave",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6033-poller-first-wave",
+    "description": "land.yml did not land land/bro-6033-poller-first-wave: the unit-tests-node gate went red at 8f656c4c7e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39897532375",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6033-poller-first-wave"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "8f656c4c7e6d7d810cc51473bc0daf0632ce41cb"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39897532375"
+      }
+    ],
+    "queuedAt": "2026-10-23T04:14:21.657Z"
   }
 ]
