@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-23T15:11:56.135Z",
+    "lastUpdated": "2026-10-23T18:14:03.564Z",
     "version": "2.1.0",
     "lastChange": "BRO-5823: register icareifyoulisten (staged name-unresolved)"
   },
@@ -13459,6 +13459,17 @@
         "icareifyoulisten"
       ],
       "domain": "icareifyoulisten.com"
+    },
+    "alt-africa": {
+      "displayName": "Alt Africa",
+      "tier": 3,
+      "aliases": [
+        "alt-africa"
+      ],
+      "domain": "alt-africa.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-23T18:14:03.564Z"
     }
   },
   "_aliasIndex": {
