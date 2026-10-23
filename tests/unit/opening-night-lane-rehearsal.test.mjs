@@ -22,7 +22,9 @@ const DAY = 24 * 60 * 60 * 1000;
 test('synthetic fixture: 35 reviews, every host a registered outlet, decoys not among them, a paywalled NYT with no text', () => {
   const f = buildSyntheticFixture();
   assert.equal(f.reviews.length, 35);
-  assert.equal(new Set(f.expectedKeys).size, 35, 'canonical keys are unique');
+  assert.equal(new Set(f.expectedKeys).size, 34, 'canonical keys are unique; the syndicated NY Daily News copy is not expected');
+  assert.equal(f.syndicatedCopies.length, 1);
+  assert.ok(!f.expectedKeys.includes(f.syndicatedCopies[0]));
   for (const r of f.reviews) assert.ok(resolveOutletFromUrl(r.url), `${r.host} must resolve to a registered outlet`);
   for (const d of f.decoys) assert.ok(!f.expectedKeys.includes(discovery.canonicalUrl(d)));
   const nyt = f.reviews.find((r) => r.outletId === 'nytimes');
@@ -35,11 +37,17 @@ test('rehearsal replay: every fixture review reaches verified-live in under 20 m
   const fixture = buildSyntheticFixture();
   const res = await rh.runRehearsal({ fixture });
   assert.equal(res.pass, true, JSON.stringify(res.verdict.failures.slice(0, 3)));
-  assert.equal(res.verdict.checked, 35);
-  assert.equal(res.summary.total, 35);
-  assert.equal(res.summary.live, 35);
+  // 35 reviews, 34 expected live: the syndicated NY Daily News copy is dropped (BRO-5993).
+  assert.equal(res.verdict.checked, 34);
+  assert.equal(res.summary.total, 35, 'all 35 discovered');
+  assert.equal(res.summary.live, 34);
   assert.ok(res.summary.maxMs < ledger.DEFAULT_MAX_MS, `max time-to-live ${res.summary.maxMs}ms`);
-  for (const r of res.summary.reviews) { assert.equal(r.manual, false); assert.deepEqual(r.skipped, []); assert.equal(r.lastStage, 'verified-live'); }
+  for (const r of res.summary.reviews) {
+    assert.equal(r.manual, false); assert.deepEqual(r.skipped, []);
+    // The copy is cited before its primary, so it is scored first and pulled from the queue when the primary lands.
+    if (fixture.syndicatedCopies.includes(r.reviewKey)) assert.notEqual(r.lastStage, 'verified-live');
+    else assert.equal(r.lastStage, 'verified-live');
+  }
   assert.deepEqual(res.checks.unexpected, []);
   assert.deepEqual(res.checks.decoyLeaks, []);
   assert.equal(res.checks.bystandersSurvived, true);
@@ -51,7 +59,8 @@ test('rehearsal keeps the work dir on request and publishes lane-stamped rows, t
   try {
     const doc = JSON.parse(fs.readFileSync(path.join(res.workDir, 'reviews.json'), 'utf8'));
     const mine = doc.reviews.filter((r) => r.showId === fixture.show.id);
-    assert.equal(mine.length, 35);
+    assert.equal(mine.length, 34);
+    assert.ok(!mine.some((r) => r.outletId === 'nydailynews'), 'the syndicated copy is not published next to its Chicago Tribune primary');
     assert.ok(mine.every((r) => r.productionVerified === 'aggregator' && r.openingNightLane && r.assignedScore != null));
     const nyt = mine.find((r) => r.outletId === 'nytimes');
     assert.equal(nyt.needsRecollection, true);
@@ -280,7 +289,8 @@ test('lane-runner: a publish that throws puts its rows back for the next batch; 
     assert.ok(res.errors.some((e) => e.adapter === 'publish' && /pushing core data failed/.test(e.error)));
     assert.deepEqual(res.unpublished, []);
     const doc = JSON.parse(fs.readFileSync(s.reviewsFile, 'utf8'));
-    assert.equal(doc.reviews.filter((r) => r.showId === s.fixture.show.id).length, 19, 'every roundup review landed after the retry');
+    assert.equal(doc.reviews.filter((r) => r.showId === s.fixture.show.id).length, 18, 'every roundup review landed after the retry (19 cited, the syndicated NY Daily News copy dropped)');
+    assert.deepEqual(res.skipped.map((x) => x.key), s.fixture.syndicatedCopies);
   } finally { s.cleanup(); }
 });
 
