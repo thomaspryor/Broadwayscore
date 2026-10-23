@@ -1,0 +1,455 @@
+{
+  "_comment": "BRO-2688 baseline: audit-*.js scripts that no workflow, action, package.json script or other code references. Wire a new audit into CI instead of adding it here; add it only when it is intentionally manual (bucket b). Reasoning: docs/triage-audit-scripts.md.",
+  "entries": {
+    "audit-star-bands.js": {
+      "bucket": "a",
+      "rank": 1,
+      "reason": "CLAUDE.md \u00a73 star-band invariant; core data only; live run today shows 1 review out of band (scoreSource originalScore-priority0)"
+    },
+    "audit-announced-cast.js": {
+      "bucket": "a",
+      "rank": 2,
+      "reason": "announced shows must not hold an older production's cast (BRO-5809); core data only; live run today flags the-wedding-march-off-broadway-2026"
+    },
+    "audit-scoreless-llmscore.js": {
+      "bucket": "a",
+      "rank": 3,
+      "reason": "files with an llmScore object but no numeric score are never scored or published (BRO-5395); needs review-texts"
+    },
+    "audit-uncounted-real-reviews.js": {
+      "bucket": "a",
+      "rank": 4,
+      "reason": "review texts on 2026 shows missing from reviews.json (BRO-5794); needs review-texts"
+    },
+    "audit-listing-page-text.js": {
+      "bucket": "a",
+      "rank": 5,
+      "reason": "listing or search page scored as a review (BRO-5375, scored 87 on the site); only a test.yml path trigger today; needs review-texts"
+    },
+    "audit-promo-booking-copy.js": {
+      "bucket": "a",
+      "rank": 6,
+      "reason": "booking and deal copy ingested as review text (BRO-5902, BRO-5906); only a test.yml path trigger today; needs review-texts"
+    },
+    "audit-ownership-gate-losses.js": {
+      "bucket": "a",
+      "rank": 7,
+      "reason": "reviews dropped by the push ownership gate that exist nowhere in the corpus (BRO-5373); needs review-texts git history"
+    },
+    "audit-corpus-determinism.js": {
+      "bucket": "a",
+      "rank": 8,
+      "reason": "published review count moving down or flapping; PASS today; needs deploy-watermark git history"
+    },
+    "audit-flagged-file-contamination.js": {
+      "bucket": "a",
+      "rank": 9,
+      "reason": "merge target landing inside a flagged review file (BRO-3219); only a test.yml path trigger; needs review-texts"
+    },
+    "audit-stale-review-texts.js": {
+      "bucket": "a",
+      "rank": 10,
+      "reason": "stale manual-clear reasons hiding genuinely wrong texts (BRO-2395); only a test.yml path trigger; needs review-texts"
+    },
+    "audit-shared-url-quote.js": {
+      "bucket": "a",
+      "rank": 11,
+      "reason": "multi-show column copied whole onto each show (BRO-4594); report only; needs review-texts"
+    },
+    "audit-form-d-capitalization.js": {
+      "bucket": "a",
+      "rank": 12,
+      "reason": "commercial.json capitalization stored as the Form D maximum (BRO-5732); clean today (0 of 37); core data plus SEC fetch"
+    },
+    "audit-feature-as-review.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "read-only sweep from the BRO-5420 incident; promote to (a) if a run with review-texts finds hits"
+    },
+    "audit-demoted-nonreview.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "read-only sweep from the BRO-5420 incident; promote to (a) if a run with review-texts finds hits"
+    },
+    "audit-uk-rows-on-broadway.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "read-only sweep from the BRO-5420 incident; promote to (a) if a run with review-texts finds hits"
+    },
+    "audit-scored-other-critic.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "read-only sweep from the BRO-5420 follow-up; promote to (a) if a run with review-texts finds hits"
+    },
+    "audit-director-guard-dates.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "read-only cousin sweep for BRO-5373; promote to (a) if a run with review-texts finds hits"
+    },
+    "audit-critic-name-apostrophe.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "read-only sweep for BRO-5444 truncated critic names; promote to (a) if a run with review-texts finds hits"
+    },
+    "audit-split-section-scores.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "read-only sweep for BRO-6000 split-section back-references; needs review-texts and judgment per hit"
+    },
+    "audit-cast-matching.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "one-shot re-evaluation of cast files against new IBDB matching rules"
+    },
+    "audit-critic-listing-parity.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "one-shot parity check for decideCriticListingPromotion (task 995); sprint-scoped"
+    },
+    "audit-data-quality.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "metrics dump to stdout for ad-hoc inspection; no pass/fail"
+    },
+    "audit-feedback-overnight-branches.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "inspects local checkouts of the iOS app repo; cannot run in CI"
+    },
+    "audit-stranded-reviewed-branches.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "inspects local worktrees; exits 2 as untrustworthy where none exist; Mac-only"
+    },
+    "audit-image-aspect.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "poster geometry check over a local image archive; hygiene, not correctness"
+    },
+    "audit-roundup-coverage.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "CLI wrapper for a pasted editorial roundup; manual input by design"
+    },
+    "audit-outlet-text-status.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "one outlet's text coverage on demand; diagnostic with an outlet argument"
+    },
+    "audit-non-quote-excerpts.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "diagnostic count for BRO-5344; no pass/fail threshold"
+    },
+    "audit-title-quality.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "title artifact buckets, report only (BRO-3915); hygiene"
+    },
+    "audit-tour-leg-venues.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "report-only corpus audit (BRO-2278); needs judgment per hit"
+    },
+    "audit-always-commit-after-validate.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "advisory workflow linter (BRO-5293); exits 0 by design, rule 19 forbids arming it"
+    },
+    "audit-flat-git-add.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "advisory workflow linter (BRO-2945); exits 0 by design, rule 19 forbids arming it"
+    },
+    "audit-apply-scripts-verify-pushed.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-audience-scores.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-awards-data.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-bro79-ensemble-rejections.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-close-time-verify.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-content-quality.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-coverage-slot-drops.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-creative-team-serp.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-critic-tenure.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-cross-attribution-by-critic.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-doubled-market-ids.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-duplicate-images.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-excerpt-only-backfill-queue.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-explicit-scores.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-false-dead-ledger-rows.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-fetch-timeouts.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-field-consistency.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-flag-wipe-signature.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-git-show-maxbuffer.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-grosses-data.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-late-add-corpus-wide.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-levenshtein-matches.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-llm-hallucinations.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-llm-scores.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-llm-scoring-parity.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-london-outlet-flags.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-mirror-status-drift.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-multi-production-titles.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-multi-verdict-stars.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-multishow-titlecase.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-nonreview-cv-conflict.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-nyt-pick-coverage.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-opening-night-extraction.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-opera-discovery-gap.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-orphan-inprogress.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-orphaned-audit-writes.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-outlet-tiers.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-paywall-leaks.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-registry-nonreview-outlets.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-reroute-backlog.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-review-pair-anomalies.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-safe-form-allowlist.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-show-score-url-redirects.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-single-author-mismatches.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-soft-404-review-texts.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-stale-open-premises.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-text-gap-cards.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-truncated-reviews.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-url-collisions.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-url-validation.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-we-historical-season.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-we-market-misroutes.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-we-reviews.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-wet-roundup-bleed.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-workflow-activity.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-wrong-article-parity.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-wt-integ-stashes.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Found by the stricter detector (comment-only and lint-baseline mentions no longer count). Not yet triaged into a or b; read it before wiring or exempting."
+    },
+    "audit-timeout-patterns.js": {
+      "bucket": "u",
+      "rank": 99,
+      "reason": "Landed on main (BRO-2427 ratchet) while this triage was in the queue. Its lib has tests; the CLI itself is not run by CI. Not yet triaged into a or b."
+    }
+  }
+}
