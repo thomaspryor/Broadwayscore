@@ -912,5 +912,33 @@
       }
     ],
     "queuedAt": "2026-10-23T02:02:40.485Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-derren-brown-only-human-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on Derren Brown: Only Human",
+    "description": "theatre-weekly/Greg Stewart (theatre-weekly--greg-stewart.json) SHIPPED with CV.wrongProduction=true (undefined confidence) and no clear flag; reasoning: (none) — https://theatreweekly.com/review-derren-browns-only-human-at-apollo-theatre/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-23T02:46:24.580Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:derren-brown-only-human-west-end-2026:telegraph",
+    "title": "Auto-remediation gave up on derren-brown-only-human-west-end-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"derren-brown-only-human-west-end-2026\",\"outlet\":\"telegraph\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-23T02:46:25.592Z"
   }
 ]
