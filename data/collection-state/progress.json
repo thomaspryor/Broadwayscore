@@ -192,7 +192,10 @@
     "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
     "witness-for-the-prosecution-west-end-2022/standard--henry-hitchings.json",
     "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json",
-    "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json"
+    "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json",
+    "ilford-boy-west-end-2026/telegraph--fiona-mountford.json",
+    "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
+    "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json"
   ],
   "failed": [
     "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
@@ -226,7 +229,6 @@
     "a-few-good-men-2026/times-square-chronicles--genevieve-rafter-keddy.json",
     "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
     "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
-    "ilford-boy-west-end-2026/telegraph--fiona-mountford.json",
     "triumph-off-west-end-2026/thestage--david-benedict.json",
     "some-woman-west-end-2026/thestage--sam-marlowe.json",
     "some-woman-west-end-2026/tixculture--unknown.json",
@@ -302,7 +304,21 @@
     "hamilton-2015/nyt-theater--jonathan-mandell.json",
     "the-play-that-goes-wrong-west-end-2021/chicagotribune--chris-jones.json",
     "aladdin-2014/ap--mark-kennedy.json",
-    "the-book-of-mormon-west-end-2024/talkinbroadway--unknown.json"
+    "the-book-of-mormon-west-end-2024/talkinbroadway--unknown.json",
+    "derren-brown-only-human-west-end-2026/broadwayworld--unknown.json",
+    "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
+    "dance-is-not-for-us-off-west-end-2026/thereviewshub--scott-matthewman.json",
+    "triumph-off-west-end-2026/british-theatre--keith-mckenna.json",
+    "triumph-off-west-end-2026/closeupculture--unknown.json",
+    "dog-mom-off-west-end-2026/reviewsgate--william-russell.json",
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "dirty-dancing-the-classic-story-on-stage-west-end-2026/soundsandstage--unknown.json",
+    "dirty-dancing-the-classic-story-on-stage-west-end-2026/sportswhereiam--unknown.json",
+    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
+    "some-woman-west-end-2026/guardian--unknown.json",
+    "double-bill-tell-me-straight-and-aggy-off-west-end-2026/soundsandstage--unknown.json",
+    "double-bill-tell-me-straight-and-aggy-off-west-end-2026/whatnightout--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/alltrippers--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -405,7 +421,8 @@
       "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
       "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
       "witness-for-the-prosecution-west-end-2022/standard--henry-hitchings.json",
-      "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json"
+      "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json",
+      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json"
     ],
     "amp": [
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
@@ -444,7 +461,8 @@
       "water-for-elephants-tour-2025/broadwayworld--christina-mancuso.json",
       "oh-mary-2024/broadwaynews--brittani-samuel.json",
       "oh-mary-2024/cititour--unknown.json",
-      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
+      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
+      "ilford-boy-west-end-2026/telegraph--fiona-mountford.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -509,11 +527,12 @@
       "harry-potter-2021/latimes--erin-ben-moche.json",
       "harry-potter-2021/npr--jeff-lunden.json",
       "harry-potter-2021/sfgate--lily-janiak.json",
-      "witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json"
+      "witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json",
+      "angels-bone-west-end-2026/sunday-times--rebecca-franks.json"
     ]
   },
   "startTime": "2026-10-23T19:47:36.243Z",
-  "lastProcessed": "the-book-of-mormon-west-end-2024/talkinbroadway--unknown.json",
+  "lastProcessed": "jane-eyre-rose-kingston-off-west-end-2026/alltrippers--unknown.json",
   "log": [
     {
       "t": "2026-10-23T22:13:23.728Z",
@@ -547,6 +566,63 @@
       "t": "2026-10-23T22:34:46.234Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-23T22:59:28.743Z",
+      "event": "bb-session",
+      "session": "611fe45c",
+      "url": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-BEING-HUMAN-Ap"
+    },
+    {
+      "t": "2026-10-23T22:59:45.115Z",
+      "event": "bb-session",
+      "session": "d8e5efd9",
+      "url": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-BEING-HUMAN-Ap"
+    },
+    {
+      "t": "2026-10-23T23:04:44.486Z",
+      "event": "bb-session",
+      "session": "d32ab2fa",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-23T23:04:52.711Z",
+      "event": "bb-session",
+      "session": "7463dfc2",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-23T23:05:43.918Z",
+      "event": "bb-session",
+      "session": "ee127256",
+      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
+    },
+    {
+      "t": "2026-10-23T23:05:56.168Z",
+      "event": "bb-session",
+      "session": "de7970b5",
+      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
+    },
+    {
+      "t": "2026-10-23T23:07:07.710Z",
+      "event": "bb-session",
+      "session": "7015cbc8",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-23T23:07:47.447Z",
+      "event": "bb-session",
+      "session": "18a16a86",
+      "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-4987479"
+    },
+    {
+      "t": "2026-10-23T23:07:54.902Z",
+      "event": "bb-session",
+      "session": "2acf7cc2",
+      "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-4987479"
     }
+  ],
+  "recoveredAfterFailure": [
+    "ilford-boy-west-end-2026/telegraph--fiona-mountford.json"
   ]
 }
