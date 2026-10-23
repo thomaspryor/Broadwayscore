@@ -331,6 +331,21 @@ function weeklyPct() {
   return R.weeklyPctFromSessions(CODEX_HOME);
 }
 
+/**
+ * BRO-6086: the cloud lane refreshes a login past 6 days itself, so the gha lane never meets its
+ * 7-day stand-down. Back-dates last_refresh so the first codex exec refreshes it (R.backdateForRefresh).
+ * Runs on slot 0 only, which laneForLogin leaves as the lone process while a refresh is due.
+ */
+function forceLoginRefresh() {
+  const file = path.join(CODEX_HOME, 'auth.json');
+  try {
+    const next = R.backdateForRefresh({ authText: fs.readFileSync(file, 'utf8'), nowMs: Date.now() });
+    if (!next) return;
+    fs.writeFileSync(file, next, { mode: 0o600 });
+    log('Codex login is past 6 days old: back-dated last_refresh so this run refreshes it');
+  } catch (e) { log(`forced login refresh skipped: ${e.message}`); }
+}
+
 function saveLogin() {
   const r = sh('node', ['scripts/codex/auth-store.js', 'save'], { timeoutMs: 900_000 });
   if (r.code !== 0) log(`login save failed: ${tail(r.out, 300)}`);
@@ -1377,6 +1392,7 @@ async function runLocked(startedMs) {
     process.exitCode = 2;
     return;
   }
+  if (SLOT === 0 && OPTS.lane === 'cloud' && !OPTS.dryRun) forceLoginRefresh();
   // Unusable namespace sandbox outside the cloud VM: stop before claiming any card (BRO-5856).
   try { codexSandboxMode(); } catch (e) {
     if (!OPTS.dryRun) await linearBrain(['update', RUNNER_CARD, '--comment', `## Codex runner did not start\n\n${e.message}. No card was claimed, so the Claude lane keeps them.`]);
