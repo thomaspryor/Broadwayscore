@@ -64,6 +64,9 @@ const NON_REVIEW_SEGMENTS = new Set([
   'subscription', 'about', 'contact', 'tickets', 'interview', 'interviews', 'feature', 'features', 'preview', 'previews',
   'opinion', 'obituary', 'obituaries', 'live', 'search', 'login', 'signin', 'account', 'privacy', 'terms',
 ]);
+// Sections some outlets file reviews under (theatermania.com/news/review-..., timeout.com/newyork/news/broadway-review-...;
+// the Oct 22 shadow run lost both to this list). A slug that says "review" passes; one that does not is still rejected.
+const SOFT_NON_REVIEW_SEGMENTS = new Set(['news', 'feature', 'features']);
 // News-phrase words only. Plain nouns that can be a show's title ("Dead Outlaw", "The Lottery", "Ticket to Ride") are
 // deliberately absent: rejecting them would drop real reviews of those shows.
 const NON_REVIEW_SLUG = /\b(opens[-\s]tonight|extends|extension|extended|casting|cast[-\s]album|announces?|announced|first[-\s]look|photos?|photo[-\s]gallery|red[-\s]carpet|opening[-\s]night[-\s](?:photos|party|arrivals)|interview|q[-\s]?and[-\s]?a|behind[-\s]the[-\s]scenes|giveaway|obituary)\b/i;
@@ -127,8 +130,9 @@ function nonReviewReason(url) {
   try { u = new URL(url); } catch { return 'unparseable-url'; }
   if (u.pathname === '/' || u.pathname === '') return 'homepage';
   const segs = decodeURIComponent(u.pathname).toLowerCase().split('/').filter(Boolean);
-  if (segs.some((s) => NON_REVIEW_SEGMENTS.has(s))) return 'non-review-path';
   const words = segs.join(' ').replace(/[-_]+/g, ' ');
+  if (segs.some((s) => NON_REVIEW_SEGMENTS.has(s) && !SOFT_NON_REVIEW_SEGMENTS.has(s))) return 'non-review-path';
+  if (segs.some((s) => SOFT_NON_REVIEW_SEGMENTS.has(s)) && !REVIEW_SIGNAL.test(words)) return 'non-review-path';
   // An explicit "review" in the slug wins over a news word ("...-review-photos"): the review signal is the stronger claim.
   if (NON_REVIEW_SLUG.test(words) && !REVIEW_SIGNAL.test(words)) return 'non-review-slug';
   return null;

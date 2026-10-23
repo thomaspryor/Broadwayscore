@@ -38,7 +38,7 @@ const hostOf = (url) => { try { return new URL(url).hostname.replace(/^www\./, '
  * @param {object} args
  *   show {id}, night, ledgerDir, now() -> ms,
  *   fetchPage(url) -> {content: string}            (throws on failure)
- *   extractArticle(html, host) -> string|null      (clean body text)
+ *   extractArticle(html, host, url) -> string|null (clean body text)
  *   extractMeta?(html, url) -> {criticName?, publishDate?, outlet?}
  *   aggregatorFor?(candidate) -> {thumb?, stars?, excerpt?}
  *   scoreText(text, ctx) -> {score, rejected?, rejection?, allModelsFailed?}  (throws on failure)
@@ -95,7 +95,7 @@ function createInlineScoring({
       const page = await fetchPage(candidate.fetchUrl || candidate.url);
       const html = page && typeof page.content === 'string' ? page.content : '';
       if (!html) throw new Error('fetchPage returned no content');
-      const text = String(extractArticle(html, hostOf(candidate.url)) || '').trim();
+      const text = String(extractArticle(html, hostOf(candidate.url), candidate.url) || '').trim();
       const meta = extractMeta(html, candidate.url) || {};
       if (text.length < minTextChars && !canFallBack) throw new Error(`no extractable text (${text.length} chars) and no aggregator score to fall back on`);
       const out = { outlet: meta.outlet, criticName: meta.criticName || null, publishDate: meta.publishDate || null, fullText: text.length < minTextChars ? '' : text, aggregator };
@@ -165,10 +165,17 @@ function ensembleScoreText(scorer) {
 function realFetchPorts() {
   const { fetchPage } = require('../scraper');
   const { extractArticleText, extractPublishDate } = require('../article-extractor');
+  const { extractTextFromHtml } = require('../review-html-text');
   const { extractByline } = require('../byline-extraction');
   return {
     fetchPage: (url) => fetchPage(url),
-    extractArticle: (html, host) => extractArticleText(html, host),
+    // The regular pipeline's extraction (collect-review-texts.js), so the lane scores the same body. article-extractor.js
+    // alone returned 916 of Deadline's ~6,400 characters and the scorer rejected Deadline and WSJ as body_too_short
+    // (BRO-5993, Oct 21 and 22). It stays as the fallback for a page the pipeline extractor gets nothing from.
+    extractArticle: (html, host, url) => {
+      const text = extractTextFromHtml(html, url || `https://${host}/`) || '';
+      return text.length >= 500 ? text : (extractArticleText(html, host) || text);
+    },
     extractMeta: (html, url) => {
       let criticName = null;
       try { criticName = extractByline(html) || null; } catch { /* a missing byline is not a failure */ }

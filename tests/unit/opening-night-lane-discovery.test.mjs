@@ -124,6 +124,11 @@ test('extractCitedLinks: article body only; no chrome, social, ticketing, ads, a
 test('nonReviewReason and hasReviewSignal: news, galleries, interviews, tag and author pages out; a title word like "Dead" is fine', () => {
   assert.equal(d.nonReviewReason('https://nytimes.com/2026/10/19/theater/other-desert-cities-review.html'), null);
   assert.equal(d.nonReviewReason('https://variety.com/2026/legit/news/odc-extends/'), 'non-review-path');
+  // Oct 22 shadow run: both are real reviews filed under /news/.
+  assert.equal(d.nonReviewReason('https://www.theatermania.com/news/review-the-imaginary-invalid-is-moliere-on-ozempic_1781730/'), null);
+  assert.equal(d.nonReviewReason('https://www.timeout.com/newyork/news/broadway-review-the-imaginary-invalid-gasps-for-moliere-102226'), null);
+  assert.equal(d.nonReviewReason('https://www.theatermania.com/news/rachel-bloom-will-make-her-broadway-debut_1700000/'), 'non-review-path', 'a /news/ story with no review word');
+  assert.equal(d.nonReviewReason('https://example.com/gallery/review-night-photos'), 'non-review-path', 'hard segments still reject');
   assert.equal(d.nonReviewReason('https://nytimes.com/tag/other-desert-cities'), 'non-review-path');
   assert.equal(d.nonReviewReason('https://nytimes.com/by/author/jesse-green'), 'non-review-path');
   assert.equal(d.nonReviewReason('https://nytimes.com/2026/10/18/theater/other-desert-cities-interview-stockard.html'), 'non-review-slug');

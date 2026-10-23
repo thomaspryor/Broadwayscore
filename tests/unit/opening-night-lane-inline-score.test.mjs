@@ -55,7 +55,9 @@ test('the live smoke uses real HTML extractors and persists ensemble fields thro
 test('the live smoke names the reason when discovery would drop the archived URL (first live run: silent admitted:0)', async () => {
   const { runLiveSmoke } = require('../../scripts/lib/opening-night-lane/live-smoke.js');
   const show = { id: 'mystic-pizza-regional-2025', title: 'Mystic Pizza', openingDate: '2025-02-02' };
-  const review = { showId: show.id, outletId: 'theatermania', url: 'https://www.theatermania.com/news/review-mystic-pizza-comes-with-lots-of-tasty-toppings-at-paper-mill-playhouse_1762630/' };
+  // The first live run's URL was a real review under /news/ (review-mystic-pizza-...), which discovery now admits
+  // (BRO-5993); a /news/ story with no review word is still dropped, and the smoke must still say why.
+  const review = { showId: show.id, outletId: 'theatermania', url: 'https://www.theatermania.com/news/mystic-pizza-extends-at-paper-mill-playhouse_1762630/' };
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4835-reject-'));
   try {
     await assert.rejects(runLiveSmoke({ show, review, workDir: dir, fetchPorts: {}, scorer: {} }), /discovery would reject .*non-review-path/);
@@ -419,4 +421,15 @@ test('lane-failures: strict about its input, tolerant of a torn last line, and u
     assert.deepEqual(lf.unresolved(r.failures, new Set(['k1'])).map((f) => f.reviewKey), ['k2']);
     assert.deepEqual(lf.readFailures(dir, 'show-b', '2026-10-18'), { failures: [], corrupt: 0 });
   } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
+});
+
+test('the real fetch ports extract with the regular pipeline extractor (Deadline lost 5,500 chars to article-extractor alone)', () => {
+  const inline = require('../../scripts/lib/opening-night-lane/inline-score.js');
+  const { extractTextFromHtml } = require('../../scripts/lib/review-html-text.js');
+  const body = Array.from({ length: 12 }, (_, i) => `<p>Paragraph ${i} of the review weighs the performances, the staging and the writing in some detail.</p>`).join('');
+  const html = `<html><body><article>${body}</article></body></html>`;
+  const url = 'https://example-outlet.com/2026/10/22/show-review/';
+  const got = inline.realFetchPorts().extractArticle(html, 'example-outlet.com', url);
+  assert.equal(got, extractTextFromHtml(html, url));
+  assert.ok(got.length > 500);
 });

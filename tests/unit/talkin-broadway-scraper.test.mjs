@@ -28,7 +28,9 @@ import { fileURLToPath } from 'node:url';
 import { extractArticleText } from '../../scripts/lib/article-extractor.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const COLLECT_REVIEW_TEXTS_PATH = path.join(__dirname, '../../scripts/collect-review-texts.js');
+// extractTextFromHtml moved from collect-review-texts.js to scripts/lib/review-html-text.js (BRO-5993); the
+// pipeline and the opening-night lane both use it from there.
+const COLLECT_REVIEW_TEXTS_PATH = path.join(__dirname, '../../scripts/lib/review-html-text.js');
 
 const NEWSLETTER_CHROME =
   "<aside class='sidebar'>" +
@@ -41,8 +43,8 @@ const NEWSLETTER_CHROME =
 describe('BRO-912: collect-review-texts.js wires TB extraction to the shared byline-anchored extractor', () => {
   test('extractTextFromHtml delegates talkinbroadway.com to extractArticleText, and does NOT fall through to a naive scrape on null', () => {
     const src = fs.readFileSync(COLLECT_REVIEW_TEXTS_PATH, 'utf8');
-    const fnStart = src.indexOf('function extractTextFromHtml(html, url) {');
-    assert.ok(fnStart !== -1, 'extractTextFromHtml should still exist in collect-review-texts.js');
+    const fnStart = src.indexOf('function extractTextFromHtmlGeneric(html, url) {');
+    assert.ok(fnStart !== -1, 'extractTextFromHtml should exist in scripts/lib/review-html-text.js');
 
     const delegationIdx = src.indexOf("url.includes('talkinbroadway.com')", fnStart);
     assert.ok(delegationIdx !== -1, 'extractTextFromHtml should branch on talkinbroadway.com');
@@ -55,8 +57,8 @@ describe('BRO-912: collect-review-texts.js wires TB extraction to the shared byl
     const legacyFallbackIdx = src.indexOf('section class="page"', fnStart);
     assert.strictEqual(legacyFallbackIdx, -1, 'the naive <section class="page"> fallback must be removed, not just deprioritized');
 
-    const requireIdx = src.indexOf("require('./lib/article-extractor')");
-    assert.ok(requireIdx !== -1, 'collect-review-texts.js should require the shared article-extractor lib');
+    const requireIdx = src.indexOf("require('./article-extractor')");
+    assert.ok(requireIdx !== -1, 'review-html-text.js should require the shared article-extractor lib');
 
     // Ordering: the TB branch must run before the generic JSON-LD attempt too
     // (a TB page with >500 chars of unrelated JSON-LD — e.g. an ad/tracking
