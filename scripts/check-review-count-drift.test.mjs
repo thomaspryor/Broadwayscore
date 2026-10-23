@@ -90,6 +90,15 @@ test('findSuppressedForShow skips a file already present in reviews.json (filena
   assert.equal(suppressed.length, 0);
 });
 
+test('findSuppressedForShow skips a duplicate whose target is published, but flags one whose target is not (BRO-5831)', () => {
+  const base = { humanReviewScore: 80, fullText: 'A review.', publishDate: '2026-06-11T12:00:00-04:00' };
+  writeReviewFile('dup-pointer-2026', 'nytimes--unknown.json', { ...base, outletId: 'nytimes', criticName: 'Unknown', duplicateOf: 'nytimes--ben-brantley.json' });
+  writeReviewFile('dup-pointer-2026', 'variety--unknown.json', { ...base, outletId: 'variety', criticName: 'Unknown', duplicateTextOf: 'variety--ghost.json' });
+  writeReviewFile('dup-pointer-2026', 'timeout--unknown.json', { ...base, outletId: 'timeout', criticName: 'Unknown', duplicateOf: 'timeout--unknown.json' });
+  const { suppressed } = findSuppressedForShow('dup-pointer-2026', SHOW_2026, [{ outletId: 'nytimes', criticName: 'Ben Brantley' }]);
+  assert.deepEqual(suppressed.map((s) => s.file).sort(), ['timeout--unknown.json', 'variety--unknown.json']);
+});
+
 test('findSuppressedForShow skips a file matched by URL when the filename diverges (byline drift)', () => {
   writeReviewFile('url-match-2026', 'nytimes--unknown.json', {
     outletId: 'nytimes',

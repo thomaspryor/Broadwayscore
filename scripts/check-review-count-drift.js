@@ -302,6 +302,10 @@ function findSuppressedForShow(showDir, show, showReviews) {
     }
     scanned++;
     if (data.url && entryUrls.has(normUrl(data.url))) continue;
+    // A file that points at a duplicate target already published is correctly hidden: its review IS on
+    // the site under the target's name (BRO-5831: wonderland-2011 / twelfth-night-2013 syndicated copies
+    // tripped the strict guard daily). A self-referential or unpublished target still counts as hidden.
+    if ([data.duplicateOf, data.duplicateTextOf].some((t) => typeof t === 'string' && t !== file && entryKeys.has(t))) continue;
     // Canonical predicate WITH filePath: circular-duplicate recovery included.
     if (!isIncludableForRebuild(data, show, filePath)) continue;
     if (!hasValidScore(data)) continue;
