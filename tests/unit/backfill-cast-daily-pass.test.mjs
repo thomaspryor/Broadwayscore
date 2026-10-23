@@ -41,14 +41,31 @@ test('only the weekly cron forces a re-scrape (daily pass must not --force)', ()
     'event_name==schedule must not lead to --force');
 });
 
-test('scrape is skipped when the precheck finds nothing missing, and the precheck is daily-only', () => {
-  const pre = step('Missing-cast precheck (daily cron only)');
-  assert.equal(pre.id, 'precheck');
+test('daily precheck job sits outside the concurrency group and gates on its RESULT', () => {
+  const pre = wf.jobs['missing-cast-precheck'];
+  assert.ok(pre, 'precheck job missing');
   assert.match(pre.if, /github\.event\.schedule != '0 6 \* \* 3'/);
-  assert.match(pre.run, /set -o pipefail/);
-  assert.match(pre.run, /N=unknown/, 'precheck must fail closed (run) on an unreadable count');
+  assert.equal(pre.concurrency, undefined, 'precheck must not join the backfill-cast group (would evict pending dispatches)');
+  assert.equal(wf.concurrency, undefined, 'group must be job-level so the precheck stays outside it');
+  const run = pre.steps.find((x) => x.id === 'count').run;
+  assert.match(run, /set -o pipefail/);
+  assert.match(run, /N=unknown/, 'precheck must fail closed (run) on an unreadable count');
+
+  const job = wf.jobs['backfill-cast'];
+  assert.equal(job.concurrency.group, 'backfill-cast');
+  assert.equal(job.concurrency['cancel-in-progress'], false);
+  assert.equal(job.needs, 'missing-cast-precheck');
+  // A skipped job's output is null, and GitHub coerces null and '0' both to 0,
+  // so a bare `outputs.missing != '0'` silently skips weekly + dispatch runs.
+  // The guard must short-circuit on the precheck's result first.
+  assert.match(job.if, /!cancelled\(\)/);
+  assert.match(job.if, /needs\.missing-cast-precheck\.result != 'success'\s*\|\|\s*needs\.missing-cast-precheck\.outputs\.missing != '0'/);
+});
+
+test('step-level gates and error suppression are gone from the backfill job', () => {
   for (const name of ['Setup Playwright', 'Run cast backfill']) {
-    assert.equal(step(name).if, "steps.precheck.outputs.missing != '0'", `${name} not gated on precheck`);
+    assert.equal(step(name).if, undefined, `${name} must not be step-gated`);
   }
-  assert.equal(step('Setup Playwright')['continue-on-error'], true, 'a hung playwright install must not kill the run');
+  assert.equal(step('Setup Playwright')['continue-on-error'], undefined,
+    'a failed playwright install must stay loud on weekly/dispatch runs; the daily pass retries it');
 });
