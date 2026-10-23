@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T02:39:32.294Z",
+  "timestamp": "2026-10-23T02:55:19.287Z",
   "stats": {
-    "totalReviews": 59602,
-    "alreadyFlagged": 21409,
+    "totalReviews": 59646,
+    "alreadyFlagged": 21442,
     "dateGuardCatches": 200,
-    "directorMismatch": 2148,
-    "tvFilmSignals": 1680,
-    "londonSignals": 2798,
+    "directorMismatch": 2160,
+    "tvFilmSignals": 1682,
+    "londonSignals": 2813,
     "offBroadwaySignals": 530,
     "yearMismatch": 170,
-    "noPublishDate": 5354
+    "noPublishDate": 5294
   },
   "findings": [
     {
@@ -3684,6 +3684,39 @@
     },
     {
       "showId": "annie-west-end-2017",
+      "file": "guardian--michael-billington.json",
+      "score": 56,
+      "publishDate": "2017-06-05",
+      "url": "https://www.theguardian.com/stage/2017/jun/05/annie-review-piccadilly-miranda-hart-miss-hannigan",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "annie-west-end-2017",
+      "file": "islington-gazette--caroline-david.json",
+      "score": null,
+      "publishDate": "2017-06-14",
+      "url": "https://www.islingtongazette.co.uk/things-to-do/annie-piccadilly-theatre-review-miranda-hart-is-a-force-of-3772874/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-west-end-2017",
       "file": "islington-gazette--unknown.json",
       "score": null,
       "publishDate": "2017-06-14",
@@ -3700,7 +3733,7 @@
       "showId": "annie-west-end-2017",
       "file": "london-theatre--mark-shenton.json",
       "score": 75,
-      "publishDate": "June 6th, 2017",
+      "publishDate": "2017-06-06",
       "url": "https://www.londontheatre.co.uk/reviews/review-of-annie-at-the-piccadilly-theatre",
       "findings": [
         {
@@ -3755,6 +3788,20 @@
     },
     {
       "showId": "annie-west-end-2017",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 82,
+      "publishDate": "2017-06-05",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/miranda-harts-west-end-debut-just-london-needs-right-now-annie/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-west-end-2017",
       "file": "the-jewish-chronicle--john-nathan.json",
       "score": 66,
       "publishDate": "2017-06-14",
@@ -3769,23 +3816,9 @@
     },
     {
       "showId": "annie-west-end-2017",
-      "file": "variety--unknown.json",
-      "score": null,
-      "publishDate": "2017-08-22",
-      "url": "https://variety.com/2017/legit/news/thomas-meehan-dead-dies-annie-the-producers-1202535986/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"martin charnin\" from annie-1997"
-        }
-      ]
-    },
-    {
-      "showId": "annie-west-end-2017",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 94,
-      "publishDate": "June 5th, 2017",
+      "publishDate": "2017-06-05",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/annie-piccadilly-miranda-hart-musical-west-end_43775.html",
       "findings": [
         {
@@ -3970,10 +4003,43 @@
     },
     {
       "showId": "art-west-end-2016",
+      "file": "fringereview--simon-jenner.json",
+      "score": null,
+      "publishDate": "2017-02-16",
+      "url": "https://fringereview.co.uk/review/fringereview-uk/2017/art-2/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from art-1998"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "art-west-end-2016",
       "file": "guardian--michael-billington.json",
       "score": 85,
       "publishDate": "2016-12-22",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from art-1998"
+        }
+      ]
+    },
+    {
+      "showId": "art-west-end-2016",
+      "file": "independent--paul-taylor.json",
+      "score": null,
+      "publishDate": "2016-12-29",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/art-old-vic-theatre-review-warchus-directs-with-an-elegant-lightness-of-touch-rufus-sewell-yasmina-reza-tim-key-a7489291.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -4485,8 +4551,21 @@
       "showId": "bat-out-of-hell-west-end-2017",
       "file": "standard--henry-hitchings.json",
       "score": 62,
-      "publishDate": "2017-06-20T22:05:00+00:00",
+      "publishDate": "2017-06-21",
       "url": "https://www.standard.co.uk/goingout/theatre/bat-out-of-hell-the-musical-theatre-review-a-jawdropping-spectacle-a3569521.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay scheib\" from bat-out-of-hell-west-end-2018"
+        }
+      ]
+    },
+    {
+      "showId": "bat-out-of-hell-west-end-2017",
+      "file": "sunday-times--ann-treneman.json",
+      "publishDate": "2017-06-22",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-bat-out-of-hell-the-musical-at-the-coliseum-wc2-5nk0hqbb3",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -4499,7 +4578,7 @@
       "showId": "bat-out-of-hell-west-end-2017",
       "file": "thestage--tim-bano.json",
       "score": 78,
-      "publishDate": "2017-06-20T22:05:00+00:00",
+      "publishDate": "2017-06-21",
       "url": "https://www.thestage.co.uk/reviews/2017/jim-steinmans-bat-out-of-hell-the-musical-review-at-the-london-coliseum/",
       "findings": [
         {
@@ -4541,7 +4620,7 @@
       "showId": "bat-out-of-hell-west-end-2017",
       "file": "whatsonstage--daisy-bowie-sell.json",
       "score": 74,
-      "publishDate": "2017-06-20T22:05:00+00:00",
+      "publishDate": "2017-06-20",
       "url": "http://www.whatsonstage.com/london-theatre/reviews/bat-out-of-hell-coliseum-jim-steinman-meat-loaf_43917.html",
       "findings": [
         {
@@ -12406,6 +12485,20 @@
       ]
     },
     {
+      "showId": "dirty-great-love-story-west-end-2017",
+      "file": "britishtheatrecom--alexa-terry.json",
+      "score": null,
+      "publishDate": "2017-01-31",
+      "url": "https://www.britishtheatre.com/posts/review-dirty-great-love-story-arts-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "disaster-2016",
       "file": "ew--stephan-lee.json",
       "score": 79,
@@ -12805,9 +12898,37 @@
     },
     {
       "showId": "dreamgirls-west-end-2016",
+      "file": "britishtheatrecom--douglas-mayo.json",
+      "score": 88,
+      "publishDate": "2016-12-14",
+      "url": "http://britishtheatre.com/review-dreamgirls-savoy-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael bennett\" from dreamgirls-1987"
+        }
+      ]
+    },
+    {
+      "showId": "dreamgirls-west-end-2016",
+      "file": "hollywood-reporter--demetrios-matheou.json",
+      "score": 87,
+      "publishDate": "2016-12-14",
+      "url": "http://www.hollywoodreporter.com/review/dreamgirls-review-956090",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael bennett\" from dreamgirls-1987"
+        }
+      ]
+    },
+    {
+      "showId": "dreamgirls-west-end-2016",
       "file": "london-theatre--dom-ohanlon.json",
       "score": 87,
-      "publishDate": "2016-12-14T22:30:28-05:00",
+      "publishDate": "2016-12-14",
       "url": "https://www.londontheatre.co.uk/reviews/review-of-dreamgirls-at-the-savoy-theatre-in-londons-west-end",
       "findings": [
         {
@@ -12862,6 +12983,20 @@
     },
     {
       "showId": "dreamgirls-west-end-2016",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": null,
+      "publishDate": "2016-12-15",
+      "url": "http://www.telegraph.co.uk/theatre/what-to-see/dreamgirls-savoy-review-show-tremendous-gusto-soul-gaiety-spirit/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael bennett\" from dreamgirls-1987"
+        }
+      ]
+    },
+    {
+      "showId": "dreamgirls-west-end-2016",
       "file": "thestage--mark-shenton.json",
       "score": 85,
       "publishDate": "2016-12-14T22:30:28-05:00",
@@ -12878,7 +13013,7 @@
       "showId": "dreamgirls-west-end-2016",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 80,
-      "publishDate": "2016-12-14T22:30:28-05:00",
+      "publishDate": "2016-12-14",
       "url": "http://www.whatsonstage.com/west-end-theatre/reviews/review-dreamgirls-savoy-theatre_42500.html",
       "findings": [
         {
@@ -42659,10 +42794,67 @@
     },
     {
       "showId": "the-ferryman-west-end-2017",
+      "file": "a-younger-theatre--fergus-morgan.json",
+      "score": null,
+      "publishDate": "2017-05-08",
+      "url": "https://www.ayoungertheatre.com/review-the-ferryman-royal-court/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-ferryman-west-end-2017",
       "file": "a-younger-theatre--unknown.json",
       "score": null,
       "publishDate": "2017-05-08",
       "url": "https://www.ayoungertheatre.com/review-the-ferryman-royal-court/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-ferryman-west-end-2017",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": "2017-05-07",
+      "url": "https://www.theguardian.com/stage/2017/may/07/ferryman-royal-court-jez-butterworth-review-magic",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-ferryman-west-end-2017",
+      "file": "independent--paul-taylor.json",
+      "score": null,
+      "publishDate": "2017-05-04",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-ferryman-review-royal-court-jez-butterworth-sam-mendes-paddy-constadine-ira-a7717021.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -42711,7 +42903,7 @@
     },
     {
       "showId": "the-ferryman-west-end-2017",
-      "file": "nytimes--unknown.json",
+      "file": "nytimes--ben-brantley.json",
       "score": null,
       "publishDate": "2017-05-04",
       "url": "https://www.nytimes.com/2017/05/04/theater/review-the-ferryman-in-jez-butterworths-ireland.html",
@@ -42727,8 +42919,22 @@
       "showId": "the-ferryman-west-end-2017",
       "file": "sierz-co-uk--unknown.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "2017-05-03",
       "url": "https://sierz.co.uk/reviews/the-ferryman-royal-court/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
+        }
+      ]
+    },
+    {
+      "showId": "the-ferryman-west-end-2017",
+      "file": "standard--robert-dex.json",
+      "score": null,
+      "publishDate": "2017-05-04",
+      "url": "https://www.standard.co.uk/culture/theatre/the-ferryman-how-star-laura-donnellys-true-life-story-inspired-jez-butterworths-troublesera-play-a3530346.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -42769,7 +42975,7 @@
       "showId": "the-ferryman-west-end-2017",
       "file": "thestage--natasha-tripney.json",
       "score": 93,
-      "publishDate": "2017-05-11",
+      "publishDate": "2017-05-04",
       "url": "https://www.thestage.co.uk/reviews/2017/the-ferryman-review-at-the-royal-court-london-a-production-of-abundance/",
       "findings": [
         {
@@ -45435,6 +45641,20 @@
       "score": 65,
       "publishDate": "2021-10-08",
       "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-miser-west-end-2017",
+      "file": "londontheatre1--paddy-briggs.json",
+      "score": null,
+      "publishDate": "2017-03-15",
+      "url": "https://www.londontheatre1.com/reviews/review-the-miser-garrick-theatre/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -57937,6 +58157,20 @@
       "score": 85,
       "publishDate": "2017-06-30",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "anatomy-of-a-suicide-west-end-2017",
+      "file": "telegraph--unknown.json",
+      "score": null,
+      "publishDate": "2017-06-12",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/brave-play-anatomy-suicide-royal-court-downstairs-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -74090,6 +74324,20 @@
     },
     {
       "showId": "lady-day-at-emersons-bar-and-grill-west-end-2017",
+      "file": "guardian--michael-billington.json",
+      "score": 61,
+      "publishDate": "2017-06-27",
+      "url": "https://www.theguardian.com/stage/2017/jun/27/lady-day-at-emersons-bar-and-grill-review-billie-holiday-audra-mcdonald",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "lady-day-at-emersons-bar-and-grill-west-end-2017",
       "file": "telegraph--dominic-cavendish.json",
       "score": 71,
       "publishDate": "2017-06-28T07:22:57-04:00",
@@ -88550,7 +88798,7 @@
     },
     {
       "showId": "the-dresser-west-end-2016",
-      "file": "nytimes--unknown.json",
+      "file": "nytimes--matt-wolf.json",
       "score": null,
       "publishDate": "2016-11-04",
       "url": "https://www.nytimes.com/2016/11/05/theater/review-a-revival-of-the-dresser-in-london.html",
@@ -90477,6 +90725,20 @@
     },
     {
       "showId": "the-kid-stays-in-the-picture-west-end-2017",
+      "file": "britishtheatrecom--mark-ludmon.json",
+      "score": null,
+      "publishDate": "2017-03-24",
+      "url": "https://www.britishtheatre.com/posts/review-the-kid-stays-in-the-picture-royal-court",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-kid-stays-in-the-picture-west-end-2017",
       "file": "britishtheatrecom--unknown.json",
       "score": null,
       "publishDate": null,
@@ -90486,6 +90748,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-kid-stays-in-the-picture-west-end-2017",
+      "file": "everything-theatre--bryony-rae-taylor.json",
+      "score": null,
+      "publishDate": "2017-03-23",
+      "url": "https://everything-theatre.co.uk/2017/03/the-kid-stays-in-the-picture-royal-court-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -90505,10 +90781,38 @@
     },
     {
       "showId": "the-kid-stays-in-the-picture-west-end-2017",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": "2017-03-23",
+      "url": "https://www.theguardian.com/stage/2017/mar/23/the-kid-stays-in-the-picture-review-robert-evans-royal-court",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-kid-stays-in-the-picture-west-end-2017",
       "file": "nytimes--matt-wolf.json",
       "score": 84,
       "publishDate": "2017-04-08",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-kid-stays-in-the-picture-west-end-2017",
+      "file": "sierz-co-uk--unknown.json",
+      "score": null,
+      "publishDate": "2017-03-23",
+      "url": "https://sierz.co.uk/reviews/the-kid-stays-in-the-picture-royal-court/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -93064,6 +93368,20 @@
       "score": 37,
       "publishDate": "2016-12-03",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-sewing-group-west-end-2016",
+      "file": "telegraph--unknown.json",
+      "score": null,
+      "publishDate": "2016-11-17",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-royal-courts-sewing-group-is-lamentably-threadbare---review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -97582,9 +97900,51 @@
     },
     {
       "showId": "woyzeck-west-end-2017",
+      "file": "british-theatre--philip-fisher.json",
+      "score": null,
+      "publishDate": "2017-05-27",
+      "url": "https://www.britishtheatreguide.info/reviews/woyzeck-old-vic-14432",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "woyzeck-west-end-2017",
+      "file": "guardian--unknown.json",
+      "score": 70,
+      "publishDate": "2017-05-24",
+      "url": "https://www.theguardian.com/stage/2017/may/24/woyzeck-review-john-boyega-jack-thorne-georg-buchner-old-vic-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "woyzeck-west-end-2017",
+      "file": "maturetimes--unknown.json",
+      "score": null,
+      "publishDate": "2017-05-26",
+      "url": "https://www.maturetimes.co.uk/robert-tanitch-reviews-woyzeck/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "woyzeck-west-end-2017",
       "file": "sierz-co-uk--unknown.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "2017-05-23",
       "url": "https://sierz.co.uk/reviews/woyzeck-old-vic/",
       "findings": [
         {
