@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T17:44:00.746Z",
+  "generatedAt": "2026-10-23T19:04:42.200Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -158,14 +158,6 @@
       "error": "Timeout fetching https://musicaltheatrereview.com/feed/"
     },
     {
-      "outletId": "south-london",
-      "error": "Timeout fetching https://southlondon.co.uk/feed/"
-    },
-    {
-      "outletId": "theatre-vibe",
-      "error": "AggregateError"
-    },
-    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -176,9 +168,13 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "chicagotribune",
+      "error": "HTTP 403 for https://www.chicagotribune.com/wp-json/wp/v2/posts?categories=135&per_page=20&orderby=date&order=desc&after"
     }
   ],
-  "itemsScanned": 765,
+  "itemsScanned": 747,
   "matchedGaps": 6,
   "possibleGaps": 2,
   "gaps": [
