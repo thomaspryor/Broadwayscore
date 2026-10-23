@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6054-d",
   "planId": "2883f0c3-782b-4c3c-8d83-242fbd1f28e8",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-23T11:26:24.036Z",
   "submitter": {
     "name": null,
@@ -104,5 +104,59 @@
         "description": "race-2009/sfgate--lily-janiak.json: criticName (no byline; Janiak was not at SFGate in 2009)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-23T11:44:27.279Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2012/theatermania--david-rooney.json criticName: \"David Rooney\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2012/theatermania--david-rooney.json wrongAttribution: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2012/theatermania--david-rooney.json duplicateClearReason: null -> \"BRO-6054-d: url collision with theatermania--kenji-fujishima.json (wrongProduction, invalid); this file holds the outlet own unique review text and is the canonical copy\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2012/theatermania--david-rooney.json duplicateOf: \"theatermania--kenji-fujishima.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jagged-little-pill-2019/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jagged-little-pill-2019/vulture--jesse-green.json wrongAttribution: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jagged-little-pill-2019/vulture--jesse-green.json duplicateClearReason: null -> \"BRO-6054-d: url collision with vulture--helen-shaw.json (wrongProduction, invalid); this file holds the outlet own unique review text and is the canonical copy\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jagged-little-pill-2019/vulture--jesse-green.json duplicateOf: \"vulture--helen-shaw.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "time-stands-still-2010/hollywood-reporter--david-rooney.json criticName: \"David Rooney\" -> \"Frank Scheck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "race-2009/sfgate--lily-janiak.json criticName: \"Lily Janiak\" -> \"Unknown\""
+    }
+  ],
+  "executedIn": "ci"
 }
