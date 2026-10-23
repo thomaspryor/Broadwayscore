@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T01:19:43.310Z",
+  "timestamp": "2026-10-23T01:34:11.872Z",
   "stats": {
-    "totalReviews": 59587,
-    "alreadyFlagged": 21371,
+    "totalReviews": 59603,
+    "alreadyFlagged": 21375,
     "dateGuardCatches": 200,
-    "directorMismatch": 2114,
-    "tvFilmSignals": 1675,
-    "londonSignals": 2761,
-    "offBroadwaySignals": 528,
+    "directorMismatch": 2121,
+    "tvFilmSignals": 1677,
+    "londonSignals": 2767,
+    "offBroadwaySignals": 529,
     "yearMismatch": 169,
-    "noPublishDate": 5471
+    "noPublishDate": 5457
   },
   "findings": [
     {
@@ -1301,6 +1301,20 @@
       "score": 90,
       "publishDate": "November 13th, 2015",
       "url": "http://www.vogue.com/13370738/a-view-from-the-bridge-ivo-van-hove-broadway-play/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"gregory mosher\" from a-view-from-the-bridge-2010"
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-2015",
+      "file": "washpost--peter-marks.json",
+      "score": 92,
+      "publishDate": "2015-11-12T19:05:02-05:00",
+      "url": "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2015/11/12/an-astonishing-view-from-the-bridge-on-broadway/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -3660,6 +3674,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "annie-west-end-2017",
+      "file": "variety--unknown.json",
+      "score": null,
+      "publishDate": "2017-08-22",
+      "url": "https://variety.com/2017/legit/news/thomas-meehan-dead-dies-annie-the-producers-1202535986/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
         }
       ]
     },
@@ -12636,6 +12664,30 @@
     },
     {
       "showId": "dreamgirls-west-end-2016",
+      "file": "nytimes--unknown.json",
+      "score": null,
+      "publishDate": "2016-12-15",
+      "url": "https://www.nytimes.com/2016/12/15/theater/review-dreamgirls-makes-an-overdue-british-debut.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael bennett\" from dreamgirls-1987"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "dreamgirls-west-end-2016",
       "file": "thestage--mark-shenton.json",
       "score": 85,
       "publishDate": "2016-12-14T22:30:28-05:00",
@@ -15763,6 +15815,44 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2017 (2x) more than 2022 (0x). 2017 matches production: girl-from-the-north-country-west-end-2017"
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2017",
+      "file": "nytimes--unknown.json",
+      "score": null,
+      "publishDate": "2017-07-26",
+      "url": "https://www.nytimes.com/2017/07/26/theater/girl-from-north-country-review-bob-dylan.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2017",
+      "file": "variety--unknown.json",
+      "score": null,
+      "publishDate": "2017-07-27",
+      "url": "https://variety.com/2017/legit/reviews/bob-dylan-musical-review-girl-from-the-north-country-1202508546/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -24425,6 +24515,20 @@
     },
     {
       "showId": "les-liaisons-dangereuses-2016",
+      "file": "northjerseycom--unknown.json",
+      "score": null,
+      "publishDate": "2016-10-31",
+      "url": "https://www.northjersey.com/story/entertainment/theater/2016/10/31/theater-review-les-liaisons-dangereuses/93135222/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-2016",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 44,
       "publishDate": "2016-11-06",
@@ -31439,6 +31543,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "file": "theater-life--david-sheward.json",
+      "score": 74,
+      "publishDate": "2026-10-21",
+      "url": "https://theaterlife.com/other-desert-cities/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from other-desert-cities-2011"
         }
       ]
     },
@@ -42192,6 +42310,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-ferryman-west-end-2017",
+      "file": "nytimes--unknown.json",
+      "score": null,
+      "publishDate": "2017-05-04",
+      "url": "https://www.nytimes.com/2017/05/04/theater/review-the-ferryman-in-jez-butterworths-ireland.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
         }
       ]
     },
@@ -56083,6 +56215,20 @@
     },
     {
       "showId": "a-view-from-the-bridge-2015",
+      "file": "nypost--elisabeth-vincentelli.json",
+      "score": 87,
+      "publishDate": "2015-11-13",
+      "url": "http://nypost.com/2015/11/13/this-new-a-view-from-the-bridge-is-totally-mind-blowing/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-2015",
       "file": "talkinbroadway--matthew-murray.json",
       "score": 59,
       "publishDate": "November 15, 2015",
@@ -63874,6 +64020,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "derren-brown-only-human-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": null,
+      "publishDate": "2026-10-22",
+      "url": "https://theatreandtonic.co.uk/blog/derren-brown-only-human-at-apollo-theatre-reviewnbsp",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -72069,6 +72229,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "jeezus-off-west-end-2026",
+      "file": "musical-theatre-review--sorcha-exworthy.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/jeezus-continues-at-the-new-diorama-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -87723,6 +87897,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-dresser-west-end-2016",
+      "file": "nytimes--unknown.json",
+      "score": null,
+      "publishDate": "2016-11-04",
+      "url": "https://www.nytimes.com/2016/11/05/theater/review-a-revival-of-the-dresser-in-london.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
