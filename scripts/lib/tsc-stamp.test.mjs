@@ -74,3 +74,12 @@ test('CLI: record then check skips; fails open outside CI and on a different tre
   assert.equal(run('check', env, [`--pushed-oid=${c1}`, '--spec-count=1', '--remote-ref=refs/heads/main']).status, 1, 'pushed oid != HEAD -> run tsc');
   fs.rmSync(r.d, { recursive: true, force: true });
 });
+
+test('key covers nested data JSON that src/ imports, ignores other nested data JSON', () => {
+  const r = mkRepo({});
+  const a = r.commit({ 'src/a.ts': "import g from '../data/analysis/gd.json';\n", 'data/analysis/gd.json': '{}', 'data/audit/x.json': '1' });
+  const audit = r.commit({ 'data/audit/x.json': '2' });
+  assert.equal(r.key(audit), r.key(a), 'unreferenced nested data json is inert');
+  const gd = r.commit({ 'data/analysis/gd.json': '{"a":1}' });
+  assert.notEqual(r.key(gd), r.key(audit), 'a src-imported nested data json must change the key');
+});

@@ -12,7 +12,8 @@
 //   tree is byte-identical on that retry, so the second tsc proves nothing.
 //
 // KEY
-//   sha256( computeCodeTreeHash(HEAD) + tracked top-level data/*.json blobs ).
+//   sha256( computeCodeTreeHash(HEAD) + tracked top-level data/*.json blobs
+//   + nested data/**/*.json paths that src/ names ).
 //   computeCodeTreeHash drops data/ (inert for verification), but tsc reads
 //   data/*.json through resolveJsonModule, so those blobs are added back: a
 //   bot commit that reshapes a JSON file changes the key and tsc runs again.
@@ -44,16 +45,28 @@ function decide({ env = {}, headOid, pushedOid, specCount, remoteRef, key, stamp
   return { skip: true, reason: `tsc already passed on this code tree (${key.slice(0, 12)})` };
 }
 
+/** Nested data JSON paths named anywhere under src/ (a superset of what tsc imports). */
+function srcReferencedDataJson(sha, cwd) {
+  let out = '';
+  try {
+    out = execFileSync('git', ['grep', '-hoE', 'data/[A-Za-z0-9_./-]+\\.json', sha, '--', 'src'], { cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  } catch (e) {
+    if (e.status !== 1) throw e; // 1 = no match
+  }
+  return [...new Set(out.split('\n').map((l) => l.replace(/^[0-9a-f]{40}:/, '').trim()).filter((l) => l.startsWith('data/') && l.indexOf('/', 5) !== -1))].sort();
+}
+
 /** Stamp key for the commit `sha`. Throws on any git failure (callers fail open). */
 function computeKey(sha, { cwd = process.cwd(), lsTreeData = null } = {}) {
   const { hash } = computeCodeTreeHash(sha, { cwd });
-  const listing = lsTreeData
-    ? lsTreeData(sha)
-    : execFileSync('git', ['ls-tree', sha, 'data/'], { cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  const gitLs = (args) => execFileSync('git', ['ls-tree', sha, ...args], { cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  const top = lsTreeData ? lsTreeData(sha) : gitLs(['data/']);
+  const nested = lsTreeData ? [] : srcReferencedDataJson(sha, cwd);
+  const nestedListing = nested.length ? gitLs(['--', ...nested]) : '';
   const h = crypto.createHash('sha256');
   h.update(hash);
-  for (const line of String(listing).split('\n')) {
-    if (/\tdata\/[^/]+\.json$/.test(line)) { h.update(line); h.update('\n'); }
+  for (const line of `${top}\n${nestedListing}`.split('\n')) {
+    if (/\tdata\/.+\.json$/.test(line) && (/\tdata\/[^/]+\.json$/.test(line) || nested.some((n) => line.endsWith(`\t${n}`)))) { h.update(line); h.update('\n'); }
   }
   return h.digest('hex');
 }
