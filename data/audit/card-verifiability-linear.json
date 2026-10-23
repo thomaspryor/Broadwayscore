@@ -1,141 +1,28 @@
 {
-  "generatedAt": "2026-10-22T16:30:33.252Z",
-  "total": 564,
-  "armedCount": 547,
-  "refusedCount": 17,
+  "generatedAt": "2026-10-23T10:19:23.829Z",
+  "total": 528,
+  "armedCount": 525,
+  "refusedCount": 3,
   "byKind": {
-    "shape": 13,
-    "path-prefix": 3,
-    "no-command": 1
+    "no-section": 2,
+    "shape": 1
   },
   "refused": [
     {
-      "id": "BRO-6000",
-      "name": "NYT Two Girls scored 46 on a mostly descriptive review (critic protest)",
+      "id": "BRO-6034",
+      "name": "Opening-night watch 2026-10-22",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6000/nyt-two-girls-scored-46-on-a-mostly-descriptive-review-critic-protest",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/validate-data.js --show=two-girls-off-broadway-2026)",
-      "kind": "shape"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6034/opening-night-watch-2026-10-22",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
     },
     {
-      "id": "BRO-5999",
-      "name": "NYT Two Girls scored 46 on a mostly descriptive review (critic protest): fix score + audit same class",
+      "id": "BRO-6018",
+      "name": "BRO-5951 follow-up: recover 146 verified-missing T1/T2 reviews in WE historical, adjudicate ~400 fact verdicts",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5999/nyt-two-girls-scored-46-on-a-mostly-descriptive-review-critic-protest",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/validate-data.js --show=two-girls-off-broadway-2026)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-5996",
-      "name": "Tech Scorecard: manufacturer press photos for every product (owner chose option B)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5996/tech-scorecard-manufacturer-press-photos-for-every-product-owner-chose",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: test -f /home/user/tech-scorecard/docs/PIPELINE.md)",
-      "kind": "path-prefix"
-    },
-    {
-      "id": "BRO-5995",
-      "name": "Review-text writers count guard-refused safeWriteReview calls as written; Cleveland tour row has the wrong outletId",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5995/review-text-writers-count-guard-refused-safewritereview-calls-as",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test tests/unit/)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-5993",
-      "name": "Opening-night lane: score candidates in parallel and publish as each is scored, not after the whole pass",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5993/opening-night-lane-score-candidates-in-parallel-and-publish-as-each-is",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test tests/unit/opening-night-lane-\\*.test.mjs)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-5989",
-      "name": "SEO: A/B a higher related-shows row on show pages (85% of search landers view one page)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5989/seo-ab-a-higher-related-shows-row-on-show-pages-85percent-of-search",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: grep -rq 'related-shows-position' src/components)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-5986",
-      "name": "iOS: users with a planned date get two 'How was X?' reminders (local 10pm + server push)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5986/ios-users-with-a-planned-date-get-two-how-was-x-reminders-local-10pm",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-5984",
-      "name": "Analytics: PostHog reverse proxy + search-landing lines in the weekly traffic email",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5984/analytics-posthog-reverse-proxy-search-landing-lines-in-the-weekly",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: curl -s -o /dev/null -w '%{http_code}' [https://broadwayscorecard.com/ingest/decide/?v=3](<https://broadwayscorecard.com)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-5983",
-      "name": "SEO: refresh data/seo-search-landings.json on a schedule (PostHog 90-day window)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5983/seo-refresh-dataseo-search-landingsjson-on-a-schedule-posthog-90-day",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const j=require('./data/seo-search-landings.json');process.exit(j.paths.length>0?0:1)\")",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-5982",
-      "name": "SEO: Cite this score on show pages (earn links without outreach)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5982/seo-cite-this-score-on-show-pages-earn-links-without-outreach",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: curl -s [https://broadwayscorecard.com/show/hamilton](<https://broadwayscorecard.com/show/hamilton>) | grep -qi 'cite th)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-5980",
-      "name": "Tech Scorecard: carry Broadway Scorecard improvements over (catch-up port + weekly porting routine)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5980/tech-scorecard-carry-broadway-scorecard-improvements-over-catch-up",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: test -f /home/user/tech-scorecard/docs/PIPELINE.md)",
-      "kind": "path-prefix"
-    },
-    {
-      "id": "BRO-5978",
-      "name": "SEO: /cast and /composers ItemLists emit people as TheaterEvent with EventScheduled",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5978/seo-cast-and-composers-itemlists-emit-people-as-theaterevent-with",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: curl -s [https://broadwayscorecard.com/cast](<https://broadwayscorecard.com/cast>) | grep -c TheaterEvent | grep -qx 0)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-5976",
-      "name": "Tech Scorecard: engineering-quality pass (public repo shared with owner's day-job team)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5976/tech-scorecard-engineering-quality-pass-public-repo-shared-with-owners",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: test -f /home/user/tech-scorecard/docs/PIPELINE.md)",
-      "kind": "path-prefix"
-    },
-    {
-      "id": "BRO-5970",
-      "name": "SEO: metadata and internal-link hygiene (duplicate guide titles, revival years, redirecting links, broken links, sitemap lastmod)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5970/seo-metadata-and-internal-link-hygiene-duplicate-guide-titles-revival",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: curl -s [https://broadwayscorecard.com/guides/best-broadway-shows-2024](<https://broadwayscorecard.com/guides/best-broad)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-5969",
-      "name": "SEO: index bloat, half the sitemap is thin pages (0-review closed shows, 1-credit actors, duplicate venues)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5969/seo-index-bloat-half-the-sitemap-is-thin-pages-0-review-closed-shows-1",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: curl -s [https://broadwayscorecard.com/show/stanley-1997](<https://broadwayscorecard.com/show/stanley-1997>) | grep -q ')",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-5951",
-      "name": "Cross-model audit of all historical backfill (GPT + Gemini), full coverage",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5951/cross-model-audit-of-all-historical-backfill-gpt-gemini-full-coverage",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/fact-check-historical-sample.js report --cohort=we-historical)",
-      "kind": "shape"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6018/bro-5951-follow-up-recover-146-verified-missing-t1t2-reviews-in-we",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
     },
     {
       "id": "BRO-5680",
@@ -148,12 +35,84 @@
   ],
   "missingCheckPaths": [
     {
+      "id": "BRO-6054",
+      "name": "Jonathan Mandell reviews double-counted: newyorktheater.me (nyt-theater) + DC Theatre Scene cross-posts",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6054/jonathan-mandell-reviews-double-counted-newyorktheaterme-nyt-theater",
+      "cmd": "node --test tests/unit/mandell-syndication.test.mjs",
+      "missingPaths": [
+        "tests/unit/mandell-syndication.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6045",
+      "name": "Publish britishtheatre.com Broadway Thérèse Raquin review; verify-review-recovery false positives",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6045/publish-britishtheatrecom-broadway-therese-raquin-review-verify-review",
+      "cmd": "node --test scripts/verify-review-recovery.test.mjs",
+      "missingPaths": [
+        "scripts/verify-review-recovery.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6026",
+      "name": "Land retry sweep can land a held change: a re-run replays the cancelled run's original commit, not the ref's current tip",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6026/land-retry-sweep-can-land-a-held-change-a-re-run-replays-the-cancelled",
+      "cmd": "node --test tests/unit/land-retry-cancelled.test.mjs",
+      "missingPaths": [
+        "tests/unit/land-retry-cancelled.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6021",
+      "name": "setup-playwright: install-deps apt mirror stalls fail whole gather shards",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6021/setup-playwright-install-deps-apt-mirror-stalls-fail-whole-gather",
+      "cmd": "node --test scripts/lib/gather-shard-continue-on-error.test.mjs",
+      "missingPaths": [
+        "scripts/lib/gather-shard-continue-on-error.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5996",
+      "name": "Tech Scorecard: manufacturer press photos for every product (owner chose option B)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5996/tech-scorecard-manufacturer-press-photos-for-every-product-owner-chose",
+      "cmd": "node --test tests/unit/manufacturer-images.test.mjs",
+      "missingPaths": [
+        "tests/unit/manufacturer-images.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5995",
+      "name": "Review-text writers count guard-refused safeWriteReview calls as written; Cleveland tour row has the wrong outletId",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5995/review-text-writers-count-guard-refused-safewritereview-calls-as",
+      "cmd": "node --test tests/unit/audit-unchecked-write-counters.test.mjs",
+      "missingPaths": [
+        "tests/unit/audit-unchecked-write-counters.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5993",
+      "name": "Opening-night lane: score candidates in parallel and publish as each is scored, not after the whole pass",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5993/opening-night-lane-score-candidates-in-parallel-and-publish-as-each-is",
+      "cmd": "node --test tests/unit/opening-night-lane-parallel-publish.test.mjs",
+      "missingPaths": [
+        "tests/unit/opening-night-lane-parallel-publish.test.mjs"
+      ]
+    },
+    {
       "id": "BRO-5992",
       "name": "SEO: staged noindex of thin show/cast/critic pages, gated on Search Console impressions",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5992/seo-staged-noindex-of-thin-showcastcritic-pages-gated-on-search",
       "cmd": "test -f scripts/lib/show-indexability.js",
       "missingPaths": [
         "scripts/lib/show-indexability.js"
+      ]
+    },
+    {
+      "id": "BRO-5989",
+      "name": "SEO: A/B a higher related-shows row on show pages (85% of search landers view one page)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5989/seo-ab-a-higher-related-shows-row-on-show-pages-85percent-of-search",
+      "cmd": "node --test tests/unit/related-shows-ab-test.test.mjs",
+      "missingPaths": [
+        "tests/unit/related-shows-ab-test.test.mjs"
       ]
     },
     {
@@ -166,57 +125,39 @@
       ]
     },
     {
-      "id": "BRO-5985",
-      "name": "Site performance: cut per-page JS (lazy Supabase for anonymous visitors, PostHog recorder/surveys) + homepage LCP priority",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5985/site-performance-cut-per-page-js-lazy-supabase-for-anonymous-visitors",
-      "cmd": "npx tsx --test tests/unit/perf-lazy-loading.test.ts",
+      "id": "BRO-5986",
+      "name": "iOS: users with a planned date get two 'How was X?' reminders (local 10pm + server push)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5986/ios-users-with-a-planned-date-get-two-how-was-x-reminders-local-10pm",
+      "cmd": "node --test scripts/lib/reminder-deduplication.test.mjs",
       "missingPaths": [
-        "tests/unit/perf-lazy-loading.test.ts"
+        "scripts/lib/reminder-deduplication.test.mjs"
       ]
     },
     {
-      "id": "BRO-5977",
-      "name": "Extend the press-night spend cap to the opening-night lane, poller and collect-outlet-reviews (untagged today)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5977/extend-the-press-night-spend-cap-to-the-opening-night-lane-poller-and",
-      "cmd": "node --test scripts/lib/scrapingdog-press-night-cap.test.mjs",
+      "id": "BRO-5983",
+      "name": "SEO: refresh data/seo-search-landings.json on a schedule (PostHog 90-day window)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5983/seo-refresh-dataseo-search-landingsjson-on-a-schedule-posthog-90-day",
+      "cmd": "node --test scripts/seo-search-landings.test.mjs",
       "missingPaths": [
-        "scripts/lib/scrapingdog-press-night-cap.test.mjs"
+        "scripts/seo-search-landings.test.mjs"
       ]
     },
     {
-      "id": "BRO-5968",
-      "name": "SEO: 5 hub pages exceed Googlebot's 2MB fetch limit (all-time list is 7.3MB)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5968/seo-5-hub-pages-exceed-googlebots-2mb-fetch-limit-all-time-list-is",
-      "cmd": "node --test scripts/validate-page-size.test.mjs",
+      "id": "BRO-5980",
+      "name": "Tech Scorecard: carry Broadway Scorecard improvements over (catch-up port + weekly porting routine)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5980/tech-scorecard-carry-broadway-scorecard-improvements-over-catch-up",
+      "cmd": "test -f docs/PORTING.md",
       "missingPaths": [
-        "scripts/validate-page-size.test.mjs"
+        "docs/PORTING.md"
       ]
     },
     {
-      "id": "BRO-5967",
-      "name": "SEO: remove review markup that breaks Google review-snippet policy (invented critic stars, list ratings)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5967/seo-remove-review-markup-that-breaks-google-review-snippet-policy",
-      "cmd": "node --test scripts/validate-schema-removal.test.mjs",
+      "id": "BRO-5978",
+      "name": "SEO: /cast and /composers ItemLists emit people as TheaterEvent with EventScheduled",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5978/seo-cast-and-composers-itemlists-emit-people-as-theaterevent-with",
+      "cmd": "node --test tests/unit/seo-cast-composers-itemlist.test.mjs",
       "missingPaths": [
-        "scripts/validate-schema-removal.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5963",
-      "name": "Backup restore drill (monthly, all R2 bundles + Supabase export) and drop the R2 lifecycle step that silently fails",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5963/backup-restore-drill-monthly-all-r2-bundles-supabase-export-and-drop",
-      "cmd": "node --test scripts/restore-drill.test.mjs",
-      "missingPaths": [
-        "scripts/restore-drill.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5962",
-      "name": "Exempt-from-cron-health workflows failing every run go unreported (12 dead weekly/daily jobs)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5962/exempt-from-cron-health-workflows-failing-every-run-go-unreported-12",
-      "cmd": "node --test scripts/lib/health-digest-crons.test.mjs",
-      "missingPaths": [
-        "scripts/lib/health-digest-crons.test.mjs"
+        "tests/unit/seo-cast-composers-itemlist.test.mjs"
       ]
     },
     {
@@ -238,15 +179,6 @@
       ]
     },
     {
-      "id": "BRO-5954",
-      "name": "Build guard: one bad shows.json row (null venue) must skip that show, not fail every prod deploy",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5954/build-guard-one-bad-showsjson-row-null-venue-must-skip-that-show-not",
-      "cmd": "node --test scripts/lib/shows-validator.test.mjs",
-      "missingPaths": [
-        "scripts/lib/shows-validator.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-5953",
       "name": "Opening night: Express auto-run that scores under 3 reviews on an embargo night should retry, not finish",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5953/opening-night-express-auto-run-that-scores-under-3-reviews-on-an",
@@ -256,66 +188,12 @@
       ]
     },
     {
-      "id": "BRO-5952",
-      "name": "Opening night: stop Express and the poller cancelling each other's runs (scope gh run cancel to same show and run kind, or remove)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5952/opening-night-stop-express-and-the-poller-cancelling-each-others-runs",
-      "cmd": "node --test tests/unit/opening-night-cancel-scope.test.mjs",
-      "missingPaths": [
-        "tests/unit/opening-night-cancel-scope.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5950",
-      "name": "Broadway.com audience scraper matches titles only: press-title shows like 'Billy Crystal 860' (alias '860') never attach",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5950/broadwaycom-audience-scraper-matches-titles-only-press-title-shows",
-      "cmd": "node --test scripts/aka-title-audience-match.test.mjs",
-      "missingPaths": [
-        "scripts/aka-title-audience-match.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5939",
-      "name": "P2: land.yml colocated-tests refusal names a passing test's warning, not the failing test (defaultDetail vs tapDetail)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5939/p2-landyml-colocated-tests-refusal-names-a-passing-tests-warning-not",
-      "cmd": "node --test scripts/tests/land-branch-detail.test.mjs",
-      "missingPaths": [
-        "scripts/tests/land-branch-detail.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5935",
-      "name": "Stale pending fix plans: four approved data plans never applied, and nothing reports them",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5935/stale-pending-fix-plans-four-approved-data-plans-never-applied-and",
-      "cmd": "node --test scripts/lib/pending-fixes-stale-check.test.mjs",
-      "missingPaths": [
-        "scripts/lib/pending-fixes-stale-check.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5932",
-      "name": "P2: PR-write guard misses the graphql, REST-PATCH and heredoc routes — ship-check probes found 5 that return allow",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5932/p2-pr-write-guard-misses-the-graphql-rest-patch-and-heredoc-routes",
-      "cmd": "node --test scripts/lib/pre-push-review-gate.test.mjs scripts/lib/push-command.test.mjs",
-      "missingPaths": [
-        "scripts/lib/push-command.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-5914",
       "name": "gather-reviews/Express: treat an empty Scrapingdog SERP as not-yet-indexed (emptyAuthoritative:false) for shows inside their press-night window",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5914/gather-reviewsexpress-treat-an-empty-scrapingdog-serp-as-not-yet",
       "cmd": "node --test scripts/lib/opening-night-window.test.mjs",
       "missingPaths": [
         "scripts/lib/opening-night-window.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5901",
-      "name": "dedupe picks a survivor that a later gate excludes, loser never re-promoted",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5901/dedupe-picks-a-survivor-that-a-later-gate-excludes-loser-never-re",
-      "cmd": "node --test scripts/tests/dedupe-survivor-exclusion.test.mjs",
-      "missingPaths": [
-        "scripts/tests/dedupe-survivor-exclusion.test.mjs"
       ]
     },
     {
@@ -373,15 +251,6 @@
       ]
     },
     {
-      "id": "BRO-5848",
-      "name": "Commercial: stunt-casting study page (film/TV star leads by season 2004-2027 + commercial outcomes)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5848/commercial-stunt-casting-study-page-filmtv-star-leads-by-season-2004",
-      "cmd": "node --test scripts/build-stunt-casting-dataset.test.mjs",
-      "missingPaths": [
-        "scripts/build-stunt-casting-dataset.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-5847",
       "name": "Owner loose ends rescued from old sessions (spend cap, Mezzanine, key rotation, cost checks, decisions)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5847/owner-loose-ends-rescued-from-old-sessions-spend-cap-mezzanine-key",
@@ -415,15 +284,6 @@
       "cmd": "node --test scripts/lib/claude-auth-health-confirm.test.mjs",
       "missingPaths": [
         "scripts/lib/claude-auth-health-confirm.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5832",
-      "name": "Board workers unhealthy: last run failed on usage limit, Codex lock 8h old",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5832/board-workers-unhealthy-last-run-failed-on-usage-limit-codex-lock-8h",
-      "cmd": "node --test scripts/board-workers-health.test.mjs",
-      "missingPaths": [
-        "scripts/board-workers-health.test.mjs"
       ]
     },
     {
@@ -508,15 +368,6 @@
       ]
     },
     {
-      "id": "BRO-5664",
-      "name": "Opening-night watch 2026-10-18",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5664/opening-night-watch-2026-10-18",
-      "cmd": "test -f memory/opening-night-watch-2026-10-18.md",
-      "missingPaths": [
-        "memory/opening-night-watch-2026-10-18.md"
-      ]
-    },
-    {
       "id": "BRO-5662",
       "name": "iOS app To Be Rated hides a past rewatch of an already-rated show",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5662/ios-app-to-be-rated-hides-a-past-rewatch-of-an-already-rated-show",
@@ -532,15 +383,6 @@
       "cmd": "node --test tests/unit/win-designations.test.mjs",
       "missingPaths": [
         "tests/unit/win-designations.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5615",
-      "name": "Opening-night audit 2026-10-18",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5615/opening-night-audit-2026-10-18",
-      "cmd": "test -f memory/opening-night-audit-2026-10-18.md",
-      "missingPaths": [
-        "memory/opening-night-audit-2026-10-18.md"
       ]
     },
     {
@@ -667,15 +509,6 @@
       "cmd": "node --test tests/unit/owner-judgment-limbo-guard.test.mjs",
       "missingPaths": [
         "tests/unit/owner-judgment-limbo-guard.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5338",
-      "name": "Bound the remaining run-out-the-clock paths: 42 exceeded()-only loop heads and the unbounded review-texts / aggregator-archive clones",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5338/bound-the-remaining-run-out-the-clock-paths-42-exceeded-only-loop",
-      "cmd": "node --test tests/unit/checkout-review-texts-network-timeout.test.mjs",
-      "missingPaths": [
-        "tests/unit/checkout-review-texts-network-timeout.test.mjs"
       ]
     },
     {
@@ -994,15 +827,6 @@
       ]
     },
     {
-      "id": "BRO-4490",
-      "name": "Cleared and LLM-misread star ratings still steer some shipped scores (31 tier-1.5-cleared llm-v6 files; FT multi-review star runs)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4490/cleared-and-llm-misread-star-ratings-still-steer-some-shipped-scores",
-      "cmd": "node --test scripts/lib/late-star-anchor.test.mjs",
-      "missingPaths": [
-        "scripts/lib/late-star-anchor.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-4483",
       "name": "Scheduled sender delivered MORE THAN ONCE on 2026-09-30: reddit-post-ready",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4483/scheduled-sender-delivered-more-than-once-on-2026-09-30-reddit-post",
@@ -1045,15 +869,6 @@
       "cmd": "node --test scripts/verify-adjudication-corrections.test.mjs",
       "missingPaths": [
         "scripts/verify-adjudication-corrections.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-4315",
-      "name": "P1: S8-T1 show-id renames — 96 Off-West End rows carry a -west-end- id suffix, 9 Broadway ids and 45 drifted ids need rename-show-id.js (blocked in cloud: classifier denies the tool)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4315/p1-s8-t1-show-id-renames-96-off-west-end-rows-carry-a-west-end-id",
-      "cmd": "node --test tests/unit/show-id-market-suffix.test.mjs",
-      "missingPaths": [
-        "tests/unit/show-id-market-suffix.test.mjs"
       ]
     },
     {
@@ -1219,15 +1034,6 @@
       ]
     },
     {
-      "id": "BRO-3552",
-      "name": "Backfill SERP discovery for closed priorRun shows stuck at low/zero review coverage (BRO-1351 follow-up)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3552/backfill-serp-discovery-for-closed-priorrun-shows-stuck-at-lowzero",
-      "cmd": "node --test tests/unit/serp-discovery-backfill.test.mjs",
-      "missingPaths": [
-        "tests/unit/serp-discovery-backfill.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-3541",
       "name": "P2: BRO-3535 follow-up — measure check-corpus-drift.yml timeout + verify per-gate digest escalation reaches a real Linear card",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-3541/p2-bro-3535-follow-up-measure-check-corpus-driftyml-timeout-verify-per",
@@ -1243,33 +1049,6 @@
       "cmd": "node --test scripts/re_extract_talkin_broadway_reviews.test.mjs",
       "missingPaths": [
         "scripts/re_extract_talkin_broadway_reviews.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-3341",
-      "name": "Audit: flag PUSH_API_REST_REF_UPDATE workflows touching non-registered files",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3341/audit-flag-push-api-rest-ref-update-workflows-touching-non-registered",
-      "cmd": "node --test scripts/audit-workflow-hygiene.test.mjs",
-      "missingPaths": [
-        "scripts/audit-workflow-hygiene.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-3196",
-      "name": "Auto-attach root-cause diagnosis to cron-health-chronic Linear cards",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3196/auto-attach-root-cause-diagnosis-to-cron-health-chronic-linear-cards",
-      "cmd": "node --test tests/unit/cron-health-chronic-diagnosis.test.mjs",
-      "missingPaths": [
-        "tests/unit/cron-health-chronic-diagnosis.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-3194",
-      "name": "Audit remaining validate-data.js call sites for the same missing-continue-on-error false-failure pattern (BRO-2289 cousin)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3194/audit-remaining-validate-datajs-call-sites-for-the-same-missing",
-      "cmd": "node --test tests/unit/validate-data-continue-on-error.test.mjs",
-      "missingPaths": [
-        "tests/unit/validate-data-continue-on-error.test.mjs"
       ]
     },
     {
@@ -1390,39 +1169,12 @@
       ]
     },
     {
-      "id": "BRO-2688",
-      "name": "P2: sweep audit-*.js scripts for the BRO-2620 orphan-audit pattern (unwired, unread in CI)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2688/p2-sweep-audit-js-scripts-for-the-bro-2620-orphan-audit-pattern",
-      "cmd": "test -f docs/triage-audit-scripts.md",
-      "missingPaths": [
-        "docs/triage-audit-scripts.md"
-      ]
-    },
-    {
       "id": "BRO-2641",
       "name": "Consolidate worktree-lock porcelain parsing (check-worktree-collision.js + gc-merged-worktrees.sh)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2641/consolidate-worktree-lock-porcelain-parsing-check-worktree-collisionjs",
       "cmd": "node --test scripts/lib/worktree-lock-parse.test.mjs",
       "missingPaths": [
         "scripts/lib/worktree-lock-parse.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-2638",
-      "name": "P3: roundup pull-quote-compilation detector is write-time-only, no backfill for already-on-disk unflagged files",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2638/p3-roundup-pull-quote-compilation-detector-is-write-time-only-no",
-      "cmd": "node --test tests/unit/backfill-roundup-pull-quote-compilation.test.mjs",
-      "missingPaths": [
-        "tests/unit/backfill-roundup-pull-quote-compilation.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-2633",
-      "name": "Confirm ScrapingBee alone can carry Data Validation coverage when BD+Scrapingdog daily breakers are tripped",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2633/confirm-scrapingbee-alone-can-carry-data-validation-coverage-when",
-      "cmd": "test -f scripts/lib/check-daily-breaker-pattern.js",
-      "missingPaths": [
-        "scripts/lib/check-daily-breaker-pattern.js"
       ]
     },
     {
@@ -1459,15 +1211,6 @@
       "cmd": "node --test tests/unit/dmarc-reject.test.mjs",
       "missingPaths": [
         "tests/unit/dmarc-reject.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-2580",
-      "name": "audit-push-retry-budgets.js: detect cross-step stranding cascade, not just single-step bundling",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2580/audit-push-retry-budgetsjs-detect-cross-step-stranding-cascade-not",
-      "cmd": "node --test scripts/audit-push-retry-budgets.test.mjs",
-      "missingPaths": [
-        "scripts/audit-push-retry-budgets.test.mjs"
       ]
     },
     {
@@ -1516,15 +1259,6 @@
       ]
     },
     {
-      "id": "BRO-2452",
-      "name": "Wire codex-agent-status.js into check-linear-delegations.js / morning digest",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2452/wire-codex-agent-statusjs-into-check-linear-delegationsjs-morning",
-      "cmd": "node --test scripts/check-linear-delegations.test.mjs",
-      "missingPaths": [
-        "scripts/check-linear-delegations.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-2445",
       "name": "Investigate Codex CLI reliability in ship-check/code-review sessions",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2445/investigate-codex-cli-reliability-in-ship-checkcode-review-sessions",
@@ -1540,15 +1274,6 @@
       "cmd": "node --test tests/unit/detect-show-changes.test.mjs",
       "missingPaths": [
         "tests/unit/detect-show-changes.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-2427",
-      "name": "P2: uncleared setTimeout inside Promise.race timeout-wrappers — same bug class in 4+ scripts (BRO-420 follow-up)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2427/p2-uncleared-settimeout-inside-promiserace-timeout-wrappers-same-bug",
-      "cmd": "test -f scripts/audit-timeout-patterns.js",
-      "missingPaths": [
-        "scripts/audit-timeout-patterns.js"
       ]
     },
     {
@@ -1694,27 +1419,33 @@
       "missingPaths": [
         "tests/unit/cache-clamp.test.mjs"
       ]
-    },
-    {
-      "id": "BRO-134",
-      "name": "Instrument direct HTTP GitHub API calls (fetchJSON duplicated across scripts) — gh CLI ruled out as #821 burner",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-134/instrument-direct-http-github-api-calls-fetchjson-duplicated-across",
-      "cmd": "node --test tests/unit/gh-api-wrapper.test.mjs",
-      "missingPaths": [
-        "tests/unit/gh-api-wrapper.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-32",
-      "name": "Route 39 direct-ScrapingBee scripts through fetchPage() (complete SD migration)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-32/route-39-direct-scrapingbee-scripts-through-fetchpage-complete-sd",
-      "cmd": "node --test tests/unit/scrapingbee-direct-calls.test.mjs",
-      "missingPaths": [
-        "tests/unit/scrapingbee-direct-calls.test.mjs"
-      ]
     }
   ],
   "vacuousChecks": [
+    {
+      "id": "BRO-6035",
+      "name": "land.js: regenerate .github/workflows/DEPENDENCIES.md on a rebase conflict instead of refusing the landing",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6035/landjs-regenerate-githubworkflowsdependenciesmd-on-a-rebase-conflict",
+      "cmd": "test -f scripts/generate-workflow-dependencies.js",
+      "kind": "test-f-satisfied",
+      "polarity": "never-fails",
+      "paths": [
+        "scripts/generate-workflow-dependencies.js"
+      ],
+      "reason": "`test -f scripts/generate-workflow-dependencies.js` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
+    },
+    {
+      "id": "BRO-6002",
+      "name": "SEO: AI-assistant referrals halved since April (ChatGPT ~570/mo to ~300): find why",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6002/seo-ai-assistant-referrals-halved-since-april-chatgpt-570mo-to-300",
+      "cmd": "test -f scripts/submit-indexnow.js",
+      "kind": "test-f-satisfied",
+      "polarity": "never-fails",
+      "paths": [
+        "scripts/submit-indexnow.js"
+      ],
+      "reason": "`test -f scripts/submit-indexnow.js` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
+    },
     {
       "id": "BRO-5919",
       "name": "Queen of Hearts (Theatre XIV) has no opening/closing dates and may be stale",
@@ -1738,18 +1469,6 @@
         "scripts/lib/review-normalization.test.mjs"
       ],
       "reason": "`test -f scripts/lib/review-normalization.test.mjs` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
-    },
-    {
-      "id": "BRO-2417",
-      "name": "finish-line-bypass.log has grown to ~39MB with no trim",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2417/finish-line-bypasslog-has-grown-to-39mb-with-no-trim",
-      "cmd": "test -f scripts/lib/finish-line-log-trim.test.mjs",
-      "kind": "test-f-satisfied",
-      "polarity": "never-fails",
-      "paths": [
-        "scripts/lib/finish-line-log-trim.test.mjs"
-      ],
-      "reason": "`test -f scripts/lib/finish-line-log-trim.test.mjs` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
     }
   ]
 }
