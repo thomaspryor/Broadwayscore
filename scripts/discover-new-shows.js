@@ -61,6 +61,7 @@ const showsWriteGuard = require('./lib/shows-write-guard');
 const { fetchTmOffBroadway, parseTmOffBroadwayRow, findTmSameTitleShow, titleKeyLoose } = require('./lib/theatermania-ob');
 const { loadPendingAddShows } = require('./lib/pending-add-shows');
 const { matchesRetired } = require('./lib/retired-show-ids');
+const { loadDiscoveryRetiredIds } = require('./lib/discovery-retired-ids');
 const { decidePrematurePreviews } = require('./lib/premature-previews');
 
 // Tags each candidate with which discovery source produced it (BRO-2072) so
@@ -2235,6 +2236,7 @@ async function applyVerifiedIbdbCreativeTeam(show, ibdbCreativeTeam) {
 }
 
 async function discoverShows() {
+  const retiredEntries = loadDiscoveryRetiredIds();
   console.log('='.repeat(60));
   console.log(includeWestEnd ? 'BROADWAY + WEST END SHOW DISCOVERY' : 'BROADWAY SHOW DISCOVERY');
   console.log('='.repeat(60));
@@ -2779,7 +2781,7 @@ async function discoverShows() {
     // Venue goes through sanitizeVenueForWrite so a placeholder ("TBA", "West End")
     // can never match a retired title+venue pair; matchesRetired normalizes the rest.
     const candidateVenue = sanitizeVenueForWrite(show.venue);
-    const retiredHit = matchesRetired({ id: minted.showId, title: show.title, venue: sanitizeVenueForWrite(show.venue) });
+    const retiredHit = matchesRetired({ id: minted.showId, title: show.title, venue: sanitizeVenueForWrite(show.venue) }, retiredEntries);
     if (retiredHit) {
       console.log(`  retired-skip: ${minted.showId} ("${show.title}" @ ${candidateVenue || 'no venue'}) matched retired ${retiredHit.id} by ${retiredHit.matchedBy}`);
       retiredSkipped.push({
@@ -3559,7 +3561,7 @@ if (require.main === module) {
   let discoveryFailed = false;
   discoverShows()
     .catch(e => {
-      console.error('Discovery failed:', e);
+      console.error('Discovery failed:', e.code === 'RETIRED_IDS_UNREADABLE' ? e.message : e);
       discoveryFailed = true;
     })
     .finally(async () => {

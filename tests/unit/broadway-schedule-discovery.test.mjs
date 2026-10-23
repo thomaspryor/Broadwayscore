@@ -288,6 +288,38 @@ test('without an "IN THE WORKS" header the parser falls back to dropping venue-l
   assert.deepEqual(entries.map(e => e.title), ['DATED SHOW']);
 });
 
+test('ALL CAPS navigation does not inflate entries, while undated announced productions remain', () => {
+  const html = `<title>Upcoming Broadway Shows</title>
+<p><a href="/tickets" target="_blank">BUY TICKETS</a></p>
+<p><a href="/announced" target="_blank">ANNOUNCED SHOW</a><br>Writer: Someone<br>About: An announced production.</p>
+<p><a href="/tickets" target="_blank">MORE TICKETS</a></p>
+<p><u>IN&nbsp;THE WORKS</u></p>
+<p><a href="/speculative" target="_blank">SPECULATIVE SHOW</a><br>Creative Team: Someone</p>`;
+  assert.deepEqual(parsePlaybillBroadwaySchedule(html).map(e => e.title), ['ANNOUNCED SHOW']);
+});
+
+test('only a standalone section header ends listings, never a title or description containing IN THE WORKS', () => {
+  const html = `<title>Upcoming Broadway Shows</title>
+<p><a href="/first" target="_blank">IN THE WORKS</a><br>Theatre: Booth Theatre</p>
+<p><a href="/second" target="_blank">A SHOW IN THE WORKS</a><br>Theatre: Hudson Theatre<br>About: IN THE WORKS is also mentioned in prose.</p>
+<p><a href="/third" target="_blank">THIRD SHOW</a><br>Writer: Someone</p>
+<h2><strong>IN&#160;THE <em>WORKS</em></strong></h2>
+<p><a href="/speculative" target="_blank">SPECULATIVE SHOW</a><br>Theatre: Marquis Theatre</p>`;
+  assert.deepEqual(parsePlaybillBroadwaySchedule(html).map(e => e.title), ['IN THE WORKS', 'A SHOW IN THE WORKS', 'THIRD SHOW']);
+});
+
+test('long invisible block prefixes keep shows without admitting long inline links or leaking dates', () => {
+  const prefix = `<span data-editor="${'x'.repeat(1200)}"></span>${' '.repeat(1200)}`;
+  const html = `<title>Upcoming Broadway Shows</title>
+<p><a href="/first" target="_blank">FIRST SHOW</a><br>Theatre: Booth Theatre<br>About: See ${prefix}<a href="/inline" target="_blank">INLINE LINK</a>.</p>
+<p>${prefix}<strong><a href="/second" target="_blank">SECOND SHOW</a></strong><br>Theatre: Hudson Theatre<br>First Preview: October 1, 2026</p>
+<p><u>IN THE WORKS</u></p>`;
+  assert.deepEqual(parsePlaybillBroadwaySchedule(html).map(e => [e.title, e.venue, e.firstPreview]), [
+    ['FIRST SHOW', 'Booth Theatre', null],
+    ['SECOND SHOW', 'Hudson Theatre', '2026-10-01'],
+  ]);
+});
+
 test('parseUSDate parses full US dates and rejects month-only text', () => {
   assert.equal(parseUSDate('November 8, 2026'), '2026-11-08');
   assert.equal(parseUSDate('Jan. 7, 2027'), '2027-01-07');

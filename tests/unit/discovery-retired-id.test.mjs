@@ -130,11 +130,16 @@ test('mintCandidateId mirrors the id-year rule the loop used to inline (opening 
 test('discover-new-shows.js is wired: the candidate loop calls matchesRetired on the minted id before any dedup check and logs retired-skip', () => {
   const src = readFileSync(join(ROOT, 'scripts/discover-new-shows.js'), 'utf8');
   assert.match(src, /require\('\.\/lib\/retired-show-ids'\)/, 'must require the real registry module');
+  const discoveryStart = src.indexOf('async function discoverShows() {');
+  const registryLoad = src.indexOf('const retiredEntries = loadDiscoveryRetiredIds();', discoveryStart);
+  const firstFetch = src.indexOf('await fetchShowsFromTodayTix()', discoveryStart);
+  assert.ok(registryLoad > discoveryStart && registryLoad < firstFetch, 'registry must load before paid discovery fetches');
+  assert.match(src, /e\.code === 'RETIRED_IDS_UNREADABLE' \? e\.message : e/, 'registry failures must log their single-line diagnostic');
 
   const loopStart = src.indexOf('for (const show of discoveredShows) {');
   assert.ok(loopStart > 0, 'candidate loop must exist');
   const todaytixDedup = src.indexOf('existingTodaytixIds.has(show.todaytixId)', loopStart);
-  const retiredCall = src.indexOf('matchesRetired({ id: minted.showId, title: show.title, venue: sanitizeVenueForWrite(show.venue) })', loopStart);
+  const retiredCall = src.indexOf('matchesRetired({ id: minted.showId, title: show.title, venue: sanitizeVenueForWrite(show.venue) }, retiredEntries)', loopStart);
   const mintCall = src.indexOf('const minted = mintCandidateId(show);', loopStart);
   assert.ok(mintCall > loopStart && mintCall < retiredCall, 'the id must be minted before the retired check');
   assert.ok(retiredCall > loopStart && retiredCall < todaytixDedup, 'retired check must run before the first dedup step');

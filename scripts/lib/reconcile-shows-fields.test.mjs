@@ -77,7 +77,7 @@ test('reconcileShowsJson: whole-show re-add only when base also lacked it', () =
   // base already had 'c-deleted-by-us' too, meaning WE deleted it this run.
   base.shows.push({ id: 'c-deleted-by-us' });
 
-  const { readded } = reconcileShowsJson(local, remote, base);
+  const { readded } = reconcileShowsJson(local, remote, base, undefined, []);
 
   assert.strictEqual(readded, 1);
   const ids = local.shows.map((s) => s.id);
@@ -100,7 +100,7 @@ test('reconcileShowsJson: end-to-end #1817 repro across the full pipeline', () =
     { id: 'the-sound-of-music-2027', ibdbUrl: url }, // origin never got a prior fix
   ] };
 
-  const { recovered } = reconcileShowsJson(local, remote, base);
+  const { recovered } = reconcileShowsJson(local, remote, base, undefined, []);
 
   assert.strictEqual(recovered, 0);
   const revival = local.shows.find((s) => s.id === 'the-sound-of-music-2027');

@@ -21,7 +21,6 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const ROOT = join(import.meta.dirname, '..', '..');
 const { reconcileShowsJson } = require(join(ROOT, 'scripts/lib/reconcile-shows-fields.js'));
-const { _resetCache } = require(join(ROOT, 'scripts/lib/retired-show-ids.js'));
 
 const S = (id, extra = {}) => ({ id, title: id, ...extra });
 const X = 'tabdates-off-west-end-2026';
@@ -88,34 +87,24 @@ test('a retired id that IS present locally is left alone here (field reconcile s
   assert.equal(r.retiredSkipped, 0);
 });
 
-test('default retiredIds reads the on-disk registry (RETIRED_IDS_PATH), so an omitted argument still refuses', () => {
-  const dir = mkdtempSync(join(tmpdir(), 'reconcile-retired-'));
-  const prev = process.env.RETIRED_IDS_PATH;
-  process.env.RETIRED_IDS_PATH = join(dir, 'retired-show-ids.json');
-  _resetCache();
-  try {
-    writeFileSync(process.env.RETIRED_IDS_PATH, JSON.stringify([{ id: X, reason: 'r', retiredAt: 'now' }]));
-    const local = { shows: [S('hamilton')] };
-    const remote = { shows: [S('hamilton'), S(X), S('genuine-add')] };
-    const base = { shows: [S('hamilton')] };
-
-    const r = reconcileShowsJson(local, remote, base);
-
-    assert.deepEqual(local.shows.map((s) => s.id), ['hamilton', 'genuine-add']);
-    assert.equal(r.retiredSkipped, 1);
-    assert.equal(r.readded, 1);
-
-    // Missing registry file: default is an empty set, never a throw.
-    rmSync(process.env.RETIRED_IDS_PATH);
-    const local2 = { shows: [S('hamilton')] };
-    const r2 = reconcileShowsJson(local2, { shows: [S('hamilton'), S(X)] }, base);
-    assert.equal(r2.readded, 1);
-    assert.equal(r2.retiredSkipped, 0);
-  } finally {
-    if (prev === undefined) delete process.env.RETIRED_IDS_PATH; else process.env.RETIRED_IDS_PATH = prev;
-    _resetCache();
-    rmSync(dir, { recursive: true, force: true });
+test('reconciliation requires an injected registry and fails before mutating local when it is omitted', () => {
+  const local = {};
+  for (const retiredIds of [undefined, null]) {
+    assert.throws(() => reconcileShowsJson(local, { shows: [S(X)] }, { shows: [] }, undefined, retiredIds),
+      /retiredIds must be a Set or an array/);
+    assert.deepEqual(local, {}, 'invalid registry input must not mutate local');
   }
+});
+
+test('injected reconciliation never reads the filesystem', t => {
+  const read = t.mock.method(require('node:fs'), 'readFileSync', () => {
+    throw new Error('reconciliation must not read disk');
+  });
+  const local = { shows: [] };
+  const result = reconcileShowsJson(local, { shows: [S(X), S('genuine-add')] }, { shows: [] }, undefined, [X]);
+  assert.equal(result.retiredSkipped, 1);
+  assert.equal(result.readded, 1);
+  assert.equal(read.mock.callCount(), 0);
 });
 
 test('a bad retiredIds type is a loud TypeError, not a silent empty set', () => {
