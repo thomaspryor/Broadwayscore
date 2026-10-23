@@ -56,7 +56,7 @@ test('poller loop is budgeted; budget + pre-loop setup leave room for the post-p
   assert.match(fn, /GATHER_TOTAL=\$\(\(GATHER_TOTAL \+ 1\)\)/);
 });
 
-const { orderPollShows, pollTier } = createRequire(import.meta.url)('./poller-loop-budget.js');
+const { orderPollShows, pollTier, shouldBreakEarly, isFirstWave } = createRequire(import.meta.url)('./poller-loop-budget.js');
 
 // The 2026-10-21 Broadway poller list (shows.json values at the time).
 const NIGHT_860 = [
@@ -131,4 +131,118 @@ test('poll loop re-polls press-night shows and can end early to publish them', (
   const find = findStep(wf, 'poll', 'Find shows to poll');
   assert.match(find.run, /orderPollShows\(opened, now\)/);
   assert.match(find.run, /echo "hot=\$HOT" >> \$GITHUB_OUTPUT/);
+});
+
+// BRO-6033: the 2026-10-22 Imaginary Invalid night, as orderPollShows saw it at 02:22Z.
+const NIGHT_INVALID = [
+  { id: 'the-imaginary-invalid-2026', category: 'broadway', openingDate: '2026-10-22' },
+  { id: 'billy-crystal-860-2026', category: 'broadway', openingDate: '2026-10-21' },
+  { id: 'derren-brown', category: 'off-west-end', openingDate: '2026-10-22' },
+  { id: 'phyl', category: 'off-broadway', openingDate: '2026-10-22' },
+  { id: 'the-pianist', category: 'off-west-end', openingDate: '2026-10-22' },
+  { id: 'queeney-todd', category: 'off-broadway', openingDate: '2026-10-22' },
+  { id: 'women-who-eat', category: 'off-broadway', openingDate: '2026-10-22' },
+  { id: 'benjamin-button', category: 'off-broadway', openingDate: '2026-10-21' },
+  { id: 'jest-to-impress', category: 'off-broadway', openingDate: '2026-10-21' },
+  { id: 'surinderella', category: 'off-west-end', openingDate: '2026-10-21' },
+];
+const AT_0222 = new Date('2026-10-23T02:22:54Z');
+
+test('orderPollShows: mainFrontEnd marks the end of the main-stage front (Imaginary Invalid night)', () => {
+  const r = orderPollShows(NIGHT_INVALID, AT_0222);
+  assert.deepEqual(r.hot, ['the-imaginary-invalid-2026']);
+  assert.equal(r.front, 9);
+  assert.equal(r.mainFrontEnd, 2);
+  assert.deepEqual(r.order.slice(0, 2), ['the-imaginary-invalid-2026', 'billy-crystal-860-2026']);
+});
+
+test('orderPollShows: mainFrontEnd is an index, so a tier-1 main-stage show behind tier-0 Off shows is included', () => {
+  const now = new Date('2026-10-22T14:00:00Z'); // 10am ET: Oct 21 opener still in its window (tier 0); Oct 22 opener before 5pm (tier 1)
+  const shows = [
+    { id: 'ob-window', category: 'off-broadway', openingDate: '2026-10-21' },
+    { id: 'bw-today', category: 'broadway', openingDate: '2026-10-22' },
+  ];
+  const r = orderPollShows(shows, now);
+  assert.deepEqual(r.order, ['ob-window', 'bw-today']); // tier 0 Off sorts before tier 1 main
+  assert.equal(r.mainFrontEnd, r.order.indexOf('bw-today') + 1);
+  assert.ok(r.mainFrontEnd <= r.front);
+});
+
+test('shouldBreakEarly: first wave ends the loop after the main-stage front, not all 9 front shows', () => {
+  const base = { total: 10, front: 9, mainFrontEnd: 2, hotNewCount: 18, firstWaveNewCount: 18, minNew: 3 };
+  assert.equal(shouldBreakEarly({ ...base, polled: 1 }), false); // Billy Crystal still to poll
+  assert.equal(shouldBreakEarly({ ...base, polled: 2 }), true);
+});
+
+test('shouldBreakEarly: later waves and small finds keep the full-front rule (Off openers never starved)', () => {
+  const base = { total: 10, front: 9, mainFrontEnd: 2, minNew: 3 };
+  assert.equal(shouldBreakEarly({ ...base, polled: 2, hotNewCount: 18, firstWaveNewCount: 0 }), false);
+  assert.equal(shouldBreakEarly({ ...base, polled: 2, hotNewCount: 2, firstWaveNewCount: 2 }), false);
+  assert.equal(shouldBreakEarly({ ...base, polled: 9, hotNewCount: 2, firstWaveNewCount: 0 }), true);
+  assert.equal(shouldBreakEarly({ ...base, polled: 9, hotNewCount: 0 }), false);
+  assert.equal(shouldBreakEarly({ ...base, polled: 10, hotNewCount: 18, firstWaveNewCount: 18 }), false); // nothing left to defer
+  // two hot shows: A's second wave (counted in hotNewCount only) must not use B's first-wave shortcut
+  assert.equal(shouldBreakEarly({ ...base, polled: 2, hotNewCount: 5, firstWaveNewCount: 0 }), false);
+  // minNew 0 is treated as 1, not as "always"
+  assert.equal(shouldBreakEarly({ ...base, polled: 2, hotNewCount: 1, firstWaveNewCount: 0, minNew: 0 }), false);
+});
+
+test('isFirstWave: tonight counts as published only once minNew in-window files are tracked', () => {
+  const show = NIGHT_INVALID[0];
+  const old = [{ firstSeenAt: '2026-08-14T04:13:12Z' }, { firstSeenAt: '2026-10-05T12:00:00Z' }, {}];
+  const tonight = (n) => Array.from({ length: n }, () => ({ firstSeenAt: '2026-10-23T02:36:04Z' }));
+  const later = new Date('2026-10-23T03:30:00Z');
+  assert.equal(isFirstWave(show, old, AT_0222), true);
+  assert.equal(isFirstWave(show, [...old, ...tonight(1)], later), true); // one early stub is not the wave
+  assert.equal(isFirstWave(show, [...old, ...tonight(3)], later), false);
+  assert.equal(isFirstWave(show, [...old, ...tonight(1)], later, 1), false);
+  assert.equal(isFirstWave({ id: 'x', openingDate: null }, [], AT_0222), false);
+});
+
+test('CLI first-wave reads only tracked files of the show; missing show prints 0', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'fw-'));
+  const rt = path.join(dir, 'rt');
+  fs.mkdirSync(path.join(rt, 'show-a'), { recursive: true });
+  // opened yesterday, so its press-night window is open now
+  const od = new Date(Date.now() - 20 * 3600 * 1000).toISOString().slice(0, 10);
+  fs.writeFileSync(path.join(dir, 'shows.json'), JSON.stringify({ shows: [{ id: 'show-a', category: 'broadway', openingDate: od }] }));
+  const now = new Date().toISOString();
+  const git = (...a) => execFileSync('git', ['-C', rt, ...a], { encoding: 'utf8' });
+  git('init', '-q');
+  for (const n of ['a', 'b', 'c']) fs.writeFileSync(path.join(rt, 'show-a', `${n}.json`), JSON.stringify({ firstSeenAt: now }));
+  fs.writeFileSync(path.join(rt, 'show-a', '_x.json'), JSON.stringify({ firstSeenAt: now }));
+  const cli = (...a) => execFileSync(process.execPath, [path.join(import.meta.dirname, 'poller-loop-budget.js'), 'first-wave', ...a], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+  const shows = path.join(dir, 'shows.json');
+  assert.equal(cli('show-a', shows, rt), '1'); // untracked files do not count
+  git('add', '-A');
+  assert.equal(cli('show-a', shows, rt), '0'); // 3 tracked in-window files (the _x stub is ignored)
+  assert.equal(cli('show-a', shows, rt, '4'), '1');
+  assert.equal(cli('nope', shows, rt), '0');
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+});
+
+test('CLI break passes the first-wave count through', () => {
+  const run = (...a) => execFileSync(process.execPath, [new URL('./poller-loop-budget.js', import.meta.url).pathname, 'break', ...a], { encoding: 'utf8' }).trim();
+  assert.equal(run('2', '10', '9', '2', '18', '18', '3'), '1');
+  assert.equal(run('2', '10', '9', '2', '18', '0', '3'), '0');
+  assert.equal(run('2', '10', '9', '2', '18', '18'), '1'); // minNew defaults to 3
+});
+
+test('poll loop breaks through shouldBreakEarly with the first-wave inputs', () => {
+  const wf = loadWorkflow('opening-night-poller.yml');
+  const step = findStep(wf, 'poll', 'Run poller for each show');
+  assert.ok(Number(step.env.HOT_PUBLISH_MIN_NEW) >= 1);
+  assert.match(step.env.DISABLE_FIRST_WAVE_BREAK, /vars\.DISABLE_FIRST_WAVE_BREAK/);
+  assert.match(step.run, /poller-loop-budget\.js break "\$POLLED" "\$\{#SHOW_ARRAY\[@\]\}" "\$FRONT" "\$MAIN_FRONT_END" "\$HOT_NEW_COUNT" "\$FIRST_WAVE_NEW" "\$HOT_PUBLISH_MIN_NEW"/);
+  assert.match(step.run, /poller-loop-budget\.js first-wave "\$HOT_ID" data\/shows\.json data\/review-texts "\$HOT_PUBLISH_MIN_NEW"/);
+  assert.match(step.run, /FIRST_WAVE_SHOWS" == \*",\$SHOW_ID,"\*/); // counted per first-wave show
+  assert.match(step.run, /MAIN_FRONT_END=\$FRONT/); // garbled output falls back to the old rule
+  // the pre-BRO-6033 rule is still ORed in
+  assert.match(step.run, /HOT_NEW" = "true" \] && \[ "\$POLLED" -ge "\$FRONT" \]/);
+  const find = findStep(wf, 'poll', 'Find shows to poll');
+  assert.match(find.run, /r\.mainFrontEnd\]\.join\('\|'\)/);
+  assert.match(find.run, /echo "main_front_end=/);
 });

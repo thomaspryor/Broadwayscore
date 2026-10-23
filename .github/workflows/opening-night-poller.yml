@@ -243,19 +243,20 @@ jobs:
               // this order, so tonight's opener is never the one a budget cut drops.
               const { orderPollShows } = require('./scripts/lib/poller-loop-budget');
               const r = orderPollShows(opened, now);
-              if (r.order.length > 0) console.log([r.order.join(','), r.hot.join(','), r.front].join('|'));
+              if (r.order.length > 0) console.log([r.order.join(','), r.hot.join(','), r.front, r.mainFrontEnd].join('|'));
             ")
 
             if [ -z "$SHOWS" ]; then
               echo "No recently opened shows"
               echo "has_shows=false" >> $GITHUB_OUTPUT
             else
-              IFS='|' read -r ORDERED HOT FRONT <<< "$SHOWS"
+              IFS='|' read -r ORDERED HOT FRONT MAIN_FRONT_END <<< "$SHOWS"
               echo "Recently opened shows: $ORDERED"
               echo "Press-night shows re-polled during the loop: ${HOT:-none}"
               echo "shows=$ORDERED" >> $GITHUB_OUTPUT
               echo "hot=$HOT" >> $GITHUB_OUTPUT
               echo "front=${FRONT:-0}" >> $GITHUB_OUTPUT
+              echo "main_front_end=${MAIN_FRONT_END:-}" >> $GITHUB_OUTPUT
               echo "has_shows=true" >> $GITHUB_OUTPUT
             fi
           fi
@@ -374,6 +375,13 @@ jobs:
           # Minutes between polls of a press-night show inside one run (see the loop).
           HOT_REPOLL_SEC: '900'
           HOT_MAX_REPOLLS: '3'
+          # BRO-6033: on a hot show's first wave, this many new review files end the
+          # loop once the main-stage front is polled (scripts/lib/poller-loop-budget.js
+          # shouldBreakEarly).
+          HOT_PUBLISH_MIN_NEW: '3'
+          # Kill switch: gh variable set DISABLE_FIRST_WAVE_BREAK --body true
+          # (back to ending early only after the whole front is polled).
+          DISABLE_FIRST_WAVE_BREAK: ${{ vars.DISABLE_FIRST_WAVE_BREAK }}
         run: |
           LOOP_START=$SECONDS
           # Keep every front show (tonight's / last night's openers) out of the rotation.
@@ -416,10 +424,28 @@ jobs:
           HOT_SHOWS="${{ steps.find.outputs.hot }}"
           FRONT="${{ steps.find.outputs.front }}"
           case "$FRONT" in ''|*[!0-9]*) FRONT=0 ;; esac
+          # Missing/garbled main-front index falls back to the full front (old rule).
+          MAIN_FRONT_END="${{ steps.find.outputs.main_front_end }}"
+          case "$MAIN_FRONT_END" in ''|*[!0-9]*) MAIN_FRONT_END=$FRONT ;; esac
           IFS=',' read -ra HOT_ARRAY <<< "$HOT_SHOWS"
           declare -A LAST_POLL=()
           declare -A REPOLLS=()
           HOT_NEW=false
+          HOT_NEW_COUNT=0
+          # BRO-6033: hot shows whose press-night wave no earlier run has committed
+          # (poller-loop-budget.js isFirstWave), read before any poll, and the new
+          # files those shows gain in this run.
+          FIRST_WAVE_SHOWS=","
+          FIRST_WAVE_NEW=0
+          if [ "$DISABLE_FIRST_WAVE_BREAK" != "true" ]; then
+            for HOT_ID in "${HOT_ARRAY[@]}"; do
+              [ -n "$HOT_ID" ] || continue
+              if [ "$(node scripts/lib/poller-loop-budget.js first-wave "$HOT_ID" data/shows.json data/review-texts "$HOT_PUBLISH_MIN_NEW")" = "1" ]; then
+                FIRST_WAVE_SHOWS="${FIRST_WAVE_SHOWS}${HOT_ID},"
+                echo "Press-night first wave pending for $HOT_ID"
+              fi
+            done
+          fi
           POLLED=0
 
           poll_one() {
@@ -515,6 +541,10 @@ jobs:
               HOT_AFTER=$(cd data/review-texts && git status --porcelain --untracked-files=all -- "$SHOW_ID" | grep -c '^??' || true)
               if [ "$HOT_AFTER" -gt "$HOT_BEFORE" ]; then
                 HOT_NEW=true
+                HOT_NEW_COUNT=$((HOT_NEW_COUNT + HOT_AFTER - HOT_BEFORE))
+                if [[ "$FIRST_WAVE_SHOWS" == *",$SHOW_ID,"* ]]; then
+                  FIRST_WAVE_NEW=$((FIRST_WAVE_NEW + HOT_AFTER - HOT_BEFORE))
+                fi
                 echo "  🔥 $SHOW_ID (press night) has $((HOT_AFTER - HOT_BEFORE)) new review file(s)"
               fi
             fi
@@ -542,7 +572,13 @@ jobs:
               REPOLLS[$HOT_ID]=$(( ${REPOLLS[$HOT_ID]:-0} + 1 ))
               poll_one "$HOT_ID" "$HOT_TIMEOUT"
             done
-            if [ "$HOT_NEW" = "true" ] && [ "$POLLED" -ge "$FRONT" ] && [ "$POLLED" -lt "${#SHOW_ARRAY[@]}" ]; then
+            BREAK_NOW=0
+            if [ "$FIRST_WAVE_NEW" -gt 0 ]; then
+              BREAK_NOW=$(node scripts/lib/poller-loop-budget.js break "$POLLED" "${#SHOW_ARRAY[@]}" "$FRONT" "$MAIN_FRONT_END" "$HOT_NEW_COUNT" "$FIRST_WAVE_NEW" "$HOT_PUBLISH_MIN_NEW" || echo 0)
+              # Garbled output: the pre-BRO-6033 full-front rule below still applies.
+              [ "$BREAK_NOW" = "1" ] || BREAK_NOW=0
+            fi
+            if [ "$BREAK_NOW" = "1" ] || { [ "$HOT_NEW" = "true" ] && [ "$POLLED" -ge "$FRONT" ] && [ "$POLLED" -lt "${#SHOW_ARRAY[@]}" ]; }; then
               echo "::notice::Press-night show has new reviews; ending the poll loop early so they are scored and deployed now (the rest are polled next run)"
               DEFERRED_SHOWS="${SHOW_ARRAY[*]:$POLLED}"
               echo "Deferred to the next run (press-night publish first): $DEFERRED_SHOWS" >> "$GITHUB_STEP_SUMMARY"
