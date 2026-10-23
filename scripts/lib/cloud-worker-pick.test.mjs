@@ -314,6 +314,12 @@ test('a pause waiting on the owner holds the card until someone comments after i
   assert.equal(pausedHistorySkipReason([held, reply], NOW), null);
 });
 
+test('a claim comment after an owner-hold pause is not an owner answer (BRO-6092)', () => {
+  const held = report('paused', 'Not landed: needs an owner decision on the prod flip.', 10 * 24 * 3600 * 1000);
+  const claim = { body: 'Claimed by claude-session-abc at 2026-10-23T01:00:00Z\nWorker model: opus', createdAt: at(1000) };
+  assert.equal(pausedHistorySkipReason([held, claim], NOW), 'awaiting-owner');
+});
+
 test('any pause younger than RECENT_PAUSE_MS skips the card; older ones and other reports do not', () => {
   const recent = report('paused', 'VERIFY times out in the cloud.', RECENT_PAUSE_MS - 60_000);
   assert.equal(pausedHistorySkipReason([recent], NOW), 'recently-paused');
