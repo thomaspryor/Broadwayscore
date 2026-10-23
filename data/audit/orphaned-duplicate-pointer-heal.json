@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-23T15:45:37.242Z",
+  "generated": "2026-10-23T16:18:02.913Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 32,
+  "count": 33,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -36,6 +36,13 @@
       "loserFile": "daily-mail--tom-lawrence.json",
       "targetFile": "daily-mail--unknown.json",
       "reason": "orphaned-duplicate-heal: daily-mail--unknown.json was flagged invalid after daily-mail--tom-lawrence.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "beetlejuice-2025",
+      "loserFile": "vulture--unknown.json",
+      "targetFile": "vulture--bethy-squires.json",
+      "reason": "orphaned-duplicate-heal: vulture--bethy-squires.json was flagged invalid after vulture--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {

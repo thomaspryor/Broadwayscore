@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-23T15:45:25.345Z",
+  "generatedAt": "2026-10-23T16:17:51.336Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 63,
+    "avgScoreDiff": 8
   },
   "syndicationPairs": [
     {
@@ -153,7 +153,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Donna Herman",
+      "showId": "motown-the-musical-2016",
+      "primaryOutlet": "nytg",
+      "secondaryOutlet": "front-row-center",
+      "primaryFile": "nytg--donna-herman.json",
+      "secondaryFile": "front-row-center--donna-herman.json",
+      "similarity": 63,
+      "primaryScore": 81,
+      "secondaryScore": 89,
+      "scoreDiff": 8
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",

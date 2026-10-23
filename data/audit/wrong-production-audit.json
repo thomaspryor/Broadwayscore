@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T15:56:14.850Z",
+  "timestamp": "2026-10-23T16:27:33.650Z",
   "stats": {
-    "totalReviews": 59518,
+    "totalReviews": 59521,
     "alreadyFlagged": 21112,
     "dateGuardCatches": 202,
     "directorMismatch": 2120,
     "tvFilmSignals": 1690,
     "londonSignals": 2836,
-    "offBroadwaySignals": 534,
+    "offBroadwaySignals": 535,
     "yearMismatch": 176,
-    "noPublishDate": 5345
+    "noPublishDate": 5342
   },
   "findings": [
     {
@@ -40563,7 +40563,7 @@
     },
     {
       "showId": "the-bodyguard-tour-2026",
-      "file": "telegram--unknown.json",
+      "file": "telegram--richard-duckett.json",
       "publishDate": "2026-10-23",
       "url": "https://www.telegram.com/story/entertainment/things-to-do/2026/10/23/rising-star-brooke-bailey-in-the-bodyguard-at-the-hanover-theatre/92118709007/",
       "findings": [
@@ -84731,6 +84731,20 @@
       "score": 92,
       "publishDate": "April 19, 2024",
       "url": "https://ew.com/stereophonic-review-broadway-8635241",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "stereophonic-2024",
+      "file": "exeunt-magazine--nicole-serratore.json",
+      "score": 94,
+      "publishDate": "2024-04-20",
+      "url": "https://exeuntnyc.com/reviews/review-stereophonic-at-golden-theatre/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
