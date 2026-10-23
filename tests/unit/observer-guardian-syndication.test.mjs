@@ -44,15 +44,33 @@ describe('rebuild-staleness-scan mirrors the shield for publishing groups', () =
   before(() => { dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6046-')); });
   after(() => fs.rmSync(dir, { recursive: true, force: true }));
 
+  const observer = (extra = {}) => ({
+    showId: 'rose-west-end-2023', criticName: 'Susannah Clapp', outletId: 'observer', outlet: 'The Observer',
+    assignedScore: 80, fullText: 'A long enough review body. '.repeat(40), contentTier: 'complete', ...extra,
+  });
+
   it('treats the guardian copy as a secondary only while a live observer copy exists', () => {
     const guardian = { criticName: 'Susannah Clapp', outletId: 'guardian' };
     write('guardian--susannah-clapp.json', guardian);
-    write('observer--susannah-clapp.json', { criticName: 'Susannah Clapp', outletId: 'observer' });
+    write('observer--susannah-clapp.json', observer());
     const files = fs.readdirSync(dir);
     assert.strictEqual(isUnflaggedSyndicationSecondary(guardian, 'guardian--susannah-clapp.json', files, dir), true);
 
-    write('observer--susannah-clapp.json', { criticName: 'Susannah Clapp', outletId: 'observer', wrongProduction: true });
+    write('observer--susannah-clapp.json', observer({ wrongProduction: true }));
     assert.strictEqual(isUnflaggedSyndicationSecondary(guardian, 'guardian--susannah-clapp.json', files, dir), false);
+  });
+
+  it('releases the guardian copy when the observer copy has no score', () => {
+    const guardian = { criticName: 'Susannah Clapp', outletId: 'guardian' };
+    write('observer--susannah-clapp.json', observer({ assignedScore: null }));
+    assert.strictEqual(isUnflaggedSyndicationSecondary(guardian, 'guardian--susannah-clapp.json', fs.readdirSync(dir), dir), false);
+  });
+
+  it('never lets a misnamed primary file shield a different critic', () => {
+    write('observer--jesse-green.json', observer({ criticName: 'David Cote' }));
+    assert.strictEqual(synd.hasLiveSyndicationPrimary(dir, ['observer'], 'jesse green'), false);
+    write('observer--jesse-green.json', observer({ criticName: 'Jesse Green' }));
+    assert.strictEqual(synd.hasLiveSyndicationPrimary(dir, ['observer'], 'jesse green'), true);
   });
 
   it('never treats the primary as a secondary of itself', () => {

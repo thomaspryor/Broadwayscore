@@ -1,8 +1,8 @@
 {
   "issueNumber": "bro-6046",
-  "planId": "8278b6dd-90ce-4a21-a5ac-7fb62f878f1c",
+  "planId": "8cadd2af-0ac6-44fd-8d24-a18e8cee7688",
   "status": "pending",
-  "createdAt": "2026-10-23T07:58:10.239Z",
+  "createdAt": "2026-10-23T08:03:25.286Z",
   "submitter": {
     "name": null,
     "email": null
@@ -20,7 +20,8 @@
       "caroline-or-change-west-end-2018/guardian--clare-brennan.json: duplicateOf",
       "infinite-life-west-end-2023/guardian--susannah-clapp.json: duplicateOf",
       "the-drifters-girl-west-end-2021/guardian--susannah-clapp.json: duplicateOf",
-      "wise-children-west-end-2018/guardian--kate-kellaway.json: duplicateOf"
+      "wise-children-west-end-2018/guardian--kate-kellaway.json: duplicateOf",
+      "don-quixote-west-end-2018/guardian--kate-kellaway.json: duplicateOf"
     ],
     "riskLevel": "low",
     "actions": [
@@ -111,6 +112,14 @@
         "oldValue": null,
         "newValue": "observer--kate-kellaway.json",
         "description": "wise-children-west-end-2018/guardian--kate-kellaway.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "don-quixote-west-end-2018/guardian--kate-kellaway.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "observer--kate-kellaway.json",
+        "description": "don-quixote-west-end-2018/guardian--kate-kellaway.json: duplicateOf"
       }
     ]
   }

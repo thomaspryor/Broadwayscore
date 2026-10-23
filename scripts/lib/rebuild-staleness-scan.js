@@ -66,15 +66,16 @@ function isScoreableFile(data, show, filePath) {
  * Observer/Guardian, BRO-6046) and hasLiveSyndicationPrimary, the same
  * fallback the rebuild uses, so the scan cannot drift from it. The primary
  * filename match is anchored (`<primary>--<slug>.json`), so a file is never
- * compared against itself.
+ * compared against itself. A primary that will not itself be scored releases
+ * its secondary, as the rebuild's syndicationShieldDecision does.
  */
-function isUnflaggedSyndicationSecondary(data, currentFile, allFiles, showDir) {
+function isUnflaggedSyndicationSecondary(data, currentFile, allFiles, showDir, show) {
   const criticName = (data.criticName || '').toLowerCase().trim();
   const outletId = normalizeOutlet(data.outletId || data.outlet || '');
   const primaries = getSyndicationPrimaries(criticName, outletId);
   if (!primaries.length) return false;
   return hasLiveSyndicationPrimary(showDir, primaries, criticName,
-    { fileNames: allFiles.filter((f) => f !== currentFile) });
+    { fileNames: allFiles.filter((f) => f !== currentFile), extraCheck: (p, fp) => isScoreableFile(p, show, fp) });
 }
 
 /**
@@ -112,7 +113,7 @@ function scanDriftedShows(candidateShowIds, dataDir) {
       const data = loadJSON(path.join(showDir, file));
       if (!data) return false;
       if (!isScoreableFile(data, show, path.join(showDir, file))) return false;
-      if (isUnflaggedSyndicationSecondary(data, file, files, showDir)) return false;
+      if (isUnflaggedSyndicationSecondary(data, file, files, showDir, show)) return false;
       return true;
     });
     if (isScoreable) scoreableShowIds.push(showId);

@@ -175,6 +175,9 @@ function isLiveSyndicationPrimary(d) {
  * normalisation. `fileNames` reuses a listing the caller already has;
  * otherwise showDir is read, and an unreadable dir throws (callers decide).
  * `extraCheck(parsedPrimary, fullPath)` adds a caller-specific condition.
+ * The match is by filename, so a primary file whose own byline names a
+ * different critic (a misnamed file, e.g. observer--jesse-green.json holding
+ * David Cote) never shields (BRO-6046).
  */
 function hasLiveSyndicationPrimary(showDir, primaries, criticName, { fileNames, extraCheck } = {}) {
   const fs = require('fs');
@@ -185,6 +188,7 @@ function hasLiveSyndicationPrimary(showDir, primaries, criticName, { fileNames, 
     try {
       const pPath = path.join(showDir, f);
       const p = JSON.parse(fs.readFileSync(pPath, 'utf8'));
+      if (p.criticName && criticFileSlug(p.criticName) !== criticFileSlug(criticName)) return false;
       return isLiveSyndicationPrimary(p) && (!extraCheck || !!extraCheck(p, pPath));
     } catch { return false; }
   });
