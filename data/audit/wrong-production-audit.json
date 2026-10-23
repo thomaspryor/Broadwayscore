@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T14:12:14.066Z",
+  "timestamp": "2026-10-23T14:27:08.419Z",
   "stats": {
-    "totalReviews": 59451,
-    "alreadyFlagged": 21099,
+    "totalReviews": 59457,
+    "alreadyFlagged": 21098,
     "dateGuardCatches": 202,
     "directorMismatch": 2120,
-    "tvFilmSignals": 1688,
-    "londonSignals": 2834,
+    "tvFilmSignals": 1689,
+    "londonSignals": 2836,
     "offBroadwaySignals": 534,
     "yearMismatch": 176,
-    "noPublishDate": 5347
+    "noPublishDate": 5346
   },
   "findings": [
     {
@@ -40544,6 +40544,19 @@
       ]
     },
     {
+      "showId": "the-bodyguard-tour-2026",
+      "file": "telegram--unknown.json",
+      "publishDate": "2026-10-23",
+      "url": "https://www.telegram.com/story/entertainment/things-to-do/2026/10/23/rising-star-brooke-bailey-in-the-bodyguard-at-the-hanover-theatre/92118709007/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "the-book-of-mormon-west-end-2024",
       "file": "financialtimes--ian-shuttleworth.json",
       "score": 76,
@@ -71452,6 +71465,19 @@
     },
     {
       "showId": "ilford-boy-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2026-10-23",
+      "url": "https://www.londonboxoffice.co.uk/news/post/ilford-boy-donmar-warehouse-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
       "score": 82,
       "publishDate": "2026-10-21",
@@ -71470,6 +71496,19 @@
       "score": 88,
       "publishDate": "2026-10-13",
       "url": "https://monstagigz.com/2026/10/13/theatre-review-ilford-boy-starring-leo-whitfield-harris-craig-steen-ria-zmitrowicz-lindsey-coulson-at-the-donmar-warehouse/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
+      "file": "observer--susannah-clapp.json",
+      "publishDate": "2026-10-23",
+      "url": "https://observer.co.uk/culture/theatre/article/ilford-boy-coming-out-in-a-blaze-of-glorious-one-liners",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
