@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-23T19:01:04.708Z",
-  "windowDays": 1095,
-  "targets": 600,
-  "auditedThisRun": 16,
-  "carriedForward": 775,
+  "generatedAt": "2026-10-23T19:10:36.477Z",
+  "windowDays": 21,
+  "targets": 1,
+  "auditedThisRun": 1,
+  "carriedForward": 788,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
@@ -146900,7 +146900,8 @@
         "http://www.washingtonpost.com/lifestyle/style/playwright-jon-robin-baitzs-other-desert-cities-is-a-strong-serio-comedy/2011/11/03/gIQA8ZehjM_story.html",
         "http://www.usatoday.com/life/theater/reviews/story/2011-11-03/other-desert-cities/51064886/1",
         "http://www.ny1.com/content/ny1_living/on_stage/150158/ny1-theater-review---other-desert-cities-",
-        "https://donshewey.com/theater_reviews/other-desert-cities-bway.html"
+        "https://donshewey.com/theater_reviews/other-desert-cities-bway.html",
+        "https://newyorktheater.me/2026/09/10/other-desert-cities-original-broadway-review/"
       ],
       "dirFiles": 53,
       "dirClean": 34,
@@ -147039,7 +147040,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 5,
             "error": null
           },
           {
@@ -147049,29 +147050,28 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 6,
+            "accepted": 7,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 15,
+        "resultCount": 18,
         "error": null
       },
       "candidatesRejected": {
-        "count": 691,
+        "count": 687,
         "byReason": {
-          "non-review-host": 66,
-          "ticketing-listing": 1,
-          "bare-host": 2,
           "aggregator-internal-nav": 477,
-          "ticketing-reseller": 5,
           "not-http-url": 108,
           "production-database-listing": 9,
           "aggregator-section-root": 15,
+          "non-review-host": 65,
+          "bare-host": 1,
           "roundup-page": 3,
           "show-hub": 4,
-          "show-listing-page": 1
+          "ticketing-reseller": 4,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -147334,6 +147334,12 @@
             "firstSeenAt": "2026-10-19T14:57:03.324Z"
           },
           {
+            "url": "https://newyorktheater.me/2026/09/10/other-desert-cities-original-broadway-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-23T19:10:36.477Z"
+          },
+          {
             "url": "https://donshewey.com/theater_reviews/other-desert-cities-bway.html",
             "outletId": "donshewey",
             "state": "GAP",
@@ -147345,7 +147351,7 @@
         "liveCount": 29,
         "candidateCount": 30
       },
-      "computedAt": "2026-10-23T17:42:57.462Z"
+      "computedAt": "2026-10-23T19:10:36.477Z"
     },
     {
       "showId": "our-sinatra-a-musical-celebration-off-broadway-2026",
