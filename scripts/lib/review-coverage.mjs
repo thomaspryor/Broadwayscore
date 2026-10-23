@@ -225,8 +225,11 @@ function lensNumbers(text) {
   return best;
 }
 // The board is Linear. The old GitHub roadmap (issue 1 of broadway-scorecard-data) is retired and no longer counts.
-const BOARD_READ_RE = /(^|[;&|]\s*)(node\s+)?\S*linear-brain\.js\s+find\b|(^|[;&|]\s*)(node\s+)?\S*linear-next\.js\s+--list\b/;
-const BOARD_READ_TOOL_RE = /linear.*__list_issues$/i;
+// Command position: line start, after ; & | ( { or a newline, or after a shell keyword (a for/while/if body).
+const BOARD_CMD_POS = String.raw`(?:^|[;&|({\n]|\b(?:do|then|else))\s*`;
+const BOARD_READ_RE = new RegExp(`${BOARD_CMD_POS}(?:node\\s+)?\\S*linear-brain\\.js\\s+find\\b|${BOARD_CMD_POS}(?:node\\s+)?\\S*linear-next\\.js\\s+--list\\b`);
+// Cloud names the Linear connector's tools mcp__<uuid>__list_issues; GitHub's mcp__github__list_issues must not count.
+const BOARD_READ_TOOL_RE = /linear.*__list_issues$|^mcp__[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}__list_issues$/i;
 const LINEAR_DONE_RE = /linear-brain\.js\s+update\s+BRO-\d+[^\n]*--state[=\s]+["']?Done|linear-session\.js\s+report\b[^\n]*--status[=\s]+["']?done\b/i;
 const LAND_PUSH_RE = /\bgit\b[^\n;&|]*\bpush\b[^\n;&|]*\bland\//;
 

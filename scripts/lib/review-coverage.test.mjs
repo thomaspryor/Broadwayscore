@@ -418,6 +418,22 @@ test('what-else: the best LENSES block wins over a later bare mention, and any L
   assert.deepEqual(run(`LENSES:\n${five}\n\nLENSES: done, summary below`, rm('mcp__Linear__list_issues')), []);
   assert.deepEqual(run(`LENSES:\n${five}`, rm('mcp__claude_ai_Linear__list_issues')), [], 'prefix differs per container');
   assert.match(run(`LENSES:\n${five}`, tool('mcp__Linear__save_comment', {})).join('|'), /never searched the Linear board/);
+  const uuid = '3307c749-7318-4776-9b30-f07de4a6352f';
+  assert.deepEqual(run(`LENSES:\n${five}`, rm(`mcp__${uuid}__list_issues`)), [], 'cloud Linear connector uses a UUID tool name (BRO-6030)');
+  assert.match(run(`LENSES:\n${five}`, rm('mcp__github__list_issues')).join('|'), /never searched the Linear board/, 'GitHub list_issues is not the board');
+  assert.match(run(`LENSES:\n${five}`, rm(`mcp__${uuid}__save_comment`)).join('|'), /never searched the Linear board/);
+});
+
+test('what-else: a linear-brain find / linear-next list inside a shell loop or group reads the board (BRO-6030)', () => {
+  const five = ['1. a: b', '2. a: b', '3. a: b', '4. a: b', '5. a: b'].join('\n');
+  const sh = (command) => tool('Bash', { command });
+  const run = (road) => evaluateChain([...fullChain(), ...ev(skill('what-else')), ...ev(road), text(`LENSES:\n${five}`)]);
+  for (const c of ['for k in a b; do node scripts/linear-brain.js find "$k"; done', 'if true; then node scripts/linear-next.js --list; fi', '(node scripts/linear-brain.js find x)', 'node scripts/linear-brain.js find x']) {
+    assert.deepEqual(run(sh(c)), [], c);
+  }
+  for (const c of ['echo node scripts/linear-brain.js find x', 'node scripts/linear-brain.js get BRO-1']) {
+    assert.match(run(sh(c)).join('|'), /never searched the Linear board/, c);
+  }
 });
 
 
