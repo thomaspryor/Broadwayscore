@@ -173,7 +173,8 @@ jobs:
     # but not on bad inputs (inputs_ok) and not after a manual cancel.
     if: ${{ !cancelled() && needs.early.outputs.inputs_ok == 'true' && needs.early.outputs.finalized != 'true' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 330
+    # 350: probe step 270 + lane-shadow import 5 + two push-with-retry budgets (audit-push-retry-budgets.js).
+    timeout-minutes: 350
     steps:
       - name: Checkout
         uses: actions/checkout@v5

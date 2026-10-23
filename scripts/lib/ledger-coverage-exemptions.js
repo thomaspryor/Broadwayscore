@@ -57,6 +57,16 @@ const EXEMPTIONS = [
       '(both invocations run plain local Playwright), so the job writes no ledger rows. Remove ' +
       'this entry if the workflow ever passes --browserbase.',
   },
+  {
+    file: 'opening-night-orchestrator.yml',
+    job: 'orchestrate',
+    reason:
+      '2026-10-23 (BRO-6067): detector false positive, not a real gap. press-night-record.js now ' +
+      'reaches fetchPage (its --capture-reference / --rebuild-reference modes fetch the BWW roundup), ' +
+      'but this job only runs --list-due, which reads shows.json and prints due probes with no network. ' +
+      'The fetching modes run in press-night-probe.yml, which commits the ledger. Remove this entry if ' +
+      'the orchestrator ever runs another press-night-record.js mode.',
+  },
 ];
 
 function isExempt(file, job) {
