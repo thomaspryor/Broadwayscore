@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-22T15:05:22.035Z",
+    "lastUpdated": "2026-10-23T14:35:08.505Z",
     "version": "2.1.0",
-    "lastChange": "BRO-5373: split The Mail on Sunday (mail-on-sunday, splitFrom daily-mail) out of daily-mail"
+    "lastChange": "BRO-5823: resolve 10 staged outlets (9 registered, metro-london aliased to metro-uk)"
   },
   "outlets": {
     "westendtheatre": {
@@ -3316,7 +3316,8 @@
       "tier": 3,
       "aliases": [
         "metro",
-        "metro uk"
+        "metro uk",
+        "metro-london"
       ],
       "domain": "metro.co.uk",
       "domainAliases": [
@@ -13375,6 +13376,81 @@
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-10-22T15:05:22.035Z"
+    },
+    "maxhechtmanfilms": {
+      "displayName": "Max Hechtman Films",
+      "tier": 4,
+      "aliases": [
+        "maxhechtmanfilms"
+      ],
+      "domain": "maxhechtmanfilms.com"
+    },
+    "behindthecurtaincincy": {
+      "displayName": "Behind the Curtain Cincinnati",
+      "tier": 3,
+      "aliases": [
+        "behindthecurtaincincy"
+      ],
+      "domain": "behindthecurtaincincy.com"
+    },
+    "rogerogreen": {
+      "displayName": "Ramblin' with Roger",
+      "tier": 4,
+      "aliases": [
+        "rogerogreen"
+      ],
+      "domain": "rogerogreen.com"
+    },
+    "cityscenecolumbus": {
+      "displayName": "CityScene Magazine",
+      "tier": 3,
+      "aliases": [
+        "cityscenecolumbus"
+      ],
+      "domain": "cityscenecolumbus.com"
+    },
+    "backstageviewandmorereviews": {
+      "displayName": "Backstage View Reviews",
+      "tier": 4,
+      "aliases": [
+        "backstageviewandmorereviews"
+      ],
+      "domain": "backstageviewandmorereviews.wordpress.com",
+      "region": "london"
+    },
+    "5thingstodotoday": {
+      "displayName": "5 Things to Do Today",
+      "tier": 4,
+      "aliases": [
+        "5thingstodotoday"
+      ],
+      "domain": "5thingstodotoday.com",
+      "region": "london"
+    },
+    "theatrebubble": {
+      "displayName": "Theatre Bubble",
+      "tier": 4,
+      "aliases": [
+        "theatrebubble"
+      ],
+      "domain": "theatrebubble.com",
+      "region": "london"
+    },
+    "swarthmorephoenix": {
+      "displayName": "The Phoenix (Swarthmore)",
+      "tier": 4,
+      "aliases": [
+        "swarthmorephoenix"
+      ],
+      "domain": "swarthmorephoenix.com"
+    },
+    "singleticket": {
+      "displayName": "Single Ticket",
+      "tier": 4,
+      "aliases": [
+        "singleticket"
+      ],
+      "domain": "singleticket.substack.com"
     }
   },
   "_aliasIndex": {

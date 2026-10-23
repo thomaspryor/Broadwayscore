@@ -393,3 +393,14 @@ describe('deriveOutletDisplayName / unusable slugs (BRO-4468)', () => {
     );
   });
 });
+
+// BRO-5823: a sentence fragment from a BWW roundup parse ("...Dayle Rayfel, is simple:")
+// became outletId "is-simple" and sat as an undecided provisional outlet.
+describe('isJunkOutlet parse-garbage ids (BRO-5823)', () => {
+  const { isJunkOutlet } = require(resolve(ROOT, 'scripts/lib/review-normalization.js'));
+  test('is-simple is junk; a real blog id is not', () => {
+    assert.equal(isJunkOutlet('is-simple'), true);
+    assert.equal(isJunkOutlet('Is Simple'), true);
+    assert.equal(isJunkOutlet('theatrebubble'), false);
+  });
+});
