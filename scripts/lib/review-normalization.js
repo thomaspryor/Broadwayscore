@@ -2054,6 +2054,8 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
         try {
           const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
           if (!data || !data.url || data.wrongProduction || data.duplicateOf) continue;
+          // BRO-2938: only the outlet prefix is read here; a legacy URL critic
+          // suffix cannot affect this URL match or the stored byline returned.
           const fileOutlet = normalizeOutlet(data.outletId || file.split('--')[0]);
           if (fileOutlet !== normalizedOutlet) continue;
           if (canonicalReviewUrl(data.url) === canonUrl) {
@@ -2065,6 +2067,8 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
   }
 
   // Pass 1: match by filename prefix (fast path — no file reads needed)
+  // BRO-2938: a URL-shaped critic slug misses this fast path safely; Pass 2
+  // matches the stored criticName instead. Do not infer a name from the slug.
   for (const file of files) {
     const parts = file.replace('.json', '').split('--');
     if (parts.length !== 2) continue;
@@ -2153,6 +2157,7 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
     // unrelated named incoming critic silently claim it.
     const parts = file.replace('.json', '').split('--');
     const filenameCritic = parts.length === 2 ? parts[1] : null;
+    // BRO-2938: this stored-byline fallback also covers legacy URL critic slugs.
     const fileCriticForMatch = data.criticName || filenameCritic;
 
     // BRO-3182: same asymmetric-unknown check as pass 1 — an unresolved
@@ -2179,6 +2184,8 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
 
   if (incomingDomain) {
     for (const file of files) {
+      // BRO-2938: this alias-only pass cannot claim a URL slug as a critic;
+      // same-outlet legacy files were already handled by the stored-byline pass.
       const parts = file.replace('.json', '').split('--');
       if (parts.length !== 2) continue;
 

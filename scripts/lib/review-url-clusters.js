@@ -54,6 +54,8 @@ function canonicalReviewUrl(url) {
  * WET/Show-Score roundup) — see feedback_aggregator_roundup_urls_shared_across_outlets. */
 function outletOf(r) {
   const f = r && r.file;
+  // BRO-2938: only the outlet prefix is used, so legacy URL critic suffixes
+  // do not change grouping. findUrlClusters takes bylines from criticName.
   let raw = (typeof f === 'string' && f.includes('--')) ? f.split('--')[0] : ((r && r.outlet) || '');
   return foldDiacritics(String(raw)).toLowerCase().replace(/[^a-z0-9]/g, '');
 }

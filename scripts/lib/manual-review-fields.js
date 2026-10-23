@@ -272,11 +272,17 @@ function detectIngestCollision(opts = {}) {
     if (parts.length !== 2) continue;
     const [fileOutlet, fileCritic] = parts;
     if (normalizeOutlet(fileOutlet) !== normalizedOutlet) continue;
-    if (normalizedCritic && fileCritic !== 'unknown' && normalizeCritic(fileCritic) !== normalizedCritic) continue;
 
     let data;
     try { data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf-8')); }
     catch { continue; }
+
+    // BRO-2938: legacy filenames sometimes stored a byline URL as the critic
+    // slug. Use the recorded byline for those files so the pre-write collision
+    // guard cannot skip a real critic's stale slot. Never derive a name from
+    // the URL. Keep fileCritic below for the actual filename collision check.
+    const criticForMatch = /^https?/.test(fileCritic) ? normalizeCritic(data.criticName) : fileCritic;
+    if (normalizedCritic && criticForMatch !== 'unknown' && normalizeCritic(criticForMatch) !== normalizedCritic) continue;
 
     // Stale flag on existing file + different URL = the Beaches failure mode.
     // wrongProductionAutoCleared is written as a STRING by every rebuild path

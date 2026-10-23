@@ -88,3 +88,37 @@ test('normalizeUrl host aliases for other same-path domain moves (BRO-5674 cousi
   for (const [a, b] of pairs) assert.equal(n(a), n(b), a);
   assert.notEqual(n('https://notthetimes.co.uk/article/x'), n('https://www.thetimes.com/article/x'));
 });
+
+test('legacy URL critic filenames resolve by stored byline and preserve flagged exclusions (BRO-2938)', () => {
+  const { findExistingReviewFile } = require('./review-normalization.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro2938-lookup-'));
+  const file = 'broadwayworld--httpswwwbroadwayworldcomauthorrichard-sasanow.json';
+  const data = {
+    outletId: 'broadwayworld', criticName: 'Richard Sasanow',
+    url: 'https://www.broadwayworld.com/article/review-carmen',
+  };
+  try {
+    fs.writeFileSync(path.join(dir, file), JSON.stringify(data));
+    // Pass 0 returns the stored identity on a URL match.
+    assert.equal(findExistingReviewFile(dir, data.outletId, data.criticName, data.url)?.data.criticName, data.criticName);
+    // The filename fast path skips the URL slug; Pass 2 recovers the byline.
+    assert.equal(findExistingReviewFile(dir, data.outletId, data.criticName)?.filename, file);
+    assert.equal(findExistingReviewFile(dir, data.outletId, 'Another Critic'), null);
+    assert.equal(findExistingReviewFile(dir, data.outletId, 'Unknown'), null);
+    fs.writeFileSync(path.join(dir, file), JSON.stringify({ ...data, wrongProduction: true }));
+    assert.equal(findExistingReviewFile(dir, data.outletId, data.criticName, data.url), null);
+    assert.equal(findExistingReviewFile(dir, data.outletId, data.criticName), null);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('URL clusters read outlet prefixes and stored bylines independently of critic filenames (BRO-2938)', () => {
+  const { findUrlClusters, outletOf } = require('./review-url-clusters.js');
+  const review = {
+    file: 'observer--httpsobservercomauthorrex-reed.json',
+    outlet: 'Observer', criticName: 'Rex Reed', url: 'https://observer.com/review',
+  };
+  assert.equal(outletOf(review), 'observer');
+  const [cluster] = findUrlClusters([review], 1);
+  assert.deepEqual(cluster.bylines, ['Rex Reed']);
+  assert.equal(cluster.outlet, 'observer');
+});

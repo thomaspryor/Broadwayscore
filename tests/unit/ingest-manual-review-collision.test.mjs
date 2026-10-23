@@ -33,6 +33,37 @@ function writeFixture(filename, data) {
   fs.writeFileSync(path.join(tmpShowDir, filename), JSON.stringify(data, null, 2));
 }
 
+test('URL critic filenames cannot bypass a stored named critic collision (BRO-2938)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro2938-collision-'));
+  const file = 'chicago-sun-times--httpschicagosuntimescomcatey-sullivan-for-the-sun-times.json';
+  const data = {
+    outletId: 'chicago-sun-times', criticName: 'Catey Sullivan',
+    url: 'https://chicago.suntimes.com/review/boop', publishDate: '2023-12-07',
+    wrongProduction: true,
+  };
+  const opts = { showDir: dir, outletId: data.outletId, criticName: data.criticName };
+  try {
+    fs.writeFileSync(path.join(dir, file), JSON.stringify(data));
+    assert.equal(detectIngestCollision(opts).reason, 'stale-flag-on-existing-file');
+    assert.equal(detectIngestCollision({ ...opts, criticName: 'Another Critic' }).ok, true);
+    assert.equal(detectIngestCollision({ ...opts, url: data.url }).ok, true);
+    assert.equal(detectIngestCollision({ ...opts, forceClearStale: true }).ok, true);
+    // Unflagged records still enforce the existing publication-date check.
+    fs.writeFileSync(path.join(dir, file), JSON.stringify({ ...data, wrongProduction: false }));
+    assert.equal(detectIngestCollision({ ...opts, publishDate: '2026-10-23' }).reason, 'publish-date-gap-exceeds-365-days');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('URL critic slugs with no stored byline behave as unknown, without deriving a name (BRO-2938)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro2938-unknown-'));
+  try {
+    fs.writeFileSync(path.join(dir, 'observer--httpsobservercomauthorrex-reed.json'), JSON.stringify({
+      outletId: 'observer', criticName: 'Unknown', wrongProduction: true,
+    }));
+    assert.equal(detectIngestCollision({ showDir: dir, outletId: 'observer', criticName: 'Another Critic' }).reason, 'stale-flag-on-existing-file');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
 test('flags wrongProduction stale-flag with different URL', () => {
   writeFixture('chicagotribune--chris-jones.json', {
     outletId: 'chicagotribune',
