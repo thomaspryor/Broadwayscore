@@ -69,6 +69,7 @@ const {
 
 const AUDIT_DIR = path.join(REPO, 'data', 'audit');
 const DRAIN_LEDGER_PATH = path.join(AUDIT_DIR, 'backlog-drain-ledger.jsonl');
+const TICK_LOCK_PATH = `${DRAIN_LEDGER_PATH}.tick.lock`;
 const METRIC_PATH = path.join(AUDIT_DIR, 'backlog-drain-metric.json');
 const VERIFIABILITY_REPORT_PATH = path.join(AUDIT_DIR, 'card-verifiability.json');
 const LOG_DIR = path.join(AUDIT_DIR, 'backlog-drain-logs');
@@ -490,6 +491,21 @@ function reconcileAndAppend(ledgerPath, tasksById, dispatchLedgerEntries, opts =
 
 async function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
+  fs.mkdirSync(AUDIT_DIR, { recursive: true });
+  // BRO-5979: serialize the entire read/check/dispatch/write tick, not just
+  // reconciliation. Busy ticks skip before reading inputs or spending quota.
+  return withFileLock(TICK_LOCK_PATH, held => {
+    if (!held) {
+      console.log('[backlog-drain] tick lock busy; skipping this tick');
+      return;
+    }
+    return runTick(argv);
+  }, { timeoutMs: 1, waitMs: 0 });
+}
+
+// Keep this body synchronous: withFileLock releases when its callback returns.
+// Card fetches use execFileSync; main stays async for its existing callers.
+function runTick(argv) {
   const args = parseArgs(argv);
   const dryRun = !!args['dry-run'];
   const cap = args.cap ? parseInt(args.cap, 10) : DEFAULT_CONCURRENCY_CAP;

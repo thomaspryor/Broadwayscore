@@ -424,3 +424,114 @@ test('reconcileAndAppend: an abandoned lock (older than 15min) reconciles unlock
     assert.equal(r.newOutcomes.length, 1);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
+
+// Exercise the real main() in separate processes. Only external inputs and
+// dispatch subprocesses are stubbed; selection, guards and ledger writes run.
+function runTickProcess(dir, { hold = false, fail = false, empty = false, argv = ['--cap', '1'] } = {}) {
+  const code = `
+    const fs = require('fs');
+    const path = require('path');
+    const root = ${JSON.stringify(dir)};
+    const drainPath = ${JSON.stringify(DRAIN)};
+    const scripts = path.dirname(drainPath);
+    require.cache[require.resolve(path.join(scripts, 'lib/repo-root.js'))] = {
+      exports: { MAIN_REPO_ROOT: root }
+    };
+    require.cache[require.resolve(path.join(scripts, 'bsc-next.js'))] = {
+      exports: {
+        loadTasks: () => {
+          fs.appendFileSync(path.join(root, 'task-reads'), 'read\\n');
+          if (${fail}) throw new Error('task read failed');
+          return ${empty} ? [] : [{ id: '4', status: 'pending', subject: 'Fix drain locking' }];
+        },
+        notionIdOf: () => 'aaaaaaaa-0000-0000-0000-000000000004'
+      }
+    };
+    const cp = require('child_process');
+    cp.execFileSync = () => {
+      if (${hold}) {
+        fs.writeFileSync(path.join(root, 'entered'), 'fetching');
+        const deadline = Date.now() + 10000;
+        while (!fs.existsSync(path.join(root, 'release'))) {
+          if (Date.now() > deadline) throw new Error('barrier timed out');
+          Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 10);
+        }
+      }
+      return JSON.stringify({ notes: 'VERIFY: node --test scripts/backlog-drain.test.mjs' });
+    };
+    cp.spawn = () => {
+      fs.appendFileSync(path.join(root, 'spawned'), 'spawn\\n');
+      return { unref() {} };
+    };
+    require(path.join(scripts, 'lib/dispatch-ledger.js')).readEntries = () => [];
+    require(drainPath).main(${JSON.stringify(argv)}).catch(e => {
+      console.error(e.message); process.exitCode = 1;
+    });
+  `;
+  return new Promise(resolve => execFile(process.execPath, ['-e', code], { timeout: 15000 },
+    (error, stdout, stderr) => resolve({ error, stdout, stderr })));
+}
+
+test('main: overlapping ticks skip the busy singleton before reading tasks or dispatching', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5979-'));
+  let first;
+  try {
+    first = runTickProcess(dir, { hold: true });
+    const deadline = Date.now() + 10000;
+    while (!fs.existsSync(path.join(dir, 'entered'))) {
+      assert.ok(Date.now() < deadline, 'first tick never reached the card fetch');
+      await new Promise(resolve => setTimeout(resolve, 10));
+    }
+    const second = await runTickProcess(dir);
+    assert.equal(second.error, null, second.stderr);
+    assert.match(second.stdout, /tick lock busy/);
+    assert.equal(fs.readFileSync(path.join(dir, 'task-reads'), 'utf8'), 'read\n', 'busy tick must skip before reading inputs');
+    fs.writeFileSync(path.join(dir, 'release'), 'go');
+    const result = await first;
+    assert.equal(result.error, null, result.stderr);
+    const ledger = path.join(dir, 'data/audit/backlog-drain-ledger.jsonl');
+    const rows = fs.readFileSync(ledger, 'utf8').trim().split('\n').map(JSON.parse);
+    assert.equal(rows.filter(r => r.event === 'drain-dispatch').length, 1);
+    assert.equal(fs.readFileSync(path.join(dir, 'spawned'), 'utf8'), 'spawn\n');
+    assert.equal(fs.existsSync(`${ledger}.tick.lock`), false, 'tick lock released');
+  } finally {
+    fs.writeFileSync(path.join(dir, 'release'), 'go');
+    await first;
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('main: tick lock releases on empty tasks and errors; help never acquires it', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5979-'));
+  const audit = path.join(dir, 'data/audit');
+  const lock = path.join(audit, 'backlog-drain-ledger.jsonl.tick.lock');
+  try {
+    const help = await runTickProcess(dir, { argv: ['--help'] });
+    assert.equal(help.error, null, help.stderr);
+    assert.equal(fs.existsSync(audit), false);
+    const empty = await runTickProcess(dir, { empty: true });
+    assert.equal(empty.error, null, empty.stderr);
+    assert.equal(fs.existsSync(lock), false);
+    const failed = await runTickProcess(dir, { fail: true });
+    assert.equal(failed.error?.code, 1);
+    assert.match(failed.stderr, /task read failed/);
+    assert.equal(fs.existsSync(lock), false);
+    fs.mkdirSync(audit, { recursive: true });
+    fs.writeFileSync(lock, `${process.pid} live\n`);
+    const busy = await runTickProcess(dir, { fail: true });
+    assert.equal(busy.error, null, busy.stderr);
+    assert.match(busy.stdout, /tick lock busy/);
+    assert.equal(fs.existsSync(lock), true, 'busy tick must not release another holder');
+    const old = new Date(Date.now() - 60 * 60_000);
+    fs.utimesSync(lock, old, old);
+    const live = await runTickProcess(dir, { fail: true });
+    assert.equal(live.error, null, live.stderr);
+    assert.match(live.stdout, /tick lock busy/, 'an old live holder must not be stolen');
+    fs.writeFileSync(lock, '999999 abandoned\n');
+    fs.utimesSync(lock, old, old);
+    const recovered = await runTickProcess(dir, { empty: true });
+    assert.equal(recovered.error, null, recovered.stderr);
+    assert.match(recovered.stderr, /shared task list is empty/, 'dead stale holder must be recovered');
+    assert.equal(fs.existsSync(lock), false);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
