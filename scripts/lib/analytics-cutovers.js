@@ -10,7 +10,7 @@
  */
 const CUTOVERS = [
   {
-    date: '2026-10-22', // UTC day the /ingest proxy went live on production
+    date: '2026-10-23', // UTC day the /ingest proxy went live on production (02:11Z, deploy of dc652cd23)
     label: 'PostHog now loads through our own domain (/ingest), so ad blockers no longer hide visitors from it',
     // Weeks after the cutover week whose spike flags are suppressed.
     suppressWeeksAfter: 1,
