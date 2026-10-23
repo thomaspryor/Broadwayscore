@@ -1,18 +1,21 @@
 {
-  "updatedAt": "2026-10-22T19:31:48.372Z",
-  "scanned": 2717,
-  "showsWithViolations": 114,
-  "totalViolations": 145,
-  "newSinceLastRun": 0,
+  "updatedAt": "2026-10-23T07:56:09.201Z",
+  "scanned": 2721,
+  "showsWithViolations": 115,
+  "totalViolations": 147,
+  "newSinceLastRun": 2,
   "handled": {
-    "temporal-override-low-confidence": 783,
-    "not-shipped": 55,
+    "temporal-override-low-confidence": 789,
+    "not-shipped": 54,
     "duplicate-not-shipped": 54,
     "rebuild-skip-audit": 31,
     "manual-clear-reason": 14,
     "prior-run-or-tour-leg": 40
   },
-  "newViolationKeys": [],
+  "newViolationKeys": [
+    "blood-of-my-blood-west-end-2026::islingtontribune--unknown.json",
+    "derren-brown-only-human-west-end-2026::theatre-weekly--greg-stewart.json"
+  ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
     "ragtime-2025::america-magazine--weinert-kendt.json",
@@ -65,6 +68,7 @@
     "sting-west-end-2026::artsdesk--aleks-sierz.json",
     "between-the-river-and-the-sea-west-end-2026::artsdesk--aleks-sierz.json",
     "blood-of-my-blood-west-end-2026::guardian--unknown.json",
+    "blood-of-my-blood-west-end-2026::islingtontribune--unknown.json",
     "archduke-west-end-2026::artsdesk--unknown.json",
     "the-enormous-crocodile-west-end-2026::musical-theatre-review--unknown.json",
     "titanique-west-end-2024::telegraph--dominic-cavendish.json",
@@ -77,6 +81,7 @@
     "trainspotting-the-musical-west-end-2026::musical-theatre-review--scott-matthewman.json",
     "now-you-see-me-live-west-end-2026::london-box-office--stuart-king.json",
     "the-oresteia-west-end-2026::artsdesk--unknown.json",
+    "derren-brown-only-human-west-end-2026::theatre-weekly--greg-stewart.json",
     "celebrity-autobiography-2026::cititour--brian-scott-lipton.json",
     "turandot-off-broadway-2025::new-york-classical-review--george-grella.json",
     "heathers-the-musical-off-west-end-2026::voice-magazine--sam-nead.json",
@@ -1119,7 +1124,7 @@
       "showId": "blood-of-my-blood-west-end-2026",
       "title": "Blood of my Blood",
       "openingDate": "2026-10-07",
-      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED with CV.wrongProduction=true (undefined confidence) and no clear flag; reasoning: (none) — https://www.theguardian.com/stage/2026/oct/10/blood-of-my-blood-review-royal-court-theatre-london",
+      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED with CV.wrongProduction=true (undefined confidence) and no clear flag; reasoning: (none) — https://www.theguardian.com/stage/2026/oct/10/blood-of-my-blood-review-royal-court-theatre-london\nislingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 15d of opening, likely correct production] This is a genuine theater review with critical asses — https://www.islingtontribune.co.uk/article/review-blood-of-my-blood-at-royal-court-theatre",
       "violations": [
         {
           "filename": "guardian--unknown.json",
@@ -1129,6 +1134,19 @@
           "matchedBy": "url",
           "cvReasoning": null,
           "cvIssues": null
+        },
+        {
+          "filename": "islingtontribune--unknown.json",
+          "url": "https://www.islingtontribune.co.uk/article/review-blood-of-my-blood-at-royal-court-theatre",
+          "outletId": "islingtontribune",
+          "criticName": "Unknown",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 15d of opening, likely correct production] This is a genuine theater review with critical asses",
+          "cvIssues": [
+            "Review publish date (15th October 2026) does not match expected review publish date (22nd October 2026)",
+            "Review does not name Royal Court as the venue; no West End venue is identified in the text"
+          ]
         }
       ]
     },
@@ -1368,6 +1386,23 @@
           "cvIssues": [
             "Review describes a production set in 2016 to 2026, indicating it is not the West End production opening in July 2026."
           ]
+        }
+      ]
+    },
+    {
+      "showId": "derren-brown-only-human-west-end-2026",
+      "title": "Derren Brown: Only Human",
+      "openingDate": "2026-10-22",
+      "message": "theatre-weekly/Greg Stewart (theatre-weekly--greg-stewart.json) SHIPPED with CV.wrongProduction=true (undefined confidence) and no clear flag; reasoning: (none) — https://theatreweekly.com/review-derren-browns-only-human-at-apollo-theatre/",
+      "violations": [
+        {
+          "filename": "theatre-weekly--greg-stewart.json",
+          "url": "https://theatreweekly.com/review-derren-browns-only-human-at-apollo-theatre/",
+          "outletId": "theatre-weekly",
+          "criticName": "Greg Stewart",
+          "matchedBy": "url",
+          "cvReasoning": null,
+          "cvIssues": null
         }
       ]
     },
@@ -1920,7 +1955,7 @@
     {
       "showId": "the-years-west-end-2025",
       "title": "The Years",
-      "openingDate": null,
+      "openingDate": "2025-02-04",
       "message": "telegraph/Dominic Cavendish (telegraph--dominic-cavendish.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: Although the byline is Dominic Cavendish (Telegraph) and the review mentions the Harold Pinter Theatre, the opinion-bear — https://www.telegraph.co.uk/theatre/what-to-see/the-years-harold-pinter-theatre/",
       "violations": [
         {
@@ -1941,7 +1976,7 @@
     {
       "showId": "more-life-west-end-2025",
       "title": "More Life",
-      "openingDate": null,
+      "openingDate": "2025-02-12",
       "message": "everything-theatre/Nathan Blue (everything-theatre--nathan-blue.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a genuine theater review with strong critical assessment, but it describes a production at Royal Court Theatre ( — https://everything-theatre.co.uk/2025/02/review-more-life-royal-court-theatre/",
       "violations": [
         {
@@ -1983,7 +2018,7 @@
     {
       "showId": "manhunt-west-end-2025",
       "title": "Manhunt",
-      "openingDate": null,
+      "openingDate": "2025-04-08",
       "message": "london-theatre/Olivia Rook (london-theatre--olivia-rook.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: Although the scraped review is a legitimate theater review with critic assessment (by Olivia Rook, published April 9, 20 — https://www.londontheatre.co.uk/reviews/manhunt-review-robert-icke-royal-court-raoul-moat\nstandard/Nick Curtis (standard--nick-curtis.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a legitimate review of 'Manhunt' by Nick Curtis from the Evening Standard, but it reviews the Royal Court produc — https://www.standard.co.uk/culture/theatre/manhunt-royal-court-review-raoul-moat-b1221446.html",
       "violations": [
         {
@@ -2098,7 +2133,7 @@
     {
       "showId": "inter-alia-west-end-2025",
       "title": "Inter Alia",
-      "openingDate": null,
+      "openingDate": "2025-07-23",
       "message": "financialtimes/Sarah Hemming (financialtimes--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped review is a legitimate theater review with strong critical assessment (★★★★☆ rating, detailed opinion on Pik — https://www.ft.com/content/dc12b61b-1ecb-4f3c-bbe1-819c2b4cd817?syn-25a6b1a6=1\nnytimes/Houman Barekat (nytimes--houman-barekat.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a valid theater review of 'Inter Alia' by Houman Barekat, but it reviews the production at the National Theater  — https://www.nytimes.com/2025/07/24/theater/inter-alia-national-theatre-london-review.html?eafs_enabled=false\nobserver/Susannah Clapp (observer--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate theater review, but it evaluates Inter Alia at the National Theatre in London, not at the Lyttelton — https://observer.co.uk/culture/theatre/article/inter-alia-far-from-a-feminist-revolution-review",
       "violations": [
         {
@@ -2179,7 +2214,7 @@
     {
       "showId": "othello-west-end-2025",
       "title": "Othello",
-      "openingDate": null,
+      "openingDate": "2025-11-04",
       "message": "thestage/David Fargnoli (thestage--david-fargnoli.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: While this is a genuine theater review of Othello with strong critical opinion, critical metadata mismatches prevent val — https://www.thestage.co.uk/reviews/othello-review-theatre-royal-haymarket-london-william-shakespeare-david-harewood-toby-jones",
       "violations": [
         {
@@ -2200,7 +2235,7 @@
     {
       "showId": "the-little-big-things-west-end-2023",
       "title": "The Little Big Things",
-      "openingDate": null,
+      "openingDate": "2023-09-14",
       "message": "london-theatre/Matt Wolf (london-theatre--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped content is a valid theater review of 'The Little Big Things' at Soho Place. However, the publish date embedd — https://www.londontheatre.co.uk/reviews/the-little-big-things-review-soho-place",
       "violations": [
         {
@@ -2221,7 +2256,7 @@
     {
       "showId": "sunset-boulevard-west-end-2023",
       "title": "Sunset Boulevard",
-      "openingDate": null,
+      "openingDate": "2023-10-12",
       "message": "whatsonstage/Sarah Crompton (whatsonstage--sarah-crompton.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: The scraped content is a legitimate review of Sunset Boulevard with substantive critical assessment, but it describes a  — https://www.whatsonstage.com/news/sunset-boulevard-review-nicole-scherzinger-stars-in-a-revival-like-no-other_1536217/",
       "violations": [
         {
@@ -2289,7 +2324,7 @@
     {
       "showId": "plaza-suite-west-end-2024",
       "title": "Plaza Suite",
-      "openingDate": null,
+      "openingDate": "2024-01-28",
       "message": "whatsonstage/Sarah Crompton (whatsonstage--sarah-crompton.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a legitimate review of Plaza Suite with Sarah Jessica Parker and Matthew Broderick, but it reviews the productio — https://www.whatsonstage.com/news/plaza-suite-review-sarah-jessica-parker-is-a-revelation-alongside-husband-matthew-broderick_1567002/",
       "violations": [
         {
@@ -2365,7 +2400,7 @@
     {
       "showId": "harry-clarke-west-end-2024",
       "title": "Harry Clarke",
-      "openingDate": null,
+      "openingDate": "2024-03-13",
       "message": "whatsonstage/Sarah Crompton (whatsonstage--sarah-crompton.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a legitimate theater review of 'Harry Clarke' containing critical assessment (e.g., 'It's a real tour de force o — https://www.whatsonstage.com/news/harry-clarke-review-billy-crudup-paints-a-picture-of-fragmented-personality-in-the-west-end_1584110/",
       "violations": [
         {
@@ -2386,7 +2421,7 @@
     {
       "showId": "red-pitch-west-end-2024",
       "title": "Red Pitch",
-      "openingDate": null,
+      "openingDate": "2024-03-21",
       "message": "thestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a valid theater review by Sam Marlowe (The Stage), but it reviews the Bush Theatre production from 2022, not the — https://www.thestage.co.uk/reviews/red-pitch-review-at-sohoplace-london-by-tyrell-williams-and-daniel-bailey",
       "violations": [
         {
@@ -2449,7 +2484,7 @@
     {
       "showId": "echo-every-cold-hearted-oxygen-west-end-2024",
       "title": "Echo (Every Cold-Hearted Oxygen)",
-      "openingDate": null,
+      "openingDate": "2024-07-14",
       "message": "londontheatre1/Mary Beer (londontheatre1--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped review describes Echo at the Royal Court (specifically 'Jerwood Theatre Downstairs at the Royal Court, 13 to — https://www.londontheatre1.com/reviews/echo-every-cold-hearted-oxygen-royal-court-review/",
       "violations": [
         {
@@ -2588,7 +2623,7 @@
     {
       "showId": "mrs-doubtfire-west-end-2023",
       "title": "Mrs. Doubtfire",
-      "openingDate": null,
+      "openingDate": "2023-06-22",
       "message": "london-theatre/Marianka Swain (london-theatre--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped review is a genuine review of Mrs. Doubtfire with critical assessment, but the publish date (Jun 23, 2023) d — https://www.londontheatre.co.uk/reviews/mrs-doubtfire-review-shaftesbury-theatre\nthestage/David Benedict (thestage--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: Although this is clearly a theater review of Mrs. Doubtfire by a legitimate London critic (David Benedict, published in  — https://www.thestage.co.uk/reviews/mrs-doubtfire-review-at-shaftesbury-theatre-london-starring-gabriel-vick",
       "violations": [
         {
@@ -2622,7 +2657,7 @@
     {
       "showId": "idiots-assemble-spitting-image-the-musical-west-end-2023",
       "title": "Idiots Assemble: Spitting Image The Musical",
-      "openingDate": null,
+      "openingDate": "2023-06-14",
       "message": "lost-in-theatreland/Amy Rye (lost-in-theatreland--amy-rye.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: While this is clearly a review (critic Amy Rye's opinion-bearing assessment of puppetry, music, writing, and performance — https://lostintheatreland.co.uk/idiots-assemble-spitting-image-the-musical-review-phoenix-theatre/",
       "violations": [
         {
@@ -2664,7 +2699,7 @@
     {
       "showId": "the-way-old-friends-do-west-end-2023",
       "title": "The Way Old Friends Do",
-      "openingDate": null,
+      "openingDate": "2023-08-18",
       "message": "standard/Nick Curtis (standard--nick-curtis.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a valid review of 'The Way Old Friends Do,' but it reviews the Park Theatre run, not the Criterion Theatre West  — https://www.standard.co.uk/culture/theatre/the-way-old-friends-do-criterion-theatre-abba-mark-gatiss-b1101889.html",
       "violations": [
         {
