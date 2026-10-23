@@ -42,7 +42,7 @@ const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const reviewsList = loadReviewsWithBlog();
 
 // _devOnly rows have no public page (/show/<slug> 404s), so a list must never rank or link them (BRO-5970).
-const shows = (Array.isArray(showsRaw) ? showsRaw : (showsRaw.shows || Object.values(showsRaw))).filter(s => !s._devOnly);
+const shows = require('./lib/show-row-guard').partitionShowRows(Array.isArray(showsRaw) ? showsRaw : (showsRaw.shows || Object.values(showsRaw))).valid.filter(s => !s._devOnly);
 const showById = {};
 const showBySlug = {};
 shows.forEach(s => { showById[s.id] = s; if (s.slug) showBySlug[s.slug] = s; });

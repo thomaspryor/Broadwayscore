@@ -78,7 +78,7 @@ let audienceBuzz = {};
 
 try {
   const showsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'shows.json'), 'utf-8'));
-  shows = showsData.shows || [];
+  shows = require('./lib/show-row-guard').partitionShowRows(showsData.shows || []).valid;
 } catch (err) {
   console.warn('⚠ shows.json not found — generating empty mobile-shows.json');
 }
