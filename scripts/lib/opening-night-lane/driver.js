@@ -146,6 +146,8 @@ function buildRealLaneDeps({
         if (!r || !r.content) throw new Error(`fetchText: no content for ${url}`);
         return r.content;
       };
+      // Defaults for the configurable sources (BRO-5993): without them the lane saw only aggregator citations.
+      adaptersConfig = require('./default-adapters').laneAdaptersConfig(show, adaptersConfig);
       return runLaneNight({
         show, night, openingDate, timeZone, ledgerDir, fetchText, shouldStop,
         // A CI job caps the lane step below the 6 h default window; without this it is always killed mid-run (BRO-4835).
@@ -154,7 +156,7 @@ function buildRealLaneDeps({
         adapters: [
           discovery.bwwRoundupAdapter(), discovery.dtliAdapter(), discovery.showScoreAdapter(showScoreGuards(repoDir)), discovery.playbillVerdictAdapter(),
           discovery.talkinBroadwayAdapter(), discovery.googleNewsAdapter(),
-          discovery.rssAdapter({ feeds: adaptersConfig.feeds || [] }), discovery.sectionIndexAdapter({ outlets: adaptersConfig.outlets || [] }),
+          discovery.rssAdapter({ feeds: adaptersConfig.feeds || [], fetchFeed: (url) => require('../rss-discovery').fetchUrl(url, 10000) }), discovery.sectionIndexAdapter({ outlets: adaptersConfig.outlets || [] }),
           discovery.serpAdapter({ search: adaptersConfig.search || realSerpSearch(env) }),
         ],
         // Outlets already captured (any seen URL resolving to them) drop out, so SERP stops searching for them.

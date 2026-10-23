@@ -544,3 +544,38 @@ test('a timed-out date check is deferred without a strike, so a slow outlet is n
   const ok = await passWith([d.rssAdapter({ feeds })], { 'https://variety.com/feed': zoneless, [VARIETY_RAW]: '<p>x</p>' }, { memo });
   assert.equal(ok.admitted.length, 1, 'still admitted after five timeouts');
 });
+
+test('google news searches press titles too, and a press-title-only headline needs a listing word (BRO-5993)', async () => {
+  const show = { id: 'billy-crystal-860-2026', title: 'Billy Crystal 860', akaTitles: ['860'], category: 'broadway' };
+  const asked = [];
+  const item = (title, src) => `<item><title>${title}</title><link>https://news.google.com/rss/articles/${encodeURIComponent(title)}</link><source url="${src}">x</source></item>`;
+  const rss = `<rss><channel>${item('Review: 860, Billy Crystal’s grief-stricken Broadway tribute', 'https://www.theatermania.com')}${item('New Balance 860 v15 review', 'https://www.theatermania.com')}</channel></rss>`;
+  const fetchText = async (url) => {
+    asked.push(url);
+    if (url.startsWith('https://news.google.com/rss/search')) return rss;
+    return '<a href="https://www.theatermania.com/news/review-860-billy-crystal_1857726/">x</a>';
+  };
+  const a = d.googleNewsAdapter();
+  await a.discover({ show, fetchText });
+  const q = new URL(asked[0]).searchParams.get('q');
+  assert.equal(q, '"Billy Crystal 860" OR "860" review');
+  const unwrapped = asked.filter((u) => u.startsWith('https://news.google.com/rss/articles/')).map((u) => decodeURIComponent(u.split('/articles/')[1]));
+  assert.deepEqual(unwrapped, ['Review: 860, Billy Crystal’s grief-stricken Broadway tribute'], 'the running-shoe headline is never unwrapped');
+});
+
+test('search and feeds rotate across passes, so a long list is covered over the night (BRO-5993)', async () => {
+  const show = { id: 'x-2026', title: 'Test Show', akaTitles: ['Test'] };
+  const asked = [];
+  const serp = d.serpAdapter({ search: async (q) => { asked.push(q); return []; }, domainFor: (id) => `${id}.com` });
+  const ids = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l'];
+  for (let i = 0; i < 3; i++) await serp.discover({ show, missingOutlets: ids, limit: 5 });
+  assert.deepEqual(asked.map((q) => q.split(' ')[0].replace('site:', '').replace('.com', '')), [...'abcde', ...'fghij', ...'klabc']);
+  assert.match(asked[0], /^site:a\.com "Test Show" OR "Test" review$/, 'press titles are searched too');
+  const read = [];
+  const feeds = Array.from({ length: 15 }, (_, i) => ({ url: `https://f${i}.example.com/rss`, outletId: 'x' }));
+  const rss = d.rssAdapter({ feeds });
+  const fetchText = async (url) => { read.push(url); return '<rss></rss>'; };
+  await rss.discover({ show, fetchText });
+  await rss.discover({ show, fetchText });
+  assert.equal(new Set(read).size, 15, 'every feed read within two passes');
+});

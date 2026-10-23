@@ -36,7 +36,9 @@ const ledger = require('./ledger');
 
 const SERP_AFTER_MS = 3 * 60 * 60 * 1000;
 const DEFAULT_MAX_DATE_CHECKS = 10;
-const DEFAULT_FETCH_TIMEOUT_MS = 15000;
+// 25 s: at 15 s DTLI timed out on 14 passes and Show Score on 6 in the Oct 22 shadow run (paid-tier fetches routinely
+// take 15-20 s). Safe since a pass past its 90 s deadline still admits what it found (BRO-5201).
+const DEFAULT_FETCH_TIMEOUT_MS = 25000;
 const DEFAULT_PASS_DEADLINE_MS = 90000;
 const MAX_SOURCES_PER_ADAPTER = 12; // feeds or index pages per pass
 const MAX_DATE_CHECK_ATTEMPTS = 3;
@@ -75,6 +77,21 @@ const REVIEW_SIGNAL = /(\breview(?:s|ed)?\b|\bcritic'?s?[-\s]pick\b|\/reviews?\/
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 const hostOf = (url) => { try { return new URL(url).hostname.replace(/^www\./, '').toLowerCase(); } catch { return null; } };
 const hostMatches = (host, list) => !!host && list.some((h) => host === h || host.endsWith(`.${h}`));
+// The listing title and the press titles (show.akaTitles; Billy Crystal 860 is reviewed as "860").
+const showTitles = (show) => require('../google-news-rss').searchTitles(show);
+const namesShow = (title, url, show) => showTitles(show).some((t) => titleMatchesShow(title || '', t, { fuzzy: true }) || urlSlugMatchesShow(url || '', t, { fuzzy: true }));
+/**
+ * A list in order from where the previous pass stopped, so a capped pass still reaches every item over the night.
+ * `order(list)` returns it rotated; `advance(k)` moves the start past the k items the pass actually used.
+ */
+function rotation() {
+  let offset = 0;
+  let size = 0;
+  return {
+    order(list) { size = list.length; if (!size) return []; const start = offset % size; return [...list.slice(start), ...list.slice(0, start)]; },
+    advance(k) { if (size) offset = (offset % size) + k; },
+  };
+}
 
 /**
  * One canonical form per article: https, no www, tracking parameters dropped, remaining parameters sorted, no
@@ -257,18 +274,23 @@ function parseFeedEntries(xml) {
   return parseFeedItems(text).map((it) => ({ ...it, date: dates.get(it.link) || feedDateInfo('', { atom }) }));
 }
 
-function rssAdapter({ feeds }) {
+function rssAdapter({ feeds, fetchFeed = null }) {
+  const next = rotation(); // more feeds than one pass reads: rotate, or the ones after the first 12 are never read
+  // fetchFeed: a plain HTTP GET for public XML (the regular pipeline's rss-discovery fetchUrl). Through the pass's
+  // fetchText every feed read is a paid scraper call: 12 feeds every 2 minutes is ~1,000 a night.
   return {
     name: 'rss', kind: 'feed', phase: 'cheap',
     async discover({ show, fetchText }) {
       const out = [];
-      for (const feed of (feeds || []).slice(0, MAX_SOURCES_PER_ADAPTER)) {
+      const batch = next.order(feeds || []).slice(0, MAX_SOURCES_PER_ADAPTER);
+      next.advance(batch.length);
+      for (const feed of batch) {
         let items;
-        try { items = parseFeedEntries(await fetchText(feed.url)); } catch { continue; } // one dead feed never hides the others
+        try { items = parseFeedEntries(await (fetchFeed || fetchText)(feed.url)); } catch { continue; } // one dead feed never hides the others
         for (const it of items) {
           if (!it.link) continue;
-          // fuzzy: an outlet's own typo in headline + slug (CATERINA, BRO-4001).
-          if (!titleMatchesShow(it.title, show.title, { fuzzy: true }) && !urlSlugMatchesShow(it.link, show.title, { fuzzy: true })) continue;
+          // fuzzy: an outlet's own typo in headline + slug (CATERINA, BRO-4001). Press titles count too.
+          if (!namesShow(it.title, it.link, show)) continue;
           out.push({ url: it.link, title: it.title, source: 'outlet-index', ...it.date, via: feed.name || feed.url, outletId: hostOf(it.link) === hostOf(feed.url) ? feed.outletId : undefined });
         }
       }
@@ -378,7 +400,11 @@ function googleNewsAdapter({ maxUnwrap = 8 } = {}) {
     name: 'google-news', kind: 'feed', phase: 'cheap',
     async discover({ show, fetchText }) {
       const london = /west[-\s]?end|london/i.test(String(show.category || ''));
-      const q = new URLSearchParams({ q: `"${show.title}" review`, hl: london ? 'en-GB' : 'en-US', gl: london ? 'GB' : 'US', ceid: london ? 'GB:en' : 'US:en' });
+      // Press titles too (show.akaTitles): critics reviewed Billy Crystal 860 as "860", and the listing-title search
+      // found 1 of 13 (BRO-5891 fixed it in the regular pipeline's google-news-rss.js; BRO-5993 here).
+      const { searchTitles, headlineNamesShow } = require('../google-news-rss');
+      const titles = searchTitles(show);
+      const q = new URLSearchParams({ q: `${titles.map((t) => `"${t}"`).join(' OR ')} review`, hl: london ? 'en-GB' : 'en-US', gl: london ? 'GB' : 'US', ceid: london ? 'GB:en' : 'US:en' });
       const xml = await fetchText(`https://news.google.com/rss/search?${q}`);
       const out = [];
       let unwrapped = 0;
@@ -388,7 +414,7 @@ function googleNewsAdapter({ maxUnwrap = 8 } = {}) {
         const link = grab('link');
         const sourceUrl = ((m[1].match(/<source[^>]*\burl=["']([^"']+)["']/i) || [])[1] || '').trim();
         if (hostOf(link) !== 'news.google.com' || !sourceUrl || !resolveOutletFromUrl(sourceUrl)) continue; // unknown publishers are never ingested blind
-        if (!titleMatchesShow(title, show.title, { fuzzy: true })) continue;
+        if (!headlineNamesShow(title, show)) continue; // listing title, or a press title plus a listing word ("New Balance 860" is not 860)
         let r = resolved.get(link);
         if (!r || (!r.url && r.tries < MAX_UNWRAP_TRIES)) {
           if (unwrapped >= maxUnwrap) continue;
@@ -445,24 +471,31 @@ function serpAdapter({ search, domainFor } = {}) {
     const o = require('../../../data/outlet-registry.json').outlets[id];
     return o && o.domain ? String(o.domain).replace(/^www\./, '') : null;
   });
+  const next = rotation();
   return {
     name: 'serp', kind: 'serp', phase: 'serp',
     async discover({ show, missingOutlets = [], limit = 5 }) {
       const out = [];
       let searches = 0; let failures = 0; let lastError = null;
-      for (const id of missingOutlets) {
+      const titles = showTitles(show).map((t) => `"${t}"`).join(' OR ');
+      // Rotate: the default list is every tier-1/2 outlet, and taking the first five every pass would search the same
+      // five all night (the Oct 22 shadow run never found Vulture or the Chicago Tribune).
+      let used = 0;
+      for (const id of next.order(missingOutlets)) {
         if (searches >= limit || out.length >= limit) break;
+        used++;
         const dom = domain(id);
         if (!dom) continue;
         searches++;
         let results;
-        try { results = await search(`site:${dom} "${show.title}" review`); } catch (e) { failures++; lastError = e; continue; }
+        try { results = await search(`site:${dom} ${titles} review`); } catch (e) { failures++; lastError = e; continue; }
         for (const r of results || []) {
           if (!r || !r.url || !(hostOf(r.url) === dom || (hostOf(r.url) || '').endsWith(`.${dom}`))) continue;
-          if (!titleMatchesShow(r.title || '', show.title, { fuzzy: true }) && !urlSlugMatchesShow(r.url, show.title, { fuzzy: true })) continue;
+          if (!namesShow(r.title, r.url, show)) continue;
           out.push({ url: r.url, title: r.title || '', source: 'outlet-index', publishDate: null, needsDate: true, via: 'serp', outletId: id.includes('.') ? undefined : id });
         }
       }
+      next.advance(used);
       if (searches && failures === searches) throw lastError;
       return out.slice(0, limit);
     },

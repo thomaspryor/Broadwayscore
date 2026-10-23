@@ -40,7 +40,8 @@ async function main() {
   if (String(show.openingDate || '').slice(0, 10) !== night) { console.error(`shadow: --night ${night} is not ${showId}'s opening date (${show.openingDate})`); return 2; }
   const windowMin = Number(arg('window-min')) > 0 ? Number(arg('window-min')) : 300;
   const liveBase = arg('live-base') || 'https://broadwayscorecard.com';
-  const adaptersConfig = arg('adapters') ? JSON.parse(fs.readFileSync(arg('adapters'), 'utf8')) : {};
+  // The same defaults as the real lane (driver.js): the pipeline's outlet feeds and a tier-1/2 search list.
+  const adaptersConfig = require('./lib/opening-night-lane/default-adapters').laneAdaptersConfig(show, arg('adapters') ? JSON.parse(fs.readFileSync(arg('adapters'), 'utf8')) : {});
   const ledgerDir = path.resolve(outDir, 'ledger');
   fs.mkdirSync(ledgerDir, { recursive: true });
 
@@ -94,7 +95,7 @@ async function main() {
       adapters: [
         discovery.bwwRoundupAdapter(), discovery.dtliAdapter(), discovery.showScoreAdapter(showScoreGuards), discovery.playbillVerdictAdapter(),
         discovery.talkinBroadwayAdapter(), discovery.googleNewsAdapter(),
-        discovery.rssAdapter({ feeds: adaptersConfig.feeds || [] }), discovery.sectionIndexAdapter({ outlets: adaptersConfig.outlets || [] }),
+        discovery.rssAdapter({ feeds: adaptersConfig.feeds || [], fetchFeed: (url) => require('./lib/rss-discovery').fetchUrl(url, 10000) }), discovery.sectionIndexAdapter({ outlets: adaptersConfig.outlets || [] }),
         discovery.serpAdapter({ search: adaptersConfig.search || serpSearch }),
       ],
       missingOutlets: ({ seen }) => {
