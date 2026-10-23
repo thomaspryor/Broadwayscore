@@ -104,8 +104,7 @@ async function main() {
       if (gate.reason === 'per-file-cap' && !dryRun) {
         // Dead URL: the breaker will never allow another fetch, so settle it.
         data[RESOLVE_EXHAUSTED_FIELD] = { at: new Date().toISOString(), reason: 'refetch per-file cap reached without a resolution' };
-        safeWriteReview(filePath, data);
-        stats.exhausted++;
+        if (safeWriteReview(filePath, data)?.wrote !== false) stats.exhausted++;
       } else stats.skippedBudget++;
       continue;
     }
@@ -115,8 +114,7 @@ async function main() {
       let refetch = { ok: false };
       if (!data.url && !dryRun) {
         data[RESOLVE_EXHAUSTED_FIELD] = { at: new Date().toISOString(), reason: 'no url to refetch' };
-        safeWriteReview(filePath, data);
-        stats.exhausted++;
+        if (safeWriteReview(filePath, data)?.wrote !== false) stats.exhausted++;
         continue;
       }
       if (data.url) {

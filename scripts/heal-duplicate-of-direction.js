@@ -100,7 +100,8 @@ function fix(flips) {
     newCanon.duplicateReason = null;
     // force:true — shares URL with f.winnerFile, so a non-forced write would
     // re-fire the URL-collision detector and immediately re-mark us a duplicate.
-    safeWriteReview(newCanonPath, newCanon, { force: true });
+    const canonRes = safeWriteReview(newCanonPath, newCanon, { force: true });
+    if (canonRes && canonRes.wrote === false) continue;
     canonicalized++;
 
     // --- The wrongly-winning file (winnerFile) becomes the duplicate. ---
@@ -109,7 +110,8 @@ function fix(flips) {
     newLoser.duplicateReason =
       `heal-duplicate-of-direction.js on ${day}: wrong-direction stamp reversed — ${f.loserFile} carries a named/anchored review this file lacks`;
     newLoser.duplicateClearReason = null; // live duplicate now
-    safeWriteReview(newLoserPath, newLoser, { force: true });
+    const loserRes = safeWriteReview(newLoserPath, newLoser, { force: true });
+    if (loserRes && loserRes.wrote === false) continue;
     repointed++;
   }
   return { canonicalized, repointed };

@@ -230,8 +230,7 @@ function revert(unjustified) {
     // in a 3-file cluster silently overwrites the target we picked (measured on
     // romeo-juliet-2024). We read-modify-write the complete record, so nothing
     // force would otherwise preserve is lost.
-    safeWriteReview(filePath, data, { force: true });
-    restored++;
+    if (safeWriteReview(filePath, data, { force: true })?.wrote !== false) restored++;
 
     // The loser is a duplicate again, so anything pointing AT it is now one hop
     // short of the canonical — and rebuild-all-reviews.js recovers through that
@@ -256,8 +255,7 @@ function flatten(chains) {
     chainData.duplicateClearReason = null;
     chainData.duplicateHealRetractedReason =
       `heal-orphaned-duplicate-pointers.js --revert-unjustified on ${day}: ${c.reason} (BRO-3092)`;
-    safeWriteReview(chainPath, chainData, { force: true }); // same reasoning as revert()
-    n++;
+    if (safeWriteReview(chainPath, chainData, { force: true })?.wrote !== false) n++; // same reasoning as revert()
   }
   return n;
 }
@@ -341,8 +339,7 @@ function fix(orphans) {
         data.duplicateOf = target;
         data.duplicateReason = `heal-retarget on ${day}: ${o.targetFile} was invalidated; ${target} is the valid same-URL canonical (BRO-4192)`;
         data.duplicateClearReason = null;
-        safeWriteReview(filePath, data, { force: true });
-        retargeted++;
+        if (safeWriteReview(filePath, data, { force: true })?.wrote !== false) retargeted++;
         continue;
       }
     }
@@ -368,8 +365,7 @@ function fix(orphans) {
     // A group winner is written with force so the collision check can't bury
     // it under a same-URL sibling that is still mid-heal (BRO-4192).
     const isGroupWinner = groupWinners.get(`${o.showId}/${o.loserFile}`) === o.loserFile;
-    safeWriteReview(filePath, data, (staleBreadcrumb || isGroupWinner) ? { force: true } : undefined);
-    cleared++;
+    if (safeWriteReview(filePath, data, (staleBreadcrumb || isGroupWinner) ? { force: true } : undefined)?.wrote !== false) cleared++;
   }
   return cleared;
 }

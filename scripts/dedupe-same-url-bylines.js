@@ -521,8 +521,8 @@ function fix(cohesive) {
     if (plan.drop.length) {
       applyCanonicalPointerClear(canonData, plan);
       canonData.duplicateClearReason = `same-url-byline-dedup on ${day}: ${plan.reason} — this file is the chosen canonical`;
-      safeWriteReview(canonPath, canonData, { force: true });
-      staleCanonicalPointerCleared++;
+      const canonRes = safeWriteReview(canonPath, canonData, { force: true });
+      if (!(canonRes && canonRes.wrote === false)) staleCanonicalPointerCleared++;
     }
     for (const loser of g.losers) {
       const p = path.join(dir, loser);
@@ -531,7 +531,8 @@ function fix(cohesive) {
       data.duplicateOf = g.canonical;
       data.duplicateReason = `same-url-byline-dedup on ${day}: identical article as ${g.canonical} under a different byline (one review scraped twice)`;
       data.duplicateClearReason = null; // live duplicate now
-      safeWriteReview(p, data, { force: true });
+      const res = safeWriteReview(p, data, { force: true });
+      if (res && res.wrote === false) continue;
       losersMarked++;
     }
     collapsed++;

@@ -229,8 +229,7 @@ function processBWWArchives() {
         // Only add if bwwExcerpt is missing or shorter
         if (!match.data.bwwExcerpt || match.data.bwwExcerpt.length < review.excerpt.length) {
           match.data.bwwExcerpt = review.excerpt;
-          safeWriteReview(match.filePath, match.data);
-          stats.bww.added++;
+          if (safeWriteReview(match.filePath, match.data)?.wrote !== false) stats.bww.added++;
           showAdded++;
         }
       }
@@ -277,8 +276,7 @@ function processShowScoreArchives() {
         // Only add if showScoreExcerpt is missing or shorter
         if (!match.data.showScoreExcerpt || match.data.showScoreExcerpt.length < review.excerpt.length) {
           match.data.showScoreExcerpt = review.excerpt;
-          safeWriteReview(match.filePath, match.data);
-          stats.ss.added++;
+          if (safeWriteReview(match.filePath, match.data)?.wrote !== false) stats.ss.added++;
           showAdded++;
         }
       }

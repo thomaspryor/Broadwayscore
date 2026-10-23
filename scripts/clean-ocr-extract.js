@@ -161,8 +161,7 @@ async function main() {
         delete fileData.assignedScore;
         delete fileData.llmScore;
         delete fileData.llmMetadata;
-        safeWriteReview(item.filePath, fileData, { force: true });
-        noReview++;
+        if (safeWriteReview(item.filePath, fileData, { force: true })?.wrote !== false) noReview++;
         await new Promise(r => setTimeout(r, 300));
         continue;
       }
@@ -182,8 +181,7 @@ async function main() {
       delete fileData.rejectedBy;
       delete fileData.rejectedReason;
       delete fileData.showNotMentioned;
-      safeWriteReview(item.filePath, fileData, { force: true });
-      extracted++;
+      if (safeWriteReview(item.filePath, fileData, { force: true })?.wrote !== false) extracted++;
 
       await new Promise(r => setTimeout(r, 300));
     } catch (e) {

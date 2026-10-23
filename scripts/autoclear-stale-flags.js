@@ -163,7 +163,8 @@ function main() {
     } else if (flag === 'wrongShow') { d.wrongShowManualClear = true; }
     d.autoClearedAt = new Date().toISOString();
     d.autoClearReason = 'shadow-gated-contradiction';
-    safeWriteReview(fp, d);
+    const res = safeWriteReview(fp, d);
+    if (res && res.wrote === false) continue;
     cleared++;
   }
   console.log(`\n✅ Cleared ${cleared} stale flag(s) behind the double gate.`);

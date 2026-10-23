@@ -246,7 +246,8 @@ for (const c of toClear) {
     review.fetchAbandonmentReason = null;
     review.fetchAbandonmentDate = null;
     if (SHOW_FILTER) review.fetchRetryAfter = null;
-    safeWriteReview(c.filePath, review, { merge: false });
+    const res = safeWriteReview(c.filePath, review, { merge: false });
+    if (res && res.wrote === false) { errors++; continue; }
     cleared++;
   } catch (e) {
     errors++;

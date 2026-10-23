@@ -178,9 +178,7 @@ function fix(pairs) {
     nl.duplicateReason =
       `BRO-3409 (${day}): repointed by fix-inverted-byline-duplicates.js — ${p.newCanonical}'s byline is attested in its own article text and this file's is not (same url). ${p.newCanonical} is now canonical.`;
     nl.duplicateClearReason = null;
-    safeWriteReview(newLoserPath, nl, { force: true });
-
-    flipped++;
+    if (safeWriteReview(newLoserPath, nl, { force: true })?.wrote !== false) flipped++;
   }
   return flipped;
 }

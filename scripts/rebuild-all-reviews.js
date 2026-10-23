@@ -1643,8 +1643,7 @@ const crossShowFingerprints = new Map();
           if (isStaleScoreInput(d, ob, fp)) {
             markRescoreNeeded(d, 'wrongProduction false-positive cleared (stale ob-broadway-transfer)');
           }
-          safeWriteReview(fp, d, { force: true });
-          transferReleased++;
+          if (safeWriteReview(fp, d, { force: true })?.wrote !== false) transferReleased++;
         } catch {}
       }
     }
@@ -1682,8 +1681,7 @@ const crossShowFingerprints = new Map();
               invalidateWrongProductionAutoClear(d);
               d.wrongProductionReason = 'ob-broadway-transfer';
               d.wrongProductionNote = `OB review superseded by Broadway transfer ${bw.id} (shared URL)`;
-              safeWriteReview(fp, d);
-              transferFlagged++;
+              if (safeWriteReview(fp, d)?.wrote !== false) transferFlagged++;
             }
           } catch {}
         }
@@ -1743,8 +1741,7 @@ const crossShowFingerprints = new Map();
           const sc = retractScriptWrongProductionClear(d);
           if (sc.retracted.length) {
             console.log(`  [FLAG-OUTRANKS-CLEAR] ${sid}/${f}: retracted script clear (${sc.retracted.length} markers)`);
-            safeWriteReview(fp, d);
-            flagOutranksClearHealed++;
+            if (safeWriteReview(fp, d)?.wrote !== false) flagOutranksClearHealed++;
           }
         }
 
@@ -1783,8 +1780,7 @@ const crossShowFingerprints = new Map();
           if (isStaleScoreInput(d, showRecord, fp)) {
             markRescoreNeeded(d, 'wrongProduction false-positive cleared (dateless-revival)');
           }
-          safeWriteReview(fp, d, { force: true });
-          datelessRevivalAutoCleared++;
+          if (safeWriteReview(fp, d, { force: true })?.wrote !== false) datelessRevivalAutoCleared++;
           // Fall through — file may still need the dated pre-opening guard.
         }
 
@@ -1802,8 +1798,7 @@ const crossShowFingerprints = new Map();
           if (isStaleScoreInput(d, showRecord, fp)) {
             markRescoreNeeded(d, 'wrongProduction false-positive cleared (collected-before-previews)');
           }
-          safeWriteReview(fp, d, { force: true });
-          collectedBeforePreviewsAutoCleared++;
+          if (safeWriteReview(fp, d, { force: true })?.wrote !== false) collectedBeforePreviewsAutoCleared++;
           // Fall through — file may still need the dated pre-opening guard.
         }
 
@@ -1844,8 +1839,7 @@ const crossShowFingerprints = new Map();
           if (isStaleScoreInput(d, showRecord, fp)) {
             markRescoreNeeded(d, 'wrongProduction false-positive cleared (priorRuns/tourLegs)');
           }
-          safeWriteReview(fp, d, { force: true });
-          priorRunAutoCleared++;
+          if (safeWriteReview(fp, d, { force: true })?.wrote !== false) priorRunAutoCleared++;
           // Fall through — don't skip, file may still need other guards
         }
 
@@ -1878,8 +1872,7 @@ const crossShowFingerprints = new Map();
             d.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
             delete d.wrongProductionNote;
             if (isStaleScoreInput(d, showRecord, fp)) markRescoreNeeded(d, 'wrongProduction false-positive cleared (stale dated pre-opening guard)');
-            safeWriteReview(fp, d, { force: true });
-            staleDateGuardAutoCleared++;
+            if (safeWriteReview(fp, d, { force: true })?.wrote !== false) staleDateGuardAutoCleared++;
             // Fall through — file may still need other guards (duplicateOf etc.)
           }
         }
@@ -1937,8 +1930,7 @@ const crossShowFingerprints = new Map();
             if (isStaleScoreInput(d, showRecord, fp)) {
               markRescoreNeeded(d, 'wrongProduction false-positive cleared (anticipatory grace re-evaluated)');
             }
-            safeWriteReview(fp, d, { force: true });
-            anticipatoryGraceAutoCleared++;
+            if (safeWriteReview(fp, d, { force: true })?.wrote !== false) anticipatoryGraceAutoCleared++;
             // Fall through — file may still need other guards
           }
         }
@@ -2002,8 +1994,7 @@ const crossShowFingerprints = new Map();
           invalidateWrongProductionAutoClear(rec);
           rec.wrongProductionReason = OTHER_PRODUCTION_URL_REASON;
           rec.wrongProductionNote = `Other-production url guard: ${sig.detail}`;
-          safeWriteReview(fp, rec);
-          otherProductionUrlFlagged++;
+          if (safeWriteReview(fp, rec)?.wrote !== false) otherProductionUrlFlagged++;
           return true;
         };
         if (shouldWithholdStaleExclusionFlag(d)) {
@@ -2041,8 +2032,7 @@ const crossShowFingerprints = new Map();
             invalidateWrongProductionAutoClear(d);
             d.wrongProductionReason = 'prior-run-republish';
             d.wrongProductionNote = `Prior-run republish guard: ${republish.reason} — "${republish.evidence}"`;
-            safeWriteReview(fp, d);
-            priorRunRepublishFlagged++;
+            if (safeWriteReview(fp, d)?.wrote !== false) priorRunRepublishFlagged++;
             continue;
           }
           // BRO-5015: the url itself proves another production (a /2022/ path on a
@@ -2059,8 +2049,7 @@ const crossShowFingerprints = new Map();
             invalidateWrongProductionAutoClear(d);
             d.wrongProductionReason = earlier.reason;
             d.wrongProductionNote = `Republished-page guard: "${earlier.snippet}" names ${earlier.markerYear}, before this production's first date`;
-            safeWriteReview(fp, d);
-            republishedEarlierYearFlagged++;
+            if (safeWriteReview(fp, d)?.wrote !== false) republishedEarlierYearFlagged++;
             continue;
           }
         }
@@ -2105,8 +2094,7 @@ const crossShowFingerprints = new Map();
               d.wrongProduction = true;
               invalidateWrongProductionAutoClear(d);
               d.wrongProductionNote = `Pre-opening guard: pre-window date — review dated ${reviewDate.toISOString().split('T')[0]} is ${preWindow.threshold}+ days before show starts ${showEarliest.toISOString().split('T')[0]}`;
-              safeWriteReview(fp, d);
-              preOpenFlagged++;
+              if (safeWriteReview(fp, d)?.wrote !== false) preOpenFlagged++;
             }
           }
         } else if (!reviewDate && !d.wrongProductionCleared && d.humanReviewedWrongProduction !== false && !shouldSkipWrongProductionAudit(d)) {
@@ -2130,8 +2118,7 @@ const crossShowFingerprints = new Map();
             invalidateWrongProductionAutoClear(d);
             d.wrongProductionReason = 'dateless-revival';
             d.wrongProductionNote = `Dateless revival guard: no publishDate on multi-production title that has not yet opened — unverified production (show starts ${showEarliest.toISOString().split('T')[0]})`;
-            safeWriteReview(fp, d);
-            datelessRevivalFlagged++;
+            if (safeWriteReview(fp, d)?.wrote !== false) datelessRevivalFlagged++;
           } else if (!verdict.flag && !laneHolds(d, 'wrongProduction')) {
             // Collected-before-previews guard (BRO-4855): the dateless-revival
             // hold above only covers multi-production titles. On ANY title, a
@@ -2146,8 +2133,7 @@ const crossShowFingerprints = new Map();
               invalidateWrongProductionAutoClear(d);
               d.wrongProductionReason = COLLECTED_BEFORE_PREVIEWS_REASON;
               d.wrongProductionNote = `${COLLECTED_BEFORE_PREVIEWS_NOTE_PREFIX}: no publishDate and first seen ${cbp.firstSeen}, before this production's first preview ${cbp.anchor} — review of another staging`;
-              safeWriteReview(fp, d);
-              collectedBeforePreviewsFlagged++;
+              if (safeWriteReview(fp, d)?.wrote !== false) collectedBeforePreviewsFlagged++;
             }
           }
         }

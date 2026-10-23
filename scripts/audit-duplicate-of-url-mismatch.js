@@ -461,8 +461,7 @@ function fix(mismatches) {
           ? `crossOutletPrimaryFile ${m.duplicateOf} no longer exists and its surviving copy ${m.siblingUrl} names this file as its primary`
           : `crossOutletPrimaryFile ${m.duplicateOf} no longer exists`;
       clearCrossOutletFields(data, `audit-duplicate-of-url-mismatch.js (--fix) on ${today}: ${why}`);
-      safeWriteReview(filePath, data);
-      cleared++;
+      if (safeWriteReview(filePath, data)?.wrote !== false) cleared++;
       continue;
     }
     if (clearDuplicateMismatch(filePath, data, m)) cleared++;

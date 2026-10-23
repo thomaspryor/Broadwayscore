@@ -162,8 +162,7 @@ if (APPLY) {
     markRescoreNeeded(d, f.kind === 'false-truncation' ? 'false-truncation-warning' : f.kind === 'unanchored' ? 'late-star-anchor' : `late-star-anchor:${f.kind}`, undefined, { requeue: true });
     delete d.rescoreCompletedAt;
     if (f.kind === 'out-of-band') d.starBandFlaggedAt = new Date().toISOString();
-    safeWriteReview(f.abs, d, { force: true });
-    flagged++;
+    if (safeWriteReview(f.abs, d, { force: true })?.wrote !== false) flagged++;
   }
 }
 

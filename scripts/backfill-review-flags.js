@@ -214,8 +214,7 @@ for (const showId of showDirs) {
 
       // Write if modified
       if (modified && !DRY_RUN) {
-        safeWriteReview(filePath, data, { force: true });
-        stats.filesModified++;
+        if (safeWriteReview(filePath, data, { force: true })?.wrote !== false) stats.filesModified++;
       } else if (modified) {
         stats.filesModified++;
       }

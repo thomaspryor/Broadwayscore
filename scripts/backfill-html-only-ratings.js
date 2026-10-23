@@ -142,7 +142,8 @@ if (require.main === module) (async () => {
       markRescoreNeeded(d, 'late-star-anchor', undefined, { requeue: true });
       delete d.rescoreCompletedAt;
     }
-    safeWriteReview(f, d, { force: true });
+    const res = safeWriteReview(f, d, { force: true });
+    if (res && res.wrote === false) { stats.refused = (stats.refused || 0) + 1; continue; }
     stats.written++;
   }
   console.log(JSON.stringify({ mode: APPLY ? 'apply' : 'dry-run', ...stats }));

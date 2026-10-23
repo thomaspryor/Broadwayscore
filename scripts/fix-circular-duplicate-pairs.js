@@ -708,8 +708,7 @@ function fix(pairs) {
     canon.duplicateReason = null;
     // force:true — the loser shares this file's url, so a non-forced write would
     // re-fire review-write-guard's URL-collision detector and re-mark us dup.
-    safeWriteReview(canonPath, canon, { force: true });
-    clearedCanonicals++;
+    if (safeWriteReview(canonPath, canon, { force: true })?.wrote !== false) clearedCanonicals++;
 
     // --- Loser: must point at the canonical. In a pure 2-cycle it already does
     // (that's what made the pair mutual), so this is a defensive repoint only. ---
@@ -721,8 +720,7 @@ function fix(pairs) {
         `repointed by fix-circular-duplicate-pairs.js on ${day}: was ${JSON.stringify(wasPointingAt)}, now points at canonical ${p.canonical}`;
       // Clear any stale clear-breadcrumb — this file is a live duplicate.
       loser.duplicateClearReason = null;
-      safeWriteReview(loserPath, loser, { force: true });
-      repointedLosers++;
+      if (safeWriteReview(loserPath, loser, { force: true })?.wrote !== false) repointedLosers++;
     }
   }
   return { clearedCanonicals, repointedLosers };

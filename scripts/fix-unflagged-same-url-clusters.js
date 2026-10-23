@@ -182,7 +182,8 @@ function fix(groups) {
       // would immediately re-trip review-write-guard's URL-collision detector
       // and mark the CANONICAL as the duplicate instead (fix-circular-duplicate-
       // pairs.js's fix() uses the identical override for the identical reason).
-      safeWriteReview(loserPath, loser, { force: true });
+      const res = safeWriteReview(loserPath, loser, { force: true });
+      if (res && res.wrote === false) continue;
       repointedLosers++;
     }
     clearedGroups++;
