@@ -1,4 +1,5 @@
 name: Opening-night lane (live)
+run-name: 'Opening-night lane ${{ inputs.mode }} ${{ inputs.show }} ${{ inputs.night }}'
 
 # BRO-4835 (epic BRO-4210). The opening-night lane with its real ports: scraper.fetchPage for fetching and the
 # ensemble scorer (scripts/lib/opening-night-lane/inline-score.js realFetchPorts + ensembleScoreText). Manual only.
@@ -12,12 +13,16 @@ name: Opening-night lane (live)
 #               review is written to data/review-texts/<show>/ before publish and pushed to the private review-texts
 #               repo by push-review-texts, so the normal rebuild keeps it.
 #
+# hygiene-run-budget-ok: BRO-6074 press-night-probe.yml now dispatches this workflow, which pulls it into the budget audit. The flagged
+# poller discovery loops belong to the manual smoke job (one archived review, 20 min cap); the shadow and night jobs bound themselves
+# with the lane's own window (window_min / OPENING_NIGHT_LANE_WINDOW_MIN), not run-budget.js.
+#
 # Checkouts are shallow and sparse: review-texts is a blob-less clone of just data/review-texts/<show>/, core data a
 # blob-less clone of just its root *.json (shows.json, reviews.json and the other files the show-JSON generator
 # reads). Nothing uses fetch-depth 0.
 #
 # Advisory first (CLAUDE.md §19): only the ledger-commit steps are continue-on-error, so a failed run shows as failed (this is the lane's first live
-# proof) and the notify-failure step reports it; ledger commits run only on main so a branch dispatch never pushes to main. No cron and no push trigger: every run (and every cent) is a manual dispatch.
+# proof) and the notify-failure step reports it; ledger commits run only on main so a branch dispatch never pushes to main. No cron and no push trigger: smoke and night are manual dispatches; shadow is also dispatched by press-night-probe.yml on Broadway press nights (BRO-6074).
 
 on:
   workflow_dispatch:

@@ -58,6 +58,10 @@ jobs:
     name: Probe to embargo +2h
     runs-on: ubuntu-latest
     timeout-minutes: 300
+    permissions:
+      contents: write
+      # actions: write: "Start lane shadow" dispatches opening-night-lane-live.yml (BRO-6074); gh run list reads runs.
+      actions: write
     outputs:
       inputs_ok: ${{ steps.guard.outputs.inputs_ok }}
       finalized: ${{ steps.guard.outputs.finalized }}
@@ -107,6 +111,32 @@ jobs:
             exit 1
           fi
           if [ "$WAIT" -gt 0 ]; then sleep "$WAIT"; fi
+
+      - name: Start lane shadow
+        # BRO-6074: the opening-night lane in shadow mode (no lease, no publish, cannot touch the live site) runs on
+        # every Broadway press night, so cutover evidence no longer depends on a hand dispatch. Warn-only: a failure
+        # here must never fail or delay the probe. Deduped against a queued or running shadow for this show-night
+        # (run-name in opening-night-lane-live.yml); window covers now to embargo +5h, capped at 320 min.
+        if: steps.guard.outputs.finalized == 'false'
+        continue-on-error: true
+        timeout-minutes: 2
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Fail closed: if any list call fails the dedupe cannot be trusted, so skip rather than risk a second full window.
+          ACTIVE=""
+          for ST in in_progress queued pending; do
+            OUT=$(gh run list --workflow=opening-night-lane-live.yml --status "$ST" --json displayTitle --jq '.[].displayTitle') \
+              || { echo "::warning::could not list $ST lane runs; skipping lane shadow dispatch"; exit 0; }
+            ACTIVE="$ACTIVE"$'\n'"$OUT"
+          done
+          PLAN=$(node scripts/lib/lane-shadow-dispatch.js --show="$SHOW_ID" --night="$NIGHT" --market="$MARKET" \
+                   --embargo-at="$EMBARGO_AT" --active="$ACTIVE") || { echo "::warning::lane shadow plan failed"; exit 0; }
+          echo "Lane shadow plan: $PLAN"
+          if [ "$(echo "$PLAN" | node -e "process.stdout.write(String(JSON.parse(require('fs').readFileSync(0,'utf8')).dispatch))")" != "true" ]; then exit 0; fi
+          WINDOW=$(echo "$PLAN" | node -e "process.stdout.write(String(JSON.parse(require('fs').readFileSync(0,'utf8')).windowMin))")
+          gh workflow run opening-night-lane-live.yml -f mode=shadow -f show="$SHOW_ID" -f night="$NIGHT" -f window_min="$WINDOW" \
+            || echo "::warning::Failed to dispatch lane shadow for $SHOW_ID $NIGHT"
 
       - name: Probe to embargo +2h
         if: steps.guard.outputs.finalized == 'false'
@@ -253,8 +283,8 @@ jobs:
         run: rm -rf data/review-texts
 
       - name: Import lane-shadow artifact (site-live times, first discovery)
-        # Optional (BRO-6067): the shadow run (opening-night-lane-live.yml mode=shadow) is dispatched by hand and
-        # uploads only when its window ends, so a shadow started after about embargo +1h is not here yet. Backfill
+        # Optional (BRO-6067): the shadow run (opening-night-lane-live.yml mode=shadow) is dispatched by the early job
+        # (BRO-6074) and uploads only when its window ends, so a shadow started after about embargo +1h is not here yet. Backfill
         # later by hand: download the artifact, then press-night-record.js --import-lane-shadow=DIR and
         # --rebuild-reference. Lookup copied from land.yml (newest unexpired artifact of that name).
         if: always()
