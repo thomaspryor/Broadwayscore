@@ -25,6 +25,7 @@ const { execFileSync } = require('child_process');
 const { applyDataEdit, dataEditAllowProblem } = require('./lib/data-edit-action');
 const { MAX_PLAN_ACTIONS } = require('./lib/pending-fix-limits');
 const { preflight, pickReviewTextsTree, pickCoreDataDir } = require('./lib/preflight-review-fix-plan');
+const { refreshDataClone } = require('./lib/data-clone-refresh');
 
 const ROOT = path.join(__dirname, '..');
 const PLAN_DIR = path.join(ROOT, 'data', 'pending-fixes');
@@ -188,6 +189,16 @@ function main(argv) {
   if (!raw.length) { console.error(`No edits given.\n${USAGE}`); return 2; }
 
   const coreDataDir = pickCoreDataDir();
+  // BRO-5851: oldValue is read from this clone, and a clone 36 commits behind
+  // wrote null for posters that had landed an hour earlier. Bring it current
+  // first; a dirty or diverged clone is refused rather than read.
+  const ownData = path.join(ROOT, 'data');
+  if (path.resolve(coreDataDir) !== path.resolve(ownData) && fs.existsSync(path.join(coreDataDir, '.git'))) {
+    const fresh = refreshDataClone(ROOT, { dataRepo: coreDataDir, memoize: false });
+    if (fresh.status === 'unsafe') { console.error(`REFUSED core data clone ${coreDataDir} is behind origin and cannot be fast-forwarded: ${fresh.detail}`); return 1; }
+    if (fresh.status === 'unknown') console.error(`warning: could not check ${coreDataDir} against origin (${fresh.detail}); oldValues may be stale`);
+    else if (fresh.status === 'fast-forwarded') console.log(`core data clone fast-forwarded to origin/main`);
+  }
   const reviewTextsDir = pickReviewTextsTree();
   const cache = {};
   const loadData = (file) => (cache[file] ||= JSON.parse(fs.readFileSync(path.join(coreDataDir, file), 'utf8')));
