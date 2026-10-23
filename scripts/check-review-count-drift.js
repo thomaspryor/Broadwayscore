@@ -62,6 +62,7 @@ const path = require('path');
 const { isIncludableForRebuild, isReviewWithinOwnProductionWindow, hasValidScore } = require('./lib/review-guards');
 const { generateReviewFilename } = require('./lib/review-normalization');
 const { unwrapRedirectUrl } = require('./lib/scraper');
+const { computeContentFingerprint } = require('./lib/content-quality');
 
 // CLI ---------------------------------------------------------
 const args = process.argv.slice(2);
@@ -262,6 +263,31 @@ function isInOpeningWindow(show, now) {
 }
 
 /**
+ * Mirrors only the conservative core of the rebuild's duplicate ladder (duplicate-of-exclusion.js): the
+ * pointer target is published, does not point back (a circular pair keeps one side by its own tiebreak,
+ * the JCS 2026-07-09 class), is not itself a copy, and for duplicateTextOf the text still matches (a
+ * mismatch is a stale flag the rebuild recovers). Anything unclear stays reported as hidden.
+ */
+function isCoveredByPublishedDuplicate(data, file, dirPath, entryKeys) {
+  const readTarget = (t) => {
+    if (typeof t !== 'string' || t === file || !entryKeys.has(t)) return null;
+    try { return JSON.parse(fs.readFileSync(path.join(dirPath, t), 'utf8')); } catch { return null; }
+  };
+  const pointsBack = (ref) => ref.duplicateOf === file || ref.duplicateTextOf === file;
+  const selfRef = data.duplicateOf === file || data.duplicateTextOf === file;
+  if (selfRef) return false;
+  const byOf = readTarget(data.duplicateOf);
+  if (byOf && !byOf.duplicateOf && !pointsBack(byOf)) return true;
+  const byText = readTarget(data.duplicateTextOf);
+  if (byText && !pointsBack(byText) && data.fullText && byText.fullText) {
+    const a = computeContentFingerprint(data.fullText);
+    const b = computeContentFingerprint(byText.fullText);
+    return Boolean(a && b && a === b);
+  }
+  return false;
+}
+
+/**
  * Scan one show dir for suppressed reviews: files the canonical rebuild
  * predicate accepts, carrying a valid score, published inside the show's own
  * production window, with no corresponding reviews.json entry.
@@ -302,10 +328,9 @@ function findSuppressedForShow(showDir, show, showReviews) {
     }
     scanned++;
     if (data.url && entryUrls.has(normUrl(data.url))) continue;
-    // A file that points at a duplicate target already published is correctly hidden: its review IS on
-    // the site under the target's name (BRO-5831: wonderland-2011 / twelfth-night-2013 syndicated copies
-    // tripped the strict guard daily). A self-referential or unpublished target still counts as hidden.
-    if ([data.duplicateOf, data.duplicateTextOf].some((t) => typeof t === 'string' && t !== file && entryKeys.has(t))) continue;
+    // A file the rebuild rightly hides as a duplicate of a PUBLISHED review is not a suppression (BRO-5831:
+    // wonderland-2011 / twelfth-night-2013 syndicated copies tripped the strict guard daily).
+    if (isCoveredByPublishedDuplicate(data, file, dirPath, entryKeys)) continue;
     // Canonical predicate WITH filePath: circular-duplicate recovery included.
     if (!isIncludableForRebuild(data, show, filePath)) continue;
     if (!hasValidScore(data)) continue;

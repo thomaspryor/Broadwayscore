@@ -90,13 +90,24 @@ test('findSuppressedForShow skips a file already present in reviews.json (filena
   assert.equal(suppressed.length, 0);
 });
 
-test('findSuppressedForShow skips a duplicate whose target is published, but flags one whose target is not (BRO-5831)', () => {
-  const base = { humanReviewScore: 80, fullText: 'A review.', publishDate: '2026-06-11T12:00:00-04:00' };
-  writeReviewFile('dup-pointer-2026', 'nytimes--unknown.json', { ...base, outletId: 'nytimes', criticName: 'Unknown', duplicateOf: 'nytimes--ben-brantley.json' });
-  writeReviewFile('dup-pointer-2026', 'variety--unknown.json', { ...base, outletId: 'variety', criticName: 'Unknown', duplicateTextOf: 'variety--ghost.json' });
-  writeReviewFile('dup-pointer-2026', 'timeout--unknown.json', { ...base, outletId: 'timeout', criticName: 'Unknown', duplicateOf: 'timeout--unknown.json' });
-  const { suppressed } = findSuppressedForShow('dup-pointer-2026', SHOW_2026, [{ outletId: 'nytimes', criticName: 'Ben Brantley' }]);
-  assert.deepEqual(suppressed.map((s) => s.file).sort(), ['timeout--unknown.json', 'variety--unknown.json']);
+test('findSuppressedForShow: duplicate of a published review is covered; circular, stale, unpublished and self pointers still flag (BRO-5831)', () => {
+  const base = { humanReviewScore: 80, publishDate: '2026-06-11T12:00:00-04:00' };
+  const d = 'dup-pointer-2026';
+  // Published target (nytimes--ben-brantley) with the same text.
+  writeReviewFile(d, 'nytimes--ben-brantley.json', { ...base, outletId: 'nytimes', criticName: 'Ben Brantley', fullText: 'Same review text about the show, long enough to fingerprint properly.' });
+  writeReviewFile(d, 'nytimes--unknown.json', { ...base, outletId: 'nytimes', criticName: 'Unknown', fullText: 'Same review text about the show, long enough to fingerprint properly.', duplicateOf: 'nytimes--ben-brantley.json' });
+  writeReviewFile(d, 'nytimes--other.json', { ...base, outletId: 'nytimes', criticName: 'Other', fullText: 'Same review text about the show, long enough to fingerprint properly.', duplicateTextOf: 'nytimes--ben-brantley.json' });
+  // Stale duplicateTextOf: text differs from the published target, rebuild recovers it, so it is a real miss.
+  writeReviewFile(d, 'nytimes--stale.json', { ...base, outletId: 'nytimes', criticName: 'Stale', fullText: 'A completely different review body that shares nothing with the other.', duplicateTextOf: 'nytimes--ben-brantley.json' });
+  // Unpublished target, self pointer, and a circular pair where only one side is published.
+  writeReviewFile(d, 'variety--unknown.json', { ...base, outletId: 'variety', criticName: 'Unknown', fullText: 'x', duplicateTextOf: 'variety--ghost.json' });
+  writeReviewFile(d, 'timeout--unknown.json', { ...base, outletId: 'timeout', criticName: 'Unknown', fullText: 'x', duplicateOf: 'timeout--unknown.json' });
+  writeReviewFile(d, 'guardian--a.json', { ...base, outletId: 'guardian', criticName: 'A', fullText: 'Different text A', duplicateOf: 'nytimes--circ.json' });
+  writeReviewFile(d, 'nytimes--circ.json', { ...base, outletId: 'nytimes', criticName: 'Circ', fullText: 'Different text B', duplicateOf: 'guardian--a.json' });
+  const { suppressed } = findSuppressedForShow(d, SHOW_2026, [
+    { outletId: 'nytimes', criticName: 'Ben Brantley' }, { outletId: 'nytimes', criticName: 'Circ' },
+  ]);
+  assert.deepEqual(suppressed.map((x) => x.file).sort(), ['guardian--a.json', 'nytimes--stale.json', 'timeout--unknown.json', 'variety--unknown.json']);
 });
 
 test('findSuppressedForShow skips a file matched by URL when the filename diverges (byline drift)', () => {
