@@ -459,6 +459,7 @@ async function runJob(opts) {
     // plain success even when the ledger recorded BLOCKED/STOPPED_SHORT/
     // STRANDED — this rides the classified outcome on `out` too (see below).
     let headlessOutcome = null;
+    let endReason = null; // BRO-6092: why the session ended short, for the card-side fallback report
     // BRO-2741: teardown-killed background tasks ride the terminal ledger rows
     // so a job-done hiding one is auditable. Record-only: see the guard module
     // header for why this must not change the outcome.
@@ -472,9 +473,11 @@ async function runJob(opts) {
       const classified = classifyHeadlessJobResult({ resultText: res.resultText, sessionId: res.sessionId, cwd });
       if (classified.outcome === 'blocked') {
         headlessOutcome = 'blocked';
+        endReason = classified.reason;
         ledger.appendEntry({ event: ledger.JOB_EVENTS.BLOCKED, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD, reason: classified.reason, ...killedFields });
       } else if (classified.outcome === 'stopped-short') {
         headlessOutcome = 'stopped-short';
+        endReason = classified.reason;
         ledger.appendEntry({ event: ledger.JOB_EVENTS.STOPPED_SHORT, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD, reason: classified.reason, ...killedFields });
       } else {
         // 'clean' — a THIS SESSION: CLOSE ME|IDLE with no BLOCKED reason.
@@ -518,7 +521,7 @@ async function runJob(opts) {
         detail: (res.errorDetail || '').slice(0, 300),
       });
     }
-    out = { ok: res.ok, jobId, stage: res.stage, headlessOutcome, exitSignal: res.exitSignal || null, killedBackgroundTasks: killedFields.killedBackgroundTasks || [], sessionId: res.sessionId, resultText: res.resultText, logFile, cwd, keptWorktree: false };
+    out = { ok: res.ok, jobId, stage: res.stage, headlessOutcome, endReason: endReason || (res.ok ? null : (res.errorDetail || '').slice(0, 300) || null), exitSignal: res.exitSignal || null, killedBackgroundTasks: killedFields.killedBackgroundTasks || [], sessionId: res.sessionId, resultText: res.resultText, logFile, cwd, keptWorktree: false };
     return out;
   } finally {
     // finally runs after the return expression is evaluated but before the

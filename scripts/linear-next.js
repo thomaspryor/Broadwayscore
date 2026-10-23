@@ -94,6 +94,7 @@ const linear = require('./lib/linear-client.js');
 const ld = require('./lib/linear-dispatch.js');
 const { contradictedDeadKeysForTask } = require('./lib/contradicted-dead-rows.js');
 const lsr = require('./lib/linear-session-reporting.js');
+const her = require('./lib/headless-end-report.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { parseArgs: parseCliArgs } = require('./lib/cli-args.js');
 const { launchCmuxSession, makeSeedProcessProbe } = require('./lib/cmux-launch.js');
@@ -1197,6 +1198,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // killSwitchEnv: this dispatcher answers to LINEAR_NEXT_DISABLED only —
     // BSC_RUNNER_DISABLED (the retired Notion-loop's plist switch, #1311)
     // must not gate the Linear path at the runner level (BRO-286).
+    const jobStartMs = Date.now();
     const res = await runJob({ taskId, subject: pseudoTask.subject, prompt: seed, model, isolate: true, killSwitchEnv: 'LINEAR_NEXT_DISABLED' });
     if (res.stage === 'lease-held') {
       console.error(`[linear-next] ${identifier} already has a live headless job (${(res.holder && res.holder.jobId) || 'unknown'}). Use bsc-status to inspect.`);
@@ -1228,6 +1230,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     const verdict = ld.describeHeadlessOutcome(res);
     console.log(`[linear-next] headless job ${res.jobId} ${verdict.label}${verdict.detail ? ` — ${verdict.detail}` : ''}`);
     if (res.logFile) console.log(`  log: ${res.logFile}`);
+    // BRO-6092: whatever the ending, the card must say so unless the worker already did.
+    await her.postEndReportIfMissing(issue, res, jobStartMs, reportLinearFn);
     if (!res.ok) { process.exitCode = 1; return; }
     if (!verdict.success) process.exitCode = 1;
     // Issue-side write happens AFTER the durable ledger write above, per the
