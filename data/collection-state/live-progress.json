@@ -1,54 +1,21 @@
 {
-  "updatedAt": "2026-10-23T02:38:51.003Z",
-  "processed": 201,
-  "failed": 58,
-  "successRate": "77.6%",
+  "updatedAt": "2026-10-23T03:10:49.671Z",
+  "processed": 219,
+  "failed": 63,
+  "successRate": "77.7%",
   "tierBreakdown": {
-    "playwright": 117,
+    "playwright": 128,
     "amp": 1,
-    "browserbase": 12,
+    "browserbase": 19,
     "directCookies": 0,
-    "scrapingdog": 4,
-    "scrapingbee": 3,
-    "brightdata": 6,
+    "scrapingdog": 5,
+    "scrapingbee": 5,
+    "brightdata": 7,
     "archiveToday": 0,
     "archive": 53
   },
   "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-10-23T01:23:55.271Z",
-      "event": "bb-session",
-      "session": "054a1006",
-      "url": "https://www.nytimes.com/2017/07/26/theater/girl-from-north-country-review-bob-dy"
-    },
-    {
-      "t": "2026-10-23T01:23:56.105Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-23T01:29:59.732Z",
-      "event": "bb-session",
-      "session": "d1a71fee",
-      "url": "https://www.nytimes.com/2017/08/04/arts/dance/radical-bodies-anna-halprin-robert"
-    },
-    {
-      "t": "2026-10-23T01:30:00.470Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-23T01:31:06.831Z",
-      "event": "bb-session",
-      "session": "80abebb1",
-      "url": "https://www.nytimes.com/2017/07/17/theater/london-bodies-queen-anne-mentor.html"
-    },
-    {
-      "t": "2026-10-23T01:31:07.522Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-10-23T01:50:32.857Z",
       "event": "bb-session",
@@ -90,6 +57,73 @@
     },
     {
       "t": "2026-10-23T02:21:19.389Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-23T03:01:26.887Z",
+      "event": "bb-session",
+      "session": "143490ed",
+      "url": "https://www.nytimes.com/2026/10/22/theater/imaginary-invalid-review-bill-irwin-m"
+    },
+    {
+      "t": "2026-10-23T03:01:27.605Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-23T03:01:45.417Z",
+      "event": "bb-session",
+      "session": "aa1eb598",
+      "url": "https://deadline.com/2026/10/the-imaginary-invalid-broadway-review-bill-irwin-12"
+    },
+    {
+      "t": "2026-10-23T03:03:39.223Z",
+      "event": "bb-session",
+      "session": "539922a0",
+      "url": "https://www.wsj.com/articles/the-imaginary-invalid-review-bill-irwins-hilarious-"
+    },
+    {
+      "t": "2026-10-23T03:03:39.858Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-23T03:08:14.540Z",
+      "event": "bb-session",
+      "session": "514220ba",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-23T03:08:43.576Z",
+      "event": "bb-session",
+      "session": "45efb4e4",
+      "url": "https://www.talkinbroadway.com/page/world/TheImaginaryInvalid.html"
+    },
+    {
+      "t": "2026-10-23T03:08:44.355Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-23T03:09:58.098Z",
+      "event": "bb-session",
+      "session": "b84230f7",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-23T03:09:58.766Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-23T03:10:08.236Z",
+      "event": "bb-session",
+      "session": "4b739904",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-23T03:10:08.857Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
