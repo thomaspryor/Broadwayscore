@@ -104,7 +104,8 @@ test('pickReviewTextsTree prefers a git checkout over a plain snapshot and warns
   fs.mkdirSync(path.join(clone, '.git'));
   fs.mkdirSync(path.join(clone, 'show-a'));
   const warns = [];
-  assert.equal(pickReviewTextsTree([snapshot, clone], { warn: (m) => warns.push(m) }), clone);
+  assert.equal(pickReviewTextsTree([snapshot, clone], { warn: (m) => warns.push(m), env: { REVIEW_TEXTS_DIR: snapshot } }), snapshot);
+  assert.equal(pickReviewTextsTree([snapshot, clone], { warn: (m) => warns.push(m), env: {} }), clone);
   assert.equal(warns.length, 0);
   assert.equal(pickReviewTextsTree([snapshot], { warn: (m) => warns.push(m) }), snapshot);
   assert.match(warns[0], /plain snapshot.*old/);
