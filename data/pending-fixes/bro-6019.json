@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6019",
   "planId": "cffec8be-e21c-43f5-8abf-0e0aa5116191",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-22T20:20:54.621Z",
   "submitter": {
     "name": null,
@@ -78,5 +78,44 @@
         "description": "oh-mary-off-broadway-2024: closingDate 2024-05-19 -> 2024-05-12 (BRO-6019 fact check: both GPT and Gemini checkers agree, cited https://playbill.com/production/oh-mary-off-broadway-lucille-lortel-theatre-2024)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-23T01:50:13.642Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for stereophonic-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for stereophonic-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for cats-the-jellicle-ball-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for cats-the-jellicle-ball-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for titanique-off-broadway-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for buena-vista-social-club-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for oh-mary-off-broadway-2024"
+    }
+  ],
+  "executedIn": "ci"
 }
