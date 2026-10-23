@@ -82,6 +82,15 @@ jobs:
           echo "Open/previews Broadway shows missing a cast file: $N"
           echo "missing=$N" >> "$GITHUB_OUTPUT"
 
+      # --dry-run returns before any fetch, so this is normally a no-op; kept
+      # so the ledger-coverage audit holds if the precheck ever fetches.
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: backfill-cast
+
   backfill-cast:
     needs: missing-cast-precheck
     # Weekly/dispatch: precheck is skipped, so run. Daily: run unless the
