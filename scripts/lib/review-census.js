@@ -470,5 +470,5 @@ function censusVerdict(census, coveredScoredOutlets, opts = {}) {
 module.exports = {
   buildCensusFromArchives, unionCensus, censusVerdict, CI_UNFETCHABLE_OUTLETS,
   sourceExtractors, parseBwwRoundup, parseDtli, parsePlaybillVerdict, parseShowScore,
-  standingOutletsSource, candidateStatesFor,
+  standingOutletsSource, candidateStatesFor, outletVariants, outletInSet,
 };

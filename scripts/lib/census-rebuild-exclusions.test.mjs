@@ -22,7 +22,7 @@ test('wrongProduction-only outlet is excluded; includable and empty outlets are 
     'nyt--b.json': good,
   });
   const ex = rebuildExcludedOutlets('x-2026', show, { dir: d });
-  assert.deepEqual([...ex], ['cititour']);
+  assert.deepEqual([...ex.keys()], ['cititour']);
   assert.equal(rebuildExcludedOutlets('x-2026', show, { dir: '/nonexistent' }).size, 0);
 });
 
@@ -39,7 +39,27 @@ test('censusVerdict no longer reports excluded outlets as missing', () => {
     { outletId: 'nyt' }, { outletId: 'cititour' }, { outletId: 'nydailynews' } ] };
   const before = censusVerdict(census, new Set(['nyt']));
   assert.equal(before.missing.length, 2);
-  const after = censusVerdict(filterCensus(census, new Set(['cititour', 'nydailynews'])), new Set(['nyt']));
+  const after = censusVerdict(filterCensus(census, new Map([['cititour', { urls: new Set(), copy: true }], ['nydailynews', { urls: new Set(), copy: true }]])), new Set(['nyt']));
   assert.equal(after.missing.length, 0);
   assert.equal(after.verdict, 'complete');
+});
+
+test('content-excluded outlet stays a gap when the census url is a different article', () => {
+  const d = dir({ 'cititour--a.json': { ...good, outletId: 'cititour', wrongProduction: true, url: 'https://c.com/old' } });
+  const ex = rebuildExcludedOutlets('x-2026', show, { dir: d });
+  const census = { hadAnySource: true, count: 2, entries: [
+    { outletId: 'cititour', url: 'https://c.com/new' }, { outletId: 'nyt', url: 'https://n.com/1' } ] };
+  assert.equal(filterCensus(census, ex).entries.length, 2);
+  const same = { ...census, entries: [{ outletId: 'cititour', url: 'http://www.c.com/old/?x=1' }, census.entries[1]] };
+  assert.deepEqual(filterCensus(same, ex).entries.map((e) => e.outletId), ['nyt']);
+});
+
+test('syndication copy drops whatever url; -london variant matches; emptied census stays complete', () => {
+  const d = dir({ 'timeout-london--a.json': { ...good, outletId: 'timeout-london', knownSyndicationSecondary: true, wrongShow: true, url: 'https://t.com/a' } });
+  const ex = rebuildExcludedOutlets('x-2026', show, { dir: d });
+  assert.equal(ex.size, 1);
+  const census = { hadAnySource: true, count: 1, entries: [{ outletId: 'timeout', url: 'https://t.com/a' }] };
+  const f = filterCensus(census, ex);
+  assert.equal(f.entries.length, 0);
+  assert.equal(censusVerdict(f, new Set()).verdict, 'complete');
 });
