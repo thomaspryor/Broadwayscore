@@ -170,7 +170,8 @@ function fix(pairs) {
     // force:true — the phantom shares this file's url, so a non-forced write
     // would re-fire review-write-guard's URL-collision detector and re-mark
     // us a duplicate.
-    safeWriteReview(newCanonPath, nc, { force: true });
+    // A refused canonical write must not be followed by the loser repoint: that leaves a mutual duplicateOf cycle.
+    if (safeWriteReview(newCanonPath, nc, { force: true })?.wrote === false) continue;
 
     // --- Phantom byline: repoint duplicateOf at the real review. ---
     const nl = JSON.parse(fs.readFileSync(newLoserPath, 'utf-8'));

@@ -239,6 +239,7 @@ if (DRY_RUN) {
 
 let cleared = 0;
 let errors = 0;
+const clearedReviewIds = new Set();
 for (const c of toClear) {
   try {
     const review = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
@@ -249,6 +250,7 @@ for (const c of toClear) {
     const res = safeWriteReview(c.filePath, review, { merge: false });
     if (res && res.wrote === false) { errors++; continue; }
     cleared++;
+    clearedReviewIds.add(c.reviewId);
   } catch (e) {
     errors++;
   }
@@ -256,7 +258,7 @@ for (const c of toClear) {
 
 // Targeted mode: drop the cleared reviews' ledger rows (see header, mode 2).
 if (SHOW_FILTER && failedFetchesRaw && cleared > 0) {
-  const clearedIds = new Set(toClear.map(c => c.reviewId));
+  const clearedIds = clearedReviewIds;
   const kept = failedFetchesRaw.filter(f => !clearedIds.has(f.reviewId || (f.showId && f.file ? `${f.showId}/${f.file}` : null)));
   if (kept.length !== failedFetchesRaw.length) {
     fs.writeFileSync(failedPath, JSON.stringify(kept, null, 2) + '\n');
