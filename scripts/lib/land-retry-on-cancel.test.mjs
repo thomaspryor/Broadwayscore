@@ -313,3 +313,17 @@ test('BRO-6012: dispatch discovery pages past unrelated runs and caches logs acr
   resolveLandRun({ ...DISPATCH, run_attempt: 2 }, options);
   assert.equal(options.calls.filter((p) => p.endsWith('/logs')).length, 1, 'Checks kept across a Land-only rerun need one log fetch');
 });
+
+test('BRO-6058: gh refusing escape sequences is retried once with --allow-escape-sequences', () => {
+  const log = 'repos/o/r/actions/jobs/123/logs';
+  const refusal = Object.assign(new Error('Command failed'), { stderr: 'the response contains terminal escape sequences; pass --allow-escape-sequences to output it anyway\n' });
+  const { calls, exec } = recorder(refusal, 'log text');
+  assert.equal(runGhWithFallback([log], { exec, env: { GH_TOKEN: 'p' }, log: quiet }), 'log text');
+  assert.deepEqual(calls.map((c) => c.args), [['api', log], ['api', '--allow-escape-sequences', log]]);
+});
+
+test('BRO-6058: unrelated errors are not retried with the flag', () => {
+  const { calls, exec } = recorder(new Error('HTTP 404'));
+  assert.throws(() => runGhWithFallback(['repos/o/r/actions/jobs/1/logs'], { exec, env: {}, log: quiet }));
+  assert.equal(calls.length, 1);
+});

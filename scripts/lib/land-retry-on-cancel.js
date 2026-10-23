@@ -57,17 +57,36 @@ function errorText(err) {
   return [err && err.stderr, err && err.stdout, err && err.message].map((x) => String(x || '')).join('\n');
 }
 
+// Newer gh refuses a response containing terminal escape sequences unless
+// told otherwise ("pass --allow-escape-sequences"), and GitHub job logs always
+// carry ANSI colour codes. Every Land identity lookup threw on the runner's gh,
+// failing "Land retry on cancel" 25x/24h (BRO-6058). Older gh does not know the
+// flag (unknown flag error), so it is added only when gh asks for it.
+const ESCAPE_REFUSAL = /--allow-escape-sequences/;
+function ghApiArgs(args, err) {
+  return err && ESCAPE_REFUSAL.test(errorText(err)) && !args.includes('--allow-escape-sequences')
+    ? ['--allow-escape-sequences', ...args] : args;
+}
+
 function runGhWithFallback(args, { exec, env = process.env, fallbackToken, log = console.error } = {}) {
   const { isRateLimitError } = require('./github-rate-limit-retry.js');
   // maxBuffer: a 100-run listing is >1 MB, past execFileSync's 1 MB default
   // (BRO-4653's sweep hit ENOBUFS on its first live run).
   const opts = (e) => ({ encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], env: e, maxBuffer: 64 * 1024 * 1024 });
+  const call = (e, args) => {
+    try { return exec('gh', ['api', ...args], opts(e)); }
+    catch (err) {
+      const retry = ghApiArgs(args, err);
+      if (retry === args) throw err;
+      return exec('gh', ['api', ...retry], opts(e));
+    }
+  };
   try {
-    return exec('gh', ['api', ...args], opts(env));
+    return call(env, args);
   } catch (err) {
     if (!fallbackToken || !isRateLimitError(errorText(err))) throw err;
     log(`gh api ${args.join(' ')}: GITHUB_TOKEN rate-limited, retrying with the fallback token`);
-    return exec('gh', ['api', ...args], opts({ ...env, GH_TOKEN: fallbackToken }));
+    return call({ ...env, GH_TOKEN: fallbackToken }, args);
   }
 }
 
@@ -96,4 +115,4 @@ function decideCancelledWait({ status, attempt, attemptBefore } = {}) {
   return 'wait';
 }
 
-module.exports = { decideLandRetry, MAX_ATTEMPTS, runGhWithFallback, isRefNotFound, decideCancelledWait };
+module.exports = { ghApiArgs, decideLandRetry, MAX_ATTEMPTS, runGhWithFallback, isRefNotFound, decideCancelledWait };

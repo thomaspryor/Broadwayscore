@@ -168,7 +168,7 @@ function main() {
   const job = jobs.find((j) => j.name === 'run') || jobs[0];
   let parsed = { found: false, output: '', exitCode: null };
   if (job) {
-    try { parsed = extractOutput(gh(['api', `repos/${REPO}/actions/jobs/${job.id}/logs`])); } catch (err) {
+    try { parsed = extractOutput(require('./lib/land-retry-on-cancel.js').runGhWithFallback([`repos/${REPO}/actions/jobs/${job.id}/logs`], { exec: execFileSync })); } catch (err) {
       console.error(`[cloud-run-script] could not read the job log: ${(err.stderr || err.message || '').trim()}`);
     }
   }

@@ -52,7 +52,8 @@ const { pickBlobShaMeta } = require('./lib/core-data-blob-meta.js');
 const { prodProofFromLog, listingLooksStale, DEPLOY_JOB } = require('./lib/deploy-log-proof.js');
 
 const REPO = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
-const ghText = (path) => execFileSync('gh', ['api', path], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 64 * 1024 * 1024 });
+// BRO-6058: job-log reads need the escape-sequence retry in runGhWithFallback.
+const ghText = (path) => require('./lib/land-retry-on-cancel.js').runGhWithFallback([path], { exec: execFileSync });
 const ghJson = (path) => JSON.parse(ghText(path));
 // Overlapping deploys can go live out of run order, so read a few proven runs
 // and keep the one proven READY last.
