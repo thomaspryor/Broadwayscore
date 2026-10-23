@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T01:34:11.872Z",
+  "timestamp": "2026-10-23T02:25:22.956Z",
   "stats": {
-    "totalReviews": 59603,
-    "alreadyFlagged": 21375,
+    "totalReviews": 59596,
+    "alreadyFlagged": 21408,
     "dateGuardCatches": 200,
-    "directorMismatch": 2121,
-    "tvFilmSignals": 1677,
-    "londonSignals": 2767,
-    "offBroadwaySignals": 529,
-    "yearMismatch": 169,
-    "noPublishDate": 5457
+    "directorMismatch": 2148,
+    "tvFilmSignals": 1680,
+    "londonSignals": 2798,
+    "offBroadwaySignals": 530,
+    "yearMismatch": 170,
+    "noPublishDate": 5353
   },
   "findings": [
     {
@@ -3637,6 +3637,39 @@
     },
     {
       "showId": "annie-west-end-2017",
+      "file": "a-younger-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2017-06-08",
+      "url": "https://www.ayoungertheatre.com/review-annie-piccadilly-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-west-end-2017",
+      "file": "artsdesk--matt-wolf.json",
+      "score": 65,
+      "publishDate": "June 6th, 2017",
+      "url": "https://theartsdesk.com/theatre/annie-review-12-year-old-star-born",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "annie-west-end-2017",
       "file": "financialtimes--sarah-hemming.json",
       "score": 66,
       "publishDate": "2017-06-06",
@@ -3646,6 +3679,63 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-west-end-2017",
+      "file": "islington-gazette--unknown.json",
+      "score": null,
+      "publishDate": "2017-06-14",
+      "url": "https://www.islingtongazette.co.uk/things-to-do/annie-piccadilly-theatre-review-miranda-hart-is-a-force-of-3772874/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-west-end-2017",
+      "file": "london-theatre--mark-shenton.json",
+      "score": 75,
+      "publishDate": "June 6th, 2017",
+      "url": "https://www.londontheatre.co.uk/reviews/review-of-annie-at-the-piccadilly-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from annie-2012"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "annie-west-end-2017",
+      "file": "musical-theatre-review--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/west-end-daddy-warbucks-alex-bourne-on-appearing-in-dream-musical-annie/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -3683,6 +3773,20 @@
       "score": null,
       "publishDate": "2017-08-22",
       "url": "https://variety.com/2017/legit/news/thomas-meehan-dead-dies-annie-the-producers-1202535986/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-west-end-2017",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 94,
+      "publishDate": "June 5th, 2017",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/annie-piccadilly-miranda-hart-musical-west-end_43775.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -4379,10 +4483,66 @@
     },
     {
       "showId": "bat-out-of-hell-west-end-2017",
+      "file": "standard--henry-hitchings.json",
+      "score": 62,
+      "publishDate": "2017-06-20T22:05:00+00:00",
+      "url": "https://www.standard.co.uk/goingout/theatre/bat-out-of-hell-the-musical-theatre-review-a-jawdropping-spectacle-a3569521.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay scheib\" from bat-out-of-hell-west-end-2018"
+        }
+      ]
+    },
+    {
+      "showId": "bat-out-of-hell-west-end-2017",
+      "file": "thestage--tim-bano.json",
+      "score": 78,
+      "publishDate": "2017-06-20T22:05:00+00:00",
+      "url": "https://www.thestage.co.uk/reviews/2017/jim-steinmans-bat-out-of-hell-the-musical-review-at-the-london-coliseum/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay scheib\" from bat-out-of-hell-west-end-2018"
+        }
+      ]
+    },
+    {
+      "showId": "bat-out-of-hell-west-end-2017",
+      "file": "theupcoming--anna-dack.json",
+      "score": 82,
+      "publishDate": "2017-06-20",
+      "url": "http://www.theupcoming.co.uk/2017/06/20/bat-out-of-hell-the-musical-at-the-london-coliseum-theatre-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay scheib\" from bat-out-of-hell-west-end-2018"
+        }
+      ]
+    },
+    {
+      "showId": "bat-out-of-hell-west-end-2017",
       "file": "times-uk--ann-treneman.json",
       "score": 78,
       "publishDate": "2017-06-20T22:05:00+00:00",
       "url": "https://www.thetimes.co.uk/article/theatre-review-bat-out-of-hell-the-musical-at-the-coliseum-wc2-5nk0hqbb3",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay scheib\" from bat-out-of-hell-west-end-2018"
+        }
+      ]
+    },
+    {
+      "showId": "bat-out-of-hell-west-end-2017",
+      "file": "whatsonstage--daisy-bowie-sell.json",
+      "score": 74,
+      "publishDate": "2017-06-20T22:05:00+00:00",
+      "url": "http://www.whatsonstage.com/london-theatre/reviews/bat-out-of-hell-coliseum-jim-steinman-meat-loaf_43917.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -12645,6 +12805,20 @@
     },
     {
       "showId": "dreamgirls-west-end-2016",
+      "file": "london-theatre--dom-ohanlon.json",
+      "score": 87,
+      "publishDate": "2016-12-14T22:30:28-05:00",
+      "url": "https://www.londontheatre.co.uk/reviews/review-of-dreamgirls-at-the-savoy-theatre-in-londons-west-end",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael bennett\" from dreamgirls-1987"
+        }
+      ]
+    },
+    {
+      "showId": "dreamgirls-west-end-2016",
       "file": "nytimes--matt-wolf.json",
       "score": 79,
       "publishDate": "2016-12-17",
@@ -12697,6 +12871,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael bennett\" from dreamgirls-1987"
+        }
+      ]
+    },
+    {
+      "showId": "dreamgirls-west-end-2016",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 80,
+      "publishDate": "2016-12-14T22:30:28-05:00",
+      "url": "http://www.whatsonstage.com/west-end-theatre/reviews/review-dreamgirls-savoy-theatre_42500.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael bennett\" from dreamgirls-1987"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -15820,6 +16013,110 @@
     },
     {
       "showId": "girl-from-the-north-country-west-end-2017",
+      "file": "britishtheatrecom--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/posts/review-girl-from-the-north-country-old-vic-theatre-5stars",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2017",
+      "file": "camdennewjournal--unknown.json",
+      "score": null,
+      "publishDate": "2017-08-04",
+      "url": "https://www.camdennewjournal.co.uk/article/review-girl-from-the-north-country-at-the-old-vic",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2017",
+      "file": "independent--paul-taylor.json",
+      "score": null,
+      "publishDate": "2017-07-27",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/girl-from-the-north-country-old-vic-review-a7863891.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2017",
+      "file": "islingtontribune--unknown.json",
+      "score": null,
+      "publishDate": "2017-08-04",
+      "url": "https://www.islingtontribune.co.uk/article/review-girl-from-the-north-country-at-the-old-vic",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2017",
+      "file": "london-box-office--phil-willmott.json",
+      "score": null,
+      "publishDate": "2017-08-31",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-girl-from-the-north-country",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2017",
+      "file": "nytimes--ben-brantley.json",
+      "score": null,
+      "publishDate": "2017-07-26",
+      "url": "https://www.nytimes.com/2017/07/26/theater/girl-from-north-country-review-bob-dylan.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2017",
       "file": "nytimes--unknown.json",
       "score": null,
       "publishDate": "2017-07-26",
@@ -15834,6 +16131,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2017",
+      "file": "plays-to-see--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://playstosee.com/reviews/uk-reviews/girl-north-country/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2017",
+      "file": "variety--matt-trueman.json",
+      "score": null,
+      "publishDate": "2017-07-27",
+      "url": "https://variety.com/2017/legit/reviews/bob-dylan-musical-review-girl-from-the-north-country-1202508546/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
         }
       ]
     },
@@ -31562,20 +31887,6 @@
     },
     {
       "showId": "other-desert-cities-2026",
-      "file": "theater-life--unknown.json",
-      "score": 74,
-      "publishDate": "2026-10-21",
-      "url": "https://theaterlife.com/other-desert-cities/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"joe mantello\" from other-desert-cities-2011"
-        }
-      ]
-    },
-    {
-      "showId": "other-desert-cities-2026",
       "file": "theatrely--joey-sims.json",
       "score": 63,
       "publishDate": "2026-10-19",
@@ -31850,6 +32161,25 @@
     },
     {
       "showId": "parade-2023",
+      "file": "metrmag--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.metrmag.com/latest-reviews/parade-by-jason-robert-brown-emerson-colonial-theatre-boston-ma-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from parade-1998"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2025 (8x) more than 2023 (2x). 2025 matches production: parade-tour-2025"
+        }
+      ]
+    },
+    {
+      "showId": "parade-2023",
       "file": "newyorker--naomi-fry.json",
       "score": 72,
       "publishDate": "March 20, 2023",
@@ -31910,6 +32240,20 @@
       "score": 88,
       "publishDate": "March 16, 2023",
       "url": "https://www.nytimes.com/2023/03/16/theater/parade-review-leo-frank.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from parade-1998"
+        }
+      ]
+    },
+    {
+      "showId": "parade-2023",
+      "file": "people--dave-quinn.json",
+      "score": null,
+      "publishDate": "2023-02-22",
+      "url": "https://people.com/theater/ben-platt-speaks-out-after-broadway-performance-parade-met-with-antisemitic-protesters/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -42315,10 +42659,90 @@
     },
     {
       "showId": "the-ferryman-west-end-2017",
+      "file": "a-younger-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2017-05-08",
+      "url": "https://www.ayoungertheatre.com/review-the-ferryman-royal-court/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-ferryman-west-end-2017",
+      "file": "independent--unknown.json",
+      "score": null,
+      "publishDate": "2017-05-04",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-ferryman-review-royal-court-jez-butterworth-sam-mendes-paddy-constadine-ira-a7717021.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-ferryman-west-end-2017",
+      "file": "london-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2017-05-04",
+      "url": "https://www.londontheatre.co.uk/reviews/review-of-the-ferryman-by-jez-butterworth-at-the-royal-court-theatre-a-complex-beautifully",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
+        }
+      ]
+    },
+    {
+      "showId": "the-ferryman-west-end-2017",
       "file": "nytimes--unknown.json",
       "score": null,
       "publishDate": "2017-05-04",
       "url": "https://www.nytimes.com/2017/05/04/theater/review-the-ferryman-in-jez-butterworths-ireland.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
+        }
+      ]
+    },
+    {
+      "showId": "the-ferryman-west-end-2017",
+      "file": "sierz-co-uk--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://sierz.co.uk/reviews/the-ferryman-royal-court/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
+        }
+      ]
+    },
+    {
+      "showId": "the-ferryman-west-end-2017",
+      "file": "standard--unknown.json",
+      "score": null,
+      "publishDate": "2017-05-04",
+      "url": "https://www.standard.co.uk/culture/theatre/the-ferryman-how-star-laura-donnellys-true-life-story-inspired-jez-butterworths-troublesera-play-a3530346.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -45011,6 +45435,20 @@
       "score": 65,
       "publishDate": "2021-10-08",
       "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-miser-west-end-2017",
+      "file": "londontheatre1--unknown.json",
+      "score": null,
+      "publishDate": "2017-03-15",
+      "url": "https://www.londontheatre1.com/reviews/review-the-miser-garrick-theatre/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -60178,6 +60616,48 @@
       ]
     },
     {
+      "showId": "bodies-west-end-2017",
+      "file": "british-theatre--philip-fisher.json",
+      "score": null,
+      "publishDate": "2017-07-12",
+      "url": "https://www.britishtheatreguide.info/reviews/bodies-royal-court-the-14588",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "bodies-west-end-2017",
+      "file": "britishtheatrecom--sophie-adnitt.json",
+      "score": null,
+      "publishDate": "2017-07-13",
+      "url": "https://www.britishtheatre.com/posts/review-bodies-royal-court-theatre-2stars",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "bodies-west-end-2017",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": "2017-07-12",
+      "url": "https://www.theguardian.com/stage/2017/jul/12/bodies-review-vivienne-franzmann-royal-court-london-surrogacy",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "born-with-teeth-west-end-2025",
       "file": "independent--alice-saville.json",
       "score": 70,
@@ -61293,6 +61773,20 @@
       "score": 58,
       "publishDate": "2017-07-24",
       "url": "https://www.timeout.com/london/theatre/cat-on-a-hot-tin-roof-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-west-end-2017",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 42,
+      "publishDate": "2017-07-25",
+      "url": "http://www.whatsonstage.com/west-end-theatre/reviews/review-cat-hot-tin-roof-apollo-young-vic-sienna-miller_44191.html?cid=homepage_news",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -64026,7 +64520,7 @@
     {
       "showId": "derren-brown-only-human-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2026-10-22",
       "url": "https://theatreandtonic.co.uk/blog/derren-brown-only-human-at-apollo-theatre-reviewnbsp",
       "findings": [
@@ -64088,6 +64582,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "dirty-great-love-story-west-end-2017",
+      "file": "britishtheatrecom--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/posts/review-dirty-great-love-story-arts-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
@@ -64367,6 +64875,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "dreamgirls-west-end-2016",
+      "file": "standard--unknown.json",
+      "score": null,
+      "publishDate": "2016-11-22",
+      "url": "https://www.standard.co.uk/culture/theatre/dreamgirls-star-liisi-lafontaine-it-s-daunting-to-step-into-beyonce-s-shoes-a3401596.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -65673,6 +66195,48 @@
       "score": 75,
       "publishDate": "April 5, 2012",
       "url": "https://www.variety.com/review/VE1117947355?refCatId=33",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "evita-west-end-2017",
+      "file": "a-younger-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2017-08-08",
+      "url": "https://www.ayoungertheatre.com/review-evita-phoenix-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "evita-west-end-2017",
+      "file": "daily-mail--unknown.json",
+      "score": null,
+      "publishDate": "2017-08-04",
+      "url": "https://www.dailymail.com/tvshowbiz/article-4759506/QUENTIN-LETTS-says-lead-Evita-worthy-West-End-run.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "evita-west-end-2017",
+      "file": "musical-theatre-review--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/evita-phoenix-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -76168,6 +76732,20 @@
     },
     {
       "showId": "master-harold-and-the-boys-west-end-2019",
+      "file": "liamodell--liam-odell.json",
+      "score": 75,
+      "publishDate": "2019-10-02",
+      "url": "https://liamodell.com/2019/10/02/master-harold-and-the-boys-national-theatre-lyttelton-theatre-athol-fugard-lucian-msamati-hammed-animashaun-ballroom-dancing-south-africa-apartheid-london-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "master-harold-and-the-boys-west-end-2019",
       "file": "london-box-office--john-yap.json",
       "score": 51,
       "publishDate": "2019-10-03",
@@ -81317,10 +81895,38 @@
     },
     {
       "showId": "queen-anne-west-end-2017",
+      "file": "britishtheatrecom--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/posts/review-queen-anne-theatre-royal-haymarket-4stars",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "queen-anne-west-end-2017",
       "file": "guardian--michael-billington.json",
       "score": 78,
       "publishDate": "2017-07-11",
       "url": "https://www.theguardian.com/stage/2017/jul/11/queen-anne-review-romola-garai-rsc",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "queen-anne-west-end-2017",
+      "file": "nytimes--unknown.json",
+      "score": null,
+      "publishDate": "2017-07-17",
+      "url": "https://www.nytimes.com/2017/07/17/theater/london-bodies-queen-anne-mentor.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -85161,6 +85767,20 @@
     },
     {
       "showId": "sweat-2017",
+      "file": "njcom--unknown.json",
+      "score": null,
+      "publishDate": "2017-03-28",
+      "url": "https://www.nj.com/entertainment/2017/03/latin_history_for_morons_john_leguizamo_sweat_broa.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "sweat-2017",
       "file": "nydailynews--joe-dziemianowicz.json",
       "score": 56,
       "publishDate": "November 3, 2016",
@@ -87902,6 +88522,34 @@
     },
     {
       "showId": "the-dresser-west-end-2016",
+      "file": "britishtheatrecom--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/posts/review-the-dresser-duke-of-yorks-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-dresser-west-end-2016",
+      "file": "london-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2016-10-14",
+      "url": "https://www.londontheatre.co.uk/reviews/review-of-the-dresser-starring-reece-shearsmith-and-ken-stott-at-the-duke-of-yorks-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-dresser-west-end-2016",
       "file": "nytimes--unknown.json",
       "score": null,
       "publishDate": "2016-11-04",
@@ -87925,6 +88573,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-dresser-west-end-2016",
+      "file": "standard--fiona-mountford.json",
+      "score": 56,
+      "publishDate": "2016-10-14",
+      "url": "https://www.standard.co.uk/goingout/theatre/the-dresser-theatre-review-stott-and-shearsmith-shine-but-a-lacklustre-production-doesnt-make-the-a3368936.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -88627,6 +89289,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "the-glass-menagerie-west-end-2017",
+      "file": "london-box-office--phil-willmott.json",
+      "publishDate": "2017-02-02",
+      "url": "https://www.londonboxoffice.co.uk/news/post/glass-menagerie-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -89802,6 +90477,34 @@
     },
     {
       "showId": "the-kid-stays-in-the-picture-west-end-2017",
+      "file": "britishtheatrecom--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/posts/review-the-kid-stays-in-the-picture-royal-court",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-kid-stays-in-the-picture-west-end-2017",
+      "file": "everything-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2017-03-23",
+      "url": "https://everything-theatre.co.uk/2017/03/the-kid-stays-in-the-picture-royal-court-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-kid-stays-in-the-picture-west-end-2017",
       "file": "nytimes--matt-wolf.json",
       "score": 84,
       "publishDate": "2017-04-08",
@@ -90288,6 +90991,33 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "the-majority-west-end-2017",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": "2017-08-15",
+      "url": "https://www.theguardian.com/stage/2017/aug/15/the-majority-review-vote-political-violence-dorfman-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-majority-west-end-2017",
+      "file": "london-box-office--phil-willmott.json",
+      "publishDate": "2017-08-17",
+      "url": "https://www.londonboxoffice.co.uk/news/post/th-majority-nt-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -94769,6 +95499,19 @@
     },
     {
       "showId": "translations-west-end-2018",
+      "file": "standard--henry-hitchings.json",
+      "publishDate": "2018-06-13",
+      "url": "https://www.standard.co.uk/go/london/theatre/translations-review-topical-resonance-to-this-revival-about-the-power-of-language-a3851866.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "translations-west-end-2018",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 84,
       "publishDate": "2018-05-31",
@@ -96834,6 +97577,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "woyzeck-west-end-2017",
+      "file": "sierz-co-uk--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://sierz.co.uk/reviews/woyzeck-old-vic/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "woyzeck-west-end-2017",
+      "file": "standard--fiona-mountford.json",
+      "score": 77,
+      "publishDate": "2017-05-24",
+      "url": "https://www.standard.co.uk/goingout/theatre/woyzeck-theatre-review-john-boyega-gives-a-muscular-committed-performance-a3546841.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
