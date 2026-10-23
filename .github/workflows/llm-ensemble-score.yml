@@ -6,9 +6,11 @@ run-name: LLM Ensemble Score Reviews${{ inputs.show_id && format(' — {0}', inp
 # Separate concurrency groups per rescore_reason allow parallel scoring of disjoint file sets.
 # Default group "scoring-reviews" serializes regular (scheduled/bulk) runs; "scoring-reviews-{reason}" for
 # targeted rescores; "scoring-reviews-show-{id}" for any show-targeted dispatch (ingest-urls, opening night)
-# so it never queues behind the 350-min scheduled batch (BRO-4466). Guarded by tests/unit/scoring-concurrency-lane.test.mjs.
+# so it never queues behind the 350-min scheduled batch (BRO-4466). A comma-separated show_id list shares one
+# "scoring-reviews-shows-multi" lane: the list itself made the group name so long that a 642-char dispatch
+# failed in 3s with zero jobs and no alert (BRO-5851). Guarded by tests/unit/scoring-concurrency-lane.test.mjs.
 concurrency:
-  group: scoring-reviews${{ inputs.rescore_reason && format('-{0}', inputs.rescore_reason) || (inputs.show_id && format('-show-{0}', inputs.show_id)) || '' }}
+  group: scoring-reviews${{ inputs.rescore_reason && format('-{0}', inputs.rescore_reason) || (inputs.show_id && (contains(inputs.show_id, ',') && '-shows-multi' || format('-show-{0}', inputs.show_id))) || '' }}
   cancel-in-progress: false
 
 on:
@@ -235,7 +237,13 @@ jobs:
             # Targeted refresh: only pull the specific show directory (faster)
             echo "Refreshing review-texts for show: ${INPUT_SHOW_ID}"
             git fetch origin main --depth=1
-            git checkout origin/main -- "${INPUT_SHOW_ID}/" 2>/dev/null || echo "Show directory not found in remote — using existing checkout"
+            # show_id may be a comma-separated list (the scorer takes --show=a,b,c).
+            IFS=',' read -ra SHOW_IDS <<< "${INPUT_SHOW_ID}"
+            for sid in "${SHOW_IDS[@]}"; do
+              sid="${sid//[[:space:]]/}"
+              [ -n "$sid" ] || continue
+              git checkout origin/main -- "${sid}/" 2>/dev/null || echo "Show directory ${sid} not found in remote — using existing checkout"
+            done
           else
             # Full refresh: pull all latest changes
             echo "Refreshing all review-texts..."
@@ -672,7 +680,9 @@ jobs:
           # show_id just finds zero anchored-v6 groups and no-ops (that scope
           # is WE/OWE-only by design — see the script's own header).
           if [ -n "${INPUT_SHOW_ID}" ]; then
-            npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/comparative-rescore.ts --show=${INPUT_SHOW_ID} --max-rescores=30
+            # --show= takes one id; a comma list goes through --shows= (comparative-rescore.ts:387-388).
+            SHOW_FLAG="--show"; case "${INPUT_SHOW_ID}" in *,*) SHOW_FLAG="--shows" ;; esac
+            npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/comparative-rescore.ts "${SHOW_FLAG}=${INPUT_SHOW_ID}" --max-rescores=30
           else
             npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/comparative-rescore.ts --all-we --max-rescores=30
           fi

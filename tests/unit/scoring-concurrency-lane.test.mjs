@@ -23,9 +23,11 @@ const prefix = m[1].split('${{')[0];
 
 function group(inputs) {
   const format = (f, v) => f.replace('{0}', v);
+  // GHA contains() on strings: case-insensitive substring match.
+  const contains = (s, sub) => String(s).toLowerCase().includes(String(sub).toLowerCase());
   // GHA: unset/empty inputs are '' (falsy); schedule runs have no inputs at all.
-  const fn = new Function('inputs', 'format', `return (${expr});`);
-  return prefix + fn(inputs || {}, format);
+  const fn = new Function('inputs', 'format', 'contains', `return (${expr});`);
+  return prefix + fn(inputs || {}, format, contains);
 }
 
 test('scheduled run keeps the default group', () => {
@@ -45,6 +47,17 @@ test('show-targeted dispatch (ingest-urls) never shares the scheduled run group'
 test('different shows get different lanes; rescore_reason lane preserved', () => {
   assert.notEqual(group({ show_id: 'a' }), group({ show_id: 'b' }));
   assert.equal(group({ show_id: 'a', rescore_reason: 'verify-all-scored-a' }), 'scoring-reviews-verify-all-scored-a');
+});
+
+test('BRO-5851: a comma-separated show list gets one short shared lane, whatever its length', () => {
+  const list = Array.from({ length: 40 }, (_, i) => `some-long-west-end-show-title-${i}-west-end-2017`).join(',');
+  assert.ok(list.length > 1200);
+  const g = group({ show_id: list });
+  assert.equal(g, 'scoring-reviews-shows-multi');
+  assert.equal(group({ show_id: 'a,b' }), g);
+  assert.notEqual(g, group(undefined));
+  assert.notEqual(g, group({ show_id: 'a' }));
+  assert.equal(group({ show_id: list, rescore_reason: 'x' }), 'scoring-reviews-x');
 });
 
 test('cancel-in-progress stays false (never kill a mid-flight scoring run)', () => {
