@@ -143,7 +143,9 @@ export default function CreativeIndexClient({
   const [obcOnly, setObcOnly] = useState(false);
   const [minShows, setMinShows] = useState(defaultMinShows);
   const [extraProfiles, setExtraProfiles] = useState<CreativeProfileSummary[]>([]);
-  const needsExtra = !!extraProfilesUrl && (minShows < defaultMinShows || search.trim() !== '');
+  // The extra profiles all sit below the default filter, so only a lower
+  // filter can show them; a search at the default filter never would (BRO-5968).
+  const needsExtra = !!extraProfilesUrl && minShows < defaultMinShows;
 
   useEffect(() => {
     if (!needsExtra || extraProfiles.length > 0) return;
