@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T08:16:00.796Z",
+  "generatedAt": "2026-10-23T11:58:47.975Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -122,15 +122,16 @@
       "id": "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026",
       "title": "The Nicest Body Ever Seen Around These Parts",
       "openingDate": "2026-10-19"
+    },
+    {
+      "id": "dance-is-not-for-us-off-west-end-2026",
+      "title": "Dance Is Not for Us",
+      "openingDate": "2026-10-18"
     }
   ],
   "skipped": [],
   "feedsChecked": 73,
   "feedsFailed": [
-    {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
@@ -156,8 +157,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 776,
-  "matchedGaps": 10,
+  "itemsScanned": 783,
+  "matchedGaps": 11,
   "possibleGaps": 3,
   "gaps": [
     {
@@ -179,13 +180,13 @@
       "publishDate": "2026-10-22"
     },
     {
-      "showId": "derren-brown-only-human-west-end-2026",
-      "title": "Derren Brown: Only Human",
+      "showId": "dance-is-not-for-us-off-west-end-2026",
+      "title": "Dance Is Not for Us",
       "level": "matched",
       "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/derren-brown-only-human-the-apollo-london/",
-      "headline": "Derren Brown: Only Human – The Apollo, London",
-      "publishDate": "2026-10-23"
+      "url": "https://www.thereviewshub.com/cie-omar-rajeh-maqamet-dance-is-not-for-us-barbican-london/",
+      "headline": "Cie Omar Rajeh &#038; Maqamet: Dance is Not For Us – Barbican, London",
+      "publishDate": "2026-10-17"
     },
     {
       "showId": "king-of-the-yees-off-broadway-2026",
@@ -224,6 +225,15 @@
       "publishDate": "2026-10-22"
     },
     {
+      "showId": "martin-guerre-west-end-2026",
+      "title": "Martin Guerre",
+      "level": "matched",
+      "outletId": "theatrecat",
+      "url": "https://theatrecat.com/2026/10/23/martin-guerre-old-vic-se1/",
+      "headline": "MARTIN GUERRE       Old Vic SE1",
+      "publishDate": "2026-10-23"
+    },
+    {
       "showId": "phyl-off-broadway-2026",
       "title": "Phyl",
       "level": "matched",
@@ -233,12 +243,12 @@
       "publishDate": "2026-10-22"
     },
     {
-      "showId": "phyl-off-broadway-2026",
-      "title": "Phyl",
+      "showId": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
       "level": "matched",
-      "outletId": "theater-scene",
-      "url": "https://www.theaterscene.net/plays/offbway-plays/phyl/samuel-l-leiter/",
-      "headline": "Phyl",
+      "outletId": "the-spy-in-the-stalls",
+      "url": "https://thespyinthestalls.com/2026/10/the-pianist/",
+      "headline": "THE PIANIST★★★★Park Theatre",
       "publishDate": "2026-10-23"
     },
     {
@@ -251,13 +261,13 @@
       "publishDate": "2026-10-18"
     },
     {
-      "showId": "derren-brown-only-human-west-end-2026",
-      "title": "Derren Brown: Only Human",
+      "showId": "copperfield-the-new-musical-off-broadway-2026",
+      "title": "Copperfield! The New Musical",
       "level": "possible",
-      "outletId": "the-spy-in-the-stalls",
-      "url": "https://thespyinthestalls.com/2026/10/derren-brown/",
-      "headline": "DERREN BROWN: ONLY HUMAN★★★½Apollo Theatre",
-      "publishDate": "2026-10-23"
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/the-curious-case-of-benjamin-button/",
+      "headline": "The Curious Case of Benjamin Button *****",
+      "publishDate": "2026-10-21"
     },
     {
       "showId": "the-pianist-off-west-end-2026",
