@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T23:15:17.147Z",
+  "generatedAt": "2026-10-23T23:45:08.901Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -539,23 +539,23 @@
       "status": "open",
       "slug": "phyl-off-broadway",
       "thumbnail": "/images/shows/phyl-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 77.06,
-      "liveScore": 77,
-      "scoreDrift": -0.060000000000002274,
+      "siteScore": 78.11,
+      "liveScore": 78,
+      "scoreDrift": -0.10999999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
+      "total": 8,
       "t1": 0,
-      "t2": 4,
+      "t2": 5,
       "t3": 3,
-      "positive": 6,
+      "positive": 7,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/12 total",
+          "8/12 total",
           "T1:0/3",
           "hi-conf:7/8"
         ],
@@ -955,6 +955,18 @@
           "m": 1,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-23T23:45:08.901Z",
+          "rc": 8,
+          "s": 78.11,
+          "t1": 0,
+          "t2": 5,
+          "t3": 3,
+          "p": 7,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -968,23 +980,23 @@
       "status": "open",
       "slug": "the-pianist-off-west-end",
       "thumbnail": "/images/shows/the-pianist-off-west-end-2026/thumbnail.webp",
-      "siteScore": 70.93,
-      "liveScore": 71,
-      "scoreDrift": 0.06999999999999318,
+      "siteScore": 72.69,
+      "liveScore": 73,
+      "scoreDrift": 0.3100000000000023,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 14,
+      "total": 15,
       "t1": 3,
       "t2": 3,
-      "t3": 8,
-      "positive": 9,
+      "t3": 9,
+      "positive": 10,
       "mixed": 5,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 11,
+        "highConfidence": 13,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1233,6 +1245,18 @@
           "t2": 3,
           "t3": 8,
           "p": 9,
+          "m": 5,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-23T23:45:08.901Z",
+          "rc": 15,
+          "s": 72.69,
+          "t1": 3,
+          "t2": 3,
+          "t3": 9,
+          "p": 10,
           "m": 5,
           "n": 0,
           "bc": "waiting"
