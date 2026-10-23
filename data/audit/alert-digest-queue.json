@@ -579,5 +579,36 @@
       }
     ],
     "queuedAt": "2026-10-23T14:51:52.921Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6070-same-night-gate",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6070-same-night-gate",
+    "description": "land.yml did not land land/bro-6070-same-night-gate: the unit-tests-node gate went red at 02b5b45532. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39971851189",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6070-same-night-gate"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "02b5b45532cfb9e127aef9aaf3e704c6e71ac01d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39971851189"
+      }
+    ],
+    "queuedAt": "2026-10-23T15:01:20.507Z"
   }
 ]
