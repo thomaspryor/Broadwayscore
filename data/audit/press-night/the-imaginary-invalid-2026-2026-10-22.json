@@ -6,25 +6,25 @@
   "embargoAt": "2026-10-23T02:00:00.000Z",
   "probe": {
     "startedAt": "2026-10-23T02:21:57.637Z",
-    "endedAt": null,
+    "endedAt": "2026-10-23T08:00:16.498Z",
     "intervalMin": 5,
-    "samples": 20,
+    "samples": 68,
     "failedSamples": 0,
-    "lastSampleAt": "2026-10-23T03:57:02.788Z",
-    "lastOkSampleAt": "2026-10-23T03:57:02.788Z"
+    "lastSampleAt": "2026-10-23T07:57:46.146Z",
+    "lastOkSampleAt": "2026-10-23T07:57:46.146Z"
   },
   "firstLiveAt": "2026-10-23T02:21:57.637Z",
   "firstLiveBaseline": true,
-  "lastLiveAt": "2026-10-23T03:37:01.452Z",
-  "liveCount": 16,
+  "lastLiveAt": "2026-10-23T04:57:38.937Z",
+  "liveCount": 18,
   "liveCountAt": {
     "1h": 1,
-    "2h": null,
+    "2h": 16,
     "6h": null
   },
   "liveCountSampleAt": {
     "1h": "2026-10-23T03:01:59.567Z",
-    "2h": null,
+    "2h": "2026-10-23T04:02:36.868Z",
     "6h": null
   },
   "firstOutletPublishAt": {
@@ -220,6 +220,28 @@
       "firstLiveAt": "2026-10-23T03:37:01.452Z",
       "baseline": false,
       "liveNow": true
+    },
+    {
+      "key": "vulture|sara holdren",
+      "outlet": "Vulture",
+      "critic": "Sara Holdren",
+      "tier": 1,
+      "publishAt": "2026-10-22",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-23T04:57:38.937Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "talkin' broadway|howard miller",
+      "outlet": "Talkin' Broadway",
+      "critic": "Howard Miller",
+      "tier": 2,
+      "publishAt": "2026-10-22",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-23T04:57:38.937Z",
+      "baseline": false,
+      "liveNow": true
     }
   ],
   "dropped": [
@@ -242,6 +264,23 @@
       "missing": [],
       "liveCount": 16,
       "fetchedAt": "2026-10-23T04:00:12.329Z"
+    },
+    "end": {
+      "status": "incomplete",
+      "source": [
+        "dtli",
+        "playbill-verdict"
+      ],
+      "count": 16,
+      "covered": 14,
+      "coverage": 0.875,
+      "missing": [
+        "nydailynews",
+        "cititour"
+      ],
+      "suppressedMissing": [],
+      "liveCount": 18,
+      "fetchedAt": "2026-10-23T08:00:15.551Z"
     }
   }
 }
