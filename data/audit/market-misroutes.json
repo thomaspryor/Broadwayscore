@@ -1,23 +1,5 @@
 [
   {
-    "recordedAt": "2026-10-22T00:54:14.007Z",
-    "fromShowId": "mary-poppins-west-end-2019",
-    "toShowId": "mary-poppins-2006",
-    "file": "nypost--unknown.json",
-    "url": "http://www.nypost.com/seven/11172006/entertainment/theater/no_stoppin_this_poppins_theater_clive_barnes.htm",
-    "publishDate": "November 16, 2006",
-    "reason": "sibling opening 0d from publishDate vs current 4745d"
-  },
-  {
-    "recordedAt": "2026-10-22T00:54:18.153Z",
-    "fromShowId": "othello-west-end-2025",
-    "toShowId": "othello-west-end-2022",
-    "file": "nytimes--charles-isherwood.json",
-    "url": "http://theater.nytimes.com/2009/02/24/theater/reviews/24othe.html?pagewanted=2&ref=theater",
-    "publishDate": "February 24, 2009",
-    "reason": "year-level sibling match (review year 2009 vs current show year 2025)"
-  },
-  {
     "recordedAt": "2026-10-22T00:54:18.185Z",
     "fromShowId": "other-desert-cities-2026",
     "toShowId": "other-desert-cities-2011",
@@ -4491,5 +4473,23 @@
     "url": "https://www.thedailybeast.com/obsessed/bill-teds-broadway-adventure-keanu-reeves-in-waiting-for-godot/",
     "publishDate": "September 28, 2025",
     "reason": "sibling opening 0d from publishDate vs current 374d"
+  },
+  {
+    "recordedAt": "2026-10-23T05:53:15.415Z",
+    "fromShowId": "school-pictures-off-broadway-2026",
+    "toShowId": "school-pictures-off-broadway-2023",
+    "file": "vulture--sara-holdren.json",
+    "url": "https://www.vulture.com/2023/11/reviews-amusements-school-pictures-sad-boys-in-harpy-land-playwrights-horizons.html",
+    "publishDate": "",
+    "reason": "sibling-venue-in-url: \"playwrights-horizons\""
+  },
+  {
+    "recordedAt": "2026-10-23T05:53:16.115Z",
+    "fromShowId": "school-pictures-off-broadway-2026",
+    "toShowId": "school-pictures-off-broadway-2023",
+    "file": "theatermania--zachary-stewart.json",
+    "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/",
+    "publishDate": "",
+    "reason": "sibling-venue-in-url: \"playwrights-horizons\""
   }
 ]
