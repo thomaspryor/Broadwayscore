@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-23T05:21:49.853Z",
+    "generatedAt": "2026-10-23T05:42:39.144Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 94,
+    "totalFlagged": 95,
     "highConfidence": 4,
-    "mediumConfidence": 90,
+    "mediumConfidence": 91,
     "lowConfidence": 0,
-    "reassignable": 37
+    "reassignable": 38
   },
   "results": [
     {
@@ -1077,6 +1077,22 @@
         "revival text signals: revival, new revival"
       ],
       "textSnippet": "  A bright and beckoning path cuts through the fairy-tale thicket of whimsy and woe that is ”Into the Woods,” the musical by Stephen Sondheim and James Lapine that opened last night in a new revival a"
+    },
+    {
+      "showId": "into-the-woods-2002",
+      "showTitle": "Into the Woods",
+      "showYear": 2002,
+      "file": "variety--charles-isherwood.json",
+      "outlet": "Variety",
+      "criticName": "Charles Isherwood",
+      "publishDate": "2002-04-30",
+      "confidence": "medium",
+      "suggestedShowId": "into-the-woods-1987",
+      "signals": [
+        "revival text signals: revival, new production",
+        "year 1987 in text matches revival into-the-woods-1987"
+      ],
+      "textSnippet": "A mute cow, believe it or not, is the life of the party at Broadway's new \" Into the Woods .\" This revival of Stephen Sondheim and James Lapine 's 1987 musical isn't wholly dependent on its scene-stea"
     },
     {
       "showId": "a-delicate-balance-1996",

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T05:28:22.749Z",
+  "timestamp": "2026-10-23T05:53:05.086Z",
   "stats": {
-    "totalReviews": 59289,
-    "alreadyFlagged": 21066,
+    "totalReviews": 59300,
+    "alreadyFlagged": 21067,
     "dateGuardCatches": 200,
-    "directorMismatch": 2161,
-    "tvFilmSignals": 1683,
-    "londonSignals": 2815,
+    "directorMismatch": 2162,
+    "tvFilmSignals": 1684,
+    "londonSignals": 2816,
     "offBroadwaySignals": 530,
     "yearMismatch": 175,
-    "noPublishDate": 5291
+    "noPublishDate": 5295
   },
   "findings": [
     {
@@ -3469,6 +3469,19 @@
     },
     {
       "showId": "anna-x-west-end-2021",
+      "file": "camdennewjournal--unknown.json",
+      "publishDate": null,
+      "url": "https://www.camdennewjournal.co.uk/article/review-anna-x-at-harold-pinter-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        }
+      ]
+    },
+    {
+      "showId": "anna-x-west-end-2021",
       "file": "daily-mail--patrick-marmion.json",
       "score": 63,
       "publishDate": "2021-07-19",
@@ -4706,6 +4719,19 @@
       "score": 96,
       "publishDate": "2021-07-06",
       "url": "https://theatreweekly.com/review-be-more-chill-at-the-shaftesbury-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen brackett\" from be-more-chill-2019"
+        }
+      ]
+    },
+    {
+      "showId": "be-more-chill-west-end-2021",
+      "file": "theupcoming--michael-higgs.json",
+      "publishDate": null,
+      "url": "https://www.theupcoming.co.uk/2021/07/07/be-more-chill-at-shaftesbury-theatre-theatre-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -71849,6 +71875,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
+      "file": "plays-international--unknown.json",
+      "publishDate": "2026-10-22",
+      "url": "https://playsinternational.org.uk/ilford-boy-donmar-warehouse/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
