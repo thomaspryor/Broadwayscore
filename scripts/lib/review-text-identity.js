@@ -174,7 +174,12 @@ const openingOf = (t) => String(t || '').replace(/\s+/g, ' ').trim().slice(0, OP
 
 function mergeTheatreRecordIntoExisting(existing, reviewData, { fillCritic = false } = {}) {
   const merged = { ...existing };
-  if (!merged.fullText && reviewData.fullText) merged.fullText = reviewData.fullText;
+  // BRO-4490: whenever the TR text is taken, its fetch date comes with it.
+  const takeText = () => {
+    merged.fullText = reviewData.fullText;
+    if (reviewData.textFetchedAt) merged.textFetchedAt = reviewData.textFetchedAt;
+  };
+  if (!merged.fullText && reviewData.fullText) takeText();
   // BRO-5141: before the PDF parser was bounded, a TR text could run on into
   // the next production's info page (synopsis, cast, sometimes its reviews).
   // A fresh extraction of the same review without that tail replaces it.
@@ -185,7 +190,7 @@ function mergeTheatreRecordIntoExisting(existing, reviewData, { fillCritic = fal
     // Breadcrumb: the push restore must not read the remote's longer, bled
     // copy as richer content and put it back (review-write-guard isIntentionalClear).
     merged.fullTextTrimmed = { reason: 'theatre-record header bleed (BRO-5141)', fromLength: merged.fullText.length, at: new Date().toISOString() };
-    merged.fullText = reviewData.fullText;
+    takeText();
     merged.textWordCount = reviewData.fullText.split(/\s+/).filter(Boolean).length;
     markRescoreNeeded(merged, 'theatre-record: text trimmed to own section (BRO-5141)');
   }

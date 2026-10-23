@@ -247,3 +247,13 @@ test('P1-b: guards — flagged, foreign domain, already-kept, not the fingerprin
   assert.equal(decideDuplicateTwinUrlCarry(d({}), two, 'bt--vera-liber.json').reason, 'ambiguous-multiple-urlless');
   assert.equal(decideDuplicateTwinUrlCarry(d({}), [{ url: 'https://x/y', fullText: TR_TEXT, file: 'bt--vera-liber.json' }], 'bt--vera-liber.json').carry, false);
 });
+
+test('BRO-4490: a merge that takes the TR text takes its fetch date; one that keeps the existing text keeps its own', () => {
+  const at = '2026-10-23T00:00:00.000Z';
+  const filled = mergeTheatreRecordIntoExisting({ url: URL, fullText: null }, { fullText: TR_TEXT, textFetchedAt: at });
+  assert.equal(filled.fullText, TR_TEXT);
+  assert.equal(filled.textFetchedAt, at);
+  const kept = mergeTheatreRecordIntoExisting({ url: URL, fullText: 'existing review body', textFetchedAt: '2025-01-01T00:00:00.000Z' }, { fullText: TR_TEXT, textFetchedAt: at });
+  assert.equal(kept.fullText, 'existing review body');
+  assert.equal(kept.textFetchedAt, '2025-01-01T00:00:00.000Z');
+});

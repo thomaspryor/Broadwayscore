@@ -628,6 +628,7 @@ async function main() {
         continue;
       }
 
+      const fetchedAt = new Date().toISOString();
       const reviewData = {
         showId: show.id,
         outletId,
@@ -641,7 +642,10 @@ async function main() {
         contentTierReason: 'Full review text from Theatre Record',
         source: 'theatre-record',
         theatreRecordUrl: productionLink,
-        addedAt: new Date().toISOString(),
+        addedAt: fetchedAt,
+        // BRO-4490: the text is fetched now, so stamp it; without this the
+        // scorer's truncated-text checks see a text with no fetch date.
+        textFetchedAt: fetchedAt,
         textWordCount: review.fullText.split(/\s+/).length
       };
 
