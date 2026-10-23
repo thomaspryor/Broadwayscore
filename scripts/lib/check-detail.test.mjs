@@ -90,3 +90,16 @@ ${[1, 2, 3, 4, 5, 6].map(n => `test(${JSON.stringify(long(n))}, () => { assert.o
   // The same cut land.yml applies keeps the name and the message.
   assert.equal(d.replace(/\r?\n/g, ' ').slice(0, 300), d);
 });
+
+test('tapDetail names the NEW-since-main failures, not the pre-existing ones (BRO-5937)', () => {
+  const stdout = [
+    'not ok 1 - old failure that already fails on main',
+    '  ---', '  error: old cause', '  ...',
+    '✗ post-merge test floor: NEW since origin/main — this merge introduced or exposed these, BLOCKING:',
+    '   1 failure(s):',
+    '    - scripts/x.test.mjs::brand new failure',
+  ].join('\n');
+  const d = tapDetail({ stdout });
+  assert.match(d, /brand new failure/);
+  assert.doesNotMatch(d, /old failure/);
+});

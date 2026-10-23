@@ -704,6 +704,18 @@ const tapDetail = (err) => {
     const name = m[1].replace(/\s+#\s*(?:TODO|SKIP)\b.*$/i, '').trim() || '(unnamed)';
     failing.push({ name, cause: causeAfter(lines, i) });
   });
+  // merged-tree-tests (BRO-5937): the gate's stdout also holds failures that
+  // already fail on origin/main. When it prints its "NEW since origin/main"
+  // list, name those instead; they are the ones that block this merge.
+  const newAt = lines.findIndex(l => /NEW since origin\/main/.test(l));
+  if (newAt >= 0) {
+    const fromNew = [];
+    for (const l of lines.slice(newAt + 1)) {
+      const m = l.match(/^\s+- (.+)$/);
+      if (m) fromNew.push({ name: m[1].trim(), cause: '' });
+    }
+    if (fromNew.length) failing.splice(0, failing.length, ...fromNew);
+  }
   const summary = `${(err && err.stderr) || ''}\n${lines.slice(-40).join('\n')}`.split('\n').filter(l => /FAILED|test floor|ENOBUFS|exceeded/.test(l)).slice(-1)[0] || '';
   if (!failing.length) return summary.trim() || defaultDetail(err);
   const first = failing.find(f => f.cause);
