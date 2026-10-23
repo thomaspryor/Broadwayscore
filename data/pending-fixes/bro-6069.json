@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6069",
   "planId": "e94c2e94-5348-4d41-bc87-7456275d4a92",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-23T14:19:00.000Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,19 @@
         "description": "two-girls-off-broadway-2026/nytimes--helen-shaw.json: humanReviewNote"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-23T14:30:29.494Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-girls-off-broadway-2026/nytimes--helen-shaw.json humanReviewScore: null -> 62"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-girls-off-broadway-2026/nytimes--helen-shaw.json humanReviewNote: null -> \"Owner pin 2026-10-23 (BRO-6069): average of the two agreeing models after a sole-outlier ensemble result of 56.\""
+    }
+  ],
+  "executedIn": "ci"
 }
