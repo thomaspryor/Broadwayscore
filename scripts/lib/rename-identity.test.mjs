@@ -31,9 +31,20 @@ test('once the stamped file is committed, its later pushes use that copy again',
   assert.equal(committedHistoryFor('x/y.json', { _recreatedAfterDelete: { ...stamp } }, readStamped), atPath);
 });
 
-test('the recreate stamp wins over a rename stamp on the same file', () => {
+test('a fresh rename onto a deleted path keeps the rename source as history (BRO-5356)', () => {
   const local = { _renamedFrom: renameStamp('a', 'src.json'), _recreatedAfterDelete: recreateStamp('plan-2') };
-  assert.equal(committedHistoryFor('therese-raquin-2015/flipside.json', local, read), null);
+  assert.deepEqual(committedHistoryFor('therese-raquin-2015/flipside.json', local, read), committed['a/src.json']);
+});
+
+test('a refused or failed stamp write is not reported as stamped', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'recreated-'));
+  fs.mkdirSync(path.join(dir, 's'), { recursive: true });
+  fs.writeFileSync(path.join(dir, 's/a.json'), JSON.stringify({ fullText: 'a' }));
+  fs.writeFileSync(path.join(dir, 's/b.json'), JSON.stringify({ fullText: 'b' }));
+  const stamped = stampRecreatedReviews(dir, new Set(['s/a.json', 's/b.json']), 'plan-4', {
+    write: (abs) => { if (abs.endsWith('a.json')) return { wrote: false }; throw new Error('disk full'); },
+  });
+  assert.deepEqual(stamped, []);
 });
 
 test('stampRecreatedReviews stamps only deleted paths that exist again', () => {

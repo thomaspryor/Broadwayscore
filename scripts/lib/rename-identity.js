@@ -49,9 +49,13 @@ function recreatedSinceCommit(local, atPath) {
 function committedHistoryFor(filePath, local, readCommitted) {
   let atPath = null;
   try { atPath = readCommitted(filePath); } catch { atPath = null; }
+  // A fresh rename names the right history (delete X, move Y onto X: Y's);
+  // the recreate stamp only matters when nothing was renamed in.
+  if (renamedSinceCommit(local, atPath)) {
+    try { return readCommitted(local._renamedFrom.file); } catch { return null; }
+  }
   if (recreatedSinceCommit(local, atPath)) return null;
-  if (!renamedSinceCommit(local, atPath)) return atPath;
-  try { return readCommitted(local._renamedFrom.file); } catch { return null; }
+  return atPath;
 }
 
 /** The stamp a rename writes onto the moved record. */
@@ -80,7 +84,13 @@ function stampRecreatedReviews(reviewTextsDir, deleted, fixId, { write, at = new
     let rec;
     try { rec = JSON.parse(fs.readFileSync(abs, 'utf8')); } catch { continue; }
     if (!rec || typeof rec !== 'object' || Array.isArray(rec)) continue;
-    save(abs, { ...rec, _recreatedAfterDelete: recreateStamp(fixId, at) });
+    try {
+      const res = save(abs, { ...rec, _recreatedAfterDelete: recreateStamp(fixId, at) });
+      if (res && res.wrote === false) continue;
+    } catch (e) {
+      console.warn(`  could not stamp ${rel} as recreated: ${e.message}`);
+      continue;
+    }
     stamped.push(rel);
   }
   return stamped;
