@@ -531,6 +531,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // alarms (trunk red, dead loop, PR supervisor, Cyrus, runners, watchdog)
   // all live in `parts` now: the owner can neither see nor act on them.
   const head = [];
+  let boardNumbersTableHtml = '';
   head.push(`<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:18px 14px;color:#111;">`);
   head.push(`<p style="font-size:15px;font-weight:700;margin:0 0 12px;">Morning digest · ${esc(dateLabel)}</p>`);
   const parts = [];
@@ -602,10 +603,11 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   if (boardNumbersData) {
     try {
       const bn = require('./lib/board-numbers.js');
-      head.push(bn.renderBoardNumbersHtml(
-        bn.buildBoardNumbers({ data: boardNumbersData, waiting: sections.boardWaitingUnknown ? null : view.decisions, stuck: sections.boardStuckUnknown ? null : stuckCount, technicalInReview: sections.inReviewTechnicalCount }),
-        esc,
-      ));
+      const m = bn.buildBoardNumbers({ data: boardNumbersData, waiting: sections.boardWaitingUnknown ? null : view.decisions, stuck: sections.boardStuckUnknown ? null : stuckCount, technicalInReview: sections.inReviewTechnicalCount });
+      // BRO-6081: the owner reads a verdict, a 7-day chart and four tiles; the
+      // full numbers table moves under Technical details.
+      boardNumbersTableHtml = bn.renderBoardNumbersHtml(m, esc);
+      head.push(require('./lib/board-summary.js').renderBoardSummaryHtml(m, m.daily, esc, { partial: m.dailyTruncated }));
     } catch (err) {
       console.error(`[digest] WARN board numbers block failed: ${String(err.message).slice(0, 120)}`);
     }
@@ -777,6 +779,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   } else if (!overnightLine) {
     head.push(`<p style="font-size:13px;color:#666;margin:0 0 12px;">All quiet — no overnight changes to report.</p>`);
   }
+  if (boardNumbersTableHtml) parts.push(boardNumbersTableHtml);
   if (parts.length) {
     head.push(renderTechnicalDetailsHeading());
     head.push(...parts);

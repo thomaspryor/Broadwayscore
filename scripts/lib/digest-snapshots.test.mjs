@@ -348,7 +348,7 @@ test('buildHtml: internal-only failures (the 2026-09-24 shape) read calm at the 
   // The tail depends on this machine's real autofix ledger (buildHtml reads
   // it via localLoopDeadMessage). A 'dispatched' row is an unconfirmed
   // launch, never counted as in progress (codex P1-1).
-  assert.match(top, /Behind the scenes: 3 maintenance items tracked(, 1 confirmed in progress right now, 1 launched but not confirmed yet\.|; automatic fixing looks stalled)/);
+  assert.match(top, /Behind the scenes: 3 maintenance items tracked(, 1 confirmed in progress right now, 1 fix attempt launched this morning \(tomorrow's email confirms it ran\)\.|; automatic fixing looks stalled)/);
   for (const banned of ['Main', 'Push-retry', 'consecutive errors', '❌', 'site error']) {
     assert.ok(!top.includes(banned), `top block must not contain "${banned}"`);
   }

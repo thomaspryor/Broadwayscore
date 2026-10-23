@@ -846,8 +846,13 @@ function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = nu
   if (view.loopDead) {
     behind = `Behind the scenes: ${items}; automatic fixing looks stalled (see Technical details).`;
   } else {
-    behind = `Behind the scenes: ${items}, ${view.inProgress} confirmed in progress right now`
-      + (view.launched ? `, ${view.launched} launched but not confirmed yet` : '') + '.';
+    // BRO-6081: "0 confirmed in progress, 3 launched but not confirmed" read
+    // as a failure to the owner; it is the normal state right after this
+    // morning's launches, which tomorrow's reconcile confirms. Say that.
+    const parts2 = [];
+    if (view.inProgress) parts2.push(`${view.inProgress} confirmed in progress right now`);
+    if (view.launched) parts2.push(`${view.launched} fix attempt${view.launched === 1 ? '' : 's'} launched this morning (tomorrow's email confirms ${view.launched === 1 ? 'it' : 'they'} ran)`);
+    behind = `Behind the scenes: ${items}${parts2.length ? `, ${parts2.join(', ')}` : ''}.`;
   }
   parts.push(`<p style="font-size:12px;color:#888;margin:0 0 16px;">${esc(behind)}</p>`);
   return parts.join('\n');

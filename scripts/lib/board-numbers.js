@@ -261,7 +261,7 @@ async function fetchClaudeCost({ graphql, now = new Date(), cwd, days = 7, readL
 }
 
 /** Every live read, each fail-soft on its own: a missing piece renders "n/a", never blocks the digest. */
-async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLandedFn = readLanded, fetchInflow = fetchInflowCounts, fetchOpen = fetchOpenByPriority, fetchStuck = fetchStuckCards, fetchBySource = fetchInflowBySource, fetchParked = fetchParkedCards, fetchOpus = fetchOpusUsage, fetchCost = fetchClaudeCost } = {}) {
+async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLandedFn = readLanded, fetchInflow = fetchInflowCounts, fetchOpen = fetchOpenByPriority, fetchStuck = fetchStuckCards, fetchBySource = fetchInflowBySource, fetchParked = fetchParkedCards, fetchOpus = fetchOpusUsage, fetchCost = fetchClaudeCost, fetchDaily = require('./board-summary.js').fetchDailyFlow } = {}) {
   const soft = async (fn) => { try { return await fn(); } catch (err) { return { error: String(err && err.message || err).slice(0, 120) }; } };
   // Sequential on purpose: backlog-inflow-ratio.js walks one at a time because of Linear rate limits.
   const open = await soft(() => fetchOpen({ graphql }));
@@ -272,6 +272,7 @@ async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLande
   const parked = await soft(() => fetchParked({ graphql }));
   const opus = await soft(() => fetchOpus({ now }));
   const cost = await soft(() => fetchCost({ graphql, now, cwd }));
+  const daily = await soft(() => fetchDaily({ graphql, now }));
   let landed = null;
   try { landed = readLandedFn({ cwd, nowMs: now.getTime() }); } catch { /* n/a */ }
   return {
@@ -283,6 +284,7 @@ async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLande
     parked,
     opus,
     cost,
+    daily,
     landed1: landed ? landed.d1 : null,
     landed7: landed ? landed.d7 : null,
   };
@@ -319,6 +321,9 @@ function buildBoardNumbers({ data = {}, waiting = null, stuck = null, technicalI
     opus: { count: pick(data.opus, 'count'), cap: ok(data.opus) ? num(data.opus.cap) : linearOpusDailyCap() },
     lanes: { d1: data.landed1 || null, d7: data.landed7 || null },
     cost: ok(data.cost) ? data.cost : null,
+    // BRO-6081: per-day added/closed for the owner summary chart (board-summary.js).
+    daily: ok(data.daily) && Array.isArray(data.daily.days) ? data.daily.days : null,
+    dailyTruncated: ok(data.daily) && !!data.daily.truncated,
     floors,
   };
 }
@@ -359,9 +364,11 @@ function renderBoardNumbersHtml(m, esc = (s) => String(s)) {
     const i = l.indexOf(': ');
     return i < 0
       ? `<tr><td colspan="2" style="padding:2px 0;color:#666;">${esc(l)}</td></tr>`
-      : `<tr><td style="padding:2px 12px 2px 0;color:#555;white-space:nowrap;vertical-align:top;">${esc(l.slice(0, i))}</td><td style="padding:2px 0;">${esc(l.slice(i + 2))}</td></tr>`;
+      : `<tr><td style="width:34%;padding:2px 10px 2px 0;color:#555;vertical-align:top;word-wrap:break-word;">${esc(l.slice(0, i))}</td><td style="padding:2px 0;word-wrap:break-word;overflow-wrap:anywhere;">${esc(l.slice(i + 2))}</td></tr>`;
   });
-  return `<div style="margin:0 0 14px;"><p style="font-size:13px;font-weight:700;margin:0 0 4px;">Board numbers</p><table style="font-size:12px;border-collapse:collapse;">${rows.join('')}</table></div>`;
+  // Fixed layout + wrapping (BRO-6081): the nowrap labels pushed this table
+  // ~20px past a 390px phone screen.
+  return `<div style="margin:0 0 14px;"><p style="font-size:13px;font-weight:700;margin:0 0 4px;">Board numbers (detail)</p><table style="font-size:12px;border-collapse:collapse;width:100%;table-layout:fixed;">${rows.join('')}</table></div>`;
 }
 
 module.exports = {
