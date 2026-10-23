@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { classifySilentGap, shouldAlertGap, shouldDispatchScoring, shouldEmailUnscoredGap } = require('./t1-silent-gap.js');
+const { classifySilentGap, classifyGapCardState, GAP_CARD_STATE, shouldAlertGap, shouldDispatchScoring, shouldEmailUnscoredGap } = require('./t1-silent-gap.js');
 
 const NOW = new Date('2026-07-18T12:00:00Z');
 const classify = (file, over = {}) =>
@@ -308,4 +308,19 @@ test('BRO-5166: empty-body file at a listing page (BWW regional show page) is no
   assert.notEqual(classify({ ...listing, listingPageUrlManualClear: true }), null);
   // A real BWW regional review article still reports.
   assert.notEqual(classify({ ...listing, url: 'https://www.broadwayworld.com/chicago/article/Review-THE-HUMANITIES-at-Steppenwolf-20261010' }), null);
+});
+
+test('BRO-5863: unscored cbsnews /video/ file is not a gap AND its card state is terminal no-review (so the backstop card closes)', () => {
+  const f = {
+    showId: 'other-desert-cities-2026', outletId: 'cbsnews', criticName: 'Unknown',
+    url: 'https://www.cbsnews.com/video/other-desert-cities-on-broadway-family-secrets-laid-bare/',
+    source: 'submit-review-form', contentTier: 'truncated', incompleteReason: 'bot_blocked',
+    fullText: 'Your web browser is not fully supported by CBS News and CBSNews.com. For optimal experience and full features, please upgrade to a modern browser. You can get the new Microsoft Edge at microsoft.com/edge, available to download on all versions of Windows in more than 90 languages. \'; document.getElementById(\'ieblock\').setAttribute(\'style\', \'background-color: #B60505; color: #F5F5F5; font-size: 20px; font-family: sans-serif; padding: 100px 100px\'); } Watch CBS News',
+    textFetchedAt: '2026-10-20T01:24:49.591Z', contentTierReason: 'Short text (63 words)',
+  };
+  const args = { file: f, show: {}, tier: 2, outletScored: false, now: new Date('2026-10-23T12:00:00Z'), filePath: '/tmp/nonexistent/cbsnews--unknown.json' };
+  assert.equal(classifySilentGap(args), null);
+  assert.equal(classifyGapCardState(args), GAP_CARD_STATE.NO_REVIEW);
+  // a real cbsnews /news/ article at the same state is NOT terminal
+  assert.notEqual(classifyGapCardState({ ...args, file: { ...f, url: 'https://www.cbsnews.com/news/other-desert-cities-review/' } }), GAP_CARD_STATE.NO_REVIEW);
 });

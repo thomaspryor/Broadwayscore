@@ -430,6 +430,11 @@ function classifyGapCardState({ file, show, tier, outletScored, now, filePath })
   // Same mirror for classifySilentGap's listing-page early return (BRO-5166):
   // a card opened before the listing rule existed must close.
   if (isListingPageFile(file)) return GAP_CARD_STATE.NO_REVIEW;
+  // BRO-5863: classifySilentGap's `unscored` early return drops an unscored file at
+  // a named non-review URL (cbsnews.com/video/ player page) that no ensemble verdict
+  // will ever classify. Mirror it here or the backstop card filed before the pattern
+  // existed never closes (this function fell through to null).
+  if (!file.rejectionReason && !hasValidScore(file) && hasNonReviewUrl(file)) return GAP_CARD_STATE.NO_REVIEW;
   return null;
 }
 
