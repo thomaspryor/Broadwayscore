@@ -2181,6 +2181,23 @@ function safeWriteReview(filePath, newData, options = {}) {
     }
   }
 
+  // Approved sourceless-stars clear (BRO-6018): an approved fix nulled a copied,
+  // sourceless aggregatorStars. Round-up scrapers refill the field whenever it
+  // is empty (scrape-westendtheatre-roundups onMerge, merge-wet-stars-urls,
+  // sweep-we-aggregators), which would re-anchor the score on the copied stars.
+  // Keep it cleared unless the incoming stars carry a source.
+  try {
+    if (newData.aggregatorStars != null && !newData.aggregatorStarsSource && fs.existsSync(filePath)) {
+      const disk = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      const cleared = Array.isArray(disk.approvedFixes)
+        && disk.approvedFixes.some((f) => f && f.field === 'aggregatorStars' && f.newValue === null);
+      if (cleared && disk.aggregatorStars == null) {
+        console.warn(`[review-write-guard] ${path.basename(filePath)}: keeping aggregatorStars cleared (approved fix), incoming stars have no source`);
+        newData.aggregatorStars = null;
+      }
+    }
+  } catch (_) { /* unreadable disk copy: leave the write alone */ }
+
   // Aggregator score contamination guard (2026-05-25): when scoreSource is in
   // AGGREGATOR_SCORE_SOURCES, the aggregator stars belong in aggregatorStars
   // only — never in originalScore. The merge-mode above can re-introduce a

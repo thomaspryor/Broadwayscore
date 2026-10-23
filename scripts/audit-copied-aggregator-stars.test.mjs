@@ -11,6 +11,18 @@ const mos = { outletId: 'mail-on-sunday', criticName: 'Georgina Brown', url: 'ht
 test('Mail on Sunday stars equal to the Daily Mail row are flagged as copied', () => {
   const rows = findCopiedStars([f('dm.json', dm), f('mos.json', mos)]);
   assert.deepEqual(rows.map((r) => r.file).sort(), ['dm.json', 'mos.json']);
+  assert.ok(rows.every((r) => r.verdict === 'ambiguous'), 'both sourceless: either side may be the original');
+});
+test('only the side whose sibling has its own rating is a copy', () => {
+  const rows = findCopiedStars([f('dm.json', { ...dm, originalScore: 80 }), f('mos.json', mos)]);
+  assert.equal(rows.find((r) => r.file === 'mos.json').verdict, 'copy');
+  assert.equal(rows.find((r) => r.file === 'dm.json').verdict, 'ambiguous');
+});
+test('a shared round-up host or generic name stem is not a family', () => {
+  const a = { outletId: 'new-york-post', url: 'https://www.westendtheatre.com/r', aggregatorStars: '4/5' };
+  const b = { outletId: 'washington-post', url: 'https://www.westendtheatre.com/r', aggregatorStars: '4/5' };
+  assert.equal(sameFamily(a, b), false);
+  assert.deepEqual(findCopiedStars([f('a.json', a), f('b.json', b)]), []);
 });
 test('stars with a source are never flagged; different stars are not copies', () => {
   assert.deepEqual(findCopiedStars([f('dm.json', dm), f('mos.json', { ...mos, aggregatorStarsSource: 'json-ld' })]).map((r) => r.file), ['dm.json']);
