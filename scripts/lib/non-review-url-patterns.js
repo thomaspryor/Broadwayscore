@@ -292,6 +292,10 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // theatre, a filmed earlier production (the Globe's As You Like It DVD was
   // ingested onto the 2026 Globe run, 2026-08-15). Never a live-run review.
   { host: /(^|\.)myreviewer\.com$/, path: /^\/(dvd|blu-?ray|4k)\//i, reason: 'home-video-review' },
+  // BRO-5863: cbsnews.com/video/ pages are TV-segment players (no article text; the
+  // fetch returns only the "browser not supported" banner). Other Desert Cities and
+  // Boop held unscored T2 cbsnews slots from them. Corpus: 0 scored cbsnews /video/ files.
+  { host: /(^|\.)cbsnews\.com$/, path: /^\/video\//i, reason: 'video-segment' },
   // The Stage's /news/ section is news; its reviews live under /reviews/.
   // Found 2026-09-25: three live "reviews" carried /news/ URLs (serp-discovery
   // star stubs on kiss-of-the-spider-woman-1993 and mamma-mia-2001 pointing at

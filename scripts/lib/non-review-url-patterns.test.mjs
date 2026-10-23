@@ -586,3 +586,8 @@ test('BRO-5377: theatermap.nyc /shows/ listing pages are event-listing; other pa
   assert.equal(namedNonReviewReason('https://www.theatermap.nyc/reviews/some-show'), null);
   assert.equal(namedNonReviewReason('https://www.nottheatermap.nyc/shows/x'), null);
 });
+
+test('namedNonReviewReason: cbsnews.com /video/ segment pages are named (BRO-5863), articles are not', () => {
+  assert.equal(namedNonReviewReason('https://www.cbsnews.com/video/other-desert-cities-on-broadway-family-secrets-laid-bare/'), 'video-segment');
+  assert.equal(namedNonReviewReason('https://www.cbsnews.com/news/some-show-review/'), null);
+});
