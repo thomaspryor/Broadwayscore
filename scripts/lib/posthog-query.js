@@ -47,6 +47,7 @@ async function phQueryFull(hogql, opts = {}) {
     // BRO-5998: PostHog sheds load with 503 clickhouse_at_capacity (and 429/502);
     // it failed the weekly gate monitor twice in a row. Transient: back off, retry.
     if (res.ok || !RETRYABLE_STATUS.has(res.status) || attempt >= RETRY_DELAYS_MS.length) break;
+    console.error(`[posthog-query] HTTP ${res.status}, retry ${attempt + 1}/${RETRY_DELAYS_MS.length} in ${RETRY_DELAYS_MS[attempt] / 1000}s`);
     await sleep(RETRY_DELAYS_MS[attempt]);
   }
   // Body sliced: a 504 comes back as a full HTML page, which would otherwise

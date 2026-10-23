@@ -18,7 +18,10 @@ function loadState(statePath) {
 
 function runAnalyzerJson(scriptPath, args) {
   const raw = execFileSync('node', [scriptPath, '--json', ...args], {
-    encoding: 'utf8', timeout: 120000,
+    // BRO-5998: 8 min, not 2. The analyzer's 7 sequential PostHog queries can
+    // spend up to ~130s per query in phQueryFull 503 backoff; a 120s kill made
+    // that retry budget unreachable. Stays under the monitor jobs' 10-min cap.
+    encoding: 'utf8', timeout: 480000,
   }).trim();
   // --json prints exactly one JSON line last; tolerate stray warnings above it.
   const jsonLine = raw.split('\n').filter(l => l.trim().startsWith('{')).pop();
