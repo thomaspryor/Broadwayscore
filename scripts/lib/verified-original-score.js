@@ -59,10 +59,13 @@ function applyVerifiedOriginalScore(data, raw, reason) {
   // A stored star that disagrees would keep binding the band.
   for (const k of ['starRating', 'originalRating']) if (data[k] != null) data[k] = null;
   data.originalScoreCorrectedFrom = prior;
-  // A verdict judged the models against the old star. Once a person changes that
-  // star the verdict is void whichever side it took: Exit the King's "sided with
-  // LLM" note still rested on a wrong 4/5 and kept publishing 80 over a 3/5 (BRO-5942).
-  const changed = String(prior) !== String(raw);
+  // A verdict judged the models against the old star. Once that star is changed or
+  // cleared (a person's correction, a refetch, a multi-show split) the verdict is
+  // void whichever side it took: Exit the King's "sided with LLM" note still rested
+  // on a wrong 4/5 and kept publishing 80 over a 3/5 (BRO-5942). Compared as parsed
+  // ratings so '3/5' and '3/5 stars' are the same star; a first star voids nothing.
+  const parse = (v) => (v == null ? null : require('./score-parsers').parseOriginalScore(v, data.outletId));
+  const changed = prior != null && (raw == null || (parse(prior) ?? String(prior)) !== (parse(raw) ?? String(raw)));
   require('./star-reliability').invalidateStarSidedAdjudication(data, why, { anySide: changed });
   return { ok: true };
 }

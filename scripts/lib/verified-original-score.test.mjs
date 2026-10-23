@@ -33,3 +33,15 @@ test('re-verifying the same star keeps a models-side adjudication', () => {
   applyVerifiedOriginalScore(d, '3/5 stars', 'checked again');
   assert.equal(d.adjudicatedScore, 80);
 });
+
+test('the same star written another way keeps it', () => {
+  const d = { ...record(), originalScore: '3/5' };
+  applyVerifiedOriginalScore(d, '3/5 stars', 'reformatted');
+  assert.equal(d.adjudicatedScore, 80);
+});
+
+test('a first star on a record that had none keeps it (no verdict was judged against a star)', () => {
+  const d = { ...record(), originalScore: null };
+  applyVerifiedOriginalScore(d, '3/5 stars', 'found on the page');
+  assert.equal(d.adjudicatedScore, 80);
+});
