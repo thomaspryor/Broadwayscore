@@ -11,10 +11,6 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
-if (require('./lib/cli-help.js').hasHelpFlag(process.argv.slice(2))) {
-  console.log('audit-verified-miss-presence.js [--json] [--rows] [--tier=N]: per-cohort count of verified misses now present in reviews.json (read-only)');
-  process.exit(0);
-}
 const ROOT = path.join(__dirname, '..');
 
 function fold(s) {
@@ -24,7 +20,11 @@ const OUTLET_STOP = new Set(['the', 'new', 'york', 'london', 'uk', 'com', 'onlin
 function outletKey(s) {
   return fold(s).split(' ').filter((w) => !OUTLET_STOP.has(w)).join('') || fold(s).replace(/ /g, '');
 }
+const REGION = new Set(['york', 'london']);
+const regionOf = (s) => fold(s).split(' ').filter((w) => REGION.has(w)).sort().join(',');
 function sameOutlet(a, b) {
+  // "The New York Times" must not match "The Times", nor Time Out New York match Time Out London.
+  if (regionOf(a) !== regionOf(b)) return false;
   const x = outletKey(a); const y = outletKey(b);
   return !!x && !!y && (x === y || (Math.min(x.length, y.length) >= 6 && (x.includes(y) || y.includes(x))));
 }
@@ -64,6 +64,10 @@ function summarize(rows) {
 
 function main() {
   const argv = process.argv.slice(2);
+  if (require('./lib/cli-help.js').hasHelpFlag(argv)) {
+    console.log('audit-verified-miss-presence.js [--json] [--rows] [--tier=N]: per-cohort count of verified misses now present in reviews.json (read-only)');
+    return;
+  }
   const tiers = argv.find((a) => a.startsWith('--tier=')) ? [Number(argv.find((a) => a.startsWith('--tier=')).slice(7))] : [1, 2];
   const misses = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/audit/crossmodel/verified-misses.json'), 'utf8')).filter((m) => tiers.includes(m.tier));
   const reviews = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/reviews.json'), 'utf8')).reviews;
