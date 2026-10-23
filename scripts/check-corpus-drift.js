@@ -636,6 +636,11 @@ function runAudit(audit) {
     ok,
     crashed,
     detail: tail,
+    // BRO-6082: where this audit's drift reaches the owner. 'card': its own
+    // routeAlert condition (routePerAuditAlerts). 'fyi': the one digest FYI
+    // line (queueUntrackedDriftLine). health-check reads it so drift that has
+    // a channel is not also a dispatched umbrella row no session can close.
+    channel: audit.healPathRequired ? 'card' : 'fyi',
   };
 }
 
@@ -725,6 +730,38 @@ async function routePerAuditAlerts(audits) {
   }
 }
 
+// BRO-6082: the monitor-only audits (no healPathRequired, so no per-audit
+// card) used to reach the owner only through the health row "Quality: corpus
+// drift", which digest-autofix dispatched as one card covering ~18 unrelated
+// statistics; no session could make it absent, so it parked. They are told as
+// one FYI line instead (queueDigestLine info:true: never carded or dispatched,
+// same channel as the weekly traffic receipt). Pure builder + thin queue call.
+const UNTRACKED_DRIFT_CONDITION_KEY = 'corpus-drift:monitor-only';
+function untrackedDriftLine(audits, now) {
+  const drifting = audits.filter((a) => !a.ok && !a.crashed && a.channel === 'fyi');
+  if (drifting.length === 0) return null;
+  const names = drifting.map((a) => a.name);
+  const shown = names.slice(0, 6).join(', ') + (names.length > 6 ? `, +${names.length - 6} more` : '');
+  return {
+    conditionKey: UNTRACKED_DRIFT_CONDITION_KEY,
+    title: `Data-quality monitors drifting from baseline: ${drifting.length} (${shown}). Checked ${String(now).slice(0, 10)}.`,
+    description: 'Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit\'s command and output.',
+    severity: 'info',
+    info: true,
+  };
+}
+
+function queueUntrackedDriftLine(audits, now) {
+  const line = untrackedDriftLine(audits, now);
+  try {
+    const router = require('./lib/owner-alert-router');
+    if (line) router.queueDigestLine(line);
+    else router.removeDigestLines(UNTRACKED_DRIFT_CONDITION_KEY);
+  } catch (e) {
+    console.error(`::warning::[check-corpus-drift] queueDigestLine failed for "${UNTRACKED_DRIFT_CONDITION_KEY}" (${e.message})`);
+  }
+}
+
 async function main() {
   const argv = process.argv.slice(2);
   const strict = argv.includes('--strict');
@@ -744,6 +781,7 @@ async function main() {
   }
 
   await routePerAuditAlerts(audits);
+  queueUntrackedDriftLine(audits, verdict._meta.generatedAt);
 
   const code = decideExit({ ...verdict.summary, strict });
   if (code !== 3) {
@@ -843,4 +881,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { AUDITS, runAudit, buildVerdict, decideExit, routePerAuditAlerts };
+module.exports = { AUDITS, runAudit, buildVerdict, decideExit, routePerAuditAlerts, untrackedDriftLine, UNTRACKED_DRIFT_CONDITION_KEY };

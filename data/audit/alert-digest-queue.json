@@ -28,55 +28,6 @@
     "queuedAt": "2026-10-23T07:34:18.958Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:the-kick-inside-off-broadway-2026",
-    "title": "Review gap — \"The Kick Inside\" missing 1 cited review(s)",
-    "description": "The Kick Inside (the-kick-inside-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-kick-inside-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-23T08:15:37.795Z"
-  },
-  {
-    "conditionKey": "opening-night-drift:other-desert-cities-2026",
-    "title": "Opening night drift: Other Desert Cities (other-desert-cities-2026)",
-    "description": "Review counts do not reconcile for Other Desert Cities (other-desert-cities-2026): local review-texts=35, reviews.json aggregate=31, live production=31, drift=4 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39921430736",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Show",
-        "value": "Other Desert Cities (other-desert-cities-2026)",
-        "inline": false
-      },
-      {
-        "name": "Counts",
-        "value": "local=35, aggregate=31, live=31, drift=4",
-        "inline": false
-      },
-      {
-        "name": "Opening",
-        "value": "2026-10-18",
-        "inline": false
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39921430736)",
-        "inline": false
-      }
-    ],
-    "queuedAt": "2026-10-23T08:01:25.562Z"
-  },
-  {
     "conditionKey": "time-to-publish-sla:missed",
     "title": "Time-to-publish SLA missed — 0% within 15 min (target 90%)",
     "description": "Scope: 2 opening window(s): derren-brown-only-human-west-end-2026 (2026-10-22), phyl-off-broadway-2026 (2026-10-22)\nEvaluated 10 review(s), p90 314m.\nSlowest:\n• derren-brown-only-human-west-end-2026 / north-west-end — 411m\n• phyl-off-broadway-2026 / talkinbroadway — 314m\n• derren-brown-only-human-west-end-2026 / london-box-office — 215m\n• derren-brown-only-human-west-end-2026 / theatre-weekly — 130m\n• derren-brown-only-human-west-end-2026 / theatreandtonic — 130m\n• derren-brown-only-human-west-end-2026 / liamodell — 130m\n• derren-brown-only-human-west-end-2026 / west-end-best-friend — 130m\n• phyl-off-broadway-2026 / nysr — 128m",
@@ -906,5 +857,161 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-23T19:19:19.991Z"
+  },
+  {
+    "conditionKey": "opening-night-drift:other-desert-cities-2026",
+    "title": "Opening night drift: Other Desert Cities (other-desert-cities-2026)",
+    "description": "Review counts do not reconcile for Other Desert Cities (other-desert-cities-2026): local review-texts=36, reviews.json aggregate=32, live production=32, drift=4 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40030542239",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Show",
+        "value": "Other Desert Cities (other-desert-cities-2026)",
+        "inline": false
+      },
+      {
+        "name": "Counts",
+        "value": "local=36, aggregate=32, live=32, drift=4",
+        "inline": false
+      },
+      {
+        "name": "Opening",
+        "value": "2026-10-18",
+        "inline": false
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40030542239)",
+        "inline": false
+      }
+    ],
+    "queuedAt": "2026-10-23T22:01:37.685Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-6080-mvlhdgf3",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-6080-mvlhdgf3",
+    "description": "land.yml did not land land/job/linear-BRO-6080-mvlhdgf3: the unit-tests-node gate went red at 65785a4712. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40029702471",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-6080-mvlhdgf3"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "65785a47129b0c718ad77cec2b6faf5f31437caa"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40029702471"
+      }
+    ],
+    "queuedAt": "2026-10-23T22:09:58.713Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6086-codex-refresh-fit",
+    "title": "Landing blocked: rebase red on land/bro-6086-codex-refresh-fit",
+    "description": "land.yml did not land land/bro-6086-codex-refresh-fit: the rebase gate went red at 6c067c4d70. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6086-codex-refresh-fit @ 6c067c4d70 (origin/land/bro-6086-codex-refresh-fit) → origin/main @ a46f41a2e9 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ a46f41a2e9: Rebasing (1/1) error: could not apply 6c067c4d70c... feat(codex): cloud lane refreshes the stored login at 6 days; card-fit exclusions; fix audit stdout truncation flake (BRO-6086) hint: Resolve all c Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40031487438",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6086-codex-refresh-fit"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "6c067c4d70c01f16205216adac7ecaac963c2a2f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40031487438"
+      }
+    ],
+    "queuedAt": "2026-10-23T22:26:22.790Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6083-coordinator-registry",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6083-coordinator-registry",
+    "description": "land.yml did not land land/bro-6083-coordinator-registry: the unit-tests-node gate went red at c10009a9ca. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40035315000",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6083-coordinator-registry"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "c10009a9ca2327c4f1286c5703ee6df7924781f9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40035315000"
+      }
+    ],
+    "queuedAt": "2026-10-23T23:00:07.188Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:cirque-berserk-west-end-2026",
+    "title": "Auto-remediation gave up on cirque-berserk-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"cirque-berserk-west-end-2026\",\"category\":\"west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-23T23:13:20.390Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/bro3887-cache-fix-acceptance.test.mjs::BRO-3887: repo Actions cache stays below the size that evicts the SERP cache",
+    "title": "Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"BRO-3887: repo Actions cache stays below the size that evicts the SERP cache\" in tests/unit/bro3887-cache-fix-acceptance.test.mjs is red against the live corpus.\n\nrepo Actions cache is 9.67 GiB; past 10.00 GiB GitHub LRU-evicts every entry, including the KB-sized bd-serp-cache-* that gather-reviews.js relies on, and SERP spend jumps (BRO-3887, BRO-4146). Find the biggest keys: `gh cache list --sort size_in_bytes --limit 20`; scripts/prune-github-actions-cache.js prunes by key prefix.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-23T23:29:56.888Z"
   }
 ]

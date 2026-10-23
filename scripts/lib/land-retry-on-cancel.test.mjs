@@ -327,3 +327,33 @@ test('BRO-6058: unrelated errors are not retried with the flag', () => {
   assert.throws(() => runGhWithFallback(['repos/o/r/actions/jobs/1/logs'], { exec, env: {}, log: quiet }));
   assert.equal(calls.length, 1);
 });
+
+test('BRO-6012: a hand dispatch is followable by its run-name while Checks is still running', () => {
+  const running = { ...DISPATCH, display_title: `Land ${DISPATCH_BRANCH}`, status: 'in_progress', conclusion: null };
+  const options = dispatchReader({ dispatch: running, runJobs: [{ id: 1, name: 'Checks', conclusion: null }] });
+  const resolved = resolveLandRun(running, options);
+  assert.equal(resolved.head_branch, DISPATCH_BRANCH);
+  assert.equal(resolved.head_sha, null, 'the verified tip is unknown until Checks logs exist');
+  assert.equal(options.calls.filter((p) => p.endsWith('/logs')).length, 0);
+  const latest = readLatestRun(DISPATCH_BRANCH, options);
+  assert.equal(latest.id, running.id);
+  const verdict = landVerdict({ refSha: DISPATCH_TIP, run: latest, nowMs: Date.parse('2026-10-22T18:30:00Z') });
+  assert.equal(verdict.verdict, 'waiting');
+  assert.match(verdict.why, /hand dispatch.*verified tip not readable yet/);
+  assert.equal(resolveLandRun({ ...running, display_title: 'Land' }, options), null, 'an untitled dispatch still waits for Checks logs');
+  assert.equal(resolveLandRun({ ...running, display_title: 'Land main' }, options), null, 'only land/** titles count');
+});
+
+test('BRO-6012: a titled unfinished dispatch stays followable while its Checks log 404s; a finished one does not', () => {
+  const running = { ...DISPATCH, display_title: `Land ${DISPATCH_BRANCH}`, status: 'in_progress', conclusion: null };
+  const options = dispatchReader({ dispatch: running });
+  options.readText = () => { throw new Error('gh: Not Found (HTTP 404)'); };
+  const resolved = resolveLandRun(running, options);
+  assert.equal(resolved.identityPending, true);
+  assert.equal(resolved.head_branch, DISPATCH_BRANCH);
+  const done = { ...DISPATCH, display_title: `Land ${DISPATCH_BRANCH}` };
+  assert.equal(resolveLandRun(done, dispatchReader({ dispatch: done, log: 'no identity here' })), null, 'a finished run never gets a pending identity');
+  const finished404 = dispatchReader({ dispatch: done });
+  finished404.readText = () => { throw new Error('gh: Not Found (HTTP 404)'); };
+  assert.equal(resolveLandRun(done, finished404), null);
+});

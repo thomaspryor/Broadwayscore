@@ -122,8 +122,14 @@ async function main(argv) {
   // would have caught the two drifting apart — a long row name would simply
   // stop matching, forever, silently. rowMatchKey also clamps the name so the
   // encoded token stays inside SAFE_CHECK_FORMS' 200-character cap.
+  // Number-free on both sides (BRO-6081): digest-autofix reattaches a row
+  // whose title carries a live count ("(2194/1750 reqs)") to the open card
+  // filed under yesterday's count, so an exact compare reported "absent" as
+  // soon as the count moved while the condition still fired.
   const { rowMatchKey } = require('./lib/health-row-check-cmd.js');
-  const target = rowMatchKey(row);
+  const { numberFreeTitle } = require('./lib/card-dedupe.js');
+  const key = (name) => numberFreeTitle(rowMatchKey(name));
+  const target = key(row);
   // BRO-3427 ship-check finding: every "<condition> on <show>" row (the
   // entire population digest-autofix's per-show cards are filed from — see
   // scripts/lib/opening-night-remediation.js's kind:'alert' branch, which
@@ -137,7 +143,7 @@ async function main(argv) {
   // shape — see queueDigestLine/normalizeQueuedRows in digest-autofix.js).
   const queuedAsRows = Array.isArray(snap.queued) ? snap.queued : [];
   const present = [...(snap.errors || []), ...(snap.warns || []), ...queuedAsRows]
-    .some(r => r && rowMatchKey(String(r.name || r.title || '')) === target);
+    .some(r => r && key(String(r.name || r.title || '')) === target);
   if (present) {
     console.error(`[check-health-row-absent] FAIL: "${row}" still listed in the ${snap.generatedAt} health snapshot`);
     return 1;

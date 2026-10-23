@@ -12,7 +12,8 @@
  * hand.
  *
  * RULES (a card is reclaimed only when all hold):
- *   - started state, not In Review (In Review belongs to the stuck-card closer).
+ *   - started state. In Review cards are reclaimed only in the narrow case
+ *     below (BRO-6085); every other In Review card belongs to the stuck-card closer.
  *   - no Linear activity for RECLAIM_IDLE_MS: neither updatedAt nor the newest
  *     comment (in case a comment does not bump updatedAt). Machine edits also
  *     bump updatedAt, which can only delay a reclaim, never cause a wrong one.
@@ -20,6 +21,14 @@
  *     the stuck set ran 1-52 days, so little is lost.
  *   - not an owner card (👑 / OWNER title) and no NO-RECLAIM: line in the
  *     description (the opt-out for trackers and long-lived holders).
+ *   - In Review cards (BRO-6085): a Mac headless worker that ends without a
+ *     session report leaves the card In Review with only its "Dispatched ..."
+ *     comment, and nothing else looks at it (the closer needs a passing VERIFY).
+ *     Such a card goes back to Todo when ALL hold: every comment is a machine
+ *     comment (dispatch, claim, earlier reclaim), there is no session report,
+ *     no owner marker (hasOwnerMarker, same test as the closer), and no gate
+ *     evidence (PR-EVIDENCE line or runnable VERIFY: the closer's try-close
+ *     owns those cards). Any human comment means someone engaged: keep.
  *   - its latest session report is not `blocked`: that report deliberately
  *     leaves the card In Progress (linear-session-reporting.js), and putting
  *     it back in Todo would make a worker hit the same blocker every ~2 days.
@@ -47,6 +56,7 @@
 'use strict';
 
 const { ABANDONED_AFTER_DAYS } = require('./land-stranded-refs.js');
+const { isRealInReview, hasOwnerMarker } = require('./in-review-backlog.js');
 
 const HOUR_MS = 60 * 60 * 1000;
 const RECLAIM_IDLE_MS = 48 * HOUR_MS;
@@ -55,6 +65,12 @@ const MAX_RECLAIMS = 2;
 const MAX_PER_RUN = 40;
 const COMMENT_CAP = 250;
 const RECLAIM_MARKER = 'RECLAIMED-ABANDONED:';
+// A "blocked" report this close to a Dispatched comment is not a verdict on the
+// card (BRO-6085: BRO-5076/5150/5249 carry one in the same minute as the dispatch),
+// so it must not pin the card against reclaim. MAX_RECLAIMS still caps the cycling
+// if the blocker is real.
+const DISPATCH_BLOCKED_WINDOW_MS = 5 * 60 * 1000;
+const DISPATCH_COMMENT_RE = /^Dispatched\b/;
 const NO_RECLAIM_RE = /^\s*NO-RECLAIM\s*:/im;
 // Case-sensitive on purpose: owner cards are titled "👑 OWNER — ..."; a
 // case-insensitive match would also catch "Owner-alert router ..." bugs.
@@ -63,7 +79,7 @@ const OWNER_CARD_RE = /\u{1F451}|^\W*OWNER\b/u;
 /** Skip reason from the list fields alone (state, updatedAt, title, description), or null. */
 function reclaimListSkipReason(issue, nowMs) {
   if (!issue || !issue.state || issue.state.type !== 'started') return 'not-started';
-  if (/review/i.test(issue.state.name || '')) return 'in-review';
+  if (/review/i.test(issue.state.name || '') && !isRealInReview(issue)) return 'in-review';
   const ms = Date.parse(issue.updatedAt);
   if (!Number.isFinite(ms)) return 'no-updated-at';
   if (nowMs - ms < RECLAIM_IDLE_MS) return 'recent';
@@ -79,6 +95,15 @@ function findReclaimCandidates(issues, { nowMs }) {
     .sort((a, b) => Date.parse(a.updatedAt) - Date.parse(b.updatedAt));
 }
 
+/** True for a `blocked` report within DISPATCH_BLOCKED_WINDOW_MS of any Dispatched comment (either side). */
+function isDispatchTimeBlocked(report, comments) {
+  const { parseSessionReportStatus } = require('./linear-session-reporting.js');
+  if (parseSessionReportStatus(report && report.body) !== 'blocked') return false;
+  const at = Date.parse(report.createdAt);
+  return comments.some((c) => c && c !== report && DISPATCH_COMMENT_RE.test(String(c.body || '').trim())
+    && Math.abs(Date.parse(c.createdAt) - at) <= DISPATCH_BLOCKED_WINDOW_MS);
+}
+
 function latestSessionReportStatus(comments) {
   const { parseSessionReportStatus } = require('./linear-session-reporting.js');
   const sorted = comments
@@ -86,8 +111,28 @@ function latestSessionReportStatus(comments) {
     .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
   for (const c of sorted) {
     const s = parseSessionReportStatus(c.body);
-    if (s != null) return s;
+    if (s != null && !isDispatchTimeBlocked(c, comments)) return s;
   }
+  return null;
+}
+
+/** Dispatch receipt, claim note or an earlier reclaim note: nobody typed it. */
+function isHolderOrReclaimComment(c) {
+  const { HOLDER_COMMENT_RE } = require('./linear-session-reporting.js');
+  const body = String((c && c.body) || '').trim();
+  return HOLDER_COMMENT_RE.test(body) || body.startsWith(RECLAIM_MARKER);
+}
+
+/** Skip reason for an In Review card beyond the shared rules, or null (see header, BRO-6085). */
+function inReviewSkipReason(issue, comments) {
+  const commentText = comments.map((c) => c && c.body).filter(Boolean).join('\n');
+  if (hasOwnerMarker({ ...issue, commentText })) return 'owner-marker';
+  if (latestSessionReportStatus(comments) != null) return 'in-review-reported';
+  if (!comments.every(isHolderOrReclaimComment)) return 'in-review-engaged';
+  // A card with no dispatch receipt (hand-moved, or a session that never commented) is not the headless shape.
+  if (!comments.some((c) => DISPATCH_COMMENT_RE.test(String((c && c.body) || '').trim()))) return 'in-review-no-dispatch';
+  const { hasGateEvidence } = require('./stuck-card-closer.js');
+  if (hasGateEvidence({ ...issue, comments })) return 'closer-owns';
   return null;
 }
 
@@ -113,6 +158,11 @@ function reclaimDecision({ issue, comments, landRefs, nowMs }) {
   const newestComment = Math.max(-Infinity, ...list.map((c) => Date.parse(c && c.createdAt)).filter(Number.isFinite));
   const lastActivityMs = Math.max(Date.parse(issue.updatedAt), newestComment);
   if (nowMs - lastActivityMs < RECLAIM_IDLE_MS) return { action: 'skip', reason: 'recent-comment' };
+  const isInReview = /review/i.test(issue.state.name || '');
+  if (isInReview) {
+    const why = inReviewSkipReason(issue, list);
+    if (why) return { action: 'skip', reason: why };
+  }
   if (latestSessionReportStatus(list) === 'blocked') return { action: 'skip', reason: 'blocked-report' };
   const refs = Array.isArray(landRefs) ? landRefs : [];
   const live = refs.filter((r) => {
@@ -126,16 +176,17 @@ function reclaimDecision({ issue, comments, landRefs, nowMs }) {
     reclaims,
     staleRefs: refs.map((r) => r.ref),
     idleHours: Math.floor((nowMs - lastActivityMs) / HOUR_MS),
+    priorState: issue.state.name,
   };
 }
 
 /** The comment posted with a reclaim. Carries RECLAIM_MARKER, which reclaimCount counts. */
-function buildReclaimComment({ action, reclaims, staleRefs, idleHours }, nowMs) {
+function buildReclaimComment({ action, reclaims, staleRefs, idleHours, priorState }, nowMs) {
   const day = new Date(nowMs).toISOString().slice(0, 10);
   const lines = [
     `${RECLAIM_MARKER} ${day} (BRO-5100 hourly sweep)`,
     '',
-    `This card sat In Progress with no Linear activity for ${idleHours}h and no live land/ branch, so the session that claimed it is presumed dead.`,
+    `This card sat ${priorState || 'In Progress'} with no Linear activity for ${idleHours}h and no live land/ branch, so the session that claimed it is presumed dead.`,
   ];
   if (staleRefs && staleRefs.length) {
     lines.push(`Land branches older than ${ABANDONED_AFTER_DAYS} days still name it (not landed, nothing retries them): ${staleRefs.join(', ')}.`);
@@ -151,6 +202,6 @@ function buildReclaimComment({ action, reclaims, staleRefs, idleHours }, nowMs) 
 
 module.exports = {
   RECLAIM_IDLE_MS, LIVE_LAND_REF_MS, MAX_RECLAIMS, MAX_PER_RUN, COMMENT_CAP, RECLAIM_MARKER,
-  OWNER_CARD_RE, NO_RECLAIM_RE,
+  DISPATCH_BLOCKED_WINDOW_MS, OWNER_CARD_RE, NO_RECLAIM_RE, isDispatchTimeBlocked,
   reclaimListSkipReason, findReclaimCandidates, reclaimDecision, buildReclaimComment,
 };

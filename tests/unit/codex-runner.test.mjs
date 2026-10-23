@@ -1052,7 +1052,7 @@ test('laneForLogin: gha runs on its own slots only when the login outlives the r
   assert.match(old.why, /last refreshed.*stands down/);
   assert.equal(r.laneForLogin({ lane: 'gha', slots: 2, authText: auth(now + 5 * 24 * 3600_000, ''), nowMs: now, runMs }).slots, 0, 'no last_refresh fails safe');
   assert.equal(r.laneForLogin({ lane: 'gha', slots: 2, authText: auth(now + 60 * 60_000, '2026-10-13T12:00:00Z'), nowMs: now, runMs }).base, 0, 'expiry wins: cloud is on slot 0 alone too');
-  assert.equal(r.laneForLogin({ lane: 'cloud', slots: 3, authText: auth(now + 5 * 24 * 3600_000, '2026-10-01T00:00:00Z'), nowMs: now, runMs }).slots, 3, 'the cloud lane keeps its own rule');
+  assert.equal(r.laneForLogin({ lane: 'cloud', slots: 3, authText: auth(now + 5 * 24 * 3600_000, '2026-10-01T00:00:00Z'), nowMs: now, runMs }).slots, 1, 'a login past 6 days: the cloud lane refreshes it on one slot (BRO-6086)');
 });
 
 test('cardsInLocks: the cards other slots\' run locks name', () => {
@@ -1063,4 +1063,74 @@ test('cardsInLocks: the cards other slots\' run locks name', () => {
   const now = Date.parse('2026-10-20T12:00:00Z');
   const fresh = r.cardsInLocks(['locked 2026-10-20T11:30:00Z cards=BRO-7', 'released 2026-10-20T08:00:00Z cards=BRO-8', 'locked 2026-10-20T09:00:00Z cards=BRO-9'], { nowMs: now, staleMs: 90 * 60_000 });
   assert.deepEqual([...fresh], ['BRO-7'], 'stamps past the stale window do not block other lanes');
+});
+
+// BRO-6086: card shapes the Claude check rejected most (real titles from the 98 rejections of 2026-10-09..23).
+test('codexCardFit: title shapes behind most Claude-check rejections are skipped, one test per shape', () => {
+  const fit = (title, description = 'Fix it.') => r.codexCardFit({ title, description, verify: 'node --test tests/unit/x.test.mjs' });
+  for (const t of ['BSC Daily: Shipped review too short to verify', '🚨 BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', 'P1: BSC Daily: Stuck pipeline items']) assert.equal(fit(t).skip, 'auto-filed-alert', t);
+  for (const t of ['heart-wall-west-end-2026: London Theatre Reviews text (Jack Shaw) misfiled', 'Midnight in the Garden of Good and Evil (2024 id): confirm Broadway run', 'Verify the true author on 18 same-article review pairs', "Recover AP's own verdict for 3 shows", 'Backfill provenance for legacy flags']) assert.equal(fit(t).skip, 'show-data-research', t);
+  for (const t of ['Migrate the 23 baselined direct api.github.com callers onto gh-api-cli', 'Wire remaining 5 ledgers', 'P2: audit routeAlert() call sites repo-wide for write-before-notify', 'Same unclamped freshness idiom in 4 in-memory caches']) assert.equal(fit(t).skip, 'multi-site-sweep', t);
+});
+
+test('codexCardFit: title-shape skips leave ordinary code cards and CODEX-OK cards alone', () => {
+  const fit = (title, description = 'Fix it.') => r.codexCardFit({ title, description, verify: 'node --test tests/unit/x.test.mjs' });
+  assert.equal(fit('Confirm ScrapingBee alone can carry Data Validation coverage').skip, null);
+  assert.equal(fit('autonomous-merge.test.mjs rewrites tracked data/audit/venue-date-mismatches.json').skip, null);
+  assert.equal(fit('isUkOutletUrl calls US sites UK', 'See the BSC Daily digest and the remaining work.').skip, null);
+  assert.equal(fit('BSC Daily: Data: BWW roundup discovery misses near opening', 'CODEX-OK: code fix in the discovery regex').skip, null);
+});
+
+test('forced login refresh (BRO-6086): due at 6 days, back-dates past the CLI threshold, cloud runs one slot', () => {
+  const now = Date.parse('2026-10-23T12:00:00Z');
+  const day = 24 * 3600_000;
+  const auth = (lr) => JSON.stringify({ last_refresh: lr, tokens: { access_token: `e30.${Buffer.from(JSON.stringify({ exp: Math.floor((now + 5 * day) / 1000) })).toString('base64url')}.s` } });
+  const fresh = auth(new Date(now - 2 * day).toISOString());
+  const due = auth(new Date(now - 6.2 * day).toISOString());
+  assert.equal(r.forceRefreshDue({ authText: fresh, nowMs: now }), false);
+  assert.equal(r.forceRefreshDue({ authText: due, nowMs: now }), true);
+  assert.equal(r.forceRefreshDue({ authText: 'not json', nowMs: now }), false);
+  assert.equal(r.backdateForRefresh({ authText: fresh, nowMs: now }), null);
+  const back = JSON.parse(r.backdateForRefresh({ authText: due, nowMs: now }));
+  assert.ok(now - Date.parse(back.last_refresh) > 8 * day, 'older than the CLI 8-day refresh threshold');
+  assert.ok(back.tokens.access_token, 'tokens are kept');
+  assert.equal(r.laneForLogin({ lane: 'cloud', slots: 3, authText: fresh, nowMs: now, runMs: 112 * 60_000 }).slots, 3);
+  const plan = r.laneForLogin({ lane: 'cloud', slots: 3, authText: due, nowMs: now, runMs: 112 * 60_000 });
+  assert.equal(plan.slots, 1);
+  assert.match(plan.why, /forced refresh/);
+});
+
+test('refresh policy: with the cloud lane forcing at 6 days the gha lane never stands down for login age in an 8-day cycle', () => {
+  const day = 24 * 3600_000, hour = 3600_000;
+  const t0 = Date.parse('2026-10-15T22:52:00Z');
+  const runMs = 290 * 60_000;
+  let last = t0;
+  let standDownHours = 0;
+  for (let h = 0; h < 24 * 24; h++) {
+    const nowMs = t0 + h * hour;
+    const authText = JSON.stringify({ last_refresh: new Date(last).toISOString(), tokens: {} });
+    if (r.refreshAgeWhy({ authText, nowMs, runMs })) standDownHours++;
+    // A cloud firing every 6 hours: forced refresh when due (the exec refreshes, the save stores the new stamp).
+    if (h % 6 === 0 && r.forceRefreshDue({ authText, nowMs })) last = nowMs;
+  }
+  assert.equal(standDownHours, 0);
+  // Without the forced refresh (the old behaviour) the same window stood the lane down.
+  assert.ok(r.refreshAgeWhy({ authText: JSON.stringify({ last_refresh: new Date(t0).toISOString() }), nowMs: t0 + 6.9 * day, runMs }));
+});
+
+test('title-shape skips and back-dating stay narrow (ship-check BRO-6086)', () => {
+  const fit = (title) => r.codexCardFit({ title, description: 'Fix it.', verify: 'node --test tests/unit/x.test.mjs' });
+  for (const t of ['Verify auth-store timestamp ordering', 'Extend parser to accept all whitespace', 'Document two call sites']) assert.equal(fit(t).skip, null, t);
+  const now = Date.parse('2026-10-23T12:00:00Z');
+  const old = JSON.stringify({ last_refresh: new Date(now - 12 * 24 * 3600_000).toISOString() });
+  assert.equal(r.backdateForRefresh({ authText: old, nowMs: now }), null, 'already past the CLI threshold: never moves the stamp forward');
+});
+
+test('ship-check round 2 (BRO-6086): noun-bearing code titles stay with Codex; a failed refresh never saves', () => {
+  const fit = (title) => r.codexCardFit({ title, description: 'Fix it.', verify: 'node --test tests/unit/x.test.mjs' });
+  for (const t of ['Verify isScoreable rejects reviews with null url', 'Backfill script crashes on shows with null category', 'Recover from ENOENT when review dir missing', 'Same-title shows in other markets misroute to Broadway', 'Extend the remaining-time check to slot runners', 'P1: BSC Rebuild crashes on malformed shows.json']) assert.equal(fit(t).skip, null, t);
+  const now = Date.parse('2026-10-23T12:00:00Z');
+  const stored = JSON.stringify({ last_refresh: new Date(now - 6.2 * 24 * 3600_000).toISOString() });
+  const back = r.backdateForRefresh({ authText: stored, nowMs: now });
+  assert.notEqual(r.syncDirection(back, stored), 'save', 'a back-dated login never overwrites the stored one');
 });

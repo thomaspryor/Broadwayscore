@@ -39,6 +39,7 @@ const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir.js');
 const { excerptMentionsFormerCast } = require('./lib/excerpt-validation.js');
+const { isWithinPriorRun } = require('./lib/wrong-production-autoclear.js');
 
 const REQUIRE_CORPUS = process.env.REQUIRE_REVIEW_CORPUS === '1';
 const REVIEW_TEXTS_DIR = resolveReviewTextsDir();
@@ -157,14 +158,30 @@ test(
     // so it never fails this test: guard recall is pinned on fixtures in
     // tests/unit/prior-run-review-display.test.mjs. Absent entries are logged
     // so the trail stays visible, and an empty list warns to re-baseline.
+    // BRO-5882: a file also stops being checkable when its show's prior run is
+    // marked inheritReviews:false (BRO-5732: isWithinPriorRun then says no, so
+    // the guard never applies). That run is a separate production whose
+    // reviews never reach this show page, so the guard has nothing to catch.
+    const showsById = new Map(withPriorRuns.map((s) => [s.id, s]));
     const presentKnownGood = [];
     const absentKnownGood = [];
     for (const key of KNOWN_GOOD_FLAGS) {
       const [showId, file] = key.split('::');
-      (fs.existsSync(path.join(REVIEW_TEXTS_DIR, showId, file)) ? presentKnownGood : absentKnownGood).push(key);
+      const filePath = path.join(REVIEW_TEXTS_DIR, showId, file);
+      let checkable = fs.existsSync(filePath);
+      if (checkable) {
+        try {
+          const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+          const show = showsById.get(showId);
+          checkable = !!show && isWithinPriorRun(data.publishDate, show.priorRuns);
+        } catch {
+          // unreadable known-good file: keep it "present" so the assertion fails loudly
+        }
+      }
+      (checkable ? presentKnownGood : absentKnownGood).push(key);
     }
     if (absentKnownGood.length) {
-      console.warn(`[former-cast sweep] ${absentKnownGood.length} KNOWN_GOOD_FLAGS file(s) no longer in the corpus, skipped: ${absentKnownGood.join(', ')}`);
+      console.warn(`[former-cast sweep] ${absentKnownGood.length} KNOWN_GOOD_FLAGS file(s) no longer in the corpus or no longer inside an inheriting prior run, skipped: ${absentKnownGood.join(', ')}`);
     }
     if (presentKnownGood.length === 0) {
       console.warn('[former-cast sweep] no KNOWN_GOOD_FLAGS file remains: real-data recall check is vacuous; re-baseline KNOWN_GOOD_FLAGS against a show with a confirmed former-cast quote (fixture recall tests still apply)');

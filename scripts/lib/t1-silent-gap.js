@@ -37,8 +37,8 @@ function siblingPrimaryReachesScore(file, filePath, show) {
   // BRO-5901: one shared rule with explainExclusion's knownSyndicationSecondary.
   try { return hasIncludableSyndicationPrimary(file, show, filePath, { requireScore: true }); } catch { return false; }
 }
-const { classifyReviewUrl, listingPageUrlReason } = require('./non-review-url-patterns');
-const { isForumLinkRecoverable } = require('./talkinbroadway-forum-link');
+const { classifyReviewUrl, listingPageUrlReason, offTopicSectionReason } = require('./non-review-url-patterns');
+const { isForumLinkRecoverable, isForumThreadUrl, FORUM_RECOVERY_CAP, FORUM_RECOVERY_SLOW_TRIES } = require('./talkinbroadway-forum-link');
 // BRO-2985: the scorer's own selector. An 'unscored' gap whose file the scorer
 // would skip cannot be self-healed by dispatching llm-ensemble-score.yml, so
 // the sweep must not keep dispatching for it (4x/day/show forever at
@@ -116,6 +116,19 @@ function hasNonReviewUrl(f) {
   if (!f || typeof f.url !== 'string' || !f.url.startsWith('http')) return false;
   const r = classifyReviewUrl(f.url);
   return r.ok === false && r.reason !== 'not-http-url' && r.reason !== 'unparseable-url';
+}
+
+// BRO-6082: an empty file (no text, so no ensemble verdict can ever be
+// recorded) in a sport, obituary or film-news section. Re-fetching that URL
+// can only re-fetch the football report or obituary, so the hourly recovery
+// and every dispatched session fail on it. Deliberately the off-topic-section
+// reason ONLY, not hasNonReviewUrl: classifyReviewUrl's non-review-host and
+// aggregator-internal-nav reasons also match real reviews (4columns.org, BWW
+// review articles; 147 empty-body files at the time), and roundup-page files
+// are pinned as recoverable gaps (audit-t1-silent-gaps.test.mjs). Gated on
+// !rejectionReason so a scorer verdict still decides whenever one exists.
+function isEmptyBodyAtNonReviewUrl(f) {
+  return !f.rejectionReason && f.listingPageUrlManualClear !== true && !!offTopicSectionReason(f.url);
 }
 
 // The rebuild's listingPageUrl exclusion (review-guards), as the audit reads it.
@@ -197,6 +210,7 @@ function classifySilentGap({ file, show, tier, outletScored, now, filePath }) {
   if (isIncludableForRebuild(file, show, filePath)) {
     // Includable content (flags + context clean), but no valid score yet.
     if (isEmptyBodyFile(file)) {
+      if (isEmptyBodyAtNonReviewUrl(file)) return null;
       return { type: 'empty-body', recoverable: isRecoverableFlaggedFile(file) || isForumLinkRecoverable(file) };
     }
     const fetchedAt = Date.parse(file.textFetchedAt || '');
@@ -244,6 +258,7 @@ function classifySilentGap({ file, show, tier, outletScored, now, filePath }) {
   //    as rejected-unscoreable (#1141 guard). A human clear wins.
   if (isListingPageFile(file)) return null;
   if (file.contentTier !== 'invalid' && isEmptyBodyFile(file) && !hasValidScore(file)) {
+    if (isEmptyBodyAtNonReviewUrl(file)) return null;
     return { type: 'empty-body', recoverable: isRecoverableFlaggedFile(file) || isForumLinkRecoverable(file) };
   }
 
@@ -440,6 +455,9 @@ function classifyGapCardState({ file, show, tier, outletScored, now, filePath })
   // existed never closes (this function fell through to null).
   if (!file.rejectionReason && !hasValidScore(file) && hasNonReviewUrl(file)
       && isDispatchable(file, show, filePath) === false) return GAP_CARD_STATE.NO_REVIEW;
+  // BRO-6082: classifySilentGap's empty-body early return, mirrored so a card
+  // filed before the off-topic-section pattern existed closes.
+  if (!hasValidScore(file) && isEmptyBodyFile(file) && isEmptyBodyAtNonReviewUrl(file)) return GAP_CARD_STATE.NO_REVIEW;
   return null;
 }
 
@@ -495,7 +513,60 @@ function dedupeGapCards(gaps) {
   return { primary, duplicates };
 }
 
+// BRO-6082: a report entry whose every automated path is spent. The hourly
+// CI audit cannot fetch it (paywall, bot wall, forum-link budget used up) and
+// the scorer will not take it, so a dispatched cloud session has nothing to
+// run: the fix commands need the Mac cookie jar or a subscriber copy. Two clocks
+// so neither a fresh file nor a long-held file that only just became a gap
+// qualifies: file held MANUAL_RECOVERY_FILE_DAYS (firstSeen, immutable) AND
+// gap open MANUAL_RECOVERY_GAP_HOURS (gapSeenAt; restarts if the gap clears).
+// health-check reports these on their own FYI row instead of the dispatched one.
+const MANUAL_RECOVERY_FILE_DAYS = 7;
+const MANUAL_RECOVERY_GAP_HOURS = 24;
+function needsManualRecovery(entry, now = new Date()) {
+  if (!entry || typeof entry !== 'object') return false;
+  const noAutomatedPath = entry.type === 'unscored'
+    ? entry.dispatchable === false
+    : entry.recoverable === false;
+  if (!noAutomatedPath) return false;
+  // isForumLinkRecoverable reads false BETWEEN the daily slow tries, so the
+  // per-run `recoverable` flag would flip a forum stub in and out of this
+  // state all week. The budget, not the flag, says whether a try is left.
+  if (typeof entry.url === 'string' && isForumThreadUrl(entry.url)
+      && (entry.forumLinkRecoveryCount || 0) < FORUM_RECOVERY_CAP + FORUM_RECOVERY_SLOW_TRIES) return false;
+  const fileAt = Date.parse(entry.firstSeen || '');
+  const gapAt = Date.parse(entry.gapSeenAt || '');
+  if (Number.isNaN(fileAt) || Number.isNaN(gapAt)) return false;
+  const t = now.getTime();
+  return t - fileAt >= MANUAL_RECOVERY_FILE_DAYS * 86400000
+    && t - gapAt >= MANUAL_RECOVERY_GAP_HOURS * 3600000;
+}
+
+// The FYI digest line for needsManualRecovery gaps, or null when there are none.
+// Title-only rendering (info rows show their title), so the count and the
+// shows live in it. One line per show+outlet, like the gap cards.
+const MANUAL_RECOVERY_CONDITION_KEY = 't1-gaps:needs-manual-recovery';
+function manualRecoveryDigestLine(gaps, now = new Date()) {
+  const manual = (Array.isArray(gaps) ? gaps : []).filter((g) => g && g.needsManualRecovery === true);
+  if (manual.length === 0) return null;
+  const { primary } = dedupeGapCards(manual);
+  const names = primary.map((g) => `${g.title || g.showId} (${g.outletId})`);
+  const shown = names.slice(0, 5).join(', ') + (names.length > 5 ? `, +${names.length - 5} more` : '');
+  return {
+    conditionKey: MANUAL_RECOVERY_CONDITION_KEY,
+    title: `Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: ${primary.length} (${shown}). Checked ${now.toISOString().slice(0, 10)}.`,
+    description: 'Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.',
+    severity: 'info',
+    info: true,
+  };
+}
+
 module.exports = {
+  manualRecoveryDigestLine,
+  MANUAL_RECOVERY_CONDITION_KEY,
+  needsManualRecovery,
+  MANUAL_RECOVERY_FILE_DAYS,
+  MANUAL_RECOVERY_GAP_HOURS,
   classifySilentGap,
   shouldAlertGap,
   shouldDispatchScoring,

@@ -525,3 +525,18 @@ test('BRO-5626: a session discovery with a technical park and a safe VERIFY file
   const a = await createLinearIssue({ title: 'Tighten the picker skip counter v2', description: notes, park: 'needs its own session, several files', priority: 3, client: router.client });
   assert.equal(a.autoTodo, false);
 }));
+
+test('BRO-6081: a filer named only by dedupeOptOut is stamped with that name off GitHub Actions, not "unknown"', () => withTeam(async () => {
+  const saved = process.env.GITHUB_WORKFLOW;
+  delete process.env.GITHUB_WORKFLOW;
+  try {
+    const board = fakeBoard({ open: [] });
+    await createLinearIssue({ title: 'Cron failed: Something', description: 'x', park: 'auto-filed parked for triage', client: board.client, dedupeOptOut: 'alert-router' });
+    assert.match(board.created[0].description, /Filed by: alert-router/);
+    const s = fakeBoard({ open: [] });
+    await createLinearIssue({ title: 'Cron failed: Other', description: 'x', park: 'auto-filed parked for triage', client: s.client, dedupeOptOut: 'alert-router', source: 'session' });
+    assert.match(s.created[0].description, /Filed by: session/, 'an explicit source still wins');
+  } finally {
+    if (saved === undefined) delete process.env.GITHUB_WORKFLOW; else process.env.GITHUB_WORKFLOW = saved;
+  }
+}));

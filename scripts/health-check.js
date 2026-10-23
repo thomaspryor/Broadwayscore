@@ -1293,6 +1293,14 @@ function checkQuality() {
         return { name: 'Quality: corpus drift', status: 'error', message: `${crashed.length} drift audit(s) crashed: ${crashed.map(a => a.name).join(', ')}`, hint: 'A corpus-statistics audit cannot scan — see data/audit/corpus-drift.json' };
       }
       const drifted = audits.filter(a => !a.ok && !a.crashed);
+      // BRO-6082: an audit stamped with a channel (check-corpus-drift.js
+      // runAudit) already reaches the owner on its own card or the FYI line;
+      // only drift with no channel (a report written before the stamp) stays
+      // a dispatched row here, so this umbrella cannot park on statistics.
+      const unrouted = drifted.filter(a => a.channel !== 'card' && a.channel !== 'fyi');
+      if (drifted.length > 0 && unrouted.length === 0) {
+        return { name: 'Quality: corpus drift', status: 'pass', message: `${drifted.length} audit(s) drifting, each reported on its own card or the digest FYI line (${formatAge(age)} ago)` };
+      }
       if (drifted.length > 0) {
         return { name: 'Quality: corpus drift', status: 'warn', message: `${drifted.length} audit(s) drifting: ${drifted.map(a => a.label || a.name).join(', ')}`, hint: 'Non-blocking corpus drift — review data/audit/corpus-drift.json' };
       }
@@ -4724,12 +4732,17 @@ function checkUncollectedStrands() {
 const SILENT_GAP_IN_FLIGHT_HOURS = 24;
 function silentGapBacklogResults(report, now = new Date()) {
   if (!report || !Array.isArray(report.gaps) || report.gaps.length === 0) return [];
-  const gaps = report.gaps.filter((g) => {
+  // BRO-6082: gaps with no automated path left (needsManualRecovery, stamped
+  // by audit-t1-silent-gaps.js) reach the owner as the audit's FYI digest line.
+  // Counting them here kept this row warn forever, and digest-autofix sent
+  // cloud sessions that cannot reach a paywall or the Mac cookie jar.
+  const automatable = report.gaps.filter((g) => g.needsManualRecovery !== true);
+  const gaps = automatable.filter((g) => {
     const seen = Date.parse(g.firstSeen || '');
     return Number.isNaN(seen) || now.getTime() - seen >= SILENT_GAP_IN_FLIGHT_HOURS * 3600000;
   });
   if (gaps.length === 0) return [];
-  const inFlight = report.gaps.length - gaps.length;
+  const inFlight = automatable.length - gaps.length;
   const t1 = gaps.filter((g) => g.tier === 1).length;
   // Rank by firstSeen (how long the gap has gone unactioned), not openingDate:
   // most back-catalogue shows opened long ago, so show age would page on day one.

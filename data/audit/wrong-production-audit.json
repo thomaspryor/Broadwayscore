@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T20:19:34.555Z",
+  "timestamp": "2026-10-23T23:15:02.982Z",
   "stats": {
-    "totalReviews": 59537,
-    "alreadyFlagged": 21116,
+    "totalReviews": 59549,
+    "alreadyFlagged": 21117,
     "dateGuardCatches": 202,
-    "directorMismatch": 2120,
+    "directorMismatch": 2119,
     "tvFilmSignals": 1690,
-    "londonSignals": 2841,
+    "londonSignals": 2842,
     "offBroadwaySignals": 535,
     "yearMismatch": 176,
-    "noPublishDate": 5342
+    "noPublishDate": 5340
   },
   "findings": [
     {
@@ -12231,20 +12231,6 @@
       "score": 85,
       "publishDate": "2026-09-13",
       "url": "https://www.chicagotribune.com/2026/09/13/review-dirty-dancing-musical-chicago/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
-        }
-      ]
-    },
-    {
-      "showId": "dirty-dancing-tour-2026",
-      "file": "cititour--brian-scott-lipton.json",
-      "score": null,
-      "publishDate": "2026-10-07",
-      "url": "https://cititour.com/NYC_News/Dirty-Dancing-The-Musical-to-Arrive-on-Broadway-in-February/11091",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -76298,6 +76284,20 @@
     },
     {
       "showId": "martin-guerre-west-end-2026",
+      "file": "all-that-dazzles-uk--daz-gale.json",
+      "score": 74,
+      "publishDate": "2026-10-23",
+      "url": "https://www.allthatdazzles.co.uk/post/review-martin-guerre-the-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
       "file": "all-that-dazzles-uk--unknown.json",
       "score": 79,
       "publishDate": "2026-10-23",
@@ -76341,7 +76341,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 88,
+      "score": 89,
       "publishDate": "2026-10-21",
       "url": "https://www.londonboxoffice.co.uk/news/post/martin-guerre-the-old-vic-review",
       "findings": [
@@ -82773,7 +82773,7 @@
     },
     {
       "showId": "rosencrantz-and-guildenstern-are-dead-west-end-2017",
-      "file": "guardian--unknown.json",
+      "file": "guardian--michael-billington.json",
       "score": 82,
       "publishDate": "2017-03-08",
       "url": "https://www.theguardian.com/stage/2017/mar/08/rosencrantz-and-guildenstern-are-dead-review-daniel-radcliffe-stoppard-old-vic-london",
@@ -89477,7 +89477,7 @@
     },
     {
       "showId": "the-ferryman-west-end-2017",
-      "file": "guardian--unknown.json",
+      "file": "guardian--susannah-clapp.json",
       "score": 98,
       "publishDate": "2017-05-07",
       "url": "https://www.theguardian.com/stage/2017/may/07/ferryman-royal-court-jez-butterworth-review-magic",
@@ -90896,7 +90896,7 @@
     },
     {
       "showId": "the-kid-stays-in-the-picture-west-end-2017",
-      "file": "guardian--unknown.json",
+      "file": "guardian--michael-billington.json",
       "score": 57,
       "publishDate": "2017-03-23",
       "url": "https://www.theguardian.com/stage/2017/mar/23/the-kid-stays-in-the-picture-review-robert-evans-royal-court",
@@ -91415,7 +91415,7 @@
     },
     {
       "showId": "the-majority-west-end-2017",
-      "file": "guardian--unknown.json",
+      "file": "guardian--michael-billington.json",
       "score": 55,
       "publishDate": "2017-08-15",
       "url": "https://www.theguardian.com/stage/2017/aug/15/the-majority-review-vote-political-violence-dorfman-national-theatre",

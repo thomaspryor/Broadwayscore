@@ -12,6 +12,15 @@ function landIdentityFromChecks(log) {
   return branch && sha ? { branch, sha } : null;
 }
 
+// BRO-6012: land.yml's run-name carries the branch for a hand dispatch, so an
+// unfinished run is followable before Checks has readable logs. The verified
+// tip is unknown (head_sha null): nothing may retry or compare it.
+function pendingIdentity(run) {
+  if (run.status === 'completed') return null;
+  const named = /^Land (land\/[\w./-]+)$/.exec(run.display_title || '');
+  return named ? { ...run, head_branch: named[1], head_sha: null, identityPending: true } : null;
+}
+
 function resolveLandRun(run, { repo, read, readText, cache = new Map() }) {
   if (!run || run.event !== 'workflow_dispatch') return run;
   const key = `dispatch:${run.id}:${run.run_attempt}:${run.updated_at}`;
@@ -23,18 +32,18 @@ function resolveLandRun(run, { repo, read, readText, cache = new Map() }) {
   const checks = jobs.find((job) => job.name === 'Checks');
   // Individual job logs become readable once Checks completes, even while
   // Land is still queued, running or parked. Retry later if not available yet.
-  if (!checks || !checks.conclusion) return null;
+  if (!checks || !checks.conclusion) return pendingIdentity(run);
   const logKey = `checks:${checks.id}`;
   let identity = cache.get(logKey);
   if (!identity) {
     let log;
     try { log = readText(`repos/${repo}/actions/jobs/${checks.id}/logs`); }
     catch (err) {
-      if (/\bHTTP 404\b/.test([err.stderr, err.message].join('\n'))) return null;
+      if (/\bHTTP 404\b/.test([err.stderr, err.message].join('\n'))) return pendingIdentity(run);
       throw err;
     }
     identity = landIdentityFromChecks(log);
-    if (!identity) return null;
+    if (!identity) return pendingIdentity(run);
     cache.set(logKey, identity);
   }
   const resolved = { ...run, head_branch: identity.branch, head_sha: identity.sha };

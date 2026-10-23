@@ -12,6 +12,9 @@
 const API_BASE = 'https://us.posthog.com';
 const PROJECT_ID = '332742';
 
+const RETRYABLE_STATUS = new Set([429, 502, 503]);
+const RETRY_DELAYS_MS = [10000, 30000, 90000];
+
 function getApiKey() {
   const key = process.env.POSTHOG_PERSONAL_API_KEY;
   if (!key) throw new Error('POSTHOG_PERSONAL_API_KEY not set');
@@ -24,19 +27,29 @@ function getApiKey() {
  * keep using phQuery; scripts/posthog-adhoc-query.js needs the column names
  * to head a table for a statement it has never seen (BRO-4327).
  */
-async function phQueryFull(hogql) {
-  const res = await fetch(`${API_BASE}/api/projects/${PROJECT_ID}/query/`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${getApiKey()}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ query: { kind: 'HogQLQuery', query: hogql } }),
-    // A hung socket would otherwise run to the calling job's timeout, which
-    // reports `cancelled` and emits nothing; 4 min still outlasts a PostHog
-    // 504 (~5 min is the observed worst case, and callers retry on timeout).
-    signal: AbortSignal.timeout(240000),
-  });
+async function phQueryFull(hogql, opts = {}) {
+  const doFetch = opts.fetch || fetch;
+  const sleep = opts.sleep || ((ms) => new Promise((r) => setTimeout(r, ms)));
+  let res;
+  for (let attempt = 0; ; attempt++) {
+    res = await doFetch(`${API_BASE}/api/projects/${PROJECT_ID}/query/`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${getApiKey()}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query: { kind: 'HogQLQuery', query: hogql } }),
+      // A hung socket would otherwise run to the calling job's timeout, which
+      // reports `cancelled` and emits nothing; 4 min still outlasts a PostHog
+      // 504 (~5 min is the observed worst case, and callers retry on timeout).
+      signal: AbortSignal.timeout(240000),
+    });
+    // BRO-5998: PostHog sheds load with 503 clickhouse_at_capacity (and 429/502);
+    // it failed the weekly gate monitor twice in a row. Transient: back off, retry.
+    if (res.ok || !RETRYABLE_STATUS.has(res.status) || attempt >= RETRY_DELAYS_MS.length) break;
+    console.error(`[posthog-query] HTTP ${res.status}, retry ${attempt + 1}/${RETRY_DELAYS_MS.length} in ${RETRY_DELAYS_MS[attempt] / 1000}s`);
+    await sleep(RETRY_DELAYS_MS[attempt]);
+  }
   // Body sliced: a 504 comes back as a full HTML page, which would otherwise
   // land verbatim in a table cell or a log line.
   if (!res.ok) throw new Error(`PostHog API ${res.status}: ${(await res.text()).slice(0, 500)}`);

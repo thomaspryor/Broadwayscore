@@ -27,7 +27,6 @@
  * Env: POSTHOG_PERSONAL_API_KEY
  */
 
-const PROJECT_ID = '332742';
 const DAYS = parseInt((process.argv.find(a => a.startsWith('--days=')) || '--days=7').split('=')[1], 10);
 const JSON_OUT = process.argv.includes('--json');
 
@@ -36,21 +35,12 @@ if (!API_KEY) { console.error('POSTHOG_PERSONAL_API_KEY not set'); process.exit(
 
 // Shared Real Users predicate (owner + bot-heavy geos excluded) — the one
 // definition lives in scripts/lib/posthog-query.js so a new bot geo is added once.
-const { REAL_USERS_WHERE: REAL_USERS } = require('./lib/posthog-query');
+const { REAL_USERS_WHERE: REAL_USERS, phQuery } = require('./lib/posthog-query');
 
 // Modal-attributed only — see file header.
 const MODAL_ONLY = `JSONExtractString(properties,'trigger') != ''`;
 
-async function hogql(query) {
-  const res = await fetch(`https://us.posthog.com/api/projects/${PROJECT_ID}/query/`, {
-    signal: AbortSignal.timeout(240000), // BRO-5261: PostHog queries can take minutes (same cap as scripts/lib/posthog-query.js)
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${API_KEY}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query: { kind: 'HogQLQuery', query } }),
-  });
-  if (!res.ok) throw new Error(`PostHog ${res.status}: ${(await res.text()).slice(0, 200)}`);
-  return (await res.json()).results || [];
-}
+const hogql = phQuery; // shared helper retries PostHog 429/502/503 (BRO-5998)
 
 function pct(n, d) { return d > 0 ? +((n / d) * 100).toFixed(2) : null; }
 

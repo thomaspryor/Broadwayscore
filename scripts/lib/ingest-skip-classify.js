@@ -196,6 +196,9 @@ const EXPECTED_REJECTION_REASONS = [
   // A site's root utility page (/submit/, /contact-us, /subscribe ...), any
   // source, NEW files only (review-file-writer.js, BRO-3106). Never a review.
   'site-utility-url',
+  // A sport / obituary / film-news newspaper section, any source, NEW files
+  // only (review-file-writer.js, BRO-6082). Never a theatre review.
+  'off-topic-section-url',
   // BRO-2717: unregistered outlet on a listing/ticketing/venue/PR URL. Correct and permanent.
   'unregistered-outlet-non-review-url',
   // The byline is a CREATIVE TEAM member of this same show
@@ -237,6 +240,7 @@ const DURABLE_REJECTION_REASONS = [
   'named-non-review-url',
   'submitted-non-review-url',
   'site-utility-url',
+  'off-topic-section-url',
   'unregistered-outlet-non-review-url',
   'credited-person-as-critic',
   'roundup-page-as-review',
@@ -399,6 +403,9 @@ function describeSkip(showId, url, { reason, detail }) {
   }
   if (reason === 'site-utility-url') {
     return `${showId}: ${url} is a site utility page (submit/contact/subscribe/login...), not a review${detail ? ` (${detail})` : ''} — expected rejection (BRO-3106), no action needed. If it really is a review, re-run scripts/ingest-review-from-url.js with --allow-non-review-url.`;
+  }
+  if (reason === 'off-topic-section-url') {
+    return `${showId}: ${url} sits in a sport, obituary or film-news section, not a theatre review${detail ? ` (${detail})` : ''} — expected rejection (BRO-6082), no action needed. If it really is a review, re-run scripts/ingest-review-from-url.js with --allow-non-review-url.`;
   }
   if (reason === 'unregistered-outlet-non-review-url') {
     return `${showId}: ${url} was refused because its outlet is not in outlet-registry.json and the URL is a listing, ticketing, venue or PR-firm page${detail ? ` (${detail})` : ''} — expected rejection (BRO-2717), no action needed. If the site really publishes reviews, register the outlet first, or re-run with --allow-non-review-url.`;

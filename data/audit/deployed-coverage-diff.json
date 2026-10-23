@@ -1,34 +1,13 @@
 {
-  "generatedAt": "2026-10-23T19:57:01.512Z",
+  "generatedAt": "2026-10-23T22:56:34.540Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 265,
-  "clean": 264,
-  "defective": 1,
-  "byType": {
-    "missing-from-prod": 1
-  },
-  "shows": [
-    {
-      "showId": "cadel-lungs-on-legs-west-end-2026",
-      "title": "Cadel: Lungs On Legs",
-      "openingDate": "2026-10-16",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: loureviews"
-        }
-      ],
-      "missingFromProd": [
-        "loureviews"
-      ],
-      "localCount": 14,
-      "deployedCount": 13,
-      "firstDefectAt": "2026-10-23T19:56:55.812Z"
-    }
-  ],
+  "clean": 265,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

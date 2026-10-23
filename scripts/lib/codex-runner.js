@@ -510,6 +510,18 @@ const CODEX_HARD_SKIPS = [
   ['private-repo-write', /\bbroadway-(?:review-texts|scorecard-data)\b|\bpending-fixes\b|\bexecute-approved-fix\b|\bapproved-fix\s+plan\b|\bdata repair\b/i],
   ['corpus-wide-data', /\bcorpus[- ]wide\b|\bbulk[- ](?:edit|fix|update|rewrite|repair|rescore)\b|(?<![\d,])(?!(?:19|20)\d\d\b)\d[\d,]{2,}\s+(?:shipped\s+|existing\s+|affected\s+|scored\s+)?(?:reviews|shows|files|rows|records)\b/i],
 ];
+// Card shapes the independent Claude check rejected most (BRO-6086: 98 "not landed, left for the Claude
+// worker" cards in 14 days, ~$0.27 per check). Matched on the TITLE only, so a description that merely
+// mentions one of these words stays eligible. Each is a card whose fix is private-data, research or
+// board work, or a sweep over many call sites, which one Codex attempt leaves half done.
+const CODEX_TITLE_SKIPS = [
+  // Auto-filed health/incident cards (12 of 98): the fix is a private-data repair or a Linear change.
+  ['auto-filed-alert', /^\W*(?:P\d:\s*)?BSC (?:Daily|Rebuild):/i],
+  // One show's data: research a venue/date/author or recover a review (needs web research + private data).
+  ['show-data-research', /^(?:P\d:\s*)?(?:Verify|Recover|Backfill|Find sources?)\b[^\n]{0,60}(?:\b\d[\d,]*\s+(?:\w+\s+){0,3}(?:shows?|reviews?|flags?|pairs?|deals?)\b|\btrue author\b|\bprovenance\b|\bverdict\b)|^[a-z0-9]+(?:-[a-z0-9]+)+-(?:19|20)\d\d\b[^:\n]{0,40}:|\(\d{4} id\)/i],
+  // A sweep over a counted or "remaining" set of call sites: Codex migrates some and stops.
+  ['multi-site-sweep', /^(?:P\d:\s*)?(?:Migrate|Wire|Version|Extend|Generalize|Consolidate|Audit)\b[^\n]{0,50}\b(?:remaining \d+|remaining (?:\w+ ){0,2}(?:generators|callers|paths|ledgers|sites|scripts)|the \d+)\b|\brepo-wide\b|\bAudit\b[^\n]{0,40}\bcall sites\b|\bsame\b[^\n]{0,60}\b(?:in|at|across) \d+\b/i],
+];
 // A `CODEX-OK` line (description or a comment) sends a card to Codex despite the hard skips.
 const CODEX_OK_RE = /^[\s>*_#-]*CODEX-OK\b/m;
 function codexCardFit({ title = '', description = '', verify = '', comments = [], nowMs = Date.now() } = {}) {
@@ -519,6 +531,12 @@ function codexCardFit({ title = '', description = '', verify = '', comments = []
   for (const [name, re] of ok ? [] : CODEX_HARD_SKIPS) {
     const m = re.exec(text);
     if (m) return { skip: name, score: -Infinity, why: [`${name}: ${m[0].slice(0, 60)}`] };
+  }
+  if (!ok) {
+    for (const [name, re] of CODEX_TITLE_SKIPS) {
+      const m = re.exec(String(title));
+      if (m) return { skip: name, score: -Infinity, why: [`${name}: ${m[0].slice(0, 60)}`] };
+    }
   }
   let score = 0;
   const why = [];
@@ -590,6 +608,32 @@ function refreshAgeWhy({ authText, nowMs, runMs, marginMs = 30 * 60_000 }) {
 }
 
 /**
+ * BRO-6086: the CLI refreshes at about 8 days, and the gha lane stands down for any login whose
+ * age plus run passes REFRESH_AGE_SAFE_MS, so it idled ~29h every cycle until a cloud run
+ * happened to refresh. The cloud lane now refreshes first: once last_refresh passes
+ * FORCE_REFRESH_AGE_MS (6 days) it runs one slot and back-dates last_refresh past the CLI's
+ * 8-day threshold, so its first `codex exec` refreshes the login and the save stores the new
+ * stamp. 6 days + the 290-min gha run stays under 7, so gha never meets the window.
+ */
+const FORCE_REFRESH_AGE_MS = 6 * 24 * 3600_000;
+const CLI_REFRESH_AGE_MS = 8 * 24 * 3600_000;
+function forceRefreshDue({ authText, nowMs }) {
+  const last = Date.parse(authLastRefresh(authText));
+  return Number.isFinite(last) && nowMs - last >= FORCE_REFRESH_AGE_MS;
+}
+/** -> the login text with last_refresh back-dated 9 days (the CLI refreshes at its next start), or null when not due/unreadable. */
+function backdateForRefresh({ authText, nowMs }) {
+  if (!forceRefreshDue({ authText, nowMs })) return null;
+  try {
+    const j = JSON.parse(authText);
+    // Already past the CLI's own threshold: it refreshes by itself, and a "back-date" would move the stamp forward.
+    if (nowMs - Date.parse(j.last_refresh) > CLI_REFRESH_AGE_MS) return null;
+    j.last_refresh = new Date(nowMs - CLI_REFRESH_AGE_MS - 24 * 3600_000).toISOString();
+    return JSON.stringify(j, null, 2);
+  } catch { return null; }
+}
+
+/**
  * Codex lanes (BRO-5730). Each lane owns its own slots, so the cloud routine (cloud) and the
  * GitHub runner (gha) run at the same time without sharing a slot's lock or worktrees.
  * MAX_SLOTS covers every lane: --lock-status reads all of their locks.
@@ -625,6 +669,8 @@ function laneForLogin({ lane = 'cloud', slots, authText, nowMs, runMs, marginMs 
     return { lane, base: l.base, slots: want, why: null };
   }
   const plan = slotsForLogin({ slots: want, authText, nowMs, runMs, marginMs });
+  // One process refreshes the login (BRO-6086): the cloud lane runs slot 0 alone while it is due.
+  if (plan.slots > 1 && forceRefreshDue({ authText, nowMs })) return { lane, base: l.base, slots: 1, why: 'the Codex login is due a forced refresh, so one slot refreshes it' };
   return { lane, base: l.base, ...plan };
 }
 
@@ -1242,6 +1288,9 @@ module.exports = {
   laneSlotList,
   laneForLogin,
   refreshAgeWhy,
+  FORCE_REFRESH_AGE_MS,
+  forceRefreshDue,
+  backdateForRefresh,
   cardsInLocks,
   SWF_CARRY_MARKER,
   swfCarryBody,

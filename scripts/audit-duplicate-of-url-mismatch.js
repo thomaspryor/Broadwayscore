@@ -470,6 +470,8 @@ function fix(mismatches) {
 }
 
 function main() {
+  // process.exit() after a large report truncates a piped stdout (the cycle report is ~30KB):
+  // set exitCode and return so the pipe drains first. BRO-6086: this flaked the land check.
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const { mismatches, scanned } = audit();
@@ -479,17 +481,17 @@ function main() {
   } catch (e) {
     if (!(e instanceof CorpusNotScannedError)) throw e;
     console.error(`\nFAIL: ${e.message}`);
-    process.exit(1);
+    process.exitCode = 1; return;
   }
 
   if (JSON_OUT) {
     console.log(JSON.stringify({ count: mismatches.length, mismatches }, null, 2));
-    process.exit(mismatches.length === 0 ? 0 : 1);
+    process.exitCode = mismatches.length === 0 ? 0 : 1; return;
   }
 
   if (mismatches.length === 0) {
     console.log('OK: no duplicateOf URL mismatches found');
-    process.exit(0);
+    process.exitCode = 0; return;
   }
 
   const dupMismatches = mismatches.filter(m => m.field !== 'crossOutletDuplicate');
@@ -531,7 +533,7 @@ function main() {
   if (FIX) {
     if (autoHealable.length > FIX_SURGE_THRESHOLD && !FORCE_BULK) {
       console.error(`::error::Refusing to auto-clear ${autoHealable.length} stale duplicateOf flags (> ${FIX_SURGE_THRESHOLD}). A spike this large usually means a producer regression, not routine churn — auto-clearing would re-admit a flood of reviews to scoring. Investigate the cause, then re-run with --force-bulk if the clears are legitimate.`);
-      process.exit(1);
+      process.exitCode = 1; return;
     }
     let toFix = mismatches.filter(m => m.field !== 'crossOutletDuplicate');
     if (crossOutletHealable.length > FIX_SURGE_THRESHOLD && !FORCE_BULK) {
@@ -547,7 +549,7 @@ function main() {
     if (cycles.length > 0) {
       console.log(`\n${cycles.length} duplicateOf-cycle mismatch(es) were NOT auto-fixed — choosing which file becomes canonical needs manual review. See the chains above.`);
     }
-    process.exit(0);
+    process.exitCode = 0; return;
   }
 
   // --gate: catastrophe floor only. Every AUTO-HEALABLE mismatch (i.e. excluding
@@ -558,14 +560,14 @@ function main() {
   if (GATE) {
     if (shouldBlockDuplicateOfGate({ mismatchCount: autoHealable.length, floor: FIX_SURGE_THRESHOLD })) {
       console.error(`\n❌ GATE: ${autoHealable.length} auto-healable duplicateOf URL mismatch(es) > floor ${FIX_SURGE_THRESHOLD}. A spike this large signals a producer regression, not routine churn — failing the trunk for manual review before the self-heal re-admits a flood of reviews.`);
-      process.exit(1);
+      process.exitCode = 1; return;
     }
     console.log(`\n✅ GATE: ${autoHealable.length} auto-healable duplicateOf URL mismatch(es) ≤ floor ${FIX_SURGE_THRESHOLD}${cycles.length > 0 ? ` (+ ${cycles.length} duplicateOf-cycle, excluded — needs manual triage, never auto-clears)` : ''}${crossOutlet.length > 0 ? ` (+ ${crossOutlet.length} crossOutletDuplicate, excluded — own surge guard in --fix)` : ''}. Auto-healable churn — surfaced above, not blocking the trunk. clear-stale-duplicate-of.yml --fix clears these; full report-mode triage runs daily in check-corpus-drift.yml (→ digest).`);
-    process.exit(0);
+    process.exitCode = 0; return;
   }
 
   console.log('Run with --fix to clear stale flags.');
-  process.exit(1);
+  process.exitCode = 1; return;
 }
 
 if (require.main === module) {

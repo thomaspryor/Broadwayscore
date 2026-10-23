@@ -331,6 +331,25 @@ function weeklyPct() {
   return R.weeklyPctFromSessions(CODEX_HOME);
 }
 
+/**
+ * BRO-6086: the cloud lane refreshes a login past 6 days itself, so the gha lane never meets its
+ * 7-day stand-down. Back-dates last_refresh so the first codex exec refreshes it (R.backdateForRefresh).
+ * Runs on slot 0 only, which laneForLogin leaves as the lone process while a refresh is due.
+ */
+function forceLoginRefresh() {
+  const file = path.join(CODEX_HOME, 'auth.json');
+  // A gha container may hold the pre-refresh copy (it starts up to ~6.6 days in): rotate only when no gha slot is live.
+  const gha = sh('node', [__filename, '--lock-status', '--lane', 'gha'], { timeoutMs: 120_000 });
+  if (gha.code !== 0) { log(`forced login refresh skipped: gha lane lock status exit ${gha.code}`); return; }
+  try {
+    const next = R.backdateForRefresh({ authText: fs.readFileSync(file, 'utf8'), nowMs: Date.now() });
+    if (!next) return;
+    fs.writeFileSync(`${file}.tmp-${process.pid}`, next, { mode: 0o600 });
+    fs.renameSync(`${file}.tmp-${process.pid}`, file);
+    log('Codex login is past 6 days old: back-dated last_refresh so this run refreshes it');
+  } catch (e) { log(`forced login refresh skipped: ${e.message}`); }
+}
+
 function saveLogin() {
   const r = sh('node', ['scripts/codex/auth-store.js', 'save'], { timeoutMs: 900_000 });
   if (r.code !== 0) log(`login save failed: ${tail(r.out, 300)}`);
@@ -1383,6 +1402,8 @@ async function runLocked(startedMs) {
     process.exitCode = 2;
     return;
   }
+  // Lone process only (no RUN_DIR: laneForLogin gave a due login one slot), so nothing else reads the login mid-refresh.
+  if (SLOT === 0 && !RUN_DIR && OPTS.lane === 'cloud' && !OPTS.dryRun) forceLoginRefresh();
   const install = sh('node', ['scripts/codex/install.js']);
   if (install.code !== 0) log(`codex install warning: ${tail(install.out, 300)}`);
   pruneDisk();

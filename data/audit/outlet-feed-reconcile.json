@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T19:57:01.815Z",
+  "generatedAt": "2026-10-23T22:56:34.792Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -138,6 +138,10 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -150,6 +154,10 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "plays-international",
+      "error": "AggregateError"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -160,11 +168,15 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 783,
+  "itemsScanned": 731,
   "matchedGaps": 7,
-  "possibleGaps": 3,
+  "possibleGaps": 2,
   "gaps": [
     {
       "showId": "dog-mom-off-west-end-2026",
@@ -203,12 +215,12 @@
       "publishDate": "2026-10-23"
     },
     {
-      "showId": "phyl-off-broadway-2026",
-      "title": "Phyl",
+      "showId": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
       "level": "matched",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/phyl/",
-      "headline": "Phyl ****",
+      "outletId": "musical-theatre-review",
+      "url": "https://musicaltheatrereview.com/the-pianist-park-theatre/",
+      "headline": "The Pianist – Park Theatre",
       "publishDate": "2026-10-23"
     },
     {
@@ -228,15 +240,6 @@
       "url": "https://culturesauce.com/caryl-churchill-triumph-off-broadway-review/",
       "headline": "Caryl Churchill&#8217;s &#8216;Triumph&#8217; views imperial Rome through a Foxy blond flack (Off Broadway review)",
       "publishDate": "2026-10-18"
-    },
-    {
-      "showId": "copperfield-the-new-musical-off-broadway-2026",
-      "title": "Copperfield! The New Musical",
-      "level": "possible",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/the-curious-case-of-benjamin-button/",
-      "headline": "The Curious Case of Benjamin Button *****",
-      "publishDate": "2026-10-21"
     },
     {
       "showId": "the-pianist-off-west-end-2026",

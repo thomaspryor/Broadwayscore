@@ -326,3 +326,27 @@ test('non-show buckets (_pending, _superseded-misattributed) are NOT scanned —
   assert.equal(real.length, 1, 'a dangling pointer in a real show dir is still flagged');
   assert.equal(real[0].reason, 'sibling-missing');
 });
+
+test('a large report still arrives whole when the reader of the pipe is slow (process.exit must not truncate stdout)', async () => {
+  // BRO-6086: the 30-file cycle report is ~30KB. process.exit() right after console.log cut it off
+  // when the pipe was full, so "Cleared N" never arrived and the land check failed on a clean branch
+  // about one run in five under load. A reader that waits before it reads makes that deterministic.
+  const { spawn } = await import('node:child_process');
+  const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'dup-audit-pipe-'));
+  const names = Array.from({ length: 120 }, (_, i) => `outlet${i}--critic${i}.json`);
+  const dir = path.join(fixture, 'huge-cycle-2026');
+  fs.mkdirSync(dir, { recursive: true });
+  for (let i = 0; i < names.length; i++) {
+    fs.writeFileSync(path.join(dir, names[i]), JSON.stringify({ url: 'https://example.com/huge-cycle', duplicateOf: names[(i + 1) % names.length] }));
+  }
+  const child = spawn('node', [SCRIPT_PATH, '--fix'], { env: { ...process.env, REVIEW_TEXTS_DIR: fixture }, stdio: ['ignore', 'pipe', 'inherit'] });
+  const chunks = [];
+  await new Promise((r) => setTimeout(r, 400));
+  child.stdout.on('data', (c) => chunks.push(c));
+  const code = await new Promise((res) => child.on('close', res));
+  assert.equal(code, 0, '--fix exits 0 (process.exitCode, not a truncating process.exit)');
+  const out = Buffer.concat(chunks).toString('utf-8');
+  assert.ok(out.length > 65536, `report is larger than a pipe buffer (${out.length})`);
+  assert.match(out, /Cleared 0 stale duplicateOf flag/);
+  assert.match(out, /120 duplicateOf-cycle mismatch\(es\) were NOT auto-fixed/);
+});
