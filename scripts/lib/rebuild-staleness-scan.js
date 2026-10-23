@@ -22,7 +22,7 @@ const { listShowDirs } = require('./list-show-dirs');
 const { isIncludableForRebuild } = require('./review-guards');
 const { getBestScore, applyScoreRelevantMigrations } = require('./rebuild-helpers');
 const { normalizeOutlet } = require('./review-normalization');
-const { getSyndicationConfig } = require('./syndication-pairs');
+const { getSyndicationPrimaries, hasLiveSyndicationPrimary } = require('./syndication-pairs');
 const { findMissingScoreableShows } = require('./rebuild-staleness-guard');
 
 function loadJSON(file, fallback = null) {
@@ -60,30 +60,21 @@ function isScoreableFile(data, show, filePath) {
 
 /**
  * Mirrors the unflagged-secondary dedup in rebuild-all-reviews.js (the
- * KNOWN_SYNDICATION_PAIRS check ~line 3193): a syndicated secondary copy is
- * excluded when an UNFLAGGED PRIMARY SIBLING for the same critic already
- * exists in the same show directory. Must require the sibling filename to
- * start with the primary outlet's prefix — checking only "some file whose
- * name contains the critic slug" without that prefix requirement matches the
- * file being tested against ITSELF (every candidate file's own name contains
- * its own critic slug), which always short-circuits true and silently
- * excludes every syndicated-secondary file from the scoreable set regardless
- * of whether a real primary exists.
+ * runtime syndication shield): a syndicated secondary copy is excluded when a
+ * LIVE primary sibling for the same critic exists in the same show directory.
+ * Uses getSyndicationPrimaries (per-critic pairs AND publishing groups, e.g.
+ * Observer/Guardian, BRO-6046) and hasLiveSyndicationPrimary, the same
+ * fallback the rebuild uses, so the scan cannot drift from it. The primary
+ * filename match is anchored (`<primary>--<slug>.json`), so a file is never
+ * compared against itself.
  */
 function isUnflaggedSyndicationSecondary(data, currentFile, allFiles, showDir) {
   const criticName = (data.criticName || '').toLowerCase().trim();
   const outletId = normalizeOutlet(data.outletId || data.outlet || '');
-  const syndConfig = getSyndicationConfig(criticName);
-  if (!syndConfig || !syndConfig.secondary.includes(outletId)) return false;
-  const primaryPrefix = `${syndConfig.primary}--`;
-  const criticSlug = criticName.replace(/\s+/g, '-');
-  return allFiles.some((f) => {
-    if (f === currentFile) return false;
-    if (!f.startsWith(primaryPrefix) || !f.includes(criticSlug)) return false;
-    const pData = loadJSON(path.join(showDir, f));
-    if (!pData) return false;
-    return !pData.wrongProduction && !pData.wrongShow;
-  });
+  const primaries = getSyndicationPrimaries(criticName, outletId);
+  if (!primaries.length) return false;
+  return hasLiveSyndicationPrimary(showDir, primaries, criticName,
+    { fileNames: allFiles.filter((f) => f !== currentFile) });
 }
 
 /**

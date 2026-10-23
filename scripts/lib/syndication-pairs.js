@@ -54,9 +54,16 @@ function isSecondaryOutlet(criticName, outletId) {
  * KNOWN_SYNDICATION_PAIRS — the third Chris Jones/Chicago Tribune recurrence
  * was a sibling of the same class (Tribune-group reprint) the per-critic map
  * could not anticipate.
+ *
+ * Observer/Guardian (BRO-6046): The Observer prints on theguardian.com, so the
+ * Guardian API and web search file the Observer's weekly theatre column as
+ * "guardian" while Theatre Record files the same column as "observer". The
+ * observer copy holds the per-show section and is the primary; a same-critic
+ * guardian copy of the same show is the reprint.
  */
 const PUBLISHING_GROUPS = [
   ['chicagotribune', 'nydailynews', 'baltimoresun', 'hartford-courant', 'orlando-sentinel', 'south-florida-sun-sentinel'],
+  ['observer', 'guardian'],
 ];
 
 function _isRealByline(criticName) {
