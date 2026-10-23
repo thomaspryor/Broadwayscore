@@ -369,6 +369,7 @@ function coverageAt(rec, census, asOfMs, { fetchedAt = null, excluded = [], defe
   // Every census outlet stays in the denominator: a lane discovery after asOf bounds the publish time
   // from above only, so it cannot prove the review was not out yet. Listed for the reader, never excluded.
   let scoped = census;
+  let deferredLate = [];
   // Re-judging +2h against a later census (BRO-6079): a listing whose only night file was first seen (or
   // published, by a timed publishDate) after asOf is graded by the 30-min rule of same-night-completeness,
   // not held to the +2h bar. An outlet with no file, or a file seen by asOf, stays in the denominator.
@@ -384,7 +385,12 @@ function coverageAt(rec, census, asOfMs, { fetchedAt = null, excluded = [], defe
       const t = pub != null ? Math.min(seen, pub) : seen;
       if (!earliest.has(f.outletId) || t < earliest.get(f.outletId)) earliest.set(f.outletId, t);
     }
-    const entries = census.entries.filter((e) => liveSet.has(e.outletId) || !(earliest.has(e.outletId) && earliest.get(e.outletId) > asOfMs));
+    // Only within the same-night window: sameNightCheck grades nothing first seen after it, so a deferral
+    // past it would leave the review graded by neither rule.
+    const lateEnd = embMs == null ? asOfMs : embMs + DEFAULT_GATES.sameNightEndH * HOUR;
+    const isDeferred = (e) => !liveSet.has(e.outletId) && earliest.has(e.outletId) && earliest.get(e.outletId) > asOfMs && earliest.get(e.outletId) <= lateEnd;
+    deferredLate = census.entries.filter(isDeferred).map((e) => e.outletId);
+    const entries = census.entries.filter((e) => !isDeferred(e));
     scoped = { ...census, entries, count: entries.length };
   }
   const notYetPublished = [];
@@ -397,7 +403,7 @@ function coverageAt(rec, census, asOfMs, { fetchedAt = null, excluded = [], defe
     }
   }
   const ref = referenceFrom({ census: scoped, verdict: censusVerdict(scoped, liveSet), liveCount: liveSet.size, fetchedAt });
-  return { ...ref, asOf, method: 'timeline', notYetPublished, discoveredAfter, ...(excluded.length ? { excluded } : {}) };
+  return { ...ref, asOf, method: 'timeline', notYetPublished, discoveredAfter, ...(deferredLate.length ? { deferredToLateRule: deferredLate } : {}), ...(excluded.length ? { excluded } : {}) };
 }
 
 /**

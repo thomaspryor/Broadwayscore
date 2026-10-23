@@ -613,3 +613,15 @@ test('coverageAt deferLateSeen: a review first seen at +3h is graded by the 30-m
   r3.reference = { '2h': r2.reference['2h'] };
   assert.equal(sn(r3).status, 'fail');
 });
+
+test('BRO-6079 review fixes: text publishDate never counts as the night; deferral stops at the same-night window and is recorded', () => {
+  const census = { entries: [{ outletId: 'variety' }], count: 1, sourcesPresent: ['dtli'], hadAnySource: true };
+  const old = { outletId: 'variety', firstSeenAt: '2026-06-10T12:00:00.000Z', publishDate: 'October 12, 2019', includable: false, reason: 'wrongProduction', syndicatedUnder: null };
+  assert.deepEqual(stateLib.censusExclusions(census, [old], { windowStartMs: winStartMs, night: '2026-10-22' }), []);
+  const c2 = { entries: [{ outletId: 'vulture' }, { outletId: 'nytimes' }], count: 2, sourcesPresent: ['dtli'], hadAnySource: true };
+  const r = nightRec({ 'The New York Times': 10 }, [file('nytimes', 5), file('vulture', 180)], { census: false });
+  assert.deepEqual(lib.coverageAt(r, c2, Date.parse(at(120)), { deferLateSeen: true }).deferredToLateRule, ['vulture']);
+  const r2 = nightRec({ 'The New York Times': 10 }, [file('nytimes', 5), file('vulture', 400)], { census: false });
+  const ref = lib.coverageAt(r2, c2, Date.parse(at(120)), { deferLateSeen: true });
+  assert.deepEqual(ref.missing, ['vulture']); // first seen past +3h: graded by neither rule, so stays missing
+});

@@ -81,7 +81,9 @@ function censusExclusions(census, files, opts = {}) {
     files = files.filter((f) => {
       const seen = f.firstSeenAt ? Date.parse(f.firstSeenAt) : NaN;
       if (Number.isFinite(seen) && seen >= windowStartMs) return true;
-      return !!(night && f.publishDate && String(f.publishDate).slice(0, 10) >= night);
+      // ISO only: a text date like "October 12, 2019" sorts after "2026-.." as a string and would pass.
+      const m = /^(\d{4}-\d{2}-\d{2})/.exec(String(f.publishDate || ''));
+      return !!(night && m && m[1] >= night);
     });
   }
   if (!census || !Array.isArray(census.entries)) return [];
