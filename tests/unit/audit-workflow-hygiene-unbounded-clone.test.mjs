@@ -15,7 +15,7 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { findUnboundedGitClones } = require('../../scripts/lib/audit-workflow-hygiene-rules.js');
+const { findUnboundedGitClones, findUnboundedGitNetworkCommands } = require('../../scripts/lib/audit-workflow-hygiene-rules.js');
 const ROOT = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..');
 
 const wf = (body) => `on: push\njobs:\n  a:\n    runs-on: ubuntu-latest\n    steps:\n      - run: |\n${body.split('\n').map((l) => `          ${l}`).join('\n')}\n`;
@@ -53,4 +53,64 @@ test('every workflow clone is bounded', () => {
     }
   }
   assert.deepEqual(offenders, [], `unbounded git clone(s):\n${offenders.join('\n')}`);
+});
+
+test('network rule flags unbounded fetch, pull and push, including global options', () => {
+  for (const body of [
+    'git fetch origin main',
+    'git pull --rebase origin main',
+    'if git push origin HEAD:main; then exit 0; fi',
+    'git -C "repo dir" fetch origin main',
+    'git -c "http.extraheader=AUTHORIZATION: basic token" push origin main',
+    'OUT=$(git push --force-with-lease="$ref:$sha" origin "$ref" 2>&1)',
+    'git push --mirror origin',
+    'git --bare fetch origin main',
+    'git fetch origin main # timeout is only documentation',
+    'echo "$(git fetch origin main)"',
+  ]) {
+    assert.equal(findUnboundedGitNetworkCommands(wf(body)).length, 1, body);
+  }
+  assert.equal(findUnboundedGitNetworkCommands('steps:\n  - run: git pull origin main\n').length, 1);
+});
+
+test('network rule skips bounded commands, comments, messages and clone-only archives', () => {
+  for (const body of [
+    'git_net 120 fetch origin main',
+    'git_net 180 pull --rebase origin main',
+    'git_net 90 push origin HEAD:main',
+    'timeout -k 10 "$CAP" git fetch --progress origin main',
+    'if timeout 90 git push; then break; fi',
+    'OUT=$(timeout 90 git push origin main)',
+    'gtimeout 180 git pull --rebase',
+    'bash scripts/push-with-retry.sh',
+    '# git fetch origin main',
+    'echo "git pull origin main"',
+    'printf "git push origin main"',
+    'echo "git fetch origin && git reset --hard origin/main" >> "$GITHUB_STEP_SUMMARY"',
+    'git status # git fetch origin main',
+    '1. Pull latest: \\`git pull\\`',
+    'git clone --mirror https://x/y.git repo.git',
+    'git clone --bare https://x/y.git repo.git',
+    'git fetch origin main # hygiene-unbounded-clone-ok: temporary exception',
+    '# hygiene-unbounded-clone-ok: temporary exception\ngit push origin main',
+  ]) {
+    assert.deepEqual(findUnboundedGitNetworkCommands(wf(body)), [], body);
+  }
+});
+
+test('a bounded command does not hide a separate unbounded command on the same line', () => {
+  for (const body of [
+    'git_net 120 fetch origin main && git push origin main',
+    'timeout 120 git fetch origin main; git pull --rebase',
+    'echo timeout && git fetch origin main',
+    'git clone --mirror https://x/y.git repo.git && git push --mirror origin',
+  ]) {
+    assert.equal(findUnboundedGitNetworkCommands(wf(body)).length, 1, body);
+  }
+});
+
+test('network rule includes clones and keeps the clone-only API compatible', () => {
+  const raw = wf('git clone https://x/y.git d\ngit fetch origin main\ngit pull\ngit push');
+  assert.equal(findUnboundedGitNetworkCommands(raw).length, 4);
+  assert.equal(findUnboundedGitClones(raw).length, 1);
 });
