@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5942-d",
   "planId": "d183984f-662b-4c67-9cb3-5fc43b2094dc",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-22T21:58:07.066Z",
   "submitter": {
     "name": null,
@@ -79,5 +79,49 @@
         "args": "--apply --scan-all --joint --show=king-charles-iii-2015 --file=flipsidereviews--kevin-filipski.json"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-23T02:36:30.423Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "junk-2017/theater-life--isa-goldberg.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "plaza-suite-west-end-2024/observer--susannah-clapp.json originalScore: \"4/5 stars\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-crucible-west-end-2022/observer--susannah-clapp.json originalScore: \"4/5 stars\" -> \"3/5 stars\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "exit-the-king-west-end-2018/guardian--susannah-clapp.json originalScore: \"4/5 stars\" -> \"3/5 stars\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted therese-raquin-2015/flipsidereviews--kevin-filipski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted king-charles-iii-2015/flipsidereviews--kevin-filipski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored king-charles-iii-2015/flipsidereviews--kevin-filipski.json@f41047c04aa23bae7469c2d6f63d4fb7f58ea566^ -> king-charles-iii-2015/flipsidereviews--kevin-filipski.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
