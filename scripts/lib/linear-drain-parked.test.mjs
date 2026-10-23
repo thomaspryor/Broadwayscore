@@ -211,3 +211,37 @@ test('drain rechecks fresh state and fails closed on unreadable comments', async
     assert.deepEqual(lib.selectDrainCandidates(hydrated), []);
   }
 });
+
+// BRO-6080: mac-only Todo cards (label or MAC-ONLY line) are drain-eligible.
+test('BRO-6080: mac-only Todo cards are selected at any triaged priority, with --mac-headless', () => {
+  const todo = { type: 'unstarted' };
+  const label = { labels: { nodes: [{ name: 'Mac-Only' }] } };
+  const line = `MAC-ONLY: renew the Stage cookie from the Mac keychain${VERIFY}`;
+  const cards = [
+    issue(10, `plain${VERIFY}`, { state: todo, ...label, priority: 4 }),
+    issue(11, line, { state: todo, priority: 3 }),
+    issue(12, line, { state: todo, priority: 0 }), // untriaged: never
+    issue(13, line, { state: { type: 'backlog' } }), // parked/backlog: not this path
+    issue(14, `MAC-ONLY: needs the Mac\n\nno verify here`, { state: todo }),
+    issue(15, `NO-DISPATCH: hold\n${line}`, { state: todo }),
+    issue(16, `${line}\nRun /visual-qa and get the owner's approval before pushing.`, { state: todo }),
+    issue(17, `plain${VERIFY}`, { state: todo }), // ordinary Todo: cloud's, not the drain's
+    issue(18, `Docs mention MAC-ONLY: mid-line${VERIFY}`, { state: todo }),
+    issue(22, line, { state: todo, labels: { nodes: [{ name: 'mac-only' }, { name: 'awaiting-owner' }] } }), // owner hold
+    issue(23, `**MAC-ONLY:** needs the Mac launchd agent${VERIFY}`, { state: todo, ...label, priority: 1 }),
+  ];
+  // BRO-10 has the label only (older meaning: hands-on GUI work), so the unattended drain leaves it.
+  assert.deepEqual(lib.selectDrainCandidates(cards, { limit: 20 }).map((i) => i.identifier), ['BRO-23', 'BRO-11']);
+  assert.deepEqual(lib.drainDispatchOpts(cards[1]), { macHeadless: true });
+  // An auto-filed tracker keeps its waivers; a MAC-ONLY line adds --mac-headless, a label alone does not.
+  assert.deepEqual(lib.drainDispatchOpts(issue(19, lib.AUTO_FILED_MARKER + VERIFY, label)), { allowAutofixFiled: true, allowAutomationParked: true });
+  assert.deepEqual(lib.drainDispatchOpts(issue(24, `MAC-ONLY: reads the Mac keychain\n${lib.AUTO_FILED_MARKER}${VERIFY}`, label)),
+    { allowAutofixFiled: true, allowAutomationParked: true, macHeadless: true });
+});
+
+test('BRO-6080: the comment shortlist includes mac-only Todo cards', async () => {
+  const seen = [];
+  const cards = [issue(20, `MAC-ONLY: needs the Mac launchd${VERIFY}`, { state: { type: 'unstarted' } }), issue(21, `plain${VERIFY}`, { state: { type: 'unstarted' } })];
+  await lib.fetchDrainIssuesWithComments(cards, { getIssue: async (id) => { seen.push(id); return cards.find((c) => c.identifier === id); }, log: () => {} });
+  assert.deepEqual(seen, ['BRO-20']);
+});

@@ -198,7 +198,18 @@ function hasMacOnlyLabel(issue) {
  *   calling this)
  * @returns {{mode: 'tab'|'headless', reason: string}}
  */
-function decideRouting(issue, { headless = false } = {}) {
+function decideRouting(issue, { headless = false, macHeadless = false } = {}) {
+  // BRO-6080: the Mac's parked drain passes --mac-headless for the mac-only
+  // cards it takes. Headless still runs on this Mac, and it is the lane the
+  // drain's reconcile and concurrency cap can see (job-* rows; a tab writes
+  // only a launch row, so every tab launch would read as a failed dispatch).
+  // A "MAC-ONLY:" line (written by linear-brain.js create --mac-only) marks
+  // work a Mac session finishes by itself, so every headless dispatcher (the
+  // watchdog's re-dispatch, a manual --id) keeps it headless too.
+  const macLine = hasMacOnlyLabel(issue) && require('./mac-only-marker.js').hasMacOnlyLine(issue && issue.description);
+  if (hasMacOnlyLabel(issue) && (macHeadless || macLine) && headless) {
+    return { mode: 'headless', reason: `label '${MAC_ONLY_LABEL}' on Mac-runnable work (${macHeadless ? '--mac-headless' : 'MAC-ONLY line'}): supervised headless on this Mac` };
+  }
   if (hasMacOnlyLabel(issue)) {
     return { mode: 'tab', reason: `label '${MAC_ONLY_LABEL}' forces a local cmux tab` };
   }

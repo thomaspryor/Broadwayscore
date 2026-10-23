@@ -25,6 +25,12 @@
  *      headless blocker). Session-parked cards dispatch with
  *      --allow-session-parked, which linear-next re-verifies on the fresh
  *      issue before waiving the PARKED sentinel.
+ *      BRO-6080: also a Todo card marked mac-only (label or "MAC-ONLY:"
+ *      line; cloud sessions file these with linear-brain.js --mac-only and
+ *      the cloud picker skips them), P0-P3, no headless blocker. It
+ *      dispatches with --mac-headless: headless on this Mac, not the tab the
+ *      label otherwise forces, because a tab writes no job-* rows and the
+ *      reconcile below would score every tab launch as a failed dispatch.
  *   3. Dispatches each via digest-autofix.js's dispatchDetached() — the
  *      SAME detached `node scripts/linear-next.js --id X --headless` spawn
  *      (`--headless` is linear-next's default since BRO-3652; still a valid alias)
@@ -108,7 +114,7 @@ const fs = require('fs');
 const { parseArgs: parseCliArgs } = require('./lib/cli-args.js');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { selectDrainCandidates, fetchDrainIssuesWithComments, isAutoFiledParked, isDrainEligible, isSessionParkedDrainable } = require('./lib/linear-drain-parked.js');
+const { selectDrainCandidates, fetchDrainIssuesWithComments, isAutoFiledParked, isDrainEligible, isSessionParkedDrainable, drainDispatchOpts } = require('./lib/linear-drain-parked.js');
 const { checkPark, computeContentHash } = require('./lib/attempt-memory.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const dispatchReconcile = require('./lib/dispatch-reconcile.js');
@@ -626,14 +632,17 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       // same predicate that made the card eligible: isAutoFiledParked matches
       // the alert-router marker anywhere in the body, so a session card that
       // merely quotes it would otherwise get the wrong waiver and be refused.
+      // BRO-6080: mac-only Todo cards get --mac-headless (no waivers: they are
+      // neither parked nor automation-filed); drainDispatchOpts picks the set.
       const sessionParked = isSessionParkedDrainable(issue);
-      const dispatchOpts = sessionParked ? { allowSessionParked: true } : { allowAutofixFiled: true, allowAutomationParked: true };
+      const dispatchOpts = drainDispatchOpts(issue);
       dispatchFn(`linear:${issue.identifier}`, log, dispatched.length * 45, null, dispatchOpts);
       budget--;
       appendLedgerFn({
         event: 'drain-parked-dispatch', identifier: issue.identifier, title: issue.title,
         contentHash: computeIssueContentHash(issue),
         ...(sessionParked ? { sessionParked: true, priority: issue.priority } : {}),
+        ...(dispatchOpts.macHeadless ? { macOnly: true, priority: issue.priority } : {}),
       }, ledgerPath);
       dispatched.push(issue.identifier);
     } catch (e) {

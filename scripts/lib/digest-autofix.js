@@ -906,8 +906,11 @@ function dispatchDetached(taskId, log, delaySec = 0, model = null, opts = {}) {
   // point at (linear-drain-parked.js promises the outcome in THIS log). The
   // explicit flag keeps the contract exactly as it was. bsc-next.js does not
   // take the flag, so it is Linear-lane only.
+  // opts.macHeadless (BRO-6080): the parked drain's mac-only Todo cards run
+  // headless on this Mac (decideRouting would otherwise force a tab).
+  const macHeadlessArg = linearMatch && opts && opts.macHeadless ? ' --mac-headless' : '';
   const detachArg = linearMatch ? ' --no-detach' : '';
-  const cmd = `sleep ${Math.max(0, Math.floor(delaySec))} && exec node "$1" --id ${id} --headless${detachArg}${modelArg}${autofixArg}${parkedArg}${sessionParkedArg}`;
+  const cmd = `sleep ${Math.max(0, Math.floor(delaySec))} && exec node "$1" --id ${id} --headless${detachArg}${modelArg}${autofixArg}${parkedArg}${sessionParkedArg}${macHeadlessArg}`;
   const child = spawn('sh', ['-c', cmd, 'sh', scriptPath],
     { cwd: REPO, detached: true, stdio: ['ignore', logFd, logFd] });
   child.unref();

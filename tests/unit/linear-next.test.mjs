@@ -255,6 +255,21 @@ test('decideRouting: mac-only label wins regardless of other labels present', ()
   assert.equal(decideRouting(issue, { headless: true }).mode, 'tab');
 });
 
+test('decideRouting: --mac-headless (Mac drain, BRO-6080) runs a mac-only card headless, only with headless on', () => {
+  const issue = { labels: { nodes: [{ name: 'mac-only' }] } };
+  assert.equal(decideRouting(issue, { headless: true, macHeadless: true }).mode, 'headless');
+  assert.match(decideRouting(issue, { headless: true, macHeadless: true }).reason, /mac-headless/);
+  assert.equal(decideRouting(issue, { headless: false, macHeadless: true }).mode, 'tab', '--tab still wins');
+  assert.equal(decideRouting({ labels: { nodes: [] } }, { headless: true, macHeadless: true }).mode, 'headless');
+});
+
+test('decideRouting: a labelled card with a MAC-ONLY line stays headless for any headless dispatcher (watchdog re-dispatch, BRO-6080)', () => {
+  const issue = { labels: { nodes: [{ name: 'mac-only' }] }, description: 'MAC-ONLY: reads the Mac keychain\n\nbody' };
+  assert.equal(decideRouting(issue, { headless: true }).mode, 'headless');
+  assert.equal(decideRouting(issue, { headless: false }).mode, 'tab');
+  assert.equal(decideRouting({ ...issue, description: 'body' }, { headless: true }).mode, 'tab', 'label alone keeps its tab');
+});
+
 // ── BRO-3652: supervised headless is the DEFAULT; --tab is the opt-out ──────
 //
 // Owner escalation 2026-09-16 ("no more fire-and-forget dispatches"): a bare

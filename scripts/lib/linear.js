@@ -97,12 +97,12 @@ class LinearClient {
    * Create a new issue. Returns the created issue node
    * ({ id, identifier, title, url }).
    */
-  async createIssue({ teamId, title, description, priority, stateId, projectId, assigneeId } = {}) {
+  async createIssue({ teamId, title, description, priority, stateId, projectId, assigneeId, labelIds } = {}) {
     if (!teamId) throw new Error('createIssue: teamId is required');
     if (!title) throw new Error('createIssue: title is required');
-    const data = await this.graphql(ISSUE_CREATE_MUTATION, {
-      input: { teamId, title, description, priority, stateId, projectId, assigneeId },
-    });
+    const input = { teamId, title, description, priority, stateId, projectId, assigneeId };
+    if (Array.isArray(labelIds) && labelIds.length) input.labelIds = labelIds;
+    const data = await this.graphql(ISSUE_CREATE_MUTATION, { input });
     if (!data || !data.issueCreate || !data.issueCreate.success) {
       throw new Error(`issueCreate failed for "${title}"`);
     }

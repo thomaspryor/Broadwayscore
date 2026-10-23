@@ -994,3 +994,39 @@ test('cloud claim rows count toward the Opus cap but not as prior launches of th
   assert.equal(countPriorLaunches(merged, 'linear:BRO-7'), 0);
   assert.equal(countPriorLaunches(merged, 'linear:BRO-1'), 2);
 });
+
+// BRO-6080: a card filed for the Mac (label or MAC-ONLY line) is skipped by every
+// cloud lane and taken by the Mac's parked drain.
+test('BRO-6080: a mac-only card is skipped by the cloud picker and selected by the Mac drain', () => {
+  const drain = require('./linear-drain-parked.js');
+  const VERIFY_BODY = `${BODY}\n\nVERIFY: \`node --test scripts/lib/example.test.mjs\``;
+  const byLabel = issue({ identifier: 'BRO-6100', description: VERIFY_BODY, labels: { nodes: [{ name: 'mac-only' }] } });
+  const byLine = issue({ identifier: 'BRO-6101', priority: 4, description: `MAC-ONLY: needs the Mac's launchd agent\n\n${VERIFY_BODY}` });
+  const plain = issue({ identifier: 'BRO-6102', description: VERIFY_BODY });
+  for (const card of [byLabel, byLine]) {
+    assert.equal(skipReason(card, NOW), Number(card.priority) === 4 ? 'not-p0-p1' : 'mac-only');
+    assert.equal(skipReason(card, NOW, { tier: 'p3' }), Number(card.priority) === 4 ? 'mac-only' : 'not-p3');
+    assert.equal(skipReason(card, NOW, { codex: true }), Number(card.priority) === 4 ? 'not-p0-p1' : 'mac-only');
+  }
+  const { pick, orderedP3 } = pickCloudCard([byLabel, byLine], { nowMs: NOW });
+  assert.equal(pick, null);
+  assert.deepEqual(orderedP3, []);
+  assert.equal(pickCloudCard([byLabel, plain], { nowMs: NOW }).pick.identifier, 'BRO-6102');
+  // The Mac drain takes the card --mac-only filed (MAC-ONLY line; any triaged priority,
+  // no idle wait), headless on the Mac. A label alone may mean hands-on GUI work: the
+  // cloud leaves it, and so does the unattended drain.
+  const fresh = (c) => ({ ...c, updatedAt: FRESH });
+  const filed = { ...byLine, labels: { nodes: [{ name: 'mac-only' }] } };
+  assert.deepEqual(drain.selectDrainCandidates([fresh(filed), fresh(byLabel), fresh(plain)]).map((i) => i.identifier), ['BRO-6101']);
+  assert.deepEqual(drain.drainDispatchOpts(filed), { macHeadless: true });
+  // Not unparked for the cloud either.
+  const parked = { ...byLabel, state: { type: 'backlog' }, description: `PARKED: needs a rule-18 review first\n\n${VERIFY_BODY}` };
+  assert.equal(drain.unparkSkipReason(parked), 'mac-only');
+});
+
+test('BRO-6080: a START-NOW mac-only card is refused at filing with a hint', () => {
+  const { startNowUnpickableReason } = require('./cloud-worker-pick.js');
+  const r = startNowUnpickableReason({ title: 'x', description: `START-NOW: go\nMAC-ONLY: needs the Mac keychain\n${BODY}`, priority: 2, mode: 'dispatch' });
+  assert.equal(r.reason, 'mac-only');
+  assert.match(r.hint, /Mac drain/);
+});

@@ -64,6 +64,7 @@
  *   node scripts/linear-next.js --id BRO-123 --allow-autofix-filed  dispatch an issue the digest-autofix/canary pipeline filed (that pipeline passes this itself; BRO-2499)
  *   node scripts/linear-next.js --id BRO-123 --allow-automation-parked  waive PARKED_SENTINEL only (not the wider --force set) for an issue an automation pipeline parked itself, pending its own drain (BRO-3060; those pipelines pass this at their own call sites)
  *   node scripts/linear-next.js --id BRO-123 --allow-session-parked  waive PARKED_SENTINEL only when every PARKED line names a technical reason a worker can clear (rule-18 review, worktree, monitor window); used by the parked drain (BRO-4535)
+ *   node scripts/linear-next.js --id BRO-123 --mac-headless  a 'mac-only' card runs supervised headless on this Mac instead of a tab; used by the parked drain (BRO-6080)
  *   node scripts/linear-next.js --id BRO-123 --dry-run       print the seed prompt, launch nothing
  *   node scripts/linear-next.js --help, -h                   show this message, do nothing else
  *
@@ -196,6 +197,7 @@ Usage:
   node scripts/linear-next.js --id BRO-123 --allow-autofix-filed  dispatch an issue digest-autofix/canary filed (that pipeline passes this itself; BRO-2499)
   node scripts/linear-next.js --id BRO-123 --allow-automation-parked  waive PARKED_SENTINEL only for an issue an automation pipeline parked itself, pending its own drain (BRO-3060; those pipelines pass this at their own call sites)
   node scripts/linear-next.js --id BRO-123 --allow-session-parked  waive PARKED_SENTINEL only when every PARKED line names a technical reason a worker can clear (BRO-4535)
+  node scripts/linear-next.js --id BRO-123 --mac-headless  a 'mac-only' card runs supervised headless on this Mac instead of a tab (BRO-6080)
   node scripts/linear-next.js --id BRO-123 --allow-reported-work "<reason>"  re-dispatch even though this issue's outstanding dispatch already reported done/in-review (--force does NOT cover this; BRO-2543)
   node scripts/linear-next.js --id BRO-123 --allow-marketing "<reason>"  dispatch a Marketing/distribution-project issue the owner approved (--force does NOT cover this; BRO-2584)
   node scripts/linear-next.js --id BRO-123 --dry-run        print the seed prompt, launch nothing
@@ -504,7 +506,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // in this codebase. Machine-bound routing (a 'mac-only' label) still wins
   // over both inside decideRouting.
   const wantsHeadless = !args.tab;
-  const routing = ld.decideRouting(issue, { headless: wantsHeadless });
+  const routing = ld.decideRouting(issue, { headless: wantsHeadless, macHeadless: !!args['mac-headless'] });
   const seed = ld.buildLinearSeed({
     identifier: issue.identifier, title: issue.title, description: issue.description,
     url: issue.url, model, project, mode: routing.mode,

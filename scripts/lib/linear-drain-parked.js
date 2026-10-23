@@ -110,11 +110,50 @@ function isSessionParkedDrainable(issue, { priorities = SESSION_PARKED_PRIORITIE
   return blockers.every((b) => b.code === hd.BLOCKERS.PARKED_SENTINEL);
 }
 
+// BRO-6080: a Todo card filed for the Mac (cloud sessions file these with
+// linear-brain.js create --mac-only; the cloud picker skips them). Any triaged
+// priority (P0-P3; never untriaged 0, same as the cloud picker), no PARKED line
+// or other headless blocker, no NO-DISPATCH marker, no awaiting-owner label.
+// Needs the MAC-ONLY line, not the label alone: the label's older meaning
+// includes GUI and keychain work a person does at the Mac, which an unattended
+// session would stall on; the line is what --mac-only writes for work a Mac
+// session can finish by itself. Dispatched headless on this Mac
+// (--mac-headless), so the drain's reconcile and caps see the job.
+const MAC_ONLY_PRIORITIES = new Set([1, 2, 3, 4]);
+function isMacOnlyCandidate(issue) {
+  return !!(issue && issue.state && issue.state.type === 'unstarted'
+    && MAC_ONLY_PRIORITIES.has(Number(issue.priority))
+    && require('./mac-only-marker.js').hasMacOnlyLine(issue.description));
+}
+
+function isMacOnlyDrainable(issue) {
+  if (!isMacOnlyCandidate(issue)) return false;
+  if (require('./no-dispatch-marker.js').hasNoDispatchMarker(issue.description)) return false;
+  if (require('./owner-approval-channel.js').isAwaitingOwner(issue)) return false;
+  const cmd = verifyCommand(issue);
+  if (!cmd) return false;
+  const hd = require('./headless-dispatchability.js');
+  const { blockers } = hd.classifyHeadlessDispatchability(
+    { subject: issue.title, notes: issue.description || '' }, { verifyCmd: cmd });
+  return blockers.length === 0;
+}
+
 // Everything this drain may pick up: alert-router trackers (any priority, as
-// before) plus technically-parked P0/P1 session cards, each with a safe VERIFY.
+// before), technically-parked P0/P1 session cards and mac-only Todo cards, each
+// with a safe VERIFY.
 function isDrainEligible(issue) {
   if (!issue || !hasSafeVerifyCommand(issue)) return false;
-  return isAutoFiledParked(issue) || isSessionParkedDrainable(issue);
+  return isAutoFiledParked(issue) || isSessionParkedDrainable(issue) || isMacOnlyDrainable(issue);
+}
+
+/** Which waiver set linear-next needs for this drain candidate (the predicate that made it eligible). */
+// A MAC-ONLY line adds --mac-headless to whichever waiver set applies, so a
+// labeled card never falls back to a tab (no job-* rows for reconcile to see).
+function drainDispatchOpts(issue) {
+  const mac = require('./mac-only-marker.js').hasMacOnlyLine(issue && issue.description) ? { macHeadless: true } : {};
+  if (isSessionParkedDrainable(issue)) return { allowSessionParked: true, ...mac };
+  if (isAutoFiledParked(issue)) return { allowAutofixFiled: true, allowAutomationParked: true, ...mac };
+  return { macHeadless: true };
 }
 
 // Shortlist before fetching: never read comments for active issues, owner
@@ -127,6 +166,7 @@ async function fetchDrainIssuesWithComments(issues, opts = {}) {
     issue && issue.identifier && !alreadyAttempted.has(issue.identifier)
     && issue.state && PARKED_STATE_TYPES.has(issue.state.type)
     && (isAutoFiledParked(issue)
+      || isMacOnlyCandidate(issue)
       || (SESSION_PARKED_PRIORITIES.has(Number(issue.priority))
         && hd.isDrainableSessionParked(issue.description || ''))));
   return require('./linear-issue-verifiability.js').fetchIssuesWithComments(shortlist, opts);
@@ -200,6 +240,9 @@ module.exports = {
   verifyCommand,
   hasSafeVerifyCommand,
   isSessionParkedDrainable,
+  MAC_ONLY_PRIORITIES,
+  isMacOnlyDrainable,
+  drainDispatchOpts,
   isDrainEligible,
   selectDrainCandidates,
   fetchDrainIssuesWithComments,

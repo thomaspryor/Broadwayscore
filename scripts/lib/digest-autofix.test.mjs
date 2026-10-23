@@ -1042,12 +1042,15 @@ test('every repo-wide dispatchDetached call site passes allowAutofixFiled (BRO-2
       // (--allow-session-parked) applies and its call passes `dispatchOpts`.
       // Pin the exact ternary: auto-filed cards must still get both waivers.
       let call = rawCall;
+      // BRO-6080: the choice moved to lib/linear-drain-parked.js drainDispatchOpts
+      // (mac-only Todo cards get --mac-headless only); pin it by behaviour.
       if (/,\s*dispatchOpts\s*\)\s*;$/.test(rawCall)) {
-        assert.match(src, /const sessionParked = isSessionParkedDrainable\(issue\);/,
-          `${rel}: dispatchOpts must branch on isSessionParkedDrainable(issue)`);
-        const m = src.match(/dispatchOpts\s*=\s*sessionParked\s*\?\s*\{\s*allowSessionParked:\s*true\s*\}\s*:\s*(\{[^}]*\})/);
-        assert.ok(m, `${rel}: dispatchOpts must be sessionParked ? { allowSessionParked: true } : { ...waivers }`);
-        call = m[1];
+        assert.match(src, /const dispatchOpts = drainDispatchOpts\(issue\);/,
+          `${rel}: dispatchOpts must come from drainDispatchOpts(issue)`);
+        const drainLib = require(path.join(repo, 'scripts', 'lib', 'linear-drain-parked.js'));
+        const autoFiled = { identifier: 'BRO-1', priority: 0, state: { type: 'backlog' },
+          description: `PARKED: ${drainLib.AUTO_FILED_MARKER} x\n\nVERIFY: \`node --test x.test.mjs\`` };
+        call = JSON.stringify(drainLib.drainDispatchOpts(autoFiled)).replace(/"/g, '');
       }
       assert.match(call, /allowAutofixFiled:\s*true/,
         `${rel} dispatches without the BRO-2499 waiver — autofixFiledIssueGuard refuses it inside the detached child, and silently (the caller journals "attempted" either way): ${call}`);

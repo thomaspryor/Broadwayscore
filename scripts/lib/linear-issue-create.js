@@ -205,7 +205,7 @@ function missingVerifyReason({ source, mode, parkReason, body, noVerify }) {
   return `${MISSING_VERIFY_MESSAGE} (${v.reason || 'no acceptance command found'})`;
 }
 
-async function createLinearIssue({ title, description, dispatch, park, priority, projectId, model, client, reuseTwin = false, source, dedupeOptOut, newAnyway, noVerify }) {
+async function createLinearIssue({ title, description, dispatch, park, priority, projectId, model, client, reuseTwin = false, source, dedupeOptOut, newAnyway, noVerify, macOnly }) {
   if (dedupeOptOut !== undefined && !Object.prototype.hasOwnProperty.call(cardDedupe.DEDUPE_OPT_OUTS, dedupeOptOut)) {
     throw new Error(`createLinearIssue: dedupeOptOut "${dedupeOptOut}" is not in card-dedupe.js DEDUPE_OPT_OUTS; add it there with its reason, or drop it`);
   }
@@ -216,7 +216,24 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
     err.dispositionReason = disposition.reason;
     throw err;
   }
-  const body = model == null ? (description || '') : stampModelHint(description, model);
+  let body = model == null ? (description || '') : stampModelHint(description, model);
+  // BRO-6080: a card only the Mac can do. Todo only (the Mac drain takes Todo
+  // cards); the MAC-ONLY line goes first so every check below, and the cloud
+  // picker, sees it even if the label write fails.
+  if (macOnly !== undefined) {
+    if (typeof macOnly !== 'string' || macOnly.trim().length < 10) {
+      throw new Error('macOnly needs a reason of at least 10 characters (what needs the Mac and why)');
+    }
+    if (disposition.mode !== 'dispatch') {
+      throw new Error('--mac-only files a Todo card for the Mac drain; use it with --dispatch, not --park');
+    }
+    body = `MAC-ONLY: ${macOnly.trim()}\n\n${body}`.trim();
+    // The Mac drain only takes a card with a safe VERIFY, and the cloud skips it,
+    // so without one the card would sit in Todo forever.
+    if (!require('./verify-gate.js').evaluateVerifiability(body, []).cmd) {
+      throw new Error('--mac-only needs a safe "VERIFY: <cmd>" line on its own line in the notes (the Mac drain takes nothing else, and the cloud worker skips mac-only cards). Nothing was filed.');
+    }
+  }
 
   // A START-NOW card the cloud worker would skip sits in Todo forever (BRO-5017).
   // Sessions-only path (reuseTwin, i.e. linear-brain.js create): the alert router
@@ -265,7 +282,10 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   // the alert router and digest-autofix have their own condition-keyed dedupe
   // and act on the returned card (dispatch markers, linear-next), so they must
   // always get the card they asked for. Fail open on lookup errors.
-  if (reuseTwin) {
+  // BRO-6080: never for a mac-only filing. A twin gets the notes as a comment,
+  // which no picker reads, so it would keep no MAC-ONLY line; the dispatch-mode
+  // near-duplicate check below still refuses an open match instead.
+  if (reuseTwin && macOnly === undefined) {
     const reused = await reuseOpenTwin({ title, body, client, mode: disposition.mode });
     if (reused) return reused;
   }
@@ -376,6 +396,12 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   // transient 429 instead of retrying.
   const issueClient = client || new LinearClient({ graphql: linear.graphql, teamKey: linear.TEAM_KEY });
 
+  const labelIds = [];
+  if (macOnly !== undefined) {
+    const labelId = await macOnlyLabelId(client, team.id);
+    if (labelId) labelIds.push(labelId);
+  }
+
   let issue;
   try {
     issue = await issueClient.createIssue({
@@ -385,6 +411,7 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
       priority: filed.priority,
       stateId: state.id,
       projectId,
+      ...(labelIds.length ? { labelIds } : {}),
     });
   } catch (err) {
     if (isUsageLimitExceeded(err)) {
@@ -401,6 +428,19 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   recordCreated({ identifier: issue?.identifier, title });
 
   return { issue, mode: disposition.mode, stateName: state.name, autoTodo };
+}
+
+// BRO-6080: the 'mac-only' label id, or null (fails open: the MAC-ONLY line
+// already marks the card for every picker).
+async function macOnlyLabelId(client, teamId) {
+  const { MAC_ONLY_LABEL } = require('./linear-dispatch.js');
+  try {
+    const label = await (client && client.findOrCreateLabel ? client.findOrCreateLabel(teamId, MAC_ONLY_LABEL) : linear.findOrCreateLabel(teamId, MAC_ONLY_LABEL));
+    return (label && label.id) || null;
+  } catch (e) {
+    console.warn(`[linear-issue-create] could not look up the '${MAC_ONLY_LABEL}' label (the MAC-ONLY line still marks the card): ${e.message}`);
+    return null;
+  }
 }
 
 const OPEN_TWIN_QUERY = `query($teamKey: String!, $title: String!) {

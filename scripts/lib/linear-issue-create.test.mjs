@@ -540,3 +540,41 @@ test('BRO-6081: a filer named only by dedupeOptOut is stamped with that name off
     if (saved === undefined) delete process.env.GITHUB_WORKFLOW; else process.env.GITHUB_WORKFLOW = saved;
   }
 }));
+
+// BRO-6080: --mac-only files a Todo card with a MAC-ONLY line and the mac-only label.
+test('createLinearIssue: macOnly writes the MAC-ONLY line and the label, and needs --dispatch', async () => {
+  const fs = require('fs');
+  const linearClient = require('./linear-client.js');
+  const { LEDGER_PATH } = require('./intake-breaker.js');
+  const { isMacOnlyCard } = require('./mac-only-marker.js');
+  const title = `bro-6080-mac-only-test-${process.pid}-${Date.now()}`;
+  const realGetTeam = linearClient.getTeam;
+  linearClient.getTeam = async () => ({ id: 'team-1', states: { nodes: STATES } });
+  const sent = [];
+  try {
+    const client = {
+      createIssue: async (input) => { sent.push(input); return { identifier: 'BRO-0', id: 'i' }; },
+      findOrCreateLabel: async (teamId, name) => ({ id: `label-${name}-${teamId}` }),
+    };
+    await createLinearIssue({ title, description: 'body\n\nVERIFY: `node --test scripts/lib/linear-issue-create.test.mjs`', dispatch: true, macOnly: 'needs the Mac launchd agent', client });
+    // Label lookup failing still files the card, marked by the line.
+    const noLabel = { ...client, findOrCreateLabel: async () => { throw new Error('boom'); } };
+    await createLinearIssue({ title: `${title}-b`, description: 'body\n\nVERIFY: `node --test scripts/lib/linear-issue-create.test.mjs`', dispatch: true, macOnly: 'needs the Mac launchd agent', client: noLabel });
+    // No safe VERIFY on its own line (e.g. a literal "\\n" from a shell): refused, it would sit in Todo forever.
+    await assert.rejects(createLinearIssue({ title, description: 'body\\n\\nVERIFY: `node --test scripts/lib/linear-issue-create.test.mjs`', dispatch: true, macOnly: 'needs the Mac launchd agent', client }), /needs a safe "VERIFY/);
+    await assert.rejects(createLinearIssue({ title, description: 'body', park: 'needs the owner Mac to run it', macOnly: 'needs the Mac launchd agent', client }), /use it with --dispatch/);
+    await assert.rejects(createLinearIssue({ title, description: 'body', dispatch: true, macOnly: 'mac', client }), /at least 10 characters/);
+    assert.equal(sent.length, 2, 'refusals file nothing');
+  } finally {
+    linearClient.getTeam = realGetTeam;
+    if (fs.existsSync(LEDGER_PATH)) {
+      const kept = fs.readFileSync(LEDGER_PATH, 'utf8').split('\n').filter((line) => !line.includes('bro-6080-mac-only-test'));
+      fs.writeFileSync(LEDGER_PATH, kept.join('\n'));
+    }
+  }
+  assert.equal(sent.length, 2);
+  assert.match(sent[0].description, /^MAC-ONLY: needs the Mac launchd agent\n\nbody/);
+  assert.deepEqual(sent[0].labelIds, ['label-mac-only-team-1']);
+  assert.equal(sent[1].labelIds, undefined);
+  assert.ok(isMacOnlyCard({ description: sent[1].description }), 'the line alone marks the card');
+});

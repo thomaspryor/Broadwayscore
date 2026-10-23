@@ -247,6 +247,9 @@ function ownerJudgmentMarked(issue) {
 function headlessUnfitReason(issue, { allowParkedSentinel = false } = {}) {
   const hd = require('./headless-dispatchability.js');
   const drain = require('./linear-drain-parked.js');
+  // BRO-6080: filed for the Mac ('mac-only' label or a MAC-ONLY: line). The Mac's
+  // parked drain takes it; every cloud lane (pick, resume, Codex, unpark) leaves it.
+  if (require('./mac-only-marker.js').isMacOnlyCard(issue)) return 'mac-only';
   if (IOS_APP_CARD_RE.test(String(issue.title || ''))) return 'ios-app-repo';
   // BRO-2204: a card marked "NO-DISPATCH:" must not be launched by any
   // dispatcher; the cloud worker picked one that said it needs the owner's
@@ -274,6 +277,7 @@ const START_NOW_FIX_HINTS = {
   'verify-not-cloud-runnable': 'use a narrower VERIFY than the whole unit suite',
   'no-dispatch-marker': 'drop NO-DISPATCH or drop START-NOW',
   'ios-app-repo': 'the cloud worker cannot check out the app repo; drop START-NOW',
+  'mac-only': 'the Mac drain takes mac-only cards, not the cloud worker; drop START-NOW',
 };
 
 /**

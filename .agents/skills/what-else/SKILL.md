@@ -142,7 +142,7 @@ For each spark that survives all three tests, create a **Linear** issue via
 `node scripts/linear-brain.js create "<spark title>" --dispatch --priority 1|2|3 --model opus|sonnet --notes "..."`
 (`--model`: Opus for multi-file, architectural or hard-to-debug work; Sonnet for mechanical single-file or data fixes. The worker reads it at dispatch.)
 Technical work with a safe `VERIFY:` line files with `--dispatch` at any priority, so it lands in Todo and the cloud workers pick it up.
-Use `--park "<the block>"` only for a real block: an owner decision, a missing key or access, Mac-only work, a date or event to wait for, or spend.
+Use `--park "<the block>"` only for a real block: an owner decision, a missing key or access, Mac work only the owner's hands can do (work a Mac session can do alone files `--dispatch --mac-only "<why>"`, BRO-6080), a date or event to wait for, or spend.
 "Needs its own session" is not a block (BRO-5626: parked technical cards were never picked, 183 piled up). Notion is
 retired: its create exits 6, so never use `notion-brain.js`.
 - **Notes:** Self-contained handoff using this structure:

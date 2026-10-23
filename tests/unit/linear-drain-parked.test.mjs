@@ -1106,6 +1106,25 @@ describe('main: session-parked dispatch and daily cap (BRO-4535)', () => {
     assert.deepStrictEqual(calls[0], ['linear:BRO-9', { allowSessionParked: true }]);
   });
 
+  test('BRO-6080: a mac-only Todo card dispatches with only macHeadless; the ledger row records macOnly', async () => {
+    delete process.env.LINEAR_NEXT_DISABLED;
+    const calls = [];
+    const rows = [];
+    const mac = {
+      identifier: 'BRO-11', title: 'Renew the Stage cookie', priority: 3, state: { name: 'Todo', type: 'unstarted' },
+      labels: { nodes: [{ name: 'mac-only' }] },
+      description: 'MAC-ONLY: reads the Mac keychain\n\nVERIFY: `node --test scripts/lib/linear-drain-parked.test.mjs`',
+    };
+    const result = await main([], baseDeps([mac], {
+      dispatchFn: (taskId, _log, _delay, _model, opts) => { calls.push([taskId, opts]); },
+      appendLedger: (row) => { rows.push(row); },
+    }));
+    assert.deepStrictEqual(result.dispatched, ['BRO-11']);
+    assert.deepStrictEqual(calls[0], ['linear:BRO-11', { macHeadless: true }]);
+    assert.strictEqual(rows[0].macOnly, true);
+    assert.strictEqual(rows[0].sessionParked, undefined);
+  });
+
   test('a full 24h budget dispatches nothing', async () => {
     delete process.env.LINEAR_NEXT_DISABLED;
     assert.strictEqual(DAILY_DISPATCH_CAP, 20);

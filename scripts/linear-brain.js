@@ -8,6 +8,10 @@
  *   node scripts/linear-brain.js create "Issue title" --notes "description" \
  *     [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>] \
  *     [--model opus|sonnet] [--source <filer>] [--new-anyway "<reason>"] [--dedupe-opt-out <name>]
+ *     [--mac-only "<what needs the Mac and why>"]
+ *
+ * BRO-6080: --mac-only (with --dispatch) adds the 'mac-only' label and a "MAC-ONLY: <why>" line. The cloud
+ * worker skips the card; the Mac's parked drain (linear-drain-parked.js, launchd) runs it headless on the Mac.
  *
  * BRO-5626: a session --park whose reason is technical (no owner/access/Mac/date block) and whose notes carry
  * a safe VERIFY line files in Todo (auto-Todo), so the workers pick it; a real block stays in Backlog.
@@ -42,7 +46,7 @@ Usage:
   node scripts/linear-brain.js create "Issue title" --notes "description" \\
     [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>] \\
     [--model opus|sonnet] [--source <filer>] [--new-anyway "<reason>"] [--dedupe-opt-out <name>]
-    [--no-verify "<reason>"]
+    [--no-verify "<reason>"] [--mac-only "<what needs the Mac and why>"]
   node scripts/linear-brain.js find "search term"
   node scripts/linear-brain.js get <BRO-N>
   node scripts/linear-brain.js update <BRO-N> [--state "<name>"] [--comment "<text>"] \\
@@ -54,6 +58,12 @@ Usage:
           Technical work with a safe VERIFY files --dispatch (Todo, any
           priority). --park only for a real block: owner call, missing key
           or access, Mac-only, a date or event, spend (BRO-5626).
+          Work only the owner's Mac can do (launchd, its cookies/keychain, a
+          local-only file) files --dispatch --mac-only "<why>": the cloud
+          worker skips it and the Mac's drain runs it headless (Mac awake,
+          08:30-22:30 Mac time; needs a safe VERIFY on its own line; BRO-6080).
+          Work needing the owner's own hands (a browser login to renew a
+          cookie) still goes to the owner, not a card.
           A session card with no safe VERIFY (and no real-block park or
           owner-judgment marker) prints VERIFY-ADVISORY; --no-verify
           "<reason>" files it with the reason on the card.
@@ -758,6 +768,12 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     console.error('--dedupe-opt-out needs a name from scripts/lib/card-dedupe.js DEDUPE_OPT_OUTS.');
     process.exit(1);
   }
+  // BRO-6080: --mac-only "<what needs the Mac and why>" routes the card to the Mac's drain, not the cloud worker.
+  const macOnly = args['mac-only'];
+  if (macOnly !== undefined && (macOnly === true || String(macOnly).trim().length < 10)) {
+    console.error('--mac-only needs a reason of at least 10 characters (what needs the Mac and why).');
+    process.exit(1);
+  }
   let notes = newAnyway ? `${args.notes || ''}\n\nFiled with --new-anyway: ${newAnyway}`.trim() : (args.notes || '');
   if (noVerify) notes = `${notes}\n\nFiled with --no-verify: ${noVerify}`.trim();
   // BRO-6067: the morning-after audit card must not read "no fixes needed" over a FAIL/UNKNOWN press-night record.
@@ -780,6 +796,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         : (process.env.GITHUB_WORKFLOW ? `workflow:${process.env.GITHUB_WORKFLOW}` : 'session'),
       newAnyway: newAnyway || undefined,
       noVerify: noVerify || undefined,
+      macOnly: macOnly === undefined ? undefined : String(macOnly),
       dedupeOptOut: typeof args['dedupe-opt-out'] === 'string' ? args['dedupe-opt-out'] : undefined,
     });
     console.log(JSON.stringify(result.issue, null, 2));
