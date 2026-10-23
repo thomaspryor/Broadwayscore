@@ -42,41 +42,6 @@
     "queuedAt": "2026-10-23T08:15:37.795Z"
   },
   {
-    "conditionKey": "opening-night-drift:other-desert-cities-2026",
-    "title": "Opening night drift: Other Desert Cities (other-desert-cities-2026)",
-    "description": "Review counts do not reconcile for Other Desert Cities (other-desert-cities-2026): local review-texts=35, reviews.json aggregate=31, live production=31, drift=4 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39921430736",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Show",
-        "value": "Other Desert Cities (other-desert-cities-2026)",
-        "inline": false
-      },
-      {
-        "name": "Counts",
-        "value": "local=35, aggregate=31, live=31, drift=4",
-        "inline": false
-      },
-      {
-        "name": "Opening",
-        "value": "2026-10-18",
-        "inline": false
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39921430736)",
-        "inline": false
-      }
-    ],
-    "queuedAt": "2026-10-23T08:01:25.562Z"
-  },
-  {
     "conditionKey": "time-to-publish-sla:missed",
     "title": "Time-to-publish SLA missed — 0% within 15 min (target 90%)",
     "description": "Scope: 2 opening window(s): derren-brown-only-human-west-end-2026 (2026-10-22), phyl-off-broadway-2026 (2026-10-22)\nEvaluated 10 review(s), p90 314m.\nSlowest:\n• derren-brown-only-human-west-end-2026 / north-west-end — 411m\n• phyl-off-broadway-2026 / talkinbroadway — 314m\n• derren-brown-only-human-west-end-2026 / london-box-office — 215m\n• derren-brown-only-human-west-end-2026 / theatre-weekly — 130m\n• derren-brown-only-human-west-end-2026 / theatreandtonic — 130m\n• derren-brown-only-human-west-end-2026 / liamodell — 130m\n• derren-brown-only-human-west-end-2026 / west-end-best-friend — 130m\n• phyl-off-broadway-2026 / nysr — 128m",
@@ -906,5 +871,40 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-23T19:19:19.991Z"
+  },
+  {
+    "conditionKey": "opening-night-drift:other-desert-cities-2026",
+    "title": "Opening night drift: Other Desert Cities (other-desert-cities-2026)",
+    "description": "Review counts do not reconcile for Other Desert Cities (other-desert-cities-2026): local review-texts=36, reviews.json aggregate=32, live production=32, drift=4 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40030542239",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Show",
+        "value": "Other Desert Cities (other-desert-cities-2026)",
+        "inline": false
+      },
+      {
+        "name": "Counts",
+        "value": "local=36, aggregate=32, live=32, drift=4",
+        "inline": false
+      },
+      {
+        "name": "Opening",
+        "value": "2026-10-18",
+        "inline": false
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40030542239)",
+        "inline": false
+      }
+    ],
+    "queuedAt": "2026-10-23T22:01:37.685Z"
   }
 ]
