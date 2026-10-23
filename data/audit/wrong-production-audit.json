@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T09:16:25.461Z",
+  "timestamp": "2026-10-23T11:04:22.435Z",
   "stats": {
-    "totalReviews": 59326,
-    "alreadyFlagged": 21070,
-    "dateGuardCatches": 200,
+    "totalReviews": 59369,
+    "alreadyFlagged": 21080,
+    "dateGuardCatches": 199,
     "directorMismatch": 2122,
-    "tvFilmSignals": 1684,
-    "londonSignals": 2817,
-    "offBroadwaySignals": 531,
-    "yearMismatch": 175,
-    "noPublishDate": 5313
+    "tvFilmSignals": 1688,
+    "londonSignals": 2823,
+    "offBroadwaySignals": 532,
+    "yearMismatch": 174,
+    "noPublishDate": 5338
   },
   "findings": [
     {
@@ -3244,6 +3244,7 @@
     {
       "showId": "anna-x-west-end-2021",
       "file": "camdennewjournal--unknown.json",
+      "score": 92,
       "publishDate": null,
       "url": "https://www.camdennewjournal.co.uk/article/review-anna-x-at-harold-pinter-theatre",
       "findings": [
@@ -3618,7 +3619,7 @@
     {
       "showId": "annie-west-end-2017",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 94,
+      "score": 82,
       "publishDate": "2017-06-05",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/annie-piccadilly-miranda-hart-musical-west-end_43775.html",
       "findings": [
@@ -3935,6 +3936,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "file": "timeout--unknown.json",
+      "score": null,
+      "publishDate": "2026-04-17",
+      "url": "https://www.westendtheatre.com/350319/news/reviews/avenue-q-reviews-round-up-at-shaftesbury-theatre-in-london/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -4351,7 +4366,7 @@
     {
       "showId": "bat-out-of-hell-west-end-2017",
       "file": "standard--henry-hitchings.json",
-      "score": 62,
+      "score": 82,
       "publishDate": "2017-06-21",
       "url": "https://www.standard.co.uk/goingout/theatre/bat-out-of-hell-the-musical-theatre-review-a-jawdropping-spectacle-a3569521.html",
       "findings": [
@@ -4365,7 +4380,7 @@
     {
       "showId": "bat-out-of-hell-west-end-2017",
       "file": "sunday-times--ann-treneman.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "2017-06-22",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-bat-out-of-hell-the-musical-at-the-coliseum-wc2-5nk0hqbb3",
       "findings": [
@@ -4504,6 +4519,7 @@
     {
       "showId": "be-more-chill-west-end-2021",
       "file": "theupcoming--michael-higgs.json",
+      "score": 45,
       "publishDate": null,
       "url": "https://www.theupcoming.co.uk/2021/07/07/be-more-chill-at-shaftesbury-theatre-theatre-review/",
       "findings": [
@@ -5376,6 +5392,7 @@
     {
       "showId": "book-of-mormon-tour-2022",
       "file": "revue--josh.json",
+      "score": 89,
       "publishDate": "2025-11-05",
       "url": "https://revuewm.com/arts/review-the-book-of-mormon-has-still-got-it",
       "findings": [
@@ -12752,7 +12769,7 @@
     {
       "showId": "dreamgirls-west-end-2016",
       "file": "london-theatre--dom-ohanlon.json",
-      "score": 87,
+      "score": 97,
       "publishDate": "2016-12-14",
       "url": "https://www.londontheatre.co.uk/reviews/review-of-dreamgirls-at-the-savoy-theatre-in-londons-west-end",
       "findings": [
@@ -13998,6 +14015,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "fawlty-towers-west-end-2024",
+      "file": "theupcoming--michael-higgs.json",
+      "publishDate": null,
+      "url": "https://www.theupcoming.co.uk/2024/05/16/fawlty-towers-at-apollo-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -17856,6 +17886,24 @@
       ]
     },
     {
+      "showId": "hadestown-2019",
+      "file": "musical-theatre-review--angela-thomas.json",
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/hadestown-new-cast-announced/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "hadestown-tour-2024",
       "file": "arkansas-democrat-gazette--eric-e-harrison.json",
       "score": 87,
@@ -18033,7 +18081,7 @@
     {
       "showId": "hadestown-tour-2024",
       "file": "san-francisco-chronicle--lily-janiak.json",
-      "score": 85,
+      "score": 87,
       "publishDate": "2026-04-16",
       "url": "https://www.sfchronicle.com/entertainment/theater/article/hadestown-atg-sf-orpheum-22206000.php",
       "findings": [
@@ -24631,7 +24679,7 @@
     {
       "showId": "les-liaisons-dangereuses-2016",
       "file": "northjerseycom--unknown.json",
-      "score": null,
+      "score": 61,
       "publishDate": "2016-10-31",
       "url": "https://www.northjersey.com/story/entertainment/theater/2016/10/31/theater-review-les-liaisons-dangereuses/93135222/",
       "findings": [
@@ -26918,20 +26966,6 @@
     },
     {
       "showId": "maybe-happy-ending-2024",
-      "file": "nydailynews--chris-jones.json",
-      "score": 85,
-      "publishDate": "2024-11-12",
-      "url": "https://www.nydailynews.com/2024/11/12/broadway-review-maybe-happy-ending-darren-criss-helen-shen/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (2x) more than 2024 (1x). 2026 matches production: maybe-happy-ending-tour-2026"
-        }
-      ]
-    },
-    {
-      "showId": "maybe-happy-ending-2024",
       "file": "showbiz411--httpswwwfacebookcomshowbiz411.json",
       "score": 91,
       "publishDate": "2024-11-12",
@@ -28374,6 +28408,7 @@
     {
       "showId": "mrs-doubtfire-tour-2025",
       "file": "dc-theater-arts--jennifer-georgia.json",
+      "score": 78,
       "publishDate": "2025-10-22",
       "url": "https://dctheaterarts.org/2025/10/22/a-fun-and-well-done-mrs-doubtfire-on-tour-at-capital-one-hall/",
       "findings": [
@@ -29468,7 +29503,7 @@
     {
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "observer--susannah-clapp.json",
-      "score": 93,
+      "score": 82,
       "publishDate": "2022-10-23",
       "url": "https://www.theguardian.com/stage/2022/oct/23/my-neighbour-totoro-barbican-rsc-phelim-mcdermott-review-studio-ghibli-local-hero-minerva-chichester-daniel-evans",
       "findings": [
@@ -29506,7 +29541,7 @@
     {
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "sunday-times--quentin-letts.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2022-10-22",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/my-neighbour-totoro-review-a-monster-hit-86zjsjqcz",
       "findings": [
@@ -29579,18 +29614,30 @@
     {
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "timeout-london--unknown.json",
+      "publishDate": "2022-10-16",
+      "url": "https://www.timeout.com/london/theatre/we-made-a-different-cat-bus-a-day-for-five-days-inside-the-rscs-my-neighbour-totoro",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 579d before show (2022-10-16 vs 2024-05-17)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "times-uk--clive-davis.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "October 19th, 2022",
       "url": "https://www.thetimes.co.uk/article/my-neighbour-totoro-review-animated-whimsy-takes-to-the-stage-with-aplomb-b28sv8dnl",
       "findings": [
@@ -31946,25 +31993,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"harold prince\" from parade-1998"
-        }
-      ]
-    },
-    {
-      "showId": "parade-2023",
-      "file": "metrmag--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.metrmag.com/latest-reviews/parade-by-jason-robert-brown-emerson-colonial-theatre-boston-ma-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"harold prince\" from parade-1998"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2025 (8x) more than 2023 (2x). 2025 matches production: parade-tour-2025"
         }
       ]
     },
@@ -35265,6 +35293,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "metro-uk--brooke-ivey-johnson.json",
+      "score": 96,
+      "publishDate": "2026-04-01",
+      "url": "https://metro.co.uk/2026/04/01/west-ends-new-romeo-juliet-best-adaptation-years-27804520/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2024 (2x) more than 2026 (0x). 2024 matches production: romeo-and-juliet-west-end-2024"
         }
       ]
     },
@@ -40719,7 +40761,7 @@
     {
       "showId": "the-book-of-mormon-west-end-2024",
       "file": "mirror--alun-palmer.json",
-      "score": 88,
+      "score": 86,
       "publishDate": "2013-03-21",
       "url": "http://www.mirror.co.uk/lifestyle/going-out/film/review-book-mormon-prince-wales-1777243",
       "findings": [
@@ -44829,7 +44871,7 @@
     {
       "showId": "the-last-ship-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
-      "score": 57,
+      "score": 55,
       "publishDate": "2026-09-24",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-last-ship-theatre-royal-drury-lane",
       "findings": [
@@ -44848,7 +44890,7 @@
     {
       "showId": "the-last-ship-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 58,
+      "score": 56,
       "publishDate": "2026-09-23",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-last-ship-review-sting-theatre-royal-drury-lane/",
       "findings": [
@@ -45793,6 +45835,7 @@
     {
       "showId": "the-notebook-tour-2025",
       "file": "leagueofcincytheatres--liz-eichler.json",
+      "score": 91,
       "publishDate": "2025-10-15",
       "url": "https://www.leagueofcincytheatres.info/review-the-notebook-a-broadway-magic-musical-at-its-finest/",
       "findings": [
@@ -46685,6 +46728,7 @@
     {
       "showId": "the-outsiders-tour-2025",
       "file": "jhpentertainment--jonathan-pinkerton.json",
+      "score": 90,
       "publishDate": "2025-10-17",
       "url": "https://jhpentertainment.com/theatre-review-the-outsiders-tpac-national-tour-2025/",
       "findings": [
@@ -46920,6 +46964,7 @@
     {
       "showId": "the-outsiders-tour-2025",
       "file": "wkrn--colleen-guerry.json",
+      "score": 66,
       "publishDate": "2025-10-15",
       "url": "https://www.wkrn.com/news/local-news/nashville/middle-tennessee-native-takes-center-stage-at-tpac-in-the-outsiders/",
       "findings": [
@@ -47546,6 +47591,19 @@
       "score": 93,
       "publishDate": "2025-11-25",
       "url": "https://www.minnesotamonthly.com/arts-entertainment/theater-dance/review-the-phantom-mask-returns/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from the-phantom-of-the-opera-1988"
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-tour-2025",
+      "file": "musical-theatre-review--angela-thomas.json",
+      "publishDate": "2026-10-09",
+      "url": "https://musicaltheatrereview.com/london-production-of-the-phantom-of-the-opera-to-be-captured-on-film-for-the-first-time/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -52809,6 +52867,7 @@
     {
       "showId": "water-for-elephants-tour-2025",
       "file": "broadwayworld--elizabeth-cortes.json",
+      "score": 78,
       "publishDate": "2025-10-25",
       "url": "https://www.broadwayworld.com/south-carolina/article/Review-WATER-FOR-ELEPHANTS-at-Peace-Center-20251025",
       "findings": [
@@ -58621,7 +58680,7 @@
     {
       "showId": "avenue-q-west-end-2026",
       "file": "radio-times--joanna-magill.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2026-04-17",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/avenue-q-review/",
       "findings": [
@@ -60435,7 +60494,7 @@
     },
     {
       "showId": "bodies-west-end-2017",
-      "file": "guardian--unknown.json",
+      "file": "guardian--michael-billington.json",
       "score": 60,
       "publishDate": "2017-07-12",
       "url": "https://www.theguardian.com/stage/2017/jul/12/bodies-review-vivienne-franzmann-royal-court-london-surrogacy",
@@ -61560,7 +61619,7 @@
     {
       "showId": "cat-on-a-hot-tin-roof-west-end-2017",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 56,
+      "score": 57,
       "publishDate": "2017-07-24",
       "url": "https://www.timeout.com/london/theatre/cat-on-a-hot-tin-roof-review",
       "findings": [
@@ -67410,7 +67469,7 @@
     },
     {
       "showId": "girl-from-the-north-country-west-end-2017",
-      "file": "britishtheatrecom--unknown.json",
+      "file": "britishtheatrecom--julian-eaves.json",
       "score": 92,
       "publishDate": null,
       "url": "https://www.britishtheatre.com/posts/review-girl-from-the-north-country-old-vic-theatre-5stars",
@@ -71195,7 +71254,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": 77,
+      "score": 79,
       "publishDate": "2026-08-13",
       "url": "https://theatreandtonic.co.uk/blog/how-the-other-half-loves-the-old-vic-review",
       "findings": [
@@ -71390,6 +71449,20 @@
     },
     {
       "showId": "ilford-boy-west-end-2026",
+      "file": "plays-international--jane-edwardes.json",
+      "score": 57,
+      "publishDate": "2026-10-22",
+      "url": "https://playsinternational.org.uk/ilford-boy-donmar-warehouse/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
       "file": "plays-international--unknown.json",
       "score": 57,
       "publishDate": "2026-10-22",
@@ -71418,7 +71491,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "2026-10-22",
       "url": "https://www.standard.co.uk/culture/theatre/ilford-boy-donmar-review-b1301897.html",
       "findings": [
@@ -71432,7 +71505,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2026-10-22",
       "url": "https://theatreandtonic.co.uk/blog/ilford-boy-donmar-warehouse-review",
       "findings": [
@@ -71907,14 +71980,14 @@
     {
       "showId": "indecent-2017",
       "file": "theatermania--pete-hempstead.json",
-      "score": 76,
-      "publishDate": "May 17, 2016",
-      "url": "http://www.theatermania.com/off-broadway/reviews/indecent_77094.html",
+      "score": 92,
+      "publishDate": "2017-04-18",
+      "url": "http://www.theatermania.com/broadway/reviews/indecent_80762.html",
       "findings": [
         {
-          "type": "DATE_GUARD",
+          "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Published 322d before show (May 17, 2016 vs 2017-04-04)"
+          "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
         }
       ]
     },
@@ -72674,7 +72747,7 @@
     {
       "showId": "jeezus-off-west-end-2026",
       "file": "musical-theatre-review--sorcha-exworthy.json",
-      "score": null,
+      "score": 79,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/jeezus-continues-at-the-new-diorama-theatre/",
       "findings": [
@@ -72716,7 +72789,7 @@
     {
       "showId": "jeezus-off-west-end-2026",
       "file": "thestage--paul-vale.json",
-      "score": 95,
+      "score": 93,
       "publishDate": "2025-08-06",
       "url": "https://www.thestage.co.uk/reviews/jeezus-a-queer-latinx-musical-review",
       "findings": [
@@ -77681,6 +77754,7 @@
     {
       "showId": "my-fair-lady-west-end-2022",
       "file": "artsdesk--unknown.json",
+      "score": 78,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/my-fair-lady-london-coliseum-review-tasteful-revival-powered-stirring-performances",
       "findings": [
@@ -85670,7 +85744,7 @@
     {
       "showId": "sweat-2017",
       "file": "njcom--unknown.json",
-      "score": null,
+      "score": 91,
       "publishDate": "2017-03-28",
       "url": "https://www.nj.com/entertainment/2017/03/latin_history_for_morons_john_leguizamo_sweat_broa.html",
       "findings": [
@@ -85849,7 +85923,7 @@
     {
       "showId": "table-17-off-west-end-2026",
       "file": "theatreandtonic--chiara.json",
-      "score": 96,
+      "score": 95,
       "publishDate": "2026-09-30",
       "url": "https://theatreandtonic.co.uk/blog/table-17-kiln-theatre-review",
       "findings": [
@@ -88574,6 +88648,19 @@
       ]
     },
     {
+      "showId": "the-effect-west-end-2023",
+      "file": "theupcoming--sarah-bradbury.json",
+      "publishDate": null,
+      "url": "https://www.theupcoming.co.uk/2023/08/10/the-effect-at-the-national-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-elephant-man-2014",
       "file": "nbcny--robert-kahn.json",
       "score": 78,
@@ -90672,7 +90759,7 @@
     {
       "showId": "the-last-ship-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 60,
+      "score": 58,
       "publishDate": "2026-09-24",
       "url": "https://www.timeout.com/london/news/review-the-last-ship-theatre-royal-drury-lane-sting-092426",
       "findings": [
@@ -90686,7 +90773,7 @@
     {
       "showId": "the-last-ship-west-end-2026",
       "file": "west-end-wilma--westendwilma.json",
-      "score": 60,
+      "score": 59,
       "publishDate": "2026-09-24",
       "url": "https://westendwilma.com/review-the-last-ship-musical-london/",
       "findings": [
@@ -94676,6 +94763,20 @@
     },
     {
       "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "times-uk--susannah-butter.json",
+      "score": null,
+      "publishDate": "2026-08-25",
+      "url": "https://www.thetimes.com/magazines/culture-magazine/article/i-wrote-thelma-and-louise-nothing-has-changed-for-women-since-then-5xc7s9x2s",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
       "file": "wave--mickeyjotheatre.json",
       "score": 78,
       "publishDate": "2026-09-18",
@@ -95153,6 +95254,7 @@
     {
       "showId": "to-kill-a-mockingbird-west-end-2022",
       "file": "theupcoming--lauren-devine.json",
+      "score": 87,
       "publishDate": null,
       "url": "https://www.theupcoming.co.uk/2022/04/26/to-kill-a-mockingbird-at-gielgud-theatre-theatre-review/",
       "findings": [
@@ -95556,7 +95658,7 @@
     {
       "showId": "translations-west-end-2018",
       "file": "londontheatre1--terry-eastham.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2018-06-01",
       "url": "https://www.londontheatre1.com/reviews/review-of-translations-at-the-olivier-theatre-national-theatre/",
       "findings": [
@@ -95570,6 +95672,7 @@
     {
       "showId": "translations-west-end-2018",
       "file": "standard--henry-hitchings.json",
+      "score": 79,
       "publishDate": "2018-06-13",
       "url": "https://www.standard.co.uk/go/london/theatre/translations-review-topical-resonance-to-this-revival-about-the-power-of-language-a3851866.html",
       "findings": [
@@ -96808,6 +96911,20 @@
     },
     {
       "showId": "what-if-if-only-west-end-2021",
+      "file": "artsdesk--unknown.json",
+      "score": 79,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/what-if-if-only-royal-court-review-short-if-not-sweet",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "what-if-if-only-west-end-2021",
       "file": "guardian--mark-lawson.json",
       "score": 77,
       "publishDate": null,
@@ -97710,7 +97827,7 @@
     {
       "showId": "woyzeck-west-end-2017",
       "file": "standard--fiona-mountford.json",
-      "score": 77,
+      "score": 60,
       "publishDate": "2017-05-24",
       "url": "https://www.standard.co.uk/goingout/theatre/woyzeck-theatre-review-john-boyega-gives-a-muscular-committed-performance-a3546841.html",
       "findings": [

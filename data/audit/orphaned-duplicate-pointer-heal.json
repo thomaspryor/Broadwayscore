@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-23T09:08:34.677Z",
+  "generated": "2026-10-23T10:57:16.865Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 33,
+  "count": 36,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -60,10 +60,24 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "glengarry-glen-ross-2012",
+      "loserFile": "theatermania--david-rooney.json",
+      "targetFile": "theatermania--kenji-fujishima.json",
+      "reason": "orphaned-duplicate-heal: theatermania--kenji-fujishima.json was flagged invalid after theatermania--david-rooney.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "heathers-the-musical-off-broadway-2025",
       "loserFile": "nytimes--elisabeth-vincentelli.json",
       "targetFile": "nytimes--ben-brantley.json",
       "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after nytimes--elisabeth-vincentelli.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "jagged-little-pill-2019",
+      "loserFile": "vulture--jesse-green.json",
+      "targetFile": "vulture--helen-shaw.json",
+      "reason": "orphaned-duplicate-heal: vulture--helen-shaw.json was flagged invalid after vulture--jesse-green.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -233,6 +247,13 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "loserFile": "timeout--unknown.json",
+      "targetFile": "timeout--paul-raven.json",
+      "reason": "orphaned-duplicate-heal: timeout--paul-raven.json was flagged invalid after timeout--unknown.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }
