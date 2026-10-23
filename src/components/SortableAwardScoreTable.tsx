@@ -1,25 +1,25 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { AwardScoreBadge, AWARD_TIER_LABEL } from '@/components/show-cards/AwardScoreBadge';
 import { StatusBadge } from '@/components/show-cards';
 import ShowImage from '@/components/ShowImage';
 import { getOptimizedImageUrl } from '@/lib/images';
-import type { ScoreResult, TierBadge, CeremonyContribution } from '@/lib/awards-scoring';
+import type { SlimAwardScore } from '@/lib/award-notable-win';
 
 type SortDirection = 'asc' | 'desc';
 type SortColumn = 'show' | 'score';
 
-interface ShowAwardData {
+export interface ShowAwardData {
   show: {
     slug: string;
     title: string;
     status?: string;
     images?: { hero?: string; thumbnail?: string; poster?: string };
   };
-  awardScore: ScoreResult;
+  awardScore: SlimAwardScore;
 }
 
 const TIER_CHIP: Record<string, string> = {
@@ -30,59 +30,6 @@ const TIER_CHIP: Record<string, string> = {
   'in-the-hunt': 'bg-amber-600/30 text-amber-300 border border-amber-600/30',
   eligible:      'bg-white/5 text-gray-400 border border-white/10',
 };
-
-function categoryShort(category: string): string {
-  const c = category.toLowerCase();
-  if (/best musical$|outstanding musical/.test(c)) return 'Best Musical';
-  if (/best play$|outstanding play/.test(c)) return 'Best Play';
-  if (/revival of a musical/.test(c)) return 'Best Revival (Musical)';
-  if (/revival of a play/.test(c)) return 'Best Revival (Play)';
-  if (/best.*score|outstanding.*score/.test(c)) return 'Best Score';
-  if (/best book|outstanding book/.test(c)) return 'Best Book';
-  if (/direction|director/.test(c)) return 'Best Direction';
-  if (/choreograph/.test(c)) return 'Best Choreography';
-  if (/distinguished performance|best actor|best actress|lead.*performance|lead.*performer/.test(c)) return 'Lead Performance';
-  if (/featured/.test(c)) return 'Featured Performance';
-  if (/^drama$/.test(c)) return 'Drama';
-  return category.length > 24 ? category.slice(0, 24) + '…' : category;
-}
-
-function isBestShowCategory(category: string): boolean {
-  const c = category.toLowerCase();
-  return /best (musical|play)$|revival of a (musical|play)/.test(c);
-}
-
-// Returns a single notable win label for the Notable column, or null if none.
-// Only returns win-type results (no nom-count fallback — that lives in Tony Record column).
-function computeNotableWin(breakdown: CeremonyContribution[], tonyWins: number): string | null {
-  // Pulitzer — always most prestigious
-  const pulitzer = breakdown.find(b => b.ceremony === 'Pulitzer Prize');
-  if (pulitzer) {
-    if (pulitzer.items.find(i => i.result === 'win')) return 'Pulitzer Drama';
-    if (pulitzer.items.find(i => i.result === 'nom')) return 'Pulitzer Finalist';
-  }
-
-  // NYDCC
-  const nydcc = breakdown.find(b => b.ceremony === "NY Drama Critics' Circle");
-  if (nydcc?.items.find(i => i.result === 'win')) return 'NYDCC Winner';
-
-  const tony = breakdown.find(b => b.ceremony === 'Tony Awards');
-
-  // Sweepers: "X Tony Wins" is more distinctive than listing one category
-  if (tonyWins >= 3) return `${tonyWins} Tony Wins`;
-
-  // Notable Tony win that isn't Best Musical/Play (more distinctive than Best Show)
-  if (tony) {
-    const notableWin = tony.items.find(i => i.result === 'win' && !isBestShowCategory(i.category));
-    if (notableWin) return `Tony · ${categoryShort(notableWin.category)}`;
-
-    // Best Musical/Play/Revival win as fallback
-    const bestShowWin = tony.items.find(i => i.result === 'win' && isBestShowCategory(i.category));
-    if (bestShowWin) return `Tony · ${categoryShort(bestShowWin.category)}`;
-  }
-
-  return null;
-}
 
 function formatSeason(season: string): string {
   const m = season.match(/^(\d{4})-(\d{4})$/);
@@ -103,9 +50,14 @@ function SortIcon({ active, direction }: { active: boolean; direction: SortDirec
 
 interface SortableAwardScoreTableProps {
   data: ShowAwardData[];
+  /** Server-render only this many rows; the full table renders right after hydration
+   *  (the 1,300-row table was 3.5MB of HTML, past Googlebot's 2MB limit, BRO-5968). */
+  initialRenderLimit?: number;
 }
 
-export function SortableAwardScoreTable({ data }: SortableAwardScoreTableProps) {
+export function SortableAwardScoreTable({ data, initialRenderLimit }: SortableAwardScoreTableProps) {
+  const [fullTableReady, setFullTableReady] = useState(initialRenderLimit === undefined);
+  useEffect(() => setFullTableReady(true), []);
   const router = useRouter();
   const [sortColumn, setSortColumn] = useState<SortColumn>('score');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
@@ -209,9 +161,9 @@ export function SortableAwardScoreTable({ data }: SortableAwardScoreTableProps) 
             </tr>
           </thead>
           <tbody>
-            {sortedData.map((item, index) => {
+            {(fullTableReady ? sortedData : sortedData.slice(0, initialRenderLimit)).map((item, index) => {
               const { awardScore, show } = item;
-              const notableWin = computeNotableWin(awardScore.breakdown, awardScore.tonyWins);
+              const notableWin = awardScore.notableWin;
 
               // Always show both wins and noms so columns are consistent across all seasons
               const hasTonyActivity = awardScore.tonyWins > 0 || awardScore.tonyNoms > 0;

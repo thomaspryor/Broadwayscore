@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getBroadwayShows } from '@/lib/data-core';
 import { computeSiteAwardScore } from '@/lib/awards-scoring';
+import { toSlimAwardScore } from '@/lib/award-notable-win';
 import { SortableAwardScoreTable } from '@/components/SortableAwardScoreTable';
 import { featureFlags } from '@/config/feature-flags';
 import { generateBreadcrumbSchema, BASE_URL, TONY_OG_IMAGE } from '@/lib/seo';
@@ -23,7 +24,7 @@ function getShowsForSeason(seasonSlug: string) {
         const awardScore = computeSiteAwardScore(show.id);
         return {
           show: { slug: show.slug, title: show.title, status: show.status, images: show.images },
-          awardScore,
+          awardScore: toSlimAwardScore(awardScore),
         };
       } catch { return null; }
     })

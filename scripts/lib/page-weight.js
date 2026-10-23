@@ -13,6 +13,18 @@ const MARKET_PAGE_BUDGETS = [
   { route: '/off-west-end', htmlFile: 'off-west-end.html', maxBytes: 1_000_000, maxImgs: 150 },
 ];
 
+// Other big hub pages (BRO-5968). Googlebot reads only the first 2MB of an
+// HTML file; /browse/best-broadway-shows-all-time was 7.3MB with 545 of its
+// 755 show links past the cutoff. 1.8MB leaves headroom under that limit.
+// Image caps sit ~1.5x above what each page rendered when trimmed (2026-10-23).
+const HUB_PAGE_BUDGETS = [
+  { route: '/browse/best-broadway-shows-all-time', htmlFile: 'browse/best-broadway-shows-all-time.html', maxBytes: 1_800_000, maxImgs: 150 },
+  { route: '/award-score', htmlFile: 'award-score.html', maxBytes: 1_800_000, maxImgs: 350 },
+  { route: '/browse/west-end-shows', htmlFile: 'browse/west-end-shows.html', maxBytes: 1_800_000, maxImgs: 150 },
+  { route: '/browse/best-broadway-soundtracks', htmlFile: 'browse/best-broadway-soundtracks.html', maxBytes: 1_800_000, maxImgs: 150 },
+  { route: '/cast', htmlFile: 'cast.html', maxBytes: 1_800_000, maxImgs: 150 },
+];
+
 function measureHtml(html) {
   const bytes = Buffer.byteLength(html, 'utf8');
   const imgs = (html.match(/<img\b/gi) || []).length;
@@ -27,4 +39,4 @@ function evaluateBudget(budget, html) {
   return { route: budget.route, bytes, imgs, violations };
 }
 
-module.exports = { MARKET_PAGE_BUDGETS, measureHtml, evaluateBudget };
+module.exports = { MARKET_PAGE_BUDGETS, HUB_PAGE_BUDGETS, measureHtml, evaluateBudget };

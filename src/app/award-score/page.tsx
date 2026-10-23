@@ -5,6 +5,7 @@ import { getBroadwayShows } from '@/lib/data-core';
 import { computeSiteAwardScore } from '@/lib/awards-scoring';
 import type { TierBadge } from '@/lib/awards-scoring';
 import { AWARD_TIER_LABEL } from '@/components/show-cards/AwardScoreBadge';
+import { toSlimAwardScore } from '@/lib/award-notable-win';
 import { SortableAwardScoreTable } from '@/components/SortableAwardScoreTable';
 import { featureFlags } from '@/config/feature-flags';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
@@ -62,6 +63,8 @@ const tierConfig: { badge: TierBadge; chipClass: string; description: string }[]
   { badge: 'nominated', chipClass: 'bg-white/5 text-gray-300 border border-white/20',             description: 'Recognized · 0 wins' },
 ];
 
+const AWARD_TABLE_INITIAL_ROWS = 250;
+
 export default function AwardScorePage() {
   if (!featureFlags.awardScoreV2) notFound();
 
@@ -73,7 +76,7 @@ export default function AwardScorePage() {
         const awardScore = computeSiteAwardScore(show.id);
         return {
           show: { slug: show.slug, title: show.title, status: show.status, images: show.images },
-          awardScore,
+          awardScore: toSlimAwardScore(awardScore),
         };
       } catch {
         return null;
@@ -144,7 +147,23 @@ export default function AwardScorePage() {
             Click column headers to sort. <span className="animate-pulse font-bold">*</span> In Progress means Tony nominations are confirmed but the ceremony hasn&apos;t happened yet.
           </p>
           {showsWithScore.length > 0 ? (
-            <SortableAwardScoreTable data={showsWithScore} />
+            <>
+            <SortableAwardScoreTable data={showsWithScore} initialRenderLimit={AWARD_TABLE_INITIAL_ROWS} />
+              {showsWithScore.length > AWARD_TABLE_INITIAL_ROWS && (
+                <details className="mt-4 card p-4">
+                  <summary className="cursor-pointer text-sm font-medium text-gray-300">
+                    Plain list of the other {showsWithScore.length - AWARD_TABLE_INITIAL_ROWS} shows with award activity
+                  </summary>
+                  <ul className="mt-3 columns-1 sm:columns-2 lg:columns-3 gap-6 text-sm text-gray-400">
+                    {showsWithScore.slice(AWARD_TABLE_INITIAL_ROWS).map(item => (
+                      <li key={item.show.slug} className="truncate">
+                        <Link href={`/show/${item.show.slug}`} className="hover:text-white transition-colors">{item.show.title}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              )}
+            </>
           ) : (
             <p className="text-gray-500 text-sm">No shows with award activity found.</p>
           )}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, startTransition } from 'react';
+import { useState, useMemo, useEffect, startTransition } from 'react';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
@@ -76,6 +76,10 @@ interface BrowseListClientProps {
   /** Upcoming-shows pages: relabel the opening-date sorts to "Soonest"/"Latest"
    *  since every show is in the future — "Oldest"/"Newest" reads as past tense. */
   upcomingContext?: boolean;
+  /** Server-render only this many cards; the full list renders right after hydration.
+   *  Keeps 700-show pages under Googlebot's 2MB fetch limit (BRO-5968). The server
+   *  page lists the remaining shows as plain links so they stay crawlable. */
+  initialRenderLimit?: number;
 }
 
 
@@ -102,7 +106,10 @@ export default function BrowseListClient({
   subtitle,
   sectionLabels,
   upcomingContext,
+  initialRenderLimit,
 }: BrowseListClientProps) {
+  const [fullListReady, setFullListReady] = useState(initialRenderLimit === undefined);
+  useEffect(() => setFullListReady(true), []);
   // On upcoming pages, opening-date sorts read as future-facing: "Soonest"
   // (opens first) / "Latest" (opens last), not "Oldest"/"Newest".
   const sortLabels: Record<SortOption, string> = upcomingContext
@@ -256,7 +263,7 @@ export default function BrowseListClient({
       {/* Show List */}
       {filteredAndSorted.length > 0 ? (
         <div className="space-y-3">
-          {filteredAndSorted.map((show, index) => {
+          {(fullListReady ? filteredAndSorted : filteredAndSorted.slice(0, initialRenderLimit)).map((show, index) => {
             // Section headings: only when labels exist and each one is a single
             // contiguous run in the order on screen (see browse-sections.js)
             const originalIndex = initialShows.indexOf(show);

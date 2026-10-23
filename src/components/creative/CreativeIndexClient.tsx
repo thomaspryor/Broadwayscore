@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { getScoreClass } from '@/lib/critic-page-utils';
 import { ColumnHeader } from '@/components/show-cards';
@@ -112,7 +112,9 @@ function ProfileCard({ profile, routePath, showObc }: { profile: CreativeProfile
 
 
 export default function CreativeIndexClient({
-  profiles,
+  profiles: initialProfiles,
+  extraProfilesUrl,
+  totalProfiles,
   categoryLabel,
   routePath,
   totalShows,
@@ -122,6 +124,10 @@ export default function CreativeIndexClient({
   defaultSort = 'shows' as SortColumn,
 }: {
   profiles: CreativeProfileSummary[];
+  /** Profiles left out of the server payload (page weight, BRO-5968); fetched when the default filter no longer covers them. */
+  extraProfilesUrl?: string;
+  /** Full profile count when `profiles` is only the default subset. */
+  totalProfiles?: number;
   categoryLabel: string;
   routePath: string;
   totalShows: number;
@@ -136,6 +142,23 @@ export default function CreativeIndexClient({
   const [visibleCount, setVisibleCount] = useState(100);
   const [obcOnly, setObcOnly] = useState(false);
   const [minShows, setMinShows] = useState(defaultMinShows);
+  const [extraProfiles, setExtraProfiles] = useState<CreativeProfileSummary[]>([]);
+  const needsExtra = !!extraProfilesUrl && (minShows < defaultMinShows || search.trim() !== '');
+
+  useEffect(() => {
+    if (!needsExtra || extraProfiles.length > 0) return;
+    let cancelled = false;
+    fetch(extraProfilesUrl!)
+      .then(r => (r.ok ? r.json() : []))
+      .then((rows: CreativeProfileSummary[]) => { if (!cancelled) setExtraProfiles(rows); })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [needsExtra, extraProfilesUrl, extraProfiles.length]);
+
+  const profiles = useMemo(
+    () => (needsExtra && extraProfiles.length > 0 ? [...initialProfiles, ...extraProfiles] : initialProfiles),
+    [needsExtra, extraProfiles, initialProfiles]
+  );
 
   function handleSort(col: SortColumn) {
     if (col === sortCol) {
@@ -188,7 +211,7 @@ export default function CreativeIndexClient({
       <div className="mb-6">
         <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">Broadway {categoryLabel}</h1>
         <p className="text-gray-400">
-          {profiles.length.toLocaleString()} {categoryLabel.toLowerCase()} across {totalShows} Broadway shows
+          {(totalProfiles ?? initialProfiles.length).toLocaleString()} {categoryLabel.toLowerCase()} across {totalShows} Broadway shows
         </p>
         {subtitle && <p className="text-xs text-gray-500 mt-1">{subtitle}</p>}
       </div>

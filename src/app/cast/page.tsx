@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getAllActorProfiles } from '@/lib/data-actors';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
+import { CAST_DEFAULT_MIN_SCORED, getCastIndexProfiles, splitCastIndex } from '@/lib/cast-index';
 import CreativeIndexClient from '@/components/creative/CreativeIndexClient';
 
 export const metadata: Metadata = {
@@ -33,18 +34,7 @@ export default function CastIndexPage() {
     'Broadway Cast Members'
   );
 
-  // Map to CreativeProfileSummary shape for reuse
-  const summaries = profiles.map(p => ({
-    name: p.name,
-    slug: p.slug,
-    showCount: p.showCount,
-    scoredShowCount: p.scoredShowCount,
-    avgScore: p.avgScore,
-    openShowCount: p.openShowCount,
-    roles: [] as string[],
-    obcCount: p.shows.filter(s => (s.castType === 'obc' || s.wasObc) && !s.isRevival).length,
-    headshot: p.headshot,
-  }));
+  const { main: summaries, rest } = splitCastIndex(getCastIndexProfiles());
 
   return (
     <div className="min-h-screen bg-surface">
@@ -54,11 +44,13 @@ export default function CastIndexPage() {
       />
       <CreativeIndexClient
         profiles={summaries}
+        extraProfilesUrl="/cast-index.json"
+        totalProfiles={summaries.length + rest.length}
         categoryLabel="Cast Members"
         routePath="cast"
         totalShows={totalShows}
         showObcFilter
-        defaultMinShows={3}
+        defaultMinShows={CAST_DEFAULT_MIN_SCORED}
         defaultSort="avg"
         subtitle="Covers productions from 1970 to present. Critic scores available from 2005."
       />

@@ -144,8 +144,13 @@ export default async function BrowsePage(props: { params: Promise<{ slug: string
     { name: config.title, url: `${BASE_URL}/browse/${params.slug}` },
   ]);
 
+  // Long lists render only their first cards in the server HTML (BRO-5968): a 700+
+  // show page was 7MB, and Googlebot reads only the first 2MB. The rest are plain
+  // links below, and the full list renders after hydration.
+  const INITIAL_RENDER_LIMIT = 100;
+  const isLongList = shows.length > INITIAL_RENDER_LIMIT + 50;
   const itemListSchema = generateItemListSchema(
-    shows.map(show => ({
+    (isLongList ? shows.slice(0, INITIAL_RENDER_LIMIT) : shows).map(show => ({
       name: show.title,
       url: `${BASE_URL}/show/${show.slug}`,
       image: show.images?.hero,
@@ -195,9 +200,12 @@ export default async function BrowsePage(props: { params: Promise<{ slug: string
   // Serialize shows with audience data for client
   const serializedShows: BrowseShow[] = shows.map(show => {
     const grosses = hasPerformanceData ? getShowGrosses(show.slug) : null;
-    return serializeShowForClient(show, {
+    // Browse cards never render these; dropping them keeps long lists under
+    // Googlebot's 2MB fetch limit (BRO-5968).
+    const { creativeTeam: _ct, tags: _tags, ageRecommendation: _age, subtitle: _sub, subtitleColor: _subc, ...slim } = serializeShowForClient(show, {
       performances: grosses?.allTime?.performances ?? undefined,
     });
+    return slim;
   });
 
   // Compute section group labels (server-side, since sectionGroup uses ComputedShow)
@@ -270,7 +278,23 @@ export default async function BrowsePage(props: { params: Promise<{ slug: string
           showScoreToggle={showScoreToggle}
           sectionLabels={sectionLabels}
           upcomingContext={config.slug.startsWith('upcoming-')}
+          initialRenderLimit={isLongList ? INITIAL_RENDER_LIMIT : undefined}
         />
+
+        {isLongList && (
+          <details className="mt-6 card p-4">
+            <summary className="cursor-pointer text-sm font-medium text-gray-300">
+              Plain list of all {shows.length} shows
+            </summary>
+            <ul className="mt-3 columns-1 sm:columns-2 gap-6 text-sm text-gray-400">
+              {shows.map(show => (
+                <li key={show.id} className="truncate">
+                  <Link href={`/show/${show.slug}`} className="hover:text-white transition-colors">{show.title}</Link>
+                </li>
+              ))}
+            </ul>
+          </details>
+        )}
 
         {/* National tours: links into the /tours/<city> pages (BRO-4723) */}
         {config.source === 'tour' && <ToursByCity cities={Array.from(getTourCities().values())} />}
