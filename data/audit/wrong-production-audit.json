@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T05:17:19.945Z",
+  "timestamp": "2026-10-23T05:28:22.749Z",
   "stats": {
-    "totalReviews": 59290,
-    "alreadyFlagged": 21068,
+    "totalReviews": 59289,
+    "alreadyFlagged": 21066,
     "dateGuardCatches": 200,
     "directorMismatch": 2161,
     "tvFilmSignals": 1683,
-    "londonSignals": 2816,
+    "londonSignals": 2815,
     "offBroadwaySignals": 530,
     "yearMismatch": 175,
-    "noPublishDate": 5287
+    "noPublishDate": 5291
   },
   "findings": [
     {
@@ -80585,19 +80585,6 @@
     {
       "showId": "operation-mincemeat-west-end-2024",
       "file": "whatsonstage--alex-wood.json",
-      "publishDate": "2023-06-26",
-      "url": "https://www.whatsonstage.com/news/operation-mincemeat-extends-west-end-run-again-and-unveils-loyalty-scheme_1465642/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "whatsonstage--unknown.json",
       "publishDate": "2023-06-26",
       "url": "https://www.whatsonstage.com/news/operation-mincemeat-extends-west-end-run-again-and-unveils-loyalty-scheme_1465642/",
       "findings": [
