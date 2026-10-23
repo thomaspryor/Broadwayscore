@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-23T14:35:08.505Z",
+    "lastUpdated": "2026-10-23T15:11:56.135Z",
     "version": "2.1.0",
-    "lastChange": "BRO-5823: resolve 10 staged outlets (9 registered, metro-london aliased to metro-uk)"
+    "lastChange": "BRO-5823: register icareifyoulisten (staged name-unresolved)"
   },
   "outlets": {
     "westendtheatre": {
@@ -13451,6 +13451,14 @@
         "singleticket"
       ],
       "domain": "singleticket.substack.com"
+    },
+    "icareifyoulisten": {
+      "displayName": "I Care If You Listen",
+      "tier": 3,
+      "aliases": [
+        "icareifyoulisten"
+      ],
+      "domain": "icareifyoulisten.com"
     }
   },
   "_aliasIndex": {
