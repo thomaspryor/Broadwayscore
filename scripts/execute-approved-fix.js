@@ -468,6 +468,10 @@ function executeRunScript(action) {
   }
 }
 
+// Review files this plan deleted or moved away (relative to review-texts), for
+// stampRecreatedReviews after the last action (BRO-5942).
+const deletedReviewPaths = new Set();
+
 function executeReviewFileOp(action) {
   const { operation, sourcePath, destPath } = action;
   const reviewTextsDir = path.join(ROOT, 'data/review-texts');
@@ -487,12 +491,16 @@ function executeReviewFileOp(action) {
     return { ok: false, reason: `Source not found: ${sourcePath}` };
   }
 
+  const relSource = path.relative(reviewTextsDir, absSource).split(path.sep).join('/');
   if (operation === 'delete') {
     fs.unlinkSync(absSource);
+    deletedReviewPaths.add(relSource);
     return { ok: true, msg: `Deleted ${sourcePath}` };
 
   } else if (operation === 'move' || operation === 'rename') {
-    return require('./lib/review-file-move').moveReviewFile(reviewTextsDir, sourcePath, destPath, { overwrite: action.overwrite === true });
+    const moved = require('./lib/review-file-move').moveReviewFile(reviewTextsDir, sourcePath, destPath, { overwrite: action.overwrite === true });
+    if (moved && moved.ok) deletedReviewPaths.add(relSource);
+    return moved;
   }
 
   return { ok: false, reason: `Unknown operation: ${operation}` };
@@ -715,6 +723,14 @@ async function main() {
       failed.push(result.reason);
       console.log(`  FAILED: ${result.reason}`);
     }
+  }
+
+  // BRO-5942: a file the plan deleted and a later action wrote anew has no
+  // history of its own; without the stamp push-review-texts restores the
+  // deleted copy's protected fields (a stale wrongProduction, an old score).
+  if (deletedReviewPaths.size) {
+    const stamped = require('./lib/rename-identity').stampRecreatedReviews(path.join(ROOT, 'data/review-texts'), deletedReviewPaths, planData.planId || String(issueNumber));
+    for (const rel of stamped) console.log(`  Recreated after delete: ${rel} (push-time restore skips its committed copy)`);
   }
 
   // BRO-5886: the plan is written back to main below; an ingested handoff keeps

@@ -14,6 +14,13 @@
  * ('<show>/<file>' relative to the review-texts root). A file whose stamp is
  * not already on the committed version at its path was renamed in this push,
  * so its history is the source path's.
+ *
+ * A plan that deletes X and then writes a new X (a re-split, a re-ingest, a
+ * restore from an older commit) leaves a file with no history of its own: the
+ * deleted copy is what the plan meant to throw away. execute-approved-fix stamps
+ * such files `_recreatedAfterDelete: { fixId, at }`, and the restore reads no
+ * committed version for them (BRO-5942: a mis-cut child's wrongProduction came
+ * back onto the clean re-split row and the rebuild marked it invalid).
  */
 
 /** Was `local` renamed onto its path since `atPath` (the committed version there) was written? */
@@ -22,6 +29,14 @@ function renamedSinceCommit(local, atPath) {
   if (!r || typeof r.file !== 'string' || !r.file) return false;
   const prior = atPath && atPath._renamedFrom;
   return !(prior && prior.at === r.at && prior.file === r.file);
+}
+
+/** Was `local` deleted and written anew by a plan since `atPath` was committed? */
+function recreatedSinceCommit(local, atPath) {
+  const r = local && local._recreatedAfterDelete;
+  if (!r || typeof r.at !== 'string' || !r.at) return false;
+  const prior = atPath && atPath._recreatedAfterDelete;
+  return !(prior && prior.at === r.at && prior.fixId === r.fixId);
 }
 
 /**
@@ -34,6 +49,7 @@ function renamedSinceCommit(local, atPath) {
 function committedHistoryFor(filePath, local, readCommitted) {
   let atPath = null;
   try { atPath = readCommitted(filePath); } catch { atPath = null; }
+  if (recreatedSinceCommit(local, atPath)) return null;
   if (!renamedSinceCommit(local, atPath)) return atPath;
   try { return readCommitted(local._renamedFrom.file); } catch { return null; }
 }
@@ -43,4 +59,31 @@ function renameStamp(srcShowId, srcFile, at = new Date().toISOString()) {
   return { file: `${srcShowId}/${srcFile}`, at };
 }
 
-module.exports = { renamedSinceCommit, committedHistoryFor, renameStamp };
+/** The stamp execute-approved-fix writes onto a file its plan deleted and wrote anew. */
+function recreateStamp(fixId, at = new Date().toISOString()) {
+  return { fixId: String(fixId), at };
+}
+
+/**
+ * Stamp every path in `deleted` (relative to the review-texts root) that exists
+ * again after the plan, so the push-time restore leaves it as the plan wrote it.
+ * @returns {string[]} the stamped paths
+ */
+function stampRecreatedReviews(reviewTextsDir, deleted, fixId, { write, at = new Date().toISOString() } = {}) {
+  const fs = require('fs');
+  const path = require('path');
+  const save = write || ((abs, rec) => require('./review-write-guard').safeWriteReview(abs, rec));
+  const stamped = [];
+  for (const rel of deleted) {
+    const abs = path.join(reviewTextsDir, rel);
+    if (!fs.existsSync(abs)) continue;
+    let rec;
+    try { rec = JSON.parse(fs.readFileSync(abs, 'utf8')); } catch { continue; }
+    if (!rec || typeof rec !== 'object' || Array.isArray(rec)) continue;
+    save(abs, { ...rec, _recreatedAfterDelete: recreateStamp(fixId, at) });
+    stamped.push(rel);
+  }
+  return stamped;
+}
+
+module.exports = { renamedSinceCommit, recreatedSinceCommit, committedHistoryFor, renameStamp, recreateStamp, stampRecreatedReviews };
