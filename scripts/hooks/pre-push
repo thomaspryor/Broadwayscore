@@ -46,6 +46,9 @@ cd "$REPO_ROOT"
 # (non-deletion) push — if every spec is a delete, skip audits entirely.
 ALL_CHANGED_FILES=""
 HAVE_NON_DELETE_SPEC=0
+NON_DELETE_SPEC_COUNT=0
+LAST_SPEC_OID=""
+LAST_SPEC_REF=""
 
 # ${arr[@]+...} guard: /bin/bash is 3.2, where expanding an EMPTY array under
 # `set -u` is a fatal "unbound variable" (fixed in bash 4.4). Git can invoke
@@ -55,6 +58,9 @@ for spec in ${PUSH_SPECS[@]+"${PUSH_SPECS[@]}"}; do
   # Skip deletions (local_oid is all zeros for `git push --delete`)
   [ "$local_oid" = "0000000000000000000000000000000000000000" ] && continue
   HAVE_NON_DELETE_SPEC=1
+  NON_DELETE_SPEC_COUNT=$((NON_DELETE_SPEC_COUNT + 1))
+  LAST_SPEC_OID="$local_oid"
+  LAST_SPEC_REF="$remote_ref"
 
   # Non-fast-forward guard on protected branches: a push that isn't a
   # fast-forward of the remote's current tip only succeeds as a FORCE push.
@@ -369,6 +375,17 @@ fi
 # exit-code-clean, and near-zero false-blocks because CI already keeps main green.
 if grep -qE "\.(ts|tsx)$" <<<"$ALL_CHANGED_FILES"; then
   if [ -f data/reviews.json ] && [ -f data/shows.json ]; then
+    # BRO-5783: inside a CI landing, a retry push of a byte-identical code tree
+    # (main moved only across inert paths) skips the repeat tsc. Fail-open: any
+    # doubt runs tsc. Decision + safety rules: scripts/lib/tsc-stamp.js.
+    if node "$REPO_ROOT/scripts/lib/tsc-stamp.js" check --pushed-oid="$LAST_SPEC_OID" --spec-count="$NON_DELETE_SPEC_COUNT" --remote-ref="$LAST_SPEC_REF"; then
+      TSC_STAMP_SKIP=1
+    else
+      TSC_STAMP_SKIP=0
+    fi
+  if [ "$TSC_STAMP_SKIP" = "1" ]; then
+    :
+  else
     echo "pre-push: tsc --noEmit (push touches TypeScript)…"
     # Raise the heap for full-repo tsc; default ~2GB OOMs in cloud (BRO-6004).
     TSC_NODE_OPTIONS="$(bash "$(git rev-parse --show-toplevel)/scripts/lib/tsc-node-options.sh")" || TSC_NODE_OPTIONS=""
@@ -385,6 +402,8 @@ if grep -qE "\.(ts|tsx)$" <<<"$ALL_CHANGED_FILES"; then
       exit 1
     fi
     rm -f /tmp/pre-push-tsc.out
+    node "$REPO_ROOT/scripts/lib/tsc-stamp.js" record || true
+  fi
   else
     echo "pre-push: skipping tsc (data/*.json absent — bare worktree; tsc needs them)"
   fi

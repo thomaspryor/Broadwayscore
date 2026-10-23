@@ -777,6 +777,10 @@ jobs:
           # build only when both sides changed build code) unless a file
           # changed on both sides; true restores the full re-check.
           LAND_SMALL_RECHECK_DISABLED: ${{ vars.LAND_SMALL_RECHECK_DISABLED }}
+          # BRO-5783: job-local stamp so the pre-push tsc (66-80s, run under the
+          # mutex) is skipped on a retry push of an identical code tree. Kill
+          # switch: repo variable LAND_TSC_STAMP_DISABLED=1. See scripts/lib/tsc-stamp.js.
+          LAND_TSC_STAMP_FILE: ${{ vars.LAND_TSC_STAMP_DISABLED == '1' && '' || format('{0}/land-tsc-stamp', runner.temp) }}
         # --expect-tip: land ONLY the tip `checks` verified — a newer push to
         #   the branch has its own run; this one refuses rather than landing
         #   an unverified tip.
