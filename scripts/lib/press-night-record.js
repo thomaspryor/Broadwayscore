@@ -443,7 +443,13 @@ function evaluateCheck(rec, opts = {}) {
   } else if (!fl) {
     const lastMs = toMs(rec.probe.lastOkSampleAt); // failed fetches prove nothing about the site
     const waited = lastMs != null ? Math.round((lastMs - embMs) / MIN) : null;
-    if (waited != null && waited > g.firstLiveWithinMin) {
+    // Nothing live is only our failure if some outlet demonstrably published (a census entry, a lane
+    // discovery); a night no critic wrote up is not a slow site.
+    const refs = Object.values(rec.reference || {});
+    const published = refs.some((r) => r && r.count > 0) || !!(rec.laneShadow && rec.laneShadow.firstDiscoveredAt);
+    if (waited != null && waited > g.firstLiveWithinMin && !published) {
+      gates.push(gate('first-live', 'unknown', `no review of the night live ${waited} min after the embargo, and no census or lane discovery shows any outlet published`));
+    } else if (waited != null && waited > g.firstLiveWithinMin) {
       gates.push(gate('first-live', 'fail', `no review of the night live ${waited} min after the embargo (bar ${g.firstLiveWithinMin})`));
     } else {
       gates.push(gate('first-live', 'unknown', 'no review of the night live yet and the probe stopped inside the bar'));
@@ -464,7 +470,7 @@ function evaluateCheck(rec, opts = {}) {
     const pubWhat = exactPub != null ? 'the first outlet publish' : (pubHigh != null ? 'the first outlet publish (embargo .. first lane discovery)' : 'the embargo');
     const range = delayLow != null && delayLow !== delayHigh ? `${delayLow}-${delayHigh}` : `${delayHigh}`;
     const who = `${fl.outlet || 'a review'} via ${fl.source}`;
-    const detail = `first review of the night (${who}) live ${range} min after ${pubWhat}; ${afterEmbargo} min after embargo (bar ${g.firstLiveWithinMin})`;
+    const detail = `first review of the night (${who}) live ${range} min after ${pubWhat}${pubWhat === 'the embargo' ? '' : `; ${afterEmbargo} min after embargo`} (bar ${g.firstLiveWithinMin})`;
     let status;
     // A baseline first-live time is only an upper bound on when it went live: it can clear the bar, never fail it.
     if (delayHigh <= g.firstLiveWithinMin) status = 'pass';

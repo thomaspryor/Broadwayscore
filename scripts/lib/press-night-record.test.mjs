@@ -94,6 +94,8 @@ test('evaluateCheck: nothing live well past the bar FAILs; nothing live inside t
   lib.applySample(rec, { at: at(10), reviews: [] });
   assert.equal(lib.evaluateCheck(rec).gates[0].status, 'unknown');
   lib.applySample(rec, { at: at(45), reviews: [] });
+  assert.equal(lib.evaluateCheck(rec).gates[0].status, 'unknown'); // no evidence any outlet published
+  rec.reference.end = { status: 'incomplete', count: 3, coverage: 0, covered: 0, missing: ['a', 'b', 'c'] };
   assert.equal(lib.evaluateCheck(rec).gates[0].status, 'fail');
 });
 
@@ -252,7 +254,7 @@ test('first-live ignores a preview-period review that was live at the first samp
   assert.equal(fl.baseline, false);
   const g = lib.evaluateCheck(rec).gates.find((x) => x.name === 'first-live');
   assert.equal(g.status, 'unknown'); // date-only publish, no lane discovery: still cannot bound publish-to-live
-  assert.match(g.detail, /87 min after the embargo/);
+  assert.match(g.detail, /87 min after the embargo \(bar 30\)/);
   assert.doesNotMatch(g.detail, /already live at the first sample/);
 });
 

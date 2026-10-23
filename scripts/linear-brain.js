@@ -631,6 +631,12 @@ async function main(argv = process.argv.slice(2), deps = {}) {
           landed.push(`marked duplicate of ${duplicateRelation.identifier}`);
         }
         if (args.comment !== undefined) {
+          // BRO-6067: an "Opening-night audit" comment carries the press-night verdict when it is not PASS.
+          const note = require('./lib/press-night-audit-note').annotateAuditCard(issue.title, args.comment, require('path').join(__dirname, '..'));
+          if (note.changed) {
+            args.comment = note.text;
+            console.error(`PRESS-NIGHT: ${note.notPassing.length} record(s) not PASS for this audit; the comment now says so.`);
+          }
           await createCommentFn(issue.id, args.comment);
           commented = true;
           landed.push('comment posted');
@@ -721,6 +727,12 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   }
   let notes = newAnyway ? `${args.notes || ''}\n\nFiled with --new-anyway: ${newAnyway}`.trim() : (args.notes || '');
   if (noVerify) notes = `${notes}\n\nFiled with --no-verify: ${noVerify}`.trim();
+  // BRO-6067: the morning-after audit card must not read "no fixes needed" over a FAIL/UNKNOWN press-night record.
+  const pressNight = require('./lib/press-night-audit-note').annotateAuditCard(title, notes, require('path').join(__dirname, '..'));
+  if (pressNight.changed) {
+    notes = pressNight.text;
+    console.error(`PRESS-NIGHT: ${pressNight.notPassing.length} record(s) not PASS for this audit night (${pressNight.notPassing.map((r) => `${r.showId} ${r.verdict}`).join(', ')}); the card now says so.`);
+  }
   try {
     const result = await createLinearIssueFn({
       title,
