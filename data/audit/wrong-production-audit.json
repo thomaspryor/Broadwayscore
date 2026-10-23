@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T05:53:05.086Z",
+  "timestamp": "2026-10-23T06:48:23.867Z",
   "stats": {
-    "totalReviews": 59300,
+    "totalReviews": 59303,
     "alreadyFlagged": 21067,
     "dateGuardCatches": 200,
-    "directorMismatch": 2162,
+    "directorMismatch": 2122,
     "tvFilmSignals": 1684,
-    "londonSignals": 2816,
+    "londonSignals": 2817,
     "offBroadwaySignals": 530,
     "yearMismatch": 175,
-    "noPublishDate": 5295
+    "noPublishDate": 5297
   },
   "findings": [
     {
@@ -3224,232 +3224,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"george c. wolfe\" from angels-in-america-perestroika-1993"
-        }
-      ]
-    },
-    {
-      "showId": "angels-in-america-west-end-2017",
-      "file": "artsdesk--unknown.json",
-      "score": 96,
-      "publishDate": null,
-      "url": "https://theartsdesk.com/theatre/angels-america-national-theatre-review-andrew-garfield-and-company-soar-seismic-revival",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"lyttelton\""
-        }
-      ]
-    },
-    {
-      "showId": "angels-in-america-west-end-2017",
-      "file": "britishtheatrecom--paul-t-davies.json",
-      "score": 98,
-      "publishDate": "2017-05-05",
-      "url": "https://www.britishtheatre.com/posts/review-angels-in-america-part-one-national-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
-        }
-      ]
-    },
-    {
-      "showId": "angels-in-america-west-end-2017",
-      "file": "guardian--michael-billington.json",
-      "score": 78,
-      "publishDate": "2017-05-05",
-      "url": "https://www.theguardian.com/stage/2017/may/05/angels-in-america-review-andrew-garfield-nathan-lane-tony-kushner",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "angels-in-america-west-end-2017",
-      "file": "hollywood-reporter--demetrios-matheou.json",
-      "score": 87,
-      "publishDate": "2017-05-05",
-      "url": "http://www.hollywoodreporter.com/review/angels-in-america-theater-1000480?utm_source=twitter",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
-        }
-      ]
-    },
-    {
-      "showId": "angels-in-america-west-end-2017",
-      "file": "independent--paul-taylor.json",
-      "score": 82,
-      "publishDate": "2017-05-11",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/angels-in-america-review-national-theatre-marianne-elliott-tony-kushner-andrew-garfield-aids-reagan-new-york-a7725596.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
-        }
-      ]
-    },
-    {
-      "showId": "angels-in-america-west-end-2017",
-      "file": "nytimes--ben-brantley.json",
-      "score": 79,
-      "publishDate": "2017-05-05",
-      "url": "https://www.nytimes.com/2017/05/05/arts/angels-in-america-national-theater-review.html?partner=rss&emc=rss&_r=0",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"lyttelton\""
-        }
-      ]
-    },
-    {
-      "showId": "angels-in-america-west-end-2017",
-      "file": "standard--henry-hitchings.json",
-      "score": 93,
-      "publishDate": "2017-05-05",
-      "url": "https://www.standard.co.uk/goingout/theatre/angels-in-america-theatre-review-andrew-garfield-makes-a-profound-impression-in-a-true-theatrical-a3530736.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
-        }
-      ]
-    },
-    {
-      "showId": "angels-in-america-west-end-2017",
-      "file": "sunday-express--michael-arditti.json",
-      "score": 75,
-      "publishDate": "2017-05-14",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
-        }
-      ]
-    },
-    {
-      "showId": "angels-in-america-west-end-2017",
-      "file": "sunday-times--david-jays.json",
-      "score": 77,
-      "publishDate": "2017-05-14",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
-        }
-      ]
-    },
-    {
-      "showId": "angels-in-america-west-end-2017",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 95,
-      "publishDate": "2017-05-04",
-      "url": "http://www.telegraph.co.uk/theatre/what-to-see/angels-america-national-theatre-reviewdazzling-quirky-often/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "angels-in-america-west-end-2017",
-      "file": "thestage--mark-shenton.json",
-      "score": 82,
-      "publishDate": "2017-05-05",
-      "url": "https://www.thestage.co.uk/reviews/2017/angels-in-america-review-at-the-lyttelton-national-theatre-london/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"lyttelton\""
-        }
-      ]
-    },
-    {
-      "showId": "angels-in-america-west-end-2017",
-      "file": "timeout-london--andrjez-lukowski.json",
-      "score": 90,
-      "publishDate": "2017-05-04",
-      "url": "https://www.timeout.com/london/theatre/angels-in-america",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
-        }
-      ]
-    },
-    {
-      "showId": "angels-in-america-west-end-2017",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 94,
-      "publishDate": "2017-05-05",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
-        }
-      ]
-    },
-    {
-      "showId": "angels-in-america-west-end-2017",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 98,
-      "publishDate": "2017-05-05",
-      "url": "http://www.whatsonstage.com/london-theatre/reviews/angels-in-america-national-theatre_43519.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -16194,176 +15968,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2017 (2x) more than 2022 (0x). 2017 matches production: girl-from-the-north-country-west-end-2017"
-        }
-      ]
-    },
-    {
-      "showId": "girl-from-the-north-country-west-end-2017",
-      "file": "britishtheatrecom--unknown.json",
-      "score": 92,
-      "publishDate": null,
-      "url": "https://www.britishtheatre.com/posts/review-girl-from-the-north-country-old-vic-theatre-5stars",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"noel coward theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "girl-from-the-north-country-west-end-2017",
-      "file": "camdennewjournal--unknown.json",
-      "score": 91,
-      "publishDate": "2017-08-04",
-      "url": "https://www.camdennewjournal.co.uk/article/review-girl-from-the-north-country-at-the-old-vic",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
-        }
-      ]
-    },
-    {
-      "showId": "girl-from-the-north-country-west-end-2017",
-      "file": "independent--paul-taylor.json",
-      "score": 92,
-      "publishDate": "2017-07-27",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/girl-from-the-north-country-old-vic-review-a7863891.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "girl-from-the-north-country-west-end-2017",
-      "file": "islingtontribune--unknown.json",
-      "score": 91,
-      "publishDate": "2017-08-04",
-      "url": "https://www.islingtontribune.co.uk/article/review-girl-from-the-north-country-at-the-old-vic",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
-        }
-      ]
-    },
-    {
-      "showId": "girl-from-the-north-country-west-end-2017",
-      "file": "london-box-office--phil-willmott.json",
-      "score": 99,
-      "publishDate": "2017-08-31",
-      "url": "https://www.londonboxoffice.co.uk/news/post/review-girl-from-the-north-country",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "girl-from-the-north-country-west-end-2017",
-      "file": "nytimes--ben-brantley.json",
-      "score": 69,
-      "publishDate": "2017-07-26",
-      "url": "https://www.nytimes.com/2017/07/26/theater/girl-from-north-country-review-bob-dylan.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "girl-from-the-north-country-west-end-2017",
-      "file": "nytimes--unknown.json",
-      "score": null,
-      "publishDate": "2017-07-26",
-      "url": "https://www.nytimes.com/2017/07/26/theater/girl-from-north-country-review-bob-dylan.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "girl-from-the-north-country-west-end-2017",
-      "file": "plays-to-see--unknown.json",
-      "score": 94,
-      "publishDate": null,
-      "url": "https://playstosee.com/reviews/uk-reviews/girl-north-country/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
-        }
-      ]
-    },
-    {
-      "showId": "girl-from-the-north-country-west-end-2017",
-      "file": "variety--matt-trueman.json",
-      "score": 79,
-      "publishDate": "2017-07-27",
-      "url": "https://variety.com/2017/legit/reviews/bob-dylan-musical-review-girl-from-the-north-country-1202508546/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
-        }
-      ]
-    },
-    {
-      "showId": "girl-from-the-north-country-west-end-2017",
-      "file": "variety--unknown.json",
-      "score": null,
-      "publishDate": "2017-07-27",
-      "url": "https://variety.com/2017/legit/reviews/bob-dylan-musical-review-girl-from-the-north-country-1202508546/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -42863,213 +42467,6 @@
       ]
     },
     {
-      "showId": "the-ferryman-west-end-2017",
-      "file": "a-younger-theatre--fergus-morgan.json",
-      "score": 90,
-      "publishDate": "2017-05-08",
-      "url": "https://www.ayoungertheatre.com/review-the-ferryman-royal-court/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "the-ferryman-west-end-2017",
-      "file": "a-younger-theatre--unknown.json",
-      "score": null,
-      "publishDate": "2017-05-08",
-      "url": "https://www.ayoungertheatre.com/review-the-ferryman-royal-court/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "the-ferryman-west-end-2017",
-      "file": "guardian--unknown.json",
-      "score": 98,
-      "publishDate": "2017-05-07",
-      "url": "https://www.theguardian.com/stage/2017/may/07/ferryman-royal-court-jez-butterworth-review-magic",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "the-ferryman-west-end-2017",
-      "file": "independent--paul-taylor.json",
-      "score": 94,
-      "publishDate": "2017-05-04",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-ferryman-review-royal-court-jez-butterworth-sam-mendes-paddy-constadine-ira-a7717021.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "the-ferryman-west-end-2017",
-      "file": "independent--unknown.json",
-      "score": null,
-      "publishDate": "2017-05-04",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-ferryman-review-royal-court-jez-butterworth-sam-mendes-paddy-constadine-ira-a7717021.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "the-ferryman-west-end-2017",
-      "file": "london-theatre--unknown.json",
-      "score": 93,
-      "publishDate": "2017-05-04",
-      "url": "https://www.londontheatre.co.uk/reviews/review-of-the-ferryman-by-jez-butterworth-at-the-royal-court-theatre-a-complex-beautifully",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
-        }
-      ]
-    },
-    {
-      "showId": "the-ferryman-west-end-2017",
-      "file": "nytimes--ben-brantley.json",
-      "score": 94,
-      "publishDate": "2017-05-04",
-      "url": "https://www.nytimes.com/2017/05/04/theater/review-the-ferryman-in-jez-butterworths-ireland.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
-        }
-      ]
-    },
-    {
-      "showId": "the-ferryman-west-end-2017",
-      "file": "sierz-co-uk--unknown.json",
-      "score": 77,
-      "publishDate": "2017-05-03",
-      "url": "https://sierz.co.uk/reviews/the-ferryman-royal-court/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
-        }
-      ]
-    },
-    {
-      "showId": "the-ferryman-west-end-2017",
-      "file": "standard--robert-dex.json",
-      "score": null,
-      "publishDate": "2017-05-04",
-      "url": "https://www.standard.co.uk/culture/theatre/the-ferryman-how-star-laura-donnellys-true-life-story-inspired-jez-butterworths-troublesera-play-a3530346.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
-        }
-      ]
-    },
-    {
-      "showId": "the-ferryman-west-end-2017",
-      "file": "standard--unknown.json",
-      "score": null,
-      "publishDate": "2017-05-04",
-      "url": "https://www.standard.co.uk/culture/theatre/the-ferryman-how-star-laura-donnellys-true-life-story-inspired-jez-butterworths-troublesera-play-a3530346.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
-        }
-      ]
-    },
-    {
-      "showId": "the-ferryman-west-end-2017",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 95,
-      "publishDate": "2017-05-04",
-      "url": "http://www.telegraph.co.uk/theatre/what-to-see/jez-butterworth-confirms-promise-unmissable-new-drama-ferryman/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
-        }
-      ]
-    },
-    {
-      "showId": "the-ferryman-west-end-2017",
-      "file": "thestage--natasha-tripney.json",
-      "score": 93,
-      "publishDate": "2017-05-04",
-      "url": "https://www.thestage.co.uk/reviews/2017/the-ferryman-review-at-the-royal-court-london-a-production-of-abundance/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
-        }
-      ]
-    },
-    {
-      "showId": "the-ferryman-west-end-2017",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 99,
-      "publishDate": "2017-05-04",
-      "url": "https://www.timeout.com/london/theatre/the-ferryman",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
-        }
-      ]
-    },
-    {
       "showId": "the-fifth-step-west-end-2025",
       "file": "daily-mail--patrick-marmion.json",
       "score": 96,
@@ -43309,48 +42706,6 @@
       "score": 82,
       "publishDate": "March 9, 2017",
       "url": "http://www.timeout.com/newyork/theater/the-glass-menagerie-1",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
-        }
-      ]
-    },
-    {
-      "showId": "the-glass-menagerie-west-end-2017",
-      "file": "express-uk--neil-norman.json",
-      "score": 78,
-      "publishDate": "2017-02-10",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
-        }
-      ]
-    },
-    {
-      "showId": "the-glass-menagerie-west-end-2017",
-      "file": "sunday-express--michael-arditti.json",
-      "score": 74,
-      "publishDate": "2017-02-05",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
-        }
-      ]
-    },
-    {
-      "showId": "the-glass-menagerie-west-end-2017",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 85,
-      "publishDate": "2017-02-07",
-      "url": "http://www.timeout.com/london/theatre/the-glass-menagerie-2",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -58663,6 +58018,34 @@
     },
     {
       "showId": "angels-in-america-west-end-2017",
+      "file": "artsdesk--unknown.json",
+      "score": 96,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/angels-america-national-theatre-review-andrew-garfield-and-company-soar-seismic-revival",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-west-end-2017",
+      "file": "guardian--michael-billington.json",
+      "score": 78,
+      "publishDate": "2017-05-05",
+      "url": "https://www.theguardian.com/stage/2017/may/05/angels-in-america-review-andrew-garfield-nathan-lane-tony-kushner",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-west-end-2017",
       "file": "london-theatre--dom-ohanlon.json",
       "score": 97,
       "publishDate": "2017-05-05",
@@ -58672,6 +58055,62 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-west-end-2017",
+      "file": "nytimes--ben-brantley.json",
+      "score": 79,
+      "publishDate": "2017-05-05",
+      "url": "https://www.nytimes.com/2017/05/05/arts/angels-in-america-national-theater-review.html?partner=rss&emc=rss&_r=0",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-west-end-2017",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 95,
+      "publishDate": "2017-05-04",
+      "url": "http://www.telegraph.co.uk/theatre/what-to-see/angels-america-national-theatre-reviewdazzling-quirky-often/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-west-end-2017",
+      "file": "thestage--mark-shenton.json",
+      "score": 82,
+      "publishDate": "2017-05-05",
+      "url": "https://www.thestage.co.uk/reviews/2017/angels-in-america-review-at-the-lyttelton-national-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-west-end-2017",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 98,
+      "publishDate": "2017-05-05",
+      "url": "http://www.whatsonstage.com/london-theatre/reviews/angels-in-america-national-theatre_43519.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -67971,10 +67410,94 @@
     },
     {
       "showId": "girl-from-the-north-country-west-end-2017",
+      "file": "britishtheatrecom--unknown.json",
+      "score": 92,
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/posts/review-girl-from-the-north-country-old-vic-theatre-5stars",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2017",
+      "file": "independent--paul-taylor.json",
+      "score": 92,
+      "publishDate": "2017-07-27",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/girl-from-the-north-country-old-vic-review-a7863891.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2017",
+      "file": "london-box-office--phil-willmott.json",
+      "score": 99,
+      "publishDate": "2017-08-31",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-girl-from-the-north-country",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2017",
+      "file": "nytimes--ben-brantley.json",
+      "score": 69,
+      "publishDate": "2017-07-26",
+      "url": "https://www.nytimes.com/2017/07/26/theater/girl-from-north-country-review-bob-dylan.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2017",
+      "file": "nytimes--unknown.json",
+      "score": null,
+      "publishDate": "2017-07-26",
+      "url": "https://www.nytimes.com/2017/07/26/theater/girl-from-north-country-review-bob-dylan.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2017",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 77,
       "publishDate": "2017-08-01",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2017",
+      "file": "variety--unknown.json",
+      "score": null,
+      "publishDate": "2017-07-27",
+      "url": "https://variety.com/2017/legit/reviews/bob-dylan-musical-review-girl-from-the-north-country-1202508546/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -71784,7 +71307,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "all-that-dazzles-uk--seth-wilby.json",
-      "score": 56,
+      "score": 58,
       "publishDate": "2026-10-22",
       "url": "https://www.allthatdazzles.co.uk/post/review-ilford-boy-donmar-warehouse",
       "findings": [
@@ -71881,6 +71404,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "plays-international--unknown.json",
+      "score": 57,
       "publishDate": "2026-10-22",
       "url": "https://playsinternational.org.uk/ilford-boy-donmar-warehouse/",
       "findings": [
@@ -78164,6 +77688,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "my-fair-lady-west-end-2022",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/my-fair-lady-london-coliseum-review-tasteful-revival-powered-stirring-performances",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
@@ -89555,6 +89092,76 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-ferryman-west-end-2017",
+      "file": "a-younger-theatre--fergus-morgan.json",
+      "score": 90,
+      "publishDate": "2017-05-08",
+      "url": "https://www.ayoungertheatre.com/review-the-ferryman-royal-court/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-ferryman-west-end-2017",
+      "file": "a-younger-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2017-05-08",
+      "url": "https://www.ayoungertheatre.com/review-the-ferryman-royal-court/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-ferryman-west-end-2017",
+      "file": "guardian--unknown.json",
+      "score": 98,
+      "publishDate": "2017-05-07",
+      "url": "https://www.theguardian.com/stage/2017/may/07/ferryman-royal-court-jez-butterworth-review-magic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-ferryman-west-end-2017",
+      "file": "independent--paul-taylor.json",
+      "score": 94,
+      "publishDate": "2017-05-04",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-ferryman-review-royal-court-jez-butterworth-sam-mendes-paddy-constadine-ira-a7717021.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-ferryman-west-end-2017",
+      "file": "independent--unknown.json",
+      "score": null,
+      "publishDate": "2017-05-04",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-ferryman-review-royal-court-jez-butterworth-sam-mendes-paddy-constadine-ira-a7717021.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
