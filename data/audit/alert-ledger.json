@@ -763,7 +763,7 @@
       "resolveReason": "absent"
     },
     "time-to-publish-sla:unmeasurable": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
       "firstSeen": "2026-08-08T11:39:46.729Z",
@@ -774,7 +774,8 @@
       "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-10-23T07:58:45.036Z"
     },
     "affiliate:bot-divergence": {
       "status": "resolved",
@@ -2767,19 +2768,17 @@
       "resolveReason": "absent"
     },
     "time-to-publish-sla:missed": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Time-to-publish SLA missed — 0% within 15 min (target 90%)",
       "firstSeen": "2026-09-05T02:23:04.226Z",
-      "incidentOpenedAt": "2026-10-20T07:51:04.089Z",
-      "lastSeen": "2026-10-20T12:22:00.126Z",
-      "lastNotifiedAt": "2026-10-20T07:51:04.089Z",
-      "lastSurfacedAt": "2026-10-20T07:51:04.089Z",
-      "notifyCount": 2,
+      "incidentOpenedAt": "2026-10-23T07:58:45.022Z",
+      "lastSeen": "2026-10-23T07:58:45.022Z",
+      "lastNotifiedAt": "2026-10-23T07:58:45.022Z",
+      "lastSurfacedAt": "2026-10-23T07:58:45.022Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 1,
-      "resolvedAt": "2026-10-21T08:00:12.225Z"
+      "linearIdentifier": null
     },
     "opening-night-slug-mismatch-the-story-west-end-2026": {
       "status": "resolved",
@@ -20492,7 +20491,7 @@
       "silentRefires": 4
     },
     "broadcast:never-sent:some-woman-west-end-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "human",
       "title": "Opening Night Email Never Reached Subscribers — Some Woman",
       "firstSeen": "2026-10-18T07:33:47.443Z",
@@ -20503,7 +20502,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 7,
+      "resolvedAt": "2026-10-23T07:58:39.303Z"
     },
     "land:land/bro-5396-dangling-syndication": {
       "status": "resolved",
@@ -24812,6 +24812,19 @@
       "lastSeen": "2026-10-23T07:33:19.297Z",
       "lastNotifiedAt": "2026-10-23T07:33:19.297Z",
       "lastSurfacedAt": "2026-10-23T07:33:19.297Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "broadcast:never-sent:martin-guerre-west-end-2026": {
+      "status": "open",
+      "disposition": "human",
+      "title": "Opening Night Email Never Reached Subscribers — Martin Guerre",
+      "firstSeen": "2026-10-23T07:58:39.315Z",
+      "incidentOpenedAt": "2026-10-23T07:58:39.315Z",
+      "lastSeen": "2026-10-23T07:58:39.315Z",
+      "lastNotifiedAt": "2026-10-23T07:58:39.315Z",
+      "lastSurfacedAt": "2026-10-23T07:58:39.315Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
