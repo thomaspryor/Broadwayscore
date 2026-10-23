@@ -78,6 +78,7 @@ const https = require('https');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { redactEmails } = require('./lib/pii-scan.js');
+const { FOOTER_RE } = require('./lib/card-dedupe.js');
 const { evaluateVerifiability, isSafeCheckCommand, candidatesFrom, SECTION_RE, OWNER_JUDGMENT_RE } = (() => {
   const gate = require('./lib/verify-gate.js');
   const { SECTION_RE } = require('./lib/autonomous-verify-cmd.js');
@@ -1003,7 +1004,13 @@ function spliceNotes(notes, draftedSection) {
   const text = String(notes || '');
   const section = SECTION_RE.exec(text);
   if (!section) return `${text}\n\n${draftedSection.trim()}\n`;
-  return text.slice(0, section.index) + draftedSection.trim() + '\n' + text.slice(section.index + section[0].length);
+  // BRO-6081: SECTION_RE runs to the end of the text when no later "##"
+  // follows, so it swallows the "Filed by:" footer linear-issue-create
+  // appends after the body; 83 enriched cards lost it and read as "unknown"
+  // in the digest's inflow-by-source. Carry the footer over.
+  const footer = FOOTER_RE.exec(section[0]);
+  const kept = footer ? `\n\n${footer[0].trim()}` : '';
+  return text.slice(0, section.index) + draftedSection.trim() + kept + '\n' + text.slice(section.index + section[0].length);
 }
 
 // Build the acceptance-criteria section for one validated draft and run every

@@ -778,13 +778,14 @@ function autofixFiledIssueGuard(issue, opts) {
 // issue a PRIOR dispatch already moved to a started state (cross-host, or a
 // stalled prior attempt), and runAutofix's dispatch-loop skip-list
 // ('in-progress'/'card-failed'/'acknowledged'/'decision'/'tracked'/'info') does not include
-// the 'card-filed' state a reattached row carries, so it reaches dispatchFn
-// same as a freshly-filed row would. That is this guard doing its job, not a
-// bug: refusing IS the correct outcome (prevents a stray double-dispatch
-// onto still-active work), and digest-autofix's own attempt-memory
-// (reconcileDigestOutcomes' orphan-timeout branch, digest-autofix.js) scores
-// the un-spawned attempt 'card-fail' and eventually parks a row that keeps
-// hitting this — no bypass flag needed, unlike autofixFiledIssueGuard, whose
+// the 'card-filed' state a reattached row carries, so it used to reach
+// dispatchFn same as a freshly-filed row would. Refusing here is still the
+// correct last line of defence, but BRO-6081 found it was the common case
+// (8 of 18 October digest dispatches refused after spawn, each burning a
+// daily DISPATCH_CAP slot and scoring a false card-fail), so runAutofix now
+// reads the reattached card's state from fileCard and marks started
+// rows 'tracked' before dispatch (digest-autofix.js reattachedLiveState).
+// No bypass flag is needed here, unlike autofixFiledIssueGuard, whose
 // refused population (its OWN freshly-filed tracker) has no other path to
 // resolution. autofix-canary.js's "existingTask" sync-lag branch is a
 // separate, narrower check (matches the legacy Notion-mirror task list,

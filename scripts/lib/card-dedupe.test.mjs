@@ -104,3 +104,16 @@ test('BRO-5488 review: numbers that name a subject never merge; counts do', () =
     assert.equal(d.findNearDuplicate(a, [{ identifier: 'BRO-1', title: b }]), null, `near-dup: ${a} vs ${b}`);
   }
 });
+
+test('numberFreeTitle: collapses live counts, keeps numbers that name something (BRO-6081)', () => {
+  const { numberFreeTitle: n } = require('./card-dedupe.js');
+  assert.equal(n('BSC Daily: Bright Data daily breaker TRIPPED: web_unlocker2 (2194/1750 reqs)'), n('BSC Daily: Bright Data daily breaker TRIPPED: web_unlocker2 (2126/1750 reqs)'));
+  assert.equal(n('BSC Daily: 1 review(s) for x stuck'), n('BSC Daily: 2 review(s) for x stuck'));
+  assert.notEqual(n('breaker TRIPPED: web_unlocker2 (1/2 reqs)'), n('breaker TRIPPED: web_unlocker3 (1/2 reqs)'));
+  assert.notEqual(n('1 review(s) for hay-fever-west-end-2026'), n('1 review(s) for hay-fever-west-end-2027'));
+  assert.notEqual(n('CANARY: touch data/audit/canary-2026-10-24.marker'), n('CANARY: touch data/audit/canary-2026-10-21.marker'));
+  assert.notEqual(n('BSC Daily: Review gaps (batch 2)'), n('BSC Daily: Review gaps (batch 3)'));
+  assert.notEqual(n('Fix card #794 now'), n('Fix card #795 now'));
+  assert.notEqual(n('P0: thing'), n('P1: thing'));
+  assert.notEqual(n('since 2026-10-19 x'), n('since 2026-10-20 x'));
+});

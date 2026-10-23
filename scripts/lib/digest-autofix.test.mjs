@@ -1628,3 +1628,71 @@ test('reconcileAndAppendDigest: an abandoned lock (older than 15min) reconciles 
   assert.equal(r.skipped, undefined);
   assert.equal(r.newOutcomes.length, 1);
 }));
+
+test('reattachedLiveState: started (In Progress / In Review) cards are tracked, not dispatched; Paused and others stay dispatchable (BRO-6081)', () => {
+  const { reattachedLiveState } = require('./digest-autofix.js');
+  assert.equal(reattachedLiveState({ existing: true, stateType: 'started', stateName: 'In Progress' }), 'tracked');
+  assert.equal(reattachedLiveState({ existing: true, stateType: 'started', stateName: 'In Review' }), 'tracked');
+  assert.equal(reattachedLiveState({ existing: true, stateType: 'backlog', stateName: 'Paused' }), null, 'Paused stays dispatchable (dispatch-guards.js)');
+  assert.equal(reattachedLiveState({ existing: true, stateType: 'backlog', stateName: 'Backlog' }), null);
+  assert.equal(reattachedLiveState({ existing: true, stateType: 'unstarted', stateName: 'Todo' }), null);
+  assert.equal(reattachedLiveState({ existing: true }), null, 'older find output without state');
+  assert.equal(reattachedLiveState({ existing: false, stateType: 'started' }), null, 'a fresh card is never started');
+});
+
+test('runAutofix: a row reattaching to an In Progress card is not dispatched and leaves the budget for the next row (BRO-6081)', () => {
+  withChildProcessStubs({
+    execFileSyncImpl: (cmd, argv) => {
+      if (argv.includes('find')) {
+        const t = argv[argv.indexOf('find') + 1];
+        return t === 'Cron failed: Busy'
+          ? JSON.stringify({ identifier: 'BRO-700', title: t, url: 'u', stateType: 'started', stateName: 'In Progress' }, null, 2)
+          : 'null';
+      }
+      return JSON.stringify({ id: 'uuid', identifier: 'BRO-701', title: 'x' }, null, 2) + '\nPARKED: BRO-701';
+    },
+  }, (calls, mod) => {
+    const dispatchCalls = [];
+    const ledgerPath = path.join(os.tmpdir(), `da-bro6081-${Date.now()}.jsonl`);
+    const plan = [
+      { name: 'Cron failed: Busy', title: 'Cron failed: Busy', message: 'a', state: 'needs-card', taskId: null, conditionKey: 'k:busy' },
+      { name: 'Cron failed: Free', title: 'Cron failed: Free', message: 'b', state: 'needs-card', taskId: null, conditionKey: 'k:free' },
+    ];
+    mod.runAutofix({ plan, cap: 1, dryRun: false, loadTasksFn: () => [], ledgerPath, dispatchLedgerEntriesFn: () => [], dispatchFn: (...args) => dispatchCalls.push(args) });
+    assert.equal(plan[0].state, 'tracked');
+    assert.equal(plan[0].taskId, 'linear:BRO-700');
+    assert.equal(plan[1].state, 'dispatched', 'the single slot goes to the free row');
+    assert.deepEqual(dispatchCalls.map(c => c[0]), ['linear:BRO-701']);
+  });
+});
+
+test('fileCard: --ignore-numbers only when the caller opts in (the canary keeps exact match) (BRO-6081)', () => {
+  withChildProcessStubs({ execFileSyncImpl: (cmd, argv) => (argv.includes('find') ? JSON.stringify({ identifier: 'BRO-9', title: 't' }) : LINEAR_BRAIN_OUT) }, (calls, mod) => {
+    mod.fileCard('CANARY: touch data/audit/canary-2026-10-24.marker', 'n', { log: () => {} });
+    assert.ok(!calls.execFileSync[0][1].includes('--ignore-numbers'));
+    mod.fileCard('BSC Daily: breaker (1/2 reqs)', 'n', { log: () => {}, ignoreNumbers: true });
+    assert.ok(calls.execFileSync[1][1].includes('--ignore-numbers'));
+  });
+});
+
+test('check-health-row-absent.js: a count change in the row title is not "fixed" (BRO-6081)', () => {
+  const script = path.join(__dirname, '..', 'check-health-row-absent.js');
+  const tmpSnap = path.join(os.tmpdir(), `check-health-row-absent-count-${process.pid}-${Math.random().toString(36).slice(2)}.json`);
+  fs.writeFileSync(tmpSnap, JSON.stringify({
+    generatedAt: new Date().toISOString(), queued: [],
+    errors: [{ name: 'Bright Data daily breaker TRIPPED: web_unlocker2 (2194/1750 reqs)' }], warns: [],
+  }));
+  const run = (rowName) => {
+    try {
+      execFileSync('node', [script, '--row-b64', Buffer.from(rowName, 'utf8').toString('base64url')],
+        { encoding: 'utf8', env: { ...process.env, HEALTH_SNAPSHOT_OVERRIDE: tmpSnap } });
+      return 0;
+    } catch (err) { return err.status; }
+  };
+  try {
+    assert.equal(run('Bright Data daily breaker TRIPPED: web_unlocker2 (2445/1750 reqs)'), 1, 'same condition, new count: still present');
+    assert.equal(run('Bright Data daily breaker TRIPPED: web_unlocker3 (2445/1750 reqs)'), 0, 'a different zone is a different row');
+  } finally {
+    fs.unlinkSync(tmpSnap);
+  }
+});

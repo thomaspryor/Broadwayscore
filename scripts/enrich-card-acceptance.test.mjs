@@ -1293,3 +1293,18 @@ test('attachComments failing leaves the description-only selection intact', asyn
   assert.equal(await attachComments(issues, client), -1);
   assert.deepEqual(selectRefusedLinearIdentifiers(issues), ['BRO-1', 'BRO-2']);
 });
+
+test('spliceNotes: keeps the "Filed by:" footer when the replaced section runs to the end of the card (BRO-6081)', () => {
+  const notes = 'Body text.\n\n## Acceptance criteria\n- [ ] something vague\n\nFiled by: digest-autofix (kind: cron)';
+  const out = spliceNotes(notes, '## Acceptance criteria\n- [ ] VERIFY: `node --test x.test.mjs`');
+  assert.match(out, /VERIFY: `node --test x\.test\.mjs`/);
+  assert.match(out, /^Filed by: digest-autofix \(kind: cron\)$/m);
+  assert.doesNotMatch(out, /something vague/);
+  const { inferCardSource } = require('./lib/card-dedupe.js');
+  assert.equal(inferCardSource({ description: out }), 'digest-autofix');
+});
+
+test('spliceNotes: a card with no footer gets none added (BRO-6081)', () => {
+  const out = spliceNotes('Body.\n\n## Acceptance criteria\n- [ ] old', '## Acceptance criteria\n- [ ] new');
+  assert.doesNotMatch(out, /Filed by:/);
+});

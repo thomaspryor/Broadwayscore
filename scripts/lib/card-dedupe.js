@@ -188,6 +188,17 @@ function findCountOnlyTwin(title, openCards, serves = () => true) {
   return null;
 }
 
+/**
+ * BRO-6081: a title with standalone counts collapsed to '#', for matching a
+ * health row whose title carries a live number ("(2194/1750 reqs)", "1 review(s)")
+ * to yesterday's card. Numbers that name something stay: inside a word or slug
+ * (web_unlocker2, hay-fever-2026, P0, T1), in a date (2026-10-24), after '#'
+ * (card #794) and "batch N" (each fold batch is its own card).
+ */
+function numberFreeTitle(title) {
+  return String(title || '').replace(/(?<![\w#.:-])(?<!batch )\d+(?![\w.:-])/gi, '#');
+}
+
 /** True when a body carries a filer marker whose downstream code keys on THIS card. */
 function hasPerCardContract(description) {
   const d = String(description || '');
@@ -283,7 +294,7 @@ const DEDUPE_OPT_OUTS = Object.freeze({
 
 module.exports = {
   DEDUPE_OPT_OUTS,
-  NEAR_DUP_MIN_SCORE, NEAR_DUP_MIN_TOKENS, FLOOD_THRESHOLD, FLOOD_WINDOW_MS, ALERT_ROUTER_MARKER, ROLLUP_TITLE_PREFIX,
+  NEAR_DUP_MIN_SCORE, NEAR_DUP_MIN_TOKENS, FLOOD_THRESHOLD, FLOOD_WINDOW_MS, ALERT_ROUTER_MARKER, ROLLUP_TITLE_PREFIX, FOOTER_RE,
   titleCore, titleTokens, countFreeTitle, findCountOnlyTwin, distinctiveParts, titleKind, jaccard, findNearDuplicate, hasPerCardContract,
-  inferCardSource, normalizeSource, sourceFooter, parseSourceFooter, rollupTitle, sameKindCards, countSameKind, rollupEnforced,
+  numberFreeTitle, inferCardSource, normalizeSource, sourceFooter, parseSourceFooter, rollupTitle, sameKindCards, countSameKind, rollupEnforced,
 };

@@ -264,7 +264,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   if (command === 'find') {
     const term = args._positional[1];
     if (!term) {
-      console.error('Usage: linear-brain find "search term" [--exact-title]');
+      console.error('Usage: linear-brain find "search term" [--exact-title [--ignore-numbers]]');
       process.exit(1);
     }
     // Read-only. Two modes (verify-pass P2, 2026-08-12):
@@ -281,10 +281,23 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       if (args['exact-title']) {
         const open = await linearClient.listOpenIssues();
         match = open.find((i) => i && i.title === term) || null;
+        // --ignore-numbers (BRO-6081): a health row whose title carries a live
+        // count ("breaker TRIPPED: web_unlocker2 (2194/1750 reqs)") changes
+        // daily, so exact match filed a fresh card each morning (5 for one
+        // breaker). Exact match still wins; this is the fallback.
+        if (!match && args['ignore-numbers']) {
+          const { numberFreeTitle } = require('./lib/card-dedupe');
+          const key = numberFreeTitle(term);
+          match = key === term ? null : open.find((i) => i && numberFreeTitle(i.title) === key) || null;
+        }
       } else {
         match = await linearClient.searchIssues(term);
       }
-      console.log(match ? JSON.stringify({ identifier: match.identifier, title: match.title, url: match.url }, null, 2) : 'null');
+      // state (BRO-6081): digest-autofix's fileCard reads it so a reattached
+      // card that is already being worked (or Paused for a re-check) is not
+      // re-dispatched only to be refused by startedStateGuard.
+      console.log(match ? JSON.stringify({ identifier: match.identifier, title: match.title, url: match.url,
+        ...(match.state ? { stateType: match.state.type, stateName: match.state.name } : {}) }, null, 2) : 'null');
     } catch (err) {
       console.error(`\n❌ ${err.message}\n`);
       process.exit(2);

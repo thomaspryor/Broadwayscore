@@ -151,3 +151,10 @@ test('runAutofix: a writable sightings file still holds a first sighting as watc
   assert.equal(plan[0].state, 'watching');
   assert.ok(Object.keys(JSON.parse(fs.readFileSync(seenPath, 'utf8'))).length === 1);
 });
+
+test('applyPersistenceGate: a row whose open card differs only in a live count is not held (BRO-6081)', () => {
+  const plan = [row('BSC Daily: breaker TRIPPED: web_unlocker2 (2194/1750 reqs)'), row('BSC Daily: breaker TRIPPED: web_unlocker3 (2194/1750 reqs)')];
+  applyPersistenceGate(plan, {}, NOW, { openTitles: new Set(['BSC Daily: breaker TRIPPED: web_unlocker2 (2445/1750 reqs)']) });
+  assert.equal(plan[0].state, 'needs-card', 'same condition, new count: straight to reattach');
+  assert.equal(plan[1].state, 'watching', 'a different zone is a different card');
+});

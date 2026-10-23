@@ -61,6 +61,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isTestRun } = require('./test-run-guard');
+const { numberFreeTitle } = require('./card-dedupe');
 const { spawn, execFileSync } = require('child_process');
 const dispatchLedger = require('./dispatch-ledger.js');
 const dispatchReconcile = require('./dispatch-reconcile.js');
@@ -291,7 +292,9 @@ function computePersistenceGate(plan, seen, nowMs, { openTitles = null } = {}) {
     next[key] = { firstSeen, lastSeen: nowIso };
     const ageHours = (nowMs - Date.parse(firstSeen)) / 3600000;
     if (row.state !== 'needs-card' || ageHours >= PERSIST_BEFORE_FILING_HOURS - GATE_SLACK_HOURS) continue;
-    if (openTitles && openTitles.has(row.title)) continue;
+    // Number-free too (BRO-6081), matching fileCard's reattach: a row whose
+    // live count moved still has its open card.
+    if (openTitles && (openTitles.has(row.title) || [...openTitles].some((t) => numberFreeTitle(t) === numberFreeTitle(row.title)))) continue;
     // A visitor-facing error a worker can fix files START-NOW on its first
     // sighting: waiting 3 days in case it clears leaves visitors facing it
     // with nothing working on it. Low volume (1-2 a day), and the resolved-
@@ -709,7 +712,19 @@ function startNowNotes(notes) {
   ].join('\n');
 }
 
-function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false, startNow = false } = {}) {
+// BRO-6081: 'tracked' (owner-handled, not dispatched) for a reattached card
+// already being worked (started: In Progress / In Review), which
+// linear-dispatch.js startedStateGuard would refuse after the spawn; null
+// keeps the row dispatchable. Paused stays dispatchable on purpose
+// (dispatch-guards.js "previously litigated"). Not 'in-progress': the
+// liveness gate only sees local cmux/headless jobs, so an In Review or
+// cloud-worked card would surface to the owner as "no live session".
+function reattachedLiveState(filed) {
+  if (!filed || !filed.existing) return null;
+  return filed.stateType === 'started' ? 'tracked' : null;
+}
+
+function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false, startNow = false, ignoreNumbers = false } = {}) {
   // Dedup BEFORE filing (BRO-286 merge-review P0): a persistent health row
   // hits this every morning, and the Notion-mirror dedup (matchOpenTask in
   // planAutofix) can't see Linear issues — without this check the same row
@@ -720,7 +735,7 @@ function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false
   // working. Fail-open: a find error just means we file (worst case one
   // duplicate, same as a transient Linear outage).
   try {
-    const found = execFileSync('node', [path.join(REPO, 'scripts', 'linear-brain.js'), 'find', title, '--exact-title'],
+    const found = execFileSync('node', [path.join(REPO, 'scripts', 'linear-brain.js'), 'find', title, '--exact-title', ...(ignoreNumbers ? ['--ignore-numbers'] : [])],
       { cwd: REPO, encoding: 'utf8', timeout: 30000 });
     const fm = found.match(LINEAR_IDENTIFIER_IN_JSON_RE);
     if (fm) {
@@ -748,7 +763,12 @@ function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false
           log(`[digest-autofix] WARN could not refresh ${fm[1]}'s notes comment (fold membership may be stale): ${String(err.message).slice(0, 120)}`);
         }
       }
-      return { ok: true, identifier: fm[1], existing: true };
+      let state = {};
+      try {
+        const j = JSON.parse(found);
+        if (j && j.stateType) state = { stateType: j.stateType, stateName: j.stateName };
+      } catch { /* older find output without state: dispatch as before */ }
+      return { ok: true, identifier: fm[1], existing: true, ...state };
     }
   } catch (err) {
     log(`[digest-autofix] WARN Linear dedup lookup failed (filing anyway): ${String(err.message).slice(0, 120)}`);
@@ -1168,7 +1188,8 @@ function reconcileAndAppendDigest(ledgerPath, tasksById, dispatchLedgerEntries, 
  * File missing cards, refresh the task list, dispatch up to `cap`.
  * Mutates each plan row's state to one of:
  *   'in-progress' | 'dispatched' | 'queued' | 'card-filed' | 'card-failed'
- *   | 'acknowledged' | 'decision' | 'tracked' | 'info' (left untouched — no card, no dispatch)
+ *   | 'acknowledged' | 'decision' | 'tracked' | 'info' (left untouched — no card, no dispatch;
+ *     'tracked' is also set on a reattached card already started or Paused, BRO-6081)
  *   | 'parked' (dispatch skipped — failed twice unchanged, see attempt-memory)
  * and returns the same array (annotated) for the email renderer.
  */
@@ -1248,7 +1269,7 @@ function runAutofix({
     // membership change is never silently invisible. See fileCard's own
     // comment for why this is scoped to folded rows only.
     const filed = fileCardFn(row.title, buildCardNotes(row), {
-      log, refreshNotesOnReattach: Array.isArray(row.affected), startNow: isVisitorFacingRow(row),
+      log, refreshNotesOnReattach: Array.isArray(row.affected), startNow: isVisitorFacingRow(row), ignoreNumbers: true,
     });
     if (filed.ok) {
       row.state = 'card-filed';
@@ -1262,6 +1283,13 @@ function runAutofix({
       // repeat-failure: X" both reattaching to one issue). `existing` is only
       // set true on a dedup hit, so a brand-new issue correctly stays "new".
       row.wasNew = !filed.existing;
+      // BRO-6081: a reattached card someone is already working (In Progress /
+      // In Review) or that is Paused awaiting its RECHECK-AFTER must not be
+      // dispatched. linear-next refuses the first (startedStateGuard) after
+      // the spawn, so each one burned a DISPATCH_CAP slot and scored a
+      // "spawn never observed" card-fail (8 of 18 October dispatches).
+      const live = reattachedLiveState(filed);
+      if (live) row.state = live;
     } else {
       row.state = 'card-failed';
       row.wasNew = true;
@@ -1424,7 +1452,9 @@ function runAutofix({
     // parked, needs a manual look") — a human looking at the card's comment
     // history (see fileCard's refreshNotesOnReattach) sees which shows are
     // CURRENTLY affected and can unpark by hand if the new shows warrant it.
-    const contentHash = computeContentHash({ name: row.title });
+    // BRO-6081: number-free, matching fileCard's reattach, so a live count in
+    // the title ("(2194/1750 reqs)") no longer resets attempt-memory daily.
+    const contentHash = computeContentHash({ name: numberFreeTitle(row.title) });
     const park = checkPark(digestLedgerEntries, String(row.taskId), contentHash);
     if (park.parked) {
       row.state = 'parked';
@@ -1514,6 +1544,6 @@ module.exports = {
   planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP,
   DIGEST_LEDGER_PATH, reconcileDigestOutcomes, reconcileAndAppendDigest, isDispatchResolved, findMyJob, readJsonlLedger, appendJsonlLedger,
   persistenceKey, computePersistenceGate, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS, GATE_SLACK_HOURS, DIGEST_SEEN_PATH,
-  fileCard, startNowNotes, START_NOW_REFUSED_RE, isVisitorFacingRow, dispatchDetached, familyDisplayName, rowFamilyKey,
+  fileCard, reattachedLiveState, startNowNotes, START_NOW_REFUSED_RE, isVisitorFacingRow, dispatchDetached, familyDisplayName, rowFamilyKey,
   splitOnShowSuffix, MAX_FOLD_PER_CONDITION,
 };

@@ -276,7 +276,9 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   // per-card contract marker. Both fail open.
   const cardSource = cardDedupe.inferCardSource({
     title, description: body,
-    source: source || (process.env.GITHUB_WORKFLOW ? `workflow:${process.env.GITHUB_WORKFLOW}` : undefined),
+    // BRO-6081: a filer that names itself only via dedupeOptOut (owner-alert-router,
+    // auto-fix-first) used to read "Filed by: unknown" off GitHub Actions.
+    source: source || (process.env.GITHUB_WORKFLOW ? `workflow:${process.env.GITHUB_WORKFLOW}` : dedupeOptOut || undefined),
   });
   const kind = cardDedupe.titleKind(title);
   // The contract marker can sit in the park reason (digest-autofix passes it
