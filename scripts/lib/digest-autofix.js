@@ -1290,7 +1290,7 @@ function runAutofix({
   let digestLedgerEntries = [];
   try {
     const dispatchEntries = dispatchLedgerEntriesFn ? dispatchLedgerEntriesFn() : dispatchLedger.readEntries();
-    const rec = reconcileAndAppendDigest(ledgerPath, tasksById, dispatchEntries, now, log);
+    const rec = reconcileAndAppendDigest(ledgerPath, tasksById, dispatchEntries, now, log, { lockOpts: { timeoutMs: 5000 } });
     digestLedgerEntries = rec.ledgerEntries;
     for (const o of rec.newOutcomes) log(`[digest-autofix] attempt-memory: #${o.cardId} ${o.event} (${o.note})`);
   } catch (err) {

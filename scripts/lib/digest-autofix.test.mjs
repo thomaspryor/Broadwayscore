@@ -1574,7 +1574,7 @@ function runDigestRacer(ledger, tag) {
     const started = Date.now();
     const r = reconcileAndAppendDigest(${JSON.stringify(ledger)}, new Map(), [], new Date(), () => {}, {
       lockOpts: { timeoutMs: 20000, waitMs: 10 },
-      beforeAppend: () => { const u = Date.now() + 400; while (Date.now() < u) {} },
+      beforeAppend: () => { const u = Date.now() + 2000; while (Date.now() < u) {} },
     });
     console.log(JSON.stringify({ tag: ${JSON.stringify(tag)}, started, ended: Date.now(), n: r.newOutcomes.length, skipped: !!r.skipped }));
   `;
