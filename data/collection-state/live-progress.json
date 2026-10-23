@@ -1,19 +1,90 @@
 {
-  "updatedAt": "2026-10-23T04:27:11.735Z",
-  "processed": 9,
-  "failed": 6,
-  "successRate": "60.0%",
+  "updatedAt": "2026-10-23T04:36:52.831Z",
+  "processed": 5,
+  "failed": 13,
+  "successRate": "27.8%",
   "tierBreakdown": {
     "playwright": 2,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingdog": 1,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 4
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 10,
+  "recentActivity": [
+    {
+      "t": "2026-10-23T04:29:54.879Z",
+      "event": "bb-session",
+      "session": "0ad87477",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-23T04:30:38.789Z",
+      "event": "bb-session",
+      "session": "6c23e2e4",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-23T04:30:39.427Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-23T04:30:48.728Z",
+      "event": "bb-session",
+      "session": "861ff7e1",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-23T04:30:49.369Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-23T04:32:04.271Z",
+      "event": "bb-session",
+      "session": "c3666c3f",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-23T04:32:12.210Z",
+      "event": "bb-session",
+      "session": "eb2d8e32",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-23T04:33:17.940Z",
+      "event": "bb-session",
+      "session": "71a78584",
+      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
+    },
+    {
+      "t": "2026-10-23T04:34:17.751Z",
+      "event": "bb-session",
+      "session": "79a128c5",
+      "url": "https://www.cbsnews.com/video/other-desert-cities-on-broadway-family-secrets-lai"
+    },
+    {
+      "t": "2026-10-23T04:35:17.495Z",
+      "event": "bb-session",
+      "session": "e87869f4",
+      "url": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-s"
+    },
+    {
+      "t": "2026-10-23T04:35:25.269Z",
+      "event": "bb-session",
+      "session": "98126403",
+      "url": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-s"
+    },
+    {
+      "t": "2026-10-23T04:36:06.269Z",
+      "event": "bb-session",
+      "session": "24551919",
+      "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07"
+    }
+  ]
 }
