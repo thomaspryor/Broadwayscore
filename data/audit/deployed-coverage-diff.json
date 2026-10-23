@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-10-22T22:18:36.783Z",
+  "generatedAt": "2026-10-23T02:17:24.413Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 261,
-  "clean": 260,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "derren-brown-only-human-west-end-2026",
-      "title": "Derren Brown: Only Human",
-      "openingDate": "2026-10-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed payload has no numeric cs (local 80.3)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 3,
-      "deployedCount": 3,
-      "firstDefectAt": "2026-10-22T18:41:00.247Z"
-    }
-  ],
+  "checked": 258,
+  "clean": 258,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

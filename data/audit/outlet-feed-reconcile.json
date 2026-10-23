@@ -1,22 +1,12 @@
 {
-  "generatedAt": "2026-10-22T22:18:37.151Z",
+  "generatedAt": "2026-10-23T02:17:24.797Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
     {
-      "id": "dirty-dancing-the-classic-story-on-stage-west-end-2026",
-      "title": "Dirty Dancing: The Classic Story on Stage",
-      "openingDate": "2026-10-16"
-    },
-    {
       "id": "ilford-boy-west-end-2026",
       "title": "Ilford Boy",
       "openingDate": "2026-10-20"
-    },
-    {
-      "id": "stories-the-tap-dance-sensation-west-end-2026",
-      "title": "STORIES – The Tap Dance Sensation",
-      "openingDate": "2026-10-16"
     },
     {
       "id": "derren-brown-only-human-west-end-2026",
@@ -94,11 +84,6 @@
       "openingDate": "2026-10-18"
     },
     {
-      "id": "sea-wall-off-broadway-2026",
-      "title": "Sea Wall",
-      "openingDate": "2026-10-16"
-    },
-    {
       "id": "triumph-off-west-end-2026",
       "title": "Triumph",
       "openingDate": "2026-10-18"
@@ -107,11 +92,6 @@
       "id": "angels-bone-west-end-2026",
       "title": "Angel's Bone",
       "openingDate": "2026-10-17"
-    },
-    {
-      "id": "cadel-lungs-on-legs-west-end-2026",
-      "title": "Cadel: Lungs On Legs",
-      "openingDate": "2026-10-16"
     },
     {
       "id": "machine-learning-off-broadway-2026",
@@ -148,10 +128,6 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -164,6 +140,10 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "musical-theatre-review",
+      "error": "Timeout fetching https://musicaltheatrereview.com/feed/"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -174,11 +154,15 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 766,
-  "matchedGaps": 11,
-  "possibleGaps": 2,
+  "itemsScanned": 734,
+  "matchedGaps": 15,
+  "possibleGaps": 6,
   "gaps": [
     {
       "showId": "angels-bone-west-end-2026",
@@ -202,27 +186,9 @@
       "showId": "derren-brown-only-human-west-end-2026",
       "title": "Derren Brown: Only Human",
       "level": "matched",
-      "outletId": "liamodell",
-      "url": "https://liamodell.com/2026/10/22/derren-brown-only-human-review-apollo-theatre-west-end-live-show-london/",
-      "headline": "&#8216;Derren Brown: Only Human&#8217; review &#8211; The illusionist’s most shocking show yet",
-      "publishDate": "2026-10-22"
-    },
-    {
-      "showId": "derren-brown-only-human-west-end-2026",
-      "title": "Derren Brown: Only Human",
-      "level": "matched",
       "outletId": "all-that-dazzles-uk",
       "url": "https://www.allthatdazzles.co.uk/post/review-derren-brown-only-human-apollo-theatre",
       "headline": "Review: Derren Brown: Only Human (Apollo Theatre)",
-      "publishDate": "2026-10-22"
-    },
-    {
-      "showId": "derren-brown-only-human-west-end-2026",
-      "title": "Derren Brown: Only Human",
-      "level": "matched",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/review-derren-brown-only-human-apollo-theatre",
-      "headline": "Review: DERREN BROWN: ONLY HUMAN, Apollo Theatre&nbsp;",
       "publishDate": "2026-10-22"
     },
     {
@@ -253,21 +219,75 @@
       "publishDate": "2026-10-22"
     },
     {
-      "showId": "the-pianist-off-west-end-2026",
-      "title": "The Pianist",
+      "showId": "phyl-off-broadway-2026",
+      "title": "Phyl",
       "level": "matched",
-      "outletId": "theupcoming",
-      "url": "https://www.theupcoming.co.uk/2026/10/22/the-pianist-at-park-theatre-theatre-review/",
-      "headline": "The Pianist at Park Theatre &#124; Theatre review",
+      "outletId": "pages-on-stages",
+      "url": "https://pagesonstages.com/2026/10/22/phyl/",
+      "headline": "Happiness Under a Microscope",
       "publishDate": "2026-10-22"
     },
     {
-      "showId": "the-pianist-off-west-end-2026",
-      "title": "The Pianist",
+      "showId": "the-imaginary-invalid-2026",
+      "title": "The Imaginary Invalid",
       "level": "matched",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/review-the-pianist-park-theatre",
-      "headline": "Review: THE PIANIST, Park Theatre",
+      "outletId": "one-minute-critic",
+      "url": "https://1minutecritic.com/imaginary-invalid-bill-irwin-broadway-review/",
+      "headline": "Can anyone afford to be sick? Molière asked first in ‘The Imaginary Invalid’",
+      "publishDate": "2026-10-22"
+    },
+    {
+      "showId": "the-imaginary-invalid-2026",
+      "title": "The Imaginary Invalid",
+      "level": "matched",
+      "outletId": "culturesauce",
+      "url": "https://culturesauce.com/imaginary-invalid-moliere-broadway-review/",
+      "headline": "&#8216;The Imaginary Invalid&#8217; makes a mountain of laughs out of a Molière hill (Broadway review)",
+      "publishDate": "2026-10-22"
+    },
+    {
+      "showId": "the-imaginary-invalid-2026",
+      "title": "The Imaginary Invalid",
+      "level": "matched",
+      "outletId": "nyt-theater",
+      "url": "https://newyorktheater.me/2026/10/22/the-imaginary-invalid-review/",
+      "headline": "The Imaginary Invalid Review",
+      "publishDate": "2026-10-22"
+    },
+    {
+      "showId": "the-imaginary-invalid-2026",
+      "title": "The Imaginary Invalid",
+      "level": "matched",
+      "outletId": "nypost",
+      "url": "https://nypost.com/2026/10/22/entertainment/the-imaginary-invalid-review-unfunny-moliere-revival-on-broadway-makes-you-scream-sacre-bleu/",
+      "headline": "&#8216;The Imaginary Invalid&#8217; review: Unfunny Molière revival on Broadway makes you scream &#8216;Sacré bleu!&#8217;",
+      "publishDate": "2026-10-22"
+    },
+    {
+      "showId": "the-imaginary-invalid-2026",
+      "title": "The Imaginary Invalid",
+      "level": "matched",
+      "outletId": "nysr",
+      "url": "https://nystagereview.com/2026/10/22/the-imaginary-invalid-hacks-and-quacks/",
+      "headline": "The Imaginary Invalid: Hacks and Quacks",
+      "publishDate": "2026-10-22"
+    },
+    {
+      "showId": "the-imaginary-invalid-2026",
+      "title": "The Imaginary Invalid",
+      "level": "matched",
+      "outletId": "nysr",
+      "url": "https://nystagereview.com/2026/10/22/the-imaginary-invalid-just-what-the-doctor-ordered/",
+      "headline": "The Imaginary Invalid: Just What the Doctor Ordered",
+      "publishDate": "2026-10-22"
+    },
+    {
+      "showId": "the-imaginary-invalid-2026",
+      "title": "The Imaginary Invalid",
+      "level": "matched",
+      "outletId": "chicagotribune",
+      "url": "https://www.chicagotribune.com/2026/10/22/review-imaginary-invalid-broadway/",
+      "headline": "Review: In &#8216;The Imaginary Invalid&#8217; on Broadway, Bill Irwin clowns it up as Molière&#8217;s hypochondriac",
       "publishDate": "2026-10-22"
     },
     {
@@ -278,6 +298,42 @@
       "url": "https://culturesauce.com/caryl-churchill-triumph-off-broadway-review/",
       "headline": "Caryl Churchill&#8217;s &#8216;Triumph&#8217; views imperial Rome through a Foxy blond flack (Off Broadway review)",
       "publishDate": "2026-10-18"
+    },
+    {
+      "showId": "copperfield-the-new-musical-off-broadway-2026",
+      "title": "Copperfield! The New Musical",
+      "level": "possible",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/the-curious-case-of-benjamin-button/",
+      "headline": "The Curious Case of Benjamin Button *****",
+      "publishDate": "2026-10-21"
+    },
+    {
+      "showId": "the-imaginary-invalid-2026",
+      "title": "The Imaginary Invalid",
+      "level": "possible",
+      "outletId": "nytg",
+      "url": "https://newyorktheatreguide.com/reviews/the-imaginary-invalid-broadway-review-bill-irwin-rachel-bloom",
+      "headline": "&#x27;The Imaginary Invalid&#x27; Broadway review — Bill Irwin",
+      "publishDate": null
+    },
+    {
+      "showId": "the-imaginary-invalid-2026",
+      "title": "The Imaginary Invalid",
+      "level": "possible",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-revival-of-the-imaginary-invalid-is-terminally-short-on-laughs_1857994/",
+      "headline": "Review: Revival of The Imaginary Invalid Is Terminally Short on Laughs",
+      "publishDate": null
+    },
+    {
+      "showId": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
+      "level": "possible",
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/pianist-park-theatre-review-loving-recreation-wladyslaw-szpilmans-musical-legacy",
+      "headline": "The Pianist, Park Theatre review - a loving recreation of Wladyslaw Szpilman&#039;s musical legacy",
+      "publishDate": null
     },
     {
       "showId": "the-pianist-off-west-end-2026",
