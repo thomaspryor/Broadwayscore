@@ -40,26 +40,78 @@ on:
 permissions:
   contents: write
 
-# Queued, not cancelled — a manual dispatch overlapping the weekly scheduled
-# run (or two manual dispatches) would otherwise race-write the same
-# data/cast/{id}.json files with no lock (ship-check adversarial review,
-# task #712 follow-up). Matches backfill-cast-web.yml's existing pattern.
-concurrency:
-  # shows-json-writer-exempt: dispatched mid-run by update-show-status.yml and discover-historical-shows.yml, and its own Wed 06:00 cron fires with update-show-status (Wed 06:00) and check-show-freshness (06:00), so it would pend behind a member and be evicted by the next sibling; 45-min runs. Only cast fields change (BRO-5803)
-  # concurrency-queue-ok: callers (update-show-status.yml, discover-historical-shows.yml)
-  # send ONE comma-list dispatch per run (BRO-4870); empty-cast.check.js still dispatches
-  # one show at a time (a rare opening-night repair, re-run by the next check), and update-show-status's shows are
-  # new/opening Broadway shows that the Wednesday --open-only cron refreshes anyway, and an
-  # evicted show_filter dispatch's still-missing shows are re-selected by the daily
-  # 14:17 missing-file pass (BRO-5819); the
-  # group must stay static because every run rewrites shows.json cast via push-core-data.
-  group: backfill-cast
-  cancel-in-progress: false
-
 jobs:
+  # Daily cron only (BRO-5819): count open/previews Broadway shows with no
+  # cast file. Weekly and dispatch runs skip this job and go straight to the
+  # backfill. Playwright is lazy-required, so the dry run needs no browsers.
+  missing-cast-precheck:
+    if: github.event_name == 'schedule' && github.event.schedule != '0 6 * * 3'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      missing: ${{ steps.count.outputs.missing }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      # Fails closed: an unparseable count runs the backfill rather than
+      # silently skipping it.
+      - name: Count shows missing a cast file
+        id: count
+        run: |
+          set -o pipefail
+          N=$(node scripts/backfill-cast.js --open-only --dry-run | sed -n 's/^Shows to process: \([0-9][0-9]*\)$/\1/p' | tail -1) || N=""
+          if ! [[ "$N" =~ ^[0-9]+$ ]]; then
+            echo "::warning::Could not read the missing-cast count; running the backfill anyway"
+            N=unknown
+          fi
+          echo "Open/previews Broadway shows missing a cast file: $N"
+          echo "missing=$N" >> "$GITHUB_OUTPUT"
+
   backfill-cast:
+    needs: missing-cast-precheck
+    # Weekly/dispatch: precheck is skipped, so run. Daily: run unless the
+    # precheck SUCCEEDED and counted 0 (a failed precheck fails closed and
+    # runs). Compare result, never a skipped job's output: GitHub coerces a
+    # null output and '0' both to 0, so `outputs.missing != '0'` alone would
+    # silently skip every weekly and dispatch run.
+    if: >-
+      !cancelled() && (needs.missing-cast-precheck.result != 'success'
+      || needs.missing-cast-precheck.outputs.missing != '0')
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    # Queued, not cancelled — a manual dispatch overlapping the weekly scheduled
+    # run (or two manual dispatches) would otherwise race-write the same
+    # data/cast/{id}.json files with no lock (ship-check adversarial review,
+    # task #712 follow-up). Matches backfill-cast-web.yml's existing pattern.
+    # Job-level (BRO-5819) so the daily precheck job runs OUTSIDE the group: a
+    # daily run that finds nothing missing never occupies the one pending slot
+    # and so never evicts a pending show_filter dispatch.
+    concurrency:
+      # shows-json-writer-exempt: dispatched mid-run by update-show-status.yml and discover-historical-shows.yml, and its own Wed 06:00 cron fires with update-show-status (Wed 06:00) and check-show-freshness (06:00), so it would pend behind a member and be evicted by the next sibling; 45-min runs. Only cast fields change (BRO-5803)
+      # concurrency-queue-ok: callers (update-show-status.yml, discover-historical-shows.yml)
+      # send ONE comma-list dispatch per run (BRO-4870); empty-cast.check.js still dispatches
+      # one show at a time (a rare opening-night repair, re-run by the next check), and update-show-status's shows are
+      # new/opening Broadway shows that the Wednesday --open-only cron refreshes anyway, and an
+      # evicted show_filter dispatch's still-missing shows are re-selected by the daily
+      # 14:17 missing-file pass (BRO-5819); the
+      # group must stay static because every run rewrites shows.json cast via push-core-data.
+      group: backfill-cast
+      cancel-in-progress: false
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -82,34 +134,10 @@ jobs:
       - name: Install dependencies
         run: npm ci || npm install
 
-      # Daily cron only: count open/previews Broadway shows with no cast file.
-      # Fails closed: an unparseable count runs the backfill rather than
-      # silently skipping it. Playwright is lazy-required, so the dry run does
-      # not need browsers installed.
-      - name: Missing-cast precheck (daily cron only)
-        id: precheck
-        if: github.event_name == 'schedule' && github.event.schedule != '0 6 * * 3'
-        run: |
-          set -o pipefail
-          N=$(node scripts/backfill-cast.js --open-only --dry-run | sed -n 's/^Shows to process: \([0-9][0-9]*\)$/\1/p' | tail -1) || N=""
-          if ! [[ "$N" =~ ^[0-9]+$ ]]; then
-            echo "::warning::Could not read the missing-cast count; running the backfill anyway"
-            N=unknown
-          fi
-          echo "Open/previews Broadway shows missing a cast file: $N"
-          echo "missing=$N" >> "$GITHUB_OUTPUT"
-
-      # continue-on-error: IBDB fetches go over HTTP tiers first and the
-      # scraper lazy-requires playwright only as a fallback (a fallback throw
-      # is a fetchFailed, never a tombstone), so a hung install-deps must not
-      # kill the whole run (run 39789093615, BRO-5819).
       - name: Setup Playwright
-        if: steps.precheck.outputs.missing != '0'
-        continue-on-error: true
         uses: ./.github/actions/setup-playwright
 
       - name: Run cast backfill
-        if: steps.precheck.outputs.missing != '0'
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
