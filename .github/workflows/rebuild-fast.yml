@@ -4,13 +4,17 @@
 name: Rebuild Reviews (Fast)
 
 concurrency:
-  # per-run group intended: GH concurrency queue depth is 1, so a shared "rebuild-reviews"
-  # group cancelled 5+ queued rebuilds on Beaches + Rocky Horror opening nights.
-  # The opening-night-orchestrator serializes externally by waiting on each
-  # poller run (scripts/lib/wait-for-run.sh), so
-  # per-run groups are safe here. See memory/feedback_gha_concurrency_queue_limit.md.
-  # (task #922 audit, 2026-08-03)
-  group: rebuild-fast-${{ github.run_id }}
+  # BRO-5913: coalesce a burst of scoring-triggered rebuilds into one running + one
+  # pending run. GH keeps a queue depth of 1, so a 3rd dispatch replaces the pending
+  # one. That is correct here: rebuild-fast rebuilds the WHOLE reviews.json from the
+  # tree it checks out, so the surviving pending run (which checks out after the
+  # others finished) covers everything the replaced run would have. The older
+  # per-run group (github.run_id, task #922) turned one batch of N scoring runs
+  # into N rebuilds and N deploys (860 night, 2026-10-22).
+  # force_write runs are manual overrides that must not be silently replaced, so
+  # they keep a per-run group.
+  # concurrency-queue-ok: idempotent whole-tree rebuild, latest pending run wins
+  group: rebuild-fast${{ inputs.force_write == 'true' && format('-force-{0}', github.run_id) || '' }}
   cancel-in-progress: false
 
 on:
