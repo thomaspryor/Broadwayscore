@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T00:09:28.196Z",
+  "timestamp": "2026-10-23T00:33:31.814Z",
   "stats": {
-    "totalReviews": 59420,
-    "alreadyFlagged": 21353,
+    "totalReviews": 59493,
+    "alreadyFlagged": 21354,
     "dateGuardCatches": 201,
-    "directorMismatch": 2077,
-    "tvFilmSignals": 1667,
-    "londonSignals": 2739,
+    "directorMismatch": 2085,
+    "tvFilmSignals": 1673,
+    "londonSignals": 2749,
     "offBroadwaySignals": 528,
     "yearMismatch": 169,
-    "noPublishDate": 5468
+    "noPublishDate": 5474
   },
   "findings": [
     {
@@ -3328,6 +3328,32 @@
     },
     {
       "showId": "angels-in-america-west-end-2017",
+      "file": "sunday-express--michael-arditti.json",
+      "publishDate": "2017-05-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-west-end-2017",
+      "file": "sunday-times--david-jays.json",
+      "publishDate": "2017-05-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-west-end-2017",
       "file": "telegraph--dominic-cavendish.json",
       "score": null,
       "publishDate": "2017-05-04",
@@ -3370,6 +3396,19 @@
       "score": null,
       "publishDate": "2017-05-04",
       "url": "https://www.timeout.com/london/theatre/angels-in-america",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from angels-in-america-2018"
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-west-end-2017",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2017-05-05",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -3576,6 +3615,45 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-west-end-2017",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2017-06-06",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-west-end-2017",
+      "file": "sunday-times--david-jays.json",
+      "publishDate": "2017-06-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-west-end-2017",
+      "file": "the-jewish-chronicle--john-nathan.json",
+      "publishDate": "2017-06-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -12333,6 +12411,68 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 870d before show (May 8th, 2023 vs 2025-09-24)"
+        }
+      ]
+    },
+    {
+      "showId": "don-juan-in-soho-west-end-2017",
+      "file": "financialtimes--ian-shuttleworth.json",
+      "publishDate": "2017-03-29",
+      "url": "https://www.ft.com/content/769bc664-1489-11e7-b0c1-37e417ee6c76?syn-25a6b1a6=1",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "don-juan-in-soho-west-end-2017",
+      "file": "nytimes--matt-wolf.json",
+      "publishDate": "2017-04-07",
+      "url": "https://www.nytimes.com/2017/04/07/arts/london-theater-don-juan-in-soho.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "don-juan-in-soho-west-end-2017",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "publishDate": "2017-04-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "don-juan-in-soho-west-end-2017",
+      "file": "variety--matt-trueman.json",
+      "publishDate": "2017-03-30",
+      "url": "https://variety.com/2017/legit/reviews/don-juan-in-soho-review-david-tennant-1202015468/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -35135,6 +35275,24 @@
       ]
     },
     {
+      "showId": "scenes-with-girls-west-end-2020",
+      "file": "islingtontribune--unknown.json",
+      "publishDate": null,
+      "url": "https://www.islingtontribune.co.uk/article/review-scenes-with-girls-at-royal-court-upstairs",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "school-girls-or-the-african-mean-girls-play-2026",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 89,
@@ -41889,6 +42047,45 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-ferryman-west-end-2017",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2017-05-04",
+      "url": "http://www.telegraph.co.uk/theatre/what-to-see/jez-butterworth-confirms-promise-unmissable-new-drama-ferryman/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
+        }
+      ]
+    },
+    {
+      "showId": "the-ferryman-west-end-2017",
+      "file": "thestage--natasha-tripney.json",
+      "publishDate": "2017-05-11",
+      "url": "https://www.thestage.co.uk/reviews/2017/the-ferryman-review-at-the-royal-court-london-a-production-of-abundance/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
+        }
+      ]
+    },
+    {
+      "showId": "the-ferryman-west-end-2017",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2017-05-04",
+      "url": "https://www.timeout.com/london/theatre/the-ferryman",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-ferryman-2018"
         }
       ]
     },
@@ -56695,6 +56892,19 @@
       ]
     },
     {
+      "showId": "anatomy-of-a-suicide-west-end-2017",
+      "file": "nytimes--matt-wolf.json",
+      "publishDate": "2017-06-30",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "and-juliet-2022",
       "file": "frontmezzjunkies--unknown.json",
       "score": 91,
@@ -61494,6 +61704,19 @@
       ]
     },
     {
+      "showId": "consent-west-end-2017",
+      "file": "times-uk--ann-treneman.json",
+      "publishDate": "2017-04-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
       "showId": "consent-west-end-2018",
       "file": "a-younger-theatre--unknown.json",
       "score": 78,
@@ -62042,6 +62265,19 @@
       "score": 55,
       "publishDate": "2019-12-18",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/curtains-review-wyndhams-theatre-much-filler-not-enough-killer/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "curtains-west-end-2019",
+      "file": "theupcoming--grace-walsh.json",
+      "publishDate": null,
+      "url": "https://www.theupcoming.co.uk/2019/12/18/curtains-at-wyndhams-theatre-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -63325,6 +63561,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "don-juan-in-soho-west-end-2017",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": "2017-03-28",
+      "url": "https://www.whatsonstage.com/news/review-don-juan-in-soho-wyndhams-theatre_43228/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -66184,6 +66433,19 @@
       "score": 79,
       "publishDate": "2019-12-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-2-girl-from-the-north-country",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2019",
+      "file": "theupcoming--cristiana-ferrauti.json",
+      "publishDate": null,
+      "url": "https://www.theupcoming.co.uk/2019/12/17/girl-from-the-north-country-at-gielgud-theatre-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -88844,6 +89106,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-kid-stays-in-the-picture-west-end-2017",
+      "file": "nytimes--matt-wolf.json",
+      "publishDate": "2017-04-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-kid-stays-in-the-picture-west-end-2017",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "publishDate": "2017-04-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
