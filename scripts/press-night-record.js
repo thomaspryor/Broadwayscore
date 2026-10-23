@@ -11,6 +11,13 @@
  *   --capture-reference  stamp census coverage vs the deployed JSON as of now
  *                        (--label=2h|end). Needs data/aggregator-archive; without it the
  *                        label reads no-census-yet (unknown, never a pass).
+ *                        Census = archived roundups plus the BWW roundup fetched live by this
+ *                        script (BRO-6067: no other workflow had archived it by +2h). --label=end
+ *                        also fills a missing +2h coverage from the record's live timeline.
+ *   --import-lane-shadow=DIR  fold a lane-shadow artifact (opening-night-lane-live.yml) into the
+ *                        record: finer site-live times and the first lane discovery (publish bound).
+ *   --rebuild-reference  recompute +2h and end coverage from the live timeline against a census
+ *                        built now (backfill for a night whose census was missing).
  *   --finalize           mark the probe ended and print a summary.
  *   --list-due           print the shows (--shows=a,b) whose probe should start now, one per line
  *   --check              verdict against the plan's gates from the committed record only
@@ -19,6 +26,7 @@
  * Common: --show=ID --night=YYYY-MM-DD [--dir=data/audit/press-night] [--json]
  * Probe:  [--embargo-at=ISO] [--interval-min=5] [--until-offset-hours=6] [--base=URL]
  * Check:  [--first-live-within=30] [--coverage2h=0.8]
+ * Census: [--bww-url=URL] [--no-fetch] (skip the live BWW roundup fetch)
  *
  * Reuses decodeSlimShow + dedupByCritic identity from verify-opening-night-live.js,
  * deployedOutletIds from lib/deployed-coverage-diff.js and the census from
@@ -89,6 +97,74 @@ function listDue() {
   return 0;
 }
 
+function readJsonl(file) {
+  try {
+    return fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch (_) { return null; } }).filter(Boolean);
+  } catch (_) { return []; }
+}
+
+function findFiles(dir, pred, out = []) {
+  let ents = [];
+  try { ents = fs.readdirSync(dir, { withFileTypes: true }); } catch (_) { return out; }
+  for (const e of ents) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) findFiles(p, pred, out);
+    else if (pred(p)) out.push(p);
+  }
+  return out;
+}
+
+/** Read a downloaded lane-shadow artifact (any layout) for this show-night. */
+function readLaneShadow(dir, showId, night) {
+  const report = findFiles(dir, (p) => path.basename(p) === 'shadow-report.json')[0];
+  const live = findFiles(dir, (p) => path.basename(p) === 'live-first-seen.jsonl')[0];
+  const ledger = findFiles(dir, (p) => path.basename(p) === `${showId}-${night}.jsonl`)[0];
+  if (!report && !live) return null;
+  let rep = null;
+  try { rep = report ? JSON.parse(fs.readFileSync(report, 'utf8')) : null; } catch (_) { rep = null; }
+  if (rep && (rep.show !== showId || rep.night !== night)) throw new Error(`lane shadow is for ${rep.show} ${rep.night}, not ${showId} ${night}`);
+  return { report: rep, liveRows: live ? readJsonl(live) : [], ledgerRows: ledger ? readJsonl(ledger) : [] };
+}
+
+/**
+ * Census for the record: archived roundups, plus the BWW roundup fetched live when the archive has
+ * none (BRO-6067: the probe waited for another workflow to archive it and read no-census-yet all night).
+ * Returns {census, note}.
+ */
+async function buildCensus(rec, show) {
+  const { buildCensusFromArchives, unionCensus, parseBwwRoundup } = require('./lib/review-census');
+  const market = rec.market || 'broadway';
+  const archive = buildCensusFromArchives(rec.showId, { market, show: show || undefined });
+  const nyc = ['broadway', 'off-broadway', 'nyc'].includes(market);
+  if (!nyc || has('no-fetch') || archive.sourcesPresent.includes('bww-roundup') || !show) return { census: archive, note: 'archive only' };
+  let url = arg('bww-url') || (rec.laneShadow && rec.laneShadow.bwwRoundupUrl) || null;
+  try {
+    if (!url) {
+      const { discoverBwwRoundupUrl } = require('./lib/bww-rr-discover');
+      const found = await discoverBwwRoundupUrl(show);
+      url = found && found.url;
+    }
+    if (!url) return { census: archive, note: 'no BWW roundup found' };
+    const { fetchPage } = require('./lib/scraper');
+    const page = await fetchPage(url);
+    const html = page && page.content;
+    if (!html) return { census: archive, note: `BWW roundup fetch empty: ${url}` };
+    const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
+    const v = verifyAggregatorUrl({ url, html, show, openingDate: show.openingDate });
+    if (!v.isValid && v.rejectReason !== 'no-significant-title-tokens') return { census: archive, note: `BWW roundup rejected (${v.rejectReason}): ${url}` };
+    const rows = parseBwwRoundup(html, rec.showId);
+    if (!rows.length) return { census: archive, note: `BWW roundup parsed 0 reviews: ${url}` };
+    const merged = unionCensus([{ source: 'archive', reviews: archive.entries }, { source: 'bww-roundup-live', reviews: rows }]);
+    merged.sourcesPresent = [...archive.sourcesPresent, 'bww-roundup-live'];
+    merged.bwwRoundupUrl = url;
+    return { census: merged, note: `archive + live BWW roundup (${rows.length} rows): ${url}` };
+  } catch (e) {
+    return { census: archive, note: `BWW roundup fetch failed: ${String(e.message || e).slice(0, 160)}` };
+  }
+}
+
+function hasCoverage(ref) { return !!(ref && ref.coverage != null); }
+
 async function main() {
   if (hasHelpFlag(args)) { usage(); return 0; }
   if (has('list-due')) return listDue();
@@ -155,26 +231,68 @@ async function main() {
   const rec = readRecord(file);
   if (!rec) { console.error(`[press-night] no record at ${path.relative(ROOT, file)}`); return 1; }
 
+  if (arg('import-lane-shadow') != null) {
+    const dirArg = arg('import-lane-shadow');
+    if (!dirArg) { console.error('[press-night] --import-lane-shadow=DIR required'); return 2; }
+    let parsed;
+    try { parsed = readLaneShadow(path.resolve(dirArg), showId, night); } catch (e) { console.error(`[press-night] ${e.message}`); return 1; }
+    if (!parsed) { console.log(`[press-night] no lane-shadow files under ${dirArg}; record unchanged`); return 0; }
+    rec.laneShadow = lib.laneShadowFrom({ ...parsed, importedAt: new Date().toISOString(), runId: arg('run-id') });
+    writeRecord(file, rec);
+    const ls = rec.laneShadow;
+    console.log(`[press-night] lane shadow imported: ${ls.liveFirstSeen.length} site-live rows, first discovery ${ls.firstDiscoveredAt || 'none'}, BWW roundup ${ls.bwwRoundupUrl || 'none'}`);
+    return 0;
+  }
+
+  if (has('rebuild-reference')) {
+    const show = loadShow(showId);
+    const { census, note } = await buildCensus(rec, show);
+    const fetchedAt = new Date().toISOString();
+    const embMs = new Date(rec.embargoAt).getTime();
+    const endMs = new Date(rec.probe.lastOkSampleAt || rec.probe.lastSampleAt).getTime();
+    for (const [label, asOfMs] of [['2h', embMs + 2 * 3600000], ['end', endMs]]) {
+      if (!Number.isFinite(asOfMs)) continue;
+      if (rec.reference[label] && !rec.reference[`${label}-live`] && rec.reference[label].method !== 'timeline') rec.reference[`${label}-live`] = rec.reference[label];
+      rec.reference[label] = { ...lib.coverageAt(rec, census, asOfMs, { fetchedAt }), censusNote: note };
+    }
+    writeRecord(file, rec);
+    for (const label of ['2h', 'end']) {
+      const r = rec.reference[label];
+      if (r) console.log(`[press-night] reference ${label} (timeline, as of ${r.asOf}): ${r.status}${r.coverage != null ? ` coverage=${r.coverage} (${r.covered}/${r.count})` : ''}`);
+    }
+    console.log(`[press-night] census: ${note}`);
+    return 0;
+  }
+
   if (has('capture-reference')) {
     const label = arg('label');
     if (!['2h', 'end'].includes(label)) { console.error('[press-night] --label=2h|end required'); return 2; }
     const fetchedAt = new Date().toISOString();
     let ref;
+    let census = null;
+    let note = '';
     try {
       const { decodeSlimShow } = require('./show-status');
       const prod = await fetchProdJson(showId, base);
       const liveCount = decodeSlimShow(prod).reviews.length;
-      const { buildCensusFromArchives, censusVerdict } = require('./lib/review-census');
+      const { censusVerdict } = require('./lib/review-census');
       const { deployedOutletIds } = require('./lib/deployed-coverage-diff');
       const show = loadShow(showId);
-      const census = buildCensusFromArchives(showId, { market: rec.market || 'broadway', show: show || undefined });
-      ref = lib.referenceFrom({ census, verdict: censusVerdict(census, deployedOutletIds(prod)), liveCount, fetchedAt });
+      ({ census, note } = await buildCensus(rec, show));
+      ref = { ...lib.referenceFrom({ census, verdict: censusVerdict(census, deployedOutletIds(prod)), liveCount, fetchedAt }), censusNote: note };
     } catch (e) {
       ref = { status: 'error', error: String(e.message || e).slice(0, 200), source: null, count: 0, covered: null, coverage: null, missing: [], fetchedAt };
     }
     rec.reference[label] = ref;
+    // The +2h census was missing (roundup not out or not fetchable then): judge +2h on the live timeline
+    // against this later census instead of leaving the gate UNKNOWN.
+    if (label === 'end' && census && census.count && !hasCoverage(rec.reference['2h'])) {
+      if (rec.reference['2h'] && !rec.reference['2h-live']) rec.reference['2h-live'] = rec.reference['2h'];
+      rec.reference['2h'] = { ...lib.coverageAt(rec, census, new Date(rec.embargoAt).getTime() + 2 * 3600000, { fetchedAt }), censusNote: note };
+      console.log(`[press-night] reference 2h filled from the live timeline: ${rec.reference['2h'].status} coverage=${rec.reference['2h'].coverage}`);
+    }
     writeRecord(file, rec);
-    console.log(`[press-night] reference ${label}: ${ref.status}${ref.coverage != null ? ` coverage=${ref.coverage} (${ref.covered}/${ref.count})` : ''}`);
+    console.log(`[press-night] reference ${label}: ${ref.status}${ref.coverage != null ? ` coverage=${ref.coverage} (${ref.covered}/${ref.count})` : ''}${note ? `; census: ${note}` : ''}`);
     return ref.status === 'error' ? 1 : 0;
   }
 

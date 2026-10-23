@@ -235,3 +235,91 @@ test('probeDue: window is embargo-2.5h .. embargo+3h on the opening day only; to
   assert.equal(lib.probeDue({ ...show, category: 'tour' }, emb), null);
   assert.equal(lib.probeDue({ id: 'y', category: 'broadway' }, emb), null);
 });
+
+// BRO-6067: a preview-period review live before the night must not erase the first-live baseline.
+const previewThenBulk = () => {
+  const rec = fresh();
+  lib.applySample(rec, { at: at(21), reviews: [rv('singleticket', null, { tier: 3, date: '2026-10-05' })] });
+  lib.applySample(rec, { at: at(82), reviews: [rv('singleticket', null, { tier: 3, date: '2026-10-05' })] });
+  lib.applySample(rec, { at: at(87), reviews: [rv('singleticket', null, { tier: 3, date: '2026-10-05' }), rv('Deadline', 'Greg Evans'), rv('Variety', 'B')] });
+  return rec;
+};
+
+test('first-live ignores a preview-period review that was live at the first sample', () => {
+  const rec = previewThenBulk();
+  const fl = lib.firstNightLive(rec);
+  assert.equal(fl.at, at(87));
+  assert.equal(fl.baseline, false);
+  const g = lib.evaluateCheck(rec).gates.find((x) => x.name === 'first-live');
+  assert.equal(g.status, 'unknown'); // date-only publish, no lane discovery: still cannot bound publish-to-live
+  assert.match(g.detail, /87 min after the embargo/);
+  assert.doesNotMatch(g.detail, /already live at the first sample/);
+});
+
+test('first-live: a lane-shadow discovery bounds the publish time, so a slow night FAILs with a number', () => {
+  const rec = previewThenBulk();
+  rec.laneShadow = lib.laneShadowFrom({
+    report: { startedAt: at(-140) },
+    liveRows: [{ outlet: 'singleticket', at: Date.parse(at(-140)) }, { outlet: 'Deadline', at: Date.parse(at(88)) }],
+    ledgerRows: [{ stage: 'discovered', at: at(4), reviewKey: 'https://deadline.com/x', meta: { url: 'https://deadline.com/x' } }],
+  });
+  const g = lib.evaluateCheck(rec).gates.find((x) => x.name === 'first-live');
+  assert.equal(g.status, 'fail');
+  assert.match(g.detail, /78-87 min after the first outlet publish/);
+});
+
+test('first-live: a fast night PASSes on the embargo bound even with a preview review live early', () => {
+  const rec = fresh();
+  lib.applySample(rec, { at: at(-30), reviews: [rv('singleticket', null, { tier: 3, date: '2026-10-05' })] });
+  lib.applySample(rec, { at: at(12), reviews: [rv('singleticket', null, { tier: 3, date: '2026-10-05' }), rv('NYT', 'A')] });
+  assert.equal(lib.evaluateCheck(rec).gates.find((x) => x.name === 'first-live').status, 'pass');
+});
+
+test('coverageAt: +2h coverage from the live timeline against a later census', () => {
+  const rec = fresh();
+  lib.applySample(rec, { at: at(-5), reviews: [] });
+  lib.applySample(rec, { at: at(60), reviews: [rv('The New York Times', 'A'), rv('New York Daily News', 'C')] });
+  lib.applySample(rec, { at: at(70), reviews: [rv('The New York Times', 'A')] }); // Daily News dropped
+  lib.applySample(rec, { at: at(200), reviews: [rv('The New York Times', 'A'), rv('Vulture', 'V')] });
+  const census = { hadAnySource: true, count: 4, sourcesPresent: ['bww-roundup-live'],
+    entries: [{ outletId: 'nytimes' }, { outletId: 'nydailynews' }, { outletId: 'vulture' }, { outletId: 'variety' }] };
+  rec.laneShadow = { liveFirstSeen: [], discoveredByOutlet: { variety: at(150) } }; // Variety published after +2h
+  const ref = lib.coverageAt(rec, census, Date.parse(at(120)), { fetchedAt: at(600) });
+  assert.equal(ref.method, 'timeline');
+  assert.equal(ref.asOf, at(120));
+  assert.deepEqual(ref.notYetPublished, ['variety']);
+  assert.equal(ref.count, 3);
+  assert.deepEqual(ref.missing.sort(), ['nydailynews', 'vulture']);
+  rec.reference['2h'] = ref;
+  const g = lib.evaluateCheck(rec).gates.find((x) => x.name === 'coverage-2h');
+  assert.equal(g.status, 'fail'); // 1/3, and judged as of +2h even though fetched at +10h
+  assert.match(g.detail, /1\/3 census outlets live at \+2h/);
+});
+
+test('laneShadowFrom: earliest discovery, BWW roundup url, per-outlet first discovery', () => {
+  const ls = lib.laneShadowFrom({
+    report: { startedAt: Date.parse(at(-140)) },
+    liveRows: [{ outlet: 'Deadline', url: 'https://deadline.com/x', at: Date.parse(at(87)) }],
+    ledgerRows: [
+      { stage: 'discovered', at: at(80), reviewKey: 'https://www.nytimes.com/r', meta: { adapter: 'bww-roundup', via: 'https://www.broadwayworld.com/article/Review-Roundup-X', url: 'https://www.nytimes.com/r' } },
+      { stage: 'discovered', at: at(4), reviewKey: 'https://deadline.com/x', meta: { url: 'https://deadline.com/x' } },
+      { stage: 'scored', at: at(1), reviewKey: 'https://deadline.com/x' },
+    ],
+  });
+  assert.equal(ls.firstDiscoveredAt, at(4));
+  assert.equal(ls.bwwRoundupUrl, 'https://www.broadwayworld.com/article/Review-Roundup-X');
+  assert.equal(ls.discoveredByOutlet.nytimes, at(80));
+  assert.equal(ls.liveFirstSeen[0].baseline, false);
+});
+
+test('the committed Imaginary Invalid 2026-10-22 record answers first-live and coverage-2h with numbers', () => {
+  const fs = require('fs');
+  const path = require('path');
+  const file = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'data', 'audit', 'press-night', 'the-imaginary-invalid-2026-2026-10-22.json');
+  const rec = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const gates = Object.fromEntries(lib.evaluateCheck(rec).gates.map((g) => [g.name, g]));
+  assert.notEqual(gates['first-live'].status, 'unknown', gates['first-live'].detail);
+  assert.match(gates['first-live'].detail, /\d+(-\d+)? min after/);
+  assert.notEqual(gates['coverage-2h'].status, 'unknown', gates['coverage-2h'].detail);
+  assert.match(gates['coverage-2h'].detail, /bww-roundup/);
+});

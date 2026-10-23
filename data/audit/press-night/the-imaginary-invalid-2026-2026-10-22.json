@@ -256,6 +256,50 @@
   ],
   "reference": {
     "2h": {
+      "status": "incomplete",
+      "source": [
+        "dtli",
+        "playbill-verdict",
+        "bww-roundup-live"
+      ],
+      "count": 16,
+      "covered": 14,
+      "coverage": 0.875,
+      "missing": [
+        "nydailynews",
+        "cititour"
+      ],
+      "suppressedMissing": [],
+      "liveCount": 15,
+      "fetchedAt": "2026-10-23T12:48:48.665Z",
+      "asOf": "2026-10-23T04:00:00.000Z",
+      "method": "timeline",
+      "notYetPublished": [],
+      "censusNote": "archive + live BWW roundup (11 rows): https://www.broadwayworld.com/article/Review-Roundup-THE-IMAGINARY-INVALID-Opens-on-Broadway-20261022"
+    },
+    "end": {
+      "status": "incomplete",
+      "source": [
+        "dtli",
+        "playbill-verdict",
+        "bww-roundup-live"
+      ],
+      "count": 16,
+      "covered": 14,
+      "coverage": 0.875,
+      "missing": [
+        "nydailynews",
+        "cititour"
+      ],
+      "suppressedMissing": [],
+      "liveCount": 17,
+      "fetchedAt": "2026-10-23T12:48:48.665Z",
+      "asOf": "2026-10-23T07:57:46.146Z",
+      "method": "timeline",
+      "notYetPublished": [],
+      "censusNote": "archive + live BWW roundup (11 rows): https://www.broadwayworld.com/article/Review-Roundup-THE-IMAGINARY-INVALID-Opens-on-Broadway-20261022"
+    },
+    "2h-live": {
       "status": "no-census-yet",
       "source": null,
       "count": 0,
@@ -265,7 +309,7 @@
       "liveCount": 16,
       "fetchedAt": "2026-10-23T04:00:12.329Z"
     },
-    "end": {
+    "end-live": {
       "status": "incomplete",
       "source": [
         "dtli",
@@ -282,5 +326,143 @@
       "liveCount": 18,
       "fetchedAt": "2026-10-23T08:00:15.551Z"
     }
+  },
+  "laneShadow": {
+    "importedAt": "2026-10-23T12:48:47.913Z",
+    "runId": "39873028216",
+    "startedAt": "2026-10-22T23:39:37.400Z",
+    "pollMin": 2,
+    "firstDiscoveredAt": "2026-10-23T02:03:46.049Z",
+    "discoveredByOutlet": {
+      "nysr": "2026-10-23T02:03:46.049Z",
+      "nytg": "2026-10-23T02:17:51.659Z",
+      "culturesauce": "2026-10-23T02:33:50.737Z",
+      "nytimes": "2026-10-23T02:42:26.543Z",
+      "deadline": "2026-10-23T02:42:26.543Z",
+      "nypost": "2026-10-23T02:42:26.543Z",
+      "thewrap": "2026-10-23T02:42:26.543Z",
+      "nydailynews": "2026-10-23T02:42:26.543Z",
+      "theatrely": "2026-10-23T02:48:30.412Z",
+      "one-minute-critic": "2026-10-23T03:19:39.658Z",
+      "wsj": "2026-10-23T03:19:39.658Z",
+      "nyt-theater": "2026-10-23T03:19:39.658Z"
+    },
+    "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-IMAGINARY-INVALID-Opens-on-Broadway-20261022",
+    "liveFirstSeen": [
+      {
+        "outlet": "singleticket",
+        "url": "https://singleticket.substack.com/p/theater-review-the-imaginary-invalid",
+        "at": "2026-10-22T23:39:37.601Z",
+        "baseline": true
+      },
+      {
+        "outlet": "Deadline",
+        "url": "https://deadline.com/2026/10/the-imaginary-invalid-broadway-review-bill-irwin-1237169589/",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "New York Daily News",
+        "url": "https://www.nydailynews.com/2026/10/22/broadway-review-imaginary-invalid-a-gross-but-fun-moliere-adaptation/",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "The New York Times",
+        "url": "https://www.nytimes.com/2026/10/22/theater/imaginary-invalid-review-bill-irwin-moliere.html",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "New York Post",
+        "url": "https://nypost.com/2026/10/22/entertainment/the-imaginary-invalid-review-unfunny-moliere-revival-on-broadway-makes-you-scream-sacre-bleu/",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "Time Out New York",
+        "url": "https://www.timeout.com/newyork/news/broadway-review-the-imaginary-invalid-gasps-for-moliere-102326",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "New York Stage Review",
+        "url": "https://nystagereview.com/2026/10/22/the-imaginary-invalid-just-what-the-doctor-ordered/",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "New York Stage Review",
+        "url": "https://nystagereview.com/2026/10/22/the-imaginary-invalid-hacks-and-quacks/",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "Theatrely",
+        "url": "https://www.theatrely.com/post/the-imaginary-invalid-with-a-starry-cast-hits-broadway-review",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "New York Theatre Guide",
+        "url": "https://www.newyorktheatreguide.com/reviews/the-imaginary-invalid-broadway-review-bill-irwin-rachel-bloom",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "TheaterMania",
+        "url": "https://www.theatermania.com/news/review-revival-of-the-imaginary-invalid-is-terminally-short-on-laughs_1857994/",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "TheWrap",
+        "url": "https://www.thewrap.com/creative-content/theater/the-imaginary-invalid-broadway-review-bill-irwin/",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "Culture Sauce",
+        "url": "https://culturesauce.com/imaginary-invalid-moliere-broadway-review/",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "The Wall Street Journal",
+        "url": "https://www.wsj.com/articles/the-imaginary-invalid-review-bill-irwins-hilarious-hypochondriac-ff88aa6b",
+        "at": "2026-10-23T03:35:38.989Z",
+        "baseline": false
+      },
+      {
+        "outlet": "Chicago Tribune",
+        "url": "https://www.chicagotribune.com/2026/10/22/review-imaginary-invalid-broadway/",
+        "at": "2026-10-23T03:35:38.989Z",
+        "baseline": false
+      },
+      {
+        "outlet": "New York Theater",
+        "url": "https://newyorktheater.me/2026/10/22/the-imaginary-invalid-review/",
+        "at": "2026-10-23T03:35:38.989Z",
+        "baseline": false
+      },
+      {
+        "outlet": "1 Minute Critic",
+        "url": "https://1minutecritic.com/imaginary-invalid-bill-irwin-broadway-review/",
+        "at": "2026-10-23T03:35:38.989Z",
+        "baseline": false
+      },
+      {
+        "outlet": "Vulture",
+        "url": "https://www.vulture.com/article/broadway-review-bill-irwin-rachel-bloom-the-imaginary-invalid.html",
+        "at": "2026-10-23T04:53:39.463Z",
+        "baseline": false
+      },
+      {
+        "outlet": "Talkin' Broadway",
+        "url": "https://www.talkinbroadway.com/page/world/TheImaginaryInvalid.html",
+        "at": "2026-10-23T04:53:39.463Z",
+        "baseline": false
+      }
+    ]
   }
 }

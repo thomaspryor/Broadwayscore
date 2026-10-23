@@ -344,10 +344,14 @@ function coverageAt(rec, census, asOfMs, { fetchedAt = null } = {}) {
     const oid = outletIdOf(p.outlet);
     if (oid) liveSet.add(oid);
   }
+  // The shadow does not track drops, so it only fills outlets the probe never saw at all
+  // (e.g. live before a late probe start); the probe's own series, drops included, wins.
+  const probeOutlets = new Set(rec.perReview.map((p) => outletIdOf(p.outlet)).filter(Boolean));
   const ls = rec.laneShadow;
   if (ls && Array.isArray(ls.liveFirstSeen)) {
     for (const r of ls.liveFirstSeen) {
-      if (toMs(r.at) != null && toMs(r.at) <= asOfMs) { const oid = outletIdOf(r.outlet); if (oid) liveSet.add(oid); }
+      const oid = outletIdOf(r.outlet);
+      if (oid && !probeOutlets.has(oid) && toMs(r.at) != null && toMs(r.at) <= asOfMs) liveSet.add(oid);
     }
   }
   let scoped = census;
