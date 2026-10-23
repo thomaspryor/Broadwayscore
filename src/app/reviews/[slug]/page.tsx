@@ -101,7 +101,6 @@ export default async function ReviewPage(props: { params: Promise<{ slug: string
           addressCountry: 'US',
         },
       },
-      eventStatus: 'https://schema.org/EventScheduled',
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
     },
     reviewRating: {

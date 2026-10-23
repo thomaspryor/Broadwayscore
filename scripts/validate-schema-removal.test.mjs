@@ -48,6 +48,11 @@ test('EventScheduled is dropped for closed or ended runs', () => {
   assert.match(body(seo, 'export function generateItemListSchema', '\nexport function '), /eventStatusField\(/);
 });
 
+test('editorial reviews omit eventStatus for attended performances', () => {
+  const review = body(read('src/app/reviews/[slug]/page.tsx'), 'const reviewSchema = {', '\n  const breadcrumbSchema');
+  assert.doesNotMatch(review, /eventStatus\s*:/);
+});
+
 test('Offers are only emitted with a real price', () => {
   assert.ok(!/price:\s*null/.test(seo));
   assert.match(seo, /filter\(link => link\.priceFrom\)/);
