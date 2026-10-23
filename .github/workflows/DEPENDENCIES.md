@@ -334,17 +334,17 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `BRIGHTDATA_ZONE` | 68 cross-repo writers (of 92 workflows using it) |
 | `BROWSERBASE_API_KEY` | 16 cross-repo writers (of 20 workflows using it) |
 | `BROWSERBASE_PROJECT_ID` | 16 cross-repo writers (of 20 workflows using it) |
-| `COOKIES_BUNDLE_1` | 17 cross-repo writers (of 19 workflows using it) |
-| `COOKIES_BUNDLE_10` | 17 cross-repo writers (of 19 workflows using it) |
-| `COOKIES_BUNDLE_11` | 15 cross-repo writers (of 17 workflows using it) |
-| `COOKIES_BUNDLE_2` | 17 cross-repo writers (of 19 workflows using it) |
-| `COOKIES_BUNDLE_3` | 17 cross-repo writers (of 19 workflows using it) |
-| `COOKIES_BUNDLE_4` | 17 cross-repo writers (of 19 workflows using it) |
-| `COOKIES_BUNDLE_5` | 17 cross-repo writers (of 19 workflows using it) |
-| `COOKIES_BUNDLE_6` | 17 cross-repo writers (of 19 workflows using it) |
-| `COOKIES_BUNDLE_7` | 17 cross-repo writers (of 19 workflows using it) |
-| `COOKIES_BUNDLE_8` | 17 cross-repo writers (of 19 workflows using it) |
-| `COOKIES_BUNDLE_9` | 17 cross-repo writers (of 19 workflows using it) |
+| `COOKIES_BUNDLE_1` | 18 cross-repo writers (of 20 workflows using it) |
+| `COOKIES_BUNDLE_10` | 18 cross-repo writers (of 20 workflows using it) |
+| `COOKIES_BUNDLE_11` | 16 cross-repo writers (of 18 workflows using it) |
+| `COOKIES_BUNDLE_2` | 18 cross-repo writers (of 20 workflows using it) |
+| `COOKIES_BUNDLE_3` | 18 cross-repo writers (of 20 workflows using it) |
+| `COOKIES_BUNDLE_4` | 18 cross-repo writers (of 20 workflows using it) |
+| `COOKIES_BUNDLE_5` | 18 cross-repo writers (of 20 workflows using it) |
+| `COOKIES_BUNDLE_6` | 18 cross-repo writers (of 20 workflows using it) |
+| `COOKIES_BUNDLE_7` | 18 cross-repo writers (of 20 workflows using it) |
+| `COOKIES_BUNDLE_8` | 18 cross-repo writers (of 20 workflows using it) |
+| `COOKIES_BUNDLE_9` | 18 cross-repo writers (of 20 workflows using it) |
 | `DISCORD_WEBHOOK_ALERTS` | 108 cross-repo writers (of 191 workflows using it) |
 | `FORMSPREE_FOLLOW_API_KEY` | 3 cross-repo writers (of 4 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
 | `FORMSPREE_FOLLOW_FORM_ID` | 3 cross-repo writers (of 4 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
@@ -400,8 +400,8 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `WAPO_COOKIES_META` | 1 cross-repo writers (of 1 workflows using it): `opening-night-express.yml` |
 | `WAPO_EMAIL` | 4 cross-repo writers (of 5 workflows using it) |
 | `WASHPOST_PASSWORD` | 4 cross-repo writers (of 5 workflows using it) |
-| `WSJ_COOKIES` | 15 cross-repo writers (of 17 workflows using it) |
-| `WSJ_COOKIES_META` | 15 cross-repo writers (of 17 workflows using it) |
+| `WSJ_COOKIES` | 16 cross-repo writers (of 18 workflows using it) |
+| `WSJ_COOKIES_META` | 16 cross-repo writers (of 18 workflows using it) |
 | `WSJ_EMAIL` | 4 cross-repo writers (of 5 workflows using it) |
 | `WSJ_PASSWORD` | 4 cross-repo writers (of 5 workflows using it) |
 
