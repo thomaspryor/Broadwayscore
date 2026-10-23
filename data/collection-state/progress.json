@@ -459,10 +459,29 @@
     "beetlejuice-2025/dailybeast--tim-teeman.json",
     "the-imaginary-invalid-2026/goldderby--ethan-alter.json",
     "triumph-off-west-end-2026/british-theatre--keith-mckenna.json",
-    "some-woman-west-end-2026/times-uk--clive-davis.json",
-    "murder-cathedral-off-west-end-2026/times-uk--clive-davis.json",
-    "titanique-west-end-2024/sunday-times--unknown.json",
-    "oh-mary-2024/boston-globe--don-aucoin.json"
+    "triumph-off-west-end-2026/closeupculture--unknown.json",
+    "dog-mom-off-west-end-2026/reviewsgate--william-russell.json",
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "dirty-dancing-the-classic-story-on-stage-west-end-2026/soundsandstage--unknown.json",
+    "dirty-dancing-the-classic-story-on-stage-west-end-2026/sportswhereiam--unknown.json",
+    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
+    "lincoln-in-the-bardo-off-broadway-2026/hotelbelleclaire--unknown.json",
+    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json",
+    "other-desert-cities-2026/cbsnews--unknown.json",
+    "school-pictures-off-broadway-2026/timeout--unknown.json",
+    "school-pictures-off-broadway-2026/airmail--air-mail.json",
+    "seussical-theatre-young-audiences-off-broadway-2026/wknd--unknown.json",
+    "the-dog-show-come-sit-stay-off-broadway-2026/talkalmanmusic--unknown.json",
+    "two-girls-off-broadway-2026/airmail--air-mail.json",
+    "two-girls-off-broadway-2026/howdidimissthat--unknown.json",
+    "midnight-off-broadway-2026/timeout--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "midnight-off-broadway-2026/openingnight--edward-a-kliszus.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -618,7 +637,9 @@
       "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
       "paranormal-activity-2026/nytimes--helen-shaw.json",
       "data/review-texts/dirty-dancing-tour-2026/nytimes--michael-paulson.json",
-      "dirty-dancing-tour-2026/nytimes--michael-paulson.json"
+      "dirty-dancing-tour-2026/nytimes--michael-paulson.json",
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -758,7 +779,7 @@
     ]
   },
   "startTime": "2026-10-23T14:36:04.998Z",
-  "lastProcessed": "hamilton-2015/nyt-theater--jonathan-mandell.json",
+  "lastProcessed": "midnight-off-broadway-2026/openingnight--edward-a-kliszus.json",
   "log": [
     {
       "t": "2026-10-23T14:43:35.677Z",
@@ -857,6 +878,76 @@
       "event": "bb-session",
       "session": "d38b4c94",
       "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-23T17:13:45.285Z",
+      "event": "bb-session",
+      "session": "1054b854",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-23T17:14:09.033Z",
+      "event": "bb-session",
+      "session": "f22919d5",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-23T17:14:09.629Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-23T17:14:18.300Z",
+      "event": "bb-session",
+      "session": "65272997",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-23T17:14:18.909Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-23T17:15:42.342Z",
+      "event": "bb-session",
+      "session": "21595c86",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-23T17:15:50.346Z",
+      "event": "bb-session",
+      "session": "588bc8cf",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-23T17:17:00.823Z",
+      "event": "bb-session",
+      "session": "d3fdbb9f",
+      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
+    },
+    {
+      "t": "2026-10-23T17:18:00.845Z",
+      "event": "bb-session",
+      "session": "de75cce5",
+      "url": "https://www.cbsnews.com/video/other-desert-cities-on-broadway-family-secrets-lai"
+    },
+    {
+      "t": "2026-10-23T17:19:30.851Z",
+      "event": "bb-session",
+      "session": "23330a7d",
+      "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07"
+    },
+    {
+      "t": "2026-10-23T17:19:38.970Z",
+      "event": "bb-session",
+      "session": "6dda73d3",
+      "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07"
+    },
+    {
+      "t": "2026-10-23T17:21:25.334Z",
+      "event": "bb-session",
+      "session": "c3e0d111",
+      "url": "https://openingnight.online/midnight-off-broadway-review-todrick-halls-new-music"
     }
   ],
   "recoveredAfterFailure": [
