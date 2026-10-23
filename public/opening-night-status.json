@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T00:33:47.251Z",
+  "generatedAt": "2026-10-23T00:55:23.436Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,27 +12,26 @@
       "status": "open",
       "slug": "derren-brown-only-human-west-end",
       "thumbnail": "/images/shows/derren-brown-only-human-west-end-2026/thumbnail.jpg",
-      "siteScore": 83.77,
-      "liveScore": 84,
-      "scoreDrift": 0.23000000000000398,
+      "siteScore": 81.54,
+      "liveScore": 82,
+      "scoreDrift": 0.45999999999999375,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 4,
+      "total": 6,
       "t1": 1,
       "t2": 3,
-      "t3": 0,
-      "positive": 4,
+      "t3": 2,
+      "positive": 5,
       "mixed": 0,
-      "negative": 0,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "4/8 total",
-          "T1:1/3",
-          "hi-conf:4/6"
+          "6/8 total",
+          "T1:1/3"
         ],
-        "highConfidence": 4,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -240,6 +239,18 @@
           "m": 0,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-23T00:55:23.436Z",
+          "rc": 6,
+          "s": 81.54,
+          "t1": 1,
+          "t2": 3,
+          "t3": 2,
+          "p": 5,
+          "m": 0,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -253,28 +264,28 @@
       "status": "open",
       "slug": "phyl-off-broadway",
       "thumbnail": "/images/shows/phyl-off-broadway-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 88,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "siteScore": 72.61,
+      "liveScore": 73,
+      "scoreDrift": 0.39000000000000057,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 1,
+      "total": 3,
       "t1": 0,
-      "t2": 0,
+      "t2": 2,
       "t3": 1,
-      "positive": 1,
-      "mixed": 0,
+      "positive": 2,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/12 total",
+          "3/12 total",
           "T1:0/3",
-          "T2:0/3",
-          "hi-conf:1/8"
+          "T2:2/3",
+          "hi-conf:3/8"
         ],
-        "highConfidence": 1,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -620,6 +631,18 @@
           "t3": 1,
           "p": 1,
           "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-23T00:55:23.436Z",
+          "rc": 3,
+          "s": 72.61,
+          "t1": 0,
+          "t2": 2,
+          "t3": 1,
+          "p": 2,
+          "m": 1,
           "n": 0,
           "bc": "waiting"
         }

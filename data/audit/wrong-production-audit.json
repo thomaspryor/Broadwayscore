@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T00:33:31.814Z",
+  "timestamp": "2026-10-23T00:55:08.266Z",
   "stats": {
-    "totalReviews": 59493,
-    "alreadyFlagged": 21354,
-    "dateGuardCatches": 201,
-    "directorMismatch": 2085,
-    "tvFilmSignals": 1673,
-    "londonSignals": 2749,
+    "totalReviews": 59550,
+    "alreadyFlagged": 21355,
+    "dateGuardCatches": 200,
+    "directorMismatch": 2100,
+    "tvFilmSignals": 1675,
+    "londonSignals": 2758,
     "offBroadwaySignals": 528,
     "yearMismatch": 169,
-    "noPublishDate": 5474
+    "noPublishDate": 5473
   },
   "findings": [
     {
@@ -3827,6 +3827,76 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"matthew warchus\" from art-1998"
+        }
+      ]
+    },
+    {
+      "showId": "art-west-end-2016",
+      "file": "guardian--michael-billington.json",
+      "publishDate": "2016-12-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from art-1998"
+        }
+      ]
+    },
+    {
+      "showId": "art-west-end-2016",
+      "file": "observer--susannah-clapp.json",
+      "publishDate": "2017-01-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from art-1998"
+        }
+      ]
+    },
+    {
+      "showId": "art-west-end-2016",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "publishDate": "2017-01-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from art-1998"
+        }
+      ]
+    },
+    {
+      "showId": "art-west-end-2016",
+      "file": "thestage--paul-vale.json",
+      "publishDate": "2017-01-05",
+      "url": "https://www.thestage.co.uk/reviews/art-review-at-the-old-vic-theatre-london--tim-key-steals-the-show",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from art-1998"
+        }
+      ]
+    },
+    {
+      "showId": "art-west-end-2016",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2016-12-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from art-1998"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -12520,6 +12590,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "dreamgirls-west-end-2016",
+      "file": "nytimes--matt-wolf.json",
+      "publishDate": "2016-12-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael bennett\" from dreamgirls-1987"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -35724,6 +35812,20 @@
     },
     {
       "showId": "shucked-2023",
+      "file": "village-voice--michael-musto.json",
+      "score": 74,
+      "publishDate": "2023-04-04",
+      "url": "https://www.villagevoice.com/2023/04/04/review-shucked-brings-the-cornpone-home/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "shucked-2023",
       "file": "vulture--helen-shaw.json",
       "score": 77,
       "publishDate": "April 5, 2023",
@@ -42338,6 +42440,45 @@
       ]
     },
     {
+      "showId": "the-glass-menagerie-west-end-2017",
+      "file": "express-uk--neil-norman.json",
+      "publishDate": "2017-02-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
+        }
+      ]
+    },
+    {
+      "showId": "the-glass-menagerie-west-end-2017",
+      "file": "sunday-express--michael-arditti.json",
+      "publishDate": "2017-02-05",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
+        }
+      ]
+    },
+    {
+      "showId": "the-glass-menagerie-west-end-2017",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2017-02-07",
+      "url": "http://www.timeout.com/london/theatre/the-glass-menagerie-2",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
+        }
+      ]
+    },
+    {
       "showId": "the-grapes-of-wrath-west-end-2024",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 60,
@@ -44348,9 +44489,66 @@
     },
     {
       "showId": "the-kite-runner-west-end-2017",
+      "file": "financialtimes--alexander-gilmour.json",
+      "publishDate": "2017-01-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"giles croft\" from the-kite-runner-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "the-kite-runner-west-end-2017",
       "file": "london-box-office--andrew-bewley.json",
       "publishDate": "2017-01-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/kite-runner-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"giles croft\" from the-kite-runner-2022"
+        }
+      ]
+    },
+    {
+      "showId": "the-kite-runner-west-end-2017",
+      "file": "sunday-express--michael-arditti.json",
+      "publishDate": "2017-01-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"giles croft\" from the-kite-runner-2022"
+        }
+      ]
+    },
+    {
+      "showId": "the-kite-runner-west-end-2017",
+      "file": "sunday-times--patricia-nicol.json",
+      "publishDate": "2017-01-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"giles croft\" from the-kite-runner-2022"
+        }
+      ]
+    },
+    {
+      "showId": "the-kite-runner-west-end-2017",
+      "file": "tribune--william-russell.json",
+      "publishDate": "2017-01-27",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -49952,6 +50150,37 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "travesties-west-end-2017",
+      "file": "observer--susannah-clapp.json",
+      "publishDate": "2017-02-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from travesties-2018"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "travesties-west-end-2017",
+      "file": "standard--fiona-mountford.json",
+      "publishDate": "2017-02-16",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from travesties-2018"
         }
       ]
     },
@@ -57690,6 +57919,19 @@
       ]
     },
     {
+      "showId": "art-west-end-2016",
+      "file": "daily-mail--quentin-letts.json",
+      "publishDate": "2016-12-23",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "as-you-like-it-globe-west-end-2026",
       "file": "bestoftheatre--arthur-fisher.json",
       "score": 71,
@@ -63450,6 +63692,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "dirty-great-love-story-west-end-2017",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2017-01-27",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -81338,6 +81593,19 @@
     },
     {
       "showId": "rosencrantz-and-guildenstern-are-dead-west-end-2017",
+      "file": "observer--susannah-clapp.json",
+      "publishDate": "2017-03-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "rosencrantz-and-guildenstern-are-dead-west-end-2017",
       "file": "variety--david-benedict.json",
       "score": null,
       "publishDate": "2017-03-08",
@@ -84515,17 +84783,6 @@
     },
     {
       "showId": "sweat-2017",
-      "file": "theatermania--zachary-stewart.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 121d before show (November 3, 2016 vs 2017-03-04)"
-        }
-      ]
-    },
-    {
-      "showId": "sweat-2017",
       "file": "variety--matt-windman.json",
       "score": 75,
       "publishDate": "2017-03-27",
@@ -87234,6 +87491,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-dresser-west-end-2016",
+      "file": "observer--susannah-clapp.json",
+      "publishDate": "2016-10-16",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -91632,6 +91902,19 @@
       ]
     },
     {
+      "showId": "the-sewing-group-west-end-2016",
+      "file": "nytimes--matt-wolf.json",
+      "publishDate": "2016-12-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "the-shark-is-broken-2023",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 61,
@@ -94122,6 +94405,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "travesties-2018",
+      "file": "hollywood-reporter--frank-scheck.json",
+      "score": 79,
+      "publishDate": "2018-04-24",
+      "url": "https://www.hollywoodreporter.com/review/travesties-theater-1104956",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
