@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T09:03:48.389Z",
+  "timestamp": "2026-10-23T09:16:25.461Z",
   "stats": {
-    "totalReviews": 59328,
+    "totalReviews": 59326,
     "alreadyFlagged": 21070,
     "dateGuardCatches": 200,
     "directorMismatch": 2122,
     "tvFilmSignals": 1684,
-    "londonSignals": 2816,
+    "londonSignals": 2817,
     "offBroadwaySignals": 531,
     "yearMismatch": 175,
-    "noPublishDate": 5310
+    "noPublishDate": 5313
   },
   "findings": [
     {
@@ -95142,6 +95142,19 @@
       "score": 97,
       "publishDate": "2022-04-09",
       "url": "https://www.dailymail.com/home/event/article-10699737/To-Kill-Mockingbird-review-unforgettable-powerfully-moving-evening.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2022",
+      "file": "theupcoming--lauren-devine.json",
+      "publishDate": null,
+      "url": "https://www.theupcoming.co.uk/2022/04/26/to-kill-a-mockingbird-at-gielgud-theatre-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
