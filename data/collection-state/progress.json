@@ -1,21 +1,107 @@
 {
-  "processed": [],
+  "processed": [
+    "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
+    "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
+    "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
+    "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+    "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json",
+    "ilford-boy-west-end-2026/guardian--kate-wyver.json",
+    "ilford-boy-west-end-2026/telegraph--fiona-mountford.json",
+    "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
+    "dance-is-not-for-us-off-west-end-2026/guardian--lyndsey-winship.json",
+    "dance-is-not-for-us-off-west-end-2026/thereviewshub--scott-matthewman.json",
+    "triumph-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
+    "dog-mom-off-west-end-2026/north-west-end--carole-gordon.json",
+    "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
+    "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
+    "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--london-living-large.json",
+    "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json"
+  ],
   "failed": [
-    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json"
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "an-oak-tree-off-west-end-2026/times-uk--dominic-maxwell.json",
+    "derren-brown-only-human-west-end-2026/broadwayworld--unknown.json",
+    "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
+    "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
+    "triumph-off-west-end-2026/british-theatre--keith-mckenna.json",
+    "triumph-off-west-end-2026/closeupculture--unknown.json",
+    "triumph-off-west-end-2026/thestage--david-benedict.json",
+    "dog-mom-off-west-end-2026/reviewsgate--william-russell.json",
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "dirty-dancing-the-classic-story-on-stage-west-end-2026/soundsandstage--unknown.json",
+    "dirty-dancing-the-classic-story-on-stage-west-end-2026/sportswhereiam--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
+      "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
+      "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
+      "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+      "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json",
+      "ilford-boy-west-end-2026/guardian--kate-wyver.json",
+      "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
+      "dance-is-not-for-us-off-west-end-2026/guardian--lyndsey-winship.json",
+      "dance-is-not-for-us-off-west-end-2026/thereviewshub--scott-matthewman.json",
+      "triumph-off-west-end-2026/londonlivinglarge--london-living-large.json",
+      "dog-mom-off-west-end-2026/north-west-end--carole-gordon.json",
+      "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
+      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--london-living-large.json",
+      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "ilford-boy-west-end-2026/telegraph--fiona-mountford.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
+      "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json"
+    ]
   },
   "startTime": "2026-10-23T19:47:36.243Z",
-  "lastProcessed": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
-  "log": []
+  "lastProcessed": "dirty-dancing-the-classic-story-on-stage-west-end-2026/sportswhereiam--unknown.json",
+  "log": [
+    {
+      "t": "2026-10-23T21:45:48.426Z",
+      "event": "bb-session",
+      "session": "9184a3b4",
+      "url": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-BEING-HUMAN-Ap"
+    },
+    {
+      "t": "2026-10-23T21:52:05.565Z",
+      "event": "bb-session",
+      "session": "fdcb5fa0",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-23T21:52:14.090Z",
+      "event": "bb-session",
+      "session": "cceaa4d5",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-23T21:53:14.651Z",
+      "event": "bb-session",
+      "session": "b9eba084",
+      "url": "https://soundsandstage.com/show/dirty-dancing"
+    },
+    {
+      "t": "2026-10-23T21:54:01.720Z",
+      "event": "bb-session",
+      "session": "0e63e2f8",
+      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
+    },
+    {
+      "t": "2026-10-23T21:54:13.938Z",
+      "event": "bb-session",
+      "session": "a80898ab",
+      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
+    }
+  ]
 }
