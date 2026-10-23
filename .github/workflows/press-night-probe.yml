@@ -117,7 +117,8 @@ jobs:
         # every Broadway press night, so cutover evidence no longer depends on a hand dispatch. Warn-only: a failure
         # here must never fail or delay the probe. Deduped against a queued or running shadow for this show-night
         # (run-name in opening-night-lane-live.yml); window covers now to embargo +5h, capped at 320 min.
-        if: steps.guard.outputs.finalized == 'false'
+        # Kill switch: repo variable LANE_SHADOW_AUTO=false (an already-dispatched shadow keeps running; cancel by hand).
+        if: steps.guard.outputs.finalized == 'false' && vars.LANE_SHADOW_AUTO != 'false'
         continue-on-error: true
         timeout-minutes: 2
         env:
@@ -130,6 +131,11 @@ jobs:
               || { echo "::warning::could not list $ST lane runs; skipping lane shadow dispatch"; exit 0; }
             ACTIVE="$ACTIVE"$'\n'"$OUT"
           done
+          # A finished successful shadow also blocks: a rerun of this job must not start a shorter second shadow whose
+          # artifact would supersede the complete one (the late job imports the newest).
+          OUT=$(gh run list --workflow=opening-night-lane-live.yml --status success --limit 20 --json displayTitle --jq '.[].displayTitle') \
+            || { echo "::warning::could not list finished lane runs; skipping lane shadow dispatch"; exit 0; }
+          ACTIVE="$ACTIVE"$'\n'"$OUT"
           PLAN=$(node scripts/lib/lane-shadow-dispatch.js --show="$SHOW_ID" --night="$NIGHT" --market="$MARKET" \
                    --embargo-at="$EMBARGO_AT" --active="$ACTIVE") || { echo "::warning::lane shadow plan failed"; exit 0; }
           echo "Lane shadow plan: $PLAN"

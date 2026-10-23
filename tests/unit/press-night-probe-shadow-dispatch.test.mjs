@@ -85,3 +85,10 @@ test('CLI: multi-line --active with the matching title blocks dispatch', async (
   const open = JSON.parse(execFileSync('node', [cli, ...args, '--active=other']).toString());
   assert.equal(open.dispatch, true);
 });
+
+test('BRO-6074: probe step has a kill switch and also dedupes against a finished successful shadow', () => {
+  const y = fs.readFileSync('.github/workflows/press-night-probe.yml', 'utf8');
+  const step = y.slice(y.indexOf('- name: Start lane shadow'), y.indexOf('- name: Probe to embargo +2h'));
+  assert.match(step, /vars\.LANE_SHADOW_AUTO != 'false'/);
+  assert.match(step, /--status success/);
+});
