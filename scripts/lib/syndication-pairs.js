@@ -59,7 +59,11 @@ function isSecondaryOutlet(criticName, outletId) {
  * Guardian API and web search file the Observer's weekly theatre column as
  * "guardian" while Theatre Record files the same column as "observer". The
  * observer copy holds the per-show section and is the primary; a same-critic
- * guardian copy of the same show is the reprint.
+ * guardian copy of the same show is the reprint. Known limit: Broadway files
+ * also use outletId "observer" for the New York Observer (observer.com), which
+ * is not Guardian-owned. A critic who reviewed one show for both the NY
+ * Observer and the Guardian would lose the guardian copy here; none existed
+ * when this group was added (47 same-critic pairs checked, BRO-6046).
  */
 const PUBLISHING_GROUPS = [
   ['chicagotribune', 'nydailynews', 'baltimoresun', 'hartford-courant', 'orlando-sentinel', 'south-florida-sun-sentinel'],
