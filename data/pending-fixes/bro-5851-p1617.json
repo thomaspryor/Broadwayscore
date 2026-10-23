@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5851-p1617",
   "planId": "9a9886b2-8539-4532-abda-9fe9cb854c5c",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-23T03:53:18.424Z",
   "submitter": {
     "name": null,
@@ -110,5 +110,39 @@
         "description": "rosencrantz-and-guildenstern-are-dead-west-end-2017: mark no reliable art so the image sweep does not re-fetch it"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-23T05:07:48.305Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-kid-stays-in-the-picture-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for the-kid-stays-in-the-picture-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-kite-runner-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for the-kite-runner-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for rosencrantz-and-guildenstern-are-dead-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for rosencrantz-and-guildenstern-are-dead-west-end-2017"
+    }
+  ],
+  "executedIn": "ci"
 }
