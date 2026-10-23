@@ -15,6 +15,7 @@
     "test": "npm run test:data && npm run test:e2e",
     "test:data": "node scripts/validate-data.js && node scripts/validate-aggregator-truth.js",
     "audit:critics": "node scripts/audit-critic-outlets.js",
+    "audit:verified-miss-presence": "node scripts/audit-verified-miss-presence.js",
     "db:build": "node scripts/build-sqlite.js",
     "db:build:full": "node scripts/build-sqlite.js --include-text",
     "db:query": "node scripts/query.js",
