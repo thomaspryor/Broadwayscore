@@ -1106,5 +1106,19 @@
       }
     ],
     "queuedAt": "2026-10-23T04:14:21.657Z"
+  },
+  {
+    "conditionKey": "llm-scoring:daily-cost-breach",
+    "title": "LLM scoring daily spend over budget",
+    "description": "Rolling 24h LLM scoring cost $16.58 exceeds the $10.00 llmScoringDailyUsd alarm line, across all GitHub runs.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-23T04:22:56.670Z"
   }
 ]
