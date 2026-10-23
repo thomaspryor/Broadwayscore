@@ -16,5 +16,6 @@ test('allows when priorRuns declared', () => {
 test('ignores non-broadway shows and missing input', () => {
   assert.equal(g('http://x.com/off-broadway/a', { category: 'off-broadway' }), false);
   assert.equal(g(null, bw), false);
-  assert.equal(g('http://x.com/off-broadway/a', null), false);
+  assert.equal(g('http://x.com/off-broadway/reviews/a', null), false);
+  assert.equal(g('http://x.com/off-broadway/news/a', bw), false);
 });

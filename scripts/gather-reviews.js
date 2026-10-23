@@ -3796,14 +3796,16 @@ function createReviewFile(showId, reviewData, options = {}) {
           }
           // BRO-6055: never swap in an /off-broadway/ URL on a Broadway show (no priorRuns).
           const replacementWrongMarket = isOffBroadwayUrlForBroadwayShow(reviewData.url, _showMeta);
-          if (replacementWrongMarket) {
-            console.log(`    ⊘ market guard: not replacing ${existingFile} with off-broadway URL ${reviewData.url}`);
+          if (replacementWrongMarket && existingReview.url
+              && normalizeUrl(reviewData.url) !== normalizeUrl(existingReview.url)) {
+            // Return, don't fall through: mergeReviews would adopt the incoming url/text/date anyway.
+            console.log(`    ⊘ market guard: not touching ${existingFile} — incoming off-broadway URL ${reviewData.url}`);
+            return false;
           }
           if ((existingReview.wrongShow || existingReview.wrongProduction) && reviewData.url
               && (!existingReview.url || normalizeUrl(reviewData.url) !== normalizeUrl(existingReview.url))
               && !isHumanFlagged
               && !replacementCollision
-              && !replacementWrongMarket
               && !existingIsDateBasedWrongProd) {
             // A file with llmScore + fullText is real content — the wrongProduction flag may be
             // an LLM false-positive (44% FP rate on opening night; Proof 2026-04-17 P0 incident).
