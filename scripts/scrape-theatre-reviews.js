@@ -32,11 +32,13 @@ const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows, buildSiblingCategoriesFromShows } = require('./lib/show-matching');
 const { checkArchiveCategory, readCachedArchiveIfValid } = require('./lib/archive-cache-guard');
 const { normalizeOutlet } = require('./lib/review-normalization');
-const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { aggregatorStarsPatch } = require('./lib/paywall-stub-score');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { rowOutletId, loadShowFiles, classifyRows, coverageEntry, archiveUrlOf, sameRoundupUrl } = require('./lib/tr-reconcile');
+const { parseRoundupPost, matchAllRoundups } = require('./lib/tr-roundup-match');
+const { discoverRoundupPostsRest } = require('./lib/theatre-reviews-discovery');
 
 // Memoized sibling-category index (same shape as scrape-bww-reviews.js) so
 // checkArchiveCategory()'s cross-market-sibling check can fire (BRO-2550).
@@ -409,9 +411,10 @@ function parseReviewParagraph($, $p, text, stars) {
  */
 function writeReviewFiles(reviews, showId, reviewTextsDir = REVIEW_TEXTS_DIR) {
   let created = 0, updated = 0, skipped = 0;
+  const outcomes = [];
 
   for (const review of reviews) {
-    const outletId = resolveArchiveRowOutletId({ url: review.url, outletLabel: review.outlet, cachedOutletId: review.outletId });
+    const outletId = rowOutletId(review);
 
     const fields = {};
     if (review.excerpt) fields.theatreReviewsExcerpt = review.excerpt;
@@ -460,117 +463,195 @@ function writeReviewFiles(reviews, showId, reviewTextsDir = REVIEW_TEXTS_DIR) {
       }
     }
 
+    outcomes.push({ outlet: review.outlet, critic: review.critic || null, action: result.action });
     if (result.action === 'new') created++;
     else if (result.action === 'updated') updated++;
     else if (result.action === 'skipped') skipped++;
   }
 
-  return { created, updated, skipped };
+  return { created, updated, skipped, outcomes };
+}
+
+const INDEX_PATH = path.join(ARCHIVE_DIR, '_roundup-index.json');
+const COVERAGE_PATH = path.join(__dirname, '..', 'data', 'audit', 'theatre-reviews-coverage.json');
+const MAX_CONSECUTIVE_FETCH_FAILURES = 8;
+
+function readJson(p, fallback) {
+  try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return fallback; }
+}
+
+/** Legacy path, used only when the REST archive walk returned nothing. */
+async function legacyDiscover(weShows) {
+  const matched = [];
+  const roundupUrls = await discoverRoundupUrls();
+  for (const url of roundupUrls) {
+    const title = extractTitleFromSlug(url);
+    if (!title) continue;
+    const match = matchTitleToShow(title, weShows, { market: 'west-end' });
+    if (!match || !match.show || match.confidence !== 'high') continue;
+    if (matched.some(m => m.show.id === match.show.id)) continue;
+    matched.push({ roundup: { url, title, modified: null, date: null }, show: match.show, confidence: 'legacy', reasons: ['legacy-title-only'] });
+  }
+  return { matched, unmatched: [] };
 }
 
 async function main() {
-  console.log('=== Theatre.Reviews Scraper ===\n');
+  console.log('=== Theatre.Reviews Scraper (full-archive reconcile) ===\n');
 
-  // Ensure archive dir exists
   if (!fs.existsSync(ARCHIVE_DIR)) fs.mkdirSync(ARCHIVE_DIR, { recursive: true });
 
   const shows = loadShows ? loadShows() : JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows;
   const weShows = shows.filter(s => isLondonMarket(s.category));
   console.log(`Loaded ${weShows.length} London market shows\n`);
 
-  // Step 1: Discover roundup URLs. Targeted runs search per show first.
-  const matched = [];
-  if (TARGET_SHOWS) {
-    matched.push(...await discoverRoundupsBySearch(weShows.filter(s => TARGET_SHOWS.includes(s.id))));
-  }
-  const roundupUrls = TARGET_SHOWS && matched.length === TARGET_SHOWS.length ? [] : await discoverRoundupUrls();
+  // Step 1: discover every round-up post through the WP REST API (whole archive).
+  const { fetchJSON } = require('./lib/scraper');
+  const disc = await discoverRoundupPostsRest(fetchJSON);
+  console.log(`Discovery: ${disc.posts.length} round-up posts over ${disc.pages} REST page(s), complete=${disc.complete}`);
 
-  // Step 2: Match URLs to shows
-  for (const url of roundupUrls) {
-    const title = extractTitleFromSlug(url);
-    if (!title) continue;
+  // Step 2: match posts to shows by title + venue + date window.
+  let { matched, unmatched } = disc.posts.length
+    ? matchAllRoundups(disc.posts.map(parseRoundupPost), weShows)
+    : await legacyDiscover(weShows);
+  if (!disc.posts.length) console.log('  REST discovery returned nothing; used the legacy category walk');
+  if (TARGET_SHOWS) matched = matched.filter(m => TARGET_SHOWS.includes(m.show.id));
+  console.log(`Matched ${matched.length} round-ups to shows; ${unmatched.length} unmatched\n`);
 
-    const match = matchTitleToShow(title, weShows, { market: 'west-end' });
-    if (!match || !match.show) continue;
-    if (match.confidence !== 'high') {
-      console.log(`  [LOW CONFIDENCE] "${title}" → ${match.show.title} (${match.confidence}) — skipped`);
-      continue;
-    }
-    if (TARGET_SHOWS && !TARGET_SHOWS.includes(match.show.id)) continue;
-    if (matched.some(m => m.show.id === match.show.id)) continue;
-    matched.push({ url, show: match.show, extractedTitle: title });
-    console.log(`  Matched: "${title}" → ${match.show.id}`);
-  }
+  // Step 3: fetch (skipping unchanged archived pages), extract, reconcile, write the missing rows.
+  const index = readJson(INDEX_PATH, {});
+  const entries = [];
+  let consecutiveFailures = 0;
+  let aborted = false;
+  const archivedFor = new Set();
 
-  console.log(`\nMatched ${matched.length} shows to roundup URLs\n`);
-
-  // Step 3: Fetch and extract each roundup
-  for (const { url, show } of matched) {
+  for (const { roundup, show } of matched) {
+    archivedFor.add(show.id);
     const archivePath = path.join(ARCHIVE_DIR, `${show.id}.html`);
+    let html = null;
+    let fromCache = false;
 
-    // Skip if already archived (unless --force)
-    // A cached file is re-validated; a poisoned one is purged and refetched (BRO-2550).
+    const prev = index[show.id];
     const cached = !FORCE ? readCachedArchiveIfValid(archivePath, Infinity, show, siblingCategoriesByShowId()[show.id]) : null;
     if (cached && !cached.valid) console.log(`  [PURGED] ${show.title}: cached archive failed ${cached.check.reason}`);
     if (cached && cached.valid) {
-      console.log(`  [CACHED] ${show.title}`);
-      const html = cached.html;
-      const reviews = extractReviews(html, show.id);
-      const { created, updated, skipped } = writeReviewFiles(reviews, show.id);
-      stats.reviewsExtracted += reviews.length;
-      stats.filesCreated += created;
-      stats.filesUpdated += updated;
-      stats.filesSkipped += skipped;
-      continue;
+      const canon = archiveUrlOf(cached.html);
+      const urlOk = canon ? sameRoundupUrl(canon, roundup.url) : !!(prev && sameRoundupUrl(prev.url, roundup.url));
+      const unchanged = prev && sameRoundupUrl(prev.url, roundup.url) && prev.modified && prev.modified === roundup.modified;
+      if (urlOk && (unchanged || !roundup.modified)) { html = cached.html; fromCache = true; }
+      else if (!urlOk) console.log(`  [LEGACY ARCHIVE] ${show.title}: archived page is not ${roundup.url}; refetching`);
     }
 
-    console.log(`  Fetching: ${show.title} → ${url}`);
-    try {
-      const html = await fetchPage(url);
+    if (!html) {
+      if (aborted) { entries.push({ showId: show.id, roundupUrl: roundup.url, openingDate: show.openingDate || null, skipped: 'fetch-aborted' }); continue; }
+      console.log(`  Fetching: ${show.title} → ${roundup.url}`);
+      try {
+        html = await fetchPage(roundup.url);
+      } catch { html = null; }
       if (!html) {
-        console.log(`    ✗ Failed to fetch`);
         stats.errors++;
+        consecutiveFailures++;
+        console.log(`    ✗ Failed to fetch (${consecutiveFailures} in a row)`);
+        entries.push({ showId: show.id, roundupUrl: roundup.url, openingDate: show.openingDate || null, skipped: 'fetch-failed' });
+        if (consecutiveFailures >= MAX_CONSECUTIVE_FETCH_FAILURES) {
+          aborted = true;
+          console.log('  ✗ Too many consecutive fetch failures: stopping fetches (scraper spend guard); remaining round-ups are reported as skipped');
+        }
         continue;
       }
-
-      // Validate page title matches the show before archiving — Stuart King 2026-04-25
+      consecutiveFailures = 0;
       const v = checkArchiveCategory(html, show, siblingCategoriesByShowId()[show.id]);
       if (!v.ok) {
         console.log(`    ✗ archive guard (${v.reason}): "${(v.pageTitle||'').substring(0,60)}" — skipped`);
         stats.errors++;
+        entries.push({ showId: show.id, roundupUrl: roundup.url, openingDate: show.openingDate || null, skipped: `archive-guard:${v.reason}` });
         continue;
       }
-
-      // Archive
       if (!DRY_RUN) {
         fs.writeFileSync(archivePath, html);
+        index[show.id] = { url: roundup.url, modified: roundup.modified || null, fetchedAt: new Date().toISOString() };
       }
-
-      const reviews = extractReviews(html, show.id);
-      console.log(`    ✓ ${reviews.length} reviews extracted`);
-
-      const { created, updated, skipped } = writeReviewFiles(reviews, show.id);
-      stats.reviewsExtracted += reviews.length;
-      stats.filesCreated += created;
-      stats.filesUpdated += updated;
-      stats.filesSkipped += skipped;
       stats.pagesChecked++;
-
-      // Rate limit
       await new Promise(r => setTimeout(r, 1500));
-    } catch (err) {
-      console.log(`    ✗ Error: ${err.message}`);
-      stats.errors++;
+    } else {
+      console.log(`  [CACHED] ${show.title}`);
     }
+
+    const rows = extractReviews(html, show.id);
+    const files = loadShowFiles(path.join(REVIEW_TEXTS_DIR, show.id));
+    const c = classifyRows(rows, files, show);
+    // Held rows still go through the writer (it merges TR stars/excerpts into the existing
+    // file); excluded rows are never written, so a flagged review is not resurrected.
+    const toWrite = [...c.held.map(h => h.row), ...c.missing];
+    const res = writeReviewFiles(toWrite, show.id);
+    const refused = res.outcomes.filter(o => o.action === 'skipped');
+    const stillMissing = c.missing.filter(m => refused.some(o => o.outlet === m.outlet && (o.critic || null) === (m.critic || null)));
+    const added = DRY_RUN ? 0 : c.missing.length - stillMissing.length;
+    stats.reviewsExtracted += rows.length;
+    stats.filesCreated += res.created;
+    stats.filesUpdated += res.updated;
+    stats.filesSkipped += res.skipped;
+    const entry = coverageEntry(show, roundup.url, { ...c, missing: DRY_RUN ? c.missing : stillMissing });
+    entry.openingDate = show.openingDate || null;
+    entry.added = DRY_RUN ? 0 : added;
+    entry.addedRows = DRY_RUN ? [] : c.missing.filter(m => !stillMissing.includes(m)).map(m => ({ outlet: m.outlet, critic: m.critic || null }));
+    entry.matchConfidence = matched.find(m => m.show.id === show.id).confidence;
+    entry.fromCache = fromCache;
+    entries.push(entry);
+    if (!fromCache) console.log(`    ✓ ${rows.length} rows: ${c.held.length} held, ${c.excluded.length} excluded, ${c.missing.length} missing, ${entry.added} added`);
+  }
+
+  // Archives that no matched round-up claims any more (legacy wrong-production pages).
+  let orphanArchives = [];
+  try {
+    orphanArchives = fs.readdirSync(ARCHIVE_DIR).filter(f => f.endsWith('.html')).map(f => f.replace(/\.html$/, '')).filter(id => !archivedFor.has(id));
+  } catch { /* no archive dir */ }
+
+  if (!DRY_RUN) {
+    fs.writeFileSync(INDEX_PATH, JSON.stringify(index, null, 2));
+    writeCoverage(entries, unmatched, orphanArchives, disc);
   }
 
   console.log('\n=== Summary ===');
-  console.log(`  Pages checked: ${stats.pagesChecked}`);
-  console.log(`  Reviews extracted: ${stats.reviewsExtracted}`);
+  console.log(`  Round-ups discovered: ${disc.posts.length} (matched ${matched.length}, unmatched ${unmatched.length})`);
+  console.log(`  Pages fetched: ${stats.pagesChecked}`);
+  console.log(`  Reviews listed: ${stats.reviewsExtracted}`);
   console.log(`  Files created: ${stats.filesCreated}`);
   console.log(`  Files updated: ${stats.filesUpdated}`);
   console.log(`  Files skipped (guard-rejected): ${stats.filesSkipped}`);
+  console.log(`  Orphan archives (no matching round-up): ${orphanArchives.length}`);
   console.log(`  Errors: ${stats.errors}`);
+}
+
+function writeCoverage(entries, unmatched, orphanArchives, disc) {
+  const prior = readJson(COVERAGE_PATH, null);
+  let shows = entries;
+  let unmatchedOut = unmatched.map(u => ({ url: u.roundup.url, title: u.roundup.title, date: u.roundup.date, reason: u.reason, candidates: u.candidates }));
+  if (TARGET_SHOWS && prior && Array.isArray(prior.shows)) {
+    // A targeted run replaces only its own shows; the rest of the last full run stays.
+    const ids = new Set(entries.map(e => e.showId));
+    shows = [...prior.shows.filter(e => !ids.has(e.showId)), ...entries];
+    unmatchedOut = prior.unmatched || [];
+  }
+  shows.sort((a, b) => String(a.showId).localeCompare(String(b.showId)));
+  const sum = (k) => shows.reduce((n, e) => n + (e[k] || 0), 0);
+  const out = {
+    _meta: {
+      generatedAt: new Date().toISOString(),
+      scope: TARGET_SHOWS ? 'partial-merge' : 'full-archive',
+      roundupsDiscovered: disc.posts.length,
+      restWalkComplete: disc.complete,
+      showsMatched: shows.length,
+      listed: sum('listed'), held: sum('held'), excluded: sum('excluded'), missing: sum('missing'), added: sum('added'),
+      unmatched: unmatchedOut.length,
+      fetchSkipped: shows.filter(e => e.skipped).length,
+    },
+    shows,
+    unmatched: unmatchedOut,
+    orphanArchives,
+  };
+  fs.mkdirSync(path.dirname(COVERAGE_PATH), { recursive: true });
+  fs.writeFileSync(COVERAGE_PATH, JSON.stringify(out, null, 2) + '\n');
+  console.log(`  Coverage report: ${path.relative(process.cwd(), COVERAGE_PATH)}`);
 }
 
 // Export for use by opening-night-poller

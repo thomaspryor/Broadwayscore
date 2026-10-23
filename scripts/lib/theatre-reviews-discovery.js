@@ -62,4 +62,46 @@ function pickTheatreReviewsRoundupFromAnchors(anchors, showTitle) {
   return pickTheatreReviewsRoundup(posts, showTitle);
 }
 
-module.exports = { pickTheatreReviewsRoundup, pickTheatreReviewsRoundupFromAnchors };
+const ROUNDUP_CATEGORY_ID = 2030;
+const REST_PER_PAGE = 100;
+const REST_MAX_PAGES = 12;
+
+/**
+ * Walk the whole reviews-roundup category through the WP REST API (BRO-6084).
+ * `fetchJSON(url)` is injected (the shared scraper's fetchJSON in production)
+ * so pagination is testable. A page shorter than per_page is the last one; a
+ * null/non-array answer (WP answers 400 past the last page) also ends the walk.
+ * Returns { posts, pages, complete }; complete is true only when a short
+ * (last) page was seen.
+ */
+async function discoverRoundupPostsRest(fetchJSON, opts = {}) {
+  const perPage = opts.perPage || REST_PER_PAGE;
+  const maxPages = opts.maxPages || REST_MAX_PAGES;
+  const category = opts.category || ROUNDUP_CATEGORY_ID;
+  const fields = '&_fields=id,date,modified,link,slug,title';
+  const posts = [];
+  const seen = new Set();
+  let pages = 0;
+  let complete = false;
+  for (let page = 1; page <= maxPages; page++) {
+    let batch = null;
+    try {
+      batch = await fetchJSON(`https://theatre.reviews/wp-json/wp/v2/posts?categories=${category}&per_page=${perPage}&page=${page}&orderby=date&order=desc${fields}`);
+    } catch { batch = null; }
+    if (!Array.isArray(batch)) break; // a failed page is an incomplete walk, never a quiet end
+    pages++;
+    for (const p of batch) {
+      const key = p && (p.id != null ? `id:${p.id}` : p.link);
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+      posts.push(p);
+    }
+    if (batch.length < perPage) { complete = true; break; }
+  }
+  return { posts, pages, complete };
+}
+
+module.exports = {
+  pickTheatreReviewsRoundup, pickTheatreReviewsRoundupFromAnchors,
+  discoverRoundupPostsRest, ROUNDUP_CATEGORY_ID,
+};
