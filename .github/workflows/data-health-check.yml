@@ -404,7 +404,8 @@ jobs:
         run: node scripts/audit-star-band-drift.js --strict --counts=data/audit/star-band-drift.json
 
       # BRO-6046: one critic's review of a show shipped at an outlet AND its syndication primary
-      # (e.g. an Observer column also filed as "guardian"). Advisory first (CLAUDE.md rule 19).
+      # (e.g. an Observer column also filed as "guardian"), plus BRO-6054: one critic at two outlets
+      # that syndication-pairs.js and scripts/config/same-critic-pairs-allowlist.json do not explain. Advisory first (CLAUDE.md rule 19).
       - name: Syndicated critic pair audit
         if: always()
         continue-on-error: true

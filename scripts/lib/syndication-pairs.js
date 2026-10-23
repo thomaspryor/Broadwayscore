@@ -23,8 +23,19 @@ const KNOWN_SYNDICATION_PAIRS = {
   'alexandra lipari': { primary: 'newsday', secondary: ['entertainmenthour'] },
   'zachary stewart': { primary: 'theatermania', secondary: ['whatsonstage'] },
   'david gordon': { primary: 'theatermania', secondary: ['whatsonstage'] },
-  'mark kennedy': { primary: 'ap', secondary: ['abc-news', 'collider', 'washington-times', 'minneapolis-star-tribune'] },
+  'mark kennedy': { primary: 'ap', secondary: ['abc-news', 'collider', 'washington-times', 'minneapolis-star-tribune',
+    // BRO-6054: AP wire reprints filed under the subscriber's outlet id
+    'washpost', 'sfgate', 'huffpost', 'seattle-post-intelligencer', 'news-tribune', 'npr', 'boston-com', 'abscbnnewscom'] },
   'jennifer farrar': { primary: 'ap', secondary: ['abc-news', 'minneapolis-star-tribune'] },
+  'jocelyn noveck': { primary: 'ap', secondary: ['seattle-post-intelligencer'] },
+  // BRO-6054: critics who repost their own review at a second outlet.
+  // Mandell's New York Theater blog runs first; DC Theatre Scene and The Faster Times reprint it.
+  'jonathan mandell': { primary: 'nyt-theater', secondary: ['dctheatrescene', 'faster-times'] },
+  'simon jenner': { primary: 'fringereview', secondary: ['viewfromthegods'] },
+  'samantha genzer': { primary: 'boston-com', secondary: ['newsbreak'] },
+  'thom geier': { primary: 'thewrap', secondary: ['culturesauce'] },
+  // NY1 aired a broadcast version of Cote's Time Out New York review ("Contributing critic David Cote of Time Out New York").
+  'david cote': { primary: 'timeout', secondary: ['ny1'] },
 };
 
 /**
@@ -68,6 +79,10 @@ function isSecondaryOutlet(criticName, outletId) {
 const PUBLISHING_GROUPS = [
   ['chicagotribune', 'nydailynews', 'baltimoresun', 'hartford-courant', 'orlando-sentinel', 'south-florida-sun-sentinel'],
   ['observer', 'guardian'],
+  // BRO-6054: SFGate is the San Francisco Chronicle's free site and reprints Chronicle reviews.
+  ['san-francisco-chronicle', 'sfgate'],
+  // BRO-6054: content partnership; the i newspaper printed theartsdesk reviews (often cut down) in 2019.
+  ['artsdesk', 'i-paper'],
 ];
 
 function _isRealByline(criticName) {

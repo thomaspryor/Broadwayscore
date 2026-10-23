@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-6054",
+  "planId": "b941ba14-903f-42eb-8241-7d7c77ba0e25",
+  "status": "pending",
+  "createdAt": "2026-10-23T09:39:30.027Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6054 part 1/3: same-critic two-outlet rows. Flag wrongAttribution on copies credited to a critic who did not write them (TheaterMania/Variety/NYSR/Guardian files duplicating a sibling critic's text, web-search entries with invented bylines, wrong-show urls) and correct three bylines (Dom O'Hanlon, Thom Geier, Jesse Oxfeld).",
+    "steps": [
+      "a-view-from-the-bridge-2015/theatermania--jesse-green.json: wrongAttribution",
+      "and-juliet-2022/theatermania--jesse-green.json: wrongAttribution",
+      "betrayal-2013/nytimes--matt-wolf.json: wrongAttribution",
+      "between-riverside-and-crazy-2022/theatermania--jesse-green.json: wrongAttribution",
+      "burn-the-floor-2009/theatermania--david-rooney.json: wrongAttribution",
+      "children-of-a-lesser-god-2018/amny--mark-shenton.json: wrongAttribution",
+      "diana-the-musical-2021/theatermania--adam-feldman.json: wrongAttribution",
+      "glengarry-glen-ross-2012/amny--ben-brantley.json: wrongAttribution",
+      "glengarry-glen-ross-2012/theatermania--david-rooney.json: wrongAttribution",
+      "hangmen-2022/nysr--elysa-gardner.json: wrongAttribution",
+      "jagged-little-pill-2019/vulture--jesse-green.json: wrongAttribution",
+      "kimberly-akimbo-2022/theatermania--adam-feldman.json: wrongAttribution",
+      "kramerfauci-st-anns-off-broadway-2026/newyorker--helen-shaw.json: wrongAttribution",
+      "lombardi-2010/theatermania--charles-isherwood.json: wrongAttribution",
+      "losing-louie-2006/variety--charles-isherwood.json: wrongAttribution",
+      "macbeth-2022/theatres-leiter-side--samuel-l-leiter.json: wrongAttribution",
+      "maybe-happy-ending-2024/variety--charles-isherwood.json: wrongAttribution",
+      "mr-saturday-night-2022/theatermania--adam-feldman.json: wrongAttribution",
+      "next-to-normal-2009/hollywood-reporter--david-rooney.json: wrongAttribution",
+      "ohio-state-murders-2022/theatermania--jesse-green.json: wrongAttribution",
+      "on-the-town-2014/guardian--jesse-green.json: wrongAttribution",
+      "paradise-square-2022/variety--charles-isherwood.json: wrongAttribution",
+      "plaza-suite-2022/theatermania--jesse-green.json: wrongAttribution",
+      "present-laughter-2017/theatermania--jesse-green.json: wrongAttribution",
+      "red-2010/theatermania--charles-isherwood.json: wrongAttribution"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-view-from-the-bridge-2015/theatermania--jesse-green.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "a-view-from-the-bridge-2015/theatermania--jesse-green.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "and-juliet-2022/theatermania--jesse-green.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "and-juliet-2022/theatermania--jesse-green.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "betrayal-2013/nytimes--matt-wolf.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "betrayal-2013/nytimes--matt-wolf.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "between-riverside-and-crazy-2022/theatermania--jesse-green.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "between-riverside-and-crazy-2022/theatermania--jesse-green.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "burn-the-floor-2009/theatermania--david-rooney.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "burn-the-floor-2009/theatermania--david-rooney.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "children-of-a-lesser-god-2018/amny--mark-shenton.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "children-of-a-lesser-god-2018/amny--mark-shenton.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "diana-the-musical-2021/theatermania--adam-feldman.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "diana-the-musical-2021/theatermania--adam-feldman.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glengarry-glen-ross-2012/amny--ben-brantley.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "glengarry-glen-ross-2012/amny--ben-brantley.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glengarry-glen-ross-2012/theatermania--david-rooney.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "glengarry-glen-ross-2012/theatermania--david-rooney.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hangmen-2022/nysr--elysa-gardner.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "hangmen-2022/nysr--elysa-gardner.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jagged-little-pill-2019/vulture--jesse-green.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "jagged-little-pill-2019/vulture--jesse-green.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kimberly-akimbo-2022/theatermania--adam-feldman.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "kimberly-akimbo-2022/theatermania--adam-feldman.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kramerfauci-st-anns-off-broadway-2026/newyorker--helen-shaw.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "kramerfauci-st-anns-off-broadway-2026/newyorker--helen-shaw.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lombardi-2010/theatermania--charles-isherwood.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "lombardi-2010/theatermania--charles-isherwood.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "losing-louie-2006/variety--charles-isherwood.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "losing-louie-2006/variety--charles-isherwood.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "macbeth-2022/theatres-leiter-side--samuel-l-leiter.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "macbeth-2022/theatres-leiter-side--samuel-l-leiter.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "maybe-happy-ending-2024/variety--charles-isherwood.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "maybe-happy-ending-2024/variety--charles-isherwood.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mr-saturday-night-2022/theatermania--adam-feldman.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "mr-saturday-night-2022/theatermania--adam-feldman.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "next-to-normal-2009/hollywood-reporter--david-rooney.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "next-to-normal-2009/hollywood-reporter--david-rooney.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ohio-state-murders-2022/theatermania--jesse-green.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "ohio-state-murders-2022/theatermania--jesse-green.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "on-the-town-2014/guardian--jesse-green.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "on-the-town-2014/guardian--jesse-green.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paradise-square-2022/variety--charles-isherwood.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "paradise-square-2022/variety--charles-isherwood.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "plaza-suite-2022/theatermania--jesse-green.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "plaza-suite-2022/theatermania--jesse-green.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "present-laughter-2017/theatermania--jesse-green.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "present-laughter-2017/theatermania--jesse-green.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "red-2010/theatermania--charles-isherwood.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "red-2010/theatermania--charles-isherwood.json: wrongAttribution"
+      }
+    ]
+  }
+}
