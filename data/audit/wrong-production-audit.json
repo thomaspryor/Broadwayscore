@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T04:26:03.949Z",
+  "timestamp": "2026-10-23T04:42:44.873Z",
   "stats": {
-    "totalReviews": 59667,
-    "alreadyFlagged": 21450,
+    "totalReviews": 59668,
+    "alreadyFlagged": 21451,
     "dateGuardCatches": 200,
-    "directorMismatch": 2160,
+    "directorMismatch": 2161,
     "tvFilmSignals": 1682,
-    "londonSignals": 2814,
+    "londonSignals": 2815,
     "offBroadwaySignals": 530,
     "yearMismatch": 174,
-    "noPublishDate": 5293
+    "noPublishDate": 5287
   },
   "findings": [
     {
@@ -3698,6 +3698,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "annie-west-end-2017",
+      "file": "hampstead-highgate-express--caroline-david.json",
+      "score": null,
+      "publishDate": "2017-06-14",
+      "url": "https://www.hamhigh.co.uk/things-to-do/21138077.annie-piccadilly-theatre-review-miranda-hart-force-nature-stage/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
         }
       ]
     },
@@ -58192,6 +58206,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "anatomy-of-a-suicide-west-end-2017",
+      "file": "guardian--michael-billington.json",
+      "score": null,
+      "publishDate": "2017-06-12",
+      "url": "https://www.theguardian.com/stage/2017/jun/12/anatomy-of-a-suicide-review-royal-court-alice-birch-katie-mitchell",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
