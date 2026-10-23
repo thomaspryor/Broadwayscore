@@ -1117,3 +1117,11 @@ test('refresh policy: with the cloud lane forcing at 6 days the gha lane never s
   // Without the forced refresh (the old behaviour) the same window stood the lane down.
   assert.ok(r.refreshAgeWhy({ authText: JSON.stringify({ last_refresh: new Date(t0).toISOString() }), nowMs: t0 + 6.9 * day, runMs }));
 });
+
+test('title-shape skips and back-dating stay narrow (ship-check BRO-6086)', () => {
+  const fit = (title) => r.codexCardFit({ title, description: 'Fix it.', verify: 'node --test tests/unit/x.test.mjs' });
+  for (const t of ['Verify auth-store timestamp ordering', 'Extend parser to accept all whitespace', 'Document two call sites']) assert.equal(fit(t).skip, null, t);
+  const now = Date.parse('2026-10-23T12:00:00Z');
+  const old = JSON.stringify({ last_refresh: new Date(now - 12 * 24 * 3600_000).toISOString() });
+  assert.equal(r.backdateForRefresh({ authText: old, nowMs: now }), null, 'already past the CLI threshold: never moves the stamp forward');
+});

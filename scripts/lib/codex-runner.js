@@ -518,9 +518,9 @@ const CODEX_TITLE_SKIPS = [
   // Auto-filed health/incident cards (12 of 98): the fix is a private-data repair or a Linear change.
   ['auto-filed-alert', /^\W*(?:BSC (?:Daily|Rebuild)\b|P\d:\s*BSC (?:Daily|Rebuild)\b)/i],
   // One show's data: research a venue/date/author or recover a review (needs web research + private data).
-  ['show-data-research', /^(?:P\d:\s*)?(?:Verify|Recover|Backfill|Find sources?)\b|^[a-z0-9]+(?:-[a-z0-9]+)+-(?:19|20)\d\d\b[^:\n]{0,40}:|\(\d{4} id\)/i],
+  ['show-data-research', /^(?:P\d:\s*)?(?:Verify|Recover|Backfill|Find sources?)\b[^\n]{0,80}\b(?:shows?|reviews?|bylines?|authors?|flags?|provenance|deals?|verdicts?)\b|^[a-z0-9]+(?:-[a-z0-9]+)+-(?:19|20)\d\d\b[^:\n]{0,40}:|\(\d{4} id\)/i],
   // A sweep over a counted or "remaining" set of call sites: Codex migrates some and stops.
-  ['multi-site-sweep', /^(?:P\d:\s*)?(?:Migrate|Wire|Version|Extend|Generalize|Consolidate|Audit)\b[^\n]{0,50}\b(?:remaining|all|every|the \d+|\d+ (?:more|baselined|remaining))\b|\b(?:repo-wide|call sites)\b|\bsame\b[^\n]{0,60}\b(?:in|at|across) (?:\d+|several|other|sibling)\b/i],
+  ['multi-site-sweep', /^(?:P\d:\s*)?(?:Migrate|Wire|Version|Extend|Generalize|Consolidate|Audit)\b[^\n]{0,50}\b(?:remaining|every|the \d+|\d+ (?:more|baselined|remaining))\b|\brepo-wide\b|\bAudit\b[^\n]{0,40}\bcall sites\b|\bsame\b[^\n]{0,60}\b(?:in|at|across) (?:\d+|several|other|sibling)\b/i],
 ];
 // A `CODEX-OK` line (description or a comment) sends a card to Codex despite the hard skips.
 const CODEX_OK_RE = /^[\s>*_#-]*CODEX-OK\b/m;
@@ -626,6 +626,8 @@ function backdateForRefresh({ authText, nowMs }) {
   if (!forceRefreshDue({ authText, nowMs })) return null;
   try {
     const j = JSON.parse(authText);
+    // Already past the CLI's own threshold: it refreshes by itself, and a "back-date" would move the stamp forward.
+    if (nowMs - Date.parse(j.last_refresh) > CLI_REFRESH_AGE_MS) return null;
     j.last_refresh = new Date(nowMs - CLI_REFRESH_AGE_MS - 24 * 3600_000).toISOString();
     return JSON.stringify(j, null, 2);
   } catch { return null; }

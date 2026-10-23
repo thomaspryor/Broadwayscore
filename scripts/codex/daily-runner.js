@@ -341,7 +341,8 @@ function forceLoginRefresh() {
   try {
     const next = R.backdateForRefresh({ authText: fs.readFileSync(file, 'utf8'), nowMs: Date.now() });
     if (!next) return;
-    fs.writeFileSync(file, next, { mode: 0o600 });
+    fs.writeFileSync(`${file}.tmp-${process.pid}`, next, { mode: 0o600 });
+    fs.renameSync(`${file}.tmp-${process.pid}`, file);
     log('Codex login is past 6 days old: back-dated last_refresh so this run refreshes it');
   } catch (e) { log(`forced login refresh skipped: ${e.message}`); }
 }
@@ -1392,13 +1393,14 @@ async function runLocked(startedMs) {
     process.exitCode = 2;
     return;
   }
-  if (SLOT === 0 && OPTS.lane === 'cloud' && !OPTS.dryRun) forceLoginRefresh();
   // Unusable namespace sandbox outside the cloud VM: stop before claiming any card (BRO-5856).
   try { codexSandboxMode(); } catch (e) {
     if (!OPTS.dryRun) await linearBrain(['update', RUNNER_CARD, '--comment', `## Codex runner did not start\n\n${e.message}. No card was claimed, so the Claude lane keeps them.`]);
     process.exitCode = 2;
     return;
   }
+  // Lone process only (no RUN_DIR: laneForLogin gave a due login one slot), so nothing else reads the login mid-refresh.
+  if (SLOT === 0 && !RUN_DIR && OPTS.lane === 'cloud' && !OPTS.dryRun) forceLoginRefresh();
   const install = sh('node', ['scripts/codex/install.js']);
   if (install.code !== 0) log(`codex install warning: ${tail(install.out, 300)}`);
   pruneDisk();
