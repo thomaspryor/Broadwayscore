@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T05:31:25.291Z",
+  "generatedAt": "2026-10-23T08:16:00.796Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -128,6 +128,10 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -152,8 +156,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 783,
-  "matchedGaps": 11,
+  "itemsScanned": 776,
+  "matchedGaps": 10,
   "possibleGaps": 3,
   "gaps": [
     {
@@ -178,10 +182,10 @@
       "showId": "derren-brown-only-human-west-end-2026",
       "title": "Derren Brown: Only Human",
       "level": "matched",
-      "outletId": "all-that-dazzles-uk",
-      "url": "https://www.allthatdazzles.co.uk/post/review-derren-brown-only-human-apollo-theatre",
-      "headline": "Review: Derren Brown: Only Human (Apollo Theatre)",
-      "publishDate": "2026-10-22"
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/derren-brown-only-human-the-apollo-london/",
+      "headline": "Derren Brown: Only Human – The Apollo, London",
+      "publishDate": "2026-10-23"
     },
     {
       "showId": "king-of-the-yees-off-broadway-2026",
@@ -200,15 +204,6 @@
       "url": "https://www.interestedbystander.com/2026/10/theater-reviews-lauren-yees-king-of.html",
       "headline": "Theater Reviews:  Lauren Yee&#39;s “King of the Yees” Is an Amusing Slice of San Francisco Chinatown Life; Duncan Sheik’s Last Musical, “Memoirs of Amorous Gentlemen,” Is About Sex Workers and Sex Writers; and “Machine Learning” Is “Who’s Afraid of AI Woolf?”",
       "publishDate": "2026-10-23"
-    },
-    {
-      "showId": "machine-learning-off-broadway-2026",
-      "title": "Machine Learning",
-      "level": "matched",
-      "outletId": "off-off-online",
-      "url": "https://www.offoffonline.com/offoffonline/2026/10/16/machine-learning",
-      "headline": "Machine Learning",
-      "publishDate": "2026-10-22"
     },
     {
       "showId": "martin-guerre-west-end-2026",
@@ -256,13 +251,13 @@
       "publishDate": "2026-10-18"
     },
     {
-      "showId": "copperfield-the-new-musical-off-broadway-2026",
-      "title": "Copperfield! The New Musical",
+      "showId": "derren-brown-only-human-west-end-2026",
+      "title": "Derren Brown: Only Human",
       "level": "possible",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/the-curious-case-of-benjamin-button/",
-      "headline": "The Curious Case of Benjamin Button *****",
-      "publishDate": "2026-10-21"
+      "outletId": "the-spy-in-the-stalls",
+      "url": "https://thespyinthestalls.com/2026/10/derren-brown/",
+      "headline": "DERREN BROWN: ONLY HUMAN★★★½Apollo Theatre",
+      "publishDate": "2026-10-23"
     },
     {
       "showId": "the-pianist-off-west-end-2026",
