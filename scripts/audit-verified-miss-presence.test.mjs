@@ -7,7 +7,7 @@ const { measure, summarize, normUrl } = require('./audit-verified-miss-presence.
 const miss = (o) => ({ cohort: 'we-2018-2019', id: 'show-a', outlet: 'The Guardian', url: 'https://www.theguardian.com/stage/2019/a', tier: 1, ...o });
 
 test('same URL with www, query and trailing slash differences matches by url', () => {
-  const [r] = measure([miss({})], [{ showId: 'show-a', outlet: 'Other', url: 'http://theguardian.com/stage/2019/a/?utm=1' }]);
+  const [r] = measure([miss({})], [{ showId: 'show-a', outlet: 'Other', url: 'http://theguardian.com/stage/2019/a?utm_source=x' }]);
   assert.deepEqual([r.present, r.via], [true, 'url']);
 });
 test('different URL, same outlet and show matches by outlet only', () => {
