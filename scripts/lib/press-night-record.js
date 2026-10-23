@@ -394,7 +394,8 @@ function filterCensus(census, excluded) {
   return { ...census, entries, count: entries.length };
 }
 
-const critKey = (c) => String(c || '').toLowerCase().replace(/[^a-z]/g, '');
+const { foldDiacritics } = require('./title-match');
+const critKey = (c) => foldDiacritics(String(c || '')).toLowerCase().replace(/[^a-z]/g, ''); // fold first: 'Zoë' must not shred to 'zo'
 
 /**
  * Earliest site-live time of the night's reviews, keyed by outlet|critic (byCritic) and by outlet (byOutlet,

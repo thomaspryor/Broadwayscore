@@ -556,3 +556,13 @@ test('readReviewFileState: a file with no outlet gets no outlet id rather than "
   const state = require('./press-night-review-state.js');
   assert.equal(state.outletIdOfFile({}), null);
 });
+
+test('outletLiveMs matches critics across diacritics (Zoë and Zoe are one critic)', () => {
+  const rec = fresh();
+  lib.applySample(rec, { at: at(-5), reviews: [] });
+  lib.applySample(rec, { at: at(10), reviews: [rv('NYT', 'Zoë Smith')] });
+  const { byCritic } = lib.outletLiveMs(rec);
+  const keys = [...(byCritic instanceof Map ? byCritic.keys() : Object.keys(byCritic))];
+  assert.ok(keys.some((k) => k.endsWith('|zoesmith')), JSON.stringify(keys));
+  assert.ok(!keys.some((k) => k.endsWith('|zosmith')));
+});
