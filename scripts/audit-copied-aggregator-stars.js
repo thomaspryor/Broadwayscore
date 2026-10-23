@@ -29,7 +29,8 @@ function host(u) {
 }
 // Only the Daily Mail / Mail on Sunday pair is matched by name; generic shared words
 // ("post", "news", "journal") are not a family.
-const isMail = (rec) => /\bmail\b/.test(String(rec.outletId || rec.outlet || '').toLowerCase().replace(/[^a-z0-9]+/g, ' '));
+const { foldDiacritics } = require('./lib/title-match');
+const isMail = (rec) => /\bmail\b/.test(foldDiacritics(String(rec.outletId || rec.outlet || '').toLowerCase()).replace(/[^a-z0-9]+/g, ' '));
 function sameFamily(a, b) {
   if (a.outletId && a.outletId === b.outletId) return true;
   const ha = host(a.url); const hb = host(b.url);
