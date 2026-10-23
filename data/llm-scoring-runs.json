@@ -1,5 +1,23 @@
 [
   {
+    "startedAt": "2026-10-22T00:18:53.232Z",
+    "completedAt": "2026-10-22T00:18:56.993Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "39698186151",
+    "errorDetails": []
+  },
+  {
     "startedAt": "2026-10-22T00:52:52.580Z",
     "completedAt": "2026-10-22T00:55:31.440Z",
     "totalReviews": 58739,
@@ -951486,57 +951504,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-23T03:06:05.830Z",
-    "completedAt": "2026-10-23T03:06:10.926Z",
-    "totalReviews": 18,
-    "processed": 1,
-    "skipped": 17,
+    "startedAt": "2026-10-23T03:12:11.812Z",
+    "completedAt": "2026-10-23T03:15:05.417Z",
+    "totalReviews": 141,
+    "processed": 29,
+    "skipped": 110,
     "errors": 0,
     "tokensUsed": {
-      "input": 5438,
-      "output": 313,
-      "cacheRead": 3741,
-      "cacheWrite": 0,
-      "total": 14221
+      "input": 172189,
+      "output": 9320,
+      "cacheRead": 96632,
+      "cacheWrite": 18523,
+      "total": 441838
     },
-    "costUsd": 0.0211071,
-    "runId": "39892825748",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-23T03:06:12.489Z",
-    "completedAt": "2026-10-23T03:06:12.497Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "39892825748",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-23T03:08:20.817Z",
-    "completedAt": "2026-10-23T03:08:26.729Z",
-    "totalReviews": 21,
-    "processed": 1,
-    "skipped": 20,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 5361,
-      "output": 336,
-      "cacheRead": 0,
-      "cacheWrite": 3696,
-      "total": 13968
-    },
-    "costUsd": 0.033851799999999994,
-    "runId": "39893024273",
+    "costUsd": 0.72397035,
+    "runId": "39893283526",
     "errorDetails": [],
     "validation": [
       {
@@ -954296,10 +954278,10 @@
       {
         "showId": "anatomy-of-a-suicide-west-end-2017",
         "ourDistribution": {
-          "up": 5,
+          "up": 6,
           "flat": 1,
           "down": 1,
-          "total": 7
+          "total": 8
         },
         "hasDisagreement": false
       },
@@ -954539,10 +954521,10 @@
       {
         "showId": "annie-west-end-2017",
         "ourDistribution": {
-          "up": 5,
-          "flat": 6,
+          "up": 9,
+          "flat": 7,
           "down": 0,
-          "total": 11
+          "total": 16
         },
         "hasDisagreement": false
       },
@@ -955175,10 +955157,10 @@
       {
         "showId": "bat-out-of-hell-west-end-2017",
         "ourDistribution": {
-          "up": 8,
+          "up": 9,
           "flat": 3,
           "down": 1,
-          "total": 12
+          "total": 13
         },
         "hasDisagreement": false
       },
@@ -957043,10 +957025,10 @@
       {
         "showId": "carousel-west-end-2017",
         "ourDistribution": {
-          "up": 5,
+          "up": 8,
           "flat": 4,
-          "down": 1,
-          "total": 10
+          "down": 4,
+          "total": 16
         },
         "hasDisagreement": false
       },
@@ -957948,20 +957930,20 @@
       {
         "showId": "consent-west-end-2017",
         "ourDistribution": {
-          "up": 13,
+          "up": 14,
           "flat": 4,
           "down": 0,
-          "total": 17
+          "total": 18
         },
         "hasDisagreement": false
       },
       {
         "showId": "consent-west-end-2018",
         "ourDistribution": {
-          "up": 13,
+          "up": 14,
           "flat": 4,
           "down": 0,
-          "total": 17
+          "total": 18
         },
         "hasDisagreement": false
       },
@@ -958928,10 +958910,10 @@
       {
         "showId": "derren-brown-only-human-west-end-2026",
         "ourDistribution": {
-          "up": 7,
+          "up": 8,
           "flat": 0,
           "down": 1,
-          "total": 8
+          "total": 9
         },
         "hasDisagreement": false
       },
@@ -960024,8 +960006,8 @@
       {
         "showId": "exit-the-king-west-end-2018",
         "ourDistribution": {
-          "up": 4,
-          "flat": 10,
+          "up": 5,
+          "flat": 9,
           "down": 3,
           "total": 17
         },
@@ -965180,10 +965162,10 @@
       {
         "showId": "lady-day-at-emersons-bar-and-grill-west-end-2017",
         "ourDistribution": {
-          "up": 6,
+          "up": 14,
           "flat": 3,
           "down": 0,
-          "total": 9
+          "total": 17
         },
         "hasDisagreement": false
       },
@@ -971494,6 +971476,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "rotterdam-west-end-2017",
+        "ourDistribution": {
+          "up": 0,
+          "flat": 1,
+          "down": 0,
+          "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "runaways-1978",
         "ourDistribution": {
           "up": 3,
@@ -972761,10 +972753,10 @@
       {
         "showId": "stepping-out-west-end-2017",
         "ourDistribution": {
-          "up": 2,
-          "flat": 1,
+          "up": 3,
+          "flat": 4,
           "down": 1,
-          "total": 4
+          "total": 8
         },
         "hasDisagreement": false
       },
@@ -975027,10 +975019,10 @@
       {
         "showId": "the-ferryman-west-end-2017",
         "ourDistribution": {
-          "up": 4,
+          "up": 10,
           "flat": 0,
           "down": 0,
-          "total": 4
+          "total": 10
         },
         "hasDisagreement": false
       },
@@ -976070,10 +976062,10 @@
       {
         "showId": "the-kid-stays-in-the-picture-west-end-2017",
         "ourDistribution": {
-          "up": 3,
-          "flat": 0,
-          "down": 0,
-          "total": 3
+          "up": 7,
+          "flat": 1,
+          "down": 1,
+          "total": 9
         },
         "hasDisagreement": false
       },
@@ -976768,10 +976760,10 @@
       {
         "showId": "the-miser-west-end-2017",
         "ourDistribution": {
-          "up": 1,
-          "flat": 1,
-          "down": 1,
-          "total": 3
+          "up": 4,
+          "flat": 3,
+          "down": 2,
+          "total": 9
         },
         "hasDisagreement": false
       },
@@ -981316,10 +981308,10 @@
       {
         "showId": "woyzeck-west-end-2017",
         "ourDistribution": {
-          "up": 7,
-          "flat": 3,
-          "down": 1,
-          "total": 11
+          "up": 20,
+          "flat": 4,
+          "down": 4,
+          "total": 28
         },
         "hasDisagreement": false
       },
@@ -981523,8 +981515,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-23T03:10:14.552Z",
-    "completedAt": "2026-10-23T03:10:14.562Z",
+    "startedAt": "2026-10-23T03:16:34.450Z",
+    "completedAt": "2026-10-23T03:16:34.451Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -981537,25 +981529,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "39893024273",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-23T03:12:28.459Z",
-    "completedAt": "2026-10-23T03:12:28.472Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "39893005978",
+    "runId": "39893283526",
     "errorDetails": []
   }
 ]
