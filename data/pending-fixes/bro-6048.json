@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6048",
   "planId": "7b1d3c52-4e0a-4f6e-9a57-2c8e61a0d9b4",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-23T09:50:00.000Z",
   "submitter": {
     "name": null,
@@ -33,5 +33,19 @@
         "description": "status open -> closed after the 2026-10-18 final performance (cited https://www.heightsplayers.org)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-23T10:08:19.381Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for bettys-summer-vacation-the-heights-players-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for bettys-summer-vacation-the-heights-players-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
