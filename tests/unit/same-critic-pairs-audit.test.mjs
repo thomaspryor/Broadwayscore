@@ -42,6 +42,13 @@ describe('findUnexplainedSameCriticPairs', () => {
     assert.deepStrictEqual(unexplained.map(u => u.outlets.join('+')).sort(), ['nytimes+theatermania', 'theatermania+vulture']);
   });
 
+  it('groups name variants of one critic (diacritics, spacing)', () => {
+    const { unexplained } = findUnexplainedSameCriticPairs([
+      row('s-2020', 'a', 'Hélène  Smith'), row('s-2020', 'b', 'Helene Smith'),
+    ]);
+    assert.deepStrictEqual(unexplained.map(u => u.outlets.join('+')), ['a+b']);
+  });
+
   it('ignores placeholder bylines and single-outlet critics', () => {
     const rows = [row('s', 'a', 'Unknown'), row('s', 'b', 'unknown'), row('s', 'c', 'Staff'), row('s', 'd', 'Staff'), row('s', 'a', 'Ben Brantley')];
     assert.strictEqual(findUnexplainedSameCriticPairs(rows).unexplained.length, 0);

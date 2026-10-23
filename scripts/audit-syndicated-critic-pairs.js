@@ -19,7 +19,7 @@
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const fs = require('fs');
 const path = require('path');
-const { getSyndicationPrimaries } = require('./lib/syndication-pairs');
+const { getSyndicationPrimaries, criticFileSlug } = require('./lib/syndication-pairs');
 
 const DEFAULT_ALLOWLIST = path.join(__dirname, 'config', 'same-critic-pairs-allowlist.json');
 const BYLINE_PLACEHOLDER = /^(unknown|staff|n\/a|none|anonymous)$/;
@@ -31,7 +31,8 @@ const BYLINE_PLACEHOLDER = /^(unknown|staff|n\/a|none|anonymous)$/;
 function groupOutletsByShowCritic(reviews) {
   const outletsByKey = new Map();
   for (const r of reviews || []) {
-    const critic = String(r.criticName || '').toLowerCase().trim();
+    // Slug key folds diacritics, case and spacing so name variants of one critic group together.
+    const critic = criticFileSlug(r.criticName);
     if (!r.showId || !r.outletId || !critic) continue;
     const key = `${r.showId}\u0000${critic}`;
     if (!outletsByKey.has(key)) outletsByKey.set(key, { showId: r.showId, criticName: r.criticName, outlets: new Set() });
@@ -53,7 +54,7 @@ function findSyndicatedCriticPairs(reviews) {
   return pairs;
 }
 
-const pairKey = (showId, critic, a, b) => [showId, String(critic).toLowerCase().trim(), ...[a, b].sort()].join('\u0000');
+const pairKey = (showId, critic, a, b) => [showId, criticFileSlug(critic), ...[a, b].sort()].join('\u0000');
 
 /**
  * Same show + same named critic at 2+ outlets, minus outlets that are a

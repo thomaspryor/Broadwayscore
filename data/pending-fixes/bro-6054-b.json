@@ -8,7 +8,7 @@
     "email": null
   },
   "plan": {
-    "summary": "BRO-6054 part 2/3: same-critic two-outlet rows. Flag wrongAttribution on copies credited to a critic who did not write them (TheaterMania/Variety/NYSR/Guardian files duplicating a sibling critic's text, web-search entries with invented bylines, wrong-show urls) and correct three bylines (Dom O'Hanlon, Thom Geier, Jesse Oxfeld).",
+    "summary": "BRO-6054 part 2: wrongAttribution flags on sibling-critic text copies, criticName cleared on real reviews carrying a wrong byline, amazing-grace byline fix.",
     "steps": [
       "red-2010/variety--charles-isherwood.json: wrongAttribution",
       "romeo-juliet-2024/variety--charles-isherwood.json: wrongAttribution",
@@ -97,10 +97,10 @@
       {
         "type": "review-field-edit",
         "file": "the-cripple-of-inishmaan-2014/guardian--jesse-green.json",
-        "field": "wrongAttribution",
-        "oldValue": null,
-        "newValue": true,
-        "description": "the-cripple-of-inishmaan-2014/guardian--jesse-green.json: wrongAttribution"
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Unknown",
+        "description": "the-cripple-of-inishmaan-2014/guardian--jesse-green.json: unique text with a wrong byline (sibling critic's name); keep the review, clear the byline"
       },
       {
         "type": "review-field-edit",
@@ -153,10 +153,10 @@
       {
         "type": "review-field-edit",
         "file": "the-scottsboro-boys-2010/variety--charles-isherwood.json",
-        "field": "wrongAttribution",
-        "oldValue": null,
-        "newValue": true,
-        "description": "the-scottsboro-boys-2010/variety--charles-isherwood.json: wrongAttribution"
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Unknown",
+        "description": "the-scottsboro-boys-2010/variety--charles-isherwood.json: unique text with a wrong byline (sibling critic's name); keep the review, clear the byline"
       },
       {
         "type": "review-field-edit",
@@ -169,10 +169,10 @@
       {
         "type": "review-field-edit",
         "file": "the-velocity-of-autumn-2014/theatermania--charles-isherwood.json",
-        "field": "wrongAttribution",
-        "oldValue": null,
-        "newValue": true,
-        "description": "the-velocity-of-autumn-2014/theatermania--charles-isherwood.json: wrongAttribution"
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Unknown",
+        "description": "the-velocity-of-autumn-2014/theatermania--charles-isherwood.json: unique text with a wrong byline (sibling critic's name); keep the review, clear the byline"
       },
       {
         "type": "review-field-edit",
