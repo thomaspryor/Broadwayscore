@@ -244,16 +244,15 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-23T05:23:44.244Z",
-      "lastSeen": "2026-10-23T05:50:54.449Z",
-      "lastNotifiedAt": "2026-10-23T05:23:44.244Z",
+      "incidentOpenedAt": "2026-10-23T06:30:36.383Z",
+      "lastSeen": "2026-10-23T06:30:36.383Z",
+      "lastNotifiedAt": "2026-10-23T06:30:36.383Z",
       "lastSurfacedAt": "2026-10-22T22:36:55.496Z",
-      "notifyCount": 160,
+      "notifyCount": 161,
       "cardId": null,
       "linearIdentifier": "BRO-6024",
       "notifyCountAtRelease": 142,
-      "sweptTracker": "BRO-5554",
-      "silentRefires": 1
+      "sweptTracker": "BRO-5554"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -6753,7 +6752,7 @@
       "resolveReason": "absent"
     },
     "test-yml:red:E2E Tests:36f3f039": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
@@ -6771,7 +6770,9 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39854568981"
       },
       "absentRunIds": [],
-      "silentRefires": 16
+      "silentRefires": 16,
+      "resolvedAt": "2026-10-23T06:30:36.343Z",
+      "resolveReason": "job-green"
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "resolved",
@@ -24674,7 +24675,8 @@
       "cardId": null,
       "linearIdentifier": "BRO-6041",
       "absentRunIds": [
-        "39906490041"
+        "39906490041",
+        "39910082921"
       ]
     },
     "review-gap:opening-window:slanted-floors-off-broadway-2026": {
@@ -24722,7 +24724,7 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"Kenrex: both DD 2026 person-name wins routed off-Broadway (no Tony fallback)\"",
       "firstSeen": "2026-10-23T05:50:51.262Z",
       "incidentOpenedAt": "2026-10-23T05:50:51.262Z",
-      "lastSeen": "2026-10-23T05:50:51.262Z",
+      "lastSeen": "2026-10-23T06:30:36.372Z",
       "lastNotifiedAt": "2026-10-23T05:50:51.262Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -24733,7 +24735,8 @@
         "mode": "dispatch-at-filing",
         "runId": "39906490041",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39906490041"
-      }
+      },
+      "silentRefires": 1
     },
     "land:land/bro-5783-lock-trim": {
       "status": "resolved",
