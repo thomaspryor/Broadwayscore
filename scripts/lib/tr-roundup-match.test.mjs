@@ -157,3 +157,28 @@ test('archive canonical URL check catches a wrong-production legacy archive', ()
   assert.equal(sameRoundupUrl(canon, 'https://theatre.reviews/reviews-roundup/other-reviews/'), false);
   assert.equal(archiveUrlOf('<html></html>'), null);
 });
+
+test('a flagged file for a different url does not hide this round-up\'s real review', () => {
+  const stageRow = rows.find((r) => r.outlet === 'The Stage');
+  const files = [{ file: 'old', data: { outletId: 'thestage', criticName: stageRow.critic, url: 'https://www.thestage.co.uk/a-2017-production-review', wrongProduction: true } }];
+  const explain = (d) => (d.wrongProduction ? 'wrongProduction' : null);
+  const c = classifyRows([stageRow], files, SHOWS[0], { explain });
+  assert.equal(c.excluded.length, 0);
+  assert.equal(c.missing.length, 1);
+  const same = [{ file: 'old', data: { ...files[0].data, url: stageRow.url } }];
+  const c2 = classifyRows([stageRow], same, SHOWS[0], { explain });
+  assert.equal(c2.excluded.length, 1, 'the same url stays excluded');
+});
+
+test('REST walk ends cleanly when WP answers 400 one page past a full last page', async () => {
+  const full = Array.from({ length: 100 }, (_, i) => ({ id: i + 1, link: `https://theatre.reviews/p${i}/` }));
+  const fetchJSON = async (u) => {
+    if (new URL(u).searchParams.get('page') === '1') return full;
+    throw new Error('HTTP 400');
+  };
+  const r = await discoverRoundupPostsRest(fetchJSON);
+  assert.equal(r.posts.length, 100);
+  assert.equal(r.complete, true);
+  const flaky = async (u) => { if (new URL(u).searchParams.get('page') === '1') return full; throw new Error('HTTP 500'); };
+  assert.equal((await discoverRoundupPostsRest(flaky)).complete, false, 'a 500 stays incomplete');
+});

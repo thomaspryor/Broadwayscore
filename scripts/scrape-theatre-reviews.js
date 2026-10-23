@@ -521,12 +521,29 @@ async function main() {
   const disc = await discoverRoundupPostsRest(fetchJSON);
   console.log(`Discovery: ${disc.posts.length} round-up posts over ${disc.pages} REST page(s), complete=${disc.complete}`);
 
+  if (!disc.posts.length && !TARGET_SHOWS) {
+    // The old title-only category walk cannot tell productions apart (Waiting for Godot 2017 got the
+    // 2024 round-up), so a full run with no REST data writes nothing rather than fall back to it.
+    console.log('::warning::theatre.reviews REST discovery returned nothing; skipping the run (no wrong-production fallback)');
+    process.exitCode = 1;
+    return;
+  }
+
   // Step 2: match posts to shows by title + venue + date window.
   let { matched, unmatched } = disc.posts.length
     ? matchAllRoundups(disc.posts.map(parseRoundupPost), weShows)
     : await legacyDiscover(weShows);
   if (!disc.posts.length) console.log('  REST discovery returned nothing; used the legacy category walk');
-  if (TARGET_SHOWS) matched = matched.filter(m => TARGET_SHOWS.includes(m.show.id));
+  if (TARGET_SHOWS) {
+    matched = matched.filter(m => TARGET_SHOWS.includes(m.show.id));
+    // A target the matcher left unmatched falls back to the date-gated WP search (opening-night runs).
+    const missingTargets = weShows.filter(s => TARGET_SHOWS.includes(s.id) && !matched.some(m => m.show.id === s.id));
+    if (missingTargets.length) {
+      for (const f of await discoverRoundupsBySearch(missingTargets)) {
+        matched.push({ roundup: { url: f.url, title: f.show.title, modified: null, date: null }, show: f.show, confidence: 'search', reasons: ['wp-search'] });
+      }
+    }
+  }
   console.log(`Matched ${matched.length} round-ups to shows; ${unmatched.length} unmatched\n`);
 
   // Step 3: fetch (skipping unchanged archived pages), extract, reconcile, write the missing rows.
@@ -607,7 +624,9 @@ async function main() {
     const res = writeReviewFiles(toWrite, show.id);
     const refused = res.outcomes.filter(o => o.action === 'skipped');
     const stillMissing = c.missing.filter(m => refused.some(o => o.outlet === m.outlet && (o.critic || null) === (m.critic || null)));
-    const added = DRY_RUN ? 0 : c.missing.length - stillMissing.length;
+    const createdKeys = new Set(res.outcomes.filter(o => o.action === 'new').map(o => `${o.outlet}|${o.critic || ''}`));
+    const addedRows = c.missing.filter(m => createdKeys.has(`${m.outlet}|${m.critic || ''}`));
+    const added = DRY_RUN ? 0 : addedRows.length;
     stats.reviewsExtracted += rows.length;
     stats.filesCreated += res.created;
     stats.filesUpdated += res.updated;
@@ -615,7 +634,7 @@ async function main() {
     const entry = coverageEntry(show, roundup.url, { ...c, missing: DRY_RUN ? c.missing : stillMissing });
     entry.openingDate = show.openingDate || null;
     entry.added = DRY_RUN ? 0 : added;
-    entry.addedRows = DRY_RUN ? [] : c.missing.filter(m => !stillMissing.includes(m)).map(m => ({ outlet: m.outlet, critic: m.critic || null }));
+    entry.addedRows = DRY_RUN ? [] : addedRows.map(m => ({ outlet: m.outlet, critic: m.critic || null }));
     entry.matchConfidence = matched.find(m => m.show.id === show.id).confidence;
     entry.fromCache = fromCache;
     entries.push(entry);
@@ -657,6 +676,11 @@ function writeCoverage(entries, unmatched, orphanArchives, disc) {
     const ids = new Set(entries.map(e => e.showId));
     shows = [...prior.shows.filter(e => !ids.has(e.showId)), ...entries];
     unmatchedOut = prior.unmatched || [];
+  }
+  // A show whose page was not fetched this run (budget, abort, failure) keeps its last good entry.
+  if (prior && Array.isArray(prior.shows)) {
+    const old = new Map(prior.shows.map(e => [e.showId, e]));
+    shows = shows.map(e => (e.skipped && old.has(e.showId) && !old.get(e.showId).skipped) ? { ...old.get(e.showId), stale: e.skipped } : e);
   }
   shows.sort((a, b) => String(a.showId).localeCompare(String(b.showId)));
   const sum = (k) => shows.reduce((n, e) => n + (e[k] || 0), 0);
