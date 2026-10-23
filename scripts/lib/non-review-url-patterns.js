@@ -186,6 +186,25 @@ function siteUtilityPathReason(url) {
   try { return SITE_UTILITY_PATH_RE.test(new URL(url).pathname) ? 'site-utility-page' : null; } catch { return null; }
 }
 
+// A newspaper section that never carries theatre criticism (BRO-6082): title-
+// word discovery filed thetimes.co.uk/sport/football/...-score-... under The
+// Score and independent.co.uk/.../films/news/tom-skerritt-dead-...-picket-
+// fences-... (an obituary) under Fences. Both were T1/T2 silent-gap rows no
+// session could close. 0 of 29,347 reviews.json URLs match any of the three.
+// Bare /football/ is left out (msn.foxsports.com/nfl/ carried a real review).
+const OFF_TOPIC_SECTION_RE = /\/(sports?|obituar(y|ies))\/|\/films?\/news\//i;
+NON_REVIEW_PATH_PATTERNS.push(OFF_TOPIC_SECTION_RE);
+
+/**
+ * 'off-topic-section' when the URL sits in a sport/obituary/film-news section, else null.
+ * @param {string} url
+ * @returns {string|null}
+ */
+function offTopicSectionReason(url) {
+  if (typeof url !== 'string' || !url) return null;
+  try { return OFF_TOPIC_SECTION_RE.test(new URL(url).pathname) ? 'off-topic-section' : null; } catch { return null; }
+}
+
 /**
  * Third wave, measured task #907 (day-one live triage of the S5 probe's
  * first CI run — 6 of 9 first-run "gaps" were exactly this class) plus its
@@ -895,6 +914,7 @@ module.exports = {
   ingestRefusalReason,
   isBwwShowHubUrl,
   siteUtilityPathReason,
+  offTopicSectionReason,
   classifyGapCandidateUrl,
   submissionNonReviewReason,
   NON_REVIEW_HOST_PATTERNS,

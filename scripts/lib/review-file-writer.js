@@ -1355,10 +1355,19 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
   // review. outlet-listing-poller wrote The Spectator's /submit/ contact page
   // as a review; every writer reaches this function, so one guard covers all.
   if (input.url && fields.allowNonReviewUrl !== true) {
-    const utilityReason = require('./non-review-url-patterns').siteUtilityPathReason(input.url);
+    const urlPatterns = require('./non-review-url-patterns');
+    const utilityReason = urlPatterns.siteUtilityPathReason(input.url);
     if (utilityReason) {
       console.warn(`  ⛔ Refusing site utility page: ${input.url} (${utilityReason})`);
       return { action: 'skipped', reason: `site-utility-url: ${utilityReason}`, guardRefused: true };
+    }
+    // BRO-6082: sport/obituary/film-news sections, NEW files only (a re-merge
+    // into an existing file is left alone, as with the listing guard above).
+    const offTopicReason = !(existing && existing.data) && !fs.existsSync(filepath)
+      ? urlPatterns.offTopicSectionReason(input.url) : null;
+    if (offTopicReason) {
+      console.warn(`  ⛔ Refusing off-topic newspaper section: ${input.url} (${offTopicReason})`);
+      return { action: 'skipped', reason: `off-topic-section-url: ${offTopicReason}`, guardRefused: true };
     }
   }
 

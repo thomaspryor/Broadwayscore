@@ -40,7 +40,7 @@ const { execFileSync } = require('child_process');
 
 const {
   classifySilentGap, shouldAlertGap, shouldDispatchScoring, shouldEmailUnscoredGap, MAJOR_TIER_MAX,
-  classifyGapCardState, dedupeGapCards, otherAlertPathKey, GAP_CARD_STATE,
+  classifyGapCardState, dedupeGapCards, otherAlertPathKey, GAP_CARD_STATE, needsManualRecovery, manualRecoveryDigestLine, MANUAL_RECOVERY_CONDITION_KEY,
 } = require('./lib/t1-silent-gap');
 const { detectFlagContradiction, contradictionFixCommand, shouldAlertContradiction } = require('./lib/flag-contradiction');
 const { wouldAutoClear, shadowObservation } = require('./lib/autoclear-shadow');
@@ -57,7 +57,7 @@ const {
 const { dispatchRescore } = require('./lib/dispatch-rescore');
 const { isForumThreadUrl, isForumLinkRecoverable, FORUM_RECOVERY_CAP, FORUM_RECOVERY_SLOW_TRIES } = require('./lib/talkinbroadway-forum-link');
 const { safeWriteReview } = require('./lib/review-write-guard');
-const { routeAlert, resolveCondition, loadLedger } = require('./lib/owner-alert-router');
+const { routeAlert, resolveCondition, loadLedger, queueDigestLine, removeDigestLines } = require('./lib/owner-alert-router');
 const { execErrorDetail } = require('./lib/exec-error-detail');
 const { ingestFailureReason } = require('./lib/ingest-failure-reason');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -482,6 +482,8 @@ async function main() {
         // scorer will never take this file". undefined for gap types where the
         // question doesn't apply (empty-body, rejected-unscoreable).
         dispatchable: gap.dispatchable,
+        // BRO-6082: needsManualRecovery reads it (false = no automated re-fetch left).
+        recoverable: gap.recoverable,
         url: d.url || null,
         recovery,
         recoveryCount: d.aggUrlRecoveryCount || 0,
@@ -515,6 +517,7 @@ async function main() {
     if (!state[k]) { state[k] = now.toISOString(); gapStateDirty = true; }
     g.gapSeenAt = state[k];
     g.nonTerminalAgeHours = nonTerminalAgeHours({ firstSeenAt: g.gapSeenAt }, now);
+    g.needsManualRecovery = needsManualRecovery(g, now);
   }
   if (!ONLY_SHOW) {
     for (const k of Object.keys(state)) {
@@ -533,6 +536,30 @@ async function main() {
       gaps,
       contradictions,
     }, null, 2) + '\n');
+  }
+  // BRO-6082: one FYI digest line for the gaps automation has given up on
+  // (paywall, bot wall, forum-link budget spent). Info lines are never carded
+  // or dispatched. Re-queued each run, so it shows in each digest while the
+  // gaps last, and is removed from the unsent queue the run none remain.
+  // A gap/backstop card filed before the gap went manual is closed here: the
+  // FYI line now carries it, and no dispatched session can act on it.
+  if (DO_ALERT && !DRY_RUN && !ONLY_SHOW) {
+    try {
+      const line = manualRecoveryDigestLine(gaps, now);
+      if (line) queueDigestLine(line);
+      else removeDigestLines(MANUAL_RECOVERY_CONDITION_KEY);
+    } catch (e) { console.warn(`  ⚠️  manual-recovery digest line not updated: ${e.message}`); }
+    const ledgerForManual = loadLedger();
+    for (const g of gaps.filter((x) => x.needsManualRecovery === true)) {
+      for (const key of [`gap:${g.showId}/${g.file}`, `backstop:${g.showId}/${g.file}`]) {
+        if (ledgerForManual.conditions[key]?.status !== 'open') continue;
+        try {
+          if (resolveCondition(key, { reason: 'BRO-6082: no automated path left; reported on the digest FYI line' })) {
+            console.log(`  ✅ closed ${key}: needs manual recovery, moved to the FYI line`);
+          }
+        } catch (e) { console.warn(`  ⚠️  could not close ${key}: ${e.message}`); }
+      }
+    }
   }
   if (contradictions.length > 0) {
     console.log(`⚠️  ${contradictions.length} stale-flag contradiction(s) (escalate-only).`);
@@ -788,8 +815,12 @@ async function main() {
     // Age measured from when the file first became a GAP (gapSeenAt), not file
     // creation. Exclude files that already paged via the normal gap path this
     // run (cross-path dedupe).
+    // BRO-6082: a gap with no automated path left is reported on the FYI
+    // line; a backstop card for it only sends a cloud session at a paywall it
+    // cannot open.
     const agedRaw = gaps.filter((g) =>
-      isAgedNonTerminalGap({ file: { firstSeenAt: g.gapSeenAt }, now })
+      g.needsManualRecovery !== true
+      && isAgedNonTerminalGap({ file: { firstSeenAt: g.gapSeenAt }, now })
       && !pagedGapOutletKeys.has(`${g.showId}/${g.outletId}`));
     // BRO-341: collapse to one card per show+outlet here too — an aged
     // byline-explosion cluster used to file one backstop card PER FILE.
