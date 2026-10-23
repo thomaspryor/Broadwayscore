@@ -165,15 +165,18 @@ function seasonPhrase(season) {
 
 /**
  * When the production played, for the checker prompts. Rows with no season
- * (Off-Broadway and some Broadway historical rows) are identified by their
- * stored start month instead: "an unknown season" sent the checker to a
- * same-title revival (School Pictures 2023 vs Cherry Lane 2026, BRO-6019).
- * The start month identifies the production; it is not a value being checked.
+ * (Off-Broadway and some Broadway historical rows) are identified by the year
+ * their run began: "an unknown season" sent the checker to a same-title revival
+ * (School Pictures 2023 vs Cherry Lane 2026, BRO-6019). Year only, from the
+ * earlier of the two stored dates: both are checked fields, and a month would
+ * hand the checker the very value it should verify (an openingDate stored as
+ * the first preview is often a month off; ship-check review, BRO-6019).
  */
 function productionTimePhrase(show) {
   if (show && /^\d{4}-\d{4}$/.test(String(show.season || ''))) return seasonPhrase(show.season);
-  const d = String((show && (show.openingDate || show.previewsStartDate)) || '').match(/^(\d{4})-(\d{2})/);
-  return d ? `the season it opened in (it began around ${d[1]}-${d[2]})` : 'an unknown season';
+  const years = [show && show.previewsStartDate, show && show.openingDate]
+    .map((d) => String(d || '').match(/^(\d{4})-/)).filter(Boolean).map((m) => Number(m[1]));
+  return years.length ? `the run that began around ${Math.min(...years)}` : 'an unknown season';
 }
 
 /** Market label for a cohort key, season-scoped keys included. */
