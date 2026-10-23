@@ -1,51 +1,6 @@
 {
   "entries": [
     {
-      "kind": "truncated-t1-refetch",
-      "showId": "angels-bone-west-end-2026",
-      "market": "west-end",
-      "queuedAt": "2026-10-19T20:45:19.919Z",
-      "dueAt": "2026-10-19T21:45:19.919Z",
-      "offsetHours": 1,
-      "outletIds": [
-        "sunday-times"
-      ],
-      "attempted": true,
-      "skipped": true,
-      "skipReason": "no-truncated-t1",
-      "attemptedAt": "2026-10-19T23:58:58.581Z"
-    },
-    {
-      "kind": "truncated-t1-refetch",
-      "showId": "angels-bone-west-end-2026",
-      "market": "west-end",
-      "queuedAt": "2026-10-19T20:45:19.919Z",
-      "dueAt": "2026-10-19T23:45:19.919Z",
-      "offsetHours": 3,
-      "outletIds": [
-        "sunday-times"
-      ],
-      "attempted": true,
-      "skipped": true,
-      "skipReason": "no-truncated-t1",
-      "attemptedAt": "2026-10-19T23:58:58.581Z"
-    },
-    {
-      "kind": "truncated-t1-refetch",
-      "showId": "angels-bone-west-end-2026",
-      "market": "west-end",
-      "queuedAt": "2026-10-19T20:45:19.919Z",
-      "dueAt": "2026-10-20T08:45:19.919Z",
-      "offsetHours": 12,
-      "outletIds": [
-        "sunday-times"
-      ],
-      "attempted": true,
-      "skipped": true,
-      "skipReason": "no-truncated-t1",
-      "attemptedAt": "2026-10-20T10:04:37.020Z"
-    },
-    {
       "showId": "martin-guerre-west-end-2026",
       "market": "west-end",
       "queuedAt": "2026-10-20T13:54:36.424Z",
@@ -247,7 +202,10 @@
       "outletIds": [
         "telegraph"
       ],
-      "attempted": false
+      "attempted": true,
+      "skipped": true,
+      "skipReason": "no-truncated-t1",
+      "attemptedAt": "2026-10-23T04:10:13.382Z"
     }
   ]
 }
