@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-23T01:48:38.374Z",
-  "processed": 76,
-  "failed": 24,
-  "successRate": "76.0%",
+  "updatedAt": "2026-10-23T02:19:53.001Z",
+  "processed": 156,
+  "failed": 44,
+  "successRate": "78.0%",
   "tierBreakdown": {
-    "playwright": 50,
+    "playwright": 95,
     "amp": 1,
-    "browserbase": 6,
+    "browserbase": 10,
     "directCookies": 0,
-    "scrapingdog": 2,
+    "scrapingdog": 4,
     "scrapingbee": 1,
-    "brightdata": 2,
+    "brightdata": 5,
     "archiveToday": 0,
-    "archive": 15
+    "archive": 36
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-10-23T01:23:55.271Z",
@@ -46,6 +46,39 @@
     },
     {
       "t": "2026-10-23T01:31:07.522Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-23T01:50:32.857Z",
+      "event": "bb-session",
+      "session": "6ec7414d",
+      "url": "https://www.nytimes.com/2017/12/01/books/review/annie-leibovitz-portraits-2005-2"
+    },
+    {
+      "t": "2026-10-23T01:50:33.498Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-23T01:56:15.621Z",
+      "event": "bb-session",
+      "session": "4a9cc3b1",
+      "url": "https://www.nytimes.com/2017/06/02/theater/london-theater-octoroon-woyzeck-my-fa"
+    },
+    {
+      "t": "2026-10-23T01:56:16.366Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-23T02:00:52.969Z",
+      "event": "bb-session",
+      "session": "d63ebe7f",
+      "url": "https://www.nytimes.com/2017/05/04/theater/review-the-ferryman-in-jez-butterwort"
+    },
+    {
+      "t": "2026-10-23T02:00:53.619Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
