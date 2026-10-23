@@ -166,7 +166,7 @@ test('seed end-to-end: exported seed makes the first check() in another job skip
   const r = mkRepo({});
   const head = r.commit({ 'src/a.ts': 'export const a = 1;\n', 'data/shows.json': '[]\n', '.gitignore': 'data/core.json\n' });
   const d = r.d;
-  fs.writeFileSync(path.join(d, 'data/core.json'), '{"v":1}\n');
+  fs.writeFileSync(path.join(d, 'data', 'core.json'), '{"v":1}\n');
   const metaFile = path.join(d, 'meta.json');
   fs.writeFileSync(metaFile, JSON.stringify({ sha: head, exits: { tsc: 0 } }));
   const cli = (args, env = {}) => spawnSync('node', [SCRIPT, ...args], { cwd: d, encoding: 'utf8', env: { ...process.env, GITHUB_ACTIONS: 'true', ...env } });
@@ -184,7 +184,7 @@ test('seed end-to-end: exported seed makes the first check() in another job skip
   assert.equal(cli(push, { LAND_TSC_STAMP_FILE: stamp }).status, 0, 'seeded: tsc skipped');
   // core data differs in the Land job => not seeded
   const stamp2 = path.join(d, 'stamp2');
-  fs.writeFileSync(path.join(d, 'data/core.json'), '{"v":2}\n');
+  fs.writeFileSync(path.join(d, 'data', 'core.json'), '{"v":2}\n');
   cli(['seed', `--seed=${seed}`], { LAND_TSC_STAMP_FILE: stamp2 });
   assert.equal(cli(push, { LAND_TSC_STAMP_FILE: stamp2 }).status, 1, 'drifted core data: tsc runs');
   assert.notEqual(dataDigest({ cwd: d }), seed.split(':')[1]);
