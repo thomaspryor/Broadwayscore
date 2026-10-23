@@ -15,13 +15,13 @@ const SHOW = { id: 'test-show-2026', title: 'Test Show', openingDate: NIGHT };
 const TRIB = 'https://www.chicagotribune.com/2026/10/22/review-test-show/';
 const NYDN = 'https://www.nydailynews.com/2026/10/22/broadway-review-test-show/';
 
-async function night(urls, critic = 'Chris Jones') {
+async function night(urls, critic = 'Chris Jones', onDiskRows = []) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5993-synd-'));
   const scored = [];
   let doc = { reviews: [] };
   let clock = Date.parse(`${NIGHT}T23:00:00Z`);
   const res = await runLaneNight({
-    show: SHOW, night: NIGHT, openingDate: NIGHT, ledgerDir: dir, dryRun: true, maxPasses: 1,
+    show: SHOW, night: NIGHT, openingDate: NIGHT, ledgerDir: dir, dryRun: true, maxPasses: 1, onDiskRows,
     adapters: [{ name: 'roundup', kind: 'aggregator', phase: 'main', discover: async () => urls.map((url) => ({ url, source: 'aggregator', aggregatorCited: true })) }],
     fetchText: async () => '',
     fetchReview: async (a) => ({ outletId: a.url.includes('tribune') ? 'chicagotribune' : 'nydailynews', outlet: 'x', criticName: critic, fullText: 'A full review of the production. '.repeat(40), publishDate: NIGHT }),
@@ -54,4 +54,15 @@ test('a copy with no primary tonight is kept (Culture Sauce runs when TheWrap ha
   const { res, scored } = await night([NYDN]);
   assert.deepEqual(scored, ['nydailynews']);
   assert.deepEqual(res.skipped, []);
+});
+
+test('a primary the regular pipeline already published (reviews.json) still stops the copy', async () => {
+  const { res, scored } = await night([NYDN], 'Chris Jones', [{ criticName: 'Chris Jones', outletId: 'chicagotribune' }]);
+  assert.deepEqual(scored, []);
+  assert.equal(res.skipped.length, 1);
+});
+
+test('critic names match the way the rebuild matches them (case, diacritics, punctuation)', async () => {
+  const { res } = await night([NYDN], 'CHRIS  JONES', [{ criticName: 'Chris Jones', outletId: 'chicagotribune' }]);
+  assert.equal(res.skipped.length, 1);
 });

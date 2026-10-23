@@ -100,7 +100,9 @@ async function main() {
       },
       fetchReview: scoring.fetchReview, scoreReview: scores.wrapScore(scoring.scoreReview),
       // No reviewTextsDir and no onDiskUrls: the shadow must find every review itself, including ones the regular
-      // pipeline already published, and must not write review files the regular pipeline also writes.
+      // pipeline already published, and must not write review files the regular pipeline also writes. onDiskRows
+      // only feeds the syndication check, as in the real lane: a primary already on the site drops its copy.
+      onDiskRows: require('./lib/opening-night-lane/driver').onDiskRowsFor(path.join(repoDir, 'data', 'reviews.json'), showId),
       publishPorts: shadow.createShadowPublishPorts({ onRows: (applied, at) => {
         for (const row of applied) { rows.push({ row, at }); scores.onRow(row); console.log(`shadow: scored ${row.outlet || row.outletId} ${row.assignedScore} ${row.url}`); }
       } }),

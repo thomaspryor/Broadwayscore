@@ -200,4 +200,4 @@ async function discoverGoogleNewsReviews(show, options = {}) {
   return results;
 }
 
-module.exports = { searchTitles, discoverGoogleNewsReviews, googleNewsRssUrl, parseGoogleNewsItems, publisherUrlFromPage, isReviewHeadline };
+module.exports = { searchTitles, headlineNamesShow, discoverGoogleNewsReviews, googleNewsRssUrl, parseGoogleNewsItems, publisherUrlFromPage, isReviewHeadline };

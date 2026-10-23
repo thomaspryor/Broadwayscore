@@ -128,6 +128,10 @@ function buildShadowReport({ show, night, ledgerDir, scores = [], rows = [], liv
     e.outletId = e.outletId || row.outletId || null; e.outlet = e.outlet || row.outlet || null; e.critic = e.critic || row.criticName || null;
     if (e.scoredAt == null) e.scoredAt = at;
   }
+  // Syndicated copies the lane dropped (lane-runner skipped): a copy pulled from the queue was scored, but the lane would
+  // never have published it, so it is not a lane score.
+  const skippedKeys = new Set(((result && result.skipped) || []).map((x) => x.key));
+  for (const k of skippedKeys) lane.delete(k);
   const site = new Map([...live.firstLive].map(([k, l]) => [k, { key: k, ...l }]));
 
   const pairs = [];
@@ -172,6 +176,7 @@ function buildShadowReport({ show, night, ledgerDir, scores = [], rows = [], liv
     laneErrors: result ? (result.errors || []).length : null,
     laneErrorsByAdapter: errorsByAdapter(result ? result.errors : []),
     laneFailed: result ? (result.failed || []).map((f) => f.key || f) : [],
+    laneSkipped: result ? (result.skipped || []) : [],
     livePolls: live.polls, livePollFailures: live.failures,
     totals: { laneScored: count('both') + count('lane-only'), siteLive: count('both') + count('site-only'), both: count('both'), laneOnly: count('lane-only'), siteOnly: count('site-only') },
     firstLaneScoredAt: firstOf('laneScoredAt'), firstSiteLiveAt: firstOf('siteLiveAt'),
