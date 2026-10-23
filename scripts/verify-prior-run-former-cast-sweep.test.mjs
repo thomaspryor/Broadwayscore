@@ -175,7 +175,7 @@ test(
           const show = showsById.get(showId);
           checkable = !!show && isWithinPriorRun(data.publishDate, show.priorRuns);
         } catch {
-          checkable = false;
+          // unreadable known-good file: keep it "present" so the assertion fails loudly
         }
       }
       (checkable ? presentKnownGood : absentKnownGood).push(key);
