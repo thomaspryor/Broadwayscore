@@ -203,9 +203,14 @@ jobs:
           iso_to_epoch() {
             date -u -d "$1" +%s 2>/dev/null || date -j -u -f '%Y-%m-%dT%H:%M:%SZ' "$1" +%s 2>/dev/null || true
           }
-          # 180 = loop DEADLINE (240, see "Orchestration loop") minus a 60min
-          # margin for one more full iteration. Keep in sync with that DEADLINE.
-          COVER_MAX_AGE_MIN=180
+          # An earlier run only covers us if it is sure to reach at least one
+          # more loop top before its DEADLINE (240min, "Orchestration loop"),
+          # i.e. dispatch another poller. One iteration can take ~95min (2min
+          # poller lookup + 75min wait-for-run + 15min POLL_INTERVAL + gh
+          # overhead), so its last loop top can come as early as age ~145.
+          # 140 leaves a margin. Pinned against DEADLINE / the wait / the
+          # interval by tests/unit/opening-night-orchestrator-cron.test.mjs.
+          COVER_MAX_AGE_MIN=140
           NOW_EPOCH=$(date -u +%s)
 
           REDUNDANT=false
@@ -225,13 +230,17 @@ jobs:
             if [ "$START" = "$MY_START" ] && [ "$ID" -gt "$MY_ID" ]; then continue; fi
             # BRO-6037: an earlier run near the end of its loop does NOT cover
             # us. The loop DEADLINE is start+240min, checked only at loop top,
-            # so a run started >= COVER_MAX_AGE_MIN ago has under 60min of
-            # polling left and may already be in its last iteration (2026-10-22:
-            # the 01:00Z/01:09Z crons deferred to a 19:45Z run, nothing polled
-            # across the 02:00Z BW embargo). Unparseable start → keep the old
-            # behaviour (count it).
+            # so a run started >= COVER_MAX_AGE_MIN ago may already be in its
+            # last iteration (2026-10-22: the 01:00Z/01:09Z crons deferred to a
+            # 19:45Z run, nothing polled across the 02:00Z BW embargo). A start
+            # we can't parse doesn't count either (fail open, as above). The
+            # overlap this allows is safe: pollers serialize per market in the
+            # poller's concurrency group.
             START_EPOCH=$(iso_to_epoch "$START")
-            if [ -n "$START_EPOCH" ] && [ $(( NOW_EPOCH - START_EPOCH )) -ge $(( COVER_MAX_AGE_MIN * 60 )) ]; then
+            if [ -z "$START_EPOCH" ]; then
+              echo "Skipping run $ID — unparseable startedAt '$START'"; continue
+            fi
+            if [ $(( NOW_EPOCH - START_EPOCH )) -ge $(( COVER_MAX_AGE_MIN * 60 )) ]; then
               echo "Ignoring run $ID (started $START) — older than ${COVER_MAX_AGE_MIN}min, its loop is near its deadline."
               continue
             fi

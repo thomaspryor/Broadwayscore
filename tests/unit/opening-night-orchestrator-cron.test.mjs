@@ -54,11 +54,13 @@ function guardScript() {
   return body.join('\n');
 }
 
-function runGuard(otherStartedMinAgo) {
+// The other run is a manual all-market dispatch: event workflow_dispatch,
+// title "(auto)" (see run-name), so it covers every market at any clock hour.
+function runGuard(otherStartedMinAgo, startOverride) {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6037-'));
   const iso = (minAgo) => new Date(Date.now() - minAgo * 60000).toISOString().replace(/\.\d+Z$/, 'Z');
   const rows = [
-    ['111', 'schedule', iso(otherStartedMinAgo), 'Opening Night Orchestrator (all)'],
+    ['111', 'workflow_dispatch', startOverride || iso(otherStartedMinAgo), 'Opening Night Orchestrator (auto)'],
     ['222', 'schedule', iso(1), 'Opening Night Orchestrator (broadway)'],
   ].map((r) => r.join('\t')).join('\n');
   fs.writeFileSync(path.join(tmp, 'rows.tsv'), rows + '\n');
@@ -73,6 +75,9 @@ function runGuard(otherStartedMinAgo) {
   return { redundant: fs.readFileSync(out, 'utf8').trim(), log };
 }
 
+const num = (re) => Number(src.match(re)[1]);
+const COVER = num(/COVER_MAX_AGE_MIN=(\d+)/);
+
 describe('Redundancy guard ignores earlier runs near their loop deadline (BRO-6037)', () => {
   it('an earlier all-market run started 5h ago does not cover us', () => {
     const r = runGuard(300);
@@ -80,6 +85,24 @@ describe('Redundancy guard ignores earlier runs near their loop deadline (BRO-60
     assert.match(r.log, /Ignoring run 111/);
   });
   it('an earlier all-market run started 30m ago still covers us', () => {
-    assert.equal(runGuard(30).redundant, 'redundant=true');
+    const r = runGuard(30);
+    assert.equal(r.redundant, 'redundant=true', r.log);
+  });
+  it('cutoff boundary: just under counts, just over does not', () => {
+    assert.equal(runGuard(COVER - 3).redundant, 'redundant=true');
+    assert.equal(runGuard(COVER + 3).redundant, 'redundant=false');
+  });
+  it('an unparseable startedAt does not count as cover', () => {
+    const r = runGuard(0, '2026-10-22T19:45:garbage');
+    assert.equal(r.redundant, 'redundant=false', r.log);
+    assert.match(r.log, /unparseable startedAt/);
+  });
+  it('a deferred-to run is sure to dispatch another poller before its DEADLINE', () => {
+    // Worst-case iteration: 2min poller lookup + wait-for-run cap + sleep + 3min gh overhead.
+    const deadline = num(/DEADLINE=\$\(\( \$\(date \+%s\) \+ (\d+)\*60 \)\)/);
+    const wait = num(/wait-for-run\.sh "\$RUN_ID" (\d+)/);
+    const interval = num(/POLL_INTERVAL=\$\{\{ inputs\.poll_interval_minutes \|\| (\d+) \}\}/);
+    assert.ok(COVER + 2 + wait + interval + 3 <= deadline,
+      `COVER_MAX_AGE_MIN=${COVER} + worst iteration ${2 + wait + interval + 3} > DEADLINE ${deadline}`);
   });
 });
