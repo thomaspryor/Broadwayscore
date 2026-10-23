@@ -77,6 +77,11 @@ test('BLOCKLIST covers known neighborhood/placeholder noise but not real venues'
 // NEXT touring house by shape rather than by name.
 // ---------------------------------------------------------------------------
 
+test('George Street Playhouse (New Brunswick, NJ) is rejected (BRO-6071)', () => {
+  assert.ok(isNonNycVenue('George Street Playhouse'), 'minted the-unexpected-3rd-off-broadway-2026 for a NJ regional house');
+  assert.ok(isNonNycVenue('George Street Playhouse, New Brunswick, NJ'));
+});
+
 test('the State Theatre New Jersey touring house is rejected (BRO-3211)', () => {
   assert.ok(
     isNonNycVenue('State Theatre New Jersey'),
