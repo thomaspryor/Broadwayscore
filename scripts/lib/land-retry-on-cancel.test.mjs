@@ -339,7 +339,7 @@ test('BRO-6012: a hand dispatch is followable by its run-name while Checks is st
   assert.equal(latest.id, running.id);
   const verdict = landVerdict({ refSha: DISPATCH_TIP, run: latest, nowMs: Date.parse('2026-10-22T18:30:00Z') });
   assert.equal(verdict.verdict, 'waiting');
-  assert.match(verdict.why, /hand dispatch.*Checks still running/);
+  assert.match(verdict.why, /hand dispatch.*verified tip not readable yet/);
   assert.equal(resolveLandRun({ ...running, display_title: 'Land' }, options), null, 'an untitled dispatch still waits for Checks logs');
   assert.equal(resolveLandRun({ ...running, display_title: 'Land main' }, options), null, 'only land/** titles count');
 });
@@ -352,5 +352,8 @@ test('BRO-6012: a titled unfinished dispatch stays followable while its Checks l
   assert.equal(resolved.identityPending, true);
   assert.equal(resolved.head_branch, DISPATCH_BRANCH);
   const done = { ...DISPATCH, display_title: `Land ${DISPATCH_BRANCH}` };
-  assert.equal(resolveLandRun(done, { ...options, runJobs: [] , read: (e) => (e.includes('/jobs?') ? { jobs: [] } : assert.fail(e)) }), null);
+  assert.equal(resolveLandRun(done, dispatchReader({ dispatch: done, log: 'no identity here' })), null, 'a finished run never gets a pending identity');
+  const finished404 = dispatchReader({ dispatch: done });
+  finished404.readText = () => { throw new Error('gh: Not Found (HTTP 404)'); };
+  assert.equal(resolveLandRun(done, finished404), null);
 });

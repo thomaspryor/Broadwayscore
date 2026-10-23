@@ -107,7 +107,7 @@ function landVerdict({ refSha, lastSha = null, run, nowMs }) {
     return { verdict: 'unknown', why: 'not on origin and no recent green land run for it (typo, or the push never reached origin?)' };
   }
   if (!run) return { verdict: 'waiting', why: 'no land run identified for this ref yet (hand dispatches become identifiable when Checks logs are available)' };
-  if (run.identityPending && run.status !== 'completed') return { verdict: 'waiting', why: `run ${run.id} (hand dispatch) ${run.status}, Checks still running` };
+  if (run.identityPending && run.status !== 'completed') return { verdict: 'waiting', why: `run ${run.id} (hand dispatch) ${run.status}, verified tip not readable yet` };
   if (run.head_sha !== refSha) {
     return { verdict: 'waiting', why: `latest run ${run.id} is for an older tip; the run for ${refSha.slice(0, 9)} has not registered yet` };
   }
