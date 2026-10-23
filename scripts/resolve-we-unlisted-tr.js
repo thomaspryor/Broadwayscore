@@ -39,6 +39,7 @@ const USAGE = `resolve-we-unlisted-tr.js — Theatre Record lookups for WE revie
 
 Usage:
   node scripts/resolve-we-unlisted-tr.js --seasons=2019-2020[,2020-2021...] [--dry-run]
+  node scripts/resolve-we-unlisted-tr.js --dateless [--dry-run]   # existing closed WE rows with no openingDate (BRO-5850)
 
 Needs TR_EMAIL and TR_PASSWORD (GitHub Actions: we-historical-tr-resolve.yml).
 Writes data/audit/we-historical-review-led-<season>.json.`;
@@ -466,18 +467,46 @@ function searchTitles(title) {
   return [...new Set([full, ...parts])].slice(0, 4);
 }
 
+const DATELESS_KEY = 'dateless';
+const datelessPath = root => path.join(root, 'data', 'audit', 'we-dateless-tr-lookups.json');
+
+/**
+ * BRO-5850: lookups for existing closed West End rows with no openingDate.
+ * The row's own previews start (else its closing date) stands in for the
+ * review date, so pickTrForReview() only accepts a TR issue within a few
+ * months of that run; the TR header's press night is then checked against
+ * the row's own run window at plan time (plan-we-dateless-openings.js).
+ */
+function datelessLookups(root) {
+  const raw = JSON.parse(fs.readFileSync(path.join(root, 'data', 'shows.json'), 'utf8'));
+  const shows = Array.isArray(raw) ? raw : raw.shows;
+  const lookups = [];
+  const dropped = [];
+  for (const s of shows) {
+    if (s.market !== 'west-end' || s.status !== 'closed' || s.openingDate) continue;
+    // The guard needs previews to bound a press night, so a row without them is not looked up.
+    if (!s.previewsStartDate) { dropped.push({ id: s.id, title: s.title, venue: s.venue, reason: 'no previews start to bound a press night' }); continue; }
+    // Press night is up to ~45 days after previews and the picker looks only 1 month past the anchor, so anchor 3 weeks in.
+    const date = new Date(Date.parse(s.previewsStartDate) + 21 * 86400000).toISOString().slice(0, 10);
+    lookups.push({ showId: s.id, title: s.title, venue: s.venue, date });
+  }
+  return { lookups, dropped };
+}
+
 async function main() {
   const args = process.argv.slice(2);
   if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const seasonsArg = (args.find(a => a.startsWith('--seasons=')) || '').split('=')[1];
   const dryRun = args.includes('--dry-run');
-  if (!seasonsArg) { console.error(USAGE); process.exit(2); }
-  const seasons = seasonsArg.split(',').map(s => s.trim()).filter(Boolean);
+  const dateless = args.includes('--dateless');
+  if (!seasonsArg && !dateless) { console.error(USAGE); process.exit(2); }
+  const seasons = dateless ? [DATELESS_KEY] : seasonsArg.split(',').map(s => s.trim()).filter(Boolean);
   for (const s of seasons) {
-    if (!/^\d{4}-\d{4}$/.test(s)) { console.error(`bad season: ${s}`); process.exit(2); }
+    if (s !== DATELESS_KEY && !/^\d{4}-\d{4}$/.test(s)) { console.error(`bad season: ${s}`); process.exit(2); }
   }
 
   const plan = seasons.map(season => {
+    if (season === DATELESS_KEY) return { season, ...datelessLookups(ROOT) };
     const file = path.join(ROOT, 'data', 'audit', `we-historical-candidates-${season}.json`);
     if (!fs.existsSync(file)) throw new Error(`no candidates file for ${season}: run discover-historical-shows-we.js first`);
     const audit = JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -486,12 +515,12 @@ async function main() {
   for (const p of plan) {
     console.log(`${p.season}: ${p.lookups.length} lookups, ${p.dropped.length} dropped`);
     for (const d of p.dropped) console.log(`  drop  ${d.title} @ ${d.venue}: ${d.reason}`);
-    for (const l of p.lookups) console.log(`  look  ${l.title} @ ${l.venue} (review ${l.date})`);
+    for (const l of p.lookups) console.log(`  look  ${l.title} @ ${l.venue} (${p.season === DATELESS_KEY ? 'run anchor' : 'review'} ${l.date})`);
   }
   if (dryRun) return;
 
   if (!process.env.TR_EMAIL || !process.env.TR_PASSWORD) {
-    console.error('TR_EMAIL and TR_PASSWORD are required (run via we-historical-tr-resolve.yml)');
+    console.error('TR_EMAIL and TR_PASSWORD are required (run via we-historical-tr-resolve.yml or we-dateless-tr-resolve.yml)');
     process.exit(2);
   }
 
@@ -594,10 +623,14 @@ async function main() {
           console.log(`  ${review.title}: ERROR ${e.message}`);
         }
         rows.push(row);
+        // Checkpoint: a 97-row run can hit the workflow timeout, and the file is written only here.
+        if (p.season === DATELESS_KEY && rows.length % 10 === 0) {
+          fs.writeFileSync(datelessPath(ROOT), JSON.stringify({ generatedAt: new Date().toISOString(), season: p.season, partial: true, lookups: rows, dropped: p.dropped }, null, 2) + '\n');
+        }
         await page.waitForTimeout(1500);
       }
       const out = { generatedAt: new Date().toISOString(), season: p.season, lookups: rows, dropped: p.dropped };
-      fs.writeFileSync(reviewLedPath(ROOT, p.season), JSON.stringify(out, null, 2) + '\n');
+      fs.writeFileSync(p.season === DATELESS_KEY ? datelessPath(ROOT) : reviewLedPath(ROOT, p.season), JSON.stringify(out, null, 2) + '\n');
       console.log(`${p.season}: wrote ${rows.length} rows (${rows.filter(r => r.header).length} with a header)`);
     }
   } finally {
@@ -610,4 +643,4 @@ if (require.main === module) {
   main().catch(e => { console.error(e); process.exit(1); });
 }
 
-module.exports = { pdfHeaderFor, pdfContentsRowFor, pdfIndexRowFor, htmlHeaderFor, pairLabelLines, searchTitles, logDateContext };
+module.exports = { datelessLookups, pdfHeaderFor, pdfContentsRowFor, pdfIndexRowFor, htmlHeaderFor, pairLabelLines, searchTitles, logDateContext };

@@ -8,7 +8,7 @@ writer needs a known place in this graph.
 
 | Repo | Role | Workflows | Reached from this repo via |
 |---|---|---|---|
-| `thomaspryor/Broadwayscore` (main) | code + all pipelines (295 workflows here) | this directory | n/a |
+| `thomaspryor/Broadwayscore` (main) | code + all pipelines (296 workflows here) | this directory | n/a |
 | `thomaspryor/broadway-scorecard-data` (private) | core data: shows.json, reviews.json, commercial.json | `submit-indexnow.yml`, `theatr-review-discovery.yml` (own repo) | `checkout-core-data` (read), `push-core-data` (write) |
 | `thomaspryor/broadway-review-texts` (private) | review texts + aggregator archive | none checked in locally | `checkout-review-texts`/`checkout-aggregator-archive` (read), `push-review-texts`/`push-aggregator-archive` (write) |
 
@@ -384,13 +384,13 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `REDDIT_CLIENT_SECRET` | 3 cross-repo writers (of 4 workflows using it): `bulk-reddit-sentiment.yml`, `reddit-engagement-digest.yml`, `update-reddit-sentiment.yml` |
 | `RESEND_API_KEY` | 70 cross-repo writers (of 130 workflows using it) |
 | `RESEND_WE_AUDIENCE_ID` | 2 cross-repo writers (of 2 workflows using it): `opening-night-broadcast.yml`, `recreate-broadcast-draft.yml` |
-| `REVIEW_TEXTS_TOKEN` | 139 cross-repo writers (of 239 workflows using it) |
+| `REVIEW_TEXTS_TOKEN` | 139 cross-repo writers (of 240 workflows using it) |
 | `SCRAPINGBEE_API_KEY` | 77 cross-repo writers (of 102 workflows using it) |
 | `SCRAPINGDOG_API_KEY` | 80 cross-repo writers (of 104 workflows using it) |
 | `SUPABASE_SERVICE_ROLE_KEY` | 1 cross-repo writers (of 7 workflows using it): `update-mezzanine.yml` |
 | `THEATR_REFRESH_TOKEN` | 1 cross-repo writers (of 1 workflows using it): `update-theatr.yml` |
-| `TR_EMAIL` | 1 cross-repo writers (of 2 workflows using it): `review-refresh.yml` |
-| `TR_PASSWORD` | 1 cross-repo writers (of 2 workflows using it): `review-refresh.yml` |
+| `TR_EMAIL` | 1 cross-repo writers (of 3 workflows using it): `review-refresh.yml` |
+| `TR_PASSWORD` | 1 cross-repo writers (of 3 workflows using it): `review-refresh.yml` |
 | `VERCEL_TOKEN` | 2 cross-repo writers (of 11 workflows using it): `opening-night-poller.yml`, `test.yml` |
 | `VULTURE_COOKIES` | 1 cross-repo writers (of 1 workflows using it): `opening-night-express.yml` |
 | `VULTURE_COOKIES_META` | 1 cross-repo writers (of 1 workflows using it): `opening-night-express.yml` |
