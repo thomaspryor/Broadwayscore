@@ -37,3 +37,11 @@ test('findings never carry prose', () => {
   const rows = findCopiedStars([f('dm.json', { ...dm, fullText: 'SECRET PROSE' }), f('mos.json', mos)]);
   assert.doesNotMatch(JSON.stringify(rows), /SECRET PROSE/);
 });
+test('textHasStarEvidence is boolean/null and never carries prose', () => {
+  const long = 'x'.repeat(250);
+  const pick = (m) => findCopiedStars([f('mos.json', m), f('dm.json', dm)]).find((r) => r.file === 'mos.json');
+  assert.equal(pick({ ...mos, fullText: long }).textHasStarEvidence, false);
+  assert.equal(pick({ ...mos, fullText: `${long} It earns four stars.` }).textHasStarEvidence, true);
+  assert.equal(pick(mos).textHasStarEvidence, null);
+  assert.doesNotMatch(JSON.stringify(pick({ ...mos, fullText: `${long} four stars` })), /four stars/);
+});

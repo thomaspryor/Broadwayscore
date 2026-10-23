@@ -13,7 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 if (require('./lib/cli-help.js').hasHelpFlag(process.argv.slice(2))) {
-  console.log('audit-copied-aggregator-stars.js [--json] [--show=ID]: sourceless aggregatorStars equal to a same-outlet-family sibling (read-only)');
+  console.log('audit-copied-aggregator-stars.js [--json] [--show=ID] [--strong]: sourceless aggregatorStars equal to a same-outlet-family sibling (read-only)');
   process.exit(0);
 }
 const ROOT = path.join(__dirname, '..');
@@ -39,6 +39,10 @@ function sameFamily(a, b) {
 }
 const norm = (v) => String(v == null ? '' : v).replace(/\s+/g, '').toLowerCase();
 
+// Does the article text itself carry any star rating? Boolean only, the prose never leaves this function.
+const STAR_EVIDENCE = /[\u2605\u2606\u2B50]|\b[1-5](?:\.5)?\s*(?:\/|out of)\s*5\b|\b(?:one|two|three|four|five|[1-5])[- ]stars?\b|\bstar rating\b/i;
+const textHasStarEvidence = (d) => (typeof d.fullText === 'string' && d.fullText.length > 200) ? STAR_EVIDENCE.test(d.fullText) : null;
+
 /** Pure: files = [{file, data}] of one show -> findings (no prose). */
 function findCopiedStars(files) {
   const out = [];
@@ -51,7 +55,7 @@ function findCopiedStars(files) {
       && sameFamily(d, g.data));
     if (sib) {
       out.push({ file: f.file, outletId: d.outletId, critic: d.criticName || null, stars: d.aggregatorStars, scoreSource: d.scoreSource || null,
-        assignedScore: d.assignedScore ?? null, hasOwnOriginalScore: d.originalScore != null, siblingFile: sib.file, siblingSourced: !!sib.data.aggregatorStarsSource,
+        assignedScore: d.assignedScore ?? null, hasOwnOriginalScore: d.originalScore != null, siblingFile: sib.file, siblingSourced: !!sib.data.aggregatorStarsSource, textHasStarEvidence: textHasStarEvidence(d),
         // 'copy' only when the sibling carries evidence the stars are its own (a source, or its own outlet rating) and this row does not;
         // otherwise 'ambiguous' (either side may be the original): read both before writing a plan, never clear both.
         verdict: (sib.data.aggregatorStarsSource || (sib.data.originalScore != null && d.originalScore == null)) ? 'copy' : 'ambiguous' });
@@ -73,6 +77,9 @@ function main() {
     }).filter(Boolean);
     for (const r of findCopiedStars(files)) rows.push({ showId: id, ...r });
   }
+  // --strong: only rows whose own article text has no star rating at all (the stars cannot have come from this review).
+  const shown = argv.includes('--strong') ? rows.filter((r) => r.textHasStarEvidence === false) : rows;
+  rows.length = 0; rows.push(...shown);
   if (argv.includes('--json')) { console.log(JSON.stringify(rows, null, 1)); return; }
   for (const r of rows) console.log(`${r.showId}/${r.file} outlet=${r.outletId} stars=${r.stars} score=${r.assignedScore} src=${r.scoreSource} ownOriginal=${r.hasOwnOriginalScore} verdict=${r.verdict} copiedFrom=${r.siblingFile}${r.siblingSourced ? ' (sourced)' : ''}`);
   console.log(`TOTAL ${rows.length} file(s) with copied sourceless aggregatorStars`);
