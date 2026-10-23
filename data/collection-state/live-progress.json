@@ -1,139 +1,53 @@
 {
-  "updatedAt": "2026-10-23T13:19:39.613Z",
-  "processed": 396,
-  "failed": 245,
-  "successRate": "61.8%",
+  "updatedAt": "2026-10-23T13:32:28.616Z",
+  "processed": 80,
+  "failed": 50,
+  "successRate": "61.5%",
   "tierBreakdown": {
-    "playwright": 175,
+    "playwright": 35,
     "amp": 0,
-    "browserbase": 15,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 5,
-    "scrapingbee": 2,
+    "scrapingdog": 3,
+    "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 143
+    "archive": 38
   },
   "browserbaseSessions": 9,
   "recentActivity": [
     {
-      "t": "2026-10-23T10:35:17.723Z",
+      "t": "2026-10-23T13:07:09.036Z",
+      "event": "bb-session",
+      "session": "faac3bff",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
+    },
+    {
+      "t": "2026-10-23T13:07:09.366Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-23T11:59:10.350Z",
+      "t": "2026-10-23T13:25:54.425Z",
       "event": "bb-session",
-      "session": "7ad20a1c",
-      "url": "https://www.theupcoming.co.uk/2026/10/22/the-pianist-at-park-theatre-theatre-rev"
+      "session": "114355e6",
+      "url": "https://www.nytimes.com/2026/04/25/theater/rheology-inspirations.html"
     },
     {
-      "t": "2026-10-23T12:02:06.897Z",
-      "event": "bb-session",
-      "session": "f1639e69",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+      "t": "2026-10-23T13:25:54.748Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-23T12:02:13.798Z",
+      "t": "2026-10-23T13:29:48.456Z",
       "event": "bb-session",
-      "session": "0d66c977",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+      "session": "4daa246f",
+      "url": "https://www.nytimes.com/2026/04/03/theater/burnout-paradise-treadmills-theater-o"
     },
     {
-      "t": "2026-10-23T12:04:09.749Z",
-      "event": "bb-session",
-      "session": "ac085fa4",
-      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
-    },
-    {
-      "t": "2026-10-23T12:04:20.240Z",
-      "event": "bb-session",
-      "session": "7c657ade",
-      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
-    },
-    {
-      "t": "2026-10-23T12:05:40.119Z",
-      "event": "bb-session",
-      "session": "1b39794f",
-      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
-    },
-    {
-      "t": "2026-10-23T12:05:46.818Z",
-      "event": "bb-session",
-      "session": "06267da2",
-      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
-    },
-    {
-      "t": "2026-10-23T12:17:18.807Z",
-      "event": "bb-session",
-      "session": "766e8271",
-      "url": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-BEING-HUMAN-Ap"
-    },
-    {
-      "t": "2026-10-23T12:17:31.859Z",
-      "event": "bb-session",
-      "session": "b6645cd3",
-      "url": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-BEING-HUMAN-Ap"
-    },
-    {
-      "t": "2026-10-23T12:19:24.830Z",
-      "event": "bb-session",
-      "session": "6fc196dc",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
-    },
-    {
-      "t": "2026-10-23T13:00:26.775Z",
-      "event": "bb-session",
-      "session": "c9930e78",
-      "url": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-BEING-HUMAN-Ap"
-    },
-    {
-      "t": "2026-10-23T13:00:43.948Z",
-      "event": "bb-session",
-      "session": "755dabee",
-      "url": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-BEING-HUMAN-Ap"
-    },
-    {
-      "t": "2026-10-23T13:03:46.786Z",
-      "event": "bb-session",
-      "session": "c138ee83",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
-    },
-    {
-      "t": "2026-10-23T13:03:55.492Z",
-      "event": "bb-session",
-      "session": "2a0ec834",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
-    },
-    {
-      "t": "2026-10-23T13:06:02.957Z",
-      "event": "bb-session",
-      "session": "25f7ea9f",
-      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
-    },
-    {
-      "t": "2026-10-23T13:07:11.117Z",
-      "event": "bb-session",
-      "session": "6e45d131",
-      "url": "https://www.iloveeventfest.com/arts/event/double-bill-tell-me-straight-aggy-lond"
-    },
-    {
-      "t": "2026-10-23T13:07:42.152Z",
-      "event": "bb-session",
-      "session": "1308a12e",
-      "url": "https://soundsandstage.com/show/double-bill-tell-me-straight-aggy-may"
-    },
-    {
-      "t": "2026-10-23T13:08:28.062Z",
-      "event": "bb-session",
-      "session": "78ca4c92",
-      "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-4987479"
-    },
-    {
-      "t": "2026-10-23T13:08:36.960Z",
-      "event": "bb-session",
-      "session": "5bab1af8",
-      "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-4987479"
+      "t": "2026-10-23T13:29:48.780Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
