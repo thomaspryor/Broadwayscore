@@ -808,5 +808,19 @@
       }
     ],
     "queuedAt": "2026-10-23T18:28:06.433Z"
+  },
+  {
+    "conditionKey": "tour-candidate:liberation-2025:2026-10-23",
+    "title": "Tour candidate: Liberation national tour",
+    "description": "Tours To You lists a Liberation tour running since 2026-10-23, but Wikipedia doesn't confirm its launch, so it wasn't added automatically. Add a category:'tour' entry with tourOf:liberation-2025 (the production it tours; any market counts), then run node scripts/sweep-tour-reviews.js --tour=<id>.",
+    "severity": "info",
+    "url": "https://tourstoyou.org/shows/liberation/",
+    "decision": true,
+    "info": false,
+    "decisionPrompt": "Add the Liberation national tour as a tracked tour?",
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-23T19:04:14.080Z"
   }
 ]
