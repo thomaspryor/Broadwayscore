@@ -20,6 +20,7 @@ const path = require('path');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { showRecencyKey, NO_DATE_SENTINEL } = require('./lib/collection-priority');
 const { buildCensusFromArchives, censusVerdict, CI_UNFETCHABLE_OUTLETS } = require('./lib/review-census');
+const { rebuildExcludedOutlets, filterCensus } = require('./lib/census-rebuild-exclusions');
 const { classifyCell, mergeLedger, serializeLedger, isDispatchTierOutlet, computeDispatchDecision, canonicalTierId, groupByCanonicalTierId, GRACE_HOURS } = require('./lib/t1-ledger');
 const { buildDigest } = require('./lib/t1-digest');
 const { isNoReviewExpectedActive, detectReactivation } = require('./lib/coverage-expectation');
@@ -236,6 +237,8 @@ function computeShowCells(show, reviews, outlets, nowMs, standingCtx, censusOpts
   }
   catch (_) { return { cells: [], reactivations, coverage: null }; }
   if (!census || !census.hadAnySource) return { cells: [], reactivations, coverage: null };
+  // BRO-6072: drop outlets the rebuild permanently excludes (can never be satisfied).
+  census = filterCensus(census, rebuildExcludedOutlets(showId, show));
   const cVerdict = censusVerdict(census, scoredOutlets, { suppressed: CI_UNFETCHABLE_OUTLETS });
   // B3 scoreboard input: total dispatch-tier (T1/T2) outlets this show's census
   // expects, regardless of covered/missing — the denominator the scoreboard
@@ -863,6 +866,7 @@ async function main() {
     {
       try { census = buildCensusFromArchives(showId, { show, market: censusMarket(category) }); } catch (e) { console.warn(`  ⚠ census build failed for ${showId}: ${e.message}`); }
       if (census) {
+        census = filterCensus(census, rebuildExcludedOutlets(showId, show)); // BRO-6072
         // Pass the CI-unfetchable block list so paywalled-from-CI outlets (WSJ /
         // New Yorker) stay visible + block `complete` but don't drive endless
         // re-dispatch of a gather that can never satisfy them.
