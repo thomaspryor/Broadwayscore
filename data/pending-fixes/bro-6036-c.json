@@ -1,0 +1,118 @@
+{
+  "issueNumber": "bro-6036-c",
+  "planId": "5c5aa560-6ba1-41cf-8318-58c014b40b3e",
+  "status": "pending",
+  "createdAt": "2026-10-23T10:27:32.102Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6036: date 11 closed West End rows from sourced press nights (RSC/Unicorn, Park, Royal Court, Playbill, londontheatre.co.uk, theatre-news) and give 19 dance/one-off/short-run rows their first performance as openingDate with source venue-first-performance (no press night published; same pattern as existing venue-first-performance rows). Placeholder check: every-brilliant-thing previews 2025-08-01, player-kings 2024-04-01/04-11 and dugsi-dayz 2024-05-01/05-03 all verified real (Playbill, theatre-news, Royal Court), only every-brilliant-thing lacked an openingDate. 16 rows left undated: press night exists but no sourced date. (part 3 of 3)",
+    "steps": [
+      "i-made-you-a-mixtape-off-west-end-2026: openingDate null -> 2026-06-12 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-06-12 from the venue/ticketing listing)",
+      "i-made-you-a-mixtape-off-west-end-2026: openingDateSource (BRO-6036)",
+      "alvin-ailey-american-dance-theater-legacy-west-end-2026: openingDate null -> 2026-09-16 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-09-16 from the venue/ticketing listing)",
+      "alvin-ailey-american-dance-theater-legacy-west-end-2026: openingDateSource (BRO-6036)",
+      "liberace-and-liza-a-tribute-west-end-2026: openingDate null -> 2026-06-24 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-06-24 from the venue/ticketing listing)",
+      "liberace-and-liza-a-tribute-west-end-2026: openingDateSource (BRO-6036)",
+      "blue-mist-off-west-end-2026: openingDate null -> 2026-07-10 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-07-10 from the venue/ticketing listing)",
+      "blue-mist-off-west-end-2026: openingDateSource (BRO-6036)",
+      "whodunnit-unrehearsed-4-off-west-end-2026: openingDate null -> 2026-05-11 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-05-11 from the venue/ticketing listing)",
+      "whodunnit-unrehearsed-4-off-west-end-2026: openingDateSource (BRO-6036)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "i-made-you-a-mixtape-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-06-12",
+        "description": "i-made-you-a-mixtape-off-west-end-2026: openingDate null -> 2026-06-12 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-06-12 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "i-made-you-a-mixtape-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "venue-first-performance",
+        "description": "i-made-you-a-mixtape-off-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "alvin-ailey-american-dance-theater-legacy-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-09-16",
+        "description": "alvin-ailey-american-dance-theater-legacy-west-end-2026: openingDate null -> 2026-09-16 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-09-16 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "alvin-ailey-american-dance-theater-legacy-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "venue-first-performance",
+        "description": "alvin-ailey-american-dance-theater-legacy-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "liberace-and-liza-a-tribute-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-06-24",
+        "description": "liberace-and-liza-a-tribute-west-end-2026: openingDate null -> 2026-06-24 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-06-24 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "liberace-and-liza-a-tribute-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "venue-first-performance",
+        "description": "liberace-and-liza-a-tribute-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "blue-mist-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-07-10",
+        "description": "blue-mist-off-west-end-2026: openingDate null -> 2026-07-10 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-07-10 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "blue-mist-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "venue-first-performance",
+        "description": "blue-mist-off-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "whodunnit-unrehearsed-4-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-05-11",
+        "description": "whodunnit-unrehearsed-4-off-west-end-2026: openingDate null -> 2026-05-11 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-05-11 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "whodunnit-unrehearsed-4-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "venue-first-performance",
+        "description": "whodunnit-unrehearsed-4-off-west-end-2026: openingDateSource (BRO-6036)"
+      }
+    ]
+  }
+}

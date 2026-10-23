@@ -1,0 +1,268 @@
+{
+  "issueNumber": "bro-6036-b",
+  "planId": "2887635d-ddb7-4db4-ab23-f4cacd06d93f",
+  "status": "pending",
+  "createdAt": "2026-10-23T10:27:32.102Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6036: date 11 closed West End rows from sourced press nights (RSC/Unicorn, Park, Royal Court, Playbill, londontheatre.co.uk, theatre-news) and give 19 dance/one-off/short-run rows their first performance as openingDate with source venue-first-performance (no press night published; same pattern as existing venue-first-performance rows). Placeholder check: every-brilliant-thing previews 2025-08-01, player-kings 2024-04-01/04-11 and dugsi-dayz 2024-05-01/05-03 all verified real (Playbill, theatre-news, Royal Court), only every-brilliant-thing lacked an openingDate. 16 rows left undated: press night exists but no sourced date. (part 2 of 3)",
+    "steps": [
+      "noda-map-320f-west-end-2026: openingDateSource (BRO-6036)",
+      "360-allstars-off-west-end-2026: openingDate null -> 2026-06-02 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-06-02 from the venue/ticketing listing)",
+      "360-allstars-off-west-end-2026: openingDateSource (BRO-6036)",
+      "this-is-rambert-west-end-2026: openingDate null -> 2026-06-10 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-06-10 from the venue/ticketing listing)",
+      "this-is-rambert-west-end-2026: openingDateSource (BRO-6036)",
+      "yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026: openingDate null -> 2026-05-12 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-05-12 from the venue/ticketing listing)",
+      "yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026: openingDateSource (BRO-6036)",
+      "return-to-the-forest-off-west-end-2026: openingDate null -> 2026-05-28 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-05-28 from the venue/ticketing listing)",
+      "return-to-the-forest-off-west-end-2026: openingDateSource (BRO-6036)",
+      "mermaids-and-pirates-west-end-2026: openingDate null -> 2026-07-21 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-07-21 from the venue/ticketing listing)",
+      "mermaids-and-pirates-west-end-2026: openingDateSource (BRO-6036)",
+      "grayson-the-musical-a-first-look-off-west-end-2026: openingDate null -> 2026-07-16 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-07-16 from the venue/ticketing listing)",
+      "grayson-the-musical-a-first-look-off-west-end-2026: openingDateSource (BRO-6036)",
+      "jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026: openingDate null -> 2026-07-18 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-07-18 from the venue/ticketing listing)",
+      "jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026: openingDateSource (BRO-6036)",
+      "shamilton-the-improvised-hip-hop-musical-west-end-2026: openingDate null -> 2026-09-08 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-09-08 from the venue/ticketing listing)",
+      "shamilton-the-improvised-hip-hop-musical-west-end-2026: openingDateSource (BRO-6036)",
+      "an-evening-with-an-immigrant-off-west-end-2026: openingDate null -> 2026-10-06 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-10-06 from the venue/ticketing listing)",
+      "an-evening-with-an-immigrant-off-west-end-2026: openingDateSource (BRO-6036)",
+      "truths-a-dog-must-to-kennel-off-west-end-2026: openingDate null -> 2026-10-03 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-10-03 from the venue/ticketing listing)",
+      "truths-a-dog-must-to-kennel-off-west-end-2026: openingDateSource (BRO-6036)",
+      "age-is-a-feeling-off-west-end-2026: openingDate null -> 2026-03-05 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-03-05 from the venue/ticketing listing)",
+      "age-is-a-feeling-off-west-end-2026: openingDateSource (BRO-6036)",
+      "the-sound-of-absence-off-west-end-2026: openingDate null -> 2026-02-24 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-02-24 from the venue/ticketing listing)",
+      "the-sound-of-absence-off-west-end-2026: openingDateSource (BRO-6036)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "noda-map-320f-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "venue-first-performance",
+        "description": "noda-map-320f-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "360-allstars-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-06-02",
+        "description": "360-allstars-off-west-end-2026: openingDate null -> 2026-06-02 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-06-02 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "360-allstars-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "venue-first-performance",
+        "description": "360-allstars-off-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "this-is-rambert-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-06-10",
+        "description": "this-is-rambert-west-end-2026: openingDate null -> 2026-06-10 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-06-10 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "this-is-rambert-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "venue-first-performance",
+        "description": "this-is-rambert-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-05-12",
+        "description": "yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026: openingDate null -> 2026-05-12 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-05-12 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "venue-first-performance",
+        "description": "yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "return-to-the-forest-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-05-28",
+        "description": "return-to-the-forest-off-west-end-2026: openingDate null -> 2026-05-28 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-05-28 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "return-to-the-forest-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "venue-first-performance",
+        "description": "return-to-the-forest-off-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mermaids-and-pirates-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-07-21",
+        "description": "mermaids-and-pirates-west-end-2026: openingDate null -> 2026-07-21 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-07-21 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mermaids-and-pirates-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "venue-first-performance",
+        "description": "mermaids-and-pirates-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grayson-the-musical-a-first-look-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-07-16",
+        "description": "grayson-the-musical-a-first-look-off-west-end-2026: openingDate null -> 2026-07-16 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-07-16 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grayson-the-musical-a-first-look-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "venue-first-performance",
+        "description": "grayson-the-musical-a-first-look-off-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-07-18",
+        "description": "jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026: openingDate null -> 2026-07-18 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-07-18 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "venue-first-performance",
+        "description": "jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "shamilton-the-improvised-hip-hop-musical-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-09-08",
+        "description": "shamilton-the-improvised-hip-hop-musical-west-end-2026: openingDate null -> 2026-09-08 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-09-08 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "shamilton-the-improvised-hip-hop-musical-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "venue-first-performance",
+        "description": "shamilton-the-improvised-hip-hop-musical-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-evening-with-an-immigrant-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-10-06",
+        "description": "an-evening-with-an-immigrant-off-west-end-2026: openingDate null -> 2026-10-06 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-10-06 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-evening-with-an-immigrant-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "venue-first-performance",
+        "description": "an-evening-with-an-immigrant-off-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "truths-a-dog-must-to-kennel-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-10-03",
+        "description": "truths-a-dog-must-to-kennel-off-west-end-2026: openingDate null -> 2026-10-03 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-10-03 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "truths-a-dog-must-to-kennel-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "venue-first-performance",
+        "description": "truths-a-dog-must-to-kennel-off-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "age-is-a-feeling-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-03-05",
+        "description": "age-is-a-feeling-off-west-end-2026: openingDate null -> 2026-03-05 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-03-05 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "age-is-a-feeling-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "venue-first-performance",
+        "description": "age-is-a-feeling-off-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-sound-of-absence-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-02-24",
+        "description": "the-sound-of-absence-off-west-end-2026: openingDate null -> 2026-02-24 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-02-24 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-sound-of-absence-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "venue-first-performance",
+        "description": "the-sound-of-absence-off-west-end-2026: openingDateSource (BRO-6036)"
+      }
+    ]
+  }
+}
