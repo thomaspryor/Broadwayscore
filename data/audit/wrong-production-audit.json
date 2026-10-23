@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T08:19:41.114Z",
+  "timestamp": "2026-10-23T08:29:48.624Z",
   "stats": {
-    "totalReviews": 59305,
+    "totalReviews": 59312,
     "alreadyFlagged": 21067,
     "dateGuardCatches": 200,
     "directorMismatch": 2122,
     "tvFilmSignals": 1684,
     "londonSignals": 2817,
-    "offBroadwaySignals": 530,
+    "offBroadwaySignals": 531,
     "yearMismatch": 175,
-    "noPublishDate": 5299
+    "noPublishDate": 5301
   },
   "findings": [
     {
@@ -88138,6 +88138,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "file": "frombroadway--hayley-levitt.json",
+      "publishDate": "2026-10-22",
+      "url": "https://news.frombroadway.com/post/review-roundup-the-curious-case-of-benjamin-button-public-theater",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"cherry lane\""
         }
       ]
     },
