@@ -1,46 +1,37 @@
 {
-  "generatedAt": "2026-10-23T19:13:57.568Z",
+  "generatedAt": "2026-10-23T19:44:47.394Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 265,
-  "clean": 263,
-  "defective": 2,
+  "clean": 264,
+  "defective": 1,
   "byType": {
-    "score-drift": 2
+    "missing-from-prod": 1,
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "dance-is-not-for-us-off-west-end-2026",
-      "title": "Dance Is Not for Us",
-      "openingDate": "2026-10-18",
+      "showId": "phyl-off-broadway-2026",
+      "title": "Phyl",
+      "openingDate": "2026-10-22",
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 70.59 vs local 69.87 (Δ0.72)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 4,
-      "deployedCount": 4,
-      "firstDefectAt": "2026-10-23T19:04:36.840Z"
-    },
-    {
-      "showId": "murder-cathedral-off-west-end-2026",
-      "title": "Murder in the Cathedral",
-      "openingDate": "2026-10-12",
-      "ok": false,
-      "defects": [
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: times-square-chronicles"
+        },
         {
           "type": "score-drift",
-          "detail": "deployed cs 83.31 vs local 83.22 (Δ0.09)"
+          "detail": "deployed cs 76.64 vs local 77.06 (Δ0.42)"
         }
       ],
-      "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 21,
-      "firstDefectAt": "2026-10-23T19:04:36.840Z"
+      "missingFromProd": [
+        "times-square-chronicles"
+      ],
+      "localCount": 7,
+      "deployedCount": 6,
+      "firstDefectAt": "2026-10-23T19:44:43.171Z"
     }
   ],
   "persistentDefective": 0,

@@ -1,20 +1,20 @@
 {
-  "generatedAt": "2026-10-23T19:10:36.477Z",
+  "generatedAt": "2026-10-23T19:44:18.016Z",
   "windowDays": 21,
   "targets": 1,
   "auditedThisRun": 1,
-  "carriedForward": 788,
+  "carriedForward": 790,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 402,
-    "missingCurrentRun": 566,
+    "withGap": 401,
+    "missingCurrentRun": 565,
     "totalCitedNoUrl": 3,
     "totalFlaggedMisses": 728,
     "totalRecoverable": 3,
     "totalRecovered": 14,
     "humanExcluded": 4,
-    "automatedExcluded": 311,
+    "automatedExcluded": 310,
     "automatedExcludedListed": 262,
     "priorProductionCitations": 5469
   },
@@ -30707,31 +30707,19 @@
         "https://theatreandtonic.co.uk/blog/cadel-lungs-on-legs-at-riverside-studios-review",
         "https://loureviews.blog/2026/10/16/play-review-cadel-lungs-on-legs-at-riverside-studios/",
         "https://www.reviewsgate.co.uk/all-reviews/cadel-lungs-on-legs-by-connor-delves-amp-steve-mcmahon-riverside-studios-101-queen-caroline-street-london-w6-until-15-november-2026-review-by-william-russell",
-        "https://www.broadwayworld.com/westend/article/Review-CADEL-LUNGS-ON-LEGS-Riverside-Studios-20261016",
-        "https://number9reviews.blogspot.com/2026/10/theatre-review-cadel-lungs-on-legs.html",
         "https://www.london-unattached.com/cadel-lungs-on-legs-riverside-studios/",
+        "https://number9reviews.blogspot.com/2026/10/theatre-review-cadel-lungs-on-legs.html",
+        "https://www.broadwayworld.com/westend/article/Review-CADEL-LUNGS-ON-LEGS-Riverside-Studios-20261016",
         "https://www.londonpubtheatres.com/cadel-lungs-on-legs-by-connor-delves-steve-mcmahon-at-riverside-studios-13-october-15-november-2026",
-        "https://ayoungishperspective.co.uk/2026/10/17/review-cadel-lungs-on-legs/",
         "https://www.londontheatre1.com/reviews/cadel-lungs-on-legs-riverside-studios/",
         "https://theatreweekly.com/interview-connor-delves-on-cadel-lungs-on-legs-at-riverside-studios/",
+        "https://ayoungishperspective.co.uk/2026/10/17/review-cadel-lungs-on-legs/",
         "https://www.broadwayworld.com/article/Review-CADEL-LUNGS-ON-LEGS-Riverside-Studios-20261016"
       ],
       "dirFiles": 25,
-      "dirClean": 13,
+      "dirClean": 14,
       "inReviewsJson": 13,
-      "missing": [
-        {
-          "url": "https://loureviews.blog/2026/10/16/play-review-cadel-lungs-on-legs-at-riverside-studios/",
-          "host": "loureviews.blog",
-          "knownOutletId": "loureviews",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 5,
-          "weRefStarsSource": "bestoftheatre"
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "londonlivinglarge.com",
@@ -30743,30 +30731,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://loureviews.blog/2026/10/18/show-focus-connor-delves-on-cadel-lungs-on-legs/",
-          "host": "loureviews.blog",
-          "knownOutletId": "loureviews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "loureviews--louise-penn.json",
-              "flag": "clean",
-              "urlInDir": "https://loureviews.blog/2026/10/18/show-focus-connor-delves-on-cadel-lungs-on-legs/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "serpCensus": true,
-          "reverify": false
-        },
         {
           "url": "https://theatreweekly.com/interview-connor-delves-on-cadel-lungs-on-legs-at-riverside-studios/",
           "host": "theatreweekly.com",
@@ -30834,15 +30798,15 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 12,
-        "corroborated": 10,
+        "corroborated": 11,
         "perSource": {
           "lbo-roundup": {
             "cited": 1,
             "corroborated": 1
           },
           "bestoftheatre": {
-            "cited": 10,
-            "corroborated": 10
+            "cited": 11,
+            "corroborated": 11
           }
         }
       },
@@ -30868,7 +30832,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 3,
             "error": null
           },
           {
@@ -30878,7 +30842,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -30888,7 +30852,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -30898,64 +30862,32 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 14,
+        "resultCount": 13,
         "error": null
       },
       "candidatesRejected": {
-        "count": 29,
+        "count": 25,
         "byReason": {
-          "write-path-blocked": 1,
-          "non-review-host": 21,
+          "non-review-host": 16,
           "roundup-page": 3,
+          "write-path-blocked": 2,
           "non-review-path": 1,
           "ticketing-reseller": 2,
-          "event-listing": 1
+          "bare-host": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://loureviews.blog/2026/10/16/play-review-cadel-lungs-on-legs-at-riverside-studios/",
-          "host": "loureviews.blog",
-          "outletId": "loureviews",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "❌ Stale merge: url still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/cadel-lungs-on-legs-west-end-2026/loureviews--louise-penn.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "loureviews",
-            "outlet": "loureviews",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://loureviews.blog/2026/10/16/play-review-cadel-lungs-on-legs-at-riverside-studios/"
-          },
-          {
-            "outletId": "loureviews",
-            "outlet": "loureviews",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://loureviews.blog/2026/10/18/show-focus-connor-delves-on-cadel-lungs-on-legs/"
-          },
           {
             "outletId": "theatre-weekly",
             "outlet": "theatre-weekly",
@@ -30979,6 +30911,12 @@
             "firstSeenAt": "2026-10-18T10:12:15.873Z"
           },
           {
+            "url": "https://loureviews.blog/2026/10/18/show-focus-connor-delves-on-cadel-lungs-on-legs/",
+            "outletId": "loureviews.blog",
+            "state": "live",
+            "firstSeenAt": "2026-10-18T18:08:23.842Z"
+          },
+          {
             "url": "https://liamodell.com/2026/10/18/cadel-lungs-on-legs-review-riverside-studios-hammersmith-london-cadel-evans-tour-de-france/",
             "outletId": "liamodell.com",
             "state": "live",
@@ -30991,22 +30929,16 @@
             "firstSeenAt": "2026-10-17T04:53:29.079Z"
           },
           {
+            "url": "https://loureviews.blog/2026/10/16/play-review-cadel-lungs-on-legs-at-riverside-studios/",
+            "outletId": "loureviews.blog",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T20:46:15.120Z"
+          },
+          {
             "url": "https://www.reviewsgate.co.uk/all-reviews/cadel-lungs-on-legs-by-connor-delves-amp-steve-mcmahon-riverside-studios-101-queen-caroline-street-london-w6-until-15-november-2026-review-by-william-russell",
             "outletId": "reviewsgate.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-18T17:41:52.084Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/westend/article/Review-CADEL-LUNGS-ON-LEGS-Riverside-Studios-20261016",
-            "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-18T18:08:23.842Z"
-          },
-          {
-            "url": "https://number9reviews.blogspot.com/2026/10/theatre-review-cadel-lungs-on-legs.html",
-            "outletId": "number9reviews.blogspot.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-17T22:59:21.861Z"
           },
           {
             "url": "https://www.london-unattached.com/cadel-lungs-on-legs-riverside-studios/",
@@ -31015,16 +30947,22 @@
             "firstSeenAt": "2026-10-19T18:05:32.145Z"
           },
           {
+            "url": "https://number9reviews.blogspot.com/2026/10/theatre-review-cadel-lungs-on-legs.html",
+            "outletId": "number9reviews.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T22:59:21.861Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-CADEL-LUNGS-ON-LEGS-Riverside-Studios-20261016",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-18T18:08:23.842Z"
+          },
+          {
             "url": "https://www.londonpubtheatres.com/cadel-lungs-on-legs-by-connor-delves-steve-mcmahon-at-riverside-studios-13-october-15-november-2026",
             "outletId": "londonpubtheatres.com",
             "state": "live",
             "firstSeenAt": "2026-10-23T11:55:46.300Z"
-          },
-          {
-            "url": "https://ayoungishperspective.co.uk/2026/10/17/review-cadel-lungs-on-legs/",
-            "outletId": "ayoungishperspective.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-17T22:59:21.861Z"
           },
           {
             "url": "https://www.londontheatre1.com/reviews/cadel-lungs-on-legs-riverside-studios/",
@@ -31033,24 +30971,16 @@
             "firstSeenAt": "2026-10-16T20:46:15.120Z"
           },
           {
+            "url": "https://ayoungishperspective.co.uk/2026/10/17/review-cadel-lungs-on-legs/",
+            "outletId": "ayoungishperspective.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T22:59:21.861Z"
+          },
+          {
             "url": "https://www.broadwayworld.com/article/Review-CADEL-LUNGS-ON-LEGS-Riverside-Studios-20261016",
             "outletId": "broadwayworld.com",
             "state": "live",
             "firstSeenAt": "2026-10-18T10:12:15.873Z"
-          },
-          {
-            "url": "https://loureviews.blog/2026/10/16/play-review-cadel-lungs-on-legs-at-riverside-studios/",
-            "outletId": "loureviews",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T20:46:15.120Z"
-          },
-          {
-            "url": "https://loureviews.blog/2026/10/18/show-focus-connor-delves-on-cadel-lungs-on-legs/",
-            "outletId": "loureviews",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-18T18:08:23.842Z"
           },
           {
             "url": "https://theatreweekly.com/interview-connor-delves-on-cadel-lungs-on-legs-at-riverside-studios/",
@@ -31061,10 +30991,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 11,
+        "liveCount": 12,
         "candidateCount": 13
       },
-      "computedAt": "2026-10-23T11:55:46.300Z"
+      "computedAt": "2026-10-23T19:44:18.016Z"
     },
     {
       "showId": "call-me-izzy-2025",
