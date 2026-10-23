@@ -163,11 +163,9 @@
     "night-city-off-west-end-2026/londonpubtheatres--namoo-chae-lee.json",
     "the-imaginary-invalid-2026/new-york-sun--unknown.json",
     "the-imaginary-invalid-2026/cititour--unknown.json",
-    "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
     "phyl-off-broadway-2026/pages-on-stages--unknown.json",
-    "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
-    "the-pianist-off-west-end-2026/the-spy-in-the-stalls--unknown.json",
-    "the-pianist-off-west-end-2026/thestage--unknown.json"
+    "king-of-the-yees-off-broadway-2026/the-interested-bystander--unknown.json",
+    "copperfield-the-new-musical-off-broadway-2026/josh-at-the-movies--unknown.json"
   ],
   "failed": [
     "othello-off-broadway-2026/thestage--fergus-morgan.json",
@@ -260,11 +258,16 @@
     "thelma-and-louise-a-new-musical-off-west-end-2026/tickets-available-from-the-theatre--unknown.json",
     "golden-boy-off-west-end-2026/thestage--dave-fargnoli.json",
     "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
-    "derren-brown-only-human-west-end-2026/broadwayworld--unknown.json",
-    "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
     "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
     "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
-    "seussical-theatre-young-audiences-off-broadway-2026/wknd--unknown.json"
+    "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
+    "lincoln-in-the-bardo-off-broadway-2026/hotelbelleclaire--unknown.json",
+    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json",
+    "other-desert-cities-2026/cbsnews--unknown.json",
+    "school-pictures-off-broadway-2026/timeout--unknown.json",
+    "school-pictures-off-broadway-2026/airmail--air-mail.json",
+    "seussical-theatre-young-audiences-off-broadway-2026/wknd--unknown.json",
+    "the-dog-show-come-sit-stay-off-broadway-2026/talkalmanmusic--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -357,11 +360,9 @@
       "night-city-off-west-end-2026/london-theatre-reviews--cara-louise-scott-lapish.json",
       "night-city-off-west-end-2026/londonbornandbred--russell.json",
       "night-city-off-west-end-2026/londonpubtheatres--namoo-chae-lee.json",
-      "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
       "phyl-off-broadway-2026/pages-on-stages--unknown.json",
-      "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
-      "the-pianist-off-west-end-2026/the-spy-in-the-stalls--unknown.json",
-      "the-pianist-off-west-end-2026/thestage--unknown.json"
+      "king-of-the-yees-off-broadway-2026/the-interested-bystander--unknown.json",
+      "copperfield-the-new-musical-off-broadway-2026/josh-at-the-movies--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -371,7 +372,8 @@
       "rheology-off-broadway-2026/nytimes--tim-teeman.json",
       "data/review-texts/burnout-paradise-off-broadway-2026/nytimes--erik-piepenburg.json",
       "burnout-paradise-off-broadway-2026/nytimes--erik-piepenburg.json",
-      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json"
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -450,7 +452,7 @@
     ]
   },
   "startTime": "2026-10-23T14:36:04.998Z",
-  "lastProcessed": "seussical-theatre-young-audiences-off-broadway-2026/wknd--unknown.json",
+  "lastProcessed": "the-dog-show-come-sit-stay-off-broadway-2026/talkalmanmusic--unknown.json",
   "log": [
     {
       "t": "2026-10-23T14:43:35.677Z",
@@ -522,22 +524,68 @@
       "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
     },
     {
-      "t": "2026-10-23T16:05:25.041Z",
+      "t": "2026-10-23T16:08:45.616Z",
       "event": "bb-session",
-      "session": "dd03ec83",
-      "url": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-BEING-HUMAN-Ap"
-    },
-    {
-      "t": "2026-10-23T16:05:45.238Z",
-      "event": "bb-session",
-      "session": "068d11a5",
-      "url": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-BEING-HUMAN-Ap"
-    },
-    {
-      "t": "2026-10-23T16:09:14.296Z",
-      "event": "bb-session",
-      "session": "758d3e2d",
+      "session": "41a75267",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-23T16:09:43.001Z",
+      "event": "bb-session",
+      "session": "42d40fc6",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-23T16:09:43.263Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-23T16:09:52.824Z",
+      "event": "bb-session",
+      "session": "ce58eab7",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-23T16:09:53.114Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-23T16:11:20.933Z",
+      "event": "bb-session",
+      "session": "7412405d",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-23T16:11:28.586Z",
+      "event": "bb-session",
+      "session": "54ffa8bf",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-23T16:12:30.523Z",
+      "event": "bb-session",
+      "session": "31743cbd",
+      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
+    },
+    {
+      "t": "2026-10-23T16:13:32.123Z",
+      "event": "bb-session",
+      "session": "a6bedc13",
+      "url": "https://www.cbsnews.com/video/other-desert-cities-on-broadway-family-secrets-lai"
+    },
+    {
+      "t": "2026-10-23T16:14:32.655Z",
+      "event": "bb-session",
+      "session": "130d9910",
+      "url": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-s"
+    },
+    {
+      "t": "2026-10-23T16:14:39.488Z",
+      "event": "bb-session",
+      "session": "1afca2d7",
+      "url": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-s"
     }
   ]
 }
