@@ -914,6 +914,37 @@
     "queuedAt": "2026-10-23T02:02:40.485Z"
   },
   {
+    "conditionKey": "land:land/bro-5985-awards-offpage-r2",
+    "title": "Landing blocked: rebase red on land/bro-5985-awards-offpage-r2",
+    "description": "land.yml did not land land/bro-5985-awards-offpage-r2: the rebase gate went red at aa187b7dab. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5985-awards-offpage-r2 @ aa187b7dab (origin/land/bro-5985-awards-offpage-r2) → origin/main @ 3e1c5b1bd1 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 3e1c5b1bd1: Rebasing (1/1) error: could not apply aa187b7dab5... VISUAL-OK-1440: perf(BRO-5985): keep data/awards.json (1.4MB, 112kB gz) off every show page hint: Resolve all conflicts manually, mark them as reso Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39887262022",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5985-awards-offpage-r2"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "aa187b7dab54881b277156ced278a51ccdaa6fcd"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39887262022"
+      }
+    ],
+    "queuedAt": "2026-10-23T03:16:06.429Z"
+  },
+  {
     "conditionKey": "land:land/bro-2688-audit-triage",
     "title": "Landing blocked: colocated-tests red on land/bro-2688-audit-triage",
     "description": "land.yml did not land land/bro-2688-audit-triage: the colocated-tests gate went red at b7d00da698. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-2688-audit-triage @ b7d00da698 (origin/land/bro-2688-audit-triage) → origin/main @ 0ace7251be [land] train: land/bro-5618-inspect-false-3 not taken — nothing left to land after the rebase (already on main or in the train) [land] train: + land/codex-bro-5994 @ 0510f7ef94 (1 commit(s)) [land] train: land/bro-5985-awards-offpage-r2 not taken — would not rebase onto the train: Rebasing Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39885315081",
