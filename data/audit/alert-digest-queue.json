@@ -821,6 +821,37 @@
     "queuedAt": "2026-10-23T01:42:45.655Z"
   },
   {
+    "conditionKey": "land:land/bro-3360-dotted-routealert",
+    "title": "Landing blocked: rebase red on land/bro-3360-dotted-routealert",
+    "description": "land.yml did not land land/bro-3360-dotted-routealert: the rebase gate went red at e70e4bd3e4. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-3360-dotted-routealert @ e70e4bd3e4 (origin/land/bro-3360-dotted-routealert) → origin/main @ 4b37021926 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 4b37021926: Rebasing (1/1) error: could not apply e70e4bd3e4e... BRO-3360: audit-alert-senders human-caller digest check recognizes dotted router.routeAlert calls hint: Resolve all conflicts manually, mark them a Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39861190391",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3360-dotted-routealert"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "e70e4bd3e4ef18ed72e98ca1c20fd43f0df41b2c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39861190391"
+      }
+    ],
+    "queuedAt": "2026-10-23T02:22:34.369Z"
+  },
+  {
     "conditionKey": "land:land/bro-5962-health-failure-streak",
     "title": "Landing blocked: rebase red on land/bro-5962-health-failure-streak",
     "description": "land.yml did not land land/bro-5962-health-failure-streak: the rebase gate went red at 04118233aa. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5962-health-failure-streak @ 04118233aa (origin/land/bro-5962-health-failure-streak) → origin/main @ 3b6c9faac0 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 3b6c9faac0: Rebasing (1/1) error: could not apply 04118233aa9... fix(health): flag scheduled workflows failing their last 3 runs; root-cause 6 dead workflows (BRO-5962) hint: Resolve all conflicts manuall Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39881507259",
