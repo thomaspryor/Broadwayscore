@@ -566,3 +566,50 @@ test('outletLiveMs matches critics across diacritics (Zoë and Zoe are one criti
   assert.ok(keys.some((k) => k.endsWith('|zoesmith')), JSON.stringify(keys));
   assert.ok(!keys.some((k) => k.endsWith('|zosmith')));
 });
+
+// BRO-6079
+const stateLib = require('./press-night-review-state.js');
+const winStartMs = Date.parse(EMB) - lib.DEFAULT_GATES.nightStartH * 3600000;
+
+test('censusExclusions: pre-night excluded files cannot drop an outlet from the denominator (A Few Good Men shape)', () => {
+  const census = { entries: [{ outletId: 'variety' }, { outletId: 'deadline' }, { outletId: 'nytimes' }], count: 3, sourcesPresent: ['dtli'], hadAnySource: true };
+  const junk = (outletId, reason) => ({ outletId, firstSeenAt: '2026-06-10T12:00:00.000Z', publishDate: '2026-06-10', includable: false, reason, syndicatedUnder: null });
+  const files = [junk('deadline', 'wrongProduction'), junk('variety', 'rejectionReason')];
+  // legacy (no window): the bug, both silently dropped
+  assert.deepEqual(stateLib.censusExclusions(census, files).map((e) => e.outletId).sort(), ['deadline', 'variety']);
+  const opts = { windowStartMs: winStartMs, night: '2026-10-22' };
+  const excluded = stateLib.censusExclusions(census, files, opts);
+  assert.deepEqual(excluded, []);
+  // night-window junk still excludes; so does a night-published file with no firstSeenAt
+  assert.deepEqual(stateLib.censusExclusions(census, [{ ...junk('deadline', 'nonReview'), firstSeenAt: at(30) }], opts).map((e) => e.outletId), ['deadline']);
+  assert.deepEqual(stateLib.censusExclusions(census, [{ ...junk('variety', 'nonReview'), firstSeenAt: null, publishDate: '2026-10-22' }], opts).map((e) => e.outletId), ['variety']);
+  // end to end: neither live -> coverage-2h FAIL naming both
+  const r = nightRec({ 'The New York Times': 10 }, files);
+  r.reference['2h'] = lib.coverageAt(r, census, Date.parse(at(120)), { excluded });
+  const g = lib.evaluateCheck(r).gates.find((x) => x.name === 'coverage-2h');
+  assert.equal(g.status, 'fail');
+  assert.match(g.detail, /variety/);
+  assert.match(g.detail, /deadline/);
+});
+
+test('coverageAt deferLateSeen: a review first seen at +3h is graded by the 30-min rule, not the +2h bar', () => {
+  const census = { entries: [{ outletId: 'nytimes' }, { outletId: 'vulture' }, { outletId: 'variety' }], count: 3, sourcesPresent: ['dtli'], hadAnySource: true };
+  const files = [file('nytimes', 5), file('vulture', 180)];
+  const r = nightRec({ 'The New York Times': 10, Vulture: 185 }, files, { census: false });
+  const at2h = Date.parse(at(120));
+  const strict = lib.coverageAt(r, census, at2h);
+  assert.deepEqual(strict.missing.sort(), ['variety', 'vulture']);
+  const ref = lib.coverageAt(r, census, at2h, { deferLateSeen: true });
+  // vulture deferred; variety has no file at all so it stays missing
+  assert.deepEqual(ref.missing, ['variety']);
+  assert.equal(ref.count, 2);
+  // same-night: vulture first seen +3h... outside +2h so (b) applies, live within 30 min -> no miss named
+  const r2 = nightRec({ 'The New York Times': 10, Vulture: 185 }, files, { census: false });
+  r2.reference = { '2h': lib.coverageAt(r2, { entries: [{ outletId: 'nytimes' }, { outletId: 'vulture' }], count: 2, sourcesPresent: ['dtli'], hadAnySource: true }, at2h, { deferLateSeen: true }) };
+  assert.equal(r2.reference['2h'].coverage, 1);
+  assert.equal(sn(r2).status, 'pass', sn(r2).detail);
+  // a deferred review that goes live too late still FAILs under (b)
+  const r3 = nightRec({ 'The New York Times': 10, Vulture: 260 }, files, { census: false });
+  r3.reference = { '2h': r2.reference['2h'] };
+  assert.equal(sn(r3).status, 'fail');
+});

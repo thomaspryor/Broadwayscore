@@ -344,7 +344,7 @@ function laneShadowFrom({ report = null, liveRows = [], ledgerRows = [], importe
  * still answer "how much was live at +2h". The later census can only add outlets, so this is a
  * conservative (lower) coverage; outlets the lane first found after asOf are listed (discoveredAfter).
  */
-function coverageAt(rec, census, asOfMs, { fetchedAt = null, excluded = [] } = {}) {
+function coverageAt(rec, census, asOfMs, { fetchedAt = null, excluded = [], deferLateSeen = false } = {}) {
   const { censusVerdict } = require('./review-census');
   census = filterCensus(census, excluded);
   const asOf = new Date(asOfMs).toISOString();
@@ -368,7 +368,25 @@ function coverageAt(rec, census, asOfMs, { fetchedAt = null, excluded = [] } = {
   }
   // Every census outlet stays in the denominator: a lane discovery after asOf bounds the publish time
   // from above only, so it cannot prove the review was not out yet. Listed for the reader, never excluded.
-  const scoped = census;
+  let scoped = census;
+  // Re-judging +2h against a later census (BRO-6079): a listing whose only night file was first seen (or
+  // published, by a timed publishDate) after asOf is graded by the 30-min rule of same-night-completeness,
+  // not held to the +2h bar. An outlet with no file, or a file seen by asOf, stays in the denominator.
+  if (deferLateSeen && census && Array.isArray(census.entries) && rec.fileState && Array.isArray(rec.fileState.files)) {
+    const embMs = toMs(rec.embargoAt);
+    const winStart = embMs == null ? null : embMs - DEFAULT_GATES.nightStartH * HOUR;
+    const earliest = new Map();
+    for (const f of rec.fileState.files) {
+      if (!f.includable || !f.outletId) continue;
+      const seen = toMs(f.firstSeenAt);
+      if (seen == null || (winStart != null && seen < winStart)) continue;
+      const pub = typeof f.publishDate === 'string' && f.publishDate.includes('T') ? toMs(f.publishDate) : null;
+      const t = pub != null ? Math.min(seen, pub) : seen;
+      if (!earliest.has(f.outletId) || t < earliest.get(f.outletId)) earliest.set(f.outletId, t);
+    }
+    const entries = census.entries.filter((e) => liveSet.has(e.outletId) || !(earliest.has(e.outletId) && earliest.get(e.outletId) > asOfMs));
+    scoped = { ...census, entries, count: entries.length };
+  }
   const notYetPublished = [];
   const discoveredAfter = [];
   const disc = ls && ls.discoveredByOutlet;

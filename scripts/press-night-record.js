@@ -142,7 +142,10 @@ function stampFileState(rec, show, census) {
   if (read.available) rec.fileState = { capturedAt: new Date().toISOString(), files: read.files };
   const files = rec.fileState && rec.fileState.files;
   if (!files) console.log('[press-night] review-texts not available: census exclusions and same-night-completeness stay unknown');
-  return files ? state.censusExclusions(census, files) : [];
+  const g = lib.DEFAULT_GATES;
+  const embMs = new Date(rec.embargoAt).getTime();
+  const opts = Number.isFinite(embMs) ? { windowStartMs: embMs - g.nightStartH * 3600000, night: rec.night } : {};
+  return files ? state.censusExclusions(census, files, opts) : [];
 }
 
 async function buildCensus(rec, show) {
@@ -268,7 +271,7 @@ async function main() {
     for (const [label, asOfMs] of [['2h', embMs + 2 * 3600000], ['end', endMs]]) {
       if (!Number.isFinite(asOfMs)) continue;
       if (rec.reference[label] && !rec.reference[`${label}-live`] && rec.reference[label].method !== 'timeline') rec.reference[`${label}-live`] = rec.reference[label];
-      rec.reference[label] = { ...lib.coverageAt(rec, census, asOfMs, { fetchedAt, excluded }), censusNote: note };
+      rec.reference[label] = { ...lib.coverageAt(rec, census, asOfMs, { fetchedAt, excluded, deferLateSeen: label === '2h' }), censusNote: note };
     }
     writeRecord(file, rec);
     for (const label of ['2h', 'end']) {
@@ -309,7 +312,7 @@ async function main() {
     const exKey = (x) => JSON.stringify((x || []).map((e) => e.outletId).sort());
     if (label === 'end' && census && census.count && (!hasCoverage(ref2) || keptCount > (ref2.count || 0) || exKey(ref2 && ref2.excluded) !== exKey(excluded))) {
       if (rec.reference['2h'] && !rec.reference['2h-live']) rec.reference['2h-live'] = rec.reference['2h'];
-      rec.reference['2h'] = { ...lib.coverageAt(rec, census, new Date(rec.embargoAt).getTime() + 2 * 3600000, { fetchedAt, excluded }), censusNote: note };
+      rec.reference['2h'] = { ...lib.coverageAt(rec, census, new Date(rec.embargoAt).getTime() + 2 * 3600000, { fetchedAt, excluded, deferLateSeen: true }), censusNote: note };
       console.log(`[press-night] reference 2h filled from the live timeline: ${rec.reference['2h'].status} coverage=${rec.reference['2h'].coverage}`);
     }
     writeRecord(file, rec);

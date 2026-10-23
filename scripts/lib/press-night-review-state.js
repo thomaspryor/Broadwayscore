@@ -69,9 +69,21 @@ function readReviewFileState(showId, show, { dir = DEFAULT_DIR } = {}) {
  * Census entries whose every review file is excluded (or that are syndicated copies) are not
  * "missing": the rebuild correctly keeps them off the site. An outlet with at least one includable
  * file, or with no file at all (a listing we have not ingested), stays in the denominator.
+ * Only files that belong to the night can exclude an outlet (BRO-6079): a June wrongProduction article
+ * or a ticket page seen last week says nothing about the night's review. With `opts.windowStartMs` a
+ * file counts only if first seen at/after it, or published on/after `opts.night` (YYYY-MM-DD); a file
+ * with neither date is not provably the night's and is ignored. Without opts every file counts (legacy).
  * @returns {Array<{outletId:string, reason:string}>}
  */
-function censusExclusions(census, files) {
+function censusExclusions(census, files, opts = {}) {
+  const { windowStartMs = null, night = null } = opts;
+  if (windowStartMs != null) {
+    files = files.filter((f) => {
+      const seen = f.firstSeenAt ? Date.parse(f.firstSeenAt) : NaN;
+      if (Number.isFinite(seen) && seen >= windowStartMs) return true;
+      return !!(night && f.publishDate && String(f.publishDate).slice(0, 10) >= night);
+    });
+  }
   if (!census || !Array.isArray(census.entries)) return [];
   const byOutlet = new Map();
   for (const f of files) {
