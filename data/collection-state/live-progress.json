@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-23T14:22:48.160Z",
-  "processed": 97,
-  "failed": 53,
-  "successRate": "64.7%",
+  "updatedAt": "2026-10-23T14:28:48.105Z",
+  "processed": 96,
+  "failed": 62,
+  "successRate": "60.8%",
   "tierBreakdown": {
-    "playwright": 40,
+    "playwright": 48,
     "amp": 0,
     "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 4,
-    "scrapingbee": 3,
-    "brightdata": 0,
+    "scrapingdog": 3,
+    "scrapingbee": 2,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 50
+    "archive": 41
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-10-23T13:53:01.624Z",
@@ -36,7 +36,7 @@
     {
       "t": "2026-10-23T14:10:18.178Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "wsj.com"
     },
     {
       "t": "2026-10-23T14:14:20.125Z",
@@ -47,7 +47,37 @@
     {
       "t": "2026-10-23T14:14:20.982Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-23T14:20:36.195Z",
+      "event": "bb-session",
+      "session": "122f47f2",
+      "url": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-BEING-HUMAN-Ap"
+    },
+    {
+      "t": "2026-10-23T14:20:53.137Z",
+      "event": "bb-session",
+      "session": "0b30d021",
+      "url": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-BEING-HUMAN-Ap"
+    },
+    {
+      "t": "2026-10-23T14:27:05.057Z",
+      "event": "bb-session",
+      "session": "f5b4ebe5",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-23T14:27:13.715Z",
+      "event": "bb-session",
+      "session": "872370d3",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-23T14:28:21.861Z",
+      "event": "bb-session",
+      "session": "4fdcd885",
+      "url": "https://soundsandstage.com/show/dirty-dancing"
     }
   ]
 }
