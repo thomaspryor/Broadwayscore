@@ -283,7 +283,28 @@ function livenessVerdict({ crons, runs, now = Date.now(), createdAt }) {
   return { status: ageHours > limitHours ? 'stale' : 'alive', limitHours, ageHours };
 }
 
+/**
+ * BRO-5962: is a scheduled workflow red on every run? True when the newest `n` scheduled
+ * runs that actually finished all concluded `failure` (or `timed_out`). In-flight and
+ * cancelled/skipped runs are ignored, so a superseded run neither starts nor breaks a streak;
+ * fewer than `n` finished runs is never a streak. Success-keyed alerts (CRITICAL_CRONS,
+ * digest rows) cannot see this for a weekly job inside its staleness window.
+ * @param {{conclusion?:string, created_at?:string, createdAt?:string}[]} runs any order
+ * @param {number} [n]
+ * @returns {{failing:boolean, streak:number, lastFailureAt:string|null}}
+ */
+function consecutiveFailureVerdict(runs, n = 3) {
+  const at = r => Date.parse(r.created_at || r.createdAt);
+  const done = (runs || [])
+    .filter(r => r && r.conclusion && !['cancelled', 'skipped', 'startup_failure'].includes(r.conclusion))
+    .sort((a, b) => (at(b) || 0) - (at(a) || 0));
+  let streak = 0;
+  while (streak < done.length && ['failure', 'timed_out'].includes(done[streak].conclusion)) streak++;
+  return { failing: streak >= n, streak, lastFailureAt: streak ? (done[0].created_at || done[0].createdAt || null) : null };
+}
+
 module.exports = {
+  consecutiveFailureVerdict,
   isScheduledWorkflow, parseExemptList, findUncoveredScheduled, findStaleExempt,
   parseExemptEntries, findUnjustifiedExempt, findFalseDigestClaims, findDigestDrift,
   parseField, worstGapHours, extractCrons, classifyAlertPaths, livenessVerdict,
