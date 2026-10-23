@@ -34,3 +34,52 @@ describe('opening-night-orchestrator West End cron coverage (BRO-2730)', () => {
     assert.ok(g.indexOf('(west-end)') < g.indexOf('hour_to_market "${START'));
   });
 });
+
+// BRO-6037: run the REAL Redundancy guard bash (extracted from the workflow)
+// against a stubbed `gh`. An earlier run started 5h ago is past its loop
+// deadline window and must not count as cover; one started 30m ago must.
+import { execFileSync } from 'node:child_process';
+import os from 'node:os';
+
+function guardScript() {
+  const lines = src.split('\n');
+  const at = lines.findIndex((l) => /^\s*id: guard\s*$/.test(l));
+  const runAt = lines.findIndex((l, i) => i > at && /^\s*run: \|\s*$/.test(l));
+  const indent = lines[runAt].match(/^\s*/)[0].length;
+  const body = [];
+  for (const l of lines.slice(runAt + 1)) {
+    if (l.trim() && l.match(/^\s*/)[0].length <= indent) break;
+    body.push(l.slice(indent + 2));
+  }
+  return body.join('\n');
+}
+
+function runGuard(otherStartedMinAgo) {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6037-'));
+  const iso = (minAgo) => new Date(Date.now() - minAgo * 60000).toISOString().replace(/\.\d+Z$/, 'Z');
+  const rows = [
+    ['111', 'schedule', iso(otherStartedMinAgo), 'Opening Night Orchestrator (all)'],
+    ['222', 'schedule', iso(1), 'Opening Night Orchestrator (broadway)'],
+  ].map((r) => r.join('\t')).join('\n');
+  fs.writeFileSync(path.join(tmp, 'rows.tsv'), rows + '\n');
+  fs.writeFileSync(path.join(tmp, 'gh'), `#!/bin/bash\ncat "${tmp}/rows.tsv"\n`, { mode: 0o755 });
+  fs.writeFileSync(path.join(tmp, 'guard.sh'), guardScript());
+  const out = path.join(tmp, 'out');
+  const log = execFileSync('bash', ['-eo', 'pipefail', path.join(tmp, 'guard.sh')], {
+    env: { ...process.env, PATH: `${tmp}:${process.env.PATH}`, MY_MARKET: 'broadway', MY_ID: '222',
+      GITHUB_OUTPUT: out, GITHUB_STEP_SUMMARY: path.join(tmp, 'summary') },
+    encoding: 'utf8',
+  });
+  return { redundant: fs.readFileSync(out, 'utf8').trim(), log };
+}
+
+describe('Redundancy guard ignores earlier runs near their loop deadline (BRO-6037)', () => {
+  it('an earlier all-market run started 5h ago does not cover us', () => {
+    const r = runGuard(300);
+    assert.equal(r.redundant, 'redundant=false', r.log);
+    assert.match(r.log, /Ignoring run 111/);
+  });
+  it('an earlier all-market run started 30m ago still covers us', () => {
+    assert.equal(runGuard(30).redundant, 'redundant=true');
+  });
+});

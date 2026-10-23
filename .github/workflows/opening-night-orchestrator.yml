@@ -198,6 +198,16 @@ jobs:
             exit 0
           fi
 
+          # GNU date on the runner; BSD fallback so the unit test can run this
+          # same block on macOS. Prints nothing if neither parses.
+          iso_to_epoch() {
+            date -u -d "$1" +%s 2>/dev/null || date -j -u -f '%Y-%m-%dT%H:%M:%SZ' "$1" +%s 2>/dev/null || true
+          }
+          # 180 = loop DEADLINE (240, see "Orchestration loop") minus a 60min
+          # margin for one more full iteration. Keep in sync with that DEADLINE.
+          COVER_MAX_AGE_MIN=180
+          NOW_EPOCH=$(date -u +%s)
+
           REDUNDANT=false
           while IFS=$'\t' read -r ID EVENT START TITLE; do
             [ -z "$ID" ] && continue
@@ -213,6 +223,18 @@ jobs:
             # run id, so two runs can never both skip in each other's favor).
             if [[ "$START" > "$MY_START" ]]; then continue; fi
             if [ "$START" = "$MY_START" ] && [ "$ID" -gt "$MY_ID" ]; then continue; fi
+            # BRO-6037: an earlier run near the end of its loop does NOT cover
+            # us. The loop DEADLINE is start+240min, checked only at loop top,
+            # so a run started >= COVER_MAX_AGE_MIN ago has under 60min of
+            # polling left and may already be in its last iteration (2026-10-22:
+            # the 01:00Z/01:09Z crons deferred to a 19:45Z run, nothing polled
+            # across the 02:00Z BW embargo). Unparseable start → keep the old
+            # behaviour (count it).
+            START_EPOCH=$(iso_to_epoch "$START")
+            if [ -n "$START_EPOCH" ] && [ $(( NOW_EPOCH - START_EPOCH )) -ge $(( COVER_MAX_AGE_MIN * 60 )) ]; then
+              echo "Ignoring run $ID (started $START) — older than ${COVER_MAX_AGE_MIN}min, its loop is near its deadline."
+              continue
+            fi
             # Title carries the market for dispatched AND scheduled runs
             # (BRO-2730). Only a pre-change scheduled run still titled "(auto)"
             # falls back to the clock-hour map.
