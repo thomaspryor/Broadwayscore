@@ -187,11 +187,13 @@ function adjudicationSidedWithStars(data) {
  *
  * @param {object} data - review-text record, star already cleared by the caller
  * @param {string} reason - why the star was cleared (stored for audit)
+ * @param {{anySide?: boolean}} [opts] - anySide: drop it whichever side it took
+ *   (a human corrected the star, so the comparison the verdict judged is void)
  * @returns {boolean}
  */
-function invalidateStarSidedAdjudication(data, reason) {
+function invalidateStarSidedAdjudication(data, reason, { anySide = false } = {}) {
   if (!data || typeof data.adjudicatedScore !== 'number') return false;
-  if (!adjudicationSidedWithStars(data)) return false;
+  if (!anySide && !adjudicationSidedWithStars(data)) return false;
   const at = new Date().toISOString();
   data.adjudicatedScoreInvalidated = {
     score: data.adjudicatedScore,
