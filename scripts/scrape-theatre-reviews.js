@@ -475,6 +475,10 @@ function writeReviewFiles(reviews, showId, reviewTextsDir = REVIEW_TEXTS_DIR) {
 const INDEX_PATH = path.join(ARCHIVE_DIR, '_roundup-index.json');
 const COVERAGE_PATH = path.join(__dirname, '..', 'data', 'audit', 'theatre-reviews-coverage.json');
 const MAX_CONSECUTIVE_FETCH_FAILURES = 8;
+// Fetch time budget (the workflow timeout is 90 min). A cold archive drains over several runs
+// instead of timing out and losing the index; TR_FETCH_BUDGET_MIN overrides it.
+const FETCH_BUDGET_MS = (Number(process.env.TR_FETCH_BUDGET_MIN) || 65) * 60 * 1000;
+const INDEX_CHECKPOINT_EVERY = 10;
 
 function readJson(p, fallback) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return fallback; }
@@ -483,6 +487,14 @@ function readJson(p, fallback) {
 /** Legacy path, used only when the REST archive walk returned nothing. */
 async function legacyDiscover(weShows) {
   const matched = [];
+  if (TARGET_SHOWS) {
+    // Targeted runs: the WP search API reaches the whole archive (BRO-4431).
+    const targets = weShows.filter(s => TARGET_SHOWS.includes(s.id));
+    for (const f of await discoverRoundupsBySearch(targets)) {
+      matched.push({ roundup: { url: f.url, title: f.show.title, modified: null, date: null }, show: f.show, confidence: 'search', reasons: ['wp-search'] });
+    }
+    if (matched.length) return { matched, unmatched: [] };
+  }
   const roundupUrls = await discoverRoundupUrls();
   for (const url of roundupUrls) {
     const title = extractTitleFromSlug(url);
@@ -522,6 +534,10 @@ async function main() {
   const entries = [];
   let consecutiveFailures = 0;
   let aborted = false;
+  let budgetHit = false;
+  let fetchesSinceCheckpoint = 0;
+  const startedAt = Date.now();
+  const saveIndex = () => { if (!DRY_RUN) fs.writeFileSync(INDEX_PATH, JSON.stringify(index, null, 2)); };
   const archivedFor = new Set();
 
   for (const { roundup, show } of matched) {
@@ -542,6 +558,11 @@ async function main() {
     }
 
     if (!html) {
+      if (!aborted && !budgetHit && Date.now() - startedAt > FETCH_BUDGET_MS) {
+        budgetHit = true;
+        console.log(`::warning::theatre.reviews fetch time budget (${FETCH_BUDGET_MS / 60000} min) reached; remaining round-ups are fetched on the next run`);
+      }
+      if (budgetHit) { entries.push({ showId: show.id, roundupUrl: roundup.url, openingDate: show.openingDate || null, skipped: 'fetch-deferred' }); continue; }
       if (aborted) { entries.push({ showId: show.id, roundupUrl: roundup.url, openingDate: show.openingDate || null, skipped: 'fetch-aborted' }); continue; }
       console.log(`  Fetching: ${show.title} → ${roundup.url}`);
       try {
@@ -569,6 +590,7 @@ async function main() {
       if (!DRY_RUN) {
         fs.writeFileSync(archivePath, html);
         index[show.id] = { url: roundup.url, modified: roundup.modified || null, fetchedAt: new Date().toISOString() };
+        if (++fetchesSinceCheckpoint >= INDEX_CHECKPOINT_EVERY) { saveIndex(); fetchesSinceCheckpoint = 0; }
       }
       stats.pagesChecked++;
       await new Promise(r => setTimeout(r, 1500));
@@ -606,10 +628,14 @@ async function main() {
     orphanArchives = fs.readdirSync(ARCHIVE_DIR).filter(f => f.endsWith('.html')).map(f => f.replace(/\.html$/, '')).filter(id => !archivedFor.has(id));
   } catch { /* no archive dir */ }
 
+  // A degraded full run (REST walk incomplete or fetches aborted) must not replace the last good report.
+  const degraded = !TARGET_SHOWS && (!disc.complete || aborted);
   if (!DRY_RUN) {
-    fs.writeFileSync(INDEX_PATH, JSON.stringify(index, null, 2));
-    writeCoverage(entries, unmatched, orphanArchives, disc);
+    saveIndex();
+    if (degraded) console.log('::warning::degraded theatre.reviews run (incomplete REST walk or aborted fetches): coverage report not overwritten');
+    else writeCoverage(entries, unmatched, orphanArchives, disc);
   }
+  if (degraded) process.exitCode = 1;
 
   console.log('\n=== Summary ===');
   console.log(`  Round-ups discovered: ${disc.posts.length} (matched ${matched.length}, unmatched ${unmatched.length})`);
@@ -660,7 +686,7 @@ module.exports = { extractReviews, discoverRoundupUrls, extractTitleFromSlug, wr
 // Only run main() when executed directly (not when required)
 if (require.main === module) {
   main().then(() => {
-    process.exit(0);
+    process.exit(process.exitCode || 0);
   }).catch(err => {
     console.error('Fatal error:', err);
     process.exit(1);

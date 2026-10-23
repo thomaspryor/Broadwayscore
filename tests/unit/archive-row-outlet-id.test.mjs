@@ -101,13 +101,13 @@ describe('WE-aggregator ingestion wiring', () => {
   const WIRED = [
     { file: 'scripts/gather-reviews.js', minCalls: 5, label: 'LBO, WET, TR, SD, TS cache blocks' },
     { file: 'scripts/opening-night-poller.js', minCalls: 5, label: 'poller LBO, WET, TR, SD, TS blocks' },
-    { file: 'scripts/scrape-theatre-reviews.js', minCalls: 1, label: 'TR sweep writer' },
+    { file: 'scripts/lib/tr-reconcile.js', minCalls: 1, label: 'TR sweep writer (rowOutletId, used by scrape-theatre-reviews.js)' },
     { file: 'scripts/scrape-thestage-roundups.js', minCalls: 1, label: 'TS sweep writer' },
   ];
   for (const w of WIRED) {
     test(`${w.file} routes ${w.label} through resolveArchiveRowOutletId`, () => {
       const contents = readFileSync(resolve(ROOT, w.file), 'utf8');
-      assert.match(contents, /require\(['"]\.\/lib\/archive-outlet-identity['"]\)/,
+      assert.match(contents, /require\(['"]\.\/(?:lib\/)?archive-outlet-identity['"]\)/,
         `${w.file} must import resolveArchiveRowOutletId — removing the wire re-introduces stale/divergent outletIds (card 39b637c5-416f-81bb)`);
       const calls = contents.match(/resolveArchiveRowOutletId\s*\(/g) || [];
       assert.ok(calls.length >= w.minCalls,
