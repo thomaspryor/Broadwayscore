@@ -134,7 +134,7 @@ The owner works from the iPhone/iPad most of the time. Before saying something n
 
 ## When in doubt
 
-Do what you can from cloud first: most "local-only" things have a cloud route (sections above). If a Mac session could do it alone, file it `--dispatch --mac-only "<why>"` with a safe VERIFY (the Mac drain runs it, 08:30-22:30, Mac awake; usage: `linear-brain.js --help`), say so in one line and keep going. Never ask the owner to switch to a local session or to make a technical choice they can't evaluate.
+Do what you can from cloud first (sections above). Work a Mac session can do alone: `--dispatch --mac-only "<why>"` (`linear-brain.js --help`). Else say so in a line, keep going. Never ask the owner to switch to a local session or to make a technical choice they can't evaluate.
 
 ## Starting a worker session (BRO-5040)
 
