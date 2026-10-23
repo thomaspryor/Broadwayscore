@@ -1,0 +1,28 @@
+{
+  "issueNumber": "bro-5755",
+  "planId": "51e17050-1a65-42d6-a068-43542e112a21",
+  "status": "pending",
+  "createdAt": "2026-10-23T12:59:19.753Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Fill the missing Triumph synopsis from the Almeida Theatre production materials. Only triumph-off-west-end-2026 is changed; the existing oldValue guard refuses a stale correction.",
+    "steps": [
+      "Replace the missing synopsis with an original two-sentence summary of the Almeida Theatre production materials, verified 2026-10-23: https://almeida.co.uk/whats-on/triumph/. The existing data-edit writer stamps synopsisSource as manual."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "triumph-off-west-end-2026",
+        "field": "synopsis",
+        "oldValue": null,
+        "newValue": "Press secretary Iris is falling for a reporter while working to keep an emperor happy. Drawing on Suetonius's The Twelve Caesars, Caryl Churchill's short political satire explores the uneasy relationship between imperial power, the press and private desire.",
+        "description": "Replace the missing synopsis with an original two-sentence summary of the Almeida Theatre production materials, verified 2026-10-23: https://almeida.co.uk/whats-on/triumph/. The existing data-edit writer stamps synopsisSource as manual."
+      }
+    ]
+  }
+}
