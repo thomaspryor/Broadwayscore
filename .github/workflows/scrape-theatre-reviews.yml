@@ -51,6 +51,11 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
@@ -84,14 +89,15 @@ jobs:
           # shellcheck disable=SC2086
           node scripts/scrape-theatre-reviews.js $ARGS
 
-      - name: Commit archives and review files
+      # BRO-6084: the round-up HTML and _roundup-index.json live in the private aggregator-archive
+      # repo (copyrighted content, never the public repo). Persisting them is what lets every
+      # weekly run skip unchanged archived pages instead of refetching ~250 round-ups.
+      - name: Push aggregator-archive to private repo
         if: always() && inputs.dry_run != true
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Aggregator archives are pushed to private repo via push-review-texts (below).
-          # Do NOT commit them to the public repo — they contain copyrighted content.
-          echo "Aggregator archives will be pushed to private repo only"
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: theatre.reviews round-up archive'
 
       - name: Push review-texts to private repo
         if: always() && inputs.dry_run != true
@@ -99,6 +105,26 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from scrape-theatre-reviews'
+
+      # BRO-6084: per-show coverage report (listed / held / excluded / missing + unmatched round-ups).
+      # Counts and outlet names only, no review text. Advisory: a push failure warns, never fails the job.
+      - name: Commit theatre.reviews coverage report
+        if: always() && inputs.dry_run != true
+        continue-on-error: true
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/theatre-reviews-coverage.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No coverage report changes to commit"
+            exit 0
+          fi
+          bash scripts/lib/check-file-sizes.sh --advisory
+          COUNTS=$(node -e "const m=require('./data/audit/theatre-reviews-coverage.json')._meta; console.log(m.showsMatched+' shows, '+m.missing+' missing, '+m.excluded+' excluded, '+m.unmatched+' unmatched')")
+          git commit -m "audit: theatre.reviews coverage ($COUNTS)
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          bash scripts/lib/push-with-retry.sh
 
       - name: Commit scraper-spend ledger
         if: always() && inputs.dry_run != true
