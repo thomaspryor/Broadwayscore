@@ -53,7 +53,7 @@ const RESUME_INSTRUCTIONS = (ref, run, kind) => [
     `Nothing to fix: run ${RERUN_LAND(run)}. "re-run requested" → follow it. "skip (attempts-exhausted)" → merge origin/main into the ref and push to the SAME ref (a fresh run). Any other skip (already re-running, landed, superseded) → follow the ref, never push on top of a live landing. Without gh: re-run the failed jobs of run ${run.id} through the GitHub MCP tools.`,
   ] : [
   `Check it out: git worktree remove --force .claude/worktrees/resume 2>/dev/null; git fetch origin ${ref} && git worktree add --detach .claude/worktrees/resume FETCH_HEAD.`,
-  `Read why Land refused run ${run.id}${run.url ? ` (${run.url})` : ''}: list its failed jobs (gh api repos/${REPO}/actions/runs/${run.id}/jobs --jq '.jobs[] | select(.conclusion=="failure") | .id'), then each job's annotations (gh api repos/${REPO}/check-runs/<job id>/annotations) or log (gh api repos/${REPO}/actions/jobs/<job id>/logs).`,
+  `Read why Land refused run ${run.id}${run.url ? ` (${run.url})` : ''}: list its failed jobs (gh api repos/${REPO}/actions/runs/${run.id}/jobs --jq '.jobs[] | select(.conclusion=="failure") | .id'), then each job's annotations (gh api repos/${REPO}/check-runs/<job id>/annotations) or log (gh api repos/${REPO}/actions/jobs/<job id>/logs; if gh says the response contains terminal escape sequences, add --allow-escape-sequences).`,
   'Fix it there (merge origin/main first if it conflicts), then push to the SAME ref:',
   `git push origin HEAD:refs/heads/${ref}`,
   ]),
