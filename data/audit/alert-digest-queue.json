@@ -954,5 +954,36 @@
       }
     ],
     "queuedAt": "2026-10-23T22:26:22.790Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6083-coordinator-registry",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6083-coordinator-registry",
+    "description": "land.yml did not land land/bro-6083-coordinator-registry: the unit-tests-node gate went red at c10009a9ca. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40035315000",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6083-coordinator-registry"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "c10009a9ca2327c4f1286c5703ee6df7924781f9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40035315000"
+      }
+    ],
+    "queuedAt": "2026-10-23T23:00:07.188Z"
   }
 ]
