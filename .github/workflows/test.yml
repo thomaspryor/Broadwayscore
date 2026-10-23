@@ -109,6 +109,7 @@ on:
       - 'scripts/audit-syndicated-critic-pairs.js'
       # BRO-6018: CLI + sibling scripts/*.test.mjs; a solo edit would otherwise trigger ZERO CI.
       - 'scripts/audit-verified-miss-presence.js'
+      - 'scripts/audit-copied-aggregator-stars.js'
       - 'scripts/audit-multi-verdict-stars.js'
       # tests/unit/run-contamination.test.mjs requires class2/3/5 from this audit (BRO-5261).
       - 'scripts/audit-run-contamination.js'

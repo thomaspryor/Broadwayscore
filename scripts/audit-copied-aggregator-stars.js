@@ -1,0 +1,80 @@
+#!/usr/bin/env node
+/**
+ * audit-copied-aggregator-stars.js (BRO-6018): finds review-text files that carry a SOURCELESS
+ * aggregatorStars (no aggregatorStarsSource) equal to the stars on a same-show sibling from the
+ * same outlet family (same registrable host, or outlet names sharing a stem such as Daily Mail
+ * and Mail on Sunday). Those stars were relayed from the sibling, not read from the critic's
+ * own page, and they anchor the score. Report only: no prose, no writes.
+ *
+ *   node scripts/audit-copied-aggregator-stars.js [--json] [--show=ID]
+ *   (needs data/review-texts; in cloud: scripts/cloud-run-script.js --review-texts ...)
+ */
+'use strict';
+const fs = require('fs');
+const path = require('path');
+if (require('./lib/cli-help.js').hasHelpFlag(process.argv.slice(2))) {
+  console.log('audit-copied-aggregator-stars.js [--json] [--show=ID]: sourceless aggregatorStars equal to a same-outlet-family sibling (read-only)');
+  process.exit(0);
+}
+const ROOT = path.join(__dirname, '..');
+
+const STOP = new Set(['the', 'on', 'sunday', 'online', 'uk', 'new', 'york', 'london', 'daily', 'times', 'magazine', 'news', 'theatre', 'theater']);
+function host(u) {
+  try {
+    const h = new URL(u).hostname.replace(/^www\./, '').split('.');
+    const sl = /^(co|com|org|net|ac|gov)$/.test(h[h.length - 2] || '') && h[h.length - 1].length === 2;
+    return h.slice(sl ? -3 : -2).join('.');
+  } catch (_) { return ''; }
+}
+function stems(rec) {
+  const words = String(rec.outletId || rec.outlet || '').toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+  return new Set(words.filter((w) => w.length > 2 && !STOP.has(w)).concat(words.includes('mail') ? ['mail'] : []));
+}
+function sameFamily(a, b) {
+  if (a.outletId && a.outletId === b.outletId) return true;
+  const ha = host(a.url); const hb = host(b.url);
+  if (ha && ha === hb) return true;
+  const sa = stems(a); const sb = stems(b);
+  for (const w of sa) if (sb.has(w)) return true;
+  return false;
+}
+const norm = (v) => String(v == null ? '' : v).replace(/\s+/g, '').toLowerCase();
+
+/** Pure: files = [{file, data}] of one show -> findings (no prose). */
+function findCopiedStars(files) {
+  const out = [];
+  for (const f of files) {
+    const d = f.data;
+    if (d.aggregatorStars == null || d.aggregatorStarsSource) continue;
+    const sib = files.find((g) => g.file !== f.file && g.data.aggregatorStars != null
+      && norm(g.data.aggregatorStars) === norm(d.aggregatorStars)
+      && (g.data.criticName !== d.criticName || g.data.outletId !== d.outletId)
+      && sameFamily(d, g.data));
+    if (sib) {
+      out.push({ file: f.file, outletId: d.outletId, critic: d.criticName || null, stars: d.aggregatorStars, scoreSource: d.scoreSource || null,
+        assignedScore: d.assignedScore ?? null, hasOwnOriginalScore: d.originalScore != null, siblingFile: sib.file, siblingSourced: !!sib.data.aggregatorStarsSource });
+    }
+  }
+  return out;
+}
+
+function main() {
+  const argv = process.argv.slice(2);
+  const dir = ['data/review-texts', '/home/user/broadway-review-texts/data/review-texts'].map((p) => path.join(ROOT, p)).find((p) => fs.existsSync(p));
+  if (!dir) { console.error('data/review-texts not available'); process.exit(2); }
+  const only = (argv.find((a) => a.startsWith('--show=')) || '').slice(7);
+  const rows = [];
+  for (const id of fs.readdirSync(dir).filter((x) => !only || x === only)) {
+    const base = path.join(dir, id);
+    if (!fs.statSync(base).isDirectory()) continue;
+    const files = fs.readdirSync(base).filter((f) => f.endsWith('.json')).map((f) => {
+      try { return { file: f, data: JSON.parse(fs.readFileSync(path.join(base, f), 'utf8')) }; } catch (_) { return null; }
+    }).filter(Boolean);
+    for (const r of findCopiedStars(files)) rows.push({ showId: id, ...r });
+  }
+  if (argv.includes('--json')) { console.log(JSON.stringify(rows, null, 1)); return; }
+  for (const r of rows) console.log(`${r.showId}/${r.file} outlet=${r.outletId} stars=${r.stars} score=${r.assignedScore} src=${r.scoreSource} ownOriginal=${r.hasOwnOriginalScore} copiedFrom=${r.siblingFile}${r.siblingSourced ? ' (sourced)' : ''}`);
+  console.log(`TOTAL ${rows.length} file(s) with copied sourceless aggregatorStars`);
+}
+module.exports = { findCopiedStars, sameFamily };
+if (require.main === module) main();
