@@ -1,42 +1,53 @@
 {
-  "updatedAt": "2026-10-23T13:49:11.355Z",
-  "processed": 102,
-  "failed": 54,
-  "successRate": "65.4%",
+  "updatedAt": "2026-10-23T14:16:57.791Z",
+  "processed": 79,
+  "failed": 51,
+  "successRate": "60.8%",
   "tierBreakdown": {
-    "playwright": 40,
+    "playwright": 34,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 13,
-    "scrapingbee": 2,
-    "brightdata": 4,
+    "scrapingdog": 3,
+    "scrapingbee": 3,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 44
+    "archive": 38
   },
   "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-23T13:35:43.821Z",
+      "t": "2026-10-23T13:53:01.624Z",
       "event": "bb-session",
-      "session": "3ce28023",
-      "url": "https://online.wsj.com/article/SB10001424127887324493704578428590892936624.html"
+      "session": "7447e7b9",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
     },
     {
-      "t": "2026-10-23T13:35:44.523Z",
+      "t": "2026-10-23T13:53:02.454Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-23T13:36:02.254Z",
+      "t": "2026-10-23T14:10:17.221Z",
       "event": "bb-session",
-      "session": "bb8a062a",
-      "url": "https://online.wsj.com/article/SB10001424127887324493704578428590892936624.html"
+      "session": "54f9e03f",
+      "url": "https://www.nytimes.com/2026/04/25/theater/rheology-inspirations.html"
     },
     {
-      "t": "2026-10-23T13:36:02.878Z",
+      "t": "2026-10-23T14:10:18.178Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-23T14:14:20.125Z",
+      "event": "bb-session",
+      "session": "f8597d07",
+      "url": "https://www.nytimes.com/2026/04/03/theater/burnout-paradise-treadmills-theater-o"
+    },
+    {
+      "t": "2026-10-23T14:14:20.982Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
