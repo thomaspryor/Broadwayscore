@@ -78,7 +78,7 @@ function isWestEndVenue(venue) {
 // category='off-broadway', and build-ob-venues.js then re-learns the venue into
 // the allowlist, restarting the very loop this is here to break. \W+ separators
 // absorb the punctuation variants and theat(?:er|re) absorbs the spelling.
-const NON_NYC_VENUE_RE = /state\W+theat(?:er|re)\W+(?:new\W+jersey|nj\b)|george\W+street\W+playhouse/i;
+const NON_NYC_VENUE_RE = /state\W+theat(?:er|re)\W+(?:new\W+jersey|nj\b)|george\W+st(?:reet|\.)?\W+playhouse/i;
 
 // Structural "this venue is plainly not in New York" detection, for catching
 // touring/regional houses NON_NYC_VENUE_RE does not yet name by hand.
@@ -366,7 +366,7 @@ function isOffBroadwayCategory(show) {
  */
 function isMisCategorisedNonNycRow(show) {
   if (!show || !show.venue) return false;
-  return (isBroadwayCategory(show) || isOffBroadwayCategory(show)) && isNonNycLocale(show.venue);
+  return (isBroadwayCategory(show) || isOffBroadwayCategory(show)) && (isNonNycLocale(show.venue) || isNonNycVenue(show.venue));
 }
 
 /**

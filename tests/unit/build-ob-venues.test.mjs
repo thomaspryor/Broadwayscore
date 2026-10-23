@@ -80,6 +80,8 @@ test('BLOCKLIST covers known neighborhood/placeholder noise but not real venues'
 test('George Street Playhouse (New Brunswick, NJ) is rejected (BRO-6071)', () => {
   assert.ok(isNonNycVenue('George Street Playhouse'), 'minted the-unexpected-3rd-off-broadway-2026 for a NJ regional house');
   assert.ok(isNonNycVenue('George Street Playhouse, New Brunswick, NJ'));
+  assert.ok(isNonNycVenue('George St. Playhouse'));
+  assert.ok(isMisCategorisedNonNycRow({ category: 'off-broadway', venue: 'George Street Playhouse' }));
 });
 
 test('the State Theatre New Jersey touring house is rejected (BRO-3211)', () => {
@@ -137,7 +139,7 @@ test('no venue outside New York is in the Off-Broadway allowlist', () => {
   // Uses the SHARED isNonNycLocale predicate rather than a copy of its regexes,
   // so this test and validate-data.js's category/venue gate cannot drift
   // (CLAUDE.md 15 — require the real function, never restate the logic).
-  const leaked = committed.filter(v => isNonNycLocale(v));
+  const leaked = committed.filter(v => isNonNycLocale(v) || isNonNycVenue(v));
   assert.deepEqual(
     leaked, [],
     `non-NYC venue(s) in the Off-Broadway allowlist: ${leaked.join(', ')}. ` +
