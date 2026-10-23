@@ -30,6 +30,7 @@
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
+const { urlHeldBySibling } = require('./lib/review-slot-guards');
 const https = require('https');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { isScoreable } = require('./lib/is-scoreable');
@@ -318,7 +319,17 @@ async function phase0DiscoverUrls(reviews) {
         } catch (e) { /* non-fatal */ }
       }
 
-      if (result && result !== '__SERP_UNAVAILABLE__') {
+      // BRO-5851: same guard as retry-wrong-urls/gather-reviews (BRO-5858). A
+      // SERP hit a sibling file already holds is that file's review, never
+      // this one's: thelma-and-louise...-2026 got Susannah Butter's Times URL
+      // on the Clive Davis stub and validate-data then blocked every
+      // shows.json writer.
+      const serpOwner = result && result !== '__SERP_UNAVAILABLE__' && review.filePath
+        ? urlHeldBySibling({ showDir: path.dirname(review.filePath), url: result, selfFilename: path.basename(review.filePath) })
+        : null;
+      if (serpOwner) {
+        console.log(`    ✗ refused ${result.substring(0, 80)}: already ${serpOwner.filename}'s url (${serpOwner.criticName})`);
+      } else if (result && result !== '__SERP_UNAVAILABLE__') {
         found++;
         stats.phase0UrlsFound++;
         console.log(`    ✓ Found URL: ${result.substring(0, 80)}`);
