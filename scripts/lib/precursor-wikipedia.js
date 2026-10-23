@@ -169,6 +169,24 @@ function normalizeForCompare(title) {
  *  Safety: if `currentEntryCount` is provided AND the new payload has fewer
  *  entries than the existing file by more than 5%, the write is rejected
  *  unless `force` is true. Parsing failures shouldn't silently wipe data. */
+/**
+ * Year-level merge of one scraped entry over the stored one (BRO-5817). The
+ * year-page scrapers store winner=show + winnerPersonName/winnerEntries; the
+ * per-category scrapers store winner=person and carry neither. A per-category
+ * write must not replace a year-page entry with its person-keyed twin: that
+ * dropped winnerPersonName from 33 Drama Desk rows on 2026-10-23 (the year-page
+ * step had failed with "MISSING page" and its failure is swallowed in the
+ * workflow), which turned main's Unit Tests red. Keep the stored entry and
+ * add any nominees the new scrape found.
+ */
+function mergeYearEntry(stored, scraped) {
+  const hasPerson = (e) => !!(e && (e.winnerPersonName || (e.winnerEntries && e.winnerEntries.length)));
+  if (!stored || !hasPerson(stored) || hasPerson(scraped)) return scraped;
+  const nominees = [...(stored.nominees || [])];
+  for (const n of scraped.nominees || []) if (!nominees.includes(n)) nominees.push(n);
+  return { ...stored, nominees };
+}
+
 function writePrecursorJson(name, data, opts = {}) {
   const fp = path.join(PRECURSORS_DIR, `${name}.json`);
   let oldCount = 0;
@@ -210,7 +228,8 @@ function writePrecursorJson(name, data, opts = {}) {
           // scraped window are preserved (prevents MIN_YEAR from wiping history).
           const newYears = new Set(entries.map((e) => e.year));
           const preserved = existing.data[cat].filter((e) => !newYears.has(e.year));
-          mergedData[cat] = [...entries, ...preserved].sort((a, b) => (a.year || 0) - (b.year || 0));
+          const merged = entries.map((e) => mergeYearEntry(existing.data[cat].find((o) => o.year === e.year), e));
+          mergedData[cat] = [...merged, ...preserved].sort((a, b) => (a.year || 0) - (b.year || 0));
         } else {
           mergedData[cat] = entries;
         }
@@ -257,6 +276,7 @@ function sleep(ms) {
 
 module.exports = {
   fetchWikitext,
+  mergeYearEntry,
   cleanWikiText,
   extractTables,
   splitRows,
