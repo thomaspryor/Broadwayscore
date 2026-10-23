@@ -57,7 +57,7 @@ audit-cross-production-weekly.yml  # weekly internal audit; a stale week delays 
 audit-cross-production.yml  # weekly internal audit; a stale week delays contamination findings only
 audit-review-quality.yml  # weekly internal QA report (BRO-3492 triage); a stale week delays quality findings, no user-facing data
 audit-touring-contamination.yml  # weekly internal LLM audit; a stale week delays touring-contamination findings only
-backfill-cast.yml  # weekly cast backfill; update-cast-changes.yml (paged) keeps live casts fresh
+backfill-cast.yml  # weekly cast refresh + daily missing-file pass (a missed day re-runs next day); update-cast-changes.yml (paged) keeps live casts fresh
 brand-mention-monitor.yml  # daily brand-mention scan for the owner's digest; a missed day loses nothing urgent
 check-cookie-health.yml  # twice-weekly paywall cookie probe; collection failures also surface in collect-review-texts (paged)
 check-corpus-drift.yml  # daily non-blocking drift audit; its digest row ages visibly when it stops
