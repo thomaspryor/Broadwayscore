@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-23T15:17:57.999Z",
-  "processed": 99,
-  "failed": 51,
-  "successRate": "66.0%",
+  "updatedAt": "2026-10-23T15:39:35.934Z",
+  "processed": 116,
+  "failed": 62,
+  "successRate": "65.2%",
   "tierBreakdown": {
-    "playwright": 43,
+    "playwright": 55,
     "amp": 0,
     "browserbase": 6,
     "directCookies": 0,
     "scrapingdog": 4,
-    "scrapingbee": 4,
+    "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 47
+    "archive": 51
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-10-23T14:43:35.677Z",
@@ -48,6 +48,42 @@
       "t": "2026-10-23T15:11:58.897Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-23T15:29:53.143Z",
+      "event": "bb-session",
+      "session": "fecd2dea",
+      "url": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-BEING-HUMAN-Ap"
+    },
+    {
+      "t": "2026-10-23T15:30:12.504Z",
+      "event": "bb-session",
+      "session": "bcb9c216",
+      "url": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-BEING-HUMAN-Ap"
+    },
+    {
+      "t": "2026-10-23T15:35:47.525Z",
+      "event": "bb-session",
+      "session": "69eb9e93",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-23T15:35:56.219Z",
+      "event": "bb-session",
+      "session": "256428c7",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-23T15:37:01.863Z",
+      "event": "bb-session",
+      "session": "b800f0a6",
+      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
+    },
+    {
+      "t": "2026-10-23T15:37:14.166Z",
+      "event": "bb-session",
+      "session": "17360e85",
+      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
     }
   ]
 }
