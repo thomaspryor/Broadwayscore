@@ -1,65 +1,70 @@
 {
-  "runDate": "2026-10-23T04:28:08.993Z",
+  "runDate": "2026-10-23T08:48:28.512Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "anatomy-of-a-suicide-west-end-2017,annie-west-end-2017,travesties-west-end-2017",
+    "showFilter": "ilford-boy-west-end-2026,derren-brown-only-human-west-end-2026,the-curious-case-of-benjamin-button-off-broadway-2026,surinderella-off-west-end-2026,king-of-the-yees-off-broadway-2026,phyl-off-broadway-2026,billy-crystal-860-2026,jest-to-impress-off-broadway-2026,martin-guerre-west-end-2026,the-pianist-off-west-end-2026,the-imaginary-invalid-2026,machine-learning-off-broadway-2026,queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026,women-who-eat-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 9,
-    "failed": 6,
+    "processed": 10,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "60.0%"
+    "successRate": "58.8%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 6,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 0,
+    "scrapingdog": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 4
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 8,
-    "tier1Success": 5,
+    "tier1Attempts": 12,
+    "tier1Success": 8,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
+    "tier1_5Attempts": 3,
+    "tier1_5Success": 3,
     "tier1_9Attempts": 2,
-    "tier1_9Success": 2,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier1_9Success": 1,
+    "tier2Attempts": 5,
+    "tier2Success": 1,
+    "tier3Attempts": 2,
+    "tier3Success": 1,
+    "tier3_6Attempts": 2,
     "tier3_6Success": 0,
-    "tier4Attempts": 5,
-    "tier4Success": 3,
-    "totalFailed": 6,
-    "scrapingBeePageCredits": 10,
+    "tier4Attempts": 8,
+    "tier4Success": 0,
+    "totalFailed": 7,
+    "scrapingBeePageCredits": 40,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 0.5,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 9,
-    "failed": 6,
+    "processed": 10,
+    "failed": 7,
     "shows": [
-      "anatomy-of-a-suicide-west-end-2017",
-      "annie-west-end-2017",
-      "travesties-west-end-2017"
+      "billy-crystal-860-2026",
+      "derren-brown-only-human-west-end-2026",
+      "ilford-boy-west-end-2026",
+      "martin-guerre-west-end-2026",
+      "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
+      "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "the-imaginary-invalid-2026",
+      "the-pianist-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -68,66 +73,90 @@
     }
   },
   "processed": [
-    "anatomy-of-a-suicide-west-end-2017/guardian--michael-billington.json",
-    "anatomy-of-a-suicide-west-end-2017/independent--paul-taylor.json",
-    "anatomy-of-a-suicide-west-end-2017/standard--fiona-mountford.json",
-    "anatomy-of-a-suicide-west-end-2017/thestage--natasha-tripney.json",
-    "annie-west-end-2017/express-uk--clair-woodward.json",
-    "annie-west-end-2017/hampstead-highgate-express--caroline-david.json",
-    "annie-west-end-2017/times-uk--dominic-maxwell.json",
-    "travesties-west-end-2017/guardian--unknown.json",
-    "travesties-west-end-2017/maturetimes--unknown.json"
+    "derren-brown-only-human-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "derren-brown-only-human-west-end-2026/sunday-times--clive-davis.json",
+    "derren-brown-only-human-west-end-2026/times-uk--clive-davis.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/new-york-city-theatre--unknown.json",
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
+    "ilford-boy-west-end-2026/guardian--kate-wyver.json",
+    "ilford-boy-west-end-2026/bestoftheatre--milo-garth.json",
+    "ilford-boy-west-end-2026/telegraph--fiona-mountford.json",
+    "ilford-boy-west-end-2026/whatsonstage--alex-wood.json",
+    "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json"
   ],
   "failed": [
-    "anatomy-of-a-suicide-west-end-2017/britishtheatrecom--mark-ludmon.json",
-    "annie-west-end-2017/britishtheatrecom--julian-eaves.json",
-    "travesties-west-end-2017/britishtheatrecom--unknown.json",
-    "travesties-west-end-2017/hampstead-highgate-express--unknown.json",
-    "travesties-west-end-2017/sunday-times--unknown.json",
-    "travesties-west-end-2017/telegraph--unknown.json"
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
+    "the-pianist-off-west-end-2026/theupcoming--jim-compton-hall.json",
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "anatomy-of-a-suicide-west-end-2017/guardian--michael-billington.json",
-      "anatomy-of-a-suicide-west-end-2017/independent--paul-taylor.json",
-      "anatomy-of-a-suicide-west-end-2017/standard--fiona-mountford.json",
-      "anatomy-of-a-suicide-west-end-2017/thestage--natasha-tripney.json",
-      "annie-west-end-2017/express-uk--clair-woodward.json",
-      "annie-west-end-2017/hampstead-highgate-express--caroline-david.json",
-      "annie-west-end-2017/times-uk--dominic-maxwell.json",
-      "travesties-west-end-2017/guardian--unknown.json",
-      "travesties-west-end-2017/maturetimes--unknown.json"
+      "derren-brown-only-human-west-end-2026/all-that-dazzles-uk--unknown.json",
+      "derren-brown-only-human-west-end-2026/sunday-times--clive-davis.json",
+      "derren-brown-only-human-west-end-2026/times-uk--clive-davis.json",
+      "the-curious-case-of-benjamin-button-off-broadway-2026/new-york-city-theatre--unknown.json",
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
+      "ilford-boy-west-end-2026/guardian--kate-wyver.json",
+      "ilford-boy-west-end-2026/bestoftheatre--milo-garth.json",
+      "ilford-boy-west-end-2026/telegraph--fiona-mountford.json",
+      "ilford-boy-west-end-2026/whatsonstage--alex-wood.json",
+      "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json"
     ],
     "failed": [
-      "anatomy-of-a-suicide-west-end-2017/britishtheatrecom--mark-ludmon.json",
-      "annie-west-end-2017/britishtheatrecom--julian-eaves.json",
-      "travesties-west-end-2017/britishtheatrecom--unknown.json",
-      "travesties-west-end-2017/hampstead-highgate-express--unknown.json",
-      "travesties-west-end-2017/sunday-times--unknown.json",
-      "travesties-west-end-2017/telegraph--unknown.json"
+      "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
+      "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+      "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
+      "the-pianist-off-west-end-2026/theupcoming--jim-compton-hall.json",
+      "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+      "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "anatomy-of-a-suicide-west-end-2017/thestage--natasha-tripney.json",
-      "annie-west-end-2017/express-uk--clair-woodward.json"
+      "derren-brown-only-human-west-end-2026/all-that-dazzles-uk--unknown.json",
+      "the-curious-case-of-benjamin-button-off-broadway-2026/new-york-city-theatre--unknown.json",
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
+      "ilford-boy-west-end-2026/bestoftheatre--milo-garth.json",
+      "ilford-boy-west-end-2026/whatsonstage--alex-wood.json",
+      "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json"
     ],
     "amp": [],
-    "browserbase": [],
-    "directCookies": [],
-    "scrapingdog": [
-      "annie-west-end-2017/hampstead-highgate-express--caroline-david.json"
+    "browserbase": [
+      "data/review-texts/derren-brown-only-human-west-end-2026/sunday-times--clive-davis.json",
+      "derren-brown-only-human-west-end-2026/sunday-times--clive-davis.json",
+      "data/review-texts/derren-brown-only-human-west-end-2026/times-uk--clive-davis.json",
+      "derren-brown-only-human-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json"
     ],
-    "scrapingbee": [],
+    "directCookies": [],
+    "scrapingdog": [],
+    "scrapingbee": [
+      "ilford-boy-west-end-2026/telegraph--fiona-mountford.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "anatomy-of-a-suicide-west-end-2017/independent--paul-taylor.json",
-      "anatomy-of-a-suicide-west-end-2017/standard--fiona-mountford.json",
-      "annie-west-end-2017/times-uk--dominic-maxwell.json",
-      "travesties-west-end-2017/maturetimes--unknown.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "TheWrap": {
+      "count": 1,
+      "domain": "thewrap.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "North West End": {
+      "count": 1,
+      "domain": "northwestend.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
