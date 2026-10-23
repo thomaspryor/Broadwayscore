@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T19:44:25.334Z",
+  "generatedAt": "2026-10-23T19:56:41.122Z",
   "windowDays": 45,
   "showsScanned": 203,
   "gaps": [
@@ -17,9 +17,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=fences-off-west-end-2026 --url=https://www.independent.co.uk/arts-entertainment/films/news/tom-skerritt-dead-top-gun-picket-fences-b3071792.html --outlet=independent   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-23T15:35:10.357Z",
-      "fileAgeHours": 4.1529372222222225,
+      "fileAgeHours": 4.357588333333333,
       "gapSeenAt": "2026-10-23T17:43:35.215Z",
-      "nonTerminalAgeHours": 2.0139219444444443
+      "nonTerminalAgeHours": 2.2183075
     },
     {
       "showId": "slam-frank-off-broadway-2026",
@@ -35,9 +35,9 @@
       "forumLinkRecoveryCount": 7,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=slam-frank-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-18T14:14:33.814Z",
-      "fileAgeHours": 125.49662666666667,
+      "fileAgeHours": 125.70123527777778,
       "gapSeenAt": "2026-10-23T02:17:11.385Z",
-      "nonTerminalAgeHours": 17.45387472222222
+      "nonTerminalAgeHours": 17.658260277777778
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -53,9 +53,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 747.0642238888889,
+      "fileAgeHours": 747.26876,
       "gapSeenAt": "2026-10-23T02:17:11.385Z",
-      "nonTerminalAgeHours": 17.45387472222222
+      "nonTerminalAgeHours": 17.658260277777778
     }
   ],
   "contradictions": []

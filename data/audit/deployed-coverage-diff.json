@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T19:44:47.394Z",
+  "generatedAt": "2026-10-23T19:57:01.512Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -7,31 +7,26 @@
   "clean": 264,
   "defective": 1,
   "byType": {
-    "missing-from-prod": 1,
-    "score-drift": 1
+    "missing-from-prod": 1
   },
   "shows": [
     {
-      "showId": "phyl-off-broadway-2026",
-      "title": "Phyl",
-      "openingDate": "2026-10-22",
+      "showId": "cadel-lungs-on-legs-west-end-2026",
+      "title": "Cadel: Lungs On Legs",
+      "openingDate": "2026-10-16",
       "ok": false,
       "defects": [
         {
           "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: times-square-chronicles"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76.64 vs local 77.06 (Δ0.42)"
+          "detail": "1 scored outlet(s) absent from the deployed payload: loureviews"
         }
       ],
       "missingFromProd": [
-        "times-square-chronicles"
+        "loureviews"
       ],
-      "localCount": 7,
-      "deployedCount": 6,
-      "firstDefectAt": "2026-10-23T19:44:43.171Z"
+      "localCount": 14,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-10-23T19:56:55.812Z"
     }
   ],
   "persistentDefective": 0,
