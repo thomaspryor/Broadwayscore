@@ -421,7 +421,11 @@ function googleNewsAdapter({ maxUnwrap = 8 } = {}) {
     name: 'google-news', kind: 'feed', phase: 'cheap',
     async discover({ show, fetchText }) {
       const london = /west[-\s]?end|london/i.test(String(show.category || ''));
-      const q = new URLSearchParams({ q: `"${show.title}" review`, hl: london ? 'en-GB' : 'en-US', gl: london ? 'GB' : 'US', ceid: london ? 'GB:en' : 'US:en' });
+      // Press titles too (show.akaTitles): critics reviewed Billy Crystal 860 as "860", and the listing-title search
+      // found 1 of 13 (BRO-5891 fixed it in the regular pipeline's google-news-rss.js; BRO-5993 here).
+      const { searchTitles, headlineNamesShow } = require('../google-news-rss');
+      const titles = searchTitles(show);
+      const q = new URLSearchParams({ q: `${titles.map((t) => `"${t}"`).join(' OR ')} review`, hl: london ? 'en-GB' : 'en-US', gl: london ? 'GB' : 'US', ceid: london ? 'GB:en' : 'US:en' });
       const xml = await fetchText(`https://news.google.com/rss/search?${q}`);
       const items = [];
       for (const m of String(xml).matchAll(/<item[\s>]([\s\S]*?)<\/item>/gi)) {
@@ -431,7 +435,7 @@ function googleNewsAdapter({ maxUnwrap = 8 } = {}) {
         const sourceUrl = ((m[1].match(/<source[^>]*\burl=["']([^"']+)["']/i) || [])[1] || '').trim();
         const outlet = sourceUrl && resolveOutletFromUrl(sourceUrl);
         if (hostOf(link) !== 'news.google.com' || !outlet) continue; // unknown publishers are never ingested blind
-        if (!titleMatchesShow(title, show.title, { fuzzy: true })) continue;
+        if (!headlineNamesShow(title, show)) continue; // listing title, or a press title plus a listing word ("New Balance 860" is not 860)
         items.push({ title, link, sourceUrl, pubDate: grab('pubDate'), tier: outletTier(outlet.outletId) });
       }
       // The unwrap budget goes to national outlets first, as in google-news-rss.js: in feed order smaller outlets could use it

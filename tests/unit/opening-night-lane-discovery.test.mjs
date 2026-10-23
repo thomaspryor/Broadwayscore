@@ -631,3 +631,21 @@ test('section index: every <article> card on an index page is read, not only the
   const out = await a.discover({ show: SHOW, fetchText });
   assert.deepEqual(out.map((c) => c.url), ['https://www.theguardian.com/stage/2026/oct/18/other-desert-cities-review']);
 });
+
+test('google news searches press titles too, and a press-title-only headline needs a listing word (BRO-5993)', async () => {
+  const show = { id: 'billy-crystal-860-2026', title: 'Billy Crystal 860', akaTitles: ['860'], category: 'broadway' };
+  const asked = [];
+  const item = (title, src) => `<item><title>${title}</title><link>https://news.google.com/rss/articles/${encodeURIComponent(title)}</link><source url="${src}">x</source></item>`;
+  const rss = `<rss><channel>${item('Review: 860, Billy Crystal’s grief-stricken Broadway tribute', 'https://www.theatermania.com')}${item('New Balance 860 v15 review', 'https://www.theatermania.com')}</channel></rss>`;
+  const fetchText = async (url) => {
+    asked.push(url);
+    if (url.startsWith('https://news.google.com/rss/search')) return rss;
+    return '<a href="https://www.theatermania.com/news/review-860-billy-crystal_1857726/">x</a>';
+  };
+  const a = d.googleNewsAdapter();
+  await a.discover({ show, fetchText });
+  const q = new URL(asked[0]).searchParams.get('q');
+  assert.equal(q, '"Billy Crystal 860" OR "860" review');
+  const unwrapped = asked.filter((u) => u.startsWith('https://news.google.com/rss/articles/')).map((u) => decodeURIComponent(u.split('/articles/')[1]));
+  assert.deepEqual(unwrapped, ['Review: 860, Billy Crystal’s grief-stricken Broadway tribute'], 'the running-shoe headline is never unwrapped');
+});

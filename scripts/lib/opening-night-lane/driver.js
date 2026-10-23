@@ -92,6 +92,11 @@ function onDiskUrlsFor(reviewsFile, showId) {
   try { return JSON.parse(fs.readFileSync(reviewsFile, 'utf8')).reviews.filter((r) => r && r.showId === showId && r.url).map((r) => r.url); } catch { return []; }
 }
 
+/** {criticName, outletId} of this show's rows in reviews.json, so the lane's syndication check sees published primaries. */
+function onDiskRowsFor(reviewsFile, showId) {
+  try { return JSON.parse(fs.readFileSync(reviewsFile, 'utf8')).reviews.filter((r) => r && r.showId === showId).map((r) => ({ criticName: r.criticName, outletId: r.outletId })); } catch { return []; }
+}
+
 /** Show Score's same-title guards need the curated URL map and every show; without them the adapter refuses to run. */
 function showScoreGuards(repoDir) {
   const ss = require('../show-score-discover');
@@ -163,10 +168,11 @@ function buildRealLaneDeps({
         // One instance for the whole night: its push queue and pending merges must be shared by every batch.
         publishPorts: createRealPublishPorts({ show: show.id, repoDir, coreDir, holder }),
         onDiskUrls: onDiskUrlsFor(path.join(repoDir, 'data', 'reviews.json'), show.id),
+        onDiskRows: onDiskRowsFor(path.join(repoDir, 'data', 'reviews.json'), show.id),
         now: Date.now, wait: (ms) => new Promise((r) => setTimeout(r, ms)),
       });
     },
   };
 }
 
-module.exports = { HEARTBEAT_MS, LEASE_TTL_MS, runProductionLane, buildRealLaneDeps, onDiskUrlsFor };
+module.exports = { HEARTBEAT_MS, LEASE_TTL_MS, runProductionLane, buildRealLaneDeps, onDiskUrlsFor, onDiskRowsFor };
