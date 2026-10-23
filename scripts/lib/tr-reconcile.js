@@ -72,6 +72,11 @@ function classifyRows(rows, files, show, opts = {}) {
       try { return explain(m.data, show, m.file); } catch { return 'error'; }
     });
     const allPermanent = reasons.every((r) => r !== null && r !== undefined && PERMANENT_REASONS.has(r));
+    // Like the census (census-rebuild-exclusions.js): an excluded file only closes the row that
+    // names ITS url. A flagged file for a different production does not hide this round-up's
+    // real review, which stays missing and is written.
+    const closes = matches.some((m) => !row.url || !m.data || !m.data.url || sameRoundupUrl(row.url, m.data.url));
+    if (allPermanent && !closes) { missing.push({ ...row, outletId }); continue; }
     if (allPermanent) excluded.push({ outlet: row.outlet, critic: row.critic, outletId, reason: reasons[0] });
     else held.push({ outlet: row.outlet, critic: row.critic, outletId, row });
   }

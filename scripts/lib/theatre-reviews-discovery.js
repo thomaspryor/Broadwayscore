@@ -87,7 +87,11 @@ async function discoverRoundupPostsRest(fetchJSON, opts = {}) {
     let batch = null;
     try {
       batch = await fetchJSON(`https://theatre.reviews/wp-json/wp/v2/posts?categories=${category}&per_page=${perPage}&page=${page}&orderby=date&order=desc${fields}`);
-    } catch { batch = null; }
+    } catch (e) {
+      // WP answers 400 (rest_post_invalid_page_number) one page past a full last page: that is the end.
+      if (page > 1 && pages === page - 1 && /\b400\b|invalid_page_number/.test(String(e && e.message))) { complete = true; break; }
+      batch = null;
+    }
     if (!Array.isArray(batch)) break; // a failed page is an incomplete walk, never a quiet end
     pages++;
     for (const p of batch) {
