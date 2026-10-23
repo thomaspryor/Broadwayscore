@@ -66,9 +66,8 @@ function main() {
   if (!dir) { console.error('data/review-texts not available'); process.exit(2); }
   const only = (argv.find((a) => a.startsWith('--show=')) || '').slice(7);
   const rows = [];
-  for (const id of fs.readdirSync(dir).filter((x) => !only || x === only)) {
+  for (const id of require('./lib/list-show-dirs').listShowDirs(dir, { silent: true }).filter((x) => !only || x === only)) {
     const base = path.join(dir, id);
-    if (!fs.statSync(base).isDirectory()) continue;
     const files = fs.readdirSync(base).filter((f) => f.endsWith('.json')).map((f) => {
       try { return { file: f, data: JSON.parse(fs.readFileSync(path.join(base, f), 'utf8')) }; } catch (_) { return null; }
     }).filter(Boolean);
