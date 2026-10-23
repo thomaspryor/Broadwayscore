@@ -219,7 +219,8 @@ function applySample(rec, sample) {
  * result says how sure it is: precision 'exact' | 'approx' (date only) | 'unknown'.
  */
 function firstOutletPublish(rec) {
-  const withDate = rec.perReview.filter((p) => p.publishAt);
+  // A preview-period review (published days before the night) is not "the first outlet publish" of the night.
+  const withDate = rec.perReview.filter((p) => p.publishAt && isNightReview(p, rec.night));
   let pool = withDate.filter((p) => p.tier != null && p.tier <= 2);
   let tierScope = 'T1-T2';
   if (!pool.length) { pool = withDate; tierScope = withDate.length ? 'any' : null; }
@@ -234,6 +235,134 @@ function firstOutletPublish(rec) {
     return { at: best.publishAt, precision: 'approx', source, tierScope };
   }
   return { at: null, precision: 'unknown', source, tierScope };
+}
+
+/**
+ * Is this review part of the press night (published on/after the night), as opposed to a
+ * preview-period review that was live long before the embargo (BRO-6067: singleticket,
+ * published 10-05, made every review "already live at the first sample")? A review with no
+ * publish date counts only if the probe saw it go live (not at the first sample).
+ */
+function isNightReview(p, night) {
+  if (!night) return true;
+  if (p.publishAt) return String(p.publishAt).slice(0, 10) >= night;
+  return !p.baseline;
+}
+
+function outletIdOf(name) {
+  if (!name) return null;
+  const { normalizeOutlet } = require('./review-normalization');
+  return normalizeOutlet(String(name)) || null;
+}
+
+/**
+ * When the first review of the night went live, merging the probe's per-review series with
+ * the lane shadow's finer (2 min) site-live times. Returns {at, lowerAt, outlet, source, baseline} or null.
+ * lowerAt is the previous poll: the review went live in (lowerAt, at].
+ */
+function firstNightLive(rec) {
+  const intervalMs = (rec.probe && rec.probe.intervalMin ? rec.probe.intervalMin : 5) * MIN;
+  const embMs = toMs(rec.embargoAt);
+  const night = rec.perReview.filter((p) => isNightReview(p, rec.night));
+  const nightOutlets = new Set(night.map((p) => outletIdOf(p.outlet)).filter(Boolean));
+  const previewOutlets = new Set(rec.perReview.filter((p) => !isNightReview(p, rec.night)).map((p) => outletIdOf(p.outlet)).filter(Boolean));
+  const cands = [];
+  for (const p of night) {
+    const ms = toMs(p.firstLiveAt);
+    if (ms != null) cands.push({ ms, lowerMs: ms - intervalMs, outlet: p.outlet, source: 'probe', baseline: !!p.baseline });
+  }
+  const ls = rec.laneShadow;
+  if (ls && Array.isArray(ls.liveFirstSeen)) {
+    const pollMs = (ls.pollMin || 2) * MIN;
+    for (const r of ls.liveFirstSeen) {
+      const ms = toMs(r.at);
+      if (ms == null) continue;
+      const oid = outletIdOf(r.outlet);
+      // A shadow row is a night review if the probe knows it as one; otherwise only if it appeared after the
+      // embargo and is not a preview-period outlet the probe already saw.
+      const isNight = (oid && nightOutlets.has(oid)) || (embMs != null && ms >= embMs && !(oid && previewOutlets.has(oid)));
+      // The shadow's first poll is a bound too (the review may have been live before it started).
+      if (isNight) cands.push({ ms, lowerMs: ms - pollMs, outlet: r.outlet, source: 'lane-shadow', baseline: !!r.baseline });
+    }
+  }
+  if (!cands.length) return null;
+  cands.sort((a, b) => a.ms - b.ms || (a.baseline - b.baseline));
+  const c = cands[0];
+  return { at: new Date(c.ms).toISOString(), lowerAt: new Date(c.lowerMs).toISOString(), outlet: c.outlet, source: c.source, baseline: c.baseline };
+}
+
+/**
+ * Fold a lane-shadow artifact (opening-night-lane-live.yml shadow job: shadow-report.json,
+ * live-first-seen.jsonl, ledger/<show>-<night>.jsonl) into the record. Public fields only:
+ * outlet names, review URLs and times. The earliest lane discovery is an upper bound on the
+ * first outlet publish (a review cannot be found before it is published).
+ */
+function laneShadowFrom({ report = null, liveRows = [], ledgerRows = [], importedAt = null, runId = null }) {
+  const startedMs = report && Number.isFinite(Number(report.startedAt)) ? Number(report.startedAt) : toMs(report && report.startedAt);
+  const firstPoll = liveRows.reduce((m, r) => (Number.isFinite(r.at) && r.at < m ? r.at : m), Infinity);
+  const startMs = startedMs != null ? startedMs : firstPoll;
+  const liveFirstSeen = liveRows
+    .filter((r) => r && Number.isFinite(r.at))
+    .map((r) => ({ outlet: r.outlet || null, url: r.url || null, at: new Date(r.at).toISOString(), baseline: r.at - startMs < 3 * MIN }));
+  const discovered = ledgerRows.filter((r) => r && r.stage === 'discovered' && toMs(r.at) != null);
+  const firstDiscoveredAt = discovered.length ? discovered.map((r) => r.at).sort()[0] : null;
+  const discoveredByOutlet = {};
+  const roundups = new Set();
+  for (const r of discovered) {
+    const url = (r.meta && r.meta.url) || r.reviewKey;
+    let oid = null;
+    try { const { resolveOutletFromUrl } = require('./review-normalization'); const x = resolveOutletFromUrl(url); oid = x && x.outletId; } catch (_) { oid = null; }
+    if (oid && (!discoveredByOutlet[oid] || r.at < discoveredByOutlet[oid])) discoveredByOutlet[oid] = r.at;
+    if (r.meta && r.meta.adapter === 'bww-roundup' && /^https?:\/\//.test(r.meta.via || '')) roundups.add(r.meta.via);
+  }
+  return {
+    importedAt, runId,
+    startedAt: Number.isFinite(startMs) ? new Date(startMs).toISOString() : null,
+    pollMin: 2,
+    firstDiscoveredAt,
+    discoveredByOutlet,
+    bwwRoundupUrl: [...roundups][0] || null,
+    liveFirstSeen,
+  };
+}
+
+/**
+ * Census coverage AS OF a past moment, from the record's own per-review live series (plus the
+ * lane shadow's site-live times). Lets a census fetched later (the roundup was not archived at +2h)
+ * still answer "how much was live at +2h". Census outlets the lane first discovered after asOf
+ * had not been published yet, so they leave the denominator (listed as notYetPublished).
+ */
+function coverageAt(rec, census, asOfMs, { fetchedAt = null } = {}) {
+  const { censusVerdict } = require('./review-census');
+  const asOf = new Date(asOfMs).toISOString();
+  const liveSet = new Set();
+  for (const p of rec.perReview) {
+    const ms = toMs(p.firstLiveAt);
+    if (ms == null || ms > asOfMs) continue;
+    const goneAt = rec.dropped.find((d) => d.key === p.key && toMs(d.droppedAt) <= asOfMs && (!d.restoredAt || toMs(d.restoredAt) > asOfMs));
+    if (goneAt) continue;
+    const oid = outletIdOf(p.outlet);
+    if (oid) liveSet.add(oid);
+  }
+  const ls = rec.laneShadow;
+  if (ls && Array.isArray(ls.liveFirstSeen)) {
+    for (const r of ls.liveFirstSeen) {
+      if (toMs(r.at) != null && toMs(r.at) <= asOfMs) { const oid = outletIdOf(r.outlet); if (oid) liveSet.add(oid); }
+    }
+  }
+  let scoped = census;
+  const notYetPublished = [];
+  const disc = ls && ls.discoveredByOutlet;
+  if (census && Array.isArray(census.entries) && disc) {
+    const keep = census.entries.filter((e) => {
+      const d = disc[e.outletId];
+      if (d && toMs(d) > asOfMs && !liveSet.has(e.outletId)) { notYetPublished.push(e.outletId); return false; }
+      return true;
+    });
+    scoped = { ...census, entries: keep, count: keep.length };
+  }
+  const ref = referenceFrom({ census: scoped, verdict: censusVerdict(scoped, liveSet), liveCount: liveSet.size, fetchedAt });
+  return { ...ref, asOf, method: 'timeline', notYetPublished };
 }
 
 /**
@@ -303,48 +432,58 @@ function evaluateCheck(rec, opts = {}) {
   const okSamples = rec.probe.samples - rec.probe.failedSamples;
   const embMs = toMs(rec.embargoAt);
 
-  // first-live
+  // first-live: the first review OF THE NIGHT (preview-period reviews excluded, BRO-6067)
+  const fl = firstNightLive(rec);
   if (okSamples === 0 || embMs == null) {
     gates.push(gate('first-live', 'unknown', 'no successful probe samples'));
-  } else if (!rec.firstLiveAt) {
+  } else if (!fl) {
     const lastMs = toMs(rec.probe.lastOkSampleAt); // failed fetches prove nothing about the site
     const waited = lastMs != null ? Math.round((lastMs - embMs) / MIN) : null;
     if (waited != null && waited > g.firstLiveWithinMin) {
-      gates.push(gate('first-live', 'fail', `no review live ${waited} min after the embargo (bar ${g.firstLiveWithinMin})`));
+      gates.push(gate('first-live', 'fail', `no review of the night live ${waited} min after the embargo (bar ${g.firstLiveWithinMin})`));
     } else {
-      gates.push(gate('first-live', 'unknown', 'no review live yet and the probe stopped inside the bar'));
+      gates.push(gate('first-live', 'unknown', 'no review of the night live yet and the probe stopped inside the bar'));
     }
   } else {
-    const liveMs = toMs(rec.firstLiveAt);
+    const liveMs = toMs(fl.at);
+    const liveLowerMs = toMs(fl.lowerAt);
     const afterEmbargo = Math.round((liveMs - embMs) / MIN);
     const pub = rec.firstOutletPublishAt || {};
-    if (pub.precision === 'exact' && toMs(pub.at) != null) {
-      const delay = Math.round((liveMs - toMs(pub.at)) / MIN);
-      // A baseline first-live time is only an upper bound on when it went live: it can clear the bar, never fail it.
-      const status = delay <= g.firstLiveWithinMin ? 'pass' : (rec.firstLiveBaseline ? 'unknown' : 'fail');
-      gates.push(gate('first-live', status,
-        `first review live ${delay} min after the first outlet publish (bar ${g.firstLiveWithinMin}); ${afterEmbargo} min after embargo`));
-    } else if (!rec.firstLiveBaseline && afterEmbargo <= g.firstLiveWithinMin) {
-      // Reviews are held to the embargo, so embargo-to-live bounds publish-to-live from above (an early leak only makes the real delay smaller).
-      gates.push(gate('first-live', 'pass', `first review live ${afterEmbargo} min after embargo (upper bound on publish-to-live; publish time is ${pub.precision || 'unknown'}; bar ${g.firstLiveWithinMin})`));
-    } else if (rec.firstLiveBaseline) {
-      gates.push(gate('first-live', 'unknown', 'reviews were already live at the first sample, so the first-live time is only a bound'));
-    } else {
-      gates.push(gate('first-live', 'unknown', `first review live ${afterEmbargo} min after embargo but the first outlet publish time is ${pub.precision || 'unknown'}, so the publish-to-live delay cannot be measured (bar ${g.firstLiveWithinMin})`));
-    }
+    const exactPub = pub.precision === 'exact' && toMs(pub.at) != null ? toMs(pub.at) : null;
+    // Publish window: an exact time pins it. Otherwise reviews are held to the embargo (lower bound) and the
+    // lane shadow's first discovery is an upper bound (nothing is found before it is published).
+    const discMs = rec.laneShadow ? toMs(rec.laneShadow.firstDiscoveredAt) : null;
+    const pubLow = exactPub != null ? exactPub : embMs;
+    const pubHigh = exactPub != null ? exactPub : (discMs != null && discMs >= embMs - 30 * MIN ? Math.max(discMs, embMs) : null);
+    const delayHigh = Math.round((liveMs - pubLow) / MIN);
+    const delayLow = pubHigh != null ? Math.max(0, Math.round((liveLowerMs - pubHigh) / MIN)) : null;
+    const pubWhat = exactPub != null ? 'the first outlet publish' : (pubHigh != null ? 'the first outlet publish (embargo .. first lane discovery)' : 'the embargo');
+    const range = delayLow != null && delayLow !== delayHigh ? `${delayLow}-${delayHigh}` : `${delayHigh}`;
+    const who = `${fl.outlet || 'a review'} via ${fl.source}`;
+    const detail = `first review of the night (${who}) live ${range} min after ${pubWhat}; ${afterEmbargo} min after embargo (bar ${g.firstLiveWithinMin})`;
+    let status;
+    // A baseline first-live time is only an upper bound on when it went live: it can clear the bar, never fail it.
+    if (delayHigh <= g.firstLiveWithinMin) status = 'pass';
+    else if (fl.baseline) status = 'unknown';
+    else if (exactPub != null || (delayLow != null && delayLow > g.firstLiveWithinMin)) status = 'fail';
+    else status = 'unknown';
+    const why = status === 'unknown'
+      ? (fl.baseline ? ' (already live at the first sample, so only a bound)' : `; publish time is ${pub.precision || 'unknown'} and no lane discovery bounds it, so the publish-to-live delay cannot be measured`)
+      : '';
+    gates.push(gate('first-live', status, detail + why));
   }
 
   // coverage-2h
   const ref2 = rec.reference && rec.reference['2h'];
   if (!ref2) {
     gates.push(gate('coverage-2h', 'unknown', 'no census captured at embargo +2h'));
-  } else if (ref2.fetchedAt && embMs != null && Math.abs(toMs(ref2.fetchedAt) - (embMs + 2 * HOUR)) > 30 * MIN) {
-    gates.push(gate('coverage-2h', 'unknown', `census was captured at ${ref2.fetchedAt}, not near embargo +2h`));
+  } else if ((ref2.asOf || ref2.fetchedAt) && embMs != null && Math.abs(toMs(ref2.asOf || ref2.fetchedAt) - (embMs + 2 * HOUR)) > 30 * MIN) {
+    gates.push(gate('coverage-2h', 'unknown', `census coverage is as of ${ref2.asOf || ref2.fetchedAt}, not near embargo +2h`));
   } else if (ref2.status === 'no-census-yet' || ref2.coverage == null) {
     gates.push(gate('coverage-2h', 'unknown', `no census (${ref2.status || 'missing'}), cannot judge coverage`));
   } else {
     gates.push(gate('coverage-2h', ref2.coverage >= g.coverage2h ? 'pass' : 'fail',
-      `${ref2.covered}/${ref2.count} census outlets live at +2h = ${ref2.coverage} (bar ${g.coverage2h})${ref2.missing.length ? `; missing: ${ref2.missing.join(', ')}` : ''}`));
+      `${ref2.covered}/${ref2.count} census outlets live at +2h = ${ref2.coverage} (bar ${g.coverage2h}; census ${(ref2.source || []).join('+') || '?'}${ref2.method === 'timeline' ? `, fetched ${ref2.fetchedAt}, judged on the live timeline` : ''})${ref2.missing.length ? `; missing: ${ref2.missing.join(', ')}` : ''}${ref2.notYetPublished && ref2.notYetPublished.length ? `; not yet published at +2h: ${ref2.notYetPublished.join(', ')}` : ''}`));
   }
 
   // stability
@@ -375,5 +514,5 @@ function evaluateCheck(rec, opts = {}) {
 module.exports = {
   SCHEMA_VERSION, OFFSET_HOURS, DEFAULT_GATES, EMBARGO_HOUR_LOCAL,
   defaultEmbargoAt, probeDue, recordPath, emptyRecord, reviewKey, applySample, firstOutletPublish,
-  runProbe, referenceFrom, evaluateCheck,
+  runProbe, referenceFrom, evaluateCheck, isNightReview, firstNightLive, laneShadowFrom, coverageAt,
 };
