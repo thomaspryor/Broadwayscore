@@ -285,7 +285,7 @@ export default function BizDashboard() {
         {/* This season vs last season and the 10-season average */}
         {currentComparison && (
           <section className="mb-8">
-            <div className="flex items-baseline justify-between gap-4 mb-3">
+            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-3">
               <h2 className="text-xl font-bold text-white">
                 The {currentComparison.season} Season{currentComparison.inProgress ? ' So Far' : ''}
               </h2>
@@ -299,7 +299,7 @@ export default function BizDashboard() {
 
         {mixCard && mixCard.columns.length > 0 && (
           <section className="mb-8">
-            <div className="flex items-baseline justify-between gap-4 mb-1">
+            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-1">
               <h2 className="text-xl font-bold text-white">Production Mix</h2>
               <Link href="/season-report" className="text-sm text-brand hover:text-brand-hover whitespace-nowrap">
                 Key findings in the Season Report →
@@ -353,6 +353,9 @@ export default function BizDashboard() {
         <section className="mb-8">
           <h2 className="text-xl font-bold text-white mb-3">Who Recoups</h2>
           <WhoRecoupsCard findings={recoupFindings} />
+          <Link href="/biz/stunt-casting" className="inline-block mt-3 text-sm text-brand hover:text-brand-hover">
+            Does star casting pay? Stunt casting since 2004 →
+          </Link>
         </section>
 
         {/* Season Stats Row */}

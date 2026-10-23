@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getCriticBySlug } from '@/lib/data-reviews';
 import { generateBreadcrumbSchema, generateCriticSchema, generateCriticFAQSchema, BASE_URL } from '@/lib/seo';
+import { criticMarketLabel, showCountPhrase } from '@/lib/critic-market';
 import CriticDetailClient from './CriticDetailClient';
 
 export const revalidate = 43200;
@@ -13,14 +14,15 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   if (!critic) return { title: 'Critic Not Found' };
 
   const canonicalUrl = `${BASE_URL}/critics/${params.slug}`;
-  const description = `${critic.name} (${critic.primaryOutlet}) has reviewed ${critic.reviewCount} Broadway shows with an average score of ${critic.avgScore}/100. See their full review history and rankings.`;
+  const market = criticMarketLabel(critic.reviews);
+  const description = `${critic.name} (${critic.primaryOutlet}) has reviewed ${showCountPhrase(critic.reviewCount, market)} with an average score of ${critic.avgScore}/100. See their full review history and rankings.`;
 
   return {
-    title: `${critic.name} - Broadway Critic at ${critic.primaryOutlet}`,
+    title: `${critic.name} - ${market} Critic at ${critic.primaryOutlet}`,
     description,
     alternates: { canonical: canonicalUrl },
     openGraph: {
-      title: `${critic.name} - Broadway Critic`,
+      title: `${critic.name} - ${market} Critic`,
       description,
       url: canonicalUrl,
       type: 'profile',
@@ -28,7 +30,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
     },
     twitter: {
       card: 'summary',
-      title: `${critic.name} - Broadway Critic`,
+      title: `${critic.name} - ${market} Critic`,
       description,
     },
   };
@@ -52,6 +54,7 @@ export default async function CriticDetailPage(props: { params: Promise<{ slug: 
     reviewCount: critic.reviewCount,
     avgScore: critic.avgScore,
     outlets: critic.outlets,
+    marketLabel: criticMarketLabel(critic.reviews),
   });
 
   const faqSchema = generateCriticFAQSchema({

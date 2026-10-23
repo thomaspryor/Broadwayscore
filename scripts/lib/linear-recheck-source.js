@@ -11,8 +11,8 @@
  * scripts/lib/autonomous-recheck-core.js's selectRecheckTargets already
  * accepts — that function needed ZERO changes: doneWithinWindow already lets
  * an explicit RECHECK-AFTER stamp override the status check entirely, so a
- * card sitting in Linear's "Backlog" state (this team has no "Paused" state
- * — CLAUDE.md §6, pausing a card lands it in Backlog) is eligible exactly
+ * card sitting in Linear's "Paused" state (or "Backlog" before that state
+ * existed, BRO-2857: `report --status=paused` falls back to Backlog) is eligible exactly
  * like a Notion "Paused" card as long as it carries a stamp. What DID need
  * to change was stamp/command DISCOVERY: a Linear card's RECHECK-AFTER stamp
  * and acceptance command are typically posted in a wrap-up COMMENT (via

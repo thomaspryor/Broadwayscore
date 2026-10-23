@@ -50,9 +50,11 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   const vars = buildTemplateVars(metadata);
   const { year } = parseGuideSlug(params.slug);
 
-  const metaTitle = interpolateTemplate(config.metaTitleTemplate, vars);
+  // Year pages are about that year, not "right now" (BRO-5970).
+  const dropNow = (s: string) => (year ? s.replace(/ \| Top-Rated Right Now/, '').replace(/ right now in /i, ' in ').replace(/ Right Now/, '') : s);
+  const metaTitle = dropNow(interpolateTemplate(config.metaTitleTemplate, vars));
   const metaDescription = shows.length > 0
-    ? interpolateTemplate(config.metaDescriptionTemplate, vars)
+    ? dropNow(interpolateTemplate(config.metaDescriptionTemplate, vars))
     : `${config.title}, a guide by Broadway Scorecard. Check back soon for updated listings.`;
   const canonicalUrl = `${BASE_URL}/guides/${params.slug}`;
 
@@ -115,7 +117,8 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
   const intro = rawIntro.replace(/^#[^\n]*\n+/, '');
 
   // H1
-  const h1 = interpolateTemplate(config.h1Template, vars);
+  // Year pages are not "right now" (BRO-5970).
+  const h1 = (year ? interpolateTemplate(config.h1Template, vars).replace(/ Right Now/, '') : interpolateTemplate(config.h1Template, vars));
 
   // Breadcrumb title (include year for year pages)
   const breadcrumbTitle = year ? `${config.title} ${year}` : config.title;

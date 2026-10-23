@@ -54,6 +54,7 @@ import {
   getCitedSourceUrl,
   meetsModelQualityFloor,
   hasNoInvestorsToRepay,
+  publicHeldRange,
 } from './commercial-display';
 import { reportedReturn } from '../../scripts/lib/reported-return';
 import type { TopicShowInput } from './investment-topics';
@@ -849,6 +850,7 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
     modelRecoupmentPct: data.modelRecoupmentPct || null,
     ...(data.modelBelowCosts ? { modelBelowCosts: true } : {}),
     ...(data.modelDisplayHold ? { modelDisplayHold: data.modelDisplayHold } : {}),
+    ...(publicHeldRange(data) ? { modelHeldRange: publicHeldRange(data) } : {}),
     ...(data.analystRecoupPct ? {
       analystRecoupPct: data.analystRecoupPct,
       analystRecoupAsOf: data.analystRecoupAsOf ?? null,

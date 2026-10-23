@@ -1369,7 +1369,8 @@ async function processRecoveredText(candidate, text, html, archiveData) {
       const scoreResult = await extractExplicitScore({
         text: cleanedText || '',
         html: html || '',
-        outletId: candidate.outletId
+        outletId: candidate.outletId,
+        showId: candidate.showId
       });
       if (scoreResult) {
         // Routes to originalScore unless EITHER the incoming source OR the

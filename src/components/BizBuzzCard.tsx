@@ -26,7 +26,7 @@ import {
   lossCanChangeNote,
   LIKELY_OUTCOME_BASIS,
   publicNotesText,
-  getDisplayableAnalystRange,
+  getDisplayableEstimateRange,
   hasNoInvestorsToRepay,
 } from '@/lib/commercial-display';
 import { formatCapitalization } from '@/lib/biz-format';
@@ -185,7 +185,8 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
   // A model the display guard held back says why instead of vanishing (BRO-4989).
   const holdLabel = displayMode === 'none' ? getModelHoldLabel({ ...commercial, status: showStatus }) : null;
   const reportedReturnLine = getReportedReturnLine({ ...commercial, status: showStatus });
-  const analystRange = displayMode === 'analyst' && !reportedReturnLine ? getDisplayableAnalystRange({ ...commercial, status: showStatus }) : null;
+  const estimateRange = displayMode === 'analyst' && !reportedReturnLine ? getDisplayableEstimateRange({ ...commercial, status: showStatus }) : null;
+  const analystRange = estimateRange?.range ?? null;
   const showModelBar = displayMode === 'model' && !reportedReturnLine;
   const attribution = displayMode === 'announced' ? getRecoupmentAttribution(commercial, closingDate) : null;
   // One link with no raw URL text: the line is clamped to two lines (BRO-5520).
@@ -241,7 +242,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           Commercial Scorecard
         </h2>
         <span className="text-[10px] tracking-[0.06em] text-gray-500 italic shrink-0">
-          {showModelBar ? 'source · filings, press + our model' : analystRange ? 'source · filings, press + analyst estimate' : 'source · filings + press'}
+          {showModelBar ? 'source · filings, press + our model' : estimateRange?.withModel ? 'source · filings, press, analyst estimate + our model' : analystRange ? 'source · filings, press + analyst estimate' : 'source · filings + press'}
         </span>
       </header>
       <p className="text-[11px] font-medium tracking-[0.06em] text-gray-500 italic m-0 mb-3">
@@ -447,7 +448,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
               <RecoupmentProgressBar estimatedPct={analystRange} variant="headline" />
             )}
             <div className="mt-1">
-              <AnalystEstimateCredit asOf={commercial.analystRecoupAsOf} url={commercial.analystRecoupUrl} />
+              <AnalystEstimateCredit asOf={commercial.analystRecoupAsOf} url={commercial.analystRecoupUrl} withModel={estimateRange?.withModel} />
             </div>
           </div>
         )}

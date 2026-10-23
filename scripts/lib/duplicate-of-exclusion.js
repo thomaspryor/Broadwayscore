@@ -8,9 +8,10 @@ const { cycleTiebreakFor } = require('./duplicate-cycle');
 /**
  * The rebuild's duplicateOf gate, shared with scoring-delta's replay.
  * Reference eligibility and flag inheritance use the caller's guard version.
+ * referenceIsCopy(ref, refPath, data) says the excluded reference is itself a copy (BRO-5909).
  * Sibling reads stay local to the supplied filePath (including replay snapshots).
  */
-function duplicateOfExclusion(data, filePath, { readSibling, fileCount, referenceExcluded, inheritedFlag }) {
+function duplicateOfExclusion(data, filePath, { readSibling, fileCount, referenceExcluded, referenceIsCopy, inheritedFlag }) {
   if (!data.duplicateOf) return { reason: null };
   if (!filePath || !data.duplicateOf.endsWith('.json')) return { reason: 'skippedDuplicateOf' };
   const showDir = path.dirname(filePath);
@@ -18,7 +19,7 @@ function duplicateOfExclusion(data, filePath, { readSibling, fileCount, referenc
   const read = readSibling || (name => {
     try { return JSON.parse(fs.readFileSync(path.join(showDir, name), 'utf8')); } catch { return null; }
   });
-  let refAlsoDupe = false, refExcluded = false, refInheritedFlag = null;
+  let refAlsoDupe = false, refExcluded = false, refInheritedFlag = null, refIsCopy = false;
   let isCircular = false, circularSameText = false, nCycleExclude = false;
   try {
     // The rebuild reads the immediate reference fresh; only the cycle walk
@@ -39,12 +40,17 @@ function duplicateOfExclusion(data, filePath, { readSibling, fileCount, referenc
     const refPath = path.join(showDir, data.duplicateOf);
     refExcluded = referenceExcluded(ref, refPath);
     refInheritedFlag = inheritedFlag(data, ref, refPath);
+    // BRO-5909: a reference excluded as a copy of another review (syndicated,
+    // cross-outlet, personal repost) must not recover this copy, or the
+    // original ships twice. A circular pair keeps its own tiebreak.
+    if (refExcluded && !refAlsoDupe && !isCircular && referenceIsCopy) refIsCopy = !!referenceIsCopy(ref, refPath, data);
   } catch {
     refAlsoDupe = true; // Missing/corrupt reference: recover the stale pointer.
   }
   let reason = null;
   if (!refAlsoDupe && !refExcluded) reason = 'skippedDuplicateOf';
   else if (refInheritedFlag && !(isCircular && !circularSameText)) reason = 'skippedDuplicateOfInheritedFlag';
+  else if (refIsCopy) reason = 'skippedDuplicateOf';
   else if (!refExcluded && ((isCircular && circularSameText && file > data.duplicateOf) || nCycleExclude)) reason = 'skippedCircularDuplicateTiebreak';
   return { reason, refExcluded, inheritedReason: refInheritedFlag, recovered: reason === null };
 }

@@ -95,6 +95,8 @@ async function main() {
       const result = await extractExplicitScore({
         text: data.fullText,
         outletId: data.outletId || '',
+        showTitle: data.showTitle,
+        showId: data.showId,
         verbose: VERBOSE
       });
 

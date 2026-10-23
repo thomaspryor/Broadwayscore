@@ -435,6 +435,7 @@ function parseWorkflow(text) {
         const envField = findChildKey(kids, 'env');
         const stepTimeoutField = findChildKey(kids, 'timeout-minutes');
         const continueOnErrorField = findChildKey(kids, 'continue-on-error');
+        const ifField = findChildKey(kids, 'if');
 
         const runText = runField ? scalarBlockText(lines, runField.idx, runField.inline) : '';
         let envDeadlineSec = null;
@@ -467,6 +468,9 @@ function parseWorkflow(text) {
         step.envOpMinTimeoutSec = envOpMinTimeoutSec;
         step.envIdx = envField ? envField.idx : null;
         step.timeoutMinutes = stepTimeoutField ? parseIntOrNull(stepTimeoutField.inline) : null;
+        // BRO-2580: `if: always()` / `if: failure()` makes this step run even after an
+        // earlier step hard-failed, so that earlier step's stranded commit reaches it.
+        step.runsAfterFailure = ifField ? /\b(always|failure)\s*\(/.test(ifField.inline) : false;
         step.continueOnError = continueOnErrorField ? /^true$/i.test(continueOnErrorField.inline) : false;
       }
     }
@@ -900,7 +904,8 @@ function auditWorkflowText(text, filePath) {
       });
     }
 
-    for (const pc of pushCalls) {
+    for (let pcIdx = 0; pcIdx < pushCalls.length; pcIdx++) {
+      const pc = pushCalls[pcIdx];
       const { step, call, deadlineSec, stagedPaths } = pc;
       // BRO-2370 second-opinion finding: a sibling step that BOTH declares its
       // own explicit timeout-minutes AND calls push-with-retry.sh used to be
@@ -971,6 +976,30 @@ function auditWorkflowText(text, filePath) {
         evaluation.flags = evaluation.flags.filter((f) => f !== 'fallback-early-trigger-unreachable');
       }
 
+      // cross-step-stranding (BRO-2580, the BRO-2538 cascade): a soft-fail
+      // (continue-on-error / `|| echo`) push EARLIER in the same job that
+      // stages a fallback-disqualifying file can strand its commit locally on
+      // total failure; that stranded commit then rides this later call's
+      // outgoing diff and disqualifies ITS Git Data API fallback too, even
+      // though everything this call stages is apiFallbackSafe. Needs positive
+      // evidence on both sides (non-empty, all-safe staged paths here; a known
+      // disqualifying path staged by the earlier soft-fail call).
+      // "Still fallback-eligible" = nothing staged disqualifies it (apiFallbackSafe
+      // and apiFallbackMerge files both keep the fallback), and at least one file
+      // is known. The earlier call strands if it is soft-fail, or if this step
+      // runs after failures (`if: always()` / `failure()`).
+      const stillEligible = stagedPaths.length > 0
+        && !stagedPaths.some((p) => classifyPushFallbackSafety(p).disqualifiesFallback);
+      const crossStepStrandingEarlier = stillEligible
+        ? pushCalls.slice(0, pcIdx)
+          .filter((e) => (e.call.softFail || e.step.continueOnError === true || step.runsAfterFailure === true)
+            && e.step !== step
+            && e.stagedPaths.some((p) => classifyPushFallbackSafety(p).disqualifiesFallback))
+          .map((e) => e.step.name || '(unnamed step)')
+        : [];
+      const crossStepStranding = crossStepStrandingEarlier.length > 0;
+      if (crossStepStranding) evaluation.flags.push('cross-step-stranding');
+
       let contentionScore = 0;
       if (managed) contentionScore += apiFallbackSafe ? 1 : 2;
       if (cronIntervalMinutes != null) {
@@ -980,6 +1009,7 @@ function auditWorkflowText(text, filePath) {
       if (evaluation.flags.includes('retries-undersized-vs-deadline')) contentionScore += 1;
       if (evaluation.flags.includes('job-timeout-margin-undersized')) contentionScore += 2;
       if (mixedSafetyBundle) contentionScore += 2;
+      if (crossStepStranding) contentionScore += 2;
       if (softFail) contentionScore = Math.max(0, contentionScore - 3);
 
       results.push({
@@ -994,6 +1024,8 @@ function auditWorkflowText(text, filePath) {
         mixedSafetyBundle,
         mixedSafetyBundleSafeFiles,
         mixedSafetyBundleDisqualifyingFiles,
+        crossStepStranding,
+        crossStepStrandingEarlierSteps: [...new Set(crossStepStrandingEarlier)],
         ...evaluation,
       });
     }

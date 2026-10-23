@@ -356,7 +356,7 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
       const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
       const dir = path.join(outputBase, show.id);
       fs.mkdirSync(dir, { recursive: true });
-      fs.writeFileSync(path.join(dir, 'poster.webp'), await portraitCardFromKeyArt(sharpLib, buffer, 600, 900, 82));
+      fs.writeFileSync(path.join(dir, 'poster.webp'), await portraitCardFromKeyArt(sharpLib, buffer, 480, 720, 82));
       fs.writeFileSync(path.join(dir, 'thumbnail.webp'), await portraitCardFromKeyArt(sharpLib, buffer, 300, 450, 80));
       await sharpLib(buffer).resize(1600, 1000, { fit: 'cover', position: 'attention' }).webp({ quality: 82 }).toFile(path.join(dir, 'hero.webp'));
       console.log(`   ✓ regional images written (poster/thumbnail/hero) from ${src.label}${dryRunMode ? ' [dry-run dir]' : ''}`);

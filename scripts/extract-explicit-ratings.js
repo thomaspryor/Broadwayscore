@@ -548,6 +548,8 @@ async function processReview(entry) {
     result = await extractExplicitScore({
       text: data.fullText,
       outletId: data.outletId || data.outlet || '',
+      showTitle: data.showTitle,
+      showId: data.showId || path.basename(path.dirname(filePath)),
       provider: PROVIDER,
       currentScore,
       verbose: VERBOSE

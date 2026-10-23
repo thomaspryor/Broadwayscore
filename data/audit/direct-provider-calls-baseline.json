@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-12",
+  "generatedAt": "2026-10-22",
   "files": {
     "scripts/backfill-cast-web.js": {
       "providers": [
@@ -24,7 +24,7 @@
       "providers": [
         "scrapingbee"
       ],
-      "cronReachable": false
+      "cronReachable": true
     },
     "scripts/gather-reviews.js": {
       "providers": [
@@ -44,12 +44,6 @@
       ],
       "cronReachable": true
     },
-    "scripts/scrape-lbo-audience.js": {
-      "providers": [
-        "brightdata"
-      ],
-      "cronReachable": true
-    },
     "scripts/scrape-lottery-rush.js": {
       "providers": [
         "brightdata",
@@ -57,21 +51,9 @@
       ],
       "cronReachable": true
     },
-    "scripts/scrape-ltd-audience.js": {
-      "providers": [
-        "brightdata"
-      ],
-      "cronReachable": true
-    },
     "scripts/scrape-nyc-theatre-roundups.js": {
       "providers": [
         "scrapingbee"
-      ],
-      "cronReachable": true
-    },
-    "scripts/scrape-seatplan-audience.js": {
-      "providers": [
-        "brightdata"
       ],
       "cronReachable": true
     },

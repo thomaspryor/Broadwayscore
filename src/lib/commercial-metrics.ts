@@ -235,6 +235,18 @@ export function isApproachingRecoupment(range: [number, number, number] | null):
 export function getSeason(dateString: string | null | undefined): string | null {
   if (!dateString) return null;
 
+  // Read a "YYYY-MM-DD" string's own month. new Date("2025-07-01") is UTC
+  // midnight, which local getters read as June 30 west of UTC, filing a
+  // July 1 opening in the prior season (same bug fixed in
+  // scripts/lib/broadway-seasons.js, BRO-5848).
+  const iso = /^(\d{4})-(\d{2})-\d{2}(?:T.*)?$/.exec(dateString);
+  if (iso) {
+    const y = Number(iso[1]);
+    const m = Number(iso[2]) - 1;
+    if (m < 0 || m > 11) return null;
+    return m >= 6 ? `${y}-${y + 1}` : `${y - 1}-${y}`;
+  }
+
   const date = new Date(dateString);
   if (isNaN(date.getTime())) return null;
 

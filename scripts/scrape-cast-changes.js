@@ -200,7 +200,7 @@ async function fetchRedditJson(url, maxRetries = 2) {
   let lastError;
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
-      return await fetchRedditWithFallback(url);
+      return await fetchRedditWithFallback(url, 0, { allowRss: true });
     } catch (e) {
       lastError = e;
       if (attempt < maxRetries) {

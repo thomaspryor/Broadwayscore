@@ -428,6 +428,7 @@ function computeAttributedPct(ledgerCounts, billingRecord, ledgerCredits) {
 }
 
 module.exports = {
+  resolveLedgerPath: _ledgerPath,
   recordProviderCall,
   withSpendShow,
   currentSpendShowId,

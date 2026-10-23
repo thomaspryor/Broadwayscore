@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5942-c",
   "planId": "535b1be4-d19b-4174-b707-cbc668fdd38c",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-22T15:44:56.952Z",
   "submitter": {
     "name": null,
@@ -142,5 +142,114 @@
         "description": "Observer column: file the Till the Stars Come Down section without the Othello review that follows it (the joint splitter would have kept Othello in it) and trim Plaza Suite to its own section"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-22T20:19:37.084Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }

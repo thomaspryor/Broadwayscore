@@ -53,8 +53,10 @@ test('a hidden flop stays on At Risk: too few weeks or estimates disagree', () =
   assert.equal(getAtRiskModelRange({ ...young, status: 'closed', designation: 'Flop' }), null);
   assert.equal(getAtRiskModelRange({ ...young, status: 'open', designation: 'Nonprofit' }), null);
   assert.equal(getAtRiskModelRange({ ...young, status: 'open', modelMethod: 'ai-estimated' }), null);
-  // The held range is server-only.
+  // The held range is server-only; a page gets only the central figure the
+  // analyst + model range uses (publicHeldRange), never a few-weeks hold's.
   assert.equal('modelHeldRange' in toPublicShowCommercial(young), false);
+  assert.deepEqual(toPublicShowCommercial(split).modelHeldRange, [10, 10, 10]);
 });
 
 test('a small negative shows as 0% returned, losing money so far', () => {

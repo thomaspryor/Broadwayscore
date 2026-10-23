@@ -18,6 +18,9 @@
  *   ts             — The Stage review round-ups
  */
 
+// BRO-6008: SB renders now go through fetchPage's per-run budget (default 250cr);
+// the sweep used to be unmetered (30-page TR pagination alone exceeds that).
+process.env.SB_CREDIT_BUDGET = process.env.SB_CREDIT_BUDGET || '2000';
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
@@ -30,7 +33,6 @@ const { isAggregatorPageUrl } = require('./lib/review-slot-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { serpQuery } = require('./lib/url-discovery');
-const { recordSbCall } = require('./lib/provider-telemetry');
 
 // Reuse extraction functions from existing scrapers
 const { extractStarRatings, extractSectionReviews, extractShowTitle, fetchRenderedPageHtml } = require('./scrape-westendtheatre-roundups');
@@ -258,36 +260,18 @@ function curlJson(url) {
 }
 
 /**
- * Fetch rendered HTML via ScrapingBee (bypasses CleanTalk, Cloudflare, etc.)
- * Costs 5 credits per request with render_js=true — kept as a direct
- * ScrapingBee call rather than routed through fetchPage() (task #5)
- * because these are UK-only West End aggregators (WET/TS/Stagedoor/etc.)
- * geo-pinned via country_code=gb, which fetchPage()'s Scrapingdog/Bright
- * Data tiers have no equivalent for. premium_proxy=true (10cr, $2.48/1k)
- * is dropped — render_js=true alone (5cr, ~$0.12/1k) is already cheaper
- * than Bright Data's $1.50/1k and was the tier actually doing the work.
+ * Fetch rendered HTML via ScrapingBee (bypasses CleanTalk, Cloudflare, etc.),
+ * through fetchPage() restricted to the scrapingbee tier (BRO-6008). These are
+ * UK-only West End aggregators (WET/TS/Stagedoor/etc.) geo-pinned with
+ * countryCode 'gb' (SB country_code). premium_proxy stays off: render_js=true
+ * alone (5cr) is cheaper than Bright Data. Returns HTML or null on a miss.
  */
 async function scrapingBeeRender(url) {
   if (!SB_KEY) return null;
-  const axios = require('axios');
   try {
-    const resp = await axios.get('https://app.scrapingbee.com/api/v1', {
-      params: {
-        api_key: SB_KEY,
-        url,
-        render_js: 'true',
-        country_code: 'gb',
-      },
-      timeout: 30000,
-      responseType: 'text',
-    });
-    recordSbCall({ url, fn: 'render', success: true, status: resp.status, credits: 5 });
-    return resp.data || null;
+    const r = await fetchPage(url, { tiers: ['scrapingbee'], renderJs: true, countryCode: 'gb', skipVerify: true });
+    return r && r.content ? r.content : null;
   } catch (err) {
-    const status = err.response?.status || 'error';
-    // 401/402 (bad key / no credits) and connection errors are not billed.
-    const billed = (status === 401 || status === 402 || status === 'error') ? 0 : 5;
-    recordSbCall({ url, fn: 'render', success: false, status, credits: billed });
     console.log(`    [SB] Render failed for ${url}: ${(err.message || '').substring(0, 60)}`);
     return null;
   }
@@ -540,17 +524,10 @@ async function sweepWET(show) {
     // ScrapingBee fallback if Sucuri WAF blocks curl (common in CI)
     if (!posts && SB_KEY) {
       try {
-        const axios = require('axios');
-        const resp = await axios.get('https://app.scrapingbee.com/api/v1', {
-          params: { api_key: SB_KEY, url: apiUrl, render_js: 'false' },
-          timeout: 20000, responseType: 'text',
-        });
-        recordSbCall({ url: apiUrl, fn: 'json', success: true, status: resp.status, credits: 1 });
-        try { posts = JSON.parse(resp.data); } catch {}
+        const r = await fetchPage(apiUrl, { tiers: ['scrapingbee'], renderJs: false, skipVerify: true });
+        try { posts = JSON.parse(r.content); } catch {}
       } catch (err) {
-        const status = err.response?.status || 'error';
-        const billed = (status === 401 || status === 402 || status === 'error') ? 0 : 1;
-        recordSbCall({ url: apiUrl, fn: 'json', success: false, status, credits: billed });
+        console.log(`    [SB] JSON fetch failed for ${apiUrl}: ${(err.message || '').substring(0, 60)}`);
       }
     }
 

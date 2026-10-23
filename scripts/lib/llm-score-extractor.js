@@ -532,6 +532,9 @@ function normalizeScore(result) {
  * @param {string} opts.text - Review fullText
  * @param {string} [opts.html] - Raw HTML (for JSON-LD fast-path)
  * @param {string} [opts.outletId] - Outlet identifier
+ * @param {string} [opts.showTitle] - this review's show title (or pass opts.showId);
+ *   picks this show's verdict in a multi-review column (BRO-4490)
+ * @param {string} [opts.showId] - resolved to a title when showTitle is absent
  * @param {string} [opts.provider] - 'gemini' (default) or 'openai'
  * @param {number} [opts.currentScore] - Existing score for cross-verify threshold
  * @param {boolean} [opts.verbose] - Extra logging
@@ -541,6 +544,13 @@ async function extractExplicitScore(opts) {
   const { text, html, outletId, verbose } = opts;
   const provider = opts.provider || (process.env.GEMINI_API_KEY ? 'gemini' : 'openai');
   const currentScore = opts.currentScore || null;
+
+  // BRO-4490: an FT column reviews several shows, each with its own star run.
+  // Its JSON-LD rating is page-level and the LLM can't tell which run is this
+  // show's, so take this show's section star or nothing.
+  const showTitle = opts.showTitle || (opts.showId ? require('./known-show-titles').showTitleForId(opts.showId) : null);
+  const sectionScore = require('./multi-verdict-sections').multiVerdictScore(text, outletId, showTitle);
+  if (sectionScore !== undefined) return sectionScore;
 
   // Resolve outlet's known star scale (when available) once, pass it as
   // ground truth to JSON-LD and LLM paths. Pre-fix: Gemini guessed

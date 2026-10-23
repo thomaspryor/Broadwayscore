@@ -4,6 +4,28 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { outletFieldShapeErrors } = require('./outlet-registry-field-shape.js');
+const { findRunTogetherSlugDisplayNames } = require('./outlet-auto-register.js');
+
+// BRO-5246: verified one-word mastheads must survive the homepage backfill.
+// The first four are explicitly verified in the card. Operationlivetheatre's
+// homepage also returns this exact spelling (2026-10-22).
+// This is intentionally not an allowlist for unresolved compound names.
+const VERIFIED_SINGLE_WORD_DISPLAY_NAMES = Object.freeze({
+  washingtonian: 'Washingtonian',
+  classicalite: 'Classicalite',
+  berkeleyside: 'Berkeleyside',
+  dramatically: 'Dramatically',
+  operationlivetheatre: 'Operationlivetheatre',
+});
+
+for (const [id, displayName] of Object.entries(VERIFIED_SINGLE_WORD_DISPLAY_NAMES)) {
+  test(`verified single-word masthead ${displayName} is preserved and exempt from backfill`, () => {
+    const { outlets } = require('../../data/outlet-registry.json');
+    assert.equal(outlets[id]?.displayName, displayName);
+    assert.deepEqual(findRunTogetherSlugDisplayNames({ [id]: outlets[id] }), [],
+      `${id} needs displayNameReviewed:true so the homepage backfill preserves its verified spelling`);
+  });
+}
 
 test('an omitted starScale is how "no star scale" is spelled — no error', () => {
   const entry = { displayName: 'The Arbuturian', tier: 3, domain: 'arbuturian.com' };

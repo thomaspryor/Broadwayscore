@@ -30,6 +30,7 @@ tests/unit/browse-slugs.test.mjs
 tests/unit/calendar-export.test.ts
 tests/unit/calendar-ics-route.test.ts
 tests/unit/cast-changes-filters-parity.test.ts
+tests/unit/cite-score.test.ts
 tests/unit/commercial-display.test.mjs
 tests/unit/commercial-metrics.test.ts
 tests/unit/commercial-model-display-guard.test.mjs
@@ -38,6 +39,7 @@ tests/unit/commercial-unannounced-surfaces.test.ts
 tests/unit/commercial-unreleased.test.mjs
 tests/unit/comparison-slugs-resolve.test.ts
 tests/unit/creative-role-mapping.test.ts
+tests/unit/creative-team-search.test.mjs
 tests/unit/critic-score-canonical-parity.test.ts
 tests/unit/data-cast-history.test.ts
 tests/unit/data-reviews-critic-grouping.test.ts
@@ -53,7 +55,9 @@ tests/unit/email-gate-copy-version.test.mjs
 tests/unit/email-gate-trigger.test.mjs
 tests/unit/email-list-vs-account.test.mjs
 tests/unit/engine.test.ts
+tests/unit/ensemble-scorer-allowlist-guard.test.ts
 tests/unit/ensemble-scorer-content-tier-forward.test.ts
+tests/unit/ensemble-scorer-split-note-forward.test.ts
 tests/unit/estimated-recoup-date.test.ts
 tests/unit/fantasy-leaderboard-parity.test.ts
 tests/unit/fantasy-roster-privacy.test.ts

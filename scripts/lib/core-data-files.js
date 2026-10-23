@@ -75,9 +75,18 @@ function publicTrackedDataFiles(repoDir) {
  */
 // COPY_FILES only by default: in cloud the SYMLINK_FILES copies are refreshed by
 // cloud-bootstrap-data.sh, which may still be running when session-start.sh calls this.
-function findStaleCopies({ dataDir, coreDataDir, files = getLocalCopyFiles() }) {
+// BRO-5940: files the repo tracks (audience-reviews-lbo.json, awards.json) are
+// never refreshed by setup-local-data.sh (BRO-5261), so they always differ from
+// the clone and no refresh clears them. Pass repoDir to exclude them; without a
+// git repo there, nothing is excluded.
+function findStaleCopies({ dataDir, coreDataDir, files = getLocalCopyFiles(), repoDir = null }) {
+  let tracked = new Set();
+  if (repoDir) {
+    try { tracked = publicTrackedDataFiles(repoDir); } catch { tracked = new Set(); }
+  }
   const stale = [];
   for (const f of files) {
+    if (tracked.has(f)) continue;
     const local = path.join(dataDir, f);
     const src = path.join(coreDataDir, f);
     if (!fs.existsSync(local) || !fs.existsSync(src)) continue;
@@ -168,7 +177,7 @@ if (require.main === module) {
     }
     if (copy.length) process.stdout.write(copy.join('\n') + '\n');
   } else if (cmd === 'stale-copies' && a && b) {
-    const stale = fs.existsSync(b) ? findStaleCopies({ dataDir: a, coreDataDir: b }) : [];
+    const stale = fs.existsSync(b) ? findStaleCopies({ dataDir: a, coreDataDir: b, repoDir: path.dirname(path.resolve(a)) }) : [];
     if (stale.length && flag === '--warn') {
       console.log([
         '',

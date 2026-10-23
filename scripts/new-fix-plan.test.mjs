@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { actionsFromArgs, completeActions, buildPlans, splitName } = require('./new-fix-plan.js');
+const { actionsFromArgs, completeActions, buildPlans, splitName, executedPlanFiles } = require('./new-fix-plan.js');
 const { planShapeProblems } = require('./lib/pending-fix-plan-checks.js');
 
 // BRO-5892: the hand-written-plan traps BRO-5853 hit, filled in by the generator.
@@ -71,4 +71,17 @@ test('plans split at the cap with -b/-c names, issueNumber = name, and pass the 
     assert.deepEqual(planShapeProblems(`${p.name}.json`, p.plan), []);
   }
   assert.equal(splitName('bro-7', 0), 'bro-7');
+});
+
+test('an executed plan is never a --force overwrite target (BRO-4490)', () => {
+  const fs = require('fs'); const os = require('os'); const path = require('path');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'nfp-'));
+  const write = (n, status) => { const f = path.join(dir, n); fs.writeFileSync(f, JSON.stringify({ status })); return f; };
+  const applied = write('bro-1.json', 'applied');
+  const pending = write('bro-2.json', 'pending');
+  const failed = write('bro-4.json', 'validation-failed');
+  const partial = write('bro-5.json', 'partial');
+  const broken = path.join(dir, 'bro-3.json'); fs.writeFileSync(broken, '{not json');
+  assert.deepEqual(executedPlanFiles([applied, pending, broken, failed, partial]), [applied, partial]);
+  fs.rmSync(dir, { recursive: true, force: true });
 });

@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useMyRating } from '@/hooks/useMyRating';
@@ -50,7 +51,12 @@ export default function HoverRateStars({ showId, show, showHref, starSize = 'xs'
   // strip is invisible until hover, so starting hidden changes nothing.
   // Date-dependent statuses decide after mount (hydration-safe, BRO-77).
   const seeable = useCouldHaveSeenShow(show);
+  // Hover-only strip: skip it in the prerendered HTML (about 2.5kB per card, x150
+  // cards on the market pages, BRO-5991) and mount it on the client instead.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
+  if (!mounted) return null;
   if (!featureFlags.userAccounts) return null;
   if (!seeable) return null;
   if (myRating !== null) return null;

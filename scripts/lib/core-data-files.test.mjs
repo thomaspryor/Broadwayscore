@@ -78,6 +78,26 @@ test('findStaleCopies flags a drifted copy, ignores identical, missing and symli
   fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
+test('findStaleCopies: with repoDir, files the repo tracks are excluded (setup-local-data.sh never refreshes them)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'core-data-tracked-'));
+  const repo = path.join(tmp, 'repo');
+  const data = path.join(repo, 'data');
+  const core = path.join(tmp, 'core');
+  fs.mkdirSync(data, { recursive: true });
+  fs.mkdirSync(core);
+  for (const [dir, v] of [[data, 0], [core, 1]]) {
+    fs.writeFileSync(path.join(dir, 'awards.json'), `{"v":${v}}`);
+    fs.writeFileSync(path.join(dir, 'grosses.json'), `{"v":${v}}`);
+  }
+  execFileSync('git', ['-C', repo, 'init', '-q']);
+  execFileSync('git', ['-C', repo, 'add', 'data/awards.json']);
+  const files = ['awards.json', 'grosses.json'];
+  assert.deepEqual(findStaleCopies({ dataDir: data, coreDataDir: core, files }), ['awards.json', 'grosses.json'], 'no repoDir: nothing excluded');
+  assert.deepEqual(findStaleCopies({ dataDir: data, coreDataDir: core, files, repoDir: repo }), ['grosses.json']);
+  assert.deepEqual(findStaleCopies({ dataDir: data, coreDataDir: core, files, repoDir: path.join(tmp, 'not-a-repo') }), ['awards.json', 'grosses.json'], 'non-repo fails open to no exclusion');
+  fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+});
+
 test('stale-copies --warn prints session-start.sh\'s warning only when a copy is stale', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'core-data-warn-'));
   const data = path.join(tmp, 'data');

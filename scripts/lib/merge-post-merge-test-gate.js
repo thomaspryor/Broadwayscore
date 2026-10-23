@@ -112,6 +112,8 @@
 //   NEW (absent from the baseline) blocks the merge. A failure present in
 //   BOTH is reported loudly (still a real bug — file a card) but does not
 //   block THIS merge, which didn't cause it and often can't fix it in scope.
+//   (BRO-5940: when data/ copies are stale the block is labelled ENV with the
+//   refresh command instead; see describePreExisting.)
 //   Baseline mode only runs on the (rarer) failing path — a clean merge pays
 //   zero extra cost. If the baseline checkout itself can't be built (network,
 //   worktree lock, missing node_modules), this fails SAFE to the pre-#1433
@@ -562,6 +564,43 @@ function formatFailureList(label, items) {
   return `${label} ${items.length} failure(s):\n${items.map((f) => `    - ${f.file}::${f.name}`).join('\n')}`;
 }
 
+// BRO-5940: the pre-existing block used to say "still real bugs, file a card"
+// even when the worktree's data/ copies were stale (the tests read the live
+// corpus, so they failed on the data, not the code). With stale copies the
+// block is labelled ENV and names the fix; a failure that survives the refresh
+// is still a real bug. The "pre-existing on origin/main" prefix is asserted by
+// tests, so it stays in both variants. Pure: staleCopies comes from the caller.
+function describePreExisting(preExisting, staleCopies = []) {
+  const head = '⚠ post-merge test floor: pre-existing on origin/main, NOT caused by this merge, NOT blocking';
+  const list = formatFailureList('  ', preExisting);
+  if (!staleCopies || staleCopies.length === 0) {
+    return `${head} — but still real bugs, file a card:\n${list}`;
+  }
+  return `${head} — ENV: likely stale local data, not a code bug.\n` +
+    `  data/ differs from ~/broadway-scorecard-data for: ${staleCopies.join(' ')}\n` +
+    `  Refresh with ./scripts/setup-local-data.sh, then re-run these test files. Any that still fail are real bugs: file a card.\n${list}`;
+}
+
+// Stale data/ copies vs the core-data clone. [] when the clone is absent or
+// anything throws: this only picks a label and must never affect the verdict.
+// In cloud the SYMLINK_FILES are plain copies that cloud-bootstrap-data.sh
+// refreshes, so a run racing it can over-report; acceptable for a label.
+function defaultStaleCopies(cwd) {
+  try {
+    const coreDataDir = path.join(require('node:os').homedir(), 'broadway-scorecard-data');
+    if (!fs.existsSync(coreDataDir)) return [];
+    const { findStaleCopies, getLocalCopyFiles, getLocalSymlinkFiles } = require('./core-data-files.js');
+    return findStaleCopies({
+      dataDir: path.join(cwd, 'data'),
+      coreDataDir,
+      files: [...getLocalCopyFiles(), ...getLocalSymlinkFiles()],
+      repoDir: cwd,
+    });
+  } catch {
+    return [];
+  }
+}
+
 // How the child ACTUALLY ended, as a short suffix for `reason`. BRO-2874: the
 // gate used to report only `status=${result.status}`, which prints the literal
 // string "status=null" whenever spawnSync fails at the spawn layer rather than
@@ -608,7 +647,7 @@ function describeExit(result) {
 // merged-tree failure) — every existing caller/test that doesn't pass them
 // is unaffected. Only invoked when the merged-tree run FAILS; a clean merge
 // never builds a baseline checkout.
-function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineCheckout = null, removeBaselineCheckout = null, retryUnparseable = true, onlyListed = false } = {}) {
+function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineCheckout = null, removeBaselineCheckout = null, retryUnparseable = true, onlyListed = false, staleCopiesFn = defaultStaleCopies } = {}) {
   if (!shouldRunTestGate(changedFiles)) {
     return { ran: false, passed: true, output: '', reason: 'no scripts/lib/, scripts/, or .github/workflows/ files changed' };
   }
@@ -764,7 +803,9 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
     const { newFailures, preExisting } = diffFailingSets(baselineFailures, mergedFailures);
     let combinedOutput = output;
     if (preExisting.length > 0) {
-      combinedOutput += `\n\n⚠ post-merge test floor: pre-existing on origin/main, NOT caused by this merge, NOT blocking — but still real bugs, file a card:\n${formatFailureList('  ', preExisting)}`;
+      let staleCopies = [];
+      try { staleCopies = staleCopiesFn(cwd) || []; } catch { staleCopies = []; }
+      combinedOutput += `\n\n${describePreExisting(preExisting, staleCopies)}`;
     }
     if (newFailures.length > 0) {
       combinedOutput += `\n\n✗ post-merge test floor: NEW since origin/main — this merge introduced or exposed these, BLOCKING:\n${formatFailureList('  ', newFailures)}`;
@@ -853,6 +894,7 @@ module.exports = {
   listWorkflowGuardTestFiles,
   selectTestFiles,
   runTestGate,
+  describePreExisting,
   diffFailingSets,
   payloadItems,
   AGGREGATE_GUARD_FILES,

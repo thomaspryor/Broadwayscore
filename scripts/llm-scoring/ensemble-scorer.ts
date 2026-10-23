@@ -617,6 +617,13 @@ export class EnsembleReviewScorer {
       // the allowlist-omission class; parity test in
       // tests/unit/ensemble-scorer-content-tier-forward.test.ts.
       contentTier: (reviewFile as any).contentTier,
+      // BRO-6000: split-section markers must be propagated so input-builder can
+      // tell the models the text is one show's section of a multi-show article
+      // (its opening back-reference lost its antecedent). Fifth instance of the
+      // allowlist-omission class; tests/unit/ensemble-scorer-split-note-forward.test.ts
+      // pins both fields against prepareScoringInput.
+      multiShowSplitChild: (reviewFile as any).multiShowSplitChild,
+      multiShowSplitParent: (reviewFile as any).multiShowSplitParent,
       // BRO-5227: input-builder's short-partial rule tells a Theatre Record
       // capsule (source 'theatre-record') from a partial copy by source.
       source: (reviewFile as any).source,

@@ -164,7 +164,7 @@ async function fetchFromArchive() {
 }
 
 async function fetchJSON(url) {
-  const json = await fetchWithFallback(url);
+  const json = await fetchWithFallback(url, 0, { allowRss: true });
   if (!json || typeof json !== 'object' || !json.data) {
     throw new Error(`Unexpected Reddit response for ${url}`);
   }
@@ -200,6 +200,9 @@ async function fetchFromReddit() {
     allPosts.push(...page1.data.children.map(c => c.data));
   }
   console.log(`  Page 1: ${page1?.data?.children?.length || 0} posts`);
+  if (page1?.data?.children?.some(c => c.data?._viaRss)) {
+    console.warn('  Reddit RSS route: max 25 recent posts, no page 2; \\~$ figures arrive unescaped (extra matches vs the JSON route)');
+  }
 
   // Page 2 (if there's an "after" token)
   const after = page1?.data?.after;

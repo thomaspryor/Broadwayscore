@@ -205,7 +205,7 @@ export default function AudienceBuzzPage() {
               </Link>
             )}
             {featureFlags.commercial && (
-              <Link href="/biz-buzz" className="text-brand hover:text-brand-hover transition-colors text-sm">
+              <Link href="/biz" className="text-brand hover:text-brand-hover transition-colors text-sm">
                 Commercial Scorecard →
               </Link>
             )}

@@ -308,7 +308,7 @@ function matchTheatrToShows(theatrShows, ourShows) {
     // 8+ characters, so a bare alias never matched.
     const aliasCandidates = ourShows.filter(show => {
       if (!matchesAlias(show, theatr.name, typeof theatr.venue === 'string' ? theatr.venue : theatr.venue && theatr.venue.name)) return false;
-      if (closedBeforeTheatr(show)) return false;
+      if (closedBeforeTheatr(show) || isLondonMarket(show.category)) return false; // same London exclusion as the exact/prefix paths
       const start = show.previewsStartDate || show.openingDate;
       return !start || start <= today;
     });

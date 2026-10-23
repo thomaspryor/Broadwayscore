@@ -22,6 +22,7 @@ const { getMarketLabel, isNonMetroMarket, getRegionalPromptContext, isTourMarket
 const { otherVenueNames } = require('../lib/venue-aliases');
 const { isShortPartialReview } = require('../lib/scorable-text');
 const { buildPriorRunsNote } = require('../lib/prior-runs-note');
+const { buildSplitExcerptNote } = require('../lib/split-excerpt-note');
 
 // ========================================
 // TYPES
@@ -53,6 +54,9 @@ export interface ReviewInputData {
   // 'complete' tier over the missing final punctuation a page footer causes (BRO-4804).
   contentTier?: string;
   source?: string;    // collector that wrote the file ('theatre-record' capsules, BRO-5227)
+  // Multi-show split markers (BRO-6000): the text is one show's section of a joint article.
+  multiShowSplitChild?: boolean;
+  multiShowSplitParent?: boolean;
 
   // Text sources
   fullText?: string | null;
@@ -218,6 +222,12 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
       }
     }
   }
+
+  // A section cut from a multi-show article loses the paragraphs its first
+  // sentences refer back to (BRO-6000: an opening that advised against
+  // another production's approach was read as a pan of this one). Say so once; every ensemble leg gets this context.
+  const splitNote = buildSplitExcerptNote(review, review.showTitle);
+  if (splitNote) contextParts.push(splitNote);
 
   // 2. Original rating (if present)
   const originalRating = review.originalRating || review.originalScore;

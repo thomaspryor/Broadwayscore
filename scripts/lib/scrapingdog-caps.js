@@ -37,6 +37,7 @@ const path = require('path');
 
 const { utcDay, isExemptCaller, DEFAULT_EXEMPT_SCRIPTS } = require('./brightdata-caps');
 const { isNextUtcDay } = require('./provider-spend-core');
+const { parsePressNightPurpose } = require('./spend-purpose');
 
 /**
  * LEGACY daily credit ceiling — since BRO-2943 (2026-09-07) this is only the
@@ -312,9 +313,123 @@ function isBreakerActive(state, day) {
   return state.day === day && state.trippedAt != null;
 }
 
+
+// ---------- press-night per-show cap (BRO-5914) -------------------------------
+
+/**
+ * HARD spend cap per show per press night (owner decision 2026-10-22: extra
+ * scraping spend is approved for opening nights only, with a hard per-night
+ * cap enforced in code). Counted in USD across providers because the empty-SERP
+ * fix sends an empty Scrapingdog answer on to ScrapingBee/Bright Data, so a
+ * credit count of Scrapingdog alone would not bound the night's real spend.
+ *
+ * Sizing: gather-reviews spend for ilford-boy-west-end-2026 priced at ~$0.45
+ * across its whole press-night window (ledger, 2026-10-20..22), before the
+ * empty-SERP escalation. $2.00 is ~4x that; tripping it ends that ONE show's
+ * SERP phase (url-discovery.js returns null -> '__SERP_UNAVAILABLE__'), so it
+ * must sit well above a normal night. Recalibrate from the ledger after the
+ * Oct 29 openings.
+ */
+const PRESS_NIGHT_CAP_USD = 2.0;
+const PRESS_NIGHT_WARN_FRACTION = 0.8;
+
+/** Cap in USD. SD_PRESS_NIGHT_CAP_USD may only LOWER it, never raise it. */
+function resolvePressNightCapUsd(env = process.env) {
+  const raw = Number(env.SD_PRESS_NIGHT_CAP_USD);
+  if (env.SD_PRESS_NIGHT_CAP_USD != null && String(env.SD_PRESS_NIGHT_CAP_USD).trim() !== ''
+      && Number.isFinite(raw) && raw > 0 && raw < PRESS_NIGHT_CAP_USD) {
+    return raw;
+  }
+  return PRESS_NIGHT_CAP_USD;
+}
+
+const _pressNightWarned = new Set();
+
+/**
+ * USD cost of one ledger row. Providers in the pricing table use it; anything
+ * else (e.g. browserbase) or any pricing error is priced at the Bright Data
+ * per-request rate x max(credits, 1), so it counts toward the cap rather than
+ * throwing or being ignored. A null `credits` is one request (Bright Data rows).
+ */
+function ledgerRowUsd(row, table) {
+  const units = Math.max(Number.isFinite(row.credits) ? row.credits : 1, 1);
+  const rate = (p) => {
+    const r = table && table[p];
+    return r && Number.isFinite(r.usdPerUnit) ? r.usdPerUnit : null;
+  };
+  const own = rate(row.provider);
+  if (own !== null) return units * own;
+  const bd = rate('brightdata');
+  return units * (bd !== null ? bd : 0.0015);
+}
+
+/** Sum USD of ledger rows tagged `purpose`. ENOENT = nothing spent; any other read error throws. */
+function pressNightSpentUsd(purpose, { ledgerPath, table } = {}) {
+  let text;
+  try {
+    text = fs.readFileSync(ledgerPath, 'utf8');
+  } catch (e) {
+    if (e && e.code === 'ENOENT') return 0;
+    throw e;
+  }
+  const needle = `"purpose":${JSON.stringify(purpose)}`;
+  let usd = 0;
+  for (const line of text.split('\n')) {
+    if (!line || !line.includes(needle)) continue; // cheap prefilter before JSON.parse
+    let row;
+    try { row = JSON.parse(line); } catch { continue; } // a partial line must not deny every show
+    if (!row || row.purpose !== purpose) continue;
+    usd += ledgerRowUsd(row, table);
+  }
+  return usd;
+}
+
+/**
+ * Has this show-night used up its press-night cap? Check-only (no side effects
+ * besides a once-per-tag 80% warning). Applies ONLY when SCRAPER_SPEND_PURPOSE
+ * is a press-night tag, so untagged (off-night) spend is never touched and no
+ * file is read. Fails closed per show-night: a malformed press-night tag or an
+ * unreadable ledger denies that show only.
+ *
+ * Counts what the ledger holds. Exact within one run (rows are appended per
+ * call); best-effort across concurrent runs and when a run's ledger commit is
+ * lost; a chain already in flight can overshoot the cap by one call or so.
+ * Only gather-reviews/Express spend carries the tag.
+ *
+ * @returns {{applies: boolean, exceeded: boolean, reason?: string, spentUsd?: number, capUsd?: number}}
+ */
+function pressNightCapStatus({ env = process.env, purpose, ledgerPath, table } = {}) {
+  if (env.SD_PRESS_NIGHT_CAP_DISABLED === '1') return { applies: false, exceeded: false, reason: 'cap-disabled' };
+  const tag = purpose !== undefined ? purpose : env.SCRAPER_SPEND_PURPOSE;
+  const parsed = parsePressNightPurpose(tag);
+  if (parsed === null) return { applies: false, exceeded: false };
+  if (parsed === 'malformed') return { applies: true, exceeded: true, reason: 'malformed-tag' };
+  const capUsd = resolvePressNightCapUsd(env);
+  let spentUsd;
+  try {
+    const telemetry = require('./provider-telemetry');
+    let priceTable = table;
+    if (priceTable === undefined) {
+      try { priceTable = require('./provider-pricing').loadProviderPricing(); } catch { priceTable = null; }
+    }
+    spentUsd = pressNightSpentUsd(tag, { ledgerPath: ledgerPath || env.SCRAPER_SPEND_LEDGER_PATH || telemetry.resolveLedgerPath(), table: priceTable });
+  } catch (e) {
+    return { applies: true, exceeded: true, reason: `ledger-unreadable: ${e && e.message}`, capUsd };
+  }
+  if (spentUsd >= capUsd) {
+    return { applies: true, exceeded: true, reason: 'press-night-cap', spentUsd, capUsd };
+  }
+  if (spentUsd >= capUsd * PRESS_NIGHT_WARN_FRACTION && !_pressNightWarned.has(tag)) {
+    _pressNightWarned.add(tag);
+    console.log(`  ⚠️  Press-night spend cap: ${tag} at $${spentUsd.toFixed(3)} of $${capUsd.toFixed(2)}`);
+  }
+  return { applies: true, exceeded: false, spentUsd, capUsd };
+}
+
 // ---------- stateful consult (the single enforcement helper) -----------------
 
-const _runStats = { blocked: 0, blockedByBreaker: 0 };
+const _runStats = { blocked: 0, blockedByBreaker: 0, blockedByPressNightCap: 0 };
+const _loggedPressNightBlocks = new Set();
 let _stateCache = { at: 0, value: null };
 let _loggedBlock = false;
 
@@ -360,6 +475,21 @@ function readBreakerState(env = process.env, now = Date.now()) {
  * @returns {{allowed: boolean, exempt: boolean, reason?: string, firstBlock?: boolean}}
  */
 function consultScrapingdog({ env = process.env, now = new Date() } = {}) {
+  // Press-night per-show cap (BRO-5914) comes FIRST: opening-night scripts are
+  // exempt from the daily breaker below and SD_CAPS_DISABLED turns that breaker
+  // off, but neither may lift a show's hard per-night cap.
+  const pn = pressNightCapStatus({ env });
+  if (pn.exceeded) {
+    _runStats.blockedByPressNightCap++;
+    const tagKey = String(env.SCRAPER_SPEND_PURPOSE || '');
+    const firstBlock = !_loggedPressNightBlocks.has(tagKey);
+    if (firstBlock) {
+      console.log(`  ⚠️  Press-night cap hit (${pn.reason}${pn.spentUsd != null ? `, $${pn.spentUsd.toFixed(3)} of $${pn.capUsd.toFixed(2)}` : ''}) — skipping Scrapingdog for this show`);
+      _loggedPressNightBlocks.add(tagKey);
+    }
+    return { allowed: false, exempt: false, reason: 'press-night-cap', firstBlock };
+  }
+
   if (env.SD_CAPS_DISABLED === '1') {
     return { allowed: true, exempt: true, reason: 'caps-disabled' };
   }
@@ -401,6 +531,9 @@ function getScrapingdogCapStats() {
 function _resetForTests() {
   _runStats.blocked = 0;
   _runStats.blockedByBreaker = 0;
+  _runStats.blockedByPressNightCap = 0;
+  _loggedPressNightBlocks.clear();
+  _pressNightWarned.clear();
   _stateCache = { at: 0, value: null };
   _loggedBlock = false;
 }
@@ -420,6 +553,10 @@ module.exports = {
   computeTodayCredits,
   isBreakerActive,
   readBreakerState,
+  PRESS_NIGHT_CAP_USD,
+  resolvePressNightCapUsd,
+  pressNightSpentUsd,
+  pressNightCapStatus,
   consultScrapingdog,
   getScrapingdogCapStats,
   _resetForTests,

@@ -988,3 +988,111 @@ test('buildMixedBundleAnnotations: escapes % in the message and , : in the file 
   assert.match(line, /file=\.github\/workflows\/a%2Cb%3Ac\.yml,/);
   assert.match(line, /100%25 done/);
 });
+
+// ── cross-step-stranding (BRO-2580, the BRO-2538 cascade) ────────────────────
+
+const crossStepFixture = (steps) => `
+name: Fixture Cross Step
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    steps:
+${steps}
+`;
+const SOFT_FAIL_UNSAFE_STEP = `      - name: Commit unregistered
+        continue-on-error: true
+        run: |
+          git add data/audit/some-totally-unregistered-file.json
+          git commit -m "a"
+          bash scripts/lib/push-with-retry.sh 14 main
+`;
+const SAFE_ONLY_STEP = `      - name: Commit safe
+        run: |
+          git add data/audit/imageless-scored-shows.json
+          git commit -m "b"
+          bash scripts/lib/push-with-retry.sh 14 main
+`;
+
+test('auditWorkflowText: soft-fail disqualifying step BEFORE an all-safe step flags cross-step-stranding on the later step only', () => {
+  const results = auditWorkflowText(crossStepFixture(SOFT_FAIL_UNSAFE_STEP + SAFE_ONLY_STEP), 'fixture-cross-step.yml');
+  assert.equal(results.length, 2);
+  assert.equal(results[0].crossStepStranding, false);
+  assert.equal(results[1].crossStepStranding, true);
+  assert.ok(results[1].flags.includes('cross-step-stranding'));
+  assert.deepEqual(results[1].crossStepStrandingEarlierSteps, ['Commit unregistered']);
+});
+
+test('auditWorkflowText: the BRO-2538 fix order (all-safe step first) is not flagged', () => {
+  const results = auditWorkflowText(crossStepFixture(SAFE_ONLY_STEP + SOFT_FAIL_UNSAFE_STEP), 'fixture-cross-step-fixed.yml');
+  assert.ok(results.every((r) => !r.crossStepStranding));
+});
+
+test('auditWorkflowText: a hard-fail (not continue-on-error) earlier step does not strand, so no flag', () => {
+  const hardFail = SOFT_FAIL_UNSAFE_STEP.replace('        continue-on-error: true\n', '');
+  const results = auditWorkflowText(crossStepFixture(hardFail + SAFE_ONLY_STEP), 'fixture-cross-step-hard.yml');
+  assert.ok(results.every((r) => !r.crossStepStranding));
+});
+
+test('auditWorkflowText: a later step that is itself mixed (not all apiFallbackSafe) is not cross-step flagged', () => {
+  const mixedLater = SAFE_ONLY_STEP.replace('git commit -m "b"', 'git add data/diary-shows.json\n          git commit -m "b"');
+  const results = auditWorkflowText(crossStepFixture(SOFT_FAIL_UNSAFE_STEP + mixedLater), 'fixture-cross-step-mixed.yml');
+  assert.ok(results.every((r) => !r.crossStepStranding));
+});
+
+test('real workflows: the 14 clean workflows from BRO-2580 stay free of cross-step-stranding', () => {
+  const root = fileURLToPath(new URL('../../', import.meta.url));
+  const names = ['auto-fix-feedback-bug', 'backfill-cast', 'check-corpus-drift', 'check-performance',
+    'collect-hard-paywall', 'collect-review-texts', 'collect-soft-paywall', 'opening-night-broadcast',
+    'opening-night-poller', 'update-cast-changes', 'update-mezzanine', 'update-show-status',
+    'weekly-integrity', 'data-health-check'];
+  for (const n of names) {
+    const rel = `.github/workflows/${n}.yml`;
+    const results = auditWorkflowText(readFileSync(root + rel, 'utf8'), rel);
+    assert.ok(results.length > 0, `${n} should have push calls`);
+    assert.deepEqual(results.filter((r) => r.crossStepStranding).map((r) => r.step), [], n);
+  }
+});
+
+test('auditWorkflowText: a hard-fail earlier step still strands into a later `if: always()` step (review finding)', () => {
+  const hardFail = SOFT_FAIL_UNSAFE_STEP.replace('        continue-on-error: true\n', '');
+  const alwaysSafe = SAFE_ONLY_STEP.replace('      - name: Commit safe\n', '      - name: Commit safe\n        if: always()\n');
+  const results = auditWorkflowText(crossStepFixture(hardFail + alwaysSafe), 'fixture-cross-step-always.yml');
+  assert.equal(results[1].crossStepStranding, true);
+  assert.deepEqual(results[1].crossStepStrandingEarlierSteps, ['Commit unregistered']);
+});
+
+test('auditWorkflowText: a later step staging safe + apiFallbackMerge files is still fallback-eligible and flagged', () => {
+  const mergeLater = SAFE_ONLY_STEP.replace('git commit -m "b"', 'git add data/commercial-pending-review.json\n          git commit -m "b"');
+  const results = auditWorkflowText(crossStepFixture(SOFT_FAIL_UNSAFE_STEP + mergeLater), 'fixture-cross-step-merge.yml');
+  assert.equal(results[1].crossStepStranding, true);
+});
+
+test('auditWorkflowText: an `|| echo` soft-fail earlier step (no continue-on-error) also strands', () => {
+  const echoSoft = SOFT_FAIL_UNSAFE_STEP.replace('        continue-on-error: true\n', '')
+    .replace('push-with-retry.sh 14 main', 'push-with-retry.sh 14 main || echo "push failed"');
+  const results = auditWorkflowText(crossStepFixture(echoSoft + SAFE_ONLY_STEP), 'fixture-cross-step-echo.yml');
+  assert.equal(results[1].crossStepStranding, true);
+});
+
+test('auditWorkflowText: steps in different jobs never cross-strand, and unnamed steps get a placeholder', () => {
+  const twoJobs = `
+name: Fixture Two Jobs
+on:
+  workflow_dispatch: {}
+jobs:
+  a:
+    runs-on: ubuntu-latest
+    steps:
+${SOFT_FAIL_UNSAFE_STEP}
+  b:
+    runs-on: ubuntu-latest
+    steps:
+${SAFE_ONLY_STEP}
+`;
+  assert.ok(auditWorkflowText(twoJobs, 'fixture-two-jobs.yml').every((r) => !r.crossStepStranding));
+  const unnamed = SOFT_FAIL_UNSAFE_STEP.replace('      - name: Commit unregistered\n        continue-on-error: true\n', '      - continue-on-error: true\n');
+  const r = auditWorkflowText(crossStepFixture(unnamed + SAFE_ONLY_STEP), 'fixture-unnamed.yml')[1];
+  assert.deepEqual(r.crossStepStrandingEarlierSteps, ['(unnamed step)']);
+});

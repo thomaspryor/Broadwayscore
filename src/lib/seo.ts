@@ -857,6 +857,8 @@ export function generateCriticSchema(critic: {
   reviewCount: number;
   avgScore: number;
   outlets?: string[];
+  /** 'Broadway' | 'West End' | ... from criticMarketLabel(); defaults to Broadway. */
+  marketLabel?: string;
 }) {
   return {
     '@context': 'https://schema.org',
@@ -864,11 +866,11 @@ export function generateCriticSchema(critic: {
     name: critic.name,
     url: `${BASE_URL}/critics/${critic.slug}`,
     jobTitle: 'Theater Critic',
-    knowsAbout: 'Broadway Theater',
+    knowsAbout: `${critic.marketLabel ?? 'Broadway'} Theater`,
     worksFor: critic.outlets && critic.outlets.length > 1
       ? critic.outlets.map(o => ({ '@type': 'Organization' as const, name: o }))
       : { '@type': 'Organization', name: critic.primaryOutlet },
-    description: `${critic.name} is a Broadway theater critic at ${critic.primaryOutlet} with ${critic.reviewCount} reviews and an average score of ${critic.avgScore}/100.`,
+    description: `${critic.name} is a ${critic.marketLabel ?? 'Broadway'} theater critic at ${critic.primaryOutlet} with ${critic.reviewCount} reviews and an average score of ${critic.avgScore}/100.`,
     // Note: AggregateRating is not valid on Person per Google's structured data spec.
     // Only supported on Product, Recipe, LocalBusiness, etc. Removed to avoid GSC warnings.
   };

@@ -501,7 +501,7 @@ async function updateReviewJson(review, text, archivePath, method) {
     // New LLM extraction (primary — async)
     let llmResult = null;
     try {
-      llmResult = await extractExplicitScore({ text, html, outletId });
+      llmResult = await extractExplicitScore({ text, html, outletId, showId: review.data.showId });
     } catch (e) {
       console.log(`    ⚠ LLM score extraction failed: ${e.message}`);
     }

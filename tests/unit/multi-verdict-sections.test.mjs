@@ -98,3 +98,40 @@ describe('multiVerdictStarStatus + audit plan', () => {
     );
   });
 });
+
+// Codex cross-check on BRO-4490: the LLM extractor is collect-review-texts'
+// primary writer and read the page-level JSON-LD rating (or guessed a run).
+describe('extractExplicitScore on a multi-review column', () => {
+  const { extractExplicitScore } = require('../../scripts/lib/llm-score-extractor.js');
+  const jsonLd5 = '<script type="application/ld+json">{"@type":"Review","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"}}</script>';
+
+  test("takes this show's section star, not the page's JSON-LD 5/5", async () => {
+    const r = await extractExplicitScore({ text: column, html: jsonLd5, outletId: 'financialtimes', showTitle: 'Harbour Lights' });
+    assert.equal(r.originalScore, '3/5 stars');
+    assert.equal(r.normalizedScore, 60);
+    assert.equal(r.source, 'unicode-stars');
+    assert.equal(r.raw, '3/5 stars');
+  });
+
+  test('section path is taken even when the section star equals JSON-LD', async () => {
+    const r = await extractExplicitScore({ text: column, html: jsonLd5, outletId: 'financialtimes', showTitle: 'My Neighbour Totoro' });
+    assert.equal(r.originalScore, '5/5 stars');
+    assert.equal(r.source, 'unicode-stars');
+  });
+
+  test('no title: the section is unknown, so no rating (never the page 5/5)', async () => {
+    assert.equal(await extractExplicitScore({ text: column, html: jsonLd5, outletId: 'financialtimes' }), null);
+  });
+
+  test('extractScore and extractExplicitScore agree on the section star', async () => {
+    const regex = extractScore(jsonLd5, column, 'financialtimes', 'Paper Moons');
+    const llm = await extractExplicitScore({ text: column, html: jsonLd5, outletId: 'financialtimes', showTitle: 'Paper Moons' });
+    assert.equal(regex.originalScore, llm.originalScore);
+    assert.equal(regex.normalizedScore, llm.normalizedScore);
+  });
+
+  test('a single-review FT article keeps the normal path (JSON-LD)', async () => {
+    const r = await extractExplicitScore({ text: `A fine evening. ${pad} ★★★★☆ To May 1`, html: jsonLd5, outletId: 'financialtimes', showTitle: 'Anything' });
+    assert.notEqual(r.source, 'unicode-stars');
+  });
+});

@@ -57,6 +57,10 @@ jobs:
             # BRO-5884: daily encrypted Supabase export (accounts, reviews, lists, watchlists, fantasy) to R2.
             # 36h = daily cadence + 12h cron-lag cushion.
             "supabase-backup.yml|36|Supabase Backup to R2"
+            # BRO-5963: monthly restore drill (2nd of month). 756h = 31 days (744h) + 12h cushion;
+            # the coverage audit only simulates 60 days so it would accept 684h, which would
+            # false-alarm before most monthly runs.
+            "backup-restore-drill.yml|756|Backup Restore Drill"
             # Monday 07:00 UTC weekly full-history secret scan. Deliberately CRITICAL
             # rather than digest-only: this workflow exists BECAUSE a live Buffer token
             # sat in the public repo ~4 months with nothing scanning for it. A secret

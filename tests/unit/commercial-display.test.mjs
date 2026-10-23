@@ -31,6 +31,8 @@ const {
   getDesignationDisplay,
   getBreakEven,
   getDisplayableAnalystRange,
+  getDisplayableEstimateRange,
+  toPublicShowCommercial,
   getRecoupedCellSummary,
 } = await import('../../src/lib/commercial-display.ts');
 
@@ -286,7 +288,7 @@ test('BRO-5502: the analyst figure leads wherever it shows', () => {
   assert.deepEqual(getRecoupedCellSummary(ragtime).kind, 'analyst');
   assert.deepEqual(getRecoupedCellSummary({ ...ragtime, analystRecoupPct: undefined, capitalization: null }), { kind: 'reason', text: 'Budget not disclosed' });
   // A range past 100 on an unrecouped show tops out at 99; a low end of 100+ stays (reads "not yet announced").
-  assert.deepEqual(getDisplayableAnalystRange({ ...twoStrangers, analystRecoupPct: [80, 120] }), [80, 99]);
+  assert.deepEqual(getDisplayableAnalystRange({ ...twoStrangers, analystRecoupPct: [80, 120] }), [80, 95]);
   assert.deepEqual(getDisplayableAnalystRange({ ...twoStrangers, analystRecoupPct: [100, 100] }), [100, 100]);
   // A closed Flop takes the analyst's figure only when it fits the label (Death Becomes Her: 10-30).
   const dbh = { ...twoStrangers, status: 'closed', designation: 'Flop', recouped: false, analystRecoupPct: [10, 30] };
@@ -298,7 +300,7 @@ test('BRO-5502: the % Recouped cell always says something', () => {
   const cell = (over) => getRecoupedCellSummary({ ...base, modelRecoupmentPct: null, status: 'open', ...over });
   assert.deepEqual(cell({ recouped: true }), { kind: 'recouped' });
   assert.deepEqual(cell({ analystRecoupPct: [10, 30], analystRecoupAsOf: '2026-10-13', analystRecoupUrl: 'https://r/x' }),
-    { kind: 'analyst', range: [10, 30], asOf: '2026-10-13', url: 'https://r/x' });
+    { kind: 'analyst', range: [10, 30], withModel: false, asOf: '2026-10-13', url: 'https://r/x' });
   assert.deepEqual(cell({ ...modelFields }), { kind: 'model', pct: [60, 86, 110] });
   // A trade-reported return beats every estimate on a closed show (Hell's Kitchen).
   const hk = { status: 'closed', designation: 'Fizzle', recouped: false, analystRecoupPct: [60, 60], reportedReturn: { lo: 55, hi: 60, outlet: 'Broadway Journal', asOf: 'Oct 2026' } };
@@ -518,3 +520,58 @@ test('BRO-4721: a Nonprofit production never shows a modeled % recouped (no inve
     assert.equal(getReportedReturnLine({ designation: 'Nonprofit', recouped: null, status: 'closed', reportedReturn: rr }), null);
   });
 }
+
+test('owner 2026-10-22: the estimate range spans the analyst and our model, rounded to 5', () => {
+  const run = { ...base, status: 'open', recouped: false, modelDataQuality: 'medium', modelMethod: 'weekly-model', analystRecoupAsOf: '2026-10-13' };
+  // Gatsby: analyst 20, model central 57 -> 20-55.
+  assert.deepEqual(getDisplayableEstimateRange({ ...run, analystRecoupPct: [20, 20], modelRecoupmentPct: [30, 57, 80] }), { range: [20, 55], withModel: true });
+  // Maybe Happy Ending: analyst 40, model 23 -> 25-40 (the owner's example).
+  assert.deepEqual(getDisplayableAnalystRange({ ...run, analystRecoupPct: [40, 40], modelRecoupmentPct: [10, 23, 40] }), [25, 40]);
+  // Model inside the analyst's range: same range, still credited.
+  assert.deepEqual(getDisplayableEstimateRange({ ...run, analystRecoupPct: [10, 30], modelRecoupmentPct: [5, 17, 30] }), { range: [10, 30], withModel: true });
+  // Below costs (the guard leaves 0 central with belowCosts) spans down to 0.
+  assert.deepEqual(getDisplayableAnalystRange({ ...run, analystRecoupPct: [10, 10], modelRecoupmentPct: [0, 0, 5] }), [0, 10]);
+  // A model under the quality floor, or held by the guard (null), stays out; the analyst alone still rounds.
+  assert.deepEqual(getDisplayableEstimateRange({ ...run, analystRecoupPct: [83, 83], modelRecoupmentPct: [10, 23, 40], modelDataQuality: 'low' }), { range: [85, 85], withModel: false });
+  assert.deepEqual(getDisplayableEstimateRange({ ...run, analystRecoupPct: [83, 83], modelRecoupmentPct: null }), { range: [85, 85], withModel: false });
+  // Unrecouped tops out at 95; a low end of 100+ stays "Est. recouped".
+  assert.deepEqual(getDisplayableAnalystRange({ ...run, analystRecoupPct: [90, 90], modelRecoupmentPct: [80, 130, 160] }), [90, 95]);
+  assert.deepEqual(getDisplayableAnalystRange({ ...run, analystRecoupPct: [98, 98] }), [95, 95]);
+  assert.deepEqual(getDisplayableAnalystRange({ ...run, analystRecoupPct: [100, 100] }), [100, 100]);
+  // A closed Flop: the model joins only when the widened range still fits the label.
+  const flop = { ...run, status: 'closed', designation: 'Flop', analystRecoupPct: [10, 10] };
+  assert.equal(getDisplayableEstimateRange({ ...flop, modelRecoupmentPct: [5, 17, 30] }).withModel, true);
+  assert.deepEqual(getDisplayableEstimateRange({ ...flop, modelRecoupmentPct: [60, 80, 95] }), { range: [10, 10], withModel: false });
+  // A model held only as too uncertain or disagreeing still bounds the range (Gatsby: analyst 10-30, model 57).
+  const gatsby = { ...run, analystRecoupPct: [10, 30], modelRecoupmentPct: null, modelHeldRange: [-11, 57, 117] };
+  assert.deepEqual(getDisplayableEstimateRange({ ...gatsby, modelDisplayHold: 'too-uncertain' }), { range: [10, 55], withModel: true });
+  assert.deepEqual(getDisplayableEstimateRange({ ...gatsby, modelDisplayHold: 'estimates-disagree' }), { range: [10, 55], withModel: true });
+  // Far below costs counts as 0; other holds (too early, past 100, not yet trusted) keep it out.
+  assert.deepEqual(getDisplayableEstimateRange({ ...gatsby, modelHeldRange: [-60, -44, -15], modelDisplayHold: 'out-of-bounds' }), { range: [0, 30], withModel: true });
+  for (const hold of ['few-weeks', 'awaiting-truth', 'past-100-unannounced', 'star-deal-unknown']) {
+    assert.deepEqual(getDisplayableEstimateRange({ ...gatsby, modelDisplayHold: hold }), { range: [10, 30], withModel: false }, hold);
+  }
+  // The show card reads the public record: it must carry what the range needs (the card once lost modelHeldRange).
+  const outOfBounds = { ...gatsby, modelHeldRange: [-60, -44, -15], modelDisplayHold: 'out-of-bounds' };
+  for (const rec of [{ ...gatsby, modelDisplayHold: 'too-uncertain' }, outOfBounds, { ...run, analystRecoupPct: [40, 40], modelRecoupmentPct: [10, 23, 40] }]) {
+    assert.deepEqual(getDisplayableEstimateRange({ ...toPublicShowCommercial(rec), status: rec.status }), getDisplayableEstimateRange(rec));
+  }
+  // ...but only the central figure, floored at 0: the held range stays server-only.
+  assert.deepEqual(toPublicShowCommercial({ ...gatsby, modelDisplayHold: 'too-uncertain' }).modelHeldRange, [57, 57, 57]);
+  assert.deepEqual(toPublicShowCommercial(outOfBounds).modelHeldRange, [0, 0, 0]);
+  for (const hold of ['few-weeks', 'past-100-unannounced']) assert.equal('modelHeldRange' in toPublicShowCommercial({ ...gatsby, modelDisplayHold: hold }), false, hold);
+  assert.equal('modelHeldRange' in toPublicShowCommercial({ ...gatsby, modelDisplayHold: 'too-uncertain', recouped: true }), false);
+  // A held central of 100+ never joins: it would hint at an unannounced recoupment (BRO-5073).
+  const past100 = { ...gatsby, analystRecoupPct: [60, 70], modelHeldRange: [80, 130, 180], modelDisplayHold: 'too-uncertain' };
+  assert.deepEqual(getDisplayableEstimateRange(past100), { range: [60, 70], withModel: false });
+  assert.equal('modelHeldRange' in toPublicShowCommercial(past100), false);
+  // The /biz cell carries the flag for its credit.
+  assert.equal(getRecoupedCellSummary({ ...run, analystRecoupPct: [20, 20], modelRecoupmentPct: [30, 57, 80] }).withModel, true);
+});
+
+test('owner 2026-10-22: a closed label is checked on the rounded range the reader sees', () => {
+  const closed = { status: 'closed', designation: 'Flop', analystRecoupPct: [0, 58] };
+  // Mid 29 fits Flop, but it shows as 0-60 (mid 30, a Fizzle's): nothing shown.
+  assert.equal(getDisplayableEstimateRange(closed), null);
+  assert.deepEqual(getDisplayableEstimateRange({ ...closed, analystRecoupPct: [0, 50] }), { range: [0, 50], withModel: false });
+});

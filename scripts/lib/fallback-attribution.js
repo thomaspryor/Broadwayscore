@@ -54,6 +54,7 @@ const SKIP_REASONS = new Set([
   'sb-credits-low',  // account credits low (checkScrapingBeeCredits)
   'sb-budget',       // per-run SB_CREDIT_BUDGET spent
   'sb-breaker',      // ScrapingBee daily circuit breaker (consultScrapingbee, BRO-3010)
+  'press-night-cap', // per-show per-night spend cap (pressNightCapStatus, BRO-5914)
 ]);
 
 /**

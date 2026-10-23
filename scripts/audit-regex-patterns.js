@@ -167,6 +167,7 @@ const PATTERN_ALLOWLIST = {
   // leading/trailing-junk mitigation absorbs them in isGarbageContent
   'NEWSLETTER_PATTERNS::0': 200,  // /thanks?\s+for\s+subscribing/ — raw 154, 2026-08-15 recal
   'NEWSLETTER_PATTERNS::1': 150,  // /enter\s+your\s+email/
+  'PROMO_BOOKING_COPY_PATTERNS::12': 12, // /(select|choose) a date/ — raw 9, 2026-10-22, all booking pages (BRO-5906, see PATTERN_CALIBRATION)
   'NEWSLETTER_PATTERNS::3': 10,   // /subscribe\s+to\s+(our\s+)?newsletter/i — raw 7, 2026-08-26 (BRO-33, see PATTERN_CALIBRATION)
   'NEWSLETTER_PATTERNS::4': 28,   // /get\s+(the\s+)?latest\s+(news|updates)/i — raw 21, 2026-08-15 recal (see PATTERN_CALIBRATION)
   'NEWSLETTER_PATTERNS::5': 22,   // /newsletter\s+sign[-\s]?up/ — raw 17, 2026-08-15 recal (see PATTERN_CALIBRATION)
@@ -310,6 +311,16 @@ const PATTERN_CALIBRATION = {
         + 'Corpus-growth recalibration from raw 6 (2026-04-28) to raw 11: same '
         + 'widget pattern (Playbill, Daily Beast), diffuse across outlets, not '
         + 'a scraper regression. Sized to baseline + ~30%.',
+  },
+  'PROMO_BOOKING_COPY_PATTERNS::12': {
+    commit: 'pending',
+    date: '2026-10-22',
+    rawHits: 9,
+    headroom: 1.33,
+    note: 'BRO-5906: weak phrase, never fires detectPromoBookingCopy alone (needs '
+        + 'a strong phrase too). The 9 single-pattern hits are seatplan and '
+        + 'theatreaccess booking/listing pages ("check live pricing, select a '
+        + 'date"), i.e. true positives for the family, not review prose.',
   },
   'NEWSLETTER_PATTERNS::3': {
     commit: 'pending',

@@ -680,6 +680,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       // "file a card before you commit" gate without filing anything — a
       // bypass built by the very sprint that hardens the gate.
       console.error(`ISSUE-UPDATED: ${issue.identifier}${target ? ` — state=${target.name}` : ''}${commented ? ' — commented' : ''}`);
+      // BRO-2857: the state-type-based "card closed" proof (printed after
+      // the write succeeded). Hooks grep this instead of state names.
+      const reported = target ? require('./lib/linear-state-types').reportedMarker(issue.identifier, target.type) : '';
+      if (reported) console.error(reported);
     } catch (err) {
       console.error(`\n❌ ${err.message}\n`);
       process.exit(2);

@@ -359,7 +359,7 @@ async function processRecovered(candidate, text, html, newUrl, method) {
   data.contentTierReason = tierResult.tierReason || tierResult.reason || 'Recovered via SERP text recovery';
 
   try {
-    const scoreResult = await extractExplicitScore({ text: cleanedText, html: html || '', outletId: candidate.outletId });
+    const scoreResult = await extractExplicitScore({ text: cleanedText, html: html || '', outletId: candidate.outletId, showId: candidate.showId });
     if (scoreResult) {
       const { field } = setExtractedScore(data, {
         value: scoreResult.originalScore,

@@ -5,6 +5,9 @@ name: Supabase Backup to R2
 # compares row counts to live. Complements Supabase's own daily physical backups
 # (7 days, no PITR, not downloadable) and r2-cold-backup.yml (git repos only).
 # Logs print table names and counts only, never row contents.
+# Retention: this job never deletes. The upload key deliberately has no bucket-admin
+# rights, so expiry and lock rules are set on the bucket by the owner (BRO-5963).
+# backup-restore-drill.yml restores the latest set monthly to prove it is usable.
 
 on:
   schedule:
@@ -43,6 +46,7 @@ jobs:
             scripts/supabase-backup.js
             scripts/supabase-backup-verify.js
             scripts/lib/supabase-backup-core.js
+            scripts/lib/backup-drill.js
             scripts/lib/cli-help.js
             .github/actions/notify-failure
             scripts/lib/discord-notify.js
@@ -102,17 +106,6 @@ jobs:
           tar -C data -xzf supabase-data.tar.gz
           cd "$GITHUB_WORKSPACE"
           node scripts/supabase-backup-verify.js "$VDIR/data"
-
-      - name: Ensure 35-day retention on daily/ (R2 lifecycle rule)
-        # Lifecycle, not a prune step: a prune step silently stops working whenever the job fails.
-        # Merges with any rules already on the bucket instead of replacing them.
-        continue-on-error: true
-        run: |
-          EXISTING=$(aws s3api get-bucket-lifecycle-configuration --bucket "$R2_BUCKET" --endpoint-url "$R2_ENDPOINT" 2>/dev/null || echo '{"Rules":[]}')
-          echo "$EXISTING" | jq '{Rules: ((.Rules // []) | map(select(.ID != "expire-daily-supabase")) + [{ID:"expire-daily-supabase",Status:"Enabled",Filter:{Prefix:"daily/"},Expiration:{Days:35}}])}' > "$RUNNER_TEMP/lifecycle.json"
-          aws s3api put-bucket-lifecycle-configuration --bucket "$R2_BUCKET" \
-            --lifecycle-configuration "file://$RUNNER_TEMP/lifecycle.json" --endpoint-url "$R2_ENDPOINT" \
-            || echo "::warning::could not set R2 lifecycle rule (key lacks bucket-admin?); daily/ will not auto-expire"
 
       - name: Remove decrypted data
         if: always()

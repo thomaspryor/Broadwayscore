@@ -42,6 +42,9 @@ interface RecoupmentSignals {
   modelMethod?: ShowCommercial['modelMethod'] | null;
   recouped: ShowCommercial['recouped'];
   modelRecoupmentPct?: ShowCommercial['modelRecoupmentPct'];
+  /** Why the display guard held the model, and the held figure (applyModelDisplayGuard). */
+  modelDisplayHold?: ShowCommercial['modelDisplayHold'];
+  modelHeldRange?: ShowCommercial['modelHeldRange'];
   /** u/Boring_Waltz_9545's published estimate (BRO-5502). */
   analystRecoupPct?: ShowCommercial['analystRecoupPct'];
   /** 'enhancement': a nonprofit production with commercial money to recoup (hasNoInvestorsToRepay). */
@@ -119,20 +122,94 @@ export function getRecoupmentDisplayMode(
   return 'model';
 }
 
+/** Display-guard holds that still let the model's central figure bound the analyst + model range. */
+const RANGE_MODEL_HOLDS = new Set(['too-uncertain', 'estimates-disagree']);
+
 /**
- * The analyst's [low, high] when getRecoupmentDisplayMode would render it, else null:
- * not on a recouped, nonprofit or tour-stop record, and on a closed Fizzle or
- * Flop only when it agrees with the label.
+ * The model [low, central, high] that may bound the estimate range, or null.
+ * A held model joins only when held for being too uncertain, for disagreeing
+ * with an outside estimate, or for sitting far below costs, and never at a
+ * central of 100+: that would hint at an unannounced recoupment (BRO-5073).
  */
-export function getDisplayableAnalystRange(commercial: RecoupmentSignals): [number, number] | null {
+function rangeModel(commercial: RecoupmentSignals): [number, number, number] | null {
+  if (commercial.modelRecoupmentPct) return commercial.modelRecoupmentPct;
+  const held = commercial.modelHeldRange;
+  if (!held || !commercial.modelDisplayHold || held[1] >= 100) return null;
+  if (RANGE_MODEL_HOLDS.has(commercial.modelDisplayHold)) return held;
+  // Far below costs: the bar hides the number, not the fact (out-of-bounds, central < 0).
+  // (<= 0: a page carries it floored at 0, publicHeldRange.)
+  if (commercial.modelDisplayHold === 'out-of-bounds' && held[1] <= 0) return held;
+  return null;
+}
+
+/**
+ * What a page may carry of the held model: its central figure alone, floored
+ * at 0, and only when rangeModel would use it. The held range itself stays
+ * server-only (a negative or unannounced-recoupment figure never reaches a page).
+ */
+export function publicHeldRange(commercial: RecoupmentSignals): [number, number, number] | null {
+  if (commercial.modelRecoupmentPct || commercial.recouped === true || hasNoInvestorsToRepay(commercial)) return null;
+  const model = rangeModel(commercial);
+  if (!model) return null;
+  const central = Math.max(0, model[1]);
+  return [central, central, central];
+}
+
+/** Nearest 5: a recoupment estimate is not good to the point (owner 2026-10-22, "23 to 40% is false accuracy"). */
+function roundToFive(v: number): number {
+  return Math.round(v / 5) * 5;
+}
+
+/**
+ * The estimate range the site shows when getRecoupmentDisplayMode is 'analyst',
+ * else null: not on a recouped, nonprofit or tour-stop record, and on a closed
+ * Fizzle or Flop only when it agrees with the label.
+ *
+ * The range spans the analyst's estimate and our model's central figure
+ * (owner 2026-10-22): two estimates from the same grosses that disagree by
+ * 15-37 points on a third of shows, neither proven better. The model joins
+ * when it passes the quality floor and the display guard, or when the guard
+ * held it only for being too uncertain, for disagreeing with an outside
+ * estimate, or for sitting far below costs: its own bar would overstate how
+ * sure it is, while one end of a range spanning the analyst's says exactly
+ * that. On a closed Fizzle or Flop the model, and the widened range, must
+ * agree with the label. withModel says the model widened or met the range,
+ * for the credit line. Both ends round to the nearest 5.
+ */
+export function getDisplayableEstimateRange(commercial: RecoupmentSignals): { range: [number, number]; withModel: boolean } | null {
   if (commercial.recouped === true || hasNoInvestorsToRepay(commercial)) return null;
-  const range = analystRange(commercial);
-  if (!range) return null;
-  if (isFinalClosedOutcome(commercial) && !estimateFitsDesignation(range, commercial.designation)) return null;
-  // A range that reaches past 100 on an unrecouped show tops out at 99, as the
-  // model's does (BRO-5073). A low end of 100+ stays: it reads "Est. recouped,
-  // not yet announced".
-  return range[0] >= 100 ? range : [range[0], Math.min(range[1], RUNNING_SHOWN_MAX)];
+  const analyst = analystRange(commercial);
+  if (!analyst) return null;
+  const finalClosed = isFinalClosedOutcome(commercial);
+  // The label check reads the rounded range the reader sees: rounding can move
+  // a midpoint across the Fizzle line (Flop 0-58, mid 29, shows 0-60, mid 30).
+  const fits = (range: [number, number]) => !finalClosed || estimateFitsDesignation(range, commercial.designation);
+  const analystShown = roundedRange(analyst);
+  if (!fits(analystShown)) return null;
+  const model = rangeModel(commercial);
+  if (model && meetsModelQualityFloor(commercial) && (!finalClosed || estimateFitsDesignation(model, commercial.designation))) {
+    const central = Math.max(0, model[1]);
+    const spanned = roundedRange([Math.min(analyst[0], central), Math.max(analyst[1], central)]);
+    // Widened, the range must still agree with a closed label; else the analyst's alone.
+    if (fits(spanned)) return { range: spanned, withModel: true };
+  }
+  return { range: analystShown, withModel: false };
+}
+
+/**
+ * Both ends to the nearest 5. A low end of 100+ stays: it reads "Est. recouped,
+ * not yet announced". Else the range tops out below 100, as the model's does
+ * (BRO-5073), at the highest multiple of 5 under it.
+ */
+function roundedRange([lo, hi]: [number, number]): [number, number] {
+  if (lo >= 100) return [roundToFive(lo), roundToFive(hi)];
+  const top = Math.floor(RUNNING_SHOWN_MAX / 5) * 5;
+  return [Math.min(roundToFive(lo), top), Math.min(roundToFive(hi), top)];
+}
+
+/** The range of getDisplayableEstimateRange, for callers that need only the numbers. */
+export function getDisplayableAnalystRange(commercial: RecoupmentSignals): [number, number] | null {
+  return getDisplayableEstimateRange(commercial)?.range ?? null;
 }
 
 /**
@@ -224,7 +301,7 @@ export function getReportedReturnLine(
 export type RecoupedCellSummary =
   | { kind: 'recouped' }
   | { kind: 'reported'; lo: number; hi: number; outlet: string; asOf: string | null }
-  | { kind: 'analyst'; range: [number, number]; asOf: string | null; url: string | null }
+  | { kind: 'analyst'; range: [number, number]; withModel: boolean; asOf: string | null; url: string | null }
   | { kind: 'model'; pct: [number, number, number] }
   | { kind: 'loss'; text: string }
   | { kind: 'reason'; text: string };
@@ -248,7 +325,8 @@ export function getRecoupedCellSummary(row: CellSignals): RecoupedCellSummary {
   const rr = row.reportedReturn;
   if (rr && getReportedReturnLine(row)) return { kind: 'reported', lo: rr.lo, hi: rr.hi, outlet: rr.outlet, asOf: rr.asOf };
   if (mode === 'analyst') {
-    return { kind: 'analyst', range: getDisplayableAnalystRange(row)!, asOf: row.analystRecoupAsOf ?? null, url: row.analystRecoupUrl ?? null };
+    const est = getDisplayableEstimateRange(row)!;
+    return { kind: 'analyst', range: est.range, withModel: est.withModel, asOf: row.analystRecoupAsOf ?? null, url: row.analystRecoupUrl ?? null };
   }
   if (mode === 'model') return { kind: 'model', pct: row.modelRecoupmentPct! };
   if (isClosedWithoutRecouping(row)) {
@@ -380,6 +458,8 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     // Display-guard outputs (applyModelDisplayGuard): the show-page bar reads these.
     ...(commercial.modelBelowCosts ? { modelBelowCosts: true } : {}),
     ...(commercial.modelDisplayHold ? { modelDisplayHold: commercial.modelDisplayHold } : {}),
+    // A held model's central figure can still bound the analyst + model range (getDisplayableEstimateRange).
+    ...(publicHeldRange(commercial) ? { modelHeldRange: publicHeldRange(commercial) } : {}),
     ...(commercial.modelCreditBasis ? { modelCreditBasis: commercial.modelCreditBasis } : {}),
     modelBreakeven: commercial.modelBreakeven,
     modelDataQuality: commercial.modelDataQuality,
@@ -775,9 +855,12 @@ export function getModelRecoupmentLabels(
   const isModel = estimatedPct.length === 3;
   // Clamp at 0: the model can emit negative percentages for deep flops
   // (e.g. cabaret-2024 [-168, -120, -74]); "-120% recouped" is nonsense copy.
-  const low = Math.max(0, Math.round(Math.min(...estimatedPct)));
-  const high = Math.max(0, Math.round(Math.max(...estimatedPct)));
-  const central = Math.max(0, isModel ? Math.round(estimatedPct[1]) : Math.round((low + high) / 2));
+  // Shown to the nearest 5, as the estimate range is (owner 2026-10-22: "23 to 40%
+  // is false accuracy"); a figure under 100 never rounds up to it (BRO-5073).
+  const shown = (v: number) => Math.max(0, v >= PCT_CAP ? roundToFive(v) : Math.min(roundToFive(v), Math.floor((PCT_CAP - 1) / 5) * 5));
+  const low = shown(Math.min(...estimatedPct));
+  const high = shown(Math.max(...estimatedPct));
+  const central = isModel ? shown(estimatedPct[1]) : Math.max(0, Math.round((low + high) / 2));
   const valueText = pctText(central);
 
   let label: string;

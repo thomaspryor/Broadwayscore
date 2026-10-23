@@ -478,6 +478,8 @@ export default function ShowPageBelowFold({
                 <span className="text-gray-400">To be announced</span>
               ) : isTour ? (
                 <span>{show.venue}</span>
+              ) : isWestEnd && !venueSlug ? (
+                <span>{show.venue}</span>
               ) : isWestEnd ? (
                 <Link href={`/west-end/theater/${venueSlug}`} className="hover:text-brand transition-colors">{show.venue}</Link>
               ) : isOffBroadway ? (

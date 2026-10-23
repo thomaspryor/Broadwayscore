@@ -234,9 +234,9 @@ def _strip_heredocs(cmd: str) -> str:
 # inside heredoc-wrapped prose (this repo's convention for long values, per
 # CLAUDE.md's heredoc commit-message rule) — without it, shlex.split would
 # raise on essentially every real invocation.
-# Linear replaced the Notion board (CLAUDE.md §6). Linear has no "Paused"
-# state (linear-brain rejects it); a pause is --state Backlog, which is what
-# `linear-session.js report --status=paused` sets. `linear-session.js report`
+# Linear replaced the Notion board (CLAUDE.md §6). a pause is
+# `linear-session.js report --status=paused`, which sets the team's "Paused"
+# state when it has one and Backlog otherwise (BRO-2857). `linear-session.js report`
 # is the close-out verb for an issue the session CLAIMED (dispatched onto
 # BRO-N) rather than created.
 # `notion-brain.js update --status Done` counted here until 2026-09-29
@@ -2262,7 +2262,7 @@ if [[ "$result" == "WAKELESS" ]]; then
 fi
 
 if [[ "$result" == "NOWRAPUP" ]]; then
-  echo "🛑 BLOCKED: claiming SAFE TO EXIT after real work, but this session's Linear card was never closed out after that work. Run: node scripts/linear-brain.js update BRO-N --state Done (needs a PR-EVIDENCE line citing the landed commit URL, https://github.com/thomaspryor/Broadwayscore/commit/<sha on main>, which verifies through GitHub even in a shallow cloud clone, or an Acceptance-criteria check; a refused update doesn't count). Landed but not live yet? Don't stop and idle: re-run node scripts/check-prod-deploy.js <sha> from a background Bash every few minutes (wait-for-land.js land/<name> 60 --prod does this too, within 6h of the landing) and close out once it is live. To pause, or when Done is refused: node scripts/linear-session.js report --issue=BRO-N --status=paused --summary=\"...\" (Linear has no Paused state; this sets Backlog). Invoking /wrap-up is required but not enough on its own, and a notion-brain.js update does not count (Notion is retired). Bypass: NO-VERIFY: <reason> (or NO-CARD: <reason> if this session has no card by design)." >&2
+  echo "🛑 BLOCKED: claiming SAFE TO EXIT after real work, but this session's Linear card was never closed out after that work. Run: node scripts/linear-brain.js update BRO-N --state Done (needs a PR-EVIDENCE line citing the landed commit URL, https://github.com/thomaspryor/Broadwayscore/commit/<sha on main>, which verifies through GitHub even in a shallow cloud clone, or an Acceptance-criteria check; a refused update doesn't count). Landed but not live yet? Don't stop and idle: re-run node scripts/check-prod-deploy.js <sha> from a background Bash every few minutes (wait-for-land.js land/<name> 60 --prod does this too, within 6h of the landing) and close out once it is live. To pause, or when Done is refused: node scripts/linear-session.js report --issue=BRO-N --status=paused --summary=\"...\" (sets the Paused state if the team has one, else Backlog). Invoking /wrap-up is required but not enough on its own, and a notion-brain.js update does not count (Notion is retired). Bypass: NO-VERIFY: <reason> (or NO-CARD: <reason> if this session has no card by design)." >&2
   exit 2
 fi
 

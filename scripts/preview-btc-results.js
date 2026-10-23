@@ -190,11 +190,6 @@ node scripts/send-btc-results.js --dry-run
 node scripts/send-btc-results.js --send-to=thomas.pryor@gmail.com
 node scripts/send-btc-results.js
 \`\`\`
-
-Or via GitHub Actions:
-\`\`\`bash
-gh workflow run send-btc-results.yml
-\`\`\`
 `;
 }
 

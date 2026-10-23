@@ -154,7 +154,9 @@ export function getGuideList(slug: string): GuideList | null {
   }
 
   const metadata = {
-    monthYear: getCurrentMonthYear(),
+    // Year-guide slugs (/guides/best-broadway-shows-2024) get their own year in
+    // the title/H1/description instead of the current month (BRO-5970).
+    monthYear: year ? String(year) : getCurrentMonthYear(),
     year: year || new Date().getFullYear(),
     season: getCurrentSeason(),
     count: filtered.length,

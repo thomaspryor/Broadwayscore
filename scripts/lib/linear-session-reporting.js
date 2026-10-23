@@ -35,7 +35,10 @@ const CLAIM_STATE_NAME = 'In Progress';
 const STATUS_TO_STATE_NAME = {
   done: 'Done',
   'in-review': 'In Review',
-  paused: 'Backlog',
+  // Preference chain, first name present on the team wins. "Paused" is a
+  // backlog-type state the owner may add in Linear (BRO-2857); until it
+  // exists, or if it is removed, paused cards fall back to "Backlog".
+  paused: ['Paused', 'Backlog'],
   // 'blocked' deliberately maps to no state change — BRO-387's own
   // instructions: "leave the state as-is rather than guessing at 'In
   // Review'" when a session can't finish.
@@ -260,8 +263,13 @@ function planCompletion({ status, states }) {
     return { stateId: null, stateName: null };
   }
 
-  const targetName = STATUS_TO_STATE_NAME[status];
-  let state = pickStateByName(states, targetName);
+  const targetNames = [].concat(STATUS_TO_STATE_NAME[status]);
+  const targetName = targetNames.join(' / ');
+  let state = null;
+  for (const name of targetNames) {
+    state = pickStateByName(states, name);
+    if (state) break;
+  }
   if (!state) {
     state = pickStateByType(states, STATUS_TO_STATE_TYPE_FALLBACK[status]);
   }

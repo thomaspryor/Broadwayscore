@@ -1,10 +1,9 @@
-# BRO-4786 state
-Done: lease CAS store, guard, CLI, six workflow syncs, push-review-texts enforce, script skips, 13 passing tests (tests/unit/opening-night-lane-lease-wiring.test.mjs). ship-check recorded pass.
-Landing: land run 37487992073 went red on one test (rmSync without maxRetries in my test) — fixed in the last commit; needs re-land.
-Next: `bash scripts/merge-worktree-to-main.sh job/linear-BRO-4786-muwt2lon`, wait for green land run, then on main `node --test tests/unit/opening-night-lane-lease-wiring.test.mjs`, then `node scripts/linear-session.js report --issue=BRO-4786 --status=done ...`.
-# BRO-4196 state
-Done: tests/unit/image-presence.test.mjs live imageless sweep -> t.diagnostic (fatal only with IMAGE_PRESENCE_STRICT=1) + deterministic fixture test for findImagelessScoredShows. Committed (2131dcc2e28), /second-opinion pass recorded.
-Root cause: newly scored shows are imageless until image self-heal lands (hours); a live-data assert turned main red each time.
-Remaining: land run 36623320088 (land/job/linear-BRO-4196-mun0ydst) must finish; verify `git merge-base --is-ancestor 2131dcc2e28 origin/main`. If cancelled: empty commit + bash scripts/merge-worktree-to-main.sh.
-Then: node scripts/linear-session.js report --issue=BRO-4196 --status=done --summary="..."
-Local run-unit-tests has 27 env failures (missing review-texts private repo, worktree/hook tests) unrelated to this change.
+# BRO-6008 state (2026-10-22 16:30 ET)
+Done (committed on job/linear-BRO-6008-mvjwjxh3, tip 046c0287e94, ship-check verdict recorded):
+- fetchPage options tiers/wait/countryCode (scripts/lib/scraper.js), BD-only helper (scripts/lib/audience-page-fetch.js)
+- LBO/LTD/SeatPlan/ShowScore/WE-sweep migrated off direct BD/SB calls; baseline 13 -> 10; allowlist entries removed
+- tests/unit/scrapingbee-direct-calls.test.mjs (VERIFY) passes 10/10 on the branch; parity run on live data OK
+Remaining: LAND. origin/land/job/linear-BRO-6008-mvjwjxh3 is at the tip; land.yml run was cancelled while pending (busy queue), server-side retry pending.
+Next command (from the worktree): bash scripts/merge-worktree-to-main.sh
+Then on main: node --test tests/unit/scrapingbee-direct-calls.test.mjs ; then linear-session.js report --status=done.
+Not done: scripts/collect-review-texts.js (BRO-2964, still baselined), "Requires: SCRAPINGBEE" docs (still accurate: those scripts gate on the SB key).

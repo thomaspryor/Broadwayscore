@@ -1235,8 +1235,8 @@ test('NOWRAPUP: ECONNREFUSED in a retried-but-successful close-out is not a refu
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
-// Linear has no "Paused" state: linear-brain rejects `--state Paused` with ❌,
-// and a pause is `--state Backlog` (what `report --status=paused` sets).
+// Close-out by pausing: `--state Backlog` (or `--state Paused` once the team
+// has that state, BRO-2857) is a close-out. This fixture covers the Backlog form.
 test('NOWRAPUP: linear-brain --state Backlog is a close-out → ALLOWED', skipNoRepoHook, () => {
   const dir = makeTmpDir('wrapup-backlog');
   const closeout = toolUse('Bash', { command: 'node scripts/linear-brain.js update BRO-9007 --state Backlog --comment "parked"' }, 'ISSUE-UPDATED: BRO-9007 — state=Backlog — commented');

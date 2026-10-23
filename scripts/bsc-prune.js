@@ -1014,9 +1014,9 @@ function parkCard(vanished) {
 }
 
 // Linear side-effect for a vanished Linear-dispatched task (BRO-3431). Not a
-// straight reuse of parkCard()/formatParkOutcome(): this team's Linear board
-// has no "Paused" state (linear-state-resolve.test.mjs, linear-recheck-
-// source.js header — pausing lands in Backlog), and formatParkOutcome()'s
+// straight reuse of parkCard()/formatParkOutcome(): this is a
+// vanished-tab park, not a paused session, so it deliberately uses plain
+// Backlog (a pause report lands in Paused when the team has that state, BRO-2857), and formatParkOutcome()'s
 // resume command hardcodes bsc-next.js's `--id <notion-numeric-id>` syntax,
 // which is wrong for a Linear id ("linear:BRO-123") — the real resume path is
 // linear-next.js --id <BRO-N> --force. `--comment`, not `--state Done` gate

@@ -133,6 +133,8 @@ jobs:
             node scripts/add-requested-show.js --title="$SHOW_TITLE" --venue_hint="$VENUE_HINT"
           fi
 
+      # validate-blocking-ok: a validation failure must turn the job red so the
+      # requester sees the show was refused (push-core-data sentinel); BRO-3194.
       - name: Validate data (push-refusal gate on failure)
         if: always()
         run: node scripts/validate-data.js

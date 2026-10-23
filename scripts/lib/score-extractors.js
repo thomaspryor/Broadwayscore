@@ -114,6 +114,26 @@ function extractTimeOutScore(html, text) {
         };
       }
     }
+    // A 5/5 block has no _unfilledRating_ div: five SVGs then an sr-only
+    // "5 out of 5 stars" label. Trust the label only when nothing but the N star
+    // SVGs sits between the block's opening tag and it, so a label from another
+    // widget can't stand in (BRO-4490).
+    const block = html.slice(ratingStarsIdx, ratingStarsIdx + 6000);
+    const label = block.match(/<span class="sr-only">(\d) out of 5 stars<\/span>/);
+    const openEnd = block.indexOf('>');
+    if (label && openEnd > -1 && openEnd < label.index) {
+      const n = parseInt(label[1], 10);
+      const between = block.slice(openEnd + 1, label.index);
+      const svgs = (between.match(/<svg /g) || []).length;
+      const onlySvgs = between.replace(/<svg [\s\S]*?<\/svg>/g, '').trim() === '';
+      if (n >= 1 && n <= 5 && svgs === n && onlySvgs) {
+        return {
+          originalScore: `${n}/5`,
+          normalizedScore: starsToNumeric(n, 5),
+          source: 'timeout-svg-stars'
+        };
+      }
+    }
   }
 
   // Try "X out of 5 stars" pattern
@@ -1729,14 +1749,9 @@ function extractScore(html, text, outletId, showTitle) {
   // BRO-4490: a multi-review column (FT) carries one verdict run per show.
   // Take this show's section's run, or nothing when the section can't be told
   // apart: a page-level rating (json-ld) or the first/last run would be a guess.
-  const { isMultiVerdictOutlet, pickShowVerdict } = require('./multi-verdict-sections');
-  if (isMultiVerdictOutlet(outletId) && text) {
-    const verdict = pickShowVerdict(text, showTitle);
-    if (verdict.status === 'ambiguous') return null;
-    if (verdict.status === 'matched') {
-      return { originalScore: verdict.originalScore, normalizedScore: starsToNumeric(verdict.filled, 5), source: 'unicode-stars', outlet: outletId };
-    }
-  }
+  const sectionScore = require('./multi-verdict-sections').multiVerdictScore(text, outletId, showTitle);
+  if (sectionScore === null) return null;
+  if (sectionScore) return { ...sectionScore, outlet: outletId };
 
   // Try outlet-specific extractor first
   // Some outlets (Telegraph) have rating elements that cleanHtmlForScoring corrupts,
