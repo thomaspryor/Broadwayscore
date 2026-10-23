@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T16:50:51.504Z",
+  "timestamp": "2026-10-23T17:04:27.894Z",
   "stats": {
-    "totalReviews": 59518,
-    "alreadyFlagged": 21112,
+    "totalReviews": 59519,
+    "alreadyFlagged": 21113,
     "dateGuardCatches": 202,
     "directorMismatch": 2120,
     "tvFilmSignals": 1690,
     "londonSignals": 2839,
     "offBroadwaySignals": 535,
     "yearMismatch": 176,
-    "noPublishDate": 5338
+    "noPublishDate": 5337
   },
   "findings": [
     {
@@ -71448,7 +71448,8 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "publishDate": null,
+      "score": 64,
+      "publishDate": "2026-10-23",
       "url": "https://theartsdesk.com/theatre/ilford-boy-donmar-warehouse-review-writing-numbers-can-be-fun",
       "findings": [
         {
@@ -71622,19 +71623,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "ilford-boy-west-end-2026",
-      "file": "theatremonkey--unknown.json",
-      "publishDate": null,
-      "url": "https://www.theatremonkey.com/show/ilford-boy/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -76283,6 +76271,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "all-that-dazzles-uk--unknown.json",
+      "score": 79,
       "publishDate": "2026-10-23",
       "url": "https://www.allthatdazzles.co.uk/post/review-martin-guerre-the-old-vic",
       "findings": [
@@ -76296,6 +76285,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "firstnightmagazine--unknown.json",
+      "score": 62,
       "publishDate": "2026-10-22",
       "url": "https://firstnightmagazine.com/2026/10/22/review-of-martin-guerre-old-vic-2026-new-revival-features-more-historical-accuracy-but-loses-its-identity/",
       "findings": [
@@ -91476,6 +91466,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-master-builder-off-west-end-2026",
+      "file": "viewfromthegods--simon-jenner.json",
+      "publishDate": "2026-10-23",
+      "url": "https://viewfromthegods.co.uk/2026/10/23/the-master-builder-arcola-hackney/?utm_source=rss&utm_medium=rss&utm_campaign=the-master-builder-arcola-hackney",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
