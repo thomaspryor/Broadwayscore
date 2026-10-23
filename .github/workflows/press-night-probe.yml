@@ -40,6 +40,8 @@ on:
 permissions:
   # contents: write: both jobs commit the record via push-with-retry.sh (a read-only token 403s).
   contents: write
+  # actions: read: the late job downloads the lane-shadow artifact of another run (BRO-6067), as land.yml does.
+  actions: read
 
 concurrency:
   group: press-night-probe-${{ inputs.show_id }}-${{ inputs.night }}
@@ -64,6 +66,9 @@ jobs:
         uses: actions/checkout@v5
         with:
           ref: main
+          # Long job (ledger-checkout-depth.js): depth 1000 keeps push-with-retry.sh's shallow boundary an
+          # ancestor of main for the commits at the end, hours after checkout.
+          fetch-depth: 1000
 
       - name: Setup Node
         uses: ./.github/actions/setup-node
@@ -120,6 +125,13 @@ jobs:
 
       - name: Stamp census coverage at +2h
         if: always() && steps.guard.outputs.finalized == 'false'
+        env:
+          # The script fetches the BWW roundup itself when no workflow has archived it (BRO-6067). fetchPage's
+          # cheap tiers only: BROWSERBASE_API_KEY is deliberately not passed, so discovery never opens a paid session.
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
         run: node scripts/press-night-record.js --show="$SHOW_ID" --night="$NIGHT" --capture-reference --label=2h
 
       - name: Commit checkpoint
@@ -136,6 +148,14 @@ jobs:
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
           bash scripts/lib/push-with-retry.sh
+
+      - name: Commit scraper-spend ledger
+        # After the record commit so the record lands first; the ledger is telemetry and may lose a race.
+        if: always() && github.ref == 'refs/heads/main' && steps.guard.outputs.finalized == 'false'
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: press-night-probe early
 
       - name: Notify on failure
         # A job timeout reports "cancelled", not "failure" (opening-night-orchestrator.yml, BRO-3707).
@@ -159,6 +179,9 @@ jobs:
         uses: actions/checkout@v5
         with:
           ref: main
+          # Long job (ledger-checkout-depth.js): depth 1000 keeps push-with-retry.sh's shallow boundary an
+          # ancestor of main for the commits at the end, hours after checkout.
+          fetch-depth: 1000
 
       - name: Setup Node
         uses: ./.github/actions/setup-node
@@ -192,8 +215,37 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      - name: Import lane-shadow artifact (site-live times, first discovery)
+        # Optional (BRO-6067): the shadow run (opening-night-lane-live.yml mode=shadow) is dispatched by hand and
+        # uploads only when its window ends, so a shadow started after about embargo +1h is not here yet. Backfill
+        # later by hand: download the artifact, then press-night-record.js --import-lane-shadow=DIR and
+        # --rebuild-reference. Lookup copied from land.yml (newest unexpired artifact of that name).
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          NAME="lane-shadow-${SHOW_ID}-${NIGHT}"
+          ROW=$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts?name=${NAME}&per_page=10" \
+            --jq '[.artifacts[] | select(.expired | not)] | sort_by(.created_at) | reverse | .[0] | select(. != null) | "\(.id) \(.workflow_run.id)"')
+          if [ -z "$ROW" ]; then echo "No ${NAME} artifact (shadow not run, or not uploaded yet)."; exit 0; fi
+          read -r ART_ID RUN_ID <<< "$ROW"
+          DIR="${RUNNER_TEMP}/lane-shadow"
+          rm -rf "$DIR" && mkdir -p "$DIR"
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ART_ID}/zip" > "$DIR.zip"
+          unzip -q -o "$DIR.zip" -d "$DIR"
+          node scripts/press-night-record.js --show="$SHOW_ID" --night="$NIGHT" --import-lane-shadow="$DIR" --run-id="$RUN_ID"
+
       - name: Stamp census coverage at the end
         if: always()
+        env:
+          # The script fetches the BWW roundup itself when no workflow has archived it (BRO-6067). fetchPage's
+          # cheap tiers only: BROWSERBASE_API_KEY is deliberately not passed, so discovery never opens a paid session.
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
         run: node scripts/press-night-record.js --show="$SHOW_ID" --night="$NIGHT" --capture-reference --label=end
 
       - name: Finalize and print verdict
@@ -214,6 +266,14 @@ jobs:
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
           bash scripts/lib/push-with-retry.sh
+
+      - name: Commit scraper-spend ledger
+        # After the record commit so the record lands first; the ledger is telemetry and may lose a race.
+        if: always() && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: press-night-probe late
 
       - name: Notify on failure
         if: failure() || cancelled()
