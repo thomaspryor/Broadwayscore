@@ -1030,5 +1030,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-23T02:46:25.592Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5851-unfetched",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5851-unfetched",
+    "description": "land.yml did not land land/bro-5851-unfetched: the unit-tests-node gate went red at e09444d901. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39892875565",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5851-unfetched"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "e09444d90183bd065db9c23924d5809996cbbcc9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39892875565"
+      }
+    ],
+    "queuedAt": "2026-10-23T03:16:27.185Z"
   }
 ]
