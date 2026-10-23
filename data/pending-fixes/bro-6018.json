@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6018",
   "planId": "3bd79590-05a6-44c1-99a9-38dfdb674c4d",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-22T20:25:56.413Z",
   "submitter": {
     "name": null,
@@ -264,5 +264,134 @@
         "description": "shows.json: a-christmas-carol-west-end-2022.openingDate"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-23T00:39:15.242Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for foxfinder-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for come-from-away-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for on-your-feet-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for get-up-stand-up-the-bob-marley-story-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-human-voice-west-end-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for a-christmas-carol-west-end-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for medea-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for hadestown-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-american-clock-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for glass-kill-bluebeard-and-imp-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for paradise-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for magic-goes-wrong-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for blues-for-an-alabama-sky-west-end-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for the-great-british-bake-off-musical-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for end-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for a-christmas-carol-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for death-of-a-salesman-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for a-little-life-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for pygmalion-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "openingDate: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-comeback-west-end-2020"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for hairspray-the-musical-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for anna-x-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for get-up-stand-up-the-bob-marley-story-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for a-christmas-carol-west-end-2022"
+    }
+  ],
+  "executedIn": "ci"
 }
