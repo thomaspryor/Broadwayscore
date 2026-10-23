@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T15:05:26.310Z",
+  "timestamp": "2026-10-23T15:27:47.531Z",
   "stats": {
-    "totalReviews": 59479,
+    "totalReviews": 59478,
     "alreadyFlagged": 21098,
     "dateGuardCatches": 202,
     "directorMismatch": 2120,
-    "tvFilmSignals": 1689,
+    "tvFilmSignals": 1690,
     "londonSignals": 2836,
     "offBroadwaySignals": 534,
     "yearMismatch": 176,
-    "noPublishDate": 5337
+    "noPublishDate": 5336
   },
   "findings": [
     {
@@ -31603,6 +31603,20 @@
       "score": 91,
       "publishDate": "2026-10-19",
       "url": "https://www.nysun.com/article/republican-family-fireworks-in-other-desert-cities-set-broadway-alight-again",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "file": "newyorker--emily-nussbaum.json",
+      "score": 74,
+      "publishDate": "2026-10-23",
+      "url": "https://www.newyorker.com/magazine/2026/11/02/other-desert-cities-theatre-review-a-bright-room-called-day",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
