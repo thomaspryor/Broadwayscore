@@ -1165,5 +1165,36 @@
       }
     ],
     "queuedAt": "2026-10-23T05:14:30.899Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5962-health-failure-streak-v3",
+    "title": "Landing blocked: rebase red on land/bro-5962-health-failure-streak-v3",
+    "description": "land.yml did not land land/bro-5962-health-failure-streak-v3: the rebase gate went red at 490f6de98f. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5962-health-failure-streak-v3 @ 490f6de98f (origin/land/bro-5962-health-failure-streak-v3) → origin/main @ df4132ac05 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 24aa35d1d7: Rebasing (1/1) error: could not apply 490f6de98f9... fix(health): flag scheduled workflows failing their last 3 runs; root-cause 6 dead workflows (BRO-5962) hint: Resolve all conflicts m Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39903847603",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5962-health-failure-streak-v3"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "490f6de98f98da09b57a22d83b72e8540983ecc3"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39903847603"
+      }
+    ],
+    "queuedAt": "2026-10-23T05:22:38.518Z"
   }
 ]
