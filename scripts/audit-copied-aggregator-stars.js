@@ -18,7 +18,8 @@ if (require('./lib/cli-help.js').hasHelpFlag(process.argv.slice(2))) {
 }
 const ROOT = path.join(__dirname, '..');
 
-const STOP = new Set(['the', 'on', 'sunday', 'online', 'uk', 'new', 'york', 'london', 'daily', 'times', 'magazine', 'news', 'theatre', 'theater']);
+// Round-up / aggregator pages list many outlets, so a shared host there proves nothing.
+const AGG_HOSTS = new Set(['westendtheatre.com', 'theatre-reviews.com', 'theatrereviews.com', 'londonboxoffice.co.uk', 'thestage.co.uk', 'stagedoor.com', 'showscore.com', 'didtheylikeit.com', 'playbill.com', 'broadwayworld.com', 'nytheatre.com', 'nyctheatre.com', 'theatre.reviews']);
 function host(u) {
   try {
     const h = new URL(u).hostname.replace(/^www\./, '').split('.');
@@ -26,17 +27,14 @@ function host(u) {
     return h.slice(sl ? -3 : -2).join('.');
   } catch (_) { return ''; }
 }
-function stems(rec) {
-  const words = String(rec.outletId || rec.outlet || '').toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
-  return new Set(words.filter((w) => w.length > 2 && !STOP.has(w)).concat(words.includes('mail') ? ['mail'] : []));
-}
+// Only the Daily Mail / Mail on Sunday pair is matched by name; generic shared words
+// ("post", "news", "journal") are not a family.
+const isMail = (rec) => /\bmail\b/.test(String(rec.outletId || rec.outlet || '').toLowerCase().replace(/[^a-z0-9]+/g, ' '));
 function sameFamily(a, b) {
   if (a.outletId && a.outletId === b.outletId) return true;
   const ha = host(a.url); const hb = host(b.url);
-  if (ha && ha === hb) return true;
-  const sa = stems(a); const sb = stems(b);
-  for (const w of sa) if (sb.has(w)) return true;
-  return false;
+  if (ha && ha === hb && !AGG_HOSTS.has(ha)) return true;
+  return isMail(a) && isMail(b);
 }
 const norm = (v) => String(v == null ? '' : v).replace(/\s+/g, '').toLowerCase();
 
@@ -52,7 +50,10 @@ function findCopiedStars(files) {
       && sameFamily(d, g.data));
     if (sib) {
       out.push({ file: f.file, outletId: d.outletId, critic: d.criticName || null, stars: d.aggregatorStars, scoreSource: d.scoreSource || null,
-        assignedScore: d.assignedScore ?? null, hasOwnOriginalScore: d.originalScore != null, siblingFile: sib.file, siblingSourced: !!sib.data.aggregatorStarsSource });
+        assignedScore: d.assignedScore ?? null, hasOwnOriginalScore: d.originalScore != null, siblingFile: sib.file, siblingSourced: !!sib.data.aggregatorStarsSource,
+        // 'copy' only when the sibling carries evidence the stars are its own (a source, or its own outlet rating) and this row does not;
+        // otherwise 'ambiguous' (either side may be the original): read both before writing a plan, never clear both.
+        verdict: (sib.data.aggregatorStarsSource || (sib.data.originalScore != null && d.originalScore == null)) ? 'copy' : 'ambiguous' });
     }
   }
   return out;
@@ -73,7 +74,7 @@ function main() {
     for (const r of findCopiedStars(files)) rows.push({ showId: id, ...r });
   }
   if (argv.includes('--json')) { console.log(JSON.stringify(rows, null, 1)); return; }
-  for (const r of rows) console.log(`${r.showId}/${r.file} outlet=${r.outletId} stars=${r.stars} score=${r.assignedScore} src=${r.scoreSource} ownOriginal=${r.hasOwnOriginalScore} copiedFrom=${r.siblingFile}${r.siblingSourced ? ' (sourced)' : ''}`);
+  for (const r of rows) console.log(`${r.showId}/${r.file} outlet=${r.outletId} stars=${r.stars} score=${r.assignedScore} src=${r.scoreSource} ownOriginal=${r.hasOwnOriginalScore} verdict=${r.verdict} copiedFrom=${r.siblingFile}${r.siblingSourced ? ' (sourced)' : ''}`);
   console.log(`TOTAL ${rows.length} file(s) with copied sourceless aggregatorStars`);
 }
 module.exports = { findCopiedStars, sameFamily };

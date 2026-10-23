@@ -748,4 +748,9 @@ test('aggregatorStars clear survives the real writer and leaves the file queued 
   const after = JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
   assert.equal(after.aggregatorStars == null, true, 'the guard must not restore the cleared stars');
   assert.equal(after.needsRescore, true);
+  // A round-up scraper refilling the empty field (sourceless) must not bring the copied stars back.
+  const { safeWriteReview } = require('./review-write-guard.js');
+  safeWriteReview(path.join(root, file), { ...after, aggregatorStars: '5/5' }, {});
+  const refilled = JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
+  assert.equal(refilled.aggregatorStars == null, true, 'a sourceless refill must not undo the approved clear');
 });
