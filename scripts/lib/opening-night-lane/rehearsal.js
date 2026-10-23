@@ -151,14 +151,17 @@ async function runRehearsal({ fixture, workDir, keep = false, scoreReview, regen
     const finalDoc = JSON.parse(fs.readFileSync(reviewsFile, 'utf8'));
     const ledgerKeys = new Set(read.events.map((e) => e.reviewKey));
     const decoyLeaks = (fixture.decoys || []).filter((u) => ledgerKeys.has(discovery.canonicalUrl(u) || u) || finalDoc.reviews.some((r) => r.url === u));
+    // A syndicated copy next to its live primary is a duplicate the site never shows (BRO-5993): it must not go live.
+    const liveKeys = new Set(read.events.filter((e) => e.stage === 'verified-live').map((e) => e.reviewKey));
+    const syndicationLeaks = (fixture.syndicatedCopies || []).filter((k) => liveKeys.has(k) || finalDoc.reviews.some((r) => discovery.canonicalUrl(r.url) === k));
     const bystandersSurvived = bystanders.every((b) => finalDoc.reviews.some((r) => r.showId === b.showId && r.url === b.url));
     const timedOut = run.published.some((p) => p.timedOut);
     // The bar the owner cares about is page-to-live, not discovery-to-live: a review that sat on its page while the lane
     // was busy still counts. Each fixture review knows when its page showed it.
     const appears = new Map(fixture.reviews.map((r) => [discovery.canonicalUrl(r.url), (r.appearsAfterMs || 0)]));
     const pageToLiveSlow = summaryReviews(read.events).filter((r) => r.live && appears.has(r.reviewKey) && Date.parse(r.live) - (startMs + appears.get(r.reviewKey)) > maxMs).map((r) => ({ reviewKey: r.reviewKey, ms: Date.parse(r.live) - (startMs + appears.get(r.reviewKey)) }));
-    const checks = { unexpected: [...unexpected], decoyLeaks, bystandersSurvived, errors: run.errors, timedOut, passes: run.passes, pageToLiveSlow, modelled: lat };
-    const pass = verdict.pass && unexpected.size === 0 && decoyLeaks.length === 0 && bystandersSurvived && !timedOut && pageToLiveSlow.length === 0;
+    const checks = { unexpected: [...unexpected], decoyLeaks, syndicationLeaks, bystandersSurvived, errors: run.errors, timedOut, passes: run.passes, pageToLiveSlow, modelled: lat };
+    const pass = verdict.pass && unexpected.size === 0 && decoyLeaks.length === 0 && syndicationLeaks.length === 0 && bystandersSurvived && !timedOut && pageToLiveSlow.length === 0;
     return { pass, verdict, checks, summary: ledger.summarize(read.events), run, workDir: keep ? dir : null };
   } finally {
     await server.close();

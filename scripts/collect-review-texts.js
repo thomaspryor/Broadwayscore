@@ -114,9 +114,6 @@ const { extractScore, extractDesignation, extractNYTCriticsPick, OUTLET_VERIFIED
 const { findBoldHeaderAnchors, loadShows: loadSplitterShows } = require('./lib/multi-show-splitter');
 const { applyMultiShowFanoutToFile } = require('./lib/multi-show-review-fanout');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
-// BRO-912: shared byline-anchored extractor (article-extractor.js) — aliased
-// to avoid colliding with this file's own Playwright-DOM extractArticleText(page).
-const { extractArticleText: extractArticleTextFromHtml, extractZoxNewsBody, extractVarietyBody, isDedicatedExtractorHost } = require('./lib/article-extractor');
 
 // Text cleaning (entity decoding, junk stripping)
 const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS, hasStrippableConsentLayer } = require('./lib/text-cleaning');
@@ -130,7 +127,6 @@ const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-re
 const { isolateMultiShowSection, MULTI_SHOW_NOT_FOUND_REASON } = require('./lib/multi-show-section-extract');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const { assessTextQuality, qualityOptsFor, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
-const { chooseArticleBody, SHORT_JSONLD_MAX: JSONLD_TEASER_MAX } = require('./lib/jsonld-body-choice');
 const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
 const { setExtractedScore, AGGREGATOR_SCORE_SOURCES } = require('./lib/score-routing');
 const { discardNoRatingOutletScore } = require('./lib/no-rating-outlet-score');
@@ -163,9 +159,6 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { isUrlCorrectedRefetch, mayShortCircuitCollected, bypassesFetchFailureGate } = require('./lib/url-corrected-refetch');
 const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, wrongShowCleared, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords, hasHighConfidenceLlmScore } = require('./lib/review-guards');
 const { resolveShowIdentity } = require('./lib/show-identity');
-// Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
-// `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
-const { extractFromJsonLd, extractParagraphText } = require('./lib/html-article-text');
 const {
   isWithinPriorRun,
   isWithinTourLeg,
@@ -4132,7 +4125,7 @@ function isPaywalled(html) {
 // it lived inline). The function is serialized and injected into the
 // Playwright browser context via page.evaluate.
 const { extractArticleTextFromDocument } = require('./lib/dom-article-extractor');
-const { decodeBloxRot47, decodeBloxRot47InDocument } = require('./lib/blox-rot47-decode');
+const { decodeBloxRot47InDocument } = require('./lib/blox-rot47-decode');
 
 async function extractArticleText(page) {
   // Serialize the lib function and run it in the browser. Wrapping in

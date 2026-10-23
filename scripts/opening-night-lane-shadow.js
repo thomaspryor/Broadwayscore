@@ -95,7 +95,7 @@ async function main() {
       adapters: [
         discovery.bwwRoundupAdapter(), discovery.dtliAdapter(), discovery.showScoreAdapter(showScoreGuards), discovery.playbillVerdictAdapter(),
         discovery.talkinBroadwayAdapter(), discovery.googleNewsAdapter(),
-        discovery.rssAdapter({ feeds: adaptersConfig.feeds || [], fetchFeed: (url) => require('./lib/rss-discovery').fetchUrl(url, 10000) }), discovery.sectionIndexAdapter({ outlets: adaptersConfig.outlets || [] }),
+        discovery.rssAdapter({ feeds: adaptersConfig.feeds || [], fetchFeed: (url, ms) => require('./lib/rss-discovery').fetchUrl(url, ms || 10000) }), discovery.sectionIndexAdapter({ outlets: adaptersConfig.outlets || [] }),
         discovery.serpAdapter({ search: adaptersConfig.search || serpSearch }),
       ],
       missingOutlets: ({ seen }) => {

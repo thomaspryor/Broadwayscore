@@ -174,7 +174,9 @@ function realFetchPorts() {
     // (BRO-5993, Oct 21 and 22). It stays as the fallback for a page the pipeline extractor gets nothing from.
     extractArticle: (html, host, url) => {
       const text = extractTextFromHtml(html, url || `https://${host}/`) || '';
-      return text.length >= 500 ? text : (extractArticleText(html, host) || text);
+      if (text.length >= 500) return text;
+      const alt = extractArticleText(html, host) || '';
+      return alt.length > text.length ? alt : text;
     },
     extractMeta: (html, url) => {
       let criticName = null;

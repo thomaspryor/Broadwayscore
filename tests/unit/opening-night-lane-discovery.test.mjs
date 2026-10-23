@@ -579,3 +579,19 @@ test('search and feeds rotate across passes, so a long list is covered over the 
   await rss.discover({ show, fetchText });
   assert.equal(new Set(read).size, 15, 'every feed read within two passes');
 });
+
+test('RSS and SERP press-title matches need a listing word, like Google News (review of BRO-5993)', async () => {
+  const show = { id: 'billy-crystal-860-2026', title: 'Billy Crystal 860', akaTitles: ['860'] };
+  const feed = `<rss><channel>
+    <item><title>New Balance 860 v15 review</title><link>https://www.theatermania.com/news/new-balance-860-v15-review_1/</link><pubDate>Wed, 21 Oct 2026 22:30:00 -0400</pubDate></item>
+    <item><title>Review: 860, Billy Crystal's Broadway tribute</title><link>https://www.theatermania.com/news/review-860-billy-crystal_2/</link><pubDate>Wed, 21 Oct 2026 22:30:00 -0400</pubDate></item>
+  </channel></rss>`;
+  const got = await d.rssAdapter({ feeds: [{ url: 'https://www.theatermania.com/feed', outletId: 'theatermania' }] }).discover({ show, fetchText: async () => feed });
+  assert.deepEqual(got.map((c) => c.url), ['https://www.theatermania.com/news/review-860-billy-crystal_2/']);
+});
+
+test('a roundup under /news/ is still rejected, though it says review', () => {
+  assert.equal(d.nonReviewReason('https://www.theatermania.com/news/review-roundup-the-imaginary-invalid_2/'), 'non-review-path');
+  assert.equal(d.nonReviewReason('https://www.timeout.com/newyork/news/reviews-are-in-for-the-imaginary-invalid'), 'non-review-path');
+  assert.equal(d.nonReviewReason('https://www.theatermania.com/news/review-the-imaginary-invalid_1/'), null);
+});

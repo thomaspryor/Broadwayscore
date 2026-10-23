@@ -69,6 +69,9 @@ const NON_REVIEW_SEGMENTS = new Set([
 // Sections some outlets file reviews under (theatermania.com/news/review-..., timeout.com/newyork/news/broadway-review-...;
 // the Oct 22 shadow run lost both to this list). A slug that says "review" passes; one that does not is still rejected.
 const SOFT_NON_REVIEW_SEGMENTS = new Set(['news', 'feature', 'features']);
+// A review word under those sections can still be a roundup of other critics; lane rows skip the rebuild's non-review
+// guard, so only a paid score would catch it.
+const ROUNDUP_SLUG = /\b(round[-\s]?up|reviews?[-\s]are[-\s]in|what[-\s](?:the[-\s])?critics|critics[-\s](?:say|are[-\s]saying|review))\b/i;
 // News-phrase words only. Plain nouns that can be a show's title ("Dead Outlaw", "The Lottery", "Ticket to Ride") are
 // deliberately absent: rejecting them would drop real reviews of those shows.
 const NON_REVIEW_SLUG = /\b(opens[-\s]tonight|extends|extension|extended|casting|cast[-\s]album|announces?|announced|first[-\s]look|photos?|photo[-\s]gallery|red[-\s]carpet|opening[-\s]night[-\s](?:photos|party|arrivals)|interview|q[-\s]?and[-\s]?a|behind[-\s]the[-\s]scenes|giveaway|obituary)\b/i;
@@ -79,7 +82,13 @@ const hostOf = (url) => { try { return new URL(url).hostname.replace(/^www\./, '
 const hostMatches = (host, list) => !!host && list.some((h) => host === h || host.endsWith(`.${h}`));
 // The listing title and the press titles (show.akaTitles; Billy Crystal 860 is reviewed as "860").
 const showTitles = (show) => require('../google-news-rss').searchTitles(show);
-const namesShow = (title, url, show) => showTitles(show).some((t) => titleMatchesShow(title || '', t, { fuzzy: true }) || urlSlugMatchesShow(url || '', t, { fuzzy: true }));
+// A press-title-only match must also carry a listing-title word (headlineNamesShow), in the headline or in the slug:
+// "New Balance 860 v15 review" is not Billy Crystal 860.
+const slugText = (url) => { try { return decodeURIComponent(new URL(url).pathname).replace(/[-_/]+/g, ' '); } catch { return ''; } };
+const namesShow = (title, url, show) => {
+  const { headlineNamesShow } = require('../google-news-rss');
+  return headlineNamesShow(title || '', show) || urlSlugMatchesShow(url || '', show.title, { fuzzy: true }) || headlineNamesShow(slugText(url), show);
+};
 /**
  * A list in order from where the previous pass stopped, so a capped pass still reaches every item over the night.
  * `order(list)` returns it rotated; `advance(k)` moves the start past the k items the pass actually used.
@@ -149,7 +158,7 @@ function nonReviewReason(url) {
   const segs = decodeURIComponent(u.pathname).toLowerCase().split('/').filter(Boolean);
   const words = segs.join(' ').replace(/[-_]+/g, ' ');
   if (segs.some((s) => NON_REVIEW_SEGMENTS.has(s) && !SOFT_NON_REVIEW_SEGMENTS.has(s))) return 'non-review-path';
-  if (segs.some((s) => SOFT_NON_REVIEW_SEGMENTS.has(s)) && !REVIEW_SIGNAL.test(words)) return 'non-review-path';
+  if (segs.some((s) => SOFT_NON_REVIEW_SEGMENTS.has(s)) && (!REVIEW_SIGNAL.test(words) || ROUNDUP_SLUG.test(words))) return 'non-review-path';
   // An explicit "review" in the slug wins over a news word ("...-review-photos"): the review signal is the stronger claim.
   if (NON_REVIEW_SLUG.test(words) && !REVIEW_SIGNAL.test(words)) return 'non-review-slug';
   return null;
@@ -280,13 +289,18 @@ function rssAdapter({ feeds, fetchFeed = null }) {
   // fetchText every feed read is a paid scraper call: 12 feeds every 2 minutes is ~1,000 a night.
   return {
     name: 'rss', kind: 'feed', phase: 'cheap',
-    async discover({ show, fetchText }) {
+    async discover({ show, fetchText, remainingMs = () => Infinity }) {
       const out = [];
       const batch = next.order(feeds || []).slice(0, MAX_SOURCES_PER_ADAPTER);
-      next.advance(batch.length);
+      let read = 0;
       for (const feed of batch) {
+        // fetchFeed bypasses the pass's fetch wrapper, so it gets the pass deadline here: twelve slow feeds must not
+        // push the pass past it and cost the section-index and SERP phases.
+        const left = remainingMs();
+        if (left <= 0) break;
+        read++;
         let items;
-        try { items = parseFeedEntries(await (fetchFeed || fetchText)(feed.url)); } catch { continue; } // one dead feed never hides the others
+        try { items = parseFeedEntries(await (fetchFeed ? fetchFeed(feed.url, Math.min(10000, left)) : fetchText(feed.url))); } catch { continue; } // one dead feed never hides the others
         for (const it of items) {
           if (!it.link) continue;
           // fuzzy: an outlet's own typo in headline + slug (CATERINA, BRO-4001). Press titles count too.
@@ -294,6 +308,7 @@ function rssAdapter({ feeds, fetchFeed = null }) {
           out.push({ url: it.link, title: it.title, source: 'outlet-index', ...it.date, via: feed.name || feed.url, outletId: hostOf(it.link) === hostOf(feed.url) ? feed.outletId : undefined });
         }
       }
+      next.advance(read); // feeds cut off by the deadline go first next pass
       return out;
     },
   };
@@ -566,7 +581,7 @@ async function runDiscoveryPass({
 
   for (const a of adapters.filter((x) => x.phase !== 'serp')) {
     if (overDeadline()) { deadlineHit = true; break; }
-    try { collect(await a.discover({ show, night, fetchText, timeZone }), a.name); } catch (e) {
+    try { collect(await a.discover({ show, night, fetchText, timeZone, remainingMs: () => deadlineMs - (Date.now() - startedMs) }), a.name); } catch (e) {
       errors.push({ adapter: a.name, error: String((e && e.message) || e).slice(0, 200) });
     }
   }

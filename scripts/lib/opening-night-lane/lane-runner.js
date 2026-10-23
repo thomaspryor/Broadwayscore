@@ -26,9 +26,9 @@ const discovery = require('./discovery');
 const trust = require('./trust-model');
 const publish = require('./publish');
 const { createLaneReviewWriter } = require('./persist');
-const { getSyndicationPrimaries } = require('../syndication-pairs');
+const { getSyndicationPrimaries, criticFileSlug } = require('../syndication-pairs');
 
-const criticKey = (name) => String(name || '').toLowerCase().trim();
+const criticKey = (name) => criticFileSlug(name); // the rebuild's critic match (diacritics, punctuation folded)
 
 /** Review keys a restarted lane must not redo: those that already reached `scored`, plus URLs already on disk. */
 function loadDone(ledgerDir, show, night, onDiskUrls = []) {
@@ -46,13 +46,13 @@ function loadDone(ledgerDir, show, night, onDiskUrls = []) {
  *   publishPorts {updateReviews, regenShow, deploy, fetchLiveShow, pushData?, isLeased?} OR makePublishPorts(clock),
  *   missingOutlets? (T1/T2 outlet ids still missing, or a function of {seen} returning them, so captured outlets stop being searched; gates the SERP phase),
  *   reviewTextsDir? (persist scored rows before marking done, also in a dry-run sandbox),
- *   dryRun?, onDiskUrls?, now() -> ms, wait(ms) -> Promise, forkClock?(startMs) -> {now, wait},
+ *   dryRun?, onDiskUrls?, onDiskRows? ([{criticName, outletId}] of this show already in reviews.json), now() -> ms, wait(ms) -> Promise, forkClock?(startMs) -> {now, wait},
  *   latency {fetchMs, scoreMs}, passIntervalMs, maxPasses, windowMs (how long the lane runs), startedAt?, publishTimeoutMs, pollMs
  * @returns {Promise<{passes, admitted, published, errors, failed, skipped, unpublished}>}
  */
 async function runLaneNight({
   show, night, openingDate, timeZone, adapters, fetchText, ledgerDir, fetchReview, scoreReview, publishPorts, makePublishPorts, dryRun = false,
-  onDiskUrls = [], maxInflight = 2, now, wait, forkClock, latency = {}, passIntervalMs = 2 * 60 * 1000, maxPasses = 1000, windowMs = 6 * 60 * 60 * 1000,
+  onDiskUrls = [], onDiskRows = [], maxInflight = 2, now, wait, forkClock, latency = {}, passIntervalMs = 2 * 60 * 1000, maxPasses = 1000, windowMs = 6 * 60 * 60 * 1000,
   startedAt, publishTimeoutMs, pollMs, reviewTextsDir, shouldStop = () => false, missingOutlets = [],
 } = {}) {
   for (const [k, v] of Object.entries({ show, night, adapters, fetchText, ledgerDir, fetchReview, scoreReview, now, wait })) {
@@ -71,8 +71,9 @@ async function runLaneNight({
   const pending = []; // rows scored but not yet published (or sent back by a failed batch)
   const inflight = new Set(); // real mode: batches publishing now
   const busyUntil = []; // virtual mode: end of each batch's timeline
-  // `${critic}|${outletId}` of every row queued or published tonight, for the syndication check below.
-  const taken = new Set();
+  // `${critic}|${outletId}` of every row on the site or queued tonight, for the syndication check below. Seeded from
+  // reviews.json: a primary the regular pipeline already published must still stop the lane publishing its copy.
+  const taken = new Set(onDiskRows.filter((r) => r && r.criticName && r.outletId).map((r) => `${criticKey(r.criticName)}|${r.outletId}`));
 
   const publishBatch = async (batch, clock) => {
     try {

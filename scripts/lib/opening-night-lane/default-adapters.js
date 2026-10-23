@@ -27,9 +27,13 @@ function defaultMissingOutlets(show, registry = require('../../../data/outlet-re
   const market = laneMarket(show);
   const outlets = registry.outlets || registry;
   const fits = (o) => (market === 'west-end' ? ['london', 'dual'].includes(o.region) : o.region !== 'london');
+  // One id per domain: sunday-times shares times-uk's domain, so its reviews resolve to times-uk and it could never
+  // count as captured; it would be searched (a duplicate site: query) all night.
+  const seenDomains = new Set();
   return Object.entries(outlets)
     .filter(([, o]) => o && (o.tier === 1 || o.tier === 2) && o.domain && fits(o))
     .sort(([, a], [, b]) => a.tier - b.tier)
+    .filter(([, o]) => { const dom = String(o.domain).replace(/^www\./, '').toLowerCase(); if (seenDomains.has(dom)) return false; seenDomains.add(dom); return true; })
     .map(([id]) => id);
 }
 
