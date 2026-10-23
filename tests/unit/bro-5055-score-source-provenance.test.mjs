@@ -46,9 +46,12 @@ test('aggregator-inherited files are never stamped (legacy rollout exemption int
   assert.equal(isBodylessAggregatorScoreUncorroborated(fresh, show), true); // same verdict as before overwrite
 });
 
-test('files with a body or an existing stamp are left alone', () => {
+test('body-having files are stamped too; an existing stamp is left alone', () => {
   const bodied = setScoreSourcePreservingProvenance({ ...guardianStub(), fullText: 'x'.repeat(500) }, 'anchored-v6');
-  assert.equal(bodied.scoreProvenance, undefined);
+  // body present at scoring time: still stamped, so clearing the body later cannot flip it
+  assert.equal(bodied.scoreProvenance, 'page-parsed');
+  const bodiedAgg = setScoreSourcePreservingProvenance({ ...guardianStub(), scoreSource: 'show-score-stars', fullText: 'x'.repeat(500) }, 'anchored-v6');
+  assert.equal(bodiedAgg.scoreProvenance, undefined);
   const stamped = setScoreSourcePreservingProvenance({ ...guardianStub(), scoreProvenance: 'aggregator-inherited' }, 'anchored-v6');
   assert.equal(stamped.scoreProvenance, 'aggregator-inherited');
   assert.equal(setScoreSourcePreservingProvenance(null, 'x'), null);

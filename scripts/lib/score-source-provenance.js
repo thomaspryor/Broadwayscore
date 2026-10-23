@@ -20,8 +20,14 @@
 function setScoreSourcePreservingProvenance(data, newScoreSource) {
   if (!data) return data;
   const { bodylessScoreProvenance } = require('./review-guards'); // lazy: heavy module
-  if (!data.scoreProvenance && bodylessScoreProvenance(data) === 'page-parsed') {
-    data.scoreProvenance = 'page-parsed';
+  if (!data.scoreProvenance) {
+    // Judge as if body-less: a file with a body now can be emptied later and
+    // would then read as aggregator-inherited under its method label.
+    const hasScore = !!(data.aggregatorStars || data.originalScore != null
+      || typeof data.originalScoreNormalized === 'number');
+    if (hasScore && bodylessScoreProvenance({ ...data, fullText: '' }) === 'page-parsed') {
+      data.scoreProvenance = 'page-parsed';
+    }
   }
   data.scoreSource = newScoreSource;
   return data;
