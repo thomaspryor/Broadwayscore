@@ -2,8 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { findUncheckedWriteCounters } = require('../../scripts/lib/unchecked-write-counters.js');
-const { scan } = require('../../scripts/audit-unchecked-write-counters.js');
+const { findUncheckedWriteCounters, scan } = require('../../scripts/lib/unchecked-write-counters.js');
 
 test('flags a counter right after an unchecked safeWriteReview', () => {
   const src = "safeWriteReview(p, d, { force: true });\nwritten++;\n";
