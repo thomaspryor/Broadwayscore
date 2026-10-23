@@ -163,6 +163,19 @@ function seasonPhrase(season) {
   return m ? `the ${m[1]}-${m[2].slice(2)} theatre season (roughly mid-${m[1]} to mid-${m[2]})` : 'an unknown season';
 }
 
+/**
+ * When the production played, for the checker prompts. Rows with no season
+ * (Off-Broadway and some Broadway historical rows) are identified by their
+ * stored start month instead: "an unknown season" sent the checker to a
+ * same-title revival (School Pictures 2023 vs Cherry Lane 2026, BRO-6019).
+ * The start month identifies the production; it is not a value being checked.
+ */
+function productionTimePhrase(show) {
+  if (show && /^\d{4}-\d{4}$/.test(String(show.season || ''))) return seasonPhrase(show.season);
+  const d = String((show && (show.openingDate || show.previewsStartDate)) || '').match(/^(\d{4})-(\d{2})/);
+  return d ? `the season it opened in (it began around ${d[1]}-${d[2]})` : 'an unknown season';
+}
+
 /** Market label for a cohort key, season-scoped keys included. */
 function cohortMarket(key) {
   return COHORTS[parseCohortKey(key).base].market;
@@ -174,7 +187,7 @@ function cohortMarket(key) {
  */
 function buildFactPrompt(show, cohortName) {
   const market = cohortMarket(cohortName);
-  return `Use web search. I need facts about one specific theatre production: "${show.title}" in the ${market} market, the production that played during ${seasonPhrase(show.season)}. If this title had several productions, answer only about the one in that market and season.
+  return `Use web search. I need facts about one specific theatre production: "${show.title}" in the ${market} market, the production that played during ${productionTimePhrase(show)}. If this title had several productions, answer only about the one in that market and season.
 
 Return JSON only, no prose, in this exact shape. Every non-null value needs the URL of a web page that states it (a page you actually found, not a guess). Never use broadwayscorecard.com as a source: it is the site being checked. Use null when you cannot find a page that states the fact.
 {
@@ -480,7 +493,7 @@ function seasonSummary(verdicts, seasonIds) {
 module.exports = {
   COHORTS, WE_SEASONS, FACT_FIELDS, FIELD_KIND,
   prng, seededShuffle, stratifiedSample, drawSample, parseCohortKey, cohortMarket, cohortRows, seasonSummary,
-  seasonPhrase, buildFactPrompt, parseJsonReply,
+  seasonPhrase, productionTimePhrase, buildFactPrompt, parseJsonReply,
   normalizePerson, samePerson, dateSpellings, pageSupports, sameVenue,
   storedCredits, storedValue, isSelfSource, normalizeAnswer, compareField, triageField, wilson, errorTable,
 };

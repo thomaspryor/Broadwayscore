@@ -208,3 +208,13 @@ test('off-broadway-historical cohort selects historical Off-Broadway rows only',
   assert.equal(f({ market: 'broadway', category: 'broadway', tags: ['historical'] }), false);
   assert.equal(f({ market: 'west-end', category: 'off-west-end', tags: ['historical'] }), false);
 });
+
+// BRO-6019: a row with no season is identified by its start month, never "an unknown season".
+test('productionTimePhrase falls back to the stored start month', () => {
+  assert.match(fc.productionTimePhrase({ season: '2024-2025' }), /2024-25 theatre season/);
+  assert.match(fc.productionTimePhrase({ openingDate: '2023-11-20' }), /began around 2023-11/);
+  assert.match(fc.productionTimePhrase({ previewsStartDate: '2016-09-01' }), /began around 2016-09/);
+  assert.equal(fc.productionTimePhrase({}), 'an unknown season');
+  const p = fc.buildFactPrompt({ title: 'School Pictures', openingDate: '2023-11-20' }, 'off-broadway-historical');
+  assert.doesNotMatch(p, /unknown season/);
+});
