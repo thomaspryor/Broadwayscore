@@ -130,6 +130,19 @@ function hasWrongUrlSignal(f) {
     || f.bwwAggregatorAmbiguous === true;
 }
 
+// Can a scoring dispatch do anything for this file? Fails OPEN on a throw (BRO-2985).
+function isDispatchable(file, show, filePath) {
+  try {
+    return unscoredSkipReason(file, {
+      show,
+      showTitle: show && show.title ? show.title : undefined,
+      filePath,
+    }) === null;
+  } catch {
+    return true;
+  }
+}
+
 /**
  * Classify one dir file. Returns null when there is nothing to escalate,
  * else { type, recoverable }.
@@ -195,16 +208,7 @@ function classifySilentGap({ file, show, tier, outletScored, now, filePath }) {
     // real problem the operator must see), but tell the caller whether a
     // scoring dispatch can do anything about it. Fail OPEN on a throw — a
     // missed opening-night score costs far more than a wasted dispatch.
-    let dispatchable = true;
-    try {
-      dispatchable = unscoredSkipReason(file, {
-        show,
-        showTitle: show && show.title ? show.title : undefined,
-        filePath,
-      }) === null;
-    } catch {
-      dispatchable = true;
-    }
+    const dispatchable = isDispatchable(file, show, filePath);
     if (dispatchable === false && !file.rejectionReason && hasNonReviewUrl(file)) return null;
     return { type: 'unscored', recoverable: false, dispatchable };
   }
@@ -434,7 +438,8 @@ function classifyGapCardState({ file, show, tier, outletScored, now, filePath })
   // a named non-review URL (cbsnews.com/video/ player page) that no ensemble verdict
   // will ever classify. Mirror it here or the backstop card filed before the pattern
   // existed never closes (this function fell through to null).
-  if (!file.rejectionReason && !hasValidScore(file) && hasNonReviewUrl(file)) return GAP_CARD_STATE.NO_REVIEW;
+  if (!file.rejectionReason && !hasValidScore(file) && hasNonReviewUrl(file)
+      && isDispatchable(file, show, filePath) === false) return GAP_CARD_STATE.NO_REVIEW;
   return null;
 }
 
