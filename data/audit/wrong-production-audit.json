@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-23T19:29:11.554Z",
+  "timestamp": "2026-10-23T19:54:07.987Z",
   "stats": {
     "totalReviews": 59537,
     "alreadyFlagged": 21116,
     "dateGuardCatches": 202,
     "directorMismatch": 2120,
     "tvFilmSignals": 1690,
-    "londonSignals": 2840,
+    "londonSignals": 2841,
     "offBroadwaySignals": 535,
     "yearMismatch": 176,
     "noPublishDate": 5342
@@ -64808,6 +64808,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
+      "file": "liamodell--liam-odell.json",
+      "score": null,
+      "publishDate": "2026-02-17",
+      "url": "https://liamodell.com/2026/02/17/cynthia-erivo-dracula-review-london-noel-coward-theatre-delfont-mackintosh-west-end-the-picture-of-dorian-gray-sarah-snook-kip-williams/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
