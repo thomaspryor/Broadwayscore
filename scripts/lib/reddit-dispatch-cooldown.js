@@ -23,7 +23,7 @@ const path = require('path');
 
 const HOUR_MS = 3600 * 1000;
 const SB_LOOKBACK_HOURS = 48;
-/** Most recent SB Reddit calls inspected. All failed => the leg is considered down. */
+/** Minimum failed calls before cooling down a host. */
 const SB_COOLDOWN_WINDOW = 6;
 /** Once down, let one probe call through after this long since the last failure. */
 const SB_PROBE_AFTER_HOURS = 6;
@@ -34,36 +34,49 @@ const REDDIT_STALE_HOURS = 48;
 
 const LEDGER_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'scraper-spend-ledger.jsonl');
 
-function isSbRedditRow(r) {
-  return r && r.provider === 'scrapingbee' && r.host === 'reddit.com' && r.status !== 'budget_capped';
+function normalizeSbHost(host) {
+  return typeof host === 'string' && host.trim() ? host.trim().toLowerCase().replace(/^www\./, '') : null;
 }
 
 /**
- * Cross-run verdict for the ScrapingBee Reddit leg.
+ * Cross-run verdict for one ScrapingBee host (BRO-5917).
  * @param {object[]} rows - ledger rows (any order; need not be pre-filtered)
  * @returns {{allowed:boolean, probe:boolean, reason:string}}
  */
-function sbRedditVerdict(rows, { nowMs = Date.now() } = {}) {
+function sbHostVerdict(rows, { host, nowMs = Date.now() } = {}) {
+  host = normalizeSbHost(host);
+  const label = host === 'reddit.com' ? 'Reddit' : (host || 'null-host');
   const since = nowMs - SB_LOOKBACK_HOURS * HOUR_MS;
-  const recent = (rows || [])
-    .filter((r) => isSbRedditRow(r) && Date.parse(r.ts) >= since)
-    .sort((a, b) => Date.parse(a.ts) - Date.parse(b.ts))
-    .slice(-SB_COOLDOWN_WINDOW);
+  const history = (rows || []).filter(r => r && r.provider === 'scrapingbee' &&
+    normalizeSbHost(r.host) === host && r.status !== 'budget_capped' &&
+    r.status !== 'run-memo-skip' && r.credits !== 0 &&
+    Date.parse(r.ts) >= since && Date.parse(r.ts) <= nowMs);
+  // General hosts must have zero successes in the lookback. A batch of bad
+  // URLs on an otherwise working outlet must not disable its remaining pages.
+  // Reddit retains its original last-six-call recovery rule.
+  if (host !== 'reddit.com' && history.some(r => r.success === true)) {
+    return { allowed: true, probe: false, reason: `a recent SB ${label} call succeeded` };
+  }
+  const recent = history.sort((a, b) => Date.parse(a.ts) - Date.parse(b.ts)).slice(-SB_COOLDOWN_WINDOW);
   if (recent.length < SB_COOLDOWN_WINDOW) {
-    return { allowed: true, probe: false, reason: `only ${recent.length} SB Reddit calls in ${SB_LOOKBACK_HOURS}h` };
+    return { allowed: true, probe: false, reason: `only ${recent.length} SB ${label} calls in ${SB_LOOKBACK_HOURS}h` };
   }
   if (recent.some((r) => r.success === true)) {
-    return { allowed: true, probe: false, reason: 'a recent SB Reddit call succeeded' };
+    return { allowed: true, probe: false, reason: `a recent SB ${label} call succeeded` };
   }
   const lastFail = Date.parse(recent[recent.length - 1].ts);
   const ageH = (nowMs - lastFail) / HOUR_MS;
   if (ageH >= SB_PROBE_AFTER_HOURS) {
-    return { allowed: true, probe: true, reason: `last ${SB_COOLDOWN_WINDOW} SB Reddit calls failed, ${ageH.toFixed(1)}h ago: probing` };
+    return { allowed: true, probe: true, reason: `last ${SB_COOLDOWN_WINDOW} SB ${label} calls failed, ${ageH.toFixed(1)}h ago: probing` };
   }
   return {
     allowed: false, probe: false,
-    reason: `last ${SB_COOLDOWN_WINDOW} SB Reddit calls all failed (newest ${ageH.toFixed(1)}h ago); cooling down until ${SB_PROBE_AFTER_HOURS}h`,
+    reason: `last ${SB_COOLDOWN_WINDOW} SB ${label} calls all failed (newest ${ageH.toFixed(1)}h ago); cooling down until ${SB_PROBE_AFTER_HOURS}h`,
   };
+}
+
+function sbRedditVerdict(rows, options = {}) {
+  return sbHostVerdict(rows, { ...options, host: 'reddit.com' });
 }
 
 /** In-run breaker: true once `consecutiveFailures` reaches the limit. */
@@ -127,5 +140,5 @@ function readLedgerTail(file = defaultLedgerPath(), { sinceMs = Date.now() - RED
 
 module.exports = {
   SB_COOLDOWN_WINDOW, SB_PROBE_AFTER_HOURS, SB_RUN_FAILURE_LIMIT, REDDIT_STALE_HOURS,
-  sbRedditVerdict, sbRunBreakerOpen, redditStaleVerdict, readLedgerTail,
+  sbHostVerdict, normalizeSbHost, sbRedditVerdict, sbRunBreakerOpen, redditStaleVerdict, readLedgerTail,
 };
