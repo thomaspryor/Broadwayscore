@@ -302,3 +302,44 @@ test('CLI: a collector failure is the only finding, exit 1, JSON parseable (fail
     fs.rmSync(root, { recursive: true, force: true, maxRetries: 5 });
   }
 });
+
+// BRO-5937: a RECHECK-AFTER probe in EXEMPT_NEVER_CI is red by design, and
+// land.yml runs a changed test file, so the probe must carry a skip guard.
+test('recheckProbeGuardViolations: unguarded RECHECK-AFTER probes are flagged, guarded and non-probe entries are not', () => {
+  const { recheckProbeGuardViolations } = require('./audit-orphan-tests.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'recheck-guard-'));
+  const write = (rel, body) => { fs.mkdirSync(path.dirname(path.join(root, rel)), { recursive: true }); fs.writeFileSync(path.join(root, rel), body); };
+  try {
+    write('scripts/a.test.mjs', "test('x', () => { assert.fail('red until the cron runs'); });\n");
+    write('scripts/b.test.mjs', "test('x', { skip: Date.now() < CHECKABLE_FROM && 'not yet' }, () => {});\n");
+    write('scripts/c.test.mjs', "test('x', (t) => { t.skip('early'); });\n");
+    write('scripts/d.test.mjs', '// RECHECK-GREEN-TODAY: passes on live data since 2026-10-01\n');
+    write('scripts/e.test.mjs', "test('x', () => { assert.fail('shim'); });\n");
+    const source = `const EXEMPT_NEVER_CI = {
+  // BRO-1 RECHECK-AFTER probe: red until the cron runs.
+  'scripts/a.test.mjs': 'BRO-1',
+  // BRO-2 Date-gated RECHECK-AFTER probe.
+  'scripts/b.test.mjs': 'BRO-2',
+  // BRO-3 RECHECK-AFTER probe.
+  'scripts/c.test.mjs': 'BRO-3',
+  // BRO-4 RECHECK-AFTER probe.
+  'scripts/d.test.mjs': 'BRO-4',
+  // BRO-5 acceptance shim.
+  'scripts/e.test.mjs': 'BRO-5',
+  // BRO-6 RECHECK-AFTER probe, file already deleted.
+  'scripts/gone.test.mjs': 'BRO-6',
+};
+`;
+    assert.deepEqual(recheckProbeGuardViolations({ root, source }), ['scripts/a.test.mjs']);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('recheckProbeGuardViolations: the real EXEMPT_NEVER_CI parses fully and every RECHECK-AFTER probe is guarded', () => {
+  const { recheckProbeGuardViolations, neverCiEntriesWithComments, EXEMPT_NEVER_CI } = require('./audit-orphan-tests.js');
+  const src = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'audit-orphan-tests.js'), 'utf8');
+  // The source parser must see every key the object has, or a probe hides.
+  assert.deepEqual(neverCiEntriesWithComments(src).map(e => e.file).sort(), Object.keys(EXEMPT_NEVER_CI).sort());
+  assert.deepEqual(recheckProbeGuardViolations(), []);
+});

@@ -233,6 +233,43 @@ const EXEMPT_KNOWN_BROKEN = {
   // runner. Decayed-exemption gate caught this.)
 };
 
+// BRO-5937: an EXEMPT_NEVER_CI entry whose comment calls it a "RECHECK-AFTER
+// probe" is red by design until its date, but land.yml's colocated-tests gate
+// still runs it when a diff adds or edits the file, and refused the landing
+// that added one. Each such probe must therefore carry a skip-until guard in
+// the file itself (a `skip:` option, `t.skip(`, or a CHECKABLE_FROM date), or
+// a `RECHECK-GREEN-TODAY: <why>` line documenting why it already passes.
+const RECHECK_PROBE_COMMENT = /RECHECK-AFTER probe/i;
+const RECHECK_GUARD = /\bskip\s*:|\.skip\s*\(|\bCHECKABLE_FROM\b|RECHECK-GREEN-TODAY:\s*\S/;
+
+// Reads this file's own EXEMPT_NEVER_CI source and returns each entry with the
+// comment lines directly above it (a comment block belongs to the next entry).
+function neverCiEntriesWithComments(source) {
+  const start = source.indexOf('const EXEMPT_NEVER_CI = {');
+  if (start < 0) return [];
+  const end = source.indexOf('\n};', start);
+  const out = [];
+  let comment = [];
+  for (const line of source.slice(start, end < 0 ? undefined : end).split('\n').slice(1)) {
+    const t = line.trim();
+    if (t.startsWith('//')) { comment.push(t.replace(/^\/\/\s?/, '')); continue; }
+    const m = t.match(/^'([^']+)'\s*:/);
+    if (m) { out.push({ file: m[1], comment: comment.join(' ') }); comment = []; }
+  }
+  return out;
+}
+
+function recheckProbeGuardViolations({ root = ROOT, source = fs.readFileSync(__filename, 'utf8') } = {}) {
+  const violations = [];
+  for (const { file, comment } of neverCiEntriesWithComments(source)) {
+    if (!RECHECK_PROBE_COMMENT.test(comment)) continue;
+    let body;
+    try { body = fs.readFileSync(path.join(root, file), 'utf8'); } catch { continue; }
+    if (!RECHECK_GUARD.test(body)) violations.push(file);
+  }
+  return violations;
+}
+
 // .mjs is the canonical extension but .test.ts and .test.js exist too — must
 // audit all of them or the gate has the same hole it was built to close. Claude
 // caught this during ship-check: 6 .ts/.js orphans were silently uncovered.
@@ -485,6 +522,7 @@ function main() {
     .map(f => ({ file: f.rel, notion: exemptionFor(EXEMPT_NEVER_CI, f) }));
   const { blocking, informational } = decideOrphanGate({ orphans, changedFiles: scope });
   const manifestGate = earlyGate;
+  const unguardedProbes = recheckProbeGuardViolations();
 
   if (json) {
     console.log(JSON.stringify({
@@ -497,6 +535,7 @@ function main() {
       exemptNeverCi,
       manifestProblems: manifestGate.blocking,
       manifestInformational: manifestGate.informational,
+      unguardedRecheckProbes: unguardedProbes,
     }, null, 2));
   } else if (blocking.length > 0) {
     console.error(`❌ ${blocking.length} orphan test file(s) — not referenced in any .github/workflows/*.yml:`);
@@ -530,7 +569,12 @@ function main() {
     console.log(`(${manifestGate.informational.length} manifest problem(s) in manifests this push doesn't touch, not blocking:)`);
     for (const p of manifestGate.informational) console.log(`  ${p.manifest}: ${p.error}`);
   }
-  process.exit(blocking.length > 0 || manifestGate.blocking.length > 0 ? 1 : 0);
+  if (!json && unguardedProbes.length > 0) {
+    console.error(`❌ ${unguardedProbes.length} RECHECK-AFTER probe(s) in EXEMPT_NEVER_CI with no skip-until guard (BRO-5937):`);
+    for (const f of unguardedProbes) console.error(`  ${f}`);
+    console.error('Fix: give the red-by-design test `{ skip: Date.now() < CHECKABLE_FROM && \'not checkable before the RECHECK-AFTER date\' }`, or add a `RECHECK-GREEN-TODAY: <why it passes now>` comment. land.yml runs a changed test file, so an unguarded probe refuses the landing that adds it.');
+  }
+  process.exit(blocking.length > 0 || manifestGate.blocking.length > 0 || unguardedProbes.length > 0 ? 1 : 0);
 }
 
 module.exports = {
@@ -553,6 +597,8 @@ module.exports = {
   checkManifests,
   EXEMPT_KNOWN_BROKEN,
   EXEMPT_NEVER_CI,
+  neverCiEntriesWithComments,
+  recheckProbeGuardViolations,
 };
 
 // Guarded so `require()`-ing this file from a test (CLAUDE.md rule 15) doesn't

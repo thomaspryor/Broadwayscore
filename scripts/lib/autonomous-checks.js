@@ -686,17 +686,40 @@ function causeAfter(lines, i) {
 }
 
 // TAP output: the failing subtests are the signal, not the passing head.
+// BRO-5937: land.yml cuts the REASON at 300 chars, so the detail is budgeted
+// to fit there, names first: `not ok: <name>; <name>; (+k more) | first
+// failure: <assertion message> | <summary>`. The old one-line-per-failure
+// shape spent the budget on causes and a summary line, and the 300-char cut
+// left a refusal that never named the test that failed.
+const TAP_DETAIL_MAX = 300;
+const TAP_NAME_MAX = 60;
+const clip = (s, n) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
 const tapDetail = (err) => {
   const out = String((err && err.stdout) || '');
   const lines = out.split('\n');
   const failing = [];
   lines.forEach((l, i) => {
-    if (!/^\s*not ok\b/.test(l)) return;
-    const cause = causeAfter(lines, i);
-    failing.push(cause ? `${l.trim()} (${cause})` : l.trim());
+    const m = l.match(/^\s*not ok\b(?:\s+\d+)?(?:\s*-\s*)?(.*)$/);
+    if (!m) return;
+    const name = m[1].replace(/\s+#\s*(?:TODO|SKIP)\b.*$/i, '').trim() || '(unnamed)';
+    failing.push({ name, cause: causeAfter(lines, i) });
   });
   const summary = `${(err && err.stderr) || ''}\n${lines.slice(-40).join('\n')}`.split('\n').filter(l => /FAILED|test floor|ENOBUFS|exceeded/.test(l)).slice(-1)[0] || '';
-  return [summary, ...failing.slice(0, 8), failing.length > 8 ? `… ${failing.length - 8} more` : ''].filter(Boolean).join(' | ').slice(0, 600) || defaultDetail(err);
+  if (!failing.length) return summary.trim() || defaultDetail(err);
+  const first = failing.find(f => f.cause);
+  const tail = [first ? ` | first failure: ${first.cause}` : '', summary ? ` | ${clip(summary.trim(), 80)}` : ''].join('');
+  // Fill names until the budget (less the tail) runs out, then count the rest.
+  const budget = TAP_DETAIL_MAX - tail.length - 'not ok: '.length - ' (+99 more)'.length;
+  const names = [];
+  let used = 0;
+  for (const f of failing) {
+    const n = clip(f.name, TAP_NAME_MAX);
+    if (names.length && used + n.length + 2 > budget) break;
+    names.push(n);
+    used += n.length + 2;
+  }
+  const more = failing.length - names.length;
+  return `not ok: ${names.join('; ')}${more ? ` (+${more} more)` : ''}${tail}`.slice(0, TAP_DETAIL_MAX);
 };
 
 module.exports = {

@@ -7,6 +7,10 @@
  * has gone through the new draft and email steps. A red run is the claim
  * being disproven, not a code regression (the logic is unit-tested in
  * scripts/lib/reddit-opening-post.test.mjs).
+ *
+ * RECHECK-GREEN-TODAY: no skip-until date needed (BRO-5937). Both tests passed
+ * 2/2 on 2026-10-23 against live data: the daily draft job has already run the
+ * BRO-5879 code, so a diff touching this file does not refuse its landing.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';

@@ -35,14 +35,14 @@ test('detail: noisy passing test does not mask the failing test', () => {
   const { err } = runNodeTest({ 'a.test.mjs': noisy });
   assert.match(String(err.stdout).slice(0, 400), /review-write-guard/, 'precondition: the head of stdout is the noise');
   const d = tapDetail(err);
-  assert.match(d, /not ok \d+ - the real failure/);
+  assert.match(d, /^not ok: the real failure \| first failure: boom-assertion/);
   assert.doesNotMatch(d, /review-write-guard/);
   assert.match(defaultDetail(err), /review-write-guard/, 'defaultDetail is the head, which is why colocated-tests needs tapDetail');
 });
 
 test('detail: file-level crash carries its cause', () => {
   const { err } = runNodeTest({ 'b.test.mjs': 'const x = ;\n' });
-  assert.match(tapDetail(err), /not ok \d+ - .*b\.test\.mjs/);
+  assert.match(tapDetail(err), /^not ok: .*b\.test\.mjs/);
   assert.match(tapDetail(err), /SyntaxError|Unexpected token/);
 });
 
@@ -53,9 +53,9 @@ test('eq fails', () => { assert.equal(1, 2); });
 test('custom fails', () => { assert.ok(false, 'custom message here'); });
 ` });
   const d = tapDetail(err);
-  assert.match(d, /not ok \d+ - eq fails \(Expected values to be strictly equal/);
-  assert.match(d, /not ok \d+ - custom fails \(custom message here\)/);
-  assert.doesNotMatch(d, /\(-\)|here'\)/);
+  // Every failing name, then the FIRST failure's assertion message (BRO-5937).
+  assert.match(d, /^not ok: eq fails; custom fails \| first failure: Expected values to be strictly equal/);
+  assert.doesNotMatch(d, /\| first failure: [|>]-?(\s|$)/);
 });
 
 test('detail: falls back to the output head when there is no TAP failure', () => {
@@ -71,6 +71,22 @@ test('detail: runSafeChecks colocated-tests names the failing test end to end', 
   });
   const r = res.find(x => x.name === 'colocated-tests');
   assert.ok(r && r.pass === false, JSON.stringify(res));
-  assert.match(r.detail, /not ok \d+ - the real failure/);
+  assert.match(r.detail, /^not ok: the real failure/);
   assert.doesNotMatch(r.detail, /review-write-guard/);
+});
+
+test('detail: many long-named failures still name tests inside land.yml\'s 300-char REASON (BRO-5937)', () => {
+  const long = n => `probe ${n} asserts the scheduled recheck saw ${'x'.repeat(70)}`;
+  const body = `import { test } from 'node:test';
+import assert from 'node:assert/strict';
+${[1, 2, 3, 4, 5, 6].map(n => `test(${JSON.stringify(long(n))}, () => { assert.ok(false, 'first-assertion-${n}'); });`).join('\n')}
+`;
+  const { err } = runNodeTest({ 'e.test.mjs': body });
+  const d = tapDetail(err);
+  assert.ok(d.length <= 300, `detail is ${d.length} chars`);
+  assert.match(d, /^not ok: probe 1 asserts/);
+  assert.match(d, /\(\+\d+ more\)/);
+  assert.match(d, /first failure: first-assertion-1/);
+  // The same cut land.yml applies keeps the name and the message.
+  assert.equal(d.replace(/\r?\n/g, ' ').slice(0, 300), d);
 });
