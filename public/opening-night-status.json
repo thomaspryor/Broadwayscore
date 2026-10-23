@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T16:27:48.471Z",
+  "generatedAt": "2026-10-23T16:51:06.309Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1211,23 +1211,23 @@
       "status": "open",
       "slug": "the-imaginary-invalid",
       "thumbnail": "/images/shows/the-imaginary-invalid-2026/thumbnail.webp",
-      "siteScore": 66.62,
-      "liveScore": 67,
+      "siteScore": 67.62,
+      "liveScore": 68,
       "scoreDrift": 0.37999999999999545,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 18,
+      "total": 19,
       "t1": 5,
-      "t2": 10,
+      "t2": 11,
       "t3": 3,
-      "positive": 9,
+      "positive": 10,
       "mixed": 4,
       "negative": 5,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 17,
+        "highConfidence": 18,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1308,6 +1308,10 @@
         },
         {
           "name": "The Daily Beast",
+          "isDualMarket": false
+        },
+        {
+          "name": "Cititour",
           "isDualMarket": false
         },
         {
@@ -1575,6 +1579,18 @@
           "m": 4,
           "n": 5,
           "bc": "preview-sent"
+        },
+        {
+          "t": "2026-10-23T16:51:06.309Z",
+          "rc": 19,
+          "s": 67.62,
+          "t1": 5,
+          "t2": 11,
+          "t3": 3,
+          "p": 10,
+          "m": 4,
+          "n": 5,
+          "bc": "complete"
         }
       ]
     },
@@ -4325,17 +4341,17 @@
       "status": "open",
       "slug": "king-of-the-yees",
       "thumbnail": "/images/shows/king-of-the-yees-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 79.13,
+      "siteScore": 79.41,
       "liveScore": 79,
-      "scoreDrift": -0.12999999999999545,
+      "scoreDrift": -0.4099999999999966,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 14,
+      "total": 15,
       "t1": 2,
       "t2": 10,
-      "t3": 2,
-      "positive": 10,
+      "t3": 3,
+      "positive": 11,
       "mixed": 4,
       "negative": 0,
       "readiness": {
@@ -4343,7 +4359,7 @@
         "reasons": [
           "T1:2/3"
         ],
-        "highConfidence": 14,
+        "highConfidence": 15,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -4799,6 +4815,18 @@
           "m": 4,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-23T16:51:06.309Z",
+          "rc": 15,
+          "s": 79.41,
+          "t1": 2,
+          "t2": 10,
+          "t3": 3,
+          "p": 11,
+          "m": 4,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -4812,17 +4840,17 @@
       "status": "open",
       "slug": "martin-guerre-west-end",
       "thumbnail": "/images/shows/martin-guerre-west-end-2026/thumbnail.webp",
-      "siteScore": 69.79,
+      "siteScore": 70.1,
       "liveScore": 70,
-      "scoreDrift": 0.20999999999999375,
+      "scoreDrift": -0.09999999999999432,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 20,
+      "total": 21,
       "t1": 6,
       "t2": 5,
-      "t3": 9,
-      "positive": 8,
+      "t3": 10,
+      "positive": 9,
       "mixed": 10,
       "negative": 2,
       "readiness": {
@@ -5161,6 +5189,18 @@
           "t2": 5,
           "t3": 9,
           "p": 8,
+          "m": 10,
+          "n": 2,
+          "bc": "preview-sent-earlier"
+        },
+        {
+          "t": "2026-10-23T16:51:06.309Z",
+          "rc": 21,
+          "s": 70.1,
+          "t1": 6,
+          "t2": 5,
+          "t3": 10,
+          "p": 9,
           "m": 10,
           "n": 2,
           "bc": "preview-sent-earlier"

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T16:27:33.650Z",
+  "timestamp": "2026-10-23T16:50:51.504Z",
   "stats": {
-    "totalReviews": 59521,
+    "totalReviews": 59518,
     "alreadyFlagged": 21112,
     "dateGuardCatches": 202,
     "directorMismatch": 2120,
     "tvFilmSignals": 1690,
-    "londonSignals": 2836,
+    "londonSignals": 2839,
     "offBroadwaySignals": 535,
     "yearMismatch": 176,
-    "noPublishDate": 5342
+    "noPublishDate": 5338
   },
   "findings": [
     {
@@ -71447,6 +71447,19 @@
     },
     {
       "showId": "ilford-boy-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/ilford-boy-donmar-warehouse-review-writing-numbers-can-be-fun",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
       "file": "boycotting-trends--view-my-complete.json",
       "score": 91,
       "publishDate": "2026-10-19",
@@ -76264,6 +76277,32 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
+      "file": "all-that-dazzles-uk--unknown.json",
+      "publishDate": "2026-10-23",
+      "url": "https://www.allthatdazzles.co.uk/post/review-martin-guerre-the-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
+      "file": "firstnightmagazine--unknown.json",
+      "publishDate": "2026-10-22",
+      "url": "https://firstnightmagazine.com/2026/10/22/review-of-martin-guerre-old-vic-2026-new-revival-features-more-historical-accuracy-but-loses-its-identity/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
