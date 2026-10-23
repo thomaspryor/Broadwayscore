@@ -123,7 +123,7 @@ test('check-bundle-size: routes come from src/app; a deleted page is stale (no b
     assert.deepEqual([...routes].sort(), ['/', '/about', '/api/ping', '/show/[slug]']);
     assert.deepEqual(computeStalePages({ pages: { '/': 1, '/about': 1, '/gone': 1 } }, routes), ['/gone']);
     // Build-only framework/metadata routes are never stale against the static list.
-    const pages = { '/': 1, '/_not-found': 1, '/robots.txt': 1, '/sitemap.xml': 1, '/gone': 1 };
+    const pages = { '/': 1, '/_not-found': 1, '/robots.txt': 1, '/sitemap.xml': 1, '/sitemap/[__metadata_id__]': 1, '/gone': 1 };
     assert.deepEqual(computeStalePages({ pages }, routes, { staticRoutes: true }), ['/gone']);
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });

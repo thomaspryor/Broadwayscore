@@ -61,7 +61,8 @@ function listAppPageRoutes(appDir = APP_DIR) {
 // routes generated from robots.ts / sitemap.ts / icon files (/robots.txt,
 // /sitemap.xml, /icon.png). They have no page.tsx, so the static route list
 // can't vouch for them: never call them stale (a build-time compare still can).
-const NON_PAGE_ROUTE_RE = /^\/_|\.[a-z0-9]+$/i;
+// generateSitemaps() in sitemap.ts emits /sitemap/[__metadata_id__] the same way (BRO-6041).
+const NON_PAGE_ROUTE_RE = /^\/_|\.[a-z0-9]+$|\[__metadata_id__\]/i;
 
 /** Baseline pages with no live route (from a build's pages, or listAppPageRoutes()). */
 function computeStalePages(baseline, liveRoutes, { staticRoutes = false } = {}) {
