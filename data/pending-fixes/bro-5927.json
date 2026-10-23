@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5927",
   "planId": "aa0ae1fa-a92d-4d39-9580-18b770f98fd7",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-23T13:53:48.987Z",
   "submitter": {
     "name": null,
@@ -239,5 +239,134 @@
         "description": "much-ado-about-nothing-west-end-2022/london-theatre--marianka-swain.json: published 93 contradicts 4/5 stars (same-article sibling record), set in-band 80"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-23T14:36:22.617Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-west-end-2024/timeout-london--andrzej-lukowski.json humanReviewScore: null -> 80"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-west-end-2024/timeout-london--andrzej-lukowski.json humanReviewNote: null -> \"BRO-5927: published 64 sat outside the critic printed rating 4/5 (stored on the same-URL sibling record timeout-london--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 80.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "unicorn-west-end-2025/broadwayworld--aliya-al-hassan.json humanReviewScore: null -> 40"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "unicorn-west-end-2025/broadwayworld--aliya-al-hassan.json humanReviewNote: null -> \"BRO-5927: published 61 sat outside the critic printed rating 2/5 (stored on the same-URL sibling record broadwayworld--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 40.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "under-the-shadow-off-west-end-2026/london-theatre--holly-omahony.json humanReviewScore: null -> 64"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "under-the-shadow-off-west-end-2026/london-theatre--holly-omahony.json humanReviewNote: null -> \"BRO-5927: published 76 sat outside the critic printed rating 3/5 stars (stored on the same-URL sibling record london-theatre--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 64.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tru-off-west-end-2026/artsdesk--helen-hawkins.json humanReviewScore: null -> 70"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tru-off-west-end-2026/artsdesk--helen-hawkins.json humanReviewNote: null -> \"BRO-5927: published 75 sat outside the critic printed rating 3/5 (stored on the same-URL sibling record artsdesk--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 70.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-upstart-crow-west-end-2020/timeout-london--andrzej-lukowski.json humanReviewScore: null -> 60"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-upstart-crow-west-end-2020/timeout-london--andrzej-lukowski.json humanReviewNote: null -> \"BRO-5927: published 74 sat outside the critic printed rating 3/5 (stored on the same-URL sibling record timeout-london--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 60.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unfriend-west-end-2023/timeout-london--andrzej-lukowski.json humanReviewScore: null -> 60"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unfriend-west-end-2023/timeout-london--andrzej-lukowski.json humanReviewNote: null -> \"BRO-5927: published 36 sat outside the critic printed rating 60 (stored on the same-URL sibling record timeout-london--tim-bano.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 60.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-terms-of-my-surrender-2017/thestage--mark-shenton.json humanReviewScore: null -> 40"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-terms-of-my-surrender-2017/thestage--mark-shenton.json humanReviewNote: null -> \"BRO-5927: published 58 sat outside the critic printed rating 2/5 stars (stored on the same-URL sibling record thestage--mark-sheton.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 40.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-mirror-and-the-light-west-end-2021/london-theatre--hailey-bachrach.json humanReviewScore: null -> 80"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-mirror-and-the-light-west-end-2021/london-theatre--hailey-bachrach.json humanReviewNote: null -> \"BRO-5927: published 66 sat outside the critic printed rating 4/5 stars (stored on the same-URL sibling record london-theatre--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 80.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-doctor-west-end-2022/london-theatre--sophie-thomas.json humanReviewScore: null -> 96"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-doctor-west-end-2022/london-theatre--sophie-thomas.json humanReviewNote: null -> \"BRO-5927: published 87 sat outside the critic printed rating 5/5 (stored on the same-URL sibling record london-theatre--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 96.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tartuffe-west-end-2019/standard--henry-hitchings.json humanReviewScore: null -> 60"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tartuffe-west-end-2019/standard--henry-hitchings.json humanReviewNote: null -> \"BRO-5927: published 75 sat outside the critic printed rating 3/5 stars (stored on the same-URL sibling record standard--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 60.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rare-earth-mettle-west-end-2021/everything-theatre--gabriel-wilding.json humanReviewScore: null -> 100"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rare-earth-mettle-west-end-2021/everything-theatre--gabriel-wilding.json humanReviewNote: null -> \"BRO-5927: published 81 sat outside the critic printed rating 5/5 stars (stored on the same-URL sibling record everything-theatre--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 100.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "peter-gynt-west-end-2019/financialtimes--sarah-hemming.json humanReviewScore: null -> 40"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "peter-gynt-west-end-2019/financialtimes--sarah-hemming.json humanReviewNote: null -> \"BRO-5927: published 59 sat outside the critic printed rating 2/5 stars (stored on the same-URL sibling record financialtimes--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 40.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-west-end-2022/london-theatre--marianka-swain.json humanReviewScore: null -> 80"
+    }
+  ],
+  "executedIn": "ci"
 }
