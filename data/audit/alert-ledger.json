@@ -244,15 +244,16 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-23T04:21:30.489Z",
-      "lastSeen": "2026-10-23T04:21:30.489Z",
-      "lastNotifiedAt": "2026-10-23T04:21:30.489Z",
+      "incidentOpenedAt": "2026-10-23T04:07:37.969Z",
+      "lastSeen": "2026-10-23T04:37:19.628Z",
+      "lastNotifiedAt": "2026-10-23T04:07:37.969Z",
       "lastSurfacedAt": "2026-10-22T22:36:55.496Z",
       "notifyCount": 159,
       "cardId": null,
       "linearIdentifier": "BRO-6024",
       "notifyCountAtRelease": 142,
-      "sweptTracker": "BRO-5554"
+      "sweptTracker": "BRO-5554",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -6757,7 +6758,7 @@
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
       "incidentOpenedAt": "2026-10-22T21:23:08.037Z",
-      "lastSeen": "2026-10-23T04:21:30.475Z",
+      "lastSeen": "2026-10-23T04:37:19.611Z",
       "lastNotifiedAt": "2026-10-22T21:23:08.037Z",
       "lastSurfacedAt": null,
       "notifyCount": 11,
@@ -6770,7 +6771,7 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39854568981"
       },
       "absentRunIds": [],
-      "silentRefires": 13
+      "silentRefires": 14
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "resolved",
