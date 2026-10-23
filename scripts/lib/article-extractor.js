@@ -868,7 +868,11 @@ function extractArticleTextUnchecked(html, hostname, criticHint) {
 
   // Variety: promo modules injected mid-article break the DOM patterns (truncate
   // to ~800 chars). Dedicated extractor strips them and collects review prose.
-  if (host.includes('variety.com')) {
+  // Deadline runs the same PMC template (a-content body, injected promo modules). The DOM patterns kept 428-1239 chars
+  // of five Broadway reviews (2025-09 to 2026-10) where this extractor keeps the whole 5-9k review, ending at the
+  // credits block (BRO-6066: the lane's Deadline review was refused by the scorer as body_too_short). Matched on the
+  // host itself, and a miss still falls through to the generic patterns as before.
+  if (host.includes('variety.com') || /(?:^|\.)deadline\.com$/.test(host)) {
     const varietyText = extractVarietyBody(html);
     if (varietyText && varietyText.length >= 300) return varietyText;
   }

@@ -420,3 +420,77 @@ test('lane-failures: strict about its input, tolerant of a torn last line, and u
     assert.deepEqual(lf.readFailures(dir, 'show-b', '2026-10-18'), { failures: [], corrupt: 0 });
   } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
 });
+
+// BRO-6066: Deadline's 956-char extraction and WSJ's teaser were sent to the scorer once, refused as body_too_short (its
+// 1000-char floor) and lost. Under the floor is now a fetch retry; the last attempt scores what it has as 'truncated'.
+test('text under the scorer floor is fetched again on the backoff, then scored as a truncated partial on the last attempt', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6066-short-'));
+  try {
+    let t = NIGHT_START;
+    let fetches = 0;
+    const show = { id: 'short-text-2026', title: 'Short Text', category: 'broadway' };
+    const scored = [];
+    const sc = inl.createInlineScoring({
+      show, night: '2026-10-18', ledgerDir: dir, now: () => t, retryMs: [1000, 1000],
+      fetchPage: async () => { fetches++; return { content: 'x' }; },
+      extractArticle: () => 'A partial copy of the review. '.repeat(20) + 'x'.repeat(fetches), // ~600 chars, growing: over minTextChars, under 1000
+      scoreText: async (text, ctx) => { scored.push(ctx.contentTier); return { score: 70 }; },
+    });
+    const cand = { url: 'https://deadline.com/2026/10/short-text-broadway-review-1/' };
+    await assert.rejects(sc.fetchReview(cand), inl.LaneRetryError);
+    await assert.rejects(sc.fetchReview(cand), /backing off/, 'no second fetch inside the backoff');
+    t += 1000;
+    await assert.rejects(sc.fetchReview(cand), inl.LaneRetryError);
+    t += 1000;
+    const got = await sc.fetchReview(cand);
+    assert.equal(fetches, 3);
+    assert.equal(got.contentTier, 'truncated');
+    assert.equal(got.fullText.length, 603); // 600 + 3 growth chars
+    await sc.scoreReview({ url: cand.url, fullText: got.fullText, showId: show.id }, got);
+    assert.deepEqual(scored, ['truncated'], 'the scorer is told it is a partial copy');
+    const recs = lf.readFailures(dir, show.id, '2026-10-18').failures;
+    assert.equal(recs.length, 3);
+    assert.ok(recs.every((f) => f.terminal === false && /only 60[123] chars/.test(f.reason)));
+    assert.match(recs[2].reason, /scoring it as a partial copy/);
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
+});
+
+test('a full-length body is scored as complete on the first fetch', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6066-full-'));
+  try {
+    const sc = inl.createInlineScoring({
+      show: { id: 'full-2026', title: 'Full' }, night: '2026-10-18', ledgerDir: dir, now: () => NIGHT_START,
+      fetchPage: async () => ({ content: 'x' }), extractArticle: () => 'A whole review body. '.repeat(60),
+      scoreText: async () => ({ score: 70 }),
+    });
+    const got = await sc.fetchReview({ url: 'https://deadline.com/2026/10/full-broadway-review-2/' });
+    assert.equal(got.contentTier, undefined);
+    assert.equal(lf.readFailures(dir, 'full-2026', '2026-10-18').failures.length, 0);
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
+});
+
+test('ensembleScoreText passes a truncated tier through and defaults to complete', async () => {
+  const seen = [];
+  const st = inl.ensembleScoreText({ scoreReviewFile: async (f) => { seen.push(f.contentTier); return { success: true, scoredFile: { assignedScore: 60 } }; } });
+  await st('text', { url: 'https://a.example/r', contentTier: 'truncated' });
+  await st('text', { url: 'https://a.example/r' });
+  assert.deepEqual(seen, ['truncated', 'complete']);
+});
+
+test('the same short length twice stops the refetching and scores the partial copy', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6066-same-'));
+  try {
+    let t = NIGHT_START; let fetches = 0;
+    const sc = inl.createInlineScoring({
+      show: { id: 'same-2026', title: 'Same' }, night: '2026-10-18', ledgerDir: dir, now: () => t, retryMs: [1000, 1000, 1000],
+      fetchPage: async () => { fetches++; return { content: 'x' }; }, extractArticle: () => 'The same 956-char cut every time. '.repeat(20),
+      scoreText: async () => ({ score: 70 }),
+    });
+    const cand = { url: 'https://deadline.com/2026/10/same-broadway-review-3/' };
+    await assert.rejects(sc.fetchReview(cand), inl.LaneRetryError);
+    t += 1000;
+    const got = await sc.fetchReview(cand);
+    assert.equal(fetches, 2, 'no third and fourth paid fetch for an identical result');
+    assert.equal(got.contentTier, 'truncated');
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
+});

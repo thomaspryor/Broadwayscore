@@ -26,6 +26,7 @@
 const failures = require('./lane-failures');
 const trust = require('./trust-model');
 const { canonicalUrl } = require('./discovery');
+const { BODY_GATE_CHARS } = require('../scorable-text');
 
 const DEFAULT_RETRY_MS = [30 * 1000, 2 * 60 * 1000, 5 * 60 * 1000, 10 * 60 * 1000];
 
@@ -54,6 +55,7 @@ function createInlineScoring({
   const state = new Map(); // `${stage}:${key}` -> {attempts, nextAt, terminal}
   const maxAttempts = retryMs.length + 1;
   const fetched = new Map(); // key -> the fetch result, so a score retry never pays for the page again
+  const shortLen = new Map(); // key -> length of the last under-the-floor extraction
   // Rebuild retry state from the night's failure record (a restart must not reset attempts or reopen terminal verdicts).
   for (const f of failures.readFailures(ledgerDir, show.id, night).failures) {
     const id = `${f.stage}:${f.reviewKey}`;
@@ -98,7 +100,23 @@ function createInlineScoring({
       const text = String(extractArticle(html, hostOf(candidate.url)) || '').trim();
       const meta = extractMeta(html, candidate.url) || {};
       if (text.length < minTextChars && !canFallBack) throw new Error(`no extractable text (${text.length} chars) and no aggregator score to fall back on`);
-      const out = { outlet: meta.outlet, criticName: meta.criticName || null, publishDate: meta.publishDate || null, fullText: text.length < minTextChars ? '' : text, aggregator };
+      // Under the scorer's body gate the scorer rejects the text for good (body_too_short), so a teaser or a page the
+      // extractor cut short is a FETCH problem: fetch again on the backoff (BRO-6066: Deadline's 956-char extraction and
+      // WSJ's teaser were each lost after one attempt). On the last attempt what we have is scored as a partial copy
+      // (contentTier 'truncated'), the owner's call for 300-999-char partials (scorable-text.js isShortPartialReview).
+      let contentTier;
+      if (text.length >= minTextChars && text.length < BODY_GATE_CHARS) {
+        const st = state.get(`fetch:${key}`);
+        const attempt = ((st && st.attempts) || 0) + 1;
+        const why = `only ${text.length} chars of article text (the scorer needs ${BODY_GATE_CHARS})`;
+        // The same length twice means the page or the extractor gives no more: stop paying for fetches.
+        const sameAsBefore = shortLen.get(key) === text.length;
+        shortLen.set(key, text.length);
+        if (attempt < maxAttempts && !sameAsBefore) fail('fetch', key, new Error(`${why}; fetching again`));
+        failures.appendFailure(ledgerDir, { show: show.id, night, reviewKey: key, stage: 'fetch', reason: `${why}; scoring it as a partial copy`, attempt, terminal: false, at: now() });
+        contentTier = 'truncated';
+      }
+      const out = { outlet: meta.outlet, criticName: meta.criticName || null, publishDate: meta.publishDate || null, fullText: text.length < minTextChars ? '' : text, aggregator, ...(contentTier ? { contentTier } : {}) };
       fetched.set(key, out);
       return out;
     } catch (e) {
@@ -120,12 +138,12 @@ function createInlineScoring({
     }
   }
 
-  async function scoreReview(row) {
+  async function scoreReview(row, fetchedReview = {}) {
     const key = canonicalUrl(row.url);
     gate('score', key);
     let r;
     try {
-      r = await scoreText(row.fullText, { showId: row.showId, showTitle: show.title, category: show.category, venue: show.venue, type: show.type, outletId: row.outletId, outlet: row.outlet, criticName: row.criticName, publishDate: row.publishDate, url: row.url });
+      r = await scoreText(row.fullText, { showId: row.showId, showTitle: show.title, category: show.category, venue: show.venue, type: show.type, outletId: row.outletId, outlet: row.outlet, criticName: row.criticName, publishDate: row.publishDate, url: row.url, contentTier: (fetchedReview && fetchedReview.contentTier) || 'complete' });
     } catch (e) { return fail('score', key, e); }
     // The scorer judging it not a review of this show is a verdict, not a glitch: record it and stop retrying.
     if (r && r.rejected) return fail('score', key, new Error(`scorer rejected the review: ${r.rejection || 'unspecified'}`), true);
@@ -148,7 +166,7 @@ function ensembleScoreText(scorer) {
     const file = {
       showId: ctx.showId, showTitle: ctx.showTitle, category: ctx.category, venue: ctx.venue, type: ctx.type,
       outletId: ctx.outletId, outlet: ctx.outlet, criticName: ctx.criticName, publishDate: ctx.publishDate, url: ctx.url,
-      fullText: text, contentTier: 'complete',
+      fullText: text, contentTier: ctx.contentTier || 'complete', // 'truncated': a partial copy, scored at low confidence
     };
     const res = await scorer.scoreReviewFile(file);
     if (res && res.rejected) return { rejected: true, rejection: res.rejection || 'rejected' };

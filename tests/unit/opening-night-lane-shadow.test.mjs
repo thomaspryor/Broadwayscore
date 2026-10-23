@@ -15,7 +15,7 @@ const rehearsal = require('../../scripts/lib/opening-night-lane/rehearsal.js');
 
 const NIGHT = '2026-10-22';
 const SHOW = { id: 'test-show-2026', title: 'Test Show', openingDate: NIGHT };
-const TEXT = 'The performances and staging make this production a delight. '.repeat(10);
+const TEXT = 'The performances and staging make this production a delight. '.repeat(20);
 const T0 = Date.parse(`${NIGHT}T23:00:00Z`);
 
 function night(dir, { urls, liveRv = [], scores = [] }) {

@@ -54,11 +54,7 @@ async function main() {
   // the scorer adds Kimi, whose 300 s OpenRouter timeouts and retries cost ~15 minutes per review in the first CI run.
   const scorer = new EnsembleReviewScorer(env.ANTHROPIC_API_KEY, env.OPENAI_API_KEY, env.GEMINI_API_KEY);
   const scoring = inline.createInlineScoring({ show, night, ledgerDir, now: Date.now, ...inline.realFetchPorts(), scoreText: inline.ensembleScoreText(scorer) });
-  const fetchText = async (url, opts) => {
-    const r = await fetchPage(url, opts);
-    if (!r || !r.content) throw new Error(`fetchText: no content for ${url}`);
-    return r.content;
-  };
+  const fetchText = discovery.fetchTextFrom(fetchPage);
   const ss = require('./lib/show-score-discover');
   const showScoreGuards = { urlMap: ss.loadShowScoreUrlMap(repoDir), allShows: Array.isArray(shows) ? shows : shows.shows || [] };
   const serpSearch = async (query) => {

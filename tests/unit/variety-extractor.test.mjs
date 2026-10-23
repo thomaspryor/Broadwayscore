@@ -66,3 +66,27 @@ describe('article-extractor: Variety promo-interleaved a-content', () => {
       'body after the injected promo div was truncated — regression');
   });
 });
+
+// BRO-6066: Deadline runs the same PMC template. The generic patterns kept 956 chars of the lane's Deadline review of
+// The Imaginary Invalid (the scorer needs 1000) and 428-1239 chars of four earlier Broadway reviews.
+describe('article-extractor: Deadline (PMC template, same as Variety)', () => {
+  const html = (host) =>
+    '<html><body><article>' +
+    '<div class="a-content a-content--logo-end">' +
+      '<p>' + 'The revival opens with a clatter of slapstick and a hypochondriac in full cry. '.repeat(5) + '</p>' +
+      '<div class="injected-related-story"><h3>Related Stories</h3><div><a href="/x">Unrelated Deadline headline</a></div></div>' +
+    '</div></article>' + // the generic patterns stop at this first </div></article>
+    '<div class="a-content-continued"><p>' + 'By the second act the comedy settles into a gentler, sadder register about fear. '.repeat(5) + '</p></div>' +
+    `<p>Read More About: ${host}</p></body></html>`;
+
+  test('keeps the review prose past the injected module and drops the module', () => {
+    const text = extractArticleText(html('deadline'), 'deadline.com');
+    assert.ok(text.includes('By the second act'), `whole body kept (${text.length} chars)`);
+    assert.ok(!text.includes('Unrelated Deadline headline'));
+    assert.ok(!text.includes('Read More About'));
+  });
+
+  test('applies to deadline.com and its www host only', () => {
+    assert.ok(extractArticleText(html('deadline'), 'www.deadline.com').includes('By the second act'));
+  });
+});

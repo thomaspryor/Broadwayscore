@@ -37,7 +37,8 @@ const FEED_OUTLETS = [['rollingstone', 'www.rollingstone.com', 'Sarah Example'],
 const INDEX_OUTLETS = [['telegraph', 'www.telegraph.co.uk', 'Dominic Example'], ['independent', 'www.independent.co.uk', 'Holly Example'], ['thestage', 'www.thestage.co.uk', 'Fiona Example'], ['financialtimes', 'www.ft.com', 'Sarah Example'], ['dailybeast', 'www.thedailybeast.com', 'Ben Example']];
 
 const reviewUrl = (host, i) => `https://${host}/2026/10/19/theater/${SLUG}-review-${i}`;
-const filler = (n) => `${'The staging builds slowly and the second act earns its ending. '.repeat(8)}(synthetic review ${n}).`;
+// 16 repeats keep each body over the scorer's 1000-char floor (scorable-text BODY_GATE_CHARS), as real reviews are.
+const filler = (n) => `${'The staging builds slowly and the second act earns its ending. '.repeat(16)}(synthetic review ${n}).`;
 
 function buildSyntheticFixture() {
   const pages = {};

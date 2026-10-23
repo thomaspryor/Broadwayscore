@@ -141,11 +141,7 @@ function buildRealLaneDeps({
       const { fetchPage } = require('../scraper');
       const scorer = new ScorerClass(env.ANTHROPIC_API_KEY, env.OPENAI_API_KEY, env.GEMINI_API_KEY, env.OPENROUTER_API_KEY);
       const scoring = inline.createInlineScoring({ show, night, ledgerDir, now: Date.now, ...inline.realFetchPorts(), scoreText: inline.ensembleScoreText(scorer) });
-      const fetchText = async (url, opts) => {
-        const r = await fetchPage(url, opts);
-        if (!r || !r.content) throw new Error(`fetchText: no content for ${url}`);
-        return r.content;
-      };
+      const fetchText = discovery.fetchTextFrom(fetchPage);
       return runLaneNight({
         show, night, openingDate, timeZone, ledgerDir, fetchText, shouldStop,
         // A CI job caps the lane step below the 6 h default window; without this it is always killed mid-run (BRO-4835).

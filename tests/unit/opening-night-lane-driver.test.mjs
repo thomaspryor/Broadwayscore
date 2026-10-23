@@ -121,7 +121,7 @@ test('the production driver persists scored reviews before publishing and skips 
   t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
   const show = { ...SHOW, openingDate: NIGHT };
   const url = 'https://www.theguardian.com/stage/2026/oct/20/test-show-review';
-  const text = 'The performances and staging make this production a delight. '.repeat(10);
+  const text = 'The performances and staging make this production a delight. '.repeat(20);
   const ledgerDir = path.join(dir, 'ledger');
   let scored = 0;
   let doc = { reviews: [] };

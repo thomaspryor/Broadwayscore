@@ -124,7 +124,7 @@ async function runLaneNight({
         if (row.assignedScore == null) { await wait(latency.scoreMs || 0); const scored = await scoreReview(row, fetched);
           if (scored && typeof scored === 'object') { Object.assign(row, scored.extra || {}); row.assignedScore = scored.score; } else row.assignedScore = scored;
         }
-        row.contentTier = row.isFullReview ? 'complete' : 'stub';
+        row.contentTier = fetched.contentTier || (row.isFullReview ? 'complete' : 'stub');
         if (persistReview) {
           // The guarded writer can preserve a human correction. Publish precisely what survived on disk.
           row = persistReview(row).row;

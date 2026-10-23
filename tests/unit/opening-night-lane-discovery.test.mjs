@@ -236,7 +236,7 @@ test('a hung fetch cannot hang the pass: per-fetch timeout, recorded as an error
 
 test('an overall deadline stops a slow pass and defers the rest instead of dropping it', async () => {
   const slow = { name: 'slow', phase: 'cheap', async discover() { await new Promise((r) => setTimeout(r, 40)); return []; } };
-  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0, startedAt: T0, adapters: [slow, slow, slow, allAdapters()[0]], ...pages(baseMap()), deadlineMs: 50 });
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0, startedAt: T0, adapters: [slow, slow, slow, allAdapters()[0]], ...pages(baseMap()), deadlineMs: 20 });
   assert.equal(r.deadlineHit, true);
 });
 
@@ -538,4 +538,96 @@ test('a timed-out date check is deferred without a strike, so a slow outlet is n
   }
   const ok = await passWith([d.rssAdapter({ feeds })], { 'https://variety.com/feed': zoneless, [VARIETY_RAW]: '<p>x</p>' }, { memo });
   assert.equal(ok.admitted.length, 1, 'still admitted after five timeouts');
+});
+
+// BRO-6066 (The Imaginary Invalid, 2026-10-22): TheaterMania and Time Out file reviews under /news/, so the DTLI and
+// Playbill links to them were rejected as news. A cited link stands; an uncited feed find and a roundup stay out.
+test('nonReviewReason: an aggregator-cited /news/ link whose slug says review is a review; uncited or roundup is not', () => {
+  const tm = 'https://www.theatermania.com/news/review-revival-of-the-imaginary-invalid-is-terminally-short-on-laughs_1857994/';
+  const to = 'https://www.timeout.com/newyork/news/broadway-review-the-imaginary-invalid-gasps-for-moliere-102326';
+  assert.equal(d.nonReviewReason(tm, { aggregatorCited: true }), null);
+  assert.equal(d.nonReviewReason(to, { aggregatorCited: true }), null);
+  assert.equal(d.nonReviewReason(tm), 'non-review-path', 'a feed or index find under /news/ is still out');
+  assert.equal(d.nonReviewReason('https://www.theatermania.com/news/the-imaginary-invalid-reviews-what-critics-say_1/', { aggregatorCited: true }), 'non-review-path');
+  assert.equal(d.nonReviewReason('https://www.theatermania.com/news/the-imaginary-invalid-extends_2/', { aggregatorCited: true }), 'non-review-path');
+  assert.equal(d.nonReviewReason('https://variety.com/2026/legit/tag/review-imaginary/', { aggregatorCited: true }), 'non-review-path', 'only the news segment stands down');
+});
+
+test('playbillArticleBody keeps the roundup prose and drops the sidebar <article> cards ahead of it', () => {
+  const html = '<article><a href="https://playbill.com/article/other">x</a></article><main><div class="prose"><a href="https://www.chicagotribune.com/2026/10/22/review-x/">r</a></div></main>';
+  const body = d.playbillArticleBody(html);
+  assert.match(body, /chicagotribune/);
+  assert.doesNotMatch(body, /playbill\.com\/article\/other/);
+  assert.equal(d.playbillArticleBody('<article>no prose block</article>'), '<article>no prose block</article>', 'no prose block: the whole page, as before');
+});
+
+test('fetchTextFrom returns content, or {content, finalUrl} on request, and never forwards withFinalUrl to fetchPage', async () => {
+  const seen = [];
+  const ft = d.fetchTextFrom(async (url, opts) => { seen.push(opts); return { content: '<p>x</p>', finalUrl: 'https://www.vulture.com/article/x.html' }; });
+  assert.equal(await ft('https://news.google.com/rss/articles/a'), '<p>x</p>');
+  assert.deepEqual(await ft('https://news.google.com/rss/articles/a', { withFinalUrl: true, preferPlaywright: true }), { content: '<p>x</p>', finalUrl: 'https://www.vulture.com/article/x.html' });
+  assert.deepEqual(seen[1], { preferPlaywright: true });
+  await assert.rejects(d.fetchTextFrom(async () => ({ content: '' }))('https://a.example/'), /no content/);
+});
+
+test('adapters run concurrently but their finds are admitted in adapter order', async () => {
+  const mk = (name, delay, url) => ({ name, kind: 'outlet-index', phase: 'cheap',
+    discover: async () => { await new Promise((r) => setTimeout(r, delay)); return [{ url, title: 'Other Desert Cities review', source: 'outlet-index', publishDate: '2026-10-18T23:00:00Z', reviewSignalGiven: true, via: name }]; } });
+  const started = Date.now();
+  const r = await d.runDiscoveryPass({
+    show: SHOW, night: NIGHT, now: T0 + 3600000, startedAt: T0, fetchText: async () => { throw new Error('404'); },
+    adapters: [mk('slow', 60, 'https://www.nytimes.com/2026/10/18/theater/other-desert-cities-review.html'), mk('fast', 5, 'https://variety.com/2026/legit/reviews/other-desert-cities-review-1/')],
+    memo: { rejected: {} }, seen: new Set(), timeZone: 'America/New_York',
+  });
+  assert.ok(Date.now() - started < 110, 'the two adapters overlapped');
+  assert.deepEqual(r.admitted.map((x) => x.via), ['slow', 'fast']);
+});
+
+test('a /news/ review rejected when a feed saw it first is admitted once an aggregator cites it', async () => {
+  const url = 'https://www.theatermania.com/news/review-other-desert-cities-is-a-triumph_1857994/';
+  const mk = (cited) => ({ name: cited ? 'dtli' : 'google-news', kind: cited ? 'aggregator' : 'outlet-index', phase: 'cheap',
+    discover: async () => [cited
+      ? { url, title: 'TheaterMania', source: 'aggregator', aggregatorCited: true, publishDate: null, via: 'https://didtheylikeit.com/shows/odc/' }
+      : { url, title: 'Review: Other Desert Cities', source: 'outlet-index', publishDate: '2026-10-18T23:00:00Z', via: 'google-news' }] });
+  const memo = { rejected: {} }; const seen = new Set();
+  const pass = (adapters, now) => d.runDiscoveryPass({ show: SHOW, night: NIGHT, now, startedAt: T0, adapters, memo, seen,
+    fetchText: async () => { throw new Error('404'); }, timeZone: 'America/New_York' });
+  const p1 = await pass([mk(false)], T0 + 3600000);
+  assert.equal(p1.admitted.length, 0);
+  assert.equal(memo.rejected[d.canonicalUrl(url)].reason, 'non-review-path');
+  const p2 = await pass([mk(true)], T0 + 3720000);
+  assert.deepEqual(p2.admitted.map((x) => x.key), [d.canonicalUrl(url)]);
+});
+
+test('publisherUrlFromWrapperPage prefers the page canonical over a same-host landing, and refuses a login landing', () => {
+  const art = 'https://www.wsj.com/articles/other-desert-cities-review-ff88';
+  const page = `<html><head><link rel="canonical" href="${art}"></head></html>`;
+  assert.equal(d.publisherUrlFromWrapperPage(page, 'https://www.wsj.com', 'https://www.wsj.com/client/login?target=x'), art);
+  assert.equal(d.publisherUrlFromWrapperPage('<html>consent</html>', 'https://www.wsj.com', 'https://www.wsj.com/client/login?target=x'), null);
+  assert.equal(d.publisherUrlFromWrapperPage('<html>consent</html>', 'https://www.vulture.com', 'https://www.vulture.com/article/odc-review.html'), 'https://www.vulture.com/article/odc-review.html');
+});
+
+test('Talkin\' Broadway: an undated named page does not stop the probe from reaching the dated one', async () => {
+  const byline = '<p>The Play by Some Writer. Directed by Jane Director. Theatre Review by Ann Critic</p>' + '<p>filler text for length. </p>'.repeat(40);
+  const show = { id: 'odc', title: 'Other Desert Cities', openingDate: '2026-10-18' };
+  const tb = require('../../scripts/lib/tb-direct-url.js');
+  const [first, , third] = tb.buildTbCandidateUrls(show.title, '2026');
+  const map = {
+    [first]: `<html><head><title>Other Desert Cities</title></head><body>${byline}</body></html>`,
+    [third]: `<html><head><title>Other Desert Cities</title></head><body><p>October 18, 2026</p>${byline}</body></html>`,
+  };
+  const { fetchText } = pages(map);
+  const a = d.talkinBroadwayAdapter({ indexUrls: [], now: () => T0 });
+  const out = await a.discover({ show, fetchText });
+  assert.deepEqual(out.map((c) => c.url), [third]);
+  assert.ok(out[0].publishDate);
+});
+
+test('section index: every <article> card on an index page is read, not only the first', async () => {
+  const card = (slug, t) => `<article><a href="https://www.theguardian.com/stage/2026/oct/18/${slug}">${t}</a></article>`;
+  const html = `<html><body><nav><a href="https://www.theguardian.com/stage/2026/oct/18/nav-other-desert-cities">Other Desert Cities nav</a></nav><main>${card('hamlet-review', 'Hamlet review')}${card('other-desert-cities-review', 'Other Desert Cities review')}</main></body></html>`;
+  const { fetchText } = pages({ 'https://www.theguardian.com/stage': html });
+  const a = d.sectionIndexAdapter({ outlets: [{ outletId: 'guardian', indexUrl: 'https://www.theguardian.com/stage' }] });
+  const out = await a.discover({ show: SHOW, fetchText });
+  assert.deepEqual(out.map((c) => c.url), ['https://www.theguardian.com/stage/2026/oct/18/other-desert-cities-review']);
 });
