@@ -343,3 +343,14 @@ test('BRO-6012: a hand dispatch is followable by its run-name while Checks is st
   assert.equal(resolveLandRun({ ...running, display_title: 'Land' }, options), null, 'an untitled dispatch still waits for Checks logs');
   assert.equal(resolveLandRun({ ...running, display_title: 'Land main' }, options), null, 'only land/** titles count');
 });
+
+test('BRO-6012: a titled unfinished dispatch stays followable while its Checks log 404s; a finished one does not', () => {
+  const running = { ...DISPATCH, display_title: `Land ${DISPATCH_BRANCH}`, status: 'in_progress', conclusion: null };
+  const options = dispatchReader({ dispatch: running });
+  options.readText = () => { throw new Error('gh: Not Found (HTTP 404)'); };
+  const resolved = resolveLandRun(running, options);
+  assert.equal(resolved.identityPending, true);
+  assert.equal(resolved.head_branch, DISPATCH_BRANCH);
+  const done = { ...DISPATCH, display_title: `Land ${DISPATCH_BRANCH}` };
+  assert.equal(resolveLandRun(done, { ...options, runJobs: [] , read: (e) => (e.includes('/jobs?') ? { jobs: [] } : assert.fail(e)) }), null);
+});
