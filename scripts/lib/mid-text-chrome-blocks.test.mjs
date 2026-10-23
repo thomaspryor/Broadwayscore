@@ -62,7 +62,12 @@ test('Independent bookmark popover before the body is not garbage', () => {
   assert.equal(isGarbageContent(t).isGarbage, false);
   assert.ok(!/already a member/i.test(stripMidTextChromeBlocks(t)));
   const r = classifyContentTier({ fullText: t, url: 'https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/x.html' });
-  assert.notEqual(r.contentTier, 'invalid', r.tierReason);
+  assert.equal(r.contentTier, 'complete', r.tierReason);
+});
+
+test('negatives: Independent popover followed by a short teaser (<300 chars) is not stripped', () => {
+  const t = `Review ${INDEP} Edward Albee's play opens with a bang and then`;
+  assert.equal(stripMidTextChromeBlocks(t), t);
 });
 
 test('negatives: Independent popover as the whole text (paywall stub) stays garbage', () => {
