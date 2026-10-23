@@ -431,7 +431,11 @@ test('what-else: a linear-brain find / linear-next list inside a shell loop or g
   for (const c of ['for k in a b; do node scripts/linear-brain.js find "$k"; done', 'if true; then node scripts/linear-next.js --list; fi', '(node scripts/linear-brain.js find x)', 'node scripts/linear-brain.js find x']) {
     assert.deepEqual(run(sh(c)), [], c);
   }
-  for (const c of ['echo node scripts/linear-brain.js find x', 'node scripts/linear-brain.js get BRO-1']) {
+  for (const c of ['{ node scripts/linear-brain.js find x; }', 'if a; then :; else node scripts/linear-brain.js find x; fi']) assert.deepEqual(run(sh(c)), [], c);
+  const fake = ['echo node scripts/linear-brain.js find x', 'node scripts/linear-brain.js get BRO-1', 'echo "do node scripts/linear-brain.js find x"', "echo 'then node scripts/linear-next.js --list'",
+    'echo "(node scripts/linear-brain.js find x)"', 'echo {node scripts/linear-brain.js find x}', '# do node scripts/linear-brain.js find x', 'cat <<EOF\nnode scripts/linear-brain.js find x\nEOF',
+    'git commit -m "fix\nnode scripts/linear-brain.js find x"', 'echo do-linear-brain.js find x'];
+  for (const c of fake) {
     assert.match(run(sh(c)).join('|'), /never searched the Linear board/, c);
   }
 });

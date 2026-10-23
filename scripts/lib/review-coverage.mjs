@@ -226,7 +226,9 @@ function lensNumbers(text) {
 }
 // The board is Linear. The old GitHub roadmap (issue 1 of broadway-scorecard-data) is retired and no longer counts.
 // Command position: line start, after ; & | ( { or a newline, or after a shell keyword (a for/while/if body).
-const BOARD_CMD_POS = String.raw`(?:^|[;&|({\n]|\b(?:do|then|else))\s*`;
+// Run on shellCode() output, so quoted strings and heredoc bodies are already blanked; comments are dropped too.
+const BOARD_CMD_POS = String.raw`(?:^|[;&|(\n]|\{\s|\b(?:do|then|else)\s)\s*`;
+const boardShell = (cmd) => shellCode(cmd).replace(/(^|\s)#[^\n]*/g, '$1');
 const BOARD_READ_RE = new RegExp(`${BOARD_CMD_POS}(?:node\\s+)?\\S*linear-brain\\.js\\s+find\\b|${BOARD_CMD_POS}(?:node\\s+)?\\S*linear-next\\.js\\s+--list\\b`);
 // Cloud names the Linear connector's tools mcp__<uuid>__list_issues; GitHub's mcp__github__list_issues must not count.
 const BOARD_READ_TOOL_RE = /linear.*__list_issues$|^mcp__[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}__list_issues$/i;
@@ -257,7 +259,7 @@ export function evaluateChain(events, { lastMessage = '' } = {}) {
     if (found.size < 5) problems.push(`/what-else printed ${found.size} of 5 numbered lens lines directly under a LENSES: header, each citing a concrete check`);
     const readBoard = events.slice(we[we.length - 1].i + 1).some((e) => e.kind === 'assistant_tool_use' && (
       BOARD_READ_TOOL_RE.test(e.name || '') ||
-      (e.name === 'Bash' && BOARD_READ_RE.test(String(e.input?.command || '')))));
+      (e.name === 'Bash' && BOARD_READ_RE.test(boardShell(String(e.input?.command || ''))))));
     if (!readBoard) problems.push('/what-else never searched the Linear board (after /what-else started: linear-brain.js find, linear-next.js --list, or mcp__Linear__list_issues; the old GitHub roadmap issue and memory/roadmap.md are retired and stale)');
   }
 
