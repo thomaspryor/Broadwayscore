@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-23T17:04:27.894Z",
+  "timestamp": "2026-10-23T17:59:20.234Z",
   "stats": {
-    "totalReviews": 59519,
+    "totalReviews": 59521,
     "alreadyFlagged": 21113,
     "dateGuardCatches": 202,
     "directorMismatch": 2120,
     "tvFilmSignals": 1690,
-    "londonSignals": 2839,
+    "londonSignals": 2840,
     "offBroadwaySignals": 535,
     "yearMismatch": 176,
     "noPublishDate": 5337
@@ -69878,6 +69878,19 @@
     },
     {
       "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "file": "amyleighchandler--amy.json",
+      "publishDate": "2026-10-21",
+      "url": "https://amyleighchandler.co.uk/review-harry-potter-and-the-cursed-child-palace-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
       "file": "britishtheatrecom--british-theatre.json",
       "score": null,
       "publishDate": "2026-10-12",
@@ -91472,6 +91485,7 @@
     {
       "showId": "the-master-builder-off-west-end-2026",
       "file": "viewfromthegods--simon-jenner.json",
+      "score": 78,
       "publishDate": "2026-10-23",
       "url": "https://viewfromthegods.co.uk/2026/10/23/the-master-builder-arcola-hackney/?utm_source=rss&utm_medium=rss&utm_campaign=the-master-builder-arcola-hackney",
       "findings": [
