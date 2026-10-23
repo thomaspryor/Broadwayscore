@@ -632,7 +632,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         }
         if (args.comment !== undefined) {
           // BRO-6067: an "Opening-night audit" comment carries the press-night verdict when it is not PASS.
-          const note = require('./lib/press-night-audit-note').annotateAuditCard(issue.title, args.comment, require('path').join(__dirname, '..'));
+          const note = require('./lib/press-night-audit-note').annotateAuditCard(issue.title, args.comment, require('path').join(__dirname, '..'), { onlyIfCleanClaim: true });
           if (note.changed) {
             args.comment = note.text;
             console.error(`PRESS-NIGHT: ${note.notPassing.length} record(s) not PASS for this audit; the comment now says so.`);

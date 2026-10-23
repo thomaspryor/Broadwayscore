@@ -62,3 +62,10 @@ test('the real 2026-10-23 audit text is flagged for the committed Imaginary Inva
   assert.match(r.text, /the-imaginary-invalid-2026 2026-10-22: FAIL/);
   assert.doesNotMatch(r.text, /no fixes needed/i);
 });
+
+test('follow-up comments get the banner only when they call the night clean', () => {
+  const shows = [{ id: 'x', category: 'broadway', openingDate: '2026-10-22' }];
+  const opts = { dir: dirWith([]), shows, onlyIfCleanClaim: true };
+  assert.equal(note.annotateAuditText('Opening-night audit 2026-10-23', 'closing, done', opts).changed, false);
+  assert.equal(note.annotateAuditText('Opening-night audit 2026-10-23', 'No fixes required.', opts).changed, true);
+});

@@ -229,7 +229,7 @@ function firstOutletPublish(rec) {
   const exact = pool.filter((p) => p.publishPrecision === 'exact');
   const source = 'prod-rv-publishDate';
   if (exact.length) {
-    const best = exact.reduce((a, b) => (a.publishAt <= b.publishAt ? a : b));
+    const best = exact.reduce((a, b) => (toMs(a.publishAt) <= toMs(b.publishAt) ? a : b)); // mixed offsets: compare instants
     return { at: best.publishAt, precision: 'exact', source, tierScope };
   }
   if (pool.length) {
@@ -473,8 +473,12 @@ function evaluateCheck(rec, opts = {}) {
     // Publish window: an exact time pins it. Otherwise reviews are held to the embargo (lower bound) and the
     // lane shadow's first discovery is an upper bound (nothing is found before it is published).
     const discMs = rec.laneShadow ? toMs(rec.laneShadow.firstDiscoveredAt) : null;
-    const pubLow = exactPub != null ? exactPub : embMs;
-    const pubHigh = exactPub != null ? exactPub : (discMs != null && discMs >= embMs - 30 * MIN ? Math.max(discMs, embMs) : null);
+    // An exact time is one outlet's publish, not necessarily the first: the first publish is at most
+    // min(exact, first discovery) and, reviews being held, at least min(embargo, exact).
+    const discHigh = discMs != null && discMs >= embMs - 30 * MIN ? Math.max(discMs, embMs) : null;
+    const pubLow = exactPub != null ? Math.min(exactPub, embMs) : embMs;
+    const highs = [exactPub, discHigh].filter((x) => x != null);
+    const pubHigh = highs.length ? Math.min(...highs) : null;
     const delayHigh = Math.round((liveMs - pubLow) / MIN);
     const delayLow = pubHigh != null ? Math.max(0, Math.round((liveLowerMs - pubHigh) / MIN)) : null;
     const pubWhat = exactPub != null ? 'the first outlet publish' : (pubHigh != null ? 'the first outlet publish (embargo .. first lane discovery)' : 'the embargo');
@@ -485,7 +489,7 @@ function evaluateCheck(rec, opts = {}) {
     // A baseline first-live time is only an upper bound on when it went live: it can clear the bar, never fail it.
     if (delayHigh <= g.firstLiveWithinMin) status = 'pass';
     else if (fl.baseline) status = 'unknown';
-    else if (exactPub != null || (delayLow != null && delayLow > g.firstLiveWithinMin)) status = 'fail';
+    else if (delayLow != null && delayLow > g.firstLiveWithinMin) status = 'fail';
     else status = 'unknown';
     const why = status === 'unknown'
       ? (fl.baseline ? ' (already live at the first sample, so only a bound)' : `; publish time is ${pub.precision || 'unknown'} and no lane discovery bounds it, so the publish-to-live delay cannot be measured`)

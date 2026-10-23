@@ -284,9 +284,10 @@ async function main() {
       ref = { status: 'error', error: String(e.message || e).slice(0, 200), source: null, count: 0, covered: null, coverage: null, missing: [], fetchedAt };
     }
     rec.reference[label] = ref;
-    // The +2h census was missing (roundup not out or not fetchable then): judge +2h on the live timeline
-    // against this later census instead of leaving the gate UNKNOWN.
-    if (label === 'end' && census && census.count && !hasCoverage(rec.reference['2h'])) {
+    // The +2h census was missing (roundup not out or not fetchable then), or thinner than this one: judge +2h
+    // on the live timeline against this later, fuller census (a bigger denominator is the stricter answer).
+    const ref2 = rec.reference['2h'];
+    if (label === 'end' && census && census.count && (!hasCoverage(ref2) || census.count > (ref2.count || 0))) {
       if (rec.reference['2h'] && !rec.reference['2h-live']) rec.reference['2h-live'] = rec.reference['2h'];
       rec.reference['2h'] = { ...lib.coverageAt(rec, census, new Date(rec.embargoAt).getTime() + 2 * 3600000, { fetchedAt }), censusNote: note };
       console.log(`[press-night] reference 2h filled from the live timeline: ${rec.reference['2h'].status} coverage=${rec.reference['2h'].coverage}`);

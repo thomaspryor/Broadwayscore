@@ -85,8 +85,14 @@ test('evaluateCheck: approx publish time with a slow first review is UNKNOWN, an
   assert.equal(lib.evaluateCheck(slow).gates.find((g) => g.name === 'first-live').status, 'unknown');
   const exact = fresh();
   lib.applySample(exact, { at: at(-5), reviews: [] });
+  lib.applySample(exact, { at: at(99), reviews: [] });
   lib.applySample(exact, { at: at(104), reviews: [rv('NYT', 'A', { date: '2026-10-22T02:00:00Z' })] });
   assert.equal(lib.evaluateCheck(exact).gates.find((g) => g.name === 'first-live').status, 'fail');
+  // A 109-min sampling gap before the first sighting: it may have gone live early, so not a FAIL.
+  const gap = fresh();
+  lib.applySample(gap, { at: at(-5), reviews: [] });
+  lib.applySample(gap, { at: at(104), reviews: [rv('NYT', 'A', { date: '2026-10-22T02:00:00Z' })] });
+  assert.equal(lib.evaluateCheck(gap).gates.find((g) => g.name === 'first-live').status, 'unknown');
 });
 
 test('evaluateCheck: nothing live well past the bar FAILs; nothing live inside the bar is UNKNOWN', () => {
@@ -347,4 +353,23 @@ test('the committed Imaginary Invalid 2026-10-22 record answers first-live and c
   assert.match(gates['first-live'].detail, /\d+(-\d+)? min after/);
   assert.notEqual(gates['coverage-2h'].status, 'unknown', gates['coverage-2h'].detail);
   assert.match(gates['coverage-2h'].detail, /bww-roundup/);
+});
+
+test('first-live: a late exact publish time does not hide an earlier lane discovery', () => {
+  const rec = fresh();
+  lib.applySample(rec, { at: at(-5), reviews: [] });
+  lib.applySample(rec, { at: at(82), reviews: [] });
+  lib.applySample(rec, { at: at(87), reviews: [rv('NYT', 'A', { date: at(80) })] });
+  rec.firstOutletPublishAt = lib.firstOutletPublish(rec);
+  assert.equal(rec.firstOutletPublishAt.precision, 'exact');
+  rec.laneShadow = { liveFirstSeen: [], firstDiscoveredAt: at(4) };
+  assert.equal(lib.evaluateCheck(rec).gates.find((x) => x.name === 'first-live').status, 'fail');
+  rec.laneShadow = null; // without the discovery the first publish could be as late as +80: not provably slow
+  assert.equal(lib.evaluateCheck(rec).gates.find((x) => x.name === 'first-live').status, 'unknown');
+});
+
+test('firstOutletPublish compares instants, not strings, across offsets', () => {
+  const rec = fresh();
+  lib.applySample(rec, { at: at(30), reviews: [rv('NYT', 'A', { date: '2026-10-22T22:05:00-04:00' }), rv('Variety', 'B', { date: '2026-10-23T02:03:00Z' })] });
+  assert.equal(rec.firstOutletPublishAt.at, '2026-10-23T02:03:00Z');
 });

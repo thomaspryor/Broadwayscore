@@ -15,7 +15,7 @@ const path = require('path');
 const { evaluateCheck } = require('./press-night-record');
 
 const TITLE_RE = /^Opening-night audit (\d{4}-\d{2}-\d{2})\b/;
-const CLEAN_RE = /\b(no fixes needed|nothing to fix|no action needed)\b/gi;
+const CLEAN_RE = /\b(no fixes? (?:needed|required)|nothing to fix|no action needed)\b/gi;
 const MARKER = 'PRESS-NIGHT RECORD NOT PASSING';
 // Markets the probe covers (press-night-probe.yml via probeDue): a show of these opening that night
 // with no record is itself an UNKNOWN (the probe never ran).
@@ -71,10 +71,12 @@ function summaryBlock(notPassing) {
 /**
  * @returns {{text:string, notPassing:Array, changed:boolean}}
  */
-function annotateAuditText(title, text, { dir, shows = [] } = {}) {
+function annotateAuditText(title, text, { dir, shows = [], onlyIfCleanClaim = false } = {}) {
   const body = String(text || '');
   const date = auditDateFromTitle(title);
   if (!date || body.includes(MARKER)) return { text: body, notPassing: [], changed: false };
+  // Follow-up comments ("closing, done") get the banner only when they call the night clean.
+  if (onlyIfCleanClaim && !new RegExp(CLEAN_RE.source, 'i').test(body)) return { text: body, notPassing: [], changed: false };
   const results = pressNightResults({ nights: auditNights(date), dir, shows });
   const notPassing = results.filter((r) => r.verdict !== 'PASS');
   if (!notPassing.length) return { text: body, notPassing, changed: false };
@@ -83,12 +85,13 @@ function annotateAuditText(title, text, { dir, shows = [] } = {}) {
 }
 
 /** linear-brain.js entry: never throws (an advisory must not block filing). */
-function annotateAuditCard(title, text, root) {
+function annotateAuditCard(title, text, root, opts = {}) {
+  if (!auditDateFromTitle(title)) return { text: String(text || ''), notPassing: [], changed: false };
   try {
     const dir = path.join(root, 'data', 'audit', 'press-night');
     let shows = [];
     try { shows = JSON.parse(fs.readFileSync(path.join(root, 'data', 'shows.json'), 'utf8')).shows || []; } catch (_) { shows = []; }
-    return annotateAuditText(title, text, { dir, shows });
+    return annotateAuditText(title, text, { dir, shows, ...opts });
   } catch (e) {
     return { text: String(text || ''), notPassing: [], changed: false, error: e.message };
   }
