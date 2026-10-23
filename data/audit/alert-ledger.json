@@ -239,7 +239,7 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -252,7 +252,8 @@
       "cardId": null,
       "linearIdentifier": "BRO-6024",
       "notifyCountAtRelease": 142,
-      "sweptTracker": "BRO-5554"
+      "sweptTracker": "BRO-5554",
+      "resolvedAt": "2026-10-23T06:38:08.292Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -1019,7 +1020,7 @@
       "resolvedAt": "2026-10-13T16:45:36.193Z"
     },
     "test-yml:main-streak": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "Main test.yml red — no confirmed-green run in 6.0h",
@@ -1031,7 +1032,8 @@
       "notifyCount": 69,
       "cardId": null,
       "linearIdentifier": "BRO-5817",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-23T06:38:08.210Z"
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "resolved",
@@ -6771,7 +6773,7 @@
       },
       "absentRunIds": [],
       "silentRefires": 16,
-      "resolvedAt": "2026-10-23T06:30:36.343Z",
+      "resolvedAt": "2026-10-23T06:38:07.682Z",
       "resolveReason": "job-green"
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
@@ -24664,7 +24666,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:df8473ac": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"check-bundle-size.js: baseline holds no stale entries\"",
       "firstSeen": "2026-10-23T05:23:43.682Z",
@@ -24678,7 +24680,9 @@
       "absentRunIds": [
         "39906490041",
         "39910082921"
-      ]
+      ],
+      "resolvedAt": "2026-10-23T06:38:07.730Z",
+      "resolveReason": "job-green"
     },
     "review-gap:opening-window:slanted-floors-off-broadway-2026": {
       "status": "open",
@@ -24720,7 +24724,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:e522c853": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"Kenrex: both DD 2026 person-name wins routed off-Broadway (no Tony fallback)\"",
       "firstSeen": "2026-10-23T05:50:51.262Z",
@@ -24737,7 +24741,9 @@
         "runId": "39906490041",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39906490041"
       },
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-23T06:38:07.786Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-5783-lock-trim": {
       "status": "resolved",
