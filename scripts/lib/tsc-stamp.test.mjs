@@ -72,7 +72,7 @@ test('CLI: record then check skips; fails open outside CI and on a different tre
   r.commit({ 'src/a.ts': 'y\n' });
   assert.equal(run('check', env, [`--pushed-oid=${r.g('rev-parse', 'HEAD')}`, '--spec-count=1', '--remote-ref=refs/heads/main']).status, 1, 'new code tree -> run tsc');
   assert.equal(run('check', env, [`--pushed-oid=${c1}`, '--spec-count=1', '--remote-ref=refs/heads/main']).status, 1, 'pushed oid != HEAD -> run tsc');
-  fs.rmSync(r.d, { recursive: true, force: true });
+  fs.rmSync(r.d, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 });
 
 test('key covers nested data JSON that src/ imports, ignores other nested data JSON', () => {
@@ -98,7 +98,7 @@ test('CLI: a dirty tracked tree neither records nor skips', () => {
   fs.rmSync(stamp);
   assert.equal(run('record').status, 0);
   assert.equal(fs.existsSync(stamp), false, 'dirty tree must not be stamped');
-  fs.rmSync(r.d, { recursive: true, force: true });
+  fs.rmSync(r.d, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 });
 
 test('land.yml kill-switch expression yields the path unless disabled', () => {
