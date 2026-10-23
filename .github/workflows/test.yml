@@ -3415,6 +3415,8 @@ on:
       # (feedback_test_yml_push_path_allowlist). Its own commit (e6345f21adb,
       # 2026-09-25) landed touching only this file and triggered zero CI.
       - 'scripts/cyrus-webhook-drain.js'
+      # BRO-6083 coordinator check CLI (tests/unit/coordinator-registry-cli.test.mjs).
+      - 'scripts/coordinator-check.js'
   pull_request:
     branches: [main]
   schedule:

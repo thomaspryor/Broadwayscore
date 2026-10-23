@@ -204,6 +204,24 @@ async function runProbe(args) {
 
 const { armingWarning } = require('./lib/card-arming-warning.js');
 
+// BRO-6083: a card about an area with a coordinator card (opening night ->
+// BRO-5955) prints that card's latest coordinator note to stderr on create and
+// get, so the session reads it before starting. Skipped in CI and under
+// node --test (no live Linear read there); tests inject their own.
+async function defaultCoordinatorReminder(text, exclude) {
+  if (process.env.GITHUB_ACTIONS === 'true' || process.env.NODE_TEST_CONTEXT) return '';
+  return require('./coordinator-check.js').startReminder(text, { exclude });
+}
+
+async function printCoordinatorReminder(fn, text, exclude) {
+  try {
+    const reminder = await fn(text, exclude);
+    if (reminder) console.error(`\n${reminder}\n`);
+  } catch {
+    // Advisory only: never let it fail a create or a get.
+  }
+}
+
 async function main(argv = process.argv.slice(2), deps = {}) {
   // Injectable I/O seams — real Linear client by default, same convention
   // scripts/linear-next.js's main() uses (deps default to the live module,
@@ -217,6 +235,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     updateIssue: updateIssueFn = linearClient.updateIssue,
     createComment: createCommentFn = linearClient.createComment,
     createIssueRelation: createIssueRelationFn = linearClient.createIssueRelation,
+    coordinatorReminder: coordinatorReminderFn = defaultCoordinatorReminder,
   } = deps;
 
   if (hasHelpFlag(argv)) {
@@ -254,6 +273,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         state: { name: state.name || null, type: state.type || null },
         terminal: isTerminalStateType(state.type),
       }, null, 2));
+      await printCoordinatorReminder(coordinatorReminderFn, `${issue.title || ''}\n${issue.description || ''}`, issue.identifier);
     } catch (err) {
       console.error(`\n❌ ${err.message}\n`);
       process.exit(2);
@@ -792,6 +812,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     } catch (e) {
       console.error(`[linear-brain] acceptance-arming check failed (issue was still created): ${e.message}`);
     }
+    await printCoordinatorReminder(coordinatorReminderFn, `${title}\n${args.notes || ''}`, result.issue.identifier);
     await warnPriorAnswers(title, {
       fetchCards: deps.fetchAnsweredCards,
       timeoutMs: deps.ownerRecallTimeoutMs,

@@ -745,3 +745,29 @@ test('BRO-5657: toplevel push-path check blocks a new uncovered script, names th
   assert.ok(TOPLEVEL_PUSH_PATH_RE.test('scripts/lib/foo.test.mjs') && TOPLEVEL_PUSH_PATH_RE.test('scripts/lib/unit-test-collection.js'));
   assert.ok(TOPLEVEL_PUSH_PATH_RE.test('scripts/foo-probe.js') && !TOPLEVEL_PUSH_PATH_RE.test('scripts/lib/x.js'));
 });
+
+test('coordinator warning reaches the session as additionalContext on a non-blocking land push (BRO-6083)', () => {
+  const origin = tmp();
+  sh(origin, 'git init -q --bare -b main . && git config gc.auto 0 && git config receive.autogc false');
+  const d = baseRepo();
+  sh(d, `git remote add origin "${origin}" && git push -q origin main`);
+  // Stand-in for scripts/coordinator-check.js: the hook runs the pushed repo's own copy.
+  write(d, 'scripts/coordinator-check.js', 'console.log(JSON.stringify({ status: "warn", message: "COORDINATOR CHECK (advisory): coordinated on BRO-5955" }));\n');
+  sh(d, 'git checkout -qb feat && git add -A && git commit -qm coord && git fetch -q origin');
+  const r = hook('git push origin HEAD:refs/heads/land/feat', d);
+  assert.equal(r.status, 0, r.stderr);
+  const ctx = JSON.parse(r.stdout.trim()).hookSpecificOutput;
+  assert.equal(ctx.hookEventName, 'PreToolUse');
+  assert.match(ctx.additionalContext, /land preflight warning: COORDINATOR CHECK \(advisory\): coordinated on BRO-5955/);
+});
+
+test('coordinatorWarnings: seam result is used, a crashing check is silent', async () => {
+  const { runHook, coordinatorWarnings } = await import('../../scripts/lib/land-preflight.mjs');
+  assert.deepEqual(coordinatorWarnings({ root: '/nonexistent', src: 'HEAD', target: 'land/x' }), []);
+  assert.deepEqual(coordinatorWarnings({ root: '/x', src: 'HEAD', target: 'land/x', seams: { coordinator: () => { throw new Error('boom'); } } }), []);
+  const { wt } = landFixture();
+  sh(wt, 'git reset -q --hard origin/main && echo z >> g.txt && git commit -qam ok');
+  const v = runHook({ command: 'git push origin HEAD:refs/heads/land/feat', cwd: wt, env: ENV, seams: { coordinator: () => ['COORDINATOR CHECK: BRO-5955'] } });
+  assert.notEqual(v.decision, 'block');
+  assert.ok(v.warnings.includes('COORDINATOR CHECK: BRO-5955'), JSON.stringify(v.warnings));
+});

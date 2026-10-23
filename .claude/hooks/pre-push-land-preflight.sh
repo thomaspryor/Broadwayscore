@@ -34,10 +34,12 @@ if command -v timeout >/dev/null 2>&1; then TO=(timeout 90)
 elif command -v gtimeout >/dev/null 2>&1; then TO=(gtimeout 90)
 else TO=()
 fi
-err=$(printf '%s' "$input" | "${TO[@]}" node "$LIB" --hook 2>&1 >/dev/null)
+# stderr passes straight through (the block message on exit 2); stdout carries
+# warnings as PreToolUse additionalContext on exit 0 (BRO-6083), the only
+# channel the session sees on a non-blocking hook. Builtins only: the macOS
+# test runs this with a PATH of node, git, bash, cat and dirname.
+out=$(printf '%s' "$input" | "${TO[@]}" node "$LIB" --hook)
 rc=$?
-if [ "$rc" -eq 2 ]; then
-  printf '%s\n' "$err" >&2
-  exit 2
-fi
+[ "$rc" -eq 2 ] && exit 2
+[ -n "$out" ] && printf '%s\n' "$out"
 exit 0
