@@ -641,5 +641,33 @@
       }
     ],
     "queuedAt": "2026-10-23T15:03:52.862Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:derren-brown-only-human-west-end-2026:timeout-london",
+    "title": "Auto-remediation gave up on derren-brown-only-human-west-end-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"derren-brown-only-human-west-end-2026\",\"outlet\":\"timeout-london\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-23T15:10:47.797Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-the-pianist-off-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on The Pianist",
+    "description": "theatre-south-east/Helena Featherstone (theatre-south-east--helena-featherstone.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] This is a legitimate review (evaluates performance, c — https://theatresoutheast.com/the-pianist-park-theatre-review/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-23T15:10:47.811Z"
   }
 ]
