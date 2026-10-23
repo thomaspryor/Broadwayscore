@@ -161,7 +161,7 @@ Every workflow that pushes to a private repo. Each must carry a concurrency grou
 | `auto-fix-feedback-bug.yml` | other | broadway-scorecard-data | `auto-fix-feedback-bug-${{ github.event.issue.number || inputs.issue_number }}` (false) |
 | `backfill-aggregators.yml` | scraping | broadway-scorecard-data, broadway-review-texts | `backfill-aggregators-${{ github.run_id }}` (false) |
 | `backfill-cast-web.yml` | scraping | broadway-scorecard-data | `backfill-cast-web` (false) |
-| `backfill-cast.yml` | scraping | broadway-scorecard-data | `backfill-cast` (false) |
+| `backfill-cast.yml` | scraping | broadway-scorecard-data | `backfill-cast` (false, job-level) |
 | `backfill-grosses.yml` | scraping | broadway-scorecard-data | `data-grosses-writers` (false) |
 | `backfill-historical-metadata.yml` | scraping | broadway-scorecard-data | `shows-json-writer` (false) |
 | `backfill-meta-evidence.yml` | scraping | broadway-review-texts | `backfill-meta-evidence` (false) |
