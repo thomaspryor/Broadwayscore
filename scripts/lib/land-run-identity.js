@@ -23,7 +23,13 @@ function resolveLandRun(run, { repo, read, readText, cache = new Map() }) {
   const checks = jobs.find((job) => job.name === 'Checks');
   // Individual job logs become readable once Checks completes, even while
   // Land is still queued, running or parked. Retry later if not available yet.
-  if (!checks || !checks.conclusion) return null;
+  if (!checks || !checks.conclusion) {
+    // BRO-6012: land.yml's run-name carries the branch for a hand dispatch, so
+    // the run is followable before Checks has logs. The verified tip is not
+    // known yet (head_sha null), so nothing may retry or compare it.
+    const named = /^Land (land\/[\w./-]+)$/.exec(run.display_title || '');
+    return named ? { ...run, head_branch: named[1], head_sha: null, identityPending: true } : null;
+  }
   const logKey = `checks:${checks.id}`;
   let identity = cache.get(logKey);
   if (!identity) {

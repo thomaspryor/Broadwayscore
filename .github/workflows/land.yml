@@ -70,6 +70,10 @@ name: Land
 # re-decided against a fresh base run before it is final. Rollback: repo
 # variable LAND_STRICT_GATES=1 restores strict parity without a code change.
 
+# BRO-6012: a hand dispatch lists under main, so its title carries the branch
+# for scripts/lib/land-run-identity.js; push runs keep the commit message title.
+run-name: ${{ github.event_name == 'workflow_dispatch' && format('Land {0}', github.event.inputs.branch) || github.event.head_commit.message || github.ref_name }}
+
 on:
   push:
     branches: ['land/**']
