@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6054",
   "planId": "b941ba14-903f-42eb-8241-7d7c77ba0e25",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-23T09:39:30.027Z",
   "submitter": {
     "name": null,
@@ -239,5 +239,134 @@
         "description": "red-2010/theatermania--charles-isherwood.json: wrongAttribution"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-23T10:49:17.233Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-view-from-the-bridge-2015/theatermania--jesse-green.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "and-juliet-2022/theatermania--jesse-green.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "betrayal-2013/nytimes--matt-wolf.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "between-riverside-and-crazy-2022/theatermania--jesse-green.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "burn-the-floor-2009/theatermania--david-rooney.json criticName: \"David Rooney\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "children-of-a-lesser-god-2018/amny--mark-shenton.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "diana-the-musical-2021/theatermania--adam-feldman.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2012/amny--ben-brantley.json criticName: \"Ben Brantley\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "glengarry-glen-ross-2012/theatermania--david-rooney.json wrongAttribution applied, but the write guard also changed duplicateOf, duplicateReason; check the record before trusting it"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hangmen-2022/nysr--elysa-gardner.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "jagged-little-pill-2019/vulture--jesse-green.json wrongAttribution applied, but the write guard also changed duplicateClearReason, duplicateOf, duplicateReason; check the record before trusting it"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kimberly-akimbo-2022/theatermania--adam-feldman.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kramerfauci-st-anns-off-broadway-2026/newyorker--helen-shaw.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lombardi-2010/theatermania--charles-isherwood.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "losing-louie-2006/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "macbeth-2022/theatres-leiter-side--samuel-l-leiter.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "maybe-happy-ending-2024/variety--charles-isherwood.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mr-saturday-night-2022/theatermania--adam-feldman.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "next-to-normal-2009/hollywood-reporter--david-rooney.json criticName: \"David Rooney\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ohio-state-murders-2022/theatermania--jesse-green.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "on-the-town-2014/guardian--jesse-green.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paradise-square-2022/variety--charles-isherwood.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "plaza-suite-2022/theatermania--jesse-green.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "present-laughter-2017/theatermania--jesse-green.json criticName: \"Jesse Green\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "red-2010/theatermania--charles-isherwood.json wrongAttribution: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
