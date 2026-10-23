@@ -37,6 +37,7 @@
  *   - playwright (optional but recommended for full Show Score extraction)
  */
 
+const { isOffBroadwayUrlForBroadwayShow } = require('./lib/review-url-market-guard');
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const { withTimeout } = require('./lib/with-timeout');
@@ -3793,10 +3794,16 @@ function createReviewFile(showId, reviewData, options = {}) {
           if (replacementCollision) {
             console.log(`    ⊘ url-collision guard: not replacing ${existingFile} with ${reviewData.url} — already owned by ${replacementCollision.filename}`);
           }
+          // BRO-6055: never swap in an /off-broadway/ URL on a Broadway show (no priorRuns).
+          const replacementWrongMarket = isOffBroadwayUrlForBroadwayShow(reviewData.url, _showMeta);
+          if (replacementWrongMarket) {
+            console.log(`    ⊘ market guard: not replacing ${existingFile} with off-broadway URL ${reviewData.url}`);
+          }
           if ((existingReview.wrongShow || existingReview.wrongProduction) && reviewData.url
               && (!existingReview.url || normalizeUrl(reviewData.url) !== normalizeUrl(existingReview.url))
               && !isHumanFlagged
               && !replacementCollision
+              && !replacementWrongMarket
               && !existingIsDateBasedWrongProd) {
             // A file with llmScore + fullText is real content — the wrongProduction flag may be
             // an LLM false-positive (44% FP rate on opening night; Proof 2026-04-17 P0 incident).
