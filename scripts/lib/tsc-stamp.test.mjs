@@ -83,3 +83,28 @@ test('key covers nested data JSON that src/ imports, ignores other nested data J
   const gd = r.commit({ 'data/analysis/gd.json': '{"a":1}' });
   assert.notEqual(r.key(gd), r.key(audit), 'a src-imported nested data json must change the key');
 });
+
+test('CLI: a dirty tracked tree neither records nor skips', () => {
+  const r = mkRepo({});
+  r.commit({ 'src/a.ts': 'x\n' });
+  const stamp = path.join(r.d, 'stamp');
+  const env = { ...process.env, GITHUB_ACTIONS: 'true', LAND_TSC_STAMP_FILE: stamp };
+  const args = [`--pushed-oid=${r.g('rev-parse', 'HEAD')}`, '--spec-count=1', '--remote-ref=refs/heads/main'];
+  const run = (cmd) => spawnSync('node', [SCRIPT, cmd, ...args], { cwd: r.d, env, encoding: 'utf8' });
+  assert.equal(run('record').status, 0);
+  assert.equal(run('check').status, 0, 'clean tree after record -> skip');
+  fs.writeFileSync(path.join(r.d, 'src/a.ts'), 'dirty\n');
+  assert.equal(run('check').status, 1, 'dirty tree -> run tsc');
+  fs.rmSync(stamp);
+  assert.equal(run('record').status, 0);
+  assert.equal(fs.existsSync(stamp), false, 'dirty tree must not be stamped');
+  fs.rmSync(r.d, { recursive: true, force: true });
+});
+
+test('land.yml kill-switch expression yields the path unless disabled', () => {
+  const y = fs.readFileSync(path.resolve(import.meta.dirname, '../../.github/workflows/land.yml'), 'utf8');
+  const m = /LAND_TSC_STAMP_FILE: \$\{\{ (.+?) \}\}/.exec(y);
+  assert.ok(m, 'LAND_TSC_STAMP_FILE env present');
+  // `cond && VALUE || ''`: VALUE must be the truthy (non-empty) branch, so '' is only reachable when disabled.
+  assert.match(m[1], /^vars\.LAND_TSC_STAMP_DISABLED != '1' && format\([^)]*\) \|\| ''$/);
+});

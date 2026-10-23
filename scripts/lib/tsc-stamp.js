@@ -23,6 +23,11 @@
 //   - Only when exactly one non-delete spec is pushed, to refs/heads/main, and
 //     its oid IS HEAD (tsc type-checks the working tree, so HEAD must be it).
 //   - The stamp is written only after tsc exits 0; compared as full 64-hex.
+//   - check/record both refuse on a dirty tracked tree: tsc then saw HEAD plus
+//     residue (a prebuild regenerates tracked files), not HEAD's own tree.
+//   - ASSUMED constant within one job, so not in the key: gitignored core data
+//     (data/reviews.json, shows.json, ...), node_modules, .next/types. The
+//     stamp file lives in $RUNNER_TEMP, so it never outlives its job.
 
 const fs = require('fs');
 const crypto = require('crypto');
@@ -83,6 +88,8 @@ function main(argv) {
   try {
     const head = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
     const file = env.LAND_TSC_STAMP_FILE || '';
+    const dirty = execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8' }).trim();
+    if (dirty) { console.error('tsc-stamp: run tsc (dirty tracked tree)'); return cmd === 'check' ? 1 : 0; }
     if (cmd === 'check') {
       const pre = decide({ env, headOid: head, pushedOid: a['pushed-oid'], specCount: Number(a['spec-count']), remoteRef: a['remote-ref'], key: 'a'.repeat(64), stampLines: ['a'.repeat(64)] });
       if (!pre.skip) { console.error(`tsc-stamp: run tsc (${pre.reason})`); return 1; }
