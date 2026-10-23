@@ -6,7 +6,7 @@
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { splitCastIndex, CAST_DEFAULT_MIN_SCORED, type CastIndexProfile } from '../../src/lib/cast-index';
+import { splitCastIndex, CAST_DEFAULT_MIN_SCORED, type CastIndexProfile } from '../../src/lib/cast-index-split';
 
 function profile(slug: string, scoredShowCount: number, showCount = scoredShowCount): CastIndexProfile {
   return { name: slug, slug, showCount, scoredShowCount, avgScore: null, openShowCount: 0, roles: [], obcCount: 0, headshot: null };
