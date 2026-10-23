@@ -23,8 +23,10 @@ const DEFAULT_DIR = path.join(ROOT, 'data', 'review-texts');
 const SYNDICATED_REASONS = new Set(['knownSyndicationSecondary', 'syndicatedDuplicate', 'crossOutletDuplicate']);
 
 function outletIdOfFile(d) {
+  const raw = String(d.outletId || d.outlet || '').trim();
+  if (!raw) return null; // normalizeOutlet('') returns 'unknown', which would read as a real outlet
   const { normalizeOutlet } = require('./review-normalization');
-  return normalizeOutlet(String(d.outletId || d.outlet || '')) || String(d.outletId || d.outlet || '').toLowerCase() || null;
+  return normalizeOutlet(raw) || raw.toLowerCase();
 }
 
 /**
@@ -79,7 +81,7 @@ function censusExclusions(census, files) {
   }
   const out = [];
   for (const e of census.entries) {
-    const fs_ = byOutlet.get(e.outletId) || byOutlet.get(e.outletId.replace(/-london$/, '')) || [];
+    const fs_ = byOutlet.get(e.outletId) || byOutlet.get(e.outletId.replace(/-london$/, '')) || byOutlet.get(`${e.outletId}-london`) || [];
     if (!fs_.length || fs_.some((f) => f.includable)) continue;
     const synd = fs_.find((f) => f.syndicatedUnder || SYNDICATED_REASONS.has(f.reason));
     const reason = synd

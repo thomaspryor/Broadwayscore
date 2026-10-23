@@ -123,6 +123,24 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      # BRO-6070: this show's review-text files, read-only, so the record can snapshot which reviews are
+      # includable and when each was first seen (same-night-completeness, census exclusions). Capped at 5 min
+      # so a hung clone cannot eat the checkpoint's time budget; a failed or partial clone is deleted, and
+      # press-night-record.js then keeps any earlier snapshot and grades the gate unknown.
+      - name: Checkout review-texts (this show, same-night gate)
+        id: rt_early
+        if: always() && steps.guard.outputs.finalized == 'false'
+        continue-on-error: true
+        timeout-minutes: 5
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          sparse-paths: ${{ env.SHOW_ID }}
+
+      - name: Drop partial review-texts checkout
+        if: always() && steps.guard.outputs.finalized == 'false' && steps.rt_early.outcome != 'success'
+        run: rm -rf data/review-texts
+
       - name: Stamp census coverage at +2h
         if: always() && steps.guard.outputs.finalized == 'false'
         env:
@@ -215,6 +233,24 @@ jobs:
         uses: ./.github/actions/checkout-aggregator-archive
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # BRO-6070: this show's review-text files, read-only, so the record can snapshot which reviews are
+      # includable and when each was first seen (same-night-completeness, census exclusions). Capped at 5 min
+      # so a hung clone cannot eat the checkpoint's time budget; a failed or partial clone is deleted, and
+      # press-night-record.js then keeps any earlier snapshot and grades the gate unknown.
+      - name: Checkout review-texts (this show, same-night gate)
+        id: rt_late
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 5
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          sparse-paths: ${{ env.SHOW_ID }}
+
+      - name: Drop partial review-texts checkout
+        if: always() && steps.rt_late.outcome != 'success'
+        run: rm -rf data/review-texts
 
       - name: Import lane-shadow artifact (site-live times, first discovery)
         # Optional (BRO-6067): the shadow run (opening-night-lane-live.yml mode=shadow) is dispatched by hand and

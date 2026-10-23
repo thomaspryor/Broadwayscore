@@ -305,7 +305,9 @@ async function main() {
     // The +2h census was missing (roundup not out or not fetchable then), or thinner than this one: judge +2h
     // on the live timeline against this later, fuller census (a bigger denominator is the stricter answer).
     const ref2 = rec.reference['2h'];
-    if (label === 'end' && census && census.count && (!hasCoverage(ref2) || census.count > (ref2.count || 0))) {
+    const keptCount = census ? lib.filterCensus(census, excluded).count : 0;
+    const exKey = (x) => JSON.stringify((x || []).map((e) => e.outletId).sort());
+    if (label === 'end' && census && census.count && (!hasCoverage(ref2) || keptCount > (ref2.count || 0) || exKey(ref2 && ref2.excluded) !== exKey(excluded))) {
       if (rec.reference['2h'] && !rec.reference['2h-live']) rec.reference['2h-live'] = rec.reference['2h'];
       rec.reference['2h'] = { ...lib.coverageAt(rec, census, new Date(rec.embargoAt).getTime() + 2 * 3600000, { fetchedAt, excluded }), censusNote: note };
       console.log(`[press-night] reference 2h filled from the live timeline: ${rec.reference['2h'].status} coverage=${rec.reference['2h'].coverage}`);

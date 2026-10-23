@@ -520,3 +520,39 @@ test('the committed 2026-10-22 record: exclusions applied, same-night gate names
   assert.match(g.detail, /talkinbroadway/);
   assert.match(g.detail, /vulture/);
 });
+
+test('same-night-completeness matches by critic: one live review does not vouch for a second critic at the same outlet', () => {
+  const r = nightRec({ 'New York Stage Review': 10 }, [file('nysr', 5, { critic: 'New York Stage Review' }), file('nysr', 6, { critic: 'Someone Else' })]);
+  r.perReview[0].critic = 'New York Stage Review';
+  const g = sn(r);
+  assert.equal(g.status, 'fail', g.detail);
+  assert.match(g.detail, /nysr/);
+});
+
+test('same-night-completeness ignores preview-period (non-night) live rows as proof', () => {
+  const r = nightRec({ singleticket: 10 }, [file('singleticket', 5)]);
+  r.perReview[0].baseline = true;
+  r.perReview[0].publishAt = '2026-10-05';
+  assert.equal(sn(r).status, 'fail');
+});
+
+test('same-night-completeness is unknown when the snapshot predates embargo +3h +30 min, but a named miss still fails', () => {
+  const r = nightRec({ 'The New York Times': 10 }, [file('nytimes', 5)]);
+  r.fileState.capturedAt = at(130);
+  assert.equal(sn(r).status, 'unknown');
+  assert.match(sn(r).detail, /snapshot was taken/);
+  r.reference['2h'].missing = ['deadline'];
+  assert.equal(sn(r).status, 'fail');
+});
+
+test('same-night-completeness: a file first seen just before +2h gets the late-branch latency, not a hard +2h line', () => {
+  const ok = nightRec({ Vulture: 125 }, [file('vulture', 119)]);
+  assert.equal(sn(ok).status, 'pass', sn(ok).detail);
+  const late = nightRec({ Vulture: 160 }, [file('vulture', 119)]);
+  assert.equal(sn(late).status, 'fail');
+});
+
+test('readReviewFileState: a file with no outlet gets no outlet id rather than "unknown"', () => {
+  const state = require('./press-night-review-state.js');
+  assert.equal(state.outletIdOfFile({}), null);
+});
