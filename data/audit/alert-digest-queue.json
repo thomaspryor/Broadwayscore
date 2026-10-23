@@ -937,5 +937,36 @@
       }
     ],
     "queuedAt": "2026-10-23T22:09:58.713Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6086-codex-refresh-fit",
+    "title": "Landing blocked: rebase red on land/bro-6086-codex-refresh-fit",
+    "description": "land.yml did not land land/bro-6086-codex-refresh-fit: the rebase gate went red at 6c067c4d70. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6086-codex-refresh-fit @ 6c067c4d70 (origin/land/bro-6086-codex-refresh-fit) → origin/main @ a46f41a2e9 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ a46f41a2e9: Rebasing (1/1) error: could not apply 6c067c4d70c... feat(codex): cloud lane refreshes the stored login at 6 days; card-fit exclusions; fix audit stdout truncation flake (BRO-6086) hint: Resolve all c Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40031487438",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6086-codex-refresh-fit"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "6c067c4d70c01f16205216adac7ecaac963c2a2f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40031487438"
+      }
+    ],
+    "queuedAt": "2026-10-23T22:26:22.790Z"
   }
 ]
