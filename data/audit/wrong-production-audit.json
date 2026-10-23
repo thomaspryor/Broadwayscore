@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-23T03:35:00.297Z",
+  "timestamp": "2026-10-23T03:53:21.341Z",
   "stats": {
     "totalReviews": 59666,
-    "alreadyFlagged": 21449,
+    "alreadyFlagged": 21450,
     "dateGuardCatches": 200,
     "directorMismatch": 2160,
     "tvFilmSignals": 1682,
     "londonSignals": 2814,
     "offBroadwaySignals": 530,
-    "yearMismatch": 170,
-    "noPublishDate": 5293
+    "yearMismatch": 174,
+    "noPublishDate": 5292
   },
   "findings": [
     {
@@ -10610,6 +10610,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2023 (2x) more than 2025 (0x). 2023 matches production: dear-england-west-end-2023"
         }
       ]
     },
@@ -10652,6 +10657,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2023 (2x) more than 2025 (0x). 2023 matches production: dear-england-west-end-2023"
         }
       ]
     },
@@ -39909,6 +39919,25 @@
     },
     {
       "showId": "sunset-boulevard-2017",
+      "file": "ew--leah-greenblatt.json",
+      "score": 86,
+      "publishDate": "2017-02-09",
+      "url": "http://ew.com/theater/2017/02/09/sunset-boulevard-ew-stage-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2023 (2x) more than 2017 (1x). 2023 matches production: sunset-boulevard-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-2017",
       "file": "observer--rex-reed.json",
       "score": 81,
       "publishDate": "February 10, 2017",
@@ -45296,6 +45325,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"christopher renshaw\" from the-king-and-i-1996"
+        }
+      ]
+    },
+    {
+      "showId": "the-king-and-i-west-end-2024",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 62,
+      "publishDate": "January 31st, 2024",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-king-and-i-dominion-theatre-review/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2018 (2x) more than 2024 (1x). 2018 matches production: the-king-and-i-west-end-2018"
         }
       ]
     },
@@ -85763,20 +85806,6 @@
       ]
     },
     {
-      "showId": "sunset-boulevard-2017",
-      "file": "ew--leah-greenblatt.json",
-      "score": 86,
-      "publishDate": "2017-02-09",
-      "url": "http://ew.com/theater/2017/02/09/sunset-boulevard-ew-stage-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "sunset-boulevard-2024",
       "file": "amny--matt-windman.json",
       "score": 74,
@@ -88800,7 +88829,7 @@
     {
       "showId": "the-dresser-west-end-2016",
       "file": "london-theatre--unknown.json",
-      "score": null,
+      "score": 81,
       "publishDate": "2016-10-14",
       "url": "https://www.londontheatre.co.uk/reviews/review-of-the-dresser-starring-reece-shearsmith-and-ken-stott-at-the-duke-of-yorks-theatre",
       "findings": [
@@ -88814,7 +88843,7 @@
     {
       "showId": "the-dresser-west-end-2016",
       "file": "nytimes--matt-wolf.json",
-      "score": null,
+      "score": 44,
       "publishDate": "2016-11-04",
       "url": "https://www.nytimes.com/2016/11/05/theater/review-a-revival-of-the-dresser-in-london.html",
       "findings": [
@@ -94983,7 +95012,7 @@
     {
       "showId": "therese-raquin-2015",
       "file": "huffpost--david-finkle.json",
-      "score": 57,
+      "score": 45,
       "publishDate": "2015-10-29T20:36:35+00:00",
       "url": "http://www.huffingtonpost.com/david-finkle/first-nighter-keira-knigh_b_8428464.html",
       "findings": [
@@ -94997,7 +95026,7 @@
     {
       "showId": "therese-raquin-2015",
       "file": "huffpost--michael-glitz.json",
-      "score": 24,
+      "score": 15,
       "publishDate": "November 9th, 2015",
       "url": "https://www.huffpost.com/michael-giltz/theater-hir-here-troubled_b_8507962.html",
       "findings": [

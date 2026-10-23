@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-23T03:29:00.538Z",
+  "generated": "2026-10-23T03:47:18.163Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 36,
+  "count": 35,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -246,13 +246,6 @@
       "loserFile": "providence-journal--unknown.json",
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "woyzeck-west-end-2017",
-      "loserFile": "express-uk--unknown.json",
-      "targetFile": "express-uk--michael-arditti.json",
-      "reason": "orphaned-duplicate-heal: express-uk--michael-arditti.json was flagged invalid after express-uk--unknown.json was pointed at it",
       "field": "duplicateOf"
     }
   ]
