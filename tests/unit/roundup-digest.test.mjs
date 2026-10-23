@@ -55,6 +55,76 @@ describe('detectRoundupDigest', () => {
 // Fictional review prose below (no copyrighted excerpts) — only real,
 // registered outlet names are used so isRegisteredOutlet() resolves them.
 describe('detectPullQuoteCompilation (task #1888)', () => {
+  // BRO-5994: flattened outlet-first attribution headings from compilation
+  // pages, including non-hub URLs. Keep the page structure, with invented
+  // excerpt prose so no private review text enters this fixture.
+  const excerpt = '"The ensemble gives the production a strong dramatic center, and the staging supports the performances throughout."';
+  const outletFirstBlocks = [
+    `New York Times Helen Shaw: ${excerpt}`,
+    `Vulture Jackson McHenry: ${excerpt}`,
+    `Variety Frank Rizzo: ${excerpt}`,
+  ];
+  const compilation = (blocks, extra = {}) => ({
+    url: 'https://newyorktheater.me/2026/10/01/opening-night-reactions/',
+    outletId: 'nyt-theater', criticName: 'Jonathan Mandell',
+    fullText: blocks.join('\n\n'), ...extra,
+  });
+
+  test('BRO-5994: flags comma-less outlet-first headings on a non-hub page, including flattened text', () => {
+    for (const separator of ['\n\n', ' ']) {
+      assert.equal(detectPullQuoteCompilation(compilation(outletFirstBlocks, {
+        fullText: outletFirstBlocks.join(separator),
+      }))?.isRoundup, true);
+    }
+  });
+
+  test('BRO-5994: handles outlet-first commas and multiword critic names', () => {
+    const blocks = [
+      `The New York Times, Ben Brantley: ${excerpt}`,
+      `Time Out New York Adam Feldman: ${excerpt}`,
+      `Talkin' Broadway Brian Scott Lipton: ${excerpt}`,
+    ];
+    assert.equal(detectPullQuoteCompilation(compilation(blocks))?.isRoundup, true);
+    assert.equal(detectPullQuoteCompilation(compilation(blocks, { criticName: 'Brian Lipton' })), null);
+  });
+
+  test('BRO-5994: flags the mixed heading shape on New York Theater\'s Othello page', () => {
+    // Real attribution layout, with fictional excerpts replacing private text.
+    assert.equal(detectPullQuoteCompilation(compilation([
+      `New York Times, Jesse Green: ${excerpt}`,
+      `Time Out New York Adam Feldman: ${excerpt}`,
+      `Vulture, Sara Holdren: ${excerpt}`,
+    ], { url: 'https://newyorktheater.me/2025/03/23/othello-broadway-reviews-denzel-and-jake-take-on-the-bard/' }))?.isRoundup, true);
+  });
+
+  test('BRO-5994: preserves distinct-outlet, excerpt-length and own-byline safeguards', () => {
+    assert.equal(detectPullQuoteCompilation(compilation(outletFirstBlocks.slice(0, 1))), null);
+    assert.equal(detectPullQuoteCompilation(compilation(outletFirstBlocks.slice(0, 2))), null);
+    assert.equal(detectPullQuoteCompilation(compilation(outletFirstBlocks, { criticName: 'Helen Shaw' })), null);
+    assert.equal(detectPullQuoteCompilation(compilation(outletFirstBlocks, { outletId: 'nytimes' })), null);
+    assert.equal(detectPullQuoteCompilation(compilation(Array(3).fill(outletFirstBlocks[0]))), null);
+    assert.equal(detectPullQuoteCompilation(compilation(outletFirstBlocks.map(block => block.replace(excerpt, '"Excellent!"')))), null);
+    assert.equal(detectPullQuoteCompilation(compilation([
+      `Unknown Outlet Alex Writer: ${excerpt}`,
+      `Another Publication Sam Critic: ${excerpt}`,
+      `Imaginary Gazette Chris Reviewer: ${excerpt}`,
+    ])), null);
+    assert.equal(detectPullQuoteCompilation(compilation(outletFirstBlocks.slice(0, 2), {
+      fullText: "Here's what critics are saying: " + outletFirstBlocks.slice(0, 2).join(' '),
+    }))?.isRoundup, true);
+  });
+
+  test('BRO-5994: keeps critic-first attributions when the critic also has a registered outlet', () => {
+    const result = detectPullQuoteCompilation(compilation([
+      `Tim Teeman, Daily Beast: ${excerpt}`,
+      `Frank Rizzo, Variety: ${excerpt}`,
+      `Adam Feldman, Time Out New York: ${excerpt}`,
+    ]));
+    assert.equal(result?.isRoundup, true);
+    assert.match(result.reason, /dailybeast/);
+    assert.doesNotMatch(result.reason, /timteeman/);
+  });
+
   test('flags a "critical consensus" page bylined to a critic who never gives their own verdict (the newyorktheater.me shape)', () => {
     const fullText = 'A new production opened tonight at the August Wilson Theatre. That is the critical consensus, as indicated below: '
       + 'Helen Shaw, New York Times. A confident, unsettling piece of theater that earns its scares. '

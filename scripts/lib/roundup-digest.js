@@ -100,6 +100,13 @@ function detectRoundupDigest(rec) {
 // "Time Out" or "Talkin' Broadway".
 const ATTRIBUTION_RE = /\b([A-Z][A-Za-z'.-]+(?:\s+[A-Z][A-Za-z'.-]+){1,3}),\s+([A-Z][A-Za-z0-9&'.\-/ ]{2,40}?)\s*[.:]/g;
 
+// Outlet-first headings also appear without a comma: "Vulture Jackson
+// McHenry: excerpt". Capture the heading, then resolve its outlet/name split
+// against the registry, so multiword outlets and critic names both work.
+// A colon is required; ordinary prose mentioning an outlet does not qualify.
+const OUTLET_FIRST_ATTRIBUTION_RE = /\b([A-Z][A-Za-z0-9&'.\/-]*(?:,?\s+[A-Z][A-Za-z0-9&'.\/-]*){2,10})\s*:/g;
+const CRITIC_NAME_RE = /^[A-Z][A-Za-z'.-]+(?:\s+[A-Z][A-Za-z'.-]+){1,3}$/;
+
 // Matches the prose-narrative attribution shape a "sampling of the critical
 // reaction" compilation uses instead of the "{Name}, {Outlet}." comma shape —
 // "{Outlet}'s {Critic} {verb}..." (e.g. "Variety's Frank Rizzo agrees,
@@ -165,7 +172,8 @@ function isSameCritic(candidateName, byline) {
  * Precision: a real critic's review that quotes ONE rival critic in passing
  * ("as The Guardian's Michael Billington wrote...") must not trip this. So we
  * require either (a) 3+ distinct OTHER outlets attributed via the
- * "{Name}, {Outlet}." pattern, cross-checked against the outlet registry so
+ * "{Name}, {Outlet}." or "{Outlet} {Name}:" patterns (comma optional in
+ * outlet-first headings), cross-checked against the outlet registry so
  * random capitalized phrases can't count as an "outlet", or (b) a consensus-
  * intro phrase near the top of the text PLUS 2+ distinct other-outlet
  * attributions corroborating it (the intro phrase alone is too common in
@@ -222,6 +230,28 @@ function detectPullQuoteCompilation(rec) {
 
   const rawMatches = [];
   let match;
+  OUTLET_FIRST_ATTRIBUTION_RE.lastIndex = 0;
+  while ((match = OUTLET_FIRST_ATTRIBUTION_RE.exec(text))) {
+    // Preserve an unambiguous existing critic-first comma attribution. Some
+    // critics (e.g. Tim Teeman) also have their own registered outlet.
+    const comma = match[1].indexOf(',');
+    if (comma >= 0 && CRITIC_NAME_RE.test(match[1].slice(0, comma))
+        && isRegisteredOutlet(match[1].slice(comma + 1).trim())) continue;
+    const words = match[1].split(/\s+/);
+    // Prefer the longest registered outlet prefix, leaving a 2-4 word name.
+    for (let split = words.length - 2; split >= Math.max(1, words.length - 4); split--) {
+      const outlet = words.slice(0, split).join(' ').replace(/,$/, '');
+      const name = words.slice(split).join(' ');
+      if (!CRITIC_NAME_RE.test(name) || !isRegisteredOutlet(outlet)) continue;
+      rawMatches.push({
+        name, outlet,
+        start: match.index,
+        end: match.index + match[0].length,
+        requireQuote: false,
+      });
+      break;
+    }
+  }
   ATTRIBUTION_RE.lastIndex = 0;
   while ((match = ATTRIBUTION_RE.exec(text))) {
     rawMatches.push({
@@ -253,11 +283,8 @@ function detectPullQuoteCompilation(rec) {
     });
   }
   rawMatches.sort((a, b) => a.start - b.start);
-  // Drop a match whose span overlaps the previous kept match's span — the
-  // comma shape and possessive shape can't both match the SAME clause (their
-  // grammars conflict), but this guards against either regex matching twice
-  // within one sentence (e.g. two capitalized-name runs close together) from
-  // being double-counted as two separate attribution blocks.
+  // Drop overlapping matches so an outlet-first heading also parsed by the
+  // comma shape cannot count as two separate attribution blocks.
   const dedupedMatches = [];
   let lastEnd = -1;
   for (const m of rawMatches) {
