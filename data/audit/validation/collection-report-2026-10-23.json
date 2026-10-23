@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-10-23T04:13:39.925Z",
+  "runDate": "2026-10-23T04:21:30.540Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "the-pianist-off-west-end-2026",
+    "showFilter": "the-imaginary-invalid-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
+    "processed": 0,
     "failed": 2,
     "skipped": 0,
-    "successRate": "33.3%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -28,36 +28,36 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 1,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 1,
+    "processed": 0,
     "failed": 2,
     "shows": [
-      "the-pianist-off-west-end-2026"
+      "the-imaginary-invalid-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -65,26 +65,20 @@
       "failed": 0
     }
   },
-  "processed": [
-    "the-pianist-off-west-end-2026/artsdesk--unknown.json"
-  ],
+  "processed": [],
   "failed": [
-    "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
-    "the-pianist-off-west-end-2026/theupcoming--jim-compton-hall.json"
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "the-imaginary-invalid-2026/talkinbroadway--unknown.json"
   ],
   "cumulativeResumedState": {
-    "processed": [
-      "the-pianist-off-west-end-2026/artsdesk--unknown.json"
-    ],
+    "processed": [],
     "failed": [
-      "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
-      "the-pianist-off-west-end-2026/theupcoming--jim-compton-hall.json"
+      "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "the-imaginary-invalid-2026/talkinbroadway--unknown.json"
     ]
   },
   "tierDetails": {
-    "playwright": [
-      "the-pianist-off-west-end-2026/artsdesk--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -94,6 +88,14 @@
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "TheWrap": {
+      "count": 1,
+      "domain": "thewrap.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
