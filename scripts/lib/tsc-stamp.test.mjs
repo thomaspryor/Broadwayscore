@@ -113,7 +113,24 @@ test('land.yml kill-switch expression yields the path unless disabled', () => {
 const { decideSeedExport, decideSeed, dataDigest } = require('./tsc-stamp.js');
 const R = 'd'.repeat(40);
 const D = 'e'.repeat(64);
-const exp = { meta: { sha: R, exits: { tsc: 0, 'tsc-llm-scoring': 0 } }, rebased: R, headOid: R, dirty: '', key: K, digest: D };
+const exp = { meta: { sha: R, exits: { tsc: 0, 'tsc-llm-scoring': 0 } }, rebased: R, headOid: R, residue: [], key: K, digest: D, preDigest: D };
+
+test('seed-export tolerates the gold-lists prep residue (the only inert one)', () => {
+  assert.equal(decideSeedExport({ ...exp, residue: ['data/gold-lists-computed.json'] }).seed, `${K}:${D}`);
+});
+
+test('inert-residue premise: the only src importer of gold-lists-computed.json casts through unknown', () => {
+  const root = path.resolve(import.meta.dirname, '../..');
+  const hits = execFileSync('git', ['grep', '-l', 'gold-lists-computed', '--', 'src', '*.ts', '*.tsx'], { cwd: root, encoding: 'utf8' }).split('\n').filter(Boolean)
+    .filter((f) => /^[^/]*\.tsx?$|^src\//.test(f) && !f.startsWith('scripts/'));
+  for (const f of hits) {
+    const text = fs.readFileSync(path.join(root, f), 'utf8');
+    if (!/import\s+\w+\s+from\s+['"][^'"]*gold-lists-computed\.json['"]/.test(text)) continue; // mention only
+    assert.equal(f, 'src/lib/data-gold-list-badges.ts', `${f} imports gold-lists-computed.json: tsc may now depend on its content; drop it from TSC_INERT_RESIDUE`);
+    assert.match(text, /computedData as unknown as /);
+  }
+  assert.ok(require('./tsc-stamp.js').TSC_INERT_RESIDUE.has('data/gold-lists-computed.json'));
+});
 
 test('seed-export: exports key:digest only for tsc exit 0 on the rebased sha', () => {
   assert.equal(decideSeedExport(exp).seed, `${K}:${D}`);
@@ -124,8 +141,11 @@ for (const [name, patch] of [
   ['HEAD moved off the rebased sha', { headOid: 'f'.repeat(40) }],
   ['tsc red (forgiven by a red base)', { meta: { sha: R, exits: { tsc: 1 } } }],
   ['tsc gate absent from the run', { meta: { sha: R, exits: { 'next-lint': 0 } } }],
-  ['dirty tracked tree', { dirty: ' M src/x.ts' }],
+  ['tsc saw tracked residue in src', { residue: ['src/x.ts'] }],
+  ['no tsc-time tree status', { residue: null }],
   ['bad key', { key: 'abc' }],
+  ['no pre-gauntlet digest', { preDigest: '' }],
+  ['core data changed during the gauntlet', { preDigest: '0'.repeat(64) }],
 ]) {
   test(`seed-export refuses: ${name}`, () => assert.equal(decideSeedExport({ ...exp, ...patch }).seed, ''));
 }
@@ -150,7 +170,11 @@ test('seed end-to-end: exported seed makes the first check() in another job skip
   const metaFile = path.join(d, 'meta.json');
   fs.writeFileSync(metaFile, JSON.stringify({ sha: head, exits: { tsc: 0 } }));
   const cli = (args, env = {}) => spawnSync('node', [SCRIPT, ...args], { cwd: d, encoding: 'utf8', env: { ...process.env, GITHUB_ACTIONS: 'true', ...env } });
-  const exported = cli(['seed-export', `--meta=${metaFile}`, `--rebased=${head}`]);
+  const preFile = path.join(d, 'pre');
+  const okTs = path.join(d, 'ts-ok');
+  fs.writeFileSync(okTs, ' M data/gold-lists-computed.json\n');
+  cli(['digest-pre', `--out=${preFile}`]);
+  const exported = cli(['seed-export', `--meta=${metaFile}`, `--rebased=${head}`, `--pre=${preFile}`, `--tree-status=${okTs}`]);
   const seed = exported.stdout.trim();
   assert.match(seed, /^[0-9a-f]{64}:[0-9a-f]{64}$/);
   const stamp = path.join(d, 'stamp');
@@ -164,4 +188,10 @@ test('seed end-to-end: exported seed makes the first check() in another job skip
   cli(['seed', `--seed=${seed}`], { LAND_TSC_STAMP_FILE: stamp2 });
   assert.equal(cli(push, { LAND_TSC_STAMP_FILE: stamp2 }).status, 1, 'drifted core data: tsc runs');
   assert.notEqual(dataDigest({ cwd: d }), seed.split(':')[1]);
+  // data mutated after digest-pre (mid-gauntlet) => no export
+  assert.equal(cli(['seed-export', `--meta=${metaFile}`, `--rebased=${head}`, `--pre=${preFile}`, `--tree-status=${okTs}`]).stdout.trim(), '');
+  // tsc-time residue in src => no export
+  const tsFile = path.join(d, 'ts-src');
+  fs.writeFileSync(tsFile, ' M src/a.ts\n');
+  assert.equal(cli(['seed-export', `--meta=${metaFile}`, `--rebased=${head}`, `--pre=${preFile}`, `--tree-status=${tsFile}`]).stdout.trim(), '');
 });

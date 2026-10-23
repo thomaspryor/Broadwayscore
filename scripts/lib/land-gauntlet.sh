@@ -191,6 +191,10 @@ TSC_NODE_OPTIONS="$(bash "$(dirname "${BASH_SOURCE[0]}")/tsc-node-options.sh")" 
 # land.yml / land-local-check copy ONLY this script to a temp dir, so the helper may be
 # absent there; fall back to the same floor rather than the 2GB default.
 [ -n "$TSC_NODE_OPTIONS" ] || TSC_NODE_OPTIONS="${NODE_OPTIONS:-} --max-old-space-size=6144"
+# BRO-6043: which tracked files differ from HEAD at the moment tsc starts (the
+# gold-lists prep always dirties one), so tsc-stamp.js seed-export can tell what
+# tsc actually saw. Absent file => no seed.
+if git status --porcelain --untracked-files=no > "$OUT/tsc-tree-status.tmp" 2>/dev/null; then mv "$OUT/tsc-tree-status.tmp" "$OUT/tsc-tree-status"; else rm -f "$OUT/tsc-tree-status.tmp"; fi
 gate tsc env NODE_OPTIONS="$TSC_NODE_OPTIONS" npx tsc --noEmit
 gate tsc-llm-scoring env NODE_OPTIONS="$TSC_NODE_OPTIONS" npx tsc --noEmit -p scripts/llm-scoring/tsconfig.json
 gate next-lint npx next lint

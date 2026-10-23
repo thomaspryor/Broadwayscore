@@ -269,6 +269,13 @@ jobs:
         run: cp scripts/lib/land-gauntlet.sh "$RUNNER_TEMP/land-gauntlet.sh"
 
       # ── Branch gauntlet: the rebased tip ─────────────────────────────────────
+      # BRO-6043: core-data digest BEFORE the gauntlet; the seed export refuses
+      # unless it is unchanged afterwards (see scripts/lib/tsc-stamp.js).
+      - name: Digest the core data before the gauntlet (tsc stamp seed)
+        if: steps.plan.outputs.skip_gauntlet != 'true' && vars.LAND_TSC_STAMP_DISABLED != '1'
+        continue-on-error: true
+        run: node scripts/lib/tsc-stamp.js digest-pre --out="$RUNNER_TEMP/tsc-data-digest-pre"
+
       - name: Run the gauntlet on the rebased branch
         if: steps.plan.outputs.skip_gauntlet != 'true'
         id: branch_run
@@ -571,7 +578,8 @@ jobs:
         env:
           REBASED: ${{ steps.rebase.outputs.rebased }}
         run: |
-          SEED=$(node scripts/lib/tsc-stamp.js seed-export --meta="$RUNNER_TEMP/land-gauntlet/branch/meta.json" --rebased="$REBASED") || SEED=""
+          SEED=$(node scripts/lib/tsc-stamp.js seed-export --meta="$RUNNER_TEMP/land-gauntlet/branch/meta.json" --rebased="$REBASED" \
+            --pre="$RUNNER_TEMP/tsc-data-digest-pre" --tree-status="$RUNNER_TEMP/land-gauntlet/branch/tsc-tree-status") || SEED=""
           echo "seed=$SEED" >> "$GITHUB_OUTPUT"
 
       # ── Next landing's base: this branch's result, published under its tree ──
@@ -793,7 +801,7 @@ jobs:
         continue-on-error: true
         env:
           TSC_SEED: ${{ needs.checks.outputs.tsc_seed }}
-          LAND_TSC_STAMP_FILE: ${{ format('{0}/land-tsc-stamp', runner.temp) }}
+          LAND_TSC_STAMP_FILE: ${{ vars.LAND_TSC_STAMP_DISABLED != '1' && format('{0}/land-tsc-stamp', runner.temp) || '' }}
         run: node scripts/lib/tsc-stamp.js seed --seed="$TSC_SEED"
 
       - name: Land the branch

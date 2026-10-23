@@ -37,7 +37,11 @@
 //   tracked tree is clean; the Land job passes that string to `seed`, which
 //   appends the key to its stamp file ONLY when its own gitignored core data
 //   hashes to the same digest (the assumption "constant within one job" does
-//   not hold across two jobs: each clones core data fresh). A Land-job tree
+//   not hold across two jobs: each clones core data fresh). `digest-pre` runs
+//   before the gauntlet and seed-export refuses unless the digest is unchanged
+//   after it. The gauntlet records the tracked files that differed from HEAD
+//   when tsc started (tsc-tree-status); anything beyond TSC_INERT_RESIDUE
+//   refuses the seed. A Land-job tree
 //   that differs in code (main moved substantively) just has a different key
 //   and still runs tsc. The gauntlet exit is the raw tsc exit, not the
 //   base-delta verdict: a tsc red forgiven because base is red never seeds.
@@ -108,14 +112,27 @@ function dataDigest({ cwd = process.cwd() } = {}) {
 }
 
 /** checks-job side. Pure: returns { seed, reason } from the gauntlet meta + tree facts. */
-function decideSeedExport({ meta, rebased, headOid, dirty, key, digest }) {
+// Tracked files the gauntlet's prep regenerates before tsc (land-gauntlet.sh
+// gold-lists prep) that tsc cannot be sensitive to: their ONLY src importer
+// casts through `unknown` (guarded by tsc-stamp.test.mjs), so regenerated
+// content cannot change a type-check result.
+const TSC_INERT_RESIDUE = new Set(['data/gold-lists-computed.json']);
+
+function decideSeedExport({ meta, rebased, headOid, residue, key, digest, preDigest }) {
   const no = (reason) => ({ seed: '', reason });
   if (!meta || typeof meta !== 'object') return no('no gauntlet meta.json');
   if (!SHA40.test(String(rebased || '')) || meta.sha !== rebased) return no('gauntlet did not measure the rebased sha');
   if (headOid !== rebased) return no('HEAD is not the rebased sha');
   if (!meta.exits || meta.exits.tsc !== 0) return no('tsc did not exit 0 in the gauntlet');
-  if (dirty) return no('tracked tree is dirty (tsc may have seen residue)');
+  // residue = tracked paths differing from HEAD when tsc STARTED (null = unknown).
+  if (!Array.isArray(residue)) return no('no tsc-time tree status');
+  const bad = residue.filter((f) => !TSC_INERT_RESIDUE.has(f));
+  if (bad.length) return no(`tsc saw tracked residue: ${bad.slice(0, 3).join(', ')}`);
   if (!HASH64.test(String(key || '')) || !HASH64.test(String(digest || ''))) return no('no usable key/digest');
+  // Taken BEFORE the gauntlet (digest-pre): proves the data tsc read is the
+  // data we certify.
+  if (!HASH64.test(String(preDigest || ''))) return no('no pre-gauntlet digest');
+  if (preDigest !== digest) return no('core data changed during the gauntlet');
   return { seed: `${key}:${digest}`, reason: `tsc exit 0 on rebased ${rebased.slice(0, 10)}` };
 }
 
@@ -143,13 +160,21 @@ function main(argv) {
     const head = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
     const file = env.LAND_TSC_STAMP_FILE || '';
     const dirty = execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8' }).trim();
-    if (dirty && cmd !== 'seed') { console.error('tsc-stamp: run tsc (dirty tracked tree)'); return cmd === 'check' ? 1 : 0; }
+    if (dirty && (cmd === 'check' || cmd === 'record')) { console.error('tsc-stamp: run tsc (dirty tracked tree)'); return cmd === 'check' ? 1 : 0; }
+    if (cmd === 'digest-pre') {
+      if (a.out) fs.writeFileSync(a.out, `${dataDigest()}\n`);
+      return 0;
+    }
     if (cmd === 'seed-export') {
+      let preD = '';
+      try { preD = fs.readFileSync(a.pre || '', 'utf8').trim(); } catch { /* decide() reports it */ }
+      let residue = null;
+      try { residue = fs.readFileSync(a['tree-status'] || '', 'utf8').split('\n').filter(Boolean).map((l) => l.slice(3).replace(/^.* -> /, '')); } catch { /* decide() reports it */ }
       let meta = null;
       try { meta = JSON.parse(fs.readFileSync(a.meta || '', 'utf8')); } catch { /* decide() reports it */ }
-      const pre = decideSeedExport({ meta, rebased: a.rebased, headOid: head, dirty, key: 'a'.repeat(64), digest: 'b'.repeat(64) });
+      const pre = decideSeedExport({ meta, rebased: a.rebased, headOid: head, residue, key: 'a'.repeat(64), digest: 'b'.repeat(64), preDigest: 'b'.repeat(64) });
       if (!pre.seed) { console.error(`tsc-stamp: no seed (${pre.reason})`); return 0; }
-      const d = decideSeedExport({ meta, rebased: a.rebased, headOid: head, dirty, key: computeKey(head), digest: dataDigest() });
+      const d = decideSeedExport({ meta, rebased: a.rebased, headOid: head, residue, key: computeKey(head), digest: dataDigest(), preDigest: preD });
       console.error(`tsc-stamp: ${d.seed ? 'seed exported' : 'no seed'} (${d.reason})`);
       if (d.seed) console.log(d.seed);
       return 0;
@@ -178,10 +203,10 @@ function main(argv) {
     console.error(`tsc-stamp: run tsc (fail-open: ${e.message})`);
     return cmd === 'check' ? 1 : 0;
   }
-  console.error('usage: tsc-stamp.js check|record|seed-export|seed [--pushed-oid=X --spec-count=N --remote-ref=R]');
+  console.error('usage: tsc-stamp.js check|record|digest-pre|seed-export|seed [--pushed-oid=X --spec-count=N --remote-ref=R]');
   return 2;
 }
 
 if (require.main === module) process.exit(main(process.argv.slice(2)));
 
-module.exports = { decide, computeKey, readStamp, dataDigest, decideSeedExport, decideSeed };
+module.exports = { TSC_INERT_RESIDUE, decide, computeKey, readStamp, dataDigest, decideSeedExport, decideSeed };
