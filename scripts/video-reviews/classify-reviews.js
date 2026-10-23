@@ -21,19 +21,28 @@
  *   node scripts/video-reviews/classify-reviews.js
  *   node scripts/video-reviews/classify-reviews.js --refresh    # Re-classify all
  *   node scripts/video-reviews/classify-reviews.js --batch=10   # Batch size (default 5)
+ *   node scripts/video-reviews/classify-reviews.js --rematch-only --dry-run  # list re-match candidates, no API calls
+ *
+ * After classifying, reviews left without a show id are re-matched (BRO-6091):
+ * title + run dates against every US production in shows.json, confirmed by
+ * the model. Re-runs each week, so a show added to shows.json later still
+ * picks up the reviews posted during its run.
  */
 
 const fs = require('fs');
 const path = require('path');
 const { CLAUDE_SONNET, CLAUDE_OPUS } = require('../lib/models');
 const { finalResponseText, describeResponse } = require('../lib/anthropic-response-text');
+const { indexShowsByTitle, rematchCandidates, parseRematchReply } = require('../lib/video-review-selection');
+const { describeProduction } = require('../lib/video-production-context');
 
 const RAW_DIR = path.join(__dirname, '../../data/video-reviews-transcripts/raw');
 const CLASSIFIED_DIR = path.join(__dirname, '../../data/video-reviews-transcripts/classified');
 const SHOWS_PATH = path.join(__dirname, '../../data/shows.json');
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
-if (!ANTHROPIC_API_KEY) {
+const DRY_RUN = process.argv.includes('--dry-run');
+if (!ANTHROPIC_API_KEY && !DRY_RUN) {
   console.error('Missing ANTHROPIC_API_KEY');
   process.exit(1);
 }
@@ -152,14 +161,93 @@ ${items}`
   return JSON.parse(text.substring(start, end));
 }
 
+async function confirmRematch(c, candidates) {
+  const options = candidates.map((s, i) => `${i + 1}. ${describeProduction(s)}`).join('\n');
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    signal: AbortSignal.timeout(120000),
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
+    body: JSON.stringify({
+      model: CLAUDE_SONNET,
+      max_tokens: 300,
+      messages: [{
+        role: 'user',
+        content: `A theater creator's video review was classified as a review of "${c.showTitle}" (classifier note: ${c.classificationReason || 'none'}).
+Posted: ${c.date}. Caption: "${c.title}"
+
+Which of these stage productions did the creator see and review in this video?
+${options}
+
+Answer 0 when the video is about another production of the same title: a different city or venue than the one listed, a tour when only a New York run is listed (or the reverse), a regional, community, school, workshop, reading or concert staging, or the film. Pick a number only when the transcript and caption fit that production's city, venue or tour and its dates.
+
+Transcript (first 1500 chars): ${String(c.transcript || '').substring(0, 1500)}
+
+Output ONLY JSON: {"match": <number or 0>, "reason": "<one short sentence>"}`,
+      }],
+    }),
+  });
+  if (!resp.ok) throw new Error(`API error ${resp.status}: ${(await resp.text()).substring(0, 200)}`);
+  const data = await resp.json();
+  return parseRematchReply(finalResponseText(data.content), candidates);
+}
+
+/**
+ * BRO-6091: reviews the classifier could not tie to a show. Re-matched by title
+ * and run dates against all of shows.json, then confirmed by the model. A
+ * classified file records the candidates it was checked against, so it is
+ * only asked again when shows.json gains a matching production.
+ */
+async function rematchUnmatched() {
+  if (!fs.existsSync(SHOWS_PATH)) {
+    console.error(`Missing ${SHOWS_PATH}; skipping re-match.`);
+    return;
+  }
+  const byTitle = indexShowsByTitle(JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows);
+  const files = fs.readdirSync(CLASSIFIED_DIR).filter(f => f.endsWith('.json'));
+  let checked = 0, matched = 0;
+  console.log('\n=== Re-matching reviews with no show ===');
+  for (const f of files) {
+    const filePath = path.join(CLASSIFIED_DIR, f);
+    const c = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    if (c.reviewType !== 'review' || c.showId) continue;
+    const candidates = rematchCandidates(c, byTitle);
+    if (!candidates.length) continue;
+    const ids = candidates.map(s => s.id);
+    if (c.rematch && c.rematch.candidates?.join(',') === ids.join(',')) continue;
+    checked++;
+    if (DRY_RUN) {
+      console.log(`  ${c.creatorId} ${c.date} "${c.showTitle}" -> ${ids.join(' | ')}`);
+      continue;
+    }
+    try {
+      const r = await confirmRematch(c, candidates);
+      if (!r.ok) { console.log(`  ? ${c.creatorId} "${c.showTitle}": unparseable reply, retry next run`); continue; }
+      c.rematch = { candidates: ids, result: r.show ? r.show.id : null, reason: r.reason, checkedAt: new Date().toISOString() };
+      if (r.show) {
+        c.showId = r.show.id;
+        c.showTitle = r.show.title;
+        c.showIdSource = 'rematch';
+        matched++;
+      }
+      fs.writeFileSync(filePath, JSON.stringify(c, null, 2));
+      console.log(`  ${r.show ? '✓' : '✗'} ${c.creatorId} ${c.date} "${c.showTitle}" -> ${r.show ? r.show.id : 'none'} (${r.reason})`);
+    } catch (err) {
+      console.error(`  Error re-matching ${f}: ${err.message?.substring(0, 200)}`);
+    }
+    await new Promise(r => setTimeout(r, 500));
+  }
+  console.log(`Re-match: ${checked} checked, ${matched} matched${DRY_RUN ? ' (dry run)' : ''}`);
+}
+
 async function main() {
   const refresh = process.argv.includes('--refresh');
+  const rematchOnly = process.argv.includes('--rematch-only');
   const batchSize = parseInt(process.argv.find(a => a.startsWith('--batch='))?.split('=')[1] || '5');
 
   if (!fs.existsSync(CLASSIFIED_DIR)) fs.mkdirSync(CLASSIFIED_DIR, { recursive: true });
 
-  const shows = getOpenBroadwayShows();
-  console.log(`Loaded ${shows.length} open/previews Broadway shows`);
+  const shows = rematchOnly ? [] : getOpenBroadwayShows();
+  if (!rematchOnly) console.log(`Loaded ${shows.length} open/previews Broadway shows`);
 
   const rawFiles = fs.readdirSync(RAW_DIR).filter(f => f.endsWith('.json'));
   console.log(`Found ${rawFiles.length} raw transcripts`);
@@ -171,7 +259,8 @@ async function main() {
   });
 
   // Filter out already-classified unless --refresh
-  const toClassify = refresh
+  const toClassify = rematchOnly ? []
+    : refresh
     ? allTranscripts
     : allTranscripts.filter(t => !fs.existsSync(path.join(CLASSIFIED_DIR, t.fileName)));
 
@@ -216,6 +305,8 @@ async function main() {
       await new Promise(r => setTimeout(r, 2000));
     }
   }
+
+  await rematchUnmatched();
 
   // Summary
   console.log('\n=== Classification Summary ===');

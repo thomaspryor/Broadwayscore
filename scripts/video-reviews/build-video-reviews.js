@@ -8,11 +8,13 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('../lib/list-show-dirs');
 const { filterPublishableReviews, isPaidPromotion, creatorLookup } = require('../lib/video-review-guards');
+const { publishedRecord } = require('../lib/video-review-selection');
 
 const TRANSCRIPTS_DIR = path.join(__dirname, '../../data/video-reviews-transcripts');
 const CREATORS_PATH = path.join(__dirname, '../../data/video-creators.json');
 const OUTPUT_PATH = path.join(__dirname, '../../data/video-reviews.json');
 const SHOWS_PATH = path.join(__dirname, '../../data/shows.json');
+const THUMB_DIR = path.join(__dirname, '../../public/images/video-reviews');
 
 function main() {
   const creators = JSON.parse(fs.readFileSync(CREATORS_PATH, 'utf8')).creators;
@@ -35,6 +37,7 @@ function main() {
 
   const showDirs = listShowDirs(TRANSCRIPTS_DIR).filter(d => d !== 'raw' && d !== 'classified');
   const reviewsByShow = {};
+  let waitingOnReplacement = 0;
 
   for (const showId of showDirs) {
     const showDir = path.join(TRANSCRIPTS_DIR, showId);
@@ -42,12 +45,24 @@ function main() {
     const reviews = [];
 
     for (const file of files) {
-      const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
-      if (data.score === undefined || data.scoreable === false) continue;
-      // Skip transcripts flagged as wrong production (e.g. movie reviews ending up
-      // on the stage show, casting-announcement videos, reply-to-comments videos).
-      if (data.wrongProduction === true) continue;
-      if (isPaidPromotion(data)) { console.log(`  skipped ${showId}/${file}: paid promotion`); continue; }
+      const filePath = path.join(showDir, file);
+      const current = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      if (isPaidPromotion(current) && !current.previousPick) { console.log(`  skipped ${showId}/${file}: paid promotion`); continue; }
+      // Unscored, rejected, wrong production (movie reviews, casting news,
+      // reply videos) or paid: not published, unless the pick it is replacing
+      // still is (BRO-6091, select-best-reviews.js previousPick).
+      const { record: data, retirePrevious } = publishedRecord(current);
+      if (!data) continue;
+      if (data === current.previousPick) waitingOnReplacement++;
+      if (retirePrevious) {
+        // The new pick made it: drop the old one and its thumbnail so
+        // backfill-thumbnails.js fetches the new video's image.
+        delete current.previousPick;
+        fs.writeFileSync(filePath, JSON.stringify(current, null, 2) + '\n');
+        const thumb = path.join(THUMB_DIR, `${current.creatorId}-${showId}.jpg`);
+        if (fs.existsSync(thumb)) fs.unlinkSync(thumb);
+        delete data.thumbnail;
+      }
       const creator = findCreator(data.creatorId);
       if (!creator) continue;
 
@@ -85,6 +100,9 @@ function main() {
     console.log(`${showId}: ${reviews.length} reviews — avg ${Math.round(reviews.reduce((s, r) => s + r.score, 0) / reviews.length)}`);
   }
 
+  // A replacement that verify-productions.js never checks (no GEMINI_API_KEY,
+  // repeated errors) leaves the old pick up indefinitely; this count shows it.
+  if (waitingOnReplacement) console.log(`\n${waitingOnReplacement} reviews still show the previous pick while the new one is scored and verified`);
   fs.writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2));
   console.log(`\nWrote ${OUTPUT_PATH}`);
 }

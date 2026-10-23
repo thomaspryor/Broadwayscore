@@ -10,9 +10,15 @@ const fs = require('fs');
 const path = require('path');
 const { SCORING_OPUS } = require('../lib/models');
 const { listShowDirs } = require('../lib/list-show-dirs');
+const { mentionsRating, anchorScore } = require('../lib/video-review-rating');
+const { creatorLookup, isPaidPromotion } = require('../lib/video-review-guards');
 
 const TRANSCRIPTS_DIR = path.join(__dirname, '../../data/video-reviews-transcripts');
 const CREATORS_PATH = path.join(__dirname, '../../data/video-creators.json');
+const SHOWS_PATH = path.join(__dirname, '../../data/shows.json');
+// 2 (BRO-6091): caption in the message, explicit ratings anchor the score.
+// Files scored under an older version whose transcript mentions a rating are rescored.
+const PROMPT_VERSION = 2;
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 if (!ANTHROPIC_API_KEY) { console.error('Missing ANTHROPIC_API_KEY'); process.exit(1); }
 
@@ -39,6 +45,8 @@ If rejecting: {"scoreable": false, "rejection": "<short category>", "reasoning":
 - Focus on the RECOMMENDATION SIGNAL
 - For multi-show videos (2 shows max), score ONLY the target show section
 - keyQuote is shown on its own next to the score: pick a line whose meaning matches the verdict without context (never an ironic hook like "Do not see this unless you want to rethink your life")
+- The video caption is the creator's own summary line; use it as a signal alongside the transcript
+- EXPLICIT RATING: if the creator gives the show an overall rating ("10 out of 10, would recommend", "4 stars", "7/10"), report it in explicitRating exactly as "N/10", "N/5" or "N stars", and the score MUST sit in its band: 5/5 or 10/10 -> 91-100; 4/5 or 8/10 -> 71-90; 3/5 or 6/10 -> 51-70; 2/5 or 4/10 -> 31-50; half steps fall between. A rating of one element (a song, a performer, the seats, the price), a hypothetical ("on paper this is a five star musical") or another show's rating is not an overall rating of this show. No overall rating -> explicitRating null
 
 | Bucket | Score Range | Signal |
 |--------|------------|--------|
@@ -49,7 +57,7 @@ If rejecting: {"scoreable": false, "rejection": "<short category>", "reasoning":
 | Pan | 0-34 | Strongly negative |
 
 Output JSON:
-{"scoreable": true, "score": <0-100>, "bucket": "<Rave|Positive|Mixed|Negative|Pan>", "confidence": "<high|medium|low>", "reasoning": "<1-2 sentences>", "keyQuote": "<most representative quote>"}`;
+{"scoreable": true, "score": <0-100>, "bucket": "<Rave|Positive|Mixed|Negative|Pan>", "confidence": "<high|medium|low>", "explicitRating": "<N/10|N/5|N stars>" or null, "reasoning": "<1-2 sentences>", "keyQuote": "<most representative quote>"}`;
 
 const MODEL_ARG = process.argv.find(a => a.startsWith('--model='))?.split('=')[1];
 // Opus is the default for scoring. Sonnet was false-rejecting legit reviews
@@ -58,14 +66,14 @@ const MODEL_ARG = process.argv.find(a => a.startsWith('--model='))?.split('=')[1
 // See scripts/video-reviews/eval-prompts.js.
 const MODEL = MODEL_ARG || process.env.ANTHROPIC_MODEL || SCORING_OPUS;
 
-async function scoreTranscript(transcript, showTitle, creatorName, platform) {
+async function scoreTranscript(transcript, showTitle, creatorName, platform, caption) {
   const resp = await fetch('https://api.anthropic.com/v1/messages', {
     signal: AbortSignal.timeout(300000),
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
     body: JSON.stringify({
       model: MODEL, max_tokens: 1024, system: PROMPT,
-      messages: [{ role: 'user', content: `Score this video review of "${showTitle}" by ${creatorName} (${platform}):\n\n---\n${transcript}\n---` }]
+      messages: [{ role: 'user', content: `Score this video review of "${showTitle}" by ${creatorName} (${platform}).\nVideo caption: "${caption || ''}"\n\n---\n${transcript}\n---` }]
     })
   });
   if (!resp.ok) throw new Error(`API error ${resp.status}: ${(await resp.text()).substring(0, 200)}`);
@@ -78,7 +86,10 @@ async function scoreTranscript(transcript, showTitle, creatorName, platform) {
 async function main() {
   const showFilter = process.argv.find(a => a.startsWith('--show='))?.split('=')[1];
   const creators = JSON.parse(fs.readFileSync(CREATORS_PATH, 'utf8')).creators;
-  const creatorMap = Object.fromEntries(creators.map(c => [c.id, c]));
+  const findCreator = creatorLookup(creators);
+  const showTitles = fs.existsSync(SHOWS_PATH)
+    ? new Map(JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows.filter(s => s && s.id).map(s => [s.id, s.title]))
+    : new Map();
 
   // Skip pipeline buckets (raw/, classified/) — they contain unsorted transcripts
   // that aren't associated with a real show yet. (listShowDirs already skips
@@ -90,17 +101,20 @@ async function main() {
     if (showFilter && showId !== showFilter) continue;
     const showDir = path.join(TRANSCRIPTS_DIR, showId);
     const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
-    const showTitle = showId.replace(/-\d{4}$/, '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    const showTitle = showTitles.get(showId) || showId.replace(/-\d{4}$/, '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 
     console.log(`\n=== ${showId} (${files.length} transcripts) ===`);
     for (const file of files) {
       const filePath = path.join(showDir, file);
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-      if (data.score !== undefined || data.scoreable === false) {
+      const ratingRescore = data.score !== undefined && data.wrongProduction !== true && !isPaidPromotion(data)
+        && (data.promptVersion || 1) < PROMPT_VERSION && mentionsRating(data.transcript);
+      if ((data.score !== undefined && !ratingRescore) || data.scoreable === false) {
         console.log(`  ${data.creatorId}: already processed, skipping`);
         continue;
       }
-      const creator = creatorMap[data.creatorId];
+      if (ratingRescore) console.log(`  ${data.creatorId}: rescoring (mentions a rating, scored before ratings anchored the score; was ${data.score})`);
+      const creator = findCreator(data.creatorId);
       console.log(`  Scoring ${data.creatorId} (${data.wordCount} words)...`);
       try {
         let transcript = data.transcript;
@@ -116,12 +130,19 @@ async function main() {
             transcript = transcript.substring(start, end);
           }
         }
-        const result = await scoreTranscript(transcript, showTitle, creator?.name || data.creatorId, data.platform);
+        const result = await scoreTranscript(transcript, showTitle, creator?.name || data.creatorId, data.platform, data.title);
         if (result.scoreable) {
-          Object.assign(data, { score: result.score, bucket: result.bucket, confidence: result.confidence, reasoning: result.reasoning, keyQuote: result.keyQuote, scoredAt: new Date().toISOString(), scoringModel: MODEL });
-          console.log(`    ✓ ${result.score} (${result.bucket}) — "${(result.keyQuote || '').substring(0, 80)}"`);
+          const a = anchorScore(result.score, result.bucket, result.explicitRating);
+          Object.assign(data, { score: a.score, bucket: a.bucket, confidence: result.confidence, reasoning: result.reasoning, keyQuote: result.keyQuote, explicitRating: result.explicitRating || null, scoredAt: new Date().toISOString(), scoringModel: MODEL, promptVersion: PROMPT_VERSION });
+          if (a.anchored) data.ratingAnchor = { modelScore: result.score, rating: result.explicitRating };
+          else delete data.ratingAnchor;
+          console.log(`    ✓ ${a.score} (${a.bucket})${a.anchored ? ` [anchored from ${result.score} by ${result.explicitRating}]` : ''} — "${(result.keyQuote || '').substring(0, 80)}"`);
+        } else if (ratingRescore) {
+          // Only the rating rule changed: a published review is not un-published by a re-read.
+          data.promptVersion = PROMPT_VERSION;
+          console.log(`    ~ rescore said not scoreable (${result.rejection}); keeping ${data.score}`);
         } else {
-          Object.assign(data, { scoreable: false, rejection: result.rejection, reasoning: result.reasoning, scoredAt: new Date().toISOString() });
+          Object.assign(data, { scoreable: false, rejection: result.rejection, reasoning: result.reasoning, scoredAt: new Date().toISOString(), promptVersion: PROMPT_VERSION });
           console.log(`    ✗ Not scoreable: ${result.rejection}`);
         }
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
