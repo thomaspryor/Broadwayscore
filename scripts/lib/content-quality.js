@@ -313,6 +313,10 @@ const MID_TEXT_CHROME_BLOCKS = [
     start: 'THIS CONTENT IS RESERVED FOR SUBSCRIBERS ONLY', end: 'Activate your Online Access Now' },
   { name: 'third-coast-review-newsletter', maxGap: 250,
     start: 'Never Miss a Moment in Chicago Culture', end: 'Enter your email address Subscribe' },
+  // BRO-5383: The Independent's bookmark popover sits between the headline/byline and
+  // the body ("Become an Independent member to bookmark ... Already a member? Log in").
+  { name: 'independent-bookmark-popover', maxGap: 400,
+    start: 'Become an Independent member to bookmark', end: 'Already\\s+a\\s+member\\?\\s+Log\\s+in' },
 ].map((b) => ({
   ...b,
   re: new RegExp(`${b.start}[\\s\\S]{0,${b.maxGap}}?${b.end}`, 'gi'),

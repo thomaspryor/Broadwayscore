@@ -53,3 +53,19 @@ test('negatives: teaser followed by the block at the end (paywall stub) is not s
   assert.equal(stripMidTextChromeBlocks(t), t);
   // Left intact: pre-existing trailing-junk handling decides, not this strip.
 });
+
+// BRO-5383: The Independent bookmark popover ("Already a member? Log in") sits ahead of the body.
+const INDEP = 'Bookmark popover Removed from bookmarks Close popover Become an Independent member to bookmark this article Want to bookmark your favourite articles and stories to read or reference later? Start your Independent Membership today. Join today Already a member? Log in';
+
+test('Independent bookmark popover before the body is not garbage', () => {
+  const t = `Who’s Afraid of Virginia Woolf? review Alice Saville ${INDEP} ${PROSE}`;
+  assert.equal(isGarbageContent(t).isGarbage, false);
+  assert.ok(!/already a member/i.test(stripMidTextChromeBlocks(t)));
+  const r = classifyContentTier({ fullText: t, url: 'https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/x.html' });
+  assert.notEqual(r.contentTier, 'invalid', r.tierReason);
+});
+
+test('negatives: Independent popover as the whole text (paywall stub) stays garbage', () => {
+  const t = `Review ${INDEP}`;
+  assert.equal(isGarbageContent(t).isGarbage, true);
+});
