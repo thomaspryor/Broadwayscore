@@ -1,21 +1,38 @@
 {
-  "updatedAt": "2026-10-23T16:21:27.957Z",
-  "processed": 236,
-  "failed": 134,
-  "successRate": "63.8%",
+  "updatedAt": "2026-10-23T16:33:26.055Z",
+  "processed": 258,
+  "failed": 162,
+  "successRate": "61.4%",
   "tierBreakdown": {
-    "playwright": 115,
+    "playwright": 123,
     "amp": 0,
     "browserbase": 8,
     "directCookies": 0,
-    "scrapingdog": 11,
-    "scrapingbee": 12,
+    "scrapingdog": 12,
+    "scrapingbee": 14,
     "brightdata": 4,
     "archiveToday": 0,
-    "archive": 82
+    "archive": 90
   },
   "browserbaseSessions": 2,
   "recentActivity": [
+    {
+      "t": "2026-10-23T14:43:35.677Z",
+      "event": "bb-session",
+      "session": "1457c081",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
+    },
+    {
+      "t": "2026-10-23T14:43:36.190Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-23T15:06:13.019Z",
+      "event": "bb-session",
+      "session": "018763b6",
+      "url": "https://www.nytimes.com/2026/04/25/theater/rheology-inspirations.html"
+    },
     {
       "t": "2026-10-23T15:06:13.524Z",
       "event": "bb-cookie-inject",
