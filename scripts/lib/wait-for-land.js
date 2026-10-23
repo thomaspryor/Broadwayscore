@@ -66,6 +66,22 @@ const STALE_EVICTION_MS = 30 * 60_000;
 const PROD_DEFAULT_MIN = 40;
 const PROD_MAX_ERRORS = 3;
 
+// Error messages can contain entire API responses. Bound the prefix before
+// looking for a newline so logging never allocates an array for the full body.
+function firstLine(value) {
+  const prefix = String(value || '').slice(0, 500);
+  const newline = prefix.indexOf('\n');
+  return newline === -1 ? prefix : prefix.slice(0, newline);
+}
+
+// check-prod-deploy prints its verdict last. Preserve that line without
+// splitting all of stdout/stderr, and bound unusually long verdicts too.
+function lastLine(value) {
+  const text = String(value || '').trim();
+  const start = text.lastIndexOf('\n') + 1;
+  return text.slice(start, start + 500);
+}
+
 /**
  * Decide what one poll means. refSha is the ref's current tip (null when the
  * ref is gone); lastSha the tip an earlier poll saw (null if none did); run
@@ -217,7 +233,7 @@ function fetchMain() {
     execFileSync('git', ['fetch', '-q', ...depthArgs, 'origin', 'main'], { stdio: ['ignore', 'ignore', 'pipe'], timeout: 120_000 });
     return true;
   } catch (err) {
-    console.error(`${stamp()} could not fetch origin/main: ${String(err.message || err).split('\n')[0]}`);
+    console.error(`${stamp()} could not fetch origin/main: ${firstLine(err.message || err)}`);
     return false;
   }
 }
@@ -242,7 +258,7 @@ function branchSiteFiles(refSha) {
     const files = JSON.parse(raw).files;
     return sitePathsIn(Array.isArray(files) ? files.map((f) => f.filename) : null);
   } catch (err) {
-    console.error(`${stamp()} could not list the branch's changes: ${String(err.message || err).split('\n')[0]}`);
+    console.error(`${stamp()} could not list the branch's changes: ${firstLine(err.message || err)}`);
     return null;
   }
 }
@@ -264,13 +280,13 @@ async function waitForProd({ siteFiles, prodMin }) {
   console.log(`${stamp()} PROD: waiting up to ${prodMin} min for ${postSha.slice(0, 9)} to go live (${plan.why})`);
   const deadlineMs = Date.now() + prodMin * 60_000;
   let errors = 0;
-  let lastLine = '';
+  let lastStatusLine = '';
   for (;;) {
     const res = spawnSync(process.execPath, [CHECK_PROD, postSha], { encoding: 'utf8', timeout: 180_000 });
     const checkExit = res.status === null ? -1 : res.status;
     errors = checkExit === 0 || checkExit === 1 ? 0 : errors + 1;
     const v = prodVerdict({ checkExit, errors, nowMs: Date.now(), deadlineMs });
-    const detail = String(res.stdout || '').trim().split('\n').pop() || String(res.stderr || '').trim().split('\n').pop() || '';
+    const detail = lastLine(res.stdout) || lastLine(res.stderr);
     if (v.verdict === 'live') {
       console.log(`${stamp()} LIVE: ${detail}`);
       return 0;
@@ -280,8 +296,8 @@ async function waitForProd({ siteFiles, prodMin }) {
       return 4;
     }
     const line = `prod: ${v.why}: ${detail}`;
-    if (line !== lastLine) console.log(`${stamp()} ${line}`);
-    lastLine = line;
+    if (line !== lastStatusLine) console.log(`${stamp()} ${line}`);
+    lastStatusLine = line;
     // ~5 min apart: each no-token check costs ~25 GitHub REST calls.
     await sleep(Math.min(270_000 + Math.floor(Math.random() * 60_000), Math.max(0, deadlineMs - Date.now())));
   }
@@ -317,7 +333,7 @@ async function main(argv) {
       errors = 0;
     } catch (err) {
       errors += 1;
-      console.error(`${stamp()} poll failed (${errors}/5): ${String(err.message || err).split('\n')[0]}`);
+      console.error(`${stamp()} poll failed (${errors}/5): ${firstLine(err.message || err)}`);
       if (errors >= 5) return 3;
     }
     if (v) {
@@ -357,4 +373,4 @@ if (require.main === module) {
   );
 }
 
-module.exports = { landVerdict, readLatestRun, prodPlan, prodVerdict, parseArgs, sitePathsIn, RED_CONCLUSIONS };
+module.exports = { landVerdict, readLatestRun, waitForProd, prodPlan, prodVerdict, parseArgs, sitePathsIn, firstLine, lastLine, RED_CONCLUSIONS };

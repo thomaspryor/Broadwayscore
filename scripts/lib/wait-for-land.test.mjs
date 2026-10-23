@@ -3,9 +3,72 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
-const { landVerdict, readLatestRun, prodPlan, prodVerdict, parseArgs, sitePathsIn } = require('./wait-for-land.js');
+const { landVerdict, readLatestRun, prodPlan, prodVerdict, parseArgs, sitePathsIn, firstLine, lastLine } = require('./wait-for-land.js');
+
+test('diagnostic first lines are bounded before parsing large messages', () => {
+  assert.equal(firstLine('request failed\nresponse body'), 'request failed');
+  assert.equal(firstLine('x'.repeat(501)), 'x'.repeat(500));
+  assert.equal(firstLine('x'.repeat(499) + '\nignored'), 'x'.repeat(499));
+  assert.equal(firstLine('\nsecond line'), '');
+  assert.equal(firstLine(null), '');
+  assert.equal(firstLine(''), '');
+});
+
+test('prod diagnostics retain the final nonblank line and stdout/stderr fallback', () => {
+  assert.equal(lastLine('  checking\n  not live yet\r\n\n '), '  not live yet');
+  assert.equal(lastLine('  live\n'), 'live');
+  assert.equal(lastLine('checking\n' + 'x'.repeat(501)), 'x'.repeat(500));
+  assert.equal(lastLine(' \n '), '');
+  assert.equal(lastLine(null), '');
+  assert.equal(lastLine(' \n ') || lastLine('warning\nfailed\n'), 'failed');
+});
+
+test('newline-heavy diagnostics fit in a constrained heap without a line array', () => {
+  const child = spawnSync(process.execPath, ['--max-old-space-size=64', '-e', `
+    const assert = require('node:assert/strict');
+    const { firstLine, lastLine } = require(${JSON.stringify(require.resolve('./wait-for-land.js'))});
+    const message = 'request failed\\n' + '\\n'.repeat(16 * 1024 * 1024) + 'last status\\n';
+    assert.equal(firstLine(message), 'request failed');
+    assert.equal(lastLine(message), 'last status');
+  `], { encoding: 'utf8', timeout: 30_000 });
+  assert.equal(child.error, undefined);
+  assert.equal(child.status, 0, `child signal=${child.signal}: ${child.stderr.slice(0, 2000)}`);
+});
+
+test('the prod polling caller logs bounded final lines and falls back to stderr', () => {
+  const child = spawnSync(process.execPath, ['-e', `
+    const assert = require('node:assert/strict');
+    const cp = require('node:child_process');
+    cp.execFileSync = (cmd, args) => {
+      assert.equal(cmd, 'git');
+      if (args[0] === 'ls-remote') return 'a'.repeat(40) + '\\trefs/heads/main\\n';
+      if (args[0] === 'rev-parse') return 'false\\n';
+      if (args[0] === 'fetch') return '';
+      assert.fail('unexpected git command: ' + args.join(' '));
+    };
+    let result;
+    cp.spawnSync = () => result;
+    const { waitForProd } = require(${JSON.stringify(require.resolve('./wait-for-land.js'))});
+    const logged = [];
+    console.log = (s) => logged.push(s);
+    (async () => {
+      for (const [stdout, stderr, expected] of [
+        ['checking\\nLIVE on prod\\n', '', 'LIVE on prod'],
+        [' \\n ', 'checking\\nstderr verdict\\n', 'stderr verdict'],
+        ['checking\\n' + 'x'.repeat(501), '', 'x'.repeat(500)],
+      ]) {
+        result = { status: 0, stdout, stderr };
+        assert.equal(await waitForProd({ siteFiles: ['src/app/page.tsx'], prodMin: 1 }), 0);
+        assert.equal(logged.at(-1).slice(16), expected);
+      }
+    })().catch((err) => { console.error(err); process.exitCode = 1; });
+  `], { encoding: 'utf8', timeout: 30_000 });
+  assert.equal(child.error, undefined);
+  assert.equal(child.status, 0, child.stderr.slice(0, 2000));
+});
 
 const TIP = '057156419a666b690b937354092729af67ceb092';
 const NOW = Date.parse('2026-10-05T05:00:00Z');
