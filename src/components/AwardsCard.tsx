@@ -2,11 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import {
-  getAwardsDesignation,
-  getTonyWinCount,
-  getTonyNominationCount,
-} from '@/lib/data-awards';
+import type { AwardsSummary } from '@/lib/data-awards';
 import type { ShowAwards, AwardsDesignation } from '@/lib/data-types';
 import { TrophyIcon, StarIcon, ChevronIcon, PulitzerIcon } from '@/components/icons';
 import { sortByImportance, isMajorCategory } from '@/config/awards';
@@ -26,6 +22,9 @@ function toFullSeasonLabel(season: string): string {
 interface AwardsCardProps {
   showId: string;
   awards: ShowAwards | undefined;
+  /** Resolved on the server with getAwardsSummary(); this client component
+   *  must not import data-awards (it pulls in all of data/awards.json). */
+  summary: AwardsSummary;
   openingDate?: string;
   /** Show's market category (show.category, e.g. 'west-end'). Forwarded to
    *  v2 (AwardScoreCard) to select the correct Olivier weight table. */
@@ -389,19 +388,17 @@ function OtherAwardsExpandableSection({ awards }: { awards: ShowAwards }) {
   );
 }
 
-export default function AwardsCard({ showId, awards, openingDate, category, tonyNamesByCategory }: AwardsCardProps) {
+export default function AwardsCard({ showId, awards, summary, openingDate, category, tonyNamesByCategory }: AwardsCardProps) {
   // Guard here (not in server page.tsx) so isDemo() is evaluated at runtime.
   if (!featureFlags.awards) return null;
 
   // v2 card behind feature flag — same props, completely different rendering.
   // See src/components/AwardScoreCard.tsx and src/lib/awards-scoring.ts.
   if (featureFlags.awardScoreV2) {
-    return <AwardScoreCard showId={showId} awards={awards} openingDate={openingDate} category={category} tonyNamesByCategory={tonyNamesByCategory} />;
+    return <AwardScoreCard showId={showId} awards={awards} result={summary.score} openingDate={openingDate} category={category} tonyNamesByCategory={tonyNamesByCategory} />;
   }
 
-  const designation = getAwardsDesignation(showId, openingDate);
-  const tonyWins = getTonyWinCount(showId);
-  const tonyNoms = getTonyNominationCount(showId);
+  const { designation, tonyWins, tonyNoms } = summary;
   const isPulitzerWinner = !!awards?.pulitzer?.wins?.includes('Drama');
   const isPulitzerFinalist = !!awards?.pulitzer?.finalist?.includes('Drama');
   const hasPulitzer = isPulitzerWinner || isPulitzerFinalist;

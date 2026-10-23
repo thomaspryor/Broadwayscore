@@ -18,7 +18,7 @@ import {
   type TonySeasonWindow,
 } from '@/lib/data-tony-predictions';
 import { TONY_CATEGORY_ORDER } from '@/config/awards';
-import { computeSiteAwardScore } from '@/lib/awards-scoring';
+import { computeSiteAwardScore } from '@/lib/awards-site-score';
 import { getActorSlug } from '@/lib/data-actors';
 import { getPersonTonyStatsByName } from '@/lib/data-tony-noms';
 import gdRawData from '../../data/tony-win-probabilities.json';

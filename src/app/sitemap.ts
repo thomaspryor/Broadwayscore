@@ -31,7 +31,7 @@ import { featureFlags } from '@/config/feature-flags';
 import { isFantasyListed } from '@/config/fantasy-listing';
 import { getAllPredictionSeasons, getTonySeasonWindow, hasNominationsBeenAnnounced } from '@/lib/data-tony-predictions';
 import { getAllBlogReviews } from '@/lib/data-reviews-blog';
-import { computeSiteAwardScore } from '@/lib/awards-scoring';
+import { computeSiteAwardScore } from '@/lib/awards-site-score';
 import { seasonSlug } from '@/lib/tony-seasons';
 import { SITEMAP_SHARDS, getActorBucket, type ShardName } from '@/config/sitemap-shards';
 import { isCategoryEnabled } from '@/lib/markets';

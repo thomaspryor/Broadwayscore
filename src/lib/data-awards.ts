@@ -5,6 +5,8 @@
 
 import type { ShowAwards, AwardsDesignation } from './data-types';
 import awardsData from '../../data/awards.json';
+import { categoryToMarket, type ScoreResult } from './awards-scoring';
+import { computeSiteAwardScore } from './awards-site-score';
 
 interface AwardsFile {
   _meta: {
@@ -199,5 +201,27 @@ export function getAwardWinnerSets(): AwardWinnerSets {
     olivierNomineeIds,
     dramaDeskWinnerIds,
     pulitzerWinnerIds,
+  };
+}
+
+/** One show's awards numbers, computed on the server for the show page. */
+export interface AwardsSummary {
+  designation: AwardsDesignation;
+  tonyWins: number;
+  tonyNoms: number;
+  score: ScoreResult;
+}
+
+/**
+ * Everything AwardsCard / AwardScoreCard need, resolved here so those client
+ * components never import this module: data/awards.json is 1.4MB (~112kB gz)
+ * and shipped on every show page while they did (BRO-5985).
+ */
+export function getAwardsSummary(showId: string, openingDate?: string, category?: string): AwardsSummary {
+  return {
+    designation: getAwardsDesignation(showId, openingDate),
+    tonyWins: getTonyWinCount(showId),
+    tonyNoms: getTonyNominationCount(showId),
+    score: computeSiteAwardScore(showId, categoryToMarket(category)),
   };
 }

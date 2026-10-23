@@ -11,7 +11,7 @@ import { getTourReviewYears } from '@/lib/tour-display';
 import { isLiveTour } from '@/lib/tour-listing';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getBoxOfficeHistoryStats } from '@/lib/data-grosses-history';
-import { getShowAwards } from '@/lib/data-awards';
+import { getShowAwards, getAwardsSummary } from '@/lib/data-awards';
 import { getTonyNamesByCategory } from '@/lib/data-tony-noms';
 import { getAudienceBuzz, getShowScoreUrl, getAudienceGrade, getTotalAudienceReviews, hasEnoughAudienceReviews, getAudiencePlatformUrl } from '@/lib/data-audience';
 import { getCriticConsensus } from '@/lib/data-consensus';
@@ -318,6 +318,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   // deltas). Server-only import — keeps the 5.5 MB history out of the client.
   const boxOfficeHistory = grosses ? getBoxOfficeHistoryStats(params.slug) : null;
   const awards = getShowAwards(show.id);
+  const awardsSummary = awards ? getAwardsSummary(show.id, show.openingDate, show.category) : null;
   const tonyNamesByCategory = getTonyNamesByCategory(show.id);
   const audienceBuzz = getAudienceBuzz(show.id);
   const consensus = getCriticConsensus(show.id);
@@ -1059,6 +1060,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
           audienceShowScoreUrl={audienceShowScoreUrl}
           audiencePlatformUrls={audiencePlatformUrls}
           awards={awards ?? null}
+          awardsSummary={awardsSummary}
           tonyNamesByCategory={tonyNamesByCategory}
           grosses={grosses ?? null}
           weekEnding={weekEnding}

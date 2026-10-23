@@ -26,6 +26,7 @@ import CastUpdatesCard from '@/components/CastUpdatesCard';
 import CastSection from '@/components/CastSection';
 import MiniShowCard from '@/components/show-cards/MiniShowCard';
 import type { ShowCardShow } from '@/components/show-cards/types';
+import type { AwardsSummary } from '@/lib/data-awards';
 import RelatedShows from '@/components/RelatedShows';
 import type { AudienceMarket } from '@/config/audience-sources';
 import type {
@@ -69,6 +70,8 @@ export interface ShowPageBelowFoldProps {
   audienceShowScoreUrl: string | undefined;
   audiencePlatformUrls: Record<string, string>;
   awards: ShowAwards | null;
+  /** Server-resolved awards numbers (getAwardsSummary); null when awards is. */
+  awardsSummary: AwardsSummary | null;
   tonyNamesByCategory: Record<string, string[]> | null;
   grosses: ShowGrosses | null;
   weekEnding: string | null;
@@ -142,6 +145,7 @@ export default function ShowPageBelowFold({
   audienceShowScoreUrl,
   audiencePlatformUrls,
   awards,
+  awardsSummary,
   tonyNamesByCategory,
   grosses,
   weekEnding,
@@ -238,7 +242,7 @@ export default function ShowPageBelowFold({
 
       {/* Awards Scorecard */}
       <div id="awards" className="scroll-mt-20" />
-      {awards && <AwardsCard showId={show.id} awards={awards} openingDate={show.openingDate} category={show.category} tonyNamesByCategory={tonyNamesByCategory ?? undefined} />}
+      {awards && awardsSummary && <AwardsCard showId={show.id} awards={awards} summary={awardsSummary} openingDate={show.openingDate} category={show.category} tonyNamesByCategory={tonyNamesByCategory ?? undefined} />}
 
       {/* Box Office Scorecard — Broadway only (no public OB/WE gross data).
           NOTE: the approved mockup showed BO + Commercial side by side on

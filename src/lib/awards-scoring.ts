@@ -7,7 +7,6 @@
  * Both modules can read the same awards.json; only the weights differ.
  */
 
-import awardsData from '../../data/awards.json';
 import { tonyCeremonyIsFuture } from './tony-cutoffs';
 import { categoryToAwardsMarket } from '../../scripts/lib/olivier-award-market';
 
@@ -243,9 +242,14 @@ function unknownNoms(totalCount: number | undefined, enumeratedWins: string[], e
   return Math.max(0, totalCount - enumerated);
 }
 
-export function computeSiteAwardScore(showId: string, market: Market = 'broadway'): ScoreResult {
-  const shows = (awardsData as { shows: Record<string, AwardsShowEntry> }).shows;
-  const entry = shows[showId];
+/**
+ * Score one show's awards entry. Pure on purpose: this module is imported by
+ * client components (AwardScoreCard, BlendedTrioDisplay types, ...) and must
+ * not import data/awards.json (1.4MB, ~112kB gz), which rode along into every
+ * show page's below-fold chunk (BRO-5985). Look a show up with
+ * computeSiteAwardScore() from ./awards-site-score on the server.
+ */
+export function computeAwardScoreForEntry(entry: AwardsShowEntry | undefined, market: Market = 'broadway'): ScoreResult {
   if (!entry) {
     return { rawPoints: 0, displayScore: 0, badge: 'eligible', inProgress: false, breakdown: [], tonyWins: 0, tonyNoms: 0, tonySeason: undefined };
   }
@@ -338,7 +342,7 @@ export function computeSiteAwardScore(showId: string, market: Market = 'broadway
 }
 
 interface PrecursorNode { wins?: string[]; nominatedFor?: string[]; nominations?: number }
-interface AwardsShowEntry {
+export interface AwardsShowEntry {
   tony?: PrecursorNode & { season?: string; ceremony?: string };
   dramadesk?: PrecursorNode & { season?: string };
   outerCriticsCircle?: PrecursorNode & { season?: string };

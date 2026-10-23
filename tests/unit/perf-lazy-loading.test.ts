@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: names data/awards.json only in import-pattern regexes; reads source files, never data
 /**
  * Page-weight guards (BRO-5985). Each one pins a fix that took a large
  * script off every page; a test fails if it comes back.
@@ -25,6 +26,12 @@ function walk(dir: string, out: string[] = []): string[] {
     else if (/\.(ts|tsx)$/.test(name) && !/\.test\.tsx?$/.test(name)) out.push(p);
   }
   return out;
+}
+
+// 'use client' must be the first statement, but comments may precede it.
+const CLIENT_DIRECTIVE_RE = /^(?:\s|\/\/[^\n]*\n|\/\*[\s\S]*?\*\/)*['"]use client['"]/;
+function isClientModule(src: string): boolean {
+  return CLIENT_DIRECTIVE_RE.test(src);
 }
 
 // Server-only modules may import the SDK statically: route handlers and the
@@ -66,8 +73,25 @@ test('browser components do not import the outlet logo registry', () => {
   for (const file of walk(join(ROOT, 'src'))) {
     const rel = relative(ROOT, file).split('\\').join('/');
     const src = readFileSync(file, 'utf8');
-    if (!/^\s*['"]use client['"]/.test(src)) continue;
+    if (!isClientModule(src)) continue;
     if (/^\s*import\s+(?!type\b)[^;]*?from\s+['"]@\/config\/outlet-logos['"]/m.test(src) && !ALLOWED.has(rel)) offenders.push(rel);
+  }
+  assert.deepEqual(offenders, []);
+});
+
+test('awards data stays out of the browser bundle', () => {
+  // data/awards.json is 1.4MB (~112kB gz); it shipped on every show page
+  // through AwardsCard/AwardScoreCard. awards-scoring.ts is shared with client
+  // components, so it stays pure; lookups live in data-awards.ts and
+  // awards-site-score.ts and run on the server (getAwardsSummary).
+  const scoring = readFileSync(join(ROOT, 'src/lib/awards-scoring.ts'), 'utf8');
+  assert.doesNotMatch(scoring, /^\s*import\s[^;]*from\s+['"][^'"]*awards\.json['"]/m);
+  const offenders: string[] = [];
+  for (const file of walk(join(ROOT, 'src'))) {
+    const rel = relative(ROOT, file).split('\\').join('/');
+    const src = readFileSync(file, 'utf8');
+    if (!isClientModule(src)) continue;
+    if (/^\s*import\s+(?!type\b)[^;]*?from\s+['"](@\/lib\/(data-awards|awards-site-score)|[./]+(data\/)?awards\.json)['"]/m.test(src)) offenders.push(rel);
   }
   assert.deepEqual(offenders, []);
 });
@@ -93,6 +117,13 @@ function memStore(initial: Record<string, string> = {}) {
   const m = new Map(Object.entries(initial));
   return { getItem: (k: string) => m.get(k) ?? null, setItem: (k: string, v: string) => { m.set(k, v); }, m };
 }
+
+test('isClientModule sees the directive after leading comments', () => {
+  assert.equal(isClientModule("'use client';\nimport x from 'y';"), true);
+  assert.equal(isClientModule("/**\n * Card.\n */\n'use client';\n"), true);
+  assert.equal(isClientModule("// note\n\"use client\";\n"), true);
+  assert.equal(isClientModule("import x from 'y';\n// 'use client' later\n"), false);
+});
 
 test('sampledForReplay keeps one decision per tab', () => {
   const s = memStore();

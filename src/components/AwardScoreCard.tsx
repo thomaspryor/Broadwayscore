@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { computeSiteAwardScore, categoryToMarket, classifyCategory } from '@/lib/awards-scoring';
+import { classifyCategory, type ScoreResult } from '@/lib/awards-scoring';
 import type { ShowAwards } from '@/lib/data-types';
 import { ChevronIcon, PulitzerIcon, TrophyIconLine, StarIconLine } from '@/components/icons';
 import { sortByImportance, isMajorCategory } from '@/config/awards';
@@ -15,6 +15,10 @@ import { OTHER_CEREMONY_CONFIGS, type OtherAwardConfig, type OtherAwardKey } fro
 interface AwardScoreCardProps {
   showId: string;
   awards: ShowAwards | undefined;
+  /** computeSiteAwardScore() for this show, resolved on the server
+   *  (getAwardsSummary). Computing it here pulled data/awards.json into the
+   *  browser bundle. */
+  result: ScoreResult;
   openingDate?: string;
   /** Show's market category (show.category, e.g. 'west-end'). Selects which
    *  Olivier weight table computeSiteAwardScore applies — West End shows use
@@ -455,8 +459,7 @@ function OtherAwardsPanel({
   );
 }
 
-export default function AwardScoreCard({ showId, awards, openingDate, category, tonyNamesByCategory }: AwardScoreCardProps) {
-  const result = computeSiteAwardScore(showId, categoryToMarket(category));
+export default function AwardScoreCard({ showId, awards, result, openingDate, category, tonyNamesByCategory }: AwardScoreCardProps) {
 
   if (result.displayScore === 0 && !result.inProgress) {
     const openingMs = openingDate ? new Date(openingDate).getTime() : 0;

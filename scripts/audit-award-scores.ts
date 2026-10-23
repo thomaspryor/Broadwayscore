@@ -4,7 +4,8 @@
  * Run: npx tsx scripts/audit-award-scores.ts
  */
 
-import { computeSiteAwardScore, categoryToMarket, type TierBadge } from '../src/lib/awards-scoring';
+import { categoryToMarket, type TierBadge } from '../src/lib/awards-scoring';
+import { computeSiteAwardScore } from '../src/lib/awards-site-score';
 import awardsData from '../data/awards.json';
 import showsData from '../data/shows.json';
 

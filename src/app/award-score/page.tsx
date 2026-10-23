@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getBroadwayShows } from '@/lib/data-core';
-import { computeSiteAwardScore } from '@/lib/awards-scoring';
+import { computeSiteAwardScore } from '@/lib/awards-site-score';
 import type { TierBadge } from '@/lib/awards-scoring';
 import { AWARD_TIER_LABEL } from '@/components/show-cards/AwardScoreBadge';
 import { toSlimAwardScore } from '@/lib/award-notable-win';

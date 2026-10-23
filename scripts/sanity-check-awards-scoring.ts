@@ -3,7 +3,7 @@
  * Run: npx tsx scripts/sanity-check-awards-scoring.ts
  */
 
-import { computeSiteAwardScore } from '../src/lib/awards-scoring';
+import { computeSiteAwardScore } from '../src/lib/awards-site-score';
 
 const SHOWS: Array<{ id: string; label: string; expect?: string }> = [
   { id: 'hamilton-2015',              label: 'Hamilton',              expect: 'sweeper, breaks 100' },

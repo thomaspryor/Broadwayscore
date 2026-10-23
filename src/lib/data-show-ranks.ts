@@ -51,7 +51,8 @@ import { getAllShows } from '@/lib/data-core';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { getSeason } from '@/lib/data-commercial';
 import { getAudienceBuzz, hasEnoughAudienceReviews } from '@/lib/data-audience';
-import { computeSiteAwardScore, type Market } from '@/lib/awards-scoring';
+import type { Market } from '@/lib/awards-scoring';
+import { computeSiteAwardScore } from '@/lib/awards-site-score';
 import { getShowGrosses } from '@/lib/data-grosses';
 import { isInCurrentOlivierSeason } from '@/lib/olivier-seasons';
 
