@@ -238,6 +238,25 @@ jobs:
           [ -f scripts/check-registry-merge.js ] || { echo "check script not on this tree yet; skipping"; exit 0; }
           node scripts/check-registry-merge.js --ancestor="$MB" --ours="$TIP" --theirs="$BASE" --result=HEAD
 
+      - name: Check coordinator card acknowledged (advisory)
+        id: coordinator
+        # BRO-6083: on 2026-10-22/23 a session landed opening-night code without
+        # re-reading the coordinator card, which had posted "do not start a
+        # parallel fix" two minutes after it started. A land touching an area in
+        # scripts/lib/coordinator-registry.js should carry
+        # COORDINATOR-ACK: <card>@<latest coordinator note id>. Advisory (CLAUDE.md
+        # §19): a missing or stale ack is a warning with the card and its latest
+        # note; an unreadable card is "unknown". Built-ins only, so it runs on
+        # the runner's node even when the gauntlet (and npm ci) is skipped.
+        continue-on-error: true
+        env:
+          TIP: ${{ steps.rebase.outputs.tip }}
+          BASE: ${{ steps.rebase.outputs.base }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          [ -f scripts/coordinator-check.js ] || { echo "coordinator check not on this tree yet; skipping"; exit 0; }
+          node scripts/coordinator-check.js --land --github --base "$BASE" --head "$TIP" --branch "$BRANCH"
+
       - name: Checkout core data
         if: steps.plan.outputs.skip_gauntlet != 'true'
         id: coredata

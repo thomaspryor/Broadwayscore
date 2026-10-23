@@ -34,10 +34,10 @@ if command -v timeout >/dev/null 2>&1; then TO=(timeout 90)
 elif command -v gtimeout >/dev/null 2>&1; then TO=(gtimeout 90)
 else TO=()
 fi
-err=$(printf '%s' "$input" | "${TO[@]}" node "$LIB" --hook 2>&1 >/dev/null)
+# stderr: block message (exit 2). stdout: advisory warnings as additionalContext
+# (BRO-6083). Builtins only: the macOS test's PATH is node, git, bash, cat, dirname.
+out=$(printf '%s' "$input" | "${TO[@]}" node "$LIB" --hook)
 rc=$?
-if [ "$rc" -eq 2 ]; then
-  printf '%s\n' "$err" >&2
-  exit 2
-fi
+[ "$rc" -eq 2 ] && exit 2
+[ -n "$out" ] && printf '%s\n' "$out"
 exit 0

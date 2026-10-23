@@ -872,6 +872,26 @@ export function checkReviewCoverage({ command, cwd, targets, env = process.env, 
   }
 }
 
+/**
+ * BRO-6083: advisory coordinator check. A land touching an area with a
+ * coordinator card (scripts/lib/coordinator-registry.js) and no
+ * COORDINATOR-ACK for the card's latest note gets a warning carrying that
+ * note. Runs the pushed repo's own scripts/coordinator-check.js (absent on an
+ * older tree: skipped). Never blocks; any failure is silent.
+ */
+export function coordinatorWarnings({ root, src, target, seams = {} }) {
+  try {
+    if (seams.coordinator) return seams.coordinator({ root, src, target }) || [];
+    const script = path.join(root, 'scripts', 'coordinator-check.js');
+    if (!fs.existsSync(script)) return [];
+    const r = spawnSync(process.execPath, [script, '--land', '--json', '--base', 'origin/main', '--head', src, '--branch', target, '--cwd', root], { cwd: root, encoding: 'utf8', timeout: 20_000 });
+    const v = JSON.parse(String(r.stdout || '').trim().split('\n').pop() || '{}');
+    return v.message ? [v.message] : [];
+  } catch {
+    return [];
+  }
+}
+
 /** PreToolUse hook entry: command string + session cwd -> verdict. */
 export function runHook({ command, cwd, env = process.env, seams = {}, transcriptPath = null }) {
   if (env.LAND_PREFLIGHT_DISABLE === '1') return { decision: 'skip', reason: 'LAND_PREFLIGHT_DISABLE=1' };
@@ -917,6 +937,10 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
     const v = judgeLand({ cwd: root, src: t.src || 'HEAD', target: t.dst, checkTests, seams });
     if (!checkTests) v.detail.tests = { status: 'skip', reason: srcIsHead ? `uncommitted test files: ${dirty.slice(0, 3).join(', ')}` : 'pushed ref is not HEAD' };
     logEvent(root, { event: v.decision, target: t.dst, rebase: v.detail.rebase?.status, tests: v.detail.tests?.status, botOwned: v.detail.botOwned?.status, staleRevert: v.detail.staleRevert?.status, pendingPlans: v.detail.pendingPlans?.status, fetch: v.detail.fetch || null, skipReason: v.detail.rebase?.reason || null });
+    if (v.decision !== 'block') {
+      const cw = coordinatorWarnings({ root, src: t.src || 'HEAD', target: t.dst, seams });
+      if (cw.length) v.warnings = [...(v.warnings || []), ...cw];
+    }
     results.push(v);
   }
   const blocked = results.filter((r) => r.decision === 'block');
@@ -940,8 +964,14 @@ function main(argv) {
       process.stderr.write(v.message + '\n');
       return 2;
     }
-    // Warnings never block (exit 0); stderr is shown to the session.
-    for (const w of v.warnings || []) process.stderr.write(`land preflight warning: ${w}\n`);
+    // Warnings never block (exit 0). Stderr on exit 0 is not shown to the
+    // session, so they go to stdout as PreToolUse additionalContext
+    // (BRO-6083); the wrapper passes stdout through.
+    const warnings = v.warnings || [];
+    if (warnings.length) {
+      const additionalContext = warnings.map((w) => `land preflight warning: ${w}`).join('\n\n');
+      process.stdout.write(JSON.stringify({ hookSpecificOutput: { hookEventName: 'PreToolUse', additionalContext } }) + '\n');
+    }
     return 0;
   }
   const arg = (name, dflt) => {
