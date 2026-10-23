@@ -1,10 +1,26 @@
 {
-  "generatedAt": "2026-10-23T02:17:11.645Z",
+  "generatedAt": "2026-10-23T05:31:11.012Z",
   "maxAgeHours": 12,
-  "showsAffected": 1,
-  "strandedFiles": 1,
+  "showsAffected": 3,
+  "strandedFiles": 3,
   "blackoutShows": [],
   "findings": [
+    {
+      "showId": "hadestown-2019",
+      "title": "Hadestown",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "musical-theatre-review--unknown.json",
+          "url": "https://musicaltheatrereview.com/hadestown-new-cast-announced/",
+          "outlet": "Musical Theatre Review",
+          "ageHours": 807.4068252777778
+        }
+      ],
+      "usable": 80,
+      "discovered": 84,
+      "totalBlackout": false
+    },
     {
       "showId": "triumph-off-west-end-2026",
       "title": "Triumph",
@@ -14,11 +30,27 @@
           "file": "almeidacouk--unknown.json",
           "url": "https://almeida.co.uk/whats-on/",
           "outlet": "Almeida Theatre",
-          "ageHours": 34.28740638888889
+          "ageHours": 37.52056388888889
         }
       ],
       "usable": 27,
       "discovered": 33,
+      "totalBlackout": false
+    },
+    {
+      "showId": "the-phantom-of-the-opera-tour-2025",
+      "title": "The Phantom of the Opera",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "musical-theatre-review--unknown.json",
+          "url": "https://musicaltheatrereview.com/london-production-of-the-phantom-of-the-opera-to-be-captured-on-film-for-the-first-time/",
+          "outlet": "Musical Theatre Review",
+          "ageHours": 301.47527444444444
+        }
+      ],
+      "usable": 29,
+      "discovered": 35,
       "totalBlackout": false
     }
   ]
