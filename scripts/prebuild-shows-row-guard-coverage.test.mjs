@@ -26,7 +26,7 @@ test('BRO-6016: prebuild generators reading shows.json use show-row-guard', () =
     if (ALLOWLIST[name]) continue;
     let src = readFileSync(f, 'utf8');
     // follow local lib requires one level (market archives load shows.json in a lib)
-    for (const m of src.matchAll(/require\('\.\/lib\/([\w.-]+)'\)/g)) {
+    for (const m of src.matchAll(/require\(['"]\.\/lib\/([\w.-]+)['"]\)/g)) {
       const lib = path.join(scriptsDir, 'lib', m[1].endsWith('.js') ? m[1] : m[1] + '.js');
       if (existsSync(lib) && !/show-row-guard\.js$/.test(lib)) src += '\n' + readFileSync(lib, 'utf8');
     }
