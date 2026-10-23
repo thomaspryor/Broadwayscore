@@ -108,3 +108,60 @@ test('land.yml kill-switch expression yields the path unless disabled', () => {
   // `cond && VALUE || ''`: VALUE must be the truthy (non-empty) branch, so '' is only reachable when disabled.
   assert.match(m[1], /^vars\.LAND_TSC_STAMP_DISABLED != '1' && format\([^)]*\) \|\| ''$/);
 });
+
+// ── BRO-6043: seeding the Land job's stamp from the checks job ──────────────
+const { decideSeedExport, decideSeed, dataDigest } = require('./tsc-stamp.js');
+const R = 'd'.repeat(40);
+const D = 'e'.repeat(64);
+const exp = { meta: { sha: R, exits: { tsc: 0, 'tsc-llm-scoring': 0 } }, rebased: R, headOid: R, dirty: '', key: K, digest: D };
+
+test('seed-export: exports key:digest only for tsc exit 0 on the rebased sha', () => {
+  assert.equal(decideSeedExport(exp).seed, `${K}:${D}`);
+});
+for (const [name, patch] of [
+  ['no meta', { meta: null }],
+  ['meta measured another sha', { meta: { sha: 'f'.repeat(40), exits: { tsc: 0 } } }],
+  ['HEAD moved off the rebased sha', { headOid: 'f'.repeat(40) }],
+  ['tsc red (forgiven by a red base)', { meta: { sha: R, exits: { tsc: 1 } } }],
+  ['tsc gate absent from the run', { meta: { sha: R, exits: { 'next-lint': 0 } } }],
+  ['dirty tracked tree', { dirty: ' M src/x.ts' }],
+  ['bad key', { key: 'abc' }],
+]) {
+  test(`seed-export refuses: ${name}`, () => assert.equal(decideSeedExport({ ...exp, ...patch }).seed, ''));
+}
+
+const sd = { env: { GITHUB_ACTIONS: 'true', LAND_TSC_STAMP_FILE: '/x' }, seed: `${K}:${D}`, digest: D };
+test('seed: appends the key when the core-data digest matches', () => assert.equal(decideSeed(sd).key, K));
+for (const [name, patch] of [
+  ['outside CI', { env: { LAND_TSC_STAMP_FILE: '/x' } }],
+  ['kill switch (empty stamp file)', { env: { GITHUB_ACTIONS: 'true', LAND_TSC_STAMP_FILE: '' } }],
+  ['no seed', { seed: '' }],
+  ['malformed seed', { seed: K }],
+  ['core data drifted between jobs', { digest: '0'.repeat(64) }],
+]) {
+  test(`seed refuses: ${name}`, () => assert.equal(decideSeed({ ...sd, ...patch }).key, ''));
+}
+
+test('seed end-to-end: exported seed makes the first check() in another job skip; drifted data does not', () => {
+  const r = mkRepo({});
+  const head = r.commit({ 'src/a.ts': 'export const a = 1;\n', 'data/shows.json': '[]\n', '.gitignore': 'data/core.json\n' });
+  const d = r.d;
+  fs.writeFileSync(path.join(d, 'data/core.json'), '{"v":1}\n');
+  const metaFile = path.join(d, 'meta.json');
+  fs.writeFileSync(metaFile, JSON.stringify({ sha: head, exits: { tsc: 0 } }));
+  const cli = (args, env = {}) => spawnSync('node', [SCRIPT, ...args], { cwd: d, encoding: 'utf8', env: { ...process.env, GITHUB_ACTIONS: 'true', ...env } });
+  const exported = cli(['seed-export', `--meta=${metaFile}`, `--rebased=${head}`]);
+  const seed = exported.stdout.trim();
+  assert.match(seed, /^[0-9a-f]{64}:[0-9a-f]{64}$/);
+  const stamp = path.join(d, 'stamp');
+  const push = ['check', `--pushed-oid=${head}`, '--spec-count=1', '--remote-ref=refs/heads/main'];
+  assert.equal(cli(push, { LAND_TSC_STAMP_FILE: stamp }).status, 1, 'unseeded: tsc runs');
+  cli(['seed', `--seed=${seed}`], { LAND_TSC_STAMP_FILE: stamp });
+  assert.equal(cli(push, { LAND_TSC_STAMP_FILE: stamp }).status, 0, 'seeded: tsc skipped');
+  // core data differs in the Land job => not seeded
+  const stamp2 = path.join(d, 'stamp2');
+  fs.writeFileSync(path.join(d, 'data/core.json'), '{"v":2}\n');
+  cli(['seed', `--seed=${seed}`], { LAND_TSC_STAMP_FILE: stamp2 });
+  assert.equal(cli(push, { LAND_TSC_STAMP_FILE: stamp2 }).status, 1, 'drifted core data: tsc runs');
+  assert.notEqual(dataDigest({ cwd: d }), seed.split(':')[1]);
+});

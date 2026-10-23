@@ -121,6 +121,7 @@ jobs:
       gate: ${{ steps.verdict.outputs.gate }}
       new_failures: ${{ steps.delta.outputs.new_failures }}
       pre_existing: ${{ steps.delta.outputs.pre_existing }}
+      tsc_seed: ${{ steps.tscseed.outputs.seed }}
     steps:
       - name: Checkout the land branch
         uses: actions/checkout@v5
@@ -556,6 +557,23 @@ jobs:
             exit 1
           fi
 
+      # BRO-6043: hand the Land job a "tsc already passed on this exact tree"
+      # token so even the FIRST pre-push tsc under the mutex (66-80s) is skipped,
+      # not just the BRO-5783 retry. Exported only when the branch gauntlet's own
+      # meta.json says tsc exited 0 on the rebased sha (never from the base-delta
+      # verdict). The Land job re-checks its core-data digest before using it.
+      # Advisory/optimisation only: continue-on-error, a failure just means tsc
+      # runs. Kill switch: repo variable LAND_TSC_STAMP_DISABLED=1.
+      - name: Export the tsc stamp seed for the Land job
+        id: tscseed
+        if: success() && steps.plan.outputs.skip_gauntlet != 'true' && vars.LAND_TSC_STAMP_DISABLED != '1'
+        continue-on-error: true
+        env:
+          REBASED: ${{ steps.rebase.outputs.rebased }}
+        run: |
+          SEED=$(node scripts/lib/tsc-stamp.js seed-export --meta="$RUNNER_TEMP/land-gauntlet/branch/meta.json" --rebased="$REBASED") || SEED=""
+          echo "seed=$SEED" >> "$GITHUB_OUTPUT"
+
       # ── Next landing's base: this branch's result, published under its tree ──
       # When this lands as a fast-forward, main BECOMES the rebased tip, and the
       # next land/** run's base key is the code-tree hash of that tip. Nobody
@@ -766,6 +784,17 @@ jobs:
         run: |
           echo '[]' > /tmp/land-riders.json
           if [ -f scripts/land-train.js ]; then node scripts/land-train.js collect --branch "$BRANCH" --out /tmp/land-riders.json; fi
+
+      # BRO-6043: seed the job-local tsc stamp from the checks job (see the
+      # "Export the tsc stamp seed" step there). Only appends the key when this
+      # job's gitignored core data hashes like the checks job's.
+      - name: Seed the tsc stamp from the checks job
+        if: vars.LAND_TSC_STAMP_DISABLED != '1' && needs.checks.outputs.tsc_seed != ''
+        continue-on-error: true
+        env:
+          TSC_SEED: ${{ needs.checks.outputs.tsc_seed }}
+          LAND_TSC_STAMP_FILE: ${{ format('{0}/land-tsc-stamp', runner.temp) }}
+        run: node scripts/lib/tsc-stamp.js seed --seed="$TSC_SEED"
 
       - name: Land the branch
         id: land
