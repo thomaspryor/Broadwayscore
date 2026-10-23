@@ -989,7 +989,7 @@
       "resolvedAt": "2026-10-13T16:45:36.950Z"
     },
     "bd-circuit-breaker-web_unlocker2": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (2194/1750 reqs)",
@@ -1002,7 +1002,8 @@
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 30,
-      "sweptTracker": "BRO-5544"
+      "sweptTracker": "BRO-5544",
+      "resolvedAt": "2026-10-23T02:08:12.960Z"
     },
     "bd-circuit-breaker-serp_api1": {
       "status": "resolved",
