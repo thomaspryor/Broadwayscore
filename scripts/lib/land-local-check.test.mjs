@@ -69,3 +69,17 @@ test('newFailureFiles: the NEW test files only; null when a new failure is not a
   assert.equal(newFailureFiles(table(['| unit-tests-node | **FAIL** | delta | 1 |', '| scripts-lib-tests | **FAIL** | strict | 0 |']) + '\n' + report), null,
     'a gate that failed with no NEW list (crash, timeout) is never cleared by re-running another gate\'s files');
 });
+
+test('missingCoreData: a worktree without data/*.json is not ready (false "new failures", BRO-6037 session)', () => {
+  const { missingCoreData, CORE_DATA_FILES } = require('./land-local-check.js');
+  assert.ok(CORE_DATA_FILES.includes('data/shows.json'));
+  assert.deepEqual(missingCoreData('/r', () => true), []);
+  assert.deepEqual(missingCoreData('/r', () => false), CORE_DATA_FILES);
+  assert.deepEqual(missingCoreData('/r', (p) => !p.endsWith('reviews.json')), ['data/reviews.json']);
+});
+
+test('main exits 3 (not ready) when core data is missing, before any gate runs', () => {
+  const src = require('fs').readFileSync(new URL('./land-local-check.js', import.meta.url), 'utf8');
+  const main = src.slice(src.indexOf('function main('));
+  assert.ok(main.indexOf('missingCoreData(ROOT)') > 0 && main.indexOf('missingCoreData(ROOT)') < main.indexOf('mkdtempSync'));
+});

@@ -22,7 +22,8 @@
  *   --max-wait-minutes  give up waiting for the mutex after N min (default 20): exit 4 with a
  *            warning, so a worker is never stranded behind another check
  * Exit: 0 no new failures | 1 new failures (printed) | 2 usage | 3 not ready (tracked
- *       changes, or no common history with origin/main) | 4 skipped (mutex wait timed out)
+ *       changes, no common history with origin/main, or no local core data) | 4 skipped
+ *       (mutex wait timed out)
  */
 'use strict';
 
@@ -46,6 +47,17 @@ const DEFAULT_GATES = GATES.filter((g) => !isAdvisory(g) && !LOCAL_SKIPPED_GATES
 // source through `@/` aliases, so a lone `node --test` re-run fails for another reason.
 const NODE_RERUN_GATES = new Set(['unit-tests-node', 'scripts-lib-tests']);
 const ROOT = path.resolve(__dirname, '..', '..');
+
+// Core data files the unit gates read (gitignored, so a fresh worktree has none). land.yml
+// checks them out; without them both the base and the branch run fail data-dependent tests in
+// slightly different sets, which reads as "new failures" (BRO-6037 session, 2026-10-23: 24 min
+// spent to report 13 false failures in show-identity / show-venue / review-file-writer tests).
+const CORE_DATA_FILES = ['data/shows.json', 'data/reviews.json'];
+
+/** -> list of CORE_DATA_FILES missing under root */
+function missingCoreData(root, exists = fs.existsSync) {
+  return CORE_DATA_FILES.filter((f) => !exists(path.join(root, f)));
+}
 
 /** -> { gates, maxWaitMs } or { error } */
 function parseArgs(argv) {
@@ -117,6 +129,13 @@ function main(argv = process.argv.slice(2)) {
   // The base run checks out origin/main in this tree and returns to HEAD: tracked changes would be lost.
   const dirty = git('status', '--porcelain', '--untracked-files=no');
   if (dirty.stdout) { console.error('land-local-check: commit or discard tracked changes first:\n' + dirty.stdout); return 3; }
+  const missing = missingCoreData(ROOT);
+  if (missing.length) {
+    console.error(`land-local-check: ${missing.join(', ')} missing in this checkout (a worktree has no local data). `
+      + 'Data-dependent tests would fail on both sides and report false new failures. '
+      + 'Run ./scripts/setup-local-data.sh --link-only in this checkout (installs only the gitignored data set).');
+    return 3;
+  }
   const fetch = git('fetch', '-q', 'origin', 'main');
   if (fetch.code !== 0) console.error(`land-local-check: git fetch failed, judging against the local origin/main (${fetch.stderr.split('\n').pop()})`);
   const head = git('rev-parse', 'HEAD').stdout;
@@ -181,6 +200,6 @@ function main(argv = process.argv.slice(2)) {
   }
 }
 
-module.exports = { parseArgs, newFailureFiles, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
+module.exports = { parseArgs, newFailureFiles, missingCoreData, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
 
 if (require.main === module) process.exit(main());
