@@ -9,14 +9,15 @@
  * 7200000ms, 86 job-done against 31 Done. bsc-runner knows how each job ended; the
  * card did not. linear-next.js now posts this fallback report when the worker did not.
  *
- * Status is always `blocked`: it posts the comment and leaves state alone, so the card
- * stays re-dispatchable. The text avoids owner-hold wording on purpose, so
- * pausedHistorySkipReason / reclaim never read it as "waiting on the owner".
+ * It is a plain machine comment, NOT a "**Session report (status)**": sweeps read that shape as
+ * the worker having reported (zombie sweep 'already-reported', reclaim 'blocked-report' pin), which
+ * would stop them recovering exactly these cards. State is left alone, so the card stays
+ * re-dispatchable. No owner-hold wording either (pausedHistorySkipReason).
  */
 
 const lsr = require('./linear-session-reporting.js');
 
-const MARKER = 'Headless worker ended without its own session report';
+const MARKER = lsr.HEADLESS_END_MARKER;
 
 function commentNodes(issue) {
   const c = issue && issue.comments;
@@ -26,8 +27,9 @@ function commentNodes(issue) {
 /** True when a worker-authored session report landed at/after the job started. */
 function hasReportSince(issue, sinceMs) {
   return commentNodes(issue).some((c) => {
-    if (!c || lsr.parseSessionReportStatus(c.body) == null) return false;
-    if (String(c.body).includes(MARKER)) return false; // our own fallback is not the worker's
+    if (!c) return false;
+    // A worker's own report, or a complete PR-EVIDENCE line (a clean Done via linear-brain update).
+    if (lsr.parseSessionReportStatus(c.body) == null && !require('./linear-dispatch.js').isCompletePrEvidence(String(c.body || ''))) return false;
     const t = Date.parse(c.createdAt);
     return Number.isFinite(t) && t >= sinceMs;
   });
@@ -54,15 +56,18 @@ function buildEndSummary(res) {
 
 /**
  * Post the fallback when the worker left no report since `sinceMs`. Best-effort:
- * never throws. Returns 'posted' | 'worker-reported' | 'error'.
+ * never throws. Returns 'posted' | 'worker-reported' | 'skipped' | 'error'.
  */
 async function postEndReportIfMissing(issue, res, sinceMs, linearClient) {
+  // Nothing ran: the job never got a session to report on.
+  if (res && res.stage === 'worktree-error') return 'skipped';
   try {
     const fresh = (await linearClient.getIssue(issue.identifier)) || issue;
     if (hasReportSince(fresh, sinceMs)) return 'worker-reported';
-    await linearClient.createComment(issue.id, lsr.buildOutcomeCommentBody({
-      summary: buildEndSummary(res), status: 'blocked',
-    }));
+    // The worker closed the card itself: a clean exit, nothing to flag.
+    const stateType = fresh.state && fresh.state.type;
+    if (res && res.ok && (stateType === 'completed' || stateType === 'canceled')) return 'worker-reported';
+    await linearClient.createComment(issue.id, buildEndSummary(res));
     return 'posted';
   } catch (e) {
     console.error(`[linear-next] WARN could not post end-of-job report on ${issue.identifier}: ${e.message}`);

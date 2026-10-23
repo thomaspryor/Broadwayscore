@@ -40,7 +40,7 @@ const {
   foldJobs,
 } = require('./dispatch-ledger.js');
 const { parseLinearTaskId } = require('./linear-watchdog-source.js');
-const { parseSessionReportStatus } = require('./linear-session-reporting.js');
+const { parseSessionReportStatus, HEADLESS_END_MARKER } = require('./linear-session-reporting.js');
 const { DISPATCH_COMMENT_CORRELATION_RE, isCompletePrEvidence } = require('./linear-dispatch.js');
 const { checkPark, computeContentHash } = require('./attempt-memory.js');
 
@@ -189,6 +189,8 @@ function decideZombieReset({ issue, spawnedTs, worktree, live } = {}) {
     // rarely, a later redispatch's — either way, not evidence of a human on
     // the thread).
     if (DISPATCH_COMMENT_CORRELATION_RE.test(body.trim())) continue;
+    // BRO-6092: linear-next.js's own end-of-job note is machine text too, and is exactly the zombie shape.
+    if (body.trim().startsWith(HEADLESS_END_MARKER)) continue;
     // Anything else since spawn: fail closed. Cannot distinguish "the owner
     // commented" from "a machine posted something unrecognized" by author —
     // every comment lands under the owner's own Linear API key — so content

@@ -332,6 +332,11 @@ function evaluateSessionClose({ trackedEditsMade, reportedIssueId, bypassText })
 // took the card 95s after it was filed, and the cloud worker started on it anyway).
 const HOLDER_COMMENT_RE = /^(?:Claimed by |Dispatched\b)/;
 
+// BRO-6092: linear-next.js's note when a headless job ends and the worker posted no report. Machine
+// text, deliberately NOT in the "**Session report (status)**" shape: sweeps read that shape as the
+// worker having reported (zombie sweep 'already-reported', reclaim 'blocked-report' pin).
+const HEADLESS_END_MARKER = 'Headless worker ended without its own session report';
+
 /** Which session this process is: the cloud session id, the local one, or the host name. */
 function claimSessionRef(env = process.env, host = require('os').hostname()) {
   // The env var is cse_<id>; the session's link is claude.ai/code/session_<id>.
@@ -369,6 +374,7 @@ function latestHolderComment(issue) {
 }
 
 module.exports = {
+  HEADLESS_END_MARKER,
   claimSessionRef,
   buildClaimComment,
   parseWorkerModel,

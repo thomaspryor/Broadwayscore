@@ -22,7 +22,7 @@
  * fetch/fs/git/Linear call and hands in `runVerifyFn` / `commitOnMainFn`.
  */
 
-const { parseSessionReportStatus } = require('./linear-session-reporting.js');
+const { parseSessionReportStatus, HEADLESS_END_MARKER } = require('./linear-session-reporting.js');
 const { DISPATCH_COMMENT_CORRELATION_RE, isCompletePrEvidence } = require('./linear-dispatch.js');
 const { BYPASS_LINE_PREFIX } = require('./linear-gate-bypass-ledger.js');
 const { evaluateVerifiability } = require('./verify-gate.js');
@@ -56,7 +56,8 @@ function classifyZombieComment(body) {
   if (DISPATCH_COMMENT_CORRELATION_RE.test(trimmed)
     || trimmed.startsWith(BYPASS_LINE_PREFIX)
     || /^\*\*Re-arm \(auto\b/.test(trimmed)
-    || /^Claimed by /.test(trimmed)) return 'machine';  // BRO-5626 claim trace, posted right after spawn
+    || /^Claimed by /.test(trimmed)
+    || trimmed.startsWith(HEADLESS_END_MARKER)) return 'machine';  // BRO-5626 claim trace, posted right after spawn
   return 'unclassified';
 }
 

@@ -120,7 +120,7 @@ function latestSessionReportStatus(comments) {
 function isHolderOrReclaimComment(c) {
   const { HOLDER_COMMENT_RE } = require('./linear-session-reporting.js');
   const body = String((c && c.body) || '').trim();
-  return HOLDER_COMMENT_RE.test(body) || body.startsWith(RECLAIM_MARKER);
+  return HOLDER_COMMENT_RE.test(body) || body.startsWith(RECLAIM_MARKER) || body.startsWith(require('./linear-session-reporting.js').HEADLESS_END_MARKER);
 }
 
 /** Skip reason for an In Review card beyond the shared rules, or null (see header, BRO-6085). */

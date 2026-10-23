@@ -43,7 +43,7 @@
  */
 'use strict';
 
-const { parseSessionReportStatus } = require('./linear-session-reporting.js');
+const { parseSessionReportStatus, HEADLESS_END_MARKER } = require('./linear-session-reporting.js');
 const { ZOMBIE_RESET_MARKER } = require('./linear-started-zombie-sweep.js');
 const { WATCHDOG_SAFETY_NET_PREFIX } = require('./dispatch-watchdog-core.js');
 
@@ -54,7 +54,7 @@ const DISPATCH_COMMENT_RE = /^Dispatched\b/;
 
 function isAutomationReport(body) {
   const b = String(body || '');
-  return b.includes(ZOMBIE_RESET_MARKER) || b.includes(WATCHDOG_SAFETY_NET_PREFIX);
+  return b.includes(ZOMBIE_RESET_MARKER) || b.includes(WATCHDOG_SAFETY_NET_PREFIX) || b.includes(HEADLESS_END_MARKER);
 }
 
 function sortedComments(comments) {
