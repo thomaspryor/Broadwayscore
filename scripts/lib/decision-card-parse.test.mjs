@@ -138,6 +138,8 @@ test('"A staged rollout" is the article, not option A; real picks still resolve'
   assert.equal(recommendedKey('A, staged, because X', opts), 'A');
   assert.equal(recommendedKey('A now, B later.', opts), 'A');
   assert.equal(recommendedKey('Option B because Y', opts), 'B');
+  assert.equal(recommendedKey('A \u2014 now, then B', opts), 'A');
+  assert.equal(recommendedKey('A (staged), because X', opts), 'A');
   assert.equal(recommendedKey('B', opts), 'B');
   assert.equal(recommendedKey('C because Z', opts), null);
 });
@@ -178,7 +180,9 @@ test('whole email: every link above Technical details is visibly a link or a but
     },
     autofixRows: [], now,
   });
-  const top = html.slice(0, html.indexOf('>Technical details<'));
+  const cut = html.indexOf('>Technical details<');
+  assert.ok(cut > 0, 'the Technical details heading marks where the owner-facing top ends');
+  const top = html.slice(0, cut);
   const anchors = top.match(/<a\b[^>]*>/g) || [];
   assert.ok(anchors.length >= 8, `expected many links above Technical details, got ${anchors.length}`);
   for (const a of anchors) {
