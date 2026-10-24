@@ -1168,6 +1168,37 @@
     "queuedAt": "2026-10-24T17:03:11.572Z"
   },
   {
+    "conditionKey": "land:land/bro-6149-share-preview",
+    "title": "Landing blocked: tsc red on land/bro-6149-share-preview",
+    "description": "land.yml did not land land/bro-6149-share-preview: the tsc gate went red at daf196ddc7. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6149-share-preview @ daf196ddc7 (origin/land/bro-6149-share-preview) → origin/main @ 640b7e02fa [land] train: + land/bro-6147-owner-decision-emails @ 227cb13385 (1 commit(s)) [land] train: + land/bro-6153-ob-phaseh-addshow @ 74be4e958f (2 commit(s)) [land] train: + land/bro-6154-tr-section-diag2 @ 888949b2a3 (1 commit(s)) [land] attempt 1/3: rebased onto 640b7e02fa, 66 file(s) chan Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40114621651",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6149-share-preview"
+      },
+      {
+        "name": "gate",
+        "value": "tsc"
+      },
+      {
+        "name": "tip",
+        "value": "daf196ddc7766108704ad9e26b76d581639e8d2e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40114621651"
+      }
+    ],
+    "queuedAt": "2026-10-24T18:38:53.729Z"
+  },
+  {
     "conditionKey": "land:land/bro-6143-bucknell-backtest",
     "title": "Landing blocked: merged-tree-tests red on land/bro-6143-bucknell-backtest",
     "description": "land.yml did not land land/bro-6143-bucknell-backtest: the merged-tree-tests gate went red at ee98647bbc. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6143-bucknell-backtest @ ee98647bbc (origin/land/bro-6143-bucknell-backtest) → origin/main @ a056f5dc72 [land] train: land/bro-6154-tr-section-diag not taken — nothing left to land after the rebase (already on main or in the train) [land] train: + land/bro-6141-baseline @ d1cfe2f25e (1 commit(s)) [land] train: + land/bro-6149-share-preview @ daf196ddc7 (1 commit(s)) [land] attempt  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40113260067",
