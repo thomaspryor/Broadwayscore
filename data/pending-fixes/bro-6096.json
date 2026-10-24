@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6096",
   "planId": "43c02e4f-a919-4d7a-af4b-00cc2054187e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-24T03:46:11.450Z",
   "submitter": {
     "name": null,
@@ -481,5 +481,109 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-24T05:00:13.245Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added gerry-and-sewell-west-end-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-last-laugh-west-end-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added sister-act-west-end-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-lehman-trilogy-west-end-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-christmas-carol-west-end-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-land-of-the-living-west-end-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added your-lie-in-april-west-end-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added shifters-west-end-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-constituent-west-end-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-39-steps-west-end-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added death-of-england-closing-time-west-end-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added ballet-shoes-west-end-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added yentl-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for burlesque-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for burlesque-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for punch-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for dracula-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for the-producers-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for the-years-west-end-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added death-of-england-michael-delroy-west-end-2024"
+    }
+  ],
+  "executedIn": "ci"
 }
