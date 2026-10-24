@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T14:39:56.330Z",
+  "generatedAt": "2026-10-24T14:59:43.616Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -138,12 +138,12 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
-      "outletId": "british-theatre",
-      "error": "Timeout fetching https://www.britishtheatreguide.info/reviews/"
+      "outletId": "front-row-center",
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
     {
       "outletId": "slantmagazine",
@@ -152,10 +152,6 @@
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "plays-international",
-      "error": "AggregateError"
     },
     {
       "outletId": "theartsdispatch",
@@ -170,19 +166,10 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 751,
-  "matchedGaps": 5,
-  "possibleGaps": 3,
+  "itemsScanned": 776,
+  "matchedGaps": 1,
+  "possibleGaps": 2,
   "gaps": [
-    {
-      "showId": "garry-starr-classic-penguins-off-west-end-2026",
-      "title": "Garry Starr Classic Penguins",
-      "level": "matched",
-      "outletId": "jackstage",
-      "url": "https://www.jackstage.co.uk/post/garry-starr-classic-penguins-review",
-      "headline": "Garry Starr - Classic Penguins Review: a whimsical race through the literary greats... in the buff!",
-      "publishDate": "2026-10-24"
-    },
     {
       "showId": "machine-learning-off-broadway-2026",
       "title": "Machine Learning",
@@ -191,42 +178,6 @@
       "url": "https://www.interestedbystander.com/2026/10/theater-reviews-lauren-yees-king-of.html",
       "headline": "Theater Reviews:  Lauren Yee&#39;s “King of the Yees” Is an Amusing Slice of San Francisco Chinatown Life; Duncan Sheik’s Last Musical, “Memoirs of Amorous Gentlemen,” Is About Sex Workers and Sex Writers; and “Machine Learning” Is “Who’s Afraid of AI Woolf?”",
       "publishDate": "2026-10-23"
-    },
-    {
-      "showId": "other-desert-cities-2026",
-      "title": "Other Desert Cities",
-      "level": "matched",
-      "outletId": "theater-pizzazz",
-      "url": "https://theaterpizzazz.com/other-desert-cities-makes-a-welcome-return-to-broadway/",
-      "headline": "“OTHER DESERT CITIES” MAKES A WELCOME RETURN TO BROADWAY",
-      "publishDate": "2026-10-23"
-    },
-    {
-      "showId": "the-pianist-off-west-end-2026",
-      "title": "The Pianist",
-      "level": "matched",
-      "outletId": "onin",
-      "url": "https://onin.london/the-pianist-at-park-theatre/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-pianist-at-park-theatre",
-      "headline": "The Pianist At Park Theatre",
-      "publishDate": "2026-10-23"
-    },
-    {
-      "showId": "the-pianist-off-west-end-2026",
-      "title": "The Pianist",
-      "level": "matched",
-      "outletId": "the-recs",
-      "url": "https://therecs.co.uk/the-pianist-park-theatre/",
-      "headline": "The Pianist &#8211; Park Theatre ★★★★★",
-      "publishDate": "2026-10-24"
-    },
-    {
-      "showId": "copperfield-the-new-musical-off-broadway-2026",
-      "title": "Copperfield! The New Musical",
-      "level": "possible",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/the-curious-case-of-benjamin-button/",
-      "headline": "The Curious Case of Benjamin Button *****",
-      "publishDate": "2026-10-21"
     },
     {
       "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
