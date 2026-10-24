@@ -1421,7 +1421,7 @@ function findUnboundedGitCommands(raw, pattern) {
       if (before.endsWith('\\`')) return false;
       const command = body.slice(match.index).split(/[;&|]/)[0];
       if (match[1] === 'clone' && /--mirror\b|--bare\b/.test(command)) return false;
-      if (/(?:^|[;&|()]|\b(?:if|then|do))\s*(?:(?:command|exec)\s+)?(?:timeout|gtimeout)\s+[^;&|()]*$/.test(before)) return false;
+      if (/(?:^|[^\w./-])(?:timeout|gtimeout)\s+[^;&|()]*$/.test(before)) return false;
       return true;
     });
   });

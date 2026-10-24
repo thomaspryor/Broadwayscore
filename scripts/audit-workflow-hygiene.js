@@ -215,7 +215,7 @@
  *   # hygiene-cache-runid-ok: <reason>    — skip run-id-keyed actions/cache check for this file
  *   # hygiene-audit-glob-ok: <reason>     — skip bare-audit-dir-glob check for this workflow
  *   # hygiene-short-timeout-ok: <reason>  — (in the job) skip rule (r), short core-data job timeout (BRO-4266)
- *   # hygiene-unbounded-clone-ok: <reason> — (on the clone line or the line above) skip rule (z) (BRO-5972)
+ *   # hygiene-unbounded-clone-ok: <reason> — (on the command line or the line above) skip rule (z) (BRO-5972)
  *
  * No external deps. Parsed with plain regex, consistent with
  * audit-workflow-concurrency.js and audit-cron-health-coverage.js.
