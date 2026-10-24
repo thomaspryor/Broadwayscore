@@ -29,7 +29,7 @@ const { pdfUrlVariants, nonPdfHead } = require('./lib/tr-pdf-url');
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
 const { resolveTheatreRecordWriteTarget, mergeTheatreRecordIntoExisting } = require('./lib/review-text-identity');
 
-const { DATE_SHORT, parseShortDate, parsePdfReviews, parseRawPdfReviews, parseDefaultPdfReviews, mergeDefaultReviews, maskPdfText } = require('./lib/tr-pdf-parse');
+const { DATE_SHORT, parseShortDate, parsePdfReviews, parseRawPdfReviews, parseDefaultPdfReviews, mergeDefaultReviews, maskPdfText, locateReviews } = require('./lib/tr-pdf-parse');
 const { foldDiacritics } = require('./lib/title-match');
 
 // BRO-6097 coverage probe: per-show outcome (counts and reasons only, never
@@ -98,6 +98,7 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
     return [];
   }
 
+  const text0 = text;
   const layoutStats = {};
   let reviews = parsePdfReviews(text, show.title, layoutStats);
   const layoutCount = reviews.length;
@@ -120,6 +121,7 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
     return [];
   }
 
+  const rawText = text;
   const rawReviews = parseRawPdfReviews(text, show.title);
   try { dumpPdfText(show.id, 'raw', text, show.title); } catch (_) {}
   // Plain column-order mode (BRO-6097): recovers the pre-2020 reviews that
@@ -133,6 +135,15 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
   if (dumpDir && defaultText) { try { dumpPdfText(show.id, 'default', defaultText, show.title); } catch (_) {} }
   probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { defaultReviews: defaultReviews.length }) });
   probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { rawReviews: rawReviews.length }) });
+  if (process.argv.some(a => a.startsWith('--probe-out='))) {
+    // BRO-6154: where in the issue each mode's reviews sit (no prose).
+    const diag = {
+      layout: locateReviews(text0, reviews.slice(0, layoutCount), show.title),
+      raw: locateReviews(rawText, rawReviews, show.title),
+      default: locateReviews(defaultText, defaultReviews, show.title),
+    };
+    probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { sections: diag }) });
+  }
   if (rawReviews.length > 0) {
     console.log(`  Extracted ${rawReviews.length} reviews (-raw mode, title-matched)`);
     // Merge with layout reviews, avoiding duplicates (same outlet+critic)
