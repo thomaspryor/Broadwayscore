@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-24T01:35:33.522Z",
+  "timestamp": "2026-10-24T01:49:20.457Z",
   "stats": {
-    "totalReviews": 59660,
-    "alreadyFlagged": 21118,
+    "totalReviews": 59665,
+    "alreadyFlagged": 21121,
     "dateGuardCatches": 202,
-    "directorMismatch": 2126,
-    "tvFilmSignals": 1691,
-    "londonSignals": 2844,
+    "directorMismatch": 2129,
+    "tvFilmSignals": 1692,
+    "londonSignals": 2845,
     "offBroadwaySignals": 535,
     "yearMismatch": 178,
-    "noPublishDate": 5414
+    "noPublishDate": 5404
   },
   "findings": [
     {
@@ -4847,6 +4847,20 @@
     },
     {
       "showId": "betrayal-2019",
+      "file": "exeunt-magazine--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://exeuntnyc.com/reviews/review-betrayal-at-bernard-b-jacobs-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "betrayal-2019",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 88,
       "publishDate": "September 5, 2019",
@@ -4936,6 +4950,20 @@
       "score": 85,
       "publishDate": "September 5, 2019",
       "url": "https://observer.com/2019/09/tom-hiddleston-betrayal-broadway-debut-review-harold-pinter/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from betrayal-2013"
+        }
+      ]
+    },
+    {
+      "showId": "betrayal-2019",
+      "file": "talkinbroadway--howard-miller.json",
+      "score": 85,
+      "publishDate": null,
+      "url": "https://www.talkinbroadway.com/page/world/Betrayal2019.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -12800,6 +12828,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "dreamgirls-west-end-2016",
+      "file": "british-theatre--philip-fisher.json",
+      "score": null,
+      "publishDate": "2016-12-15",
+      "url": "https://www.britishtheatreguide.info/reviews/dreamgirls-savoy-13851",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael bennett\" from dreamgirls-1987"
         }
       ]
     },
@@ -22942,6 +22984,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-1971",
+      "file": "exeunt-magazine--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://exeuntnyc.com/reviews/jesus-christ-superstar/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"des mcanuff\" from jesus-christ-superstar-2012"
         }
       ]
     },
@@ -49753,7 +49809,7 @@
     },
     {
       "showId": "the-upstart-crow-west-end-2022",
-      "file": "timeout-london--unknown.json",
+      "file": "timeout-london--andrzej-lukowski.json",
       "score": 71,
       "publishDate": "2022-10-03",
       "url": "https://www.timeout.com/london/theatre/the-upstart-crow-review",
@@ -50728,7 +50784,7 @@
     },
     {
       "showId": "travesties-west-end-2017",
-      "file": "guardian--unknown.json",
+      "file": "guardian--susannah-clapp.json",
       "score": 81,
       "publishDate": "2017-02-19",
       "url": "https://www.theguardian.com/stage/2017/feb/19/travesties-tom-stoppard-tom-hollander-review-apollo-london",
@@ -55473,6 +55529,20 @@
       ]
     },
     {
+      "showId": "a-christmas-carol-2019",
+      "file": "theater-news-online--robert-cashill.json",
+      "score": 82,
+      "publishDate": "November 30th, 2019",
+      "url": "http://theaternewsonline.com/NYTheaterReviews/CATCHTHEHUMBUG.cfm",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "a-christmas-carol-2022",
       "file": "vulture--sara-holdren.json",
       "score": 24,
@@ -56635,7 +56705,7 @@
     },
     {
       "showId": "abigails-party-west-end-2026",
-      "file": "plays-international--unknown.json",
+      "file": "plays-international--jeremy-malies.json",
       "score": 77,
       "publishDate": "2026-08-21",
       "url": "https://playsinternational.org.uk/abigails-party-harold-pinter-theatre/",
@@ -98270,7 +98340,7 @@
     },
     {
       "showId": "woyzeck-west-end-2017",
-      "file": "guardian--unknown.json",
+      "file": "guardian--michael-billington.json",
       "score": 70,
       "publishDate": "2017-05-24",
       "url": "https://www.theguardian.com/stage/2017/may/24/woyzeck-review-john-boyega-jack-thorne-georg-buchner-old-vic-london",
