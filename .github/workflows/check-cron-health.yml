@@ -238,6 +238,10 @@ jobs:
             # 3h band false-tripped on the real noon checks on 10-14). Mirrored in
             # TIGHT_BY_DESIGN (scripts/audit-cron-health-coverage.js); do not tighten back.
             "opening-night-checklist.yml|10|Opening Night Checklist"
+            # Codex lane health alarm (BRO-6134), scheduled hourly at :37; cron-redispatch replaces a dropped tick at 3h.
+            # Same throttled-hourly band as audit-aggregator-gap (BRO-3867: real gap p95 8.0h, max 12.1h). Mirrored in
+            # TIGHT_BY_DESIGN (scripts/audit-cron-health-coverage.js); do not tighten back.
+            "codex-lane-health.yml|12|Codex Lane Health"
             # Same-night Express retry dispatcher (card #1889); scheduled hourly at :50.
             # A dead cron here means a queued
             # same-night retry never dispatches — the exact silent-miss this
