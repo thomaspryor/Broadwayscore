@@ -1421,7 +1421,11 @@ function findUnboundedGitCommands(raw, pattern) {
       if (before.endsWith('\\`')) return false;
       const command = body.slice(match.index).split(/[;&|]/)[0];
       if (match[1] === 'clone' && /--mirror\b|--bare\b/.test(command)) return false;
-      if (/(?:^|[^\w./-])(?:timeout|gtimeout)\s+[^;&|()]*$/.test(before)) return false;
+      // Quoted arguments (e.g. env NOTE="timeout 60") cannot supply a
+      // timeout wrapper. Keep a placeholder so quoted duration arguments
+      // still count, without treating their contents as shell commands.
+      const unquotedBefore = before.replace(/"(?:\\.|[^"\\])*"|'[^']*'/g, '""');
+      if (/(?:^|[^\w./-])(?:timeout|gtimeout)\s+[^;&|()]*$/.test(unquotedBefore)) return false;
       return true;
     });
   });
