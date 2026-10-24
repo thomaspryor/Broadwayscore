@@ -122,3 +122,13 @@ test('URL clusters read outlet prefixes and stored bylines independently of crit
   assert.deepEqual(cluster.bylines, ['Rex Reed']);
   assert.equal(cluster.outlet, 'observer');
 });
+
+test('normalizeUrl: AMP variants collapse to the plain URL, no trailing slash or glued params (BRO-5365)', () => {
+  const { normalizeUrl: n } = require('./review-normalization.js');
+  const plain = n('https://example.com/review');
+  assert.equal(n('https://example.com/review/?amp=1'), plain);
+  assert.equal(n('https://example.com/review?amp=1'), plain);
+  assert.equal(n('https://example.com/review/amp/'), plain);
+  assert.equal(n('https://example.com/review/?amp=1&page=2'), n('https://example.com/review?page=2'));
+  assert.notEqual(n('https://example.com/review?page=2'), plain);
+});

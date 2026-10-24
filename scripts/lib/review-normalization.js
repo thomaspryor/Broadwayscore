@@ -2420,9 +2420,9 @@ function normalizeUrl(url) {
       const base = u.slice(0, qIdx);
       const kept = u.slice(qIdx + 1).split('&').filter((pair) => {
         if (!pair) return false; // drop empty segments from a stray &/&& in the source
-        return !/^(utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc|srsltid|loginsuccessful|gaa_(?:at|n|ts|sig)|action|contentcollection|region|module|version|contentplacement|pgtype|searchresultposition)=/.test(pair);
+        return !/^(utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc|srsltid|loginsuccessful|gaa_(?:at|n|ts|sig)|action|contentcollection|region|module|version|contentplacement|pgtype|searchresultposition)=|^amp=1$/.test(pair);
       });
-      u = kept.length ? `${base}?${kept.join('&')}` : base;
+      u = kept.length ? `${base.replace(/\/+$/, "")}?${kept.join("&")}` : base;
     }
     // Re-strip trailing slashes: the first strip (above) runs before the
     // query string is removed, so `/review/?utm_source=x` still ends in a
@@ -2440,6 +2440,8 @@ function normalizeUrl(url) {
     // strip `/amp` cleanly (otherwise `/amp$` doesn't match while `?utm`
     // is still present).
     u = u.replace(/\/amp$/, '').replace(/[?&]amp=1\b/g, '');
+    // BRO-5365: '/review/?amp=1' leaves '/review/' after the AMP strip; re-strip so it matches '/review'.
+    u = u.replace(/\/+$/, '');
     // WordPress comment-pagination suffix (BRO-2869): `/article/comment-page-1`
     // serves the SAME article body as `/article`. Path-final only, so a real
     // slug that merely contains the words is untouched.
