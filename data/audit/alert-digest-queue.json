@@ -126,20 +126,6 @@
     "queuedAt": "2026-10-24T07:38:57.677Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 17 (pull-quote-quality, regex-fp, run-contamination, cross-show-url, body-date-mismatch, unknown-outlets, +11 more). Checked 2026-10-24.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-24T09:22:14.927Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:dance-is-not-for-us-off-west-end-2026",
     "title": "Review gap — \"Dance Is Not for Us\" missing 1 cited review(s)",
     "description": "Dance Is Not for Us (dance-is-not-for-us-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=dance-is-not-for-us-off-west-end-2026 --checkpoint --ingest-missing",
@@ -287,6 +273,48 @@
       }
     ],
     "queuedAt": "2026-10-24T10:28:32.894Z"
+  },
+  {
+    "conditionKey": "corpus-drift:sibling-title-misroute",
+    "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff) — escalated after 22 notifications",
+    "description": "Filed BRO-6113 for owner triage after 22 repeats with no tracker.\n\ncheck-corpus-drift.js audit \"sibling-title-misroute\" (node scripts/audit-sibling-title-misroute.js --strict) has been drifting. Latest output:\n\n    the-cherry-orchard-west-end-2026  thewrap--unknown.json  (cross-market: US-only outlet \"thewrap\" reviewing WE show)\n    the-cherry-orchard-west-end-2026  timeout--unknown.json  (cross-market: Broadway URL pattern: /\\/newyork\\//i)\n    the-great-gatsby-tour-2026  newjerseystage--adam-f-cohen.json  (tour-review: review date is outside every tour of this title)\n    the-great-gatsby-tour-2026  theater-pizzazz--adam-cohen.json  (tour-review: review date is outside every tour of this title)\n    the-great-gatsby-tour-2026  theatermania--david-gordon.json  (tour-review: review date is outside every tour of this title)\n    the-lion-king-tour-2021  nytimes--michael-paulson.json  (tour-review: review date is outside every tour of this title)\n    the-misanthrope-west-end-2026  theatermania--david-finkle.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    the-notebook-tour-2025  observer--david-cote.json  (tour-review: review date is outside every tour of this title)\n    the-phantom-of-the-opera-tour-2025  nytimes--juan-a-ramirez.json  (tour-review: review date is outside every tour of this title)\n    the-phantom-of-the-opera-tour-2025  nytimes--unknown.json  (tour-review: review date is outside every tour of this title)\n    the-phantom-of-the-opera-west-end-1986  variety--unknown.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    the-play-that-goes-wrong-west-end-2021  chicagotribune--chris-jones.json  (cross-market: US-only outlet \"chicagotribune\" reviewing WE show)\n    the-play-that-goes-wrong-west-end-2021  variety--frank-rizzo.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    the-producers-west-end-2025  deadline--unknown.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    the-sound-of-music-tour-2025  timeout--kris-vire.json  (tour-review: review date is outside every tour of this title)\n    the-whos-tommy-tour-2026  deadline--greg-evans.json  (tour-review: review date is outside every tour of this title)\n    titanique-west-end-2024  cititour--brian-scott-lipton.json  (cross-market: US-only outlet \"cititour\" reviewing WE show)\n    titanique-west-end-2024  nypost--johnny-oleksinski.json  (cross-market: US-only outlet \"nypost\" reviewing WE show)\n    titanique-west-end-2024  thewrap--robert-hofler.json  (cross-market: US-only outlet \"thewrap\" reviewing WE show)\n    titanique-west-end-2024  wsj--charles-isherwood.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    to-kill-a-mockingbird-west-end-2026  dailybeast--tim-teeman.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    to-kill-a-mockingbird-west-end-2026  hollywood-reporter--david-rooney.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    to-kill-a-mockingbird-west-end-2026  latimes--charles-mcnulty.json  (cross-market: Broadway URL pattern: /broadway-review/i)\n    to-kill-a-mockingbird-west-end-2026  newsday--elisabeth-vincentelli.json  (cross-market: Broadway URL pattern: /broadway-review/i)\n    to-kill-a-mockingbird-west-end-2026  newsday--elysa-gardner.json  (cross-market: Broadway URL pattern: /broadway-review/i)\n    to-kill-a-mockingbird-west-end-2026  nydailynews--chris-jones.json  (cross-market: US-only outlet \"nydailynews\" reviewing WE show)\n    to-kill-a-mockingbird-west-end-2026  thewrap--thom-geier.json  (cross-market: US-only outlet \"thewrap\" reviewing WE show)\n    two-strangers-carry-a-cake-across-new-york-west-end-2024  daily-mail--patrick-marmion.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    water-for-elephants-tour-2025  observer--david-cote.json  (tour-review: review date is outside every tour of this title)\n    wicked-west-end-2021  timeout--david-cote.json  (cross-market: Broadway URL pattern: /newyork\\.timeout\\.com/i)\n\n✗ STRICT: 7 sibling-title misroute(s) NOT in baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/sibling-title-misroute-baseline.json):\n    [reroute] death-of-england-closing-time-west-end-2023 -> death-of-england-closing-time-west-end-2024  telegraph--unknown.json  (sibling-venue-in-url: \"soho-place\")\n    [reroute] the-score-regional-2026 -> the-score-west-end-2025  standard--tim-bano.json  (sibling-venue-in-url: \"theatre-royal-haymarket\")\n    [reroute] titanique-west-end-2024 -> titanique-2026  deadline--greg-evans.json  (sibling opening 37d from publishDate vs current 496d)\n    [same-url] punch-2025 -> punch-west-end-2025  theatrely--juan-a-ramirez.json  (same url as punch-west-end-2025/theatrely--juan-a-ramirez.json)\n    [same-url] hadestown-west-end-2018 -> hadestown-west-end-2024  timeout-london--andrzej-lukowski.json  (same url as hadestown-west-end-2024/timeout-london--andrzej-lukowski.json)\n    [same-url] death-of-a-salesman-west-end-2019 -> death-of-a-salesman-west-end-2026  london-box-office--phil-willmott.json  (same url as death-of-a-salesman-west-end-2026/london-box-office--phil-willmott.json)\n    [same-url] noises-off-west-end-2019 -> noises-off-west-end-2023  timeout-london--andrzej-lukowski.json  (same url as noises-off-west-end-2023/timeout-london--andrzej-lukowski.json)\n  Verify by hand, then either fix the file or run --update-baseline once it's a confirmed, deliberately-unfixed FP.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-6113",
+    "fields": [],
+    "queuedAt": "2026-10-24T11:26:04.770Z"
+  },
+  {
+    "conditionKey": "corpus-drift:critic-outlets",
+    "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff) (still open — BRO-4515)",
+    "description": "Still firing after 34 notifications since it was filed. Tracked at BRO-4515.\n\ncheck-corpus-drift.js audit \"critic-outlets\" (node scripts/audit-critic-outlets.js --strict) has been drifting. Latest output:\n\n  James Wilson at off-off-online (8% share) for masquerade-off-broadway-2025\n  Susannah Clapp at guardian (8% share) for carousel-west-end-2017\n  Susannah Clapp at guardian (8% share) for cruise-west-end-2021\n  Susannah Clapp at guardian (8% share) for emilia-west-end-2019\n  Susannah Clapp at guardian (8% share) for exit-the-king-west-end-2018\n  Susannah Clapp at guardian (8% share) for g-west-end-2024\n  Susannah Clapp at guardian (8% share) for manor-west-end-2021\n  Susannah Clapp at guardian (8% share) for network-west-end-2017\n  Susannah Clapp at guardian (8% share) for people-places-and-things-west-end-2024\n  Susannah Clapp at guardian (8% share) for pity-west-end-2018\n  Susannah Clapp at guardian (8% share) for player-kings-west-end-2024\n  Susannah Clapp at guardian (8% share) for pride-and-prejudice-sort-of-west-end-2021\n  Susannah Clapp at guardian (8% share) for romeo-and-juliet-west-end-2024\n  Susannah Clapp at guardian (8% share) for the-ferryman-west-end-2017\n  Susannah Clapp at guardian (8% share) for the-sewing-group-west-end-2016\n  Susannah Clapp at guardian (8% share) for travesties-west-end-2017\n  Lucy Popescu at islingtontribune (7% share) for the-last-ship-west-end-2026\n  Bridget Galton at islington-gazette (6% share) for paddington-the-musical-west-end-2025\n  Bridget Galton at islington-gazette (6% share) for when-we-have-sufficiently-tortured-each-other-west-end-2019\n  Howard Loxton at camdennewjournal (1% share) for peter-gynt-west-end-2019\n  John Groves at bestoftheatre (4% share) for what-the-animals-say-off-west-end-2026\n  John Cutler at bestoftheatre (4% share) for an-oak-tree-off-west-end-2026\n  Deb Miller at theater-scene (5% share) for in-honor-of-jean-michel-basquiat-off-broadway-2026\n  Deb Miller at theater-scene (5% share) for the-real-ivanov-off-broadway-2026\n  Kate Wyver at timeout-london (3% share) for expendable-west-end-2024\n  Kenji Fujishima at slantmagazine (3% share) for the-heart-off-broadway-2026\n  Jose Solis at dtli (6% share) for six-2021\n  Ann Treneman at sunday-times (5% share) for bat-out-of-hell-west-end-2017\n  Ann Treneman at sunday-times (5% share) for the-kid-stays-in-the-picture-west-end-2017\n  Christopher Caggiano at zeal-nyc (9% share) for the-play-that-goes-wrong-2017\n  Heather Neill at thestage (6% share) for waiting-for-godot-west-end-2017\n  Christine Stanton at ratedreviewed (8% share) for stories-the-tap-dance-sensation-west-end-2026\n  Caitlin Huston at broadwaynews (9% share) for escape-to-margaritaville-2018\n  Shania Russell at cbsnews (9% share) for big-fish-2013\n  Shania Russell at cbsnews (9% share) for the-waverly-gallery-2018\n  Mert Dilek at thestage (9% share) for les-miserables-west-end-2021\n  Markos Papadatos at truehollywoodtalk (7% share) for night-of-january-16th-off-broadway-2026\n\nInvestigate the attribution, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-critic-outlets.js --update-baseline",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-4515",
+    "fields": [],
+    "queuedAt": "2026-10-24T11:26:05.264Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 17 (pull-quote-quality, regex-fp, run-contamination, cross-show-url, body-date-mismatch, unknown-outlets, +11 more). Checked 2026-10-24.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T11:26:05.324Z"
   },
   {
     "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
