@@ -1430,6 +1430,37 @@
     "queuedAt": "2026-10-24T19:07:25.905Z"
   },
   {
+    "conditionKey": "land:land/bro-6158-estimates",
+    "title": "Landing blocked: race red on land/bro-6158-estimates",
+    "description": "land.yml did not land land/bro-6158-estimates: the race gate went red at 9ec714f838. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6158-estimates @ 9ec714f838 (origin/land/bro-6158-estimates) → origin/main @ 0c024779e7 [land] attempt 1/3: rebased onto 0c024779e7, 20 file(s) changed — running checks [land] verified-base: main moved 790db5fe77 → 0c024779e7 across 315 file(s), substantive — re-checking on the merged tree (+5 test file(s) changed on main since the verified base); small re-check: no file changed on Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40123983976",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6158-estimates"
+      },
+      {
+        "name": "gate",
+        "value": "race"
+      },
+      {
+        "name": "tip",
+        "value": "9ec714f83889364a304bc9932007a0a190f91b56"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40123983976"
+      }
+    ],
+    "queuedAt": "2026-10-24T21:17:41.625Z"
+  },
+  {
     "conditionKey": "land:land/bro-6160",
     "title": "Landing blocked: no-checks red on land/bro-6160",
     "description": "land.yml did not land land/bro-6160: the no-checks gate went red at fc475b9d2a. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6160 @ fc475b9d2a (origin/land/bro-6160) → origin/main @ 542bae298d [land] train: + land/bro-6158-estimates @ 9ec714f838 (2 commit(s)) [land] train: + land/bro-6164-button-fill @ 2403738914 (2 commit(s)) [land] train: land/bro-6138-ramp not taken — would not rebase onto the train: Rebasing (1/1) error: could not apply 6742f91d1c8... data(commercial): BRO-6138 ramp plan, add Fun Hom Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40123283918",
