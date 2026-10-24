@@ -1,0 +1,153 @@
+name: Recover WE Major Outlet Reviews
+
+# BRO-6155: recover missing major-outlet reviews for West End historical shows
+# (seasons 2016-17..2020-21). Manual dispatch only. Spend is capped by max_usd
+# (scraper dollars from the spend ledger + projected scoring dollars); the run
+# stops before the cap and prints a COST TALLY line. Scoring is a separate
+# dispatch of llm-ensemble-score.yml.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'wos = free WhatsOnStage API match then ingest, run = wos + SERP for the rest, report = counts only'
+        required: true
+        type: choice
+        options: [report, wos, run]
+        default: report
+      seasons:
+        description: 'Season start years, e.g. 2016..2020'
+        required: false
+        type: string
+        default: '2016..2020'
+      slots:
+        description: 'Comma list of outlet slots (guardian,telegraph,standard,times,ft,stage,whatsonstage,timeout,independent,observer,artsdesk,daily-mail). Empty = all'
+        required: false
+        type: string
+        default: ''
+      shows:
+        description: 'Comma list of show ids. Empty = all'
+        required: false
+        type: string
+        default: ''
+      max_usd:
+        description: 'Hard cap, scraper + projected scoring dollars'
+        required: false
+        type: string
+        default: '45'
+      reserve_usd:
+        description: 'Dollars held back for scoring of files written by earlier runs'
+        required: false
+        type: string
+        default: '0'
+      max_calls:
+        description: 'At most this many SERP searches (E2E uses a small number)'
+        required: false
+        type: string
+        default: '200'
+      dry_run:
+        description: 'List the queue only, spend nothing, push nothing'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: recover-we-major-outlets
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 300
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - uses: ./.github/actions/setup-playwright
+
+      - name: Report
+        if: inputs.mode == 'report'
+        run: node scripts/we-major-recovery.js report --seasons="${{ inputs.seasons }}"
+
+      - name: Recover
+        if: inputs.mode != 'report'
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          INPUT_SHOWS: ${{ inputs.shows }}
+          INPUT_SLOTS: ${{ inputs.slots }}
+        run: |
+          set -o pipefail
+          FLAGS="--seasons=${{ inputs.seasons }} --max-usd=${{ inputs.max_usd }} --reserve-usd=${{ inputs.reserve_usd }} --max-calls=${{ inputs.max_calls }} --out=$RUNNER_TEMP/recovery.json"
+          [ -n "$INPUT_SHOWS" ] && FLAGS="$FLAGS --shows=$INPUT_SHOWS"
+          [ -n "$INPUT_SLOTS" ] && FLAGS="$FLAGS --slots=$INPUT_SLOTS"
+          [ "${{ inputs.dry_run }}" = "true" ] && FLAGS="$FLAGS --dry-run"
+          node scripts/we-major-recovery.js wos --seasons="${{ inputs.seasons }}" --out=$RUNNER_TEMP/wos.json
+          [ "${{ inputs.mode }}" = "run" ] && FLAGS="$FLAGS --serp"
+          node scripts/we-major-recovery.js run --candidates=$RUNNER_TEMP/wos.json $FLAGS 2>&1 | tee $RUNNER_TEMP/recovery.log
+          { echo '### Recovery'; grep -E 'COST TALLY|OUTCOMES|STOPPED' $RUNNER_TEMP/recovery.log | tail -4; } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload run output
+        if: always() && inputs.mode != 'report'
+        uses: actions/upload-artifact@v4
+        with:
+          name: recovery-output
+          path: |
+            ${{ runner.temp }}/recovery.json
+            ${{ runner.temp }}/recovery.log
+            ${{ runner.temp }}/wos.json
+          if-no-files-found: ignore
+
+      - name: Commit new review files
+        if: always() && inputs.mode != 'report' && inputs.dry_run != true
+        run: |
+          cd data/review-texts
+          if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard | head -1)" ]; then
+            echo "No changes to commit"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git diff --cached --quiet || git commit -m "data: BRO-6155 recover WE major-outlet reviews"
+            bash ../../scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      - name: Commit scraper-spend ledger
+        if: always() && inputs.mode != 'report'
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: recover-we-major-outlets
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'WE Major Outlet Recovery Failed'
+          severity: 'warning'
