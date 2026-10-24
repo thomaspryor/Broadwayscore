@@ -77,7 +77,7 @@ The owner lives in Berlin; US opening-night reviews drop 01:00-03:00 UTC. Anythi
 The setup script runs after the clones, before Claude starts, cached. It needs this line (BRO-5221/6126):
 
 ```
-for d in /home/user/Broadwayscore /home/user/broadwayscore; do [ -d "$d/.git" ] && git -C "$d" fetch -q origin main && git -C "$d" merge -q --ff-only origin/main; done; for d in /home/user/*/; do [ -f "$d/scripts/install-home-claude-config.js" ] && CLAUDE_CODE_REMOTE=true node "$d/scripts/install-home-claude-config.js"; done; true
+for d in /home/user/Broadwayscore /home/user/broadwayscore; do [ -d "$d/.git" ] && git -C "$d" fetch -q origin main && git -C "$d" merge -q --ff-only origin/main; done; for d in /home/user/*/; do [ -f "$d/scripts/install-home-claude-config.js" ] && CLAUDE_CODE_REMOTE=true node "$d/scripts/install-home-claude-config.js" --adopt-hookless-settings; done; true
 ```
 
 The first loop refreshes a stale checkout; editing it rebuilds the cache. Later drift: startup fetches 40s, then retries detached.
@@ -110,6 +110,8 @@ CLAUDE.md's `gh` runbooks don't run as written; use the GitHub MCP tools (secret
 Several repos attached, or a misspelled `create_session` source_url, start the session in `/home/user`: `--add-dir` loads commands, never hooks. The setup-script line (below) runs `scripts/install-home-claude-config.js`, which wires every hook into `/home/user/.claude` and links `commands/`, `skills/`, `agents/`; startup repairs drift. Check with its `--check`.
 
 If that reports DRIFT or nothing, no hooks fire: run `bash scripts/cloud-bootstrap-data.sh` first, then follow the hook rules by hand (no `POST /broadcasts/{id}/send`, no MCP writes to `main`, review before landing, close the card, canonical `create_session` URL).
+
+The setup line opts into adopting a pre-existing settings object only when it has no `hooks` or ownership marker. Existing permissions and `autoMode` settings survive installation, reinstallation and uninstall. Settings with existing hooks still require a manual merge.
 
 ## Production API keys from a phone session
 
