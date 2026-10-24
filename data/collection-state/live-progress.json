@@ -1,19 +1,84 @@
 {
-  "updatedAt": "2026-10-24T14:26:20.117Z",
-  "processed": 84,
-  "failed": 66,
-  "successRate": "56.0%",
+  "updatedAt": "2026-10-24T14:36:32.467Z",
+  "processed": 109,
+  "failed": 85,
+  "successRate": "56.2%",
   "tierBreakdown": {
-    "playwright": 52,
+    "playwright": 66,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingdog": 7,
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 16
+    "archive": 26
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 9,
+  "recentActivity": [
+    {
+      "t": "2026-10-24T14:30:12.932Z",
+      "event": "bb-session",
+      "session": "f5d68359",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-24T14:30:44.051Z",
+      "event": "bb-session",
+      "session": "4379a499",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-24T14:30:52.886Z",
+      "event": "bb-session",
+      "session": "fa3fd3f6",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-24T14:32:02.373Z",
+      "event": "bb-session",
+      "session": "dfbd65df",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-24T14:32:02.980Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-24T14:32:12.447Z",
+      "event": "bb-session",
+      "session": "c678a0b5",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-24T14:32:13.060Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-24T14:33:45.226Z",
+      "event": "bb-session",
+      "session": "6e01b111",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-24T14:33:53.406Z",
+      "event": "bb-session",
+      "session": "4d6f6ba1",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-24T14:35:02.542Z",
+      "event": "bb-session",
+      "session": "78a97092",
+      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
+    },
+    {
+      "t": "2026-10-24T14:36:03.243Z",
+      "event": "bb-session",
+      "session": "a81bc3c2",
+      "url": "https://www.cbsnews.com/video/other-desert-cities-on-broadway-family-secrets-lai"
+    }
+  ]
 }
