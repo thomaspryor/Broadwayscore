@@ -29,8 +29,12 @@ import { execFileSync } from 'node:child_process';
 const FIX_LANDED_AT = '2026-08-19T10:19:28Z'; // commit 0d3716a9ba8 author date
 const REQUIRED_STREAK = 5;
 const LOOKBACK_LIMIT = 30; // generous window in case cancellations recur
+// Five daily 08:00 UTC runs after the 2026-08-19 timeout fix.
+const CHECKABLE_FROM = Date.parse('2026-08-24T08:00:00Z');
 
-test('update-show-status.yml has 5 non-cancelled completed runs since the timeout fix landed', () => {
+test('update-show-status.yml has 5 non-cancelled completed runs since the timeout fix landed', {
+  skip: Date.now() < CHECKABLE_FROM && 'not checkable before the fifth daily run on 2026-08-24 08:00 UTC',
+}, () => {
   let raw;
   try {
     raw = execFileSync(

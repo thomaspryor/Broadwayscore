@@ -158,7 +158,7 @@ function auditRepo({ collector = false } = {}) {
   // BRO-2483: a tree carrying the collector reads its node batch from it.
   if (collector) write(d, 'scripts/lib/unit-test-collection.js', fs.readFileSync(path.join(ROOT, 'scripts/lib/unit-test-collection.js'), 'utf8'));
   // ci-test-coverage.js + bash-integration-test-list.js: the audit's coverage rule (BRO-2778).
-  for (const f of ['scripts/audit-orphan-tests.js', 'scripts/lib/orphan-test-gate.js', 'scripts/lib/test-manifest.js', 'scripts/lib/ci-test-coverage.js', 'scripts/lib/bash-integration-test-list.js', 'scripts/lib/workflow-glob-guard.js', 'scripts/lib/scan-alert-ledger-gaps.js']) {
+  for (const f of ['scripts/audit-orphan-tests.js', 'scripts/lib/orphan-test-gate.js', 'scripts/lib/recheck-probe-guard.js', 'scripts/lib/test-manifest.js', 'scripts/lib/ci-test-coverage.js', 'scripts/lib/bash-integration-test-list.js', 'scripts/lib/workflow-glob-guard.js', 'scripts/lib/scan-alert-ledger-gaps.js']) {
     write(d, f, fs.readFileSync(path.join(ROOT, f), 'utf8'));
   }
   write(d, '.github/workflows/test.yml', 'name: t\n');

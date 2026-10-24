@@ -36,7 +36,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { computeDeadRate, CMUX_LANE, DEFAULTS } = require('/Users/tompryor/Broadwayscore/scripts/lib/dispatch-health.js');
+const { computeDeadRate, CMUX_LANE, DEFAULTS } = require('./lib/dispatch-health.js');
 
 const LEDGER = path.join('/Users/tompryor/Broadwayscore', 'data', 'audit', 'dispatch-ledger.jsonl');
 
@@ -60,8 +60,12 @@ const LEDGER = path.join('/Users/tompryor/Broadwayscore', 'data', 'audit', 'disp
 // what it always did — the claim is disproven, not that the code regressed.
 const FIX_LANDED_MS = Date.parse('2026-08-26T15:01:58Z');
 const MIN_LAUNCHES = DEFAULTS.minLaunches; // 20 — same "enough sample" floor computeDispatchHealthDigest uses
+// Allow a daily recheck after the repointed #1904 fix, rather than its old window.
+const CHECKABLE_FROM = Date.parse('2026-08-27T00:00:00Z');
 
-test('the cmux dead-launch rate has recovered below the alarm floor since the wrapper-detection fix landed (task #1812)', () => {
+test('the cmux dead-launch rate has recovered below the alarm floor since the wrapper-detection fix landed (task #1812)', {
+  skip: Date.now() < CHECKABLE_FROM && 'not checkable before 2026-08-27',
+}, () => {
   let lines;
   try {
     lines = fs.readFileSync(LEDGER, 'utf8').split('\n').filter(Boolean);
