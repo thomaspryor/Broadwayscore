@@ -496,7 +496,8 @@ test('codexCardFit: the four kinds of card the sandbox cannot finish are skipped
   assert.equal(fit('Cut Actions minutes', 'Land gauntlet runs base+branch per land/** push (~10 min each).').skip, 'land-ref');
   assert.equal(fit('Temporal wrongProduction override', '464 with unhandled violations, 1003 shipped reviews in 464 shows').skip, 'corpus-wide-data');
   assert.equal(fit('Rebuild guard: drop a dateless review', 'reviews.json: 293 rows with no url AND no publishDate.').skip, 'corpus-wide-data');
-  assert.equal(fit('unicode-stars-fallthrough extractor', 'Data repair through an approved-fix plan.').skip, 'private-repo-write');
+  // BRO-6175: a data repair through the reviewed plan route is Codex work now (see codex-data-fixes.test.mjs).
+  assert.equal(fit('unicode-stars-fallthrough extractor', 'Data repair through an approved-fix plan.').skip, null);
   assert.equal(fit('Edit flow', 'Then edit .github/workflows/land.yml.').skip, 'workflow-edit');
   assert.equal(fit('x', 'write to broadway-review-texts').skip, 'private-repo-write');
 });

@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6153-c",
   "planId": "8c61b49a-394a-444d-b1a6-7bfbebf7cdea",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-24T22:31:05.206Z",
   "submitter": {
     "name": null,
@@ -89,5 +89,24 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-24T23:07:55.299Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added archduke-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added not-ready-for-prime-time-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added lowcountry-off-broadway-2025"
+    }
+  ],
+  "executedIn": "ci"
 }

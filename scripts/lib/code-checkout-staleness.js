@@ -218,10 +218,29 @@ function reconcileInterruptedFastForward({ repoDir, execFn = execFileSync, timeo
       const m = /^100(?:644|755) blob ([0-9a-f]+)\t([\s\S]*)$/.exec(e);
       if (m) remote.set(m[2], m[1]);
     }
+    // BRO-6104: a kill that came before origin/main moved leaves bytes from an OLDER tip, which the current tip's blob
+    // no longer equals (a file edited again since). Any blob a commit in HEAD..origin/main wrote to the path is debris
+    // too: HEAD has no commits ahead (the sync preconditions), so none of that content can be the session's own.
+    const history = new Map(); // path -> Set of blob ids those commits introduced
+    try { // best effort: tip-only matching still heals when the history walk fails or times out
+      const raw = z(['log', '--diff-merges=first-parent', '--no-show-signature', '--no-renames', '--raw', '--no-abbrev', '-z', '--format=', `HEAD..${REMOTE_MAIN}`]).split('\0');
+      for (let i = 0; i + 1 < raw.length;) {
+        const m = /^:\d+ 100(?:644|755) [0-9a-f]+ ([0-9a-f]+) [A-Z]\d*$/.exec(raw[i].trim());
+        if (!raw[i].trim().startsWith(':')) { i += 1; continue; } // stray token (signature line): resync on the next meta record
+        if (m && raw[i + 1]) {
+          if (!history.has(raw[i + 1])) history.set(raw[i + 1], new Set());
+          history.get(raw[i + 1]).add(m[1]);
+        }
+        i += 2;
+      }
+    } catch { history.clear(); }
+    const known = (p, sha) => remote.get(p) === sha || (history.get(p) || new Set()).has(sha);
+    // A path that is missing on disk is debris only when origin/main has no such file either: a session's own
+    // deletion of a file that exists at the tip must still refuse the sync.
     const matches = (paths) => {
-      const need = paths.filter((p) => remote.has(p) && isRegular(p));
+      const need = paths.filter((p) => (remote.has(p) || history.has(p)) && isRegular(p));
       const shas = rawShas(need);
-      return paths.filter((p) => (remote.has(p) ? shas.get(p) === remote.get(p) : goneOrDir(p)));
+      return paths.filter((p) => (remote.has(p) || history.has(p) ? (shas.has(p) && known(p, shas.get(p))) || (!remote.has(p) && goneOrDir(p)) : goneOrDir(p)));
     };
 
     const matchedTracked = new Set(matches(dirty));
