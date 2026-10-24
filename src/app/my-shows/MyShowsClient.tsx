@@ -32,6 +32,8 @@ import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
 import dynamic from 'next/dynamic';
 import { ShowSearchDropdown } from '@/components/show-cards';
 import MiniStars from '@/components/user/Stars';
+const StatsTab = dynamic(() => import('@/components/my-shows/stats/StatsTab'), { ssr: false });
+const FeedTab = dynamic(() => import('@/components/my-shows/feed/FeedTab'), { ssr: false });
 const ImportShows = dynamic(() => import('./ImportShows'), { ssr: false });
 
 const ListsTab = dynamic(() => import('./ListsTab').catch(() => {
@@ -51,7 +53,8 @@ function ShareIcon() {
   );
 }
 
-type Tab = 'diary' | 'watchlist' | 'lists';
+type Tab = 'diary' | 'feed' | 'stats' | 'watchlist' | 'lists';
+const DIARY_GROUP: Tab[] = ['diary', 'feed', 'stats'];
 type DiarySort = 'date-desc' | 'date-asc' | 'rating-desc';
 type WatchlistSort = 'added-desc' | 'alphabetical' | 'closing-soon';
 /** A welcome-sheet "seen it" pick with no stars and no date (BRO-4619). */
@@ -129,15 +132,20 @@ export default function MyShowsClient() {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTabState] = useState<Tab>(
     searchParams.get('tab') === 'watchlist' ? 'watchlist' :
-    searchParams.get('tab') === 'lists' ? 'lists' : 'diary'
+    searchParams.get('tab') === 'lists' ? 'lists' :
+    searchParams.get('tab') === 'feed' ? 'feed' :
+    searchParams.get('tab') === 'stats' ? 'stats' : 'diary'
   );
+  // Design-proposal only (BRO-6170): ?layout=b nests Feed/Stats under Diary as
+  // a segmented control (the iOS shape) instead of top-level tabs.
+  const nestedLayout = searchParams.get('layout') === 'b';
 
   // Dev-only mock mode: ?mock=1 on localhost renders with fake data (for Playwright visual QA)
   // Must be state (not derived) to avoid SSR/client hydration mismatch
   const [isMockMode, setIsMockMode] = useState(false);
   const [createListTrigger, setCreateListTrigger] = useState(0);
   useEffect(() => {
-    if (window.location.hostname === 'localhost' && searchParams.get('mock') === '1') {
+    if (window.location.hostname === 'localhost' && (searchParams.get('mock') === '1' || searchParams.get('mock') === 'large')) {
       setIsMockMode(true);
     }
   }, [searchParams]);
@@ -145,7 +153,7 @@ export default function MyShowsClient() {
   // Update URL when tab changes so back button restores the correct tab
   const setActiveTab = (tab: Tab) => {
     setActiveTabState(tab);
-    const mockParam = isMockMode ? '&mock=1' : '';
+    const mockParam = isMockMode ? `&mock=${searchParams.get('mock') ?? '1'}${nestedLayout ? '&layout=b' : ''}` : '';
     const url = tab === 'diary'
       ? `/my-shows${mockParam ? `?${mockParam.slice(1)}` : ''}`
       : `/my-shows?tab=${tab}${mockParam}`;
@@ -209,10 +217,15 @@ export default function MyShowsClient() {
   const [mockData, setMockData] = useState<{ reviews: UserReview[]; watchlist: WatchlistEntry[]; seenUnrated: SeenUnratedRow[]; showMap: ShowMap } | null>(null);
   useEffect(() => {
     if (!isMockMode) return;
-    import('./__dev-mock-data').then(mod => {
+    import('./__dev-mock-data').then(async mod => {
+      if (searchParams.get('mock') === 'large') {
+        const large = await import('./__dev-mock-data-large');
+        setMockData({ reviews: large.mockReviewsLarge, watchlist: mod.mockWatchlist, seenUnrated: mod.mockSeenUnrated, showMap: { ...mod.mockShowMap, ...large.mockShowMapLarge } });
+        return;
+      }
       setMockData({ reviews: mod.mockReviews, watchlist: mod.mockWatchlist, seenUnrated: mod.mockSeenUnrated, showMap: mod.mockShowMap });
     });
-  }, [isMockMode]);
+  }, [isMockMode, searchParams]);
 
   // "Seen, date not set" picks from the welcome sheet (BRO-4619). Listed under
   // To Be Rated as "Date not set"; a failed load (or the table not being
@@ -867,11 +880,11 @@ export default function MyShowsClient() {
           type="button"
           role="tab"
           id="tab-diary"
-          aria-selected={activeTab === 'diary'}
+          aria-selected={nestedLayout ? DIARY_GROUP.includes(activeTab) : activeTab === 'diary'}
           aria-controls="panel-diary"
           onClick={() => setActiveTab('diary')}
           className={`flex-shrink-0 px-2 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] outline-none ${
-            activeTab === 'diary'
+            (nestedLayout ? DIARY_GROUP.includes(activeTab) : activeTab === 'diary')
               ? 'text-white border-brand'
               : 'text-gray-500 border-transparent hover:text-gray-300'
           }`}
@@ -884,6 +897,24 @@ export default function MyShowsClient() {
             </span>
           )}
         </button>
+        {!nestedLayout && (['feed', 'stats'] as const).map(tab => (
+          <button
+            key={tab}
+            type="button"
+            role="tab"
+            id={`tab-${tab}`}
+            aria-selected={activeTab === tab}
+            aria-controls={`panel-${tab}`}
+            onClick={() => setActiveTab(tab)}
+            className={`flex-shrink-0 px-2 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] outline-none ${
+              activeTab === tab
+                ? 'text-white border-brand'
+                : 'text-gray-500 border-transparent hover:text-gray-300'
+            }`}
+          >
+            {tab === 'feed' ? 'Feed' : 'Stats'}
+          </button>
+        ))}
         <button
           type="button"
           role="tab"
@@ -928,7 +959,7 @@ export default function MyShowsClient() {
         </button>
 
         {/* Desktop-only inline controls (hidden on mobile — shown in second row below) */}
-        {activeTab !== 'lists' && (
+        {(activeTab === 'diary' || activeTab === 'watchlist') && (
         <div className="ml-auto hidden sm:flex items-center gap-1.5 sm:gap-2 -mb-[1px]">
           {activeTab === 'diary' && canSharePlans && (
             <button
@@ -988,7 +1019,7 @@ export default function MyShowsClient() {
       {/* Mobile controls row — only visible on mobile, hidden on sm+.
           Selects are 16px on mobile: anything smaller makes iOS Safari zoom
           the whole page on focus and stay zoomed (owner report, 2026-07-17). */}
-      {activeTab !== 'lists' && (
+      {(activeTab === 'diary' || activeTab === 'watchlist') && (
         <div className="flex sm:hidden items-center justify-end gap-2 py-1.5 mb-2">
           {activeTab === 'diary' && canSharePlans && (
             <button
@@ -1388,6 +1419,37 @@ export default function MyShowsClient() {
               )}
             </div>
           )}
+        </div>
+      )}
+
+      {nestedLayout && DIARY_GROUP.includes(activeTab) && (
+        <div role="tablist" aria-label="Diary views" className="flex gap-1 p-1 mt-4 mb-4 rounded-xl bg-surface-raised border border-white/10">
+          {(['diary', 'feed', 'stats'] as const).map(tab => (
+            <button
+              key={tab}
+              type="button"
+              role="tab"
+              aria-selected={activeTab === tab}
+              onClick={() => setActiveTab(tab)}
+              className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-colors ${
+                activeTab === tab ? 'bg-surface-overlay text-white' : 'text-gray-500 hover:text-gray-300'
+              }`}
+            >
+              {tab === 'diary' ? 'List' : tab === 'feed' ? 'Feed' : 'Stats'}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {activeTab === 'feed' && (
+        <div id="panel-feed" role="tabpanel" aria-labelledby="tab-feed" className="pt-4 sm:pt-0">
+          <FeedTab reviews={reviews} showMap={showMap} userId={user?.id || null} isMockMode={isMockMode} />
+        </div>
+      )}
+
+      {activeTab === 'stats' && (
+        <div id="panel-stats" role="tabpanel" aria-labelledby="tab-stats" className="pt-4 sm:pt-0">
+          <StatsTab reviews={reviews} showMap={showMap} isMockMode={isMockMode} />
         </div>
       )}
 
