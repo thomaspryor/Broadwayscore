@@ -562,14 +562,17 @@ async function main() {
       }
     }
   }
-  // BRO-5076: close `gap:` keys whose file is gone / no longer a gap (full runs only;
-  // never without the review-texts clone, where every gap would look gone).
+  // BRO-5076: close gap:/backstop: keys whose review file was deleted or renamed
+  // (full runs only; needs the review-texts clone so a missing dir never reads as "gone").
   if (DO_ALERT && !DRY_RUN && !ONLY_SHOW && fs.existsSync(REVIEW_TEXTS_DIR)) {
-    const live = new Set(gaps.map((g) => `gap:${g.showId}/${g.file}`));
-    for (const key of staleOpenGapKeys(loadLedger(), live)) {
+    const stale = staleOpenGapKeys(loadLedger(), {
+      dirExists: (showId) => fs.existsSync(path.join(REVIEW_TEXTS_DIR, showId)),
+      fileExists: (showId, f) => fs.existsSync(path.join(REVIEW_TEXTS_DIR, showId, f)),
+    });
+    for (const key of stale) {
       try {
-        if (resolveCondition(key, { reason: 'BRO-5076: file no longer a gap (removed, renamed or collected)' })) {
-          console.log(`  ✅ closed ${key}: no longer a gap`);
+        if (resolveCondition(key, { reason: 'BRO-5076: review file no longer exists (removed or renamed)' })) {
+          console.log(`  ✅ closed ${key}: file gone`);
         }
       } catch (e) { console.warn(`  ⚠️  could not close ${key}: ${e.message}`); }
     }

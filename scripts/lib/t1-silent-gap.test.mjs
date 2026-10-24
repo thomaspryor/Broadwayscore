@@ -325,15 +325,17 @@ test('BRO-5863: unscored cbsnews /video/ file is not a gap AND its card state is
   assert.notEqual(classifyGapCardState({ ...args, file: { ...f, url: 'https://www.cbsnews.com/news/other-desert-cities-review/' } }), GAP_CARD_STATE.NO_REVIEW);
 });
 
-test('staleOpenGapKeys: open gap: keys absent from current gaps are stale (BRO-5076)', () => {
+test('staleOpenGapKeys: only open keys whose file is gone from an existing show dir (BRO-5076)', () => {
   const { staleOpenGapKeys } = require('./t1-silent-gap.js');
   const ledger = { conditions: {
-    'gap:a/x.json': { status: 'open' },
-    'gap:a/y.json': { status: 'open' },
-    'gap:a/z.json': { status: 'resolved' },
-    'backstop:a/w.json': { status: 'open' },
+    'gap:a/gone.json': { status: 'open' },
+    'backstop:a/gone.json': { status: 'open' },
+    'gap:a/here.json': { status: 'open' },
+    'gap:a/done.json': { status: 'resolved' },
+    'gap:nodir/x.json': { status: 'open' },
     'other:thing': { status: 'open' },
   } };
-  assert.deepEqual(staleOpenGapKeys(ledger, new Set(['gap:a/y.json'])), ['gap:a/x.json']);
-  assert.deepEqual(staleOpenGapKeys(null, []), []);
+  const io = { dirExists: (s) => s === 'a', fileExists: (s, f) => f === 'here.json' };
+  assert.deepEqual(staleOpenGapKeys(ledger, io), ['gap:a/gone.json', 'backstop:a/gone.json']);
+  assert.deepEqual(staleOpenGapKeys(null, io), []);
 });
