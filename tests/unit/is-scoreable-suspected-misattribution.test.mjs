@@ -15,6 +15,7 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'module';
+import { confirmedMisattribution } from '../helpers/confirmed-misattribution.mjs';
 
 const require = createRequire(import.meta.url);
 const { isScoreable } = require('../../scripts/lib/is-scoreable.js');
@@ -29,14 +30,13 @@ const COMPLETE_BASE = {
 
 describe('isScoreable — suspectedMisattribution gate', () => {
   test('flagged file with current-registry-confirmed misattribution is NOT scoreable', () => {
-    // Susannah Clapp at WSL — Clapp is in registry as observer/guardian non-freelancer,
-    // and wsj is NOT in her knownOutlets and NOT in KNOWN_MULTI_OUTLET_PAIRS, so
-    // Guard G would fire today and the predicate should NOT clear the flag.
+    // A non-freelance critic at an outlet outside their knownOutlets in the
+    // current registry (tests/helpers/confirmed-misattribution.mjs, BRO-5824),
+    // so Guard G would fire today and the predicate should NOT clear the flag.
     const data = {
       ...COMPLETE_BASE,
       suspectedMisattribution: true,
-      criticName: 'Susannah Clapp',
-      outletId: 'wsj',
+      ...confirmedMisattribution(),
     };
     assert.strictEqual(isScoreable(data), false,
       'Real misattribution must not be sent to the LLM scorer');

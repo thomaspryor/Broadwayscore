@@ -22,6 +22,7 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'module';
+import { confirmedMisattribution } from '../helpers/confirmed-misattribution.mjs';
 
 const require = createRequire(import.meta.url);
 const { isLikelyStaleSuspectedMisattribution, isIncludableForRebuild } = require('../../scripts/lib/review-guards.js');
@@ -254,11 +255,11 @@ describe('isIncludableForRebuild — stale suspectedMisattribution override', ()
   test('confirmed misattribution is still excluded', () => {
     // Pick a critic in registry as non-freelancer at outletIds that are NOT in
     // their knownOutlets and NOT in KNOWN_MULTI_OUTLET_PAIRS (audit-critic-outlets.js).
-    // Susannah Clapp is observer/guardian; wsj is unrelated and unlisted in pairs.
+    // The registry is regenerated nightly, so the critic comes from it
+    // (tests/helpers/confirmed-misattribution.mjs, BRO-5824).
     const data = {
       suspectedMisattribution: true,
-      criticName: 'Susannah Clapp',
-      outletId: 'wsj',
+      ...confirmedMisattribution(),
       fullText: longReviewText,
       isFullReview: true,
       contentTier: 'complete',

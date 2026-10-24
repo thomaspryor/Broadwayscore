@@ -24,6 +24,7 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'module';
+import { confirmedMisattribution } from '../helpers/confirmed-misattribution.mjs';
 
 const require = createRequire(import.meta.url);
 const { isScoreable } = require('../../scripts/lib/is-scoreable.js');
@@ -164,14 +165,13 @@ describe('Parity contract — LLM no more permissive than rebuild', () => {
 describe('Symmetric stale-overrides — both predicates honor the same overrides', () => {
 
   test('suspectedMisattribution flagged + registry confirms misattribution: both exclude', () => {
-    // Susannah Clapp at WSJ — registry has Clapp as Guardian/Observer non-freelancer,
-    // wsj NOT in knownOutlets and NOT in KNOWN_MULTI_OUTLET_PAIRS. Stale-override
-    // does NOT fire; both predicates must exclude.
+    // A non-freelance critic at an outlet outside their knownOutlets in the
+    // current registry (tests/helpers/confirmed-misattribution.mjs, BRO-5824).
+    // Stale-override does NOT fire; both predicates must exclude.
     const data = {
       ...COMPLETE_BASE,
       suspectedMisattribution: true,
-      criticName: 'Susannah Clapp',
-      outletId: 'wsj',
+      ...confirmedMisattribution(),
     };
     assert.equal(isIncludableForRebuild(data), false, 'rebuild should exclude (registry confirms)');
     assert.equal(isScoreable(data), false);
