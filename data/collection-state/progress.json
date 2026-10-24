@@ -320,7 +320,11 @@
     "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
     "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "birthright-off-broadway-2026/the-recs--unknown.json",
-    "relics-west-end-2026/rhombus-rota--unknown.json"
+    "relics-west-end-2026/rhombus-rota--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--west-end-wilma.json",
+    "sting-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+    "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
+    "a-fine-idea-off-west-end-2026/guardian--arifa-akbar.json"
   ],
   "failed": [
     "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
@@ -354,6 +358,8 @@
     "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
     "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
     "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
     "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
     "some-woman-west-end-2026/thestage--sam-marlowe.json",
     "some-woman-west-end-2026/tixculture--unknown.json",
@@ -491,7 +497,13 @@
     "cyrano-de-bergerac-west-end-2026/northjerseycom--robert-feldberg.json",
     "pride-west-end-2026/artsdesk--unknown.json",
     "cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json"
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--louise-griffin.json",
+    "sting-west-end-2026/ew--unknown.json",
+    "sting-west-end-2026/guardian--anya-ryan.json",
+    "glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
+    "romeo-and-juliet-off-broadway-2026/guardian--unknown.json",
+    "romeo-and-juliet-off-broadway-2026/express-uk--neil-norman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -658,7 +670,10 @@
       "pride-west-end-2026/londontheatre1--terry-eastham.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
       "birthright-off-broadway-2026/the-recs--unknown.json",
-      "relics-west-end-2026/rhombus-rota--unknown.json"
+      "relics-west-end-2026/rhombus-rota--unknown.json",
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--west-end-wilma.json",
+      "sting-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+      "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json"
     ],
     "amp": [
       "data/review-texts/network-2018/variety--marilyn-stasio.json",
@@ -677,8 +692,7 @@
       "data/review-texts/dirty-dancing-tour-2026/nytimes--michael-paulson.json",
       "dirty-dancing-tour-2026/nytimes--michael-paulson.json",
       "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json",
-      "the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json",
-      "data/review-texts/some-woman-west-end-2026/momentsapp--unknown.json"
+      "the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -824,7 +838,7 @@
     ]
   },
   "startTime": "2026-10-24T20:35:10.771Z",
-  "lastProcessed": "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
+  "lastProcessed": "romeo-and-juliet-off-broadway-2026/express-uk--neil-norman.json",
   "log": [
     {
       "t": "2026-10-24T21:48:46.832Z",
@@ -858,28 +872,9 @@
       "t": "2026-10-24T22:09:43.869Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-24T22:47:28.327Z",
-      "event": "bb-session",
-      "session": "905a7c95",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
-    },
-    {
-      "t": "2026-10-24T22:47:35.795Z",
-      "event": "bb-session",
-      "session": "ea44276b",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
-    },
-    {
-      "t": "2026-10-24T22:51:40.892Z",
-      "event": "bb-session",
-      "session": "f0bf301a",
-      "url": "https://momentsapp.no/serie/some-woman-5dbb94319d2461e366f4078cb82fb81d"
     }
   ],
   "recoveredAfterFailure": [
-    "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
-    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json"
+    "an-oak-tree-off-west-end-2026/thereviewshub--the-reviews-hub-london.json"
   ]
 }
