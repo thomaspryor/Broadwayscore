@@ -238,21 +238,20 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-23T14:51:52.920Z",
-      "lastSeen": "2026-10-23T14:51:52.920Z",
-      "lastNotifiedAt": "2026-10-23T14:51:52.920Z",
-      "lastSurfacedAt": "2026-10-23T14:51:52.920Z",
-      "notifyCount": 162,
+      "incidentOpenedAt": "2026-10-24T01:42:49.971Z",
+      "lastSeen": "2026-10-24T01:42:49.971Z",
+      "lastNotifiedAt": "2026-10-24T01:42:49.971Z",
+      "lastSurfacedAt": "2026-10-24T01:42:49.971Z",
+      "notifyCount": 163,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
-      "sweptTracker": "BRO-6024",
-      "resolvedAt": "2026-10-23T15:27:57.366Z"
+      "sweptTracker": "BRO-6024"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -4397,9 +4396,9 @@
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run unit tests — \"should have valid designation values\"",
       "firstSeen": "2026-09-20T20:06:05.167Z",
-      "incidentOpenedAt": "2026-10-24T01:31:00.421Z",
-      "lastSeen": "2026-10-24T01:31:00.421Z",
-      "lastNotifiedAt": "2026-10-24T01:31:00.421Z",
+      "incidentOpenedAt": "2026-10-24T01:25:04.103Z",
+      "lastSeen": "2026-10-24T01:42:49.961Z",
+      "lastNotifiedAt": "2026-10-24T01:25:04.103Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
       "cardId": null,
@@ -4410,9 +4409,8 @@
         "runId": "40048069928",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40048069928"
       },
-      "absentRunIds": [
-        "37184564354"
-      ]
+      "absentRunIds": [],
+      "silentRefires": 1
     },
     "test-yml:red:Data Validation:9b5157f4": {
       "status": "resolved",
