@@ -107,6 +107,8 @@ on:
       - 'scripts/audit-timeout-patterns.js'
       - 'scripts/audit-exclusion-flags.js'
       - 'scripts/audit-syndicated-critic-pairs.js'
+      # BRO-6056: CLI over scripts/lib/default-critic-diversity.js (globbed); a solo edit would otherwise trigger ZERO CI.
+      - 'scripts/audit-default-critic-diversity.js'
       # BRO-6054: the audit's allowlist; tests/unit/same-critic-pairs-audit.test.mjs validates it.
       - 'scripts/config/same-critic-pairs-allowlist.json'
       # BRO-6018: CLI + sibling scripts/*.test.mjs; a solo edit would otherwise trigger ZERO CI.

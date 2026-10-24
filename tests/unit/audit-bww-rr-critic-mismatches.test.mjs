@@ -20,7 +20,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { extractAuthorPairs } = require('../../scripts/audit-bww-rr-critic-mismatches.js');
+const { extractAuthorPairs, singleAuthorOutletMap } = require('../../scripts/audit-bww-rr-critic-mismatches.js');
 const SCRIPT_PATH = require.resolve('../../scripts/audit-bww-rr-critic-mismatches.js');
 
 function mkHtml(author, headline = 'Test headline') {
@@ -138,5 +138,27 @@ describe('CLI exit code — findings must surface the same way in both output mo
     } finally {
       rmSync(dir, { recursive: true, force: true });
     }
+  });
+});
+
+describe('singleAuthorOutletMap (BRO-6056)', () => {
+  test('watches defaultCritic outlets, skips multiAuthor:true, keeps multiAuthor:false', () => {
+    const map = singleAuthorOutletMap({
+      'cote-notices': { defaultCritic: 'David Cote' },
+      sfgate: { defaultCritic: 'Lily Janiak', multiAuthor: true },
+      amny: { defaultCritic: 'Matt Windman', multiAuthor: false },
+      nytimes: { displayName: 'NYT' },
+    });
+    assert.deepStrictEqual(map, { 'cote-notices': 'David Cote', amny: 'Matt Windman' });
+  });
+
+  test('the live registry no longer watches the outlets BRO-6056 marked multiAuthor', () => {
+    const { readFileSync } = require('node:fs');
+    const reg = JSON.parse(readFileSync(new URL('../../data/outlet-registry.json', import.meta.url), 'utf8')).outlets;
+    const map = singleAuthorOutletMap(reg);
+    for (const id of ['sfgate', 'philadelphia-inquirer', 'boston-globe', 'the-globe-and-mail']) {
+      assert.strictEqual(map[id], undefined, id);
+    }
+    assert.strictEqual(map.amny, 'Matt Windman');
   });
 });

@@ -98,6 +98,19 @@ function extractAuthorPairs(html) {
   return out;
 }
 
+/**
+ * { outletId: defaultCritic } for the outlets this audit watches. multiAuthor
+ * outlets (BRO-6056) carry a defaultCritic but run several critics, so any
+ * other byline there is expected, not a mismatch.
+ */
+function singleAuthorOutletMap(registry) {
+  const out = {};
+  for (const [id, o] of Object.entries(registry || {})) {
+    if (o && o.defaultCritic && o.multiAuthor !== true) out[id] = o.defaultCritic;
+  }
+  return out;
+}
+
 function main() {
   const argv = process.argv.slice(2);
   const JSON_OUTPUT = argv.includes('--json');
@@ -107,10 +120,7 @@ function main() {
   const sinceMs = sinceArg ? new Date(sinceArg).getTime() : null;
 
   const registry = loadRegistry();
-  const singleAuthorOutlets = {};
-  for (const [id, o] of Object.entries(registry)) {
-    if (o.defaultCritic) singleAuthorOutlets[id] = o.defaultCritic;
-  }
+  const singleAuthorOutlets = singleAuthorOutletMap(registry);
 
   if (!fs.existsSync(ARCHIVE_DIR)) {
     console.error(`No archive dir: ${ARCHIVE_DIR}`);
@@ -192,4 +202,4 @@ if (require.main === module) {
   process.exitCode = main();
 }
 
-module.exports = { extractAuthorPairs, main };
+module.exports = { extractAuthorPairs, singleAuthorOutletMap, main };
