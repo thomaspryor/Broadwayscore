@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T13:31:18.287Z",
+  "generatedAt": "2026-10-24T13:53:17.985Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -178,28 +178,28 @@
       "status": "open",
       "slug": "garry-starr-classic-penguins-off-west-end",
       "thumbnail": "/images/shows/garry-starr-classic-penguins-off-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 83,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "siteScore": 83.61,
+      "liveScore": 84,
+      "scoreDrift": 0.39000000000000057,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 2,
+      "total": 4,
       "t1": 1,
-      "t2": 0,
-      "t3": 1,
-      "positive": 2,
+      "t2": 1,
+      "t3": 2,
+      "positive": 4,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/8 total",
+          "4/8 total",
           "T1:1/3",
-          "T2:0/2",
-          "hi-conf:2/6"
+          "T2:1/2",
+          "hi-conf:4/6"
         ],
-        "highConfidence": 2,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -307,10 +307,6 @@
           "isDualMarket": false
         },
         {
-          "name": "London Theatre",
-          "isDualMarket": false
-        },
-        {
           "name": "LondonTheatre1",
           "isDualMarket": false
         },
@@ -328,6 +324,18 @@
           "t2": 0,
           "t3": 1,
           "p": 2,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-24T13:53:17.985Z",
+          "rc": 4,
+          "s": 83.61,
+          "t1": 1,
+          "t2": 1,
+          "t3": 2,
+          "p": 4,
           "m": 0,
           "n": 0,
           "bc": "waiting"
