@@ -68,6 +68,8 @@ const emitExcludedStage = createExcludedStageEmitter();
 let _heldTrackedShows = null; // lazy: readTrackedShowIds() once per run, only if a held show is seen
 const { buildMultiProdDirectorGuard, inheritPriorRunReviews, findPriorRunSiblings, supersededPriorRunReviews, preWindowExemptPriorRuns } = require('./lib/prior-run-sibling');
 const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
+const { siblingRatingForClamp } = require('./lib/sibling-rating-inherit');
+const { detectBandFromReviewFile } = require('./lib/star-reliability');
 const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isSoft404Body } = require('./lib/soft-404-body');
@@ -1208,8 +1210,8 @@ const skippedReviews = [];
 
 // getBestScore — core logic imported from ./lib/rebuild-helpers as _getBestScoreCore.
 // This wrapper passes module-level stats/flagForHumanReview and adds extra stat tracking.
-function getBestScore(data) {
-  const result = _getBestScoreCore(data, { stats, flagForHumanReview });
+function getBestScore(data, siblingRating = null) {
+  const result = _getBestScoreCore(data, { stats, flagForHumanReview, siblingRating });
 
   // Extra stat tracking (not part of core scoring logic):
   // Borderline rave detection, bwwScore-LLM divergence
@@ -5420,7 +5422,9 @@ showDirs.forEach(showId => {
       data._showCategory = showCategoryMap[showId] || 'broadway';
 
       // Get best score - returns null if no valid score
-      const scoreResult = getBestScore(data);
+      // BRO-6078: no rating of its own -> clamp against the same-URL twin's rating.
+      const siblingRating = siblingRatingForClamp(file, data, allJsonFiles, _loadDupCycleSibling, canonicalizeUrlForDedup, detectBandFromReviewFile);
+      const scoreResult = getBestScore(data, siblingRating);
 
       if (scoreResult === null) {
         // Skip this review - no valid score. This used to be the one
