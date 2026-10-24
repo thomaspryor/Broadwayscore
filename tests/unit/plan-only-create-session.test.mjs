@@ -110,3 +110,9 @@ test('transcript: skips tool-result-only user rows, uses only the first card id'
   fs.writeFileSync(tp, JSON.stringify({ type: 'user', isMeta: true, message: { role: 'user', content: '<local-command-caveat>x</local-command-caveat>' } }) + '\n' + row('<command-name>/model</command-name>') + row([{ type: 'tool_result', content: 'x' }]) + row('[BRO-100] plan it. See also BRO-101 and BRO-102.'));
   assert.deepEqual(lib.sessionCards({ transcriptPath: tp, tmpDir: dir }), ['BRO-100']);
 });
+
+test('hook entry script: --help prints usage and exits 0 without reading stdin or calling Linear', () => {
+  const root = path.resolve(import.meta.dirname, '../..');
+  const out = execFileSync('node', [path.join(root, 'scripts/plan-only-create-session-hook.js'), '--help'], { encoding: 'utf8', input: '' });
+  assert.match(out, /Usage: plan-only-create-session-hook/);
+});
