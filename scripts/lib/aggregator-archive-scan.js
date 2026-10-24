@@ -66,4 +66,41 @@ function scanArchiveIntegrity(archiveRoot, showById) {
   return { totalScanned, skippedNoShow, bad };
 }
 
-module.exports = { SOURCES, SKIP_FILENAMES, scanArchiveIntegrity };
+/** Unlink every scanned page; returns the count. */
+function deletePages(hits) {
+  for (const h of hits) fs.unlinkSync(h.file);
+  return hits.length;
+}
+
+/**
+ * The quarantine CLI's body (scripts/quarantine-poisoned-aggregator-archive.js), here so a lib test can drive it.
+ * Report mode lists the poisoned pages (exit 1 if any); --delete needs --expect=N equal to the count found.
+ * @returns {number} the process exit code
+ */
+function runQuarantine(args, { defaultArchiveRoot, showById, log = console.log, error = console.error }) {
+  const archiveArg = args.find(a => a.startsWith('--archive='));
+  const archiveRoot = archiveArg ? path.resolve(archiveArg.slice(10)) : defaultArchiveRoot;
+  const deleting = args.includes('--delete');
+  if (!fs.existsSync(archiveRoot)) {
+    if (deleting) { error(`archive not present at ${archiveRoot}: refusing a no-op --delete`); return 2; }
+    log(`archive not present at ${archiveRoot}, nothing to audit`);
+    return 0;
+  }
+  const { bad } = scanArchiveIntegrity(archiveRoot, showById);
+  for (const b of bad) log(`${b.source}\t${b.showId}\t${b.reason}`);
+  log(`\n${bad.length} poisoned archive page(s)`);
+  if (!deleting) return bad.length ? 1 : 0;
+  const expectArg = args.find(a => a.startsWith('--expect='));
+  if (!expectArg || !/^\d+$/.test(expectArg.slice(9))) {
+    error('--delete requires --expect=N (the number of poisoned pages the plan author saw)');
+    return 2;
+  }
+  if (bad.length !== Number(expectArg.slice(9))) {
+    error(`expected ${expectArg.slice(9)} poisoned page(s), found ${bad.length}: nothing deleted`);
+    return 2;
+  }
+  log(`deleted ${deletePages(bad)} file(s)`);
+  return 0;
+}
+
+module.exports = { SOURCES, SKIP_FILENAMES, scanArchiveIntegrity, deletePages, runQuarantine };

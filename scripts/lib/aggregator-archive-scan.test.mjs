@@ -4,11 +4,9 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
-import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
-const { scanArchiveIntegrity } = require('./aggregator-archive-scan.js');
-const { deletePages } = require('../quarantine-poisoned-aggregator-archive.js');
+const { scanArchiveIntegrity, deletePages, runQuarantine } = require('./aggregator-archive-scan.js');
 
 const shows = {
   'wicked-2003': { id: 'wicked-2003', title: 'Wicked', category: 'broadway', openingDate: '2003-10-30', closingDate: null },
@@ -40,16 +38,19 @@ test('deletePages removes exactly the scanned files', () => {
   assert.equal(scanArchiveIntegrity(root, shows).bad.length, 0);
 });
 
-test('CLI --delete refuses without --expect and on a count mismatch, deleting nothing', () => {
+test('runQuarantine --delete refuses without --expect and on a count mismatch, deleting nothing', () => {
   const root = fixture();
-  const cli = path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'quarantine-poisoned-aggregator-archive.js');
-  const run = (...a) => spawnSync('node', [cli, `--archive=${root}`, ...a], { encoding: 'utf8' });
-  // The CLI reads the real shows.json, where both fixture ids exist, so it finds 1 poisoned page:
-  // --expect=99 is a real count mismatch and --delete with no --expect is refused outright.
-  assert.equal(run('--delete').status, 2);
-  assert.equal(run('--delete', '--expect=99').status, 2);
+  const run = (...a) => runQuarantine([`--archive=${root}`, ...a], { defaultArchiveRoot: root, showById: shows, log() {}, error() {} });
+  assert.equal(run(), 1, 'report mode exits 1 when poisoned pages exist');
+  assert.equal(run('--delete'), 2);
+  assert.equal(run('--delete', '--expect=99'), 2);
   assert.equal(fs.readdirSync(path.join(root, 'show-score')).length, 2);
-  // and a matching --expect deletes exactly the poisoned page
-  assert.equal(run('--delete', '--expect=1').status, 0);
+  assert.equal(run('--delete', '--expect=1'), 0);
   assert.deepEqual(fs.readdirSync(path.join(root, 'show-score')), ['wicked-2003.html']);
+  assert.equal(run(), 0, 'clean archive exits 0');
+});
+
+test('runQuarantine refuses a --delete against a missing archive', () => {
+  const missing = path.join(os.tmpdir(), 'agg-scan-does-not-exist');
+  assert.equal(runQuarantine(['--delete', '--expect=0'], { defaultArchiveRoot: missing, showById: shows, log() {}, error() {} }), 2);
 });
