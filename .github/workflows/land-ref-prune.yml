@@ -1,0 +1,59 @@
+name: Prune stale land refs
+
+# BRO-6103: land.yml deletes land/<name> only after a fast-forward, so every
+# refusal left a ref behind (247 on origin on 2026-10-24) and nothing pruned
+# them. Daily pass: delete refs whose tip is already on main, or that sat idle
+# 14+ days with no In Progress card and no Land run in flight. Never touches a
+# ref younger than 2 days; at most 100 deletes a run; each deleted tip sha is
+# logged so a delete is recoverable. Decisions + tests: scripts/lib/land-ref-prune{,.test}.
+# Lands advisory (BRO-2123): it only reports until the repo variable
+# LAND_REF_PRUNE_APPLY is set to true (or a manual run passes apply=true).
+
+on:
+  schedule:
+    - cron: '41 5 * * *'
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: 'Delete the candidates (default: report only)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  prune:
+    name: Prune stale land/** refs
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: land-ref-prune
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          sparse-checkout: |
+            scripts
+            .github/actions
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+      - name: Report or delete stale land refs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          APPLY: ${{ inputs.apply == true || vars.LAND_REF_PRUNE_APPLY == 'true' }}
+        run: |
+          if [ "$APPLY" = "true" ]; then node scripts/prune-stale-land-refs.js --apply
+          else node scripts/prune-stale-land-refs.js; fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Land ref prune failed'
+          description: 'daily pass could not read or prune stale land/** refs (BRO-6103)'
+          severity: 'warning'
