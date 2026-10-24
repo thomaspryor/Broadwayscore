@@ -83,7 +83,6 @@ For each issue completed this week, check its Outcome comment. Flag any issue wh
 ### 8. File the Week in Review Issue
 Write the retro to a temp file, then file it on Linear:
   node scripts/linear-brain.js create "Week in Review — $WEEK_START to $TODAY" --priority 4 --source routine:weekly-retro --park "weekly retro record" --notes "\$(cat <file>)"
-then:
 (The dated title is recorded in data/audit/routine-logs.jsonl, not filed as a card: there is no card to close. BRO-6130)
 The retro is formatted as:
   ## Week in Review — $WEEK_START to $TODAY

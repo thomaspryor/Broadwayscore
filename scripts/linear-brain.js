@@ -791,10 +791,18 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // LINEAR_ROUTINE_LOG_DIVERT=0 files it as a card again.
   const rlog = require('./lib/routine-log-ledger');
   if (rlog.isRoutineLogTitle(title) && process.env.LINEAR_ROUTINE_LOG_DIVERT !== '0') {
-    const { file } = rlog.appendRoutineLog({ title, notes, source: typeof args.source === 'string' ? args.source : undefined });
-    console.error(`ROUTINE-LOG: "${title}" recorded in ${require('path').relative(require('path').join(__dirname, '..'), file)}; no Linear card filed (dated logs are records, BRO-6130).`);
-    console.log(JSON.stringify({ routineLog: true, title, ledger: rlog.LEDGER_REL }));
-    process.exit(0);
+    let file = null;
+    try {
+      ({ file } = rlog.appendRoutineLog({ title, notes, source: typeof args.source === 'string' ? args.source : undefined }));
+    } catch (e) {
+      // A failed ledger write must not lose the record: fall through and file the card.
+      console.error(`ROUTINE-LOG: ledger write failed (${e.message}); filing the card instead.`);
+    }
+    if (file) {
+      console.error(`ROUTINE-LOG: "${title}" recorded in ${require('path').relative(require('path').join(__dirname, '..'), file)}; no Linear card filed (dated logs are records, BRO-6130).`);
+      console.log(JSON.stringify({ routineLog: true, title, ledger: rlog.LEDGER_REL }));
+      process.exit(0);
+    }
   }
   try {
     const result = await createLinearIssueFn({
