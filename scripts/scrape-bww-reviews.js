@@ -42,6 +42,7 @@ const { classifyContentTier } = require('./lib/content-quality');
 const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isLondonMarket, getMarketPool } = require('./lib/venue-classification');
+const { buildRoundupQuery } = require('./lib/bww-roundup-query');
 const { normalizeTitle } = require('./lib/market-routing');
 const { fetchPage, fetchWithScrapingdog, isChallengeOrGarbage, cleanup: cleanupScraper } = require('./lib/scraper');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
@@ -574,9 +575,7 @@ async function discoverBwwRoundup(show, showId, options = {}) {
   // broadwayworld.com/bwwopera/article/Review-Kaija-Saariahos-INNOCENCE-...-20260407
   // was missed because the SERP query filtered to /article/ + "broadway".)
   const isOpera = show.type === 'opera';
-  const query = isOpera
-    ? `site:broadwayworld.com "${searchTitle}" review ${year}`
-    : `site:broadwayworld.com/article "Review Roundup" "${searchTitle}" broadway ${year}`;
+  const query = buildRoundupQuery({ searchTitle, year, isOpera, isLondon: isLondonMarket(show.category) });
   try {
     stats.googleSearches++;
     const googleUrls = await googleSearch(query, 10);
