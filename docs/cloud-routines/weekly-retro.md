@@ -76,7 +76,7 @@ Write the retro to a temp file in this format:
 Then:
 
     node scripts/linear-brain.js create "Week in Review, $WEEK_START to $TODAY" --priority 4 --source routine:weekly-retro --park "weekly retro record" --notes "$(cat <file>)"
-    node scripts/linear-brain.js update BRO-N --state Done --force "weekly retro record, no code change to verify"
+(The dated title is recorded in data/audit/routine-logs.jsonl, not filed as a card: there is no card to close. BRO-6130)
 
 If Linear is unreachable, print the retro in the reply instead. Do not fall
 back to Notion.

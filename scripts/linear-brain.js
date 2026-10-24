@@ -787,6 +787,15 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     notes = pressNight.text;
     console.error(`PRESS-NIGHT: ${pressNight.notPassing.length} record(s) not PASS for this audit night (${pressNight.notPassing.map((r) => `${r.showId} ${r.verdict}`).join(', ')}); the card now says so.`);
   }
+  // BRO-6130: a dated routine log is a record, not work. It goes to the ledger file, not the board.
+  // LINEAR_ROUTINE_LOG_DIVERT=0 files it as a card again.
+  const rlog = require('./lib/routine-log-ledger');
+  if (rlog.isRoutineLogTitle(title) && process.env.LINEAR_ROUTINE_LOG_DIVERT !== '0') {
+    const { file } = rlog.appendRoutineLog({ title, notes, source: typeof args.source === 'string' ? args.source : undefined });
+    console.error(`ROUTINE-LOG: "${title}" recorded in ${require('path').relative(require('path').join(__dirname, '..'), file)}; no Linear card filed (dated logs are records, BRO-6130).`);
+    console.log(JSON.stringify({ routineLog: true, title, ledger: rlog.LEDGER_REL }));
+    process.exit(0);
+  }
   try {
     const result = await createLinearIssueFn({
       title,
