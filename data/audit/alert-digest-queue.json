@@ -1168,6 +1168,37 @@
     "queuedAt": "2026-10-24T17:03:11.572Z"
   },
   {
+    "conditionKey": "land:land/bro-6143-bucknell-backtest",
+    "title": "Landing blocked: merged-tree-tests red on land/bro-6143-bucknell-backtest",
+    "description": "land.yml did not land land/bro-6143-bucknell-backtest: the merged-tree-tests gate went red at ee98647bbc. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6143-bucknell-backtest @ ee98647bbc (origin/land/bro-6143-bucknell-backtest) → origin/main @ a056f5dc72 [land] train: land/bro-6154-tr-section-diag not taken — nothing left to land after the rebase (already on main or in the train) [land] train: + land/bro-6141-baseline @ d1cfe2f25e (1 commit(s)) [land] train: + land/bro-6149-share-preview @ daf196ddc7 (1 commit(s)) [land] attempt  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40113260067",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6143-bucknell-backtest"
+      },
+      {
+        "name": "gate",
+        "value": "merged-tree-tests"
+      },
+      {
+        "name": "tip",
+        "value": "ee98647bbc37eb2d1e374c22c56bcb93114e138f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40113260067"
+      }
+    ],
+    "queuedAt": "2026-10-24T17:52:29.581Z"
+  },
+  {
     "conditionKey": "land:land/bro-6137-r2-doc",
     "title": "Landing blocked: unit-tests-node red on land/bro-6137-r2-doc",
     "description": "land.yml did not land land/bro-6137-r2-doc: the unit-tests-node gate went red at dc91ad2d74. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40115748432",
