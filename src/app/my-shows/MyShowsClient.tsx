@@ -774,7 +774,7 @@ export default function MyShowsClient() {
           </button>
         ) : (
           <AddShowSearch
-            context={activeTab}
+            context={activeTab === 'watchlist' ? 'watchlist' : 'diary'}
             userId={isMockMode ? null : (user?.id ?? null)}
             onAddToWatchlist={async (showId: string, title?: string) => {
               await effectiveAddToWatchlist(showId);
