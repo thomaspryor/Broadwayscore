@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-24T17:53:27.006Z",
+  "timestamp": "2026-10-24T19:08:26.270Z",
   "stats": {
-    "totalReviews": 60480,
-    "alreadyFlagged": 21256,
+    "totalReviews": 60498,
+    "alreadyFlagged": 21267,
     "dateGuardCatches": 223,
-    "directorMismatch": 2177,
+    "directorMismatch": 2179,
     "tvFilmSignals": 1713,
-    "londonSignals": 2925,
+    "londonSignals": 2926,
     "offBroadwaySignals": 534,
     "yearMismatch": 195,
-    "noPublishDate": 5553
+    "noPublishDate": 5550
   },
   "findings": [
     {
@@ -47009,6 +47009,24 @@
     },
     {
       "showId": "the-notebook-tour-2025",
+      "file": "deadline--greg-evans.json",
+      "publishDate": "2026-10-23",
+      "url": "https://deadline.com/2026/10/the-notebook-london-west-end-1237171679/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
       "file": "feature-presentation--patrick-j-regal.json",
       "score": 63,
       "publishDate": "2026-08-21",
@@ -57026,6 +57044,19 @@
       "score": 38,
       "publishDate": "2026-04-09",
       "url": "https://www.broadwayworld.com/westend/article/Review-A-DOLLS-HOUSE-Almeida-Theatre-20260409",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "a-dolls-house-off-west-end-2026",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2026-04-09",
+      "url": "https://www.theguardian.com/stage/2026/apr/09/a-dolls-house-review-henrik-ibsen-almeida-theatre-london",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -69255,7 +69286,7 @@
     {
       "showId": "garry-starr-classic-penguins-off-west-end-2026",
       "file": "times-uk--donald-hutera.json",
-      "score": null,
+      "score": 87,
       "publishDate": "2026-02-02",
       "url": "https://www.thetimes.com/culture/comedy/article/garry-starr-classic-penguins-review-garrick-theatre-london-87vh6kdjs",
       "findings": [
@@ -86562,6 +86593,7 @@
     {
       "showId": "some-woman-west-end-2026",
       "file": "revstanstheatreblog--unknown.json",
+      "score": 45,
       "publishDate": "2026-10-24",
       "url": "https://revstanstheatreblog.co.uk/2026/10/24/review-some-woman-national-theatre/",
       "findings": [
