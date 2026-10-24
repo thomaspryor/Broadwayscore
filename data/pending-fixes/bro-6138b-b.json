@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6138b-b",
   "planId": "28b5fdec-6080-45a6-86a8-f2c8b177f30e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-24T19:23:35.867Z",
   "submitter": {
     "name": null,
@@ -268,5 +268,74 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-24T20:09:22.967Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added 9-to-5-2009 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added a-catered-affair-2008 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added baby-its-you-2011 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added big-fish-2013 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added crybaby-2008 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added gigi-2015 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added hands-on-a-hardbody-2013 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added honeymoon-in-vegas-2015 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added in-transit-2016 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added lysistrata-jones-2011 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added soul-doctor-2013 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-scottsboro-boys-2010 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added war-paint-2017 (Did Not Recoup)"
+    }
+  ],
+  "executedIn": "ci"
 }
