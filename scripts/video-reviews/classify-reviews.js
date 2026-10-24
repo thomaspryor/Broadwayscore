@@ -190,7 +190,7 @@ ${home}
 Which of these stage productions did the creator see and review in this video?
 ${options}
 
-Answer 0 when the video is about a different show whose title only resembles a listed one, or another production of the same title: a different city or venue than the one listed, a tour when only a New York run is listed (or the reverse), a regional, community, school, workshop, reading or concert staging, or the film. Pick a number only when the transcript and caption fit that production's city, venue or tour and its dates.
+Answer 0 when the video is about a different show whose title only resembles a listed one, or another production of the same title: a different city or venue than the one listed, a tour when only a New York run is listed (or the reverse), a regional, community, school, workshop or reading staging, a concert staging when the listed production is not one (Encores! is one), or the film. Pick a number only when the transcript and caption fit that production's city, venue or tour and its dates.
 
 Transcript (first 1500 chars): ${String(c.transcript || '').substring(0, 1500)}
 

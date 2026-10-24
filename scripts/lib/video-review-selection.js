@@ -89,7 +89,8 @@ function closeTitleMatches(title, byTitle) {
       if (j >= FUZZY_TITLE_MIN) out.push([s, j]);
     }
   }
-  return out.sort((a, b) => b[1] - a[1]).map(([s]) => s);
+  // ties by id, so the candidate list (the re-match cache key) is stable
+  return out.sort((a, b) => b[1] - a[1] || a[0].id.localeCompare(b[0].id)).map(([s]) => s);
 }
 
 /** Shows whose title is the classifier's title, else close to it. */
