@@ -16,13 +16,16 @@ const NOW = Date.parse('2026-10-24T12:00:00Z');
 const hoursAgo = (h) => new Date(NOW - h * 3600 * 1000).toISOString();
 
 test('isAgedNeverAttemptedStub: URL, zero attempts, older than 48h', () => {
-  const base = { url: 'https://x.test/r', fetchAttempts: [], firstSeenAt: hoursAgo(60) };
+  const base = { url: 'https://x.test/r', incompleteReason: 'not_attempted', fetchAttempts: [], firstSeenAt: hoursAgo(60) };
   assert.equal(isAgedNeverAttemptedStub(base, { nowMs: NOW }), true);
   assert.equal(isAgedNeverAttemptedStub({ ...base, firstSeenAt: hoursAgo(10) }, { nowMs: NOW }), false, 'too young');
   assert.equal(isAgedNeverAttemptedStub({ ...base, fetchAttempts: [{ at: 'x' }] }, { nowMs: NOW }), false, 'already attempted');
   assert.equal(isAgedNeverAttemptedStub({ ...base, url: '' }, { nowMs: NOW }), false, 'no url');
   assert.equal(isAgedNeverAttemptedStub({ ...base, _locked: true }, { nowMs: NOW }), false, 'locked');
-  assert.equal(isAgedNeverAttemptedStub({ url: 'https://x.test/r' }, { nowMs: NOW }), true, 'unknown age counts as aged');
+  assert.equal(isAgedNeverAttemptedStub({ ...base, firstSeenAt: undefined }, { nowMs: NOW }), true, 'unknown age counts as aged');
+  assert.equal(isAgedNeverAttemptedStub({ url: 'https://x.test/r', fetchAttempts: null }, { nowMs: NOW }), false, 'complete/legacy file with null attempts is not a stub');
+  assert.equal(isAgedNeverAttemptedStub({ ...base, incompleteReason: 'paywall' }, { nowMs: NOW }), false, 'failed/other reason is not a stub');
+  assert.equal(isAgedNeverAttemptedStub({ ...base, fullText: 'body' }, { nowMs: NOW }), false, 'has text');
   assert.equal(isAgedNeverAttemptedStub(null), false);
 });
 
