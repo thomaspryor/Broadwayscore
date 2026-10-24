@@ -1172,5 +1172,61 @@
       }
     ],
     "queuedAt": "2026-10-24T01:51:56.012Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:murder-cathedral-off-west-end-2026",
+    "title": "1 review(s) for murder-cathedral-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--7b99d1e7.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/murder-in-the-cathedral-review-st-johns-the-divine-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T02:04:29.643Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:dog-mom-off-west-end-2026",
+    "title": "1 review(s) for dog-mom-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--70d4480d.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/dog-mom-review-southwark-playhouse-borough-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T02:04:31.731Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:stories-the-tap-dance-sensation-west-end-2026",
+    "title": "1 review(s) for stories-the-tap-dance-sensation-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--15d1902b.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/rb-dance-company-stories-review-peacock-theatre-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T02:04:36.410Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:into-the-woods-noel-coward-west-end-2026",
+    "title": "2 review(s) for into-the-woods-noel-coward-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- noel-coward-theatre--333fba17.json (noel-coward-theatre): no byline in page and no recoverable body https://delfontmackintosh.co.uk/\n- thestage--4d5a441.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/into-the-woods-review-bridge-theatre-london-stephen-sondheim-jordan-fein",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T02:04:44.298Z"
   }
 ]
