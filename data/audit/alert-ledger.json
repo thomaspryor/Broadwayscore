@@ -22414,19 +22414,17 @@
       "resolvedAt": "2026-10-20T22:22:57.440Z"
     },
     "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
       "firstSeen": "2026-10-20T21:59:17.665Z",
-      "incidentOpenedAt": "2026-10-23T17:36:15.831Z",
-      "lastSeen": "2026-10-23T17:36:15.831Z",
-      "lastNotifiedAt": "2026-10-23T17:36:15.831Z",
-      "lastSurfacedAt": "2026-10-23T17:36:15.831Z",
-      "notifyCount": 3,
+      "incidentOpenedAt": "2026-10-24T15:20:54.049Z",
+      "lastSeen": "2026-10-24T15:20:54.049Z",
+      "lastNotifiedAt": "2026-10-24T15:20:54.049Z",
+      "lastSurfacedAt": "2026-10-24T15:20:54.049Z",
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-10-23T23:29:56.917Z",
-      "resolveReason": "live-data test green"
+      "linearIdentifier": null
     },
     "land:land/bro-5776-commercial-coverage": {
       "status": "open",
@@ -23646,12 +23644,13 @@
       "title": "Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
       "firstSeen": "2026-10-22T11:49:37.833Z",
       "incidentOpenedAt": "2026-10-22T11:49:37.833Z",
-      "lastSeen": "2026-10-24T14:49:23.965Z",
+      "lastSeen": "2026-10-24T15:20:54.037Z",
       "lastNotifiedAt": "2026-10-24T14:49:23.965Z",
       "lastSurfacedAt": "2026-10-24T14:49:23.965Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-5325-wsj-section": {
       "status": "resolved",
@@ -24396,13 +24395,13 @@
       "title": "Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
       "firstSeen": "2026-10-22T20:59:52.372Z",
       "incidentOpenedAt": "2026-10-22T20:59:52.372Z",
-      "lastSeen": "2026-10-24T14:49:23.953Z",
+      "lastSeen": "2026-10-24T15:20:54.022Z",
       "lastNotifiedAt": "2026-10-23T23:29:56.888Z",
       "lastSurfacedAt": "2026-10-23T23:29:56.888Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 13
+      "silentRefires": 14
     },
     "land:land/bro-5969-index-bloat-v3": {
       "status": "open",
