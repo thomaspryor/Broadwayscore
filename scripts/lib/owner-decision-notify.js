@@ -52,6 +52,7 @@ function findOwnerDecisions(issues) {
   for (const issue of issues || []) {
     if (!issue || !issue.identifier) continue;
     const question = extractDecisionQuestion(issue.description);
+    const fullQuestion = findDecisionQuestion(issue.description);
     const labelled = labelNames(issue).includes(AWAITING_OWNER_LABEL);
     if (!question && !labelled) continue;
     out.push({
@@ -59,6 +60,8 @@ function findOwnerDecisions(issues) {
       title: issue.title || issue.identifier,
       url: issue.url || null,
       question: question || null,
+      // From the uncapped question: the 220-char display cap must never cut a link in half.
+      actionLink: fullQuestion ? questionLink(fullQuestion.question) : null,
       priority: issue.priority ?? null,
       createdAt: issue.createdAt || null,
       // BRO-6131: the structured card (options, recommendation, default) for the digest.
@@ -142,13 +145,15 @@ function formatEmail(plan) {
  * you". Same {generatedAt, bannerText, items, moreCount} shape as every other
  * digest section. Returns null when there is nothing to show.
  */
-// BRO-6131: only this site's own action links (/api/... on broadwayscorecard.com: the signed
-// renewal flows) replace the card link. Any other URL in the question is just context
-// (BRO-6110 quotes a dead relay URL), and linking the button to it sent the owner nowhere.
-const SIGNED_LINK_RE = /https:\/\/broadwayscorecard\.com\/api\/[^\s)>\]]+/;
+// BRO-6131: only this site's own owner action links (/api/admin/... on broadwayscorecard.com:
+// the signed renewal flows) replace the card link. Any other URL in the question is context
+// (BRO-6110 quotes a dead relay URL; a public /api/health/... path is not an action), and
+// linking the button to it sent the owner nowhere. The match stops at quotes and ellipsis, and
+// trailing punctuation or markdown emphasis is dropped, so a wrapped link keeps a valid signature.
+const SIGNED_LINK_RE = /https:\/\/broadwayscorecard\.com\/api\/admin\/[^\s)>\]"'\u2026]+/;
 function questionLink(question) {
   const m = SIGNED_LINK_RE.exec(String(question || ''));
-  return m ? m[0].replace(/[.,;:!?]+$/, '') : null;
+  return m ? m[0].replace(/[.,;:!?*_]+$/, '') : null;
 }
 
 function buildDecisionsSection(issues, { max = 8, now = new Date() } = {}) {
@@ -169,7 +174,7 @@ function buildDecisionsSection(issues, { max = 8, now = new Date() } = {}) {
       return {
         title: d.question,
         detail: `${d.identifier}: ${d.title}`,
-        url: questionLink(d.question) || d.url,
+        url: d.actionLink || d.url,
         // BRO-6131: what the digest card shows. cardUrl is the Linear card even
         // when `url` is a signed one-tap link taken from the question.
         identifier: d.identifier,
@@ -178,7 +183,7 @@ function buildDecisionsSection(issues, { max = 8, now = new Date() } = {}) {
         cardUrl: d.url,
         decision: d.card,
         ageDays: Number.isFinite(ageDays) && ageDays >= 0 ? ageDays : null,
-        actionLabel: questionLink(d.question) ? 'Tap to do this \u2192' : undefined,
+        actionLabel: d.actionLink ? 'Tap to do this \u2192' : undefined,
       };
     }),
     moreCount: decisions.length - shown.length,
