@@ -825,5 +825,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-24T14:49:23.966Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6134-codex-lane-alarm",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6134-codex-lane-alarm",
+    "description": "land.yml did not land land/bro-6134-codex-lane-alarm: the unit-tests-node gate went red at 082d6a5a78. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40102765310",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6134-codex-lane-alarm"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "082d6a5a787c884ab359568b4fe6ce51881268bb"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40102765310"
+      }
+    ],
+    "queuedAt": "2026-10-24T14:53:13.211Z"
   }
 ]
