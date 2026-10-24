@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6153",
   "planId": "13892023-8f83-4440-90a8-617518980b0f",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-24T16:59:38.711Z",
   "submitter": {
     "name": null,
@@ -64,5 +64,19 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-24T19:02:19.268Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hold-on-to-me-darling-off-broadway-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added sumo-off-broadway-2025"
+    }
+  ],
+  "executedIn": "ci"
 }
