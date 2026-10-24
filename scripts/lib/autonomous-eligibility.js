@@ -196,6 +196,7 @@ const EXCLUDED_FILES = new Set([
   'scripts/lib/score-parsers.js',
   'scripts/lib/review-normalization.js',
   'scripts/lib/score-routing.js',
+  'scripts/lib/sibling-rating-inherit.js', // BRO-6078 (mirrors scoring-watchlists)
   // scoring-delta INCLUSION_FILES added after this list was first mirrored.
   // The old drift guard only asked isPathAllowed (Tier 1), so Tier 3
   // (isCodePathAllowed) still let the loop edit several of these.
