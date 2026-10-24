@@ -108,6 +108,12 @@ test('fixture page extracts every listed critic and drops the Buy tickets pseudo
   assert.ok(!rows.some((r) => isPseudoRow(r) === false && /buy tickets/i.test(r.outlet)));
   assert.equal(isPseudoRow({ outlet: 'Buy tickets' }), true);
   assert.equal(isPseudoRow({ outlet: '' }), true);
+  for (const o of ['Click here to buy  tickets direct', 'www.andrewlloydwebber.com/show/jesus-christ-superstar', 'thedukeofyorks.com', 'Noël Coward Theatre']) {
+    assert.equal(isPseudoRow({ outlet: o }), true, o);
+  }
+  for (const o of ['The Guardian', 'Time Out', 'Evening Standard', 'WhatsOnStage']) assert.equal(isPseudoRow({ outlet: o }), false, o);
+  assert.equal(canonicalLabel('Guardian review.'), 'The Guardian');
+  assert.equal(canonicalLabel('Mail'), 'Daily Mail');
 });
 
 test('outlet abbreviations normalise (Time = The Times, Standard, i, Stage)', () => {

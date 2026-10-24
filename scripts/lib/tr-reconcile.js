@@ -17,14 +17,16 @@ const { resolveArchiveRowOutletId } = require('./archive-outlet-identity');
 const { explainExclusion } = require('./review-guards');
 const { PERMANENT_REASONS } = require('./census-rebuild-exclusions');
 
-const PSEUDO_OUTLET = /^(buy\s+tickets?|book\s+(now|tickets?)|tickets?|see\s+tickets?|get\s+tickets?)\b/i;
+// Ticket links, bare domains and venue links that theatre.reviews renders in the same list as
+// critic rows ("Click here to buy tickets direct...", "www.thedukeofyorks.com", "Noël Coward Theatre").
+const PSEUDO_OUTLET = /^(buy\s+tickets?|book\s+(now|tickets?)|tickets?|see\s+tickets?|get\s+tickets?|click\s+here\b|(https?:\/\/)?(www\.)?[a-z0-9-]+(\.[a-z0-9-]+)*\.(com|co\.uk|org|uk|net)\b|.*\btheatre$)/i;
 
 // theatre.reviews abbreviates some outlets in its row labels; "Time" is The Times
 // (without this it resolves to a junk "time" outlet, BRO-6084).
-const LABEL_ALIASES = { time: 'The Times', standard: 'Evening Standard', stage: 'The Stage', i: 'The i' };
+const LABEL_ALIASES = { time: 'The Times', standard: 'Evening Standard', stage: 'The Stage', i: 'The i', mail: 'Daily Mail', 'guardian review': 'The Guardian' };
 function canonicalLabel(label) {
-  const k = String(label || '').trim().toLowerCase();
-  return LABEL_ALIASES[k] || String(label || '').trim();
+  const trimmed = String(label || '').trim().replace(/\.+$/, '');
+  return LABEL_ALIASES[trimmed.toLowerCase()] || trimmed;
 }
 
 function isPseudoRow(row) {
