@@ -108,7 +108,8 @@ function showWindow(show, outletId) {
 
 // ---- WhatsOnStage review posts (free WP REST) -> missing slots -------------
 
-const norm = s => String(s || '').toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ')
+const { foldDiacritics } = require('./title-match');
+const norm = s => foldDiacritics(String(s || '')).toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ')
   .replace(/^(the|a|an) /, '').replace(/ the musical$| a new musical$| the play$/, '').trim();
 const venueNorm = t => norm(t).replace(/\btheatre\b/g, '').replace(/\s+/g, ' ').trim();
 const venueAgrees = (a, b) => { const x = venueNorm(a), y = venueNorm(b); return !!x && !!y && x === y; };

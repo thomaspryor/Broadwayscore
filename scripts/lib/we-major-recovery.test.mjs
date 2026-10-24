@@ -125,3 +125,7 @@ test('hostMatchesSlot: Times reviews live on thetimes.co.uk and thetimes.com, su
   assert.equal(lib.hostMatchesSlot(m, 'notthetimes.co.uk'), false);
   assert.equal(lib.hostMatchesSlot(lib.BY_SLOT.get('guardian'), 'www.theguardian.com'), true);
 });
+
+test('norm folds diacritics so accented titles match', () => {
+  assert.equal(lib.norm('Café Müller'), lib.norm('Cafe Muller'));
+});
