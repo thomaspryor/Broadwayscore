@@ -1,19 +1,71 @@
 {
-  "updatedAt": "2026-10-24T14:05:09.696Z",
-  "processed": 432,
-  "failed": 202,
-  "successRate": "68.1%",
+  "updatedAt": "2026-10-24T14:10:55.420Z",
+  "processed": 446,
+  "failed": 206,
+  "successRate": "68.4%",
   "tierBreakdown": {
-    "playwright": 216,
+    "playwright": 226,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 7,
     "directCookies": 0,
     "scrapingdog": 19,
-    "scrapingbee": 30,
+    "scrapingbee": 31,
     "brightdata": 4,
     "archiveToday": 0,
-    "archive": 136
+    "archive": 139
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-10-24T08:16:20.349Z",
+      "event": "bb-session",
+      "session": "948e8f3c",
+      "url": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-BEING-HUMAN-Ap"
+    },
+    {
+      "t": "2026-10-24T08:16:34.183Z",
+      "event": "bb-session",
+      "session": "b16dc21b",
+      "url": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-BEING-HUMAN-Ap"
+    },
+    {
+      "t": "2026-10-24T08:25:04.277Z",
+      "event": "bb-session",
+      "session": "879c9098",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-24T09:55:02.433Z",
+      "event": "bb-session",
+      "session": "b49386d4",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-24T09:55:02.943Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-24T09:56:58.742Z",
+      "event": "bb-session",
+      "session": "807a6956",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-24T09:56:59.189Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-24T10:27:13.755Z",
+      "event": "bb-session",
+      "session": "ba1ead92",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
+    },
+    {
+      "t": "2026-10-24T10:27:14.291Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
