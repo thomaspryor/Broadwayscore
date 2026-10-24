@@ -118,4 +118,19 @@ describe('designation canonicalization on save (BRO-4570)', () => {
     assert.equal(onDisk.shows.hamilton.designation, 'Miracle');
     assert.equal(onDisk.shows.odd.designation, 'bogus');
   });
+
+  test('a record saved with no designation is stored as TBD (BRO-5824)', () => {
+    seed({ _meta: {}, shows: { hamilton: { designation: 'Miracle' } } });
+    const guard = createCommercialWriteGuard(commercialPath);
+    const data = guard.loadCommercial();
+    data.shows.farinelli = { recouped: true, recoupedDate: '2018-03' };
+    data.shows.blank = { designation: '' };
+    data.shows.nulled = { designation: null };
+    guard.saveCommercial(data);
+    const onDisk = JSON.parse(fs.readFileSync(commercialPath, 'utf8'));
+    assert.equal(onDisk.shows.farinelli.designation, 'TBD');
+    assert.equal(onDisk.shows.blank.designation, 'TBD');
+    assert.equal(onDisk.shows.nulled.designation, 'TBD');
+    assert.equal(onDisk.shows.hamilton.designation, 'Miracle');
+  });
 });

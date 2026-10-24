@@ -54,8 +54,9 @@ const NON_REVIEW_PATTERNS = [
   // theater review never carries these.
   // A bare "forecast" is prose ("the weather forecast" in the Independent's
   // review of Pressure, a play about a D-Day meteorologist, BRO-5824); on a
-  // weather page it sits beside a temperature pair like "75/40".
-  { pattern: /\bthe weather\b[\s\S]{0,60}(?:county|sunrise|high\b.{0,10}\blow|forecast[\s\S]{0,40}\b\d{2,3}\s*\/\s*\d{2,3}\b)/i, type: 'weather_page', definitive: true },
+  // weather page it sits beside a list of high/low pairs like "75/40, 8/-2"
+  // (two pairs, so a "50/50 gamble" metaphor cannot trip it).
+  { pattern: /\bthe weather\b[\s\S]{0,60}(?:county|sunrise|high\b.{0,10}\blow|forecast(?:[\s\S]{0,40}?-?\b\d{1,3}°?\s*\/\s*-?\d{1,3}\b°?){2})/i, type: 'weather_page', definitive: true },
   { pattern: /\btide(?:s)?\b.{0,25}(?:table|\bhi(?:gh)?\b.{0,15}\blo(?:w)?\b|feet)/i, type: 'weather_page', definitive: true },
   // Require clock times so Fiddler's "Sunrise, Sunset" song (and similar) don't match.
   { pattern: /\bsunrise\b.{0,12}\d{1,2}:\d{2}\s*[ap]?\.?m?\.?.{0,25}\bsunset\b.{0,12}\d{1,2}:\d{2}/i, type: 'weather_page', definitive: true },

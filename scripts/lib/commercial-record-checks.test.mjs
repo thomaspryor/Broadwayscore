@@ -7,7 +7,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { commercialRecordErrors, commercialRecordWarnings, commercialFileErrors, commercialFileWarnings, sanitizeForPublicRecord, stripInternalWording } = require('./commercial-record-checks.js');
+const { commercialRecordErrors, commercialRecordWarnings, commercialFileErrors, touchedRecordProblems, commercialFileWarnings, sanitizeForPublicRecord, stripInternalWording } = require('./commercial-record-checks.js');
 const { buildTipRecord } = require('./commercial-tip-record.js');
 const { undoAutoFizzleOnRunningShow } = require('./classify-stale-closure.js');
 
@@ -479,4 +479,10 @@ test('a stored record with no designation, or a non-canonical one, is a file err
   assert.ok(commercialFileErrors({ shows: { hamilton: noLabel } }, shows).some(e => /invalid designation "missing"/.test(e)));
   assert.ok(commercialFileErrors({ shows: { hamilton: { ...ok, designation: 'Hit' } } }, shows).some(e => /invalid designation "Hit"/.test(e)));
   assert.deepEqual(commercialFileErrors({ shows: { hamilton: { ...noLabel, designation: 'TBD', recouped: null } } }, shows).filter(e => /designation/.test(e)), []);
+});
+
+test('a plan that writes a record with no designation fails its touched-record check (BRO-5824 review)', () => {
+  const { designation, ...noLabel } = ok;
+  assert.ok(touchedRecordProblems({ shows: { hamilton: { ...noLabel, designation: null } } }, shows, ['hamilton'], {}).some(e => /invalid designation "missing"/.test(e)));
+  assert.ok(!touchedRecordProblems({ shows: { hamilton: ok } }, shows, ['hamilton'], {}).some(e => /invalid designation/.test(e)));
 });

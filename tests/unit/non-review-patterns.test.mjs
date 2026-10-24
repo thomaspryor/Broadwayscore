@@ -82,3 +82,14 @@ test('still flags a weather page whose only weather-word signal is a forecast wi
   const r = heuristicClassify('THE WEATHER Forecast for today: Downtown 75/58, Burbank 81/55, Long Beach 72/60 mostly sunny');
   assert.ok(r && r.confidence === 'high' && r.type === 'weather_page');
 });
+
+test('a single "50/50" after "the weather forecast" is prose, not a forecast grid (BRO-5824 review)', () => {
+  assert.equal(heuristicClassify('Stagg says the weather forecast is a 50/50 call for the landings, and Haig plays him with dry wit.'), null);
+});
+
+test('flags forecast grids with degree signs and single-digit or negative lows', () => {
+  for (const t of ['THE WEATHER Forecast: Ojai 75°/40°, Santa Paula 77°/42° clear', 'THE WEATHER Forecast for today: London 8/3, York 7/-2, rain throughout']) {
+    const r = heuristicClassify(t);
+    assert.ok(r && r.type === 'weather_page' && r.confidence === 'high', t);
+  }
+});

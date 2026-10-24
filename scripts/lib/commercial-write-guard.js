@@ -76,6 +76,9 @@ function createCommercialWriteGuard(commercialPath) {
       for (const rec of Object.values(finalData.shows || {})) {
         const canon = rec && canonicalDesignation(rec.designation);
         if (canon) rec.designation = canon;
+        // A record saved with no label at all is TBD, the outcome-unknown
+        // label (BRO-5824: two claim-built records shipped with none).
+        else if (rec && typeof rec === 'object' && (rec.designation == null || rec.designation === '')) rec.designation = 'TBD';
         // A weekly cost changed since the last model run: scale the model's
         // break-even with it, never leave it below the cost (BRO-4985).
         syncBreakevenToCost(rec);

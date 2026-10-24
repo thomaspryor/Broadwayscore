@@ -545,8 +545,9 @@ function commercialFileErrors(data, showsList) {
 /**
  * Every stored record carries a canonical designation, TBD when the outcome is
  * unknown (BRO-5824: two claim-built records shipped with none, failing the
- * Test Suite on every run). File-level only: plan and tip checks see partial
- * records.
+ * Test Suite on every run). Run on stored records (the whole file, or the
+ * records a plan wrote), not inside commercialRecordErrors, which tip and
+ * field-edit checks also call on partial records.
  */
 function designationErrors(showId, show) {
   if (VALID_DESIGNATIONS.includes(show.designation)) return [];
@@ -572,7 +573,7 @@ function touchedRecordProblems(data, showsList, touchedKeys, priorShows) {
     .filter((k) => records[k])
     .flatMap((k) => {
       const ctx = { showRecord: bySlug.get(k), allRecords: records, priorRecord: priorShows && priorShows[k] };
-      return [...commercialRecordErrors(k, records[k], ctx), ...commercialRecordWarnings(k, records[k], ctx)];
+      return [...designationErrors(k, records[k]), ...commercialRecordErrors(k, records[k], ctx), ...commercialRecordWarnings(k, records[k], ctx)];
     });
 }
 
