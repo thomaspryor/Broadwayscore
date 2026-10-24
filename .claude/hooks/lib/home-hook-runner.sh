@@ -35,15 +35,7 @@ cwd=$(printf '%s' "$input" | jq -r '.cwd // empty' 2>/dev/null)
 common_dir() { git -C "$1" rev-parse --path-format=absolute --git-common-dir 2>/dev/null; }
 OURS="$(common_dir "$R")"
 [ -n "$OURS" ] || exit 0
-
-# Dedupe (BRO-6126): in cloud $HOME is the install target, so these user-level hooks
-# load in single-repo sessions too. A session whose cwd is a checkout of this repo
-# already runs the hook from that checkout's own project settings; stay out.
-top="$(git -C "$cwd" rev-parse --show-toplevel 2>/dev/null)"
-if [ -n "$top" ] && [ "$(common_dir "$cwd")" = "$OURS" ] && grep -q "\.claude/hooks/$hook" "$top/.claude/settings.json" 2>/dev/null; then
-  exit 0
-fi
-
+[ "$(common_dir "$cwd")" = "$OURS" ] && grep -q "\.claude/hooks/$hook" "$(git -C "$cwd" rev-parse --show-toplevel)/.claude/settings.json" 2>/dev/null && exit 0  # BRO-6126: project settings already run it
 # in_other_repo DIR: true when DIR is inside a git repo that is not this one
 # (worktrees of this repo share its common dir, so they count as ours).
 in_other_repo() {
@@ -91,12 +83,9 @@ fi
 # command or agent folder added since). Repair it at startup; links added now
 # serve this session's later lookups and every later start in this container.
 if [ "$hook" = session-start.sh ] && command -v node >/dev/null 2>&1; then
-  # H is /home/user = $HOME in cloud; the installer accepts that only with
-  # CLAUDE_CODE_REMOTE=true (BRO-6126). Scoped to these calls, not exported to the hook.
   I="$R/scripts/install-home-claude-config.js"; H="$(dirname -- "$R")"
-  CR=true
-  CLAUDE_CODE_REMOTE=$CR node "$I" --check --target "$H" >/dev/null 2>&1 || CLAUDE_CODE_REMOTE=$CR node "$I" --target "$H" >/dev/null 2>&1
-  CLAUDE_CODE_REMOTE=$CR node "$I" --check --target "$H" >/dev/null 2>&1 \
+  CLAUDE_CODE_REMOTE=true node "$I" --check --target "$H" >/dev/null 2>&1 || CLAUDE_CODE_REMOTE=true node "$I" --target "$H" >/dev/null 2>&1
+  CLAUDE_CODE_REMOTE=true node "$I" --check --target "$H" >/dev/null 2>&1 \
     || echo "⚠️ BRO-5221: /home/user/.claude could not be brought up to date (node scripts/install-home-claude-config.js --check). Hooks added since this container was set up are NOT running; follow CLOUD.md § Multi-repo by hand for them."
 fi
 
