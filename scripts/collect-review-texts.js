@@ -6727,6 +6727,16 @@ function findReviewsToProcess() {
   // then by outlet tier priority
   const closedShowMode = process.env.CLOSED_SHOW_MODE === 'true';
   reviews.sort((a, b) => compareReviewPriority(a, b, { closedShowMode }));
+  // BRO-6123: closed-show stubs with a URL and zero attempts ranked behind the
+  // whole open-show backlog and never reached the cut. Reserve a capped slice.
+  // Applied BEFORE the salvage and needsRefetch promotions so those stay ahead.
+  {
+    const promoted = promoteAgedStubs(reviews);
+    const n = promoted.filter(r => r._agedStub).slice(0, AGED_STUB_DRAIN_PER_RUN).length;
+    if (n) console.log(`  aged-stub drain: ${n} never-attempted stub(s) queued first (cap ${AGED_STUB_DRAIN_PER_RUN}/run)`);
+    reviews.length = 0;
+    reviews.push(...promoted);
+  }
   // Stored-text re-verifies (consent-prefixed captures, BRO-4185 A) need no
   // fetch, only one verification call, so they go first: ranked by show
   // recency they sat past the 300-review cut on older shows run after run.
@@ -6745,15 +6755,6 @@ function findReviewsToProcess() {
     const promoted = promoteNeedsRefetch(reviews);
     const n = promoted.filter(r => r._needsRefetch).slice(0, NEEDS_REFETCH_DRAIN_PER_RUN).length;
     if (n) console.log(`  needsRefetch drain: ${n} textless review(s) queued first (cap ${NEEDS_REFETCH_DRAIN_PER_RUN}/run)`);
-    reviews.length = 0;
-    reviews.push(...promoted);
-  }
-  // BRO-6123: closed-show stubs with a URL and zero attempts ranked behind the
-  // whole open-show backlog and never reached the cut. Reserve a capped slice.
-  {
-    const promoted = promoteAgedStubs(reviews);
-    const n = promoted.filter(r => r._agedStub).slice(0, AGED_STUB_DRAIN_PER_RUN).length;
-    if (n) console.log(`  aged-stub drain: ${n} never-attempted stub(s) queued first (cap ${AGED_STUB_DRAIN_PER_RUN}/run)`);
     reviews.length = 0;
     reviews.push(...promoted);
   }

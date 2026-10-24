@@ -184,6 +184,10 @@ const AGED_STUB_MIN_AGE_HOURS = 48;
  */
 function isAgedNeverAttemptedStub(data, { minAgeHours = AGED_STUB_MIN_AGE_HOURS, nowMs = Date.now() } = {}) {
   if (!data || typeof data.url !== 'string' || !data.url) return false;
+  // The collector's own marker for "Has URL but never scraped". Without it the
+  // predicate matched 44k of 60k files (null/absent fetchAttempts is the norm).
+  if (data.incompleteReason !== 'not_attempted') return false;
+  if (typeof data.fullText === 'string' && data.fullText.length > 0) return false;
   if (Array.isArray(data.fetchAttempts) ? data.fetchAttempts.length > 0 : Number(data.fetchAttempts) > 0) return false;
   if (data._locked === true || data.manualContentTier === 'complete') return false;
   const seen = Date.parse(data.firstSeenAt);
