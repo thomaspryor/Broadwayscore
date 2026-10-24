@@ -15,12 +15,15 @@ const reg = require('./coordinator-registry');
 
 const CARD_RE = /\bBRO-\d+\b/g;
 const PHRASE = '(?:plan[- ]only|do not implement)';
-// Title: phrase leads (after an optional `P1:`-style prefix) or sits in brackets. A title that merely
+// Title: phrase leads (after optional `[P1]` / `P1:` prefixes) or sits in brackets. A title that merely
 // quotes it ("Flag create_session from a plan-only session") is about plan-only sessions, not one.
-const TITLE_RE = new RegExp(`^\\W*(?:[A-Za-z0-9-]+:\\s*)?${PHRASE}\\b|[\\[(]${PHRASE}[\\])]`, 'i');
-const LINE_RE = /^[ \t]*(?:[-*>#]+[ \t]*)?(?:\*\*|__)?[ \t]*(?:plan[- ]only|do not implement)\b/im;
+const TITLE_RE = new RegExp(`^\\W*(?:(?:\\[[^\\]]*\\]|[A-Za-z0-9-]+:)\\s*)*${PHRASE}\\b(?!\\s*\\?)|[\\[(]${PHRASE}[\\])]`, 'i');
+// Description: a line that IS the instruction: phrase then end / punctuation / "session" / "until|yet".
+// Not "Do not implement a new scraper" or "## Plan only applies to phase 2".
+const LINE_RE = new RegExp(`^[ \\t]*(?:(?:[-*>#]+|\\d+\\.)[ \\t]*)?(?:\\*\\*|__)?[ \\t]*${PHRASE}(?:\\*\\*|__)?[ \\t]*(?:$|[:.!;,)\\u2013\\u2014-]|session\\b|until\\b|yet\\b)`, 'im');
 const MAX_CARDS = 5;
-const DEADLINE_MS = 10000;
+const DEADLINE_MS = 14000;
+const ENRICH_MS = 4000;
 
 /** Which phrase marks this card plan-only: 'title' | 'description' | null. */
 function planOnlyMarker({ title = '', description = '' } = {}) {
@@ -37,7 +40,7 @@ function cardIds(text) {
 function firstUserText(transcriptPath, fsImpl = fs) {
   try {
     const fd = fsImpl.openSync(transcriptPath, 'r');
-    const buf = Buffer.alloc(65536);
+    const buf = Buffer.alloc(262144);
     const n = fsImpl.readSync(fd, buf, 0, buf.length, 0);
     fsImpl.closeSync(fd);
     for (const line of buf.toString('utf8', 0, n).split('\n')) {
@@ -45,7 +48,9 @@ function firstUserText(transcriptPath, fsImpl = fs) {
       const msg = row && row.message;
       if (!msg || (row.type || msg.role) !== 'user') continue;
       const c = msg.content;
-      return typeof c === 'string' ? c : (Array.isArray(c) ? c.map((p) => (p && p.text) || '').join('\n') : '');
+      const text = typeof c === 'string' ? c : (Array.isArray(c) ? c.map((p) => (p && p.text) || '').join('\n') : '');
+      if (row.isMeta || /^\s*<(?:local-)?command-/.test(text)) continue; // caveat / slash-command rows
+      if (text.trim()) return text; // skip tool-result-only rows
     }
   } catch { /* fall through */ }
   return '';
@@ -65,7 +70,7 @@ function sessionCards({ sessionId = '', branch = '', cwd = '', transcriptPath = 
     } catch { /* no sentinel */ }
   }
   out.push(...cardIds(branch), ...cardIds(cwd));
-  if (transcriptPath) out.push(...cardIds(firstUserText(transcriptPath, fsImpl).slice(0, 4000)));
+  if (transcriptPath) out.push(...cardIds(firstUserText(transcriptPath, fsImpl)).slice(0, 1)); // the dispatch tag; later ids are mere references
   return [...new Set(out)].slice(0, MAX_CARDS);
 }
 
@@ -74,6 +79,8 @@ function sessionCards({ sessionId = '', branch = '', cwd = '', transcriptPath = 
  */
 async function evaluate(input, { fetchCard, startReminder, env = process.env, branch = '', tmpDir, fsImpl } = {}) {
   if (env.PLAN_ONLY_CREATE_SESSION_DISABLE) return null;
+  // The settings block also matches add_repo/send_later/etc.; only create_session starts a session.
+  if (!/__create_session$/.test(String((input && input.tool_name) || ''))) return null;
   const ti = (input && input.tool_input) || {};
   const cards = sessionCards({ sessionId: input.session_id, branch, cwd: input.cwd, transcriptPath: input.transcript_path, tmpDir, fsImpl });
   if (!cards.length) return null;
@@ -87,7 +94,11 @@ async function evaluate(input, { fetchCard, startReminder, env = process.env, br
   const prompt = String(ti.prompt || '') + '\n' + String(ti.title || '');
   const areas = reg.areasForText(prompt);
   let reminder = '';
-  if (areas.length && startReminder) reminder = await startReminder(prompt, { exclude: id });
+  if (areas.length && startReminder) {
+    let t; // the finding is already established: a slow coordinator lookup only drops the reminder
+    reminder = await Promise.race([startReminder(prompt, { exclude: id }).catch(() => ''), new Promise((r) => { t = setTimeout(() => r(''), ENRICH_MS); })]);
+    clearTimeout(t);
+  }
   const lines = [
     `PLAN-ONLY CARD: ${id}${hit.card.title ? ` ("${hit.card.title}")` : ''} is marked plan-only (${planOnlyMarker(hit.card)}), but this session is starting a new session with create_session.`,
     'A plan-only session writes the plan and stops; it does not start implementation sessions (2026-10-23: a planning session started four code sessions on its own, BRO-6083). If the owner asked you to start this one, continue; otherwise do not, and put the proposed sessions in the plan instead.',
