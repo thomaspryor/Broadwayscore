@@ -1,0 +1,29 @@
+{
+  "submittedAt": "2026-10-24T00:58:06.118Z",
+  "itemCount": 2,
+  "claudeBatchId": "msgbatch_01FVFdtZ31Tqu4ME9s1abZik",
+  "openaiBatchId": "batch_6adc029aa8fc819084c2d6646c127b16",
+  "geminiBatchId": "batches/ydmpjj1hjkwlc0jvs3i02dggfzsq6o7h9xnw",
+  "manifest": [
+    {
+      "index": 0,
+      "showId": "the-humans-2016",
+      "outletId": "newsday",
+      "filePath": "data/review-texts/the-humans-2016/newsday--linda-winer.json",
+      "inputHash": "63cc1eea01cedc1910f1f86058b40ff2"
+    },
+    {
+      "index": 1,
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "outletId": "thestage",
+      "filePath": "data/review-texts/thelma-and-louise-a-new-musical-off-west-end-2026/thestage--the-stage.json",
+      "inputHash": "3f0514759d390112f6b9cecc2eb483b3"
+    }
+  ],
+  "models": {
+    "claude": "claude-sonnet-4-6",
+    "openai": "gpt-4o",
+    "gemini": "gemini-2.5-flash"
+  },
+  "promptVersion": "5.4.0"
+}
