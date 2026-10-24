@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-24T08:48:00.283Z",
+  "generated": "2026-10-24T10:09:09.210Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 33,
+  "count": 34,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -233,6 +233,13 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "sweat-2017",
+      "loserFile": "newsday--matt-windman.json",
+      "targetFile": "newsday--linda-winer.json",
+      "reason": "orphaned-duplicate-heal: newsday--linda-winer.json was flagged invalid after newsday--matt-windman.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }

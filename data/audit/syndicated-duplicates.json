@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-24T08:47:49.818Z",
+  "generatedAt": "2026-10-24T10:09:01.478Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 95,
+    "avgScoreDiff": 1
   },
   "syndicationPairs": [
     {
@@ -153,7 +153,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Marilyn Stasio",
+      "showId": "eclipsed-2016",
+      "primaryOutlet": "variety",
+      "secondaryOutlet": "boston-herald",
+      "primaryFile": "variety--marilyn-stasio.json",
+      "secondaryFile": "boston-herald--marilyn-stasio.json",
+      "similarity": 95,
+      "primaryScore": 90,
+      "secondaryScore": 89,
+      "scoreDiff": 1
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
