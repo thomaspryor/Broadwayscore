@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-6052",
+  "planId": "f6cd6b4b-4da7-4806-a06f-4f5865936dcc",
+  "status": "pending",
+  "createdAt": "2026-10-24T07:09:12.614Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6052: stamp scoreProvenance page-parsed on West End review files an LLM relabel (llm-v6 / anchored-v6) cut off from their outlet-page score source, so the rebuild stops dropping them as aggregator-relayed body-less scores. Pre-relabel scoreSource recovered from review-texts git history; aggregator-relayed ones (show-score, LBO) are left alone.",
+    "steps": [
+      "Pre-relabel scoreSource was json-ld (review-texts 6bd1ea8490), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was json-ld (review-texts 6bd1ea8490), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was wos-star-images (review-texts 3b737276bf), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was fivestar-widget (review-texts 4fe6a05d75), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was json-ld (review-texts 6bd1ea8490), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was stage-star-svg (review-texts 6bd1ea8490), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was fivestar-widget (review-texts 483c777aef), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was telegraph-svg-stars (review-texts 7c4097ee40), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was stage-star-svg (review-texts 4eca2bccc4), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was stage-star-svg (review-texts 0ebb45071e), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was stage-star-svg (review-texts 433855f1a7), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was stage-star-svg (review-texts f892200ce7), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was stage-star-svg (review-texts 97acabe4a3), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was telegraph-svg-stars (review-texts bd74a6a4cb), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was stage-star-svg (review-texts 97acabe4a3), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was json-ld (review-texts afe09f0c9e), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was telegraph-svg-stars (review-texts 1b06a10f9e), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was wos-star-images (review-texts 00217e263e), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was guardian-star-svg (review-texts afe09f0c9e), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was fivestar-widget (review-texts 14d4292dfa), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was telegraph-svg-stars (review-texts 3d931eca4a), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was telegraph-svg-stars (review-texts 07a45f1e21), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was stage-star-svg (review-texts 9d12600382), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was atd-emoji-stars (review-texts 483c777aef), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was json-ld (review-texts 4eca2bccc4), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "american-psycho-off-west-end-2026/standard--nick-curtis.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was json-ld (review-texts 6bd1ea8490), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-enemy-of-the-people-west-end-2024/standard--unknown.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was json-ld (review-texts 6bd1ea8490), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anna-x-west-end-2021/whatsonstage--sarah-crompton.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was wos-star-images (review-texts 3b737276bf), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "big-the-musical-west-end-2019/artsdesk--matt-wolf.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was fivestar-widget (review-texts 4fe6a05d75), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bird-grove-off-west-end-2026/standard--nick-curtis.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was json-ld (review-texts 6bd1ea8490), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "eureka-day-west-end-2022/thestage--unknown.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was stage-star-svg (review-texts 6bd1ea8490), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "g-west-end-2024/artsdesk--aleks-sierz.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was fivestar-widget (review-texts 483c777aef), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "indian-ink-off-west-end-2025/telegraph--claire-allfree.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was telegraph-svg-stars (review-texts 7c4097ee40), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-old-man-and-the-pool-west-end-2023/thestage--anya-ryan.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was stage-star-svg (review-texts 4eca2bccc4), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-weir-west-end-2025/thestage--sam-marlowe.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was stage-star-svg (review-texts 0ebb45071e), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "word-play-west-end-2023/thestage--natasha-tripney.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was stage-star-svg (review-texts 433855f1a7), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "golden-boy-off-west-end-2026/thestage--dave-fargnoli.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was stage-star-svg (review-texts f892200ce7), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mj-the-musical-west-end-2024/thestage--unknown.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was stage-star-svg (review-texts 97acabe4a3), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-prince-of-egypt-west-end-2020/telegraph--dominic-cavendish.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was telegraph-svg-stars (review-texts bd74a6a4cb), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "inter-alia-west-end-2026/thestage--holly-omahony.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was stage-star-svg (review-texts 97acabe4a3), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "network-west-end-2017/express-uk--michael-arditti.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was json-ld (review-texts afe09f0c9e), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-night-of-the-iguana-west-end-2019/telegraph--dominic-cavendish.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was telegraph-svg-stars (review-texts 1b06a10f9e), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-score-west-end-2025/whatsonstage--lucinda-everett.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was wos-star-images (review-texts 00217e263e), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "network-west-end-2017/guardian--susannah-clapp.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was guardian-star-svg (review-texts afe09f0c9e), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lyonesse-west-end-2023/artsdesk--demetrios-matheou.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was fivestar-widget (review-texts 14d4292dfa), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-starry-messenger-west-end-2019/telegraph--dominic-cavendish.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was telegraph-svg-stars (review-texts 3d931eca4a), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "top-girls-west-end-2019/telegraph--dominic-cavendish.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was telegraph-svg-stars (review-texts 07a45f1e21), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "come-alive-the-greatest-showman-circus-spectacular-off-west-end-2024/thestage--paul-vale.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was stage-star-svg (review-texts 9d12600382), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "g-west-end-2024/all-that-dazzles-uk--dan-sinclair.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was atd-emoji-stars (review-texts 483c777aef), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-old-man-and-the-pool-west-end-2023/standard--bruce-dessau.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was json-ld (review-texts 4eca2bccc4), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      }
+    ]
+  }
+}
