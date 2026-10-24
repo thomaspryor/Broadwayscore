@@ -25,6 +25,7 @@
 const fs = require('fs');
 const path = require('path');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const {
   summarizeOutletBylines,
   classifyOutlet,
@@ -37,11 +38,11 @@ const REGISTRY_PATH = path.join(ROOT, 'data', 'outlet-registry.json');
 function loadRecords(dir) {
   const records = [];
   let unreadable = 0;
-  for (const show of fs.readdirSync(dir)) {
+  for (const show of listShowDirs(dir, { skipHolding: true })) {
     if (show.startsWith('.')) continue;
     const showDir = path.join(dir, show);
     let files;
-    try { if (!fs.statSync(showDir).isDirectory()) continue; files = fs.readdirSync(showDir); } catch { continue; }
+    try { files = fs.readdirSync(showDir); } catch { continue; }
     for (const f of files) {
       if (!f.endsWith('.json')) continue;
       try {

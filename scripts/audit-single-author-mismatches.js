@@ -36,7 +36,9 @@ const OUTPUT_PATH = path.join(ROOT, 'data', 'audit', 'outlet-multiauthor-classif
 
 // Allow-list — outlets where staff turnover over the years has produced ≥3
 // distinct critics but bylines are AUTHORITATIVE (not rotating). Setting
-// multiAuthor:true on these would break canonical T1/T2 critic attribution.
+// multiAuthor:true on these would stop blank bylines being filled with the default critic.
+// BRO-6056 later set it on a few of them (bbc-news, boston-globe, sfgate, philadelphia-inquirer,
+// minneapolis-star-tribune) where the data shows several critics; blank bylines there now read Unknown.
 // Pre-mortem (2026-05-21) caught this before any code shipped.
 const STAFF_TURNOVER_ALLOWLIST = new Set([
   // T1 — flagship critics' picks
