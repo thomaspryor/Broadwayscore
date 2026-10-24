@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6137-r2-b",
   "planId": "e8be9470-f34b-4573-bc70-8afb7253e9ed",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-24T16:25:24.826Z",
   "submitter": {
     "name": null,
@@ -294,5 +294,134 @@
         "description": "therese-raquin-2015: press naming the producing nonprofit."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-24T17:04:00.521Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-father-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for the-father-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-father-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-father-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for she-loves-me-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for she-loves-me-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for she-loves-me-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for she-loves-me-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for our-mothers-brief-affair-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for our-mothers-brief-affair-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for our-mothers-brief-affair-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for our-mothers-brief-affair-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for noises-off-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for noises-off-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for noises-off-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for noises-off-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for therese-raquin-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for therese-raquin-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for therese-raquin-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for therese-raquin-2015"
+    }
+  ],
+  "executedIn": "ci"
 }
