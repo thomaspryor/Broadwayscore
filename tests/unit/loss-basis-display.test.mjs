@@ -11,7 +11,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-const { lossBasisCaveat, LOSS_ON_SILENCE_CAVEAT, toPublicShowCommercial, publicSourceText, lossOutcomePhrase, isReportedLoss, publicNotesText, lossCanChangeNote, LOSS_CAN_CHANGE_NOTE, likelyOutcomeLine, likelyOutcomeBasis, LIKELY_OUTCOME_BASIS, LIKELY_OUTCOME_NOTE } =
+const { lossBasisCaveat, LOSS_ON_SILENCE_CAVEAT, toPublicShowCommercial, publicSourceText, lossOutcomePhrase, isReportedLoss, publicNotesText, lossCanChangeNote, LOSS_CAN_CHANGE_NOTE, likelyOutcomeLine, likelyOutcomeBasis, LIKELY_OUTCOME_BASIS, LIKELY_OUTCOME_NOTE, DESIGNATION_ESTIMATE_CAVEAT } =
   await import('../../src/lib/commercial-display.ts');
 
 test('a Did Not Recoup show carries our best guess as a marked Likely line (owner 2026-10-18, BRO-5647)', () => {
@@ -157,4 +157,20 @@ test('Group C: Reddit and blog characterisations never print as a source line', 
   assert.doesNotMatch(JSON.stringify(pub), /reddit|blog/i);
   // A trade citation still prints.
   assert.equal(publicSourceText('Deadline: producers said the production will not recoup'), 'Deadline: producers said the production will not recoup');
+});
+
+test('a designation resting on our estimate says so, whatever its tier (owner 2026-10-24, BRO-6158)', () => {
+  assert.match(DESIGNATION_ESTIMATE_CAVEAT, /^Our estimate, not a reported result/);
+  assert.doesNotMatch(DESIGNATION_ESTIMATE_CAVEAT, /—/);
+  for (const designation of ['Flop', 'Fizzle', 'Did Not Recoup', 'Trickle', 'Windfall']) {
+    assert.equal(lossBasisCaveat({ designation, designationBasis: 'model-estimate' }), DESIGNATION_ESTIMATE_CAVEAT, designation);
+  }
+  // The estimate wording replaces both the silence caveat and the can-change note.
+  assert.equal(lossCanChangeNote({ designation: 'Flop', designationBasis: 'model-estimate' }), null);
+  assert.equal(lossCanChangeNote({ designation: 'Flop', designationBasis: 'no-recoupment-announced' }), LOSS_CAN_CHANGE_NOTE);
+  // It is not a reported loss, and the notes stay off the page.
+  assert.equal(isReportedLoss({ designation: 'Flop', designationBasis: 'model-estimate' }), false);
+  assert.equal(publicNotesText({ designation: 'Trickle', designationBasis: 'model-estimate', notes: 'internal' }), null);
+  assert.equal(toPublicShowCommercial({ designation: 'Windfall', designationBasis: 'model-estimate' }).designationBasis, 'model-estimate');
+  assert.equal(lossBasisCaveat({ designation: 'Windfall' }), null);
 });

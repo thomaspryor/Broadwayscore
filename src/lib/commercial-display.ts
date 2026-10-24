@@ -673,6 +673,13 @@ export function hasCommercialCard(
 /** The public caveat for a loss label that rests on silence (owner policy B, BRO-5020). */
 export const LOSS_ON_SILENCE_CAVEAT = 'Based on no recoupment being announced';
 
+/**
+ * The public caveat for a designation that is our estimate (owner 2026-10-24,
+ * BRO-6158): a closed show no source has reported on still gets our best
+ * designation, marked as ours and open to change.
+ */
+export const DESIGNATION_ESTIMATE_CAVEAT = 'Our estimate, not a reported result. We update it if a recoupment is announced.';
+
 type LossBasisSignals = Pick<ShowCommercial, 'designation' | 'designationBasis'>;
 
 /**
@@ -688,10 +695,14 @@ export function isReportedLoss(c: LossBasisSignals | null | undefined): boolean 
 /**
  * The caveat a loss label carries unless a source reported the loss. Null
  * for a reported loss and for every other designation. Writers store only the
- * basis; this file is the one place the public words live.
+ * basis; this file is the one place the public words live. A designation
+ * resting on our own estimate (basis 'model-estimate', loss label or
+ * Trickle/Windfall) says so instead.
  */
 export function lossBasisCaveat(c: LossBasisSignals | null | undefined): string | null {
-  if (!c || !isLossDesignation(c.designation)) return null;
+  if (!c) return null;
+  if (c.designationBasis === 'model-estimate') return DESIGNATION_ESTIMATE_CAVEAT;
+  if (!isLossDesignation(c.designation)) return null;
   return isReportedLoss(c) ? null : LOSS_ON_SILENCE_CAVEAT;
 }
 
@@ -734,8 +745,9 @@ export const LIKELY_OUTCOME_NOTE: Record<LikelyOutcomeBasis, string> = {
 };
 
 /** The can-change note for a loss label; null for every other designation. */
-export function lossCanChangeNote(c: Pick<ShowCommercial, 'designation'> | null | undefined): string | null {
-  return c && isLossDesignation(c.designation) ? LOSS_CAN_CHANGE_NOTE : null;
+export function lossCanChangeNote(c: Pick<ShowCommercial, 'designation' | 'designationBasis'> | null | undefined): string | null {
+  // An estimate's caveat already says it updates; the extra note would repeat it.
+  return c && isLossDesignation(c.designation) && c.designationBasis !== 'model-estimate' ? LOSS_CAN_CHANGE_NOTE : null;
 }
 
 /**

@@ -188,6 +188,8 @@ function recoupClaimDesignationAction(existing) {
   if (existing.humanReviewedDesignation === true) return 'block';
   if (existing.classifiedBy === 'classify-stale-closures') return 'reset';
   if (existing.designationBasis === DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED) return 'reset';
+  // Our estimate gives way to a verified recoupment (BRO-6158).
+  if (existing.designationBasis === DESIGNATION_BASES.MODEL_ESTIMATE) return 'reset';
   return 'block';
 }
 
@@ -370,6 +372,17 @@ function buildCommercialEntry(entry, existing, opts = {}) {
  */
 function stampDesignationBasis(result, entry, existing) {
   const d = result.designation;
+  // A model estimate (BRO-6158) rests on our figures, not on a source, and may
+  // sit on a recouped-side tier too; it keeps its basis wherever it is stamped.
+  if (d && d !== 'TBD' && (
+    (entry && entry.designationBasis === DESIGNATION_BASES.MODEL_ESTIMATE)
+    || (existing && existing.designation === d && existing.designationBasis === DESIGNATION_BASES.MODEL_ESTIMATE
+      && !(entry && entry.designationBasis))
+  ) && (isLossDesignation(d) || d === 'Trickle' || d === 'Windfall')) {
+    result.designationBasis = DESIGNATION_BASES.MODEL_ESTIMATE;
+    delete result.needsLossEvidence;
+    return;
+  }
   if (isLossDesignation(d)) {
     if (VALID_DESIGNATION_BASES.includes(entry && entry.designationBasis)) {
       result.designationBasis = entry.designationBasis;

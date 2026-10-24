@@ -125,7 +125,7 @@ for (const [key, val] of Object.entries(shows)) {
   } else {
     val.designation = act.designation;
     val.designationBasis = act.designationBasis;
-    val.recouped = false;
+    if (act.designationBasis !== 'model-estimate') val.recouped = false;
     delete val.needsLossEvidence;
     changes.designationFixed.push(`${key}: TBD -> ${act.designation} (${act.designationBasis}) (${show.title})`);
   }

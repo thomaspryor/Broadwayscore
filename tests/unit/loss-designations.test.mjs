@@ -80,11 +80,13 @@ describe('loss labels', () => {
     assert.equal(many.held, true);
     assert.equal(many.moves.length, D.MODEL_LOSS_RESIZE_LIMIT + 1);
   });
-  it('a silence-basis Did Not Recoup waits out the 6-month window like a Fizzle', () => {
-    const show = { closingDate: '2026-09-01' };
-    const entry = { designation: 'Did Not Recoup', designationBasis: D.DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED };
-    assert.equal(D.isPrematureSilenceLabel(entry, show, Date.parse('2026-10-18')), true);
-    assert.equal(D.isPrematureSilenceLabel(entry, show, Date.parse('2027-06-01')), false);
+  it('a model-estimate label is sized by the model at any data quality, and is never resized across 100%', () => {
+    const low = { designation: 'Flop', designationBasis: D.DESIGNATION_BASES.MODEL_ESTIMATE, modelDataQuality: 'low', modelReturnedExCreditPct: [10, 20, 30] };
+    assert.equal(D.resizedLossLabel(low), null);
+    assert.equal(D.resizedLossLabel({ ...low, modelReturnedExCreditPct: [30, 45, 60] }), 'Fizzle');
+    assert.equal(D.resizedLossLabel({ ...low, modelReturnedExCreditPct: [90, 110, 130] }), null);
+    // Without the basis a low-quality model sizes nothing: Did Not Recoup.
+    assert.equal(D.resizedLossLabel({ ...low, designationBasis: undefined }), 'Did Not Recoup');
   });
 });
 
@@ -163,16 +165,18 @@ describe('no literal loss-label lists outside commercial-designations.js', () =>
   });
 });
 
-describe('isWithinLossLabelWait (policy B wait, BRO-6137)', () => {
-  const now = Date.parse('2026-10-24');
-  it('is true inside 183 days of closing and false after', () => {
-    assert.equal(D.isWithinLossLabelWait({ closingDate: '2026-08-08' }, now), true);
-    assert.equal(D.isWithinLossLabelWait({ closingDate: '2026-04-01' }, now), false);
-    assert.equal(D.isWithinLossLabelWait({ closingDate: '2026-04-25' }, now), true);
-    assert.equal(D.isWithinLossLabelWait({ closingDate: '2026-04-24' }, now), false);
+describe('estimatedDesignationForClosed (BRO-6158: no wait, TBD is for running shows)', () => {
+  const model = (pct, extra = {}) => ({ modelDataQuality: 'low', modelReturnedExCreditPct: [pct - 5, pct, pct + 5], ...extra });
+  it('sizes by the same lines the rule uses: Flop < 30, Fizzle < 100, Trickle < 150, Windfall above', () => {
+    for (const [pct, label] of [[-20, 'Flop'], [29.9, 'Flop'], [30, 'Fizzle'], [99.9, 'Fizzle'], [100, 'Trickle'], [149.9, 'Trickle'], [150, 'Windfall'], [300, 'Windfall']]) {
+      assert.equal(D.estimatedDesignationForClosed(model(pct)), label, `${pct}%`);
+    }
   });
-  it('is false with no usable closing date', () => {
-    assert.equal(D.isWithinLossLabelWait({ closingDate: null }, now), false);
-    assert.equal(D.isWithinLossLabelWait(undefined, now), false);
+  it('prefers the record\'s own estimate and returns null with no figure', () => {
+    assert.equal(D.estimatedDesignationForClosed(model(90, { analystRecoupPct: [10, 20] })), 'Flop');
+    assert.equal(D.estimatedDesignationForClosed({}), null);
+  });
+  it('the wait is gone from the exports', () => {
+    for (const gone of ['LOSS_LABEL_MIN_DAYS', 'isPrematureSilenceLabel', 'isWithinLossLabelWait']) assert.equal(D[gone], undefined, gone);
   });
 });
