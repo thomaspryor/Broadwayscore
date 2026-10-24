@@ -56,3 +56,35 @@ test('body-having files are stamped too; an existing stamp is left alone', () =>
   assert.equal(stamped.scoreProvenance, 'aggregator-inherited');
   assert.equal(setScoreSourcePreservingProvenance(null, 'x'), null);
 });
+
+// BRO-6053: no writer may overwrite scoreSource with an LLM method label directly; the helper
+// stamps scoreProvenance first. Scans the real sources (baseline zero).
+test('no script assigns an LLM method label to scoreSource outside the provenance helper', async () => {
+  const fs = await import('node:fs');
+  const path = await import('node:path');
+  const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../../scripts');
+  const bare = /\bscoreSource\s*=\s*['"`](llm-v\d+|anchored-v\d+|manual-cleared-haiku-fallback)['"`]/;
+  const hits = [];
+  const walk = (dir) => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      const p = path.join(dir, e.name);
+      if (e.isDirectory()) { if (e.name !== 'node_modules') walk(p); continue; }
+      if (!/\.(js|mjs|ts)$/.test(e.name) || /\.test\./.test(e.name)) continue;
+      fs.readFileSync(p, 'utf8').split('\n').forEach((line, i) => {
+        if (bare.test(line) && !/^\s*(\/\/|\*)/.test(line) && !/console\./.test(line)) hits.push(`${path.relative(root, p)}:${i + 1}`);
+      });
+    }
+  };
+  walk(root);
+  assert.deepEqual(hits, [], 'use setScoreSourcePreservingProvenance(data, label): ' + hits.join(', '));
+});
+
+test('stale-verdict parking stamps page-parsed provenance before the label is parked', () => {
+  const { parkTextDerivedScore } = require('../../scripts/lib/stale-automated-text-verdict.js');
+  const d = { ...guardianStub(), scoreSource: 'anchored-v6', assignedScore: 56, bucket: 'Mixed', originalScoreNormalized: 60 };
+  d.originalScoreSource = 'json-ld';
+  const parked = parkTextDerivedScore(d, '2026-10-24T00:00:00.000Z');
+  assert.ok(parked);
+  assert.equal(d.scoreSource, 'explicit-after-stale-verdict-clear');
+  assert.equal(d.scoreProvenance, 'page-parsed');
+});

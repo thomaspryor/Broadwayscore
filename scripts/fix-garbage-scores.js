@@ -20,6 +20,7 @@ const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { setScoreSourcePreservingProvenance } = require('./lib/score-source-provenance');
 const { markRescoreNeeded } = require('./lib/rescore-flagging');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -203,7 +204,7 @@ function invalidateScore(filePath, review) {
   // If we have an explicit original score, use that
   if (data.originalScoreNormalized !== null && data.originalScoreNormalized !== undefined) {
     data.assignedScore = data.originalScoreNormalized;
-    data.scoreSource = 'explicit-after-garbage-invalidation';
+    setScoreSourcePreservingProvenance(data, 'explicit-after-garbage-invalidation');
     if (verbose) {
       console.log(`    Using explicit score: ${data.originalScoreNormalized}`);
     }

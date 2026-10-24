@@ -42,6 +42,7 @@ const { hasHumanAssertedFlag } = require('./contradicted-flag-basis');
 const { isTimestampAfter } = require('./review-guards');
 const { findMatchingPriorRun, isWithinTourLeg, isWithinOptOutPriorRun } = require('./wrong-production-autoclear');
 const { clearWrongProductionFlags } = require('./wrong-production-clear');
+const { setScoreSourcePreservingProvenance } = require('./score-source-provenance');
 
 const TEXT_QUALITY_REASONS = new Set(['not_a_review', 'garbage_text', 'truncated_text']);
 const AUTOMATED_REJECTERS = new Set(['ensemble-scoreability-check', 'news-article-heuristic-check', 'preopening-interview-signal']);
@@ -188,12 +189,15 @@ function parkTextDerivedScore(d, at) {
     if (d[f] != null) { parked[f] = d[f]; d[f] = null; }
   }
   if (isTextDerivedScoreSource(d.scoreSource)) {
+    // BRO-6053: a method label (llm-v6) may be hiding a page-parsed star; stamp that before the
+    // label is parked, or the body-less gate reads the file as aggregator-relayed.
+    setScoreSourcePreservingProvenance(d, d.scoreSource);
     for (const f of ['assignedScore', 'bucket', 'scoreSource']) {
       if (d[f] != null) { parked[f] = d[f]; d[f] = null; }
     }
     if (typeof d.originalScoreNormalized === 'number' && Number.isFinite(d.originalScoreNormalized)) {
       d.assignedScore = d.originalScoreNormalized;
-      d.scoreSource = 'explicit-after-stale-verdict-clear';
+      setScoreSourcePreservingProvenance(d, 'explicit-after-stale-verdict-clear');
     }
   }
   if (!Object.keys(parked).length) return null;

@@ -12,6 +12,7 @@ const fs = require('fs');
 const path = require('path');
 const { setExtractedScore } = require('./lib/score-routing');
 const { LETTER_GRADES: LETTER_TO_SCORE } = require('./lib/score-conversion-rules');
+const { setScoreSourcePreservingProvenance } = require('./lib/score-source-provenance');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -121,7 +122,7 @@ showDirs.forEach(showId => {
             source: 'extracted-grade',
           });
           data.assignedScore = gradeResult.score;
-          data.scoreSource = 'extracted-grade';
+          setScoreSourcePreservingProvenance(data, 'extracted-grade');
           fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
           stats.fixedByGrade++;
           console.log(`✓ ${showId}/${file}: Grade ${gradeResult.grade} → ${gradeResult.score}`);
@@ -134,7 +135,7 @@ showDirs.forEach(showId => {
 
         if (sentimentResult && sentimentResult.confidence !== 'low') {
           data.assignedScore = sentimentResult.score;
-          data.scoreSource = sentimentResult.method;
+          setScoreSourcePreservingProvenance(data, sentimentResult.method);
           data.scoreConfidence = sentimentResult.confidence;
           fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
           stats.fixedBySentiment++;
@@ -145,7 +146,7 @@ showDirs.forEach(showId => {
         // Even low confidence is better than 50
         if (sentimentResult) {
           data.assignedScore = sentimentResult.score;
-          data.scoreSource = sentimentResult.method;
+          setScoreSourcePreservingProvenance(data, sentimentResult.method);
           data.scoreConfidence = 'low';
           fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
           stats.fixedBySentiment++;
