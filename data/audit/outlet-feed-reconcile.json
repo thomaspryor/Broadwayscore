@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T01:27:28.785Z",
+  "generatedAt": "2026-10-24T04:37:44.975Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -128,10 +128,6 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "one-minute-critic",
-      "error": "HTTP 403 for https://1minutecritic.com/feed"
-    },
-    {
       "outletId": "theater-life",
       "error": "Timeout fetching https://theaterlife.com/feed"
     },
@@ -146,14 +142,6 @@
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "south-london",
-      "error": "Timeout fetching https://southlondon.co.uk/feed/"
-    },
-    {
-      "outletId": "theatre-vibe",
-      "error": "AggregateError"
     },
     {
       "outletId": "theartsdispatch",
@@ -172,7 +160,7 @@
       "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 729,
+  "itemsScanned": 738,
   "matchedGaps": 4,
   "possibleGaps": 2,
   "gaps": [
