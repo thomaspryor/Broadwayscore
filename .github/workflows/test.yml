@@ -3419,6 +3419,9 @@ on:
       - 'scripts/cyrus-webhook-drain.js'
       # BRO-6083 coordinator check CLI (tests/unit/coordinator-registry-cli.test.mjs).
       - 'scripts/coordinator-check.js'
+      # BRO-6088 plan-only create_session hook entry (tests/unit/plan-only-create-session.test.mjs).
+      - 'scripts/plan-only-create-session-hook.js'
+      - '.claude/hooks/plan-only-create-session.sh'
   pull_request:
     branches: [main]
   schedule:
