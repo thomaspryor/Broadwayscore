@@ -23,6 +23,11 @@ const AUTH_MARKER = '<!-- codex-auth-v1 -->';
 // the next day's run leaves that card to the Claude worker instead of looping.
 const BOUNCED_MARKER = '<!-- codex-runner-bounced -->';
 const BOUNCE_MEMORY_MS = 14 * 24 * 3600_000;
+// A partial landing made progress, so the remainder returns to Codex sooner (BRO-6129: 40 of the
+// 109 cards banned for 14 days were partials); a card that lands only part twice stays out the full 14 days.
+const PARTIAL_HEADING = '## Codex runner: landed part of this card';
+const PARTIAL_MEMORY_MS = 3 * 24 * 3600_000;
+const PARTIAL_MAX_PER_MEMORY = 2;
 // Opens every runner note about a landing that leaves card items undone, so whichever
 // path settles the landing (this run, reconcileLanded, recoverOrphans) returns the card
 // to Todo instead of closing it.
@@ -407,8 +412,12 @@ const isCrashNote = (body) => { const b = String(body || ''); return b.startsWit
 function codexBouncedRecently(comments, nowMs) {
   const recent = (Array.isArray(comments) ? comments : []).filter((c) => c
     && Number.isFinite(Date.parse(c.createdAt)) && nowMs - Date.parse(c.createdAt) < BOUNCE_MEMORY_MS);
+  const isPartial = (c) => String(c.body || '').startsWith(`${BOUNCED_MARKER}\n${PARTIAL_HEADING}`);
+  const partials = recent.filter(isPartial);
   // A full disk is the machine's fault, so it never counts toward the card's two crashes (BRO-5384).
-  return recent.some((c) => isCodexBounce(c.body))
+  return recent.some((c) => isCodexBounce(c.body) && !isPartial(c))
+    || partials.length >= PARTIAL_MAX_PER_MEMORY
+    || partials.some((c) => nowMs - Date.parse(c.createdAt) < PARTIAL_MEMORY_MS)
     || recent.filter((c) => isCrashNote(c.body) && !DISK_FULL_RE.test(String(c.body))).length >= 2;
 }
 
@@ -508,6 +517,9 @@ const CODEX_HARD_SKIPS = [
   ['workflow-edit', /\b(?:edit|change|modify|patch|add|update|wire|move|bump)\b[^.\n]{0,80}\.github\/workflows\/|\.github\/workflows\/[\w.-]+\.ya?ml\b[^.\n]{0,40}\b(?:step|job|cron|schedule|inputs?|env)\b|\bworkflow(?:'s)?\s+(?:\w+\s+)?(?:step|job)s?\b|\b(?:edit|change|modify|patch)\b[^.\n]{0,30}\b[\w-]+\.ya?ml\b|\bworkflow_dispatch\b[^.\n]{0,20}\binputs?\b/i],
   ['land-ref', /\bland\/\*|\b(?:stranded|refused|evicted)\s+land(?:ing)?s?\b|\bland(?:ing)?\s+refs?\b|\brebas\w*\b[^.\n]{0,40}\bland\b/i],
   ['private-repo-write', /\bbroadway-(?:review-texts|scorecard-data)\b|\bpending-fixes\b|\bexecute-approved-fix\b|\bapproved-fix\s+plan\b|\bdata repair\b/i],
+  // BRO-6129: 6 of the 69 "not landed" bounces were "nothing needed landing, items still open": work that waits on a date,
+  // a scheduled run or the owner. One Codex attempt cannot finish it, so it never starts.
+  ['waits-on-later-event', /\bRECHECK-AFTER:?\s*\d{4}-\d\d-\d\d|\bnext scheduled [\w.-]+ run\b|\bowner (?:presses|must|needs to|settles)\b/i],
   ['corpus-wide-data', /\bcorpus[- ]wide\b|\bbulk[- ](?:edit|fix|update|rewrite|repair|rescore)\b|(?<![\d,])(?!(?:19|20)\d\d\b)\d[\d,]{2,}\s+(?:shipped\s+|existing\s+|affected\s+|scored\s+)?(?:reviews|shows|files|rows|records)\b/i],
 ];
 // Card shapes the independent Claude check rejected most (BRO-6086: 98 "not landed, left for the Claude
@@ -595,43 +607,16 @@ function loginExpiryWhy({ authText, nowMs, runMs, marginMs = 30 * 60_000 }) {
 }
 
 /**
- * The Codex CLI also refreshes on its own once the last refresh is about 8 days old, whatever
- * the token's expiry. A second lane needs the whole run to end well before that, so neither
- * container rotates the refresh token the other holds. null: safe; unreadable counts as unsafe.
+ * Slots are gated on the access token's expiry only (loginExpiryWhy). BRO-6086 also gated on the
+ * login's AGE (cloud lane one slot from 6 days, gha lane idle from ~7), assuming the Codex CLI
+ * refreshes itself at 8 days. It does not: the stored login stayed at last_refresh 2026-10-15
+ * through 2026-10-24 (8.6 days, every `codex exec` ran and saved), and the only refresh seen came
+ * at token expiry (2026-10-05 -> 10-15). The age gate therefore never cleared: the cloud lane ran
+ * one slot and the gha lane none, from 2026-10-24 01:00Z on (BRO-6129: 4 cards in 12 h vs ~45 a day).
+ * The CLI refreshes when the access token expires, which loginExpiryWhy already guards: inside
+ * run + margin of expiry the cloud lane runs one slot and the gha lane falls back to slot 0.
+ * Assumption: the CLI does not refresh earlier than margin (30 min) before expiry.
  */
-const REFRESH_AGE_SAFE_MS = 7 * 24 * 3600_000;
-function refreshAgeWhy({ authText, nowMs, runMs, marginMs = 30 * 60_000 }) {
-  const last = Date.parse(authLastRefresh(authText));
-  if (!Number.isFinite(last)) return 'the Codex login last_refresh is unreadable';
-  if (nowMs + runMs + marginMs - last > REFRESH_AGE_SAFE_MS) return `the Codex login was last refreshed ${new Date(last).toISOString()}, so it could refresh itself during this run`;
-  return null;
-}
-
-/**
- * BRO-6086: the CLI refreshes at about 8 days, and the gha lane stands down for any login whose
- * age plus run passes REFRESH_AGE_SAFE_MS, so it idled ~29h every cycle until a cloud run
- * happened to refresh. The cloud lane now refreshes first: once last_refresh passes
- * FORCE_REFRESH_AGE_MS (6 days) it runs one slot and back-dates last_refresh past the CLI's
- * 8-day threshold, so its first `codex exec` refreshes the login and the save stores the new
- * stamp. 6 days + the 290-min gha run stays under 7, so gha never meets the window.
- */
-const FORCE_REFRESH_AGE_MS = 6 * 24 * 3600_000;
-const CLI_REFRESH_AGE_MS = 8 * 24 * 3600_000;
-function forceRefreshDue({ authText, nowMs }) {
-  const last = Date.parse(authLastRefresh(authText));
-  return Number.isFinite(last) && nowMs - last >= FORCE_REFRESH_AGE_MS;
-}
-/** -> the login text with last_refresh back-dated 9 days (the CLI refreshes at its next start), or null when not due/unreadable. */
-function backdateForRefresh({ authText, nowMs }) {
-  if (!forceRefreshDue({ authText, nowMs })) return null;
-  try {
-    const j = JSON.parse(authText);
-    // Already past the CLI's own threshold: it refreshes by itself, and a "back-date" would move the stamp forward.
-    if (nowMs - Date.parse(j.last_refresh) > CLI_REFRESH_AGE_MS) return null;
-    j.last_refresh = new Date(nowMs - CLI_REFRESH_AGE_MS - 24 * 3600_000).toISOString();
-    return JSON.stringify(j, null, 2);
-  } catch { return null; }
-}
 
 /**
  * Codex lanes (BRO-5730). Each lane owns its own slots, so the cloud routine (cloud) and the
@@ -651,9 +636,8 @@ function laneSlotList(lane) {
  * Where a launch runs: { lane, base, slots, why }. Lanes run at once in separate containers,
  * each with its own copy of the rotating login, so a lane past the first runs only when the
  * login outlives its whole run (no refresh anywhere). If the token could expire it falls back to
- * the cloud lane's slot 0 with one slot (the cloud lane is down to that slot too); if the CLI could
- * refresh on age it runs no slots. Either way the two never run Codex side by side on a login
- * that may refresh.
+ * the cloud lane's slot 0 with one slot (the cloud lane is down to that slot too), so the two
+ * never run Codex side by side on a login that may refresh.
  */
 function laneForLogin({ lane = 'cloud', slots, authText, nowMs, runMs, marginMs = 30 * 60_000 }) {
   const l = LANES[lane] || LANES.cloud;
@@ -662,15 +646,9 @@ function laneForLogin({ lane = 'cloud', slots, authText, nowMs, runMs, marginMs 
     // Expiry: the cloud lane also drops to slot 0 alone (slotsForLogin), so sharing slot 0 serializes them.
     const expiry = loginExpiryWhy({ authText, nowMs, runMs, marginMs });
     if (expiry) return { lane: 'cloud', base: 0, slots: 1, why: `${expiry}; ${lane} lane falls back to slot 0` };
-    // Refresh age: the cloud lane keeps its slots 1-2 (it alone holds the login then), so slot 0
-    // would still run beside them; this lane stands down for the firing instead.
-    const age = refreshAgeWhy({ authText, nowMs, runMs, marginMs });
-    if (age) return { lane, base: l.base, slots: 0, why: `${age}; ${lane} lane stands down so only the cloud lane holds the login` };
     return { lane, base: l.base, slots: want, why: null };
   }
   const plan = slotsForLogin({ slots: want, authText, nowMs, runMs, marginMs });
-  // One process refreshes the login (BRO-6086): the cloud lane runs slot 0 alone while it is due.
-  if (plan.slots > 1 && forceRefreshDue({ authText, nowMs })) return { lane, base: l.base, slots: 1, why: 'the Codex login is due a forced refresh, so one slot refreshes it' };
   return { lane, base: l.base, ...plan };
 }
 
@@ -1287,10 +1265,6 @@ module.exports = {
   MAX_SLOTS,
   laneSlotList,
   laneForLogin,
-  refreshAgeWhy,
-  FORCE_REFRESH_AGE_MS,
-  forceRefreshDue,
-  backdateForRefresh,
   cardsInLocks,
   SWF_CARRY_MARKER,
   swfCarryBody,
@@ -1329,6 +1303,7 @@ module.exports = {
   AUTH_MARKER,
   BOUNCED_MARKER,
   PARTIAL_MARKER,
+  PARTIAL_HEADING,
   landingIsPartial,
   parseEnvBlocked,
   parseRemaining,

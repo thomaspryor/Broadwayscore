@@ -1047,12 +1047,12 @@ test('laneForLogin: gha runs on its own slots only when the login outlives the r
   assert.deepEqual(r.laneForLogin({ lane: 'cloud', slots: 3, authText: fresh, nowMs: now, runMs }), { lane: 'cloud', base: 0, slots: 3, why: null });
   assert.equal(r.laneForLogin({ lane: 'cloud', slots: 3, authText: auth(now + 60 * 60_000), nowMs: now, runMs }).slots, 1);
   assert.equal(r.loginExpiryWhy({ authText: fresh, nowMs: now, runMs }), null);
-  const old = r.laneForLogin({ lane: 'gha', slots: 2, authText: auth(now + 5 * 24 * 3600_000, '2026-10-13T12:00:00Z'), nowMs: now, runMs });
-  assert.deepEqual([old.lane, old.base, old.slots], ['gha', 3, 0], 'last refresh near 7 days: the CLI could refresh itself mid-run, beside cloud slots 1-2, so gha stands down');
-  assert.match(old.why, /last refreshed.*stands down/);
-  assert.equal(r.laneForLogin({ lane: 'gha', slots: 2, authText: auth(now + 5 * 24 * 3600_000, ''), nowMs: now, runMs }).slots, 0, 'no last_refresh fails safe');
+  // BRO-6129: login age never limits slots (the CLI does not refresh on age); only the token's expiry does.
+  const aged = auth(now + 5 * 24 * 3600_000, '2026-10-01T00:00:00Z');
+  assert.deepEqual(r.laneForLogin({ lane: 'gha', slots: 2, authText: aged, nowMs: now, runMs }), { lane: 'gha', base: 3, slots: 2, why: null });
+  assert.deepEqual(r.laneForLogin({ lane: 'cloud', slots: 3, authText: aged, nowMs: now, runMs }), { lane: 'cloud', base: 0, slots: 3, why: null });
   assert.equal(r.laneForLogin({ lane: 'gha', slots: 2, authText: auth(now + 60 * 60_000, '2026-10-13T12:00:00Z'), nowMs: now, runMs }).base, 0, 'expiry wins: cloud is on slot 0 alone too');
-  assert.equal(r.laneForLogin({ lane: 'cloud', slots: 3, authText: auth(now + 5 * 24 * 3600_000, '2026-10-01T00:00:00Z'), nowMs: now, runMs }).slots, 1, 'a login past 6 days: the cloud lane refreshes it on one slot (BRO-6086)');
+  assert.equal(r.laneForLogin({ lane: 'cloud', slots: 3, authText: auth(now + 60 * 60_000, '2026-10-01T00:00:00Z'), nowMs: now, runMs }).slots, 1, 'near expiry: one slot refreshes, even on a very old login');
 });
 
 test('cardsInLocks: the cards other slots\' run locks name', () => {
@@ -1081,56 +1081,33 @@ test('codexCardFit: title-shape skips leave ordinary code cards and CODEX-OK car
   assert.equal(fit('BSC Daily: Data: BWW roundup discovery misses near opening', 'CODEX-OK: code fix in the discovery regex').skip, null);
 });
 
-test('forced login refresh (BRO-6086): due at 6 days, back-dates past the CLI threshold, cloud runs one slot', () => {
-  const now = Date.parse('2026-10-23T12:00:00Z');
-  const day = 24 * 3600_000;
-  const auth = (lr) => JSON.stringify({ last_refresh: lr, tokens: { access_token: `e30.${Buffer.from(JSON.stringify({ exp: Math.floor((now + 5 * day) / 1000) })).toString('base64url')}.s` } });
-  const fresh = auth(new Date(now - 2 * day).toISOString());
-  const due = auth(new Date(now - 6.2 * day).toISOString());
-  assert.equal(r.forceRefreshDue({ authText: fresh, nowMs: now }), false);
-  assert.equal(r.forceRefreshDue({ authText: due, nowMs: now }), true);
-  assert.equal(r.forceRefreshDue({ authText: 'not json', nowMs: now }), false);
-  assert.equal(r.backdateForRefresh({ authText: fresh, nowMs: now }), null);
-  const back = JSON.parse(r.backdateForRefresh({ authText: due, nowMs: now }));
-  assert.ok(now - Date.parse(back.last_refresh) > 8 * day, 'older than the CLI 8-day refresh threshold');
-  assert.ok(back.tokens.access_token, 'tokens are kept');
-  assert.equal(r.laneForLogin({ lane: 'cloud', slots: 3, authText: fresh, nowMs: now, runMs: 112 * 60_000 }).slots, 3);
-  const plan = r.laneForLogin({ lane: 'cloud', slots: 3, authText: due, nowMs: now, runMs: 112 * 60_000 });
-  assert.equal(plan.slots, 1);
-  assert.match(plan.why, /forced refresh/);
-});
-
-test('refresh policy: with the cloud lane forcing at 6 days the gha lane never stands down for login age in an 8-day cycle', () => {
-  const day = 24 * 3600_000, hour = 3600_000;
-  const t0 = Date.parse('2026-10-15T22:52:00Z');
-  const runMs = 290 * 60_000;
-  let last = t0;
-  let standDownHours = 0;
-  for (let h = 0; h < 24 * 24; h++) {
-    const nowMs = t0 + h * hour;
-    const authText = JSON.stringify({ last_refresh: new Date(last).toISOString(), tokens: {} });
-    if (r.refreshAgeWhy({ authText, nowMs, runMs })) standDownHours++;
-    // A cloud firing every 6 hours: forced refresh when due (the exec refreshes, the save stores the new stamp).
-    if (h % 6 === 0 && r.forceRefreshDue({ authText, nowMs })) last = nowMs;
-  }
-  assert.equal(standDownHours, 0);
-  // Without the forced refresh (the old behaviour) the same window stood the lane down.
-  assert.ok(r.refreshAgeWhy({ authText: JSON.stringify({ last_refresh: new Date(t0).toISOString() }), nowMs: t0 + 6.9 * day, runMs }));
-});
-
 test('title-shape skips and back-dating stay narrow (ship-check BRO-6086)', () => {
   const fit = (title) => r.codexCardFit({ title, description: 'Fix it.', verify: 'node --test tests/unit/x.test.mjs' });
   for (const t of ['Verify auth-store timestamp ordering', 'Extend parser to accept all whitespace', 'Document two call sites']) assert.equal(fit(t).skip, null, t);
-  const now = Date.parse('2026-10-23T12:00:00Z');
-  const old = JSON.stringify({ last_refresh: new Date(now - 12 * 24 * 3600_000).toISOString() });
-  assert.equal(r.backdateForRefresh({ authText: old, nowMs: now }), null, 'already past the CLI threshold: never moves the stamp forward');
 });
 
-test('ship-check round 2 (BRO-6086): noun-bearing code titles stay with Codex; a failed refresh never saves', () => {
+test('ship-check round 2 (BRO-6086): noun-bearing code titles stay with Codex', () => {
   const fit = (title) => r.codexCardFit({ title, description: 'Fix it.', verify: 'node --test tests/unit/x.test.mjs' });
   for (const t of ['Verify isScoreable rejects reviews with null url', 'Backfill script crashes on shows with null category', 'Recover from ENOENT when review dir missing', 'Same-title shows in other markets misroute to Broadway', 'Extend the remaining-time check to slot runners', 'P1: BSC Rebuild crashes on malformed shows.json']) assert.equal(fit(t).skip, null, t);
-  const now = Date.parse('2026-10-23T12:00:00Z');
-  const stored = JSON.stringify({ last_refresh: new Date(now - 6.2 * 24 * 3600_000).toISOString() });
-  const back = r.backdateForRefresh({ authText: stored, nowMs: now });
-  assert.notEqual(r.syncDirection(back, stored), 'save', 'a back-dated login never overwrites the stored one');
+});
+
+// BRO-6129: a partial landing made progress, so the remainder returns to Codex after 3 days, not 14.
+test('codexBouncedRecently: partial landings are remembered 3 days, twice in 14 days stays out, rejections 14 days', () => {
+  const now = Date.parse('2026-10-24T12:00:00Z');
+  const day = 24 * 3600_000;
+  const note = (heading, daysAgo) => ({ createdAt: new Date(now - daysAgo * day).toISOString(), body: `${r.BOUNCED_MARKER}\n${heading}\n\nleft` });
+  const partial = (d) => note(r.PARTIAL_HEADING, d);
+  const rejected = (d) => note('## Codex runner: not landed, left for the Claude worker', d);
+  assert.equal(r.codexBouncedRecently([partial(1)], now), true, 'fresh partial: wait');
+  assert.equal(r.codexBouncedRecently([partial(4)], now), false, 'one partial 4 days ago: Codex may finish it');
+  assert.equal(r.codexBouncedRecently([partial(4), partial(9)], now), true, 'second partial in 14 days: Claude lane');
+  assert.equal(r.codexBouncedRecently([rejected(10)], now), true, 'a rejection keeps the 14-day ban');
+  assert.equal(r.codexBouncedRecently([partial(4), rejected(6)], now), true);
+  assert.equal(r.codexBouncedRecently([rejected(15)], now), false);
+});
+
+test('codexCardFit: work that waits on a date, a scheduled run or the owner is skipped (BRO-6129)', () => {
+  const fit = (description) => r.codexCardFit({ title: 'Fix the thing', description, verify: 'node --test tests/unit/x.test.mjs' });
+  for (const d of ['Fix it. RECHECK-AFTER: 2026-10-30', 'Confirm the next scheduled audit-aggregator-gap.yml run passes', 'The owner must settle the acceptance line']) assert.equal(fit(d).skip, 'waits-on-later-event', d);
+  assert.equal(fit('Fix it, then add a test.').skip, null);
 });
