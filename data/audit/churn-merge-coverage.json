@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-24T05:47:33.580Z",
+    "generatedAt": "2026-10-24T06:19:09.080Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,9 +9,9 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 7,
-    "exemptCount": 25,
+    "exemptCount": 24,
     "coveredCount": 56,
-    "highChurnTracked": 88
+    "highChurnTracked": 87
   },
   "flagged": [
     {
@@ -20,7 +20,7 @@
     },
     {
       "path": "data/audit/bundle-size-history.json",
-      "churn": 45
+      "churn": 44
     },
     {
       "path": "data/audit/recover-ratings-state.json",
@@ -46,27 +46,27 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 1158
-    },
-    {
-      "path": "public/data/admin/critic-coverage.json",
-      "churn": 255
-    },
-    {
-      "path": "public/data/admin/locks.json",
-      "churn": 255
-    },
-    {
-      "path": "public/data/mobile-shows.json",
-      "churn": 255
+      "churn": 1160
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 254
+      "churn": 256
+    },
+    {
+      "path": "public/data/admin/critic-coverage.json",
+      "churn": 253
+    },
+    {
+      "path": "public/data/admin/locks.json",
+      "churn": 253
+    },
+    {
+      "path": "public/data/mobile-shows.json",
+      "churn": 253
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 205
+      "churn": 203
     },
     {
       "path": "public/data/stats-reviews.json",
@@ -86,7 +86,7 @@
     },
     {
       "path": "public/data/shows/martin-guerre-west-end-2026.json",
-      "churn": 67
+      "churn": 66
     },
     {
       "path": "public/data/shows/the-curious-case-of-benjamin-button-off-broadway-2026.json",
@@ -139,46 +139,42 @@
     {
       "path": "data/audit/t1-outlet-breaker.json",
       "churn": 30
-    },
-    {
-      "path": "public/data/shows/king-of-the-yees-off-broadway-2026.json",
-      "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 997,
+      "churn": 999,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 624,
+      "churn": 622,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 453,
+      "churn": 452,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 432,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/rebuild-score-drift.json",
-      "churn": 432,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/cross-show-fingerprint-collisions.json",
       "churn": 431,
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/rebuild-score-drift.json",
+      "churn": 431,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/cross-show-fingerprint-collisions.json",
+      "churn": 430,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/landings.jsonl",
-      "churn": 374,
+      "churn": 373,
       "mergeAttr": "union"
     },
     {
@@ -188,27 +184,27 @@
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 296,
+      "churn": 294,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-other-desert-cities-2026.json",
-      "churn": 255,
+      "churn": 253,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 255,
+      "churn": 253,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/lane-rehearsal.json",
-      "churn": 232,
+      "churn": 230,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 218,
+      "churn": 216,
       "mergeAttr": "ours"
     },
     {
@@ -218,7 +214,7 @@
     },
     {
       "path": "data/audit/orphan-unscored-billy-crystal-860-2026.json",
-      "churn": 210,
+      "churn": 211,
       "mergeAttr": "ours"
     },
     {
@@ -298,12 +294,12 @@
     },
     {
       "path": "data/audit/churn-merge-coverage.json",
-      "churn": 41,
+      "churn": 42,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/corpus-drift.json",
-      "churn": 41,
+      "churn": 42,
       "mergeAttr": "ours"
     },
     {
@@ -363,7 +359,7 @@
     },
     {
       "path": "data/audit/url-mismatch-suspects.json",
-      "churn": 33,
+      "churn": 34,
       "mergeAttr": "ours"
     },
     {
