@@ -28,7 +28,15 @@
  * script's own JSON report. routeAlert's conditionKey ledger dedupes re-fires
  * for 7 days, so this is safe to call every hourly run.
  *
- * Exit codes: 0 clean, 1 strands found (only with --fail-on-strand).
+ * Aged stubs (BRO-6123): a second, status-independent pass flags any show's
+ * never-fetched files with a URL older than 48h, closed shows included (the
+ * live-only check above missed 176 theatre.reviews stubs on closed West End
+ * shows). ADVISORY: it is reported and written to the JSON but never changes
+ * the exit code unless --fail-on-aged-stub is passed (new gates land advisory
+ * first, CLAUDE.md section 19).
+ *
+ * Exit codes: 0 clean, 1 strands found (only with --fail-on-strand) or aged
+ * stubs found (only with --fail-on-aged-stub).
  */
 
 'use strict';
@@ -36,13 +44,14 @@
 const fs = require('fs');
 const path = require('path');
 
-const { assessShow, DEFAULT_MAX_AGE_HOURS } = require('./lib/uncollected-strand');
+const { assessShow, findAgedStubs, DEFAULT_MAX_AGE_HOURS, AGED_STUB_MAX_AGE_HOURS } = require('./lib/uncollected-strand');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
 const args = process.argv.slice(2);
 const failOnStrand = args.includes('--fail-on-strand');
 const asJson = args.includes('--json');
 const doAlert = args.includes('--alert');
+const failOnAgedStub = args.includes('--fail-on-aged-stub');
 const maxAgeHours = parseFloat(
   args.find(a => a.startsWith('--max-age-hours='))?.split('=')[1] || String(DEFAULT_MAX_AGE_HOURS)
 );
@@ -82,9 +91,13 @@ async function main() {
   const nowMs = Date.now();
 
   const findings = [];
+  const agedStubs = [];
   for (const show of shows) {
     if (!haveDirs.has(show.id)) continue;
-    const result = assessShow(show, readShowFiles(show.id), { nowMs, maxAgeHours });
+    const files = readShowFiles(show.id);
+    const aged = findAgedStubs(files, { nowMs });
+    if (aged.length) agedStubs.push({ showId: show.id, status: show.status, stubs: aged });
+    const result = assessShow(show, files, { nowMs, maxAgeHours });
     if (!result) continue;
     if (result.stranded.length > 0 || result.totalBlackout) findings.push(result);
   }
@@ -96,12 +109,19 @@ async function main() {
   const strandedFiles = findings.reduce((n, f) => n + f.stranded.length, 0);
   const blackouts = findings.filter(f => f.totalBlackout);
 
+  agedStubs.sort((a, b) => b.stubs.length - a.stubs.length);
+  const agedStubFiles = agedStubs.reduce((n, s) => n + s.stubs.length, 0);
+
   const report = {
     generatedAt: new Date(nowMs).toISOString(),
     maxAgeHours,
     showsAffected: findings.length,
     strandedFiles,
     blackoutShows: blackouts.map(f => f.showId),
+    agedStubHours: AGED_STUB_MAX_AGE_HOURS,
+    agedStubFiles,
+    agedStubShows: agedStubs.length,
+    agedStubs,
     findings,
   };
 
@@ -120,6 +140,10 @@ async function main() {
       if (f.stranded.length > 10) console.log(`      … ${f.stranded.length - 10} more`);
     }
     if (!findings.length) console.log('  ✅ none');
+    console.log(`\nAged stubs (URL, never fetched, >${AGED_STUB_MAX_AGE_HOURS}h, any show status; advisory)`);
+    console.log(`  shows affected: ${agedStubs.length}   files: ${agedStubFiles}`);
+    for (const s of agedStubs.slice(0, 10)) console.log(`      ${s.showId} (${s.status}): ${s.stubs.length}`);
+    if (agedStubs.length > 10) console.log(`      … ${agedStubs.length - 10} more show(s)`);
   }
 
   fs.mkdirSync(path.dirname(OUT_PATH), { recursive: true });
@@ -164,6 +188,11 @@ async function main() {
         console.log(`[alert] resolved ${key}`);
       }
     }
+  }
+
+  if (failOnAgedStub && agedStubFiles > 0) {
+    console.error(`\n❌ ${agedStubFiles} never-fetched review file(s) older than ${AGED_STUB_MAX_AGE_HOURS}h across ${agedStubs.length} show(s)`);
+    process.exit(1);
   }
 
   if (failOnStrand && (strandedFiles > 0 || blackouts.length > 0)) {

@@ -158,7 +158,61 @@ function promoteNeedsRefetch(queue, cap = NEEDS_REFETCH_DRAIN_PER_RUN, seed = dr
   return [...chosen, ...queue.filter(r => !promoted.has(r))];
 }
 
+/**
+ * Per-run slots for aged never-attempted stubs (BRO-6123).
+ *
+ * Queue order is show recency, so a closed show's freshly created stubs (the
+ * theatre.reviews reconcile wrote ~1,160 West End files in one night, BRO-6084)
+ * rank behind every open show and past the max_reviews cut, run after run: 176
+ * files with a URL sat at fetchAttempts 0 through the 04:30 and 10:30 runs.
+ * These slots pull the oldest of them to the front; the cap bounds paid-fetch
+ * spend (each slot is one normal fetch, same fetch gate and cooldowns as any
+ * other queue entry) and the remainder waits for the next run.
+ */
+const AGED_STUB_DRAIN_PER_RUN = 40;
+const AGED_STUB_MIN_AGE_HOURS = 48;
+
+/**
+ * True for a queued review that has a URL, was never fetched, and has been
+ * sitting that way for at least `minAgeHours`. A file with no usable
+ * firstSeenAt counts as aged: an unknown age must not hide a stub from the
+ * drain.
+ *
+ * @param {object} data review file JSON
+ * @param {{minAgeHours?: number, nowMs?: number}} opts
+ * @returns {boolean}
+ */
+function isAgedNeverAttemptedStub(data, { minAgeHours = AGED_STUB_MIN_AGE_HOURS, nowMs = Date.now() } = {}) {
+  if (!data || typeof data.url !== 'string' || !data.url) return false;
+  if (Array.isArray(data.fetchAttempts) ? data.fetchAttempts.length > 0 : Number(data.fetchAttempts) > 0) return false;
+  if (data._locked === true || data.manualContentTier === 'complete') return false;
+  const seen = Date.parse(data.firstSeenAt);
+  if (!Number.isFinite(seen)) return true;
+  return nowMs - seen >= minAgeHours * 3600 * 1000;
+}
+
+/**
+ * Move up to `cap` entries flagged `_agedStub` to the front of an
+ * already-sorted queue, oldest firstSeenAt first (`_agedSince`, ms, 0 when
+ * unknown) so repeated runs make steady progress through the backlog. Entries
+ * past the cap keep their normal position. Returns a new array; does not
+ * mutate the input.
+ */
+function promoteAgedStubs(queue, cap = AGED_STUB_DRAIN_PER_RUN) {
+  const flagged = [];
+  queue.forEach((r, i) => { if (r && r._agedStub) flagged.push({ r, i }); });
+  if (!flagged.length || cap <= 0) return queue.slice();
+  flagged.sort((a, b) => ((a.r._agedSince || 0) - (b.r._agedSince || 0)) || (a.i - b.i));
+  const chosen = flagged.slice(0, cap).map(f => f.r);
+  const promoted = new Set(chosen);
+  return [...chosen, ...queue.filter(r => !promoted.has(r))];
+}
+
 module.exports = {
+  AGED_STUB_DRAIN_PER_RUN,
+  AGED_STUB_MIN_AGE_HOURS,
+  isAgedNeverAttemptedStub,
+  promoteAgedStubs,
   NEEDS_REFETCH_DRAIN_PER_RUN,
   isTextlessNeedsRefetch,
   isNeedsRefetchDrainCandidate,
