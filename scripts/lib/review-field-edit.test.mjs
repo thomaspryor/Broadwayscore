@@ -792,3 +792,10 @@ test('scoreProvenance: any content-verdict incompleteReason refuses (BRO-6052 sh
     assert.equal(res.ok, false, incompleteReason);
   }
 });
+
+test('scoreProvenance: an access-failure incompleteReason (paywall, scraper_timeout) is allowed', () => {
+  for (const incompleteReason of ['paywall', 'scraper_timeout']) {
+    const res = applyReviewFieldEdit({ originalScore: 60, scoreSource: 'anchored-v6', fullText: null, incompleteReason }, { field: 'scoreProvenance', oldValue: null, newValue: 'page-parsed' }, stamp);
+    assert.equal(res.ok, true, incompleteReason);
+  }
+});
