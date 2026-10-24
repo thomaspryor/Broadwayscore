@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-24T14:59:13.348Z",
+  "generatedAt": "2026-10-24T15:06:22.735Z",
   "windowDays": 21,
-  "targets": 11,
-  "auditedThisRun": 11,
-  "carriedForward": 791,
+  "targets": 2,
+  "auditedThisRun": 2,
+  "carriedForward": 800,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 401,
-    "missingCurrentRun": 548,
+    "withGap": 400,
+    "missingCurrentRun": 553,
     "totalCitedNoUrl": 3,
     "totalFlaggedMisses": 718,
     "totalRecoverable": 2,
@@ -165885,39 +165885,13 @@
       "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://patch.com/new-york/upper-east-side-nyc/calendar/event/20261018/a765e8de-27ef-4e7a-b603-c245edf2fed2/seussical-theatre-young-audiences"
-      ],
-      "dirFiles": 2,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://patch.com/new-york/upper-east-side-nyc/calendar/event/20261018/a765e8de-27ef-4e7a-b603-c245edf2fed2/seussical-theatre-young-audiences",
-          "host": "patch.com",
-          "knownOutletId": "patch",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "patch--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://patch.com/new-york/upper-east-side-nyc/calendar/event/20261018/a765e8de-27ef-4e7a-b603-c245edf2fed2/seussical-theatre-young-audiences"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -165931,7 +165905,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 1,
+            "results": 2,
             "accepted": 0,
             "error": null
           },
@@ -165962,7 +165936,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -165971,54 +165945,40 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 0,
         "error": null
       },
       "candidatesRejected": {
-        "count": 12,
+        "count": 19,
         "byReason": {
-          "non-review-host": 7,
-          "census-junk-host": 2,
+          "aggregator-internal-nav": 2,
+          "non-review-host": 8,
+          "ticketing-listing": 1,
           "ticketing-reseller": 1,
-          "venue-production-page": 2
+          "census-junk-host": 3,
+          "venue-production-page": 1,
+          "write-path-blocked": 3
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "patch",
-            "outlet": "patch",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://patch.com/new-york/upper-east-side-nyc/calendar/event/20261018/a765e8de-27ef-4e7a-b603-c245edf2fed2/seussical-theatre-young-audiences"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://patch.com/new-york/upper-east-side-nyc/calendar/event/20261018/a765e8de-27ef-4e7a-b603-c245edf2fed2/seussical-theatre-young-audiences",
-            "outletId": "patch",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-24T11:53:28.442Z"
-          }
-        ],
+        "candidates": [],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 1
+        "candidateCount": 0
       },
-      "computedAt": "2026-10-24T11:53:28.442Z"
+      "computedAt": "2026-10-24T15:06:22.735Z"
     },
     {
       "showId": "shamilton-the-improvised-hip-hop-musical-west-end-2026",
@@ -205441,10 +205401,8 @@
         "https://playsinternational.org.uk/the-master-builder-arcola-theatre/",
         "https://theatreandtonic.co.uk/blog/the-master-builder-at-arcola-theatre-review",
         "https://www.timeout.com/london/theatre/the-master-builder-3",
-        "https://viewfromthegods.co.uk/2026/10/23/the-master-builder-arcola-hackney/",
+        "https://www.westendbestfriend.co.uk/news/review-my-master-builder-arcola-theatre",
         "https://www.flickermagazine.art/post/greg-hicks-the-master-builder-arcola-interview",
-        "https://theatreweekly.com/interview-greg-hicks-on-the-master-builder-at-arcola-theatre/",
-        "https://www.londonboxoffice.co.uk/news/post/master-builder-review",
         "https://www.theguardian.com/stage/2025/apr/29/my-master-builder-review-ewan-mcgregor-kate-fleetwood-wyndhams-theatre-london",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/my-master-builder-ewan-mcgregor-b2742066.html",
         "https://www.telegraph.co.uk/theatre/what-to-see/my-master-builder-wyndhams-theatre-review-ewan-mcgregor/",
@@ -205452,7 +205410,9 @@
         "https://www.londontheatre.co.uk/reviews/my-master-builder-review-wyndhams-ewan-mcgregor-elizabeth-debicki-kate-fleetwood",
         "https://www.ft.com/content/a19b1a9f-57b0-41d3-8789-77ee935c91ee",
         "https://www.thestage.co.uk/reviews/my-master-builder-review-wyndhams-theatre-london-2025-ewan-mcgregor-elizabeth-debicki-michael-grandage",
-        "https://www.standard.co.uk/culture/theatre/my-master-builder-wyndham-theatre-review-ewan-mcgregor-b1225100.html"
+        "https://www.standard.co.uk/culture/theatre/my-master-builder-wyndham-theatre-review-ewan-mcgregor-b1225100.html",
+        "https://www.londonboxoffice.co.uk/news/post/master-builder-review",
+        "https://viewfromthegods.co.uk/2026/10/23/the-master-builder-arcola-hackney/"
       ],
       "dirFiles": 16,
       "dirClean": 9,
@@ -205608,6 +205568,34 @@
           "weRef": true,
           "weRefSources": [],
           "reverify": false
+        },
+        {
+          "url": "https://viewfromthegods.co.uk/2026/10/23/the-master-builder-arcola-hackney/",
+          "host": "viewfromthegods.co.uk",
+          "knownOutletId": "viewfromthegods",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "viewfromthegods--simon-jenner.json",
+              "flag": "clean",
+              "urlInDir": "https://viewfromthegods.co.uk/2026/10/23/the-master-builder-arcola-hackney/?utm_source=rss&utm_medium=rss&utm_campaign=the-master-builder-arcola-hackney"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "knownSyndicationSecondary"
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "bestoftheatre"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "bestoftheatre",
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -205712,27 +205700,25 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 14,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
-        "count": 17,
+        "count": 18,
         "byReason": {
-          "aggregator-internal-nav": 1,
-          "non-review-host": 8,
-          "roundup-page": 1,
-          "ticketing-listing": 1,
-          "no-review-evidence": 2,
-          "ticket-seller-product-page": 1,
+          "non-review-host": 10,
+          "ticketing-listing": 2,
           "census-junk-host": 1,
-          "non-review-path": 1,
-          "write-path-blocked": 1
+          "write-path-blocked": 1,
+          "roundup-page": 1,
+          "no-review-evidence": 2,
+          "ticket-seller-product-page": 1
         }
       },
       "dedupedVariants": [],
@@ -205822,13 +205808,6 @@
             "outlet": "timeout-london",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.timeout.com/london/theatre/the-master-builder-3"
-          },
-          {
-            "outletId": "viewfromthegods",
-            "outlet": "viewfromthegods",
-            "critic": "Unknown",
-            "stars": null,
             "url": "https://viewfromthegods.co.uk/2026/10/23/the-master-builder-arcola-hackney/"
           },
           {
@@ -205837,6 +205816,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.flickermagazine.art/post/greg-hicks-the-master-builder-arcola-interview"
+          },
+          {
+            "outletId": "viewfromthegods",
+            "outlet": "viewfromthegods",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://viewfromthegods.co.uk/2026/10/23/the-master-builder-arcola-hackney/"
           }
         ],
         "suppressedMissing": [],
@@ -205896,17 +205882,10 @@
             "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
-            "url": "https://theatreweekly.com/interview-greg-hicks-on-the-master-builder-at-arcola-theatre/",
-            "outletId": "theatreweekly.com",
+            "url": "https://www.westendbestfriend.co.uk/news/review-my-master-builder-arcola-theatre",
+            "outletId": "westendbestfriend.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-24T14:59:13.348Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/the-master-builder-3",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+            "firstSeenAt": "2026-10-24T15:06:22.735Z"
           },
           {
             "url": "https://viewfromthegods.co.uk/2026/10/23/the-master-builder-arcola-hackney/",
@@ -205921,13 +205900,20 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-20T04:58:31.558Z"
+          },
+          {
+            "url": "https://viewfromthegods.co.uk/2026/10/23/the-master-builder-arcola-hackney/",
+            "outletId": "viewfromthegods",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-24T11:53:28.442Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 9,
         "candidateCount": 12
       },
-      "computedAt": "2026-10-24T14:59:13.348Z"
+      "computedAt": "2026-10-24T15:06:22.735Z"
     },
     {
       "showId": "the-misanthrope-west-end-2026",

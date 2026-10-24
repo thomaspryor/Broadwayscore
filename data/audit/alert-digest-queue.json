@@ -726,6 +726,20 @@
     "queuedAt": "2026-10-24T14:39:26.862Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:the-imaginary-invalid-2026",
+    "title": "Review gap — \"The Imaginary Invalid\" missing 3 cited review(s)",
+    "description": "The Imaginary Invalid (the-imaginary-invalid-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-imaginary-invalid-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T14:39:26.941Z"
+  },
+  {
     "conditionKey": "land:land/bro-6130-self-disposition",
     "title": "Landing blocked: unit-tests-node red on land/bro-6130-self-disposition",
     "description": "land.yml did not land land/bro-6130-self-disposition: the unit-tests-node gate went red at 181ad29f33. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40100566821",
@@ -768,7 +782,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-24T14:59:27.735Z"
+    "queuedAt": "2026-10-24T15:06:38.969Z"
   },
   {
     "conditionKey": "ob-venue-go-live:the-great-soviet-bucket-off-broadway-2027",

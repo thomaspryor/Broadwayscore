@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T14:59:43.616Z",
+  "generatedAt": "2026-10-24T15:07:03.053Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -154,6 +154,10 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "viewfromthegods",
+      "error": "Timeout fetching https://viewfromthegods.co.uk/feed/"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -164,9 +168,13 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "nysr",
+      "error": "Timeout fetching https://nystagereview.com/wp-json/wp/v2/posts?per_page=50&orderby=date&order=desc&after=2026-10-10T15%3"
     }
   ],
-  "itemsScanned": 776,
+  "itemsScanned": 750,
   "matchedGaps": 1,
   "possibleGaps": 2,
   "gaps": [
