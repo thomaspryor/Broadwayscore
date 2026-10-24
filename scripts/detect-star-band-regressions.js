@@ -185,10 +185,12 @@ if (JSON_OUT) fs.writeFileSync(JSON_OUT, JSON.stringify({ byKind, byMarket, bySh
 (async () => {
   if (!ALERT || findings.every(f => f.kind === 'false-truncation')) return; // report-only kind, see above
   const { routeAlert } = require('./lib/owner-alert-router');
+  // false-truncation is report-only (staged drain), so it is neither flagged nor part of this alert's count (BRO-6121).
+  const actionable = findings.filter(f => f.kind !== 'false-truncation');
   await routeAlert({
     conditionKey: 'star-band:regressions',
-    title: `Star-band detector: ${findings.length} review(s) ${APPLY ? 'flagged for anchored re-score' : 'found'}`,
-    description: `${JSON.stringify(byKind)} across the whole corpus, by market ${JSON.stringify(byMarket)}. ${APPLY ? 'Each was flagged needsRescore and the normal drain repairs it, no action needed.' : 'Dry run, nothing flagged.'}\n` + findings.slice(0, 10).map(f => `- [${f.kind}] ${f.file} ${f.detail}`).join('\n'),
+    title: `Star-band detector: ${actionable.length} review(s) ${APPLY ? 'flagged for anchored re-score' : 'found'}`,
+    description: `${JSON.stringify(Object.fromEntries(Object.entries(byKind).filter(([k]) => k !== 'false-truncation')))} across the whole corpus, by market ${JSON.stringify(byMarket)}. ${APPLY ? 'Each was flagged needsRescore and the normal drain repairs it, no action needed.' : 'Dry run, nothing flagged.'}\n` + actionable.slice(0, 10).map(f => `- [${f.kind}] ${f.file} ${f.detail}`).join('\n'),
     severity: 'warning',
     disposition: 'digest',
     cooldownHours: 24,
