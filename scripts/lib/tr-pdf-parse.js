@@ -544,6 +544,9 @@ function maskPdfText(text, keepWords) {
 const RUN_DATES_LINE = /^\d{1,2} [A-Za-z]+( \d{4})? [\u2013-] \d{1,2} [A-Za-z]+ \d{4}$/;
 const isCapsTitle = (l) => /[A-Z]/.test(l) && l === l.toUpperCase() && l.length > 2 && !isDateLine(l);
 
+const { trTitleMatches } = require('./tr-production-pick');
+const { foldDiacritics } = require('./title-match');
+
 function productionRuns(lines) {
   const runs = [];
   lines.forEach((l, i) => {
@@ -566,8 +569,12 @@ function sectionOwnedBy(runs, lineIdx, showTitle) {
   let run = null;
   for (const r of runs) { if (r.line <= lineIdx) run = r; else break; }
   if (!run || !run.title) return null;
-  const { trTitleMatches } = require('./tr-production-pick');
-  return trTitleMatches(run.title, showTitle);
+  if (trTitleMatches(run.title, showTitle)) return true;
+  // TR spells titles its own way ("PRIDE AND PREJUDICE* (*SORT OF)"), so a block
+  // that shares a real word with ours stays "unknown" instead of being dropped.
+  const words = (t) => foldDiacritics(String(t)).toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 3 && !TITLE_STOP.has(w));
+  const ours = new Set(words(showTitle));
+  return words(run.title).some(w => ours.has(w)) ? null : false;
 }
 
 // BRO-6154 diagnostic: which production's section of the issue each parsed

@@ -376,3 +376,10 @@ test('BRO-6154 locateReviews attributes a review to its production section', () 
   assert.equal(r.line, 4);
   assert.equal(r.ours, true);
 });
+
+test('BRO-6154 a block sharing a real word with our title stays unknown, a disjoint one is dropped', () => {
+  const runs = productionRuns(['X', '03 October - 02 December 2017', 'PRIDE AND PREJUDICE* (*SORT OF)', 'a'].concat(['y', '', '04 December - 02 January 2018', 'ALL ABOUT EVE']));
+  assert.equal(sectionOwnedBy(runs, 3, 'Pride & Prejudice (Sort Of)'), true);
+  assert.equal(sectionOwnedBy(runs, 3, 'Pride and Joy'), null);
+  assert.equal(sectionOwnedBy(runs, 9, 'After Life'), false);
+});
