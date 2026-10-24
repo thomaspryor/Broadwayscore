@@ -464,5 +464,36 @@
       }
     ],
     "queuedAt": "2026-10-24T12:24:43.756Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-6114-mvmbkozw",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-6114-mvmbkozw",
+    "description": "land.yml did not land land/job/linear-BRO-6114-mvmbkozw: the rebase gate went red at ca131eb5f0. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-6114-mvmbkozw @ ca131eb5f0 (origin/land/job/linear-BRO-6114-mvmbkozw) → origin/main @ ac8145245a REFUSED: rebase: branch would not rebase cleanly onto origin/main @ ac8145245a: Rebasing (1/4) error: could not apply fa47ff3ac7f... BRO-6114: add-show refuses id/category suffix mismatch; commercial write guard defaults missing designation to TBD hint: Resolve all conflicts  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40093003720",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-6114-mvmbkozw"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "ca131eb5f004d916252ffa024886c44e63892083"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40093003720"
+      }
+    ],
+    "queuedAt": "2026-10-24T12:33:21.459Z"
   }
 ]
