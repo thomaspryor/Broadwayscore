@@ -93,12 +93,12 @@ test('a context URL in the question is not the button target; a signed owner lin
   const quoted = { identifier: 'BRO-6110', title: 'DECISION NEEDED: Is Cyrus Team Cloud still used?', url: 'https://linear.app/x/issue/BRO-6110', createdAt: '2026-10-21T00:00:00Z',
     description: `DECISION NEEDED: Do you still use Cyrus? The relay https://cyrus-relay.vercel.app now returns 404 so the drain job logs fetch failed every tick and has done for weeks now.\nOption A - Retire: x / y\nOption B - Keep: x / y` };
   const signed = { identifier: 'BRO-7', title: 'DECISION NEEDED: Renew Gmail login', url: 'https://linear.app/x/issue/BRO-7', createdAt: '2026-10-24T00:00:00Z',
-    description: 'DECISION NEEDED: Tap https://broadwayscorecard.com/gmail-reauth?e=1793000000&s=0123456789abcdef0123456789abcdef and press Allow' };
+    description: 'DECISION NEEDED: Tap https://broadwayscorecard.com/api/admin/gmail-reauth?e=1793000000&s=0123456789abcdef0123456789abcdef and press Allow' };
   const section = buildDecisionsSection([quoted, signed], { now: new Date('2026-10-24T12:00:00Z') });
   const byId = Object.fromEntries(section.items.map((i) => [i.identifier, i]));
   assert.equal(byId['BRO-6110'].url, 'https://linear.app/x/issue/BRO-6110');
   assert.equal(byId['BRO-6110'].actionLabel, undefined);
-  assert.match(byId['BRO-7'].url, /^https:\/\/broadwayscorecard\.com\/gmail-reauth\?e=1793000000&s=0123456789abcdef/);
+  assert.match(byId['BRO-7'].url, /^https:\/\/broadwayscorecard\.com\/api\/admin\/gmail-reauth\?e=1793000000&s=0123456789abcdef/);
   assert.equal(byId['BRO-7'].cardUrl, 'https://linear.app/x/issue/BRO-7');
   const html = renderNamedDigestBlock('Decisions', section, { actionCards: true });
   assert.match(html, />Is Cyrus Team Cloud still used\?<\/a>/);
