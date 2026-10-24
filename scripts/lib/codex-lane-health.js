@@ -5,8 +5,8 @@
 // caller (scripts/codex-lane-alarm.js) so this file stays I/O-free and unit-testable:
 //  - landed: Codex-runner landings on origin/main (git log), { ms }[]
 //  - summaries: the runner's "## Codex runner" comments on BRO-4745 (all pages), { createdAt, body }[]
-//  - ghRuns: codex-runner.yml run list, { startMs, durationMin, conclusion }[]
-//  - lockAgeH: age of the runner lock stamp in hours, or null when unread
+//  - ghRuns: codex-runner.yml run list, { startMs, endMs, durationMin, conclusion }[]
+//  - lockAgeH: age of the runner lock stamp in hours; the caller does not read it yet, so lock-stale is dormant
 // A source passed as null is "health unknown", never a breach and never a crash.
 const { runnerSummaryFacts, landedPerLane } = require('./codex-runner.js');
 
@@ -90,7 +90,10 @@ function codexLaneHealth({ nowMs, landed = null, summaries = null, ghRuns = null
 
   if (ghRuns === null) unknown.push('codex-runner.yml run list');
   else {
-    const runs = ghRuns.filter((r) => Number.isFinite(r.startMs) && r.startMs <= nowMs).sort((a, b) => b.startMs - a.startMs);
+    // A run that had not ended at nowMs is unfinished then, even if it has a conclusion now (hour-earlier replay).
+    const runs = ghRuns.filter((r) => Number.isFinite(r.startMs) && r.startMs <= nowMs)
+      .map((r) => (Number.isFinite(r.endMs) && r.endMs > nowMs ? { ...r, conclusion: null } : r))
+      .sort((a, b) => b.startMs - a.startMs);
     facts.ghaRuns = runs.length;
     if (runs.length) {
       if (nowMs - runs[0].startMs > floors.ghaSilentH * HOUR) {
