@@ -2774,12 +2774,13 @@
       "title": "Time-to-publish SLA missed — 0% within 15 min (target 90%)",
       "firstSeen": "2026-09-05T02:23:04.226Z",
       "incidentOpenedAt": "2026-10-23T07:58:45.022Z",
-      "lastSeen": "2026-10-23T07:58:45.022Z",
+      "lastSeen": "2026-10-24T07:41:01.146Z",
       "lastNotifiedAt": "2026-10-23T07:58:45.022Z",
       "lastSurfacedAt": "2026-10-23T07:58:45.022Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-slug-mismatch-the-story-west-end-2026": {
       "status": "resolved",
@@ -24866,12 +24867,13 @@
       "title": "Opening Night Email Never Reached Subscribers — Martin Guerre",
       "firstSeen": "2026-10-23T07:58:39.315Z",
       "incidentOpenedAt": "2026-10-23T07:58:39.315Z",
-      "lastSeen": "2026-10-23T07:58:39.315Z",
+      "lastSeen": "2026-10-24T07:40:49.500Z",
       "lastNotifiedAt": "2026-10-23T07:58:39.315Z",
       "lastSurfacedAt": "2026-10-23T07:58:39.315Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-6018-agg-stars": {
       "status": "resolved",
@@ -25447,6 +25449,32 @@
       "lastSeen": "2026-10-24T07:20:32.675Z",
       "lastNotifiedAt": "2026-10-24T07:20:32.675Z",
       "lastSurfacedAt": "2026-10-24T07:20:32.675Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "aggregator-health:thestage-roundups:workflow-failing:scrape-thestage-roundups.yml": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "The Stage roundups: scrape-thestage-roundups.yml failed its last 20 runs in a row (last success 2026-06-09)",
+      "firstSeen": "2026-10-24T07:38:57.669Z",
+      "incidentOpenedAt": "2026-10-24T07:38:57.669Z",
+      "lastSeen": "2026-10-24T07:38:57.669Z",
+      "lastNotifiedAt": "2026-10-24T07:38:57.669Z",
+      "lastSurfacedAt": "2026-10-24T07:38:57.669Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "aggregator-health:nyc-theatre:coverage-drop": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "NYC Theatre roundups: archive coverage 54% in 2025Q4+2026Q2 vs 82% baseline (2024Q2+2024Q4+2025Q1+2025Q2)",
+      "firstSeen": "2026-10-24T07:38:57.677Z",
+      "incidentOpenedAt": "2026-10-24T07:38:57.677Z",
+      "lastSeen": "2026-10-24T07:38:57.677Z",
+      "lastNotifiedAt": "2026-10-24T07:38:57.677Z",
+      "lastSurfacedAt": "2026-10-24T07:38:57.677Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
