@@ -27,13 +27,16 @@ const { partitionShowRows, formatSkipped } = require('./lib/show-row-guard');
 const SKIPPED_ROWS_CONDITION = 'shows-json:skipped-rows';
 const SHOWS_FILE = process.env.SHOWS_FILE_OVERRIDE || path.join(__dirname, '..', 'data', 'shows.json');
 const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+// BRO-6025: a SHOWS_FILE_OVERRIDE run reads a fixture, not the real shows.json, so
+// it must never touch the owner alert router (a fixture run once filed a real card).
+const ALERTS_ENABLED = !process.env.SHOWS_FILE_OVERRIDE && process.env.SKIP_ROW_ALERT !== 'true';
 
 // BRO-5954: a malformed row is skipped loudly, never fatal. src/lib/data-core.ts
 // applies the same partition, so the export builds without those rows.
 const { valid: allShows, skipped } = partitionShowRows(data.shows || data);
 if (skipped.length === 0) {
   // Clean again: close the incident so the next bad row notifies immediately.
-  try {
+  if (ALERTS_ENABLED) try {
     require('./lib/owner-alert-router').resolveCondition(SKIPPED_ROWS_CONDITION, { reason: 'prebuild: no malformed shows.json rows' });
   } catch (_) { /* alert ledger unavailable in this build env: non-fatal */ }
 } else {
@@ -47,7 +50,7 @@ if (skipped.length === 0) {
     fs.writeFileSync(path.join(reportDir, 'skipped-show-rows.json'),
       JSON.stringify({ at: new Date().toISOString(), skipped }, null, 2));
   } catch (_) { /* report file is best-effort */ }
-  if (process.env.SKIP_ROW_ALERT !== 'true') {
+  if (ALERTS_ENABLED) {
     try {
       const { routeAlert } = require('./lib/owner-alert-router');
       const { withTimeout } = require('./lib/with-timeout');
