@@ -192,7 +192,9 @@
     "wicked-tour-2021/heyrhody--shay-costa.json",
     "little-shop-of-horrors-off-broadway-2019/ew--maureen-lee-lenker.json",
     "little-shop-of-horrors-off-broadway-2019/amny--matt-windman.json",
-    "the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json"
+    "the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "beetlejuice-west-end-2026/amny--matt-windman.json",
@@ -295,8 +297,6 @@
     "a-few-good-men-2026/times-square-chronicles--genevieve-rafter-keddy.json",
     "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
     "garry-starr-classic-penguins-off-west-end-2026/theatreandtonic--penny-walshe.json",
-    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
-    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
     "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--jane-bradley.json",
     "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json",
     "jena-friedman-motherfucker-off-broadway-2026/viptickets--unknown.json",
@@ -331,7 +331,21 @@
     "six-2021/whatsonstage--alex-wood.json",
     "little-shop-of-horrors-off-broadway-2019/wsj--charles-isherwood.json",
     "hadestown-2019/broadwaynews--charles-isherwood.json",
-    "hadestown-2019/theater-life--isa-goldberg.json"
+    "hadestown-2019/theater-life--isa-goldberg.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+    "king-of-the-yees-off-broadway-2026/exeunt-magazine--unknown.json",
+    "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
+    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/timeout--unknown.json",
+    "lincoln-in-the-bardo-off-broadway-2026/hotelbelleclaire--unknown.json",
+    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json",
+    "other-desert-cities-2026/cbsnews--unknown.json",
+    "school-pictures-off-broadway-2026/timeout--unknown.json",
+    "school-pictures-off-broadway-2026/airmail--air-mail.json",
+    "seussical-theatre-young-audiences-off-broadway-2026/wknd--unknown.json",
+    "the-dog-show-come-sit-stay-off-broadway-2026/talkalmanmusic--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -435,7 +449,9 @@
       "abba-voyage-off-west-end-2026/fairypoweredproductions--unknown.json",
       "the-lion-king-tour-2021/south-florida-sun-sentinel--stafford-hagwood.json",
       "wicked-tour-2021/heyrhody--shay-costa.json",
-      "little-shop-of-horrors-off-broadway-2019/ew--maureen-lee-lenker.json"
+      "little-shop-of-horrors-off-broadway-2019/ew--maureen-lee-lenker.json",
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
@@ -444,7 +460,9 @@
       "data/review-texts/dirty-dancing-tour-2026/nytimes--michael-paulson.json",
       "dirty-dancing-tour-2026/nytimes--michael-paulson.json",
       "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json",
-      "the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json"
+      "the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json",
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -540,7 +558,7 @@
     ]
   },
   "startTime": "2026-10-24T13:03:51.298Z",
-  "lastProcessed": "the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json",
+  "lastProcessed": "the-dog-show-come-sit-stay-off-broadway-2026/talkalmanmusic--unknown.json",
   "log": [
     {
       "t": "2026-10-24T14:52:00.191Z",
@@ -574,6 +592,80 @@
       "t": "2026-10-24T15:21:20.830Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-24T15:36:04.377Z",
+      "event": "bb-session",
+      "session": "ce135a8b",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-24T15:36:48.489Z",
+      "event": "bb-session",
+      "session": "8fa6f7cd",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-24T15:36:57.669Z",
+      "event": "bb-session",
+      "session": "869ed054",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-24T15:37:42.570Z",
+      "event": "bb-session",
+      "session": "f3352d3c",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
+    },
+    {
+      "t": "2026-10-24T15:37:51.918Z",
+      "event": "bb-session",
+      "session": "76abf6dc",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
+    },
+    {
+      "t": "2026-10-24T15:38:30.122Z",
+      "event": "bb-session",
+      "session": "82d86ab5",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-24T15:38:30.966Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-24T15:38:40.618Z",
+      "event": "bb-session",
+      "session": "0f003ebd",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-24T15:38:41.470Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-24T15:40:12.492Z",
+      "event": "bb-session",
+      "session": "b66e3853",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-24T15:40:21.362Z",
+      "event": "bb-session",
+      "session": "3a34f95e",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-24T15:41:24.498Z",
+      "event": "bb-session",
+      "session": "44defc03",
+      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
     }
+  ],
+  "recoveredAfterFailure": [
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
   ]
 }
