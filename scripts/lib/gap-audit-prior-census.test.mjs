@@ -24,3 +24,12 @@ test('BRO-5516: real audit rows carry their census (sting-west-end-2026 had 3 li
   const withCensus = a.results.filter(r => priorCensusUrls(r).length > 0);
   assert.ok(withCensus.length > 100);
 });
+
+test('BRO-5516: prior URLs are unioned into a census that already ran (SERP variance cannot drop candidates)', () => {
+  const { seedPriorCensusUrls } = require('./gap-audit-merge.js');
+  const target = new Set(['https://a.com/new']);          // this run's SERP pass found only this
+  const n = seedPriorCensusUrls(target, ['https://a.com/old', 'https://b.com/stale'], (u) => (u.includes('stale') ? null : u));
+  assert.equal(n, 1);
+  assert.deepEqual([...target].sort(), ['https://a.com/new', 'https://a.com/old']);
+  assert.equal(seedPriorCensusUrls(new Set(), undefined, (u) => u), 0);
+});
