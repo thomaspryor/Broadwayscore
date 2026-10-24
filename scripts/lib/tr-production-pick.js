@@ -122,8 +122,8 @@ function pickTrProduction(titleMatches, show, opts) {
   }
   // Nothing in the window, none at our venue, none in London: a regional
   // production of the same title (Chester's 2021 Pride and Prejudice for the
-  // Criterion run), not ours. Same call as the dated 'regional only' null above.
-  if (win && show.status === 'closed' && typeof isLondonVenue === 'function' && pool[0].venue && windowFit(pool[0].link, win) === 'out') return null;
+  // Criterion run, which even lands inside the date window), not ours.
+  if (win && show.status === 'closed' && typeof isLondonVenue === 'function' && pool[0].venue) return null;
   return pool[0];
 }
 

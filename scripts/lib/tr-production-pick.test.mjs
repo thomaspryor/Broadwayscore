@@ -86,6 +86,12 @@ test('closed show: an out-of-window regional result is no pick, an unknown venue
   assert.equal(pickTrProduction([unknown], show, { isLondonVenue }), unknown);
 });
 
+test('closed show: a non-London result inside the date window is still no pick', () => {
+  const show = { title: 'Pride and Prejudice (sort of)', venue: 'Criterion Theatre', openingDate: '2021-11-03', previewsStartDate: '2021-10-15', status: 'closed' };
+  const chester = { title: 'PRIDE AND PREJUDICE', venue: 'Grosvenor Park Open Air Theatre, Chester', link: 'https://www.theatrerecord.com/archive/volume/41/dest/14_pride_and_prejudice' };
+  assert.equal(pickTrProduction([chester], show, { isLondonVenue }), null);
+});
+
 test('trTitleMatches accepts a TR tagline after a colon, and nothing looser', () => {
   assert.equal(trTitleMatches('CURTAINS: A MUSICAL WHODUNNIT', 'Curtains'), true);
   assert.equal(trTitleMatches('Curtains', 'Curtains'), true);
