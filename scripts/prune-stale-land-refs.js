@@ -82,17 +82,20 @@ async function main() {
       console.log(`::warning::${branch}: skipped (${String(err.message).split('\n')[0]})`);
     }
   }
+  candidates.sort((a, b) => Date.parse(a.tipCommittedAt) - Date.parse(b.tipCommittedAt)); // oldest first, so the cap never starves the tail
   const batch = candidates.slice(0, MAX_DELETES_PER_RUN);
   for (const c of candidates) console.log(`${apply && batch.includes(c) ? 'DELETE' : 'candidate'} ${c.branch} @${c.tip} (${c.reason}, tip ${c.tipCommittedAt.slice(0, 10)})`);
   let deleted = 0;
+  let failed = 0;
   if (apply) {
     for (const c of batch) {
       try { ghRaw(['-X', 'DELETE', `repos/${repo}/git/refs/heads/${c.branch.split('/').map(encodeURIComponent).join('/')}`]); deleted += 1; }
-      catch (err) { console.log(`::warning::${c.branch}: delete refused (${String(err.message).split('\n')[0]})`); }
+      catch (err) { failed += 1; console.log(`::warning::${c.branch}: delete refused (${String(err.message).split('\n')[0]})`); }
     }
   }
   console.log(`kept: ${JSON.stringify(keptBy)}`);
   console.log(`prune summary: ${refs.length} ref(s), ${candidates.length} candidate(s), ${deleted} deleted${apply ? '' : ' (dry-run)'}`);
+  if (failed) { console.log(`::error::${failed} delete(s) refused`); process.exitCode = 1; }
 }
 
 main().catch((err) => { console.error(err); process.exit(1); });
