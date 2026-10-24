@@ -155,6 +155,8 @@ jobs:
           PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           git add data/pending-fixes/
+          # BRO-6122: outlet-registry-flag edits this tracked file.
+          git add data/outlet-registry.json 2>/dev/null || true
           # BRO-5182: reconcile-pending-commercial.js prunes this tracked file; the weekly
           # commercial workflows commit it the same way (commercial-friday.yml).
           git add data/commercial-pending-review.json 2>/dev/null || true

@@ -54,6 +54,8 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { applyAddShow } = require('./lib/add-show-action.js');
 const { applyRetireShow } = require('./lib/retire-show-action.js');
 const { isReviewTextFile } = require('./lib/review-text-sidecars.js');
+const { applyOutletRegistryFlag } = require('./lib/outlet-registry-flag-action.js');
+const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape.js');
 const { applyDropOrphanKey, DROP_ORPHAN_KEY_FILES } = require('./lib/orphan-key-action.js');
 const { applyRetitleShow } = require('./lib/retitle-show-action.js');
 const { applyAddCommercialEntry } = require('./lib/commercial-entry-action.js');
@@ -219,6 +221,14 @@ function runValidation(changedFiles, touchedCommercialKeys = [], priorCommercial
     },
     'data/audience-buzz.json': (data) => {
       if (!data?.shows) throw new Error('Missing shows key');
+    },
+    // BRO-6122: outlet-registry-flag. Tracked in the web repo, so rollback is git checkout.
+    'data/outlet-registry.json': (data) => {
+      const ids = Object.keys(data?.outlets || {});
+      if (ids.length < 500) throw new Error(`Expected 500+ outlets, got ${ids.length}`);
+      if (!data._aliasIndex || typeof data._aliasIndex !== 'object') throw new Error('Missing _aliasIndex');
+      const errs = ids.flatMap((id) => outletFieldShapeErrors(id, data.outlets[id]));
+      if (errs.length) throw new Error(errs.slice(0, 5).join('; '));
     },
   };
 
@@ -434,6 +444,23 @@ function executeDropOrphanKey(action) {
   }
   const result = applyDropOrphanKey(data && data.shows, action, idSets);
   if (result.ok) saveJsonFile(rel, data);
+  return result;
+}
+
+function executeOutletRegistryFlag(action) {
+  const rel = 'data/outlet-registry.json';
+  let registry, shows, reviews;
+  try {
+    registry = loadJsonFile(rel);
+    const sd = loadJsonFile('data/shows.json');
+    shows = sd.shows || sd;
+    reviews = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/reviews.json'), 'utf8')).reviews;
+  } catch (e) {
+    return { ok: false, reason: `outlet-registry-flag ${action && action.outletId}: cannot read inputs (${e.message})` };
+  }
+  const result = applyOutletRegistryFlag(registry, action, { shows, reviews });
+  // The registry file has no trailing newline (rebuild-all-reviews.js writes it that way).
+  if (result.ok && result.changed) fs.writeFileSync(path.join(ROOT, rel), JSON.stringify(registry, null, 2));
   return result;
 }
 
@@ -696,6 +723,9 @@ async function main() {
       case 'drop-orphan-key':
         result = executeDropOrphanKey(action);
         break;
+      case 'outlet-registry-flag':
+        result = executeOutletRegistryFlag(action);
+        break;
       case 'review-field-edit':
         result = executeReviewFieldEdit(action, { fixId: planData.planId || String(issueNumber), at: new Date().toISOString() });
         break;
@@ -740,11 +770,11 @@ async function main() {
   // 4. Validate if we made data changes. batch-transform mutates data files
   // too — it must NOT bypass validation (it previously did, so a bad bulk
   // transform had no rollback path).
-  const dataTouching = planData.plan.actions.filter(a => a.type === 'data-edit' || a.type === 'batch-transform' || a.type === 'add-show' || a.type === 'retire-show' || a.type === 'retitle-show' || a.type === 'add-commercial-entry' || a.type === 'drop-orphan-key');
+  const dataTouching = planData.plan.actions.filter(a => a.type === 'data-edit' || a.type === 'batch-transform' || a.type === 'add-show' || a.type === 'retire-show' || a.type === 'retitle-show' || a.type === 'add-commercial-entry' || a.type === 'drop-orphan-key' || a.type === 'outlet-registry-flag');
   const hasDataEdits = dataTouching.length > 0;
   if (hasDataEdits) {
     // add-show / retire-show / retitle-show / add-commercial-entry carry no `file`.
-    const IMPLIED_FILE = { 'add-show': 'shows.json', 'retire-show': 'shows.json', 'retitle-show': 'shows.json', 'add-commercial-entry': 'commercial.json' };
+    const IMPLIED_FILE = { 'add-show': 'shows.json', 'retire-show': 'shows.json', 'retitle-show': 'shows.json', 'add-commercial-entry': 'commercial.json', 'outlet-registry-flag': 'outlet-registry.json' };
     const changedFiles = [...new Set(dataTouching.map(a => a.file || IMPLIED_FILE[a.type] || null).filter(Boolean))];
     // retire-show also drops or moves the id's audience-buzz.json key (BRO-3248).
     if (dataTouching.some(a => a.type === 'retire-show') && !changedFiles.includes('audience-buzz.json')) changedFiles.push('audience-buzz.json');
