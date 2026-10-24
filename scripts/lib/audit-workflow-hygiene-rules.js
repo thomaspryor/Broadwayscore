@@ -1378,43 +1378,66 @@ function findScriptWithoutDispatchToken(raw) {
 }
 
 /**
- * Rule (z) (BRO-5972): a `git clone` with no wall-clock cap. A clone whose
- * transfer stalls never returns, so the step waits for the job timeout (or
+ * Rule (z) (BRO-5972, BRO-6029): a git network command with no wall-clock cap.
+ * A stalled transfer never returns, so the step waits for the job timeout (or
  * GitHub's 6h default when the job sets none) instead of failing in minutes.
- * Wrap it as `git_net <secs> clone ...` (scripts/lib/git-net-timeout.sh,
+ * Wrap it as `git_net <secs> clone|fetch|pull|push ...` (scripts/lib/git-net-timeout.sh,
  * BRO-4966) or under `timeout`. Scans run-block lines (comments skipped).
  *
  * Not flagged: `--mirror`/`--bare` clones (the r2/gitlab archive jobs, whose
  * size varies too much for one cap and whose job timeout bounds them), lines
  * that start with `echo`/`printf` (messages that mention a clone), and lines
- * holding `git_net` or a `timeout` before the `git`. A `git clone` split
+ * bounded by `git_net` or `timeout`/`gtimeout`. Each command is checked separately
+ * so a bounded fetch cannot hide an unbounded push on the same line. A command split
  * across a `\` continuation is judged by its first line only.
  *
- * ADVISORY at introduction (CLAUDE.md §19). Exempt one clone with
+ * ADVISORY at introduction (CLAUDE.md §19). Exempt one command with
  * `# hygiene-unbounded-clone-ok: <reason>` on its line or the line above.
  *
  * Returns [{ lineNum, text }].
  */
-// git's global options may sit before the subcommand (`git -c k=v clone`).
-const GIT_CLONE_RE = /\bgit(?:\s+(?:--no-pager|-[Cc]\s+\S+))*\s+clone\b/;
+// git's global options may sit before the subcommand; their values may be quoted.
+const GIT_GLOBAL_OPTIONS = String.raw`(?:\s+(?:--no-pager|--bare|-[Cc]\s+(?:"[^"]*"|'[^']*'|\S+)))*`;
+const GIT_CLONE_RE = new RegExp(String.raw`\bgit${GIT_GLOBAL_OPTIONS}\s+(clone)\b`, 'g');
+const GIT_NETWORK_RE = new RegExp(String.raw`\bgit${GIT_GLOBAL_OPTIONS}\s+(clone|fetch|pull|push)\b`, 'g');
 const UNBOUNDED_CLONE_OK_RE = /hygiene-unbounded-clone-ok:/;
-function findUnboundedGitClones(raw) {
+function findUnboundedGitCommands(raw, pattern) {
   const lines = raw.split('\n');
-  return runLineMatches(raw, GIT_CLONE_RE).filter(({ lineNum, text }) => {
+  // runLineMatches expects a stateless regex; matchAll below needs the global one.
+  return runLineMatches(raw, new RegExp(pattern.source)).filter(({ lineNum, text }) => {
     // A trailing `# ...` comment is dropped so its words (e.g. "timeout")
     // cannot vouch for the command.
     const body = text.replace(/^\s*(?:-\s+)?run:\s*/, '').replace(/\s+#.*$/, '').trim();
-    // A message only when nothing is chained after it (`echo x && git clone` runs).
-    if (/^(?:echo|printf)\b[^;&|]*$/.test(body)) return false;
-    if (/--mirror\b|--bare\b/.test(body)) return false;
-    if (/\bgit_net\b/.test(body)) return false;
-    if (/\btimeout\b[^|;&]*\bgit\b/.test(body)) return false;
+    // Quoted message text can contain shell separators without executing them.
+    // Command substitutions inside messages still execute and need a cap.
+    if (!/\$\(|(?<!\\)`/.test(body) && (
+      /^(?:echo|printf)\b[^;&|]*$/.test(body) ||
+      /^(?:echo|printf)\s+(?:"(?:\\.|[^"\\])*"|'[^']*')(?:\s+(?:"(?:\\.|[^"\\])*"|'[^']*'))*(?:\s*>>?\s*.*)?$/.test(body)
+    )) return false;
     if (UNBOUNDED_CLONE_OK_RE.test(text) || UNBOUNDED_CLONE_OK_RE.test(lines[lineNum - 2] || '')) return false;
-    return true;
+    return [...body.matchAll(pattern)].some((match) => {
+      const before = body.slice(0, match.index);
+      // Escaped backticks in heredoc prose do not execute a command.
+      if (before.endsWith('\\`')) return false;
+      const command = body.slice(match.index).split(/[;&|]/)[0];
+      if (match[1] === 'clone' && /--mirror\b|--bare\b/.test(command)) return false;
+      if (/(?:^|[;&|()]|\b(?:if|then|do))\s*(?:(?:command|exec)\s+)?(?:timeout|gtimeout)\s+[^;&|()]*$/.test(before)) return false;
+      return true;
+    });
   });
 }
 
+// Keep the clone-only API for the existing clone migration check.
+function findUnboundedGitClones(raw) {
+  return findUnboundedGitCommands(raw, GIT_CLONE_RE);
+}
+
+function findUnboundedGitNetworkCommands(raw) {
+  return findUnboundedGitCommands(raw, GIT_NETWORK_RE);
+}
+
 module.exports = {
+  findUnboundedGitNetworkCommands,
   findUnboundedGitClones,
   findDispatchWithoutActionsWrite,
   findScriptWithoutDispatchToken,
