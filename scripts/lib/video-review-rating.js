@@ -48,14 +48,10 @@ function ratingBand(fraction) {
   return { min: Math.max(0, Math.round(stars * 20 - 9)), max: Math.min(100, Math.round(stars * 20 + 10)) };
 }
 
-// Same buckets as the score-video-reviews.js prompt table.
-function videoBucketForScore(score) {
-  if (score >= 83) return 'Rave';
-  if (score >= 70) return 'Positive';
-  if (score >= 55) return 'Mixed';
-  if (score >= 35) return 'Negative';
-  return 'Pan';
-}
+// Same buckets as the score-video-reviews.js prompt table and the text-review
+// rebuild: one threshold set (score-extractors.js scoreToBucket).
+const { scoreToBucket } = require('./score-extractors');
+const videoBucketForScore = scoreToBucket;
 
 /**
  * Keep a model score inside the creator's own rating band. The bucket always
