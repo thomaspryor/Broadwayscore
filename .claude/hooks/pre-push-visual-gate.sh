@@ -75,19 +75,16 @@ IS_PUSH=$(echo "$PUSH_RESULT" | jq -r '.isPush // false' 2>/dev/null)
 # Cross-repo push guard: if the command cd's into a directory that belongs to
 # a DIFFERENT git repository, the visual-qa gate does not apply.
 # Handles: `cd ~/broadway-review-texts && git push origin main`
-_FIRST_CD=$(printf '%s' "$command" | grep -oE '(^|[[:space:];&|(])cd[[:space:]]+[^[:space:];&|<>)]+' | head -1 | sed 's/^[[:space:];&|(]*cd[[:space:]]*//')
-if [ -n "$_FIRST_CD" ]; then
-  case "$_FIRST_CD" in
-    \~/*)  _FIRST_CD="$HOME/${_FIRST_CD#\~/}" ;;
-    \~)    _FIRST_CD="$HOME" ;;
-  esac
-  if [ -d "$_FIRST_CD" ]; then
-    _CD_REPO=$(git -C "$_FIRST_CD" rev-parse --show-toplevel 2>/dev/null)
-    if [ -n "$_CD_REPO" ] && [ "$_CD_REPO" != "$CANONICAL_ROOT" ]; then
-      exit 0  # Push target is a different repo — not our gate to enforce.
-    fi
-  fi
-fi
+# BRO-6136: resolve every operation's directory, including successive cds
+# and generated shell scripts. Only exempt commands whose targets ALL belong
+# to other repo families; unknown contexts keep the gate in scope.
+_REPO_TARGET=$(node "$CANONICAL_ROOT/scripts/lib/command-repo.mjs" \
+  --command="$command" --cwd="$PWD" --canonical-root="$CANONICAL_ROOT" \
+  --operation=push 2>/dev/null)
+[ "$(printf '%s' "$_REPO_TARGET" | jq -r '.outOfScope // false' 2>/dev/null)" = "true" ] && exit 0
+EVAL_ROOT=$(printf '%s' "$_REPO_TARGET" | jq -r '.evalRoot // empty' 2>/dev/null)
+[ -z "$EVAL_ROOT" ] && EVAL_ROOT="$SESSION_ROOT"
+SESSION_ROOT="$EVAL_ROOT"
 
 # Are any UI files changed in what's actually being pushed?
 # Parse `git push [flags] [remote] <branch>` to find the explicit push target.
