@@ -28,8 +28,25 @@ const { pickTrProduction } = require('./lib/tr-production-pick');
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
 const { resolveTheatreRecordWriteTarget, mergeTheatreRecordIntoExisting } = require('./lib/review-text-identity');
 
-const { DATE_SHORT, parseShortDate, parsePdfReviews, parseRawPdfReviews } = require('./lib/tr-pdf-parse');
+const { DATE_SHORT, parseShortDate, parsePdfReviews, parseRawPdfReviews, maskPdfText } = require('./lib/tr-pdf-parse');
 const { foldDiacritics } = require('./lib/title-match');
+
+// BRO-6097 coverage probe: per-show outcome (counts and reasons only, never
+// review text) written to --probe-out, merged into what an earlier run wrote.
+// --skeleton-dir saves masked layout skeletons of the PDF issues (see
+// maskPdfText) so parser fixtures come from real issues.
+// venue-write-guard-ok: probe notes record TR venue text in a data/audit report only; nothing here writes shows.json
+const PROBE = (() => {
+  const f = process.argv.slice(2).find(a => a.startsWith('--probe-out='))?.split('=')[1];
+  try { return f ? JSON.parse(fs.readFileSync(f, 'utf8')).shows || {} : {}; } catch (_) { return {}; }
+})();
+// Flushed on every note so a login failure or a throw keeps what was learned.
+const probeNote = (showId, o) => { PROBE[showId] = Object.assign(PROBE[showId] || {}, o); writeProbe(); };
+function writeProbe() {
+  if (!probeOut) return;
+  fs.mkdirSync(path.dirname(probeOut), { recursive: true });
+  fs.writeFileSync(probeOut, JSON.stringify({ generatedAt: new Date().toISOString(), shows: PROBE }, null, 2));
+}
 
 async function extractReviewsFromPDF(page, context, pdfUrl, show) {
   // Get session cookie from Playwright context
@@ -37,6 +54,7 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
   const phpSession = cookies.find(c => c.name === 'PHPSESSID');
   if (!phpSession) {
     console.log('  No PHPSESSID cookie — cannot download PDF');
+    probeNote(show.id, { pdf: { failed: 'no-session' } });
     return [];
   }
 
@@ -48,6 +66,7 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
     execSync(`curl -s -L -o "${tmpFile}" -b "PHPSESSID=${phpSession.value}" "${resolvedUrl}"`, { timeout: 30000 });
   } catch (e) {
     console.log(`  PDF download failed: ${e.message}`);
+    probeNote(show.id, { pdf: { failed: 'download' } });
     return [];
   }
 
@@ -56,6 +75,7 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
   if (!fileType.includes('PDF')) {
     console.log(`  Downloaded file is not a PDF: ${fileType.trim()}`);
     fs.unlinkSync(tmpFile);
+    probeNote(show.id, { pdf: { failed: 'not-a-pdf' } });
     return [];
   }
 
@@ -66,10 +86,15 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
   } catch (e) {
     console.log(`  pdftotext failed: ${e.message}`);
     fs.unlinkSync(tmpFile);
+    probeNote(show.id, { pdf: { failed: 'pdftotext' } });
     return [];
   }
 
-  let reviews = parsePdfReviews(text, show.title);
+  const layoutStats = {};
+  let reviews = parsePdfReviews(text, show.title, layoutStats);
+  const layoutCount = reviews.length;
+  probeNote(show.id, { pdf: { layout: layoutStats, layoutReviews: layoutCount, layoutChars: text.length } });
+  dumpPdfText(show.id, 'layout', text, show.title);
   if (reviews.length > 0) {
     console.log(`  Extracted ${reviews.length} reviews (-layout mode)`);
     // Don't return yet — also try raw mode as it may find more reviews
@@ -88,6 +113,8 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
   }
 
   const rawReviews = parseRawPdfReviews(text, show.title);
+  dumpPdfText(show.id, 'raw', text, show.title);
+  probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { rawReviews: rawReviews.length }) });
   if (rawReviews.length > 0) {
     console.log(`  Extracted ${rawReviews.length} reviews (-raw mode, title-matched)`);
     // Merge with layout reviews, avoiding duplicates (same outlet+critic)
@@ -100,6 +127,7 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
     }
   }
 
+  probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { merged: reviews.length }) });
   fs.unlinkSync(tmpFile);
   return reviews;
 }
@@ -120,6 +148,19 @@ const browseWE = args.includes('--browse-we');
 const browseLondon = args.includes('--browse-london');
 const limit = parseInt(args.find(a => a.startsWith('--limit='))?.split('=')[1] || '0', 10) || 0;
 const noSkipExisting = args.includes('--no-skip-existing');
+const showsFilter = (args.find(a => a.startsWith('--shows='))?.split('=')[1] || '').split(',').filter(Boolean);
+const probeOut = args.find(a => a.startsWith('--probe-out='))?.split('=')[1];
+const dumpDir = args.find(a => a.startsWith('--skeleton-dir='))?.split('=')[1];
+const skeletonMax = parseInt(args.find(a => a.startsWith('--skeleton-max='))?.split('=')[1] || '6', 10);
+const skeletonDone = new Set();
+// Skeleton = maskPdfText (tr-pdf-parse.js): structure kept, no prose, safe to commit (§11).
+function dumpPdfText(showId, mode, text, title) {
+  if (!dumpDir || mode !== 'layout') return;
+  if (!skeletonDone.has(showId)) { if (skeletonDone.size >= skeletonMax) return; skeletonDone.add(showId); }
+  fs.mkdirSync(dumpDir, { recursive: true });
+  const keepWords = String(title || '').split(/\W+/).filter(w => w.length >= 3);
+  fs.writeFileSync(path.join(dumpDir, `${showId}.${mode}.txt`), maskPdfText(text, keepWords));
+}
 
 // Theatre Record credentials
 const TR_EMAIL = process.env.TR_EMAIL || 'thomas.pryor@gmail.com';
@@ -196,6 +237,14 @@ function parseDate(dateStr) {
 // Determine which shows to process
 function getTargetShows() {
   let shows = showsData.shows;
+
+  if (showsFilter.length) {
+    const want = new Set(showsFilter);
+    shows = shows.filter(s => want.has(s.id));
+    for (const id of showsFilter) if (!shows.some(s => s.id === id)) { console.log(`  --shows: ${id} not in shows.json`); probeNote(id, { outcome: 'not-in-shows-json' }); }
+    shows.sort((a, b) => new Date(a.openingDate || '2099') - new Date(b.openingDate || '2099'));
+    return shows;
+  }
 
   if (showFilter) {
     shows = shows.filter(s => s.id === showFilter || s.slug === showFilter);
@@ -461,6 +510,7 @@ async function main() {
       r.outlet.toLowerCase().includes('summary') ||
       r.outlet.toLowerCase().includes('editor')
     ).length;
+    probeNote(show.id, { isPDF, listed: reviews.length - filteredCount });
     console.log(`  Found ${reviews.length - filteredCount} reviews`);
 
     const showDir = path.join(REVIEW_TEXTS_DIR, show.id);
@@ -470,6 +520,7 @@ async function main() {
 
     let newCount = 0;
     let skippedCount = 0;
+    let heldCount = 0; // skipped because we already hold the review (not guard rejects)
 
     // Lazily fetched once per show and reused across all its reviews — an
     // independent corroboration source (critic+outlet already listed for
@@ -509,6 +560,7 @@ async function main() {
       const existingVariant = findExistingReviewFile(showDir, outletId, review.critic);
       if ((fileExists || existingVariant) && !noSkipExisting) {
         skippedCount++;
+        heldCount++;
         continue;
       }
 
@@ -663,6 +715,7 @@ async function main() {
       if (target.action === 'skip') {
         console.log(`    SKIP: ${filename} — ${target.reason} (${path.basename(target.path)})`);
         skippedCount++;
+        heldCount++;
         continue;
       }
       if (target.action === 'merge') {
@@ -687,6 +740,7 @@ async function main() {
     if (newCount === 0 && reviews.length > 0) {
       console.log('  All reviews already exist');
     }
+    probeNote(show.id, { saved: newCount, skippedExisting: heldCount, skippedGuarded: skippedCount - heldCount });
     return { newCount, skippedCount };
   }
 
@@ -747,10 +801,12 @@ async function main() {
 
     if (results.length === 0) {
       console.log('  No results found on Theatre Record');
+      probeNote(show.id, { outcome: 'search-miss', searchQuery: searchTitle });
       return null;
     }
 
     if (titleMatches.length === 0) {
+      probeNote(show.id, { outcome: 'title-mismatch', trResults: results.slice(0, 8).map(r => ({ title: r.title, venue: r.venue })) });
       console.log(`  No title match. TR results: ${results.map(r => `"${r.title}" @ ${r.venue}`).join('; ')}`);
       return null;
     }
@@ -761,10 +817,12 @@ async function main() {
     // 2024 Wyndham's row).
     const bestResult = pickTrProduction(titleMatches, show, { hintVenue, isLondonVenue });
     if (!bestResult) {
+      probeNote(show.id, { outcome: 'no-production-in-window', trResults: titleMatches.map(r => ({ title: r.title, venue: r.venue, link: r.link })) });
       console.log(`  No TR production in this show's press-night window. Title matches: ${titleMatches.map(r => `"${r.title}" @ ${r.venue} (${r.link})`).join('; ')}`);
       return null;
     }
 
+    probeNote(show.id, { outcome: 'picked', picked: { title: bestResult.title, venue: bestResult.venue, link: bestResult.link, candidates: titleMatches.length } });
     console.log(`  Found: ${bestResult.title} @ ${bestResult.venue}`);
     console.log(`  Link: ${bestResult.link}`);
 
@@ -842,10 +900,12 @@ async function main() {
                               err.message?.includes('Navigation failed') ||
                               err.message?.includes('ERR_ABORTED');
         if (isBrowserDead) {
+          probeNote(show.id, { outcome: 'error', error: 'browser-crash: ' + String(err.message).slice(0, 100) });
           console.log(`  Browser crashed — relaunching...`);
           await launchAndLogin();
         } else {
           console.log(`  Error: ${err.message}`);
+          probeNote(show.id, { outcome: 'error', error: String(err.message).slice(0, 160) });
         }
       }
     }
@@ -871,10 +931,12 @@ async function main() {
         await page.waitForTimeout(2000);
       } catch (err) {
         if (err.message?.includes('browser has been closed') || err.message?.includes('ERR_ABORTED')) {
+          probeNote(show.id, { outcome: 'error', error: 'browser-crash: ' + String(err.message).slice(0, 100) });
           console.log(`  Browser crashed — relaunching...`);
           await launchAndLogin();
         } else {
           console.log(`  Error: ${err.message}`);
+          probeNote(show.id, { outcome: 'error', error: String(err.message).slice(0, 160) });
         }
       }
     }
@@ -901,16 +963,19 @@ async function main() {
         await page.waitForTimeout(2000);
       } catch (err) {
         if (err.message?.includes('browser has been closed') || err.message?.includes('ERR_ABORTED')) {
+          probeNote(show.id, { outcome: 'error', error: 'browser-crash: ' + String(err.message).slice(0, 100) });
           console.log(`  Browser crashed — relaunching...`);
           await launchAndLogin();
         } else {
           console.log(`  Error: ${err.message}`);
+          probeNote(show.id, { outcome: 'error', error: String(err.message).slice(0, 160) });
         }
       }
     }
   }
 
   await browser.close();
+  if (probeOut) console.log(`Probe written: ${probeOut} (${Object.keys(PROBE).length} shows)`);
 
   console.log('\n=== Summary ===');
   console.log(`Shows processed: ${totalShows}`);
