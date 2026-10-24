@@ -70,6 +70,8 @@ on:
       - 'scripts/check-grosses-integrity.js'
       # BRO-5626: daily unpark drain, tested by scripts/linear-unpark-drain.test.mjs.
       - 'scripts/linear-unpark-drain.js'
+      # BRO-6134: Codex lane health alarm, tested by tests/unit/codex-lane-health.test.mjs.
+      - 'scripts/codex-lane-alarm.js'
       # BRO-3579: multi-run workflow-status wrapper + its manifest-registered test.
       - 'scripts/check-workflow-run-status.js'
       # scripts/backtest-recoupment-ground-truth.js runs in unit-tests (advisory model backtest, BRO-4989)
