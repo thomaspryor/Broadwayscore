@@ -117,3 +117,25 @@ test('numberFreeTitle: collapses live counts, keeps numbers that name something 
   assert.notEqual(n('P0: thing'), n('P1: thing'));
   assert.notEqual(n('since 2026-10-19 x'), n('since 2026-10-20 x'));
 });
+
+// BRO-6130 step 5: the 14-day digest-autofix duplicates (BRO-5757/5827/6059 breaker cards) differed only by a live
+// count in the title. Pin the key that find --ignore-numbers matches on, and that the one fileCard caller opts in.
+test('numberFreeTitle: the same health row on different days shares one dedupe key', async () => {
+  const dedupe = (await import('node:module')).createRequire(import.meta.url)('./card-dedupe.js');
+  assert.equal(
+    dedupe.numberFreeTitle('BSC Daily: Bright Data daily breaker TRIPPED: web_unlocker2 (2126/1750 reqs)'),
+    dedupe.numberFreeTitle('BSC Daily: Bright Data daily breaker TRIPPED: web_unlocker2 (2194/1750 reqs)'),
+  );
+  assert.notEqual(
+    dedupe.numberFreeTitle('BSC Daily: Bright Data daily breaker TRIPPED: web_unlocker2 (2126/1750 reqs)'),
+    dedupe.numberFreeTitle('BSC Daily: Corpus drift: review files with wrongProduction provenance (12 files)'),
+  );
+});
+
+test('digest-autofix files every row with ignoreNumbers so a changing count cannot mint a daily duplicate', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('./digest-autofix.js', import.meta.url), 'utf8');
+  const callSites = [...src.matchAll(/= fileCardFn\(([\s\S]*?)\);/g)].map((m) => m[1]);
+  assert.ok(callSites.length >= 1, 'expected at least one fileCard( call site');
+  for (const c of callSites) assert.match(c, /ignoreNumbers: true/);
+});

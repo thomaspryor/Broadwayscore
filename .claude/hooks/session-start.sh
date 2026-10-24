@@ -634,7 +634,7 @@ fi
 
 cat << 'EOF'
 CRITICAL SESSION RULES (CLAUDE.md has full text — these 7 are the most-violated):
-1. LINEAR CARD FIRST, before any edit: `node scripts/linear-brain.js create "<title>" --dispatch --notes "...## Acceptance criteria..."`. Dispatched onto an existing issue → `node scripts/linear-session.js claim --issue=BRO-N` instead. Notion is retired: never notion-brain.js.
+1. LINEAR CARD FIRST, before any edit: `node scripts/linear-brain.js create "<title>" --self --notes "...## Acceptance criteria..."` (--self = you do this work now; --dispatch only for work a worker should take). Dispatched onto an existing issue → `node scripts/linear-session.js claim --issue=BRO-N` instead. Notion is retired: never notion-brain.js.
 2. VERIFY: run the command + show output before claiming done. `node --check` is syntax only, not a test.
 3. ASYNC = WAIT: deploys/CI started ≠ done. Verify it succeeded; fix if it failed.
 4. FIX, DON'T REPORT: discovered issues get fixed now, not listed for later.
