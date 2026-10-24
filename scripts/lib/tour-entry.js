@@ -62,6 +62,11 @@ function titleSlug(title) {
     .replace(/&/g, 'and').replace(/['\u2019]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
+/** The id both tour creation and candidate retirement checks use. */
+function tourEntryId(parent, title, openingDate) {
+  return `${parent ? baseSlug(parent.id) : titleSlug(title)}-tour-${openingDate.slice(0, 4)}`;
+}
+
 /**
  * @param {object} args
  * @param {object|null} args.parent production the tour descends from (any TOUR_PARENT_CATEGORIES category),
@@ -130,7 +135,7 @@ function buildTourEntry({ parent = null, title: standaloneTitle = null, type: st
     && (!endOf(t) || endOf(t) >= launch));
   if (stillOpen) return { skip: `tour ${stillOpen.id} is still open or overlaps ${launch}` };
 
-  const id = `${parent ? baseSlug(parent.id) : titleSlug(title)}-tour-${launch.slice(0, 4)}`;
+  const id = tourEntryId(parent, title, launch);
   if ((shows || []).some(s => s.id === id || s.slug === id)) return { skip: `id ${id} already exists` };
   if (retiredIds && retiredIds.has(id)) return { skip: `id ${id} is retired` };
 
@@ -168,4 +173,4 @@ function buildTourEntry({ parent = null, title: standaloneTitle = null, type: st
   return { entry };
 }
 
-module.exports = { buildTourEntry, baseSlug, titleSlug, STANDALONE_TYPES, scheduleSlugOf, LAUNCH_SOURCES };
+module.exports = { buildTourEntry, tourEntryId, baseSlug, titleSlug, STANDALONE_TYPES, scheduleSlugOf, LAUNCH_SOURCES };
