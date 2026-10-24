@@ -142,13 +142,13 @@ function formatEmail(plan) {
  * you". Same {generatedAt, bannerText, items, moreCount} shape as every other
  * digest section. Returns null when there is nothing to show.
  */
-// BRO-6131: only an owner-signed link (owner-signed-link.js: this site, ?e=<exp>&s=<hex>)
-// replaces the card link. Any other URL in the question is just context (BRO-6110
-// quotes a dead relay URL), and linking the button to it sent the owner nowhere.
-const SIGNED_LINK_RE = /https:\/\/broadwayscorecard\.com\/[^\s)>\]]*[?&]e=\d{9,11}&s=[0-9a-f]{16,}/;
+// BRO-6131: only this site's own action links (/api/... on broadwayscorecard.com: the signed
+// renewal flows) replace the card link. Any other URL in the question is just context
+// (BRO-6110 quotes a dead relay URL), and linking the button to it sent the owner nowhere.
+const SIGNED_LINK_RE = /https:\/\/broadwayscorecard\.com\/api\/[^\s)>\]]+/;
 function questionLink(question) {
   const m = SIGNED_LINK_RE.exec(String(question || ''));
-  return m ? m[0] : null;
+  return m ? m[0].replace(/[.,;:!?]+$/, '') : null;
 }
 
 function buildDecisionsSection(issues, { max = 8, now = new Date() } = {}) {
