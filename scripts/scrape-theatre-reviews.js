@@ -475,7 +475,7 @@ function writeReviewFiles(reviews, showId, reviewTextsDir = REVIEW_TEXTS_DIR) {
 
 const INDEX_PATH = path.join(ARCHIVE_DIR, '_roundup-index.json');
 const COVERAGE_PATH = path.join(__dirname, '..', 'data', 'audit', 'theatre-reviews-coverage.json');
-const SCOPE_OVERRIDES_PATH = path.join(__dirname, '..', 'data', 'audit', 'theatre-reviews-scope-overrides.json');
+const SCOPE_OVERRIDES_PATH = path.join(__dirname, '..', 'data', 'theatre-reviews-scope-overrides.json');
 const MAX_CONSECUTIVE_FETCH_FAILURES = 8;
 // Fetch time budget (the workflow timeout is 90 min). A cold archive drains over several runs
 // instead of timing out and losing the index; TR_FETCH_BUDGET_MIN overrides it.
@@ -682,7 +682,7 @@ function writeCoverage(entries, unmatched, orphanArchives, disc) {
   const prior = readJson(COVERAGE_PATH, null);
   let shows = entries;
   let unmatchedOut = markOutOfScope(
-    unmatched.map(u => ({ url: u.roundup.url, title: u.roundup.title, date: u.roundup.date, ...(u.roundup.venue ? { venue: u.roundup.venue } : {}), reason: u.reason, candidates: u.candidates })),
+    unmatched.map(u => ({ url: u.roundup.url, title: u.roundup.title, date: u.roundup.date, ...(u.roundup.venue ? { venue: u.roundup.venue } : {}), reason: u.reason, candidates: u.candidates })), // venue-write-guard-ok: coverage report field, not a shows.json write
     readJson(SCOPE_OVERRIDES_PATH, {}),
   );
   if (TARGET_SHOWS && prior && Array.isArray(prior.shows)) {

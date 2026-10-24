@@ -160,7 +160,7 @@ function extraWindows(show) {
     const rs = Date.parse(r && r.openingDate || '');
     if (!Number.isFinite(rs)) continue;
     const re = Date.parse(r.closingDate || '');
-    out.push({ start: rs, end: Number.isFinite(re) && re > rs ? re : rs, kind: 'prior-run', venue: r.venue });
+    out.push({ start: rs, end: Number.isFinite(re) && re > rs ? re : rs, kind: 'prior-run', venue: r.venue }); // venue-write-guard-ok: in-memory match window, nothing written to shows.json
   }
   return out;
 }

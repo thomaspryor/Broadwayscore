@@ -9,7 +9,7 @@
  * 2026-01-01. A round-up for an Off-West-End house dated before that has no
  * show to match by design. Anything the venue rule cannot decide (no venue in
  * the post, opera, touring, non-London) is recorded with evidence in
- * data/audit/theatre-reviews-scope-overrides.json, keyed by round-up slug.
+ * data/theatre-reviews-scope-overrides.json, keyed by round-up slug.
  */
 
 const { isWestEndVenue } = require('./venue-classification');

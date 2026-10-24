@@ -328,7 +328,7 @@ test('overrides: an explicit reason wins, a venue override feeds the rule, pins 
 });
 
 test('the committed overrides file only holds well-formed entries', () => {
-  const ov = JSON.parse(fs.readFileSync(path.join(here, '..', '..', 'data', 'audit', 'theatre-reviews-scope-overrides.json'), 'utf8'));
+  const ov = JSON.parse(fs.readFileSync(path.join(here, '..', '..', 'data', 'theatre-reviews-scope-overrides.json'), 'utf8'));
   for (const [slug, o] of Object.entries(ov)) {
     assert.ok(o.outOfScope || o.venue || o.pin, `${slug} needs outOfScope, venue or pin`);
     assert.ok(typeof (o.evidence || o.outOfScope) === 'string', `${slug} needs evidence`);
