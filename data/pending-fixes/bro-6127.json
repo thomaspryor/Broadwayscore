@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6127",
   "planId": "a951fda7-0711-44a2-80d3-27b93a9c0786",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-24T14:11:39.584Z",
   "submitter": {
     "name": null,
@@ -30,5 +30,21 @@
         "description": "Misfiled by the old production pick; the Arts Desk review is of the 2022 Garrick run, per its Theatre Record issue"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-24T14:47:04.126Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved to-kill-a-mockingbird-west-end-2026/telegraph--dominic-cavendish.json → to-kill-a-mockingbird-west-end-2022/telegraph--dominic-cavendish.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved bonnie-and-clyde-west-end-2023/artsdesk--gary-naylor.json → bonnie-and-clyde-west-end-2022/artsdesk--gary-naylor.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
 }
