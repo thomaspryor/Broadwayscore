@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-24T12:28:56.541Z",
+  "generatedAt": "2026-10-24T12:56:24.594Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 2,
+    "newlyFlagged": 2,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 2,
+    "showsAffected": 2,
+    "avgSimilarity": 53,
+    "avgScoreDiff": 7.5
   },
   "syndicationPairs": [
     {
@@ -153,7 +153,32 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Quentin Letts",
+      "showId": "hadestown-west-end-2018",
+      "primaryOutlet": "daily-mail",
+      "secondaryOutlet": "mail-on-sunday",
+      "primaryFile": "daily-mail--quentin-letts.json",
+      "secondaryFile": "mail-on-sunday--quentin-letts.json",
+      "similarity": 53,
+      "primaryScore": 80,
+      "secondaryScore": 65,
+      "scoreDiff": 15
+    },
+    {
+      "critic": "Susannah Clapp",
+      "showId": "carousel-west-end-2017",
+      "primaryOutlet": "observer",
+      "secondaryOutlet": "sunday-times",
+      "primaryFile": "observer--susannah-clapp.json",
+      "secondaryFile": "sunday-times--susannah-clapp.json",
+      "similarity": 53,
+      "primaryScore": 44,
+      "secondaryScore": 44,
+      "scoreDiff": 0
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",

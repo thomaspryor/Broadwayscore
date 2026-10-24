@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-24T12:38:52.911Z",
+  "timestamp": "2026-10-24T13:07:11.228Z",
   "stats": {
-    "totalReviews": 60201,
-    "alreadyFlagged": 21229,
-    "dateGuardCatches": 215,
+    "totalReviews": 60218,
+    "alreadyFlagged": 21228,
+    "dateGuardCatches": 216,
     "directorMismatch": 2144,
     "tvFilmSignals": 1705,
     "londonSignals": 2873,
-    "offBroadwaySignals": 536,
-    "yearMismatch": 180,
-    "noPublishDate": 5545
+    "offBroadwaySignals": 534,
+    "yearMismatch": 194,
+    "noPublishDate": 5562
   },
   "findings": [
     {
@@ -18759,6 +18759,95 @@
     },
     {
       "showId": "harry-potter-tour-2024",
+      "file": "broadwayworld--albert-gutierrez.json",
+      "score": 73,
+      "publishDate": "2026-01-29",
+      "url": "https://www.broadwayworld.com/orlando/article/Review-HARRY-POTTER-AND-THE-CURSED-CHILD-at-Dr-Phillips-Center-For-The-Performing-Arts-20260129",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (5x) more than 2024 (0x). 2026 matches production: harry-potter-and-the-cursed-child-one-part-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
+      "file": "broadwayworld--jared-fessler.json",
+      "score": 78,
+      "publishDate": "2026-04-30",
+      "url": "https://www.broadwayworld.com/minneapolis/article/Review-HARRY-POTTER-AND-THE-CURSED-CHILD-at-Orpheum-Theatre-Minneapolis-20260430",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (7x) more than 2024 (0x). 2026 matches production: harry-potter-and-the-cursed-child-one-part-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
+      "file": "broadwayworld--jay-irwin.json",
+      "score": 64,
+      "publishDate": "2026-08-27",
+      "url": "https://www.broadwayworld.com/seattle/article/Review-HARRY-POTTER-AND-THE-CURSED-CHILD-at-Paramount-Theatre-20260827",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (6x) more than 2024 (0x). 2026 matches production: harry-potter-and-the-cursed-child-one-part-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
+      "file": "broadwayworld--tyler-hinton.json",
+      "score": 93,
+      "publishDate": "2026-09-24",
+      "url": "https://www.broadwayworld.com/salt-lake-city/article/Review-HARRY-POTTER-AND-THE-CURSED-CHILD-at-the-Eccles-Theater-is-Staggeringly-Awe-Inspiring-20260924",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (6x) more than 2024 (0x). 2026 matches production: harry-potter-and-the-cursed-child-one-part-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
+      "file": "chasingsupermom--bekki.json",
+      "score": 90,
+      "publishDate": "2026-08-06",
+      "url": "https://chasingsupermom.com/2026/08/06/harry-potter-and-the-cursed-child-in-portland-now-through-august-15th-full-show-review/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2024 (0x). 2026 matches production: harry-potter-and-the-cursed-child-one-part-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
+      "file": "denver-post--john-wenzel.json",
+      "score": 78,
+      "publishDate": "2026-06-04",
+      "url": "https://www.denverpost.com/2026/06/04/harry-potter-cursed-child-denver-review/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2024 (0x). 2026 matches production: harry-potter-and-the-cursed-child-one-part-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
       "file": "equality365--eric-andrews-katz.json",
       "score": 75,
       "publishDate": "2026-08-28",
@@ -18773,6 +18862,90 @@
     },
     {
       "showId": "harry-potter-tour-2024",
+      "file": "gephardt-daily--nancy-van-valkenburg.json",
+      "score": 71,
+      "publishDate": "2026-09-25",
+      "url": "https://gephardtdaily.com/local/review-broadway-in-utahs-harry-potter-and-the-cursed-child-visually-magical/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2024 (0x). 2026 matches production: harry-potter-and-the-cursed-child-one-part-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
+      "file": "ladue-news--mark-bretz.json",
+      "score": 88,
+      "publishDate": "2026-04-03",
+      "url": "https://www.laduenews.com/arts-and-culture/harry-potter-cursed-child-stl-st-louis-fox-theatre-performance-broadway-stuff-to-do-april/article_19e6df8a-82d1-4e8e-9986-909301c3eb22.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (4x) more than 2024 (1x). 2026 matches production: harry-potter-and-the-cursed-child-one-part-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
+      "file": "latin-life-denver--joe-contreras.json",
+      "score": 82,
+      "publishDate": "2026-06-05",
+      "url": "https://latinlifedenver.com/community/harry-potter-and-the-cursed-child-a-back-to-the-future-experience-lld-review/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2024 (0x). 2026 matches production: harry-potter-and-the-cursed-child-one-part-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
+      "file": "onstage-colorado--alex-miller.json",
+      "score": 76,
+      "publishDate": "2026-06-05",
+      "url": "https://onstagecolorado.com/harry-potter-and-the-cursed-child-flies-into-the-buell-in-a-high-speed-extravaganza/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (5x) more than 2024 (0x). 2026 matches production: harry-potter-and-the-cursed-child-one-part-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
+      "file": "phenomnaltwincities--stephanie-kwong.json",
+      "score": 78,
+      "publishDate": "2026-05-01",
+      "url": "https://www.phenomnaltwincities.com/review-harry-potter-and-the-cursed-child/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (5x) more than 2024 (0x). 2026 matches production: harry-potter-and-the-cursed-child-one-part-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
+      "file": "playoffthepage--mary-aalgaard.json",
+      "score": 88,
+      "publishDate": "2026-04-30",
+      "url": "https://playoffthepage.com/2026/04/review-of-harry-potter-and-the-cursed-child-on-tour-at-the-orpheum-in-mpls-mn/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2024 (0x). 2026 matches production: harry-potter-and-the-cursed-child-one-part-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
       "file": "rachelsreviewstheatre--unknown.json",
       "score": 66,
       "publishDate": "2026-09-25",
@@ -18781,7 +18954,35 @@
         {
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions year 2016 (2x) more than 2024 (0x). 2016 matches production: harry-potter-and-the-cursed-child-both-parts-west-end-2021"
+          "detail": "Mentions year 2026 (2x) more than 2024 (0x). 2026 matches production: harry-potter-and-the-cursed-child-one-part-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
+      "file": "seattles-child--candice-mcmillan.json",
+      "score": 86,
+      "publishDate": "2026-08-27",
+      "url": "https://www.seattleschild.com/harry-potter-cursed-child-seattle-review/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2024 (0x). 2026 matches production: harry-potter-and-the-cursed-child-one-part-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
+      "file": "utahconcertreview--ucr.json",
+      "score": 91,
+      "publishDate": "2026-09-28",
+      "url": "https://utahconcertreview.com/harry-potter-and-the-cursed-child/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2024 (0x). 2026 matches production: harry-potter-and-the-cursed-child-one-part-west-end-2026"
         }
       ]
     },
@@ -69305,7 +69506,7 @@
       "showId": "groundhog-day-2017",
       "file": "li-herald--elyse-trevers.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "April 30, 2017",
       "url": "https://liherald.com/stories/groundhog-day,91101",
       "findings": [
         {
@@ -70654,20 +70855,6 @@
       ]
     },
     {
-      "showId": "harry-potter-tour-2024",
-      "file": "broadwayworld--albert-gutierrez.json",
-      "score": 73,
-      "publishDate": "2026-01-29",
-      "url": "https://www.broadwayworld.com/orlando/article/Review-HARRY-POTTER-AND-THE-CURSED-CHILD-at-Dr-Phillips-Center-For-The-Performing-Arts-20260129",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "hay-fever-west-end-2026",
       "file": "adventuresintheatreland--julie-fisher-sheher.json",
       "score": 78,
@@ -71280,22 +71467,8 @@
     },
     {
       "showId": "here-lies-love-2023",
-      "file": "theatermania--adam-feldman.json",
-      "score": 83,
-      "publishDate": "July 20, 2023",
-      "url": "https://www.theatermania.com/news/review-david-byrne-and-fatboy-slims-here-lies-love-is-the-party-to-end-all-parties_1708759/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "here-lies-love-2023",
       "file": "theatermania--david-gordon.json",
-      "score": 87,
+      "score": 83,
       "publishDate": "July 20, 2023",
       "url": "https://www.theatermania.com/news/review-david-byrne-and-fatboy-slims-here-lies-love-is-the-party-to-end-all-parties_1708759/",
       "findings": [
@@ -81297,6 +81470,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"mitzi newhouse\""
+        }
+      ]
+    },
+    {
+      "showId": "oslo-2017",
+      "file": "timeout--adam-feldman.json",
+      "publishDate": "July 11, 2016",
+      "url": "http://www.timeout.com/newyork/theater/oslo",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 255d before show (July 11, 2016 vs 2017-03-23)"
         }
       ]
     },
@@ -92542,6 +92728,7 @@
     {
       "showId": "the-master-builder-off-west-end-2026",
       "file": "fringereview--unknown.json",
+      "score": 87,
       "publishDate": "2026-10-23",
       "url": "https://fringereview.co.uk/review/fringereview-uk/2026/the-master-builder/",
       "findings": [
@@ -97075,24 +97262,10 @@
     },
     {
       "showId": "torch-song-2018",
-      "file": "wsj--matt-windman.json",
+      "file": "wsj--terry-teachout.json",
       "score": 62,
       "publishDate": "November 1st, 2018",
       "url": "https://www.wsj.com/articles/torch-song-review-less-radical-still-funny-1541118600",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
-        }
-      ]
-    },
-    {
-      "showId": "torch-song-2018",
-      "file": "wsj--terry-teachout.json",
-      "score": 50,
-      "publishDate": "2018-11-02",
-      "url": "https://www.wsj.com/articles/torch-song-review-less-radical-still-funny-1541118600?gaa_at=eafs&gaa_n=AWEtsqeyjRY6nUxpgbcxXhSwsWNvc8QE1zi9Y9Jyfk7SZklVykHM_KUac4LZ&gaa_ts=698b9533&gaa_sig=qNgbhLffcKxCAegOUNkKQ67gtVzx7PWfSi126SjjGxvsReUNKywAZslJ4x7TV4_VpH0ofz9CBEm3qpUPiklgVw%3D%3D",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
