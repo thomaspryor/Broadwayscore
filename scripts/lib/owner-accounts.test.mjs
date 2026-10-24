@@ -76,6 +76,7 @@ test('owner alias domains are classified as owner URLs (theaterscorecard leak 20
     'https://offbroadwayscorecard.com/show/primary-trust',
     'https://westendscorecard.com/west-end',
     'https://broadwaymetascore.com/',
+    'https://www.broadwaymoneyscorecard.com/',
     'https://www.scorekeep.co/',
     'https://eveandadammusical.com/',
     'https://broadwayscore.vercel.app/',

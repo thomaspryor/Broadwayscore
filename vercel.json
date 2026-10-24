@@ -1467,6 +1467,28 @@
       "has": [
         {
           "type": "host",
+          "value": "broadwaymoneyscorecard.com"
+        }
+      ],
+      "destination": "https://broadwayscorecard.com/biz",
+      "permanent": false
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.broadwaymoneyscorecard.com"
+        }
+      ],
+      "destination": "https://broadwayscorecard.com/biz",
+      "permanent": false
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
           "value": "theaterscorecard.com"
         }
       ],

@@ -66,7 +66,7 @@ const OWNER_URL_PATTERNS = [
   // Google indexes them as separate sites and they surface as "mentions"
   // (theaterscorecard.com leak, 2026-07-27). Source of truth: Vercel account
   // domains (GET /v5/domains) — update here when attaching a new domain.
-  /^https?:\/\/(?:[a-z0-9-]+\.)*(?:broadwayscorecard|theaterscorecard|showscorecard|operascorecard|offbroadwayscorecard|westendscorecard|broadwaymetascore|eveandadammusical)\.com(?:[/?#]|$)/i,
+  /^https?:\/\/(?:[a-z0-9-]+\.)*(?:broadwayscorecard|theaterscorecard|showscorecard|operascorecard|offbroadwayscorecard|westendscorecard|broadwaymetascore|broadwaymoneyscorecard|eveandadammusical)\.com(?:[/?#]|$)/i,
   /^https?:\/\/(?:[a-z0-9-]+\.)*scorekeep\.co(?:[/?#]|$)/i,
   // Owner Vercel deployment URLs. vercel.app is a PUBLIC shared namespace —
   // anchor to the owner's exact project/team slugs so a third party's

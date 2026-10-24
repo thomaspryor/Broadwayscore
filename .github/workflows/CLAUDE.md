@@ -746,3 +746,9 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Does:** BRO-5963. Picks the newest COMPLETE weekly git-bundle set and daily Supabase set in R2 (`scripts/lib/backup-drill.js` `pickLatestSet`; fails if the newest complete set is older than 8d weekly / 2d daily), checks each sha256 line, decrypts, bare-clones each of the four bundles one at a time (runner disk ~14GB) and checks `refs/heads/main` resolves and `git fsck --connectivity-only`, then recounts the Supabase export against `BACKUP_MANIFEST.json` and the uploaded copy of it (`recountExport`, shared with `supabase-backup-verify.js`). Prints names and counts only.
 - **Retention:** no workflow deletes from R2. The upload key has no bucket-admin rights on purpose; expiry and lock rules are set on the bucket by the owner.
 - **Failure:** `severity: 'warning'`; the alarm is staleness in `check-cron-health.yml`.
+
+## `vercel-project-domain.yml`
+- **Runs:** manually only (`action=status` read-only, `action=add` attaches).
+- **Does:** checks the domain is registered to the Vercel team, attaches it to the production project (409 = already attached, treated as success), then fails unless `GET /v6/domains/<d>/config` says `misconfigured: false` (DNS actually serving). Where the domain points is set in `vercel.json` host redirects, not here. Response bodies are never printed (public logs; the `/v5/domains` body carries account details). When attaching a new apex, also add it to the owner-domain regex in `scripts/lib/owner-accounts.js`.
+- **Requires:** `VERCEL_TOKEN`.
+- **Origin:** BRO-6145 (2026-10-24): `broadwaymoneyscorecard.com` + `www.` for the Money Scorecard launch; both redirect (302 until launch) to `https://broadwayscorecard.com/biz`.
