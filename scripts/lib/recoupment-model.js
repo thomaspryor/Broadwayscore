@@ -1147,7 +1147,16 @@ function estimateWeeklyNut(show, commercial, opts = {}) {
   const defaults = {
     musicalSpectacle: 1100000,
     musical: 750000,
-    playStar: 600000,  // Reduced from 700K — stars add variable cost, not fixed
+    // Reduced from 700K, then 600K (BRO-6178): stars add variable cost, not
+    // fixed. Only star plays with no cost on file and no reported recoupment
+    // (those use the implied cost) move. Backtest at 550K vs 600K: reported-
+    // truth plays MAE 4.2 -> 3.4 (Sea Wall / A Life, The Piano Lesson; no row
+    // worse); timing plays MAE 13.6 -> 11.4, inside 18 -> 20 of 34; no group
+    // worse, 0 new false recouped. Lower fits those rows better (450K: timing
+    // 9.1) but the backtest has no loss-side signal, and at 525K and below
+    // unsourced star plays (A Doll's House 2023, Good Night, Oscar) cross 100%
+    // and read "Likely: Recouped".
+    playStar: 550000,
     play: 425000,      // Reduced from 475K — typical straight play
     special: 300000,
   };
