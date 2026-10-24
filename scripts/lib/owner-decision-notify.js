@@ -23,49 +23,17 @@
 const crypto = require('crypto');
 const { AWAITING_OWNER_LABEL } = require('./owner-approval-channel.js');
 const { isEmptyDecisionContent } = require('./needs-you-snapshot.js');
-const { parseDecisionDescription } = require('./decision-card-parse.js');
+const { collapseSelfLinks, findDecisionQuestion, parseDecisionDescription } = require('./decision-card-parse.js');
 
 const MAX_LISTED = 35; // the first run carries the 31-card backlog; one email, not three days of them
 const MAX_QUESTION_CHARS = 220;
-// Plain, bold, bulleted, quoted, numbered or heading lines; "DECISION NEEDED
-// (owner):" too.
-const MARKER_RE = /^\s*(?:#{1,6}\s+|[-*>]\s+|\d+[.)]\s+)?\**DECISION NEEDED\**(?:\s*\([^)]*\))?\s*:\s*\**\s*(\S.*)$/i;
-// Stub or leftover lines a session wrote instead of deleting the block.
-const SETTLED_RE = /^\s*(?:answered|resolved|decided|done|closed)\b/i;
-
-function stripCode(text) {
-  const out = [];
-  let inFence = false;
-  for (const line of String(text || '').split('\n')) {
-    if (/^\s*(```|~~~)/.test(line)) { inFence = !inFence; continue; }
-    if (inFence) continue;
-    out.push(line.replace(/`[^`]*`/g, ''));
-  }
-  return out;
-}
-
-function isPlaceholder(q) {
-  return /^</.test(q) || /<(?:what|why|name|upside|downside|x|y)\b/i.test(q) || /^\.{3}$/.test(q);
-}
-
-// Linear stores a bare URL as [url](<url>) (an address as [a](<mailto:a>)).
-// Collapsed back so the 220-char cap never clips a signed owner link's second
-// copy mid-signature (BRO-5235), and the dedupe hash reads the same before and
-// after Linear's rewrite.
-function collapseSelfLinks(text) {
-  return String(text || '').replace(/\[([^\]\s]{1,2048})\]\(<?(?:mailto:)?\1>?\)/g, '$1');
-}
-
 // First real "DECISION NEEDED: <question>" line in a description, or null.
+// The line-finding rules live in decision-card-parse.js (shared with the digest card).
 function extractDecisionQuestion(description) {
-  for (const line of stripCode(description)) {
-    const m = MARKER_RE.exec(line);
-    if (!m) continue;
-    const q = collapseSelfLinks(m[1]).replace(/\*+$/, '').trim();
-    if (!q || isPlaceholder(q) || isEmptyDecisionContent(q) || SETTLED_RE.test(q)) continue;
-    return q.length > MAX_QUESTION_CHARS ? `${q.slice(0, MAX_QUESTION_CHARS - 1)}…` : q;
-  }
-  return null;
+  const found = findDecisionQuestion(description);
+  if (!found) return null;
+  const q = found.question;
+  return q.length > MAX_QUESTION_CHARS ? `${q.slice(0, MAX_QUESTION_CHARS - 1)}…` : q;
 }
 
 function labelNames(issue) {

@@ -106,3 +106,51 @@ test('a context URL in the question is not the button target; a signed owner lin
   assert.match(html, />Tap to do this \u2192<\/a>/);
   assert.match(html, /see the full card/);
 });
+
+// ── ship-check findings (BRO-6131) ───────────────────────────────────────────
+const { extractDecisionQuestion } = require('./owner-decision-notify.js');
+
+test('the card headline is the same question the decision email uses (placeholder, settled, numbered, code)', () => {
+  const cases = {
+    template: '- DECISION NEEDED: <what, one sentence>\nDECISION NEEDED: Ship the real thing?\nOption A - go: x / y',
+    settled: 'DECISION NEEDED: answered: we chose A\nDECISION NEEDED: Is the second one open?',
+    numbered: '1. DECISION NEEDED: Pick X?\nOption A - x: a / b',
+    fenced: '```\nDECISION NEEDED: inside a code block\n```\nDECISION NEEDED: Outside the block?',
+  };
+  const expected = { template: 'Ship the real thing?', settled: 'Is the second one open?', numbered: 'Pick X?', fenced: 'Outside the block?' };
+  for (const [name, text] of Object.entries(cases)) {
+    assert.equal(extractDecisionQuestion(text), expected[name], `${name}: extractor`);
+    assert.equal(parseDecisionDescription(text).question, expected[name], `${name}: card`);
+  }
+});
+
+test('hostile text stays cheap: option and link regexes do not blow up', () => {
+  const t0 = Date.now();
+  parseDecisionDescription(`DECISION NEEDED: q?\nOption A${' '.repeat(50000)}x`);
+  cleanOwnerText('['.repeat(50000));
+  cleanOwnerText(`[${'a'.repeat(50000)}](`);
+  assert.ok(Date.now() - t0 < 500, `took ${Date.now() - t0}ms`);
+});
+
+test('"A staged rollout" is the article, not option A; real picks still resolve', () => {
+  const opts = [{ key: 'A' }, { key: 'B' }];
+  assert.equal(recommendedKey('A staged rollout of B, because it is safer.', opts), null);
+  assert.equal(recommendedKey('A, staged, because X', opts), 'A');
+  assert.equal(recommendedKey('A now, B later.', opts), 'A');
+  assert.equal(recommendedKey('Option B because Y', opts), 'B');
+  assert.equal(recommendedKey('B', opts), 'B');
+  assert.equal(recommendedKey('C because Z', opts), null);
+});
+
+test('renderActionCard escapes hostile text and drops unsafe urls (no button without a safe link)', () => {
+  const evil = '<img src=x onerror=alert(1)>';
+  const html = renderNamedDigestBlock('Decisions', {
+    items: [{
+      title: evil, url: 'javascript:alert(1)', cardUrl: 'data:text/html,x', identifier: evil, ageDays: 3,
+      decision: { question: evil, why: evil, options: [{ key: 'A', name: evil, upside: evil, downside: evil }], recommendation: `A ${evil}`, defaultLine: evil },
+    }],
+  }, { actionCards: true });
+  assert.doesNotMatch(html, /<img|javascript:|data:text/);
+  assert.match(html, /&lt;img src=x onerror=alert\(1\)&gt;/);
+  assert.doesNotMatch(html, /background:#1d4ed8/, 'no safe URL, no button');
+});

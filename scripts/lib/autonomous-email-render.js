@@ -898,7 +898,7 @@ function renderNamedDigestBlock(label, snapshot, { actionCards = false, showBann
   // in the owner's inbox (ship-check follow-up finding, card #497).
   const safeUrl = (u) => (typeof u === 'string' && /^https?:\/\//i.test(u) ? u : null);
   const more = snapshot.moreCount > 0
-    ? `<div style="font-size:12px;color:#666;margin-top:4px;">+${snapshot.moreCount} more, in tomorrow's email</div>` : '';
+    ? `<div style="font-size:12px;color:#666;margin-top:4px;">+${snapshot.moreCount} more waiting</div>` : '';
   const asOf = snapshot.generatedAt && !Number.isNaN(new Date(snapshot.generatedAt).getTime())
     ? `<div style="font-size:11px;color:#999;margin-top:6px;">as of ${esc(String(snapshot.generatedAt).slice(0, 16).replace('T', ' '))} UTC</div>` : '';
   if (actionCards) {
@@ -927,7 +927,7 @@ function renderNamedDigestBlock(label, snapshot, { actionCards = false, showBann
 // from decision-card-parse.js) shows the question, why it is the owner's call,
 // each option with its upside/downside, the recommended pick and what happens
 // if nothing is answered. Any other row (approval, review queue, cmux tab)
-// shows its title and one line of context. Every card ends in a button.
+// shows its title and one line of context. A card with a URL ends in a button.
 function renderActionCard(it, safeUrl) {
   const { cleanOwnerText, recommendedKey } = require('./decision-card-parse.js');
   const href = safeUrl(it.url);
@@ -939,7 +939,7 @@ function renderActionCard(it, safeUrl) {
   const split = !it.identifier && !d ? /^(BRO-\d+):\s*(.+)$/.exec(String(it.title || '')) : null;
   const identifier = it.identifier || (split && split[1]) || '';
   const ref = identifier ? `<span style="font-size:11px;color:#92400e;font-weight:700;">${esc(identifier)}</span>` : '';
-  const age = it.ageDays >= 1 ? `<span style="font-size:11px;color:${it.stale ? '#b91c1c' : '#92400e'};"> \u00b7 waiting ${it.ageDays}d</span>` : '';
+  const age = it.ageDays >= 1 ? `<span style="font-size:11px;color:${it.stale ? '#b91c1c' : '#92400e'};"> \u00b7 waiting ${esc(it.ageDays)}d</span>` : '';
   // A long question is a paragraph: the card's short title becomes the headline
   // and the full question reads as normal text under it.
   const question = d ? d.question : '';
