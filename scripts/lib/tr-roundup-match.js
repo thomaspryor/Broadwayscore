@@ -192,8 +192,12 @@ function matchRoundupToShow(roundup, shows) {
   // House" over the one-word "Good"); kind breaks ties.
   const RANK = { phrase: 3, words: 2, subset: 1 };
   const sigWords = (c) => words(c.show.title).filter((w) => !STOP.has(w)).length;
-  const maxSig = Math.max(...cands.map(sigWords));
-  const longest = cands.filter((c) => sigWords(c) === maxSig);
+  // A 'subset' match (headline words all inside a longer title) never outranks
+  // a title the headline names in full.
+  const full = cands.filter((c) => c.kind !== 'subset');
+  const base = full.length ? full : cands;
+  const maxSig = Math.max(...base.map(sigWords));
+  const longest = base.filter((c) => sigWords(c) === maxSig);
   const bestRank = Math.max(...longest.map((c) => RANK[c.kind]));
   const ranked = longest.filter((c) => RANK[c.kind] === bestRank);
   const maxWords = Math.max(...ranked.map((c) => c.titleWords));
@@ -201,7 +205,10 @@ function matchRoundupToShow(roundup, shows) {
   const ids = pool.map((c) => c.show.id);
 
   const slugWordsList = slugWords(roundup.slug);
-  const scored = pool.map((c) => {
+  // Extra windows (in-run, prior-run) are a fallback: they only apply when no
+  // same-title show opens inside the round-up's own window, otherwise a long
+  // run would make every same-title round-up ambiguous.
+  const scoreAll = (useExtras) => pool.map((c) => {
     const reasons = [`title:${c.kind}`];
     const vt = showVenueTokens(c.show);
     // A venue read from the post body beats the slug (the slug can be wrong).
@@ -222,7 +229,7 @@ function matchRoundupToShow(roundup, shows) {
       dateOk = days >= -WINDOW_BEFORE_DAYS && days <= WINDOW_AFTER_DAYS;
       tight = days >= -WINDOW_BEFORE_DAYS && days <= TIGHT_AFTER_DAYS;
       reasons.push(`opening:${days >= 0 ? '+' : ''}${days}d`);
-      if (!dateOk) {
+      if (!dateOk && useExtras) {
         const w = extraWindows(c.show).find((x) => postMs >= x.start - WINDOW_BEFORE_DAYS * DAY_MS && postMs <= x.end + WINDOW_AFTER_DAYS * DAY_MS);
         if (w) {
           dateOk = true;
@@ -248,6 +255,11 @@ function matchRoundupToShow(roundup, shows) {
     return { ...c, reasons, venueHit, venueKnownElsewhere, days, dateOk, tight, undated: om == null };
   });
 
+  let scored = scoreAll(false);
+  if (!scored.some((x) => x.dateOk)) {
+    const withExtras = scoreAll(true);
+    if (withExtras.some((x) => x.dateOk)) scored = withExtras;
+  }
   const dated = scored.filter((s) => s.dateOk);
   let chosen = null;
   let confidence = null;

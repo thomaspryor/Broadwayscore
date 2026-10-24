@@ -334,3 +334,21 @@ test('the committed overrides file only holds well-formed entries', () => {
     assert.ok(typeof (o.evidence || o.outOfScope) === 'string', `${slug} needs evidence`);
   }
 });
+
+test('regression: a long run does not make a same-title round-up ambiguous (extra windows are a fallback)', () => {
+  const shows = [
+    { ...show('arcadia-a', 'Arcadia', 'west-end', '2026-03-10', 'The Old Vic'), closingDate: '2026-05-30' },
+    { ...show('arcadia-b', 'Arcadia', 'west-end', '2025-01-10', 'Duke of York’s Theatre'), closingDate: '2026-04-01' },
+  ];
+  const r = matchRoundupToShow(rd('arcadia-old-vic-reviews', 'Arcadia', '2026-03-13T10:00:00', 'The Old Vic'), shows);
+  assert.equal(r.show && r.show.id, 'arcadia-a');
+});
+
+test('regression: a subset-only match on a longer title does not outrank a full title match', () => {
+  const shows = [
+    show('jcs-a', 'Jesus Christ Superstar', 'west-end', '2026-06-01', 'Palladium'),
+    show('jcs-b', 'Jesus Christ Superstar Theatre Royal Drury Lane', 'west-end', '2026-06-02', 'Theatre Royal Drury Lane'),
+  ];
+  const r = matchRoundupToShow(rd('jesus-christ-superstar-palladium-reviews', 'Jesus Christ Superstar', '2026-06-03T10:00:00', 'Palladium'), shows);
+  assert.equal(r.show && r.show.id, 'jcs-a');
+});
