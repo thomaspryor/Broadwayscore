@@ -165,7 +165,7 @@ const PATTERN_ALLOWLIST = {
   'STRONG_CHROME_DUMP_PATTERNS::8': 130, // /legitimate\s+interest/i — raw 101
   // Newsletter: real newsletter prompts in Guardian, artsdesk, TimeOut scrapes —
   // leading/trailing-junk mitigation absorbs them in isGarbageContent
-  'NEWSLETTER_PATTERNS::0': 200,  // /thanks?\s+for\s+subscribing/ — raw 154, 2026-08-15 recal
+  'NEWSLETTER_PATTERNS::0': 279,
   'NEWSLETTER_PATTERNS::1': 150,  // /enter\s+your\s+email/
   'PROMO_BOOKING_COPY_PATTERNS::12': 12, // /(select|choose) a date/ — raw 9, 2026-10-22, all booking pages (BRO-5906, see PATTERN_CALIBRATION)
   'NEWSLETTER_PATTERNS::3': 10,   // /subscribe\s+to\s+(our\s+)?newsletter/i — raw 7, 2026-08-26 (BRO-33, see PATTERN_CALIBRATION)
@@ -203,10 +203,10 @@ const PATTERN_ALLOWLIST = {
   // "horror movie genre comparison", "haunted house set", "spirit world in Hamlet").
   // detectHorrorFilmContent's 3+-theater-keyword guard absorbs 100% — zero pass
   // through to rejection. Allowlist to current full-corpus baseline + 30%.
-  'HORROR_FILM_PATTERNS::0': 150, // /insidious/ — raw 101
-  'HORROR_FILM_PATTERNS::1': 205, // /horror\s*(film|movie|sequel)/ — raw 158, 2026-08-31 recal (see PATTERN_CALIBRATION)
-  'HORROR_FILM_PATTERNS::3': 100, // /haunted\s+(family|house|lambert)/ — raw 76, 2026-08-26 recal (see PATTERN_CALIBRATION)
-  'HORROR_FILM_PATTERNS::4': 20,  // /spirit\s+world/ — raw 9
+  'HORROR_FILM_PATTERNS::0': 233,
+  'HORROR_FILM_PATTERNS::1': 283,
+  'HORROR_FILM_PATTERNS::3': 153,
+  'HORROR_FILM_PATTERNS::4': 37,
   'HORROR_FILM_PATTERNS::5': 15,  // /scary\s+movies?/ — raw 5
   'HORROR_FILM_PATTERNS::6': 110, // /horror\s+film/ — raw 82, 2026-08-31 recal (duplicate of ::1, see PATTERN_CALIBRATION)
 };
@@ -408,36 +408,38 @@ const PATTERN_CALIBRATION = {
         + 'not a scraper regression. Sized to raw + ~35%.',
   },
   'HORROR_FILM_PATTERNS::3': {
-    commit: 'pending',
-    date: '2026-08-26',
-    rawHits: 76,
-    headroom: 1.32,
-    note: 'BRO-33 triage: /haunted (family|house|lambert)/i corpus growth from '
-        + 'raw 47 (prior baseline) to 76 — theater-metaphor bleed ("haunted '
-        + 'house version of the Seventies", horror-adjacent staging '
-        + 'descriptions in Appropriate, Abigail\'s Party reviews), diffuse '
-        + "across outlets, not concentrated in one active scraper. detectHorror"
-        + "FilmContent's 3+-theater-keyword guard absorbs these at runtime — "
-        + 'zero pass through to rejection. Sized to raw + 30%.',
+    "commit": "pending",
+    "date": "2026-10-24",
+    "rawHits": 117,
+    "headroom": 1.3076923076923077,
+    "guard": "detectHorrorFilmContent",
+    "checked": 117,
+    "absorbed": 117,
+    "sampleOutlets": [
+      "hauntedattractionnetwork",
+      "Off Off Online",
+      "Theatre Reviews Limited",
+      "Theatrely",
+      "Liamodell"
+    ],
+    "note": "BRO-2509: full corpus scan (34566 eligible reviews); detectHorrorFilmContent directly absorbed 117/117 matched files. Sample outlets: hauntedattractionnetwork, Off Off Online, Theatre Reviews Limited, Theatrely, Liamodell."
   },
   'HORROR_FILM_PATTERNS::1': {
-    commit: 'pending',
-    date: '2026-08-31',
-    rawHits: 158,
-    headroom: 1.3,
-    note: 'BRO-2662 triage (surfaced while confirming --full exits 0 after the '
-        + 'circus title-exclude fix): /horror\\s*(film|movie|sequel)/i corpus '
-        + 'growth from raw 107 (prior baseline) to 158 — theater-metaphor '
-        + 'bleed ("worthy of a Blumhouse horror film", "reminiscent of a '
-        + 'horror movie", genre-comparison prose in Appropriate, American '
-        + 'Son, Variety/LSA/TWiNY reviews), diffuse across outlets, not a '
-        + 'scraper regression. Verified directly: scanning the full corpus '
-        + "with detectHorrorFilmContent() (not the bare regex) finds only 2 "
-        + 'texts where the 3+-theater-keyword guard fails to absorb the '
-        + 'match (My Neighbour Totoro / Paranormal Activity West End '
-        + "reviews), and both already carry contentTier: 'invalid' — outside "
-        + "this audit's own tier filter and already excluded by other gates, "
-        + 'not caused by this pattern. Sized to raw + 30%.',
+    "commit": "pending",
+    "date": "2026-10-24",
+    "rawHits": 217,
+    "headroom": 1.304147465437788,
+    "guard": "detectHorrorFilmContent",
+    "checked": 217,
+    "absorbed": 217,
+    "sampleOutlets": [
+      "Variety",
+      "New York Theater",
+      "The New York Times",
+      "Off Off Online",
+      "voiceoverherald"
+    ],
+    "note": "BRO-2509: full corpus scan (34566 eligible reviews); detectHorrorFilmContent directly absorbed 217/217 matched files. Sample outlets: Variety, New York Theater, The New York Times, Off Off Online, voiceoverherald."
   },
   'HORROR_FILM_PATTERNS::6': {
     commit: 'pending',
@@ -449,6 +451,57 @@ const PATTERN_CALIBRATION = {
         + '/horror\\s*(film|movie|sequel)/i). Raw 43 (prior baseline) to 82. '
         + 'See ::1 above for the verification that detectHorrorFilmContent\'s '
         + 'guard absorbs these. Sized to raw + 30%.',
+  },
+  'NEWSLETTER_PATTERNS::0': {
+    "commit": "pending",
+    "date": "2026-10-24",
+    "rawHits": 214,
+    "headroom": 1.3037383177570094,
+    "guard": "isGarbageContent",
+    "checked": 214,
+    "absorbed": 214,
+    "sampleOutlets": [
+      "Time Out London",
+      "Time Out New York",
+      "Time Out NY",
+      "Time Out",
+      "TimeOut NY"
+    ],
+    "note": "BRO-2509: full corpus scan (34566 eligible reviews); isGarbageContent directly absorbed 214/214 matched files. Sample outlets: Time Out London, Time Out New York, Time Out NY, Time Out, TimeOut NY."
+  },
+  'HORROR_FILM_PATTERNS::0': {
+    "commit": "pending",
+    "date": "2026-10-24",
+    "rawHits": 179,
+    "headroom": 1.3016759776536313,
+    "guard": "detectHorrorFilmContent",
+    "checked": 179,
+    "absorbed": 179,
+    "sampleOutlets": [
+      "The Daily Beast",
+      "London Box Office",
+      "Evening Standard",
+      "Broadway Blog",
+      "Exeunt Magazine"
+    ],
+    "note": "BRO-2509: full corpus scan (34566 eligible reviews); detectHorrorFilmContent directly absorbed 179/179 matched files. Sample outlets: The Daily Beast, London Box Office, Evening Standard, Broadway Blog, Exeunt Magazine."
+  },
+  'HORROR_FILM_PATTERNS::4': {
+    "commit": "pending",
+    "date": "2026-10-24",
+    "rawHits": 28,
+    "headroom": 1.3214285714285714,
+    "guard": "detectHorrorFilmContent",
+    "checked": 28,
+    "absorbed": 28,
+    "sampleOutlets": [
+      "The Hollywood Reporter",
+      "The Daily Beast",
+      "Culture Sauce",
+      "Lighting & Sound America",
+      "Fort Worth Star Telgram"
+    ],
+    "note": "BRO-2509: full corpus scan (34566 eligible reviews); detectHorrorFilmContent directly absorbed 28/28 matched files. Sample outlets: The Hollywood Reporter, The Daily Beast, Culture Sauce, Lighting & Sound America, Fort Worth Star Telgram."
   },
 };
 
