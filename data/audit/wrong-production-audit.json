@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-24T11:01:47.498Z",
+  "timestamp": "2026-10-24T12:04:42.201Z",
   "stats": {
-    "totalReviews": 60015,
-    "alreadyFlagged": 21143,
+    "totalReviews": 60182,
+    "alreadyFlagged": 21148,
     "dateGuardCatches": 215,
-    "directorMismatch": 2134,
-    "tvFilmSignals": 1701,
-    "londonSignals": 2871,
+    "directorMismatch": 2146,
+    "tvFilmSignals": 1708,
+    "londonSignals": 2897,
     "offBroadwaySignals": 536,
     "yearMismatch": 180,
-    "noPublishDate": 5530
+    "noPublishDate": 5524
   },
   "findings": [
     {
@@ -3617,6 +3617,19 @@
     },
     {
       "showId": "annie-west-end-2017",
+      "file": "standard--henry-hitchings.json",
+      "publishDate": "2017-06-06",
+      "url": "https://www.standard.co.uk/goingout/theatre/annie-theatre-review-young-stars-have-an-infectious-vitality-a3557711.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-west-end-2017",
       "file": "sunday-times--david-jays.json",
       "score": 72,
       "publishDate": "2017-06-11",
@@ -3654,6 +3667,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "annie-west-end-2017",
+      "file": "thestage--mark-shenton.json",
+      "publishDate": "2017-06-08",
+      "url": "https://www.thestage.co.uk/reviews/2017/annie-review-at-piccadilly-theatre-london/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -3907,6 +3933,32 @@
     },
     {
       "showId": "art-west-end-2016",
+      "file": "standard--fiona-mountford.json",
+      "publishDate": "2016-12-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from art-1998"
+        }
+      ]
+    },
+    {
+      "showId": "art-west-end-2016",
+      "file": "sunday-times--christopher-hart.json",
+      "publishDate": "2017-01-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from art-1998"
+        }
+      ]
+    },
+    {
+      "showId": "art-west-end-2016",
       "file": "the-spectator-uk--lloyd-evans.json",
       "score": 91,
       "publishDate": "2017-01-14",
@@ -3949,6 +4001,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "art-west-end-2016",
+      "file": "times-uk--ann-treneman.json",
+      "publishDate": "2016-12-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from art-1998"
         }
       ]
     },
@@ -4448,6 +4513,45 @@
     },
     {
       "showId": "bat-out-of-hell-west-end-2017",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2017-06-20",
+      "url": "http://www.telegraph.co.uk/theatre/what-to-see/care-banishing-blast-wild-child-zaniness-bat-musical-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay scheib\" from bat-out-of-hell-west-end-2018"
+        }
+      ]
+    },
+    {
+      "showId": "bat-out-of-hell-west-end-2017",
+      "file": "the-jewish-chronicle--john-nathan.json",
+      "publishDate": "2017-06-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay scheib\" from bat-out-of-hell-west-end-2018"
+        }
+      ]
+    },
+    {
+      "showId": "bat-out-of-hell-west-end-2017",
+      "file": "thestage--natasha-tripney.json",
+      "publishDate": "2017-06-29",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay scheib\" from bat-out-of-hell-west-end-2018"
+        }
+      ]
+    },
+    {
+      "showId": "bat-out-of-hell-west-end-2017",
       "file": "thestage--tim-bano.json",
       "score": 78,
       "publishDate": "2017-06-21",
@@ -4499,6 +4603,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jay scheib\" from bat-out-of-hell-west-end-2018"
+        }
+      ]
+    },
+    {
+      "showId": "bat-out-of-hell-west-end-2018",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2018-04-20",
+      "url": "https://www.thetimes.co.uk/article/theatre-review-bat-out-of-hell-at-the-dominion-w1-stshp6fwr",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -23908,6 +24025,32 @@
       ]
     },
     {
+      "showId": "julie-west-end-2018",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2018-06-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "julie-west-end-2018",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2018-06-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "juno-and-the-paycock-west-end-2024",
       "file": "british-theatre--howard-loxton.json",
       "score": 78,
@@ -28125,6 +28268,19 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 56,
       "publishDate": "2018-05-04",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "mood-music-west-end-2018",
+      "file": "standard--henry-hitchings.json",
+      "publishDate": "2018-05-03",
       "url": null,
       "findings": [
         {
@@ -35866,6 +36022,19 @@
       "score": 51,
       "publishDate": "2018-03-28",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-ruthless-musical",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joel paley\" from ruthless-the-musical-off-broadway-2015"
+        }
+      ]
+    },
+    {
+      "showId": "ruthless-the-musical-west-end-2018",
+      "file": "thestage--tim-bano.json",
+      "publishDate": "2018-04-05",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -45084,6 +45253,19 @@
       ]
     },
     {
+      "showId": "the-jungle-west-end-2018",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2018-07-06",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "the-king-and-i-2015",
       "file": "nytimes--ben-brantley.json",
       "score": 86,
@@ -45146,6 +45328,19 @@
     },
     {
       "showId": "the-kite-runner-west-end-2017",
+      "file": "standard--henry-hitchings.json",
+      "publishDate": "2017-01-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"giles croft\" from the-kite-runner-2022"
+        }
+      ]
+    },
+    {
+      "showId": "the-kite-runner-west-end-2017",
       "file": "sunday-express--michael-arditti.json",
       "score": 86,
       "publishDate": "2017-01-15",
@@ -45163,6 +45358,19 @@
       "file": "sunday-times--patricia-nicol.json",
       "score": 63,
       "publishDate": "2017-01-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"giles croft\" from the-kite-runner-2022"
+        }
+      ]
+    },
+    {
+      "showId": "the-kite-runner-west-end-2017",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2017-01-10",
       "url": null,
       "findings": [
         {
@@ -49948,6 +50156,19 @@
     },
     {
       "showId": "the-upstart-crow-west-end-2020",
+      "file": "thestage--tim-bano.json",
+      "publishDate": "2020-02-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-upstart-crow-west-end-2020",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 74,
       "publishDate": "2020-02-18",
@@ -50956,6 +51177,19 @@
     },
     {
       "showId": "travesties-west-end-2017",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2017-02-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from travesties-2018"
+        }
+      ]
+    },
+    {
+      "showId": "travesties-west-end-2017",
       "file": "fringereview--simon-jenner.json",
       "score": 90,
       "publishDate": "2017-04-28",
@@ -51043,6 +51277,19 @@
       "showId": "travesties-west-end-2017",
       "file": "standard--fiona-mountford.json",
       "score": 91,
+      "publishDate": "2017-02-16",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from travesties-2018"
+        }
+      ]
+    },
+    {
+      "showId": "travesties-west-end-2017",
+      "file": "timeout-london--dave-calhoun.json",
       "publishDate": "2017-02-16",
       "url": null,
       "findings": [
@@ -58195,6 +58442,20 @@
     },
     {
       "showId": "anatomy-of-a-suicide-west-end-2017",
+      "file": "standard--fiona-mountford.json",
+      "score": 82,
+      "publishDate": "2017-06-12",
+      "url": "https://www.standard.co.uk/culture/theatre/anatomy-of-a-suicide-theatre-review-unflinching-examination-of-illness-a3681316.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "anatomy-of-a-suicide-west-end-2017",
       "file": "telegraph--unknown.json",
       "score": null,
       "publishDate": "2017-06-12",
@@ -59716,6 +59977,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "bat-out-of-hell-west-end-2018",
+      "file": "timeout-london--caroline-mcginn.json",
+      "publishDate": "2018-04-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -66786,10 +67060,36 @@
     },
     {
       "showId": "exit-the-king-west-end-2018",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2018-07-25",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "exit-the-king-west-end-2018",
       "file": "thestage--natasha-tripney.json",
       "score": 62,
       "publishDate": "2018-07-30T12:54:09-04:00",
       "url": "https://www.thestage.co.uk/reviews/2018/exit-the-king-rhys-ifans-review-at-national-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "exit-the-king-west-end-2018",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2018-07-12",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -68117,6 +68417,19 @@
     },
     {
       "showId": "girl-from-the-north-country-west-end-2017",
+      "file": "tribune--aleks-sierz.json",
+      "publishDate": "2017-07-28",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2017",
       "file": "variety--unknown.json",
       "score": null,
       "publishDate": "2017-07-27",
@@ -68181,6 +68494,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "girls-and-boys-west-end-2018",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2018-02-16",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -71591,6 +71917,19 @@
       ]
     },
     {
+      "showId": "home-im-darling-west-end-2018",
+      "file": "thestage--tim-bano.json",
+      "publishDate": "2018-07-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "honeymoon-in-vegas-2015",
       "file": "timeout--david-cote.json",
       "score": 85,
@@ -74091,6 +74430,19 @@
       ]
     },
     {
+      "showId": "julie-west-end-2018",
+      "file": "thestage--tim-bano.json",
+      "publishDate": "2018-06-12",
+      "url": "https://www.thestage.co.uk/reviews/57069",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "junk-2017",
       "file": "chicagotribune--chris-jones.json",
       "score": 78,
@@ -74352,6 +74704,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "killer-joe-west-end-2018",
+      "file": "thestage--natasha-tripney.json",
+      "publishDate": "2018-06-21",
+      "url": "https://www.thestage.co.uk/reviews/killer-joe",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -78267,6 +78632,19 @@
     },
     {
       "showId": "mood-music-west-end-2018",
+      "file": "sunday-times--unknown.json",
+      "publishDate": "2018-05-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "mood-music-west-end-2018",
       "file": "telegraph--dominic-cavendish.json",
       "score": 73,
       "publishDate": "2018-05-03",
@@ -78486,6 +78864,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "murder-ballad-west-end-2016",
+      "file": "timeout-london--caroline-mcginn.json",
+      "publishDate": "2016-10-03",
+      "url": "http://www.timeout.com/london/theatre/murder-ballad",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "murder-ballad-west-end-2016",
+      "file": "times-uk--ann-treneman.json",
+      "publishDate": "2016-10-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -79096,6 +79500,19 @@
     },
     {
       "showId": "network-west-end-2017",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2017-11-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "network-west-end-2017",
       "file": "theatrebubble--antonia-windsor.json",
       "score": 75,
       "publishDate": "2017-11-15",
@@ -79452,6 +79869,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "nine-night-west-end-2018",
+      "file": "timeout-london--caroline-mcginn.json",
+      "publishDate": "2018-04-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -81896,6 +82326,45 @@
       ]
     },
     {
+      "showId": "pigeon-english-west-end-2016",
+      "file": "standard--fiona-mountford.json",
+      "publishDate": "2016-10-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "pigeon-english-west-end-2016",
+      "file": "timeout-london--caroline-mcginn.json",
+      "publishDate": "2016-10-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "pigeon-english-west-end-2016",
+      "file": "times-uk--ann-treneman.json",
+      "publishDate": "2016-10-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "pinocchio-west-end-2017",
       "file": "british-theatre--philip-fisher.json",
       "score": 78,
@@ -83511,6 +83980,19 @@
     },
     {
       "showId": "rosencrantz-and-guildenstern-are-dead-west-end-2017",
+      "file": "financialtimes--ian-shuttleworth.json",
+      "publishDate": "2017-03-09",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "rosencrantz-and-guildenstern-are-dead-west-end-2017",
       "file": "guardian--michael-billington.json",
       "score": 82,
       "publishDate": "2017-03-08",
@@ -83548,6 +84030,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "rosencrantz-and-guildenstern-are-dead-west-end-2017",
+      "file": "telegraph--ben-lawrence.json",
+      "publishDate": "2017-03-09",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "rosencrantz-and-guildenstern-are-dead-west-end-2017",
+      "file": "the-jewish-chronicle--john-nathan.json",
+      "publishDate": "2017-03-09",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -86402,6 +86910,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "strictly-ballroom-west-end-2018",
+      "file": "timeout-london--caroline-mcginn.json",
+      "publishDate": "2018-04-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -90280,6 +90801,19 @@
     },
     {
       "showId": "the-ferryman-west-end-2017",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2017-05-04",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-ferryman-west-end-2017",
       "file": "guardian--susannah-clapp.json",
       "score": 98,
       "publishDate": "2017-05-07",
@@ -90609,6 +91143,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "the-great-wave-west-end-2018",
+      "file": "thestage--rosemary-waugh.json",
+      "publishDate": "2018-03-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -92297,6 +92844,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-master-builder-off-west-end-2026",
+      "file": "fringereview--unknown.json",
+      "publishDate": "2026-10-23",
+      "url": "https://fringereview.co.uk/review/fringereview-uk/2026/the-master-builder/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -94390,6 +94950,19 @@
     },
     {
       "showId": "the-sewing-group-west-end-2016",
+      "file": "financialtimes--ian-shuttleworth.json",
+      "publishDate": "2016-11-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-sewing-group-west-end-2016",
       "file": "nytimes--matt-wolf.json",
       "score": 37,
       "publishDate": "2016-12-03",
@@ -95219,6 +95792,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-upstart-crow-west-end-2020",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 87,
+      "publishDate": "2020-02-17",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/upstart-crow-review-gielgud-welcome-back-ben-elton-forgiven/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
