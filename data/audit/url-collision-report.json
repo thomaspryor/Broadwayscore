@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-24T12:09:20.342Z",
+  "generatedAt": "2026-10-24T13:29:27.610Z",
   "summary": {
-    "total": 11,
-    "high": 6,
-    "medium": 4,
+    "total": 13,
+    "high": 7,
+    "medium": 5,
     "low": 1
   },
   "collisions": [
@@ -170,6 +170,33 @@
       "confidence": "medium"
     },
     {
+      "url": "http://theaterlife.com/groundhog-day-hello-dolly/",
+      "normalizedUrl": "https://theaterlife.com/groundhog-day-hello-dolly",
+      "candidates": [
+        {
+          "showId": "groundhog-day-2017",
+          "file": "theater-life--david-sheward.json",
+          "publishDate": null,
+          "openingDate": "2017-04-17",
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "theater-life"
+        },
+        {
+          "showId": "hello-dolly-2017",
+          "file": "theater-life--david-sheward.json",
+          "publishDate": "April 22, 2017",
+          "openingDate": "2017-04-20",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theater-life"
+        }
+      ],
+      "suggestedWinner": "hello-dolly-2017",
+      "reason": "publishDate April 22, 2017 is 2 days from hello-dolly-2017 opening (2017-04-20)",
+      "confidence": "high"
+    },
+    {
       "url": "https://www.timeout.com/london/theatre/hadestown-review",
       "normalizedUrl": "https://timeout.com/london/theatre/hadestown-review",
       "candidates": [
@@ -178,7 +205,7 @@
           "file": "timeout-london--andrzej-lukowski.json",
           "publishDate": "2018-11-14",
           "openingDate": "2018-11-13",
-          "hasScore": false,
+          "hasScore": true,
           "hasFullText": true,
           "outletId": "timeout-london"
         },
@@ -303,6 +330,33 @@
       "suggestedWinner": "titanique-2026",
       "reason": "publishDate 2026-04-13 is 1 days from titanique-2026 opening (2026-04-12); next closest is 174 days from titanique-off-broadway-2022",
       "confidence": "high"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/translations-review",
+      "normalizedUrl": "https://timeout.com/london/theatre/translations-review",
+      "candidates": [
+        {
+          "showId": "translations-west-end-2018",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "2018-05-31",
+          "openingDate": "2018-05-30",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        },
+        {
+          "showId": "translations-west-end-2019",
+          "file": "timeout-london--tom-wicker.json",
+          "publishDate": "2019-10-21",
+          "openingDate": "2019-10-21",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        }
+      ],
+      "suggestedWinner": "translations-west-end-2019",
+      "reason": "publishDate 2019-10-21 is 0 days from translations-west-end-2019 but also 1 days from translations-west-end-2018",
+      "confidence": "medium"
     }
   ]
 }
