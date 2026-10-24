@@ -243,15 +243,16 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-24T21:45:31.431Z",
-      "lastSeen": "2026-10-24T21:45:31.431Z",
-      "lastNotifiedAt": "2026-10-24T21:45:31.431Z",
-      "lastSurfacedAt": "2026-10-24T21:45:31.431Z",
+      "incidentOpenedAt": "2026-10-24T21:37:26.113Z",
+      "lastSeen": "2026-10-24T22:01:37.815Z",
+      "lastNotifiedAt": "2026-10-24T21:37:26.113Z",
+      "lastSurfacedAt": "2026-10-24T21:37:26.113Z",
       "notifyCount": 166,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
-      "sweptTracker": "BRO-6024"
+      "sweptTracker": "BRO-6024",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -26096,20 +26097,14 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"on-screen copy in src/app, src/components, src/config and src/lib follows the voice rules\"",
-      "firstSeen": "2026-10-24T21:18:01.551Z",
-      "incidentOpenedAt": "2026-10-24T21:18:01.551Z",
-      "lastSeen": "2026-10-24T21:45:31.417Z",
-      "lastNotifiedAt": "2026-10-24T21:18:01.551Z",
+      "firstSeen": "2026-10-24T21:37:25.819Z",
+      "incidentOpenedAt": "2026-10-24T21:37:25.819Z",
+      "lastSeen": "2026-10-24T22:01:37.801Z",
+      "lastNotifiedAt": "2026-10-24T21:37:25.819Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6174",
-      "dispatch": {
-        "requestedAt": "2026-10-24T21:18:01.551Z",
-        "mode": "dispatch-at-filing",
-        "runId": "40132155159",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40132155159"
-      },
       "silentRefires": 1
     },
     "land:land/bro-6158-plans": {
