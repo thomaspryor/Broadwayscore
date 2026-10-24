@@ -822,7 +822,7 @@ function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = nu
   if (view.decisions > 0) {
     parts.push(`<p style="font-size:16px;font-weight:700;color:#1d4ed8;margin:4px 0 2px;">${view.decisions} decision${view.decisions === 1 ? '' : 's'} for you</p>`);
     // BRO-6131: say how to answer once, up top (no "ask Claude": BRO-5542).
-    parts.push(`<p style="font-size:12px;color:#555;margin:0 0 10px;">Tap a button to open the item. Each decision says what happens if you do nothing.</p>`);
+    parts.push(`<p style="font-size:12px;color:#555;margin:0 0 10px;">Tap a button to open the item. To answer a decision with lettered options, comment on it with just the letter (for example "A"). Twice a day your answer is read: the work is queued, or you get a short question back if it was unclear. Each one says what happens if you do nothing.</p>`);
     if (decisionBlocksHtml) parts.push(decisionBlocksHtml);
   } else if (view.siteState !== 'affected') {
     // About the OWNER's attention only (no decisions waiting); the visitor
