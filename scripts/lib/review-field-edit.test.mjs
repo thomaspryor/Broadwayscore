@@ -775,3 +775,12 @@ test('scoreProvenance: refuses other values, true aggregator sources, bodies, sc
   assert.equal(edit({ originalScore: null, scoreSource: 'llm-v6' }).ok, false);
   assert.equal(edit({ ...base, scoreProvenance: 'aggregator-inherited' }, 'page-parsed', 'aggregator-inherited').ok, false);
 });
+
+test('scoreProvenance: refuses relabelled aggregator relays and mismatched-page files (BRO-6052 review)', () => {
+  const base = { originalScore: 60, scoreSource: 'anchored-v6', fullText: null };
+  const edit = (rec) => applyReviewFieldEdit(rec, { field: 'scoreProvenance', oldValue: null, newValue: 'page-parsed' }, stamp);
+  assert.equal(edit({ ...base, aggregatorStarsSource: 'lbo-star-rating' }).ok, false);
+  assert.equal(edit({ ...base, originalScoreSource: 'show-score-stars' }).ok, false);
+  assert.equal(edit({ ...base, incompleteReason: 'url_content_mismatch' }).ok, false);
+  assert.equal(edit({ ...base, incompleteReason: 'paywall' }).ok, true);
+});
