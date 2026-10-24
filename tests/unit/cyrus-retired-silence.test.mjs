@@ -12,11 +12,12 @@ const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..',
 
 // The readers take their status paths from CYRUS_HOME at load time, so set it before requiring.
 const home = fs.mkdtempSync(path.join(os.tmpdir(), 'cyrus-home-'));
+const priorCyrusHome = process.env.CYRUS_HOME;
 process.env.CYRUS_HOME = home;
 const stale = '2000-01-01T00:00:00.000Z';
 fs.writeFileSync(path.join(home, 'webhook-drain-status.json'), JSON.stringify({ at: stale, ok: false, error: 'fetch failed' }));
 fs.writeFileSync(path.join(home, 'runner-health.json'), JSON.stringify({ at: stale, ok: false }));
-after(() => { fs.rmSync(home, { recursive: true, force: true }); delete process.env.CYRUS_HOME; });
+after(() => { fs.rmSync(home, { recursive: true, force: true }); if (priorCyrusHome === undefined) delete process.env.CYRUS_HOME; else process.env.CYRUS_HOME = priorCyrusHome; });
 const digest = require(path.join(ROOT, 'scripts/send-morning-digest.js'));
 const { assessCyrusRelay } = require(path.join(ROOT, 'scripts/lib/cyrus-relay-health.js'));
 const { assessRunnerHealth } = require(path.join(ROOT, 'scripts/lib/cyrus-runner-health.js'));
@@ -45,7 +46,7 @@ test('a stale Cyrus status file no longer raises a digest alarm once the job is 
   const status = JSON.parse(fs.readFileSync(path.join(home, 'webhook-drain-status.json'), 'utf8'));
   assert.match(assessCyrusRelay(status).message, /has not checked in/, 'the alarm condition is real');
   const runnerState = JSON.parse(fs.readFileSync(path.join(home, 'runner-health.json'), 'utf8'));
-  assert.ok(assessRunnerHealth(runnerState).message, 'the runner alarm condition is real too');
+  assert.match(assessRunnerHealth(runnerState).message, /has not checked in/, 'the runner alarm condition is real too');
   assert.equal(digest.localCyrusRelayMessage(), null);
   assert.equal(digest.localRunnerHealthMessage(), null);
 });
