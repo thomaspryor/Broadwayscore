@@ -59,9 +59,9 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Broadway Money Scorecard',
-    description: 'Recoupment data and investment metrics for industry insiders',
+    description: 'Who made money on Broadway, and who lost it: recoupment, capitalization and running costs, show by show.',
     url: `${BASE_URL}/biz`,
-    images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630, alt: 'Broadway Scorecard' }],
+    images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630, alt: 'Broadway Money Scorecard' }],
   },
   twitter: {
     card: 'summary_large_image',
@@ -257,7 +257,7 @@ export default function BizDashboard() {
                 Broadway Money Scorecard
               </h1>
               <p className="text-gray-400 mt-2">
-                Recoupment data and investment metrics for industry insiders
+                Who made money on Broadway, and who lost it
               </p>
               <p className="text-sm text-gray-500 mt-1">
                 Capitalization and recoupment from SEC filings and trade press. Weekly
