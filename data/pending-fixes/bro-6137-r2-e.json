@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6137-r2-e",
   "planId": "14dd58e8-0c9d-4a43-8a4c-5695d7ea7307",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-24T16:25:24.829Z",
   "submitter": {
     "name": null,
@@ -54,5 +54,29 @@
         "description": "sunday-in-the-park-with-george-2017: recouped during its limited engagement per the cited Playbill report, so the designation can no longer be TBD."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-24T17:15:37.653Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for farinelli-and-the-king-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for farinelli-and-the-king-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for sunday-in-the-park-with-george-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for sunday-in-the-park-with-george-2017"
+    }
+  ],
+  "executedIn": "ci"
 }
