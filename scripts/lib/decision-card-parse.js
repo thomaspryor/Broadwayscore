@@ -141,7 +141,7 @@ function recommendedKey(recommendation, options) {
   if (!m) return null;
   const rest = text.slice(m[0].length).replace(/^\s+/, '');
   const bare = !m[1];
-  const sepFollows = /^[,.:;\u2013\u2014-]/.test(text.slice(m[0].length)) || rest === '';
+  const sepFollows = /^[,.:;(\u2013\u2014-]/.test(rest) || rest === '';
   if (bare && !sepFollows && !PICK_FOLLOWERS.test(rest)) return null;
   const key = m[2].toUpperCase();
   return (options || []).some((o) => o.key === key) ? key : null;
