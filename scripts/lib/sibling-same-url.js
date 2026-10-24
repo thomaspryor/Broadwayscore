@@ -61,6 +61,29 @@ function findSiblingSameUrlPairs(siblingIndex, loadFiles, isCounted, skipPair = 
   return pairs;
 }
 
+const _norm = (t) => String(t || '').toLowerCase().replace(/&#?\w+;/g, ' ').replace(/[^a-z0-9]+/g, ' ').trim();
+const MIN_TEXT = 300;
+const PREFIX = 200;
+
+/**
+ * True when both copies hold substantive text and the texts are different
+ * articles (BRO-6113). Timeout London and London Box Office reuse one url slug
+ * for every revival of a show, so a 2018 and a 2024 Hadestown review share a
+ * url yet each file holds its own production's text: no article is counted
+ * twice. Identical text (the Punch Theatrely copy), or a copy with no real
+ * text, stays reported. Text differs when neither normalized body starts with
+ * the other's first PREFIX chars nor is contained in the other.
+ */
+function haveDistinctTexts(left, right) {
+  const a = _norm(left && left.fullText);
+  const b = _norm(right && right.fullText);
+  if (a.length < MIN_TEXT || b.length < MIN_TEXT) return false;
+  if (a === b) return false;
+  const [short, long] = a.length <= b.length ? [a, b] : [b, a];
+  if (long.includes(short.slice(0, PREFIX))) return false;
+  return true;
+}
+
 const _venueKey = (v) => String(v || '').trim().toLowerCase();
 
 /**
@@ -126,4 +149,4 @@ function siblingUrlHolder({ showId, owners, siblingIndex, visited = null, target
   return verdict.block ? verdict.owner : null;
 }
 
-module.exports = { findSiblingSameUrlPairs, siblingUrlHolder, isDeclaredPriorRunPair };
+module.exports = { findSiblingSameUrlPairs, haveDistinctTexts, siblingUrlHolder, isDeclaredPriorRunPair };
