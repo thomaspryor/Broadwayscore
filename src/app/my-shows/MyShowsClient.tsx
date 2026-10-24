@@ -892,7 +892,7 @@ export default function MyShowsClient() {
         >
           Diary
           {showsSeen > 0 && (
-            <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-white/10 rounded-full" aria-hidden="true">
+            <span className={`ml-1.5 px-1.5 py-0.5 text-xs bg-white/10 rounded-full ${nestedLayout ? "" : "hidden sm:inline"}`} aria-hidden="true">
               {showsSeen}
             </span>
           )}
@@ -931,7 +931,7 @@ export default function MyShowsClient() {
         >
           Watchlist
           {visibleWatchlistCount > 0 && (
-            <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-white/10 rounded-full" aria-hidden="true">
+            <span className={`ml-1.5 px-1.5 py-0.5 text-xs bg-white/10 rounded-full ${nestedLayout ? "" : "hidden sm:inline"}`} aria-hidden="true">
               {visibleWatchlistCount}
             </span>
           )}
@@ -952,7 +952,7 @@ export default function MyShowsClient() {
         >
           Lists
           {listsCount > 0 && (
-            <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-white/10 rounded-full" aria-hidden="true">
+            <span className={`ml-1.5 px-1.5 py-0.5 text-xs bg-white/10 rounded-full ${nestedLayout ? "" : "hidden sm:inline"}`} aria-hidden="true">
               {listsCount}
             </span>
           )}
