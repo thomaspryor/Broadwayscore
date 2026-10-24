@@ -453,6 +453,8 @@ function executeDropOrphanKey(action) {
   return result;
 }
 
+const REGISTRY_FILE = path.join(ROOT, 'data/outlet-registry.json');
+
 function executeOutletRegistryFlag(action) {
   const rel = 'data/outlet-registry.json';
   let registry, shows, reviews;
@@ -469,7 +471,7 @@ function executeOutletRegistryFlag(action) {
   try {
     const result = applyOutletRegistryFlag(registry, action, { shows, reviews });
     // The registry file has no trailing newline (rebuild-all-reviews.js writes it that way).
-    if (result.ok && result.changed) fs.writeFileSync(path.join(ROOT, rel), JSON.stringify(registry, null, 2));
+    if (result.ok && result.changed) fs.writeFileSync(REGISTRY_FILE, JSON.stringify(registry, null, 2));
     return result;
   } catch (e) {
     return { ok: false, reason: `outlet-registry-flag ${action && action.outletId}: ${e.message}` };
