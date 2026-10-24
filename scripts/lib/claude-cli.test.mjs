@@ -194,6 +194,8 @@ test('resolveAuthEnv returns only auth keys and leaves process.env alone', () =>
 // stream through; event shapes verified against the real CLI 2026-08-10.
 // ---------------------------------------------------------------------------
 import { parseStreamLine, addUsage, estimateCostUSD } from './claude-cli.js';
+import models from './models.js';
+const { DISPATCH_OPUS } = models;
 
 test('parseStreamLine: captures session_id from ANY event (it arrives on the first one)', () => {
   const ev = parseStreamLine('{"type":"system","subtype":"init","session_id":"abc-123"}');
@@ -298,6 +300,53 @@ test('estimateCostUSD: null without usage; opus > sonnet; unknown model estimate
   assert.ok(sonnet > 0);
   assert.ok(opus > sonnet, 'opus rate must exceed sonnet');
   assert.equal(estimateCostUSD(usage, 'mystery-model'), sonnet, 'unknown model falls back to sonnet rates');
+});
+
+test('estimateCostUSD: current dispatch Opus and its CLI alias use 4/20 rates (BRO-4497)', () => {
+  for (const model of [DISPATCH_OPUS, `${DISPATCH_OPUS}-20260922`, 'opus']) {
+    assert.equal(estimateCostUSD({ input_tokens: 1_000_000, output_tokens: 1_000_000 }, model), 24, model);
+    assert.equal(estimateCostUSD({ cache_creation_input_tokens: 1_000_000 }, model), 5, model);
+    assert.equal(estimateCostUSD({
+      cache_creation: { ephemeral_1h_input_tokens: 1_000_000, ephemeral_5m_input_tokens: 1_000_000 },
+      cache_read_input_tokens: 1_000_000,
+    }, model), 13.4, model);
+  }
+});
+
+test('estimateCostUSD: historical Opus and other model families keep their estimates (BRO-4497)', () => {
+  const usage = { input_tokens: 1_000_000, output_tokens: 1_000_000 };
+  assert.equal(estimateCostUSD(usage, 'claude-opus-5'), 90);
+  assert.equal(estimateCostUSD(usage, 'claude-opus-4-7'), 90);
+  assert.equal(estimateCostUSD(usage, 'sonnet'), 18);
+  assert.equal(estimateCostUSD(usage, 'haiku'), 6);
+  assert.equal(estimateCostUSD(usage, 'mystery-model'), 18);
+});
+
+test('runClaudeCli: interrupted Opus estimates use current rates and preserve reported costs (BRO-4497)', async () => {
+  const { mkdtempSync, writeFileSync, rmSync } = await import('node:fs');
+  const { join } = await import('node:path');
+  const { tmpdir } = await import('node:os');
+  const { runClaudeCli } = await import('./claude-cli.js');
+  const dir = mkdtempSync(join(tmpdir(), 'claude-cli-opus-cost-'));
+  try {
+    const bin = join(dir, 'claude');
+    for (const reportedCost of [null, 1.23, 0]) {
+      const events = [{
+        type: 'assistant', message: { usage: { input_tokens: 1_000_000, output_tokens: 1_000_000 } },
+      }];
+      if (reportedCost !== null) events.push({ type: 'result', total_cost_usd: reportedCost });
+      const output = events.map(event => `echo '${JSON.stringify(event)}'`).join('\n');
+      writeFileSync(bin, `#!/bin/sh\n${output}\nkill -KILL $$\n`, { mode: 0o755 });
+      const result = await runClaudeCli({
+        prompt: 'noop', cwd: dir, model: DISPATCH_OPUS, env: { CLAUDE_BIN: bin }, timeoutMs: 60000,
+      });
+      assert.equal(result.exitSignal, 'SIGKILL');
+      assert.equal(result.costUSD, reportedCost ?? 24);
+      assert.equal(result.costEstimated, reportedCost === null);
+    }
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 test('estimateCostUSD: 1h cache writes price at 2x, 5m at 1.25x, flat fallback unchanged (BRO-3100)', () => {

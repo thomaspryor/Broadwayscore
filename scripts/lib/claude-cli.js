@@ -35,6 +35,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { readEnvKeys } = require('./load-env.js');
+const { DISPATCH_OPUS } = require('./models.js');
 
 // Same guard as autonomous-budget.js: checked on the OUTPUT of model choice so
 // no config edit can route an unattended run onto the interactive default tier.
@@ -529,6 +530,8 @@ function addUsage(total, usage) {
 // sees ~$2 instead of $0 for a killed session (Codex plan-review finding),
 // not billing-grade accuracy. Unknown models estimate as sonnet.
 const APPROX_MODEL_RATES_PER_MTOK = Object.freeze({
+  // Match the current dispatch pin before the historical family fallback.
+  [DISPATCH_OPUS]: { in: 4, out: 20 },
   opus: { in: 15, out: 75 },
   sonnet: { in: 3, out: 15 },
   haiku: { in: 1, out: 5 },
@@ -542,7 +545,8 @@ const APPROX_MODEL_RATES_PER_MTOK = Object.freeze({
 // absent (older transcripts / envelopes that don't carry it).
 function estimateCostUSD(usage, model) {
   if (!usage) return null;
-  const key = Object.keys(APPROX_MODEL_RATES_PER_MTOK).find(k => String(model || '').includes(k)) || 'sonnet';
+  const modelId = model === 'opus' ? DISPATCH_OPUS : String(model || '');
+  const key = Object.keys(APPROX_MODEL_RATES_PER_MTOK).find(k => modelId.includes(k)) || 'sonnet';
   const r = APPROX_MODEL_RATES_PER_MTOK[key];
   const cc = usage.cache_creation;
   const ephemeral1h = cc && typeof cc.ephemeral_1h_input_tokens === 'number' ? cc.ephemeral_1h_input_tokens : null;
