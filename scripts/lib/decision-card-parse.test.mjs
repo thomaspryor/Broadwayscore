@@ -1,0 +1,108 @@
+// BRO-6131: the morning digest shows each DECISION NEEDED card as a readable
+// card. These use the real BRO-6111 / BRO-6112 text (markdown escapes included).
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const { cleanOwnerText, parseDecisionDescription, recommendedKey } = require('./decision-card-parse.js');
+const { buildDecisionsSection } = require('./owner-decision-notify.js');
+const { renderNamedDigestBlock } = require('./autonomous-email-render.js');
+
+const BRO_6111 = `PARKED: owner decision
+
+DECISION NEEDED: Retire the Mac dispatch fleet (cmux + headless jobs, \\~79 supervision files) in favour of cloud board workers?
+Why this is your call: cloud-worker-pick lacks attempt memory/retry cap/spend breaker and only takes P0/P1; Mac is \\~33% trouble rate. Trade-off of reliability vs capability.
+Option A - Cut over after cloud worker gets caps: more reliable / weeks of work.
+Option B - Keep Mac for now: no risk / ongoing Mac-infra failures (\\~241 titles since 08-11).
+My recommendation: A, staged, because cloud sessions proved more reliable.
+Default: Mac fleet stays.
+Context: BRO-4622 plan, BRO-5846.`;
+
+const BRO_6112 = `DECISION NEEDED: Cloud lacks 8 of 13 Tier-1 keys (BRIGHTDATA\\_*, SCRAPINGBEE, BROWSERBASE\\_*, RESEND, ANTHROPIC). Needed to move the cloud Morning email (RESEND) and scraping jobs off the Mac.
+Why this is your call: pasting production secrets into the cloud environment is a security/spend decision.
+Option A - Add RESEND only: unblocks the morning email / scraping stays on Mac.
+Option B - Add all 8 in [claude.ai](<http://claude.ai>) environment settings: full cloud move / larger secret exposure.
+My recommendation: A now, B later.
+Default: the three Mac email jobs keep running.`;
+
+test('cleanOwnerText strips markdown escapes and wrapped links', () => {
+  assert.equal(cleanOwnerText('BRIGHTDATA\\_*, \\~79 files'), 'BRIGHTDATA_*, ~79 files');
+  assert.equal(cleanOwnerText('in [claude.ai](<http://claude.ai>) settings'), 'in claude.ai settings');
+  assert.equal(cleanOwnerText('**bold**  and\n spaced'), 'bold and spaced');
+});
+
+test('parses question, why, options, recommendation and default (full, untruncated)', () => {
+  const d = parseDecisionDescription(BRO_6111);
+  assert.match(d.question, /^Retire the Mac dispatch fleet \(cmux \+ headless jobs, ~79 supervision files\) in favour of cloud board workers\?$/);
+  assert.match(d.why, /^cloud-worker-pick lacks/);
+  assert.deepEqual(d.options.map((o) => o.key), ['A', 'B']);
+  assert.equal(d.options[0].name, 'Cut over after cloud worker gets caps');
+  assert.equal(d.options[0].upside, 'more reliable');
+  assert.equal(d.options[0].downside, 'weeks of work.');
+  assert.equal(d.defaultLine, 'Mac fleet stays.');
+  assert.equal(recommendedKey(d.recommendation, d.options), 'A');
+});
+
+test('a card with no options or fields still parses its question; no marker returns null', () => {
+  const d = parseDecisionDescription('DECISION NEEDED: Is Cyrus Team Cloud still used?');
+  assert.equal(d.question, 'Is Cyrus Team Cloud still used?');
+  assert.deepEqual(d.options, []);
+  assert.equal(parseDecisionDescription('just a normal card'), null);
+  assert.equal(recommendedKey('Neither', []), null);
+});
+
+test('digest section carries the parsed card, and every row renders a visible link and button', () => {
+  const issues = [
+    { identifier: 'BRO-6111', title: 'DECISION NEEDED: Cut over', url: 'https://linear.app/x/issue/BRO-6111', description: BRO_6111, createdAt: '2026-10-20T00:00:00Z' },
+    { identifier: 'BRO-6112', title: 'DECISION NEEDED: Add secrets', url: 'https://linear.app/x/issue/BRO-6112', description: BRO_6112, createdAt: '2026-10-24T00:00:00Z' },
+  ];
+  const section = buildDecisionsSection(issues, { now: new Date('2026-10-24T12:00:00Z') });
+  assert.equal(section.items[0].decision.question.startsWith('Retire the Mac'), true);
+  const html = renderNamedDigestBlock('Decisions waiting on you', section, { actionCards: true });
+  // Full question, no truncation ellipsis, no markdown escape leakage.
+  assert.doesNotMatch(html, /\\_|\\~|…/);
+  assert.match(html, /BRIGHTDATA_\*/);
+  // Options, pick, default, age.
+  assert.match(html, /<b>A\.<\/b> Cut over after cloud worker gets caps/);
+  assert.match(html, /my pick/);
+  assert.match(html, /If you do nothing:<\/b> Mac fleet stays/);
+  assert.match(html, /waiting 4d/);
+  // One real button per card, titles are visibly links (blue, underlined).
+  assert.equal((html.match(/background:#1d4ed8/g) || []).length, 2);
+  assert.match(html, /href="https:\/\/linear\.app\/x\/issue\/BRO-6111"[^>]*text-decoration:underline/);
+  assert.doesNotMatch(html, /color:#333;text-decoration:none/);
+});
+
+test('non-decision rows (review queue) split the id, show a button, and drop unsafe urls', () => {
+  const html = renderNamedDigestBlock('Review queue', {
+    bannerText: '2 finished items waiting for your review',
+    items: [
+      { title: 'BRO-5596: Dispatch flow is DEAD', detail: 'finished; idle in review 4d', url: 'https://linear.app/x/issue/BRO-5596' },
+      { title: 'BRO-1: bad link', detail: 'x', url: 'javascript:alert(1)' },
+    ],
+    moreCount: 0,
+  }, { actionCards: true, showBanner: true });
+  assert.match(html, />BRO-5596<\/span>/);
+  assert.match(html, />Open →<\/a>/);
+  assert.doesNotMatch(html, /javascript:/);
+  assert.match(html, /2 finished items waiting for your review/);
+});
+
+test('a context URL in the question is not the button target; a signed owner link is; long questions get the card title as headline', () => {
+  const quoted = { identifier: 'BRO-6110', title: 'DECISION NEEDED: Is Cyrus Team Cloud still used?', url: 'https://linear.app/x/issue/BRO-6110', createdAt: '2026-10-21T00:00:00Z',
+    description: `DECISION NEEDED: Do you still use Cyrus? The relay https://cyrus-relay.vercel.app now returns 404 so the drain job logs fetch failed every tick and has done for weeks now.\nOption A - Retire: x / y\nOption B - Keep: x / y` };
+  const signed = { identifier: 'BRO-7', title: 'DECISION NEEDED: Renew Gmail login', url: 'https://linear.app/x/issue/BRO-7', createdAt: '2026-10-24T00:00:00Z',
+    description: 'DECISION NEEDED: Tap https://broadwayscorecard.com/gmail-reauth?e=1793000000&s=0123456789abcdef0123456789abcdef and press Allow' };
+  const section = buildDecisionsSection([quoted, signed], { now: new Date('2026-10-24T12:00:00Z') });
+  const byId = Object.fromEntries(section.items.map((i) => [i.identifier, i]));
+  assert.equal(byId['BRO-6110'].url, 'https://linear.app/x/issue/BRO-6110');
+  assert.equal(byId['BRO-6110'].actionLabel, undefined);
+  assert.match(byId['BRO-7'].url, /^https:\/\/broadwayscorecard\.com\/gmail-reauth\?e=1793000000&s=0123456789abcdef/);
+  assert.equal(byId['BRO-7'].cardUrl, 'https://linear.app/x/issue/BRO-7');
+  const html = renderNamedDigestBlock('Decisions', section, { actionCards: true });
+  assert.match(html, />Is Cyrus Team Cloud still used\?<\/a>/);
+  assert.match(html, /Do you still use Cyrus\? The relay/);
+  assert.match(html, />Tap to do this \u2192<\/a>/);
+  assert.match(html, /see the full card/);
+});

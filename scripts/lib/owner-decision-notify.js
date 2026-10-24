@@ -23,6 +23,7 @@
 const crypto = require('crypto');
 const { AWAITING_OWNER_LABEL } = require('./owner-approval-channel.js');
 const { isEmptyDecisionContent } = require('./needs-you-snapshot.js');
+const { parseDecisionDescription } = require('./decision-card-parse.js');
 
 const MAX_LISTED = 35; // the first run carries the 31-card backlog; one email, not three days of them
 const MAX_QUESTION_CHARS = 220;
@@ -92,6 +93,8 @@ function findOwnerDecisions(issues) {
       question: question || null,
       priority: issue.priority ?? null,
       createdAt: issue.createdAt || null,
+      // BRO-6131: the structured card (options, recommendation, default) for the digest.
+      card: question ? parseDecisionDescription(issue.description) : null,
     });
   }
   return out.sort((a, b) => priorityRank(a.priority) - priorityRank(b.priority)
@@ -171,9 +174,13 @@ function formatEmail(plan) {
  * you". Same {generatedAt, bannerText, items, moreCount} shape as every other
  * digest section. Returns null when there is nothing to show.
  */
+// BRO-6131: only an owner-signed link (owner-signed-link.js: this site, ?e=<exp>&s=<hex>)
+// replaces the card link. Any other URL in the question is just context (BRO-6110
+// quotes a dead relay URL), and linking the button to it sent the owner nowhere.
+const SIGNED_LINK_RE = /https:\/\/broadwayscorecard\.com\/[^\s)>\]]*[?&]e=\d{9,11}&s=[0-9a-f]{16,}/;
 function questionLink(question) {
-  const m = /https?:\/\/[^\s)>\]]+/.exec(String(question || ''));
-  return m ? m[0].replace(/[.,;:!?]+$/, '') : null;
+  const m = SIGNED_LINK_RE.exec(String(question || ''));
+  return m ? m[0] : null;
 }
 
 function buildDecisionsSection(issues, { max = 8, now = new Date() } = {}) {
@@ -189,7 +196,23 @@ function buildDecisionsSection(issues, { max = 8, now = new Date() } = {}) {
     // A question that carries its own link (signed renewal links: "Tap
     // https://... and press Allow") links to THAT, not the card: the digest
     // wraps the whole title in one anchor, so an inner URL is not tappable.
-    items: shown.map((d) => ({ title: d.question, detail: `${d.identifier}: ${d.title}`, url: questionLink(d.question) || d.url })),
+    items: shown.map((d) => {
+      const ageDays = d.createdAt ? Math.floor((now.getTime() - new Date(d.createdAt).getTime()) / 86400000) : null;
+      return {
+        title: d.question,
+        detail: `${d.identifier}: ${d.title}`,
+        url: questionLink(d.question) || d.url,
+        // BRO-6131: what the digest card shows. cardUrl is the Linear card even
+        // when `url` is a signed one-tap link taken from the question.
+        identifier: d.identifier,
+        // Card titles are the short plain-English headline; the question is often a paragraph.
+        headline: String(d.title || '').replace(/^\s*DECISION NEEDED\s*:\s*/i, '').trim() || null,
+        cardUrl: d.url,
+        decision: d.card,
+        ageDays: Number.isFinite(ageDays) && ageDays >= 0 ? ageDays : null,
+        actionLabel: questionLink(d.question) ? 'Tap to do this \u2192' : undefined,
+      };
+    }),
     moreCount: decisions.length - shown.length,
     // Every decision card's url, shown or not, so other sections (In Review)
     // can drop the same card instead of counting it twice.

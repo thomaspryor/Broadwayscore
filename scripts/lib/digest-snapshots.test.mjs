@@ -393,8 +393,9 @@ test('buildHtml: review-queue items render at the top, de-duplicated, and are co
   const top = html.slice(0, html.indexOf('>Technical details<') === -1 ? html.length : html.indexOf('>Technical details<'));
   assert.match(top, /2 decisions for you/);
   assert.match(top, /Review queue/);
-  assert.match(top, /BRO-10: finished fix/);
-  assert.equal(html.split('BRO-9: approve new homepage').length - 1, 1, 'duplicate issue listed once');
+  // BRO-6131: the card shows the id small and the title large, so match the parts.
+  assert.match(top, />BRO-10<\/span>[\s\S]*finished fix/);
+  assert.equal(html.split('approve new homepage').length - 1, 1, 'duplicate issue listed once');
   assert.doesNotMatch(html, /Nothing needs your attention|Nothing below needs you/);
 });
 
