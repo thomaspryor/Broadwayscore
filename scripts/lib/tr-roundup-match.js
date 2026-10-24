@@ -64,7 +64,20 @@ function parseRoundupPost(post) {
   const date = post && post.date ? String(post.date).slice(0, 10) : null;
   const title = cleanRoundupTitle(post && post.title && (post.title.rendered ?? post.title));
   const modified = post && (post.modified_gmt || post.modified) ? String(post.modified_gmt || post.modified) : null;
-  return { id: post && post.id != null ? post.id : null, url, slug, date, title, modified };
+  const venue = venueFromContent(post && post.content && (post.content.rendered ?? post.content));
+  return { id: post && post.id != null ? post.id : null, url, slug, date, title, modified, ...(venue ? { venue } : {}) };
+}
+
+/**
+ * The venue TR prints under the headline (first <h5>). The slug can name the
+ * wrong house ("sorry-prime-minister-adelphi" is an Apollo show), so a body
+ * venue, when we have it, outranks the slug for the venue check.
+ */
+function venueFromContent(html) {
+  const m = String(html || '').match(/<h5[^>]*>([\s\S]*?)<\/h5>/i);
+  if (!m) return null;
+  const v = decodeEntities(m[1].replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
+  return v && v.length <= 80 ? v : null;
 }
 
 function slugWords(slug) {
@@ -72,13 +85,29 @@ function slugWords(slug) {
 }
 
 function venueTokens(v) {
-  const t = String(v || '').toLowerCase()
+  const t = String(v || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
     .replace(/\(.*?\)/g, ' ')
     .replace(/['\u2018\u2019]/g, '')
     .split(/[^a-z0-9]+/).filter((w) => w && !VENUE_NOISE.has(w));
   // TR writes "sohoplace" for Soho Place.
   if (t.length >= 2) t.push(t[0] + t[1]);
   return t;
+}
+
+/**
+ * A body venue names the house when every word of one of its parts is in the
+ * show's venue. One shared word is not enough: "Lyric Hammersmith" shares
+ * "lyric" with the Lyric Theatre, "Theatre Royal Haymarket" shares "royal"
+ * with Drury Lane.
+ */
+function bodyVenueHit(bodyVenue, showTokens) {
+  return String(bodyVenue).split(/\s*\/\s*|\s+at the\s+/i).some((part) => {
+    const t = venueTokens(part);
+    if (!t.length) return false;
+    const joined = t.length >= 2 ? t[t.length - 1] : null; // synthesized "sohoplace"
+    const core = joined ? t.slice(0, -1) : t;
+    return core.every((w) => showTokens.has(w)) || (joined != null && showTokens.has(joined));
+  });
 }
 
 const NATIONAL_HOUSES = ['national', 'olivier', 'lyttelton', 'dorfman', 'cottesloe'];
@@ -99,6 +128,10 @@ function slugExtraTokens(roundup, showTitleWords) {
   return slugWords(roundup.slug).filter((w) => !tw.has(w) && !STOP.has(w) && !/^\d+$/.test(w));
 }
 
+// "Wings" vs "Wing": plural-only differences do not make a different title.
+const stem = (w) => (w.length > 3 && w.endsWith('s') && !w.endsWith('ss') ? w.slice(0, -1) : w);
+const sameWord = (a, b) => a === b || stem(a) === stem(b);
+
 function titleMatchKind(show, roundup) {
   const sw = words(show.title);
   if (!sw.length) return null;
@@ -106,24 +139,46 @@ function titleMatchKind(show, roundup) {
   const slw = words(slugWords(roundup.slug).join(' '));
   const phrase = (hay) => {
     for (let i = 0; i + sw.length <= hay.length; i++) {
-      if (sw.every((w, j) => hay[i + j] === w)) return true;
+      if (sw.every((w, j) => sameWord(hay[i + j], w))) return true;
     }
     return false;
   };
   if (phrase(tw) || phrase(slw)) return 'phrase';
   const sig = sw.filter((w) => !STOP.has(w));
-  if (sig.length >= 2 && sig.every((w) => tw.includes(w) || slw.includes(w))) return 'words';
+  if (sig.length >= 2 && sig.every((w) => tw.some((x) => sameWord(x, w)) || slw.some((x) => sameWord(x, w)))) return 'words';
   // TR drops subtitles ("Thelma & Louise" for "Thelma and Louise: A New
   // Musical", "Hunger Games" for "The Hunger Games On Stage"): every
   // significant word of the round-up headline is in our title.
   const rsig = tw.filter((w) => !STOP.has(w));
-  if (rsig.length >= 2 && rsig.every((w) => sw.includes(w))) return 'subset';
+  if (rsig.length >= 2 && rsig.every((w) => sw.some((x) => sameWord(x, w)))) return 'subset';
   return null;
 }
 
 function openingMs(show) {
   const t = Date.parse(show.openingDate || '') || Date.parse(show.previewsStartDate || '');
   return Number.isFinite(t) ? t : null;
+}
+
+/**
+ * Date windows a round-up for this show can fall in beyond the opening
+ * window: the whole run of a long-running show (Tina 2018-2025 has round-ups
+ * for later casts) and every declared prior run (a tour or transfer of the
+ * same production, shows.json priorRuns).
+ */
+function extraWindows(show) {
+  const out = [];
+  const om = openingMs(show);
+  let cm = Date.parse(show.closingDate || '');
+  // An open show with no announced closing runs until today.
+  if (!Number.isFinite(cm) && show.status === 'open') cm = Date.now();
+  if (om != null && Number.isFinite(cm) && cm > om) out.push({ start: om, end: cm, kind: 'in-run' });
+  for (const r of Array.isArray(show.priorRuns) ? show.priorRuns : []) {
+    const rs = Date.parse(r && r.openingDate || '');
+    if (!Number.isFinite(rs)) continue;
+    const re = Date.parse(r.closingDate || '');
+    out.push({ start: rs, end: Number.isFinite(re) && re > rs ? re : rs, kind: 'prior-run', venue: r.venue }); // venue-write-guard-ok: in-memory match window, nothing written to shows.json
+  }
+  return out;
 }
 
 function idYear(show) {
@@ -149,21 +204,37 @@ function matchRoundupToShow(roundup, shows) {
 
   // Strongest kind of title match first, then the most specific title
   // ("Richard III" over a hypothetical "Richard").
+  // A longer matching title beats a shorter one whatever the kind ("A Good
+  // House" over the one-word "Good"); kind breaks ties.
   const RANK = { phrase: 3, words: 2, subset: 1 };
-  const bestRank = Math.max(...cands.map((c) => RANK[c.kind]));
-  const ranked = cands.filter((c) => RANK[c.kind] === bestRank);
+  const sigWords = (c) => words(c.show.title).filter((w) => !STOP.has(w)).length;
+  // A 'subset' match (headline words all inside a longer title) never outranks
+  // a title the headline names in full.
+  const full = cands.filter((c) => c.kind !== 'subset');
+  const base = full.length ? full : cands;
+  const maxSig = Math.max(...base.map(sigWords));
+  const longest = base.filter((c) => sigWords(c) === maxSig);
+  const bestRank = Math.max(...longest.map((c) => RANK[c.kind]));
+  const ranked = longest.filter((c) => RANK[c.kind] === bestRank);
   const maxWords = Math.max(...ranked.map((c) => c.titleWords));
   const pool = ranked.filter((c) => c.titleWords === maxWords);
   const ids = pool.map((c) => c.show.id);
 
   const slugWordsList = slugWords(roundup.slug);
-  const scored = pool.map((c) => {
+  // Extra windows (in-run, prior-run) are a fallback: they only apply when no
+  // same-title show opens inside the round-up's own window, otherwise a long
+  // run would make every same-title round-up ambiguous.
+  const scoreAll = (useExtras) => pool.map((c) => {
     const reasons = [`title:${c.kind}`];
     const vt = showVenueTokens(c.show);
-    const venueHit = slugWordsList.some((w) => vt.has(w));
-    const extras = slugExtraTokens(roundup, words(c.show.title).concat(slugWordsList.filter((w) => STOP.has(w))));
-    // The slug names a venue we recognise for a DIFFERENT house.
-    const venueKnownElsewhere = !venueHit && vt.size > 0 && extras.length > 0 && extras.some((w) => VENUE_SLUG_TOKENS.has(w));
+    // A venue read from the post body beats the slug (the slug can be wrong).
+    const bodyTokens = roundup.venue ? venueTokens(roundup.venue) : [];
+    let venueHit = bodyTokens.length ? bodyVenueHit(roundup.venue, vt) : slugWordsList.some((w) => vt.has(w));
+    const extras = bodyTokens.length
+      ? bodyTokens.filter((w) => !STOP.has(w))
+      : slugExtraTokens(roundup, words(c.show.title).concat(slugWordsList.filter((w) => STOP.has(w))));
+    // The slug (or body) names a venue we recognise for a DIFFERENT house.
+    let venueKnownElsewhere = !venueHit && vt.size > 0 && extras.length > 0 && extras.some((w) => VENUE_SLUG_TOKENS.has(w));
     if (venueHit) reasons.push('venue');
     const om = openingMs(c.show);
     let days = null;
@@ -174,6 +245,25 @@ function matchRoundupToShow(roundup, shows) {
       dateOk = days >= -WINDOW_BEFORE_DAYS && days <= WINDOW_AFTER_DAYS;
       tight = days >= -WINDOW_BEFORE_DAYS && days <= TIGHT_AFTER_DAYS;
       reasons.push(`opening:${days >= 0 ? '+' : ''}${days}d`);
+      if (!dateOk && useExtras) {
+        const w = extraWindows(c.show).find((x) => postMs >= x.start - WINDOW_BEFORE_DAYS * DAY_MS && postMs <= x.end + WINDOW_AFTER_DAYS * DAY_MS);
+        if (w) {
+          dateOk = true;
+          days = Math.round((postMs - w.start) / DAY_MS);
+          tight = days >= -WINDOW_BEFORE_DAYS && days <= TIGHT_AFTER_DAYS;
+          reasons.push(w.kind);
+          // A prior run was at its own house: judge the venue against that one.
+          // A touring prior run played many houses: no single venue to veto on.
+          if (w.kind === 'prior-run' && /\btour\b/i.test(w.venue || '')) {
+            venueKnownElsewhere = false;
+          } else if (w.kind === 'prior-run' && w.venue && (bodyTokens.length || slugWordsList.length)) {
+            const pvt = new Set(venueTokens(w.venue));
+            const toks = bodyTokens.length ? bodyTokens : slugWordsList;
+            venueHit = bodyTokens.length ? bodyVenueHit(roundup.venue, pvt) : toks.some((x) => pvt.has(x));
+            venueKnownElsewhere = !venueHit && extras.length > 0 && extras.some((x) => VENUE_SLUG_TOKENS.has(x));
+          }
+        }
+      }
     } else {
       const y = idYear(c.show);
       if (y && Number.isFinite(postMs) && String(y) === String(roundup.date).slice(0, 4)) reasons.push('id-year');
@@ -181,6 +271,11 @@ function matchRoundupToShow(roundup, shows) {
     return { ...c, reasons, venueHit, venueKnownElsewhere, days, dateOk, tight, undated: om == null };
   });
 
+  let scored = scoreAll(false);
+  if (!scored.some((x) => x.dateOk)) {
+    const withExtras = scoreAll(true);
+    if (withExtras.some((x) => x.dateOk)) scored = withExtras;
+  }
   const dated = scored.filter((s) => s.dateOk);
   let chosen = null;
   let confidence = null;
@@ -239,12 +334,12 @@ const VENUE_SLUG_TOKENS = new Set([
  * opening wins, later ones are reported as duplicates, never merged).
  * @returns {{matched: Array, unmatched: Array}}
  */
-function matchAllRoundups(posts, shows) {
+function matchAllRoundups(posts, shows, pins = {}) {
   const matched = [];
   const unmatched = [];
   for (const raw of posts) {
     const roundup = raw && raw.slug !== undefined && raw.title && typeof raw.title === 'string' ? raw : parseRoundupPost(raw);
-    const r = matchRoundupToShow(roundup, shows);
+    const r = pinnedMatch(roundup, shows, pins) || matchRoundupToShow(roundup, shows);
     if (r.show) matched.push({ roundup, show: r.show, confidence: r.confidence, reasons: r.reasons });
     else unmatched.push({ roundup, reason: r.unmatched, candidates: r.candidates || [] });
   }
@@ -260,9 +355,48 @@ function matchAllRoundups(posts, shows) {
   return { matched: [...byShow.values()], unmatched };
 }
 
+/**
+ * An operator pin ({slug: showId}) for a round-up whose post date does not
+ * track the production's run (a round-up covering two houses, a long open
+ * run with a one-word title). Only honoured while the show still exists.
+ */
+function pinnedMatch(roundup, shows, pins) {
+  const id = pins && pins[roundup.slug];
+  const show = id && shows.find((x) => x && x.id === id);
+  return show ? { show, confidence: 'high', reasons: ['pinned'] } : null;
+}
+
+/**
+ * Second pass: unmatched round-ups get their body venue (venueById: id -> text)
+ * and are matched again. A round-up that now matches a show no other round-up
+ * owns moves to `matched`; everything else stays unmatched, now carrying the
+ * venue so scope can be judged. Pure: callers do the fetching.
+ */
+function rematchWithVenues(matched, unmatched, shows, venueById) {
+  const owned = new Set(matched.map((m) => m.show.id));
+  const stillUnmatched = [];
+  const moved = [];
+  for (const u of unmatched) {
+    const venue = u.roundup && u.roundup.id != null ? venueById[u.roundup.id] : null;
+    if (!venue) { stillUnmatched.push(u); continue; }
+    const roundup = { ...u.roundup, venue };
+    const r = /^duplicate/.test(u.reason) ? { unmatched: u.reason, candidates: u.candidates } : matchRoundupToShow(roundup, shows);
+    if (r.show && !owned.has(r.show.id)) {
+      owned.add(r.show.id);
+      moved.push({ roundup, show: r.show, confidence: r.confidence, reasons: [...r.reasons, 'body-venue'] });
+    } else {
+      stillUnmatched.push({ roundup, reason: r.unmatched || u.reason, candidates: r.candidates || u.candidates || [] });
+    }
+  }
+  return { matched: [...matched, ...moved], unmatched: stillUnmatched };
+}
+
 module.exports = {
+  rematchWithVenues,
+  pinnedMatch,
   cleanRoundupTitle,
   parseRoundupPost,
+  venueFromContent,
   matchRoundupToShow,
   matchAllRoundups,
   titleMatchKind,
