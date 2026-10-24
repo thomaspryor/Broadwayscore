@@ -238,22 +238,20 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-24T05:16:44.503Z",
-      "lastSeen": "2026-10-24T11:54:58.097Z",
-      "lastNotifiedAt": "2026-10-24T05:16:44.503Z",
-      "lastSurfacedAt": "2026-10-24T05:16:44.503Z",
-      "notifyCount": 164,
+      "incidentOpenedAt": "2026-10-24T13:19:06.722Z",
+      "lastSeen": "2026-10-24T13:19:06.722Z",
+      "lastNotifiedAt": "2026-10-24T13:19:06.722Z",
+      "lastSurfacedAt": "2026-10-24T13:19:06.722Z",
+      "notifyCount": 165,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
-      "sweptTracker": "BRO-6024",
-      "silentRefires": 9,
-      "resolvedAt": "2026-10-24T12:24:27.763Z"
+      "sweptTracker": "BRO-6024"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -25574,7 +25572,9 @@
         "runId": "40093882046",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40093882046"
       },
-      "silentRefires": 1
+      "absentRunIds": [
+        "40096093981"
+      ]
     },
     "land:land/job/linear-BRO-6114-mvmbkozw": {
       "status": "resolved",
@@ -25615,6 +25615,25 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:e81f5384": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"main: overlapping ticks skip the busy singleton before reading tasks or dispatching\"",
+      "firstSeen": "2026-10-24T13:19:04.580Z",
+      "incidentOpenedAt": "2026-10-24T13:19:04.580Z",
+      "lastSeen": "2026-10-24T13:19:04.580Z",
+      "lastNotifiedAt": "2026-10-24T13:19:04.580Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6125",
+      "dispatch": {
+        "requestedAt": "2026-10-24T13:19:04.580Z",
+        "mode": "dispatch-at-filing",
+        "runId": "40096093981",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40096093981"
+      }
     },
     "live-data-test:scripts/verify-contamination-gate.test.mjs::no class-A cross-market leaks (a show showing another production's reviews)": {
       "status": "open",
