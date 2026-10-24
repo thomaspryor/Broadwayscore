@@ -421,6 +421,30 @@ const isCriticLine = (l) => {
 // review's headline or caption, not this review's prose.
 const isHeadlineish = (l) => l.length <= 60 && !/[.!?"”]$/.test(l);
 
+// Default mode interleaves a review's lines with its neighbours' (headline
+// fragments come first), so the first-300-chars check of filterByTitle drops
+// real reviews. The cut at the next date/caption already bounds each review to
+// one piece, so a mention of the title anywhere in it is the signal.
+const TITLE_STOP = new Set(['the', 'and', 'for', 'from', 'with', 'a', 'an', 'at', 'in', 'on', 'of', 'to']);
+function mentionsTitle(fullText, showTitle) {
+  const text = fullText.toLowerCase().replace(/[^a-z0-9]+/g, ' ');
+  const words = showTitle.toLowerCase().split(/[^a-z0-9]+/).filter(w => w && !TITLE_STOP.has(w));
+  if (!words.length) return false;
+  const count = (w) => (text.match(new RegExp(`\\b${w}\\b`, 'g')) || []).length;
+  if (words.length === 1) {
+    const w = words[0];
+    const n = count(w);
+    if (w.length <= 4 || /^\d+$/.test(w)) return n >= 3;
+    if (n >= 2) return true;
+    // A single mention only counts when written as a proper name next to theatre context.
+    const cap = new RegExp(`\\b${w[0].toUpperCase()}${w.slice(1)}\\b`).test(fullText);
+    return n === 1 && cap && /\b(production|theatre|theater|stage|cast|directed|revival|musical|opening|premiere|staging)\b/i.test(fullText);
+  }
+  // Titles made of numbers or tiny words ("9 to 5") match ordinary prose, so each word must recur.
+  if (words.every(w => w.length <= 2 || /^\d+$/.test(w))) return words.every(w => count(w) >= 3);
+  return words.filter(w => count(w) > 0).length >= Math.ceil(words.length * 0.7);
+}
+
 function parseDefaultPdfReviews(text, showTitle) {
   const lines = text.split('\n').map(l => l.trim());
   const markers = [];
@@ -459,7 +483,7 @@ function parseDefaultPdfReviews(text, showTitle) {
       all.push({ outlet: lines[m.start], date: lines[m.dateIdx], critic, fullText });
     }
   });
-  return finishPdfReviews(filterByTitle(all, showTitle));
+  return finishPdfReviews(all.filter(r => mentionsTitle(r.fullText, showTitle)));
 }
 
 // "14.10.16" and "14 October 2016" both reduce to the ISO day (unparseable
@@ -510,6 +534,7 @@ module.exports = {
   parsePdfReviews,
   parseRawPdfReviews,
   parseDefaultPdfReviews,
+  mentionsTitle,
   mergeDefaultReviews,
   dateKey,
 };

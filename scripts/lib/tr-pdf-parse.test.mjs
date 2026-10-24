@@ -15,7 +15,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { parsePdfReviews, parseRawPdfReviews, cutAtProductionHeader, maskPdfText, parseDefaultPdfReviews, mergeDefaultReviews, dateKey, parseShortDate } = require('./tr-pdf-parse.js');
+const { parsePdfReviews, parseRawPdfReviews, cutAtProductionHeader, maskPdfText, parseDefaultPdfReviews, mentionsTitle, mergeDefaultReviews, dateKey, parseShortDate } = require('./tr-pdf-parse.js');
 
 const JOSEPH = 'Joseph and the Amazing Technicolor Dreamcoat';
 const PAD = ' '.repeat(52);
@@ -243,4 +243,33 @@ test('BRO-6097: default merge drops the same review but keeps a second named cri
   const twin = { outlet: 'The Times', date: '14.10.16', critic: 'A. Thompson', fullText: 'd' };
   assert.deepEqual(mergeDefaultReviews(have, [same, twin]).map(r => r.fullText), ['a']);
   assert.deepEqual(mergeDefaultReviews(have, [other]).map(r => r.fullText), ['a', 'c']);
+});
+
+// BRO-6097: real masked pdftotext skeletons from the CI probe. Default mode
+// used to return 0 for The Dresser (title is rarely in the first 300 chars of
+// interleaved column text); the whole-review title mention recovers them.
+test('default mode on masked real skeletons recovers reviews', async () => {
+  const { readFileSync, existsSync } = await import('node:fs');
+  const dir = new URL('../../data/audit/we-historical-tr-skeletons/', import.meta.url);
+  const cases = [
+    ['the-dresser-west-end-2016', 'The Dresser', 5],
+    ['murder-ballad-west-end-2016', 'Murder Ballad', 4],
+    ['the-sewing-group-west-end-2016', 'The Sewing Group', 5],
+  ];
+  for (const [id, title, min] of cases) {
+    const f = new URL(`${id}.default.txt`, dir);
+    assert.ok(existsSync(f), `${id} skeleton missing`);
+    const r = parseDefaultPdfReviews(readFileSync(f, 'utf8'), title);
+    assert.ok(r.length >= min, `${id}: got ${r.length}, want >= ${min}`);
+  }
+});
+
+test('default mode title match rejects passing mentions of common words', () => {
+  const body = (extra) => ({ fullText: `${extra} `.repeat(1) + 'x'.repeat(300) });
+  assert.equal(mentionsTitle(body('The company is excellent in this play.').fullText, 'Company'), false);
+  assert.equal(mentionsTitle(body('echoes of Hamlet and the stage cast').fullText, 'Hamlet'), true);
+  assert.equal(mentionsTitle(body('Like hamilton before it').fullText, 'Hamilton'), false);
+  assert.equal(mentionsTitle(body('the band plays; the band was loud').fullText, 'The Band'), false);
+  assert.equal(mentionsTitle(body('six actors in six roles').fullText, 'Six'), false);
+  assert.equal(mentionsTitle(body('act 2 at 9 pm, 5 stars').fullText, '9 to 5'), false);
 });
