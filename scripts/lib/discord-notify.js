@@ -110,7 +110,7 @@ function buildAlertEmail({ title, description, severity = 'error', fields = [], 
   return { subject: `${labelPrefix}${title}`, html };
 }
 
-async function sendEmailAlert({ title, description, severity = 'error', fields = [], url, idempotencyKey, subjectLabel }) {
+async function sendEmailAlert({ title, description, severity = 'error', fields = [], url, idempotencyKey, subjectLabel, html: htmlOverride }) {
   if (!shouldEmailAlert(severity)) {
     console.log(`[Alert policy] email suppressed for severity=${severity} — "${title}" (actionable-only policy; see BSC Daily / run logs)`);
     if (process.env.GITHUB_STEP_SUMMARY) {
@@ -133,7 +133,11 @@ async function sendEmailAlert({ title, description, severity = 'error', fields =
   // get one keyed on the whole message, so only an exact duplicate from a
   // parallel runner is dropped; two different incidents that share a static
   // title still both reach the owner.
-  const { subject, html } = buildAlertEmail({ title, description, severity, fields, url, subjectLabel });
+  // htmlOverride (BRO-6147): a caller-built body, e.g. the decision email's
+  // answer buttons. The subject still comes from `title`; the caller escapes.
+  const built = buildAlertEmail({ title, description, severity, fields, url, subjectLabel });
+  const subject = built.subject;
+  const html = typeof htmlOverride === 'string' ? htmlOverride : built.html;
   idempotencyKey = idempotencyKey || defaultIdempotencyKey(subject + html, Date.now());
   const data = JSON.stringify({
     from: 'Broadway Scorecard <alerts@broadwayscorecard.com>',

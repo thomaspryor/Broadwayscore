@@ -1146,6 +1146,10 @@ on:
       - 'scripts/verify-feedback-requests-live.js'
       # BRO-4719: owner decision email; its test (tests/unit/owner-decision-notify.test.mjs) is manifest-registered.
       - 'scripts/notify-owner-decisions.js'
+      - 'scripts/send-owner-decision-emails.js'
+      - 'scripts/lib/owner-decision-email.js'
+      - 'src/lib/owner-decision-link.js'
+      - 'src/app/api/owner-decision/route.ts'
       # What the owner actually reads. Added 2026-08-05 after a shipped report
       # linked /shows/{slug} — a route that does not exist — and nothing failed:
       # both report builders were exported but had no test at all. This file

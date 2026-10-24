@@ -320,3 +320,5 @@ land-ref-prune.yml
 linear-decision-reply-drain.yml
 # BRO-6167: weekly advisory sweep of the Broadway Journal archive; a missed week only delays an owner-review alert, nothing user-facing. Failures go through notify-failure and the daily liveness sweep.
 commercial-broadway-journal-sweep.yml
+# BRO-6147: every-20-min owner decision emails; a missed run only delays an email to the next run, and a failed run goes through notify-failure.
+owner-decision-emails.yml
