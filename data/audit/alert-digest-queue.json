@@ -1290,5 +1290,36 @@
       }
     ],
     "queuedAt": "2026-10-24T03:44:25.231Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6098-agg-health-wire",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6098-agg-health-wire",
+    "description": "land.yml did not land land/bro-6098-agg-health-wire: the unit-tests-node gate went red at fd835811a3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40059361603",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6098-agg-health-wire"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "fd835811a3c4b8d31a246d5b60c811a105fcb3c1"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40059361603"
+      }
+    ],
+    "queuedAt": "2026-10-24T04:00:41.597Z"
   }
 ]
