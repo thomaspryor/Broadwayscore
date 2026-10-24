@@ -23640,13 +23640,13 @@
       "title": "Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
       "firstSeen": "2026-10-22T11:49:37.833Z",
       "incidentOpenedAt": "2026-10-22T11:49:37.833Z",
-      "lastSeen": "2026-10-24T13:07:31.070Z",
+      "lastSeen": "2026-10-24T13:34:45.314Z",
       "lastNotifiedAt": "2026-10-23T13:58:34.452Z",
       "lastSurfacedAt": "2026-10-23T13:58:34.452Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 14
+      "silentRefires": 15
     },
     "land:land/bro-5325-wsj-section": {
       "status": "resolved",
@@ -24391,13 +24391,13 @@
       "title": "Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
       "firstSeen": "2026-10-22T20:59:52.372Z",
       "incidentOpenedAt": "2026-10-22T20:59:52.372Z",
-      "lastSeen": "2026-10-24T13:07:31.057Z",
+      "lastSeen": "2026-10-24T13:34:45.303Z",
       "lastNotifiedAt": "2026-10-23T23:29:56.888Z",
       "lastSurfacedAt": "2026-10-23T23:29:56.888Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "land:land/bro-5969-index-bloat-v3": {
       "status": "open",
@@ -25641,12 +25641,13 @@
       "title": "Live-data test failing: no class-A cross-market leaks (a show showing another production's reviews) (scripts/verify-contamination-gate.test.mjs)",
       "firstSeen": "2026-10-24T13:07:31.042Z",
       "incidentOpenedAt": "2026-10-24T13:07:31.042Z",
-      "lastSeen": "2026-10-24T13:07:31.042Z",
+      "lastSeen": "2026-10-24T13:34:45.288Z",
       "lastNotifiedAt": "2026-10-24T13:07:31.042Z",
       "lastSurfacedAt": "2026-10-24T13:07:31.042Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-6101-aggregator-repair": {
       "status": "open",
