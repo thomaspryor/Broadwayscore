@@ -1131,5 +1131,32 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-24T01:24:26.316Z"
+  },
+  {
+    "conditionKey": "feedback-outcomes:2026-10-24T00:01:27.099105+00:00",
+    "title": "Feedback: 1 submission(s), all handled automatically",
+    "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nsingleticket — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"Hi, I am happy to have my substack review included in your aggregate of “Imaginary Invalid” but my name is “singleticket” (one word, lower case “s”). Thank you and best of luck with your site. \r\n\r\nsingleticket\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/1157",
+    "severity": "info",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40051525225",
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Submissions",
+        "value": "1"
+      },
+      {
+        "name": "Need you",
+        "value": "0"
+      },
+      {
+        "name": "Pipeline status",
+        "value": "success"
+      }
+    ],
+    "queuedAt": "2026-10-24T01:51:56.012Z"
   }
 ]
