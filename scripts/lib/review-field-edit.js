@@ -119,6 +119,11 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // stars then anchor the score. Only stars with no aggregatorStarsSource may be cleared; the
   // edit queues the file for a normal rescore (see applyReviewFieldEdit).
   'aggregatorStars',
+  // scoreProvenance (BRO-6052): 'page-parsed' ONLY, on a body-less file an LLM method label
+  // (llm-v6, anchored-v6) relabelled before BRO-5055. The label hid that the star was read off the
+  // outlet's own page, so the rebuild treats it as aggregator-relayed and drops it. The plan's
+  // description must name the pre-relabel scoreSource recovered from review-texts history.
+  'scoreProvenance',
 ];
 
 // True when a record's syndication pointer names the record's own file
@@ -251,6 +256,14 @@ const FIELD_VALUE_CHECKS = {
     return record && record.aggregatorStarsSource
       ? 'aggregatorStars: carries an aggregatorStarsSource (stars read from a page); only sourceless stars may be cleared'
       : null;
+  },
+  scoreProvenance: (v, record) => {
+    if (v !== 'page-parsed') return "scoreProvenance: a plan may only write 'page-parsed'";
+    if (record.scoreProvenance) return 'scoreProvenance: already stamped';
+    if (typeof record.fullText === 'string' && record.fullText.trim().length >= 200) return 'scoreProvenance: the file has a body, provenance only matters for body-less files';
+    if (!(record.aggregatorStars || record.originalScore != null || typeof record.originalScoreNormalized === 'number')) return 'scoreProvenance: the file carries no star or score';
+    return /^(llm-v\d+|anchored-v\d+|manual-cleared-haiku-fallback)$/.test(record.scoreSource || '')
+      ? null : 'scoreProvenance: only a file whose scoreSource is an LLM method label (the BRO-5055 relabel) may be stamped';
   },
   // Excerpts: clear only (BRO-4251). Text written by a plan would bypass the
   // scraper's provenance; a wrong excerpt is removed, never rewritten.

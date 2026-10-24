@@ -754,3 +754,24 @@ test('aggregatorStars clear survives the real writer and leaves the file queued 
   const refilled = JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
   assert.equal(refilled.aggregatorStars == null, true, 'a sourceless refill must not undo the approved clear');
 });
+
+test('scoreProvenance: stamps page-parsed on a body-less LLM-relabelled file only (BRO-6052)', () => {
+  const rec = { outletId: 'thestage', originalScore: 60, scoreSource: 'llm-v6', fullText: null };
+  const res = applyReviewFieldEdit(rec, { field: 'scoreProvenance', oldValue: null, newValue: 'page-parsed' }, stamp);
+  assert.equal(res.ok, true, res.reason);
+  assert.equal(res.record.scoreProvenance, 'page-parsed');
+  const { bodylessScoreProvenance } = require('./review-guards');
+  assert.equal(bodylessScoreProvenance(rec), 'aggregator-inherited');
+  assert.equal(bodylessScoreProvenance(res.record), 'page-parsed');
+  assert.equal(rec.scoreProvenance, undefined, 'input record is not mutated');
+});
+
+test('scoreProvenance: refuses other values, true aggregator sources, bodies, scoreless and stamped files', () => {
+  const base = { originalScore: 60, scoreSource: 'llm-v6', fullText: null };
+  const edit = (rec, newValue = 'page-parsed', oldValue = null) => applyReviewFieldEdit(rec, { field: 'scoreProvenance', oldValue, newValue }, stamp);
+  assert.equal(edit(base, 'aggregator-inherited').ok, false);
+  assert.equal(edit({ ...base, scoreSource: 'london-box-office' }).ok, false);
+  assert.equal(edit({ ...base, fullText: 'x'.repeat(300) }).ok, false);
+  assert.equal(edit({ originalScore: null, scoreSource: 'llm-v6' }).ok, false);
+  assert.equal(edit({ ...base, scoreProvenance: 'aggregator-inherited' }, 'page-parsed', 'aggregator-inherited').ok, false);
+});
