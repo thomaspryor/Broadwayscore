@@ -64,12 +64,15 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
   const tmpFile = path.join('/tmp', `tr-${show.id}.pdf`);
   let notPdf = null;
   let gotPdf = false;
-  for (const url of pdfUrlVariants(pdfUrl)) {
+  const pdfUrls = pdfUrlVariants(pdfUrl);
+  const lastUrl = pdfUrls[pdfUrls.length - 1];
+  for (const url of pdfUrls) {
     try {
       // Resolve any redirects first — /archive/volume/ redirects to /archive/issue/
       execSync(`curl -s -L -o "${tmpFile}" -b "PHPSESSID=${phpSession.value}" "${url}"`, { timeout: 30000 });
     } catch (e) {
       console.log(`  PDF download failed: ${e.message}`);
+      if (url !== lastUrl) continue;
       probeNote(show.id, { pdf: { failed: 'download' } });
       return [];
     }
@@ -581,7 +584,8 @@ async function main() {
         continue;
       }
 
-      const outletId = resolveSplitOutletByCritic(getOutletId(review.outlet), review.critic);
+      const parentOutletId = getOutletId(review.outlet);
+      const outletId = resolveSplitOutletByCritic(parentOutletId, review.critic);
       const outletDisplay = getRegistryDisplayName(outletId) || review.outlet;
       const filename = makeFilename(outletId, review.critic);
       const filepath = path.join(showDir, filename);
@@ -589,6 +593,13 @@ async function main() {
       // Check for existing file — both exact match and fuzzy (accent/alias variants)
       const fileExists = fs.existsSync(filepath);
       const existingVariant = findExistingReviewFile(showDir, outletId, review.critic);
+      // The same review may still sit under the parent label (daily-mail for a
+      // Mail on Sunday critic) until the outlet-mismatch heal moves it: held, not new.
+      if (parentOutletId !== outletId && findExistingReviewFile(showDir, parentOutletId, review.critic)) {
+        skippedCount++;
+        heldCount++;
+        continue;
+      }
       if ((fileExists || existingVariant) && !noSkipExisting) {
         skippedCount++;
         heldCount++;

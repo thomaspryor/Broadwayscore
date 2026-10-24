@@ -77,6 +77,15 @@ test('PDF-era links outside the window never null a closed show (dates can be wr
   assert.equal(windowFit(only.link, pressNightWindow(show)), 'out');
 });
 
+test('closed show: an out-of-window regional result is no pick, an unknown venue is kept', () => {
+  const link = 'https://www.theatrerecord.com/archive/volume/40/dest/05_pride_and_prejudice';
+  const show = { title: 'Pride and Prejudice', venue: 'Criterion Theatre', openingDate: '2021-12-01', status: 'closed' };
+  const regional = { title: 'Pride and Prejudice', venue: 'Storyhouse, Chester', link };
+  assert.equal(pickTrProduction([regional], show, { isLondonVenue }), null);
+  const unknown = { title: 'Pride and Prejudice', venue: '', link };
+  assert.equal(pickTrProduction([unknown], show, { isLondonVenue }), unknown);
+});
+
 test('trTitleMatches accepts a TR tagline after a colon, and nothing looser', () => {
   assert.equal(trTitleMatches('CURTAINS: A MUSICAL WHODUNNIT', 'Curtains'), true);
   assert.equal(trTitleMatches('Curtains', 'Curtains'), true);
