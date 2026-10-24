@@ -90,3 +90,14 @@ test('toGhRuns maps the API shape and keeps null as null', () => {
   assert.equal(a.durationMin, 3);
   assert.equal(b.conclusion, null);
 });
+
+test('a gha run that had not ended an hour ago is unfinished in the hour-earlier check', () => {
+  // Two 3-min runs: the newest started 1.5h ago and ended 1.4h ago, the older 8h ago. Both ended before "now-1h",
+  // so they confirm. A run that ends 30 min ago must not count as finished at now-1h.
+  const late = { startMs: ago(1.2), endMs: ago(0.5), durationMin: 3, conclusion: 'success' };
+  const old = { startMs: ago(8), endMs: ago(7.9), durationMin: 3, conclusion: 'success' };
+  const c = h.confirmedBreaches({ ...healthy(), ghRuns: [late, old] });
+  assert.ok(c.now.breaches.some((b) => b.cls === 'stand-down'));
+  assert.ok(!c.prev[0].breaches.some((b) => b.cls === 'stand-down'));
+  assert.ok(!c.confirmed.some((b) => b.cls === 'stand-down'));
+});

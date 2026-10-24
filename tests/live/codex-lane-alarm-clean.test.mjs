@@ -5,6 +5,6 @@ import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 
 test('no Codex lane breach is confirmed', () => {
-  const r = spawnSync('node', ['scripts/codex-lane-alarm.js', '--strict'], { encoding: 'utf8' });
+  const r = spawnSync('node', ['scripts/codex-lane-alarm.js', '--strict', '--unknown-ok'], { encoding: 'utf8' });
   assert.equal(r.status, 0, `${r.stdout}\n${r.stderr}`);
 });

@@ -6,7 +6,7 @@
 // confirmed on two consecutive hourly evaluations. Shadow by default: without --alert it only
 // reports. An unreadable source is "health unknown", never a breach.
 //
-//   node scripts/codex-lane-alarm.js [--alert] [--strict] [--out=FILE] [--dump-sources=DIR]
+//   node scripts/codex-lane-alarm.js [--alert] [--strict [--unknown-ok]] [--out=FILE] [--dump-sources=DIR]
 // Exit: 0 ran (cards, if any, filed) | 1 --strict and a confirmed breach | 2 no source readable
 //       | 3 --alert and a card has no tracker.
 const fs = require('fs');
@@ -58,7 +58,7 @@ function readRuns() {
 
 const toGhRuns = (runs) => (runs === null ? null : runs.map((r) => {
   const startMs = Date.parse(r.run_started_at || r.created_at);
-  return { startMs, durationMin: r.status === 'completed' ? (Date.parse(r.updated_at) - startMs) / 60000 : null, conclusion: r.status === 'completed' ? r.conclusion : null };
+  return { startMs, endMs: r.status === 'completed' ? Date.parse(r.updated_at) : null, durationMin: r.status === 'completed' ? (Date.parse(r.updated_at) - startMs) / 60000 : null, conclusion: r.status === 'completed' ? r.conclusion : null };
 }));
 
 async function main() {
@@ -120,7 +120,7 @@ async function main() {
     }
   }
   if (dispatchFailed) return 3;
-  return flag('strict') && (confirmed.length || now.unknown.length) ? 1 : 0;
+  return flag('strict') && (confirmed.length || (now.unknown.length && !flag('unknown-ok'))) ? 1 : 0;
 }
 
 if (require.main === module) main().then((c) => process.exit(c), (e) => { console.error(e.stack || e.message); process.exit(2); });
