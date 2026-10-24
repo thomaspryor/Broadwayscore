@@ -84,3 +84,14 @@ test('ScrapingDog: exhausted credits still report error', () => {
   assert.equal(row.status, 'error');
   assert.equal(row.message, '0k credits left (0%)');
 });
+
+// BRO-6105: validate-data.js writes baseline.totalReviews as reviews[].length;
+// the drift check must count the same way (_meta.stats.totalReviews differs).
+test('baseline drift check counts reviews like validate-data baseline writer', async () => {
+  const { readFileSync } = await import('node:fs');
+  const hc = readFileSync(new URL('./health-check.js', import.meta.url), 'utf8');
+  const block = hc.slice(hc.indexOf("runCheck('Sync: baseline drift'"));
+  assert.match(block.slice(0, 1500), /const currentReviews = Array\.isArray\(reviews\.reviews\) \? reviews\.reviews\.length/);
+  const vd = readFileSync(new URL('./validate-data.js', import.meta.url), 'utf8');
+  assert.match(vd, /return reviews\.length;/);
+});

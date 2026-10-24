@@ -948,7 +948,9 @@ function checkSync() {
     const showList = shows.shows || Object.values(shows).filter(s => s && s.id);
     const currentTotal = showList.length;
     const currentOpen = showList.filter(s => s.status === 'open').length;
-    const currentReviews = reviews._meta?.stats?.totalReviews || 0;
+    // Must count the same way validate-data.js writes the baseline (reviews[] length).
+    // _meta.stats.totalReviews counts a different population (BRO-6105).
+    const currentReviews = Array.isArray(reviews.reviews) ? reviews.reviews.length : (reviews._meta?.stats?.totalReviews || 0);
 
     const issues = [];
     let worstStatus = 'pass';
