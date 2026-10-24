@@ -14,6 +14,7 @@ const require = createRequire(import.meta.url);
 for (const [name, lib, envVar] of [
   ['brightdata-caps', '../../scripts/lib/brightdata-caps.js', 'BD_BREAKER_STATE_PATH'],
   ['scrapingdog-caps', '../../scripts/lib/scrapingdog-caps.js', 'SD_BREAKER_STATE_PATH'],
+  ['scrapingbee-caps', '../../scripts/lib/scrapingbee-caps.js', 'SB_BREAKER_STATE_PATH'],
 ]) {
   test(`${name}: state cache is refreshed when its timestamp is in the future`, () => {
     const caps = require(lib);

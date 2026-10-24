@@ -209,7 +209,7 @@ function _statePath(env = process.env) {
 }
 
 function readBreakerState(env = process.env, now = Date.now()) {
-  if (_stateCache.value !== null && now - _stateCache.at < STATE_CACHE_MS) return _stateCache.value;
+  if (_stateCache.value !== null && _stateCache.at <= now && now - _stateCache.at < STATE_CACHE_MS) return _stateCache.value;
   let value = null;
   try { value = JSON.parse(fs.readFileSync(_statePath(env), 'utf8')); } catch { value = {}; }
   _stateCache = { at: now, value };
