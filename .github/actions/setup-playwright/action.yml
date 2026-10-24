@@ -6,6 +6,10 @@ inputs:
     description: 'Browsers to install (space-separated, e.g., "chromium" or "chromium webkit")'
     required: false
     default: 'chromium'
+  optional:
+    description: 'true = a failed install is a warning, not a job failure (BRO-6021). For jobs where Playwright is only a last-resort fetcher; the caller must cope with a missing browser.'
+    required: false
+    default: 'false'
 
 runs:
   using: composite
@@ -22,6 +26,7 @@ runs:
       env:
         DEBIAN_FRONTEND: noninteractive
         INPUT_BROWSERS: ${{ inputs.browsers }}
+        INPUT_OPTIONAL: ${{ inputs.optional }}
       run: |
         log=$(mktemp)
         if [ "${{ steps.playwright-cache.outputs.cache-hit }}" != "true" ]; then
@@ -80,6 +85,15 @@ runs:
                && timeout 60 node -e "require('playwright').chromium.launch().then(b=>b.close()).then(()=>process.exit(0),e=>{console.error(e.message);process.exit(1)})"; then
               echo "::warning::install-deps failed but chromium launches; continuing (BRO-5818)"
               break
+            fi
+            if [ "${INPUT_OPTIONAL}" = "true" ]; then
+              # BRO-6021: gather shards lost all discovery to an apt mirror stall
+              # although Playwright is only their last-resort fetcher. Drop the
+              # partial browser dir so the post-job cache save (key shared by every
+              # caller) finds nothing and cannot poison later fail-closed runs.
+              rm -rf "$HOME/.cache/ms-playwright"
+              echo "::warning::Playwright unavailable, tier skipped (BRO-6021)"
+              exit 0
             fi
             exit 1
           fi

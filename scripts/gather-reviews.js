@@ -178,6 +178,12 @@ let chromium, playwright;
 try {
   playwright = require('playwright');
   chromium = playwright.chromium;
+  // BRO-6021: the module loads after npm ci even when the browser download or
+  // install-deps failed; a truthy chromium would then skip the HTTP fallbacks.
+  if (!fs.existsSync(chromium.executablePath())) {
+    console.warn('Playwright browser binary missing; using HTTP fallbacks');
+    chromium = null;
+  }
 } catch (e) {
   // Playwright not available - will fall back to HTTP scraping
 }

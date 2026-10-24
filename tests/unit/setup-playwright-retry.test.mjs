@@ -39,7 +39,7 @@ function installScript({ cacheHit = false } = {}) {
 // npx stub: exit code per call taken from $NPX_CODES (space-separated).
 // Both stubs append to $ORDER so a test can check what ran first; sudo also
 // records its stdin (the apt conf body piped into `sudo tee`).
-function runWith(codes, { cacheHit = false, sudoTeeFail = false, nodeCode = null } = {}) {
+function runWith(codes, { cacheHit = false, sudoTeeFail = false, nodeCode = null, optional = '' } = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pw-retry-'));
   // node stub: stands in for the chromium launch probe (BRO-5818).
   if (nodeCode !== null) fs.writeFileSync(path.join(dir, 'node'), `#!/bin/bash\necho "node probe" >> "${path.join(dir, 'order')}"\nexit ${nodeCode}\n`, { mode: 0o755 });
@@ -62,7 +62,7 @@ exit 0
   fs.writeFileSync(script, installScript({ cacheHit }));
   const r = spawnSync('bash', ['-e', script], {
     encoding: 'utf8',
-    env: { ...process.env, PATH: `${dir}:${process.env.PATH}`, NPX_CODES: codes, INPUT_BROWSERS: 'chromium', SUDO_TEE_FAIL: sudoTeeFail ? '1' : '' },
+    env: { ...process.env, PATH: `${dir}:${process.env.PATH}`, NPX_CODES: codes, INPUT_BROWSERS: 'chromium', INPUT_OPTIONAL: optional, HOME: dir, SUDO_TEE_FAIL: sudoTeeFail ? '1' : '' },
   });
   const calls = Number(fs.existsSync(counter) ? fs.readFileSync(counter, 'utf8') : 0);
   const log = fs.existsSync(order) ? fs.readFileSync(order, 'utf8') : '';
@@ -142,4 +142,29 @@ test('cache-miss + both attempts fail: never probes, still exit 1', () => {
   const r = runWith('124 124', { cacheHit: false, nodeCode: 0 });
   assert.equal(r.status, 1, r.out);
   assert.doesNotMatch(r.order, /node probe/);
+});
+
+// BRO-6021: gather shards died on an apt mirror stall although Playwright is
+// only their last-resort fetcher. optional=true turns the final failure into a
+// warning; the default stays fatal. The partial browser dir is removed so the
+// post-job cache save (key shared by every caller) cannot store it.
+for (const cacheHit of [false, true]) {
+  test(`optional=true + both attempts fail: warning, exit 0, partial cache dropped (cache-hit=${cacheHit})`, () => {
+    const r = runWith('124 124', { cacheHit, optional: 'true', nodeCode: 1 });
+    assert.equal(r.status, 0, r.out);
+    assert.equal(r.calls, 2);
+    assert.match(r.out, /::warning::Playwright unavailable, tier skipped \(BRO-6021\)/);
+  });
+}
+
+test('optional=false (default) + both attempts fail stays fatal', () => {
+  assert.equal(runWith('124 124', { optional: 'false' }).status, 1);
+  assert.equal(runWith('124 124').status, 1);
+});
+
+test('optional=true + cache-hit + chromium launches: the BRO-5818 rescue wins first', () => {
+  const r = runWith('124 124', { cacheHit: true, optional: 'true', nodeCode: 0 });
+  assert.equal(r.status, 0, r.out);
+  assert.match(r.out, /chromium launches; continuing \(BRO-5818\)/);
+  assert.doesNotMatch(r.out, /tier skipped/);
 });
