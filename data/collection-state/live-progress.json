@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-24T09:31:47.230Z",
-  "processed": 73,
-  "failed": 52,
-  "successRate": "58.4%",
+  "updatedAt": "2026-10-24T10:02:34.701Z",
+  "processed": 146,
+  "failed": 69,
+  "successRate": "67.9%",
   "tierBreakdown": {
-    "playwright": 42,
+    "playwright": 81,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingdog": 5,
-    "scrapingbee": 1,
-    "brightdata": 0,
+    "scrapingdog": 9,
+    "scrapingbee": 3,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 19
+    "archive": 40
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-10-24T08:16:20.349Z",
@@ -33,6 +33,28 @@
       "event": "bb-session",
       "session": "879c9098",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-24T09:55:02.433Z",
+      "event": "bb-session",
+      "session": "b49386d4",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-24T09:55:02.943Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-24T09:56:58.742Z",
+      "event": "bb-session",
+      "session": "807a6956",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-24T09:56:59.189Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
