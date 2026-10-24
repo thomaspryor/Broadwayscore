@@ -320,7 +320,12 @@
     "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "small-off-broadway-2026/culturesauce--thom-geier.json",
     "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json",
-    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/me-ticket--unknown.json"
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/me-ticket--unknown.json",
+    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
+    "ilford-boy-west-end-2026/telegraph--fiona-mountford.json",
+    "dance-is-not-for-us-off-west-end-2026/thereviewshub--scott-matthewman.json",
+    "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
+    "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json"
   ],
   "failed": [
     "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
@@ -354,7 +359,6 @@
     "a-few-good-men-2026/times-square-chronicles--genevieve-rafter-keddy.json",
     "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
     "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
-    "ilford-boy-west-end-2026/telegraph--fiona-mountford.json",
     "triumph-off-west-end-2026/thestage--david-benedict.json",
     "some-woman-west-end-2026/thestage--sam-marlowe.json",
     "some-woman-west-end-2026/tixculture--unknown.json",
@@ -500,8 +504,19 @@
     "small-off-broadway-2026/washpost--unknown.json",
     "the-pianist-off-west-end-2026/jewishnews--unknown.json",
     "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
-    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
-    "operation-mincemeat-tour-2026/broadwayworld--angela-lin.json"
+    "operation-mincemeat-tour-2026/broadwayworld--angela-lin.json",
+    "derren-brown-only-human-west-end-2026/broadwayworld--unknown.json",
+    "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
+    "triumph-off-west-end-2026/british-theatre--keith-mckenna.json",
+    "triumph-off-west-end-2026/closeupculture--unknown.json",
+    "dog-mom-off-west-end-2026/reviewsgate--william-russell.json",
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "dirty-dancing-the-classic-story-on-stage-west-end-2026/soundsandstage--unknown.json",
+    "dirty-dancing-the-classic-story-on-stage-west-end-2026/sportswhereiam--unknown.json",
+    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
+    "some-woman-west-end-2026/guardian--unknown.json",
+    "double-bill-tell-me-straight-and-aggy-off-west-end-2026/soundsandstage--unknown.json",
+    "double-bill-tell-me-straight-and-aggy-off-west-end-2026/whatnightout--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -664,7 +679,10 @@
       "return-of-the-godz-west-end-2026/londontheatre1--ben-ross.json",
       "high-society-west-end-2026/londontheatredirect--sian-mcbride.json",
       "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
-      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/me-ticket--unknown.json"
+      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/me-ticket--unknown.json",
+      "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
+      "dance-is-not-for-us-off-west-end-2026/thereviewshub--scott-matthewman.json",
+      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json"
     ],
     "amp": [
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
@@ -720,7 +738,8 @@
       "the-humanities-regional-2026/broadwayworld--unknown.json",
       "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-off-west-end-2026/broadwayworld--cindy-marcolina.json",
       "marlise-off-broadway-2026/broadwayworld--unknown.json",
-      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json"
+      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
+      "ilford-boy-west-end-2026/telegraph--fiona-mountford.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -825,11 +844,12 @@
       "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json",
       "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "small-off-broadway-2026/culturesauce--thom-geier.json"
+      "small-off-broadway-2026/culturesauce--thom-geier.json",
+      "angels-bone-west-end-2026/sunday-times--rebecca-franks.json"
     ]
   },
   "startTime": "2026-10-23T19:47:36.243Z",
-  "lastProcessed": "wicked-west-end-2021/ign--brian-formo.json",
+  "lastProcessed": "double-bill-tell-me-straight-and-aggy-off-west-end-2026/whatnightout--unknown.json",
   "log": [
     {
       "t": "2026-10-23T22:13:23.728Z",
@@ -863,9 +883,71 @@
       "t": "2026-10-23T22:34:46.234Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-24T00:31:11.460Z",
+      "event": "bb-session",
+      "session": "dff52feb",
+      "url": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-BEING-HUMAN-Ap"
+    },
+    {
+      "t": "2026-10-24T00:31:27.031Z",
+      "event": "bb-session",
+      "session": "790758b5",
+      "url": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-BEING-HUMAN-Ap"
+    },
+    {
+      "t": "2026-10-24T00:35:17.217Z",
+      "event": "bb-session",
+      "session": "87985bc0",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-24T00:35:25.003Z",
+      "event": "bb-session",
+      "session": "9af8e9bf",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-24T00:36:12.777Z",
+      "event": "bb-session",
+      "session": "b6a9b858",
+      "url": "https://soundsandstage.com/show/dirty-dancing"
+    },
+    {
+      "t": "2026-10-24T00:37:02.400Z",
+      "event": "bb-session",
+      "session": "0848af70",
+      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
+    },
+    {
+      "t": "2026-10-24T00:37:12.437Z",
+      "event": "bb-session",
+      "session": "a4d2e396",
+      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
+    },
+    {
+      "t": "2026-10-24T00:38:06.761Z",
+      "event": "bb-session",
+      "session": "fbd1383d",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-24T00:38:14.179Z",
+      "event": "bb-session",
+      "session": "725b6ff8",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-24T00:38:56.414Z",
+      "event": "bb-session",
+      "session": "76884b96",
+      "url": "https://soundsandstage.com/show/double-bill-tell-me-straight-aggy-may"
     }
   ],
   "recoveredAfterFailure": [
-    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/ground--unknown.json"
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/ground--unknown.json",
+    "ilford-boy-west-end-2026/telegraph--fiona-mountford.json",
+    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json"
   ]
 }
