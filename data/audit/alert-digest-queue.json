@@ -1289,7 +1289,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-24T18:45:20.909Z"
+    "queuedAt": "2026-10-24T18:54:08.170Z"
   },
   {
     "conditionKey": "review-gap:opening-window:murder-cathedral-off-west-end-2026",
@@ -1303,21 +1303,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-24T18:45:21.021Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
-    "title": "Review gap — \"Queeney Todd: The Demon Bottom of Fleet Street\" missing 1 cited review(s)",
-    "description": "Queeney Todd: The Demon Bottom of Fleet Street (queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-24T18:45:21.114Z"
+    "queuedAt": "2026-10-24T18:54:08.230Z"
   },
   {
     "conditionKey": "t1-gaps:needs-manual-recovery",
@@ -1331,7 +1317,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-24T18:45:33.210Z"
+    "queuedAt": "2026-10-24T18:54:15.236Z"
   },
   {
     "conditionKey": "t1-coverage:new-gaps-24h",
@@ -1386,6 +1372,20 @@
         "value": "gh workflow run gather-reviews.yml -f shows=\"the-imaginary-invalid-2026\" -f max_tier=3 -f aggregators_only=false"
       }
     ],
-    "queuedAt": "2026-10-24T18:48:17.719Z"
+    "queuedAt": "2026-10-24T18:58:10.650Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
+    "title": "Review gap — \"Queeney Todd: The Demon Bottom of Fleet Street\" missing 1 cited review(s)",
+    "description": "Queeney Todd: The Demon Bottom of Fleet Street (queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T18:45:21.114Z"
   }
 ]

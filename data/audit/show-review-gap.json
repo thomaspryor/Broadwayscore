@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-24T18:45:20.421Z",
-  "windowDays": 1095,
-  "targets": 624,
-  "auditedThisRun": 16,
-  "carriedForward": 787,
+  "generatedAt": "2026-10-24T18:54:07.708Z",
+  "windowDays": 21,
+  "targets": 1,
+  "auditedThisRun": 1,
+  "carriedForward": 801,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 403,
-    "missingCurrentRun": 558,
+    "withGap": 400,
+    "missingCurrentRun": 548,
     "totalCitedNoUrl": 3,
     "totalFlaggedMisses": 715,
     "totalRecoverable": 2,
@@ -26091,7 +26091,9 @@
       "category": "tour",
       "aggregatorArticles": [
         "https://playbill.com/article/reviews-see-what-critics-have-to-say-about-boop-the-betty-boop-musical-in-chicago",
-        "https://playbill.com/article/read-the-reviews-for-boop-the-musical-on-broadway"
+        "https://playbill.com/article/read-the-reviews-for-boop-the-musical-on-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
+        "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-BETTY-BOOP-MUSICAL-Opens-Pre-Broadway-Run-in-Chicago-20231207"
       ],
       "aggregatorListedUrls": [
         "https://chicagoconcertreviews.com/2023/12/06/boop-cibc-theatre/",
@@ -26392,13 +26394,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 264,
+        "count": 814,
         "byReason": {
-          "aggregator-internal-nav": 146,
-          "not-http-url": 11,
+          "aggregator-internal-nav": 581,
+          "not-http-url": 84,
           "production-database-listing": 57,
-          "aggregator-section-root": 8,
-          "non-review-host": 41,
+          "aggregator-section-root": 16,
+          "non-review-host": 75,
           "bare-host": 1
         }
       },
@@ -26411,6 +26413,14 @@
         {
           "url": "https://playbill.com/article/read-the-reviews-for-boop-the-musical-on-broadway",
           "publishDate": "2025-04-07"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
+          "publishDate": "2025-04-07"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-BETTY-BOOP-MUSICAL-Opens-Pre-Broadway-Run-in-Chicago-20231207",
+          "publishDate": "2023-12-07"
         }
       ],
       "automatedExcludedListed": 0,
@@ -26771,7 +26781,7 @@
         "liveCount": 1,
         "candidateCount": 7
       },
-      "computedAt": "2026-10-24T14:39:26.381Z"
+      "computedAt": "2026-10-24T18:54:07.708Z"
     },
     {
       "showId": "brainiac-live-west-end-2026",
