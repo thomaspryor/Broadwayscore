@@ -28,7 +28,7 @@ const { pickTrProduction } = require('./lib/tr-production-pick');
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
 const { resolveTheatreRecordWriteTarget, mergeTheatreRecordIntoExisting } = require('./lib/review-text-identity');
 
-const { DATE_SHORT, parseShortDate, parsePdfReviews, parseRawPdfReviews, maskPdfText } = require('./lib/tr-pdf-parse');
+const { DATE_SHORT, parseShortDate, parsePdfReviews, parseRawPdfReviews, parseDefaultPdfReviews, mergeDefaultReviews, maskPdfText } = require('./lib/tr-pdf-parse');
 const { foldDiacritics } = require('./lib/title-match');
 
 // BRO-6097 coverage probe: per-show outcome (counts and reasons only, never
@@ -114,9 +114,16 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
 
   const rawReviews = parseRawPdfReviews(text, show.title);
   try { dumpPdfText(show.id, 'raw', text, show.title); } catch (_) {}
-  if (dumpDir) {
-    try { dumpPdfText(show.id, 'default', execSync(`pdftotext "${tmpFile}" -`, { maxBuffer: 10 * 1024 * 1024 }).toString(), show.title); } catch (_) {}
+  // Plain column-order mode (BRO-6097): recovers the pre-2020 reviews that
+  // neither -layout nor -raw can pair into outlet + date + critic.
+  let defaultText = '';
+  try { defaultText = execSync(`pdftotext "${tmpFile}" -`, { maxBuffer: 10 * 1024 * 1024 }).toString(); } catch (e) {
+    console.log(`  pdftotext (default) failed: ${e.message}`);
   }
+  // Kill switch: TR_DEFAULT_MODE_DISABLED=true restores the layout + raw behaviour.
+  const defaultReviews = process.env.TR_DEFAULT_MODE_DISABLED === 'true' ? [] : parseDefaultPdfReviews(defaultText, show.title);
+  if (dumpDir && defaultText) { try { dumpPdfText(show.id, 'default', defaultText, show.title); } catch (_) {} }
+  probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { defaultReviews: defaultReviews.length }) });
   probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { rawReviews: rawReviews.length }) });
   if (rawReviews.length > 0) {
     console.log(`  Extracted ${rawReviews.length} reviews (-raw mode, title-matched)`);
@@ -128,6 +135,11 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
         seen.add(`${r.outlet}|${r.critic}`);
       }
     }
+  }
+
+  if (defaultReviews.length > 0) {
+    console.log(`  Extracted ${defaultReviews.length} reviews (default mode, title-matched)`);
+    reviews = mergeDefaultReviews(reviews, defaultReviews);
   }
 
   probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { merged: reviews.length }) });

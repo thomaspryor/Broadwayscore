@@ -15,7 +15,7 @@ function parseShortDate(dateStr) {
   // "21.12.17" → "2017-12-21", "15.03.99" → "1999-03-15"
   const [d, m, y] = dateStr.split('.');
   const yearNum = parseInt(y, 10);
-  const fullYear = yearNum >= 80 ? 1900 + yearNum : (yearNum > 30 ? 1900 + yearNum : 2000 + yearNum);
+  const fullYear = y.length === 4 ? yearNum : yearNum >= 80 ? 1900 + yearNum : (yearNum > 30 ? 1900 + yearNum : 2000 + yearNum);
   return `${fullYear}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
 }
 
@@ -254,7 +254,6 @@ function parsePdfReviews(text, showTitle, stats) {
 function parseRawPdfReviews(text, showTitle) {
   const lines = text.split('\n');
   const allReviews = [];
-  const titleLower = showTitle.toLowerCase();
 
   let i = 0;
   while (i < lines.length) {
@@ -293,7 +292,13 @@ function parseRawPdfReviews(text, showTitle) {
     i++;
   }
 
-  // Filter: keep only reviews that are actually ABOUT our show
+  return finishPdfReviews(filterByTitle(allReviews, showTitle));
+}
+
+// Keep only reviews ABOUT the show: raw and default modes extract every
+// review in the volume, so the rest are other productions'.
+function filterByTitle(allReviews, showTitle) {
+  const titleLower = showTitle.toLowerCase();
   // Raw mode extracts every review from the PDF — most are for other shows.
   // Multi-column PDFs break words across lines, so full-phrase matching is unreliable.
   // Strategy: exact phrase match OR significant-word overlap with theatre context.
@@ -373,7 +378,10 @@ function parseRawPdfReviews(text, showTitle) {
     // (multi-column contamination from adjacent productions in the same PDF page)
     return false;
   });
+  return cleaned;
+}
 
+function finishPdfReviews(cleaned) {
   // Convert outlet names to Title Case
   return cleaned.map(r => ({
     outlet: r.outlet.split(/[\s.]+/)
@@ -385,6 +393,96 @@ function parseRawPdfReviews(text, showTitle) {
     critic: r.critic || null,
     fullText: r.fullText
   }));
+}
+
+// BRO-6097: plain `pdftotext` (no -layout, no -raw) reads the 3-column
+// pre-2020 pages column by column, so a review's outlet caption, headline,
+// date and critic are NOT adjacent lines as -raw expects: the date can sit up
+// to DEFAULT_DATE_WINDOW lines below the caption and the critic a few lines
+// below the date. Captions are limited to KNOWN_OUTLETS_UPPER so a caps
+// headline or production title cannot open a review.
+const DEFAULT_DATE_WINDOW = 8;
+const DEFAULT_CRITIC_WINDOW = 10;
+const DEFAULT_MAX_CHARS = 8000;
+const CRITIC_PARTICLES = new Set(['van', 'von', 'de', 'der', 'den', 'di', 'da', 'del', 'du', 'le', 'la', 'bin', 'al', 'ap', 'ten', 'ter']);
+// Venue and heading words that fit the name shape ("Theatre Royal Haymarket").
+const NOT_A_NAME = new Set(['theatre', 'theater', 'royal', 'playhouse', 'duke', 'palace', 'hall', 'studio', 'studios', 'arts',
+  'centre', 'center', 'street', 'road', 'park', 'garden', 'gardens', 'opera', 'house', 'square', 'court', 'globe', 'stage',
+  'london', 'hotel', 'club', 'room', 'vic', 'bridge', 'wharf', 'lane', 'online', 'review', 'reviews', 'index', 'cast',
+  'creative', 'previews', 'press', 'night', 'closes', 'opens', 'running', 'time', 'performed', 'musical', 'play', 'revival']);
+const NAME_TOKEN = /^[A-Z][A-Za-z'’.-]+$/;
+const isCriticLine = (l) => {
+  const t = l.split(' ');
+  if (t.length < 2 || t.length > 5 || l === l.toUpperCase()) return false;
+  if (!NAME_TOKEN.test(t[0]) || !NAME_TOKEN.test(t[t.length - 1])) return false;
+  return t.every(w => (NAME_TOKEN.test(w) || CRITIC_PARTICLES.has(w)) && !NOT_A_NAME.has(w.toLowerCase()));
+};
+// A short caps or unpunctuated line right before another review's date is that
+// review's headline or caption, not this review's prose.
+const isHeadlineish = (l) => l.length <= 60 && !/[.!?"”]$/.test(l);
+
+function parseDefaultPdfReviews(text, showTitle) {
+  const lines = text.split('\n').map(l => l.trim());
+  const markers = [];
+  for (let i = 0; i < lines.length; i++) {
+    if (!KNOWN_OUTLETS_UPPER.has(lines[i])) continue;
+    for (let k = i + 1; k <= Math.min(i + DEFAULT_DATE_WINDOW, lines.length - 1); k++) {
+      if (KNOWN_OUTLETS_UPPER.has(lines[k])) break;
+      if (isDateLine(lines[k])) { markers.push({ start: i, dateIdx: k }); break; }
+    }
+  }
+
+  const all = [];
+  markers.forEach((m, idx) => {
+    let end = idx + 1 < markers.length ? markers[idx + 1].start : lines.length;
+    // Any further date line is another review's header (an outlet we do not
+    // list, or a caption whose date sits beyond the window): cut there and drop
+    // the caption and headline lines that precede it.
+    for (let k = m.dateIdx + 1; k < end; k++) {
+      if (!isDateLine(lines[k])) continue;
+      let cut = k;
+      for (let n = 0; n < 6 && cut > m.dateIdx + 1 && (!lines[cut - 1] || isHeadlineish(lines[cut - 1])); n++) cut--;
+      end = cut;
+      break;
+    }
+    let critic = '';
+    let criticIdx = -1;
+    for (let k = m.dateIdx + 1; k < Math.min(m.dateIdx + 1 + DEFAULT_CRITIC_WINDOW, end); k++) {
+      if (isCriticLine(lines[k])) { critic = lines[k]; criticIdx = k; break; }
+    }
+    const body = lines.slice(m.start + 1, end)
+      .map((l, off) => ({ l, abs: m.start + 1 + off }))
+      .filter(({ l, abs }) => l && abs !== m.dateIdx && abs !== criticIdx && !/^(Index|Reviews|\d+)$/.test(l))
+      .map(({ l }) => l);
+    const fullText = cutAtProductionHeader(body).join('\n').trim();
+    if (fullText.length > 200 && fullText.length < DEFAULT_MAX_CHARS) {
+      all.push({ outlet: lines[m.start], date: lines[m.dateIdx], critic, fullText });
+    }
+  });
+  return finishPdfReviews(filterByTitle(all, showTitle));
+}
+
+// "14.10.16" and "14 October 2016" both reduce to the ISO day (unparseable
+// dates stay as written, so they only dedupe against themselves).
+const dateKey = (d) => {
+  if (DATE_SHORT.test(d)) return parseShortDate(d);
+  const t = Date.parse(`${d} UTC`);
+  return isNaN(t) ? d : new Date(t).toISOString().slice(0, 10);
+};
+const lastName = (c) => String(c || '').trim().split(/\s+/).pop().toLowerCase();
+
+// Add default-mode reviews to the layout/raw ones. Same outlet + day is the
+// same review when either side lacks a critic or the surnames agree; two named
+// critics from one outlet on one day are both kept.
+function mergeDefaultReviews(existing, incoming) {
+  const out = existing.slice();
+  for (const r of incoming) {
+    const k = dateKey(r.date);
+    const dup = out.some(e => e.outlet === r.outlet && dateKey(e.date) === k
+      && (!e.critic || !r.critic || lastName(e.critic) === lastName(r.critic)));
+    if (!dup) out.push(r);
+  }
+  return out;
 }
 
 // BRO-6097: layout skeleton of a paid TR issue. Short lines (outlet, date,
@@ -411,4 +509,7 @@ module.exports = {
   hasProductionHeaderBleed,
   parsePdfReviews,
   parseRawPdfReviews,
+  parseDefaultPdfReviews,
+  mergeDefaultReviews,
+  dateKey,
 };
