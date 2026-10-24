@@ -14,8 +14,10 @@ const {
 } = require('./date-guard.js');
 
 // slot -> how to search and file it. `domain` is the SERP site: scope (the
-// held reviews' real hosts: Times is thetimes.com now, The Observer lives
-// under theguardian.com/theobserver, Time Out London under timeout.com/london).
+// held reviews' real hosts; the SERP matcher compares bare hosts, so no path
+// suffix). `serp: false` = never searched: Observer reviews sit on
+// theguardian.com/stage or observer.co.uk, so a Guardian-host hit cannot be
+// told from a Guardian review).
 // `outletId` is passed to ingest verbatim so the file lands under the same
 // identity as the reviews we already hold. `ids` = outletIds that fill the slot.
 const MAJOR = [
@@ -26,9 +28,9 @@ const MAJOR = [
   { slot: 'ft', outletId: 'financialtimes', ids: ['financialtimes'], domain: 'ft.com', tier: 1 },
   { slot: 'stage', outletId: 'thestage', ids: ['thestage'], domain: 'thestage.co.uk', tier: 2 },
   { slot: 'whatsonstage', outletId: 'whatsonstage', ids: ['whatsonstage'], domain: 'whatsonstage.com', tier: 2 },
-  { slot: 'timeout', outletId: 'timeout-london', ids: ['timeout-london'], domain: 'timeout.com/london', tier: 2 },
+  { slot: 'timeout', outletId: 'timeout-london', ids: ['timeout-london'], domain: 'timeout.com', tier: 2 },
   { slot: 'independent', outletId: 'independent', ids: ['independent'], domain: 'independent.co.uk', tier: 2 },
-  { slot: 'observer', outletId: 'observer', ids: ['observer'], domain: 'theguardian.com/theobserver', tier: 2 },
+  { slot: 'observer', outletId: 'observer', ids: ['observer'], domain: 'theguardian.com', tier: 2, serp: false },
   { slot: 'artsdesk', outletId: 'artsdesk', ids: ['artsdesk'], domain: 'theartsdesk.com', tier: 3 },
   { slot: 'daily-mail', outletId: 'daily-mail', ids: ['daily-mail', 'mail-on-sunday'], domain: 'dailymail.co.uk', tier: 3 },
 ];
@@ -140,7 +142,8 @@ function matchWosPosts(rows, shows, posts) {
  * carry credits 0 and are one request each. Rows with no price (browserbase, memo
  * skips, breaker rows) add nothing.
  */
-function ledgerUsd(rows, pricing) {
+function ledgerUsd(rows, pricing, sinceIso = null) {
+  if (sinceIso) rows = rows.filter(r => r.ts >= sinceIso);
   let usd = 0;
   const byProvider = {};
   for (const r of rows) {
@@ -159,23 +162,26 @@ function ledgerUsd(rows, pricing) {
  * LLM scoring dollars already incurred and projected for the files this run wrote.
  */
 class CostTally {
-  constructor({ capUsd, scoringUsdPerReview = 0.04, reserveUsd = 0 }) {
+  constructor({ capUsd, scoringUsdPerReview = 0.04, reserveUsd = 0, priorScraperUsd = 0, priorWritten = 0 }) {
     this.capUsd = capUsd;
     this.scoringUsdPerReview = scoringUsdPerReview;
     this.reserveUsd = reserveUsd; // held back for work that follows (scoring of what is already written)
-    this.scraperUsd = 0;
+    this.priorScraperUsd = priorScraperUsd; // earlier runs of this campaign
+    this.priorWritten = priorWritten;
+    this.runScraperUsd = 0;
     this.written = 0;
   }
-  setScraperUsd(usd) { this.scraperUsd = usd; }
+  get scraperUsd() { return this.priorScraperUsd + this.runScraperUsd; }
+  setScraperUsd(usd) { this.runScraperUsd = usd; }
   recordWritten(n = 1) { this.written += n; }
-  get projectedScoringUsd() { return this.written * this.scoringUsdPerReview; }
+  get projectedScoringUsd() { return (this.priorWritten + this.written) * this.scoringUsdPerReview; }
   get projectedTotalUsd() { return this.scraperUsd + this.projectedScoringUsd + this.reserveUsd; }
   /** True when one more slot (a search, plus a fetch and its scoring if it hits) could cross the cap. */
   wouldExceed(nextCallUsd) {
     return this.projectedTotalUsd + nextCallUsd + this.scoringUsdPerReview > this.capUsd;
   }
   line() {
-    return `COST TALLY scraper=$${this.scraperUsd.toFixed(3)} scoring(proj ${this.written} files)=$${this.projectedScoringUsd.toFixed(3)} total=$${this.projectedTotalUsd.toFixed(3)} cap=$${this.capUsd}`;
+    return `COST TALLY scraper=$${this.scraperUsd.toFixed(3)} scoring(proj ${this.priorWritten + this.written} files)=$${this.projectedScoringUsd.toFixed(3)} total=$${this.projectedTotalUsd.toFixed(3)} cap=$${this.capUsd}`;
   }
 }
 

@@ -94,3 +94,26 @@ test('CostTally: projects scoring, reserves, and stops before the cap', () => {
   assert.equal(t.wouldExceed(0.2), true);
   assert.match(t.line(), /^COST TALLY scraper=\$0\.300 .*cap=\$1$/);
 });
+
+test('SERP domains are bare hosts the scraper host matcher accepts; observer is never searched', () => {
+  const { domainMatchesExpected } = require('../lib/scraper.js');
+  for (const m of lib.MAJOR) {
+    if (m.serp === false) continue;
+    assert.equal(domainMatchesExpected(m.domain, m.domain), true, m.slot);
+    assert.ok(!m.domain.includes('/'), `${m.slot} domain must be a bare host`);
+  }
+  assert.equal(lib.BY_SLOT.get('observer').serp, false);
+});
+
+test('CostTally: prior campaign spend and files count against the cap', () => {
+  const t = new lib.CostTally({ capUsd: 10, scoringUsdPerReview: 0.1, priorScraperUsd: 6, priorWritten: 20 });
+  t.setScraperUsd(1);
+  assert.ok(Math.abs(t.projectedTotalUsd - 9) < 1e-9);
+  assert.equal(t.wouldExceed(0.95), true);
+});
+
+test('ledgerUsd: sinceIso ignores earlier rows', () => {
+  const pricing = { scrapingdog: { usdPerUnit: 0.1 }, scrapingbee: { usdPerUnit: 0 }, brightdata: { usdPerUnit: 0 } };
+  const rows = [{ provider: 'scrapingdog', credits: 1, ts: '2026-01-01T00:00:00Z' }, { provider: 'scrapingdog', credits: 1, ts: '2026-02-01T00:00:00Z' }];
+  assert.ok(Math.abs(lib.ledgerUsd(rows, pricing, '2026-01-15T00:00:00Z').usd - 0.1) < 1e-9);
+});
