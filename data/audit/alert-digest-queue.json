@@ -905,6 +905,37 @@
     "queuedAt": "2026-10-24T15:20:54.050Z"
   },
   {
+    "conditionKey": "land:land/job/linear-BRO-6139-mvmhv6j1",
+    "title": "Landing blocked: merged-tree-tests red on land/job/linear-BRO-6139-mvmhv6j1",
+    "description": "land.yml did not land land/job/linear-BRO-6139-mvmhv6j1: the merged-tree-tests gate went red at 6c7a26e984. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-6139-mvmhv6j1 @ 6c7a26e984 (origin/land/job/linear-BRO-6139-mvmhv6j1) → origin/main @ 5f0fb73ecc [land] train: + land/bro-6131-digest-cards @ b099923490 (6 commit(s)) [land] train: + land/codex-bro-6076 @ 377110e256 (1 commit(s)) [land] attempt 1/3: rebased onto c7a3bb1af0, 27 file(s) changed (train: land/job/linear-BRO-6139-mvmhv6j1 + land/bro-6131-digest-cards, land/co Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40105215843",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-6139-mvmhv6j1"
+      },
+      {
+        "name": "gate",
+        "value": "merged-tree-tests"
+      },
+      {
+        "name": "tip",
+        "value": "6c7a26e984c6afc4b31443ee2286a3f11377864b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40105215843"
+      }
+    ],
+    "queuedAt": "2026-10-24T16:06:37.465Z"
+  },
+  {
     "conditionKey": "land:land/bro-6137-r2-dump-script",
     "title": "Landing blocked: rebase red on land/bro-6137-r2-dump-script",
     "description": "land.yml did not land land/bro-6137-r2-dump-script: the rebase gate went red at da7569d975. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40106529891",
