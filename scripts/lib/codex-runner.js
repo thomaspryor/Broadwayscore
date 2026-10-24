@@ -102,15 +102,32 @@ function authLastRefresh(text) {
   try { return String(JSON.parse(text).last_refresh || ''); } catch { return ''; }
 }
 
-function authCommentBody(blob, lastRefresh, nowIso) {
+// access_expires (BRO-6139): the access token's expiry, a time and not a secret, so the lane
+// alarm can tell from outside whether a refresh was saved after the login expired.
+function authCommentBody(blob, lastRefresh, nowIso, accessExpiresIso = '') {
   return [
     AUTH_MARKER,
     'Encrypted Codex login for the daily Codex runner (scripts/codex/auth-store.js). Do not edit or delete.',
-    `last_refresh: ${lastRefresh || 'unknown'} · saved: ${nowIso}`,
+    `last_refresh: ${lastRefresh || 'unknown'} · saved: ${nowIso}${accessExpiresIso ? ` · access_expires: ${accessExpiresIso}` : ''}`,
     '```',
     blob,
     '```',
   ].join('\n');
+}
+
+/** The access token's expiry of an auth.json text as ISO, '' when unreadable (never the token). */
+function authAccessExpires(text) {
+  try { const ms = jwtExpMs(JSON.parse(text).tokens.access_token); return Number.isFinite(ms) ? new Date(ms).toISOString() : ''; } catch { return ''; }
+}
+
+/**
+ * The storage comment's public stamps only (never the blob): { lastRefreshMs, savedMs, accessExpiresMs }
+ * (NaN when absent), or null if the body is not the storage comment.
+ */
+function parseAuthMeta(body) {
+  if (typeof body !== 'string' || !body.startsWith(AUTH_MARKER)) return null;
+  const at = (k) => Date.parse((body.match(new RegExp(`${k}: (\\S+)`)) || [])[1] || '');
+  return { lastRefreshMs: at('last_refresh'), savedMs: at('saved'), accessExpiresMs: at('access_expires') };
 }
 
 /** { blob, lastRefresh } from a storage comment body, or null if not one. */
@@ -1034,6 +1051,82 @@ function landWaitMinutes({ hardEndMs, wrapUpMs, nowMs }) {
  * card landed. -> { ok, runs, landed, problems[] }
  */
 /** The counts one "## Codex runner" summary body reports: { landed, crashed, stop }. */
+/**
+ * The run summary heading (BRO-6139). Before it, a single-slot launch of EITHER lane posted no
+ * "(slot N)" and readers took it for the cloud lane; now every summary names its slot and the
+ * lane that launched it (a gha launch that fell back to slot 0 is still lane gha).
+ */
+function summaryHeading({ date, worked, mins, slot = 0, lane = 'cloud' }) {
+  return `## Codex runner ${date}: ${worked} card(s) worked in ${mins} min (slot ${Number(slot) || 0}) (lane ${lane})`;
+}
+const SUMMARY_HEADING_RE = /^## Codex runner (\d{4}-\d{2}-\d{2}): (\d+) card\(s\) worked in (\d+) min/;
+/**
+ * -> { date, worked, mins, slot, lane } or null (not a run summary). slot is null when the heading
+ * has none; lane is null for a summary from before the lane marker (laneOfSummary decides those).
+ */
+function parseSummaryHeading(body) {
+  const head = String(body || '').split('\n')[0];
+  const m = head.match(SUMMARY_HEADING_RE);
+  if (!m) return null;
+  const slot = head.match(/\(slot (\d+)\)/);
+  const lane = head.match(/\(lane (cloud|gha)\)/);
+  return { date: m[1], worked: Number(m[2]), mins: Number(m[3]), slot: slot ? Number(slot[1]) : null, lane: lane ? lane[1] : null };
+}
+/**
+ * Which lane posted a summary. The marker when present; else slot 3+ is gha and an explicit slot
+ * 0-2 is cloud (a gha fallback to slot 0 always ran one slot, so it had no slot). A legacy
+ * slotless summary is gha only when a codex-runner.yml run covered its whole "worked in M min"
+ * span (ghRuns [{ startMs, endMs }]); a cloud run that merely ended near a 3-min gha stand-down
+ * must not count. Without ghRuns it stays cloud, as before. -> 'cloud' | 'gha' | null
+ */
+function laneOfSummary(body, createdAtMs, ghRuns = null) {
+  const h = parseSummaryHeading(body);
+  if (!h) return null;
+  if (h.lane) return h.lane;
+  if (h.slot !== null) return h.slot >= LANES.gha.base ? 'gha' : 'cloud';
+  const startedMs = createdAtMs - h.mins * 60_000;
+  const SLACK = 5 * 60_000;
+  const inGha = Array.isArray(ghRuns) && ghRuns.some((r) => Number.isFinite(r.startMs) && r.startMs <= startedMs + SLACK
+    && createdAtMs <= (Number.isFinite(r.endMs) ? r.endMs : Infinity) + SLACK);
+  return inGha ? 'gha' : 'cloud';
+}
+
+/**
+ * A runner that exits without a summary says why (BRO-6139 stage 2): one comment on the runner
+ * card, read by scripts/lib/codex-lane-health.js. cls is a fixed word so readers never parse prose:
+ *   login         the stored Codex login did not restore (a person must log in again)
+ *   login-refresh deliberate: the login may refresh during the run, so this lane stands aside
+ *   lock-held     another run holds this slot's lock (holderStartedMs: when that run started)
+ *   sandbox|tools|picker|crash|lane  the lane cannot work until fixed
+ */
+const STAND_DOWN_CLASSES = ['login', 'login-refresh', 'lock-held', 'sandbox', 'tools', 'picker', 'crash', 'lane'];
+function standDownNote({ lane = 'cloud', slot = 0, cls, why, holderStartedMs = NaN, loginExpiresMs = NaN }) {
+  const c = STAND_DOWN_CLASSES.includes(cls) ? cls : 'crash';
+  const stamps = [
+    Number.isFinite(holderStartedMs) ? `Lock holder started: ${new Date(holderStartedMs).toISOString()}` : '',
+    // login-refresh: the expiry this stand-down saw, so a later saved refresh does not make it look stuck.
+    Number.isFinite(loginExpiresMs) ? `Login expires: ${new Date(loginExpiresMs).toISOString()}` : '',
+  ].filter(Boolean);
+  return `## Codex runner did not start (slot ${Number(slot) || 0}) (lane ${lane}) (reason ${c})\n\n${String(why || '').slice(0, 1500)}${stamps.length ? `\n\n${stamps.join('\n')}` : ''}`;
+}
+/** -> { lane, slot, cls, why, holderStartedMs, loginExpiresMs } or null. A pre-BRO-6139 note (no markers) reads as cloud, class login. */
+function parseStandDownNote(body) {
+  const b = String(body || '');
+  if (!b.startsWith('## Codex runner did not start')) return null;
+  const head = b.split('\n')[0];
+  const lane = (head.match(/\(lane (cloud|gha)\)/) || [])[1] || 'cloud';
+  const slot = Number((head.match(/\(slot (\d+)\)/) || [])[1] || 0);
+  const cls = (head.match(/\(reason ([a-z-]+)\)/) || [])[1] || (/login/i.test(b) ? 'login' : 'crash');
+  const why = b.split('\n').slice(1).filter((l) => !/^(Lock holder started|Login expires): /.test(l)).join('\n').trim();
+  const stamp = (k) => Date.parse((b.match(new RegExp(`^${k}: (\\S+)$`, 'm')) || [])[1] || '');
+  return { lane, slot, cls, why, holderStartedMs: stamp('Lock holder started'), loginExpiresMs: stamp('Login expires') };
+}
+
+/** The lock commit body's "Started:" time, NaN when unreadable. */
+function lockStartedMs(body) {
+  return Date.parse((String(body || '').match(/^Started: (\S+)\s*$/m) || [])[1] || '');
+}
+
 function runnerSummaryFacts(body) {
   const list = (label) => {
     const v = (String(body || '').match(new RegExp(`^- ${label}: (.*)$`, 'm')) || [])[1] || 'none';
@@ -1053,34 +1146,21 @@ function runnerSummaryFacts(body) {
 /**
  * BRO-5384 acceptance: cards per firing and landed share from runner summaries. Each slot posts
  * its summary when it finishes (minutes or ~110 min into the firing), so time gaps do not group a
- * firing; every launch posts exactly one summary from slot 0, or one with no slot suffix (a lone
- * runner), and those count the firings. -> { firings, worked, landed, perFiring, landedShare }
+ * firing; every launch posts exactly one summary from its lane's first slot (0 cloud, 3 gha, or 0
+ * for a gha launch that fell back), or one with no slot suffix (a pre-BRO-6139 lone runner), and
+ * those count the firings. -> { firings, worked, landed, perFiring, landedShare }
  */
 function firingThroughput(comments) {
-  const runs = (Array.isArray(comments) ? comments : [])
-    .filter((c) => c && /^## Codex runner \d{4}-\d{2}-\d{2}:/.test(String(c.body || '')));
+  const firstSlots = new Set(Object.values(LANES).map((l) => l.base));
   let firings = 0; let worked = 0; let landed = 0;
-  for (const c of runs) {
-    const heading = String(c.body).split('\n')[0];
-    if (!/\(slot [1-9]\d*\)\s*$/.test(heading)) firings += 1;
-    worked += Number((String(c.body).match(/^## Codex runner \S+: (\d+) card\(s\) worked/) || [])[1]) || 0;
+  for (const c of Array.isArray(comments) ? comments : []) {
+    const h = c && parseSummaryHeading(c.body);
+    if (!h) continue;
+    if (h.slot === null || firstSlots.has(h.slot)) firings += 1;
+    worked += h.worked;
     landed += runnerSummaryFacts(c.body).landed;
   }
   return { firings, worked, landed, perFiring: firings ? worked / firings : 0, landedShare: worked ? landed / worked : 0 };
-}
-
-function assessRunnerSummaries(bodies, { minRuns = 3 } = {}) {
-  const runs = (Array.isArray(bodies) ? bodies : []).filter((b) => /^## Codex runner \d{4}-\d{2}-\d{2}:/.test(String(b || '')));
-  const problems = [];
-  let landed = 0;
-  for (const b of runs) {
-    const f = runnerSummaryFacts(b);
-    if (/lock/i.test(f.stop)) problems.push(`stopped on the lock: ${f.stop}`);
-    landed += f.landed;
-  }
-  if (runs.length < minRuns) problems.push(`only ${runs.length} run summaries (want ${minRuns})`);
-  if (!landed) problems.push('no card landed');
-  return { ok: problems.length === 0, runs: runs.length, landed, problems };
 }
 
 /**
@@ -1098,7 +1178,8 @@ function runnerHealth(comments, nowMs, { windowMs = 24 * 3600_000 } = {}) {
     .filter((c) => c && /^## Codex runner \d{4}-\d{2}-\d{2}:/.test(String(c.body || ''))
       && Number.isFinite(Date.parse(c.createdAt)) && Date.parse(c.createdAt) <= nowMs && nowMs - Date.parse(c.createdAt) <= windowMs);
   if (!recent.length) {
-    const noLogin = (Array.isArray(comments) ? comments : []).some((c) => c && String(c.body || '').startsWith('## Codex runner did not start')
+    // Only a login stand-down means the login (BRO-6139 notes also say "lock-held", "sandbox", ...).
+    const noLogin = (Array.isArray(comments) ? comments : []).some((c) => c && (parseStandDownNote(c.body) || {}).cls === 'login'
       && Date.parse(c.createdAt) <= nowMs && nowMs - Date.parse(c.createdAt) <= windowMs);
     return { status: 'error', message: noLogin
       ? 'Codex runner could not start in the last 24h: its Codex login is not usable (see "## Codex runner did not start" on BRO-4745).'
@@ -1251,8 +1332,10 @@ module.exports = {
   lockTipVerdict,
   lockStampTooOld,
   landWaitMinutes,
-  assessRunnerSummaries,
   firingThroughput,
+  summaryHeading, parseSummaryHeading, laneOfSummary,
+  authAccessExpires, parseAuthMeta,
+  STAND_DOWN_CLASSES, standDownNote, parseStandDownNote, lockStartedMs,
   runnerSummaryFacts,
   runnerHealth,
   codexExitTransient,

@@ -23,7 +23,7 @@ const os = require('os');
 const path = require('path');
 const linear = require('../lib/linear-client.js');
 const {
-  AUTH_MARKER, encryptAuth, decryptAuth, authLastRefresh, authCommentBody, parseAuthComment, syncDirection,
+  AUTH_MARKER, encryptAuth, decryptAuth, authLastRefresh, authAccessExpires, authCommentBody, parseAuthComment, syncDirection,
 } = require('../lib/codex-runner.js');
 
 const STORE_ISSUE = process.env.CODEX_AUTH_STORE_ISSUE || 'BRO-4799';
@@ -48,7 +48,7 @@ async function readStored() {
 }
 
 async function writeStored(stored, plain) {
-  const body = authCommentBody(encryptAuth(plain, keyMaterial()), authLastRefresh(plain), new Date().toISOString());
+  const body = authCommentBody(encryptAuth(plain, keyMaterial()), authLastRefresh(plain), new Date().toISOString(), authAccessExpires(plain));
   if (stored.commentId) {
     const data = await linear.graphql(
       `mutation($id: String!, $body: String!) { commentUpdate(id: $id, input: { body: $body }) { success } }`,

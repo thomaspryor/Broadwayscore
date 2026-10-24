@@ -196,6 +196,24 @@ function scrubbedEnv() {
 const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
 
 /** linear-brain.js with every --comment redacted; retries transient failures (429s), never a gate refusal (exit 5). */
+/**
+ * BRO-6139 stage 2: a runner that exits without a summary says why, in one comment on the runner
+ * card (R.standDownNote), so the lane alarm reads a reason instead of a quiet exit 0.
+ */
+// One attempt, 2 min at most: sh is spawnSync, so a timer cannot bound it, and linearBrain's retries
+// (up to an hour) would hold a stopped run's job. --pr runs are not card runs and post nothing here.
+let summaryPosted = false;
+function standDown(cls, why, { holderStartedMs = NaN, loginExpiresMs = NaN, exitCode = null } = {}) {
+  log(`not starting (${cls}): ${why}`);
+  if (exitCode !== null) process.exitCode = exitCode;
+  if (OPTS.dryRun || PR_NUM || summaryPosted) return;
+  const body = R.redactSecrets(R.standDownNote({ lane: OPTS.lane, slot: SLOT, cls, why, holderStartedMs, loginExpiresMs }), process.env);
+  const r = sh('node', ['scripts/linear-brain.js', 'update', RUNNER_CARD, '--comment', body], { timeoutMs: 120_000 });
+  if (r.code !== 0 && r.code !== 5) log(`stand-down note not posted: exit ${r.code} ${tail(r.out, 200)}`);
+}
+// A failure that ends the run before it starts; main() turns it into a stand-down note.
+const startFailure = (cls, message, exitCode = 2) => Object.assign(new Error(message), { standDownClass: cls, exitCode });
+
 async function linearBrain(args) {
   const safe = args.map((a, i) => (args[i - 1] === '--comment' ? R.redactSecrets(a, process.env) : a));
   let r = null;
@@ -1072,10 +1090,13 @@ function readLock(ref = LOCK_REF) {
 const lockHeld = (l) => !!l.sha && l.subject.startsWith('locked') && Date.now() - l.ms < LOCK_STALE_MS;
 const describeLock = (l) => (l.error ? `unreadable (${l.error})` : !l.sha ? 'free (no lock yet)'
   : `${l.subject}${l.run ? ` by ${l.run}` : ''}, ${Math.round((Date.now() - l.ms) / 60_000)} min old${lockHeld(l) ? '' : ' (free)'}`);
+// The lock takeLock last read, so a stand-down note can say when the holder started.
+let lastLockSeen = {};
 /** -> null when taken, else why not. */
 function takeLock() {
   try { git(['fetch', '-q', 'origin', 'main'], ROOT); } catch (e) { return `cannot fetch main: ${e.message}`; }
   const cur = readLock();
+  lastLockSeen = cur;
   if (cur.error) return `lock unreadable: ${cur.error}`;
   // A "locked" stamp inside LOCK_STALE_MS is never taken over; "released"/"unlocked" are free.
   if (lockHeld(cur)) return `another run holds the lock (${describeLock(cur)})`;
@@ -1198,6 +1219,8 @@ for (const sig of ['SIGTERM', 'SIGINT', 'SIGHUP']) {
     }
     log(`killed by ${sig}${current ? `; ${current} returned to Todo` : ''}`);
     releaseLock();
+    // A kill (routine timeout, cancel) before the summary says so too (BRO-6139).
+    try { standDown('crash', `killed by ${sig} before the run summary${current ? ` (on ${current}, returned to Todo)` : ''}`); } catch { /* exit anyway */ }
     process.exit(1);
   });
 }
@@ -1213,7 +1236,7 @@ function ensureTools({ codex = true } = {}) {
     log(`installed Codex CLI ${CODEX_VERSION}: exit ${inst.code}`);
   }
   for (const tool of codex ? ['codex', 'claude'] : ['claude']) {
-    if (sh(tool, ['--version'], { timeoutMs: 60_000 }).code !== 0) { log(`${tool} CLI missing`); process.exit(2); }
+    if (sh(tool, ['--version'], { timeoutMs: 60_000 }).code !== 0) throw startFailure('tools', `the ${tool} CLI is missing`);
   }
   // A cloud container can start without node_modules. Then the land checks fail ~300 tests on
   // both trees, and a slot linked before another lane installs them fails tests that copy the
@@ -1222,7 +1245,7 @@ function ensureTools({ codex = true } = {}) {
   if (!fs.existsSync(path.join(ROOT, 'node_modules'))) {
     const ci = sh('npm', ['ci', '--no-audit', '--no-fund', '--loglevel=error'], { timeoutMs: 900_000 });
     log(`node_modules was missing, npm ci: exit ${ci.code}${ci.code ? ` ${tail(ci.out, 300)}` : ''}`);
-    if (ci.code !== 0) process.exit(2);
+    if (ci.code !== 0) throw startFailure('tools', `npm ci failed: ${tail(ci.out, 300)}`);
   }
 }
 
@@ -1241,8 +1264,10 @@ async function launchSlots() {
   const runMs = (Number.isFinite(HARD_END_MS) ? HARD_END_MS : RUN_STARTED_MS + OPTS.maxMinutes * 60_000) - Date.now();
   // The lane's slots (R.laneForLogin): a later lane falls back to slot 0 when the login may refresh.
   const plan = restore.code === 0 ? R.laneForLogin({ lane: OPTS.lane, slots: OPTS.slots, authText, nowMs: Date.now(), runMs }) : { lane: 'cloud', base: 0, slots: 1, why: 'the Codex login did not restore' };
+  // A deliberate fallback (the login may refresh) only from a login that restored; the expiry it saw goes in the note.
+  const fallback = restore.code === 0 && plan.lane !== OPTS.lane ? { CODEX_LANE_FALLBACK: plan.why || `${OPTS.lane} lane fell back to slot ${plan.base}`, CODEX_LANE_FALLBACK_EXPIRES: R.authAccessExpires(authText) } : {};
   authText = '';
-  if (!plan.slots) { log(`not starting: ${plan.why}`); return; }
+  if (!plan.slots) { standDown(/login/i.test(plan.why || '') ? 'login-refresh' : 'lane', plan.why || 'no slot to run on'); return; }
   pruneDisk();
   const missingBySlot = [...Array(plan.slots).keys()].map((k) => {
     const n = R.slotNames(plan.base + k);
@@ -1258,7 +1283,9 @@ async function launchSlots() {
     if (k) await sleep(SLOT_STAGGER_MS);
     if (dying || (runDir && fs.existsSync(path.join(runDir, 'STOP')))) break;
     const args = R.slotArgs(process.argv.slice(2), { slot: plan.base + k, runDir, runStartedMs: RUN_STARTED_MS, limit: Math.ceil(OPTS.limit / plan.slots), checkBudgetUsd: OPTS.checkBudgetUsd / plan.slots, pickList: OPTS.limit + 5 * plan.slots });
-    const child = spawn(process.execPath, [__filename, ...args], { cwd: ROOT, stdio: 'inherit', env: { ...process.env, ...(plan.slots < OPTS.slots ? { CODEX_SLOT_SHORTFALL: `${plan.slots} of ${OPTS.slots} requested: ${plan.why || 'disk or lane limit'}` } : {}) } });
+    const child = spawn(process.execPath, [__filename, ...args], { cwd: ROOT, stdio: 'inherit', env: { ...process.env, ...(plan.slots < OPTS.slots ? { CODEX_SLOT_SHORTFALL: `${plan.slots} of ${OPTS.slots} requested: ${plan.why || 'disk or lane limit'}` } : {}),
+      // A lane that fell back to another lane's slot (the login may refresh) stands down by design if that slot is busy.
+      ...fallback } });
     slotChildren.push(child);
     exits.push(new Promise((res) => child.on('exit', (code) => res(code == null ? 1 : code))));
   }
@@ -1292,7 +1319,17 @@ async function main() {
   ensureTools();
   if (!OPTS.dryRun) {
     const held = takeLock();
-    if (held) { log(`not starting: ${held}`); return; }
+    if (held) {
+      // Busy because this lane fell back onto the cloud lane's slot: the deliberate login-refresh stand-down, not a fault.
+      const busy = /^another run (holds|took) the lock/.test(held);
+      const cls = busy ? (process.env.CODEX_LANE_FALLBACK ? 'login-refresh' : 'lock-held') : 'lane';
+      // The holder's start only when we read the holder's own stamp: a run that won the race just now is not in lastLockSeen.
+      standDown(cls, process.env.CODEX_LANE_FALLBACK && busy ? `${held}; ${process.env.CODEX_LANE_FALLBACK}` : held, {
+        holderStartedMs: held.startsWith('another run holds the lock') ? R.lockStartedMs(lastLockSeen.body) : NaN,
+        loginExpiresMs: Date.parse(process.env.CODEX_LANE_FALLBACK_EXPIRES || ''),
+      });
+      return;
+    }
   }
   // Re-stamp while waiting on slow steps (landings, in-flight slots), so a long healthy run
   // never looks stale to the next one.
@@ -1373,14 +1410,12 @@ async function runLocked(startedMs) {
   const restore = sh('node', ['scripts/codex/auth-store.js', 'restore'], { timeoutMs: 900_000 });
   log(restore.out.trim());
   if (restore.code !== 0) {
-    if (!OPTS.dryRun) await linearBrain(['update', RUNNER_CARD, '--comment', `## Codex runner did not start\n\nNo usable Codex login (it may have expired). Someone with the ChatGPT account must run \`codex login --device-auth\` in a cloud session, then \`node scripts/codex/auth-store.js save\`.\n\n${fence(tail(restore.out, 600))}`]);
-    process.exitCode = 2;
+    standDown('login', `No usable Codex login (it may have expired). Someone with the ChatGPT account must run \`codex login --device-auth\` in a cloud session, then \`node scripts/codex/auth-store.js save\`.\n\n${fence(tail(restore.out, 600))}`, { exitCode: 2 });
     return;
   }
   // Unusable namespace sandbox outside the cloud VM: stop before claiming any card (BRO-5856).
   try { codexSandboxMode(); } catch (e) {
-    if (!OPTS.dryRun) await linearBrain(['update', RUNNER_CARD, '--comment', `## Codex runner did not start\n\n${e.message}. No card was claimed, so the Claude lane keeps them.`]);
-    process.exitCode = 2;
+    standDown('sandbox', `${e.message}. No card was claimed, so the Claude lane keeps them.`, { exitCode: 2 });
     return;
   }
   const install = sh('node', ['scripts/codex/install.js']);
@@ -1391,7 +1426,10 @@ async function runLocked(startedMs) {
   const inFlight = [];
   let worked = 0;
   let stop = null;
-  for (const pick of await pickCards()) {
+  let picks;
+  try { picks = await pickCards(); } catch (e) { throw startFailure('picker', e.message, 1); }
+  let skipped = 0;
+  for (const pick of picks) {
     if (worked >= OPTS.limit) break;
     let freeDiskBytes = freeDisk();
     if (freeDiskBytes != null && freeDiskBytes < R.MIN_FREE_DISK_BYTES) { pruneDisk(); freeDiskBytes = freeDisk(); }
@@ -1409,7 +1447,9 @@ async function runLocked(startedMs) {
     if (stop) { log(`stopping: ${stop}`); break; }
     try {
       const crashedBefore = stats.crashed.length;
-      if (await workCard(pick, stats, inFlight) === 'done') worked += 1;
+      const outcome = await workCard(pick, stats, inFlight);
+      if (outcome === 'done') worked += 1;
+      else if (outcome === 'skip') skipped += 1;
       if (stats.crashed.length === crashedBefore) stats.crashStreak = 0;
     } catch (e) {
       log(`${pick.identifier}: error ${e && e.message ? e.message : e}`);
@@ -1425,7 +1465,7 @@ async function runLocked(startedMs) {
   const list = (a) => (a.length ? a.join(', ') : 'none');
   const landedCount = stats.landed.length + stats.landedPartial.length;
   const text = [
-    `## Codex runner ${new Date().toISOString().slice(0, 10)}: ${worked} card(s) worked in ${mins} min${RUN_DIR ? ` (slot ${SLOT})` : ''}`,
+    R.summaryHeading({ date: new Date().toISOString().slice(0, 10), worked, mins, slot: SLOT, lane: OPTS.lane }),
     `- Landed and Done: ${list(stats.landed)}`,
     `- Landed part, back to Todo with what is left: ${list(stats.landedPartial)}`,
     `- Already fixed, closed: ${list(stats.alreadyFixed)}`,
@@ -1445,9 +1485,12 @@ async function runLocked(startedMs) {
     ...(process.env.CODEX_SLOT_SHORTFALL ? [`- Slots: ${process.env.CODEX_SLOT_SHORTFALL}`] : []),
     ...(SLOT === 0 ? [`- Landed on main, last 24h: ${landedPerLane()}`] : []),
     `- Stopped early: ${stop || 'no'}`,
+    // A run that did no work says why (BRO-6139), so "0 worked, stopped early: no" is never the whole story.
+    ...(worked ? [] : [`- Why nothing was worked: ${!picks.length ? 'the picker returned no Codex-fit card' : stop ? 'stopped early (above)' : `all ${picks.length} picked card(s) were skipped (taken by another slot, no longer Todo, or unfit now; see the run log)`}${skipped ? ` (${skipped} skipped)` : ''}`]),
   ].join('\n');
   log(text);
   if (!OPTS.dryRun) await linearBrain(['update', RUNNER_CARD, '--comment', text]);
+  summaryPosted = true; // a later crash is not a run that "did not start"
 }
 
 /**
@@ -1582,4 +1625,11 @@ async function runPr(n) {
 }
 
 module.exports = { newLandFailures, landPreflight, provideData, takeLock, refreshLock, readLock, releaseLock, weeklyPct, recoverOrphans };
-if (require.main === module) main().catch((e) => { log(`runner failed: ${e && e.stack ? e.stack : e}`); process.exit(1); });
+if (require.main === module) {
+  main().catch(async (e) => {
+    log(`runner failed: ${e && e.stack ? e.stack : e}`);
+    // Every exit says why (BRO-6139): a crash or a missing tool posts a stand-down note too.
+    try { standDown(e && e.standDownClass ? e.standDownClass : 'crash', `${e && e.standDownClass ? '' : 'runner failed: '}${e && e.message ? e.message : e}`); } catch { /* exit anyway */ }
+    process.exit(e && e.exitCode ? e.exitCode : 1);
+  });
+}

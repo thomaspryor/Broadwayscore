@@ -378,8 +378,10 @@ async function listIssuesByProvenance({ since, titlePrefixes = [], descriptionMa
 // (BRO-4642). Callers attach these as issue.comments for sortedCommentBodies.
 // Each issue's list is its NEWEST 50 comments, newest first: Linear's comment
 // pages run newest first, so `first: 50` keeps the latest and `last: N` would
-// return the oldest N (verified live 2026-10-14, BRO-5287).
-async function listIssueComments(identifiers, teamKey = TEAM_KEY) {
+// return the oldest N (verified live 2026-10-14, BRO-5287). An issue with 50+
+// comments is then read whole, page by page, up to maxPerIssue (BRO-6139: the
+// runner card BRO-4745 has hundreds, and the newest 50 hid older summaries).
+async function listIssueComments(identifiers, teamKey = TEAM_KEY, { maxPerIssue = 2000 } = {}) {
   const prefix = `${teamKey}-`;
   const numbers = [...new Set((identifiers || [])
     .filter((id) => String(id).startsWith(prefix))
@@ -390,11 +392,32 @@ async function listIssueComments(identifiers, teamKey = TEAM_KEY) {
     const data = await graphql(linearDispatch.buildIssueCommentsByNumberQuery(), { teamKey, numbers: numbers.slice(i, i + 50) });
     for (const n of (data.issues && data.issues.nodes) || []) {
       const nodes = (n.comments && n.comments.nodes) || [];
-      if (nodes.length >= 50) console.error(`[linear-client] ${n.identifier}: 50+ comments, only the newest 50 read`);
-      byId.set(n.identifier, nodes);
+      let all = nodes;
+      if (nodes.length >= 50) {
+        // A failed deep read keeps the newest 50 for this issue rather than failing every issue in the batch.
+        try { all = await allIssueComments(n.identifier, maxPerIssue); } catch (e) { console.error(`[linear-client] ${n.identifier}: full comment read failed (${String(e && e.message || e).split('\n')[0]}), only the newest 50 read`); }
+      }
+      byId.set(n.identifier, all);
     }
   }
   return byId;
+}
+
+// Every comment of one issue, newest first (Linear's page order), up to max.
+async function allIssueComments(identifier, max = 2000) {
+  const out = [];
+  let after = null;
+  while (out.length < max) {
+    const data = await graphql(`query($id: String!, $after: String) {
+      issue(id: $id) { comments(first: 100, after: $after, orderBy: createdAt) { nodes { body createdAt } pageInfo { hasNextPage endCursor } } }
+    }`, { id: identifier, after });
+    const page = (data.issue && data.issue.comments) || { nodes: [], pageInfo: {} };
+    out.push(...page.nodes);
+    if (!page.pageInfo.hasNextPage) break;
+    after = page.pageInfo.endCursor;
+  }
+  if (out.length >= max) console.error(`[linear-client] ${identifier}: ${max}+ comments, only the newest ${max} read`);
+  return out.slice(0, max);
 }
 
 // Comments across the workspace created after sinceIso whose body contains `text`, newest first,

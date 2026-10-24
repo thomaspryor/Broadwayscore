@@ -421,16 +421,6 @@ test('lock pushes skip git hooks: the pre-push code audits refused bookkeeping s
   for (const p of pushes) assert.ok(p.includes("'--no-verify'"), p);
 });
 
-test('assessRunnerSummaries: 3 runs, none stopped on the lock, something landed', () => {
-  const run = (landed, stop) => `## Codex runner 2026-10-14: 1 card(s) worked in 61 min\n- Landed and Done: ${landed}\n- Landed part, back to Todo with what is left: none\n- Stopped early: ${stop}`;
-  assert.deepEqual(r.assessRunnerSummaries([run('BRO-1', 'no'), run('none', 'time budget of 105 min used'), run('none', 'under 75 min left before the 112-min hard stop')]),
-    { ok: true, runs: 3, landed: 1, problems: [] });
-  const bad = r.assessRunnerSummaries([run('none', 'lost the run lock (see the run log)'), run('none', 'another run took the lock'), 'unrelated comment']);
-  assert.equal(bad.ok, false);
-  assert.equal(bad.runs, 2);
-  assert.ok(bad.problems.some((p) => p.includes('stopped on the lock')) && bad.problems.includes('no card landed'));
-});
-
 test('runner pushes of land/codex-* refs skip the session pre-push hook (BRO-5287, BRO-4530 crash)', () => {
   const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../../scripts/codex/daily-runner.js'), 'utf8');
   const pushes = src.match(/git\(\['push',[^\]]*refs\/heads\/\$\{ref\}[^\]]*\]/g) || [];
@@ -474,11 +464,10 @@ test('runnerHealth: a lapsed Codex login reads as such, and the row is internal-
   assert.notEqual(classifyHealthCheck({ name: 'Codex runner: landing cards', status: 'error' }), 'visitors');
 });
 
-test('runnerSummaryFacts: one parser for the acceptance probe and the daily row', () => {
+test('runnerSummaryFacts: one parser for the lane alarm and the daily row', () => {
   const b = '## Codex runner 2026-10-14: 2 card(s) worked in 90 min\n- Landed and Done: BRO-1, \n- Landed part, back to Todo with what is left: BRO-2\n- Runner error mid-card (back to Todo): BRO-3, BRO-4\n- Stopped early: no';
   assert.deepEqual(r.runnerSummaryFacts(b), { landed: 2, landedIds: ['BRO-1', 'BRO-2'], hasCheckLine: false, crashed: 2, stop: 'no', checkUsd: 0 });
   assert.equal(r.runnerSummaryFacts(`${b}\n- Claude check: 2 review(s), $1.25 API cost`).hasCheckLine, true);
-  assert.equal(r.assessRunnerSummaries([b, b, b]).landed, 6);
   assert.match(r.runnerHealth([{ createdAt: '2026-10-14T09:00:00Z', body: b }], Date.parse('2026-10-14T10:00:00Z')).message, /2 card\(s\) landed, 2 crashed/);
 });
 
