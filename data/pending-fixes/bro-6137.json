@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6137",
   "planId": "5858d7ac-886c-4a2d-9d65-4b6e7cc91cd1",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-24T14:26:22.323Z",
   "submitter": {
     "name": null,
@@ -279,5 +279,134 @@
         "description": "oh-hello-on-broadway-2016: recouped, so the designation can no longer be TBD."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-24T14:33:46.607Z",
+  "results": [
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "commercial.json: dropped orphan key 860"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-front-page-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-front-page-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recouped: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedDate: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedSource: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:sources: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for the-front-page-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-front-page-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-humans-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-humans-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recouped: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedDate: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedSource: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:sources: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for the-humans-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-humans-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for oh-hello-on-broadway-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for oh-hello-on-broadway-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recouped: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedDate: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedSource: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:sources: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for oh-hello-on-broadway-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for oh-hello-on-broadway-2016"
+    }
+  ],
+  "executedIn": "ci"
 }
