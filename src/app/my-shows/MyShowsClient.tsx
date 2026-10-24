@@ -33,7 +33,7 @@ import dynamic from 'next/dynamic';
 import { ShowSearchDropdown } from '@/components/show-cards';
 import MiniStars from '@/components/user/Stars';
 const StatsTab = dynamic(() => import('@/components/my-shows/stats/StatsTab'), { ssr: false });
-import MyShowsNav, { DiaryViewSwitch, type NavVariant } from '@/components/my-shows/MyShowsNav';
+import MyShowsNav, { DiaryViewSwitch, TitleTabs, DiarySegmented, type NavVariant } from '@/components/my-shows/MyShowsNav';
 const FeedTab = dynamic(() => import('@/components/my-shows/feed/FeedTab'), { ssr: false });
 const ImportShows = dynamic(() => import('./ImportShows'), { ssr: false });
 
@@ -142,8 +142,9 @@ export default function MyShowsClient() {
   // Design-proposal only: ?nav=segmented|cards|pills swaps the underline tabs
   // for a louder nav. segmented/cards nest Feed+Stats under Diary; pills is flat.
   const navParam = searchParams.get('nav');
-  const navVariant: NavVariant | null = navParam === 'segmented' || navParam === 'cards' || navParam === 'pills' ? navParam : null;
-  const nestedLayout = searchParams.get('layout') === 'b' || navVariant === 'segmented' || navVariant === 'cards';
+  const navVariant: NavVariant | null = (['segmented', 'cards', 'pills', 'titles', 'titles-bar', 'titles-icons'] as const).find(v => v === navParam) ?? null;
+  const titleNav = navVariant === 'titles' || navVariant === 'titles-bar' || navVariant === 'titles-icons';
+  const nestedLayout = searchParams.get('layout') === 'b' || navVariant === 'segmented' || navVariant === 'cards' || titleNav;
 
   // Dev-only mock mode: ?mock=1 on localhost renders with fake data (for Playwright visual QA)
   // Must be state (not derived) to avoid SSR/client hydration mismatch
@@ -765,20 +766,34 @@ export default function MyShowsClient() {
       {/* Header — flex-wrap lets the opened Add-show search take a full row on
           mobile (basis-full) instead of squeezing beside the title. */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white">My Shows</h1>
+        {titleNav ? (
+          <>
+            <h1 className="sr-only">My Shows</h1>
+            <TitleTabs
+              bar={navVariant === 'titles-bar'}
+              items={[{ tab: 'diary', label: 'Diary' }, { tab: 'watchlist', label: 'Watchlist' }, { tab: 'lists', label: 'Lists' }]}
+              isActive={tab => (tab === 'diary' ? DIARY_GROUP.includes(activeTab) : activeTab === tab)}
+              onSelect={setActiveTab}
+            />
+          </>
+        ) : (
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">My Shows</h1>
+        )}
         {activeTab === 'lists' ? (
           <button
             type="button"
             onClick={() => setCreateListTrigger(t => t + 1)}
-            className="btn-primary gap-1.5 text-xs"
+            className={`btn-primary gap-1.5 text-xs ${titleNav ? 'max-sm:!w-11 max-sm:!h-11 max-sm:!p-0 max-sm:!rounded-full' : ''}`}
+            aria-label="New list"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
             </svg>
-            <span>New list</span>
+            <span className={titleNav ? 'hidden sm:inline' : ''}>New list</span>
           </button>
         ) : (
           <AddShowSearch
+            compact={titleNav}
             context={activeTab === 'watchlist' ? 'watchlist' : 'diary'}
             userId={isMockMode ? null : (user?.id ?? null)}
             onAddToWatchlist={async (showId: string, title?: string) => {
@@ -880,7 +895,7 @@ export default function MyShowsClient() {
       {/* Tab bar + sort/view controls.
           On mobile: tabs only in the tablist row; controls on a second row below.
           On sm+: controls inline to the right of the tabs. */}
-      {navVariant && (
+      {navVariant && !titleNav && (
         <MyShowsNav
           variant={navVariant}
           items={navVariant === 'pills'
@@ -900,8 +915,11 @@ export default function MyShowsClient() {
           onSelect={setActiveTab}
         />
       )}
-      {navVariant && nestedLayout && DIARY_GROUP.includes(activeTab) && (
+      {navVariant && !titleNav && nestedLayout && DIARY_GROUP.includes(activeTab) && (
         <DiaryViewSwitch active={activeTab} onSelect={setActiveTab} />
+      )}
+      {titleNav && DIARY_GROUP.includes(activeTab) && (
+        <DiarySegmented active={activeTab} onSelect={setActiveTab} icons={navVariant === 'titles-icons'} />
       )}
       <div role="tablist" className={`${navVariant ? 'hidden' : 'flex'} items-center gap-1 border-b border-white/10 mb-0 sm:mb-6`}>
         <button
@@ -1955,7 +1973,10 @@ function AddShowSearch({
   existingWatchlistIds,
   existingReviewIds,
   onLiveShowAdded,
+  compact,
 }: {
+  /** Icon-only "+" on phones (title-tab header, BRO-6170 proposal). */
+  compact?: boolean;
   context: 'diary' | 'watchlist';
   /** Gates the live Mezzanine catalog search — signed out / mock mode never
    *  offers it (the edge function is JWT-gated anyway). */
@@ -2038,14 +2059,14 @@ function AddShowSearch({
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="btn-primary gap-1.5 text-xs"
+        className={`btn-primary gap-1.5 text-xs ${compact ? 'max-sm:!w-11 max-sm:!h-11 max-sm:!p-0 max-sm:!rounded-full' : ''}`}
         aria-label={context === 'diary' ? 'Add a show to diary' : 'Add to watchlist'}
         title={context === 'diary' ? 'Rate a show' : 'Add to watchlist'}
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
         </svg>
-        <span>Add show</span>
+        <span className={compact ? 'hidden sm:inline' : ''}>Add show</span>
       </button>
     );
   }

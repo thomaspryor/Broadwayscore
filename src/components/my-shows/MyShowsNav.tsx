@@ -8,7 +8,7 @@
  */
 
 export type MyShowsTab = 'diary' | 'feed' | 'stats' | 'watchlist' | 'lists';
-export type NavVariant = 'segmented' | 'cards' | 'pills';
+export type NavVariant = 'segmented' | 'cards' | 'pills' | 'titles' | 'titles-bar' | 'titles-icons';
 
 export interface NavItem {
   tab: MyShowsTab;
@@ -147,6 +147,70 @@ export function DiaryViewSwitch({ active, onSelect }: { active: MyShowsTab; onSe
             className={`flex items-center gap-1.5 py-2.5 text-[15px] font-semibold border-b-2 -mb-[1px] transition-colors ${on ? 'text-white border-brand' : 'text-gray-400 border-transparent hover:text-white'}`}
           >
             <TabIcon tab={v.tab} className="w-[18px] h-[18px]" />
+            {v.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+/**
+ * Round 3 (owner, 2026-10-24): no "My Shows" heading. The three sections ARE
+ * the page title, so the page has three text levels: section names, the
+ * List / Feed / Stats switch, then controls and content.
+ */
+export function TitleTabs({ items, isActive, onSelect, bar }: {
+  items: NavItem[];
+  isActive: (tab: MyShowsTab) => boolean;
+  onSelect: (tab: MyShowsTab) => void;
+  /** Gold bar under the active name. */
+  bar?: boolean;
+}) {
+  return (
+    <div role="tablist" aria-label="My Shows sections" className="flex items-baseline gap-5 sm:gap-7 min-w-0">
+      {items.map(item => {
+        const on = isActive(item.tab);
+        return (
+          <button
+            key={item.tab}
+            type="button"
+            role="tab"
+            id={`tab-${item.tab}`}
+            aria-selected={on}
+            onClick={() => onSelect(item.tab)}
+            className={`relative text-2xl sm:text-3xl font-extrabold tracking-tight transition-colors ${bar ? 'pb-1.5' : ''} ${on ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}
+          >
+            {item.label}
+            {bar && on && <span aria-hidden="true" className="absolute left-0 right-0 bottom-0 h-[3px] rounded-full bg-brand" />}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+/** App-style List / Feed / Stats segmented control: the page's second text level. */
+export function DiarySegmented({ active, onSelect, icons }: { active: MyShowsTab; onSelect: (tab: MyShowsTab) => void; icons?: boolean }) {
+  const views: { tab: MyShowsTab; label: string }[] = [
+    { tab: 'diary', label: 'List' },
+    { tab: 'feed', label: 'Feed' },
+    { tab: 'stats', label: 'Stats' },
+  ];
+  return (
+    <div role="tablist" aria-label="Diary views" className="flex gap-1 p-1 mt-4 mb-3 rounded-xl bg-surface-raised border border-white/10">
+      {views.map(v => {
+        const on = active === v.tab;
+        return (
+          <button
+            key={v.tab}
+            type="button"
+            role="tab"
+            aria-selected={on}
+            onClick={() => onSelect(v.tab)}
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-base font-semibold rounded-lg transition-colors ${on ? 'bg-surface-overlay text-white' : 'text-gray-400 hover:text-white'}`}
+          >
+            {icons && <TabIcon tab={v.tab} className="w-[18px] h-[18px]" />}
             {v.label}
           </button>
         );
