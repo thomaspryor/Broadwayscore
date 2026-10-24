@@ -1715,5 +1715,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-24T22:33:36.672Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6175-codex-data-fixes",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6175-codex-data-fixes",
+    "description": "land.yml did not land land/bro-6175-codex-data-fixes: the unit-tests-node gate went red at ba587f8bca. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40138016672",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6175-codex-data-fixes"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "ba587f8bca5fb9e8f907fc5d6765f654f545a930"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40138016672"
+      }
+    ],
+    "queuedAt": "2026-10-24T22:35:15.666Z"
   }
 ]
