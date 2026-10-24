@@ -273,7 +273,7 @@ test('CLI: a collector failure is the only finding, exit 1, JSON parseable (fail
   const here = path.dirname(fileURLToPath(import.meta.url));
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'orphan-cli-collector-'));
   try {
-    for (const f of ['audit-orphan-tests.js', 'lib/orphan-test-gate.js', 'lib/test-manifest.js', 'lib/ci-test-coverage.js', 'lib/bash-integration-test-list.js', 'lib/workflow-glob-guard.js', 'lib/scan-alert-ledger-gaps.js']) {
+    for (const f of ['audit-orphan-tests.js', 'lib/orphan-test-gate.js', 'lib/recheck-probe-guard.js', 'lib/test-manifest.js', 'lib/ci-test-coverage.js', 'lib/bash-integration-test-list.js', 'lib/workflow-glob-guard.js', 'lib/scan-alert-ledger-gaps.js']) {
       fs.mkdirSync(path.dirname(path.join(root, 'scripts', f)), { recursive: true });
       fs.copyFileSync(path.join(here, f), path.join(root, 'scripts', f));
     }

@@ -1,0 +1,78 @@
+{
+  "issueNumber": "bro-6052",
+  "planId": "d54782ba-3576-4f1f-8cbf-2b7be9a82199",
+  "status": "applied",
+  "createdAt": "2026-10-24T07:21:13.811Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6052: stamp scoreProvenance page-parsed on the 4 Telegraph West End review files an LLM relabel cut off from their outlet-page score source (pre-relabel scoreSource recovered from review-texts history; only paywall notes, no url mismatch). About 20 other candidates carry url_content_mismatch/scraper_garbage and ~60 have no recoverable outlet source, so they are left alone.",
+    "steps": [
+      "Pre-relabel scoreSource was telegraph-svg-stars (review-texts bd74a6a4cb), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was telegraph-svg-stars (review-texts 1b06a10f9e), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was telegraph-svg-stars (review-texts 3d931eca4a), an outlet-page source; the LLM relabel to anchored-v6 hid it.",
+      "Pre-relabel scoreSource was telegraph-svg-stars (review-texts 07a45f1e21), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-prince-of-egypt-west-end-2020/telegraph--dominic-cavendish.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was telegraph-svg-stars (review-texts bd74a6a4cb), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-night-of-the-iguana-west-end-2019/telegraph--dominic-cavendish.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was telegraph-svg-stars (review-texts 1b06a10f9e), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-starry-messenger-west-end-2019/telegraph--dominic-cavendish.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was telegraph-svg-stars (review-texts 3d931eca4a), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "top-girls-west-end-2019/telegraph--dominic-cavendish.json",
+        "field": "scoreProvenance",
+        "oldValue": null,
+        "newValue": "page-parsed",
+        "description": "Pre-relabel scoreSource was telegraph-svg-stars (review-texts 07a45f1e21), an outlet-page source; the LLM relabel to anchored-v6 hid it."
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T09:50:52.859Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-prince-of-egypt-west-end-2020/telegraph--dominic-cavendish.json scoreProvenance: null -> \"page-parsed\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-night-of-the-iguana-west-end-2019/telegraph--dominic-cavendish.json scoreProvenance: null -> \"page-parsed\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-starry-messenger-west-end-2019/telegraph--dominic-cavendish.json scoreProvenance: null -> \"page-parsed\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "top-girls-west-end-2019/telegraph--dominic-cavendish.json scoreProvenance: null -> \"page-parsed\""
+    }
+  ],
+  "executedIn": "ci"
+}

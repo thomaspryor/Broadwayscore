@@ -25,8 +25,12 @@ const { computeStreak } = require('./lib/provider-spend-core.js');
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const LEDGER = path.join(HERE, '..', 'data', 'audit', 'provider-spend-daily.jsonl');
 const THRESHOLDS_PATH = path.join(HERE, 'config', 'provider-spend-thresholds.json');
+// Task #695's RECHECK-AFTER, also recorded in autonomous-recheck-core.test.mjs.
+const CHECKABLE_FROM = Date.parse('2026-08-08T00:00:00Z');
 
-test('scraping spend has held within thresholds for 7+ consecutive fully-measured days', () => {
+test('scraping spend has held within thresholds for 7+ consecutive fully-measured days', {
+  skip: Date.now() < CHECKABLE_FROM && 'not checkable before 2026-08-08',
+}, () => {
   let lines;
   try {
     lines = fs.readFileSync(LEDGER, 'utf8').split('\n').filter(Boolean);

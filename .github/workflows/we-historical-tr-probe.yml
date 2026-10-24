@@ -12,12 +12,12 @@ on:
   workflow_dispatch:
     inputs:
       seasons:
-        description: 'Seasons by start year, comma-separated, e.g. 2017,2018 (ignored when shows is set)'
+        description: 'Seasons by start year, comma-separated, e.g. 2017,2018 (used when shows is the word seasons)'
         required: false
         default: ''
         type: string
       shows:
-        description: 'Comma-separated show ids (overrides seasons). Probe 1-2 first.'
+        description: 'Comma-separated show ids, or the word seasons to select by the seasons input. Probe 1-2 first.'
         required: false
         default: 'the-band-west-end-2018'
         type: string
@@ -76,7 +76,7 @@ jobs:
           SHOWS: ${{ inputs.shows }}
           SKELETON_MAX: ${{ inputs.skeleton_max }}
         run: |
-          if [ -z "$SHOWS" ]; then
+          if [ "$SHOWS" = "seasons" ]; then
             SHOWS=$(node -e "
               const want = new Set(process.env.SEASONS.split(',').filter(Boolean).map(x => x.slice(0, 4)));
               const { WE_HISTORICAL_DISCOVERY_SOURCES } = require('./scripts/lib/we-historical-corroboration.js');

@@ -84,6 +84,20 @@ if grep -qE "^scripts/.*\.(js|mjs|cjs|ts|sh)$|^\.github/(workflows|actions)/.*\.
   run_audit "unbounded-fetch" "scripts/audit-unbounded-fetch.js" || FAIL=1
 fi
 
+# Cheap CI-parity unit tests (BRO-5621). Two landings were refused by Land CI
+# for failures these tests catch before the push: a new scoring-watchlists
+# entry not mirrored in autonomous-eligibility EXCLUDED_FILES, a new top-level
+# script missing from test.yml on.push.paths, and a new scripts/lib matcher
+# without foldDiacritics. Each cost a 25-30 min land cycle. The two ~1s tests
+# run on any scripts/ source edit; the ~10s top-level coverage test only for a
+# new/changed top-level non-test script, and only when the test-registration
+# block below has not already run it (TOPLEVEL_RAN).
+TOPLEVEL_RAN=0
+if grep -qE "^scripts/.*\.(js|mjs|cjs|ts)$" <<<"$CHANGED_FILES"; then
+  run_audit "ci-parity-autonomous-eligibility" "scripts/lib/autonomous-eligibility.test.mjs" || FAIL=1
+  run_audit "ci-parity-sibling-matchers-diacritics" "tests/unit/sibling-matchers-diacritics.test.mjs" || FAIL=1
+fi
+
 # Direct cmux spawns with no socket credential (BRO-3001). Push-time, not
 # CI-only, on purpose: the two sites this caught were merged to main and ran
 # for hours before anyone looked, and the failure mode is silent — the call is
@@ -184,6 +198,7 @@ if grep -qE "^(tests/unit|scripts)/[^/]*\.test\.(mjs|ts|js|cjs|sh)$|^scripts/lib
   # registered tests/**/*.test.* whose required top-level scripts/ SOURCE has
   # no push-path entry — the BRO-3219/BRO-3127 shape.
   run_audit "toplevel-script-test-yml-coverage" "scripts/audit-toplevel-script-test-yml-coverage.test.mjs" || FAIL=1
+  TOPLEVEL_RAN=1
   # --scope-stdin (card #1488): only orphans among THIS push's changed files
   # are blocking; pre-existing orphans elsewhere print informational and
   # don't fail an unrelated push. CI's own direct calls to
@@ -202,6 +217,10 @@ if grep -qE "^(tests/unit|scripts)/[^/]*\.test\.(mjs|ts|js|cjs|sh)$|^scripts/lib
   else
     printf '%s\n' "$CHANGED_FILES" | run_audit "orphan-tests" "scripts/audit-orphan-tests.js" --scope-stdin || FAIL=1
   fi
+fi
+
+if [ "$TOPLEVEL_RAN" = "0" ] && grep -qE "^scripts/[^/]+\.(js|mjs|ts)$" <<<"$CHANGED_FILES"; then
+  run_audit "ci-parity-toplevel-script-test-yml" "scripts/audit-toplevel-script-test-yml-coverage.test.mjs" || FAIL=1
 fi
 
 # Playwright evaluate-click anti-pattern.

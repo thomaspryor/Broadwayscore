@@ -20,6 +20,7 @@
 const { generateReviewFilename } = require('../review-normalization');
 const { versionedReviewFilename, normalizeReviewUrl } = require('../ingest-collision');
 const { THUMB_SCORES, starsToNumeric } = require('../score-extractors');
+const { EXCERPT_FIELDS } = require('../excerpt-fields');
 
 const PROVENANCE_KEY = 'openingNightLane';
 const PRODUCTION_VERIFIED = 'aggregator';
@@ -172,7 +173,7 @@ function paywallFallbackScore({ thumb, stars } = {}) {
  */
 function buildLaneReview({
   showId, night, source, seenAt, outletId, outlet, criticName, url, publishDate = null, fullText = '',
-  aggregator = {},
+  aggregator = {}, excerpts = {},
 } = {}) {
   if (!url) throw new Error('buildLaneReview: url is required');
   if (!outletId) throw new Error('buildLaneReview: outletId is required');
@@ -184,6 +185,9 @@ function buildLaneReview({
     [PROVENANCE_KEY]: provenance, productionVerified: PRODUCTION_VERIFIED,
   };
   if (aggregator.excerpt) review.showScoreExcerpt = String(aggregator.excerpt);
+  // Each aggregator's quote in its own review-file field (bwwExcerpt, dtliExcerpt ...): what the scorer reads for a
+  // paywalled review, and what the regular pipeline keeps for one.
+  for (const [field, text] of Object.entries(excerpts || {})) if (EXCERPT_FIELDS.includes(field) && text) review[field] = String(text);
   if (text.length >= MIN_FULL_TEXT_CHARS) {
     review.isFullReview = true;
     review.needsRecollection = false;

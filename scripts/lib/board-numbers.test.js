@@ -10,6 +10,128 @@ const { readDispatchLedgers } = require('./board-targeting-sources.js');
 const open = { total: 551, byPriority: { 1: 1, 2: 39, 3: 265, 4: 239, 0: 7 } };
 const inflow = (created, completed, canceled = 0, extra = {}) => ({ created, completed, canceled, ...extra });
 
+test('BRO-6090: separate ceremony from Added/Completed and show the matching 7-day daily averages', async () => {
+  const now = new Date('2026-10-24T12:00:00Z');
+  const session = { description: 'Filed by: session (kind: fix)', createdAt: '2026-10-24T01:00:00Z', completedAt: '2026-10-24T03:00:00Z' };
+  const nodes = [
+    { title: '[E2E Canary] alert chain check', ...session },
+    { title: 'Opening-night watch 2026-10-23', ...session },
+    { title: 'Opening-night audit 2026-10-23', ...session },
+    { title: 'CANARY: touch data/audit/canary.marker', ...session },
+    { title: 'Week in Review, 2026-10-17 to 2026-10-24', ...session },
+    { title: 'Fix search', ...session },
+    { title: 'Fast automated repair', ...session, description: 'Filed by: digest-autofix (kind: fix)' },
+    { title: 'Older session work', ...session, createdAt: '2026-10-23T01:00:00Z' },
+    { title: 'Still open', createdAt: session.createdAt, description: session.description },
+    { title: 'Prior week work', createdAt: '2026-10-20T01:00:00Z' },
+    { title: 'Canceled test', createdAt: session.createdAt, canceledAt: session.completedAt, description: session.description },
+  ];
+  const graphql = async (query, { filter }) => {
+    assert.match(query, /includeArchived: true/);
+    for (const field of ['title', 'description', 'createdAt', 'completedAt', 'canceledAt']) assert.ok(query.includes(field));
+    assert.equal(filter.team.key.eq, 'BRO');
+    assert.equal(filter.or.length, 3);
+    return { issues: { nodes, pageInfo: { hasNextPage: false } } };
+  };
+  const d1 = await B.fetchBoardInflowCounts({ graphql, now, windowDays: 1 });
+  const d7 = await B.fetchBoardInflowCounts({ graphql, now, windowDays: 7 });
+  assert.deepEqual([d1.created, d1.completed, d1.canceled], [2, 2, 1]);
+  assert.deepEqual([d7.created, d7.completed], [4, 2]);
+  assert.deepEqual(d1.excluded.created, { canary: 1, routineLog: 4, sessionTracking: 2 });
+  assert.deepEqual(d1.excluded.completed, { canary: 1, routineLog: 4, sessionTracking: 1 });
+  const m = B.buildBoardNumbers({ data: { d1, d7, bySource: B.summarizeInflowBySource(nodes, { now }) } });
+  const lines = B.renderBoardNumbersLines(m).join('\n');
+  assert.match(lines, /Added: 2 in 24h \(7-day average 0\.6\/day\), 4 in 7 days/);
+  assert.match(lines, /Completed: 2 in 24h \(7-day average 0\.3\/day\), 2 in 7 days/);
+  assert.match(lines, /Added test alarms: 1 in 24h, 1 in 7 days/);
+  assert.match(lines, /Added routine logs: 4 in 24h, 4 in 7 days/);
+  assert.match(lines, /Added session self-tracking \(closed within 6h\): 2 in 24h, 2 in 7 days/);
+  assert.match(lines, /Completed session self-tracking \(closed within 6h\): 1 in 24h, 1 in 7 days/);
+  assert.match(lines, /Added in 24h by source: session 2, digest-autofix 1, unknown 1/);
+  assert.match(B.renderBoardNumbersHtml(m), /7-day average 0\.6\/day/);
+});
+
+test('BRO-6090: session cutoff is inclusive, requires session provenance and valid closure timestamps', () => {
+  const now = new Date('2026-10-24T12:00:00Z');
+  const base = { title: 'Session work', description: 'Filed by: session (kind: fix)', createdAt: '2026-10-24T00:00:00Z' };
+  const nodes = [
+    { ...base, completedAt: '2026-10-24T06:00:00Z' },
+    { ...base, completedAt: '2026-10-24T06:00:00.001Z' },
+    { ...base, completedAt: '2026-10-23T23:59:59Z' },
+    { ...base, createdAt: '2026-10-24T11:00:00Z', completedAt: '2026-10-24T13:00:00Z' },
+    { ...base, completedAt: 'bad date' },
+    { ...base, updatedAt: '2026-10-24T01:00:00Z' },
+    { ...base, description: '', completedAt: '2026-10-24T01:00:00Z' },
+    { ...base, description: 'Filed by: alert-router (kind: fix)', completedAt: '2026-10-24T01:00:00Z' },
+    { ...base, title: 'Fix Opening-night watch 2026-10-23', description: '' },
+    { ...base, title: 'Week in Review rendering is broken', description: '' },
+  ];
+  const r = B.summarizeBoardFlow(nodes, { now, windowDays: 1 });
+  assert.deepEqual([r.created, r.completed], [9, 4]);
+  assert.deepEqual(r.excluded.created, { canary: 0, routineLog: 0, sessionTracking: 1 });
+  assert.equal(B.summarizeInflowBySource(nodes, { now }).total, 9);
+});
+
+test('BRO-6090: board flow pages, includes old completions, and labels partial counts as minimums', async () => {
+  const now = new Date('2026-10-24T12:00:00Z');
+  const calls = [];
+  const graphql = async (q, v, opts) => {
+    calls.push(v);
+    assert.equal(opts.maxAttempts, 2);
+    assert.equal(v.filter.or[0].createdAt.gte, '2026-10-23T12:00:00.000Z');
+    return { issues: { nodes: [{ title: 'Long running work', createdAt: '2026-10-01T12:00:00Z', completedAt: '2026-10-24T01:00:00Z' }], pageInfo: { hasNextPage: calls.length < 2, endCursor: 'next' } } };
+  };
+  const r = await B.fetchBoardInflowCounts({ graphql, now, windowDays: 1 });
+  assert.equal(r.created, 0);
+  assert.equal(r.completed, 2);
+  assert.equal(calls[1].after, 'next');
+  assert.equal(r.truncated, false);
+  calls.length = 0;
+  const partial = await B.fetchBoardInflowCounts({ graphql, now, windowDays: 1, maxPages: 1 });
+  assert.equal(partial.truncated, true);
+  const text = B.renderBoardNumbersLines(B.buildBoardNumbers({ data: { d1: partial } })).join('\n');
+  assert.match(text, /minimums/);
+  assert.match(text, /7-day average n\/a\/day/);
+  await assert.rejects(B.fetchBoardInflowCounts({ graphql: async () => ({}) }), /no issues connection/);
+});
+
+test('BRO-6090: digest uses the filtered collector by default and survives a failed window', async () => {
+  const now = new Date('2026-10-24T12:00:00Z');
+  const data = await B.fetchBoardNumbersData({
+    now,
+    graphql: async (q, { filter }) => {
+      assert.match(q, /query BoardFlow/);
+      if (filter.or[0].createdAt.gte === '2026-10-23T12:00:00.000Z') throw new Error('window unavailable');
+      return { issues: { nodes: [{ title: '[E2E Canary] alert', createdAt: '2026-10-24T01:00:00Z' }], pageInfo: { hasNextPage: false } } };
+    },
+    fetchOpen: async () => open, fetchStuck: async () => null, fetchParked: async () => null,
+    fetchBySource: async () => null, fetchOpus: async () => null, fetchCost: async () => null,
+    fetchDaily: async () => null, readLandedFn: () => null,
+  });
+  assert.equal(data.d1.error, 'window unavailable');
+  assert.equal(data.d7.created, 0);
+  const text = B.renderBoardNumbersLines(B.buildBoardNumbers({ data })).join('\n');
+  assert.match(text, /Added: n\/a in 24h \(7-day average 0\.0\/day\), 0 in 7 days/);
+  assert.match(text, /Added test alarms: n\/a in 24h, 1 in 7 days/);
+});
+
+test('BRO-6090: the by-source read requests closure timestamps so its counts exclude the same session cards', async () => {
+  const now = new Date('2026-10-24T12:00:00Z');
+  const summary = await B.fetchInflowBySource({
+    now,
+    graphql: async (query, { filter }) => {
+      assert.match(query, /createdAt completedAt canceledAt/);
+      assert.equal(filter.createdAt.gte, '2026-10-23T12:00:00.000Z');
+      return { issues: { nodes: [
+        { title: 'Session', description: 'Filed by: session (kind: fix)', createdAt: '2026-10-24T01:00:00Z', completedAt: '2026-10-24T02:00:00Z' },
+        { title: 'Real work', description: 'Filed by: session (kind: fix)', createdAt: '2026-10-24T01:00:00Z' },
+      ], pageInfo: { hasNextPage: false } } };
+    },
+  });
+  assert.equal(summary.total, 1);
+  assert.deepEqual(summary.bySource, [{ source: 'session', count: 1 }]);
+});
+
 test('buildBoardNumbers shapes open rows, windows, lanes', () => {
   const m = B.buildBoardNumbers({
     data: { open, d1: inflow(87, 53, 4), d7: inflow(548, 300), landed1: { codex: 3, claude: 9 }, landed7: { codex: 10, claude: 40 } },
@@ -35,7 +157,7 @@ test('failed reads render n/a, never 0', () => {
   const m = B.buildBoardNumbers({ data: { open: { error: 'x' }, d1: { error: 'x' }, d7: inflow(5, 2), landed1: null } });
   const text = B.renderBoardNumbersLines(m).join('\n');
   assert.match(text, /Open cards: n\/a/);
-  assert.match(text, /Added: n\/a in 24h, 5 in 7 days/);
+  assert.match(text, /Added: n\/a in 24h \(7-day average 0\.7\/day\), 5 in 7 days/);
   assert.match(text, /Waiting on you: n\/a/);
   assert.match(text, /Landed on main, 24h: n\/a/);
   assert.match(text, /Opus in last 24h: n\/a/);
@@ -153,14 +275,14 @@ test('BRO-5488: inflow by source reads the Filed-by footer, else title rules, an
     { title: 'Rollup (workflow:A): k', description: sourceFooter('rollup', 'k') },
   ];
   const s = B.summarizeInflowBySource(cards);
-  assert.equal(s.total, 7);
+  assert.equal(s.total, 6);
   assert.deepEqual(s.bySource, [
-    { source: 'digest-autofix', count: 4 }, { source: 'ci-red', count: 1 }, { source: 'rollup', count: 1 }, { source: 'session', count: 1 },
+    { source: 'digest-autofix', count: 4 }, { source: 'ci-red', count: 1 }, { source: 'rollup', count: 1 },
   ]);
   assert.deepEqual(s.floods, [{ source: 'digest-autofix', kind: 'review gap missing cited', count: 4 }]);
-  const m = B.buildBoardNumbers({ data: { d1: inflow(7, 0), bySource: s } });
+  const m = B.buildBoardNumbers({ data: { d1: inflow(6, 0), bySource: s } });
   const text = B.renderBoardNumbersLines(m).join('\n');
-  assert.match(text, /Added: 7 in 24h.*\nAdded in 24h by source: digest-autofix 4, ci-red 1, rollup 1, session 1\nFloods \(3\+ cards of one kind from one filer in 24h\): digest-autofix "review gap missing cited" 4\nCompleted:/);
+  assert.match(text, /Added: 6 in 24h[\s\S]*\nAdded in 24h by source: digest-autofix 4, ci-red 1, rollup 1\nFloods \(3\+ cards of one kind from one filer in 24h\): digest-autofix "review gap missing cited" 4\nCompleted:/);
 });
 
 test('BRO-5488: a failed by-source read drops the line instead of printing zeros', () => {
@@ -273,6 +395,6 @@ test('BRO-5770: an Opus read failure preserves the rest of the digest and render
   });
   assert.equal(data.opus.error, 'cloud unavailable');
   const lines = B.renderBoardNumbersLines(B.buildBoardNumbers({ data }));
-  assert.ok(lines.includes('Added: 3 in 24h, 3 in 7 days'));
+  assert.ok(lines.includes('Added: 3 in 24h (7-day average 0.4/day), 3 in 7 days'));
   assert.ok(lines.includes(`Opus in last 24h: n/a of ${require('./bsc-next-model.js').linearOpusDailyCap()}`));
 });

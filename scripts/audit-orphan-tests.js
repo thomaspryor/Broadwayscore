@@ -233,45 +233,9 @@ const EXEMPT_KNOWN_BROKEN = {
   // runner. Decayed-exemption gate caught this.)
 };
 
-// BRO-5937: an EXEMPT_NEVER_CI entry whose comment calls it a "RECHECK-AFTER
-// probe" is red by design until its date, but land.yml's colocated-tests gate
-// still runs it when a diff adds or edits the file, and refused the landing
-// that added one. Each such probe must therefore carry a skip-until guard in
-// the file itself (a `skip:` option, `t.skip(`, or a CHECKABLE_FROM date), or
-// a `RECHECK-GREEN-TODAY: <why>` line documenting why it already passes.
-const RECHECK_PROBE_COMMENT = /RECHECK-AFTER probe/i;
-// Broader wording ("RECHECK-AFTER acceptance-probe", "acceptance probe") is
-// reported advisory only until the existing entries are guarded (CLAUDE.md §19).
-const RECHECK_PROBE_COMMENT_BROAD = /RECHECK-AFTER|acceptance[- ]probe/i;
-const RECHECK_GUARD = /(?:^|[\s{,])skip\s*:\s*(?!false\b)\S|\.skip\s*\(|^[^/\n]*\bCHECKABLE_FROM\b|^\s*(?:\/\/|\*)?\s*RECHECK-GREEN-TODAY:\s*\S/m;
-
-// Reads this file's own EXEMPT_NEVER_CI source and returns each entry with the
-// comment lines directly above it (a comment block belongs to the next entry).
-function neverCiEntriesWithComments(source) {
-  const start = source.indexOf('const EXEMPT_NEVER_CI = {');
-  if (start < 0) return [];
-  const end = source.indexOf('\n};', start);
-  const out = [];
-  let comment = [];
-  for (const line of source.slice(start, end < 0 ? undefined : end).split('\n').slice(1)) {
-    const t = line.trim();
-    if (t.startsWith('//')) { comment.push(t.replace(/^\/\/\s?/, '')); continue; }
-    const m = t.match(/^'([^']+)'\s*:/);
-    if (m) { out.push({ file: m[1], comment: comment.join(' ') }); comment = []; }
-  }
-  return out;
-}
-
-function recheckProbeGuardViolations({ root = ROOT, source = fs.readFileSync(__filename, 'utf8'), matcher = RECHECK_PROBE_COMMENT } = {}) {
-  const violations = [];
-  for (const { file, comment } of neverCiEntriesWithComments(source)) {
-    if (!matcher.test(comment)) continue;
-    let body;
-    try { body = fs.readFileSync(path.join(root, file), 'utf8'); } catch { continue; }
-    if (!RECHECK_GUARD.test(body)) violations.push(file);
-  }
-  return violations;
-}
+// BRO-6077: the previously advisory probe wording now blocks as well.
+// Keep the implementation in scripts/lib so its regressions run in CI.
+const { neverCiEntriesWithComments, recheckProbeGuardViolations } = require('./lib/recheck-probe-guard.js');
 
 // .mjs is the canonical extension but .test.ts and .test.js exist too — must
 // audit all of them or the gate has the same hole it was built to close. Claude
@@ -526,7 +490,6 @@ function main() {
   const { blocking, informational } = decideOrphanGate({ orphans, changedFiles: scope });
   const manifestGate = earlyGate;
   const unguardedProbes = recheckProbeGuardViolations();
-  const advisoryProbes = recheckProbeGuardViolations({ matcher: RECHECK_PROBE_COMMENT_BROAD }).filter((f) => !unguardedProbes.includes(f));
 
   if (json) {
     console.log(JSON.stringify({
@@ -540,7 +503,7 @@ function main() {
       manifestProblems: manifestGate.blocking,
       manifestInformational: manifestGate.informational,
       unguardedRecheckProbes: unguardedProbes,
-      advisoryUnguardedRecheckProbes: advisoryProbes,
+      advisoryUnguardedRecheckProbes: [], // Retained for JSON consumers; all probes now block.
     }, null, 2));
   } else if (blocking.length > 0) {
     console.error(`❌ ${blocking.length} orphan test file(s) — not referenced in any .github/workflows/*.yml:`);
@@ -575,12 +538,9 @@ function main() {
     for (const p of manifestGate.informational) console.log(`  ${p.manifest}: ${p.error}`);
   }
   if (!json && unguardedProbes.length > 0) {
-    console.error(`❌ ${unguardedProbes.length} RECHECK-AFTER probe(s) in EXEMPT_NEVER_CI with no skip-until guard (BRO-5937):`);
+    console.error(`❌ ${unguardedProbes.length} RECHECK-AFTER/acceptance probe(s) in EXEMPT_NEVER_CI with no skip-until guard (BRO-6077):`);
     for (const f of unguardedProbes) console.error(`  ${f}`);
     console.error('Fix: give the red-by-design test `{ skip: Date.now() < CHECKABLE_FROM && \'not checkable before the RECHECK-AFTER date\' }`, or add a `RECHECK-GREEN-TODAY: <why it passes now>` comment. land.yml runs a changed test file, so an unguarded probe refuses the landing that adds it.');
-  }
-  if (!json && advisoryProbes.length > 0) {
-    console.log(`⚠️  ${advisoryProbes.length} more probe-like EXEMPT_NEVER_CI entr(ies) with no skip-until guard (advisory, BRO-5937): ${advisoryProbes.join(', ')}`);
   }
   process.exit(blocking.length > 0 || manifestGate.blocking.length > 0 || unguardedProbes.length > 0 ? 1 : 0);
 }

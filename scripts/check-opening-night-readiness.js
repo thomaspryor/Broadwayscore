@@ -17,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { fetchGitHubJSON } = require('./lib/gh-api-client');
 const { imagePresent } = require('./lib/show-image-presence');
 const { fetchSBCreditStatus } = require('./lib/check-sb-credits');
 const { sbCreditVerdict } = require('./lib/sb-credit-verdict');
@@ -479,13 +480,22 @@ async function runChecks() {
   // 12. Orchestrator recent fire
   const ghToken = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
   if (ghToken) {
-    const orchRes = await httpsGet(
-      'https://api.github.com/repos/thomaspryor/Broadwayscore/actions/workflows/opening-night-orchestrator.yml/runs?per_page=5',
-      { 'Authorization': `Bearer ${ghToken}`, 'User-Agent': 'BWSC-Health-Check' }
-    );
-    if (orchRes.status === 200) {
+    let orchRuns = null;
+    let orchStatus = 200;
+    let orchError = '';
+    try {
+      orchRuns = await fetchGitHubJSON(
+        'https://api.github.com/repos/thomaspryor/Broadwayscore/actions/workflows/opening-night-orchestrator.yml/runs?per_page=5',
+        { token: ghToken, caller: 'check-opening-night-readiness.js' }
+      );
+    } catch (err) {
+      orchStatus = err.status || 0;
+      orchError = err.message;
+    }
+    if (orchStatus === 200) {
       try {
-        const runs = JSON.parse(orchRes.body).workflow_runs || [];
+        if (!orchRuns) throw new Error('unparseable response');
+        const runs = orchRuns.workflow_runs || [];
         const recentRun = runs[0];
         if (recentRun) {
           const ageHours = (Date.now() - new Date(recentRun.created_at).getTime()) / 3600000;
@@ -501,7 +511,7 @@ async function runChecks() {
         report(WARN, 'Orchestrator check', 'Could not parse GitHub API response');
       }
     } else {
-      report(WARN, 'Orchestrator check', `GitHub API returned ${orchRes.status}. Set GH_TOKEN for this check.`);
+      report(WARN, 'Orchestrator check', `GitHub API returned ${orchStatus || orchError || 'an error'}. Set GH_TOKEN for this check.`);
     }
   } else {
     report(SKIP, 'Orchestrator check', 'GH_TOKEN not set');

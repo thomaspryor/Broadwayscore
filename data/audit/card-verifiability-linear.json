@@ -1,21 +1,13 @@
 {
-  "generatedAt": "2026-10-23T10:19:23.829Z",
-  "total": 528,
-  "armedCount": 525,
-  "refusedCount": 3,
+  "generatedAt": "2026-10-24T09:41:38.125Z",
+  "total": 524,
+  "armedCount": 522,
+  "refusedCount": 2,
   "byKind": {
-    "no-section": 2,
+    "no-section": 1,
     "shape": 1
   },
   "refused": [
-    {
-      "id": "BRO-6034",
-      "name": "Opening-night watch 2026-10-22",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6034/opening-night-watch-2026-10-22",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
     {
       "id": "BRO-6018",
       "name": "BRO-5951 follow-up: recover 146 verified-missing T1/T2 reviews in WE historical, adjudicate ~400 fact verdicts",
@@ -35,12 +27,66 @@
   ],
   "missingCheckPaths": [
     {
-      "id": "BRO-6054",
-      "name": "Jonathan Mandell reviews double-counted: newyorktheater.me (nyt-theater) + DC Theatre Scene cross-posts",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6054/jonathan-mandell-reviews-double-counted-newyorktheaterme-nyt-theater",
-      "cmd": "node --test tests/unit/mandell-syndication.test.mjs",
+      "id": "BRO-6108",
+      "name": "BRO-6097 follow-up: run remaining 212 West End historical shows through Theatre Record extraction",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6108/bro-6097-follow-up-run-remaining-212-west-end-historical-shows-through",
+      "cmd": "node --test scripts/lib/we-historical-tr-coverage.test.mjs scripts/lib/tr-pdf-parse.test.mjs",
       "missingPaths": [
-        "tests/unit/mandell-syndication.test.mjs"
+        "scripts/lib/we-historical-tr-coverage.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6104",
+      "name": "Code-checkout auto-sync leaves a half-applied tree when its fast-forward times out at 20s",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6104/code-checkout-auto-sync-leaves-a-half-applied-tree-when-its-fast",
+      "cmd": "node --test tests/unit/code-checkout-staleness.test.mjs",
+      "missingPaths": [
+        "tests/unit/code-checkout-staleness.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6100",
+      "name": "Opening-night watch 2026-10-23",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6100/opening-night-watch-2026-10-23",
+      "cmd": "test -f memory/opening-night-watch-2026-10-23.md",
+      "missingPaths": [
+        "memory/opening-night-watch-2026-10-23.md"
+      ]
+    },
+    {
+      "id": "BRO-6098",
+      "name": "Aggregator health: fix The Stage (failing since Oct), Stagedoor (stopped June), LBO/BWW-London yield drops; add coverage-drop alarm",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6098/aggregator-health-fix-the-stage-failing-since-oct-stagedoor-stopped",
+      "cmd": "node --test scripts/audit-aggregator-health.test.mjs",
+      "missingPaths": [
+        "scripts/audit-aggregator-health.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6088",
+      "name": "Flag create_session from a plan-only session (BRO-6083 follow-up)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6088/flag-create-session-from-a-plan-only-session-bro-6083-follow-up",
+      "cmd": "node --test tests/unit/plan-only-create-session.test.mjs",
+      "missingPaths": [
+        "tests/unit/plan-only-create-session.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6066",
+      "name": "Opening-night lane misses 8 of 19 Broadway reviews in shadow (WSJ, Deadline, Time Out, TheaterMania, Tribune, Vulture, Talkin' Broadway, singleticket)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6066/opening-night-lane-misses-8-of-19-broadway-reviews-in-shadow-wsj",
+      "cmd": "node --test scripts/lib/opening-night-lane/opening-night-lane.test.mjs",
+      "missingPaths": [
+        "scripts/lib/opening-night-lane/opening-night-lane.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6057",
+      "name": "Opening-night audit 2026-10-23",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6057/opening-night-audit-2026-10-23",
+      "cmd": "test -f memory/audit-2026-10-23.log",
+      "missingPaths": [
+        "memory/audit-2026-10-23.log"
       ]
     },
     {
@@ -53,6 +99,15 @@
       ]
     },
     {
+      "id": "BRO-6034",
+      "name": "Opening-night watch 2026-10-22",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6034/opening-night-watch-2026-10-22",
+      "cmd": "test -f memory/opening-night-watch-2026-10-22.md",
+      "missingPaths": [
+        "memory/opening-night-watch-2026-10-22.md"
+      ]
+    },
+    {
       "id": "BRO-6026",
       "name": "Land retry sweep can land a held change: a re-run replays the cancelled run's original commit, not the ref's current tip",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6026/land-retry-sweep-can-land-a-held-change-a-re-run-replays-the-cancelled",
@@ -62,39 +117,12 @@
       ]
     },
     {
-      "id": "BRO-6021",
-      "name": "setup-playwright: install-deps apt mirror stalls fail whole gather shards",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6021/setup-playwright-install-deps-apt-mirror-stalls-fail-whole-gather",
-      "cmd": "node --test scripts/lib/gather-shard-continue-on-error.test.mjs",
-      "missingPaths": [
-        "scripts/lib/gather-shard-continue-on-error.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-5996",
       "name": "Tech Scorecard: manufacturer press photos for every product (owner chose option B)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5996/tech-scorecard-manufacturer-press-photos-for-every-product-owner-chose",
       "cmd": "node --test tests/unit/manufacturer-images.test.mjs",
       "missingPaths": [
         "tests/unit/manufacturer-images.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5995",
-      "name": "Review-text writers count guard-refused safeWriteReview calls as written; Cleveland tour row has the wrong outletId",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5995/review-text-writers-count-guard-refused-safewritereview-calls-as",
-      "cmd": "node --test tests/unit/audit-unchecked-write-counters.test.mjs",
-      "missingPaths": [
-        "tests/unit/audit-unchecked-write-counters.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5993",
-      "name": "Opening-night lane: score candidates in parallel and publish as each is scored, not after the whole pass",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5993/opening-night-lane-score-candidates-in-parallel-and-publish-as-each-is",
-      "cmd": "node --test tests/unit/opening-night-lane-parallel-publish.test.mjs",
-      "missingPaths": [
-        "tests/unit/opening-night-lane-parallel-publish.test.mjs"
       ]
     },
     {
@@ -332,15 +360,6 @@
       ]
     },
     {
-      "id": "BRO-5742",
-      "name": "Opening-night watch 2026-10-19",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5742/opening-night-watch-2026-10-19",
-      "cmd": "test -f memory/opening-night-watch-2026-10-19.md",
-      "missingPaths": [
-        "memory/opening-night-watch-2026-10-19.md"
-      ]
-    },
-    {
       "id": "BRO-5714",
       "name": "commercial-pending-moulin-rouge — recoupment claim needs review",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5714/commercial-pending-moulin-rouge-recoupment-claim-needs-review",
@@ -356,15 +375,6 @@
       "cmd": "node --test tests/unit/springsteen-search-fix.test.mjs",
       "missingPaths": [
         "tests/unit/springsteen-search-fix.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5692",
-      "name": "Opening-night audit 2026-10-19",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5692/opening-night-audit-2026-10-19",
-      "cmd": "node --test scripts/opening-night-audit.test.mjs",
-      "missingPaths": [
-        "scripts/opening-night-audit.test.mjs"
       ]
     },
     {
@@ -392,15 +402,6 @@
       "cmd": "node --test scripts/audit-grosses-data.test.mjs",
       "missingPaths": [
         "scripts/audit-grosses-data.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5595",
-      "name": "Opening-night watch 2026-10-17",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5595/opening-night-watch-2026-10-17",
-      "cmd": "test -f memory/opening-night-watch-2026-10-17.md",
-      "missingPaths": [
-        "memory/opening-night-watch-2026-10-17.md"
       ]
     },
     {
@@ -1433,18 +1434,6 @@
         "scripts/generate-workflow-dependencies.js"
       ],
       "reason": "`test -f scripts/generate-workflow-dependencies.js` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
-    },
-    {
-      "id": "BRO-6002",
-      "name": "SEO: AI-assistant referrals halved since April (ChatGPT ~570/mo to ~300): find why",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6002/seo-ai-assistant-referrals-halved-since-april-chatgpt-570mo-to-300",
-      "cmd": "test -f scripts/submit-indexnow.js",
-      "kind": "test-f-satisfied",
-      "polarity": "never-fails",
-      "paths": [
-        "scripts/submit-indexnow.js"
-      ],
-      "reason": "`test -f scripts/submit-indexnow.js` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
     },
     {
       "id": "BRO-5919",

@@ -33,8 +33,12 @@ const SNAPSHOT = path.join(HERE, '..', 'data', 'audit', 'seo-health.json');
 // (#419) went live on production on 2026-08-03. An older snapshot describes a
 // world that no longer exists and must not be read as a pass.
 const FIX_LIVE_ON = '2026-08-03';
+// The first Sunday SEO snapshot after the fix went live.
+const CHECKABLE_FROM = Date.parse('2026-08-09T08:00:00Z');
 
-test('seo-health.json is fresh and reports no anomalies (card #419)', () => {
+test('seo-health.json is fresh and reports no anomalies (card #419)', {
+  skip: Date.now() < CHECKABLE_FROM && 'not checkable before the 2026-08-09 SEO cron',
+}, () => {
   assert.ok(
     fs.existsSync(SNAPSHOT),
     `${SNAPSHOT} missing — check-seo-health.yml has not written a snapshot`,

@@ -47,7 +47,9 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { fetchLiveRc, countAggregate, countLocalPerShowJson } = require('./lib/review-count-probe');
-const { explainExclusion } = require('./lib/review-guards');
+const { explainRecoveryExclusion } = require('./lib/recovery-exclusions');
+const { loadOutletRegistry } = require('./lib/review-normalization');
+const { buildOutletRegionMap } = require('./lib/cross-market-guard');
 const { parseOriginalScore } = require('./lib/score-parsers');
 
 // ── Parse args ──────────────────────────────────────────────────────────────
@@ -272,9 +274,18 @@ const showRecord = (() => {
   return undefined;
 })();
 
+const outletRegistry = loadOutletRegistry();
+const dualMarketOutlets = new Set();
+for (const [id, outlet] of Object.entries(outletRegistry.outlets)) {
+  if (!outlet.isDualMarket) continue;
+  dualMarketOutlets.add(id);
+  for (const alias of outlet.aliases || []) dualMarketOutlets.add(alias.toLowerCase());
+}
+const marketContext = { outletRegionMap: buildOutletRegionMap(outletRegistry), dualMarketOutlets };
+
 for (const [file, data] of parsed) {
   const filepath = path.join(REVIEW_TEXTS_DIR, file);
-  const rule = explainExclusion(data, showRecord, filepath);
+  const rule = explainRecoveryExclusion(data, showRecord, filepath, marketContext);
 
   if (rule) {
     const detail = data.wrongProductionReason || data.wrongShowReason || '';

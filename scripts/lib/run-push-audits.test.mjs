@@ -25,6 +25,12 @@ function listAudits(files, tipMessage = '') {
   return out.trim().split('\n').filter(Boolean).sort();
 }
 
+// BRO-5621: cheap CI-parity unit tests selected by any scripts/ source edit;
+// the ~10s top-level coverage test only for a top-level non-test script.
+const PARITY = ['ci-parity-autonomous-eligibility', 'ci-parity-sibling-matchers-diacritics'];
+const PARITY_TOP = 'ci-parity-toplevel-script-test-yml';
+const plus = (list, ...extra) => [...list, ...extra].sort();
+
 test('empty file list selects no audits', () => {
   assert.deepEqual(listAudits([]), []);
 });
@@ -51,11 +57,11 @@ test('tests/unit/*.test.mjs selects the full test-registration audit set (BRO-32
 test('scripts/lib/**/*.test.* selects the full test-registration audit set (BRO-3239 HOLE 1)', () => {
   assert.deepEqual(
     listAudits(['scripts/lib/push-with-retry.stall-diagnostics.test.sh']),
-    ['colocated-test-ci-coverage', 'orphan-tests', 'test-yml-manifest-paths', 'tests-vs-derived-data', 'toplevel-script-test-yml-coverage', 'unbounded-fetch']
+    plus(['colocated-test-ci-coverage', 'orphan-tests', 'test-yml-manifest-paths', 'tests-vs-derived-data', 'toplevel-script-test-yml-coverage', 'unbounded-fetch'])
   );
   assert.deepEqual(
     listAudits(['scripts/lib/nested/deeper/x.test.mjs']),
-    ['cmux-spawn-credential', 'colocated-test-ci-coverage', 'orphan-tests', 'test-yml-manifest-paths', 'tests-vs-derived-data', 'toplevel-script-test-yml-coverage', 'unbounded-fetch']
+    plus(['cmux-spawn-credential', 'colocated-test-ci-coverage', 'orphan-tests', 'test-yml-manifest-paths', 'tests-vs-derived-data', 'toplevel-script-test-yml-coverage', 'unbounded-fetch'], ...PARITY)
   );
 });
 
@@ -64,7 +70,7 @@ test('scripts/lib/**/*.test.* selects the full test-registration audit set (BRO-
 // stay anchored to .test.* files, not scripts/lib/ generally (which the
 // pre-existing unbounded-fetch/cmux-spawn-credential triggers already cover).
 test('a non-test scripts/lib/*.js file does not select the test-registration audits', () => {
-  assert.deepEqual(listAudits(['scripts/lib/some-helper.js']), ['cmux-spawn-credential', 'unbounded-fetch']);
+  assert.deepEqual(listAudits(['scripts/lib/some-helper.js']), plus(['cmux-spawn-credential', 'unbounded-fetch'], ...PARITY));
 });
 
 // Adversarial review (BRO-3239): each of the 3 new audits require()s one or
@@ -86,7 +92,7 @@ test('editing a canonical dependency (test-manifest.js / test-yml-push-paths.js)
 test('scripts/*.js selects unbounded-fetch + write-routing + help-flag-safety', () => {
   assert.deepEqual(
     listAudits(['scripts/recover-wsj-browser.js']),
-    ['cmux-spawn-credential', 'help-flag-safety', 'unbounded-fetch', 'write-routing']
+    plus(['cmux-spawn-credential', 'help-flag-safety', 'unbounded-fetch', 'write-routing'], ...PARITY, PARITY_TOP)
   );
 });
 
@@ -132,17 +138,17 @@ test('.github/workflows/*.yml selects unbounded-fetch + the workflow-subject gua
 // pre-existing scripts/*.js triggers (unbounded-fetch, help-flag-safety,
 // write-routing) — that overlap is correct, not a bug this card introduces.
 test('a change to workflow-line-length.js alone selects workflow-line-length (plus its own scripts/*.js triggers)', () => {
-  assert.deepEqual(listAudits(['scripts/lib/workflow-line-length.js']), [
+  assert.deepEqual(listAudits(['scripts/lib/workflow-line-length.js']), plus([
     'cmux-spawn-credential',
     'unbounded-fetch',
     'workflow-actionlint',
     'workflow-concurrency',
     'workflow-line-length',
-  ]);
+  ], ...PARITY));
 });
 
 test('a change to audit-workflow-concurrency.js alone selects workflow-concurrency (plus its own scripts/*.js triggers)', () => {
-  assert.deepEqual(listAudits(['scripts/audit-workflow-concurrency.js']), [
+  assert.deepEqual(listAudits(['scripts/audit-workflow-concurrency.js']), plus([
     'cmux-spawn-credential',
     'gate-corpus-guard-coverage', // BRO-3014: it reads every scripts/audit-*.js
     'help-flag-safety',
@@ -151,7 +157,7 @@ test('a change to audit-workflow-concurrency.js alone selects workflow-concurren
     'workflow-concurrency',
     'workflow-line-length',
     'write-routing',
-  ]);
+  ], ...PARITY, PARITY_TOP));
 });
 
 // BRO-3014: blocking CI audits wired into the lane, each on its own inputs.
@@ -201,12 +207,12 @@ test('argv form (no stdin) matches piped-stdin form', () => {
     [SCRIPT, '--list', 'scripts/recover-wsj-browser.js'],
     { encoding: 'utf8' }
   );
-  assert.deepEqual(out.trim().split('\n').filter(Boolean).sort(), [
+  assert.deepEqual(out.trim().split('\n').filter(Boolean).sort(), plus([
     'cmux-spawn-credential',
     'help-flag-safety',
     'unbounded-fetch',
     'write-routing',
-  ]);
+  ], ...PARITY, PARITY_TOP));
 });
 
 test('scripts/*.mjs and scripts/*.ts also select write-routing (not just .js)', () => {
@@ -214,14 +220,14 @@ test('scripts/*.mjs and scripts/*.ts also select write-routing (not just .js)', 
   // checks cover .js/.mjs/.ts writers; the local push-time trigger must be
   // able to fire on all three too, or a top-level .mjs/.ts writer silently
   // skips the local gate and is only caught later in CI (task #1826 review).
-  assert.deepEqual(listAudits(['scripts/write-shows.mjs']), ['cmux-spawn-credential', 'unbounded-fetch', 'write-routing']);
-  assert.deepEqual(listAudits(['scripts/write-shows.ts']), ['cmux-spawn-credential', 'unbounded-fetch', 'write-routing']);
+  assert.deepEqual(listAudits(['scripts/write-shows.mjs']), plus(['cmux-spawn-credential', 'unbounded-fetch', 'write-routing'], ...PARITY, PARITY_TOP));
+  assert.deepEqual(listAudits(['scripts/write-shows.ts']), plus(['cmux-spawn-credential', 'unbounded-fetch', 'write-routing'], ...PARITY, PARITY_TOP));
 });
 
 test('mixed file list unions all applicable audits', () => {
   assert.deepEqual(
     listAudits(['scripts/foo.js', 'tests/unit/bar.test.mjs', 'tests/e2e/baz.spec.ts']),
-    [
+    plus([
       'cmux-spawn-credential',
       'colocated-test-ci-coverage',
       'help-flag-safety',
@@ -232,7 +238,7 @@ test('mixed file list unions all applicable audits', () => {
       'toplevel-script-test-yml-coverage',
       'unbounded-fetch',
       'write-routing',
-    ]
+    ], ...PARITY)
   );
 });
 

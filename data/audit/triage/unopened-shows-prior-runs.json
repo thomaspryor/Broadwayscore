@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-23T07:56:25.128Z",
+  "generatedAt": "2026-10-24T07:38:58.139Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3848,
-  "flaggedShows": 55,
-  "flaggedFiles": 181,
+  "scannedShows": 3872,
+  "flaggedShows": 54,
+  "flaggedFiles": 179,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
   "unevaluated": [],
   "unreadableFiles": 0,
   "byVerdict": {
-    "likely-contamination": 30,
+    "likely-contamination": 29,
     "needs-human-review": 25
   },
   "shows": [
@@ -2705,56 +2705,6 @@
           "criticName": "Stuart King",
           "publishDate": "2024-12-13",
           "url": "https://www.londonboxoffice.co.uk/news/post/nutcracker-coliseum-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "the-master-builder-off-west-end-2026",
-      "title": "The Master Builder",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "Arcola Theatre",
-      "previewsStartDate": "2026-10-16",
-      "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 2,
-        "distinctYears": [
-          2016,
-          2025
-        ],
-        "spanDays": 3370,
-        "flaggedCount": 2,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "london-box-office--nastazja-domaradzka.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Nastazja Domaradzka",
-          "publishDate": "2016-02-08",
-          "url": "https://www.londonboxoffice.co.uk/news/post/master-builder-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-box-office--stuart-king.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Stuart King",
-          "publishDate": "2025-05-01",
-          "url": "https://www.londonboxoffice.co.uk/news/post/my-master-builder-review",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null

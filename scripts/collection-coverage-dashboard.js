@@ -21,6 +21,7 @@
  */
 
 const { isRejectedByReasonExclusion } = require('./lib/review-guards');
+const { fetchGitHubJSON } = require('./lib/gh-api-client');
 const fs = require('fs');
 const path = require('path');
 const { isLondonMarket } = require('./lib/venue-classification');
@@ -353,24 +354,24 @@ async function createGitHubIssue(markdown) {
   if (!token) { console.log('No GITHUB_TOKEN — skipping issue creation'); return; }
 
   const today = new Date().toISOString().slice(0, 10);
-  const res = await fetch('https://api.github.com/repos/thomaspryor/Broadwayscore/issues', {
-    signal: AbortSignal.timeout(60000),
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      title: `Collection Coverage Report — ${today}`,
-      body: markdown,
-      labels: ['analytics', 'automated'],
-    }),
-  });
-  if (res.ok) {
-    const issue = await res.json();
-    console.log(`Created issue: ${issue.html_url}`);
-  } else {
-    console.error(`Issue creation failed: ${res.status}`);
+  try {
+    const issue = await fetchGitHubJSON('https://api.github.com/repos/thomaspryor/Broadwayscore/issues', {
+      method: 'POST',
+      token,
+      timeoutMs: 60000,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: `Collection Coverage Report — ${today}`,
+        body: markdown,
+        labels: ['analytics', 'automated'],
+      }),
+    });
+    if (issue && issue.html_url) console.log(`Created issue: ${issue.html_url}`);
+    else console.error('Issue creation returned no issue URL');
+  } catch (err) {
+    console.error(`Issue creation failed: ${err.status || err.message}`);
+    // An HTTP rejection was only logged before; a network error or timeout used to fail the run.
+    if (!err.status) throw err;
   }
 }
 

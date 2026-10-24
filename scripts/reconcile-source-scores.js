@@ -27,6 +27,7 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { invalidateStarSidedAdjudication } = require('./lib/star-reliability');
+const { setScoreSourcePreservingProvenance } = require('./lib/score-source-provenance');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const dryRun = process.argv.includes('--dry-run');
@@ -73,7 +74,7 @@ for (const show of listShowDirs(REVIEW_TEXTS_DIR)) {
         if (!dryRun) {
           data._starIconOriginalScore = data.originalScore; // preserve for audit
           data.originalScore = null;
-          data.scoreSource = 'star-icon-cleared';
+          setScoreSourcePreservingProvenance(data, 'star-icon-cleared');
           invalidateStarSidedAdjudication(data, 'star-icon contradicted by LLM');
           data.scoreConfidence = 'low';
         }

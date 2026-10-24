@@ -15,7 +15,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { parsePdfReviews, parseRawPdfReviews, cutAtProductionHeader, maskPdfText } = require('./tr-pdf-parse.js');
+const { parsePdfReviews, parseRawPdfReviews, cutAtProductionHeader, maskPdfText, parseDefaultPdfReviews, mentionsTitle, mergeDefaultReviews, dateKey, parseShortDate } = require('./tr-pdf-parse.js');
 
 const JOSEPH = 'Joseph and the Amazing Technicolor Dreamcoat';
 const PAD = ' '.repeat(52);
@@ -162,4 +162,114 @@ test('maskPdfText keeps structure lines and drops prose (BRO-6097)', () => {
   assert.deepEqual(lines.slice(0, 3), ['THE STAGE', '21.12.17', 'Mxxxxxx Bxxxxxxxxx']);
   assert.equal(lines[3], prose.replace(/\p{L}/gu, 'x'));
   assert.equal(maskPdfText('Joseph at the Palladium', ['Joseph']), 'Joseph xx xxx Pxxxxxxxx');
+});
+
+// BRO-6097: plain pdftotext reads a 3-column page column by column, so the
+// caption, headline, date and critic are not adjacent (shape taken from a
+// real 2016 issue's skeleton; the prose here is invented).
+const prose = (n, extra = '') => Array.from({ length: n }, (_, i) =>
+  `The Dresser returns to the Duke of York's with a fine cast and a sure director, line ${i}. ${extra}`);
+
+test('BRO-6097: default parser pairs a caption with a date a few lines below and finds the critic', () => {
+  const text = [
+    'THE TIMES', 'A headline about the Dresser play', ...prose(1), '14.10.16', 'Ann Thompson', ...prose(4),
+    'EVENING STANDARD', 'Strapline', '14.10.16', 'Fiona Mountford', ...prose(4),
+  ].join('\n');
+  const out = parseDefaultPdfReviews(text, 'The Dresser');
+  assert.deepEqual(out.map(r => [r.outlet, r.date, r.critic]), [
+    ['The Times', '14.10.16', 'Ann Thompson'],
+    ['Evening Standard', '14.10.16', 'Fiona Mountford'],
+  ]);
+  for (const r of out) assert.doesNotMatch(r.fullText, /14\.10\.16|Ann Thompson|Fiona Mountford/);
+});
+
+test('BRO-6097: default parser ignores caps headlines and reviews of other shows', () => {
+  const other = Array.from({ length: 6 }, (_, i) => `Murder Ballad is loud and sweaty at the Arts Theatre, line ${i}.`);
+  const text = [
+    'THE DRESSER', '14.10.16', 'THE TIMES', 'x', '15.10.16', 'Critic One', ...other,
+  ].join('\n');
+  assert.deepEqual(parseDefaultPdfReviews(text, 'The Dresser'), []);
+  assert.deepEqual(parseDefaultPdfReviews('', 'The Dresser'), []);
+});
+
+test('BRO-6097: default parser cuts a review where the next production header begins', () => {
+  const text = [
+    'THE STAGE', '10.11.16', 'Mark Shenton', ...prose(4),
+    'MURDER BALLAD', 'Musical by JULIA JORDAN', 'Arts Theatre, London',
+    'Previews / Opens              Press night                   Closes',
+    '08 November 2016', 'Cast & Creative',
+  ].join('\n');
+  const [r] = parseDefaultPdfReviews(text, 'The Dresser');
+  assert.ok(r);
+  assert.doesNotMatch(r.fullText, /MURDER BALLAD|Arts Theatre, London|Previews/);
+});
+
+// BRO-6097 review fixes: neighbouring reviews, venue lines as critics, dedupe.
+test('BRO-6097: default parser stops at a neighbouring review from an outlet it does not list', () => {
+  const text = [
+    'THE TIMES', 'Headline', '14.10.16', 'Ann Thompson', ...prose(4),
+    'A short caps-less strapline',
+    'MORNING STAR', 'Another headline', '16.10.16', 'Gordon Parsons',
+    ...Array.from({ length: 4 }, (_, i) => `Murder Ballad is loud and sweaty at the Arts Theatre, line ${i}.`),
+  ].join('\n');
+  const [r, ...rest] = parseDefaultPdfReviews(text, 'The Dresser');
+  assert.equal(rest.length, 0);
+  assert.equal(r.critic, 'Ann Thompson');
+  assert.doesNotMatch(r.fullText, /MORNING STAR|Gordon Parsons|16\.10\.16|Murder Ballad|strapline/);
+});
+
+test('BRO-6097: critic search skips venue lines and accepts lowercase particles', () => {
+  const body = prose(4);
+  const venue = parseDefaultPdfReviews(['THE TIMES', '14.10.16', 'Theatre Royal Haymarket', "Duke Of York's", 'Ann Thompson', ...body].join('\n'), 'The Dresser');
+  assert.equal(venue[0].critic, 'Ann Thompson');
+  const particle = parseDefaultPdfReviews(['THE TIMES', '14.10.16', 'Jan van Dijk', ...body].join('\n'), 'The Dresser');
+  assert.equal(particle[0].critic, 'Jan van Dijk');
+  const none = parseDefaultPdfReviews(['THE TIMES', '14.10.16', ...body].join('\n'), 'The Dresser');
+  assert.equal(none[0].critic, null);
+});
+
+test('BRO-6097: dates reduce to one ISO key whatever the format', () => {
+  assert.equal(parseShortDate('14.10.2016'), '2016-10-14');
+  assert.equal(parseShortDate('14.10.16'), '2016-10-14');
+  assert.equal(dateKey('14 October 2016'), '2016-10-14');
+  assert.equal(dateKey('14.10.16'), dateKey('14 October 2016'));
+  assert.equal(dateKey('32 October 2016'), '32 October 2016');
+});
+
+test('BRO-6097: default merge drops the same review but keeps a second named critic', () => {
+  const have = [{ outlet: 'The Times', date: '14 October 2016', critic: 'Ann Thompson', fullText: 'a' }];
+  const same = { outlet: 'The Times', date: '14.10.16', critic: '', fullText: 'b' };
+  const other = { outlet: 'The Times', date: '14.10.16', critic: 'Libby Purves', fullText: 'c' };
+  const twin = { outlet: 'The Times', date: '14.10.16', critic: 'A. Thompson', fullText: 'd' };
+  assert.deepEqual(mergeDefaultReviews(have, [same, twin]).map(r => r.fullText), ['a']);
+  assert.deepEqual(mergeDefaultReviews(have, [other]).map(r => r.fullText), ['a', 'c']);
+});
+
+// BRO-6097: real masked pdftotext skeletons from the CI probe. Default mode
+// used to return 0 for The Dresser (title is rarely in the first 300 chars of
+// interleaved column text); the whole-review title mention recovers them.
+test('default mode on masked real skeletons recovers reviews', async () => {
+  const { readFileSync, existsSync } = await import('node:fs');
+  const dir = new URL('../../data/audit/we-historical-tr-skeletons/', import.meta.url);
+  const cases = [
+    ['the-dresser-west-end-2016', 'The Dresser', 5],
+    ['murder-ballad-west-end-2016', 'Murder Ballad', 4],
+    ['the-sewing-group-west-end-2016', 'The Sewing Group', 5],
+  ];
+  for (const [id, title, min] of cases) {
+    const f = new URL(`${id}.default.txt`, dir);
+    assert.ok(existsSync(f), `${id} skeleton missing`);
+    const r = parseDefaultPdfReviews(readFileSync(f, 'utf8'), title);
+    assert.ok(r.length >= min, `${id}: got ${r.length}, want >= ${min}`);
+  }
+});
+
+test('default mode title match rejects passing mentions of common words', () => {
+  const body = (extra) => ({ fullText: `${extra} `.repeat(1) + 'x'.repeat(300) });
+  assert.equal(mentionsTitle(body('The company is excellent in this play.').fullText, 'Company'), false);
+  assert.equal(mentionsTitle(body('echoes of Hamlet and the stage cast').fullText, 'Hamlet'), true);
+  assert.equal(mentionsTitle(body('Like hamilton before it').fullText, 'Hamilton'), false);
+  assert.equal(mentionsTitle(body('the band plays; the band was loud').fullText, 'The Band'), false);
+  assert.equal(mentionsTitle(body('six actors in six roles').fullText, 'Six'), false);
+  assert.equal(mentionsTitle(body('act 2 at 9 pm, 5 stars').fullText, '9 to 5'), false);
 });

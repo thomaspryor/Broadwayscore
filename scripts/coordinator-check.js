@@ -34,7 +34,7 @@ async function fetchCard(card) {
     const data = await graphql(CARD_QUERY, { id: card }, LINEAR_OPTS);
     const issue = data && data.issue;
     if (!issue) return { ok: false, error: `${card} not found` };
-    return { ok: true, url: issue.url, title: issue.title, description: issue.description || '', comments: (issue.comments && issue.comments.nodes) || [] };
+    return { ok: true, identifier: issue.identifier, url: issue.url, title: issue.title, description: issue.description || '', comments: (issue.comments && issue.comments.nodes) || [] };
   } catch (err) {
     return { ok: false, error: String((err && err.message) || err).split('\n')[0].slice(0, 200) };
   }

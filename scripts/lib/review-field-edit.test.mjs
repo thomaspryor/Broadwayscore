@@ -754,3 +754,48 @@ test('aggregatorStars clear survives the real writer and leaves the file queued 
   const refilled = JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
   assert.equal(refilled.aggregatorStars == null, true, 'a sourceless refill must not undo the approved clear');
 });
+
+test('scoreProvenance: stamps page-parsed on a body-less LLM-relabelled file only (BRO-6052)', () => {
+  const rec = { outletId: 'thestage', originalScore: 60, scoreSource: 'llm-v6', fullText: null };
+  const res = applyReviewFieldEdit(rec, { field: 'scoreProvenance', oldValue: null, newValue: 'page-parsed' }, stamp);
+  assert.equal(res.ok, true, res.reason);
+  assert.equal(res.record.scoreProvenance, 'page-parsed');
+  const { bodylessScoreProvenance } = require('./review-guards');
+  assert.equal(bodylessScoreProvenance(rec), 'aggregator-inherited');
+  assert.equal(bodylessScoreProvenance(res.record), 'page-parsed');
+  assert.equal(rec.scoreProvenance, undefined, 'input record is not mutated');
+});
+
+test('scoreProvenance: refuses other values, true aggregator sources, bodies, scoreless and stamped files', () => {
+  const base = { originalScore: 60, scoreSource: 'llm-v6', fullText: null };
+  const edit = (rec, newValue = 'page-parsed', oldValue = null) => applyReviewFieldEdit(rec, { field: 'scoreProvenance', oldValue, newValue }, stamp);
+  assert.equal(edit(base, 'aggregator-inherited').ok, false);
+  assert.equal(edit({ ...base, scoreSource: 'london-box-office' }).ok, false);
+  assert.equal(edit({ ...base, fullText: 'x'.repeat(300) }).ok, false);
+  assert.equal(edit({ originalScore: null, scoreSource: 'llm-v6' }).ok, false);
+  assert.equal(edit({ ...base, scoreProvenance: 'aggregator-inherited' }, 'page-parsed', 'aggregator-inherited').ok, false);
+});
+
+test('scoreProvenance: refuses relabelled aggregator relays and mismatched-page files (BRO-6052 review)', () => {
+  const base = { originalScore: 60, scoreSource: 'anchored-v6', fullText: null };
+  const edit = (rec) => applyReviewFieldEdit(rec, { field: 'scoreProvenance', oldValue: null, newValue: 'page-parsed' }, stamp);
+  assert.equal(edit({ ...base, aggregatorStarsSource: 'lbo-star-rating' }).ok, false);
+  assert.equal(edit({ ...base, originalScoreSource: 'show-score-stars' }).ok, false);
+  assert.equal(edit({ ...base, incompleteReason: 'url_content_mismatch' }).ok, false);
+  assert.equal(edit({ ...base, incompleteReason: 'paywall' }).ok, true);
+});
+
+test('scoreProvenance: any content-verdict incompleteReason refuses (BRO-6052 ship-check)', () => {
+  const base = { originalScore: 60, scoreSource: 'anchored-v6', fullText: null };
+  for (const incompleteReason of ['wrong_content', 'roundup_only', 'no_url', 'url_dead', 'scraper_garbage']) {
+    const res = applyReviewFieldEdit({ ...base, incompleteReason }, { field: 'scoreProvenance', oldValue: null, newValue: 'page-parsed' }, stamp);
+    assert.equal(res.ok, false, incompleteReason);
+  }
+});
+
+test('scoreProvenance: an access-failure incompleteReason (paywall, scraper_timeout) is allowed', () => {
+  for (const incompleteReason of ['paywall', 'scraper_timeout']) {
+    const res = applyReviewFieldEdit({ originalScore: 60, scoreSource: 'anchored-v6', fullText: null, incompleteReason }, { field: 'scoreProvenance', oldValue: null, newValue: 'page-parsed' }, stamp);
+    assert.equal(res.ok, true, incompleteReason);
+  }
+});

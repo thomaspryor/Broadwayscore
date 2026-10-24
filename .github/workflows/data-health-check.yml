@@ -412,6 +412,23 @@ jobs:
         timeout-minutes: 1
         run: node scripts/audit-syndicated-critic-pairs.js --strict
 
+      # BRO-5510: dropped-by-wrong-twin reviews and stale-slot squatters on 2026+ shows (empty outlet slots only).
+      # Advisory (CLAUDE.md rule 19): the script exits 0 unless --strict; continue-on-error keeps the job green.
+      - name: Stale slot squatter audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/audit-stale-slot-squatters.js --min-year=2026
+
+      # BRO-6056: outlets whose registry defaultCritic fills blank bylines although their
+      # review-text files show several other named critics (set multiAuthor in
+      # data/outlet-registry.json). Advisory first (CLAUDE.md rule 19).
+      - name: Default-critic diversity audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 1
+        run: node scripts/audit-default-critic-diversity.js --strict
+
       # BRO-5769: early or carried publish dates no page read has confirmed (counts only, digest row).
       # Advisory: exit 1 means the weekly backfill-review-dates recheck is behind; continue-on-error keeps the job green.
       - name: Early publish date audit

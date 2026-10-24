@@ -494,3 +494,15 @@ test('the same short length twice stops the refetching and scores the partial co
     assert.equal(got.contentTier, 'truncated');
   } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
 });
+
+// BRO-6066 ship-check: a partial copy scored now is still collected in full later (it was published needsRecollection:false).
+test('a review scored from a truncated partial copy is queued for re-collection', async () => {
+  const s = sandbox({ extractArticle: () => 'A partial copy of the review, cut short by the page. '.repeat(12), retryMs: [] });
+  try {
+    await s.run();
+    const rows = JSON.parse(fs.readFileSync(path.join(s.dir, 'reviews.json'), 'utf8')).reviews;
+    assert.ok(rows.length > 0);
+    for (const r of rows.filter((x) => x.contentTier === 'truncated')) assert.equal(r.needsRecollection, true, r.url);
+    assert.ok(rows.some((x) => x.contentTier === 'truncated'));
+  } finally { s.cleanup(); }
+});

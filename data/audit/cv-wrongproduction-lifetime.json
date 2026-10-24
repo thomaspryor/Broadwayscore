@@ -1,20 +1,21 @@
 {
-  "updatedAt": "2026-10-23T07:56:09.201Z",
-  "scanned": 2721,
+  "updatedAt": "2026-10-24T07:38:39.391Z",
+  "scanned": 2737,
   "showsWithViolations": 115,
   "totalViolations": 147,
-  "newSinceLastRun": 2,
+  "newSinceLastRun": 3,
   "handled": {
-    "temporal-override-low-confidence": 789,
+    "temporal-override-low-confidence": 795,
     "not-shipped": 54,
-    "duplicate-not-shipped": 54,
+    "duplicate-not-shipped": 56,
     "rebuild-skip-audit": 31,
     "manual-clear-reason": 14,
-    "prior-run-or-tour-leg": 40
+    "prior-run-or-tour-leg": 44
   },
   "newViolationKeys": [
-    "blood-of-my-blood-west-end-2026::islingtontribune--unknown.json",
-    "derren-brown-only-human-west-end-2026::theatre-weekly--greg-stewart.json"
+    "derren-brown-only-human-west-end-2026::thereviewshub--katherine-gannon.json",
+    "the-years-west-end-2025::timeout-london--andrzej-lukowski.json",
+    "dance-is-not-for-us-off-west-end-2026::thereviewshub--the-reviews-hub-london.json"
   ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
@@ -68,7 +69,6 @@
     "sting-west-end-2026::artsdesk--aleks-sierz.json",
     "between-the-river-and-the-sea-west-end-2026::artsdesk--aleks-sierz.json",
     "blood-of-my-blood-west-end-2026::guardian--unknown.json",
-    "blood-of-my-blood-west-end-2026::islingtontribune--unknown.json",
     "archduke-west-end-2026::artsdesk--unknown.json",
     "the-enormous-crocodile-west-end-2026::musical-theatre-review--unknown.json",
     "titanique-west-end-2024::telegraph--dominic-cavendish.json",
@@ -82,6 +82,7 @@
     "now-you-see-me-live-west-end-2026::london-box-office--stuart-king.json",
     "the-oresteia-west-end-2026::artsdesk--unknown.json",
     "derren-brown-only-human-west-end-2026::theatre-weekly--greg-stewart.json",
+    "derren-brown-only-human-west-end-2026::thereviewshub--katherine-gannon.json",
     "celebrity-autobiography-2026::cititour--brian-scott-lipton.json",
     "turandot-off-broadway-2025::new-york-classical-review--george-grella.json",
     "heathers-the-musical-off-west-end-2026::voice-magazine--sam-nead.json",
@@ -112,6 +113,7 @@
     "the-curious-case-of-benjamin-button-west-end-2024::broadwayworld--unknown.json",
     "robin-hood-west-end-2024::whatsonstage--tom-millward.json",
     "the-years-west-end-2025::telegraph--dominic-cavendish.json",
+    "the-years-west-end-2025::timeout-london--andrzej-lukowski.json",
     "more-life-west-end-2025::everything-theatre--nathan-blue.json",
     "clueless-west-end-2025::timeout-london--andrzej-lukowski.json",
     "manhunt-west-end-2025::london-theatre--olivia-rook.json",
@@ -124,8 +126,6 @@
     "inter-alia-west-end-2025::financialtimes--unknown.json",
     "inter-alia-west-end-2025::nytimes--houman-barekat.json",
     "inter-alia-west-end-2025::observer--unknown.json",
-    "punch-west-end-2025::independent--alice-saville.json",
-    "punch-west-end-2025::timeout-london--andrzej-lukowski.json",
     "othello-west-end-2025::thestage--david-fargnoli.json",
     "the-little-big-things-west-end-2023::london-theatre--unknown.json",
     "sunset-boulevard-west-end-2023::whatsonstage--sarah-crompton.json",
@@ -163,7 +163,8 @@
     "seven-methods-of-killing-kylie-jenner-west-end-2021::timeout-london--alice-saville.json",
     "the-upstart-crow-west-end-2020::timeout-london--unknown.json",
     "the-importance-of-being-earnest-west-end-2024::broadwayworld--unknown.json",
-    "the-importance-of-being-earnest-west-end-2024::londontheatre1--unknown.json"
+    "the-importance-of-being-earnest-west-end-2024::londontheatre1--unknown.json",
+    "dance-is-not-for-us-off-west-end-2026::thereviewshub--the-reviews-hub-london.json"
   ],
   "hits": [
     {
@@ -1124,7 +1125,7 @@
       "showId": "blood-of-my-blood-west-end-2026",
       "title": "Blood of my Blood",
       "openingDate": "2026-10-07",
-      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED with CV.wrongProduction=true (undefined confidence) and no clear flag; reasoning: (none) — https://www.theguardian.com/stage/2026/oct/10/blood-of-my-blood-review-royal-court-theatre-london\nislingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 15d of opening, likely correct production] This is a genuine theater review with critical asses — https://www.islingtontribune.co.uk/article/review-blood-of-my-blood-at-royal-court-theatre",
+      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED with CV.wrongProduction=true (undefined confidence) and no clear flag; reasoning: (none) — https://www.theguardian.com/stage/2026/oct/10/blood-of-my-blood-review-royal-court-theatre-london",
       "violations": [
         {
           "filename": "guardian--unknown.json",
@@ -1134,19 +1135,6 @@
           "matchedBy": "url",
           "cvReasoning": null,
           "cvIssues": null
-        },
-        {
-          "filename": "islingtontribune--unknown.json",
-          "url": "https://www.islingtontribune.co.uk/article/review-blood-of-my-blood-at-royal-court-theatre",
-          "outletId": "islingtontribune",
-          "criticName": "Unknown",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 15d of opening, likely correct production] This is a genuine theater review with critical asses",
-          "cvIssues": [
-            "Review publish date (15th October 2026) does not match expected review publish date (22nd October 2026)",
-            "Review does not name Royal Court as the venue; no West End venue is identified in the text"
-          ]
         }
       ]
     },
@@ -1393,13 +1381,22 @@
       "showId": "derren-brown-only-human-west-end-2026",
       "title": "Derren Brown: Only Human",
       "openingDate": "2026-10-22",
-      "message": "theatre-weekly/Greg Stewart (theatre-weekly--greg-stewart.json) SHIPPED with CV.wrongProduction=true (undefined confidence) and no clear flag; reasoning: (none) — https://theatreweekly.com/review-derren-browns-only-human-at-apollo-theatre/",
+      "message": "theatre-weekly/Greg Stewart (theatre-weekly--greg-stewart.json) SHIPPED with CV.wrongProduction=true (undefined confidence) and no clear flag; reasoning: (none) — https://theatreweekly.com/review-derren-browns-only-human-at-apollo-theatre/\nthereviewshub/Katherine Gannon (thereviewshub--katherine-gannon.json) SHIPPED with CV.wrongProduction=true (undefined confidence) and no clear flag; reasoning: (none) — https://www.thereviewshub.com/derren-brown-only-human-the-apollo-london/",
       "violations": [
         {
           "filename": "theatre-weekly--greg-stewart.json",
           "url": "https://theatreweekly.com/review-derren-browns-only-human-at-apollo-theatre/",
           "outletId": "theatre-weekly",
           "criticName": "Greg Stewart",
+          "matchedBy": "url",
+          "cvReasoning": null,
+          "cvIssues": null
+        },
+        {
+          "filename": "thereviewshub--katherine-gannon.json",
+          "url": "https://www.thereviewshub.com/derren-brown-only-human-the-apollo-london/",
+          "outletId": "thereviewshub",
+          "criticName": "Katherine Gannon",
           "matchedBy": "url",
           "cvReasoning": null,
           "cvIssues": null
@@ -1956,7 +1953,7 @@
       "showId": "the-years-west-end-2025",
       "title": "The Years",
       "openingDate": "2025-02-04",
-      "message": "telegraph/Dominic Cavendish (telegraph--dominic-cavendish.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: Although the byline is Dominic Cavendish (Telegraph) and the review mentions the Harold Pinter Theatre, the opinion-bear — https://www.telegraph.co.uk/theatre/what-to-see/the-years-harold-pinter-theatre/",
+      "message": "telegraph/Dominic Cavendish (telegraph--dominic-cavendish.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: Although the byline is Dominic Cavendish (Telegraph) and the review mentions the Harold Pinter Theatre, the opinion-bear — https://www.telegraph.co.uk/theatre/what-to-see/the-years-harold-pinter-theatre/\ntimeout-london/Andrzej Lukowski (timeout-london--andrzej-lukowski.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid theater review, but it reviews the pre-transfer Almeida Theatre production from August 2024, not the Wes — https://www.timeout.com/london/theatre/the-years-review",
       "violations": [
         {
           "filename": "telegraph--dominic-cavendish.json",
@@ -1969,6 +1966,19 @@
           "cvIssues": [
             "Review describes the Almeida Theatre production, not the West End production at Harold Pinter Theatre. The critic states 'the Almeida's contribution to theatreland's enticements is further bolstered by the transfer of a less predictably successful affair, first mounted last summer' — indicating this is a review OF the Almeida production that later transferred to the West End, written before or during the Almeida run.",
             "The review is truncated mid-sentence ('Full marks to Harmony Rose-Bremner and Anjli Mohindra for conjurin[...]') and again later ('theatrical minimalism – the dominant motif being white sheets whipped from a central table and strung from washing-lines to den[...]'), indicating incomplete scraping."
+          ]
+        },
+        {
+          "filename": "timeout-london--andrzej-lukowski.json",
+          "url": "https://www.timeout.com/london/theatre/the-years-review",
+          "outletId": "timeout-london",
+          "criticName": "Andrzej Lukowski",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "This is a valid theater review, but it reviews the pre-transfer Almeida Theatre production from August 2024, not the Wes",
+          "cvIssues": [
+            "Review evaluates the Almeida Theatre production (August 2024), not the West End Harold Pinter Theatre run (January 2025)",
+            "Opening sentence explicitly states: 'This review is from the Almeida Theatre in August 2024; The Years transfers to the Harold Pinter Theatre in January 2025'"
           ]
         }
       ]
@@ -2073,7 +2083,7 @@
     {
       "showId": "the-fifth-step-west-end-2025",
       "title": "The Fifth Step",
-      "openingDate": null,
+      "openingDate": "2025-05-19",
       "message": "everything-theatre/Mary Pollard (everything-theatre--mary-pollard.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a valid theater review, but it reviews the Edinburgh International Festival premiere (August 2024) rather than t — https://everything-theatre.co.uk/2025/05/review-the-fifth-step-sohoplace/\nlondon-theatre/Holly O'Mahony (london-theatre--holly-omahony.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a legitimate theater review with substantive critical assessment of performance quality, but the text is severel — https://www.londontheatre.co.uk/reviews/the-fifth-step-review-soho-place\nthestage/Dave Fargnoli (thestage--dave-fargnoli.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a genuine theater review of 'The Fifth Step,' but it reviews the 2024 Edinburgh International Festival productio — https://www.thestage.co.uk/reviews/the-fifth-step-review-sohoplace-london-martin-freeman-jack-lowden-david-ireland\nwhatsonstage/Sarah Crompton (whatsonstage--sarah-crompton.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a genuine review of a theatrical production, but it reviews the Edinburgh International Festival/National Theatr — https://www.whatsonstage.com/news/the-fifth-step-with-martin-freeman-and-jack-lowden-in-the-west-end-review_1678332/",
       "violations": [
         {
@@ -2173,40 +2183,6 @@
           "cvIssues": [
             "Review describes production at National Theatre, not Lyttelton Theatre (West End venue)",
             "Closing date stated as 13 September, but expected publish date is 2026-10-10 (future date far beyond closing)"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "punch-west-end-2025",
-      "title": "Punch",
-      "openingDate": "2025-09-26",
-      "message": "independent/Alice Saville (independent--alice-saville.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid theater review, but it evaluates the Young Vic production (a pre-West End tryout/transfer venue), not th — https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/james-graham-punch-review-b2710837.html\ntimeout-london/Andrzej Lukowski (timeout-london--andrzej-lukowski.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped content explicitly states 'This review is from the Young Vic, March 2025. Punch will transfer to the West En — https://www.timeout.com/london/theatre/punch-review",
-      "violations": [
-        {
-          "filename": "independent--alice-saville.json",
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/james-graham-punch-review-b2710837.html",
-          "outletId": "independent",
-          "criticName": "Alice Saville",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a valid theater review, but it evaluates the Young Vic production (a pre-West End tryout/transfer venue), not th",
-          "cvIssues": [
-            "Review is of the Young Vic production, not the West End Apollo Theatre production",
-            "Young Vic is a pre-West End tryout venue, not a West End theatre"
-          ]
-        },
-        {
-          "filename": "timeout-london--andrzej-lukowski.json",
-          "url": "https://www.timeout.com/london/theatre/punch-review",
-          "outletId": "timeout-london",
-          "criticName": "Andrzej Lukowski",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "The scraped content explicitly states 'This review is from the Young Vic, March 2025. Punch will transfer to the West En",
-          "cvIssues": [
-            "Review is of the Young Vic production (March 2025), not the West End Apollo Theatre production (opening September 2025)",
-            "Scraped text is truncated mid-sentence ('ry broken down into forensic bites...' and 's evocative but unshowy...')"
           ]
         }
       ]
@@ -2442,7 +2418,7 @@
     {
       "showId": "romeo-and-juliet-west-end-2024",
       "title": "Romeo and Juliet",
-      "openingDate": null,
+      "openingDate": "2024-05-23",
       "message": "thestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: While this is definitively a review (contains extensive critical assessment of Jamie Lloyd's production with Tom Holland — https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-duke-of-yorks-theatre-london-jamie-lloyd-tom-holland-and-francesca-amewudah-rivers",
       "violations": [
         {
@@ -2463,7 +2439,7 @@
     {
       "showId": "the-bounds-west-end-2024",
       "title": "The Bounds",
-      "openingDate": null,
+      "openingDate": "2024-06-17",
       "message": "everything-theatre/M Jacob (everything-theatre--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid review (critic's assessment of quality is present throughout), but it reviews 'The Bounds' at Royal Cour — https://everything-theatre.co.uk/2024/06/review-the-bounds-royal-court-theatre/",
       "violations": [
         {
@@ -2602,7 +2578,7 @@
     {
       "showId": "aint-too-proud-west-end-2023",
       "title": "Ain't Too Proud",
-      "openingDate": null,
+      "openingDate": "2023-04-20",
       "message": "whatsonstage/Alun Hood (whatsonstage--alun-hood.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: The scraped review is a legitimate theater review of 'Ain't Too Proud,' but it describes a production at the Tom Stoppar — https://www.whatsonstage.com/london-theatre/news/aint-too-proud-west-end-temptations-musical_58791.html",
       "violations": [
         {
@@ -2949,6 +2925,27 @@
           "cvIssues": [
             "West End opening date mismatch: Expected 2024-11-28, but text states '20 November 2024 to 25 January 2025' (20 November ≠ 28 November)",
             "Review publish date is in the future relative to the production run (2026-10-11 is after the show closes 2025-01-25), which is impossible for a review written after seeing the show"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "dance-is-not-for-us-off-west-end-2026",
+      "title": "Dance Is Not for Us",
+      "openingDate": "2026-10-18",
+      "message": "thereviewshub/The Reviews Hub - London (thereviewshub--the-reviews-hub-london.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This is a well-written review of Omar Rajeh's 'Dance  — https://www.thereviewshub.com/cie-omar-rajeh-maqamet-dance-is-not-for-us-barbican-london/",
+      "violations": [
+        {
+          "filename": "thereviewshub--the-reviews-hub-london.json",
+          "url": "https://www.thereviewshub.com/cie-omar-rajeh-maqamet-dance-is-not-for-us-barbican-london/",
+          "outletId": "thereviewshub",
+          "criticName": "The Reviews Hub - London",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "[OVERRIDE: review within 1d of opening, likely correct production] This is a well-written review of Omar Rajeh's 'Dance ",
+          "cvIssues": [
+            "Review evaluates a Dance Umbrella Festival production, not an Off-West End theater production at Barbican Theatre",
+            "Text explicitly states 'playing in this year's Dance Umbrella Festival' and 'Dance Umbrella continues until 27 October 2026', indicating this is a festival production, not a Barbican Theatre Off-West End production"
           ]
         }
       ]

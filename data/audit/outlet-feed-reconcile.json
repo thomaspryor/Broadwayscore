@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T04:37:44.975Z",
+  "generatedAt": "2026-10-24T11:53:50.653Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -84,11 +84,6 @@
       "openingDate": "2026-10-18"
     },
     {
-      "id": "triumph-off-west-end-2026",
-      "title": "Triumph",
-      "openingDate": "2026-10-18"
-    },
-    {
       "id": "machine-learning-off-broadway-2026",
       "title": "Machine Learning",
       "openingDate": "2026-10-20"
@@ -128,10 +123,6 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -154,13 +145,9 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 738,
+  "itemsScanned": 781,
   "matchedGaps": 4,
   "possibleGaps": 2,
   "gaps": [
@@ -192,13 +179,22 @@
       "publishDate": "2026-10-23"
     },
     {
-      "showId": "triumph-off-west-end-2026",
-      "title": "Triumph",
+      "showId": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
       "level": "matched",
-      "outletId": "culturesauce",
-      "url": "https://culturesauce.com/caryl-churchill-triumph-off-broadway-review/",
-      "headline": "Caryl Churchill&#8217;s &#8216;Triumph&#8217; views imperial Rome through a Foxy blond flack (Off Broadway review)",
-      "publishDate": "2026-10-18"
+      "outletId": "the-recs",
+      "url": "https://therecs.co.uk/the-pianist-park-theatre/",
+      "headline": "The Pianist &#8211; Park Theatre ★★★★★",
+      "publishDate": "2026-10-24"
+    },
+    {
+      "showId": "copperfield-the-new-musical-off-broadway-2026",
+      "title": "Copperfield! The New Musical",
+      "level": "possible",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/the-curious-case-of-benjamin-button/",
+      "headline": "The Curious Case of Benjamin Button *****",
+      "publishDate": "2026-10-21"
     },
     {
       "showId": "the-pianist-off-west-end-2026",
@@ -208,15 +204,6 @@
       "url": "https://www.thereviewshub.com/lambeth-fringe-2026-happy-heart-the-songs-of-andy-williams-toulouse-lautrec-jazz-club-london/",
       "headline": "Lambeth Fringe 2026: Happy Heart: The Songs of Andy Williams – Toulouse Lautrec Jazz Club, London",
       "publishDate": "2026-10-19"
-    },
-    {
-      "showId": "triumph-off-west-end-2026",
-      "title": "Triumph",
-      "level": "possible",
-      "outletId": "all-that-dazzles-uk",
-      "url": "https://www.allthatdazzles.co.uk/post/review-cadel-lungs-on-legs-riverside-studios",
-      "headline": "Review: CADEL: Lungs on Legs (Riverside Studios)",
-      "publishDate": "2026-10-16"
     }
   ]
 }

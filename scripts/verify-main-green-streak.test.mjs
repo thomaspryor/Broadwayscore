@@ -54,8 +54,11 @@ const REQUIRED_CONSECUTIVE_SUCCESSES = 9;
 // without turning a stale-data problem into a false "main went red" report —
 // staleness is asserted separately below so it can never pass silently.
 const MAX_SNAPSHOT_AGE_H = 48;
+const CHECKABLE_FROM = Date.parse('2026-08-15T00:00:00Z'); // Card's RECHECK-AFTER above.
 
-test('main test.yml has held green for 24h (trunk snapshot)', () => {
+test('main test.yml has held green for 24h (trunk snapshot)', {
+  skip: Date.now() < CHECKABLE_FROM && 'not checkable before 2026-08-15',
+}, () => {
   let snap;
   try {
     snap = JSON.parse(fs.readFileSync(SNAPSHOT, 'utf8'));

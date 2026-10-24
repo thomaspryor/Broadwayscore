@@ -26,6 +26,7 @@ const LOG = path.join(HERE, '..', 'data', 'audit', 'we-promotion-log.jsonl');
 // the feature merged to main on 2026-08-14.
 const EARLIEST_VALID_RUN = '2026-08-15T00:00:00.000Z';
 
+// RECHECK-GREEN-TODAY: passed against data/audit/we-promotion-log.jsonl on 2026-10-24.
 test('promote-we-aggregator-candidates.js has run at least once in production since merge', () => {
   let lines;
   try {

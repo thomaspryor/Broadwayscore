@@ -244,4 +244,4 @@ function isStaleToBeCalculated(data, showCategory) {
 
 module.exports = {
   strippedFullTextSelection, selectScorableText, isCapsuleReview, DEFAULT_MIN_TEXT_LENGTH,
-  isShortPartialReview, isExemptFromBodyLengthGate, isToBeCalculatedScored, isStaleToBeCalculated, BODY_GATE_CHARS };
+  isShortPartialReview, isExemptFromBodyLengthGate, isToBeCalculatedScored, isStaleToBeCalculated, BODY_GATE_CHARS, MIN_SHORT_PARTIAL_CHARS };

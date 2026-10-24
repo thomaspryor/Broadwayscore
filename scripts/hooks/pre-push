@@ -333,6 +333,18 @@ fi
 if grep -qE "^scripts/.*\.js$" <<<"$ALL_CHANGED_FILES"; then
   WF_CHECKS="${WF_CHECKS:+$WF_CHECKS,}ledger-coverage"
 fi
+# BRO-5621: a fresh cloud worktree has no node_modules, so the ledger-coverage
+# guard failed closed with "acorn is not installed". Link the main checkout's
+# node_modules in for the lint run only (removed after, so a later npm install
+# in the worktree cannot write through to the shared one).
+LINKED_NODE_MODULES=0
+if [ -n "$WF_CHECKS" ] && [ ! -e node_modules ] && [ ! -L node_modules ]; then
+  MAIN_CHECKOUT="$(cd "$(git rev-parse --git-common-dir 2>/dev/null)/.." 2>/dev/null && pwd)"
+  if [ -n "$MAIN_CHECKOUT" ] && [ "$MAIN_CHECKOUT" != "$PWD" ] && [ -d "$MAIN_CHECKOUT/node_modules/acorn" ]; then
+    ln -s "$MAIN_CHECKOUT/node_modules" node_modules && LINKED_NODE_MODULES=1
+    trap '[ "$LINKED_NODE_MODULES" = "1" ] && [ -L node_modules ] && rm -f node_modules' EXIT
+  fi
+fi
 if [ -n "$WF_CHECKS" ] && [ -f scripts/lint-workflow-guards.sh ]; then
   GUARDS_OUT="/tmp/pre-push-wf-guards.$$.out"
   if ! bash scripts/lint-workflow-guards.sh "$WF_CHECKS" >"$GUARDS_OUT" 2>&1; then
@@ -343,10 +355,12 @@ if [ -n "$WF_CHECKS" ] && [ -f scripts/lint-workflow-guards.sh ]; then
     echo ""
     echo "(Bypass for emergencies: git push --no-verify)"
     rm -f "$GUARDS_OUT"
+    [ "$LINKED_NODE_MODULES" = "1" ] && [ -L node_modules ] && rm -f node_modules
     exit 1
   fi
   rm -f "$GUARDS_OUT"
 fi
+[ "$LINKED_NODE_MODULES" = "1" ] && [ -L node_modules ] && rm -f node_modules
 
 # Workflow audits (concurrency, hygiene, cron-health coverage) run in
 # scripts/lib/run-push-audits.sh above (BRO-3014), which also honours CI's

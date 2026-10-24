@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-23T18:14:03.564Z",
+    "lastUpdated": "2026-10-24T11:39:14.571Z",
     "version": "2.1.0",
-    "lastChange": "BRO-5823: register icareifyoulisten (staged name-unresolved)"
+    "lastChange": "BRO-6056: multiAuthor on 25 defaultCritic outlets whose files show several other named critics; multiAuthor:false on 3 reviewed single-author outlets"
   },
   "outlets": {
     "westendtheatre": {
@@ -370,7 +370,9 @@
       "domain": "amny.com",
       "accessModel": "free",
       "starScale": 4,
-      "defaultCritic": "Matt Windman"
+      "defaultCritic": "Matt Windman",
+      "multiAuthor": false,
+      "multiAuthorNote": "BRO-6056: reviewed and kept single-author: Matt Windman writes 402 of 409 named files; the rest are one-off guests."
     },
     "nysr": {
       "displayName": "New York Stage Review",
@@ -632,7 +634,9 @@
       "standingCoverage": true,
       "standingMarkets": [
         "broadway"
-      ]
+      ],
+      "multiAuthor": false,
+      "multiAuthorNote": "BRO-6056: reviewed and kept single-author: Jonathan Mandell's own site: 351 of 355 named files are his."
     },
     "theatrely": {
       "displayName": "Theatrely",
@@ -1393,7 +1397,9 @@
       "defaultCritic": "Deb Miller",
       "domainAliases": [
         "dcmetrotheaterarts.com"
-      ]
+      ],
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Richard Seff, Constance Beulah, Jennifer Georgia, Zoe Winsky and others write here besides Deb Miller, so a blank byline must stay Unknown rather than take the default critic."
     },
     "the-interested-bystander": {
       "displayName": "The Interested Bystander",
@@ -1593,7 +1599,9 @@
       ],
       "region": "philadelphia",
       "accessModel": "paywalled",
-      "defaultCritic": "Toby Zinman"
+      "defaultCritic": "Toby Zinman",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Howard Shapiro (2006-2012) has more files than Toby Zinman; Gauri Mangala, Rosa Cartagena and others also review, so a blank byline must stay Unknown rather than take the default critic."
     },
     "city-beat": {
       "displayName": "CityBeat",
@@ -1808,7 +1816,9 @@
       "domain": "bostonglobe.com",
       "region": "boston",
       "accessModel": "paywalled",
-      "defaultCritic": "Don Aucoin"
+      "defaultCritic": "Don Aucoin",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Ty Burr, Terry Byrne and James Sullivan also review; 11 recent files carry no byline, so a blank byline must stay Unknown rather than take the default critic."
     },
     "broadwayselect": {
       "displayName": "Broadway Select",
@@ -2045,7 +2055,9 @@
       ],
       "domain": "womanaroundtown.com",
       "accessModel": "free",
-      "defaultCritic": "Alix Cohen"
+      "defaultCritic": "Alix Cohen",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Maria-Cristina Necula and Quan Lam also review besides Alix Cohen, so a blank byline must stay Unknown rather than take the default critic."
     },
     "metro-weekly": {
       "displayName": "Metro Weekly",
@@ -2071,7 +2083,9 @@
       "domainAliases": [
         "nextmagazine.com"
       ],
-      "defaultCritic": "Michael Hollett"
+      "defaultCritic": "Michael Hollett",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Neel Modi and William Molls write more of these than Michael Hollett, so a blank byline must stay Unknown rather than take the default critic."
     },
     "the-globe-and-mail": {
       "displayName": "The Globe and Mail",
@@ -2085,7 +2099,9 @@
       ],
       "domain": "theglobeandmail.com",
       "accessModel": "paywalled",
-      "defaultCritic": "J. Kelly Nestruck"
+      "defaultCritic": "J. Kelly Nestruck",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Aisling Murphy and Ilana Lucas write the 2025-2026 reviews; J. Kelly Nestruck files end in 2016, so a blank byline must stay Unknown rather than take the default critic."
     },
     "whatsonstage": {
       "displayName": "WhatsOnStage",
@@ -2124,7 +2140,9 @@
       ],
       "domain": "theaternewsonline.com",
       "accessModel": "free",
-      "defaultCritic": "Joe Dziemianowicz"
+      "defaultCritic": "Joe Dziemianowicz",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Jeremy Gerard, David Cote and Brian Scott Lipton each have as many files as Joe Dziemianowicz or more, so a blank byline must stay Unknown rather than take the default critic."
     },
     "this-week-in-new-york": {
       "displayName": "This Week in New York",
@@ -2148,7 +2166,9 @@
       "domain": "bbc.com",
       "accessModel": "free",
       "region": "london",
-      "defaultCritic": "Neil Armstrong"
+      "defaultCritic": "Neil Armstrong",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Hugh Montgomery and Will Gompertz review as often as Neil Armstrong, so a blank byline must stay Unknown rather than take the default critic."
     },
     "tickertv": {
       "displayName": "TickerTV",
@@ -2182,7 +2202,9 @@
       ],
       "domain": "denverpost.com",
       "accessModel": "paywalled",
-      "defaultCritic": "Sandra Brooks-Dillard"
+      "defaultCritic": "Sandra Brooks-Dillard",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: John Wenzel writes the recent reviews; Sandra Brooks-Dillard files are 1997, so a blank byline must stay Unknown rather than take the default critic."
     },
     "milwaukee-journal-sentinel": {
       "displayName": "Milwaukee Journal Sentinel",
@@ -2233,7 +2255,9 @@
       ],
       "domain": "seattlepi.com",
       "accessModel": "paywalled",
-      "defaultCritic": "Jeffrey Eric Jenkins"
+      "defaultCritic": "Jeffrey Eric Jenkins",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Mark Kennedy and Jocelyn Noveck outnumber Jeffrey Eric Jenkins, so a blank byline must stay Unknown rather than take the default critic."
     },
     "syracuse-herald-journal": {
       "displayName": "Syracuse Herald Journal",
@@ -2244,7 +2268,9 @@
       ],
       "domain": "syracuse.com",
       "accessModel": "paywalled",
-      "defaultCritic": "Joan Vadeboncoeur"
+      "defaultCritic": "Joan Vadeboncoeur",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Linda Lowen, Len Fonte and Emily Kulkus write the recent reviews; Joan Vadeboncoeur has one 1997 file, so a blank byline must stay Unknown rather than take the default critic."
     },
     "vu": {
       "displayName": "Vu",
@@ -2501,7 +2527,9 @@
       "domain": "culturewhisper.com",
       "accessModel": "free",
       "region": "london",
-      "defaultCritic": "Teresa Guerreiro"
+      "defaultCritic": "Teresa Guerreiro",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Holly O'Mahoney and Lucy Brooks write as often as Teresa Guerreiro, so a blank byline must stay Unknown rather than take the default critic."
     },
     "gay-times": {
       "displayName": "Gay Times",
@@ -2545,7 +2573,9 @@
       ],
       "domain": "cbsnews.com",
       "accessModel": "free",
-      "defaultCritic": "Shania Russell"
+      "defaultCritic": "Shania Russell",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Dillon Thomas, Dave Carlin, Mo Rocca and others; Shania Russell has two 2013 files, so a blank byline must stay Unknown rather than take the default critic."
     },
     "artsfuse": {
       "displayName": "The Arts Fuse",
@@ -2570,7 +2600,9 @@
       ],
       "domain": "mercurynews.com",
       "accessModel": "paywalled",
-      "defaultCritic": "Karen D'Souza"
+      "defaultCritic": "Karen D'Souza",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Jim Harrington, Randy McMullen and others; no file carries Karen D'Souza, so a blank byline must stay Unknown rather than take the default critic."
     },
     "sioux-city-journal": {
       "displayName": "Sioux City Journal",
@@ -2745,7 +2777,9 @@
       "domain": "bostonherald.com",
       "region": "boston",
       "accessModel": "free",
-      "defaultCritic": "Marilyn Stasio"
+      "defaultCritic": "Marilyn Stasio",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Jed Gottlieb (2026) and Gordon Cox write here; Marilyn Stasio files are 2014-2015, so a blank byline must stay Unknown rather than take the default critic."
     },
     "abc-news": {
       "displayName": "ABC News",
@@ -3094,7 +3128,9 @@
       "domain": "chicagoreader.com",
       "region": "chicago",
       "accessModel": "free",
-      "defaultCritic": "Justin Hayford"
+      "defaultCritic": "Justin Hayford",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Kerry Reid writes more of these than Justin Hayford; several freelancers too, so a blank byline must stay Unknown rather than take the default critic."
     },
     "chicago-sun-times": {
       "displayName": "Chicago Sun-Times",
@@ -3126,7 +3162,9 @@
       "domainAliases": [
         "edgesandiego.com"
       ],
-      "defaultCritic": "Kilian Melloy"
+      "defaultCritic": "Kilian Melloy",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Will Demers and Winnie McCroy; no file carries Kilian Melloy, so a blank byline must stay Unknown rather than take the default critic."
     },
     "kget": {
       "displayName": "KGET",
@@ -3164,7 +3202,9 @@
       "domain": "thirdcoastreview.com",
       "region": "chicago",
       "accessModel": "free",
-      "defaultCritic": "Nancy Bishop"
+      "defaultCritic": "Nancy Bishop",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Adam Kaz and Doug Mose also review; 7 recent files carry no byline, so a blank byline must stay Unknown rather than take the default critic."
     },
     "outbuzz": {
       "displayName": "OutBuzz",
@@ -3338,7 +3378,9 @@
       "domain": "thesun.co.uk",
       "region": "london",
       "accessModel": "free",
-      "defaultCritic": "Dominic Maxwell"
+      "defaultCritic": "Dominic Maxwell",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: reviews come from Benjy Potter, Caroline McGuire, Thea Jacobs, Neil Norman and others; Dominic Maxwell has one file, so a blank byline must stay Unknown rather than take the default critic."
     },
     "empire": {
       "displayName": "Empire",
@@ -3528,7 +3570,9 @@
       ],
       "domain": "startribune.com",
       "accessModel": "paywalled",
-      "defaultCritic": "Chris Hewitt"
+      "defaultCritic": "Chris Hewitt",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Rohan Preston and Mark Kennedy write these; no file carries Chris Hewitt, so a blank byline must stay Unknown rather than take the default critic."
     },
     "purewow": {
       "displayName": "PureWow",
@@ -3994,7 +4038,9 @@
       "domain": "mirror.co.uk",
       "region": "london",
       "accessModel": "paywalled",
-      "defaultCritic": "Mickey Smith"
+      "defaultCritic": "Mickey Smith",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Alun Palmer and Tom Bryant write as often as Mickey Smith, so a blank byline must stay Unknown rather than take the default critic."
     },
     "nz-herald": {
       "displayName": "New Zealand Herald",
@@ -4209,7 +4255,9 @@
       ],
       "accessModel": "free",
       "defaultCritic": "Julie Hanson",
-      "domain": "seattleschild.com"
+      "domain": "seattleschild.com",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Candice McMillan and Cheryl Murfin write as often as Julie Hanson, so a blank byline must stay Unknown rather than take the default critic."
     },
     "stagebuddy": {
       "displayName": "Stage Buddy",
@@ -4285,7 +4333,9 @@
       ],
       "accessModel": "paywalled",
       "defaultCritic": "Adrian Gomez",
-      "domain": "abqjournal.com"
+      "domain": "abqjournal.com",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Logan Beitman writes the recent reviews; Adrian Gomez has one file, so a blank byline must stay Unknown rather than take the default critic."
     },
     "apt-613": {
       "displayName": "Apt 613",
@@ -5921,7 +5971,9 @@
       "accessModel": "paywalled",
       "defaultCritic": "Hal Rubenstein",
       "domain": "forbes.com",
-      "region": "us"
+      "region": "us",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Shivani Vora, Darryn King and Jeryl Brunner write as often as Hal Rubenstein, so a blank byline must stay Unknown rather than take the default critic."
     },
     "kansas-city-star": {
       "displayName": "Kansas City Star",
@@ -7620,7 +7672,9 @@
       ],
       "accessModel": "paywalled",
       "defaultCritic": "Marianne Evett",
-      "domain": "cleveland.com"
+      "domain": "cleveland.com",
+      "multiAuthor": true,
+      "multiAuthorNote": "BRO-6056: Joey Morona writes most of these; Marianne Evett has one file, so a blank byline must stay Unknown rather than take the default critic."
     },
     "kitchener-ontario-record": {
       "displayName": "Kitchener-Waterloo Record",
@@ -9192,7 +9246,9 @@
       ],
       "accessModel": "free",
       "domain": "thejewishvoiceandopinion.com",
-      "defaultCritic": "Two Sues On the Aisle"
+      "defaultCritic": "Two Sues On the Aisle",
+      "multiAuthor": false,
+      "multiAuthorNote": "BRO-6056: reviewed and kept single-author: the default is the Two Sues duo, and the other bylines are the same two writers by name."
     },
     "w42st": {
       "displayName": "W42st",
@@ -13470,6 +13526,14 @@
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-10-23T18:14:03.564Z"
+    },
+    "dazzlingdailydeals": {
+      "displayName": "Dazzling Daily Deals",
+      "tier": 3,
+      "aliases": [
+        "dazzlingdailydeals"
+      ],
+      "domain": "dazzlingdailydeals.com"
     }
   },
   "_aliasIndex": {
@@ -14161,6 +14225,6 @@
     "the sunday times (uk)": "sunday-times",
     "sunday times (uk)": "sunday-times"
   },
-  "lastUpdated": "2026-09-30T04:38:59.859Z",
-  "lastChange": "BRO-5219: Nub News domain widened to nub.news (whole hyperlocal network, not just kingston.) + aliases"
+  "lastUpdated": "2026-10-24T09:00:22.000Z",
+  "lastChange": "BRO-6056: multiAuthor on 25 defaultCritic outlets whose files show several other named critics; multiAuthor:false on 3 reviewed single-author outlets"
 }
