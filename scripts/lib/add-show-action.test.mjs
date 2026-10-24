@@ -165,3 +165,19 @@ test('refuses a "presents-" prefixed copy of an existing title', () => {
 test('an unrelated title is not blocked', () => {
   assert.equal(applyAddShow([{ ...existingAmaze }], { show: base() }).ok, true);
 });
+
+// BRO-6114: id market suffix must agree with category before the row is written.
+import { createRequire as __cr6114 } from 'node:module';
+{
+  const { applyAddShow } = __cr6114(import.meta.url)('./add-show-action.js');
+  const base = { title: 'Yentl', venue: 'Marylebone Theatre', openingDate: '2026-03-11', status: 'closed', market: 'west-end', type: 'play', tags: [] };
+  test('BRO-6114: add-show refuses an off-west-end row whose id carries -west-end', () => {
+    const r = applyAddShow([], { show: { ...base, id: 'yentl-west-end-2026', slug: 'yentl-west-end-2026', category: 'off-west-end' } });
+    assert.equal(r.ok, false);
+    assert.match(r.reason, /disagrees with category "off-west-end"/);
+  });
+  test('BRO-6114: add-show accepts the matching -off-west-end id', () => {
+    const r = applyAddShow([], { show: { ...base, id: 'yentl-off-west-end-2026', slug: 'yentl-off-west-end-2026', category: 'off-west-end' } });
+    assert.notEqual(r.reason && /disagrees with category/.test(r.reason), true);
+  });
+}

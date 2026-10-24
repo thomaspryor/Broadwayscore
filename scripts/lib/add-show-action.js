@@ -13,6 +13,7 @@
 
 const { sanitizeVenueForWrite, isBroadwayCategory } = require('./venue-classification');
 const { MARKET_BEFORE_TOUR_RE } = require('./tour-family');
+const { marketSuffixMismatch } = require('./show-id-market-suffix');
 
 const REQUIRED = ['id', 'title', 'slug', 'venue', 'status', 'type', 'category', 'market'];
 const ALLOWED = new Set([
@@ -34,6 +35,11 @@ const TOUR_ONLY = ['tourOf', 'tourScheduleSlug', 'tourLaunchEvidence'];
 // tour-entry.js buildTourEntry); validate-data.js blocks the build on a broken
 // one, so refuse it here before CI writes it.
 function marketShapeProblem(shows, show) {
+  // The id is a live URL minted once: its market suffix must agree with the
+  // category at write time, or tests/unit/show-id-market-suffix.test.mjs turns
+  // main red after the row lands (BRO-6114, yentl-west-end-2026 as off-west-end).
+  const idMismatch = marketSuffixMismatch(show);
+  if (idMismatch) return `add-show: id "${show.id}" disagrees with category "${show.category}" (${idMismatch.reason}); an off-west-end row needs an id ending -off-west-end[-YYYY]`;
   if (show.category !== 'tour' && TOUR_ONLY.some(f => show[f] !== undefined)) {
     return `add-show: ${TOUR_ONLY.join('/')} only belong on category "tour"`;
   }
