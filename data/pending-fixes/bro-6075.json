@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6075",
   "planId": "899615fb-fd0a-45cd-a1ec-de3d514bd0ce",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-24T17:01:07.720Z",
   "submitter": {
     "name": null,
@@ -264,5 +264,134 @@
         "description": "BRO-6075: backfill empty West End historical synopsis, written from the show's collected review texts"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-24T19:28:59.506Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-duchess-of-malfi-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for robin-hood-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-tempest-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for cow-deer-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-unbelievers-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for othello-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for p-rn-play-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for end-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for vanya-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for myras-story-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-mongol-khan-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for lie-low-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for a-view-from-the-bridge-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-unfriend-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for romeo-and-julie-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-great-british-bake-off-musical-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for bonnie-and-clyde-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for no-i-d-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for idiots-assemble-spitting-image-the-musical-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for aspects-of-love-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for hope-has-a-happy-meal-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for word-play-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for get-up-stand-up-the-bob-marley-story-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-shark-is-broken-west-end-2021"
+    }
+  ],
+  "executedIn": "ci"
 }
