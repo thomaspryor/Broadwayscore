@@ -394,7 +394,9 @@
     "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
     "dance-is-not-for-us-off-west-end-2026/thereviewshub--scott-matthewman.json",
     "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
-    "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json"
+    "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "the-dog-show-come-sit-stay-off-broadway-2026/picture-this-post--unknown.json"
   ],
   "failed": [
     "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
@@ -572,7 +574,6 @@
     "high-society-west-end-2026/times-uk--clive-davis.json",
     "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--alix-cohen.json",
     "small-off-broadway-2026/washpost--unknown.json",
-    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
     "operation-mincemeat-tour-2026/broadwayworld--angela-lin.json",
     "animal-wisdom-off-broadway-2022/timeout--raven-snook.json",
     "equus-west-end-2026/standard--nick-curtis.json",
@@ -638,7 +639,22 @@
     "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
     "some-woman-west-end-2026/guardian--unknown.json",
     "double-bill-tell-me-straight-and-aggy-off-west-end-2026/soundsandstage--unknown.json",
-    "double-bill-tell-me-straight-and-aggy-off-west-end-2026/whatnightout--unknown.json"
+    "double-bill-tell-me-straight-and-aggy-off-west-end-2026/whatnightout--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
+    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/timeout--unknown.json",
+    "lincoln-in-the-bardo-off-broadway-2026/hotelbelleclaire--unknown.json",
+    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json",
+    "other-desert-cities-2026/cbsnews--unknown.json",
+    "school-pictures-off-broadway-2026/timeout--unknown.json",
+    "school-pictures-off-broadway-2026/airmail--air-mail.json",
+    "seussical-theatre-young-audiences-off-broadway-2026/wknd--unknown.json",
+    "the-dog-show-come-sit-stay-off-broadway-2026/talkalmanmusic--unknown.json",
+    "two-girls-off-broadway-2026/airmail--air-mail.json",
+    "two-girls-off-broadway-2026/howdidimissthat--unknown.json",
+    "midnight-off-broadway-2026/timeout--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -815,7 +831,9 @@
       "burnout-paradise-off-broadway-2026/nytimes--erik-piepenburg.json",
       "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
       "dance-is-not-for-us-off-west-end-2026/thereviewshub--scott-matthewman.json",
-      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json"
+      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json",
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+      "the-dog-show-come-sit-stay-off-broadway-2026/picture-this-post--unknown.json"
     ],
     "amp": [
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
@@ -834,7 +852,9 @@
       "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json",
       "the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json",
       "data/review-texts/the-pianist-off-west-end-2026/jewishnews--unknown.json",
-      "the-pianist-off-west-end-2026/jewishnews--unknown.json"
+      "the-pianist-off-west-end-2026/jewishnews--unknown.json",
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1033,7 +1053,7 @@
     ]
   },
   "startTime": "2026-10-23T19:47:36.243Z",
-  "lastProcessed": "double-bill-tell-me-straight-and-aggy-off-west-end-2026/whatnightout--unknown.json",
+  "lastProcessed": "midnight-off-broadway-2026/chicagotribune--unknown.json",
   "log": [
     {
       "t": "2026-10-23T22:13:23.728Z",
@@ -1127,11 +1147,82 @@
       "event": "bb-session",
       "session": "30fd1432",
       "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-4987479"
+    },
+    {
+      "t": "2026-10-24T01:56:56.220Z",
+      "event": "bb-session",
+      "session": "08ed99b7",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-24T01:57:20.674Z",
+      "event": "bb-session",
+      "session": "aad4d800",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-24T01:57:21.352Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-24T01:57:31.254Z",
+      "event": "bb-session",
+      "session": "346c8e18",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-24T01:57:31.880Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-24T01:58:58.646Z",
+      "event": "bb-session",
+      "session": "e4c4d248",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-24T01:59:06.426Z",
+      "event": "bb-session",
+      "session": "8ae36046",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-24T02:00:10.825Z",
+      "event": "bb-session",
+      "session": "7362994f",
+      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
+    },
+    {
+      "t": "2026-10-24T02:01:10.337Z",
+      "event": "bb-session",
+      "session": "a3584e6d",
+      "url": "https://www.cbsnews.com/video/other-desert-cities-on-broadway-family-secrets-lai"
+    },
+    {
+      "t": "2026-10-24T02:02:23.435Z",
+      "event": "bb-session",
+      "session": "ff849a51",
+      "url": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-s"
+    },
+    {
+      "t": "2026-10-24T02:02:31.237Z",
+      "event": "bb-session",
+      "session": "1118d68b",
+      "url": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-s"
+    },
+    {
+      "t": "2026-10-24T02:03:15.293Z",
+      "event": "bb-session",
+      "session": "a7ac748c",
+      "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07"
     }
   ],
   "recoveredAfterFailure": [
     "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/ground--unknown.json",
     "the-pianist-off-west-end-2026/jewishnews--unknown.json",
-    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json"
+    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json"
   ]
 }
