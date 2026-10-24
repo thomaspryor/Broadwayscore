@@ -23666,13 +23666,13 @@
       "title": "Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
       "firstSeen": "2026-10-22T11:49:37.833Z",
       "incidentOpenedAt": "2026-10-22T11:49:37.833Z",
-      "lastSeen": "2026-10-24T16:53:43.227Z",
+      "lastSeen": "2026-10-24T23:08:26.430Z",
       "lastNotifiedAt": "2026-10-24T14:49:23.965Z",
       "lastSurfacedAt": "2026-10-24T14:49:23.965Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-5325-wsj-section": {
       "status": "resolved",
@@ -24416,13 +24416,13 @@
       "title": "Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
       "firstSeen": "2026-10-22T20:59:52.372Z",
       "incidentOpenedAt": "2026-10-22T20:59:52.372Z",
-      "lastSeen": "2026-10-24T16:53:43.217Z",
+      "lastSeen": "2026-10-24T23:08:26.417Z",
       "lastNotifiedAt": "2026-10-23T23:29:56.888Z",
       "lastSurfacedAt": "2026-10-23T23:29:56.888Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 15
+      "silentRefires": 16
     },
     "land:land/bro-5969-index-bloat-v3": {
       "status": "open",
@@ -26216,6 +26216,19 @@
       "lastSeen": "2026-10-24T22:35:15.665Z",
       "lastNotifiedAt": "2026-10-24T22:35:15.665Z",
       "lastSurfacedAt": "2026-10-24T22:35:15.665Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "live-data-test:tests/unit/venue-complex-live-data.test.mjs::no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
+      "firstSeen": "2026-10-24T23:08:26.440Z",
+      "incidentOpenedAt": "2026-10-24T23:08:26.440Z",
+      "lastSeen": "2026-10-24T23:08:26.440Z",
+      "lastNotifiedAt": "2026-10-24T23:08:26.440Z",
+      "lastSurfacedAt": "2026-10-24T23:08:26.440Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
