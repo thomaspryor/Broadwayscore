@@ -1073,5 +1073,36 @@
       }
     ],
     "queuedAt": "2026-10-24T16:15:14.138Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6141-archive-quarantine",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6141-archive-quarantine",
+    "description": "land.yml did not land land/bro-6141-archive-quarantine: the unit-tests-node gate went red at 20771099f9. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40111547964",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6141-archive-quarantine"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "20771099f9c4946de2dcf72259ac5f71e83c8938"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40111547964"
+      }
+    ],
+    "queuedAt": "2026-10-24T16:40:32.751Z"
   }
 ]
