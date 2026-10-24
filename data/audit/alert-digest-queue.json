@@ -138,5 +138,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-24T09:22:14.927Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6056-multiauthor",
+    "title": "Landing blocked: lint-workflows red on land/bro-6056-multiauthor",
+    "description": "land.yml did not land land/bro-6056-multiauthor: the lint-workflows gate went red at b5a439bba0. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40082084074",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6056-multiauthor"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "b5a439bba04cf8c4450a9922cd1c66ea90c826ac"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40082084074"
+      }
+    ],
+    "queuedAt": "2026-10-24T09:48:25.568Z"
   }
 ]
