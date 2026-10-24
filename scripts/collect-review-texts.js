@@ -145,6 +145,9 @@ const {
   isNeedsRefetchDrainCandidate,
   promoteNeedsRefetch,
   compareReviewPriority,
+  AGED_STUB_DRAIN_PER_RUN,
+  isAgedNeverAttemptedStub,
+  promoteAgedStubs,
 } = require('./lib/collection-priority');
 
 // NYT Critics' Pick lookup — lazy-loaded once per run from authoritative URL list.
@@ -6703,6 +6706,9 @@ function findReviewsToProcess() {
           // What the file already holds (BRO-5222): a Time Out refetch that
           // finds a listing blurb keeps a stored review instead of failing it.
           _needsRefetch: isNeedsRefetchDrainCandidate(data, failedFetchesByReviewId.get(reviewId)),
+          // BRO-6123: aged never-attempted stub, drained from a reserved slice.
+          _agedStub: isAgedNeverAttemptedStub(data),
+          _agedSince: Date.parse(data.firstSeenAt) || 0,
           _storedTier: data.contentTier || null,
           _storedTextLength: typeof data.fullText === 'string' ? data.fullText.length : 0,
           // Stored text that may not be this url's review (repointed url, show
@@ -6740,6 +6746,15 @@ function findReviewsToProcess() {
     const promoted = promoteNeedsRefetch(reviews);
     const n = promoted.filter(r => r._needsRefetch).slice(0, NEEDS_REFETCH_DRAIN_PER_RUN).length;
     if (n) console.log(`  needsRefetch drain: ${n} textless review(s) queued first (cap ${NEEDS_REFETCH_DRAIN_PER_RUN}/run)`);
+    reviews.length = 0;
+    reviews.push(...promoted);
+  }
+  // BRO-6123: closed-show stubs with a URL and zero attempts ranked behind the
+  // whole open-show backlog and never reached the cut. Reserve a capped slice.
+  {
+    const promoted = promoteAgedStubs(reviews);
+    const n = promoted.filter(r => r._agedStub).slice(0, AGED_STUB_DRAIN_PER_RUN).length;
+    if (n) console.log(`  aged-stub drain: ${n} never-attempted stub(s) queued first (cap ${AGED_STUB_DRAIN_PER_RUN}/run)`);
     reviews.length = 0;
     reviews.push(...promoted);
   }

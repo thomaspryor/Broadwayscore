@@ -270,6 +270,38 @@ function assessShow(show, files, { nowMs, maxAgeHours = DEFAULT_MAX_AGE_HOURS } 
   };
 }
 
+/** Hours a never-fetched stub may age before the any-status check flags it (BRO-6123). */
+const AGED_STUB_MAX_AGE_HOURS = 48;
+
+/**
+ * Status-independent twin of the strand check: never-fetched files with a URL
+ * that have waited at least `maxAgeHours`, for ANY show (closed ones included).
+ *
+ * assessShow only looks at open/previews shows, so 176 theatre.reviews stubs on
+ * closed 2024-2026 West End shows sat unfetched through two collector runs with
+ * nothing flagging them (BRO-6123). A file with no firstSeenAt counts as aged,
+ * same rule as strands. Files with a terminal verdict or a duplicateOf pointer
+ * are excluded exactly as in assessShow.
+ *
+ * @param {Array<{file: string, review: object}>} files one show's review files
+ * @param {{nowMs: number, maxAgeHours?: number}} opts
+ * @returns {Array<{file: string, url: string, outlet: string|null, ageHours: number|null}>}
+ */
+function findAgedStubs(files, { nowMs, maxAgeHours = AGED_STUB_MAX_AGE_HOURS } = {}) {
+  const siblings = new Map((files || []).map(f => [f.file, f.review]));
+  const out = [];
+  for (const { file, review } of files || []) {
+    if (!isNeverAttempted(review)) continue;
+    if (Array.isArray(review.fetchAttempts) && review.fetchAttempts.length > 0) continue;
+    if (hasTerminalVerdict(review, siblings)) continue;
+    const ageHours = strandAgeHours(review, nowMs);
+    if (ageHours === null || ageHours >= maxAgeHours) {
+      out.push({ file, url: review.url, outlet: review.outlet || null, ageHours });
+    }
+  }
+  return out;
+}
+
 /**
  * Open `uncollected-blackout:<id>` ledger keys whose show is no longer in the
  * current blackout set. Nothing else ever resolves these (BRO-5077: 14 sat
@@ -288,6 +320,8 @@ function staleBlackoutKeys(conditions, blackoutShowIds) {
 }
 
 module.exports = {
+  findAgedStubs,
+  AGED_STUB_MAX_AGE_HOURS,
   staleBlackoutKeys,
   LIVE_STATUSES,
   DEFAULT_MAX_AGE_HOURS,
