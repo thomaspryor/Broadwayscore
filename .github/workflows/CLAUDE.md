@@ -751,4 +751,4 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Runs:** manually only (`action=status` read-only, `action=add` attaches).
 - **Does:** checks the domain is registered to the Vercel team, attaches it to the production project (409 = already attached, treated as success), then fails unless `GET /v6/domains/<d>/config` says `misconfigured: false` (DNS actually serving). Where the domain points is set in `vercel.json` host redirects, not here. Response bodies are never printed (public logs; the `/v5/domains` body carries account details). When attaching a new apex, also add it to the owner-domain regex in `scripts/lib/owner-accounts.js`.
 - **Requires:** `VERCEL_TOKEN`.
-- **Origin:** BRO-6145 (2026-10-24): `broadwaymoneyscorecard.com` + `www.` for the Money Scorecard launch; both redirect (302 until launch) to `https://broadwayscorecard.com/biz`.
+- **Origin:** BRO-6145 (2026-10-24): `broadwaymoneyscorecard.com` + `www.` for the Money Scorecard launch; both redirect (307, temporary, until launch) to `https://broadwayscorecard.com/biz`.

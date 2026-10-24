@@ -51,7 +51,7 @@ jobs:
           set -euo pipefail
           DOMAIN=$(printf '%s' "$DOMAIN_INPUT" | tr '[:upper:]' '[:lower:]')
           if ! [[ "$DOMAIN" =~ ^(www\.)?[a-z0-9-]+\.(com|org|co)$ ]]; then
-            echo "::error::Not a plain apex or www domain: $DOMAIN"; exit 1
+            echo "::error::Not a plain apex or www domain"; exit 1
           fi
           APEX=${DOMAIN#www.}
           API=https://api.vercel.com
@@ -59,7 +59,7 @@ jobs:
 
           # Owned by this team? Status code only, the body is never printed.
           OWNED=$(curl -s -o /dev/null -w '%{http_code}' -H "$AUTH" \
-            "$API/v5/domains/$APEX?teamId=$TEAM_ID")
+            "$API/v5/domains/$APEX?teamId=$TEAM_ID" || echo 000)
           if [ "$OWNED" != "200" ]; then
             echo "::error::$APEX is not registered to the team (HTTP $OWNED)"; exit 1
           fi
@@ -69,21 +69,27 @@ jobs:
             BODY=$(jq -n --arg n "$DOMAIN" '{name: $n}')
             CODE=$(curl -s -o /tmp/add.json -w '%{http_code}' -X POST -H "$AUTH" \
               -H 'Content-Type: application/json' \
-              "$API/v10/projects/$PROJECT_ID/domains?teamId=$TEAM_ID" -d "$BODY")
+              "$API/v10/projects/$PROJECT_ID/domains?teamId=$TEAM_ID" -d "$BODY" || echo 000)
             echo "add: HTTP $CODE $(jq -r '.error.code // "ok"' /tmp/add.json)"
             # 2xx = attached; 409 = already on this project, so re-running add is safe.
             case "$CODE" in 2??|409) ;; *) exit 1 ;; esac
           fi
 
           CODE=$(curl -s -o /tmp/pd.json -w '%{http_code}' -H "$AUTH" \
-            "$API/v9/projects/$PROJECT_ID/domains/$DOMAIN?teamId=$TEAM_ID")
+            "$API/v9/projects/$PROJECT_ID/domains/$DOMAIN?teamId=$TEAM_ID" || echo 000)
           if [ "$CODE" != "200" ]; then
             echo "::error::$DOMAIN is not attached to the project (HTTP $CODE)"; exit 1
           fi
           jq '{name, verified, redirect}' /tmp/pd.json
+          if [ "$(jq -r '.verified' /tmp/pd.json)" != "true" ]; then
+            echo "::error::$DOMAIN is attached but not verified"; exit 1
+          fi
 
-          curl -s -H "$AUTH" "$API/v6/domains/$DOMAIN/config?teamId=$TEAM_ID" \
-            > /tmp/cfg.json
+          CODE=$(curl -s -o /tmp/cfg.json -w '%{http_code}' -H "$AUTH" \
+            "$API/v6/domains/$DOMAIN/config?teamId=$TEAM_ID" || echo 000)
+          if [ "$CODE" != "200" ]; then
+            echo "::error::Could not read DNS config for $DOMAIN (HTTP $CODE)"; exit 1
+          fi
           jq '{misconfigured, configuredBy}' /tmp/cfg.json
           if [ "$(jq -r '.misconfigured' /tmp/cfg.json)" != "false" ]; then
             echo "::error::$DOMAIN is attached but DNS is not serving it yet"; exit 1
