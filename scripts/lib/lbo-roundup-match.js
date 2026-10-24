@@ -42,14 +42,14 @@ function postSlugOf(url) {
 // house (Duke of York's is now the Tom Stoppard Theatre) or the National's
 // auditoria. Each rule adds the slug-side tokens for a venue.
 const VENUE_ALIASES = [
-  { venue: /duke of york/, add: ['tom', 'stoppard'] },
-  { venue: /\b(dorfman|olivier|lyttelton|cottesloe)\b/, add: ['national'] },
+  { match: /duke of york/, add: ['tom', 'stoppard'] },
+  { match: /\b(dorfman|olivier|lyttelton|cottesloe)\b/, add: ['national'] },
 ];
 
 function venueTokens(venue) {
   const n = norm(venue);
   const tokens = n.split(' ').filter(w => w && !VENUE_GENERIC.has(w));
-  for (const rule of VENUE_ALIASES) if (rule.venue.test(n)) tokens.push(...rule.add);
+  for (const rule of VENUE_ALIASES) if (rule.match.test(n)) tokens.push(...rule.add);
   return tokens;
 }
 
