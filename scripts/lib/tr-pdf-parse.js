@@ -530,7 +530,39 @@ function maskPdfText(text, keepWords) {
   }).join('\n');
 }
 
+
+// BRO-6154 diagnostic: which production's section of the issue each parsed
+// review sits in. Structure only (production titles, outlets, dates, line
+// numbers), never review prose, so the result can be committed in a probe file.
+function productionSections(lines) {
+  const out = [];
+  lines.forEach((l, i) => {
+    if (!PRODUCTION_INFO_LINE.test(l.trim())) return;
+    const start = productionHeaderStart(lines, i);
+    const title = lines.slice(start, i).map(x => stripIndexSuffix(x.trim())).filter(t => t && t !== 'Goto').join(' ');
+    out.push({ line: i, title });
+  });
+  return out;
+}
+
+function locateReviews(text, reviews, showTitle) {
+  const lines = text.split('\n');
+  const trimmed = lines.map(l => l.trim());
+  const sections = productionSections(lines);
+  const ourUpper = String(showTitle || '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  return reviews.map(r => {
+    const first = String(r.fullText || '').split('\n')[0].trim().slice(0, 40);
+    const line = first.length >= 15 ? trimmed.findIndex(t => t.startsWith(first)) : -1;
+    let section = null;
+    for (const s of sections) if (s.line <= line) section = s.title; else break;
+    const secNorm = section ? section.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase() : null;
+    return { outlet: r.outlet, date: r.date, line, section, ours: secNorm == null ? null : (secNorm === ourUpper || secNorm === 'THE ' + ourUpper || secNorm.includes(ourUpper)) };
+  });
+}
+
 module.exports = {
+  productionSections,
+  locateReviews,
   maskPdfText,
   DATE_LONG,
   DATE_SHORT,

@@ -40,6 +40,19 @@ for (const f of GUARDED) {
   check(/siblingCategoriesByShowId\(\)\[/.test(src), `${f} passes sibling categories`);
   check(!/validateRoundupPageTitle\(/.test(src), `${f} has no bare validateRoundupPageTitle call`);
 }
+// gather-reviews.js writes through archiveAggregatorPage(), which used to archive
+// any page it was handed (BRO-6141: wrong-production BWW roundups, wrong-show Show
+// Score/DTLI pages). The function itself must run the guard, and every call must
+// pass the show so it can.
+{
+  const src = fs.readFileSync(path.join(__dirname, 'gather-reviews.js'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+  const start = src.indexOf('function archiveAggregatorPage(');
+  const body = src.slice(start, src.indexOf('fs.writeFileSync(archivePath', start));
+  check(start > -1 && /checkArchiveCategory\(html, show, siblingCategoriesByShowId\(\)\[showId\]\)/.test(body),
+    'gather-reviews.js archiveAggregatorPage runs the guard before its write');
+  const calls = src.match(/(?<!function )archiveAggregatorPage\([^;]*\);/g) || [];
+  check(calls.length >= 3 && calls.every(c => /, show\);$/.test(c)), `all ${calls.length} archiveAggregatorPage calls pass the show`);
+}
 // A new archive-writing scraper must be added to GUARDED or EXEMPT.
 for (const f of fs.readdirSync(__dirname).filter(n => /^scrape-.*\.js$/.test(n))) {
   const src = fs.readFileSync(path.join(__dirname, f), 'utf8');

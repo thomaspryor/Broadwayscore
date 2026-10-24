@@ -190,3 +190,29 @@ test('whole email: every link above Technical details is visibly a link or a but
     assert.equal(hidden, false, `camouflaged link: ${a.slice(0, 120)}`);
   }
 });
+
+// ── final-commit review (BRO-6131): which URL in a question becomes the button ──
+test('button link: only /api/admin/ links on this site count, cleaned of wrappers, read from the uncapped question', () => {
+  const mk = (n, text) => ({ identifier: `BRO-${n}`, title: `t${n}`, url: `https://linear.app/x/BRO-${n}`, createdAt: new Date().toISOString(), description: `DECISION NEEDED: ${text}` });
+  const link = 'https://broadwayscorecard.com/api/admin/gmail-reauth?e=1793000000&s=0123456789abcdef0123456789abcdef';
+  const cases = [
+    ['trailing period', `Tap ${link}.`, link],
+    ['double quotes', `Tap "${link}" now`, link],
+    ['single quotes', `Tap '${link}' now`, link],
+    ['bold wrapper', `Tap **${link}** now`, link],
+    ['markdown self-link', `Tap [${link}](<${link}>) now`, link],
+    ['parenthesised', `Tap (${link}) now`, link],
+    ['two links, first wins', `Tap ${link} or ${link.replace('gmail-reauth', 'mezzanine-token')}`, link],
+    ['public api path is context', 'Is https://broadwayscorecard.com/api/health/drift down?', null],
+    ['site page is context', 'Is https://broadwayscorecard.com/show/hamilton right?', null],
+    ['dead relay is context', 'Is https://cyrus-relay.vercel.app still used?', null],
+    ['look-alike host', 'Tap https://broadwayscorecard.com.evil.io/api/admin/x?e=1793000000&s=abc', null],
+    ['long question, link past the 220-char display cap is still whole', `${'Context sentence. '.repeat(14)}Tap ${link} and press Allow`, link],
+  ];
+  const section = buildDecisionsSection(cases.map(([name, text], i) => mk(i, text)), { now: new Date(), max: 20 });
+  cases.forEach(([name, , expected], i) => {
+    const it = section.items.find((x) => x.identifier === `BRO-${i}`);
+    assert.equal(it.url, expected || `https://linear.app/x/BRO-${i}`, name);
+    assert.equal(it.actionLabel, expected ? 'Tap to do this →' : undefined, `${name}: label`);
+  });
+});

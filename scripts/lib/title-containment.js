@@ -229,8 +229,25 @@ function findContainingTitleSibling(text, targetTitle, options = {}) {
   return { sibling: hits[0] };
 }
 
+/**
+ * Categories of the shows.json entries whose core title is `coreKey` (a value
+ * findContainingTitleSibling() returned as `sibling`). Lets a caller tell "the
+ * longer title is another market's production of the SAME work" (Tina on
+ * Broadway vs "Tina The Tina Turner Musical" in the West End) from a
+ * genuinely different show in the same market.
+ */
+function categoriesOfCoreTitle(coreKey, options = {}) {
+  const list = options.shows || defaultShows();
+  const cats = new Set();
+  for (const s of list) {
+    if (s && typeof s.title === 'string' && s.category && coreTitle(s.title) === coreKey) cats.add(s.category);
+  }
+  return [...cats];
+}
+
 module.exports = {
   basicNorm,
+  categoriesOfCoreTitle,
   phraseNorm,
   coreTitle,
   distinctTitleKey,

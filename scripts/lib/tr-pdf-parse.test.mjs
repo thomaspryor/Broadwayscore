@@ -320,3 +320,16 @@ test('default mode reads bare mastheads on masked real 2018 skeletons', async ()
   const kite = parseDefaultPdfReviews(read('the-kite-runner-west-end-2017'), 'The Kite Runner');
   assert.ok(kite.some(r => /guardian/i.test(r.outlet)), 'Kite Runner: Guardian');
 });
+
+// BRO-6154 diagnostic helpers
+import { createRequire as __cr } from 'node:module';
+{
+  const { productionSections, locateReviews } = __cr(import.meta.url)('./tr-pdf-parse.js');
+  const t = ['ANNA X    Index', 'Previews / Opens   Press night', 'THE GUARDIAN', '1 May 2021', 'Some long first line of review text here', 'BE MORE CHILL', 'Previews / Opens'].join('\n');
+  test('BRO-6154 locateReviews attributes a review to its production section', () => {
+    assert.equal(productionSections(t.split('\n')).length, 2);
+    const [r] = locateReviews(t, [{ outlet: 'The Guardian', date: '1 May 2021', fullText: 'Some long first line of review text here' }], 'Anna X');
+    assert.equal(r.line, 4);
+    assert.equal(r.ours, true);
+  });
+}

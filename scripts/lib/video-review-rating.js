@@ -48,26 +48,24 @@ function ratingBand(fraction) {
   return { min: Math.max(0, Math.round(stars * 20 - 9)), max: Math.min(100, Math.round(stars * 20 + 10)) };
 }
 
-// Same buckets as the score-video-reviews.js prompt table.
-function videoBucketForScore(score) {
-  if (score >= 83) return 'Rave';
-  if (score >= 70) return 'Positive';
-  if (score >= 55) return 'Mixed';
-  if (score >= 35) return 'Negative';
-  return 'Pan';
-}
+// Same buckets as the score-video-reviews.js prompt table and the text-review
+// rebuild: one threshold set (score-extractors.js scoreToBucket).
+const { scoreToBucket } = require('./score-extractors');
+const videoBucketForScore = scoreToBucket;
 
 /**
- * Keep a model score inside the creator's own rating band.
+ * Keep a model score inside the creator's own rating band. The bucket always
+ * comes from the final score: the model once returned 68 "Positive" (the
+ * Mixed band), published as a mismatched label (BRO-6095).
  * @returns {{score: number, bucket: string, anchored: boolean, rating: number|null}}
  */
 function anchorScore(score, bucket, rawRating) {
   const rating = parseRating(rawRating);
-  if (rating === null || typeof score !== 'number') return { score, bucket, anchored: false, rating };
+  const fromScore = s => (typeof s === 'number' ? videoBucketForScore(s) : bucket);
+  if (rating === null || typeof score !== 'number') return { score, bucket: fromScore(score), anchored: false, rating };
   const { min, max } = ratingBand(rating);
   const clamped = Math.min(max, Math.max(min, score));
-  if (clamped === score) return { score, bucket, anchored: false, rating };
-  return { score: clamped, bucket: videoBucketForScore(clamped), anchored: true, rating };
+  return { score: clamped, bucket: fromScore(clamped), anchored: clamped !== score, rating };
 }
 
 module.exports = { mentionsRating, parseRating, ratingBand, videoBucketForScore, anchorScore };

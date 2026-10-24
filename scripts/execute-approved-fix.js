@@ -98,6 +98,9 @@ const ALLOWED_SCRIPTS = [
   // BRO-4779: delete sibling-misfiled aggregator-archive pages (+ tombstone ids).
   // Needs --delete --expect=N; the workflow checks out and pushes the archive.
   'audit-sibling-misfile-archive.js',
+  // BRO-6141: delete aggregator-archive pages that fail their own category check (the pages
+  // audit-aggregator-archive-integrity --strict reports). Needs --delete --expect=N; same archive checkout/push as above.
+  'quarantine-poisoned-aggregator-archive.js',
   'rebuild-all-reviews.js',
   'gather-reviews.js',
   'collect-review-texts.js',

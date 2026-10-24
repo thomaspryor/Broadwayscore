@@ -1,6 +1,6 @@
 # .claude/CLOUD.md — read first if you're a cloud Claude Code session
 
-Cloud sandboxes (claude.ai/code, iOS, Mac desktop) don't mount the owner's `~/.claude/` (the Mac's hooks, slash commands and memory). `.claude/hooks/session-start.sh` installs the owner's global `CLAUDE.md` + `anti-slop-rules.md` from the private `thomaspryor/claude-config` repo at every cloud start; their "## Cloud sessions" section overrides Mac-only rules, and Mac-only blocks are stripped from the cloud copy (BRO-5072). If the fetch failed, session-start says why. This file, `.claude/hooks/` and `cloud-memory/` cover the rest.
+Cloud sandboxes do not mount the owner's `~/.claude/`. `.claude/hooks/session-start.sh` installs the owner's global `CLAUDE.md` + `anti-slop-rules.md` from the private `thomaspryor/claude-config` repo at every cloud start; their "## Cloud sessions" section overrides Mac-only rules, and Mac-only blocks are stripped from the cloud copy (BRO-5072). Fetch failures are reported. See also `.claude/hooks/` and `cloud-memory/`.
 
 ## Before your first tool call
 
@@ -74,13 +74,13 @@ The owner lives in Berlin; US opening-night reviews drop 01:00-03:00 UTC. Anythi
 
 ## Owner one-time setup (cloud environment → Edit → Setup script)
 
-The setup script runs after the clones, before Claude starts, cached. It needs this line (BRO-5221/6126):
+Cached setup runs after cloning, before Claude (BRO-5221/6126):
 
 ```
-for d in /home/user/Broadwayscore /home/user/broadwayscore; do [ -d "$d/.git" ] && git -C "$d" fetch -q origin main && git -C "$d" merge -q --ff-only origin/main; done; for d in /home/user/*/; do [ -f "$d/scripts/install-home-claude-config.js" ] && CLAUDE_CODE_REMOTE=true node "$d/scripts/install-home-claude-config.js"; done; true
+for d in /home/user/Broadwayscore /home/user/broadwayscore; do [ -d "$d/.git" ] && git -C "$d" fetch -q origin main && git -C "$d" merge -q --ff-only origin/main; done; for d in /home/user/*/; do [ -f "$d/scripts/install-home-claude-config.js" ] && CLAUDE_CODE_REMOTE=true node "$d/scripts/install-home-claude-config.js" --adopt-hookless-settings; done; true
 ```
 
-The first loop refreshes a stale checkout; editing it rebuilds the cache. Later drift: startup fetches 40s, then retries detached.
+The first loop refreshes the checkout; edits rebuild the cache. Startup fetches for 40s, then retries detached.
 
 It cannot change auto mode (the classifier reads `autoMode` only from user, managed or `--settings` sources; BRO-5008). When it refuses an owner-requested action, say so plainly and offer the nearest allowed route (a `land/<name>` branch, a dispatched workflow, a Linear card).
 
@@ -110,6 +110,8 @@ CLAUDE.md's `gh` runbooks don't run as written; use the GitHub MCP tools (secret
 Several repos attached, or a misspelled `create_session` source_url, start the session in `/home/user`: `--add-dir` loads commands, never hooks. The setup-script line (below) runs `scripts/install-home-claude-config.js`, which wires every hook into `/home/user/.claude` and links `commands/`, `skills/`, `agents/`; startup repairs drift. Check with its `--check`.
 
 If that reports DRIFT or nothing, no hooks fire: run `bash scripts/cloud-bootstrap-data.sh` first, then follow the hook rules by hand (no `POST /broadcasts/{id}/send`, no MCP writes to `main`, review before landing, close the card, canonical `create_session` URL).
+
+`--adopt-hookless-settings` preserves unmarked, hookless settings, including permissions and `autoMode`, across install and uninstall.
 
 ## Production API keys from a phone session
 

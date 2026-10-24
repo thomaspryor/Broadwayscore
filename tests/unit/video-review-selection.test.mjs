@@ -140,6 +140,8 @@ test('ratings: Heathers "10 out of 10" scored 77 is pulled up into the Rave band
   assert.deepEqual(anchorScore(95, 'Rave', '10/10'), { score: 95, bucket: 'Rave', anchored: false, rating: 1 });
   assert.deepEqual(anchorScore(75, 'Positive', null), { score: 75, bucket: 'Positive', anchored: false, rating: null });
   assert.equal(anchorScore(40, 'Negative', '4 stars').score, 71);
+  // the label always follows the score (model returned 68 "Positive")
+  assert.equal(anchorScore(68, 'Positive', null).bucket, 'Mixed');
 });
 
 test('ratings: rescore pre-filter and bucket table', () => {
