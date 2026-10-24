@@ -1002,20 +1002,6 @@
     "queuedAt": "2026-10-24T16:15:14.138Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 15 (pull-quote-quality, regex-fp, run-contamination, cross-show-url, body-date-mismatch, unknown-outlets, +9 more). Checked 2026-10-24.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-24T16:50:35.640Z"
-  },
-  {
     "conditionKey": "land:land/bro-6141-archive-quarantine",
     "title": "Landing blocked: unit-tests-node red on land/bro-6141-archive-quarantine",
     "description": "land.yml did not land land/bro-6141-archive-quarantine: the unit-tests-node gate went red at 20771099f9. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40111547964",
@@ -1731,34 +1717,17 @@
     "queuedAt": "2026-10-24T22:35:15.666Z"
   },
   {
-    "conditionKey": "land:land/bro-6147-owner-decision-emails",
-    "title": "Landing blocked: merged-tree-tests red on land/bro-6147-owner-decision-emails",
-    "description": "land.yml did not land land/bro-6147-owner-decision-emails: the merged-tree-tests gate went red at 09264b50c7. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6147-owner-decision-emails @ 09264b50c7 (origin/land/bro-6147-owner-decision-emails) → origin/main @ f6d651f6ed [land] attempt 1/3: rebased onto f6d651f6ed, 13 file(s) changed — running checks [land] verified-base: main moved e9b000ab16 → f6d651f6ed across 1073 file(s), substantive — re-checking on the merged tree (+5 test file(s) changed on main since the verified base); full re-c Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40138315437",
-    "severity": "error",
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 15 (pull-quote-quality, regex-fp, run-contamination, cross-show-url, body-date-mismatch, unknown-outlets, +9 more). Checked 2026-10-24.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
     "url": null,
     "decision": false,
-    "info": false,
+    "info": true,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/bro-6147-owner-decision-emails"
-      },
-      {
-        "name": "gate",
-        "value": "merged-tree-tests"
-      },
-      {
-        "name": "tip",
-        "value": "09264b50c7ed9f5ffa4ceed964cb7b193fd19d6d"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40138315437"
-      }
-    ],
-    "queuedAt": "2026-10-24T22:57:25.517Z"
+    "fields": [],
+    "queuedAt": "2026-10-24T23:04:52.019Z"
   }
 ]
