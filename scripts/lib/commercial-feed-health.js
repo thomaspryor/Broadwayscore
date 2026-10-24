@@ -53,7 +53,14 @@ function untrustedClaimAlertOpts(findings, nowIso = new Date().toISOString()) {
   };
 }
 
+// routeAlert reports a failed card filing as dispatchOk:false / dispatchError
+// (a cooldown-silenced result carries neither), so "landed" is the inverse.
+function alertLanded(res) {
+  return !!res && res.dispatchOk !== false && !res.dispatchError;
+}
+
 module.exports = {
+  alertLanded,
   DEAD_FEED_ERROR_THRESHOLD,
   shouldAlertDeadFeed,
   deadFeedAlertOpts,

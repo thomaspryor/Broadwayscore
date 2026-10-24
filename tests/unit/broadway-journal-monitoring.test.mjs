@@ -150,3 +150,15 @@ describe('review fixes', () => {
   });
 });
 
+
+describe('alertLanded', () => {
+  it('treats a failed card dispatch as not landed', () => {
+    assert.equal(health.alertLanded({ action: 'auto', dispatchOk: false, dispatchError: 'linear down' }), false);
+    assert.equal(health.alertLanded({ action: 'auto', dispatchError: 'no key' }), false);
+    assert.equal(health.alertLanded(null), false);
+  });
+  it('treats a filed or cooldown-silenced alert as landed', () => {
+    assert.equal(health.alertLanded({ action: 'auto', dispatchOk: true, cardId: 'BRO-1' }), true);
+    assert.equal(health.alertLanded({ action: 'silent' }), true);
+  });
+});

@@ -80,7 +80,7 @@ async function main() {
     } catch (e) {
       console.log(`  ✗ ${p.slug}: ${e.message}`);
       // A deleted post (404/410) can never be read: do not let it fail every future run.
-      if (!/HTTP 40[04]|HTTP 410/.test(e.message)) unreadable.push(p.slug);
+      if (!/HTTP 404|HTTP 410/.test(e.message)) unreadable.push(p.slug);
       continue;
     }
     const { terms } = bj.scanFinancialTerms(`${p.title || ''} ${p.subtitle || ''} ${body}`);
@@ -97,14 +97,18 @@ async function main() {
   for (const a of fresh) console.log(`  NEW ${a.postDate.slice(0, 10)} ${a.title} [${a.terms.join(', ')}]\n      ${a.url}`);
   for (const a of backlog.slice(0, 5)) console.log(`  backlog ${a.postDate.slice(0, 10)} ${a.title}`);
 
+  if (inconclusive > 0) console.warn(`WARNING: ${inconclusive} paywalled post(s) had no matching terms in the visible text; they could not be fully scanned.`);
   if (!DRY_RUN) {
     const router = require('./lib/owner-alert-router');
     if (fresh.length > 0) {
       const res = await router.routeAlert(bj.sweepAlertOpts(fresh));
       console.log(`Alert routed: ${res && res.action}`);
-    } else {
+      if (res && (res.dispatchOk === false || res.dispatchError)) throw new Error(`alert card was not filed: ${res.dispatchError || 'dispatch failed'}`);
+    } else if (unreadable.length === 0) {
       console.log('Nothing new to report.');
       router.resolveCondition(bj.SWEEP_CONDITION_KEY, { reason: 'no uncited financial posts' });
+    } else {
+      console.log('Nothing new to report, but some posts were unreadable; leaving the alert condition open.');
     }
   } else {
     console.log('[dry-run] no alert sent');

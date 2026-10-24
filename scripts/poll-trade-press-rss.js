@@ -43,7 +43,7 @@ const { fetchPage, cleanup } = require('./lib/scraper');
 const { classifyArticle } = require('./lib/recoupment-classify');
 const { guardRejectionWarning } = require('./lib/recoupment-production-guard');
 const { pickRecoupmentCandidates, RSS_SCOPE } = require('./lib/recoupment-scan-scope');
-const { hostGate, shouldAlertDeadFeed, deadFeedAlertOpts, untrustedClaimAlertOpts } = require('./lib/commercial-feed-health');
+const { hostGate, shouldAlertDeadFeed, deadFeedAlertOpts, untrustedClaimAlertOpts, alertLanded } = require('./lib/commercial-feed-health');
 const { runMain } = require('./lib/run-main');
 const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
@@ -318,7 +318,7 @@ async function main() {
     let landed = false;
     try {
       const res = await routeAlert(untrustedClaimAlertOpts(reviewFindings));
-      landed = !!res && res.ok !== false && res.error === undefined;
+      landed = alertLanded(res);
     } catch (e) { log(`  ⚠️  untrusted-claim alert failed: ${e.message}`); }
     if (!landed) {
       for (const [outletId, r] of Object.entries(feedResults)) {
