@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-24T00:26:09.343Z",
+  "timestamp": "2026-10-24T01:20:55.484Z",
   "stats": {
-    "totalReviews": 59552,
-    "alreadyFlagged": 21117,
+    "totalReviews": 59660,
+    "alreadyFlagged": 21118,
     "dateGuardCatches": 202,
-    "directorMismatch": 2119,
+    "directorMismatch": 2125,
     "tvFilmSignals": 1690,
     "londonSignals": 2842,
     "offBroadwaySignals": 535,
-    "yearMismatch": 176,
-    "noPublishDate": 5341
+    "yearMismatch": 178,
+    "noPublishDate": 5425
   },
   "findings": [
     {
@@ -393,6 +393,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "city-pulse--by-mark-gmazel.json",
+      "publishDate": "2025-09-17",
+      "url": "https://lansingcitypulse.com/a-beautiful-noise-appeals-to-fans-and-newcomers-alike/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2024 (0x). 2026 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2026"
         }
       ]
     },
@@ -4064,6 +4077,19 @@
     },
     {
       "showId": "back-to-the-future-tour-2024",
+      "file": "broadwayworld--jade-kops.json",
+      "publishDate": "2025-10-05",
+      "url": "https://www.broadwayworld.com/sydney/article/REVIEW-BACK-TO-THE-FUTURE-THE-MUSICAL-Is-A-Fabulously-Fun-Adaptation-Of-The-1985-Classic-Time-Travel-Movie-20251005",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-tour-2024",
       "file": "fwtx--john-henry.json",
       "publishDate": "2026-03-23",
       "url": "https://fwtx.com/culture/back-to-the-future-musical-lands-at-bass-hall/",
@@ -5430,6 +5456,19 @@
     },
     {
       "showId": "book-of-mormon-tour-2022",
+      "file": "the-pitch--rowan-bickelhaupt.json",
+      "publishDate": "2025-09-13",
+      "url": "https://www.thepitchkc.com/book-of-mormon-on-tour-rings-true-with-sharp-satire-and-perfect-pitch/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
       "file": "wkrn--colleen-guerry.json",
       "score": 75,
       "publishDate": "2026-06-04",
@@ -5992,6 +6031,19 @@
       "score": 90,
       "publishDate": "2026-09-17",
       "url": "https://www.buffalorising.com/2026/09/no-translation-needed-buena-vista-social-club-speaks-straight-to-the-heart-of-a-muy-simpatico-audience/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"saheem ali\" from buena-vista-social-club-2025"
+        }
+      ]
+    },
+    {
+      "showId": "buena-vista-social-club-tour-2026",
+      "file": "orlando-weekly--seth-kubersky.json",
+      "publishDate": "2026-10-21",
+      "url": "https://www.orlandoweekly.com/arts/review-buena-vista-social-club-at-dr-phillips-center/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -18193,6 +18245,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-tour-2024",
+      "file": "boston-globe--unknown.json",
+      "publishDate": "2025-09-25",
+      "url": "https://www.bostonglobe.com/2025/09/25/arts/hamilton-boston-review/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2015 (2x) more than 2024 (0x). 2015 matches production: hamilton-2015"
         }
       ]
     },
@@ -37528,6 +37593,19 @@
     },
     {
       "showId": "spamalot-tour-2025",
+      "file": "boston-globe--unknown.json",
+      "publishDate": "2026-10-02",
+      "url": "https://www.bostonglobe.com/2026/10/02/arts/eric-idle-spamalot-wang/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
       "file": "broadwayworld--aa-cristi.json",
       "publishDate": "2026-07-17",
       "url": "https://www.broadwayworld.com/kansas-city/article/MONTY-PYTHONS-SPAMALOT-to-Return-to-Starlight-Theatre-in-Kansas-City-20260717",
@@ -45791,6 +45869,24 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
+      "file": "hartford-courant--christopher-arnott.json",
+      "publishDate": "2025-10-02",
+      "url": "https://www.courant.com/2025/10/02/theater-review-the-notebook-is-a-beautifully-balanced-romantic-musical-at-the-bushnell/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
         }
       ]
     },
@@ -69443,7 +69539,7 @@
       "file": "independent--alice-saville.json",
       "score": 77,
       "publishDate": "2025-10-03",
-      "url": null,
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/hamlet-national-theatre-london-review-b2838606.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -89144,7 +89240,7 @@
       "file": "londontheatre1--chris-omaweng.json",
       "score": 74,
       "publishDate": "2025-07-18",
-      "url": null,
+      "url": "https://www.londontheatre1.com/reviews/the-estate-national-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -94915,7 +95011,7 @@
     {
       "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 75,
+      "score": 74,
       "publishDate": "2026-09-17",
       "url": "https://www.londonboxoffice.co.uk/news/post/thelma-louise-young-vic-review",
       "findings": [
@@ -94956,7 +95052,7 @@
     {
       "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
       "file": "musical-theatre-review--scott-matthewman.json",
-      "score": 79,
+      "score": 77,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/thelma-louise-young-vic-theatre/",
       "findings": [
