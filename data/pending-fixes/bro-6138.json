@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6138",
   "planId": "10474ac3-1c08-4a3d-8ac0-88f2bec0a0bb",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-24T19:16:03.115Z",
   "submitter": {
     "name": null,
@@ -58,5 +58,19 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-24T20:01:18.954Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added fun-home-2015 (Windfall)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added glory-days-2008 (Did Not Recoup)"
+    }
+  ],
+  "executedIn": "ci"
 }
