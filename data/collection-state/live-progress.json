@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-10-24T23:26:14.920Z",
-  "processed": 325,
-  "failed": 177,
-  "successRate": "64.7%",
+  "updatedAt": "2026-10-25T00:02:41.956Z",
+  "processed": 329,
+  "failed": 189,
+  "successRate": "63.5%",
   "tierBreakdown": {
-    "playwright": 166,
+    "playwright": 169,
     "amp": 9,
-    "browserbase": 6,
+    "browserbase": 9,
     "directCookies": 0,
     "scrapingdog": 21,
     "scrapingbee": 17,
@@ -14,7 +14,7 @@
     "archiveToday": 0,
     "archive": 95
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-10-24T21:48:46.832Z",
@@ -48,6 +48,41 @@
       "t": "2026-10-24T22:09:43.869Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-24T23:53:41.982Z",
+      "event": "bb-session",
+      "session": "aae66c3d",
+      "url": "https://soundsandstage.com/show/cirque-berserk"
+    },
+    {
+      "t": "2026-10-24T23:59:06.135Z",
+      "event": "bb-session",
+      "session": "ac8211fa",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-24T23:59:12.725Z",
+      "event": "bb-session",
+      "session": "9eda350d",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-25T00:00:32.092Z",
+      "event": "bb-session",
+      "session": "ddc74377",
+      "url": "https://momentsapp.no/serie/some-woman-5dbb94319d2461e366f4078cb82fb81d"
+    },
+    {
+      "t": "2026-10-25T00:02:00.484Z",
+      "event": "bb-session",
+      "session": "7cae9003",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/some-woman-review-anne-ma"
+    },
+    {
+      "t": "2026-10-25T00:02:00.864Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

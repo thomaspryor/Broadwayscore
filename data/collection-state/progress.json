@@ -324,7 +324,11 @@
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--west-end-wilma.json",
     "sting-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
     "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
-    "a-fine-idea-off-west-end-2026/guardian--arifa-akbar.json"
+    "a-fine-idea-off-west-end-2026/guardian--arifa-akbar.json",
+    "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
+    "harry-potter-and-the-cursed-child-one-part-west-end-2026/bestoftheatre--unknown.json",
+    "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json"
   ],
   "failed": [
     "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
@@ -358,8 +362,6 @@
     "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
     "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
     "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
-    "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
-    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
     "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
     "some-woman-west-end-2026/thestage--sam-marlowe.json",
     "some-woman-west-end-2026/tixculture--unknown.json",
@@ -503,7 +505,21 @@
     "sting-west-end-2026/guardian--anya-ryan.json",
     "glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
     "romeo-and-juliet-off-broadway-2026/guardian--unknown.json",
-    "romeo-and-juliet-off-broadway-2026/express-uk--neil-norman.json"
+    "romeo-and-juliet-off-broadway-2026/express-uk--neil-norman.json",
+    "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
+    "dog-mom-off-west-end-2026/reviewsgate--william-russell.json",
+    "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "dirty-dancing-the-classic-story-on-stage-west-end-2026/soundsandstage--unknown.json",
+    "dirty-dancing-the-classic-story-on-stage-west-end-2026/sportswhereiam--unknown.json",
+    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
+    "some-woman-west-end-2026/guardian--unknown.json",
+    "double-bill-tell-me-straight-and-aggy-off-west-end-2026/soundsandstage--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/alltrippers--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
+    "some-woman-west-end-2026/momentsapp--unknown.json",
+    "some-woman-west-end-2026/sunday-times--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -673,7 +689,10 @@
       "relics-west-end-2026/rhombus-rota--unknown.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--west-end-wilma.json",
       "sting-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
-      "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json"
+      "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
+      "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+      "harry-potter-and-the-cursed-child-one-part-west-end-2026/bestoftheatre--unknown.json",
+      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json"
     ],
     "amp": [
       "data/review-texts/network-2018/variety--marilyn-stasio.json",
@@ -692,7 +711,10 @@
       "data/review-texts/dirty-dancing-tour-2026/nytimes--michael-paulson.json",
       "dirty-dancing-tour-2026/nytimes--michael-paulson.json",
       "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json",
-      "the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json"
+      "the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json",
+      "data/review-texts/some-woman-west-end-2026/momentsapp--unknown.json",
+      "data/review-texts/some-woman-west-end-2026/sunday-times--clive-davis.json",
+      "some-woman-west-end-2026/sunday-times--clive-davis.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -838,7 +860,7 @@
     ]
   },
   "startTime": "2026-10-24T20:35:10.771Z",
-  "lastProcessed": "romeo-and-juliet-off-broadway-2026/express-uk--neil-norman.json",
+  "lastProcessed": "some-woman-west-end-2026/thestage--sam-marlowe.json",
   "log": [
     {
       "t": "2026-10-24T21:48:46.832Z",
@@ -872,9 +894,46 @@
       "t": "2026-10-24T22:09:43.869Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-24T23:53:41.982Z",
+      "event": "bb-session",
+      "session": "aae66c3d",
+      "url": "https://soundsandstage.com/show/cirque-berserk"
+    },
+    {
+      "t": "2026-10-24T23:59:06.135Z",
+      "event": "bb-session",
+      "session": "ac8211fa",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-24T23:59:12.725Z",
+      "event": "bb-session",
+      "session": "9eda350d",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-25T00:00:32.092Z",
+      "event": "bb-session",
+      "session": "ddc74377",
+      "url": "https://momentsapp.no/serie/some-woman-5dbb94319d2461e366f4078cb82fb81d"
+    },
+    {
+      "t": "2026-10-25T00:02:00.484Z",
+      "event": "bb-session",
+      "session": "7cae9003",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/some-woman-review-anne-ma"
+    },
+    {
+      "t": "2026-10-25T00:02:00.864Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ],
   "recoveredAfterFailure": [
-    "an-oak-tree-off-west-end-2026/thereviewshub--the-reviews-hub-london.json"
+    "an-oak-tree-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json"
   ]
 }
