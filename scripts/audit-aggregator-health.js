@@ -6,6 +6,7 @@
  *   node scripts/audit-aggregator-health.js --strict   # exit 1 on any finding
  *   node scripts/audit-aggregator-health.js --json     # machine-readable
  *   node scripts/audit-aggregator-health.js --write    # also write data/audit/aggregator-health.json
+ *   node scripts/audit-aggregator-health.js --alert    # route findings to the owner digest (CI daily)
  *
  * Coverage needs data/aggregator-archive (private repo; CI checks it out) and is
  * skipped with a note when absent. Run history needs `gh` or a reachable GitHub
@@ -43,7 +44,7 @@ function loadArchives(sources, shows) {
       ? fs.readdirSync(dir).map(f => /^(.+)\.(html|json)$/.exec(f)).filter(Boolean).map(m => idBySlug.get(m[1]) || m[1])
       : []);
   }
-  return out;
+  return Object.values(out).every(a => a.size === 0) ? null : out; // empty clone == absent
 }
 
 function loadScheduled(sources) {
@@ -70,7 +71,34 @@ function loadRuns(sources, failed) {
   return ok ? out : null;
 }
 
-function main() {
+/**
+ * Route findings to the owner digest (same router as audit-coverage-holes --alert).
+ * One condition per source+kind (+workflow), resolved when the finding clears.
+ * A condition resolves only when its own input (archive or run history) was
+ * readable, so a partial run can never "resolve" a real problem.
+ */
+async function alertFindings(findings, sources, have) {
+  const { routeAlert, resolveCondition } = require('./lib/owner-alert-router.js');
+  const keyOf = f => `aggregator-health:${f.source}:${f.kind}${f.workflow ? ':' + f.workflow : ''}`;
+  const live = new Set(findings.map(keyOf));
+  let raised = 0;
+  for (const f of findings) {
+    try {
+      await routeAlert({ conditionKey: keyOf(f), title: f.message, description: `${f.message}\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 runs.`, severity: 'warning', disposition: 'digest', cooldownHours: 20 });
+      raised++;
+    } catch (err) { console.error(`[aggregator-health] alert failed for ${keyOf(f)}: ${err.message}`); process.exitCode = 1; }
+  }
+  for (const s of sources.filter(x => !x.retired)) {
+    for (const kind of ['coverage-drop', 'workflow-failing', 'workflow-idle', 'workflow-stale']) {
+      if (kind === 'coverage-drop' ? !have.coverage : !have.runs) continue; // unreadable input never resolves anything
+      const keys = kind === 'coverage-drop' ? [`aggregator-health:${s.id}:${kind}`] : Object.keys(s.workflows).map(w => `aggregator-health:${s.id}:${kind}:${w}`);
+      for (const k of keys) if (!live.has(k)) { try { resolveCondition(k, { reason: 'finding cleared' }); } catch { /* nothing open */ } }
+    }
+  }
+  return raised;
+}
+
+async function main() {
   const args = process.argv.slice(2);
   const strict = args.includes('--strict');
   const asJson = args.includes('--json');
@@ -107,8 +135,11 @@ function main() {
     }
     for (const n of notes) console.log(`  note: ${n}`);
   }
-  process.exit(strict && findings.length ? 1 : 0);
+  if (args.includes('--alert')) {
+    console.log(`alert: ${await alertFindings(findings, sources, { coverage: !!archives, runs: !!runs })} finding(s) routed to the digest`);
+  }
+  process.exit(strict && findings.length ? 1 : process.exitCode || 0);
 }
 
-if (require.main === module) main();
+if (require.main === module) main().catch(e => { console.error(e.message); process.exit(1); });
 module.exports = { loadScheduled };
