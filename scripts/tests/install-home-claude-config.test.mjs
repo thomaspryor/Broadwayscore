@@ -18,7 +18,8 @@ const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..
 const INSTALLER = path.join(REPO_ROOT, 'scripts', 'install-home-claude-config.js');
 const { buildSettings, MARK_KEY } = require(INSTALLER);
 
-const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-5221-home-'));
+// realpath: macOS tmpdir is a /var symlink; git and the installer report /private/var.
+const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'bro-5221-home-')));
 const fakeHome = path.join(scratch, 'root');   // $HOME: no ~/.claude/hooks, so repo hooks never self-skip
 fs.mkdirSync(fakeHome);
 test.after(() => fs.rmSync(scratch, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
@@ -123,9 +124,12 @@ test('tool hooks skip work in another repo (the app keeps its main-only workflow
 });
 
 test('refuses $HOME as target, a hand-written settings.json, and a real commands dir', () => {
+  fs.mkdirSync(path.join(fakeHome, '.claude'), { recursive: true });
+  fs.writeFileSync(path.join(fakeHome, '.claude', 'settings.json'), '{"theme":"dark"}');
   const home = run(['--target', fakeHome]);
   assert.equal(home.status, 2);
   assert.match(home.stderr, /is \$HOME/);
+  fs.rmSync(path.join(fakeHome, '.claude'), { recursive: true, force: true });
 
   const { target } = makeTarget('t-foreign');
   fs.mkdirSync(path.join(target, '.claude'));
@@ -194,4 +198,33 @@ test('--help prints usage and installs nothing', () => {
   assert.equal(r.status, 0);
   assert.match(r.stdout, /Usage/);
   assert.ok(!fs.existsSync(path.join(target, '.claude')), 'nothing written');
+});
+
+// BRO-6126: the owner's pasted setup line runs the installer with NO --target. In
+// cloud the checkout is /home/user/Broadwayscore, so the default target is $HOME.
+test('cloud one-liner: no --target, HOME = parent of the checkout, installs and --check passes', () => {
+  const parent = path.dirname(REPO_ROOT);
+  // The installer only writes under <HOME>/.claude; use a scratch copy of the layout
+  // so the test never touches the real parent of this checkout.
+  const cloudHome = path.join(scratch, 'home-user');
+  const clone = path.join(cloudHome, 'Broadwayscore');
+  fs.mkdirSync(path.join(clone, 'scripts', 'lib'), { recursive: true });
+  fs.mkdirSync(path.join(clone, '.claude'), { recursive: true });
+  for (const f of ['install-home-claude-config.js']) fs.copyFileSync(path.join(REPO_ROOT, 'scripts', f), path.join(clone, 'scripts', f));
+  fs.cpSync(path.join(REPO_ROOT, 'scripts', 'lib'), path.join(clone, 'scripts', 'lib'), { recursive: true });
+  for (const f of ['settings.json', 'commands', 'skills', 'agents']) {
+    if (fs.existsSync(path.join(REPO_ROOT, '.claude', f))) fs.symlinkSync(path.join(REPO_ROOT, '.claude', f), path.join(clone, '.claude', f));
+  }
+  assert.notEqual(parent, cloudHome);
+  const cloudRun = (args, env = {}) => spawnSync('node', [path.join(clone, 'scripts', 'install-home-claude-config.js'), ...args], {
+    encoding: 'utf8', env: { ...process.env, HOME: cloudHome, ...env },
+  });
+  for (const env of [{ CLAUDE_CODE_REMOTE: 'true' }, { CLAUDE_CODE_REMOTE: '' }]) {
+    const r = cloudRun([], env);
+    assert.equal(r.status, 0, `install with env ${JSON.stringify(env)}: ${r.stderr}`);
+    assert.ok(fs.existsSync(path.join(cloudHome, '.claude', 'settings.json')), 'hooks land in $HOME/.claude');
+    const c = cloudRun(['--check'], env);
+    assert.equal(c.status, 0, c.stdout + c.stderr);
+    assert.equal(cloudRun(['--uninstall'], env).status, 0);
+  }
 });

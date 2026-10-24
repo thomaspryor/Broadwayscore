@@ -83,7 +83,10 @@ fi
 # command or agent folder added since). Repair it at startup; links added now
 # serve this session's later lookups and every later start in this container.
 if [ "$hook" = session-start.sh ] && command -v node >/dev/null 2>&1; then
+  # H is /home/user = $HOME in cloud; the installer accepts that only with
+  # CLAUDE_CODE_REMOTE=true or no foreign ~/.claude/settings.json (BRO-6126).
   I="$R/scripts/install-home-claude-config.js"; H="$(dirname -- "$R")"
+  export CLAUDE_CODE_REMOTE="${CLAUDE_CODE_REMOTE:-true}"
   node "$I" --check --target "$H" >/dev/null 2>&1 || node "$I" --target "$H" >/dev/null 2>&1
   node "$I" --check --target "$H" >/dev/null 2>&1 \
     || echo "⚠️ BRO-5221: /home/user/.claude could not be brought up to date (node scripts/install-home-claude-config.js --check). Hooks added since this container was set up are NOT running; follow CLOUD.md § Multi-repo by hand for them."
