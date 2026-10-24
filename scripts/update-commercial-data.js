@@ -781,8 +781,12 @@ async function searchTradePress() {
     },
     {
       name: 'Broadway Journal',
-      rssUrl: null,
-      sectionUrl: 'https://broadwayjournal.com/category/news/',
+      // BRO-6167: site moved to Substack; the old /category/news/ section 404s.
+      rssUrl: 'https://www.broadwayjournal.com/feed',
+      sectionUrl: null,
+      // Broadway-business outlet: headlines like "HELL'S KITCHEN'S BROADWAY BUYOUT"
+      // never match FINANCIAL_KEYWORDS, so every item is a candidate.
+      alwaysFinancial: true,
       source: 'Broadway Journal'
     }
   ];
@@ -870,7 +874,7 @@ async function searchTradePress() {
           const items = parseRSS(rssContent);
           for (const item of items.slice(0, 20)) { // Last 20 articles
             if (seenUrls.has(item.url)) continue;
-            if (hasFinancialKeywords(item.title) || hasFinancialKeywords(item.snippet)) {
+            if (source.alwaysFinancial || hasFinancialKeywords(item.title) || hasFinancialKeywords(item.snippet)) {
               seenUrls.add(item.url);
               results.push({ ...item, source: source.source });
             }

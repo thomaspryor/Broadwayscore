@@ -27,6 +27,9 @@ const { withinOneEdit, QUERY_NOISE_WORDS } = require('./show-search-match');
 // (scripts/poll-trade-press-rss.js) reads. Only set on feeds whose host is also
 // in TRUSTED_RECOUPMENT_HOSTS — see scripts/lib/trusted-recoupment-domains.js —
 // since the apply-commercial-pending auto-apply gate cross-checks sourceHost.
+// Exception (BRO-6167): untrustedClaimsToReview: true feeds (Broadway Journal) sit in
+// BROADWAY_BUSINESS_FEEDS, never ALL_FEEDS; the poller routes their claims to a human
+// instead of pending (hostGate in commercial-feed-health.js).
 // Playbill RSS is defunct (no entry here); BroadwayWorld has no RSS feed
 // registered; Broadway News Reviews is a reviews-tag feed (no recoupment news).
 const THEATER_FEEDS = [
@@ -90,10 +93,17 @@ const ENTERTAINMENT_FEEDS = [
   { url: 'https://www.rollingstone.com/tv-movies/feed/', outletId: 'rollingstone', name: 'Rolling Stone', needsFilter: true },
 ];
 
+// Broadway-business outlets that are NOT review outlets (BRO-6167). Only the
+// recoupment poller reads these; review discovery (checkRSSFeeds) iterates ALL_FEEDS.
+// Broadway Journal moved to Substack (posts at /p/<slug>); it quotes NY AG filings.
+const BROADWAY_BUSINESS_FEEDS = [
+  { url: 'https://www.broadwayjournal.com/feed', outletId: 'broadway-journal', name: 'Broadway Journal', market: 'broadway', trackRecoupment: true, untrustedClaimsToReview: true },
+];
+
 const ALL_FEEDS = [...THEATER_FEEDS, ...WE_THEATER_FEEDS, ...SUBSTACK_CRITIC_FEEDS, ...ENTERTAINMENT_FEEDS];
 
 // Subset consumed by scripts/poll-trade-press-rss.js (hourly recoupment poll).
-const TRACK_RECOUPMENT_FEEDS = ALL_FEEDS.filter(f => f.trackRecoupment === true);
+const TRACK_RECOUPMENT_FEEDS = [...ALL_FEEDS, ...BROADWAY_BUSINESS_FEEDS].filter(f => f.trackRecoupment === true);
 
 /**
  * Fetch a URL and return the body text
@@ -515,4 +525,4 @@ async function checkRSSFeeds(showTitle, options = {}) {
   return results;
 }
 
-module.exports = { checkRSSFeeds, ALL_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, isWithinOpeningWindow, openingWindowFeedAccepts, singleBylineName, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };
+module.exports = { checkRSSFeeds, ALL_FEEDS, BROADWAY_BUSINESS_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, isWithinOpeningWindow, openingWindowFeedAccepts, singleBylineName, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };
