@@ -130,7 +130,7 @@ function matchWosPosts(rows, shows, posts) {
     let hits = posts.filter(p => p.date >= lo && p.date <= hi && norm(p.title) === norm(s.title));
     const n = hits.length;
     hits = hits.filter(p => (p.venue ? venueAgrees(p.venue, s.venue) : n === 1));
-    if (hits.length) out.push({ showId: r.id, slot: 'whatsonstage', posts: hits.map(h => ({ url: h.url, date: h.date, venue: h.venue })) });
+    if (hits.length) out.push({ showId: r.id, slot: 'whatsonstage', posts: hits.map(h => ({ url: h.url, date: h.date })) });
   }
   return out;
 }
