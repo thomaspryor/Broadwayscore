@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-24T04:50:34.524Z",
+  "timestamp": "2026-10-24T05:27:00.791Z",
   "stats": {
-    "totalReviews": 59664,
-    "alreadyFlagged": 21122,
-    "dateGuardCatches": 202,
+    "totalReviews": 59773,
+    "alreadyFlagged": 21112,
+    "dateGuardCatches": 216,
     "directorMismatch": 2129,
     "tvFilmSignals": 1692,
     "londonSignals": 2845,
     "offBroadwaySignals": 535,
-    "yearMismatch": 178,
-    "noPublishDate": 5402
+    "yearMismatch": 180,
+    "noPublishDate": 5509
   },
   "findings": [
     {
@@ -30260,7 +30260,7 @@
       "file": "i-paper--fiona-mountford.json",
       "score": 44,
       "publishDate": "2025-02-05",
-      "url": null,
+      "url": "https://inews.co.uk/culture/arts/rami-malek-fans-money-oedipus-3519801",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -36213,6 +36213,20 @@
       ]
     },
     {
+      "showId": "shifters-off-broadway-2026",
+      "file": "nytg--gillian-russo.json",
+      "score": 71,
+      "publishDate": "2026-07-15",
+      "url": "https://www.newyorktheatreguide.com/reviews/shifters-off-broadway-review",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2024 (2x) more than 2026 (1x). 2024 matches production: shifters-west-end-2024"
+        }
+      ]
+    },
+    {
       "showId": "shit-meet-fan-off-broadway-2024",
       "file": "exeunt-magazine--nicole-serratore.json",
       "score": 42,
@@ -36474,6 +36488,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "sister-act-2011",
+      "file": "faster-times--jonathan-mandell.json",
+      "score": 38,
+      "publishDate": "2011-04-21T08:23:12-04:00",
+      "url": "http://thefastertimes.com/newyorktheater/2011/04/20/sister-act-review/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2024 (5x) more than 2011 (0x). 2024 matches production: sister-act-west-end-2024"
         }
       ]
     },
@@ -64983,6 +65011,18 @@
     },
     {
       "showId": "dracula-west-end-2025",
+      "file": "broadwayworld--cindy-marcolina.json",
+      "score": 85,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 326d before show (2025-03-18 vs 2026-02-07)"
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
       "file": "city-am--adam-bloodworth.json",
       "score": 26,
       "publishDate": "2026-04-01",
@@ -82165,6 +82205,74 @@
       ]
     },
     {
+      "showId": "punch-west-end-2025",
+      "file": "independent--alice-saville.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 199d before show (2025-03-07 vs 2025-09-22)"
+        }
+      ]
+    },
+    {
+      "showId": "punch-west-end-2025",
+      "file": "london-theatre--olivia-rook.json",
+      "score": 62,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 198d before show (2025-03-08 vs 2025-09-22)"
+        }
+      ]
+    },
+    {
+      "showId": "punch-west-end-2025",
+      "file": "telegraph--lindsay-john.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 199d before show (2025-03-07 vs 2025-09-22)"
+        }
+      ]
+    },
+    {
+      "showId": "punch-west-end-2025",
+      "file": "telegraph--lindsay-johns.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 199d before show (2025-03-07 vs 2025-09-22)"
+        }
+      ]
+    },
+    {
+      "showId": "punch-west-end-2025",
+      "file": "thestage--sam-marlowe.json",
+      "score": 58,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 199d before show (2025-03-07 vs 2025-09-22)"
+        }
+      ]
+    },
+    {
+      "showId": "punch-west-end-2025",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 175d before show (2025-03-31 vs 2025-09-22)"
+        }
+      ]
+    },
+    {
       "showId": "purpose-2025",
       "file": "vulture--jackson-mchenry.json",
       "score": 72,
@@ -93359,6 +93467,59 @@
     },
     {
       "showId": "the-producers-west-end-2025",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 78,
+      "publishDate": "2024-12-11",
+      "url": "https://www.ft.com/content/c800b4fb-d3c2-4725-8401-a6489048ab96",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 262d before show (2024-12-11 vs 2025-08-30)"
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "file": "financialtimes--unknown.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 262d before show (2024-12-11 vs 2025-08-30)"
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "file": "i-paper--fiona-mountford.json",
+      "score": 79,
+      "publishDate": "2024-12-11",
+      "url": "https://inews.co.uk/culture/arts/the-producers-sexist-won-me-over-3425373",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 262d before show (2024-12-11 vs 2025-08-30)"
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "file": "independent--louis-chilton.json",
+      "score": 74,
+      "publishDate": "2024-12-11",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-producers-musical-menier-chocolate-factory-mel-brooks-b2661942.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 262d before show (2024-12-11 vs 2025-08-30)"
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
       "file": "juliarank--unknown.json",
       "score": 82,
       "publishDate": null,
@@ -93382,6 +93543,17 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "file": "sunday-times--dominic-maxwell.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 258d before show (2024-12-15 vs 2025-08-30)"
         }
       ]
     },
@@ -95016,9 +95188,33 @@
     },
     {
       "showId": "the-years-west-end-2025",
-      "file": "timeout-london--unknown.json",
+      "file": "thestage--holly-omahony.json",
+      "score": 87,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 175d before show (2024-08-02 vs 2025-01-24)"
+        }
+      ]
+    },
+    {
+      "showId": "the-years-west-end-2025",
+      "file": "thestage--unknown.json",
+      "score": 87,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 175d before show (2024-08-02 vs 2025-01-24)"
+        }
+      ]
+    },
+    {
+      "showId": "the-years-west-end-2025",
+      "file": "timeout-london--andrjez-lukowski.json",
       "publishDate": null,
-      "url": "https://www.timeout.com/london/theatre/the-years-harold-pinter-theatre-review",
+      "url": "https://www.timeout.com/london/theatre/the-years-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
