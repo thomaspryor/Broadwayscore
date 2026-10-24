@@ -1430,6 +1430,37 @@
     "queuedAt": "2026-10-24T19:07:25.905Z"
   },
   {
+    "conditionKey": "land:land/bro-6160",
+    "title": "Landing blocked: no-checks red on land/bro-6160",
+    "description": "land.yml did not land land/bro-6160: the no-checks gate went red at fc475b9d2a. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6160 @ fc475b9d2a (origin/land/bro-6160) → origin/main @ 542bae298d [land] train: + land/bro-6158-estimates @ 9ec714f838 (2 commit(s)) [land] train: + land/bro-6164-button-fill @ 2403738914 (2 commit(s)) [land] train: land/bro-6138-ramp not taken — would not rebase onto the train: Rebasing (1/1) error: could not apply 6742f91d1c8... data(commercial): BRO-6138 ramp plan, add Fun Hom Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40123283918",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6160"
+      },
+      {
+        "name": "gate",
+        "value": "no-checks"
+      },
+      {
+        "name": "tip",
+        "value": "fc475b9d2af7e4caf719ecef8b99023804d640fb"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40123283918"
+      }
+    ],
+    "queuedAt": "2026-10-24T21:02:14.332Z"
+  },
+  {
     "conditionKey": "land:land/bro-6155-debug",
     "title": "Landing blocked: rebase red on land/bro-6155-debug",
     "description": "land.yml did not land land/bro-6155-debug: the rebase gate went red at f27c064055. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40126924185",
