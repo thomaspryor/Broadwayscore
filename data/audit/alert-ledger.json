@@ -238,7 +238,7 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -251,7 +251,8 @@
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
-      "sweptTracker": "BRO-6024"
+      "sweptTracker": "BRO-6024",
+      "resolvedAt": "2026-10-24T14:02:11.307Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -25617,7 +25618,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:e81f5384": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"main: overlapping ticks skip the busy singleton before reading tasks or dispatching\"",
       "firstSeen": "2026-10-24T13:19:04.580Z",
@@ -25633,7 +25634,9 @@
         "mode": "dispatch-at-filing",
         "runId": "40096093981",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40096093981"
-      }
+      },
+      "resolvedAt": "2026-10-24T14:02:11.101Z",
+      "resolveReason": "job-green"
     },
     "live-data-test:scripts/verify-contamination-gate.test.mjs::no class-A cross-market leaks (a show showing another production's reviews)": {
       "status": "resolved",
