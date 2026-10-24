@@ -18,7 +18,7 @@
  *   node scripts/audit-default-critic-diversity.js --strict   exit 1 when any outlet is listed
  *
  * Exit: 0 clean (or no review-texts checkout, with a warning), 1 --strict and
- * outlets listed, 2 bad input.
+ * outlets listed, 2 bad input (unreadable registry, or a checkout with no files).
  */
 'use strict';
 
@@ -36,6 +36,7 @@ const REGISTRY_PATH = path.join(ROOT, 'data', 'outlet-registry.json');
 
 function loadRecords(dir) {
   const records = [];
+  let unreadable = 0;
   for (const show of fs.readdirSync(dir)) {
     if (show.startsWith('.')) continue;
     const showDir = path.join(dir, show);
@@ -54,9 +55,10 @@ function loadRecords(dir) {
           wrongProduction: d.wrongProduction,
           isRoundupArticle: d.isRoundupArticle,
         });
-      } catch { /* unreadable file: validate-review-texts reports it */ }
+      } catch { unreadable++; /* validate-review-texts reports the file itself */ }
     }
   }
+  records.unreadable = unreadable;
   return records;
 }
 
@@ -86,12 +88,16 @@ function main() {
     return 0;
   }
   const records = loadRecords(dir);
+  if (records.length === 0) {
+    console.error(`No review-text files read from ${dir}: an empty checkout cannot pass this audit.`);
+    return 2;
+  }
   const rows = findUnflaggedMultiAuthorOutlets(records, outlets);
 
   if (asJson) {
-    console.log(JSON.stringify({ reviewTextsDir: dir, files: records.length, unflagged: rows }, null, 2));
+    console.log(JSON.stringify({ reviewTextsDir: dir, files: records.length, unreadable: records.unreadable, unflagged: rows }, null, 2));
   } else {
-    console.log(`Default-critic diversity audit: ${records.length} review-text files in ${dir}`);
+    console.log(`Default-critic diversity audit: ${records.length} review-text files in ${dir}${records.unreadable ? ` (${records.unreadable} unreadable, skipped)` : ''}`);
     if (all) {
       for (const s of summarizeOutletBylines(records, outlets).values()) {
         const c = classifyOutlet(s);
