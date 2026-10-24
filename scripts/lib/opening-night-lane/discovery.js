@@ -162,21 +162,57 @@ function hasReviewSignal(url, title) {
   return REVIEW_SIGNAL.test(`${title || ''} ${(() => { try { return decodeURIComponent(new URL(url).pathname); } catch { return ''; } })()}`.replace(/[-_]+/g, ' '));
 }
 
+const EXCERPT_MIN_CHARS = 40;
+const EXCERPT_MAX_CHARS = 1500;
+/**
+ * The quote an aggregator prints with each review it cites, keyed by canonical URL: the anchor's own entry block
+ * (BWW "<p>Critic, <a>Outlet:</a> quote</p>", DTLI "<div class=review-item><p>quote</p><a>READ THE REVIEW</a></div>")
+ * with the anchors removed. A block that cites more than one review is a listing, not an entry, and gives nothing.
+ * The lane scores this excerpt when the review's own page is a paywall teaser (BRO-6066: WSJ was lost for good).
+ */
+function citedExcerpts(scopedHtml, pageUrl) {
+  const $ = require('cheerio').load(String(scopedHtml || ''));
+  const pageHost = hostOf(pageUrl);
+  const keyOf = (el) => { const u = resolveUrl($(el).attr('href') || '', pageUrl); const h = u && hostOf(u); return h && h !== pageHost ? canonicalUrl(u) : null; };
+  const out = new Map();
+  $('a[href]').each((_, el) => {
+    const key = keyOf(el);
+    if (!key || out.has(key)) return;
+    const blocks = [$(el).closest('p, li, blockquote'), $(el).closest('div')];
+    for (const block of blocks) {
+      if (!block.length) continue;
+      const cited = new Set(block.find('a[href]').map((__, a) => keyOf(a)).get().filter(Boolean));
+      if (cited.size !== 1) continue;
+      const copy = block.clone();
+      copy.find('a, script, style, img').remove();
+      const text = copy.text().replace(/\s+/g, ' ').trim();
+      if (text.length < EXCERPT_MIN_CHARS || text.length > EXCERPT_MAX_CHARS) continue;
+      out.set(key, text);
+      return;
+    }
+  });
+  return out;
+}
+
 /**
  * The outbound links an aggregator page cites, within its article body: other hosts only, none from the non-review
- * host list or redirect wrappers, no bare homepages. Returned canonical, in order, without duplicates.
+ * host list or redirect wrappers, no bare homepages. Returned canonical, in order, without duplicates, each with the
+ * excerpt the page prints beside it (or null).
  */
 function extractCitedLinks(html, pageUrl, { excludeHosts = [] } = {}) {
   const pageHost = hostOf(pageUrl);
   const seen = new Set();
   const out = [];
-  for (const a of extractAnchors(bodyScope(html), pageUrl)) {
+  const scoped = bodyScope(html);
+  let excerpts = new Map();
+  try { excerpts = citedExcerpts(scoped, pageUrl); } catch { /* an excerpt is a bonus; the links still count */ }
+  for (const a of extractAnchors(scoped, pageUrl)) {
     const host = hostOf(a.url);
     if (!host || host === pageHost || hostMatches(host, NON_REVIEW_HOSTS) || hostMatches(host, excludeHosts)) continue;
     const key = canonicalUrl(a.url);
     if (!key || seen.has(key) || nonReviewReason(key) === 'homepage') continue;
     seen.add(key);
-    out.push({ url: key, rawUrl: a.url, text: a.text });
+    out.push({ url: key, rawUrl: a.url, text: a.text, excerpt: excerpts.get(key) || null });
   }
   return out;
 }
@@ -217,13 +253,18 @@ function extractPublishDate(html) {
 // ---- adapters: { name, kind, phase, discover({ show, night, fetchText, limit }) -> candidates[] } ---------------
 // candidate: { url, source: 'aggregator'|'outlet-index', aggregatorCited?, publishDate?, title?, needsDate?, via, outletId? }
 
+/** An aggregator page's cited links as candidates; `excerptField` is the review-file field (excerpt-fields.js) its quotes go in. */
+function citedCandidates(links, via, excerptField) {
+  return links.map((l) => ({ url: l.url, fetchUrl: l.rawUrl, title: l.text, source: 'aggregator', aggregatorCited: true, via, ...(l.excerpt ? { excerpts: { [excerptField]: l.excerpt } } : {}) }));
+}
+
 function bwwRoundupAdapter({ homeUrl = 'https://www.broadwayworld.com/' } = {}) {
   return {
     name: 'bww-roundup', kind: 'aggregator', phase: 'cheap',
     async discover({ show, fetchText }) {
       const roundup = findBWWRoundupLinkOnHomepage(await fetchText(homeUrl), show.title, { openingDate: show.openingDate, showId: show.id });
       if (!roundup) return [];
-      return extractCitedLinks(await fetchText(roundup), roundup).map((l) => ({ url: l.url, fetchUrl: l.rawUrl, title: l.text, source: 'aggregator', aggregatorCited: true, via: roundup }));
+      return citedCandidates(extractCitedLinks(await fetchText(roundup), roundup), roundup, 'bwwExcerpt');
     },
   };
 }
@@ -234,7 +275,7 @@ function dtliAdapter({ homeUrl = 'https://didtheylikeit.com/' } = {}) {
     async discover({ show, fetchText }) {
       const page = findDTLIShowLinkOnHomepage(await fetchText(homeUrl), show);
       if (!page) return [];
-      return extractCitedLinks(await fetchText(page), page).map((l) => ({ url: l.url, fetchUrl: l.rawUrl, title: l.text, source: 'aggregator', aggregatorCited: true, via: page }));
+      return citedCandidates(extractCitedLinks(await fetchText(page), page), page, 'dtliExcerpt');
     },
   };
 }
@@ -363,7 +404,7 @@ function playbillVerdictAdapter() {
       // has to be dated inside opening night +/- 1 day.
       const when = extractPublishDate(html);
       if (!when || !admitLaneCandidate({ source: 'outlet-index', aggregatorCited: false, publishDate: when, night, ...(timeZone ? { timeZone } : {}) }).admit) return [];
-      return extractCitedLinks(playbillArticleBody(html), hit.articleUrl).map((l) => ({ url: l.url, fetchUrl: l.rawUrl, title: l.text, source: 'aggregator', aggregatorCited: true, via: hit.articleUrl }));
+      return citedCandidates(extractCitedLinks(playbillArticleBody(html), hit.articleUrl), hit.articleUrl, 'playbillVerdictExcerpt');
     },
   };
 }
@@ -648,7 +689,10 @@ async function runDiscoveryPass({
       const prior = byKey.get(key);
       const next = { ...c, url: key, fetchUrl: c.fetchUrl || c.url, adapter: adapterName }; // fetch the URL as the outlet published it; dedupe on the canonical form
       // The same article from several sources keeps the strongest claim: an aggregator citation beats an index sighting.
-      if (!prior || (!prior.aggregatorCited && c.aggregatorCited)) byKey.set(key, next);
+      // Every source's excerpt is kept, whichever claim wins: each is one more quote the scorer can read.
+      const excerpts = (prior && (prior.excerpts || c.excerpts)) ? { ...(prior.excerpts || {}), ...(c.excerpts || {}) } : undefined;
+      if (!prior || (!prior.aggregatorCited && c.aggregatorCited)) byKey.set(key, excerpts ? { ...next, excerpts } : next);
+      else if (excerpts) prior.excerpts = excerpts;
     }
   };
 
@@ -728,7 +772,7 @@ async function runDiscoveryPass({
       }
     }
     const verdict = admitLaneCandidate({ source: c.source, aggregatorCited: c.aggregatorCited === true, publishDate, night, ...(timeZone ? { timeZone } : {}) });
-    if (verdict.admit) admitted.push({ url: c.fetchUrl || c.url, key, source: c.source, adapter: c.adapter, via: c.via, publishDate, outletId: c.outletId || (resolveOutletFromUrl(c.url) || {}).outletId || null, reason: verdict.reason });
+    if (verdict.admit) admitted.push({ url: c.fetchUrl || c.url, key, source: c.source, adapter: c.adapter, via: c.via, publishDate, outletId: c.outletId || (resolveOutletFromUrl(c.url) || {}).outletId || null, reason: verdict.reason, ...(c.excerpts ? { excerpts: c.excerpts } : {}) });
     else reject(c, key, verdict.reason);
   }
   return { admitted, rejected, unknownHosts: [...unknownHosts].filter(Boolean).sort(), errors, deferredDateChecks, serpRan, deadlineHit };
@@ -771,7 +815,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 }
 
 module.exports = {
-  SERP_AFTER_MS, NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, extractAnchors, extractCitedLinks, extractPublishDate,
+  SERP_AFTER_MS, NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
   nonReviewReason, hasReviewSignal, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, talkinBroadwayAdapter, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, loadSeen, recordDiscovered,

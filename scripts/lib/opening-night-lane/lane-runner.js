@@ -126,7 +126,7 @@ async function runLaneNight({
         let row = trust.buildLaneReview({
           showId: show.id, night, source: a.source, seenAt: new Date(stamp).toISOString(), outletId: fetched.outletId || a.outletId,
           outlet: fetched.outlet, criticName: fetched.criticName, url: a.url, publishDate: a.publishDate || fetched.publishDate || null,
-          fullText: fetched.fullText, aggregator: fetched.aggregator || {},
+          fullText: fetched.fullText, aggregator: fetched.aggregator || {}, excerpts: fetched.excerpts,
         });
         // A syndicated copy (Chris Jones's Chicago Tribune review in the NY Daily News) is the rebuild's to drop only
         // when the primary is present (syndication-pairs.js). Mirror that: skip a copy whose primary is already
@@ -140,7 +140,8 @@ async function runLaneNight({
         if (row.assignedScore == null) { await wait(latency.scoreMs || 0); const scored = await scoreReview(row, fetched);
           if (scored && typeof scored === 'object') { Object.assign(row, scored.extra || {}); row.assignedScore = scored.score; } else row.assignedScore = scored;
         }
-        row.contentTier = fetched.contentTier || (row.isFullReview ? 'complete' : 'stub');
+        // A tier the scorer set wins (a page text it refused, rescored from the aggregator excerpt: 'excerpt').
+        row.contentTier = row.contentTier || fetched.contentTier || (row.isFullReview ? 'complete' : 'stub');
         if (persistReview) {
           // The guarded writer can preserve a human correction. Publish precisely what survived on disk.
           row = persistReview(row).row;
