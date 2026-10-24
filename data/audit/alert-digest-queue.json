@@ -710,5 +710,36 @@
       }
     ],
     "queuedAt": "2026-10-24T14:06:28.595Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6130-self-disposition",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6130-self-disposition",
+    "description": "land.yml did not land land/bro-6130-self-disposition: the unit-tests-node gate went red at 181ad29f33. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40100566821",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6130-self-disposition"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "181ad29f336a13225e54e48dba6a76a12f7841d9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40100566821"
+      }
+    ],
+    "queuedAt": "2026-10-24T14:22:37.448Z"
   }
 ]
