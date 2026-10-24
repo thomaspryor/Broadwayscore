@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       seasons:
-        description: 'Seasons by start year, comma-separated, e.g. 2017,2018 (used when shows is 'seasons')'
+        description: 'Seasons by start year, comma-separated, e.g. 2017,2018 (used when shows is the word seasons)'
         required: false
         default: ''
         type: string
