@@ -66,6 +66,7 @@ const TIGHT_BY_DESIGN = {
   'audit-aggregator-gap.yml': { maxHours: 12, why: 'throttled hourly cron: real gap p95 8.0h, max 12.1h (2026-10-01->22)' },
   'opening-night-reviews.yml': { maxHours: 12, why: 'throttled ~3h cron: real gap p95 8.5h, max 11.4h (2026-10-01->22)' },
   'check-opening-night-drift.yml': { maxHours: 10, why: 'throttled 30-min cron: real gap p95 7.1h, max 9.7h (2026-10-01->22)' },
+  'codex-lane-health.yml': { maxHours: 12, why: 'throttled hourly cron: real gap p95 8.0h, max 12.1h (2026-10-01->22); BRO-6134' },
   'opening-night-checklist.yml': { maxHours: 10, why: 'throttled hourly cron: real gap p95 7.1h, max 10.6h (2026-10-01->22)' },
   'opening-night-express-retry-check.yml': { maxHours: 10, why: 'throttled hourly cron: real gap p95 7.0h, max 9.6h (2026-10-01->22)' },
 };
