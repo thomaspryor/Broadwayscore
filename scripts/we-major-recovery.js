@@ -71,13 +71,24 @@ async function cmdWos() {
 // ---- run -------------------------------------------------------------------
 
 const LEDGER = path.join(ROOT, 'data', 'audit', 'scraper-spend-ledger.jsonl');
-function ledgerSize() { try { return fs.statSync(LEDGER).size; } catch { return 0; } }
-function ledgerRowsSince(offset) {
-  try {
-    const buf = fs.readFileSync(LEDGER);
-    return buf.slice(offset).toString('utf8').split('\n').filter(Boolean).map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
-  } catch { return []; }
+// Rows at or after sinceIso. The ledger is append-ordered with a few out-of-order rows, so scan
+// from the end and stop after a long run of older rows instead of parsing all 70k+ lines.
+function ledgerRows(sinceIso) {
+  let lines;
+  try { lines = fs.readFileSync(LEDGER, 'utf8').split('\n'); } catch { return []; }
+  const out = [];
+  let older = 0;
+  for (let i = lines.length - 1; i >= 0 && older < 500; i--) {
+    if (!lines[i]) continue;
+    let r;
+    try { r = JSON.parse(lines[i]); } catch { continue; }
+    if (r.ts >= sinceIso) { out.push(r); older = 0; } else older++;
+  }
+  return out;
 }
+// Campaign spend across runs (the $45 cap is for the whole campaign, not one run).
+const STATE = path.join(ROOT, 'data', 'audit', 'we-major-recovery-state.json');
+function readState() { try { return JSON.parse(fs.readFileSync(STATE, 'utf8')); } catch { return { scraperUsd: 0, written: 0, runs: 0 }; } }
 
 function reviewDir(showId) { return path.join(require('./lib/review-texts-dir').resolveReviewTextsDir(), showId); }
 function heldFiles(showId, outletIds) {
@@ -99,20 +110,23 @@ function ingest(showId, m, url, show) {
     const skip = /Skipped: ([^—]+)/.exec(r.stdout || '');
     return { outcome: r.status === 0 ? `skipped:${skip ? skip[1].trim() : 'no-file'}` : `refused:exit${r.status}`, detail: tail };
   }
-  // Wrong-show guard: a full-body ingest checks the date window only, so require the show's title in the body.
-  const f = path.join(reviewDir(showId), added[0]);
-  let body = '';
-  try { body = String(JSON.parse(fs.readFileSync(f, 'utf8')).fullText || ''); } catch { /* unreadable file counts as no body */ }
-  if (body.length >= 200 && !pageMentionsShowTitle(body, show.title)) {
-    fs.unlinkSync(f);
-    return { outcome: 'removed:wrong-show', detail: added[0] };
+  // Wrong-show guard: a full-body ingest checks the date window only, so require the show's title in every body written.
+  let kept = null, removed = 0, bodyChars = 0;
+  for (const name of added) {
+    const f = path.join(reviewDir(showId), name);
+    let body = '';
+    try { body = String(JSON.parse(fs.readFileSync(f, 'utf8')).fullText || ''); } catch { /* unreadable file counts as no body */ }
+    if (body.length >= 200 && !pageMentionsShowTitle(body, show.title)) { fs.unlinkSync(f); removed++; continue; }
+    kept = kept || name; bodyChars = body.length;
   }
-  return { outcome: 'ingested', file: added[0], bodyChars: body.length };
+  if (!kept) return { outcome: 'removed:wrong-show', detail: `${removed} file(s)` };
+  return { outcome: 'ingested', file: kept, bodyChars };
 }
 
 async function cmdRun() {
   const capUsd = Number(arg('max-usd') || 45);
-  const tally = new lib.CostTally({ capUsd, reserveUsd: Number(arg('reserve-usd') || 0) });
+  const state0 = readState();
+  const tally = new lib.CostTally({ capUsd, reserveUsd: Number(arg('reserve-usd') || 0), priorScraperUsd: state0.scraperUsd, priorWritten: state0.written });
   const pricing = require('./config/provider-pricing.json');
   const shows = new Map(rd('data/shows.json').shows.map(s => [s.id, s]));
   const rows = loadRows();
@@ -123,10 +137,10 @@ async function cmdRun() {
   const maxCalls = Number(arg('max-calls') || Infinity);
   const dry = flag('dry-run');
   const serp = flag('serp');
-  const startOffset = ledgerSize();
+  const startIso = new Date().toISOString();
   const results = [];
   let calls = 0;
-  const refresh = () => tally.setScraperUsd(lib.ledgerUsd(ledgerRowsSince(startOffset), pricing).usd);
+  const refresh = () => dry || tally.setScraperUsd(lib.ledgerUsd(ledgerRows(startIso), pricing, startIso).usd);
 
   console.log(`queue ${queue.length} slots (${cands.size} with a free candidate), cap $${capUsd}, serp=${serp}, dry=${dry}`);
   let stopped = null;
@@ -136,7 +150,7 @@ async function cmdRun() {
     const rec = { showId: q.showId, season: q.season, slot: q.slot };
     if (heldFiles(q.showId, m.ids).length) { results.push({ ...rec, outcome: 'file-exists-unscored' }); continue; }
     const urls = cands.get(`${q.showId}|${q.slot}`);
-    if (!urls && !serp) { results.push({ ...rec, outcome: 'not-attempted' }); continue; }
+    if (!urls && (!serp || m.serp === false)) { results.push({ ...rec, outcome: 'not-attempted' }); continue; }
     refresh();
     if (tally.wouldExceed(0.01)) { stopped = `cap: ${tally.line()}`; results.push({ ...rec, outcome: 'capped' }); continue; }
     if (dry) { results.push({ ...rec, outcome: urls ? 'would-ingest' : 'would-search' }); continue; }
@@ -179,6 +193,7 @@ async function cmdRun() {
   const summary = { capUsd, scraperUsd: +tally.scraperUsd.toFixed(4), ingested: tally.written, projectedScoringUsd: +tally.projectedScoringUsd.toFixed(4),
     projectedTotalUsd: +tally.projectedTotalUsd.toFixed(4), serpCalls: calls, stopped, outcomes: by };
   if (arg('out')) fs.writeFileSync(arg('out'), JSON.stringify({ summary, results }, null, 1));
+  if (!dry) fs.writeFileSync(STATE, JSON.stringify({ scraperUsd: +tally.scraperUsd.toFixed(4), written: tally.priorWritten + tally.written, runs: (state0.runs || 0) + 1, updated: new Date().toISOString() }, null, 1));
 }
 
 const cmd = process.argv[2];

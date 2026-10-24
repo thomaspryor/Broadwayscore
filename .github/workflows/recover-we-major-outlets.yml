@@ -41,7 +41,7 @@ on:
         type: string
         default: '0'
       max_calls:
-        description: 'At most this many SERP searches (E2E uses a small number)'
+        description: 'At most this many SERP searches. The $45 cap is campaign-wide: earlier runs count via data/audit/we-major-recovery-state.json'
         required: false
         type: string
         default: '200'
@@ -90,7 +90,9 @@ jobs:
 
       - name: Report
         if: inputs.mode == 'report'
-        run: node scripts/we-major-recovery.js report --seasons="${{ inputs.seasons }}"
+        env:
+          INPUT_SEASONS: ${{ inputs.seasons }}
+        run: node scripts/we-major-recovery.js report --seasons="$INPUT_SEASONS"
 
       - name: Recover
         if: inputs.mode != 'report'
@@ -102,14 +104,20 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           INPUT_SHOWS: ${{ inputs.shows }}
           INPUT_SLOTS: ${{ inputs.slots }}
+          INPUT_SEASONS: ${{ inputs.seasons }}
+          INPUT_MAX_USD: ${{ inputs.max_usd }}
+          INPUT_RESERVE_USD: ${{ inputs.reserve_usd }}
+          INPUT_MAX_CALLS: ${{ inputs.max_calls }}
+          INPUT_MODE: ${{ inputs.mode }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
         run: |
           set -o pipefail
-          FLAGS="--seasons=${{ inputs.seasons }} --max-usd=${{ inputs.max_usd }} --reserve-usd=${{ inputs.reserve_usd }} --max-calls=${{ inputs.max_calls }} --out=$RUNNER_TEMP/recovery.json"
+          FLAGS="--seasons=$INPUT_SEASONS --max-usd=$INPUT_MAX_USD --reserve-usd=$INPUT_RESERVE_USD --max-calls=$INPUT_MAX_CALLS --out=$RUNNER_TEMP/recovery.json"
           [ -n "$INPUT_SHOWS" ] && FLAGS="$FLAGS --shows=$INPUT_SHOWS"
           [ -n "$INPUT_SLOTS" ] && FLAGS="$FLAGS --slots=$INPUT_SLOTS"
-          [ "${{ inputs.dry_run }}" = "true" ] && FLAGS="$FLAGS --dry-run"
-          node scripts/we-major-recovery.js wos --seasons="${{ inputs.seasons }}" --out=$RUNNER_TEMP/wos.json
-          [ "${{ inputs.mode }}" = "run" ] && FLAGS="$FLAGS --serp"
+          [ "$INPUT_DRY_RUN" = "true" ] && FLAGS="$FLAGS --dry-run"
+          node scripts/we-major-recovery.js wos --seasons="$INPUT_SEASONS" --out=$RUNNER_TEMP/wos.json
+          [ "$INPUT_MODE" = "run" ] && FLAGS="$FLAGS --serp"
           node scripts/we-major-recovery.js run --candidates=$RUNNER_TEMP/wos.json $FLAGS 2>&1 | tee $RUNNER_TEMP/recovery.log
           { echo '### Recovery'; grep -E 'COST TALLY|OUTCOMES|STOPPED' $RUNNER_TEMP/recovery.log | tail -4; } >> "$GITHUB_STEP_SUMMARY"
 
@@ -137,6 +145,15 @@ jobs:
             git diff --cached --quiet || git commit -m "data: BRO-6155 recover WE major-outlet reviews"
             bash ../../scripts/lib/push-with-retry.sh 5 main
           fi
+
+      - name: Commit campaign spend state
+        if: always() && inputs.mode != 'report' && inputs.dry_run != true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/we-major-recovery-state.json
+          git diff --cached --quiet || git commit -m "data: BRO-6155 recovery campaign spend state [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
 
       - name: Commit scraper-spend ledger
         if: always() && inputs.mode != 'report'
