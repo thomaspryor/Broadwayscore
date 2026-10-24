@@ -498,7 +498,7 @@ test('silentGapBacklogResults: real audit report shape', async t => {
   const file = new URL('../../data/audit/t1-silent-gaps.json', import.meta.url);
   if (!existsSync(file)) return t.skip('Audit report unavailable');
   const report = JSON.parse(readFileSync(file, 'utf8'));
-  // Clock one day after the report: every gap is past the in-flight window.
+  // Clock two days after the report: every gap is past the in-flight window.
   const rows = silentGapBacklogResults(report, new Date(Date.parse(report.generatedAt) + 86400000 * 2));
   // BRO-6082: needsManualRecovery gaps are the audit's FYI digest line, not a warn row.
   assert.equal(rows.length, report.gaps.some(g => g.needsManualRecovery !== true) ? 1 : 0);
