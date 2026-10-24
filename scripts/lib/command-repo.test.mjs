@@ -78,6 +78,31 @@ test('ordinary external add/commit/push chains remain exempt', () => {
   assert.equal(resolve(`cd ${other}; git add . && git commit -m fixture && git push origin main`).outOfScope, true);
 });
 
+test('pipelines, redirections, backgrounds and retries preserve known push directories', () => {
+  for (const tail of [
+    'git push origin main 2>&1 | tail -3',
+    'git push origin main || git push origin main',
+    'git push origin main || (git pull --rebase && git push origin main)',
+    'git push origin main &',
+    '2>&1 git push origin main | tail -3',
+  ]) {
+    assert.equal(resolve(`cd ${other}; ${tail}`).outOfScope, true, tail);
+    assert.deepEqual(resolve(`cd "${worktree}"; ${tail}`), { outOfScope: false, evalRoot: worktree }, tail);
+  }
+  assert.equal(resolve(`true | cat; cd ${other}; git push origin main`).outOfScope, true);
+  assert.equal(resolve(`cd ${other}; git push origin main; true || cd ${own}`).outOfScope, true);
+});
+
+test('conditional and isolated directory changes cannot provide an exemption', () => {
+  for (const prefix of [
+    `cd ${other} | cat`,
+    `true | cd ${other}`,
+    `cd ${other} &`,
+    `cd ${other} && true &`,
+    `true || cd ${other}`,
+  ]) assert.equal(resolve(`${prefix}; git push origin main`).outOfScope, false, prefix);
+});
+
 test('conditional branches cannot provide a speculative repository exemption', () => {
   assert.equal(resolve(`if false; then\ncd ${other}\nfi; git push origin main`).outOfScope, false);
   assert.equal(resolve(`cd ${other}; if true; then cd ${own}; fi; git push origin main`).outOfScope, false);

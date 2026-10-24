@@ -34,6 +34,8 @@
 # Self-skip preamble (project copy only): if the user-level master exists,
 # it is the registered one on local CLI — let it fire and exit here. On cloud
 # sandboxes ~/.claude/hooks/ doesn't exist, so this project copy runs.
+# BRO-6136: the Mac master ~/.claude/hooks/pre-push-review-gate.sh still needs
+# the command-repo.mjs resolution port below; changing this copy cannot fix it.
 if [ -f "$HOME/.claude/hooks/pre-push-review-gate.sh" ] && \
    [ "${BASH_SOURCE[0]}" != "$HOME/.claude/hooks/pre-push-review-gate.sh" ]; then
   exit 0

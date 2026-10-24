@@ -52,25 +52,45 @@ export function resolveCommandRepo(command, { cwd, canonicalRoot = cwd, operatio
     return path.resolve(state.dir, d);
   }
   function record(state) {
-    const top = !state.unknown && git(state.dir, ['rev-parse', '--show-toplevel']);
+    const top = !state.unknown && !state.uncertain && git(state.dir, ['rev-parse', '--show-toplevel']);
     const c = top && git(top, ['rev-parse', '--git-common-dir']);
     targets.push({ top, external: Boolean(common && c && path.resolve(top, c) !== common) });
   }
   function scan(src, state, depth = 0) {
     if (depth > 6) { targets.push({ external: false }); return; }
     const scopes = [];
-    const commands = splitShellCommands(inlineGeneratedScripts(src));
-    // Pipeline/background commands do not share the caller's cwd. Branches
-    // and non-cd conditionals that can skip a later cd also remain uncertain.
-    // An ordinary add/commit/push chain keeps its already resolved directory.
+    const commands = splitShellCommands(inlineGeneratedScripts(src)).map((c) => ({
+      ...c, words: c.words.filter((w) => !/^(?:\d+)?[<>]&(?:\d+|-)$/.test(w)),
+    }));
+    // Pipes, background pushes and retry lists preserve an already known cwd.
+    // Only directory changes in those constructs are uncertain. Attach that
+    // uncertainty to actual operations rather than inventing an extra target
+    // that would send an otherwise external push back to the session root.
     const heads = commands.map(({ words }) => words[skipWrappers(words)]);
-    if (commands.some(({ sep }, n) => ['|', '&', '||'].includes(sep)
-        || CONTROL_WORDS.has(heads[n])
-        || (sep === '&&' && heads[n] !== 'cd'
-          && heads.slice(n + 1).some((head) => ['cd', 'eval', 'source', '.', 'pushd', 'popd'].includes(head))))) {
-      targets.push({ external: false });
-    }
-    for (const { words: all, sep } of commands) {
+    const changes = heads.map((head) => ['cd', 'eval', 'source', '.', 'pushd', 'popd'].includes(head));
+    const uncertainAt = new Set();
+    let afterOr = false;
+    let afterConditional = false;
+    let listStart = 0;
+    commands.forEach(({ sep }, n) => {
+      if (CONTROL_WORDS.has(heads[n])
+          || (changes[n] && (sep === '|' || commands[n - 1]?.sep === '|' || afterOr || afterConditional))) {
+        uncertainAt.add(n);
+      }
+      if (sep === '&') {
+        for (let i = listStart; i <= n; i++) if (changes[i]) uncertainAt.add(i);
+      }
+      if (sep === '||') afterOr = true;
+      else if (sep === '&&' && heads[n] !== 'cd') afterConditional = true;
+      if (!['&&', '||', '|'].includes(sep)) {
+        afterOr = false;
+        afterConditional = false;
+        listStart = n + 1;
+      }
+    });
+    for (const [n, { words: all, sep }] of commands.entries()) {
+      // A later ambiguous cd cannot change an operation already recorded.
+      if (uncertainAt.has(n)) state.uncertain = true;
       const k = skipWrappers(all);
       const words = all.slice(k);
       const head = path.basename(words[0] || '');
