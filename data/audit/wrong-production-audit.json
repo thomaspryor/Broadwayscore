@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-24T16:32:38.949Z",
+  "timestamp": "2026-10-24T17:53:27.006Z",
   "stats": {
     "totalReviews": 60480,
-    "alreadyFlagged": 21251,
-    "dateGuardCatches": 222,
-    "directorMismatch": 2175,
+    "alreadyFlagged": 21256,
+    "dateGuardCatches": 223,
+    "directorMismatch": 2177,
     "tvFilmSignals": 1713,
-    "londonSignals": 2922,
+    "londonSignals": 2925,
     "offBroadwaySignals": 534,
     "yearMismatch": 195,
-    "noPublishDate": 5565
+    "noPublishDate": 5553
   },
   "findings": [
     {
@@ -17043,6 +17043,24 @@
     },
     {
       "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "thenerve--dorian-lynskey.json",
+      "publishDate": "2026-06-19",
+      "url": "https://www.thenerve.news/p/review-theatre-glengarry-glen-ross-old-vic-female-cast-indira-varma-patrick-marber",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
       "file": "thereviewshub--christine-stanton.json",
       "score": 68,
       "publishDate": "2026-06-18",
@@ -22162,6 +22180,20 @@
       "score": 89,
       "publishDate": "July 20th, 2022",
       "url": "http://www.theaterscene.net/musicals/broadway/into-the-woods/victor-gluck/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-2022",
+      "file": "theatermania--hayley-levitt.json",
+      "score": 88,
+      "publishDate": "2022-07-10",
+      "url": "https://www.theatermania.com/broadway/reviews/review-into-the-woods-delivers-perfection_94015.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -51527,6 +51559,20 @@
       ]
     },
     {
+      "showId": "to-kill-a-mockingbird-west-end-2022",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 92,
+      "publishDate": "2022-03-31",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/kill-mockingbird-review-aaron-sorkins-revelatory-adaptation/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2018 (2x) more than 2022 (1x). 2018 matches production: to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
       "showId": "to-kill-a-mockingbird-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 98,
@@ -51542,25 +51588,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2018 (2x) more than 2026 (1x). 2018 matches production: to-kill-a-mockingbird-2018"
-        }
-      ]
-    },
-    {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 92,
-      "publishDate": "2022-03-31",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/kill-mockingbird-review-aaron-sorkins-revelatory-adaptation/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1547d before show (2022-03-31 vs 2026-06-25)"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2018 (2x) more than 2026 (0x). 2018 matches production: to-kill-a-mockingbird-2018"
         }
       ]
     },
@@ -58210,6 +58237,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "after-life-west-end-2021",
+      "file": "standard--nick-curtis.json",
+      "score": 61,
+      "publishDate": "2021-06-11",
+      "url": "https://www.standard.co.uk/culture/theatre/after-life-national-theatre-review-b939914.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -69186,6 +69227,19 @@
     },
     {
       "showId": "garry-starr-classic-penguins-off-west-end-2026",
+      "file": "sunday-times--donald-hutera.json",
+      "publishDate": "2026-02-02",
+      "url": "https://www.thetimes.com/culture/comedy/article/garry-starr-classic-penguins-review-garrick-theatre-london-87vh6kdjs",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 262d before show (2026-02-02 vs 2026-10-22)"
+        }
+      ]
+    },
+    {
+      "showId": "garry-starr-classic-penguins-off-west-end-2026",
       "file": "theatreandtonic--penny-walshe.json",
       "score": 98,
       "publishDate": "2026-10-24",
@@ -69202,11 +69256,27 @@
       "showId": "garry-starr-classic-penguins-off-west-end-2026",
       "file": "times-uk--donald-hutera.json",
       "score": null,
+      "publishDate": "2026-02-02",
+      "url": "https://www.thetimes.com/culture/comedy/article/garry-starr-classic-penguins-review-garrick-theatre-london-87vh6kdjs",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 262d before show (2026-02-02 vs 2026-10-22)"
+        }
+      ]
+    },
+    {
+      "showId": "garry-starr-classic-penguins-off-west-end-2026",
+      "file": "whatsonstage--unknown.json",
+      "score": null,
+      "publishDate": "2026-07-16",
+      "url": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/garry-starr-classic-penguins_1727588/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 98d before show (2026-07-16 vs 2026-10-22)"
         }
       ]
     },
@@ -86491,6 +86561,19 @@
     },
     {
       "showId": "some-woman-west-end-2026",
+      "file": "revstanstheatreblog--unknown.json",
+      "publishDate": "2026-10-24",
+      "url": "https://revstanstheatreblog.co.uk/2026/10/24/review-some-woman-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
       "file": "sierz-co-uk--unknown.json",
       "score": 64,
       "publishDate": "2026-10-17",
@@ -98777,7 +98860,7 @@
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
