@@ -58,16 +58,18 @@ function videoBucketForScore(score) {
 }
 
 /**
- * Keep a model score inside the creator's own rating band.
+ * Keep a model score inside the creator's own rating band. The bucket always
+ * comes from the final score: the model once returned 68 "Positive" (the
+ * Mixed band), published as a mismatched label (BRO-6095).
  * @returns {{score: number, bucket: string, anchored: boolean, rating: number|null}}
  */
 function anchorScore(score, bucket, rawRating) {
   const rating = parseRating(rawRating);
-  if (rating === null || typeof score !== 'number') return { score, bucket, anchored: false, rating };
+  const fromScore = s => (typeof s === 'number' ? videoBucketForScore(s) : bucket);
+  if (rating === null || typeof score !== 'number') return { score, bucket: fromScore(score), anchored: false, rating };
   const { min, max } = ratingBand(rating);
   const clamped = Math.min(max, Math.max(min, score));
-  if (clamped === score) return { score, bucket, anchored: false, rating };
-  return { score: clamped, bucket: videoBucketForScore(clamped), anchored: true, rating };
+  return { score: clamped, bucket: fromScore(clamped), anchored: clamped !== score, rating };
 }
 
 module.exports = { mentionsRating, parseRating, ratingBand, videoBucketForScore, anchorScore };
