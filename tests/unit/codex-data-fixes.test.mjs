@@ -82,7 +82,7 @@ test('planNotApplied: only status applied from CI counts', () => {
 });
 
 // A fake of the runner's git/dispatch: `main` holds plan files; a dispatch run flips one to the given outcome.
-function fake(files, outcome) {
+function fake(files, outcome, { lastWriter = 'github-actions[bot]\tfix(data): Execute approved fix for #bro-9' } = {}) {
   const main = { ...files };
   const calls = [];
   const io = {
@@ -90,6 +90,7 @@ function fake(files, outcome) {
     git: (a) => {
       if (a[0] === 'fetch') return '';
       if (a[0] === 'ls-tree') return Object.keys(main).map((f) => `data/pending-fixes/${f}`).join('\n');
+      if (a[0] === 'log') return lastWriter;
       if (a[0] === 'show') return JSON.stringify(main[a[1].split('/').pop()]);
       throw new Error(`unexpected git ${a.join(' ')}`);
     },
@@ -151,6 +152,26 @@ test('applyCardFixPlans: split plans are all applied before the card settles', a
   assert.equal(calls.filter((c) => c[0] === 'execute-approved-fix.yml').length, 2);
 });
 
+test('applyCardFixPlans: a plan Codex marked applied itself is refused (executor must have written it)', async () => {
+  const t = fake({ 'bro-9.json': plan(['data-edit'], { status: 'applied', executedIn: 'ci' }) }, { code: 0, plan: {} }, { lastWriter: 'codex-bot\tfeat: BRO-9 fix' });
+  const res = await DF.applyCardFixPlans('BRO-9', t.io);
+  assert.equal(res.kind, 'failed');
+  assert.match(res.why, /executor/);
+});
+
+test('applyCardFixPlans: issue_number always comes from the file name, never the plan body', async () => {
+  const { io, calls } = fake({ 'bro-9.json': plan(['data-edit'], { issueNumber: 'bro-1' }) }, { code: 0, plan: { status: 'applied', executedIn: 'ci' } });
+  await DF.applyCardFixPlans('BRO-9', io, { rebuild: false });
+  assert.ok(calls[0].includes('issue_number=bro-9'));
+});
+
+test('applyCardFixPlans: with the route switched off a pending plan fails and nothing is dispatched', async () => {
+  const { io, calls } = fake({ 'bro-9.json': plan(['data-edit']) }, { code: 0, plan: {} });
+  const res = await DF.applyCardFixPlans('BRO-9', io, { dispatch: false });
+  assert.equal(res.kind, 'failed');
+  assert.equal(calls.length, 0);
+});
+
 // The runner wiring cannot run without Codex and Linear, so pin the three seams: the apply sits inside
 // settleLanded (every landing path), ahead of the partial and Done moves, and the prompt rule is gated.
 import { readFileSync } from 'node:fs';
@@ -158,7 +179,7 @@ test('daily-runner wiring: apply inside settleLanded before Done; prompt rule be
   const src = readFileSync(new URL('../../scripts/codex/daily-runner.js', import.meta.url), 'utf8');
   const body = src.slice(src.indexOf('async function settleLanded'));
   const fn = body.slice(0, body.indexOf('\n}\n'));
-  assert.ok(fn.indexOf('applyLandedPlans(id)') > 0 && fn.indexOf('applyLandedPlans(id)') < fn.indexOf('if (partial)') && fn.indexOf('if (partial)') < fn.indexOf("'Done'"));
+  assert.ok(fn.indexOf('applyLandedPlans(id,') > 0 && fn.indexOf('applyLandedPlans(id,') < fn.indexOf('if (partial)') && fn.indexOf('if (partial)') < fn.indexOf("'Done'"));
   assert.match(src, /DF\.dataFixesEnabled\(\) \? DATA_FIX_RULE : ''/);
   assert.match(readFileSync(new URL('../../scripts/codex/runner-prompt.md', import.meta.url), 'utf8'), /\{\{DATA_FIX_RULE\}\}/);
   assert.match(readFileSync(new URL('../../.github/workflows/codex-runner.yml', import.meta.url), 'utf8'), /^permissions:\n  contents: read\n(?:  #.*\n)*  actions: write$/m);

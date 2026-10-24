@@ -639,7 +639,7 @@ function landedOnMain(id, sinceMs, { onError = false } = {}) {
  * back to Todo for the Claude worker with what is left. -> true when the card was moved.
  */
 /** Runs the runner-side apply of the card's landed data-fix plans (codex-data-fixes.js); never throws. */
-async function applyLandedPlans(id) {
+async function applyLandedPlans(id, opts = {}) {
   const io = {
     git: (args) => git(args, ROOT),
     log,
@@ -652,14 +652,15 @@ async function applyLandedPlans(id) {
       p.on('close', (code) => resolve({ code: code == null ? -1 : code, out: R.redactSecrets(out, process.env) }));
     }),
   };
-  try { return await DF.applyCardFixPlans(id, io); } catch (e) { return { kind: 'failed', why: `could not check or apply the plan: ${String(e.message).split('\n')[0]}`, lines: [] }; }
+  try { return await DF.applyCardFixPlans(id, io, opts); } catch (e) { return { kind: 'failed', why: `could not check or apply the plan: ${String(e.message).split('\n')[0]}`, lines: [] }; }
 }
 
 async function settleLanded(id, stats, { partial, remaining = [], body, countRefusal = false }) {
   // BRO-6175: a data-fix plan this card landed is applied before the card closes. Every path that settles a
   // landing comes through here, so a recovered or reconciled landing cannot reach Done unapplied.
-  if (DF.dataFixesEnabled() && !OPTS.dryRun) {
-    const ap = await applyLandedPlans(id);
+  // With the kill switch on, a pending plan still bounces the card (never Done unapplied), it is just not dispatched.
+  if (!OPTS.dryRun) {
+    const ap = await applyLandedPlans(id, { dispatch: DF.dataFixesEnabled() });
     if (ap.kind === 'failed') {
       stats.bounced.push(id);
       const r = await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: landed, but the data-fix plan was not applied\n${R.bounceClassLine('genuine-failure')}\n\n${ap.why}\n\n${fence(tail(ap.lines.join('\n'), 800))}\n\nThe plan file is on main. Fix the plan (a stale oldValue, a refused action) or apply it by hand per .claude/CLOUD.md "Fixing private data from cloud".\n\n${body}`);

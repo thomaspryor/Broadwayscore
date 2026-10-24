@@ -51,7 +51,17 @@ const PLAN_DIR = 'data/pending-fixes';
  * { kind: 'failed', why, lines }. A plan already applied by CI counts as applied (a re-run after a
  * crash); a plan in any other finished state, or one the allowlist refuses, is a failure.
  */
-async function applyCardFixPlans(cardId, io, { rebuild = true } = {}) {
+// An "applied" status is a field Codex can type, so it only counts when the executor workflow's own commit
+// is the last one to touch the plan file on main (BRO-6175 review).
+const EXECUTOR_SUBJECT_RE = /^fix\(data\): Execute approved fix\b/;
+function executorWroteLast(io, f) {
+  try {
+    const [author, subject] = io.git(['log', '-1', '--format=%an%x09%s', 'origin/main', '--', `${PLAN_DIR}/${f}`]).trim().split('\t');
+    return /github-actions/i.test(author || '') && EXECUTOR_SUBJECT_RE.test(subject || '');
+  } catch { return false; }
+}
+
+async function applyCardFixPlans(cardId, io, { rebuild = true, dispatch = true } = {}) {
   io.git(['fetch', '-q', 'origin', 'main']);
   const names = io.git(['ls-tree', '--name-only', 'origin/main', `${PLAN_DIR}/`]).split('\n').filter(Boolean);
   const files = cardPlanFiles(names, cardId);
@@ -66,10 +76,11 @@ async function applyCardFixPlans(cardId, io, { rebuild = true } = {}) {
     if (refused && plan.status !== 'applied') return fail(`${f}: ${refused}`);
     let ranHere = false;
     if (plan.status === 'pending') {
+      if (!dispatch) return fail(`${f} is pending and the Codex data-fix route is switched off (CODEX_DATA_FIXES_DISABLED)`);
       ranHere = true;
       if (!plan.planId) return fail(`${f} has no planId`);
       io.log(`${cardId}: applying ${f}`);
-      const r = await io.dispatch(['execute-approved-fix.yml', '-f', `issue_number=${plan.issueNumber || f.replace(/\.json$/, '')}`, '-f', `plan_id=${plan.planId}`, '-f', 'mode=apply', '--wait', '--timeout=50']);
+      const r = await io.dispatch(['execute-approved-fix.yml', '-f', `issue_number=${f.replace(/\.json$/, '')}`, '-f', `plan_id=${plan.planId}`, '-f', 'mode=apply', '--wait', '--timeout=50']);
       lines.push(`${f}: apply run exit ${r.code}`);
       if (r.code !== 0) return fail(`${f}: the apply run did not succeed (exit ${r.code}): ${String(r.out || '').trim().split('\n').slice(-3).join(' | ').slice(0, 400)}`);
       io.git(['fetch', '-q', 'origin', 'main']);
@@ -77,6 +88,7 @@ async function applyCardFixPlans(cardId, io, { rebuild = true } = {}) {
     }
     const why = planNotApplied(plan, { legacyOk: !ranHere });
     if (why) return fail(`${f} on main is not applied: ${why}`);
+    if (!executorWroteLast(io, f)) return fail(`${f} says applied, but the executor workflow did not write that status (last commit on the file is not its own)`);
     lines.push(`${f}: applied by CI`);
   }
   if (rebuild) {
