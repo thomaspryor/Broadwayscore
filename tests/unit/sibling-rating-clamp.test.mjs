@@ -35,6 +35,17 @@ test('letter grade twin from a grade-printing outlet is inherited', () => {
   assert.ok(sib, 'EW B+ should inherit');
   assert.ok(getBestScore({ ...f2['a.json'] }, { siblingRating: sib }).score <= 84);
 });
+test('different critic on a shared URL without a duplicate link is not a twin', () => {
+  const a = { ...canon, criticName: 'Ann Lee' };
+  const f2 = { 'a.json': a, 'b.json': { url: URL, originalScore: '3/5 stars', criticName: 'Bob Roe' } };
+  assert.equal(pick('a.json', a, Object.keys(f2), (n) => f2[n]), null);
+  f2['b.json'].duplicateOf = 'a.json';
+  assert.ok(pick('a.json', a, Object.keys(f2), (n) => f2[n]));
+});
+test('relay-only twin rating does not bind', () => {
+  const f2 = { 'a.json': canon, 'b.json': { url: URL, starRating: 'n/a', aggregatorStars: '3/5 stars' } };
+  assert.equal(pick('a.json', canon, Object.keys(f2), (n) => f2[n]), null);
+});
 test('percentage twin ratings are not inherited', () => {
   const f2 = { 'a.json': canon, 'b.json': { url: URL, originalScore: '40%' } };
   assert.equal(pick('a.json', canon, Object.keys(f2), (n) => f2[n]), null);

@@ -5423,7 +5423,7 @@ showDirs.forEach(showId => {
 
       // Get best score - returns null if no valid score
       // BRO-6078: no rating of its own -> clamp against the same-URL twin's rating.
-      const siblingRating = siblingRatingForClamp(file, data, allJsonFiles, _loadDupCycleSibling, canonicalizeUrlForDedup, detectBandFromReviewFile);
+      const siblingRating = siblingRatingForClamp(file, data, allJsonFiles, _loadDupCycleSibling, canonicalizeUrlForDedup, detectBandFromReviewFile, areSameCriticFuzzy);
       const scoreResult = getBestScore(data, siblingRating);
 
       if (scoreResult === null) {

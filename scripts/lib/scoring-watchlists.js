@@ -131,6 +131,8 @@ const SCORE_VALUE_FILES = [
   'scripts/lib/score-parsers.js',
   'scripts/lib/review-normalization.js',
   'scripts/lib/score-routing.js',
+  // BRO-6078: picks the same-URL twin whose rating the star-band clamp uses.
+  'scripts/lib/sibling-rating-inherit.js',
   // BRO-2609: getBestTextForScoring() here builds the text the LLM scorer
   // receives (scripts/llm-scoring/input-builder.ts). An edit changes every
   // future llmScore, yet BRO-36's two edits here ran this gate to "nothing to
