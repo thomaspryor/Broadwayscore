@@ -496,9 +496,9 @@ function renderNeedsAttentionBlock(queued) {
           // send-morning-digest.js. decisionPrompt names the actual choice
           // so a bare button never leaves the owner guessing what it does.
           return `<div style="margin:0 0 10px;">
-            <div style="font-size:12px;color:#555;"><b>${esc(q.title || '(untitled)')}</b>${q.description ? ` \u2014 ${esc(clip(q.description, 200))}` : ''}${href ? ` <a href="${esc(href)}" style="color:#2563eb;">view</a>` : ''}</div>
-            ${q.decisionPrompt ? `<div style="font-size:11px;color:#b45309;margin:2px 0 0;">Decision needed: ${esc(clip(q.decisionPrompt, 200))}</div>` : ''}
-            ${action ? `<div style="margin:4px 0 0;"><a href="${esc(action)}" style="display:inline-block;font-size:11px;font-weight:700;color:#fff;background:#16a34a;text-decoration:none;padding:3px 12px;border-radius:8px;">Dispatch a fix \u2192</a></div>` : ''}
+            <div style="font-size:13px;color:#333;"><b>${esc(q.title || '(untitled)')}</b>${q.description ? ` \u2014 ${esc(clip(q.description, 200))}` : ''}${href ? ` <a href="${esc(href)}" style="color:#1d4ed8;text-decoration:underline;">view</a>` : ''}</div>
+            ${q.decisionPrompt ? `<div style="font-size:13px;font-weight:700;color:#b45309;margin:4px 0 0;">${esc(clip(q.decisionPrompt, 200).replace(/^Decision needed:\s*/i, ''))}</div>` : ''}
+            ${action ? `<div style="margin:4px 0 0;"><a href="${esc(action)}" style="display:inline-block;font-size:13px;font-weight:700;color:#fff;background:#16a34a;text-decoration:none;padding:7px 16px;border-radius:8px;">Dispatch a fix \u2192</a></div>` : ''}
           </div>`;
         }).join('')}</div>`
     : '';
@@ -820,7 +820,9 @@ function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = nu
   }
 
   if (view.decisions > 0) {
-    parts.push(`<p style="font-size:14px;font-weight:700;color:#1d4ed8;margin:4px 0 8px;">${view.decisions} decision${view.decisions === 1 ? '' : 's'} for you</p>`);
+    parts.push(`<p style="font-size:16px;font-weight:700;color:#1d4ed8;margin:4px 0 2px;">${view.decisions} decision${view.decisions === 1 ? '' : 's'} for you</p>`);
+    // BRO-6131: say how to answer once, up top (no "ask Claude": BRO-5542).
+    parts.push(`<p style="font-size:12px;color:#555;margin:0 0 10px;">Tap a button to open the item. To answer a decision, reply on it with your pick (for example "A"). Each one says what happens if you do nothing.</p>`);
     if (decisionBlocksHtml) parts.push(decisionBlocksHtml);
   } else if (view.siteState !== 'affected') {
     // About the OWNER's attention only (no decisions waiting); the visitor
@@ -832,7 +834,8 @@ function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = nu
 
   // Receipts (BRO-5481): told to the owner, never counted as a decision.
   const info = infoLines(view);
-  if (info.length) parts.push(`<p style="font-size:12px;color:#444;margin:0 0 8px;">${esc(info.join(' '))}</p>`);
+  // BRO-6131: one short line each (they used to run together into one wall of text).
+  if (info.length) parts.push(`<ul style="font-size:12px;color:#444;margin:0 0 8px;padding-left:18px;">${info.map((l) => `<li style="margin:0 0 3px;">${esc(l)}</li>`).join('')}</ul>`);
 
   // overnightLine is pre-built plain text from send-morning-digest.js (the
   // "Overnight: N new shows added" sentence); escape it here.
@@ -884,7 +887,7 @@ function healthIssueCount(health) {
 // detail, url?}], moreCount } — routine FYI content, not errors/warnings, so
 // unlike renderHealthDigestBlock this never bumps the "N things to look at"
 // count; it's context, same tier as the overnight digest block below it.
-function renderNamedDigestBlock(label, snapshot) {
+function renderNamedDigestBlock(label, snapshot, { actionCards = false, showBanner = false } = {}) {
   if (!snapshot) return '';
   // .filter(Boolean): a corrupted/partial snapshot write must not crash the
   // whole email render — same guard as renderHealthDigestBlock's queued items
@@ -894,20 +897,81 @@ function renderNamedDigestBlock(label, snapshot) {
   // a malformed/malicious url must not become a live javascript:/data: link
   // in the owner's inbox (ship-check follow-up finding, card #497).
   const safeUrl = (u) => (typeof u === 'string' && /^https?:\/\//i.test(u) ? u : null);
+  const more = snapshot.moreCount > 0
+    ? `<div style="font-size:12px;color:#666;margin-top:4px;">+${snapshot.moreCount} more, in tomorrow's email</div>` : '';
+  const asOf = snapshot.generatedAt && !Number.isNaN(new Date(snapshot.generatedAt).getTime())
+    ? `<div style="font-size:11px;color:#999;margin-top:6px;">as of ${esc(String(snapshot.generatedAt).slice(0, 16).replace('T', ' '))} UTC</div>` : '';
+  if (actionCards) {
+    // BRO-6131: owner-action sections. One readable card per item with a
+    // visible button, instead of gray one-line rows whose link was styled to
+    // look like plain text.
+    return `<div style="margin:0 0 14px;">
+    <div style="font-size:13px;font-weight:700;color:#333;margin:0 0 8px;">${esc(label)}${showBanner && snapshot.bannerText ? `<span style="font-weight:400;color:#777;"> \u00b7 ${esc(snapshot.bannerText)}</span>` : ''}</div>
+    ${items.map((it) => renderActionCard(it, safeUrl)).join('')}${more}${asOf}
+  </div>`;
+  }
   const rows = items.map(it => {
     const href = safeUrl(it.url);
     return `<div style="margin:0 0 6px;">
-      <span style="font-size:13px;color:#333;">${href ? `<a href="${esc(href)}" style="color:#333;text-decoration:none;">${esc(it.title)}</a>` : esc(it.title)}</span>
+      <span style="font-size:13px;color:#333;">${href ? `<a href="${esc(href)}" style="color:#1d4ed8;text-decoration:underline;">${esc(it.title)}</a>` : esc(it.title)}</span>
       ${it.detail ? `<div style="font-size:11px;color:#999;margin:2px 0 0 2px;">${esc(it.detail)}</div>` : ''}
     </div>`;
   }).join('');
-  const more = snapshot.moreCount > 0
-    ? `<div style="font-size:11px;color:#999;margin-top:4px;">+${snapshot.moreCount} more</div>` : '';
-  const asOf = snapshot.generatedAt && !Number.isNaN(new Date(snapshot.generatedAt).getTime())
-    ? `<div style="font-size:11px;color:#999;margin-top:6px;">as of ${esc(String(snapshot.generatedAt).slice(0, 16).replace('T', ' '))} UTC</div>` : '';
   return `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
     <div style="font-size:13px;font-weight:700;margin-bottom:8px;">${esc(label)}: ${esc(snapshot.bannerText || '')}</div>
     ${rows}${more}${asOf}
+  </div>`;
+}
+
+// One owner-action card (BRO-6131). A parsed DECISION NEEDED card (`it.decision`,
+// from decision-card-parse.js) shows the question, why it is the owner's call,
+// each option with its upside/downside, the recommended pick and what happens
+// if nothing is answered. Any other row (approval, review queue, cmux tab)
+// shows its title and one line of context. Every card ends in a button.
+function renderActionCard(it, safeUrl) {
+  const { cleanOwnerText, recommendedKey } = require('./decision-card-parse.js');
+  const href = safeUrl(it.url);
+  const cardHref = safeUrl(it.cardUrl) || href;
+  const d = it.decision || null;
+  const accent = it.stale ? '#dc2626' : '#f59e0b';
+  const bg = it.stale ? '#fef2f2' : '#fffbeb';
+  // Rows built as "BRO-N: title" (approvals, review queue) show the id small and the title big.
+  const split = !it.identifier && !d ? /^(BRO-\d+):\s*(.+)$/.exec(String(it.title || '')) : null;
+  const identifier = it.identifier || (split && split[1]) || '';
+  const ref = identifier ? `<span style="font-size:11px;color:#92400e;font-weight:700;">${esc(identifier)}</span>` : '';
+  const age = it.ageDays >= 1 ? `<span style="font-size:11px;color:${it.stale ? '#b91c1c' : '#92400e'};"> \u00b7 waiting ${it.ageDays}d</span>` : '';
+  // A long question is a paragraph: the card's short title becomes the headline
+  // and the full question reads as normal text under it.
+  const question = d ? d.question : '';
+  const headline = cleanOwnerText(it.headline || '');
+  const longQuestion = d && question.length > 110 && headline && headline !== question;
+  const title = longQuestion ? headline : cleanOwnerText(d ? question : (split ? split[2] : it.title));
+  const titleHtml = href
+    ? `<a href="${esc(href)}" style="color:#1d4ed8;text-decoration:underline;">${esc(title)}</a>`
+    : esc(title);
+  const pick = d ? recommendedKey(d.recommendation, d.options) : null;
+  let body = '';
+  if (d) {
+    if (longQuestion) body += `<div style="font-size:13px;color:#222;margin:0 0 6px;">${esc(question)}</div>`;
+    if (d.why) body += `<div style="font-size:12px;color:#555;margin:0 0 6px;"><b>Why it is yours:</b> ${esc(d.why)}</div>`;
+    body += d.options.map((o) => {
+      const mine = pick === o.key;
+      const detail = [o.upside, o.downside ? `but ${o.downside}` : ''].filter(Boolean).join(', ');
+      return `<div style="font-size:13px;color:#222;margin:0 0 4px;padding-left:2px;"><b>${esc(o.key)}.</b> ${esc(o.name)}${detail ? ` <span style="color:#666;">(${esc(detail)})</span>` : ''}${mine ? ' <span style="color:#15803d;font-weight:700;">\u2605 my pick</span>' : ''}</div>`;
+    }).join('');
+    if (d.recommendation) body += `<div style="font-size:12px;color:#15803d;margin:4px 0 0;"><b>My pick:</b> ${esc(d.recommendation)}</div>`;
+    if (d.defaultLine) body += `<div style="font-size:12px;color:#666;margin:4px 0 0;"><b>If you do nothing:</b> ${esc(d.defaultLine)}</div>`;
+  } else if (it.detail) {
+    body += `<div style="font-size:12px;color:#666;margin:0 0 2px;">${esc(cleanOwnerText(it.detail))}</div>`;
+  }
+  const label = it.actionLabel || (d ? 'Read and answer \u2192' : 'Open \u2192');
+  const button = href
+    ? `<div style="margin:8px 0 0;"><a href="${esc(href)}" style="display:inline-block;font-size:13px;font-weight:700;color:#ffffff;background:#1d4ed8;text-decoration:none;padding:7px 16px;border-radius:8px;">${esc(label)}</a>${cardHref && cardHref !== href ? ` <a href="${esc(cardHref)}" style="font-size:12px;color:#1d4ed8;margin-left:10px;">see the full card</a>` : ''}</div>`
+    : '';
+  return `<div style="border-left:4px solid ${accent};background:${bg};border-radius:6px;padding:10px 14px;margin:0 0 10px;">
+    <div style="margin:0 0 3px;">${ref}${age}</div>
+    <div style="font-size:15px;font-weight:700;color:#111;margin:0 0 6px;">${titleHtml}</div>
+    ${body}${button}
   </div>`;
 }
 

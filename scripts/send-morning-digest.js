@@ -586,16 +586,16 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   const decisionBlocksHtml = [
     renderNeedsAttentionBlock(view.decisionQueued),
     // "Needs You" tab triage (card #870) — the owner's own pending decisions.
-    sections.needsYou ? renderNamedDigestBlock('Needs your decision', sections.needsYou) : '',
+    sections.needsYou ? renderNamedDigestBlock('Decisions waiting on you', sections.needsYou, { actionCards: true }) : '',
     // Waiting on your approval (BRO-282) — Linear issues carrying the
     // 'awaiting-owner' label (work finished, blocked on a plain-language yes,
     // e.g. the /visual-qa pre-push gate). Distinct from "Needs your decision"
     // above (session-scoped cmux state, dies with the tab): this is
     // issue-scoped and survives the originating session closing.
-    sections.awaitingOwner ? renderNamedDigestBlock('Waiting on your approval', sections.awaitingOwner) : '',
+    sections.awaitingOwner ? renderNamedDigestBlock('Waiting on your approval', sections.awaitingOwner, { actionCards: true, showBanner: true }) : '',
     // Parked in review (BRO-3376) — finished work waiting on the owner with
     // no opt-in marker; de-duplicated against awaitingOwner in buildOwnerView.
-    view.reviewQueue ? renderNamedDigestBlock('Review queue', view.reviewQueue) : '',
+    view.reviewQueue ? renderNamedDigestBlock('Review queue', view.reviewQueue, { actionCards: true, showBanner: true }) : '',
   ].filter(Boolean).join('\n');
   head.push(renderOwnerTopBlock(view, { decisionBlocksHtml, overnightLine }));
   // Board numbers (BRO-5482). `waiting` and `stuck` are the SAME numbers the sections
