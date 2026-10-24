@@ -1,13 +1,96 @@
 {
-  "generatedAt": "2026-10-24T11:53:50.376Z",
+  "generatedAt": "2026-10-24T14:39:55.932Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 260,
-  "clean": 260,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 264,
+  "clean": 259,
+  "defective": 5,
+  "byType": {
+    "score-drift": 5
+  },
+  "shows": [
+    {
+      "showId": "some-woman-west-end-2026",
+      "title": "Some Woman",
+      "openingDate": "2026-10-15",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 68.99 vs local 67.34 (Δ1.65)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 30,
+      "deployedCount": 32,
+      "firstDefectAt": "2026-10-24T14:39:52.389Z"
+    },
+    {
+      "showId": "high-school-musical-off-west-end-2026",
+      "title": "High School Musical",
+      "openingDate": "2026-10-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.07 vs local 80.53 (Δ0.54)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 19,
+      "deployedCount": 19,
+      "firstDefectAt": "2026-10-24T14:39:52.389Z"
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "title": "Cabaret at the Kit Kat Club",
+      "openingDate": "2021-12-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 88.23 vs local 88.29 (Δ0.06)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 25,
+      "deployedCount": 26,
+      "firstDefectAt": "2026-10-24T14:39:52.389Z"
+    },
+    {
+      "showId": "six-the-musical-west-end-2021",
+      "title": "SIX the Musical",
+      "openingDate": "2019-01-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.76 vs local 82.55 (Δ1.21)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 18,
+      "deployedCount": 20,
+      "firstDefectAt": "2026-10-24T14:39:52.389Z"
+    },
+    {
+      "showId": "wicked-west-end-2021",
+      "title": "Wicked",
+      "openingDate": "2006-09-27",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 67.16 vs local 71.4 (Δ4.24)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 16,
+      "deployedCount": 18,
+      "firstDefectAt": "2026-10-24T14:39:52.389Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

@@ -352,20 +352,6 @@
     "queuedAt": "2026-10-24T11:53:28.680Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-24.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-24T11:53:33.053Z"
-  },
-  {
     "conditionKey": "star-band:regressions",
     "title": "Star-band detector: 35 review(s) flagged for anchored re-score — escalated after 15 notifications",
     "description": "Filed BRO-6121 for owner triage after 15 repeats with no tracker.\n\n{\"unanchored\":8,\"false-truncation\":27} across the whole corpus, by market {\"broadway\":20,\"west-end\":14,\"regional\":1}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [unanchored] mike-birbiglia-the-old-man-and-the-pool-2022/ew--yolanda-machado.json A band 89-94\n- [unanchored] the-mousetrap-west-end-2021/guardian--arifa-akbar.json 3/5 band 51-70\n- [unanchored] the-man-in-the-white-suit-west-end-2019/times-uk--clive-davis.json 1/5 band 0-30\n- [unanchored] touching-the-void-west-end-2019/telegraph--dominic-cavendish.json 5/5 band 91-100\n- [unanchored] midnight-movie-west-end-2019/times-uk--sam-marlowe.json 2/5 band 31-50\n- [unanchored] downstate-west-end-2019/times-uk--ann-treneman.json 4/5 band 71-90\n- [unanchored] top-girls-west-end-2019/times-uk--ann-treneman.json 2/5 band 31-50\n- [unanchored] bitter-wheat-west-end-2019/times-uk--dominic-maxwell.json 2/5 band 31-50\n- [false-truncation] good-night-and-good-luck-2025/ew--dalton-ross.json score 90 scored with a truncation warning on a complete-tier text\n- [false-truncation] parade-2023/ew--kristen-baldwin.json score 89 scored with a truncation warning on a complete-tier text",
@@ -710,6 +696,76 @@
       }
     ],
     "queuedAt": "2026-10-24T14:06:28.595Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:high-school-musical-off-west-end-2026",
+    "title": "Review gap — \"High School Musical\" missing 1 cited review(s)",
+    "description": "High School Musical (high-school-musical-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=high-school-musical-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T14:39:26.833Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:king-of-the-yees-off-broadway-2026",
+    "title": "Review gap — \"King of the Yees\" missing 2 cited review(s)",
+    "description": "King of the Yees (king-of-the-yees-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-of-the-yees-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T14:39:26.847Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:machine-learning-off-broadway-2026",
+    "title": "Review gap — \"Machine Learning\" missing 1 cited review(s)",
+    "description": "Machine Learning (machine-learning-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=machine-learning-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T14:39:26.862Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-imaginary-invalid-2026",
+    "title": "Review gap — \"The Imaginary Invalid\" missing 3 cited review(s)",
+    "description": "The Imaginary Invalid (the-imaginary-invalid-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-imaginary-invalid-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T14:39:26.941Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-24.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T14:39:34.338Z"
   },
   {
     "conditionKey": "land:land/bro-6130-self-disposition",

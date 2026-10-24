@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T11:53:50.653Z",
+  "generatedAt": "2026-10-24T14:39:56.330Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -84,6 +84,16 @@
       "openingDate": "2026-10-18"
     },
     {
+      "id": "garry-starr-classic-penguins-off-west-end-2026",
+      "title": "Garry Starr Classic Penguins",
+      "openingDate": "2026-10-23"
+    },
+    {
+      "id": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "title": "Harry Potter and the Cursed Child",
+      "openingDate": "2026-10-21"
+    },
+    {
       "id": "machine-learning-off-broadway-2026",
       "title": "Machine Learning",
       "openingDate": "2026-10-20"
@@ -97,6 +107,11 @@
       "id": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
       "title": "Queeney Todd: The Demon Bottom of Fleet Street",
       "openingDate": "2026-10-22"
+    },
+    {
+      "id": "the-kick-inside-off-broadway-2026",
+      "title": "The Kick Inside",
+      "openingDate": "2026-10-23"
     },
     {
       "id": "the-dog-show-come-sit-stay-off-broadway-2026",
@@ -127,12 +142,20 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
     {
+      "outletId": "british-theatre",
+      "error": "Timeout fetching https://www.britishtheatreguide.info/reviews/"
+    },
+    {
       "outletId": "slantmagazine",
       "error": "HTTP 403 for https://www.slantmagazine.com/theater/feed/"
     },
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "plays-international",
+      "error": "AggregateError"
     },
     {
       "outletId": "theartsdispatch",
@@ -147,10 +170,19 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 781,
-  "matchedGaps": 4,
-  "possibleGaps": 2,
+  "itemsScanned": 751,
+  "matchedGaps": 5,
+  "possibleGaps": 3,
   "gaps": [
+    {
+      "showId": "garry-starr-classic-penguins-off-west-end-2026",
+      "title": "Garry Starr Classic Penguins",
+      "level": "matched",
+      "outletId": "jackstage",
+      "url": "https://www.jackstage.co.uk/post/garry-starr-classic-penguins-review",
+      "headline": "Garry Starr - Classic Penguins Review: a whimsical race through the literary greats... in the buff!",
+      "publishDate": "2026-10-24"
+    },
     {
       "showId": "machine-learning-off-broadway-2026",
       "title": "Machine Learning",
@@ -195,6 +227,15 @@
       "url": "https://theaterlife.com/the-curious-case-of-benjamin-button/",
       "headline": "The Curious Case of Benjamin Button *****",
       "publishDate": "2026-10-21"
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "title": "Harry Potter and the Cursed Child",
+      "level": "possible",
+      "outletId": "timeout",
+      "url": "https://timeout.com/newyork/theater/harry-potter-cursed-child-broadway-review",
+      "headline": "16.&nbsp;Harry Potter and the Cursed Child",
+      "publishDate": null
     },
     {
       "showId": "the-pianist-off-west-end-2026",
