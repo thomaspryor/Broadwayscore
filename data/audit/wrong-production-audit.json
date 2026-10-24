@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-24T10:15:40.023Z",
+  "timestamp": "2026-10-24T10:49:08.445Z",
   "stats": {
-    "totalReviews": 59962,
-    "alreadyFlagged": 21142,
+    "totalReviews": 60015,
+    "alreadyFlagged": 21143,
     "dateGuardCatches": 215,
-    "directorMismatch": 2132,
-    "tvFilmSignals": 1696,
-    "londonSignals": 2864,
+    "directorMismatch": 2134,
+    "tvFilmSignals": 1701,
+    "londonSignals": 2871,
     "offBroadwaySignals": 536,
     "yearMismatch": 180,
-    "noPublishDate": 5537
+    "noPublishDate": 5530
   },
   "findings": [
     {
@@ -1230,6 +1230,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "a-very-expensive-poison-west-end-2019",
+      "file": "observer--susannah-clapp.json",
+      "publishDate": "2019-09-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -33173,6 +33186,20 @@
     },
     {
       "showId": "peter-gynt-west-end-2019",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 35,
+      "publishDate": "July 10th, 2019",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/peter-gynt-review-olivier-theatre-national-theatre-interminable/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "peter-gynt-west-end-2019",
       "file": "theupcoming--connor-campbell.json",
       "score": 44,
       "publishDate": null,
@@ -34332,6 +34359,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"george c. scott\" from present-laughter-1982"
+        }
+      ]
+    },
+    {
+      "showId": "present-laughter-west-end-2019",
+      "file": "standard--henry-hitchings.json",
+      "score": 95,
+      "publishDate": "June 26th, 2019",
+      "url": "https://www.standard.co.uk/culture/theatre/present-laughter-review-andrew-scott-gives-a-virtuoso-performance-at-the-old-vic-a4175981.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -35776,6 +35817,32 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "rutherford-and-son-west-end-2019",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2019-05-31",
+      "url": "https://www.dailymail.com/tvshowbiz/article-7089159/Does-grim-North-PATRICK-MARMION-reviews-Rutherford-Son.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "rutherford-and-son-west-end-2019",
+      "file": "mail-on-sunday--robert-gore-langton.json",
+      "publishDate": "2019-06-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -52686,6 +52753,19 @@
     },
     {
       "showId": "waitress-west-end-2019",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2019-03-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from waitress-2021"
+        }
+      ]
+    },
+    {
+      "showId": "waitress-west-end-2019",
       "file": "independent--paul-taylor.json",
       "score": 77,
       "publishDate": "March 7th, 2019",
@@ -52831,6 +52911,19 @@
       "score": 65,
       "publishDate": "March 8th, 2019",
       "url": "https://www.timeout.com/london/theatre/waitress-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from waitress-2021"
+        }
+      ]
+    },
+    {
+      "showId": "waitress-west-end-2019",
+      "file": "times-uk--ann-treneman.json",
+      "publishDate": "2019-03-08",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -56667,6 +56760,20 @@
       "score": 82,
       "publishDate": "September 12th, 2019",
       "url": "https://www.londontheatre.co.uk/reviews/review-lucy-prebbles-a-very-expensive-poison-at-the-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "a-very-expensive-poison-west-end-2019",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 58,
+      "publishDate": "September 6th, 2019",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/expensive-poison-old-vic-review-story-litvinenkos-murder-leaves/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -81267,6 +81374,20 @@
     },
     {
       "showId": "paddington-the-musical-west-end-2025",
+      "file": "metro-uk--laura-harman.json",
+      "score": null,
+      "publishDate": "2025-12-01",
+      "url": "https://metro.co.uk/2025/12/01/paddington-musical-reviews-hail-marvellous-west-end-debut-iconic-bear-25029192/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "paddington-the-musical-west-end-2025",
       "file": "musical-theatre-review--lisa-martland.json",
       "score": 97,
       "publishDate": null,
@@ -82055,6 +82176,19 @@
     },
     {
       "showId": "present-laughter-west-end-2019",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2019-06-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "present-laughter-west-end-2019",
       "file": "london-theatre--will-longman.json",
       "score": 97,
       "publishDate": "June 26th, 2019",
@@ -82073,6 +82207,20 @@
       "score": 88,
       "publishDate": "2019-07-25",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "present-laughter-west-end-2019",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": null,
+      "publishDate": "2019-06-26",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/present-laughter-review-old-vic-andrew-scotts-revelatory-performance/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -84610,7 +84758,7 @@
       "showId": "small-island-west-end-2019",
       "file": "guardian--michael-billington.json",
       "score": 96,
-      "publishDate": null,
+      "publishDate": "2019-05-02",
       "url": "https://www.theguardian.com/stage/2019/may/02/small-island-review-andrea-levy-windrush-national-theatre-london",
       "findings": [
         {
@@ -86929,7 +87077,7 @@
       "showId": "tartuffe-west-end-2019",
       "file": "guardian--michael-billington.json",
       "score": 61,
-      "publishDate": null,
+      "publishDate": "2019-02-22",
       "url": "https://www.theguardian.com/stage/2019/feb/22/tartuffe-the-imposter-review-national-theatre-lyttelton",
       "findings": [
         {
@@ -87216,6 +87364,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-american-clock-west-end-2019",
+      "file": "financialtimes--ian-shuttleworth.json",
+      "publishDate": "2019-02-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -89655,7 +89816,7 @@
       "showId": "the-end-of-history-west-end-2019",
       "file": "guardian--michael-billington.json",
       "score": 56,
-      "publishDate": null,
+      "publishDate": "2019-07-04",
       "url": "https://www.theguardian.com/stage/2019/jul/04/the-end-of-history-review-jack-thorne-john-tiffany-royal-court",
       "findings": [
         {
@@ -94438,6 +94599,20 @@
     },
     {
       "showId": "the-starry-messenger-west-end-2019",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 58,
+      "publishDate": "2019-05-29T19:31:26+00:00",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/starry-messenger-review-wyndhams-theatrea-long-comic-drama-need/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "the-starry-messenger-west-end-2019",
       "file": "theupcoming--cristiana-ferrauti.json",
       "score": 63,
       "publishDate": null,
@@ -96526,6 +96701,20 @@
       "score": 72,
       "publishDate": "2019-04-07",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "top-girls-west-end-2019",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 56,
+      "publishDate": "April 4th, 2019",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/top-girls-review-national-theatre-lyttelton-feminist-museum/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
