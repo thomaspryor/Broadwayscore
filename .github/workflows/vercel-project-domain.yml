@@ -71,8 +71,8 @@ jobs:
               -H 'Content-Type: application/json' \
               "$API/v10/projects/$PROJECT_ID/domains?teamId=$TEAM_ID" -d "$BODY")
             echo "add: HTTP $CODE $(jq -r '.error.code // "ok"' /tmp/add.json)"
-            # 409 = already on this project: re-running add is safe.
-            if [ "$CODE" != "200" ] && [ "$CODE" != "409" ]; then exit 1; fi
+            # 2xx = attached; 409 = already on this project, so re-running add is safe.
+            case "$CODE" in 2??|409) ;; *) exit 1 ;; esac
           fi
 
           CODE=$(curl -s -o /tmp/pd.json -w '%{http_code}' -H "$AUTH" \
