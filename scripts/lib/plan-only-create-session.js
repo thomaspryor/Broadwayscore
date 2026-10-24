@@ -1,7 +1,7 @@
 /**
  * plan-only-create-session.js — logic for the advisory PreToolUse hook that flags
  * create_session calls made from a session whose Linear card says plan-only
- * (BRO-6088, follow-up to BRO-6083 bullet 4). Hook: .claude/hooks/plan-only-create-session.sh.
+ * (BRO-6088, follow-up to BRO-6083 bullet 4). Hook: settings.json create_session block.
  *
  * Advisory only (CLAUDE.md §19): never denies, every failure path returns null.
  * The marker is structural (card title, or a description line that STARTS with it) so a

@@ -84,12 +84,12 @@ test('deadline: a hung fetch yields null instead of hanging', async () => {
 
 test('hook script: exits 0 and prints nothing on garbage / no card; settings wires it to create_session', () => {
   const root = path.resolve(import.meta.dirname, '../..');
-  const run = (input) => execFileSync('bash', [path.join(root, '.claude/hooks/plan-only-create-session.sh')], { input, encoding: 'utf8', cwd: root, env: { ...process.env, LINEAR_API_KEY: '' } });
+  const run = (input) => execFileSync('node', [path.join(root, 'scripts/plan-only-create-session-hook.js')], { input, encoding: 'utf8', cwd: root, env: { ...process.env, LINEAR_API_KEY: '' } });
   assert.equal(run('not json'), '');
   assert.equal(run(JSON.stringify({ session_id: 'zz', cwd: os.tmpdir(), tool_input: {} })), '');
   const settings = JSON.parse(fs.readFileSync(path.join(root, '.claude/settings.json'), 'utf8'));
   const block = settings.hooks.PreToolUse.find((b) => /create_session/.test(b.matcher));
-  assert.ok(block.hooks.some((h) => /plan-only-create-session\.sh/.test(h.command)));
+  assert.ok(block.hooks.some((h) => /plan-only-create-session-hook\.js/.test(h.command)));
 });
 
 test('other tools in the shared matcher block (add_repo, send_later) are ignored', async () => {

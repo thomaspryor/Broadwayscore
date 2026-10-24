@@ -72,7 +72,7 @@
           {
             "type": "command",
             "timeout": 20,
-            "command": "R=\"${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null)}\"; H=\"$R/.claude/hooks/plan-only-create-session.sh\"; [ -n \"$R\" ] && [ -f \"$H\" ] && exec bash \"$H\"; exit 0"
+            "command": "R=\"${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null)}\"; S=\"$R/scripts/plan-only-create-session-hook.js\"; [ -n \"$R\" ] && [ -f \"$S\" ] && command -v node >/dev/null 2>&1 && node \"$S\" 2>/dev/null; exit 0"
           }
         ]
       },
