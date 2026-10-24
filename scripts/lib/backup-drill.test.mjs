@@ -19,6 +19,18 @@ test('pickLatestSet: daily picks highest run id on the newest date', () => {
   const listing = [daily('2026-10-21', 100), daily('2026-10-21', 250), daily('2026-10-20', 999)].join('\n');
   assert.equal(d.pickLatestSet('daily', listing, NOW).prefix, 'daily/2026-10-21/run-250');
 });
+test('pickLatestSet: per-run weekly folders (BRO-6132 bucket lock) and re-run attempts', () => {
+  const runWeekly = (date, run) => d.WEEKLY_FILES.map((f) => `x 1 1 weekly/${date}/${run}/${f}`).join('\n');
+  // A legacy flat set and a per-run set on the same date: the run folder wins.
+  let listing = [weekly('2026-10-18'), runWeekly('2026-10-18', 'run-500')].join('\n');
+  assert.equal(d.pickLatestSet('weekly', listing, NOW).prefix, 'weekly/2026-10-18/run-500');
+  // A re-run attempt beats attempt 1 of the same run, and a partial attempt is skipped.
+  listing = [runWeekly('2026-10-18', 'run-500-1'), runWeekly('2026-10-18', 'run-500-2'),
+    'x 1 1 weekly/2026-10-18/run-500-3/MANIFEST.sha256'].join('\n');
+  assert.equal(d.pickLatestSet('weekly', listing, NOW).prefix, 'weekly/2026-10-18/run-500-2');
+  listing = [daily('2026-10-21', 250), daily('2026-10-21', '250-2')].join('\n');
+  assert.equal(d.pickLatestSet('daily', listing, NOW).prefix, 'daily/2026-10-21/run-250-2');
+});
 test('pickLatestSet: stale newest set fails loudly', () => {
   assert.throws(() => d.pickLatestSet('weekly', weekly('2026-09-20'), NOW), /backups have stopped/);
   assert.throws(() => d.pickLatestSet('daily', daily('2026-10-10', 1), NOW), /days old/);
