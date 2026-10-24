@@ -199,7 +199,16 @@ const LOSS_LABEL_MIN_DAYS = 183;
 function isPrematureSilenceLabel(entry, show, now = Date.now()) {
   if (!entry || !show || !isLossDesignation(entry.designation)) return false;
   if (entry.designationBasis !== DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED) return false;
-  const closing = Date.parse(show.closingDate);
+  return isWithinLossLabelWait(show, now);
+}
+
+/**
+ * True for a closed show still inside the policy B wait (closed under
+ * LOSS_LABEL_MIN_DAYS ago): TBD is correct there, so the audit does not ask
+ * for a final label yet (BRO-6137). An unknown closing date is not waiting.
+ */
+function isWithinLossLabelWait(show, now = Date.now()) {
+  const closing = Date.parse(show && show.closingDate);
   return Number.isFinite(closing) && (now - closing) / 86400000 < LOSS_LABEL_MIN_DAYS;
 }
 
@@ -220,7 +229,7 @@ function hasNoInvestorsToRepay(rec) {
 
 module.exports = {
   hasNoInvestorsToRepay,
-  DESIGNATION_BASES, VALID_DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel,
+  DESIGNATION_BASES, VALID_DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel, isWithinLossLabelWait,
   VALID_DESIGNATIONS, canonicalDesignation,
   TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, DESIGNATIONS_OUTSIDE_RULE,
   LOSS_DESIGNATIONS, isLossDesignation, lossDesignationFor, modelMiddleReturnedPct, likelyOutcomeDesignation,

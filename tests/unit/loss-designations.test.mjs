@@ -162,3 +162,17 @@ describe('no literal loss-label lists outside commercial-designations.js', () =>
     assert.deepEqual(hits, [], 'use isLossDesignation / LOSS_DESIGNATIONS from scripts/lib/commercial-designations.js');
   });
 });
+
+describe('isWithinLossLabelWait (policy B wait, BRO-6137)', () => {
+  const now = Date.parse('2026-10-24');
+  it('is true inside 183 days of closing and false after', () => {
+    assert.equal(D.isWithinLossLabelWait({ closingDate: '2026-08-08' }, now), true);
+    assert.equal(D.isWithinLossLabelWait({ closingDate: '2026-04-01' }, now), false);
+    assert.equal(D.isWithinLossLabelWait({ closingDate: '2026-04-25' }, now), true);
+    assert.equal(D.isWithinLossLabelWait({ closingDate: '2026-04-24' }, now), false);
+  });
+  it('is false with no usable closing date', () => {
+    assert.equal(D.isWithinLossLabelWait({ closingDate: null }, now), false);
+    assert.equal(D.isWithinLossLabelWait(undefined, now), false);
+  });
+});
