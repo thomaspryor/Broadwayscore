@@ -385,6 +385,16 @@ test('trySyncCodeCheckout: bytes a killed fast-forward wrote for an OLDER origin
   assert.equal(fs.readFileSync(path.join(cloneDir, 'a.txt'), 'utf8'), 'upstream again');
 }));
 
+test('trySyncCodeCheckout: a session\'s own deletion of a file that exists at the tip still refuses (BRO-6104)', () => withTrio((trio) => {
+  const { cloneDir } = trio;
+  const { head } = halfWrittenScenario(trio);
+  fs.rmSync(path.join(cloneDir, '[ab].txt'));
+  const s = staleThenSync(cloneDir);
+  assert.equal(s.synced, false);
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
+  assert.equal(fs.existsSync(path.join(cloneDir, '[ab].txt')), false, 'the deletion is kept');
+}));
+
 test('trySyncCodeCheckout: a file matching no origin/main blob, old or new, still refuses (BRO-6104)', () => withTrio((trio) => {
   const { cloneDir } = trio;
   const { head, tear } = halfWrittenScenario(trio);
