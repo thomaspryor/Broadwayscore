@@ -1387,5 +1387,32 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-24T18:45:21.114Z"
+  },
+  {
+    "conditionKey": "direct-push:7d8cc61063cfe6579d7d03b30a8c7d23f64e7207",
+    "title": "Direct push to main: 7d8cc61063 by thomaspryor",
+    "description": "7d8cc61063 reached main WITHOUT going through land.yml (no row in data/audit/landings.jsonl). Pushed by thomaspryor (committer GitHub). Head commit: Fix cloud hook installation with existing settings (#1158) Direct pushes skip the delta-vs-base gates; sessions must land via scripts/merge-worktree-to-main.sh (BRO-3425). Compare: https://github.com/thomaspryor/Broadwayscore/compare/d2bd345948532e6d3b57f4fa862486c6109007d1...7d8cc61063cfe6579d7d03b30a8c7d23f64e7207 Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40123100966",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "sha",
+        "value": "7d8cc61063cfe6579d7d03b30a8c7d23f64e7207"
+      },
+      {
+        "name": "actor",
+        "value": "thomaspryor"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40123100966"
+      }
+    ],
+    "queuedAt": "2026-10-24T19:05:57.066Z"
   }
 ]
