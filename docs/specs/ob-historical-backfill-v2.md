@@ -30,6 +30,40 @@ This replaces Phase 0's three-source spike: TM is the dated listing (the WOS rol
 
 **Exclusions on TM rows.** Drop rows with no opening or preview date, runs under 14 days, titles matching festival or reading or benefit or concert or cabaret patterns, and venues outside OB (TM market 98 includes some off-off spaces). Dedup against shows.json by normalized title and opening date within 120 days, and refuse an id that exists (the add-show action already does).
 
+## v3.1: plan-review outcome on v3 (2026-10-24, Opus reviewers + GPT-5.4-mini + Gemini Flash; supersedes v3 where they conflict)
+
+**Ramp change (adopted).** The first gap run is **10 shows picked at random from the 168, unscreened**: Playbill-validate, add, gather, rebuild. Their real review counts calibrate the press screen before it gates the other ~158. Cost: about $0.50 scraping plus LLM. [structure reviewer, GPT, Phase 0]
+
+**The v3 screen as written gates nothing (P0, design + structure + pre-mortem).** `"<title>" review` returns TheaterMania's own show page, a Playbill production page and a BWW listing for almost every show. Those are T1/T2 registry domains (`data/outlet-registry.json`), so "3 outlets, or 2 with a T1/T2" passes without one review. It also picks up same-title West End or film coverage (the registry holds 272 London outlets) and generic titles. Rebuilt on the existing census instead of new counting:
+- Queries from `buildCensusPlan` (`scripts/lib/serp-review-census.js`), results filtered by `acceptSerpCensusResult` (`scripts/audit-show-review-gap.js:685`; wrong-work, stale-year, other-production, own-venue guards), outlets from `getKnownDomainMap()`.
+- Listing and ticketing pages never count. Only review-shaped URLs or titles that name the show. Outlets filtered to NYC/US region. Generic titles go through `isGenericShowTitle` / `canDisambiguateGenericTitle` (`scripts/lib/url-discovery.js:139-184`) and need a venue or creative in the result.
+- A pure `decideObPressScreen({acceptedUrls, knownDomainMap, tierOf})` returns `{pass, outlets, reason}` with evidence URLs, unit-tested. Its threshold is set from the 10-show calibration.
+- The script calls `serpCensusPreflight` first (a missing key otherwise reads as "0 outlets" for every show) and sets `SCRAPER_SPEND_PURPOSE=historical-backfill` (run-script.yml sets none, so rows would count against the 5K/day probe).
+
+**Playbill dates are still required (P1, pre-mortem + structure).** TM often puts the first performance in `opening_date` and leaves stale open-ended rows (`scripts/lib/theatermania-ob.js:39-42, 91-108`). Every candidate is checked with `validate-show-venue.js --candidates-file` (about 6 Scrapingdog credits each) and needs a Playbill opening and closing date, closed 90 or more days ago, with a run of 14 days or more. TM is the list of what to check. Playbill supplies the dates.
+
+**TM reader: parameter, not fork (P0/P1, design + structure).** `fetchTmOffBroadway` keeps only `isCurrentTmRow` rows and stops at the first page with none (`theatermania-ob.js:379-391`), and `discover-new-shows.js:716` uses it daily. It gains `{rowFilter = isCurrentTmRow, maxPages, stopWhenPageEmpty = true, orderby = 'modified'}`. The historical caller passes a window predicate, 80 pages, no early stop and `orderby=id` (modified-order paging skips and repeats rows mid-scan). Rows still go through `parseTmOffBroadwayRow` and the existing `isNonTheaterContent` / `isOneNightShow` gates, and the historical path overrides `discoverySource` to `ob-historical:tm` and clears `provisional`. Fixture tests go in `theatermania-ob.test.mjs`. Default callers' behavior is unchanged and tested.
+
+**One dedup rule (P1).** Use `findTmSameTitleShow` and `checkForDuplicate`, not a new title-plus-120-days rule. The 168 figure is therefore an upper bound (187 OB stubs have no opening date).
+
+**Coupling with current discovery (P1, structure).** A closed 2025 row would make `findTmSameTitleShow` (366-day window) treat a 2026 transfer or return run of the same title as a duplicate (`discover-new-shows.js:2830-2844`), and `reconcileMatchedShow` could write current-run data onto the closed row. A historical closed row is excluded from that match. The fix ships before the first gap promotion, with a test.
+
+**Plans go through `new-fix-plan.js --actions=` (design).** No hand-built JSON and no second splitter. Plans hold at most about 10 actions, and after each apply the cohort ledger is reconciled against the plan's `results[]` (an action can fail while the rest apply). [pre-mortem]
+
+**Gather dispatch etiquette.** Off-peak only, never when an opening-night run is queued or an opening falls within 48 hours. About 4 shows per job.
+
+**User-facing (user-impact reviewer):**
+- Thin-page noindex is off by default and covers only zero-review closed shows (`scripts/lib/seo-indexability.js:43,69`). So every added show is indexable from the moment it lands, including while it sits at 0 reviews mid-gather. Before the first gap promotion, extend noindex to closed shows below the display threshold whose `discoverySource` starts with `ob-historical:`, and turn it on for that class only. A show retired later gets a redirect, not a 404.
+- The iOS feed includes a closed show once it has one scored review (`scripts/generate-mobile-data.js:156-158`), so an unscored card can appear. Accepted for now, since the score is hidden below the bar, and checked in the cohort audit.
+- The `/off-broadway` "Closed" view sorts by recent, so gap shows will sit at its top. That is correct behavior. `getRecentShowSlugs` treats shows closed within 180 days as recent (`src/lib/data-core.ts:521`), which the 90-days-closed rule mostly keeps clear of.
+- Homepage shelves, OB browse lists, RSS, newsletter and broadcasts all require open or previews status, so they are unaffected (checked).
+
+**Wording fixes (Gemini).** LLM scoring cost is **not yet measured**. The 16-show 2024-25 run will measure it. The v1 notability list (press 5+, award, transfer, flagship as equals) is replaced by v3.1's calibrated press screen, with award and flagship as tie-breakers only. The outlet registry is `data/outlet-registry.json`.
+
+**Considered and not adopted.** "Add all 168, gather, retire the thin ones" (GPT). It saves building the screen, but pages are indexed while thin and retirement is a multi-repo revert per show. The 10-show unscreened run takes the useful part of that idea.
+
+**Revised effort.** The TM reader parameterization, discovery coupling fix, census-based screen and noindex extension add about 1.5 to 2 days of build before the main gap promotion. The 10-show run can go first, because it uses only Playbill validation and fix plans, which already work.
+
 ## v2 changes from plan review (supersedes conflicting text below)
 
 Ramp (framing fix from Phase 0 and the structure reviewer): the first step was 5 shows through new tooling after 8 to 12 days of building. New order:
