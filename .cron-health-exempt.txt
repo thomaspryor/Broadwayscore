@@ -316,3 +316,5 @@ backfill-meta-evidence.yml
 audit-live-show-art.yml
 # BRO-6103: daily report-first prune of stale land/** refs; a missed day only leaves leftover refs on origin, nothing user-facing. Failures go through notify-failure.
 land-ref-prune.yml
+# BRO-6167: weekly advisory sweep of the Broadway Journal archive; a missed week only delays an owner-review alert, nothing user-facing. Failures go through notify-failure and the daily liveness sweep.
+commercial-broadway-journal-sweep.yml
