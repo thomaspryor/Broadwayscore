@@ -473,3 +473,10 @@ test('a reported-methodology weekly cost needs a weeklyRunningCostSource (BRO-58
   assert.equal(warn({ costMethodology: 'reddit-standard' }), 0);
   assert.equal(warn({ costMethodology: 'trade-reported', weeklyRunningCost: undefined }), 0);
 });
+
+test('a stored record with no designation, or a non-canonical one, is a file error (BRO-5824)', () => {
+  const { designation, ...noLabel } = ok;
+  assert.ok(commercialFileErrors({ shows: { hamilton: noLabel } }, shows).some(e => /invalid designation "missing"/.test(e)));
+  assert.ok(commercialFileErrors({ shows: { hamilton: { ...ok, designation: 'Hit' } } }, shows).some(e => /invalid designation "Hit"/.test(e)));
+  assert.deepEqual(commercialFileErrors({ shows: { hamilton: { ...noLabel, designation: 'TBD', recouped: null } } }, shows).filter(e => /designation/.test(e)), []);
+});

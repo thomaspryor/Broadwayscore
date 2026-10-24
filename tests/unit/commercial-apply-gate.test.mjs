@@ -268,7 +268,7 @@ describe('commercial-apply-gate', () => {
     it('handles missing existing entry gracefully', () => {
       const result = gate.buildCommercialEntry(scraperEntry, null, { isClaimAutoApply: true });
       assert.equal(result.recouped, true);
-      assert.equal(result.designation, undefined);
+      assert.equal(result.designation, 'TBD'); // never written with no label (BRO-5824)
     });
 
     it('drops literal "null"/"undefined"/"" sentinel strings instead of writing them', () => {
@@ -285,7 +285,7 @@ describe('commercial-apply-gate', () => {
       const result = gate.buildCommercialEntry(dirty, null, { isClaimAutoApply: false });
       assert.equal(result.recoupedDate, undefined, 'string "null" date must be dropped');
       assert.equal(result.costMethodology, undefined, 'string "null" costMethodology must be dropped');
-      assert.equal(result.designation, undefined, 'string "undefined" designation must be dropped');
+      assert.equal(result.designation, 'TBD', 'string "undefined" designation must be dropped (TBD, never no label: BRO-5824)');
       assert.equal(result.notes, undefined, 'whitespace-only notes must be dropped');
     });
   });
@@ -810,5 +810,17 @@ describe('bare capitalizationSource (BRO-5815)', () => {
     const good = applyCommercialFieldEdit(c, 'x', 'capitalizationSource', null, 'Broadway Journal: "a maximum of $9.5 million"');
     assert.equal(good.ok, true);
     assert.equal(c.shows.x.capitalizationBasis, 'maximum');
+  });
+});
+
+describe('buildCommercialEntry: a brand-new record always has a designation (BRO-5824)', () => {
+  it('a recoupment claim for a show with no record writes TBD, not no label', () => {
+    const claim = { recouped: true, recoupedDate: '2018-03', recoupedSource: 'https://playbill.com/article/x', sources: [{ type: 'trade', url: 'https://playbill.com/article/x', date: '2018-03-26' }] };
+    assert.equal(gate.buildCommercialEntry(claim, undefined, { isClaimAutoApply: true }).designation, 'TBD');
+    assert.equal(gate.buildCommercialEntry(claim, undefined, {}).designation, 'TBD');
+  });
+  it('keeps a canonical label from the entry or the existing record', () => {
+    assert.equal(gate.buildCommercialEntry({ designation: 'Nonprofit' }, undefined, {}).designation, 'Nonprofit');
+    assert.equal(gate.buildCommercialEntry({ recouped: true }, { designation: 'Windfall', recouped: true, recoupedDate: '2020-01' }, { isClaimAutoApply: true }).designation, 'Windfall');
   });
 });

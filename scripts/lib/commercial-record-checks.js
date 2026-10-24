@@ -73,7 +73,7 @@ const URL_RE = /\bhttps?:\/\/\S+/gi;
 // something that reads like a checked source.
 const CITATION_FIELDS = ['capitalizationSource', 'recoupedSource'];
 const { NP_VENUES, venueMatches } = require('./nonprofit-venues');
-const { VALID_DESIGNATION_BASES, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, isLossDesignation, lossDesignationFor } = require('./commercial-designations');
+const { VALID_DESIGNATIONS, VALID_DESIGNATION_BASES, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, isLossDesignation, lossDesignationFor } = require('./commercial-designations');
 const { conversionOf, conversionShapeProblems } = require('./commercial-conversion');
 const { COST_BASES, BASIS_CUE_TEXT } = require('./cost-split');
 const { CAPITALIZATION_BASES } = require('./public-source-text');
@@ -539,7 +539,18 @@ function eachRecord(data, showsList, rule) {
 
 /** All record errors for a parsed commercial.json, given shows.json's list. */
 function commercialFileErrors(data, showsList) {
-  return eachRecord(data, showsList, commercialRecordErrors);
+  return [...eachRecord(data, showsList, designationErrors), ...eachRecord(data, showsList, commercialRecordErrors)];
+}
+
+/**
+ * Every stored record carries a canonical designation, TBD when the outcome is
+ * unknown (BRO-5824: two claim-built records shipped with none, failing the
+ * Test Suite on every run). File-level only: plan and tip checks see partial
+ * records.
+ */
+function designationErrors(showId, show) {
+  if (VALID_DESIGNATIONS.includes(show.designation)) return [];
+  return [`commercial.json: "${showId}" has invalid designation "${show.designation ?? 'missing'}" (must be one of: ${VALID_DESIGNATIONS.join(', ')}; TBD when unknown)`];
 }
 
 /** All record warnings for a parsed commercial.json, given shows.json's list. */

@@ -263,6 +263,10 @@ function buildCommercialEntry(entry, existing, opts = {}) {
     if (!result.designation && existing?.designation) {
       result.designation = canonicalDesignation(existing.designation) || existing.designation;
     }
+    // A brand-new record from a recoupment claim carries no label; TBD until
+    // one is set (BRO-5824: Farinelli and Sunday in the Park were written with
+    // no designation and failed validation).
+    if (!result.designation) result.designation = 'TBD';
   }
   if (entry.capitalization != null) result.capitalization = entry.capitalization;
   if (capitalizationSource) result.capitalizationSource = capitalizationSource;

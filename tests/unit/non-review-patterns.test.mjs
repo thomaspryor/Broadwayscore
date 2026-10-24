@@ -70,3 +70,15 @@ test('quoted stars in a press release do not veto it (BRO-4956 review)', () => {
   const r = heuristicClassify('★★★★★ The Times. Press release: the producers are delighted to announce the West End transfer, for immediate release.');
   assert.ok(r, 'press release with quoted stars still flagged');
 });
+
+// BRO-5824: a real review of a play about a weather forecaster ("the weather
+// forecast" as prose) failed the hard CI gate on every Test Suite run.
+test('does NOT flag a review that says "the weather forecast" in prose (Pressure, BRO-5824)', () => {
+  const review = 'David Haig stars in his own play about a Scottish meteorologist who had to forecast the D-Day landings\n\nIt’s not often that you find a weather forecaster taking up the central position in a piece of drama. Off the top of my head, I can think of two movies. But the Bill Murray character in Groundhog Day reads the weather forecast. Haig plays James Stagg.';
+  assert.equal(heuristicClassify(review), null);
+});
+
+test('still flags a weather page whose only weather-word signal is a forecast with temperatures', () => {
+  const r = heuristicClassify('THE WEATHER Forecast for today: Downtown 75/58, Burbank 81/55, Long Beach 72/60 mostly sunny');
+  assert.ok(r && r.confidence === 'high' && r.type === 'weather_page');
+});
