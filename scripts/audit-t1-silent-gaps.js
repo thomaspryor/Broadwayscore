@@ -58,6 +58,7 @@ const { dispatchRescore } = require('./lib/dispatch-rescore');
 const { isForumThreadUrl, isForumLinkRecoverable, FORUM_RECOVERY_CAP, FORUM_RECOVERY_SLOW_TRIES } = require('./lib/talkinbroadway-forum-link');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { routeAlert, resolveCondition, loadLedger, queueDigestLine, removeDigestLines } = require('./lib/owner-alert-router');
+const { staleOpenGapKeys } = require('./lib/t1-silent-gap');
 const { execErrorDetail } = require('./lib/exec-error-detail');
 const { ingestFailureReason } = require('./lib/ingest-failure-reason');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -559,6 +560,18 @@ async function main() {
           }
         } catch (e) { console.warn(`  ⚠️  could not close ${key}: ${e.message}`); }
       }
+    }
+  }
+  // BRO-5076: close `gap:` keys whose file is gone / no longer a gap (full runs only;
+  // never without the review-texts clone, where every gap would look gone).
+  if (DO_ALERT && !DRY_RUN && !ONLY_SHOW && fs.existsSync(REVIEW_TEXTS_DIR)) {
+    const live = new Set(gaps.map((g) => `gap:${g.showId}/${g.file}`));
+    for (const key of staleOpenGapKeys(loadLedger(), live)) {
+      try {
+        if (resolveCondition(key, { reason: 'BRO-5076: file no longer a gap (removed, renamed or collected)' })) {
+          console.log(`  ✅ closed ${key}: no longer a gap`);
+        }
+      } catch (e) { console.warn(`  ⚠️  could not close ${key}: ${e.message}`); }
     }
   }
   if (contradictions.length > 0) {

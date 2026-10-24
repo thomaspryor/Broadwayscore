@@ -561,6 +561,23 @@ function manualRecoveryDigestLine(gaps, now = new Date()) {
   };
 }
 
+/**
+ * BRO-5076: open `gap:` ledger keys that no longer correspond to a current gap.
+ * closeCardIfTerminal only visits files that still exist, so a file that was
+ * deleted or renamed (unknown byline -> named critic) left its `gap:` key open
+ * forever and check-alert-condition-absent could never prove it gone. Only
+ * `gap:` keys: `backstop:` keys belong to another alert path's gap definition.
+ */
+function staleOpenGapKeys(ledger, currentGapKeys) {
+  const current = currentGapKeys instanceof Set ? currentGapKeys : new Set(currentGapKeys);
+  const out = [];
+  for (const [key, row] of Object.entries((ledger && ledger.conditions) || {})) {
+    if (!key.startsWith('gap:') || !row || row.status !== 'open') continue;
+    if (!current.has(key)) out.push(key);
+  }
+  return out;
+}
+
 module.exports = {
   manualRecoveryDigestLine,
   MANUAL_RECOVERY_CONDITION_KEY,
@@ -582,4 +599,5 @@ module.exports = {
   dedupeGapCards,
   WRONG_URL_INCOMPLETE,
   hasWrongUrlSignal,
+  staleOpenGapKeys,
 };
