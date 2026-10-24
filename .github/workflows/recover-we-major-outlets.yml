@@ -126,8 +126,8 @@ jobs:
           [ "$INPUT_DEBUG" = "true" ] && FLAGS="$FLAGS --debug"
           node scripts/we-major-recovery.js wos --seasons="$INPUT_SEASONS" --out=$RUNNER_TEMP/wos.json
           # Guardian Content API: production-specific by construction (date window around opening). Free.
-          if [ -n "$GUARDIAN_API_KEY" ] && { [ -z "$INPUT_SLOTS" ] || echo ",$INPUT_SLOTS," | grep -qE ',(guardian|observer),'; }; then
-            node scripts/we-major-recovery.js guardian --seasons="$INPUT_SEASONS" ${INPUT_SHOWS:+--shows="$INPUT_SHOWS"} --out=$RUNNER_TEMP/guardian.json || echo '[]' > $RUNNER_TEMP/guardian.json
+          if [ -n "$GUARDIAN_API_KEY" ] && { [ -z "$INPUT_SLOTS" ] || echo ",$INPUT_SLOTS," | grep -q ',guardian,'; }; then
+            node scripts/we-major-recovery.js guardian --seasons="$INPUT_SEASONS" ${INPUT_SHOWS:+--shows="$INPUT_SHOWS"} --out=$RUNNER_TEMP/guardian.json | tee -a $RUNNER_TEMP/recovery.log || echo '[]' > $RUNNER_TEMP/guardian.json
             node -e "const f=require('fs'),d=process.env.RUNNER_TEMP;f.writeFileSync(d+'/wos.json',JSON.stringify([...JSON.parse(f.readFileSync(d+'/wos.json')),...JSON.parse(f.readFileSync(d+'/guardian.json'))],null,1))"
           fi
           [ "$INPUT_MODE" = "run" ] && FLAGS="$FLAGS --serp"

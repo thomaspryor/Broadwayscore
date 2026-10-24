@@ -130,16 +130,17 @@ test('norm folds diacritics so accented titles match', () => {
   assert.equal(lib.norm('Café Müller'), lib.norm('Cafe Muller'));
 });
 
-test('matchGuardianResults: tone/reviews, right paper, title in headline, inside the window, unambiguous', () => {
-  const s = show({ title: 'The Lehman Trilogy', openingDate: '2018-07-12' });
+test('matchGuardianResults: tone/reviews, Guardian only, title in headline, window, venue in text, unambiguous', () => {
+  const s = show({ title: 'The Lehman Trilogy', openingDate: '2018-07-12', venue: 'Piccadilly Theatre' });
   const r = (date, headline, o = {}) => ({ webUrl: `https://www.theguardian.com/stage/${date}/${headline.length}`, webTitle: headline,
-    webPublicationDate: `${date}T20:00:00Z`, fields: { headline, publication: 'The Guardian' }, tags: [{ id: 'tone/reviews' }], ...o });
+    webPublicationDate: `${date}T20:00:00Z`, fields: { headline, publication: 'The Guardian', bodyText: 'At the Piccadilly Theatre, London' }, tags: [{ id: 'tone/reviews' }], ...o });
   const only = x => lib.matchGuardianResults(s, x).map(h => h.date);
   assert.deepEqual(only([r('2018-07-13', 'The Lehman Trilogy review – epic')]), ['2018-07-13']);
+  assert.deepEqual(only([r('2018-07-13', 'The Lehman Trilogy review', { fields: { headline: 'The Lehman Trilogy review', publication: 'theguardian.com', bodyText: 'Piccadilly Theatre' } })]), ['2018-07-13']);
   assert.deepEqual(only([r('2019-07-13', 'The Lehman Trilogy review – revival')]), []); // outside window
   assert.deepEqual(only([r('2018-07-13', 'The Lehman Trilogy: a feature', { tags: [{ id: 'tone/features' }] })]), []);
-  assert.deepEqual(only([r('2018-07-13', 'The week in theatre: The Lehman Trilogy review', { fields: { headline: 'The week in theatre: The Lehman Trilogy review', publication: 'The Observer' } })]), []); // Observer is not Guardian
-  assert.deepEqual(lib.matchGuardianResults(s, [r('2018-07-13', 'The week in theatre: The Lehman Trilogy review', { fields: { headline: 'The week in theatre: The Lehman Trilogy review', publication: 'The Observer' } })], 'observer').length, 1);
+  assert.deepEqual(only([r('2018-07-13', 'The Lehman Trilogy review', { fields: { headline: 'The Lehman Trilogy review', publication: 'The Observer', bodyText: 'Piccadilly Theatre' } })]), []); // Observer
+  assert.deepEqual(only([r('2018-07-13', 'The Lehman Trilogy review', { fields: { headline: 'The Lehman Trilogy review', publication: 'The Guardian', bodyText: 'At the Park Avenue Armory, New York' } })]), []); // other production
   assert.deepEqual(only([r('2018-07-13', 'Hamlet review')]), []); // other show
   assert.deepEqual(only([r('2018-07-13', 'The Lehman Trilogy review – a'), r('2018-07-20', 'The Lehman Trilogy review – b')]), []); // ambiguous
   assert.deepEqual(lib.matchGuardianResults(show({ openingDate: null }), []), []);
