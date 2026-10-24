@@ -26,19 +26,19 @@
  */
 const SOURCES = Object.freeze([
   { id: 'thestage-roundups', label: 'The Stage roundups', market: 'west-end',
-    workflows: { 'scrape-thestage-roundups.yml': 7 } },
+    workflows: { 'scrape-thestage-roundups.yml': 7, 'sweep-we-aggregators.yml': 7 } },
   { id: 'stagedoor', label: 'Stagedoor', market: 'west-end',
     workflows: { 'scrape-stagedoor.yml': 7 },
     retired: { on: '2026-06-25', reason: 'stagedoor.com shut down and 302-redirects to londontheatredirect.com; no critic pages exist to scrape' } },
   { id: 'lbo-roundups', label: 'London Box Office roundups', market: 'west-end',
     workflows: { 'scrape-new-aggregators.yml': 1 } },
   { id: 'bww-roundups', label: 'BroadwayWorld roundups (London)', market: 'west-end',
-    workflows: { 'scrape-new-aggregators.yml': 1 } },
+    workflows: { 'scrape-new-aggregators.yml': 1, 'scrape-bww-reviews.yml': 7 } },
   { id: 'westendtheatre', label: 'westendtheatre.com', market: 'west-end',
     workflows: { 'scrape-westendtheatre.yml': 7, 'sweep-we-aggregators.yml': 7 } },
-  { id: 'nyc-theatre', label: 'NYC Theatre roundups', market: 'broadway',
+  { id: 'nyc-theatre', label: 'NYC Theatre roundups', market: 'broadway', category: 'broadway',
     workflows: { 'scrape-new-aggregators.yml': 1 } },
-  { id: 'playbill-verdict', label: 'Playbill Verdict', market: 'broadway',
+  { id: 'playbill-verdict', label: 'Playbill Verdict', market: 'broadway', category: 'broadway',
     workflows: { 'scrape-new-aggregators.yml': 1 } },
 ]);
 
@@ -67,15 +67,17 @@ function quarterOf(dateStr) {
  * @param {Set<string>} archivedIds show ids that have an archived page
  * @returns {Array<{quarter,total,covered,pct}>} ascending by quarter
  */
-function coverageSeries(shows, archivedIds, { market, now = new Date(), graceDays = DEFAULTS.graceDays } = {}) {
+function coverageSeries(shows, archivedIds, { market, category, now = new Date(), graceDays = DEFAULTS.graceDays } = {}) {
   const cutoff = new Date(now.getTime() - graceDays * 86400000).toISOString().slice(0, 10);
+  const currentQ = quarterOf(now.toISOString()); // still filling in: never judged
   const byQ = new Map();
   for (const s of shows || []) {
     if (!s || !s.openingDate || s.provisional) continue;
     if (market && s.market !== market) continue;
+    if (category && s.category !== category) continue;
     if (s.openingDate > cutoff) continue;
     const q = quarterOf(s.openingDate);
-    if (!q) continue;
+    if (!q || q === currentQ) continue;
     const row = byQ.get(q) || { quarter: q, total: 0, covered: 0 };
     row.total++;
     if (archivedIds.has(s.id)) row.covered++;
@@ -125,9 +127,9 @@ function workflowVerdict(runs, { cadenceDays, now = new Date() } = {}, opts = {}
   const sorted = (runs || []).filter(r => r && !Number.isNaN(toMs(r))).sort((a, b) => toMs(b) - toMs(a));
   if (!sorted.length) return { status: 'no-runs' };
   const daysAgo = r => (now.getTime() - toMs(r)) / 86400000;
-  const done = sorted.filter(r => r.conclusion && !['cancelled', 'skipped', 'startup_failure'].includes(r.conclusion));
+  const done = sorted.filter(r => r.conclusion && !['cancelled', 'skipped'].includes(r.conclusion));
   let streak = 0;
-  while (streak < done.length && ['failure', 'timed_out'].includes(done[streak].conclusion)) streak++;
+  while (streak < done.length && ['failure', 'timed_out', 'startup_failure'].includes(done[streak].conclusion)) streak++;
   const lastSuccess = done.find(r => r.conclusion === 'success');
   const out = {
     streak,
@@ -139,7 +141,7 @@ function workflowVerdict(runs, { cadenceDays, now = new Date() } = {}, opts = {}
   const idleAfter = cadenceDays * o.idleMultiplier + o.idleSlackDays;
   if (out.daysSinceLastRun > idleAfter) return { status: 'idle', idleAfterDays: idleAfter, ...out };
   const staleAfter = cadenceDays * o.staleSuccessMultiplier + o.idleSlackDays;
-  if (out.daysSinceSuccess === null ? sorted.length >= o.failStreak : out.daysSinceSuccess > staleAfter) {
+  if (out.daysSinceSuccess === null ? done.length >= o.failStreak : out.daysSinceSuccess > staleAfter) {
     return { status: 'stale-success', staleAfterDays: staleAfter, ...out };
   }
   return { status: 'ok', ...out };
@@ -178,12 +180,13 @@ function retiredConsistency(sources, scheduled) {
 function assess({ sources = SOURCES, shows, archives, runs, scheduled, now = new Date(), opts = {} }) {
   const findings = [];
   const report = [];
+  const seenWf = new Set(); // a workflow shared by several sources is reported once
   findings.push(...retiredConsistency(sources, scheduled || {}));
   for (const s of sources) {
     if (s.retired) { report.push({ source: s.id, retired: s.retired }); continue; }
     const entry = { source: s.id, label: s.label };
     if (archives && archives[s.id]) {
-      const series = coverageSeries(shows, archives[s.id], { market: s.market, now, graceDays: opts.graceDays });
+      const series = coverageSeries(shows, archives[s.id], { market: s.market, category: s.category, now, graceDays: opts.graceDays });
       const v = coverageVerdict(series, opts);
       entry.coverage = { series: series.slice(-6), ...v };
       if (v.flagged) {
@@ -197,12 +200,14 @@ function assess({ sources = SOURCES, shows, archives, runs, scheduled, now = new
         if (!runs[wf]) continue;
         const v = workflowVerdict(runs[wf], { cadenceDays, now }, opts);
         entry.workflows[wf] = v;
+        if (seenWf.has(wf)) continue;
+        seenWf.add(wf);
         if (v.status === 'failing') {
           findings.push({ source: s.id, kind: 'workflow-failing', workflow: wf,
             message: `${s.label}: ${wf} failed its last ${v.streak} runs in a row (last success ${v.lastSuccessAt ? v.lastSuccessAt.slice(0, 10) : 'none in window'})` });
         } else if (v.status === 'idle') {
           findings.push({ source: s.id, kind: 'workflow-idle', workflow: wf,
-            message: `${s.label}: ${wf} has not run in ${v.daysSinceLastRun} days (expected every ${Math.round((v.idleAfterDays - DEFAULTS.idleSlackDays) / DEFAULTS.idleMultiplier)})` });
+            message: `${s.label}: ${wf} has not run in ${v.daysSinceLastRun} days (expected every ${cadenceDays})` });
         } else if (v.status === 'stale-success') {
           findings.push({ source: s.id, kind: 'workflow-stale', workflow: wf,
             message: `${s.label}: ${wf} last succeeded ${v.daysSinceSuccess === null ? 'never (in window)' : `${v.daysSinceSuccess} days ago`}` });

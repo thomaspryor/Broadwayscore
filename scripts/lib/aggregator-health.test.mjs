@@ -98,6 +98,8 @@ test('green runs that only ever fail intermittently stay ok; no success for a lo
   const stale = [run('2026-10-23T00:00:00Z', 'failure'), run('2026-10-22T00:00:00Z', 'success'),
     run('2026-10-10T00:00:00Z', 'success')];
   assert.equal(H.workflowVerdict(stale, { cadenceDays: 1, now: new Date('2026-10-30T00:00:00Z') }).status, 'idle');
+  const staleOk = [run('2026-10-29T00:00:00Z', 'failure'), run('2026-10-02T00:00:00Z', 'success')];
+  assert.equal(H.workflowVerdict(staleOk, { cadenceDays: 1, now: new Date('2026-10-30T00:00:00Z') }).status, 'stale-success');
   assert.equal(H.workflowVerdict([], { cadenceDays: 1, now: NOW }).status, 'no-runs');
 });
 
@@ -137,4 +139,27 @@ test('real registry matches the real workflow files (cron removed or restored wi
     }
   }
   assert.deepEqual(H.retiredConsistency(H.SOURCES, scheduled), []);
+});
+
+test('current quarter is never judged; startup_failure counts; cancelled/pending alone is not stale', () => {
+  const { shows, ids } = fixture({ '25Q4': [100, 60], '26Q1': [100, 60], '26Q2': [100, 60], '26Q3': [100, 60] });
+  for (let i = 0; i < 20; i++) shows.push({ id: `cur-${i}`, market: 'west-end', openingDate: '2026-10-05' });
+  const series = H.coverageSeries(shows, ids, { market: 'west-end', now: NOW });
+  assert.ok(!series.some(r => r.quarter === '2026Q4'));
+  assert.equal(H.coverageVerdict(series).flagged, false);
+  const sf = ['2026-10-23', '2026-10-22', '2026-10-21'].map(d => run(`${d}T00:00:00Z`, 'startup_failure'));
+  assert.equal(H.workflowVerdict(sf, { cadenceDays: 1, now: NOW }).status, 'failing');
+  const pending = [run('2026-10-23T00:00:00Z', null), run('2026-10-22T00:00:00Z', 'cancelled'), run('2026-10-21T00:00:00Z', 'cancelled')];
+  assert.equal(H.workflowVerdict(pending, { cadenceDays: 1, now: NOW }).status, 'ok');
+});
+
+test('category filter and shared-workflow dedupe', () => {
+  const shows = [];
+  for (let i = 0; i < 10; i++) shows.push({ id: `b${i}`, market: 'broadway', category: 'broadway', openingDate: '2026-02-01' }, { id: `o${i}`, market: 'broadway', category: 'off-broadway', openingDate: '2026-02-01' });
+  const s = H.coverageSeries(shows, new Set(), { market: 'broadway', category: 'broadway', now: NOW });
+  assert.equal(s[0].total, 10);
+  const sources = [{ id: 'a', label: 'A', market: 'west-end', workflows: { 'x.yml': 1 } }, { id: 'b', label: 'B', market: 'west-end', workflows: { 'x.yml': 1 } }];
+  const fails = ['20', '21', '22'].map(d => run(`2026-10-${d}T00:00:00Z`, 'failure'));
+  const { findings } = H.assess({ sources, shows: [], archives: null, runs: { 'x.yml': fails }, scheduled: { 'x.yml': true }, now: NOW });
+  assert.equal(findings.length, 1);
 });

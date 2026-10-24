@@ -27,16 +27,19 @@ const REPO = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
 
 function loadShows() {
   const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
-  return Array.isArray(raw) ? raw : raw.shows;
+  const shows = Array.isArray(raw) ? raw : raw.shows;
+  if (!Array.isArray(shows)) throw new Error('data/shows.json has no shows array');
+  return shows;
 }
 
-function loadArchives(sources) {
+function loadArchives(sources, shows) {
+  const idBySlug = new Map(shows.filter(s => s.slug).map(s => [s.slug, s.id])); // legacy slug-named archives
   if (!fs.existsSync(ARCHIVE_DIR)) return null;
   const out = {};
   for (const s of sources) {
     const dir = path.join(ARCHIVE_DIR, s.id);
     out[s.id] = new Set(fs.existsSync(dir)
-      ? fs.readdirSync(dir).map(f => /^(.+)\.(html|json)$/.exec(f)).filter(Boolean).map(m => m[1])
+      ? fs.readdirSync(dir).map(f => /^(.+)\.(html|json)$/.exec(f)).filter(Boolean).map(m => idBySlug.get(m[1]) || m[1])
       : []);
   }
   return out;
@@ -53,7 +56,7 @@ function loadScheduled(sources) {
   return out;
 }
 
-function loadRuns(sources) {
+function loadRuns(sources, failed) {
   const out = {};
   let ok = 0;
   for (const wf of new Set(sources.flatMap(s => Object.keys(s.workflows)))) {
@@ -61,7 +64,7 @@ function loadRuns(sources) {
       const body = ghApiJson(`repos/${REPO}/actions/workflows/${wf}/runs?per_page=30`);
       out[wf] = (body.workflow_runs || []).map(r => ({ created_at: r.created_at, conclusion: r.conclusion, event: r.event }));
       ok++;
-    } catch { /* leave unset: that workflow is skipped, not reported healthy */ }
+    } catch { failed.push(wf); /* skipped, not reported healthy */ }
   }
   return ok ? out : null;
 }
@@ -74,13 +77,17 @@ function main() {
   const now = nowArg ? new Date(nowArg.slice(6)) : new Date();
   const sources = SOURCES;
 
-  const archives = loadArchives(sources);
-  const runs = args.includes('--no-runs') ? null : loadRuns(sources);
-  const { findings, report } = assess({ sources, shows: loadShows(), archives, runs, scheduled: loadScheduled(sources), now });
+  if (Number.isNaN(now.getTime())) { console.error('bad --now'); process.exit(2); }
+  const shows = loadShows();
+  const failedWf = [];
+  const archives = loadArchives(sources, shows);
+  const runs = args.includes('--no-runs') ? null : loadRuns(sources, failedWf);
+  const { findings, report } = assess({ sources, shows, archives, runs, scheduled: loadScheduled(sources), now });
   const notes = [];
   if (!archives) notes.push('coverage skipped: data/aggregator-archive not present');
   if (!runs) notes.push('workflow history skipped: GitHub API unavailable or --no-runs');
 
+  if (failedWf.length) notes.push(`run history unavailable for: ${failedWf.join(', ')}`);
   const result = { generatedAt: now.toISOString(), findings, notes, report };
   if (args.includes('--write')) {
     fs.mkdirSync(path.dirname(OUT), { recursive: true });
