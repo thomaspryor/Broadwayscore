@@ -9910,13 +9910,13 @@
     "priority-queue:overdue": {
       "status": "open",
       "disposition": "digest",
-      "title": "Overdue P0/P1 queue: 0 P0 older than 24h, 10 P1 older than 7d",
+      "title": "Overdue P0/P1 queue: 0 P0 older than 24h, 13 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-10-23T07:33:42.016Z",
-      "lastNotifiedAt": "2026-10-23T07:33:42.016Z",
+      "lastSeen": "2026-10-24T07:20:55.215Z",
+      "lastNotifiedAt": "2026-10-24T07:20:55.215Z",
       "lastSurfacedAt": "2026-10-18T07:17:18.505Z",
-      "notifyCount": 20,
+      "notifyCount": 21,
       "cardId": null,
       "linearIdentifier": "BRO-5613"
     },
@@ -17677,13 +17677,13 @@
       "title": "Spend guard bd-circuit-breaker-serp_api1: cap drift",
       "firstSeen": "2026-10-14T02:46:56.653Z",
       "incidentOpenedAt": "2026-10-14T02:46:56.653Z",
-      "lastSeen": "2026-10-23T07:35:35.163Z",
+      "lastSeen": "2026-10-24T07:22:21.103Z",
       "lastNotifiedAt": "2026-10-21T07:42:19.975Z",
       "lastSurfacedAt": "2026-10-21T07:42:19.975Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "guard-audit:bd-web_unlocker2": {
       "status": "open",
@@ -17691,13 +17691,13 @@
       "title": "Spend guard bd-circuit-breaker-web_unlocker2: cap drift",
       "firstSeen": "2026-10-14T02:46:56.661Z",
       "incidentOpenedAt": "2026-10-14T02:46:56.661Z",
-      "lastSeen": "2026-10-23T07:35:35.183Z",
+      "lastSeen": "2026-10-24T07:22:21.115Z",
       "lastNotifiedAt": "2026-10-21T07:42:19.987Z",
       "lastSurfacedAt": "2026-10-21T07:42:19.987Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "land:land/bro-5261-s5-retro-fixes": {
       "status": "resolved",
@@ -19817,13 +19817,12 @@
       "title": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-17T07:00:59.962Z",
       "incidentOpenedAt": "2026-10-22T18:21:15.371Z",
-      "lastSeen": "2026-10-23T07:34:19.045Z",
-      "lastNotifiedAt": "2026-10-22T18:21:15.371Z",
-      "lastSurfacedAt": "2026-10-22T18:21:15.371Z",
-      "notifyCount": 6,
+      "lastSeen": "2026-10-24T07:21:15.053Z",
+      "lastNotifiedAt": "2026-10-24T07:21:15.053Z",
+      "lastSurfacedAt": "2026-10-24T07:21:15.053Z",
+      "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 2
+      "linearIdentifier": null
     },
     "land:land/bro-5520-research-batch": {
       "status": "resolved",
@@ -21232,7 +21231,7 @@
       "silentRefires": 5
     },
     "coverage-holes:cadel-lungs-on-legs-west-end-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "cadel-lungs-on-legs-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-19T07:50:11.584Z",
@@ -21242,7 +21241,9 @@
       "lastSurfacedAt": "2026-10-23T07:34:18.958Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-24T07:21:14.994Z",
+      "resolveReason": "no rejected-but-verified review and no unqueued out-of-band score"
     },
     "land:land/bro-5670-docs-deploy-timing": {
       "status": "resolved",
@@ -23500,10 +23501,10 @@
       "title": "the-pianist-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-22T07:38:11.543Z",
       "incidentOpenedAt": "2026-10-22T07:38:11.543Z",
-      "lastSeen": "2026-10-23T07:34:18.865Z",
-      "lastNotifiedAt": "2026-10-23T07:34:18.865Z",
-      "lastSurfacedAt": "2026-10-23T07:34:18.865Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-10-24T07:21:14.939Z",
+      "lastNotifiedAt": "2026-10-24T07:21:14.939Z",
+      "lastSurfacedAt": "2026-10-24T07:21:14.939Z",
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -24236,13 +24237,12 @@
       "title": "stories-the-tap-dance-sensation-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-22T18:21:15.099Z",
       "incidentOpenedAt": "2026-10-22T18:21:15.099Z",
-      "lastSeen": "2026-10-23T07:34:18.742Z",
-      "lastNotifiedAt": "2026-10-22T18:21:15.099Z",
-      "lastSurfacedAt": "2026-10-22T18:21:15.099Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-10-24T07:21:14.864Z",
+      "lastNotifiedAt": "2026-10-24T07:21:14.864Z",
+      "lastSurfacedAt": "2026-10-24T07:21:14.864Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 2
+      "linearIdentifier": null
     },
     "coverage-holes:fences-off-west-end-2026": {
       "status": "open",
@@ -24264,13 +24264,12 @@
       "title": "billy-crystal-860-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-22T18:21:15.185Z",
       "incidentOpenedAt": "2026-10-22T18:21:15.185Z",
-      "lastSeen": "2026-10-23T07:34:18.822Z",
-      "lastNotifiedAt": "2026-10-22T18:21:15.185Z",
-      "lastSurfacedAt": "2026-10-22T18:21:15.185Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-10-24T07:21:14.913Z",
+      "lastNotifiedAt": "2026-10-24T07:21:14.913Z",
+      "lastSurfacedAt": "2026-10-24T07:21:14.913Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 2
+      "linearIdentifier": null
     },
     "coverage-holes:queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026": {
       "status": "open",
@@ -24278,13 +24277,12 @@
       "title": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-22T18:21:15.315Z",
       "incidentOpenedAt": "2026-10-22T18:21:15.315Z",
-      "lastSeen": "2026-10-23T07:34:18.989Z",
-      "lastNotifiedAt": "2026-10-22T18:21:15.315Z",
-      "lastSurfacedAt": "2026-10-22T18:21:15.315Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-10-24T07:21:15.016Z",
+      "lastNotifiedAt": "2026-10-24T07:21:15.016Z",
+      "lastSurfacedAt": "2026-10-24T07:21:15.016Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 2
+      "linearIdentifier": null
     },
     "coverage-holes:nina-off-west-end-2026": {
       "status": "open",
@@ -24292,13 +24290,12 @@
       "title": "nina-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-22T18:21:15.398Z",
       "incidentOpenedAt": "2026-10-22T18:21:15.398Z",
-      "lastSeen": "2026-10-23T07:34:19.083Z",
-      "lastNotifiedAt": "2026-10-22T18:21:15.398Z",
-      "lastSurfacedAt": "2026-10-22T18:21:15.398Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-10-24T07:21:15.072Z",
+      "lastNotifiedAt": "2026-10-24T07:21:15.072Z",
+      "lastSurfacedAt": "2026-10-24T07:21:15.072Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 2
+      "linearIdentifier": null
     },
     "land:land/bro-2427-withtimeout": {
       "status": "resolved",
