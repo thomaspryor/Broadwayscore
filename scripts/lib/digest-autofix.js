@@ -1158,8 +1158,9 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
 // unresolved dispatch and both appended its card-pass/card-fail, double-counting
 // the attempt-memory streaks checkPark parks on. Same shape as BRO-2513's
 // scripts/backlog-drain.js reconcileAndAppend. Lock busy: skip the reconcile
-// (the next run retries); lock abandoned past DIGEST_ABANDONED_LOCK_MS:
-// reconcile unlocked, loudly, so outcomes never stop reaching the spend breaker.
+// (the next run retries). These synchronous writes take milliseconds, so a
+// holder older than DIGEST_ABANDONED_LOCK_MS is abandoned even with a recycled
+// live PID. The shared helper recovers it before running the locked body.
 const DIGEST_ABANDONED_LOCK_MS = 15 * 60 * 1000;
 function reconcileAndAppendDigest(ledgerPath, tasksById, dispatchLedgerEntries, now = new Date(), log = () => {}, opts = {}) {
   const { lockOpts = {}, beforeAppend } = opts;
@@ -1174,16 +1175,11 @@ function reconcileAndAppendDigest(ledgerPath, tasksById, dispatchLedgerEntries, 
     return { newOutcomes, ledgerEntries: newOutcomes.length ? entries.concat(newOutcomes) : entries };
   };
   fs.mkdirSync(path.dirname(ledgerPath), { recursive: true });
-  const result = withFileLock(`${ledgerPath}.lock`, held => (held ? body() : null), lockOpts);
+  const result = withFileLock(`${ledgerPath}.lock`, held => (held ? body() : null), {
+    abandonedMs: DIGEST_ABANDONED_LOCK_MS, ...lockOpts,
+  });
   if (result !== null) return result;
-  const ageMs = Math.max(...[`${ledgerPath}.lock`, `${ledgerPath}.lock.steal-gate`].map(f => {
-    try { return Date.now() - fs.statSync(f).mtimeMs; } catch { return 0; }
-  }));
-  if (ageMs > DIGEST_ABANDONED_LOCK_MS) {
-    log(`[digest-autofix] reconcile lock abandoned (${Math.round(ageMs / 60000)}min old) — reconciling unlocked`);
-    return body();
-  }
-  log('[digest-autofix] reconcile lock busy — skipping reconcile this run (next run retries)');
+  console.error('[digest-autofix] reconcile lock busy; skipping reconcile this run (next run retries)');
   return { newOutcomes: [], ledgerEntries: readJsonlLedger(ledgerPath), skipped: true };
 }
 

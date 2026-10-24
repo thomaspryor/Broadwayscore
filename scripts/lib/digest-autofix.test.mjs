@@ -1589,7 +1589,7 @@ function withDigestLedger(fn) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6003-'));
   const ledger = path.join(dir, 'ledger.jsonl');
   fs.writeFileSync(ledger, JSON.stringify(ORPHAN_DISPATCH) + '\n');
-  return Promise.resolve(fn(ledger)).finally(() => fs.rmSync(dir, { recursive: true, force: true }));
+  return Promise.resolve().then(() => fn(ledger)).finally(() => fs.rmSync(dir, { recursive: true, force: true }));
 }
 
 test('reconcileAndAppendDigest: two concurrent processes append exactly one outcome per resolved dispatch (BRO-6003)', () => withDigestLedger(async ledger => {
@@ -1602,15 +1602,17 @@ test('reconcileAndAppendDigest: two concurrent processes append exactly one outc
   assert.equal(fs.existsSync(`${ledger}.lock`), false, 'lock released');
 }));
 
-test('reconcileAndAppendDigest: lock busy skips instead of appending (BRO-6003)', () => withDigestLedger(ledger => {
+test('reconcileAndAppendDigest: lock busy skips instead of appending (BRO-6003)', t => withDigestLedger(ledger => {
   const { reconcileAndAppendDigest } = require('./digest-autofix.js');
   fs.writeFileSync(`${ledger}.lock`, `${process.pid} live\n`);
-  const logs = [];
+  const errors = [], logs = [];
+  t.mock.method(console, 'error', m => errors.push(m));
   const r = reconcileAndAppendDigest(ledger, new Map(), [], new Date(), m => logs.push(m), { lockOpts: { timeoutMs: 150, waitMs: 10 } });
   assert.equal(r.skipped, true);
   assert.deepEqual(r.newOutcomes, []);
   assert.equal(fs.readFileSync(ledger, 'utf8').trim().split('\n').length, 1, 'nothing appended');
-  assert.ok(logs.some(m => /lock busy/.test(m)));
+  assert.ok(errors.some(m => /lock busy/.test(m)));
+  assert.equal(logs.length, 0);
 }));
 
 test('reconcileAndAppendDigest: a second pass is idempotent and returns the fresh ledger (BRO-6003)', () => withDigestLedger(ledger => {
@@ -1622,15 +1624,41 @@ test('reconcileAndAppendDigest: a second pass is idempotent and returns the fres
   assert.equal(fs.readFileSync(ledger, 'utf8').trim().split('\n').length, 2);
 }));
 
-test('reconcileAndAppendDigest: an abandoned lock (older than 15min) reconciles unlocked instead of skipping forever (BRO-6003)', () => withDigestLedger(ledger => {
-  const { reconcileAndAppendDigest } = require('./digest-autofix.js');
-  fs.writeFileSync(`${ledger}.lock.steal-gate`, 'abandoned\n');
-  const old = new Date(Date.now() - 30 * 60_000);
-  fs.utimesSync(`${ledger}.lock.steal-gate`, old, old);
-  const r = reconcileAndAppendDigest(ledger, new Map(), [], new Date(), () => {}, { lockOpts: { timeoutMs: 150, waitMs: 10 } });
-  assert.equal(r.skipped, undefined);
-  assert.equal(r.newOutcomes.length, 1);
-}));
+for (const abandoned of ['legacy-gate', 'dead-lock-and-gate', 'recycled-lock', 'recycled-gate', 'dead-directory-gate', 'recycled-directory-gate']) {
+  test(`reconcileAndAppendDigest: ${abandoned} is recovered, reconciles locked, and leaves the next run locked`, t => withDigestLedger(ledger => {
+    const { reconcileAndAppendDigest } = require('./digest-autofix.js');
+    const lock = `${ledger}.lock`, gate = `${lock}.steal-gate`;
+    const old = new Date(Date.now() - 30 * 60_000);
+    const paths = abandoned === 'dead-lock-and-gate' ? [lock, gate]
+      : [abandoned === 'recycled-lock' ? lock : gate];
+    for (const f of paths) {
+      let owner = f;
+      if (abandoned.endsWith('directory-gate')) {
+        fs.mkdirSync(f);
+        owner = path.join(f, 'old-generation');
+      }
+      fs.writeFileSync(owner, abandoned.startsWith('recycled') ? `${process.pid} old\n` : 'abandoned\n');
+      fs.utimesSync(owner, old, old);
+      fs.utimesSync(f, old, old);
+    }
+    const errors = [], logs = [];
+    t.mock.method(console, 'error', m => errors.push(m));
+    let calls = 0;
+    const opts = { lockOpts: { timeoutMs: 150, waitMs: 10 }, beforeAppend: () => {
+      calls++;
+      assert.match(fs.readFileSync(lock, 'utf8'), new RegExp(`^${process.pid} \\d{4}-`), 'body must hold a newly acquired lock');
+    } };
+    const r = reconcileAndAppendDigest(ledger, new Map(), [], new Date(), m => logs.push(m), opts);
+    assert.equal(r.skipped, undefined);
+    assert.equal(r.newOutcomes.length, 1);
+    assert.equal(fs.existsSync(lock), false, 'main lock released');
+    assert.equal(fs.existsSync(gate), false, 'abandoned gate cleared');
+    assert.ok(errors.some(m => /abandoned/.test(m)), 'recovery logged to stderr');
+    assert.equal(logs.length, 0, 'lock diagnostics must not go to the stdout logger');
+    assert.equal(reconcileAndAppendDigest(ledger, new Map(), [], new Date(), () => {}, opts).newOutcomes.length, 0);
+    assert.equal(calls, 2, 'next run also reconciles while locked');
+  }));
+}
 
 test('reattachedLiveState: started (In Progress / In Review) cards are tracked, not dispatched; Paused and others stay dispatchable (BRO-6081)', () => {
   const { reattachedLiveState } = require('./digest-autofix.js');

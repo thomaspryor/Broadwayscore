@@ -409,21 +409,47 @@ test('reconcileAndAppend: a second pass over the same ledger is idempotent', () 
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
-test('reconcileAndAppend: an abandoned lock (older than 15min) reconciles unlocked instead of skipping forever', () => {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro2513-'));
-  try {
-    const ledger = path.join(dir, 'ledger.jsonl');
-    fs.writeFileSync(ledger, JSON.stringify(
-      { ts: '2026-07-30T11:00:00Z', event: 'drain-dispatch', taskId: '4', subject: 'x', contentHash: 'abc' }) + '\n');
-    fs.writeFileSync(`${ledger}.lock.steal-gate`, 'abandoned\n');
-    const old = new Date(Date.now() - 30 * 60_000);
-    fs.utimesSync(`${ledger}.lock.steal-gate`, old, old);
-    const { reconcileAndAppend } = require('./backlog-drain.js');
-    const r = reconcileAndAppend(ledger, new Map([['4', { id: '4', status: 'pending' }]]), [], { lockOpts: { timeoutMs: 150, waitMs: 10 } });
-    assert.equal(r.skipped, undefined);
-    assert.equal(r.newOutcomes.length, 1);
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
-});
+for (const abandoned of ['legacy-gate', 'dead-lock-and-gate', 'recycled-lock', 'recycled-gate', 'dead-directory-gate', 'recycled-directory-gate']) {
+  test(`reconcileAndAppend: ${abandoned} is recovered, reconciles locked, and leaves the next run locked`, t => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6076-drain-'));
+    try {
+      const ledger = path.join(dir, 'ledger.jsonl');
+      fs.writeFileSync(ledger, JSON.stringify(
+        { ts: '2026-07-30T11:00:00Z', event: 'drain-dispatch', taskId: '4', contentHash: 'abc' }) + '\n');
+      const lock = `${ledger}.lock`, gate = `${lock}.steal-gate`;
+      const old = new Date(Date.now() - 30 * 60_000);
+      const paths = abandoned === 'dead-lock-and-gate' ? [lock, gate]
+        : [abandoned === 'recycled-lock' ? lock : gate];
+      for (const f of paths) {
+        let owner = f;
+        if (abandoned.endsWith('directory-gate')) {
+          fs.mkdirSync(f);
+          owner = path.join(f, 'old-generation');
+        }
+        fs.writeFileSync(owner, abandoned.startsWith('recycled') ? `${process.pid} old\n` : 'abandoned\n');
+        fs.utimesSync(owner, old, old);
+        fs.utimesSync(f, old, old);
+      }
+      const errors = [];
+      t.mock.method(console, 'error', m => errors.push(m));
+      const { reconcileAndAppend } = require('./backlog-drain.js');
+      let calls = 0;
+      const opts = { lockOpts: { timeoutMs: 150, waitMs: 10 }, beforeAppend: () => {
+        calls++;
+        assert.match(fs.readFileSync(lock, 'utf8'), new RegExp(`^${process.pid} \\d{4}-`), 'body must hold a newly acquired lock');
+      } };
+      const tasks = new Map([['4', { id: '4', status: 'pending' }]]);
+      const r = reconcileAndAppend(ledger, tasks, [], opts);
+      assert.equal(r.skipped, undefined);
+      assert.equal(r.newOutcomes.length, 1);
+      assert.equal(fs.existsSync(lock), false, 'main lock released');
+      assert.equal(fs.existsSync(gate), false, 'abandoned gate cleared');
+      assert.ok(errors.some(m => /abandoned/.test(m)), 'recovery logged to stderr');
+      assert.equal(reconcileAndAppend(ledger, tasks, [], opts).newOutcomes.length, 0);
+      assert.equal(calls, 2, 'next run also reconciles while locked');
+    } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  });
+}
 
 // Exercise the real main() in separate processes. Only external inputs and
 // dispatch subprocesses are stubbed; selection, guards and ledger writes run.

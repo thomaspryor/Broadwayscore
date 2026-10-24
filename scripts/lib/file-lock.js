@@ -10,10 +10,9 @@
  *
  * `wx` open is atomic on POSIX, so exactly one process wins the create.
  *
- * Fail-open on every uncertainty: a lock we cannot create after the timeout is
- * broken (assumed stale from a killed process) and the work proceeds. Blocking
- * a caller forever on a leftover lockfile would be a worse failure than the
- * race it prevents.
+ * The callback always runs, receiving held=false if acquisition times out.
+ * Callers that require mutual exclusion must skip their work in that case.
+ * Abandoned locks are claimed before invoking the callback with held=true.
  *
  * Staleness is judged by TWO signals, not one: lock age (mtime) AND whether
  * the recorded holder PID is still alive. Age alone is wrong — the lock's
@@ -41,13 +40,19 @@
  * the fix claims in place (never unlinks/renames lockPath) instead of trying
  * to patch that window shut.
  *
+ * Callers with strictly bounded synchronous critical sections may opt into
+ * abandonedMs: an age limit that also recovers locks with recycled live PIDs.
+ * Other callers retain the age AND dead-PID rule above.
+ *
  * @param {string} lockPath
- * @param {() => any} fn                 executed while holding the lock
- * @param {{timeoutMs?: number, staleMs?: number, waitMs?: number}} [opts]
+ * @param {(held: boolean) => any} fn
+ * @param {{timeoutMs?: number, staleMs?: number, waitMs?: number, abandonedMs?: number}} [opts]
  */
 'use strict';
 
 const fs = require('fs');
+const path = require('path');
+const { randomUUID } = require('crypto');
 
 function pidAlive(pid) {
   if (!Number.isInteger(pid) || pid <= 0) return false;
@@ -66,90 +71,80 @@ function readLockPid(lockPath) {
   catch { return null; }
 }
 
+function isStale(lockPath, staleMs, abandonedMs) {
+  const ageMs = Date.now() - fs.statSync(lockPath).mtimeMs;
+  return ageMs > abandonedMs || (ageMs > staleMs && !pidAlive(readLockPid(lockPath)));
+}
+
 /**
- * Claims lockPath in place when it is still genuinely stale at the moment of
- * the claim (not merely at the moment the caller's stat/pid check ran),
- * WITHOUT ever unlinking or renaming lockPath — so lockPath is never
- * observably absent to anyone (task #1024's actual ~12%-repro two-holders
- * bug: a rename-away steal briefly emptied lockPath, and a totally unrelated
- * waiter's plain `wx` create landed in that gap and became a second
- * simultaneous holder — no gate or re-check on the rename side closes that,
- * because the absence itself is the hazard, not what's judged before it).
- *
- * Two things make this safe:
- *
- * 1. `stealGatePath` (acquired with `wx`, exclusive) serializes stealers, so
- *    at most one process is ever mid-claim at a time. Without it, two
- *    processes could each judge the lock stale, each overwrite lockPath in
- *    place, and each read back a match against ITS OWN write if the reads
- *    happen to interleave with the writes just wrong — "write then read
- *    back" alone is not enough; the whole write+verify must be one
- *    process's exclusive turn. withFileLock's main loop also refuses its
- *    own `wx` create while the gate exists, purely to avoid wasted spins —
- *    NOT for correctness, since lockPath is never absent during a claim
- *    (see below).
- * 2. The claim overwrites lockPath's CONTENT in place (`fs.writeFileSync`
- *    with no `wx`/`ax` flag — open+truncate+write, never unlink+recreate),
- *    so the directory entry exists continuously throughout. Any other
- *    process's `wx` create — gate-aware or not — requires lockPath to be
- *    ABSENT to succeed; since it never is, no interleaving can let a second
- *    process in, unlike the earlier rename-based version of this fix.
- *
- * Returns true iff this process now legitimately holds the lock (caller
- * should treat this exactly like a successful `wx` create); false means
- * lockPath is untouched (caller should wait and recheck).
+ * New gates are directories containing a unique owner marker. A delayed
+ * cleaner removes only marker names it observed as stale, then rmdir refuses
+ * to remove a populated successor gate. Ordinary stat+unlink of a gate FILE
+ * could instead delete a fresh successor between those calls (BRO-6076).
+ * Legacy file gates can be unlinked safely because unlink cannot remove a
+ * directory successor. All contenders must use this directory protocol.
  */
-function claimStaleLockInPlace(lockPath, stealGatePath, staleMs) {
+function clearAbandonedGate(gatePath, staleMs, abandonedMs) {
   try {
-    fs.writeFileSync(stealGatePath, `${process.pid}\n`, { flag: 'wx' });
-  } catch {
-    return false; // someone else is already mid-claim — let them finish
-  }
+    const st = fs.statSync(gatePath);
+    if (st.isDirectory()) {
+      const markers = fs.readdirSync(gatePath);
+      if (!markers.length && Date.now() - st.mtimeMs <= Math.min(staleMs, abandonedMs)) return;
+      for (const marker of markers) {
+        const markerPath = path.join(gatePath, marker);
+        try {
+          if (isStale(markerPath, staleMs, abandonedMs)) fs.unlinkSync(markerPath);
+        } catch { /* vanished or unreadable; never remove a whole directory */ }
+      }
+      fs.rmdirSync(gatePath); // only succeeds if no fresh owner marker exists
+    } else {
+      if (!isStale(gatePath, staleMs, abandonedMs)) return;
+      fs.unlinkSync(gatePath); // EISDIR if another cleaner installed a successor
+    }
+    console.error(`[file-lock] cleared abandoned steal gate: ${gatePath}`);
+  } catch { /* live successor, vanished gate or inaccessible path; retry normally */ }
+}
+
+/**
+ * Serialize stale claims under a directory gate and overwrite the main lock
+ * in place. Never unlink/rename lockPath before claiming: its absence would
+ * allow a normal wx contender to become a second holder (task #1024).
+ */
+function claimStaleLockInPlace(lockPath, stealGatePath, staleMs, abandonedMs) {
+  // A fresh name per attempt also fences a cleaner that observed a previous
+  // generation of this directory. Release must never recursively remove it.
+  const marker = path.join(stealGatePath, randomUUID());
+  try { fs.mkdirSync(stealGatePath); }
+  catch { return false; }
   try {
-    const st = fs.statSync(lockPath);
-    const staleByAge = Date.now() - st.mtimeMs > staleMs;
-    if (!staleByAge || pidAlive(readLockPid(lockPath))) return false; // no longer stale
+    fs.writeFileSync(marker, `${process.pid} ${new Date().toISOString()}\n`, { flag: 'wx' });
+    // A cleaner may have removed an EMPTY gate between mkdir and this write,
+    // merging us into a successor directory. Only a sole marker may proceed;
+    // any second marker must withdraw before its holder can claim the lock.
+    const owners = fs.readdirSync(stealGatePath);
+    if (owners.length !== 1 || owners[0] !== path.basename(marker)) return false;
+    if (!isStale(lockPath, staleMs, abandonedMs)) return false;
 
     const claim = `${process.pid} ${new Date().toISOString()}\n`;
     fs.writeFileSync(lockPath, claim);
-    // Confirm our write landed last. While we hold the gate, no other
-    // stealer can be mid-claim, and a legitimate holder never overwrites its
-    // own lock file in place, so this can only mismatch in a scenario this
-    // helper already treats as acceptable risk (pidAlive false negative —
-    // see the file docstring); it costs one read to verify anyway.
-    return fs.readFileSync(lockPath, 'utf8') === claim;
+    const held = fs.readFileSync(lockPath, 'utf8') === claim;
+    if (held) console.error(`[file-lock] recovered abandoned lock in place: ${lockPath}`);
+    return held;
   } finally {
-    try { fs.unlinkSync(stealGatePath); } catch { /* best-effort */ }
+    try { fs.unlinkSync(marker); } catch { /* best-effort */ }
+    try { fs.rmdirSync(stealGatePath); } catch { /* a successor owns this directory */ }
   }
 }
 
 function withFileLock(lockPath, fn, opts = {}) {
-  const { timeoutMs = 30000, staleMs = 5 * 60 * 1000, waitMs = 100 } = opts;
+  const { timeoutMs = 30000, staleMs = 5 * 60 * 1000, waitMs = 100, abandonedMs = Infinity } = opts;
   const stealGatePath = `${lockPath}.steal-gate`;
   const deadline = Date.now() + timeoutMs;
   let held = false;
   while (Date.now() < deadline) {
     if (fs.existsSync(stealGatePath)) {
-      // Someone else is mid-claim. This is purely to avoid a wasted `wx`
-      // attempt while that's happening — lockPath itself is never absent
-      // during a claim (see claimStaleLockInPlace's docstring), so this
-      // check is an optimization, not a correctness requirement.
-      //
-      // Deliberately NOT self-healing an abandoned gate here: a stat-then-act
-      // cleanup (age+pid check, then unlink) has the exact same TOCTOU shape
-      // as the original bug — between the check and the unlink, the real
-      // holder can release the gate normally and a brand-new claimer can
-      // acquire it via `wx`, and the cleanup would then delete that live
-      // gate, letting a second claimer in. Fencing that properly means
-      // reimplementing the same rename-and-verify dance this fix removed in
-      // favor of the simpler in-place claim — not worth it for a window this
-      // narrow: the gate is only ever held for a handful of synchronous fs
-      // calls (no work happens while holding it), so a crash exactly there is
-      // far rarer than a crash during the real critical section, which this
-      // helper already only guards with a timeout, not a lock-specific
-      // self-heal. An abandoned gate degrades to the SAME fail-open path as
-      // any other unavailability here: callers wait out `timeoutMs` and then
-      // run with held=false (see the docstring's fail-open philosophy).
+      clearAbandonedGate(stealGatePath, staleMs, abandonedMs);
+      if (!fs.existsSync(stealGatePath)) continue;
       const until = Date.now() + waitMs;
       while (Date.now() < until) { /* spin */ }
       continue;
@@ -161,11 +156,8 @@ function withFileLock(lockPath, fn, opts = {}) {
     } catch (e) {
       if (e.code !== 'EEXIST') { held = false; break; } // unwritable dir etc — proceed unlocked
       try {
-        const st = fs.statSync(lockPath);
-        const staleByAge = Date.now() - st.mtimeMs > staleMs;
-        // Both signals must agree — see docstring above.
-        if (staleByAge && !pidAlive(readLockPid(lockPath))) {
-          if (claimStaleLockInPlace(lockPath, stealGatePath, staleMs)) { held = true; break; }
+        if (isStale(lockPath, staleMs, abandonedMs)) {
+          if (claimStaleLockInPlace(lockPath, stealGatePath, staleMs, abandonedMs)) { held = true; break; }
         }
       } catch { /* vanished or lost the claim race — fall through and retry */ }
       // Busy-wait: this runs at most once per lock acquisition on a

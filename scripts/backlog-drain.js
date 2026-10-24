@@ -451,6 +451,8 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
 // A lock we cannot take means a live holder exists: skip and let the next tick
 // reconcile, never append (fail-open here would re-open the double-count).
 // The key (cardId, judgedDispatchTs, event) is a second line of defence.
+// These synchronous ledger writes take milliseconds. Past this bound a live
+// recorded PID is recycled, not a legitimate holder. Recover under the gate.
 const ABANDONED_LOCK_MS = 15 * 60 * 1000;
 function reconcileAndAppend(ledgerPath, tasksById, dispatchLedgerEntries, opts = {}) {
   const { dryRun = false, lockOpts = {}, beforeAppend, ...reconcileOpts } = opts;
@@ -470,19 +472,8 @@ function reconcileAndAppend(ledgerPath, tasksById, dispatchLedgerEntries, opts =
   const result = withFileLock(`${ledgerPath}.lock`, held => {
     if (!held) return null;
     return body();
-  }, lockOpts);
+  }, { abandonedMs: ABANDONED_LOCK_MS, ...lockOpts });
   if (result === null) {
-    // A lock still unreleased long past withFileLock's staleMs is an abandoned
-    // .steal-gate or a recycled PID (file-lock.js never self-heals either), not
-    // a live holder: skipping forever would stop outcomes ever reaching the
-    // spend breaker. Past ABANDONED_LOCK_MS run unlocked, loudly.
-    const ageMs = Math.max(...[`${ledgerPath}.lock`, `${ledgerPath}.lock.steal-gate`].map(f => {
-      try { return Date.now() - fs.statSync(f).mtimeMs; } catch { return 0; }
-    }));
-    if (ageMs > ABANDONED_LOCK_MS) {
-      console.error(`[backlog-drain] reconcile lock abandoned (${Math.round(ageMs / 60000)}min old) — reconciling unlocked`);
-      return body();
-    }
     console.error('[backlog-drain] reconcile lock busy — skipping reconcile this tick (next tick retries)');
     return { newOutcomes: [], ledgerEntries: readLedger(ledgerPath), skipped: true };
   }
