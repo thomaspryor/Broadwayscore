@@ -32,7 +32,7 @@ const BWW_ROUNDUP = `<html><body><article><div class="disnep-area">
   <p>Read the reviews: <a href="https://nypost.com/2026/10/22/entertainment/the-imaginary-invalid-review-x/">Post</a> and <a href="https://deadline.com/2026/10/the-imaginary-invalid-broadway-review-bill-irwin-1237169589/">Deadline</a>, both worth a look tonight.</p>
 </div></article></body></html>`;
 const DTLI_PAGE = `<html><body><section class="section-review-page">
-  <div class="review-item"><div class="review-item-header"><img alt="NEW YORK TIMES" src="x.png"></div>
+  <div class="review-item"><div class="review-item-header"><img alt="NEW YORK TIMES" src="x.png"><h2><a href="/?s=Helen Shaw&searchfor=critics">Helen<br />Shaw</a></h2></div>
     <h3 class="review-item-date">October 22, 2026</h3>
     <p class="paragraph">Dirden's exquisite production, though, is both amusing and wise. That time vanishes in a swirl.</p>
     <a href="https://www.nytimes.com/2026/10/22/theater/imaginary-invalid-review-bill-irwin-moliere.html" class="button-pink review-item-button">READ THE REVIEW</a>
@@ -55,6 +55,7 @@ test('the excerpt an aggregator prints beside each link is kept, from BWW and DT
   const dtli = d.extractCitedLinks(DTLI_PAGE, 'https://didtheylikeit.com/shows/the-imaginary-invalid/');
   const nyt = dtli.find((l) => l.url.includes('nytimes.com'));
   assert.match(nyt.excerpt, /exquisite production/);
+  assert.ok(nyt.excerpt.startsWith('Helen Shaw '), nyt.excerpt);
   assert.ok(!/READ THE REVIEW/.test(nyt.excerpt));
   assert.equal(dtli.find((l) => l.url.includes('vulture.com')).excerpt, null, 'a date alone is not an excerpt');
 });
@@ -81,10 +82,10 @@ test('aggregator adapters put the excerpt in its review-file field, and the pass
   assert.match(row.excerpts.bwwExcerpt, /Helen Shaw/);
 });
 
-function scoring({ extract, scoreText, retryMs = [1000], dir }) {
+function scoring({ extract, scoreText, retryMs = [1000], dir, now = () => NOW, fetchPage }) {
   return inl.createInlineScoring({
-    show: SHOW, night: NIGHT, ledgerDir: dir, now: () => NOW, retryMs,
-    fetchPage: async () => ({ content: '<html>teaser</html>' }), extractArticle: extract, scoreText,
+    show: SHOW, night: NIGHT, ledgerDir: dir, now, retryMs,
+    fetchPage: fetchPage || (async () => ({ content: '<html>teaser</html>' })), extractArticle: extract, scoreText,
   });
 }
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'bro6066-excerpt-'));
@@ -94,7 +95,12 @@ test('a paywall teaser with an aggregator excerpt is scored from the excerpt wit
   const dir = tmp();
   try {
     const seen = [];
-    const sc = scoring({ dir, extract: () => 'Subscribe to read.', scoreText: async (text, ctx) => { seen.push({ text, ctx }); return { score: 88 }; } });
+    let t = NOW;
+    const sc = scoring({ dir, now: () => t, extract: () => 'Subscribe to read.', scoreText: async (text, ctx) => { seen.push({ text, ctx }); return { score: 88 }; } });
+    // An empty page is fetched again first (a Cloudflare page or a transient block looks the same); the same result
+    // twice ends the retries and the excerpt is scored.
+    await assert.rejects(sc.fetchReview(WSJ_CAND), inl.LaneRetryError);
+    t += 1000;
     const got = await sc.fetchReview(WSJ_CAND);
     assert.equal(got.fullText, '');
     assert.equal(got.contentTier, 'excerpt');
@@ -185,4 +191,46 @@ test('through the real ensemble input gate: an excerpt-only lane review passes, 
   const refused = await inl.ensembleScoreText(scorer)(teaser, { ...ctx, contentTier: 'complete' });
   assert.equal(refused.rejected, true);
   assert.match(refused.rejection, /^input_validation_failed:body_too_short/);
+});
+
+// Ship-check findings (Codex review): the excerpt must be the aggregator's entry for that review, nothing nearby.
+test('only an entry block or a review card gives an excerpt; same-site links keep their words; under 50 chars is no excerpt', () => {
+  const page = 'https://www.broadwayworld.com/article/x';
+  const html = `<html><body><article>
+    <div class="intro">The critics have weighed in on the starry revival tonight, and the verdict is split down the middle. <a href="https://www.vulture.com/article/broadway-review-the-imaginary-invalid.html">READ</a></div>
+    <p><a href="https://www.broadwayworld.com/people/Sara-Holdren/">Sara Holdren</a>, <a href="https://www.wsj.com/articles/the-imaginary-invalid-review-x">Wall Street Journal:</a> At the center of this whirligig sits Irwin, often literally.</p>
+    <p>Jo Smith, <a href="https://deadline.com/2026/10/the-imaginary-invalid-review-1/">Deadline:</a> Fun.</p>
+  </article></body></html>`;
+  const links = d.extractCitedLinks(html, page);
+  assert.equal(links.find((l) => l.url.includes('vulture.com')).excerpt, null, "a plain container's prose is never a critic's quote");
+  assert.match(links.find((l) => l.url.includes('wsj.com')).excerpt, /^Sara Holdren, At the center/, 'a same-site link keeps its text');
+  assert.equal(links.find((l) => l.url.includes('deadline.com')).excerpt, null, 'too short for the scorer to take');
+  assert.deepEqual(inl.usableExcerpts({ bwwExcerpt: 'x'.repeat(49), dtliExcerpt: 'y'.repeat(50), notAField: 'z'.repeat(80) }), { dtliExcerpt: 'y'.repeat(50) });
+});
+
+test('a 403 with only an excerpt retries first (a proxy 403 is often transient), then scores the excerpt when retries run out', async () => {
+  const dir = tmp();
+  try {
+    let t = NOW;
+    let fetches = 0;
+    const blocked = async () => { fetches++; const e = new Error('HTTP 403'); e.status = 403; throw e; };
+    const sc = scoring({ dir, now: () => t, retryMs: [1000], fetchPage: blocked, extract: () => '', scoreText: async () => ({ score: 80 }) });
+    await assert.rejects(sc.fetchReview(WSJ_CAND), inl.LaneRetryError);
+    t += 1000;
+    const got = await sc.fetchReview(WSJ_CAND);
+    assert.equal(fetches, 2);
+    assert.equal(got.contentTier, 'excerpt');
+    assert.equal(got.fallbackReason, 'fetch-exhausted');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('page text is scored without the aggregator quote mixed in; the quote is only the text of an excerpt-only score', async () => {
+  const dir = tmp();
+  try {
+    const seen = [];
+    const sc = scoring({ dir, extract: () => 'A whole review body of The Imaginary Invalid. '.repeat(40), scoreText: async (text, ctx) => { seen.push(ctx); return { score: 75 }; } });
+    const got = await sc.fetchReview(WSJ_CAND);
+    assert.equal(await sc.scoreReview({ url: WSJ, fullText: got.fullText, showId: SHOW.id }, got), 75);
+    assert.equal(seen[0].excerpts, undefined);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });

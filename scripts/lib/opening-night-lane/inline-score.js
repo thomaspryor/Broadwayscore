@@ -30,8 +30,8 @@ const { canonicalUrl } = require('./discovery');
 const { BODY_GATE_CHARS, MIN_SHORT_PARTIAL_CHARS } = require('../scorable-text');
 const { EXCERPT_FIELDS } = require('../excerpt-fields');
 
-// The text-quality module ignores an excerpt under 30 chars (text-quality.js getBestTextForScoring).
-const MIN_EXCERPT_CHARS = 30;
+// The ensemble refuses selected text under 50 chars (ensemble-scorer.ts prepareScoringInput): a shorter excerpt is no fallback.
+const MIN_EXCERPT_CHARS = 50;
 /** The aggregator excerpts the scorer can read, as review-file fields ({ bwwExcerpt: '...' }). */
 function usableExcerpts(excerpts) {
   const out = {};
@@ -129,13 +129,16 @@ function createInlineScoring({
       // (contentTier 'truncated'), the owner's call for 300-999-char partials (scorable-text.js isShortPartialReview).
       // Under 300 chars the scorer refuses even a partial copy, so the aggregator excerpt is scored instead, or, with
       // none, the review fails rather than being sent to a scorer that will reject it.
+      // An aggregator thumb or stars still takes a paywall's empty page at once (the trust model's fallback). An excerpt
+      // waits for the retries: an empty extraction is as often a Cloudflare page or a transient block as a paywall, and
+      // the full text a few minutes later beats an excerpt score (ship-check).
       let contentTier;
       let keepText = text.length >= minTextChars;
-      if (text.length < minTextChars) contentTier = excerptTier.contentTier;
-      if (text.length >= minTextChars && text.length < BODY_GATE_CHARS) {
+      const shortText = text.length < BODY_GATE_CHARS && !(text.length < minTextChars && thumbScore);
+      if (shortText) {
         const st = state.get(`fetch:${key}`);
         const attempt = ((st && st.attempts) || 0) + 1;
-        const why = `only ${text.length} chars of article text (the scorer needs ${BODY_GATE_CHARS})`;
+        const why = text.length < minTextChars ? `no usable article text (${text.length} chars)` : `only ${text.length} chars of article text (the scorer needs ${BODY_GATE_CHARS})`;
         // The same length twice means the page or the extractor gives no more: stop paying for fetches.
         const sameAsBefore = shortLen.get(key) === text.length;
         shortLen.set(key, text.length);
@@ -153,8 +156,9 @@ function createInlineScoring({
     } catch (e) {
       if (e instanceof LaneRetryError || e instanceof LanePermanentError) throw e;
       // A hard paywall (401/403) is a paywall, not an outage: a T1 review with an aggregator score is never rejected for
-      // it (trust-model paywallFallbackScore), so take the fallback now instead of retrying a door that stays shut.
-      if (canFallBack && (e && (e.status === 401 || e.status === 403 || /\b40[13]\b/.test(String(e.message))))) {
+      // it (trust-model paywallFallbackScore), so take the fallback now instead of retrying a door that stays shut. An
+      // excerpt-only fallback retries first (a proxy's 403 is often transient) and is taken when the retries run out.
+      if (thumbScore && (e && (e.status === 401 || e.status === 403 || /\b40[13]\b/.test(String(e.message))))) {
         failures.appendFailure(ledgerDir, { show: show.id, night, reviewKey: key, stage: 'fetch', reason: `${String(e.message)} (paywall: using the aggregator score)`, attempt: 1, terminal: false, at: now() });
         const out = fallback('paywall');
         fetched.set(key, out);
@@ -173,7 +177,11 @@ function createInlineScoring({
     const key = canonicalUrl(row.url);
     gate('score', key);
     const excerpts = usableExcerpts((fetchedReview && fetchedReview.excerpts) || {});
-    const ctx = { showId: row.showId, showTitle: show.title, category: show.category, venue: show.venue, type: show.type, outletId: row.outletId, outlet: row.outlet, criticName: row.criticName, publishDate: row.publishDate, url: row.url, contentTier: (fetchedReview && fetchedReview.contentTier) || 'complete', ...(Object.keys(excerpts).length ? { excerpts } : {}) };
+    const ctx = { showId: row.showId, showTitle: show.title, category: show.category, venue: show.venue, type: show.type, outletId: row.outletId, outlet: row.outlet, criticName: row.criticName, publishDate: row.publishDate, url: row.url, contentTier: (fetchedReview && fetchedReview.contentTier) || 'complete' };
+    // The excerpt is the scorer's text only when there is no page text to score: page text is scored as it always was,
+    // with no aggregator quote mixed in (text-quality.js would append it to a short body).
+    const hasExcerpts = Object.keys(excerpts).length > 0;
+    if (hasExcerpts && !row.fullText) ctx.excerpts = excerpts;
     let r;
     let fromExcerpt = false;
     try {
@@ -182,9 +190,9 @@ function createInlineScoring({
       // about the review when an aggregator printed the critic's own words: score those once, excerpt-only. The 10-22
       // WSJ review was lost for good to input_validation_failed:body_too_short (BRO-6066). A wrong-show or non-review
       // verdict is the scorer's judgement of the review itself and is never retried on an excerpt.
-      if (r && r.rejected && /^input_validation_failed/.test(String(r.rejection || '')) && row.fullText && ctx.excerpts) {
+      if (r && r.rejected && /^input_validation_failed/.test(String(r.rejection || '')) && row.fullText && hasExcerpts) {
         failures.appendFailure(ledgerDir, { show: show.id, night, reviewKey: key, stage: 'score', reason: `scorer refused the page text (${r.rejection}); scoring the aggregator excerpt`, attempt: 1, terminal: false, at: now() });
-        r = await scoreText('', { ...ctx, contentTier: 'excerpt' });
+        r = await scoreText('', { ...ctx, contentTier: 'excerpt', excerpts });
         fromExcerpt = true;
       }
     } catch (e) { return fail('score', key, e); }

@@ -142,6 +142,8 @@ async function runLaneNight({
         }
         // A tier the scorer set wins (a page text it refused, rescored from the aggregator excerpt: 'excerpt').
         row.contentTier = row.contentTier || fetched.contentTier || (row.isFullReview ? 'complete' : 'stub');
+        // A partial copy is scored now and collected in full later, like an excerpt-only one.
+        if (row.contentTier === 'truncated') row.needsRecollection = true;
         if (persistReview) {
           // The guarded writer can preserve a human correction. Publish precisely what survived on disk.
           row = persistReview(row).row;

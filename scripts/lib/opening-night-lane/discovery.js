@@ -162,12 +162,15 @@ function hasReviewSignal(url, title) {
   return REVIEW_SIGNAL.test(`${title || ''} ${(() => { try { return decodeURIComponent(new URL(url).pathname); } catch { return ''; } })()}`.replace(/[-_]+/g, ' '));
 }
 
-const EXCERPT_MIN_CHARS = 40;
+// The ensemble refuses selected text under 50 chars (ensemble-scorer.ts prepareScoringInput).
+const EXCERPT_MIN_CHARS = 50;
 const EXCERPT_MAX_CHARS = 1500;
 /**
  * The quote an aggregator prints with each review it cites, keyed by canonical URL: the anchor's own entry block
  * (BWW "<p>Critic, <a>Outlet:</a> quote</p>", DTLI "<div class=review-item><p>quote</p><a>READ THE REVIEW</a></div>")
- * with the anchors removed. A block that cites more than one review is a listing, not an entry, and gives nothing.
+ * with the cited link removed (same-site links keep their words). A block that cites more than one review is a listing,
+ * not an entry, and gives nothing. A <div> counts only when it is a review card (class contains "review"): any other
+ * container can hold the page's own prose next to a single link.
  * The lane scores this excerpt when the review's own page is a paywall teaser (BRO-6066: WSJ was lost for good).
  */
 function citedExcerpts(scopedHtml, pageUrl) {
@@ -178,13 +181,15 @@ function citedExcerpts(scopedHtml, pageUrl) {
   $('a[href]').each((_, el) => {
     const key = keyOf(el);
     if (!key || out.has(key)) return;
-    const blocks = [$(el).closest('p, li, blockquote'), $(el).closest('div')];
+    const blocks = [$(el).closest('p, li, blockquote'), $(el).closest('div[class*="review" i]')];
     for (const block of blocks) {
       if (!block.length) continue;
       const cited = new Set(block.find('a[href]').map((__, a) => keyOf(a)).get().filter(Boolean));
       if (cited.size !== 1) continue;
       const copy = block.clone();
-      copy.find('a, script, style, img').remove();
+      copy.find('script, style, img').remove();
+      copy.find('br').replaceWith(' '); // DTLI writes the critic as "Helen<br />Shaw"
+      copy.find('a[href]').each((__, a) => { if (keyOf(a)) $(a).remove(); else $(a).replaceWith($(a).text()); });
       const text = copy.text().replace(/\s+/g, ' ').trim();
       if (text.length < EXCERPT_MIN_CHARS || text.length > EXCERPT_MAX_CHARS) continue;
       out.set(key, text);
