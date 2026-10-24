@@ -610,7 +610,7 @@ async function main() {
         if (++fetchesSinceCheckpoint >= INDEX_CHECKPOINT_EVERY) { saveIndex(); fetchesSinceCheckpoint = 0; }
       }
       stats.pagesChecked++;
-      await new Promise(r => setTimeout(r, 1500));
+      await new Promise(r => setTimeout(r, 4000));
     } else {
       console.log(`  [CACHED] ${show.title}`);
     }

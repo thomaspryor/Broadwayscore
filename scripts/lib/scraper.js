@@ -1341,7 +1341,17 @@ async function _fetchWithPlaywrightInner(url, options = {}) {
         }
       } catch (_) { /* best-effort — proceed with whatever rendered */ }
     }
-    const content = await page.content();
+    // BRO-6084: anti-bot interstitials (theatre.reviews CleanTalk) keep navigating after
+    // domcontentloaded, and page.content() throws "page is navigating". Let the navigation
+    // settle and retry a few times before giving up on the tier.
+    let content;
+    for (let attempt = 0; ; attempt++) {
+      try { content = await page.content(); break; } catch (e) {
+        if (attempt >= 3 || !/navigating and changing the content/i.test(String(e && e.message))) throw e;
+        try { await page.waitForLoadState('load', { timeout: 8000 }); } catch (_) {}
+        await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
+      }
+    }
     const finalUrl = page.url();
     await page.close();
     if (context) {
