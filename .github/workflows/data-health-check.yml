@@ -976,6 +976,23 @@ jobs:
         timeout-minutes: 5
         run: node scripts/audit-roundup-link-coverage.js
 
+      # BRO-6098: aggregator health. Archive coverage per source vs its own trailing
+      # baseline, plus failing / idle / stale checks on every scraper workflow, routed
+      # to the owner digest. Reuses the archive checkout above. Advisory first
+      # (CLAUDE.md §19): no --strict, continue-on-error. timeout 2 keeps the job-timeout
+      # margin above audit-push-retry-budgets' 15% floor (script is local reads + ~8 API calls).
+      # lint-allow-swallow: advisory monitor; it reports through the owner-alert router, writes no audit file
+      - name: Aggregator health monitor (advisory)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/audit-aggregator-health.js --alert
+
       # BRO-80: unopened-show prior-run / readmission sweep. The pre-opening
       # temporal gate (review-guards.js isPrematureReviewForUnopenedShow) is a
       # TEMPORARY exclusion - it only fires while a show's status is
