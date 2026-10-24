@@ -22,13 +22,13 @@ function ownRatingField(d) {
  * @param {(name: string) => object|null} load parsed sibling loader
  * @param {(url: string) => string} canonicalUrl
  * @param {(d: object) => ({highReliability?: boolean, band?: {floor: number, ceiling: number}}|null)} detectBand
- * @returns {string|null} rating string to clamp against, or null (own rating present / no usable twin / twins disagree)
+ * @returns {{file: string, data: object}|null} the twin record whose rating to clamp against (its full evidence), or null (own rating present / no usable twin / twins disagree)
  */
 function siblingRatingForClamp(file, data, siblingFiles, load, canonicalUrl, detectBand) {
   if (!data || !data.url || ownRatingField(data) !== null || typeof data.originalScore === 'number') return null;
   if (/tickets?-and-information|\/tickets\b/i.test(data.url) || data.originalScoreCleared) return null;
   const url = canonicalUrl(data.url);
-  const found = new Map(); // "floor-ceiling" -> rating string
+  const found = new Map(); // "floor-ceiling" -> {file, data}
   for (const name of siblingFiles) {
     if (name === file) continue;
     const d = load(name);
@@ -36,9 +36,9 @@ function siblingRatingForClamp(file, data, siblingFiles, load, canonicalUrl, det
     if (d.wrongShow || d.wrongProduction || d.isRoundupArticle || d.originalScoreCleared) continue;
     const rating = ownRatingField(d);
     if (rating === null || /%/.test(String(rating))) continue; // a percentage is not a star/grade band
-    const det = detectBand({ originalRating: rating });
+    const det = detectBand(d); // the donor's own record: outlet/text corroboration decide reliability
     if (!det || !det.band || !det.highReliability) continue;
-    found.set(`${det.band.floor}-${det.band.ceiling}`, String(rating));
+    if (!found.has(`${det.band.floor}-${det.band.ceiling}`)) found.set(`${det.band.floor}-${det.band.ceiling}`, { file: name, data: d });
   }
   // Twins that disagree on the band: no safe call, leave the score alone.
   if (found.size !== 1) return null;

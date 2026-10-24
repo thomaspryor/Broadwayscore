@@ -15,7 +15,7 @@ const load = (n) => files[n] || null;
 const pick = (f, d, all, ld) => siblingRatingForClamp(f, d, all, ld, canonicalizeUrlForDedup, detectBandFromReviewFile);
 
 test('inherits the same-URL twin rating', () => {
-  assert.equal(pick('a.json', canon, Object.keys(files), load), '3/5 stars');
+  assert.equal(pick('a.json', canon, Object.keys(files), load).file, 'b.json');
 });
 test('own rating wins: no inheritance', () => {
   const own = { ...canon, originalScore: '4/5 stars' };
@@ -29,13 +29,19 @@ test('flagged / other-URL twins ignored', () => {
   const f2 = { 'a.json': canon, 'b.json': { url: URL, originalScore: '3/5 stars', wrongProduction: true }, 'c.json': { url: 'https://example.com/other', originalScore: '3/5 stars' } };
   assert.equal(pick('a.json', canon, Object.keys(f2), (n) => f2[n]), null);
 });
+test('letter grade twin from a grade-printing outlet is inherited', () => {
+  const f2 = { 'a.json': { ...canon, outletId: 'ew' }, 'b.json': { url: URL, outletId: 'ew', originalScore: 'B+' } };
+  const sib = pick('a.json', f2['a.json'], Object.keys(f2), (n) => f2[n]);
+  assert.ok(sib, 'EW B+ should inherit');
+  assert.ok(getBestScore({ ...f2['a.json'] }, { siblingRating: sib }).score <= 84);
+});
 test('percentage twin ratings are not inherited', () => {
   const f2 = { 'a.json': canon, 'b.json': { url: URL, originalScore: '40%' } };
   assert.equal(pick('a.json', canon, Object.keys(f2), (n) => f2[n]), null);
 });
 test('clamp uses the inherited rating; without it the score is untouched', () => {
   const without = getBestScore({ ...canon }, {});
-  const withSib = getBestScore({ ...canon }, { siblingRating: '3/5 stars' });
+  const withSib = getBestScore({ ...canon }, { siblingRating: pick('a.json', canon, Object.keys(files), load) });
   assert.ok(without.score > 70, `unclamped ${without.score}`);
   assert.ok(withSib.score >= 51 && withSib.score <= 70, `clamped ${withSib.score}`);
 });

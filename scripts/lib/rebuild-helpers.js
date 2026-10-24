@@ -1635,14 +1635,15 @@ function getBestScore(data, opts = {}) {
   // precedence steps ignored it; the clamp must not bring it back).
   if (data.originalScoreCleared || /tickets?-and-information|\/tickets\b/i.test(data.url || '')) return result;
   // BRO-6078: a canonical with no rating of its own clamps against its same-URL twin's rating.
-  const clampData = opts.siblingRating ? { ...data, originalRating: opts.siblingRating } : data;
-  const v = publishedScoreViolation(clampData, result.score, { unanimousTol: Infinity });
+  // The twin's whole record is judged (its outlet, text and extraction source decide whether the rating binds).
+  const sib = opts.siblingRating;
+  const v = publishedScoreViolation(sib ? { ...sib.data, url: data.url } : data, result.score, { unanimousTol: Infinity });
   if (!v || v.kind !== 'star-band') return result;
   const clamped = Math.min(v.ceiling, Math.max(v.floor, result.score));
   if (clamped === result.score) return result;
   const stats = opts.stats || {};
   stats.scoreClampedToStarBand = (stats.scoreClampedToStarBand || 0) + 1;
-  if (opts.siblingRating && !publishedScoreViolation(data, result.score, { unanimousTol: Infinity })) stats.scoreClampedToSiblingRating = (stats.scoreClampedToSiblingRating || 0) + 1;
+  if (sib) { stats.scoreClampedToSiblingRating = (stats.scoreClampedToSiblingRating || 0) + 1; (stats.siblingRatingClamps = stats.siblingRatingClamps || []).push(`${sib.file}: ${result.score}->${clamped}`); }
   return { ...result, score: clamped };
 }
 
