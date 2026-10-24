@@ -24,7 +24,7 @@ const CARD_TARGETS = {
   theater: { headings: ['Theater','Theater Scorecard','Venue'], shows: ['hamilton','the-lion-king','oh-mary','the-lost-boys'] },
   boxoffice: { headings: ['Box Office'], shows: ['hamilton','wicked','the-lion-king','death-becomes-her','the-lost-boys'] },
   social:  { headings: ['Socials Scorecard','Social Pulse','Social'], shows: ['the-lost-boys','beaches','oh-mary','becky-shaw','aladdin'] },
-  commercial: { headings: ['Commercial','Biz Buzz','Commercial Performance','Commercial Scorecard'], shows: ['hamilton','wicked','the-lion-king','maybe-happy-ending','death-becomes-her'] },
+  commercial: { headings: ['Commercial','Biz Buzz','Commercial Performance','Commercial Scorecard','Money Scorecard'], shows: ['hamilton','wicked','the-lion-king','maybe-happy-ending','death-becomes-her'] },
   showtimes:   { headings: ['Showtimes'], shows: ['hamilton','oh-mary','the-lost-boys','death-becomes-her','wicked'] },
   castupdates: { headings: ['Cast Updates'], shows: ['hamilton','wicked','the-lion-king','oh-mary'] },
   castsection: { headings: ['Original Broadway Cast','Original Cast','Original London Cast','Current Cast'], shows: ['hamilton','wicked','the-lion-king','oh-mary','the-lost-boys'] },

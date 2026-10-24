@@ -1,4 +1,4 @@
-// Shared currency formatting for the /biz Investment Tracker.
+// Shared currency formatting for the /biz Money Scorecard.
 // Single source of truth so a missing data point renders "—" everywhere
 // instead of drifting per-component (the null → "~$0" credibility bug).
 //

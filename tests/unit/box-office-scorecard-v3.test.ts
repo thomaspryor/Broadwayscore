@@ -110,9 +110,9 @@ test('factsStory: the mock’s three sentences, and the costs pointer only with 
     factsStory(f, true),
     'It is down 42% from a year ago: attendance is down 30% and the average ticket is down 17%. Its audience fell more than Broadway’s (down 4%), so the show is slipping against the season. ' +
       'Weekly grosses have held between about $630K and $790K since May. ' +
-      'Strong sales don’t always mean profit; costs are on the Commercial Scorecard below.',
+      'Strong sales don’t always mean profit; costs are on the Money Scorecard below.',
   );
-  assert.ok(!/Commercial Scorecard/.test(factsStory(f, false)!));
+  assert.ok(!/Money Scorecard/.test(factsStory(f, false)!));
   assert.match(factsStory({ ...f, steady: { ...f.steady, since: '2025-12-28' } }, false)!, /since December 2025\.$/);
   assert.equal(factsStory({ week: LATEST, yearAgoPct: null, marketYearAgoPct: null, steady: null }, true), null);
   assert.match(factsStory({ ...f, steady: { low: 1_500_000, high: 1_890_000, since: '2026-08-02' } }, false)!, /between about \$1\.5M and \$1\.89M since August\.$/);

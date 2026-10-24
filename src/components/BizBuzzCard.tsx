@@ -239,7 +239,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
       {/* Unified scorecard chrome: eyebrow on left, source attribution right */}
       <header className="flex items-center justify-between gap-3 mb-1">
         <h2 id="commercial-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">
-          Commercial Scorecard
+          Money Scorecard
         </h2>
         <span className="text-[10px] tracking-[0.06em] text-gray-500 italic shrink-0">
           {showModelBar ? 'source · filings, press + our model' : estimateRange?.withModel ? 'source · filings, press, analyst estimate + our model' : analystRange ? 'source · filings, press + analyst estimate' : 'source · filings + press'}

@@ -1,5 +1,5 @@
 /**
- * TopicPageShell - frame for the Investment Tracker topic pages
+ * TopicPageShell - frame for the Money Scorecard topic pages
  * (/biz/musicals-since-reopening, /biz/reviews-and-money, ...; BRO-5865):
  * back link, title, sourcing note and methodology footer, matching /biz/season/[season].
  */
@@ -16,7 +16,7 @@ export default function TopicPageShell({ title, subtitle, children }: { title: s
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Investment Tracker
+          Money Scorecard
         </Link>
 
         <div className="mb-8">

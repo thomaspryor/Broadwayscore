@@ -132,7 +132,7 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
               {featureFlags.goldLists && <li><Link href="/lists" className="hover:text-white transition-colors">Gold Lists</Link></li>}
               {featureFlags.boxOffice && <li><Link href="/box-office" className="hover:text-white transition-colors">Box Office Scorecard</Link></li>}
               {marketId === 'nyc' && <li><Link href="/season-report" className="hover:text-white transition-colors">Season Report</Link></li>}
-              {featureFlags.commercial && <li><Link href="/biz" className="hover:text-white transition-colors">Commercial Scorecard</Link></li>}
+              {featureFlags.commercial && <li><Link href="/biz" className="hover:text-white transition-colors">Money Scorecard</Link></li>}
               <li><Link href="/audience-buzz" className="hover:text-white transition-colors">AudienceGrade</Link></li>
               <li><Link href="/broadway-theaters-map" className="hover:text-white transition-colors">Theater Map</Link></li>
               {marketId === 'off-broadway' && <li><Link href="/off-broadway/theater" className="hover:text-white transition-colors">Off-Broadway Theatres</Link></li>}

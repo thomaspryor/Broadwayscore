@@ -1,5 +1,5 @@
 /**
- * /biz - Broadway Investment Tracker Dashboard
+ * /biz - Broadway Money Scorecard Dashboard
  * Sprint 3: Dashboard Page
  */
 
@@ -51,21 +51,21 @@ import { BASE_URL, generateBreadcrumbSchema } from '@/lib/seo';
 import { getMarketDate } from '@/lib/date-utils';
 
 export const metadata: Metadata = {
-  title: 'Broadway Investment Tracker',
+  title: 'Broadway Money Scorecard',
   description:
     'Recoupment data and investment metrics for Broadway shows. Track which shows have recouped, capital at risk, and financial trends.',
   alternates: {
     canonical: `${BASE_URL}/biz`,
   },
   openGraph: {
-    title: 'Broadway Investment Tracker',
+    title: 'Broadway Money Scorecard',
     description: 'Recoupment data and investment metrics for industry insiders',
     url: `${BASE_URL}/biz`,
     images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630, alt: 'Broadway Scorecard' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Broadway Investment Tracker',
+    title: 'Broadway Money Scorecard',
     description: 'Recoupment data and investment metrics for Broadway shows.',
   },
 };
@@ -191,7 +191,7 @@ export default function BizDashboard() {
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
-    { name: 'Investment Tracker', url: `${BASE_URL}/biz` },
+    { name: 'Money Scorecard', url: `${BASE_URL}/biz` },
   ]);
 
   const bizFaqSchema = {
@@ -254,7 +254,7 @@ export default function BizDashboard() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
               <h1 className="text-3xl sm:text-4xl font-bold text-white">
-                Broadway Investment Tracker
+                Broadway Money Scorecard
               </h1>
               <p className="text-gray-400 mt-2">
                 Recoupment data and investment metrics for industry insiders

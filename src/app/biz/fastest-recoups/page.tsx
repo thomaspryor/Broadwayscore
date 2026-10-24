@@ -15,7 +15,7 @@ const TITLE = "Broadway's Fastest Recoupments";
 const DESCRIPTION = "Commercial Broadway shows opened since September 2021 that paid back their investors fastest, ranked by weeks from opening to recoupment.";
 
 export const metadata: Metadata = {
-  title: `${TITLE} | Investment Tracker`,
+  title: `${TITLE} | Money Scorecard`,
   description: DESCRIPTION,
   alternates: { canonical: `${BASE_URL}/biz/fastest-recoups` },
   openGraph: { images: [SITE_OG_IMAGE], title: TITLE, description: DESCRIPTION, url: `${BASE_URL}/biz/fastest-recoups` },

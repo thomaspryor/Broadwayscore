@@ -1,5 +1,5 @@
 // Pure calculation helpers for the commercial scorecard (/biz, season pages,
-// show-page Commercial Scorecard). No data imports: data-commercial.ts feeds
+// show-page Money Scorecard). No data imports: data-commercial.ts feeds
 // these from commercial.json / grosses-history.json, and the unit tests
 // (tests/unit/commercial-metrics.test.ts) call them with fixtures.
 

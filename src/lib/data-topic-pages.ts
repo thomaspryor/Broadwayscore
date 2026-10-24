@@ -1,4 +1,4 @@
-// Data for the Investment Tracker topic pages (BRO-5865): joins shows, commercial
+// Data for the Money Scorecard topic pages (BRO-5865): joins shows, commercial
 // records, canonical Critic Scores and audience buzz, then hands them to the
 // pure aggregates in investment-topics.ts.
 
