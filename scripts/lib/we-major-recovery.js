@@ -136,28 +136,29 @@ function matchWosPosts(rows, shows, posts) {
 }
 
 
-// ---- Guardian Content API search results -> missing guardian / observer slots
+// ---- Guardian Content API search results -> missing guardian slots ---------
 
 /**
- * Candidates for a show's missing Guardian (or Observer) slot from Content API search results
- * (section=stage, queried over the show's opening window with show-tags=tone and
- * show-fields=publication). A result counts when it is tagged tone/reviews, published by the
- * slot's paper (The Guardian vs The Observer share theguardian.com/stage), its headline names the
- * show title, and it is dated in [opening-14d, opening+60d]. More than one such result means the
- * title is ambiguous (another production in the same window), so none is kept, like matchWosPosts.
+ * Candidates for a show's missing Guardian slot from Content API search results (section=stage,
+ * queried over the show's opening window with show-tags=tone and show-fields=headline,publication,bodyText).
+ * A result counts when it is tagged tone/reviews, published by The Guardian (not The Observer, which shares
+ * theguardian.com/stage and is filed under another outlet), its headline names the show title, it is dated in
+ * [opening-14d, opening+60d], and its text names the show's venue (a same-titled regional or Broadway
+ * production is another production). More than one such result means the title is ambiguous, so none is kept.
  */
-function matchGuardianResults(show, results, slot = 'guardian') {
+function matchGuardianResults(show, results) {
   if (!show || !show.openingDate) return [];
   const lo = addDays(show.openingDate, -14), hi = addDays(show.openingDate, 60);
   const t = norm(show.title);
   if (!t || t.length < 4) return [];
-  const paper = slot === 'observer' ? 'The Observer' : 'The Guardian';
+  const v = venueNorm(show.venue);
   const hits = results.filter(r => {
     const date = String(r.webPublicationDate || '').slice(0, 10);
     if (date < lo || date > hi) return false;
-    if ((r.fields && r.fields.publication) !== paper) return false;
+    if (!/^(the guardian|theguardian\.com)$/i.test((r.fields && r.fields.publication) || '')) return false;
     if (!(r.tags || []).some(x => x.id === 'tone/reviews')) return false;
-    return ` ${norm(r.fields && r.fields.headline || r.webTitle)} `.includes(` ${t} `);
+    if (!` ${norm(r.fields && r.fields.headline || r.webTitle)} `.includes(` ${t} `)) return false;
+    return !v || ` ${norm(r.fields && r.fields.bodyText)} `.includes(` ${v} `);
   });
   return hits.length === 1 ? [{ url: hits[0].webUrl, date: String(hits[0].webPublicationDate).slice(0, 10) }] : [];
 }
