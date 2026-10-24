@@ -364,5 +364,19 @@
       }
     ],
     "queuedAt": "2026-10-24T11:27:26.992Z"
+  },
+  {
+    "conditionKey": "star-band:regressions",
+    "title": "Star-band detector: 35 review(s) flagged for anchored re-score — escalated after 15 notifications",
+    "description": "Filed BRO-6121 for owner triage after 15 repeats with no tracker.\n\n{\"unanchored\":8,\"false-truncation\":27} across the whole corpus, by market {\"broadway\":20,\"west-end\":14,\"regional\":1}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [unanchored] mike-birbiglia-the-old-man-and-the-pool-2022/ew--yolanda-machado.json A band 89-94\n- [unanchored] the-mousetrap-west-end-2021/guardian--arifa-akbar.json 3/5 band 51-70\n- [unanchored] the-man-in-the-white-suit-west-end-2019/times-uk--clive-davis.json 1/5 band 0-30\n- [unanchored] touching-the-void-west-end-2019/telegraph--dominic-cavendish.json 5/5 band 91-100\n- [unanchored] midnight-movie-west-end-2019/times-uk--sam-marlowe.json 2/5 band 31-50\n- [unanchored] downstate-west-end-2019/times-uk--ann-treneman.json 4/5 band 71-90\n- [unanchored] top-girls-west-end-2019/times-uk--ann-treneman.json 2/5 band 31-50\n- [unanchored] bitter-wheat-west-end-2019/times-uk--dominic-maxwell.json 2/5 band 31-50\n- [false-truncation] good-night-and-good-luck-2025/ew--dalton-ross.json score 90 scored with a truncation warning on a complete-tier text\n- [false-truncation] parade-2023/ew--kristen-baldwin.json score 89 scored with a truncation warning on a complete-tier text",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-6121",
+    "fields": [],
+    "queuedAt": "2026-10-24T11:43:53.820Z"
   }
 ]
