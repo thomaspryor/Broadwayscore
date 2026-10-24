@@ -14,14 +14,14 @@
  * numbers its own sections already use (buildOwnerView().decisions, countStuckSignals), so this
  * block can never disagree with them.
  *
- * ARCHIVED CARDS: created/completed counts come from fetchInflowCounts (includeArchived:true).
+ * ARCHIVED CARDS: created/completed counts include archived issues.
  * Without it archived cards silently drop out (measured 2026-09-07: 41 of 101 closures hidden).
  * The open count deliberately excludes archived cards.
  */
 
 const { execFileSync } = require('child_process');
 const { TERMINAL_STATE_TYPES } = require('./linear-state-types.js');
-const { fetchInflowCounts } = require('./backlog-inflow-ratio.js');
+const { windowStart } = require('./backlog-inflow-ratio.js');
 const { landedPerLane, LANDED_LOG_FORMAT } = require('./codex-runner.js');
 const { isAutofixFiledIssue } = require('./autofix-filed-marker.js');
 const { isAwaitingOwner } = require('./owner-approval-channel.js');
@@ -127,19 +127,84 @@ async function fetchParkedCards({ graphql, teamKey = TEAM_KEY, graphqlOpts = GRA
 const RECENT_QUERY = `query RecentCards($filter: IssueFilter, $after: String) {
   issues(filter: $filter, first: 100, after: $after, includeArchived: true) {
     pageInfo { hasNextPage endCursor }
-    nodes { title description createdAt }
+    nodes { title description createdAt completedAt canceledAt }
   }
 }`;
+
+// Keep this narrow: a repair ABOUT a routine is work, not the routine's daily log.
+function ceremonyKind(card, nowMs) {
+  const title = String(card.title || '').trim();
+  if (/^\[E2E Canary\]/i.test(title)) return 'canary';
+  if (/^Opening-night (?:watch|audit) \d{4}-\d{2}-\d{2}$/i.test(title)
+    || /^CANARY: touch\b/i.test(title)
+    || /^Week in Review(?:\s*[,\u2014:-]\s*|\s+)\d{4}-\d{2}-\d{2}(?: to \d{4}-\d{2}-\d{2})?$/i.test(title)) return 'routineLog';
+  const created = Date.parse(card.createdAt);
+  const closed = Date.parse(card.completedAt || card.canceledAt);
+  // A quick automated repair or an unmarked card is still real work. Only
+  // explicitly session-filed cards qualify; never guess from updatedAt.
+  if (cardDedupe.inferCardSource(card) === 'session' && closed <= nowMs
+    && closed >= created && closed - created <= 6 * 3600_000) return 'sessionTracking';
+  return null;
+}
+
+/** Digest-only counts: other inflow-ratio callers still measure the whole board. */
+function summarizeBoardFlow(cards, { now = new Date(), windowDays = 7 } = {}) {
+  const since = windowStart(now, windowDays);
+  const startMs = Date.parse(since);
+  const nowMs = now.getTime();
+  const empty = () => ({ canary: 0, routineLog: 0, sessionTracking: 0 });
+  const result = { created: 0, completed: 0, canceled: 0, excluded: { created: empty(), completed: empty() }, windowDays, since };
+  for (const card of cards || []) {
+    const kind = ceremonyKind(card, nowMs);
+    for (const [key, field] of [['created', 'createdAt'], ['completed', 'completedAt'], ['canceled', 'canceledAt']]) {
+      const ts = Date.parse(card[field]);
+      if (!(ts >= startMs && ts <= nowMs)) continue;
+      if (kind && key !== 'canceled') result.excluded[key][kind]++;
+      else result[key]++;
+    }
+  }
+  return result;
+}
+
+const BOARD_FLOW_QUERY = `query BoardFlow($filter: IssueFilter, $after: String) {
+  issues(filter: $filter, first: 250, after: $after, includeArchived: true) {
+    pageInfo { hasNextPage endCursor }
+    nodes { title description createdAt completedAt canceledAt }
+  }
+}`;
+
+/** One paginated walk per window, including old cards completed in the window. */
+async function fetchBoardInflowCounts({ graphql, now = new Date(), windowDays = 7, teamKey = TEAM_KEY, maxPages = MAX_PAGES, graphqlOpts = GRAPHQL_OPTS } = {}) {
+  const since = windowStart(now, windowDays);
+  const filter = {
+    team: { key: { eq: teamKey } },
+    or: ['createdAt', 'completedAt', 'canceledAt'].map((field) => ({ [field]: { gte: since } })),
+  };
+  const cards = [];
+  let after = null;
+  for (let page = 0; page < maxPages; page++) {
+    const data = await graphql(BOARD_FLOW_QUERY, { filter, after }, graphqlOpts);
+    const conn = data && data.issues;
+    if (!conn || !Array.isArray(conn.nodes)) throw new Error('Linear returned no issues connection for the board flow');
+    cards.push(...conn.nodes);
+    if (!conn.pageInfo || !conn.pageInfo.hasNextPage) return { ...summarizeBoardFlow(cards, { now, windowDays }), truncated: false, truncatedCounts: [] };
+    after = conn.pageInfo.endCursor;
+  }
+  return { ...summarizeBoardFlow(cards, { now, windowDays }), truncated: true, truncatedCounts: ['created', 'completed', 'canceled'] };
+}
 
 /**
  * PURE. Cards added in the window, per filer (the "Filed by:" footer the front door
  * stamps since BRO-5488, else card-dedupe's title/body rules), plus floods: one
  * filer's FLOOD_THRESHOLD+ cards of one kind. -> { total, bySource:[{source,count}], floods:[{source,kind,count}] }
  */
-function summarizeInflowBySource(cards) {
+function summarizeInflowBySource(cards, { now = new Date() } = {}) {
   const bySource = new Map();
   const byKind = new Map();
+  let total = 0;
   for (const c of cards || []) {
+    if (ceremonyKind(c, now.getTime())) continue;
+    total++;
     const footer = cardDedupe.parseSourceFooter(c.description);
     const source = footer ? footer.source : cardDedupe.inferCardSource(c);
     bySource.set(source, (bySource.get(source) || 0) + 1);
@@ -150,7 +215,7 @@ function summarizeInflowBySource(cards) {
   }
   const desc = (a, b) => b.count - a.count || String(a.source).localeCompare(String(b.source));
   return {
-    total: (cards || []).length,
+    total,
     bySource: [...bySource].map(([source, count]) => ({ source, count })).sort(desc),
     floods: [...byKind].filter(([, n]) => n >= cardDedupe.FLOOD_THRESHOLD)
       .map(([k, count]) => { const [source, kind] = k.split('\u0000'); return { source, kind, count }; }).sort(desc),
@@ -167,10 +232,10 @@ async function fetchInflowBySource({ graphql, now = new Date(), teamKey = TEAM_K
     const conn = data && data.issues;
     if (!conn || !Array.isArray(conn.nodes)) throw new Error('Linear returned no issues connection for the inflow-by-source read');
     cards.push(...conn.nodes);
-    if (!conn.pageInfo || !conn.pageInfo.hasNextPage) return { ...summarizeInflowBySource(cards), truncated: false };
+    if (!conn.pageInfo || !conn.pageInfo.hasNextPage) return { ...summarizeInflowBySource(cards, { now }), truncated: false };
     after = conn.pageInfo.endCursor;
   }
-  return { ...summarizeInflowBySource(cards), truncated: true };
+  return { ...summarizeInflowBySource(cards, { now }), truncated: true };
 }
 
 /**
@@ -261,9 +326,9 @@ async function fetchClaudeCost({ graphql, now = new Date(), cwd, days = 7, readL
 }
 
 /** Every live read, each fail-soft on its own: a missing piece renders "n/a", never blocks the digest. */
-async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLandedFn = readLanded, fetchInflow = fetchInflowCounts, fetchOpen = fetchOpenByPriority, fetchStuck = fetchStuckCards, fetchBySource = fetchInflowBySource, fetchParked = fetchParkedCards, fetchOpus = fetchOpusUsage, fetchCost = fetchClaudeCost, fetchDaily = require('./board-summary.js').fetchDailyFlow } = {}) {
+async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLandedFn = readLanded, fetchInflow = fetchBoardInflowCounts, fetchOpen = fetchOpenByPriority, fetchStuck = fetchStuckCards, fetchBySource = fetchInflowBySource, fetchParked = fetchParkedCards, fetchOpus = fetchOpusUsage, fetchCost = fetchClaudeCost, fetchDaily = require('./board-summary.js').fetchDailyFlow } = {}) {
   const soft = async (fn) => { try { return await fn(); } catch (err) { return { error: String(err && err.message || err).slice(0, 120) }; } };
-  // Sequential on purpose: backlog-inflow-ratio.js walks one at a time because of Linear rate limits.
+  // Sequential on purpose because of Linear rate limits.
   const open = await soft(() => fetchOpen({ graphql }));
   const d1 = await soft(() => fetchInflow({ graphql, now, windowDays: 1 }));
   const d7 = await soft(() => fetchInflow({ graphql, now, windowDays: 7 }));
@@ -303,7 +368,7 @@ function buildBoardNumbers({ data = {}, waiting = null, stuck = null, technicalI
     ? { total: data.open.total, rows: PRIORITY_LABELS.map(([p, label]) => ({ label, count: data.open.byPriority[p] || 0 })) }
     : null;
   const pick = (w, k) => (ok(w) ? num(w[k]) : null);
-  // fetchInflowCounts also walks an open count we never use; only truncation of the counts we show matters.
+  // Only truncation of the counts we show matters.
   const shownTrunc = (w) => ok(w) && (w.truncatedCounts || []).some((n) => n !== 'open');
   const floors = !!((ok(data.open) && !!data.open.truncated) || shownTrunc(data.d1) || shownTrunc(data.d7) || (ok(data.stuckCards) && data.stuckCards.truncated) || (ok(data.parked) && data.parked.truncated));
   return {
@@ -311,6 +376,10 @@ function buildBoardNumbers({ data = {}, waiting = null, stuck = null, technicalI
     added: { d1: pick(data.d1, 'created'), d7: pick(data.d7, 'created') },
     completed: { d1: pick(data.d1, 'completed'), d7: pick(data.d7, 'completed') },
     canceled: { d1: pick(data.d1, 'canceled'), d7: pick(data.d7, 'canceled') },
+    excluded: {
+      added: { d1: ok(data.d1) ? data.d1.excluded?.created : null, d7: ok(data.d7) ? data.d7.excluded?.created : null },
+      completed: { d1: ok(data.d1) ? data.d1.excluded?.completed : null, d7: ok(data.d7) ? data.d7.excluded?.completed : null },
+    },
     waiting: num(waiting),
     stuck: num(stuck),
     stuckCards: ok(data.stuckCards) ? num(data.stuckCards.count) : null,
@@ -334,17 +403,26 @@ const show = (v) => (v === null || v === undefined ? 'n/a' : String(v));
 /** Plain-text lines (also what gets pasted into the card Outcome). */
 function renderBoardNumbersLines(m) {
   const lines = [];
+  const flowLine = (label, counts) => `${label}: ${show(counts.d1)} in 24h (7-day average ${counts.d7 === null ? 'n/a' : (counts.d7 / 7).toFixed(1)}/day), ${show(counts.d7)} in 7 days`;
+  const exclusions = (label, counts) => {
+    for (const [key, name] of [['canary', 'test alarms'], ['routineLog', 'routine logs'], ['sessionTracking', 'session self-tracking (closed within 6h)']]) {
+      lines.push(`${label} ${name}: ${show(counts.d1?.[key])} in 24h, ${show(counts.d7?.[key])} in 7 days`);
+    }
+  };
   lines.push(m.open
     ? `Open cards: ${m.open.total} (${m.open.rows.map((r) => `${r.count} ${r.label}`).join(', ')})`
     : 'Open cards: n/a');
-  lines.push(`Added: ${show(m.added.d1)} in 24h, ${show(m.added.d7)} in 7 days`);
+  lines.push('Added and Completed exclude the test alarms, routine logs and session self-tracking reported separately below.');
+  lines.push(flowLine('Added', m.added));
+  exclusions('Added', m.excluded.added);
   if (m.bySource && m.bySource.bySource) {
     lines.push(`Added in 24h by source: ${m.bySource.bySource.map((r) => `${r.source} ${r.count}`).join(', ') || 'none'}`);
     if (m.bySource.floods.length) {
       lines.push(`Floods (${FLOOD_LABEL}): ${m.bySource.floods.slice(0, 5).map((f) => `${f.source} "${f.kind}" ${f.count}`).join('; ')}`);
     }
   }
-  lines.push(`Completed: ${show(m.completed.d1)} in 24h, ${show(m.completed.d7)} in 7 days`);
+  lines.push(flowLine('Completed', m.completed));
+  exclusions('Completed', m.excluded.completed);
   lines.push(`Canceled: ${show(m.canceled.d1)} in 24h, ${show(m.canceled.d7)} in 7 days`);
   lines.push(`Parked, never picked: ${show(m.parked)}${m.parked === null ? '' : ' (Backlog cards with a PARKED line)'}`);
   lines.push(`Waiting on you: ${show(m.waiting)}`);
@@ -372,5 +450,6 @@ function renderBoardNumbersHtml(m, esc = (s) => String(s)) {
 }
 
 module.exports = {
+  summarizeBoardFlow, fetchBoardInflowCounts,
   fetchOpenByPriority, fetchStuckCards, fetchParkedCards, fetchInflowBySource, summarizeInflowBySource, readLanded, fetchOpusUsage, fetchClaudeCost, fetchBoardNumbersData, buildBoardNumbers, renderBoardNumbersLines, renderBoardNumbersHtml, PRIORITY_LABELS,
 };
