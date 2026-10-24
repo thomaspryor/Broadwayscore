@@ -98,6 +98,7 @@ const { buildOutletMaps } = require('./lib/outlet-region-map');
 const { classifyCrossMarketContamination } = require('./lib/cross-market-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const {
+  classAApplies,
   classifyClassAContamination,
   normalizeShowTitle: normalizeTitle,
 } = require('./lib/cross-market-contamination');
@@ -427,7 +428,7 @@ for (const showId of showDirs) {
     // disambiguate automatically (typically when a review's publishDate coincides
     // with a sibling production's opening date but the URL + text confirm it
     // belongs to the current folder).
-    if (shouldRunClass('A') && !alreadyFlagged && !d._auditAllowCrossMarket) {
+    if (shouldRunClass('A') && classAApplies(show) && !alreadyFlagged && !d._auditAllowCrossMarket) {
       const pubDate = parseDate(d.publishDate);
       if (pubDate && showOpening && sibs.length) {
         // Shared strict Category-A predicate — single source of truth with

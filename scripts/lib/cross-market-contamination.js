@@ -99,7 +99,19 @@ function classifyClassAContamination(pubDate, showOpening, siblingOpenings) {
   return { isClassA, thisDiff, sibDiff: best, sibIndex: bestIndex };
 }
 
+/**
+ * Category A compares a review's publishDate with the show's own opening and a
+ * same-title sibling's opening. A touring production's reviews are published at
+ * each stop, years after opening, so a new sibling opening near one stop's
+ * reviews is a coincidence, not a leak (BRO-6114: Utah stop reviews of
+ * harry-potter-tour-2024 flagged against the 2026 West End one-part production).
+ */
+function classAApplies(show) {
+  return !!show && show.category !== 'tour' && show.market !== 'tour';
+}
+
 module.exports = {
+  classAApplies,
   classifyClassAContamination,
   normalizeShowTitle,
   buildSiblingOpeningsMap,

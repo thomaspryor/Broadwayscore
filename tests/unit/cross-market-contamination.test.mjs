@@ -87,3 +87,16 @@ test('buildSiblingOpeningsMap groups same-title shows (different ids) and exclud
   assert.equal(new Date(m.get('om-we-2024')[0]).toISOString().slice(0, 10), '2025-03-20');
   assert.equal(m.get('unrelated').length, 0, 'a unique-title show has no siblings');
 });
+
+// BRO-6114: tour reviews are published at each stop, so class A does not apply to tour shows.
+import { createRequire as __cr } from 'node:module';
+{
+  const { classAApplies } = __cr(import.meta.url)('../../scripts/lib/cross-market-contamination');
+  const { test: t6114 } = await import('node:test');
+  const a6114 = (await import('node:assert/strict')).default;
+  t6114('classAApplies skips tour shows only (BRO-6114)', () => {
+    a6114.equal(classAApplies({ category: 'tour', market: 'tour' }), false);
+    a6114.equal(classAApplies({ category: 'broadway', market: 'broadway' }), true);
+    a6114.equal(classAApplies({ category: 'west-end', market: 'west-end' }), true);
+  });
+}
