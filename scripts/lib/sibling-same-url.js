@@ -16,6 +16,7 @@
  */
 const { sameUrlKey } = require('./review-url-collision');
 const { shouldBlockCrossShowCreate } = require('./url-ownership');
+const { foldDiacritics } = require('./title-match');
 
 /**
  * @param {Map<string, {siblings: Array<{id: string}>}>} siblingIndex  buildSiblingIndex() output
@@ -61,7 +62,7 @@ function findSiblingSameUrlPairs(siblingIndex, loadFiles, isCounted, skipPair = 
   return pairs;
 }
 
-const _norm = (t) => String(t || '').toLowerCase().replace(/<[^>]*>/g, ' ').replace(/&#?\w+;/g, ' ').replace(/[^a-z0-9]+/g, ' ').trim();
+const _norm = (t) => foldDiacritics(String(t || '')).toLowerCase().replace(/<[^>]*>/g, ' ').replace(/&#?\w+;/g, ' ').replace(/[^a-z0-9]+/g, ' ').trim();
 const MIN_WORDS = 50;
 const SHINGLE = 8;
 const SHARED_RATIO = 0.1;
