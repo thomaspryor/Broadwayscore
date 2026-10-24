@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6138b",
   "planId": "b9e53591-0ac9-407c-b698-dc836c3a1bfb",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-24T19:23:35.867Z",
   "submitter": {
     "name": null,
@@ -526,5 +526,134 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-24T20:05:07.554Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added a-gentlemans-guide-to-love-and-murder-2013 (Windfall)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added in-the-heights-2008 (Windfall)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added hedwig-and-the-angry-inch-2014 (Windfall)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added once-2012 (Windfall)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added pippin-2013 (Windfall)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added next-to-normal-2009 (Windfall)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added west-side-story-2009 (Windfall)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added rock-of-ages-2009 (Windfall)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added a-little-night-music-2009 (Trickle)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added how-to-succeed-in-business-without-really-trying-2011 (Trickle)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added memphis-2009 (Trickle)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added motown-the-musical-2013 (Trickle)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": false,
+      "reason": "add-commercial-entry: \"sunday-in-the-park-with-george-2017\" already has a commercial entry (use data-edit)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added a-christmas-story-the-musical-2012 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added a-tale-of-two-cities-2008 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added annie-2012 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added evita-2012 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added follies-2011 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added groundhog-day-2017 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added ifthen-2014 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added rocky-2014 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added scandalous-2012 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added shrek-the-musical-2008 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added sister-act-2011 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added 13-2008 (Did Not Recoup)"
+    }
+  ],
+  "executedIn": "ci"
 }
