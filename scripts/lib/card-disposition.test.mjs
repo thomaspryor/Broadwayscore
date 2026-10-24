@@ -79,3 +79,12 @@ test('createLinearIssue refuses a session park with a takeable reason (kill swit
   process.env.LINEAR_TAKEABLE_PARK_REFUSE = '0';
   try { await assert.doesNotReject(run()); } finally { delete process.env.LINEAR_TAKEABLE_PARK_REFUSE; }
 });
+
+test('BRO-6130: real owner/money/device/repo blocks are never called takeable', () => {
+  const { takeableParkAdvisory } = require('./headless-dispatchability.js');
+  for (const r of ['needs ScrapingBee quota top-up', 'Bright Data budget increase needed', 'needs iPhone device test',
+    'legal question for Thomas', 'different repo, BroadwayScorecard-app', 'duplicate of BRO-123']) {
+    assert.equal(!!takeableParkAdvisory(r), false, r);
+  }
+  assert.equal(!!takeableParkAdvisory('Fix typo in scripts/lib/foo.js and add a test'), true);
+});

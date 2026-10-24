@@ -779,6 +779,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     console.error('--mac-only needs a reason of at least 10 characters (what needs the Mac and why).');
     process.exit(1);
   }
+  if (args.self && macOnly !== undefined) {
+    console.error('--self and --mac-only conflict: a self-claimed card is worked now by this session. Use --dispatch --mac-only for Mac work.');
+    process.exit(1);
+  }
   let notes = newAnyway ? `${args.notes || ''}\n\nFiled with --new-anyway: ${newAnyway}`.trim() : (args.notes || '');
   if (noVerify) notes = `${notes}\n\nFiled with --no-verify: ${noVerify}`.trim();
   // BRO-6067: the morning-after audit card must not read "no fixes needed" over a FAIL/UNKNOWN press-night record.
@@ -790,7 +794,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // BRO-6130: a dated routine log is a record, not work. It goes to the ledger file, not the board.
   // LINEAR_ROUTINE_LOG_DIVERT=0 files it as a card again.
   const rlog = require('./lib/routine-log-ledger');
-  if (rlog.isRoutineLogTitle(title) && process.env.LINEAR_ROUTINE_LOG_DIVERT !== '0') {
+  // An audit with a not-PASS press-night record is a warning the owner must see: it stays a card.
+  if (rlog.isRoutineLogTitle(title) && !pressNight.changed && process.env.LINEAR_ROUTINE_LOG_DIVERT !== '0') {
     let file = null;
     try {
       ({ file } = rlog.appendRoutineLog({ title, notes, source: typeof args.source === 'string' ? args.source : undefined }));
@@ -800,7 +805,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     }
     if (file) {
       console.error(`ROUTINE-LOG: "${title}" recorded in ${require('path').relative(require('path').join(__dirname, '..'), file)}; no Linear card filed (dated logs are records, BRO-6130).`);
-      console.log(JSON.stringify({ routineLog: true, title, ledger: rlog.LEDGER_REL }));
+      console.log(JSON.stringify({ routineLog: true, title, ledger: rlog.LEDGER_REL, notes }));
       process.exit(0);
     }
   }
@@ -842,7 +847,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       // BRO-6130: same trace `linear-session.js claim` leaves, so the next claimer sees who holds it.
       const lsr = require('./lib/linear-session-reporting');
       try {
-        await linearClient.createComment(result.issue.id, lsr.buildClaimComment({ sessionRef: lsr.claimSessionRef(), ts: new Date().toISOString() }));
+        await createCommentFn(result.issue.id, lsr.buildClaimComment({ sessionRef: lsr.claimSessionRef(), ts: new Date().toISOString() }));
       } catch (e) {
         console.error(`[linear-brain] WARN could not post the claim comment: ${e.message}`);
       }

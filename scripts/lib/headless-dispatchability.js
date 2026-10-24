@@ -248,7 +248,7 @@ function isDrainableSessionParked(notes) {
 // owner can supply: money, a login or account, a product/taste call, an
 // irreversible bulk change, their calendar, or their Mac. Used only to keep the
 // advisory quiet; it never widens what drains.
-const OWNER_ONLY_PARK_RE = /\bmac\b|launchd|simulator|money|spend|subscription|credits|\bpaid\b|payment|price|login|log[- ]in|sign[- ]?in|oauth|cookie|password|account|calendar|schedul|taste|visual-qa approval|owner-review|product (?:call|decision)|irreversib|bulk/i;
+const OWNER_ONLY_PARK_RE = /\bmac\b|launchd|simulator|money|spend|subscription|credits|\bpaid\b|payment|price|login|log[- ]in|sign[- ]?in|oauth|cookie|password|account|calendar|schedul|taste|visual-qa approval|owner-review|product (?:call|decision)|irreversib|bulk|quota|budget|iphone|device|different repo|other repo|legal|thomas|duplicate of/i;
 
 // BRO-5626: what a session park can name that a worker really cannot get past:
 // a key or credential, a date or event to wait for, a card that is a log and
