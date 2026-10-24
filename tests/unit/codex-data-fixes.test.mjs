@@ -73,6 +73,9 @@ test('codexPlanAllowed: field edits only, capped', () => {
 test('planNotApplied: only status applied from CI counts', () => {
   assert.equal(DF.planNotApplied({ status: 'applied', executedIn: 'ci' }), null);
   assert.match(DF.planNotApplied({ status: 'applied', executedIn: 'local' }), /local/);
+  assert.match(DF.planNotApplied({ status: 'applied' }), /applied/);
+  assert.equal(DF.planNotApplied({ status: 'applied' }, { legacyOk: true }), null);
+  assert.match(DF.planNotApplied({ status: 'applied', executedIn: 'local' }, { legacyOk: true }), /local/);
   assert.match(DF.planNotApplied({ status: 'partial', executedIn: 'ci', results: [{ status: 'refused' }] }), /partial.*1 action/);
   assert.match(DF.planNotApplied({ status: 'validation-failed' }), /validation-failed/);
   assert.match(DF.planNotApplied({ status: 'pending' }), /pending/);

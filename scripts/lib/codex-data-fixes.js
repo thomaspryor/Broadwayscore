@@ -36,8 +36,9 @@ function codexPlanAllowed(plan) {
 }
 
 /** -> null when the plan on main was applied by CI, else what it says instead. */
-function planNotApplied(plan) {
-  if (plan && plan.status === 'applied' && plan.executedIn === 'ci') return null;
+function planNotApplied(plan, { legacyOk = false } = {}) {
+  // legacyOk: a plan applied before the executor tagged executedIn (BRO-5647) reads as applied; "local" never does.
+  if (plan && plan.status === 'applied' && (plan.executedIn === 'ci' || (legacyOk && !plan.executedIn))) return null;
   const r = plan && Array.isArray(plan.results) ? plan.results.filter((x) => x && x.status && x.status !== 'applied' && x.status !== 'ok').length : 0;
   return `status "${plan && plan.status}"${plan && plan.executedIn ? ` (executedIn ${plan.executedIn})` : ''}${r ? `, ${r} action result(s) not applied` : ''}`;
 }
@@ -63,7 +64,9 @@ async function applyCardFixPlans(cardId, io, { rebuild = true } = {}) {
     try { plan = read(f); } catch (e) { return fail(`${f} is not readable on main: ${String(e.message).split('\n')[0]}`); }
     const refused = codexPlanAllowed(plan);
     if (refused && plan.status !== 'applied') return fail(`${f}: ${refused}`);
+    let ranHere = false;
     if (plan.status === 'pending') {
+      ranHere = true;
       if (!plan.planId) return fail(`${f} has no planId`);
       io.log(`${cardId}: applying ${f}`);
       const r = await io.dispatch(['execute-approved-fix.yml', '-f', `issue_number=${plan.issueNumber || f.replace(/\.json$/, '')}`, '-f', `plan_id=${plan.planId}`, '-f', 'mode=apply', '--wait', '--timeout=50']);
@@ -72,7 +75,7 @@ async function applyCardFixPlans(cardId, io, { rebuild = true } = {}) {
       io.git(['fetch', '-q', 'origin', 'main']);
       plan = read(f);
     }
-    const why = planNotApplied(plan);
+    const why = planNotApplied(plan, { legacyOk: !ranHere });
     if (why) return fail(`${f} on main is not applied: ${why}`);
     lines.push(`${f}: applied by CI`);
   }
