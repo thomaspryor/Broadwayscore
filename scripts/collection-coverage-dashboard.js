@@ -370,6 +370,8 @@ async function createGitHubIssue(markdown) {
     else console.error('Issue creation returned no issue URL');
   } catch (err) {
     console.error(`Issue creation failed: ${err.status || err.message}`);
+    // An HTTP rejection was only logged before; a network error or timeout used to fail the run.
+    if (!err.status) throw err;
   }
 }
 

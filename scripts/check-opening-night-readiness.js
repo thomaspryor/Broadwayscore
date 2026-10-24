@@ -482,6 +482,7 @@ async function runChecks() {
   if (ghToken) {
     let orchRuns = null;
     let orchStatus = 200;
+    let orchError = '';
     try {
       orchRuns = await fetchGitHubJSON(
         'https://api.github.com/repos/thomaspryor/Broadwayscore/actions/workflows/opening-night-orchestrator.yml/runs?per_page=5',
@@ -489,6 +490,7 @@ async function runChecks() {
       );
     } catch (err) {
       orchStatus = err.status || 0;
+      orchError = err.message;
     }
     if (orchStatus === 200) {
       try {
@@ -508,7 +510,7 @@ async function runChecks() {
         report(WARN, 'Orchestrator check', 'Could not parse GitHub API response');
       }
     } else {
-      report(WARN, 'Orchestrator check', `GitHub API returned ${orchStatus || 'an error'}. Set GH_TOKEN for this check.`);
+      report(WARN, 'Orchestrator check', `GitHub API returned ${orchStatus || orchError || 'an error'}. Set GH_TOKEN for this check.`);
     }
   } else {
     report(SKIP, 'Orchestrator check', 'GH_TOKEN not set');
