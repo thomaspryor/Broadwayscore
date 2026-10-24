@@ -81,3 +81,22 @@ test('real archived roundup pages extract rows and are not classed gated', { ski
   }
   assert.ok(withRows >= 1);
 });
+
+test('parseRoundupUrls keeps venue-suffixed roundup slugs and drops the index pages', () => {
+  const xml = `<urlset>
+<url><loc>https://www.thestage.co.uk/review-round-ups/arcadia-at-the-old-vic-london-review-round-up-tom-stoppard</loc></url>
+<url><loc>https://www.thestage.co.uk/review-round-ups/born-with-teeth-review-round-up-wyndhams-theatre-london</loc></url>
+<url><loc>https://www.thestage.co.uk/review-round-ups/martin-guerre-at-the-old-vic-london-review-round-up</loc></url>
+<url><loc>https://www.thestage.co.uk/review-round-ups/review-round-ups</loc></url>
+</urlset>`;
+  const urls = parseRoundupUrls(xml);
+  assert.equal(urls.length, 3);
+  assert.ok(!urls.some((u) => u.endsWith('/review-round-ups')));
+});
+
+test('zeroDataFailure flags a run where every fetch failed even with cached archives', () => {
+  const { zeroDataFailure } = require('../scrape-thestage-roundups.js');
+  assert.match(zeroDataFailure({ pagesChecked: 0, cached: 35, reviewsExtracted: 0, fetchErrors: 12 }), /Every Stage page fetch failed/);
+  assert.equal(zeroDataFailure({ pagesChecked: 3, cached: 35, reviewsExtracted: 0, fetchErrors: 12 }), null);
+  assert.equal(zeroDataFailure({ pagesChecked: 0, cached: 35, reviewsExtracted: 0, fetchErrors: 0 }), null);
+});

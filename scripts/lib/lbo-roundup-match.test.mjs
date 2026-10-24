@@ -47,3 +47,22 @@ test('real shows.json: real show list resolves the contraction-slug roundup', { 
   const r = matchLboRoundup(u('review-round-up-i-m-sorry-prime-minister-apollo-theatre'), 'i m sorry prime minister apollo theatre', we, { year: 2026 });
   assert.equal(r && r.show.id, 'im-sorry-prime-minister-west-end-2026');
 });
+
+test('a longer title that merely starts with a tracked title is not matched (review: Cats The Jellicle Ball)', { skip: !fs.existsSync('data/shows.json') }, () => {
+  const raw = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+  const we = (Array.isArray(raw) ? raw : raw.shows).filter((s) => /london|west/.test(s.category || ''));
+  for (const [slug, year] of [
+    ['review-roundup-cats-the-jellicle-ball-southbank', 2026],
+    ['review-round-up-hamlet-hackney-empire', 2026],
+    ['review-round-up-girls-and-boys-royal-court', 2026],
+  ]) {
+    assert.equal(matchLboRoundup(u(slug), null, we, { year }), null, slug);
+  }
+});
+
+test('renamed and sub-venues still resolve (Tom Stoppard = Duke of York, Dorfman = National)', { skip: !fs.existsSync('data/shows.json') }, () => {
+  const raw = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+  const we = (Array.isArray(raw) ? raw : raw.shows).filter((s) => /london|west/.test(s.category || ''));
+  assert.equal(matchLboRoundup(u('review-roundup-rent-tom-stoppard-theatre'), null, we, { year: 2026 }).show.id, 'rent-west-end-2026');
+  assert.equal(matchLboRoundup(u('review-round-up-pride-national-theatre'), null, we, { year: 2026 }).show.id, 'pride-west-end-2026');
+});

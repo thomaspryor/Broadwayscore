@@ -23,7 +23,8 @@ const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (
 const GATE_RE = /utm_source=Reggate|create a free account|Subscribe to continue/i;
 const CHALLENGE_RE = /captcha-delivery\.com|<title>\s*(?:Verifying Device|Just a moment\.\.\.)\s*<\/title>|Access is temporarily restricted/i;
 
-const ROUNDUP_PATH_RE = /^\/review-round-ups\/([a-z0-9-]+)-review-round-up\/?$/i;
+// Newer pages carry a venue suffix after the marker (...-review-round-up-old-vic-london).
+const ROUNDUP_PATH_RE = /^\/review-round-ups\/([a-z0-9-]+)-review-round-up(?:-[a-z0-9-]+)?\/?$/i;
 
 function locs(xml) {
   return [...String(xml || '').matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/g)].map((m) => m[1]);
@@ -35,7 +36,7 @@ function parseRoundupUrls(body) {
   const seen = new Set();
   const candidates = [
     ...locs(body),
-    ...[...String(body || '').matchAll(/href="([^"]*-review-round-up\/?)"/g)].map((m) => m[1]),
+    ...[...String(body || '').matchAll(/href="([^"]*-review-round-up(?:-[a-z0-9-]+)?\/?)"/g)].map((m) => m[1]),
   ];
   for (const raw of candidates) {
     let u;

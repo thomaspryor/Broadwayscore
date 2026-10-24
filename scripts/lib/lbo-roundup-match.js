@@ -37,8 +37,19 @@ function postSlugOf(url) {
     .replace(/\/$/, '');
 }
 
+// Roundup slugs sometimes name a different building than shows.json: a renamed
+// house (Duke of York's is now the Tom Stoppard Theatre) or the National's
+// auditoria. Each rule adds the slug-side tokens for a venue.
+const VENUE_ALIASES = [
+  { venue: /duke of york/, add: ['tom', 'stoppard'] },
+  { venue: /\b(dorfman|olivier|lyttelton|cottesloe)\b/, add: ['national'] },
+];
+
 function venueTokens(venue) {
-  return norm(venue).split(' ').filter(w => w && !VENUE_GENERIC.has(w));
+  const n = norm(venue);
+  const tokens = n.split(' ').filter(w => w && !VENUE_GENERIC.has(w));
+  for (const rule of VENUE_ALIASES) if (rule.venue.test(n)) tokens.push(...rule.add);
+  return tokens;
 }
 
 function matchBySlug(url, shows, year) {
@@ -57,17 +68,17 @@ function matchBySlug(url, shows, year) {
     hits.push({ show: s, tail, venueHit });
   }
   if (!hits.length) return null;
-  const withVenue = hits.filter(h => h.venueHit);
+  const inWindow = (h) => !year
+    || (h.show.openingDate && Math.abs(Number(h.show.openingDate.slice(0, 4)) - year) <= 1);
+  // A venue hit alone is not enough: the same title at the same venue recurs
+  // (Royal Court, Regent's Park), so the production must also be in the
+  // roundup's year window. <lastmod> is an edit date, so the window is +-1.
+  const withVenue = hits.filter(h => h.venueHit && inWindow(h));
   if (withVenue.length === 1) return withVenue[0].show;
-  if (withVenue.length > 1) {
-    const near = withVenue.filter(h => year && h.show.openingDate && Math.abs(Number(h.show.openingDate.slice(0, 4)) - year) <= 1);
-    return near.length === 1 ? near[0].show : null;
-  }
-  // No venue overlap: renamed theatre. Accept one production opening in the roundup's year window.
-  if (!year) return null;
-  const near = hits.filter(h => h.tail.length > 0 && h.show.openingDate
-    && Number(h.show.openingDate.slice(0, 4)) >= year - 1 && Number(h.show.openingDate.slice(0, 4)) <= year);
-  return near.length === 1 ? near[0].show : null;
+  // Several in-window productions at the venue: no safe pick.
+  // No venue overlap is NOT matched: a longer slug ("cats-the-jellicle-ball-...")
+  // is usually a different show that merely starts with this title.
+  return null;
 }
 
 /**

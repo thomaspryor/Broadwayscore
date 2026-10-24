@@ -61,7 +61,7 @@ const USE_BROWSER = process.argv.includes('--browser');
 const showsArg = process.argv.find(a => a.startsWith('--shows='));
 const TARGET_SHOWS = showsArg ? showsArg.split('=')[1].split(',') : null;
 
-const stats = { pagesChecked: 0, cached: 0, reviewsExtracted: 0, filesCreated: 0, filesUpdated: 0, filesSkipped: 0, errors: 0 };
+const stats = { pagesChecked: 0, cached: 0, reviewsExtracted: 0, filesCreated: 0, filesUpdated: 0, filesSkipped: 0, errors: 0, fetchErrors: 0 };
 
 // ─── Browser Setup ───────────────────────────────────────────────────────────
 
@@ -207,9 +207,10 @@ async function scrapeRoundups(fetchHtml, urls, weShows) {
 
   for (const url of urls) {
     // Extract title from URL slug
-    const slug = url.match(/review-round-ups\/(.+?)(?:-review-round-up)?\/?$/)?.[1] || '';
+    // Newer slugs carry a venue after the marker: <title>-review-round-up-<venue>.
+    const slug = url.match(/review-round-ups\/(.+?)(?:-review-round-up(?:-.*)?)?\/?$/)?.[1] || '';
     const title = slug
-      .replace(/-review-round-up$/, '')
+      .replace(/-starring-.*$/, '')
       .replace(/-at-the-.*$/, '').replace(/-at-.*$/, '')
       .split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
@@ -239,7 +240,13 @@ async function scrapeRoundups(fetchHtml, urls, weShows) {
 
     console.log(`  Fetching: ${match.show.title} → ${url}`);
     try {
-      const html = await fetchHtml(url);
+      let html;
+      try {
+        html = await fetchHtml(url);
+      } catch (fetchErr) {
+        stats.fetchErrors++;
+        throw fetchErr;
+      }
       // Dead login first: the registration gate has its own page title, so the
       // category guard below would otherwise hide it as a plain skip.
       const extractedRows = extractReviews(html, showId);
@@ -408,7 +415,15 @@ async function main() {
         await page.waitForTimeout(2000);
         return page.content();
       };
-      const matched = await scrapeRoundups(fetchHtml, urls, weShows);
+      let matched;
+      try {
+        matched = await scrapeRoundups(fetchHtml, urls, weShows);
+      } catch (err) {
+        if (!err.loginExpired) throw err;
+        console.error(`❌ ${err.message}`);
+        process.exitCode = 2;
+        return;
+      }
       console.log(`\nScraped ${matched.length} roundup pages\n`);
       extractMatched(matched);
     } finally {
@@ -449,7 +464,7 @@ async function main() {
 
   const zeroData = zeroDataFailure({
     pagesChecked: stats.pagesChecked, cached: stats.cached, reviewsExtracted: stats.reviewsExtracted,
-    targetShows: TARGET_SHOWS, extractOnly: EXTRACT_ONLY,
+    targetShows: TARGET_SHOWS, extractOnly: EXTRACT_ONLY, fetchErrors: stats.fetchErrors,
   });
   if (zeroData) {
     console.error(`❌ ${zeroData} Failing.`);
@@ -462,8 +477,12 @@ async function main() {
 // worked. --extract-only never fetches, so there the signal is whether any
 // review came out of the archives. Targeted runs are exempt.
 // Returns the failure message, or null.
-function zeroDataFailure({ pagesChecked, cached, reviewsExtracted, targetShows, extractOnly }) {
+function zeroDataFailure({ pagesChecked, cached, reviewsExtracted, targetShows, extractOnly, fetchErrors = 0 }) {
   if (targetShows) return null;
+  // Every fetch failed (403 / challenge): cached archives must not hide it.
+  if (!extractOnly && fetchErrors > 0 && pagesChecked === 0) {
+    return `Every Stage page fetch failed (${fetchErrors} errors, 0 pages fetched): blocked or challenged.`;
+  }
   if (extractOnly) {
     return reviewsExtracted === 0 ? 'ZERO reviews extracted from the archived roundups (archive missing or template drift).' : null;
   }
