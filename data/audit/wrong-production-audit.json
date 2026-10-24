@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-24T22:43:56.510Z",
+  "timestamp": "2026-10-24T23:41:02.733Z",
   "stats": {
-    "totalReviews": 60562,
-    "alreadyFlagged": 21289,
+    "totalReviews": 60670,
+    "alreadyFlagged": 21297,
     "dateGuardCatches": 223,
-    "directorMismatch": 2179,
-    "tvFilmSignals": 1715,
-    "londonSignals": 2927,
+    "directorMismatch": 2176,
+    "tvFilmSignals": 1716,
+    "londonSignals": 2926,
     "offBroadwaySignals": 534,
     "yearMismatch": 197,
-    "noPublishDate": 5566
+    "noPublishDate": 5660
   },
   "findings": [
     {
@@ -3898,6 +3898,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "archduke-off-broadway-2025",
+      "file": "vulture--sara-holdren.json",
+      "publishDate": "2025-11-12",
+      "url": "https://www.vulture.com/article/theater-review-archduke-rajiv-joseph-princip-roundabout.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -11858,20 +11871,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1244d before show (2022-10-09 vs 2026-03-06)"
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-west-end-2026",
-      "file": "london-box-office--phil-willmott.json",
-      "score": 96,
-      "publishDate": null,
-      "url": "https://www.londonboxoffice.co.uk/news/post/review-death-of-a-salesman-piccadilly",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"miranda cromwell\" from death-of-a-salesman-2022"
         }
       ]
     },
@@ -35591,25 +35590,6 @@
       "score": 80,
       "publishDate": "2025-09-28",
       "url": "https://playsinternational.org.uk/punch-apollo-theatre/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"adam penford\" from punch-2025"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"leanne pinder\" from punch-2025"
-        }
-      ]
-    },
-    {
-      "showId": "punch-west-end-2025",
-      "file": "theatrely--juan-a-ramirez.json",
-      "score": 75,
-      "publishDate": "September 29, 2025",
-      "url": "https://www.theatrely.com/post/punch-redemption-and-runarounds-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -78324,7 +78304,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 73,
+      "score": 60,
       "publishDate": "2026-10-22",
       "url": "https://www.theguardian.com/stage/2026/oct/22/martin-guerre-review-les-mis-duo-melodrama-old-vic-theatre-london",
       "findings": [
@@ -80987,20 +80967,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new world stages\""
-        }
-      ]
-    },
-    {
-      "showId": "noises-off-west-end-2019",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 60,
-      "publishDate": null,
-      "url": "https://www.timeout.com/london/theatre/noises-off-review-1",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
