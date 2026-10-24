@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-6115",
+  "planId": "6c5796cb-20a9-480a-8627-7e51f3d3ac78",
+  "status": "pending",
+  "createdAt": "2026-10-24T12:30:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6115: promote talkinbroadway to standingCoverage. audit-standing-coverage lists it as unflagged and clearing the promote bar (overall >= 84%, every trailing season >= 75%); the action re-checks that at execute time and refuses otherwise.",
+    "steps": [
+      "Set standingCoverage true (and standingMarkets ['broadway']) on talkinbroadway in data/outlet-registry.json."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "outlet-registry-flag",
+        "outletId": "talkinbroadway",
+        "flag": "standingCoverage",
+        "value": true,
+        "reason": "audit-standing-coverage lists talkinbroadway under promote (unflagged, clears the bar)",
+        "description": "Promote talkinbroadway to standingCoverage"
+      }
+    ]
+  }
+}

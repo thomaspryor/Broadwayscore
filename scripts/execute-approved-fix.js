@@ -227,7 +227,13 @@ function runValidation(changedFiles, touchedCommercialKeys = [], priorCommercial
       const ids = Object.keys(data?.outlets || {});
       if (ids.length < 500) throw new Error(`Expected 500+ outlets, got ${ids.length}`);
       if (!data._aliasIndex || typeof data._aliasIndex !== 'object') throw new Error('Missing _aliasIndex');
-      const errs = ids.flatMap((id) => outletFieldShapeErrors(id, data.outlets[id]));
+      // Only flagged outlets: a shape problem some other writer left on an unrelated outlet must not block this fix.
+      const flagged = ids.filter((id) => data.outlets[id] && data.outlets[id].standingCoverage !== undefined);
+      const errs = flagged.flatMap((id) => [
+        ...(data.outlets[id].standingCoverage === true && !Array.isArray(data.outlets[id].standingMarkets) ? [`outlet "${id}": standingCoverage without standingMarkets`] : []),
+        ...(typeof data.outlets[id].standingCoverage !== 'boolean' ? [`outlet "${id}": standingCoverage must be a boolean`] : []),
+        ...outletFieldShapeErrors(id, data.outlets[id]),
+      ]);
       if (errs.length) throw new Error(errs.slice(0, 5).join('; '));
     },
   };
@@ -458,10 +464,16 @@ function executeOutletRegistryFlag(action) {
   } catch (e) {
     return { ok: false, reason: `outlet-registry-flag ${action && action.outletId}: cannot read inputs (${e.message})` };
   }
-  const result = applyOutletRegistryFlag(registry, action, { shows, reviews });
-  // The registry file has no trailing newline (rebuild-all-reviews.js writes it that way).
-  if (result.ok && result.changed) fs.writeFileSync(path.join(ROOT, rel), JSON.stringify(registry, null, 2));
-  return result;
+  // Fail this action, not the run: a throw would skip validation/rollback while
+  // the always() push step still publishes earlier actions' writes.
+  try {
+    const result = applyOutletRegistryFlag(registry, action, { shows, reviews });
+    // The registry file has no trailing newline (rebuild-all-reviews.js writes it that way).
+    if (result.ok && result.changed) fs.writeFileSync(path.join(ROOT, rel), JSON.stringify(registry, null, 2));
+    return result;
+  } catch (e) {
+    return { ok: false, reason: `outlet-registry-flag ${action && action.outletId}: ${e.message}` };
+  }
 }
 
 function executeRetitleShow(action) {
@@ -775,7 +787,7 @@ async function main() {
   if (hasDataEdits) {
     // add-show / retire-show / retitle-show / add-commercial-entry carry no `file`.
     const IMPLIED_FILE = { 'add-show': 'shows.json', 'retire-show': 'shows.json', 'retitle-show': 'shows.json', 'add-commercial-entry': 'commercial.json', 'outlet-registry-flag': 'outlet-registry.json' };
-    const changedFiles = [...new Set(dataTouching.map(a => a.file || IMPLIED_FILE[a.type] || null).filter(Boolean))];
+    const changedFiles = [...new Set(dataTouching.map(a => IMPLIED_FILE[a.type] || a.file || null).filter(Boolean))];
     // retire-show also drops or moves the id's audience-buzz.json key (BRO-3248).
     if (dataTouching.some(a => a.type === 'retire-show') && !changedFiles.includes('audience-buzz.json')) changedFiles.push('audience-buzz.json');
     console.log('\nRunning validation...');

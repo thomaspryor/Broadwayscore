@@ -39,7 +39,17 @@ function applyOutletRegistryFlag(registry, action, { shows, reviews, nowMs = Dat
   if (!Array.isArray(reviews) || reviews.length < MIN_PLAUSIBLE_REVIEWS) return { ok: false, reason: `${tag}: reviews.json has ${reviews ? reviews.length : 0} rows (< ${MIN_PLAUSIBLE_REVIEWS}), refusing on a stub` };
 
   const entry = outlets[outletId];
-  if (!!entry.standingCoverage === value) return { ok: true, changed: false, msg: `${outletId}: standingCoverage already ${value}` };
+  // Strict compare: a truthy non-boolean ("false") is malformed state, not "already set".
+  const current = entry.standingCoverage === true;
+  if (entry.standingCoverage !== undefined && typeof entry.standingCoverage !== 'boolean') return { ok: false, reason: `${tag}: existing standingCoverage ${JSON.stringify(entry.standingCoverage)} is not a boolean, refusing` };
+  if (current === value) {
+    // Already flagged but missing standingMarkets (standing-outlets.js would default it): repair, no audit needed.
+    if (value && !Array.isArray(entry.standingMarkets)) {
+      entry.standingMarkets = ['broadway'];
+      return { ok: true, changed: true, msg: `${outletId}: standingCoverage already true; added missing standingMarkets` };
+    }
+    return { ok: true, changed: false, msg: `${outletId}: standingCoverage already ${value}` };
+  }
 
   const audit = evaluateStandingCoverage(shows, reviews, outlets, nowMs);
   const list = value ? audit.promote : audit.demote;

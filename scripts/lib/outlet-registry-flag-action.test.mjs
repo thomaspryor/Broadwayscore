@@ -107,3 +107,13 @@ test('refuses on stub shows or stub reviews (no evidence must never demote)', ()
   assert.match(applyOutletRegistryFlag(reg, act('gone', false), { shows, reviews: reviews.slice(0, 50), nowMs: NOW }).reason, /stub/);
   assert.equal(reg.outlets.gone.standingCoverage, true);
 });
+
+test('flagged outlet missing standingMarkets is repaired; a non-boolean flag is refused', () => {
+  const reg = registry({ nomarkets: { tier: 2, standingCoverage: true }, bad: { tier: 2, standingCoverage: 'false' } });
+  const r = applyOutletRegistryFlag(reg, act('nomarkets', true), ctx());
+  assert.deepEqual([r.ok, r.changed], [true, true]);
+  assert.deepEqual(reg.outlets.nomarkets.standingMarkets, ['broadway']);
+  const b = applyOutletRegistryFlag(reg, act('bad', true), ctx());
+  assert.equal(b.ok, false);
+  assert.match(b.reason, /not a boolean/);
+});
