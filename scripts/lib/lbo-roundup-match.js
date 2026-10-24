@@ -16,11 +16,12 @@
  * is accepted. The fetched page's own title is still checked afterwards.
  */
 const { matchTitleToShow } = require('./show-matching');
+const { foldDiacritics } = require('./title-match');
 
 const VENUE_GENERIC = new Set(['the', 'theatre', 'theater', 'centre', 'center', 'royal', 'of', 'at', 'and', 'london', 'hall', 'house', 'open', 'air']);
 
 function norm(s) {
-  return String(s || '').toLowerCase()
+  return foldDiacritics(String(s || '')).toLowerCase()
     .replace(/[‘’‚′`]/g, "'").replace(/'/g, '')
     .replace(/&/g, ' and ')
     .replace(/[^a-z0-9]+/g, ' ')
