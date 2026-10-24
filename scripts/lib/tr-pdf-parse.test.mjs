@@ -15,7 +15,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { parsePdfReviews, parseRawPdfReviews, cutAtProductionHeader, maskPdfText, parseDefaultPdfReviews, mentionsTitle, mergeDefaultReviews, dateKey, parseShortDate } = require('./tr-pdf-parse.js');
+const { parsePdfReviews, parseRawPdfReviews, cutAtProductionHeader, maskPdfText, parseDefaultPdfReviews, mentionsTitle, mergeDefaultReviews, dateKey, parseShortDate, isDateLine } = require('./tr-pdf-parse.js');
 
 const JOSEPH = 'Joseph and the Amazing Technicolor Dreamcoat';
 const PAD = ' '.repeat(52);
@@ -272,4 +272,51 @@ test('default mode title match rejects passing mentions of common words', () => 
   assert.equal(mentionsTitle(body('the band plays; the band was loud').fullText, 'The Band'), false);
   assert.equal(mentionsTitle(body('six actors in six roles').fullText, 'Six'), false);
   assert.equal(mentionsTitle(body('act 2 at 9 pm, 5 stars').fullText, '9 to 5'), false);
+});
+
+// BRO-6127: 2021-22 issues date September "08 Sept 2021". DATE_LONG only knew
+// "Sep"/"September", so no outlet+date header matched and Frozen, Blithe
+// Spirit, The Last Five Years and Rockets and Blue Lights all parsed to zero.
+test('September is also written Sept', () => {
+  assert.equal(isDateLine('08 Sept 2021'), true);
+  assert.equal(isDateLine('08 Sep 2021'), true);
+  assert.equal(isDateLine('08 September 2021'), true);
+  assert.equal(isDateLine('08 Septx 2021'), false);
+  assert.equal(dateKey('08 Sept 2021'), '2021-09-08');
+});
+
+// The probe's masked skeletons keep only capitals on short lines, so the
+// markers the parser keys on ("Reviews", "Previews / Opens", the month) are
+// restored here; every other line is the real layout.
+const unmask = (t) => t
+  .replace(/^(\s*)Rxxxxxx\s*$/gm, '$1Reviews')
+  .replace(/Pxxxxxxx \/ Oxxxx/g, 'Previews / Opens')
+  .replace(/(\d{2}) Sxxx (\d{4})/g, '$1 Sept $2');
+
+test('layout mode on masked real 2021 skeletons finds every outlet header', async () => {
+  const { readFileSync } = await import('node:fs');
+  const dir = new URL('../../data/audit/we-historical-tr-skeletons/', import.meta.url);
+  const cases = [
+    ['frozen-west-end-2021', 'Frozen', 4],
+    ['blithe-spirit-west-end-2021', 'Blithe Spirit', 6],
+    ['the-last-five-years-west-end-2021', 'The Last Five Years', 5],
+    ['rockets-and-blue-lights-west-end-2021', 'Rockets and Blue Lights', 5],
+  ];
+  for (const [id, title, headers] of cases) {
+    const stats = {};
+    parsePdfReviews(unmask(readFileSync(new URL(`${id}.layout.txt`, dir), 'utf8')), title, stats);
+    assert.equal(stats.sectionFound, true, `${id}: section`);
+    assert.equal(stats.headers, headers, `${id}: headers`);
+  }
+});
+
+// 2017-18 issues print the bare masthead ("GUARDIAN", "INDEPENDENT").
+test('default mode reads bare mastheads on masked real 2018 skeletons', async () => {
+  const { readFileSync } = await import('node:fs');
+  const dir = new URL('../../data/audit/we-historical-tr-skeletons/', import.meta.url);
+  const read = (id) => readFileSync(new URL(`${id}.default.txt`, dir), 'utf8');
+  const pressure = parseDefaultPdfReviews(read('pressure-west-end-2018'), 'Pressure');
+  assert.ok(pressure.some(r => /independent/i.test(r.outlet)), 'Pressure: Independent');
+  const kite = parseDefaultPdfReviews(read('the-kite-runner-west-end-2017'), 'The Kite Runner');
+  assert.ok(kite.some(r => /guardian/i.test(r.outlet)), 'Kite Runner: Guardian');
 });

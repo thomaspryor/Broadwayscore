@@ -1383,6 +1383,22 @@ function splitChildrenOf(parentId) {
   return _splitChildren.get(parentId) || [];
 }
 
+const compactName = (n) => String(n || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/gi, '').toLowerCase();
+
+/**
+ * The split child (Mail on Sunday, Sunday Times) a parent-outlet byline belongs
+ * to, by the child's registry splitCritics; the outletId unchanged when none
+ * matches. Lets a source that labels the parent (Theatre Record's "Daily Mail"
+ * for Robert Gore-Langton) write the child's file on first extraction rather
+ * than relying on a later outlet-mismatch-heal relabel (BRO-6127).
+ */
+function resolveSplitOutletByCritic(outletId, criticName) {
+  const critic = compactName(criticName);
+  if (!critic) return outletId;
+  const hit = splitChildrenOf(outletId).find((c) => (c.entry.splitCritics || []).some((n) => compactName(n) === critic));
+  return hit ? hit.id : outletId;
+}
+
 /** Bare host set of an outlet entry: domain plus domainAliases, www.-stripped, lowercased. */
 function outletHosts(entry) {
   const aliases = entry && Array.isArray(entry.domainAliases) ? entry.domainAliases : [];
@@ -2993,6 +3009,7 @@ module.exports = {
   getOutletTier,
   loadOutletRegistry,
   splitChildrenOf,
+  resolveSplitOutletByCritic,
   sharesMasthead,
   editionFamily,
   editionGroupKey,

@@ -21,10 +21,11 @@ const { chromium } = require('playwright');
 const { isLikelyWrongProduction, isLikelyTourReview } = require('./lib/review-guards');
 const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
 const { isLateTheatreRecordReviewOfBroadwayShow } = require('./lib/tr-late-review-guard');
-const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, getOutletDisplayName: getRegistryDisplayName } = require('./lib/review-normalization');
+const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, resolveSplitOutletByCritic, getOutletDisplayName: getRegistryDisplayName } = require('./lib/review-normalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { checkWrongShowMentionGuard, checkFilmTvGuard, isCorroboratedByRoundup } = require('./lib/tr-wrongshow-guard');
-const { pickTrProduction } = require('./lib/tr-production-pick');
+const { pickTrProduction, trTitleMatches } = require('./lib/tr-production-pick');
+const { pdfUrlVariants, nonPdfHead } = require('./lib/tr-pdf-url');
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
 const { resolveTheatreRecordWriteTarget, mergeTheatreRecordIntoExisting } = require('./lib/review-text-identity');
 
@@ -58,24 +59,28 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
     return [];
   }
 
-  // Download PDF to temp file
+  // Download PDF to temp file. A link the server will not route (2:22's
+  // colon slug) comes back as HTML, so each variant of the link is tried.
   const tmpFile = path.join('/tmp', `tr-${show.id}.pdf`);
-  try {
-    // Resolve any redirects first — /archive/volume/ redirects to /archive/issue/
-    const resolvedUrl = pdfUrl.replace(/#.*$/, ''); // Strip fragment
-    execSync(`curl -s -L -o "${tmpFile}" -b "PHPSESSID=${phpSession.value}" "${resolvedUrl}"`, { timeout: 30000 });
-  } catch (e) {
-    console.log(`  PDF download failed: ${e.message}`);
-    probeNote(show.id, { pdf: { failed: 'download' } });
-    return [];
+  let notPdf = null;
+  let gotPdf = false;
+  for (const url of pdfUrlVariants(pdfUrl)) {
+    try {
+      // Resolve any redirects first — /archive/volume/ redirects to /archive/issue/
+      execSync(`curl -s -L -o "${tmpFile}" -b "PHPSESSID=${phpSession.value}" "${url}"`, { timeout: 30000 });
+    } catch (e) {
+      console.log(`  PDF download failed: ${e.message}`);
+      probeNote(show.id, { pdf: { failed: 'download' } });
+      return [];
+    }
+    const fileType = execSync(`file "${tmpFile}"`).toString();
+    if (fileType.includes('PDF')) { gotPdf = true; break; }
+    console.log(`  Downloaded file is not a PDF (${url}): ${fileType.trim()}`);
+    notPdf = { url, head: nonPdfHead(fs.readFileSync(tmpFile, 'utf8').slice(0, 4000)) };
   }
-
-  // Verify it's actually a PDF
-  const fileType = execSync(`file "${tmpFile}"`).toString();
-  if (!fileType.includes('PDF')) {
-    console.log(`  Downloaded file is not a PDF: ${fileType.trim()}`);
+  if (!gotPdf) {
     fs.unlinkSync(tmpFile);
-    probeNote(show.id, { pdf: { failed: 'not-a-pdf' } });
+    probeNote(show.id, { pdf: { failed: 'not-a-pdf', ...notPdf } });
     return [];
   }
 
@@ -576,8 +581,8 @@ async function main() {
         continue;
       }
 
-      const outletId = getOutletId(review.outlet);
-      const outletDisplay = getOutletDisplayName(review.outlet);
+      const outletId = resolveSplitOutletByCritic(getOutletId(review.outlet), review.critic);
+      const outletDisplay = getRegistryDisplayName(outletId) || review.outlet;
       const filename = makeFilename(outletId, review.critic);
       const filepath = path.join(showDir, filename);
 
@@ -809,7 +814,7 @@ async function main() {
       }
     }
 
-    let titleMatches = results.filter(r => titlesMatch(r.title, show.title));
+    let titleMatches = results.filter(r => trTitleMatches(r.title, show.title));
 
     // If no title match, retry with a cleaned (suffix/prefix-stripped) title
     if (titleMatches.length === 0) {
@@ -821,7 +826,7 @@ async function main() {
         for (const r of moreResults) {
           if (!seen.has(r.link)) { results.push(r); seen.add(r.link); }
         }
-        titleMatches = results.filter(r => titlesMatch(r.title, show.title));
+        titleMatches = results.filter(r => trTitleMatches(r.title, show.title));
       }
     }
 
