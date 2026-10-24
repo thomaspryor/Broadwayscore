@@ -52,7 +52,9 @@ const ROOT = path.resolve(__dirname, '..', '..');
 // checks them out; without them both the base and the branch run fail data-dependent tests in
 // slightly different sets, which reads as "new failures" (BRO-6037 session, 2026-10-23: 24 min
 // spent to report 13 false failures in show-identity / show-venue / review-file-writer tests).
-const CORE_DATA_FILES = ['data/shows.json', 'data/reviews.json'];
+// The generated cast manifests are also static imports in src/: tsc fails without them,
+// even when setup-local-data.sh found the private core data in a cloud checkout.
+const CORE_DATA_FILES = ['data/shows.json', 'data/reviews.json', 'data/cast-manifest.json', 'data/actor-slugs.json'];
 
 /** -> list of CORE_DATA_FILES missing under root */
 function missingCoreData(root, exists = fs.existsSync) {
@@ -133,7 +135,8 @@ function main(argv = process.argv.slice(2)) {
   if (missing.length) {
     console.error(`land-local-check: ${missing.join(', ')} missing in this checkout (a worktree has no local data). `
       + 'Data-dependent tests would fail on both sides and report false new failures. '
-      + 'Run ./scripts/setup-local-data.sh --link-only in this checkout (installs only the gitignored data set).');
+      + 'Run ./scripts/setup-local-data.sh --link-only for core data. With data/cast/ available, generate the manifests with '
+      + 'node scripts/build-actor-slugs-manifest.js && node scripts/build-cast-manifest.js.');
     return 3;
   }
   const fetch = git('fetch', '-q', 'origin', 'main');
@@ -166,6 +169,7 @@ function main(argv = process.argv.slice(2)) {
         // Same as land.yml: the gauntlet copy runs from outside the tree it checks out.
         const copy = path.join(out, 'land-gauntlet.sh');
         fs.copyFileSync(path.join(ROOT, 'scripts/lib/land-gauntlet.sh'), copy);
+        fs.copyFileSync(path.join(ROOT, 'scripts/lib/tsc-node-options.sh'), path.join(out, 'tsc-node-options.sh'));
         console.log(`land-local-check: red on HEAD: ${red}; running them on the base to tell new failures from old`);
         run('bash', [copy, baseDir, '--checkout', base, '--return-to', head], { env: { ...env, GAUNTLET_GATES: red }, stdio: ['ignore', 'ignore', 'inherit'] });
         if (git('rev-parse', 'HEAD').stdout !== head) console.error(`land-local-check: WARNING: HEAD is not back at ${head.slice(0, 10)}; run git checkout ${branch || head}`);
@@ -200,6 +204,6 @@ function main(argv = process.argv.slice(2)) {
   }
 }
 
-module.exports = { parseArgs, newFailureFiles, missingCoreData, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
+module.exports = { main, parseArgs, newFailureFiles, missingCoreData, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
 
 if (require.main === module) process.exit(main());
