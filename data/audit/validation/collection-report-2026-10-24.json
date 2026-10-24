@@ -1,64 +1,63 @@
 {
-  "runDate": "2026-10-24T20:05:43.060Z",
+  "runDate": "2026-10-24T20:36:02.315Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "hold-on-to-me-darling-off-broadway-2024,sumo-off-broadway-2025",
+    "showFilter": "garry-starr-classic-penguins-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 33,
-    "failed": 4,
+    "processed": 1,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "89.2%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 16,
-    "amp": 2,
-    "browserbase": 10,
+    "playwright": 1,
+    "amp": 0,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 3,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 6
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 20,
-    "tier1Success": 17,
-    "ampAttempts": 1,
-    "ampSuccess": 1,
-    "tier1_5Attempts": 5,
-    "tier1_5Success": 5,
-    "tier1_9Attempts": 4,
-    "tier1_9Success": 1,
-    "tier2Attempts": 9,
-    "tier2Success": 3,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 0,
+    "tier1_9Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 3,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 5,
-    "tier4Success": 1,
-    "totalFailed": 4,
-    "scrapingBeePageCredits": 43,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 0,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 5,
-    "browserbaseMinutesUsed": 1,
-    "urlDiscoveryAttempts": 1,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 33,
-    "failed": 4,
+    "processed": 1,
+    "failed": 0,
     "shows": [
-      "hold-on-to-me-darling-off-broadway-2024",
-      "sumo-off-broadway-2025"
+      "garry-starr-classic-penguins-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -67,166 +66,28 @@
     }
   },
   "processed": [
-    "hold-on-to-me-darling-off-broadway-2024/theatermania--zachary-stewart.json",
-    "sumo-off-broadway-2025/nytg--austin-fimmano.json",
-    "sumo-off-broadway-2025/nytimes--jesse-green.json",
-    "sumo-off-broadway-2025/nytimes--unknown.json",
-    "sumo-off-broadway-2025/vulture--sara-holdren.json",
-    "sumo-off-broadway-2025/this-week-in-new-york--mark-rifkin.json",
-    "sumo-off-broadway-2025/timeout--raven-snook.json",
-    "sumo-off-broadway-2025/theatrely--unknown.json",
-    "sumo-off-broadway-2025/culturesauce--thom-geier.json",
-    "sumo-off-broadway-2025/exeunt-magazine--lorin-wertheimer.json",
-    "sumo-off-broadway-2025/the-interested-bystander--cary-wong.json",
-    "sumo-off-broadway-2025/theater-pizzazz--samuel-l-leiter.json",
-    "sumo-off-broadway-2025/theater-scene--joseph-pisano.json",
-    "hold-on-to-me-darling-off-broadway-2024/nyt-theater--jonathan-mandell.json",
-    "hold-on-to-me-darling-off-broadway-2024/nytimes--jesse-green.json",
-    "hold-on-to-me-darling-off-broadway-2024/nytimes--unknown.json",
-    "hold-on-to-me-darling-off-broadway-2024/vulture--sara-holdren.json",
-    "hold-on-to-me-darling-off-broadway-2024/deadline--greg-evans.json",
-    "hold-on-to-me-darling-off-broadway-2024/ew--unknown.json",
-    "hold-on-to-me-darling-off-broadway-2024/guardian--unknown.json",
-    "hold-on-to-me-darling-off-broadway-2024/new-york-sun--elysa-gardner.json",
-    "hold-on-to-me-darling-off-broadway-2024/nydailynews--joe-dziemianowicz.json",
-    "hold-on-to-me-darling-off-broadway-2024/timeout--david-cote.json",
-    "hold-on-to-me-darling-off-broadway-2024/wsj--charles-isherwood.json",
-    "hold-on-to-me-darling-off-broadway-2024/theatrely--unknown.json",
-    "hold-on-to-me-darling-off-broadway-2024/culturesauce--thom-geier.json",
-    "hold-on-to-me-darling-off-broadway-2024/dailybeast--tim-teeman.json",
-    "hold-on-to-me-darling-off-broadway-2024/nysr--david-finkle.json",
-    "hold-on-to-me-darling-off-broadway-2024/theater-pizzazz--brian-scott-lipton.json",
-    "hold-on-to-me-darling-off-broadway-2024/theater-scene--victor-gluck.json",
-    "hold-on-to-me-darling-off-broadway-2024/thestage--lane-williamson.json",
-    "hold-on-to-me-darling-off-broadway-2024/times-square-chronicles--suzanna-bowling.json",
-    "hold-on-to-me-darling-off-broadway-2024/vogue--christopher-barnard.json"
+    "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json"
   ],
-  "failed": [
-    "hold-on-to-me-darling-off-broadway-2024/thewrap--robert-hofler.json",
-    "hold-on-to-me-darling-off-broadway-2024/newsday--linda-winer.json",
-    "hold-on-to-me-darling-off-broadway-2024/ap--jennifer-farrar.json",
-    "hold-on-to-me-darling-off-broadway-2024/epoch-times--judd-hollander.json"
-  ],
+  "failed": [],
   "cumulativeResumedState": {
     "processed": [
-      "hold-on-to-me-darling-off-broadway-2024/theatermania--zachary-stewart.json",
-      "sumo-off-broadway-2025/nytg--austin-fimmano.json",
-      "sumo-off-broadway-2025/nytimes--jesse-green.json",
-      "sumo-off-broadway-2025/nytimes--unknown.json",
-      "sumo-off-broadway-2025/vulture--sara-holdren.json",
-      "sumo-off-broadway-2025/this-week-in-new-york--mark-rifkin.json",
-      "sumo-off-broadway-2025/timeout--raven-snook.json",
-      "sumo-off-broadway-2025/theatrely--unknown.json",
-      "sumo-off-broadway-2025/culturesauce--thom-geier.json",
-      "sumo-off-broadway-2025/exeunt-magazine--lorin-wertheimer.json",
-      "sumo-off-broadway-2025/the-interested-bystander--cary-wong.json",
-      "sumo-off-broadway-2025/theater-pizzazz--samuel-l-leiter.json",
-      "sumo-off-broadway-2025/theater-scene--joseph-pisano.json",
-      "hold-on-to-me-darling-off-broadway-2024/nyt-theater--jonathan-mandell.json",
-      "hold-on-to-me-darling-off-broadway-2024/nytimes--jesse-green.json",
-      "hold-on-to-me-darling-off-broadway-2024/nytimes--unknown.json",
-      "hold-on-to-me-darling-off-broadway-2024/vulture--sara-holdren.json",
-      "hold-on-to-me-darling-off-broadway-2024/deadline--greg-evans.json",
-      "hold-on-to-me-darling-off-broadway-2024/ew--unknown.json",
-      "hold-on-to-me-darling-off-broadway-2024/guardian--unknown.json",
-      "hold-on-to-me-darling-off-broadway-2024/new-york-sun--elysa-gardner.json",
-      "hold-on-to-me-darling-off-broadway-2024/nydailynews--joe-dziemianowicz.json",
-      "hold-on-to-me-darling-off-broadway-2024/timeout--david-cote.json",
-      "hold-on-to-me-darling-off-broadway-2024/wsj--charles-isherwood.json",
-      "hold-on-to-me-darling-off-broadway-2024/theatrely--unknown.json",
-      "hold-on-to-me-darling-off-broadway-2024/culturesauce--thom-geier.json",
-      "hold-on-to-me-darling-off-broadway-2024/dailybeast--tim-teeman.json",
-      "hold-on-to-me-darling-off-broadway-2024/nysr--david-finkle.json",
-      "hold-on-to-me-darling-off-broadway-2024/theater-pizzazz--brian-scott-lipton.json",
-      "hold-on-to-me-darling-off-broadway-2024/theater-scene--victor-gluck.json",
-      "hold-on-to-me-darling-off-broadway-2024/thestage--lane-williamson.json",
-      "hold-on-to-me-darling-off-broadway-2024/times-square-chronicles--suzanna-bowling.json",
-      "hold-on-to-me-darling-off-broadway-2024/vogue--christopher-barnard.json"
+      "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json"
     ],
-    "failed": [
-      "hold-on-to-me-darling-off-broadway-2024/thewrap--robert-hofler.json",
-      "hold-on-to-me-darling-off-broadway-2024/newsday--linda-winer.json",
-      "hold-on-to-me-darling-off-broadway-2024/ap--jennifer-farrar.json",
-      "hold-on-to-me-darling-off-broadway-2024/epoch-times--judd-hollander.json"
-    ]
+    "failed": []
   },
   "tierDetails": {
     "playwright": [
-      "hold-on-to-me-darling-off-broadway-2024/theatermania--zachary-stewart.json",
-      "sumo-off-broadway-2025/nytg--austin-fimmano.json",
-      "sumo-off-broadway-2025/this-week-in-new-york--mark-rifkin.json",
-      "sumo-off-broadway-2025/timeout--raven-snook.json",
-      "sumo-off-broadway-2025/culturesauce--thom-geier.json",
-      "sumo-off-broadway-2025/exeunt-magazine--lorin-wertheimer.json",
-      "sumo-off-broadway-2025/the-interested-bystander--cary-wong.json",
-      "sumo-off-broadway-2025/theater-scene--joseph-pisano.json",
-      "hold-on-to-me-darling-off-broadway-2024/nyt-theater--jonathan-mandell.json",
-      "hold-on-to-me-darling-off-broadway-2024/ew--unknown.json",
-      "hold-on-to-me-darling-off-broadway-2024/timeout--david-cote.json",
-      "hold-on-to-me-darling-off-broadway-2024/culturesauce--thom-geier.json",
-      "hold-on-to-me-darling-off-broadway-2024/nysr--david-finkle.json",
-      "hold-on-to-me-darling-off-broadway-2024/theater-scene--victor-gluck.json",
-      "hold-on-to-me-darling-off-broadway-2024/thestage--lane-williamson.json",
-      "hold-on-to-me-darling-off-broadway-2024/times-square-chronicles--suzanna-bowling.json"
+      "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json"
     ],
-    "amp": [
-      "data/review-texts/hold-on-to-me-darling-off-broadway-2024/deadline--greg-evans.json",
-      "hold-on-to-me-darling-off-broadway-2024/deadline--greg-evans.json"
-    ],
-    "browserbase": [
-      "data/review-texts/sumo-off-broadway-2025/nytimes--jesse-green.json",
-      "sumo-off-broadway-2025/nytimes--jesse-green.json",
-      "data/review-texts/sumo-off-broadway-2025/nytimes--unknown.json",
-      "sumo-off-broadway-2025/nytimes--unknown.json",
-      "data/review-texts/hold-on-to-me-darling-off-broadway-2024/nytimes--jesse-green.json",
-      "hold-on-to-me-darling-off-broadway-2024/nytimes--jesse-green.json",
-      "data/review-texts/hold-on-to-me-darling-off-broadway-2024/nytimes--unknown.json",
-      "hold-on-to-me-darling-off-broadway-2024/nytimes--unknown.json",
-      "data/review-texts/hold-on-to-me-darling-off-broadway-2024/wsj--charles-isherwood.json",
-      "hold-on-to-me-darling-off-broadway-2024/wsj--charles-isherwood.json"
-    ],
+    "amp": [],
+    "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "hold-on-to-me-darling-off-broadway-2024/vogue--christopher-barnard.json"
-    ],
-    "scrapingbee": [
-      "sumo-off-broadway-2025/theatrely--unknown.json",
-      "hold-on-to-me-darling-off-broadway-2024/new-york-sun--elysa-gardner.json",
-      "hold-on-to-me-darling-off-broadway-2024/theatrely--unknown.json"
-    ],
+    "scrapingdog": [],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "sumo-off-broadway-2025/vulture--sara-holdren.json",
-      "sumo-off-broadway-2025/theater-pizzazz--samuel-l-leiter.json",
-      "hold-on-to-me-darling-off-broadway-2024/vulture--sara-holdren.json",
-      "hold-on-to-me-darling-off-broadway-2024/nydailynews--joe-dziemianowicz.json",
-      "hold-on-to-me-darling-off-broadway-2024/dailybeast--tim-teeman.json",
-      "hold-on-to-me-darling-off-broadway-2024/theater-pizzazz--brian-scott-lipton.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {
-    "TheWrap": {
-      "count": 1,
-      "domain": "thewrap.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Newsday": {
-      "count": 1,
-      "domain": "newsday.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Associated Press": {
-      "count": 1,
-      "domain": "abcnews.go.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
