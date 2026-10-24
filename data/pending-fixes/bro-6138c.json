@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6138c",
   "planId": "820e6972-38aa-4ed1-aea2-28ad681f1dd2",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-24T20:32:38.455Z",
   "submitter": {
     "name": null,
@@ -54,5 +54,19 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-24T21:33:22.844Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added finding-neverland-2015 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added side-show-2014 (Did Not Recoup)"
+    }
+  ],
+  "executedIn": "ci"
 }
