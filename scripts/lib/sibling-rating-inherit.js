@@ -35,7 +35,7 @@ function siblingRatingForClamp(file, data, siblingFiles, load, canonicalUrl, det
     if (!d || !d.url || canonicalUrl(d.url) !== url) continue;
     if (d.wrongShow || d.wrongProduction || d.isRoundupArticle || d.originalScoreCleared) continue;
     const rating = ownRatingField(d);
-    if (rating === null) continue;
+    if (rating === null || /%/.test(String(rating))) continue; // a percentage is not a star/grade band
     const det = detectBand({ originalRating: rating });
     if (!det || !det.band || !det.highReliability) continue;
     found.set(`${det.band.floor}-${det.band.ceiling}`, String(rating));

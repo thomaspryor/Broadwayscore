@@ -29,6 +29,10 @@ test('flagged / other-URL twins ignored', () => {
   const f2 = { 'a.json': canon, 'b.json': { url: URL, originalScore: '3/5 stars', wrongProduction: true }, 'c.json': { url: 'https://example.com/other', originalScore: '3/5 stars' } };
   assert.equal(pick('a.json', canon, Object.keys(f2), (n) => f2[n]), null);
 });
+test('percentage twin ratings are not inherited', () => {
+  const f2 = { 'a.json': canon, 'b.json': { url: URL, originalScore: '40%' } };
+  assert.equal(pick('a.json', canon, Object.keys(f2), (n) => f2[n]), null);
+});
 test('clamp uses the inherited rating; without it the score is untouched', () => {
   const without = getBestScore({ ...canon }, {});
   const withSib = getBestScore({ ...canon }, { siblingRating: '3/5 stars' });
