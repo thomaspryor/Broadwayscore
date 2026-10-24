@@ -978,7 +978,12 @@ async function workCard(pick, stats, inFlight) {
     stats.bounced.push(id);
     const why = remaining.length && !landBlocked ? `Nothing needed landing, but these card items are still open:\n${remaining.map((x) => `- ${x}`).join('\n')}`
       : `${attempt} Codex attempt(s) did not pass the checks, so nothing was pushed.`;
-    handedBack = (await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n\n${why} Findings for whoever takes it next:\n\n${summary}`)).code === 0;
+    // BRO-6144: name why, so a card that needs the owner, the Mac, a credential or files Codex may not
+    // edit (or is already fixed) is not offered to Codex again when a timer runs out. After the heading line.
+    const blockedText = /^Blocked before review: /.test(check.text || '') ? check.text : null;
+    const bounceClass = R.classifyBounce({ envBlocked, blocked: blockedText, remaining: [...remaining, ...R.parseRemaining(check.text)], report });
+    log(`${id}: bounce class ${bounceClass}`);
+    handedBack = (await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n${R.bounceClassLine(bounceClass)}\n\n${why} Findings for whoever takes it next:\n\n${summary}`)).code === 0;
     disposed = true;
     return 'done';
   } catch (e) {

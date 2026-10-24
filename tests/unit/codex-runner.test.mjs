@@ -1101,3 +1101,76 @@ test('codexCardFit: work that waits on a date, a scheduled run or the owner is s
   assert.equal(fit('Fix it, then add a test.').skip, null);
   for (const d of ['The owner must never be the one catching it', 'so the owner needs to see the failure', 'Add a test that RECHECK-AFTER: 2026-11-01 stamps parse', 'Fix the parser for the next scheduled data-health-check.yml run output']) assert.equal(fit(d).skip, null, d);
 });
+
+// BRO-6144: route by bounce reason. Texts below are the 2026-10-24 live-run bounce notes.
+test('classifyBounce: the six cards of the 2026-10-24 run land in the right class', () => {
+  assert.equal(r.classifyBounce({ remaining: ["On the owner's Mac (private hook installed), run `node --test x.test.mjs` and close BRO-3926."], report: "BRO-3926's fixture fix is already on main. No files changed." }), 'mac-or-private');
+  assert.equal(r.classifyBounce({ remaining: ['Owner decision on whether the Playbill Verdict path should use resolveArchiveRowOutletId.'], report: 'No changes made. The guard is already fixed.' }), 'owner-decision');
+  assert.equal(r.classifyBounce({ report: 'The Direct filter is already on `origin/main`. The remaining live GA4 audit is blocked by missing credentials. `GA4_PROPERTY_ID` is unset.' }), 'missing-credential');
+  assert.equal(r.classifyBounce({ report: 'You need to: add the CLI wrapper and test.yml registration. Workflow edits were forbidden here.' }), 'forbidden-files');
+  assert.equal(r.classifyBounce({ blocked: 'Blocked before review: touched .github/workflows/x.yml' }), 'forbidden-files');
+  assert.equal(r.classifyBounce({ report: 'BRO-4289 is already fixed on main, no files changed.' }), 'already-fixed');
+});
+
+test('classifyBounce: a plain failure stays genuine-failure (short time ban only)', () => {
+  assert.equal(r.classifyBounce({ report: 'Implemented the helper but 3 tests fail in pick.test.mjs.' }), 'genuine-failure');
+  assert.equal(r.classifyBounce({ remaining: [], report: '' }), 'genuine-failure');
+  assert.equal(r.classifyBounce({ blocked: 'Blocked before review: the change adds a symlink, which the runner never lands.' }), 'genuine-failure');
+  assert.equal(r.classifyBounce(), 'genuine-failure');
+});
+
+test('structural bounce: banned for 60 days, lifted by a person comment or CODEX-OK, not by time', () => {
+  const now = Date.parse('2026-12-01T00:00:00Z');
+  const note = (cls, at) => ({ body: `${r.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n${r.bounceClassLine(cls)}\n\nbody`, createdAt: at });
+  // 30 days old: past the 14-day memory, still held.
+  assert.equal(r.codexBouncedRecently([note('owner-decision', '2026-11-01T00:00:00Z')], now), true);
+  // The same age with the old unclassified note is free again.
+  assert.equal(r.codexBouncedRecently([{ body: `${r.BOUNCED_MARKER}\n## Codex runner: not landed\nx`, createdAt: '2026-11-01T00:00:00Z' }], now), false);
+  // genuine-failure keeps the 14 days.
+  assert.equal(r.codexBouncedRecently([note('genuine-failure', '2026-11-01T00:00:00Z')], now), false);
+  assert.equal(r.codexBouncedRecently([note('genuine-failure', '2026-11-25T00:00:00Z')], now), true);
+  // 60 days: over.
+  assert.equal(r.codexBouncedRecently([note('mac-or-private', '2026-09-20T00:00:00Z')], now), false);
+  // A person's comment after the bounce lifts it; a machine comment does not.
+  assert.equal(r.codexBouncedRecently([note('missing-credential', '2026-11-01T00:00:00Z'), { body: 'Added GA4_PROPERTY_ID to the environment.', createdAt: '2026-11-02T00:00:00Z' }], now), false);
+  assert.equal(r.codexBouncedRecently([note('missing-credential', '2026-11-01T00:00:00Z'), { body: 'Claimed by session x', createdAt: '2026-11-02T00:00:00Z' }], now), true);
+  // A person's comment BEFORE the bounce does not.
+  assert.equal(r.codexBouncedRecently([{ body: 'older human note', createdAt: '2026-10-30T00:00:00Z' }, note('owner-decision', '2026-11-01T00:00:00Z')], now), true);
+  // CODEX-OK anywhere lifts it.
+  assert.equal(r.codexBouncedRecently([note('forbidden-files', '2026-11-01T00:00:00Z'), { body: 'CODEX-OK', createdAt: '2026-11-02T00:00:00Z' }], now), false);
+});
+
+test('class line sits after the heading: partial and crash notes keep their own memory rules', () => {
+  const now = Date.parse('2026-12-01T00:00:00Z');
+  const line = r.bounceClassLine('owner-decision');
+  const partial = { body: `${r.BOUNCED_MARKER}\n${r.PARTIAL_HEADING}\n${line}\n\nleft`, createdAt: '2026-11-20T00:00:00Z' };
+  assert.equal(r.codexBouncedRecently([partial], now), false, 'a single old partial is not a 14-day bounce');
+  assert.equal(r.bounceClassOf(`${r.BOUNCED_MARKER}\n## h\n${line}\n\nx`), 'owner-decision');
+  assert.equal(r.bounceClassOf(`${r.BOUNCED_MARKER}\n## h\n\nx`), null);
+  // A structural class on a crash note (never written) must not turn a runner error into a ban.
+  const crash = { body: `${r.BOUNCED_MARKER}\n## Codex runner: stopped mid-card\n${line}`, createdAt: '2026-11-01T00:00:00Z' };
+  assert.equal(r.codexBouncedRecently([crash], now), false);
+});
+
+test('classifyBounce: phrases from plain failures stay genuine-failure (ship-check cases)', () => {
+  for (const report of [
+    'Tests pass without credentials, no new credentials needed.',
+    'The fix works in cloud and on the Mac.',
+    'No owner decision needed.',
+    'DECISION NEEDED: none',
+    'helper already landed in BRO-12. 2 tests fail in pick.test.mjs.',
+    'Updated scripts/install-launchd.sh test; 1 test fails.',
+    'LINEAR_API_KEY is unset in the sandbox so I mocked it; 3 tests fail.',
+  ]) assert.equal(r.classifyBounce({ report }), 'genuine-failure', report);
+  // The reviewer's REMAINING line counts even when Codex's own report is silent.
+  assert.equal(r.classifyBounce({ remaining: ['Owner decision on the Playbill path.'], report: 'done' }), 'owner-decision');
+});
+
+test('structural bounce: the Claude worker\'s own reports and an old CODEX-OK do not lift it', () => {
+  const now = Date.parse('2026-12-01T00:00:00Z');
+  const note = { body: `${r.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n${r.bounceClassLine('owner-decision')}\n\nx`, createdAt: '2026-11-01T00:00:00Z' };
+  const { buildOutcomeCommentBody } = require('../../scripts/lib/linear-session-reporting.js');
+  const paused = { body: buildOutcomeCommentBody ? buildOutcomeCommentBody({ status: 'paused', summary: 'waiting on owner' }) : '**Session report (paused)**\nwaiting', createdAt: '2026-11-02T00:00:00Z' };
+  assert.equal(r.codexBouncedRecently([note, paused], now), true);
+  assert.equal(r.codexBouncedRecently([{ body: 'CODEX-OK', createdAt: '2026-10-01T00:00:00Z' }, note], now), true);
+});
