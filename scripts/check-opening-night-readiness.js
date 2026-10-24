@@ -494,7 +494,8 @@ async function runChecks() {
     }
     if (orchStatus === 200) {
       try {
-        const runs = (orchRuns && orchRuns.workflow_runs) || [];
+        if (!orchRuns) throw new Error('unparseable response');
+        const runs = orchRuns.workflow_runs || [];
         const recentRun = runs[0];
         if (recentRun) {
           const ageHours = (Date.now() - new Date(recentRun.created_at).getTime()) / 3600000;
