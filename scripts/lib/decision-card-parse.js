@@ -68,6 +68,22 @@ function findDecisionQuestion(description) {
   return null;
 }
 
+// BRO-6166: is there a REAL "DECISION NEEDED: <content>" anywhere in the text, including inline in a
+// worker's report ("Report. DECISION NEEDED: pick A or B")? Same filters as findDecisionQuestion
+// (code skipped, placeholders, settled stubs and empty content ignored), but not line-anchored. A bare
+// mention without a colon and content ("no DECISION NEEDED here") is not a decision.
+const INLINE_DECISION_RE = /DECISION NEEDED\**\s*:\s*\**\s*(\S.*)$/i;
+function hasInlineDecision(text) {
+  for (const line of stripCode(text)) {
+    const m = INLINE_DECISION_RE.exec(line);
+    if (!m) continue;
+    const q = collapseSelfLinks(m[1]).replace(/\*+$/, '').trim();
+    if (!q || isPlaceholder(q) || isEmptyDecisionContent(q) || SETTLED_RE.test(q)) continue;
+    return true;
+  }
+  return false;
+}
+
 // Linear stores markdown, so text read back carries escapes ("BRIGHTDATA\_*",
 // "\~79") and wrapped links ("[claude.ai](<http://claude.ai>)") that look like
 // typos in an email. Strip them; the owner reads plain words.
@@ -148,6 +164,6 @@ function recommendedKey(recommendation, options) {
 }
 
 module.exports = {
-  MARKER_RE, SETTLED_RE, cleanOwnerText, collapseSelfLinks, findDecisionQuestion, isPlaceholder,
+  MARKER_RE, SETTLED_RE, cleanOwnerText, collapseSelfLinks, findDecisionQuestion, hasInlineDecision, isPlaceholder,
   parseDecisionDescription, recommendedKey, splitOption, stripCode,
 };

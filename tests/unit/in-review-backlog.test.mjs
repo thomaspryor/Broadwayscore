@@ -291,7 +291,7 @@ describe('owner split (BRO-5433): technical In Review cards are not owner decisi
     const issues = [issue({ identifier: 'BRO-40' }), issue({ identifier: 'BRO-41' }), issue({ identifier: 'BRO-42' }), issue({ identifier: 'BRO-43' })];
     const bodies = {
       'BRO-40': { description: 'DECISION NEEDED: pick one', comments: { nodes: [] } },
-      'BRO-41': { description: 'done', comments: { nodes: [{ body: 'report. 👑 OWNER: approve' }] } },
+      'BRO-41': { description: 'done', comments: { nodes: [{ body: 'report. DECISION NEEDED: approve the vendor' }] } },
       'BRO-42': { description: 'all technical', comments: { nodes: [{ body: 'merged' }] } },
     };
     const graphql = async (_q, { id }) => { if (id === 'BRO-43') throw new Error('boom'); return { issue: bodies[id] }; };
@@ -299,5 +299,58 @@ describe('owner split (BRO-5433): technical In Review cards are not owner decisi
     const ids = buildInReviewRows(issues, { now: NOW, ownerOnly: true }).map((r) => r.title.split(':')[0]).sort();
     assert.deepEqual(ids, ['BRO-40', 'BRO-41', 'BRO-43']);
     assert.equal(countTechnicalInReview(issues, { now: NOW }), 1);
+  });
+});
+
+
+describe('owner marker (BRO-6166): a mention is not a request for the owner', () => {
+  // Real texts from the 2026-10-24 digest, where both cards were wrongly listed as the owner's.
+  const bro5596 = issue({
+    identifier: 'BRO-5596',
+    title: 'Dispatch flow is DEAD — heartbeat is fine but nothing is being dispatched',
+    description: 'The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and linear-next.js/bsc-next.js for a stuck sweep.',
+  });
+  const bro3425 = issue({
+    identifier: 'BRO-3425',
+    title: 'Main is always red: split code CI from data-health gates (investigation + 3 structural options)',
+    description: 'Option A+C live.',
+    commentText: "landed, verified on origin/main). Crown passed to cmux tab '👑 OWNER — main-green keep-green watch (BRO-3425)' with brief ~/Documents/x",
+  });
+
+  test('the two real cards that were wrongly shown to the owner are technical', () => {
+    assert.equal(hasOwnerMarker(bro5596), false);
+    assert.equal(hasOwnerMarker(bro3425), false);
+  });
+
+  test('prose that merely contains "owner-only" or "no DECISION NEEDED" or an echoed template is technical', () => {
+    for (const text of [
+      'Stopped at an owner-only stop; the worker continued.',
+      'Owner-only signed links are not touched by this change.',
+      'Checked: no DECISION NEEDED here, all technical.',
+      'The card template says DECISION NEEDED: <what, one sentence> and this is not one.',
+      'DECISION NEEDED: answered: we chose A',
+    ]) assert.equal(hasOwnerMarker(issue({ description: text })), false, text);
+  });
+
+  test('real owner markers still count: decision line in the body or a comment, OWNER-ONLY: line, crown/OWNER titles, label', () => {
+    assert.equal(hasOwnerMarker(issue({ description: 'Why.\nDECISION NEEDED: pick the vendor?' })), true);
+    assert.equal(hasOwnerMarker(issue({ commentText: 'Report. DECISION NEEDED: pick A or B' })), true);
+    assert.equal(hasOwnerMarker(issue({ commentText: 'report\nDECISION NEEDED: pick the vendor?' })), true);
+    assert.equal(hasOwnerMarker(issue({ description: 'OWNER-ONLY: needs the owner login' })), true);
+    assert.equal(hasOwnerMarker(issue({ title: '👑 OWNER — approve homepage' })), true);
+    assert.equal(hasOwnerMarker(issue({ title: '❓ 👑 OWNER — approve homepage' })), true);
+    assert.equal(hasOwnerMarker(issue({ labels: { nodes: [{ name: 'awaiting-owner' }] } })), true);
+    assert.equal(hasOwnerMarker(issue({ ownerMarkerUnknown: true })), true);
+  });
+
+  test('a Paused card is never listed as In Review work', () => {
+    const paused = issue({ identifier: 'BRO-5597', title: '👑 OWNER: x', state: { name: 'Paused', type: 'backlog' } });
+    assert.equal(buildInReviewRows([paused], { now: NOW, ownerOnly: true }).length, 0);
+  });
+
+  test('digest Review queue: the two real cards drop out, a real decision card stays', () => {
+    const real = issue({ identifier: 'BRO-9001', title: 't', description: 'DECISION NEEDED: pick' });
+    const rows = buildInReviewRows([bro5596, bro3425, real], { now: NOW, ownerOnly: true });
+    assert.deepEqual(rows.map((r) => r.title.split(':')[0]), ['BRO-9001']);
   });
 });
