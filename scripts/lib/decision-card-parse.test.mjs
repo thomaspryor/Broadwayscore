@@ -69,7 +69,7 @@ test('digest section carries the parsed card, and every row renders a visible li
   assert.match(html, /If you do nothing:<\/b> Mac fleet stays/);
   assert.match(html, /waiting 4d/);
   // One real button per card, titles are visibly links (blue, underlined).
-  assert.equal((html.match(/background:#1d4ed8/g) || []).length, 2);
+  assert.equal((html.match(/background-color:#1d4ed8/g) || []).length, 2);
   assert.match(html, /href="https:\/\/linear\.app\/x\/issue\/BRO-6111"[^>]*text-decoration:underline/);
   assert.doesNotMatch(html, /color:#333;text-decoration:none/);
 });
@@ -154,7 +154,7 @@ test('renderActionCard escapes hostile text and drops unsafe urls (no button wit
   }, { actionCards: true });
   assert.doesNotMatch(html, /<img|javascript:|data:text/);
   assert.match(html, /&lt;img src=x onerror=alert\(1\)&gt;/);
-  assert.doesNotMatch(html, /background:#1d4ed8/, 'no safe URL, no button');
+  assert.doesNotMatch(html, /background-color:#1d4ed8/, 'no safe URL, no button');
 });
 
 // ── what-else cousins (BRO-6131) ─────────────────────────────────────────────
@@ -183,10 +183,13 @@ test('whole email: every link above Technical details is visibly a link or a but
   const cut = html.indexOf('>Technical details<');
   assert.ok(cut > 0, 'the Technical details heading marks where the owner-facing top ends');
   const top = html.slice(0, cut);
+  // Gmail's display sanitizer drops the `background:` shorthand (button and card fills vanish,
+  // leaving white text on a pale card, owner report 2026-10-24); `background-color:` survives.
+  assert.doesNotMatch(top, /background:/, 'use background-color, never the background shorthand, above Technical details');
   const anchors = top.match(/<a\b[^>]*>/g) || [];
   assert.ok(anchors.length >= 8, `expected many links above Technical details, got ${anchors.length}`);
   for (const a of anchors) {
-    const hidden = /text-decoration:none/.test(a) && !/background:/.test(a);
+    const hidden = /text-decoration:none/.test(a) && !/background(?:-color)?:/.test(a);
     assert.equal(hidden, false, `camouflaged link: ${a.slice(0, 120)}`);
   }
 });

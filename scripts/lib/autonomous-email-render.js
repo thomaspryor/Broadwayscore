@@ -170,11 +170,11 @@ function renderAttentionBlock(attention) {
   if (!lines.length) return '';
   const rows = lines.map(l =>
     `<div style="margin:0 0 8px;">
-      <span style="display:inline-block;background:#b45309;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;vertical-align:middle;text-transform:uppercase;">${esc(l.label)}</span>
+      <span style="display:inline-block;background-color:#b45309;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;vertical-align:middle;text-transform:uppercase;">${esc(l.label)}</span>
       <span style="font-size:13px;color:#333;margin-left:6px;">${esc(l.text)}</span>
       <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">→ ${esc(l.action)}</div>
     </div>`).join('');
-  return `<div style="border:1px solid #fbbf24;background:#fffbeb;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
+  return `<div style="border:1px solid #fbbf24;background-color:#fffbeb;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
     <div style="font-size:13px;font-weight:700;margin-bottom:8px;color:#b45309;">Needs your attention: ${lines.length} item${lines.length > 1 ? 's' : ''} stalling the loop</div>
     ${rows}
   </div>`;
@@ -435,7 +435,7 @@ function renderAutofixBlock(autofixRows, loopDeadMessage = null) {
   const header = loopDeadMessage
     ? `\u26a0\ufe0f Automation queue \u2014 the auto-fix loop looks DEAD, so these are FILED but likely NOT running: ${esc(loopDeadMessage)}`
     : 'Automation queue \u2014 filed and launched; tomorrow\u2019s digest verifies each one ran';
-  return `<div style="border:1px solid ${loopDeadMessage ? '#fca5a5' : '#e5e5e5'};background:${loopDeadMessage ? '#fef2f2' : '#fff'};border-radius:10px;padding:14px 16px;margin:0 0 14px;">
+  return `<div style="border:1px solid ${loopDeadMessage ? '#fca5a5' : '#e5e5e5'};background-color:${loopDeadMessage ? '#fef2f2' : '#fff'};border-radius:10px;padding:14px 16px;margin:0 0 14px;">
     <div style="font-size:13px;font-weight:700;margin-bottom:8px;${loopDeadMessage ? 'color:#b91c1c;' : ''}">${header}</div>
     ${lines}
   </div>`;
@@ -498,7 +498,7 @@ function renderNeedsAttentionBlock(queued) {
           return `<div style="margin:0 0 10px;">
             <div style="font-size:13px;color:#333;"><b>${esc(q.title || '(untitled)')}</b>${q.description ? ` \u2014 ${esc(clip(q.description, 200))}` : ''}${href ? ` <a href="${esc(href)}" style="color:#1d4ed8;text-decoration:underline;">view</a>` : ''}</div>
             ${q.decisionPrompt ? `<div style="font-size:13px;font-weight:700;color:#b45309;margin:4px 0 0;">${esc(clip(q.decisionPrompt, 200).replace(/^Decision needed:\s*/i, ''))}</div>` : ''}
-            ${action ? `<div style="margin:4px 0 0;"><a href="${esc(action)}" style="display:inline-block;font-size:13px;font-weight:700;color:#fff;background:#16a34a;text-decoration:none;padding:7px 16px;border-radius:8px;">Dispatch a fix \u2192</a></div>` : ''}
+            ${action ? `<div style="margin:4px 0 0;"><a href="${esc(action)}" style="display:inline-block;font-size:13px;font-weight:700;color:#fff;background-color:#16a34a;text-decoration:none;padding:7px 16px;border-radius:8px;">Dispatch a fix \u2192</a></div>` : ''}
           </div>`;
         }).join('')}</div>`
     : '';
@@ -516,7 +516,7 @@ function renderHealthDigestBlock(health, autofixRows = null, loopDeadMessageOver
     ? `<div style="font-size:11px;color:#999;margin-top:6px;">as of ${esc(String(health.generatedAt).slice(0, 16).replace('T', ' '))} UTC</div>` : '';
   const queuedHtml = omitQueued ? '' : renderNeedsAttentionBlock(queued);
 
-  const header = `<div style="border:1px solid ${urgent ? '#fca5a5' : '#e5e5e5'};background:${urgent ? '#fef2f2' : '#fff'};border-radius:10px;padding:14px 16px;margin:0 0 14px;">
+  const header = `<div style="border:1px solid ${urgent ? '#fca5a5' : '#e5e5e5'};background-color:${urgent ? '#fef2f2' : '#fff'};border-radius:10px;padding:14px 16px;margin:0 0 14px;">
     <div style="font-size:15px;font-weight:700;${urgent ? 'color:#dc2626;' : ''}">${errors.length} error${errors.length === 1 ? '' : 's'}, ${warns.length} warning${warns.length === 1 ? '' : 's'}${health.consecutiveErrorDays > 1 ? ` <span style="color:#999;font-weight:400;font-size:12px;">(day ${health.consecutiveErrorDays} of consecutive errors)</span>` : ''}</div>
     ${autoFixedNote}${asOf}
   </div>`;
@@ -807,7 +807,7 @@ function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = nu
     const heading = affected
       ? '⚠️ Visitors may notice a problem'
       : `Site mostly OK. ${n} minor issue${n === 1 ? '' : 's'} visitors could notice`;
-    parts.push(`<div style="border:1px solid ${affected ? '#fcd34d' : '#e5e5e5'};background:${affected ? '#fffbeb' : '#fff'};border-radius:10px;padding:12px 16px;margin:0 0 12px;">
+    parts.push(`<div style="border:1px solid ${affected ? '#fcd34d' : '#e5e5e5'};background-color:${affected ? '#fffbeb' : '#fff'};border-radius:10px;padding:12px 16px;margin:0 0 12px;">
       <div style="font-size:14px;font-weight:700;color:${affected ? '#92400e' : '#333'};margin-bottom:6px;">${esc(heading)}</div>
       ${renderVisitorItems(view)}
     </div>`);
@@ -966,9 +966,9 @@ function renderActionCard(it, safeUrl) {
   }
   const label = it.actionLabel || (d ? 'Read and answer \u2192' : 'Open \u2192');
   const button = href
-    ? `<div style="margin:8px 0 0;"><a href="${esc(href)}" style="display:inline-block;font-size:13px;font-weight:700;color:#ffffff;background:#1d4ed8;text-decoration:none;padding:7px 16px;border-radius:8px;">${esc(label)}</a>${cardHref && cardHref !== href ? ` <a href="${esc(cardHref)}" style="font-size:12px;color:#1d4ed8;margin-left:10px;">see the full card</a>` : ''}</div>`
+    ? `<div style="margin:8px 0 0;"><a href="${esc(href)}" style="display:inline-block;font-size:13px;font-weight:700;color:#ffffff;background-color:#1d4ed8;text-decoration:none;padding:7px 16px;border-radius:8px;">${esc(label)}</a>${cardHref && cardHref !== href ? ` <a href="${esc(cardHref)}" style="font-size:12px;color:#1d4ed8;margin-left:10px;">see the full card</a>` : ''}</div>`
     : '';
-  return `<div style="border-left:4px solid ${accent};background:${bg};border-radius:6px;padding:10px 14px;margin:0 0 10px;">
+  return `<div style="border-left:4px solid ${accent};background-color:${bg};border-radius:6px;padding:10px 14px;margin:0 0 10px;">
     <div style="margin:0 0 3px;">${ref}${age}</div>
     <div style="font-size:15px;font-weight:700;color:#111;margin:0 0 6px;">${titleHtml}</div>
     ${body}${button}
@@ -1004,11 +1004,11 @@ function renderParkedCardsBlock(parkedCards, moreCount = 0) {
 }
 
 function renderItem(item) {
-  const badge = `<span style="display:inline-block;background:#16a34a;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;vertical-align:middle;">PASS</span>`;
+  const badge = `<span style="display:inline-block;background-color:#16a34a;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;vertical-align:middle;">PASS</span>`;
   const cost = `<span style="color:#999;font-size:12px;margin-left:6px;">~${money(item.usd)}</span>`;
   const checks = (item.checks || []).map(esc).join(' · ');
   const btn = (label, url, bg) =>
-    `<a href="${esc(url)}" style="display:inline-block;background:${bg};color:#fff;text-decoration:none;font-size:14px;font-weight:600;padding:10px 22px;border-radius:8px;margin-right:10px;">${label}</a>`;
+    `<a href="${esc(url)}" style="display:inline-block;background-color:${bg};color:#fff;text-decoration:none;font-size:14px;font-weight:600;padding:10px 22px;border-radius:8px;margin-right:10px;">${label}</a>`;
   // item.plainText (owner scope-add 2026-07-14): the LLM-generated
   // non-technical explanation becomes the PRIMARY text; the card's own
   // Why/Done/branch demote to small grey text underneath. Falls back to the
@@ -1030,12 +1030,12 @@ function renderItem(item) {
     ? `<div style="font-size:11px;color:#999;margin-bottom:10px;">Screenshots attached to this email · ${shots.map(s => esc(String(s).split('/').pop())).join(' · ')}</div>`
     : '';
   const uiNotice = uiUnseen
-    ? `<div style="border-left:3px solid #b45309;background:#fffbeb;padding:8px 10px;margin:0 0 10px;font-size:13px;color:#7c2d12;">
+    ? `<div style="border-left:3px solid #b45309;background-color:#fffbeb;padding:8px 10px;margin:0 0 10px;font-size:13px;color:#7c2d12;">
         <b>This one changes how a page looks, and the overnight run could not take pictures of it.</b>
         There is no approve button because you would be approving something nobody has seen.
         <div style="margin-top:6px;">Easiest option: tap Reject. It will try again tonight and send pictures next time.</div>
         <div style="margin-top:6px;">If you want it now, paste this into a terminal on the Mac and it will open the changed page for you:</div>
-        <div style="margin-top:4px;font-family:ui-monospace,Menlo,monospace;font-size:12px;background:#fff;border:1px solid #fde68a;border-radius:6px;padding:6px 8px;word-break:break-all;">npm run preview-branch ${esc(item.branch)}</div>
+        <div style="margin-top:4px;font-family:ui-monospace,Menlo,monospace;font-size:12px;background-color:#fff;border:1px solid #fde68a;border-radius:6px;padding:6px 8px;word-break:break-all;">npm run preview-branch ${esc(item.branch)}</div>
       </div>`
     : '';
   const actions = uiUnseen
