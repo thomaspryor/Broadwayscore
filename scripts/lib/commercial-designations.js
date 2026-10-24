@@ -72,6 +72,33 @@ function modelMiddleReturnedPct(entry) {
   return null;
 }
 /**
+ * The designation our best estimate gives a CLOSED show (owner 2026-10-24,
+ * BRO-6158): the record's own estimate, else the model's middle figure at any
+ * data quality. Under FIZZLE_MIN_RETURNED_PCT returned is Flop, 30% to under
+ * 100% Fizzle, 100% or more the recouped side by the same 1.5x split the rule
+ * uses (Trickle under, Windfall at or above). Easy Winner and Miracle need a
+ * reported recoupment, so an estimate never picks them. null with no estimate.
+ */
+function estimatedDesignationForClosed(entry) {
+  const own = ownReturnedEstimatePct(entry);
+  const pct = own !== null ? own : modelMiddleReturnedPct(entry);
+  if (pct === null) return null;
+  if (pct >= 100) return pct >= TRICKLE_MAX_MULTIPLE * 100 ? 'Windfall' : 'Trickle';
+  return lossDesignationFor(pct);
+}
+/**
+ * The % returned that sizes a label: for a model-estimate label the record's
+ * own estimate else the model at any quality (that is what it rests on),
+ * otherwise returnedEstimatePct.
+ */
+function labelSizingPct(entry) {
+  if (entry?.designationBasis === 'model-estimate') {
+    const own = ownReturnedEstimatePct(entry);
+    return own !== null ? own : modelMiddleReturnedPct(entry);
+  }
+  return returnedEstimatePct(entry);
+}
+/**
  * Closed-without-recouping labels. Fizzle and Flop also say how much came
  * back; Did Not Recoup is the loss with no estimate of that (owner
  * 2026-10-18, BRO-5636). Compare loss labels with isLossDesignation, never
@@ -131,7 +158,9 @@ function modelSizesLossLabel(entry) {
  */
 function resizedLossLabel(entry) {
   if (!isLossDesignation(entry?.designation) || entry.humanReviewedDesignation === true) return null;
-  const sized = lossDesignationFor(returnedEstimatePct(entry));
+  const sized = lossDesignationFor(labelSizingPct(entry));
+  // A model-estimate label whose figure crossed 100% is a recouped-side call, not a resize.
+  if (entry.designationBasis === 'model-estimate' && labelSizingPct(entry) >= 100) return null;
   return sized === entry.designation ? null : sized;
 }
 /** More loss labels than this moving in one model run is a model change, not drift. */
@@ -173,11 +202,13 @@ function modelContradictsDesignation(pct, designation) {
 }
 
 // ---------------------------------------------------------------------------
-// designationBasis (owner policy B, BRO-5020 2026-10-11): what a loss label
-// rests on. Writers stamp it; only the display layer turns
-// 'no-recoupment-announced' into public words ("Based on no recoupment being
-// announced"). A label on silence waits LOSS_LABEL_MIN_DAYS after closing,
-// because some shows recoup after they close.
+// designationBasis: what a designation rests on. Writers stamp it; only the
+// display layer turns it into public words. Owner decision 2026-10-24
+// (BRO-6158, superseding policy B's 183-day wait): a closed show gets our
+// best-estimate designation right away from the recoupment model or an
+// analyst's % returned, stamped 'model-estimate' and shown as our estimate,
+// and it is updated if a recoupment is announced later. TBD is for running
+// shows only.
 // ---------------------------------------------------------------------------
 const DESIGNATION_BASES = Object.freeze({
   /** A cited source or the producers state the loss / non-recoupment. */
@@ -186,31 +217,10 @@ const DESIGNATION_BASES = Object.freeze({
   NO_RECOUPMENT_ANNOUNCED: 'no-recoupment-announced',
   /** Our notes describe a loss but the cite is not a hard source. */
   NOTES_STATED: 'notes-stated',
+  /** Our estimate from the recoupment model or an analyst's % returned; no source reports the outcome. */
+  MODEL_ESTIMATE: 'model-estimate',
 });
 const VALID_DESIGNATION_BASES = Object.freeze(Object.values(DESIGNATION_BASES));
-const LOSS_LABEL_MIN_DAYS = 183;
-
-/**
- * True for a loss label resting on silence whose show closed under
- * LOSS_LABEL_MIN_DAYS ago: the one copy of the policy B age rule that the
- * record checks and the public-record sanitizer share. `show` is the
- * shows.json record; an unknown closing date never counts as premature.
- */
-function isPrematureSilenceLabel(entry, show, now = Date.now()) {
-  if (!entry || !show || !isLossDesignation(entry.designation)) return false;
-  if (entry.designationBasis !== DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED) return false;
-  return isWithinLossLabelWait(show, now);
-}
-
-/**
- * True for a closed show still inside the policy B wait (closed under
- * LOSS_LABEL_MIN_DAYS ago): TBD is correct there, so the audit does not ask
- * for a final label yet (BRO-6137). An unknown closing date is not waiting.
- */
-function isWithinLossLabelWait(show, now = Date.now()) {
-  const closing = Date.parse(show && show.closingDate);
-  return Number.isFinite(closing) && (now - closing) / 86400000 < LOSS_LABEL_MIN_DAYS;
-}
 
 /**
  * A record with no investors' money of its own to recoup: a tour stop (its
@@ -229,10 +239,11 @@ function hasNoInvestorsToRepay(rec) {
 
 module.exports = {
   hasNoInvestorsToRepay,
-  DESIGNATION_BASES, VALID_DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel, isWithinLossLabelWait,
+  DESIGNATION_BASES, VALID_DESIGNATION_BASES,
   VALID_DESIGNATIONS, canonicalDesignation,
   TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, DESIGNATIONS_OUTSIDE_RULE,
   LOSS_DESIGNATIONS, isLossDesignation, lossDesignationFor, modelMiddleReturnedPct, likelyOutcomeDesignation,
+  estimatedDesignationForClosed, labelSizingPct,
   modelSizesLossLabel, resizedLossLabel, MODEL_LOSS_RESIZE_LIMIT, planModelLossResizes,
   MODEL_CONTRADICTION, modelContradictsDesignation,
 };

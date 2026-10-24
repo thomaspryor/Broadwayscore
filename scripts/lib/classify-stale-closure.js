@@ -17,30 +17,28 @@
 // gate would require special-casing the gate (INTERNAL_AUTO_APPLY_SOURCES),
 // which is a regression from the value-driven gate's discipline.
 
-const GRACE_DAYS_DEFAULT = 30;
+const GRACE_DAYS_DEFAULT = 7;
 const MAX_AGE_DAYS_DEFAULT = 365;
 const RECENT_SIGNAL_DAYS_DEFAULT = 30;
-// Owner policy B (BRO-5020, 2026-10-11): a loss label resting only on "no
-// recoupment announced" waits LOSS_LABEL_MIN_DAYS (~6 months) after closing,
-// because some shows recoup after they close (The Piano Lesson took about 14
-// months). Before that the row stays TBD and is flagged needsLossEvidence.
+// Owner decision 2026-10-24 (BRO-6158, superseding policy B's 183-day wait): a
+// closed show gets our best-estimate designation right away from the model or
+// an analyst's % returned, stamped designationBasis 'model-estimate' so the
+// page shows it as our estimate. Some shows recoup after they close (The Piano
+// Lesson took about 14 months); the apply gate resets an estimate when that is
+// announced.
 const {
-  DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS: LOSS_LABEL_MIN_DAYS_DEFAULT, returnedEstimatePct,
-  LOSS_DESIGNATIONS, isLossDesignation, lossDesignationFor,
+  DESIGNATION_BASES, estimatedDesignationForClosed,
+  LOSS_DESIGNATIONS, isLossDesignation,
 } = require('./commercial-designations');
 
 /**
- * Fizzle or Flop for a closed, unrecouped show, by the returned-% rule
- * (>= FIZZLE_MIN_RETURNED_PCT returned is Fizzle). With no estimate (the
- * record's own, or the model's with decent inputs) there is no label: the
- * row stays TBD, shown as Undisclosed, and is flagged needsLossEvidence
- * (BRO-5623).
+ * Our estimated designation for a closed, unannounced show (Flop under 30%
+ * returned, Fizzle 30%+, Trickle or Windfall at 100%+), from the record's own
+ * estimate or our model at any data quality. null with no figure at all: the
+ * row stays TBD and is flagged needsLossEvidence.
  */
 function lossLabelFor(entry) {
-  // The same reading the record check uses, so the label it writes never
-  // draws its warning (BRO-5602, BRO-5623).
-  const pct = returnedEstimatePct(entry);
-  return pct === null ? null : lossDesignationFor(pct);
+  return estimatedDesignationForClosed(entry);
 }
 
 // Production types where auto-Fizzle is unsafe — these shows may have closed
@@ -78,15 +76,15 @@ function daysAgo(isoString, now = Date.now()) {
  *   pending      — commercial-pending-review.json entries for the slug array
  *   archive      — commercial-pending-archive.json entries for the slug
  *   now          — Date.now() override for tests
- *   thresholds   — { graceDays, maxAgeDays, recentSignalDays, lossLabelMinDays,
+ *   thresholds   — { graceDays, maxAgeDays, recentSignalDays,
  *                    requireLossEvidence }
  *
  * Returns one of:
  *   { action: 'wait',         reason }   — within grace period; do nothing
  *   { action: 'no-change',    reason }   — already classified; do nothing
  *   { action: 'skip-carve-out', reason } — special production type / designation
- *   { action: 'classify-fizzle', reason, designation: a LOSS_DESIGNATIONS label,
- *     designationBasis: 'no-recoupment-announced', confidence } — auto-apply
+ *   { action: 'classify-fizzle', reason, designation: our estimated label,
+ *     designationBasis: 'model-estimate' (owner verdicts keep 'no-recoupment-announced'), confidence } — auto-apply
  *   { action: 'flag-needs-loss-evidence', reason } — stays TBD, flagged
  *   { action: 'human-review',   reason } — late recoupment signal, escalate
  */
@@ -173,7 +171,8 @@ function classifyStaleClosure({ show, entry, pending, archive, now, thresholds }
   // an operator can backfill. This is the User Impact reviewer's
   // producer-reputation risk mitigation.
   // An explicitly saved owner verdict has already had that human review.
-  if (!hasBeenResearched(entry) && !ownerDesignation) {
+  // BRO-6158: an estimate needs no research (it claims no silence), only a figure.
+  if (!hasBeenResearched(entry) && !ownerDesignation && !lossLabelFor(entry)) {
     const tbdEntry = entry?.designation === 'TBD';
     return {
       action: 'human-review',
@@ -187,25 +186,14 @@ function classifyStaleClosure({ show, entry, pending, archive, now, thresholds }
     };
   }
 
-  // Researched + closed >graceDays + no recoupment news + no carve-out.
-  // Policy B (owner, BRO-5020 2026-10-11): label the loss only once the show
-  // has been closed lossLabelMinDays (~6 months), stamped with
-  // designationBasis 'no-recoupment-announced' so the page says the label
-  // rests on silence. Before that, stay TBD and flag needsLossEvidence.
-  // requireLossEvidence is the kill switch: always flag, never label on
-  // silence (STALE_CLOSURE_REQUIRE_LOSS_EVIDENCE=1).
-  const lossLabelMinDays = t.lossLabelMinDays ?? LOSS_LABEL_MIN_DAYS_DEFAULT;
+  // Closed >graceDays + no recoupment news + no carve-out: label our estimate
+  // now (BRO-6158). requireLossEvidence is the kill switch: always flag, never
+  // label (STALE_CLOSURE_REQUIRE_LOSS_EVIDENCE=1).
   const reviewEvidence = ownerDesignation ? 'owner-reviewed' : 'deep-researched';
   if (t.requireLossEvidence) {
     return {
       action: 'flag-needs-loss-evidence',
       reason: `closed ${Math.floor(daysClosed)}d ago, ${reviewEvidence}, no trade-press recoupment found; loss labels on silence are switched off`,
-    };
-  }
-  if (daysClosed < lossLabelMinDays) {
-    return {
-      action: 'flag-needs-loss-evidence',
-      reason: `closed ${Math.floor(daysClosed)}d ago (< ${lossLabelMinDays}d), ${reviewEvidence}, no trade-press recoupment found yet`,
     };
   }
   // An unreviewed pending row saying the show recouped blocks a loss label at
@@ -221,16 +209,16 @@ function classifyStaleClosure({ show, entry, pending, archive, now, thresholds }
   if (!designation) {
     return {
       action: 'flag-needs-loss-evidence',
-      reason: `closed ${Math.floor(daysClosed)}d ago, no recoupment found, and no estimate of how much came back to choose Fizzle or Flop`,
+      reason: `closed ${Math.floor(daysClosed)}d ago, no recoupment found, and no figure at all to estimate how much came back`,
     };
   }
   return {
     action: 'classify-fizzle',
     reason: ownerDesignation
-      ? `owner-reviewed ${ownerDesignation}; closed ${Math.floor(daysClosed)}d ago, closure window passed`
-      : `closed ${Math.floor(daysClosed)}d ago, deep-researched, no trade-press recoupment found`,
+      ? `owner-reviewed ${ownerDesignation}; closed ${Math.floor(daysClosed)}d ago`
+      : `closed ${Math.floor(daysClosed)}d ago, no recoupment announced; our estimate`,
     designation,
-    designationBasis: DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED,
+    designationBasis: ownerDesignation ? DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED : DESIGNATION_BASES.MODEL_ESTIMATE,
     ...(ownerDesignation ? { humanReviewedDesignation: true } : {}),
     confidence: 'high',
   };
@@ -246,9 +234,12 @@ function buildClassifiedClosureEntry(entry, show, result, now = Date.now()) {
     designation: result.designation,
     designationBasis: result.designationBasis,
     ...(result.humanReviewedDesignation === true ? { humanReviewedDesignation: true } : {}),
-    recouped: existing.recouped === true ? true : false,
+    // An estimate never asserts "Not Recouped" (BRO-6158): recouped stays as recorded.
+    recouped: existing.recouped === true ? true
+      : result.designationBasis === DESIGNATION_BASES.MODEL_ESTIMATE ? (existing.recouped ?? null) : false,
     recoupedSource: existing.recoupedSource ||
-      `Inferred: closed ${Math.floor((now - Date.parse(show.closingDate)) / 86_400_000)} days ago, no trade-press recoupment found`,
+      (result.designationBasis === DESIGNATION_BASES.MODEL_ESTIMATE ? null
+        : `Inferred: closed ${Math.floor((now - Date.parse(show.closingDate)) / 86_400_000)} days ago, no trade-press recoupment found`),
     classifiedBy: 'classify-stale-closures',
     classifiedAt: stamp,
     classifiedReason: result.reason,
@@ -274,7 +265,8 @@ function undoAutoFizzleOnRunningShow(entry, show) {
   if (!isLossDesignation(entry.designation)) return null;
   if (entry.humanReviewedDesignation === true) return null;
   // A silence-based label (policy B, BRO-5020) is inferred whoever wrote it.
-  const silence = entry.designationBasis === DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED;
+  const silence = entry.designationBasis === DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED
+    || entry.designationBasis === DESIGNATION_BASES.MODEL_ESTIMATE;
   if (!silence && entry.classifiedBy !== 'classify-stale-closures') return null;
   const inferred = entry.recoupedSource == null || (typeof entry.recoupedSource === 'string' && entry.recoupedSource.startsWith(INFERRED_SOURCE_PREFIX));
   if (!inferred && !silence) return null;
@@ -288,18 +280,15 @@ function undoAutoFizzleOnRunningShow(entry, show) {
 }
 
 /**
- * Policy B for writers that sweep closed TBD rows outside the daily
- * classifier (cleanup-commercial-data.js). Returns
- *   { action: 'label', designation, designationBasis } closed LOSS_LABEL_MIN_DAYS+ and researched,
- *   { action: 'flag' }                                  closed more recently, or never researched,
+ * The closed-TBD sweep for writers outside the daily classifier
+ * (cleanup-commercial-data.js). Returns
+ *   { action: 'label', designation, designationBasis: 'model-estimate' } we have an estimate (BRO-6158),
+ *   { action: 'flag' }                                  no figure at all, or the kill switch is on,
  *   null                                                nothing to do.
  * Never touches a locked, recouped, non-TBD or already-flag-ruled row. Writes
- * no prose: the site renders the caveat from designationBasis. A label on
- * silence needs the research that found the silence, as in the classifier
- * (BRO-5636: a dry run without this check labelled 8 never-researched
- * 2022-2023 rows).
+ * no prose: the site renders the caveat from designationBasis.
  */
-function closedTbdLossAction(entry, show, { now = Date.now(), lossLabelMinDays = LOSS_LABEL_MIN_DAYS_DEFAULT, requireLossEvidence = false } = {}) {
+function closedTbdLossAction(entry, show, { now = Date.now(), requireLossEvidence = false } = {}) {
   if (!entry || entry.designation !== 'TBD' || !show || show.status !== 'closed') return null;
   if (entry.humanReviewedDesignation === true || entry.recouped === true) return null;
   // The daily classifier applies the saved owner verdict and review stamp.
@@ -310,10 +299,10 @@ function closedTbdLossAction(entry, show, { now = Date.now(), lossLabelMinDays =
   const days = daysAgo(show.closingDate, now);
   if (!Number.isFinite(days)) return null;
   const designation = lossLabelFor(entry);
-  if (requireLossEvidence || days < lossLabelMinDays || !designation || !hasBeenResearched(entry)) {
+  if (requireLossEvidence || !designation) {
     return 'needsLossEvidence' in entry ? null : { action: 'flag' };
   }
-  return { action: 'label', designation, designationBasis: DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED };
+  return { action: 'label', designation, designationBasis: DESIGNATION_BASES.MODEL_ESTIMATE };
 }
 
 module.exports = {
@@ -322,7 +311,6 @@ module.exports = {
   GRACE_DAYS_DEFAULT,
   MAX_AGE_DAYS_DEFAULT,
   RECENT_SIGNAL_DAYS_DEFAULT,
-  LOSS_LABEL_MIN_DAYS_DEFAULT,
   lossLabelFor,
   SKIP_PRODUCTION_TYPES,
   SKIP_DESIGNATIONS,

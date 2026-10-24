@@ -100,11 +100,10 @@ describe('commercial-record-checks designationBasis rules', () => {
     assert.ok(commercialRecordWarnings('x', loss).some(m => /no designationBasis/.test(m)));
     assert.ok(commercialRecordWarnings('x', { designation: 'TBD', designationBasis: 'reported-loss' }).some(m => /non-loss/.test(m)));
   });
-  it('warns when a silence-based label sits on a show closed under six months', () => {
+  it('no longer warns about a silence-based label on a young closure (owner 2026-10-24, BRO-6158)', () => {
     const row = { ...loss, designationBasis: 'no-recoupment-announced' };
     const w = (d) => commercialRecordWarnings('x', row, { showRecord: { status: 'closed', closingDate: daysAgo(d) } });
-    assert.ok(w(60).some(m => /ages in/.test(m)));
-    assert.equal(w(400).filter(m => /ages in/.test(m)).length, 0);
+    for (const d of [3, 60, 400]) assert.equal(w(d).filter(m => /ages in/.test(m)).length, 0, `${d} days`);
   });
   it('warns when a recouped show still carries an earlier share returned (BRO-5091)', () => {
     const w = (est) => commercialRecordWarnings('x', { designation: 'Windfall', recouped: true, estimatedRecoupmentPct: est });
