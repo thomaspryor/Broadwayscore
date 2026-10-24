@@ -333,6 +333,15 @@ fi
 if grep -qE "^scripts/.*\.js$" <<<"$ALL_CHANGED_FILES"; then
   WF_CHECKS="${WF_CHECKS:+$WF_CHECKS,}ledger-coverage"
 fi
+# BRO-5621: a fresh cloud worktree has no node_modules, so the ledger-coverage
+# guard failed closed with "acorn is not installed". Link the main checkout's
+# (gitignored) node_modules in; never replace one that exists.
+if [ -n "$WF_CHECKS" ] && [ ! -e node_modules ]; then
+  MAIN_CHECKOUT="$(cd "$(git rev-parse --git-common-dir 2>/dev/null)/.." 2>/dev/null && pwd)"
+  if [ -n "$MAIN_CHECKOUT" ] && [ "$MAIN_CHECKOUT" != "$PWD" ] && [ -d "$MAIN_CHECKOUT/node_modules/acorn" ]; then
+    ln -s "$MAIN_CHECKOUT/node_modules" node_modules
+  fi
+fi
 if [ -n "$WF_CHECKS" ] && [ -f scripts/lint-workflow-guards.sh ]; then
   GUARDS_OUT="/tmp/pre-push-wf-guards.$$.out"
   if ! bash scripts/lint-workflow-guards.sh "$WF_CHECKS" >"$GUARDS_OUT" 2>&1; then
