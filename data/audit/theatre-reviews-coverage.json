@@ -1,14 +1,14 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-24T01:30:31.043Z",
+    "generatedAt": "2026-10-24T02:00:52.557Z",
     "scope": "partial-merge",
     "roundupsDiscovered": 290,
     "restWalkComplete": true,
     "showsMatched": 187,
     "listed": 1433,
-    "held": 1321,
-    "excluded": 48,
-    "missing": 13,
+    "held": 1319,
+    "excluded": 49,
+    "missing": 14,
     "added": 44,
     "unmatched": 103,
     "fetchSkipped": 24
@@ -24,15 +24,18 @@
       "missingRows": [
         {
           "outlet": "WhatsOnStage",
-          "critic": "Alex Wood"
+          "critic": "Alex Wood",
+          "refusal": "cross-show-url-owned:1536-west-end-2026"
         },
         {
           "outlet": "The Standard",
-          "critic": "Unknown"
+          "critic": "Unknown",
+          "refusal": "flagged-filename-collision"
         },
         {
           "outlet": "The Standard",
-          "critic": "Unknown"
+          "critic": "Unknown",
+          "refusal": "flagged-filename-collision"
         }
       ],
       "excludedRows": [],
@@ -398,7 +401,8 @@
       "missingRows": [
         {
           "outlet": "The Observer",
-          "critic": "Unknown"
+          "critic": "Unknown",
+          "refusal": "cross-show-url-owned:the-devil-wears-prada-west-end-2024"
         }
       ],
       "excludedRows": [],
@@ -790,7 +794,8 @@
       "missingRows": [
         {
           "outlet": "The Observer",
-          "critic": "Unknown"
+          "critic": "Unknown",
+          "refusal": "cross-show-url-owned:barcelona-west-end-2024"
         }
       ],
       "excludedRows": [],
@@ -971,7 +976,8 @@
       "missingRows": [
         {
           "outlet": "The Guardian",
-          "critic": "Unknown"
+          "critic": "Unknown",
+          "refusal": "cross-show-url-owned:for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2023"
         }
       ],
       "excludedRows": [],
@@ -1236,16 +1242,28 @@
       "showId": "inter-alia-west-end-2025",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/inter-alia-reviews/",
       "listed": 18,
-      "held": 17,
-      "excluded": 0,
-      "missing": 1,
+      "held": 15,
+      "excluded": 1,
+      "missing": 2,
       "missingRows": [
         {
           "outlet": "WhatsOnStage",
-          "critic": "Sarah Crompton"
+          "critic": "Sarah Crompton",
+          "refusal": "cross-show-url-owned:inter-alia-west-end-2026"
+        },
+        {
+          "outlet": "Time Out",
+          "critic": "Unknown",
+          "refusal": "merged-duplicate-url: already merged into timeout-london--caroline-mcginn.json"
         }
       ],
-      "excludedRows": [],
+      "excludedRows": [
+        {
+          "outlet": "Time Out",
+          "critic": "Caroline McGinn",
+          "reason": "wrongProduction"
+        }
+      ],
       "openingDate": "2025-07-23",
       "added": 0,
       "addedRows": [],
@@ -1262,7 +1280,8 @@
       "missingRows": [
         {
           "outlet": "BroadwayWorld",
-          "critic": "Cheryl Markosky"
+          "critic": "Cheryl Markosky",
+          "refusal": "cross-show-url-owned:into-the-woods-noel-coward-west-end-2026"
         }
       ],
       "excludedRows": [],
@@ -1327,7 +1346,8 @@
       "missingRows": [
         {
           "outlet": "Rolling Stone UK",
-          "critic": "Unknown"
+          "critic": "Unknown",
+          "refusal": "domain-mismatch: URL domain rollingstone.co.uk doesn't match outlet rollingstone (expected rollingstone.com)"
         }
       ],
       "excludedRows": [],
@@ -2071,7 +2091,8 @@
       "missingRows": [
         {
           "outlet": "Guardian review.",
-          "critic": "Unknown"
+          "critic": "Unknown",
+          "refusal": "flagged-filename-collision"
         }
       ],
       "excludedRows": [
@@ -2773,7 +2794,8 @@
       "missingRows": [
         {
           "outlet": "The Observer",
-          "critic": "Susannah Clapp"
+          "critic": "Susannah Clapp",
+          "refusal": "cross-show-url-owned:g-west-end-2024"
         }
       ],
       "excludedRows": [],
@@ -2849,11 +2871,13 @@
       "missingRows": [
         {
           "outlet": "Express",
-          "critic": "Unknown"
+          "critic": "Unknown",
+          "refusal": "cross-show-url-owned:magic-mike-live-west-end-2021"
         },
         {
           "outlet": "Mail",
-          "critic": "Unknown"
+          "critic": "Unknown",
+          "refusal": "cross-show-url-owned:the-tempest-globe-west-end-2026"
         }
       ],
       "excludedRows": [],
@@ -3986,6 +4010,7 @@
     "care-west-end-2026",
     "cats-west-end-2026",
     "christmas-carol-goes-wrong-apollo-west-end-2025",
+    "clarkston-west-end-2025",
     "cleansed-off-west-end-2026",
     "clueless-west-end-2025",
     "copenhagen-west-end-2026",
@@ -4005,6 +4030,7 @@
     "every-brilliant-thing-west-end-2025",
     "evita-west-end-2025",
     "fawlty-towers-west-end-2024",
+    "giant-royal-court-off-west-end-2024",
     "glengarry-glen-ross-west-end-2026",
     "golden-boy-off-west-end-2026",
     "grace-pervades-west-end-2026",
@@ -4023,6 +4049,7 @@
     "inside-no-9-stage-fright-west-end-2025",
     "inter-alia-west-end-2026",
     "into-the-woods-noel-coward-west-end-2026",
+    "jesus-christ-superstar-west-end-2026",
     "john-proctor-is-the-villain-west-end-2026",
     "juno-and-the-paycock-west-end-2024",
     "kimberly-akimbo-off-west-end-2026",
@@ -4045,6 +4072,7 @@
     "mother-courage-and-her-children-globe-west-end-2026",
     "mrs-warrens-profession-west-end-2025",
     "much-ado-about-nothing-west-end-2025",
+    "my-master-builder-west-end-2025",
     "my-neighbour-totoro-west-end-2025",
     "next-to-normal-west-end-2024",
     "nye-west-end-2024",
@@ -4115,6 +4143,7 @@
     "who-killed-marilyn-off-west-end-2026",
     "whos-afraid-of-virginia-woolf-west-end-2026",
     "why-am-i-so-single-west-end-2024",
-    "witness-for-the-prosecution-west-end-2022"
+    "witness-for-the-prosecution-west-end-2022",
+    "woman-in-mind-west-end-2025"
   ]
 }
