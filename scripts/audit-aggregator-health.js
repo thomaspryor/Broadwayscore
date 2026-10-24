@@ -18,6 +18,7 @@ const path = require('path');
 const { SOURCES, assess } = require('./lib/aggregator-health');
 const { isScheduledWorkflow } = require('./lib/cron-coverage');
 const { ghApiJson } = require('./lib/github-public-api');
+require('./lib/cli-help').exitOnHelp(module);
 
 const ROOT = path.join(__dirname, '..');
 const WF_DIR = path.join(ROOT, '.github', 'workflows');
