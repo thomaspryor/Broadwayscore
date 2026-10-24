@@ -124,12 +124,9 @@ test('tool hooks skip work in another repo (the app keeps its main-only workflow
 });
 
 test('refuses $HOME as target, a hand-written settings.json, and a real commands dir', () => {
-  fs.mkdirSync(path.join(fakeHome, '.claude'), { recursive: true });
-  fs.writeFileSync(path.join(fakeHome, '.claude', 'settings.json'), '{"theme":"dark"}');
   const home = run(['--target', fakeHome]);
   assert.equal(home.status, 2);
   assert.match(home.stderr, /is \$HOME/);
-  fs.rmSync(path.join(fakeHome, '.claude'), { recursive: true, force: true });
 
   const { target } = makeTarget('t-foreign');
   fs.mkdirSync(path.join(target, '.claude'));
@@ -219,7 +216,11 @@ test('cloud one-liner: no --target, HOME = parent of the checkout, installs and 
   const cloudRun = (args, env = {}) => spawnSync('node', [path.join(clone, 'scripts', 'install-home-claude-config.js'), ...args], {
     encoding: 'utf8', env: { ...process.env, HOME: cloudHome, ...env },
   });
-  for (const env of [{ CLAUDE_CODE_REMOTE: 'true' }, { CLAUDE_CODE_REMOTE: '' }]) {
+  // Without the flag (a Mac, even one with no user settings) $HOME stays refused.
+  const local = cloudRun([], { CLAUDE_CODE_REMOTE: '' });
+  assert.equal(local.status, 2);
+  assert.ok(!fs.existsSync(path.join(cloudHome, '.claude', 'settings.json')));
+  for (const env of [{ CLAUDE_CODE_REMOTE: 'true' }]) {
     const r = cloudRun([], env);
     assert.equal(r.status, 0, `install with env ${JSON.stringify(env)}: ${r.stderr}`);
     assert.ok(fs.existsSync(path.join(cloudHome, '.claude', 'settings.json')), 'hooks land in $HOME/.claude');

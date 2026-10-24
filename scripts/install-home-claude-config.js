@@ -30,7 +30,7 @@
  *
  * Usage: node scripts/install-home-claude-config.js [--target <dir>] [--check | --uninstall]
  *   --target defaults to the directory holding this checkout (/home/user in cloud,
- *   which is $HOME there; $HOME is refused only when it holds foreign user settings).
+ *   which is $HOME there; $HOME needs CLAUDE_CODE_REMOTE=true).
  */
 require('./lib/cli-help').exitOnHelp(module);
 
@@ -93,15 +93,13 @@ function plan(target) {
 // Problems that make installing unsafe; empty when it is fine to write.
 function refusals(target, p) {
   const out = [];
-  const home = path.resolve(os.homedir());
+  const real = (x) => { try { return fs.realpathSync(x); } catch { return path.resolve(x); } };
+  const home = real(os.homedir());
   // In cloud, /home/user IS $HOME and ~/.claude is the only place Claude Code loads
-  // (BRO-6126), so $HOME is the default target there. On a machine with real user
-  // settings it would fire every hook twice in single-repo sessions: refuse that.
-  if (path.resolve(target) === home && process.env.CLAUDE_CODE_REMOTE !== 'true') {
-    const user = readJson(p.settingsPath);
-    if (fs.existsSync(p.settingsPath) && (!user || user[MARK_KEY] !== MARK)) {
-      out.push(`target ${target} is $HOME with its own user settings: installing would fire every hook twice in single-repo sessions (set CLAUDE_CODE_REMOTE=true in cloud)`);
-    }
+  // (BRO-6126), so the cloud setup line and runner set CLAUDE_CODE_REMOTE=true to
+  // allow it. Without it $HOME is refused: on a Mac it would fire every hook twice.
+  if (real(target) === home && process.env.CLAUDE_CODE_REMOTE !== 'true') {
+    out.push(`target ${target} is $HOME: its .claude/settings.json would be user settings and fire every hook twice in single-repo sessions (cloud: run with CLAUDE_CODE_REMOTE=true)`);
   }
   if (path.resolve(target) === REPO_ROOT || REPO_ROOT.startsWith(path.resolve(target, '.claude') + path.sep)) {
     out.push(`target ${target} is this checkout`);
@@ -170,7 +168,7 @@ function main(argv) {
     return 0;
   }
   if (argv.includes('--check')) {
-    const d = [...refusals(target, p).filter((x) => !/is \$HOME with|is this checkout/.test(x)), ...drift(p)];
+    const d = [...refusals(target, p).filter((x) => !/is \$HOME|is this checkout/.test(x)), ...drift(p)];
     if (d.length) { d.forEach((x) => console.log(`[home-claude-config] DRIFT: ${x}`)); return 1; }
     console.log(`[home-claude-config] OK: ${p.wired.length} hooks wired, ${p.links.map((l) => l.name).join(' + ')} linked under ${target}/.claude`);
     return 0;

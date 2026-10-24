@@ -80,7 +80,7 @@ The setup script runs after the clones, before Claude starts, cached across sess
 for d in /home/user/Broadwayscore /home/user/broadwayscore; do [ -d "$d/.git" ] && git -C "$d" fetch -q origin main && git -C "$d" merge -q --ff-only origin/main; done; for d in /home/user/*/; do [ -f "$d/scripts/install-home-claude-config.js" ] && CLAUDE_CODE_REMOTE=true node "$d/scripts/install-home-claude-config.js"; done; true
 ```
 
-The first loop refreshes a stale cached checkout; editing it rebuilds the cache. The installer's default target is the folder holding the checkout, which in cloud is `/home/user` = `$HOME`; it accepts that there (`CLAUDE_CODE_REMOTE=true`, or no foreign user settings) and refuses `$HOME` only on a machine with its own `~/.claude/settings.json` (BRO-6126; test: `scripts/tests/install-home-claude-config.test.mjs`, "cloud one-liner"). Later drift: startup fetches 40s, then retries detached.
+The first loop refreshes a stale cached checkout; editing it rebuilds the cache. The installer's default target is the folder holding the checkout, which in cloud is `/home/user` = `$HOME`; it accepts that only with `CLAUDE_CODE_REMOTE=true` (the pasted line sets it; a Mac without the flag is refused, BRO-6126; test: `scripts/tests/install-home-claude-config.test.mjs`, "cloud one-liner"). Later drift: startup fetches 40s, then retries detached.
 
 It cannot change auto mode (the classifier reads `autoMode` only from user, managed or `--settings` sources; BRO-5008). When it refuses an owner-requested action, say so plainly and offer the nearest allowed route (a `land/<name>` branch, a dispatched workflow, a Linear card).
 
