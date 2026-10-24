@@ -72,6 +72,20 @@
           "note": "Same retirement. localRunnerHealthMessage() in the morning digest stays silent for a retired label, otherwise a stopped scheduler would be reported as stale every day."
         }
       ]
+    },
+    {
+      "label": "com.broadwayscore.cyrus-edge",
+      "retiredAt": "2026-10-24",
+      "replacedBy": [
+        "nothing: owner retired Cyrus Team Cloud (BRO-6110, 2026-10-24); this is the local edge worker the webhook drain replayed events into (127.0.0.1:3456)"
+      ],
+      "watchers": [
+        {
+          "conditionKey": "linear-delegation-status.json",
+          "file": "scripts/check-linear-delegations.js",
+          "note": "No pager watched the edge worker itself (it last showed exit status 1 in August and nothing alarmed). The only Cyrus-side reader left is the delegation check, which judges delegated Linear issues by their agent sessions; BRO-338, the one issue ever delegated, is closed."
+        }
+      ]
     }
   ]
 }

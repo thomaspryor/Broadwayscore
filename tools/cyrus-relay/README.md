@@ -1,6 +1,6 @@
 # Cyrus webhook relay
 
-> **Retired 2026-10-24 (BRO-6110).** The owner chose to retire Cyrus Team Cloud. Its drain and runner launchd jobs are listed in `config/mac-retired.json` and are booted out after the 3-day grace period; the morning digest no longer reports their status files. To bring Cyrus back, follow `_rollback` in that file and redeploy the relay (`./deploy.sh deploy`).
+> **Retired 2026-10-24 (BRO-6110).** The owner chose to retire Cyrus Team Cloud. Its drain, runner and edge-worker launchd jobs (`com.broadwayscore.cyrus-webhook-drain`, `-runner`, `-edge`) are listed in `config/mac-retired.json` and are booted out after the 3-day grace period; the morning digest no longer reports their status files. To bring Cyrus back, follow `_rollback` in that file and redeploy the relay (`./deploy.sh deploy`).
 
 Linear can only deliver agent-session webhooks to a public URL. This Mac has no
 usable inbound path, so nothing is exposed here: Linear POSTs to a small Vercel
