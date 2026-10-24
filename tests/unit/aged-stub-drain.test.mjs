@@ -32,16 +32,18 @@ test('aged closed-show stub is pulled inside the max_reviews cut, bounded by the
   }));
   const stubs = Array.from({ length: 60 }, (_, i) => ({
     reviewId: `closed-2024/${i}`, isOpenShow: false, recencyDate: '2024-05-01', fetchAttempts: 0, priority: 2,
-    _agedStub: true, _agedSince: NOW - (100 + i) * 3600 * 1000,
+    _agedStub: true,
   }));
   const queue = [...fresh, ...stubs].sort((a, b) => compareReviewPriority(a, b));
   assert.ok(queue.indexOf(stubs[0]) >= 300, 'precondition: starved past max_reviews=300');
-  const out = promoteAgedStubs(queue);
+  const out = promoteAgedStubs(queue, AGED_STUB_DRAIN_PER_RUN, 1);
   assert.equal(out.length, queue.length);
   const head = out.slice(0, AGED_STUB_DRAIN_PER_RUN);
   assert.ok(head.every(r => r._agedStub), 'cap-sized head is all aged stubs');
   assert.equal(out.slice(AGED_STUB_DRAIN_PER_RUN).filter(r => r._agedStub).length, 60 - AGED_STUB_DRAIN_PER_RUN, 'spend bounded: the rest wait');
-  assert.equal(head[0].reviewId, 'closed-2024/59', 'oldest firstSeenAt first');
+  const other = promoteAgedStubs(queue, AGED_STUB_DRAIN_PER_RUN, 2).slice(0, AGED_STUB_DRAIN_PER_RUN).map(r => r.reviewId);
+  assert.notDeepEqual(other, head.map(r => r.reviewId), 'a different run draws different stubs (no fixed subset starves the rest)');
+  assert.deepEqual(promoteAgedStubs(queue, AGED_STUB_DRAIN_PER_RUN, 1).slice(0, AGED_STUB_DRAIN_PER_RUN).map(r => r.reviewId), head.map(r => r.reviewId), 'same run is deterministic');
 });
 
 test('findReviewsToProcess (real function) queues an aged closed-show stub inside the cut', () => {
