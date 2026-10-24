@@ -23,7 +23,6 @@
  *              BROWSERBASE_API_KEY, BROWSERBASE_PROJECT_ID (optional, for CI)
  */
 
-const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, loadShows, buildSiblingCategoriesFromShows } = require('./lib/show-matching');
@@ -32,6 +31,8 @@ const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { filterToLiveShowIds, loadLiveShowIds } = require('./lib/live-show-ids');
 const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { fetchWithCookiesPlain } = require('./lib/fetch-plain');
+const { discoverRoundupUrlsPlain, classifyRoundupPage, LOGIN_EXPIRED_MESSAGE } = require('./lib/thestage-fetch');
 
 // Memoized sibling-category index (same shape as scrape-bww-reviews.js) so
 // checkArchiveCategory()'s cross-market-sibling check can fire (BRO-2550).
@@ -54,6 +55,9 @@ const BB_PROJECT_ID = process.env.BROWSERBASE_PROJECT_ID;
 const DRY_RUN = process.argv.includes('--dry-run');
 const FORCE = process.argv.includes('--force');
 const EXTRACT_ONLY = process.argv.includes('--extract-only');
+// Legacy Browserbase/Playwright route. Off by default: the cookie-plain route
+// needs no browser session (BRO-6101). Manual use only.
+const USE_BROWSER = process.argv.includes('--browser');
 const showsArg = process.argv.find(a => a.startsWith('--shows='));
 const TARGET_SHOWS = showsArg ? showsArg.split('=')[1].split(',') : null;
 
@@ -62,6 +66,7 @@ const stats = { pagesChecked: 0, cached: 0, reviewsExtracted: 0, filesCreated: 0
 // ─── Browser Setup ───────────────────────────────────────────────────────────
 
 async function launchBrowser() {
+  const { chromium } = require('playwright');
   if (BB_API_KEY && BB_PROJECT_ID) {
     console.log('  Using BrowserBase...');
     const { createBbSession } = require('./lib/browserbase-session');
@@ -197,7 +202,7 @@ async function discoverRoundupUrls(page) {
 
 // ─── Scrape Phase (Playwright) ───────────────────────────────────────────────
 
-async function scrapeRoundups(page, urls, weShows) {
+async function scrapeRoundups(fetchHtml, urls, weShows) {
   const matched = [];
 
   for (const url of urls) {
@@ -234,10 +239,15 @@ async function scrapeRoundups(page, urls, weShows) {
 
     console.log(`  Fetching: ${match.show.title} → ${url}`);
     try {
-      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-      await page.waitForTimeout(2000);
-
-      const html = await page.content();
+      const html = await fetchHtml(url);
+      // Dead login first: the registration gate has its own page title, so the
+      // category guard below would otherwise hide it as a plain skip.
+      const extractedRows = extractReviews(html, showId);
+      if (extractedRows.length === 0 && classifyRoundupPage(html, 0) === 'gated') {
+        const e = new Error(LOGIN_EXPIRED_MESSAGE);
+        e.loginExpired = true;
+        throw e;
+      }
 
       // Validate page title matches the show before archiving — Stuart King 2026-04-25
       const v = checkArchiveCategory(html, match.show, siblingCategoriesByShowId()[match.show.id]);
@@ -247,17 +257,17 @@ async function scrapeRoundups(page, urls, weShows) {
         continue;
       }
 
+      if (extractedRows.length === 0) {
+        const kind = classifyRoundupPage(html, 0);
+        console.log(`    ✗ 0 extractable rows (${kind === 'challenge' ? 'bot challenge' : 'template drift'}) — not archiving`);
+        stats.errors++;
+        continue;
+      }
       // Never archive a page with no extractable rows — a title-valid PAYWALLED
       // teaser (expired cookies) otherwise lands as a 0-row archive that the
       // gap-audit's thestage-archive reference reads as emptyParse every hour
       // (QA review 2026-07-11). Skipping (not caching) means a later run with
       // working cookies still gets to archive the real page.
-      const extractedRows = extractReviews(html, showId);
-      if (extractedRows.length === 0) {
-        console.log(`    ✗ 0 extractable rows (paywalled teaser or template drift) — not archiving`);
-        stats.errors++;
-        continue;
-      }
 
       if (!DRY_RUN) {
         fs.writeFileSync(archivePath, html);
@@ -268,6 +278,7 @@ async function scrapeRoundups(page, urls, weShows) {
 
       await new Promise(r => setTimeout(r, RATE_LIMIT_MS));
     } catch (err) {
+      if (err.loginExpired) throw err; // dead cookies: stop, every later page would be gated too
       console.log(`    ✗ Error: ${err.message}`);
       stats.errors++;
     }
@@ -329,6 +340,21 @@ function writeReviewFiles(reviews, showId, reviewTextsDir = REVIEW_TEXTS_DIR) {
 
 // ─── Main ────────────────────────────────────────────────────────────────────
 
+function extractMatched(matched) {
+  for (const { showId, archivePath } of matched) {
+    if (!fs.existsSync(archivePath)) continue;
+    const html = fs.readFileSync(archivePath, 'utf8');
+    const reviews = extractReviews(html, showId);
+    console.log(`  ${showId}: ${reviews.length} reviews`);
+
+    const { created, updated, skipped } = writeReviewFiles(reviews, showId);
+    stats.reviewsExtracted += reviews.length;
+    stats.filesCreated += created;
+    stats.filesUpdated += updated;
+    stats.filesSkipped += skipped;
+  }
+}
+
 async function main() {
   console.log('=== The Stage Review Round-Ups Scraper ===\n');
 
@@ -338,10 +364,37 @@ async function main() {
   const weShows = shows.filter(s => isLondonMarket(s.category));
   console.log(`Loaded ${weShows.length} London market shows\n`);
 
-  if (!EXTRACT_ONLY) {
-    // Phase 1: Scrape with Playwright
+  if (!EXTRACT_ONLY && !USE_BROWSER) {
+    // Phase 1: public sitemaps for discovery, saved cookies over plain HTTPS
+    // for the pages. No Browserbase session, no page navigation to time out.
+    const { loadCookiesForDomain } = require('./lib/cookie-loader');
+    if (!loadCookiesForDomain('thestage.co.uk')) {
+      console.error('✗ No Stage cookies found (COOKIES_BUNDLE_* / data/cookies/thestage.json). Only the Mac renews them.');
+      process.exit(1);
+    }
+    const urls = await discoverRoundupUrlsPlain();
+    if (urls.length === 0) {
+      console.error('✗ Found no roundup URLs in the sitemaps or the listing page (site change or blocked).');
+      process.exit(1);
+    }
+    const fetchHtml = async (url) => {
+      const res = await fetchWithCookiesPlain(url);
+      if (!res || typeof res.content !== 'string') throw new Error('plain fetch failed');
+      return res.content;
+    };
+    let matched;
+    try {
+      matched = await scrapeRoundups(fetchHtml, urls, weShows);
+    } catch (err) {
+      if (!err.loginExpired) throw err;
+      console.error(`❌ ${err.message}`);
+      process.exit(2);
+    }
+    console.log(`\nScraped ${matched.length} roundup pages\n`);
+    extractMatched(matched);
+  } else if (!EXTRACT_ONLY) {
+    // Legacy browser route (--browser), kept for manual recovery only.
     const { browser, page } = await launchBrowser();
-
     try {
       const loggedIn = await loginToTheStage(page);
       if (!loggedIn) {
@@ -349,25 +402,15 @@ async function main() {
         await browser.close();
         process.exit(1);
       }
-
       const urls = await discoverRoundupUrls(page);
-
-      const matched = await scrapeRoundups(page, urls, weShows);
+      const fetchHtml = async (url) => {
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await page.waitForTimeout(2000);
+        return page.content();
+      };
+      const matched = await scrapeRoundups(fetchHtml, urls, weShows);
       console.log(`\nScraped ${matched.length} roundup pages\n`);
-
-      // Phase 2: Extract from archives
-      for (const { showId, archivePath } of matched) {
-        if (!fs.existsSync(archivePath)) continue;
-        const html = fs.readFileSync(archivePath, 'utf8');
-        const reviews = extractReviews(html, showId);
-        console.log(`  ${showId}: ${reviews.length} reviews`);
-
-        const { created, updated, skipped } = writeReviewFiles(reviews, showId);
-        stats.reviewsExtracted += reviews.length;
-        stats.filesCreated += created;
-        stats.filesUpdated += updated;
-        stats.filesSkipped += skipped;
-      }
+      extractMatched(matched);
     } finally {
       await browser.close();
     }
