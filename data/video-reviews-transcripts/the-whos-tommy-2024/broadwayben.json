@@ -11,12 +11,12 @@
   "wordCount": 521,
   "transcriptSource": "tiktok-subs",
   "extractedAt": "2026-04-15T00:12:07.820Z",
-  "score": 45,
+  "score": 38,
   "bucket": "Negative",
   "confidence": "high",
-  "reasoning": "Creator explicitly rates it 2/5 stars and says the show is 'just not for me' and doesn't hold up under a modern lens, though they praise the cast and music. The negative framing dominates despite the caveat that fans of Tommy might enjoy it.",
-  "keyQuote": "The show itself is just not for me, and I don't know that it holds up... I'm gonna give it a two out of five stars",
-  "scoredAt": "2026-04-19T08:36:41.329Z",
+  "reasoning": "Creator explicitly rates it 2/5 and says the show is not for them, though acknowledges strong cast and music and that fans of Tommy may enjoy it.",
+  "keyQuote": "The show itself is just not for me, and I don't know that it holds up.",
+  "scoredAt": "2026-10-24T01:36:51.773Z",
   "scoringModel": "claude-opus-4-7",
   "productionCheck": {
     "verdict": "same",
@@ -27,5 +27,13 @@
     "method": "llm",
     "model": "gpt-4o",
     "checkedAt": "2026-09-29T14:57:03.669Z"
-  }
+  },
+  "excludedVideoIds": [],
+  "selection": {
+    "method": "single",
+    "candidateKey": "7362311288757751086",
+    "at": "2026-10-24T01:23:46.083Z"
+  },
+  "explicitRating": "2/5",
+  "promptVersion": 2
 }

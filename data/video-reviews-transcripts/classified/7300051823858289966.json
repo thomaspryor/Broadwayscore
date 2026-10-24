@@ -10,7 +10,7 @@
   "wordCount": 126,
   "collectedAt": "2026-04-14T04:16:40.707Z",
   "fileName": "7300051823858289966.json",
-  "showId": null,
+  "showId": "school-pictures-off-broadway-2023",
   "showTitle": "School Pictures",
   "reviewType": "review",
   "classificationConfidence": "high",
@@ -19,5 +19,14 @@
   "scoreable": false,
   "rejection": "Wrong show content",
   "reasoning": "The transcript is reviewing 'School Pictures' at Playwrights Horizons, not 'Classified' as specified in the prompt. This appears to be a mismatch between the requested show and the actual content being reviewed.",
-  "scoredAt": "2026-04-14T04:54:23.556Z"
+  "scoredAt": "2026-04-14T04:54:23.556Z",
+  "rematch": {
+    "candidates": [
+      "school-pictures-off-broadway-2023"
+    ],
+    "result": "school-pictures-off-broadway-2023",
+    "reason": "The transcript explicitly mentions seeing 'School Pictures' at Playwrights Horizons in New York City, matching the listed production's venue and timeframe.",
+    "checkedAt": "2026-10-24T01:19:53.842Z"
+  },
+  "showIdSource": "rematch"
 }

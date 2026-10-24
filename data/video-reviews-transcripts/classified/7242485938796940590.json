@@ -10,7 +10,7 @@
   "wordCount": 189,
   "collectedAt": "2026-04-14T04:19:12.186Z",
   "fileName": "7242485938796940590.json",
-  "showId": null,
+  "showId": "primary-trust-off-broadway-2023",
   "showTitle": "Primary Trust",
   "reviewType": "review",
   "classificationConfidence": "high",
@@ -19,5 +19,14 @@
   "scoreable": false,
   "rejection": "Wrong show reviewed",
   "reasoning": "The transcript is reviewing 'Primary Trust' at Roundabout Theatre, not 'Classified'. The creator discusses seeing Primary Trust starring William Jackson Harper, with no mention of Classified anywhere in the review.",
-  "scoredAt": "2026-04-14T04:48:44.159Z"
+  "scoredAt": "2026-04-14T04:48:44.159Z",
+  "rematch": {
+    "candidates": [
+      "primary-trust-off-broadway-2023"
+    ],
+    "result": "primary-trust-off-broadway-2023",
+    "reason": "The transcript explicitly mentions Primary Trust off-Broadway at Roundabout, William Jackson Harper, the Laura Pels Theater, and closing July 2nd, all matching the listed production.",
+    "checkedAt": "2026-10-24T01:19:44.715Z"
+  },
+  "showIdSource": "rematch"
 }

@@ -10,7 +10,7 @@
   "wordCount": 197,
   "collectedAt": "2026-04-13T03:13:25.687Z",
   "fileName": "7600249350979063071.json",
-  "showId": null,
+  "showId": "blackout-songs-off-broadway-2026",
   "showTitle": "Blackout Songs",
   "reviewType": "review",
   "classificationConfidence": "high",
@@ -19,5 +19,14 @@
   "scoreable": false,
   "rejection": "Wrong show title",
   "reasoning": "The transcript is reviewing 'Blackout Songs' by Joe White, not 'Classified' as specified in the prompt. This appears to be a mismatch between the requested show and the actual review content.",
-  "scoredAt": "2026-04-13T13:45:13.490Z"
+  "scoredAt": "2026-04-13T13:45:13.490Z",
+  "rematch": {
+    "candidates": [
+      "blackout-songs-off-broadway-2026"
+    ],
+    "result": "blackout-songs-off-broadway-2026",
+    "reason": "The transcript describes 'Blackout Songs by Joe White' with cast members Abbey Lee and Owen Teague, matching the Off-Broadway production at Susan & Ronald Frankel Theater within its run dates.",
+    "checkedAt": "2026-10-24T01:22:00.444Z"
+  },
+  "showIdSource": "rematch"
 }

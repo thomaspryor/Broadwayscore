@@ -10,7 +10,7 @@
   "wordCount": 245,
   "collectedAt": "2026-04-13T03:12:27.089Z",
   "fileName": "7612856991806967054.json",
-  "showId": null,
+  "showId": "spread-off-broadway-2026",
   "showTitle": "Spread",
   "reviewType": "review",
   "classificationConfidence": "high",
@@ -19,5 +19,14 @@
   "scoreable": false,
   "rejection": "Wrong show title",
   "reasoning": "The transcript is reviewing a play called 'Spread' by Jesús Valles, not 'Classified'. This appears to be a mislabeling issue where the wrong transcript was provided for the target show.",
-  "scoredAt": "2026-04-14T03:36:11.171Z"
+  "scoredAt": "2026-04-14T03:36:11.171Z",
+  "rematch": {
+    "candidates": [
+      "spread-off-broadway-2026"
+    ],
+    "result": "spread-off-broadway-2026",
+    "reason": "The caption explicitly mentions 'Spread by Jesús I. Valles at Intar Theatre' and the post date of 2026-03-03 falls within the production's run (2026-03-02 to 2026-03-29).",
+    "checkedAt": "2026-10-24T01:22:40.358Z"
+  },
+  "showIdSource": "rematch"
 }

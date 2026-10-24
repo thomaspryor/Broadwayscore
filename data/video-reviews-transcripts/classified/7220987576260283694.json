@@ -10,7 +10,7 @@
   "wordCount": 217,
   "collectedAt": "2026-04-14T04:20:15.840Z",
   "fileName": "7220987576260283694.json",
-  "showId": null,
+  "showId": "new-york-new-york-2023",
   "showTitle": "New York, New York",
   "reviewType": "review",
   "classificationConfidence": "high",
@@ -19,5 +19,14 @@
   "scoreable": false,
   "rejection": "wrong show",
   "reasoning": "This review is about 'New York, New York' on Broadway, not 'Classified' as specified in the prompt",
-  "scoredAt": "2026-04-14T04:47:40.433Z"
+  "scoredAt": "2026-04-14T04:47:40.433Z",
+  "rematch": {
+    "candidates": [
+      "new-york-new-york-2023"
+    ],
+    "result": "new-york-new-york-2023",
+    "reason": "The creator saw 'New York, New York' on Broadway during previews (post date April 12, 2023 falls within the preview period starting March 24, 2023), matching the St. James Theatre production listed.",
+    "checkedAt": "2026-10-24T01:19:16.755Z"
+  },
+  "showIdSource": "rematch"
 }

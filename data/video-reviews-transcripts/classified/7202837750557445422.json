@@ -10,7 +10,7 @@
   "wordCount": 174,
   "collectedAt": "2026-04-14T04:21:20.197Z",
   "fileName": "7202837750557445422.json",
-  "showId": null,
+  "showId": "parade-2023",
   "showTitle": "Parade",
   "reviewType": "review",
   "classificationConfidence": "high",
@@ -19,5 +19,14 @@
   "scoreable": false,
   "rejection": "Wrong show title",
   "reasoning": "The transcript is clearly about a review of 'Parade' on Broadway, not 'Classified'. The reviewer discusses seeing the first preview of Parade starring Ben Platt and Michaela Diamond, with music by Jason Robert Brown. This is a different show entirely from the target show 'Classified'.",
-  "scoredAt": "2026-04-14T04:46:25.928Z"
+  "scoredAt": "2026-04-14T04:46:25.928Z",
+  "rematch": {
+    "candidates": [
+      "parade-2023"
+    ],
+    "result": "parade-2023",
+    "reason": "The creator attended the first preview of Parade on Broadway on 2023-02-22, matching the Bernard B. Jacobs Theatre revival's preview start date of 2023-02-21.",
+    "checkedAt": "2026-10-24T01:18:40.520Z"
+  },
+  "showIdSource": "rematch"
 }

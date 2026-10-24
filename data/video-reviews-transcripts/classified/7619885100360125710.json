@@ -10,7 +10,7 @@
   "wordCount": 299,
   "collectedAt": "2026-04-13T03:11:42.190Z",
   "fileName": "7619885100360125710.json",
-  "showId": null,
+  "showId": "trash-off-broadway-2026",
   "showTitle": "Trash",
   "reviewType": "review",
   "classificationConfidence": "high",
@@ -19,5 +19,14 @@
   "scoreable": false,
   "rejection": "Wrong show title",
   "reasoning": "The transcript is reviewing a play called 'Trash' at the Perelman Arts Center, not 'Classified'. This appears to be a mismatch between the requested show and the actual review content.",
-  "scoredAt": "2026-04-14T03:38:20.329Z"
+  "scoredAt": "2026-04-14T03:38:20.329Z",
+  "rematch": {
+    "candidates": [
+      "trash-off-broadway-2026"
+    ],
+    "result": "trash-off-broadway-2026",
+    "reason": "The caption and transcript confirm this is 'Trash' at Perelman Arts Center (PAC NYC), matching the listed production's venue and its March 2026 run dates.",
+    "checkedAt": "2026-10-24T01:22:49.481Z"
+  },
+  "showIdSource": "rematch"
 }

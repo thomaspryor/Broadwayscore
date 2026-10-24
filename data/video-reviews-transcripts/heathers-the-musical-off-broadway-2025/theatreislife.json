@@ -12,13 +12,13 @@
   "transcriptSource": "tiktok-subs",
   "extractedAt": "2026-04-13T03:09:19.525Z",
   "thumbnail": "/images/video-reviews/theatreislife-heathers-the-musical-off-broadway-2025.jpg",
-  "score": 77,
-  "bucket": "Positive",
+  "score": 91,
+  "bucket": "Rave",
   "confidence": "high",
-  "reasoning": "The reviewer calls this the best production of Heathers they've ever seen and praises the cast extensively, but has notable criticisms about the direction, tone, and staging of the second act. They feel the production doesn't fully nail the dark comedy tone and wants more from the overall direction and design. Despite saying '10 out of 10 would recommend,' the substantive critique about the show's tonal choices and second act staging keeps this from being a rave.",
-  "keyQuote": "This is easily the best production of Heathers I've ever seen. It still leaves me, however, wanting just a little bit more from the production.",
-  "scoredAt": "2026-04-15T04:22:01.591Z",
-  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "reasoning": "Creator calls it the best production of Heathers they've seen and gives explicit 10/10 recommendation, though substantive criticism about tone and second-act direction tempers the enthusiasm. Explicit 10/10 rating places score in the 91-100 band normally, but the significant caveats justify the lower end of Rave.",
+  "keyQuote": "Easily the best production of Heathers I've seen, and that really, truly is due to this cast.",
+  "scoredAt": "2026-10-24T01:29:29.437Z",
+  "scoringModel": "claude-opus-4-7",
   "ensembleScores": {
     "sonnet": 78,
     "opus": 76
@@ -32,5 +32,17 @@
     "method": "llm",
     "model": "gpt-4o",
     "checkedAt": "2026-09-29T14:55:31.287Z"
+  },
+  "excludedVideoIds": [],
+  "selection": {
+    "method": "single",
+    "candidateKey": "7548545229503155487",
+    "at": "2026-10-24T01:24:42.877Z"
+  },
+  "explicitRating": "10/10",
+  "promptVersion": 2,
+  "ratingAnchor": {
+    "modelScore": 85,
+    "rating": "10/10"
   }
 }

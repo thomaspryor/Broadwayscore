@@ -11,13 +11,13 @@
   "wordCount": 5254,
   "transcriptSource": "youtube-auto-captions",
   "extractedAt": "2026-04-15T00:31:18.121Z",
-  "score": 89,
+  "score": 94,
   "bucket": "Rave",
   "confidence": "high",
-  "reasoning": "The reviewer expresses overwhelming enthusiasm for Death Becomes Her across all aspects: book, score, staging, costumes, performances, direction, and choreography. They saw it twice, call it 'pretty great,' explicitly recommend it ('go and check this out, have yourselves a glorious time'), and praise nearly every element with only minor caveats (one weak Ernest song, some songs not individually memorable). The depth and passion of the review clearly signals a strong recommendation.",
-  "keyQuote": "I love Death Becomes Her On Broadway I think it is not only a terrific show for the gays but a hilarious musical comedy for anyone in the market go and check this out have yourselves a glorious time",
-  "scoredAt": "2026-04-15T04:18:00.796Z",
-  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "reasoning": "Caption confirms a ★★★★★ review, and the transcript is overwhelmingly enthusiastic across writing, direction, costumes, and all performances, with only minor quibbles about one song.",
+  "keyQuote": "I love Death Becomes Her On Broadway I think it is not only a terrific show for the gays but a hilarious musical comedy for anyone in the market",
+  "scoredAt": "2026-10-24T01:28:27.494Z",
+  "scoringModel": "claude-opus-4-7",
   "ensembleScores": {
     "sonnet": 88,
     "opus": 90
@@ -32,5 +32,13 @@
     "method": "llm",
     "model": "gpt-4o",
     "checkedAt": "2026-10-06T00:48:09.641Z"
-  }
+  },
+  "excludedVideoIds": [],
+  "selection": {
+    "method": "single",
+    "candidateKey": "0RXMlcQbhG0",
+    "at": "2026-10-24T01:23:05.231Z"
+  },
+  "explicitRating": "5/5",
+  "promptVersion": 2
 }

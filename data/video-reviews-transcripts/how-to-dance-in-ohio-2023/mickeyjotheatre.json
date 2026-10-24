@@ -14,9 +14,9 @@
   "score": 78,
   "bucket": "Positive",
   "confidence": "high",
-  "reasoning": "Mickey-Jo gives a four-star review with significant enthusiasm for the performances, characters, and emotional impact, but has substantive structural criticisms about focusing too much on Dr. Amigo, song interruptions, and direction. Clear recommendation to see it before closing, but with meaningful caveats.",
-  "keyQuote": "it is enduringly just so uplifting so positive joyous fun wonderful going to make you cry going to make you laugh you're going to have a great time",
-  "scoredAt": "2026-04-19T08:25:06.230Z",
+  "reasoning": "Mickey-Jo gives an explicit four-star rating, praising the show as heartwarming, joyous, and groundbreaking for representation, with standout performances and songs, while noting structural issues, over-focus on Dr. Amigo, and direction weaknesses. Clear recommendation with caveats.",
+  "keyQuote": "it is enduringly just so uplifting so positive joyous fun wonderful going to make you cry gun to make you laugh you're going to have a great time",
+  "scoredAt": "2026-10-24T01:29:39.515Z",
   "scoringModel": "claude-opus-4-7",
   "thumbnail": "https://i.ytimg.com/vi/tpY1N1OUt5g/hqdefault.jpg",
   "productionCheck": {
@@ -28,5 +28,13 @@
     "method": "llm",
     "model": "gpt-4o",
     "checkedAt": "2026-10-06T00:48:17.175Z"
-  }
+  },
+  "excludedVideoIds": [],
+  "selection": {
+    "method": "single",
+    "candidateKey": "tpY1N1OUt5g",
+    "at": "2026-10-24T01:25:47.101Z"
+  },
+  "explicitRating": "4/5",
+  "promptVersion": 2
 }

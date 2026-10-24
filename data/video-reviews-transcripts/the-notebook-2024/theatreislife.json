@@ -14,10 +14,10 @@
   "score": 95,
   "bucket": "Rave",
   "confidence": "high",
-  "reasoning": "The reviewer saw the show three times, calls it their pick for Best Musical 2024, gives it a 10/10 recommendation, compares it favorably to Hadestown (a personal favorite), praises nearly every element (cast, design, writing, score), and says 'I can't recommend this enough.' The only criticisms are sightline issues due to theater design, which are presented as minor caveats.",
-  "keyQuote": "I can't recommend this enough. I just. I freaking love this show, y'all.",
-  "scoredAt": "2026-04-15T04:35:03.312Z",
-  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "reasoning": "Creator calls it her pick for Best Musical 2024, has seen it three times, and praises nearly every element with only minor sightline caveats tied to the theater design.",
+  "keyQuote": "I freaking love this show, y'all.",
+  "scoredAt": "2026-10-24T01:36:05.859Z",
+  "scoringModel": "claude-opus-4-7",
   "ensembleScores": {
     "sonnet": 95,
     "opus": 95
@@ -31,5 +31,14 @@
     "method": "llm",
     "model": "gpt-4o",
     "checkedAt": "2026-09-29T14:56:52.341Z"
-  }
+  },
+  "excludedVideoIds": [],
+  "selection": {
+    "method": "llm",
+    "candidateKey": "7334237381341596974,7346365415464897834",
+    "reason": "Video 2 is explicitly the full review Kate promised after letting the show cook, posted on opening night after her third viewing, giving her complete verdict.",
+    "at": "2026-10-24T01:23:43.514Z"
+  },
+  "explicitRating": null,
+  "promptVersion": 2
 }

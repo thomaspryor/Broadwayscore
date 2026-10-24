@@ -11,12 +11,12 @@
   "wordCount": 775,
   "transcriptSource": "tiktok-subs",
   "extractedAt": "2026-04-15T00:11:57.641Z",
-  "score": 42,
+  "score": 38,
   "bucket": "Negative",
   "confidence": "high",
-  "reasoning": "Reviewer explicitly cannot recommend the production at current prices, gives 2/5 stars, and lists multiple disappointments including the set, lead performances, and ending. Some positive notes on pre-show and supporting cast keep it from a full pan.",
+  "reasoning": "Creator explicitly rates the production 2 out of 5 stars and says they cannot recommend it at the prices charged, citing a disappointing show after a strong pre-show experience.",
   "keyQuote": "I cannot recommend this production at the prices that they are charging when the product itself is just so mediocre.",
-  "scoredAt": "2026-04-19T08:20:41.990Z",
+  "scoredAt": "2026-10-24T01:27:15.410Z",
   "scoringModel": "claude-opus-4-7",
   "productionCheck": {
     "verdict": "same",
@@ -27,5 +27,14 @@
     "method": "llm",
     "model": "gpt-4o",
     "checkedAt": "2026-09-29T14:54:56.176Z"
-  }
+  },
+  "excludedVideoIds": [],
+  "selection": {
+    "method": "llm",
+    "candidateKey": "7378650926980009258,7382346601546845482,7391211743411784991,7424646255806024991,7493663748008332575",
+    "reason": "Video 1 is Broadway Ben's first full standalone review of the show after seeing it, giving his overall verdict on the production.",
+    "at": "2026-10-24T01:23:59.744Z"
+  },
+  "explicitRating": "2/5",
+  "promptVersion": 2
 }

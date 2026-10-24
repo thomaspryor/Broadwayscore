@@ -10,7 +10,7 @@
   "wordCount": 144,
   "collectedAt": "2026-04-14T04:20:19.119Z",
   "fileName": "7220249112044670251.json",
-  "showId": null,
+  "showId": "summer-1976-2023",
   "showTitle": "Summer, 1976",
   "reviewType": "review",
   "classificationConfidence": "high",
@@ -19,5 +19,14 @@
   "scoreable": false,
   "rejection": "Wrong show title",
   "reasoning": "The transcript reviews 'Summer 1976' on Broadway, not 'Classified'. The user asked for a score of 'Classified' but the content is about a completely different show.",
-  "scoredAt": "2026-04-14T04:47:37.506Z"
+  "scoredAt": "2026-04-14T04:47:37.506Z",
+  "rematch": {
+    "candidates": [
+      "summer-1976-2023"
+    ],
+    "result": "summer-1976-2023",
+    "reason": "The transcript explicitly states they saw 'Summer 1976 on Broadway' produced by MTC, matching the listed Broadway production at Samuel J. Friedman Theatre.",
+    "checkedAt": "2026-10-24T01:19:12.136Z"
+  },
+  "showIdSource": "rematch"
 }

@@ -10,7 +10,7 @@
   "wordCount": 138,
   "collectedAt": "2026-04-13T03:04:50.478Z",
   "fileName": "7457380419084782894.json",
-  "showId": null,
+  "showId": "sunset-boulevard-2024",
   "showTitle": "Sunset Boulevard",
   "reviewType": "review",
   "classificationConfidence": "high",
@@ -19,5 +19,14 @@
   "scoreable": false,
   "rejection": "wrong show",
   "reasoning": "This transcript is reviewing Sunset Boulevard on Broadway, not the show 'Classified' as specified in the prompt.",
-  "scoredAt": "2026-04-13T03:45:12.163Z"
+  "scoredAt": "2026-04-13T03:45:12.163Z",
+  "rematch": {
+    "candidates": [
+      "sunset-boulevard-2024"
+    ],
+    "result": "sunset-boulevard-2024",
+    "reason": "The transcript explicitly references the current Broadway production of Sunset Boulevard featuring Mandy Gonzalez, matching the listed revival at St. James Theatre.",
+    "checkedAt": "2026-10-24T01:20:28.078Z"
+  },
+  "showIdSource": "rematch"
 }

@@ -17,5 +17,22 @@
   "reasoning": "The reviewer's dominant signal is disappointment—comparing the show to AI-generated art lacking heart, criticizing stock characters, uncreative staging, and racial insensitivity in direction. While she acknowledges emotional impact and Jessica Vosk's performance, the recommendation is heavily qualified and directed at undemanding audiences.",
   "keyQuote": "watching beaches gave me the same feeling of watching art created by A I... all the pieces are there, but it's lacking the heart, it's lacking the soul",
   "scoredAt": "2026-08-03T05:52:56.763Z",
-  "scoringModel": "claude-opus-4-7"
+  "scoringModel": "claude-opus-4-7",
+  "excludedVideoIds": [],
+  "selection": {
+    "method": "llm",
+    "candidateKey": "7627543711697653022,7641741201506422046",
+    "reason": "Video 1 is Kate's full standalone review after seeing the show during previews, while Video 2 is a short closing-week reaction to the cancellation news rather than a primary verdict.",
+    "at": "2026-10-24T01:25:21.471Z"
+  },
+  "productionCheck": {
+    "verdict": "same",
+    "confidence": "high",
+    "evidenceType": null,
+    "evidenceQuote": "",
+    "reason": "The video explicitly mentions that the reviewer saw 'Beaches' in previews on Broadway, which matches the assigned production in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "checkedAt": "2026-10-24T01:38:23.798Z"
+  }
 }
