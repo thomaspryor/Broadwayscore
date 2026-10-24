@@ -311,7 +311,19 @@ function isRiskyGapChange(prevState, nextState) {
   const [prevLive, prevCandidates] = counts(prevState);
   const [nextLive, nextCandidates] = counts(nextState);
   if (String(prevState).endsWith(':prior-schema')) return nextLive < prevLive;
-  return nextLive < prevLive || nextCandidates < prevCandidates;
+  return nextLive < prevLive || nextCandidates < prevCandidates - candidateDropTolerance(prevCandidates);
+}
+
+/**
+ * A SERP census pass is not deterministic: re-running it can return one fewer
+ * candidate with no coverage lost (the-bodyguard-tour-2026 2:9 -> 2:8 on
+ * 2026-10-24 quarantined it and re-fired the blast-radius alert, BRO-5516).
+ * Shows with 4+ candidates tolerate a single-candidate drop; a dead or partial
+ * provider zeroes counts (more than one lost on any show this size, and the
+ * 5% percentage threshold still applies across shows), and small censuses stay strict.
+ */
+function candidateDropTolerance(prevCandidates) {
+  return prevCandidates >= 4 ? 1 : 0;
 }
 
 /**
