@@ -343,6 +343,11 @@ describe('owner marker (BRO-6166): a mention is not a request for the owner', ()
     assert.equal(hasOwnerMarker(issue({ commentText: 'DECISION NEEDED - none, all technical' })), false);
     assert.equal(hasOwnerMarker(issue({ title: '👑 OWNER — approve homepage' })), true);
     assert.equal(hasOwnerMarker(issue({ title: '❓ 👑 OWNER — approve homepage' })), true);
+    assert.equal(hasOwnerMarker(issue({ title: '👑 🤖 OWNER — approve homepage' })), true);
+    assert.equal(hasOwnerMarker(issue({ title: 'OWNER: approve homepage' })), true);
+    // a crown alone, or a lowercase mention, is not an ask to the owner
+    assert.equal(hasOwnerMarker(issue({ title: '👑 fix the scraper' })), false);
+    assert.equal(hasOwnerMarker(issue({ title: 'ask the owner about the scraper' })), false);
     assert.equal(hasOwnerMarker(issue({ labels: { nodes: [{ name: 'awaiting-owner' }] } })), true);
     assert.equal(hasOwnerMarker(issue({ ownerMarkerUnknown: true })), true);
   });

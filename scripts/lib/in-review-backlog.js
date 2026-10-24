@@ -103,13 +103,18 @@ function isRealInReview(issue) {
 //     real decision (needs ": <content>", skips code, placeholders and settled stubs), so "no
 //     DECISION NEEDED here" and an echoed template do not count, while a worker's inline
 //     "Report. DECISION NEEDED: pick A or B" still does;
-//   * the crown/OWNER test is the title-only OWNER_CARD_RE the reclaim sweep already uses;
+//   * the crown/OWNER test applies to the TITLE only, and needs OWNER after the crown (OWNER_TITLE_RE);
 //   * "owner-only" counts only as the start of a line ("OWNER-ONLY: why").
 // The open-issues query carries no description or comments, so the digest first runs
 // enrichForOwnerMarkers() on the idle cards that have no marker yet; stuck-card-closer reads the
 // same fields from the full card. A card whose text cannot be read counts as owner-marked
 // (shown), never as technical.
 const AWAITING_OWNER_LABEL = 'awaiting-owner';
+// A card TITLE addressed to the owner: a crown (then optional status emoji) followed by OWNER, or a title
+// that starts with OWNER, as cmux tab titles and owner cards are written ("👑 OWNER: x", "❓ 👑 OWNER: x",
+// "👑 🤖 OWNER: x"). Narrower than the reclaim sweep's OWNER_CARD_RE, which treats ANY crown in a title as an
+// owner card: here a technical card whose title merely has a crown must not be shown to the human owner.
+const OWNER_TITLE_RE = /\u{1F451}\s*(?:[^\w\s]\s*)*OWNER\b|^\W*OWNER\b/u;
 const OWNER_ONLY_LINE_RE = /^\s*(?:[-*>]\s+)?\**OWNER[- ]ONLY\**\s*:/im;
 
 function hasOwnerMarker(issue) {
@@ -117,8 +122,7 @@ function hasOwnerMarker(issue) {
   const labels = (issue.labels && issue.labels.nodes) || [];
   if (labels.some((l) => l && l.name === AWAITING_OWNER_LABEL)) return true;
   if (issue.ownerMarkerUnknown) return true;
-  const { OWNER_CARD_RE } = require('./linear-reclaim-abandoned.js'); // lazy: keeps the module graph acyclic
-  if (OWNER_CARD_RE.test(issue.title || '')) return true;
+  if (OWNER_TITLE_RE.test(issue.title || '')) return true;
   const text = `${issue.title || ''}\n${issue.description || ''}\n${issue.commentText || ''}`;
   return hasInlineDecision(text) || OWNER_ONLY_LINE_RE.test(text);
 }
