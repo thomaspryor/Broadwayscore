@@ -69,10 +69,10 @@ function findDecisionQuestion(description) {
 }
 
 // BRO-6166: is there a REAL "DECISION NEEDED: <content>" anywhere in the text, including inline in a
-// worker's report ("Report. DECISION NEEDED: pick A or B")? Same filters as findDecisionQuestion
+// worker's report ("Report. DECISION NEEDED: pick A or B", "DECISION NEEDED (owner): ...", or with a dash)? Same filters as findDecisionQuestion
 // (code skipped, placeholders, settled stubs and empty content ignored), but not line-anchored. A bare
 // mention without a colon and content ("no DECISION NEEDED here") is not a decision.
-const INLINE_DECISION_RE = /DECISION NEEDED\**\s*:\s*\**\s*(\S.*)$/i;
+const INLINE_DECISION_RE = /DECISION NEEDED\**(?:\s*\([^)]*\))?\s*[:–—-]\s*\**\s*(\S.*)$/i;
 function hasInlineDecision(text) {
   for (const line of stripCode(text)) {
     const m = INLINE_DECISION_RE.exec(line);

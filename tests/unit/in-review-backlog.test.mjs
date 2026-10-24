@@ -337,6 +337,10 @@ describe('owner marker (BRO-6166): a mention is not a request for the owner', ()
     assert.equal(hasOwnerMarker(issue({ commentText: 'Report. DECISION NEEDED: pick A or B' })), true);
     assert.equal(hasOwnerMarker(issue({ commentText: 'report\nDECISION NEEDED: pick the vendor?' })), true);
     assert.equal(hasOwnerMarker(issue({ description: 'OWNER-ONLY: needs the owner login' })), true);
+    // the forms the old bare match also caught: (owner) qualifier and dash separators
+    assert.equal(hasOwnerMarker(issue({ commentText: 'Report. DECISION NEEDED (owner): pick A or B' })), true);
+    assert.equal(hasOwnerMarker(issue({ commentText: 'DECISION NEEDED \u2014 approve the vendor?' })), true);
+    assert.equal(hasOwnerMarker(issue({ commentText: 'DECISION NEEDED - none, all technical' })), false);
     assert.equal(hasOwnerMarker(issue({ title: '👑 OWNER — approve homepage' })), true);
     assert.equal(hasOwnerMarker(issue({ title: '❓ 👑 OWNER — approve homepage' })), true);
     assert.equal(hasOwnerMarker(issue({ labels: { nodes: [{ name: 'awaiting-owner' }] } })), true);
