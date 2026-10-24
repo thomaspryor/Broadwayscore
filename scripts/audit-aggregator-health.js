@@ -92,7 +92,7 @@ async function alertFindings(findings, sources, have) {
     for (const kind of ['coverage-drop', 'workflow-failing', 'workflow-idle', 'workflow-stale']) {
       if (kind === 'coverage-drop' ? !have.coverage : !have.runs) continue; // unreadable input never resolves anything
       const keys = kind === 'coverage-drop' ? [`aggregator-health:${s.id}:${kind}`] : Object.keys(s.workflows).map(w => `aggregator-health:${s.id}:${kind}:${w}`);
-      for (const k of keys) if (!live.has(k)) { try { resolveCondition(k, { reason: 'finding cleared' }); } catch { /* nothing open */ } }
+      for (const k of keys) if (!live.has(k) && !have.failedWf.includes(k.split(':')[3])) { try { resolveCondition(k, { reason: 'finding cleared' }); } catch { /* nothing open */ } }
     }
   }
   return raised;
@@ -136,7 +136,7 @@ async function main() {
     for (const n of notes) console.log(`  note: ${n}`);
   }
   if (args.includes('--alert')) {
-    console.log(`alert: ${await alertFindings(findings, sources, { coverage: !!archives, runs: !!runs })} finding(s) routed to the digest`);
+    console.log(`alert: ${await alertFindings(findings, sources, { coverage: !!archives, runs: !!runs, failedWf })} finding(s) routed to the digest`);
   }
   process.exit(strict && findings.length ? 1 : process.exitCode || 0);
 }
