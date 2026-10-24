@@ -500,8 +500,19 @@ test('silentGapBacklogResults: real audit report shape', async t => {
   const report = JSON.parse(readFileSync(file, 'utf8'));
   // Clock one day after the report: every gap is past the in-flight window.
   const rows = silentGapBacklogResults(report, new Date(Date.parse(report.generatedAt) + 86400000 * 2));
-  assert.equal(rows.length, report.gaps.length ? 1 : 0);
+  // BRO-6082: needsManualRecovery gaps are the audit's FYI digest line, not a warn row.
+  assert.equal(rows.length, report.gaps.some(g => g.needsManualRecovery !== true) ? 1 : 0);
   if (rows.length) assert.match(rows[0].message, /Oldest:/);
+});
+
+// BRO-6082: deterministic cover for the filter the real-data test above depends on.
+test('silentGapBacklogResults: needsManualRecovery gaps never produce a row', () => {
+  const now = new Date('2026-10-13T02:00:00Z');
+  const manual = { showId: 'm', tier: 1, outletId: 'nyt', type: 'paywalled', firstSeen: '2026-09-01T00:00:00Z', needsManualRecovery: true };
+  const auto = { showId: 'a', tier: 1, outletId: 'vulture', type: 'unscored', firstSeen: '2026-09-01T00:00:00Z' };
+  assert.deepEqual(silentGapBacklogResults({ gaps: [manual] }, now), []);
+  const [row] = silentGapBacklogResults({ gaps: [manual, auto] }, now);
+  assert.match(row.message, /^1 discovered review\(s\).*Oldest: a /);
 });
 
 // BRO-5166: a review discovered minutes ago is in flight, not silent.
