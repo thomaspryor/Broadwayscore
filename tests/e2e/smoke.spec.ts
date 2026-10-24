@@ -211,7 +211,8 @@ test.describe('Post-deploy smoke tests', () => {
     const showHtml = await (await request.get('/show/wicked')).text();
     expect(showHtml).not.toMatch(/\\?"(capitalization|weeklyRunningCost|recoupedDate)\\?":|\\?"recoupmentTrend\\?":\\?"(?!unknown)/);
 
-    expect(await (await request.get('/llms.txt')).text()).not.toContain('Commercial Scorecard');
+    expect(await (await request.get('/llms.txt')).text()).not.toContain('Money Scorecard');
+    expect(await (await request.get('/llms.txt')).text()).not.toContain('/biz)');
     expect(await (await request.get('/sitemap/0.xml')).text()).not.toMatch(/\/biz</);
     // Related-page links to the flops list go with it.
     expect(await (await request.get('/browse/longest-running-broadway-shows')).text())

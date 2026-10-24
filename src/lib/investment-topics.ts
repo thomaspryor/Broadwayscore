@@ -1,4 +1,4 @@
-// Aggregates behind the Investment Tracker topic pages (/biz/musicals-since-reopening,
+// Aggregates behind the Money Scorecard topic pages (/biz/musicals-since-reopening,
 // /biz/reviews-and-money; BRO-5865). Commercial productions only (investors to
 // repay: isExcludedFromSeasonStats leaves out nonprofit runs and tour stops),
 // Broadway openings from Sep 2021 on.

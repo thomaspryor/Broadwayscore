@@ -29,7 +29,8 @@
  *   the checkouts under /home/user and runs this file from each).
  *
  * Usage: node scripts/install-home-claude-config.js [--target <dir>] [--check | --uninstall]
- *   --target defaults to the directory holding this checkout (/home/user in cloud).
+ *   --target defaults to the directory holding this checkout (/home/user in cloud,
+ *   which is $HOME there; $HOME needs CLAUDE_CODE_REMOTE=true).
  */
 require('./lib/cli-help').exitOnHelp(module);
 
@@ -92,9 +93,13 @@ function plan(target) {
 // Problems that make installing unsafe; empty when it is fine to write.
 function refusals(target, p) {
   const out = [];
-  const home = path.resolve(os.homedir());
-  if (path.resolve(target) === home) {
-    out.push(`target ${target} is $HOME: its .claude/settings.json would be user settings and fire every hook twice in single-repo sessions`);
+  const real = (x) => { try { return fs.realpathSync(x); } catch { return path.resolve(x); } };
+  const home = real(os.homedir());
+  // In cloud, /home/user IS $HOME and ~/.claude is the only place Claude Code loads
+  // (BRO-6126), so the cloud setup line and runner set CLAUDE_CODE_REMOTE=true to
+  // allow it. Without it $HOME is refused: on a Mac it would fire every hook twice.
+  if (real(target) === home && process.env.CLAUDE_CODE_REMOTE !== 'true') {
+    out.push(`target ${target} is $HOME: its .claude/settings.json would be user settings and fire every hook twice in single-repo sessions (cloud: run with CLAUDE_CODE_REMOTE=true)`);
   }
   if (path.resolve(target) === REPO_ROOT || REPO_ROOT.startsWith(path.resolve(target, '.claude') + path.sep)) {
     out.push(`target ${target} is this checkout`);

@@ -1,19 +1,53 @@
 {
-  "updatedAt": "2026-10-24T13:41:27.962Z",
-  "processed": 100,
-  "failed": 50,
-  "successRate": "66.7%",
+  "updatedAt": "2026-10-24T16:05:12.482Z",
+  "processed": 262,
+  "failed": 188,
+  "successRate": "58.2%",
   "tierBreakdown": {
-    "playwright": 60,
+    "playwright": 135,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 7,
-    "scrapingbee": 2,
-    "brightdata": 1,
+    "scrapingdog": 21,
+    "scrapingbee": 17,
+    "brightdata": 8,
     "archiveToday": 0,
-    "archive": 21
+    "archive": 64
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-10-24T14:52:00.191Z",
+      "event": "bb-session",
+      "session": "f3b41a9a",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-24T14:52:00.561Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-24T14:54:41.165Z",
+      "event": "bb-session",
+      "session": "a42febcb",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-24T14:54:41.459Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-24T15:21:20.505Z",
+      "event": "bb-session",
+      "session": "358f45a1",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
+    },
+    {
+      "t": "2026-10-24T15:21:20.830Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }

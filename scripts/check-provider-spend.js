@@ -279,6 +279,16 @@ async function main() {
     });
   }
 
+  // BRO-5526: a clean day resolves the budget conditions. Only the attribution-gap
+  // family used to call resolveCondition, so overspend/unmeasured stayed 'open' in
+  // the alert ledger after the spend recovered and acceptance checks
+  // (check-alert-condition-absent.js) could not tell fixed from still-firing.
+  try {
+    resolveClearedBudgetConditions(series, thresholds, DAY, require('./lib/owner-alert-router').resolveCondition);
+  } catch (err) {
+    console.log(`::warning::spend-condition resolve failed: ${err.message}`);
+  }
+
   // BRO-4215: a SUSTAINED attribution gap is its own actionable condition.
   // Until now a low attributedPct only added a digest line; ScrapingBee sat at
   // 12-23% for weeks (Reddit Sentiment + Show Score rows discarded at runner
@@ -358,6 +368,33 @@ if (require.main === module) {
   });
 }
 
+const RESOLVE_CLEAR_DAYS = 3;
+
+/**
+ * Resolve the budget conditions once the last RESOLVE_CLEAR_DAYS consecutive calendar
+ * days (ending at `day`) are all recorded and clean. An unmeasured day is unproven, so
+ * it never clears overspend; a single green day never resolves (a flapping condition
+ * would otherwise get its decision card swept on one good pass). Returns keys resolved.
+ */
+function resolveClearedBudgetConditions(series, thresholds, day, resolveCondition, windowDays = RESOLVE_CLEAR_DAYS) {
+  const byDay = new Map(series.map((r) => [r.day, r]));
+  const breaches = [];
+  for (let i = 0; i < windowDays; i++) {
+    const d = new Date(Date.parse(`${day}T00:00:00Z`) - i * 86400000).toISOString().slice(0, 10);
+    const rec = byDay.get(d);
+    if (!rec) return [];
+    breaches.push(budgetBreaches(rec, thresholds));
+  }
+  const resolved = [];
+  const noUnmeasured = breaches.every((b) => !b.unmeasured.length);
+  if (noUnmeasured && breaches.every((b) => !b.overspend.length)
+    && resolveCondition('provider-spend:overspend', { reason: `no provider over budget for ${windowDays} days through ${day}` })) resolved.push('provider-spend:overspend');
+  if (noUnmeasured
+    && resolveCondition('provider-spend:unmeasured', { reason: `all providers measured for ${windowDays} days through ${day}` })) resolved.push('provider-spend:unmeasured');
+  return resolved;
+}
+
 module.exports = {
+  resolveClearedBudgetConditions,
   ledgerFreshnessHours, missingLedgerDays, STALE_HOURS_THRESHOLD, CONTINUITY_WINDOW_DAYS,
 };

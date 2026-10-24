@@ -23,7 +23,7 @@ const TITLE = "What Happened to the Tony Winners' Investors";
 const DESCRIPTION = "Best Musical and Best Play winners since the 2021-22 season, and whether each recouped.";
 
 export const metadata: Metadata = {
-  title: `${TITLE} | Investment Tracker`,
+  title: { absolute: `${TITLE} | Money Scorecard` },
   description: DESCRIPTION,
   alternates: { canonical: `${BASE_URL}/biz/tony-winners` },
   openGraph: { images: [SITE_OG_IMAGE], title: TITLE, description: DESCRIPTION, url: `${BASE_URL}/biz/tony-winners` },

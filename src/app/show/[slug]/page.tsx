@@ -343,7 +343,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   // otherwise sit in the page source though the card never prints them.
   const rawCommercial = featureFlags.commercial ? getShowCommercial(show.slug) : undefined;
   const commercial = rawCommercial ? toPublicShowCommercial(rawCommercial) : undefined;
-  // Box Office Scorecard v3 and the Commercial Scorecard's break-even section
+  // Box Office Scorecard v3 and the Money Scorecard's break-even section
   // (BRO-5007, unreleased): same rule, computed only when both flags are on,
   // so a flags-off build carries none of their data.
   const boxOfficeV2Raw = featureFlags.commercial && featureFlags.boxOfficeV2 && show.category === 'broadway' ? getShowBoxOfficeV2(show.slug) : null;
@@ -1040,7 +1040,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
               3. Audience Scorecard
               4. Awards Scorecard
               5. Box Office Scorecard
-              6. Commercial Scorecard
+              6. Money Scorecard
               7. Where it ranks
               8. Showtimes
               8.5. FAQ / PAA block (owner move, 2026-08-02 — was 1.5)

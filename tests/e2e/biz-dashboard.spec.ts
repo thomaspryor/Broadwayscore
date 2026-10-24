@@ -30,7 +30,7 @@ test.describe('/biz Dashboard - Basic Tests', () => {
   });
 
   test('main header and subtitle render', async ({ page }) => {
-    await expect(page.locator('h1')).toContainText('Broadway Investment Tracker');
+    await expect(page.locator('h1')).toContainText('Broadway Money Scorecard');
     await expect(page.getByText('Recoupment data and investment metrics')).toBeVisible();
   });
 

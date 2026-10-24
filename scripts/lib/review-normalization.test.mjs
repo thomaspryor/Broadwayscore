@@ -7,7 +7,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { classifyJunkOutletForUrl, isJunkOutlet } = require('./review-normalization.js');
+const { classifyJunkOutletForUrl, isJunkOutlet, resolveSplitOutletByCritic } = require('./review-normalization.js');
 const { createOrMergeReviewFile } = require('./review-file-writer.js');
 
 test('name-only isJunkOutlet misses the treadmill outlets (premise)', () => {
@@ -131,4 +131,13 @@ test('normalizeUrl: AMP variants collapse to the plain URL, no trailing slash or
   assert.equal(n('https://example.com/review/amp/'), plain);
   assert.equal(n('https://example.com/review/?amp=1&page=2'), n('https://example.com/review?page=2'));
   assert.notEqual(n('https://example.com/review?page=2'), plain);
+});
+
+// BRO-6127: Theatre Record labels Mail on Sunday critics "Daily Mail".
+test('resolveSplitOutletByCritic moves splitCritics bylines to the split child', () => {
+  assert.equal(resolveSplitOutletByCritic('daily-mail', 'Robert Gore-Langton'), 'mail-on-sunday');
+  assert.equal(resolveSplitOutletByCritic('daily-mail', 'Mark Cook'), 'mail-on-sunday');
+  assert.equal(resolveSplitOutletByCritic('daily-mail', 'Quentin Crisp'), 'daily-mail');
+  assert.equal(resolveSplitOutletByCritic('daily-mail', ''), 'daily-mail');
+  assert.equal(resolveSplitOutletByCritic('guardian', 'Mark Cook'), 'guardian');
 });

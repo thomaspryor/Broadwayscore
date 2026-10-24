@@ -449,7 +449,7 @@ export default function RankingsPage() {
             {featureFlags.commercial && (
             <RankingCard
               href="/biz"
-              title="Commercial Scorecard"
+              title="Money Scorecard"
               description="Which shows make money"
               icon={<span className="text-lg">📊</span>}
               color="text-blue-400"

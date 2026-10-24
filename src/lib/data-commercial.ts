@@ -254,7 +254,7 @@ export function getDesignationDescription(designation: CommercialDesignation): s
 }
 
 // ============================================
-// Biz Dashboard / Investment Tracker
+// Biz Dashboard / Money Scorecard
 // ============================================
 
 /**
@@ -936,7 +936,7 @@ export interface ShowBoxOfficeV2 extends ShowBoxOfficeStatus {
   nonprofitOrg: string | null;
   /** hasNoInvestorsToRepay: the nonprofit note says "no investors to pay back" only then (an enhancement deal has them). */
   noInvestors: boolean;
-  /** Final designation for a closed show (links to the Commercial Scorecard), else null. */
+  /** Final designation for a closed show (links to the Money Scorecard), else null. */
   designation: CommercialDesignation | null;
   /** Why a show has no usable cost (availability 'nocost' only), for the build report. */
   noCostReason: string | null;

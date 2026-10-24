@@ -102,17 +102,18 @@ jobs:
       - name: Upload to Cloudflare R2
         run: |
           STAMP="${{ steps.date.outputs.stamp }}"
-          PREFIX="weekly/${STAMP}"
+          # BRO-6132: the bucket lock refuses overwrites for 90 days, so every run and
+          # re-run attempt writes to its own folder and nothing writes a fixed key.
+          PREFIX="weekly/${STAMP}/run-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           for f in *.bundle.gpg MANIFEST.sha256; do
             aws s3 cp "$f" "s3://${R2_BUCKET}/${PREFIX}/$f" --endpoint-url "$R2_ENDPOINT"
           done
-          aws s3 cp "MANIFEST.sha256" "s3://${R2_BUCKET}/latest/MANIFEST.sha256" --endpoint-url "$R2_ENDPOINT"
           echo "Uploaded to s3://${R2_BUCKET}/${PREFIX}/"
 
       - name: Verify upload by listing
         run: |
           STAMP="${{ steps.date.outputs.stamp }}"
-          aws s3 ls "s3://${R2_BUCKET}/weekly/${STAMP}/" --endpoint-url "$R2_ENDPOINT" --human-readable --summarize
+          aws s3 ls "s3://${R2_BUCKET}/weekly/${STAMP}/run-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}/" --endpoint-url "$R2_ENDPOINT" --human-readable --summarize
 
       - name: Checkout for notify action
         # BRO-3707: a hang hitting the job's own timeout-minutes: 120 reports

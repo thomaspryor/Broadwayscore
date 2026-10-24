@@ -311,7 +311,19 @@ function isRiskyGapChange(prevState, nextState) {
   const [prevLive, prevCandidates] = counts(prevState);
   const [nextLive, nextCandidates] = counts(nextState);
   if (String(prevState).endsWith(':prior-schema')) return nextLive < prevLive;
-  return nextLive < prevLive || nextCandidates < prevCandidates;
+  return nextLive < prevLive || nextCandidates < prevCandidates - candidateDropTolerance(prevCandidates);
+}
+
+/**
+ * A SERP census pass is not deterministic: re-running it can return one fewer
+ * candidate with no coverage lost (the-bodyguard-tour-2026 2:9 -> 2:8 on
+ * 2026-10-24 quarantined it and re-fired the blast-radius alert, BRO-5516).
+ * Shows with 4+ candidates tolerate a single-candidate drop; a dead or partial
+ * provider zeroes counts (more than one lost on any show this size, and the
+ * 5% percentage threshold still applies across shows), and small censuses stay strict.
+ */
+function candidateDropTolerance(prevCandidates) {
+  return prevCandidates >= 4 ? 1 : 0;
 }
 
 /**
@@ -578,6 +590,22 @@ function countsFor(results) {
 // working.
 const { withFileLock } = require('./file-lock');
 
+/**
+ * Add each prior-census URL that `vet` still accepts to `target` (BRO-5516).
+ * Applied whether the SERP census ran or was skipped: a re-run SERP pass is
+ * non-deterministic, so without the union a candidate can vanish between runs
+ * and trip the blast-radius candidateCount guard.
+ * @returns {number} URLs added or already present
+ */
+function seedPriorCensusUrls(target, urls, vet) {
+  let n = 0;
+  for (const u of (urls || [])) {
+    const ok = vet(u);
+    if (ok) { target.add(ok); n++; }
+  }
+  return n;
+}
+
 const BLAST_RADIUS_ALERT_KEY = 'review-gap:blast-radius-refused';
 
 /**
@@ -596,4 +624,4 @@ function blastRadiusClearedKeys(blast, { dryRun = false } = {}) {
 
 module.exports = {
   BLAST_RADIUS_ALERT_KEY, blastRadiusClearedKeys,
-  priorCensusUrls, mergeGapAudit, countsFor, gapStateFor, censusVerdictFor, stateMap, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock, DEFAULT_RETENTION_DAYS, CENSUS_SCHEMA, needsCensusMigration };
+  priorCensusUrls, seedPriorCensusUrls, mergeGapAudit, countsFor, gapStateFor, censusVerdictFor, stateMap, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock, DEFAULT_RETENTION_DAYS, CENSUS_SCHEMA, needsCensusMigration };

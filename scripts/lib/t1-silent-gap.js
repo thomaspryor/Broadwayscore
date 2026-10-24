@@ -561,6 +561,26 @@ function manualRecoveryDigestLine(gaps, now = new Date()) {
   };
 }
 
+/**
+ * BRO-5076: open `gap:`/`backstop:` ledger keys whose review file no longer
+ * exists. closeCardIfTerminal only visits files that still exist, so a file
+ * that was deleted or renamed (unknown byline -> named critic) left its key
+ * open forever and check-alert-condition-absent could never prove it gone.
+ * Deliberately narrow: a key is stale only when its show directory exists and
+ * the file is absent. "Not in the computed gap list" is NOT used: that list
+ * also omits fresh-unscored files (12h grace), shows outside the window and
+ * unreadable files, whose gaps are still real.
+ */
+function staleOpenGapKeys(ledger, { dirExists, fileExists }) {
+  const out = [];
+  for (const [key, row] of Object.entries((ledger && ledger.conditions) || {})) {
+    const m = /^(?:gap|backstop):([^/]+)\/(.+)$/.exec(key);
+    if (!m || !row || row.status !== 'open') continue;
+    if (dirExists(m[1]) && !fileExists(m[1], m[2])) out.push(key);
+  }
+  return out;
+}
+
 module.exports = {
   manualRecoveryDigestLine,
   MANUAL_RECOVERY_CONDITION_KEY,
@@ -582,4 +602,5 @@ module.exports = {
   dedupeGapCards,
   WRONG_URL_INCOMPLETE,
   hasWrongUrlSignal,
+  staleOpenGapKeys,
 };

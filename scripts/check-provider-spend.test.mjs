@@ -135,3 +135,21 @@ test('missingLedgerDays: a future day (clock skew / bad --day backfill) cannot f
   const missing = missingLedgerDays([{ day: '2026-09-25' }], now, 1);
   assert.deepEqual(missing, ['2026-09-18'], 'a future record must not be mistaken for the in-window day');
 });
+
+test('BRO-5526: resolve only after a multi-day clean, fully-measured window', () => {
+  const { resolveClearedBudgetConditions } = require('./check-provider-spend.js');
+  const th = { brightdataDailyUsd: 6, browserbaseDailyUsd: 4 };
+  const ok = (day, bd = 4) => ({ day, providers: {
+    browserbase: { status: 'ok', cost: 0.7 }, brightdata: { status: 'ok', cost: bd },
+    scrapingbee: { status: 'ok', dayCredits: 1 }, scrapingdog: { status: 'ok', dayCredits: 1 } } });
+  const run = (series) => { const calls = []; const out = resolveClearedBudgetConditions(series, th, '2026-10-23', (k) => { calls.push(k); return true; }); return { out, calls }; };
+  const clean = [ok('2026-10-21'), ok('2026-10-22'), ok('2026-10-23')];
+  assert.deepEqual(run(clean).out, ['provider-spend:overspend', 'provider-spend:unmeasured']);
+  // one over-budget day inside the window: nothing overspend-related resolves
+  assert.deepEqual(run([ok('2026-10-21', 9), ok('2026-10-22'), ok('2026-10-23')]).out, ['provider-spend:unmeasured']);
+  // missing calendar day: unproven
+  assert.deepEqual(run([ok('2026-10-21'), ok('2026-10-23')]).out, []);
+  // unmeasured provider on the latest day must NOT clear overspend (reviewer blocker)
+  const unm = ok('2026-10-23'); unm.providers.brightdata = { status: 'unknown' };
+  assert.deepEqual(run([ok('2026-10-21'), ok('2026-10-22'), unm]).out, []);
+});

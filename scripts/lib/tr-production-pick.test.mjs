@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { pickTrProduction, archiveMonth, pressNightWindow } = require('./tr-production-pick.js');
+const { trTitleMatches, pickTrProduction, archiveMonth, pdfEraDate, windowFit, pressNightWindow } = require('./tr-production-pick.js');
 
 const isLondonVenue = v => /london/i.test(v);
 const OLD_VIC = { title: 'Oedipus', venue: 'The Old Vic Theatre, London', link: 'https://www.theatrerecord.com/archive/2025/2/17206-oedipus' };
@@ -51,4 +51,44 @@ test('shows without dates use the old venue preference (hint venue first)', () =
   const pick = pickTrProduction([OLD_VIC, WYNDHAMS], { title: 'Oedipus' }, { hintVenue: "Wyndham's Theatre, London", isLondonVenue });
   assert.equal(pick, WYNDHAMS);
   assert.equal(pressNightWindow({}), null);
+});
+
+// BRO-6127: real PDF-era links from probe run 40100130206. Volume = year - 1980,
+// issue N (fortnightly) falls in month floor((N-1)/2).
+const JOSEPH_2021 = { title: 'JOSEPH AND THE AMAZING TECHNICOLOR DREAMCOAT', venue: 'London Palladium, London', link: 'https://www.theatrerecord.com/archive/volume/41/dest/14_joseph_and_the_amazing_techn' };
+const JOSEPH_2019 = { title: 'JOSEPH AND THE AMAZING TECHNICOLOR DREAMCOAT', venue: 'London, Palladium', link: 'https://www.theatrerecord.com/archive/volume/39/dest/13_joseph_and_the_amazing_techn' };
+const josephShow = { id: 'joseph-and-the-amazing-technicolor-dreamcoat-west-end-2019', title: 'Joseph and the Amazing Technicolor Dreamcoat', venue: 'London Palladium', openingDate: '2019-07-11', status: 'closed' };
+
+test('pdfEraDate reads volume/issue and volume/page links', () => {
+  assert.deepEqual(pdfEraDate(JOSEPH_2019.link), { month: 2019 * 12 + 6 });
+  assert.deepEqual(pdfEraDate('https://www.theatrerecord.com/archive/volume/37/page/743'), { year: 2017 });
+  assert.equal(pdfEraDate('https://www.theatrerecord.com/archive/volume/38/dest/oedipus'), null);
+  assert.equal(pdfEraDate(OLD_VIC.link), null);
+});
+
+test('a 2019 revival picks the 2019 PDF issue, not the 2021 reopening', () => {
+  assert.equal(pickTrProduction([JOSEPH_2021, JOSEPH_2019], josephShow, { isLondonVenue }), JOSEPH_2019);
+});
+
+test('PDF-era links outside the window never null a closed show (dates can be wrong)', () => {
+  const only = { title: 'Pretty Woman', venue: 'Savoy Theatre, London', link: 'https://www.theatrerecord.com/archive/volume/40/dest/05_pretty_woman__the_musical' };
+  const show = { title: 'Pretty Woman: The Musical', venue: 'Savoy Theatre', openingDate: '2021-07-08', status: 'closed' };
+  assert.equal(pickTrProduction([only], show, { isLondonVenue }), only);
+  assert.equal(windowFit(only.link, pressNightWindow(show)), 'out');
+});
+
+test('closed show: an out-of-window regional result is no pick, an unknown venue is kept', () => {
+  const link = 'https://www.theatrerecord.com/archive/volume/40/dest/05_pride_and_prejudice';
+  const show = { title: 'Pride and Prejudice', venue: 'Criterion Theatre', openingDate: '2021-12-01', status: 'closed' };
+  const regional = { title: 'Pride and Prejudice', venue: 'Storyhouse, Chester', link };
+  assert.equal(pickTrProduction([regional], show, { isLondonVenue }), null);
+  const unknown = { title: 'Pride and Prejudice', venue: '', link };
+  assert.equal(pickTrProduction([unknown], show, { isLondonVenue }), unknown);
+});
+
+test('trTitleMatches accepts a TR tagline after a colon, and nothing looser', () => {
+  assert.equal(trTitleMatches('CURTAINS: A MUSICAL WHODUNNIT', 'Curtains'), true);
+  assert.equal(trTitleMatches('Curtains', 'Curtains'), true);
+  assert.equal(trTitleMatches('Curtains for Us', 'Curtains'), false);
+  assert.equal(trTitleMatches('Strike Up The Band', 'The Band'), false);
 });

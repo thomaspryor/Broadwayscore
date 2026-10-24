@@ -11,7 +11,12 @@
  *
  * TR archive links carry the issue month of the production's press night:
  *   /archive/2025/2/17206-oedipus
- * Older (PDF-era) links (/archive/volume/…) carry none and count as undated.
+ * Older (PDF-era) links (/archive/volume/V/dest/N_slug) carry none, but the
+ * volume is the calendar year (V + 1980) and N counts fortnightly issues from
+ * 1, so they date to about a month (BRO-6127: 97 of 117 picked links land on
+ * the opening month exactly; the misses are mostly same-title revivals picked
+ * from the wrong year, e.g. Joseph 2019 taking the 2021 Palladium issue).
+ * /archive/volume/V/page/P links give the year only. Other links are undated.
  *
  * Order of preference, within the date window when the show has dates:
  *   1. the listing's hint venue, 2. the show's own venue, 3. any London
@@ -23,6 +28,10 @@
 
 const WINDOW_MONTHS_BEFORE = 1;
 const WINDOW_MONTHS_AFTER = 2;
+// Slack on an estimated (PDF-era) month: the issue number is a fortnight count,
+// not a date, and a press night can land in either neighbouring issue.
+const PDF_ERA_SLACK_MONTHS = 2;
+const TR_VOLUME_YEAR_BASE = 1980;
 
 /** "YYYY-MM-DD" → months since year 0, or null. */
 function monthIndex(iso) {
@@ -34,6 +43,35 @@ function monthIndex(iso) {
 function archiveMonth(link) {
   const m = String(link || '').match(/\/archive\/(\d{4})\/(\d{1,2})\//);
   return m ? Number(m[1]) * 12 + (Number(m[2]) - 1) : null;
+}
+
+/**
+ * PDF-era link → { month } (volume/dest, estimated), { year } (volume/page) or
+ * null (anything else, including slugs with no issue number).
+ */
+function pdfEraDate(link) {
+  const dest = String(link || '').match(/\/archive\/volume\/(\d{1,3})\/dest\/(\d{1,2})(?!\d)/);
+  if (dest) {
+    const issue = Number(dest[2]);
+    if (issue < 1 || issue > 26) return null;
+    return { month: (TR_VOLUME_YEAR_BASE + Number(dest[1])) * 12 + Math.floor((issue - 1) / 2) };
+  }
+  const page = String(link || '').match(/\/archive\/volume\/(\d{1,3})\/page\/\d+/);
+  return page ? { year: TR_VOLUME_YEAR_BASE + Number(page[1]) } : null;
+}
+
+/** 'in' | 'out' | 'unknown': does this result's date fit the press-night window. */
+function windowFit(link, win) {
+  const am = archiveMonth(link);
+  if (am != null) return am >= win.start && am <= win.end ? 'in' : 'out';
+  const pdf = pdfEraDate(link);
+  if (!pdf) return 'unknown';
+  if (pdf.month != null) {
+    return pdf.month >= win.start - PDF_ERA_SLACK_MONTHS && pdf.month <= win.end + PDF_ERA_SLACK_MONTHS ? 'in' : 'out';
+  }
+  const lo = Math.floor((win.start - PDF_ERA_SLACK_MONTHS) / 12);
+  const hi = Math.floor((win.end + PDF_ERA_SLACK_MONTHS) / 12);
+  return pdf.year >= lo && pdf.year <= hi ? 'in' : 'out';
 }
 
 /**
@@ -62,7 +100,7 @@ function pickTrProduction(titleMatches, show, opts) {
   let pool = Array.isArray(titleMatches) ? titleMatches : [];
   const win = pressNightWindow(show || {});
   if (win && pool.length) {
-    const inWindow = pool.filter(r => { const am = archiveMonth(r.link); return am != null && am >= win.start && am <= win.end; });
+    const inWindow = pool.filter(r => windowFit(r.link, win) === 'in');
     if (inWindow.length) pool = inWindow;
     else if (show.status === 'closed') pool = pool.filter(r => archiveMonth(r.link) == null);
   }
@@ -82,7 +120,19 @@ function pickTrProduction(titleMatches, show, opts) {
     const hit = pool.find(r => isLondonVenue(r.venue));
     if (hit) return hit;
   }
+  // Nothing in the window, none at our venue, none in London: a regional
+  // production of the same title (Chester's 2021 Pride and Prejudice for the
+  // Criterion run), not ours. Same call as the dated 'regional only' null above.
+  if (win && show.status === 'closed' && typeof isLondonVenue === 'function' && pool[0].venue && windowFit(pool[0].link, win) === 'out') return null;
   return pool[0];
 }
 
-module.exports = { pickTrProduction, archiveMonth, monthIndex, pressNightWindow };
+const { titlesMatch } = require('./title-normalization.js');
+
+// TR appends a tagline after a colon ("CURTAINS: A MUSICAL WHODUNNIT" for our
+// "Curtains"); the part before it is the title (BRO-6127).
+function trTitleMatches(trTitle, showTitle) {
+  return titlesMatch(trTitle, showTitle) || (/:\s/.test(trTitle) && titlesMatch(trTitle.split(/:\s/)[0], showTitle));
+}
+
+module.exports = { trTitleMatches, pickTrProduction, archiveMonth, pdfEraDate, windowFit, monthIndex, pressNightWindow };

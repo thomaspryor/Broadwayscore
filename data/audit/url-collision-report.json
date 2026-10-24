@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-24T13:29:27.610Z",
+  "generatedAt": "2026-10-24T16:08:08.679Z",
   "summary": {
-    "total": 13,
-    "high": 7,
+    "total": 16,
+    "high": 10,
     "medium": 5,
     "low": 1
   },
@@ -170,33 +170,6 @@
       "confidence": "medium"
     },
     {
-      "url": "http://theaterlife.com/groundhog-day-hello-dolly/",
-      "normalizedUrl": "https://theaterlife.com/groundhog-day-hello-dolly",
-      "candidates": [
-        {
-          "showId": "groundhog-day-2017",
-          "file": "theater-life--david-sheward.json",
-          "publishDate": null,
-          "openingDate": "2017-04-17",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "theater-life"
-        },
-        {
-          "showId": "hello-dolly-2017",
-          "file": "theater-life--david-sheward.json",
-          "publishDate": "April 22, 2017",
-          "openingDate": "2017-04-20",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "theater-life"
-        }
-      ],
-      "suggestedWinner": "hello-dolly-2017",
-      "reason": "publishDate April 22, 2017 is 2 days from hello-dolly-2017 opening (2017-04-20)",
-      "confidence": "high"
-    },
-    {
       "url": "https://www.timeout.com/london/theatre/hadestown-review",
       "normalizedUrl": "https://timeout.com/london/theatre/hadestown-review",
       "candidates": [
@@ -221,6 +194,33 @@
       ],
       "suggestedWinner": "hadestown-west-end-2018",
       "reason": "publishDate 2018-11-14 is 1 days from hadestown-west-end-2018 opening (2018-11-13); next closest is 417 days from hadestown-west-end-2024",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/into-the-woods-review-bridge-theatre/",
+      "normalizedUrl": "https://telegraph.co.uk/theatre/what-to-see/into-the-woods-review-bridge-theatre",
+      "candidates": [
+        {
+          "showId": "into-the-woods-noel-coward-west-end-2026",
+          "file": "telegraph--dominic-cavendish.json",
+          "publishDate": null,
+          "openingDate": "2026-10-07",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "telegraph"
+        },
+        {
+          "showId": "into-the-woods-west-end-2025",
+          "file": "telegraph--dominic-cavendish.json",
+          "publishDate": "December 12, 2025",
+          "openingDate": "2025-12-11",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "telegraph"
+        }
+      ],
+      "suggestedWinner": "into-the-woods-west-end-2025",
+      "reason": "publishDate December 12, 2025 is 1 days from into-the-woods-west-end-2025 opening (2025-12-11)",
       "confidence": "high"
     },
     {
@@ -305,6 +305,33 @@
       "confidence": "medium"
     },
     {
+      "url": "https://www.independent.co.uk/independentpremium/culture/the-crucible-review-national-theatre-erin-doherty-b2177953.html",
+      "normalizedUrl": "https://independent.co.uk/independentpremium/culture/the-crucible-review-national-theatre-erin-doherty-b2177953.html",
+      "candidates": [
+        {
+          "showId": "the-crucible-west-end-2022",
+          "file": "independent--alice-saville.json",
+          "publishDate": "2022-09-29",
+          "openingDate": "2022-09-28",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "independent"
+        },
+        {
+          "showId": "the-crucible-west-end-2023",
+          "file": "independent--alice-saville.json",
+          "publishDate": null,
+          "openingDate": "2023-06-15",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "independent"
+        }
+      ],
+      "suggestedWinner": "the-crucible-west-end-2022",
+      "reason": "publishDate 2022-09-29 is 1 days from the-crucible-west-end-2022 opening (2022-09-28)",
+      "confidence": "high"
+    },
+    {
       "url": "https://www.thewrap.com/titanique-off-broadway-review-celine-dion-titanic/",
       "normalizedUrl": "https://thewrap.com/titanique-off-broadway-review-celine-dion-titanic",
       "candidates": [
@@ -332,6 +359,60 @@
       "confidence": "high"
     },
     {
+      "url": "https://inews.co.uk/culture/arts/to-kill-a-mockingbird-gielgud-theatre-review-rafe-spall-plays-the-hero-in-a-tremendous-reimagining-1550710",
+      "normalizedUrl": "https://inews.co.uk/culture/arts/to-kill-a-mockingbird-gielgud-theatre-review-rafe-spall-plays-the-hero-in-a-tremendous-reimagining-1550710",
+      "candidates": [
+        {
+          "showId": "to-kill-a-mockingbird-west-end-2022",
+          "file": "i-paper--sam-marlowe.json",
+          "publishDate": "2022-04-01",
+          "openingDate": "2022-03-31",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "i-paper"
+        },
+        {
+          "showId": "to-kill-a-mockingbird-west-end-2026",
+          "file": "i-paper--sam-marlowe.json",
+          "publishDate": null,
+          "openingDate": "2026-06-30",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "i-paper"
+        }
+      ],
+      "suggestedWinner": "to-kill-a-mockingbird-west-end-2022",
+      "reason": "publishDate 2022-04-01 is 1 days from to-kill-a-mockingbird-west-end-2022 opening (2022-03-31)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/to-kill-a-mockingbird-review-rafe-spall-finch_56225.html",
+      "normalizedUrl": "https://whatsonstage.com/london-theatre/reviews/to-kill-a-mockingbird-review-rafe-spall-finch_56225.html",
+      "candidates": [
+        {
+          "showId": "to-kill-a-mockingbird-west-end-2022",
+          "file": "whatsonstage--sarah-crompton.json",
+          "publishDate": "2022-03-31",
+          "openingDate": "2022-03-31",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "whatsonstage"
+        },
+        {
+          "showId": "to-kill-a-mockingbird-west-end-2026",
+          "file": "whatsonstage--sarah-crompton.json",
+          "publishDate": null,
+          "openingDate": "2026-06-30",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "whatsonstage"
+        }
+      ],
+      "suggestedWinner": "to-kill-a-mockingbird-west-end-2022",
+      "reason": "publishDate 2022-03-31 is 0 days from to-kill-a-mockingbird-west-end-2022 opening (2022-03-31)",
+      "confidence": "high"
+    },
+    {
       "url": "https://www.timeout.com/london/theatre/translations-review",
       "normalizedUrl": "https://timeout.com/london/theatre/translations-review",
       "candidates": [
@@ -349,7 +430,7 @@
           "file": "timeout-london--tom-wicker.json",
           "publishDate": "2019-10-21",
           "openingDate": "2019-10-21",
-          "hasScore": false,
+          "hasScore": true,
           "hasFullText": true,
           "outletId": "timeout-london"
         }

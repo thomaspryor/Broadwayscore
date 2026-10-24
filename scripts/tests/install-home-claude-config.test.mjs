@@ -18,7 +18,8 @@ const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..
 const INSTALLER = path.join(REPO_ROOT, 'scripts', 'install-home-claude-config.js');
 const { buildSettings, MARK_KEY } = require(INSTALLER);
 
-const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-5221-home-'));
+// realpath: macOS tmpdir is a /var symlink; git and the installer report /private/var.
+const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'bro-5221-home-')));
 const fakeHome = path.join(scratch, 'root');   // $HOME: no ~/.claude/hooks, so repo hooks never self-skip
 fs.mkdirSync(fakeHome);
 test.after(() => fs.rmSync(scratch, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
@@ -36,7 +37,7 @@ function makeTarget(name) {
 }
 
 const run = (args, env = {}) => spawnSync('node', [INSTALLER, ...args], {
-  encoding: 'utf8', env: { ...process.env, HOME: fakeHome, ...env },
+  encoding: 'utf8', env: { ...process.env, HOME: fakeHome, CLAUDE_CODE_REMOTE: '', ...env },
 });
 
 // Run one generated hook command the way Claude Code does: bash -c, cwd = session cwd.
@@ -194,4 +195,53 @@ test('--help prints usage and installs nothing', () => {
   assert.equal(r.status, 0);
   assert.match(r.stdout, /Usage/);
   assert.ok(!fs.existsSync(path.join(target, '.claude')), 'nothing written');
+});
+
+// BRO-6126: the owner's pasted setup line runs the installer with NO --target. In
+// cloud the checkout is /home/user/Broadwayscore, so the default target is $HOME.
+test('cloud one-liner: no --target, HOME = parent of the checkout, installs and --check passes', () => {
+  const parent = path.dirname(REPO_ROOT);
+  // The installer only writes under <HOME>/.claude; use a scratch copy of the layout
+  // so the test never touches the real parent of this checkout.
+  const cloudHome = path.join(scratch, 'home-user');
+  const clone = path.join(cloudHome, 'Broadwayscore');
+  fs.mkdirSync(path.join(clone, 'scripts', 'lib'), { recursive: true });
+  fs.mkdirSync(path.join(clone, '.claude'), { recursive: true });
+  for (const f of ['install-home-claude-config.js']) fs.copyFileSync(path.join(REPO_ROOT, 'scripts', f), path.join(clone, 'scripts', f));
+  fs.cpSync(path.join(REPO_ROOT, 'scripts', 'lib'), path.join(clone, 'scripts', 'lib'), { recursive: true });
+  for (const f of ['settings.json', 'commands', 'skills', 'agents']) {
+    if (fs.existsSync(path.join(REPO_ROOT, '.claude', f))) fs.symlinkSync(path.join(REPO_ROOT, '.claude', f), path.join(clone, '.claude', f));
+  }
+  assert.notEqual(parent, cloudHome);
+  const cloudRun = (args, env = {}) => spawnSync('node', [path.join(clone, 'scripts', 'install-home-claude-config.js'), ...args], {
+    encoding: 'utf8', env: { ...process.env, HOME: cloudHome, ...env },
+  });
+  // Without the flag (a Mac, even one with no user settings) $HOME stays refused.
+  const local = cloudRun([], { CLAUDE_CODE_REMOTE: '' });
+  assert.equal(local.status, 2);
+  assert.ok(!fs.existsSync(path.join(cloudHome, '.claude', 'settings.json')));
+  for (const env of [{ CLAUDE_CODE_REMOTE: 'true' }]) {
+    const r = cloudRun([], env);
+    assert.equal(r.status, 0, `install with env ${JSON.stringify(env)}: ${r.stderr}`);
+    assert.ok(fs.existsSync(path.join(cloudHome, '.claude', 'settings.json')), 'hooks land in $HOME/.claude');
+    const c = cloudRun(['--check'], env);
+    assert.equal(c.status, 0, c.stdout + c.stderr);
+    assert.equal(cloudRun(['--uninstall'], env).status, 0);
+  }
+});
+
+// BRO-6126: with $HOME as the cloud target the generated hooks also load in a session
+// whose cwd is this checkout, which already wires them: the runner must stay out.
+test('runner does not re-run a hook for a session whose cwd is this checkout', () => {
+  const runner = path.join(REPO_ROOT, '.claude', 'hooks', 'lib', 'home-hook-runner.sh');
+  const call = (cwd) => spawnSyncStdinFile('bash', [runner, 'block-prompting-remote-tools.sh'], {
+    cwd, encoding: 'utf8', timeout: 30000,
+    input: JSON.stringify({ hook_event_name: 'PreToolUse', cwd, tool_name: 'mcp__claude-code-remote__create_session',
+      tool_input: { source_url: 'https://github.com/thomaspryor/broadwayscore', prompt: 'x', model: 'claude-sonnet-5-5' } }),
+    env: { ...process.env, HOME: fakeHome, CLAUDE_PROJECT_DIR: '' },
+  });
+  assert.match(call(scratch).stdout, /"permissionDecision":\s*"deny"/, 'control: from a non-repo cwd the hook denies');
+  const inRepo = call(REPO_ROOT);
+  assert.equal(inRepo.status, 0);
+  assert.equal(inRepo.stdout.trim(), '', 'no hook output: the runner deduped');
 });

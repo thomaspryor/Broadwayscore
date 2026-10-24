@@ -15,23 +15,30 @@ const WEEKLY_FILES = [
 const DAILY_FILES = ['supabase-data.tar.gz.gpg', 'MANIFEST.sha256', 'BACKUP_MANIFEST.json'];
 const MAX_AGE_DAYS = { weekly: 8, daily: 2 };
 
+// Sort key for a run folder: run-<id> or run-<id>-<attempt>; none sorts first.
+function runOrder(runDir) {
+  const m = runDir && runDir.match(/^run-(\d+)(?:-(\d+))?$/);
+  return m ? Number(m[1]) * 1000 + Number(m[2] || 1) : 0;
+}
+
 // `listing` is the output of `aws s3 ls --recursive s3://bucket/<kind>/` (or bare keys).
 // Returns the newest complete set as { prefix, date, files }, newest by (date, run id).
 function pickLatestSet(kind, listing, now = new Date()) {
   const expected = kind === 'weekly' ? WEEKLY_FILES : kind === 'daily' ? DAILY_FILES : null;
   if (!expected) throw new Error(`unknown kind: ${kind}`);
+  // BRO-6132: the R2 bucket lock refuses overwrites, so every run writes under its own
+  // run-<id>[-<attempt>] folder. Weekly sets from before that change have no run folder.
   const re = kind === 'weekly'
-    ? /^weekly\/(\d{4}-\d{2}-\d{2})\/([^/]+)$/
-    : /^daily\/(\d{4}-\d{2}-\d{2})\/(run-\d+)\/([^/]+)$/;
+    ? /^weekly\/(\d{4}-\d{2}-\d{2})\/(?:(run-\d+(?:-\d+)?)\/)?([^/]+)$/
+    : /^daily\/(\d{4}-\d{2}-\d{2})\/(run-\d+(?:-\d+)?)\/([^/]+)$/;
   const sets = new Map();
   for (const line of String(listing).split('\n')) {
     const key = line.trim().split(/\s+/).pop();
     const m = key && key.match(re);
     if (!m) continue;
-    const [prefix, date] = kind === 'weekly'
-      ? [`weekly/${m[1]}`, m[1]] : [`daily/${m[1]}/${m[2]}`, m[1]];
-    const file = m[m.length - 1];
-    if (!sets.has(prefix)) sets.set(prefix, { prefix, date, run: kind === 'daily' ? Number(m[2].slice(4)) : 0, files: new Set() });
+    const [, date, runDir, file] = m;
+    const prefix = runDir ? `${kind}/${date}/${runDir}` : `${kind}/${date}`;
+    if (!sets.has(prefix)) sets.set(prefix, { prefix, date, run: runOrder(runDir), files: new Set() });
     sets.get(prefix).files.add(file);
   }
   const complete = [...sets.values()]

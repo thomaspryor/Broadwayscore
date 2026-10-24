@@ -35,7 +35,7 @@ export function generateStaticParams() {
 export async function generateMetadata(props: { params: Promise<{ season: string }> }): Promise<Metadata> {
   const params = await props.params;
   return {
-    title: `${params.season} Broadway Season | Investment Tracker`,
+    title: { absolute: `${params.season} Broadway Season | Money Scorecard` },
     description: `Commercial data and recoupment metrics for Broadway shows from the ${params.season} season.`,
     alternates: {
       canonical: `${BASE_URL}/biz/season/${params.season}`,
@@ -77,7 +77,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            Investment Tracker
+            Money Scorecard
           </Link>
 
           <h1 className="text-3xl font-bold text-white mb-4">{season} Season</h1>
@@ -105,7 +105,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Investment Tracker
+          Money Scorecard
         </Link>
 
         {/* Header */}

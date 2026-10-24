@@ -49,7 +49,7 @@ function shortDate(iso: string): string {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
 }
 
-/** Whether the Commercial Scorecard's break-even section has anything to say for this show. */
+/** Whether the Money Scorecard's break-even section has anything to say for this show. */
 export function showsBreakEven(card: Pick<BoxOfficeV2Card, 'availability' | 'multiple'>): boolean {
   return (card.availability === 'ok' && !!card.multiple) || card.availability === 'early';
 }
@@ -73,7 +73,7 @@ export function rangeText(m: MultipleRange): string {
   return `${m.lo.toFixed(2)}–${m.hi.toFixed(2)}×`;
 }
 
-/** A multiple as a share of break-even (0.86 → "86%"): the Commercial Scorecard's unit. */
+/** A multiple as a share of break-even (0.86 → "86%"): the Money Scorecard's unit. */
 export function formatShare(x: number): string {
   return `${Math.round(x * 100)}%`;
 }
@@ -288,7 +288,7 @@ export interface FactsStoryInput {
   steady: { low: number; high: number; since: string } | null;
 }
 
-/** The Box Office Scorecard's sentences: facts only. The pointer to costs prints only when the Commercial Scorecard is on the page. */
+/** The Box Office Scorecard's sentences: facts only. The pointer to costs prints only when the Money Scorecard is on the page. */
 export function factsStory(f: FactsStoryInput, hasCommercial: boolean): string | null {
   const parts: string[] = [];
   const yoy = yearAgoSentence({
@@ -298,7 +298,7 @@ export function factsStory(f: FactsStoryInput, hasCommercial: boolean): string |
   if (yoy) parts.push(yoy);
   if (f.steady) parts.push(`Weekly grosses have held between about ${aboutWeekly(f.steady.low)} and ${aboutWeekly(f.steady.high)} ${sinceText(f.steady.since, f.week)}.`);
   if (!parts.length) return null;
-  if (hasCommercial) parts.push('Strong sales don’t always mean profit; costs are on the Commercial Scorecard below.');
+  if (hasCommercial) parts.push('Strong sales don’t always mean profit; costs are on the Money Scorecard below.');
   return parts.join(' ');
 }
 
@@ -312,7 +312,7 @@ export interface BoxOfficeFactsCard {
   of: number;
   story: string | null;
   series: Array<{ week: string; gross: number | null }>;
-  /** The Commercial Scorecard renders below, so the card may point to it. */
+  /** The Money Scorecard renders below, so the card may point to it. */
   hasCommercial: boolean;
   /** This run's records, ready to print; null under the minimum weeks. */
   bests: BestLine[] | null;

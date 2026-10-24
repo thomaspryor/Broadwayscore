@@ -324,3 +324,18 @@ test('BRO-5863: unscored cbsnews /video/ file is not a gap AND its card state is
   // a real cbsnews /news/ article at the same state is NOT terminal
   assert.notEqual(classifyGapCardState({ ...args, file: { ...f, url: 'https://www.cbsnews.com/news/other-desert-cities-review/' } }), GAP_CARD_STATE.NO_REVIEW);
 });
+
+test('staleOpenGapKeys: only open keys whose file is gone from an existing show dir (BRO-5076)', () => {
+  const { staleOpenGapKeys } = require('./t1-silent-gap.js');
+  const ledger = { conditions: {
+    'gap:a/gone.json': { status: 'open' },
+    'backstop:a/gone.json': { status: 'open' },
+    'gap:a/here.json': { status: 'open' },
+    'gap:a/done.json': { status: 'resolved' },
+    'gap:nodir/x.json': { status: 'open' },
+    'other:thing': { status: 'open' },
+  } };
+  const io = { dirExists: (s) => s === 'a', fileExists: (s, f) => f === 'here.json' };
+  assert.deepEqual(staleOpenGapKeys(ledger, io), ['gap:a/gone.json', 'backstop:a/gone.json']);
+  assert.deepEqual(staleOpenGapKeys(null, io), []);
+});

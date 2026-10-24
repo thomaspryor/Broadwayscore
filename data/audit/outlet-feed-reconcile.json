@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T11:53:50.653Z",
+  "generatedAt": "2026-10-24T15:07:03.053Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -84,6 +84,16 @@
       "openingDate": "2026-10-18"
     },
     {
+      "id": "garry-starr-classic-penguins-off-west-end-2026",
+      "title": "Garry Starr Classic Penguins",
+      "openingDate": "2026-10-23"
+    },
+    {
+      "id": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "title": "Harry Potter and the Cursed Child",
+      "openingDate": "2026-10-21"
+    },
+    {
       "id": "machine-learning-off-broadway-2026",
       "title": "Machine Learning",
       "openingDate": "2026-10-20"
@@ -97,6 +107,11 @@
       "id": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
       "title": "Queeney Todd: The Demon Bottom of Fleet Street",
       "openingDate": "2026-10-22"
+    },
+    {
+      "id": "the-kick-inside-off-broadway-2026",
+      "title": "The Kick Inside",
+      "openingDate": "2026-10-23"
     },
     {
       "id": "the-dog-show-come-sit-stay-off-broadway-2026",
@@ -123,6 +138,10 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -135,6 +154,10 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "viewfromthegods",
+      "error": "Timeout fetching https://viewfromthegods.co.uk/feed/"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -145,10 +168,14 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "nysr",
+      "error": "Timeout fetching https://nystagereview.com/wp-json/wp/v2/posts?per_page=50&orderby=date&order=desc&after=2026-10-10T15%3"
     }
   ],
-  "itemsScanned": 781,
-  "matchedGaps": 4,
+  "itemsScanned": 750,
+  "matchedGaps": 1,
   "possibleGaps": 2,
   "gaps": [
     {
@@ -161,40 +188,13 @@
       "publishDate": "2026-10-23"
     },
     {
-      "showId": "other-desert-cities-2026",
-      "title": "Other Desert Cities",
-      "level": "matched",
-      "outletId": "theater-pizzazz",
-      "url": "https://theaterpizzazz.com/other-desert-cities-makes-a-welcome-return-to-broadway/",
-      "headline": "“OTHER DESERT CITIES” MAKES A WELCOME RETURN TO BROADWAY",
-      "publishDate": "2026-10-23"
-    },
-    {
-      "showId": "the-pianist-off-west-end-2026",
-      "title": "The Pianist",
-      "level": "matched",
-      "outletId": "onin",
-      "url": "https://onin.london/the-pianist-at-park-theatre/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-pianist-at-park-theatre",
-      "headline": "The Pianist At Park Theatre",
-      "publishDate": "2026-10-23"
-    },
-    {
-      "showId": "the-pianist-off-west-end-2026",
-      "title": "The Pianist",
-      "level": "matched",
-      "outletId": "the-recs",
-      "url": "https://therecs.co.uk/the-pianist-park-theatre/",
-      "headline": "The Pianist &#8211; Park Theatre ★★★★★",
-      "publishDate": "2026-10-24"
-    },
-    {
-      "showId": "copperfield-the-new-musical-off-broadway-2026",
-      "title": "Copperfield! The New Musical",
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "title": "Harry Potter and the Cursed Child",
       "level": "possible",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/the-curious-case-of-benjamin-button/",
-      "headline": "The Curious Case of Benjamin Button *****",
-      "publishDate": "2026-10-21"
+      "outletId": "timeout",
+      "url": "https://timeout.com/newyork/theater/harry-potter-cursed-child-broadway-review",
+      "headline": "16.&nbsp;Harry Potter and the Cursed Child",
+      "publishDate": null
     },
     {
       "showId": "the-pianist-off-west-end-2026",

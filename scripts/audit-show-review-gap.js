@@ -240,7 +240,7 @@ function writeJsonAtomic(filePath, obj) {
 // Whoopi Monologues' missing NYT review sat 3 days behind the backlog).
 const { freshnessMsFor, compareAuditPriority, auditTier, checkpointTs, gapRowTimestamps, reserveStalestSlots, oldestGapRow, STALE_RESERVE_EVERY, CATALOGUE_RESERVE_EVERY } = require('./lib/gap-audit-freshness');
 // Per-show merge for the audit file (#893) + the S0 blast-radius guard.
-const { mergeGapAudit, countsFor, priorCensusUrls, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock, BLAST_RADIUS_ALERT_KEY, blastRadiusClearedKeys } = require('./lib/gap-audit-merge');
+const { mergeGapAudit, countsFor, priorCensusUrls, seedPriorCensusUrls, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock, BLAST_RADIUS_ALERT_KEY, blastRadiusClearedKeys } = require('./lib/gap-audit-merge');
 // Merge-aware checkpoint read-modify-write (#923 — the #893 race class, one
 // file over). saveCheckpoint(wholeObject) used to write the ENTIRE in-memory
 // checkpoint from inside the per-show loop, unlocked on two of its three call
@@ -1104,16 +1104,17 @@ async function auditShow(show, opts = {}) {
       }
     } else {
       result.serpCensus = { ran: false, reason: inWindowNow ? 'cooldown' : 'out-of-window' };
-      // BRO-5516: census skipped -> keep the prior census's URLs in play (see priorCensusUrls).
-      // Re-vet each with the CURRENT show-relevance rules so a tightened rule retires
-      // stale URLs; seeded URLs stay census-tagged = report-only unless SERP_CENSUS_INGEST.
-      // showInfo omitted on purpose: the generic-title disambiguation gate needs the SERP
-      // title/snippet we no longer have, and would reject every URL of a one-word title.
-      for (const u of (opts.priorCensusUrls || [])) {
-        const ok = acceptSerpCensusResult({ url: u }, { show, showInfo: {}, priorVetted: true });
-        if (ok) serpCensusUrls.add(ok);
-      }
     }
+    // BRO-5516: ALWAYS keep the prior census's URLs in play (see priorCensusUrls), whether
+    // this run's census was skipped (window exit / cooldown) or ran. A SERP pass is not
+    // deterministic: re-running it (targeted runs force cooldown 0) returns a different
+    // result set, so a candidate the last pass found can vanish and trip the blast-radius
+    // candidateCount guard (the-bodyguard-tour-2026 2:9 -> 2:8, 2026-10-24).
+    // Re-vet each with the CURRENT show-relevance rules so a tightened rule retires
+    // stale URLs; seeded URLs stay census-tagged = report-only unless SERP_CENSUS_INGEST.
+    // showInfo omitted on purpose: the generic-title disambiguation gate needs the SERP
+    // title/snippet we no longer have, and would reject every URL of a one-word title.
+    seedPriorCensusUrls(serpCensusUrls, opts.priorCensusUrls, (u) => acceptSerpCensusResult({ url: u }, { show, showInfo: {}, priorVetted: true }));
   }
   // BRO-5252: census provenance is census-ONLY. A URL an aggregator also cites is
   // an aggregator-cited gap; tagging it serpCensus would report-only it and (via

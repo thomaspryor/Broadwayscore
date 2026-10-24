@@ -58,6 +58,7 @@ const { dispatchRescore } = require('./lib/dispatch-rescore');
 const { isForumThreadUrl, isForumLinkRecoverable, FORUM_RECOVERY_CAP, FORUM_RECOVERY_SLOW_TRIES } = require('./lib/talkinbroadway-forum-link');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { routeAlert, resolveCondition, loadLedger, queueDigestLine, removeDigestLines } = require('./lib/owner-alert-router');
+const { staleOpenGapKeys } = require('./lib/t1-silent-gap');
 const { execErrorDetail } = require('./lib/exec-error-detail');
 const { ingestFailureReason } = require('./lib/ingest-failure-reason');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -559,6 +560,21 @@ async function main() {
           }
         } catch (e) { console.warn(`  ⚠️  could not close ${key}: ${e.message}`); }
       }
+    }
+  }
+  // BRO-5076: close gap:/backstop: keys whose review file was deleted or renamed
+  // (full runs only; needs the review-texts clone so a missing dir never reads as "gone").
+  if (DO_ALERT && !DRY_RUN && !ONLY_SHOW && fs.existsSync(REVIEW_TEXTS_DIR)) {
+    const stale = staleOpenGapKeys(loadLedger(), {
+      dirExists: (showId) => fs.existsSync(path.join(REVIEW_TEXTS_DIR, showId)),
+      fileExists: (showId, f) => fs.existsSync(path.join(REVIEW_TEXTS_DIR, showId, f)),
+    });
+    for (const key of stale) {
+      try {
+        if (resolveCondition(key, { reason: 'BRO-5076: review file no longer exists (removed or renamed)' })) {
+          console.log(`  ✅ closed ${key}: file gone`);
+        }
+      } catch (e) { console.warn(`  ⚠️  could not close ${key}: ${e.message}`); }
     }
   }
   if (contradictions.length > 0) {

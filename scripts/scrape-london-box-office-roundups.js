@@ -30,6 +30,7 @@ const { matchTitleToShow, matchSlugToShow, loadShows, titleWordsMatch, buildSibl
 const { pickLboIndividualReviewUrls } = require('./lib/lbo-individual-serp');
 const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { matchLboRoundup } = require('./lib/lbo-roundup-match');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
@@ -124,11 +125,14 @@ async function discoverRoundupUrls() {
   // Article year per individual URL, from <lastmod> (BRO-5631): the sitemap
   // holds years of URLs, and same-title productions only separate by date.
   const individualYear = new Map();
+  const roundupYear = new Map();
   $('url > loc').each((_, el) => {
     const loc = $(el).text().trim();
     // Match roundup URLs: "review-round-up-", "review-roundup-", etc.
     if (/review-round-?up[-:]|review-round-?up$/i.test(loc)) {
       roundups.push(loc);
+      const y = Number(($(el).parent().find('lastmod').first().text() || '').slice(0, 4));
+      if (y >= 1990 && y <= 2100) roundupYear.set(loc, y);
     }
     // Match individual review URLs: ends with "-review" or starts with "/review-"
     // Excludes roundups (already matched above) and non-review articles
@@ -142,7 +146,7 @@ async function discoverRoundupUrls() {
   console.log(`Found ${roundups.length} roundup URLs + ${individual.length} individual review URLs in sitemap`);
   stats.sitemapUrls = roundups.length;
   stats.individualUrls = individual.length;
-  return { roundups, individual, individualYear };
+  return { roundups, individual, individualYear, roundupYear };
 }
 
 // ---------------------------------------------------------------------------
@@ -693,11 +697,13 @@ async function scrapeLBORoundups() {
   let roundupUrls = [];
   let individualUrls = [];
   let individualYear = new Map();
+  let roundupYear = new Map();
   try {
     const discovered = await discoverRoundupUrls();
     roundupUrls = discovered.roundups;
     individualUrls = discovered.individual;
     individualYear = discovered.individualYear;
+    roundupYear = discovered.roundupYear;
   } catch (err) {
     console.error(`Failed to fetch sitemap: ${err.message}`);
     console.log('Falling back to targeted shows with Google SERP...');
@@ -708,12 +714,15 @@ async function scrapeLBORoundups() {
     const extractedTitle = extractShowTitleFromUrl(url);
     if (!extractedTitle) continue;
 
-    const match = matchTitleToShow(extractedTitle, weShows, { market: 'west-end' });
-    if (!match || !match.show) continue;
-    if (match.confidence !== 'high') {
-      console.log(`  [LOW CONFIDENCE] roundup "${extractedTitle}" → ${match.show.title} (${match.confidence}) — skipped`);
+    // Title match first, then slug + venue (BRO-6101: venues missing from the
+    // hardcoded theatre list left Rent / Cats / Death Note at medium confidence).
+    const hit = matchLboRoundup(url, extractedTitle, weShows, { year: roundupYear.get(url) });
+    if (!hit) {
+      const weak = matchTitleToShow(extractedTitle, weShows, { market: 'west-end' });
+      if (weak && weak.show) console.log(`  [LOW CONFIDENCE] roundup "${extractedTitle}" → ${weak.show.title} (${weak.confidence}) — skipped`);
       continue;
     }
+    const match = { show: hit.show, confidence: 'high' };
     if (curatedMatchedIds.has(match.show.id)) continue; // Already have curated URL
     if (targetShowIds && !targetShowIds.includes(match.show.id)) continue;
     matchedRoundups.push({ url, show: match.show, extractedTitle });

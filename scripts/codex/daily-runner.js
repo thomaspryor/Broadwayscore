@@ -331,25 +331,6 @@ function weeklyPct() {
   return R.weeklyPctFromSessions(CODEX_HOME);
 }
 
-/**
- * BRO-6086: the cloud lane refreshes a login past 6 days itself, so the gha lane never meets its
- * 7-day stand-down. Back-dates last_refresh so the first codex exec refreshes it (R.backdateForRefresh).
- * Runs on slot 0 only, which laneForLogin leaves as the lone process while a refresh is due.
- */
-function forceLoginRefresh() {
-  const file = path.join(CODEX_HOME, 'auth.json');
-  // A gha container may hold the pre-refresh copy (it starts up to ~6.6 days in): rotate only when no gha slot is live.
-  const gha = sh('node', [__filename, '--lock-status', '--lane', 'gha'], { timeoutMs: 120_000 });
-  if (gha.code !== 0) { log(`forced login refresh skipped: gha lane lock status exit ${gha.code}`); return; }
-  try {
-    const next = R.backdateForRefresh({ authText: fs.readFileSync(file, 'utf8'), nowMs: Date.now() });
-    if (!next) return;
-    fs.writeFileSync(`${file}.tmp-${process.pid}`, next, { mode: 0o600 });
-    fs.renameSync(`${file}.tmp-${process.pid}`, file);
-    log('Codex login is past 6 days old: back-dated last_refresh so this run refreshes it');
-  } catch (e) { log(`forced login refresh skipped: ${e.message}`); }
-}
-
 function saveLogin() {
   const r = sh('node', ['scripts/codex/auth-store.js', 'save'], { timeoutMs: 900_000 });
   if (r.code !== 0) log(`login save failed: ${tail(r.out, 300)}`);
@@ -639,7 +620,7 @@ function landedOnMain(id, sinceMs, { onError = false } = {}) {
 async function settleLanded(id, stats, { partial, remaining = [], body, countRefusal = false }) {
   if (partial) {
     const left = remaining.length ? `Still open on this card:\n${remaining.map((x) => `- ${x}`).join('\n')}\n\n` : 'Some card items are still open (see the runner\'s "landing a partial fix" note).\n\n';
-    const r = await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: landed part of this card\n\n${left}${body}\n\n${R.PARTIAL_MARKER}`);
+    const r = await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n${R.PARTIAL_HEADING}\n\n${left}${body}\n\n${R.PARTIAL_MARKER}`);
     if (r.code === 0) stats.landedPartial.push(id);
     return r.code === 0;
   }
@@ -1277,7 +1258,7 @@ async function launchSlots() {
     if (k) await sleep(SLOT_STAGGER_MS);
     if (dying || (runDir && fs.existsSync(path.join(runDir, 'STOP')))) break;
     const args = R.slotArgs(process.argv.slice(2), { slot: plan.base + k, runDir, runStartedMs: RUN_STARTED_MS, limit: Math.ceil(OPTS.limit / plan.slots), checkBudgetUsd: OPTS.checkBudgetUsd / plan.slots, pickList: OPTS.limit + 5 * plan.slots });
-    const child = spawn(process.execPath, [__filename, ...args], { cwd: ROOT, stdio: 'inherit' });
+    const child = spawn(process.execPath, [__filename, ...args], { cwd: ROOT, stdio: 'inherit', env: { ...process.env, ...(plan.slots < OPTS.slots ? { CODEX_SLOT_SHORTFALL: `${plan.slots} of ${OPTS.slots} requested: ${plan.why || 'disk or lane limit'}` } : {}) } });
     slotChildren.push(child);
     exits.push(new Promise((res) => child.on('exit', (code) => res(code == null ? 1 : code))));
   }
@@ -1402,8 +1383,6 @@ async function runLocked(startedMs) {
     process.exitCode = 2;
     return;
   }
-  // Lone process only (no RUN_DIR: laneForLogin gave a due login one slot), so nothing else reads the login mid-refresh.
-  if (SLOT === 0 && !RUN_DIR && OPTS.lane === 'cloud' && !OPTS.dryRun) forceLoginRefresh();
   const install = sh('node', ['scripts/codex/install.js']);
   if (install.code !== 0) log(`codex install warning: ${tail(install.out, 300)}`);
   pruneDisk();
@@ -1462,6 +1441,8 @@ async function runLocked(startedMs) {
     `- Claude check: ${checkCount} review(s), $${checkSpentUsd.toFixed(2)} API cost`,
     // BRO-5384 savings line: what the Codex lane costs in Claude, by model and per landed card.
     `- Claude check by model: ${Object.entries(checkByModel).map(([k, v]) => `${k} ${v.n} ($${v.usd.toFixed(2)})`).join(', ') || 'none'}; per landed card: ${landedCount ? `$${(checkSpentUsd / landedCount).toFixed(2)}` : 'n/a (nothing landed)'}`,
+    // A pinned lane shows in the next summary instead of days later (BRO-6129: one slot for 13 h unnoticed).
+    ...(process.env.CODEX_SLOT_SHORTFALL ? [`- Slots: ${process.env.CODEX_SLOT_SHORTFALL}`] : []),
     ...(SLOT === 0 ? [`- Landed on main, last 24h: ${landedPerLane()}`] : []),
     `- Stopped early: ${stop || 'no'}`,
   ].join('\n');

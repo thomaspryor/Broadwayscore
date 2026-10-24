@@ -7,7 +7,7 @@
 // Parses reviews from pdftotext output. Reviews follow pattern:
 // OUTLET NAME (ALL CAPS) → date line → critic name → review text
 // Date formats: "18 May 2021" (post-2019) or "21.12.17" (pre-2019)
-const DATE_LONG = /^\d{1,2}\s+(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{4}$/;
+const DATE_LONG = /^\d{1,2}\s+(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{4}$/;
 const DATE_SHORT = /^\d{1,2}\.\d{1,2}\.\d{2,4}$/;
 const isDateLine = (line) => DATE_LONG.test(line) || DATE_SHORT.test(line);
 
@@ -80,6 +80,13 @@ const KNOWN_OUTLETS_UPPER = new Set([
     'DIGITAL SPY', 'THE SUN', 'THE MIRROR', 'THE EXPRESS', 'CULTURE WHISPER',
     'THE I', 'I NEWS', 'LONDONIST', 'CITY A.M.',
 ]);
+
+// 2017-18 issues print the bare masthead ("GUARDIAN", "INDEPENDENT", "METRO
+// (LONDON)"); 2019+ print "THE GUARDIAN". Compare on the masthead alone
+// (BRO-6127: the 2018 Pressure/The Band reviews were dropped for want of it).
+const outletKey = (t) => t.replace(/\s*\([^)]*\)\s*$/, '').replace(/^THE\s+/, '');
+const KNOWN_OUTLET_KEYS = new Set([...KNOWN_OUTLETS_UPPER].map(outletKey));
+const isKnownOutletLine = (t) => KNOWN_OUTLETS_UPPER.has(t) || KNOWN_OUTLET_KEYS.has(outletKey(t));
 
 // `stats` (optional) is filled for the BRO-6097 coverage probe: whether the
 // production's Reviews section was found, how many outlet+date headers it
@@ -171,7 +178,7 @@ function parsePdfReviews(text, showTitle, stats) {
 
     if (trimmed === trimmed.toUpperCase() && trimmed.length > 3 && /^[A-Z]/.test(trimmed) &&
         trimmed !== 'Reviews' && trimmed !== 'Index' && !trimmed.includes(titleUpper) &&
-        !isDateLine(trimmed) && !KNOWN_OUTLETS_UPPER.has(trimmed)) {
+        !isDateLine(trimmed) && !isKnownOutletLine(trimmed)) {
       // Check if next few lines look like production metadata (not a review)
       const nextLines = [];
       for (let k = 1; k <= 5 && j + k < lines.length; k++) {
@@ -449,9 +456,9 @@ function parseDefaultPdfReviews(text, showTitle) {
   const lines = text.split('\n').map(l => l.trim());
   const markers = [];
   for (let i = 0; i < lines.length; i++) {
-    if (!KNOWN_OUTLETS_UPPER.has(lines[i])) continue;
+    if (!isKnownOutletLine(lines[i])) continue;
     for (let k = i + 1; k <= Math.min(i + DEFAULT_DATE_WINDOW, lines.length - 1); k++) {
-      if (KNOWN_OUTLETS_UPPER.has(lines[k])) break;
+      if (isKnownOutletLine(lines[k])) break;
       if (isDateLine(lines[k])) { markers.push({ start: i, dateIdx: k }); break; }
     }
   }
