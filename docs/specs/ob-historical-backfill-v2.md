@@ -244,3 +244,18 @@ last gather. Fail any check and the next cohort does not start:
 - First-time deep-gather scraping cost is an assumption until the 5-show pilot runs.
 - The loose definition of "Off-Broadway": the rule above is the proposal, and the flagship
   venue list is the part most likely to need owner edits.
+
+## Phase H results (2026-10-24, BRO-6153)
+
+Two award-nominated 2024-25 shows were added by hand through an `add-show` fix plan and gathered with `max_tier=3`, `spend_purpose=historical-backfill` (run 40123511753).
+
+| Show | Venue | Reviews after rebuild | Scraping cost (ledger, priced) |
+|---|---|---|---|
+| Hold On to Me Darling (Lortel, OBA) | Lucille Lortel Theatre, Oct 2024 | 11 scored (NYT, Guardian, EW, Deadline, Vogue, TheWrap, Time Out, The Stage, NYSR, NYTG, nyt-theater) | $0.040 |
+| Sumo (Lortel Outstanding Play) | Public Theater, Feb to Mar 2025 | 2 (Culture Sauce, Time Out) | $0.055 |
+
+What it changed:
+- **Scraping is a small cost.** $0.04 to $0.055 per show at `max_tier=3`, against the $0.20 to $0.45 assumed. About 70 to 110 Scrapingdog SERP calls per show carry nearly all of it, and Bright Data was touched 1 to 2 times (one capped). The per-show estimate is now dominated by LLM scoring, which this run did not measure (`llm-scoring-runs.json` keeps only the last 100 runs).
+- **An award does not guarantee reviews.** A Lortel Outstanding Play nominee yielded 2 reviews, below the OB display bar of 3. So the Award signal alone cannot promote a show. Promote when press coverage is also found, or accept that some award shows stay unscored. The audit's 70 percent target needs a measured denominator from the full season.
+- **Title matching is too loose.** A title lookup against shows.json "found" Ghosts, Vanya, Orlando and Home, which are different productions. Dedup in the promotion step compares venue and year, as the plan says.
+- **Mechanics.** The cloud session has no scraper keys, so Playbill validation runs through `cloud-run-script.js` against a candidates file that must be on main. Core data changes go in as `add-show` fix plans, which refuse existing ids and placeholder venues. So `promote-historical-ob.js` becomes a generator that writes those plans (and `retire-show` plans for revert). A land takes 20 to 35 minutes when the queue is busy, so each cohort is batched into few lands. Never `git reset --soft` onto a moved `origin/main` in a worktree: it silently reverts other sessions' commits (it clobbered `we-historical-tr-probe.json` once, since restored).
