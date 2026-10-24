@@ -24,7 +24,8 @@ function ownRatingField(d) {
  * @param {(d: object) => ({highReliability?: boolean, band?: {floor: number, ceiling: number}}|null)} detectBand
  * @returns {{file: string, data: object}|null} the twin record whose rating to clamp against (its full evidence), or null (own rating present / no usable twin / twins disagree)
  */
-const norm = (n) => String(n || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+const { foldDiacritics } = require('./title-match');
+const norm = (n) => foldDiacritics(String(n || '')).toLowerCase().replace(/[^a-z0-9]/g, '');
 const unknownCritic = (n) => !norm(n) || norm(n) === 'unknown';
 
 /** Twin = a duplicateOf link either way, or the same critic (typo-fuzzy), or a byline missing on either side. A bare URL match is not enough: multi-critic pages share one URL. */
