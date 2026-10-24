@@ -1717,20 +1717,6 @@
     "queuedAt": "2026-10-24T22:35:15.666Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 15 (pull-quote-quality, regex-fp, run-contamination, cross-show-url, body-date-mismatch, unknown-outlets, +9 more). Checked 2026-10-24.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-24T23:04:52.019Z"
-  },
-  {
     "conditionKey": "live-data-test:tests/unit/venue-complex-live-data.test.mjs::no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug",
     "title": "Live-data test failing: no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
     "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\" in tests/unit/venue-complex-live-data.test.mjs is red against the live corpus.\n\nunlinked candidate sub-venue slugs found (same class as the West End National Theatre bug): {\n\"the-public-theater\": [\n{\n\"slug\": \"public-theater\",\n\"rawStrings\": [\n\"Public Theater\"\n],\n\"showCount\": 3\n}\n],\n\"signature-theatre\": [\n{\n\"slug\": \"signature-center\",\n\"rawStrings\": [\n\"Signature Center\"\n],\n\"showCount\": 1\n}\n],\n\"lincoln-center-theater\": [\n{\n\"slug\": \"mitzi-e-newhouse-theater\",\n\"rawStrings\": [\n\"Mitzi E. Newhouse Theater\"\n],\n\"showCount\": 1\n}\n]\n}\n+ actual - expected\n\n+ {\n+   'lincoln-center-theater': [\n+     {\n+       rawStrings: [\n+         'Mitzi E. Newhouse Theater'\n+       ],\n+       showCount: 1,\n+       slug: 'mitzi-e-newhouse-theater'\n+     }\n+   ],\n+   'signature-theatre': [\n+     {\n+       rawStrings: [\n+         'Signature Center'\n+       ],\n+       showCount: 1,\n+       slug: 'signature-center'\n+     }\n+   ],\n+   'the-public-theater': [\n+     {\n+       rawStrings: [\n+         'Public Theater'\n+       ],\n+       showCount: 3,\n+       slug: 'public-theater'\n+     }\n+   ]\n+ }\n- {}",
@@ -1743,5 +1729,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-24T23:08:26.441Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 16 (pull-quote-quality, regex-fp, run-contamination, cross-show-url, body-date-mismatch, unknown-outlets, +10 more). Checked 2026-10-24.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T23:58:28.991Z"
   }
 ]
