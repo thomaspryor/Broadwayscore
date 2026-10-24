@@ -40,12 +40,12 @@ Use shared components from `src/components/show-cards/` — never create custom 
 **Run `/visual-qa` before any push touching UI files** (`src/**/*.{tsx,jsx,css,scss}`, `tailwind.config.*`, `src/app/**`): element crops + overflow probe + two-model LLM diff vs references. Stop hook blocks visual-correctness claims without a fresh verdict; pre-push hook blocks `git push`/`gh pr merge` without user `APPROVED: <verdictHash>`. Bypass: `NO-VERIFY: <reason>` or `ship immediately for: <reason>`. **Score badges sacred** (`w-20 sm:w-24`). Full rules: `memory/feedback_local_preview_before_push.md`.
 
 ### 6. Board = Linear, not the Notion Brain (MANDATORY — every session)
-**Linear is the source of truth — do NOT create Notion cards.** Notion is retired (mirror froze 2026-08-20): cards filed there have no Linear twin, so `linearMirrorGuard` can't dedupe them. Flow: `memory/linear-board-workflow.md`.
-- **Session start:** `linear-brain.js create "<title>" --self|--dispatch|--park "<reason>" --notes "..."`; output the URL. **`--self` = you are doing this work now** (files In Progress, claimed); never write "PARKED: doing it now". A `--park` with a technical reason is refused. **Session end:** comment the Outcome (what/why/approach/gotchas) + Key Files, then `linear-brain.js update BRO-N --state Done`. Pause/refused Done: `linear-session.js report --status=paused`.
+**Linear is the source of truth, never Notion cards.** Notion is retired (froze 2026-08-20); its cards have no Linear twin, so `linearMirrorGuard` can't dedupe them. Flow: `memory/linear-board-workflow.md`.
+- **Session start:** `linear-brain.js create "<title>" --self|--dispatch|--park "<reason>" --notes "..."`; output the URL. `--self` = you do it now (In Progress); technical `--park` refused. **Session end:** comment the Outcome (what/why/approach/gotchas) + Key Files, then `linear-brain.js update BRO-N --state Done`. Pause/refused Done: `linear-session.js report --status=paused`.
 - **Done is gated (exit 5):** needs `PR-EVIDENCE: merged deployed checked (<url>)`, or a safe-form command in `## Acceptance criteria` / a `VERIFY: <cmd>` line.
 - **New discoveries:** file a Linear issue (Todo), don't context-switch.
-- **P0/P1 dispatch at creation (owner rule 2026-07-24):** `--dispatch` does NOT launch yet — run `linear-next.js --id BRO-N`, report `DISPATCHED:`. Confirm it started: a `job-spawned` ledger row AND a growing log, never the "job starting" line alone. Cap ~8/session.
-- **If Linear is down:** warn, continue untracked, output the Outcome text. Do NOT fall back to Notion.
+- **P0/P1 dispatch at creation (owner rule 2026-07-24):** `--dispatch` does NOT launch yet — run `linear-next.js --id BRO-N`, report `DISPATCHED:`. Confirm it started: a `job-spawned` ledger row AND a growing log. Cap ~8/session.
+- **If Linear is down:** warn, continue untracked, print the Outcome. Never fall back to Notion.
 
 ### 7. Infrastructure Change Planning (MANDATORY)
 See global CLAUDE.md. Also: test 3 representative cases before merging.
