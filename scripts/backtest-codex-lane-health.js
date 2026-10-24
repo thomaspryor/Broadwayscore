@@ -12,6 +12,10 @@ const { codexLaneHealth, confirmedBreaches, codexLandedEvents } = require('./lib
 const { LANDED_LOG_FORMAT } = require('./lib/codex-runner.js');
 void LANDED_LOG_FORMAT;
 
+if (require.main === module && (process.argv.includes('--help') || process.argv.includes('-h'))) {
+  console.log('Usage: node scripts/backtest-codex-lane-health.js --summaries=FILE --landed=FILE --runs=FILE');
+  process.exit(0);
+}
 const arg = (n) => (process.argv.find((a) => a.startsWith(`--${n}=`)) || '').slice(n.length + 3);
 const U = (s) => Date.parse(`2026-${s}:00Z`);
 const EPISODES = [

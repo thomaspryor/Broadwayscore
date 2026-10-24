@@ -20,6 +20,10 @@ const KEY_PREFIX = 'codex-lane:';
 const VERIFY = 'VERIFY: node --test tests/live/codex-lane-alarm-clean.test.mjs';
 const arg = (n) => (process.argv.find((a) => a.startsWith(`--${n}=`)) || '').slice(n.length + 3) || null;
 const flag = (n) => process.argv.includes(`--${n}`);
+if (require.main === module && (flag('help') || process.argv.includes('-h'))) {
+  console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(2, 11).map((l) => l.replace(/^\/\/ ?/, '')).join('\n'));
+  process.exit(0);
+}
 
 function readLanded() {
   try {
