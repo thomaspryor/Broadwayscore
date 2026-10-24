@@ -32,7 +32,7 @@ test('real duplicates still block the build', () => {
 
 test('BRO-6025: a SHOWS_FILE_OVERRIDE fixture run never reaches the alert router, even without SKIP_ROW_ALERT', () => {
   const ledger = path.join(mkdtempSync(path.join(tmpdir(), 'ledger-')), 'ledger.json');
-  const r = run([row('alpha'), null, 5, { id: 'a' }], { ALERT_LEDGER_PATH: ledger, SKIP_ROW_ALERT: '' });
+  const r = run([row('alpha'), null, 5, { id: 'a' }], { ALERT_LEDGER_PATH: ledger, SKIP_ROW_ALERT: '', LINEAR_API_KEY: '', RESEND_API_KEY: '' });
   assert.equal(r.status, 0, r.stderr);
   assert.match(r.stderr, /skipping 3 malformed/);
   assert.equal(existsSync(ledger), false, 'alert router wrote a ledger for a fixture run');

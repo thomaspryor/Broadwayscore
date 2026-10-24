@@ -36,9 +36,11 @@ const ALERTS_ENABLED = !process.env.SHOWS_FILE_OVERRIDE && process.env.SKIP_ROW_
 const { valid: allShows, skipped } = partitionShowRows(data.shows || data);
 if (skipped.length === 0) {
   // Clean again: close the incident so the next bad row notifies immediately.
-  if (ALERTS_ENABLED) try {
-    require('./lib/owner-alert-router').resolveCondition(SKIPPED_ROWS_CONDITION, { reason: 'prebuild: no malformed shows.json rows' });
-  } catch (_) { /* alert ledger unavailable in this build env: non-fatal */ }
+  if (ALERTS_ENABLED) {
+    try {
+      require('./lib/owner-alert-router').resolveCondition(SKIPPED_ROWS_CONDITION, { reason: 'prebuild: no malformed shows.json rows' });
+    } catch (_) { /* alert ledger unavailable in this build env: non-fatal */ }
+  }
 } else {
   const lines = formatSkipped(skipped);
   console.error(`\x1b[33mWARNING: skipping ${skipped.length} malformed shows.json row(s) (BRO-5954):\x1b[0m`);
