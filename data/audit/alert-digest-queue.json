@@ -1133,20 +1133,6 @@
     "queuedAt": "2026-10-24T02:13:11.047Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 17 (pull-quote-quality, regex-fp, run-contamination, cross-show-url, body-date-mismatch, unknown-outlets, +11 more). Checked 2026-10-24.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-24T02:13:11.158Z"
-  },
-  {
     "conditionKey": "feedback-outcomes:2026-10-24T00:01:27.099105+00:00",
     "title": "Feedback: 1 submission(s), all handled automatically",
     "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nsingleticket — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"Hi, I am happy to have my substack review included in your aggregate of “Imaginary Invalid” but my name is “singleticket” (one word, lower case “s”). Thank you and best of luck with your site. \r\n\r\nsingleticket\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/1157",
@@ -1228,5 +1214,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-24T02:04:44.298Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 18 (pull-quote-quality, regex-fp, run-contamination, cross-show-url, body-date-mismatch, unknown-outlets, +12 more). Checked 2026-10-24.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T02:40:42.686Z"
   }
 ]
