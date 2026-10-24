@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-24T15:26:43.943Z",
+  "timestamp": "2026-10-24T16:18:28.627Z",
   "stats": {
-    "totalReviews": 60481,
-    "alreadyFlagged": 21252,
+    "totalReviews": 60480,
+    "alreadyFlagged": 21251,
     "dateGuardCatches": 222,
     "directorMismatch": 2175,
-    "tvFilmSignals": 1712,
+    "tvFilmSignals": 1713,
     "londonSignals": 2922,
     "offBroadwaySignals": 534,
     "yearMismatch": 195,
-    "noPublishDate": 5567
+    "noPublishDate": 5565
   },
   "findings": [
     {
@@ -5507,7 +5507,7 @@
     {
       "showId": "bonnie-and-clyde-west-end-2022",
       "file": "artsdesk--gary-naylor.json",
-      "score": 57,
+      "score": 63,
       "publishDate": "2022-04-21",
       "url": "https://theartsdesk.com/theatre/bonnie-clyde-arts-theatre-review-great-songs-plot-fires-too-many-blanks",
       "findings": [
@@ -32531,6 +32531,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"joe mantello\" from other-desert-cities-2011"
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "file": "theater-pizzazz--unknown.json",
+      "publishDate": "2026-10-23",
+      "url": "https://theaterpizzazz.com/other-desert-cities-makes-a-welcome-return-to-broadway/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -69174,7 +69187,7 @@
     {
       "showId": "garry-starr-classic-penguins-off-west-end-2026",
       "file": "theatreandtonic--penny-walshe.json",
-      "score": 99,
+      "score": 98,
       "publishDate": "2026-10-24",
       "url": "https://theatreandtonic.co.uk/blog/garry-starr-classic-penguins-at-the-other-palace-review",
       "findings": [
