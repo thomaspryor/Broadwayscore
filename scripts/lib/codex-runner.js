@@ -406,7 +406,8 @@ const CRASH_HEADING = '## Codex runner: stopped mid-card';
 const isCrashNote = (body) => { const b = String(body || ''); return b.startsWith(CRASH_HEADING) || b.startsWith(`${BOUNCED_MARKER}\n${CRASH_HEADING}`); };
 
 /**
- * True when Codex failed this card within the last 14 days, or the runner crashed on it twice
+ * True when Codex failed this card within the last 14 days (a 'landed part' note counts for only 3 days,
+ * and two of them in 14 days ban it for the full 14), or the runner crashed on it twice
  * (a card that breaks the runner every time must not take a slot on every run).
  */
 function codexBouncedRecently(comments, nowMs) {
@@ -519,7 +520,7 @@ const CODEX_HARD_SKIPS = [
   ['private-repo-write', /\bbroadway-(?:review-texts|scorecard-data)\b|\bpending-fixes\b|\bexecute-approved-fix\b|\bapproved-fix\s+plan\b|\bdata repair\b/i],
   // BRO-6129: 6 of the 69 "not landed" bounces were "nothing needed landing, items still open": work that waits on a date,
   // a scheduled run or the owner. One Codex attempt cannot finish it, so it never starts.
-  ['waits-on-later-event', /\bRECHECK-AFTER:?\s*\d{4}-\d\d-\d\d|\bnext scheduled [\w.-]+ run\b|\bowner (?:presses|must|needs to|settles)\b/i],
+  ['waits-on-later-event', /^\s*RECHECK-AFTER:?\s*\d{4}-\d\d-\d\d|\bconfirm the next scheduled [\w.-]+ run\b|\bowner (?:presses|(?:must|needs to) (?:decide|approve|press|answer|settle)|settles (?:the|this|which))\b/im],
   ['corpus-wide-data', /\bcorpus[- ]wide\b|\bbulk[- ](?:edit|fix|update|rewrite|repair|rescore)\b|(?<![\d,])(?!(?:19|20)\d\d\b)\d[\d,]{2,}\s+(?:shipped\s+|existing\s+|affected\s+|scored\s+)?(?:reviews|shows|files|rows|records)\b/i],
 ];
 // Card shapes the independent Claude check rejected most (BRO-6086: 98 "not landed, left for the Claude

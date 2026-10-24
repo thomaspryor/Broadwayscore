@@ -184,7 +184,7 @@ async function main() {
       return;
     }
     // Same queue minus resume entries: a stranded landing is the Claude worker's to finish.
-    // Cards Codex already bounced go to the Claude worker, never back to Codex.
+    // Cards Codex bounced recently (14d; 3d after a single 'landed part') go to the Claude worker, not back to Codex.
     const { codexBouncedRecently } = require('./lib/codex-runner.js');
     let rest = queue.filter((q) => !q.resume && !codexBouncedRecently(q.issue.comments && q.issue.comments.nodes, nowMs));
     // --codex (the Codex runner, BRO-5287): drop cards an unattended Codex run cannot finish

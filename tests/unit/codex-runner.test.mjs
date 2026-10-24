@@ -1108,6 +1108,7 @@ test('codexBouncedRecently: partial landings are remembered 3 days, twice in 14 
 
 test('codexCardFit: work that waits on a date, a scheduled run or the owner is skipped (BRO-6129)', () => {
   const fit = (description) => r.codexCardFit({ title: 'Fix the thing', description, verify: 'node --test tests/unit/x.test.mjs' });
-  for (const d of ['Fix it. RECHECK-AFTER: 2026-10-30', 'Confirm the next scheduled audit-aggregator-gap.yml run passes', 'The owner must settle the acceptance line']) assert.equal(fit(d).skip, 'waits-on-later-event', d);
+  for (const d of ['Fix it.\nRECHECK-AFTER: 2026-10-30', 'Confirm the next scheduled audit-aggregator-gap.yml run passes', 'The owner must settle the acceptance line']) assert.equal(fit(d).skip, 'waits-on-later-event', d);
   assert.equal(fit('Fix it, then add a test.').skip, null);
+  for (const d of ['The owner must never be the one catching it', 'so the owner needs to see the failure', 'Add a test that RECHECK-AFTER: 2026-11-01 stamps parse', 'Fix the parser for the next scheduled data-health-check.yml run output']) assert.equal(fit(d).skip, null, d);
 });
