@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T22:56:34.792Z",
+  "generatedAt": "2026-10-24T01:27:28.785Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -79,11 +79,6 @@
       "openingDate": "2026-10-19"
     },
     {
-      "id": "dog-mom-off-west-end-2026",
-      "title": "Dog Mom",
-      "openingDate": "2026-10-17"
-    },
-    {
       "id": "school-pictures-off-broadway-2026",
       "title": "School Pictures",
       "openingDate": "2026-10-18"
@@ -92,11 +87,6 @@
       "id": "triumph-off-west-end-2026",
       "title": "Triumph",
       "openingDate": "2026-10-18"
-    },
-    {
-      "id": "angels-bone-west-end-2026",
-      "title": "Angel's Bone",
-      "openingDate": "2026-10-17"
     },
     {
       "id": "machine-learning-off-broadway-2026",
@@ -138,6 +128,10 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "one-minute-critic",
+      "error": "HTTP 403 for https://1minutecritic.com/feed"
+    },
+    {
       "outletId": "theater-life",
       "error": "Timeout fetching https://theaterlife.com/feed"
     },
@@ -154,7 +148,11 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
-      "outletId": "plays-international",
+      "outletId": "south-london",
+      "error": "Timeout fetching https://southlondon.co.uk/feed/"
+    },
+    {
+      "outletId": "theatre-vibe",
       "error": "AggregateError"
     },
     {
@@ -174,28 +172,10 @@
       "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 731,
-  "matchedGaps": 7,
+  "itemsScanned": 729,
+  "matchedGaps": 4,
   "possibleGaps": 2,
   "gaps": [
-    {
-      "showId": "dog-mom-off-west-end-2026",
-      "title": "Dog Mom",
-      "level": "matched",
-      "outletId": "onin",
-      "url": "https://onin.london/dog-mom-at-southwark-playhouse/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=dog-mom-at-southwark-playhouse",
-      "headline": "Dog Mom At Southwark Playhouse",
-      "publishDate": "2026-10-23"
-    },
-    {
-      "showId": "king-of-the-yees-off-broadway-2026",
-      "title": "King of the Yees",
-      "level": "matched",
-      "outletId": "pages-on-stages",
-      "url": "https://pagesonstages.com/2026/10/23/king-of-the-yees/",
-      "headline": "Lost",
-      "publishDate": "2026-10-23"
-    },
     {
       "showId": "machine-learning-off-broadway-2026",
       "title": "Machine Learning",
@@ -212,15 +192,6 @@
       "outletId": "theater-pizzazz",
       "url": "https://theaterpizzazz.com/other-desert-cities-makes-a-welcome-return-to-broadway/",
       "headline": "“OTHER DESERT CITIES” MAKES A WELCOME RETURN TO BROADWAY",
-      "publishDate": "2026-10-23"
-    },
-    {
-      "showId": "the-pianist-off-west-end-2026",
-      "title": "The Pianist",
-      "level": "matched",
-      "outletId": "musical-theatre-review",
-      "url": "https://musicaltheatrereview.com/the-pianist-park-theatre/",
-      "headline": "The Pianist – Park Theatre",
       "publishDate": "2026-10-23"
     },
     {

@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-23T22:56:16.776Z",
+  "generatedAt": "2026-10-24T01:24:45.574Z",
   "windowDays": 45,
-  "showsScanned": 203,
+  "showsScanned": 211,
   "gaps": [
     {
       "showId": "slam-frank-off-broadway-2026",
@@ -11,15 +11,17 @@
       "outletId": "talkinbroadway",
       "tier": 2,
       "type": "empty-body",
+      "recoverable": true,
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654721",
       "recovery": null,
       "recoveryCount": 0,
       "forumLinkRecoveryCount": 7,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=slam-frank-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-18T14:14:33.814Z",
-      "fileAgeHours": 128.69468555555557,
+      "fileAgeHours": 131.165745,
       "gapSeenAt": "2026-10-23T02:17:11.385Z",
-      "nonTerminalAgeHours": 20.6514975
+      "nonTerminalAgeHours": 23.12616361111111,
+      "needsManualRecovery": false
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -29,15 +31,17 @@
       "outletId": "daily-mail",
       "tier": 1,
       "type": "rejected-unscoreable",
+      "recoverable": false,
       "url": "https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing",
       "recovery": null,
       "recoveryCount": 0,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 750.2621461111111,
+      "fileAgeHours": 752.7364975,
       "gapSeenAt": "2026-10-23T02:17:11.385Z",
-      "nonTerminalAgeHours": 20.6514975
+      "nonTerminalAgeHours": 23.12616361111111,
+      "needsManualRecovery": false
     }
   ],
   "contradictions": []
