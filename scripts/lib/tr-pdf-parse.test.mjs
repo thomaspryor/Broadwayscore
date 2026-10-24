@@ -399,3 +399,10 @@ test('BRO-6154 run blocks: same-month dates, wrapped titles, outlet lines are no
   assert.equal(runs[0].title, 'THE TRACKERS OF OXYRHYNCHUS');
   assert.equal(runs[1].title, 'THE BAND');
 });
+
+test('BRO-6154 a missed run line for our own show leaves the review unknown, not dropped', () => {
+  const L = ['x', '03 October \u2013 02 December 2017', 'OTHER SHOW', 'a', 'NOVELLO', '03 October 2017 onwards', 'ALL ABOUT EVE', 'review text'];
+  const runs = productionRuns(L);
+  assert.equal(sectionOwnedBy(runs, 7, 'All About Eve', L), null);
+  assert.equal(sectionOwnedBy(runs, 7, 'After Life', L), false);
+});

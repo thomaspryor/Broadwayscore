@@ -275,7 +275,7 @@ function parseRawPdfReviews(text, showTitle) {
         const outlet = line;
         const date = nextLine;
         const critic = (lines[i + 2] || '').trim();
-        const owned = sectionOwnedBy(runs, i, showTitle);
+        const owned = sectionOwnedBy(runs, i, showTitle, lines);
         i += 3;
         while (i < lines.length && lines[i].trim() === '') i++;
 
@@ -489,7 +489,7 @@ function parseDefaultPdfReviews(text, showTitle) {
       .filter(({ l, abs }) => l && abs !== m.dateIdx && abs !== criticIdx && !/^(Index|Reviews|\d+)$/.test(l))
       .map(({ l }) => l);
     const fullText = cutAtProductionHeader(body).join('\n').trim();
-    if (fullText.length > 200 && fullText.length < DEFAULT_MAX_CHARS && sectionOwnedBy(runs, m.start, showTitle) !== false) {
+    if (fullText.length > 200 && fullText.length < DEFAULT_MAX_CHARS && sectionOwnedBy(runs, m.start, showTitle, lines) !== false) {
       all.push({ outlet: lines[m.start], date: lines[m.dateIdx], critic, fullText });
     }
   });
@@ -567,7 +567,7 @@ function productionRuns(lines) {
 
 // true: the review sits under our production's block; false: under another
 // production's; null: the block cannot be told (no run line above, no title).
-function sectionOwnedBy(runs, lineIdx, showTitle) {
+function sectionOwnedBy(runs, lineIdx, showTitle, lines) {
   let run = null;
   for (const r of runs) { if (r.line <= lineIdx) run = r; else break; }
   if (!run || !run.title) return null;
@@ -576,7 +576,16 @@ function sectionOwnedBy(runs, lineIdx, showTitle) {
   // that shares a real word with ours stays "unknown" instead of being dropped.
   const words = (t) => foldDiacritics(String(t)).toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 3 && !TITLE_STOP.has(w));
   const ours = new Set(words(showTitle));
-  return words(run.title).some(w => ours.has(w)) ? null : false;
+  if (words(run.title).some(w => ours.has(w))) return null;
+  // Our own run line may have been missed ("onwards", "01-28 February"): when our
+  // title appears as a caps line after the other block's run line, we cannot tell.
+  if (lines) {
+    for (let k = run.line + 1; k < lineIdx && k < lines.length; k++) {
+      const t = lines[k].trim();
+      if (isCapsTitle(t) && trTitleMatches(t, showTitle)) return null;
+    }
+  }
+  return false;
 }
 
 // BRO-6154 diagnostic: which production's section of the issue each parsed
@@ -607,7 +616,7 @@ function locateReviews(text, reviews, showTitle) {
     let run = null;
     for (const x of runs) { if (x.line <= line) run = x; else break; }
     const tail = String(r.fullText || '').split('\n').filter(Boolean).slice(-2).map(mk);
-    return { outlet: r.outlet, date: r.date, line, section, runTitle: run ? run.title : null, tail, owned: line < 0 ? null : sectionOwnedBy(runs, line, showTitle) };
+    return { outlet: r.outlet, date: r.date, line, section, runTitle: run ? run.title : null, tail, owned: line < 0 ? null : sectionOwnedBy(runs, line, showTitle, lines) };
   });
 }
 
