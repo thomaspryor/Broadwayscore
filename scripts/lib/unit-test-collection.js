@@ -70,6 +70,7 @@ const OPT_IN = new Set([
   'scripts/verify-prior-run-former-cast-sweep.test.mjs',
   'scripts/verify-reroute-migration.test.mjs',
   'scripts/verify-review-text-folders.test.mjs',
+  'scripts/verify-review-recovery.test.mjs',
 ]);
 
 // A reason containing this marker asserts the file runs at its OWN dedicated

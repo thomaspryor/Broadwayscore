@@ -46,6 +46,7 @@ function parseReviewFileText(raw) {
   }
 }
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
+const { resolveRelativeReviewUrl, reverseCrossMarketExclusion } = require('./lib/recovery-exclusions');
 const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, evaluateLateDualMarketUkOnBroadway, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion, buildCrossMarketCriticIndex, findSiblingInOtherMarket, classifyDualMarketNullUrl, outletRegionExplicitlyNotLondon } = require('./lib/cross-market-guard');
 const { computeContentFingerprint } = require('./lib/content-quality');
 const { textMentionsTitle, textMentionsShortTitle } = require('./lib/show-title-variants');
@@ -3804,18 +3805,17 @@ showDirs.forEach(showId => {
         }
       }
 
-      // Auto-fix relative URLs that look like BWW paths (missing domain prefix)
-      if (data.url && !data.url.startsWith('http://') && !data.url.startsWith('https://')) {
-        if (data.url.match(/^\/([-a-z]+)\/article\//)) {
-          data.url = `https://www.broadwayworld.com${data.url}`;
-          try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
-          stats.fixedRelativeUrl = (stats.fixedRelativeUrl || 0) + 1;
-        } else {
-          // Non-BWW relative path (e.g. /people/Ben-Brantley/) — scraping artifact
-          logExclusion("skippedInvalidUrl", showId, file, data);
-          stats.skippedInvalidUrl = (stats.skippedInvalidUrl || 0) + 1;
-          return;
-        }
+      // Shared with recovery verification so scraper artifacts are not reported as missing reviews.
+      const relativeUrl = resolveRelativeReviewUrl(data.url);
+      if (relativeUrl.exclude) {
+        logExclusion("skippedInvalidUrl", showId, file, data);
+        stats.skippedInvalidUrl = (stats.skippedInvalidUrl || 0) + 1;
+        return;
+      }
+      if (relativeUrl.url !== data.url) {
+        data.url = relativeUrl.url;
+        try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
+        stats.fixedRelativeUrl = (stats.fixedRelativeUrl || 0) + 1;
       }
 
       // Cross-show URL dedup: if this URL also exists in another show's directory,
@@ -4002,85 +4002,24 @@ showDirs.forEach(showId => {
         }
       }
 
-      // Reverse cross-market guard: London outlets should not score Broadway/off-Broadway
-      // Unlike the forward guard, we DON'T exempt Tier 1/2 here — a London Tier 1 outlet like
-      // Evening Standard never covers Broadway. Only explicitly dual-market outlets (Guardian, FT, Variety)
-      // are allowed to cross markets. Tier 1/2 exemption was designed for US outlets reviewing WE.
-      if ((showCategory === 'broadway' || showCategory === 'off-broadway') && !data.allowEarlyDate && !data.allowCrossMarket && !laneOk('tourCrossMarket')
-          && !DUAL_MARKET_OUTLETS.has(canonicalOutlet) && !DUAL_MARKET_OUTLETS.has(rawOutlet)) {
-        const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
-        // URL-domain fallback: if outlet has no region in registry, check if the URL is a .co.uk domain
-        let urlIsUK = false;
-        if (!outletRegion && data.url) {
-          try {
-            const hostname = new URL(data.url).hostname || '';
-            urlIsUK = hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk');
-          } catch (e) { /* ignore malformed URLs */ }
+      // Same gate as the recovery verifier, including lane, prior-run and CV exemptions.
+      const reverseCrossMarket = reverseCrossMarketExclusion({
+        data, show: showById[showId], canonicalOutlet, rawOutlet,
+        outletRegionMap, dualMarketOutlets: DUAL_MARKET_OUTLETS,
+      });
+      if (reverseCrossMarket.exclude) {
+        if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data) && !skipStaleFlagWrite(data)) {
+          // [GUARD:CROSS-MARKET-LONDON-ON-OTHER]
+          data.wrongProduction = true;
+          invalidateWrongProductionAutoClear(data);
+          data.wrongProductionNote = `Cross-market: London outlet "${rawOutlet}" reviewing ${showCategory} show`;
+          try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
         }
-        // UK_MARKET_REGIONS, not `=== 'london'`: the registry's UK-market bucket is
-        // {london, uk}, and testing only 'london' let every region:'uk' outlet score
-        // Broadway/off-Broadway shows unflagged. Measured before widening — exactly
-        // one review was affected, and it is a true positive: The Wee Review's
-        // Suhani Shah "Spellbound 2.0" piece, whose own text reads "Note: This review
-        // is from the 2024 Fringe" and names Underbelly Bristo Square, was
-        // filed under spellbound-off-broadway-2026 (SoHo Playhouse, opened 2026-08-19,
-        // no declared priorRuns). It was NOT scoring — ensemble-scoreability-check had
-        // already rejected it, so this guard is a second, earlier line of defence
-        // rather than a live score correction. 'dual' stays out of the set; the
-        // DUAL_MARKET_OUTLETS check above is what exempts outlets allowed to cross.
-        if (outletIsUkMarketRegion(outletRegionMap, canonicalOutlet, rawOutlet) || urlIsUK) {
-          // Production-continuity exemption (BRO-222): a review whose
-          // publishDate falls inside a declared priorRuns window is coverage
-          // of THAT run, not this one — its market must be judged against the
-          // prior run's own venue, not the current (NYC) show's market. This
-          // guard previously consulted show.priorRuns nowhere at all, which
-          // suppressed a real UK-critic review of a declared Edinburgh Fringe
-          // prior run on a live off-Broadway transfer.
-          const reverseGuardReviewDate = data.publishDate ? parseDate(data.publishDate) : null;
-          const reversePriorRunVerdict = evaluateReverseLondonCrossMarketGuard({
-            outletIsLondon: true,
-            reviewDate: reverseGuardReviewDate,
-            priorRuns: showById[showId] && showById[showId].priorRuns,
-          });
-
-          // CV override — symmetric with the forward guard above.
-          // [GUARD:CROSS-MARKET-CV-OVERRIDE]
-          //
-          // Tighten 2026-05-23: a UK-hosted URL (.co.uk / .org.uk) on a Broadway
-          // or off-Broadway show cannot be CV-overridden. The LLM verifier reads
-          // content semantics ("is this a review of this play?") and cannot tell
-          // a London revival of the same title from the NYC production — see
-          // rock-n-roll-2007 / west-end-best-friend--erifyli-gigante (Hampstead
-          // Theatre 2023 review attached to the 2007 Broadway production). The
-          // geographic signal (UK domain reviewing a Broadway show ID) is canonical;
-          // legitimate dual-market coverage is already exempt via DUAL_MARKET_OUTLETS.
-          const cv = data.contentVerification;
-          let cvSaysCorrect = cv && cv.isValid === true
-            && cv.wrongProduction === false && cv.confidence === 'high';
-          if (cvSaysCorrect && data.url) {
-            try {
-              const cvHost = new URL(data.url).hostname || '';
-              if (cvHost.endsWith('.co.uk') || cvHost.endsWith('.org.uk')) cvSaysCorrect = false;
-            } catch (e) { /* malformed URL — leave cvSaysCorrect as-is */ }
-          }
-          if (cvSaysCorrect || !reversePriorRunVerdict.shouldFlag) {
-            // skip the flag + skip the exclusion — let downstream pipeline use it
-          } else {
-            // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk
-            if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data) && !skipStaleFlagWrite(data)) {
-              // [GUARD:CROSS-MARKET-LONDON-ON-OTHER]
-              data.wrongProduction = true;
-              invalidateWrongProductionAutoClear(data);
-              data.wrongProductionNote = `Cross-market: London outlet "${rawOutlet}" reviewing ${showCategory} show`;
-              try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
-            }
-            logExclusion("skippedCrossMarket", showId, file, data);
-            stats.skippedCrossMarket = (stats.skippedCrossMarket || 0) + 1;
-            if (!stats.crossMarketDetails) stats.crossMarketDetails = [];
-            stats.crossMarketDetails.push({ showId, outlet: rawOutlet, file, direction: 'london→broadway', urlFallback: urlIsUK });
-            return;
-          }
-        }
+        logExclusion("skippedCrossMarket", showId, file, data);
+        stats.skippedCrossMarket = (stats.skippedCrossMarket || 0) + 1;
+        if (!stats.crossMarketDetails) stats.crossMarketDetails = [];
+        stats.crossMarketDetails.push({ showId, outlet: rawOutlet, file, direction: 'london→broadway', urlFallback: reverseCrossMarket.urlIsUK });
+        return;
       }
 
       // [GUARD:CROSS-MARKET-LATE-DUAL-UK] BRO-5429: the reverse guard above exempts
