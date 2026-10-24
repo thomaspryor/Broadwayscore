@@ -12918,7 +12918,7 @@
       "resolveReason": "job-green"
     },
     "cron-health:Weekly A/B Monitors": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Weekly A/B Monitors",
@@ -12929,7 +12929,8 @@
       "lastSurfacedAt": "2026-10-21T16:25:30.418Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-24T15:12:04.560Z"
     },
     "land:land/bro-4238-failopen": {
       "status": "resolved",
@@ -13471,7 +13472,7 @@
       "resolveReason": "audit-tour-pages: no longer reported"
     },
     "cron-health-chronic:Weekly A/B Monitors": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Weekly A/B Monitors",
       "firstSeen": "2026-10-08T18:17:10.037Z",
@@ -13482,7 +13483,8 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-5998",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-24T15:12:04.578Z"
     },
     "we-aggregator-go-live:jfod-west-end-2025": {
       "status": "resolved",
@@ -25734,6 +25736,20 @@
       "lastSeen": "2026-10-24T14:53:13.210Z",
       "lastNotifiedAt": "2026-10-24T14:53:13.210Z",
       "lastSurfacedAt": "2026-10-24T14:53:13.210Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health:Commercial Pending Review Notify": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Commercial Pending Review Notify",
+      "firstSeen": "2026-10-24T15:12:04.441Z",
+      "incidentOpenedAt": "2026-10-24T15:12:04.441Z",
+      "lastSeen": "2026-10-24T15:12:04.441Z",
+      "lastNotifiedAt": "2026-10-24T15:12:04.441Z",
+      "lastSurfacedAt": "2026-10-24T15:12:04.441Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
