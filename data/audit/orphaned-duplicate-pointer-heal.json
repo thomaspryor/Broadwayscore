@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-24T16:12:12.618Z",
+  "generated": "2026-10-24T16:22:40.751Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 34,
+  "count": 33,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -64,13 +64,6 @@
       "loserFile": "guardian--unknown.json",
       "targetFile": "guardian--emma-brockes.json",
       "reason": "orphaned-duplicate-heal: guardian--emma-brockes.json was flagged invalid after guardian--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "frozen-west-end-2021",
-      "loserFile": "standard--nick-curtis.json",
-      "targetFile": "standard--alice-saville.json",
-      "reason": "orphaned-duplicate-heal: standard--alice-saville.json was flagged invalid after standard--nick-curtis.json was pointed at it",
       "field": "duplicateOf"
     },
     {
