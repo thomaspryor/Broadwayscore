@@ -5,7 +5,8 @@
     "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
     "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
     "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json",
-    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
+    "other-desert-cities-2026/new-york-city-theatre--unknown.json"
   ],
   "failed": [
     "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
@@ -15,7 +16,16 @@
     "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
     "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
     "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
-    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json"
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
+    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/timeout--unknown.json",
+    "lincoln-in-the-bardo-off-broadway-2026/hotelbelleclaire--unknown.json",
+    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json",
+    "other-desert-cities-2026/cbsnews--unknown.json",
+    "school-pictures-off-broadway-2026/timeout--unknown.json",
+    "school-pictures-off-broadway-2026/airmail--air-mail.json",
+    "seussical-theatre-young-audiences-off-broadway-2026/wknd--unknown.json",
+    "the-dog-show-come-sit-stay-off-broadway-2026/talkalmanmusic--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -29,7 +39,8 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json"
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -38,10 +49,12 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "other-desert-cities-2026/new-york-city-theatre--unknown.json"
+    ]
   },
   "startTime": "2026-10-24T02:32:47.012Z",
-  "lastProcessed": "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
+  "lastProcessed": "the-dog-show-come-sit-stay-off-broadway-2026/talkalmanmusic--unknown.json",
   "log": [
     {
       "t": "2026-10-24T02:33:27.948Z",
@@ -60,6 +73,70 @@
       "event": "bb-session",
       "session": "25606ce8",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-24T02:58:43.308Z",
+      "event": "bb-session",
+      "session": "3bd70139",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-24T02:59:09.613Z",
+      "event": "bb-session",
+      "session": "61151106",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-24T02:59:10.020Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-24T02:59:18.828Z",
+      "event": "bb-session",
+      "session": "712984c9",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-24T02:59:19.265Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-24T03:00:45.811Z",
+      "event": "bb-session",
+      "session": "6b615dbf",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-24T03:00:53.332Z",
+      "event": "bb-session",
+      "session": "6491c9e5",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-24T03:01:56.644Z",
+      "event": "bb-session",
+      "session": "99441adf",
+      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
+    },
+    {
+      "t": "2026-10-24T03:02:55.440Z",
+      "event": "bb-session",
+      "session": "d6ea59e2",
+      "url": "https://www.cbsnews.com/video/other-desert-cities-on-broadway-family-secrets-lai"
+    },
+    {
+      "t": "2026-10-24T03:04:13.674Z",
+      "event": "bb-session",
+      "session": "7016eefd",
+      "url": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-s"
+    },
+    {
+      "t": "2026-10-24T03:04:20.832Z",
+      "event": "bb-session",
+      "session": "e3859b59",
+      "url": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-s"
     }
   ]
 }
