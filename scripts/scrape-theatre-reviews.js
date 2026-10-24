@@ -463,7 +463,7 @@ function writeReviewFiles(reviews, showId, reviewTextsDir = REVIEW_TEXTS_DIR) {
       }
     }
 
-    outcomes.push({ outlet: review.outlet, critic: review.critic || null, action: result.action });
+    outcomes.push({ outlet: review.outlet, critic: review.critic || null, action: result.action, reason: result.reason || null });
     if (result.action === 'new') created++;
     else if (result.action === 'updated') updated++;
     else if (result.action === 'skipped') skipped++;
@@ -623,7 +623,10 @@ async function main() {
     const toWrite = [...c.held.map(h => h.row), ...c.missing];
     const res = writeReviewFiles(toWrite, show.id);
     const refused = res.outcomes.filter(o => o.action === 'skipped');
-    const stillMissing = c.missing.filter(m => refused.some(o => o.outlet === m.outlet && (o.critic || null) === (m.critic || null)));
+    const stillMissing = c.missing
+      .map(m => ({ m, o: refused.find(o => o.outlet === m.outlet && (o.critic || null) === (m.critic || null)) }))
+      .filter(x => x.o)
+      .map(x => ({ ...x.m, refusal: x.o.reason }));
     const createdKeys = new Set(res.outcomes.filter(o => o.action === 'new').map(o => `${o.outlet}|${o.critic || ''}`));
     const addedRows = c.missing.filter(m => createdKeys.has(`${m.outlet}|${m.critic || ''}`));
     const added = DRY_RUN ? 0 : addedRows.length;

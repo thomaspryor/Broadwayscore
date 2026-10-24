@@ -94,7 +94,7 @@ function coverageEntry(show, roundupUrl, c) {
     held: c.held.length,
     excluded: c.excluded.length,
     missing: c.missing.length,
-    missingRows: c.missing.map((m) => ({ outlet: m.outlet, critic: m.critic || null })),
+    missingRows: c.missing.map((m) => ({ outlet: m.outlet, critic: m.critic || null, ...(m.refusal ? { refusal: m.refusal } : {}) })),
     excludedRows: c.excluded.map((e) => ({ outlet: e.outlet, critic: e.critic || null, reason: e.reason })),
   };
 }
