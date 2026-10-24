@@ -29,7 +29,7 @@ const { pdfUrlVariants, nonPdfHead } = require('./lib/tr-pdf-url');
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
 const { resolveTheatreRecordWriteTarget, mergeTheatreRecordIntoExisting } = require('./lib/review-text-identity');
 
-const { DATE_SHORT, parseShortDate, parsePdfReviews, parseRawPdfReviews, parseDefaultPdfReviews, mergeDefaultReviews, maskPdfText, locateReviews, capsLines } = require('./lib/tr-pdf-parse');
+const { DATE_SHORT, parseShortDate, parsePdfReviews, parseRawPdfReviews, parseDefaultPdfReviews, mergeDefaultReviews, maskPdfText, locateReviews, productionRuns } = require('./lib/tr-pdf-parse');
 const { foldDiacritics } = require('./lib/title-match');
 
 // BRO-6097 coverage probe: per-show outcome (counts and reasons only, never
@@ -141,7 +141,7 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
       layout: locateReviews(text0, reviews.slice(0, layoutCount), show.title),
       raw: locateReviews(rawText, rawReviews, show.title),
       default: locateReviews(defaultText, defaultReviews, show.title),
-      caps: { layout: capsLines(text0), raw: capsLines(rawText), default: capsLines(defaultText) },
+      runs: { raw: productionRuns(rawText.split('\n')), default: productionRuns(defaultText.split('\n')) },
     };
     probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { sections: diag }) });
   }

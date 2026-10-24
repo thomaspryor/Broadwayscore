@@ -541,8 +541,8 @@ function maskPdfText(text, keepWords) {
 // October 2017") starts with letters, so a line that begins with the day is
 // the production's run. Before this, a common-word title (All About Eve,
 // After Life) matched the prose of whichever production followed ours.
-const RUN_DATES_LINE = /^\d{1,2} [A-Za-z]+( \d{4})? [\u2013-] \d{1,2} [A-Za-z]+ \d{4}$/;
-const isCapsTitle = (l) => /[A-Z]/.test(l) && l === l.toUpperCase() && l.length > 2 && !isDateLine(l);
+const RUN_DATES_LINE = /^\d{1,2}( [A-Za-z]+)?( \d{4})? [\u2013-] \d{1,2} [A-Za-z]+ \d{4}$/;
+const isCapsTitle = (l) => /[A-Z]/.test(l) && l === l.toUpperCase() && l.length > 2 && !isDateLine(l) && !/[.,;:]$/.test(l) && !isKnownOutletLine(l);
 
 const { trTitleMatches } = require('./tr-production-pick');
 const { foldDiacritics } = require('./title-match');
@@ -551,13 +551,15 @@ function productionRuns(lines) {
   const runs = [];
   lines.forEach((l, i) => {
     if (!RUN_DATES_LINE.test(l.trim())) return;
-    let title = null;
+    // A long title wraps over up to three caps lines.
+    const parts = [];
     for (let k = i + 1, seen = 0; k < Math.min(i + 6, lines.length) && seen < 4; k++) {
       const t = lines[k].trim();
       if (!t) continue;
       seen++;
-      if (isCapsTitle(t)) { title = t; break; }
+      if (isCapsTitle(t) && parts.length < 3) parts.push(t); else if (parts.length) break;
     }
+    const title = parts.length ? parts.join(' ') : null;
     runs.push({ line: i, title });
   });
   return runs;
@@ -591,36 +593,25 @@ function productionSections(lines) {
   return out;
 }
 
-// ALL-CAPS lines (production titles, outlets, captions) with their line numbers.
-function capsLines(text) {
-  const out = [];
-  text.split('\n').forEach((l, i) => {
-    const t = l.trim();
-    if (t.length >= 4 && t.length <= 80 && /[A-Z]{3}/.test(t) && t === t.toUpperCase()) out.push([i, maskPdfText(t, [])]);
-  });
-  return out.slice(0, 4000);
-}
-
 function locateReviews(text, reviews, showTitle) {
   const lines = text.split('\n');
   const trimmed = lines.map(l => l.trim());
+  const runs = productionRuns(lines);
   const sections = productionSections(lines);
-  const ourUpper = String(showTitle || '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const mk = (x) => maskPdfText(x, []).trim().slice(0, 60);
   return reviews.map(r => {
     const first = String(r.fullText || '').split('\n')[0].trim().slice(0, 40);
     const line = first.length >= 15 ? trimmed.findIndex(t => t.startsWith(first)) : -1;
     let section = null;
-    for (const s of sections) if (s.line <= line) section = s.title; else break;
-    const secNorm = section ? section.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase() : null;
-    const mk = (x) => maskPdfText(x, []).trim().slice(0, 90);
-    const before = line > 0 ? lines.slice(Math.max(0, line - 4), line).map(mk) : [];
+    for (const x of sections) if (x.line <= line) section = x.title; else break;
+    let run = null;
+    for (const x of runs) { if (x.line <= line) run = x; else break; }
     const tail = String(r.fullText || '').split('\n').filter(Boolean).slice(-2).map(mk);
-    return { outlet: r.outlet, date: r.date, line, before, tail, section, ours: secNorm == null ? null : (secNorm === ourUpper || secNorm === 'THE ' + ourUpper || secNorm.includes(ourUpper)) };
+    return { outlet: r.outlet, date: r.date, line, section, runTitle: run ? run.title : null, tail, owned: line < 0 ? null : sectionOwnedBy(runs, line, showTitle) };
   });
 }
 
 module.exports = {
-  capsLines,
   productionRuns,
   sectionOwnedBy,
   productionSections,

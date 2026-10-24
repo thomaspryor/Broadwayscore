@@ -365,6 +365,11 @@ test('BRO-6154 ownership on the real masked Band issue (raw + default)', async (
     assert.ok(runs.some(r => r.title === 'LABOUR OF LOVE'), `${mode}: Labour of Love block found`);
     const at = runs.find(r => r.title === 'LABOUR OF LOVE').line + 80;
     assert.equal(sectionOwnedBy(runs, at, 'Labour of Love'), true);
+    const own = runs.find(r => r.title === 'THE BAND');
+    if (mode === 'raw') {
+      assert.ok(own, 'The Band own block found (same-month run line)');
+      assert.equal(sectionOwnedBy(runs, own.line + 40, 'The Band'), true);
+    }
     assert.equal(sectionOwnedBy(runs, at, 'The Band'), false);
   }
 });
@@ -374,7 +379,10 @@ test('BRO-6154 locateReviews attributes a review to its production section', () 
   assert.equal(productionSections(t.split('\n')).length, 2);
   const [r] = locateReviews(t, [{ outlet: 'The Guardian', date: '1 May 2021', fullText: 'Some long first line of review text here' }], 'Anna X');
   assert.equal(r.line, 4);
-  assert.equal(r.ours, true);
+  assert.equal(r.owned, null);
+  const t2 = ['x', '01 May \u2013 30 June 2021', 'ANNA X', 'The Guardian', 'Some long first line of review text here'].join('\n');
+  assert.equal(locateReviews(t2, [{ outlet: 'The Guardian', fullText: 'Some long first line of review text here' }], 'Anna X')[0].owned, true);
+  assert.equal(locateReviews(t2, [{ outlet: 'The Guardian', fullText: 'Some long first line of review text here' }], 'Other Show')[0].owned, false);
 });
 
 test('BRO-6154 a block sharing a real word with our title stays unknown, a disjoint one is dropped', () => {
@@ -382,4 +390,12 @@ test('BRO-6154 a block sharing a real word with our title stays unknown, a disjo
   assert.equal(sectionOwnedBy(runs, 3, 'Pride & Prejudice (Sort Of)'), true);
   assert.equal(sectionOwnedBy(runs, 3, 'Pride and Joy'), null);
   assert.equal(sectionOwnedBy(runs, 9, 'After Life'), false);
+});
+
+test('BRO-6154 run blocks: same-month dates, wrapped titles, outlet lines are not titles', () => {
+  const L = ['x', '26 \u2013 30 September 2017', 'THE TRACKERS OF', 'OXYRHYNCHUS', 'text', '03 October \u2013 02 December 2017', 'GUARDIAN', 'THE BAND'];
+  const runs = productionRuns(L);
+  assert.equal(runs.length, 2);
+  assert.equal(runs[0].title, 'THE TRACKERS OF OXYRHYNCHUS');
+  assert.equal(runs[1].title, 'THE BAND');
 });
