@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6052",
   "planId": "d54782ba-3576-4f1f-8cbf-2b7be9a82199",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-24T07:21:13.811Z",
   "submitter": {
     "name": null,
@@ -50,5 +50,29 @@
         "description": "Pre-relabel scoreSource was telegraph-svg-stars (review-texts 07a45f1e21), an outlet-page source; the LLM relabel to anchored-v6 hid it."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-24T09:50:52.859Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-prince-of-egypt-west-end-2020/telegraph--dominic-cavendish.json scoreProvenance: null -> \"page-parsed\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-night-of-the-iguana-west-end-2019/telegraph--dominic-cavendish.json scoreProvenance: null -> \"page-parsed\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-starry-messenger-west-end-2019/telegraph--dominic-cavendish.json scoreProvenance: null -> \"page-parsed\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "top-girls-west-end-2019/telegraph--dominic-cavendish.json scoreProvenance: null -> \"page-parsed\""
+    }
+  ],
+  "executedIn": "ci"
 }
