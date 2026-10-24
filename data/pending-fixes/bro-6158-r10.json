@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6158-r10",
   "planId": "791897cd-7363-467d-8903-e97bec2139ff",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-24T21:57:06.862Z",
   "submitter": {
     "name": null,
@@ -154,5 +154,79 @@
         "description": "commercial.json: side-show-2014.designationBasis"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-24T23:39:51.195Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for in-transit-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for in-transit-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for lysistrata-jones-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for lysistrata-jones-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for soul-doctor-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for soul-doctor-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-scottsboro-boys-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-scottsboro-boys-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for war-paint-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for war-paint-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for finding-neverland-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for finding-neverland-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for side-show-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for side-show-2014"
+    }
+  ],
+  "executedIn": "ci"
 }
