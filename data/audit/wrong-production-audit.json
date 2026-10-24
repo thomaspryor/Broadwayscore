@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-24T01:20:55.484Z",
+  "timestamp": "2026-10-24T01:35:33.522Z",
   "stats": {
     "totalReviews": 59660,
     "alreadyFlagged": 21118,
     "dateGuardCatches": 202,
-    "directorMismatch": 2125,
-    "tvFilmSignals": 1690,
-    "londonSignals": 2842,
+    "directorMismatch": 2126,
+    "tvFilmSignals": 1691,
+    "londonSignals": 2844,
     "offBroadwaySignals": 535,
     "yearMismatch": 178,
-    "noPublishDate": 5425
+    "noPublishDate": 5414
   },
   "findings": [
     {
@@ -10437,6 +10437,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "dear-england-west-end-2023",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2023-11-17",
+      "url": "https://www.londonboxoffice.co.uk/news/post/dear-england-prince-edward-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -51788,6 +51801,25 @@
     },
     {
       "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
+      "file": "liamodell--liam-odell.json",
+      "score": 58,
+      "publishDate": "2024-04-24",
+      "url": "https://liamodell.com/2024/04/24/two-strangers-carry-a-cake-across-new-york-musical-review-criterion-theatre-piccadilly-dujonna-gift-sam-tutty-kiln-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tim jackson\" from two-strangers-bway-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
       "file": "london-box-office--stuart-king.json",
       "score": 79,
       "publishDate": "2024-04-24",
@@ -86291,6 +86323,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "tammy-faye-2024",
+      "file": "latimes--malia-mendez.json",
+      "score": null,
+      "publishDate": "2024-11-20",
+      "url": "https://www.latimes.com/entertainment-arts/music/story/2024-11-20/elton-john-tammy-faye-musical-closing-short-run-broadway",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
