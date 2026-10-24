@@ -630,7 +630,7 @@ async function main() {
 }
 
 // Export the write path for tests (CLAUDE.md §15 — test the real function).
-module.exports = { writeReviewFile };
+module.exports = { writeReviewFile, looksLikeReview };
 
 if (require.main === module) {
   main().catch(e => {
