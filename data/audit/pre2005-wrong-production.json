@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-24T01:39:13.229Z",
+    "generatedAt": "2026-10-24T01:53:20.675Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 96,
-    "highConfidence": 4,
+    "totalFlagged": 97,
+    "highConfidence": 5,
     "mediumConfidence": 92,
     "lowConfidence": 0,
-    "reassignable": 39
+    "reassignable": 40
   },
   "results": [
     {
@@ -1461,6 +1461,23 @@
         "revival text signals: revival, back on broadway"
       ],
       "textSnippet": "**Bernadette Peters Shows Off Her Serious Side in the Broadway Hit \"Sunday in the Park with George\"**\n\nBy HOWARD KISSEL\n\nWhen Bernadette Peters last appeared on Broadway ten years ago, it was nearly a"
+    },
+    {
+      "showId": "jesus-christ-superstar-1971",
+      "showTitle": "Jesus Christ Superstar",
+      "showYear": 1971,
+      "file": "exeunt-magazine--unknown.json",
+      "outlet": "Exeunt Magazine",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "high",
+      "suggestedShowId": "jesus-christ-superstar-2012",
+      "signals": [
+        "revival cast/director match for jesus-christ-superstar-2012: Des McAnuff, Paul Nolan, Josh Young, Chilina Kennedy, Stratford, director: Des McAnuff",
+        "revival text signals: back on broadway, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "If Jesus Christ Superstar is one of the musicals with the most predictable endings, why have audiences remained in its thrall for so many years? Why, in fact, do audiences continue to hunger so for a "
     },
     {
       "showId": "jesus-christ-superstar-1971",
