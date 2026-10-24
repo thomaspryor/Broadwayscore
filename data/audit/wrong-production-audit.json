@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-24T15:16:35.371Z",
+  "timestamp": "2026-10-24T15:26:43.943Z",
   "stats": {
-    "totalReviews": 60430,
-    "alreadyFlagged": 21250,
+    "totalReviews": 60481,
+    "alreadyFlagged": 21252,
     "dateGuardCatches": 222,
     "directorMismatch": 2175,
-    "tvFilmSignals": 1710,
-    "londonSignals": 2919,
+    "tvFilmSignals": 1712,
+    "londonSignals": 2922,
     "offBroadwaySignals": 534,
     "yearMismatch": 195,
-    "noPublishDate": 5562
+    "noPublishDate": 5567
   },
   "findings": [
     {
@@ -5508,7 +5508,7 @@
       "showId": "bonnie-and-clyde-west-end-2022",
       "file": "artsdesk--gary-naylor.json",
       "score": 57,
-      "publishDate": null,
+      "publishDate": "2022-04-21",
       "url": "https://theartsdesk.com/theatre/bonnie-clyde-arts-theatre-review-great-songs-plot-fires-too-many-blanks",
       "findings": [
         {
@@ -35988,6 +35988,19 @@
     },
     {
       "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "file": "deadline--greg-evans.json",
+      "publishDate": "2026-10-15",
+      "url": "https://deadline.com/2026/10/rhinoceros-broadway-tatiana-maslany-tony-shalhoub-john-turturro-1237158434/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        }
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
       "file": "wbur--jacquinn-sinclair.json",
       "score": 89,
       "publishDate": "2026-08-25",
@@ -36058,6 +36071,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "rockets-and-blue-lights-west-end-2021",
+      "file": "observer--susannah-clapp.json",
+      "publishDate": "2021-09-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -64867,6 +64893,19 @@
     },
     {
       "showId": "curtains-west-end-2019",
+      "file": "daily-mail--luke-jones.json",
+      "publishDate": "2019-12-27",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "curtains-west-end-2019",
       "file": "guardian--mark-lawson.json",
       "score": 82,
       "publishDate": "December 18th, 2019",
@@ -75142,6 +75181,19 @@
     },
     {
       "showId": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2019",
+      "file": "times-uk--chris-bennion.json",
+      "publishDate": "2019-07-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2019",
       "file": "whatsonstage--alun-hood.json",
       "score": 64,
       "publishDate": "July 11th, 2019",
@@ -84529,6 +84581,19 @@
       ]
     },
     {
+      "showId": "rockets-and-blue-lights-west-end-2021",
+      "file": "thereviewshub--stephen-bates.json",
+      "publishDate": "2021-09-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
       "showId": "romeo-and-julie-west-end-2023",
       "file": "daily-mail--patrick-marmion.json",
       "score": 67,
@@ -85398,7 +85463,7 @@
       "showId": "seven-methods-of-killing-kylie-jenner-west-end-2019",
       "file": "guardian--arifa-akbar.json",
       "score": 60,
-      "publishDate": null,
+      "publishDate": "2019-07-09",
       "url": "https://www.theguardian.com/stage/2019/jul/09/seven-methods-of-killing-kylie-jenner-review-royal-court-theatre",
       "findings": [
         {
