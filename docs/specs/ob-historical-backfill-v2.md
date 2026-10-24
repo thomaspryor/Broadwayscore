@@ -1,7 +1,34 @@
 # Off-Broadway historical backfill, plan v2 (BRO-6146)
 
-Status: v2, revised after a six-reviewer /plan-review (2026-10-24). Plan only. No code, data or workflow changes in this card.
+Status: v3 (gap-first, TheaterMania universe, press screen), after a six-reviewer /plan-review of v2 and the first season run (2026-10-24). Plan only. No code, data or workflow changes in this card.
 Where the "v2 changes" section below conflicts with the v1 text under it, v2 wins.
+
+## v3 changes (2026-10-24, owner feedback after the first season run; supersedes conflicting text below)
+
+Owner feedback: 16 shows is too few, and the June 2025 to February 2026 gap (before OB coverage began) should come first.
+
+**Measured gap.** shows.json has 0 to 4 OB openings a month for 2025-06 to 2025-12 (14 total), then 13, 25, 43 for 2026-01..03 and 20 to 45 a month after. At the 2026 rate (163 shows with 3+ reviews in 8 months, about 20 a month) the gap window should hold roughly 140 scoreable shows.
+
+**Universe source found: TheaterMania's public WP JSON** (`theatermania.com/wp-json/wp/v2/shows?market=98`, already used by `scripts/lib/theatermania-ob.js` for current shows). It lists 7,922 OB shows across 80 pages of 100, with ACF `opening_date`, `preview_date`, `closing_date` (YYYYMMDD) and a venue id. It is free (no scraper credits, reachable from a cloud session), paged and dated. Counts by opening month run 7 to 39, about 200 to 300 a year back to 2022. Title plus opening date within 120 days against shows.json:
+
+| Window | TM listings | Not in shows.json |
+|---|---|---|
+| 2025-06 to 2026-02 (the gap) | 204 | 168 |
+| 2024-06 to 2025-05 | 257 | 247 |
+| 2023-06 to 2024-05 | 265 | 250 |
+| 2022-01 to 2023-05 | 298 | 293 |
+
+This replaces Phase 0's three-source spike: TM is the dated listing (the WOS role in the WE backfill). It is the loose universe, so it needs a notability filter.
+
+**Notability becomes a measured press screen, not awards.** Phase H showed an award does not guarantee reviews (Sumo: Lortel nominee, 2 reviews), and the award-only 2024-25 pass found just 16 promotable shows. New rule: a TM-listed, dated production is promotable when a pre-screen finds critic reviews from at least 3 distinct outlets in the outlet registry, or 2 when one is T1/T2. The screen runs one or two SERP queries per show (`"<title>" review` plus venue) and counts distinct registry outlet domains in the results. Cost is about $0.0005 per query, so screening all 168 gap candidates is under $0.20. It runs as a committed script through `cloud-run-script.js` (cloud has no scraper keys), prints JSON, writes nothing. Awards and flagship venue stay as tie-breakers for shows at the threshold.
+
+**Order changes.** Gap first (2025-06 to 2026-02), then the rest of 2024-25 (the 16 award shows already added and gathering are its first slice), then 2023-24, then 2022-23. Each still passes the cohort audit before the next.
+
+**Expected size.** If 60 to 80 percent of the 168 gap candidates fail the press screen (small showcases, festivals, readings), the gap yields about 35 to 70 shows. That is below the 140 estimate, which assumed the 2026 catalog's live-tracking yield. The screen gives the real number before anything is promoted.
+
+**Cost.** Scraping measured $0.04 to $0.055 per show (Phase H). Screening adds about $0.001 per candidate. LLM scoring still dominates and is measured on the 16-show run.
+
+**Exclusions on TM rows.** Drop rows with no opening or preview date, runs under 14 days, titles matching festival or reading or benefit or concert or cabaret patterns, and venues outside OB (TM market 98 includes some off-off spaces). Dedup against shows.json by normalized title and opening date within 120 days, and refuse an id that exists (the add-show action already does).
 
 ## v2 changes from plan review (supersedes conflicting text below)
 
