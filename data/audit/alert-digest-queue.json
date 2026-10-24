@@ -1414,5 +1414,19 @@
       }
     ],
     "queuedAt": "2026-10-24T19:05:57.066Z"
+  },
+  {
+    "conditionKey": "bd-circuit-breaker-web_unlocker2",
+    "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (1944/1750 reqs)",
+    "description": "Zone web_unlocker2 billed 1944 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n21 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (576), gather-reviews.js (574), collect-review-texts.js (354).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T19:07:25.905Z"
   }
 ]
