@@ -81,7 +81,10 @@ const KNOWN_OUTLETS_UPPER = new Set([
     'THE I', 'I NEWS', 'LONDONIST', 'CITY A.M.',
 ]);
 
-function parsePdfReviews(text, showTitle) {
+// `stats` (optional) is filled for the BRO-6097 coverage probe: whether the
+// production's Reviews section was found, how many outlet+date headers it
+// holds, and how many headers produced no review (text under 50 chars).
+function parsePdfReviews(text, showTitle, stats) {
   const lines = text.split('\n');
   const reviews = [];
 
@@ -137,6 +140,7 @@ function parsePdfReviews(text, showTitle) {
     }
   }
 
+  if (stats) { stats.sectionFound = reviewsStart !== -1; stats.productionCount = productionCount; stats.headers = 0; stats.shortDropped = 0; }
   if (reviewsStart === -1) {
     if (productionCount > 1) console.log(`  -layout: "${showTitle}" heading not found in a ${productionCount}-production issue; relying on -raw title matching`);
     return [];
@@ -197,6 +201,7 @@ function parsePdfReviews(text, showTitle) {
         const outlet = line;
         const date = nextLine;
         const critic = (lines[i + 2] || '').trim();
+        if (stats) stats.headers++;
         i += 3;
 
         // Skip blank line after critic name
@@ -220,6 +225,7 @@ function parsePdfReviews(text, showTitle) {
         let fullText = cutAtProductionHeader(textLines).map(l => l.trim()).filter(l => l).join('\n');
         // Clean PDF artifacts
         fullText = fullText.replace(/\nIndex$/m, '').replace(/\nReviews$/m, '').replace(/\n\d+$/m, '').trim();
+        if (stats && fullText.length <= 50) stats.shortDropped++;
         if (fullText.length > 50) {
           // Convert outlet name to Title Case
           const outletTitle = outlet.split(/[\s.]+/)
@@ -381,7 +387,22 @@ function parseRawPdfReviews(text, showTitle) {
   }));
 }
 
+// BRO-6097: layout skeleton of a paid TR issue. Short lines (outlet, date,
+// critic, headings) keep their capitals; prose lines and every lowercase or
+// non-ASCII letter become 'x', so structure survives and no prose does.
+function maskPdfText(text, keepWords) {
+  const keep = new Set(keepWords.map(w => w.toLowerCase()));
+  return text.split('\n').map(line => {
+    // Short lines carry the structure (outlet, date, critic, headings); long
+    // lines are prose, so their capitals go too. Non-ASCII letters always go.
+    const prose = line.trim().length > 70;
+    return line.replace(/[\p{L}]+/gu, w => (keep.has(w.toLowerCase()) ? w
+      : w.replace(/[\p{L}]/gu, c => (/[A-Z]/.test(c) && !prose ? c : 'x'))));
+  }).join('\n');
+}
+
 module.exports = {
+  maskPdfText,
   DATE_LONG,
   DATE_SHORT,
   isDateLine,

@@ -307,12 +307,6 @@
       "kind": "assignment",
       "snippet": "if (!DRY_RUN) show.venue = venueDecision.venue;"
     },
-    "scripts/extract-theatre-record.js::venue: venue?.textContent?.trim() || '',": {
-      "file": "scripts/extract-theatre-record.js",
-      "line": 716,
-      "kind": "literal",
-      "snippet": "venue: venue?.textContent?.trim() || '',"
-    },
     "scripts/fetch-show-images-auto.js::venue: show.venue,": {
       "file": "scripts/fetch-show-images-auto.js",
       "line": 2663,

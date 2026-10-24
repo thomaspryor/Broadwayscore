@@ -15,7 +15,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { parsePdfReviews, parseRawPdfReviews, cutAtProductionHeader } = require('./tr-pdf-parse.js');
+const { parsePdfReviews, parseRawPdfReviews, cutAtProductionHeader, maskPdfText } = require('./tr-pdf-parse.js');
 
 const JOSEPH = 'Joseph and the Amazing Technicolor Dreamcoat';
 const PAD = ' '.repeat(52);
@@ -153,4 +153,13 @@ test('BRO-5141: the header walk-back stops at three title lines (a caps line in 
     'Previews / Opens              Press night                   Closes',
   ]);
   assert.deepEqual(cut, ['and the audience roars its approval.', 'BRAVO.']);
+});
+
+test('maskPdfText keeps structure lines and drops prose (BRO-6097)', () => {
+  const prose = 'A lovely evening at the Théâtre with CAPITALS and Mixed Case words that run past seventy characters.';
+  const out = maskPdfText(['THE STAGE', '21.12.17', 'Michael Billington', prose].join('\n'), ['Joseph']);
+  const lines = out.split('\n');
+  assert.deepEqual(lines.slice(0, 3), ['THE STAGE', '21.12.17', 'Mxxxxxx Bxxxxxxxxx']);
+  assert.equal(lines[3], prose.replace(/\p{L}/gu, 'x'));
+  assert.equal(maskPdfText('Joseph at the Palladium', ['Joseph']), 'Joseph xx xxx Pxxxxxxxx');
 });
