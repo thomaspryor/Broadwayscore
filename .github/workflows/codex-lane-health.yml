@@ -45,11 +45,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Checkout (full history for the landings window)
+      # Blobless + sparse: the first dispatch hung 15 min on a plain
+      # fetch-depth: 0 (this repo's data/ history is huge). The alarm only
+      # reads commit metadata (git log) and runs scripts/, so skip blobs.
+      - name: Checkout (full commit history, no blobs)
         uses: actions/checkout@v5
         with:
           ref: main
           fetch-depth: 0
+          filter: blob:none
+          sparse-checkout: |
+            scripts
+            package.json
+            data/audit
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
