@@ -352,3 +352,33 @@ test('regression: a subset-only match on a longer title does not outrank a full 
   const r = matchRoundupToShow(rd('jesus-christ-superstar-palladium-reviews', 'Jesus Christ Superstar', '2026-06-03T10:00:00', 'Palladium'), shows);
   assert.equal(r.show && r.show.id, 'jcs-a');
 });
+
+test('one shared venue word is not a venue hit ("Theatre Royal Haymarket" is not Drury Lane)', () => {
+  const shows = [
+    show('twin-west-end-2025', 'Twin Peaks Play', 'west-end', '2025-03-01', 'Theatre Royal Drury Lane'),
+    show('twin-west-end-2025b', 'Twin Peaks Play', 'west-end', '2025-03-06', 'Palace Theatre'),
+  ];
+  const r = matchRoundupToShow(rd('twin-peaks-play-reviews', 'Twin Peaks Play', '2025-03-20T10:00:00', 'Theatre Royal Haymarket'), shows);
+  assert.ok(!r.show, 'neither house is named, so the two same-window shows stay ambiguous');
+  const ok = matchRoundupToShow(rd('twin-peaks-play-reviews', 'Twin Peaks Play', '2025-03-20T10:00:00', 'Theatre Royal Drury Lane'), shows);
+  assert.equal(ok.show && ok.show.id, 'twin-west-end-2025');
+});
+
+test('accented house names match the plain spelling (Noel Coward / Noël Coward)', () => {
+  const shows = [show('x-west-end-2025', 'The Last Laugh', 'west-end', '2025-02-25', 'Noël Coward Theatre')];
+  const r = matchRoundupToShow(rd('the-last-laugh-reviews', 'The Last Laugh', '2025-02-27T10:00:00', 'Noel Coward Theatre'), shows);
+  assert.equal(r.show && r.show.id, 'x-west-end-2025');
+});
+
+test('plural stemming does not turn a one-word headline into a longer title', () => {
+  const shows = [show('girl-from-the-north-country-west-end-2017', 'Girl from the North Country', 'west-end', '2017-07-03', 'Noël Coward Theatre')];
+  const r = matchRoundupToShow(rd('girls-reviews', 'Girls', '2017-07-10T10:00:00', null), shows);
+  assert.ok(!r.show);
+});
+
+test('classifyOutOfScope reads TR venue spellings: Sohoplace and "company at the house" are West End', () => {
+  const e = (venue) => ({ url: 'https://theatre.reviews/reviews-roundup/x-reviews/', date: '2024-08-05', venue });
+  assert.equal(classifyOutOfScope(e('Sohoplace')), null);
+  assert.equal(classifyOutOfScope(e('Kit Kat Club at the Playhouse Theatre')), null);
+  assert.match(classifyOutOfScope(e('Huron Club at the SoHo Playhouse')), /Off-West-End/);
+});

@@ -1,14 +1,14 @@
 {
   "issueNumber": "bro-6096",
-  "planId": "6dd5e0be-0264-42dd-acb0-fa77788a5f90",
+  "planId": "43c02e4f-a919-4d7a-af4b-00cc2054187e",
   "status": "pending",
-  "createdAt": "2026-10-24T02:48:01.826Z",
+  "createdAt": "2026-10-24T03:46:11.450Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "Add 13 London productions that theatre.reviews round-ups cover, fix the Burlesque venue, and declare the earlier runs of four transfers (BRO-6096)",
+    "summary": "Add 14 London productions that theatre.reviews round-ups cover, fix the Burlesque venue and closing date, and declare the earlier runs of four transfers (BRO-6096)",
     "steps": [
       "add-show",
       "add-show",
@@ -24,10 +24,12 @@
       "add-show",
       "add-show",
       "WhatsOnStage and the theatre.reviews round-up (burlesque-savoy-reviews) both place the 2025 run at the Savoy Theatre, not The Arts at Marble Arch.",
+      "Round-up: Burlesque can be seen at the Savoy Theatre until 6 September 2025.",
       "Declare the earlier run so its theatre.reviews round-up attaches to this production (BRO-6096).",
       "Declare the earlier run so its theatre.reviews round-up attaches to this production (BRO-6096).",
       "Declare the earlier run so its theatre.reviews round-up attaches to this production (BRO-6096).",
-      "Declare the earlier run so its theatre.reviews round-up attaches to this production (BRO-6096)."
+      "Declare the earlier run so its theatre.reviews round-up attaches to this production (BRO-6096).",
+      "add-show"
     ],
     "riskLevel": "low",
     "actions": [
@@ -194,7 +196,7 @@
           "venue": "Harold Pinter Theatre",
           "previewsStartDate": "2024-06-28",
           "openingDate": "2024-07-05",
-          "closingDate": "2024-08-11",
+          "closingDate": "2024-09-21",
           "status": "closed",
           "category": "west-end",
           "market": "west-end",
@@ -295,7 +297,7 @@
           "id": "death-of-england-closing-time-west-end-2024",
           "title": "Death of England: Closing Time",
           "slug": "death-of-england-closing-time-west-end-2024",
-          "venue": "@sohoplace",
+          "venue": "Soho Place",
           "previewsStartDate": null,
           "openingDate": "2024-08-22",
           "closingDate": "2024-09-28",
@@ -379,6 +381,15 @@
       {
         "type": "data-edit",
         "file": "shows.json",
+        "showId": "burlesque-west-end-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2025-09-06",
+        "description": "Round-up: Burlesque can be seen at the Savoy Theatre until 6 September 2025."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
         "showId": "punch-west-end-2025",
         "field": "priorRuns",
         "oldValue": null,
@@ -443,6 +454,31 @@
           }
         ],
         "description": "Declare the earlier run so its theatre.reviews round-up attaches to this production (BRO-6096)."
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "death-of-england-michael-delroy-west-end-2024",
+          "title": "Death of England: Michael and Delroy",
+          "slug": "death-of-england-michael-delroy-west-end-2024",
+          "venue": "Soho Place",
+          "openingDate": "2024-07-23",
+          "closingDate": "2024-09-21",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-24T00:00:00.000Z",
+          "openingDateSource": "tr-roundup-bro-6096",
+          "closingDateSource": "tr-roundup-bro-6096",
+          "evidenceUrls": [
+            "https://theatre.reviews/reviews-roundup/death-of-england-michael-delroy-reviews/"
+          ]
+        }
       }
     ]
   }

@@ -85,13 +85,29 @@ function slugWords(slug) {
 }
 
 function venueTokens(v) {
-  const t = String(v || '').toLowerCase()
+  const t = String(v || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
     .replace(/\(.*?\)/g, ' ')
     .replace(/['\u2018\u2019]/g, '')
     .split(/[^a-z0-9]+/).filter((w) => w && !VENUE_NOISE.has(w));
   // TR writes "sohoplace" for Soho Place.
   if (t.length >= 2) t.push(t[0] + t[1]);
   return t;
+}
+
+/**
+ * A body venue names the house when every word of one of its parts is in the
+ * show's venue. One shared word is not enough: "Lyric Hammersmith" shares
+ * "lyric" with the Lyric Theatre, "Theatre Royal Haymarket" shares "royal"
+ * with Drury Lane.
+ */
+function bodyVenueHit(bodyVenue, showTokens) {
+  return String(bodyVenue).split(/\s*\/\s*|\s+at the\s+/i).some((part) => {
+    const t = venueTokens(part);
+    if (!t.length) return false;
+    const joined = t.length >= 2 ? t[t.length - 1] : null; // synthesized "sohoplace"
+    const core = joined ? t.slice(0, -1) : t;
+    return core.every((w) => showTokens.has(w)) || (joined != null && showTokens.has(joined));
+  });
 }
 
 const NATIONAL_HOUSES = ['national', 'olivier', 'lyttelton', 'dorfman', 'cottesloe'];
@@ -213,7 +229,7 @@ function matchRoundupToShow(roundup, shows) {
     const vt = showVenueTokens(c.show);
     // A venue read from the post body beats the slug (the slug can be wrong).
     const bodyTokens = roundup.venue ? venueTokens(roundup.venue) : [];
-    let venueHit = bodyTokens.length ? bodyTokens.some((w) => vt.has(w)) : slugWordsList.some((w) => vt.has(w));
+    let venueHit = bodyTokens.length ? bodyVenueHit(roundup.venue, vt) : slugWordsList.some((w) => vt.has(w));
     const extras = bodyTokens.length
       ? bodyTokens.filter((w) => !STOP.has(w))
       : slugExtraTokens(roundup, words(c.show.title).concat(slugWordsList.filter((w) => STOP.has(w))));
@@ -243,7 +259,7 @@ function matchRoundupToShow(roundup, shows) {
           } else if (w.kind === 'prior-run' && w.venue && (bodyTokens.length || slugWordsList.length)) {
             const pvt = new Set(venueTokens(w.venue));
             const toks = bodyTokens.length ? bodyTokens : slugWordsList;
-            venueHit = toks.some((x) => pvt.has(x));
+            venueHit = bodyTokens.length ? bodyVenueHit(roundup.venue, pvt) : toks.some((x) => pvt.has(x));
             venueKnownElsewhere = !venueHit && extras.length > 0 && extras.some((x) => VENUE_SLUG_TOKENS.has(x));
           }
         }

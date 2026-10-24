@@ -23,7 +23,10 @@ const OWE_TRACKING_START = '2026-01-01';
  * call those Off-West-End and hide a real gap.
  */
 function namesWestEndHouse(venue) {
-  const parts = String(venue).split(/\s*\/\s*/).map((v) => v.replace(/\s+at the national theatre$/i, '').trim()).filter(Boolean);
+  // TR also writes "Kit Kat Club at the Playhouse Theatre" (company at house) and
+  // "Sohoplace" for Soho Place; each piece is judged on its own.
+  const parts = String(venue).split(/\s*\/\s*|\s+at the\s+/i)
+    .map((v) => v.trim().replace(/^@?sohoplace$/i, 'Soho Place')).filter(Boolean);
   return parts.some((v) => isWestEndVenue(v));
 }
 
