@@ -88,6 +88,11 @@ async function alertFindings(findings, sources, have) {
       raised++;
     } catch (err) { console.error(`[aggregator-health] alert failed for ${keyOf(f)}: ${err.message}`); process.exitCode = 1; }
   }
+  // Registry-vs-workflow-file findings come from local files, so they are always readable.
+  for (const s of sources) for (const wf of Object.keys(s.workflows)) for (const kind of ['workflow-missing', 'retired-but-scheduled', 'schedule-removed']) {
+    const k = `aggregator-health:${s.id}:${kind}:${wf}`;
+    if (!live.has(k)) { try { resolveCondition(k, { reason: 'finding cleared' }); } catch { /* nothing open */ } }
+  }
   for (const s of sources.filter(x => !x.retired)) {
     for (const kind of ['coverage-drop', 'workflow-failing', 'workflow-idle', 'workflow-stale']) {
       if (kind === 'coverage-drop' ? !have.coverage : !have.runs) continue; // unreadable input never resolves anything
