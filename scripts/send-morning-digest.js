@@ -607,7 +607,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
       // BRO-6081: the owner reads a verdict, a 7-day chart and four tiles; the
       // full numbers table moves under Technical details.
       boardNumbersTableHtml = bn.renderBoardNumbersHtml(m, esc);
-      head.push(require('./lib/board-summary.js').renderBoardSummaryHtml(m, m.daily, esc, { partial: m.dailyTruncated }));
+      head.push(require('./lib/board-summary.js').renderBoardSummaryHtml(m, m.daily, esc, { partial: m.daily ? m.dailyTruncated : m.floors }));
     } catch (err) {
       console.error(`[digest] WARN board numbers block failed: ${String(err.message).slice(0, 120)}`);
     }

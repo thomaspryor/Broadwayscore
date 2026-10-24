@@ -13,7 +13,9 @@
  */
 
 const TEAM_KEY = 'BRO';
-const TZ = 'Europe/Berlin';
+// The digest is sent and dated on the Mac's clock, 07:30 America/New_York
+// (launchd plist; send-morning-digest.js date line), so its days are NY days.
+const TZ = 'America/New_York';
 const DAYS = 7;
 // ~425 issues/week is 2 pages; 8 pages x (2 x 6s) bounds the worst case inside
 // the digest's shared 330s board-numbers budget.
@@ -127,7 +129,7 @@ function boardVerdict(m, daily, { partial = false } = {}) {
 }
 
 function weekdayLabel(day, tz = TZ) {
-  // day is a local YYYY-MM-DD; noon UTC keeps it on the same calendar date in Europe.
+  // day is a local YYYY-MM-DD; noon UTC keeps it on the same calendar date in New York.
   return new Intl.DateTimeFormat('en-GB', { timeZone: tz, weekday: 'short' }).format(new Date(`${day}T12:00:00Z`));
 }
 
@@ -183,7 +185,7 @@ function tilesFor(m) {
       lanes7 ? `last 7 days; ${lanes1 ? `${lanes1.codex + lanes1.claude} in the last day; ` : ''}Claude ${lanes7.claude}, Codex ${lanes7.codex}` : 'not available'],
     ['Waiting on you', m.waiting === null ? 'n/a' : m.waiting === 0 ? 'Nothing' : plural(m.waiting, 'decision'),
       m.waiting === null ? 'could not be read' : m.waiting ? 'listed at the top of this email' : 'no decisions pending'],
-    ['Stuck', m.stuckCards === null ? 'n/a' : plural(m.stuckCards, 'card'),
+    ['Stuck', m.stuckCards === null ? 'n/a' : `${m.stuckCards}${m.stuckCardsFloor ? '+' : ''} card${m.stuckCards === 1 && !m.stuckCardsFloor ? '' : 's'}`,
       'started, no progress in 2+ days'],
     ['Spent this week', costBig, costNote],
   ];
