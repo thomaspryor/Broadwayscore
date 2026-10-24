@@ -263,6 +263,10 @@ async function main() {
       } else if (clearFlag) {
         delete fresh.wrongProduction;
         delete fresh.wrongProductionReason;
+        // Breadcrumb the push-time restore honors for 7 days (review-write-guard
+        // _freshWrongProductionAutoClear); without it the next push put the flag back (BRO-6091).
+        fresh.wrongProductionAutoCleared = 'verify-productions: earlier run of the same production recorded';
+        fresh.wrongProductionAutoClearedAt = new Date().toISOString();
       }
       fs.writeFileSync(job.file, JSON.stringify(fresh, null, 2) + '\n');
     }

@@ -1240,6 +1240,12 @@ function _differentArticleAtSamePath(field, localData, committedData) {
   // url-change-invariant keeps it across url changes, so the restore does too.
   if (/^wrongProduction/.test(field) && typeof committedData.wrongProductionNote === 'string'
       && MANUAL_WP_PREFIXES.some((p) => committedData.wrongProductionNote.startsWith(p))) return false;
+  // BRO-6091: a video review transcript (data/video-reviews-transcripts/<show>/<creator>.json)
+  // re-pointed at another video by select-best-reviews.js. The old video's
+  // verdict flags are not this video's; restoring them hid 11 new picks.
+  // Keyed on videoId: only ~9% of transcript files carry videoUrl.
+  if (localData.videoId && committedData.videoId
+      && (localData.videoId !== committedData.videoId || localData.platform !== committedData.platform)) return true;
   if (_replacedFlaggedText(localData, committedData)) return true;
   // BRO-2770: a recorded in-place body swap cleared this field on purpose.
   if (require('./body-date-mismatch').bodySwapClearsField(field, localData, committedData)) return true;
