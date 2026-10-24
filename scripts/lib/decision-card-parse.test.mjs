@@ -154,3 +154,35 @@ test('renderActionCard escapes hostile text and drops unsafe urls (no button wit
   assert.match(html, /&lt;img src=x onerror=alert\(1\)&gt;/);
   assert.doesNotMatch(html, /background:#1d4ed8/, 'no safe URL, no button');
 });
+
+// ── what-else cousins (BRO-6131) ─────────────────────────────────────────────
+const digestSender = require('../send-morning-digest.js');
+
+test('mergeNeedsYouSections keeps cardUrls from both sides (a hidden decision that is also In Review is not counted twice)', () => {
+  const cmux = { generatedAt: 'x', bannerText: '1 tab', items: [{ title: 't' }], moreCount: 0 };
+  const linear = { generatedAt: 'y', bannerText: '2 cards', items: [{ title: 'a' }], moreCount: 1, cardUrls: ['https://linear.app/x/BRO-1', 'https://linear.app/x/BRO-2'] };
+  assert.deepEqual(digestSender.mergeNeedsYouSections(cmux, linear).cardUrls, linear.cardUrls);
+  assert.equal(digestSender.mergeNeedsYouSections(null, linear), linear);
+  assert.equal(digestSender.mergeNeedsYouSections(cmux, null), cmux);
+});
+
+test('whole email: every link above Technical details is visibly a link or a button (owner complaint 2026-10-24)', () => {
+  const now = new Date('2026-10-24T11:30:00Z');
+  const card = (id) => ({ identifier: id, title: `DECISION NEEDED: ${id}`, url: `https://linear.app/x/issue/${id}`, createdAt: '2026-10-22T00:00:00Z', description: `DECISION NEEDED: Question ${id}?\nOption A - a: x / y\nOption B - b: x / y\nMy recommendation: A because z.\nDefault: nothing.` });
+  const html = digestSender.buildHtml({
+    sections: {
+      health: { errors: [], warns: [], queued: [{ title: 'Tour candidate', description: 'd', url: 'https://example.com/v', decision: true, decisionPrompt: 'Add it?' }] },
+      needsYou: buildDecisionsSection([card('BRO-1'), card('BRO-2')], { now }),
+      awaitingOwner: { bannerText: '1 waiting', items: [{ title: 'BRO-3: approve', detail: 'Waiting', url: 'https://linear.app/x/issue/BRO-3' }] },
+      inReviewBacklog: { bannerText: '1 parked', moreCount: 0, items: [{ title: 'BRO-4: finished', detail: 'idle 4d', url: 'https://linear.app/x/issue/BRO-4' }] },
+    },
+    autofixRows: [], now,
+  });
+  const top = html.slice(0, html.indexOf('>Technical details<'));
+  const anchors = top.match(/<a\b[^>]*>/g) || [];
+  assert.ok(anchors.length >= 8, `expected many links above Technical details, got ${anchors.length}`);
+  for (const a of anchors) {
+    const hidden = /text-decoration:none/.test(a) && !/background:/.test(a);
+    assert.equal(hidden, false, `camouflaged link: ${a.slice(0, 120)}`);
+  }
+});

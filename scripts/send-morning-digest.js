@@ -418,6 +418,9 @@ function mergeNeedsYouSections(cmux, linear) {
     bannerText: `${cmux.bannerText}; ${linear.bannerText}`,
     items: [...(cmux.items || []), ...(linear.items || [])],
     moreCount: (Number(cmux.moreCount) || 0) + (Number(linear.moreCount) || 0),
+    // Keep every decision card url (shown or not) so buildOwnerView can drop the
+    // same card from the Review queue instead of counting it twice.
+    cardUrls: [...(cmux.cardUrls || []), ...(linear.cardUrls || [])],
   };
 }
 
