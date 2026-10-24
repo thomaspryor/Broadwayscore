@@ -584,6 +584,16 @@ function productionSections(lines) {
   return out;
 }
 
+// ALL-CAPS lines (production titles, outlets, captions) with their line numbers.
+function capsLines(text) {
+  const out = [];
+  text.split('\n').forEach((l, i) => {
+    const t = l.trim();
+    if (t.length >= 4 && t.length <= 80 && /[A-Z]{3}/.test(t) && t === t.toUpperCase()) out.push([i, maskPdfText(t, [])]);
+  });
+  return out.slice(0, 4000);
+}
+
 function locateReviews(text, reviews, showTitle) {
   const lines = text.split('\n');
   const trimmed = lines.map(l => l.trim());
@@ -595,11 +605,15 @@ function locateReviews(text, reviews, showTitle) {
     let section = null;
     for (const s of sections) if (s.line <= line) section = s.title; else break;
     const secNorm = section ? section.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase() : null;
-    return { outlet: r.outlet, date: r.date, line, section, ours: secNorm == null ? null : (secNorm === ourUpper || secNorm === 'THE ' + ourUpper || secNorm.includes(ourUpper)) };
+    const mk = (x) => maskPdfText(x, []).trim().slice(0, 90);
+    const before = line > 0 ? lines.slice(Math.max(0, line - 4), line).map(mk) : [];
+    const tail = String(r.fullText || '').split('\n').filter(Boolean).slice(-2).map(mk);
+    return { outlet: r.outlet, date: r.date, line, before, tail, section, ours: secNorm == null ? null : (secNorm === ourUpper || secNorm === 'THE ' + ourUpper || secNorm.includes(ourUpper)) };
   });
 }
 
 module.exports = {
+  capsLines,
   productionRuns,
   sectionOwnedBy,
   productionSections,
