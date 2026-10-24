@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T04:37:44.975Z",
+  "generatedAt": "2026-10-24T06:46:02.975Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -136,6 +136,10 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
     {
+      "outletId": "british-theatre",
+      "error": "Timeout fetching https://www.britishtheatreguide.info/reviews/"
+    },
+    {
       "outletId": "slantmagazine",
       "error": "HTTP 403 for https://www.slantmagazine.com/theater/feed/"
     },
@@ -160,7 +164,7 @@
       "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 738,
+  "itemsScanned": 718,
   "matchedGaps": 4,
   "possibleGaps": 2,
   "gaps": [
