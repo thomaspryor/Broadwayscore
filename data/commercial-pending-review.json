@@ -103,37 +103,8 @@
           "date": null
         }
       ],
-      "confidence": "low",
-      "researchedAt": "2026-06-27T18:30:29.814Z"
-    },
-    "beaches-2026": {
-      "title": "Beaches, A New Musical",
-      "slug": "beaches",
-      "openingDate": "2026-04-22",
-      "status": "closed",
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
-      "costMethodology": "industry-estimate",
-      "recouped": false,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "designation": "Flop",
-      "notes": "Beaches, A New Musical opened April 22, 2026 at the Majestic Theatre and closed early on May 24, 2026, having been originally scheduled to run through September 6, 2026. The early closure after roughly five weeks suggests poor box office performance. No capitalization, weekly running cost, or recoupment data is available in the evidence provided.",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.broadwaynews.com/beaches-musical-to-close-early-on-broadway/",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayleague.com/research/grosses-broadway-nyc/",
-          "date": null
-        }
-      ],
-      "confidence": "low",
-      "researchedAt": "2026-06-27T18:31:55.468Z"
+      "researchedAt": "2026-06-27T18:30:29.814Z",
+      "lastRequeuedAt": "2026-10-24T20:38:05.048Z"
     },
     "buena-vista-social-club-2025": {
       "title": "Buena Vista Social Club",
@@ -192,35 +163,6 @@
       ],
       "confidence": "medium",
       "researchedAt": "2026-10-24T20:13:29.536Z"
-    },
-    "maybe-happy-ending-2024": {
-      "title": "Maybe Happy Ending",
-      "slug": "maybe-happy-ending",
-      "openingDate": "2024-11-12",
-      "status": "open",
-      "capitalization": 16000000,
-      "capitalizationSource": "SEC EDGAR Form D filing, CIK 0002021672, states offering capitalized at $16,000,000 (total offering amount $18,250,000)",
-      "weeklyRunningCost": null,
-      "costMethodology": "sec-filing",
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "designation": "TBD",
-      "notes": "Maybe Happy Ending opened at the Belasco Theatre on November 12, 2024 and is still running. The SEC Form D filing shows a capitalization of $16,000,000 with a maximum offering of $18,250,000. A Facebook post references a $1.4 million weekly gross, and the Broadway Journal references a 'turnaround,' but no explicit recoupment has been reported. Too early to designate.",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/intimate-maybe-happy-ending-engineers-turnaround",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.facebook.com/MusicalsDaily/posts/maybe-happy-ending-just-pulled-in-14-million-at-the-box-office-for-its-latest-ru/1368939085235383/",
-          "date": null
-        }
-      ],
-      "confidence": "medium",
-      "researchedAt": "2026-10-24T20:14:17.912Z"
     },
     "aladdin-2014": {
       "title": "Aladdin",
@@ -2165,46 +2107,6 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog"
     },
-    "the-lost-boys": {
-      "capitalization": 25000000,
-      "capitalizationSource": "Broadway Journal reporting, citing a 2024 SEC filing",
-      "weeklyRunningCost": 950000,
-      "costMethodology": "industry-estimate",
-      "recouped": false,
-      "recoupedDate": null,
-      "recoupedSource": "No public recoupment announcement found; Broadway Journal said the show was running at a loss, and a TalkinBroadway recoupment discussion said it would need roughly $2 million/week to be profitable and had not reached that level.",
-      "estimatedRecoupmentPct": [
-        10,
-        30
-      ],
-      "designation": "TBD",
-      "notes": "Best public figure I found for capitalization is $25M. Weekly running cost is a public estimate, not a filing, and exact recoupment status has not been publicly announced; I am treating the production as unrecouped so far, but still too early/open-ended to judge final outcome.",
-      "confidence": "low",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/broadways-missing-mojo",
-          "date": "2026-05-06"
-        },
-        {
-          "type": "reddit",
-          "url": "https://forum.broadwayworld.com/thread/Broadway-GrossesWeek-Ending-4-12-26",
-          "date": "2026-04-14"
-        },
-        {
-          "type": "reddit",
-          "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2650536",
-          "date": "2026-07-14"
-        }
-      ],
-      "title": "The Lost Boys",
-      "slug": "the-lost-boys",
-      "openingDate": "2026-04-26",
-      "status": "open",
-      "researchedAt": "2026-10-17T20:53:34.561Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "backlog"
-    },
     "the-rocky-horror-show": {
       "capitalization": null,
       "capitalizationSource": "No verified public capitalization found in the sources checked.",
@@ -2313,48 +2215,6 @@
       "openingDate": "2026-12-06",
       "status": "upcoming",
       "researchedAt": "2026-10-17T21:01:58.594Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "backlog"
-    },
-    "maybe-happy-ending": {
-      "capitalization": 16000000,
-      "capitalizationSource": "Broadway Journal interview with producer Jeffrey Richards (2025-06-09) reported the Broadway capitalization at $16 million; a separate pre-opening report also cited an SEC-based maximum offer of $18.25 million. ([broadwayjournal.com](https://www.broadwayjournal.com/p/intimate-maybe-happy-ending-engineers-turnaround?utm_source=openai))",
-      "weeklyRunningCost": 765000,
-      "costMethodology": "trade-reported",
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": "BroadwayWorld reported on 2026-06-05 that the show was still working toward recoupment. ([broadwayworld.com](https://www.broadwayworld.com/article/How-Much-Does-a-Tony-Award-Boost-Ticket-Sales-20260605?utm_source=openai))",
-      "estimatedRecoupmentPct": null,
-      "designation": "TBD",
-      "notes": "Best verified figures I found: $16M capitalization, $765K weekly running cost, and $3M in NY tax credits. I did not find a public recoupment announcement. ([broadwayjournal.com](https://www.broadwayjournal.com/p/intimate-maybe-happy-ending-engineers-turnaround?utm_source=openai))",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/intimate-maybe-happy-ending-engineers-turnaround",
-          "date": "2025-06-09"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/article/How-Much-Does-a-Tony-Award-Boost-Ticket-Sales-20260605",
-          "date": "2026-06-05"
-        },
-        {
-          "type": "trade",
-          "url": "https://news.bloomberglaw.com/daily-tax-report/broadway-shows-backed-by-disney-billionaires-nab-ny-tax-credits",
-          "date": "2026-06-02"
-        },
-        {
-          "type": "manual",
-          "url": "https://yonkersobserver.com/darren-criss-to-return-to-broadway-as-a-robot-in-love/",
-          "date": "2024-05-24"
-        }
-      ],
-      "title": "Maybe Happy Ending",
-      "slug": "maybe-happy-ending",
-      "openingDate": "2024-11-12",
-      "status": "open",
-      "researchedAt": "2026-10-17T21:03:45.378Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog"
     },
@@ -2905,43 +2765,6 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog"
     },
-    "buena-vista-social-club": {
-      "capitalization": 17000000,
-      "capitalizationSource": "San Juan Daily Star reported the musical was capitalized for $17 million, citing an SEC filing; Broadway Journal independently reported the same figure.",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "estimatedRecoupmentPct": null,
-      "designation": "TBD",
-      "notes": "Publicly reported capitalization is $17 million. I did not find a verified public weekly nut or any confirmed recoupment announcement; Broadway Journal said in June 2025 the show was earning operating profits but would still take well over a year to recoup at that pace. BroadwayWorld's grosses page still listed it as currently running in October 2026.",
-      "confidence": "low",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.sanjuandailystar.com/post/a-buena-vista-social-club-musical-will-open-on-broadway-next-year",
-          "date": "2024-09-18"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/jukebox-prevails-in-tough-season-for-new-musicals",
-          "date": "2025-06-05"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/grosses/buena-vista-social-club",
-          "date": "2026-10-11"
-        }
-      ],
-      "title": "Buena Vista Social Club",
-      "slug": "buena-vista-social-club",
-      "openingDate": "2025-03-19",
-      "status": "open",
-      "researchedAt": "2026-10-17T22:06:04.400Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "backlog"
-    },
     "the-rocky-horror-show-2026": {
       "title": "The Rocky Horror Show",
       "slug": "the-rocky-horror-show",
@@ -2975,79 +2798,6 @@
       ],
       "confidence": "low",
       "researchedAt": "2026-06-27T18:31:11.071Z"
-    },
-    "the-balusters-2026": {
-      "title": "The Balusters",
-      "slug": "the-balusters",
-      "openingDate": "2026-04-21",
-      "status": "open",
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
-      "costMethodology": "industry-estimate",
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "designation": "Nonprofit",
-      "notes": "The Balusters is a new play by David Lindsay-Abaire, directed by Kenny Leon, produced by Manhattan Theatre Club at the Samuel J. Friedman Theatre (MTC's Broadway house) as part of their 2025-26 season. No financial data — capitalization, weekly running costs, or recoupment — is explicitly stated in any of the evidence provided. As an MTC production at their nonprofit Broadway venue, standard commercial recoupment metrics do not apply in the same way. The show received five Tony nominations according to Broadway Journal coverage.",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/broadways-missing-mojo",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.manhattantheatreclub.com/shows/2025-26-season/the-balusters/",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayleague.com/research/grosses-broadway-nyc/",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.youtube.com/watch?v=fTYr3qWZHVs",
-          "date": null
-        }
-      ],
-      "confidence": "low",
-      "researchedAt": "2026-06-27T18:32:47.115Z"
-    },
-    "schmigadoon-2026": {
-      "title": "Schmigadoon!",
-      "slug": "schmigadoon",
-      "openingDate": "2026-04-20",
-      "status": "open",
-      "capitalization": 15000000,
-      "capitalizationSource": "SEC filing, as reported by Broadway Journal (broadwayjournal.com): 'capitalized for as much as $15 million, according to an SEC filing'",
-      "weeklyRunningCost": null,
-      "costMethodology": "sec-filing",
-      "recouped": false,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "designation": "TBD",
-      "notes": "Schmigadoon! opened April 20, 2026 at the Nederlander Theatre and is scheduled to close January 3, 2027. Capitalized at up to $15 million per an SEC filing cited by Broadway Journal. As of the Broadway Journal article, the show was running at a loss but had just received 12 Tony nominations and was expected to benefit from that publicity. No recoupment has been reported. The show has a fixed closing date, making it a limited run, but it is still too early to determine its final financial outcome.",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/broadways-missing-mojo",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.nytimes.com/2025/09/22/theater/broadway-musicals-finances.html",
-          "date": "2025-09-22"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.forbes.com/sites/marchershberg/2026/08/02/tony-triumph-meets-tough-economics-for-schmigadoon/",
-          "date": "2026-08-02"
-        }
-      ],
-      "confidence": "medium",
-      "researchedAt": "2026-08-06T14:37:59.057Z"
     },
     "fallen-angels-2026": {
       "title": "Fallen Angels",
@@ -3223,40 +2973,6 @@
       "confidence": "low",
       "researchedAt": "2026-08-06T14:52:08.094Z"
     },
-    "becky-shaw-2026": {
-      "title": "Becky Shaw",
-      "slug": "becky-shaw",
-      "openingDate": "2026-04-06",
-      "status": "closed",
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
-      "costMethodology": "trade-reported",
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "designation": "Nonprofit",
-      "notes": "Becky Shaw is a revival of Gina Gionfriddo's play produced by Second Stage Theater, a nonprofit organization. It ran at the Helen Hayes Theater (Second Stage's Broadway home) from April 6 to June 14, 2026. As a nonprofit production, there is no traditional investor recoupment structure. The production received Tony nominations including for featured actor Alden Ehrenreich. No capitalization, running cost, or recoupment data is available in the evidence.",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/broadways-missing-mojo",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://newyorktheater.me/2026/04/06/becky-shaw-broadway-review/",
-          "date": "2026-04-06"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.facebook.com/DaveCarlinNYC/videos/the-play-becky-shaw-is-a-darkly-funny-look-at-dating-gone-wrong-it-opened-on-bro/3432866706876029/",
-          "date": null
-        }
-      ],
-      "confidence": "high",
-      "researchedAt": "2026-08-06T14:54:16.592Z"
-    },
     "dog-day-afternoon-2026": {
       "title": "Dog Day Afternoon",
       "slug": "dog-day-afternoon",
@@ -3319,45 +3035,6 @@
       ],
       "confidence": "low",
       "researchedAt": "2026-08-06T15:06:49.600Z"
-    },
-    "marjorie-prime-2025": {
-      "title": "Marjorie Prime",
-      "slug": "marjorie-prime",
-      "openingDate": "2025-12-08",
-      "status": "closed",
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
-      "costMethodology": "trade-reported",
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "designation": "Nonprofit",
-      "notes": "Marjorie Prime was produced by Second Stage Theater, a nonprofit organization, as confirmed by the Broadway Journal evidence which explicitly states 'Second Stage Theater got four nominations' for the production featuring Danny Burstein and June Squibb. As a nonprofit subscriber-funded production, traditional investor recoupment metrics do not apply. The show ran at the Helen Hayes Theater (Second Stage's Broadway home) from December 8, 2025 to February 15, 2026.",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/broadways-missing-mojo",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://frontmezzjunkies.com/2025/12/14/the-return-and-reconstruction-of-marjorie-prime/",
-          "date": "2025-12-14"
-        },
-        {
-          "type": "trade",
-          "url": "https://newyorktheater.me/2025/12/08/marjorie-prime-broadway-review/",
-          "date": "2025-12-08"
-        },
-        {
-          "type": "trade",
-          "url": "https://jitneybooks.com/marjorie-prime-broadway-review/",
-          "date": "2026-01-03"
-        }
-      ],
-      "confidence": "high",
-      "researchedAt": "2026-08-06T15:08:32.615Z"
     },
     "two-strangers-bway-2025": {
       "title": "Two Strangers (Carry a Cake Across New York)",
@@ -3543,69 +3220,6 @@
       "confidence": "medium",
       "researchedAt": "2026-08-06T15:26:32.906Z"
     },
-    "the-great-gatsby-2024": {
-      "title": "The Great Gatsby",
-      "slug": "the-great-gatsby",
-      "openingDate": "2024-04-25",
-      "status": "open",
-      "capitalization": 25000000,
-      "capitalizationSource": "Forbes article (marchershberg, 2024-10-24) states 'The Great Gatsby at $25 million'",
-      "weeklyRunningCost": null,
-      "costMethodology": "trade-reported",
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "designation": "TBD",
-      "notes": "The Great Gatsby (2024) was capitalized at $25 million per Forbes trade reporting. The show opened April 25, 2024 and has an announced closing date of March 29, 2027, indicating a multi-year commercial run. No recoupment information is available in the evidence. Given the lengthy run announced, designation remains TBD pending recoupment confirmation.",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.forbes.com/sites/marchershberg/2024/10/24/skyrocketing-broadway-show-budgets-scare-producers/",
-          "date": "2024-10-24"
-        },
-        {
-          "type": "trade",
-          "url": "https://gordoncox.substack.com/p/chunsoo-shin-interview-the-great-gatsby-broadway",
-          "date": null
-        }
-      ],
-      "confidence": "medium",
-      "researchedAt": "2026-10-24T20:16:12.451Z"
-    },
-    "the-lion-king-1997": {
-      "title": "The Lion King",
-      "slug": "the-lion-king",
-      "openingDate": "1997-11-13",
-      "status": "open",
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
-      "costMethodology": "industry-estimate",
-      "recouped": true,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "designation": "Miracle",
-      "notes": "The Lion King opened November 13, 1997 at the Minskoff Theatre and is still running, making it one of the longest-running and highest-grossing shows in Broadway history. The evidence gathered does not explicitly state capitalization, weekly running costs, or recoupment date. The theatregold.com source references a '$9 billion gross' figure in its metadata keywords, but no specific financial figures are confirmed in the extracted evidence text. Given its multi-decade open-ended run and legendary status, it qualifies as a Miracle by designation criteria, but specific financial data cannot be confirmed from these sources.",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/inside-broadways-1-million-nut-cases",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://theatregold.com/how-much-does-a-broadway-musical-cost-wicked-lion-king/",
-          "date": "2026-05-31"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayleague.com/research/grosses-broadway-nyc/",
-          "date": null
-        }
-      ],
-      "confidence": "low",
-      "researchedAt": "2026-10-24T20:35:06.738Z"
-    },
     "wanted-2022": {
       "title": "Wanted",
       "slug": "wanted",
@@ -3629,43 +3243,6 @@
       ],
       "confidence": "low",
       "researchedAt": "2026-10-19T18:31:59.197Z"
-    },
-    "the-music-man-2022": {
-      "capitalization": 24000000,
-      "capitalizationSource": "Trade coverage in Sept. 2022 described the revival as capitalized at $24 million (Queerty / NYT-reported closing coverage).",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": "ArtsJournal quoting NYT (2022-10-13) said the show had not yet recouped its $24 million capitalization at that time and expected to before closing; I could not verify a final public recoupment announcement.",
-      "estimatedRecoupmentPct": null,
-      "designation": "TBD",
-      "notes": "The NYC tax-credit list shows Iowa Stubborn LLC received a $3,000,000 credit, but that subsidy does not appear to be the full capitalization. I could verify a $24 million capitalization from trade reporting, but not a weekly running cost or a final public recoupment announcement.",
-      "confidence": "low",
-      "sources": [
-        {
-          "type": "manual",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": "2025-08-09"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.queerty.com/even-hugh-jackman-cant-save-broadways-revival-music-man-20220913/",
-          "date": "2022-09-13"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.artsjournal.com/calltime/2022/10/13/on-music-mans-closing-and-the-business-of-theatre/",
-          "date": "2022-10-13"
-        }
-      ],
-      "title": "The Music Man",
-      "slug": "the-music-man-2022",
-      "openingDate": "2022-02-10",
-      "status": "closed",
-      "researchedAt": "2026-10-19T18:42:57.250Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "backlog"
     },
     "hangmen-2022": {
       "capitalization": 5700220,
@@ -3708,124 +3285,6 @@
       "researchedAt": "2026-10-19T18:45:42.209Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog"
-    },
-    "the-great-gatsby": {
-      "capitalization": 25000000,
-      "capitalizationSource": "The Asia Business Daily interview with OD Company CEO Shin Chun-soo (2026-06-08) reported a $25 million advance production cost; The Korea Times had earlier reported an approximately $25 million budget.",
-      "weeklyRunningCost": 900000,
-      "costMethodology": "trade-reported",
-      "recouped": false,
-      "recoupedDate": null,
-      "recoupedSource": "BroadwayWorld's 2026-01-06 article said none of the remaining 2023-24 new musicals, including The Great Gatsby, had recouped yet; Shin later said in June 2026 he expected to recoup by 2028.",
-      "estimatedRecoupmentPct": null,
-      "designation": "TBD",
-      "notes": "Gatsby Broadway LLC received a $3 million NYC tax credit award, but I used the producer-reported $25 million advance production cost as the capitalization figure. Weekly operating costs were reported around $900,000, and the latest coverage I found still treated recoupment as future-facing.",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": "2025-08-09"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/equity-audition/THE-GREAT-GATSBY--Broadway-Gatsby-Broadway-LLC-2024-41539",
-          "date": "2023-12-26"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.koreatimes.co.kr/lifestyle/arts-theater/20240430/shin-chun-soo-brings-fresh-vision-of-the-great-gatsby-to-broadway",
-          "date": "2024-04-30"
-        },
-        {
-          "type": "trade",
-          "url": "https://view.asiae.co.kr/en/article/2026060818131758788",
-          "date": "2026-06-08"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/article/The-30-Million-Musical-Trend-20260106",
-          "date": "2026-01-06"
-        }
-      ],
-      "title": "The Great Gatsby",
-      "slug": "the-great-gatsby",
-      "openingDate": "2024-04-25",
-      "status": "open",
-      "researchedAt": "2026-10-19T18:48:09.897Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "backlog"
-    },
-    "school-girls-or-the-african-mean-girls-play-2026": {
-      "title": "School Girls; Or, The African Mean Girls Play",
-      "slug": "school-girls-or-the-african-mean-girls-play",
-      "openingDate": "2026-09-28",
-      "status": "open",
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
-      "costMethodology": "trade-reported",
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "designation": "Nonprofit",
-      "notes": "School Girls; Or, The African Mean Girls Play is produced by Manhattan Theatre Club (MTC), a nonprofit organization, at the Samuel J. Friedman Theatre — MTC's Broadway home. The show runs September 28 to November 15, 2026. As a nonprofit production, there is no traditional investor recoupment structure. No capitalization, weekly running cost, or recoupment data is available in the evidence.",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/",
-          "date": "2026-03-17"
-        },
-        {
-          "type": "trade",
-          "url": "https://newyorktheater.me/2026/09/28/school-girls-or-the-african-mean-girls-play-broadway-review/",
-          "date": "2026-09-28"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/grosses/SCHOOL-GIRLSORTHE-AFRICAN-MEAN-GIRLS-PLAY",
-          "date": null
-        }
-      ],
-      "confidence": "high",
-      "researchedAt": "2026-10-19T18:32:57.171Z"
-    },
-    "beetlejuice-2019": {
-      "capitalization": 21000000,
-      "capitalizationSource": "Broadway News (2019-12-09), citing SEC filing: the musical was capitalized for up to $21 million.",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": false,
-      "recoupedDate": null,
-      "recoupedSource": "ArtDaily reprint of a New York Times article (2022-09-22): 'It has not recouped those costs.'",
-      "estimatedRecoupmentPct": null,
-      "designation": "Did Not Recoup",
-      "notes": "Original Winter Garden run opened Apr. 25, 2019 and was cut short Mar. 10, 2020. I could not verify an exact public weekly nut; Forbes only offered a rough estimate.",
-      "confidence": "high",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.broadwaynews.com/beetlejuice-to-end-broadway-run/",
-          "date": "2019-12-09"
-        },
-        {
-          "type": "trade",
-          "url": "https://artdaily.com/news/150113/-Beetlejuice--to-close-on-Broadway",
-          "date": "2022-09-22"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.forbes.com/sites/leeseymour/2019/12/23/broadway-box-office-bounces-ahead-of-christmasbeetlejuice-digs-in-west-side-story-soars/",
-          "date": "2019-12-23"
-        }
-      ],
-      "title": "Beetlejuice",
-      "slug": "beetlejuice-2019",
-      "openingDate": "2019-04-25",
-      "status": "closed",
-      "researchedAt": "2026-10-22T02:51:54.410Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual"
     },
     "gary-a-sequel-to-titus-andronicus-2019": {
       "capitalization": null,
@@ -3958,48 +3417,6 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
-    "kiss-me-kate-2019": {
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "estimatedRecoupmentPct": null,
-      "designation": "Nonprofit",
-      "notes": "Roundabout Theatre Company is a not-for-profit producer. I could not verify a public capitalization or weekly running cost for this production, and traditional investor recoupment does not apply.",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "manual",
-          "url": "https://www.roundabouttheatre.org/about/past-shows/",
-          "date": null
-        },
-        {
-          "type": "manual",
-          "url": "https://www.tonyawards.com/shows/kiss-me-kate/",
-          "date": "2019-03-14"
-        },
-        {
-          "type": "manual",
-          "url": "https://www.roundabouttheatre.org/the-overture-is-about-to-start/",
-          "date": "2019-04-19"
-        },
-        {
-          "type": "manual",
-          "url": "https://www.roundabouttheatre.org/",
-          "date": null
-        }
-      ],
-      "title": "Kiss Me, Kate",
-      "slug": "kiss-me-kate-2019",
-      "openingDate": "2019-03-14",
-      "status": "closed",
-      "researchedAt": "2026-10-22T03:02:41.714Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual"
-    },
     "frankie-and-johnny-in-the-clair-de-lune-2019": {
       "capitalization": 4100000,
       "capitalizationSource": "BroadwayNews reported the play was capitalized for up to $4.1 million, and Forbes' SEC-based roundup also listed Frankie and Johnny at $4.1 million. ([broadwaynews.com](https://www.broadwaynews.com/frankie-and-johnny-posts-early-closing-notice/?utm_source=openai))",
@@ -4113,107 +3530,6 @@
       "openingDate": "2018-10-25",
       "status": "closed",
       "researchedAt": "2026-10-22T03:10:00.164Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual"
-    },
-    "head-over-heels-2018": {
-      "capitalization": null,
-      "capitalizationSource": "Broadway Journal reported a state-filing range of $11.6 million to $14.5 million, but I could not verify one exact figure. ([broadwayjournal.com](https://www.broadwayjournal.com/p/frozen-mean-girls-post-worst-week-since-opening?utm_source=openai))",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": false,
-      "recoupedDate": null,
-      "recoupedSource": "INTIX/Forbes reporting said the investors would not get their money back because the production took on loans to remain solvent. ([access.intix.org](https://access.intix.org/Full-Article/three-broadway-shows-to-close-as-box-office-sinks-and-long-term-issues-loom))",
-      "estimatedRecoupmentPct": null,
-      "designation": "Did Not Recoup",
-      "notes": "Hudson Theatre run: Jul. 26, 2018 to Jan. 6, 2019; Playbill lists total gross of $7,107,980.70, average weekly gross of $245,103, and average capacity of 57.37%. No public weekly nut found. ([playbill.com](https://playbill.com/production/head-over-heelshudson-theatre-2018-2019?utm_source=openai))",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.playbill.com/production/head-over-heelshudson-theatre-2018-2019",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/frozen-mean-girls-post-worst-week-since-opening",
-          "date": "2018-09-10"
-        },
-        {
-          "type": "trade",
-          "url": "https://access.intix.org/Full-Article/three-broadway-shows-to-close-as-box-office-sinks-and-long-term-issues-loom",
-          "date": "2018-12-03"
-        }
-      ],
-      "title": "Head Over Heels",
-      "slug": "head-over-heels-2018",
-      "openingDate": "2018-07-26",
-      "status": "closed",
-      "researchedAt": "2026-10-22T03:12:22.794Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual"
-    },
-    "burn-this-2019": {
-      "capitalization": 4000000,
-      "capitalizationSource": "Forbes (July 11, 2019) reported Burn This at $4 million in its Broadway investors roundup.",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "estimatedRecoupmentPct": null,
-      "designation": "TBD",
-      "notes": "Public reporting confirms a $4 million capitalization and that the show closed on July 14, 2019. I did not find a public weekly nut or a formal recoupment announcement, so recoupment remains unconfirmed.",
-      "confidence": "low",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://tollbit.forbes.com/sites/leeseymour/2019/07/11/investors-set-to-lose-100-million-as-broadway-undergoes-huge-market-correction/",
-          "date": "2019-07-11"
-        },
-        {
-          "type": "trade",
-          "url": "https://playbill.com/article/grosses-analysis-adam-driver-and-keri-russell-led-burn-this-ends-hot",
-          "date": "2019-07-15"
-        }
-      ],
-      "title": "Burn This",
-      "slug": "burn-this-2019",
-      "openingDate": "2019-04-16",
-      "status": "closed",
-      "researchedAt": "2026-10-22T03:15:04.489Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual"
-    },
-    "the-cher-show-2018": {
-      "capitalization": 19000000,
-      "capitalizationSource": "Broadway News said the musical was capitalized for up to $19 million, citing an SEC filing; Forbes also listed The Cher Show at $19m. ([broadwaynews.com](https://www.broadwaynews.com/the-cher-show-will-end-its-run-in-august/))",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": false,
-      "recoupedDate": null,
-      "recoupedSource": "No public recoupment announcement found; Forbes said in July 2019 the show was \"bleeding money\" but \"not hemorrhaging\" and that investors would likely see at least a partial return. ([tollbit.forbes.com](https://tollbit.forbes.com/sites/leeseymour/2019/07/11/investors-set-to-lose-100-million-as-broadway-undergoes-huge-market-correction/))",
-      "estimatedRecoupmentPct": null,
-      "designation": "Did Not Recoup",
-      "notes": "Closed on 2019-08-18 after 34 previews and 296 regular performances at the Neil Simon Theatre; no public weekly nut or tax-credit listing was verified. ([broadwaynews.com](https://www.broadwaynews.com/the-cher-show-will-end-its-run-in-august/))",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://tollbit.forbes.com/sites/leeseymour/2019/07/11/investors-set-to-lose-100-million-as-broadway-undergoes-huge-market-correction/",
-          "date": "2019-07-11"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwaynews.com/the-cher-show-will-end-its-run-in-august/",
-          "date": "2019-06-25"
-        }
-      ],
-      "title": "The Cher Show",
-      "slug": "the-cher-show-2018",
-      "openingDate": "2018-12-03",
-      "status": "closed",
-      "researchedAt": "2026-10-22T03:17:03.341Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
@@ -4599,38 +3915,6 @@
       "openingDate": "2018-04-12",
       "status": "closed",
       "researchedAt": "2026-10-22T04:07:40.331Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual"
-    },
-    "escape-to-margaritaville-2018": {
-      "capitalization": 15000000,
-      "capitalizationSource": "NYTix closeout article citing an SEC filing",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": false,
-      "recoupedDate": null,
-      "recoupedSource": "NYTix closeout article stating the show had not recouped by closing",
-      "estimatedRecoupmentPct": null,
-      "designation": "Did Not Recoup",
-      "notes": "Public reporting supports a $15M capitalization and indicates the Broadway production had not recouped by its July 1, 2018 closing. Playbill lists total gross of $12,444,600.40 by closing. I could not verify a public weekly running cost.",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.nytix.com/news/escape-to-margaritaville-closes-to-little-fanfare",
-          "date": "2018-06-29"
-        },
-        {
-          "type": "trade",
-          "url": "https://playbill.com/production/escape-to-margaritaville-marquis-theatre-2017-2018",
-          "date": null
-        }
-      ],
-      "title": "Escape to Margaritaville",
-      "slug": "escape-to-margaritaville-2018",
-      "openingDate": "2018-03-15",
-      "status": "closed",
-      "researchedAt": "2026-10-22T04:10:37.822Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
@@ -5280,43 +4564,6 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
-    "in-transit-2016": {
-      "capitalization": null,
-      "capitalizationSource": "Broadway Journal reported a Broadway run would cost $6M-$7M; no exact public capitalization figure was verified.",
-      "weeklyRunningCost": null,
-      "costMethodology": "trade-reported",
-      "recouped": false,
-      "recoupedDate": null,
-      "recoupedSource": "No public recoupment announcement found; recoupment inferred as unlikely from the trade-reported budget range and cumulative grosses.",
-      "estimatedRecoupmentPct": null,
-      "designation": "Did Not Recoup",
-      "notes": "Public reporting gave only a $6M-$7M budget range and a weekly operating-cost ceiling of well below $500k. The show closed April 16, 2017 after 181 performances and $6,075,958 in Broadway grosses, with no public recoupment notice found.",
-      "confidence": "low",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/frozen-composers-a-cappella-musical-in-transit-seeks-express-train-to-broadway",
-          "date": "2016-03-21"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadway.com/buzz/186929/in-transit-starring-telly-leung-justin-guarini-more-sets-broadway-closing-date/",
-          "date": "2017-04-11"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/grossescumulative.php/grosscumulative.php?orderby=desc&show=all&sortby=totaltotalshows",
-          "date": null
-        }
-      ],
-      "title": "In Transit",
-      "slug": "in-transit-2016",
-      "openingDate": "2016-12-11",
-      "status": "closed",
-      "researchedAt": "2026-10-22T05:01:55.191Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual"
-    },
     "a-bronx-tale-the-musical-2016": {
       "capitalization": 10000000,
       "capitalizationSource": "Observer trade article listing A Bronx Tale at $10 million",
@@ -5430,85 +4677,6 @@
       "openingDate": "2016-10-27",
       "status": "closed",
       "researchedAt": "2026-10-22T05:16:58.727Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual"
-    },
-    "the-cherry-orchard-2016": {
-      "capitalization": null,
-      "capitalizationSource": "No verified public capitalization found.",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "estimatedRecoupmentPct": null,
-      "designation": "Nonprofit",
-      "notes": "Roundabout Theatre Company is a nonprofit; The Cherry Orchard is listed on Roundabout’s past-shows page as a 2016–2017 production. Playbill’s production page shows the run opened Oct. 16, 2016 and closed Dec. 4, 2016, with total gross of $3,899,477.80 over 57 performances. No verified public capitalization or weekly running cost was found.",
-      "confidence": "low",
-      "sources": [
-        {
-          "type": "manual",
-          "url": "https://www.roundabouttheatre.org/about/financial-information/",
-          "date": null
-        },
-        {
-          "type": "manual",
-          "url": "https://www.roundabouttheatre.org/about/past-shows/",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.playbill.com/production/the-cherry-orchard-american-airlines-theatre-vault-0000014151",
-          "date": null
-        }
-      ],
-      "title": "The Cherry Orchard",
-      "slug": "the-cherry-orchard-2016",
-      "openingDate": "2016-10-16",
-      "status": "closed",
-      "researchedAt": "2026-10-22T05:21:28.812Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual"
-    },
-    "heisenberg-2016": {
-      "capitalization": null,
-      "capitalizationSource": "No verified public capitalization found in official MTC/IBDB materials; MTC identifies itself as a not-for-profit theatre and is listed as producer of Heisenberg. ([manhattantheatreclub.com](https://www.manhattantheatreclub.com/who-we-are/about-mtc/?utm_source=openai))",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "estimatedRecoupmentPct": null,
-      "designation": "Nonprofit",
-      "notes": "MTC is a not-for-profit theatre and IBDB lists it as the producer and owner/operator of the Samuel J. Friedman Theatre production; because this is a nonprofit production, traditional investor recoupment is not applicable. Public pages show performance/gross statistics, but no disclosed capitalization or weekly operating cost. ([manhattantheatreclub.com](https://www.manhattantheatreclub.com/who-we-are/about-mtc/?utm_source=openai))",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "manual",
-          "url": "https://www.ibdb.com/broadway-production/heisenberg-504820",
-          "date": null
-        },
-        {
-          "type": "manual",
-          "url": "https://www.manhattantheatreclub.com/who-we-are/about-mtc/",
-          "date": null
-        },
-        {
-          "type": "manual",
-          "url": "https://www.manhattantheatreclub.com/who-we-are/about-mtc/financial-info/",
-          "date": null
-        },
-        {
-          "type": "manual",
-          "url": "https://playbill.com/production/heisenberg-samuel-j-friedman-theatre-vault-0000014158",
-          "date": null
-        }
-      ],
-      "title": "Heisenberg",
-      "slug": "heisenberg-2016",
-      "openingDate": "2016-10-13",
-      "status": "closed",
-      "researchedAt": "2026-10-22T05:23:34.339Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
@@ -5789,48 +4957,6 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
-    "long-days-journey-into-night-2016": {
-      "capitalization": null,
-      "capitalizationSource": "Not publicly verified; no match on the NYC tax-credit list and I found no public budget disclosure. ([investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit))",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": "Not applicable for Roundabout’s not-for-profit production model. ([roundabouttheatre.org](https://www.roundabouttheatre.org/about/financial-information/?utm_source=openai))",
-      "estimatedRecoupmentPct": null,
-      "designation": "Nonprofit",
-      "notes": "Public box-office data show a total gross of $5,153,916.50 over 61 performances, but I found no public capitalization or weekly nut. Roundabout is a 501(c)(3) not-for-profit, so conventional investor recoupment is not publicly applicable. ([playbill.com](https://playbill.com/production/long-days-journey-into-night-american-airlines-theatre-vault-0000014129?utm_source=openai))",
-      "confidence": "low",
-      "sources": [
-        {
-          "type": "manual",
-          "url": "https://www.roundabouttheatre.org/about/financial-information/",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.playbill.com/production/long-days-journey-into-night-american-airlines-theatre-vault-0000014129",
-          "date": null
-        },
-        {
-          "type": "manual",
-          "url": "https://www.ibdb.com/broadway-production/long-days-journey-into-night-501115",
-          "date": null
-        },
-        {
-          "type": "manual",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": null
-        }
-      ],
-      "title": "Long Day's Journey Into Night",
-      "slug": "long-days-journey-into-night-2016",
-      "openingDate": "2016-04-27",
-      "status": "closed",
-      "researchedAt": "2026-10-22T05:47:00.939Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual"
-    },
     "tuck-everlasting-2016": {
       "capitalization": 11000000,
       "capitalizationSource": "Houston Chronicle / New York Times article 'Anatomy of a Broadway Flop: Why These 4 Shows Failed' (cost to produce)",
@@ -5902,38 +5028,6 @@
       "openingDate": "2016-04-25",
       "status": "closed",
       "researchedAt": "2026-10-22T05:51:47.996Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual"
-    },
-    "the-father-2016": {
-      "capitalization": null,
-      "capitalizationSource": "No reliable public capitalization source found; MTC is a nonprofit theatre and IBDB credits MTC as producer of this production at the Samuel J. Friedman Theatre. ([manhattantheatreclub.com](https://www.manhattantheatreclub.com/who-we-are/about-mtc/financial-info/))",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "estimatedRecoupmentPct": null,
-      "designation": "Nonprofit",
-      "notes": "MTC is a not-for-profit theatre, and IBDB lists The Father at the Samuel J. Friedman Theatre from 2016-04-14 to 2016-06-19. I could not verify a public capitalization or weekly nut, so those fields are null and recoupment is not applicable in the usual investor sense. ([manhattantheatreclub.com](https://www.manhattantheatreclub.com/who-we-are/about-mtc/financial-info/))",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "manual",
-          "url": "https://www.manhattantheatreclub.com/who-we-are/about-mtc/financial-info/",
-          "date": null
-        },
-        {
-          "type": "manual",
-          "url": "https://www.ibdb.com/broadway-production/the-father-502234",
-          "date": null
-        }
-      ],
-      "title": "The Father",
-      "slug": "the-father-2016",
-      "openingDate": "2016-04-14",
-      "status": "closed",
-      "researchedAt": "2026-10-22T05:56:03.577Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
@@ -6016,38 +5110,6 @@
       "openingDate": "2016-03-24",
       "status": "closed",
       "researchedAt": "2026-10-22T06:01:28.637Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual"
-    },
-    "she-loves-me-2016": {
-      "capitalization": null,
-      "capitalizationSource": "No public capitalization figure found in the sources checked; Roundabout’s upstage guide says the show was much more expensive than the company’s prior productions, but gives no dollar amount.",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "estimatedRecoupmentPct": null,
-      "designation": "Nonprofit",
-      "notes": "Roundabout produced the 2016 revival at Studio 54. Public sources I checked did not disclose a capitalization or weekly nut; Playbill’s vault page gives gross totals, but that does not establish recoupment.",
-      "confidence": "low",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://playbill.com/production/she-loves-me-studio-54-vault-0000014138",
-          "date": "2016-07-10"
-        },
-        {
-          "type": "manual",
-          "url": "https://www.mtishows.com/sites/default/files/shelovesme_upstageguide_web.pdf",
-          "date": null
-        }
-      ],
-      "title": "She Loves Me",
-      "slug": "she-loves-me-2016",
-      "openingDate": "2016-03-17",
-      "status": "closed",
-      "researchedAt": "2026-10-22T06:03:50.120Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
@@ -6196,80 +5258,6 @@
       "openingDate": "2016-02-25",
       "status": "closed",
       "researchedAt": "2026-10-22T06:20:29.114Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual"
-    },
-    "our-mothers-brief-affair-2016": {
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "estimatedRecoupmentPct": null,
-      "designation": "Nonprofit",
-      "notes": "Produced by Manhattan Theatre Club, a not-for-profit theatre; the official show page lists the final performance as March 6, 2016. I did not find a public capitalization, weekly running cost, or recoupment disclosure for this production.",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "manual",
-          "url": "https://www.manhattantheatreclub.com/shows/2015-16-season/our-mothers-brief-affair/",
-          "date": "2016-03-06"
-        },
-        {
-          "type": "manual",
-          "url": "https://www.manhattantheatreclub.com/who-we-are/about-mtc/financial-info/",
-          "date": null
-        }
-      ],
-      "title": "Our Mother's Brief Affair",
-      "slug": "our-mothers-brief-affair-2016",
-      "openingDate": "2016-01-20",
-      "status": "closed",
-      "researchedAt": "2026-10-22T06:23:16.896Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual"
-    },
-    "noises-off-2016": {
-      "capitalization": null,
-      "capitalizationSource": "No public capitalization figure surfaced in the sources I found; the public materials I found report dates and grosses, not a production budget. ([ibdb.com](https://www.ibdb.com/broadway-production/noises-off-501117))",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": false,
-      "recoupedDate": null,
-      "recoupedSource": "NYTIX said the 2016 revival closed without entering profits and noted that Roundabout does not set out to recoup its investment in the usual investor sense. ([nytix.com](https://www.nytix.com/news/roundabout-theatre-companys-noises-off-closes))",
-      "estimatedRecoupmentPct": null,
-      "designation": "Nonprofit",
-      "notes": "Roundabout is a not-for-profit organization; IBDB dates the Broadway revival at the American Airlines Theatre from 2016-01-14 to 2016-03-13, and BroadwayWorld's 2016 grosses page lists total gross of $4,847,179 and average capacity of 95.84%. No public budget or weekly nut figure was found. ([roundabouttheatre.org](https://www.roundabouttheatre.org/about/?utm_source=openai))",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "manual",
-          "url": "https://www.roundabouttheatre.org/about/",
-          "date": null
-        },
-        {
-          "type": "manual",
-          "url": "https://www.ibdb.com/broadway-production/noises-off-501117",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/grossesbyyear.php?year=2016",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.nytix.com/news/roundabout-theatre-companys-noises-off-closes",
-          "date": "2016-03-20"
-        }
-      ],
-      "title": "Noises Off",
-      "slug": "noises-off-2016",
-      "openingDate": "2016-01-14",
-      "status": "closed",
-      "researchedAt": "2026-10-22T06:25:33.519Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
@@ -6485,38 +5473,6 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
-    "therese-raquin-2015": {
-      "capitalization": null,
-      "capitalizationSource": "Not publicly disclosed in the sources checked; Roundabout Theatre Company is a not-for-profit company, so this was not a traditional investor capitalization.",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "estimatedRecoupmentPct": null,
-      "designation": "Nonprofit",
-      "notes": "Roundabout produced the show as a not-for-profit; I found no public capitalization or weekly nut. Playbill lists the run as Oct. 29, 2015-Jan. 3, 2016, with 30 previews, 75 performances, and a total gross of $5,184,011.",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "manual",
-          "url": "https://res.cloudinary.com/roundabout-theatre-company/image/upload/v1545236580/PDFs-and-FORMS/UPSTAGE/The-Humans-Final-Web.pdf",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://playbill.com/production/therese-raquin-studio-54-vault-0000014088",
-          "date": null
-        }
-      ],
-      "title": "Thérèse Raquin",
-      "slug": "therese-raquin-2015",
-      "openingDate": "2015-10-29",
-      "status": "closed",
-      "researchedAt": "2026-10-22T06:50:39.884Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual"
-    },
     "sylvia-2015": {
       "capitalization": null,
       "capitalizationSource": null,
@@ -6623,85 +5579,6 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
-    "fool-for-love-2015": {
-      "capitalization": null,
-      "capitalizationSource": "No public capitalization disclosed in the sources checked.",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": "Not applicable; Manhattan Theatre Club is a not-for-profit theatre.",
-      "estimatedRecoupmentPct": null,
-      "designation": "Nonprofit",
-      "notes": "Manhattan Theatre Club produced Fool for Love at the Samuel J. Friedman Theatre; the official show page lists its final performance as December 13, 2015. Public grosses data show a total gross of $3,721,858 over 75 performances, but I could not verify a public capitalization, weekly running cost, or traditional recoupment figure.",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "manual",
-          "url": "https://www.manhattantheatreclub.com/",
-          "date": null
-        },
-        {
-          "type": "manual",
-          "url": "https://www.manhattantheatreclub.com/shows/2015-16-season/fool-for-love/",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/grosses/FOOL-FOR-LOVE",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.nytix.com/news/fool-for-love-concludes-with-strong-reviews-on-broadway",
-          "date": "2015-12-27"
-        }
-      ],
-      "title": "Fool for Love",
-      "slug": "fool-for-love-2015",
-      "openingDate": "2015-10-08",
-      "status": "closed",
-      "researchedAt": "2026-10-22T07:01:24.194Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual"
-    },
-    "old-times-2015": {
-      "capitalization": null,
-      "capitalizationSource": "No verified public capitalization found in the sources searched.",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "estimatedRecoupmentPct": null,
-      "designation": "Nonprofit",
-      "notes": "Roundabout is a not-for-profit theatre company. I found no public capitalization, weekly nut, or recoupment disclosure for this 2015 limited Broadway revival, and the NYC tax-credit recipient list I checked did not include Old Times or Roundabout. ([roundabouttheatre.org](https://www.roundabouttheatre.org/about/?utm_source=openai))",
-      "confidence": "low",
-      "sources": [
-        {
-          "type": "manual",
-          "url": "https://www.roundabouttheatre.org/about/",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.playbill.com/article/pinters-old-times-starring-clive-owen-and-eve-best-ends-broadway-run-com-373165",
-          "date": null
-        },
-        {
-          "type": "manual",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": "2025-08-10"
-        }
-      ],
-      "title": "Old Times",
-      "slug": "old-times-2015",
-      "openingDate": "2015-10-06",
-      "status": "closed",
-      "researchedAt": "2026-10-22T07:02:48.673Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual"
-    },
     "spring-awakening-2015": {
       "capitalization": 4500000,
       "capitalizationSource": "Los Angeles Times reported a spokeswoman said the Broadway capitalization was $4.5 million. ([latimes.com](https://www.latimes.com/entertainment/arts/culture/la-et-cm-spring-awakening-broadway-box-office-20151006-story.html?utm_source=openai))",
@@ -6781,47 +5658,97 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
-    "the-imaginary-invalid": {
-      "capitalization": null,
-      "capitalizationSource": null,
+    "maybe-happy-ending-2024": {
+      "title": "Maybe Happy Ending",
+      "slug": "maybe-happy-ending",
+      "openingDate": "2024-11-12",
+      "status": "open",
+      "capitalization": 16000000,
+      "capitalizationSource": "SEC EDGAR Form D filing, CIK 0002021672, states offering capitalized at $16,000,000 (total offering amount $18,250,000)",
       "weeklyRunningCost": null,
-      "costMethodology": null,
+      "costMethodology": "sec-filing",
       "recouped": null,
       "recoupedDate": null,
       "recoupedSource": null,
-      "estimatedRecoupmentPct": null,
-      "designation": "Nonprofit",
-      "notes": "No verified public capitalization, weekly nut, or recoupment filing was found. Roundabout identifies The Imaginary Invalid as a not-for-profit Broadway production at Todd Haimes Theatre running Sept. 25–Nov. 22, 2026, with opening night on Oct. 22, 2026. ([investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit))",
-      "confidence": "low",
+      "designation": "TBD",
+      "notes": "Maybe Happy Ending opened at the Belasco Theatre on November 12, 2024 and is still running. The SEC Form D filing shows a capitalization of $16,000,000 with a maximum offering of $18,250,000. A Facebook post references a $1.4 million weekly gross, and the Broadway Journal references a 'turnaround,' but no explicit recoupment has been reported. Too early to designate.",
       "sources": [
         {
           "type": "trade",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": "2025-08-09"
-        },
-        {
-          "type": "manual",
-          "url": "https://www.roundabouttheatre.org/production/2026-2027-season/the-imaginary-invalid/",
+          "url": "https://www.broadwayjournal.com/p/intimate-maybe-happy-ending-engineers-turnaround",
           "date": null
         },
         {
-          "type": "manual",
-          "url": "https://www.roundabouttheatre.org/about/financial-information/",
-          "date": null
-        },
-        {
-          "type": "manual",
-          "url": "https://www.roundabouttheatre.org/",
+          "type": "trade",
+          "url": "https://www.facebook.com/MusicalsDaily/posts/maybe-happy-ending-just-pulled-in-14-million-at-the-box-office-for-its-latest-ru/1368939085235383/",
           "date": null
         }
       ],
-      "title": "The Imaginary Invalid",
-      "slug": "the-imaginary-invalid",
-      "openingDate": "2026-10-22",
+      "confidence": "medium",
+      "researchedAt": "2026-10-24T20:14:17.912Z"
+    },
+    "the-great-gatsby-2024": {
+      "title": "The Great Gatsby",
+      "slug": "the-great-gatsby",
+      "openingDate": "2024-04-25",
       "status": "open",
-      "researchedAt": "2026-10-22T13:45:58.081Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual"
+      "capitalization": 25000000,
+      "capitalizationSource": "Forbes article (marchershberg, 2024-10-24) states 'The Great Gatsby at $25 million'",
+      "weeklyRunningCost": null,
+      "costMethodology": "trade-reported",
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "designation": "TBD",
+      "notes": "The Great Gatsby (2024) was capitalized at $25 million per Forbes trade reporting. The show opened April 25, 2024 and has an announced closing date of March 29, 2027, indicating a multi-year commercial run. No recoupment information is available in the evidence. Given the lengthy run announced, designation remains TBD pending recoupment confirmation.",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.forbes.com/sites/marchershberg/2024/10/24/skyrocketing-broadway-show-budgets-scare-producers/",
+          "date": "2024-10-24"
+        },
+        {
+          "type": "trade",
+          "url": "https://gordoncox.substack.com/p/chunsoo-shin-interview-the-great-gatsby-broadway",
+          "date": null
+        }
+      ],
+      "confidence": "medium",
+      "researchedAt": "2026-10-24T20:16:12.451Z"
+    },
+    "the-lion-king-1997": {
+      "title": "The Lion King",
+      "slug": "the-lion-king",
+      "openingDate": "1997-11-13",
+      "status": "open",
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": "industry-estimate",
+      "recouped": true,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "designation": "Miracle",
+      "notes": "The Lion King opened November 13, 1997 at the Minskoff Theatre and is still running, making it one of the longest-running and highest-grossing shows in Broadway history. The evidence gathered does not explicitly state capitalization, weekly running costs, or recoupment date. The theatregold.com source references a '$9 billion gross' figure in its metadata keywords, but no specific financial figures are confirmed in the extracted evidence text. Given its multi-decade open-ended run and legendary status, it qualifies as a Miracle by designation criteria, but specific financial data cannot be confirmed from these sources.",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/inside-broadways-1-million-nut-cases",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://theatregold.com/how-much-does-a-broadway-musical-cost-wicked-lion-king/",
+          "date": "2026-05-31"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayleague.com/research/grosses-broadway-nyc/",
+          "date": null
+        }
+      ],
+      "confidence": "low",
+      "researchedAt": "2026-10-24T20:35:06.738Z"
     },
     "giant-2026": {
       "title": "Giant",
@@ -7285,7 +6212,7 @@
       "researchedAt": "2026-10-24T20:35:55.543Z"
     }
   },
-  "lastUpdated": "2026-10-24T00:36:49.750Z",
+  "lastUpdated": "2026-10-24T20:38:05.048Z",
   "hardTruthFindings": {
     "collectedAt": "2026-10-11",
     "card": "BRO-5017",
