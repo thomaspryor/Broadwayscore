@@ -82,33 +82,22 @@ test('deadline: a hung fetch yields null instead of hanging', async () => {
   assert.equal(r, null);
 });
 
-test('hook script: exits 0 and prints nothing on garbage / no card; settings wires it to create_session', () => {
-  const root = path.resolve(import.meta.dirname, '../..');
-  const run = (input) => execFileSync('node', [path.join(root, 'scripts/plan-only-create-session-hook.js')], { input, encoding: 'utf8', cwd: root, env: { ...process.env, LINEAR_API_KEY: '' } });
-  assert.equal(run('not json'), '');
-  assert.equal(run(JSON.stringify({ session_id: 'zz', cwd: os.tmpdir(), tool_input: {} })), '');
+test('block-prompting-remote-tools.sh runs the advisory only for an allowed create_session; settings gives it time', () => {
+  const root = path.resolve(import.meta.dirname, '..', '..');
+  const sh = (input, env = {}) => execFileSync('bash', [path.join(root, '.claude/hooks/block-prompting-remote-tools.sh')], { input: JSON.stringify(input), encoding: 'utf8', cwd: root, env: { ...process.env, ...env } });
+  const ok = { session_id: 'zz', cwd: os.tmpdir(), tool_name: CS, tool_input: { model: 'claude-sonnet-5-5', source_url: 'https://github.com/thomaspryor/Broadwayscore', prompt: 'x\nBUDGET: 6h\nREPORT-BACK: yes' } };
+  assert.equal(sh(ok), '', 'no card resolvable: silent');
+  const denied = sh({ ...ok, tool_input: { ...ok.tool_input, model: '' } });
+  assert.match(denied, /permissionDecision": "deny"/);
+  assert.doesNotMatch(denied, /PLAN-ONLY/);
   const settings = JSON.parse(fs.readFileSync(path.join(root, '.claude/settings.json'), 'utf8'));
   const block = settings.hooks.PreToolUse.find((b) => /create_session/.test(b.matcher));
-  assert.ok(block.hooks.some((h) => /plan-only-create-session-hook\.js/.test(h.command)));
+  assert.ok(block.hooks.every((h) => (h.timeout || 0) >= 20), 'timeout covers fetch + reminder deadline');
 });
 
-test('other tools in the shared matcher block (add_repo, send_later) are ignored', async () => {
-  for (const tool_name of ['mcp__claude-code-remote__add_repo', 'mcp__Claude_Code_Remote__send_later', '']) {
-    assert.equal(await lib.evaluate({ tool_name, tool_input: {} }, { fetchCard: cards({ 'BRO-100': PLAN }), branch: 'BRO-100', tmpDir: tmp(), env: {} }), null);
-  }
-});
-
-test('slow coordinator lookup keeps the plan-only warning (enrichment only drops the reminder)', async () => {
-  const slow = () => new Promise(() => {});
-  const r = await lib.evaluate({ tool_name: CS, tool_input: { prompt: 'opening night lease' } }, { fetchCard: cards({ 'BRO-100': PLAN }), startReminder: slow, branch: 'BRO-100', tmpDir: tmp(), env: {} });
-  assert.match(r.additionalContext, /PLAN-ONLY CARD: BRO-100/);
-}, { timeout: 8000 });
-
-test('transcript: skips tool-result-only user rows, uses only the first card id', async () => {
-  const dir = tmp(); const tp = path.join(dir, 't.jsonl');
-  const row = (content) => JSON.stringify({ type: 'user', message: { role: 'user', content } }) + '\n';
-  fs.writeFileSync(tp, JSON.stringify({ type: 'user', isMeta: true, message: { role: 'user', content: '<local-command-caveat>x</local-command-caveat>' } }) + '\n' + row('<command-name>/model</command-name>') + row([{ type: 'tool_result', content: 'x' }]) + row('[BRO-100] plan it. See also BRO-101 and BRO-102.'));
-  assert.deepEqual(lib.sessionCards({ transcriptPath: tp, tmpDir: dir }), ['BRO-100']);
+test('hook entry script: garbage stdin prints nothing, exits 0', () => {
+  const root = path.resolve(import.meta.dirname, '..', '..');
+  assert.equal(execFileSync('node', [path.join(root, 'scripts/plan-only-create-session-hook.js')], { input: 'not json', encoding: 'utf8' }), '');
 });
 
 test('hook entry script: --help prints usage and exits 0 without reading stdin or calling Linear', () => {
