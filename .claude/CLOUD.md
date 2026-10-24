@@ -93,6 +93,7 @@ Producers' figures from the owner's Broadway investments (capitalization, weekly
 Don't clone and push the private repos. Route the edit through CI (BRO-4216):
 
 **Field edits: generate the plan.** `node scripts/new-fix-plan.js --id=bro-N --summary="..." --edit='<showId>.<field>=VALUE' --review-edit='<show>/<file>.json:<field>=VALUE'` (`--help` for more). It fills `oldValue`, splits at 25 actions, runs preflight, force-adds the files and prints the step 3 command. Otherwise:
+Commercial edits in cloud: `data/commercial.json` here is a stale copy, so `oldValue` built from it is refused live ("value changed since plan"). Read the live entries first: `node scripts/cloud-run-script.js scripts/dump-commercial-entries.js --slugs=a,b` (or `--closed-tbd`), and write `oldValue` from that. Do not add a `needsLossEvidence` clear next to a designation change; the new designation clears it and the extra action is refused.
 
 1. Write `data/pending-fixes/bro-N.json` by hand: shape and every action type (review-field-edit, review-file-op, data-edit, add-commercial-entry, retire-show, drop-orphan-key, retitle-show, add-show, ingest-html-handoff for a page CI can't fetch) are in `scripts/pending-fix-actions.md`.
 2. `node scripts/lib/preflight-review-fix-plan.js <plan>` (replays data-edits, so a stale `oldValue` fails here), `git add -f` the plan, then land (`land/<name>`).
