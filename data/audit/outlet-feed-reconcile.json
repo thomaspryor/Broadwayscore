@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T15:07:03.053Z",
+  "generatedAt": "2026-10-24T18:48:17.949Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -154,10 +154,6 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
-      "outletId": "viewfromthegods",
-      "error": "Timeout fetching https://viewfromthegods.co.uk/feed/"
-    },
-    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -168,16 +164,21 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "nysr",
-      "error": "Timeout fetching https://nystagereview.com/wp-json/wp/v2/posts?per_page=50&orderby=date&order=desc&after=2026-10-10T15%3"
     }
   ],
-  "itemsScanned": 750,
-  "matchedGaps": 1,
+  "itemsScanned": 780,
+  "matchedGaps": 4,
   "possibleGaps": 2,
   "gaps": [
+    {
+      "showId": "derren-brown-only-human-west-end-2026",
+      "title": "Derren Brown: Only Human",
+      "level": "matched",
+      "outletId": "londontheatre1",
+      "url": "https://www.londontheatre1.com/reviews/derren-brown-only-human-apollo-theatre/",
+      "headline": "Derren Brown: Only Human | Apollo Theatre",
+      "publishDate": "2026-10-24"
+    },
     {
       "showId": "machine-learning-off-broadway-2026",
       "title": "Machine Learning",
@@ -186,6 +187,24 @@
       "url": "https://www.interestedbystander.com/2026/10/theater-reviews-lauren-yees-king-of.html",
       "headline": "Theater Reviews:  Lauren Yee&#39;s “King of the Yees” Is an Amusing Slice of San Francisco Chinatown Life; Duncan Sheik’s Last Musical, “Memoirs of Amorous Gentlemen,” Is About Sex Workers and Sex Writers; and “Machine Learning” Is “Who’s Afraid of AI Woolf?”",
       "publishDate": "2026-10-23"
+    },
+    {
+      "showId": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
+      "level": "matched",
+      "outletId": "firstnightmagazine",
+      "url": "https://firstnightmagazine.com/2026/10/24/review-of-the-pianist-2026-park-theatre-stage-adaptation-hits-all-the-right-notes-despite-lacking-a-few-fortes/",
+      "headline": "Review of &#8216;The Pianist&#8217; (2026, Park Theatre): &#8220;Stage adaptation hits all the right notes despite lacking a few fortes&#8221;",
+      "publishDate": "2026-10-24"
+    },
+    {
+      "showId": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
+      "level": "matched",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/the-pianist-park-theatre-london/",
+      "headline": "The Pianist – Park Theatre, London",
+      "publishDate": "2026-10-24"
     },
     {
       "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T15:06:38.969Z",
+  "generatedAt": "2026-10-24T18:45:33.209Z",
   "windowDays": 45,
   "showsScanned": 209,
   "gaps": [
@@ -18,34 +18,10 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 766.4322036111112,
+      "fileAgeHours": 770.0813830555555,
       "gapSeenAt": "2026-10-23T02:17:11.385Z",
-      "nonTerminalAgeHours": 36.82432861111111,
+      "nonTerminalAgeHours": 40.47272888888889,
       "needsManualRecovery": true
-    },
-    {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
-      "title": "Into the Woods",
-      "openingDate": "2026-10-07",
-      "file": "telegraph--dominic-cavendish.json",
-      "outletId": "telegraph",
-      "tier": 1,
-      "type": "empty-body",
-      "recoverable": true,
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/into-the-woods-review-bridge-theatre/",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "⚠️  Cross-market reroute: into-the-woods-noel-coward-west-end-2026 → into-the-woods-west-end-2025 (sibling opening 1d from publishDate vs current 299d)\n\n❌ Stale merge: fullText still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/into-the-woods-west-end-2025/telegraph--dominic-cavendish.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
-      },
-      "recoveryCount": 1,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=into-the-woods-noel-coward-west-end-2026 --url=https://www.telegraph.co.uk/theatre/what-to-see/into-the-woods-review-bridge-theatre/ --outlet=telegraph --critic=\"Dominic Cavendish\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-11T19:59:38.851Z",
-      "fileAgeHours": 307.1162708333333,
-      "gapSeenAt": "2026-10-24T15:06:38.968Z",
-      "nonTerminalAgeHours": 0,
-      "needsManualRecovery": false
     }
   ],
   "contradictions": []

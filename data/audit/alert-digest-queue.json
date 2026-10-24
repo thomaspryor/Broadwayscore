@@ -726,20 +726,6 @@
     "queuedAt": "2026-10-24T14:39:26.862Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:the-imaginary-invalid-2026",
-    "title": "Review gap — \"The Imaginary Invalid\" missing 3 cited review(s)",
-    "description": "The Imaginary Invalid (the-imaginary-invalid-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-imaginary-invalid-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-24T14:39:26.941Z"
-  },
-  {
     "conditionKey": "land:land/bro-6130-self-disposition",
     "title": "Landing blocked: unit-tests-node red on land/bro-6130-self-disposition",
     "description": "land.yml did not land land/bro-6130-self-disposition: the unit-tests-node gate went red at 181ad29f33. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40100566821",
@@ -769,20 +755,6 @@
       }
     ],
     "queuedAt": "2026-10-24T14:22:37.448Z"
-  },
-  {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-24.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-24T15:06:38.969Z"
   },
   {
     "conditionKey": "ob-venue-go-live:the-great-soviet-bucket-off-broadway-2027",
@@ -1304,5 +1276,116 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-24T18:13:58.850Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:harry-potter-and-the-cursed-child-one-part-west-end-2026",
+    "title": "Review gap — \"Harry Potter and the Cursed Child\" missing 1 cited review(s)",
+    "description": "Harry Potter and the Cursed Child (harry-potter-and-the-cursed-child-one-part-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=harry-potter-and-the-cursed-child-one-part-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T18:45:20.909Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:murder-cathedral-off-west-end-2026",
+    "title": "Review gap — \"Murder in the Cathedral\" missing 1 cited review(s)",
+    "description": "Murder in the Cathedral (murder-cathedral-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=murder-cathedral-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T18:45:21.021Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
+    "title": "Review gap — \"Queeney Todd: The Demon Bottom of Fleet Street\" missing 1 cited review(s)",
+    "description": "Queeney Todd: The Demon Bottom of Fleet Street (queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T18:45:21.114Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-24.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T18:45:33.210Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h (still open — BRO-5532)",
+    "description": "Still firing after 66 notifications since it was filed. Tracked at BRO-5532.\n\n11 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5532",
+    "fields": [
+      {
+        "name": "Jesus Christ Superstar — guardian (29h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"jesus-christ-superstar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Jesus Christ Superstar — independent (29h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"jesus-christ-superstar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Jesus Christ Superstar — standard (29h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"jesus-christ-superstar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Jesus Christ Superstar — telegraph (29h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"jesus-christ-superstar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Jesus Christ Superstar — thestage (29h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"jesus-christ-superstar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Jesus Christ Superstar — timeout (29h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"jesus-christ-superstar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Jesus Christ Superstar — times-uk (29h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"jesus-christ-superstar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Stranger Things: The First Shadow — timeout (31h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"stranger-things-the-first-shadow-west-end-2023\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Imaginary Invalid — cititour (61h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-imaginary-invalid-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Imaginary Invalid — theater-scene (61h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-imaginary-invalid-2026\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-10-24T18:48:17.719Z"
   }
 ]
