@@ -28,4 +28,5 @@ test('weather_page pattern: prose about a forecaster passes, a real forecast gri
   assert.equal(hit('A Scottish meteorologist who had to forecast D-Day: you find the weather forecast taking up the central position in drama.'), false);
   assert.equal(hit('THE WEATHER Forecast: sunny, high 72° low 55°'), true);
   assert.equal(hit('The weather for the county: rain'), true);
+  assert.equal(hit('THE WEATHER\nForecast: Partly cloudy. Highs in the 70s, lows in the 50s.'), true);
 });

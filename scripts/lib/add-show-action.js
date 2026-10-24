@@ -39,7 +39,7 @@ function marketShapeProblem(shows, show) {
   // category at write time, or tests/unit/show-id-market-suffix.test.mjs turns
   // main red after the row lands (BRO-6114, yentl-west-end-2026 as off-west-end).
   const idMismatch = marketSuffixMismatch(show);
-  if (idMismatch) return `add-show: id "${show.id}" disagrees with category "${show.category}" (${idMismatch.reason}); an off-west-end row needs an id ending -off-west-end[-YYYY]`;
+  if (idMismatch) return `add-show: id "${show.id}" disagrees with category "${show.category}" (${idMismatch.reason})`;
   if (show.category !== 'tour' && TOUR_ONLY.some(f => show[f] !== undefined)) {
     return `add-show: ${TOUR_ONLY.join('/')} only belong on category "tour"`;
   }

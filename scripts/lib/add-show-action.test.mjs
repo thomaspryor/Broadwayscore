@@ -178,6 +178,6 @@ import { createRequire as __cr6114 } from 'node:module';
   });
   test('BRO-6114: add-show accepts the matching -off-west-end id', () => {
     const r = applyAddShow([], { show: { ...base, id: 'yentl-off-west-end-2026', slug: 'yentl-off-west-end-2026', category: 'off-west-end' } });
-    assert.notEqual(r.reason && /disagrees with category/.test(r.reason), true);
+    assert.equal(r.ok, true, r.reason);
   });
 }
