@@ -24,5 +24,5 @@ if (process.argv.includes('--closed-tbd')) {
 for (const slug of slugs) {
   const s = bySlug.get(slug) || {};
   const slim = Object.fromEntries(Object.entries(commercial[slug] || { missing: true }).filter(([k]) => !/^model|^research|^lastRes|^deepResearch/.test(k)));
-  console.log(JSON.stringify({ slug, title: s.title, type: s.type, venue: s.venue, opened: s.openingDate, closed: s.closingDate, ...slim }));
+  console.log(JSON.stringify({ slug, title: s.title, type: s.type, theater: s.venue, opened: s.openingDate, closed: s.closingDate, ...slim }));
 }
