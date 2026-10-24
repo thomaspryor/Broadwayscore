@@ -67,6 +67,14 @@ function hasBwwRoundupOverride(showId) {
  *   ok:false with the sibling guard's reason and rescuedTitle:true when the
  *   rescued page is really a sibling's.
  */
+// BRO-6141: shows whose containing-title sibling is the same work in another market,
+// checked against the archived pages. Add a show here only after reading both titles.
+const SAME_WORK_OTHER_MARKET_SHOWS = new Set([
+  'tina-2019',                          // West End "Tina The Tina Turner Musical" (2018)
+  'old-friends-west-end-2023',          // Broadway "Stephen Sondheim's Old Friends" (2025)
+  'the-old-man-and-the-pool-west-end-2023', // Broadway "Mike Birbiglia: The Old Man & The Pool"
+]);
+
 function checkArchiveCategory(html, show, siblingCategories) {
   let check = validateRoundupPageTitle(html, show.title, show.category, siblingCategories);
   const typoRescue = () => /Review Roundup/i.test(check.pageTitle || '')
@@ -78,7 +86,11 @@ function checkArchiveCategory(html, show, siblingCategories) {
   // "Old Friends (West End)" vs the 2025 Broadway "Stephen Sondheim's Old
   // Friends"), the page is this show's, not a sibling's (BRO-6141). A longer
   // title that also exists in the page's own market stays rejected.
-  if (check.reason === 'containing-title-sibling' && check.sibling && check.pageTitle) {
+  // Only for shows verified by hand as the same work (SAME_WORK_OTHER_MARKET_SHOWS):
+  // a containing title can also be a DIFFERENT work ("A Christmas Carol" vs the
+  // West End "A Christmas Carol Goes Wrong"), and title words cannot tell those apart.
+  if (check.reason === 'containing-title-sibling' && check.sibling && check.pageTitle
+      && SAME_WORK_OTHER_MARKET_SHOWS.has(show.id)) {
     // Did They Like It carries no market word in its titles; it reviews
     // Broadway productions, so its canonical host stands in for "on Broadway".
     const qualifier = detectPageMarketQualifier(html, check.pageTitle)

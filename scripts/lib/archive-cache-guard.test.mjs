@@ -541,4 +541,10 @@ test('makeArchiveShowChecker: a page saved under one show id but about another s
     assert.equal(bad.ok, false);
     assert.equal(bad.reason, 'containing-title-sibling');
   });
+
+  test('BRO-6141: a West End-only longer title is NOT rescued for a show outside the verified list', { skip: !have('a-christmas-carol-2022', 'christmas-carol-goes-wrong-apollo-west-end-2025') }, () => {
+    const bad = checkArchiveCategory(html('Christmas Carol Goes Wrong (Broadway) Reviews | Show Score'), byId['a-christmas-carol-2022'], []);
+    assert.equal(bad.ok, false);
+    assert.equal(bad.reason, 'containing-title-sibling');
+  });
 }

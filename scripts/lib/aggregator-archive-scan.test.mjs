@@ -44,9 +44,12 @@ test('CLI --delete refuses without --expect and on a count mismatch, deleting no
   const root = fixture();
   const cli = path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'quarantine-poisoned-aggregator-archive.js');
   const run = (...a) => spawnSync('node', [cli, `--archive=${root}`, ...a], { encoding: 'utf8' });
-  // real shows.json is used by the CLI, so these ids are unknown to it and scan finds nothing:
-  // the guard under test is the argument check, which runs before any delete.
+  // The CLI reads the real shows.json, where both fixture ids exist, so it finds 1 poisoned page:
+  // --expect=99 is a real count mismatch and --delete with no --expect is refused outright.
   assert.equal(run('--delete').status, 2);
   assert.equal(run('--delete', '--expect=99').status, 2);
   assert.equal(fs.readdirSync(path.join(root, 'show-score')).length, 2);
+  // and a matching --expect deletes exactly the poisoned page
+  assert.equal(run('--delete', '--expect=1').status, 0);
+  assert.deepEqual(fs.readdirSync(path.join(root, 'show-score')), ['wicked-2003.html']);
 });
