@@ -10,6 +10,7 @@
  * run flags:
  *   --candidates=FILE            wos output; those URLs are ingested with no search
  *   --serp                       search the remaining slots (site: scoped SERP)
+ *   --debug                      log every SERP query/verdict and skip the Google date filter
  *   --max-usd=N                  hard cap on scraper + projected scoring dollars (default 45)
  *   --reserve-usd=N              held back for scoring of files already written by earlier runs
  *   --seasons=2016..2020         start years
@@ -150,6 +151,7 @@ async function cmdRun() {
   const maxCalls = numArg('max-calls', Infinity);
   const dry = flag('dry-run');
   const serp = flag('serp');
+  const debug = flag('debug'); // print every SERP query and verdict; also skips Google's date filter (unreliable for 2016-2020 articles)
   const startIso = new Date().toISOString();
   const results = [];
   let calls = 0;
@@ -177,7 +179,7 @@ async function cmdRun() {
       const { looksLikeReview } = require('./collect-outlet-reviews.js');
       try {
         const res = await discoverCorrectUrl({ showId: q.showId, outletId: m.outletId, outlet: m.slot, criticName: null, url: null },
-          process.env.SCRAPINGBEE_API_KEY || '', { brightDataKey: process.env.BRIGHTDATA_TOKEN || '', dateRange: null, domainOverride: m.domain, returnMetadata: true, log: () => {} });
+          process.env.SCRAPINGBEE_API_KEY || '', { brightDataKey: process.env.BRIGHTDATA_TOKEN || '', dateRange: null, forceHistorical: debug, domainOverride: m.domain, returnMetadata: true, log: debug ? console.log : () => {} });
         if (res === '__SERP_UNAVAILABLE__') { stopped = 'serp-unavailable'; results.push({ ...rec, outcome: 'serp-unavailable' }); break; }
         if (!res || typeof res !== 'object') { results.push({ ...rec, outcome: 'no-serp-hit' }); refresh(); await sleep(800); continue; }
         const host = new URL(res.url).hostname.replace(/^www\./, '');

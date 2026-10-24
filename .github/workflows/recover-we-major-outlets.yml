@@ -45,6 +45,11 @@ on:
         required: false
         type: string
         default: '200'
+      debug:
+        description: 'Print every SERP query and verdict, and skip the Google date filter'
+        required: false
+        default: false
+        type: boolean
       dry_run:
         description: 'List the queue only, spend nothing, push nothing'
         required: false
@@ -110,12 +115,14 @@ jobs:
           INPUT_MAX_CALLS: ${{ inputs.max_calls }}
           INPUT_MODE: ${{ inputs.mode }}
           INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          INPUT_DEBUG: ${{ inputs.debug }}
         run: |
           set -o pipefail
           FLAGS="--seasons=$INPUT_SEASONS --max-usd=$INPUT_MAX_USD --reserve-usd=$INPUT_RESERVE_USD --max-calls=$INPUT_MAX_CALLS --out=$RUNNER_TEMP/recovery.json"
           [ -n "$INPUT_SHOWS" ] && FLAGS="$FLAGS --shows=$INPUT_SHOWS"
           [ -n "$INPUT_SLOTS" ] && FLAGS="$FLAGS --slots=$INPUT_SLOTS"
           [ "$INPUT_DRY_RUN" = "true" ] && FLAGS="$FLAGS --dry-run"
+          [ "$INPUT_DEBUG" = "true" ] && FLAGS="$FLAGS --debug"
           node scripts/we-major-recovery.js wos --seasons="$INPUT_SEASONS" --out=$RUNNER_TEMP/wos.json
           [ "$INPUT_MODE" = "run" ] && FLAGS="$FLAGS --serp"
           node scripts/we-major-recovery.js run --candidates=$RUNNER_TEMP/wos.json $FLAGS 2>&1 | tee $RUNNER_TEMP/recovery.log
