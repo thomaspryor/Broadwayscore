@@ -26,6 +26,7 @@ import {
   publicSourceText,
   sourceTextLink,
   LOSS_ON_SILENCE_CAVEAT,
+  DESIGNATION_ESTIMATE_CAVEAT,
   LIKELY_OUTCOME_NOTE,
   type RecoupedCellSummary,
 } from '@/lib/commercial-display';
@@ -343,8 +344,8 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                       <div className="text-xs text-gray-500">{getNonprofitTag(show)}</div>
                     )}
                     {show.lossCaveat && (
-                      <div className="text-xs text-gray-500 whitespace-nowrap" title={LOSS_ON_SILENCE_CAVEAT} data-testid="loss-basis-tag">
-                        No recoupment announced
+                      <div className="text-xs text-gray-500 whitespace-nowrap" title={show.lossCaveat === DESIGNATION_ESTIMATE_CAVEAT ? DESIGNATION_ESTIMATE_CAVEAT : LOSS_ON_SILENCE_CAVEAT} data-testid="loss-basis-tag">
+                        {show.lossCaveat === DESIGNATION_ESTIMATE_CAVEAT ? 'Our estimate' : 'No recoupment announced'}
                       </div>
                     )}
                     {show.likelyOutcome && (

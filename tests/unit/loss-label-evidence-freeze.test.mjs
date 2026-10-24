@@ -104,6 +104,9 @@ describe('commercial-record-checks designationBasis rules', () => {
     const row = { ...loss, designationBasis: 'no-recoupment-announced' };
     const w = (d) => commercialRecordWarnings('x', row, { showRecord: { status: 'closed', closingDate: daysAgo(d) } });
     for (const d of [3, 60, 400]) assert.equal(w(d).filter(m => /ages in/.test(m)).length, 0, `${d} days`);
+    // A model-estimate label on a young closure is clean and needs no recouped flag.
+    const est = { designation: 'Flop', recouped: null, designationBasis: 'model-estimate', modelReturnedExCreditPct: [5, 10, 15] };
+    assert.deepEqual(commercialRecordErrors('x', est, { showRecord: { status: 'closed', closingDate: daysAgo(3) } }), []);
   });
   it('warns when a recouped show still carries an earlier share returned (BRO-5091)', () => {
     const w = (est) => commercialRecordWarnings('x', { designation: 'Windfall', recouped: true, estimatedRecoupmentPct: est });
