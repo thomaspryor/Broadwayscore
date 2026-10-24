@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6160-b",
   "planId": "97d1edb0-b664-4409-9045-9e8d78936d08",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -23,5 +23,14 @@
         "description": "in-transit-2016: record AG-budget weekly sales minimum (BRO-6160)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-24T22:28:11.015Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for in-transit-2016"
+    }
+  ],
+  "executedIn": "ci"
 }
