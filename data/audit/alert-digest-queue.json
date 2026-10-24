@@ -1259,5 +1259,19 @@
       }
     ],
     "queuedAt": "2026-10-24T17:49:21.743Z"
+  },
+  {
+    "conditionKey": "tour-candidate:mexodus-off-broadway-2026:2026-07-08",
+    "title": "Tour candidate: Mexodus national tour",
+    "description": "Tours To You lists a Mexodus tour running since 2026-07-08, but Wikipedia doesn't confirm its launch, so it wasn't added automatically. Add a category:'tour' entry with tourOf:mexodus-off-broadway-2026 (the production it tours; any market counts), then run node scripts/sweep-tour-reviews.js --tour=<id>.",
+    "severity": "info",
+    "url": "https://tourstoyou.org/shows/mexodus/",
+    "decision": true,
+    "info": false,
+    "decisionPrompt": "Add the Mexodus national tour as a tracked tour?",
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T18:13:58.850Z"
   }
 ]
