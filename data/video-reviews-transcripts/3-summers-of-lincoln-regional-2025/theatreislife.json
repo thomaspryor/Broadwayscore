@@ -1,0 +1,46 @@
+{
+  "creatorId": "theatreislife",
+  "platform": "tiktok",
+  "videoId": "7479652782509690142",
+  "videoUrl": "https://www.tiktok.com/@theatreislife/video/7479652782509690142",
+  "title": "Glad I was able to make this trip already! #3summersoflincoln #newmus...",
+  "publishedAt": "20250309",
+  "views": "2010",
+  "duration": "1:56",
+  "transcript": "I just got out of three summers of Bloomfield at Loyer Playhouse. This is a world premiere new musical. And, y'all, I'm really excited about this one. It definitely needs some work. I'll do a full video with all of my thoughts. There's a lot of promise here, especially the music compositions by Crystal Monet Hall. I love her music in this. Here's a preview of the bows with this incredible cast. But listen to the music while you're watching these. Uh, ignore my screaming, but definitely listen to the music because it. It's like, it's exciting sounding. I'm excited to see where this show goes next. I can't imagine we don't see this in New York at some point. 우 우 우후 오",
+  "wordCount": 124,
+  "transcriptSource": "tiktok-subs",
+  "extractedAt": "2026-04-15T01:10:25.876Z",
+  "excludedVideoIds": [],
+  "selection": {
+    "method": "single",
+    "candidateKey": "7479652782509690142",
+    "at": "2026-10-24T22:11:39.333Z"
+  },
+  "score": 72,
+  "bucket": "Positive",
+  "confidence": "medium",
+  "reasoning": "Creator expresses excitement and praises the music/cast while acknowledging it needs work. Predicts a NY transfer, suggesting a recommendation with caveats.",
+  "keyQuote": "There's a lot of promise here, especially the music compositions by Crystal Monet Hall.",
+  "explicitRating": null,
+  "scoredAt": "2026-10-24T22:11:55.715Z",
+  "scoringModel": "claude-opus-4-7",
+  "promptVersion": 2,
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "three summers of Bloomfield at Loyer Playhouse",
+    "reason": "The video is about 'three summers of Bloomfield' at 'Loyer Playhouse', not '3 Summers of Lincoln' at Mandell Weiss Theatre, La Jolla Playhouse.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The transcript explicitly mentions 'three summers of Bloomfield at Loyer Playhouse' and the speaker's excitement for it to potentially go to New York, indicating a different production or location than the assigned '3 Summers of Lincoln' at La Jolla Playhouse in San Diego.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-10-24T22:24:43.068Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The video is about 'three summers of Bloomfield' at 'Loyer Playhouse', not '3 Summers of Lincoln' at Mandell Weiss Theatre, La Jolla Playhouse."
+}
