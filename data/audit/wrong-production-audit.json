@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-24T14:26:50.721Z",
+  "timestamp": "2026-10-24T14:39:37.626Z",
   "stats": {
-    "totalReviews": 60248,
-    "alreadyFlagged": 21212,
+    "totalReviews": 60276,
+    "alreadyFlagged": 21223,
     "dateGuardCatches": 222,
-    "directorMismatch": 2177,
+    "directorMismatch": 2176,
     "tvFilmSignals": 1709,
-    "londonSignals": 2920,
+    "londonSignals": 2919,
     "offBroadwaySignals": 534,
     "yearMismatch": 195,
-    "noPublishDate": 5427
+    "noPublishDate": 5432
   },
   "findings": [
     {
@@ -16271,25 +16271,6 @@
       "score": 97,
       "publishDate": "2024-09-27",
       "url": "https://www.standard.co.uk/culture/theatre/giant-royal-court-review-john-lithgow-romola-garai-b1184513.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "giant-royal-court-off-west-end-2024",
-      "file": "timeout-london--tim-bano.json",
-      "score": 96,
-      "publishDate": "2025-05-01",
-      "url": "https://www.timeout.com/london/theatre/giant-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
