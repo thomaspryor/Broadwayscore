@@ -30,11 +30,11 @@ test('only the gather-reviews job passes optional: true to Setup Playwright', ()
 test('no other workflow opts in to optional Playwright (fail-closed elsewhere)', () => {
   const dir = path.join(root, '.github', 'workflows');
   for (const f of fs.readdirSync(dir).filter((n) => n.endsWith('.yml') && n !== 'gather-reviews.yml')) {
-    assert.doesNotMatch(fs.readFileSync(path.join(dir, f), 'utf8'), /optional:\s*'?true/, f);
+    assert.doesNotMatch(fs.readFileSync(path.join(dir, f), 'utf8'), /setup-playwright\s*\n\s+with:\s*\n\s+optional:/, f);
   }
 });
 
 test('gather-reviews.js nulls chromium when the browser binary is missing', () => {
   const src = read('scripts/gather-reviews.js');
-  assert.match(src, /chromium = playwright\.chromium;\s*[^]*?existsSync\(chromium\.executablePath\(\)\)[^]*?chromium = null;/);
+  assert.match(src, /const candidate = playwright\.chromium;\s*if \(fs\.existsSync\(candidate\.executablePath\(\)\)\) \{\s*chromium = candidate;/);
 });

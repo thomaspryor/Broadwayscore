@@ -177,12 +177,16 @@ const { searchOutletSites, selectApplicableSiteSearchOutlets, SITE_SEARCH_ENDPOI
 let chromium, playwright;
 try {
   playwright = require('playwright');
-  chromium = playwright.chromium;
   // BRO-6021: the module loads after npm ci even when the browser download or
   // install-deps failed; a truthy chromium would then skip the HTTP fallbacks.
-  if (!fs.existsSync(chromium.executablePath())) {
+  // Probe into a local so a throwing executablePath() leaves chromium unset.
+  // (Checks the full chrome binary; `install chromium` also installs the headless
+  // shell, so a switch to --only-shell would need this probe revisited.)
+  const candidate = playwright.chromium;
+  if (fs.existsSync(candidate.executablePath())) {
+    chromium = candidate;
+  } else {
     console.warn('Playwright browser binary missing; using HTTP fallbacks');
-    chromium = null;
   }
 } catch (e) {
   // Playwright not available - will fall back to HTTP scraping
