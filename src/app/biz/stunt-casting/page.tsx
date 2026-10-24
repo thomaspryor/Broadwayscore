@@ -15,6 +15,8 @@ import type { Metadata } from 'next';
 
 import { featureFlags } from '@/config/feature-flags';
 import { BASE_URL, generateBreadcrumbSchema } from '@/lib/seo';
+import { bizOgImage } from '@/lib/biz-og';
+import ShareButton from '@/components/biz/ShareButton';
 
 type Fame = 'screen' | 'music' | 'other' | 'stage' | 'none';
 type Headliner = { name: string; fame: Fame; knownFor: string };
@@ -71,9 +73,9 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     url: URL,
     type: 'article',
-    images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630, alt: 'Broadway Scorecard' }],
+    images: [bizOgImage('stunt-casting', TITLE)],
   },
-  twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION },
+  twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION, images: [bizOgImage('stunt-casting', TITLE)] },
 };
 
 /** "2024-2025" -> "2024–25" */
@@ -264,7 +266,10 @@ export default function StuntCastingPage() {
           </Link>
 
           <header className="mb-8">
-            <div className="text-xs uppercase tracking-wider text-brand mb-2">Research</div>
+            <div className="flex items-start justify-between gap-4 mb-2">
+              <div className="text-xs uppercase tracking-wider text-brand pt-3">Research</div>
+              <ShareButton path="/biz/stunt-casting" title={TITLE} className="shrink-0" />
+            </div>
             <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-snug">{TITLE}</h1>
             <p className="text-gray-300 mt-4 leading-relaxed">{DESCRIPTION}</p>
             <p className="text-xs text-gray-500 mt-3">Updated {DATA.generated}</p>

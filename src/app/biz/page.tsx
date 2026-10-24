@@ -48,25 +48,31 @@ import DesignationLegend from '@/components/biz/DesignationLegend';
 import BizPageTracker from '@/components/biz/BizPageTracker';
 import CostCoverageCard from '@/components/box-office/CostCoverageCard';
 import { BASE_URL, generateBreadcrumbSchema } from '@/lib/seo';
+import { bizOgImage } from '@/lib/biz-og';
+import ShareButton from '@/components/biz/ShareButton';
 import { getMarketDate } from '@/lib/date-utils';
+
+const OG_ALT = 'Broadway Money Scorecard: who made money on Broadway, and who lost it';
+const OG_DESCRIPTION =
+  'Who made money on Broadway, and who lost it. Every commercial show sorted from Miracle to Flop, with capitalization, weekly running costs and recoupment, estimated from SEC filings and trade press.';
 
 export const metadata: Metadata = {
   title: { absolute: 'Broadway Money Scorecard' },
-  description:
-    'Recoupment data and investment metrics for Broadway shows. Track which shows have recouped, capital at risk, and financial trends.',
+  description: OG_DESCRIPTION,
   alternates: {
     canonical: `${BASE_URL}/biz`,
   },
   openGraph: {
     title: 'Broadway Money Scorecard',
-    description: 'Who made money on Broadway, and who lost it: recoupment, capitalization and running costs, show by show.',
+    description: OG_DESCRIPTION,
     url: `${BASE_URL}/biz`,
-    images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630, alt: 'Broadway Money Scorecard' }],
+    images: [bizOgImage('home', OG_ALT)],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Broadway Money Scorecard',
-    description: 'Recoupment data and investment metrics for Broadway shows.',
+    description: OG_DESCRIPTION,
+    images: [bizOgImage('home', OG_ALT)],
   },
 };
 
@@ -251,7 +257,7 @@ export default function BizDashboard() {
 
         {/* Header */}
         <div className="mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
             <div>
               <h1 className="text-3xl sm:text-4xl font-bold text-white">
                 Broadway Money Scorecard
@@ -276,6 +282,7 @@ export default function BizDashboard() {
                 </Link>
               </p>
             </div>
+            <ShareButton path="/biz" title="Broadway Money Scorecard" className="shrink-0 order-first self-end sm:order-none sm:self-start" />
             {/* JSON/CSV download buttons removed (owner decision, BRO-4721): they
                 only opened a waitlist and read as unfinished. GatedDownloadButtons
                 is kept for when downloads ship. */}

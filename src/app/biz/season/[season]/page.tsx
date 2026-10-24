@@ -4,7 +4,9 @@
 
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
+import { BASE_URL } from '@/lib/seo';
+import { seasonOgImage } from '@/lib/biz-og';
+import ShareButton from '@/components/biz/ShareButton';
 import { notFound } from 'next/navigation';
 
 import { featureFlags } from '@/config/feature-flags';
@@ -41,9 +43,9 @@ export async function generateMetadata(props: { params: Promise<{ season: string
       canonical: `${BASE_URL}/biz/season/${params.season}`,
     },
     openGraph: {
-      images: [SITE_OG_IMAGE],
+      images: [seasonOgImage(params.season)],
       title: `${params.season} Broadway Season`,
-      description: `Commercial data and recoupment metrics for the ${params.season} Broadway season.`,
+      description: `Every Broadway show from the ${params.season} season, sorted from Miracle to Flop: which recouped, which finished in the red, and how much money was at risk.`,
       url: `${BASE_URL}/biz/season/${params.season}`,
     },
   };
@@ -109,7 +111,8 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
         </Link>
 
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+         <div>
           <h1 className="text-3xl sm:text-4xl font-bold text-white">
             {season} Season
           </h1>
@@ -122,6 +125,8 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
               How we measure
             </Link>
           </p>
+         </div>
+          <ShareButton path={`/biz/season/${season}`} title={`${season} Broadway Season | Money Scorecard`} className="shrink-0 order-first self-end sm:order-none sm:self-start" />
         </div>
 
         {/* Season Stats Summary. text-xl on phones: "~$164.7M+" overflowed a two-column tile at 360px. */}

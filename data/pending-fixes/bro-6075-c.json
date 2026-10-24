@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6075-c",
   "planId": "47282601-d817-49a2-8941-d2d9a332d7ee",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-24T17:01:07.720Z",
   "submitter": {
     "name": null,
@@ -134,5 +134,69 @@
         "description": "BRO-6075: backfill empty West End historical synopsis, written from the show's collected review texts"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-24T19:37:55.138Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for bat-out-of-hell-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for instructions-for-correct-assembly-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for quiz-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-great-wave-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for girls-and-boys-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-majority-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for girl-from-the-north-country-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for queen-anne-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-wind-in-the-willows-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-ferryman-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for travesties-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for dirty-great-love-story-west-end-2017"
+    }
+  ],
+  "executedIn": "ci"
 }

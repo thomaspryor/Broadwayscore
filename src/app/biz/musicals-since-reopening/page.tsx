@@ -9,7 +9,8 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { featureFlags } from '@/config/feature-flags';
-import { BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
+import { BASE_URL } from '@/lib/seo';
+import { bizOgImage } from '@/lib/biz-og';
 import { getMusicalsSinceReopening } from '@/lib/data-topic-pages';
 import { MUSICAL_KIND_LABELS, MUSICAL_KIND_SHORT, type MusicalOutcome } from '@/lib/investment-topics';
 import { StatGrid } from '@/components/show-cards';
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
   title: { absolute: `${TITLE} | Money Scorecard` },
   description: DESCRIPTION,
   alternates: { canonical: `${BASE_URL}/biz/musicals-since-reopening` },
-  openGraph: { images: [SITE_OG_IMAGE], title: TITLE, description: DESCRIPTION, url: `${BASE_URL}/biz/musicals-since-reopening` },
+  openGraph: { images: [bizOgImage('musicals-since-reopening', TITLE)], title: TITLE, description: DESCRIPTION, url: `${BASE_URL}/biz/musicals-since-reopening` },
 };
 
 const OUTCOME: Record<MusicalOutcome, { label: string; className: string }> = {
@@ -40,7 +41,7 @@ export default function MusicalsSinceReopeningPage() {
   const revival = data.summaries.find((s) => s.kind === 'revival')!;
 
   return (
-    <TopicPageShell title={TITLE} subtitle="Commercial musicals opened September 2021 to today, and what happened to the money.">
+    <TopicPageShell title={TITLE} sharePath="/biz/musicals-since-reopening" subtitle="Commercial musicals opened September 2021 to today, and what happened to the money.">
       <StatGrid
         className="mb-8"
         stats={[
