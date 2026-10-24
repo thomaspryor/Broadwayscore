@@ -113,7 +113,10 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
   }
 
   const rawReviews = parseRawPdfReviews(text, show.title);
-  dumpPdfText(show.id, 'raw', text, show.title);
+  try { dumpPdfText(show.id, 'raw', text, show.title); } catch (_) {}
+  if (dumpDir) {
+    try { dumpPdfText(show.id, 'default', execSync(`pdftotext "${tmpFile}" -`, { maxBuffer: 10 * 1024 * 1024 }).toString(), show.title); } catch (_) {}
+  }
   probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { rawReviews: rawReviews.length }) });
   if (rawReviews.length > 0) {
     console.log(`  Extracted ${rawReviews.length} reviews (-raw mode, title-matched)`);
@@ -155,11 +158,22 @@ const skeletonMax = parseInt(args.find(a => a.startsWith('--skeleton-max='))?.sp
 const skeletonDone = new Set();
 // Skeleton = maskPdfText (tr-pdf-parse.js): structure kept, no prose, safe to commit (§11).
 function dumpPdfText(showId, mode, text, title) {
-  if (!dumpDir || mode !== 'layout') return;
+  if (!dumpDir) return;
   if (!skeletonDone.has(showId)) { if (skeletonDone.size >= skeletonMax) return; skeletonDone.add(showId); }
   fs.mkdirSync(dumpDir, { recursive: true });
   const keepWords = String(title || '').split(/\W+/).filter(w => w.length >= 3);
-  fs.writeFileSync(path.join(dumpDir, `${showId}.${mode}.txt`), maskPdfText(text, keepWords));
+  // A volume PDF is ~10k lines: keep +-110 lines around the first title hits only.
+  const lines = text.split('\n');
+  const re = new RegExp(String(title || '').replace(/[^A-Za-z0-9]+/g, '.{0,3}').replace(/^\.\{0,3\}|\.\{0,3\}$/g, ''), 'i');
+  const keep = new Set();
+  let hits = 0;
+  for (let i = 0; i < lines.length && hits < 8; i++) {
+    if (!re.test(lines[i])) continue;
+    hits++;
+    for (let j = Math.max(0, i - 110); j <= Math.min(lines.length - 1, i + 110); j++) keep.add(j);
+  }
+  const out = lines.filter((_, i) => keep.has(i)).join('\n');
+  fs.writeFileSync(path.join(dumpDir, `${showId}.${mode}.txt`), maskPdfText(out, keepWords));
 }
 
 // Theatre Record credentials
@@ -822,7 +836,8 @@ async function main() {
       return null;
     }
 
-    probeNote(show.id, { outcome: 'picked', picked: { title: bestResult.title, venue: bestResult.venue, link: bestResult.link, candidates: titleMatches.length } });
+    probeNote(show.id, { outcome: 'picked', picked: { title: bestResult.title, venue: bestResult.venue, link: bestResult.link, candidates: titleMatches.length },
+      trResults: results.slice(0, 12).map(r => ({ title: r.title, venue: r.venue, link: r.link })) });
     console.log(`  Found: ${bestResult.title} @ ${bestResult.venue}`);
     console.log(`  Link: ${bestResult.link}`);
 
