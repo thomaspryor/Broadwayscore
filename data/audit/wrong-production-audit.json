@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-10-24T20:20:50.503Z",
+  "timestamp": "2026-10-24T21:01:46.384Z",
   "stats": {
-    "totalReviews": 60554,
+    "totalReviews": 60555,
     "alreadyFlagged": 21283,
     "dateGuardCatches": 223,
     "directorMismatch": 2179,
-    "tvFilmSignals": 1714,
+    "tvFilmSignals": 1715,
     "londonSignals": 2926,
     "offBroadwaySignals": 534,
     "yearMismatch": 195,
@@ -12226,6 +12226,19 @@
       "score": 82,
       "publishDate": "2026-09-17",
       "url": "https://theatreweekly.com/review-deep-heat-rivalry-at-the-other-palace-studio/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "derren-brown-only-human-west-end-2026",
+      "file": "londontheatre1--faye-stockley.json",
+      "publishDate": "2026-10-24",
+      "url": "https://www.londontheatre1.com/reviews/derren-brown-only-human-apollo-theatre/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
