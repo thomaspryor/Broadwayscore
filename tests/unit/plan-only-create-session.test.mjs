@@ -6,6 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
+import { execFileSyncStdinFile } from '../helpers/spawn-stdin-file.mjs';
 
 const require = createRequire(import.meta.url);
 const lib = require('../../scripts/lib/plan-only-create-session.js');
@@ -84,7 +85,7 @@ test('deadline: a hung fetch yields null instead of hanging', async () => {
 
 test('block-prompting-remote-tools.sh runs the advisory only for an allowed create_session; settings gives it time', () => {
   const root = path.resolve(import.meta.dirname, '..', '..');
-  const sh = (input, env = {}) => execFileSync('bash', [path.join(root, '.claude/hooks/block-prompting-remote-tools.sh')], { input: JSON.stringify(input), encoding: 'utf8', cwd: root, env: { ...process.env, ...env } });
+  const sh = (input, env = {}) => execFileSyncStdinFile('bash', [path.join(root, '.claude/hooks/block-prompting-remote-tools.sh')], { input: JSON.stringify(input), encoding: 'utf8', cwd: root, env: { ...process.env, ...env } });
   const ok = { session_id: 'zz', cwd: os.tmpdir(), tool_name: CS, tool_input: { model: 'claude-sonnet-5-5', source_url: 'https://github.com/thomaspryor/Broadwayscore', prompt: 'x\nBUDGET: 6h\nREPORT-BACK: yes' } };
   assert.equal(sh(ok), '', 'no card resolvable: silent');
   const denied = sh({ ...ok, tool_input: { ...ok.tool_input, model: '' } });
