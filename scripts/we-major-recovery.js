@@ -5,6 +5,7 @@
  *
  *   report                       per-season averages + missing slots (reads data/)
  *   wos --out=FILE               free WhatsOnStage WP-API match for missing WoS slots
+ *   guardian --out=FILE          Guardian Content API match for missing guardian slots (needs GUARDIAN_API_KEY)
  *   run  [flags]                 recover slots (CI: needs scraper keys + review-texts)
  *
  * run flags:
@@ -68,6 +69,35 @@ async function cmdWos() {
   const missing = rows.filter(r => r.missing.includes('whatsonstage')).length;
   console.log(`WOS review posts ${posts.length}; shows missing WOS ${missing}; with a matching post ${hits.length}`);
   if (arg('out')) fs.writeFileSync(arg('out'), JSON.stringify(hits, null, 1));
+}
+
+
+// Guardian Content API (key in CI only): one search per missing guardian slot over the
+// show's opening window. Output has the same shape as `wos`, so `run --candidates` ingests
+// through the same date-window and wrong-show guards. API calls are free (no scraper spend).
+async function cmdGuardian() {
+  const key = process.env.GUARDIAN_API_KEY;
+  if (!key) { console.error('GUARDIAN_API_KEY not set'); process.exit(2); }
+  const rows = loadRows().filter(r => r.missing.includes('guardian'));
+  const shows = new Map(rd('data/shows.json').shows.map(s => [s.id, s]));
+  const out = [];
+  let asked = 0, failed = 0;
+  for (const r of rows) {
+    const s = shows.get(r.id);
+    if (!s || !s.openingDate) continue;
+    const q = new URLSearchParams({ section: 'stage', 'from-date': lib.addDays(s.openingDate, -14), 'to-date': lib.addDays(s.openingDate, 60),
+      q: `"${s.title}"`, 'show-fields': 'headline,starRating', 'page-size': '30', 'api-key': key });
+    asked++;
+    try {
+      const res = await fetch(`https://content.guardianapis.com/search?${q}`, { signal: AbortSignal.timeout(20000) });
+      if (!res.ok) { failed++; console.log(`${r.id}: HTTP ${res.status}`); continue; }
+      const posts = lib.matchGuardianResults(s, (await res.json()).response?.results || []);
+      if (posts.length) out.push({ showId: r.id, slot: 'guardian', posts });
+    } catch (e) { failed++; console.log(`${r.id}: ${e.message}`); }
+    await sleep(150);
+  }
+  console.log(`GUARDIAN shows missing ${rows.length}; searched ${asked}; failed ${failed}; with candidates ${out.length}`);
+  if (arg('out')) fs.writeFileSync(arg('out'), JSON.stringify(out, null, 1));
 }
 
 // ---- run -------------------------------------------------------------------
@@ -215,7 +245,7 @@ async function cmdRun() {
 }
 
 const cmd = process.argv[2];
-const table = { report: cmdReport, wos: cmdWos, run: cmdRun };
+const table = { report: cmdReport, wos: cmdWos, guardian: cmdGuardian, run: cmdRun };
 if (require.main === module) {
   if (!table[cmd]) { console.error('Usage: node scripts/we-major-recovery.js <report|wos|run> [flags] (see header)'); process.exit(2); }
   table[cmd]().catch(e => { console.error(e); process.exit(1); });

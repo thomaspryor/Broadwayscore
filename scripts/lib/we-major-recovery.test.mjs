@@ -129,3 +129,16 @@ test('hostMatchesSlot: Times reviews live on thetimes.co.uk and thetimes.com, su
 test('norm folds diacritics so accented titles match', () => {
   assert.equal(lib.norm('Café Müller'), lib.norm('Cafe Muller'));
 });
+
+test('matchGuardianResults: review headline naming the show inside the opening window only', () => {
+  const s = show({ title: 'The Lehman Trilogy', openingDate: '2018-07-12' });
+  const r = (date, headline, extra = {}) => ({ webUrl: `https://www.theguardian.com/stage/${date}`, webTitle: headline, webPublicationDate: `${date}T20:00:00Z`, fields: { headline }, ...extra });
+  const hits = lib.matchGuardianResults(s, [
+    r('2018-07-13', 'The Lehman Trilogy review – epic'),
+    r('2019-07-13', 'The Lehman Trilogy review – revival'), // another production, outside the window
+    r('2018-07-10', 'The Lehman Trilogy preview'), // not a review
+    r('2018-07-13', 'Hamlet review'), // other show
+  ]);
+  assert.deepEqual(hits.map(h => h.date), ['2018-07-13']);
+  assert.deepEqual(lib.matchGuardianResults(show({ openingDate: null }), []), []);
+});
