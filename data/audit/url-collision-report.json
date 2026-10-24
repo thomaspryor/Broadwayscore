@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-24T17:39:34.823Z",
+  "generatedAt": "2026-10-24T18:57:04.773Z",
   "summary": {
-    "total": 14,
+    "total": 15,
     "high": 8,
-    "medium": 5,
+    "medium": 6,
     "low": 1
   },
   "collisions": [
@@ -114,6 +114,33 @@
       "suggestedWinner": "death-of-a-salesman-west-end-2019",
       "reason": "publishDate 2019-11-06 is 2 days from death-of-a-salesman-west-end-2019 opening (2019-11-04)",
       "confidence": "high"
+    },
+    {
+      "url": "https://www.whatsonstage.com/news/fences-at-leeds-playhouse-and-on-tour-review_1731583/",
+      "normalizedUrl": "https://whatsonstage.com/news/fences-at-leeds-playhouse-and-on-tour-review_1731583",
+      "candidates": [
+        {
+          "showId": "fences-off-west-end-2026",
+          "file": "whatsonstage--jim-keaveney.json",
+          "publishDate": "2026-09-17",
+          "openingDate": "2026-10-09",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "whatsonstage"
+        },
+        {
+          "showId": "man-to-man-west-end-2026",
+          "file": "whatsonstage--jim-keaveney.json",
+          "publishDate": "2026-09-17",
+          "openingDate": "2026-09-11",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "whatsonstage"
+        }
+      ],
+      "suggestedWinner": "man-to-man-west-end-2026",
+      "reason": "publishDate 2026-09-17 is 6 days from man-to-man-west-end-2026 but also 22 days from fences-off-west-end-2026",
+      "confidence": "medium"
     },
     {
       "url": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
