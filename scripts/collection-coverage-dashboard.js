@@ -366,7 +366,8 @@ async function createGitHubIssue(markdown) {
         labels: ['analytics', 'automated'],
       }),
     });
-    console.log(`Created issue: ${issue && issue.html_url}`);
+    if (issue && issue.html_url) console.log(`Created issue: ${issue.html_url}`);
+    else console.error('Issue creation returned no issue URL');
   } catch (err) {
     console.error(`Issue creation failed: ${err.status || err.message}`);
   }
