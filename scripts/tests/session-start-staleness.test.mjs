@@ -371,6 +371,30 @@ test('trySyncCodeCheckout: a half-written tree from an interrupted fast-forward 
   assert.equal(fs.readFileSync(path.join(cloneDir, '[ab].txt'), 'utf8'), 'bracket2');
 }));
 
+test('trySyncCodeCheckout: bytes a killed fast-forward wrote for an OLDER origin/main tip are debris too (BRO-6104)', () => withTrio((trio) => {
+  const { seedDir, cloneDir } = trio;
+  const { tear } = halfWrittenScenario(trio);
+  tear({ 'a.txt': 'upstream' }); // the first (killed) merge wrote the tip of its day ...
+  commitIn(seedDir, 'a.txt', 'upstream again', 'a edited once more'); // ... and origin/main has moved on since
+  git(seedDir, ['push', '-q', 'origin', 'main']);
+  git(cloneDir, ['fetch', '-q', 'origin', 'main']);
+  assert.ok(git(cloneDir, ['status', '--porcelain']).length > 0, 'precondition: tree is torn');
+  const s = staleThenSync(cloneDir);
+  assert.equal(s.synced, true, s.reason);
+  assert.equal(git(cloneDir, ['status', '--porcelain']), '');
+  assert.equal(fs.readFileSync(path.join(cloneDir, 'a.txt'), 'utf8'), 'upstream again');
+}));
+
+test('trySyncCodeCheckout: a file matching no origin/main blob, old or new, still refuses (BRO-6104)', () => withTrio((trio) => {
+  const { cloneDir } = trio;
+  const { head, tear } = halfWrittenScenario(trio);
+  tear({ 'a.txt': 'my own edit' });
+  const s = staleThenSync(cloneDir);
+  assert.equal(s.synced, false);
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
+  assert.equal(fs.readFileSync(path.join(cloneDir, 'a.txt'), 'utf8'), 'my own edit');
+}));
+
 test('trySyncCodeCheckout: a torn tree plus a genuine edit still refuses, keeps the edit, and a bracket path is not a glob (BRO-5784)', () => withTrio((trio) => {
   const { cloneDir } = trio;
   const { head, tear } = halfWrittenScenario(trio);
