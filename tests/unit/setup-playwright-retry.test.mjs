@@ -43,6 +43,8 @@ function runWith(codes, { cacheHit = false, sudoTeeFail = false, nodeCode = null
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pw-retry-'));
   // node stub: stands in for the chromium launch probe (BRO-5818).
   if (nodeCode !== null) fs.writeFileSync(path.join(dir, 'node'), `#!/bin/bash\necho "node probe" >> "${path.join(dir, 'order')}"\nexit ${nodeCode}\n`, { mode: 0o755 });
+  fs.mkdirSync(path.join(dir, '.cache', 'ms-playwright'), { recursive: true });
+  fs.writeFileSync(path.join(dir, '.cache', 'ms-playwright', 'partial'), 'x');
   const counter = path.join(dir, 'calls');
   const order = path.join(dir, 'order');
   fs.writeFileSync(path.join(dir, 'npx'), `#!/bin/bash
@@ -66,8 +68,9 @@ exit 0
   });
   const calls = Number(fs.existsSync(counter) ? fs.readFileSync(counter, 'utf8') : 0);
   const log = fs.existsSync(order) ? fs.readFileSync(order, 'utf8') : '';
+  const cacheKept = fs.existsSync(path.join(dir, '.cache', 'ms-playwright'));
   fs.rmSync(dir, { recursive: true, force: true });
-  return { status: r.status, out: `${r.stdout}${r.stderr}`, calls, order: log };
+  return { cacheKept, status: r.status, out: `${r.stdout}${r.stderr}`, calls, order: log };
 }
 
 test('first attempt succeeds: one call, exit 0, no warning', () => {
@@ -154,11 +157,14 @@ for (const cacheHit of [false, true]) {
     assert.equal(r.status, 0, r.out);
     assert.equal(r.calls, 2);
     assert.match(r.out, /::warning::Playwright unavailable, tier skipped \(BRO-6021\)/);
+    assert.equal(r.cacheKept, false, 'partial browser dir must be removed so the cache save finds nothing');
   });
 }
 
 test('optional=false (default) + both attempts fail stays fatal', () => {
-  assert.equal(runWith('124 124', { optional: 'false' }).status, 1);
+  const r = runWith('124 124', { optional: 'false' });
+  assert.equal(r.status, 1);
+  assert.equal(r.cacheKept, true, 'fail-closed path must not touch the cache dir');
   assert.equal(runWith('124 124').status, 1);
 });
 
