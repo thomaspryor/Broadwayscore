@@ -253,7 +253,7 @@
       "notifyCountAtRelease": 161,
       "sweptTracker": "BRO-6024",
       "silentRefires": 9,
-      "resolvedAt": "2026-10-24T12:23:20.432Z"
+      "resolvedAt": "2026-10-24T12:24:27.763Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -4417,7 +4417,7 @@
       },
       "absentRunIds": [],
       "silentRefires": 17,
-      "resolvedAt": "2026-10-24T12:23:20.255Z",
+      "resolvedAt": "2026-10-24T12:24:31.483Z",
       "resolveReason": "job-green"
     },
     "test-yml:red:Data Validation:9b5157f4": {
@@ -25158,8 +25158,9 @@
       "cardId": null,
       "linearIdentifier": "BRO-6071",
       "silentRefires": 8,
-      "resolvedAt": "2026-10-24T12:23:20.290Z",
-      "resolveReason": "job-green"
+      "absentRunIds": [
+        "40092598111"
+      ]
     },
     "land:land/bro-6070-same-night-gate": {
       "status": "resolved",
