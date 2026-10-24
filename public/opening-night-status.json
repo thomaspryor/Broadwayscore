@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T21:02:01.439Z",
+  "generatedAt": "2026-10-24T21:42:05.627Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -797,23 +797,23 @@
       "status": "open",
       "slug": "derren-brown-only-human-west-end",
       "thumbnail": "/images/shows/derren-brown-only-human-west-end-2026/thumbnail.jpg",
-      "siteScore": 82.64,
+      "siteScore": 83.25,
       "liveScore": 83,
-      "scoreDrift": 0.35999999999999943,
+      "scoreDrift": -0.25,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 22,
+      "total": 23,
       "t1": 4,
-      "t2": 5,
+      "t2": 6,
       "t3": 13,
-      "positive": 17,
+      "positive": 18,
       "mixed": 3,
       "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 21,
+        "highConfidence": 22,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1174,6 +1174,18 @@
           "t2": 5,
           "t3": 13,
           "p": 17,
+          "m": 3,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-24T21:42:05.627Z",
+          "rc": 23,
+          "s": 83.25,
+          "t1": 4,
+          "t2": 6,
+          "t3": 13,
+          "p": 18,
           "m": 3,
           "n": 2,
           "bc": "waiting"
@@ -4680,24 +4692,24 @@
       "slug": "harry-potter-and-the-cursed-child-one-part-west-end",
       "thumbnail": "/images/shows/harry-potter-and-the-cursed-child-one-part-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 77,
+      "liveScore": 70,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 3,
+      "total": 4,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 3,
       "positive": 2,
-      "mixed": 1,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
+          "4/8 total",
           "T1:0/3",
-          "T2:0/2",
+          "T2:1/2",
           "hi-conf:0/6"
         ],
         "highConfidence": 0,
@@ -4736,6 +4748,10 @@
         {
           "name": "The Sunday Times",
           "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
         },
         {
           "name": "The i",
@@ -4796,6 +4812,10 @@
           "isDualMarket": false
         },
         {
+          "name": "LondonTheatre1",
+          "isDualMarket": false
+        },
+        {
           "name": "London Box Office",
           "isDualMarket": false
         }
@@ -4822,6 +4842,18 @@
           "t3": 3,
           "p": 2,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-24T21:42:05.627Z",
+          "rc": 4,
+          "s": 70,
+          "t1": 0,
+          "t2": 1,
+          "t3": 3,
+          "p": 2,
+          "m": 2,
           "n": 0,
           "bc": "waiting"
         }

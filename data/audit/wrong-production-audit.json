@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-24T21:01:46.384Z",
+  "timestamp": "2026-10-24T21:41:55.738Z",
   "stats": {
-    "totalReviews": 60555,
-    "alreadyFlagged": 21283,
+    "totalReviews": 60559,
+    "alreadyFlagged": 21290,
     "dateGuardCatches": 223,
     "directorMismatch": 2179,
     "tvFilmSignals": 1715,
     "londonSignals": 2926,
     "offBroadwaySignals": 534,
-    "yearMismatch": 195,
-    "noPublishDate": 5566
+    "yearMismatch": 196,
+    "noPublishDate": 5563
   },
   "findings": [
     {
@@ -12237,6 +12237,7 @@
     {
       "showId": "derren-brown-only-human-west-end-2026",
       "file": "londontheatre1--faye-stockley.json",
+      "score": 93,
       "publishDate": "2026-10-24",
       "url": "https://www.londontheatre1.com/reviews/derren-brown-only-human-apollo-theatre/",
       "findings": [
@@ -19019,6 +19020,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2016 (2x) more than 2018 (0x). 2016 matches production: harry-potter-and-the-cursed-child-both-parts-west-end-2021"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/new-music/cd-imogen-heap-music-harry-potter-and-cursed-child",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2018 (2x) more than 2026 (1x). 2018 matches production: harry-potter-2021"
         }
       ]
     },
