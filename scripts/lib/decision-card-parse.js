@@ -35,7 +35,9 @@ const FIELD_RES = [
   ['context', /^\s*context\s*:\s*(.+)$/i],
 ];
 const QUESTION_RE = /^\s*(?:#{1,6}\s+|[-*>]\s+)?\**DECISION NEEDED\**(?:\s*\([^)]*\))?\s*:\s*\**\s*(\S.*)$/i;
-// "Option A - name: upside / downside", also "Option A: ...", "A) ...", "- Option A — ..."
+// "Option A - name: upside / downside", also "Option A: ...", "- Option A — ...".
+// A bare "A) ..." is not matched on purpose (too easy to hit in free text); such a
+// card still renders its question, why, pick and default, just without option rows.
 const OPTION_RE = /^\s*(?:[-*]\s+)?(?:\*\*)?option\s+([A-Z0-9])\s*(?:\*\*)?\s*[-–—:.)]\s*(.+)$/i;
 
 // "name: upside / downside" → { name, upside, downside }. Anything that does
