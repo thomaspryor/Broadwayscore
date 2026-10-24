@@ -26,21 +26,16 @@
   "scoredAt": "2026-10-24T22:11:55.715Z",
   "scoringModel": "claude-opus-4-7",
   "promptVersion": 2,
+  "wrongProductionManualClear": true,
+  "wrongProductionManualClearReason": "BRO-6179: auto-captions misheard the title and venue (\"three summers of Bloomfield at Loyer Playhouse\"); caption hashtag #3summersoflincoln, posted inside the La Jolla run",
   "productionCheck": {
-    "verdict": "different",
+    "verdict": "same",
     "confidence": "high",
-    "evidenceType": "other_city",
-    "evidenceQuote": "three summers of Bloomfield at Loyer Playhouse",
-    "reason": "The video is about 'three summers of Bloomfield' at 'Loyer Playhouse', not '3 Summers of Lincoln' at Mandell Weiss Theatre, La Jolla Playhouse.",
+    "evidenceType": null,
+    "evidenceQuote": "",
+    "reason": "The video title and hashtags match the assigned production, and the transcript's mention of 'Loyer Playhouse' is likely a mishearing of 'La Jolla Playhouse' in San Diego, CA.",
     "method": "llm",
     "model": "gpt-4o",
-    "confirmation": {
-      "confirmed": true,
-      "reason": "The transcript explicitly mentions 'three summers of Bloomfield at Loyer Playhouse' and the speaker's excitement for it to potentially go to New York, indicating a different production or location than the assigned '3 Summers of Lincoln' at La Jolla Playhouse in San Diego.",
-      "model": "gemini-2.5-flash"
-    },
-    "checkedAt": "2026-10-24T22:24:43.068Z"
-  },
-  "wrongProduction": true,
-  "wrongProductionReason": "The video is about 'three summers of Bloomfield' at 'Loyer Playhouse', not '3 Summers of Lincoln' at Mandell Weiss Theatre, La Jolla Playhouse."
+    "checkedAt": "2026-10-24T22:35:47.541Z"
+  }
 }
