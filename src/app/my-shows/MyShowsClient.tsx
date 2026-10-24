@@ -33,6 +33,7 @@ import dynamic from 'next/dynamic';
 import { ShowSearchDropdown } from '@/components/show-cards';
 import MiniStars from '@/components/user/Stars';
 const StatsTab = dynamic(() => import('@/components/my-shows/stats/StatsTab'), { ssr: false });
+import MyShowsNav, { DiaryViewSwitch, type NavVariant } from '@/components/my-shows/MyShowsNav';
 const FeedTab = dynamic(() => import('@/components/my-shows/feed/FeedTab'), { ssr: false });
 const ImportShows = dynamic(() => import('./ImportShows'), { ssr: false });
 
@@ -138,7 +139,11 @@ export default function MyShowsClient() {
   );
   // Design-proposal only (BRO-6170): ?layout=b nests Feed/Stats under Diary as
   // a segmented control (the iOS shape) instead of top-level tabs.
-  const nestedLayout = searchParams.get('layout') === 'b';
+  // Design-proposal only: ?nav=segmented|cards|pills swaps the underline tabs
+  // for a louder nav. segmented/cards nest Feed+Stats under Diary; pills is flat.
+  const navParam = searchParams.get('nav');
+  const navVariant: NavVariant | null = navParam === 'segmented' || navParam === 'cards' || navParam === 'pills' ? navParam : null;
+  const nestedLayout = searchParams.get('layout') === 'b' || navVariant === 'segmented' || navVariant === 'cards';
 
   // Dev-only mock mode: ?mock=1 on localhost renders with fake data (for Playwright visual QA)
   // Must be state (not derived) to avoid SSR/client hydration mismatch
@@ -153,7 +158,7 @@ export default function MyShowsClient() {
   // Update URL when tab changes so back button restores the correct tab
   const setActiveTab = (tab: Tab) => {
     setActiveTabState(tab);
-    const mockParam = isMockMode ? `&mock=${searchParams.get('mock') ?? '1'}${nestedLayout ? '&layout=b' : ''}` : '';
+    const mockParam = isMockMode ? `&mock=${searchParams.get('mock') ?? '1'}${searchParams.get('layout') === 'b' ? '&layout=b' : ''}${navVariant ? `&nav=${navVariant}` : ''}` : '';
     const url = tab === 'diary'
       ? `/my-shows${mockParam ? `?${mockParam.slice(1)}` : ''}`
       : `/my-shows?tab=${tab}${mockParam}`;
@@ -875,7 +880,30 @@ export default function MyShowsClient() {
       {/* Tab bar + sort/view controls.
           On mobile: tabs only in the tablist row; controls on a second row below.
           On sm+: controls inline to the right of the tabs. */}
-      <div role="tablist" className="flex items-center gap-1 border-b border-white/10 mb-0 sm:mb-6">
+      {navVariant && (
+        <MyShowsNav
+          variant={navVariant}
+          items={navVariant === 'pills'
+            ? [
+                { tab: 'diary', label: 'Diary', count: showsSeen },
+                { tab: 'feed', label: 'Feed' },
+                { tab: 'stats', label: 'Stats' },
+                { tab: 'watchlist', label: 'Watchlist', count: visibleWatchlistCount },
+                { tab: 'lists', label: 'Lists', count: listsCount },
+              ]
+            : [
+                { tab: 'diary', label: 'Diary', count: showsSeen, detail: `${showsSeen} seen` },
+                { tab: 'watchlist', label: 'Watchlist', count: visibleWatchlistCount, detail: `${visibleWatchlistCount} to see` },
+                { tab: 'lists', label: 'Lists', count: listsCount, detail: `${listsCount} ${listsCount === 1 ? 'list' : 'lists'}` },
+              ]}
+          isActive={tab => (tab === 'diary' && nestedLayout ? DIARY_GROUP.includes(activeTab) : activeTab === tab)}
+          onSelect={setActiveTab}
+        />
+      )}
+      {navVariant && nestedLayout && DIARY_GROUP.includes(activeTab) && (
+        <DiaryViewSwitch active={activeTab} onSelect={setActiveTab} />
+      )}
+      <div role="tablist" className={`${navVariant ? 'hidden' : 'flex'} items-center gap-1 border-b border-white/10 mb-0 sm:mb-6`}>
         <button
           type="button"
           role="tab"
@@ -1020,7 +1048,7 @@ export default function MyShowsClient() {
           Selects are 16px on mobile: anything smaller makes iOS Safari zoom
           the whole page on focus and stay zoomed (owner report, 2026-07-17). */}
       {(activeTab === 'diary' || activeTab === 'watchlist') && (
-        <div className="flex sm:hidden items-center justify-end gap-2 py-1.5 mb-2">
+        <div className={`flex ${navVariant ? '' : 'sm:hidden'} items-center justify-end gap-2 py-1.5 mb-2`}>
           {activeTab === 'diary' && canSharePlans && (
             <button
               type="button"
@@ -1422,7 +1450,7 @@ export default function MyShowsClient() {
         </div>
       )}
 
-      {nestedLayout && DIARY_GROUP.includes(activeTab) && (
+      {!navVariant && nestedLayout && DIARY_GROUP.includes(activeTab) && (
         <div role="tablist" aria-label="Diary views" className="flex gap-1 p-1 mt-4 mb-4 rounded-xl bg-surface-raised border border-white/10">
           {(['diary', 'feed', 'stats'] as const).map(tab => (
             <button
