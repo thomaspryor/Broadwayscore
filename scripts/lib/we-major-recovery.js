@@ -135,6 +135,31 @@ function matchWosPosts(rows, shows, posts) {
   return out;
 }
 
+
+// ---- Guardian Content API search results -> missing guardian slots --------
+
+/**
+ * Candidates for a show's missing Guardian slot from Content API search results
+ * (section=stage, queried over the show's opening window). A result counts when it is a
+ * review (star rating, "review" in the headline, or a /stage/ review URL), its headline names
+ * the show title, and it is dated in [opening-14d, opening+60d]. Two or more distinct results
+ * after that are kept (ingest's date window and body-names-the-show guards pick), capped at 3.
+ */
+function matchGuardianResults(show, results) {
+  if (!show || !show.openingDate) return [];
+  const lo = addDays(show.openingDate, -14), hi = addDays(show.openingDate, 60);
+  const t = norm(show.title);
+  if (!t || t.length < 4) return [];
+  const hits = results.filter(r => {
+    const date = String(r.webPublicationDate || '').slice(0, 10);
+    if (date < lo || date > hi) return false;
+    const head = norm(r.fields && r.fields.headline || r.webTitle);
+    const isReview = r.fields && r.fields.starRating || /\breview\b/.test(head) || /-review\b/.test(r.webUrl || '');
+    return isReview && new RegExp(`(^| )${t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}( |$)`).test(head);
+  });
+  return hits.slice(0, 3).map(r => ({ url: r.webUrl, date: String(r.webPublicationDate).slice(0, 10) }));
+}
+
 // ---- spend tally ----------------------------------------------------------
 
 /**
@@ -194,5 +219,5 @@ function hostMatchesSlot(m, host) {
 
 module.exports = {
   hostMatchesSlot, MAJOR, BY_SLOT, SLOT_OF, buildSlots, summarize, orderQueue, showWindow,
-  norm, venueAgrees, matchWosPosts, ledgerUsd, CostTally, addDays,
+  norm, venueAgrees, matchWosPosts, matchGuardianResults, ledgerUsd, CostTally, addDays,
 };
