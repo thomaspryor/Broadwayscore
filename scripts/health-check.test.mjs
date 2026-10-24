@@ -91,7 +91,7 @@ test('baseline drift check counts reviews like validate-data baseline writer', a
   const { readFileSync } = await import('node:fs');
   const hc = readFileSync(new URL('./health-check.js', import.meta.url), 'utf8');
   const block = hc.slice(hc.indexOf("runCheck('Sync: baseline drift'"));
-  assert.match(block.slice(0, 1500), /const currentReviews = Array\.isArray\(reviews\.reviews\) \? reviews\.reviews\.length/);
+  assert.match(block.slice(0, 1500), /const currentReviews = reviews\.reviews\.length;/);
   const vd = readFileSync(new URL('./validate-data.js', import.meta.url), 'utf8');
   assert.match(vd, /return reviews\.length;/);
 });

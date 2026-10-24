@@ -950,7 +950,10 @@ function checkSync() {
     const currentOpen = showList.filter(s => s.status === 'open').length;
     // Must count the same way validate-data.js writes the baseline (reviews[] length).
     // _meta.stats.totalReviews counts a different population (BRO-6105).
-    const currentReviews = Array.isArray(reviews.reviews) ? reviews.reviews.length : (reviews._meta?.stats?.totalReviews || 0);
+    if (!Array.isArray(reviews.reviews)) {
+      return { name: 'Sync: baseline drift', status: 'warn', message: 'reviews.json has no reviews[] array' };
+    }
+    const currentReviews = reviews.reviews.length;
 
     const issues = [];
     let worstStatus = 'pass';
