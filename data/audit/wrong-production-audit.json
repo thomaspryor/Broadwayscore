@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-24T14:54:46.276Z",
+  "timestamp": "2026-10-24T15:16:35.371Z",
   "stats": {
-    "totalReviews": 60286,
-    "alreadyFlagged": 21224,
-    "dateGuardCatches": 223,
-    "directorMismatch": 2176,
+    "totalReviews": 60430,
+    "alreadyFlagged": 21250,
+    "dateGuardCatches": 222,
+    "directorMismatch": 2175,
     "tvFilmSignals": 1710,
-    "londonSignals": 2921,
+    "londonSignals": 2919,
     "offBroadwaySignals": 534,
     "yearMismatch": 195,
-    "noPublishDate": 5434
+    "noPublishDate": 5562
   },
   "findings": [
     {
@@ -5506,20 +5506,6 @@
     },
     {
       "showId": "bonnie-and-clyde-west-end-2022",
-      "file": "theatre-vibe--lizzie-loveridge.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://theatrevibe.co.uk/review-bonnie-and-clyde-the-musical-arts-theatre/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2011 (2x) more than 2022 (0x). 2011 matches production: bonnie-and-clyde-2011"
-        }
-      ]
-    },
-    {
-      "showId": "bonnie-and-clyde-west-end-2023",
       "file": "artsdesk--gary-naylor.json",
       "score": 57,
       "publishDate": null,
@@ -5529,6 +5515,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "bonnie-and-clyde-west-end-2022",
+      "file": "theatre-vibe--lizzie-loveridge.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "https://theatrevibe.co.uk/review-bonnie-and-clyde-the-musical-arts-theatre/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2011 (2x) more than 2022 (0x). 2011 matches production: bonnie-and-clyde-2011"
         }
       ]
     },
@@ -21784,20 +21784,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"wyndham\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "london-theatre--unknown.json",
-      "score": 77,
-      "publishDate": "2026-04-08",
-      "url": "https://www.londontheatre.co.uk/reviews/inter-alia-review-national-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
         }
       ]
     },
@@ -46287,7 +46273,7 @@
       "file": "artsdesk--ismene-brown.json",
       "score": 44,
       "publishDate": "2021-10-08",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre/mirror-and-light-gielgud-theatre-review-nobody-expects-spanish-inquisition",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -51763,7 +51749,7 @@
     {
       "showId": "translations-west-end-2019",
       "file": "timeout-london--tom-wicker.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2019-10-21",
       "url": "https://www.timeout.com/london/theatre/translations-review",
       "findings": [
@@ -58190,20 +58176,6 @@
     },
     {
       "showId": "after-life-west-end-2021",
-      "file": "standard--nick-curtis.json",
-      "score": 61,
-      "publishDate": "2021-06-11",
-      "url": null,
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "after-life-west-end-2021",
       "file": "sunday-times--quentin-letts.json",
       "score": 76,
       "publishDate": "2021-06-20",
@@ -60351,7 +60323,7 @@
       "file": "i-paper--fiona-mountford.json",
       "score": 62,
       "publishDate": "2025-09-25",
-      "url": null,
+      "url": "https://inews.co.uk/culture/arts/bacchae-is-feminist-sexually-provocative-and-too-shouty-3937838?srsltid=AfmBOoqv53S_wwZj-sF_kB-C4TPE-UeoA6b_SX8oL-pJn1AwZ26nCzcx",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -65971,7 +65943,7 @@
       "file": "artsdesk--matt-wolf.json",
       "score": 78,
       "publishDate": "2020-11-05",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre/death-england-delroy-national-theatre-review-furious-if-fleetingly-seen-sequel",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -67974,21 +67946,7 @@
       "file": "telegraph--dominic-cavendish.json",
       "score": 76,
       "publishDate": "2018-07-25",
-      "url": null,
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "exit-the-king-west-end-2018",
-      "file": "thestage--natasha-tripney.json",
-      "score": 62,
-      "publishDate": "2018-07-30T12:54:09-04:00",
-      "url": "https://www.thestage.co.uk/reviews/2018/exit-the-king-rhys-ifans-review-at-national-theatre-london/",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/exit-king-review-national-theatre-rhys-ifans-drives-chilling/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -69176,19 +69134,8 @@
     },
     {
       "showId": "garry-starr-classic-penguins-off-west-end-2026",
-      "file": "sunday-times--donald-hutera.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 262d before show (2026-02-02 vs 2026-10-22)"
-        }
-      ]
-    },
-    {
-      "showId": "garry-starr-classic-penguins-off-west-end-2026",
       "file": "theatreandtonic--penny-walshe.json",
-      "score": null,
+      "score": 99,
       "publishDate": "2026-10-24",
       "url": "https://theatreandtonic.co.uk/blog/garry-starr-classic-penguins-at-the-other-palace-review",
       "findings": [
@@ -76809,7 +76756,7 @@
       "file": "financialtimes--sarah-hemming.json",
       "score": 78,
       "publishDate": "2024-04-18",
-      "url": null,
+      "url": "https://www.ft.com/content/936e1ce9-3d7d-4ed5-bcb6-61c1008b9155",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -98745,7 +98692,8 @@
     {
       "showId": "triumph-off-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "publishDate": null,
+      "score": 80,
+      "publishDate": "2026-10-23",
       "url": "https://theartsdesk.com/theatre/triumph-golden-boy-almeida-theatre-almeida-fires-multiple-cylinders",
       "findings": [
         {
