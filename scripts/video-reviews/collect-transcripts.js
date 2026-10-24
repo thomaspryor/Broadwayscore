@@ -186,12 +186,22 @@ async function main() {
 
   // BRO-4760: re-date published YouTube reviews stored with "NA" (5 credits each).
   if (YOUTUBE_FETCHPAGE_FALLBACK && process.env.SCRAPINGDOG_API_KEY) {
+    // BRO-6095: only unmatched reviews whose title we list a production of.
+    const showsPath = path.join(__dirname, '../../data/shows.json');
+    let matchableTitle = null;
+    if (fs.existsSync(showsPath)) {
+      const { indexShowsByTitle } = require('../lib/video-review-selection');
+      const { normalizeTitle } = require('../lib/title-match');
+      const byTitle = indexShowsByTitle(JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows);
+      matchableTitle = t => byTitle.has(normalizeTitle(t || ''));
+    }
     const bf = await backfillPublishedDates({
       transcriptsDir: path.dirname(RAW_TRANSCRIPTS_DIR),
       creatorFilter,
+      matchableTitle,
       max: Number(process.env.YT_DATE_BACKFILL_MAX || 250),
     });
-    console.log(`\nYouTube date backfill: ${bf.dated}/${bf.attempted} dated (${bf.candidates} undated published reviews)`);
+    console.log(`\nYouTube date backfill: ${bf.dated}/${bf.attempted} dated (${bf.candidates} undated published or unmatched reviews)`);
   }
 
   console.log(`\n=== Collection Summary ===`);

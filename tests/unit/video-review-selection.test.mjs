@@ -30,9 +30,10 @@ test('re-match: classifier qualifiers in parentheses still match the title', () 
   assert.deepEqual(rematchCandidates({ showTitle: 'The Notebook (national tour)', date: '20251222' }, idx).map(s => s.id), ['the-notebook-tour-2025']);
 });
 
-test('re-match: London runs are never candidates', () => {
-  const idx = indexShowsByTitle([notebookWE]);
-  assert.deepEqual(rematchCandidates({ showTitle: 'The Notebook', date: '20251222' }, idx), []);
+test('re-match: London runs are candidates too (BRO-6095), alongside an overlapping New York run', () => {
+  const idx = indexShowsByTitle([notebook, notebookTour, notebookWE]);
+  assert.deepEqual(rematchCandidates({ showTitle: 'The Notebook', date: '20251222' }, idx).map(s => s.id).sort(),
+    ['the-notebook-tour-2025', 'the-notebook-west-end-2026']);
 });
 
 test('re-match: unknown post date or run start gives no candidates', () => {

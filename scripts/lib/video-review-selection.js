@@ -8,7 +8,8 @@
  *      show list stops at shows opened since 2023-06, it missed titles in a
  *      585-name list (Waiting for Godot 2025, Oedipus 2025), and it never
  *      retried once shows.json grew. rematchCandidates() re-matches by title
- *      and run dates against every US production.
+ *      and run dates against every production, London included (BRO-6095:
+ *      two registry creators are London-based and US creators review London trips).
  *   2. select-best-reviews.js took the video closest to opening night, so a
  *      422-word song clip beat Kate's 1,230-word Tammy Faye review.
  *      deterministicPick() is the fallback for the LLM picker.
@@ -30,13 +31,6 @@ const SUBSTANTIAL_WORDS = 300;
 const CLOSING_GRACE_DAYS = 14;
 // No previews date: the old rule assumed previews began 30 days before opening.
 const ASSUMED_PREVIEW_DAYS = 30;
-// Registry creators are US-based; London runs are not matched (classify-reviews.js does the same).
-const EXCLUDED_CATEGORIES = new Set(['west-end', 'off-west-end']);
-
-function isExcludedShow(show) {
-  return EXCLUDED_CATEGORIES.has(show.category) || /(^|-)west-end(-|$)/.test(show.id);
-}
-
 /** First day a review of this production can be posted (UTC ms), or null. */
 function windowStartMs(show) {
   let start = productionStartMs(show);
@@ -63,7 +57,7 @@ function inProductionWindow(date, show) {
 function indexShowsByTitle(shows) {
   const byTitle = new Map();
   for (const s of shows) {
-    if (!s || !s.id || !s.title || isExcludedShow(s)) continue;
+    if (!s || !s.id || !s.title) continue;
     const key = normalizeTitle(s.title);
     if (!key) continue;
     if (!byTitle.has(key)) byTitle.set(key, []);

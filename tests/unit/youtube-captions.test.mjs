@@ -166,3 +166,41 @@ test('backfillPublishedDates re-dates NA YouTube reviews only (BRO-4760)', async
   assert.equal(r3.attempted, 0);
   fs.rmSync(root, { recursive: true });
 });
+
+test('backfillPublishedDates also dates unmatched YouTube reviews, published ones first (BRO-6095)', async () => {
+  const fs = require('fs'), os = require('os'), path = require('path');
+  const { backfillPublishedDates } = require('../../scripts/lib/youtube-captions.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'ytdates6095-'));
+  const w = (rel, obj) => { fs.mkdirSync(path.dirname(path.join(root, rel)), { recursive: true }); fs.writeFileSync(path.join(root, rel), JSON.stringify(obj)); };
+  const read = rel => JSON.parse(fs.readFileSync(path.join(root, rel), 'utf8'));
+  w('show-a/mj.json', { platform: 'youtube', videoId: 'p1', creatorId: 'MJ', publishedAt: 'NA' });
+  w('classified/u1.json', { platform: 'youtube', videoId: 'u1', creatorId: 'MJ', reviewType: 'review', showId: null, date: 'NA' });
+  w('raw/u1.json', { platform: 'youtube', videoId: 'u1', date: 'NA' });
+  w('classified/u2.json', { platform: 'youtube', videoId: 'u2', creatorId: 'PS', reviewType: 'review', date: 'NA' });
+  w('raw/u2.json', { platform: 'youtube', videoId: 'u2', date: 'NA' });
+  // not candidates: matched, not a review, TikTok, already dated
+  w('classified/m1.json', { platform: 'youtube', videoId: 'm1', reviewType: 'review', showId: 'six-2021', date: 'NA' });
+  w('classified/c1.json', { platform: 'youtube', videoId: 'c1', reviewType: 'commentary', date: 'NA' });
+  w('classified/t1.json', { platform: 'tiktok', videoId: 't1', reviewType: 'review', date: null });
+  w('classified/d1.json', { platform: 'youtube', videoId: 'd1', reviewType: 'review', date: '20260101' });
+  const asked = [];
+  const r = await backfillPublishedDates({ transcriptsDir: root, max: 2, fetchDate: async id => { asked.push(id); return id === 'u2' ? null : '20250610'; } });
+  assert.deepEqual(asked, ['p1', 'u1']); // published first, max shared
+  assert.deepEqual(r, { candidates: 3, attempted: 2, dated: 2 });
+  assert.equal(read('classified/u1.json').date, '20250610');
+  assert.equal(read('raw/u1.json').date, '20250610');
+  const r2 = await backfillPublishedDates({ transcriptsDir: root, fetchDate: async () => null });
+  assert.deepEqual(r2, { candidates: 1, attempted: 1, dated: 0 });
+  // a failed lookup is stamped on the raw file too (classify --refresh rebuilds classified from raw)
+  assert.ok(read('classified/u2.json').dateLookupFailedAt);
+  assert.ok(read('raw/u2.json').dateLookupFailedAt);
+  const r3 = await backfillPublishedDates({ transcriptsDir: root, fetchDate: async () => { throw new Error('cooldown'); } });
+  assert.equal(r3.candidates, 0);
+  // titles we list no production of are never paid for
+  w('classified/f1.json', { platform: 'youtube', videoId: 'f1', reviewType: 'review', showTitle: 'Some Fringe Show', date: 'NA' });
+  w('classified/l1.json', { platform: 'youtube', videoId: 'l1', reviewType: 'review', showTitle: 'Six', date: 'NA' });
+  const seen = [];
+  await backfillPublishedDates({ transcriptsDir: root, matchableTitle: t => t === 'Six', fetchDate: async id => { seen.push(id); return '20250101'; } });
+  assert.deepEqual(seen, ['l1']);
+  fs.rmSync(root, { recursive: true });
+});

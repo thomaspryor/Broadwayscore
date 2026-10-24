@@ -24,7 +24,8 @@
  *   node scripts/video-reviews/classify-reviews.js --rematch-only --dry-run  # list re-match candidates, no API calls
  *
  * After classifying, reviews left without a show id are re-matched (BRO-6091):
- * title + run dates against every US production in shows.json, confirmed by
+ * title + run dates against every production in shows.json (London too,
+ * BRO-6095), confirmed by
  * the model. Re-runs each week, so a show added to shows.json later still
  * picks up the reviews posted during its run.
  */
@@ -35,10 +36,12 @@ const { CLAUDE_SONNET, CLAUDE_OPUS } = require('../lib/models');
 const { finalResponseText, describeResponse } = require('../lib/anthropic-response-text');
 const { indexShowsByTitle, rematchCandidates, parseRematchReply } = require('../lib/video-review-selection');
 const { describeProduction } = require('../lib/video-production-context');
+const { creatorLookup } = require('../lib/video-review-guards');
 
 const RAW_DIR = path.join(__dirname, '../../data/video-reviews-transcripts/raw');
 const CLASSIFIED_DIR = path.join(__dirname, '../../data/video-reviews-transcripts/classified');
 const SHOWS_PATH = path.join(__dirname, '../../data/shows.json');
+const CREATORS_PATH = path.join(__dirname, '../../data/video-creators.json');
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -161,8 +164,17 @@ ${items}`
   return JSON.parse(text.substring(start, end));
 }
 
-async function confirmRematch(c, candidates) {
+async function confirmRematch(c, candidates, homeMarket) {
   const options = candidates.map((s, i) => `${i + 1}. ${describeProduction(s)}`).join('\n');
+  // BRO-6095: London and New York runs of one title can overlap, and creators
+  // rarely name their own city in a review. Only a London-vs-elsewhere
+  // tie-break: creators travel, so with one candidate the home market is no
+  // evidence against it (Kate Reinking, Denver, reviewed The Witches in London).
+  const isLondon = s => s.category === 'west-end' || s.category === 'off-west-end';
+  const splitsLondon = candidates.some(isLondon) && candidates.some(s => !isLondon(s));
+  const home = homeMarket && splitsLondon
+    ? `\nThe creator is based in ${homeMarket}. If both a London and a non-London production fit and the video names no city or venue, prefer the one in ${homeMarket}; a named city or venue always wins.\n`
+    : '';
   const resp = await fetch('https://api.anthropic.com/v1/messages', {
     signal: AbortSignal.timeout(120000),
     method: 'POST',
@@ -174,7 +186,7 @@ async function confirmRematch(c, candidates) {
         role: 'user',
         content: `A theater creator's video review was classified as a review of "${c.showTitle}" (classifier note: ${c.classificationReason || 'none'}).
 Posted: ${c.date}. Caption: "${c.title}"
-
+${home}
 Which of these stage productions did the creator see and review in this video?
 ${options}
 
@@ -203,6 +215,7 @@ async function rematchUnmatched() {
     return;
   }
   const byTitle = indexShowsByTitle(JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows);
+  const findCreator = creatorLookup(JSON.parse(fs.readFileSync(CREATORS_PATH, 'utf8')).creators);
   const files = fs.readdirSync(CLASSIFIED_DIR).filter(f => f.endsWith('.json'));
   let checked = 0, matched = 0;
   console.log('\n=== Re-matching reviews with no show ===');
@@ -220,7 +233,7 @@ async function rematchUnmatched() {
       continue;
     }
     try {
-      const r = await confirmRematch(c, candidates);
+      const r = await confirmRematch(c, candidates, findCreator(c.creatorId)?.homeMarket);
       if (!r.ok) { console.log(`  ? ${c.creatorId} "${c.showTitle}": unparseable reply, retry next run`); continue; }
       c.rematch = { candidates: ids, result: r.show ? r.show.id : null, reason: r.reason, checkedAt: new Date().toISOString() };
       if (r.show) {

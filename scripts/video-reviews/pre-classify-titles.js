@@ -25,6 +25,8 @@ const path = require('path');
 const { CLAUDE_HAIKU } = require('../lib/models');
 
 const DISCOVERY_DIR = path.join(__dirname, '../../data/video-reviews-discovery');
+const CREATORS_PATH = path.join(__dirname, '../../data/video-creators.json');
+const creatorsById = new Map(JSON.parse(fs.readFileSync(CREATORS_PATH, 'utf8')).creators.map(c => [c.id.toLowerCase(), c]));
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 if (!ANTHROPIC_API_KEY) { console.error('Missing ANTHROPIC_API_KEY'); process.exit(1); }
 
@@ -79,8 +81,11 @@ async function main() {
     if (creatorFilter && data.handle.toLowerCase() !== creatorFilter.toLowerCase()
         && file.replace(/\.json$/, '').toLowerCase() !== creatorFilter.toLowerCase()) continue;
 
-    // Skip YouTube — Mickey-Jo's 300 videos are mostly review content, already well-tagged
-    if (data.platform === 'youtube') {
+    // Skip YouTube — Mickey-Jo's 300 videos are mostly review content, already well-tagged.
+    // A creator with titleScreen: true in video-creators.json is screened anyway:
+    // Roma Torre's review titles rarely say "review" (BRO-6095).
+    const creator = creatorsById.get(file.replace(/\.json$/, '').toLowerCase());
+    if (data.platform === 'youtube' && !(creator && creator.titleScreen)) {
       console.log(`\n${data.handle} (YouTube): skipping LLM pre-classification (title heuristics sufficient for YouTube)`);
       continue;
     }

@@ -181,7 +181,7 @@ const isDateless = d => !d || d === 'NA';
  * @returns {Promise<{candidates: number, attempted: number, dated: number}>}
  */
 const RETRY_DAYS = 30;
-async function backfillPublishedDates({ transcriptsDir, creatorFilter = null, max = 250, fetchDate = fetchYouTubePublishedAt, now = new Date(), fs = require('fs'), path = require('path') }) {
+async function backfillPublishedDates({ transcriptsDir, creatorFilter = null, max = 250, fetchDate = fetchYouTubePublishedAt, now = new Date(), fs = require('fs'), path = require('path'), matchableTitle = null }) {
   const readJson = f => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return null; } };
   const writeJson = (f, o) => fs.writeFileSync(f, JSON.stringify(o, null, 2));
   const todo = [];
@@ -198,13 +198,47 @@ async function backfillPublishedDates({ transcriptsDir, creatorFilter = null, ma
       todo.push({ file, t });
     }
   }
+  // BRO-6095: then reviews the classifier could not tie to a show. rematch
+  // (classify-reviews.js, the next workflow step) needs a post date to tell a
+  // London run from a Broadway one; 465 UK YouTube reviews had none. Published
+  // reviews go first; both share max. The failure stamp also lands on the raw
+  // file, which survives classify-reviews.js --refresh.
+  const classifiedDir = path.join(transcriptsDir, 'classified');
+  const unmatched = [];
+  if (fs.existsSync(classifiedDir)) {
+    for (const f of fs.readdirSync(classifiedDir).filter(n => n.endsWith('.json'))) {
+      const c = readJson(path.join(classifiedDir, f));
+      if (!c || c.platform !== 'youtube' || !c.videoId || c.reviewType !== 'review' || c.showId || !isDateless(c.date)) continue;
+      if (creatorFilter && String(c.creatorId).toLowerCase() !== creatorFilter.toLowerCase()) continue;
+      if (c.dateLookupFailedAt && now - new Date(c.dateLookupFailedAt) < RETRY_DAYS * 864e5) continue;
+      // A title we list no production of can never re-match: don't pay to date it.
+      if (matchableTitle && !matchableTitle(c.showTitle)) continue;
+      unmatched.push({ file: path.join(classifiedDir, f), t: c, unmatched: true });
+    }
+  }
   let attempted = 0, dated = 0;
-  for (const { file, t } of todo.slice(0, max)) {
+  for (const { file, t, unmatched: isUnmatched } of [...todo, ...unmatched].slice(0, max)) {
     attempted++;
     const ymd = await fetchDate(t.videoId);
     // Out of credits: stop without stamping, so the next run retries these.
     if (ymd === undefined) { attempted--; break; }
-    if (!ymd) { t.dateLookupFailedAt = now.toISOString(); writeJson(file, t); continue; }
+    const rawFile = path.join(transcriptsDir, 'raw', `${t.videoId}.json`);
+    if (!ymd) {
+      t.dateLookupFailedAt = now.toISOString();
+      writeJson(file, t);
+      const raw = isUnmatched && fs.existsSync(rawFile) ? readJson(rawFile) : null;
+      if (raw) { raw.dateLookupFailedAt = t.dateLookupFailedAt; writeJson(rawFile, raw); }
+      continue;
+    }
+    if (isUnmatched) {
+      t.date = ymd;
+      delete t.dateLookupFailedAt;
+      writeJson(file, t);
+      const raw = fs.existsSync(rawFile) ? readJson(rawFile) : null;
+      if (raw && isDateless(raw.date)) { raw.date = ymd; delete raw.dateLookupFailedAt; writeJson(rawFile, raw); }
+      dated++;
+      continue;
+    }
     t.publishedAt = ymd;
     delete t.dateLookupFailedAt;
     delete t.productionCheck;
@@ -216,7 +250,7 @@ async function backfillPublishedDates({ transcriptsDir, creatorFilter = null, ma
     }
     dated++;
   }
-  return { candidates: todo.length, attempted, dated };
+  return { candidates: todo.length + unmatched.length, attempted, dated };
 }
 
 /**
