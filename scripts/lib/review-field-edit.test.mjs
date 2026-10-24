@@ -784,3 +784,11 @@ test('scoreProvenance: refuses relabelled aggregator relays and mismatched-page 
   assert.equal(edit({ ...base, incompleteReason: 'url_content_mismatch' }).ok, false);
   assert.equal(edit({ ...base, incompleteReason: 'paywall' }).ok, true);
 });
+
+test('scoreProvenance: any content-verdict incompleteReason refuses (BRO-6052 ship-check)', () => {
+  const base = { originalScore: 60, scoreSource: 'anchored-v6', fullText: null };
+  for (const incompleteReason of ['wrong_content', 'roundup_only', 'no_url', 'url_dead', 'scraper_garbage']) {
+    const res = applyReviewFieldEdit({ ...base, incompleteReason }, { field: 'scoreProvenance', oldValue: null, newValue: 'page-parsed' }, stamp);
+    assert.equal(res.ok, false, incompleteReason);
+  }
+});

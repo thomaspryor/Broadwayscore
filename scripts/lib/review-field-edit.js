@@ -263,9 +263,10 @@ const FIELD_VALUE_CHECKS = {
     if (typeof record.fullText === 'string' && record.fullText.trim().length >= 200) return 'scoreProvenance: the file has a body, provenance only matters for body-less files';
     if (!(record.aggregatorStars || record.originalScore != null || typeof record.originalScoreNormalized === 'number')) return 'scoreProvenance: the file carries no star or score';
     const { AGGREGATOR_SCORE_SOURCES } = require('./review-normalization');
-    const relay = [record.originalScoreSource, record.aggregatorStarsSource].find((x) => x && (AGGREGATOR_SCORE_SOURCES.has(x) || x === 'theatre-reviews'));
+    const relay = [record.originalScoreSource, record.aggregatorStarsSource].find((x) => x && (AGGREGATOR_SCORE_SOURCES.has(x) || x === 'theatre-reviews' || x === 'lbo-roundup'));
     if (relay) return `scoreProvenance: the score carries an aggregator source (${relay}), so it is not page-parsed`;
-    if (/^(url_content_mismatch|scraper_garbage)$/.test(record.incompleteReason || '')) return `scoreProvenance: incompleteReason ${record.incompleteReason} means the page the star came from may not be this review`;
+    // Only a fetch that failed for a known access reason leaves the page-read star trustworthy; any content verdict (wrong_content, url_content_mismatch, scraper_garbage, roundup_only, no_url, url_dead) says the page was not this review.
+    if (record.incompleteReason && !/^(paywall|timeout|fetch_timeout)$/.test(record.incompleteReason)) return `scoreProvenance: incompleteReason ${record.incompleteReason} means the page the star came from may not be this review`;
     return /^(llm-v\d+|anchored-v\d+|manual-cleared-haiku-fallback)$/.test(record.scoreSource || '')
       ? null : 'scoreProvenance: only a file whose scoreSource is an LLM method label (the BRO-5055 relabel) may be stamped';
   },
