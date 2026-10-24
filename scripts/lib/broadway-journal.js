@@ -87,11 +87,15 @@ function selectUncited(analyzed, cited, { before = null } = {}) {
   return { fresh, backlog };
 }
 
+const SWEEP_CONDITION_KEY = 'commercial-broadway-journal-uncited-posts';
+
 function sweepAlertOpts(fresh, nowIso = new Date().toISOString()) {
   const lines = fresh.map(a => `- ${a.postDate.slice(0, 10)} ${a.title} ${a.url} [${a.terms.join(', ')}]`);
   return {
     // One aggregate condition per sweep so a backlog files one card, not a burst.
-    conditionKey: 'commercial-broadway-journal-uncited-posts',
+    conditionKey: SWEEP_CONDITION_KEY,
+    // Weekly cron: a 168h default cooldown would mute alternate weeks.
+    cooldownHours: 24,
     title: `Broadway Journal: ${fresh.length} post${fresh.length > 1 ? 's' : ''} quoting financial filings are not cited in commercial data`,
     description: `Weekly sweep (scripts/sweep-broadway-journal.js) found posts mentioning AG filings, financial statements, recoupment or capitalization whose URL is not cited in data/commercial.json. Nothing was applied.\n${lines.join('\n')}\nSwept ${nowIso}.`,
     hint: 'Read each post, extract capitalization, weekly running costs and recoupment figures with a citation, and add them to data/commercial.json by hand (or via the pending-review path).',
@@ -100,4 +104,4 @@ function sweepAlertOpts(fresh, nowIso = new Date().toISOString()) {
   };
 }
 
-module.exports = { slugFromUrl, citedSlugs, stripHtml, scanFinancialTerms, fetchArchive, selectUncited, sweepAlertOpts, FINANCIAL_PATTERNS };
+module.exports = { slugFromUrl, citedSlugs, stripHtml, scanFinancialTerms, fetchArchive, selectUncited, sweepAlertOpts, SWEEP_CONDITION_KEY, FINANCIAL_PATTERNS };

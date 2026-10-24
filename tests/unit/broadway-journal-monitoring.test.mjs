@@ -141,3 +141,12 @@ describe('selectUncited', () => {
     assert.match(o.title, /2 posts/);
   });
 });
+
+describe('review fixes', () => {
+  it('sweep alert uses a short cooldown so a weekly cron is not muted', () => {
+    const o = bj.sweepAlertOpts([{ slug: 'a', title: 'a', url: 'u/a', postDate: '2026-11-02T00:00:00Z', terms: ['recoup'] }]);
+    assert.ok(o.cooldownHours <= 24);
+    assert.equal(bj.SWEEP_CONDITION_KEY, o.conditionKey);
+  });
+});
+

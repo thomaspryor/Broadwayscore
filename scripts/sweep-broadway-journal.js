@@ -63,8 +63,14 @@ async function main() {
 
   const analyzed = [];
   const unreadable = [];
+  // Posts dated before --before belong to the BRO-6160 backfill and are never
+  // alerted on, so skip their body fetch (keeps the weekly run short).
+  const cutoff = Date.parse(BEFORE);
+  const old = posts.filter(p => p.post_date && Date.parse(p.post_date) < cutoff).length;
+  console.log(`Skipping ${old} posts dated before ${BEFORE} (BRO-6160 backfill)`);
   for (const p of posts.slice(0, MAX_POSTS)) {
     if (!p.slug || cited.has(p.slug)) continue;
+    if (p.post_date && Date.parse(p.post_date) < cutoff) continue;
     let body = '';
     let truncated = p.audience && p.audience !== 'everyone';
     try {
@@ -73,7 +79,8 @@ async function main() {
       if (full.audience && full.audience !== 'everyone') truncated = true;
     } catch (e) {
       console.log(`  ✗ ${p.slug}: ${e.message}`);
-      unreadable.push(p.slug);
+      // A deleted post (404/410) can never be read: do not let it fail every future run.
+      if (!/HTTP 40[04]|HTTP 410/.test(e.message)) unreadable.push(p.slug);
       continue;
     }
     const { terms } = bj.scanFinancialTerms(`${p.title || ''} ${p.subtitle || ''} ${body}`);
@@ -90,14 +97,22 @@ async function main() {
   for (const a of fresh) console.log(`  NEW ${a.postDate.slice(0, 10)} ${a.title} [${a.terms.join(', ')}]\n      ${a.url}`);
   for (const a of backlog.slice(0, 5)) console.log(`  backlog ${a.postDate.slice(0, 10)} ${a.title}`);
 
-  // A post we could not read is a post we did not scan: fail loudly, never report a clean sweep.
-  if (unreadable.length > 0) throw new Error(`${unreadable.length} post(s) unreadable after retries (${unreadable.slice(0, 3).join(', ')}...); sweep incomplete`);
+  if (!DRY_RUN) {
+    const router = require('./lib/owner-alert-router');
+    if (fresh.length > 0) {
+      const res = await router.routeAlert(bj.sweepAlertOpts(fresh));
+      console.log(`Alert routed: ${res && res.action}`);
+    } else {
+      console.log('Nothing new to report.');
+      router.resolveCondition(bj.SWEEP_CONDITION_KEY, { reason: 'no uncited financial posts' });
+    }
+  } else {
+    console.log('[dry-run] no alert sent');
+  }
 
-  if (DRY_RUN) { console.log('[dry-run] no alert sent'); return; }
-  if (fresh.length === 0) { console.log('Nothing new to report.'); return; }
-  const { routeAlert } = require('./lib/owner-alert-router');
-  const res = await routeAlert(bj.sweepAlertOpts(fresh));
-  console.log(`Alert routed: ${res && res.action}`);
+  // A post we could not read is a post we did not scan. Report what we found
+  // first, then fail the run so the notify-failure step fires.
+  if (unreadable.length > 0) throw new Error(`${unreadable.length} post(s) unreadable after retries (${unreadable.slice(0, 3).join(', ')}...); sweep incomplete`);
 }
 
 if (require.main === module) runMain(main);

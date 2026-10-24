@@ -3,13 +3,12 @@ name: Commercial Broadway Journal Sweep
 # BRO-6167. Weekly sweep of the Broadway Journal Substack archive for posts
 # that mention AG filings, FOIL records, financial statements or recoupment
 # and are not cited in data/commercial.json. Uncited posts are routed to the
-# owner-alert router for review. The sweep NEVER writes commercial.json
-# (Broadway Journal is not in TRUSTED_RECOUPMENT_HOSTS, so nothing from it
-# auto-applies). Posts before 2026-10-24 belong to the BRO-6160 backfill.
+# owner-alert router for review. The sweep NEVER writes commercial.json.
+# Posts dated before 2026-10-24 belong to the BRO-6160 backfill and are skipped.
 #
-# Advisory: the sweep step is continue-on-error so a Substack outage or rate
-# limit shows up as a step annotation and the dead-source alert, not a red
-# run that pages anyone.
+# Advisory: failure severity is 'warning' (digest), nothing here pages. An
+# incomplete sweep (unreadable posts, Substack outage) fails the run so
+# notify-failure and cron health see it; findings are alerted before it fails.
 
 on:
   schedule:
@@ -47,7 +46,6 @@ jobs:
           configure-git: 'true'
 
       - name: Sweep Broadway Journal archive
-        continue-on-error: true
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           CI: 'true'

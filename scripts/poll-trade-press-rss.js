@@ -310,10 +310,22 @@ async function main() {
     return;
   }
 
+  // A review finding exists only as this alert. If it cannot be delivered, hold
+  // the feed's lastSeenGuid so the next poll sees the item again.
+  const heldFeeds = new Set();
   if (reviewFindings.length > 0) {
     const { routeAlert } = require('./lib/owner-alert-router');
-    try { await routeAlert(untrustedClaimAlertOpts(reviewFindings)); }
-    catch (e) { log(`  ⚠️  untrusted-claim alert failed: ${e.message}`); }
+    let landed = false;
+    try {
+      const res = await routeAlert(untrustedClaimAlertOpts(reviewFindings));
+      landed = !!res && res.ok !== false && res.error === undefined;
+    } catch (e) { log(`  ⚠️  untrusted-claim alert failed: ${e.message}`); }
+    if (!landed) {
+      for (const [outletId, r] of Object.entries(feedResults)) {
+        if (r && (r.findings || []).some(f => f.gate === 'review')) heldFeeds.add(outletId);
+      }
+      log(`  ⚠️  holding lastSeenGuid for: ${[...heldFeeds].join(', ')}`);
+    }
   }
 
   // Write pending FIRST; bump state lastSeenGuid only on success (transactional).
@@ -354,7 +366,7 @@ async function main() {
     const result = feedResults[feed.outletId];
     const feedState = state.feeds[feed.outletId] || { lastSeenGuid: null, errorCount: 0 };
     feedState.lastPolledAt = nowIso;
-    if (result && !result.capHit && result.mostRecentGuid) {
+    if (result && !result.capHit && result.mostRecentGuid && !heldFeeds.has(feed.outletId)) {
       feedState.lastSeenGuid = result.mostRecentGuid;
     }
     state.feeds[feed.outletId] = feedState;
@@ -364,7 +376,13 @@ async function main() {
   // Dead-source alert (BRO-6167): a tracked feed failing 3+ polls in a row.
   for (const feed of feeds) {
     const fs_ = state.feeds[feed.outletId];
-    if (!shouldAlertDeadFeed(fs_)) continue;
+    if (!shouldAlertDeadFeed(fs_)) {
+      // Recovered feed: close the incident so a second outage alerts again.
+      if (feedResults[feed.outletId] && !feedResults[feed.outletId].error) {
+        require('./lib/owner-alert-router').resolveCondition(`commercial-feed-dead:${feed.outletId}`, { reason: 'feed polled successfully' });
+      }
+      continue;
+    }
     const { routeAlert } = require('./lib/owner-alert-router');
     try { await routeAlert(deadFeedAlertOpts(feed, fs_)); }
     catch (e) { log(`  ⚠️  dead-feed alert failed for ${feed.outletId}: ${e.message}`); }
