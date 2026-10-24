@@ -75,4 +75,10 @@ test('BRO-6113: haveDistinctTexts separates a recycled url slug from a double co
   };
   assert.equal(run(folders, haveDistinctTexts).length, 0);
   assert.equal(run(folders).length, 1);
+  // same article behind different headers / markup / truncation is still one article
+  const article = Array.from({ length: 120 }, (_, i) => `sentence${i}`).join(' ');
+  const header = 'The best of London straight to your inbox By entering your email address you agree to our Terms of Use and Privacy Policy and consent to receive emails from Time Out about news events offers and partner promotions';
+  assert.equal(haveDistinctTexts({ fullText: header + ' ' + article }, { fullText: article.split(' ').slice(0, 70).join(' ') }), false, 'header on one copy');
+  assert.equal(haveDistinctTexts({ fullText: `<p>${article}</p>` }, { fullText: 'Photograph: Courtesy of X ' + article }), false, 'markup vs plain');
+  assert.equal(haveDistinctTexts({ fullText: header + ' ' + para('alpha').repeat(1) + ' ' + Array.from({ length: 400 }, (_, i) => `a${i}`).join(' ') }, { fullText: header + ' ' + para('beta') + ' ' + Array.from({ length: 400 }, (_, i) => `b${i}`).join(' ') }), true, 'shared header, different articles');
 });
