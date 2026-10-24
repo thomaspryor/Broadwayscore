@@ -36,6 +36,14 @@ common_dir() { git -C "$1" rev-parse --path-format=absolute --git-common-dir 2>/
 OURS="$(common_dir "$R")"
 [ -n "$OURS" ] || exit 0
 
+# Dedupe (BRO-6126): in cloud $HOME is the install target, so these user-level hooks
+# load in single-repo sessions too. A session whose cwd is a checkout of this repo
+# already runs the hook from that checkout's own project settings; stay out.
+top="$(git -C "$cwd" rev-parse --show-toplevel 2>/dev/null)"
+if [ -n "$top" ] && [ "$(common_dir "$cwd")" = "$OURS" ] && grep -q "\.claude/hooks/$hook" "$top/.claude/settings.json" 2>/dev/null; then
+  exit 0
+fi
+
 # in_other_repo DIR: true when DIR is inside a git repo that is not this one
 # (worktrees of this repo share its common dir, so they count as ours).
 in_other_repo() {

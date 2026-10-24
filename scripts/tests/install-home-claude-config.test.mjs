@@ -37,7 +37,7 @@ function makeTarget(name) {
 }
 
 const run = (args, env = {}) => spawnSync('node', [INSTALLER, ...args], {
-  encoding: 'utf8', env: { ...process.env, HOME: fakeHome, ...env },
+  encoding: 'utf8', env: { ...process.env, HOME: fakeHome, CLAUDE_CODE_REMOTE: '', ...env },
 });
 
 // Run one generated hook command the way Claude Code does: bash -c, cwd = session cwd.
@@ -228,4 +228,20 @@ test('cloud one-liner: no --target, HOME = parent of the checkout, installs and 
     assert.equal(c.status, 0, c.stdout + c.stderr);
     assert.equal(cloudRun(['--uninstall'], env).status, 0);
   }
+});
+
+// BRO-6126: with $HOME as the cloud target the generated hooks also load in a session
+// whose cwd is this checkout, which already wires them: the runner must stay out.
+test('runner does not re-run a hook for a session whose cwd is this checkout', () => {
+  const runner = path.join(REPO_ROOT, '.claude', 'hooks', 'lib', 'home-hook-runner.sh');
+  const call = (cwd) => spawnSyncStdinFile('bash', [runner, 'block-prompting-remote-tools.sh'], {
+    cwd, encoding: 'utf8', timeout: 30000,
+    input: JSON.stringify({ hook_event_name: 'PreToolUse', cwd, tool_name: 'mcp__claude-code-remote__create_session',
+      tool_input: { source_url: 'https://github.com/thomaspryor/broadwayscore', prompt: 'x', model: 'claude-sonnet-5-5' } }),
+    env: { ...process.env, HOME: fakeHome, CLAUDE_PROJECT_DIR: '' },
+  });
+  assert.match(call(scratch).stdout, /"permissionDecision":\s*"deny"/, 'control: from a non-repo cwd the hook denies');
+  const inRepo = call(REPO_ROOT);
+  assert.equal(inRepo.status, 0);
+  assert.equal(inRepo.stdout.trim(), '', 'no hook output: the runner deduped');
 });
