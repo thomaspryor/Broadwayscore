@@ -35,7 +35,7 @@ const HISTORY_MAX_ENTRIES = 52;
 // Constants
 // ============================================
 
-const { VALID_DESIGNATIONS, FIZZLE_MIN_RETURNED_PCT, isLossDesignation } = require('./lib/commercial-designations');
+const { VALID_DESIGNATIONS, FIZZLE_MIN_RETURNED_PCT, isLossDesignation, isWithinLossLabelWait } = require('./lib/commercial-designations');
 
 const VALID_COST_METHODOLOGIES = [
   'reddit-standard', 'trade-reported', 'sec-filing',
@@ -702,7 +702,8 @@ function checkClosedShowTBD() {
     const show = resolveShow(key);
     if (!show) continue;
 
-    if (show.status === 'closed') {
+    // Owner policy B (BRO-5020): a silent closure waits ~6 months for a loss label, so TBD is expected until then.
+    if (show.status === 'closed' && !isWithinLossLabelWait(show)) {
       // How long ago did it close?
       let closedAgo = '';
       if (show.closingDate) {

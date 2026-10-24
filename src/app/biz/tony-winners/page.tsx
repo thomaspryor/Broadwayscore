@@ -6,7 +6,8 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { featureFlags } from '@/config/feature-flags';
-import { BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
+import { BASE_URL } from '@/lib/seo';
+import { bizOgImage } from '@/lib/biz-og';
 import { getTonyWinners } from '@/lib/data-topic-pages';
 import { formatMillions, type MusicalOutcome } from '@/lib/investment-topics';
 import { StatGrid } from '@/components/show-cards';
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
   title: { absolute: `${TITLE} | Money Scorecard` },
   description: DESCRIPTION,
   alternates: { canonical: `${BASE_URL}/biz/tony-winners` },
-  openGraph: { images: [SITE_OG_IMAGE], title: TITLE, description: DESCRIPTION, url: `${BASE_URL}/biz/tony-winners` },
+  openGraph: { images: [bizOgImage('tony-winners', TITLE)], title: TITLE, description: DESCRIPTION, url: `${BASE_URL}/biz/tony-winners` },
 };
 
 export default function Page() {
@@ -34,7 +35,7 @@ export default function Page() {
   const data = getTonyWinners();
 
   return (
-    <TopicPageShell title={TITLE} subtitle="Best Musical and Best Play winners since 2021-22 (commercial productions), and how the money turned out.">
+    <TopicPageShell title={TITLE} sharePath="/biz/tony-winners" subtitle="Best Musical and Best Play winners since 2021-22 (commercial productions), and how the money turned out.">
       <StatGrid
         className="mb-6"
         stats={[

@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 'use strict';
 // BRO-6134 stage 1: hourly outside-signal health alarm for the Codex lanes.
-// Reads git landings, the runner's BRO-4745 summaries and the codex-runner.yml run list, runs the
+// Reads git landings, the runner's BRO-4745 summaries and stand-down notes, the codex-runner.yml run
+// list and the stored login's public stamps on BRO-4799 (never the encrypted login), runs the
 // pure scripts/lib/codex-lane-health.js, and (with --alert) files ONE Linear card per lane:class
 // confirmed on two consecutive hourly evaluations. Shadow by default: without --alert it only
 // reports. An unreadable source is "health unknown", never a breach.
@@ -9,10 +10,14 @@
 //   node scripts/codex-lane-alarm.js [--alert] [--strict [--unknown-ok]] [--out=FILE] [--dump-sources=DIR]
 // Exit: 0 ran (cards, if any, filed) | 1 --strict and a confirmed breach | 2 no source readable
 //       | 3 --alert and a card has no tracker.
+if (require.main === module && (process.argv.includes('--help') || process.argv.includes('-h'))) {
+  console.log('Usage: node scripts/codex-lane-alarm.js [--alert] [--strict [--unknown-ok]] [--out=FILE] [--dump-sources=DIR]\nHourly Codex lane health from outside signals (BRO-6134). Shadow unless --alert.');
+  process.exit(0);
+}
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
-const { LANDED_LOG_FORMAT } = require('./lib/codex-runner.js');
+const { LANDED_LOG_FORMAT, parseAuthMeta } = require('./lib/codex-runner.js');
 const { codexLandedEvents, confirmedBreaches, FLOORS } = require('./lib/codex-lane-health.js');
 
 const RUNNER_ISSUE = 'BRO-4745';
@@ -20,10 +25,6 @@ const KEY_PREFIX = 'codex-lane:';
 const VERIFY = 'VERIFY: node --test tests/live/codex-lane-alarm-clean.test.mjs';
 const arg = (n) => (process.argv.find((a) => a.startsWith(`--${n}=`)) || '').slice(n.length + 3) || null;
 const flag = (n) => process.argv.includes(`--${n}`);
-if (require.main === module && (flag('help') || process.argv.includes('-h'))) {
-  console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(2, 11).map((l) => l.replace(/^\/\/ ?/, '')).join('\n'));
-  process.exit(0);
-}
 
 function readLanded() {
   try {
@@ -52,6 +53,19 @@ async function readSummaries() {
   } catch { return null; }
 }
 
+// The stored login's public stamps only (last_refresh, saved, access_expires); the encrypted blob is never kept.
+async function readLogin() {
+  try {
+    const { graphql } = require('./lib/linear-client.js');
+    const d = await graphql('query($id: String!) { issue(id: $id) { comments(first: 50) { nodes { body } } } }', { id: process.env.CODEX_AUTH_STORE_ISSUE || 'BRO-4799' });
+    for (const c of (d.issue && d.issue.comments.nodes) || []) {
+      const meta = parseAuthMeta(c.body);
+      if (meta) return meta;
+    }
+    return null;
+  } catch { return null; }
+}
+
 function readRuns() {
   try {
     const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
@@ -69,19 +83,22 @@ async function main() {
   const landedRaw = readLanded();
   const summaries = await readSummaries();
   const runsRaw = readRuns();
+  const login = await readLogin();
   const dump = arg('dump-sources');
   if (dump) {
     fs.mkdirSync(dump, { recursive: true });
     if (landedRaw !== null) fs.writeFileSync(path.join(dump, 'landed.log'), landedRaw);
     if (summaries !== null) fs.writeFileSync(path.join(dump, 'c4745.json'), JSON.stringify(summaries));
     if (runsRaw !== null) fs.writeFileSync(path.join(dump, 'runs.json'), JSON.stringify(runsRaw));
+    if (login !== null) fs.writeFileSync(path.join(dump, 'login.json'), JSON.stringify(login));
   }
   const inputs = {
     nowMs: Date.now(),
     landed: landedRaw === null ? null : codexLandedEvents(landedRaw),
     summaries,
     ghRuns: toGhRuns(runsRaw),
-    lockAgeH: null,
+    lockAgeH: null, // read from the newest cloud lock-held stand-down note (codex-lane-health.js)
+    login,
   };
   if (inputs.landed === null && summaries === null && inputs.ghRuns === null) {
     console.error('codex-lane-alarm: no source readable (git, Linear, GitHub runs)');

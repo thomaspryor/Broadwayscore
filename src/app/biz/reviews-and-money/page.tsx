@@ -8,7 +8,8 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { featureFlags } from '@/config/feature-flags';
-import { BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
+import { BASE_URL } from '@/lib/seo';
+import { bizOgImage } from '@/lib/biz-og';
 import { getWhatPredictsTheMoney } from '@/lib/data-topic-pages';
 import { SCORE_BAND_LABELS, BAND_LOW, TONY_NOMS_HIGH, MIN_RATE_SAMPLE, type BandCount, type MoneyCallout } from '@/lib/investment-topics';
 import { ScoreBadge } from '@/components/show-cards';
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
   title: { absolute: `${TITLE} | Money Scorecard` },
   description: DESCRIPTION,
   alternates: { canonical: `${BASE_URL}/biz/reviews-and-money` },
-  openGraph: { images: [SITE_OG_IMAGE], title: TITLE, description: DESCRIPTION, url: `${BASE_URL}/biz/reviews-and-money` },
+  openGraph: { images: [bizOgImage('reviews-and-money', TITLE)], title: TITLE, description: DESCRIPTION, url: `${BASE_URL}/biz/reviews-and-money` },
 };
 
 function RateRow({ label, count }: { label: string; count: BandCount }) {
@@ -64,7 +65,7 @@ export default function ReviewsAndMoneyPage() {
   const bandIds = ['high', 'mid', 'low'] as const;
 
   return (
-    <TopicPageShell title={TITLE} subtitle="Share of Broadway shows that recouped, by critic score, audience score and Tony results, for shows opened since September 2021. Only shows with a final verdict (recouped or lost) are counted, so these totals are smaller than the show counts on the other pages. Each kind of show is counted on its own.">
+    <TopicPageShell title={TITLE} sharePath="/biz/reviews-and-money" subtitle="Share of Broadway shows that recouped, by critic score, audience score and Tony results, for shows opened since September 2021. Only shows with a final verdict (recouped or lost) are counted, so these totals are smaller than the show counts on the other pages. Each kind of show is counted on its own.">
       <section className="mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4" data-testid="bucket-panels">
           {data.buckets.map((b) => (

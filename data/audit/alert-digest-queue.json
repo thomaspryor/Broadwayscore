@@ -726,20 +726,6 @@
     "queuedAt": "2026-10-24T14:39:26.862Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:the-imaginary-invalid-2026",
-    "title": "Review gap — \"The Imaginary Invalid\" missing 3 cited review(s)",
-    "description": "The Imaginary Invalid (the-imaginary-invalid-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-imaginary-invalid-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-24T14:39:26.941Z"
-  },
-  {
     "conditionKey": "land:land/bro-6130-self-disposition",
     "title": "Landing blocked: unit-tests-node red on land/bro-6130-self-disposition",
     "description": "land.yml did not land land/bro-6130-self-disposition: the unit-tests-node gate went red at 181ad29f33. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40100566821",
@@ -769,20 +755,6 @@
       }
     ],
     "queuedAt": "2026-10-24T14:22:37.448Z"
-  },
-  {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-24.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-24T15:06:38.969Z"
   },
   {
     "conditionKey": "ob-venue-go-live:the-great-soviet-bucket-off-broadway-2027",
@@ -825,20 +797,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-24T14:49:23.966Z"
-  },
-  {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 15 (pull-quote-quality, regex-fp, run-contamination, cross-show-url, body-date-mismatch, unknown-outlets, +9 more). Checked 2026-10-24.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-24T15:16:41.045Z"
   },
   {
     "conditionKey": "land:land/bro-6134-codex-lane-alarm",
@@ -1075,6 +1033,20 @@
     "queuedAt": "2026-10-24T16:15:14.138Z"
   },
   {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 15 (pull-quote-quality, regex-fp, run-contamination, cross-show-url, body-date-mismatch, unknown-outlets, +9 more). Checked 2026-10-24.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T16:50:35.640Z"
+  },
+  {
     "conditionKey": "land:land/bro-6141-archive-quarantine",
     "title": "Landing blocked: unit-tests-node red on land/bro-6141-archive-quarantine",
     "description": "land.yml did not land land/bro-6141-archive-quarantine: the unit-tests-node gate went red at 20771099f9. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40111547964",
@@ -1135,5 +1107,326 @@
       }
     ],
     "queuedAt": "2026-10-24T16:44:52.425Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6153-ob-phaseh-addshow",
+    "title": "Landing blocked: rebase red on land/bro-6153-ob-phaseh-addshow",
+    "description": "land.yml did not land land/bro-6153-ob-phaseh-addshow: the rebase gate went red at bf46e86888. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40114215505",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6153-ob-phaseh-addshow"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "bf46e868889b1b03f14d28a16512f55b0ef2823e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40114215505"
+      }
+    ],
+    "queuedAt": "2026-10-24T17:03:11.572Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6149-share-preview",
+    "title": "Landing blocked: tsc red on land/bro-6149-share-preview",
+    "description": "land.yml did not land land/bro-6149-share-preview: the tsc gate went red at daf196ddc7. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6149-share-preview @ daf196ddc7 (origin/land/bro-6149-share-preview) → origin/main @ 640b7e02fa [land] train: + land/bro-6147-owner-decision-emails @ 227cb13385 (1 commit(s)) [land] train: + land/bro-6153-ob-phaseh-addshow @ 74be4e958f (2 commit(s)) [land] train: + land/bro-6154-tr-section-diag2 @ 888949b2a3 (1 commit(s)) [land] attempt 1/3: rebased onto 640b7e02fa, 66 file(s) chan Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40114621651",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6149-share-preview"
+      },
+      {
+        "name": "gate",
+        "value": "tsc"
+      },
+      {
+        "name": "tip",
+        "value": "daf196ddc7766108704ad9e26b76d581639e8d2e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40114621651"
+      }
+    ],
+    "queuedAt": "2026-10-24T18:38:53.729Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6143-bucknell-backtest",
+    "title": "Landing blocked: merged-tree-tests red on land/bro-6143-bucknell-backtest",
+    "description": "land.yml did not land land/bro-6143-bucknell-backtest: the merged-tree-tests gate went red at ee98647bbc. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6143-bucknell-backtest @ ee98647bbc (origin/land/bro-6143-bucknell-backtest) → origin/main @ a056f5dc72 [land] train: land/bro-6154-tr-section-diag not taken — nothing left to land after the rebase (already on main or in the train) [land] train: + land/bro-6141-baseline @ d1cfe2f25e (1 commit(s)) [land] train: + land/bro-6149-share-preview @ daf196ddc7 (1 commit(s)) [land] attempt  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40113260067",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6143-bucknell-backtest"
+      },
+      {
+        "name": "gate",
+        "value": "merged-tree-tests"
+      },
+      {
+        "name": "tip",
+        "value": "ee98647bbc37eb2d1e374c22c56bcb93114e138f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40113260067"
+      }
+    ],
+    "queuedAt": "2026-10-24T17:52:29.581Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6137-r2-doc",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6137-r2-doc",
+    "description": "land.yml did not land land/bro-6137-r2-doc: the unit-tests-node gate went red at dc91ad2d74. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40115748432",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6137-r2-doc"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "dc91ad2d749b968214f116286453a406152eaf5f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40115748432"
+      }
+    ],
+    "queuedAt": "2026-10-24T17:34:46.358Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6155-we-major-recovery",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6155-we-major-recovery",
+    "description": "land.yml did not land land/bro-6155-we-major-recovery: the unit-tests-node gate went red at 5eec6287ae. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40116457151",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6155-we-major-recovery"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "5eec6287ae96380b229ed10411346212f45fd7d8"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40116457151"
+      }
+    ],
+    "queuedAt": "2026-10-24T17:49:21.743Z"
+  },
+  {
+    "conditionKey": "tour-candidate:mexodus-off-broadway-2026:2026-07-08",
+    "title": "Tour candidate: Mexodus national tour",
+    "description": "Tours To You lists a Mexodus tour running since 2026-07-08, but Wikipedia doesn't confirm its launch, so it wasn't added automatically. Add a category:'tour' entry with tourOf:mexodus-off-broadway-2026 (the production it tours; any market counts), then run node scripts/sweep-tour-reviews.js --tour=<id>.",
+    "severity": "info",
+    "url": "https://tourstoyou.org/shows/mexodus/",
+    "decision": true,
+    "info": false,
+    "decisionPrompt": "Add the Mexodus national tour as a tracked tour?",
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T18:13:58.850Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:harry-potter-and-the-cursed-child-one-part-west-end-2026",
+    "title": "Review gap — \"Harry Potter and the Cursed Child\" missing 1 cited review(s)",
+    "description": "Harry Potter and the Cursed Child (harry-potter-and-the-cursed-child-one-part-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=harry-potter-and-the-cursed-child-one-part-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T18:54:08.170Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:murder-cathedral-off-west-end-2026",
+    "title": "Review gap — \"Murder in the Cathedral\" missing 1 cited review(s)",
+    "description": "Murder in the Cathedral (murder-cathedral-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=murder-cathedral-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T18:54:08.230Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-24.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T18:54:15.236Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h (still open — BRO-5532)",
+    "description": "Still firing after 66 notifications since it was filed. Tracked at BRO-5532.\n\n11 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5532",
+    "fields": [
+      {
+        "name": "Jesus Christ Superstar — guardian (29h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"jesus-christ-superstar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Jesus Christ Superstar — independent (29h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"jesus-christ-superstar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Jesus Christ Superstar — standard (29h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"jesus-christ-superstar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Jesus Christ Superstar — telegraph (29h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"jesus-christ-superstar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Jesus Christ Superstar — thestage (29h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"jesus-christ-superstar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Jesus Christ Superstar — timeout (29h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"jesus-christ-superstar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Jesus Christ Superstar — times-uk (29h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"jesus-christ-superstar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Stranger Things: The First Shadow — timeout (31h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"stranger-things-the-first-shadow-west-end-2023\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Imaginary Invalid — cititour (61h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-imaginary-invalid-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Imaginary Invalid — theater-scene (61h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-imaginary-invalid-2026\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-10-24T18:58:10.650Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
+    "title": "Review gap — \"Queeney Todd: The Demon Bottom of Fleet Street\" missing 1 cited review(s)",
+    "description": "Queeney Todd: The Demon Bottom of Fleet Street (queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T18:45:21.114Z"
+  },
+  {
+    "conditionKey": "direct-push:7d8cc61063cfe6579d7d03b30a8c7d23f64e7207",
+    "title": "Direct push to main: 7d8cc61063 by thomaspryor",
+    "description": "7d8cc61063 reached main WITHOUT going through land.yml (no row in data/audit/landings.jsonl). Pushed by thomaspryor (committer GitHub). Head commit: Fix cloud hook installation with existing settings (#1158) Direct pushes skip the delta-vs-base gates; sessions must land via scripts/merge-worktree-to-main.sh (BRO-3425). Compare: https://github.com/thomaspryor/Broadwayscore/compare/d2bd345948532e6d3b57f4fa862486c6109007d1...7d8cc61063cfe6579d7d03b30a8c7d23f64e7207 Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40123100966",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "sha",
+        "value": "7d8cc61063cfe6579d7d03b30a8c7d23f64e7207"
+      },
+      {
+        "name": "actor",
+        "value": "thomaspryor"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40123100966"
+      }
+    ],
+    "queuedAt": "2026-10-24T19:05:57.066Z"
+  },
+  {
+    "conditionKey": "bd-circuit-breaker-web_unlocker2",
+    "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (1944/1750 reqs)",
+    "description": "Zone web_unlocker2 billed 1944 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n21 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (576), gather-reviews.js (574), collect-review-texts.js (354).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T19:07:25.905Z"
   }
 ]

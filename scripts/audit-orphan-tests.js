@@ -76,9 +76,6 @@ const ROOT = path.resolve(__dirname, '..');
 const EXEMPT_NEVER_CI = {
   // BRO-4776 acceptance shim; imports the live-data suite run by check-corpus-drift.yml.
   'tests/unit/tour-runtime-source-agreement.test.mjs': 'BRO-4776',
-  // BRO-5287 live acceptance: reads the Codex runner's run summaries on Linear (needs LINEAR_API_KEY).
-  'scripts/verify-codex-runner-health.test.mjs': 'BRO-5287',
-  'scripts/verify-bro-5384-codex-throughput.test.mjs': 'BRO-5384',
   // BRO-6134 RECHECK-AFTER probe: reads live git/Linear/GitHub signals, red while a Codex lane is down.
   'tests/live/codex-lane-alarm-clean.test.mjs': 'BRO-6134',
   // BRO-3490 RECHECK-AFTER probe: live data, red until Saturday's deep-research run researches the six stuck closures.

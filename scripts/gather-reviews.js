@@ -3080,7 +3080,18 @@ function validateBWWRoundupYear(reviews, html, showOpeningDate, showId, bwwUrl, 
 /**
  * Archive aggregator page for future reference
  */
-function archiveAggregatorPage(aggregator, showId, url, html) {
+function archiveAggregatorPage(aggregator, showId, url, html, show) {
+  // Same predicate every scrape-*.js writer runs before a write. This path used
+  // to archive whatever page the aggregator search returned, even one whose
+  // reviews validateBWWRoundupYear() had just rejected, so a wrong-production
+  // or wrong-market page sat in the archive under this showId (BRO-6141).
+  if (show) {
+    const catCheck = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);
+    if (!catCheck.ok) {
+      console.log(`    ⚠ Not archiving ${aggregator}/${showId}.html: ${catCheck.reason}${catCheck.pageTitle ? ` ("${String(catCheck.pageTitle).slice(0, 80)}")` : ''}`);
+      return;
+    }
+  }
   const archiveDir = path.join(__dirname, '..', 'data', 'aggregator-archive', aggregator);
   if (!fs.existsSync(archiveDir)) {
     fs.mkdirSync(archiveDir, { recursive: true });
@@ -4430,7 +4441,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     health.dtli.extracted = dtliReviews.length;
     foundReviews.push(...dtliReviews);
     // Archive the page
-    archiveAggregatorPage('dtli', showId, dtliResult.url, dtliResult.html);
+    archiveAggregatorPage('dtli', showId, dtliResult.url, dtliResult.html, show);
   }
   await sleep(DELAY_MS);
 
@@ -4577,7 +4588,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     }
 
     // Archive the page
-    archiveAggregatorPage('show-score', showId, showScoreResult.url, showScoreResult.html);
+    archiveAggregatorPage('show-score', showId, showScoreResult.url, showScoreResult.html, show);
   }
   await sleep(DELAY_MS);
 
@@ -4684,7 +4695,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       health.bww.extracted = bwwReviews.length;
       foundReviews.push(...bwwReviews);
       // Archive the page
-      archiveAggregatorPage('bww-roundups', showId, bwwResult.url, bwwResult.html);
+      archiveAggregatorPage('bww-roundups', showId, bwwResult.url, bwwResult.html, show);
     }
   }
   await sleep(DELAY_MS);

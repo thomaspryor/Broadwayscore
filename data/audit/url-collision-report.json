@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-24T16:08:08.679Z",
+  "generatedAt": "2026-10-24T18:57:04.773Z",
   "summary": {
-    "total": 16,
-    "high": 10,
-    "medium": 5,
+    "total": 15,
+    "high": 8,
+    "medium": 6,
     "low": 1
   },
   "collisions": [
@@ -116,6 +116,33 @@
       "confidence": "high"
     },
     {
+      "url": "https://www.whatsonstage.com/news/fences-at-leeds-playhouse-and-on-tour-review_1731583/",
+      "normalizedUrl": "https://whatsonstage.com/news/fences-at-leeds-playhouse-and-on-tour-review_1731583",
+      "candidates": [
+        {
+          "showId": "fences-off-west-end-2026",
+          "file": "whatsonstage--jim-keaveney.json",
+          "publishDate": "2026-09-17",
+          "openingDate": "2026-10-09",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "whatsonstage"
+        },
+        {
+          "showId": "man-to-man-west-end-2026",
+          "file": "whatsonstage--jim-keaveney.json",
+          "publishDate": "2026-09-17",
+          "openingDate": "2026-09-11",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "whatsonstage"
+        }
+      ],
+      "suggestedWinner": "man-to-man-west-end-2026",
+      "reason": "publishDate 2026-09-17 is 6 days from man-to-man-west-end-2026 but also 22 days from fences-off-west-end-2026",
+      "confidence": "medium"
+    },
+    {
       "url": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
       "normalizedUrl": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
       "candidates": [
@@ -194,33 +221,6 @@
       ],
       "suggestedWinner": "hadestown-west-end-2018",
       "reason": "publishDate 2018-11-14 is 1 days from hadestown-west-end-2018 opening (2018-11-13); next closest is 417 days from hadestown-west-end-2024",
-      "confidence": "high"
-    },
-    {
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/into-the-woods-review-bridge-theatre/",
-      "normalizedUrl": "https://telegraph.co.uk/theatre/what-to-see/into-the-woods-review-bridge-theatre",
-      "candidates": [
-        {
-          "showId": "into-the-woods-noel-coward-west-end-2026",
-          "file": "telegraph--dominic-cavendish.json",
-          "publishDate": null,
-          "openingDate": "2026-10-07",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "telegraph"
-        },
-        {
-          "showId": "into-the-woods-west-end-2025",
-          "file": "telegraph--dominic-cavendish.json",
-          "publishDate": "December 12, 2025",
-          "openingDate": "2025-12-11",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "telegraph"
-        }
-      ],
-      "suggestedWinner": "into-the-woods-west-end-2025",
-      "reason": "publishDate December 12, 2025 is 1 days from into-the-woods-west-end-2025 opening (2025-12-11)",
       "confidence": "high"
     },
     {
@@ -383,33 +383,6 @@
       ],
       "suggestedWinner": "to-kill-a-mockingbird-west-end-2022",
       "reason": "publishDate 2022-04-01 is 1 days from to-kill-a-mockingbird-west-end-2022 opening (2022-03-31)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://www.whatsonstage.com/london-theatre/reviews/to-kill-a-mockingbird-review-rafe-spall-finch_56225.html",
-      "normalizedUrl": "https://whatsonstage.com/london-theatre/reviews/to-kill-a-mockingbird-review-rafe-spall-finch_56225.html",
-      "candidates": [
-        {
-          "showId": "to-kill-a-mockingbird-west-end-2022",
-          "file": "whatsonstage--sarah-crompton.json",
-          "publishDate": "2022-03-31",
-          "openingDate": "2022-03-31",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "whatsonstage"
-        },
-        {
-          "showId": "to-kill-a-mockingbird-west-end-2026",
-          "file": "whatsonstage--sarah-crompton.json",
-          "publishDate": null,
-          "openingDate": "2026-06-30",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "whatsonstage"
-        }
-      ],
-      "suggestedWinner": "to-kill-a-mockingbird-west-end-2022",
-      "reason": "publishDate 2022-03-31 is 0 days from to-kill-a-mockingbird-west-end-2022 opening (2022-03-31)",
       "confidence": "high"
     },
     {

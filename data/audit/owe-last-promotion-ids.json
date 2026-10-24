@@ -1,56 +1,7 @@
 {
-  "generatedAt": "2026-10-23T19:22:19.508Z",
-  "promoted": [
-    {
-      "id": "beyond-caring-off-west-end-2027",
-      "source": "venue-page:almeida-theatre",
-      "sourceUrl": "https://almeida.co.uk/whats-on/beyond-caring/"
-    },
-    {
-      "id": "faith-hope-and-charity-off-west-end-2027",
-      "source": "venue-page:almeida-theatre",
-      "sourceUrl": "https://almeida.co.uk/whats-on/faith-hope-and-charity/"
-    },
-    {
-      "id": "love-off-west-end-2027",
-      "source": "venue-page:almeida-theatre",
-      "sourceUrl": "https://almeida.co.uk/whats-on/love/"
-    },
-    {
-      "id": "birdcatcher-off-west-end-2027",
-      "source": "venue-page:park-theatre",
-      "sourceUrl": "https://parktheatre.co.uk/whats-on/"
-    },
-    {
-      "id": "dickens-christmas-off-west-end-2026",
-      "source": "venue-page:park-theatre",
-      "sourceUrl": "https://parktheatre.co.uk/whats-on/"
-    },
-    {
-      "id": "let-the-whale-die-off-west-end-2027",
-      "source": "venue-page:park-theatre",
-      "sourceUrl": "https://parktheatre.co.uk/whats-on/"
-    },
-    {
-      "id": "the-gentleman-of-wimbledon-off-west-end-2027",
-      "source": "venue-page:park-theatre",
-      "sourceUrl": "https://parktheatre.co.uk/whats-on/"
-    },
-    {
-      "id": "mother-ignacia-off-west-end-2027",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": "https://riversidestudios.co.uk/whats-on/"
-    }
-  ],
+  "generatedAt": "2026-10-24T18:16:08.406Z",
+  "promoted": [],
   "rejected": [
-    {
-      "title": "Triumph",
-      "venue": "Almeida Theatre",
-      "source": "venue-page:almeida-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as triumph-off-west-end-2026 (normalized-equal)"
-    },
     {
       "title": "Golden Boy",
       "venue": "Almeida Theatre",
@@ -90,6 +41,30 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as the-inequalities-trilogy-off-west-end-2027 (same house, title words contained, overlapping run (\"The Inequalities Trilogy\" vs \"The Inequalities\"))"
+    },
+    {
+      "title": "Beyond Caring",
+      "venue": "Almeida Theatre",
+      "source": "venue-page:almeida-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as beyond-caring-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "Faith, Hope and Charity",
+      "venue": "Almeida Theatre",
+      "source": "venue-page:almeida-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as faith-hope-and-charity-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "LOVE",
+      "venue": "Almeida Theatre",
+      "source": "venue-page:almeida-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as love-off-west-end-2027 (normalized-equal)"
     },
     {
       "title": "Boy Blue: 25 Stories",
@@ -388,12 +363,12 @@
       "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
     },
     {
-      "title": "Monsters A Killer New Musical Comedy",
+      "title": "Outrageous What The Frock Crystal Carrington",
       "venue": "The Other Palace",
       "source": "venue-page:the-other-palace",
       "sourceUrl": null,
       "kind": "skip-duplicate",
-      "reason": "already in shows.json as monsters-a-killer-new-musical-comedy-off-west-end-2026 (normalized-equal)"
+      "reason": "already in shows.json as outrageous-what-the-frock-crystal-carrington-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Garry Starr Classic Penguins",
@@ -402,14 +377,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as garry-starr-classic-penguins-garrick-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"Garrick Theatre\"))"
-    },
-    {
-      "title": "Outrageous What The Frock Crystal Carrington",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as outrageous-what-the-frock-crystal-carrington-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Boys Who Dance",
@@ -564,12 +531,28 @@
       "reason": "already in shows.json as wives-maids-off-west-end-2026 (normalized-equal)"
     },
     {
+      "title": "Birdcatcher",
+      "venue": "Park Theatre",
+      "source": "venue-page:park-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as birdcatcher-off-west-end-2027 (normalized-equal)"
+    },
+    {
       "title": "Bull",
       "venue": "Park Theatre",
       "source": "venue-page:park-theatre",
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as bull-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Dickens' Christmas",
+      "venue": "Park Theatre",
+      "source": "venue-page:park-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as dickens-christmas-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Drag Tales",
@@ -620,6 +603,14 @@
       "reason": "already in shows.json as jimmy-off-west-end-2027 (normalized-equal)"
     },
     {
+      "title": "Let the Whale Die",
+      "venue": "Park Theatre",
+      "source": "venue-page:park-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as let-the-whale-die-off-west-end-2027 (normalized-equal)"
+    },
+    {
       "title": "Miss Bennet: Christmas at Pemberley",
       "venue": "Park Theatre",
       "source": "venue-page:park-theatre",
@@ -650,6 +641,14 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as the-captain-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "The Gentleman of Wimbledon",
+      "venue": "Park Theatre",
+      "source": "venue-page:park-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as the-gentleman-of-wimbledon-off-west-end-2027 (normalized-equal)"
     },
     {
       "title": "The Pianist",
@@ -1002,6 +1001,14 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as man-hater-eater-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "Mother Ignacia",
+      "venue": "Riverside Studios",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as mother-ignacia-off-west-end-2027 (normalized-equal)"
     },
     {
       "title": "Paradise Villa – A Rehearsed Reading",

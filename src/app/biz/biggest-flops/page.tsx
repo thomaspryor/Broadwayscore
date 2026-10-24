@@ -6,7 +6,8 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { featureFlags } from '@/config/feature-flags';
-import { BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
+import { BASE_URL } from '@/lib/seo';
+import { bizOgImage } from '@/lib/biz-og';
 import { getFlopsAndRecoups } from '@/lib/data-topic-pages';
 import { formatMillions } from '@/lib/investment-topics';
 import TopicPageShell from '@/components/biz/TopicPageShell';
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   title: { absolute: `${TITLE} | Money Scorecard` },
   description: DESCRIPTION,
   alternates: { canonical: `${BASE_URL}/biz/biggest-flops` },
-  openGraph: { images: [SITE_OG_IMAGE], title: TITLE, description: DESCRIPTION, url: `${BASE_URL}/biz/biggest-flops` },
+  openGraph: { images: [bizOgImage('biggest-flops', TITLE)], title: TITLE, description: DESCRIPTION, url: `${BASE_URL}/biz/biggest-flops` },
 };
 
 export default function Page() {
@@ -26,7 +27,7 @@ export default function Page() {
   const data = getFlopsAndRecoups();
 
   return (
-    <TopicPageShell title={TITLE} subtitle="Shows carrying a loss label (Fizzle, Flop or similar), ranked by capitalization.">
+    <TopicPageShell title={TITLE} sharePath="/biz/biggest-flops" subtitle="Shows carrying a loss label (Fizzle, Flop or similar), ranked by capitalization.">
       <ul className="space-y-2" data-testid="flop-list">
         {data.flops.map((r) => (
           <li key={r.slug} className="card rounded-xl px-4 py-3 flex items-center gap-3">

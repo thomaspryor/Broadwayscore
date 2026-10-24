@@ -207,9 +207,12 @@ test('BRO-3607: checkTitleMatchSiblingGuards is the one sibling check validateRo
 });
 
 test('BRO-3607: the integrity audit uses checkArchiveCategory, not its own copy of the rescue', () => {
-  const src = fs.readFileSync(new URL('../audit-aggregator-archive-integrity.js', import.meta.url), 'utf8');
+  // BRO-6141: the scan lives in lib/aggregator-archive-scan.js, shared by the audit and the quarantine script.
+  const audit = fs.readFileSync(new URL('../audit-aggregator-archive-integrity.js', import.meta.url), 'utf8');
+  const src = fs.readFileSync(new URL('./aggregator-archive-scan.js', import.meta.url), 'utf8');
+  assert.match(audit, /require\('\.\/lib\/aggregator-archive-scan'\)/);
   assert.match(src, /checkArchiveCategory\(html, show, siblingCategoriesById\[showId\]\)/);
-  assert.doesNotMatch(src, /isPunctuationFalsePositive\(/);
+  assert.doesNotMatch(src + audit, /isPunctuationFalsePositive\(/);
 });
 
 // ---------------------------------------------------------------------------
@@ -503,3 +506,45 @@ test('makeArchiveShowChecker: a page saved under one show id but about another s
   assert.strictEqual(check(page('Review Roundup: RICHARD II at the Bridge Theatre, UK / West End | BroadwayWorld'), 'richard-ii-off-west-end-2026'), null);
   assert.strictEqual(check(hayFever, 'not-in-shows-json'), null, 'an id with no show is left to the caller');
 });
+
+// BRO-6141: the containing-title-sibling guard flagged a page as a sibling's when the
+// "sibling" was only another market's production of the same work. Uses the real
+// shows.json titles (the containment index reads it); skipped where it is absent.
+{
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const showsPath = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'data', 'shows.json');
+  const all = fs.existsSync(showsPath) ? (() => { const r = JSON.parse(fs.readFileSync(showsPath, 'utf8')); return r.shows || r; })() : [];
+  const byId = Object.fromEntries(all.map(s => [s.id, s]));
+  const { checkArchiveCategory } = require('./archive-cache-guard.js');
+  const html = (t, canonical = '') => `<html><head><title>${t}</title>${canonical}</head><body></body></html>`;
+  const have = (...ids) => ids.every(id => byId[id]);
+
+  test('BRO-6141: Broadway page "Tina: The Tina Turner Musical on Broadway" is Tina\'s, not the West End sibling\'s', { skip: !have('tina-2019', 'tina-the-tina-turner-musical-west-end-2018') }, () => {
+    const show = byId['tina-2019'];
+    assert.equal(checkArchiveCategory(html('Read the Reviews for Tina: The Tina Turner Musical on Broadway | Playbill'), show, []).ok, true);
+    const dtli = html('TINA, The Tina Turner Musical - Did They Like It?', '<link rel="canonical" href="https://didtheylikeit.com/shows/tina-the-tina-turner-musical-review/" />');
+    assert.equal(checkArchiveCategory(dtli, show, []).ok, true, 'Did They Like It is a Broadway site');
+    assert.equal(checkArchiveCategory(html('TINA, The Tina Turner Musical - Did They Like It?'), show, []).ok, false, 'no market signal at all stays rejected');
+  });
+
+  test('BRO-6141: Show Score "(West End)" page for the West End Old Friends passes; the Broadway-titled roundup does not', { skip: !have('old-friends-west-end-2023', 'stephen-sondheims-old-friends-2025') }, () => {
+    const show = byId['old-friends-west-end-2023'];
+    assert.equal(checkArchiveCategory(html("Show Score | Stephen Sondheim's Old Friends (West End) London Reviews and Tickets"), show, []).ok, true);
+    const bad = checkArchiveCategory(html("Review Roundup: STEPHEN SONDHEIM'S OLD FRIENDS Opens On Broadway"), show, []);
+    assert.equal(bad.ok, false);
+    assert.equal(bad.reason, 'containing-title-sibling');
+  });
+
+  test('BRO-6141: a longer title that exists in the page\'s own market is still a different show', { skip: !have('a-christmas-carol-west-end-2022', 'christmas-carol-goes-wrong-apollo-west-end-2025') }, () => {
+    const bad = checkArchiveCategory(html('Review Round-Up: CHRISTMAS CAROL GOES WRONG at the Apollo Theatre (West End)'), byId['a-christmas-carol-west-end-2022'], []);
+    assert.equal(bad.ok, false);
+    assert.equal(bad.reason, 'containing-title-sibling');
+  });
+
+  test('BRO-6141: a West End-only longer title is NOT rescued for a show outside the verified list', { skip: !have('a-christmas-carol-2022', 'christmas-carol-goes-wrong-apollo-west-end-2025') }, () => {
+    const bad = checkArchiveCategory(html('Christmas Carol Goes Wrong (Broadway) Reviews | Show Score'), byId['a-christmas-carol-2022'], []);
+    assert.equal(bad.ok, false);
+    assert.equal(bad.reason, 'containing-title-sibling');
+  });
+}

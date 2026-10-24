@@ -1,115 +1,13 @@
 {
-  "generatedAt": "2026-10-24T15:07:02.677Z",
+  "generatedAt": "2026-10-24T18:58:10.281Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 264,
-  "clean": 263,
-  "defective": 1,
-  "byType": {
-    "missing-from-prod": 5,
-    "score-drift": 2
-  },
-  "shows": [
-    {
-      "showId": "garry-starr-classic-penguins-off-west-end-2026",
-      "title": "Garry Starr Classic Penguins",
-      "openingDate": "2026-10-23",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: theatreandtonic"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 83.61 vs local 85.83 (Δ2.22)"
-        }
-      ],
-      "missingFromProd": [
-        "theatreandtonic"
-      ],
-      "localCount": 5,
-      "deployedCount": 4,
-      "firstDefectAt": "2026-10-24T15:06:56.884Z"
-    },
-    {
-      "showId": "triumph-off-west-end-2026",
-      "title": "Triumph",
-      "openingDate": "2026-10-18",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: artsdesk"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76.65 vs local 76.85 (Δ0.2)"
-        }
-      ],
-      "missingFromProd": [
-        "artsdesk"
-      ],
-      "localCount": 18,
-      "deployedCount": 17,
-      "firstDefectAt": "2026-10-24T15:06:56.884Z"
-    },
-    {
-      "showId": "high-school-musical-off-west-end-2026",
-      "title": "High School Musical",
-      "openingDate": "2026-10-12",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: theatreandtonic"
-        }
-      ],
-      "missingFromProd": [
-        "theatreandtonic"
-      ],
-      "localCount": 20,
-      "deployedCount": 19,
-      "firstDefectAt": "2026-10-24T14:39:52.389Z"
-    },
-    {
-      "showId": "murder-cathedral-off-west-end-2026",
-      "title": "Murder in the Cathedral",
-      "openingDate": "2026-10-12",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: lbc"
-        }
-      ],
-      "missingFromProd": [
-        "lbc"
-      ],
-      "localCount": 22,
-      "deployedCount": 21,
-      "firstDefectAt": "2026-10-24T15:06:56.884Z"
-    },
-    {
-      "showId": "rent-west-end-2026",
-      "title": "Rent",
-      "openingDate": "2026-10-08",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: financialtimes"
-        }
-      ],
-      "missingFromProd": [
-        "financialtimes"
-      ],
-      "localCount": 38,
-      "deployedCount": 37,
-      "firstDefectAt": "2026-10-24T15:06:56.884Z"
-    }
-  ],
+  "clean": 264,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

@@ -28,6 +28,15 @@ const BOUNCE_MEMORY_MS = 14 * 24 * 3600_000;
 const PARTIAL_HEADING = '## Codex runner: landed part of this card';
 const PARTIAL_MEMORY_MS = 3 * 24 * 3600_000;
 const PARTIAL_MAX_PER_MEMORY = 2;
+// BRO-6144: a card Codex cannot work for a structural reason (the work needs the owner, the Mac,
+// a credential the runner lacks, or files Codex may not edit; or it is already fixed) was offered
+// again whenever the 14-day timer ran out: 5 of 6 cards of the 2026-10-24 live run. The runner writes
+// the class on the bounce note, on its own line AFTER the heading (the marker + heading prefix is
+// what isPartial/isCrashNote match). A structural bounce keeps the card away from Codex for
+// STRUCTURAL_MEMORY_MS, or until a person comments on the card or a CODEX-OK line says go.
+const BOUNCE_CLASS_RE = /^<!-- codex-bounce-class: ([a-z-]+) -->[ \t]*$/m;
+const STRUCTURAL_BOUNCE_CLASSES = new Set(['already-fixed', 'owner-decision', 'mac-or-private', 'missing-credential', 'forbidden-files']);
+const STRUCTURAL_MEMORY_MS = 60 * 24 * 3600_000;
 // Opens every runner note about a landing that leaves card items undone, so whichever
 // path settles the landing (this run, reconcileLanded, recoverOrphans) returns the card
 // to Todo instead of closing it.
@@ -102,15 +111,32 @@ function authLastRefresh(text) {
   try { return String(JSON.parse(text).last_refresh || ''); } catch { return ''; }
 }
 
-function authCommentBody(blob, lastRefresh, nowIso) {
+// access_expires (BRO-6139): the access token's expiry, a time and not a secret, so the lane
+// alarm can tell from outside whether a refresh was saved after the login expired.
+function authCommentBody(blob, lastRefresh, nowIso, accessExpiresIso = '') {
   return [
     AUTH_MARKER,
     'Encrypted Codex login for the daily Codex runner (scripts/codex/auth-store.js). Do not edit or delete.',
-    `last_refresh: ${lastRefresh || 'unknown'} · saved: ${nowIso}`,
+    `last_refresh: ${lastRefresh || 'unknown'} · saved: ${nowIso}${accessExpiresIso ? ` · access_expires: ${accessExpiresIso}` : ''}`,
     '```',
     blob,
     '```',
   ].join('\n');
+}
+
+/** The access token's expiry of an auth.json text as ISO, '' when unreadable (never the token). */
+function authAccessExpires(text) {
+  try { const ms = jwtExpMs(JSON.parse(text).tokens.access_token); return Number.isFinite(ms) ? new Date(ms).toISOString() : ''; } catch { return ''; }
+}
+
+/**
+ * The storage comment's public stamps only (never the blob): { lastRefreshMs, savedMs, accessExpiresMs }
+ * (NaN when absent), or null if the body is not the storage comment.
+ */
+function parseAuthMeta(body) {
+  if (typeof body !== 'string' || !body.startsWith(AUTH_MARKER)) return null;
+  const at = (k) => Date.parse((body.match(new RegExp(`${k}: (\\S+)`)) || [])[1] || '');
+  return { lastRefreshMs: at('last_refresh'), savedMs: at('saved'), accessExpiresMs: at('access_expires') };
 }
 
 /** { blob, lastRefresh } from a storage comment body, or null if not one. */
@@ -405,21 +431,102 @@ function isCodexBounce(body) {
 const CRASH_HEADING = '## Codex runner: stopped mid-card';
 const isCrashNote = (body) => { const b = String(body || ''); return b.startsWith(CRASH_HEADING) || b.startsWith(`${BOUNCED_MARKER}\n${CRASH_HEADING}`); };
 
+// A blocker phrase counts only in a sentence that says something is blocked, and not when negated
+// ("no owner decision needed", "DECISION NEEDED: none"). BRO-6144 ship-check: bare keywords banned
+// plain failures for 60 days ("works on the Mac", "tests pass without credentials").
+const BOUNCE_BLOCKER_VERB_RE = /\b(?:blocked|cannot|can't|could not|couldn't|unable|unavailable|requires?|needs?|remain(?:s|ing)?|waits?|pending|only)\b/i;
+const BOUNCE_NEG_BEFORE_RE = /\b(?:no|not|without|none|never|nor)\b[^.\n;]{0,30}$/i;
+const BOUNCE_NEG_AFTER_RE = /^[^.\n]{0,12}\b(?:none|not (?:needed|required)|n\/a)\b/i;
+const BOUNCE_CRED_RE = /\b(?:missing|unset|lacks?)\s+(?:the\s+)?(?:\w+\s+)?credentials?\b|\bcredentials?\s+(?:are\s+|is\s+)?(?:missing|unavailable|not (?:set|available))|\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*_(?:ID|KEY|TOKEN|SECRET)\b[^.\n]{0,40}\b(?:unset|missing|not set)/;
+const BOUNCE_MAC_RE = /\bowner'?s Mac\b|\bMac[- ](?:only|host)\b|\bprivate hook\b|\breal dispatch ledger\b/i;
+const BOUNCE_OWNER_RE = /\bowner (?:decision|approval|call|judg(?:e)?ment)\b|\bneeds? (?:an? |the )?owner\b|\bACTION NEEDED FROM YOU\b|\bDECISION NEEDED\b|\bpending (?:an? |the )?owner\b/i;
+const BOUNCE_FORBIDDEN_RE = /\bworkflow (?:edits?|files?|changes?) (?:were |are |is )?(?:forbidden|not allowed|off[- ]limits)|\b(?:edit(?:s|ing)?|chang(?:e|es|ing)|modif(?:y|ies|ying))\b[^.\n]{0,60}\bworkflows?\b[^.\n]{0,80}\b(?:forbid|prohibit|not allowed|off[- ]limits|expressly|which your instructions)|\.github\/workflows[^.\n]{0,60}\b(?:forbidden|not allowed|off[- ]limits)/i;
+// The report's verdict says the change is already there; a bare "no files changed" also describes a
+// run that found the work undoable, so it does not count (BRO-6144 backtest: 11 of 24 first matches were that).
+const BOUNCE_ALREADY_RE = /\balready (?:fixed|implemented|on (?:`?origin\/)?main|met)\b/i;
+// A report that still has failing tests is a plain failure whatever else it mentions.
+const BOUNCE_FAILING_RE = /\b[1-9]\d* (?:tests?\s+)?(?:fail|failed|failing)\b|\btests? (?:still )?fail/i;
+
+/** True when `re` matches in a sentence of `text` that is not negated at the match. */
+function bounceSays(re, text, { needVerb = false } = {}) {
+  for (const sentence of String(text).split(/(?<=[.!?])\s+|\n+/)) {
+    const g = new RegExp(re.source, re.flags.includes('g') ? re.flags : `${re.flags}g`);
+    for (const m of sentence.matchAll(g)) {
+      if (BOUNCE_NEG_BEFORE_RE.test(sentence.slice(Math.max(0, m.index - 40), m.index))) continue;
+      if (BOUNCE_NEG_AFTER_RE.test(sentence.slice(m.index + m[0].length, m.index + m[0].length + 30))) continue;
+      if (needVerb && !BOUNCE_BLOCKER_VERB_RE.test(sentence)) continue;
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Why a card Codex handed back could not be worked, from the runner's own signals: the
+ * ENVIRONMENT-BLOCKED line, the pre-review block, the reviewer's REMAINING lines and the head of
+ * Codex's report (its verdict line, before the checklist). -> one of 'forbidden-files',
+ * 'missing-credential', 'mac-or-private', 'owner-decision', 'already-fixed', 'genuine-failure'.
+ * Only a card with a real blocker is structural; everything unmatched stays 'genuine-failure'
+ * and keeps the old time-based ban.
+ */
+function classifyBounce({ envBlocked = null, blocked = null, remaining = [], report = '' } = {}) {
+  const text = [envBlocked, blocked, ...(Array.isArray(remaining) ? remaining : []), String(report || '').slice(0, 700)]
+    .filter(Boolean).join('\n');
+  // A pre-review block is Codex's own slip unless it touched workflows (a symlink or token material is not structural).
+  if (/\.github\/workflows/.test(String(blocked || '')) || bounceSays(BOUNCE_FORBIDDEN_RE, text)) return 'forbidden-files';
+  if (BOUNCE_FAILING_RE.test(text)) return 'genuine-failure';
+  if (bounceSays(BOUNCE_CRED_RE, text, { needVerb: true })) return 'missing-credential';
+  if (bounceSays(BOUNCE_MAC_RE, text)) return 'mac-or-private';
+  if (bounceSays(BOUNCE_OWNER_RE, text)) return 'owner-decision';
+  if (bounceSays(BOUNCE_ALREADY_RE, text)) return 'already-fixed';
+  return 'genuine-failure';
+}
+/** The class line a bounce note carries, put on the line after the heading. */
+const bounceClassLine = (cls) => `<!-- codex-bounce-class: ${cls} -->`;
+/** -> the class a bounce note records, or null for a note written before BRO-6144. */
+function bounceClassOf(body) {
+  const m = BOUNCE_CLASS_RE.exec(String(body || ''));
+  return m ? m[1] : null;
+}
+
 /**
  * True when Codex failed this card within the last 14 days (a 'landed part' note counts for only 3 days,
  * and two of them in 14 days ban it for the full 14), or the runner crashed on it twice
  * (a card that breaks the runner every time must not take a slot on every run).
  */
 function codexBouncedRecently(comments, nowMs) {
-  const recent = (Array.isArray(comments) ? comments : []).filter((c) => c
-    && Number.isFinite(Date.parse(c.createdAt)) && nowMs - Date.parse(c.createdAt) < BOUNCE_MEMORY_MS);
+  const all = Array.isArray(comments) ? comments.filter((c) => c && Number.isFinite(Date.parse(c.createdAt))) : [];
+  const recent = all.filter((c) => nowMs - Date.parse(c.createdAt) < BOUNCE_MEMORY_MS);
   const isPartial = (c) => String(c.body || '').startsWith(`${BOUNCED_MARKER}\n${PARTIAL_HEADING}`);
   const partials = recent.filter(isPartial);
+  if (structuralBounceHolds(all, nowMs)) return true;
   // A full disk is the machine's fault, so it never counts toward the card's two crashes (BRO-5384).
   return recent.some((c) => isCodexBounce(c.body) && !isPartial(c))
     || partials.length >= PARTIAL_MAX_PER_MEMORY
     || partials.some((c) => nowMs - Date.parse(c.createdAt) < PARTIAL_MEMORY_MS)
     || recent.filter((c) => isCrashNote(c.body) && !DISK_FULL_RE.test(String(c.body))).length >= 2;
+}
+
+/**
+ * True while a structural bounce (BRO-6144) still stands: a Codex bounce note with a structural class,
+ * under STRUCTURAL_MEMORY_MS old, with no person's comment after it (the owner answered, a credential
+ * arrived: the card is worth another try) and no CODEX-OK line anywhere on the card.
+ */
+function structuralBounceHolds(comments, nowMs) {
+  const sorted = [...comments].sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));
+  let last = -1;
+  sorted.forEach((c, i) => {
+    if (isCodexBounce(c.body) && !String(c.body).startsWith(`${BOUNCED_MARKER}\n${PARTIAL_HEADING}`) && STRUCTURAL_BOUNCE_CLASSES.has(bounceClassOf(c.body))
+      && nowMs - Date.parse(c.createdAt) < STRUCTURAL_MEMORY_MS) last = i;
+  });
+  if (last < 0) return false;
+  const after = sorted.slice(last + 1);
+  if (after.some((c) => CODEX_OK_RE.test(String(c.body || '')))) return false;
+  // A person's word, not the Claude worker's own session report or an automatic note.
+  const { isMachineComment } = require('./cloud-worker-pick.js');
+  const { parseSessionReportStatus } = require('./linear-session-reporting.js');
+  const isBot = (b) => isMachineComment(b) || parseSessionReportStatus(b) != null || /^\W*(?:Outcome\b|Auto-filed\b|Session report\b)/i.test(String(b || ''));
+  return !after.some((c) => !isBot(c.body));
 }
 
 /**
@@ -1034,6 +1141,82 @@ function landWaitMinutes({ hardEndMs, wrapUpMs, nowMs }) {
  * card landed. -> { ok, runs, landed, problems[] }
  */
 /** The counts one "## Codex runner" summary body reports: { landed, crashed, stop }. */
+/**
+ * The run summary heading (BRO-6139). Before it, a single-slot launch of EITHER lane posted no
+ * "(slot N)" and readers took it for the cloud lane; now every summary names its slot and the
+ * lane that launched it (a gha launch that fell back to slot 0 is still lane gha).
+ */
+function summaryHeading({ date, worked, mins, slot = 0, lane = 'cloud' }) {
+  return `## Codex runner ${date}: ${worked} card(s) worked in ${mins} min (slot ${Number(slot) || 0}) (lane ${lane})`;
+}
+const SUMMARY_HEADING_RE = /^## Codex runner (\d{4}-\d{2}-\d{2}): (\d+) card\(s\) worked in (\d+) min/;
+/**
+ * -> { date, worked, mins, slot, lane } or null (not a run summary). slot is null when the heading
+ * has none; lane is null for a summary from before the lane marker (laneOfSummary decides those).
+ */
+function parseSummaryHeading(body) {
+  const head = String(body || '').split('\n')[0];
+  const m = head.match(SUMMARY_HEADING_RE);
+  if (!m) return null;
+  const slot = head.match(/\(slot (\d+)\)/);
+  const lane = head.match(/\(lane (cloud|gha)\)/);
+  return { date: m[1], worked: Number(m[2]), mins: Number(m[3]), slot: slot ? Number(slot[1]) : null, lane: lane ? lane[1] : null };
+}
+/**
+ * Which lane posted a summary. The marker when present; else slot 3+ is gha and an explicit slot
+ * 0-2 is cloud (a gha fallback to slot 0 always ran one slot, so it had no slot). A legacy
+ * slotless summary is gha only when a codex-runner.yml run covered its whole "worked in M min"
+ * span (ghRuns [{ startMs, endMs }]); a cloud run that merely ended near a 3-min gha stand-down
+ * must not count. Without ghRuns it stays cloud, as before. -> 'cloud' | 'gha' | null
+ */
+function laneOfSummary(body, createdAtMs, ghRuns = null) {
+  const h = parseSummaryHeading(body);
+  if (!h) return null;
+  if (h.lane) return h.lane;
+  if (h.slot !== null) return h.slot >= LANES.gha.base ? 'gha' : 'cloud';
+  const startedMs = createdAtMs - h.mins * 60_000;
+  const SLACK = 5 * 60_000;
+  const inGha = Array.isArray(ghRuns) && ghRuns.some((r) => Number.isFinite(r.startMs) && r.startMs <= startedMs + SLACK
+    && createdAtMs <= (Number.isFinite(r.endMs) ? r.endMs : Infinity) + SLACK);
+  return inGha ? 'gha' : 'cloud';
+}
+
+/**
+ * A runner that exits without a summary says why (BRO-6139 stage 2): one comment on the runner
+ * card, read by scripts/lib/codex-lane-health.js. cls is a fixed word so readers never parse prose:
+ *   login         the stored Codex login did not restore (a person must log in again)
+ *   login-refresh deliberate: the login may refresh during the run, so this lane stands aside
+ *   lock-held     another run holds this slot's lock (holderStartedMs: when that run started)
+ *   sandbox|tools|picker|crash|lane  the lane cannot work until fixed
+ */
+const STAND_DOWN_CLASSES = ['login', 'login-refresh', 'lock-held', 'sandbox', 'tools', 'picker', 'crash', 'lane'];
+function standDownNote({ lane = 'cloud', slot = 0, cls, why, holderStartedMs = NaN, loginExpiresMs = NaN }) {
+  const c = STAND_DOWN_CLASSES.includes(cls) ? cls : 'crash';
+  const stamps = [
+    Number.isFinite(holderStartedMs) ? `Lock holder started: ${new Date(holderStartedMs).toISOString()}` : '',
+    // login-refresh: the expiry this stand-down saw, so a later saved refresh does not make it look stuck.
+    Number.isFinite(loginExpiresMs) ? `Login expires: ${new Date(loginExpiresMs).toISOString()}` : '',
+  ].filter(Boolean);
+  return `## Codex runner did not start (slot ${Number(slot) || 0}) (lane ${lane}) (reason ${c})\n\n${String(why || '').slice(0, 1500)}${stamps.length ? `\n\n${stamps.join('\n')}` : ''}`;
+}
+/** -> { lane, slot, cls, why, holderStartedMs, loginExpiresMs } or null. A pre-BRO-6139 note (no markers) reads as cloud, class login. */
+function parseStandDownNote(body) {
+  const b = String(body || '');
+  if (!b.startsWith('## Codex runner did not start')) return null;
+  const head = b.split('\n')[0];
+  const lane = (head.match(/\(lane (cloud|gha)\)/) || [])[1] || 'cloud';
+  const slot = Number((head.match(/\(slot (\d+)\)/) || [])[1] || 0);
+  const cls = (head.match(/\(reason ([a-z-]+)\)/) || [])[1] || (/login/i.test(b) ? 'login' : 'crash');
+  const why = b.split('\n').slice(1).filter((l) => !/^(Lock holder started|Login expires): /.test(l)).join('\n').trim();
+  const stamp = (k) => Date.parse((b.match(new RegExp(`^${k}: (\\S+)$`, 'm')) || [])[1] || '');
+  return { lane, slot, cls, why, holderStartedMs: stamp('Lock holder started'), loginExpiresMs: stamp('Login expires') };
+}
+
+/** The lock commit body's "Started:" time, NaN when unreadable. */
+function lockStartedMs(body) {
+  return Date.parse((String(body || '').match(/^Started: (\S+)\s*$/m) || [])[1] || '');
+}
+
 function runnerSummaryFacts(body) {
   const list = (label) => {
     const v = (String(body || '').match(new RegExp(`^- ${label}: (.*)$`, 'm')) || [])[1] || 'none';
@@ -1053,34 +1236,21 @@ function runnerSummaryFacts(body) {
 /**
  * BRO-5384 acceptance: cards per firing and landed share from runner summaries. Each slot posts
  * its summary when it finishes (minutes or ~110 min into the firing), so time gaps do not group a
- * firing; every launch posts exactly one summary from slot 0, or one with no slot suffix (a lone
- * runner), and those count the firings. -> { firings, worked, landed, perFiring, landedShare }
+ * firing; every launch posts exactly one summary from its lane's first slot (0 cloud, 3 gha, or 0
+ * for a gha launch that fell back), or one with no slot suffix (a pre-BRO-6139 lone runner), and
+ * those count the firings. -> { firings, worked, landed, perFiring, landedShare }
  */
 function firingThroughput(comments) {
-  const runs = (Array.isArray(comments) ? comments : [])
-    .filter((c) => c && /^## Codex runner \d{4}-\d{2}-\d{2}:/.test(String(c.body || '')));
+  const firstSlots = new Set(Object.values(LANES).map((l) => l.base));
   let firings = 0; let worked = 0; let landed = 0;
-  for (const c of runs) {
-    const heading = String(c.body).split('\n')[0];
-    if (!/\(slot [1-9]\d*\)\s*$/.test(heading)) firings += 1;
-    worked += Number((String(c.body).match(/^## Codex runner \S+: (\d+) card\(s\) worked/) || [])[1]) || 0;
+  for (const c of Array.isArray(comments) ? comments : []) {
+    const h = c && parseSummaryHeading(c.body);
+    if (!h) continue;
+    if (h.slot === null || firstSlots.has(h.slot)) firings += 1;
+    worked += h.worked;
     landed += runnerSummaryFacts(c.body).landed;
   }
   return { firings, worked, landed, perFiring: firings ? worked / firings : 0, landedShare: worked ? landed / worked : 0 };
-}
-
-function assessRunnerSummaries(bodies, { minRuns = 3 } = {}) {
-  const runs = (Array.isArray(bodies) ? bodies : []).filter((b) => /^## Codex runner \d{4}-\d{2}-\d{2}:/.test(String(b || '')));
-  const problems = [];
-  let landed = 0;
-  for (const b of runs) {
-    const f = runnerSummaryFacts(b);
-    if (/lock/i.test(f.stop)) problems.push(`stopped on the lock: ${f.stop}`);
-    landed += f.landed;
-  }
-  if (runs.length < minRuns) problems.push(`only ${runs.length} run summaries (want ${minRuns})`);
-  if (!landed) problems.push('no card landed');
-  return { ok: problems.length === 0, runs: runs.length, landed, problems };
 }
 
 /**
@@ -1098,7 +1268,8 @@ function runnerHealth(comments, nowMs, { windowMs = 24 * 3600_000 } = {}) {
     .filter((c) => c && /^## Codex runner \d{4}-\d{2}-\d{2}:/.test(String(c.body || ''))
       && Number.isFinite(Date.parse(c.createdAt)) && Date.parse(c.createdAt) <= nowMs && nowMs - Date.parse(c.createdAt) <= windowMs);
   if (!recent.length) {
-    const noLogin = (Array.isArray(comments) ? comments : []).some((c) => c && String(c.body || '').startsWith('## Codex runner did not start')
+    // Only a login stand-down means the login (BRO-6139 notes also say "lock-held", "sandbox", ...).
+    const noLogin = (Array.isArray(comments) ? comments : []).some((c) => c && (parseStandDownNote(c.body) || {}).cls === 'login'
       && Date.parse(c.createdAt) <= nowMs && nowMs - Date.parse(c.createdAt) <= windowMs);
     return { status: 'error', message: noLogin
       ? 'Codex runner could not start in the last 24h: its Codex login is not usable (see "## Codex runner did not start" on BRO-4745).'
@@ -1251,8 +1422,10 @@ module.exports = {
   lockTipVerdict,
   lockStampTooOld,
   landWaitMinutes,
-  assessRunnerSummaries,
   firingThroughput,
+  summaryHeading, parseSummaryHeading, laneOfSummary,
+  authAccessExpires, parseAuthMeta,
+  STAND_DOWN_CLASSES, standDownNote, parseStandDownNote, lockStartedMs,
   runnerSummaryFacts,
   runnerHealth,
   codexExitTransient,
@@ -1303,6 +1476,12 @@ module.exports = {
   cardBody,
   AUTH_MARKER,
   BOUNCED_MARKER,
+  classifyBounce,
+  bounceClassLine,
+  bounceClassOf,
+  structuralBounceHolds,
+  STRUCTURAL_BOUNCE_CLASSES,
+  STRUCTURAL_MEMORY_MS,
   PARTIAL_MARKER,
   PARTIAL_HEADING,
   landingIsPartial,

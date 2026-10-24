@@ -31,8 +31,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { buildSiblingCategoriesByTitle } = require('./lib/show-matching');
-const { checkArchiveCategory } = require('./lib/archive-cache-guard');
+const { scanArchiveIntegrity } = require('./lib/aggregator-archive-scan');
 const { computeStaleBaselineKeys, reportStaleBaseline, pruneStaleEntries, runStaleModes } = require('./lib/stale-baseline');
 
 const STRICT = process.argv.includes('--strict');
@@ -47,20 +46,6 @@ const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
 const REPORT_PATH = path.join(ROOT, 'data', 'audit', 'aggregator-archive-integrity.json');
 const BASELINE_PATH = path.join(ROOT, 'data', 'audit', 'aggregator-archive-integrity-baseline.json');
 
-// Sources where filename-encoded showId should match page-title content.
-// excluded: (1) those that aren't HTML archives keyed by showId — wet (.json
-// API caches), stagedoor (.json), nysr (no archive yet); (2) bww-rr — empty
-// dir; (3) front-page caches like bww-roundups/category-page-1.html (skipped
-// individually below).
-const SOURCES = [
-  'bww-reviews', 'bww-roundups', 'dtli', 'show-score',
-  'playbill-verdict', 'nyc-theatre', 'theatre-reviews',
-  'thestage-roundups', 'lbo-roundups',
-];
-
-// Filenames that aren't show-keyed archives (category landing pages, etc.)
-const SKIP_FILENAMES = new Set(['category-page-1.html']);
-
 function loadShowMap() {
   const raw = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   const list = raw.shows || raw;
@@ -69,48 +54,10 @@ function loadShowMap() {
   return byId;
 }
 
-// Groups shows.json entries by normalized title so validateRoundupPageTitle
-// can check a page's market qualifier (e.g. Show Score's "(Broadway)")
-// against the categories of any OTHER show sharing this title — catches an
-// archive filed under a same-title sibling's showId (BRO-363: a Broadway
-// Show Score page archived under a regional show's id).
-
 function audit() {
-  const showById = loadShowMap();
-  const siblingCategoriesById = buildSiblingCategoriesByTitle(showById);
-  const bad = [];
-  let totalScanned = 0;
-  let skippedNoShow = 0;
-
-  for (const src of SOURCES) {
-    const dir = path.join(ARCHIVE_ROOT, src);
-    if (!fs.existsSync(dir)) continue;
-    const files = fs.readdirSync(dir).filter(f => f.endsWith('.html') && !SKIP_FILENAMES.has(f));
-    for (const f of files) {
-      totalScanned++;
-      const showId = f.replace(/\.html$/, '');
-      const show = showById[showId];
-      if (!show) { skippedNoShow++; continue; }
-      const html = fs.readFileSync(path.join(dir, f), 'utf8');
-      // checkArchiveCategory = validateRoundupPageTitle + the punctuation
-      // false-positive rescue + the sibling guards re-run on a rescued page.
-      // The audit used to run its own copy of the rescue, which skipped the
-      // cross-market-sibling check on rescued pages (BRO-3607); sharing the
-      // scrapers' predicate keeps audit and write/read guards identical.
-      const v = checkArchiveCategory(html, show, siblingCategoriesById[showId]);
-      if (v.ok) continue;
-
-      bad.push({
-        source: src,
-        showId,
-        showTitle: show.title,
-        pageTitle: (v.pageTitle || '').substring(0, 120),
-        reason: v.reason,
-      });
-    }
-  }
-
-  return { totalScanned, skippedNoShow, bad };
+  const r = scanArchiveIntegrity(ARCHIVE_ROOT, loadShowMap());
+  // `file` is for the quarantine script; the committed report keeps its original shape.
+  return { ...r, bad: r.bad.map(({ file, ...rest }) => rest) };
 }
 
 function loadBaseline() {
