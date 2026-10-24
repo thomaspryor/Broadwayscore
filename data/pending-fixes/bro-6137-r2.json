@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6137-r2",
   "planId": "3f8d2cfb-a177-42a4-8bfd-bf0913bec5b0",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-24T16:25:24.823Z",
   "submitter": {
     "name": null,
@@ -284,5 +284,129 @@
         "description": "long-days-journey-into-night-2016: press naming the producing nonprofit."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-24T17:00:00.220Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for kiss-me-kate-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for kiss-me-kate-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for kiss-me-kate-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for kiss-me-kate-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for falsettos-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for falsettos-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for falsettos-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-cherry-orchard-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for the-cherry-orchard-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-cherry-orchard-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-cherry-orchard-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for heisenberg-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for heisenberg-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for heisenberg-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for heisenberg-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for long-days-journey-into-night-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for long-days-journey-into-night-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for long-days-journey-into-night-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for long-days-journey-into-night-2016"
+    }
+  ],
+  "executedIn": "ci"
 }
