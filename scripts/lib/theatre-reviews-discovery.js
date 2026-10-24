@@ -105,7 +105,26 @@ async function discoverRoundupPostsRest(fetchJSON, opts = {}) {
   return { posts, pages, complete };
 }
 
+/**
+ * Body venue (the <h5> under the headline) for the given round-up post ids,
+ * one small REST call each. A failed fetch just leaves that id out.
+ * @returns {Promise<Record<string,string>>} id -> venue text
+ */
+async function fetchRoundupBodyVenues(fetchJSON, ids) {
+  const { venueFromContent } = require('./tr-roundup-match');
+  const out = {};
+  for (const id of ids) {
+    try {
+      const post = await fetchJSON(`https://theatre.reviews/wp-json/wp/v2/posts/${id}?_fields=id,content`);
+      const v = venueFromContent(post && post.content && (post.content.rendered ?? post.content));
+      if (v) out[id] = v;
+    } catch (_) { /* leave unresolved */ }
+  }
+  return out;
+}
+
 module.exports = {
+  fetchRoundupBodyVenues,
   pickTheatreReviewsRoundup, pickTheatreReviewsRoundupFromAnchors,
   discoverRoundupPostsRest, ROUNDUP_CATEGORY_ID,
 };

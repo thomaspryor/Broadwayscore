@@ -37,8 +37,9 @@ const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { aggregatorStarsPatch } = require('./lib/paywall-stub-score');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { rowOutletId, loadShowFiles, classifyRows, coverageEntry, archiveUrlOf, sameRoundupUrl } = require('./lib/tr-reconcile');
-const { parseRoundupPost, matchAllRoundups } = require('./lib/tr-roundup-match');
-const { discoverRoundupPostsRest } = require('./lib/theatre-reviews-discovery');
+const { parseRoundupPost, matchAllRoundups, rematchWithVenues } = require('./lib/tr-roundup-match');
+const { discoverRoundupPostsRest, fetchRoundupBodyVenues } = require('./lib/theatre-reviews-discovery');
+const { markOutOfScope, pinsFromOverrides } = require('./lib/tr-out-of-scope');
 
 // Memoized sibling-category index (same shape as scrape-bww-reviews.js) so
 // checkArchiveCategory()'s cross-market-sibling check can fire (BRO-2550).
@@ -474,6 +475,7 @@ function writeReviewFiles(reviews, showId, reviewTextsDir = REVIEW_TEXTS_DIR) {
 
 const INDEX_PATH = path.join(ARCHIVE_DIR, '_roundup-index.json');
 const COVERAGE_PATH = path.join(__dirname, '..', 'data', 'audit', 'theatre-reviews-coverage.json');
+const SCOPE_OVERRIDES_PATH = path.join(__dirname, '..', 'data', 'audit', 'theatre-reviews-scope-overrides.json');
 const MAX_CONSECUTIVE_FETCH_FAILURES = 8;
 // Fetch time budget (the workflow timeout is 90 min). A cold archive drains over several runs
 // instead of timing out and losing the index; TR_FETCH_BUDGET_MIN overrides it.
@@ -531,9 +533,15 @@ async function main() {
 
   // Step 2: match posts to shows by title + venue + date window.
   let { matched, unmatched } = disc.posts.length
-    ? matchAllRoundups(disc.posts.map(parseRoundupPost), weShows)
+    ? matchAllRoundups(disc.posts.map(parseRoundupPost), weShows, pinsFromOverrides(readJson(SCOPE_OVERRIDES_PATH, {})))
     : await legacyDiscover(weShows);
   if (!disc.posts.length) console.log('  REST discovery returned nothing; used the legacy category walk');
+  if (disc.posts.length && unmatched.length && !TARGET_SHOWS) {
+    // The slug can name the wrong house, and scope needs the venue: read the body venue of each
+    // unmatched round-up and match once more.
+    const venues = await fetchRoundupBodyVenues(fetchJSON, unmatched.map(u => u.roundup.id).filter(id => id != null));
+    ({ matched, unmatched } = rematchWithVenues(matched, unmatched, weShows, venues));
+  }
   if (TARGET_SHOWS) {
     matched = matched.filter(m => TARGET_SHOWS.includes(m.show.id));
     // A target the matcher left unmatched falls back to the date-gated WP search (opening-night runs).
@@ -673,7 +681,10 @@ async function main() {
 function writeCoverage(entries, unmatched, orphanArchives, disc) {
   const prior = readJson(COVERAGE_PATH, null);
   let shows = entries;
-  let unmatchedOut = unmatched.map(u => ({ url: u.roundup.url, title: u.roundup.title, date: u.roundup.date, reason: u.reason, candidates: u.candidates }));
+  let unmatchedOut = markOutOfScope(
+    unmatched.map(u => ({ url: u.roundup.url, title: u.roundup.title, date: u.roundup.date, ...(u.roundup.venue ? { venue: u.roundup.venue } : {}), reason: u.reason, candidates: u.candidates })),
+    readJson(SCOPE_OVERRIDES_PATH, {}),
+  );
   if (TARGET_SHOWS && prior && Array.isArray(prior.shows)) {
     // A targeted run replaces only its own shows; the rest of the last full run stays.
     const ids = new Set(entries.map(e => e.showId));
@@ -695,7 +706,8 @@ function writeCoverage(entries, unmatched, orphanArchives, disc) {
       restWalkComplete: disc.complete,
       showsMatched: shows.length,
       listed: sum('listed'), held: sum('held'), excluded: sum('excluded'), missing: sum('missing'), added: sum('added'),
-      unmatched: unmatchedOut.length,
+      unmatched: unmatchedOut.filter(x => !x.outOfScope).length,
+      outOfScope: unmatchedOut.filter(x => x.outOfScope).length,
       fetchSkipped: shows.filter(e => e.skipped).length,
     },
     shows,
