@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-24T13:07:11.228Z",
+  "timestamp": "2026-10-24T13:31:08.267Z",
   "stats": {
-    "totalReviews": 60218,
-    "alreadyFlagged": 21228,
-    "dateGuardCatches": 216,
-    "directorMismatch": 2144,
-    "tvFilmSignals": 1705,
-    "londonSignals": 2873,
+    "totalReviews": 60225,
+    "alreadyFlagged": 21193,
+    "dateGuardCatches": 221,
+    "directorMismatch": 2150,
+    "tvFilmSignals": 1706,
+    "londonSignals": 2884,
     "offBroadwaySignals": 534,
-    "yearMismatch": 194,
-    "noPublishDate": 5562
+    "yearMismatch": 195,
+    "noPublishDate": 5544
   },
   "findings": [
     {
@@ -923,6 +923,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "a-dolls-house-off-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2026-04-08",
+      "url": "https://www.timeout.com/london/theatre/a-dolls-house-24-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from a-dolls-house-2023"
         }
       ]
     },
@@ -4468,6 +4481,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "bat-out-of-hell-west-end-2017",
+      "file": "britishtheatrecom--julian-eaves.json",
+      "publishDate": "2017-06-27",
+      "url": "https://www.britishtheatre.com/pt/posts/review-bat-out-of-hell-london-coliseum-5stars",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay scheib\" from bat-out-of-hell-west-end-2018"
         }
       ]
     },
@@ -45456,6 +45482,25 @@
       ]
     },
     {
+      "showId": "the-king-and-i-west-end-2018",
+      "file": "thestage--tim-bano.json",
+      "score": null,
+      "publishDate": "2018-07-04",
+      "url": "https://www.thestage.co.uk/reviews/2018/king-ken-watanabe-review-london-palladium/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher renshaw\" from the-king-and-i-1996"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2015 (2x) more than 2018 (1x). 2015 matches production: the-king-and-i-2015"
+        }
+      ]
+    },
+    {
       "showId": "the-king-and-i-west-end-2024",
       "file": "telegraph--dominic-cavendish.json",
       "score": 62,
@@ -51285,6 +51330,19 @@
       ]
     },
     {
+      "showId": "translations-west-end-2019",
+      "file": "timeout-london--tom-wicker.json",
+      "publishDate": "2019-10-21",
+      "url": "https://www.timeout.com/london/theatre/translations-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ian rickson\" from translations-west-end-2018"
+        }
+      ]
+    },
+    {
       "showId": "trash-off-broadway-2026",
       "file": "nytimes--laura-collins-hughes.json",
       "score": 63,
@@ -53046,6 +53104,39 @@
       ]
     },
     {
+      "showId": "waiting-for-godot-2025",
+      "file": "theatre-reviews-limited--david-roberts.json",
+      "score": 81,
+      "publishDate": "October 13th, 2025",
+      "url": "https://www.theatrereviews.com/broadway-review-waiting-for-godot-at-the-hudson-theatre-through-sunday-january-4-2026/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "waiting-for-godot-west-end-2024",
+      "file": "monstagigz--unknown.json",
+      "score": null,
+      "publishDate": "2024-10-05",
+      "url": "https://monstagigz.com/2024/10/05/theatre-review-waiting-for-godot-starring-ben-whishaw-lucian-msamati-at-theatre-royal-haymarket/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from waiting-for-godot-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "waiting-for-godot-west-end-2024",
       "file": "plays-international--maryam-philpott.json",
       "score": 81,
@@ -53738,6 +53829,20 @@
       "score": 81,
       "publishDate": "2026-01-28",
       "url": "https://www.broadwayworld.com/houston/article/Review-WATER-FOR-ELEPHANTS-at-Broadway-At-The-Hobby-Center-20260128",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "broadwayworld--lucia-serrano.json",
+      "score": 76,
+      "publishDate": "2026-08-21",
+      "url": "https://www.broadwayworld.com/san-diego/article/Review-WATER-FOR-ELEPHANTS-Brings-Romance-Puppetry-and-Circus-Magic-to-Broadway-San-Diego-20260821",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -56420,10 +56525,63 @@
     },
     {
       "showId": "a-dolls-house-off-west-end-2026",
+      "file": "broadwayworld--gary-naylor.json",
+      "publishDate": "2026-04-09",
+      "url": "https://www.broadwayworld.com/westend/article/Review-A-DOLLS-HOUSE-Almeida-Theatre-20260409",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "a-dolls-house-off-west-end-2026",
+      "file": "independent--alice-saville.json",
+      "publishDate": "2026-04-09",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/a-dolls-house-almeida-review-romola-garai-b2954356.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "a-dolls-house-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 55,
       "publishDate": "2026-04-09",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-a-dolls-house-almeida-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "a-dolls-house-off-west-end-2026",
+      "file": "london-theatre--anya-ryan.json",
+      "score": 75,
+      "publishDate": "2026-04-09",
+      "url": "https://www.londontheatre.co.uk/reviews/a-dolls-house-review-almeida-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "a-dolls-house-off-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2026-04-09",
+      "url": "https://www.standard.co.uk/culture/theatre/a-doll-s-house-at-the-almeida-theatre-review-b1278088.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -56549,6 +56707,20 @@
       "score": 83,
       "publishDate": "January 19th, 2025",
       "url": "https://www.theguardian.com/stage/2025/jan/19/a-good-house-review-amy-jephta-royal-court-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "a-good-house-west-end-2025",
+      "file": "london-box-office--stuart-king.json",
+      "score": 100,
+      "publishDate": "2025-01-18",
+      "url": "https://www.londonboxoffice.co.uk/news/post/a-good-house-royal-court-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -67227,6 +67399,20 @@
     },
     {
       "showId": "expendable-west-end-2024",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 74,
+      "publishDate": "2024-11-28",
+      "url": "https://www.allthatdazzles.co.uk/post/review-expendable-royal-court",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "expendable-west-end-2024",
       "file": "artsdesk--aleks-sierz.json",
       "score": 77,
       "publishDate": "2024-11-29",
@@ -74981,6 +75167,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"ars nova\""
+        }
+      ]
+    },
+    {
+      "showId": "krapps-last-tape-godots-todo-list-west-end-2026",
+      "file": "independent--alice-saville.json",
+      "publishDate": "2026-05-12",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/krapps-last-tape-gary-oldman-royal-court-b2974856.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -84699,6 +84898,18 @@
       ]
     },
     {
+      "showId": "shifters-west-end-2024",
+      "file": "thestage--holly-omahony.json",
+      "score": 87,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 167d before show (2024-02-27 vs 2024-08-12)"
+        }
+      ]
+    },
+    {
       "showId": "shirley-valentine-west-end-2023",
       "file": "artsdesk--matt-wolf.json",
       "score": 92,
@@ -85166,6 +85377,20 @@
       "score": 62,
       "publishDate": "2024-07-14",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "slave-play-west-end-2024",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 81,
+      "publishDate": "July 10th, 2024",
+      "url": "https://www.whatsonstage.com/news/slave-play-west-end-review-sexual-desire-and-racial-trauma-collide-in-vital-piece-of-theatre_1613560/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -96083,6 +96308,37 @@
     },
     {
       "showId": "the-years-west-end-2025",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2024-08-02",
+      "url": "https://inews.co.uk/culture/arts/the-years-almeida-review-people-may-have-fainted-but-this-is-magnificent-3205549",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 175d before show (2024-08-02 vs 2025-01-24)"
+        }
+      ]
+    },
+    {
+      "showId": "the-years-west-end-2025",
+      "file": "independent--isobel-lewis.json",
+      "publishDate": "2024-08-01",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-years-review-almeida-theatre-annie-ernaux-b2589575.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 176d before show (2024-08-01 vs 2025-01-24)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-years-west-end-2025",
       "file": "london-box-office--stuart-king.json",
       "score": 92,
       "publishDate": "2025-02-10",
@@ -96106,6 +96362,37 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-years-west-end-2025",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2024-08-02",
+      "url": "https://www.standard.co.uk/culture/theatre/the-years-almeida-theatre-review-romola-garai-gina-mckee-b1174366.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 175d before show (2024-08-02 vs 2025-01-24)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-years-west-end-2025",
+      "file": "telegraph--dzifa-benson.json",
+      "publishDate": "2024-08-02",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-years-almeida-theatre-review-annie-ernaux/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 175d before show (2024-08-02 vs 2025-01-24)"
         }
       ]
     },
