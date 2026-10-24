@@ -40,4 +40,9 @@ describe('decideLandRefPrune (BRO-6103)', () => {
     assert.equal(d({ ...old, openPr: true }).reason, 'open-pr');
     assert.equal(d({ compareStatus: 'behind', openPr: true }).reason, 'open-pr');
   });
+  it('keeps on unreadable compare, unparseable date and unknown card state', () => {
+    assert.equal(d({ compareStatus: null, tipCommittedAt: ago(5) }).reason, 'recent-unmerged');
+    assert.equal(d({ tipCommittedAt: 'not-a-date' }).reason, 'tip-date-unreadable');
+    assert.equal(d({ tipCommittedAt: ago(30), compareStatus: 'ahead', cardStateType: 'triage' }).reason, 'card-open');
+  });
 });
