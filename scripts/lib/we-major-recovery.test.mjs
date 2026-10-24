@@ -117,3 +117,11 @@ test('ledgerUsd: sinceIso ignores earlier rows', () => {
   const rows = [{ provider: 'scrapingdog', credits: 1, ts: '2026-01-01T00:00:00Z' }, { provider: 'scrapingdog', credits: 1, ts: '2026-02-01T00:00:00Z' }];
   assert.ok(Math.abs(lib.ledgerUsd(rows, pricing, '2026-01-15T00:00:00Z').usd - 0.1) < 1e-9);
 });
+
+test('hostMatchesSlot: Times reviews live on thetimes.co.uk and thetimes.com, subdomains count, lookalikes do not', () => {
+  const m = lib.BY_SLOT.get('times');
+  assert.equal(lib.hostMatchesSlot(m, 'www.thetimes.co.uk'), true);
+  assert.equal(lib.hostMatchesSlot(m, 'thetimes.com'), true);
+  assert.equal(lib.hostMatchesSlot(m, 'notthetimes.co.uk'), false);
+  assert.equal(lib.hostMatchesSlot(lib.BY_SLOT.get('guardian'), 'www.theguardian.com'), true);
+});

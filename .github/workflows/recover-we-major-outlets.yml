@@ -151,6 +151,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          [ -f data/audit/we-major-recovery-state.json ] || { echo 'no state file'; exit 0; }
           git add data/audit/we-major-recovery-state.json
           git diff --cached --quiet || git commit -m "data: BRO-6155 recovery campaign spend state [skip ci]"
           bash scripts/lib/push-with-retry.sh 5 main

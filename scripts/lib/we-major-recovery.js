@@ -24,7 +24,7 @@ const MAJOR = [
   { slot: 'guardian', outletId: 'guardian', ids: ['guardian'], domain: 'theguardian.com', tier: 1 },
   { slot: 'telegraph', outletId: 'telegraph', ids: ['telegraph'], domain: 'telegraph.co.uk', tier: 1 },
   { slot: 'standard', outletId: 'standard', ids: ['standard'], domain: 'standard.co.uk', tier: 1 },
-  { slot: 'times', outletId: 'times-uk', ids: ['times-uk'], domain: 'thetimes.com', tier: 1 },
+  { slot: 'times', outletId: 'times-uk', ids: ['times-uk'], domain: 'thetimes.co.uk', hosts: ['thetimes.co.uk', 'thetimes.com'], tier: 1 },
   { slot: 'ft', outletId: 'financialtimes', ids: ['financialtimes'], domain: 'ft.com', tier: 1 },
   { slot: 'stage', outletId: 'thestage', ids: ['thestage'], domain: 'thestage.co.uk', tier: 2 },
   { slot: 'whatsonstage', outletId: 'whatsonstage', ids: ['whatsonstage'], domain: 'whatsonstage.com', tier: 2 },
@@ -185,7 +185,13 @@ class CostTally {
   }
 }
 
+/** True when host belongs to the slot's outlet (bare host compare, www stripped). */
+function hostMatchesSlot(m, host) {
+  const h = String(host).replace(/^www\./, '');
+  return (m.hosts || [m.domain]).some(d => h === d || h.endsWith('.' + d));
+}
+
 module.exports = {
-  MAJOR, BY_SLOT, SLOT_OF, buildSlots, summarize, orderQueue, showWindow,
+  hostMatchesSlot, MAJOR, BY_SLOT, SLOT_OF, buildSlots, summarize, orderQueue, showWindow,
   norm, venueAgrees, matchWosPosts, ledgerUsd, CostTally, addDays,
 };
