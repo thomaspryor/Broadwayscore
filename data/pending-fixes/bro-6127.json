@@ -1,17 +1,16 @@
 {
   "issueNumber": "bro-6127",
-  "planId": "a951fda7-0711-44a2-80d3-27b93a9c0786",
-  "status": "applied",
+  "planId": "6303485b-0df7-4c08-9849-8e0ba5fe2b44",
+  "status": "pending",
   "createdAt": "2026-10-24T14:11:39.584Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-6127: move two Theatre Record reviews the old production pick filed under the wrong run (Telegraph Mockingbird 2026 to 2022, Arts Desk Bonnie and Clyde 2023 to 2022).",
+    "summary": "BRO-6127: re-apply the Mockingbird Telegraph move (a stale-checkout refresh race restored the 2026 copy and the ownership gate dropped the 2022 one).",
     "steps": [
-      "Misfiled by the old production pick (took the 2026 Gielgud run); the Telegraph review is of the 2022 Gielgud production, per its Theatre Record issue",
-      "Misfiled by the old production pick; the Arts Desk review is of the 2022 Garrick run, per its Theatre Record issue"
+      "Misfiled by the old production pick (took the 2026 Gielgud run); the Telegraph review is of the 2022 Gielgud production, per its Theatre Record issue"
     ],
     "riskLevel": "low",
     "actions": [
@@ -21,30 +20,7 @@
         "sourcePath": "to-kill-a-mockingbird-west-end-2026/telegraph--dominic-cavendish.json",
         "destPath": "to-kill-a-mockingbird-west-end-2022/telegraph--dominic-cavendish.json",
         "description": "Misfiled by the old production pick (took the 2026 Gielgud run); the Telegraph review is of the 2022 Gielgud production, per its Theatre Record issue"
-      },
-      {
-        "type": "review-file-op",
-        "operation": "move",
-        "sourcePath": "bonnie-and-clyde-west-end-2023/artsdesk--gary-naylor.json",
-        "destPath": "bonnie-and-clyde-west-end-2022/artsdesk--gary-naylor.json",
-        "description": "Misfiled by the old production pick; the Arts Desk review is of the 2022 Garrick run, per its Theatre Record issue"
       }
     ]
-  },
-  "executedAt": "2026-10-24T14:47:04.126Z",
-  "results": [
-    {
-      "action": "review-file-op",
-      "ok": true,
-      "msg": "Moved to-kill-a-mockingbird-west-end-2026/telegraph--dominic-cavendish.json → to-kill-a-mockingbird-west-end-2022/telegraph--dominic-cavendish.json",
-      "cleared": []
-    },
-    {
-      "action": "review-file-op",
-      "ok": true,
-      "msg": "Moved bonnie-and-clyde-west-end-2023/artsdesk--gary-naylor.json → bonnie-and-clyde-west-end-2022/artsdesk--gary-naylor.json",
-      "cleared": []
-    }
-  ],
-  "executedIn": "ci"
+  }
 }
