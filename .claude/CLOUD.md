@@ -101,6 +101,8 @@ Don't clone and push the private repos. Route the edit through CI (BRO-4216):
 
 Never put review text or reader contact details in a plan: the file is public.
 
+**Codex lane (BRO-6175):** the Codex runner takes data-fix cards through this same route. Codex writes the plan (`new-fix-plan.js`); the runner, not Codex, dispatches `execute-approved-fix.yml` mode=apply after the landing and `rebuild-fast.yml`, and closes the card only when the plan on main reads `status: applied`, `executedIn: ci` (`scripts/lib/codex-data-fixes.js`, inside `settleLanded`). It applies only `data-edit`, `review-field-edit`, `drop-orphan-key`, `retitle-show` and `outlet-registry-flag` plans of at most 25 actions; anything else stays with the Claude lane. A failed apply sends the card back to Todo (genuine-failure). Kill switch: `CODEX_DATA_FIXES_DISABLED=1`.
+
 ## GitHub work in cloud (no `gh` CLI by default)
 
 CLAUDE.md's `gh` runbooks don't run as written; use the GitHub MCP tools (secret rotation stays on the Mac). Probe first (BRO-4595; `gh api user` and `ToolSearch mcp__github`): with the agent proxy, `gh` may be preconfigured (`curl -sS "$HTTPS_PROXY/__agentproxy/status"`) and REST works (`gh api user`, `gh run list/view`, `gh workflow run --ref main`; without `--ref` it needs GraphQL and fails) even though `gh auth status` says the token is invalid; GraphQL is blocked, so use REST routes instead of `gh pr list`/`gh issue view`. Job logs: `curl` the API's `actions/jobs/<id>/logs` redirect into a file and slice it. Dispatch and wait: `node scripts/cloud-dispatch.js <workflow.yml> -f k=v --wait`. Monitoring: a `run_in_background` loop on the public API (works without a token) or one `get_workflow_run` per turn, never ScheduleWakeup alone.
