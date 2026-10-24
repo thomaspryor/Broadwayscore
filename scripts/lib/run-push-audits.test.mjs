@@ -238,7 +238,7 @@ test('mixed file list unions all applicable audits', () => {
       'toplevel-script-test-yml-coverage',
       'unbounded-fetch',
       'write-routing',
-    ], ...PARITY, PARITY_TOP)
+    ], ...PARITY)
   );
 });
 
