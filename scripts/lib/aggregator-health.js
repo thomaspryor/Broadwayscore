@@ -157,11 +157,11 @@ function retiredConsistency(sources, scheduled) {
   for (const s of sources) {
     for (const wf of Object.keys(s.workflows)) {
       if (!(wf in scheduled)) {
-        findings.push({ source: s.id, kind: 'workflow-missing', message: `${s.label}: workflow ${wf} does not exist` });
+        findings.push({ source: s.id, kind: 'workflow-missing', workflow: wf, message: `${s.label}: workflow ${wf} does not exist` });
       } else if (s.retired && scheduled[wf]) {
-        findings.push({ source: s.id, kind: 'retired-but-scheduled', message: `${s.label} is marked retired (${s.retired.reason}) but ${wf} still has a schedule` });
+        findings.push({ source: s.id, kind: 'retired-but-scheduled', workflow: wf, message: `${s.label} is marked retired (${s.retired.reason}) but ${wf} still has a schedule` });
       } else if (!s.retired && !scheduled[wf]) {
-        findings.push({ source: s.id, kind: 'schedule-removed', message: `${s.label}: ${wf} has no active schedule but the source is not marked retired. Restore the cron or retire the source in scripts/lib/aggregator-health.js with a reason` });
+        findings.push({ source: s.id, kind: 'schedule-removed', workflow: wf, message: `${s.label}: ${wf} has no active schedule but the source is not marked retired. Restore the cron or retire the source in scripts/lib/aggregator-health.js with a reason` });
       }
     }
   }
