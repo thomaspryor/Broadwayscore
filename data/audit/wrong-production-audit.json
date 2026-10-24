@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-24T07:00:53.436Z",
+  "timestamp": "2026-10-24T08:43:23.352Z",
   "stats": {
-    "totalReviews": 59785,
+    "totalReviews": 59802,
     "alreadyFlagged": 21115,
     "dateGuardCatches": 216,
     "directorMismatch": 2129,
     "tvFilmSignals": 1692,
-    "londonSignals": 2845,
+    "londonSignals": 2846,
     "offBroadwaySignals": 535,
     "yearMismatch": 180,
-    "noPublishDate": 5515
+    "noPublishDate": 5511
   },
   "findings": [
     {
@@ -28054,7 +28054,7 @@
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 75,
       "publishDate": "2018-05-03",
-      "url": null,
+      "url": "https://www.timeout.com/london/theatre/mood-music-review",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -55848,6 +55848,19 @@
     },
     {
       "showId": "a-fight-against-una-lucha-contra-west-end-2021",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2021-12-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "a-fight-against-una-lucha-contra-west-end-2021",
       "file": "whatsonstage--nicole-acquah.json",
       "score": 96,
       "publishDate": "2021-12-15",
@@ -71770,7 +71783,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 79,
+      "score": 81,
       "publishDate": "2026-10-21",
       "url": "https://www.londontheatre.co.uk/reviews/ilford-boy-review-donmar-warehouse",
       "findings": [
@@ -71853,7 +71866,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 81,
+      "score": 79,
       "publishDate": "2026-10-22",
       "url": "https://www.standard.co.uk/culture/theatre/ilford-boy-donmar-review-b1301897.html",
       "findings": [
@@ -92801,7 +92814,7 @@
     {
       "showId": "the-pianist-off-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 60,
+      "score": 55,
       "publishDate": "2026-10-23",
       "url": "https://www.standard.co.uk/culture/theatre/the-pianist-at-park-theatre-review-b1302039.html",
       "findings": [
