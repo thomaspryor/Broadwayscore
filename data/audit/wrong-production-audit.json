@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-24T14:39:37.626Z",
+  "timestamp": "2026-10-24T14:54:46.276Z",
   "stats": {
-    "totalReviews": 60276,
-    "alreadyFlagged": 21223,
-    "dateGuardCatches": 222,
+    "totalReviews": 60286,
+    "alreadyFlagged": 21224,
+    "dateGuardCatches": 223,
     "directorMismatch": 2176,
-    "tvFilmSignals": 1709,
-    "londonSignals": 2919,
+    "tvFilmSignals": 1710,
+    "londonSignals": 2921,
     "offBroadwaySignals": 534,
     "yearMismatch": 195,
-    "noPublishDate": 5432
+    "noPublishDate": 5434
   },
   "findings": [
     {
@@ -687,6 +687,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael arden\" from a-christmas-carol-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-2022",
+      "file": "latimes--matt-cooper.json",
+      "publishDate": "2022-11-30",
+      "url": "https://www.latimes.com/entertainment-arts/story/2022-11-29/live-holiday-shows-christmas-carol-nutcracker-messiah-socal-2022",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -12652,7 +12665,7 @@
     },
     {
       "showId": "dirty-dancing-tour-2026",
-      "file": "chicagoonstage--unknown.json",
+      "file": "chicagoonstage--joe-de-rosa.json",
       "score": 73,
       "publishDate": "2026-09-17",
       "url": "https://www.chicagoonstage.com/dirty-dancing-the-musical-trips-on-the-way-to-the-lift/",
@@ -69173,6 +69186,32 @@
       ]
     },
     {
+      "showId": "garry-starr-classic-penguins-off-west-end-2026",
+      "file": "theatreandtonic--penny-walshe.json",
+      "score": null,
+      "publishDate": "2026-10-24",
+      "url": "https://theatreandtonic.co.uk/blog/garry-starr-classic-penguins-at-the-other-palace-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "garry-starr-classic-penguins-off-west-end-2026",
+      "file": "times-uk--donald-hutera.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 262d before show (2026-02-02 vs 2026-10-22)"
+        }
+      ]
+    },
+    {
       "showId": "gary-a-sequel-to-titus-andronicus-2019",
       "file": "theater-scene--victor-gluck.json",
       "score": 79,
@@ -93797,7 +93836,7 @@
     },
     {
       "showId": "the-master-builder-off-west-end-2026",
-      "file": "fringereview--unknown.json",
+      "file": "fringereview--simon-jenner.json",
       "score": 87,
       "publishDate": "2026-10-23",
       "url": "https://fringereview.co.uk/review/fringereview-uk/2026/the-master-builder/",
@@ -98695,6 +98734,19 @@
       "score": 82,
       "publishDate": "2026-10-19",
       "url": "https://www.allthatdazzles.co.uk/post/review-triumph-almeida-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "triumph-off-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/triumph-golden-boy-almeida-theatre-almeida-fires-multiple-cylinders",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
