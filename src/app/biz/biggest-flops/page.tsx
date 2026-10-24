@@ -15,7 +15,7 @@ const TITLE = "Broadway's Biggest Flops Since the Reopening";
 const DESCRIPTION = "Commercial Broadway shows opened since September 2021 that finished in the red, ranked by the capital they raised.";
 
 export const metadata: Metadata = {
-  title: `${TITLE} | Money Scorecard`,
+  title: { absolute: `${TITLE} | Money Scorecard` },
   description: DESCRIPTION,
   alternates: { canonical: `${BASE_URL}/biz/biggest-flops` },
   openGraph: { images: [SITE_OG_IMAGE], title: TITLE, description: DESCRIPTION, url: `${BASE_URL}/biz/biggest-flops` },

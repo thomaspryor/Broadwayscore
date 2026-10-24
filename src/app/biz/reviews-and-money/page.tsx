@@ -18,7 +18,7 @@ const TITLE = 'What Predicts the Money?';
 const DESCRIPTION = 'Critic scores, audience scores and Tony results against recoupment for Broadway shows since the reopening, with new musicals, musical revivals, new plays and play revivals counted separately.';
 
 export const metadata: Metadata = {
-  title: `${TITLE} | Money Scorecard`,
+  title: { absolute: `${TITLE} | Money Scorecard` },
   description: DESCRIPTION,
   alternates: { canonical: `${BASE_URL}/biz/reviews-and-money` },
   openGraph: { images: [SITE_OG_IMAGE], title: TITLE, description: DESCRIPTION, url: `${BASE_URL}/biz/reviews-and-money` },

@@ -35,7 +35,7 @@ export function generateStaticParams() {
 export async function generateMetadata(props: { params: Promise<{ season: string }> }): Promise<Metadata> {
   const params = await props.params;
   return {
-    title: `${params.season} Broadway Season | Money Scorecard`,
+    title: { absolute: `${params.season} Broadway Season | Money Scorecard` },
     description: `Commercial data and recoupment metrics for Broadway shows from the ${params.season} season.`,
     alternates: {
       canonical: `${BASE_URL}/biz/season/${params.season}`,

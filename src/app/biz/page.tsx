@@ -51,7 +51,7 @@ import { BASE_URL, generateBreadcrumbSchema } from '@/lib/seo';
 import { getMarketDate } from '@/lib/date-utils';
 
 export const metadata: Metadata = {
-  title: 'Broadway Money Scorecard',
+  title: { absolute: 'Broadway Money Scorecard' },
   description:
     'Recoupment data and investment metrics for Broadway shows. Track which shows have recouped, capital at risk, and financial trends.',
   alternates: {

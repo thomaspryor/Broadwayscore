@@ -19,7 +19,7 @@ const TITLE = 'Broadway Musicals Since the Reopening';
 const DESCRIPTION = 'Every commercial Broadway musical that opened since September 2021: which recouped, which finished in the red, and which are still running.';
 
 export const metadata: Metadata = {
-  title: `${TITLE} | Money Scorecard`,
+  title: { absolute: `${TITLE} | Money Scorecard` },
   description: DESCRIPTION,
   alternates: { canonical: `${BASE_URL}/biz/musicals-since-reopening` },
   openGraph: { images: [SITE_OG_IMAGE], title: TITLE, description: DESCRIPTION, url: `${BASE_URL}/biz/musicals-since-reopening` },
