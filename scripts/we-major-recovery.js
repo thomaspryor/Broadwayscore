@@ -88,7 +88,19 @@ function ledgerRows(sinceIso) {
 }
 // Campaign spend across runs (the $45 cap is for the whole campaign, not one run).
 const STATE = path.join(ROOT, 'data', 'audit', 'we-major-recovery-state.json');
-function readState() { try { return JSON.parse(fs.readFileSync(STATE, 'utf8')); } catch { return { scraperUsd: 0, written: 0, runs: 0 }; } }
+function readState() {
+  try { return JSON.parse(fs.readFileSync(STATE, 'utf8')); } catch (e) {
+    if (e.code === 'ENOENT') return { scraperUsd: 0, written: 0, runs: 0 };
+    throw new Error(`campaign state unreadable, refusing to reset spend to $0: ${e.message}`); // a corrupt file must not turn the cap off
+  }
+}
+function numArg(name, dflt) {
+  const raw = arg(name);
+  if (raw === undefined || raw === '') return dflt;
+  const n = Number(raw);
+  if (!Number.isFinite(n) || n < 0) { console.error(`--${name} must be a non-negative number, got "${raw}"`); process.exit(2); }
+  return n;
+}
 
 function reviewDir(showId) { return path.join(require('./lib/review-texts-dir').resolveReviewTextsDir(), showId); }
 function heldFiles(showId, outletIds) {
@@ -116,7 +128,7 @@ function ingest(showId, m, url, show) {
     const f = path.join(reviewDir(showId), name);
     let body = '';
     try { body = String(JSON.parse(fs.readFileSync(f, 'utf8')).fullText || ''); } catch { /* unreadable file counts as no body */ }
-    if (body.length >= 200 && !pageMentionsShowTitle(body, show.title)) { fs.unlinkSync(f); removed++; continue; }
+    if (body.length < 200 || !pageMentionsShowTitle(body, show.title)) { fs.unlinkSync(f); removed++; continue; }
     kept = kept || name; bodyChars = body.length;
   }
   if (!kept) return { outcome: 'removed:wrong-show', detail: `${removed} file(s)` };
@@ -124,9 +136,9 @@ function ingest(showId, m, url, show) {
 }
 
 async function cmdRun() {
-  const capUsd = Number(arg('max-usd') || 45);
+  const capUsd = numArg('max-usd', 45);
   const state0 = readState();
-  const tally = new lib.CostTally({ capUsd, reserveUsd: Number(arg('reserve-usd') || 0), priorScraperUsd: state0.scraperUsd, priorWritten: state0.written });
+  const tally = new lib.CostTally({ capUsd, reserveUsd: numArg('reserve-usd', 0), priorScraperUsd: state0.scraperUsd, priorWritten: state0.written });
   const pricing = require('./config/provider-pricing.json');
   const shows = new Map(rd('data/shows.json').shows.map(s => [s.id, s]));
   const rows = loadRows();
@@ -134,13 +146,14 @@ async function cmdRun() {
   const queue = lib.orderQueue(rows, { slots: slotFilter });
   const cands = new Map();
   if (arg('candidates')) for (const c of JSON.parse(fs.readFileSync(arg('candidates'), 'utf8'))) cands.set(`${c.showId}|${c.slot}`, c.posts.map(p => p.url));
-  const maxCalls = Number(arg('max-calls') || Infinity);
+  const maxCalls = numArg('max-calls', Infinity);
   const dry = flag('dry-run');
   const serp = flag('serp');
   const startIso = new Date().toISOString();
   const results = [];
   let calls = 0;
-  const refresh = () => dry || tally.setScraperUsd(lib.ledgerUsd(ledgerRows(startIso), pricing, startIso).usd);
+  const saveState = () => dry || fs.writeFileSync(STATE, JSON.stringify({ scraperUsd: +tally.scraperUsd.toFixed(4), written: tally.priorWritten + tally.written, runs: (state0.runs || 0) + 1, updated: new Date().toISOString() }, null, 1));
+  const refresh = () => { if (dry) return; tally.setScraperUsd(lib.ledgerUsd(ledgerRows(startIso), pricing, startIso).usd); saveState(); };
 
   console.log(`queue ${queue.length} slots (${cands.size} with a free candidate), cap $${capUsd}, serp=${serp}, dry=${dry}`);
   let stopped = null;
@@ -160,7 +173,6 @@ async function cmdRun() {
       if (calls >= maxCalls) { stopped = stopped || `max-calls ${maxCalls}`; results.push({ ...rec, outcome: 'capped:max-calls' }); continue; }
       calls++;
       const { discoverCorrectUrl } = require('./lib/url-discovery');
-      const { domainMatchesExpected } = require('./lib/scraper');
       const { looksLikeReview } = require('./collect-outlet-reviews.js');
       try {
         const res = await discoverCorrectUrl({ showId: q.showId, outletId: m.outletId, outlet: m.slot, criticName: null, url: null },
@@ -168,17 +180,20 @@ async function cmdRun() {
         if (res === '__SERP_UNAVAILABLE__') { stopped = 'serp-unavailable'; results.push({ ...rec, outcome: 'serp-unavailable' }); break; }
         if (!res || typeof res !== 'object') { results.push({ ...rec, outcome: 'no-serp-hit' }); refresh(); await sleep(800); continue; }
         const host = new URL(res.url).hostname.replace(/^www\./, '');
-        if (!domainMatchesExpected(m.domain.split('/')[0], host)) { results.push({ ...rec, outcome: 'wrong-domain', url: res.url }); continue; }
+        if (!lib.hostMatchesSlot(m, host)) { results.push({ ...rec, outcome: 'wrong-domain', url: res.url }); continue; }
         if (!looksLikeReview(res.url, res.serpTitle)) { results.push({ ...rec, outcome: 'not-a-review', url: res.url }); continue; }
         found = [res.url];
       } catch (e) { results.push({ ...rec, outcome: `serp-error:${String(e.message).slice(0, 80)}` }); continue; }
     }
     let done = null;
     for (const url of found) {
+      refresh();
+      if (tally.wouldExceed(0.01)) { stopped = `cap: ${tally.line()}`; break; }
       const r = ingest(q.showId, m, url, show);
       done = { ...rec, url, ...r };
       if (r.outcome === 'ingested') { tally.recordWritten(1); break; }
     }
+    if (!done) { results.push({ ...rec, outcome: 'capped' }); continue; }
     results.push(done);
     refresh();
     console.log(`${q.showId} [${q.slot}] ${done.outcome} ${done.url || ''}`);
@@ -193,7 +208,7 @@ async function cmdRun() {
   const summary = { capUsd, scraperUsd: +tally.scraperUsd.toFixed(4), ingested: tally.written, projectedScoringUsd: +tally.projectedScoringUsd.toFixed(4),
     projectedTotalUsd: +tally.projectedTotalUsd.toFixed(4), serpCalls: calls, stopped, outcomes: by };
   if (arg('out')) fs.writeFileSync(arg('out'), JSON.stringify({ summary, results }, null, 1));
-  if (!dry) fs.writeFileSync(STATE, JSON.stringify({ scraperUsd: +tally.scraperUsd.toFixed(4), written: tally.priorWritten + tally.written, runs: (state0.runs || 0) + 1, updated: new Date().toISOString() }, null, 1));
+  saveState();
 }
 
 const cmd = process.argv[2];
