@@ -69,13 +69,13 @@ test('a steady source, a low-baseline source and thin quarters are not flagged',
 
 const run = (iso, conclusion, event = 'schedule') => ({ created_at: iso, conclusion, event });
 
-test('The Stage: 4 weekly failures incl. a manual dispatch is failing', () => {
+test('The Stage: 3 weekly failures plus a failed manual dispatch is failing', () => {
   const v = H.workflowVerdict([
     run('2026-10-23T05:22:00Z', 'failure', 'workflow_dispatch'), run('2026-10-20T12:21:00Z', 'failure'),
     run('2026-10-13T14:39:00Z', 'failure'), run('2026-10-06T13:44:00Z', 'failure'),
   ], { cadenceDays: 7, now: NOW });
   assert.equal(v.status, 'failing');
-  assert.equal(v.streak, 4);
+  assert.equal(v.streak, 3); // the manual dispatch is not part of the cron's record
 });
 
 test('Stagedoor: weekly cron silent since 2026-06-22 is idle by mid July', () => {
@@ -162,4 +162,17 @@ test('category filter and shared-workflow dedupe', () => {
   const fails = ['20', '21', '22'].map(d => run(`2026-10-${d}T00:00:00Z`, 'failure'));
   const { findings } = H.assess({ sources, shows: [], archives: null, runs: { 'x.yml': fails }, scheduled: { 'x.yml': true }, now: NOW });
   assert.equal(findings.length, 1);
+});
+
+test('manual dispatch success does not hide a failing cron; retired source may delete its workflow', () => {
+  const now = new Date('2026-10-24T00:00:00Z');
+  const day = n => new Date(now - n * 86400000).toISOString();
+  const runs = [
+    { created_at: day(0.5), conclusion: 'success', event: 'workflow_dispatch' },
+    ...[7, 14, 21].map(n => ({ created_at: day(n), conclusion: 'failure', event: 'schedule' })),
+  ];
+  assert.equal(H.workflowVerdict(runs, { cadenceDays: 7, now }).status, 'failing');
+  const onlyManual = [{ created_at: day(1), conclusion: 'success', event: 'workflow_dispatch' }];
+  assert.equal(H.workflowVerdict(onlyManual, { cadenceDays: 7, now }).status, 'ok');
+  assert.deepEqual(H.retiredConsistency([{ id: 'x', label: 'X', retired: { reason: 'r' }, workflows: { 'gone.yml': 7 } }], {}), []);
 });

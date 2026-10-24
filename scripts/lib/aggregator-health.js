@@ -118,13 +118,16 @@ const toMs = r => Date.parse(r.created_at || r.createdAt);
 
 /**
  * Liveness of one workflow from REST run objects ({created_at, conclusion, event}).
- * A manual dispatch counts toward both streak and recency (the 2026-10-23 Stage
- * dispatch was a failure too). Cancelled/skipped runs neither extend nor break a streak.
+ * Manual dispatches are ignored when scheduled runs exist. Cancelled/skipped runs neither extend nor break a streak.
  * @returns {{status:'ok'|'failing'|'idle'|'stale-success'|'no-runs', ...}}
  */
 function workflowVerdict(runs, { cadenceDays, now = new Date() } = {}, opts = {}) {
   const o = { ...DEFAULTS, ...opts };
-  const sorted = (runs || []).filter(r => r && !Number.isNaN(toMs(r))).sort((a, b) => toMs(b) - toMs(a));
+  const valid = (runs || []).filter(r => r && !Number.isNaN(toMs(r)));
+  // A one-off dry-run dispatch must not hide a failing cron (or fake one), so judge the
+  // cron's own runs. A workflow that only ever ran by hand keeps its manual runs.
+  const unattended = valid.filter(r => r.event !== 'workflow_dispatch');
+  const sorted = (unattended.length ? unattended : valid).sort((a, b) => toMs(b) - toMs(a));
   if (!sorted.length) return { status: 'no-runs' };
   const daysAgo = r => (now.getTime() - toMs(r)) / 86400000;
   const done = sorted.filter(r => r.conclusion && !['cancelled', 'skipped'].includes(r.conclusion));
@@ -157,6 +160,7 @@ function retiredConsistency(sources, scheduled) {
   for (const s of sources) {
     for (const wf of Object.keys(s.workflows)) {
       if (!(wf in scheduled)) {
+        if (s.retired) continue; // deleting a retired source's workflow is the right cleanup
         findings.push({ source: s.id, kind: 'workflow-missing', workflow: wf, message: `${s.label}: workflow ${wf} does not exist` });
       } else if (s.retired && scheduled[wf]) {
         findings.push({ source: s.id, kind: 'retired-but-scheduled', workflow: wf, message: `${s.label} is marked retired (${s.retired.reason}) but ${wf} still has a schedule` });

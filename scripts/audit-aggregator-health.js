@@ -38,9 +38,8 @@ function loadArchives(sources, shows) {
   const out = {};
   for (const s of sources) {
     const dir = path.join(ARCHIVE_DIR, s.id);
-    out[s.id] = new Set(fs.existsSync(dir)
-      ? fs.readdirSync(dir).map(f => /^(.+)\.(html|json)$/.exec(f)).filter(Boolean).map(m => idBySlug.get(m[1]) || m[1])
-      : []);
+    if (!fs.existsSync(dir)) continue; // missing folder is unknown, not 0% coverage
+    out[s.id] = new Set(fs.readdirSync(dir).map(f => /^(.+)\.(html|json)$/.exec(f)).filter(Boolean).map(m => idBySlug.get(m[1]) || m[1]));
   }
   return Object.values(out).every(a => a.size === 0) ? null : out; // empty clone == absent
 }
