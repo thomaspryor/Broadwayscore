@@ -5,7 +5,6 @@
  *   node scripts/audit-aggregator-health.js            # report, exit 0
  *   node scripts/audit-aggregator-health.js --strict   # exit 1 on any finding
  *   node scripts/audit-aggregator-health.js --json     # machine-readable
- *   node scripts/audit-aggregator-health.js --write    # also write data/audit/aggregator-health.json
  *   node scripts/audit-aggregator-health.js --alert    # route findings to the owner digest (CI daily)
  *
  * Coverage needs data/aggregator-archive (private repo; CI checks it out) and is
@@ -24,7 +23,6 @@ require('./lib/cli-help').exitOnHelp(module);
 const ROOT = path.join(__dirname, '..');
 const WF_DIR = path.join(ROOT, '.github', 'workflows');
 const ARCHIVE_DIR = path.join(ROOT, 'data', 'aggregator-archive');
-const OUT = path.join(ROOT, 'data', 'audit', 'aggregator-health.json');
 const REPO = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
 
 function loadShows() {
@@ -123,10 +121,6 @@ async function main() {
 
   if (failedWf.length) notes.push(`run history unavailable for: ${failedWf.join(', ')}`);
   const result = { generatedAt: now.toISOString(), findings, notes, report };
-  if (args.includes('--write')) {
-    fs.mkdirSync(path.dirname(OUT), { recursive: true });
-    fs.writeFileSync(OUT, JSON.stringify(result, null, 2) + '\n');
-  }
   if (asJson) {
     console.log(JSON.stringify(result, null, 2));
   } else {
