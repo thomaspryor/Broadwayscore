@@ -1306,20 +1306,6 @@
     "queuedAt": "2026-10-24T18:54:08.230Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-24.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-24T18:54:15.236Z"
-  },
-  {
     "conditionKey": "t1-coverage:new-gaps-24h",
     "title": "T1 Coverage — new gaps past 24h (still open — BRO-5532)",
     "description": "Still firing after 66 notifications since it was filed. Tracked at BRO-5532.\n\n11 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
@@ -1566,6 +1552,34 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-24T21:06:39.029Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:ceilidh-the-musical-off-west-end-2026",
+    "title": "Review gap — \"Ceilidh The Musical\" missing 1 cited review(s)",
+    "description": "Ceilidh The Musical (ceilidh-the-musical-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=ceilidh-the-musical-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T21:30:14.333Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-24.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T21:30:59.551Z"
   },
   {
     "conditionKey": "land:land/bro-6168-decision-reply-drain",
