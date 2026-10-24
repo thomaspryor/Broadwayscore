@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T06:46:02.975Z",
+  "generatedAt": "2026-10-24T10:04:49.157Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -136,16 +136,16 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
     {
-      "outletId": "british-theatre",
-      "error": "Timeout fetching https://www.britishtheatreguide.info/reviews/"
-    },
-    {
       "outletId": "slantmagazine",
       "error": "HTTP 403 for https://www.slantmagazine.com/theater/feed/"
     },
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "plays-international",
+      "error": "AggregateError"
     },
     {
       "outletId": "theartsdispatch",
@@ -158,13 +158,9 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 718,
+  "itemsScanned": 766,
   "matchedGaps": 4,
   "possibleGaps": 2,
   "gaps": [

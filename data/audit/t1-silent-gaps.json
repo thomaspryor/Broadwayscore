@@ -1,8 +1,32 @@
 {
-  "generatedAt": "2026-10-24T06:45:44.836Z",
+  "generatedAt": "2026-10-24T10:02:06.816Z",
   "windowDays": 45,
   "showsScanned": 211,
   "gaps": [
+    {
+      "showId": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
+      "openingDate": "2026-10-22",
+      "file": "sunday-times--unknown.json",
+      "outletId": "sunday-times",
+      "tier": 1,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-pianist-review-park-theatre-tl2239htl?eafs_enabled=false",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "⚠️  outletId drift detected — operator input \"sunday-times\" resolved to \"sunday-times\" but URL domain maps to canonical \"times-uk\". Using URL-derived canonical.\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+      },
+      "recoveryCount": 1,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=the-pianist-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/the-pianist-review-park-theatre-tl2239htl?eafs_enabled=false --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-10-24T07:41:52.865Z",
+      "fileAgeHours": 2.3364041666666666,
+      "gapSeenAt": "2026-10-24T10:02:06.815Z",
+      "nonTerminalAgeHours": 0,
+      "needsManualRecovery": false
+    },
     {
       "showId": "golden-boy-off-west-end-2026",
       "title": "Golden Boy",
@@ -18,9 +42,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 758.0864663888889,
+      "fileAgeHours": 761.3590708333334,
       "gapSeenAt": "2026-10-23T02:17:11.385Z",
-      "nonTerminalAgeHours": 28.47595861111111,
+      "nonTerminalAgeHours": 31.748730555555557,
       "needsManualRecovery": true
     }
   ],
