@@ -28,7 +28,7 @@
  *   the one-line loop in .claude/CLOUD.md, "Owner one-time setup" (it globs
  *   the checkouts under /home/user and runs this file from each).
  *
- * Usage: node scripts/install-home-claude-config.js [--target <dir>] [--check | --uninstall]
+ * Usage: node scripts/install-home-claude-config.js [--target <dir>] [--check | --uninstall] [--adopt-hookless-settings]
  *   --target defaults to the directory holding this checkout (/home/user in cloud,
  *   which is $HOME there; $HOME needs CLAUDE_CODE_REMOTE=true).
  */
@@ -80,14 +80,19 @@ function readJson(p) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; }
 }
 
-function plan(target) {
+function plan(target, adoptHookless = false) {
   const repoSettings = readJson(path.join(REPO_ROOT, '.claude', 'settings.json'));
   if (!repoSettings) throw new Error('cannot read .claude/settings.json in this checkout');
   const { settings, wired } = buildSettings(repoSettings, target);
   const links = LINKS
     .filter((name) => fs.existsSync(path.join(REPO_ROOT, '.claude', name)))
     .map((name) => ({ name, from: path.join(target, '.claude', name), to: path.join(REPO_ROOT, '.claude', name) }));
-  return { settingsPath: path.join(target, '.claude', 'settings.json'), settings, wired, links };
+  const settingsPath = path.join(target, '.claude', 'settings.json');
+  const existing = readJson(settingsPath);
+  const isObject = existing && typeof existing === 'object' && !Array.isArray(existing);
+  const mayAdopt = !!(adoptHookless && isObject && !Object.hasOwn(existing, 'hooks') && !Object.hasOwn(existing, MARK_KEY));
+  const preserve = isObject && (existing[MARK_KEY] === MARK || mayAdopt);
+  return { settingsPath, settings: preserve ? { ...existing, ...settings } : settings, wired, links, mayAdopt };
 }
 
 // Problems that make installing unsafe; empty when it is fine to write.
@@ -105,7 +110,7 @@ function refusals(target, p) {
     out.push(`target ${target} is this checkout`);
   }
   const existing = readJson(p.settingsPath);
-  if (fs.existsSync(p.settingsPath) && (!existing || existing[MARK_KEY] !== MARK)) {
+  if (fs.existsSync(p.settingsPath) && (!existing || existing[MARK_KEY] !== MARK) && !p.mayAdopt) {
     out.push(`${p.settingsPath} exists and was not written by this script; leaving it alone`);
   }
   for (const l of p.links) {
@@ -150,7 +155,13 @@ function install(target, p) {
 
 function uninstall(p) {
   const existing = readJson(p.settingsPath);
-  if (existing && existing[MARK_KEY] === MARK) fs.unlinkSync(p.settingsPath);
+  if (existing && existing[MARK_KEY] === MARK) {
+    const remaining = { ...existing };
+    delete remaining[MARK_KEY];
+    delete remaining.hooks;
+    if (Object.keys(remaining).length) fs.writeFileSync(p.settingsPath, JSON.stringify(remaining, null, 2) + '\n');
+    else fs.unlinkSync(p.settingsPath);
+  }
   for (const l of p.links) {
     let cur = null;
     try { cur = fs.readlinkSync(l.from); } catch { /* absent */ }
@@ -161,7 +172,7 @@ function uninstall(p) {
 function main(argv) {
   const ti = argv.indexOf('--target');
   const target = path.resolve(ti >= 0 ? argv[ti + 1] || '' : path.dirname(REPO_ROOT));
-  const p = plan(target);
+  const p = plan(target, argv.includes('--adopt-hookless-settings'));
   if (argv.includes('--uninstall')) {
     uninstall(p);
     console.log(`[home-claude-config] removed what this script installed under ${target}/.claude`);

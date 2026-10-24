@@ -245,3 +245,34 @@ test('runner does not re-run a hook for a session whose cwd is this checkout', (
   assert.equal(inRepo.status, 0);
   assert.equal(inRepo.stdout.trim(), '', 'no hook output: the runner deduped');
 });
+
+// The saved cloud setup creates autoMode settings before invoking this installer.
+test('explicit adoption preserves hookless owner settings through install, check, reinstall and uninstall', () => {
+  const { target } = makeTarget('t-adopt');
+  const file = path.join(target, '.claude', 'settings.json');
+  fs.mkdirSync(path.dirname(file));
+  const original = { autoMode: { soft_deny: ['$defaults', 'no force push'] }, permissions: { deny: ['Bash(rm:*)'] } };
+  fs.writeFileSync(file, JSON.stringify(original));
+  assert.equal(run(['--target', target]).status, 2);
+  assert.equal(run(['--target', target, '--adopt-hookless-settings']).status, 0);
+  const installed = JSON.parse(fs.readFileSync(file, 'utf8'));
+  assert.deepEqual(installed.autoMode, original.autoMode);
+  assert.deepEqual(installed.permissions, original.permissions);
+  assert.ok(Object.keys(installed.hooks).length > 0);
+  assert.equal(run(['--target', target, '--check']).status, 0);
+  assert.equal(run(['--target', target]).status, 0);
+  assert.deepEqual(JSON.parse(fs.readFileSync(file, 'utf8')), installed);
+  assert.equal(run(['--target', target, '--uninstall']).status, 0);
+  assert.deepEqual(JSON.parse(fs.readFileSync(file, 'utf8')), original);
+});
+
+test('adoption refuses existing hooks, foreign ownership, malformed JSON and arrays without changing them', () => {
+  for (const [i, raw] of ['{"hooks":{}}', '{"_generatedBy":"someone else"}', '{broken', '[]'].entries()) {
+    const { target } = makeTarget('t-adopt-refuse-' + i);
+    const file = path.join(target, '.claude', 'settings.json');
+    fs.mkdirSync(path.dirname(file));
+    fs.writeFileSync(file, raw);
+    assert.equal(run(['--target', target, '--adopt-hookless-settings']).status, 2);
+    assert.equal(fs.readFileSync(file, 'utf8'), raw);
+  }
+});
