@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6137-b",
   "planId": "02ab3335-8063-4e3a-8e6a-14d7f1443ac6",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-24T14:26:22.323Z",
   "submitter": {
     "name": null,
@@ -298,5 +298,134 @@
         "description": "once-on-this-island-2017: $7.5M capitalization (Forbes, Lee Seymour 2018-12-03, via the existing source)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-24T14:38:47.314Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for china-doll-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for china-doll-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recouped: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedDate: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedSource: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:sources: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for china-doll-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for china-doll-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for waitress-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for waitress-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recouped: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedDate: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedSource: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:sources: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for waitress-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for waitress-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recouped: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedDate: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedSource: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:sources: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for school-of-rock-the-musical-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for school-of-rock-the-musical-2015"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": false,
+      "reason": "add-commercial-entry: \"farinelli-and-the-king-2017\" already has a commercial entry (use data-edit)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": false,
+      "reason": "add-commercial-entry: \"sunday-in-the-park-with-george-2017\" already has a commercial entry (use data-edit)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for once-on-this-island-2017"
+    }
+  ],
+  "executedIn": "ci"
 }
