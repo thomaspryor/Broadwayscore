@@ -827,6 +827,20 @@
     "queuedAt": "2026-10-24T14:49:23.966Z"
   },
   {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 15 (pull-quote-quality, regex-fp, run-contamination, cross-show-url, body-date-mismatch, unknown-outlets, +9 more). Checked 2026-10-24.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-24T15:16:41.045Z"
+  },
+  {
     "conditionKey": "land:land/bro-6134-codex-lane-alarm",
     "title": "Landing blocked: unit-tests-node red on land/bro-6134-codex-lane-alarm",
     "description": "land.yml did not land land/bro-6134-codex-lane-alarm: the unit-tests-node gate went red at 082d6a5a78. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40102765310",
