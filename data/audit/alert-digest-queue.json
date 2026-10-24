@@ -568,5 +568,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-24T13:07:31.042Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6101-aggregator-repair",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6101-aggregator-repair",
+    "description": "land.yml did not land land/bro-6101-aggregator-repair: the unit-tests-node gate went red at b72505e92e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40096605558",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6101-aggregator-repair"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "b72505e92e71b187ee852ef89de783a26758b029"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40096605558"
+      }
+    ],
+    "queuedAt": "2026-10-24T13:27:16.254Z"
   }
 ]
