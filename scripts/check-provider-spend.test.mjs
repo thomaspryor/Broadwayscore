@@ -135,3 +135,16 @@ test('missingLedgerDays: a future day (clock skew / bad --day backfill) cannot f
   const missing = missingLedgerDays([{ day: '2026-09-25' }], now, 1);
   assert.deepEqual(missing, ['2026-09-18'], 'a future record must not be mistaken for the in-window day');
 });
+
+test('BRO-5526: a breach-free day resolves overspend + unmeasured; a breach leaves its own condition open', () => {
+  const { resolveClearedBudgetConditions } = require('./check-provider-spend.js');
+  const calls = [];
+  const resolve = (k) => { calls.push(k); return true; };
+  assert.deepEqual(resolveClearedBudgetConditions({ overspend: [], unmeasured: [] }, '2026-10-23', resolve),
+    ['provider-spend:overspend', 'provider-spend:unmeasured']);
+  calls.length = 0;
+  assert.deepEqual(resolveClearedBudgetConditions({ overspend: ['x'], unmeasured: [] }, '2026-10-23', resolve),
+    ['provider-spend:unmeasured']);
+  assert.deepEqual(calls, ['provider-spend:unmeasured']);
+  assert.deepEqual(resolveClearedBudgetConditions({ overspend: ['x'], unmeasured: ['y'] }, '2026-10-23', resolve), []);
+});

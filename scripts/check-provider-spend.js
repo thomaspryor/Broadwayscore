@@ -279,6 +279,16 @@ async function main() {
     });
   }
 
+  // BRO-5526: a clean day resolves the budget conditions. Only the attribution-gap
+  // family used to call resolveCondition, so overspend/unmeasured stayed 'open' in
+  // the alert ledger after the spend recovered and acceptance checks
+  // (check-alert-condition-absent.js) could not tell fixed from still-firing.
+  try {
+    resolveClearedBudgetConditions(breaches, DAY, require('./lib/owner-alert-router').resolveCondition);
+  } catch (err) {
+    console.log(`::warning::spend-condition resolve failed: ${err.message}`);
+  }
+
   // BRO-4215: a SUSTAINED attribution gap is its own actionable condition.
   // Until now a low attributedPct only added a digest line; ScrapingBee sat at
   // 12-23% for weeks (Reddit Sentiment + Show Score rows discarded at runner
@@ -358,6 +368,15 @@ if (require.main === module) {
   });
 }
 
+/** Resolve the budget conditions a breach-free day no longer trips. Returns the keys resolved. */
+function resolveClearedBudgetConditions(breaches, day, resolveCondition) {
+  const resolved = [];
+  if (!breaches.overspend.length && resolveCondition('provider-spend:overspend', { reason: `no provider over budget on ${day}` })) resolved.push('provider-spend:overspend');
+  if (!breaches.unmeasured.length && resolveCondition('provider-spend:unmeasured', { reason: `all providers measured on ${day}` })) resolved.push('provider-spend:unmeasured');
+  return resolved;
+}
+
 module.exports = {
+  resolveClearedBudgetConditions,
   ledgerFreshnessHours, missingLedgerDays, STALE_HOURS_THRESHOLD, CONTINUITY_WINDOW_DAYS,
 };
