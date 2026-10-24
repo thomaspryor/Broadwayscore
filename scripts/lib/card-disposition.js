@@ -20,30 +20,33 @@ const MIN_PARK_REASON_LENGTH = 10;
 
 const USAGE_MESSAGE =
   'Card creation must decide: pass --dispatch to work it now, or --park "<reason>" to park it ' +
-  'with a stated reason. Neither was given — that silent third state is the bug this gate exists to close.\n' +
-  '  --dispatch                   create it and work it now\n' +
+  'with a stated reason, or --self when this session is already doing the work. Neither was given — that silent third state is the bug this gate exists to close.\n' +
+  '  --dispatch                   create it and let a worker take it\n' +
+  '  --self                       create it In Progress, claimed by this session (its own work, BRO-6130)\n' +
   `  --park "<reason (>=${MIN_PARK_REASON_LENGTH} chars)>"  create it parked, with a reason a reader can act on`;
 
 /**
- * @param {{dispatch?: boolean, park?: string|boolean}} opts
- * @returns {{ok: true, mode: 'dispatch'|'park', reason?: string} | {ok: false, reason: string, message: string}}
+ * @param {{dispatch?: boolean, park?: string|boolean, self?: boolean}} opts
+ * @returns {{ok: true, mode: 'dispatch'|'park'|'self', reason?: string} | {ok: false, reason: string, message: string}}
  */
-function resolveDisposition({ dispatch, park } = {}) {
+function resolveDisposition({ dispatch, park, self } = {}) {
   const hasDispatch = !!dispatch;
+  const hasSelf = !!self;
   // A bare `--park` with no value parses as `true`, not a string — treat that
   // the same as "no reason given" rather than silently accepting it.
   const hasPark = typeof park === 'string' && park.trim().length > 0;
   const parkGivenButEmpty = !hasPark && (park === true || (typeof park === 'string' && park.trim().length === 0));
 
-  if (hasDispatch && (hasPark || parkGivenButEmpty)) {
+  const given = [hasDispatch, hasSelf, hasPark || parkGivenButEmpty].filter(Boolean).length;
+  if (given > 1) {
     return {
       ok: false,
       reason: 'BOTH_FLAGS',
-      message: 'Pass exactly one of --dispatch or --park "<reason>", not both.',
+      message: 'Pass exactly one of --dispatch, --self or --park "<reason>".',
     };
   }
 
-  if (!hasDispatch && !hasPark && !parkGivenButEmpty) {
+  if (!hasDispatch && !hasSelf && !hasPark && !parkGivenButEmpty) {
     return { ok: false, reason: 'NO_DISPOSITION', message: USAGE_MESSAGE };
   }
 
@@ -66,6 +69,7 @@ function resolveDisposition({ dispatch, park } = {}) {
     };
   }
 
+  if (hasSelf) return { ok: true, mode: 'self' };
   if (hasDispatch) return { ok: true, mode: 'dispatch' };
   return { ok: true, mode: 'park', reason: park.trim() };
 }

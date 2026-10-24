@@ -75,7 +75,7 @@ Write the retro to a temp file in this format:
 
 Then:
 
-    node scripts/linear-brain.js create "Week in Review, $WEEK_START to $TODAY" --priority 4 --park "weekly retro record" --notes "$(cat <file>)"
+    node scripts/linear-brain.js create "Week in Review, $WEEK_START to $TODAY" --priority 4 --source routine:weekly-retro --park "weekly retro record" --notes "$(cat <file>)"
     node scripts/linear-brain.js update BRO-N --state Done --force "weekly retro record, no code change to verify"
 
 If Linear is unreachable, print the retro in the reply instead. Do not fall

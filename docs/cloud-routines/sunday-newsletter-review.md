@@ -42,7 +42,7 @@ cloud substitutions:
   `RESEND_API_KEY` and `OWNER_EMAIL` are set, as one transactional
   `POST /emails` to `$OWNER_EMAIL`. If they are not set, post the same summary
   as a comment on a Linear issue titled "Sunday newsletter review <date>"
-  (`node scripts/linear-brain.js create ... --park "routine record"`) instead.
+  (`node scripts/linear-brain.js create ... --source routine:sunday-newsletter-review --park "routine record"`) instead.
 - Stop after 60 minutes of work: finish or card what you are on, then send the
   summary last, as the prompt says.
 

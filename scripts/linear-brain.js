@@ -6,7 +6,7 @@
  *
  * Usage:
  *   node scripts/linear-brain.js create "Issue title" --notes "description" \
- *     [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>] \
+ *     [--dispatch | --self | --park "<reason>"] [--priority 0-4] [--project-id <id>] \
  *     [--model opus|sonnet] [--source <filer>] [--new-anyway "<reason>"] [--dedupe-opt-out <name>]
  *     [--mac-only "<what needs the Mac and why>"]
  *
@@ -44,7 +44,7 @@ const USAGE = `linear-brain.js — file a Linear issue through the one creation 
 
 Usage:
   node scripts/linear-brain.js create "Issue title" --notes "description" \\
-    [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>] \\
+    [--dispatch | --self | --park "<reason>"] [--priority 0-4] [--project-id <id>] \\
     [--model opus|sonnet] [--source <filer>] [--new-anyway "<reason>"] [--dedupe-opt-out <name>]
     [--no-verify "<reason>"] [--mac-only "<what needs the Mac and why>"]
   node scripts/linear-brain.js find "search term"
@@ -54,7 +54,12 @@ Usage:
 
   node scripts/linear-brain.js --probe [--timeout-ms N]
 
-  create: --dispatch or --park "<reason>" is REQUIRED. Neither given → exit 2.
+  create: --dispatch, --self or --park "<reason>" is REQUIRED. None given → exit 2.
+          --self (BRO-6130): this session is already doing the work (an owner request, a
+          fix it is making now). Files the card In Progress with the claim comment, the
+          same trace "linear-session.js claim" leaves. The card is never swapped for
+          someone else's twin; a near-duplicate open card is still refused. Not a park:
+          do not write "PARKED: doing it now".
           Technical work with a safe VERIFY files --dispatch (Todo, any
           priority). --park only for a real block: owner call, missing key
           or access, Mac-only, a date or event, spend (BRO-5626).
@@ -747,7 +752,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
 
   const title = args._positional[1];
   if (!title) {
-    console.error('Usage: linear-brain create "Issue title" --notes "..." [--dispatch|--park "<reason>"]');
+    console.error('Usage: linear-brain create "Issue title" --notes "..." [--dispatch|--self|--park "<reason>"]');
     process.exit(1);
   }
 
@@ -788,6 +793,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       description: notes,
       dispatch: args.dispatch,
       park: args.park,
+      self: args.self,
       priority: args.priority !== undefined ? Number(args.priority) : undefined,
       projectId: args['project-id'],
       model: args.model,
@@ -815,6 +821,16 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       console.error(`ISSUE-REUSED: ${result.issue.identifier} ("${result.issue.title}") is already open ${result.countOnly ? 'with this title except for a count' : 'with this title'}; the notes were added there as a comment (state=${result.stateName})`);
     } else if (result.mode === 'rolled-up') {
       console.error(`ROLLED-UP: ${result.issue.identifier} ("${result.issue.title}") collects this filer's repeated findings of this kind; the notes were added there as a comment, no new card`);
+    } else if (result.mode === 'self') {
+      // BRO-6130: same trace `linear-session.js claim` leaves, so the next claimer sees who holds it.
+      const lsr = require('./lib/linear-session-reporting');
+      try {
+        await linearClient.createComment(result.issue.id, lsr.buildClaimComment({ sessionRef: lsr.claimSessionRef(), ts: new Date().toISOString() }));
+      } catch (e) {
+        console.error(`[linear-brain] WARN could not post the claim comment: ${e.message}`);
+      }
+      console.log(lsr.buildIssueIdMarker(result.issue.id));
+      console.error(`ISSUE-FILED: ${result.issue.identifier} ("${result.issue.title}") — state=${result.stateName}, claimed by this session (--self)`);
     } else if (result.mode === 'dispatch') {
       console.error(`ISSUE-FILED: ${result.issue.identifier} ("${result.issue.title}") — state=${result.stateName}, not yet running (bsc-next Linear support pending #1303)`);
     } else if (result.autoTodo) {

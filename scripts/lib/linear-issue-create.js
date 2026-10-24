@@ -91,6 +91,11 @@ function pickStateForMode(states, mode) {
     }
     return state;
   }
+  if (mode === 'self') {
+    const started = list.find((s) => s && s.type === 'started' && String(s.name).toLowerCase() === 'in progress') || byType('started');
+    if (!started) throw new Error(`linear-issue-create: no 'started' workflow state found on this team for --self. States seen: ${list.map((s) => `${s.name}(${s.type})`).join(', ') || '(none)'}`);
+    return started;
+  }
   const state = byType('unstarted');
   if (!state) {
     throw new Error(
@@ -180,7 +185,7 @@ function effectiveCreatePriority({ priority, mode, title }) {
  *   named in card-dedupe.js DEDUPE_OPT_OUTS (anything else throws).
  * @param {string} [p.newAnyway] one filing a person says is new work despite
  *   the match; the reason is kept on the card.
- * @returns {Promise<{issue: object, mode: 'dispatch'|'park'|'reused'|'rolled-up', stateName: string}>}
+ * @returns {Promise<{issue: object, mode: 'dispatch'|'self'|'park'|'reused'|'rolled-up', stateName: string}>}
  */
 // BRO-5626 step 6: a session card with no safe acceptance command is the vague
 // card nobody can verify or pick. Advisory first (CLAUDE.md 19): measured
@@ -205,17 +210,22 @@ function missingVerifyReason({ source, mode, parkReason, body, noVerify }) {
   return `${MISSING_VERIFY_MESSAGE} (${v.reason || 'no acceptance command found'})`;
 }
 
-async function createLinearIssue({ title, description, dispatch, park, priority, projectId, model, client, reuseTwin = false, source, dedupeOptOut, newAnyway, noVerify, macOnly }) {
+async function createLinearIssue({ title, description, dispatch, park, self, priority, projectId, model, client, reuseTwin = false, source, dedupeOptOut, newAnyway, noVerify, macOnly }) {
   if (dedupeOptOut !== undefined && !Object.prototype.hasOwnProperty.call(cardDedupe.DEDUPE_OPT_OUTS, dedupeOptOut)) {
     throw new Error(`createLinearIssue: dedupeOptOut "${dedupeOptOut}" is not in card-dedupe.js DEDUPE_OPT_OUTS; add it there with its reason, or drop it`);
   }
   const dedupe = !dedupeOptOut && !newAnyway;
-  const disposition = resolveDisposition({ dispatch, park });
+  const disposition = resolveDisposition({ dispatch, park, self });
   if (!disposition.ok) {
     const err = new Error(disposition.message);
     err.dispositionReason = disposition.reason;
     throw err;
   }
+  // BRO-6130: 'self' is a dispatch the filing session already holds: every dispatch rule below
+  // (near-duplicate refusal, mac-only, START-NOW, VERIFY) applies, but it never reuses someone
+  // else's card as a twin and it is created already started (In Progress).
+  const mode = disposition.mode === 'self' ? 'dispatch' : disposition.mode;
+  const selfFiled = disposition.mode === 'self';
   let body = model == null ? (description || '') : stampModelHint(description, model);
   // BRO-6080: a card only the Mac can do. Todo only (the Mac drain takes Todo
   // cards); the MAC-ONLY line goes first so every check below, and the cloud
@@ -224,7 +234,7 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
     if (typeof macOnly !== 'string' || macOnly.trim().length < 10) {
       throw new Error('macOnly needs a reason of at least 10 characters (what needs the Mac and why)');
     }
-    if (disposition.mode !== 'dispatch') {
+    if (mode !== 'dispatch') {
       throw new Error('--mac-only files a Todo card for the Mac drain; use it with --dispatch, not --park');
     }
     body = `MAC-ONLY: ${macOnly.trim()}\n\n${body}`.trim();
@@ -242,8 +252,8 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   let unpickable = null;
   if (reuseTwin) {
     try {
-      const filedPriority = effectiveCreatePriority({ priority, mode: disposition.mode, title }).priority;
-      unpickable = require('./cloud-worker-pick.js').startNowUnpickableReason({ title, description: body, priority: filedPriority, mode: disposition.mode });
+      const filedPriority = effectiveCreatePriority({ priority, mode, title }).priority;
+      unpickable = require('./cloud-worker-pick.js').startNowUnpickableReason({ title, description: body, priority: filedPriority, mode });
     } catch (e) {
       console.warn(`[linear-issue-create] START-NOW pickability check failed open: ${e.message}`);
     }
@@ -285,8 +295,8 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   // BRO-6080: never for a mac-only filing. A twin gets the notes as a comment,
   // which no picker reads, so it would keep no MAC-ONLY line; the dispatch-mode
   // near-duplicate check below still refuses an open match instead.
-  if (reuseTwin && macOnly === undefined) {
-    const reused = await reuseOpenTwin({ title, body, client, mode: disposition.mode });
+  if (reuseTwin && macOnly === undefined && !selfFiled) {
+    const reused = await reuseOpenTwin({ title, body, client, mode });
     if (reused) return reused;
   }
 
@@ -309,7 +319,7 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   // A --dispatch filing (a session's own card) is never swapped for another
   // card, but a near-match of an open card is refused so the session works on
   // that card or says why it is different (--new-anyway). Fails open.
-  if (dedupe && !contract && disposition.mode === 'dispatch') {
+  if (dedupe && !contract && mode === 'dispatch') {
     const open = await findNearDuplicateOpen({ title, client });
     if (open) {
       const err = new Error(`already open: ${open.card.identifier} ${open.card.title} [${(open.card.state && open.card.state.name) || 'open'}] (title match ${open.score.toFixed(2)}). Work on that card (node scripts/linear-session.js claim --issue=${open.card.identifier}), or if this is different work re-run with --new-anyway "<why>".`);
@@ -318,11 +328,11 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
       throw err;
     }
   }
-  if (dedupe && !contract && disposition.mode === 'park') {
-    const reused = await reuseNearDuplicate({ title, body, client, mode: disposition.mode });
+  if (dedupe && !contract && mode === 'park') {
+    const reused = await reuseNearDuplicate({ title, body, client, mode });
     if (reused) return reused;
   }
-  if (dedupe && disposition.mode === 'park' && !contract && cardDedupe.rollupEnforced({ source: cardSource, description: contractText })) {
+  if (dedupe && mode === 'park' && !contract && cardDedupe.rollupEnforced({ source: cardSource, description: contractText })) {
     const rolled = await rollUpFlood({ title, body, client, source: cardSource, kind });
     if (rolled) return rolled;
   }
@@ -330,7 +340,7 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   const team = await linear.getTeam();
   let missingVerify = null;
   try {
-    missingVerify = missingVerifyReason({ source: cardSource, mode: disposition.mode, parkReason: disposition.reason, body, noVerify });
+    missingVerify = missingVerifyReason({ source: cardSource, mode, parkReason: disposition.reason, body, noVerify });
   } catch (e) {
     console.warn(`[linear-issue-create] VERIFY check failed open: ${e.message}`);
   }
@@ -341,14 +351,14 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   }
   if (missingVerify) console.warn(`[linear-issue-create] VERIFY-ADVISORY: ${missingVerify}. Or pass --no-verify "<reason>" (BRO-5626).`);
 
-  let state = pickStateForMode(team.states, disposition.mode);
+  let state = pickStateForMode(team.states, selfFiled ? 'self' : mode);
 
-  const filed = effectiveCreatePriority({ priority, mode: disposition.mode, title });
+  const filed = effectiveCreatePriority({ priority, mode, title });
   // BRO-5626: a session discovery parked for a technical reason with a safe VERIFY is pickable work, not a
   // block. File it in Todo (no PARKED sentinel) so the workers take it; 183 such cards sat in Backlog
   // untouched once the Mac drain died. Sessions-only path (reuseTwin), fails open to the parked filing.
   let autoTodo = false;
-  if (reuseTwin && disposition.mode === 'park' && !filed.clamped) {
+  if (reuseTwin && mode === 'park' && !filed.clamped) {
     try {
       // Same rule the daily unpark drain applies (scripts/linear-unpark-drain.js), so a card it would move is filed in Todo.
       const parkedBody = `PARKED: ${disposition.reason}\n\n${body}`;
@@ -364,18 +374,27 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   if (filed.clamped) {
     console.warn(`[linear-issue-create] parked issue filed at Medium, not P0/P1 (BRO-4487): "${title}"`);
   }
-  if (disposition.mode === 'park') {
+  if (mode === 'park') {
+    let takeable = null;
     // BRO-5372, warn-only: an advisory must never fail the filing. Lazy require:
     // headless-dispatchability.js pulls in linear-drain-parked.js.
     try {
       const advisory = require('./headless-dispatchability').parkReasonAdvisory(disposition.reason);
       if (advisory) console.warn(`[linear-issue-create] ${advisory}`);
       // BRO-5626: sessions parked technical discoveries by default, and nothing picked them up.
-      const takeable = cardSource === 'session' && !autoTodo && require('./headless-dispatchability').takeableParkAdvisory(disposition.reason);
-      if (takeable) console.warn(`[linear-issue-create] ${takeable}`);
+      takeable = cardSource === 'session' && !autoTodo && require('./headless-dispatchability').takeableParkAdvisory(disposition.reason);
     } catch (e) {
       console.warn(`[linear-issue-create] park-reason advisory failed (filing continues): ${e.message}`);
     }
+    // BRO-6130: the BRO-5626 advisory is now a refusal for session filers (a routine names itself
+    // with --source routine:<name>). Owner/money/login/taste/irreversible/Mac/date reasons are not
+    // "takeable", so those parks pass. Kill switch: LINEAR_TAKEABLE_PARK_REFUSE=0.
+    if (takeable && process.env.LINEAR_TAKEABLE_PARK_REFUSE !== '0') {
+      const err = new Error(`Card refused: ${takeable} If this session is doing the work now, file it with --self. Nothing was filed.`);
+      err.code = 'TAKEABLE_PARK';
+      throw err;
+    }
+    if (takeable) console.warn(`[linear-issue-create] ${takeable}`);
   }
   const clampNote = filed.clamped
     ? `\n\n${PARKED_CLAMP_MARKER} A P0/P1 must be dispatched at creation (BRO-4487); re-file with --dispatch if it needs urgent work.`
@@ -383,7 +402,7 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   const footer = cardDedupe.sourceFooter(cardSource, kind);
   const finalDescription = `${
     autoTodo ? require('./linear-drain-parked.js').unparkDescription(`PARKED: ${disposition.reason}\n\n${body}`, `BRO-5626 filed in Todo ${new Date().toISOString().slice(0, 10)}`).trim()
-      : disposition.mode === 'park' ? `PARKED: ${disposition.reason}${clampNote}\n\n${body}`.trim() : body
+      : mode === 'park' ? `PARKED: ${disposition.reason}${clampNote}\n\n${body}`.trim() : body
   }\n\n${footer}`.trim();
 
   // Built lazily (not at module load) so requiring this file never reads
@@ -427,7 +446,7 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   // successful create into a reported failure.
   recordCreated({ identifier: issue?.identifier, title });
 
-  return { issue, mode: disposition.mode, stateName: state.name, autoTodo };
+  return { issue, mode: selfFiled ? 'self' : mode, stateName: state.name, autoTodo };
 }
 
 // BRO-6080: the 'mac-only' label id, or null (fails open: the MAC-ONLY line

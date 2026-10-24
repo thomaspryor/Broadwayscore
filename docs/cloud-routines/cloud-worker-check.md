@@ -78,7 +78,7 @@ search for an open card about it
 (`node scripts/linear-brain.js find "Board workers unhealthy"`); comment on it if
 one exists, otherwise create one:
 
-    node scripts/linear-brain.js create "Board workers unhealthy: <what>" --priority 2 --park "routine health finding" --notes "<evidence: trigger fields, counts, lock age>\n\n## Acceptance criteria\nVERIFY: <safe-form command that shows it healthy>"
+    node scripts/linear-brain.js create "Board workers unhealthy: <what>" --priority 2 --source routine:cloud-worker-check --park "routine health finding" --notes "<evidence: trigger fields, counts, lock age>\n\n## Acceptance criteria\nVERIFY: <safe-form command that shows it healthy>"
 
 ## 5. Reply
 

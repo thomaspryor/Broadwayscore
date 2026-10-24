@@ -37,8 +37,8 @@ test('BRO-6090: separate ceremony from Added/Completed and show the matching 7-d
   const d7 = await B.fetchBoardInflowCounts({ graphql, now, windowDays: 7 });
   assert.deepEqual([d1.created, d1.completed, d1.canceled], [2, 2, 1]);
   assert.deepEqual([d7.created, d7.completed], [4, 2]);
-  assert.deepEqual(d1.excluded.created, { canary: 1, routineLog: 4, sessionTracking: 2 });
-  assert.deepEqual(d1.excluded.completed, { canary: 1, routineLog: 4, sessionTracking: 1 });
+  assert.deepEqual(d1.excluded.created, { canary: 1, routineLog: 4, sessionTracking: 2, duplicate: 0 });
+  assert.deepEqual(d1.excluded.completed, { canary: 1, routineLog: 4, sessionTracking: 1, duplicate: 0 });
   const m = B.buildBoardNumbers({ data: { d1, d7, bySource: B.summarizeInflowBySource(nodes, { now }) } });
   const lines = B.renderBoardNumbersLines(m).join('\n');
   assert.match(lines, /Added: 2 in 24h \(7-day average 0\.6\/day\), 4 in 7 days/);
@@ -68,8 +68,19 @@ test('BRO-6090: session cutoff is inclusive, requires session provenance and val
   ];
   const r = B.summarizeBoardFlow(nodes, { now, windowDays: 1 });
   assert.deepEqual([r.created, r.completed], [9, 4]);
-  assert.deepEqual(r.excluded.created, { canary: 0, routineLog: 0, sessionTracking: 1 });
+  assert.deepEqual(r.excluded.created, { canary: 0, routineLog: 0, sessionTracking: 1, duplicate: 0 });
   assert.equal(B.summarizeInflowBySource(nodes, { now }).total, 9);
+});
+
+test('BRO-6130: a card in the Duplicate state counts as a record, not as added work', () => {
+  const now = new Date('2026-10-24T12:00:00Z');
+  const nodes = [
+    { title: 'Real work', description: '', createdAt: '2026-10-24T01:00:00Z', state: { name: 'Todo' } },
+    { title: 'Real work again', description: '', createdAt: '2026-10-24T02:00:00Z', canceledAt: '2026-10-24T03:00:00Z', state: { name: 'Duplicate' } },
+  ];
+  const r = B.summarizeBoardFlow(nodes, { now, windowDays: 1 });
+  assert.equal(r.created, 1);
+  assert.equal(r.excluded.created.duplicate, 1);
 });
 
 test('BRO-6090: board flow pages, includes old completions, and labels partial counts as minimums', async () => {

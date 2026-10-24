@@ -127,7 +127,7 @@ async function fetchParkedCards({ graphql, teamKey = TEAM_KEY, graphqlOpts = GRA
 const RECENT_QUERY = `query RecentCards($filter: IssueFilter, $after: String) {
   issues(filter: $filter, first: 100, after: $after, includeArchived: true) {
     pageInfo { hasNextPage endCursor }
-    nodes { title description createdAt completedAt canceledAt }
+    nodes { title description createdAt completedAt canceledAt state { name } }
   }
 }`;
 
@@ -135,6 +135,8 @@ const RECENT_QUERY = `query RecentCards($filter: IssueFilter, $after: String) {
 function ceremonyKind(card, nowMs) {
   const title = String(card.title || '').trim();
   if (/^\[E2E Canary\]/i.test(title)) return 'canary';
+  // BRO-6130: a card closed as a Duplicate of another is the same work counted twice.
+  if (String(card.state && card.state.name || '').trim().toLowerCase() === 'duplicate') return 'duplicate';
   if (/^Opening-night (?:watch|audit) \d{4}-\d{2}-\d{2}$/i.test(title)
     || /^CANARY: touch\b/i.test(title)
     || /^Week in Review(?:\s*[,\u2014:-]\s*|\s+)\d{4}-\d{2}-\d{2}(?: to \d{4}-\d{2}-\d{2})?$/i.test(title)) return 'routineLog';
@@ -152,7 +154,7 @@ function summarizeBoardFlow(cards, { now = new Date(), windowDays = 7 } = {}) {
   const since = windowStart(now, windowDays);
   const startMs = Date.parse(since);
   const nowMs = now.getTime();
-  const empty = () => ({ canary: 0, routineLog: 0, sessionTracking: 0 });
+  const empty = () => ({ canary: 0, routineLog: 0, sessionTracking: 0, duplicate: 0 });
   const result = { created: 0, completed: 0, canceled: 0, excluded: { created: empty(), completed: empty() }, windowDays, since };
   for (const card of cards || []) {
     const kind = ceremonyKind(card, nowMs);
@@ -169,7 +171,7 @@ function summarizeBoardFlow(cards, { now = new Date(), windowDays = 7 } = {}) {
 const BOARD_FLOW_QUERY = `query BoardFlow($filter: IssueFilter, $after: String) {
   issues(filter: $filter, first: 250, after: $after, includeArchived: true) {
     pageInfo { hasNextPage endCursor }
-    nodes { title description createdAt completedAt canceledAt }
+    nodes { title description createdAt completedAt canceledAt state { name } }
   }
 }`;
 
@@ -405,14 +407,14 @@ function renderBoardNumbersLines(m) {
   const lines = [];
   const flowLine = (label, counts) => `${label}: ${show(counts.d1)} in 24h (7-day average ${counts.d7 === null ? 'n/a' : (counts.d7 / 7).toFixed(1)}/day), ${show(counts.d7)} in 7 days`;
   const exclusions = (label, counts) => {
-    for (const [key, name] of [['canary', 'test alarms'], ['routineLog', 'routine logs'], ['sessionTracking', 'session self-tracking (closed within 6h)']]) {
+    for (const [key, name] of [['canary', 'test alarms'], ['routineLog', 'routine logs'], ['sessionTracking', 'session self-tracking (closed within 6h)'], ['duplicate', 'duplicates']]) {
       lines.push(`${label} ${name}: ${show(counts.d1?.[key])} in 24h, ${show(counts.d7?.[key])} in 7 days`);
     }
   };
   lines.push(m.open
     ? `Open cards: ${m.open.total} (${m.open.rows.map((r) => `${r.count} ${r.label}`).join(', ')})`
     : 'Open cards: n/a');
-  lines.push('Added and Completed exclude the test alarms, routine logs and session self-tracking reported separately below.');
+  lines.push('Added and Completed exclude the test alarms, routine logs, session self-tracking and duplicates reported separately below.');
   lines.push(flowLine('Added', m.added));
   exclusions('Added', m.excluded.added);
   if (m.bySource && m.bySource.bySource) {
