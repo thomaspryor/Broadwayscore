@@ -314,3 +314,5 @@ backfill-review-dates.yml
 backfill-meta-evidence.yml
 # BRO-5744: weekly advisory live-art vision sweep; a missed week only delays one rollup card, nothing user-facing. Failures go through notify-failure.
 audit-live-show-art.yml
+# BRO-6103: daily report-first prune of stale land/** refs; a missed day only leaves leftover refs on origin, nothing user-facing. Failures go through notify-failure.
+land-ref-prune.yml
