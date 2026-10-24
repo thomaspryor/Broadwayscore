@@ -7,7 +7,9 @@ const {
   isPunctuationFalsePositive,
   checkTitleMatchSiblingGuards,
   buildSiblingCategoriesFromShows,
+  detectPageMarketQualifier,
 } = require('./show-matching');
+const { categoriesOfCoreTitle } = require('./title-containment');
 const path = require('path');
 const { pageTitleTypoMatch } = require('./fuzzy-title-token');
 
@@ -69,6 +71,23 @@ function checkArchiveCategory(html, show, siblingCategories) {
   let check = validateRoundupPageTitle(html, show.title, show.category, siblingCategories);
   const typoRescue = () => /Review Roundup/i.test(check.pageTitle || '')
     && hasBwwRoundupOverride(show.id) && !!pageTitleTypoMatch(show.title, html);
+  // containing-title-sibling means a longer title in shows.json contains this
+  // one. When that longer title is only ever another MARKET's production of the
+  // same work and the page itself names THIS show's market ("Tina ... on
+  // Broadway" vs the West End "Tina The Tina Turner Musical", Show Score's
+  // "Old Friends (West End)" vs the 2025 Broadway "Stephen Sondheim's Old
+  // Friends"), the page is this show's, not a sibling's (BRO-6141). A longer
+  // title that also exists in the page's own market stays rejected.
+  if (check.reason === 'containing-title-sibling' && check.sibling && check.pageTitle) {
+    // Did They Like It carries no market word in its titles; it reviews
+    // Broadway productions, so its canonical host stands in for "on Broadway".
+    const qualifier = detectPageMarketQualifier(html, check.pageTitle)
+      || (/<link[^>]+rel=["']canonical["'][^>]+href=["']https?:\/\/(?:www\.)?didtheylikeit\.com\//i.test(html) ? 'broadway' : null);
+    const siblingCats = categoriesOfCoreTitle(check.sibling);
+    if (qualifier && qualifier === show.category && siblingCats.length && !siblingCats.includes(qualifier)) {
+      check = { ok: true, reason: 'matched-other-market-sibling', pageTitle: check.pageTitle, confidence: check.confidence, rescued: true };
+    }
+  }
   if (check.reason === 'page-title-mismatch'
       && (isPunctuationFalsePositive(check.pageTitle, show.title) || typoRescue())) {
     // A rescue only proves the page names this title. The sibling guards a
