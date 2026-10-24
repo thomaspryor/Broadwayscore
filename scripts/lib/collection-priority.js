@@ -193,16 +193,18 @@ function isAgedNeverAttemptedStub(data, { minAgeHours = AGED_STUB_MIN_AGE_HOURS,
 
 /**
  * Move up to `cap` entries flagged `_agedStub` to the front of an
- * already-sorted queue, oldest firstSeenAt first (`_agedSince`, ms, 0 when
- * unknown) so repeated runs make steady progress through the backlog. Entries
+ * already-sorted queue. WHICH ones rotate with `seed` (same reasoning as
+ * promoteNeedsRefetch): a fetch that fails writes its verdict to the ledger,
+ * not to the file's fetchAttempts, and most backlog files carry no firstSeenAt,
+ * so any fixed ordering would hand the same 40 files the slots every run. Entries
  * past the cap keep their normal position. Returns a new array; does not
  * mutate the input.
  */
-function promoteAgedStubs(queue, cap = AGED_STUB_DRAIN_PER_RUN) {
+function promoteAgedStubs(queue, cap = AGED_STUB_DRAIN_PER_RUN, seed = drainRotationSeed()) {
   const flagged = [];
   queue.forEach((r, i) => { if (r && r._agedStub) flagged.push({ r, i }); });
   if (!flagged.length || cap <= 0) return queue.slice();
-  flagged.sort((a, b) => ((a.r._agedSince || 0) - (b.r._agedSince || 0)) || (a.i - b.i));
+  flagged.sort((a, b) => (rotationHash(a.r.reviewId || a.i, seed) - rotationHash(b.r.reviewId || b.i, seed)) || (a.i - b.i));
   const chosen = flagged.slice(0, cap).map(f => f.r);
   const promoted = new Set(chosen);
   return [...chosen, ...queue.filter(r => !promoted.has(r))];

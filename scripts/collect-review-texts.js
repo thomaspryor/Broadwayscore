@@ -6708,7 +6708,6 @@ function findReviewsToProcess() {
           _needsRefetch: isNeedsRefetchDrainCandidate(data, failedFetchesByReviewId.get(reviewId)),
           // BRO-6123: aged never-attempted stub, drained from a reserved slice.
           _agedStub: isAgedNeverAttemptedStub(data),
-          _agedSince: Date.parse(data.firstSeenAt) || 0,
           _storedTier: data.contentTier || null,
           _storedTextLength: typeof data.fullText === 'string' ? data.fullText.length : 0,
           // Stored text that may not be this url's review (repointed url, show
