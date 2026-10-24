@@ -136,28 +136,30 @@ function matchWosPosts(rows, shows, posts) {
 }
 
 
-// ---- Guardian Content API search results -> missing guardian slots --------
+// ---- Guardian Content API search results -> missing guardian / observer slots
 
 /**
- * Candidates for a show's missing Guardian slot from Content API search results
- * (section=stage, queried over the show's opening window). A result counts when it is a
- * review (star rating, "review" in the headline, or a /stage/ review URL), its headline names
- * the show title, and it is dated in [opening-14d, opening+60d]. Two or more distinct results
- * after that are kept (ingest's date window and body-names-the-show guards pick), capped at 3.
+ * Candidates for a show's missing Guardian (or Observer) slot from Content API search results
+ * (section=stage, queried over the show's opening window with show-tags=tone and
+ * show-fields=publication). A result counts when it is tagged tone/reviews, published by the
+ * slot's paper (The Guardian vs The Observer share theguardian.com/stage), its headline names the
+ * show title, and it is dated in [opening-14d, opening+60d]. More than one such result means the
+ * title is ambiguous (another production in the same window), so none is kept, like matchWosPosts.
  */
-function matchGuardianResults(show, results) {
+function matchGuardianResults(show, results, slot = 'guardian') {
   if (!show || !show.openingDate) return [];
   const lo = addDays(show.openingDate, -14), hi = addDays(show.openingDate, 60);
   const t = norm(show.title);
   if (!t || t.length < 4) return [];
+  const paper = slot === 'observer' ? 'The Observer' : 'The Guardian';
   const hits = results.filter(r => {
     const date = String(r.webPublicationDate || '').slice(0, 10);
     if (date < lo || date > hi) return false;
-    const head = norm(r.fields && r.fields.headline || r.webTitle);
-    const isReview = r.fields && r.fields.starRating || /\breview\b/.test(head) || /-review\b/.test(r.webUrl || '');
-    return isReview && new RegExp(`(^| )${t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}( |$)`).test(head);
+    if ((r.fields && r.fields.publication) !== paper) return false;
+    if (!(r.tags || []).some(x => x.id === 'tone/reviews')) return false;
+    return ` ${norm(r.fields && r.fields.headline || r.webTitle)} `.includes(` ${t} `);
   });
-  return hits.slice(0, 3).map(r => ({ url: r.webUrl, date: String(r.webPublicationDate).slice(0, 10) }));
+  return hits.length === 1 ? [{ url: hits[0].webUrl, date: String(hits[0].webPublicationDate).slice(0, 10) }] : [];
 }
 
 // ---- spend tally ----------------------------------------------------------

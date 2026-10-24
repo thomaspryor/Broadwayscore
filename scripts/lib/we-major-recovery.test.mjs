@@ -130,15 +130,17 @@ test('norm folds diacritics so accented titles match', () => {
   assert.equal(lib.norm('Café Müller'), lib.norm('Cafe Muller'));
 });
 
-test('matchGuardianResults: review headline naming the show inside the opening window only', () => {
+test('matchGuardianResults: tone/reviews, right paper, title in headline, inside the window, unambiguous', () => {
   const s = show({ title: 'The Lehman Trilogy', openingDate: '2018-07-12' });
-  const r = (date, headline, extra = {}) => ({ webUrl: `https://www.theguardian.com/stage/${date}`, webTitle: headline, webPublicationDate: `${date}T20:00:00Z`, fields: { headline }, ...extra });
-  const hits = lib.matchGuardianResults(s, [
-    r('2018-07-13', 'The Lehman Trilogy review – epic'),
-    r('2019-07-13', 'The Lehman Trilogy review – revival'), // another production, outside the window
-    r('2018-07-10', 'The Lehman Trilogy preview'), // not a review
-    r('2018-07-13', 'Hamlet review'), // other show
-  ]);
-  assert.deepEqual(hits.map(h => h.date), ['2018-07-13']);
+  const r = (date, headline, o = {}) => ({ webUrl: `https://www.theguardian.com/stage/${date}/${headline.length}`, webTitle: headline,
+    webPublicationDate: `${date}T20:00:00Z`, fields: { headline, publication: 'The Guardian' }, tags: [{ id: 'tone/reviews' }], ...o });
+  const only = x => lib.matchGuardianResults(s, x).map(h => h.date);
+  assert.deepEqual(only([r('2018-07-13', 'The Lehman Trilogy review – epic')]), ['2018-07-13']);
+  assert.deepEqual(only([r('2019-07-13', 'The Lehman Trilogy review – revival')]), []); // outside window
+  assert.deepEqual(only([r('2018-07-13', 'The Lehman Trilogy: a feature', { tags: [{ id: 'tone/features' }] })]), []);
+  assert.deepEqual(only([r('2018-07-13', 'The week in theatre: The Lehman Trilogy review', { fields: { headline: 'The week in theatre: The Lehman Trilogy review', publication: 'The Observer' } })]), []); // Observer is not Guardian
+  assert.deepEqual(lib.matchGuardianResults(s, [r('2018-07-13', 'The week in theatre: The Lehman Trilogy review', { fields: { headline: 'The week in theatre: The Lehman Trilogy review', publication: 'The Observer' } })], 'observer').length, 1);
+  assert.deepEqual(only([r('2018-07-13', 'Hamlet review')]), []); // other show
+  assert.deepEqual(only([r('2018-07-13', 'The Lehman Trilogy review – a'), r('2018-07-20', 'The Lehman Trilogy review – b')]), []); // ambiguous
   assert.deepEqual(lib.matchGuardianResults(show({ openingDate: null }), []), []);
 });
