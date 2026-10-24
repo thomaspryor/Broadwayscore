@@ -1,32 +1,42 @@
 {
-  "updatedAt": "2026-10-24T21:40:57.786Z",
-  "processed": 25,
-  "failed": 10,
-  "successRate": "71.4%",
+  "updatedAt": "2026-10-24T22:06:16.232Z",
+  "processed": 188,
+  "failed": 93,
+  "successRate": "66.9%",
   "tierBreakdown": {
-    "playwright": 21,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 98,
+    "amp": 9,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 8,
-    "scrapingbee": 2,
+    "scrapingdog": 11,
+    "scrapingbee": 10,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 4
+    "archive": 54
   },
   "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-24T21:37:30.533Z",
+      "t": "2026-10-24T21:48:46.832Z",
       "event": "bb-session",
-      "session": "53c4c20c",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+      "session": "9442bac6",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
     },
     {
-      "t": "2026-10-24T21:37:38.766Z",
+      "t": "2026-10-24T21:48:47.509Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-24T21:50:17.294Z",
       "event": "bb-session",
-      "session": "c7a8fc97",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+      "session": "8ebced1d",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-24T21:50:17.919Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
