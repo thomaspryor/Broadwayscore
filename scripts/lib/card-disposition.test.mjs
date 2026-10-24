@@ -45,6 +45,9 @@ const STATES = [
   { id: 's-prog', name: 'In Progress', type: 'started' },
 ];
 
+// createLinearIssue reads the team through the module client (needs LINEAR_API_KEY, absent in CI): stub it for this file.
+require('./linear-client.js').getTeam = async () => ({ id: 'team', states: { nodes: STATES } });
+
 test('createLinearIssue --self files In Progress and never reuses a twin', async (t) => {
   const { client, created } = fakeClient(STATES);
   let r;
