@@ -112,6 +112,18 @@ test('fixture page extracts every listed critic and drops the Buy tickets pseudo
     assert.equal(isPseudoRow({ outlet: o }), true, o);
   }
   for (const o of ['The Guardian', 'Time Out', 'Evening Standard', 'WhatsOnStage']) assert.equal(isPseudoRow({ outlet: o }), false, o);
+  // Registered outlets whose labels look like a domain or a "...Theatre" venue are critic rows (ship-check).
+  for (const o of ['London Theatre', 'Everything Theatre', 'A Younger Theatre', 'British Theatre', 'BritishTheatre.com', 'WhatsOnStage.com', 'broadwayworld.com']) {
+    assert.equal(isPseudoRow({ outlet: o }), false, o);
+  }
+  // Prevention: no registered outlet name or alias may be classed as a pseudo-row (ticket resellers aside).
+  const reg = JSON.parse(fs.readFileSync(path.join(here, '..', '..', 'data', 'outlet-registry.json'), 'utf8'));
+  const dropped = [];
+  for (const [id, v] of Object.entries(reg.outlets || reg)) {
+    if (/ticket/i.test(id)) continue;
+    for (const n of [v.name, ...(v.aliases || [])].filter(Boolean)) if (isPseudoRow({ outlet: n })) dropped.push(`${id}:${n}`);
+  }
+  assert.deepEqual(dropped, []);
   assert.equal(canonicalLabel('Guardian review.'), 'The Guardian');
   assert.equal(canonicalLabel('Mail'), 'Daily Mail');
 });

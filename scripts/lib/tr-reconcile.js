@@ -14,12 +14,16 @@ const fs = require('fs');
 const path = require('path');
 const { hasReviewFor } = require('./outlet-ground-truth');
 const { resolveArchiveRowOutletId } = require('./archive-outlet-identity');
+const { normalizeOutlet, isRegisteredOutlet } = require('./review-normalization');
 const { explainExclusion } = require('./review-guards');
 const { PERMANENT_REASONS } = require('./census-rebuild-exclusions');
 
 // Ticket links, bare domains and venue links that theatre.reviews renders in the same list as
 // critic rows ("Click here to buy tickets direct...", "www.thedukeofyorks.com", "Noël Coward Theatre").
-const PSEUDO_OUTLET = /^(buy\s+tickets?|book\s+(now|tickets?)|tickets?|see\s+tickets?|get\s+tickets?|click\s+here\b|(https?:\/\/)?(www\.)?[a-z0-9-]+(\.[a-z0-9-]+)*\.(com|co\.uk|org|uk|net)\b|.*\btheatre$)/i;
+const TICKET_LINK = /^(buy\s+tickets?|book\s+(now|tickets?)|tickets?|see\s+tickets?|get\s+tickets?|click\s+here\b)/i;
+// Bare domains and "...Theatre" venue links. Outlets such as "London Theatre", "Everything Theatre"
+// or "WhatsOnStage.com" match these shapes too, so a label the outlet registry knows is a critic row.
+const DOMAIN_OR_VENUE = /^((https?:\/\/)?(www\.)?[a-z0-9-]+(\.[a-z0-9-]+)*\.(com|co\.uk|org|uk|net)\b|.*\btheatre$)/i;
 
 // theatre.reviews abbreviates some outlets in its row labels; "Time" is The Times
 // (without this it resolves to a junk "time" outlet, BRO-6084).
@@ -32,7 +36,12 @@ function canonicalLabel(label) {
 function isPseudoRow(row) {
   const label = String((row && row.outlet) || '').trim();
   if (!label) return true;
-  return PSEUDO_OUTLET.test(label);
+  if (TICKET_LINK.test(label)) return true;
+  if (!DOMAIN_OR_VENUE.test(label)) return false;
+  let registered = false;
+  const bare = canonicalLabel(label).replace(/^(https?:\/\/)?(www\.)?/i, '').replace(/\.(com|co\.uk|org|uk|net)$/i, '');
+  try { registered = [canonicalLabel(label), bare].some((l) => isRegisteredOutlet(normalizeOutlet(l))); } catch { /* unknown label */ }
+  return !registered;
 }
 
 function rowOutletId(row) {
