@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-24T11:39:14.571Z",
+    "lastUpdated": "2026-10-24T13:05:01.669Z",
     "version": "2.1.0",
-    "lastChange": "BRO-6056: multiAuthor on 25 defaultCritic outlets whose files show several other named critics; multiAuthor:false on 3 reviewed single-author outlets"
+    "lastChange": "BRO-6122: standingCoverage promote talkinbroadway (audit-standing-coverage lists talkinbroadway under promote (unflagged, clears the bar))"
   },
   "outlets": {
     "westendtheatre": {
@@ -677,7 +677,11 @@
         "talkin-broadway"
       ],
       "domain": "talkinbroadway.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "standingCoverage": true,
+      "standingMarkets": [
+        "broadway"
+      ]
     },
     "cititour": {
       "displayName": "Cititour",

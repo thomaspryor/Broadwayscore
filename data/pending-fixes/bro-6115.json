@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6115",
   "planId": "6c5796cb-20a9-480a-8627-7e51f3d3ac78",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-24T12:30:00.000Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,15 @@
         "description": "Promote talkinbroadway to standingCoverage"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-24T13:05:01.709Z",
+  "results": [
+    {
+      "action": "outlet-registry-flag",
+      "ok": true,
+      "changed": true,
+      "msg": "talkinbroadway: standingCoverage false -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
