@@ -299,6 +299,8 @@ function closedTbdLossAction(entry, show, { now = Date.now(), requireLossEvidenc
   const days = daysAgo(show.closingDate, now);
   if (!Number.isFinite(days)) return null;
   const designation = lossLabelFor(entry);
+  // A win-side estimate beside a recorded non-recoupment is contradictory: a person looks.
+  if (designation && !isLossDesignation(designation) && entry.recouped === false) return { action: 'flag' };
   if (requireLossEvidence || !designation) {
     return 'needsLossEvidence' in entry ? null : { action: 'flag' };
   }

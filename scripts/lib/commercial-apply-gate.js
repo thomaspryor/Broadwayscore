@@ -184,12 +184,13 @@ function recoupClaimDesignationAction(existing) {
   const designation = canonicalDesignation(existing.designation) || existing.designation;
   // A verified recoupment contradicts every loss label (validate-data.js
   // rejects one with recouped:true).
+  // Our estimate gives way to a verified recoupment, on any tier (BRO-6158).
+  if (existing.designationBasis === DESIGNATION_BASES.MODEL_ESTIMATE && existing.humanReviewedDesignation !== true
+    && designation && designation !== 'TBD') return 'reset';
   if (!isLossDesignation(designation)) return 'keep';
   if (existing.humanReviewedDesignation === true) return 'block';
   if (existing.classifiedBy === 'classify-stale-closures') return 'reset';
   if (existing.designationBasis === DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED) return 'reset';
-  // Our estimate gives way to a verified recoupment (BRO-6158).
-  if (existing.designationBasis === DESIGNATION_BASES.MODEL_ESTIMATE) return 'reset';
   return 'block';
 }
 
@@ -374,7 +375,7 @@ function stampDesignationBasis(result, entry, existing) {
   const d = result.designation;
   // A model estimate (BRO-6158) rests on our figures, not on a source, and may
   // sit on a recouped-side tier too; it keeps its basis wherever it is stamped.
-  if (d && d !== 'TBD' && (
+  if (d && d !== 'TBD' && result.recouped !== true && (
     (entry && entry.designationBasis === DESIGNATION_BASES.MODEL_ESTIMATE)
     || (existing && existing.designation === d && existing.designationBasis === DESIGNATION_BASES.MODEL_ESTIMATE
       && !(entry && entry.designationBasis))
