@@ -1788,5 +1788,36 @@
       }
     ],
     "queuedAt": "2026-10-25T00:40:57.679Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6184-delta-assert",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-6184-delta-assert",
+    "description": "land.yml did not land land/bro-6184-delta-assert: the scripts-lib-tests gate went red at b46e3cfc92. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40147759626",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6184-delta-assert"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "b46e3cfc92a597bb4a90ca98e3990ad35827ae40"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40147759626"
+      }
+    ],
+    "queuedAt": "2026-10-25T01:02:09.437Z"
   }
 ]
