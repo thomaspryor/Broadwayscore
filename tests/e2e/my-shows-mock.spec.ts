@@ -1,6 +1,6 @@
 import { type Page } from '@playwright/test';
 import { test, expect, MOCK_TODAY } from './helpers/ugc-test';
-import { switchToListView } from './helpers/mock-helpers';
+import { switchToListView, unstickSiteHeader } from './helpers/mock-helpers';
 import { filterNonCriticalErrors } from './helpers/console-errors';
 
 
@@ -546,6 +546,7 @@ test.describe('My Shows — Desktop Layout (1440px)', () => {
 // real change inside [data-testid="my-shows-content"] moves these baselines.
 test.describe('My Shows — Visual Regression', () => {
   const content = (page: Page) => page.getByTestId('my-shows-content');
+  test.beforeEach(async ({ page }) => { await unstickSiteHeader(page); });
 
   test('diary list view at 390px', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });

@@ -1,5 +1,5 @@
 import { test, expect } from './helpers/ugc-test';
-import { VIEWPORTS, goToMock, goToRatingEditor } from './helpers/mock-helpers';
+import { VIEWPORTS, goToMock, goToRatingEditor, unstickSiteHeader } from './helpers/mock-helpers';
 
 /**
  * Visual baseline screenshots for all UGC states.
@@ -13,6 +13,7 @@ for (const vp of VIEWPORTS) {
   test.describe(`UGC Visual Baselines — ${vp.name} (${vp.width}px)`, () => {
     test.beforeEach(async ({ page }) => {
       await page.setViewportSize({ width: vp.width, height: vp.height });
+      await unstickSiteHeader(page);
     });
 
     // ─── My Shows — Diary ──────────────────────────────────────
