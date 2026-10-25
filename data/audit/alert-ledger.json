@@ -26541,6 +26541,47 @@
       "cardId": null,
       "linearIdentifier": null,
       "resolvedAt": "2026-10-25T14:05:05.983Z"
+    },
+    "cron-health:GitLab Code Mirror": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: GitLab Code Mirror",
+      "firstSeen": "2026-10-25T15:22:55.001Z",
+      "incidentOpenedAt": "2026-10-25T15:22:55.001Z",
+      "lastSeen": "2026-10-25T15:22:55.001Z",
+      "lastNotifiedAt": "2026-10-25T15:22:55.001Z",
+      "lastSurfacedAt": "2026-10-25T15:22:55.001Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health:Update Lottery/Rush": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Update Lottery/Rush",
+      "firstSeen": "2026-10-25T15:22:55.022Z",
+      "incidentOpenedAt": "2026-10-25T15:22:55.022Z",
+      "lastSeen": "2026-10-25T15:22:55.022Z",
+      "lastNotifiedAt": "2026-10-25T15:22:55.022Z",
+      "lastSurfacedAt": "2026-10-25T15:22:55.022Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health-chronic:Commercial Pending Review Notify": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Cron stale 3+ consecutive days: Commercial Pending Review Notify",
+      "firstSeen": "2026-10-25T15:22:55.146Z",
+      "incidentOpenedAt": "2026-10-25T15:22:55.146Z",
+      "lastSeen": "2026-10-25T15:22:55.146Z",
+      "lastNotifiedAt": "2026-10-25T15:22:55.146Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6209"
     }
   }
 }
