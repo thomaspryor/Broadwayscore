@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-25T10:31:15.637Z",
+  "generatedAt": "2026-10-25T14:16:03.425Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -69,6 +69,11 @@
       "openingDate": "2026-10-22"
     },
     {
+      "id": "aftermath-art-new-york-off-broadway-2026",
+      "title": "Aftermath",
+      "openingDate": "2026-10-24"
+    },
+    {
       "id": "copperfield-the-new-musical-off-broadway-2026",
       "title": "Copperfield! The New Musical",
       "openingDate": "2026-10-19"
@@ -122,10 +127,6 @@
       "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
     },
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -148,21 +149,16 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 680,
-  "matchedGaps": 6,
-  "possibleGaps": 1,
+  "itemsScanned": 652,
+  "matchedGaps": 4,
+  "possibleGaps": 2,
   "gaps": [
-    {
-      "showId": "garry-starr-classic-penguins-off-west-end-2026",
-      "title": "Garry Starr Classic Penguins",
-      "level": "matched",
-      "outletId": "a-youngish-perspective",
-      "url": "https://ayoungishperspective.co.uk/2026/10/25/review-garry-starr-classic-penguins-3/",
-      "headline": "REVIEW: Garry Starr: Classic Penguins",
-      "publishDate": "2026-10-25"
-    },
     {
       "showId": "ilford-boy-west-end-2026",
       "title": "Ilford Boy",
@@ -182,22 +178,13 @@
       "publishDate": "2026-10-23"
     },
     {
-      "showId": "the-pianist-off-west-end-2026",
-      "title": "The Pianist",
+      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "title": "The Curious Case of Benjamin Button",
       "level": "matched",
-      "outletId": "firstnightmagazine",
-      "url": "https://firstnightmagazine.com/2026/10/24/review-of-the-pianist-2026-park-theatre-stage-adaptation-hits-all-the-right-notes-despite-lacking-a-few-fortes/",
-      "headline": "Review of &#8216;The Pianist&#8217; (2026, Park Theatre): &#8220;Stage adaptation hits all the right notes despite lacking a few fortes&#8221;",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/midnight-1-2-the-curious-case-of-benjamin-button/",
+      "headline": "Midnight ** 1/2, The Curious Case of Benjamin Button ****",
       "publishDate": "2026-10-24"
-    },
-    {
-      "showId": "the-pianist-off-west-end-2026",
-      "title": "The Pianist",
-      "level": "matched",
-      "outletId": "readaboutstuff",
-      "url": "https://readaboutstuff.com/2026/10/25/review-the-pianist-park-theatre-london/",
-      "headline": "Review: The Pianist &#8211; Park Theatre, London",
-      "publishDate": "2026-10-25"
     },
     {
       "showId": "the-pianist-off-west-end-2026",
@@ -207,6 +194,15 @@
       "url": "https://www.pinkprincetheatre.com/post/review-the-pianist-park-theatre",
       "headline": "REVIEW: THE PIANIST @ PARK THEATRE",
       "publishDate": "2026-10-25"
+    },
+    {
+      "showId": "copperfield-the-new-musical-off-broadway-2026",
+      "title": "Copperfield! The New Musical",
+      "level": "possible",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/the-curious-case-of-benjamin-button/",
+      "headline": "The Curious Case of Benjamin Button *****",
+      "publishDate": "2026-10-21"
     },
     {
       "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",

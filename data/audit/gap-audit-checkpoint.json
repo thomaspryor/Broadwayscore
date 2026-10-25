@@ -2018,9 +2018,11 @@
     "uncollected": 0
   },
   "orlando-off-broadway-2026": {
-    "at": "2026-09-18T01:45:36.159Z",
-    "gaps": 28,
-    "uncollected": 1
+    "at": "2026-10-25T14:10:19.598Z",
+    "gaps": 2,
+    "priorProductionGaps": 26,
+    "uncollected": 1,
+    "alertUncollected": 1
   },
   "three-houses-off-broadway-2026": {
     "at": "2026-09-19T01:50:07.042Z",
@@ -3794,9 +3796,11 @@
     "serpCensusAt": "2026-09-18T22:58:22.312Z"
   },
   "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026": {
-    "at": "2026-09-18T20:06:00.083Z",
-    "gaps": 10,
-    "uncollected": 2,
+    "at": "2026-10-25T14:13:17.670Z",
+    "gaps": 1,
+    "priorProductionGaps": 5,
+    "uncollected": 0,
+    "alertUncollected": 0,
     "serpCensusAt": "2026-09-18T20:06:00.083Z"
   },
   "tartuffe-remixed-off-west-end-2026": {
@@ -5219,8 +5223,8 @@
     "uncollected": 0
   },
   "the-curious-case-of-benjamin-button-off-broadway-2026": {
-    "at": "2026-10-25T05:31:32.913Z",
-    "gaps": 3,
+    "at": "2026-10-25T14:03:47.018Z",
+    "gaps": 2,
     "priorProductionGaps": 0,
     "uncollected": 0,
     "alertUncollected": 0,
@@ -5231,22 +5235,22 @@
         "since": "2026-10-21T09:46:32.636Z"
       }
     },
-    "serpCensusAt": "2026-10-25T05:31:32.913Z"
+    "serpCensusAt": "2026-10-25T14:03:47.018Z"
   },
   "king-of-the-yees-off-broadway-2026": {
-    "at": "2026-10-25T05:27:02.628Z",
+    "at": "2026-10-25T13:58:45.210Z",
     "gaps": 3,
     "priorProductionGaps": 0,
     "uncollected": 2,
     "alertUncollected": 2,
-    "serpCensusAt": "2026-10-25T05:27:02.628Z"
+    "serpCensusAt": "2026-10-25T13:58:45.211Z"
   },
   "martin-guerre-west-end-2026": {
-    "at": "2026-10-25T08:36:48.044Z",
-    "gaps": 0,
-    "priorProductionGaps": 1,
-    "uncollected": 0,
-    "alertUncollected": 0,
+    "at": "2026-10-25T14:07:08.277Z",
+    "gaps": 2,
+    "priorProductionGaps": 0,
+    "uncollected": 2,
+    "alertUncollected": 2,
     "refVersion": 2,
     "zeroChar": {
       "https://musicaltheatrereview.com/new-look-martin-guerre-to-debut-at-the-old-vic/": {
@@ -5258,9 +5262,19 @@
         "n": 2,
         "at": "2026-10-21T05:28:16.971Z",
         "since": "2026-10-20T17:40:02.790Z"
+      },
+      "https://1883magazine.com/martin-guerre-old-vic-review/": {
+        "n": 1,
+        "at": "2026-10-25T14:07:44.126Z",
+        "since": "2026-10-25T14:07:44.126Z"
       }
     },
-    "serpCensusAt": "2026-10-25T08:36:48.045Z"
+    "serpCensusAt": "2026-10-25T08:36:48.045Z",
+    "weAlert": {
+      "hash": "1538699025",
+      "at": "2026-10-25T14:07:08.286Z",
+      "delivered": false
+    }
   },
   "stories-the-tap-dance-sensation-west-end-2026": {
     "at": "2026-10-22T18:28:43.687Z",
@@ -6331,12 +6345,12 @@
     "serpCensusAt": "2026-10-25T05:22:12.326Z"
   },
   "copperfield-the-new-musical-off-broadway-2026": {
-    "at": "2026-10-25T05:33:44.166Z",
+    "at": "2026-10-25T14:04:36.170Z",
     "gaps": 2,
     "priorProductionGaps": 0,
     "uncollected": 0,
     "alertUncollected": 0,
-    "serpCensusAt": "2026-10-25T05:33:44.167Z"
+    "serpCensusAt": "2026-10-25T14:04:36.171Z"
   },
   "seussical-theatre-young-audiences-off-broadway-2026": {
     "at": "2026-10-24T23:55:33.025Z",
@@ -6347,8 +6361,8 @@
     "serpCensusAt": "2026-10-24T23:55:33.025Z"
   },
   "ilford-boy-west-end-2026": {
-    "at": "2026-10-25T08:43:29.542Z",
-    "gaps": 3,
+    "at": "2026-10-25T14:14:43.303Z",
+    "gaps": 0,
     "priorProductionGaps": 0,
     "uncollected": 0,
     "alertUncollected": 0,
@@ -6388,7 +6402,7 @@
     "serpCensusAt": "2026-10-25T05:24:33.804Z"
   },
   "billy-crystal-860-2026": {
-    "at": "2026-10-25T08:37:58.546Z",
+    "at": "2026-10-25T14:08:06.149Z",
     "gaps": 0,
     "priorProductionGaps": 0,
     "uncollected": 0,
@@ -6444,8 +6458,8 @@
     "serpCensusAt": "2026-10-25T10:11:20.028Z"
   },
   "derren-brown-only-human-west-end-2026": {
-    "at": "2026-10-25T08:41:19.905Z",
-    "gaps": 3,
+    "at": "2026-10-25T14:11:46.589Z",
+    "gaps": 2,
     "priorProductionGaps": 0,
     "uncollected": 0,
     "alertUncollected": 0,
@@ -6475,23 +6489,23 @@
     "serpCensusAt": "2026-10-25T08:41:19.906Z"
   },
   "phyl-off-broadway-2026": {
-    "at": "2026-10-25T05:34:17.483Z",
-    "gaps": 0,
+    "at": "2026-10-25T14:05:41.046Z",
+    "gaps": 1,
     "priorProductionGaps": 0,
     "uncollected": 0,
     "alertUncollected": 0,
-    "serpCensusAt": "2026-10-24T23:43:19.923Z"
+    "serpCensusAt": "2026-10-25T14:05:41.046Z"
   },
   "the-pianist-off-west-end-2026": {
-    "at": "2026-10-25T08:38:58.631Z",
-    "gaps": 1,
+    "at": "2026-10-25T14:09:07.146Z",
+    "gaps": 4,
     "priorProductionGaps": 2,
     "uncollected": 0,
     "alertUncollected": 0,
     "refVersion": 2,
     "weAlert": {
-      "hash": "4011895429",
-      "at": "2026-10-24T01:24:05.613Z",
+      "hash": "3223391498",
+      "at": "2026-10-25T14:09:07.154Z",
       "delivered": false
     },
     "zeroChar": {
@@ -6509,9 +6523,9 @@
     "serpCensusAt": "2026-10-25T08:38:58.631Z"
   },
   "the-imaginary-invalid-2026": {
-    "at": "2026-10-25T08:40:23.829Z",
+    "at": "2026-10-25T14:11:08.659Z",
     "gaps": 1,
-    "priorProductionGaps": 7,
+    "priorProductionGaps": 0,
     "uncollected": 0,
     "alertUncollected": 0,
     "serpCensusAt": "2026-10-25T08:40:23.829Z"
@@ -6649,9 +6663,9 @@
     "serpCensusAt": "2026-10-25T10:18:23.214Z"
   },
   "garry-starr-classic-penguins-off-west-end-2026": {
-    "at": "2026-10-25T08:42:27.404Z",
-    "gaps": 10,
-    "priorProductionGaps": 11,
+    "at": "2026-10-25T14:12:08.912Z",
+    "gaps": 9,
+    "priorProductionGaps": 10,
     "uncollected": 6,
     "alertUncollected": 6,
     "refVersion": 2,
@@ -6662,13 +6676,13 @@
     },
     "zeroChar": {
       "https://fringereview.co.uk/review/edinburgh-fringe/2026/garry-starr-classic-penguins-4/": {
-        "n": 2,
-        "at": "2026-10-25T08:42:48.140Z",
+        "n": 3,
+        "at": "2026-10-25T14:12:25.269Z",
         "since": "2026-10-24T23:52:10.700Z"
       },
       "https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/": {
-        "n": 1,
-        "at": "2026-10-25T08:42:48.140Z",
+        "n": 2,
+        "at": "2026-10-25T14:12:25.269Z",
         "since": "2026-10-25T08:42:48.140Z"
       }
     },
@@ -6720,7 +6734,7 @@
     "alertUncollected": 0
   },
   "love-me-off-broadway-2026": {
-    "at": "2026-10-25T08:45:58.173Z",
+    "at": "2026-10-25T14:15:16.000Z",
     "gaps": 1,
     "priorProductionGaps": 6,
     "uncollected": 0,
@@ -6771,7 +6785,7 @@
     "alertUncollected": 0
   },
   "dance-is-not-for-us-off-west-end-2026": {
-    "at": "2026-10-24T23:47:43.759Z",
+    "at": "2026-10-25T14:02:37.380Z",
     "gaps": 1,
     "priorProductionGaps": 1,
     "uncollected": 1,
@@ -6784,7 +6798,7 @@
         "since": "2026-10-23T11:37:52.526Z"
       }
     },
-    "serpCensusAt": "2026-10-24T23:47:43.819Z"
+    "serpCensusAt": "2026-10-25T14:02:37.421Z"
   },
   "inala-west-end-2026": {
     "at": "2026-10-23T11:43:51.732Z",
@@ -6980,5 +6994,13 @@
     "priorProductionGaps": 0,
     "uncollected": 0,
     "alertUncollected": 0
+  },
+  "crybabies-the-scaring-off-west-end-2026": {
+    "at": "2026-10-25T14:06:04.287Z",
+    "gaps": 0,
+    "priorProductionGaps": 0,
+    "uncollected": 0,
+    "alertUncollected": 0,
+    "refVersion": 2
   }
 }
