@@ -8,14 +8,14 @@
   "retentionDays": 395,
   "counts": {
     "withGap": 402,
-    "missingCurrentRun": 573,
+    "missingCurrentRun": 571,
     "totalCitedNoUrl": 3,
-    "totalFlaggedMisses": 707,
-    "totalRecoverable": 2,
+    "totalFlaggedMisses": 706,
+    "totalRecoverable": 1,
     "totalRecovered": 14,
     "humanExcluded": 4,
-    "automatedExcluded": 356,
-    "automatedExcludedListed": 297,
+    "automatedExcluded": 355,
+    "automatedExcludedListed": 296,
     "priorProductionCitations": 5661
   },
   "results": [
@@ -12713,21 +12713,13 @@
         "https://www.whatsonstage.com/news/antigone-exits-at-chichesters-minerva-theatre-review_1734289/",
         "https://www.aol.co.uk/articles/antigone-exits-review-emotions-run-104342000.html",
         "https://www.theargus.co.uk/news/26600536.antigone-exits-minerva-theatre-chichester/",
-        "https://www.uktw.co.uk/archive/Chichester/Minerva-Theatre/Play/Antigone-Exits/L350214576/",
         "https://egazette.ai/article/review-antigone-exits-delivers-an-experimental-but-uneven-take-on-greek-tragedy-f40ae7",
         "https://www.theargus.co.uk/news/26460635.antigone-exits-cast-revealed-chichester-festival-theatre/"
       ],
       "dirFiles": 13,
       "dirClean": 9,
       "inReviewsJson": 9,
-      "missing": [
-        {
-          "url": "https://www.uktw.co.uk/archive/Chichester/Minerva-Theatre/Play/Antigone-Exits/L350214576/",
-          "host": "uktw.co.uk",
-          "knownOutletId": "uktw",
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "theartsdesk.com",
@@ -12850,13 +12842,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 33,
+        "count": 34,
         "byReason": {
           "non-review-path": 1,
           "non-review-host": 25,
           "no-review-evidence": 1,
           "write-path-blocked": 1,
-          "census-junk-host": 5
+          "census-junk-host": 5,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [
@@ -12921,13 +12914,6 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "uktw",
-            "outlet": "uktw",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.uktw.co.uk/archive/Chichester/Minerva-Theatre/Play/Antigone-Exits/L350214576/"
-          },
           {
             "outletId": "egazette",
             "outlet": "egazette",
@@ -13006,13 +12992,6 @@
             "firstSeenAt": "2026-10-21T05:36:11.502Z"
           },
           {
-            "url": "https://www.uktw.co.uk/archive/Chichester/Minerva-Theatre/Play/Antigone-Exits/L350214576/",
-            "outletId": "uktw",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-21T05:36:11.502Z"
-          },
-          {
             "url": "https://egazette.ai/article/review-antigone-exits-delivers-an-experimental-but-uneven-take-on-greek-tragedy-f40ae7",
             "outletId": "egazette",
             "state": "GAP",
@@ -13029,7 +13008,7 @@
         ],
         "censusSchema": 3,
         "liveCount": 10,
-        "candidateCount": 13
+        "candidateCount": 12
       },
       "computedAt": "2026-10-21T05:36:11.502Z"
     },
@@ -42359,7 +42338,6 @@
         "https://ayoungishperspective.co.uk/2026/10/05/review-berliner-ensemble-de-profundis/",
         "https://thespyinthestalls.com/2026/10/de-profundis/",
         "https://playstosee.com/reviews/uk-reviews/de-profundis-2/",
-        "https://www.uktw.co.uk/London/The-Coronet/Play/De-Profundis/L1410119577/",
         "https://playsinternational.org.uk/de-profundis-coronet-theatre/",
         "https://theatreweekly.com/berliner-ensembles-acclaimed-production-of-de-profundis-receives-uk-premiere-at-the-coronet-theatre/",
         "https://www.broadwayworld.com/westend/article/Review-DE-PROFUNDIS-The-Coronet-Theatre-20261003",
@@ -42383,29 +42361,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.uktw.co.uk/London/The-Coronet/Play/De-Profundis/L1410119577/",
-          "host": "uktw.co.uk",
-          "knownOutletId": "uktw",
-          "recoverable": true,
-          "recoverableFile": "uktw--unknown.json",
-          "recoverableOutletId": "uktw",
-          "recoverableCritic": "Unknown",
-          "recoverableCount": 1,
-          "dirFlags": [
-            {
-              "file": "uktw--unknown.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.uktw.co.uk/archive/London/The-Coronet/Play/De-Profundis/L1410119577/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "noTextOrScoreSignal"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
         {
           "url": "https://viewfromthegods.co.uk/2026/10/07/10-6-26-de-profundis-coronet/",
           "host": "viewfromthegods.co.uk",
@@ -42557,17 +42512,18 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 20,
+        "count": 21,
         "byReason": {
           "non-review-host": 11,
           "roundup-page": 2,
           "write-path-blocked": 4,
           "event-listings-page": 2,
-          "venue-production-page": 1
+          "venue-production-page": 1,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 2,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "ingestResults": [
         {
@@ -42621,13 +42577,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/london/theatre/de-profundis-2"
-          },
-          {
-            "outletId": "uktw",
-            "outlet": "uktw",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.uktw.co.uk/London/The-Coronet/Play/De-Profundis/L1410119577/"
           },
           {
             "outletId": "viewfromthegods",
@@ -42731,13 +42680,6 @@
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
           },
           {
-            "url": "https://www.uktw.co.uk/London/The-Coronet/Play/De-Profundis/L1410119577/",
-            "outletId": "uktw",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T14:24:41.672Z"
-          },
-          {
             "url": "https://viewfromthegods.co.uk/2026/10/07/10-6-26-de-profundis-coronet/",
             "outletId": "viewfromthegods",
             "state": "GAP",
@@ -42747,7 +42689,7 @@
         ],
         "censusSchema": 3,
         "liveCount": 13,
-        "candidateCount": 16
+        "candidateCount": 15
       },
       "computedAt": "2026-10-22T11:18:11.739Z"
     },
@@ -227686,7 +227628,6 @@
         "https://www.adventuresintheatreland.com/post/three-men-in-a-boat-rose-theatre",
         "https://www.westendbestfriend.co.uk/news/review-three-men-in-a-boat-rose-theatre-kingston",
         "https://www.essentialsurrey.co.uk/theatre-arts/theatre-reviews/three-men-in-a-boat/",
-        "https://www.uktw.co.uk/Kingston/Rose-Theatre-Kingston/Play/Three-Men-In-a-Boat/L0539480084/",
         "https://www.yourlocalguardian.co.uk/leisure/theatre/11793541.review-three-men-in-a-boat-takes-journey-through-thames-at-the-rose/",
         "https://thespyinthestalls.com/2026/09/three-men-in-a-boat-2/"
       ],
@@ -227694,12 +227635,6 @@
       "dirClean": 13,
       "inReviewsJson": 15,
       "missing": [
-        {
-          "url": "https://www.uktw.co.uk/Kingston/Rose-Theatre-Kingston/Play/Three-Men-In-a-Boat/L0539480084/",
-          "host": "uktw.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
         {
           "url": "https://www.yourlocalguardian.co.uk/leisure/theatre/11793541.review-three-men-in-a-boat-takes-journey-through-thames-at-the-rose/",
           "host": "yourlocalguardian.co.uk",
@@ -227814,11 +227749,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 19,
+        "count": 20,
         "byReason": {
           "non-review-host": 17,
           "roundup-page": 1,
-          "non-review-path": 1
+          "non-review-path": 1,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -227876,13 +227812,6 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "uktw.co.uk",
-            "outlet": "uktw.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.uktw.co.uk/Kingston/Rose-Theatre-Kingston/Play/Three-Men-In-a-Boat/L0539480084/"
-          },
           {
             "outletId": "yourlocalguardian.co.uk",
             "outlet": "yourlocalguardian.co.uk",
@@ -227978,13 +227907,6 @@
             "firstSeenAt": "2026-10-04T17:10:48.347Z"
           },
           {
-            "url": "https://www.uktw.co.uk/Kingston/Rose-Theatre-Kingston/Play/Three-Men-In-a-Boat/L0539480084/",
-            "outletId": "uktw.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T09:20:33.796Z"
-          },
-          {
             "url": "https://www.yourlocalguardian.co.uk/leisure/theatre/11793541.review-three-men-in-a-boat-takes-journey-through-thames-at-the-rose/",
             "outletId": "yourlocalguardian.co.uk",
             "state": "GAP",
@@ -227994,7 +227916,7 @@
         ],
         "censusSchema": 3,
         "liveCount": 14,
-        "candidateCount": 16
+        "candidateCount": 15
       },
       "computedAt": "2026-10-04T17:10:48.347Z",
       "automatedExcludedListed": 0
@@ -251796,5 +251718,31 @@
       "computedAt": "2026-09-18T01:46:03.483Z",
       "ageHours": 896.7
     }
+  },
+  "localReconciliation": {
+    "issue": "BRO-3964",
+    "checkedAt": "2026-10-25T12:59:11.760Z",
+    "sourceAuditGeneratedAt": "2026-10-25T10:27:27.352Z",
+    "method": "Existing classifyGapCandidateUrl rules only. No discovery or private review writes. Discovery timestamps and prior-production rows preserved.",
+    "removed": [
+      {
+        "showId": "antigone-exits-chichester-regional-2026",
+        "sourceArray": "missing",
+        "url": "https://www.uktw.co.uk/archive/Chichester/Minerva-Theatre/Play/Antigone-Exits/L350214576/",
+        "reason": "ticketing-listing"
+      },
+      {
+        "showId": "de-profundis-off-west-end-2026",
+        "sourceArray": "flaggedMisses",
+        "url": "https://www.uktw.co.uk/London/The-Coronet/Play/De-Profundis/L1410119577/",
+        "reason": "ticketing-listing"
+      },
+      {
+        "showId": "three-men-in-a-boat-off-west-end-2026",
+        "sourceArray": "missing",
+        "url": "https://www.uktw.co.uk/Kingston/Rose-Theatre-Kingston/Play/Three-Men-In-a-Boat/L0539480084/",
+        "reason": "ticketing-listing"
+      }
+    ]
   }
 }
