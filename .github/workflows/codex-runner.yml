@@ -117,6 +117,12 @@ jobs:
           IDS: ${{ inputs.ids }}
           EXTRA: ${{ inputs.extra }}
           LANE: ${{ inputs.lane || 'gha' }}
+          # BRO-6236: pinned model (strongest first; the runner moves down the list if the ChatGPT
+          # login refuses one) and the high vs xhigh effort A/B, arm chosen per card id so both arms
+          # draw from the same cards. A/B ends 2026-10-29 (RECHECK-AFTER on BRO-6236); compare with
+          # `node scripts/codex-ab-report.js`. Unset both to go back to the CLI default at high.
+          CODEX_MODEL: gpt-6-astra,gpt-6.1-sol,gpt-6-sol,gpt-5.6-sol
+          CODEX_EFFORT_AB: high,xhigh
         run: |
           # Until the owner adds the CODEX_AUTH_KEY secret the login cannot be opened here;
           # skip instead of failing five times a day. Adding the secret starts the runner.

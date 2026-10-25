@@ -1236,6 +1236,107 @@ function lockStartedMs(body) {
   return Date.parse((String(body || '').match(/^Started: (\S+)\s*$/m) || [])[1] || '');
 }
 
+// BRO-6236: pinned Codex model and the high vs xhigh effort A/B. All default-off: with none of
+// CODEX_MODEL / CODEX_EFFORT / CODEX_EFFORT_AB set, codexSettings returns today's exec settings.
+const CODEX_EFFORTS = ['low', 'medium', 'high', 'xhigh', 'max'];
+const CODEX_DEFAULT_EFFORT = 'high';
+/** "a, b" -> ['a', 'b'] (a model preference list, strongest first). */
+function parseModelCandidates(raw) {
+  return String(raw || '').split(',').map((x) => x.trim()).filter((x) => /^[A-Za-z0-9._:-]+$/.test(x));
+}
+/** Stable 0..n-1 bucket for a card id, so a card lands in the same A/B arm on every attempt. */
+function abBucket(cardId, n) {
+  let h = 0;
+  for (const ch of String(cardId || '')) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return n > 0 ? h % n : 0;
+}
+/**
+ * Exec settings for one card -> { models, effort, arm }. models is the preference list ([] = the
+ * CLI default, today's behaviour). effort comes from CODEX_EFFORT_AB (e.g. "high,xhigh": the arm
+ * is chosen by card id, not slot, so both arms draw from the same cards and the same firings),
+ * else CODEX_EFFORT, else high. An unknown effort name falls back to high.
+ */
+function codexSettings(env, cardId) {
+  const valid = (e) => CODEX_EFFORTS.includes(e);
+  const ab = String((env || {}).CODEX_EFFORT_AB || '').split(',').map((x) => x.trim()).filter(valid);
+  const single = String((env || {}).CODEX_EFFORT || '').trim();
+  let effort = valid(single) ? single : CODEX_DEFAULT_EFFORT;
+  let arm = null;
+  if (ab.length > 1) { effort = ab[abBucket(cardId, ab.length)]; arm = effort; }
+  return { models: parseModelCandidates((env || {}).CODEX_MODEL), effort, arm };
+}
+/**
+ * True when Codex's own ERROR lines (the last 40 lines, like codexExitTransient) say the model name is
+ * not available to this login. Tool output inside a long exec ("unknown model" in code Codex read)
+ * must not move the runner down the model list.
+ */
+function isUnknownModelError(out) {
+  const re = /(?:model\b(?![_\w])[^\n]{0,80}(?:not found|does not exist|not supported|unsupported|not available|isn't available)|(?:unknown|unsupported|invalid) model\b(?![_\w])|not have access to (?:the )?model)/i;
+  return String(out || '').split('\n').slice(-40).some((l) => /^\s*(?:ERROR|error):/.test(l) && re.test(l));
+}
+/** The summary line that records which model and effort each card ran at (the A/B report reads it). */
+function codexSettingsLine(used) {
+  const byEffort = {};
+  for (const [id, u] of Object.entries(used.cards || {})) (byEffort[u.effort] = byEffort[u.effort] || []).push(id);
+  const parts = Object.keys(byEffort).sort().map((e) => `${e}: ${byEffort[e].join(' ')}`);
+  return `- Codex settings: model ${used.model || 'CLI default (not pinned)'}; effort ${parts.join('; ') || 'none run'}`;
+}
+/** -> { model, byEffort: { effort: [ids] } } from a run summary, or null when it has no settings line. */
+function parseCodexSettingsLine(body) {
+  const m = String(body || '').match(/^- Codex settings: model (.+?); effort (.*)$/m);
+  if (!m) return null;
+  const byEffort = {};
+  if (m[2].trim() !== 'none run') for (const part of m[2].split(';')) {
+    const [e, ids] = part.split(':');
+    if (e && ids) byEffort[e.trim()] = ids.trim().split(/\s+/).filter(Boolean);
+  }
+  return { model: m[1].trim(), byEffort };
+}
+
+const AB_OUTCOMES = [
+  ['landed', 'Landed and Done'],
+  ['partial', 'Landed part, back to Todo with what is left'],
+  ['alreadyFixed', 'Already fixed, closed'],
+  ['rejected', 'Did not pass the Claude check, back to Todo'],
+  ['error', 'Runner error mid-card \\(back to Todo\\)'],
+];
+/**
+ * BRO-6236: per-effort outcome table from run-summary bodies. Only summaries with a "Codex settings"
+ * line count (older ones carry no effort). Minutes are the run's, shared out by card count.
+ * -> { effort: { cards, landed, partial, alreadyFixed, rejected, error, other, mins } }
+ */
+function abReport(bodies, { sinceMs = 0, createdAtMs = [], lane = null } = {}) {
+  const out = {};
+  const seen = new Set(); // a carried card is listed in more than one summary: count it once
+  bodies.forEach((body, i) => {
+    if (sinceMs && !(createdAtMs[i] >= sinceMs)) return;
+    const settings = parseCodexSettingsLine(body);
+    const head = parseSummaryHeading(body);
+    if (!settings || !head) return;
+    if (lane && (head.lane || laneOfSummary(body, createdAtMs[i] || 0)) !== lane) return;
+    const total = Object.values(settings.byEffort).reduce((n, ids) => n + ids.length, 0) || 1;
+    const listOf = (label) => {
+      const v = (String(body).match(new RegExp(`^- ${label}: (.*)$`, 'm')) || [])[1] || 'none';
+      return v.trim() === 'none' ? [] : v.split(',').map((x) => x.trim()).filter(Boolean);
+    };
+    for (const [effort, allIds] of Object.entries(settings.byEffort)) {
+      const ids = allIds.filter((id) => !seen.has(id));
+      ids.forEach((id) => seen.add(id));
+      if (!ids.length) continue;
+      const row = out[effort] = out[effort] || { cards: 0, landed: 0, partial: 0, alreadyFixed: 0, rejected: 0, error: 0, other: 0, mins: 0 };
+      row.cards += ids.length;
+      row.mins += head.mins * ids.length / total;
+      let counted = 0;
+      for (const [key, label] of AB_OUTCOMES) {
+        const n = listOf(label).filter((id) => ids.includes(id)).length;
+        row[key] += n; counted += n;
+      }
+      row.other += ids.length - counted;
+    }
+  });
+  return out;
+}
+
 function runnerSummaryFacts(body) {
   const list = (label) => {
     const v = (String(body || '').match(new RegExp(`^- ${label}: (.*)$`, 'm')) || [])[1] || 'none';
@@ -1443,6 +1544,7 @@ module.exports = {
   landWaitMinutes,
   firingThroughput,
   summaryHeading, parseSummaryHeading, laneOfSummary,
+  parseModelCandidates, codexSettings, isUnknownModelError, codexSettingsLine, parseCodexSettingsLine, abReport, CODEX_EFFORTS,
   authAccessExpires, parseAuthMeta,
   STAND_DOWN_CLASSES, standDownNote, parseStandDownNote, lockStartedMs,
   runnerSummaryFacts,

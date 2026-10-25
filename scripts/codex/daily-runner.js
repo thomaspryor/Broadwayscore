@@ -374,12 +374,36 @@ function codexSandboxMode() {
   return sandboxChoice.mode;
 }
 
+// BRO-6236: the model and effort each card ran at, for the summary's settings line. Models come
+// from CODEX_MODEL (a strongest-first list); an unknown-model refusal moves to the next one.
+const codexUsed = { model: '', cards: {} };
+let modelIdx = 0;
+
 function runCodex(id, prompt, tag, timeoutMs = CODEX_TIMEOUT_MS) {
   const last = path.join(LOG_DIR, `${id}-${tag}-last.md`);
   fs.writeFileSync(path.join(LOG_DIR, `${id}-${tag}-prompt.md`), prompt);
-  const r = sh('codex', ['exec', '--dangerously-bypass-hook-trust', '--sandbox', codexSandboxMode(), '--color', 'never',
-    '-c', 'model_reasoning_effort=high', '-o', last, '-C', WT, prompt],
-  { cwd: WT, timeoutMs, env: scrubbedEnv(), input: '' });
+  const cfg = R.codexSettings(process.env, id);
+  const exec = () => {
+    const model = cfg.models[modelIdx];
+    return { model, r: sh('codex', ['exec', '--dangerously-bypass-hook-trust', '--sandbox', codexSandboxMode(), '--color', 'never',
+      ...(model ? ['-m', model] : []),
+      '-c', `model_reasoning_effort=${cfg.effort}`, '-o', last, '-C', WT, prompt],
+    { cwd: WT, timeoutMs, env: scrubbedEnv(), input: '' }) };
+  };
+  let t0 = Date.now();
+  let { model, r } = exec();
+  // A model refusal comes back at once; a failure after minutes of work is not one, so it never
+  // re-runs the exec or moves the whole run down the list.
+  while (r.code > 0 && Date.now() - t0 < 3 * 60_000 && model && modelIdx < cfg.models.length - 1 && R.isUnknownModelError(r.out)) {
+    log(`${id}: model ${model} refused by this login; trying ${cfg.models[modelIdx + 1]}`);
+    log(`${id}: ${model} refusal: ${tail(r.out, 300).replace(/\s+/g, ' ')}`);
+    modelIdx += 1;
+    t0 = Date.now();
+    ({ model, r } = exec());
+  }
+  if (model && !codexUsed.model.split(' then ').includes(model)) codexUsed.model = codexUsed.model ? `${codexUsed.model} then ${model}` : model;
+  codexUsed.cards[id] = { effort: cfg.effort, model: model || '' };
+  log(`${id}: codex exec model ${model || 'CLI default'}, effort ${cfg.effort}${cfg.arm ? ' (A/B arm)' : ''}`);
   fs.writeFileSync(path.join(LOG_DIR, `${id}-${tag}.log`), r.out);
   saveLogin(); // refresh tokens rotate: persist the newest login after every exec
   let report = '';
@@ -1540,6 +1564,7 @@ async function runLocked(startedMs) {
     ...(stats.carried.length ? [`- SHIP-WITH-FIXES, fix round carried to the next run: ${list(stats.carried)}`] : []),
     ...(stats.outOfTime.length ? [`- Out of time before review, not judged (back to Todo): ${list(stats.outOfTime)}`] : []),
     ...(stats.wouldLand.length ? [`- Passed, not landed (--no-land): ${list(stats.wouldLand)}`] : []),
+    R.codexSettingsLine(codexUsed),
     `- Codex weekly allowance used: ${weeklyPct() ?? 'unknown'}%`,
     `- Claude check: ${checkCount} review(s), $${checkSpentUsd.toFixed(2)} API cost`,
     // BRO-5384 savings line: what the Codex lane costs in Claude, by model and per landed card.

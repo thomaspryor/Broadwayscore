@@ -1190,3 +1190,55 @@ test('land-check mutex wait: giving up via onWait leaves the held lock alone; th
   assert.match(src, /fitsBeforeHardStop\(landChecksMs\)\) throw new LandWaitTimeout/);
   assert.equal((src.match(/instanceof LandWaitTimeout\) \{ outOfTime = 'the land checks'; break; \}/g) || []).length, 2);
 });
+
+// BRO-6236: pinned model + high/xhigh effort A/B (default-off).
+test('codexSettings: unset env is today\'s exec (CLI default model, high)', () => {
+  assert.deepEqual(r.codexSettings({}, 'BRO-1'), { models: [], effort: 'high', arm: null });
+});
+test('codexSettings: CODEX_MODEL is a strongest-first list, bad names dropped', () => {
+  assert.deepEqual(r.codexSettings({ CODEX_MODEL: 'gpt-6-astra, gpt-6.1-sol;rm' }, 'BRO-1').models, ['gpt-6-astra']);
+  assert.deepEqual(r.parseModelCandidates('a, b ,,c'), ['a', 'b', 'c']);
+});
+test('codexSettings: the A/B arm follows the card id, is stable and uses both arms', () => {
+  const env = { CODEX_EFFORT_AB: 'high,xhigh' };
+  const arms = new Set();
+  for (let n = 6000; n < 6040; n++) {
+    const a = r.codexSettings(env, `BRO-${n}`);
+    assert.equal(a.effort, r.codexSettings(env, `BRO-${n}`).effort, 'same card, same arm');
+    assert.equal(a.arm, a.effort);
+    arms.add(a.effort);
+  }
+  assert.deepEqual([...arms].sort(), ['high', 'xhigh']);
+});
+test('codexSettings: CODEX_EFFORT sets one effort; unknown efforts fall back to high', () => {
+  assert.equal(r.codexSettings({ CODEX_EFFORT: 'xhigh' }, 'BRO-1').effort, 'xhigh');
+  assert.equal(r.codexSettings({ CODEX_EFFORT: 'turbo' }, 'BRO-1').effort, 'high');
+  assert.equal(r.codexSettings({ CODEX_EFFORT_AB: 'turbo,nope' }, 'BRO-1').arm, null);
+});
+test('isUnknownModelError: model refusals yes, transient, plain and tool-output mentions no', () => {
+  assert.ok(r.isUnknownModelError('ERROR: The model `gpt-6-astra` does not exist or you do not have access to it'));
+  assert.ok(r.isUnknownModelError('working\nERROR: unsupported model: gpt-x'));
+  assert.ok(!r.isUnknownModelError('unsupported model: gpt-x'), 'not an ERROR line: tool output');
+  assert.ok(!r.isUnknownModelError('ERROR: unknown model_reasoning_effort value xhigh'));
+  assert.ok(!r.isUnknownModelError('const model = x; // throws if unknown'));
+  assert.ok(!r.isUnknownModelError('Selected model is at capacity'));
+  assert.ok(!r.isUnknownModelError('tests failed'));
+});
+test('settings line round-trips and abReport splits outcomes by effort', () => {
+  const line = r.codexSettingsLine({ model: 'gpt-6-astra', cards: { 'BRO-1': { effort: 'high' }, 'BRO-2': { effort: 'xhigh' }, 'BRO-3': { effort: 'xhigh' } } });
+  assert.deepEqual(r.parseCodexSettingsLine(line), { model: 'gpt-6-astra', byEffort: { high: ['BRO-1'], xhigh: ['BRO-2', 'BRO-3'] } });
+  assert.equal(r.parseCodexSettingsLine('- nothing'), null);
+  const body = `${r.summaryHeading({ date: '2026-10-26', worked: 3, mins: 90, slot: 3, lane: 'gha' })}\n- Landed and Done: BRO-2\n- Landed part, back to Todo with what is left: none\n- Already fixed, closed: BRO-1\n- Did not pass the Claude check, back to Todo: BRO-3\n${line}`;
+  const rep = r.abReport([body, '## Codex runner 2026-10-20: 1 card(s) worked in 10 min\n- Landed and Done: BRO-9']);
+  assert.equal(rep.high.alreadyFixed, 1);
+  assert.equal(rep.xhigh.landed, 1);
+  assert.equal(rep.xhigh.rejected, 1);
+  assert.equal(rep.xhigh.cards, 2);
+  assert.equal(rep.xhigh.mins, 60);
+});
+test('abReport: lane filter and a carried card is counted once', () => {
+  const line = r.codexSettingsLine({ model: 'm', cards: { 'BRO-1': { effort: 'high' } } });
+  const mk = (lane) => `${r.summaryHeading({ date: '2026-10-26', worked: 1, mins: 10, slot: 3, lane })}\n- Landed and Done: BRO-1\n${line}`;
+  assert.deepEqual(Object.keys(r.abReport([mk('cloud')], { lane: 'gha' })), []);
+  assert.equal(r.abReport([mk('gha'), mk('gha')], { lane: 'gha' }).high.cards, 1);
+});
