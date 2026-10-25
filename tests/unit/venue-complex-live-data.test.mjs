@@ -85,7 +85,9 @@ test('an emptied subVenueSlugs array is legitimate when the complex slug is itse
   // venue-complex-audit.js: data-core.ts:885 emits zero-show complexes by design).
   const def = complexDefs['new-world-stages'];
   assert.ok(def, 'new-world-stages complex must still exist');
-  assert.deepEqual(def.subVenueSlugs, [], 'new-world-stages.subVenueSlugs must stay empty — the Stage 5 slug was orphaned by a core-data merge');
+  // Stage 3 was linked 2026-10-25 (BRO-6201) when a real show used it. Emptiness is
+  // legitimate, not required: the guard is that no linked slug is orphaned (test 1).
+  assert.ok(Array.isArray(def.subVenueSlugs), 'new-world-stages.subVenueSlugs must be an array');
   const nwsShows = showsData.shows.filter(s => isOffBroadway(s) && slugify(normalizeVenueName(s.venue || '')) === 'new-world-stages');
   assert.ok(nwsShows.length > 0, 'the complex now depends entirely on ownTheater, so at least one show must use the bare "New World Stages" venue string');
 });
