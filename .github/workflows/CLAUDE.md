@@ -258,6 +258,13 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Requires:** ANTHROPIC_API_KEY, RESEND_API_KEY, FORMSPREE_FOLLOW_API_KEY, FORMSPREE_SUBSCRIBER_API_KEY, FORMSPREE_FOLLOW_FORM_ID, FORMSPREE_SUBSCRIBER_FORM_ID, FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID, FORMSPREE_WESTEND_SUBSCRIBER_API_KEY
 - **Manual trigger:** `gh workflow run "Opening Night Broadcast" -f lookback_days=7`
 - **Related:** `opening-night-reviews.yml` handles SERP discovery + triggers gather-reviews (runs at 5 AM UTC). The data pipeline runs independently and feeds scored data to this broadcast workflow.
+- **Mobile push (BRO-6219):** the "Send push notifications (mobile app)" step runs `scripts/dispatch-reviews-in-push.js` for every show that passed the readiness gate, independent of the email hold and of whether the email sent. It dispatches the app's `send-notifications.yml` (`reviews-in`) with show id, slug, title and category, for Broadway and West End shows opened in the last 4 days, then writes the `push:<id>` marker in `opening-night-sent.json` only after the app run (found by its run-name) finished successfully, waiting at most 5 min so the email path's job budget is safe. The app picks recipients (market, their "reviews are in" choice, their To Watch list) and dedupes per show in `push_log`, so a retry never double-sends. Pure rules: `scripts/lib/reviews-in-push.js`.
+
+## `detect-show-events.yml`
+- **Runs:** Daily 13:20 UTC (before the app's 15:00 UTC alert send), or manually (`dry_run`). In `CRITICAL_CRONS` at 36h.
+- **Does:** Records New York (Broadway + Off-Broadway) closing-date changes from `public/data/mobile-shows.json` into Supabase `show_events` (`closing-announced` / `closing-moved`) via `scripts/write-show-events.js`. The iOS app's "Closing date announced" alert reads the last 3 days of events. London is skipped: West End closing dates are often booking tranches (olt-enrichment.js).
+- **No baseline file:** the table's unique key (show_id, type, value) is the diff (`planShowEvents` in `scripts/lib/show-change-diff.js`, which `detect-show-changes.js` also uses for the follower emails). The first run (empty table) records everything as `seeded` so existing dates are never news; more than 15 new dates in one run is recorded as seeded too and flagged with a warning (a data glitch, not 15 closings).
+- **Requires:** `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`. Migration: `supabase/migrations/20261026_push_alert_prefs.sql`.
 
 ## `recreate-broadcast-draft.yml`
 - **Runs:** Manual only. Inputs `market`, `shows` (ids exactly as in the old draft), `lookback_days` (default 3), `dry_run` (default **true**).

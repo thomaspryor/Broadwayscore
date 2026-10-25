@@ -1294,52 +1294,32 @@ jobs:
           "
 
       - name: Send push notifications (mobile app)
-        # BRO-4417: only when a preview/draft really went out this run, and once per
-        # show (push:<id> marker in opening-night-sent.json). Before this, any run
-        # that reached this step re-pushed, which the hourly deadline cron would
-        # have turned into up to 11 "reviews are in" pushes a day.
-        if: steps.check.outputs.broadway != '' && env.BROADCAST_HOLD_ACTIVE != 'true' && steps.broadcast.outputs.broadcast_sent == 'true'
+        # BRO-6219 (replaces BRO-4417's Broadway-only, email-coupled version):
+        #  - Gated on the readiness gate (same review thresholds as the email),
+        #    NOT on the email hold or on the email actually sending: a hold or
+        #    a gate-blocked email is no reason to skip the app push.
+        #  - Broadway AND West End; the app picks recipients by their market
+        #    and by their own "reviews are in" choice. Off-Broadway/Off-West End
+        #    reach people only through their To Watch list.
+        #  - Sends the show id (what watchlists store) as well as the slug.
+        #  - The push:<id> marker is written only after the app's run finished
+        #    successfully (a ticket was accepted), not when the dispatch worked.
+        #    The wait is capped at 3 min so the email path's job budget is safe;
+        #    a run still going is simply checked again next time, and the app
+        #    dedupes per show (push_log), so nothing is sent twice.
+        #  - `!cancelled()` (not the implicit success()): a failed earlier email step must not
+        #    skip the app push. The wait is bounded three ways: 180s budget inside the script,
+        #    60s per gh call, and the step timeout below. That fits the 300s of job margin left by
+        #    the push-retry budget above, so the email markers/commits after this step are safe.
+        #  - Dispatch edge for scripts/generate-workflow-dependencies.js (the call itself lives in
+        #    the script): gh workflow run send-notifications.yml --repo thomaspryor/BroadwayScorecard-app
+        if: ${{ !cancelled() && steps.readiness_gate.outputs.ready_shows != '' }}
         continue-on-error: true
+        timeout-minutes: 5
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-        run: |
-          # Dispatch push notification to mobile app for each Broadway show that
-          # actually broadcast (post-readiness-gate set, NOT steps.find.outputs.broadway).
-          IFS=',' read -ra SHOW_IDS <<< "${{ steps.check.outputs.broadway }}"
-          for SHOW_ID in "${SHOW_IDS[@]}"; do
-            if node -e "
-              const s = JSON.parse(require('fs').readFileSync('data/opening-night-sent.json', 'utf8')).shows || {};
-              process.exit(s['push:' + process.argv[1]] ? 0 : 1);
-            " "$SHOW_ID" 2>/dev/null; then
-              echo "Push already sent for $SHOW_ID, skipping"
-              continue
-            fi
-            # Look up slug and title from shows.json
-            SHOW_INFO=$(node -e "
-              const shows = require('./data/shows.json').shows;
-              const s = shows.find(x => x.id === '$SHOW_ID');
-              if (s) console.log(JSON.stringify({ slug: s.slug || s.id, title: s.title }));
-            ")
-            if [ -z "$SHOW_INFO" ]; then
-              echo "Show $SHOW_ID not found in shows.json, skipping push"
-              continue
-            fi
-            SLUG=$(echo "$SHOW_INFO" | jq -r '.slug')
-            TITLE=$(echo "$SHOW_INFO" | jq -r '.title')
-            echo "Dispatching push notification for: $TITLE ($SLUG)"
-            gh workflow run send-notifications.yml \
-              --repo thomaspryor/BroadwayScorecard-app \
-              -f type=reviews-in \
-              -f "show=$SLUG" \
-              -f "title=$TITLE" && node -e "
-                const fs = require('fs');
-                const p = 'data/opening-night-sent.json';
-                const d = JSON.parse(fs.readFileSync(p, 'utf8'));
-                d.shows = d.shows || {};
-                d.shows['push:' + process.argv[1]] = { sentAt: new Date().toISOString() };
-                fs.writeFileSync(p, JSON.stringify(d, null, 2) + '\n');
-              " "$SHOW_ID" || echo "Push dispatch failed for $SLUG — non-critical"
-          done
+          READY_SHOWS: ${{ steps.readiness_gate.outputs.ready_shows }}
+        run: node scripts/dispatch-reviews-in-push.js --ready="$READY_SHOWS" --budget-sec=180
 
       # BRO-2455 (2026-08-26): this used to be one "Commit data" step
       # bundling orphan-rescore-requeue-state.json (single-writer,

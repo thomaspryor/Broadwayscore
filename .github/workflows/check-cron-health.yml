@@ -109,6 +109,9 @@ jobs:
             # invisible again — the exact failure mode it was built to fix (S1-T4,
             # Notion 39c637c5-416f-8112). 36h = daily cadence + 12h cron-lag cushion.
             "commercial-pending-review-notify.yml|36|Commercial Pending Review Notify"
+            # BRO-6219: feeds the iOS "Closing date announced" alert. Daily 13:20 UTC;
+            # if it dies, no closing alert goes out. 36h = daily cadence + 12h cushion.
+            "detect-show-events.yml|36|Detect Show Events"
             "fetch-todaytix-showtimes.yml|36|Fetch TodayTix Showtimes"
             # BRO-4601: tour Now/Next lines and Tour Schedule cards go stale if this dies.
             "fetch-tour-schedules.yml|36|Fetch Tour Schedules"
