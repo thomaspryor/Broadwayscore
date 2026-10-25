@@ -1363,6 +1363,24 @@ test('runTestGate: a killed unparseable merged run is NOT re-run (one spawn, not
   assert.match(result.reason, /killed before finishing/);
 });
 
+// Node 22 reports a real spawnSync timeout as status 1, signal null, error ETIMEDOUT.
+test('runTestGate: the real ETIMEDOUT result shape is also treated as killed', () => {
+  const dir = makeScratchRepo();
+  writeFailingTest(dir, 'x.test.mjs');
+  let calls = 0;
+  const err = Object.assign(new Error('spawnSync ETIMEDOUT'), { code: 'ETIMEDOUT' });
+  const result = runTestGate({
+    cwd: dir,
+    changedFiles: ['scripts/lib/review-file-writer.js'],
+    execFn: () => { calls++; return { status: 1, signal: null, error: err, stdout: '', stderr: '' }; },
+    makeBaselineCheckout: () => ({ dir, prepared: true }),
+    removeBaselineCheckout: () => {},
+  });
+  assert.equal(calls, 1);
+  assert.equal(result.passed, false);
+  assert.match(result.reason, /killed before finishing/);
+});
+
 test('runTestGate: a non-killed unparseable death is still re-run once', () => {
   const dir = makeScratchRepo();
   writeFailingTest(dir, 'x.test.mjs');
