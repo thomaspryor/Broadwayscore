@@ -608,5 +608,36 @@
       }
     ],
     "queuedAt": "2026-10-25T19:43:01.061Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5850-we-dateless-tr",
+    "title": "Landing blocked: rebase red on land/bro-5850-we-dateless-tr",
+    "description": "land.yml did not land land/bro-5850-we-dateless-tr: the rebase gate went red at 0ab1a317ce. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39843787766",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5850-we-dateless-tr"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "0ab1a317ceddd50ceb1aa891ab4fa568a521eae0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39843787766"
+      }
+    ],
+    "queuedAt": "2026-10-25T19:49:36.270Z"
   }
 ]
