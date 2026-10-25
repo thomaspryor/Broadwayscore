@@ -29,4 +29,4 @@ same-critic collision and URL-domain checks have no backstop for the stale-link 
 false negatives in advisory audits and change no score. If a miss is ever seen, use that helper
 rather than re-implementing the rebuild conditions in the audit.
 
-`scripts/audit-review-duplicates.test.mjs` pins the `continue`-form call sites to this note.
+`tests/unit/duplicate-text-of-audit-skips.test.mjs` pins the `continue`-form call sites to this note.
