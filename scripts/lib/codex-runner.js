@@ -977,6 +977,8 @@ function leaveToCodex(issue, { nowMs, verify = '', startNow = false } = {}) {
   if (!issue || Number(issue.priority) === 1 || startNow) return false;
   const comments = (issue.comments && issue.comments.nodes) || [];
   if (codexBouncedRecently(comments, nowMs)) return false;
+  // Default canDispatch: the Claude worker is not a dispatch-capable Codex runner, so it keeps data-route cards
+  // itself rather than leaving them to a Codex lane that may be only the cloud one (BRO-6194).
   return !codexCardFit({ title: issue.title, description: issue.description, verify, comments, nowMs }).skip;
 }
 

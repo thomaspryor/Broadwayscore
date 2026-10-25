@@ -1396,7 +1396,7 @@ function landedPerLane() {
 }
 
 /** Close cards whose runner commit reached main after an earlier run stopped waiting (left In Progress). */
-async function reconcileLanded(stats) {
+async function reconcileLanded(stats, { onlyDeferred = false } = {}) {
   let subjects = '';
   try { subjects = git(['log', 'origin/main', '--since=4.days', '--author=Codex runner', '--format=%s'], ROOT); } catch { return; }
   const ids = [...new Set(subjects.split('\n').map((l) => (l.match(/^fix\((BRO-\d+)\):/) || [])[1]).filter(Boolean))];
@@ -1407,6 +1407,9 @@ async function reconcileLanded(stats) {
     const notes = ((await linear.listIssueComments([id]).catch(() => new Map())).get(id) || [])
       .filter((c) => String(c.body || '').startsWith('## Codex runner'));
     if (!notes.length || !notes[0].body.startsWith('## Codex runner: landing did not finish')) continue;
+    // A deferred data-fix apply is for a runner that can dispatch; a cloud slot re-reading it would only defer again.
+    const deferred = notes[0].body.startsWith(DEFER_HEADING);
+    if (deferred ? !DF.canDispatchWorkflows() : onlyDeferred) continue;
     await settleLanded(id, stats, { partial: await partialLanding(id, NaN), body: 'The runner\'s commit for this card is on main; an earlier run stopped waiting before the landing finished.' });
   }
 }
@@ -1456,7 +1459,7 @@ async function runLocked(startedMs) {
   const stats = { claimed: [], landed: [], landedPartial: [], alreadyFixed: [], bounced: [], inReview: [], landFailed: [], crashed: [], recoveredStops: [], outOfTime: [], carried: [], wouldLand: [], rejectStreak: 0, doneRefusals: 0 };
   // Tidying an earlier run's cards needs only git and Linear, so it runs even without a Codex login.
   // reconcileLanded scans every runner commit on main, so one slot does it (two would settle a card twice).
-  if (!OPTS.dryRun) { if (SLOT === 0) await reconcileLanded(stats); await recoverOrphans(stats); }
+  if (!OPTS.dryRun) { if (SLOT === 0) await reconcileLanded(stats); else if (SLOT === R.LANES[OPTS.lane].base) await reconcileLanded(stats, { onlyDeferred: true }); await recoverOrphans(stats); }
   const restore = sh('node', ['scripts/codex/auth-store.js', 'restore'], { timeoutMs: 900_000 });
   log(restore.out.trim());
   if (restore.code !== 0) {
