@@ -244,7 +244,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-25T06:20:00.816Z",
-      "lastSeen": "2026-10-25T10:32:38.186Z",
+      "lastSeen": "2026-10-25T10:44:23.270Z",
       "lastNotifiedAt": "2026-10-25T06:20:00.816Z",
       "lastSurfacedAt": "2026-10-25T06:20:00.816Z",
       "notifyCount": 167,
@@ -252,7 +252,7 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
       "sweptTracker": "BRO-6024",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -26191,7 +26191,8 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40132155159"
       },
       "absentRunIds": [
-        "40183837265"
+        "40182559853",
+        "40184470597"
       ],
       "silentRefires": 3
     },
@@ -26451,14 +26452,21 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no two unrelated shows serve byte-identical hero images\"",
-      "firstSeen": "2026-10-25T10:32:37.769Z",
-      "incidentOpenedAt": "2026-10-25T10:32:37.769Z",
-      "lastSeen": "2026-10-25T10:32:37.769Z",
-      "lastNotifiedAt": "2026-10-25T10:32:37.769Z",
+      "firstSeen": "2026-10-25T10:13:52.807Z",
+      "incidentOpenedAt": "2026-10-25T10:13:52.807Z",
+      "lastSeen": "2026-10-25T10:44:23.216Z",
+      "lastNotifiedAt": "2026-10-25T10:13:52.807Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6198"
+      "linearIdentifier": "BRO-6198",
+      "dispatch": {
+        "requestedAt": "2026-10-25T10:13:52.807Z",
+        "mode": "dispatch-at-filing",
+        "runId": "40182559853",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40182559853"
+      },
+      "silentRefires": 1
     }
   }
 }
