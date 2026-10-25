@@ -686,6 +686,20 @@ export function getDataStats() {
 }
 
 /**
+ * Site-wide headline counts for "N shows. N critic reviews." (every market the
+ * site lists, not just Broadway). A show counts as scored when its Critic Score
+ * is displayed (displaysCriticScore, the same gate as the score badges), so the
+ * iOS home line, which counts the same way over the mobile feed, agrees.
+ */
+export function getSiteStats() {
+  const listed = getAllShows().filter(regionalSlugAllowed);
+  return {
+    scoredShows: listed.filter(displaysCriticScore).length,
+    totalReviews: listed.reduce((sum, show) => sum + (show.criticScore?.reviewCount || 0), 0),
+  };
+}
+
+/**
  * Get the most recent data update timestamp for a show
  * Returns ISO string of the most recent update across core data sources
  */

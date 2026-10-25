@@ -91,7 +91,7 @@ export default function HomepageExplainerShelf({ totalShows, totalReviews, total
             </li>
             <li className="flex gap-3">
               <span className="flex-shrink-0 mt-1 w-1.5 h-1.5 rounded-full bg-brand" />
-              <span>{totalShows.toLocaleString('en-US')} shows. {totalReviews.toLocaleString('en-US')} reviews. Free, independent, and not for sale.</span>
+              <span>{totalShows.toLocaleString('en-US')} scored shows. {totalReviews.toLocaleString('en-US')} reviews. Free, independent, and not for sale.</span>
             </li>
           </ul>
 
