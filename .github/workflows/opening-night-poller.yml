@@ -300,9 +300,11 @@ jobs:
         run: npm ci
 
       # BRO-5955: an apt mirror stall here failed the whole phyl poller run
-      # (39880121721) on the Imaginary Invalid night. Playwright is only a
-      # fetcher tier; with no browser fetchWithPlaywright returns null and
-      # fetchPage moves to the next tier, and the Browserbase path is remote.
+      # (39880121721) on the Imaginary Invalid night. With no browser,
+      # scraper.js fetchPage skips its Playwright tier and The Stage's
+      # Browserbase path is remote, so poll, score, rebuild and deploy still
+      # run. "Collect full text inline" still launches a local browser and
+      # fails (continue-on-error); the stage check then marks the run red.
       - name: Setup Playwright
         if: steps.find.outputs.has_shows == 'true'
         uses: ./.github/actions/setup-playwright
