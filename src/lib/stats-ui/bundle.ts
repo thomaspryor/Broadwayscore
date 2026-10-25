@@ -87,6 +87,18 @@ export interface StatsShow {
  * omitted when closed); `meta` adds display fields only for shows the My
  * Shows lookup leaves out. Tolerates any malformed input by returning [].
  */
+/**
+ * decodeStatsShows that refuses an empty catalog. prebuild writes an empty
+ * stats-shows.json when mobile-shows.json is unreadable; without this the
+ * critics/gold/audience modules would render as if the user had no matches
+ * instead of showing a load error (ship-check, BRO-6170).
+ */
+export function decodeStatsShowsStrict(raw: unknown): StatsShow[] {
+  const rows = decodeStatsShows(raw);
+  if (rows.length === 0) throw new Error('stats-shows.json is empty');
+  return rows;
+}
+
 export function decodeStatsShows(raw: unknown): StatsShow[] {
   const d = raw as { shows?: unknown; meta?: unknown } | null;
   const rows = d && typeof d.shows === 'object' && d.shows ? (d.shows as Record<string, unknown>) : {};

@@ -34,6 +34,7 @@ import {
   MIN_ENTRIES_FOR_STATS,
   computeStatsBundle,
   decodeStatsShows,
+  decodeStatsShowsStrict,
   mergeShows,
   toDiaryRows,
 } from '../../src/lib/stats-ui/bundle';
@@ -408,4 +409,12 @@ test('computeStatsBundle: no catalog and no canon (both fetches failed) still co
 
 test('toDiaryRows keeps only the engine fields', () => {
   assert.deepEqual(toDiaryRows([review('a', 3.5, null)]), [{ show_id: 'a', rating: 3.5, date_seen: null }]);
+});
+
+test('decodeStatsShowsStrict turns an empty catalog into a load error', () => {
+  // prebuild writes {"shows":{}} when mobile-shows.json is unreadable; the page
+  // must show the Retry card rather than empty critic modules.
+  assert.throws(() => decodeStatsShowsStrict({ shows: {} }), /empty/);
+  assert.throws(() => decodeStatsShowsStrict(null), /empty/);
+  assert.equal(decodeStatsShowsStrict({ shows: { 'x-2020': [80, 12, 'A', 'open'] } }).length, 1);
 });

@@ -18,7 +18,7 @@ import {
   HOUSE_INDEX,
   MIN_ENTRIES_FOR_STATS,
   computeStatsBundle,
-  decodeStatsShows,
+  decodeStatsShowsStrict,
   mergeShows,
   type StatsShow,
 } from '@/lib/stats-ui/bundle';
@@ -140,7 +140,7 @@ function StatsTabContent({ reviews, showMap }: StatsTabProps) {
   const [reviewsLoad, retryReviews] = useStaticJson('/data/stats-reviews.json', parseReviews);
   // Slim web catalog (scripts/generate-stats-shows.js): critic score + review
   // count, audience grade, status — projected from the iOS app's catalog.
-  const [catalogLoad, retryCatalog] = useStaticJson('/data/stats-shows.json', decodeStatsShows);
+  const [catalogLoad, retryCatalog] = useStaticJson('/data/stats-shows.json', decodeStatsShowsStrict);
 
   // Only the FIRST canon load gates the page; a retry after a failure keeps
   // the rest of the view on screen.
