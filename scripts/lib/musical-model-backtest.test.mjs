@@ -41,7 +41,9 @@ function backtest(...args) {
   const out = execFileSync(process.execPath, ['scripts/backtest-recoupment-ground-truth.js', ...args, '--json'], {
     cwd: REPO, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, stdio: ['ignore', 'pipe', 'inherit'],
   });
-  return JSON.parse(out);
+  // GitHub Actions workflow commands (::warning ...) share stdout with the JSON when
+  // a variant reads worse than the shipped model; drop them before parsing.
+  return JSON.parse(out.split('\n').filter((l) => !l.startsWith('::')).join('\n'));
 }
 
 test('timing backtest: musicals hold MAE <= 15.5 and >= 35 inside; plays MAE <= 15 and >= 16 inside', { skip }, () => {
