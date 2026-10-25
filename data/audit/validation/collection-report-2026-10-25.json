@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-25T06:37:14.948Z",
+  "runDate": "2026-10-25T07:00:54.651Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,41 +11,41 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 54,
+    "processed": 24,
+    "failed": 59,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "28.9%"
   },
   "tierBreakdown": {
-    "playwright": 69,
+    "playwright": 89,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 4,
-    "scrapingbee": 6,
-    "brightdata": 4,
+    "scrapingdog": 6,
+    "scrapingbee": 7,
+    "brightdata": 6,
     "archiveToday": 0,
-    "archive": 13
+    "archive": 14
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 24,
+    "tier1Success": 20,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
-    "tier1_9Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier1_9Attempts": 5,
+    "tier1_9Success": 2,
+    "tier2Attempts": 4,
+    "tier2Success": 1,
+    "tier3Attempts": 5,
+    "tier3Success": 2,
+    "tier3_6Attempts": 3,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 3,
     "tier4Success": 0,
-    "totalFailed": 54,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 57,
+    "scrapingBeePageCredits": 12,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -54,8 +54,8 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 0,
-    "failed": 54,
+    "processed": 24,
+    "failed": 59,
     "shows": [
       "aint-no-mo-2022",
       "all-my-sons-2008",
@@ -70,6 +70,7 @@
       "hamlet-2009",
       "harmony-2023",
       "hedwig-and-the-angry-inch-2014",
+      "house-of-mcqueen-off-broadway-2025",
       "indecent-2017",
       "inherit-the-wind-2007",
       "is-he-dead-2007",
@@ -96,6 +97,7 @@
       "the-little-mermaid-2008",
       "the-nap-2018",
       "the-norman-conquests-2009",
+      "the-other-americans-off-broadway-2025",
       "the-shark-is-broken-2023",
       "the-waverly-gallery-2018",
       "the-whos-tommy-2024",
@@ -112,7 +114,32 @@
       "failed": 71
     }
   },
-  "processed": [],
+  "processed": [
+    "the-other-americans-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "the-other-americans-off-broadway-2025/nytg--kyle-turner.json",
+    "the-other-americans-off-broadway-2025/vulture--sara-holdren.json",
+    "the-other-americans-off-broadway-2025/nbcnews--unknown.json",
+    "the-other-americans-off-broadway-2025/theatermania--zachary-stewart.json",
+    "the-other-americans-off-broadway-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "the-other-americans-off-broadway-2025/this-week-in-new-york--mark-rifkin.json",
+    "the-other-americans-off-broadway-2025/culturesauce--thom-geier.json",
+    "the-other-americans-off-broadway-2025/nysr--unknown.json",
+    "the-other-americans-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+    "house-of-mcqueen-off-broadway-2025/nytg--kyle-turner.json",
+    "house-of-mcqueen-off-broadway-2025/vulture--sara-holdren.json",
+    "house-of-mcqueen-off-broadway-2025/new-york-sun--elysa-gardner.json",
+    "house-of-mcqueen-off-broadway-2025/theatermania--zachary-stewart.json",
+    "house-of-mcqueen-off-broadway-2025/this-week-in-new-york--mark-rifkin.json",
+    "house-of-mcqueen-off-broadway-2025/culturesauce--thom-geier.json",
+    "house-of-mcqueen-off-broadway-2025/dailybeast--tim-teeman.json",
+    "house-of-mcqueen-off-broadway-2025/frontmezzjunkies--unknown.json",
+    "house-of-mcqueen-off-broadway-2025/nysr--frank-scheck.json",
+    "house-of-mcqueen-off-broadway-2025/nysr--michael-sommers.json",
+    "house-of-mcqueen-off-broadway-2025/off-off-online--adrienne-onofri.json",
+    "house-of-mcqueen-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+    "house-of-mcqueen-off-broadway-2025/theater-scene--darryl-reilly.json",
+    "house-of-mcqueen-off-broadway-2025/theater-scene--tony-marinelli.json"
+  ],
   "failed": [
     "the-hills-of-california-2024/times-uk--ann-treneman.json",
     "the-collaboration-2022/hollywood-reporter--anita-gates.json",
@@ -154,6 +181,11 @@
     "the-whos-tommy-2024/hollywood-reporter--angie-han.json",
     "ghost-the-musical-2012/timeout--david-cote.json",
     "sea-wall-a-life-2019/usatoday--charles-isherwood.json",
+    "the-other-americans-off-broadway-2025/thewrap--unknown.json",
+    "the-other-americans-off-broadway-2025/theater-life--samuel-l-leiter.json",
+    "the-other-americans-off-broadway-2025/theater-scene--victor-gluck.json",
+    "house-of-mcqueen-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "house-of-mcqueen-off-broadway-2025/thewrap--robert-hofler.json",
     "mary-jane-2024/ew--joey-nolfi.json",
     "appropriate-2023/timeout--adam-feldman.json",
     "the-shark-is-broken-2023/hollywood-reporter--angie-han.json",
@@ -260,7 +292,31 @@
       "queens-off-broadway-2025/zeal-nyc--jil-picariello.json",
       "murdoch-the-final-interview-off-broadway-2025/culturesauce--thom-geier.json",
       "oh-happy-day-off-broadway-2025/nytimes--unknown.json",
-      "the-other-americans-off-broadway-2025/nytimes--unknown.json"
+      "the-other-americans-off-broadway-2025/nytimes--unknown.json",
+      "the-other-americans-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+      "the-other-americans-off-broadway-2025/nytg--kyle-turner.json",
+      "the-other-americans-off-broadway-2025/vulture--sara-holdren.json",
+      "the-other-americans-off-broadway-2025/nbcnews--unknown.json",
+      "the-other-americans-off-broadway-2025/theatermania--zachary-stewart.json",
+      "the-other-americans-off-broadway-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "the-other-americans-off-broadway-2025/this-week-in-new-york--mark-rifkin.json",
+      "the-other-americans-off-broadway-2025/culturesauce--thom-geier.json",
+      "the-other-americans-off-broadway-2025/nysr--unknown.json",
+      "the-other-americans-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+      "house-of-mcqueen-off-broadway-2025/nytg--kyle-turner.json",
+      "house-of-mcqueen-off-broadway-2025/vulture--sara-holdren.json",
+      "house-of-mcqueen-off-broadway-2025/new-york-sun--elysa-gardner.json",
+      "house-of-mcqueen-off-broadway-2025/theatermania--zachary-stewart.json",
+      "house-of-mcqueen-off-broadway-2025/this-week-in-new-york--mark-rifkin.json",
+      "house-of-mcqueen-off-broadway-2025/culturesauce--thom-geier.json",
+      "house-of-mcqueen-off-broadway-2025/dailybeast--tim-teeman.json",
+      "house-of-mcqueen-off-broadway-2025/frontmezzjunkies--unknown.json",
+      "house-of-mcqueen-off-broadway-2025/nysr--frank-scheck.json",
+      "house-of-mcqueen-off-broadway-2025/nysr--michael-sommers.json",
+      "house-of-mcqueen-off-broadway-2025/off-off-online--adrienne-onofri.json",
+      "house-of-mcqueen-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+      "house-of-mcqueen-off-broadway-2025/theater-scene--darryl-reilly.json",
+      "house-of-mcqueen-off-broadway-2025/theater-scene--tony-marinelli.json"
     ],
     "failed": [
       "meet-the-cartozians-off-broadway-2025/thewrap--robert-hofler.json",
@@ -333,7 +389,12 @@
       "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json",
       "shrek-the-musical-2008/usatoday--elysa-gardner.json",
       "macbeth-2008/usatoday--elysa-gardner.json",
-      "is-he-dead-2007/nypost--clive-barnes.json"
+      "is-he-dead-2007/nypost--clive-barnes.json",
+      "the-other-americans-off-broadway-2025/thewrap--unknown.json",
+      "the-other-americans-off-broadway-2025/theater-life--samuel-l-leiter.json",
+      "the-other-americans-off-broadway-2025/theater-scene--victor-gluck.json",
+      "house-of-mcqueen-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+      "house-of-mcqueen-off-broadway-2025/thewrap--robert-hofler.json"
     ]
   },
   "tierDetails": {
@@ -406,7 +467,27 @@
       "queens-off-broadway-2025/timeout--helen-shaw.json",
       "queens-off-broadway-2025/one-minute-critic--unknown.json",
       "queens-off-broadway-2025/zeal-nyc--jil-picariello.json",
-      "murdoch-the-final-interview-off-broadway-2025/culturesauce--thom-geier.json"
+      "murdoch-the-final-interview-off-broadway-2025/culturesauce--thom-geier.json",
+      "the-other-americans-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+      "the-other-americans-off-broadway-2025/nytg--kyle-turner.json",
+      "the-other-americans-off-broadway-2025/nbcnews--unknown.json",
+      "the-other-americans-off-broadway-2025/theatermania--zachary-stewart.json",
+      "the-other-americans-off-broadway-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "the-other-americans-off-broadway-2025/this-week-in-new-york--mark-rifkin.json",
+      "the-other-americans-off-broadway-2025/culturesauce--thom-geier.json",
+      "the-other-americans-off-broadway-2025/nysr--unknown.json",
+      "the-other-americans-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+      "house-of-mcqueen-off-broadway-2025/nytg--kyle-turner.json",
+      "house-of-mcqueen-off-broadway-2025/theatermania--zachary-stewart.json",
+      "house-of-mcqueen-off-broadway-2025/this-week-in-new-york--mark-rifkin.json",
+      "house-of-mcqueen-off-broadway-2025/culturesauce--thom-geier.json",
+      "house-of-mcqueen-off-broadway-2025/frontmezzjunkies--unknown.json",
+      "house-of-mcqueen-off-broadway-2025/nysr--frank-scheck.json",
+      "house-of-mcqueen-off-broadway-2025/nysr--michael-sommers.json",
+      "house-of-mcqueen-off-broadway-2025/off-off-online--adrienne-onofri.json",
+      "house-of-mcqueen-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+      "house-of-mcqueen-off-broadway-2025/theater-scene--darryl-reilly.json",
+      "house-of-mcqueen-off-broadway-2025/theater-scene--tony-marinelli.json"
     ],
     "amp": [],
     "browserbase": [
@@ -418,7 +499,9 @@
       "richard-ii-off-broadway-2025/the-globe-and-mail--kelly-nestruck.json",
       "crooked-cross-off-broadway-2025/theater-life--samuel-l-leiter.json",
       "crooked-cross-off-broadway-2025/theater-scene--victor-gluck.json",
-      "the-honey-trap-off-broadway-2025/theater-life--unknown.json"
+      "the-honey-trap-off-broadway-2025/theater-life--unknown.json",
+      "the-other-americans-off-broadway-2025/theater-life--samuel-l-leiter.json",
+      "the-other-americans-off-broadway-2025/theater-scene--victor-gluck.json"
     ],
     "scrapingbee": [
       "the-bakers-wife-off-broadway-2025/new-york-sun--unknown.json",
@@ -426,13 +509,16 @@
       "richard-ii-off-broadway-2025/cititour--brian-scott-lipton.json",
       "messy-white-gays-off-broadway-2025/theatrely--kobi-kassal.json",
       "art-of-leaving-off-broadway-2025/theatrely--unknown.json",
-      "the-honey-trap-off-broadway-2025/theatermania--pete-hempstead.json"
+      "the-honey-trap-off-broadway-2025/theatermania--pete-hempstead.json",
+      "house-of-mcqueen-off-broadway-2025/new-york-sun--elysa-gardner.json"
     ],
     "brightdata": [
       "macbeth-2008/talkinbroadway--matthew-murray.json",
       "the-bakers-wife-off-broadway-2025/vulture--jackson-mchenry.json",
       "richard-ii-off-broadway-2025/talkinbroadway--howard-miller.json",
-      "meet-the-cartozians-off-broadway-2025/vulture--jackson-mchenry.json"
+      "meet-the-cartozians-off-broadway-2025/vulture--jackson-mchenry.json",
+      "the-other-americans-off-broadway-2025/vulture--sara-holdren.json",
+      "house-of-mcqueen-off-broadway-2025/vulture--sara-holdren.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -448,9 +534,25 @@
       "art-of-leaving-off-broadway-2025/theater-pizzazz--samuel-l-leiter.json",
       "a-midsummer-nights-dream-off-broadway-2025/theater-pizzazz--jk-clarke.json",
       "oh-happy-day-off-broadway-2025/nytimes--unknown.json",
-      "the-other-americans-off-broadway-2025/nytimes--unknown.json"
+      "the-other-americans-off-broadway-2025/nytimes--unknown.json",
+      "house-of-mcqueen-off-broadway-2025/dailybeast--tim-teeman.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "TheWrap": {
+      "count": 2,
+      "domain": "thewrap.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "New York Theater": {
+      "count": 1,
+      "domain": "newyorktheater.me",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
