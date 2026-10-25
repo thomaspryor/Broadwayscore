@@ -92,7 +92,8 @@ const { backfillMissingOutletRegions } = require('./outlet-region-map.js');
 test('backfill: fills region on a pre-existing region-less outlet with unanimous London evidence', () => {
   const outlets = { londonmumsmagazine: { displayName: 'Londonmumsmagazine', tier: 3, aliases: ['londonmumsmagazine'], domain: 'londonmumsmagazine.com' } };
   const categories = { londonmumsmagazine: new Set(['off-west-end']) };
-  const backfilled = backfillMissingOutletRegions(outlets, categories, isLondonMarket, '2026-08-15T00:00:00.000Z');
+  const shows = { londonmumsmagazine: { london: new Set(['s1', 's2', 's3']) } };
+  const backfilled = backfillMissingOutletRegions(outlets, categories, isLondonMarket, '2026-08-15T00:00:00.000Z', shows);
   assert.deepEqual(backfilled, ['londonmumsmagazine']);
   assert.equal(outlets.londonmumsmagazine.region, 'london');
   assert.equal(outlets.londonmumsmagazine.regionInferredBy, 'backfillMissingOutletRegions (BRO-133)');
@@ -126,7 +127,7 @@ test('backfill: leaves outlets with mixed/no market evidence region-less', () =>
 
 test('backfill: mutates the outlets object in place and returns only the changed ids', () => {
   const outlets = {
-    a: { tier: 3 },
+    a: { tier: 3, domain: 'a.co.uk' },
     b: { tier: 3, region: 'us' },
   };
   const categories = { a: new Set(['off-west-end']) };
@@ -220,4 +221,63 @@ test('regionEvidenceMarket: other categories are no evidence', () => {
   for (const category of ['regional', 'tour', undefined]) {
     assert.equal(regionEvidenceMarket({ isLondonMarket: isLdn, category, trustworthy: true, trustworthyApartFromWrongProduction: true }), null);
   }
+});
+
+// ── BRO-5896: a london stamp needs real evidence ────────────────────────────
+const { isUkRegistryDomain, londonStampEvidence, MIN_LONDON_SHOWS_FOR_STAMP } = require('./outlet-region-map.js');
+
+test('backfill: one London review on a non-UK domain no longer stamps london (outinjersey)', () => {
+  const outlets = { outinjersey: { domain: 'outinjersey.net' } };
+  const cats = { outinjersey: new Set(['west-end']) };
+  assert.deepEqual(backfillMissingOutletRegions(outlets, cats, isLdn, 'T', { outinjersey: { london: new Set(['w1']) } }), []);
+  assert.equal(outlets.outinjersey.region, undefined);
+  // two shows is still below the floor
+  assert.deepEqual(backfillMissingOutletRegions(outlets, cats, isLdn, 'T', { outinjersey: { london: ['w1', 'w2'] } }), []);
+  // and no evidence map at all (old call shape) never stamps a non-UK domain
+  assert.deepEqual(backfillMissingOutletRegions(outlets, cats, isLdn), []);
+});
+
+test('backfill: N distinct London shows on a non-UK domain stamps, recording the evidence', () => {
+  const outlets = { blog: { domain: 'blog.com' } };
+  const out = backfillMissingOutletRegions(outlets, { blog: new Set(['west-end', 'off-west-end']) }, isLdn, 'T',
+    { blog: { london: new Set(['w1', 'w2', 'w3']) } });
+  assert.deepEqual(out, ['blog']);
+  assert.equal(outlets.blog.region, 'london');
+  assert.equal(outlets.blog.regionInferredEvidence, '3 London shows');
+});
+
+test('backfill: duplicate files on one show count once', () => {
+  const outlets = { blog: { domain: 'blog.com' } };
+  assert.deepEqual(backfillMissingOutletRegions(outlets, { blog: new Set(['west-end']) }, isLdn, 'T',
+    { blog: { london: ['w1', 'w1', 'w1'] } }), []);
+});
+
+test('backfill: a UK domain stamps from a single London show', () => {
+  const outlets = { ukblog: { domain: 'www.ukblog.co.uk' } };
+  assert.deepEqual(backfillMissingOutletRegions(outlets, { ukblog: new Set(['off-west-end']) }, isLdn, 'T',
+    { ukblog: { london: ['w1'] } }), ['ukblog']);
+  assert.equal(outlets.ukblog.regionInferredEvidence, 'uk-domain');
+});
+
+test('backfill: a UK domain still needs unanimous London categories', () => {
+  const outlets = { ukblog: { domain: 'ukblog.co.uk' } };
+  assert.deepEqual(backfillMissingOutletRegions(outlets, { ukblog: new Set(['west-end', 'broadway']) }, isLdn, 'T',
+    { ukblog: { london: ['w1', 'w2', 'w3'] } }), []);
+});
+
+test('isUkRegistryDomain: UK TLDs only, not the loose theatre/london substring heuristic', () => {
+  for (const d of ['x.co.uk', 'www.x.org.uk', 'onin.london', 'getthechance.wales', 'https://x.uk/path', 'x.scot']) {
+    assert.equal(isUkRegistryDomain(d), true, d);
+  }
+  for (const d of ['outinjersey.net', 'theatreboard.com', 'londonmumsmagazine.com', 'marquee.tv', '', null, undefined, 'co.uk.example.com']) {
+    assert.equal(isUkRegistryDomain(d), false, String(d));
+  }
+});
+
+test('londonStampEvidence: floor is MIN_LONDON_SHOWS_FOR_STAMP', () => {
+  assert.equal(MIN_LONDON_SHOWS_FOR_STAMP, 3);
+  assert.equal(londonStampEvidence({ domain: 'x.com' }, 2), null);
+  assert.equal(londonStampEvidence({ domain: 'x.com' }, 3), '3 London shows');
+  assert.equal(londonStampEvidence({}, 0), null);
+  assert.equal(londonStampEvidence({ domain: 'x.co.uk' }, 0), 'uk-domain');
 });

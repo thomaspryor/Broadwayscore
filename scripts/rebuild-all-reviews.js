@@ -7266,7 +7266,10 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
   if (retractedOutlets.length > 0) {
     console.log(`\n↩️  RETRACTED wrong region:'london' on ${retractedOutlets.length} outlet(s) (BRO-5896): ${retractedOutlets.map(r => `${r.id} (${r.nycShows} NYC / ${r.londonShows} London shows)`).join(', ')}`);
   }
-  const backfilledOutlets = backfillMissingOutletRegions(outletRegistry.outlets, outletShowCategories, isLondonMarket);
+  // outletMarketShowsRaw supplies the distinct-London-show count the stamp now
+  // needs when the outlet has no UK domain (BRO-5896). On a --show= run that
+  // count covers one show, so only UK-domain outlets can be stamped there.
+  const backfilledOutlets = backfillMissingOutletRegions(outletRegistry.outlets, outletShowCategories, isLondonMarket, undefined, outletMarketShowsRaw);
 
   // Staged ids were NOT written to the registry — counting them here would
   // rewrite + commit data/outlet-registry.json on every one of ~20 workflows'

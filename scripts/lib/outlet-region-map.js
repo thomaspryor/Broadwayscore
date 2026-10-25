@@ -124,9 +124,12 @@ function inferOutletRegionFromCategories(categories, isLondonMarket) {
  * @param {Record<string, Set<string>|string[]>} outletShowCategories - outlet id -> show categories it's been reviewed under
  * @param {(cat: string) => boolean} isLondonMarket
  * @param {string} [nowIso] - injectable clock for tests; defaults to new Date().toISOString()
+ * @param {Record<string, {london?: Set<string>|string[]}>} [outletMarketShows] - outlet id ->
+ *   distinct trustworthy London show ids (the rebuild's outletMarketShowsRaw). Without
+ *   it only UK-domain outlets can be stamped (londonStampEvidence, BRO-5896).
  * @returns {string[]} ids that were backfilled with region:'london'
  */
-function backfillMissingOutletRegions(outlets, outletShowCategories, isLondonMarket, nowIso) {
+function backfillMissingOutletRegions(outlets, outletShowCategories, isLondonMarket, nowIso, outletMarketShows) {
   const backfilled = [];
   for (const [id, info] of Object.entries(outlets || {})) {
     // regionCorrectedBy: a human correction, or a retraction by
@@ -135,14 +138,56 @@ function backfillMissingOutletRegions(outlets, outletShowCategories, isLondonMar
     if (!info || info.region || info.isDualMarket || info.regionCorrectedBy) continue;
     const inferredRegion = inferOutletRegionFromCategories(
       [...(outletShowCategories[id] || [])], isLondonMarket);
-    if (inferredRegion) {
-      info.region = inferredRegion;
-      info.regionInferredBy = 'backfillMissingOutletRegions (BRO-133)';
-      info.regionInferredAt = nowIso || new Date().toISOString();
-      backfilled.push(id);
-    }
+    if (!inferredRegion) continue;
+    // BRO-5896: unanimous categories alone let ONE review stamp an outlet
+    // london forever (outinjersey.net from a single West End file). Require
+    // real evidence too: a UK domain, or enough distinct London shows.
+    const londonShows = new Set(((outletMarketShows || {})[id] || {}).london || []).size;
+    const evidence = londonStampEvidence(info, londonShows);
+    if (!evidence) continue;
+    info.region = inferredRegion;
+    info.regionInferredBy = 'backfillMissingOutletRegions (BRO-133)';
+    info.regionInferredAt = nowIso || new Date().toISOString();
+    info.regionInferredEvidence = evidence;
+    backfilled.push(id);
   }
   return backfilled;
+}
+
+/**
+ * Distinct trustworthy London shows an outlet needs before a region:'london'
+ * stamp is made without a UK domain (BRO-5896). 3, not 2: the BRO-133 audit
+ * found US/global outlets (marquee.tv, grandgoldman.com, abundantart.net,
+ * bnn.network) stamped from one or two London files.
+ */
+const MIN_LONDON_SHOWS_FOR_STAMP = 3;
+
+/**
+ * True for a registry domain on a UK country-code or UK geographic TLD.
+ * Deliberately stricter than venue-classification.js's isUkOutletUrl, whose
+ * "hostname contains theatre" heuristic matches US blogs as well.
+ * @param {string|null|undefined} domain
+ * @returns {boolean}
+ */
+function isUkRegistryDomain(domain) {
+  const host = String(domain || '').toLowerCase().trim()
+    .replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '');
+  if (!host) return false;
+  return /\.(uk|london|wales|cymru|scot)$/.test(host);
+}
+
+/**
+ * The evidence that justifies a region:'london' stamp, or null when there is
+ * not enough (BRO-5896). Callers have already checked the outlet's categories
+ * are unanimously London; this adds the "is it real" bar.
+ * @param {{domain?: string}} info - registry entry
+ * @param {number} londonShows - distinct trustworthy London shows reviewed
+ * @returns {string|null} 'uk-domain' | '<n> London shows' | null
+ */
+function londonStampEvidence(info, londonShows) {
+  if (isUkRegistryDomain(info && info.domain)) return 'uk-domain';
+  if ((londonShows || 0) >= MIN_LONDON_SHOWS_FOR_STAMP) return `${londonShows} London shows`;
+  return null;
 }
 
 /**
@@ -333,6 +378,9 @@ module.exports = {
   buildOutletMaps,
   inferOutletRegionFromCategories,
   backfillMissingOutletRegions,
+  MIN_LONDON_SHOWS_FOR_STAMP,
+  isUkRegistryDomain,
+  londonStampEvidence,
   retractContradictedOutletRegions,
   regionEvidenceMarket,
   BROADWAY_LOCAL_REGIONS,
