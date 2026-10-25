@@ -1,11 +1,10 @@
 name: Social Media Post
 
 on:
-  # Daily at 3 PM UTC (10 AM ET) — peak engagement for arts content
-  schedule:
-    - cron: '0 15 * * *'
-
-  # Manual trigger + event-driven dispatch
+  # BRO-6242: retired from schedule and from update-show-status.yml's opening
+  # dispatch. social-autopost.yml posts openings and Critic Scores to every
+  # network through Buffer; this Twitter-only rotation never had credentials.
+  # Manual dispatch kept for one-off content types.
   workflow_dispatch:
     inputs:
       type:

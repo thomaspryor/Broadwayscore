@@ -78,7 +78,7 @@ const ALLOWED_SHOW_IDS = SHOWS_ARG ? new Set(SHOWS_ARG.split('=')[1].split(',').
 // Use this after fixing a bug in the email template — clears completed flag so the script
 // doesn't bail with "already broadcast". Safe: only creates a draft, never calls /send.
 const RECREATE_DRAFT = process.argv.includes('--recreate-draft');
-// --force-create-draft: bypass the readiness gate (MIN_REVIEWS / MIN_T1 / MIN_T2 / MIN_HIGH_CONFIDENCE).
+// --force-create-draft: bypass the readiness gate (scripts/lib/score-confidence-gate.js).
 // Always combine with --shows= to target a specific show. Still draft-only — never calls /send.
 // For revivals or niche shows where T1 outlets are unlikely to cover; owner manually reviews the
 // draft in Resend UI and decides whether to send.
@@ -108,15 +108,9 @@ const FROM_EMAIL = 'updates@broadwayscorecard.com';
 // carries a Reply-To that reaches the owner's inbox — see buildReplyToAddress.
 const REPLY_TO = buildReplyToAddress();
 const SITE_NAME = siteNameForMarket(MARKET);
-// WE has ~15 reliable outlets vs Broadway's 40+; median WE show gets 10 scored reviews
-const MIN_REVIEWS = isLondonMarket(MARKET) ? 8 : 12;
-const MIN_T1_REVIEWS = 3;
-const MIN_T2_REVIEWS = isLondonMarket(MARKET) ? 2 : 3;
-// BRO-4954: a transfer/return carries its earlier run's reviews, so it can clear the
-// gates above before anyone has reviewed THIS run. "The reviews are in" needs some
-// reviews of this run: half the total floor.
-const MIN_NEW_REVIEWS_RETURNING = Math.ceil(MIN_REVIEWS / 2);
-const MIN_HIGH_CONFIDENCE = isLondonMarket(MARKET) ? 6 : 8;
+// Readiness floors live in scripts/lib/score-confidence-gate.js (BRO-6242), shared
+// with the social autopost so "the reviews are in" means the same thing everywhere.
+const { evaluateScoreConfidence, getConfidenceFloors } = require('./lib/score-confidence-gate');
 
 
 function loadJSON(filePath) {
@@ -488,44 +482,25 @@ async function main() {
     }
     const stats = getReviewStats(reviewsArr, showId, MARKET, show, showsArr);
     const showReviews = reviewsArr.filter(r => r.showId === showId && r.assignedScore != null);
-    const t1Count = showReviews.filter(r => getOutletTier(r.outletId) === 1).length;
-    const t2Count = showReviews.filter(r => getOutletTier(r.outletId) === 2).length;
-    const t3Count = showReviews.filter(r => getOutletTier(r.outletId) === 3).length;
+    const gate = evaluateScoreConfidence({ showReviews, category: MARKET, getOutletTier, newReviewCount: stats.newReviewCount });
+    const { t1: t1Count, t2: t2Count, t3: t3Count, highConfidence: highConfCount } = gate.counts;
 
-    // Count high-confidence reviews (full-text scored, not excerpt-only)
-    const highConfCount = showReviews.filter(r => r.scoreConfidence === 'high' || r.scoreConfidence === 'medium').length;
-
-    const totalOk = stats.reviewCount >= MIN_REVIEWS;
-    const t1Ok = t1Count >= MIN_T1_REVIEWS;
-    const t2Ok = t2Count >= MIN_T2_REVIEWS;
-    const confOk = highConfCount >= MIN_HIGH_CONFIDENCE;
-    const newOk = stats.newReviewCount == null || stats.newReviewCount >= MIN_NEW_REVIEWS_RETURNING;
-
-    if (totalOk && t1Ok && t2Ok && confOk && newOk) {
+    if (gate.ok) {
       readyShows.push({ show, stats, t1Count, t2Count, t3Count });
       console.log(`  ✅ ${show.title}: ${stats.reviewCount} reviews${stats.newReviewCount != null ? ` (${stats.newReviewCount} of this run)` : ''} (T1:${t1Count} T2:${t2Count} T3:${t3Count}, hi-conf:${highConfCount})`);
     } else if (FORCE_CREATE_DRAFT) {
       readyShows.push({ show, stats, t1Count, t2Count, t3Count });
-      const reasons = [];
-      if (!totalOk) reasons.push(`${stats.reviewCount}/${MIN_REVIEWS} total`);
-      if (!t1Ok) reasons.push(`T1:${t1Count}/${MIN_T1_REVIEWS}`);
-      if (!t2Ok) reasons.push(`T2:${t2Count}/${MIN_T2_REVIEWS}`);
-      if (!confOk) reasons.push(`hi-conf:${highConfCount}/${MIN_HIGH_CONFIDENCE}`);
-      if (!newOk) reasons.push(`this-run:${stats.newReviewCount}/${MIN_NEW_REVIEWS_RETURNING}`);
+      const reasons = gate.reasons;
       console.log(`  ⚠️  ${show.title}: gate failed (${reasons.join(', ')}) — bypassed by --force-create-draft. Draft will be created for manual review.`);
     } else {
-      const reasons = [];
-      if (!totalOk) reasons.push(`${stats.reviewCount}/${MIN_REVIEWS} total`);
-      if (!t1Ok) reasons.push(`T1:${t1Count}/${MIN_T1_REVIEWS}`);
-      if (!t2Ok) reasons.push(`T2:${t2Count}/${MIN_T2_REVIEWS}`);
-      if (!confOk) reasons.push(`hi-conf:${highConfCount}/${MIN_HIGH_CONFIDENCE}`);
-      if (!newOk) reasons.push(`this-run:${stats.newReviewCount}/${MIN_NEW_REVIEWS_RETURNING}`);
+      const reasons = gate.reasons;
       console.log(`  ⏳ ${show.title}: Not ready — ${reasons.join(', ')} (T1:${t1Count} T2:${t2Count} T3:${t3Count}, hi-conf:${highConfCount})`);
     }
   }
 
   if (readyShows.length === 0) {
-    console.log(`\nNo shows are ready for broadcast (need ${MIN_REVIEWS}+ reviews, ${MIN_T1_REVIEWS}+ T1, ${MIN_T2_REVIEWS}+ T2, ${MIN_HIGH_CONFIDENCE}+ high-confidence)`);
+    const f = getConfidenceFloors(MARKET);
+    console.log(`\nNo shows are ready for broadcast (need ${f.total}+ reviews, ${f.t1}+ T1, ${f.t2}+ T2, ${f.highConfidence}+ high-confidence)`);
     process.exit(0);
   }
 

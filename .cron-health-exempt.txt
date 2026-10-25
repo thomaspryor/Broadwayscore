@@ -148,7 +148,7 @@ self-heal-orphan-show-files.yml
 snapshot-audience-grades.yml  # seasonal weekly snapshot (Apr-Jun); a missed week is a gap in a trend chart
 snapshot-audience-history.yml  # weekly snapshot; a missed week is a gap in a trend chart
 snapshot-award-scores.yml  # weekly snapshot; a missed week is a gap in a trend chart
-social-post.yml  # daily social post; a missed day is one fewer post
+social-autopost.yml  # hourly; a dropped run is caught by the next hour (posts are idempotent), and failures notify
 submit-indexnow.yml  # weekly IndexNow ping; search engines still crawl the sitemap
 sync-followers.yml  # daily subscriber sync; follow notifications re-sync before sending
 test-ugc-roundtrip.yml  # daily live sign-in check that pages on failure (routed users-affected alert); a run that never starts only delays detection a day

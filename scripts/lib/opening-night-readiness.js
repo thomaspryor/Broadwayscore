@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isLondonMarket } = require('./venue-classification');
+const { getConfidenceFloors } = require('./score-confidence-gate');
 const { getFoundOutletIds } = require('./found-outlet-ids');
 const { selectMissingT1T2Outlets } = require('./opening-night-discovery-policy');
 
@@ -25,14 +26,18 @@ const DATA_DIR = path.join(__dirname, '..', '..', 'data');
 const REVIEWS_PATH = path.join(DATA_DIR, 'reviews.json');
 const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
 
-/** MIN_REVIEWS/MIN_T1_REVIEWS/MIN_T2_REVIEWS/MIN_HIGH_CONFIDENCE broadcast-readiness thresholds for a market. */
+/**
+ * MIN_REVIEWS/MIN_T1_REVIEWS/MIN_T2_REVIEWS/MIN_HIGH_CONFIDENCE broadcast-readiness thresholds for a market.
+ * The numbers live in score-confidence-gate.js (BRO-6242), the gate the broadcast itself applies.
+ */
 function getThresholds(market) {
   const isWE = market === 'west-end' || market === 'off-west-end';
+  const f = getConfidenceFloors(isWE ? 'west-end' : 'broadway');
   return {
-    MIN_REVIEWS: isWE ? 8 : 12,
-    MIN_T1_REVIEWS: 3,
-    MIN_T2_REVIEWS: isWE ? 2 : 3,
-    MIN_HIGH_CONFIDENCE: isWE ? 6 : 8,
+    MIN_REVIEWS: f.total,
+    MIN_T1_REVIEWS: f.t1,
+    MIN_T2_REVIEWS: f.t2,
+    MIN_HIGH_CONFIDENCE: f.highConfidence,
   };
 }
 
