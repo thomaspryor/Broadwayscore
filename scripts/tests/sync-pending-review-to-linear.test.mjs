@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-const { buildDigest, DIGEST_CHAR_CAP } = createRequire(import.meta.url)('./sync-pending-review-to-linear.js');
+const { buildDigest, DIGEST_CHAR_CAP } = createRequire(import.meta.url)('../sync-pending-review-to-linear.js');
 
 const mk = (n) => Array.from({ length: n }, (_, i) => ({
   slug: `show-${i}`, title: `Show ${i}`, heldSince: '2026-01-01',
