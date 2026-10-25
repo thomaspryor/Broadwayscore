@@ -317,6 +317,11 @@ const MID_TEXT_CHROME_BLOCKS = [
   // the body ("Become an Independent member to bookmark ... Already a member? Log in").
   { name: 'independent-bookmark-popover', maxGap: 400,
     start: 'Become an Independent member to bookmark', end: 'Already\\s+a\\s+member\\?\\s+Log\\s+in' },
+  // BRO-6212: the Daily Express review template inlines a Reach plc email signup after the
+  // opening paragraphs ("Get the latest news and gossip from the Royal Family ... You can
+  // unsubscribe at any time. More Info"). Benjamin Button (West End) was tiered `invalid`.
+  { name: 'express-reach-newsletter', maxGap: 900,
+    start: 'Get the latest news and gossip from the Royal Family', end: 'You\\s+can\\s+unsubscribe\\s+at\\s+any\\s+time\\.\\s*More\\s+Info\\s*\\.?' },
 ].map((b) => ({
   ...b,
   re: new RegExp(`${b.start}[\\s\\S]{0,${b.maxGap}}?${b.end}`, 'gi'),
