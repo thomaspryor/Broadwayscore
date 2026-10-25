@@ -1,130 +1,53 @@
 {
-  "updatedAt": "2026-10-25T19:15:21.415Z",
-  "processed": 72,
-  "failed": 45,
-  "successRate": "61.5%",
+  "updatedAt": "2026-10-25T19:48:16.827Z",
+  "processed": 142,
+  "failed": 65,
+  "successRate": "68.6%",
   "tierBreakdown": {
-    "playwright": 43,
-    "amp": 0,
-    "browserbase": 2,
+    "playwright": 84,
+    "amp": 2,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 4,
-    "scrapingbee": 3,
+    "scrapingdog": 10,
+    "scrapingbee": 6,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 19
+    "archive": 33
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-25T18:48:53.629Z",
+      "t": "2026-10-25T18:01:19.045Z",
       "event": "bb-session",
-      "session": "1e65dfa8",
-      "url": "https://www.nytimes.com/2025/12/16/theater/tartuffe-review-matthew-broderick-dav"
+      "session": "9142fec4",
+      "url": "https://www.wsj.com/articles/the-brothers-size-review-siblings-in-tension-at-the"
     },
     {
-      "t": "2026-10-25T18:48:53.956Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-25T18:49:47.913Z",
-      "event": "bb-session",
-      "session": "e8b6de46",
-      "url": "https://www.nytimes.com/2025/11/18/theater/this-world-of-tomorrow-review-tom-han"
-    },
-    {
-      "t": "2026-10-25T18:49:48.171Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-25T18:50:22.462Z",
-      "event": "bb-session",
-      "session": "9c0857aa",
-      "url": "https://www.nytimes.com/2025/11/18/theater/meet-the-cartozians-review.html"
-    },
-    {
-      "t": "2026-10-25T18:50:22.794Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-25T18:51:23.909Z",
-      "event": "bb-session",
-      "session": "496d7993",
-      "url": "https://www.nytimes.com/2025/11/13/theater/archduke-review-rajiv-joseph.html"
-    },
-    {
-      "t": "2026-10-25T18:51:24.184Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-25T18:52:53.633Z",
-      "event": "bb-session",
-      "session": "a1d1eee9",
-      "url": "https://www.nytimes.com/2025/11/10/theater/richard-ii-review-michael-urie.html"
-    },
-    {
-      "t": "2026-10-25T18:52:53.955Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-25T18:56:40.363Z",
-      "event": "bb-session",
-      "session": "dddc94b7",
-      "url": "https://www.wsj.com/arts-culture/film/father-mother-sister-brother-review-jim-ja"
-    },
-    {
-      "t": "2026-10-25T18:56:40.711Z",
+      "t": "2026-10-25T18:01:19.346Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-25T19:01:15.015Z",
+      "t": "2026-10-25T19:40:15.251Z",
       "event": "bb-session",
-      "session": "705adc87",
-      "url": "https://www.nytimes.com/2025/10/15/theater/ariel-stachel-other.html"
+      "session": "c4314f08",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
     },
     {
-      "t": "2026-10-25T19:01:15.294Z",
+      "t": "2026-10-25T19:40:15.759Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-25T19:02:15.192Z",
+      "t": "2026-10-25T19:43:19.484Z",
       "event": "bb-session",
-      "session": "12f35c24",
-      "url": "https://www.nytimes.com/2025/10/09/theater/jen-tullock-severance-hand-of-god.htm"
+      "session": "a6c232d0",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
     },
     {
-      "t": "2026-10-25T19:02:15.579Z",
+      "t": "2026-10-25T19:43:19.965Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-25T19:03:47.865Z",
-      "event": "bb-session",
-      "session": "52d48f70",
-      "url": "https://www.nytimes.com/2025/09/15/theater/prince-faggot-off-broadway-royals.htm"
-    },
-    {
-      "t": "2026-10-25T19:03:48.139Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-25T19:10:28.102Z",
-      "event": "bb-session",
-      "session": "8d8fe4da",
-      "url": "https://www.wsj.com/articles/the-antiquities-review-exhibiting-humanity-in-an-ai"
-    },
-    {
-      "t": "2026-10-25T19:10:28.410Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
     }
   ]
 }
