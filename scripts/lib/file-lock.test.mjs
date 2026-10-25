@@ -279,3 +279,25 @@ test('BRO-6076: removing an empty gate between mkdir and marker creation cannot 
     fs.rmSync(dir, { recursive: true, force: true });
   }
 });
+
+// BRO-6189: timeoutMs smaller than the time to the first check (slow CI
+// runner, timeoutMs: 1) used to skip the acquire loop and report a FREE lock
+// as busy. At least one attempt must always be made.
+test('withFileLock makes one attempt even when the deadline has already passed', (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'file-lock-deadline-'));
+  const lock = path.join(dir, 'x.lock');
+  try {
+    const realNow = Date.now;
+    let calls = 0;
+    // First call (deadline calc) is real; every later call is 1h in the future.
+    t.mock.method(Date, 'now', () => (calls++ === 0 ? realNow() : realNow() + 3_600_000));
+    let held;
+    withFileLock(lock, h => { held = h; }, { timeoutMs: 1, waitMs: 0 });
+    t.mock.restoreAll();
+    assert.equal(held, true, 'free lock must be acquired despite an expired deadline');
+    assert.equal(fs.existsSync(lock), false, 'lock released on exit');
+  } finally {
+    t.mock.restoreAll();
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});

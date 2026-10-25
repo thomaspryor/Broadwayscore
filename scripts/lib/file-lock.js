@@ -141,7 +141,10 @@ function withFileLock(lockPath, fn, opts = {}) {
   const stealGatePath = `${lockPath}.steal-gate`;
   const deadline = Date.now() + timeoutMs;
   let held = false;
-  while (Date.now() < deadline) {
+  // Make at least one pass (unless a live steal gate is in progress): a tiny timeoutMs (BRO-5979 uses 1) can
+  // already be past by the first check on a slow runner, which skipped the
+  // acquire entirely and reported a free lock as busy (BRO-6189).
+  for (let attempt = 0; attempt === 0 || Date.now() < deadline; attempt++) {
     if (fs.existsSync(stealGatePath)) {
       clearAbandonedGate(stealGatePath, staleMs, abandonedMs);
       if (!fs.existsSync(stealGatePath)) continue;
