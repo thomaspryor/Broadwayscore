@@ -943,8 +943,10 @@ async function main() {
           for (const field of fieldsToCheck) {
             // BRO-6191: a figure a person cleared stays cleared unless the answer cites it.
             if (refuseClearedField(existingShow, analysis, field)) {
-              console.log(`    Guardian blocked ${field}: cleared on record (BRO-6191), uncited AI figure refused`);
-              delete analysis[field];
+              // Held, not deleted: a cited figure may refill it, and only the apply gate
+              // has figureEvidence to decide (commercial-apply-gate.js).
+              console.log(`    Guardian: ${field} is cleared on record (BRO-6191); answer's figure held, applies only with verified evidence`);
+              analysis._clearedFieldProposed = [...(analysis._clearedFieldProposed || []), field];
               continue;
             }
             if (analysis[field] != null && existingShow[field] != null) {

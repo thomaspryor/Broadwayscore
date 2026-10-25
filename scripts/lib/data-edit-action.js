@@ -27,6 +27,10 @@ const EDITABLE_DATA_FIELDS = pickEditableFields([
 // honors only alongside a substantive statusBackfillSource.
 EDITABLE_DATA_FIELDS['shows.json'] = [...EDITABLE_DATA_FIELDS['shows.json'], 'noPlaybillProductionPage', 'statusBackfillSource', 'ibdbRevivalChecked'];
 
+// BRO-6191: plan-only (owner-approved) commercial.json extras with value checks
+// (cleared-field-guard.js planOnlyValueProblem); not offered to the feedback-plan LLM.
+EDITABLE_DATA_FIELDS['commercial.json'] = [...EDITABLE_DATA_FIELDS['commercial.json'], ...require('./cleared-field-guard.js').PLAN_ONLY_COMMERCIAL_FIELDS];
+
 /** null when the file and field are editable by a plan, else the refusal reason. */
 function dataEditAllowProblem({ file, field }) {
   if (!EDITABLE_DATA_FIELDS[file]) return `File "${file}" not allowed for data-edit`;
@@ -133,6 +137,11 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
     return { ok: true, msg: `shows.json: ${field} updated for ${showId}${tagNote}` };
 
   } else if (file === 'commercial.json') {
+    const { isPlanOnlyField, planOnlyValueProblem } = require('./cleared-field-guard.js');
+    if (isPlanOnlyField(field)) {
+      const bad = planOnlyValueProblem(field, oldValue, newValue);
+      if (bad) return { ok: false, reason: bad };
+    }
     const { applyCommercialFieldEdit } = require('./commercial-field-edit.js');
     return applyCommercialFieldEdit(data, action.showSlug || showId, field, oldValue, newValue);
 

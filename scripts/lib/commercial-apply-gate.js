@@ -274,10 +274,11 @@ function buildCommercialEntry(entry, existing, opts = {}) {
     // no designation and failed validation).
     if (!result.designation) result.designation = 'TBD';
   }
+  const costRefused = entry.weeklyRunningCost != null && refuseClearedField(existing, entry, 'weeklyRunningCost', figureEvidence.weeklyRunningCost);
   if (entry.capitalization != null) result.capitalization = entry.capitalization;
   if (capitalizationSource) result.capitalizationSource = capitalizationSource;
-  if (entry.weeklyRunningCost != null && !refuseClearedField(existing, entry, 'weeklyRunningCost', figureEvidence.weeklyRunningCost)) result.weeklyRunningCost = entry.weeklyRunningCost;
-  if (costMethodology) result.costMethodology = costMethodology;
+  if (entry.weeklyRunningCost != null && !costRefused) result.weeklyRunningCost = entry.weeklyRunningCost;
+  if (costMethodology && !costRefused) result.costMethodology = costMethodology;
   // An auto-apply claim never rewrites a recoupment already on record, dated
   // or human-locked: the claim's date is usually the article's month, later
   // than the real one. Its source URL still joins `sources` below. BRO-4657:

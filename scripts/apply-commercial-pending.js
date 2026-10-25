@@ -68,6 +68,7 @@ const AUTO_APPLY_CLAIMS_FROM = flags['auto-apply-claims-from']
   ? flags['auto-apply-claims-from'].split(',').map(s => s.trim()).filter(Boolean)
   : [];
 
+const { carriedClearedGuard } = require('./lib/cleared-field-guard');
 const gate = require('./lib/commercial-apply-gate');
 const { sanitizeForPublicRecord, commercialRecordErrors } = require('./lib/commercial-record-checks');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -403,6 +404,8 @@ async function main() {
       if (existing.researchAttempts != null) commercialEntry.researchAttempts = existing.researchAttempts;
       if (existing.lastResearchedAt != null) commercialEntry.lastResearchedAt = existing.lastResearchedAt;
       if (existing.researchTrigger != null) commercialEntry.researchTrigger = existing.researchTrigger;
+      // BRO-6191: a --show rebuild starts from {}; carry the cleared-field guard's inputs across.
+      Object.assign(commercialEntry, carriedClearedGuard(existing, commercialEntry));
     }
 
     if (DRY_RUN) {
