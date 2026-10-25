@@ -63,20 +63,6 @@
     "queuedAt": "2026-10-25T13:36:37.721Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 16 (pull-quote-quality, regex-fp, run-contamination, cross-show-url, body-date-mismatch, unknown-outlets, +10 more). Checked 2026-10-25.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-25T13:36:38.095Z"
-  },
-  {
     "conditionKey": "land:land/worktree-fix-newsletter-grosses-week",
     "title": "Landing blocked: rebase red on land/worktree-fix-newsletter-grosses-week",
     "description": "land.yml did not land land/worktree-fix-newsletter-grosses-week: the rebase gate went red at 2653de2211. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/worktree-fix-newsletter-grosses-week @ 2653de2211 (origin/land/worktree-fix-newsletter-grosses-week) → origin/main @ efb171e92a REFUSED: rebase: branch would not rebase cleanly onto origin/main @ efb171e92a: Rebasing (1/1) error: could not apply 2653de22110... fix(newsletter): box office header shows the grosses week's Sunday, not the Saturday hint: Resolve all conflicts manually, mark Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40197519665",
@@ -162,5 +148,33 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-25T14:53:12.709Z"
+  },
+  {
+    "conditionKey": "corpus-drift:contradicted-flag-basis",
+    "title": "Corpus drift: exclusion flag whose own stated basis (a date-guard claim) is contradicted by the current record (zero-tolerance)",
+    "description": "check-corpus-drift.js audit \"contradicted-flag-basis\" (node scripts/audit-contradicted-flag-basis.js --gate --max=0) has been drifting. Latest output:\n\nContradicted-flag-basis sweep: 2807 shows scanned, 1 match(es).\n  [wrongProduction] a-view-from-the-bridge-2015/njcom--christopher-kelly.json\n      basis cites 2015-07-01 but record is dated 2015-11-12, inside run 2015-10-21..2016-02-28\n\nFAIL: 1 review file(s) carry an exclusion flag whose date basis the record itself contradicts (> max 0).\nEach match is a real review suppressed from live Critic Scores on a date that is no longer on the record.\nAdjudicate by hand and clear with the full PROTECTED_FIELDS set — there is no bulk drain, by design.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-25T15:06:59.827Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 16 (pull-quote-quality, regex-fp, run-contamination, cross-show-url, body-date-mismatch, unknown-outlets, +10 more). Checked 2026-10-25.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-25T15:06:59.860Z"
   }
 ]
