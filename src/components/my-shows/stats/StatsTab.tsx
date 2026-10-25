@@ -10,7 +10,7 @@
  * helpers) behind computeStatsBundle; nothing here computes a statistic.
  */
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Component, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { UserReview, ShowLookup } from '@/types/user';
 import { matchVenueToHouse, type CanonEntry, type HouseVisit, type StatsCanon, type StatsReviews } from '@/lib/stats';
 import {
@@ -18,7 +18,7 @@ import {
   HOUSE_INDEX,
   MIN_ENTRIES_FOR_STATS,
   computeStatsBundle,
-  decodeMobileShows,
+  decodeStatsShows,
   mergeShows,
   type StatsShow,
 } from '@/lib/stats-ui/bundle';
@@ -34,6 +34,7 @@ import AisleMates from './AisleMates';
 import CanonChecklists, { type CanonFilter } from './CanonChecklists';
 import RatingsModule from './RatingsModule';
 import StatsDrilldown, { type DrilldownPayload } from './StatsDrilldown';
+import type { DataState } from './primitives';
 
 export interface StatsTabProps {
   reviews: UserReview[];
@@ -43,22 +44,42 @@ export interface StatsTabProps {
 
 type Load<T> = { status: 'loading' } | { status: 'ready'; data: T } | { status: 'error' };
 
-/** Fetch a static JSON file under /data once per mount. */
-function useStaticJson<T>(path: string, parse: (raw: unknown) => T): Load<T> {
+/** A data file still pending after this long counts as failed (module shows Retry). */
+const FETCH_TIMEOUT_MS = 15_000;
+
+/**
+ * Fetch a static JSON file under /data once per mount, with a timeout and a
+ * retry. A non-2xx, a malformed body, a parse() throw or a timeout all land
+ * in 'error' — never an unhandled rejection or an endless spinner.
+ */
+function useStaticJson<T>(path: string, parse: (raw: unknown) => T): [Load<T>, () => void] {
   const [state, setState] = useState<Load<T>>({ status: 'loading' });
+  const [attempt, setAttempt] = useState(0);
   useEffect(() => {
     const controller = new AbortController();
+    let timedOut = false;
+    const timer = setTimeout(() => {
+      timedOut = true;
+      controller.abort();
+    }, FETCH_TIMEOUT_MS);
+    setState({ status: 'loading' });
     fetch(path, { signal: controller.signal })
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
       .then((raw) => setState({ status: 'ready', data: parse(raw) }))
       .catch((e) => {
-        if ((e as Error).name !== 'AbortError') setState({ status: 'error' });
-      });
-    return () => controller.abort();
+        // An abort from unmount/re-run is not a failure; one from the timer is.
+        if (timedOut || (e as Error).name !== 'AbortError') setState({ status: 'error' });
+      })
+      .finally(() => clearTimeout(timer));
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
     // parse is a module-level function; path is a constant.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [path]);
-  return state;
+  }, [path, attempt]);
+  const retry = useCallback(() => setAttempt((n) => n + 1), []);
+  return [state, retry];
 }
 
 const parseCanon = (raw: unknown): StatsCanon => {
@@ -80,12 +101,53 @@ const parseReviews = (raw: unknown): StatsReviews => {
 
 const byDateDesc = (a: UserReview, b: UserReview) => (b.date_seen ?? '').localeCompare(a.date_seen ?? '');
 
-export default function StatsTab({ reviews, showMap }: StatsTabProps) {
+/** Last line of defence: a render bug in one module must not blank My Shows. */
+class StatsErrorBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  componentDidCatch(error: unknown) {
+    console.error('[stats] render failed', error);
+  }
+  render() {
+    if (!this.state.failed) return this.props.children;
+    return (
+      <div className="card px-6 py-10 text-center" data-testid="stats-crashed">
+        <h3 className="text-lg font-bold text-white">Your stats hit a snag</h3>
+        <p className="text-sm text-gray-400 mt-2">Your diary is safe. Try loading the stats again.</p>
+        <button type="button" onClick={() => this.setState({ failed: false })} className="btn-secondary text-sm min-h-[44px] mt-5">
+          Try again
+        </button>
+      </div>
+    );
+  }
+}
+
+export default function StatsTab(props: StatsTabProps) {
+  return (
+    <StatsErrorBoundary>
+      <StatsTabContent {...props} />
+    </StatsErrorBoundary>
+  );
+}
+
+const loadState = (l: Load<unknown>): DataState => (l.status === 'ready' ? 'ready' : l.status);
+
+function StatsTabContent({ reviews, showMap }: StatsTabProps) {
   const today = useMemo(() => localToday(), []);
-  const canonLoad = useStaticJson('/data/stats-canon.json', parseCanon);
-  const reviewsLoad = useStaticJson('/data/stats-reviews.json', parseReviews);
-  // The iOS app's catalog: critic score + review count, audience grade, status.
-  const catalogLoad = useStaticJson('/data/mobile-shows.json', decodeMobileShows);
+  const [canonLoad, retryCanon] = useStaticJson('/data/stats-canon.json', parseCanon);
+  const [reviewsLoad, retryReviews] = useStaticJson('/data/stats-reviews.json', parseReviews);
+  // Slim web catalog (scripts/generate-stats-shows.js): critic score + review
+  // count, audience grade, status — projected from the iOS app's catalog.
+  const [catalogLoad, retryCatalog] = useStaticJson('/data/stats-shows.json', decodeStatsShows);
+
+  // Only the FIRST canon load gates the page; a retry after a failure keeps
+  // the rest of the view on screen.
+  const [canonSettled, setCanonSettled] = useState(false);
+  useEffect(() => {
+    if (canonLoad.status !== 'loading') setCanonSettled(true);
+  }, [canonLoad.status]);
 
   const [scope, setScope] = useState<ScopeOption | null>(null);
   const [drill, setDrill] = useState<DrilldownPayload | null>(null);
@@ -123,8 +185,10 @@ export default function StatsTab({ reviews, showMap }: StatsTabProps) {
     [bundle.scopes],
   );
 
-  // Canon gates first paint: season scopes come from its ceremony dates.
-  if (canonLoad.status === 'loading') {
+  // Canon gates first paint: season scopes come from its ceremony dates. If it
+  // fails (or times out) the page renders without seasons and the canon
+  // module offers a retry.
+  if (!canonSettled && canonLoad.status === 'loading') {
     return (
       <div className="flex justify-center py-16" aria-busy="true">
         <div className="w-6 h-6 rounded-full border-2 border-brand border-t-transparent animate-spin" />
@@ -358,7 +422,7 @@ export default function StatsTab({ reviews, showMap }: StatsTabProps) {
     open({ title: 'Not yet rated', caption: `${rows.length} ${rows.length === 1 ? 'entry' : 'entries'} without a rating`, reviews: rows });
   };
 
-  const catalogReady = catalogLoad.status !== 'loading';
+  const catalogState = loadState(catalogLoad);
 
   return (
     <div className="space-y-4" data-testid="stats-tab">
@@ -372,15 +436,22 @@ export default function StatsTab({ reviews, showMap }: StatsTabProps) {
         onOpenRing={openRing}
         onOpenExtraCredit={openExtraCredit}
       />
-      <YouVsCritics bundle={bundle} catalogReady={catalogReady} onOpenAligned={openAligned} onOpenPick={openPick} />
-      {catalogReady && (bundle.gold.total > 0 || bundle.audience.comparable >= 5) && (
+      <YouVsCritics bundle={bundle} catalog={catalogState} onRetryCatalog={retryCatalog} onOpenAligned={openAligned} onOpenPick={openPick} />
+      {catalogState === 'ready' && (bundle.gold.total > 0 || bundle.audience.comparable >= 5) && (
         <div className="grid sm:grid-cols-2 gap-4">
           <GoldCard bundle={bundle} onOpenGold={openGold} />
           <AudienceCard bundle={bundle} onOpen={openAudience} />
         </div>
       )}
-      <AisleMates bundle={bundle} loading={reviewsLoad.status === 'loading'} onOpenReviewer={openReviewer} />
-      <CanonChecklists bundle={bundle} hasCanon={canon.bestMusical.length + canon.bestPlay.length > 0} onOpenList={openCanonList} onOpenEntry={openCanonEntry} />
+      <AisleMates bundle={bundle} data={loadState(reviewsLoad)} onRetry={retryReviews} onOpenReviewer={openReviewer} />
+      <CanonChecklists
+        bundle={bundle}
+        hasCanon={canon.bestMusical.length + canon.bestPlay.length > 0}
+        data={loadState(canonLoad)}
+        onRetry={retryCanon}
+        onOpenList={openCanonList}
+        onOpenEntry={openCanonEntry}
+      />
       <RatingsModule bundle={bundle} onOpenBucket={openBucket} onOpenUnrated={openUnrated} />
       {diary.undated > 0 && (
         <p className="text-xs text-gray-500 px-1">

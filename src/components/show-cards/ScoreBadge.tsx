@@ -105,7 +105,11 @@ export { MustSeeCrown };
 
 export interface ScoreBadgeProps {
   score?: number | null;
-  size?: 'sm' | 'md' | 'lg';
+  /**
+   * xs: fixed 40px at every breakpoint, for dense list rows (Stats drill-down,
+   * contrarian picks). sm/md grow to 68px at lg, which swamps a ~52px row.
+   */
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   reviewCount?: number;
   status?: string;
   showCrown?: boolean;
@@ -137,6 +141,7 @@ function TbdBadge({ sizeClass, labelTbd, caption }: { sizeClass: string; labelTb
 
 export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown, category, tier1And2Count, isCuratedHistorical, labelTbd }: ScoreBadgeProps) {
   const sizeClass = {
+    xs: 'w-10 h-10 text-base rounded-lg flex-shrink-0 tabular-nums',
     sm: 'w-11 h-11 text-lg lg:w-[68px] lg:h-[68px] lg:text-3xl rounded-lg',
     md: 'w-14 h-14 text-2xl lg:w-[68px] lg:h-[68px] lg:text-3xl rounded-xl',
     lg: 'w-16 h-16 sm:w-20 sm:h-20 text-3xl rounded-xl',
@@ -177,7 +182,7 @@ export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown,
   if (showCrown && isCriticalGold(roundedScore, category)) {
     return (
       <div className="relative overflow-visible">
-        <MustSeeCrown size={size} />
+        <MustSeeCrown size={size === 'xs' ? 'mini' : size} />
         {badge}
       </div>
     );

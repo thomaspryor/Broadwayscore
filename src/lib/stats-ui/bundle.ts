@@ -8,8 +8,8 @@
  * Inputs on web:
  *  - diary rows: the My Shows reviews (same rows the Diary tab lists)
  *  - showMap: /data/show-lookup.json (venue, type, runtime, poster)
- *  - catalog: /data/mobile-shows.json (critic score + review count, audience
- *    grade, status) — the same file the iOS app reads
+ *  - catalog: /data/stats-shows.json (critic score + review count, audience
+ *    grade, status), a slim projection of the iOS app's mobile-shows.json
  *  - canon: /data/stats-canon.json; statsReviews: /data/stats-reviews.json
  *  - houses: theater-houses.json (slim projection of data/theater-metadata.json)
  */
@@ -61,7 +61,7 @@ export const HOUSE_INDEX: HouseIndex = buildHouseIndex(
 
 export const EMPTY_CANON: StatsCanon = { ceremonies: [], bestMusical: [], bestPlay: [] };
 
-/** One catalog show, the union of show-lookup and mobile-shows facts. */
+/** One catalog show, the union of show-lookup and stats-shows facts. */
 export interface StatsShow {
   id: string;
   title: string;
@@ -76,40 +76,58 @@ export interface StatsShow {
   audienceGrade: string | null;
   posterUrl: string | null;
   diaryOnly: boolean;
+  /** Catalog row carried its own display fields (decodeStatsShows only). */
+  hasMeta?: boolean;
 }
 
-/** Decode /data/mobile-shows.json's compact rows (the iOS app's catalog). */
-export function decodeMobileShows(raw: unknown): StatsShow[] {
-  const rows = (raw as { shows?: Record<string, unknown>[] })?.shows;
-  if (!Array.isArray(rows)) return [];
-  return rows.map((r) => {
-    const img = (r.img as { po?: string; th?: string } | undefined) ?? {};
-    const cr = r.cr as { rc?: number } | undefined;
-    const ag = r.ag as { g?: string } | undefined;
-    return {
-      id: String(r.id),
-      title: String(r.t ?? r.id),
-      slug: String(r.s ?? r.id),
-      venue: String(r.v ?? ''),
-      type: (r.ty as string) ?? null,
-      runtime: (r.rt as string) ?? null,
-      category: (r.cat as string) || 'broadway',
-      status: (r.st as string) || 'closed',
-      compositeScore: typeof r.cs === 'number' ? r.cs : null,
-      criticReviewCount: typeof cr?.rc === 'number' ? cr.rc : null,
-      audienceGrade: ag?.g ?? null,
-      posterUrl: img.po ?? img.th ?? null,
+/**
+ * Decode /data/stats-shows.json (scripts/lib/stats-shows.js): the slim web
+ * catalog projected from the app feed. `shows` rows carry the numbers
+ * ([score, reviewCount, grade, status?], trailing nulls trimmed, status
+ * omitted when closed); `meta` adds display fields only for shows the My
+ * Shows lookup leaves out. Tolerates any malformed input by returning [].
+ */
+export function decodeStatsShows(raw: unknown): StatsShow[] {
+  const d = raw as { shows?: unknown; meta?: unknown } | null;
+  const rows = d && typeof d.shows === 'object' && d.shows ? (d.shows as Record<string, unknown>) : {};
+  const meta = d && typeof d.meta === 'object' && d.meta ? (d.meta as Record<string, unknown>) : {};
+  const out: StatsShow[] = [];
+  for (const [id, value] of Object.entries(rows)) {
+    if (!Array.isArray(value)) continue;
+    const [score, reviewCount, grade, status] = value as unknown[];
+    const m = Array.isArray(meta[id]) ? (meta[id] as unknown[]) : null;
+    out.push({
+      id,
+      title: typeof m?.[0] === 'string' ? m[0] : id,
+      slug: typeof m?.[1] === 'string' ? m[1] : id,
+      venue: typeof m?.[2] === 'string' ? m[2] : '',
+      type: m ? (m[4] === 1 ? 'musical' : 'play') : null,
+      runtime: null,
+      category: typeof m?.[3] === 'string' ? m[3] : 'broadway',
+      status: typeof status === 'string' && status ? status : 'closed',
+      compositeScore: typeof score === 'number' ? score : null,
+      criticReviewCount: typeof reviewCount === 'number' ? reviewCount : null,
+      audienceGrade: typeof grade === 'string' ? grade : null,
+      posterUrl: typeof m?.[5] === 'string' ? m[5] : null,
       diaryOnly: false,
-    };
-  });
+      hasMeta: !!m,
+    });
+  }
+  return out;
 }
 
-/** Merge show-lookup (authoritative for diary display) over the catalog. */
+/**
+ * Merge show-lookup (authoritative for display AND status: it is rebuilt with
+ * today's date on every build) over the catalog's numbers. Catalog rows with
+ * no lookup entry and no meta are number-only (no title) and are dropped, so
+ * a list never renders a raw show id.
+ */
 export function mergeShows(showMap: Record<string, ShowLookup>, catalog: StatsShow[]): Record<string, StatsShow> {
   const out: Record<string, StatsShow> = {};
-  for (const c of catalog) out[c.id] = c;
+  for (const c of catalog) if (c.hasMeta) out[c.id] = c;
+  const byId = new Map(catalog.map((c) => [c.id, c]));
   for (const [id, s] of Object.entries(showMap)) {
-    const c = out[id];
+    const c = byId.get(id);
     out[id] = {
       id,
       title: s.title || c?.title || id,
@@ -118,7 +136,7 @@ export function mergeShows(showMap: Record<string, ShowLookup>, catalog: StatsSh
       type: s.type ?? c?.type ?? null,
       runtime: s.runtimeMin ?? c?.runtime ?? null,
       category: s.category || c?.category || 'broadway',
-      status: c?.status ?? s.status,
+      status: s.status || c?.status || 'closed',
       compositeScore: c?.compositeScore ?? s.compositeScore ?? null,
       criticReviewCount: c?.criticReviewCount ?? null,
       audienceGrade: c?.audienceGrade ?? null,

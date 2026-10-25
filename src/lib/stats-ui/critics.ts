@@ -3,7 +3,7 @@
  *
  * Port of the iOS app's lib/stats-you-vs-critics.ts (BRO-6170 prototype). The
  * app wrote it as pure functions so the web could lift it; it needs only the
- * composite score, review count and audience grade per show (mobile-shows.json).
+ * composite score, review count and audience grade per show (stats-shows.json).
  */
 
 import { parseRating, ratingToHundred } from '@/lib/stats';

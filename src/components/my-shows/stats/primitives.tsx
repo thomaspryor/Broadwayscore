@@ -9,7 +9,6 @@
  */
 
 import type { ReactNode } from 'react';
-import { getScoreColorClass } from '@/components/show-cards';
 
 export function StatsCard({ children, className = '' }: { children: ReactNode; className?: string }) {
   return <section className={`card p-4 sm:p-5 min-w-0 ${className}`}>{children}</section>;
@@ -153,20 +152,24 @@ export function ModuleLocked({ title, need, scopeLabel }: { title: string; need:
 
 export const pressableClass = pressable;
 
+
+/** Load state of one static data file behind a module. */
+export type DataState = 'loading' | 'ready' | 'error';
+
 /**
- * Compact score chip for dense rows (drill-down list, contrarian picks). Same
- * .score-badge + tier class ScoreBadge uses, at a fixed 40px: ScoreBadge "sm"
- * grows to 68px at lg, which swamps a 52px list row. Hardening: add an "xs"
- * size to ScoreBadge and drop this.
+ * A module whose data file failed or timed out: says what is missing and
+ * offers a retry, so one bad fetch never blanks the page or the other modules.
  */
-export function ScoreChip({ score, category }: { score: number | null | undefined; category?: string | null }) {
-  if (score === null || score === undefined) {
-    return <div className="score-badge score-none w-10 h-10 text-sm font-bold flex-shrink-0 rounded-lg">–</div>;
-  }
-  const rounded = Math.round(score);
+export function ModuleError({ title, what, onRetry }: { title: string; what: string; onRetry: () => void }) {
   return (
-    <div className={`score-badge ${getScoreColorClass(rounded, category ?? undefined)} w-10 h-10 text-base font-bold flex-shrink-0 rounded-lg tabular-nums`}>
-      {rounded}
-    </div>
+    <StatsCard>
+      <ModuleHeader title={title} />
+      <div className="flex flex-wrap items-center justify-between gap-3" data-testid="stats-module-error">
+        <p className="text-sm text-gray-400">Couldn&apos;t load {what}. Check your connection and try again.</p>
+        <button type="button" onClick={onRetry} className="btn-secondary text-sm min-h-[44px]">
+          Retry
+        </button>
+      </div>
+    </StatsCard>
   );
 }

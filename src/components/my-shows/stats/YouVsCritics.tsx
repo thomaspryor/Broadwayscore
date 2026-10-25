@@ -5,11 +5,12 @@
  * On desktop the contrarian lists and the two companion cards sit side by side.
  */
 
+import { ScoreBadge } from '@/components/show-cards';
 import { Poster } from '@/components/user/upcoming-cards';
 import MiniStars from '@/components/user/Stars';
 import type { StatsBundle } from '@/lib/stats-ui/bundle';
 import { MIN_RATED_WITH_SCORE, type ContrarianPick } from '@/lib/stats-ui/critics';
-import { ChipButton, GoldTrack, GroupLabel, ModuleHeader, ModuleLocked, ScoreChip, StatsCard, pressableClass } from './primitives';
+import { ChipButton, GoldTrack, GroupLabel, ModuleError, ModuleHeader, ModuleLocked, StatsCard, pressableClass, type DataState } from './primitives';
 
 function PickRow({ pick, onClick }: { pick: ContrarianPick; onClick: () => void }) {
   const delta = Math.round(pick.delta);
@@ -36,24 +37,29 @@ function PickRow({ pick, onClick }: { pick: ContrarianPick; onClick: () => void 
           </span>
         </span>
       </span>
-      <ScoreChip score={pick.criticScore} category={pick.category} />
+      <ScoreBadge size="xs" score={pick.criticScore} category={pick.category ?? undefined} />
     </button>
   );
 }
 
 export function YouVsCritics({
   bundle,
-  catalogReady,
+  catalog,
+  onRetryCatalog,
   onOpenAligned,
   onOpenPick,
 }: {
   bundle: StatsBundle;
-  catalogReady: boolean;
+  catalog: DataState;
+  onRetryCatalog: () => void;
   onOpenAligned: () => void;
   onOpenPick: (showId: string) => void;
 }) {
   const { critics, scope } = bundle;
-  if (!catalogReady) {
+  if (catalog === 'error') {
+    return <ModuleError title="You vs. the critics" what="critic scores" onRetry={onRetryCatalog} />;
+  }
+  if (catalog === 'loading') {
     return (
       <StatsCard>
         <ModuleHeader title="You vs. the critics" caption="Loading critic scores…" />

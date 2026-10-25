@@ -9,7 +9,7 @@ import ScrollRow from '@/components/ScrollRow';
 import { Poster } from '@/components/user/upcoming-cards';
 import type { CanonEntry, CanonList } from '@/lib/stats';
 import type { StatsBundle } from '@/lib/stats-ui/bundle';
-import { ChipButton, GoldTrack, ModuleHeader, StatsCard, pressableClass } from './primitives';
+import { ChipButton, GoldTrack, ModuleError, ModuleHeader, StatsCard, pressableClass, type DataState } from './primitives';
 
 export type CanonFilter = 'seen' | 'unseen' | 'before';
 
@@ -87,15 +87,20 @@ function CanonBlock({
 export default function CanonChecklists({
   bundle,
   hasCanon,
+  data,
+  onRetry,
   onOpenList,
   onOpenEntry,
 }: {
   bundle: StatsBundle;
   hasCanon: boolean;
+  data: DataState;
+  onRetry: () => void;
   onOpenList: (which: 'musical' | 'play', filter: CanonFilter) => void;
   onOpenEntry: (e: CanonEntry) => void;
 }) {
   const { canonStats, scope } = bundle;
+  if (data === 'error') return <ModuleError title="Tony & the canon" what="Tony winners" onRetry={onRetry} />;
   if (!hasCanon) return null;
   return (
     <StatsCard>

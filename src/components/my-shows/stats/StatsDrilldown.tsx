@@ -7,8 +7,7 @@
 
 import Link from 'next/link';
 import { useMemo } from 'react';
-import { Modal, ModalCloseButton } from '@/components/show-cards';
-import { ScoreChip } from './primitives';
+import { Modal, ModalCloseButton, ScoreBadge } from '@/components/show-cards';
 import { Poster } from '@/components/user/upcoming-cards';
 import MiniStars from '@/components/user/Stars';
 import type { UserReview } from '@/types/user';
@@ -129,7 +128,7 @@ export default function StatsDrilldown({
                       </div>
                     )}
                   </div>
-                  <ScoreChip score={score} category={show?.category} />
+                  <ScoreBadge size="xs" score={score} category={show?.category} />
                 </>
               );
               const cls = 'group flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-white/[0.04] transition-colors';

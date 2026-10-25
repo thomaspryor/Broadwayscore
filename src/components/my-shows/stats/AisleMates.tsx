@@ -9,7 +9,7 @@ import { RISING_MIN_SHARED, type Alignment, type OutletAlignment } from '@/lib/s
 import type { StatsBundle } from '@/lib/stats-ui/bundle';
 import type { Reviewer } from '@/lib/stats-ui/aisle-mates';
 import { initials } from '@/lib/stats-ui/format';
-import { GroupLabel, ModuleHeader, ModuleLocked, StatsCard, pressableClass } from './primitives';
+import { GroupLabel, ModuleError, ModuleHeader, ModuleLocked, StatsCard, pressableClass, type DataState } from './primitives';
 
 function biasLabel(bias: number): string {
   const r = Math.round(bias);
@@ -44,16 +44,18 @@ function MateRow({ a, muted, onClick, testId }: { a: Alignment; muted?: boolean;
 
 export default function AisleMates({
   bundle,
-  loading,
+  data,
+  onRetry,
   onOpenReviewer,
 }: {
   bundle: StatsBundle;
-  loading: boolean;
+  data: DataState;
+  onRetry: () => void;
   onOpenReviewer: (who: Reviewer, label: string) => void;
 }) {
   const { aisleMates, scope } = bundle;
   if (!aisleMates) {
-    if (!loading) return null;
+    if (data === 'error') return <ModuleError title="Aisle Mates" what="critic reviews" onRetry={onRetry} />;
     return (
       <StatsCard>
         <ModuleHeader title="Aisle Mates" caption="Finding the critics who see theater the way you do…" />
