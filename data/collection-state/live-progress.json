@@ -1,42 +1,86 @@
 {
-  "updatedAt": "2026-10-25T16:20:25.816Z",
-  "processed": 131,
-  "failed": 92,
-  "successRate": "58.7%",
+  "updatedAt": "2026-10-25T16:26:58.175Z",
+  "processed": 75,
+  "failed": 26,
+  "successRate": "74.3%",
   "tierBreakdown": {
-    "playwright": 46,
+    "playwright": 49,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 10,
     "directCookies": 0,
-    "scrapingdog": 6,
-    "scrapingbee": 5,
-    "brightdata": 9,
+    "scrapingdog": 0,
+    "scrapingbee": 4,
+    "brightdata": 5,
     "archiveToday": 0,
-    "archive": 32
+    "archive": 12
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
-      "t": "2026-10-25T14:59:36.090Z",
+      "t": "2026-10-25T16:00:44.757Z",
       "event": "bb-session",
-      "session": "2a598099",
-      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
+      "session": "98568c84",
+      "url": "https://www.nytimes.com/2025/12/16/theater/tartuffe-review-matthew-broderick-dav"
     },
     {
-      "t": "2026-10-25T14:59:36.805Z",
+      "t": "2026-10-25T16:00:45.231Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-25T15:20:50.177Z",
+      "t": "2026-10-25T16:03:33.993Z",
       "event": "bb-session",
-      "session": "9f75aeff",
-      "url": "https://www.nytimes.com/2026/04/03/theater/burnout-paradise-treadmills-theater-o"
+      "session": "4dd61bf3",
+      "url": "https://www.wsj.com/articles/anna-christie-review-michelle-williamss-scorching-s"
     },
     {
-      "t": "2026-10-25T15:20:50.905Z",
+      "t": "2026-10-25T16:03:34.476Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-25T16:06:05.563Z",
+      "event": "bb-session",
+      "session": "2693ed86",
+      "url": "https://www.nytimes.com/2025/11/23/theater/gruesome-playground-injuries-review.h"
+    },
+    {
+      "t": "2026-10-25T16:06:06.048Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-25T16:07:56.490Z",
+      "event": "bb-session",
+      "session": "b4d47375",
+      "url": "https://www.wsj.com/articles/gruesome-playground-injuries-review-a-painful-bond-"
+    },
+    {
+      "t": "2026-10-25T16:07:56.941Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-25T16:19:13.818Z",
+      "event": "bb-session",
+      "session": "b1390cb6",
+      "url": "https://www.nytimes.com/2025/09/15/theater/prince-faggot-off-broadway-royals.htm"
+    },
+    {
+      "t": "2026-10-25T16:19:14.330Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-25T16:22:56.438Z",
+      "event": "bb-session",
+      "session": "d74cf755",
+      "url": "https://www.wsj.com/articles/the-weir-review-conor-mcphersons-menu-of-spirits-c6"
+    },
+    {
+      "t": "2026-10-25T16:22:56.968Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
