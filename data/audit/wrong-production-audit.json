@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T10:31:46.500Z",
+  "timestamp": "2026-10-25T10:47:06.553Z",
   "stats": {
-    "totalReviews": 61327,
+    "totalReviews": 61330,
     "alreadyFlagged": 21402,
     "dateGuardCatches": 222,
     "directorMismatch": 2223,
-    "tvFilmSignals": 1746,
+    "tvFilmSignals": 1747,
     "londonSignals": 2973,
-    "offBroadwaySignals": 538,
+    "offBroadwaySignals": 540,
     "yearMismatch": 201,
-    "noPublishDate": 5446
+    "noPublishDate": 5435
   },
   "findings": [
     {
@@ -3459,6 +3459,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "angry-alan-off-broadway-2025",
+      "file": "this-week-in-new-york--mark-rifkin.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://twi-ny.com/2025/06/11/angry-alan-studio-seaview-john-krasinski/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"web series\""
         }
       ]
     },
@@ -60971,6 +60985,20 @@
       ]
     },
     {
+      "showId": "angry-alan-off-broadway-2025",
+      "file": "theater-scene--victor-gluck.json",
+      "score": null,
+      "publishDate": "2025-07-11",
+      "url": "https://www.theaterscene.net/plays/offbway-plays/angry-alan/victor-gluck/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
       "showId": "animal-wisdom-off-broadway-2022",
       "file": "theatre-reviews-limited--david-roberts.json",
       "score": 25,
@@ -86675,6 +86703,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "saturday-church-off-broadway-2025",
+      "file": "off-off-online--deirdre-donovan.json",
+      "score": null,
+      "publishDate": "2025-09-22",
+      "url": "https://www.offoffonline.com/offoffonline/2025/9/10/saturday-church",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"nytw\""
         }
       ]
     },
