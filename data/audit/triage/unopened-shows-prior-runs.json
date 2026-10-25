@@ -1,17 +1,49 @@
 {
-  "generatedAt": "2026-10-24T07:38:58.139Z",
+  "generatedAt": "2026-10-25T08:12:29.666Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3872,
-  "flaggedShows": 54,
-  "flaggedFiles": 179,
-  "readmissionRiskFiles": 0,
-  "readmissionRisks": [],
+  "scannedShows": 3942,
+  "flaggedShows": 56,
+  "flaggedFiles": 194,
+  "readmissionRiskFiles": 5,
+  "readmissionRisks": [
+    {
+      "showId": "legally-blonde-west-end-2027",
+      "file": "artsdesk--marianka-swain.json",
+      "publishDate": "2022-05-25",
+      "outletId": "artsdesk"
+    },
+    {
+      "showId": "legally-blonde-west-end-2027",
+      "file": "independent--nicole-vassell.json",
+      "publishDate": "2022-05-25",
+      "outletId": "independent"
+    },
+    {
+      "showId": "legally-blonde-west-end-2027",
+      "file": "london-theatre--sophie-thomas.json",
+      "publishDate": "2022-05-24",
+      "outletId": "london-theatre"
+    },
+    {
+      "showId": "legally-blonde-west-end-2027",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2022-05-25",
+      "outletId": "standard"
+    },
+    {
+      "showId": "legally-blonde-west-end-2027",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": "2022-05-25",
+      "outletId": "whatsonstage"
+    }
+  ],
   "unevaluatedFiles": 0,
   "unevaluated": [],
   "unreadableFiles": 0,
   "byVerdict": {
-    "likely-contamination": 29,
-    "needs-human-review": 25
+    "likely-contamination": 30,
+    "needs-human-review": 25,
+    "likely-single-prior-run": 1
   },
   "shows": [
     {
@@ -996,8 +1028,8 @@
         {
           "file": "telegraph--holly-williams.json",
           "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
+          "beforeReason": "previewPlaceholder",
+          "afterReason": "previewPlaceholder",
           "outletId": "telegraph",
           "criticName": "Holly Williams",
           "publishDate": "2022-07-21",
@@ -1399,6 +1431,242 @@
           "criticName": "Dominic Maxwell",
           "publishDate": "2025-11-26",
           "url": "https://www.thetimes.com/culture/theatre-dance/article/christmas-carol-review-old-vic-2gv5gqs7k",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "legally-blonde-west-end-2027",
+      "title": "Legally Blonde",
+      "market": "west-end",
+      "status": "announced",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": null,
+      "verdict": "likely-single-prior-run",
+      "reasoning": "7 premature-scored review(s) cluster within a 1-day window (single run pattern), 2 already flagged. none of the 7 review texts mention the show's own venue (\"London Coliseum\") — verify venue before declaring.",
+      "stats": {
+        "count": 7,
+        "distinctYears": [
+          2022
+        ],
+        "spanDays": 1,
+        "flaggedCount": 2,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": {
+        "venue": "London Coliseum",
+        "reviewDateRangeStart": "2022-05-24",
+        "reviewDateRangeEnd": "2022-05-25",
+        "note": "reviewDateRange is derived from review publish dates, NOT the run's real opening/closing dates — confirm actual dates via Playbill/IBDB before declaring show.priorRuns."
+      },
+      "reviews": [
+        {
+          "file": "artsdesk--marianka-swain.json",
+          "readmissionRisk": "readmits-on-open",
+          "beforeReason": "prematureForUnopenedShow",
+          "afterReason": null,
+          "outletId": "artsdesk",
+          "criticName": "Marianka Swain",
+          "publishDate": "2022-05-25",
+          "url": "https://theartsdesk.com/theatre/legally-blonde-regents-park-open-air-theatre-review-joyous-gen-z-musical-makeover",
+          "wrongProduction": false,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "guardian--arifa-akbar.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "guardian",
+          "criticName": "Arifa Akbar",
+          "publishDate": "2022-05-25",
+          "url": "https://www.theguardian.com/stage/2022/may/25/legally-blonde-review-regents-park-open-air-theatre-musical",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "independent--nicole-vassell.json",
+          "readmissionRisk": "readmits-on-open",
+          "beforeReason": "prematureForUnopenedShow",
+          "afterReason": null,
+          "outletId": "independent",
+          "criticName": "Nicole Vassell",
+          "publishDate": "2022-05-25",
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/legally-blonde-review-regents-park-b2087115.html",
+          "wrongProduction": false,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "london-theatre--sophie-thomas.json",
+          "readmissionRisk": "readmits-on-open",
+          "beforeReason": "prematureForUnopenedShow",
+          "afterReason": null,
+          "outletId": "london-theatre",
+          "criticName": "Sophie Thomas",
+          "publishDate": "2022-05-24",
+          "url": "https://www.londontheatre.co.uk/reviews/legally-blonde-review-regents-park-open-air-theatre",
+          "wrongProduction": false,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "standard--nick-curtis.json",
+          "readmissionRisk": "readmits-on-open",
+          "beforeReason": "prematureForUnopenedShow",
+          "afterReason": null,
+          "outletId": "standard",
+          "criticName": "Nick Curtis",
+          "publishDate": "2022-05-25",
+          "url": "https://www.standard.co.uk/culture/theatre/legally-blonde-musical-regents-park-open-air-theatre-review-b1002188.html",
+          "wrongProduction": false,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "thestage--tim-bano.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "thestage",
+          "criticName": "Tim Bano",
+          "publishDate": "2022-05-25",
+          "url": "https://www.thestage.co.uk/reviews/legally-blonde-the-musical-review-regents-park-lucy-moss",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "whatsonstage--sarah-crompton.json",
+          "readmissionRisk": "readmits-on-open",
+          "beforeReason": "prematureForUnopenedShow",
+          "afterReason": null,
+          "outletId": "whatsonstage",
+          "criticName": "Sarah Crompton",
+          "publishDate": "2022-05-25",
+          "url": "https://www.whatsonstage.com/london-theatre/reviews/legally-blonde-at-regents-park-open-air_56581.html",
+          "wrongProduction": false,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "peter-pan-west-end-2026",
+      "title": "Peter Pan",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Polka Theatre",
+      "previewsStartDate": "2026-11-14",
+      "openingDate": null,
+      "verdict": "likely-contamination",
+      "reasoning": "7/7 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 7,
+        "distinctYears": [
+          2015,
+          2019,
+          2023,
+          2025
+        ],
+        "spanDays": 3610,
+        "flaggedCount": 7,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "i-paper--anya-ryan.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "i-paper",
+          "criticName": "Anya Ryan",
+          "publishDate": "2023-12-14",
+          "url": "https://inews.co.uk/culture/arts/peter-pan-london-palladium-review-2808480",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "london-box-office--isabella-james.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Isabella James",
+          "publishDate": "2019-07-27",
+          "url": "https://www.londonboxoffice.co.uk/news/post/review-peter-pan-troubadour",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "london-box-office--phil-willmott.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Phil Willmott",
+          "publishDate": "2015-12-11",
+          "url": "https://www.londonboxoffice.co.uk/news/post/peter-pan-wrong-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "london-box-office--stuart-king.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Stuart King",
+          "publishDate": "2025-10-29",
+          "url": "https://www.londonboxoffice.co.uk/news/post/wendy-and-peter-pan-barbican-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "standard--bruce-dessau.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "standard",
+          "criticName": "Bruce Dessau",
+          "publishDate": "2023-12-14",
+          "url": "https://www.standard.co.uk/culture/theatre/peter-pan-london-palladium-review-julian-clary-jennifer-saunders-b1126799.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "thestage--paul-vale.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "thestage",
+          "criticName": "Paul Vale",
+          "publishDate": "2023-12-14",
+          "url": "https://www.thestage.co.uk/reviews/peter-pan-review-london-palladium-jennifer-saunders-julian-clary-paul-zerdin-nigel-havers-gary-willmot-crossroads",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "whatsonstage--tom-millward.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "whatsonstage",
+          "criticName": "Tom Millward",
+          "publishDate": "2023-12-14",
+          "url": "https://www.whatsonstage.com/news/peter-pan-at-the-london-palladium-review-high-flying-adored-pantomime_1558291/",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -1940,6 +2208,81 @@
       ]
     },
     {
+      "showId": "richard-ii-off-west-end-2026",
+      "title": "Richard II",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Orange Tree Theatre",
+      "previewsStartDate": "2027-02-18",
+      "openingDate": null,
+      "verdict": "likely-contamination",
+      "reasoning": "4/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 4,
+        "distinctYears": [
+          2025
+        ],
+        "spanDays": 1,
+        "flaggedCount": 4,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-theatre--olivia-rook.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-theatre",
+          "criticName": "Olivia Rook",
+          "publishDate": "2025-02-18",
+          "url": "https://www.londontheatre.co.uk/reviews/richard-ii-review-jonathan-bailey-is-a-magnetic-king-bridge-theatre-nicholas-hytner",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "telegraph--dominic-cavendish.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "telegraph",
+          "criticName": "Dominic Cavendish",
+          "publishDate": "2025-02-19",
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/richard-ii-bridge-theatre-review-jonathan-bailey/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "timeout-london--andrzej-lukowski.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "timeout-london",
+          "criticName": "Andrzej Lukowski",
+          "publishDate": "2025-02-18",
+          "url": "https://www.timeout.com/london/theatre/richard-ii-10-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "whatsonstage--sarah-crompton.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "whatsonstage",
+          "criticName": "Sarah Crompton",
+          "publishDate": "2025-02-18",
+          "url": "https://www.whatsonstage.com/news/richard-ii-at-bridge-theatre-review-jonathan-bailey-is-a-vicious-monarch_1665507/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "dreamgirls-2026",
       "title": "Dreamgirls",
       "market": "broadway",
@@ -2185,70 +2528,6 @@
           "url": "https://www.londonboxoffice.co.uk/news/post/review-top-girls-nt",
           "wrongProduction": true,
           "wrongShow": true,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "peter-pan-west-end-2026",
-      "title": "Peter Pan",
-      "market": "west-end",
-      "status": "upcoming",
-      "venue": "Polka Theatre",
-      "previewsStartDate": "2026-11-14",
-      "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "3/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 3,
-        "distinctYears": [
-          2015,
-          2019,
-          2025
-        ],
-        "spanDays": 3610,
-        "flaggedCount": 3,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "london-box-office--isabella-james.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Isabella James",
-          "publishDate": "2019-07-27",
-          "url": "https://www.londonboxoffice.co.uk/news/post/review-peter-pan-troubadour",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-box-office--phil-willmott.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Phil Willmott",
-          "publishDate": "2015-12-11",
-          "url": "https://www.londonboxoffice.co.uk/news/post/peter-pan-wrong-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-box-office--stuart-king.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Stuart King",
-          "publishDate": "2025-10-29",
-          "url": "https://www.londonboxoffice.co.uk/news/post/wendy-and-peter-pan-barbican-review",
-          "wrongProduction": true,
-          "wrongShow": false,
           "evaluationError": null
         }
       ]

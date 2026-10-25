@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-10-24T07:20:17.595Z",
+  "lastChecked": "2026-10-25T07:38:29.489Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -63,38 +63,38 @@
     },
     {
       "name": "Data: uncollected live review strands",
-      "status": "warn",
-      "message": "1 discovered review URL(s) across 1 live show(s) were never fetched. First: triumph-off-west-end-2026 (1 stranded)"
+      "status": "pass",
+      "message": "Every discovered review URL for live shows was fetched"
     },
     {
       "name": "Data: armed-but-vacuous backlog cards",
       "status": "warn",
-      "message": "4 Linear card(s) carry an acceptance check that cannot tell done from not done (4 can never fail, 0 can never pass). First: BRO-6035 land.js: regenerate .github/workflows/DEPENDENCIES.md on a rebase conflict instead of refusing the landing"
+      "message": "3 Linear card(s) carry an acceptance check that cannot tell done from not done (3 can never fail, 0 can never pass). First: BRO-6035 land.js: regenerate .github/workflows/DEPENDENCIES.md on a rebase conflict instead of refusing the landing"
     },
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "3 of 528 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-6034 Opening-night watch 2026-10-22"
+      "message": "2 of 524 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-6018 BRO-5951 follow-up: recover 146 verified-missing T1/T2 reviews in WE historical, adjudicate ~400 fact verdicts"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-10-23"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-10-24"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "72 review(s) with no usable text, 58 rejected although verified as a review, 42 never scored, 29 with a blocked URL (0 published on the site), across 447 current shows"
+      "message": "69 review(s) with no usable text, 57 rejected although verified as a review, 43 never scored, 29 with a blocked URL (0 published on the site), across 457 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "warn",
-      "message": "40 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 30058 checked"
+      "message": "16 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 30223 checked"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "warn",
-      "message": "44 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 62 more already attempted)"
+      "message": "52 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 62 more already attempted)"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -104,12 +104,12 @@
     {
       "name": "Data: stale-slot squatters (current-year review slots held by another production)",
       "status": "pass",
-      "message": "audit ran: 576 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+      "message": "audit ran: 589 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "error",
-      "message": "3 aggregator-reviewed show(s) not in the catalogue. Oldest: \"TS Eliot’s Murder in the Cathedral\" (guardian-review — missing 3d) — 1 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
+      "message": "3 aggregator-reviewed show(s) not in the catalogue. Oldest: \"TS Eliot’s Murder in the Cathedral\" (guardian-review — missing 4d) — 1 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
     }
   ]
 }

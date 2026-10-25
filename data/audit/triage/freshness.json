@@ -1,7 +1,7 @@
 {
   "system": "freshness",
   "status": "warn",
-  "lastChecked": "2026-10-24T07:20:17.593Z",
+  "lastChecked": "2026-10-25T07:38:29.486Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,17 +14,17 @@
     {
       "name": "Freshness: shows.json",
       "status": "pass",
-      "message": "2h old"
+      "message": "5h old"
     },
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "4d old"
+      "message": "5d old"
     },
     {
       "name": "Freshness: audience-buzz.json",
       "status": "pass",
-      "message": "6h old"
+      "message": "7h old"
     },
     {
       "name": "Freshness: commercial.json",
@@ -34,12 +34,12 @@
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "2h old"
+      "message": "0h old"
     },
     {
       "name": "Freshness: lottery-rush.json",
       "status": "warn",
-      "message": "5d old (warn threshold: 5d)"
+      "message": "6d old (warn threshold: 5d)"
     },
     {
       "name": "Freshness: cast-changes.json",
@@ -49,12 +49,12 @@
     {
       "name": "Freshness: nyt-critics-picks.json",
       "status": "pass",
-      "message": "13h old"
+      "message": "22h old"
     },
     {
       "name": "Freshness: video-reviews.json",
       "status": "pass",
-      "message": "6h old"
+      "message": "8h old"
     },
     {
       "name": "Freshness: tony-win-probabilities.json",
@@ -74,12 +74,12 @@
     {
       "name": "Freshness: audit/t1-silent-gaps.json",
       "status": "pass",
-      "message": "1h old"
+      "message": "2h old"
     },
     {
       "name": "Freshness: audit/uncollected-live-reviews.json",
       "status": "pass",
-      "message": "1h old"
+      "message": "2h old"
     },
     {
       "name": "Freshness: audit/imageless-scored-shows.json",
@@ -89,32 +89,32 @@
     {
       "name": "Freshness: audit/venue-date-mismatches.json",
       "status": "pass",
-      "message": "8h old"
+      "message": "9h old"
     },
     {
       "name": "Freshness: audit/alert-sender-inventory.json",
       "status": "pass",
-      "message": "12h old"
+      "message": "14h old"
     },
     {
       "name": "Freshness: audit/ob-closing-candidates.json",
       "status": "pass",
-      "message": "5d old"
+      "message": "6d old"
     },
     {
       "name": "Freshness: audit/same-title-confusion.json",
       "status": "pass",
-      "message": "6d old"
+      "message": "7d old"
     },
     {
       "name": "Freshness: audit/slug-misroute-audit.json",
       "status": "pass",
-      "message": "6d old"
+      "message": "7d old"
     },
     {
       "name": "Freshness: audit/open-backlog-acceptance-sweep.json",
       "status": "pass",
-      "message": "24h old"
+      "message": "1d old"
     },
     {
       "name": "Freshness: audit/progress-watch-state.json",
