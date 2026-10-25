@@ -220,11 +220,10 @@ test('an orphan and a terminal outcome coexist in one pass — the orphan suppre
   assert.deepEqual(out.map(d => [d.cardId, d.kind]), [['8', 'orphan'], ['7', 'terminal']]);
 });
 
-test('one spawn is attributed to ONE of two close dispatch rows, so only one outcome is earned', () => {
-  // Only one job ever spawned, so only one outcome is earned (the duplicate-dispatch race the
-  // jobId guard exists for). BRO-2514: the spawn belongs to the dispatch nearest before it, the
-  // 10:00:00 row; the 09:59:00 row, whose own spawn never appeared, stays pending until its
-  // orphan timeout instead of swallowing the later row's spawn.
+test('an EARLIER dispatch row that correlates onto the same job claims it, suppressing the later row', () => {
+  // Rows are walked in ledger order, so the first row to reach a job owns it.
+  // This is the duplicate-dispatch race the jobId guard exists for: only one
+  // job ever spawned, so only one outcome is earned — by the row that caused it.
   const ledger = [
     { ts: '2026-08-30T09:59:00Z', event: 'auto-dispatch', taskId: '7' },
     { ts: '2026-08-30T10:00:00Z', event: 'auto-dispatch', taskId: '7' },
@@ -235,8 +234,20 @@ test('one spawn is attributed to ONE of two close dispatch rows, so only one out
   ];
   const out = classify(ledger, dispatched, '2026-08-30T11:00:00Z');
   assert.equal(out.length, 1);
-  assert.equal(out[0].job.jobId, 'j1');
-  assert.equal(out[0].dispatch.ts, '2026-08-30T10:00:00Z');
+  assert.equal(out[0].dispatch.ts, '2026-08-30T09:59:00Z');
+});
+
+test('BRO-2514: one spawn, two close dispatch rows, reconciled 3h+ later → ONE terminal outcome, no spurious orphan', () => {
+  const ledger = [
+    { ts: '2026-08-30T09:59:00Z', event: 'auto-dispatch', taskId: '7' },
+    { ts: '2026-08-30T10:00:00Z', event: 'auto-dispatch', taskId: '7' },
+  ];
+  const dispatched = [
+    { ts: '2026-08-30T10:00:01Z', event: E.SPAWNED, taskId: '7', jobId: 'j1' },
+    { ts: '2026-08-30T10:20:00Z', event: E.DONE, taskId: '7', jobId: 'j1' },
+  ];
+  const out = classify(ledger, dispatched, '2026-08-30T15:00:00Z');
+  assert.deepEqual(out.map(d => [d.kind, d.job && d.job.jobId]), [['terminal', 'j1']]);
 });
 
 // ── classifyDispatches: resolution is read from the pre-pass ledger only ────

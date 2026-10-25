@@ -116,14 +116,13 @@ const DECISION_KINDS = Object.freeze({
  *
  * Returns the folded job record, or null when no spawn was ever observed.
  */
-function pickSpawn(dispatchLedgerEntries, taskId, sinceTs, excludeJobIds, beforeMs = Infinity) {
+function pickSpawn(dispatchLedgerEntries, taskId, sinceTs, excludeJobIds) {
   const sinceMs = new Date(sinceTs).getTime() - SPAWN_LOOKBACK_MS;
   const spawns = (dispatchLedgerEntries || [])
     .filter((e) => e && e.event === dispatchLedger.JOB_EVENTS.SPAWNED
       && String(e.taskId) === String(taskId)
       && !(excludeJobIds && excludeJobIds.has(e.jobId))
-      && new Date(e.ts).getTime() >= sinceMs
-      && new Date(e.ts).getTime() < beforeMs)
+      && new Date(e.ts).getTime() >= sinceMs)
     .sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime());
   return spawns[0] || null;
 }
@@ -245,19 +244,14 @@ function classifyDispatches({
   // never claimed.
   const spawnedBy = new Map();
   const takenSpawnIds = new Set();
-  // A dispatch may only take a spawn that lands before the NEXT same-task
-  // dispatch (plus the same lookback slack): one that never spawned must not
-  // swallow the spawn of a later, separate attempt.
   const ordered = [...dispatches].sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime());
-  ordered.forEach((dispatch, i) => {
-      const taskId = taskIdOf(dispatch);
-      const next = ordered.slice(i + 1).find((d) => String(taskIdOf(d)) === String(taskId));
-      const beforeMs = next ? new Date(next.ts).getTime() + SPAWN_LOOKBACK_MS : Infinity;
-      const spawn = pickSpawn(dispatchLedgerEntries, taskId, dispatch.ts, takenSpawnIds, beforeMs);
-      if (!spawn) return;
-      takenSpawnIds.add(spawn.jobId);
-      spawnedBy.set(dispatch, dispatchLedger.followRetryChain(dispatchLedgerEntries, taskId, spawn.jobId));
-    });
+  ordered.forEach((dispatch) => {
+    const taskId = taskIdOf(dispatch);
+    const spawn = pickSpawn(dispatchLedgerEntries, taskId, dispatch.ts, takenSpawnIds);
+    if (!spawn) return;
+    takenSpawnIds.add(spawn.jobId);
+    spawnedBy.set(dispatch, dispatchLedger.followRetryChain(dispatchLedgerEntries, taskId, spawn.jobId));
+  });
 
   // Jobs already resolved into an outcome THIS pass (postmortem 3).
   const claimedJobIds = new Set();
@@ -267,7 +261,11 @@ function classifyDispatches({
     const cardId = cardIdOf(dispatch);
     if (isDispatchResolved(ledgerEntries, cardId, dispatch.ts, resolvingEvents)) continue;
 
-    const job = spawnedBy.get(dispatch) || null;
+    // No unassigned spawn left: fall back to the plain lookup, which lands on a job another
+    // row already owns and is dropped by claimedJobIds below (one spawn, two close dispatch
+    // rows earns ONE outcome, never a spurious orphan for the second).
+    const job = spawnedBy.get(dispatch)
+      || findMyJob(dispatchLedgerEntries, taskIdOf(dispatch), dispatch.ts);
 
     if (!job) {
       const ageH = (nowMs - new Date(dispatch.ts).getTime()) / 3600e3;
