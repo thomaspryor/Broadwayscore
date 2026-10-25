@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-25T14:53:13.435Z",
+  "generatedAt": "2026-10-25T16:29:18.013Z",
   "date": "2026-10-25",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 252435,
+  "entryCount": 261379,
   "shows": [
     {
       "showId": "mrs-doubtfire-tour-2025",
@@ -231,13 +231,13 @@
     },
     {
       "showId": "ilford-boy-west-end-2026",
-      "reviewCount": 26,
+      "reviewCount": 27,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 652060,
-        "scored-to-rebuilt": 354057,
+        "collected-to-scored": 762224,
+        "scored-to-rebuilt": 356104,
         "rebuilt-to-deployed": 168417268
       },
       "reviews_over_15min": 0,
@@ -402,8 +402,8 @@
       "p90_e2e_ms": 238911466,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 590735,
-        "scored-to-rebuilt": 330035,
+        "collected-to-scored": 612085,
+        "scored-to-rebuilt": 331979,
         "rebuilt-to-deployed": 230616274
       },
       "reviews_over_15min": 1,
@@ -478,7 +478,7 @@
     },
     {
       "showId": "witness-for-the-prosecution-west-end-2022",
-      "reviewCount": 17,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -493,7 +493,7 @@
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
-      "reviewCount": 19,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -733,13 +733,13 @@
     },
     {
       "showId": "midnight-off-broadway-2026",
-      "reviewCount": 22,
+      "reviewCount": 23,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 714472,
-        "scored-to-rebuilt": 838059,
+        "scored-to-rebuilt": 443566,
         "rebuilt-to-deployed": 241923008
       },
       "reviews_over_15min": 0,
@@ -986,7 +986,7 @@
     },
     {
       "showId": "the-mousetrap-west-end-2021",
-      "reviewCount": 13,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2711,7 +2711,7 @@
     },
     {
       "showId": "romeo-and-juliet-west-end-2026",
-      "reviewCount": 30,
+      "reviewCount": 31,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3161,7 +3161,7 @@
     },
     {
       "showId": "the-hills-of-california-2024",
-      "reviewCount": 32,
+      "reviewCount": 33,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3281,13 +3281,13 @@
     },
     {
       "showId": "the-pianist-off-west-end-2026",
-      "reviewCount": 23,
+      "reviewCount": 24,
       "median_e2e_ms": 183147152,
       "p90_e2e_ms": 228522056,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 430679,
-        "scored-to-rebuilt": 305856,
+        "collected-to-scored": 521618,
+        "scored-to-rebuilt": 307493,
         "rebuilt-to-deployed": 161873136
       },
       "reviews_over_15min": 3,
@@ -3522,13 +3522,13 @@
     },
     {
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
-      "reviewCount": 16,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 940620,
+        "scored-to-rebuilt": 432172,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -5438,7 +5438,7 @@
     },
     {
       "showId": "back-to-the-future-tour-2024",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5813,7 +5813,7 @@
     },
     {
       "showId": "beetlejuice-west-end-2026",
-      "reviewCount": 38,
+      "reviewCount": 39,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6125,7 +6125,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 180962,
+        "scored-to-rebuilt": 658016,
         "rebuilt-to-deployed": 168417264
       },
       "reviews_over_15min": 0,
@@ -6395,13 +6395,13 @@
     },
     {
       "showId": "the-master-builder-off-west-end-2026",
-      "reviewCount": 9,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 177864,
-        "scored-to-rebuilt": 302523,
+        "collected-to-scored": 861726,
+        "scored-to-rebuilt": 352822,
         "rebuilt-to-deployed": 159274638
       },
       "reviews_over_15min": 0,
@@ -6633,13 +6633,13 @@
     },
     {
       "showId": "lincoln-in-the-bardo-off-broadway-2026",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 305058,
+        "scored-to-rebuilt": 436974,
         "rebuilt-to-deployed": 168417267
       },
       "reviews_over_15min": 0,
@@ -7461,7 +7461,7 @@
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
-      "reviewCount": 46,
+      "reviewCount": 47,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8361,7 +8361,7 @@
     },
     {
       "showId": "the-upstart-crow-west-end-2020",
-      "reviewCount": 13,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8451,7 +8451,7 @@
     },
     {
       "showId": "touching-the-void-west-end-2019",
-      "reviewCount": 14,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9501,7 +9501,7 @@
     },
     {
       "showId": "love-love-love-off-broadway-2016",
-      "reviewCount": 29,
+      "reviewCount": 31,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9516,7 +9516,7 @@
     },
     {
       "showId": "groundhog-day-2017",
-      "reviewCount": 49,
+      "reviewCount": 51,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9621,7 +9621,7 @@
     },
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
-      "reviewCount": 9,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9651,7 +9651,7 @@
     },
     {
       "showId": "merrily-we-roll-along-2023",
-      "reviewCount": 30,
+      "reviewCount": 34,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9681,7 +9681,7 @@
     },
     {
       "showId": "topdog-underdog-2022",
-      "reviewCount": 31,
+      "reviewCount": 32,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9696,7 +9696,7 @@
     },
     {
       "showId": "torch-song-2018",
-      "reviewCount": 27,
+      "reviewCount": 26,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10146,7 +10146,7 @@
     },
     {
       "showId": "300-paintings-off-broadway-2024",
-      "reviewCount": 5,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10191,7 +10191,7 @@
     },
     {
       "showId": "my-first-ex-husband-off-broadway-2025",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10206,7 +10206,7 @@
     },
     {
       "showId": "the-antiquities-off-broadway-2025",
-      "reviewCount": 13,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10266,7 +10266,7 @@
     },
     {
       "showId": "blood-of-the-lamb-off-broadway-2024",
-      "reviewCount": 5,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10281,7 +10281,7 @@
     },
     {
       "showId": "aint-done-bad-off-broadway-2024",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10311,7 +10311,7 @@
     },
     {
       "showId": "archduke-off-broadway-2025",
-      "reviewCount": 11,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10326,7 +10326,7 @@
     },
     {
       "showId": "not-ready-for-prime-time-off-broadway-2025",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10341,7 +10341,7 @@
     },
     {
       "showId": "lowcountry-off-broadway-2025",
-      "reviewCount": 9,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10431,7 +10431,7 @@
     },
     {
       "showId": "good-bones-off-broadway-2024",
-      "reviewCount": 17,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10655,21 +10655,6 @@
       "slowest_reviews": []
     },
     {
-      "showId": "a-christmas-carol-2022",
-      "reviewCount": 22,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "that-is-not-who-i-am-west-end-2022",
       "reviewCount": 22,
       "median_e2e_ms": null,
@@ -10716,7 +10701,7 @@
     },
     {
       "showId": "macbeth-2008",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10731,7 +10716,7 @@
     },
     {
       "showId": "gypsy-2008",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11046,7 +11031,7 @@
     },
     {
       "showId": "this-world-of-tomorrow-off-broadway-2025",
-      "reviewCount": 18,
+      "reviewCount": 19,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11076,7 +11061,7 @@
     },
     {
       "showId": "angry-alan-off-broadway-2025",
-      "reviewCount": 24,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11136,7 +11121,7 @@
     },
     {
       "showId": "saturday-church-off-broadway-2025",
-      "reviewCount": 19,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11451,7 +11436,7 @@
     },
     {
       "showId": "betrayal-2013",
-      "reviewCount": 12,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11466,7 +11451,7 @@
     },
     {
       "showId": "gypsy-2024",
-      "reviewCount": 41,
+      "reviewCount": 42,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11511,7 +11496,7 @@
     },
     {
       "showId": "oh-mary-off-broadway-2024",
-      "reviewCount": 13,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11541,7 +11526,7 @@
     },
     {
       "showId": "the-price-2017",
-      "reviewCount": 39,
+      "reviewCount": 40,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11571,13 +11556,13 @@
     },
     {
       "showId": "showstopper-the-improvised-musical-west-end-2023",
-      "reviewCount": 2,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1140130,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -11586,13 +11571,13 @@
     },
     {
       "showId": "the-play-that-goes-wrong-west-end-2021",
-      "reviewCount": 4,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1140124,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -11616,13 +11601,13 @@
     },
     {
       "showId": "orlando-off-broadway-2026",
-      "reviewCount": 1,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1135082,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -11631,13 +11616,13 @@
     },
     {
       "showId": "a-mirror-west-end-2024",
-      "reviewCount": 7,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1135070,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -11646,13 +11631,13 @@
     },
     {
       "showId": "the-crown-jewels-west-end-2023",
-      "reviewCount": 25,
+      "reviewCount": 26,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1135069,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -11676,13 +11661,13 @@
     },
     {
       "showId": "shirley-valentine-west-end-2023",
-      "reviewCount": 3,
+      "reviewCount": 19,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1135065,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -11691,13 +11676,13 @@
     },
     {
       "showId": "romeo-and-julie-west-end-2023",
-      "reviewCount": 1,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1135064,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -11706,13 +11691,13 @@
     },
     {
       "showId": "sylvia-west-end-2023",
-      "reviewCount": 3,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1135064,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -11721,13 +11706,13 @@
     },
     {
       "showId": "beetlejuice-tour-2022",
-      "reviewCount": 1,
+      "reviewCount": 53,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1135054,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -11736,13 +11721,13 @@
     },
     {
       "showId": "a-christmas-carol-west-end-2022",
-      "reviewCount": 1,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1135053,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -11751,13 +11736,13 @@
     },
     {
       "showId": "les-miserables-tour-2022",
-      "reviewCount": 14,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1135051,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -11766,13 +11751,13 @@
     },
     {
       "showId": "the-normal-heart-west-end-2021",
-      "reviewCount": 1,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1135050,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -11796,13 +11781,13 @@
     },
     {
       "showId": "constellations-west-end-2021",
-      "reviewCount": 2,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1135038,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -11811,13 +11796,13 @@
     },
     {
       "showId": "death-of-england-delroy-west-end-2020",
-      "reviewCount": 1,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1135038,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -11826,13 +11811,13 @@
     },
     {
       "showId": "old-times-2015",
-      "reviewCount": 1,
+      "reviewCount": 37,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1132160,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -11856,7 +11841,7 @@
     },
     {
       "showId": "once-upon-a-one-more-time-2023",
-      "reviewCount": 36,
+      "reviewCount": 37,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11871,7 +11856,142 @@
     },
     {
       "showId": "jersey-boys-2005",
+      "reviewCount": 15,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1132142,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "tartuffe-off-broadway-2025",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 682625,
+        "scored-to-rebuilt": 216056,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-ask-off-broadway-2026",
+      "reviewCount": 6,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 947257,
+        "scored-to-rebuilt": 407242,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "anna-christie-off-broadway-2025",
+      "reviewCount": 15,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "gruesome-playground-injuries-off-broadway-2025",
+      "reviewCount": 11,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "hannah-senesh-off-broadway-2025",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "pygmalion-off-broadway-2025",
+      "reviewCount": 8,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "prince-faggot-off-broadway-2025",
       "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "funny-girl-2022",
+      "reviewCount": 15,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "evita-1979",
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
