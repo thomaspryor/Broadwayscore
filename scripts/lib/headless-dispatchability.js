@@ -281,11 +281,11 @@ const RISKY_ACTION_PARK_RE = /\baccess\b|\bdeploy|\bprod(?:uction)?\b|\bdelet|\b
 const NEGATED_HOLD_RE = /\b(?:not an owner decision|no owner input|no (?:spend|cost)(?: or [\w-]+)? impact)\b/gi;
 const DATED_WAIT_RE = /(?:\b(?:waits?|waiting)\s+)?(?:\b(?:until|after|since|before)\s+)?\b(\d{4}-\d{2}-\d{2})\b/g;
 // BRO-6238: wording that only describes work already done and tripped the spend or
-// dependency holds ("after BRO-5426 raised the poller step budget", "tax-credit
+// dependency holds ("BRO-5426 raised the poller step budget", "tax-credit
 // shows"). "needs its own session", "research batch" and "profiling pass" are work
-// reasons (BRO-5626) with no hold word of their own. "after BRO-N landed/merged" is
-// deliberately NOT here: written in past tense it is often a future dependency.
-const INCIDENTAL_HOLD_RE = /\b(?:(?:after|since)\s+)?BRO-\d+\s+(?:raised|added|fixed|covered)\b|\bsince\s+BRO-\d+\s+(?:landed|merged|shipped)\b|\b(?:step|time|timeout) budgets?\b/gi;
+// reasons (BRO-5626) with no hold word of their own. "after BRO-N <verb>" is
+// deliberately NOT neutralized: written in past tense it is often a future dependency.
+const INCIDENTAL_HOLD_RE = /(?<!\bafter\s+)\bBRO-\d+\s+(?:raised|added|fixed|covered)\b|\bstep budgets?\b/gi;
 
 function neutralizeParkReason(reason, now = new Date()) {
   const today = now.toISOString().slice(0, 10);

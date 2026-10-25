@@ -442,7 +442,7 @@ describe('BRO-6238 worker-takeable work-reason parks', () => {
   const { isWorkerTakeableParkReason } = require('../lib/headless-dispatchability.js');
   test('work reasons with incidental hold words are takeable', () => {
     for (const r of [
-      'Not urgent after BRO-5426 raised the poller step budget to 15 min; needs a profiling pass, no owner input',
+      'Not urgent since BRO-5426 raised the poller step budget to 15 min; needs a profiling pass, no owner input',
       'Research batch of 2-3 hours (EDGAR search plus entity matching per show); BRO-5527 covered only the 41 tax-credit shows',
       'needs its own session',
     ]) assert.strictEqual(isWorkerTakeableParkReason(r), true, r);
@@ -450,6 +450,9 @@ describe('BRO-6238 worker-takeable work-reason parks', () => {
   test('real holds stay held', () => {
     for (const r of [
       'Pick up after BRO-6000 merged',
+      'Pick up after BRO-6000 added the endpoint',
+      'Do after BRO-6000 fixed the parser',
+      'raise timeout budget on the GHA bill and tax credits spend',
       'Resume after BRO-6000 landed and verified',
       'waits for time budget',
       'needs its own session and an A/B on the weekly run',
