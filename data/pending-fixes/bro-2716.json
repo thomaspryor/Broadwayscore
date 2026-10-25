@@ -1,0 +1,75 @@
+{
+  "issueNumber": "bro-2716",
+  "planId": "8eb348a5-deae-4bac-9873-c33275abf9d3",
+  "status": "applied",
+  "createdAt": "2026-10-13T04:37:25.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-2716: two rows found while auditing the outlet registry against today's non-review domain filters. A Louder Than War concert review filed under Click Liverpool (live, scored, borrowing Click Liverpool's registry entry) and a SeatPlan ticket-sales page stored as a review.",
+    "steps": [
+      "abba-voyage-off-west-end-2026/click-liverpool--filthy-dirty.json: url is louderthanwar.com (an unregistered music site), not clickliverpool.com; flag wrongAttribution so it leaves scoring until it is re-filed under its real outlet.",
+      "cat-cohen-broad-strokes-off-broadway-2026/seatplan--unknown.json: url is a SeatPlan /<show>-tickets/ sales page from the submit form, not a review; flag isNonReview so it is never scored."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "abba-voyage-off-west-end-2026/click-liverpool--filthy-dirty.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Louder Than War review (louderthanwar.com) filed under Click Liverpool."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "abba-voyage-off-west-end-2026/click-liverpool--filthy-dirty.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-2716: url is louderthanwar.com, not Click Liverpool (clickliverpool.com)",
+        "description": "Reason for the flag."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-cohen-broad-strokes-off-broadway-2026/seatplan--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "SeatPlan ticket-sales page, not a review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-cohen-broad-strokes-off-broadway-2026/seatplan--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-2716: seatplan.com /<show>-tickets/ sales page submitted through the review form",
+        "description": "Reason for the flag."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T06:49:13.990Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "abba-voyage-off-west-end-2026/click-liverpool--filthy-dirty.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "abba-voyage-off-west-end-2026/click-liverpool--filthy-dirty.json wrongAttributionReason: null -> \"BRO-2716: url is louderthanwar.com, not Click Liverpool (clickliverpool.com)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-cohen-broad-strokes-off-broadway-2026/seatplan--unknown.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-cohen-broad-strokes-off-broadway-2026/seatplan--unknown.json isNonReviewReason: null -> \"BRO-2716: seatplan.com /<show>-tickets/ sales page submitted through the review form\""
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "issueNumber": "bro-5892",
+  "planId": "ab16e4e4-b982-46dc-84c4-efa2b151ba06",
+  "status": "applied",
+  "createdAt": "2026-10-22T06:59:09.619Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Fill closingDate for three closed shows that have none (BRO-5892 end-to-end test). Sources: IBDB (High Rollers, closed 1992-05-02); La Jolla Playhouse extension through 2023-04-09 (The Outsiders); A.R.T. listing May 20 to July 13, 2025 (Two Strangers).",
+    "steps": [
+      "shows.json: the-high-rollers-social-and-pleasure-club-1992.closingDate",
+      "shows.json: the-outsiders-world-premiere-regional-2023.closingDate",
+      "shows.json: two-strangers-carry-a-cake-across-new-york-at-art-regional-2025.closingDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-high-rollers-social-and-pleasure-club-1992",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "1992-05-02",
+        "description": "shows.json: the-high-rollers-social-and-pleasure-club-1992.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-outsiders-world-premiere-regional-2023",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2023-04-09",
+        "description": "shows.json: the-outsiders-world-premiere-regional-2023.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2025-07-13",
+        "description": "shows.json: two-strangers-carry-a-cake-across-new-york-at-art-regional-2025.closingDate"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T08:21:31.812Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for the-high-rollers-social-and-pleasure-club-1992"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for the-outsiders-world-premiere-regional-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for two-strangers-carry-a-cake-across-new-york-at-art-regional-2025"
+    }
+  ],
+  "executedIn": "ci"
+}

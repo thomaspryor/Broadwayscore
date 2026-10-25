@@ -1,0 +1,88 @@
+{
+  "issueNumber": "bro-4891-d",
+  "planId": "08ed011f-842b-44bc-bdfa-533ed0f58531",
+  "status": "applied",
+  "createdAt": "2026-10-13T03:18:19.978Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4891: Paddington West End excludes TheaterMania (date mis-parsed as 2023) and John Proctor West End excludes The Upcoming (header names the Wyndham's transfer); both are genuine reviews of the production on the page",
+    "steps": [
+      "Fix TheaterMania date and clear its false flag",
+      "Clear The Upcoming false flag"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "paddington-the-musical-west-end-2025/theatermania--alex-wood.json",
+        "field": "publishDate",
+        "oldValue": "2023-12-12",
+        "newValue": "2025-12-02",
+        "description": "BRO-4891: live page datePublished 2025-12-02T12:51:11-05:00; stored 2023-12-12 was mis-parsed and tripped the pre-opening guard"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paddington-the-musical-west-end-2025/theatermania--alex-wood.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4891: genuine Savoy Theatre opening review (Dec 2025); flag came from the mis-parsed 2023 date"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paddington-the-musical-west-end-2025/theatermania--alex-wood.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4891: keep the false-positive flag from coming back on rebuild"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "john-proctor-is-the-villain-west-end-2026/theupcoming--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4891: review dated 23 April 2026 of the Royal Court run (closed 2026-04); the page header names the 2027 Wyndham's transfer, which is why it was flagged"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "john-proctor-is-the-villain-west-end-2026/theupcoming--unknown.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4891: keep the false-positive flag from coming back on rebuild"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T04:03:10.068Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paddington-the-musical-west-end-2025/theatermania--alex-wood.json publishDate: \"2023-12-12\" -> \"2025-12-02\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paddington-the-musical-west-end-2025/theatermania--alex-wood.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paddington-the-musical-west-end-2025/theatermania--alex-wood.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "john-proctor-is-the-villain-west-end-2026/theupcoming--unknown.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "john-proctor-is-the-villain-west-end-2026/theupcoming--unknown.json wrongProductionManualClear: null -> true"
+    }
+  ]
+}

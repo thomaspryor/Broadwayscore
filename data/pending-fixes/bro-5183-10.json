@@ -1,0 +1,357 @@
+{
+  "issueNumber": "bro-5183-10",
+  "planId": "9ed6fbb3-dfcc-48b4-9e46-4349354cf6ba",
+  "status": "applied",
+  "createdAt": "2026-10-13T02:10:30.547Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5183: mark legacy web-search rows with an impossible outlet/critic pair as not real reviews (they stay excluded; evidence in each action).",
+    "steps": [
+      "kpop-2022/hollywood-reporter--angie-han.json: isNonReview -> true",
+      "kpop-2022/hollywood-reporter--angie-han.json: isNonReviewReason -> BRO-5183: invented web-search row. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck",
+      "kpop-2022/usatoday--charles-isherwood.json: isNonReview -> true",
+      "kpop-2022/usatoday--charles-isherwood.json: isNonReviewReason -> BRO-5183: invented web-search row. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-)",
+      "left-on-tenth-2024/washpost--peter-marks.json: isNonReview -> true",
+      "left-on-tenth-2024/washpost--peter-marks.json: isNonReviewReason -> BRO-5183: invented web-search row. Peter Marks left The Washington Post on 2023-12-31 (Playbill, Broadway News); this show opened after that",
+      "mary-jane-2024/washpost--peter-marks.json: isNonReview -> true",
+      "mary-jane-2024/washpost--peter-marks.json: isNonReviewReason -> BRO-5183: invented web-search row. Peter Marks left The Washington Post on 2023-12-31 (Playbill, Broadway News); this show opened after that",
+      "mother-play-2024/washpost--peter-marks.json: isNonReview -> true",
+      "mother-play-2024/washpost--peter-marks.json: isNonReviewReason -> BRO-5183: invented web-search row. Peter Marks left The Washington Post on 2023-12-31 (Playbill, Broadway News); this show opened after that",
+      "ohio-state-murders-2022/observer--jesse-green.json: isNonReview -> true",
+      "ohio-state-murders-2022/observer--jesse-green.json: isNonReviewReason -> BRO-5183: invented web-search row. Jesse Green has been chief theater critic of The New York Times since 2017",
+      "one-man-two-guvnors-2012/guardian--charles-isherwood.json: isNonReview -> true",
+      "one-man-two-guvnors-2012/guardian--charles-isherwood.json: isNonReviewReason -> BRO-5183: invented web-search row. Charles Isherwood was a New York Times critic then (2004-2017)",
+      "parade-2023/hollywood-reporter--angie-han.json: isNonReview -> true",
+      "parade-2023/hollywood-reporter--angie-han.json: isNonReviewReason -> BRO-5183: invented web-search row. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck",
+      "paradise-square-2022/hollywood-reporter--angie-han.json: isNonReview -> true",
+      "paradise-square-2022/hollywood-reporter--angie-han.json: isNonReviewReason -> BRO-5183: invented web-search row. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck",
+      "plaza-suite-2022/usatoday--charles-isherwood.json: isNonReview -> true",
+      "plaza-suite-2022/usatoday--charles-isherwood.json: isNonReviewReason -> BRO-5183: invented web-search row. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-)",
+      "skeleton-crew-2022/usatoday--charles-isherwood.json: isNonReview -> true",
+      "skeleton-crew-2022/usatoday--charles-isherwood.json: isNonReviewReason -> BRO-5183: invented web-search row. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-)",
+      "some-like-it-hot-2022/hollywood-reporter--angie-han.json: isNonReview -> true",
+      "some-like-it-hot-2022/hollywood-reporter--angie-han.json: isNonReviewReason -> BRO-5183: invented web-search row. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "kpop-2022/hollywood-reporter--angie-han.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Not a real review: legacy LLM web-search row whose outlet/critic pair is impossible. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck. Stored url does not resolve to a review; no aggregator lists it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kpop-2022/hollywood-reporter--angie-han.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5183: invented web-search row. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck",
+        "description": "Reason for the isNonReview flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kpop-2022/usatoday--charles-isherwood.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Not a real review: legacy LLM web-search row whose outlet/critic pair is impossible. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-). Stored url does not resolve to a review; no aggregator lists it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kpop-2022/usatoday--charles-isherwood.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5183: invented web-search row. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-)",
+        "description": "Reason for the isNonReview flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "left-on-tenth-2024/washpost--peter-marks.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Not a real review: legacy LLM web-search row whose outlet/critic pair is impossible. Peter Marks left The Washington Post on 2023-12-31 (Playbill, Broadway News); this show opened after that. Stored url does not resolve to a review; no aggregator lists it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "left-on-tenth-2024/washpost--peter-marks.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5183: invented web-search row. Peter Marks left The Washington Post on 2023-12-31 (Playbill, Broadway News); this show opened after that",
+        "description": "Reason for the isNonReview flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mary-jane-2024/washpost--peter-marks.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Not a real review: legacy LLM web-search row whose outlet/critic pair is impossible. Peter Marks left The Washington Post on 2023-12-31 (Playbill, Broadway News); this show opened after that. Stored url does not resolve to a review; no aggregator lists it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mary-jane-2024/washpost--peter-marks.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5183: invented web-search row. Peter Marks left The Washington Post on 2023-12-31 (Playbill, Broadway News); this show opened after that",
+        "description": "Reason for the isNonReview flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mother-play-2024/washpost--peter-marks.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Not a real review: legacy LLM web-search row whose outlet/critic pair is impossible. Peter Marks left The Washington Post on 2023-12-31 (Playbill, Broadway News); this show opened after that. Stored url does not resolve to a review; no aggregator lists it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mother-play-2024/washpost--peter-marks.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5183: invented web-search row. Peter Marks left The Washington Post on 2023-12-31 (Playbill, Broadway News); this show opened after that",
+        "description": "Reason for the isNonReview flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ohio-state-murders-2022/observer--jesse-green.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Not a real review: legacy LLM web-search row whose outlet/critic pair is impossible. Jesse Green has been chief theater critic of The New York Times since 2017. Stored url does not resolve to a review; no aggregator lists it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ohio-state-murders-2022/observer--jesse-green.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5183: invented web-search row. Jesse Green has been chief theater critic of The New York Times since 2017",
+        "description": "Reason for the isNonReview flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "one-man-two-guvnors-2012/guardian--charles-isherwood.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Not a real review: legacy LLM web-search row whose outlet/critic pair is impossible. Charles Isherwood was a New York Times critic then (2004-2017). Stored url does not resolve to a review; no aggregator lists it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "one-man-two-guvnors-2012/guardian--charles-isherwood.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5183: invented web-search row. Charles Isherwood was a New York Times critic then (2004-2017)",
+        "description": "Reason for the isNonReview flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "parade-2023/hollywood-reporter--angie-han.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Not a real review: legacy LLM web-search row whose outlet/critic pair is impossible. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck. Stored url does not resolve to a review; no aggregator lists it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "parade-2023/hollywood-reporter--angie-han.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5183: invented web-search row. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck",
+        "description": "Reason for the isNonReview flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paradise-square-2022/hollywood-reporter--angie-han.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Not a real review: legacy LLM web-search row whose outlet/critic pair is impossible. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck. Stored url does not resolve to a review; no aggregator lists it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paradise-square-2022/hollywood-reporter--angie-han.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5183: invented web-search row. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck",
+        "description": "Reason for the isNonReview flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "plaza-suite-2022/usatoday--charles-isherwood.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Not a real review: legacy LLM web-search row whose outlet/critic pair is impossible. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-). Stored url does not resolve to a review; no aggregator lists it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "plaza-suite-2022/usatoday--charles-isherwood.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5183: invented web-search row. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-)",
+        "description": "Reason for the isNonReview flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "skeleton-crew-2022/usatoday--charles-isherwood.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Not a real review: legacy LLM web-search row whose outlet/critic pair is impossible. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-). Stored url does not resolve to a review; no aggregator lists it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "skeleton-crew-2022/usatoday--charles-isherwood.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5183: invented web-search row. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-)",
+        "description": "Reason for the isNonReview flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "some-like-it-hot-2022/hollywood-reporter--angie-han.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Not a real review: legacy LLM web-search row whose outlet/critic pair is impossible. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck. Stored url does not resolve to a review; no aggregator lists it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "some-like-it-hot-2022/hollywood-reporter--angie-han.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5183: invented web-search row. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck",
+        "description": "Reason for the isNonReview flag above."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T03:04:11.743Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kpop-2022/hollywood-reporter--angie-han.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kpop-2022/hollywood-reporter--angie-han.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kpop-2022/usatoday--charles-isherwood.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kpop-2022/usatoday--charles-isherwood.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "left-on-tenth-2024/washpost--peter-marks.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "left-on-tenth-2024/washpost--peter-marks.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Peter Marks left The Washington Post on 2023-12-31 (Playbill, Broadway News); this show opened after that\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mary-jane-2024/washpost--peter-marks.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mary-jane-2024/washpost--peter-marks.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Peter Marks left The Washington Post on 2023-12-31 (Playbill, Broadway News); this show opened after that\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mother-play-2024/washpost--peter-marks.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mother-play-2024/washpost--peter-marks.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Peter Marks left The Washington Post on 2023-12-31 (Playbill, Broadway News); this show opened after that\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ohio-state-murders-2022/observer--jesse-green.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ohio-state-murders-2022/observer--jesse-green.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Jesse Green has been chief theater critic of The New York Times since 2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "one-man-two-guvnors-2012/guardian--charles-isherwood.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "one-man-two-guvnors-2012/guardian--charles-isherwood.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Charles Isherwood was a New York Times critic then (2004-2017)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "parade-2023/hollywood-reporter--angie-han.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "parade-2023/hollywood-reporter--angie-han.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paradise-square-2022/hollywood-reporter--angie-han.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paradise-square-2022/hollywood-reporter--angie-han.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "plaza-suite-2022/usatoday--charles-isherwood.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "plaza-suite-2022/usatoday--charles-isherwood.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "skeleton-crew-2022/usatoday--charles-isherwood.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "skeleton-crew-2022/usatoday--charles-isherwood.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "some-like-it-hot-2022/hollywood-reporter--angie-han.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "some-like-it-hot-2022/hollywood-reporter--angie-han.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck\""
+    }
+  ]
+}

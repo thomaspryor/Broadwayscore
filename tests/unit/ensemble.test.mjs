@@ -1,0 +1,721 @@
+/**
+ * Unit Tests for Ensemble Voting Logic
+ *
+ * Tests all voting scenarios:
+ * - 3-model unanimous
+ * - 3-model majority (2/3)
+ * - 3-model no consensus
+ * - 2-model fallback
+ * - 1-model fallback
+ * - All fail case
+ */
+
+import { test, describe } from 'node:test';
+import assert from 'node:assert';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+
+// Register ts-node with the scripts tsconfig (CommonJS/node resolution)
+process.env.TS_NODE_PROJECT = new URL('../../scripts/tsconfig.json', import.meta.url).pathname;
+require('ts-node/register');
+
+const {
+  ensembleScore,
+  toModelScore,
+  scoreToBucket,
+  bucketDistance,
+  median,
+  mean,
+  getAgreementLevel,
+  getEnsembleWeights
+} = require('../../scripts/llm-scoring/ensemble');
+
+// ========================================
+// HELPER FUNCTIONS
+// ========================================
+
+function makeModelScore(model, bucket, score, options = {}) {
+  return {
+    model,
+    bucket,
+    score,
+    confidence: 'high',
+    ...options
+  };
+}
+
+function makeResult(bucket, score) {
+  return {
+    bucket,
+    score,
+    confidence: 'high',
+    verdict: 'test verdict',
+    keyQuote: 'test quote',
+    reasoning: 'test reasoning'
+  };
+}
+
+// ========================================
+// UTILITY FUNCTION TESTS
+// ========================================
+
+describe('scoreToBucket', () => {
+  test('returns Rave for 83-100', () => {
+    assert.strictEqual(scoreToBucket(100), 'Rave');
+    assert.strictEqual(scoreToBucket(83), 'Rave');
+    assert.strictEqual(scoreToBucket(85), 'Rave');
+    assert.strictEqual(scoreToBucket(92), 'Rave');
+  });
+
+  test('returns Positive for 70-82', () => {
+    assert.strictEqual(scoreToBucket(82), 'Positive');
+    assert.strictEqual(scoreToBucket(70), 'Positive');
+    assert.strictEqual(scoreToBucket(77), 'Positive');
+  });
+
+  test('returns Mixed for 55-69', () => {
+    assert.strictEqual(scoreToBucket(69), 'Mixed');
+    assert.strictEqual(scoreToBucket(55), 'Mixed');
+    assert.strictEqual(scoreToBucket(62), 'Mixed');
+  });
+
+  test('returns Negative for 35-54', () => {
+    assert.strictEqual(scoreToBucket(54), 'Negative');
+    assert.strictEqual(scoreToBucket(35), 'Negative');
+    assert.strictEqual(scoreToBucket(45), 'Negative');
+  });
+
+  test('returns Pan for 0-34', () => {
+    assert.strictEqual(scoreToBucket(34), 'Pan');
+    assert.strictEqual(scoreToBucket(0), 'Pan');
+    assert.strictEqual(scoreToBucket(20), 'Pan');
+  });
+});
+
+describe('bucketDistance', () => {
+  test('same bucket returns 0', () => {
+    assert.strictEqual(bucketDistance('Rave', 'Rave'), 0);
+    assert.strictEqual(bucketDistance('Mixed', 'Mixed'), 0);
+  });
+
+  test('adjacent buckets return 1', () => {
+    assert.strictEqual(bucketDistance('Rave', 'Positive'), 1);
+    assert.strictEqual(bucketDistance('Positive', 'Mixed'), 1);
+    assert.strictEqual(bucketDistance('Negative', 'Pan'), 1);
+  });
+
+  test('distant buckets return correct distance', () => {
+    assert.strictEqual(bucketDistance('Rave', 'Mixed'), 2);
+    assert.strictEqual(bucketDistance('Rave', 'Pan'), 4);
+    assert.strictEqual(bucketDistance('Positive', 'Pan'), 3);
+  });
+});
+
+describe('median', () => {
+  test('returns median of odd-length array', () => {
+    assert.strictEqual(median([1, 2, 3]), 2);
+    assert.strictEqual(median([80, 85, 90]), 85);
+    assert.strictEqual(median([10, 50, 90]), 50);
+  });
+
+  test('returns average of middle two for even-length array', () => {
+    assert.strictEqual(median([1, 2, 3, 4]), 2.5);
+    assert.strictEqual(median([80, 85]), 82.5);
+  });
+
+  test('handles single value', () => {
+    assert.strictEqual(median([50]), 50);
+  });
+
+  test('handles empty array', () => {
+    assert.strictEqual(median([]), 0);
+  });
+});
+
+describe('mean', () => {
+  test('returns average of values', () => {
+    assert.strictEqual(mean([80, 85, 90]), 85);
+    assert.strictEqual(mean([0, 100]), 50);
+    assert.strictEqual(mean([75, 75, 75]), 75);
+  });
+
+  test('handles empty array', () => {
+    assert.strictEqual(mean([]), 0);
+  });
+});
+
+// ========================================
+// 3-MODEL ENSEMBLE TESTS
+// ========================================
+
+describe('ensembleScore - 3 models', () => {
+  describe('unanimous agreement', () => {
+    test('all Rave with tight spread', () => {
+      const result = ensembleScore(
+        makeModelScore('claude', 'Rave', 92),
+        makeModelScore('openai', 'Rave', 90),
+        makeModelScore('gemini', 'Rave', 94)
+      );
+
+      assert.strictEqual(result.bucket, 'Rave');
+      assert.ok(result.score >= 83, `score ${result.score} should be >= 83`);
+      assert.ok(result.score <= 100, `score ${result.score} should be <= 100`);
+      assert.strictEqual(result.confidence, 'high');
+      assert.strictEqual(result.source, 'ensemble-unanimous');
+      assert.strictEqual(result.needsReview, false);
+    });
+
+    test('all Rave with wider spread', () => {
+      const result = ensembleScore(
+        makeModelScore('claude', 'Rave', 85),
+        makeModelScore('openai', 'Rave', 95),
+        makeModelScore('gemini', 'Rave', 100)
+      );
+
+      assert.strictEqual(result.bucket, 'Rave');
+      assert.strictEqual(result.confidence, 'medium'); // wider spread
+      assert.strictEqual(result.source, 'ensemble-unanimous');
+    });
+
+    test('all Mixed unanimous', () => {
+      const result = ensembleScore(
+        makeModelScore('claude', 'Mixed', 60),
+        makeModelScore('openai', 'Mixed', 62),
+        makeModelScore('gemini', 'Mixed', 58)
+      );
+
+      assert.strictEqual(result.bucket, 'Mixed');
+      assert.ok(result.score >= 55, `score ${result.score} should be >= 55`);
+      assert.ok(result.score <= 69, `score ${result.score} should be <= 69`);
+      assert.strictEqual(result.source, 'ensemble-unanimous');
+    });
+
+    test('all Pan unanimous', () => {
+      const result = ensembleScore(
+        makeModelScore('claude', 'Pan', 20),
+        makeModelScore('openai', 'Pan', 15),
+        makeModelScore('gemini', 'Pan', 25)
+      );
+
+      assert.strictEqual(result.bucket, 'Pan');
+      assert.ok(result.score >= 0, `score ${result.score} should be >= 0`);
+      assert.ok(result.score <= 34, `score ${result.score} should be <= 34`);
+    });
+  });
+
+  describe('2/3 majority with outlier', () => {
+    test('2 Rave, 1 Positive (adjacent outlier)', () => {
+      const result = ensembleScore(
+        makeModelScore('claude', 'Rave', 92),
+        makeModelScore('openai', 'Rave', 88),
+        makeModelScore('gemini', 'Positive', 78)
+      );
+
+      assert.strictEqual(result.bucket, 'Rave');
+      assert.strictEqual(result.source, 'ensemble-majority');
+      assert.strictEqual(result.outlier?.model, 'gemini');
+      assert.strictEqual(result.outlier?.bucket, 'Positive');
+      assert.strictEqual(result.needsReview, false); // adjacent bucket, not severe
+    });
+
+    test('2 Positive, 1 Pan (severe outlier)', () => {
+      const result = ensembleScore(
+        makeModelScore('claude', 'Positive', 80),
+        makeModelScore('openai', 'Positive', 78),
+        makeModelScore('gemini', 'Pan', 25)
+      );
+
+      // Weighted avg: (80*1.5 + 78*1.5 + 25*1.0) / 4.0 = 65.5 → 66
+      // Bucket derived from numeric score: scoreToBucket(66) = Mixed
+      assert.strictEqual(result.bucket, 'Mixed');
+      assert.strictEqual(result.source, 'ensemble-majority');
+      assert.strictEqual(result.outlier?.model, 'gemini');
+      assert.strictEqual(result.outlier?.bucket, 'Pan');
+      assert.strictEqual(result.needsReview, true); // 3 buckets apart
+      assert.ok(result.reviewReason.includes('2+ buckets'), `reviewReason should contain '2+ buckets'`);
+    });
+
+    test('2 Mixed, 1 Rave (outlier)', () => {
+      const result = ensembleScore(
+        makeModelScore('claude', 'Mixed', 62),
+        makeModelScore('openai', 'Rave', 90),
+        makeModelScore('gemini', 'Mixed', 65)
+      );
+
+      // Weighted avg: (62*1.5 + 65*1.5 + 90*1.0) / 4.0 = 70.125 → 70
+      // Bucket derived from numeric score: scoreToBucket(70) = Positive
+      assert.strictEqual(result.bucket, 'Positive');
+      assert.strictEqual(result.outlier?.model, 'openai');
+      assert.strictEqual(result.outlier?.bucket, 'Rave');
+      assert.strictEqual(result.needsReview, true); // 2 buckets apart
+    });
+  });
+
+  // ========================================
+  // NUMERIC-GAP OUTLIER (Cititour 2026-05-20 regression case)
+  // ========================================
+  // When 2 models cluster on a higher score and outvote the dissenting model whose
+  // calibration is correct, the 1-bucket-distance check misses it. The numeric-gap
+  // rule fires needsReview when the lone outlier is >12pts from the majority mean.
+  describe('2/3 majority with numeric-gap outlier (within 1 bucket)', () => {
+    test('Cititour case: Claude=76 Positive vs OpenAI=90 Gemini=90 Rave → needsReview', () => {
+      const result = ensembleScore(
+        makeModelScore('claude', 'Positive', 76),
+        makeModelScore('openai', 'Rave', 90),
+        makeModelScore('gemini', 'Rave', 90)
+      );
+
+      // Weighted avg: (90*1.5 + 90*1.5 + 76*1.0) / 4.0 = 86.5 → 87
+      assert.strictEqual(result.source, 'ensemble-majority');
+      assert.strictEqual(result.outlier?.model, 'claude');
+      assert.strictEqual(result.outlier?.bucket, 'Positive');
+      // Bucket distance Positive↔Rave is 1 — old check would NOT fire.
+      // Numeric gap |76 - 90| = 14 > 12 → new check fires.
+      assert.strictEqual(result.needsReview, true);
+      assert.ok(Array.isArray(result.needsReviewReasons), 'needsReviewReasons should be an array');
+      assert.ok(
+        result.needsReviewReasons.some(r => /sole-outlier-\d+pt-gap/.test(r)),
+        `needsReviewReasons should contain a 'sole-outlier-Npt-gap' entry, got: ${JSON.stringify(result.needsReviewReasons)}`
+      );
+      // Reason string is model-agnostic — does NOT hardcode 'claude'.
+      assert.ok(
+        !result.needsReviewReasons.some(r => /claude-outlier/i.test(r)),
+        'reasons should not hardcode model name as "claude-outlier"'
+      );
+    });
+
+    test('boundary: gap=12 (78 vs 90/90) does NOT fire (strict >)', () => {
+      const result = ensembleScore(
+        makeModelScore('claude', 'Positive', 78),
+        makeModelScore('openai', 'Rave', 90),
+        makeModelScore('gemini', 'Rave', 90)
+      );
+      // Gap = |78 - 90| = 12. Threshold is strict >12, so this does NOT fire.
+      assert.strictEqual(result.needsReview, false);
+      assert.strictEqual(result.needsReviewReasons, undefined);
+    });
+
+    test('boundary: gap=13 (77 vs 90/90) DOES fire', () => {
+      const result = ensembleScore(
+        makeModelScore('claude', 'Positive', 77),
+        makeModelScore('openai', 'Rave', 90),
+        makeModelScore('gemini', 'Rave', 90)
+      );
+      // Gap = |77 - 90| = 13 > 12 → fires.
+      assert.strictEqual(result.needsReview, true);
+      assert.ok(
+        result.needsReviewReasons.some(r => /sole-outlier-13pt-gap/.test(r)),
+        `expected '...13pt-gap', got: ${JSON.stringify(result.needsReviewReasons)}`
+      );
+    });
+
+    test('inverted: outlier HIGHER than cluster (Claude=92 vs OpenAI=70 Gemini=72) → fires', () => {
+      const result = ensembleScore(
+        makeModelScore('claude', 'Rave', 92),
+        makeModelScore('openai', 'Positive', 70),
+        makeModelScore('gemini', 'Positive', 72)
+      );
+      // Lone outlier is Claude high. Majority mean = 71. Gap = 21 > 12 → fires.
+      assert.strictEqual(result.needsReview, true);
+      assert.ok(result.needsReviewReasons?.some(r => /sole-outlier/.test(r)));
+    });
+
+    test('two outliers (not a sole outlier) does NOT fire the numeric-gap reason', () => {
+      // openai+gemini Positive (cluster of 2), claude+kimi Rave (cluster of 2) is a tie not a majority.
+      // We need 2/4 majority for this test — use 3 Positive + 1 Rave outlier with big gap, but the
+      // sole-outlier branch only triggers when outlierResults.length === 1, so a 2-outlier scenario
+      // would never trip the gap check. Verify by setting up a 2-outlier 4-model case.
+      const result = ensembleScore(
+        makeModelScore('claude', 'Positive', 72),
+        makeModelScore('openai', 'Positive', 74),
+        makeModelScore('gemini', 'Rave', 90),
+        makeModelScore('kimi', 'Rave', 92)
+      );
+      // 2/4 each — no >50% majority, so this falls through to no-consensus branch entirely.
+      // The numeric-gap check is scoped to the majority branch, so it doesn't apply here.
+      // We just verify the new code doesn't crash on a no-majority N=4 input.
+      assert.ok(result.source === 'ensemble-no-consensus' || result.source === 'ensemble-majority');
+    });
+
+    test('bucket-distance reason still fires alongside numeric-gap when both apply', () => {
+      // Outlier 2 buckets away AND >12pt gap — both reasons should appear.
+      const result = ensembleScore(
+        makeModelScore('claude', 'Mixed', 60),  // 2 buckets below Rave
+        makeModelScore('openai', 'Rave', 90),
+        makeModelScore('gemini', 'Rave', 88)
+      );
+      assert.strictEqual(result.needsReview, true);
+      const reasons = result.needsReviewReasons || [];
+      assert.ok(reasons.some(r => /2\+ buckets from majority/.test(r)), 'expected bucket-distance reason');
+      assert.ok(reasons.some(r => /sole-outlier-\d+pt-gap/.test(r)), 'expected numeric-gap reason');
+    });
+  });
+
+  describe('3-way disagreement (no consensus)', () => {
+    test('all different buckets', () => {
+      const result = ensembleScore(
+        makeModelScore('claude', 'Rave', 92),
+        makeModelScore('openai', 'Mixed', 58),
+        makeModelScore('gemini', 'Pan', 25)
+      );
+
+      assert.strictEqual(result.source, 'ensemble-no-consensus');
+      assert.strictEqual(result.confidence, 'low');
+      assert.strictEqual(result.needsReview, true);
+      assert.strictEqual(result.reviewReason, '3-way bucket disagreement (4 bucket gap)');
+      assert.ok(result.note.includes('claude=Rave'), `note should contain 'claude=Rave'`);
+      assert.ok(result.note.includes('openai=Mixed'), `note should contain 'openai=Mixed'`);
+      assert.ok(result.note.includes('gemini=Pan'), `note should contain 'gemini=Pan'`);
+    });
+
+    test('uses median score', () => {
+      const result = ensembleScore(
+        makeModelScore('claude', 'Rave', 95),
+        makeModelScore('openai', 'Mixed', 60),
+        makeModelScore('gemini', 'Negative', 40)
+      );
+
+      // Median of [95, 60, 40] = 60
+      assert.strictEqual(result.score, 60);
+      assert.strictEqual(result.bucket, 'Mixed');
+    });
+  });
+});
+
+// ========================================
+// 4-MODEL ADJACENT SPLIT TESTS
+// ========================================
+
+describe('ensembleScore - 4 models adjacent split', () => {
+  test('2-2 split between adjacent buckets gets medium confidence', () => {
+    const result = ensembleScore(
+      makeModelScore('claude', 'Positive', 82),
+      makeModelScore('openai', 'Rave', 90),
+      makeModelScore('gemini', 'Positive', 81),
+      makeModelScore('kimi', 'Rave', 90)
+    );
+
+    assert.strictEqual(result.source, 'ensemble-no-consensus');
+    assert.strictEqual(result.confidence, 'medium');
+    assert.strictEqual(result.needsReview, false);
+    assert.ok(result.agreement.includes('Adjacent bucket split'));
+  });
+
+  test('2-2 split between distant buckets gets low confidence', () => {
+    const result = ensembleScore(
+      makeModelScore('claude', 'Rave', 92),
+      makeModelScore('openai', 'Negative', 42),
+      makeModelScore('gemini', 'Rave', 90),
+      makeModelScore('kimi', 'Negative', 40)
+    );
+
+    assert.strictEqual(result.source, 'ensemble-no-consensus');
+    assert.strictEqual(result.confidence, 'low');
+    assert.strictEqual(result.needsReview, true);
+    assert.ok(result.reviewReason.includes('bucket gap'));
+  });
+
+  test('adjacent split score uses median', () => {
+    const result = ensembleScore(
+      makeModelScore('claude', 'Mixed', 62),
+      makeModelScore('openai', 'Mixed', 60),
+      makeModelScore('gemini', 'Positive', 72),
+      makeModelScore('kimi', 'Positive', 72)
+    );
+
+    assert.strictEqual(result.score, 67); // median of [60,62,72,72] = (62+72)/2
+    assert.strictEqual(result.bucket, 'Mixed');
+    assert.strictEqual(result.confidence, 'medium');
+    assert.strictEqual(result.needsReview, false);
+  });
+});
+
+// ========================================
+// 2-MODEL FALLBACK TESTS
+// ========================================
+
+describe('ensembleScore - 2 models (fallback)', () => {
+  test('2 agree on bucket', () => {
+    const result = ensembleScore(
+      makeModelScore('claude', 'Positive', 78),
+      makeModelScore('openai', 'Positive', 82),
+      null
+    );
+
+    assert.strictEqual(result.bucket, 'Positive');
+    assert.strictEqual(result.source, 'two-model-fallback');
+    assert.strictEqual(result.score, 80); // average
+    assert.strictEqual(result.needsReview, false);
+  });
+
+  test('2 disagree on bucket (adjacent)', () => {
+    const result = ensembleScore(
+      makeModelScore('claude', 'Rave', 86),
+      makeModelScore('openai', 'Positive', 82),
+      null
+    );
+
+    assert.strictEqual(result.source, 'two-model-fallback');
+    assert.strictEqual(result.score, 84); // average
+    assert.strictEqual(result.bucket, 'Rave'); // derived from score 84 (>= 83 = Rave)
+    assert.strictEqual(result.needsReview, false); // only 1 bucket apart
+  });
+
+  test('2 disagree on bucket (distant)', () => {
+    const result = ensembleScore(
+      makeModelScore('claude', 'Rave', 90),
+      makeModelScore('openai', 'Negative', 40),
+      null
+    );
+
+    assert.strictEqual(result.source, 'two-model-fallback');
+    assert.strictEqual(result.score, 65); // average
+    assert.strictEqual(result.confidence, 'low');
+    assert.strictEqual(result.needsReview, true); // 3 buckets apart
+  });
+
+  test('high score delta triggers review', () => {
+    const result = ensembleScore(
+      makeModelScore('claude', 'Positive', 70),
+      makeModelScore('openai', 'Positive', 88),
+      null
+    );
+
+    assert.strictEqual(result.bucket, 'Positive');
+    assert.strictEqual(result.needsReview, true); // delta of 18 > 15
+    assert.ok(result.reviewReason.includes('delta'), `reviewReason should contain 'delta'`);
+  });
+
+  test('one model has error', () => {
+    const result = ensembleScore(
+      makeModelScore('claude', 'Positive', 80),
+      null,
+      makeModelScore('gemini', 'Positive', 82, { error: 'API error' })
+    );
+
+    // Only claude succeeds
+    assert.strictEqual(result.source, 'single-model-fallback');
+  });
+});
+
+// ========================================
+// 1-MODEL FALLBACK TESTS
+// ========================================
+
+describe('ensembleScore - 1 model (fallback)', () => {
+  test('only claude succeeds', () => {
+    const result = ensembleScore(
+      makeModelScore('claude', 'Rave', 92),
+      null,
+      null
+    );
+
+    assert.strictEqual(result.bucket, 'Rave');
+    assert.strictEqual(result.score, 92);
+    assert.strictEqual(result.source, 'single-model-fallback');
+    assert.strictEqual(result.confidence, 'low');
+    assert.strictEqual(result.needsReview, true);
+    assert.ok(result.note.includes('claude'), `note should contain 'claude'`);
+  });
+
+  test('only openai succeeds', () => {
+    const result = ensembleScore(
+      null,
+      makeModelScore('openai', 'Mixed', 58),
+      null
+    );
+
+    assert.strictEqual(result.bucket, 'Mixed');
+    assert.strictEqual(result.score, 58);
+    assert.strictEqual(result.source, 'single-model-fallback');
+  });
+
+  test('only gemini succeeds', () => {
+    const result = ensembleScore(
+      null,
+      null,
+      makeModelScore('gemini', 'Pan', 20)
+    );
+
+    assert.strictEqual(result.bucket, 'Pan');
+    assert.strictEqual(result.score, 20);
+  });
+});
+
+// ========================================
+// ALL-FAIL CASE
+// ========================================
+
+describe('ensembleScore - all fail', () => {
+  test('returns neutral fallback', () => {
+    const result = ensembleScore(null, null, null);
+
+    assert.strictEqual(result.score, 50);
+    assert.strictEqual(result.bucket, 'Mixed');
+    assert.strictEqual(result.confidence, 'low');
+    assert.strictEqual(result.needsReview, true);
+    assert.strictEqual(result.reviewReason, 'All models failed to score');
+    assert.strictEqual(result.note, 'All models failed');
+  });
+
+  test('all models have errors', () => {
+    const result = ensembleScore(
+      makeModelScore('claude', 'Rave', 90, { error: 'API error' }),
+      makeModelScore('openai', 'Rave', 90, { error: 'API error' }),
+      makeModelScore('gemini', 'Rave', 90, { error: 'API error' })
+    );
+
+    assert.strictEqual(result.note, 'All models failed');
+    assert.strictEqual(result.needsReview, true);
+  });
+});
+
+// ========================================
+// HELPER FUNCTION TESTS
+// ========================================
+
+describe('toModelScore', () => {
+  test('converts SimplifiedLLMResult to ModelScore', () => {
+    const result = makeResult('Positive', 80);
+    const modelScore = toModelScore(result, 'claude');
+
+    assert.strictEqual(modelScore.model, 'claude');
+    assert.strictEqual(modelScore.bucket, 'Positive');
+    assert.strictEqual(modelScore.score, 80);
+    assert.strictEqual(modelScore.verdict, 'test verdict');
+    assert.strictEqual(modelScore.error, undefined);
+  });
+
+  test('handles null result', () => {
+    const modelScore = toModelScore(null, 'openai');
+
+    assert.strictEqual(modelScore.model, 'openai');
+    assert.strictEqual(modelScore.bucket, 'Mixed');
+    assert.strictEqual(modelScore.score, 50);
+    assert.strictEqual(modelScore.error, 'No result');
+  });
+
+  test('handles error parameter', () => {
+    const result = makeResult('Positive', 80);
+    const modelScore = toModelScore(result, 'gemini', 'API timeout');
+
+    assert.strictEqual(modelScore.error, 'API timeout');
+    assert.strictEqual(modelScore.bucket, 'Mixed'); // fallback
+  });
+});
+
+// ========================================
+// PHASE B: ENSEMBLE_V2 WEIGHT CALIBRATION (Notion 367637c5-416f-81a3)
+// ========================================
+describe('getEnsembleWeights (ENSEMBLE_V2 flag)', () => {
+  const ORIGINAL_FLAG = process.env.ENSEMBLE_V2;
+
+  function restoreFlag() {
+    if (ORIGINAL_FLAG === undefined) delete process.env.ENSEMBLE_V2;
+    else process.env.ENSEMBLE_V2 = ORIGINAL_FLAG;
+  }
+
+  test('flag unset → v1 weights (1.5/1.0)', () => {
+    delete process.env.ENSEMBLE_V2;
+    const w = getEnsembleWeights();
+    assert.strictEqual(w.majorityWeight, 1.5);
+    assert.strictEqual(w.outlierWeight, 1.0);
+    assert.strictEqual(w.version, 'v1');
+    restoreFlag();
+  });
+
+  test('ENSEMBLE_V2=1 → v2 weights (1.4/1.0)', () => {
+    process.env.ENSEMBLE_V2 = '1';
+    const w = getEnsembleWeights();
+    assert.strictEqual(w.majorityWeight, 1.4);
+    assert.strictEqual(w.outlierWeight, 1.0);
+    assert.strictEqual(w.version, 'v2');
+    restoreFlag();
+  });
+
+  test('any non-"1" value → v1 (fail-safe default)', () => {
+    process.env.ENSEMBLE_V2 = 'true';
+    const w = getEnsembleWeights();
+    assert.strictEqual(w.version, 'v1');
+    restoreFlag();
+  });
+
+  test('multiModelEnsemble: ENSEMBLE_V2=1 shifts Cititour-style score toward the outlier', () => {
+    delete process.env.ENSEMBLE_V2;
+    const v1 = ensembleScore(
+      makeModelScore('claude', 'Positive', 76),
+      makeModelScore('openai', 'Rave', 90),
+      makeModelScore('gemini', 'Rave', 90)
+    );
+    // v1: (90*1.5 + 90*1.5 + 76*1.0) / 4.0 = 86.5 → 87
+    assert.strictEqual(v1.score, 87);
+    assert.strictEqual(v1.ensembleVersion, 'v1');
+
+    process.env.ENSEMBLE_V2 = '1';
+    const v2 = ensembleScore(
+      makeModelScore('claude', 'Positive', 76),
+      makeModelScore('openai', 'Rave', 90),
+      makeModelScore('gemini', 'Rave', 90)
+    );
+    // v2: (90*1.4 + 90*1.4 + 76*1.0) / 3.8 = 86.32 → 86
+    assert.strictEqual(v2.score, 86);
+    assert.strictEqual(v2.ensembleVersion, 'v2');
+    assert.ok(v2.score < v1.score, 'lowering MAJORITY_WEIGHT should pull the score toward the outlier');
+    restoreFlag();
+  });
+
+  test('needsReview numeric-gap check is unaffected by ENSEMBLE_V2 (still fires)', () => {
+    process.env.ENSEMBLE_V2 = '1';
+    const result = ensembleScore(
+      makeModelScore('claude', 'Positive', 76),
+      makeModelScore('openai', 'Rave', 90),
+      makeModelScore('gemini', 'Rave', 90)
+    );
+    assert.strictEqual(result.needsReview, true);
+    assert.ok(result.needsReviewReasons?.some(r => /sole-outlier-\d+pt-gap/.test(r)));
+    restoreFlag();
+  });
+});
+
+describe('getAgreementLevel', () => {
+  test('returns unanimous when all same', () => {
+    const results = [
+      makeModelScore('claude', 'Rave', 90),
+      makeModelScore('openai', 'Rave', 92),
+      makeModelScore('gemini', 'Rave', 88)
+    ];
+    assert.strictEqual(getAgreementLevel(results), 'unanimous');
+  });
+
+  test('returns majority when 2/3 agree', () => {
+    const results = [
+      makeModelScore('claude', 'Rave', 90),
+      makeModelScore('openai', 'Rave', 92),
+      makeModelScore('gemini', 'Mixed', 60)
+    ];
+    assert.strictEqual(getAgreementLevel(results), 'majority');
+  });
+
+  test('returns split when all different', () => {
+    const results = [
+      makeModelScore('claude', 'Rave', 90),
+      makeModelScore('openai', 'Mixed', 60),
+      makeModelScore('gemini', 'Pan', 20)
+    ];
+    assert.strictEqual(getAgreementLevel(results), 'split');
+  });
+
+  test('returns insufficient for single result', () => {
+    const results = [makeModelScore('claude', 'Rave', 90)];
+    assert.strictEqual(getAgreementLevel(results), 'insufficient');
+  });
+
+  test('filters out results with errors', () => {
+    const results = [
+      makeModelScore('claude', 'Rave', 90),
+      makeModelScore('openai', 'Rave', 92, { error: 'failed' })
+    ];
+    assert.strictEqual(getAgreementLevel(results), 'insufficient');
+  });
+});

@@ -1,0 +1,104 @@
+{
+  "issueNumber": "bro-4910-b",
+  "planId": "284c072d-11bc-43c6-9306-7b6b2a3ffe8e",
+  "status": "applied",
+  "createdAt": "2026-10-19T23:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4910 (follow-up): finish the Into the Woods 2022 cleanup. Give the Observer and NYT reviews their real critics' filenames (David Cote, Alexis Soloski) and drop the duplicate NYT copy; re-credit the Front Mezz Junkies review to Steven Ross (the page byline) with its 2022-07-28 date so a refetch can score it.",
+    "steps": [
+      "File already credits David Cote (url observer.com/2022/07/review-into-the-woods-still-casts-a-sensational-spell-on-broadway/, page byline David Cote) but is named for Jesse Green, who never wrote for the Observer. Renamed so the filename matches the byline and no later re-derive credits Green again.",
+      "Byte-identical copy of the NYT review text (same url nytimes.com/2022/07/10/theater/into-the-woods-review.html), currently duplicateOf nytimes--jesse-green.json. Deleted so the one real copy can take the correct Soloski filename in the next action.",
+      "The NYT review at nytimes.com/2022/07/10/theater/into-the-woods-review.html is by Alexis Soloski (criticName already Soloski, score 90 kept). Renamed off the Jesse Green filename so Soloski is the canonical file, not a duplicate of a Green file.",
+      "Live page fetched 2026-10-19 reads 'The Broadway Theatre Review: Into the Woods By Ross' and the author link is 'View all posts by ross'. Ross is Front Mezz Junkies' founder Steven Ross (critic-registry steven-ross, primaryOutlet frontmezzjunkies; 109 FMJ files credit him). Nothing on the page names Shannon Shyne.",
+      "article:published_time on the page is 2022-07-28T14:54:00+00:00 (also the date in the url).",
+      "Rename to match the corrected byline. The file stays a stub (no text) until ingest-urls.yml refetches the url, which merges into this file by url match and gets it scored."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "into-the-woods-2022/observer--jesse-green.json",
+        "destPath": "into-the-woods-2022/observer--david-cote.json",
+        "description": "File already credits David Cote (url observer.com/2022/07/review-into-the-woods-still-casts-a-sensational-spell-on-broadway/, page byline David Cote) but is named for Jesse Green, who never wrote for the Observer. Renamed so the filename matches the byline and no later re-derive credits Green again."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-2022/nytimes--alexis-soloski.json",
+        "description": "Byte-identical copy of the NYT review text (same url nytimes.com/2022/07/10/theater/into-the-woods-review.html), currently duplicateOf nytimes--jesse-green.json. Deleted so the one real copy can take the correct Soloski filename in the next action."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "into-the-woods-2022/nytimes--jesse-green.json",
+        "destPath": "into-the-woods-2022/nytimes--alexis-soloski.json",
+        "description": "The NYT review at nytimes.com/2022/07/10/theater/into-the-woods-review.html is by Alexis Soloski (criticName already Soloski, score 90 kept). Renamed off the Jesse Green filename so Soloski is the canonical file, not a duplicate of a Green file."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-2022/frontmezzjunkies--shannon-shyne.json",
+        "field": "criticName",
+        "oldValue": "Shannon Shyne",
+        "newValue": "Steven Ross",
+        "description": "Live page fetched 2026-10-19 reads 'The Broadway Theatre Review: Into the Woods By Ross' and the author link is 'View all posts by ross'. Ross is Front Mezz Junkies' founder Steven Ross (critic-registry steven-ross, primaryOutlet frontmezzjunkies; 109 FMJ files credit him). Nothing on the page names Shannon Shyne."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-2022/frontmezzjunkies--shannon-shyne.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2022-07-28",
+        "description": "article:published_time on the page is 2022-07-28T14:54:00+00:00 (also the date in the url)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "into-the-woods-2022/frontmezzjunkies--shannon-shyne.json",
+        "destPath": "into-the-woods-2022/frontmezzjunkies--steven-ross.json",
+        "description": "Rename to match the corrected byline. The file stays a stub (no text) until ingest-urls.yml refetches the url, which merges into this file by url match and gets it scored."
+      }
+    ]
+  },
+  "executedAt": "2026-10-19T23:28:21.113Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-2022/observer--jesse-green.json → into-the-woods-2022/observer--david-cote.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-2022/nytimes--alexis-soloski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-2022/nytimes--jesse-green.json → into-the-woods-2022/nytimes--alexis-soloski.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-2022/frontmezzjunkies--shannon-shyne.json criticName: \"Shannon Shyne\" -> \"Steven Ross\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-2022/frontmezzjunkies--shannon-shyne.json publishDate: null -> \"2022-07-28\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-2022/frontmezzjunkies--shannon-shyne.json → into-the-woods-2022/frontmezzjunkies--steven-ross.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
+}

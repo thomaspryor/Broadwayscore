@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-5886",
+  "planId": "5d1c8148-5504-46a9-9813-a5679dcc6e3d",
+  "status": "applied",
+  "createdAt": "2026-10-22T09:26:37.260942Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5886: set the missing publishDate on the two Bachtrack reviews the collector recovered",
+    "steps": [
+      "Lincoln: publishDate 2026-10-20",
+      "Innocence: publishDate 2026-04-09"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "lincoln-in-the-bardo-off-broadway-2026/bachtrack--susan-stempleski.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-10-20",
+        "description": "BRO-5886: page JSON-LD datePublished 2026-10-20; file has none"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "innocence-off-broadway-2026/bachtrack--kurt-gottschalk.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-04-09",
+        "description": "BRO-5886: page JSON-LD datePublished 2026-04-09; file has none"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T10:47:41.416Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lincoln-in-the-bardo-off-broadway-2026/bachtrack--susan-stempleski.json publishDate: null -> \"2026-10-20\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "innocence-off-broadway-2026/bachtrack--kurt-gottschalk.json publishDate: null -> \"2026-04-09\""
+    }
+  ],
+  "executedIn": "ci"
+}

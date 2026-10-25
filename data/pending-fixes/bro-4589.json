@@ -1,0 +1,43 @@
+{
+  "issueNumber": "bro-4589",
+  "planId": "ccd86648-b856-4843-a2a0-8054743e2bf5",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4589 follow-up: cite The Lion King's recouped:true. It was the one recouped:true record in commercial.json with no source URL (only prose saying Disney never announced it). The AP (Mark Kennedy, Dec 20 2012) counts The Lion King among Disney's five Broadway hits measured against the industry recoupment rate.",
+    "steps": [
+      "AP via KSL, 2012-12-20, 'Broadway's Newsies recoups its investment': 'The entertainment giant has had now five hits, including The Lion King and Mary Poppins, from seven Broadway shows it has produced, way above the 3-in-10 average recoupment of most Broadway shows.'",
+      "recouped, recoupedDate (1999 estimate) and recoupedSource stay as they are; only the sources array gains the citation."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lion-king",
+        "showId": "the-lion-king-1997",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.ksl.com/article/24074659",
+            "date": "2012-12-20"
+          }
+        ],
+        "description": "the-lion-king: add AP citation for recouped:true (Disney's Broadway hits vs 3-in-10 recoupment average)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T02:51:12.621Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-lion-king"
+    }
+  ]
+}

@@ -1,0 +1,284 @@
+{
+  "issueNumber": "bro-5858",
+  "planId": "eaca8c4c-34d2-4a0b-a0d9-4cea301482d2",
+  "status": "applied",
+  "createdAt": "2026-10-21T19:35:07.442Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5858 (part 1/3): two live review files held one article url (a url writer moved one critic's file onto another critic's article). Each loser is marked duplicateOf the file whose critic the page byline, aggregator excerpt attribution or same-critic identity shows wrote the article; where the article's critic is none of the members, the kept file's criticName is corrected.",
+    "steps": [
+      "Mark the surplus file in each same-url group duplicateOf the kept file",
+      "Correct criticName on kept files whose page byline names a different critic"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--jackson-mchenry.json",
+        "description": "same article url as vulture--jackson-mchenry.json; one review by Jackson McHenry (live page byline \"Jackson McHenry\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "aladdin-2014/theatermania--david-finkle.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theatermania--charles-isherwood.json",
+        "description": "same article url as theatermania--charles-isherwood.json; one review by Zachary Stewart (live page byline + JSON-LD author \"Zachary Stewart\" (neither member))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "aladdin-2014/theatermania--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Zachary Stewart",
+        "description": "critic of this article is Zachary Stewart, not Charles Isherwood (live page byline + JSON-LD author \"Zachary Stewart\" (neither member))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "times-uk--rebecca-franks.json",
+        "description": "same article url as times-uk--rebecca-franks.json; one review by Rebecca Franks (same critic (Rebecca Franks) both files; keep the complete scored times-uk copy)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bad-cinderella-2023/theatermania--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theatermania--david-gordon.json",
+        "description": "same article url as theatermania--david-gordon.json; one review by David Gordon (Playbill Verdict lists David Gordon next to this review; registry: Gordon=theatermania, Jesse Green=vulture)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "blackbird-2016/guardian--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "guardian--alexis-soloski.json",
+        "description": "same article url as guardian--alexis-soloski.json; one review by Alexis Soloski (live page byline \"Alexis Soloski\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bloodsport-after-helen-of-troy-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "thereviewshub--chris-lilly.json",
+        "description": "same article url as thereviewshub--chris-lilly.json; one review by Chris Lilly (live page byline \"Chris Lilly\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cabaret-2014/guardian--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "guardian--emma-brockes.json",
+        "description": "same article url as guardian--emma-brockes.json; one review by Emma Brockes (live page byline \"Emma Brockes\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-west-end-2026/guardian--richard-lawson.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "guardian--arifa-akbar.json",
+        "description": "same article url as guardian--arifa-akbar.json; one review by Arifa Akbar (live page byline \"Arifa Akbar\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clarkston-west-end-2025/daily-mail--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "daily-mail--patrick-marmion.json",
+        "description": "same article url as daily-mail--patrick-marmion.json; one review by Patrick Marmion (same critic (Patrick Marmion) both files)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "company-2021/deadline--pete-hammond.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "deadline--greg-evans.json",
+        "description": "same article url as deadline--greg-evans.json; one review by Greg Evans (live page byline \"Greg Evans\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-of-a-salesman-2026/ew--lester-fabian-brathwaite.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "ew--dalton-ross.json",
+        "description": "same article url as ew--dalton-ross.json; one review by Dalton Ross (DTLI quotes this text under Dalton Ross)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-of-a-salesman-2026/ew--thom-geier.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "ew--dalton-ross.json",
+        "description": "same article url as ew--dalton-ross.json; one review by Dalton Ross (DTLI quotes this text under Dalton Ross)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "delirium-off-broadway-2026/nyt-theater--jonathan.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nyt-theater--jonathan-mandell.json",
+        "description": "same article url as nyt-theater--jonathan-mandell.json; one review by Jonathan Mandell (live page byline \"Jonathan Mandell\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "every-brilliant-thing-2026/nydailynews--joe-dziemianowicz.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nydailynews--chris-jones.json",
+        "description": "same article url as nydailynews--chris-jones.json; one review by Chris Jones (live page byline \"Chris Jones\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fiddler-on-the-roof-2015/guardian--jesse-dorris.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "guardian--alexis-soloski.json",
+        "description": "same article url as guardian--alexis-soloski.json; one review by Alexis Soloski (live page byline \"Alexis Soloski\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fun-home-2015/guardian--jesse-dorris.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "guardian--alexis-soloski.json",
+        "description": "same article url as guardian--alexis-soloski.json; one review by Alexis Soloski (live page byline \"Alexis Soloski\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gigi-2015/nytimes--ben-brantley.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytimes--charles-isherwood.json",
+        "description": "same article url as nytimes--charles-isherwood.json; one review by Charles Isherwood (BWW reviews, BWW roundup and DTLI quote this text under Charles Isherwood)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "golden-boy-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "thereviewshub--scott-matthewman.json",
+        "description": "same article url as thereviewshub--scott-matthewman.json; one review by Scott Matthewman (live page byline \"Scott Matthewman\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "good-night-and-good-luck-2025/theatrely--kobi-kassal.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theatrely--juan-a-ramirez.json",
+        "description": "same article url as theatrely--juan-a-ramirez.json; one review by Juan A. Ramirez (live page byline \"Juan A. Ramirez\")"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T20:18:13.364Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json duplicateOf: null -> \"vulture--jackson-mchenry.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "aladdin-2014/theatermania--david-finkle.json duplicateOf: null -> \"theatermania--charles-isherwood.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "aladdin-2014/theatermania--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Zachary Stewart\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "angels-bone-west-end-2026/sunday-times--rebecca-franks.json duplicateOf: null -> \"times-uk--rebecca-franks.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bad-cinderella-2023/theatermania--jesse-green.json duplicateOf: null -> \"theatermania--david-gordon.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "blackbird-2016/guardian--jesse-green.json duplicateOf: null -> \"guardian--alexis-soloski.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bloodsport-after-helen-of-troy-off-west-end-2026/thereviewshub--the-reviews-hub-london.json duplicateOf: null -> \"thereviewshub--chris-lilly.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cabaret-2014/guardian--jesse-green.json duplicateOf: null -> \"guardian--emma-brockes.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-west-end-2026/guardian--richard-lawson.json duplicateOf: null -> \"guardian--arifa-akbar.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "clarkston-west-end-2025/daily-mail--unknown.json duplicateOf: null -> \"daily-mail--patrick-marmion.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "company-2021/deadline--pete-hammond.json duplicateOf: null -> \"deadline--greg-evans.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-of-a-salesman-2026/ew--lester-fabian-brathwaite.json duplicateOf: null -> \"ew--dalton-ross.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-of-a-salesman-2026/ew--thom-geier.json duplicateOf: null -> \"ew--dalton-ross.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "delirium-off-broadway-2026/nyt-theater--jonathan.json duplicateOf: null -> \"nyt-theater--jonathan-mandell.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "every-brilliant-thing-2026/nydailynews--joe-dziemianowicz.json duplicateOf: null -> \"nydailynews--chris-jones.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fiddler-on-the-roof-2015/guardian--jesse-dorris.json duplicateOf: null -> \"guardian--alexis-soloski.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fun-home-2015/guardian--jesse-dorris.json duplicateOf: null -> \"guardian--alexis-soloski.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gigi-2015/nytimes--ben-brantley.json duplicateOf: null -> \"nytimes--charles-isherwood.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "golden-boy-off-west-end-2026/thereviewshub--the-reviews-hub-london.json duplicateOf: null -> \"thereviewshub--scott-matthewman.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-night-and-good-luck-2025/theatrely--kobi-kassal.json duplicateOf: null -> \"theatrely--juan-a-ramirez.json\""
+    }
+  ],
+  "executedIn": "ci"
+}

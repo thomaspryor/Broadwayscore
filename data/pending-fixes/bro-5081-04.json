@@ -1,0 +1,371 @@
+{
+  "issueNumber": "bro-5081-04",
+  "planId": "f3a0fb90-4b18-40ef-932b-afe9156c27a9",
+  "status": "partial",
+  "createdAt": "2026-10-11T21:42:49.528Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5081 part 4: correct 25 critic bylines and publish dates. The legacy LLM web-search step (Feb 2026 backfill) invented them; each review page's own metadata (JSON-LD/meta author, published time) says otherwise.",
+    "steps": [
+      "Page byline at https://www.theatermania.com/news/review-in-alicia-keyss-hells-kitchen-the-concrete-jungle-teems-with-life_1737614/ is Zachary Stewart; David Gordon came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theatermania.com/news/review-david-byrne-and-fatboy-slims-here-lies-love-is-the-party-to-end-all-parties_1708759/ is David Gordon; Adam Feldman came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theguardian.com/stage/2019/apr/18/hillary-and-clinton-review-laurie-metcalf-on-winning-form-in-solid-drama is Alexis Soloski; Adrian Horton came from the legacy web-search step and is not on the page.",
+      "Page byline at https://nystagereview.com/2023/07/20/here-lies-love-its-a-vibe/ is Melissa Rose Bernardo; Dan Callahan came from the legacy web-search step and is not on the page.",
+      "Page byline at https://observer.com/2023/12/review-how-to-dance-in-ohio-welcomes-autistic-youth-under-the-disco-ball/ is David Cote; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theguardian.com/stage/2016/feb/25/hughie-review-forrest-whitaker-plays-low-stakes-eugene-oneill-play is Alexis Soloski; Jesse Dorris came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.hollywoodreporter.com/lifestyle/arts/illinoise-review-sufjan-stevens-justin-peck-broadway-theater-1235882171/ is David Rooney; Angie Han came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theguardian.com/stage/article/2024/jun/23/illinoise-review-sufjan-stevens-album-brilliant-story-of-loss-grief-and-reconciliation is Sarah Crompton; Adrian Horton came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2024/legit/reviews/illinoise-review-broadway-sufjan-stevens-1235983600/ is Christian Lewis; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/article/theater-review-sufjan-stevens-illinoise-armory.html is Sara Holdren; Helen Shaw came from the legacy web-search step and is not on the page.",
+      "Page byline at https://observer.com/2022/07/review-into-the-woods-still-casts-a-sensational-spell-on-broadway/ is David Cote; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2021/legit/reviews/is-this-a-room-review-broadway-1235086194/ is Naveen Kumar; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2021/legit/reviews/is-this-a-room-review-broadway-1235096446/ is Naveen Kumar; Marilyn Stasio came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.newyorker.com/magazine/2021/10/25/is-this-a-room-and-chicken-biscuits-bring-the-unexpected-to-broadway is Alexandra Schwartz; Naomi Fry came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theguardian.com/stage/2019/dec/05/jagged-little-pill-review-alanis-morissette-musical-broadway-new-york-broadhurst-theatre is Alexis Soloski; Adrian Horton came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theatermania.com/news/alanis-morissettes-jagged-little-pill-becomes-diablo-codys-jagged-little-broadway-musical_90262/ is Zachary Stewart; Andy Propst came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2019/12/review-jagged-little-pill-is-missing-the-essence-of-alanis.html is Helen Shaw; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record vulture--helen-shaw.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at https://www.theguardian.com/stage/2010/feb/10/jerusalem-review is Michael Billington; Brian Logan came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2023/legit/reviews/just-for-us-review-alex-edelman-1235655007/ is Naveen Kumar; Aramide Tinubu came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.hollywoodreporter.com/lifestyle/arts/kimberly-akimbo-theater-review-david-lindsay-abaire-jeanine-tesori-broadway-musical-1235259809/ is David Rooney; Angie Han came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theguardian.com/stage/2018/nov/08/king-kong-review-braodway-musical is Alexis Soloski; Adrian Horton came from the legacy web-search step and is not on the page. The page critic already has the live record guardian--alexis-soloski.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at https://observer.com/2019/03/kiss-me-kate-review-a-broadway-classic-gets-consent/ is David Cote; Rex Reed came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2019/04/theater-review-once-more-into-the-storm-with-king-lear.html#:~:text=Blurry%20and%20superficial%2C%20the%20shape,is%20at%20the%20Cort%20Theatre. is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record vulture--sara-holdren.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at https://www.vulture.com/2018/11/theater-review-king-kong-whos-there.html#:~:text=Which%20is%20all%20to%20say%3A,of%20choreography%2C%20of%20performers%20and is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2019/03/theater-review-can-kiss-me-kate-survive-a-2019-gaze.html#:~:text=No%20matter%20how%20bright%20and,long%2C%20uncomfortable%20shadow.%20It's%20a is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record vulture--sara-holdren.json for this url, so this web-search copy is a duplicate of it."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "hells-kitchen-2024/theatermania--david-gordon.json",
+        "field": "criticName",
+        "oldValue": "David Gordon",
+        "newValue": "Zachary Stewart",
+        "description": "Page byline at https://www.theatermania.com/news/review-in-alicia-keyss-hells-kitchen-the-concrete-jungle-teems-with-life_1737614/ is Zachary Stewart; David Gordon came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-lies-love-2023/theatermania--adam-feldman.json",
+        "field": "criticName",
+        "oldValue": "Adam Feldman",
+        "newValue": "David Gordon",
+        "description": "Page byline at https://www.theatermania.com/news/review-david-byrne-and-fatboy-slims-here-lies-love-is-the-party-to-end-all-parties_1708759/ is David Gordon; Adam Feldman came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hillary-and-clinton-2019/guardian--adrian-horton.json",
+        "field": "criticName",
+        "oldValue": "Adrian Horton",
+        "newValue": "Alexis Soloski",
+        "description": "Page byline at https://www.theguardian.com/stage/2019/apr/18/hillary-and-clinton-review-laurie-metcalf-on-winning-form-in-solid-drama is Alexis Soloski; Adrian Horton came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-lies-love-2023/nysr--dan-callahan.json",
+        "field": "criticName",
+        "oldValue": "Dan Callahan",
+        "newValue": "Melissa Rose Bernardo",
+        "description": "Page byline at https://nystagereview.com/2023/07/20/here-lies-love-its-a-vibe/ is Melissa Rose Bernardo; Dan Callahan came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "how-to-dance-in-ohio-2023/observer--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "David Cote",
+        "description": "Page byline at https://observer.com/2023/12/review-how-to-dance-in-ohio-welcomes-autistic-youth-under-the-disco-ball/ is David Cote; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hughie-2016/guardian--jesse-dorris.json",
+        "field": "criticName",
+        "oldValue": "Jesse Dorris",
+        "newValue": "Alexis Soloski",
+        "description": "Page byline at https://www.theguardian.com/stage/2016/feb/25/hughie-review-forrest-whitaker-plays-low-stakes-eugene-oneill-play is Alexis Soloski; Jesse Dorris came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "illinoise-2024/hollywood-reporter--angie-han.json",
+        "field": "criticName",
+        "oldValue": "Angie Han",
+        "newValue": "David Rooney",
+        "description": "Page byline at https://www.hollywoodreporter.com/lifestyle/arts/illinoise-review-sufjan-stevens-justin-peck-broadway-theater-1235882171/ is David Rooney; Angie Han came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "illinoise-2024/guardian--adrian-horton.json",
+        "field": "criticName",
+        "oldValue": "Adrian Horton",
+        "newValue": "Sarah Crompton",
+        "description": "Page byline at https://www.theguardian.com/stage/article/2024/jun/23/illinoise-review-sufjan-stevens-album-brilliant-story-of-loss-grief-and-reconciliation is Sarah Crompton; Adrian Horton came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "illinoise-2024/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Christian Lewis",
+        "description": "Page byline at https://variety.com/2024/legit/reviews/illinoise-review-broadway-sufjan-stevens-1235983600/ is Christian Lewis; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "illinoise-2024/vulture--helen-shaw.json",
+        "field": "criticName",
+        "oldValue": "Helen Shaw",
+        "newValue": "Sara Holdren",
+        "description": "Page byline at https://www.vulture.com/article/theater-review-sufjan-stevens-illinoise-armory.html is Sara Holdren; Helen Shaw came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-2022/observer--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "David Cote",
+        "description": "Page byline at https://observer.com/2022/07/review-into-the-woods-still-casts-a-sensational-spell-on-broadway/ is David Cote; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "is-this-a-room-2021/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Naveen Kumar",
+        "description": "Page byline at https://variety.com/2021/legit/reviews/is-this-a-room-review-broadway-1235086194/ is Naveen Kumar; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "is-this-a-room-2021/variety--marilyn-stasio.json",
+        "field": "criticName",
+        "oldValue": "Marilyn Stasio",
+        "newValue": "Naveen Kumar",
+        "description": "Page byline at https://variety.com/2021/legit/reviews/is-this-a-room-review-broadway-1235096446/ is Naveen Kumar; Marilyn Stasio came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "is-this-a-room-2021/newyorker--naomi-fry.json",
+        "field": "criticName",
+        "oldValue": "Naomi Fry",
+        "newValue": "Alexandra Schwartz",
+        "description": "Page byline at https://www.newyorker.com/magazine/2021/10/25/is-this-a-room-and-chicken-biscuits-bring-the-unexpected-to-broadway is Alexandra Schwartz; Naomi Fry came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jagged-little-pill-2019/guardian--adrian-horton.json",
+        "field": "criticName",
+        "oldValue": "Adrian Horton",
+        "newValue": "Alexis Soloski",
+        "description": "Page byline at https://www.theguardian.com/stage/2019/dec/05/jagged-little-pill-review-alanis-morissette-musical-broadway-new-york-broadhurst-theatre is Alexis Soloski; Adrian Horton came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jagged-little-pill-2019/theatermania--andy-propst.json",
+        "field": "criticName",
+        "oldValue": "Andy Propst",
+        "newValue": "Zachary Stewart",
+        "description": "Page byline at https://www.theatermania.com/news/alanis-morissettes-jagged-little-pill-becomes-diablo-codys-jagged-little-broadway-musical_90262/ is Zachary Stewart; Andy Propst came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jagged-little-pill-2019/vulture--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--helen-shaw.json",
+        "description": "Page byline at https://www.vulture.com/2019/12/review-jagged-little-pill-is-missing-the-essence-of-alanis.html is Helen Shaw; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record vulture--helen-shaw.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jerusalem-2011/guardian--brian-logan.json",
+        "field": "criticName",
+        "oldValue": "Brian Logan",
+        "newValue": "Michael Billington",
+        "description": "Page byline at https://www.theguardian.com/stage/2010/feb/10/jerusalem-review is Michael Billington; Brian Logan came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "just-for-us-2023/variety--aramide-tinubu.json",
+        "field": "criticName",
+        "oldValue": "Aramide Tinubu",
+        "newValue": "Naveen Kumar",
+        "description": "Page byline at https://variety.com/2023/legit/reviews/just-for-us-review-alex-edelman-1235655007/ is Naveen Kumar; Aramide Tinubu came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kimberly-akimbo-2022/hollywood-reporter--angie-han.json",
+        "field": "criticName",
+        "oldValue": "Angie Han",
+        "newValue": "David Rooney",
+        "description": "Page byline at https://www.hollywoodreporter.com/lifestyle/arts/kimberly-akimbo-theater-review-david-lindsay-abaire-jeanine-tesori-broadway-musical-1235259809/ is David Rooney; Angie Han came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "king-kong-2018/guardian--adrian-horton.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "guardian--alexis-soloski.json",
+        "description": "Page byline at https://www.theguardian.com/stage/2018/nov/08/king-kong-review-braodway-musical is Alexis Soloski; Adrian Horton came from the legacy web-search step and is not on the page. The page critic already has the live record guardian--alexis-soloski.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kiss-me-kate-2019/observer--rex-reed.json",
+        "field": "criticName",
+        "oldValue": "Rex Reed",
+        "newValue": "David Cote",
+        "description": "Page byline at https://observer.com/2019/03/kiss-me-kate-review-a-broadway-classic-gets-consent/ is David Cote; Rex Reed came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "king-lear-2019/vulture--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--sara-holdren.json",
+        "description": "Page byline at https://www.vulture.com/2019/04/theater-review-once-more-into-the-storm-with-king-lear.html#:~:text=Blurry%20and%20superficial%2C%20the%20shape,is%20at%20the%20Cort%20Theatre. is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record vulture--sara-holdren.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "king-kong-2018/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Sara Holdren",
+        "description": "Page byline at https://www.vulture.com/2018/11/theater-review-king-kong-whos-there.html#:~:text=Which%20is%20all%20to%20say%3A,of%20choreography%2C%20of%20performers%20and is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kiss-me-kate-2019/vulture--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--sara-holdren.json",
+        "description": "Page byline at https://www.vulture.com/2019/03/theater-review-can-kiss-me-kate-survive-a-2019-gaze.html#:~:text=No%20matter%20how%20bright%20and,long%2C%20uncomfortable%20shadow.%20It's%20a is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record vulture--sara-holdren.json for this url, so this web-search copy is a duplicate of it."
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T23:31:11.998Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hells-kitchen-2024/theatermania--david-gordon.json criticName: \"David Gordon\" -> \"Zachary Stewart\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-lies-love-2023/theatermania--adam-feldman.json criticName: \"Adam Feldman\" -> \"David Gordon\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hillary-and-clinton-2019/guardian--adrian-horton.json criticName: \"Adrian Horton\" -> \"Alexis Soloski\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-lies-love-2023/nysr--dan-callahan.json criticName: \"Dan Callahan\" -> \"Melissa Rose Bernardo\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "how-to-dance-in-ohio-2023/observer--jesse-green.json criticName: \"Jesse Green\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hughie-2016/guardian--jesse-dorris.json criticName: \"Jesse Dorris\" -> \"Alexis Soloski\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "illinoise-2024/hollywood-reporter--angie-han.json criticName: \"Angie Han\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "illinoise-2024/guardian--adrian-horton.json criticName: \"Adrian Horton\" -> \"Sarah Crompton\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "illinoise-2024/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Christian Lewis\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "illinoise-2024/vulture--helen-shaw.json criticName: \"Helen Shaw\" -> \"Sara Holdren\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-2022/observer--jesse-green.json criticName: \"Jesse Green\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "is-this-a-room-2021/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Naveen Kumar\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "is-this-a-room-2021/variety--marilyn-stasio.json criticName: \"Marilyn Stasio\" -> \"Naveen Kumar\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "is-this-a-room-2021/newyorker--naomi-fry.json criticName: \"Naomi Fry\" -> \"Alexandra Schwartz\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jagged-little-pill-2019/guardian--adrian-horton.json criticName: \"Adrian Horton\" -> \"Alexis Soloski\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jagged-little-pill-2019/theatermania--andy-propst.json criticName: \"Andy Propst\" -> \"Zachary Stewart\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jagged-little-pill-2019/vulture--jesse-green.json duplicateOf: null -> \"vulture--helen-shaw.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jerusalem-2011/guardian--brian-logan.json criticName: \"Brian Logan\" -> \"Michael Billington\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "just-for-us-2023/variety--aramide-tinubu.json criticName: \"Aramide Tinubu\" -> \"Naveen Kumar\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kimberly-akimbo-2022/hollywood-reporter--angie-han.json criticName: \"Angie Han\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-kong-2018/guardian--adrian-horton.json duplicateOf: null -> \"guardian--alexis-soloski.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kiss-me-kate-2019/observer--rex-reed.json criticName: \"Rex Reed\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "king-lear-2019/vulture--jesse-green.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-kong-2018/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Sara Holdren\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kiss-me-kate-2019/vulture--jesse-green.json duplicateOf: null -> \"vulture--sara-holdren.json\""
+    }
+  ]
+}

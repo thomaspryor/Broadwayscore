@@ -1,0 +1,672 @@
+{
+  "issueNumber": "bro-5560",
+  "planId": "ae0ab377-8e8c-485b-a882-b91d43cf5f37",
+  "status": "applied",
+  "createdAt": "2026-10-17T21:55:58.075Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5560: the owner’s third Gemini batch (2013-14 to 2016-17, 2012-13 and earlier, nonprofit 2021-23) checked at source, and SEC EDGAR searched for the commercial shows in those prompts with no capitalization. Form D capitalizations (issuer named for the show, related persons its lead producers): Holler If Ya Hear Me $8,000,000 (matches the report), Leap of Faith $14,650,000, Allegiance $13,000,000, The Bridges of Madison County $8,500,000, Betrayal (2013) $4,200,000, The Testament of Mary $3,500,000, The Anarchist $2,600,000. Bullets Over Broadway keeps $14M, now cited to its Form D. Not used: Bloody Bloody Andrew Jackson’s Form D offered $4,850,000, against the $4.5M the NYT reported (kept); Flying Over Sunset’s “in association with” credit is not commercial enhancement money; the rest of the report was NOT FOUND or repeats figures already on record.",
+    "steps": [
+      "Edits read every oldValue from live data; each capitalization is the filing’s total offering amount."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "holler-if-ya-hear-me-2014",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 8000000,
+        "description": "holler-if-ya-hear-me-2014: the production company's SEC Form D (Jun 27, 2014) gives the capitalization; the record had none."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "holler-if-ya-hear-me-2014",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Holler If Ya Hear Me, Limited Partnership, CIK 0001611459; general partner owned by lead producers Eric Gold and Chunsoo Shin; Jun 27, 2014): total offering amount $8,000,000, all of it sold to 9 investors. https://www.sec.gov/Archives/edgar/data/1611459/000161145914000001/xslFormDX01/primary_doc.xml",
+        "description": "holler-if-ya-hear-me-2014: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "holler-if-ya-hear-me-2014",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.yahoo.com/entertainment/tupac-shakur-musical-holler-ya-hear-flops-broadway-230218146.html",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/leeseymour/2015/12/09/broadway-has-a-race-problem-can-the-wiz-solve-it/",
+            "date": "2015-12-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.rollingstone.com/music/music-news/saul-williams-why-broadways-tupac-musical-closed-early-232821/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://gordoncox.substack.com/p/chunsoo-shin-interview-the-great-gatsby-broadway",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2015/04/doctor-zhivago-musical-broadway-review-1201413548/",
+            "date": "2015-04-21",
+            "excerpt": "Side Show ($12 million) and Holler If Ya Hear me ($10 million)"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.yahoo.com/entertainment/tupac-shakur-musical-holler-ya-hear-flops-broadway-230218146.html",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/leeseymour/2015/12/09/broadway-has-a-race-problem-can-the-wiz-solve-it/",
+            "date": "2015-12-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.rollingstone.com/music/music-news/saul-williams-why-broadways-tupac-musical-closed-early-232821/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://gordoncox.substack.com/p/chunsoo-shin-interview-the-great-gatsby-broadway",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2015/04/doctor-zhivago-musical-broadway-review-1201413548/",
+            "date": "2015-04-21",
+            "excerpt": "Side Show ($12 million) and Holler If Ya Hear me ($10 million)"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1611459/000161145914000001/xslFormDX01/primary_doc.xml",
+            "date": "2014-06-27"
+          }
+        ],
+        "description": "holler-if-ya-hear-me-2014: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leap-of-faith-2012",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 14650000,
+        "description": "leap-of-faith-2012: the production company's SEC Form D (amended May 16, 2012) gives the capitalization; the record had none."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leap-of-faith-2012",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Leap Of Faith Broadway Company, L.P., CIK 0001480368; general partner FVBR Theatrical Ventures, LLC, whose managing members include Richard Frankel Productions and Scorpio Entertainment; amended May 16, 2012): $14,650,000 sold to 230 investors. https://www.sec.gov/Archives/edgar/data/1480368/000148036812000002/xslFormDX01/primary_doc.xml",
+        "description": "leap-of-faith-2012: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leap-of-faith-2012",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://grokipedia.com/page/Leap_of_Faith_(musical)",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.theglobeandmail.com/arts/behind-some-broadway-hits-your-grannie/article18141071/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/leap-of-faith-the-musical-pulls-down-its-broadway-tent-may-13-com-193495",
+            "date": "2012-05-13",
+            "excerpt": "The New York Times reported that the producers lost their entire $14 million investment."
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://grokipedia.com/page/Leap_of_Faith_(musical)",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.theglobeandmail.com/arts/behind-some-broadway-hits-your-grannie/article18141071/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/leap-of-faith-the-musical-pulls-down-its-broadway-tent-may-13-com-193495",
+            "date": "2012-05-13",
+            "excerpt": "The New York Times reported that the producers lost their entire $14 million investment."
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1480368/000148036812000002/xslFormDX01/primary_doc.xml",
+            "date": "2012-05-16"
+          }
+        ],
+        "description": "leap-of-faith-2012: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "allegiance-2015",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 13000000,
+        "description": "allegiance-2015: the production company's SEC Form D (Nov 21, 2014) gives the capitalization; the record had none."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "allegiance-2015",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Allegiance Broadway, Ltd Liability Co, CIK 0001561172; managers Sing Out, Louise! Productions and Andrew Treagus Associates; Nov 21, 2014): total offering amount $13,000,000. https://www.sec.gov/Archives/edgar/data/1561172/000156117214000001/xslFormDX01/primary_doc.xml",
+        "description": "allegiance-2015: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "allegiance-2015",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.wweek.com/arts/movies/2022/10/11/a-new-movie-featuring-the-music-of-storm-large-will-premiere-at-the-portland-film-festival/",
+            "date": "2022-10-11"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/joshuarogers/2016/05/31/invest-in-the-next-hamilton-broadways-odds-look-like-silicon-valleys/",
+            "date": "2016-05-31"
+          },
+          {
+            "type": "trade",
+            "url": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2016/01/06/allegiance-announces-broadway-closing-date/",
+            "date": "2016-01-06",
+            "excerpt": "it will close at a loss to its investors"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.wweek.com/arts/movies/2022/10/11/a-new-movie-featuring-the-music-of-storm-large-will-premiere-at-the-portland-film-festival/",
+            "date": "2022-10-11"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/joshuarogers/2016/05/31/invest-in-the-next-hamilton-broadways-odds-look-like-silicon-valleys/",
+            "date": "2016-05-31"
+          },
+          {
+            "type": "trade",
+            "url": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2016/01/06/allegiance-announces-broadway-closing-date/",
+            "date": "2016-01-06",
+            "excerpt": "it will close at a loss to its investors"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1561172/000156117214000001/xslFormDX01/primary_doc.xml",
+            "date": "2014-11-21"
+          }
+        ],
+        "description": "allegiance-2015: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-bridges-of-madison-county-2014",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 8500000,
+        "description": "the-bridges-of-madison-county-2014: the production company's SEC Form D (amended Apr 7, 2014) gives the capitalization; the record had none."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-bridges-of-madison-county-2014",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Bridges on Broadway Ltd Liability Co, CIK 0001574928; managing members led by Jeffrey Richards and Stacey Mindich; amended Apr 7, 2014): total offering amount $8,500,000, of which $8,488,000 was sold to 103 investors. https://www.sec.gov/Archives/edgar/data/1574928/000157492814000001/xslFormDX01/primary_doc.xml",
+        "description": "the-bridges-of-madison-county-2014: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-bridges-of-madison-county-2014",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2013/09/08/theater/for-big-fish-susan-stroman-lures-investors-too.html",
+            "date": "2013-09-08"
+          },
+          {
+            "type": "trade",
+            "url": "https://online.barrons.com/articles/how-to-make-money-on-broadway-1417232812",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.jamesballardmusic.com/blog/where-are-all-the-original-musicals",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2014/05/best-film-stories-of-the-week-x-men-days-of-future-past-cannes-quentin-tarantino-hells-angels-735867/",
+            "date": "2014-05-25",
+            "excerpt": "closed last Sunday at a loss of $8.5 million"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2013/09/08/theater/for-big-fish-susan-stroman-lures-investors-too.html",
+            "date": "2013-09-08"
+          },
+          {
+            "type": "trade",
+            "url": "https://online.barrons.com/articles/how-to-make-money-on-broadway-1417232812",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.jamesballardmusic.com/blog/where-are-all-the-original-musicals",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2014/05/best-film-stories-of-the-week-x-men-days-of-future-past-cannes-quentin-tarantino-hells-angels-735867/",
+            "date": "2014-05-25",
+            "excerpt": "closed last Sunday at a loss of $8.5 million"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1574928/000157492814000001/xslFormDX01/primary_doc.xml",
+            "date": "2014-04-07"
+          }
+        ],
+        "description": "the-bridges-of-madison-county-2014: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "betrayal-2013",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 4200000,
+        "description": "betrayal-2013: the production company's SEC Form D (Jul 19, 2013) gives the capitalization; the record had none."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "betrayal-2013",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Betrayal Broadway LLC, CIK 0001579288; managing member RudinPlay, Inc. (Scott Rudin); Jul 19, 2013): total offering amount $4,200,000. https://www.sec.gov/Archives/edgar/data/1579288/000114420413040238/xslFormDX01/primary_doc.xml",
+        "description": "betrayal-2013: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "betrayal-2013",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/news/general-news/betrayal-concludes-smash-broadway-run-668680/",
+            "date": "2014-01-05"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2013/12/mike-nichols-betrayal-revival-with-daniel-craig-and-rachel-weisz-sets-broadway-weekly-gross-record-657767/",
+            "date": "2013-12-31"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/news/general-news/betrayal-concludes-smash-broadway-run-668680/",
+            "date": "2014-01-05"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2013/12/mike-nichols-betrayal-revival-with-daniel-craig-and-rachel-weisz-sets-broadway-weekly-gross-record-657767/",
+            "date": "2013-12-31"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1579288/000114420413040238/xslFormDX01/primary_doc.xml",
+            "date": "2013-07-19"
+          }
+        ],
+        "description": "betrayal-2013: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-testament-of-mary-2013",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 3500000,
+        "description": "the-testament-of-mary-2013: the production company's SEC Form D (Feb 15, 2013) gives the capitalization; the record had none."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-testament-of-mary-2013",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Testament Broadway LLC, CIK 0001569779; managing member RudinPlay, Inc. (Scott Rudin); Feb 15, 2013): total offering amount $3,500,000. https://www.sec.gov/Archives/edgar/data/1569779/000114420413009686/xslFormDX01/primary_doc.xml",
+        "description": "the-testament-of-mary-2013: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-testament-of-mary-2013",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://www.catholicleague.org/testament-of-mary-closes/",
+            "date": "2013-05-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.thetimes.com/travel/destinations/north-america-travel/us-travel/new-york-city/testament-of-mary-closes-after-just-two-weeks-on-broadway-gmh72pjwn9t",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://www.catholicleague.org/testament-of-mary-closes/",
+            "date": "2013-05-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.thetimes.com/travel/destinations/north-america-travel/us-travel/new-york-city/testament-of-mary-closes-after-just-two-weeks-on-broadway-gmh72pjwn9t",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1569779/000114420413009686/xslFormDX01/primary_doc.xml",
+            "date": "2013-02-15"
+          }
+        ],
+        "description": "the-testament-of-mary-2013: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-anarchist-2012",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 2600000,
+        "description": "the-anarchist-2012: the production company's SEC Form D (amended Jan 11, 2013) gives the capitalization; the record had none."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-anarchist-2012",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Anarchist Broadway Ltd Liability Co, CIK 0001552175; managing members Jeffrey Richards, Jerry Frankel and Howard Kagan; amended Jan 11, 2013): total offering amount $2,600,000, of which $2,450,000 was sold to 49 investors. https://www.sec.gov/Archives/edgar/data/1552175/000155217513000001/xslFormDX01/primary_doc.xml",
+        "description": "the-anarchist-2012: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-anarchist-2012",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://hesherman.com/category/broadway/page/9/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/playbill-picks-the-top-theatre-stories-of-2012-smash-les-miz-theatre-renovations-rebecca-and-more-com-200974",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "http://www.curtainup.com/anarchist12.html",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://newyorktheater.me/2012/12/05/the-anarchist-review-real-life-riveting-story-turned-into-mamet-mush/",
+            "date": "2012-12-05"
+          },
+          {
+            "type": "trade",
+            "url": "https://variety.com/2012/legit/news/broadway-glengarry-recoups-1118063828/",
+            "date": "2012-12-19",
+            "excerpt": "losses sustained from the flop of \"The Anarchist,\""
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://hesherman.com/category/broadway/page/9/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/playbill-picks-the-top-theatre-stories-of-2012-smash-les-miz-theatre-renovations-rebecca-and-more-com-200974",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "http://www.curtainup.com/anarchist12.html",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://newyorktheater.me/2012/12/05/the-anarchist-review-real-life-riveting-story-turned-into-mamet-mush/",
+            "date": "2012-12-05"
+          },
+          {
+            "type": "trade",
+            "url": "https://variety.com/2012/legit/news/broadway-glengarry-recoups-1118063828/",
+            "date": "2012-12-19",
+            "excerpt": "losses sustained from the flop of \"The Anarchist,\""
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1552175/000155217513000001/xslFormDX01/primary_doc.xml",
+            "date": "2013-01-11"
+          }
+        ],
+        "description": "the-anarchist-2012: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bullets-over-broadway-2014",
+        "field": "capitalizationSource",
+        "oldValue": "Financing Broadway blog listing capitalization at $14 million",
+        "newValue": "SEC Form D filing (BULLETS OVER BROADWAY Ltd Liability Co, CIK 0001548511; managers Jumer Productions (Julian Schlossberg) and It's Not My Fault, Inc. (Letty Aronson); Jul 12, 2013): total offering amount $14,000,000, all of it sold to 32 investors. https://www.sec.gov/Archives/edgar/data/1548511/000154851113000001/xslFormDX01/primary_doc.xml",
+        "description": "bullets-over-broadway-2014: cite the Form D; the old source was a blog line the site does not print, so the $14M showed as an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bullets-over-broadway-2014",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://financingbroadway.wordpress.com/history-of-recoups/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2014/07/bullets-over-broadway-musical-closing-august-026-808257/",
+            "date": "2014-07-22",
+            "excerpt": "Bullets Over Broadway will close at almost a complete loss of its $15 million-plus capitalization"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://financingbroadway.wordpress.com/history-of-recoups/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2014/07/bullets-over-broadway-musical-closing-august-026-808257/",
+            "date": "2014-07-22",
+            "excerpt": "Bullets Over Broadway will close at almost a complete loss of its $15 million-plus capitalization"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1548511/000154851113000001/xslFormDX01/primary_doc.xml",
+            "date": "2013-07-12"
+          }
+        ],
+        "description": "bullets-over-broadway-2014: add the Form D to sources."
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T22:31:55.805Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for holler-if-ya-hear-me-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for holler-if-ya-hear-me-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for holler-if-ya-hear-me-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for leap-of-faith-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for leap-of-faith-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for leap-of-faith-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for allegiance-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for allegiance-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for allegiance-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-bridges-of-madison-county-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-bridges-of-madison-county-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-bridges-of-madison-county-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for betrayal-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for betrayal-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for betrayal-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-testament-of-mary-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-testament-of-mary-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-testament-of-mary-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-anarchist-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-anarchist-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-anarchist-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for bullets-over-broadway-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for bullets-over-broadway-2014"
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+{
+  "createdAt": "2026-10-12T14:30:00Z",
+  "issueNumber": "bro-5156",
+  "planId": "e7812743-d99e-4705-845b-281c7255ae18",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5156: correct stored opening dates that contradict primary sources and the dated review cluster. Grey House (Playbill: opened 2023-05-30, not 06-06), Mother Russia (Playbill: previews 2026-02-03, opened 2026-02-23; 03-03 was the blizzard-postponed party), Cabaret West End (WhatsOnStage/Playbill: opened 2021-12-12, not 12-16), Cursed Child West End (Playbill: review embargo lifted 00:01 2016-07-26 after the 2016-07-25 press performance; 07-30 was the gala), Bedlam's Othello (every review 2026-05-03..07, before the stored 05-10), Midnight (Playbill 2026-09-22: previews moved to 09-25, opening to 10-15). The rebuild's anticipatory auto-clear then releases the real reviews the wrong dates held back as pre-opening posts. The Variety Cursed Child item is a news round-up of other critics, so it is marked non-review before its date hold lifts.",
+    "steps": [
+      "Grey House: Playbill 'Grey House Opens on Broadway May 30; Reviews Held With Tatiana Maslany Out Sick' (https://playbill.com/article/grey-house-opens-on-broadway-may-30)",
+      "Mother Russia: previews began 2026-02-03 (Playbill / NYTG listings)",
+      "Mother Russia: opened 2026-02-23 (https://playbill.com/article/reviews-are-out-for-lauren-yees-mother-russia; NYT, Vulture, TheaterMania reviews all 2026-02-23)",
+      "Cabaret at the Kit Kat Club: officially opened 2021-12-12 (WhatsOnStage opening-night report 2021-12-13; Guardian/Standard/Independent reviews 2021-12-13)",
+      "Cursed Child: press performance 2016-07-25, embargo 00:01 2016-07-26 (https://playbill.com/article/harry-potter-and-the-cursed-child-brings-forward-date-that-critics-can-deliver-verdicts)",
+      "Variety 'Harry Potter and the Cursed Child reviews' is a round-up of other critics' notices, not a review",
+      "Variety round-up reason",
+      "Bedlam's Othello: WSJ, TheaterMania, Culture Sauce reviews 2026-05-03, Exeunt 05-05, NYT 05-06, NYSR 05-07 (review-derived press night)",
+      "Midnight: first preview moved to 2026-09-25 (https://playbill.com/article/todrick-hall-musical-midnight-cancels-1st-week-of-previews-off-broadway)",
+      "Midnight: opening moved to 2026-10-15 (same Playbill article)",
+      "Midnight: in previews until 2026-10-15"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grey-house-2023",
+        "field": "openingDate",
+        "oldValue": "2023-06-06",
+        "newValue": "2023-05-30",
+        "description": "Opened 2023-05-30 (Playbill)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mother-russia-off-broadway-2026",
+        "field": "previewsStartDate",
+        "oldValue": "2026-03-03",
+        "newValue": "2026-02-03",
+        "description": "First preview 2026-02-03"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mother-russia-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-03-03",
+        "newValue": "2026-02-23",
+        "description": "Opened 2026-02-23 (Playbill reviews-are-out)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+        "field": "openingDate",
+        "oldValue": "2021-12-16",
+        "newValue": "2021-12-12",
+        "description": "Opened 2021-12-12"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+        "field": "openingDate",
+        "oldValue": "2016-07-30",
+        "newValue": "2016-07-25",
+        "description": "Press performance 2016-07-25; reviews out 2016-07-26"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "harry-potter-and-the-cursed-child-both-parts-west-end-2021/variety--gordon-cox.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "News round-up of other critics' reviews"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "harry-potter-and-the-cursed-child-both-parts-west-end-2021/variety--gordon-cox.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5156: Variety news round-up of other critics' Cursed Child reviews (url /legit/news/...-reviews-), not a review",
+        "description": "Reason for the non-review flag"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bedlams-othello-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-05-10",
+        "newValue": "2026-05-03",
+        "description": "Review-derived press night: 3 reviews 2026-05-03, all 7 by 05-07"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "midnight-off-broadway-2026",
+        "field": "previewsStartDate",
+        "oldValue": "2026-09-12",
+        "newValue": "2026-09-25",
+        "description": "First week of previews cancelled (Playbill 2026-09-22)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "midnight-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-09-27",
+        "newValue": "2026-10-15",
+        "description": "Opening moved to 2026-10-15 (Playbill 2026-09-22)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "midnight-off-broadway-2026",
+        "field": "status",
+        "oldValue": "open",
+        "newValue": "previews",
+        "description": "Not opened yet: opening is 2026-10-15"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T14:09:35.801Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for grey-house-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for mother-russia-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for mother-russia-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for cabaret-at-the-kit-kat-club-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for harry-potter-and-the-cursed-child-both-parts-west-end-2021"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-and-the-cursed-child-both-parts-west-end-2021/variety--gordon-cox.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-and-the-cursed-child-both-parts-west-end-2021/variety--gordon-cox.json isNonReviewReason: null -> \"BRO-5156: Variety news round-up of other critics' Cursed Child reviews (url /legit/news/...-reviews-), not a review\""
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for bedlams-othello-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for midnight-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for midnight-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for midnight-off-broadway-2026"
+    }
+  ]
+}

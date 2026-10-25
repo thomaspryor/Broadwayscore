@@ -1,0 +1,217 @@
+{
+  "issueNumber": "bro-5396",
+  "planId": "90a77f8a-8a1f-4c07-b3ba-3bb6a724c8ea",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Repoint 15 dangling syndication pointers to the live same-show copy of the article (BRO-5396)",
+    "steps": [
+      "Each secondary points at a primary file that no longer exists, so it is excluded for nothing.",
+      "A live same-show file holding the same article (text match) gets the pointer; otherwise the mark is cleared so the review scores."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "aint-too-proud-2019/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "aint-too-proud-2019/chicagotribune--chris-jones-bway.json",
+        "newValue": "aint-too-proud-2019/chicagotribune--chris-jones.json",
+        "description": "Repoint dangling syndication pointer to the live same-show copy of the article"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "beetlejuice-2019/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "beetlejuice-2019/chicagotribune--chris-jones-bway.json",
+        "newValue": "beetlejuice-2019/chicagotribune--chris-jones.json",
+        "description": "Repoint dangling syndication pointer to the live same-show copy of the article"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "burn-this-2019/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "burn-this-2019/chicagotribune--chris-jones-bway.json",
+        "newValue": "burn-this-2019/chicagotribune--chris-jones.json",
+        "description": "Repoint dangling syndication pointer to the live same-show copy of the article"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "little-bear-ridge-road-2025/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "little-bear-ridge-road-2025/chicagotribune--unknown.json",
+        "newValue": "little-bear-ridge-road-2025/chicagotribune--chris-jones.json",
+        "description": "Repoint dangling syndication pointer to the live same-show copy of the article"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "little-shop-of-horrors-2019/chicagotribune--chris-jones.json",
+        "newValue": "little-shop-of-horrors-off-broadway-2019/chicagotribune--chris-jones.json",
+        "description": "Repoint dangling syndication pointer to the live same-show copy of the article"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "masquerade-off-broadway-2025/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "masquerade-off-broadway-2025/chicagotribune--unknown.json",
+        "newValue": "masquerade-off-broadway-2025/chicagotribune--chris-jones.json",
+        "description": "Repoint dangling syndication pointer to the live same-show copy of the article"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "moulin-rouge-2019/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "moulin-rouge-2019/chicagotribune--chris-jones-bway.json",
+        "newValue": "moulin-rouge-2019/chicagotribune--chris-jones.json",
+        "description": "Repoint dangling syndication pointer to the live same-show copy of the article"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-2025/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "operation-mincemeat-2025/chicagotribune--unknown.json",
+        "newValue": "operation-mincemeat-2025/chicagotribune--chris-jones.json",
+        "description": "Repoint dangling syndication pointer to the live same-show copy of the article"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "queen-versailles-2025/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "queen-versailles-2025/chicagotribune--unknown.json",
+        "newValue": "queen-versailles-2025/chicagotribune--chris-jones.json",
+        "description": "Repoint dangling syndication pointer to the live same-show copy of the article"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-great-society-2019/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "the-great-society-2019/chicagotribune--chris-jones-bway.json",
+        "newValue": "the-great-society-2019/chicagotribune--chris-jones.json",
+        "description": "Repoint dangling syndication pointer to the live same-show copy of the article"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-inheritance-2019/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "the-inheritance-2019/chicagotribune--chris-jones-bway.json",
+        "newValue": "the-inheritance-2019/chicagotribune--chris-jones.json",
+        "description": "Repoint dangling syndication pointer to the live same-show copy of the article"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lifespan-of-a-fact-2018/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "the-lifespan-of-a-fact-2018/chicagotribune--chris-jones-bway.json",
+        "newValue": "the-lifespan-of-a-fact-2018/chicagotribune--chris-jones.json",
+        "description": "Repoint dangling syndication pointer to the live same-show copy of the article"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tina-2019/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "tina-2019/chicagotribune--chris-jones-bway.json",
+        "newValue": "tina-2019/chicagotribune--chris-jones.json",
+        "description": "Repoint dangling syndication pointer to the live same-show copy of the article"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waiting-for-godot-2025/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "waiting-for-godot-2025/chicagotribune--unknown.json",
+        "newValue": "waiting-for-godot-2025/chicagotribune--chris-jones.json",
+        "description": "Repoint dangling syndication pointer to the live same-show copy of the article"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "what-the-constitution-means-to-me-2019/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "what-the-constitution-means-to-me-2019/chicagotribune--chris-jones-bway.json",
+        "newValue": "what-the-constitution-means-to-me-2019/chicagotribune--chris-jones.json",
+        "description": "Repoint dangling syndication pointer to the live same-show copy of the article"
+      }
+    ]
+  },
+  "executedAt": "2026-10-18T08:58:32.090Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "aint-too-proud-2019/nydailynews--chris-jones.json syndicatedPrimaryFile: \"aint-too-proud-2019/chicagotribune--chris-jones-bway.json\" -> \"aint-too-proud-2019/chicagotribune--chris-jones.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beetlejuice-2019/nydailynews--chris-jones.json syndicatedPrimaryFile: \"beetlejuice-2019/chicagotribune--chris-jones-bway.json\" -> \"beetlejuice-2019/chicagotribune--chris-jones.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "burn-this-2019/nydailynews--chris-jones.json syndicatedPrimaryFile: \"burn-this-2019/chicagotribune--chris-jones-bway.json\" -> \"burn-this-2019/chicagotribune--chris-jones.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "little-bear-ridge-road-2025/nydailynews--chris-jones.json syndicatedPrimaryFile: \"little-bear-ridge-road-2025/chicagotribune--unknown.json\" -> \"little-bear-ridge-road-2025/chicagotribune--chris-jones.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "little-shop-of-horrors-off-broadway-2019/nydailynews--chris-jones.json syndicatedPrimaryFile: \"little-shop-of-horrors-2019/chicagotribune--chris-jones.json\" -> \"little-shop-of-horrors-off-broadway-2019/chicagotribune--chris-jones.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "masquerade-off-broadway-2025/nydailynews--chris-jones.json syndicatedPrimaryFile: \"masquerade-off-broadway-2025/chicagotribune--unknown.json\" -> \"masquerade-off-broadway-2025/chicagotribune--chris-jones.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "moulin-rouge-2019/nydailynews--chris-jones.json syndicatedPrimaryFile: \"moulin-rouge-2019/chicagotribune--chris-jones-bway.json\" -> \"moulin-rouge-2019/chicagotribune--chris-jones.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "operation-mincemeat-2025/nydailynews--chris-jones.json syndicatedPrimaryFile: \"operation-mincemeat-2025/chicagotribune--unknown.json\" -> \"operation-mincemeat-2025/chicagotribune--chris-jones.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "queen-versailles-2025/nydailynews--chris-jones.json syndicatedPrimaryFile: \"queen-versailles-2025/chicagotribune--unknown.json\" -> \"queen-versailles-2025/chicagotribune--chris-jones.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-great-society-2019/nydailynews--chris-jones.json syndicatedPrimaryFile: \"the-great-society-2019/chicagotribune--chris-jones-bway.json\" -> \"the-great-society-2019/chicagotribune--chris-jones.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-inheritance-2019/nydailynews--chris-jones.json syndicatedPrimaryFile: \"the-inheritance-2019/chicagotribune--chris-jones-bway.json\" -> \"the-inheritance-2019/chicagotribune--chris-jones.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lifespan-of-a-fact-2018/nydailynews--chris-jones.json syndicatedPrimaryFile: \"the-lifespan-of-a-fact-2018/chicagotribune--chris-jones-bway.json\" -> \"the-lifespan-of-a-fact-2018/chicagotribune--chris-jones.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tina-2019/nydailynews--chris-jones.json syndicatedPrimaryFile: \"tina-2019/chicagotribune--chris-jones-bway.json\" -> \"tina-2019/chicagotribune--chris-jones.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2025/nydailynews--chris-jones.json syndicatedPrimaryFile: \"waiting-for-godot-2025/chicagotribune--unknown.json\" -> \"waiting-for-godot-2025/chicagotribune--chris-jones.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "what-the-constitution-means-to-me-2019/nydailynews--chris-jones.json syndicatedPrimaryFile: \"what-the-constitution-means-to-me-2019/chicagotribune--chris-jones-bway.json\" -> \"what-the-constitution-means-to-me-2019/chicagotribune--chris-jones.json\""
+    }
+  ]
+}

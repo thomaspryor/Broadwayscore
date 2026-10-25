@@ -1,0 +1,949 @@
+{
+  "generatedAt": "2026-10-19T17:49:09.594Z",
+  "naivePages": 2,
+  "settlingHours": 24,
+  "totals": {
+    "shows": 5,
+    "excluded": [],
+    "undatedCandidates": 7,
+    "truthUrls": 82,
+    "scopedUrls": 19,
+    "naiveUrls": 28,
+    "onDiskUrls": 78,
+    "newFromNaive": 3,
+    "perArm": {
+      "naive-p0": {
+        "found": 17,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.207
+      },
+      "naive-p1": {
+        "found": 12,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.146
+      },
+      "onDisk": {
+        "found": 78,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.951
+      },
+      "scoped-q0": {
+        "found": 10,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.122
+      },
+      "scoped-q1": {
+        "found": 15,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.183
+      }
+    },
+    "perFamily": {
+      "naive": {
+        "found": 28,
+        "arms": 2,
+        "failed": 0,
+        "recall": 0.341
+      },
+      "onDisk": {
+        "found": 78,
+        "arms": 1,
+        "failed": 0,
+        "recall": 0.951
+      },
+      "scoped": {
+        "found": 19,
+        "arms": 2,
+        "failed": 0,
+        "recall": 0.232
+      }
+    },
+    "byCategory": {
+      "off-broadway": {
+        "shows": 2,
+        "truthUrls": 16,
+        "families": {
+          "naive": {
+            "found": 6,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.375
+          },
+          "onDisk": {
+            "found": 16,
+            "arms": 1,
+            "failed": 0,
+            "recall": 1
+          },
+          "scoped": {
+            "found": 1,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.063
+          }
+        }
+      },
+      "off-west-end": {
+        "shows": 2,
+        "truthUrls": 47,
+        "families": {
+          "naive": {
+            "found": 20,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.426
+          },
+          "onDisk": {
+            "found": 43,
+            "arms": 1,
+            "failed": 0,
+            "recall": 0.915
+          },
+          "scoped": {
+            "found": 17,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.362
+          }
+        }
+      },
+      "west-end": {
+        "shows": 1,
+        "truthUrls": 19,
+        "families": {
+          "naive": {
+            "found": 2,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.105
+          },
+          "onDisk": {
+            "found": 19,
+            "arms": 1,
+            "failed": 0,
+            "recall": 1
+          },
+          "scoped": {
+            "found": 1,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.053
+          }
+        }
+      }
+    },
+    "scopedRecall": 0.232,
+    "naiveRecall": 0.341
+  },
+  "shows": [
+    {
+      "showId": "the-second-best-school-shooting-off-broadway-2026",
+      "title": "The Second Best School Shooting",
+      "market": "off-broadway",
+      "openingDate": "2026-10-17",
+      "sampleState": "measured",
+      "sampleReason": "opened 2d ago",
+      "geo": "us",
+      "naiveQuery": "The Second Best School Shooting SoHo Playhouse review",
+      "counts": {
+        "truth": 12,
+        "scoped": 0,
+        "naive": 4,
+        "onDisk": 12
+      },
+      "recall": {
+        "scoped": 0,
+        "naive": 0.333,
+        "onDisk": 1,
+        "censusPlusDisk": 1
+      },
+      "newFromNaive": [],
+      "missedByCensus": [
+        "https://mdtheatreguide.com/2026/09/theatre-review-the-second-best-school-shooting-at-nextstop-theatre/",
+        "https://festmag.com/2026/08/08/review-the-second-best-school-shooting/",
+        "https://www.theatreindc.com/the-second-best-school-shooting/reviews/5319/",
+        "https://edinburgh-reviews.co.uk/review-the-second-best-school-shooting-fringe-2026/",
+        "https://ayoungishperspective.co.uk/2026/08/08/review-the-second-best-school-shooting-at-baby-grand-pleasance-courtyard/",
+        "https://broadwaybaby.com/shows/the-second-best-school-shooting/836812",
+        "https://cedarnews.net/newstasks/1016181/school-shooting-theatre-review-second-best-nextstop/",
+        "https://edinburghfestivalsforkids.com/the-second-best-school-shooting-14/",
+        "https://www.sundaypost.com/fp/the-second-best-school-shooting/",
+        "https://www.theatreinla.com/the-second-best-school-shooting/11328/",
+        "https://www.thestage.co.uk/reviews/the-second-best-school-shooting-review-pleasance-courtyard-edinburgh-alice-stanley-jr",
+        "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"The Second Best School Shooting\" Off-Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"The Second Best School Shooting\" review soho",
+          "page": 0,
+          "geo": null,
+          "raw": 6,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "The Second Best School Shooting SoHo Playhouse review",
+          "page": 0,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 2,
+          "urls": [
+            "https://mdtheatreguide.com/2026/09/theatre-review-the-second-best-school-shooting-at-nextstop-theatre/",
+            "https://festmag.com/2026/08/08/review-the-second-best-school-shooting/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "The Second Best School Shooting SoHo Playhouse review",
+          "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 2,
+          "urls": [
+            "https://www.theatreindc.com/the-second-best-school-shooting/reviews/5319/",
+            "https://edinburgh-reviews.co.uk/review-the-second-best-school-shooting-fringe-2026/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 12,
+          "accepted": 12,
+          "urls": [
+            "https://ayoungishperspective.co.uk/2026/08/08/review-the-second-best-school-shooting-at-baby-grand-pleasance-courtyard/",
+            "https://broadwaybaby.com/shows/the-second-best-school-shooting/836812",
+            "https://cedarnews.net/newstasks/1016181/school-shooting-theatre-review-second-best-nextstop/",
+            "https://edinburgh-reviews.co.uk/review-the-second-best-school-shooting-fringe-2026/",
+            "https://edinburghfestivalsforkids.com/the-second-best-school-shooting-14/",
+            "https://festmag.com/2026/08/08/review-the-second-best-school-shooting/",
+            "https://mdtheatreguide.com/2026/09/theatre-review-the-second-best-school-shooting-at-nextstop-theatre/",
+            "https://www.sundaypost.com/fp/the-second-best-school-shooting/",
+            "https://www.theatreindc.com/the-second-best-school-shooting/reviews/5319/",
+            "https://www.theatreinla.com/the-second-best-school-shooting/11328/",
+            "https://www.thestage.co.uk/reviews/the-second-best-school-shooting-review-pleasance-courtyard-edinburgh-alice-stanley-jr",
+            "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "angels-bone-west-end-2026",
+      "title": "Angel's Bone",
+      "market": "west-end",
+      "openingDate": "2026-10-17",
+      "sampleState": "measured",
+      "sampleReason": "opened 2d ago",
+      "geo": "gb",
+      "naiveQuery": "Angel's Bone London Coliseum review",
+      "counts": {
+        "truth": 19,
+        "scoped": 1,
+        "naive": 2,
+        "onDisk": 19
+      },
+      "recall": {
+        "scoped": 0.053,
+        "naive": 0.105,
+        "onDisk": 1,
+        "censusPlusDisk": 1
+      },
+      "newFromNaive": [],
+      "missedByCensus": [
+        "https://markaspen.com/2026/10/17/angel-bone/",
+        "https://theartsdesk.com/opera/angels-bone-english-national-opera-manchester-review-bold-experiment-elaborate-project",
+        "https://bachtrack.com/review-angels-bone-du-yun-vavrek-english-national-opera-london-october-2026",
+        "https://www.bestoftheatre.co.uk/blog/post/eno-autumn-season-london-coliseum-angels-bone-tosca",
+        "https://www.britishtheatreguide.info/reviews/angel-s-bones-london-coliseum-26131",
+        "https://www.broadwayworld.com/westend/article/Review-ANGELS-BONE-London-Coliseum-20261018",
+        "https://www.camdennewjournal.co.uk/article/michael-whites-classical-news-angels-bone-orpheus-and-eurydice-spring-snow-a-kabuki-winterreise-coffee-cantata",
+        "https://www.ft.com/content/9da32f56-9024-4940-b7f0-ebfb200a7c15",
+        "https://www.theguardian.com/music/2026/may/13/angels-bone-review-du-yun-kip-williams-english-national-opera-aviva-studios-manchster",
+        "https://www.jackstage.co.uk/post/eno-s-angel-s-bone-review-a-cinematic-expose-of-human-trafficking",
+        "https://www.londontheatre.co.uk/reviews/angels-bone-review-london-coliseum",
+        "https://www.musicomh.com/classical/opera-reviews/angels-bone-review-english-national-opera-coliseum",
+        "https://www.standard.co.uk/culture/opera/angels-bone-at-london-coliseum-review-b1301400.html",
+        "https://www.thetimes.com/culture/classical-opera/article/angels-bone-review-opera-manchester-fn2zqc2dw",
+        "https://www.telegraph.co.uk/opera/angels-bone-opera-review-manchester-eno/",
+        "https://theatreweekly.com/review-angels-bone-at-london-coliseum/",
+        "https://www.theatrereviewsnorth.com/post/angel-s-bone",
+        "https://thestage.co.uk/reviews/angels-bone-review-london-coliseum-english-national-opera"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Angel's Bone\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 1,
+          "urls": [
+            "https://www.britishtheatreguide.info/reviews/angel-s-bone-aviva-studios-25587"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Angel's Bone\" review london",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 1,
+          "urls": [
+            "https://www.britishtheatreguide.info/reviews/angel-s-bone-aviva-studios-25587"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Angel's Bone London Coliseum review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 9,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Angel's Bone London Coliseum review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 2,
+          "urls": [
+            "https://markaspen.com/2026/10/17/angel-bone/",
+            "https://www.britishtheatreguide.info/reviews/angel-s-bone-aviva-studios-25587"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 19,
+          "accepted": 19,
+          "urls": [
+            "https://theartsdesk.com/opera/angels-bone-english-national-opera-manchester-review-bold-experiment-elaborate-project",
+            "https://bachtrack.com/review-angels-bone-du-yun-vavrek-english-national-opera-london-october-2026",
+            "https://www.bestoftheatre.co.uk/blog/post/eno-autumn-season-london-coliseum-angels-bone-tosca",
+            "https://www.britishtheatreguide.info/reviews/angel-s-bone-aviva-studios-25587",
+            "https://www.britishtheatreguide.info/reviews/angel-s-bones-london-coliseum-26131",
+            "https://www.broadwayworld.com/westend/article/Review-ANGELS-BONE-London-Coliseum-20261018",
+            "https://www.camdennewjournal.co.uk/article/michael-whites-classical-news-angels-bone-orpheus-and-eurydice-spring-snow-a-kabuki-winterreise-coffee-cantata",
+            "https://www.ft.com/content/9da32f56-9024-4940-b7f0-ebfb200a7c15",
+            "https://www.theguardian.com/music/2026/may/13/angels-bone-review-du-yun-kip-williams-english-national-opera-aviva-studios-manchster",
+            "https://www.jackstage.co.uk/post/eno-s-angel-s-bone-review-a-cinematic-expose-of-human-trafficking",
+            "https://www.londontheatre.co.uk/reviews/angels-bone-review-london-coliseum",
+            "https://markaspen.com/2026/10/17/angel-bone/",
+            "https://www.musicomh.com/classical/opera-reviews/angels-bone-review-english-national-opera-coliseum",
+            "https://www.standard.co.uk/culture/opera/angels-bone-at-london-coliseum-review-b1301400.html",
+            "https://www.thetimes.com/culture/classical-opera/article/angels-bone-review-opera-manchester-fn2zqc2dw",
+            "https://www.telegraph.co.uk/opera/angels-bone-opera-review-manchester-eno/",
+            "https://theatreweekly.com/review-angels-bone-at-london-coliseum/",
+            "https://www.theatrereviewsnorth.com/post/angel-s-bone",
+            "https://thestage.co.uk/reviews/angels-bone-review-london-coliseum-english-national-opera"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "music-for-18-musicians-staged-variations-off-broadway-2026",
+      "title": "Music for 18 Musicians: Staged Variations",
+      "market": "off-broadway",
+      "openingDate": "2026-10-17",
+      "sampleState": "measured",
+      "sampleReason": "opened 2d ago",
+      "geo": "us",
+      "naiveQuery": "Music for 18 Musicians: Staged Variations Park Avenue Armory review",
+      "counts": {
+        "truth": 4,
+        "scoped": 1,
+        "naive": 2,
+        "onDisk": 4
+      },
+      "recall": {
+        "scoped": 0.25,
+        "naive": 0.5,
+        "onDisk": 1,
+        "censusPlusDisk": 1
+      },
+      "newFromNaive": [],
+      "missedByCensus": [
+        "https://www.msmnyc.edu/performances/music-for-18-musicians-staged-variations-at-park-avenue-armory/",
+        "https://www.amny.com/entertainment/music/the-danny-awards-nyc-disabled-musicians/",
+        "https://oazis.app/evenements/music-for-18-musicians-staged-variations"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Music for 18 Musicians: Staged Variations\" Off-Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 8,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Music for 18 Musicians: Staged Variations\" review avenue",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://www.sequenza21.com/2026/10/review-steve-reichs-music-for-18-musicians-staged-variations-at-the-park-avenue-armory/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Music for 18 Musicians: Staged Variations Park Avenue Armory review",
+          "page": 0,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 2,
+          "urls": [
+            "https://www.sequenza21.com/2026/10/review-steve-reichs-music-for-18-musicians-staged-variations-at-the-park-avenue-armory/",
+            "https://www.msmnyc.edu/performances/music-for-18-musicians-staged-variations-at-park-avenue-armory/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Music for 18 Musicians: Staged Variations Park Avenue Armory review",
+          "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 4,
+          "accepted": 4,
+          "urls": [
+            "https://www.amny.com/entertainment/music/the-danny-awards-nyc-disabled-musicians/",
+            "https://www.msmnyc.edu/performances/music-for-18-musicians-staged-variations-at-park-avenue-armory/",
+            "https://oazis.app/evenements/music-for-18-musicians-staged-variations",
+            "https://www.sequenza21.com/2026/10/review-steve-reichs-music-for-18-musicians-staged-variations-at-the-park-avenue-armory/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "dog-mom-off-west-end-2026",
+      "title": "Dog Mom",
+      "market": "off-west-end",
+      "openingDate": "2026-10-17",
+      "sampleState": "measured",
+      "sampleReason": "opened 2d ago",
+      "geo": "gb",
+      "naiveQuery": "Dog Mom Southwark Playhouse review",
+      "counts": {
+        "truth": 23,
+        "scoped": 9,
+        "naive": 11,
+        "onDisk": 20
+      },
+      "recall": {
+        "scoped": 0.391,
+        "naive": 0.478,
+        "onDisk": 0.87,
+        "censusPlusDisk": 0.87
+      },
+      "newFromNaive": [
+        "https://www.thestage.co.uk/reviews/dog-mom-review-southwark-playhouse-borough-london",
+        "https://whatsgoodtodo.com/uk-premiere-of-dog-mom-comes-to-southwark-playhouse-borough-this-autumn/",
+        "https://shouldgoto.com/theatre/dog-mom"
+      ],
+      "missedByCensus": [
+        "https://www.thestage.co.uk/reviews/dog-mom-review-southwark-playhouse-borough-london",
+        "https://www.thereviewshub.com/dog-mom-southwark-playhouse-borough-london/",
+        "https://readaboutstuff.com/2026/10/18/review-dog-mom-southwark-playhouse-borough-london/",
+        "https://whatsgoodtodo.com/uk-premiere-of-dog-mom-comes-to-southwark-playhouse-borough-this-autumn/",
+        "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn",
+        "https://shouldgoto.com/theatre/dog-mom",
+        "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/",
+        "https://www.london-unattached.com/dog-mom-southwark-playhouse/",
+        "https://www.londontheatre1.com/reviews/dog-mom-southwark-playhouse-borough/",
+        "https://northwestend.com/dog-mom-southwark-playhouse-borough/",
+        "https://notesfromrowh.com/2026/10/17/review-dog-mom-at-southwark-playhouse-borough/",
+        "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/",
+        "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/",
+        "https://thestage.co.uk/reviews/dog-mom-review-southwark-playhouse-borough-london"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Dog Mom\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 5,
+          "urls": [
+            "https://www.londonpubtheatres.com/review-dog-mom-by-tate-elizabeth-hanyok-at-southwark-playhouse-borough-14-october-7-november-2026",
+            "https://everything-theatre.co.uk/2026/10/review-dog-mom-southwark-theatre/",
+            "https://www.londonboxoffice.co.uk/news/post/dog-mom-southwark-playhouse-borough-review",
+            "https://www.britishtheatreguide.info/reviews/dog-mom-southwark-playh-26135",
+            "https://theatreandtonic.co.uk/blog/dog-mom-at-southwark-playhouse-borough-review"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Dog Mom\" review southwark",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 7,
+          "urls": [
+            "https://www.londonpubtheatres.com/review-dog-mom-by-tate-elizabeth-hanyok-at-southwark-playhouse-borough-14-october-7-november-2026",
+            "https://www.allthatdazzles.co.uk/post/review-dog-mom-southwark-playhouse-borough",
+            "https://www.pinkprincetheatre.com/post/review-dog-mom-southwark-playhouse",
+            "https://theatreandtonic.co.uk/blog/dog-mom-at-southwark-playhouse-borough-review",
+            "https://thespyinthestalls.com/2026/10/dog-mom/",
+            "https://www.reviewsgate.co.uk/all-reviews/dog-mom-by-tate-elizabeth-hanyok-southwark-playhouse-the-little-until-07-november-2026nbsp-review-by-william-russell",
+            "https://www.londonboxoffice.co.uk/news/post/dog-mom-southwark-playhouse-borough-review"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Dog Mom Southwark Playhouse review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 9,
+          "accepted": 7,
+          "urls": [
+            "https://everything-theatre.co.uk/2026/10/review-dog-mom-southwark-theatre/",
+            "https://www.thestage.co.uk/reviews/dog-mom-review-southwark-playhouse-borough-london",
+            "https://www.londonpubtheatres.com/review-dog-mom-by-tate-elizabeth-hanyok-at-southwark-playhouse-borough-14-october-7-november-2026",
+            "https://www.allthatdazzles.co.uk/post/review-dog-mom-southwark-playhouse-borough",
+            "https://www.thereviewshub.com/dog-mom-southwark-playhouse-borough-london/",
+            "https://theatreandtonic.co.uk/blog/dog-mom-at-southwark-playhouse-borough-review",
+            "https://www.reviewsgate.co.uk/all-reviews/dog-mom-by-tate-elizabeth-hanyok-southwark-playhouse-the-little-until-07-november-2026nbsp-review-by-william-russell"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Dog Mom Southwark Playhouse review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 5,
+          "urls": [
+            "https://www.thereviewshub.com/dog-mom-southwark-playhouse-borough-london/",
+            "https://readaboutstuff.com/2026/10/18/review-dog-mom-southwark-playhouse-borough-london/",
+            "https://whatsgoodtodo.com/uk-premiere-of-dog-mom-comes-to-southwark-playhouse-borough-this-autumn/",
+            "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn",
+            "https://shouldgoto.com/theatre/dog-mom"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 20,
+          "accepted": 20,
+          "urls": [
+            "https://www.allthatdazzles.co.uk/post/review-dog-mom-southwark-playhouse-borough",
+            "https://www.britishtheatreguide.info/reviews/dog-mom-southwark-playh-26135",
+            "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/",
+            "https://everything-theatre.co.uk/2026/10/review-dog-mom-southwark-theatre/",
+            "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn",
+            "https://www.londonboxoffice.co.uk/news/post/dog-mom-southwark-playhouse-borough-review",
+            "https://www.london-unattached.com/dog-mom-southwark-playhouse/",
+            "https://www.londonpubtheatres.com/review-dog-mom-by-tate-elizabeth-hanyok-at-southwark-playhouse-borough-14-october-7-november-2026",
+            "https://www.londontheatre1.com/reviews/dog-mom-southwark-playhouse-borough/",
+            "https://northwestend.com/dog-mom-southwark-playhouse-borough/",
+            "https://notesfromrowh.com/2026/10/17/review-dog-mom-at-southwark-playhouse-borough/",
+            "https://www.pinkprincetheatre.com/post/review-dog-mom-southwark-playhouse",
+            "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/",
+            "https://readaboutstuff.com/2026/10/18/review-dog-mom-southwark-playhouse-borough-london/",
+            "https://www.reviewsgate.co.uk/all-reviews/dog-mom-by-tate-elizabeth-hanyok-southwark-playhouse-the-little-until-07-november-2026nbsp-review-by-william-russell",
+            "https://thespyinthestalls.com/2026/10/dog-mom/",
+            "https://theatreandtonic.co.uk/blog/dog-mom-at-southwark-playhouse-borough-review",
+            "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/",
+            "https://www.thereviewshub.com/dog-mom-southwark-playhouse-borough-london/",
+            "https://thestage.co.uk/reviews/dog-mom-review-southwark-playhouse-borough-london"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "cadel-lungs-on-legs-west-end-2026",
+      "title": "Cadel: Lungs On Legs",
+      "market": "off-west-end",
+      "openingDate": "2026-10-16",
+      "sampleState": "measured",
+      "sampleReason": "opened 3d ago",
+      "geo": "gb",
+      "naiveQuery": "Cadel: Lungs On Legs Riverside Studios review",
+      "counts": {
+        "truth": 24,
+        "scoped": 8,
+        "naive": 9,
+        "onDisk": 23
+      },
+      "recall": {
+        "scoped": 0.333,
+        "naive": 0.375,
+        "onDisk": 0.958,
+        "censusPlusDisk": 1
+      },
+      "newFromNaive": [],
+      "missedByCensus": [
+        "https://number9reviews.blogspot.com/2026/10/theatre-review-cadel-lungs-on-legs.html",
+        "https://www.reviewsgate.co.uk/all-reviews/cadel-lungs-on-legs-by-connor-delves-amp-steve-mcmahon-riverside-studios-101-queen-caroline-street-london-w6-until-15-november-2026-review-by-william-russell",
+        "https://liamodell.com/2026/10/18/cadel-lungs-on-legs-review-riverside-studios-hammersmith-london-cadel-evans-tour-de-france/",
+        "https://5thingstodotoday.com/2026/10/15/5-reasons-to-see-cadel-lungs-on-legs-at-riverside-studios/",
+        "https://www.bestoftheatre.co.uk/blog/post/cadel-lungs-on-legs-london-premiere-riverside-studios",
+        "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs",
+        "https://www.londonpubtheatres.com/cadel-lungs-on-legs-by-connor-delves-steve-mcmahon-at-riverside-studios-13-october-15-november-2026",
+        "https://www.londontheatre1.com/reviews/cadel-lungs-on-legs-gilded-balloon-at-the-museum/",
+        "https://www.londontheatre1.com/reviews/cadel-lungs-on-legs-riverside-studios/",
+        "https://one4review.co.uk/2026/08/cadel-lungs-on-legs-4-5/",
+        "https://list.co.uk/adelaide-festivals/news/cadel-lungs-on-legs-theatre-review-racing-to-glory-48060",
+        "https://theatreweekly.com/interview-connor-delves-on-cadel-lungs-on-legs-at-riverside-studios/",
+        "https://theatreinedinburgh.co.uk/reviews/cadel-lungs-on-legs-gilded-balloon-at-the-museum/",
+        "https://theatrematters.com.au/news/cadel-lungs-on-legs/",
+        "https://theqr.co.uk/2026/08/19/edfringe-review-cadel-lungs-on-legs-2/",
+        "https://www.westendbestfriend.co.uk/news/fringe-review-cadel-lungs-on-legs-auditorium-at-gilded-balloon-at-the-museum"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Cadel: Lungs On Legs\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 4,
+          "urls": [
+            "https://www.allthatdazzles.co.uk/post/review-cadel-lungs-on-legs-riverside-studios",
+            "https://www.londonboxoffice.co.uk/news/post/cadel-lungs-on-legs-riverside-studios-review",
+            "https://loureviews.blog/2026/10/18/show-focus-connor-delves-on-cadel-lungs-on-legs/",
+            "https://theatreandtonic.co.uk/blog/cadel-lungs-on-legs-at-riverside-studios-review"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Cadel: Lungs On Legs\" review riverside",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 6,
+          "urls": [
+            "https://www.allthatdazzles.co.uk/post/review-cadel-lungs-on-legs-riverside-studios",
+            "https://theatreandtonic.co.uk/blog/cadel-lungs-on-legs-at-riverside-studios-review",
+            "https://loureviews.blog/2026/10/16/play-review-cadel-lungs-on-legs-at-riverside-studios/",
+            "https://www.broadwayworld.com/westend/article/Review-CADEL-LUNGS-ON-LEGS-Riverside-Studios-20261016",
+            "https://www.london-unattached.com/cadel-lungs-on-legs-riverside-studios/",
+            "https://ayoungishperspective.co.uk/2026/10/17/review-cadel-lungs-on-legs/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Cadel: Lungs On Legs Riverside Studios review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 9,
+          "accepted": 6,
+          "urls": [
+            "https://www.allthatdazzles.co.uk/post/review-cadel-lungs-on-legs-riverside-studios",
+            "https://number9reviews.blogspot.com/2026/10/theatre-review-cadel-lungs-on-legs.html",
+            "https://www.londonboxoffice.co.uk/news/post/cadel-lungs-on-legs-riverside-studios-review",
+            "https://www.reviewsgate.co.uk/all-reviews/cadel-lungs-on-legs-by-connor-delves-amp-steve-mcmahon-riverside-studios-101-queen-caroline-street-london-w6-until-15-november-2026-review-by-william-russell",
+            "https://liamodell.com/2026/10/18/cadel-lungs-on-legs-review-riverside-studios-hammersmith-london-cadel-evans-tour-de-france/",
+            "https://loureviews.blog/2026/10/18/show-focus-connor-delves-on-cadel-lungs-on-legs/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Cadel: Lungs On Legs Riverside Studios review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 3,
+          "urls": [
+            "https://theatreandtonic.co.uk/blog/cadel-lungs-on-legs-at-riverside-studios-review",
+            "https://ayoungishperspective.co.uk/2026/10/17/review-cadel-lungs-on-legs/",
+            "https://loureviews.blog/2026/10/16/play-review-cadel-lungs-on-legs-at-riverside-studios/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 23,
+          "accepted": 23,
+          "urls": [
+            "https://5thingstodotoday.com/2026/10/15/5-reasons-to-see-cadel-lungs-on-legs-at-riverside-studios/",
+            "https://ayoungishperspective.co.uk/2026/10/17/review-cadel-lungs-on-legs/",
+            "https://www.allthatdazzles.co.uk/post/review-cadel-lungs-on-legs-riverside-studios",
+            "https://www.bestoftheatre.co.uk/blog/post/cadel-lungs-on-legs-london-premiere-riverside-studios",
+            "https://www.broadwayworld.com/westend/article/Review-CADEL-LUNGS-ON-LEGS-Riverside-Studios-20261016",
+            "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs",
+            "https://liamodell.com/2026/10/18/cadel-lungs-on-legs-review-riverside-studios-hammersmith-london-cadel-evans-tour-de-france/",
+            "https://www.londonboxoffice.co.uk/news/post/cadel-lungs-on-legs-riverside-studios-review",
+            "https://www.london-unattached.com/cadel-lungs-on-legs-riverside-studios/",
+            "https://www.londonpubtheatres.com/cadel-lungs-on-legs-by-connor-delves-steve-mcmahon-at-riverside-studios-13-october-15-november-2026",
+            "https://www.londontheatre1.com/reviews/cadel-lungs-on-legs-gilded-balloon-at-the-museum/",
+            "https://www.londontheatre1.com/reviews/cadel-lungs-on-legs-riverside-studios/",
+            "https://loureviews.blog/2026/10/18/show-focus-connor-delves-on-cadel-lungs-on-legs/",
+            "https://number9reviews.blogspot.com/2026/10/theatre-review-cadel-lungs-on-legs.html",
+            "https://one4review.co.uk/2026/08/cadel-lungs-on-legs-4-5/",
+            "https://www.reviewsgate.co.uk/all-reviews/cadel-lungs-on-legs-by-connor-delves-amp-steve-mcmahon-riverside-studios-101-queen-caroline-street-london-w6-until-15-november-2026-review-by-william-russell",
+            "https://list.co.uk/adelaide-festivals/news/cadel-lungs-on-legs-theatre-review-racing-to-glory-48060",
+            "https://theatreweekly.com/interview-connor-delves-on-cadel-lungs-on-legs-at-riverside-studios/",
+            "https://theatreandtonic.co.uk/blog/cadel-lungs-on-legs-at-riverside-studios-review",
+            "https://theatreinedinburgh.co.uk/reviews/cadel-lungs-on-legs-gilded-balloon-at-the-museum/",
+            "https://theatrematters.com.au/news/cadel-lungs-on-legs/",
+            "https://theqr.co.uk/2026/08/19/edfringe-review-cadel-lungs-on-legs-2/",
+            "https://www.westendbestfriend.co.uk/news/fringe-review-cadel-lungs-on-legs-auditorium-at-gilded-balloon-at-the-museum"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "providerOutage": false,
+  "onDiskUnavailable": false,
+  "trend": {
+    "entry": {
+      "date": "2026-10-19",
+      "generatedAt": "2026-10-19T17:49:09.594Z",
+      "naivePages": 2,
+      "shows": 5,
+      "informativeShows": 5,
+      "excluded": {
+        "settling": 7
+      },
+      "truthUrls": 82,
+      "onDiskUrls": 78,
+      "newFromNaive": 3,
+      "families": {
+        "naive": 0.341,
+        "onDisk": 0.951,
+        "scoped": 0.232
+      },
+      "arms": {
+        "naive-p0": 0.207,
+        "naive-p1": 0.146,
+        "onDisk": 0.951,
+        "scoped-q0": 0.122,
+        "scoped-q1": 0.183
+      },
+      "combinedRecall": 0.963,
+      "familyYield": {
+        "naive": 5.6,
+        "onDisk": 15.6,
+        "scoped": 3.8
+      },
+      "armYield": {
+        "naive-p0": 3.4,
+        "naive-p1": 2.4,
+        "onDisk": 15.6,
+        "scoped-q0": 2,
+        "scoped-q1": 3
+      },
+      "armsFailed": {
+        "naive-p0": 0,
+        "naive-p1": 0,
+        "onDisk": 0,
+        "scoped-q0": 0,
+        "scoped-q1": 0
+      },
+      "unavailableArms": [],
+      "byCategory": {
+        "off-broadway": {
+          "shows": 2,
+          "truthUrls": 16,
+          "families": {
+            "naive": 0.375,
+            "onDisk": 1,
+            "scoped": 0.063
+          }
+        },
+        "off-west-end": {
+          "shows": 2,
+          "truthUrls": 47,
+          "families": {
+            "naive": 0.426,
+            "onDisk": 0.915,
+            "scoped": 0.362
+          }
+        },
+        "west-end": {
+          "shows": 1,
+          "truthUrls": 19,
+          "families": {
+            "naive": 0.105,
+            "onDisk": 1,
+            "scoped": 0.053
+          }
+        }
+      },
+      "sampleIds": [
+        "the-second-best-school-shooting-off-broadway-2026",
+        "angels-bone-west-end-2026",
+        "music-for-18-musicians-staged-variations-off-broadway-2026",
+        "dog-mom-off-west-end-2026",
+        "cadel-lungs-on-legs-west-end-2026"
+      ]
+    },
+    "judgement": {
+      "verdict": "ok",
+      "reason": "3 search method(s) within 0.15 of their 4-run median",
+      "regressions": [],
+      "latest": {
+        "date": "2026-10-19",
+        "generatedAt": "2026-10-19T17:49:09.594Z",
+        "naivePages": 2,
+        "shows": 5,
+        "informativeShows": 5,
+        "excluded": {
+          "settling": 7
+        },
+        "truthUrls": 82,
+        "onDiskUrls": 78,
+        "newFromNaive": 3,
+        "families": {
+          "naive": 0.341,
+          "onDisk": 0.951,
+          "scoped": 0.232
+        },
+        "arms": {
+          "naive-p0": 0.207,
+          "naive-p1": 0.146,
+          "onDisk": 0.951,
+          "scoped-q0": 0.122,
+          "scoped-q1": 0.183
+        },
+        "combinedRecall": 0.963,
+        "familyYield": {
+          "naive": 5.6,
+          "onDisk": 15.6,
+          "scoped": 3.8
+        },
+        "armYield": {
+          "naive-p0": 3.4,
+          "naive-p1": 2.4,
+          "onDisk": 15.6,
+          "scoped-q0": 2,
+          "scoped-q1": 3
+        },
+        "armsFailed": {
+          "naive-p0": 0,
+          "naive-p1": 0,
+          "onDisk": 0,
+          "scoped-q0": 0,
+          "scoped-q1": 0
+        },
+        "unavailableArms": [],
+        "byCategory": {
+          "off-broadway": {
+            "shows": 2,
+            "truthUrls": 16,
+            "families": {
+              "naive": 0.375,
+              "onDisk": 1,
+              "scoped": 0.063
+            }
+          },
+          "off-west-end": {
+            "shows": 2,
+            "truthUrls": 47,
+            "families": {
+              "naive": 0.426,
+              "onDisk": 0.915,
+              "scoped": 0.362
+            }
+          },
+          "west-end": {
+            "shows": 1,
+            "truthUrls": 19,
+            "families": {
+              "naive": 0.105,
+              "onDisk": 1,
+              "scoped": 0.053
+            }
+          }
+        },
+        "sampleIds": [
+          "the-second-best-school-shooting-off-broadway-2026",
+          "angels-bone-west-end-2026",
+          "music-for-18-musicians-staged-variations-off-broadway-2026",
+          "dog-mom-off-west-end-2026",
+          "cadel-lungs-on-legs-west-end-2026"
+        ]
+      },
+      "comparedArms": 3,
+      "skipped": []
+    }
+  }
+}

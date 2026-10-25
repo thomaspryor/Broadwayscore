@@ -1,0 +1,68 @@
+{
+  "issueNumber": "bro-5908",
+  "planId": "a8be3c45-0e5c-4ce1-81f8-6eeb064c46e3",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add Company XIV's Petite Rouge (Théâtre XIV, Brooklyn, opened 2026-03-01) as an open Off-Broadway show; users searched for it with zero results.",
+    "steps": [
+      "Append petite-rouge-off-broadway-2026 to shows.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "petite-rouge-off-broadway-2026",
+          "title": "Petite Rouge",
+          "slug": "petite-rouge-off-broadway-2026",
+          "venue": "Theatre XIV",
+          "openingDate": "2026-03-01",
+          "closingDate": null,
+          "previewsStartDate": "2026-02-14",
+          "status": "open",
+          "type": "play",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "new"
+          ],
+          "runtime": "1 hour 30 minutes",
+          "intermissions": 1,
+          "synopsis": "Company XIV's baroque burlesque retelling of Perrault's Little Red Riding Hood, in which a spoiled young noblewoman enters the woods and emerges having claimed her agency. For ages 21+.",
+          "openingDateSource": "theatermania",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": "383 Troutman Street, Brooklyn, NY 11237",
+          "ticketLinks": [],
+          "cast": [
+            {
+              "name": "Cara Seymour",
+              "role": "Petite Rouge"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Austin McCormick",
+              "role": "Creator, Director, Choreographer"
+            }
+          ],
+          "ibdbRevivalChecked": true
+        },
+        "description": "Add Petite Rouge (Company XIV, Theatre XIV Brooklyn); sources: TheaterMania listing (previews 2026-02-14, opening 2026-03-01), New York Theatre Guide and Time Out reviews. Closing date omitted: sources conflict (May 24 vs extended to Oct 31)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T04:27:54.563Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added petite-rouge-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

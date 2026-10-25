@@ -1,0 +1,231 @@
+{
+  "issueNumber": "bro-5265",
+  "planId": "8c75bc95-be59-407c-90a3-97e4b854813f",
+  "status": "applied",
+  "createdAt": "2026-10-17T21:00:49.566Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5265: 15 show dirs had mutual crossOutletDuplicate 2-cycles (each file named the other as its primary), so both copies were excluded and the review vanished. Clear the flag on the adjudicated keeper of each pair; the other copy stays flagged against it. Part 1 of 2 (an-act-of-god-2016, beautiful-the-carole-king-musical-2014, escape-to-margaritaville-2018, ghost-the-musical-2012, harry-potter-2021, in-transit-2016, jitney-2017, king-charles-iii-2015).",
+    "steps": [
+      "Per pair: write a crossOutletClearReason breadcrumb on the keeper.",
+      "Per pair: clear crossOutletDuplicate on the keeper."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "an-act-of-god-2016/front-row-center--kathleen-campion.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with nytg--unknown.json dropped both copies; the NYTG copy carries \"Review by Kathleen Campion\", so both files are Campion's one review cross-posted; keep her Front Row Center byline copy.",
+        "description": "Breadcrumb for the hand clear (an-act-of-god-2016)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-act-of-god-2016/front-row-center--kathleen-campion.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear crossOutletDuplicate on front-row-center--kathleen-campion.json so the review counts once (nytg--unknown.json stays flagged as its copy)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "beautiful-the-carole-king-musical-2014/ap--mark-kennedy.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with newsday--steve-parks.json dropped both copies; the Newsday row is a contaminated invalid-tier page already excluded wrongProduction; the AP copy is the usable text.",
+        "description": "Breadcrumb for the hand clear (beautiful-the-carole-king-musical-2014)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "beautiful-the-carole-king-musical-2014/ap--mark-kennedy.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear crossOutletDuplicate on ap--mark-kennedy.json so the review counts once (newsday--steve-parks.json stays flagged as its copy)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "escape-to-margaritaville-2018/front-row-center--stanford-friedman.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with wolf-entertainment-guide--william-wolf.json dropped both copies; the text is Stanford Friedman's (By Stanford Friedman on the FRC page); the Wolf row holds a reposted copy and is already excluded wrongShow.",
+        "description": "Breadcrumb for the hand clear (escape-to-margaritaville-2018)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "escape-to-margaritaville-2018/front-row-center--stanford-friedman.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear crossOutletDuplicate on front-row-center--stanford-friedman.json so the review counts once (wolf-entertainment-guide--william-wolf.json stays flagged as its copy)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ghost-the-musical-2012/nytimes--ben-brantley.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with about-entertainment--charles-isherwood.json dropped both copies; both urls are the same nytimes.com article; the about-entertainment row is already excluded duplicateOf the NYT row, so the NYT copy is the one that should count.",
+        "description": "Breadcrumb for the hand clear (ghost-the-musical-2012)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ghost-the-musical-2012/nytimes--ben-brantley.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear crossOutletDuplicate on nytimes--ben-brantley.json so the review counts once (about-entertainment--charles-isherwood.json stays flagged as its copy)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "harry-potter-2021/dctheatrescene--jonathan-mandell.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with nyt-theater--unknown.json dropped both copies; Jonathan Mandell cross-posts to his own newyorktheater.me blog; keep the named DC Theatre Scene byline copy.",
+        "description": "Breadcrumb for the hand clear (harry-potter-2021)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "harry-potter-2021/dctheatrescene--jonathan-mandell.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear crossOutletDuplicate on dctheatrescene--jonathan-mandell.json so the review counts once (nyt-theater--unknown.json stays flagged as its copy)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "in-transit-2016/front-row-center--stanford-friedman.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with nytg--william-wolf.json dropped both copies; the NYTG copy carries \"Review by Stan Friedman\"; one Friedman review counts, kept on his FRC byline.",
+        "description": "Breadcrumb for the hand clear (in-transit-2016)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "in-transit-2016/front-row-center--stanford-friedman.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear crossOutletDuplicate on front-row-center--stanford-friedman.json so the review counts once (nytg--william-wolf.json stays flagged as its copy)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jitney-2017/front-row-center--tulis-mccall.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with nytg--unknown.json dropped both copies; the NYTG copy carries \"Review by Tulis McCall\"; keep her FRC byline copy.",
+        "description": "Breadcrumb for the hand clear (jitney-2017)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jitney-2017/front-row-center--tulis-mccall.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear crossOutletDuplicate on front-row-center--tulis-mccall.json so the review counts once (nytg--unknown.json stays flagged as its copy)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "king-charles-iii-2015/dctheatrescene--jonathan-mandell.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with nyt-theater--david-nounou.json dropped both copies; both rows are Jonathan Mandell (newyorktheater.me is his blog); keep the DC Theatre Scene byline copy.",
+        "description": "Breadcrumb for the hand clear (king-charles-iii-2015)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "king-charles-iii-2015/dctheatrescene--jonathan-mandell.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear crossOutletDuplicate on dctheatrescene--jonathan-mandell.json so the review counts once (nyt-theater--david-nounou.json stays flagged as its copy)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T21:49:35.186Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-act-of-god-2016/front-row-center--kathleen-campion.json crossOutletClearReason: null -> \"BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with nytg--unknown.json dropped both copies; the NYTG copy carries \\\"Review by Kathleen Campion\\\", so both files are Campion's one review cross-posted; keep her Front Row Center byline copy.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-act-of-god-2016/front-row-center--kathleen-campion.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beautiful-the-carole-king-musical-2014/ap--mark-kennedy.json crossOutletClearReason: null -> \"BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with newsday--steve-parks.json dropped both copies; the Newsday row is a contaminated invalid-tier page already excluded wrongProduction; the AP copy is the usable text.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beautiful-the-carole-king-musical-2014/ap--mark-kennedy.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "escape-to-margaritaville-2018/front-row-center--stanford-friedman.json crossOutletClearReason: null -> \"BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with wolf-entertainment-guide--william-wolf.json dropped both copies; the text is Stanford Friedman's (By Stanford Friedman on the FRC page); the Wolf row holds a reposted copy and is already excluded wrongShow.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "escape-to-margaritaville-2018/front-row-center--stanford-friedman.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ghost-the-musical-2012/nytimes--ben-brantley.json crossOutletClearReason: null -> \"BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with about-entertainment--charles-isherwood.json dropped both copies; both urls are the same nytimes.com article; the about-entertainment row is already excluded duplicateOf the NYT row, so the NYT copy is the one that should count.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ghost-the-musical-2012/nytimes--ben-brantley.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-2021/dctheatrescene--jonathan-mandell.json crossOutletClearReason: null -> \"BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with nyt-theater--unknown.json dropped both copies; Jonathan Mandell cross-posts to his own newyorktheater.me blog; keep the named DC Theatre Scene byline copy.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-2021/dctheatrescene--jonathan-mandell.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "in-transit-2016/front-row-center--stanford-friedman.json crossOutletClearReason: null -> \"BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with nytg--william-wolf.json dropped both copies; the NYTG copy carries \\\"Review by Stan Friedman\\\"; one Friedman review counts, kept on his FRC byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "in-transit-2016/front-row-center--stanford-friedman.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jitney-2017/front-row-center--tulis-mccall.json crossOutletClearReason: null -> \"BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with nytg--unknown.json dropped both copies; the NYTG copy carries \\\"Review by Tulis McCall\\\"; keep her FRC byline copy.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jitney-2017/front-row-center--tulis-mccall.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-charles-iii-2015/dctheatrescene--jonathan-mandell.json crossOutletClearReason: null -> \"BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with nyt-theater--david-nounou.json dropped both copies; both rows are Jonathan Mandell (newyorktheater.me is his blog); keep the DC Theatre Scene byline copy.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-charles-iii-2015/dctheatrescene--jonathan-mandell.json crossOutletDuplicate: true -> false"
+    }
+  ]
+}

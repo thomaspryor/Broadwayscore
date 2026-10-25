@@ -1,0 +1,112 @@
+{
+  "issueNumber": "bro-5166",
+  "planId": "e2a6bbf1-4186-4286-8fca-82f789c2d655",
+  "status": "partial",
+  "createdAt": "2026-10-12T13:49:37.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5166: recover the Talkin' Broadway review of Human Things. The stored file is the allthatchat forum teaser; its Link anchor points at the real review page (verified by recover-talkinbroadway-forum-links.js --dry-run on 2026-10-12, critic from the page byline). The forum-link retry cap was spent on Bright Data timeouts. Also flag four discovered articles that are not reviews of the show they sit on: a Deadline politics story on The Pass and a Times opera review on Fire Fire (wrongShow), a Variety Olivier-nominations news story on Into the Woods and a Time Out NY event listing on September L. Davis (isNonReview).",
+    "steps": [
+      "Ingest the real Talkin' Broadway review page for human-things-off-broadway-2026.",
+      "Set wrongShow on the two mis-matched articles and isNonReview (with a reason) on the news story and the event listing."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=human-things-off-broadway-2026 --url=https://www.talkinbroadway.com/page/ob/09_25_26.html --outlet=talkinbroadway --critic=\"Moshe A. Bloxenheim\"",
+        "description": "BRO-5166: Talkin' Broadway review page behind forum thread 2653913"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pass-off-west-end-2026/deadline--ted-johnson.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5166: Deadline news story on the No Fakes Act, matched on the word 'pass'; it does not review The Pass."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fire-fire-off-west-end-2026/times-uk--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5166: Times review of a different opera ('Fire in my mouth'), matched by SERP discovery on the title words."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-noel-coward-west-end-2026/variety--naman-ramachandran.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5166: Variety Olivier nominations news story, not a review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-noel-coward-west-end-2026/variety--naman-ramachandran.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "news: Olivier Award nominations story (BRO-5166)",
+        "description": "BRO-5166: reason for the isNonReview flag."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "september-l-davis-the-apology-tour-off-broadway-2026/timeout--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5166: Time Out NY event listing (JSON-LD Review with no rating and no author), not a review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "september-l-davis-the-apology-tour-off-broadway-2026/timeout--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "listing: Time Out event page with no rating or author (BRO-5166)",
+        "description": "BRO-5166: reason for the isNonReview flag."
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T15:43:03.315Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=human-things-off-broadway-2026 --url=https://www.talkinbroadway.com/page/ob/09_25_26.html --outlet=talkinbroadway --critic=\"Moshe A. Bloxenheim\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pass-off-west-end-2026/deadline--ted-johnson.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fire-fire-off-west-end-2026/times-uk--unknown.json wrongShow: null -> true (retracted clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongShowAutoCleared, wrongShowAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-noel-coward-west-end-2026/variety--naman-ramachandran.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-noel-coward-west-end-2026/variety--naman-ramachandran.json isNonReviewReason: null -> \"news: Olivier Award nominations story (BRO-5166)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "september-l-davis-the-apology-tour-off-broadway-2026/timeout--unknown.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "september-l-davis-the-apology-tour-off-broadway-2026/timeout--unknown.json isNonReviewReason: null -> \"listing: Time Out event page with no rating or author (BRO-5166)\""
+    }
+  ]
+}

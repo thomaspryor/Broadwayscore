@@ -1,0 +1,92 @@
+{
+  "issueNumber": "bro-6018-2",
+  "planId": "290a5694-0d0d-47a5-be87-fedc12a9c9db",
+  "status": "applied",
+  "createdAt": "2026-10-23T10:09:51.262Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear sourceless aggregatorStars copied from Daily Mail siblings onto 5 Mail on Sunday rows (no star rating in their own text); rescore follows",
+    "steps": [
+      "a-little-life-west-end-2023/mail-on-sunday--robert-gore-langton.json: aggregatorStars",
+      "born-with-teeth-west-end-2025/mail-on-sunday--robert-gore-langton.json: aggregatorStars",
+      "an-enemy-of-the-people-west-end-2024/mail-on-sunday--robert-gore-langton.json: aggregatorStars",
+      "lyonesse-west-end-2023/mail-on-sunday--neil-armstrong.json: aggregatorStars",
+      "the-picture-of-dorian-gray-west-end-2024/mail-on-sunday--robert-gore-langton.json: aggregatorStars"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-little-life-west-end-2023/mail-on-sunday--robert-gore-langton.json",
+        "field": "aggregatorStars",
+        "oldValue": "4/5",
+        "newValue": null,
+        "description": "a-little-life-west-end-2023/mail-on-sunday--robert-gore-langton.json: aggregatorStars"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "born-with-teeth-west-end-2025/mail-on-sunday--robert-gore-langton.json",
+        "field": "aggregatorStars",
+        "oldValue": "5/5",
+        "newValue": null,
+        "description": "born-with-teeth-west-end-2025/mail-on-sunday--robert-gore-langton.json: aggregatorStars"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-enemy-of-the-people-west-end-2024/mail-on-sunday--robert-gore-langton.json",
+        "field": "aggregatorStars",
+        "oldValue": "1/5",
+        "newValue": null,
+        "description": "an-enemy-of-the-people-west-end-2024/mail-on-sunday--robert-gore-langton.json: aggregatorStars"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lyonesse-west-end-2023/mail-on-sunday--neil-armstrong.json",
+        "field": "aggregatorStars",
+        "oldValue": "3/5",
+        "newValue": null,
+        "description": "lyonesse-west-end-2023/mail-on-sunday--neil-armstrong.json: aggregatorStars"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/mail-on-sunday--robert-gore-langton.json",
+        "field": "aggregatorStars",
+        "oldValue": "5/5",
+        "newValue": null,
+        "description": "the-picture-of-dorian-gray-west-end-2024/mail-on-sunday--robert-gore-langton.json: aggregatorStars"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T12:14:32.472Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-little-life-west-end-2023/mail-on-sunday--robert-gore-langton.json aggregatorStars: \"4/5\" -> null (retracted needsRescore, rescoreFlaggedAt, rescoreReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "born-with-teeth-west-end-2025/mail-on-sunday--robert-gore-langton.json aggregatorStars: \"5/5\" -> null (retracted needsRescore, rescoreFlaggedAt, rescoreReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-enemy-of-the-people-west-end-2024/mail-on-sunday--robert-gore-langton.json aggregatorStars: \"1/5\" -> null (retracted needsRescore, rescoreFlaggedAt, rescoreReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lyonesse-west-end-2023/mail-on-sunday--neil-armstrong.json aggregatorStars: \"3/5\" -> null (retracted needsRescore, rescoreFlaggedAt, rescoreReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-picture-of-dorian-gray-west-end-2024/mail-on-sunday--robert-gore-langton.json aggregatorStars: \"5/5\" -> null (retracted needsRescore, rescoreFlaggedAt, rescoreReason)"
+    }
+  ],
+  "executedIn": "ci"
+}

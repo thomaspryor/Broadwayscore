@@ -1,0 +1,78 @@
+{
+  "issueNumber": "bro-5632",
+  "planId": "7fd6b36d-0bbb-4714-a772-dc9ded584caa",
+  "status": "applied",
+  "createdAt": "2026-10-18T14:44:03.505Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5632: cite two weekly running costs that were labelled trade-reported but cited nothing (the site showed them as estimates). Parade 2023 ($659K) and Sweeney Todd 2023 ($840K) are stated in the Broadway Journal articles already in each record's sources, both before royalties. Five other uncited figures found in their own sources are not running costs (Cabaret's $1.5M is all-in spending in its first seven weeks; Here Lies Love, Once Upon a One More Time and Titanique are break-even grosses) and stay estimates; Maybe Happy Ending's $765K traces only to Wikipedia.",
+    "steps": [
+      "Each edit reads its oldValue from live commercial.json."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "parade-2023",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Dec 23, 2022): \"Fixed weekly operating expenses, before royalties, for the limited run are projected to be $659,000.\" https://www.broadwayjournal.com/p/ben-platt-to-lead-6-5-million-parade-exclusive",
+        "description": "parade-2023: the $659K \"trade-reported\" cost cited nothing, so the site and model showed it as an estimate; the Broadway Journal article already in its sources states it (opened at source 2026-10-18)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "parade-2023",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "running",
+        "description": "parade-2023: the quote says before royalties: a running cost, not all-in or a break-even."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sweeney-todd-2023",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Aug 23, 2022): \"Weekly running costs for the 2023 revival are projected to be about $840,000, not including royalties and percentage rent.\" https://www.broadwayjournal.com/p/will-a-new-sweeney-todd-make-its-investors-a-killing-exclusive",
+        "description": "sweeney-todd-2023: the $840K \"trade-reported\" cost cited nothing; the Broadway Journal article already in its sources states it (opened at source 2026-10-18)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sweeney-todd-2023",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "running",
+        "description": "sweeney-todd-2023: the quote excludes royalties and percentage rent: a running cost."
+      }
+    ]
+  },
+  "executedAt": "2026-10-18T16:19:41.634Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for parade-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for parade-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for sweeney-todd-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for sweeney-todd-2023"
+    }
+  ]
+}

@@ -1,0 +1,217 @@
+{
+  "shows": {
+    "bug": {
+      "recouped": true,
+      "_recoupedClaim": true,
+      "recoupedDate": "2005-01-28",
+      "recoupedSource": "https://playbill.com/article/in-last-week-of-performances-bug-recoups-its-investment-closes-jan-30-com-123862",
+      "confidence": "high",
+      "evidence": "the Off-Broadway critical hit Bug has recouped its investment.",
+      "sourceHost": "playbill.com",
+      "detectedBy": "recoupment-announcement-scraper",
+      "detectedAt": "2026-08-07T22:21:39.285Z",
+      "researchedAt": "2026-08-07T22:21:39.285Z",
+      "promoteRecommended": true,
+      "verifyAttempts": 2,
+      "lastVerifyAttemptAt": "2026-07-31T22:32:04.705Z",
+      "archivedAt": "2026-10-11T21:07:44.895Z",
+      "archivedReason": "rejected-recouped-claim",
+      "archivedDetail": "wrong production: recoupedDate 2005-01-28 is before this production's first performance 2025-12-16: an earlier production's recoupment",
+      "rejectedSources": [
+        "https://playbill.com/article/in-last-week-of-performances-bug-recoups-its-investment-closes-jan-30-com-123862"
+      ]
+    },
+    "beetlejuice-2025": {
+      "recouped": true,
+      "_recoupedClaim": true,
+      "recoupedDate": "2023-10-30",
+      "recoupedSource": "https://playbill.com/article/beetlejuice-national-tour-recoups",
+      "confidence": "high",
+      "evidence": "The national tour of Beetlejuice has recouped after just 11 months—37 weeks—on the road.",
+      "sourceHost": "playbill.com",
+      "detectedBy": "recoupment-announcement-scraper",
+      "detectedAt": "2026-08-07T22:21:39.285Z",
+      "researchedAt": "2026-08-07T22:21:39.285Z",
+      "promoteRecommended": true,
+      "verifyAttempts": 2,
+      "lastVerifyAttemptAt": "2026-07-31T22:32:37.363Z",
+      "archivedAt": "2026-10-11T21:07:44.895Z",
+      "archivedReason": "rejected-recouped-claim",
+      "archivedDetail": "wrong production: recoupedDate 2023-10-30 is before this production's first performance 2025-10-08: an earlier production's recoupment",
+      "rejectedSources": [
+        "https://playbill.com/article/beetlejuice-national-tour-recoups"
+      ]
+    },
+    "mamma-mia": {
+      "recouped": true,
+      "_recoupedClaim": true,
+      "recoupedDate": null,
+      "recoupedSource": "https://playbill.com/article/money-money-money-hit-mamma-mia-recoups-its-investment-com-106096",
+      "confidence": "high",
+      "evidence": "Mamma Mia! has recouped its entire $10 million Broadway investment",
+      "sourceHost": "playbill.com",
+      "detectedBy": "recoupment-announcement-scraper",
+      "detectedAt": "2026-08-07T22:21:39.285Z",
+      "researchedAt": "2026-08-07T22:21:39.285Z",
+      "promoteRecommended": true,
+      "verifyAttempts": 2,
+      "lastVerifyAttemptAt": "2026-07-31T22:32:52.073Z",
+      "archivedAt": "2026-10-11T21:07:44.895Z",
+      "archivedReason": "rejected-recouped-claim",
+      "archivedDetail": "wrong production: \"mamma-mia\" is a tour-stop engagement; recoupment belongs to the tour or the original run",
+      "rejectedSources": [
+        "https://playbill.com/article/money-money-money-hit-mamma-mia-recoups-its-investment-com-106096"
+      ]
+    },
+    "the-lion-king": {
+      "title": "The Lion King",
+      "slug": "the-lion-king",
+      "openingDate": "1997-11-13",
+      "status": "open",
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": "industry-estimate",
+      "recouped": true,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "designation": "Miracle",
+      "notes": "The Lion King is one of Broadway's longest-running and highest-grossing shows, opening in November 1997 and still running. It is widely acknowledged as a mega-hit. However, none of the evidence gathered contains explicit figures for capitalization, weekly running costs, or a specific recoupment date. The theatregold.com source references a $9 billion gross figure in its keywords, but no usable financial detail was extractable from the evidence provided. Designation as Miracle is based on the show's well-known status as a decades-long phenomenon, but specific financial data cannot be cited from these sources.",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://theatregold.com/how-much-does-a-broadway-musical-cost-wicked-lion-king/",
+          "date": null
+        },
+        {
+          "type": "reddit",
+          "url": "https://www.reddit.com/r/Broadway/comments/13p5d0p/current_broadway_shows_that_have_recouped_their/",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://thehustle.co/the-economics-of-broadway-shows",
+          "date": null
+        }
+      ],
+      "confidence": "low",
+      "researchedAt": "2026-10-10T21:32:20.394Z",
+      "pendingKey": "the-lion-king-1997",
+      "archivedAt": "2026-10-11T21:07:45.077Z",
+      "archivedReason": "rejected-recouped-claim",
+      "archivedDetail": "Only source is a theatregold.com cost explainer with no recoupment date or report. commercial.json the-lion-king already records recouped:true (Miracle, 1999 estimate); nothing new to apply."
+    },
+    "moulin-rouge": {
+      "title": "Moulin Rouge! The Musical",
+      "slug": "moulin-rouge",
+      "openingDate": "2019-07-25",
+      "status": "closed",
+      "capitalization": 28000000,
+      "capitalizationSource": "nytix.com article listing top 10 most expensive Broadway shows, states '$28 Million' capitalization for Moulin Rouge! The Musical",
+      "weeklyRunningCost": null,
+      "costMethodology": "trade-reported",
+      "recouped": true,
+      "recoupedDate": "2023-07",
+      "recoupedSource": "BroadwayWorld article dated 2023-07-31 titled 'MOULIN ROUGE! THE MUSICAL Recoups on Broadway, in the West End & in Australia'; Deadline article from 2023-07 referencing recoupment; nytix.com also confirms recoupment",
+      "designation": "Windfall",
+      "notes": "Moulin Rouge! The Musical opened July 25, 2019 and is scheduled to close August 30, 2026 — a roughly 7-year run. It was capitalized at $28 million per trade reporting, won 10 Tony Awards including Best Musical, and recouped its Broadway investment in July 2023 (also recouping simultaneously in the West End and Australia). While a strong commercial hit, its ~7-year run falls short of the decade-plus phenomenon threshold for a Miracle designation, making Windfall the appropriate classification.",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.nytix.com/articles/top-10-most-expensive-broadway-shows",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/MOULIN-ROUGE-THE-MUSICAL-Recoups-on-Broadway-in-the-West-End-in-Australia-20230731",
+          "date": "2023-07-31"
+        },
+        {
+          "type": "trade",
+          "url": "https://deadline.com/2023/07/baz-luhrmann-moulin-rouge-musical-breaking-baz-1235451329/",
+          "date": "2023-07-01"
+        }
+      ],
+      "confidence": "medium",
+      "researchedAt": "2026-10-10T21:22:58.271Z",
+      "pendingKey": "moulin-rouge-2019",
+      "archivedAt": "2026-10-11T21:07:45.258Z",
+      "archivedReason": "rejected-recouped-claim",
+      "archivedDetail": "Duplicate. commercial.json moulin-rouge already cites Broadway News (2023-08-03) quoting the production 'recouped its investment in November 2022'; the 2023-07 date here is the announcement date, not a correction."
+    },
+    "leopoldstadt-2022": {
+      "capitalization": 8000000,
+      "capitalizationSource": "Washington Post described Leopoldstadt as roughly an $8 million Broadway production and said it initially had to raise more than $8 million. ([washingtonpost.com](https://www.washingtonpost.com/theater-dance/2022/09/29/tom-stoppard-leopoldstadt-broadway/?utm_source=openai))",
+      "weeklyRunningCost": 580000,
+      "costMethodology": "trade-reported",
+      "recoupedDate": null,
+      "recoupedSource": "A 2026 profile/interview with producer Catherine Adler says Leopoldstadt recouped its investment. ([palmerpb.com](https://palmerpb.com/2026/06/04/nine-tonys-and-counting-a-conversation-with-catherine-adler/?utm_source=openai))",
+      "estimatedRecoupmentPct": [
+        100,
+        120
+      ],
+      "designation": "Easy Winner",
+      "notes": "I used the direct contemporaneous ~$8 million budget estimate rather than back-solving from the later $3 million NYC tax credit award, because the credit is a subsidy and does not map one-to-one onto original Broadway capitalization. New York tax rules say the credit equals 25% of qualified NYC production expenditures and was capped at $3 million for this opening date; Broadway Journal also reported weekly fixed costs of about $580,000 before royalties, and Playbill’s closing gross page puts total Broadway grosses at $32.7 million. Public sources confirm recoupment, but not the exact month it happened. ([tax.ny.gov](https://www.tax.ny.gov/data/stats/ter/fiscal-year27/cross-article-tax-credits.htm?utm_source=openai))",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.washingtonpost.com/theater-dance/2022/09/29/tom-stoppard-leopoldstadt-broadway/",
+          "date": "2022-09-29"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/kimberly-akimbo-leopoldstadt-david-stone-win-big-at-tonys",
+          "date": "2023-06-12"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.tax.ny.gov/data/stats/ter/fiscal-year27/cross-article-tax-credits.htm",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/production/leopoldstadt-broadway-longacre-theatre-2022",
+          "date": "2023-07-02"
+        },
+        {
+          "type": "trade",
+          "url": "https://palmerpb.com/2026/06/04/nine-tonys-and-counting-a-conversation-with-catherine-adler/",
+          "date": "2026-06-04"
+        }
+      ],
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
+      "title": "Leopoldstadt",
+      "slug": "leopoldstadt-2022",
+      "openingDate": "2022-10-02",
+      "status": "closed",
+      "researchedAt": "2026-10-10T23:06:49.604Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "rejected",
+        "hardFields": [],
+        "rejectReasons": [
+          "recoup quote refers to the producer's 2013 production, not Leopoldstadt"
+        ]
+      },
+      "archivedAt": "2026-10-11T21:07:45.425Z",
+      "archivedReason": "rejected-recouped-claim",
+      "archivedDetail": "Cited source (palmerpb.com Catherine Adler interview, 2026-06-04) does not say Leopoldstadt recouped; its only recoupment line is about Vanya and Sonia and Masha and Spike. No trade report of Leopoldstadt recouping found (web search 2026-10-11).",
+      "rejectedSources": [
+        "https://palmerpb.com/2026/06/04/nine-tonys-and-counting-a-conversation-with-catherine-adler"
+      ]
+    }
+  },
+  "lastUpdated": "2026-10-11T21:07:45.595Z"
+}
