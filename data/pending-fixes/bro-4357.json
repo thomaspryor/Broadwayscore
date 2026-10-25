@@ -1,0 +1,33 @@
+{
+  "issueNumber": "bro-4357",
+  "planId": "25f476ba-3de3-4a70-a7b9-12634815a974",
+  "status": "applied",
+  "createdAt": "2026-10-14T00:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4357: delete the bogus multi-name WYPR segment file; the same review stays as wypr / Rob Sivak with its URL.",
+    "steps": [
+      "Host and guests of one radio segment parsed as a critic; duplicate of the wypr row (parser fixed in the same change)."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "water-for-elephants-tour-2025/j-wynn-rousuck-tom-hall-sam-bermas-dawes-rob-sivak--unknown.json",
+        "description": "Host and guests of one radio segment parsed as a critic; duplicate of the wypr row (parser fixed in the same change)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T04:48:18.676Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted water-for-elephants-tour-2025/j-wynn-rousuck-tom-hall-sam-bermas-dawes-rob-sivak--unknown.json"
+    }
+  ]
+}

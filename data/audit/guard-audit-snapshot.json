@@ -1,0 +1,306 @@
+{
+  "generatedAt": "2026-10-24T07:22:20.943Z",
+  "window": {
+    "since": "2026-10-18",
+    "until": "2026-10-24"
+  },
+  "bannerText": "Spend guard audit (last 7 days): 0 defect(s), 2 cap drift(s).",
+  "items": [
+    {
+      "title": "bd-circuit-breaker-serp_api1",
+      "detail": "OK: 0 trip day(s); spend n/a (no skip label) · CAP DRIFT: ceiling 250 (opening-window-reserve) < 1.5x 14-day median 220"
+    },
+    {
+      "title": "bd-circuit-breaker-web_unlocker2",
+      "detail": "ACCEPTED: 5 trip day(s); rerouted spend on trip days $0.03 (336 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 2777"
+    },
+    {
+      "title": "sb-circuit-breaker",
+      "detail": "NO DATA: no data; rerouted spend on trip days $0.00 (0 rows)"
+    },
+    {
+      "title": "sd-circuit-breaker",
+      "detail": "OK: 0 trip day(s); rerouted spend on trip days $0.00 (0 rows)"
+    },
+    {
+      "title": "Data Validation fallback risk",
+      "detail": "Recorded 0/7 day(s) with BD + Scrapingdog trips (web + SD: 0, SERP + SD: 0, all three: 0). Days: none recorded. Same-day trips do not prove simultaneous outages or ScrapingBee coverage; missing observations can undercount trips."
+    }
+  ],
+  "defects": [],
+  "drifts": [
+    "bd-circuit-breaker-serp_api1",
+    "bd-circuit-breaker-web_unlocker2"
+  ],
+  "guards": [
+    {
+      "key": "bd-circuit-breaker-serp_api1",
+      "alertKey": "guard-audit:bd-serp_api1",
+      "provider": "brightdata",
+      "shadow": false,
+      "verdict": "OK",
+      "days": 0,
+      "dayList": [],
+      "lowerBound": false,
+      "spend": {
+        "note": "n/a (no skip label)"
+      },
+      "drift": {
+        "ceiling": 250,
+        "source": "opening-window-reserve",
+        "from": "trip-row",
+        "currentZero": false,
+        "median14d": 220,
+        "drift": true,
+        "note": null
+      }
+    },
+    {
+      "key": "bd-circuit-breaker-web_unlocker2",
+      "alertKey": "guard-audit:bd-web_unlocker2",
+      "provider": "brightdata",
+      "shadow": false,
+      "verdict": "ACCEPTED",
+      "days": 5,
+      "dayList": [
+        "2026-10-18",
+        "2026-10-19",
+        "2026-10-20",
+        "2026-10-22",
+        "2026-10-23"
+      ],
+      "lowerBound": false,
+      "spend": {
+        "usd": 0.03,
+        "rows": 336,
+        "unpriced": 0,
+        "label": "bd-budget",
+        "partialSince": null,
+        "caveat": "'bd-budget' also marks per-run budget skips"
+      },
+      "drift": {
+        "ceiling": 1750,
+        "source": "opening-window-reserve",
+        "from": "trip-row",
+        "currentZero": false,
+        "median14d": 2777,
+        "drift": true,
+        "note": null
+      }
+    },
+    {
+      "key": "sb-circuit-breaker",
+      "alertKey": "guard-audit:sb",
+      "provider": "scrapingbee",
+      "shadow": false,
+      "verdict": "NO DATA",
+      "days": 0,
+      "dayList": [],
+      "lowerBound": false,
+      "spend": {
+        "usd": 0,
+        "rows": 0,
+        "unpriced": 0,
+        "label": "sb-breaker",
+        "partialSince": null,
+        "caveat": null
+      },
+      "drift": {
+        "ceiling": 50380,
+        "source": "plan+opening-window-reserve",
+        "from": "state",
+        "currentZero": false,
+        "median14d": 16433,
+        "drift": false,
+        "note": "not enforcing (shadow)"
+      }
+    },
+    {
+      "key": "sd-circuit-breaker",
+      "alertKey": "guard-audit:sd",
+      "provider": "scrapingdog",
+      "shadow": false,
+      "verdict": "OK",
+      "days": 0,
+      "dayList": [],
+      "lowerBound": false,
+      "spend": {
+        "usd": 0,
+        "rows": 0,
+        "unpriced": 0,
+        "label": "sd-breaker",
+        "partialSince": null,
+        "caveat": null
+      },
+      "drift": {
+        "ceiling": 441138,
+        "source": "plan",
+        "from": "state",
+        "currentZero": false,
+        "median14d": 57706,
+        "drift": false,
+        "note": null
+      }
+    }
+  ],
+  "spendByDay": {
+    "2026-10-11": {
+      "partial": true,
+      "guards": {
+        "bd-circuit-breaker-web_unlocker2": {
+          "usd": 0.0103,
+          "rows": 78,
+          "unpriced": 0
+        }
+      }
+    },
+    "2026-10-13": {
+      "partial": false,
+      "guards": {
+        "bd-circuit-breaker-web_unlocker2": {
+          "usd": 0.0061,
+          "rows": 58,
+          "unpriced": 0
+        }
+      }
+    },
+    "2026-10-14": {
+      "partial": false,
+      "guards": {
+        "bd-circuit-breaker-web_unlocker2": {
+          "usd": 0.0064,
+          "rows": 53,
+          "unpriced": 0
+        }
+      }
+    },
+    "2026-10-12": {
+      "partial": false,
+      "guards": {}
+    },
+    "2026-10-15": {
+      "partial": false,
+      "guards": {
+        "bd-circuit-breaker-web_unlocker2": {
+          "usd": 0.0034,
+          "rows": 30,
+          "unpriced": 0
+        }
+      }
+    },
+    "2026-10-16": {
+      "partial": false,
+      "guards": {
+        "bd-circuit-breaker-web_unlocker2": {
+          "usd": 0.0072,
+          "rows": 48,
+          "unpriced": 0
+        }
+      }
+    },
+    "2026-10-17": {
+      "partial": false,
+      "guards": {
+        "bd-circuit-breaker-web_unlocker2": {
+          "usd": 0.0105,
+          "rows": 82,
+          "unpriced": 0
+        }
+      }
+    },
+    "2026-10-18": {
+      "partial": false,
+      "guards": {
+        "bd-circuit-breaker-web_unlocker2": {
+          "usd": 0.0192,
+          "rows": 190,
+          "unpriced": 0
+        }
+      }
+    },
+    "2026-10-19": {
+      "partial": false,
+      "guards": {
+        "bd-circuit-breaker-web_unlocker2": {
+          "usd": 0.0013,
+          "rows": 13,
+          "unpriced": 0
+        }
+      }
+    },
+    "2026-10-20": {
+      "partial": false,
+      "guards": {
+        "bd-circuit-breaker-web_unlocker2": {
+          "usd": 0.0059,
+          "rows": 56,
+          "unpriced": 0
+        }
+      }
+    },
+    "2026-10-21": {
+      "partial": false,
+      "guards": {}
+    },
+    "2026-10-22": {
+      "partial": false,
+      "guards": {
+        "bd-circuit-breaker-web_unlocker2": {
+          "usd": 0.0026,
+          "rows": 26,
+          "unpriced": 0
+        }
+      }
+    },
+    "2026-10-23": {
+      "partial": false,
+      "guards": {
+        "bd-circuit-breaker-web_unlocker2": {
+          "usd": 0.0054,
+          "rows": 51,
+          "unpriced": 0
+        }
+      }
+    },
+    "2026-10-24": {
+      "partial": true,
+      "guards": {}
+    }
+  },
+  "dailyBreakerPattern": {
+    "window": {
+      "sinceDay": "2026-10-18",
+      "untilDay": "2026-10-24",
+      "days": 7
+    },
+    "providers": {
+      "web": {
+        "days": 5,
+        "dayList": [
+          "2026-10-18",
+          "2026-10-19",
+          "2026-10-20",
+          "2026-10-22",
+          "2026-10-23"
+        ],
+        "lowerBound": false
+      },
+      "serp": {
+        "days": 0,
+        "dayList": [],
+        "lowerBound": false
+      },
+      "scrapingdog": {
+        "days": 0,
+        "dayList": [],
+        "lowerBound": false
+      }
+    },
+    "webAndSd": [],
+    "serpAndSd": [],
+    "allThree": [],
+    "observedDays": [],
+    "incomplete": false,
+    "summary": "Recorded 0/7 day(s) with BD + Scrapingdog trips (web + SD: 0, SERP + SD: 0, all three: 0). Days: none recorded. Same-day trips do not prove simultaneous outages or ScrapingBee coverage; missing observations can undercount trips."
+  }
+}

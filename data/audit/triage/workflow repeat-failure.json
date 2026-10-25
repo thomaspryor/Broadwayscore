@@ -1,0 +1,20 @@
+{
+  "system": "workflow repeat-failure",
+  "status": "error",
+  "lastChecked": "2026-10-24T07:20:17.600Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Workflow repeat-failure: Test Suite",
+      "status": "error",
+      "message": "Test Suite failed 14 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Check Corpus Drift",
+      "status": "warn",
+      "message": "Check Corpus Drift failed 2 times in the last 24h — likely broken, not transient."
+    }
+  ]
+}

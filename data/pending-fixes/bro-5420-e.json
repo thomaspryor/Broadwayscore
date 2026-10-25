@@ -1,0 +1,347 @@
+{
+  "issueNumber": "bro-5420-e",
+  "planId": "89533f56-a94e-4080-a8d1-ee24a7ab445a",
+  "status": "applied",
+  "createdAt": "2026-10-16T04:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5420 (e): clean 25 live critic names carrying byline decoration (\"(she/her)\", \", Chief Dance Critic\", \"<br>\", escaped letters, \"Outlet (Name)\") or broken capitalisation. Submitter handles whose pages show no other byline (nick730, helena6, Stewart Who?), pen names, outlet names on unsigned pieces, joint bylines and Angels in America part labels are left as they are.",
+    "steps": [
+      "recredit"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "1536-west-end-2026/times-uk--laura-hackett-fiction-editor.json",
+        "field": "criticName",
+        "oldValue": "Laura Hackett, Fiction Editor",
+        "newValue": "Laura Hackett",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Laura Hackett. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "affluenza-off-west-end-2026/adventuresintheatreland--oviya-thirumalai-sheher.json",
+        "field": "criticName",
+        "oldValue": "Oviya Thirumalai (she/her)",
+        "newValue": "Oviya Thirumalai",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Oviya Thirumalai. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "aint-no-mo-2022/theater-pizzazz--ron-fassler-critic.json",
+        "field": "criticName",
+        "oldValue": "Ron Fassler (critic)",
+        "newValue": "Ron Fassler",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Ron Fassler. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anansi-the-spider-west-end-2026/adventuresintheatreland--bethan-warriner-sheher.json",
+        "field": "criticName",
+        "oldValue": "Bethan Warriner (she/her)",
+        "newValue": "Bethan Warriner",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Bethan Warriner. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "and-juliet-tour-2024/indianapolisrecorder--chloe-mcgowan.json",
+        "field": "criticName",
+        "oldValue": "CHLOE McGOWAN",
+        "newValue": "Chloe McGowan",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Chloe McGowan. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anna-christie-1977/nysr--new-york-notebook-sandy-macdonald.json",
+        "field": "criticName",
+        "oldValue": "New York Notebook (Sandy MacDonald)",
+        "newValue": "Sandy MacDonald",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Sandy MacDonald. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "becoming-hamlet-off-broadway-2026/theater-scene--victor-gluck-editor-in-chief.json",
+        "field": "criticName",
+        "oldValue": "Victor Gluck, Editor-in-Chief",
+        "newValue": "Victor Gluck",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Victor Gluck. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "brainiac-live-west-end-2026/adventuresintheatreland--oviya-thirumalai-sheher.json",
+        "field": "criticName",
+        "oldValue": "Oviya Thirumalai (she/her)",
+        "newValue": "Oviya Thirumalai",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Oviya Thirumalai. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bug-2026/nysr--new-york-notebook-sandy-macdonald.json",
+        "field": "criticName",
+        "oldValue": "New York Notebook (Sandy MacDonald)",
+        "newValue": "Sandy MacDonald",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Sandy MacDonald. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dead-accounts-2012/latimes--charles-mcnulty.json",
+        "field": "criticName",
+        "oldValue": "Charles McNUlty",
+        "newValue": "Charles McNulty",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Charles McNulty. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "deep-heat-rivalry-off-west-end-2026/adventuresintheatreland--bethan-warriner-sheher.json",
+        "field": "criticName",
+        "oldValue": "Bethan Warriner (she/her)",
+        "newValue": "Bethan Warriner",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Bethan Warriner. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dolly-a-true-original-musical-regional-2025/tennessean--the-tennessean.json",
+        "field": "criticName",
+        "oldValue": ", the Tennessean",
+        "newValue": "Unknown",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Unknown. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "franz-and-marie-west-end-2026/adventuresintheatreland--oviya-thirumalai-sheher.json",
+        "field": "criticName",
+        "oldValue": "Oviya Thirumalai (she/her)",
+        "newValue": "Oviya Thirumalai",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Oviya Thirumalai. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hadestown-west-end-2024/adventuresintheatreland--maddie-white-sheher.json",
+        "field": "criticName",
+        "oldValue": "Maddie White (she/her)",
+        "newValue": "Maddie White",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Maddie White. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hay-fever-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
+        "field": "criticName",
+        "oldValue": "Julie Fisher (she/her)",
+        "newValue": "Julie Fisher",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Julie Fisher. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-noel-coward-west-end-2026/adventuresintheatreland--oviya-thirumalai-sheher.json",
+        "field": "criticName",
+        "oldValue": "Oviya Thirumalai (she/her)",
+        "newValue": "Oviya Thirumalai",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Oviya Thirumalai. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "king-kong-2018/the-artswire-weekly--mateo-moreno-critic.json",
+        "field": "criticName",
+        "oldValue": "Mateo Moreno (Critic)",
+        "newValue": "Mateo Moreno",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Mateo Moreno. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lucky-guy-2013/latimes--charles-mcnulty.json",
+        "field": "criticName",
+        "oldValue": "Charles McNUlty",
+        "newValue": "Charles McNulty",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Charles McNulty. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "million-dollar-quartet-off-west-end-2026/adventuresintheatreland--bethan-warriner-sheher.json",
+        "field": "criticName",
+        "oldValue": "Bethan Warriner (she/her)",
+        "newValue": "Bethan Warriner",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Bethan Warriner. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "now-you-see-me-live-west-end-2026/adventuresintheatreland--bethan-warriner-sheher.json",
+        "field": "criticName",
+        "oldValue": "Bethan Warriner (she/her)",
+        "newValue": "Bethan Warriner",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Bethan Warriner. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oedipus-west-end-2025/gramilano--lucu00eda-piquero.json",
+        "field": "criticName",
+        "oldValue": "Luc\\u00eda Piquero",
+        "newValue": "Lucía Piquero",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Lucía Piquero. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oh-mary-tour-2026/timesofsandiego--drew-sitton-times-of-san-diego.json",
+        "field": "criticName",
+        "oldValue": "Drew Sitton • Times of San Diego",
+        "newValue": "Drew Sitton",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Drew Sitton. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json",
+        "field": "criticName",
+        "oldValue": "Lisa Martland<br>",
+        "newValue": "Lisa Martland",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Lisa Martland. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purlie-victorious-2023/theater-pizzazz--ron-fassler-critic.json",
+        "field": "criticName",
+        "oldValue": "Ron Fassler (critic)",
+        "newValue": "Ron Fassler",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Ron Fassler. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "space-dogs-off-west-end-2026/adventuresintheatreland--bethan-warriner-sheher.json",
+        "field": "criticName",
+        "oldValue": "Bethan Warriner (she/her)",
+        "newValue": "Bethan Warriner",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Bethan Warriner. Same rule sanitizeCriticName now applies at save time."
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T04:07:13.824Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "1536-west-end-2026/times-uk--laura-hackett-fiction-editor.json criticName: \"Laura Hackett, Fiction Editor\" -> \"Laura Hackett\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "affluenza-off-west-end-2026/adventuresintheatreland--oviya-thirumalai-sheher.json criticName: \"Oviya Thirumalai (she/her)\" -> \"Oviya Thirumalai\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "aint-no-mo-2022/theater-pizzazz--ron-fassler-critic.json criticName: \"Ron Fassler (critic)\" -> \"Ron Fassler\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anansi-the-spider-west-end-2026/adventuresintheatreland--bethan-warriner-sheher.json criticName: \"Bethan Warriner (she/her)\" -> \"Bethan Warriner\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "and-juliet-tour-2024/indianapolisrecorder--chloe-mcgowan.json criticName: \"CHLOE McGOWAN\" -> \"Chloe McGowan\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anna-christie-1977/nysr--new-york-notebook-sandy-macdonald.json criticName: \"New York Notebook (Sandy MacDonald)\" -> \"Sandy MacDonald\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "becoming-hamlet-off-broadway-2026/theater-scene--victor-gluck-editor-in-chief.json criticName: \"Victor Gluck, Editor-in-Chief\" -> \"Victor Gluck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "brainiac-live-west-end-2026/adventuresintheatreland--oviya-thirumalai-sheher.json criticName: \"Oviya Thirumalai (she/her)\" -> \"Oviya Thirumalai\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bug-2026/nysr--new-york-notebook-sandy-macdonald.json criticName: \"New York Notebook (Sandy MacDonald)\" -> \"Sandy MacDonald\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dead-accounts-2012/latimes--charles-mcnulty.json criticName: \"Charles McNUlty\" -> \"Charles McNulty\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "deep-heat-rivalry-off-west-end-2026/adventuresintheatreland--bethan-warriner-sheher.json criticName: \"Bethan Warriner (she/her)\" -> \"Bethan Warriner\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dolly-a-true-original-musical-regional-2025/tennessean--the-tennessean.json criticName: \", the Tennessean\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "franz-and-marie-west-end-2026/adventuresintheatreland--oviya-thirumalai-sheher.json criticName: \"Oviya Thirumalai (she/her)\" -> \"Oviya Thirumalai\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hadestown-west-end-2024/adventuresintheatreland--maddie-white-sheher.json criticName: \"Maddie White (she/her)\" -> \"Maddie White\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hay-fever-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json criticName: \"Julie Fisher (she/her)\" -> \"Julie Fisher\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-noel-coward-west-end-2026/adventuresintheatreland--oviya-thirumalai-sheher.json criticName: \"Oviya Thirumalai (she/her)\" -> \"Oviya Thirumalai\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-kong-2018/the-artswire-weekly--mateo-moreno-critic.json criticName: \"Mateo Moreno (Critic)\" -> \"Mateo Moreno\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lucky-guy-2013/latimes--charles-mcnulty.json criticName: \"Charles McNUlty\" -> \"Charles McNulty\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "million-dollar-quartet-off-west-end-2026/adventuresintheatreland--bethan-warriner-sheher.json criticName: \"Bethan Warriner (she/her)\" -> \"Bethan Warriner\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "now-you-see-me-live-west-end-2026/adventuresintheatreland--bethan-warriner-sheher.json criticName: \"Bethan Warriner (she/her)\" -> \"Bethan Warriner\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oedipus-west-end-2025/gramilano--lucu00eda-piquero.json criticName: \"Luc\\\\u00eda Piquero\" -> \"Lucía Piquero\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oh-mary-tour-2026/timesofsandiego--drew-sitton-times-of-san-diego.json criticName: \"Drew Sitton • Times of San Diego\" -> \"Drew Sitton\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martlandbr.json criticName: \"Lisa Martland<br>\" -> \"Lisa Martland\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "purlie-victorious-2023/theater-pizzazz--ron-fassler-critic.json criticName: \"Ron Fassler (critic)\" -> \"Ron Fassler\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "space-dogs-off-west-end-2026/adventuresintheatreland--bethan-warriner-sheher.json criticName: \"Bethan Warriner (she/her)\" -> \"Bethan Warriner\""
+    }
+  ]
+}

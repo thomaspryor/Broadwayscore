@@ -1,0 +1,143 @@
+{
+  "issueNumber": "bro-4891-c",
+  "planId": "0e15fd52-0008-46fa-b242-caf18ff74367",
+  "status": "applied",
+  "createdAt": "2026-10-13T00:47:51.668Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4891: delete 11 stray On Your Feet! review files misfiled under gloria-2026 (the Gloria Estefan musical page is a different production)",
+    "steps": [
+      "Delete the 11 gloria-2026 files that hold On Your Feet! reviews"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "gloria-2026/amny--unknown.json",
+        "description": "Stray On Your Feet! (2015) review filed under Gloria by a one-word title match; not counted"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "gloria-2026/billboard--david-rooney.json",
+        "description": "Stray On Your Feet! (2015) review filed under Gloria by a one-word title match; not counted"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "gloria-2026/chicagotribune--chris-jones.json",
+        "description": "Stray On Your Feet! (2015) review filed under Gloria by a one-word title match; not counted"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "gloria-2026/financialtimes--unknown.json",
+        "description": "Stray On Your Feet! (2015) review filed under Gloria by a one-word title match; not counted"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "gloria-2026/huffpost--unknown.json",
+        "description": "Stray On Your Feet! (2015) review filed under Gloria by a one-word title match; not counted"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "gloria-2026/nbcny--robert-kahn.json",
+        "description": "Stray On Your Feet! (2015) review filed under Gloria by a one-word title match; not counted"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "gloria-2026/newsday--linda-winer.json",
+        "description": "Stray On Your Feet! (2015) review filed under Gloria by a one-word title match; not counted"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "gloria-2026/nydailynews--joe-dziemianowicz.json",
+        "description": "Stray On Your Feet! (2015) review filed under Gloria by a one-word title match; not counted"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "gloria-2026/perez-hilton--unknown.json",
+        "description": "Stray On Your Feet! (2015) review filed under Gloria by a one-word title match; not counted"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "gloria-2026/thewrap--robert-hofler.json",
+        "description": "Stray On Your Feet! (2015) review filed under Gloria by a one-word title match; not counted"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "gloria-2026/wsj--terry-teachout.json",
+        "description": "Stray On Your Feet! (2015) review filed under Gloria by a one-word title match; not counted"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T02:03:04.915Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted gloria-2026/amny--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted gloria-2026/billboard--david-rooney.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted gloria-2026/chicagotribune--chris-jones.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted gloria-2026/financialtimes--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted gloria-2026/huffpost--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted gloria-2026/nbcny--robert-kahn.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted gloria-2026/newsday--linda-winer.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted gloria-2026/nydailynews--joe-dziemianowicz.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted gloria-2026/perez-hilton--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted gloria-2026/thewrap--robert-hofler.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted gloria-2026/wsj--terry-teachout.json"
+    }
+  ]
+}

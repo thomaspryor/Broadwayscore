@@ -1,0 +1,40 @@
+name: 'Commit stage-latency log'
+description: >-
+  Stages and commits data/audit/stage-latency.jsonl (root-repo public
+  checkout) if it changed, and pushes. BRO-2757: the opening-night poller and
+  Express only staged data/audit/*.json, which never matches this .jsonl, so
+  every review-first-seen / review-text-collected / scored event they emitted
+  died with the runner and the opening-night coverage metric read every outlet
+  as a miss. Kept OUT of the time-critical data commit on purpose: this path
+  disqualifies push-with-retry's Git Data API fallback. The calling step must
+  set `if: always()` and `continue-on-error: true` (telemetry must never fail
+  a job). Concurrent appends merge cleanly (.gitattributes merge=union).
+  Same shape as commit-scraper-spend-ledger.
+
+inputs:
+  workflow-name:
+    description: 'Name to include in the commit message, e.g. "opening-night-poller"'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Commit stage-latency log
+      shell: bash
+      env:
+        GIT_NET_TIMEOUT_SEC: '30'
+        INPUT_WORKFLOW_NAME: ${{ inputs.workflow-name }}
+      run: |
+        if [ ! -f data/audit/stage-latency.jsonl ]; then
+          echo "No stage-latency log on this runner"
+          exit 0
+        fi
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add data/audit/stage-latency.jsonl
+        if git diff --staged --quiet; then
+          echo "No stage-latency events to commit"
+        else
+          git commit -m "audit: stage-latency events (${INPUT_WORKFLOW_NAME}) [skip ci]" -- data/audit/stage-latency.jsonl
+          bash scripts/lib/push-with-retry.sh 5 main
+        fi

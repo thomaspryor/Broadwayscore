@@ -1,0 +1,55 @@
+{
+  "promptVersion": "v2-gershwin-only",
+  "timestamp": "2026-04-18T03:07:30.642Z",
+  "score": {
+    "composite": 54.8,
+    "sectionScore": 41.7,
+    "claimScore": 32.1,
+    "warningPenalty": 19
+  },
+  "totals": {
+    "theaters_total": 1,
+    "theaters_with_errors": 0,
+    "sections_total": 6,
+    "sections_by_support": {
+      "STRONG": 4,
+      "MODERATE": 1,
+      "WEAK": 1,
+      "UNSUPPORTED": 0,
+      "ERROR": 0
+    },
+    "claims_total": 12,
+    "claims_by_support": {
+      "STRONG": 4,
+      "MODERATE": 4,
+      "WEAK": 3,
+      "UNSUPPORTED": 1
+    },
+    "warnings_total": 19,
+    "urls_fetched_total": 27,
+    "urls_failed_total": 0,
+    "unsupported_claims_examples": [
+      {
+        "theater": "Gershwin Theatre",
+        "section": "Orchestra Center Front (too close)",
+        "note": "No evidence mentions dragon or flying scenery hung above proscenium extending over rows BB-DD. One photo shows dragon visible from BB-111 but no obstruction claim. Evidence 3 mentions raised stage forcing upward gaze but not scenery obstruction."
+      }
+    ]
+  },
+  "perTheater": [
+    {
+      "theater": "Gershwin Theatre",
+      "sections_total": 6,
+      "sections_audited": 6,
+      "sections_by_support": {
+        "STRONG": 4,
+        "MODERATE": 1,
+        "WEAK": 1,
+        "UNSUPPORTED": 0,
+        "ERROR": 0
+      },
+      "warnings": 19,
+      "unsupported_claims": 1
+    }
+  ]
+}

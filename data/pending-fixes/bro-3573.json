@@ -1,0 +1,245 @@
+{
+  "issueNumber": "bro-3573",
+  "planId": "6c92f49f-0cc0-4f3a-87b4-ff2efa6296d6",
+  "status": "applied",
+  "createdAt": "2026-10-13T13:35:38.661Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-3573: clear 16 stale ambiguous-production wrongProduction flags, hand-adjudicated. Sweep: 5,241 files have wrongProduction + 2000+ chars of text and no human/date basis; the stub-time shape the card describes is the ambiguous-production stamp (35 files). Re-running the routing signals on today's stored date/url: 19 now point at their own show; by reading each text, 16 are reviews of this production (cleared here) and 3 are genuinely another run (buena-vista nytimes 2023 url, cats chicagotribune and exeunt off-Broadway 2024 reviews), plus othello-west-end-2022/guardian (2025 Haymarket review), all left flagged. The other 16 still have no signal for their own show and stay flagged. (part 1 of 2)",
+    "steps": [
+      "BRO-3573: stale ambiguous-production flag (market-routing Guard A, stamped when the record had no date/url signal for this show). Re-running collectSameTitleSignals on the stored date/url now gives this show its own signal, and text: \"It’s transferred to the suitably intimate Ambassadors\" (this West End run; published the day after the 2026-05-12 opening).",
+      "Clear the stale flag (see above).",
+      "BRO-3573: stale ambiguous-production flag (market-routing Guard A, stamped when the record had no date/url signal for this show). Re-running collectSameTitleSignals on the stored date/url now gives this show its own signal, and text reviews \"the new musical at the Gerald Schoenfeld\"; nystagereview.com/2025/03/19, the Broadway opening.",
+      "Clear the stale flag (see above).",
+      "BRO-3573: stale ambiguous-production flag (market-routing Guard A, stamped when the record had no date/url signal for this show). Re-running collectSameTitleSignals on the stored date/url now gives this show its own signal, and text: \"Opening on Tuesday at the Broadhurst Theatre, following extended prowls downtown\"; nystagereview.com/2026/04/07.",
+      "Clear the stale flag (see above).",
+      "BRO-3573: stale ambiguous-production flag (market-routing Guard A, stamped when the record had no date/url signal for this show). Re-running collectSameTitleSignals on the stored date/url now gives this show its own signal, and Rosamund Pike at the National Theatre (url national-theatre), 2025-07-24, this NT run.",
+      "Clear the stale flag (see above).",
+      "BRO-3573: stale ambiguous-production flag (market-routing Guard A, stamped when the record had no date/url signal for this show). Re-running collectSameTitleSignals on the stored date/url now gives this show its own signal, and dated 07 Apr 2026, the Wyndham's opening; text contrasts with \"when it ran at\" the NT premiere.",
+      "Clear the stale flag (see above).",
+      "BRO-3573: stale ambiguous-production flag (market-routing Guard A, stamped when the record had no date/url signal for this show). Re-running collectSameTitleSignals on the stored date/url now gives this show its own signal, and text: \"Into the Woods at the Bridge Theatre\" (this production).",
+      "Clear the stale flag (see above).",
+      "BRO-3573: stale ambiguous-production flag (market-routing Guard A, stamped when the record had no date/url signal for this show). Re-running collectSameTitleSignals on the stored date/url now gives this show its own signal, and text: \"aptly named, Bridge Theatre, Fein has...\" (this production).",
+      "Clear the stale flag (see above).",
+      "BRO-3573: stale ambiguous-production flag (market-routing Guard A, stamped when the record had no date/url signal for this show). Re-running collectSameTitleSignals on the stored date/url now gives this show its own signal, and text: \"This revival at the Bridge Theatre, directed by Jordan Fein\".",
+      "Clear the stale flag (see above)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "1536-west-end-2026/standard--nick-curtis.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-3573: stale ambiguous-production flag (market-routing Guard A, stamped when the record had no date/url signal for this show). Re-running collectSameTitleSignals on the stored date/url now gives this show its own signal, and text: \"It’s transferred to the suitably intimate Ambassadors\" (this West End run; published the day after the 2026-05-12 opening)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "1536-west-end-2026/standard--nick-curtis.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the stale flag (see above)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "buena-vista-social-club-2025/nysr--unknown.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-3573: stale ambiguous-production flag (market-routing Guard A, stamped when the record had no date/url signal for this show). Re-running collectSameTitleSignals on the stored date/url now gives this show its own signal, and text reviews \"the new musical at the Gerald Schoenfeld\"; nystagereview.com/2025/03/19, the Broadway opening."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "buena-vista-social-club-2025/nysr--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the stale flag (see above)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-the-jellicle-ball-2026/nysr--melissa-rose-bernardo.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-3573: stale ambiguous-production flag (market-routing Guard A, stamped when the record had no date/url signal for this show). Re-running collectSameTitleSignals on the stored date/url now gives this show its own signal, and text: \"Opening on Tuesday at the Broadhurst Theatre, following extended prowls downtown\"; nystagereview.com/2026/04/07."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-the-jellicle-ball-2026/nysr--melissa-rose-bernardo.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the stale flag (see above)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "inter-alia-west-end-2025/standard--nick-curtis.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-3573: stale ambiguous-production flag (market-routing Guard A, stamped when the record had no date/url signal for this show). Re-running collectSameTitleSignals on the stored date/url now gives this show its own signal, and Rosamund Pike at the National Theatre (url national-theatre), 2025-07-24, this NT run."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "inter-alia-west-end-2025/standard--nick-curtis.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the stale flag (see above)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "inter-alia-west-end-2026/daily-mail--patrick-marmion.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-3573: stale ambiguous-production flag (market-routing Guard A, stamped when the record had no date/url signal for this show). Re-running collectSameTitleSignals on the stored date/url now gives this show its own signal, and dated 07 Apr 2026, the Wyndham's opening; text contrasts with \"when it ran at\" the NT premiere."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "inter-alia-west-end-2026/daily-mail--patrick-marmion.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the stale flag (see above)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-west-end-2025/counselmagazine--daniel-barnett.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-3573: stale ambiguous-production flag (market-routing Guard A, stamped when the record had no date/url signal for this show). Re-running collectSameTitleSignals on the stored date/url now gives this show its own signal, and text: \"Into the Woods at the Bridge Theatre\" (this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-west-end-2025/counselmagazine--daniel-barnett.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the stale flag (see above)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-west-end-2025/mildconcern--tim-brandon.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-3573: stale ambiguous-production flag (market-routing Guard A, stamped when the record had no date/url signal for this show). Re-running collectSameTitleSignals on the stored date/url now gives this show its own signal, and text: \"aptly named, Bridge Theatre, Fein has...\" (this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-west-end-2025/mildconcern--tim-brandon.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the stale flag (see above)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-west-end-2025/plays-to-see--wilder-gutterson.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-3573: stale ambiguous-production flag (market-routing Guard A, stamped when the record had no date/url signal for this show). Re-running collectSameTitleSignals on the stored date/url now gives this show its own signal, and text: \"This revival at the Bridge Theatre, directed by Jordan Fein\"."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-west-end-2025/plays-to-see--wilder-gutterson.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the stale flag (see above)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T15:03:56.075Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "1536-west-end-2026/standard--nick-curtis.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "1536-west-end-2026/standard--nick-curtis.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "buena-vista-social-club-2025/nysr--unknown.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "buena-vista-social-club-2025/nysr--unknown.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-the-jellicle-ball-2026/nysr--melissa-rose-bernardo.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-the-jellicle-ball-2026/nysr--melissa-rose-bernardo.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "inter-alia-west-end-2025/standard--nick-curtis.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "inter-alia-west-end-2025/standard--nick-curtis.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "inter-alia-west-end-2026/daily-mail--patrick-marmion.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "inter-alia-west-end-2026/daily-mail--patrick-marmion.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-west-end-2025/counselmagazine--daniel-barnett.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-west-end-2025/counselmagazine--daniel-barnett.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-west-end-2025/mildconcern--tim-brandon.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-west-end-2025/mildconcern--tim-brandon.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-west-end-2025/plays-to-see--wilder-gutterson.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-west-end-2025/plays-to-see--wilder-gutterson.json wrongProduction: true -> false"
+    }
+  ]
+}

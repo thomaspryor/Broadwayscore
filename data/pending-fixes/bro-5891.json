@@ -1,0 +1,233 @@
+{
+  "issueNumber": "bro-5891",
+  "planId": "a819e284-0242-4777-815c-5f8f6be7e837",
+  "status": "applied",
+  "createdAt": "2026-10-22T04:20:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5891: release five Billy Crystal 860 opening-night reviews (NY Post, Time Out, NY Theatre Guide, The Independent, People) wrongly excluded as non-reviews by a title-only content-verifier heuristic, and fix the Vulture critic name. NY Daily News stays excluded: it syndicates Chris Jones's Chicago Tribune review, already live.",
+    "steps": [
+      "For each of the five files: set nonReviewManualClear, clear isNonReview and rejectionReason (isNonReviewReason is a write-guarded audit trail and stays)",
+      "Fix Vulture criticName capitalisation",
+      "Rebuild and deploy"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "billy-crystal-860-2026/nypost--johnny-oleksinski.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "NY Post review by Johnny Oleksinski (nypost.com/2026/10/21/.../860-review-billy-crystal...). BRO-5891: content-verifier heuristic flagged wrongArticle only because the listing title 'Billy Crystal 860' is absent from the text (critics call the show '860', shows.json akaTitles ['860']); the rebuild promoted that medium heuristic verdict to isNonReview before the review was scored. Full review text, high-confidence ensemble score, cited by the BWW Review Roundup."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "billy-crystal-860-2026/nypost--johnny-oleksinski.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Release the false CV-promoted non-review flag (BRO-5891)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "billy-crystal-860-2026/nypost--johnny-oleksinski.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Clear the rejectionReason the CV promotion stamped (BRO-5891)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "billy-crystal-860-2026/timeout--adam-feldman.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Time Out New York review by Adam Feldman, 4 stars. BRO-5891: content-verifier heuristic flagged wrongArticle only because the listing title 'Billy Crystal 860' is absent from the text (critics call the show '860', shows.json akaTitles ['860']); the rebuild promoted that medium heuristic verdict to isNonReview before the review was scored. Full review text, high-confidence ensemble score, cited by the BWW Review Roundup."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "billy-crystal-860-2026/timeout--adam-feldman.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Release the false CV-promoted non-review flag (BRO-5891)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "billy-crystal-860-2026/timeout--adam-feldman.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Clear the rejectionReason the CV promotion stamped (BRO-5891)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "billy-crystal-860-2026/nytg--joe-dziemianowicz.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "New York Theatre Guide review by Joe Dziemianowicz. BRO-5891: content-verifier heuristic flagged wrongArticle only because the listing title 'Billy Crystal 860' is absent from the text (critics call the show '860', shows.json akaTitles ['860']); the rebuild promoted that medium heuristic verdict to isNonReview before the review was scored. Full review text, high-confidence ensemble score, cited by the BWW Review Roundup."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "billy-crystal-860-2026/nytg--joe-dziemianowicz.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Release the false CV-promoted non-review flag (BRO-5891)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "billy-crystal-860-2026/nytg--joe-dziemianowicz.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Clear the rejectionReason the CV promotion stamped (BRO-5891)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "billy-crystal-860-2026/independent--caitlin-hornik.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "The Independent review by Caitlin Hornik. BRO-5891: content-verifier heuristic flagged wrongArticle only because the listing title 'Billy Crystal 860' is absent from the text (critics call the show '860', shows.json akaTitles ['860']); the rebuild promoted that medium heuristic verdict to isNonReview before the review was scored. Full review text, high-confidence ensemble score, cited by the BWW Review Roundup."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "billy-crystal-860-2026/independent--caitlin-hornik.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Release the false CV-promoted non-review flag (BRO-5891)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "billy-crystal-860-2026/independent--caitlin-hornik.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Clear the rejectionReason the CV promotion stamped (BRO-5891)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "billy-crystal-860-2026/people--dave-quinn.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "People review by Dave Quinn. BRO-5891: content-verifier heuristic flagged wrongArticle only because the listing title 'Billy Crystal 860' is absent from the text (critics call the show '860', shows.json akaTitles ['860']); the rebuild promoted that medium heuristic verdict to isNonReview before the review was scored. Full review text, high-confidence ensemble score, cited by the BWW Review Roundup."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "billy-crystal-860-2026/people--dave-quinn.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Release the false CV-promoted non-review flag (BRO-5891)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "billy-crystal-860-2026/people--dave-quinn.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Clear the rejectionReason the CV promotion stamped (BRO-5891)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "billy-crystal-860-2026/vulture--jackson-mchenry.json",
+        "field": "criticName",
+        "oldValue": "Jackson Mchenry",
+        "newValue": "Jackson McHenry",
+        "description": "BRO-5891: Vulture byline is Jackson McHenry (capital H); ingest-urls title-cased it"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T04:27:18.722Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/nypost--johnny-oleksinski.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/nypost--johnny-oleksinski.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/nypost--johnny-oleksinski.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/timeout--adam-feldman.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/timeout--adam-feldman.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/timeout--adam-feldman.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/nytg--joe-dziemianowicz.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/nytg--joe-dziemianowicz.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/nytg--joe-dziemianowicz.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/independent--caitlin-hornik.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/independent--caitlin-hornik.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/independent--caitlin-hornik.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/people--dave-quinn.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/people--dave-quinn.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/people--dave-quinn.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/vulture--jackson-mchenry.json criticName: \"Jackson Mchenry\" -> \"Jackson McHenry\""
+    }
+  ],
+  "executedIn": "ci"
+}

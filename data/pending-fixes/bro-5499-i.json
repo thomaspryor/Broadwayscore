@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-5499-i",
+  "planId": "76de8324-d0a5-4d19-9f1b-13cefea89009",
+  "status": "applied",
+  "createdAt": "2026-10-16T20:14:13.498Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5499 (i): Pages on Stages Memoirs date (file renamed by plan b after plan d was written).",
+    "steps": [
+      "edit"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "memoirs-of-amorous-gentlemen-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-16",
+        "newValue": "2026-10-15",
+        "description": "BRO-5499: WordPress post permalink 2026/10/15 (the page prints no date); UTC ingest date had been stored. The file was renamed from pages-on-stages--unknown by plan b, so plan d could not reach it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "memoirs-of-amorous-gentlemen-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: date checked against the article page"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T20:59:06.540Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "memoirs-of-amorous-gentlemen-off-broadway-2026/pages-on-stages--mason-pilevsky.json publishDate: \"2026-10-16\" -> \"2026-10-15\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "memoirs-of-amorous-gentlemen-off-broadway-2026/pages-on-stages--mason-pilevsky.json dateSource: null -> \"human-page-verified\""
+    }
+  ]
+}

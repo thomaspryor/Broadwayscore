@@ -1,0 +1,83 @@
+{
+  "date": "2026-07-20",
+  "generatedAt": "2026-07-20T00:33:24.831Z",
+  "note": "S3-T2: per-slug SEC Form D hit/miss for the 10 shows with weeklyRunningCost but no capitalization. Generated after fixing two bugs: (1) update-commercial-data.js passed {companyName} instead of {showName} to searchFormDFilings, guaranteeing empty results; (2) searchFormDFilings({showName}) itself was a stub that logged suggested patterns and returned [] rather than actually searching. Both fixed in this run (scripts/lib/sec-edgar-scraper.js searchCompanyByShowName + parseCompanySearchAtom).",
+  "summary": {
+    "hit": 1,
+    "miss": 9,
+    "error": 0,
+    "total": 10
+  },
+  "shows": [
+    {
+      "slug": "ragtime",
+      "title": "Ragtime",
+      "status": "miss"
+    },
+    {
+      "slug": "mamma-mia",
+      "title": "Mamma Mia",
+      "status": "miss"
+    },
+    {
+      "slug": "floyd-collins-2025",
+      "title": "Floyd Collins",
+      "status": "miss"
+    },
+    {
+      "slug": "pirates-the-penzance-musical-2025",
+      "title": "Pirates! The Penzance Musical",
+      "status": "miss"
+    },
+    {
+      "slug": "dead-outlaw-2025",
+      "title": "Dead Outlaw",
+      "status": "miss"
+    },
+    {
+      "slug": "real-women-have-curves",
+      "title": "Real Women Have Curves",
+      "status": "miss"
+    },
+    {
+      "slug": "a-wonderful-world-the-louis-armstrong-musical-2024",
+      "title": "A Wonderful World: The Louis Armstrong Musical",
+      "status": "miss"
+    },
+    {
+      "slug": "heart-of-rock-and-roll",
+      "title": "The Heart of Rock and Roll",
+      "status": "miss"
+    },
+    {
+      "slug": "kpop-2022",
+      "title": "KPOP",
+      "status": "hit",
+      "companyName": "KPOP Broadway LLC",
+      "filingCount": 2,
+      "filings": [
+        {
+          "cik": "0001808497",
+          "companyName": "KPOP Broadway LLC",
+          "filingDate": "2023-03-03",
+          "filingUrl": "https://www.sec.gov/Archives/edgar/data/1808497/000180849723000001/primary_doc.xml",
+          "form": "D/A",
+          "isAmendment": true
+        },
+        {
+          "cik": "0001808497",
+          "companyName": "KPOP Broadway LLC",
+          "filingDate": "2021-12-17",
+          "filingUrl": "https://www.sec.gov/Archives/edgar/data/1808497/000180849721000001/primary_doc.xml",
+          "form": "D",
+          "isAmendment": false
+        }
+      ]
+    },
+    {
+      "slug": "days-of-wine-and-roses",
+      "title": "Days of Wine and Roses",
+      "status": "miss"
+    }
+  ]
+}

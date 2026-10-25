@@ -1,0 +1,427 @@
+{
+  "issueNumber": "bro-6137-r2-b",
+  "planId": "e8be9470-f34b-4573-bc70-8afb7253e9ed",
+  "status": "partial",
+  "createdAt": "2026-10-24T16:25:24.826Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6137 round 2 (part 2 of 5): Nonprofit labels, Did Not Recoup for silent commercial closures (BRO-5645), Easy Winner for two recouped limited runs.",
+    "steps": [
+      "the-father-2016: produced by a nonprofit theater, so there are no investors to recoup (BRO-6137 round 2).",
+      "the-father-2016: the producing nonprofit.",
+      "the-father-2016: a nonprofit has no loss label to evidence.",
+      "the-father-2016: basis for the Nonprofit label.",
+      "the-father-2016: press naming the producing nonprofit.",
+      "she-loves-me-2016: produced by a nonprofit theater, so there are no investors to recoup (BRO-6137 round 2).",
+      "she-loves-me-2016: the producing nonprofit.",
+      "she-loves-me-2016: a nonprofit has no loss label to evidence.",
+      "she-loves-me-2016: basis for the Nonprofit label.",
+      "she-loves-me-2016: press naming the producing nonprofit.",
+      "our-mothers-brief-affair-2016: produced by a nonprofit theater, so there are no investors to recoup (BRO-6137 round 2).",
+      "our-mothers-brief-affair-2016: the producing nonprofit.",
+      "our-mothers-brief-affair-2016: a nonprofit has no loss label to evidence.",
+      "our-mothers-brief-affair-2016: basis for the Nonprofit label.",
+      "our-mothers-brief-affair-2016: press naming the producing nonprofit.",
+      "noises-off-2016: produced by a nonprofit theater, so there are no investors to recoup (BRO-6137 round 2).",
+      "noises-off-2016: the producing nonprofit.",
+      "noises-off-2016: a nonprofit has no loss label to evidence.",
+      "noises-off-2016: basis for the Nonprofit label.",
+      "noises-off-2016: press naming the producing nonprofit.",
+      "therese-raquin-2015: produced by a nonprofit theater, so there are no investors to recoup (BRO-6137 round 2).",
+      "therese-raquin-2015: the producing nonprofit.",
+      "therese-raquin-2015: a nonprofit has no loss label to evidence.",
+      "therese-raquin-2015: basis for the Nonprofit label.",
+      "therese-raquin-2015: press naming the producing nonprofit."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-father-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Nonprofit",
+        "description": "the-father-2016: produced by a nonprofit theater, so there are no investors to recoup (BRO-6137 round 2)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-father-2016",
+        "field": "nonprofitOrg",
+        "oldValue": null,
+        "newValue": "Manhattan Theatre Club",
+        "description": "the-father-2016: the producing nonprofit."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-father-2016",
+        "field": "needsLossEvidence",
+        "oldValue": true,
+        "newValue": false,
+        "description": "the-father-2016: a nonprofit has no loss label to evidence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-father-2016",
+        "field": "notes",
+        "oldValue": null,
+        "newValue": "Manhattan Theatre Club production. Trade press names the nonprofit as producer; no commercial enhancement investors found.",
+        "description": "the-father-2016: basis for the Nonprofit label."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-father-2016",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/mtcs-the-father-extends-limited-run-on-broadway",
+            "date": null
+          }
+        ],
+        "description": "the-father-2016: press naming the producing nonprofit."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "she-loves-me-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Nonprofit",
+        "description": "she-loves-me-2016: produced by a nonprofit theater, so there are no investors to recoup (BRO-6137 round 2)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "she-loves-me-2016",
+        "field": "nonprofitOrg",
+        "oldValue": null,
+        "newValue": "Roundabout Theatre Company",
+        "description": "she-loves-me-2016: the producing nonprofit."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "she-loves-me-2016",
+        "field": "needsLossEvidence",
+        "oldValue": true,
+        "newValue": false,
+        "description": "she-loves-me-2016: a nonprofit has no loss label to evidence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "she-loves-me-2016",
+        "field": "notes",
+        "oldValue": null,
+        "newValue": "Roundabout Theatre Company revival. Trade press names the nonprofit as producer; no commercial enhancement investors found.",
+        "description": "she-loves-me-2016: basis for the Nonprofit label."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "she-loves-me-2016",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/roundabouts-she-loves-me-begins-performances-tonight",
+            "date": null
+          }
+        ],
+        "description": "she-loves-me-2016: press naming the producing nonprofit."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "our-mothers-brief-affair-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Nonprofit",
+        "description": "our-mothers-brief-affair-2016: produced by a nonprofit theater, so there are no investors to recoup (BRO-6137 round 2)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "our-mothers-brief-affair-2016",
+        "field": "nonprofitOrg",
+        "oldValue": null,
+        "newValue": "Manhattan Theatre Club",
+        "description": "our-mothers-brief-affair-2016: the producing nonprofit."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "our-mothers-brief-affair-2016",
+        "field": "needsLossEvidence",
+        "oldValue": true,
+        "newValue": false,
+        "description": "our-mothers-brief-affair-2016: a nonprofit has no loss label to evidence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "our-mothers-brief-affair-2016",
+        "field": "notes",
+        "oldValue": null,
+        "newValue": "Manhattan Theatre Club production. Trade press names the nonprofit as producer; no commercial enhancement investors found.",
+        "description": "our-mothers-brief-affair-2016: basis for the Nonprofit label."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "our-mothers-brief-affair-2016",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/mtc-presents-our-mothers-brief-affair-on-broadway",
+            "date": null
+          }
+        ],
+        "description": "our-mothers-brief-affair-2016: press naming the producing nonprofit."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "noises-off-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Nonprofit",
+        "description": "noises-off-2016: produced by a nonprofit theater, so there are no investors to recoup (BRO-6137 round 2)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "noises-off-2016",
+        "field": "nonprofitOrg",
+        "oldValue": null,
+        "newValue": "Roundabout Theatre Company",
+        "description": "noises-off-2016: the producing nonprofit."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "noises-off-2016",
+        "field": "needsLossEvidence",
+        "oldValue": true,
+        "newValue": false,
+        "description": "noises-off-2016: a nonprofit has no loss label to evidence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "noises-off-2016",
+        "field": "notes",
+        "oldValue": null,
+        "newValue": "Roundabout Theatre Company revival. Trade press names the nonprofit as producer; no commercial enhancement investors found.",
+        "description": "noises-off-2016: basis for the Nonprofit label."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "noises-off-2016",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.theatermania.com/news/roundabout-theater-company-extends-noises-offs-broadway-run_75695/",
+            "date": null
+          }
+        ],
+        "description": "noises-off-2016: press naming the producing nonprofit."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "therese-raquin-2015",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Nonprofit",
+        "description": "therese-raquin-2015: produced by a nonprofit theater, so there are no investors to recoup (BRO-6137 round 2)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "therese-raquin-2015",
+        "field": "nonprofitOrg",
+        "oldValue": null,
+        "newValue": "Roundabout Theatre Company",
+        "description": "therese-raquin-2015: the producing nonprofit."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "therese-raquin-2015",
+        "field": "needsLossEvidence",
+        "oldValue": true,
+        "newValue": false,
+        "description": "therese-raquin-2015: a nonprofit has no loss label to evidence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "therese-raquin-2015",
+        "field": "notes",
+        "oldValue": null,
+        "newValue": "Roundabout Theatre Company production. Trade press names the nonprofit as producer; no commercial enhancement investors found.",
+        "description": "therese-raquin-2015: basis for the Nonprofit label."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "therese-raquin-2015",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/roundabout-announces-lead-cast-for-th%C3%A9r%C3%A8se-raquin",
+            "date": null
+          }
+        ],
+        "description": "therese-raquin-2015: press naming the producing nonprofit."
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T17:04:00.521Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-father-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for the-father-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-father-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-father-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for she-loves-me-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for she-loves-me-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for she-loves-me-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for she-loves-me-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for our-mothers-brief-affair-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for our-mothers-brief-affair-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for our-mothers-brief-affair-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for our-mothers-brief-affair-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for noises-off-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for noises-off-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for noises-off-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for noises-off-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for therese-raquin-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for therese-raquin-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for therese-raquin-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for therese-raquin-2015"
+    }
+  ],
+  "executedIn": "ci"
+}

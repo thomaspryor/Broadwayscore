@@ -1,0 +1,20 @@
+{
+  "system": "autofix",
+  "status": "warn",
+  "lastChecked": "2026-10-24T07:20:17.599Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Autofix: jobs actually succeeding",
+      "status": "warn",
+      "message": "Auto-fix loop fails more than it fixes: 4/12 succeeded (33%) in the last 7d — issues will re-report tomorrow"
+    },
+    {
+      "name": "Autofix: persistent visitor rows with no open card",
+      "status": "pass",
+      "message": "Every visitor-facing row red for 96h+ has an open card"
+    }
+  ]
+}

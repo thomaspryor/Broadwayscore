@@ -1,0 +1,100 @@
+{
+  "system": "cron",
+  "status": "warn",
+  "lastChecked": "2026-10-24T07:20:17.597Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Cron: Update Show Status",
+      "status": "pass",
+      "message": "18h ago, success"
+    },
+    {
+      "name": "Cron: Rebuild Reviews",
+      "status": "pass",
+      "message": "0h ago, success"
+    },
+    {
+      "name": "Cron: Collect Review Texts",
+      "status": "pass",
+      "message": "5h ago, success"
+    },
+    {
+      "name": "Cron: LLM Ensemble Score",
+      "status": "pass",
+      "message": "0h ago, success"
+    },
+    {
+      "name": "Cron: Opening Night Broadcast",
+      "status": "pass",
+      "message": "0h ago, success"
+    },
+    {
+      "name": "Cron: Weekly Grosses",
+      "status": "pass",
+      "message": "3d ago, success"
+    },
+    {
+      "name": "Cron: Update Show Score",
+      "status": "pass",
+      "message": "6h ago, success"
+    },
+    {
+      "name": "Cron: Update Mezzanine",
+      "status": "pass",
+      "message": "6h ago, success"
+    },
+    {
+      "name": "Cron: Update Cast Changes",
+      "status": "pass",
+      "message": "3d ago, success"
+    },
+    {
+      "name": "Cron: NYT Critics Picks",
+      "status": "pass",
+      "message": "22h ago, success"
+    },
+    {
+      "name": "Cron: Weekly Video Reviews",
+      "status": "pass",
+      "message": "6h ago, success"
+    },
+    {
+      "name": "Cron: Weekly Show Origins",
+      "status": "pass",
+      "message": "2d ago, success"
+    },
+    {
+      "name": "Cron: Reverse Discovery",
+      "status": "pass",
+      "message": "6h ago, success"
+    },
+    {
+      "name": "Cron: Cron Health Watchdog",
+      "status": "pass",
+      "message": "15h ago, ran (failure; liveness-only check)"
+    },
+    {
+      "name": "Cron: Affiliate Link Integrity",
+      "status": "pass",
+      "message": "5d ago, success"
+    },
+    {
+      "name": "Cron: Cloud Memory Reconcile",
+      "status": "pass",
+      "message": "2h ago, success"
+    },
+    {
+      "name": "Cron: exempt-cron liveness",
+      "status": "warn",
+      "message": "3 of 129 exempt scheduled workflow(s) stopped starting: backfill-review-dates.yml (no scheduled start in last 5 runs, limit 192h); discover-regional-serp-reviews.yml (last start 273h ago, limit 192h); recollect-for-scores.yml (last start 465h ago, limit 192h)."
+    },
+    {
+      "name": "Cron: failing every scheduled run",
+      "status": "warn",
+      "message": "8 of 134 scheduled workflow(s) failed their last 3 scheduled runs: audit-bww-rr-attributions.yml (5+ in a row, last 2026-10-17); check-seo-health.yml (5+ in a row, last 2026-10-18); clear-wrong-show-blockers.yml (5+ in a row, last 2026-10-22); collection-coverage-report.yml (5+ in a row, last 2026-10-19); detect-revivals-ibdb.yml (5+ in a row, last 2026-10-21); scoring-audit.yml (5+ in a row, last 2026-10-01); scrape-thestage-roundups.yml (5+ in a row, last 2026-10-20); update-precursor-awards.yml (5+ in a row, last 2026-10-19)."
+    }
+  ]
+}

@@ -1,0 +1,431 @@
+{
+  "issueNumber": "bro-6137-b",
+  "planId": "02ab3335-8063-4e3a-8e6a-14d7f1443ac6",
+  "status": "partial",
+  "createdAt": "2026-10-24T14:26:22.323Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6137: Money Scorecard launch data cleanup. Drop orphan key 860, record 8 announced recoupments with citations, Did Not Recoup for silent closures per BRO-5645, Once On This Island capitalization. (part 2 of 5)",
+    "steps": [
+      "china-doll-2015: capitalization from the recoupment announcement.",
+      "china-doll-2015: where the capitalization comes from.",
+      "china-doll-2015: recoupment announced publicly (BRO-6137 item 2).",
+      "china-doll-2015: month the recoupment was announced.",
+      "china-doll-2015: quote from the cited announcement.",
+      "china-doll-2015: citation for the recoupment.",
+      "china-doll-2015: designation checked against the cited announcement.",
+      "china-doll-2015: recouped, so the designation can no longer be TBD.",
+      "waitress-2016: capitalization from the recoupment announcement.",
+      "waitress-2016: where the capitalization comes from.",
+      "waitress-2016: recoupment announced publicly (BRO-6137 item 2).",
+      "waitress-2016: month the recoupment was announced.",
+      "waitress-2016: quote from the cited announcement.",
+      "waitress-2016: citation for the recoupment.",
+      "waitress-2016: designation checked against the cited announcement.",
+      "waitress-2016: recouped, so the designation can no longer be TBD.",
+      "school-of-rock-the-musical-2015: recoupment announced publicly (BRO-6137 item 2).",
+      "school-of-rock-the-musical-2015: month the recoupment was announced.",
+      "school-of-rock-the-musical-2015: quote from the cited announcement.",
+      "school-of-rock-the-musical-2015: citation for the recoupment.",
+      "school-of-rock-the-musical-2015: designation checked against the cited announcement.",
+      "school-of-rock-the-musical-2015: recouped, so the designation can no longer be TBD.",
+      "add-commercial-entry",
+      "add-commercial-entry",
+      "once-on-this-island-2017: $7.5M capitalization (Forbes, Lee Seymour 2018-12-03, via the existing source)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "china-doll-2015",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 3700000,
+        "description": "china-doll-2015: capitalization from the recoupment announcement."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "china-doll-2015",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "https://playbill.com/article/david-mamets-china-doll-starring-al-pacino-ends-broadway-run-as-a-hit-com-383002",
+        "description": "china-doll-2015: where the capitalization comes from."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "china-doll-2015",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": true,
+        "description": "china-doll-2015: recoupment announced publicly (BRO-6137 item 2)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "china-doll-2015",
+        "field": "recoupedDate",
+        "oldValue": null,
+        "newValue": "2016-01",
+        "description": "china-doll-2015: month the recoupment was announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "china-doll-2015",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Playbill: 'the play takes its final bow having recouped its full $3.7 million investment.'",
+        "description": "china-doll-2015: quote from the cited announcement."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "china-doll-2015",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/david-mamets-china-doll-starring-al-pacino-ends-broadway-run-as-a-hit-com-383002",
+            "date": "2016-01-31"
+          }
+        ],
+        "description": "china-doll-2015: citation for the recoupment."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "china-doll-2015",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "china-doll-2015: designation checked against the cited announcement."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "china-doll-2015",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Easy Winner",
+        "description": "china-doll-2015: recouped, so the designation can no longer be TBD."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "waitress-2016",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 12000000,
+        "description": "waitress-2016: capitalization from the recoupment announcement."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "waitress-2016",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "https://playbill.com/article/waitress-is-officially-a-hit-recoups-after-10-months-on-broadway",
+        "description": "waitress-2016: where the capitalization comes from."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "waitress-2016",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": true,
+        "description": "waitress-2016: recoupment announced publicly (BRO-6137 item 2)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "waitress-2016",
+        "field": "recoupedDate",
+        "oldValue": null,
+        "newValue": "2017-01",
+        "description": "waitress-2016: month the recoupment was announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "waitress-2016",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Playbill: 'recouped its entire $12 million investment' after less than ten months.",
+        "description": "waitress-2016: quote from the cited announcement."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "waitress-2016",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/waitress-is-officially-a-hit-recoups-after-10-months-on-broadway",
+            "date": "2017-01-26"
+          }
+        ],
+        "description": "waitress-2016: citation for the recoupment."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "waitress-2016",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "waitress-2016: designation checked against the cited announcement."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "waitress-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Windfall",
+        "description": "waitress-2016: recouped, so the designation can no longer be TBD."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "school-of-rock-the-musical-2015",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": true,
+        "description": "school-of-rock-the-musical-2015: recoupment announced publicly (BRO-6137 item 2)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "school-of-rock-the-musical-2015",
+        "field": "recoupedDate",
+        "oldValue": null,
+        "newValue": "2017-05",
+        "description": "school-of-rock-the-musical-2015: month the recoupment was announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "school-of-rock-the-musical-2015",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Playbill 2017-05-09: 'has recouped its entire investment' (no dollar figure on the page).",
+        "description": "school-of-rock-the-musical-2015: quote from the cited announcement."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "school-of-rock-the-musical-2015",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/school-of-rock-recoups-broadway-investment",
+            "date": "2017-05-09"
+          }
+        ],
+        "description": "school-of-rock-the-musical-2015: citation for the recoupment."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "school-of-rock-the-musical-2015",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "school-of-rock-the-musical-2015: designation checked against the cited announcement."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "school-of-rock-the-musical-2015",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Trickle",
+        "description": "school-of-rock-the-musical-2015: recouped, so the designation can no longer be TBD."
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "farinelli-and-the-king-2017",
+        "entry": {
+          "designation": "Easy Winner",
+          "recouped": true,
+          "recoupedDate": "2018-03",
+          "recoupedSource": "Playbill 2018-03-26: 'announced that it has recouped its capitalization' as the limited engagement ended 2018-03-25.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/farinelli-and-the-king-starring-mark-rylance-recoups-broadway-investment-as-limited-engagement-ends",
+              "date": "2018-03-26"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "sunday-in-the-park-with-george-2017",
+        "entry": {
+          "designation": "Easy Winner",
+          "recouped": true,
+          "recoupedDate": "2017-04",
+          "recoupedSource": "Broadway.com 2017-04-20: 'has also announced that it has recouped its investment' (limited run).",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadway.com/buzz/188337/sunday-in-the-park-with-george-revival-starring-jake-gyllenhaal-annaleigh-ashford-to-receive-cast-album-production-recoups/",
+              "date": "2017-04-20"
+            }
+          ]
+        }
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-on-this-island-2017",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 7500000,
+        "description": "once-on-this-island-2017: $7.5M capitalization (Forbes, Lee Seymour 2018-12-03, via the existing source)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T14:38:47.314Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for china-doll-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for china-doll-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recouped: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedDate: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedSource: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:sources: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for china-doll-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for china-doll-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for waitress-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for waitress-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recouped: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedDate: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedSource: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:sources: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for waitress-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for waitress-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recouped: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedDate: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedSource: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:sources: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for school-of-rock-the-musical-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for school-of-rock-the-musical-2015"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": false,
+      "reason": "add-commercial-entry: \"farinelli-and-the-king-2017\" already has a commercial entry (use data-edit)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": false,
+      "reason": "add-commercial-entry: \"sunday-in-the-park-with-george-2017\" already has a commercial entry (use data-edit)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for once-on-this-island-2017"
+    }
+  ],
+  "executedIn": "ci"
+}

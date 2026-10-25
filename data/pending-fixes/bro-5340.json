@@ -1,0 +1,35 @@
+{
+  "createdAt": "2026-10-14T05:10:00Z",
+  "issueNumber": "bro-5340",
+  "planId": "c2d89a96-5374-49b6-8f9b-5b7a2d718404",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5340: Lloyd Evans's Spectator review of Harry Potter and the Cursed Child (publishDate 2016-08-06, the original two-part Palace Theatre premiere that opened 2016-07-30) sits on the 2026 one-part entry, whose priorRuns declares that run inheritReviews:false. BRO-5333 stops that window from exempting the review, so the next rebuild flags it on the one-part entry. The original-run entry has no Spectator review, so move it there.",
+    "riskLevel": "low",
+    "steps": [
+      "Move harry-potter-and-the-cursed-child-one-part-west-end-2026/the-spectator-uk--lloyd-evans.json to harry-potter-and-the-cursed-child-both-parts-west-end-2021/"
+    ],
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "harry-potter-and-the-cursed-child-one-part-west-end-2026/the-spectator-uk--lloyd-evans.json",
+        "destPath": "harry-potter-and-the-cursed-child-both-parts-west-end-2021/the-spectator-uk--lloyd-evans.json",
+        "description": "Review published 2016-08-06 is of the 2016 two-part premiere; the one-part production began previews 2026-10-09."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T06:17:47.773Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved harry-potter-and-the-cursed-child-one-part-west-end-2026/the-spectator-uk--lloyd-evans.json → harry-potter-and-the-cursed-child-both-parts-west-end-2021/the-spectator-uk--lloyd-evans.json",
+      "cleared": []
+    }
+  ]
+}

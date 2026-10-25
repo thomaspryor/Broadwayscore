@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-10-25T00:01:19.453Z",
+  "windowDays": 45,
+  "showsScanned": 204,
+  "gaps": [
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "title": "Golden Boy",
+      "openingDate": "2026-09-15",
+      "file": "daily-mail--patrick-marmion.json",
+      "outletId": "daily-mail",
+      "tier": 1,
+      "type": "rejected-unscoreable",
+      "recoverable": false,
+      "url": "https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing",
+      "recovery": null,
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-09-22T16:40:31.606Z",
+      "fileAgeHours": 775.3458941666667,
+      "gapSeenAt": "2026-10-23T02:17:11.385Z",
+      "nonTerminalAgeHours": 45.735574444444445,
+      "needsManualRecovery": true
+    }
+  ],
+  "contradictions": []
+}

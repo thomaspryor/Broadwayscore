@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-4490-3",
+  "planId": "2476c1ab-fa39-455f-9382-1ae20291b3d4",
+  "status": "applied",
+  "createdAt": "2026-10-22T22:08:32.107Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4490: un-clear the verified Time Out 5/5 on Long Day's Journey (2016); the shipped 88 is below the 5/5 band",
+    "steps": [
+      "Time Out page rating block shows five filled stars labelled '5 out of 5 stars' (checked 2026-10-22). The stored 5/5 is still marked cleared (tier-1.5 no-evidence clear), so the shipped llm-v6 88 sits below the 91-100 band. Re-setting the verified value un-clears it. bro-4490-2 asked for null -> 5/5 and was refused because the value was already present."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "long-days-journey-into-night-2016/timeout--adam-feldman.json",
+        "field": "originalScore",
+        "oldValue": "5/5",
+        "newValue": "5/5",
+        "description": "Time Out page rating block shows five filled stars labelled '5 out of 5 stars' (checked 2026-10-22). The stored 5/5 is still marked cleared (tier-1.5 no-evidence clear), so the shipped llm-v6 88 sits below the 91-100 band. Re-setting the verified value un-clears it. bro-4490-2 asked for null -> 5/5 and was refused because the value was already present."
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T01:57:31.107Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "long-days-journey-into-night-2016/timeout--adam-feldman.json originalScore: \"5/5\" -> \"5/5\" (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    }
+  ],
+  "executedIn": "ci"
+}

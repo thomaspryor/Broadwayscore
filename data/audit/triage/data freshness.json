@@ -1,0 +1,15 @@
+{
+  "system": "data freshness",
+  "status": "warn",
+  "lastChecked": "2026-10-24T07:20:17.599Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Data freshness: shows missing poster/synopsis/tickets",
+      "status": "warn",
+      "message": "64 open show(s) missing critical data — auto-fill from the standard image/synopsis/ticket pipelines."
+    }
+  ]
+}

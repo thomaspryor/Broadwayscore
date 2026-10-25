@@ -1,0 +1,49 @@
+{
+  "issueNumber": "bro-5780",
+  "planId": "52704611-9508-481e-b49c-e3dd3c969d39",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5780: clear the wrong_show rejection on the New York Theatre Guide review of Two Girls (Cherry Lane). The ensemble check judged only an aggregator excerpt that was School Girls text; the url is NYTG's own Two Girls review (Allison Considine, 2026-10-19), and fetching it returns that review.",
+    "steps": [
+      "mark wrongShowManualClear and clear wrongShow (the write guard re-tiers the record)",
+      "then refetch the page text"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "two-girls-off-broadway-2026/nytg--allison-considine.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5780: the wrongShow verdict came from nycTheatreExcerpt (School Girls text mis-paired by the aggregator), not the article. url newyorktheatreguide.com/reviews/two-girls-off-broadway-review loads a page titled 'Two Girls' Off-Broadway review, datePublished 2026-10-19, by Allison Considine, checked 2026-10-20."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-girls-off-broadway-2026/nytg--allison-considine.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5780: clear the flag (see above)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-20T15:58:22.858Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-girls-off-broadway-2026/nytg--allison-considine.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-girls-off-broadway-2026/nytg--allison-considine.json wrongShow: true -> false"
+    }
+  ],
+  "executedIn": "ci"
+}

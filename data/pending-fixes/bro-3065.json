@@ -1,0 +1,216 @@
+{
+  "issueNumber": "bro-3065",
+  "planId": "8136ced6-f9b6-45d8-9c57-e593082fc21f",
+  "status": "partial",
+  "createdAt": "2026-10-13T14:41:36.669Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-3065: fix the real misfiles in the cross-show-url audit tail, each checked against the stored record: 9 wrong-show stubs flagged, a Hot Wing King review moved out of The Lion King, two wrong urls repaired, and a 2015 Heisenberg premiere review re-flagged wrongProduction with its own date.",
+    "steps": [
+      "Stub: url is the westendtheatre.com round-up for Guess How Much I Love You and the stored excerpt describes a James Graham / Bleasdale play, not Black Is the Color of My Voice.",
+      "Stub, no text: url is the westendtheatre.com American Psycho (2026) round-up.",
+      "Stub, no text: url is the NYTG show page for A Wonderful World (Studio 54).",
+      "Stub, no text: url is the WhatsOnStage Man and Boy (National Theatre) review.",
+      "Stub, no text: url is The Wrap A Strange Loop review.",
+      "Stub, no text: url is a NYT news story about Book of Mormon shows canceled after a fire, not a New Born review.",
+      "Stub, no text: url is the Independent Only Fools and Horses musical review.",
+      "Stub, no text: url is the LBO review of A Number at the Bridge Theatre (venue name, not The Bridge).",
+      "Url is the Backstage A View from the Bridge review; stored text is site chrome (Popular Searches...), already classified non-review.",
+      "Text, url and excerpt are Clive Davis's Times review of The Hot Wing King (Dorfman, 2024-07-19); the-hot-wing-king-west-end-2024 opened 2024-07-18 and has no times-uk review.",
+      "Theatre Record text (Charles Spencer, 1999-10-20, Lion King opening) with a westendtheatre.com Shadowlands round-up url backfilled; restores the no-url Theatre Record shape.",
+      "Text is Alun Hood's Here There Are Blueberries review (2026-02-12); the url was Sarah Crompton's Here We Are review, which here-we-are-west-end-2025/ already holds.",
+      "Text is Deadline's June 2015 review of the MTC Stage II world premiere ('having its world premiere at Manhattan Theatre Club's tiny experimental Stage II'), not the 2016 Broadway run; BRO-3513 flagged it and a date auto-clear undid that because publishDate carried the 2016 combined review's date.",
+      "Date of the Deadline 2015 premiere review whose text this file holds (deadline.com/2015/06/mary-louise-parker-heisenberg-world-premiere-1201437648/), so the date guard keeps the wrongProduction flag."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "black-is-the-color-of-my-voice-west-end-2026/guardian--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stub: url is the westendtheatre.com round-up for Guess How Much I Love You and the stored excerpt describes a James Graham / Bleasdale play, not Black Is the Color of My Voice."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "burlesque-west-end-2026/financialtimes--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stub, no text: url is the westendtheatre.com American Psycho (2026) round-up."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mj-the-musical-west-end-2024/nytg--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stub, no text: url is the NYTG show page for A Wonderful World (Studio 54)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "golden-boy-off-west-end-2026/whatsonstage--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stub, no text: url is the WhatsOnStage Man and Boy (National Theatre) review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "michael-r-jackson-wake-up-call-off-broadway-2026/thewrap--robert-hofler.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stub, no text: url is The Wrap A Strange Loop review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "new-born-off-broadway-2026/nytimes--michael-paulson.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stub, no text: url is a NYT news story about Book of Mormon shows canceled after a fire, not a New Born review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "9-to-5-the-musical-west-end-2019/independent--paul-taylor.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stub, no text: url is the Independent Only Fools and Horses musical review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-bridge-off-west-end-2026/london-box-office--stuart-king.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stub, no text: url is the LBO review of A Number at the Bridge Theatre (venue name, not The Bridge)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-little-night-music-2009/backstage--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Url is the Backstage A View from the Bridge review; stored text is site chrome (Popular Searches...), already classified non-review."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-lion-king-west-end-2021/times-uk--clive-davis.json",
+        "destPath": "the-hot-wing-king-west-end-2024/times-uk--clive-davis.json",
+        "description": "Text, url and excerpt are Clive Davis's Times review of The Hot Wing King (Dorfman, 2024-07-19); the-hot-wing-king-west-end-2024 opened 2024-07-18 and has no times-uk review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lion-king-west-end-2021/telegraph--charles-spencer.json",
+        "field": "url",
+        "oldValue": "https://www.westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville/",
+        "newValue": "",
+        "description": "Theatre Record text (Charles Spencer, 1999-10-20, Lion King opening) with a westendtheatre.com Shadowlands round-up url backfilled; restores the no-url Theatre Record shape."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/whatsonstage--alun-hood.json",
+        "field": "url",
+        "oldValue": "https://www.whatsonstage.com/news/here-we-are-at-the-national-theatre-review-sondheims-final-musical-is-mystifying-and-magical_1676732/",
+        "newValue": "https://www.whatsonstage.com/news/here-there-are-blueberries-at-stratford-east-review_1711989/",
+        "description": "Text is Alun Hood's Here There Are Blueberries review (2026-02-12); the url was Sarah Crompton's Here We Are review, which here-we-are-west-end-2025/ already holds."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "heisenberg-2016/deadline--jeremy-gerard.json",
+        "field": "wrongProduction",
+        "oldValue": false,
+        "newValue": true,
+        "description": "Text is Deadline's June 2015 review of the MTC Stage II world premiere ('having its world premiere at Manhattan Theatre Club's tiny experimental Stage II'), not the 2016 Broadway run; BRO-3513 flagged it and a date auto-clear undid that because publishDate carried the 2016 combined review's date."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "heisenberg-2016/deadline--jeremy-gerard.json",
+        "field": "publishDate",
+        "oldValue": "October 16th, 2016",
+        "newValue": "2015-06-04",
+        "description": "Date of the Deadline 2015 premiere review whose text this file holds (deadline.com/2015/06/mary-louise-parker-heisenberg-world-premiere-1201437648/), so the date guard keeps the wrongProduction flag."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T17:14:29.707Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "black-is-the-color-of-my-voice-west-end-2026/guardian--unknown.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "burlesque-west-end-2026/financialtimes--unknown.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mj-the-musical-west-end-2024/nytg--unknown.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "golden-boy-off-west-end-2026/whatsonstage--unknown.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "michael-r-jackson-wake-up-call-off-broadway-2026/thewrap--robert-hofler.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "new-born-off-broadway-2026/nytimes--michael-paulson.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "9-to-5-the-musical-west-end-2019/independent--paul-taylor.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-bridge-off-west-end-2026/london-box-office--stuart-king.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-little-night-music-2009/backstage--unknown.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: the-hot-wing-king-west-end-2024/times-uk--clive-davis.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lion-king-west-end-2021/telegraph--charles-spencer.json url: \"https://www.westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville/\" -> \"\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/whatsonstage--alun-hood.json url: \"https://www.whatsonstage.com/news/here-we-are-at-the-national-theatre-review-sondheims-final-musical-is-mystifying-and-magical_1676732/\" -> \"https://www.whatsonstage.com/news/here-there-are-blueberries-at-stratford-east-review_1711989/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heisenberg-2016/deadline--jeremy-gerard.json wrongProduction: false -> true (retracted clearBreadcrumbRetractedAt, wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heisenberg-2016/deadline--jeremy-gerard.json publishDate: \"October 16th, 2016\" -> \"2015-06-04\""
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "issueNumber": "bro-5356-k",
+  "planId": "ba010eed-eb59-4630-b7d9-d6094f95cbba",
+  "status": "partial",
+  "createdAt": "2026-10-14T17:45:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5356 (k): after plan j, 2 of the 4 NYSR opening-night reviews are still off the site: stale wrongShow flags from the year-less orphan folders they were rehomed from (spamalot-2023 Sandy MacDonald, the-whos-tommy-2024 David Finkle), and Finkle's row pointed duplicateOf at a byline-less copy of itself. Clear wrongShow with the manual-clear marker and point the duplicate the right way.",
+    "steps": [
+      "clear wrongShow on 2",
+      "reverse the Tommy duplicate pointer"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "spamalot-2023/nysr--sandy-macdonald.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5356: the wrongShow flag ('Wrong show', contentTier invalid) dates from when this file sat in the year-less orphan folder before the BRO-4317 rehome; the url is New York Stage Review's opening-night review of exactly this show (nystagereview.com/2023/11/16/spamalot-spamalot-trumpeting-the-return-...). It keeps a real review off the show page after plan bro-5356-j cleared wrongProduction."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spamalot-2023/nysr--sandy-macdonald.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the flag (see above)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-2024/nysr--david-finkle.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5356: the wrongShow flag ('Wrong show', contentTier invalid) dates from when this file sat in the year-less orphan folder before the BRO-4317 rehome; the url is New York Stage Review's opening-night review of exactly this show (nystagereview.com/2024/03/28/the-whos-tommy-the-ground-breaking-rock-opera-...). It keeps a real review off the show page after plan bro-5356-j cleared wrongProduction."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-2024/nysr--david-finkle.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the flag (see above)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-2024/nysr--david-finkle.json",
+        "field": "duplicateClearReason",
+        "oldValue": null,
+        "newValue": "BRO-5356: this named David Finkle copy is the canonical one; nysr--unknown.json is the same url with no byline and is pointed here instead",
+        "description": "Breadcrumb before clearing duplicateOf."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-2024/nysr--david-finkle.json",
+        "field": "duplicateOf",
+        "oldValue": "nysr--unknown.json",
+        "newValue": null,
+        "description": "The duplicate points the wrong way: the byline-less copy should defer to this one."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-2024/nysr--david-finkle.json",
+        "field": "duplicateReason",
+        "oldValue": "url-collision-detected-at-write",
+        "newValue": null,
+        "description": "Goes with the cleared pointer."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-2024/nysr--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nysr--david-finkle.json",
+        "description": "BRO-5356: same url as nysr--david-finkle.json (Finkle's opening-night review); this copy has no byline."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-2024/nysr--unknown.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "BRO-5356: byline-less copy of nysr--david-finkle.json (same url)",
+        "description": "Why."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T18:03:54.313Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spamalot-2023/nysr--sandy-macdonald.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spamalot-2023/nysr--sandy-macdonald.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-whos-tommy-2024/nysr--david-finkle.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-whos-tommy-2024/nysr--david-finkle.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-whos-tommy-2024/nysr--david-finkle.json duplicateClearReason: null -> \"BRO-5356: this named David Finkle copy is the canonical one; nysr--unknown.json is the same url with no byline and is pointed here instead\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-whos-tommy-2024/nysr--david-finkle.json duplicateOf: \"nysr--unknown.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-whos-tommy-2024/nysr--david-finkle.json duplicateReason: write guard kept \"url-collision-detected-at-write\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-whos-tommy-2024/nysr--unknown.json duplicateOf: null -> \"nysr--david-finkle.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateReason: current value doesn't match expected (data changed since plan was created)"
+    }
+  ]
+}
