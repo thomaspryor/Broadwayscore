@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-25T10:57:38.101Z",
+  "runDate": "2026-10-25T11:12:40.517Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 54,
+    "processed": 0,
+    "failed": 55,
     "skipped": 0,
-    "successRate": "5.3%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 68,
@@ -28,24 +28,24 @@
     "archive": 19
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 3,
-    "tier4Success": 1,
-    "totalFailed": 54,
-    "scrapingBeePageCredits": 10,
+    "tier4Attempts": 1,
+    "tier4Success": 0,
+    "totalFailed": 55,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -54,8 +54,8 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 3,
-    "failed": 54,
+    "processed": 0,
+    "failed": 55,
     "shows": [
       "aint-no-mo-2022",
       "all-my-sons-2008",
@@ -75,12 +75,9 @@
       "is-he-dead-2007",
       "jesus-christ-superstar-2012",
       "kiss-me-kate-2019",
-      "laowang-a-chinatown-king-lear-off-broadway-2025",
       "macbeth-2008",
       "mary-jane-2024",
       "motown-the-musical-2013",
-      "not-ready-for-prime-time-off-broadway-2025",
-      "nothing-can-take-you-from-the-hand-of-god-off-broadway-2025",
       "ohio-state-murders-2022",
       "on-a-clear-day-you-can-see-forever-2011",
       "picnic-2013",
@@ -99,6 +96,7 @@
       "the-little-mermaid-2008",
       "the-nap-2018",
       "the-norman-conquests-2009",
+      "the-other-americans-off-broadway-2025",
       "the-shark-is-broken-2023",
       "the-waverly-gallery-2018",
       "the-whos-tommy-2024",
@@ -111,15 +109,11 @@
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 84,
+      "processed": 87,
       "failed": 79
     }
   },
-  "processed": [
-    "laowang-a-chinatown-king-lear-off-broadway-2025/the-interested-bystander--cary-wong.json",
-    "not-ready-for-prime-time-off-broadway-2025/the-interested-bystander--cary-wong.json",
-    "nothing-can-take-you-from-the-hand-of-god-off-broadway-2025/nytimes--elisabeth-vincentelli.json"
-  ],
+  "processed": [],
   "failed": [
     "grey-house-2023/stageandcinema--simi-horwitz.json",
     "the-collaboration-2022/times-uk--jesse-green.json",
@@ -161,6 +155,7 @@
     "tammy-faye-2024/stageandcinema--mike-mineo.json",
     "rodgers-hammersteins-cinderella-2013/vulture--jesse-green.json",
     "kiss-me-kate-2019/usatoday--david-rooney.json",
+    "the-other-americans-off-broadway-2025/thewrap--robert-hofler.json",
     "the-shark-is-broken-2023/hollywood-reporter--angie-han.json",
     "the-collaboration-2022/hollywood-reporter--anita-gates.json",
     "ohio-state-murders-2022/hollywood-reporter--anita-gates.json",
@@ -345,7 +340,8 @@
       "dirty-dancing-the-classic-story-on-stage-west-end-2026/sportswhereiam--unknown.json",
       "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
       "some-woman-west-end-2026/guardian--unknown.json",
-      "double-bill-tell-me-straight-and-aggy-off-west-end-2026/soundsandstage--unknown.json"
+      "double-bill-tell-me-straight-and-aggy-off-west-end-2026/soundsandstage--unknown.json",
+      "the-other-americans-off-broadway-2025/thewrap--robert-hofler.json"
     ]
   },
   "tierDetails": {
@@ -456,6 +452,14 @@
       "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "TheWrap": {
+      "count": 1,
+      "domain": "thewrap.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
