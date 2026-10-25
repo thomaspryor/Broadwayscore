@@ -427,7 +427,8 @@ export default function ImportShows({
         venue: raw.venue,
         date_seen: raw.date,
         mezz_show_id: raw.mezzShowId || null,
-      }).catch(() => {}); // best-effort logging — an insert failure must never surface to the user
+        // INSERT-only RLS (no SELECT policy): the default RETURNING read is refused with 42501 (BRO-5565).
+      }, { returning: 'minimal' }).catch(() => {}); // best-effort logging — an insert failure must never surface to the user
     }
   }, [ensureSearchData, matchShow, existingReviewShowIds, existingWatchlistShowIds, userId, context, reactionRatings]);
 
