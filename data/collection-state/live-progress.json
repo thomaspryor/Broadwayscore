@@ -1,18 +1,18 @@
 {
-  "updatedAt": "2026-10-25T05:04:47.264Z",
-  "processed": 114,
-  "failed": 99,
-  "successRate": "53.5%",
+  "updatedAt": "2026-10-25T05:47:01.931Z",
+  "processed": 175,
+  "failed": 108,
+  "successRate": "61.8%",
   "tierBreakdown": {
-    "playwright": 82,
+    "playwright": 131,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 7,
-    "scrapingbee": 8,
-    "brightdata": 1,
+    "scrapingdog": 11,
+    "scrapingbee": 12,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 14
+    "archive": 19
   },
   "browserbaseSessions": 1,
   "recentActivity": [
@@ -68,6 +68,17 @@
     },
     {
       "t": "2026-10-25T04:33:52.975Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-25T05:20:18.824Z",
+      "event": "bb-session",
+      "session": "2610892b",
+      "url": "https://www.nytimes.com/2025/11/12/theater/the-bakers-wife-review-ariana-debose."
+    },
+    {
+      "t": "2026-10-25T05:20:19.192Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
