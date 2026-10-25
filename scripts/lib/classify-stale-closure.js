@@ -43,9 +43,11 @@ function lossLabelFor(entry) {
 
 // Production types where auto-Fizzle is unsafe — these shows may have closed
 // on Broadway but continued life elsewhere with separate recoupment economics.
+// A return engagement is not one: it closes on Broadway like any run, so it
+// gets the estimate label too (BRO-6218, owner rule BRO-6158: no TBD for
+// closed shows).
 const SKIP_PRODUCTION_TYPES = new Set([
   'tour-stop',
-  'return-engagement',
   'international-transfer',
   'International Transfer',
   // 'enhancement' deals (LCT etc.) — DO classify, the enhancement investors

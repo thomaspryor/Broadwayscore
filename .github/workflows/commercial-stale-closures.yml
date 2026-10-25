@@ -6,7 +6,7 @@ name: Commercial Stale Closures Classifier
 # Writes DIRECTLY to commercial.json; doesn't route through pending-review.
 #
 # Carve-outs (in classify-stale-closure.js):
-#   - tour-stop / return-engagement / international-transfer productionTypes
+#   - tour-stop / international-transfer productionTypes (return engagements are labelled, BRO-6218)
 #   - Nonprofit designation (unless enhancement)
 #   - Enhancement deals → human-review escalation, never auto-Fizzle
 #   - humanReviewedDesignation:true → never auto-classify

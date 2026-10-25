@@ -74,6 +74,9 @@ test('recoupment, running shows, carve-outs and review locks still protect a clo
   assert.equal(classify({ entry: { ...entry, recouped: true } }).action, 'no-change');
   assert.equal(classify({ entry: { ...entry, humanReviewedDesignation: true } }).action, 'no-change');
   assert.equal(classify({ entry: { ...entry, productionType: 'tour-stop' } }).action, 'skip-carve-out');
+  const returnRun = classify({ entry: { ...entry, productionType: 'return-engagement' } });
+  assert.equal(returnRun.action, 'classify-fizzle');
+  assert.equal(returnRun.designation, 'Flop');
   assert.equal(classify({ pending: { recouped: true, researchedAt: new Date(later).toISOString() } }).action, 'human-review');
 });
 
@@ -84,6 +87,11 @@ test('cleanup labels a closed TBD row from its estimate with no age wait, and fl
   assert.equal(closedTbdLossAction(estimate(55), { ...show, status: 'open' }, { now }), null);
   assert.equal(closedTbdLossAction(estimate(55, { humanReviewedDesignation: true }), show, { now }), null);
   assert.equal(closedTbdLossAction(estimate(55, { recouped: true }), show, { now }), null);
+  // A closed return engagement is labelled like any run; tours and transfers stay carved out (BRO-6218).
+  assert.deepEqual(closedTbdLossAction(estimate(55, { productionType: 'return-engagement' }), show, { now }),
+    { action: 'label', designation: 'Fizzle', designationBasis: 'model-estimate' });
+  assert.equal(closedTbdLossAction(estimate(55, { productionType: 'international-transfer' }), show, { now }), null);
+  assert.equal(closedTbdLossAction(estimate(55, { productionType: 'tour-stop' }), show, { now }), null);
 });
 
 test('a recoupment announced later resets an estimate, and a reopened show undoes it', () => {
