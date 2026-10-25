@@ -223,7 +223,8 @@ describe('varBandMusicalsReported (BRO-5872, live for musicals)', () => {
     }
   });
   test('the live musical defaults are pinned', () => {
-    const { MUSICAL_LIVE_OPTS } = require('../../scripts/lib/recoupment-model');
-    assert.deepEqual({ ...MUSICAL_LIVE_OPTS }, { previewsFromWeekly: true, datedCosts: true, varBandMusicalsCited: true, varBandMusicalsWaltz: true, varBandMusicalsReported: true, capScaledMusicals: true });
+    const { MUSICAL_LIVE_OPTS, ALL_LIVE_OPTS } = require('../../scripts/lib/recoupment-model');
+    assert.deepEqual({ ...ALL_LIVE_OPTS }, { previewsFromWeekly: true, costBasis: true });
+    assert.deepEqual({ ...MUSICAL_LIVE_OPTS }, { datedCosts: true, varBandMusicalsCited: true, varBandMusicalsWaltz: true, varBandMusicalsReported: true, capScaledMusicals: true });
   });
 });

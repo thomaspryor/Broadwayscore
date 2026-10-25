@@ -22,7 +22,7 @@ const { previewWeeksFromWeekly } = require('./preview-weeks');
 const { runWindow, weeksInOwnRun, COVID_DARK_START, COVID_DARK_END } = require('./run-window');
 const { taxCreditCited } = require('./tax-credit-cited');
 const { nyTaxCredit, QUALIFYING_WEEKS, TAX_CREDIT_MAX, TAX_CREDIT_RATE, TAX_CREDIT_PROGRAM_START, TAX_CREDIT_PROGRAM_END } = require('./ny-tax-credit');
-const { splitCosts, fixedNutFromBasis } = require('./cost-split');
+const { splitCosts, fixedNutFromBasis, breakEvenRatio } = require('./cost-split');
 const { sourcedGrossParticipation, weeklyParticipationCost, starDealUnknown } = require('./gross-participation');
 const { isConvertedToCommercial } = require('./commercial-conversion');
 const { haircutCapitalization } = require('./cap-max-haircut');
@@ -505,9 +505,9 @@ function getPreviewGrossMultiplier(previewWeek) {
  * @param {object} grossesAllTime - From grosses.json { gross, performances, attendance }
  * @param {object} grossesWeekly - From grosses-history.json { [weekDate]: { gross, capacity, atp, attendance, performances } }
  * @param {object} [opts]
- * @param {boolean} [opts.previewsFromWeekly] - shadow only (BRO-5002): estimate
- *   only the preview weeks the weekly history does not already cover. Off
- *   (live behavior) by default.
+ * @param {boolean} [opts.previewsFromWeekly] - (BRO-5002) estimate only the
+ *   preview weeks the weekly history does not already cover. Live for every
+ *   category (ALL_LIVE_OPTS, BRO-6217); false restores the old double count.
  * @param {boolean} [opts.playedWeeksOnly] - shadow only (BRO-5003): count a
  *   running show's weeks to today, not to an announced closing date. Off
  *   (live behavior) by default.
@@ -528,7 +528,8 @@ function getPreviewGrossMultiplier(previewWeek) {
  * Musical calibration (BRO-5598): three former shadow options are live for
  * musicals only, so the live play bar is unchanged.
  *   previewsFromWeekly  estimate only the preview weeks the weekly grosses
- *                       do not already cover (BRO-5002: they were counted twice)
+ *                       do not already cover (BRO-5002: they were counted
+ *                       twice). Moved to ALL_LIVE_OPTS by BRO-6217.
  *   datedCosts          each week's cost from its own date (cost index, BRO-4989)
  *   varBandMusicalsCited the varBand deduction shape (BRO-5073), only on a cited
  *                       running cost: an estimated cost was fitted to the old
@@ -555,7 +556,7 @@ function getPreviewGrossMultiplier(previewWeek) {
  * finals with a reported outcome 14.3 -> 5.8; 0 new false recouped. An
  * explicit false in opts turns one off (shadow comparisons).
  */
-const MUSICAL_LIVE_OPTS = Object.freeze({ previewsFromWeekly: true, datedCosts: true, varBandMusicalsCited: true, varBandMusicalsWaltz: true, varBandMusicalsReported: true, capScaledMusicals: true });
+const MUSICAL_LIVE_OPTS = Object.freeze({ datedCosts: true, varBandMusicalsCited: true, varBandMusicalsWaltz: true, varBandMusicalsReported: true, capScaledMusicals: true });
 // Keyed on classifyShow (the category the variable-cost rates use), so opera
 // counts as a musical and a solo show ('special') keeps the old path.
 // An explicit undefined in opts leaves the default on.
@@ -573,10 +574,23 @@ const MUSICAL_LIVE_OPTS = Object.freeze({ previewsFromWeekly: true, datedCosts: 
 // 5-20 points (every pre-2025 estimated nut is lower).
 // eraIndex stays off for musicals: alone it moved their timing MAE 13.7 -> 15.8.
 const PLAY_LIVE_OPTS = Object.freeze({ impliedCost: true, eraIndex: true, costSplit: true });
+// Every category (BRO-6217, launch audit M02/M03/M05):
+//   previewsFromWeekly  real pre-opening weekly rows are the previews (live
+//                       for musicals since BRO-5598); plays and specials
+//                       estimated them on top too (Our Town: 18 real rows +
+//                       3 estimated = 21 weeks).
+//   costBasis           a cost typed breakeven or all-in becomes the fixed
+//                       nut the simulation charges (cost-split.js), instead of
+//                       charging the break-even gross as a running cost.
+// reserveIfStated stays shadow (launch audit M05): dropping the added reserve
+// moved the timing backtest's musical MAE 13.4 -> 18.4 and put one more show
+// at 100% 26 weeks before its announcement. Producers hold an operating
+// reserve out of profits before they distribute, on top of what the raise
+// budgeted, and a closed show's % already leaves the reserve out (capForPct).
+const ALL_LIVE_OPTS = Object.freeze({ previewsFromWeekly: true, costBasis: true });
 function withMusicalDefaults(show, opts) {
   const category = classifyShow(show);
-  const live = /^musical/.test(category) ? MUSICAL_LIVE_OPTS : /^play/.test(category) ? PLAY_LIVE_OPTS : null;
-  if (!live) return opts;
+  const live = { ...ALL_LIVE_OPTS, ...(/^musical/.test(category) ? MUSICAL_LIVE_OPTS : /^play/.test(category) ? PLAY_LIVE_OPTS : {}) };
   const set = Object.fromEntries(Object.entries(opts).filter(([, v]) => v !== undefined));
   return { ...live, ...set };
 }
@@ -606,6 +620,17 @@ function withCapEstimate(run, commercial, opts) {
 function isWaltzWeeklyCost(commercial) {
   if (!(commercial && commercial.weeklyRunningCost > 0)) return false;
   return commercial.costMethodology === 'reddit-standard' || costSourceBasis(commercial.weeklyRunningCostSource) === 'reddit';
+}
+
+/**
+ * opts.costBasis: the fixed nut behind a cost typed breakeven or all-in
+ * (cost-split.js fixedNutFromBasis); null for a running cost, so a running
+ * figure keeps every other path (costSplit included) exactly as before.
+ */
+function typedBasisNut(opts, commercial, category, weekly) {
+  if (!opts.costBasis || !commercial.weeklyRunningCost) return null;
+  const r = fixedNutFromBasis(commercial, commercial.weeklyRunningCost, getBaseVariableRate(category), THEATER_DEAL, weekly);
+  return r.basis === 'running' && !r.rejected ? null : r;
 }
 
 function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, opts = {}) {
@@ -662,11 +687,11 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   if (haircut.factor) warnings.push(`Capitalization is an offering ceiling: scaled by ${haircut.factor} to $${Math.round(capitalization / 1000)}K`);
 
   const category = classifyShow(show);
-  // Shadow only (BRO-5093, opts.costBasis): a breakeven or all-in figure is
+  // opts.costBasis (BRO-5093, live since BRO-6217 M03): a breakeven or all-in figure is
   // turned back into the fixed nut the rest of the model expects. The
   // reserve and tax-credit estimate follow it (they are weeks of the real
   // nut), and costSplit is skipped so the share is not taken off twice.
-  const basisNut = opts.costBasis && commercial.weeklyRunningCost ? fixedNutFromBasis(commercial, commercial.weeklyRunningCost, getBaseVariableRate(category), THEATER_DEAL, weeklyUncut) : null;
+  const basisNut = typedBasisNut(opts, commercial, category, weeklyUncut);
   const weeklyNut = basisNut ? basisNut.nut : commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial, { eraIndex: !!opts.eraIndex, capScaledMusicals: !!opts.capScaledMusicals });
   // opts.costSourcedOnly (shadow, BRO-5073): a weekly cost with no cited
   // source counts as 'unsourced', and only a cited cost lifts quality (a
@@ -743,7 +768,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   // Shadow (BRO-5073): a Broadway capitalization usually already budgets the
   // reserve and bonds, so adding one on top may double count. opts.noReserve
   // drops it; opts.reserveIfStated keeps it only when the record says the
-  // capitalization excludes the reserve.
+  // capitalization excludes the reserve. Both stay shadow: see ALL_LIVE_OPTS.
   const reserveExcluded = !opts.reserveIfStated || CAP_EXCLUDES_RESERVE.test(`${commercial.capitalizationSource || ''} ${commercial.notes || ''}`);
   const reserveWeeks = opts.noReserve || !reserveExcluded ? 0 : isLimitedRun ? 1.5 : (opts.reserveLag ? RESERVE_LAG_WEEKS : RESERVE_FUND_WEEKS);
   const reserveFund = weeklyNut * reserveWeeks;
@@ -808,7 +833,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   // A record with no cost figure at all keeps the live nut (flat era
   // deflator): a category estimate is never carried back by the index.
   const datedCosts = opts.datedCosts && datedCostsApply(show, commercial, warnings);
-  const nutByWeek = datedCosts ? datedWeeklyNuts(show, commercial, category, weeklySchedule) : null;
+  const nutByWeek = datedCosts ? datedWeeklyNuts(show, commercial, category, weeklySchedule, weeklyUncut) : null;
   if (datedCosts && !nutByWeek) {
     return { error: 'No dated cost for the run', warnings: ['No dated cost for the run'] };
   }
@@ -887,16 +912,15 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   }
 
   // --- Weekly breakeven ---
-  // Breakeven: gross × (1 - varRate) - theaterOverage - nut = 0
-  // When gross is above theater breakpoint: gross × (1 - varRate - 0.07) + rentInNut = nut
-  // → gross = (nut - rentInNut) / (1 - varRate - 0.07)
-  // Simplified: gross = nut × (1 - rentPct) / (1 - varRate - theaterPct)
-  // With the cited-cost band (BRO-5598) deductions rise with gross, so there is
-  // no closed form: bisect the steady-state week (27: full nut, no opening
-  // push). Profit still rises with gross (the band's slope stays well under 1).
-  let breakeven = (runNut * (1 - THEATER_DEAL.rentPctOfNut)) /
-    (1 - baseVarRate - THEATER_DEAL.pctOfGross);
-  if (citedBand && runNut > 0) {
+  // The gross at which the steady-state week (27: full nut, no opening push)
+  // makes zero profit, solved by bisection on calcWeeklyProfit itself, so it
+  // is the simulation's own break-even on every path (BRO-6217 M04: the old
+  // closed form always took the percentage-rent branch and read ~4.5% low).
+  // Without the band it equals cost-split.js breakEvenRatio; with the
+  // cited-cost band (BRO-5598) there is no closed form. Profit rises with
+  // gross (the band's slope stays well under 1).
+  let breakeven = runNut * breakEvenRatio(baseVarRate, THEATER_DEAL);
+  if (runNut > 0) {
     const profitAt = (g) => calcWeeklyProfit(g, runNut, baseVarRate, false, 27, false, null, weeklySchedule.length, show.type || 'musical', category, costPath).profit;
     let lo = 0, hi = runNut * 10;
     for (let i = 0; i < 60; i++) { const mid = (lo + hi) / 2; if (profitAt(mid) < 0) lo = mid; else hi = mid; }
@@ -991,7 +1015,7 @@ function impliedCostFor(show, commercial, grossesAllTime, grossesWeekly, opts) {
  * the first preview (or opening). Null when there is no date to anchor to or
  * no cost figure at all.
  */
-function datedWeeklyNuts(show, commercial, category, schedule) {
+function datedWeeklyNuts(show, commercial, category, schedule, weekly) {
   // Lazy: cost-for-week requires this module.
   const { costForWeek } = require('./cost-for-week');
   const WEEK_MS = 7 * 86400000;
@@ -1004,7 +1028,7 @@ function datedWeeklyNuts(show, commercial, category, schedule) {
   const nuts = [];
   for (let i = 0; i < schedule.length; i++) {
     const date = schedule[i].date || new Date(t0 + i * WEEK_MS).toISOString().slice(0, 10);
-    const c = costForWeek(commercial, date, { show, category, fallbackCost });
+    const c = costForWeek(commercial, date, { show, category, fallbackCost, weekly });
     if (!c) return null;
     nuts.push(c.cost);
   }
@@ -1114,8 +1138,14 @@ function buildWeeklySchedule(show, grossesAllTime, grossesWeekly, previewWeeks, 
       cleanGross = grossesAllTime.gross / contamRatio;
     }
 
-    // Distribute evenly across run weeks
-    const avgWeeklyGross = cleanGross / Math.max(totalRunWeeks - previewWeeks, 1);
+    // Spread the known total over the run (BRO-6217 M01): previews take their
+    // ramp share of a regular week, and the weeks sum to cleanGross. Dividing
+    // by regular weeks only and adding previews on top made extra revenue
+    // (Back to the Future: $89.5M in, $93.8M modeled).
+    const regularWeeks = Math.max(totalRunWeeks - previewWeeks, 0);
+    let previewShare = 0;
+    for (let pw = 1; pw <= previewWeeks; pw++) previewShare += getPreviewGrossMultiplier(pw);
+    const avgWeeklyGross = cleanGross / Math.max(regularWeeks + previewShare, 1);
 
     // Add preview weeks
     for (let pw = 1; pw <= previewWeeks; pw++) {
@@ -1128,7 +1158,6 @@ function buildWeeklySchedule(show, grossesAllTime, grossesWeekly, previewWeeks, 
     }
 
     // Add regular weeks
-    const regularWeeks = totalRunWeeks - previewWeeks;
     for (let w = 0; w < regularWeeks; w++) {
       schedule.push({
         gross: avgWeeklyGross,
@@ -1296,7 +1325,7 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
   // goes uncharged.
   const lifetimeDeals = opts.sourcedStarDeals ? sourcedGrossParticipation(commercial) : null;
   if (lifetimeDeals && lifetimeDeals.entries.length) warnings.push('Star deal: sourced grossParticipation not charged on the lifetime tier');
-  const basisNut = opts.costBasis && commercial.weeklyRunningCost ? fixedNutFromBasis(commercial, commercial.weeklyRunningCost, getBaseVariableRate(category), THEATER_DEAL) : null; // shadow, BRO-5093
+  const basisNut = typedBasisNut(opts, commercial, category); // BRO-5093, live since BRO-6217
   const weeklyNut = basisNut ? basisNut.nut : commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial, { eraAdjust: false });
   const split = opts.costSplit && !basisNut ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null; // shadow, BRO-5073
   const baseVarRate = split ? split.varRate : getBaseVariableRate(category);
@@ -1442,6 +1471,7 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
 module.exports = {
   MUSICAL_LIVE_OPTS,
   PLAY_LIVE_OPTS,
+  ALL_LIVE_OPTS,
   calculateRecoupment,
   calculateLifetimeRecoupment,
   SPLIT_RUN_ERROR,

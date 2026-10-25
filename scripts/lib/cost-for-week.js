@@ -46,15 +46,14 @@ const QUALITY_BANDS = [
 
 /**
  * Break-even gross as a multiple of the weekly running cost, by category:
- * the recoupment model's weekly break-even (nut x (1 - rent share) /
- * (1 - variable rate - theater %)). Read from recoupment-model.js so the two
- * can never drift apart.
+ * the zero-profit point of the recoupment model's steady-state week
+ * (cost-split.js breakEvenRatio, BRO-6217). Read from recoupment-model.js so
+ * the two can never drift apart.
  */
 const { THEATER_DEAL, getBaseVariableRate } = require('./recoupment-model');
+const { breakEvenRatio: ratioFor, fixedNutFromBasis } = require('./cost-split');
 const BREAK_EVEN_RATIO = Object.fromEntries(
-  ['musical', 'musicalSpectacle', 'play', 'playStar', 'special'].map((c) => [
-    c, (1 - THEATER_DEAL.rentPctOfNut) / (1 - getBaseVariableRate(c) - THEATER_DEAL.pctOfGross),
-  ]),
+  ['musical', 'musicalSpectacle', 'play', 'playStar', 'special'].map((c) => [c, ratioFor(getBaseVariableRate(c), THEATER_DEAL)]),
 );
 
 let cachedIndex = null;
@@ -114,10 +113,21 @@ function qualityFor(halfWidth, hasAnchor) {
 const REPORTED_ANCHOR_SOURCES = REPORTED_SOURCE_TYPES;
 
 /**
+ * The fixed nut inside an all-in figure (total expenses at a stated gross,
+ * BRO-6217 M03), the same conversion the flat model applies (cost-split.js
+ * fixedNutFromBasis): the period's average gross when the quote names one,
+ * else a gross equal to the figure.
+ */
+function allInNut(record, amount, category, weekly) {
+  const r = fixedNutFromBasis({ ...record, weeklyRunningCost: amount, weeklyRunningCostBasis: 'all-in' }, amount, getBaseVariableRate(category), THEATER_DEAL, weekly);
+  return r.nut;
+}
+
+/**
  * Cost-equivalent anchors: break-even anchors are converted to a running
  * cost with the category ratio so both kinds feed one series.
  */
-function costAnchors(record, show, category) {
+function costAnchors(record, show, category, weekly) {
   // Malformed anchors are skipped (check-cost-anchors.js reports them).
   let hist = Array.isArray(record?.costHistory) ? record.costHistory.filter((a) => anchorErrors(a).length === 0) : [];
   // A stored migrated copy of weeklyRunningCost takes the record's tier today:
@@ -138,7 +148,8 @@ function costAnchors(record, show, category) {
   return hist.map((a) => ({
     ...a,
     t: toTime(a.asOf),
-    costAmount: a.kind === 'break-even' ? a.amount / breakEvenRatio(category) : a.amount,
+    costAmount: a.kind === 'break-even' ? a.amount / breakEvenRatio(category)
+      : a.basis === 'all-in' ? allInNut(record, a.amount, category, weekly) : a.amount,
     baseHalfWidth: (SOURCE_TIERS[a.sourceType] || SOURCE_TIERS['industry-estimate']).halfWidth,
   }));
 }
@@ -156,7 +167,8 @@ function hasCostAnchor(record, show) {
 /**
  * @param {object} record - commercial.json record (costHistory, weeklyRunningCost...)
  * @param {string|Date} weekEnding
- * @param {{ show?: object, category?: string, fallbackCost?: number, fallbackAsOf?: string, index?: object }} [ctx]
+ * @param {{ show?: object, category?: string, fallbackCost?: number, fallbackAsOf?: string, index?: object, weekly?: object }} [ctx]
+ *   weekly: weekly grosses, for an all-in quote that names its period.
  *   category: recoupment-model classifyShow() category (break-even ratio).
  *   fallbackCost: the category estimate (estimateWeeklyNut with eraAdjust:false,
  *   i.e. 2025-calibrated) used only when the record has no figure at all.
@@ -166,7 +178,7 @@ function costForWeek(record, weekEnding, ctx = {}) {
   const idx = ctx.index || loadIndex();
   const category = ctx.category || 'musical';
   const t = toTime(weekEnding);
-  const anchors = costAnchors(record, ctx.show, category);
+  const anchors = costAnchors(record, ctx.show, category, ctx.weekly);
 
   let cost;
   let halfWidth;
