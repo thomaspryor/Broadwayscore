@@ -167,6 +167,17 @@ function macLabelRetired(label, file = path.join(REPO, 'config', 'mac-retired.js
   }
 }
 
+// BRO-6216: sync-refusal snapshot tags (SYNC_TAG = the label's last segment) of retired jobs.
+// Only the owning job clears its snapshot, so a retired job's last one would show every morning.
+function retiredSyncTags(file = path.join(REPO, 'config', 'mac-retired.json')) {
+  try {
+    const entries = JSON.parse(fs.readFileSync(file, 'utf8')).entries;
+    return Array.isArray(entries) ? entries.filter((e) => e && typeof e.label === 'string').map((e) => e.label.split('.').pop()) : [];
+  } catch {
+    return [];
+  }
+}
+
 function localCyrusRelayMessage() {
   if (macLabelRetired('com.broadwayscore.cyrus-webhook-drain')) return null;
   let status;
@@ -1035,7 +1046,7 @@ async function main() {
   // to `problems` — that banner is for a producer that's supposed to run
   // and didn't; this is its own named block instead, same as backlogDrain.
   try {
-    sections.syncRefused = readSyncRefused();
+    sections.syncRefused = readSyncRefused({ ignoreTags: retiredSyncTags().filter((t) => t !== DIGEST_SYNC_TAG) });
   } catch (err) {
     // Fail CLOSED (ship-check finding, BRO-3393). This catch used to leave
     // sections.syncRefused undefined, which autofixShouldDryRun reads as
@@ -1587,4 +1598,4 @@ if (require.main === module) {
   main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, localLinearDelegationMessage, localCodexConnectionLine, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage };
+module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, localLinearDelegationMessage, localCodexConnectionLine, retiredSyncTags, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage };

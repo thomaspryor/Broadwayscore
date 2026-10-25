@@ -25,6 +25,13 @@ const ROUTINE_DOCS = [
   'weekly-retro',
 ];
 
+// Docs no routine reads: records of routines whose prompts live inline on the
+// server, kept so config/mac-retired.json replacedBy can point at something
+// checkable (BRO-6216). Not runnable scripts, so no Reply/Finish step.
+const RECORD_DOCS = [
+  'opening-night-watch',
+];
+
 function isIgnored(rel) {
   try {
     execFileSync('git', ['check-ignore', '-q', '--no-index', rel], { cwd: ROOT, stdio: 'ignore' });
@@ -46,11 +53,19 @@ for (const name of ROUTINE_DOCS) {
   });
 }
 
+for (const name of RECORD_DOCS) {
+  test(`docs/cloud-routines/${name}.md (record) exists and is not gitignored`, () => {
+    const rel = `docs/cloud-routines/${name}.md`;
+    assert.ok(fs.existsSync(path.join(ROOT, rel)), `${rel} is missing`);
+    assert.equal(isIgnored(rel), false, `${rel} is gitignored, so it would never reach main`);
+  });
+}
+
 test('a new doc under docs/cloud-routines/ is not gitignored', () => {
   assert.equal(isIgnored('docs/cloud-routines/some-future-routine.md'), false);
 });
 
 test('every doc in docs/cloud-routines/ is listed (no orphan routine docs)', () => {
   const onDisk = fs.readdirSync(DIR).filter((f) => f.endsWith('.md')).map((f) => f.slice(0, -3)).sort();
-  assert.deepEqual(onDisk, [...ROUTINE_DOCS].sort());
+  assert.deepEqual(onDisk, [...ROUTINE_DOCS, ...RECORD_DOCS].sort());
 });

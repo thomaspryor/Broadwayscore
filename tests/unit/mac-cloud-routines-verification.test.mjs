@@ -59,11 +59,8 @@ test('every watcher file exists and contains its conditionKey', () => {
 });
 
 // replacedBy must be checkable: "nothing: <reason>", or text naming a workflow / routine doc that exists.
-// com.bwsc.opening-night-monitor predates this rule (its routines have no doc path); grandfathered.
-const REPLACEDBY_GRANDFATHERED = new Set(['com.bwsc.opening-night-monitor']);
 test('every replacedBy item is "nothing: <reason>" or names an existing workflow or routine doc', () => {
   for (const e of retired.entries) {
-    if (REPLACEDBY_GRANDFATHERED.has(e.label)) continue;
     for (const r of e.replacedBy) {
       if (/^nothing: \S/.test(r)) continue;
       const paths = r.match(/(?:\.github\/workflows|docs\/cloud-routines)\/[\w.-]+\.(?:ya?ml|md)/g) || [];

@@ -23,7 +23,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { readSyncRefused, SYNC_REFUSED_READ_FAILED } = require('../../scripts/lib/digest-snapshots.js');
-const { buildHtml, autofixShouldDryRun, DIGEST_SYNC_TAG } = require('../../scripts/send-morning-digest.js');
+const { buildHtml, autofixShouldDryRun, DIGEST_SYNC_TAG, retiredSyncTags } = require('../../scripts/send-morning-digest.js');
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const LAUNCHD_DIR = path.join(REPO_ROOT, 'scripts', 'launchd');
@@ -225,4 +225,24 @@ test('the tag the plist EXPORTS is the constant autofixShouldDryRun defaults to'
     true,
     'a refusal written under the plist\'s own tag must force dry-run',
   );
+});
+
+// BRO-6216: a retired launchd job never runs again, and only the owning job
+// clears its snapshot, so its last refusal would show in every digest.
+test('readSyncRefused skips the snapshots of retired jobs (ignoreTags)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sync-refused-retired-'));
+  for (const tag of ['linear-drain-parked', 'backlog-drain']) {
+    fs.writeFileSync(path.join(dir, `sync-refused-${tag}.json`), JSON.stringify({ tag, at: '2026-10-20T00:00:00Z', reason: 'diverged' }));
+  }
+  assert.deepEqual(readSyncRefused({ auditDir: dir, ignoreTags: ['linear-drain-parked'] }).tags, ['backlog-drain']);
+  assert.equal(readSyncRefused({ auditDir: dir, ignoreTags: ['linear-drain-parked', 'backlog-drain'] }), null);
+  assert.equal(readSyncRefused({ auditDir: dir }).count, 2);
+});
+
+test('retiredSyncTags names every retired label by its SYNC_TAG and never the digest itself', () => {
+  const tags = retiredSyncTags();
+  assert.ok(tags.includes('linear-drain-parked'));
+  assert.ok(tags.includes('weekly-retro'));
+  assert.ok(!tags.includes(DIGEST_SYNC_TAG));
+  assert.deepEqual(retiredSyncTags('/nonexistent/mac-retired.json'), []);
 });
