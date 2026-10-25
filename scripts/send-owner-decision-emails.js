@@ -158,8 +158,9 @@ async function main(argv = process.argv.slice(2)) {
   if (fresh.length >= BACKLOG_MIN) {
     const email = buildBacklogEmail({ decisions: fresh, secret });
     if (opts.dryRun) { console.log(`[dry-run] would send ONE backlog email "${email.subject}" covering ${fresh.map((d) => d.identifier).join(', ')}`); return 0; }
+    // Keyed on the exact set of cards, so a partly failed marker write cannot re-send the same list inside Resend's 24h dedupe window.
     const day = new Date().toISOString().slice(0, 10);
-    const ok = await sendEmailAlert({ title: email.subject, description: '', severity: 'error', subjectLabel: '', html: email.html, idempotencyKey: `owner-decision-backlog:${day}:${fresh.length}` });
+    const ok = await sendEmailAlert({ title: email.subject, description: '', severity: 'error', subjectLabel: '', html: email.html, idempotencyKey: `owner-decision-backlog:${day}:${fresh.map((d) => d.identifier).sort().join(',')}` });
     if (!ok) { console.error('[owner-decision-emails] backlog email was not delivered; will retry next run'); return 1; }
     for (const d of fresh) await markTold(d, "Listed in the owner's decisions email (one email with a link to the list page).");
     console.log(`[owner-decision-emails] sent ONE backlog email covering ${fresh.length} decision(s)`);
