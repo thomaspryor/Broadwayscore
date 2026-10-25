@@ -699,3 +699,15 @@ test('land-gauntlet.sh hands the scope to the background-lane child and scopes b
   assert.match(sh, /scope_list bash-integration tests/);
   assert.match(sh, /scope_list toplevel-regression tests/);
 });
+
+// BRO-6252: the base gates run in a separate worktree, so a failure inside the symlinked
+// node_modules is printed relative to a different place on each side.
+test('parseTscFailures keys out-of-tree node_modules errors the same from any run location', () => {
+  const err = 'error TS1010: \'*/\' expected.\n';
+  const a = parseTscFailures(`../../../node_modules/@types/node/v8.d.ts(147,3): ${err}`);
+  const b = parseTscFailures(`../../../home/user/Broadwayscore/node_modules/@types/node/v8.d.ts(147,3): ${err}`);
+  assert.deepEqual([...a.keys()], [...b.keys()]);
+  assert.ok([...a.keys()][0].startsWith('node_modules/@types/node/v8.d.ts::'));
+  // an in-tree path is untouched
+  assert.ok([...parseTscFailures(`src/a.ts(1,1): ${err}`).keys()][0].startsWith('src/a.ts::'));
+});
