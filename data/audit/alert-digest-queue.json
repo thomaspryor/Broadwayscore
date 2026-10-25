@@ -686,18 +686,35 @@
     "queuedAt": "2026-10-25T20:10:15.725Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 18 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +12 more). Checked 2026-10-25.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40229630823",
     "decision": false,
-    "info": true,
+    "info": false,
     "decisionPrompt": null,
-    "model": null,
+    "model": "opus",
     "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-25T20:31:16.637Z"
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40229630823)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40228993033)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "4"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "Unit Tests"
+      }
+    ],
+    "queuedAt": "2026-10-25T20:34:42.294Z"
   },
   {
     "conditionKey": "land:land/bro-6236-codex-model-ab",
