@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6153-gap2",
   "planId": "8dca22cc-1b64-4608-8201-b4aea297b25b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-25T13:04:57.582Z",
   "submitter": {
     "name": null,
@@ -298,5 +298,59 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-25T13:11:19.649Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added tartuffe-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added gruesome-playground-injuries-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hannah-senesh-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added 44-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added prince-faggot-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added pygmalion-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added anna-christie-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-weir-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-brothers-size-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added endgame-off-broadway-2025"
+    }
+  ],
+  "executedIn": "ci"
 }
