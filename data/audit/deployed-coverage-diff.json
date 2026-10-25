@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-10-25T21:33:33.671Z",
+  "generatedAt": "2026-10-25T23:51:41.814Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 254,
-  "clean": 253,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "high-school-musical-off-west-end-2026",
-      "title": "High School Musical",
-      "openingDate": "2026-10-12",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 80.09 vs local 79.57 (Δ0.52)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 22,
-      "deployedCount": 22,
-      "firstDefectAt": "2026-10-25T21:33:28.938Z"
-    }
-  ],
+  "clean": 254,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
