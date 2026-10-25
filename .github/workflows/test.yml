@@ -31,6 +31,7 @@ on:
       # impossible and removes the merge-conflict-magnet property of a single
       # shared list every parallel worktree session had to edit.
       - 'scripts/lib/**'
+      - 'scripts/read-theater-newsletters.js'
       # scripts/tests/** — same glob fix for scripts/tests/ (BRO-5309). A new
       # scripts/tests/*.test.mjs with no literal entry below failed
       # scripts/lib/test-yml-manifest-paths.test.mjs at land time (land run

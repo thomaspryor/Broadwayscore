@@ -36,6 +36,11 @@ on:
         description: 'Full 400-day historical backfill (first run / recovery)'
         type: boolean
         default: false
+      newsletters:
+        description: 'Theater newsletter reader (BRO-6214): off, dry-run (list issues and facts, send nothing) or live (route a review card). Scheduled runs go live on Mondays.'
+        type: choice
+        options: [off, dry-run, live]
+        default: off
 
 concurrency:
   group: finance-ingest
@@ -232,13 +237,107 @@ jobs:
           severity: 'warning'
           description: 'Daily DMARC aggregate report ingest did not complete. Likely causes: revoked GMAIL_REFRESH_TOKEN (the renew-gmail job then mints the owner a one-tap renewal link, BRO-3712), a malformed report attachment, an alert-routing failure, or a push conflict on data/audit/.'
 
+  # BRO-6214: weekly reader for three theater newsletters. Same Gmail secrets
+  # and the same shared-workflow rationale as the jobs above. It reads ONLY
+  # the three senders in scripts/lib/newsletter-facts.js, stores no email
+  # content, and writes nothing to commercial data: new or conflicting
+  # Broadway business facts go to a person as one routeAlert card. The daily
+  # cron runs this job but the first step only lets it continue on Mondays
+  # (or on a manual dispatch that asks for it), so GitHub's 60-day
+  # auto-disable never sees a separate quiet workflow.
+  #
+  # The ingest calls routeAlert(...) (scripts/read-theater-newsletters.js
+  # requires owner-alert-router.js), so the alert ledger is committed below.
+  newsletters:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - name: Decide whether to run
+        id: gate
+        env:
+          EVENT: ${{ github.event_name }}
+          MODE: ${{ inputs.newsletters }}
+        run: |
+          if [ "$EVENT" = "workflow_dispatch" ]; then
+            if [ "$MODE" = "dry-run" ] || [ "$MODE" = "live" ]; then echo "mode=$MODE" >> "$GITHUB_OUTPUT"; else echo "mode=off" >> "$GITHUB_OUTPUT"; fi
+          elif [ "$(date -u +%u)" = "1" ]; then
+            echo "mode=live" >> "$GITHUB_OUTPUT"
+          else
+            echo "mode=off" >> "$GITHUB_OUTPUT"
+          fi
+          cat "$GITHUB_OUTPUT"
+
+      - name: Checkout
+        if: steps.gate.outputs.mode != 'off'
+        uses: actions/checkout@v5
+
+      - name: Checkout core data
+        if: steps.gate.outputs.mode != 'off'
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        if: steps.gate.outputs.mode != 'off'
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install googleapis
+        if: steps.gate.outputs.mode != 'off'
+        run: npm install --no-save --no-audit --no-fund googleapis
+
+      - name: Read theater newsletters
+        if: steps.gate.outputs.mode != 'off'
+        env:
+          MODE: ${{ steps.gate.outputs.mode }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
+          GMAIL_CLIENT_SECRET: ${{ secrets.GMAIL_CLIENT_SECRET }}
+          GMAIL_REFRESH_TOKEN: ${{ secrets.GMAIL_REFRESH_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          FLAGS=""
+          if [ "$MODE" = "dry-run" ]; then FLAGS="--dry-run"; fi
+          node scripts/read-theater-newsletters.js $FLAGS
+
+      - name: Commit and push alert state
+        if: ${{ always() && steps.gate.outputs.mode == 'live' }}
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          # Kept on ONE line per invocation: the alert-ledger guard
+          # (scripts/lint-workflow-guards.sh alert-ledger-commit) matches the
+          # staging command and the filename on the SAME line.
+          bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl
+          if git diff --staged --quiet; then
+            echo "No alert state changes."
+            exit 0
+          fi
+          git commit -m "audit: theater newsletter reader alert state
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Theater Newsletter Reader Failed'
+          severity: 'warning'
+          description: 'The weekly theater newsletter reader did not complete. Likely causes: revoked GMAIL_REFRESH_TOKEN (the renew-gmail job handles that), an ANTHROPIC_API_KEY problem, or a push conflict on data/audit/.'
+
   # BRO-3712: when either job fails, ask Google whether the saved token is
   # revoked. Only then (exit 3) start gmail-reauth.yml, which puts a one-tap
   # renewal link on the card and so in the owner's decisions email. A Gmail
   # outage or a bad attachment never asks the owner for anything.
   renew-gmail:
-    needs: [ingest, dmarc]
-    if: ${{ always() && (needs.ingest.result == 'failure' || needs.dmarc.result == 'failure') }}
+    needs: [ingest, dmarc, newsletters]
+    if: ${{ always() && (needs.ingest.result == 'failure' || needs.dmarc.result == 'failure' || needs.newsletters.result == 'failure') }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
