@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T15:16:13.748Z",
+  "timestamp": "2026-10-25T15:40:53.736Z",
   "stats": {
-    "totalReviews": 61458,
-    "alreadyFlagged": 21440,
+    "totalReviews": 61482,
+    "alreadyFlagged": 21437,
     "dateGuardCatches": 223,
     "directorMismatch": 2226,
     "tvFilmSignals": 1747,
-    "londonSignals": 2975,
+    "londonSignals": 2976,
     "offBroadwaySignals": 541,
     "yearMismatch": 202,
-    "noPublishDate": 5468
+    "noPublishDate": 5488
   },
   "findings": [
     {
@@ -74908,6 +74908,19 @@
     },
     {
       "showId": "ilford-boy-west-end-2026",
+      "file": "revstanstheatreblog--unknown.json",
+      "publishDate": "2026-10-25",
+      "url": "https://revstanstheatreblog.co.uk/2026/10/25/review-ilford-boy-donmar-warehouse/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
       "file": "sierz-co-uk--unknown.json",
       "score": 63,
       "publishDate": "2026-10-24",
@@ -90175,6 +90188,7 @@
     {
       "showId": "tartuffe-off-broadway-2025",
       "file": "observer--david-cote.json",
+      "score": 25,
       "publishDate": "2025-12-19",
       "url": "https://observer.com/2025/12/review-tartuffe-bad-matthew-broderick-david-cross/",
       "findings": [
