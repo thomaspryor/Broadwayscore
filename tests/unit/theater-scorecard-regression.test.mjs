@@ -87,9 +87,9 @@ test('Marquis Theatre: comfort=5 (modern hotel theater, best legroom on Broadway
   assert.strictEqual(scores('Marquis Theatre').comfort, 5);
 });
 
-// ─── Schema integrity for all 42 theaters ───────────────────────────────────
+// ─── Schema integrity for every theater in the metadata ───────────────────────────────────
 
-test('All 42 theaters have venueScores with 5 integer dimensions in range 1-5', () => {
+test('Every theater has venueScores with 5 integer dimensions in range 1-5', () => {
   const DIMS = ['sightlines', 'sound', 'comfort', 'ambiance', 'facilities'];
   let count = 0;
   for (const [name, entry] of Object.entries(meta)) {
@@ -103,5 +103,7 @@ test('All 42 theaters have venueScores with 5 integer dimensions in range 1-5', 
       );
     }
   }
-  assert.strictEqual(count, 42, `Expected 42 theaters with venueScores, got ${count}`);
+  const houses = Object.keys(meta).filter((k) => !k.startsWith('_')).length;
+  assert.strictEqual(count, houses, `Expected venueScores on all ${houses} theaters, got ${count}`);
+  assert.ok(count >= 40, `Suspiciously few theaters: ${count}`);
 });
