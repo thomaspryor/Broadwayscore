@@ -113,7 +113,19 @@ function extractDomain(urlOrDomain) {
   return urlOrDomain.replace(/^www\./, '');
 }
 
+/**
+ * A registration wall rendered INTO the extracted body (Telegraph sign-up form
+ * text after a byline and one standfirst paragraph). The start-of-text check
+ * misses it because the wall sits at the end of a ~1.5k-char stub, and the
+ * scorer then rates the stub (a Cinderella stub scored 86, BRO-6183).
+ */
+const REGISTRATION_WALL_TAIL = /A minimum of 8 characters\s+At least 1 letter\s+At least 1 number/i;
+function hasRegistrationWallTail(text) {
+  return typeof text === 'string' && REGISTRATION_WALL_TAIL.test(text);
+}
+
 module.exports = {
+  hasRegistrationWallTail,
   detectHardPaywall,
   PAYWALL_START_MARKERS,
   OUTLET_HARD_MARKERS,
