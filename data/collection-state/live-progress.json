@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-25T10:32:51.634Z",
-  "processed": 14,
-  "failed": 7,
-  "successRate": "66.7%",
+  "updatedAt": "2026-10-25T10:33:35.638Z",
+  "processed": 122,
+  "failed": 79,
+  "successRate": "60.7%",
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 80,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 3,
-    "scrapingbee": 1,
-    "brightdata": 2,
+    "scrapingdog": 2,
+    "scrapingbee": 5,
+    "brightdata": 19,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 19
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-10-25T10:24:47.987Z",
@@ -26,6 +26,36 @@
       "t": "2026-10-25T10:24:48.669Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-25T10:29:33.429Z",
+      "event": "bb-session",
+      "session": "6390362d",
+      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
+    },
+    {
+      "t": "2026-10-25T10:29:43.847Z",
+      "event": "bb-session",
+      "session": "8e8eeb57",
+      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
+    },
+    {
+      "t": "2026-10-25T10:30:57.794Z",
+      "event": "bb-session",
+      "session": "4ef8cad8",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-25T10:31:05.346Z",
+      "event": "bb-session",
+      "session": "c4684f65",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-25T10:33:10.511Z",
+      "event": "bb-session",
+      "session": "4eaa87af",
+      "url": "https://soundsandstage.com/show/double-bill-tell-me-straight-aggy-may"
     }
   ]
 }
