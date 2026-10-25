@@ -50,8 +50,8 @@ const TIER_1 = [
   'GH_TOKEN',
   'BRIGHTDATA_TOKEN',
   'BRIGHTDATA_ZONE',
-  'BRIGHTDATA_CUSTOMER',
   'SCRAPINGBEE_API_KEY',
+  'SCRAPINGDOG_API_KEY',
   'BROWSERBASE_API_KEY',
   'BROWSERBASE_PROJECT_ID',
   'OPENAI_API_KEY',
@@ -59,22 +59,15 @@ const TIER_1 = [
   'RESEND_API_KEY',
 ];
 
-// Keys cloud sessions are deliberately NOT given: they bill per call or can
-// reach real people (Resend), so the owner keeps them out of the sandbox
-// (BRO-4622, BRO-5008, .claude/CLOUD.md). A session that needs one runs the
-// script through scripts/cloud-run-script.js instead. In cloud (and only
-// there) the check treats these as expected-absent, not as a failure, so a
-// red "8 missing" every session does not bury a real gap such as LINEAR_API_KEY.
-// Still Tier 1 everywhere else: a Mac or CI run that lacks them still fails.
+// Keys cloud sessions are deliberately NOT given. Only ANTHROPIC_API_KEY now:
+// Claude API work runs through GitHub Actions / scripts/cloud-run-script.js.
+// The scraper and Resend keys were withheld until the owner added them to the
+// Default environment (BRO-6112). In cloud (and only there) the check treats
+// these as expected-absent, not as a failure. Still Tier 1 everywhere else.
+// BRIGHTDATA_CUSTOMER is not required: only scripts/evaluate-brightdata-serp.js
+// reads it, with a hardcoded default.
 const CLOUD_WITHHELD = [
   'ANTHROPIC_API_KEY',
-  'BRIGHTDATA_TOKEN',
-  'BRIGHTDATA_ZONE',
-  'BRIGHTDATA_CUSTOMER',
-  'SCRAPINGBEE_API_KEY',
-  'BROWSERBASE_API_KEY',
-  'BROWSERBASE_PROJECT_ID',
-  'RESEND_API_KEY',
 ];
 
 // Tier 2: useful when doing specific work. Reported but doesn't fail the check.
@@ -84,7 +77,12 @@ const TIER_2 = [
   'RESEND_WE_AUDIENCE_ID',
   'RESEND_FANTASY_AUDIENCE_ID',
   'APPROVAL_HMAC_SECRET',
+  'IMPACT_ACCOUNT_SID',
   'IMPACT_AUTH_TOKEN',
+  'BING_WEBMASTER_API_KEY',
+  'FORMSPREE_TOKEN',
+  'FORMSPREE_SUBSCRIBER_API_KEY',
+  'FORMSPREE_SUBSCRIBER_FORM_ID',
   'MEZZANINE_SESSION_TOKEN',
   'POSTHOG_PERSONAL_API_KEY',
   'POSTHOG_PROJECT_ID',
