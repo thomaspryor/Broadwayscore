@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T01:29:20.117Z",
+  "timestamp": "2026-10-25T01:45:10.638Z",
   "stats": {
     "totalReviews": 60835,
-    "alreadyFlagged": 21330,
+    "alreadyFlagged": 21345,
     "dateGuardCatches": 223,
-    "directorMismatch": 2206,
+    "directorMismatch": 2211,
     "tvFilmSignals": 1720,
-    "londonSignals": 2962,
+    "londonSignals": 2963,
     "offBroadwaySignals": 535,
     "yearMismatch": 201,
-    "noPublishDate": 5507
+    "noPublishDate": 5468
   },
   "findings": [
     {
@@ -9614,6 +9614,19 @@
     },
     {
       "showId": "constellations-west-end-2021",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/westend/article/BWW-Review-CONSTELLATIONS-Vaudeville-Theatre-20210702",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael longhurst\" from constellations-2015"
+        }
+      ]
+    },
+    {
+      "showId": "constellations-west-end-2021",
       "file": "financialtimes--alice-saville.json",
       "score": 75,
       "publishDate": "2021-07-09",
@@ -11538,6 +11551,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (2x) more than 2022 (0x). 2026 matches production: death-of-a-salesman-2026"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "file": "forbes--hal-rubenstein.json",
+      "score": null,
+      "publishDate": "2022-12-17",
+      "url": "https://www.forbes.com/sites/jerylbrunner/2022/12/17/performing-powerhouse-sharon-d-clarke-on-starring-in-a-history-making-death-of-a-salesman-on-broadway/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from death-of-a-salesman-west-end-2019"
         }
       ]
     },
@@ -31800,6 +31827,20 @@
       ]
     },
     {
+      "showId": "old-times-1971",
+      "file": "theater-life--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://theaterlife.com/fool-for-love-old-times-the-gin-game-12/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"douglas hodge\" from old-times-2015"
+        }
+      ]
+    },
+    {
       "showId": "old-times-2015",
       "file": "dctheatrescene--jonathan-mandell.json",
       "score": 61,
@@ -49613,6 +49654,19 @@
     },
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
+      "file": "express-uk--stefan-kyriazis.json",
+      "publishDate": "2024-02-18",
+      "url": "https://www.express.co.uk/entertainment/theatre/1867915/Dorian-Gray-review-Sarah-Snook-Oscar-Wilde-theatre-Succssion",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kip williams\" from the-picture-of-dorian-gray-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-picture-of-dorian-gray-west-end-2024",
       "file": "financialtimes--sarah-hemming.json",
       "score": 96,
       "publishDate": "2024-02-15",
@@ -52196,6 +52250,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2002 (2x) more than 2022 (0x). 2002 matches production: topdog-underdog-2002"
+        }
+      ]
+    },
+    {
+      "showId": "topdog-underdog-2022",
+      "file": "nysr--unknown.json",
+      "publishDate": "2022-10-20",
+      "url": "https://nystagereview.com/2022/10/20/topdog-underdog-keep-your-eye-on-the-winner-but-which/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george c. wolfe\" from topdog-underdog-2002"
         }
       ]
     },
@@ -89229,6 +89296,19 @@
       "score": 69,
       "publishDate": "2023-02-15",
       "url": "https://www.theguardian.com/stage/2023/feb/19/phaedra-simon-stone-national-theatre-janet-mcteer-review-sylvia-musica-old-vic-kate-prince-beverley-knight-standing-at-the-skys-edge-national-chris-bush-richard-hawley",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "sylvia-west-end-2023",
+      "file": "london-theatre--marianka-swain.json",
+      "publishDate": "2023-02-15",
+      "url": "https://www.londontheatre.co.uk/reviews/sylvia-review-old-vic-beverley-knight",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
