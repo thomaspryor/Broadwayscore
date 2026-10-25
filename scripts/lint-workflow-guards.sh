@@ -745,7 +745,11 @@ check_swallowed_audit_writers() {
   OUT=$(node -e "
     const fs = require('fs');
     const path = require('path');
-    const { findSwallowedAuditWriters } = require('./scripts/lib/swallowed-audit-writer-check.js');
+    const { findSwallowedAuditWriters, isAuditWriterFile, validateAllowlist, allowlistKey } = require('./scripts/lib/swallowed-audit-writer-check.js');
+    const allowlist = JSON.parse(fs.readFileSync('scripts/lib/swallowed-audit-writer-allowlist.json', 'utf8'));
+    const matched = new Set();
+    let any = false;
+    for (const p of validateAllowlist(allowlist)) { any = true; console.log('allowlist: ' + p); }
     const { readWorkflowFilesOrFailClosed } = require('./scripts/lib/workflow-glob-guard.js');
 
     const auditWriterCache = new Map();
@@ -753,7 +757,7 @@ check_swallowed_audit_writers() {
       if (auditWriterCache.has(scriptPath)) return auditWriterCache.get(scriptPath);
       let result = false;
       try {
-        result = fs.readFileSync(scriptPath, 'utf8').includes('data/audit/');
+        result = isAuditWriterFile('.', scriptPath);
       } catch { result = false; }
       auditWriterCache.set(scriptPath, result);
       return result;
@@ -767,13 +771,16 @@ check_swallowed_audit_writers() {
       console.log(e.message);
       process.exit(0);
     }
-    let any = false;
     for (const name of files) {
       const text = fs.readFileSync(path.join(dir, name), 'utf8');
-      for (const v of findSwallowedAuditWriters(text, isAuditWriterScript)) {
+      for (const v of findSwallowedAuditWriters(text, isAuditWriterScript, { allowlist, workflow: name, matched })) {
         any = true;
         console.log(name + ': ' + v);
       }
+    }
+    // A reasoned exemption nothing matches any more is stale: fail so it is pruned.
+    for (const e of allowlist) {
+      if (!matched.has(allowlistKey(e))) { any = true; console.log('allowlist: stale entry ' + allowlistKey(e) + ' matches no swallowed audit writer'); }
     }
     if (!any) console.log('__CLEAN__');
   " 2>&1)

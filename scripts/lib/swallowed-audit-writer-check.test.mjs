@@ -178,3 +178,69 @@ test('empty/no-jobs workflow text produces no violations and no crash', () => {
   assert.deepEqual(findSwallowedAuditWriters('name: Empty\non: push\n', isAuditWriter), []);
   assert.deepEqual(findSwallowedAuditWriters('', isAuditWriter), []);
 });
+
+// BRO-267: tightened detector + central reasoned allowlist.
+const { isAuditWriterSource, validateAllowlist, matchAllowlist } = require('./swallowed-audit-writer-check.js');
+
+test('isAuditWriterSource requires a write call, not just a data/audit/ mention', () => {
+  assert.equal(isAuditWriterSource("const f = 'data/audit/x.json'; fs.readFileSync(f)"), false);
+  assert.equal(isAuditWriterSource("// writes data/audit/x.json later"), false);
+  // Fixture calls are assembled so this test file itself never matches the data-write guard.
+  const W = 'write' + 'FileSync';
+  const A = 'append' + 'FileSync';
+  assert.equal(isAuditWriterSource(`fs.${W}('data/audit/x.json', '{}')`), true);
+  assert.equal(isAuditWriterSource(`fs.${A}('data/audit/x.jsonl', l)`), true);
+  assert.equal(isAuditWriterSource(`fs.${W}('other.json', '{}')`), false);
+});
+
+const SWALLOW_STEP = `      - name: Run audit script
+        continue-on-error: true
+        run: |
+          node scripts/some-audit-writer.js
+`;
+const yes = () => true;
+
+test('allowlist entry suppresses exactly its step and records the match', () => {
+  const matched = new Set();
+  const allowlist = [{ workflow: 'a.yml', step: 'Run audit script', script: 'scripts/some-audit-writer.js', reason: 'fixture: outcome checked elsewhere' }];
+  assert.deepEqual(findSwallowedAuditWriters(SWALLOW_STEP, yes, { allowlist, workflow: 'a.yml', matched }), []);
+  assert.equal(matched.size, 1);
+  // Different workflow or step name is NOT exempt.
+  assert.equal(findSwallowedAuditWriters(SWALLOW_STEP, yes, { allowlist, workflow: 'b.yml' }).length, 1);
+  assert.equal(findSwallowedAuditWriters(SWALLOW_STEP.replace('Run audit script', 'Other'), yes, { allowlist, workflow: 'a.yml' }).length, 1);
+});
+
+test('script-wide wildcard entry covers every workflow but only that script', () => {
+  const allowlist = [{ workflow: '*', script: 'scripts/some-audit-writer.js', reason: 'fixture: exit code means findings' }];
+  assert.deepEqual(findSwallowedAuditWriters(SWALLOW_STEP, yes, { allowlist, workflow: 'z.yml' }), []);
+  assert.equal(findSwallowedAuditWriters(SWALLOW_STEP.replace('some-audit-writer', 'other-writer'), yes, { allowlist, workflow: 'z.yml' }).length, 1);
+  assert.equal(matchAllowlist(allowlist, 'z.yml', 'x', 'scripts/other.js'), null);
+});
+
+test('validateAllowlist rejects missing reasons, empty scopes and duplicates', () => {
+  assert.deepEqual(validateAllowlist([{ workflow: 'a.yml', script: 's.js', reason: 'a real reason, long enough' }]), []);
+  assert.equal(validateAllowlist([{ workflow: 'a.yml', script: 's.js', reason: 'todo' }]).length, 1);
+  assert.equal(validateAllowlist([{ workflow: 'a.yml', reason: 'a real reason, long enough' }]).length, 1);
+  const dup = { workflow: 'a.yml', script: 's.js', reason: 'a real reason, long enough' };
+  assert.equal(validateAllowlist([dup, { ...dup }]).length, 1);
+});
+
+test('shipped allowlist is valid and the real lint reports no stale or invalid entries', async () => {
+  const fs = await import('node:fs');
+  const { spawnSync } = await import('node:child_process');
+  const entries = JSON.parse(fs.readFileSync(path.join(__dirname, 'swallowed-audit-writer-allowlist.json'), 'utf8'));
+  assert.deepEqual(validateAllowlist(entries), []);
+  const r = spawnSync('bash', ['scripts/lint-workflow-guards.sh', 'swallowed-audit-writers'], { cwd: path.join(__dirname, '../..'), encoding: 'utf8' });
+  assert.doesNotMatch(r.stdout + r.stderr, /allowlist: /);
+  // Not vacuous: the scan must have produced a verdict, not crashed before printing one.
+  assert.match(r.stdout + r.stderr, /\.yml: step '|No workflow step swallows/);
+});
+
+test('matchAllowlist prefers the most specific entry over a wildcard', () => {
+  const entries = [
+    { workflow: '*', script: 's.js', reason: 'wildcard reason long enough' },
+    { workflow: 'a.yml', step: 'X', script: 's.js', reason: 'specific reason long enough' },
+  ];
+  assert.equal(matchAllowlist(entries, 'a.yml', 'X', 's.js').step, 'X');
+  assert.equal(matchAllowlist(entries, 'b.yml', 'X', 's.js').workflow, '*');
+});
