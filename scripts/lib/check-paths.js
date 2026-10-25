@@ -575,7 +575,8 @@ function replaceAllTokens(cmd, from, to) {
 // implementer it must create them; exec-time check re-validation is
 // shape-only, so an uncreated file simply fails the card's own check). A
 // missing path whose parent directory does not exist is still a fabricated
-// location and fails closed.
+// location and fails closed, except for ONE missing level under an existing
+// non-root grandparent in src/, scripts/, docs/, memory/ (BRO-2625; see the branch below).
 //
 // The card #171 protection is UNCHANGED: its phantom
 // (tests/review-write-guard.test.mjs) has a real tests/unit/ near-match, and
@@ -627,6 +628,15 @@ function resolveCheckPaths(checkableDone, opts = {}) {
     if (dirExists(target)) {
       if (target !== p) { corrected = replaceAllTokens(corrected, p, target); anyCorrection = true; }
       newPaths.push(target);
+      continue;
+    }
+    // BRO-2625: ONE missing directory level is forgiven under src/, scripts/, docs/ or memory/ when
+    // the grandparent exists and is not the repo root (`src/new-feature/index.ts` with `src/`
+    // present). tests/ is excluded on purpose: new tests belong in tests/unit/, and an invented
+    // tests/<dir>/ is the card #171 phantom. Deeper chains and a missing top-level root stay vetoed.
+    const grandparent = path.dirname(path.dirname(p));
+    if (/^(src|scripts|docs|memory)\//.test(p) && grandparent !== '.' && isDir(grandparent)) {
+      newPaths.push(p);
       continue;
     }
     return { ok: false, reason: `checkableDone references a path in a directory that does not exist on disk: ${p}${nearMatch ? ` (tried near-match ${nearMatch})` : ''}` };
