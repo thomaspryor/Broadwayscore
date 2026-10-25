@@ -8,7 +8,7 @@
 require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
-const { isThinClosedShow, hasSearchLanding, loadSearchLandings } = require('./lib/seo-indexability');
+const { isThinClosedShow, hasSearchLanding, loadSearchLandings, hasGscImpressions, loadGscImpressions } = require('./lib/seo-indexability');
 
 const root = path.join(__dirname, '..');
 const shows = JSON.parse(fs.readFileSync(path.join(root, 'data', 'shows.json'), 'utf8')).shows || [];
@@ -19,10 +19,11 @@ for (const r of Array.isArray(reviews) ? reviews : Object.values(reviews.reviews
   if (id) counts[id] = (counts[id] || 0) + 1;
 }
 const landings = loadSearchLandings();
+const gsc = loadGscImpressions();
 const candidates = shows
-  .filter(s => isThinClosedShow({ status: s.status, reviewCount: counts[s.id] || 0, hasSearchLanding: hasSearchLanding(`/show/${s.slug || s.id}`, landings) }, true))
+  .filter(s => isThinClosedShow({ status: s.status, reviewCount: counts[s.id] || 0, hasSearchLanding: hasSearchLanding(`/show/${s.slug || s.id}`, landings), hasGscImpressions: hasGscImpressions(`/show/${s.slug || s.id}`, gsc) }, true))
   .map(s => s.slug || s.id).sort();
-const out = { generated: new Date().toISOString().slice(0, 10), rule: 'closed, 0 reviews, no search landing', landingsLoaded: !!landings, shows: { total: shows.length, thinCandidates: candidates.length, slugs: candidates } };
+const out = { generated: new Date().toISOString().slice(0, 10), rule: 'closed, 0 reviews, 0 search landings, 0 GSC impressions (90d)', landingsLoaded: !!landings, gscLoaded: !!gsc, shows: { total: shows.length, thinCandidates: candidates.length, slugs: candidates } };
 fs.mkdirSync(path.join(root, 'data', 'audit'), { recursive: true });
 fs.writeFileSync(path.join(root, 'data', 'audit', 'seo-thin-candidates.json'), JSON.stringify(out, null, 1) + '\n');
-console.log(`thin show candidates: ${candidates.length} of ${shows.length} (landings loaded: ${!!landings})`);
+console.log(`thin show candidates: ${candidates.length} of ${shows.length} (landings loaded: ${!!landings}, gsc loaded: ${!!gsc})`);

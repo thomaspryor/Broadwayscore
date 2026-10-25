@@ -17,6 +17,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const LANDINGS_FILE = path.join(__dirname, '..', '..', 'data', 'seo-search-landings.json');
 
@@ -53,16 +54,90 @@ function hasSearchLanding(urlPath, landings = loadSearchLandings()) {
   return landings.has(String(urlPath).replace(/\/+$/, ''));
 }
 
+const GSC_FILE = path.join(__dirname, '..', '..', 'data', 'seo-gsc-impressions.json');
+
+let _gsc;
+/** Map path -> 90-day GSC impressions, or null when the snapshot is missing, unreadable or empty. */
+function loadGscImpressions(file = GSC_FILE) {
+  if (file === GSC_FILE && _gsc !== undefined) return _gsc;
+  let map;
+  try {
+    const pages = (file === GSC_FILE
+      ? require('../../data/seo-gsc-impressions.json')
+      : JSON.parse(fs.readFileSync(file, 'utf8'))).pages;
+    map = pages && typeof pages === 'object' && Object.keys(pages).length > 0 ? pages : null;
+  } catch {
+    map = null;
+  }
+  if (file === GSC_FILE) _gsc = map;
+  return map;
+}
+
+function hasGscImpressions(urlPath, gsc = loadGscImpressions()) {
+  // Fail open, same as hasSearchLanding: no snapshot means every page counts as seen in search.
+  if (!gsc) return true;
+  if (!urlPath) return false;
+  return (gsc[String(urlPath).replace(/\/+$/, '')] || 0) > 0;
+}
+
+// Staged rollout (BRO-5992): the thin rule applies to a frozen 10% cohort of slugs.
+// Cohort = sha256("seo-thin-cohort-v1:" + slug) first 8 hex as uint32, mod 100, < 10.
+// scripts/seo-thin-cohort.js freezes the list in data/audit/seo-thin-cohort.json; the
+// list (not the hash) is what the build reads, so later data changes never move a page in.
+const COHORT_PERCENT = 10;
+const COHORT_FILE = path.join(__dirname, '..', '..', 'data', 'audit', 'seo-thin-cohort.json');
+
+function cohortBucket(slug, salt = 'seo-thin-cohort-v1') {
+  return parseInt(crypto.createHash('sha256').update(`${salt}:${slug}`).digest('hex').slice(0, 8), 16) % 100;
+}
+function inCohortHash(slug, percent = COHORT_PERCENT) {
+  return cohortBucket(slug) < percent;
+}
+
+let _cohort;
+function loadCohort(file = COHORT_FILE) {
+  if (file === COHORT_FILE && _cohort !== undefined) return _cohort;
+  let set;
+  try {
+    const slugs = (file === COHORT_FILE
+      ? require('../../data/audit/seo-thin-cohort.json')
+      : JSON.parse(fs.readFileSync(file, 'utf8'))).cohortSlugs;
+    set = Array.isArray(slugs) && slugs.length > 0 ? new Set(slugs) : null;
+  } catch {
+    set = null;
+  }
+  if (file === COHORT_FILE) _cohort = set;
+  return set;
+}
+
+/** Kill switch for the cohort only: SEO_THIN_COHORT_OFF=1. */
+function inFrozenCohort(slug, env = process.env, cohort = loadCohort()) {
+  if (env.SEO_THIN_COHORT_OFF === '1' || !cohort) return false;
+  return cohort.has(slug);
+}
+
+/**
+ * Show-page decision used by page robots and the sitemap: the full rule when
+ * SEO_THIN_NOINDEX=1, otherwise only for a slug in the frozen cohort. Either way
+ * the page must still be a candidate (closed, 0 reviews, 0 landings, 0 GSC impressions).
+ */
+function isThinShowRollout(s, slug, env = process.env) {
+  if (!s) return false;
+  const enabled = thinRulesEnabled(env) || inFrozenCohort(slug, env);
+  return isThinClosedShow(s, enabled);
+}
+
 /**
  * Closed show with no critic reviews and no search traffic: placeholder copy only.
- * @param {{status?: string, reviewCount?: number, hasSearchLanding?: boolean}} s
+ * Search traffic = a PostHog search landing OR GSC impressions (both must be 0).
+ * @param {{status?: string, reviewCount?: number, hasSearchLanding?: boolean, hasGscImpressions?: boolean}} s
  */
 function isThinClosedShow(s, enabled = thinRulesEnabled()) {
   if (!enabled || !s) return false;
   if (ALWAYS_INDEXABLE_STATUSES.has(s.status)) return false;
   if (s.status !== 'closed') return false;
   if ((s.reviewCount || 0) > 0) return false;
-  return !s.hasSearchLanding;
+  return !s.hasSearchLanding && !s.hasGscImpressions;
 }
 
 /**
@@ -76,4 +151,7 @@ function isThinCritic(c, enabled = thinRulesEnabled()) {
   return (c.reviewCount || 0) <= 1;
 }
 
-module.exports = { thinRulesEnabled, isThinClosedShow, isThinCritic, hasSearchLanding, loadSearchLandings, ALWAYS_INDEXABLE_STATUSES };
+module.exports = {
+  thinRulesEnabled, isThinClosedShow, isThinCritic, hasSearchLanding, loadSearchLandings, ALWAYS_INDEXABLE_STATUSES,
+  loadGscImpressions, hasGscImpressions, cohortBucket, inCohortHash, loadCohort, inFrozenCohort, isThinShowRollout, COHORT_PERCENT,
+};
