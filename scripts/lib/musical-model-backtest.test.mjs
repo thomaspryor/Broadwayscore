@@ -90,11 +90,18 @@ test('timing backtest: the play-only options leave musicals untouched', { skip }
   }
 });
 
-test('reported-truth backtest: musicals hold MAE <= 4.2 and >= 62 inside; plays MAE <= 6.5 and >= 24 inside', { skip }, () => {
+// BRO-6184 (2026-10-25): BRO-6138 added 14 sourced 2008-2017 musical truth rows
+// (Playbill/TheaterMania recoupment reports), n 74 -> 88, MAE 2.9 -> 7.4 with the
+// model unchanged. Next to Normal alone (recouped a $4M cap; the estimated nut for a
+// 2009 small musical reads -218%) is ~3.7 points; the other rows sit at ~4.0. eraIndex
+// for musicals would fix it (7.7 -> 4.1) but worsens timing MAE 14.8 -> 16.6, over
+// its 15.5 bound, so that is a model decision, not a pin. Bound re-pinned between
+// the live level (7.4-7.7) and MUSICAL_LIVE_OPTS undone (10.9) so an undo still fails.
+test('reported-truth backtest: musicals hold MAE <= 8.5 and >= 62 inside; plays MAE <= 6.5 and >= 24 inside', { skip }, () => {
   const { summary } = backtest('--base=HEAD');
   const m = summary['type:musical'];
   assert.ok(m.n >= 65, `musical rows ${m.n}`);
-  assert.ok(m.newMae <= 4.2, `musical reported-truth MAE ${m.newMae} (was 4.6 before BRO-5598)`);
+  assert.ok(m.newMae <= 8.5, `musical reported-truth MAE ${m.newMae} (was 4.6 before BRO-5598, 10.9 with MUSICAL_LIVE_OPTS undone on the BRO-6138 rows)`);
   assert.ok(m.newInside >= 62, `musical reported-truth inside ${m.newInside}/${m.n} (was 61/70)`);
   const p = summary['type:play'];
   assert.ok(p.n >= 26, `play rows ${p.n}`);

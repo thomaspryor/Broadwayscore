@@ -140,9 +140,19 @@ const { execErrorDetail } = require('./exec-error-detail.js');
 const { readTsxManifest } = require('./autonomous-checks.js');
 const { nodeUnitTestsForTree, treeUsesCollector, NODE_MANIFEST_REL } = require('./unit-test-collection.js');
 
-// Matches acceptance-check-core.js's own CHECK_TIMEOUT_MS convention — "a
-// hang is worse than a failure" applies equally to this gate's two spawns.
-const TEST_GATE_TIMEOUT_MS = 5 * 60 * 1000;
+// Per-spawn cap for this gate's two spawns ("a hang is worse than a failure").
+// 8 min (BRO-6184): the merged selection grew to 3-9 min and 5 min killed it
+// mid-run. Budget under land-branch.js MERGED_TREE_TIMEOUT_MS (20 min): merged 8
+// + baseline checkout + baseline 8. A killed merged run is never re-run (below),
+// so the common slow case costs one spawn, not two.
+const TEST_GATE_TIMEOUT_MS = 8 * 60 * 1000;
+
+// A spawn the timeout (or any signal) cut short: tests after the kill point
+// never ran. Shared by the retry predicate, the merged-run block and the baseline guard.
+function isKilled(result) {
+  const r = result || {};
+  return !!(r.signal || (r.error && r.error.code === 'ETIMEDOUT'));
+}
 
 // node's TAP `location:` line reports the REAL (symlink-resolved) path, but a
 // tmpdir root (e.g. acceptance-check-core.js's baseline checkout, always
@@ -692,7 +702,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
   // replaces the first, so everything downstream (baseline diff, reason) sees
   // whatever the second run actually produced.
   let retriedUnparseable = false;
-  if (retryUnparseable && result.status !== 0 && parseTapOutput(output, safeRealpath(cwd)).failures.size === 0) {
+  if (retryUnparseable && result.status !== 0 && !isKilled(result) && parseTapOutput(output, safeRealpath(cwd)).failures.size === 0) {
     retriedUnparseable = true;
     const first = describeExit(result);
     result = execFn(cwd, testFiles);
@@ -749,7 +759,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
   // baseline, so the diff would PASS a run that skipped the rest of the
   // selection — a silent false pass that grows with the selection (BRO-4812
   // Codex review). Block as incomplete instead.
-  if (result.signal || (result.error && result.error.code === 'ETIMEDOUT')) {
+  if (isKilled(result)) {
     return {
       ran: true,
       passed: false,
@@ -790,6 +800,11 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
       // one of the merged tree's real failures misread as "new" (which
       // fails toward blocking, not toward a silent pass, but still isn't the
       // honest "baseline unavailable" signal this gate should give).
+      // A baseline killed mid-run with partial TAP is just as untrustworthy:
+      // its failure set is incomplete, so merged failures would read as NEW.
+      if (isKilled(baselineResult)) {
+        throw new Error(`baseline run was killed before finishing (${describeExit(baselineResult)}) — its failure set is incomplete`);
+      }
       if (baselineResult.status !== 0 && baselineParsed.failures.size === 0) {
         // describeExit here too, not just on the merged run (BRO-2874): the
         // baseline child dies from the same timeouts and spawn errors, and this
@@ -877,6 +892,8 @@ function baselineCheckoutOptions(env) {
 }
 
 module.exports = {
+  isKilled,
+  TEST_GATE_TIMEOUT_MS,
   REQUIRED_WORKFLOW_GUARDS,
   EXCLUDED_WORKFLOW_GUARDS,
   shouldRunTestGate,

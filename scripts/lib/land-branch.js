@@ -351,7 +351,7 @@ function makeVerifiedBaseChecks({ verifiedBase, checks = defaultChecks, git = nu
       // its helper or data file on main is still not selected.
       // A test main deleted is absent here; dropping it keeps it from arming
       // the whole scripts/lib suite for nothing. An intervening scripts/lib
-      // test still does arm it (~4 min, within MERGED_TREE_TIMEOUT_MS).
+      // test still does arm it (~4-9 min, within MERGED_TREE_TIMEOUT_MS).
       const interveningTests = intervening.filter(f => isRunnableTestFile(f) && (!cwd || fs.existsSync(path.join(cwd, f))));
       // BRO-5732: a capped doc changed on main selects no test by name, so run the cap test explicitly.
       if (intervening.some(f => CAPPED_DOCS_RE.test(f)) && (!cwd || fs.existsSync(path.join(cwd, CAPPED_DOCS_TEST))) && !interveningTests.includes(CAPPED_DOCS_TEST)) interveningTests.push(CAPPED_DOCS_TEST);

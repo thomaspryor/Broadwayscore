@@ -1207,7 +1207,7 @@ test('runTestGate: unparseable first run that PASSES on re-run is not blocked (B
     cwd: dir,
     changedFiles: ['scripts/lib/review-file-writer.js'],
     execFn: () => (++calls === 1
-      ? { status: null, signal: 'SIGTERM', stdout: 'TimeoutError: linear\n', stderr: '' }
+      ? { status: 1, signal: null, stdout: 'TimeoutError: linear\n', stderr: '' } // a non-kill death; a timeout kill is not re-run (BRO-6184)
       : { status: 0, stdout: 'ok\n', stderr: '' }),
     makeBaselineCheckout: () => { throw new Error('baseline must not be built'); },
     removeBaselineCheckout: () => {},
@@ -1343,4 +1343,59 @@ test('runTestGate: stale data plus a NEW failure still blocks (the label never s
   assert.equal(r.passed, false);
   assert.match(r.output, /NEW since origin\/main/);
   assert.match(r.output, /ENV: likely stale local data/);
+});
+
+// BRO-6184: a merged run killed by the spawn timeout was re-run as an "unparseable
+// death", doubling the burn (648s) before the same refusal.
+test('runTestGate: a killed unparseable merged run is NOT re-run (one spawn, not two)', () => {
+  const dir = makeScratchRepo();
+  writeFailingTest(dir, 'x.test.mjs');
+  let calls = 0;
+  const result = runTestGate({
+    cwd: dir,
+    changedFiles: ['scripts/lib/review-file-writer.js'],
+    execFn: () => { calls++; return { status: null, signal: 'SIGTERM', stdout: '', stderr: '' }; },
+    makeBaselineCheckout: () => ({ dir, prepared: true }),
+    removeBaselineCheckout: () => {},
+  });
+  assert.equal(calls, 1);
+  assert.equal(result.passed, false);
+  assert.match(result.reason, /killed before finishing/);
+});
+
+test('runTestGate: a non-killed unparseable death is still re-run once', () => {
+  const dir = makeScratchRepo();
+  writeFailingTest(dir, 'x.test.mjs');
+  let calls = 0;
+  runTestGate({
+    cwd: dir,
+    changedFiles: ['scripts/lib/review-file-writer.js'],
+    execFn: () => { calls++; return { status: 1, signal: null, stdout: '', stderr: 'boom' }; },
+    makeBaselineCheckout: () => ({ dir, prepared: true }),
+    removeBaselineCheckout: () => {},
+  });
+  assert.equal(calls, 2);
+});
+
+test('runTestGate baseline mode: a killed baseline run is not trusted as the pre-existing set', () => {
+  const baselineDir = makeScratchRepo();
+  writeFailingTest(baselineDir, 'old.test.mjs');
+  const mergedDir = makeScratchRepo();
+  writeFailingTest(mergedDir, 'old.test.mjs');
+  const env = { ...process.env };
+  delete env.NODE_TEST_CONTEXT;
+  const result = runTestGate({
+    cwd: mergedDir,
+    changedFiles: ['scripts/lib/review-file-writer.js'],
+    execFn: (cwd, files) => {
+      const r = spawnSync(process.execPath, ['--test', '--test-reporter=tap', ...files], { cwd, encoding: 'utf8', env });
+      return cwd === baselineDir ? { ...r, status: null, signal: 'SIGTERM' } : r;
+    },
+    makeBaselineCheckout: () => ({ dir: baselineDir, prepared: true }),
+    removeBaselineCheckout: () => {},
+    retryUnparseable: false,
+  });
+  assert.equal(result.passed, false);
+  assert.match(result.reason, /baseline checkout unavailable/);
+  assert.match(result.output, /baseline run was killed/);
 });
