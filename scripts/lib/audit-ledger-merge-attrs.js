@@ -168,32 +168,6 @@ const EXEMPT_LEDGERS = [
       'alert, not a harmless duplicate line.',
   },
   {
-    file: 'data/audit/census-recall-trend.jsonl',
-    reason:
-      '2026-08-26 (BRO-2493, Codex ship-check review): audit-serp-census-recall.js\'s ' +
-      'appendTrendEntry() deliberately REPLACES a same-date row (keeping the ' +
-      'stronger measurement) specifically so the regression detector\'s median ' +
-      'does not "double-weight" a date — its own doc comment says so. That ' +
-      'reconciliation is a dedicated JS merge function (mergeCensusRecallTrend) ' +
-      'that only runs on push-with-retry.sh\'s separate CI reconcile pass; ' +
-      'sync-audit-checkout.sh\'s local recovery stage instead does byte-for-byte ' +
-      'line union (unionLedgerLines()), which has no notion of "same date, ' +
-      'stronger measurement wins" and would leave two same-date rows — exactly ' +
-      'the double-weighting the writer exists to prevent.',
-  },
-  {
-    file: 'data/audit/coverage-adversarial-probe-trend.jsonl',
-    reason:
-      '2026-08-26 (BRO-2493, Codex ship-check review): same shape as ' +
-      'census-recall-trend.jsonl above — coverage-adversarial-probe.js\'s ' +
-      'appendTrendEntry() replaces a same-date row unless the new one measured ' +
-      'fewer shows, again to avoid double-weighting a date in whatever reads the ' +
-      'trend series. The dedicated merge function ' +
-      '(mergeCoverageAdversarialProbeTrend) only runs on the CI reconcile path, ' +
-      'not sync-audit-checkout.sh\'s local recovery, which would union two ' +
-      'same-date rows verbatim.',
-  },
-  {
     file: 'data/audit/autonomous-recheck-ledger.jsonl',
     reason:
       '2026-08-26 (BRO-2493): autonomous-acceptance-recheck.js\'s enforcementState() ' +

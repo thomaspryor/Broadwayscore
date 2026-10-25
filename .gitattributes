@@ -468,3 +468,21 @@ cloud-memory/** linguist-generated=true
 # cloud-memory-reconcile.yml). Union keeps a land rebase from conflicting; the
 # next regeneration rewrites it sorted and de-duplicated.
 cloud-memory/INDEX.txt merge=union
+
+# BRO-2498: these two same-date-replace trends were EXEMPT_LEDGERS (BRO-2493)
+# because sync-audit-checkout.sh's union-recovery did a dumb line union that
+# left two rows for one date. The recovery stage now reconciles any ledger
+# with a registered merge function through it (scripts/lib/smart-ledger-merge.js:
+# mergeCensusRecallTrend / mergeCoverageAdversarialProbeTrend), so the ff-only
+# path is lossless. A git merge or rebase still uses this line-union driver, so
+# sync-audit-checkout.sh refuses those paths for these two files
+# (GIT_MERGE_UNSAFE_LEDGERS) instead of resolving them.
+data/audit/census-recall-trend.jsonl merge=union
+data/audit/coverage-adversarial-probe-trend.jsonl merge=union
+
+# routine-logs.jsonl (scripts/lib/routine-log-ledger.js, BRO-6130): appendFileSync
+# only, never pruned or rewritten, and nothing reads it back (grep of scripts/,
+# src/, .github/ finds only the writer, its test and a prose mention), so a union
+# can neither resurrect a pruned row nor disturb a reader. Landed tracked with no
+# attribute, which failed audit-ledger-merge-attrs.test.mjs's repo-wide check.
+data/audit/routine-logs.jsonl merge=union
