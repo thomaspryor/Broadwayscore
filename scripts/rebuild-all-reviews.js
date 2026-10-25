@@ -4795,7 +4795,7 @@ showDirs.forEach(showId => {
           const fp = crypto.createHash('sha256').update(cleanedForFp).digest('hex').substring(0, 16);
           const existing = crossShowFingerprints.get(fp);
           if (existing && existing.showId !== showId && !skipCrossShowDupeIds.has(existing.showId)
-            && !isJointCombinedCopy(data, showId, existing)) { // BRO-4305: joint multi-show article copies all count
+            && !isJointCombinedCopy(data, showId, existing.copies || [existing], showById[showId])) { // BRO-4305: joint multi-show article copies all count
             logExclusion("skippedCrossShowDupe", showId, file, data);
             stats.skippedCrossShowDupe = (stats.skippedCrossShowDupe || 0) + 1;
             if (!stats.crossShowDupeDetails) stats.crossShowDupeDetails = [];
@@ -4828,6 +4828,10 @@ showDirs.forEach(showId => {
           }
           if (!existing) {
             crossShowFingerprints.set(fp, { showId, file, url: data.url, isCombinedReview: data.isCombinedReview, combinedWith: data.combinedWith });
+          } else if (existing.showId !== showId && data.isCombinedReview === true) {
+            // Kept joint sibling: later copies compare against every sibling, not just the first (BRO-4305).
+            if (!existing.copies) existing.copies = [{ showId: existing.showId, file: existing.file, url: existing.url, isCombinedReview: existing.isCombinedReview, combinedWith: existing.combinedWith }];
+            existing.copies.push({ showId, file, url: data.url, isCombinedReview: true, combinedWith: data.combinedWith });
           }
         }
       }
