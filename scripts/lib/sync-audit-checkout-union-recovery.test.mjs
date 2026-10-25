@@ -42,10 +42,12 @@ test('smartMergeLines resolves a same-date collision with the registered functio
   assert.equal(JSON.parse(merged[0]).truthUrls, 400, 'the better-evidenced measurement wins');
 });
 
-test('smartMergeLines returns null for a ledger with no registered merge function, and throws on a torn row', () => {
+test('smartMergeLines returns null for other ledgers, and skips (never throws on) an unparseable row', () => {
   assert.equal(smartMergeLines('data/audit/landings.jsonl', ['{}'], ['{}']), null);
-  assert.equal(smartMergeEntryFor('data/audit/landings.jsonl'), null);
-  assert.throws(() => smartMergeLines(TREND, ['{"date":'], []));
+  assert.equal(smartMergeEntryFor('data/audit/owner-email-log.jsonl'), null, 'keyed ledgers keep the line union');
+  const r = smartMergeLines(TREND, [row('2026-10-01', 400)], ['{"date":', row('2026-10-02', 400)]);
+  assert.equal(r.merged.length, 2);
+  assert.equal(r.stats.skipped, 1);
 });
 
 test('every git-merge-unsafe ledger has a registered merge function, is declared merge=union, and is no longer exempt', () => {
@@ -61,11 +63,11 @@ test('every git-merge-unsafe ledger has a registered merge function, is declared
 
 test('classifyBlock: a diverged checkout blocked by a git-merge-unsafe ledger refuses; a plain union ledger still rebases', () => {
   const common = { aheadCount: 1, behindCount: 1 };
-  const refused = classifyBlock({ ...common, blockingPaths: [TREND], unionMergePaths: [TREND], smartMergePaths: [TREND] });
-  assert.equal(refused.action, 'refuse');
-  const rebased = classifyBlock({ ...common, blockingPaths: ['data/audit/landings.jsonl'], unionMergePaths: ['data/audit/landings.jsonl'], smartMergePaths: [] });
-  assert.equal(rebased.action, 'commit-and-rebase');
-  const ffOnly = classifyBlock({ aheadCount: 0, behindCount: 1, blockingPaths: [TREND], unionMergePaths: [TREND], smartMergePaths: [TREND] });
+  const L = 'data/audit/landings.jsonl';
+  assert.equal(classifyBlock({ ...common, blockingPaths: [L], unionMergePaths: [L], gitMergeUnsafePaths: [TREND] }).action, 'refuse', 'rebase path');
+  assert.equal(classifyBlock({ ...common, blockingPaths: [], gitMergeUnsafePaths: [TREND] }).action, 'refuse', 'merge-origin path');
+  assert.equal(classifyBlock({ ...common, blockingPaths: [L], unionMergePaths: [L] }).action, 'commit-and-rebase');
+  const ffOnly = classifyBlock({ aheadCount: 0, behindCount: 1, blockingPaths: [TREND], unionMergePaths: [TREND] });
   assert.equal(ffOnly.action, 'union-recover', 'the ff-only stage is where the smart merge runs');
 });
 
@@ -136,17 +138,57 @@ test('ACCEPTANCE: union-recovery of census-recall-trend.jsonl keeps ONE row per 
   }
 });
 
-test('a torn row in the saved copy of a smart-merge ledger refuses and restores the ledger verbatim', () => {
+test('an unparseable row in the saved copy is dropped; origin rows still reach the worktree', () => {
   const { base, origin, clone } = pair('bro2498-b-');
   try {
     originCommit(base, origin, 'via-b', (via) => {
       fs.writeFileSync(path.join(via, TREND), [row('2026-10-01', 400), row('2026-10-02', 400)].join('\n') + '\n');
     });
-    const dirty = row('2026-10-01', 400) + '\nnot-json-in-the-middle\n' + row('2026-10-03', 400) + '\n';
-    fs.writeFileSync(path.join(clone, TREND), dirty);
+    fs.writeFileSync(path.join(clone, TREND), row('2026-10-01', 400) + '\nnot-json-in-the-middle\n' + row('2026-10-03', 400) + '\n');
     const { code, out } = sync(clone, 'b');
+    assert.equal(code, 0, out);
+    const dates = lines(path.join(clone, TREND)).map((l) => JSON.parse(l).date);
+    assert.deepEqual(dates, ['2026-10-01', '2026-10-02', '2026-10-03'], "origin's 10-02 is present");
+  } finally {
+    fs.rmSync(base, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('commit-and-rebase with an ahead commit on a trend file origin also changed refuses and never pushes a duplicate date', () => {
+  const { base, origin, clone } = pair('bro2498-d-');
+  try {
+    const OTHER = 'data/audit/fixture-other-ledger.jsonl';
+    fs.appendFileSync(path.join(clone, '.gitattributes'), `${OTHER} merge=union\n`);
+    fs.writeFileSync(path.join(clone, OTHER), 'x\n');
+    git(clone, 'add', '-A'); git(clone, 'commit', '-q', '-m', 'other'); git(clone, 'push', '-q', 'origin', 'main');
+    fs.writeFileSync(path.join(clone, TREND), [row('2026-10-01', 400), row('2026-10-05', 10)].join('\n') + '\n');
+    git(clone, 'add', '-A'); git(clone, 'commit', '-q', '-m', 'local trend');
+    originCommit(base, origin, 'via-d', (via) => {
+      fs.writeFileSync(path.join(via, TREND), [row('2026-10-01', 400), row('2026-10-05', 400)].join('\n') + '\n');
+      fs.writeFileSync(path.join(via, OTHER), 'x\ny\n');
+    });
+    fs.appendFileSync(path.join(clone, OTHER), 'z\n');
+    const before = git(origin, 'rev-parse', 'main').trim();
+    const { code, out } = sync(clone, 'd');
     assert.notEqual(code, 0, out);
-    assert.equal(fs.readFileSync(path.join(clone, TREND), 'utf8'), dirty, 'local ledger untouched by the refused recovery');
+    assert.equal(git(origin, 'rev-parse', 'main').trim(), before, 'nothing pushed');
+    const dates = lines(path.join(clone, TREND)).map((l) => JSON.parse(l).date);
+    assert.equal(new Set(dates).size, dates.length);
+  } finally {
+    fs.rmSync(base, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('identical changes on both sides are not a refusal (git merges them with no driver)', () => {
+  const { base, origin, clone } = pair('bro2498-e-');
+  try {
+    const content = [row('2026-10-01', 400), row('2026-10-05', 400)].join('\n') + '\n';
+    fs.writeFileSync(path.join(clone, TREND), content);
+    git(clone, 'add', '-A'); git(clone, 'commit', '-q', '-m', 'local trend');
+    originCommit(base, origin, 'via-e', (via) => { fs.writeFileSync(path.join(via, TREND), content); });
+    const { code, out } = sync(clone, 'e');
+    assert.equal(code, 0, out);
+    assert.equal(lines(path.join(clone, TREND)).length, 2);
   } finally {
     fs.rmSync(base, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }

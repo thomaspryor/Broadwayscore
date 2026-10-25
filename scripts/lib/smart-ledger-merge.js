@@ -16,7 +16,9 @@ const { findEntry } = require('./core-data-merge-registry');
 
 /** The registered jsonl merge entry for a repo-relative path, or null. */
 function smartMergeEntryFor(repoPath) {
-  if (typeof repoPath !== 'string' || !repoPath.endsWith('.jsonl')) return null;
+  // Only the same-date-replace trends need it. The keyed ledgers already union
+  // safely by line (BRO-2493) and a keyed merge can drop an origin row.
+  if (!gitMergeUnsafe(repoPath)) return null;
   const e = findEntry(repoPath, 'public-repo');
   return e && e.status === 'active' && e.format === 'jsonl' && typeof e.merge === 'function' ? e : null;
 }
@@ -34,23 +36,33 @@ const GIT_MERGE_UNSAFE_LEDGERS = [
 ];
 const gitMergeUnsafe = (repoPath) => GIT_MERGE_UNSAFE_LEDGERS.includes(repoPath);
 
-const parseLines = (lines) => lines.filter((l) => l !== '').map((l) => JSON.parse(l));
+// An unparseable row is skipped (never thrown): throwing after the fast-forward
+// left the worktree without origin's rows. Count reported through `skipped`.
+function parseLines(lines, skipped) {
+  const out = [];
+  for (const l of lines) {
+    if (l === '') continue;
+    try { out.push(JSON.parse(l)); } catch { skipped.n += 1; }
+  }
+  return out;
+}
 
 /**
  * @param {string} repoPath  e.g. data/audit/census-recall-trend.jsonl
  * @param {string[]} baseLines  origin's lines (the post-fast-forward file)
  * @param {string[]} extraLines the locally saved lines
  * @returns {{merged: string[], stats: {base: number, added: number, total: number}} | null}
- *   null when no smart merge is registered; throws on an unparseable row
+ *   null when no smart merge is registered; skips unparseable rows
  */
 function smartMergeLines(repoPath, baseLines, extraLines) {
   const entry = smartMergeEntryFor(repoPath);
   if (!entry) return null;
-  const remote = parseLines(baseLines);
-  const ours = parseLines(extraLines);
+  const skipped = { n: 0 };
+  const remote = parseLines(baseLines, skipped);
+  const ours = parseLines(extraLines, skipped);
   const { merged } = entry.merge(ours, remote);
   const out = merged.map((e) => JSON.stringify(e));
-  return { merged: out, stats: { base: remote.length, added: Math.max(0, out.length - remote.length), total: out.length } };
+  return { merged: out, stats: { skipped: skipped.n, base: remote.length, added: Math.max(0, out.length - remote.length), total: out.length } };
 }
 
 module.exports = { smartMergeEntryFor, smartMergeLines, GIT_MERGE_UNSAFE_LEDGERS, gitMergeUnsafe };

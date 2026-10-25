@@ -703,11 +703,35 @@ EOF
   return 0
 }
 
+# BRO-2498: ledgers a git merge/rebase would double (GIT_MERGE_UNSAFE_LEDGERS)
+# that BOTH our unpushed commits and origin/main changed, with different
+# content at the two tips. Any rebase or merge of a diverged checkout replays
+# those commits through git's line-union driver, not the registered merge.
+# Fails closed: if the merge base or diff cannot be read while ahead, every
+# unsafe ledger is reported.
+SMART_BOTH=""
+if [ "${AHEAD_COUNT:-0}" -gt 0 ]; then
+  MB=$(git merge-base HEAD origin/main 2>/dev/null || true)
+  if [ -n "$MB" ]; then
+    OURS_CHANGED=$(git diff --name-only "$MB" HEAD 2>/dev/null) || OURS_CHANGED="__unreadable__"
+    THEIRS_CHANGED=$(git diff --name-only "$MB" origin/main 2>/dev/null) || THEIRS_CHANGED="__unreadable__"
+  else
+    OURS_CHANGED="__unreadable__"; THEIRS_CHANGED="__unreadable__"
+  fi
+  for UL in $(SMART_LIB="$SCRIPT_DIR/smart-ledger-merge.js" node -e 'process.stdout.write(require(process.env.SMART_LIB).GIT_MERGE_UNSAFE_LEDGERS.join(" "))' 2>/dev/null); do
+    if [ "$OURS_CHANGED" = "__unreadable__" ] || [ "$THEIRS_CHANGED" = "__unreadable__" ] \
+       || { printf '%s\n' "$OURS_CHANGED" | grep -qxF "$UL" && printf '%s\n' "$THEIRS_CHANGED" | grep -qxF "$UL" \
+            && [ "$(git rev-parse "HEAD:$UL" 2>/dev/null)" != "$(git rev-parse "origin/main:$UL" 2>/dev/null)" ]; }; then
+      SMART_BOTH="${SMART_BOTH}${UL}
+"
+    fi
+  done
+fi
+
 # One node call returns the whole decision; the logic lives in
 # scripts/lib/sync-audit-decision.js so it is unit-testable (CLAUDE.md r15).
-DECISION=$(DIRTY="$REMAINING_DIRTY" CHANGED="$ORIGIN_CHANGED" AHEAD="$AHEAD_COUNT" BEHIND="$BEHIND_COUNT" UNION_FACTS="$UNION_FACTS" DECISION_LIB="$SCRIPT_DIR/sync-audit-decision.js" SMART_LIB="$SCRIPT_DIR/smart-ledger-merge.js" node -e '
-  const { gitMergeUnsafe } = require(process.env.SMART_LIB);
-  const { ffBlockingPaths, classifyBlock, unionLedgerCandidates } = require(process.env.DECISION_LIB);
+DECISION=$(SMART_BOTH="$SMART_BOTH" DIRTY="$REMAINING_DIRTY" CHANGED="$ORIGIN_CHANGED" AHEAD="$AHEAD_COUNT" BEHIND="$BEHIND_COUNT" UNION_FACTS="$UNION_FACTS" DECISION_LIB="$SCRIPT_DIR/sync-audit-decision.js" SMART_LIB="$SCRIPT_DIR/smart-ledger-merge.js" node -e '
+    const { ffBlockingPaths, classifyBlock, unionLedgerCandidates } = require(process.env.DECISION_LIB);
   const split = (v) => (v || "").split("\n").map((s) => s.trim()).filter(Boolean);
   const blockingPaths = ffBlockingPaths({
     dirtyPaths: split(process.env.DIRTY),
@@ -715,7 +739,7 @@ DECISION=$(DIRTY="$REMAINING_DIRTY" CHANGED="$ORIGIN_CHANGED" AHEAD="$AHEAD_COUN
   });
   const d = classifyBlock({
     blockingPaths,
-    smartMergePaths: blockingPaths.filter((p) => gitMergeUnsafe(p)),
+    gitMergeUnsafePaths: (process.env.SMART_BOTH || "").split("\n").map((x) => x.trim()).filter(Boolean),
     aheadCount: Number(process.env.AHEAD || 0),
     behindCount: Number(process.env.BEHIND || 0),
     unionMergePaths: unionLedgerCandidates((process.env.UNION_FACTS || "").split("\n").filter(Boolean).map((l) => {
@@ -948,17 +972,7 @@ if [ "$ACTION" = "merge-origin" ]; then
     REASON="diverged"
   else
     echo "[$TAG] diverged with nothing blocking the fast-forward ($AHEAD_COUNT ahead, $BEHIND_COUNT behind) — reconciling with a 3-way merge of origin/main"
-    # BRO-2498: a git merge resolves merge=union ledgers by line union, which
-    # doubles a same-date-replace row. Refuse when both sides touched one.
-    SMART_BOTH=$(SMART_LIB="$SCRIPT_DIR/smart-ledger-merge.js" BOTH="$( { git diff --name-only "$(git merge-base HEAD origin/main)" HEAD; echo ---; git diff --name-only "$(git merge-base HEAD origin/main)" origin/main; } 2>/dev/null)" node -e '
-      const { gitMergeUnsafe } = require(process.env.SMART_LIB);
-      const [a, b] = process.env.BOTH.split("---").map((x) => new Set(x.split("\n").map((s) => s.trim()).filter(Boolean)));
-      process.stdout.write([...a].filter((p) => b && b.has(p) && gitMergeUnsafe(p)).join(" "));
-    ' 2>/dev/null)
-    if [ -n "$SMART_BOTH" ]; then
-      echo "::error::[$TAG] both sides changed $SMART_BOTH, which a git merge would reconcile by line union and double a same-date row — refusing (reconcile with its registered merge function by hand)"
-      REASON="diverged"
-    elif git merge --autostash --no-edit -m "chore: merge origin/main into the shared checkout [skip ci]" origin/main --quiet 2>/dev/null; then
+    if git merge --autostash --no-edit -m "chore: merge origin/main into the shared checkout [skip ci]" origin/main --quiet 2>/dev/null; then
       # GUARD 3 - a 0 exit is NOT proof the tree is clean. Verified
       # empirically: when the merge itself succeeds but restoring the
       # --autostash CONFLICTS, git prints "Applying autostash resulted in

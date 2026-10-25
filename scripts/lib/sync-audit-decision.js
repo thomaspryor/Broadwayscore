@@ -168,13 +168,12 @@ function recoveryPushAllowed({ commitCount = 0, touched = [] } = {}) {
  *                                   `git checkout HEAD -- <p>` cannot restore
  *                                   a path HEAD does not contain, so the
  *                                   recovery stage has nothing to roll back to.
- * @param {string[]} smartMergePaths blocking paths with a registered merge
- *                                   function (smart-ledger-merge.js)
+ * @param {string[]} gitMergeUnsafePaths ledgers (smart-ledger-merge.js) that both
+ *                                   our commits and origin changed differently
  * @returns {{action: string, reason: string, blockingPaths: string[], unionPaths: string[]}}
  */
-function classifyBlock({ blockingPaths = [], aheadCount = 0, behindCount = 0, unionMergePaths = [], smartMergePaths = [] } = {}) {
+function classifyBlock({ blockingPaths = [], aheadCount = 0, behindCount = 0, unionMergePaths = [], gitMergeUnsafePaths = [] } = {}) {
   const blocking = toList(blockingPaths);
-  const smartSet = new Set(toList(smartMergePaths));
   const unionSet = new Set(toList(unionMergePaths).filter((p) => blocking.includes(p)));
   const unionPaths = blocking.filter((p) => unionSet.has(p));
   const base = { blockingPaths: blocking, unionPaths };
@@ -198,12 +197,14 @@ function classifyBlock({ blockingPaths = [], aheadCount = 0, behindCount = 0, un
   // over it would be exactly the "let the merge machinery paper over it"
   // failure mode this whole gate exists to prevent.
   if (Number(aheadCount) > 0) {
-    // BRO-2498: a rebase resolves the ledger with git's line-union driver, which
-    // has no notion of the registered merge function (same-date-replace rows
-    // would double up). Only the ff-only union-recover stage below can call
-    // that function, so a diverged checkout blocked by such a ledger refuses.
-    const smartBlocked = blocking.some((p) => smartSet.has(p));
-    if (blocking.length && unionPaths.length === blocking.length && !smartBlocked) {
+    // BRO-2498: any rebase or merge of a diverged checkout replays our commits
+    // through git's line-union driver, which cannot call the registered merge
+    // function and would double a same-date row. gitMergeUnsafePaths are the
+    // such ledgers both sides changed to different content; refuse.
+    if (toList(gitMergeUnsafePaths).length) {
+      return { ...base, action: ACTION_REFUSE, reason: REASON_DIVERGED };
+    }
+    if (blocking.length && unionPaths.length === blocking.length) {
       return { ...base, action: ACTION_COMMIT_AND_REBASE, reason: REASON_DIVERGED_UNION_LEDGER };
     }
     // Ahead, behind, and NOTHING dirty that origin also moves (BRO-3393).
