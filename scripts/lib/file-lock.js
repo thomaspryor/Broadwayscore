@@ -141,17 +141,21 @@ function withFileLock(lockPath, fn, opts = {}) {
   const stealGatePath = `${lockPath}.steal-gate`;
   const deadline = Date.now() + timeoutMs;
   let held = false;
-  // Make at least one pass (unless a live steal gate is in progress): a tiny timeoutMs (BRO-5979 uses 1) can
+  // Guarantee one real acquire attempt: a tiny timeoutMs (BRO-5979 uses 1) can
   // already be past by the first check on a slow runner, which skipped the
-  // acquire entirely and reported a free lock as busy (BRO-6189).
-  for (let attempt = 0; attempt === 0 || Date.now() < deadline; attempt++) {
+  // acquire entirely and reported a free lock as busy (BRO-6189). Clearing an
+  // abandoned steal gate does not use the attempt up; waiting on a live one does.
+  let mustTry = true;
+  while (mustTry || Date.now() < deadline) {
     if (fs.existsSync(stealGatePath)) {
       clearAbandonedGate(stealGatePath, staleMs, abandonedMs);
       if (!fs.existsSync(stealGatePath)) continue;
+      mustTry = false;
       const until = Date.now() + waitMs;
       while (Date.now() < until) { /* spin */ }
       continue;
     }
+    mustTry = false;
     try {
       fs.writeFileSync(lockPath, `${process.pid} ${new Date().toISOString()}\n`, { flag: 'wx' });
       held = true;
