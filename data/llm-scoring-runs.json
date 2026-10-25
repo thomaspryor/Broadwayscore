@@ -1,41 +1,5 @@
 [
   {
-    "startedAt": "2026-10-23T19:19:20.250Z",
-    "completedAt": "2026-10-23T19:19:26.990Z",
-    "totalReviews": 8,
-    "processed": 1,
-    "skipped": 7,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 6388,
-      "output": 316,
-      "cacheRead": 0,
-      "cacheWrite": 3741,
-      "total": 15509
-    },
-    "costUsd": 0.03677175,
-    "runId": "40009918643",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-23T19:19:28.595Z",
-    "completedAt": "2026-10-23T19:19:28.601Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "40009918643",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-23T19:42:24.460Z",
     "completedAt": "2026-10-23T19:42:28.771Z",
     "totalReviews": 25,
@@ -859886,6 +859850,58 @@
     },
     "costUsd": 0,
     "runId": "40221231681",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-25T19:13:27.532Z",
+    "completedAt": "2026-10-25T19:15:24.652Z",
+    "totalReviews": 61816,
+    "processed": 59,
+    "skipped": 61751,
+    "errors": 3,
+    "tokensUsed": {
+      "input": 343444,
+      "output": 18432,
+      "cacheRead": 130935,
+      "cacheWrite": 100870,
+      "total": 885174
+    },
+    "costUsd": 0.8294847000000001,
+    "runId": "40224592504",
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "alterations-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-years-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-25T19:15:39.032Z",
+    "completedAt": "2026-10-25T19:15:44.388Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "40224592504",
     "errorDetails": []
   }
 ]
