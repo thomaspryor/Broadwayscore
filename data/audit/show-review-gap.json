@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-25T18:07:05.819Z",
+  "generatedAt": "2026-10-25T18:34:20.132Z",
   "windowDays": 1095,
-  "targets": 667,
+  "targets": 672,
   "auditedThisRun": 12,
   "carriedForward": 804,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 404,
-    "missingCurrentRun": 571,
+    "withGap": 403,
+    "missingCurrentRun": 569,
     "totalCitedNoUrl": 3,
     "totalFlaggedMisses": 705,
     "totalRecoverable": 1,
@@ -16,7 +16,7 @@
     "humanExcluded": 4,
     "automatedExcluded": 367,
     "automatedExcludedListed": 306,
-    "priorProductionCitations": 5668
+    "priorProductionCitations": 5667
   },
   "results": [
     {
@@ -35904,17 +35904,17 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 37,
+        "count": 36,
         "byReason": {
-          "non-review-host": 25,
+          "non-review-host": 24,
           "aggregator-internal-nav": 1,
           "no-review-evidence": 3,
-          "bare-host": 1,
-          "write-path-blocked": 3,
           "census-junk-host": 1,
-          "ticketing-reseller": 1,
+          "write-path-blocked": 3,
+          "bare-host": 1,
           "non-review-path": 1,
-          "ticketing-listing": 1
+          "ticketing-listing": 1,
+          "ticketing-reseller": 1
         }
       },
       "dedupedVariants": [],
@@ -36055,7 +36055,7 @@
         "liveCount": 0,
         "candidateCount": 7
       },
-      "computedAt": "2026-10-25T18:07:05.819Z"
+      "computedAt": "2026-10-25T18:34:20.132Z"
     },
     {
       "showId": "celebrity-autobiography-2026",
@@ -39062,7 +39062,7 @@
         "liveCount": 9,
         "candidateCount": 12
       },
-      "computedAt": "2026-10-25T18:07:05.819Z"
+      "computedAt": "2026-10-25T18:34:20.132Z"
     },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -104063,7 +104063,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=marissavivian.substack.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=marissavivian.substack.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":fals"
+          "reason": "spawnSync node ETIMEDOUT | ⚠️  Scrapingdog failed (dynamic=false, domain=marissavivian.substack.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=marissavivian.substack.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scra"
         },
         {
           "url": "https://morristheatredc.com/theatre/review-king-of-the-yees-signature-theatre",
@@ -104201,7 +104201,7 @@
         "liveCount": 10,
         "candidateCount": 13
       },
-      "computedAt": "2026-10-25T18:07:05.819Z"
+      "computedAt": "2026-10-25T18:34:20.132Z"
     },
     {
       "showId": "kinky-boots-the-musical-west-end-2026",
@@ -109814,24 +109814,19 @@
         "https://www.wsj.com/arts-culture/theater/lincoln-in-the-bardo-review-an-opera-of-presidential-grief-83cfed8b",
         "https://www.npr.org/2026/10/19/nx-s1-6003649/lincoln-bardo-metropolitan-opera-mazzoli-saunders",
         "https://www.washingtonpost.com/entertainment/theater/2026/10/22/how-lincoln-bardo-found-words-presidents-operatic-grief/",
+        "https://bachtrack.com/es_ES/review-mazzoli-lincoln-in-the-bardo-blain-cruz-mattei-metropolitan-opera-new-york-october-2026",
         "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera",
         "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html",
         "https://slippedisc.com/2026/10/lincoln-in-the-bardo-first-review-from-the-met/",
         "https://operawire.com/q-a-composer-missy-mazzoli-author-george-saunders-on-lincoln-in-the-bardo/",
         "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661",
+        "https://operawire.com/q-a-composer-missy-mazzoli-author-george-saunders-on-lincoln-in-the-bardo/",
         "https://www.newyorker.com/culture/goings-on/lincoln-in-the-bardo-gets-an-opera-at-the-met"
       ],
-      "dirFiles": 33,
-      "dirClean": 11,
+      "dirFiles": 34,
+      "dirClean": 12,
       "inReviewsJson": 11,
-      "missing": [
-        {
-          "url": "https://www.washingtonpost.com/entertainment/theater/2026/10/22/how-lincoln-bardo-found-words-presidents-operatic-grief/",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost",
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "broadwayworld.com",
@@ -110044,7 +110039,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -110054,28 +110049,27 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 6,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 13,
+        "resultCount": 15,
         "error": null
       },
       "candidatesRejected": {
-        "count": 122,
+        "count": 121,
         "byReason": {
-          "non-review-host": 37,
+          "non-review-host": 39,
           "aggregator-internal-nav": 46,
-          "no-review-evidence": 1,
+          "no-review-evidence": 2,
           "census-junk-host": 1,
-          "roundup-page": 3,
+          "roundup-page": 1,
           "not-http-url": 20,
           "production-database-listing": 6,
           "aggregator-section-root": 5,
-          "show-listing-page": 1,
-          "ticketing-reseller": 2
+          "show-listing-page": 1
         }
       },
       "dedupedVariants": [],
@@ -110204,6 +110198,18 @@
             "firstSeenAt": "2026-10-22T11:18:11.739Z"
           },
           {
+            "url": "https://www.washingtonpost.com/entertainment/theater/2026/10/22/how-lincoln-bardo-found-words-presidents-operatic-grief/",
+            "outletId": "washingtonpost.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T18:34:20.132Z"
+          },
+          {
+            "url": "https://bachtrack.com/es_ES/review-mazzoli-lincoln-in-the-bardo-blain-cruz-mattei-metropolitan-opera-new-york-october-2026",
+            "outletId": "bachtrack.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T18:34:20.132Z"
+          },
+          {
             "url": "https://operawire.com/q-a-composer-missy-mazzoli-author-george-saunders-on-lincoln-in-the-bardo/",
             "outletId": "operawire.com",
             "state": "live",
@@ -110260,10 +110266,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 8,
+        "liveCount": 9,
         "candidateCount": 15
       },
-      "computedAt": "2026-10-25T18:07:05.819Z"
+      "computedAt": "2026-10-25T18:34:20.132Z"
     },
     {
       "showId": "little-bear-ridge-road-2025",
@@ -113433,7 +113439,6 @@
       "aggregatorListedUrls": [
         "https://www.theatermania.com/news/review-machine-learning-a-reality-show-masquerading-as-an-experiment_1857715/",
         "http://www.theaterscene.net/plays/offbway-plays/machine-learning/christopher-caz/",
-        "https://nyra.nyc/articles/machine-learning",
         "https://www.littleenginetheater.com/machine-learning",
         "https://www.researchgate.net/publication/251236864_Machine_Learning_for_Social_Network_Analysis_A_Systematic_Literature_Review",
         "https://blog.mlreview.com/machine-learning-weekly-review-992c2c6ea47"
@@ -113545,7 +113550,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -113571,15 +113576,15 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 6,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 35,
+        "count": 40,
         "byReason": {
-          "non-review-host": 28,
-          "no-review-evidence": 4,
-          "non-review-path": 1,
+          "non-review-host": 35,
+          "aggregator-internal-nav": 1,
+          "no-review-evidence": 2,
           "venue-production-page": 2
         }
       },
@@ -113587,13 +113592,6 @@
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
-        {
-          "url": "https://nyra.nyc/articles/machine-learning",
-          "host": "nyra.nyc",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
         {
           "url": "https://blog.mlreview.com/machine-learning-weekly-review-992c2c6ea47",
           "host": "mlreview.com",
@@ -113671,7 +113669,7 @@
         "liveCount": 2,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-25T18:07:05.819Z"
+      "computedAt": "2026-10-25T18:34:20.132Z"
     },
     {
       "showId": "madama-butterfly-off-broadway-2024",
@@ -120228,12 +120226,13 @@
         "https://www.allthatdazzles.co.uk/post/review-martin-guerre-the-old-vic",
         "https://therecs.co.uk/martin-guerre-old-vic-theatre/",
         "https://theatreandtonic.co.uk/blog/martin-guerre-the-old-vic-review",
+        "https://www.whatsonstage.com/news/martin-guerre-review-a-compelling-case-for-a-musical-with-a-complicated-past_1735581/",
+        "https://www.londonboxoffice.co.uk/news/post/martin-guerre-the-old-vic-review",
         "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic",
         "https://thespyinthestalls.com/2026/10/martin-guerre/",
         "https://www.londonboxoffice.co.uk/news/post/martin-guerre-the-old-vic-review",
         "https://www.standard.co.uk/culture/theatre/martin-guerre-at-the-old-vic-b1301716.html",
-        "https://musicaltheatrereview.com/martin-guerre-the-old-vic/",
-        "https://www.whatsonstage.com/news/martin-guerre-review-a-compelling-case-for-a-musical-with-a-complicated-past_1735581/",
+        "https://1883magazine.com/martin-guerre-old-vic-review/",
         "https://www.musicomh.com/classical/martin-guerre-review-schonberg-boublils-cameron-mackintosh-the-old-vic",
         "https://southlondon.co.uk/area/southwark/review-martin-guerre-old-vic/",
         "https://www.timeout.com/london/theatre/martin-guerre",
@@ -120244,7 +120243,6 @@
         "https://playsinternational.org.uk/martin-guerre-the-old-vic/",
         "https://www.westendbestfriend.co.uk/news/review-martin-guerre-old-vic-theatre",
         "https://firstnightmagazine.com/2026/10/22/review-of-martin-guerre-old-vic-2026-new-revival-features-more-historical-accuracy-but-loses-its-identity/",
-        "https://1883magazine.com/martin-guerre-old-vic-review/",
         "https://www.london-now.co.uk/news/26665516.martin-guerre-old-vic-theatre-london-review/"
       ],
       "dirFiles": 40,
@@ -120465,21 +120463,21 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 7,
             "error": null
           }
         ],
         "queriesOk": 4,
         "queriesTotal": 4,
-        "resultCount": 14,
+        "resultCount": 16,
         "error": null
       },
       "candidatesRejected": {
-        "count": 17,
+        "count": 16,
         "byReason": {
           "non-review-host": 9,
           "bare-host": 2,
-          "roundup-page": 4,
+          "roundup-page": 3,
           "non-review-path": 1,
           "ticketing-listing": 1
         }
@@ -120597,8 +120595,8 @@
             "firstSeenAt": "2026-10-21T19:57:41.264Z"
           },
           {
-            "url": "https://thespyinthestalls.com/2026/10/martin-guerre/",
-            "outletId": "thespyinthestalls.com",
+            "url": "https://www.whatsonstage.com/news/martin-guerre-review-a-compelling-case-for-a-musical-with-a-complicated-past_1735581/",
+            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-10-21T19:57:41.264Z"
           },
@@ -120719,7 +120717,7 @@
         "liveCount": 21,
         "candidateCount": 25
       },
-      "computedAt": "2026-10-25T18:07:05.819Z"
+      "computedAt": "2026-10-25T18:34:20.132Z"
     },
     {
       "showId": "mary-jane-2024",
@@ -135664,12 +135662,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 17,
+        "count": 19,
         "byReason": {
           "non-review-host": 9,
           "no-review-evidence": 4,
           "write-path-blocked": 2,
-          "roundup-page": 1,
+          "roundup-page": 3,
           "event-listings-page": 1
         }
       },
@@ -135815,7 +135813,7 @@
         "liveCount": 16,
         "candidateCount": 17
       },
-      "computedAt": "2026-10-25T18:07:05.819Z"
+      "computedAt": "2026-10-25T18:34:20.132Z"
     },
     {
       "showId": "murder-she-didnt-write-west-end-2025",
@@ -146828,16 +146826,10 @@
         "https://thefrontrowcenter.com/2022/04/oratorio-for-living-things/",
         "https://thebroadwayblog.com/heather-christian-oratorio/"
       ],
-      "dirFiles": 15,
-      "dirClean": 4,
+      "dirFiles": 16,
+      "dirClean": 5,
       "inReviewsJson": 4,
-      "missing": [
-        {
-          "url": "https://www.theatermania.com/news/review-oratorio-for-living-things-returns-as-glorious-as-ever_1807728/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania"
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "newyorker.com",
@@ -147073,35 +147065,9 @@
       ],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://www.theatermania.com/news/review-oratorio-for-living-things-returns-as-glorious-as-ever_1807728/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/review-oratorio-for-living-things-returns-as-glorious-as-ever_1807728/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -147118,17 +147084,16 @@
           },
           {
             "url": "https://www.theatermania.com/news/review-oratorio-for-living-things-returns-as-glorious-as-ever_1807728/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-25T18:07:05.819Z"
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T18:34:20.132Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 2,
+        "liveCount": 3,
         "candidateCount": 3
       },
-      "computedAt": "2026-10-25T18:07:05.819Z"
+      "computedAt": "2026-10-25T18:34:20.132Z"
     },
     {
       "showId": "orlando-off-broadway-2026",
@@ -152226,7 +152191,7 @@
         "liveCount": 5,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-25T18:07:05.819Z"
+      "computedAt": "2026-10-25T18:34:20.132Z"
     },
     {
       "showId": "pied-a-terre-off-broadway-2026",
@@ -191283,7 +191248,7 @@
         "liveCount": 12,
         "candidateCount": 15
       },
-      "computedAt": "2026-10-25T18:07:05.819Z"
+      "computedAt": "2026-10-25T18:34:20.132Z"
     },
     {
       "showId": "the-devil-wears-prada-west-end-2024",
@@ -200382,6 +200347,7 @@
         "https://thefrontrowcenter.com/2026/10/the-kick-inside/",
         "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/14/",
         "https://www.allmusic.com/album/the-kick-inside-mw0000189382",
+        "https://musicboard.app/erickstarr/review/album/the-kick-inside/kate-bush/",
         "https://pitchfork.com/reviews/albums/kate-bush-the-kick-inside/"
       ],
       "dirFiles": 4,
@@ -200491,24 +200457,24 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 6,
+        "resultCount": 7,
         "error": null
       },
       "candidatesRejected": {
-        "count": 28,
+        "count": 29,
         "byReason": {
-          "non-review-host": 18,
-          "aggregator-internal-nav": 3,
-          "no-review-evidence": 3,
-          "bare-host": 1,
-          "write-path-blocked": 2,
-          "census-junk-host": 1
+          "non-review-host": 21,
+          "aggregator-internal-nav": 1,
+          "no-review-evidence": 4,
+          "census-junk-host": 1,
+          "write-path-blocked": 1,
+          "bare-host": 1
         }
       },
       "dedupedVariants": [],
@@ -200519,6 +200485,29 @@
           "host": "getcuebox.com",
           "knownOutletId": null,
           "zeroCharAttempts": 3
+        },
+        {
+          "url": "https://musicboard.app/erickstarr/review/album/the-kick-inside/kate-bush/",
+          "host": "musicboard.app",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "zeroCharAttempts": 3
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.allmusic.com/album/the-kick-inside-mw0000189382",
+          "host": "allmusic.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://pitchfork.com/reviews/albums/kate-bush-the-kick-inside/",
+          "host": "pitchfork.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         }
       ],
       "weIngestBlocked": [
@@ -200606,7 +200595,7 @@
         "liveCount": 2,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-25T18:07:05.819Z"
+      "computedAt": "2026-10-25T18:34:20.132Z"
     },
     {
       "showId": "the-last-five-years-2025",
@@ -224320,7 +224309,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-25T18:07:05.819Z"
+      "computedAt": "2026-10-25T18:34:20.132Z"
     },
     {
       "showId": "the-waterfall-off-broadway-2026",
@@ -250921,7 +250910,7 @@
     }
   ],
   "staleness": {
-    "at": "2026-10-25T18:07:05.819Z",
+    "at": "2026-10-25T18:34:20.131Z",
     "reserveEvery": 4,
     "reservedAttempted": [
       "murder-cathedral-off-west-end-2026",
@@ -250935,12 +250924,12 @@
     "oldestDueRowAtStart": {
       "showId": "oratorio-for-living-things-off-broadway-2026",
       "computedAt": "2026-09-19T01:53:26.201Z",
-      "ageHours": 879.9
+      "ageHours": 880.3
     },
     "oldestDueRowAfterRun": {
       "showId": "caroline-off-broadway-2026",
       "computedAt": "2026-09-19T01:53:26.201Z",
-      "ageHours": 880.2
+      "ageHours": 880.7
     }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-25T18:10:27.646Z",
+  "generatedAt": "2026-10-25T18:37:59.406Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -127,8 +127,16 @@
       "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
     },
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
+    },
+    {
+      "outletId": "british-theatre",
+      "error": "Timeout fetching https://www.britishtheatreguide.info/reviews/"
     },
     {
       "outletId": "slantmagazine",
@@ -137,6 +145,10 @@
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "viewfromthegods",
+      "error": "AggregateError"
     },
     {
       "outletId": "theartsdispatch",
@@ -151,9 +163,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 689,
+  "itemsScanned": 652,
   "matchedGaps": 1,
-  "possibleGaps": 2,
+  "possibleGaps": 1,
   "gaps": [
     {
       "showId": "machine-learning-off-broadway-2026",
@@ -163,15 +175,6 @@
       "url": "https://www.interestedbystander.com/2026/10/theater-reviews-lauren-yees-king-of.html",
       "headline": "Theater Reviews:  Lauren Yee&#39;s “King of the Yees” Is an Amusing Slice of San Francisco Chinatown Life; Duncan Sheik’s Last Musical, “Memoirs of Amorous Gentlemen,” Is About Sex Workers and Sex Writers; and “Machine Learning” Is “Who’s Afraid of AI Woolf?”",
       "publishDate": "2026-10-23"
-    },
-    {
-      "showId": "copperfield-the-new-musical-off-broadway-2026",
-      "title": "Copperfield! The New Musical",
-      "level": "possible",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/the-curious-case-of-benjamin-button/",
-      "headline": "The Curious Case of Benjamin Button *****",
-      "publishDate": "2026-10-21"
     },
     {
       "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
