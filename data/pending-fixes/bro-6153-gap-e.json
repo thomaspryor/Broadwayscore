@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6153-gap-e",
   "planId": "d66c604b-617e-4f0f-ac45-672aed777e3a",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-25T01:26:42.375Z",
   "submitter": {
     "name": null,
@@ -222,5 +222,49 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-25T01:50:37.201Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added polishing-shakespeare-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added rolling-thunder-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added bear-grease-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added chiaroscuro-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added ava-the-secret-conversations-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added angry-alan-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added saturday-church-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added joy-a-new-true-musical-off-broadway-2025"
+    }
+  ],
+  "executedIn": "ci"
 }
