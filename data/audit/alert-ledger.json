@@ -418,12 +418,13 @@
       "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
       "incidentOpenedAt": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-10-25T07:44:11.838Z",
+      "lastSeen": "2026-10-25T12:43:25.971Z",
       "lastNotifiedAt": "2026-10-25T07:44:11.838Z",
       "lastSurfacedAt": "2026-10-25T07:44:11.838Z",
       "notifyCount": 42,
       "cardId": null,
-      "linearIdentifier": "BRO-5526"
+      "linearIdentifier": "BRO-5526",
+      "silentRefires": 1
     },
     "orphan-unscored-requeue:tao-of-glass-west-end-2026": {
       "status": "resolved",
@@ -9923,12 +9924,13 @@
       "title": "Overdue P0/P1 queue: 1 P0 older than 24h, 12 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-10-25T07:38:50.953Z",
+      "lastSeen": "2026-10-25T12:29:22.159Z",
       "lastNotifiedAt": "2026-10-25T07:38:50.953Z",
       "lastSurfacedAt": "2026-10-25T07:38:50.953Z",
       "notifyCount": 22,
       "cardId": null,
-      "linearIdentifier": "BRO-5613"
+      "linearIdentifier": "BRO-5613",
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-t1-missing:hay-fever-west-end-2026": {
       "status": "resolved",
@@ -17733,13 +17735,13 @@
       "title": "Spend guard bd-circuit-breaker-web_unlocker2: cap drift",
       "firstSeen": "2026-10-14T02:46:56.661Z",
       "incidentOpenedAt": "2026-10-14T02:46:56.661Z",
-      "lastSeen": "2026-10-25T07:44:10.499Z",
+      "lastSeen": "2026-10-25T12:43:24.532Z",
       "lastNotifiedAt": "2026-10-21T07:42:19.987Z",
       "lastSurfacedAt": "2026-10-21T07:42:19.987Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "land:land/bro-5261-s5-retro-fixes": {
       "status": "resolved",
@@ -18694,13 +18696,13 @@
       "title": "LLM scoring daily spend over budget",
       "firstSeen": "2026-10-15T09:31:55.528Z",
       "incidentOpenedAt": "2026-10-19T11:53:05.157Z",
-      "lastSeen": "2026-10-25T12:36:59.378Z",
+      "lastSeen": "2026-10-25T12:43:24.800Z",
       "lastNotifiedAt": "2026-10-24T21:06:39.028Z",
       "lastSurfacedAt": "2026-10-24T21:06:39.028Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 32
+      "silentRefires": 31
     },
     "feedback-outcomes:2026-10-15T05:05:16.652944+00:00": {
       "status": "resolved",
@@ -23599,12 +23601,13 @@
       "title": "the-pianist-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-22T07:38:11.543Z",
       "incidentOpenedAt": "2026-10-22T07:38:11.543Z",
-      "lastSeen": "2026-10-25T07:39:27.429Z",
+      "lastSeen": "2026-10-25T12:29:58.398Z",
       "lastNotifiedAt": "2026-10-25T07:39:27.429Z",
       "lastSurfacedAt": "2026-10-25T07:39:27.429Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-5887-probe": {
       "status": "resolved",
@@ -24335,12 +24338,13 @@
       "title": "stories-the-tap-dance-sensation-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-22T18:21:15.099Z",
       "incidentOpenedAt": "2026-10-22T18:21:15.099Z",
-      "lastSeen": "2026-10-25T07:39:27.310Z",
+      "lastSeen": "2026-10-25T12:29:58.270Z",
       "lastNotifiedAt": "2026-10-25T07:39:27.310Z",
       "lastSurfacedAt": "2026-10-25T07:39:27.310Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "coverage-holes:fences-off-west-end-2026": {
       "status": "open",
@@ -24362,15 +24366,16 @@
       "title": "billy-crystal-860-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-22T18:21:15.185Z",
       "incidentOpenedAt": "2026-10-22T18:21:15.185Z",
-      "lastSeen": "2026-10-25T07:39:27.385Z",
+      "lastSeen": "2026-10-25T12:29:58.350Z",
       "lastNotifiedAt": "2026-10-25T07:39:27.385Z",
       "lastSurfacedAt": "2026-10-25T07:39:27.385Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "coverage-holes:queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-22T18:21:15.315Z",
@@ -24380,7 +24385,9 @@
       "lastSurfacedAt": "2026-10-25T07:39:27.578Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-25T12:29:58.558Z",
+      "resolveReason": "no rejected-but-verified review and no unqueued out-of-band score"
     },
     "coverage-holes:nina-off-west-end-2026": {
       "status": "open",
@@ -24388,12 +24395,13 @@
       "title": "nina-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-22T18:21:15.398Z",
       "incidentOpenedAt": "2026-10-22T18:21:15.398Z",
-      "lastSeen": "2026-10-25T07:39:27.665Z",
+      "lastSeen": "2026-10-25T12:29:58.651Z",
       "lastNotifiedAt": "2026-10-25T07:39:27.665Z",
       "lastSurfacedAt": "2026-10-25T07:39:27.665Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-2427-withtimeout": {
       "status": "resolved",
@@ -26410,12 +26418,13 @@
       "title": "harry-potter-and-the-cursed-child-one-part-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-25T07:39:27.517Z",
       "incidentOpenedAt": "2026-10-25T07:39:27.517Z",
-      "lastSeen": "2026-10-25T07:39:27.517Z",
+      "lastSeen": "2026-10-25T12:29:58.490Z",
       "lastNotifiedAt": "2026-10-25T07:39:27.517Z",
       "lastSurfacedAt": "2026-10-25T07:39:27.517Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "live-data-test:tests/unit/sound-of-music-synopsis.test.mjs::the-sound-of-music-1998 has a synopsis of at least 40 characters": {
       "status": "open",
