@@ -238,7 +238,7 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -252,7 +252,8 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
       "sweptTracker": "BRO-6024",
-      "silentRefires": 6
+      "silentRefires": 6,
+      "resolvedAt": "2026-10-25T13:00:35.951Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -1020,7 +1021,7 @@
       "resolvedAt": "2026-10-13T16:45:36.193Z"
     },
     "test-yml:main-streak": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "Main test.yml red — no confirmed-green run in 5.1h",
@@ -1032,7 +1033,8 @@
       "notifyCount": 71,
       "cardId": null,
       "linearIdentifier": "BRO-5817",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-25T13:00:35.894Z"
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "resolved",
@@ -26179,7 +26181,7 @@
       "resolvedAt": "2026-10-24T22:25:20.535Z"
     },
     "test-yml:red:Unit Tests:d627cdf7": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"on-screen copy in src/app, src/components, src/config and src/lib follows the voice rules\"",
       "firstSeen": "2026-10-24T21:18:01.551Z",
@@ -26197,7 +26199,9 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40132155159"
       },
       "absentRunIds": [],
-      "silentRefires": 6
+      "silentRefires": 6,
+      "resolvedAt": "2026-10-25T13:00:35.811Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-6158-plans": {
       "status": "resolved",
