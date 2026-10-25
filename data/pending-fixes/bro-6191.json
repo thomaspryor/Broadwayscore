@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6191",
   "planId": "58b9ebf8-a546-430b-85a0-e46efd67f1b2",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-25T15:01:07.352Z",
   "submitter": {
     "name": null,
@@ -53,5 +53,19 @@
         "description": "commercial.json: oedipus.deepResearch"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-25T15:46:40.403Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostCleared updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: deepResearch updated for oedipus"
+    }
+  ],
+  "executedIn": "ci"
 }
