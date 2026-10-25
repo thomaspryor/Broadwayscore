@@ -655,6 +655,9 @@ async function applyLandedPlans(id, opts = {}) {
   try { return await DF.applyCardFixPlans(id, io, opts); } catch (e) { return { kind: 'failed', why: `could not check or apply the plan: ${String(e.message).split('\n')[0]}`, lines: [] }; }
 }
 
+// Starts with the heading reconcileLanded looks for, so a deferred apply is retried by a dispatch-capable runner.
+const DEFER_HEADING = '## Codex runner: landing did not finish (data-fix apply deferred)';
+
 async function settleLanded(id, stats, { partial, remaining = [], body, countRefusal = false }) {
   // BRO-6175: a data-fix plan this card landed is applied before the card closes. Every path that settles a
   // landing comes through here, so a recovered or reconciled landing cannot reach Done unapplied.
@@ -665,6 +668,10 @@ async function settleLanded(id, stats, { partial, remaining = [], body, countRef
       // Not a failure and not a bounce (a bounce would hide the card from the GHA lane for 14 days): the card stays
       // In Progress with its landing on main, and a runner that can dispatch applies it on its next reconcile.
       log(`${id}: data-fix apply deferred: ${ap.why}`);
+      // reconcileLanded picks a card up only when the runner's newest note says the landing did not finish, so leave
+      // that note (once: a runner that cannot dispatch re-reads the same card every run).
+      const notes = ((await linear.listIssueComments([id]).catch(() => new Map())).get(id) || []).filter((c) => String(c.body || '').startsWith('## Codex runner'));
+      if (!notes.length || !notes[0].body.startsWith(DEFER_HEADING)) await linearBrain(['update', id, '--comment', `${DEFER_HEADING}\n\n${ap.why}\n\nThe plan is on main and the card stays In Progress; a runner that can dispatch workflows applies it and closes the card.`]);
       return false;
     }
     if (ap.kind === 'failed') {

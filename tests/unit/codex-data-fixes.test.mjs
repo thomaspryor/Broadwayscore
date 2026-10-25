@@ -184,6 +184,9 @@ test('daily-runner wiring: apply inside settleLanded before Done; prompt rule be
   // BRO-6194: a deferred apply leaves the card alone (no Todo bounce, which would hide it from the GHA lane for 14 days).
   const deferred = fn.slice(fn.indexOf("ap.kind === 'deferred'"), fn.indexOf("ap.kind === 'failed'"));
   assert.ok(deferred.includes('return false') && !deferred.includes('moveCard') && !deferred.includes('bounced'));
+  // reconcileLanded only retries a card whose newest runner note starts with this heading.
+  assert.match(src, /const DEFER_HEADING = '## Codex runner: landing did not finish/);
+  assert.match(src, /startsWith\('## Codex runner: landing did not finish'\)/);
   assert.match(fn, /canDispatch: DF\.canDispatchWorkflows\(\)/);
   assert.match(src, /DF\.dataFixesEnabled\(\) && DF\.canDispatchWorkflows\(\) \? DATA_FIX_RULE : ''/);
   assert.match(readFileSync(new URL('../../scripts/codex/runner-prompt.md', import.meta.url), 'utf8'), /\{\{DATA_FIX_RULE\}\}/);
