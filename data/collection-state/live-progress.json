@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-25T16:08:40.988Z",
-  "processed": 108,
-  "failed": 89,
-  "successRate": "54.8%",
+  "updatedAt": "2026-10-25T16:20:25.816Z",
+  "processed": 131,
+  "failed": 92,
+  "successRate": "58.7%",
   "tierBreakdown": {
-    "playwright": 34,
+    "playwright": 46,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 3,
-    "scrapingbee": 3,
-    "brightdata": 4,
+    "scrapingdog": 6,
+    "scrapingbee": 5,
+    "brightdata": 9,
     "archiveToday": 0,
-    "archive": 31
+    "archive": 32
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
       "t": "2026-10-25T14:59:36.090Z",
@@ -30,8 +30,13 @@
     {
       "t": "2026-10-25T15:20:50.177Z",
       "event": "bb-session",
-      "session": "24bf08f6",
-      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+      "session": "9f75aeff",
+      "url": "https://www.nytimes.com/2026/04/03/theater/burnout-paradise-treadmills-theater-o"
+    },
+    {
+      "t": "2026-10-25T15:20:50.905Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
