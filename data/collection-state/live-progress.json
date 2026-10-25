@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-25T15:15:42.628Z",
-  "processed": 69,
-  "failed": 51,
-  "successRate": "57.5%",
+  "updatedAt": "2026-10-25T15:25:03.084Z",
+  "processed": 91,
+  "failed": 59,
+  "successRate": "60.7%",
   "tierBreakdown": {
-    "playwright": 32,
+    "playwright": 36,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 7,
+    "scrapingdog": 8,
     "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 31
+    "archive": 50
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-10-25T14:59:36.090Z",
@@ -24,6 +24,17 @@
     },
     {
       "t": "2026-10-25T14:59:36.805Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-25T15:20:50.177Z",
+      "event": "bb-session",
+      "session": "9f75aeff",
+      "url": "https://www.nytimes.com/2026/04/03/theater/burnout-paradise-treadmills-theater-o"
+    },
+    {
+      "t": "2026-10-25T15:20:50.905Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
