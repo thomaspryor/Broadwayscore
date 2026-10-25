@@ -2489,7 +2489,7 @@ function checkScheduledFailureStreak() {
     const paging = new Set([...fs.readFileSync(path.join(wfDir, 'check-cron-health.yml'), 'utf8')
       .matchAll(/"([a-z0-9-]+\.yml)\|\d+\|/g)].map(m => m[1]));
     const digest = require('./lib/health-digest-crons').DIGEST_CRONS.map(d => d.workflow);
-    const scheduled = fs.readdirSync(wfDir).filter(f => f.endsWith('.yml'))
+    const scheduled = readWorkflowFilesOrFailClosed(wfDir)
       .filter(f => isScheduledWorkflow(fs.readFileSync(path.join(wfDir, f), 'utf8')));
     const paths = classifyAlertPaths(scheduled, paging, digest,
       parseExemptEntries(fs.existsSync(exemptFile) ? fs.readFileSync(exemptFile, 'utf8') : ''));

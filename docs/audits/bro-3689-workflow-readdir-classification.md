@@ -1,5 +1,41 @@
 # BRO-3689: workflow directory scan classification
 
+## Follow-up verification, 2026-10-25
+
+The existing acceptance check passes on starting main (`1ff6943ba5ff`):
+63 tests, zero failures. All 32 classifications and the original guard fixes
+are already present. A newer workflow enumeration in
+`health-check.js:checkScheduledFailureStreak` still lacked the floor. Against
+the real workflow directory restricted to zero or three entries it reported
+`pass` with zero scheduled workflows checked; 49 entries also produced a
+partial successful report. The added caller regression failed three cases
+before the fix. This caller now uses the same guard as exempt-cron liveness,
+preserving its `.yml` scope and existing error-row contract.
+After the fix, `node --test tests/unit/workflow-readdir-guard-classification.test.mjs`
+reports 67 passed and zero failures, including all four new caller cases.
+
+The current real inventory contains 305 workflow files. Before/after probes of
+the production caller, using that inventory with offline GitHub responses for
+success, repeated failure, and lookup error, each visit the same 138 scheduled
+workflows and produce identical results. Zero valid workflow records change.
+Examples include `adjudicate-review-queue.yml`, `aggregator-url-watcher.yml`,
+and `audit-aggregator-coverage.yml`. Incomplete inventories now produce an
+error row before any API lookup. The offline responses test control flow;
+they do not establish live workflow health.
+
+The caller is wired into `computeCoreHealthResults()` and runs in the existing
+daily digest. No new scripts, flags, paid fetches, LLM calls, API calls, or
+cron invocations are introduced. The classification remains 14 verdict-risk
+files and 18 informational files; the health-check entry covers three callers.
+
+The related test search produced 2,440 passes, one skip, and seven failures:
+four live-data/network failures reproduced with main's code, and three shell
+tests initially passed to Node. All three shell tests passed when run with
+Bash. The lint-workflows gauntlet reports all gates green (exit 0); actionlint
+is unavailable locally. Its initial `/tmp/gauntlet` output directory disappeared
+during concurrent tests, so the gate was rerun with an isolated output directory
+and the saved log was read successfully. No new regression remains.
+
 Follow-up verification after the runner reported 11 new failures:
 
 - Reproduced with `node --test --test-timeout 300000 scripts/audit-missing-deps.test.mjs tests/unit/land-preflight.test.mjs tests/unit/workflow-readdir-guard-classification.test.mjs`: 100 passed, 11 failed.
@@ -69,7 +105,7 @@ the actionlint wrapper and exempt-cron liveness scan retain their `.yml` scope.
 | `scripts/dedupe-same-url-bylines.js` | informational | Enumerates show directories and review-text files. No workflow enumeration. |
 | `scripts/gather-reviews.js` | informational | All directory enumerations read review texts. Workflow references describe callers and environment requirements. |
 | `scripts/generate-mobile-show-details.js` | informational | Enumerates library sources and output shards. No workflow enumeration. |
-| `scripts/health-check.js` | verdict-risk | Exempt-cron liveness and never-run coverage could report pass or persist a zero-offender snapshot after an incomplete scan. Guard both. A coverage read failure now produces an error health row and leaves the previous snapshot intact. |
+| `scripts/health-check.js` | verdict-risk | Exempt-cron liveness, scheduled failure streaks, and never-run coverage could report pass or persist a zero-offender snapshot after an incomplete scan. Guard all three. A coverage read failure now produces an error health row and leaves the previous snapshot intact. |
 | `scripts/lint-resend-calls.js` | verdict-risk | `main` recursively walks scripts, workflows, and src, swallowing unreadable roots. Guard workflows before determining there are no direct Resend callers. |
 | `scripts/measure-scraper-usage.js` | informational | On-demand cost telemetry, no PASS/FAIL verdict. Already warns and uses a named fallback when derivation is empty or unreadable. Partial inventories can undercount telemetry; this is not a safety gate. |
 | `scripts/verify-supabase-schema.js` | informational | Enumerates Supabase migrations. Workflows are documentation references. |
@@ -80,7 +116,7 @@ the actionlint wrapper and exempt-cron liveness scan retain their `.yml` scope.
 
 The acceptance test reads this classification and runs each verdict-risk entry
 against missing, empty, three-file, and 49-file fixture inventories using the
-real caller and shared guard. Health coverage exercises both callers. It also
+real caller and shared guard. Health coverage exercises all three callers. It also
 checks the real inventory and the opt-in extension behavior at the exact floor.
 Existing fixture regressions use inert workflows to satisfy the production floor
 without changing their schedule, dispatch, or test-execution assertions.

@@ -85,7 +85,7 @@ function runCaller(file, fixture, healthFunction) {
 
 for (const { file } of entries.filter(e => e.classification === 'verdict-risk')) {
   const functions = file.endsWith('/health-check.js')
-    ? ['checkExemptCronLiveness', 'checkNeverRunWorkflowHealth'] : [null];
+    ? ['checkExemptCronLiveness', 'checkScheduledFailureStreak', 'checkNeverRunWorkflowHealth'] : [null];
   for (const healthFunction of functions) {
     for (const count of [null, 0, 3, MIN_EXPECTED_WORKFLOWS - 1]) {
       test(`${file}${healthFunction ? ':' + healthFunction : ''} refuses a ${count === null ? 'missing' : count + '-workflow'} inventory`, () => {
