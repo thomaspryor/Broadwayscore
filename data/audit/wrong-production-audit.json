@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T07:09:28.002Z",
+  "timestamp": "2026-10-25T07:41:53.467Z",
   "stats": {
-    "totalReviews": 61150,
-    "alreadyFlagged": 21388,
+    "totalReviews": 61160,
+    "alreadyFlagged": 21391,
     "dateGuardCatches": 222,
-    "directorMismatch": 2222,
-    "tvFilmSignals": 1728,
+    "directorMismatch": 2223,
+    "tvFilmSignals": 1734,
     "londonSignals": 2971,
     "offBroadwaySignals": 538,
     "yearMismatch": 201,
-    "noPublishDate": 5547
+    "noPublishDate": 5482
   },
   "findings": [
     {
@@ -859,6 +859,19 @@
     },
     {
       "showId": "a-christmas-carol-west-end-2022",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2022-11-23",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/christmas-carol-old-vic-review-scrooge-little-nice-good/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2022",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 83,
       "publishDate": "2022-11-24",
@@ -920,6 +933,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2024",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2024-11-21",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/a-christmas-carol-old-vic-review-john-simm/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
         }
       ]
     },
@@ -16685,6 +16711,20 @@
       ]
     },
     {
+      "showId": "ginger-twinsies-off-broadway-2025",
+      "file": "nysr--david-finkle.json",
+      "score": null,
+      "publishDate": "2025-07-24",
+      "url": "https://nystagereview.com/2025/07/24/ginger-twinsies-kevin-zaks-parent-trap-spoof-not-so-gingerly-achieved/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "girl-from-the-north-country-2022",
       "file": "rollingstone--david-browne.json",
       "score": 83,
@@ -20473,6 +20513,34 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "house-of-mcqueen-off-broadway-2025",
+      "file": "dailybeast--tim-teeman.json",
+      "score": null,
+      "publishDate": "2025-09-10",
+      "url": "https://www.thedailybeast.com/obsessed/house-of-mcqueen-fashion-icon-alexander-mcqueen-is-brought-back-to-life-on-stage/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "house-of-mcqueen-off-broadway-2025",
+      "file": "new-york-sun--elysa-gardner.json",
+      "score": null,
+      "publishDate": "2025-09-10",
+      "url": "https://www.nysun.com/article/a-designer-who-drew-inspiration-from-violence-and-despair-alexander-mcqueen-is-subject-of-off-broadways-house-of-mcqueen",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -31860,7 +31928,7 @@
     },
     {
       "showId": "oh-mary-tour-2026",
-      "file": "kqed--unknown.json",
+      "file": "kqed--david-john-chavez.json",
       "publishDate": "2026-10-16",
       "url": "https://www.kqed.org/arts/13994824/in-oh-mary-a-closeted-presidents-unhinged-wife-draws-cackles",
       "findings": [
@@ -32012,20 +32080,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from oklahoma-2002"
-        }
-      ]
-    },
-    {
-      "showId": "old-times-1971",
-      "file": "theater-life--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://theaterlife.com/fool-for-love-old-times-the-gin-game-12/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"douglas hodge\" from old-times-2015"
         }
       ]
     },
@@ -46751,7 +46805,7 @@
       "showId": "the-least-problematic-woman-in-the-world-off-broadway-2025",
       "file": "culturesauce--thom-geier.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "2025-10-07",
       "url": "https://culturesauce.com/2025/10/07/dylan-mulvaney-least-problematic-woman-in-the-world-off-broadway-review/",
       "findings": [
         {
@@ -55667,10 +55721,52 @@
     },
     {
       "showId": "weather-girl-off-broadway-2025",
+      "file": "culturesauce--thom-geier.json",
+      "score": null,
+      "publishDate": "2025-09-21",
+      "url": "https://culturesauce.com/2025/09/21/weather-girl-off-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "weather-girl-off-broadway-2025",
+      "file": "nysr--melissa-rose-bernardo.json",
+      "score": null,
+      "publishDate": "2025-09-21",
+      "url": "https://nystagereview.com/2025/09/21/weather-girl-the-forecast-dark-with-100-chance-of-laughter/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "weather-girl-off-broadway-2025",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "2025-09-21",
       "url": "https://newyorktheater.me/2025/09/21/weather-girl-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "weather-girl-off-broadway-2025",
+      "file": "timeout--raven-snook.json",
+      "score": null,
+      "publishDate": "2025-09-24",
+      "url": "https://www.timeout.com/newyork/theater/weather-girl-review-play-julia-mcdermott-brian-watkins-climate-change",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
