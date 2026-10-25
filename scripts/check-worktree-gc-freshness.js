@@ -43,7 +43,17 @@ async function main() {
   let logText = null;
   try { logText = fs.readFileSync(LOG_PATH, 'utf8'); } catch { /* missing */ }
   const payload = evaluate(logText, Date.now());
+  let expected = [];
+  try { expected = require('./lib/worktree-gc-repos').DEFAULT_REPOS.map((r) => r.name); } catch { /* none */ }
+  const repoPayloads = evaluateRepos(logText, Date.now(), expected);
   const { routeAlert, resolveCondition } = require('./lib/owner-alert-router.js');
+  for (const rp of repoPayloads) {
+    console.log(`[worktree-gc-freshness] FAIL ${rp.title}`);
+    await routeAlert(rp).catch((e) => console.error(`[worktree-gc-freshness] alert failed: ${e.message}`));
+  }
+  for (const name of expected) {
+    if (!repoPayloads.some((rp) => rp.conditionKey === `worktree-gc:stale:${name}`)) resolveCondition(`worktree-gc:stale:${name}`);
+  }
   if (payload) {
     console.log(`[worktree-gc-freshness] FAIL ${payload.title}`);
     await routeAlert(payload).catch((e) => console.error(`[worktree-gc-freshness] alert failed: ${e.message}`));
@@ -51,8 +61,23 @@ async function main() {
   }
   resolveCondition('worktree-gc:stale');
   resolveCondition('worktree-gc:log-missing');
+  if (repoPayloads.length) process.exit(1);
   console.log('[worktree-gc-freshness] ok');
 }
 
-module.exports = { evaluate };
+/** Pure: one payload per repo whose own DIGEST heartbeat is stale (BRO-2617). */
+function evaluateRepos(logText, nowMs, expectedRepos = []) {
+  if (logText == null) return [];
+  const { checkWorktreeGcFreshnessByRepo } = require('./lib/worktree-gc-freshness');
+  return checkWorktreeGcFreshnessByRepo(logText, nowMs, expectedRepos).map((s) => ({
+    conditionKey: `worktree-gc:stale:${s.repo}`,
+    title: `Infra: worktree GC stale for repo ${s.repo}`,
+    description: s.hoursStale == null
+      ? `worktree-gc.log has no DIGEST[${s.repo}] line at all, so the ${s.repo} repo's worktrees are not being garbage-collected.`
+      : `worktree-gc.log has no DIGEST[${s.repo}] line in the last ${s.hoursStale.toFixed(1)}h while other repos may still be logging, so the ${s.repo} repo's GC pass may have silently stopped.`,
+    severity: s.severity, disposition: 'digest',
+  }));
+}
+
+module.exports = { evaluate, evaluateRepos };
 if (require.main === module) main();

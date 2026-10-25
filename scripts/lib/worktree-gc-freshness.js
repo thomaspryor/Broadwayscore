@@ -62,4 +62,44 @@ function checkWorktreeGcFreshness(lastLineTimestamp, nowMs) {
   return { hoursStale, severity: hoursStale >= STALE_ERROR_HOURS ? 'error' : 'warn' };
 }
 
-module.exports = { checkWorktreeGcFreshness, lastTimestampFromLog, STALE_WARN_HOURS, STALE_ERROR_HOURS };
+/**
+ * BRO-2617: the combined log stays fresh while any one repo's pass is running,
+ * so a single repo (e.g. ios) going silent is invisible to the overall check.
+ * gc-merged-worktrees.sh writes a `DIGEST[<repo>]:` line for every repo on every
+ * pass, which makes it the per-repo heartbeat.
+ * @param {string|null|undefined} logText
+ * @returns {Record<string,string>} repo name -> newest `YYYY-MM-DD HH:MM:SS` of its DIGEST line
+ */
+function lastTimestampsByRepo(logText) {
+  const out = {};
+  if (typeof logText !== 'string') return out;
+  const lines = logText.split('\n');
+  for (let i = lines.length - 1; i >= 0; i--) {
+    const m = /^\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\] DIGEST\[([^\]]+)\]:/.exec(lines[i]);
+    if (m && !(m[2] in out)) out[m[2]] = m[1];
+  }
+  return out;
+}
+
+/**
+ * @param {string|null|undefined} logText
+ * @param {number} nowMs
+ * @param {string[]} [expectedRepos] repos that must have a heartbeat even if the log has none yet
+ * @returns {Array<{repo:string, hoursStale:number|null, severity:'warn'|'error'}>} stale repos only.
+ *   A repo with no heartbeat at all reports hoursStale null, severity error. Empty when the
+ *   log has no DIGEST lines and nothing is expected (older log format), so this never fires on
+ *   a log the overall check already covers.
+ */
+function checkWorktreeGcFreshnessByRepo(logText, nowMs, expectedRepos = []) {
+  const byRepo = lastTimestampsByRepo(logText);
+  const names = new Set([...Object.keys(byRepo), ...expectedRepos]);
+  const stale = [];
+  for (const repo of names) {
+    if (!byRepo[repo]) { stale.push({ repo, hoursStale: null, severity: 'error' }); continue; }
+    const r = checkWorktreeGcFreshness(byRepo[repo], nowMs);
+    if (r) stale.push({ repo, ...r });
+  }
+  return stale;
+}
+
+module.exports = { checkWorktreeGcFreshness, lastTimestampFromLog, lastTimestampsByRepo, checkWorktreeGcFreshnessByRepo, STALE_WARN_HOURS, STALE_ERROR_HOURS };
