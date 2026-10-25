@@ -164,15 +164,18 @@ test('no live-scoring review-text file has a reverted wrongAttribution clear', (
 });
 
 // BRO-4695: a critic filed under a registry ALIAS of their own home outlet
-// (Robert Sholiton @ gotham-playgoer, alias of bobs-theater-blog; Richard Seff
-// @ dc-metro-theater-arts, alias of dc-theater-arts) is not a cross-outlet
-// suspect. The audit must compare canonical outletIds, not raw ones.
-test('audit canonicalizes registry-alias outletIds before the home-outlet check', async () => {
+// (Robert Sholiton @ gotham-playgoer, alias of bobs-theater-blog) is not a
+// cross-outlet suspect. The audit compares canonical outletIds, resolved by
+// EXACT registry alias lookup (never fuzzy normalizeOutlet, which would clear
+// real suspects like operawire-independent-review -> operawire).
+test('makeOutletCanonicalizer resolves exact registry aliases only', async () => {
   const { createRequire } = await import('node:module');
-  const { normalizeOutlet } = createRequire(import.meta.url)('./lib/review-normalization.js');
-  assert.strictEqual(normalizeOutlet('gotham-playgoer'), 'bobs-theater-blog');
-  assert.strictEqual(normalizeOutlet('dc-metro-theater-arts'), 'dc-theater-arts');
-  const src = readFileSync(path.join(repoRoot, 'scripts', 'audit-cross-outlet-attributions.js'), 'utf8');
-  assert.match(src, /homes\.includes\(canonId\)/, 'default-critic home check must test the canonical outletId');
-  assert.match(src, /perOutletCritic\.get\(`\$\{canonId\}\|\|\$\{criticName\}`\)/, 'repeat-appearance lookup must use the canonical outletId');
+  const { makeOutletCanonicalizer } = createRequire(import.meta.url)('./lib/cross-outlet-triage.js');
+  const canon = makeOutletCanonicalizer({ _aliasIndex: { 'gotham-playgoer': 'bobs-theater-blog', operawire: 'operawire' } });
+  assert.strictEqual(canon('gotham-playgoer'), 'bobs-theater-blog');
+  assert.strictEqual(canon('Gotham-Playgoer'), 'bobs-theater-blog');
+  assert.strictEqual(canon('bobs-theater-blog'), 'bobs-theater-blog');
+  assert.strictEqual(canon('operawire-independent-review'), 'operawire-independent-review', 'no fuzzy matching');
+  assert.strictEqual(canon(undefined), undefined);
+  assert.strictEqual(makeOutletCanonicalizer(null)('x'), 'x');
 });

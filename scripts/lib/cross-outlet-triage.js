@@ -58,4 +58,22 @@ function isTriagedOut(d, explainExclusion) {
   return false;
 }
 
-module.exports = { isTriagedOut };
+/**
+ * Exact registry-alias canonicalizer (BRO-4695). Built from the SAME registry
+ * document the audit reads, so aliases and defaultCritic homes can never come
+ * from two different checkouts. Deliberately NOT normalizeOutlet(): that does
+ * fuzzy prefix matching, which would silently clear real suspects.
+ *
+ * @param {{_aliasIndex?: Object<string,string>}} registryDoc parsed outlet-registry.json
+ * @returns {(id: string) => string}
+ */
+function makeOutletCanonicalizer(registryDoc) {
+  const idx = (registryDoc && registryDoc._aliasIndex) || {};
+  return (id) => {
+    if (!id) return id;
+    const hit = idx[String(id).toLowerCase()];
+    return typeof hit === 'string' && hit ? hit : id;
+  };
+}
+
+module.exports = { makeOutletCanonicalizer, isTriagedOut };

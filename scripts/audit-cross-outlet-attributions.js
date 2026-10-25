@@ -80,15 +80,12 @@ const { hasHelpFlag } = require('./lib/cli-help');
 const { getTier } = require('./lib/outlet-tiers');
 const { normalizeCriticForCoverage } = require('./lib/multi-critic-serp');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
-const { isTriagedOut } = require('./lib/cross-outlet-triage');
+const { isTriagedOut, makeOutletCanonicalizer } = require('./lib/cross-outlet-triage');
 const { explainExclusion } = require('./lib/review-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { normalizeOutlet } = require('./lib/review-normalization');
-
 // Registry aliases (gotham-playgoer -> bobs-theater-blog, dc-metro-theater-arts
 // -> dc-theater-arts) are the SAME outlet. Comparing raw outletIds reported a
 // critic at their own home outlet's alias as a cross-outlet suspect (BRO-4695).
-const canonOutlet = (id) => normalizeOutlet(id) || id;
 
 // Byline zone for the --include-fulltext inline-verify check. A plain
 // whole-body substring search (ship-check adversarial finding, 2026-08-04)
@@ -173,12 +170,14 @@ for (const required of ['data/review-texts', 'data/reviews.json', 'data/outlet-r
 }
 const AGG = ['playbill-verdict', 'show-score', 'bww-roundup', 'dtli', 'outlet-listing-poller'];
 
-const registry = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'outlet-registry.json'), 'utf8')).outlets;
+const registryDoc = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'outlet-registry.json'), 'utf8'));
+const registry = registryDoc.outlets;
+const canonOutlet = makeOutletCanonicalizer(registryDoc);
 const defaultOf = new Map();
 for (const [oid, entry] of Object.entries(registry)) {
   if (entry.defaultCritic) {
     if (!defaultOf.has(entry.defaultCritic)) defaultOf.set(entry.defaultCritic, []);
-    defaultOf.get(entry.defaultCritic).push(oid);
+    defaultOf.get(entry.defaultCritic).push(canonOutlet(oid));
   }
 }
 
@@ -225,7 +224,7 @@ if (PLAYBILL_BLEED) {
 
   const bleedGroups = [];
   for (const { showId, criticName, entries } of groups.values()) {
-    const outletIds = [...new Set(entries.map((e) => e.outletId))];
+    const outletIds = [...new Set(entries.map((e) => canonOutlet(e.outletId)))];
     if (outletIds.length < PLAYBILL_BLEED_MIN_OUTLETS) continue;
     bleedGroups.push({ showId, criticName, outletIds, files: entries });
   }
@@ -270,7 +269,7 @@ if (PLAYBILL_BLEED) {
       if (isTriagedOut(d, explainExclusion)) continue;
       const homes = defaultOf.get(criticName) || [];
       const canonId = canonOutlet(outletId);
-      if (!homes.length || homes.includes(outletId) || homes.includes(canonId)) continue;
+      if (!homes.length || homes.includes(canonId)) continue;
       if ((perOutletCritic.get(`${canonId}||${criticName}`) || 0) > 1) continue;
 
       if (INCLUDE_FULLTEXT) {
