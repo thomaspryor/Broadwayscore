@@ -14,6 +14,7 @@
  */
 
 const { BACKFILL_CLOSED_DAYS } = require('./spend-purpose');
+const { sanitizeVenueForWrite } = require('./venue-classification');
 
 const MIN_RUN_DAYS = 14;
 const DAY_MS = 86400 * 1000;
@@ -63,15 +64,18 @@ function playbillFacts(r, entry) {
 }
 
 /**
- * The add-show action for a promotable entry. discoverySource marks the row as
- * backfilled so a cohort can be audited or reverted as a set.
+ * The add-show action for a promotable entry, or null when the venue fails
+ * sanitizeVenueForWrite. discoverySource marks the row as backfilled so a
+ * cohort can be audited or reverted as a set.
  */
 function toAddShowAction(entry, { discoveredAt, dateSource, evidenceUrls = [] }) {
+  const venue = sanitizeVenueForWrite(entry.venue);
+  if (!venue) return null;
   const show = {
     id: entry.id,
     title: entry.title,
     slug: entry.slug,
-    venue: entry.venue,
+    venue,
     previewsStartDate: entry.previewsStartDate || null,
     openingDate: entry.openingDate,
     closingDate: entry.closingDate,

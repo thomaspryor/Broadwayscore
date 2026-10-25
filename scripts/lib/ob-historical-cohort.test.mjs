@@ -117,3 +117,7 @@ test('isObHistoricalRow: tag or ob-historical discoverySource, Off-Broadway rows
   assert.equal(isObHistoricalRow({ market: 'broadway', category: 'broadway', tags: ['historical'] }), false);
   assert.equal(isObHistoricalRow(null), false);
 });
+
+test('toAddShowAction: refuses a placeholder venue (sanitizeVenueForWrite)', () => {
+  assert.equal(toAddShowAction(entry({ venue: 'TBA' }), { discoveredAt: 'x', dateSource: 'y' }), null);
+});
