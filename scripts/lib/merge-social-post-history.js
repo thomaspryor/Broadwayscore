@@ -17,6 +17,9 @@
 //   - scripts/lib/merge-commercial-conflict.js (push-with-retry.sh conflict path)
 //   - tests/unit/merge-social-post-history.test.mjs
 //
+// Writers: scripts/social-autopost/run.js (social-autopost.yml, BRO-6242; entries keyed
+// by date|type|showId, type 'opening' | 'score') and the manual-only generate-social-post.js.
+//
 // Merge rules:
 //   * shape: { _meta: { description, lastUpdated }, posts: [ { date, type, showId,
 //     tweetId, tweetUrl, text }, ... ] }

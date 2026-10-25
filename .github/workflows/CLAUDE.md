@@ -747,6 +747,14 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Retention:** no workflow deletes from R2. The upload key has no bucket-admin rights on purpose; expiry and lock rules are set on the bucket by the owner.
 - **Failure:** `severity: 'warning'`; the alarm is staleness in `check-cron-health.yml`.
 
+## `social-autopost.yml`
+- **Runs:** Hourly at :23, or manually (`dry_run`, or `show` + `event` for a one-show preview; cards are uploaded as the `social-cards` artifact).
+- **Does:** BRO-6242. `scripts/social-autopost/run.js` posts to every Buffer channel (Instagram, Facebook, X, Threads, Bluesky): an "opens tonight" card on opening day (queued up to 6h before noon local; Broadway and West End always, Off-Broadway and Off-West End only at the houses in `config.js` `MAJOR_VENUES`) and a Critic Score card once the score clears `scripts/lib/score-confidence-gate.js` (the opening-night email's gate; Off-West End also needs 10 reviews with 5 from tier 1). Cards are 2160x2700, built from original-resolution key art that is never upscaled, hosted in the public Supabase Storage bucket `social-cards`.
+- **Safety:** `--check` gates the browser install. The first live post runs a draft self-test on every channel (drafts deleted) and the first run skips score posts for shows opened more than 3 days earlier. Each post is written to `data/social-post-history.json` the moment Buffer accepts it, and every channel is checked for an existing post with the same show path and event phrase before creating one, so a crash or a failed push never double-posts. A channel error fails the job (warning severity).
+- **Requires:** `BUFFER_API_KEY` (personal key from publish.buffer.com/settings/api; without it nothing is posted), `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `REVIEW_TEXTS_TOKEN`. Kill switch: repo variable `SOCIAL_AUTOPOST_DISABLED=true`.
+- **Replaces:** `social-post.yml`'s daily Twitter-only rotation (never had credentials; now manual-only) and update-show-status's per-opening dispatch of it.
+- **Check the Buffer link:** `node scripts/social-autopost/run.js --list-channels` with the key set.
+
 ## `vercel-project-domain.yml`
 - **Runs:** manually only (`action=status` read-only, `action=add` attaches).
 - **Does:** checks the domain is registered to the Vercel team, attaches it to the production project (409 = already attached, treated as success), then fails unless `GET /v6/domains/<d>/config` says `misconfigured: false` (DNS actually serving). Where the domain points is set in `vercel.json` host redirects, not here. Response bodies are never printed (public logs; the `/v5/domains` body carries account details). When attaching a new apex, also add it to the owner-domain regex in `scripts/lib/owner-accounts.js`.

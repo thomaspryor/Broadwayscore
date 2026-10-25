@@ -1,0 +1,139 @@
+name: Social Autopost
+
+# BRO-6242: opening-day and Critic Score posts to Instagram, Facebook, X,
+# Threads and Bluesky through Buffer (scripts/social-autopost/run.js).
+# Hourly: an opening post is queued up to 6h before noon local on opening day;
+# a score post goes out once the score clears scripts/lib/score-confidence-gate.js.
+# Without the BUFFER_API_KEY secret nothing is posted. Kill switch: repository
+# variable SOCIAL_AUTOPOST_DISABLED=true. Replaces social-post.yml's daily
+# Twitter-only rotation, which never had credentials.
+
+on:
+  schedule:
+    - cron: '23 * * * *'
+  workflow_dispatch:
+    inputs:
+      redispatched:
+        # BRO-5152: set by scripts/cron-redispatch.js when GitHub dropped the scheduled run.
+        description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the cron)'
+        required: false
+        default: 'false'
+        type: string
+      dry_run:
+        description: 'Render cards and captions only; post nothing'
+        required: false
+        type: boolean
+        default: false
+      show:
+        description: 'Preview one show id (needs dry_run)'
+        required: false
+        type: string
+        default: ''
+      event:
+        description: 'Event for the show preview'
+        required: false
+        type: choice
+        default: score
+        options:
+          - score
+          - opening
+
+# One writer for data/social-post-history.json. Runs take a few minutes and the
+# cron is hourly, so a static group never queues more than one run.
+concurrency:
+  group: social-autopost
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  autopost:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      SOCIAL_AUTOPOST_DISABLED: ${{ vars.SOCIAL_AUTOPOST_DISABLED }}
+      BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Find due posts
+        id: check
+        env:
+          INPUT_SHOW: ${{ inputs.show }}
+        run: |
+          if [ -n "$INPUT_SHOW" ]; then
+            echo "due=1" >> "$GITHUB_OUTPUT"
+          else
+            node scripts/social-autopost/run.js --check
+          fi
+
+      - name: Setup Playwright
+        if: steps.check.outputs.due != '0' && steps.check.outputs.due != ''
+        uses: ./.github/actions/setup-playwright
+
+      - name: Render and post
+        if: steps.check.outputs.due != '0' && steps.check.outputs.due != ''
+        env:
+          INPUT_SHOW: ${{ inputs.show }}
+          INPUT_EVENT: ${{ inputs.event }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          ARGS=(--out=/tmp/social-autopost)
+          if [ "$INPUT_DRY_RUN" = "true" ]; then ARGS+=(--dry-run); fi
+          if [ -n "$INPUT_SHOW" ]; then ARGS+=(--dry-run "--show=$INPUT_SHOW" "--event=$INPUT_EVENT"); fi
+          node scripts/social-autopost/run.js "${ARGS[@]}"
+
+      - name: Upload cards
+        if: always() && steps.check.outputs.due != '0' && steps.check.outputs.due != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-cards
+          path: /tmp/social-autopost/*.png
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Commit post history
+        # always(): run.js writes each post to the history as soon as Buffer accepts
+        # it, so a later failure in the same run must still land the record (or the
+        # next run would find it again; buffer.js findExistingPost is the backstop).
+        if: always() && inputs.dry_run != true && !inputs.show
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          if ! git diff --quiet data/social-post-history.json 2>/dev/null; then
+            git add data/social-post-history.json
+            git commit -m "data: social autopost history [automated]"
+            bash scripts/lib/push-with-retry.sh
+          else
+            echo "No changes to social post history"
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Social Autopost Failed'
+          severity: 'warning'
