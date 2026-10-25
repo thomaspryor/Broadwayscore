@@ -15,6 +15,7 @@ import { getMusicalsSinceReopening } from '@/lib/data-topic-pages';
 import { MUSICAL_KIND_LABELS, MUSICAL_KIND_SHORT, type MusicalOutcome } from '@/lib/investment-topics';
 import { StatGrid } from '@/components/show-cards';
 import TopicPageShell from '@/components/biz/TopicPageShell';
+import MoneyGate from '@/components/biz/MoneyGate';
 
 const TITLE = 'Broadway Musicals Since the Reopening';
 const DESCRIPTION = 'Every commercial Broadway musical that opened since September 2021: which recouped, which finished in the red, and which are still running.';
@@ -68,6 +69,7 @@ export default function MusicalsSinceReopeningPage() {
 
       <section>
         <h2 className="text-xl font-bold text-white mb-3">Every Musical</h2>
+        <MoneyGate page="biz-musicals-since-reopening">
         <ul className="space-y-2" data-testid="musical-list">
           {data.rows.map((r) => (
             <li key={r.slug} className="card rounded-xl px-4 py-3">
@@ -83,6 +85,7 @@ export default function MusicalsSinceReopeningPage() {
             </li>
           ))}
         </ul>
+        </MoneyGate>
         <p className="text-xs text-gray-500 mt-3">
           In the red means a loss label (Fizzle, Flop or similar). Closed with no verdict covers shows still labelled TBD and nonprofit enhancement deals. Counts of shows recouped are out of every show opened, running shows included.
         </p>

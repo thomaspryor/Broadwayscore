@@ -567,6 +567,36 @@
   .animate-up {
     @apply animate-slide-up;
   }
+
+  /* Money Scorecard email gate (BRO-6210, src/components/biz/MoneyGate.tsx).
+     Locked unless <html data-money-unlocked>, which the gate's inline boot
+     script sets before paint for a browser that already signed up. The
+     gated content stays in the DOM; locked, it is clipped to a blurred,
+     fading preview with the sign-up card pulled up over the fade. */
+  .money-gate {
+    @apply relative;
+  }
+  html:not([data-money-unlocked]) .money-gate-content {
+    max-height: 26rem;
+    overflow: hidden;
+    filter: blur(2.5px);
+    user-select: none;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
+  }
+  html:not([data-money-unlocked]) .money-gate[data-preview='short'] .money-gate-content {
+    max-height: 12rem;
+  }
+  .money-gate-lock {
+    @apply relative z-10 -mt-48 mb-8 px-0;
+  }
+  .money-gate[data-preview='short'] .money-gate-lock {
+    @apply -mt-28 mb-2;
+  }
+  html[data-money-unlocked] .money-gate-lock {
+    display: none;
+  }
 }
 
 @layer utilities {

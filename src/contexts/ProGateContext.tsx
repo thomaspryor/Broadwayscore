@@ -17,6 +17,7 @@ import { track } from '@vercel/analytics';
 import { captureEvent } from '@/lib/posthog-events';
 import { type GateTrigger, type CapturedUserData } from '@/components/EmailCaptureModal';
 import { emailCaptureConfig } from '@/config/email-capture';
+import { isMoneyGateInView } from '@/lib/money-gate';
 import {
   shouldSuppressPassiveGate,
   hasSeenEnoughPages,
@@ -235,6 +236,9 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     // the user clicked the action) are exempt; recapture is already one-shot
     // via RECAPTURED_KEY. See isPassiveTrigger in gate-logic.ts.
     if (isPassiveTrigger(trigger)) {
+      // Never stack the main-list ask over a show page's Money Scorecard
+      // sign-up, which is a separate list (BRO-6210).
+      if (isMoneyGateInView()) return false;
       // Don't ask before the visitor has shown real engagement this session
       // (2026-07-20 audit; ran as the 'gate-cold-start' A/B 2026-07-21 to
       // 2026-09-15, concluded as the permanent default for all traffic — see

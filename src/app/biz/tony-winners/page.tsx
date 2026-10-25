@@ -19,6 +19,7 @@ const OUTCOME: Record<MusicalOutcome, { label: string; className: string }> = {
   unknown: { label: 'Closed with no verdict', className: 'text-gray-500' },
 };
 import TopicPageShell from '@/components/biz/TopicPageShell';
+import MoneyGate from '@/components/biz/MoneyGate';
 
 const TITLE = "What Happened to the Tony Winners' Investors";
 const DESCRIPTION = "Best Musical and Best Play winners since the 2021-22 season, and whether each recouped.";
@@ -43,6 +44,7 @@ export default function Page() {
           { label: 'Winners listed', value: data.rows.length },
         ]}
       />
+      <MoneyGate page="biz-tony-winners">
       <ul className="space-y-2" data-testid="tony-winner-list">
         {data.rows.map((r) => (
           <li key={r.slug} className="card rounded-xl px-4 py-3">
@@ -58,6 +60,7 @@ export default function Page() {
           </li>
         ))}
       </ul>
+      </MoneyGate>
       <p className="text-xs text-gray-500 mt-3">
         In the red means a loss label (Fizzle, Flop or similar). Closed with no verdict means the show has no final label yet. Nonprofit productions with no investors are left out.
       </p>
