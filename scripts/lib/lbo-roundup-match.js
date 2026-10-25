@@ -82,6 +82,25 @@ function matchBySlug(url, shows, year) {
   return null;
 }
 
+const yr = (d) => { const y = Number(String(d || '').slice(0, 4)); return y >= 1900 && y <= 2200 ? y : null; };
+
+/**
+ * Does the production run (opening-1 .. closing+1, open-ended while open) or a
+ * prior run include `year`? <lastmod> is an edit date, hence the +-1 slack.
+ * A show with no opening date cannot be placed, so it stays eligible.
+ */
+function showRunNearYear(show, year) {
+  const runs = [{ o: yr(show.openingDate) || yr(show.previewsStartDate), c: yr(show.closingDate) }];
+  for (const r of Array.isArray(show.priorRuns) ? show.priorRuns : []) runs.push({ o: yr(r && r.openingDate), c: yr(r && r.closingDate) });
+  const dated = runs.filter(r => r.o);
+  if (!dated.length) return true;
+  const nowY = new Date().getFullYear();
+  return dated.some((r, i) => {
+    const c = r.c || (i === 0 && show.status === 'open' ? nowY : r.o);
+    return year >= r.o - 1 && year <= c + 1;
+  });
+}
+
 /**
  * @param {string} url roundup URL
  * @param {string|null} extractedTitle title parsed from the URL (theatre suffix stripped), if any
@@ -91,11 +110,15 @@ function matchBySlug(url, shows, year) {
  */
 function matchLboRoundup(url, extractedTitle, shows, opts = {}) {
   if (extractedTitle) {
-    const t = matchTitleToShow(extractedTitle, shows, { market: 'west-end' });
+    // BRO-6089: with a sitemap year, only productions whose run (or a declared
+    // prior run) reaches that year compete on title, so a same-title revival
+    // from another era cannot take the round-up.
+    const pool = opts.year ? shows.filter(s => showRunNearYear(s, opts.year)) : shows;
+    const t = pool.length ? matchTitleToShow(extractedTitle, pool, { market: 'west-end' }) : null;
     if (t && t.show && t.confidence === 'high') return { show: t.show, via: 'title' };
   }
   const s = matchBySlug(url, shows, opts.year);
   return s ? { show: s, via: 'slug-venue' } : null;
 }
 
-module.exports = { matchLboRoundup, matchBySlug, postSlugOf, norm };
+module.exports = { showRunNearYear, matchLboRoundup, matchBySlug, postSlugOf, norm };

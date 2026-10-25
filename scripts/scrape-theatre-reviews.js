@@ -657,6 +657,13 @@ async function main() {
   try {
     orphanArchives = fs.readdirSync(ARCHIVE_DIR).filter(f => f.endsWith('.html')).map(f => f.replace(/\.html$/, '')).filter(id => !archivedFor.has(id));
   } catch { /* no archive dir */ }
+  // BRO-6089: an orphan whose canonical URL is a round-up matched to ANOTHER show
+  // is a wrong-production page; park it so gather-reviews/poller cannot replay it.
+  // Unclaimed orphans stay (gather-reviews also writes valid archives).
+  const quarantined = require('./lib/tr-archive-claim').quarantineClaimedOrphans(
+    ARCHIVE_DIR, orphanArchives, matched.map(m => ({ showId: m.show.id, url: m.roundup.url })), { dryRun: DRY_RUN });
+  for (const q of quarantined) console.log(`  [QUARANTINED] ${q.showId}.html is the round-up matched to ${q.owner}`);
+  if (!DRY_RUN) orphanArchives = orphanArchives.filter(id => !quarantined.some(q => q.showId === id));
 
   // A degraded full run (REST walk incomplete or fetches aborted) must not replace the last good report.
   const degraded = !TARGET_SHOWS && (!disc.complete || aborted);

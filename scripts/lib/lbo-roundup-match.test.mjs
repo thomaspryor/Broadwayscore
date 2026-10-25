@@ -66,3 +66,26 @@ test('renamed and sub-venues still resolve (Tom Stoppard = Duke of York, Dorfman
   assert.equal(matchLboRoundup(u('review-roundup-rent-tom-stoppard-theatre'), null, we, { year: 2026 }).show.id, 'rent-west-end-2026');
   assert.equal(matchLboRoundup(u('review-round-up-pride-national-theatre'), null, we, { year: 2026 }).show.id, 'pride-west-end-2026');
 });
+
+test('BRO-6089: sitemap year keeps a same-title revival from another era out of the title match', () => {
+  const godot = [
+    { id: 'godot-west-end-2017', title: 'Waiting for Godot', venue: 'Theatre Royal Haymarket', openingDate: '2009-05-01', closingDate: '2009-07-30' },
+    { id: 'godot-west-end-2024', title: 'Waiting for Godot', venue: 'Theatre Royal Haymarket', openingDate: '2024-09-01', closingDate: '2025-01-01' },
+  ];
+  const url = u('review-round-up-waiting-for-godot-theatre-royal-haymarket');
+  const r24 = matchLboRoundup(url, 'waiting for godot', godot, { year: 2024 });
+  assert.equal(r24 && r24.show.id, 'godot-west-end-2024');
+  // 2009 round-up must not land on the 2024 show.
+  const only24 = [godot[1]];
+  assert.equal(matchLboRoundup(url, 'waiting for godot', only24, { year: 2009 }), null);
+  // no year: old behaviour unchanged
+  assert.ok(matchLboRoundup(url, 'waiting for godot', only24, {}));
+});
+
+test('BRO-6089: showRunNearYear honours open runs and prior runs', () => {
+  const { showRunNearYear } = require('./lbo-roundup-match.js');
+  assert.equal(showRunNearYear({ openingDate: '2018-01-01', status: 'open' }, 2025), true);
+  assert.equal(showRunNearYear({ openingDate: '2018-01-01', closingDate: '2019-01-01' }, 2025), false);
+  assert.equal(showRunNearYear({ openingDate: '2024-01-01', closingDate: '2024-06-01', priorRuns: [{ openingDate: '2017-05-01', closingDate: '2017-08-01' }] }, 2017), true);
+  assert.equal(showRunNearYear({ title: 'x' }, 2001), true);
+});
