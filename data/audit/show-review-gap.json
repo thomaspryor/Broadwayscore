@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-25T00:00:48.604Z",
+  "generatedAt": "2026-10-25T03:18:28.178Z",
   "windowDays": 1095,
-  "targets": 630,
-  "auditedThisRun": 25,
-  "carriedForward": 781,
+  "targets": 680,
+  "auditedThisRun": 11,
+  "carriedForward": 796,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 401,
     "missingCurrentRun": 556,
     "totalCitedNoUrl": 3,
-    "totalFlaggedMisses": 714,
+    "totalFlaggedMisses": 717,
     "totalRecoverable": 1,
     "totalRecovered": 14,
     "humanExcluded": 4,
-    "automatedExcluded": 339,
-    "automatedExcludedListed": 281,
-    "priorProductionCitations": 5625
+    "automatedExcluded": 342,
+    "automatedExcludedListed": 284,
+    "priorProductionCitations": 5648
   },
   "results": [
     {
@@ -4299,18 +4299,16 @@
         "https://stagebuddy.com/tag/aftermath",
         "https://www.theatermania.com/news/steven-skybell-to-star-in-new-york-premiere-of-aftermath_1847143/"
       ],
-      "dirFiles": 2,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [
+      "dirFiles": 3,
+      "dirClean": 1,
+      "inReviewsJson": 1,
+      "missing": [],
+      "dirOnly": [
         {
-          "url": "https://stagebuddy.com/tag/aftermath",
-          "host": "stagebuddy.com",
-          "knownOutletId": "stagebuddy",
-          "serpCensus": true
+          "host": "newyorktheater.me",
+          "count": 1
         }
       ],
-      "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
@@ -4346,7 +4344,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -4372,21 +4370,19 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
         "count": 36,
         "byReason": {
-          "non-review-host": 17,
           "aggregator-internal-nav": 5,
-          "venue-production-page": 2,
-          "show-listing-page": 2,
-          "bare-host": 2,
-          "merch-store": 2,
+          "non-review-host": 20,
           "no-review-evidence": 3,
-          "production-database-listing": 2,
-          "feature-not-review": 1
+          "venue-production-page": 2,
+          "bare-host": 4,
+          "show-listing-page": 1,
+          "merch-store": 1
         }
       },
       "dedupedVariants": [],
@@ -4398,6 +4394,13 @@
           "knownOutletId": "theatermania",
           "serpCensus": true,
           "zeroCharAttempts": 5
+        },
+        {
+          "url": "https://stagebuddy.com/tag/aftermath",
+          "host": "stagebuddy.com",
+          "knownOutletId": "stagebuddy",
+          "serpCensus": true,
+          "zeroCharAttempts": 3
         }
       ],
       "ingestResults": [
@@ -4415,50 +4418,19 @@
           "unclassified": false,
           "zeroChar": true,
           "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-        },
-        {
-          "url": "https://www.theatermania.com/news/steven-skybell-to-star-in-new-york-premiere-of-aftermath_1847143/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         }
       ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "stagebuddy",
-            "outlet": "stagebuddy",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://stagebuddy.com/tag/aftermath"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://stagebuddy.com/tag/aftermath",
-            "outletId": "stagebuddy",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-24T18:45:20.421Z"
-          }
-        ],
+        "candidates": [],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 1
+        "candidateCount": 0
       },
-      "computedAt": "2026-10-24T18:45:20.421Z"
+      "computedAt": "2026-10-25T03:18:28.178Z"
     },
     {
       "showId": "age-is-a-feeling-off-broadway-2024",
@@ -63432,8 +63404,8 @@
         "https://playbill.com/article/read-reviews-for-girls-boys-starring-carey-mulligan",
         "https://www.broadwayworld.com/article/Review-Roundup-SCHOOL-GIRLS-OR-THE-AFRICAN-MEAN-GIRLS-PLAY-Opens-on-Broadway-20260928",
         "https://www.broadwayworld.com/article/Review-Roundup-TWO-GIRLS-at-the-Cherry-Lane-Theatre-20261023",
-        "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-Roundabouts-USUAL-GIRLS-20181106",
-        "https://www.broadwayworld.com/article/Review-Roundup-TO-MY-GIRLS-at-Second-Stage-Read-the-Reviews-20220413"
+        "https://www.broadwayworld.com/article/Review-Roundup-TO-MY-GIRLS-at-Second-Stage-Read-the-Reviews-20220413",
+        "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-Think-MEAN-GIRLS-Was-Fetch-All-the-Reviews-Updating-Live-20180408"
       ],
       "aggregatorListedUrls": [
         "https://1minutecritic.com/school-girls-broadway-review/",
@@ -63545,23 +63517,25 @@
         "https://www.newyorktheatreguide.com/reviews/two-girls-off-broadway-review",
         "https://www.theguardian.com/stage/2026/oct/22/2-girls-1-cup-play-new-york-city",
         "https://exeuntnyc.com/reviews/review-two-girls-a-homeric-retelling-in-the-oral-tradition-at-cherry-lane-theatre/",
-        "https://www.nytimes.com/2018/11/05/theater/ususal-girls-review.html",
-        "https://www.thedailybeast.com/the-wild-world-of-usual-girls-sex-misogyny-racism-and-cuddly-toys",
-        "https://www.hollywoodreporter.com/review/usual-girls-theater-1157966",
-        "https://www.timeout.com/newyork/theater/usual-girls",
+        "https://www.thestage.co.uk/reviews/2018/mean-girls-review-august-wilson-theatre-new-york/",
+        "https://www.washingtonpost.com/entertainment/theater_dance/mean-girls-on-broadway-omg-youll-lol/2018/04/08/0094e986-3ae0-11e8-b57c-9445cc4dfa5e_story.html",
+        "https://thequeerreview.com/2026/10/15/film-review-big-girls-dont-cry/",
+        "https://theqr.co.uk/2026/10/21/sisterhood-under-siege-the-cast-of-girls-at-the-young-vic/",
+        "https://theatresoutheast.com/the-girls-review/",
+        "https://rocknrollerbaby.co.uk/girls-musical-london/",
+        "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic",
+        "https://www.britishtheatre.com/posts/review-the-girls-phoenix-theatre",
+        "https://www.londontheatre.co.uk/reviews/review-of-the-girls-gary-barlows-new-musical-at-the-phoenix-theatre",
+        "https://www.timeout.com/london/theatre/girls",
+        "https://qa5-web-vercel.telegraph.co.uk/theatre/what-to-see/the-girls-lowry-theatre-salford-review-already-has-the-bare-esse/",
+        "https://www.stagefaves.com/blog/critics-are-raving-about-the-girls/",
+        "https://www.whatsonstage.com/news/sign-up-for-priority-booking-for-the-girls_41555/",
+        "https://www.whatsonstage.com/news/top-girls_7552/",
         "https://ilovemanchester.com/review-calendar-girls-the-musical-at-the-lowry",
         "https://whatsgoodtodo.com/mean-girls-the-musical-at-bradford-alhambra-theatre-review/",
-        "https://theqr.co.uk/2026/10/21/sisterhood-under-siege-the-cast-of-girls-at-the-young-vic/",
-        "https://thequeerreview.com/2026/10/15/film-review-big-girls-dont-cry/",
-        "https://theatresoutheast.com/the-girls-review/",
-        "https://www.britishtheatre.com/posts/review-the-girls-phoenix-theatre",
         "https://musicaltheatrereview.com/the-girls-phoenix-theatre/",
         "https://northernartsreview.co.uk/north-west/review-spitfire-girls-at-theatre-by-the-lake/",
-        "https://www.londontheatre.co.uk/reviews/review-of-the-girls-gary-barlows-new-musical-at-the-phoenix-theatre",
-        "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic",
-        "https://www.timeout.com/london/theatre/girls",
         "https://www.standard.co.uk/culture/theatre/girls-theatre-review-a-chastening-reminder-of-a-story-that-has-dropped-off-the-headlines-a3359406.html",
-        "https://rocknrollerbaby.co.uk/girls-musical-london/",
         "https://westendwilma.com/review-the-girls-phoenix-theatre/",
         "https://www.thereviewshub.com/scenes-with-girls-union-theatre-london/",
         "https://fairypoweredproductions.com/the-girls-review/",
@@ -64296,32 +64270,90 @@
           "knownOutletId": "exeunt-magazine"
         },
         {
-          "url": "https://www.nytimes.com/2018/11/05/theater/ususal-girls-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
+          "url": "https://www.thestage.co.uk/reviews/2018/mean-girls-review-august-wilson-theatre-new-york/",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.thedailybeast.com/the-wild-world-of-usual-girls-sex-misogyny-racism-and-cuddly-toys",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/mean-girls-on-broadway-omg-youll-lol/2018/04/08/0094e986-3ae0-11e8-b57c-9445cc4dfa5e_story.html",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.hollywoodreporter.com/review/usual-girls-theater-1157966",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "url": "https://thequeerreview.com/2026/10/15/film-review-big-girls-dont-cry/",
+          "host": "thequeerreview.com",
+          "knownOutletId": "the-queer-review",
+          "serpCensus": true
         },
         {
-          "url": "https://www.timeout.com/newyork/theater/usual-girls",
+          "url": "https://theqr.co.uk/2026/10/21/sisterhood-under-siege-the-cast-of-girls-at-the-young-vic/",
+          "host": "theqr.co.uk",
+          "knownOutletId": "theqr",
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatresoutheast.com/the-girls-review/",
+          "host": "theatresoutheast.com",
+          "knownOutletId": "theatre-south-east",
+          "serpCensus": true
+        },
+        {
+          "url": "https://rocknrollerbaby.co.uk/girls-musical-london/",
+          "host": "rocknrollerbaby.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic",
+          "host": "bestoftheatre.co.uk",
+          "knownOutletId": "bestoftheatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.britishtheatre.com/posts/review-the-girls-phoenix-theatre",
+          "host": "britishtheatre.com",
+          "knownOutletId": "britishtheatrecom",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/review-of-the-girls-gary-barlows-new-musical-at-the-phoenix-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/girls",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "serpCensus": true
+        },
+        {
+          "url": "https://qa5-web-vercel.telegraph.co.uk/theatre/what-to-see/the-girls-lowry-theatre-salford-review-already-has-the-bare-esse/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.stagefaves.com/blog/critics-are-raving-about-the-girls/",
+          "host": "stagefaves.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/sign-up-for-priority-booking-for-the-girls_41555/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/top-girls_7552/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "serpCensus": true
         },
         {
           "url": "https://ilovemanchester.com/review-calendar-girls-the-musical-at-the-lowry",
@@ -64333,30 +64365,6 @@
           "url": "https://whatsgoodtodo.com/mean-girls-the-musical-at-bradford-alhambra-theatre-review/",
           "host": "whatsgoodtodo.com",
           "knownOutletId": "whatsgoodtodo",
-          "serpCensus": true
-        },
-        {
-          "url": "https://theqr.co.uk/2026/10/21/sisterhood-under-siege-the-cast-of-girls-at-the-young-vic/",
-          "host": "theqr.co.uk",
-          "knownOutletId": "theqr",
-          "serpCensus": true
-        },
-        {
-          "url": "https://thequeerreview.com/2026/10/15/film-review-big-girls-dont-cry/",
-          "host": "thequeerreview.com",
-          "knownOutletId": "the-queer-review",
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatresoutheast.com/the-girls-review/",
-          "host": "theatresoutheast.com",
-          "knownOutletId": "theatre-south-east",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.britishtheatre.com/posts/review-the-girls-phoenix-theatre",
-          "host": "britishtheatre.com",
-          "knownOutletId": "britishtheatrecom",
           "serpCensus": true
         },
         {
@@ -64372,33 +64380,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.londontheatre.co.uk/reviews/review-of-the-girls-gary-barlows-new-musical-at-the-phoenix-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic",
-          "host": "bestoftheatre.co.uk",
-          "knownOutletId": "bestoftheatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/girls",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "serpCensus": true
-        },
-        {
           "url": "https://www.standard.co.uk/culture/theatre/girls-theatre-review-a-chastening-reminder-of-a-story-that-has-dropped-off-the-headlines-a3359406.html",
           "host": "standard.co.uk",
           "knownOutletId": "standard",
-          "serpCensus": true
-        },
-        {
-          "url": "https://rocknrollerbaby.co.uk/girls-musical-london/",
-          "host": "rocknrollerbaby.co.uk",
-          "knownOutletId": null,
           "serpCensus": true
         },
         {
@@ -64526,8 +64510,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 2,
+            "results": 0,
+            "accepted": 0,
             "error": null
           },
           {
@@ -64547,7 +64531,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 2,
             "error": null
           },
           {
@@ -64557,7 +64541,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 4,
             "error": null
           },
           {
@@ -64567,7 +64551,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 4,
             "error": null
           }
         ],
@@ -64577,19 +64561,19 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 2218,
+        "count": 2237,
         "byReason": {
-          "non-review-host": 253,
-          "write-path-blocked": 1,
-          "roundup-page": 103,
-          "ticket-seller-product-page": 2,
-          "ticketing-listing": 2,
-          "aggregator-internal-nav": 1381,
-          "not-http-url": 294,
+          "aggregator-internal-nav": 1389,
+          "not-http-url": 313,
           "production-database-listing": 120,
           "aggregator-section-root": 58,
+          "non-review-host": 244,
+          "write-path-blocked": 1,
+          "roundup-page": 104,
+          "ticketing-listing": 2,
+          "no-review-evidence": 1,
           "bare-host": 3,
-          "non-review-path": 1
+          "non-review-path": 2
         }
       },
       "dedupedVariants": [],
@@ -64627,12 +64611,12 @@
           "publishDate": "2018-06-28"
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-Roundabouts-USUAL-GIRLS-20181106",
-          "publishDate": "2018-11-06"
-        },
-        {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-TO-MY-GIRLS-at-Second-Stage-Read-the-Reviews-20220413",
           "publishDate": "2022-04-13"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-Think-MEAN-GIRLS-Was-Fetch-All-the-Reviews-Updating-Live-20180408",
+          "publishDate": "2018-04-08"
         }
       ],
       "automatedExcludedListed": 0,
@@ -65248,29 +65232,15 @@
           "censusGateOn": true
         },
         {
-          "url": "https://www.nytimes.com/2018/11/05/theater/ususal-girls-review.html",
-          "host": "nytimes.com",
+          "url": "https://www.thestage.co.uk/reviews/2018/mean-girls-review-august-wilson-theatre-new-york/",
+          "host": "thestage.co.uk",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.thedailybeast.com/the-wild-world-of-usual-girls-sex-misogyny-racism-and-cuddly-toys",
-          "host": "thedailybeast.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/usual-girls-theater-1157966",
-          "host": "hollywoodreporter.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/usual-girls",
-          "host": "timeout.com",
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/mean-girls-on-broadway-omg-youll-lol/2018/04/08/0094e986-3ae0-11e8-b57c-9445cc4dfa5e_story.html",
+          "host": "washingtonpost.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -65482,6 +65452,66 @@
           "outletId": "exeunt-magazine"
         },
         {
+          "url": "https://thequeerreview.com/2026/10/15/film-review-big-girls-dont-cry/",
+          "host": "thequeerreview.com",
+          "outletId": "the-queer-review"
+        },
+        {
+          "url": "https://theqr.co.uk/2026/10/21/sisterhood-under-siege-the-cast-of-girls-at-the-young-vic/",
+          "host": "theqr.co.uk",
+          "outletId": "theqr"
+        },
+        {
+          "url": "https://theatresoutheast.com/the-girls-review/",
+          "host": "theatresoutheast.com",
+          "outletId": "theatre-south-east"
+        },
+        {
+          "url": "https://rocknrollerbaby.co.uk/girls-musical-london/",
+          "host": "rocknrollerbaby.co.uk",
+          "outletId": "rocknrollerbaby"
+        },
+        {
+          "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic",
+          "host": "bestoftheatre.co.uk",
+          "outletId": "bestoftheatre"
+        },
+        {
+          "url": "https://www.britishtheatre.com/posts/review-the-girls-phoenix-theatre",
+          "host": "britishtheatre.com",
+          "outletId": "britishtheatrecom"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/review-of-the-girls-gary-barlows-new-musical-at-the-phoenix-theatre",
+          "host": "londontheatre.co.uk",
+          "outletId": "london-theatre"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/girls",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
+        },
+        {
+          "url": "https://qa5-web-vercel.telegraph.co.uk/theatre/what-to-see/the-girls-lowry-theatre-salford-review-already-has-the-bare-esse/",
+          "host": "telegraph.co.uk",
+          "outletId": "sunday-telegraph"
+        },
+        {
+          "url": "https://www.stagefaves.com/blog/critics-are-raving-about-the-girls/",
+          "host": "stagefaves.com",
+          "outletId": "stagefaves"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/sign-up-for-priority-booking-for-the-girls_41555/",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/top-girls_7552/",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage"
+        },
+        {
           "url": "https://ilovemanchester.com/review-calendar-girls-the-musical-at-the-lowry",
           "host": "ilovemanchester.com",
           "outletId": "ilovemanchester"
@@ -65490,26 +65520,6 @@
           "url": "https://whatsgoodtodo.com/mean-girls-the-musical-at-bradford-alhambra-theatre-review/",
           "host": "whatsgoodtodo.com",
           "outletId": "whatsgoodtodo"
-        },
-        {
-          "url": "https://theqr.co.uk/2026/10/21/sisterhood-under-siege-the-cast-of-girls-at-the-young-vic/",
-          "host": "theqr.co.uk",
-          "outletId": "theqr"
-        },
-        {
-          "url": "https://thequeerreview.com/2026/10/15/film-review-big-girls-dont-cry/",
-          "host": "thequeerreview.com",
-          "outletId": "the-queer-review"
-        },
-        {
-          "url": "https://theatresoutheast.com/the-girls-review/",
-          "host": "theatresoutheast.com",
-          "outletId": "theatre-south-east"
-        },
-        {
-          "url": "https://www.britishtheatre.com/posts/review-the-girls-phoenix-theatre",
-          "host": "britishtheatre.com",
-          "outletId": "britishtheatrecom"
         },
         {
           "url": "https://musicaltheatrereview.com/the-girls-phoenix-theatre/",
@@ -65522,29 +65532,9 @@
           "outletId": "northernartsreview"
         },
         {
-          "url": "https://www.londontheatre.co.uk/reviews/review-of-the-girls-gary-barlows-new-musical-at-the-phoenix-theatre",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre"
-        },
-        {
-          "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic",
-          "host": "bestoftheatre.co.uk",
-          "outletId": "bestoftheatre"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/girls",
-          "host": "timeout.com",
-          "outletId": "timeout-london"
-        },
-        {
           "url": "https://www.standard.co.uk/culture/theatre/girls-theatre-review-a-chastening-reminder-of-a-story-that-has-dropped-off-the-headlines-a3359406.html",
           "host": "standard.co.uk",
           "outletId": "standard"
-        },
-        {
-          "url": "https://rocknrollerbaby.co.uk/girls-musical-london/",
-          "host": "rocknrollerbaby.co.uk",
-          "outletId": "rocknrollerbaby"
         },
         {
           "url": "https://westendwilma.com/review-the-girls-phoenix-theatre/",
@@ -65720,6 +65710,90 @@
             "url": "https://exeuntnyc.com/reviews/review-two-girls-a-homeric-retelling-in-the-oral-tradition-at-cherry-lane-theatre/"
           },
           {
+            "outletId": "the-queer-review",
+            "outlet": "the-queer-review",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thequeerreview.com/2026/10/15/film-review-big-girls-dont-cry/"
+          },
+          {
+            "outletId": "theqr",
+            "outlet": "theqr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theqr.co.uk/2026/10/21/sisterhood-under-siege-the-cast-of-girls-at-the-young-vic/"
+          },
+          {
+            "outletId": "theatre-south-east",
+            "outlet": "theatre-south-east",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatresoutheast.com/the-girls-review/"
+          },
+          {
+            "outletId": "rocknrollerbaby.co.uk",
+            "outlet": "rocknrollerbaby.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://rocknrollerbaby.co.uk/girls-musical-london/"
+          },
+          {
+            "outletId": "bestoftheatre",
+            "outlet": "bestoftheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic"
+          },
+          {
+            "outletId": "britishtheatrecom",
+            "outlet": "britishtheatrecom",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.britishtheatre.com/posts/review-the-girls-phoenix-theatre"
+          },
+          {
+            "outletId": "london-theatre",
+            "outlet": "london-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatre.co.uk/reviews/review-of-the-girls-gary-barlows-new-musical-at-the-phoenix-theatre"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/girls"
+          },
+          {
+            "outletId": "sunday-telegraph",
+            "outlet": "sunday-telegraph",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://qa5-web-vercel.telegraph.co.uk/theatre/what-to-see/the-girls-lowry-theatre-salford-review-already-has-the-bare-esse/"
+          },
+          {
+            "outletId": "stagefaves.com",
+            "outlet": "stagefaves.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.stagefaves.com/blog/critics-are-raving-about-the-girls/"
+          },
+          {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/news/sign-up-for-priority-booking-for-the-girls_41555/"
+          },
+          {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/news/top-girls_7552/"
+          },
+          {
             "outletId": "ilovemanchester",
             "outlet": "ilovemanchester",
             "critic": "Unknown",
@@ -65732,34 +65806,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://whatsgoodtodo.com/mean-girls-the-musical-at-bradford-alhambra-theatre-review/"
-          },
-          {
-            "outletId": "theqr",
-            "outlet": "theqr",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theqr.co.uk/2026/10/21/sisterhood-under-siege-the-cast-of-girls-at-the-young-vic/"
-          },
-          {
-            "outletId": "the-queer-review",
-            "outlet": "the-queer-review",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thequeerreview.com/2026/10/15/film-review-big-girls-dont-cry/"
-          },
-          {
-            "outletId": "theatre-south-east",
-            "outlet": "theatre-south-east",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatresoutheast.com/the-girls-review/"
-          },
-          {
-            "outletId": "britishtheatrecom",
-            "outlet": "britishtheatrecom",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.britishtheatre.com/posts/review-the-girls-phoenix-theatre"
           },
           {
             "outletId": "musical-theatre-review",
@@ -65776,39 +65822,11 @@
             "url": "https://northernartsreview.co.uk/north-west/review-spitfire-girls-at-theatre-by-the-lake/"
           },
           {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/review-of-the-girls-gary-barlows-new-musical-at-the-phoenix-theatre"
-          },
-          {
-            "outletId": "bestoftheatre",
-            "outlet": "bestoftheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/girls"
-          },
-          {
             "outletId": "standard",
             "outlet": "standard",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.standard.co.uk/culture/theatre/girls-theatre-review-a-chastening-reminder-of-a-story-that-has-dropped-off-the-headlines-a3359406.html"
-          },
-          {
-            "outletId": "rocknrollerbaby.co.uk",
-            "outlet": "rocknrollerbaby.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://rocknrollerbaby.co.uk/girls-musical-london/"
           },
           {
             "outletId": "west-end-wilma",
@@ -65989,29 +66007,15 @@
             "firstSeenAt": "2026-10-23T19:01:04.708Z"
           },
           {
-            "url": "https://ilovemanchester.com/review-calendar-girls-the-musical-at-the-lowry",
-            "outletId": "ilovemanchester",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-22T14:24:48.125Z"
-          },
-          {
-            "url": "https://whatsgoodtodo.com/mean-girls-the-musical-at-bradford-alhambra-theatre-review/",
-            "outletId": "whatsgoodtodo",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-22T14:24:48.125Z"
-          },
-          {
-            "url": "https://theqr.co.uk/2026/10/21/sisterhood-under-siege-the-cast-of-girls-at-the-young-vic/",
-            "outletId": "theqr",
+            "url": "https://thequeerreview.com/2026/10/15/film-review-big-girls-dont-cry/",
+            "outletId": "the-queer-review",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-23T14:07:48.228Z"
           },
           {
-            "url": "https://thequeerreview.com/2026/10/15/film-review-big-girls-dont-cry/",
-            "outletId": "the-queer-review",
+            "url": "https://theqr.co.uk/2026/10/21/sisterhood-under-siege-the-cast-of-girls-at-the-young-vic/",
+            "outletId": "theqr",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-23T14:07:48.228Z"
@@ -66024,11 +66028,81 @@
             "firstSeenAt": "2026-10-22T14:24:48.125Z"
           },
           {
+            "url": "https://rocknrollerbaby.co.uk/girls-musical-london/",
+            "outletId": "rocknrollerbaby.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-22T14:24:48.125Z"
+          },
+          {
+            "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic",
+            "outletId": "bestoftheatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-22T14:24:48.125Z"
+          },
+          {
             "url": "https://www.britishtheatre.com/posts/review-the-girls-phoenix-theatre",
             "outletId": "britishtheatrecom",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-24T21:30:13.917Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/review-of-the-girls-gary-barlows-new-musical-at-the-phoenix-theatre",
+            "outletId": "london-theatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-22T14:24:48.125Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/girls",
+            "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-24T21:30:13.917Z"
+          },
+          {
+            "url": "https://qa5-web-vercel.telegraph.co.uk/theatre/what-to-see/the-girls-lowry-theatre-salford-review-already-has-the-bare-esse/",
+            "outletId": "sunday-telegraph",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-25T03:18:28.178Z"
+          },
+          {
+            "url": "https://www.stagefaves.com/blog/critics-are-raving-about-the-girls/",
+            "outletId": "stagefaves.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-25T03:18:28.178Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/sign-up-for-priority-booking-for-the-girls_41555/",
+            "outletId": "whatsonstage",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-25T03:18:28.178Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/top-girls_7552/",
+            "outletId": "whatsonstage",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-25T03:18:28.178Z"
+          },
+          {
+            "url": "https://ilovemanchester.com/review-calendar-girls-the-musical-at-the-lowry",
+            "outletId": "ilovemanchester",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-22T14:24:48.125Z"
+          },
+          {
+            "url": "https://whatsgoodtodo.com/mean-girls-the-musical-at-bradford-alhambra-theatre-review/",
+            "outletId": "whatsgoodtodo",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-22T14:24:48.125Z"
           },
           {
             "url": "https://musicaltheatrereview.com/the-girls-phoenix-theatre/",
@@ -66045,39 +66119,11 @@
             "firstSeenAt": "2026-10-24T21:30:13.917Z"
           },
           {
-            "url": "https://www.londontheatre.co.uk/reviews/review-of-the-girls-gary-barlows-new-musical-at-the-phoenix-theatre",
-            "outletId": "london-theatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-22T14:24:48.125Z"
-          },
-          {
-            "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic",
-            "outletId": "bestoftheatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-22T14:24:48.125Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/girls",
-            "outletId": "timeout-london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-24T21:30:13.917Z"
-          },
-          {
             "url": "https://www.standard.co.uk/culture/theatre/girls-theatre-review-a-chastening-reminder-of-a-story-that-has-dropped-off-the-headlines-a3359406.html",
             "outletId": "standard",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-24T21:30:13.917Z"
-          },
-          {
-            "url": "https://rocknrollerbaby.co.uk/girls-musical-london/",
-            "outletId": "rocknrollerbaby.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-22T14:24:48.125Z"
           },
           {
             "url": "https://westendwilma.com/review-the-girls-phoenix-theatre/",
@@ -66103,9 +66149,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 32
+        "candidateCount": 35
       },
-      "computedAt": "2026-10-24T21:30:13.917Z"
+      "computedAt": "2026-10-25T03:18:28.178Z"
     },
     {
       "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
@@ -85479,27 +85525,28 @@
         "https://decider.com/2019/11/05/high-school-musical-the-musical-the-series-review-disney-plus/",
         "https://www.theguardian.com/commentisfree/2026/oct/13/high-school-musical-film-back-london-stage",
         "https://www.timeout.com/london/theatre/high-school-musical-review",
-        "https://www.londontheatredirect.com/news/high-school-musical-review",
         "https://www.theguardian.com/stage/2026/oct/21/high-school-musical-review-harry-judd-troubadour-wembley-park-theatre-london",
-        "https://www.whatsonstage.com/news/disneys-high-school-musical-at-troubadour-wembley-park-theatre-review-exactly-what-ive-been-looking-for_1735522/",
         "https://www.allthatdazzles.co.uk/post/review-high-school-musical-troubadour-wembley-park-theatre",
+        "https://www.londontheatredirect.com/news/high-school-musical-review",
         "https://www.londontheatre.co.uk/reviews/high-school-musical-review-troubadour-wembley-park-theatre",
         "https://theatreandtonic.co.uk/blog/high-school-musical-at-wembley-troubadour-theatre-review",
+        "https://www.whatsonstage.com/news/disneys-high-school-musical-at-troubadour-wembley-park-theatre-review-exactly-what-ive-been-looking-for_1735522/",
         "http://www.jonathanbaz.com/2026/10/high-school-musical-review.html",
         "https://kiddoadventures.com/2026/10/13/high-school-musical-london-review-does-it-live-up-to-the-original-film/",
         "https://www.thestage.co.uk/reviews/high-school-musical-review-troubadour-wembley-park-theatre-london",
-        "https://musicaltheatrereview.com/high-school-musical-troubadour-wembley-park-theatre/",
         "https://www.thereviewshub.com/high-school-musical-troubadour-wembley-park-theatre-london/",
-        "https://theatreandtonic.co.uk/blog/high-school-musical-at-wembley-troubadour-theatre",
         "https://theatresoutheast.com/high-school-musical-troubadour-theatre-wembley-review/",
-        "https://www.theupcoming.co.uk/2026/10/21/high-school-musical-at-troubadour-wembley-park-theatre-theatre-review/",
+        "https://musicaltheatrereview.com/high-school-musical-troubadour-wembley-park-theatre/",
+        "https://jadar.uk/2026/08/28/review-high-school-musical/",
         "https://www.westendbestfriend.co.uk/news/review-high-school-musical-troubadour-wembley-park-theatre",
+        "https://www.theupcoming.co.uk/2026/10/21/high-school-musical-at-troubadour-wembley-park-theatre-theatre-review/",
         "https://theatreweekly.com/review-high-school-musical-at-troubadour-wembley-park-theatre-an-absolute-slam-dunk/",
-        "https://www.whatsonstage.com/news/disneys-high-school-musical-at-troubadour-wembley-park-theatre-review-exactly-what-ive-been-looking-"
+        "https://www.whatsonstage.com/news/disneys-high-school-musical-at-troubadour-wembley-park-theatre-review-exactly-what-ive-been-looking-",
+        "https://theatreandtonic.co.uk/blog/high-school-musical-at-wembley-troubadour-theatre"
       ],
-      "dirFiles": 39,
-      "dirClean": 20,
-      "inReviewsJson": 19,
+      "dirFiles": 42,
+      "dirClean": 22,
+      "inReviewsJson": 21,
       "missing": [
         {
           "url": "https://tv.avclub.com/the-cast-of-disney-s-high-school-musical-reboot-are-alr-1839459992",
@@ -85598,18 +85645,6 @@
           "knownOutletId": "decider",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/high-school-musical-at-wembley-troubadour-theatre-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/high-school-musical-at-wembley-troubadour-theatre",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
-          "serpCensus": true
         }
       ],
       "dirOnly": [
@@ -85631,6 +85666,10 @@
         },
         {
           "host": "unmissabletheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "westendwilma.com",
           "count": 1
         }
       ],
@@ -85658,11 +85697,34 @@
           "confirmedNonReview": true,
           "serpCensus": true,
           "reverify": false
+        },
+        {
+          "url": "https://jadar.uk/2026/08/28/review-high-school-musical/",
+          "host": "jadar.uk",
+          "knownOutletId": "jadar",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "jadar--jay-darcy.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://jadar.uk/2026/08/28/review-high-school-musical/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 5,
+        "rowCount": 10,
         "sources": {
           "westendtheatre": {
             "found": true,
@@ -85679,8 +85741,8 @@
             "fetchErrors": 0
           },
           "lbo-roundup": {
-            "found": false,
-            "rows": 0,
+            "found": true,
+            "rows": 5,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -85701,12 +85763,16 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 5,
-        "corroborated": 4,
+        "currentRunRows": 10,
+        "corroborated": 6,
         "perSource": {
           "westendtheatre": {
             "cited": 4,
             "corroborated": 4
+          },
+          "lbo-roundup": {
+            "cited": 5,
+            "corroborated": 5
           }
         }
       },
@@ -85722,7 +85788,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 8,
+            "accepted": 7,
             "error": null
           },
           {
@@ -85742,7 +85808,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -85752,7 +85818,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -85768,22 +85834,21 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 18,
+        "resultCount": 17,
         "error": null
       },
       "candidatesRejected": {
-        "count": 433,
+        "count": 436,
         "byReason": {
           "aggregator-internal-nav": 275,
           "not-http-url": 38,
           "production-database-listing": 10,
           "aggregator-section-root": 8,
-          "non-review-host": 45,
+          "non-review-host": 47,
           "write-path-blocked": 1,
-          "roundup-page": 52,
-          "ticketing-listing": 1,
-          "no-review-evidence": 1,
-          "census-junk-host": 2
+          "roundup-page": 54,
+          "ticketing-listing": 2,
+          "no-review-evidence": 1
         }
       },
       "dedupedVariants": [],
@@ -85797,7 +85862,7 @@
           "publishDate": "2019-11-11"
         }
       ],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -85899,62 +85964,24 @@
           "censusGateOn": true
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://theatreandtonic.co.uk/blog/high-school-musical-at-wembley-troubadour-theatre-review",
-          "host": "theatreandtonic.co.uk",
-          "outletId": "theatreandtonic",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/high-school-musical-at-wembley-troubadour-theatre",
-          "host": "theatreandtonic.co.uk",
-          "outletId": "theatreandtonic",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=theatreandtonic.co.uk): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-        }
-      ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "theatreandtonic",
-            "outlet": "theatreandtonic",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreandtonic.co.uk/blog/high-school-musical-at-wembley-troubadour-theatre-review"
-          },
-          {
-            "outletId": "theatreandtonic",
-            "outlet": "theatreandtonic",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreandtonic.co.uk/blog/high-school-musical-at-wembley-troubadour-theatre"
-          },
           {
             "outletId": "guardian",
             "outlet": "guardian",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theguardian.com/commentisfree/2026/oct/13/high-school-musical-film-back-london-stage"
+          },
+          {
+            "outletId": "jadar",
+            "outlet": "jadar",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://jadar.uk/2026/08/28/review-high-school-musical/"
           }
         ],
         "suppressedMissing": [],
@@ -85966,20 +85993,8 @@
             "firstSeenAt": "2026-10-21T23:22:16.944Z"
           },
           {
-            "url": "https://www.londontheatredirect.com/news/high-school-musical-review",
-            "outletId": "londontheatredirect.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-21T23:22:16.944Z"
-          },
-          {
             "url": "https://www.theguardian.com/stage/2026/oct/21/high-school-musical-review-harry-judd-troubadour-wembley-park-theatre-london",
             "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-21T23:22:16.944Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/disneys-high-school-musical-at-troubadour-wembley-park-theatre-review-exactly-what-ive-been-looking-for_1735522/",
-            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-10-21T23:22:16.944Z"
           },
@@ -85990,8 +86005,26 @@
             "firstSeenAt": "2026-10-21T23:22:16.944Z"
           },
           {
+            "url": "https://www.londontheatredirect.com/news/high-school-musical-review",
+            "outletId": "londontheatredirect.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-21T23:22:16.944Z"
+          },
+          {
             "url": "https://www.londontheatre.co.uk/reviews/high-school-musical-review-troubadour-wembley-park-theatre",
             "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-21T23:22:16.944Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/high-school-musical-at-wembley-troubadour-theatre-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-24T14:39:26.381Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/disneys-high-school-musical-at-troubadour-wembley-park-theatre-review-exactly-what-ive-been-looking-for_1735522/",
+            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-10-21T23:22:16.944Z"
           },
@@ -86014,12 +86047,6 @@
             "firstSeenAt": "2026-10-21T23:22:16.944Z"
           },
           {
-            "url": "https://musicaltheatrereview.com/high-school-musical-troubadour-wembley-park-theatre/",
-            "outletId": "musicaltheatrereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-24T14:39:26.381Z"
-          },
-          {
             "url": "https://www.thereviewshub.com/high-school-musical-troubadour-wembley-park-theatre-london/",
             "outletId": "thereviewshub.com",
             "state": "live",
@@ -86032,16 +86059,22 @@
             "firstSeenAt": "2026-10-24T14:39:26.381Z"
           },
           {
-            "url": "https://www.theupcoming.co.uk/2026/10/21/high-school-musical-at-troubadour-wembley-park-theatre-theatre-review/",
-            "outletId": "theupcoming.co.uk",
+            "url": "https://musicaltheatrereview.com/high-school-musical-troubadour-wembley-park-theatre/",
+            "outletId": "musicaltheatrereview.com",
             "state": "live",
-            "firstSeenAt": "2026-10-22T14:24:48.125Z"
+            "firstSeenAt": "2026-10-24T14:39:26.381Z"
           },
           {
             "url": "https://www.westendbestfriend.co.uk/news/review-high-school-musical-troubadour-wembley-park-theatre",
             "outletId": "westendbestfriend.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-21T23:22:16.944Z"
+          },
+          {
+            "url": "https://www.theupcoming.co.uk/2026/10/21/high-school-musical-at-troubadour-wembley-park-theatre-theatre-review/",
+            "outletId": "theupcoming.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-22T14:24:48.125Z"
           },
           {
             "url": "https://theatreweekly.com/review-high-school-musical-at-troubadour-wembley-park-theatre-an-absolute-slam-dunk/",
@@ -86056,17 +86089,9 @@
             "firstSeenAt": "2026-10-21T23:22:16.944Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/blog/high-school-musical-at-wembley-troubadour-theatre-review",
-            "outletId": "theatreandtonic",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-24T14:39:26.381Z"
-          },
-          {
             "url": "https://theatreandtonic.co.uk/blog/high-school-musical-at-wembley-troubadour-theatre",
-            "outletId": "theatreandtonic",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
             "firstSeenAt": "2026-10-24T14:39:26.381Z"
           },
           {
@@ -86075,13 +86100,20 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-24T14:39:26.381Z"
+          },
+          {
+            "url": "https://jadar.uk/2026/08/28/review-high-school-musical/",
+            "outletId": "jadar",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T03:18:28.178Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 15,
-        "candidateCount": 17
+        "liveCount": 16,
+        "candidateCount": 18
       },
-      "computedAt": "2026-10-24T14:39:26.381Z"
+      "computedAt": "2026-10-25T03:18:28.178Z"
     },
     {
       "showId": "high-society-west-end-2026",
@@ -87258,7 +87290,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-23T02:13:33.776Z"
+      "computedAt": "2026-10-25T03:18:28.178Z"
     },
     {
       "showId": "hot-mess-a-new-musical-off-west-end-2026",
@@ -90690,6 +90722,440 @@
       },
       "computedAt": "2026-09-21T17:35:03.940Z",
       "automatedExcludedListed": 0
+    },
+    {
+      "showId": "in-the-heights-off-broadway-2026",
+      "title": "In the Heights",
+      "openingDate": "2026-10-28",
+      "status": "upcoming",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-the-in-the-heights-movie"
+      ],
+      "aggregatorListedUrls": [
+        "https://film.avclub.com/in-the-heights-joyfully-brings-lin-manuel-miranda-s-fir-1846932171",
+        "https://collider.com/in-the-heights-review-movie-lin-manuel-miranda-hbo-max/",
+        "https://deadline.com/video/in-the-heights-review-lin-manuel-mirandas-tony-winning-musical-makes-buoyant-leap-to-the-screen/",
+        "https://www.empireonline.com/movies/reviews/in-the-heights/",
+        "https://ew.com/movies/movie-reviews/in-the-heights-movie-review/",
+        "https://www.standard.co.uk/culture/film/in-the-heights-film-review-immigrants-hamilton-lin-manuel-miranda-b936529.html",
+        "https://www.forbes.com/sites/scottmendelson/2021/05/21/review-in-the-heights-lin-manuel-miranda-jon-m-chu-warner-bros-hbo-max/",
+        "https://www.theguardian.com/film/2021/may/21/in-the-heights-review-high-energy-movie-musical-loaded-with-sunny-d-optimism",
+        "https://www.hollywoodreporter.com/movies/movie-reviews/lin-manuel-mirandas-in-the-heights-1234955500/",
+        "https://www.ign.com/articles/in-the-heights-movie-review",
+        "https://www.independent.co.uk/arts-entertainment/films/reviews/in-the-heights-review-lin-manuel-miranda-b1851464.html",
+        "https://www.indiewire.com/2021/05/in-the-heights-movie-review-1234639010/",
+        "https://www.latimes.com/entertainment-arts/movies/story/2021-05-21/in-the-heights-review-lin-manuel-miranda",
+        "https://mashable.com/article/in-the-heights-movie-review/",
+        "https://www.nytimes.com/2021/06/09/movies/in-the-heights-review.html",
+        "https://observer.com/2021/05/in-the-heights-film-review/",
+        "https://datebook.sfchronicle.com/movies-tv/review-jon-m-chus-in-the-heights-marks-the-return-of-grand-scale-movies",
+        "https://www.slantmagazine.com/film/review-in-the-heights-brings-the-broadway-musical-to-exuberantly-cinematic-life/",
+        "https://www.theatrely.com/post/in-the-heights-lives-up-to-its-name-review",
+        "https://www.timeout.com/movies/in-the-heights-2021",
+        "https://www.usatoday.com/story/entertainment/movies/2021/05/21/in-heights-review-lin-manuel-miranda-musical-cultural-joy/5186601001/",
+        "https://www.vanityfair.com/hollywood/2021/05/review-in-the-heights-is-just-what-weve-been-waiting-for",
+        "https://variety.com/2021/film/reviews/in-the-heights-review-lin-manuel-miranda-hamilton-1234978405/",
+        "https://www.vox.com/22440448/in-the-heights-movie-review-miranda-ramos-chu-hudes",
+        "https://www.thewrap.com/in-the-heights-film-review-lin-manuel-miranda-anthony-ramos-movie/"
+      ],
+      "dirFiles": 6,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://film.avclub.com/in-the-heights-joyfully-brings-lin-manuel-miranda-s-fir-1846932171",
+          "host": "avclub.com",
+          "knownOutletId": "av-club",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://collider.com/in-the-heights-review-movie-lin-manuel-miranda-hbo-max/",
+          "host": "collider.com",
+          "knownOutletId": "collider",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://deadline.com/video/in-the-heights-review-lin-manuel-mirandas-tony-winning-musical-makes-buoyant-leap-to-the-screen/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.empireonline.com/movies/reviews/in-the-heights/",
+          "host": "empireonline.com",
+          "knownOutletId": "empire",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://ew.com/movies/movie-reviews/in-the-heights-movie-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/film/in-the-heights-film-review-immigrants-hamilton-lin-manuel-miranda-b936529.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.forbes.com/sites/scottmendelson/2021/05/21/review-in-the-heights-lin-manuel-miranda-jon-m-chu-warner-bros-hbo-max/",
+          "host": "forbes.com",
+          "knownOutletId": "forbes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/film/2021/may/21/in-the-heights-review-high-energy-movie-musical-loaded-with-sunny-d-optimism",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/movies/movie-reviews/lin-manuel-mirandas-in-the-heights-1234955500/",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.ign.com/articles/in-the-heights-movie-review",
+          "host": "ign.com",
+          "knownOutletId": "ign",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/films/reviews/in-the-heights-review-lin-manuel-miranda-b1851464.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.indiewire.com/2021/05/in-the-heights-movie-review-1234639010/",
+          "host": "indiewire.com",
+          "knownOutletId": "indiewire",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/movies/story/2021-05-21/in-the-heights-review-lin-manuel-miranda",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://mashable.com/article/in-the-heights-movie-review/",
+          "host": "mashable.com",
+          "knownOutletId": "mashable",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2021/06/09/movies/in-the-heights-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2021/05/in-the-heights-film-review/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://datebook.sfchronicle.com/movies-tv/review-jon-m-chus-in-the-heights-marks-the-return-of-grand-scale-movies",
+          "host": "sfchronicle.com",
+          "knownOutletId": "san-francisco-chronicle",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.slantmagazine.com/film/review-in-the-heights-brings-the-broadway-musical-to-exuberantly-cinematic-life/",
+          "host": "slantmagazine.com",
+          "knownOutletId": "slantmagazine",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/in-the-heights-lives-up-to-its-name-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/movies/in-the-heights-2021",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.usatoday.com/story/entertainment/movies/2021/05/21/in-heights-review-lin-manuel-miranda-musical-cultural-joy/5186601001/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vanityfair.com/hollywood/2021/05/review-in-the-heights-is-just-what-weve-been-waiting-for",
+          "host": "vanityfair.com",
+          "knownOutletId": "vanityfair",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2021/film/reviews/in-the-heights-review-lin-manuel-miranda-hamilton-1234978405/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vox.com/22440448/in-the-heights-movie-review-miranda-ramos-chu-hudes",
+          "host": "vox.com",
+          "knownOutletId": "vox",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/in-the-heights-film-review-lin-manuel-miranda-anthony-ramos-movie/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 151,
+        "byReason": {
+          "aggregator-internal-nav": 59,
+          "not-http-url": 8,
+          "production-database-listing": 10,
+          "aggregator-section-root": 4,
+          "non-review-host": 20,
+          "roundup-page": 50
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-the-reviews-for-the-in-the-heights-movie",
+          "publishDate": "2021-05-21"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://film.avclub.com/in-the-heights-joyfully-brings-lin-manuel-miranda-s-fir-1846932171",
+          "host": "avclub.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://collider.com/in-the-heights-review-movie-lin-manuel-miranda-hbo-max/",
+          "host": "collider.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://deadline.com/video/in-the-heights-review-lin-manuel-mirandas-tony-winning-musical-makes-buoyant-leap-to-the-screen/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.empireonline.com/movies/reviews/in-the-heights/",
+          "host": "empireonline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://ew.com/movies/movie-reviews/in-the-heights-movie-review/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/film/in-the-heights-film-review-immigrants-hamilton-lin-manuel-miranda-b936529.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.forbes.com/sites/scottmendelson/2021/05/21/review-in-the-heights-lin-manuel-miranda-jon-m-chu-warner-bros-hbo-max/",
+          "host": "forbes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/film/2021/may/21/in-the-heights-review-high-energy-movie-musical-loaded-with-sunny-d-optimism",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/movies/movie-reviews/lin-manuel-mirandas-in-the-heights-1234955500/",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.ign.com/articles/in-the-heights-movie-review",
+          "host": "ign.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/films/reviews/in-the-heights-review-lin-manuel-miranda-b1851464.html",
+          "host": "independent.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.indiewire.com/2021/05/in-the-heights-movie-review-1234639010/",
+          "host": "indiewire.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/movies/story/2021-05-21/in-the-heights-review-lin-manuel-miranda",
+          "host": "latimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://mashable.com/article/in-the-heights-movie-review/",
+          "host": "mashable.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2021/06/09/movies/in-the-heights-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://observer.com/2021/05/in-the-heights-film-review/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://datebook.sfchronicle.com/movies-tv/review-jon-m-chus-in-the-heights-marks-the-return-of-grand-scale-movies",
+          "host": "sfchronicle.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.slantmagazine.com/film/review-in-the-heights-brings-the-broadway-musical-to-exuberantly-cinematic-life/",
+          "host": "slantmagazine.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/in-the-heights-lives-up-to-its-name-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/movies/in-the-heights-2021",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.usatoday.com/story/entertainment/movies/2021/05/21/in-heights-review-lin-manuel-miranda-musical-cultural-joy/5186601001/",
+          "host": "usatoday.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vanityfair.com/hollywood/2021/05/review-in-the-heights-is-just-what-weve-been-waiting-for",
+          "host": "vanityfair.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2021/film/reviews/in-the-heights-review-lin-manuel-miranda-hamilton-1234978405/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vox.com/22440448/in-the-heights-movie-review-miranda-ramos-chu-hudes",
+          "host": "vox.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/in-the-heights-film-review-lin-manuel-miranda-anthony-ramos-movie/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-25T03:18:28.178Z"
     },
     {
       "showId": "in-the-print-off-west-end-2026",
@@ -124553,7 +125019,8 @@
       "aggregatorListedUrls": [
         "https://theqr.co.uk/2026/10/20/noga-flaishon-on-memoriam-and-the-ethics-of-vr-history/",
         "https://westendwilma.com/memoriam-southwark-playhouse/",
-        "https://readaboutstuff.com/2026/10/15/interview-noga-flaishon-discusses-memoriam/"
+        "https://readaboutstuff.com/2026/10/15/interview-noga-flaishon-discusses-memoriam/",
+        "https://www.bestoftheatre.co.uk/blog/post/memoriam-southwark-playhouse-full-cast"
       ],
       "dirFiles": 4,
       "dirClean": 0,
@@ -124633,6 +125100,29 @@
           "confirmedNonReview": true,
           "serpCensus": true,
           "reverify": false
+        },
+        {
+          "url": "https://www.bestoftheatre.co.uk/blog/post/memoriam-southwark-playhouse-full-cast",
+          "host": "bestoftheatre.co.uk",
+          "knownOutletId": "bestoftheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bestoftheatre--maria-boot.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/memoriam-southwark-playhouse-full-cast"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -124732,31 +125222,31 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 3,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
         "count": 35,
         "byReason": {
-          "non-review-host": 22,
           "aggregator-internal-nav": 2,
-          "non-review-path": 3,
-          "review-hub-page": 1,
+          "non-review-host": 22,
           "write-path-blocked": 1,
           "ticketing-listing": 1,
-          "census-junk-host": 1,
           "event-listing": 3,
+          "review-hub-page": 2,
+          "census-junk-host": 1,
+          "non-review-path": 2,
           "event-listings-page": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
@@ -124774,6 +125264,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://readaboutstuff.com/2026/10/15/interview-noga-flaishon-discusses-memoriam/"
+          },
+          {
+            "outletId": "bestoftheatre",
+            "outlet": "bestoftheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.bestoftheatre.co.uk/blog/post/memoriam-southwark-playhouse-full-cast"
           }
         ],
         "suppressedMissing": [],
@@ -124791,13 +125288,20 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-23T05:28:50.804Z"
+          },
+          {
+            "url": "https://www.bestoftheatre.co.uk/blog/post/memoriam-southwark-playhouse-full-cast",
+            "outletId": "bestoftheatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-25T03:18:28.178Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 2
+        "candidateCount": 3
       },
-      "computedAt": "2026-10-24T18:45:20.421Z"
+      "computedAt": "2026-10-25T03:18:28.178Z"
     },
     {
       "showId": "menopause-the-musical-tour-2026",
@@ -135094,34 +135598,29 @@
         "https://www.theguardian.com/stage/2026/oct/20/ts-eliot-murder-in-the-cathedral-review-david-suchet",
         "https://thespyinthestalls.com/2026/10/murder-in-the-cathedral/",
         "https://www.thereviewshub.com/murder-in-the-cathedral-st-john-the-divine-london/",
-        "https://www.londontheatre1.com/reviews/murder-in-the-cathedral-st-john-the-divine-richmond/",
-        "https://www.westendbestfriend.co.uk/news/review-murder-in-the-cathedral-st-john-the-divine-richmond",
+        "https://theatreweekly.com/first-look-rehearsal-images-released-for-orange-tree-theatres-murder-in-the-cathedral/",
         "https://www.thetimes.com/culture/theatre-dance/article/murder-in-the-cathedral-review-david-suchet-7mvrc5g08",
         "https://www.standard.co.uk/culture/theatre/murder-in-the-cathedral-review-b1301555.html",
+        "https://fringereview.co.uk/review/fringereview-uk/2026/murder-in-the-cathedral/",
         "https://www.whatsonstage.com/news/murder-in-the-cathedral-with-david-suchet-review_1735285/",
         "https://playstosee.com/reviews/uk-reviews/murder-in-the-cathedral/",
         "https://playsinternational.org.uk/murder-in-the-cathedral-orange-tree-theatre-church-of-saint-john-the-divine-richmond/",
-        "https://fringereview.co.uk/review/fringereview-uk/2026/murder-in-the-cathedral/",
         "https://www.broadwayworld.com/westend/article/Review-MURDER-IN-THE-CATHEDRAL-Starring-David-Suchet-20261020",
         "https://www.aol.co.uk/articles/ts-eliot-murder-cathedral-review-115030000.html",
         "https://everything-theatre.co.uk/2026/10/review-murder-in-the-cathedral-orange-tree-theatre-st-john-the-divine/",
         "https://theatrecat.com/2026/10/20/murder-in-the-cathedral-orange-tree-richmond/",
+        "https://www.londontheatre1.com/reviews/murder-in-the-cathedral-st-john-the-divine-richmond/",
+        "https://www.westendbestfriend.co.uk/news/review-murder-in-the-cathedral-st-john-the-divine-richmond",
         "https://www.lbc.co.uk/article/murder-in-the-cathedral-review-5HjdkMJ_2/"
       ],
-      "dirFiles": 35,
-      "dirClean": 21,
-      "inReviewsJson": 21,
+      "dirFiles": 36,
+      "dirClean": 22,
+      "inReviewsJson": 22,
       "missing": [
         {
           "url": "https://www.aol.co.uk/articles/ts-eliot-murder-cathedral-review-115030000.html",
           "host": "aol.co.uk",
           "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.lbc.co.uk/article/murder-in-the-cathedral-review-5HjdkMJ_2/",
-          "host": "lbc.co.uk",
-          "knownOutletId": "lbc",
           "serpCensus": true
         }
       ],
@@ -135144,10 +135643,6 @@
         },
         {
           "host": "therecs.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theatreweekly.com",
           "count": 1
         },
         {
@@ -135213,7 +135708,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           },
           {
@@ -135223,7 +135718,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           },
           {
@@ -135243,7 +135738,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -135253,24 +135748,23 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 16,
+        "resultCount": 14,
         "error": null
       },
       "candidatesRejected": {
-        "count": 19,
+        "count": 18,
         "byReason": {
           "non-review-host": 10,
           "write-path-blocked": 2,
-          "roundup-page": 2,
-          "no-review-evidence": 3,
-          "event-listings-page": 1,
-          "news-article": 1
+          "roundup-page": 1,
+          "no-review-evidence": 4,
+          "event-listings-page": 1
         }
       },
       "dedupedVariants": [],
@@ -135291,21 +135785,6 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "Fetch failed: All scraping methods failed"
-        },
-        {
-          "url": "https://www.lbc.co.uk/article/murder-in-the-cathedral-review-5HjdkMJ_2/",
-          "host": "lbc.co.uk",
-          "outletId": "lbc",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -135318,13 +135797,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.aol.co.uk/articles/ts-eliot-murder-cathedral-review-115030000.html"
-          },
-          {
-            "outletId": "lbc",
-            "outlet": "lbc",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.lbc.co.uk/article/murder-in-the-cathedral-review-5HjdkMJ_2/"
           }
         ],
         "suppressedMissing": [],
@@ -135348,16 +135820,10 @@
             "firstSeenAt": "2026-10-21T14:08:29.336Z"
           },
           {
-            "url": "https://www.londontheatre1.com/reviews/murder-in-the-cathedral-st-john-the-divine-richmond/",
-            "outletId": "londontheatre1.com",
+            "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-orange-tree-theatres-murder-in-the-cathedral/",
+            "outletId": "theatreweekly.com",
             "state": "live",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
-          },
-          {
-            "url": "https://www.westendbestfriend.co.uk/news/review-murder-in-the-cathedral-st-john-the-divine-richmond",
-            "outletId": "westendbestfriend.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-24T11:53:28.442Z"
+            "firstSeenAt": "2026-10-25T03:18:28.178Z"
           },
           {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/murder-in-the-cathedral-review-david-suchet-7mvrc5g08",
@@ -135370,6 +135836,12 @@
             "outletId": "standard.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-23T08:15:37.359Z"
+          },
+          {
+            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/murder-in-the-cathedral/",
+            "outletId": "fringereview.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-21T14:08:29.336Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/murder-in-the-cathedral-with-david-suchet-review_1735285/",
@@ -135390,12 +135862,6 @@
             "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
-            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/murder-in-the-cathedral/",
-            "outletId": "fringereview.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
-          },
-          {
             "url": "https://www.broadwayworld.com/westend/article/Review-MURDER-IN-THE-CATHEDRAL-Starring-David-Suchet-20261020",
             "outletId": "broadwayworld.com",
             "state": "live",
@@ -135414,25 +135880,36 @@
             "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
+            "url": "https://www.londontheatre1.com/reviews/murder-in-the-cathedral-st-john-the-divine-richmond/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-21T14:08:29.336Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-murder-in-the-cathedral-st-john-the-divine-richmond",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-24T11:53:28.442Z"
+          },
+          {
+            "url": "https://www.lbc.co.uk/article/murder-in-the-cathedral-review-5HjdkMJ_2/",
+            "outletId": "lbc.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-24T14:39:26.381Z"
+          },
+          {
             "url": "https://www.aol.co.uk/articles/ts-eliot-murder-cathedral-review-115030000.html",
             "outletId": "aol.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-22T05:46:18.377Z"
-          },
-          {
-            "url": "https://www.lbc.co.uk/article/murder-in-the-cathedral-review-5HjdkMJ_2/",
-            "outletId": "lbc",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-24T14:39:26.381Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 14,
-        "candidateCount": 16
+        "liveCount": 16,
+        "candidateCount": 17
       },
-      "computedAt": "2026-10-24T14:39:26.381Z"
+      "computedAt": "2026-10-25T03:18:28.178Z"
     },
     {
       "showId": "murder-she-didnt-write-west-end-2025",
@@ -156649,25 +157126,27 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.thewrap.com/creative-content/reviews/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-review/",
+        "https://sg.news.yahoo.com/queeney-todd-demon-bottom-fleet-170401560.html",
         "https://donyc.com/events/2026/10/22/queeney-todd-the-demon-bottom-of-fleet-street-tickets",
-        "https://www.yahoo.com/entertainment/articles/queeney-todd-demon-bottom-fleet-170401560.html",
+        "https://www.gayout.com/usa-canada/united-states/new-york/events/queeney-todd-the-demon-bottom-of-fleet-street-2026-10-22",
+        "https://www.thewrap.com/creative-content/reviews/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-review/",
+        "https://melodramamag.com/shows/queeney-todd-the-demon-bottom-of-fleet-street/",
         "https://www.picturethispost.com/heartbeat-opera-presents-queeney-todd-the-demon-bottom-of-fleet-street-preview/"
       ],
-      "dirFiles": 3,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 4,
+      "dirClean": 1,
+      "inReviewsJson": 1,
       "missing": [
         {
-          "url": "https://www.thewrap.com/creative-content/reviews/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-review/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
+          "url": "https://sg.news.yahoo.com/queeney-todd-demon-bottom-fleet-170401560.html",
+          "host": "yahoo.com",
+          "knownOutletId": "yahoo",
           "serpCensus": true
         },
         {
-          "url": "https://www.yahoo.com/entertainment/articles/queeney-todd-demon-bottom-fleet-170401560.html",
-          "host": "yahoo.com",
-          "knownOutletId": "yahoo",
+          "url": "https://melodramamag.com/shows/queeney-todd-the-demon-bottom-of-fleet-street/",
+          "host": "melodramamag.com",
+          "knownOutletId": null,
           "serpCensus": true
         }
       ],
@@ -156696,6 +157175,29 @@
           "confirmedNonReview": true,
           "serpCensus": true,
           "reverify": false
+        },
+        {
+          "url": "https://www.gayout.com/usa-canada/united-states/new-york/events/queeney-todd-the-demon-bottom-of-fleet-street-2026-10-22",
+          "host": "gayout.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "gayout--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.gayout.com/usa-canada/united-states/new-york/events/queeney-todd-the-demon-bottom-of-fleet-street-2026-10-22"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "contentTierInvalid"
+          ],
+          "serpCensus": true,
+          "reverify": true
         },
         {
           "url": "https://www.picturethispost.com/heartbeat-opera-presents-queeney-todd-the-demon-bottom-of-fleet-street-preview/",
@@ -156736,7 +157238,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -156746,7 +157248,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -156782,41 +157284,26 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
-        "count": 29,
+        "count": 33,
         "byReason": {
-          "non-review-host": 23,
-          "aggregator-internal-nav": 1,
-          "venue-production-page": 1,
+          "non-review-host": 25,
           "no-review-evidence": 1,
-          "census-junk-host": 1,
-          "event-listing": 2
+          "venue-production-page": 3,
+          "event-listing": 2,
+          "show-listing-page": 1,
+          "review-hub-page": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://www.thewrap.com/creative-content/reviews/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-review/",
-          "host": "thewrap.com",
-          "outletId": "thewrap",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.yahoo.com/entertainment/articles/queeney-todd-demon-bottom-fleet-170401560.html",
+          "url": "https://sg.news.yahoo.com/queeney-todd-demon-bottom-fleet-170401560.html",
           "host": "yahoo.com",
           "outletId": "yahoo",
           "provisional": false,
@@ -156829,6 +157316,21 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "https://melodramamag.com/shows/queeney-todd-the-demon-bottom-of-fleet-street/",
+          "host": "melodramamag.com",
+          "outletId": "melodramamag",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "spawnSync node ETIMEDOUT | ⚠️  Scrapingdog failed (dynamic=false, domain=melodramamag.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=melodramamag.com): Scrapingdog request timeout"
         }
       ],
       "ingestSkippedByCap": [],
@@ -156836,18 +157338,18 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "thewrap",
-            "outlet": "thewrap",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thewrap.com/creative-content/reviews/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-review/"
-          },
-          {
             "outletId": "yahoo",
             "outlet": "yahoo",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.yahoo.com/entertainment/articles/queeney-todd-demon-bottom-fleet-170401560.html"
+            "url": "https://sg.news.yahoo.com/queeney-todd-demon-bottom-fleet-170401560.html"
+          },
+          {
+            "outletId": "melodramamag.com",
+            "outlet": "melodramamag.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://melodramamag.com/shows/queeney-todd-the-demon-bottom-of-fleet-street/"
           },
           {
             "outletId": "donyc",
@@ -156855,6 +157357,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://donyc.com/events/2026/10/22/queeney-todd-the-demon-bottom-of-fleet-street-tickets"
+          },
+          {
+            "outletId": "gayout.com",
+            "outlet": "gayout.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.gayout.com/usa-canada/united-states/new-york/events/queeney-todd-the-demon-bottom-of-fleet-street-2026-10-22"
           },
           {
             "outletId": "picture-this-post",
@@ -156868,17 +157377,23 @@
         "candidates": [
           {
             "url": "https://www.thewrap.com/creative-content/reviews/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-review/",
-            "outletId": "thewrap",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "thewrap.com",
+            "state": "live",
             "firstSeenAt": "2026-10-24T18:45:20.421Z"
           },
           {
-            "url": "https://www.yahoo.com/entertainment/articles/queeney-todd-demon-bottom-fleet-170401560.html",
+            "url": "https://sg.news.yahoo.com/queeney-todd-demon-bottom-fleet-170401560.html",
             "outletId": "yahoo",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-24T18:45:20.421Z"
+            "firstSeenAt": "2026-10-25T03:18:28.178Z"
+          },
+          {
+            "url": "https://melodramamag.com/shows/queeney-todd-the-demon-bottom-of-fleet-street/",
+            "outletId": "melodramamag.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T03:18:28.178Z"
           },
           {
             "url": "https://donyc.com/events/2026/10/22/queeney-todd-the-demon-bottom-of-fleet-street-tickets",
@@ -156886,6 +157401,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-22T05:46:18.377Z"
+          },
+          {
+            "url": "https://www.gayout.com/usa-canada/united-states/new-york/events/queeney-todd-the-demon-bottom-of-fleet-street-2026-10-22",
+            "outletId": "gayout.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T03:18:28.178Z"
           },
           {
             "url": "https://www.picturethispost.com/heartbeat-opera-presents-queeney-todd-the-demon-bottom-of-fleet-street-preview/",
@@ -156896,10 +157418,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 0,
-        "candidateCount": 4
+        "liveCount": 1,
+        "candidateCount": 6
       },
-      "computedAt": "2026-10-24T18:45:20.421Z"
+      "computedAt": "2026-10-25T03:18:28.178Z"
     },
     {
       "showId": "rabih-mroue-and-lina-majdalanie-four-walls-and-a-roof-off-broadway-2026",
@@ -156979,11 +157501,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 21,
+        "count": 25,
         "byReason": {
-          "non-review-host": 17,
+          "aggregator-internal-nav": 1,
+          "non-review-host": 19,
           "ticketing-listing": 3,
-          "institutional-press-release": 1
+          "institutional-press-release": 2
         }
       },
       "dedupedVariants": [],
@@ -156997,7 +157520,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-24T18:45:20.421Z"
+      "computedAt": "2026-10-25T03:18:28.178Z"
     },
     {
       "showId": "race-the-movie-the-play-off-broadway-2026",
@@ -181634,8 +182157,8 @@
       "aggregatorListedUrls": [
         "https://everything-theatre.co.uk/2026/10/review-surinderella-stratford-east/",
         "https://rolandcat.substack.com/p/review-surinderella-stratford-east",
-        "https://fairypoweredproductions.com/surinderella-review/",
-        "https://www.timeout.com/london/theatre/surinderella"
+        "https://www.timeout.com/london/theatre/surinderella",
+        "https://fairypoweredproductions.com/surinderella-review/"
       ],
       "dirFiles": 4,
       "dirClean": 2,
@@ -181771,24 +182294,26 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 28,
+        "count": 31,
         "byReason": {
           "non-review-host": 15,
-          "venue-production-page": 4,
-          "census-junk-host": 4,
-          "event-listing": 1,
+          "write-path-blocked": 2,
           "no-review-evidence": 2,
-          "write-path-blocked": 2
+          "venue-production-page": 4,
+          "event-listing": 1,
+          "census-junk-host": 5,
+          "non-review-path": 1,
+          "tag-index-page": 1
         }
       },
       "dedupedVariants": [],
@@ -181863,7 +182388,7 @@
         "liveCount": 2,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-24T21:30:13.917Z"
+      "computedAt": "2026-10-25T03:18:28.178Z"
     },
     {
       "showId": "swan-lake-off-broadway-2026",
@@ -209056,11 +209581,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 35,
+        "count": 33,
         "byReason": {
-          "non-review-host": 28,
+          "non-review-host": 26,
+          "write-path-blocked": 1,
           "venue-production-page": 3,
-          "bare-host": 4
+          "bare-host": 3
         }
       },
       "dedupedVariants": [],
@@ -209097,7 +209623,7 @@
         "liveCount": 1,
         "candidateCount": 2
       },
-      "computedAt": "2026-10-24T18:45:20.421Z"
+      "computedAt": "2026-10-25T03:18:28.178Z"
     },
     {
       "showId": "the-notebook-2024",
@@ -250203,29 +250729,26 @@
     }
   ],
   "staleness": {
-    "at": "2026-10-25T00:00:48.604Z",
+    "at": "2026-10-25T03:18:28.177Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "why-i-stuck-a-flare-up-my-arse-for-england-west-end-2026",
-      "bughouse-off-broadway-2026",
-      "well-ill-let-you-go-off-broadway-2026",
-      "chess-2025"
+      "high-school-musical-off-west-end-2026",
+      "murder-cathedral-off-west-end-2026"
     ],
     "catalogueReserveEvery": 12,
     "catalogueAttempted": [
-      "youre-so-special-off-west-end-2026",
-      "this-is-not-not-a-drill-off-broadway-2026"
+      "in-the-heights-off-broadway-2026"
     ],
-    "neverAuditedDueAtStart": 216,
+    "neverAuditedDueAtStart": 268,
     "oldestDueRowAtStart": {
-      "showId": "why-i-stuck-a-flare-up-my-arse-for-england-west-end-2026",
+      "showId": "oh-mary-off-broadway-2024",
       "computedAt": "2026-09-17T23:23:55.518Z",
-      "ageHours": 888.3
+      "ageHours": 891.6
     },
     "oldestDueRowAfterRun": {
       "showId": "oh-mary-off-broadway-2024",
       "computedAt": "2026-09-17T23:23:55.518Z",
-      "ageHours": 888.6
+      "ageHours": 891.9
     }
   }
 }
