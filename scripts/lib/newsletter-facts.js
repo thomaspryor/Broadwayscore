@@ -25,7 +25,7 @@ const SENDERS = [
     label: 'Chromolume',
     hosts: ['chromolume.io'],
     // Chromolume issues link only to the homepage with utm params, so a path is required.
-    pathRe: /^\/(?:p|posts?|issues?|archive|commission|newsletter|reports?)\/[^/]+/i,
+    pathRe: /^\/(?:p|posts?|issues?|archive|commission|newsletter|reports?|blog)\/[^/]+/i,
   },
   {
     key: 'abroadway',

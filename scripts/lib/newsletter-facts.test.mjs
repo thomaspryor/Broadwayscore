@@ -53,6 +53,8 @@ test('pickIssueUrl returns a post link on the sender host, without tracking', ()
   assert.equal(nf.pickIssueUrl(SUBSTACK, links), 'https://gordoncox.substack.com/p/abroadway-oct-21');
   assert.equal(nf.pickIssueUrl(CHROMO, ['https://chromolume.io?utm_source=newsletter']), null);
   assert.equal(nf.pickIssueUrl(CHROMO, ['https://chromolume.io/issues/commission-26/?utm=x']), 'https://chromolume.io/issues/commission-26');
+  assert.equal(nf.pickIssueUrl(CHROMO, ['https://chromolume.io/blog/week-18-analysis?utm=x']), 'https://chromolume.io/blog/week-18-analysis');
+  assert.equal(nf.pickIssueUrl(CHROMO, ['https://chromolume.io/blog']), null);
   assert.equal(nf.pickIssueUrl(BRIEFING, ['https://www.broadwaybriefing.com/p/briefing-oct-23', 'https://example.com/p/x']), 'https://www.broadwaybriefing.com/p/briefing-oct-23');
   assert.equal(nf.pickIssueUrl(SUBSTACK, ['https://substack.com/redirect/2/abc']), null);
   assert.equal(nf.pickIssueUrl(SUBSTACK, ['not a url', 'https://evil.example/p/x']), null);
