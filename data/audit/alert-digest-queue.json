@@ -515,5 +515,36 @@
       }
     ],
     "queuedAt": "2026-10-25T18:08:54.209Z"
+  },
+  {
+    "conditionKey": "land:land/mac-cloud-phase0",
+    "title": "Landing blocked: unit-tests-node red on land/mac-cloud-phase0",
+    "description": "land.yml did not land land/mac-cloud-phase0: the unit-tests-node gate went red at 040496dac2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40218988420",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/mac-cloud-phase0"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "040496dac2c1a35df5daadfd767b4b74debb161e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40218988420"
+      }
+    ],
+    "queuedAt": "2026-10-25T18:17:28.717Z"
   }
 ]
