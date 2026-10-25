@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6178",
   "planId": "31e56bd6-acad-4513-b346-397f7a768717",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-24T22:43:43.882Z",
   "submitter": {
     "name": null,
@@ -34,5 +34,19 @@
         "description": "commercial.json: oedipus.costMethodology"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-25T00:19:58.171Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for oedipus"
+    }
+  ],
+  "executedIn": "ci"
 }
