@@ -212,3 +212,13 @@ test('BRO-720 wiring: rebuild imports isDateOnlyAutoReason from the autoclear li
   const rebuild = fs.readFileSync(new URL('./rebuild-all-reviews.js', import.meta.url), 'utf8');
   assert.ok(/isDateOnlyAutoReason,\n\} = require\('\.\/lib\/wrong-production-autoclear'\)/.test(rebuild));
 });
+
+// BRO-5805 — a CV wrongProduction / wrongShow / film-TV verdict on a body that names most of the show's own
+// cast is advisory. Seven real Talkin' Broadway reviews sat excluded on such verdicts (2026-10-21).
+test('BRO-5805 wiring: all three CV promotion branches are gated on ppOwnShowEvidence', () => {
+  const src = fs.readFileSync(new URL('./rebuild-all-reviews.js', import.meta.url), 'utf8');
+  assert.ok(/const ppOwnShowEvidence = !cvLowButStrong && ownShowTextEvidence\(d\.fullText, showById\[sid\]\)\.strong;/.test(src));
+  assert.ok(/!ppVenueCarveout && !ppOwnShowEvidence\) \{/.test(src), 'wrongProduction promotion');
+  assert.ok(/cv\.wrongProduction === true && !ensembleSaysReview && !ppOwnShowEvidence && d\.wrongShow !== true/.test(src), 'wrongShow promotion');
+  assert.ok(/cv\.isFilmTv === true && !ensembleSaysReview && !ppOwnShowEvidence && d\.wrongShow !== true/.test(src), 'film/TV promotion');
+});
