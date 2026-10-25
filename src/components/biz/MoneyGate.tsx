@@ -10,7 +10,7 @@
  * money page in this browser (src/lib/money-gate.ts).
  */
 
-import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { track } from '@vercel/analytics';
 import { captureEvent } from '@/lib/posthog-events';
 import {
@@ -35,6 +35,11 @@ interface MoneyGateProps {
   schema?: boolean;
 }
 
+// The boot script only runs on a full page load; on a client-side navigation
+// the attribute has to be set before paint here, or a returning reader sees
+// the lock flash for a frame.
+const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
 export default function MoneyGate({ children, page, preview = 'tall', schema = true }: MoneyGateProps) {
   // null until mounted: the server render is the locked markup, and CSS
   // (driven by the boot script's <html> attribute) decides what shows.
@@ -42,8 +47,9 @@ export default function MoneyGate({ children, page, preview = 'tall', schema = t
   const [justUnlocked, setJustUnlocked] = useState(false);
   const lockRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const statusRef = useRef<HTMLParagraphElement>(null);
 
-  useEffect(() => {
+  useIsoLayoutEffect(() => {
     const unlockedNow = isMoneyUnlocked();
     if (unlockedNow) document.documentElement.setAttribute('data-money-unlocked', '');
     setUnlocked(unlockedNow);
@@ -73,6 +79,11 @@ export default function MoneyGate({ children, page, preview = 'tall', schema = t
     return () => io.disconnect();
   }, [unlocked, page]);
 
+  // The submit button disappears with the card: move focus to the confirmation.
+  useEffect(() => {
+    if (justUnlocked) statusRef.current?.focus();
+  }, [justUnlocked]);
+
   const handleUnlocked = useCallback(() => {
     setJustUnlocked(true);
     setUnlocked(true);
@@ -88,7 +99,7 @@ export default function MoneyGate({ children, page, preview = 'tall', schema = t
         />
       )}
       {justUnlocked && (
-        <p role="status" className="money-gate-success mb-3 inline-flex items-center gap-2 rounded-full border border-status-open/30 bg-status-open/10 px-3 py-1 text-xs font-medium text-status-open">
+        <p ref={statusRef} tabIndex={-1} role="status" className="money-gate-success mb-3 focus:outline-none inline-flex items-center gap-2 rounded-full border border-status-open/30 bg-status-open/10 px-3 py-1 text-xs font-medium text-status-open">
           <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
           </svg>
@@ -176,7 +187,7 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
         </div>
 
         <fieldset className="mt-4">
-          <legend className="mb-2 text-xs text-gray-400">I&apos;m a… <span className="text-gray-500">(optional)</span></legend>
+          <legend className="mb-2 text-xs text-gray-400">I&apos;m a… <span className="text-gray-400">(optional)</span></legend>
           <div className="flex flex-wrap gap-1.5">
             {MONEY_ROLES.map((r) => {
               const active = role === r.value;
@@ -186,7 +197,7 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
                   type="button"
                   aria-pressed={active}
                   onClick={() => setRole(active ? '' : r.value)}
-                  className={`min-h-[36px] rounded-full border px-3 text-xs font-medium transition-colors ${
+                  className={`min-h-[36px] rounded-full border px-3 text-xs font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand ${
                     active
                       ? 'border-brand bg-brand/10 text-brand'
                       : 'border-white/10 bg-white/5 text-gray-300 hover:border-white/20 hover:text-white'
@@ -202,8 +213,9 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
         {error && (
           <p id={`${id}-error`} role="alert" className="mt-3 text-xs text-score-skip">{error}</p>
         )}
-        <p className="mt-4 text-xs text-gray-500">
-          One step, no password. Its own list, separate from our newsletter.
+        <p className="mt-4 text-xs text-gray-400">
+          One step, no password. Its own list, separate from our newsletter.{' '}
+          <a href="/privacy" className="underline underline-offset-2 hover:text-white">Privacy</a>
         </p>
       </form>
     </div>

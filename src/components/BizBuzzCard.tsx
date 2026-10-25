@@ -254,7 +254,9 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
       </p>
 
       {/* Everything below the heading is free with an email (BRO-6210). */}
-      <MoneyGate page="show-page" preview="short">
+      {/* No paywall JSON-LD here: it would mark the whole show page not free
+          for one small section (BRO-6210 review). /biz pages carry it. */}
+      <MoneyGate page="show-page" preview="short" schema={false}>
       {/* Status chips: recoupment, trend, break-even position */}
       <div className="flex flex-wrap gap-1.5 mb-4 empty:hidden">
         {/* Pure nonprofits raise no investor capital: "Not reported" / "Not Recouped" would read as a gap or a failure.

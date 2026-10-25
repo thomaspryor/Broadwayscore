@@ -584,9 +584,13 @@
     pointer-events: none;
     -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
     mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
+    /* At least the card's pull-up (-mt-48), so short content never lets the
+       card cover the heading above the gate. */
+    min-height: 12rem;
   }
   html:not([data-money-unlocked]) .money-gate[data-preview='short'] .money-gate-content {
     max-height: 12rem;
+    min-height: 7rem;
   }
   .money-gate-lock {
     @apply relative z-10 -mt-48 mb-8 px-0;
