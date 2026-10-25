@@ -26,7 +26,7 @@ test('GUARD_NAMES: all 9 sibling guards are named', () => {
 test('blind sweep surfaces a phantom-path refusal in the digest', () => {
   const task = {
     id: 'BRO-2626', subject: 'Repair the queue audit',
-    description: '## Acceptance criteria\nVERIFY: node --test scripts/lib/bro2626-missing-directory/phantom.test.mjs',
+    description: '## Acceptance criteria\nVERIFY: node --test scripts/lib/bro2626-missing-directory/deeper/phantom.test.mjs',
   };
   const result = simulateDispatchGuards(task);
   assert.deepEqual(Object.keys(result.guards), GUARD_NAMES);
