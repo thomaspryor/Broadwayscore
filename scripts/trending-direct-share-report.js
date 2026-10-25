@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 'use strict';
 /**
- * audit-trending-direct-share.js (BRO-2503): how much of the newsletter's
+ * trending-direct-share-report.js (BRO-2503): how much of the newsletter's
  * "Trending This Week" input is Direct-channel traffic, and how the ranking
  * changes when Direct is excluded. Same GA4 query as
  * scripts/newsletter/popular-pages.mjs. Read-only.
  *
  * Env: GA4_PROPERTY_ID, GA_SERVICE_ACCOUNT_KEY (base64) or GA_KEY_FILE.
- * Run from a cloud session: node scripts/cloud-run-script.js scripts/audit-trending-direct-share.js
+ * Run from a cloud session: node scripts/cloud-run-script.js scripts/trending-direct-share-report.js
  */
 const { getGaClient } = require('./lib/ga4-client');
 const { rankTrendingShowPages, directShareOfShowViews } = require('./lib/newsletter-trending');
