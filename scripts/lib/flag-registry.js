@@ -105,6 +105,20 @@ const REGISTERED_FLAGS = [
     note: 'AdSense show-page slot: kill switch + 50/50 test. Pre-launch at 0% ads; no-ads = kill switch.',
   },
   {
+    key: 'related-shows-position',
+    expected: {
+      exists: true,
+      active: true,
+      variants: [{ key: 'control', pct: 50 }, { key: 'compact-after-reviews', pct: 50 }],
+      rollout: 100,
+      // TRUE: identified (signed-in) visitors reach show pages, so keep their arm
+      // stable across any later rollout change.
+      ensure_experience_continuity: true,
+    },
+    ownerDoc: 'docs/experiments/related-shows-position.md',
+    note: 'BRO-5989: compact related-shows row after the reviews card, mobile show pages only. Created 2026-10-25 (flag id 992842); data valid only after the PostHog proxy cutover 2026-10-23 02:11Z.',
+  },
+  {
     key: 'mobile-gate-timing',
     expected: { exists: false },
     ownerDoc: null,
