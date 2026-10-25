@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-25T08:54:06.766Z",
+  "generatedAt": "2026-10-25T10:31:15.637Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -148,16 +148,21 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 646,
-  "matchedGaps": 4,
+  "itemsScanned": 680,
+  "matchedGaps": 6,
   "possibleGaps": 1,
   "gaps": [
+    {
+      "showId": "garry-starr-classic-penguins-off-west-end-2026",
+      "title": "Garry Starr Classic Penguins",
+      "level": "matched",
+      "outletId": "a-youngish-perspective",
+      "url": "https://ayoungishperspective.co.uk/2026/10/25/review-garry-starr-classic-penguins-3/",
+      "headline": "REVIEW: Garry Starr: Classic Penguins",
+      "publishDate": "2026-10-25"
+    },
     {
       "showId": "ilford-boy-west-end-2026",
       "title": "Ilford Boy",
@@ -192,6 +197,15 @@
       "outletId": "readaboutstuff",
       "url": "https://readaboutstuff.com/2026/10/25/review-the-pianist-park-theatre-london/",
       "headline": "Review: The Pianist &#8211; Park Theatre, London",
+      "publishDate": "2026-10-25"
+    },
+    {
+      "showId": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
+      "level": "matched",
+      "outletId": "pinkprincetheatre",
+      "url": "https://www.pinkprincetheatre.com/post/review-the-pianist-park-theatre",
+      "headline": "REVIEW: THE PIANIST @ PARK THEATRE",
       "publishDate": "2026-10-25"
     },
     {

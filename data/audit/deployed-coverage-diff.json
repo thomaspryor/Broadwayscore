@@ -1,13 +1,208 @@
 {
-  "generatedAt": "2026-10-25T08:54:06.376Z",
+  "generatedAt": "2026-10-25T10:31:15.250Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 263,
-  "clean": 263,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 251,
+  "defective": 12,
+  "byType": {
+    "score-drift": 12
+  },
+  "shows": [
+    {
+      "showId": "triumph-off-west-end-2026",
+      "title": "Triumph",
+      "openingDate": "2026-10-18",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 77.21 vs local 77.02 (Δ0.19)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 18,
+      "deployedCount": 18,
+      "firstDefectAt": "2026-10-25T10:31:10.755Z"
+    },
+    {
+      "showId": "operation-mincemeat-tour-2026",
+      "title": "Operation Mincemeat",
+      "openingDate": "2026-09-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.83 vs local 84.05 (Δ0.22)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-10-25T10:31:10.755Z"
+    },
+    {
+      "showId": "oh-mary-tour-2026",
+      "title": "Oh, Mary!",
+      "openingDate": "2026-09-19",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.25 vs local 85.19 (Δ0.06)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 11,
+      "deployedCount": 12,
+      "firstDefectAt": "2026-10-25T10:31:10.755Z"
+    },
+    {
+      "showId": "death-becomes-her-tour-2026",
+      "title": "Death Becomes Her",
+      "openingDate": "2026-09-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.7 vs local 85.22 (Δ0.48)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 6,
+      "deployedCount": 7,
+      "firstDefectAt": "2026-10-25T10:31:10.755Z"
+    },
+    {
+      "showId": "the-phantom-of-the-opera-tour-2025",
+      "title": "The Phantom of the Opera",
+      "openingDate": "2025-11-07",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 87.52 vs local 87.33 (Δ0.19)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 20,
+      "deployedCount": 21,
+      "firstDefectAt": "2026-10-25T10:31:10.755Z"
+    },
+    {
+      "showId": "the-sound-of-music-tour-2025",
+      "title": "The Sound of Music",
+      "openingDate": "2025-09-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.25 vs local 84.86 (Δ0.39)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 24,
+      "deployedCount": 27,
+      "firstDefectAt": "2026-10-25T10:31:10.755Z"
+    },
+    {
+      "showId": "mrs-doubtfire-tour-2025",
+      "title": "Mrs. Doubtfire",
+      "openingDate": "2025-09-04",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 72.84 vs local 73.29 (Δ0.45)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 14,
+      "deployedCount": 16,
+      "firstDefectAt": "2026-10-25T10:31:10.755Z"
+    },
+    {
+      "showId": "beauty-and-the-beast-tour-2025",
+      "title": "Beauty and the Beast",
+      "openingDate": "2025-06-25",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.45 vs local 84.22 (Δ0.23)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 30,
+      "deployedCount": 33,
+      "firstDefectAt": "2026-10-25T10:31:10.755Z"
+    },
+    {
+      "showId": "hamilton-tour-2024",
+      "title": "Hamilton",
+      "openingDate": "2024-08-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 87.09 vs local 86.83 (Δ0.26)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 18,
+      "deployedCount": 21,
+      "firstDefectAt": "2026-10-25T10:31:10.755Z"
+    },
+    {
+      "showId": "the-lion-king-tour-2021",
+      "title": "The Lion King",
+      "openingDate": "2021-10-01",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 86.27 vs local 86.14 (Δ0.13)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 36,
+      "deployedCount": 37,
+      "firstDefectAt": "2026-10-25T10:31:10.755Z"
+    },
+    {
+      "showId": "witness-for-the-prosecution-west-end-2022",
+      "title": "Witness for the Prosecution",
+      "openingDate": "2017-10-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.57 vs local 75.47 (Δ0.1)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 14,
+      "deployedCount": 14,
+      "firstDefectAt": "2026-10-25T10:31:10.755Z"
+    },
+    {
+      "showId": "the-mousetrap-west-end-2021",
+      "title": "The Mousetrap",
+      "openingDate": "1952-11-25",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 68.84 vs local 68.45 (Δ0.39)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-10-25T10:31:10.755Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
