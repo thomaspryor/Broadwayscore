@@ -1,65 +1,69 @@
 {
-  "runDate": "2026-10-25T01:10:40.073Z",
+  "runDate": "2026-10-25T02:09:55.467Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "garsides-career-off-broadway-2025,becoming-eve-off-broadway-2025,good-bones-off-broadway-2024,ghosts-off-broadway-2025",
+    "showFilter": "derren-brown-only-human-west-end-2026,phyl-off-broadway-2026,the-pianist-off-west-end-2026,cirque-berserk-west-end-2026,the-imaginary-invalid-2026,garry-starr-classic-penguins-off-west-end-2026,queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026,the-kick-inside-off-broadway-2026,women-who-eat-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 0,
+    "processed": 8,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "53.3%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 8,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 1,
+    "scrapingdog": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 4,
+    "tier1Attempts": 13,
+    "tier1Success": 8,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
-    "tier1_9Success": 0,
-    "tier2Attempts": 1,
+    "tier1_9Attempts": 5,
+    "tier1_9Success": 3,
+    "tier2Attempts": 3,
     "tier2Success": 1,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3Attempts": 4,
+    "tier3Success": 2,
+    "tier3_6Attempts": 4,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 13,
     "tier4Success": 0,
-    "totalFailed": 0,
-    "scrapingBeePageCredits": 1,
+    "totalFailed": 6,
+    "scrapingBeePageCredits": 2,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 5,
-    "failed": 0,
+    "processed": 8,
+    "failed": 7,
     "shows": [
-      "becoming-eve-off-broadway-2025",
-      "ghosts-off-broadway-2025",
-      "good-bones-off-broadway-2024"
+      "cirque-berserk-west-end-2026",
+      "derren-brown-only-human-west-end-2026",
+      "garry-starr-classic-penguins-off-west-end-2026",
+      "phyl-off-broadway-2026",
+      "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
+      "the-imaginary-invalid-2026",
+      "the-pianist-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -68,41 +72,89 @@
     }
   },
   "processed": [
-    "ghosts-off-broadway-2025/nysr--unknown.json",
-    "becoming-eve-off-broadway-2025/front-row-center--kendra-jones.json",
-    "good-bones-off-broadway-2024/timeout--raven-snook.json",
-    "good-bones-off-broadway-2024/theatrely--unknown.json",
-    "good-bones-off-broadway-2024/front-row-center--david-walters.json"
+    "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json",
+    "derren-brown-only-human-west-end-2026/london-theatre-reviews--ramsey-baghdadi.json",
+    "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
+    "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
+    "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
+    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
+    "the-pianist-off-west-end-2026/onin--caitlin-neal.json",
+    "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json"
   ],
-  "failed": [],
+  "failed": [
+    "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+    "the-pianist-off-west-end-2026/soundsandstage--unknown.json"
+  ],
   "cumulativeResumedState": {
     "processed": [
-      "ghosts-off-broadway-2025/nysr--unknown.json",
-      "becoming-eve-off-broadway-2025/front-row-center--kendra-jones.json",
-      "good-bones-off-broadway-2024/timeout--raven-snook.json",
-      "good-bones-off-broadway-2024/theatrely--unknown.json",
-      "good-bones-off-broadway-2024/front-row-center--david-walters.json"
+      "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json",
+      "derren-brown-only-human-west-end-2026/london-theatre-reviews--ramsey-baghdadi.json",
+      "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
+      "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
+      "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
+      "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
+      "the-pianist-off-west-end-2026/onin--caitlin-neal.json",
+      "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json"
     ],
-    "failed": []
+    "failed": [
+      "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+      "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+      "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+      "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+      "the-pianist-off-west-end-2026/soundsandstage--unknown.json"
+    ]
   },
   "tierDetails": {
     "playwright": [
-      "ghosts-off-broadway-2025/nysr--unknown.json",
-      "becoming-eve-off-broadway-2025/front-row-center--kendra-jones.json",
-      "good-bones-off-broadway-2024/timeout--raven-snook.json",
-      "good-bones-off-broadway-2024/front-row-center--david-walters.json"
+      "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json",
+      "derren-brown-only-human-west-end-2026/london-theatre-reviews--ramsey-baghdadi.json",
+      "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
+      "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
+      "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
+      "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
+      "the-pianist-off-west-end-2026/onin--caitlin-neal.json",
+      "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
-    "scrapingbee": [
-      "good-bones-off-broadway-2024/theatrely--unknown.json"
+    "scrapingdog": [
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json"
     ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "TheWrap": {
+      "count": 1,
+      "domain": "thewrap.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "North West End": {
+      "count": 1,
+      "domain": "northwestend.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Jonathan Baz": {
+      "count": 1,
+      "domain": "jonathanbaz.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
