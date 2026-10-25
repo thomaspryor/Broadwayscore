@@ -35,6 +35,8 @@ async function main() {
     const batch = (await res.json()).rows || [];
     rows.push(...batch);
     if (batch.length < PAGE_SIZE) break;
+    // A truncated pull would read as 0 impressions for the missing pages: refuse it.
+    if (i === MAX_PAGES - 1) throw new Error(`hit the ${MAX_PAGES * PAGE_SIZE} row ceiling; raise MAX_PAGES, keeping existing snapshot`);
   }
   const pages = aggregateRows(rows);
   if (Object.keys(pages).length === 0) throw new Error(`no tracked pages in ${rows.length} GSC rows; keeping existing snapshot`);

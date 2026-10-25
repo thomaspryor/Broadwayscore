@@ -17,7 +17,8 @@ const OUT = path.join(root, 'data', 'audit', 'seo-thin-cohort.json');
 const cand = JSON.parse(fs.readFileSync(path.join(root, 'data', 'audit', 'seo-thin-candidates.json'), 'utf8'));
 
 if (!cand.landingsLoaded || !cand.gscLoaded) { console.error('candidate report lacks landings or GSC data; not freezing'); process.exit(1); }
-if (fs.existsSync(OUT) && !process.argv.includes('--force')) { console.error('cohort already frozen (data/audit/seo-thin-cohort.json); use --force only to restart the experiment'); process.exit(1); }
+const frozen = fs.existsSync(OUT) && (JSON.parse(fs.readFileSync(OUT, 'utf8')).cohortSlugs || []).length > 0;
+if (frozen && !process.argv.includes('--force')) { console.error('cohort already frozen (data/audit/seo-thin-cohort.json); use --force only to restart the experiment'); process.exit(1); }
 
 const slugs = cand.shows.slugs;
 const cohortSlugs = slugs.filter(s => inCohortHash(s)).sort();

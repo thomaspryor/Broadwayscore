@@ -18,7 +18,7 @@ jobs:
     # sample URLs) with some run-to-run variance — a little slack beyond the original
     # 25 covers that without over-provisioning for the push step (which is non-blocking
     # and uses the default retry budget; see "Push audit data" below, task #353).
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v5
