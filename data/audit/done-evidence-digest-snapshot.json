@@ -1,7 +1,12 @@
 {
-  "generatedAt": "2026-10-25T07:52:56.377Z",
-  "bannerText": "126/243 Done(14d) verified on main · 13 FAILED · 1 vacuous · 22 stuck-but-done — PARTIAL RUN: 103 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-25T12:48:50.822Z",
+  "bannerText": "92/148 Done(14d) verified on main · 4 FAILED · 1 vacuous · 23 stuck-but-done — PARTIAL RUN: 57 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
+    {
+      "title": "FAILED BRO-6108 — BRO-6097 follow-up: run remaining 212 West End historical shows through Theatre Record extraction",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/we-historical-tr-coverage.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6108/bro-6097-follow-up-run-remaining-212-west-end-historical-shows-through"
+    },
     {
       "title": "FAILED BRO-6075 — Write grounded synopses for the 62 West End historical shows left empty (from collected review texts)",
       "detail": "FAIL 1506: show missing FAIL 1507: show missing FAIL 1508: show missing FAIL 1509: show missing FAIL 1510: show missing FAIL 1511: show missing FAIL 1512: show missing FAIL 1513: …",
@@ -13,35 +18,30 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5993/opening-night-lane-score-candidates-in-parallel-and-publish-as-each-is"
     },
     {
-      "title": "FAILED BRO-5968 — SEO: 5 hub pages exceed Googlebot's 2MB fetch limit (all-time list is 7.3MB)",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/validate-page-size.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5968/seo-5-hub-pages-exceed-googlebots-2mb-fetch-limit-all-time-list-is"
+      "title": "FAILED BRO-4776 — P3: 8 tour runtimes copied from the Broadway parent disagree with the tour's own page by 5 to 10 minutes",
+      "detail": "not ok: the-sound-of-music-1998 has a synopsis of at least 40 chara… | first failure: the-sound-of-music-1998: missing synopsis (run the verified Wikipedia enricher,",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4776/p3-8-tour-runtimes-copied-from-the-broadway-parent-disagree-with-the"
     },
     {
-      "title": "FAILED BRO-5963 — Backup restore drill (monthly, all R2 bundles + Supabase export) and drop the R2 lifecycle step that silently fails",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/restore-drill.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5963/backup-restore-drill-monthly-all-r2-bundles-supabase-export-and-drop"
+      "title": "STUCK BRO-6105 — BSC Daily: Sync: baseline drift",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6105/bsc-daily-sync-baseline-drift"
     },
     {
-      "title": "FAILED BRO-5962 — Exempt-from-cron-health workflows failing every run go unreported (12 dead weekly/daily jobs)",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/health-digest-crons.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5962/exempt-from-cron-health-workflows-failing-every-run-go-unreported-12"
+      "title": "STUCK BRO-6089 — Wrong-production round-up archives: quarantine TR orphans and apply date-window matching to LBO/Stage round-up scrapers",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6089/wrong-production-round-up-archives-quarantine-tr-orphans-and-apply"
     },
     {
-      "title": "FAILED BRO-5942 — Backfill: split the ~46 existing joint reviews the BRO-5895 corpus dry run found (one article, 2-3 shows)",
-      "detail": "FAIL the-parisian-woman: show missing; scored reviews 0 < 5 PASS my-name-is-lucy-barton-2020: 34 scored reviews PASS the-sound-inside-2019: 22 scored reviews",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5942/backfill-split-the-46-existing-joint-reviews-the-bro-5895-corpus-dry"
+      "title": "STUCK BRO-6088 — Flag create_session from a plan-only session (BRO-6083 follow-up)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6088/flag-create-session-from-a-plan-only-session-bro-6083-follow-up"
     },
     {
-      "title": "FAILED BRO-5939 — P2: land.yml colocated-tests refusal names a passing test's warning, not the failing test (defaultDetail vs tapDetail)",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/tests/land-branch-detail.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5939/p2-landyml-colocated-tests-refusal-names-a-passing-tests-warning-not"
-    },
-    {
-      "title": "FAILED BRO-5887 — Reddit drafts: Sonnet review check (completeness + accuracy, auto-fix) before any draft email is sent",
-      "detail": "not ok: every draft emailed since the check went live carries a rev… | first failure: drafts emailed with no review-check record",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5887/reddit-drafts-sonnet-review-check-completeness-accuracy-auto-fix"
+      "title": "STUCK BRO-6087 — Claude board worker runs at about half its ceiling (20-33 claims/day vs 48) while 194 cards are eligible",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6087/claude-board-worker-runs-at-about-half-its-ceiling-20-33-claimsday-vs"
     }
   ],
-  "moreCount": 28
+  "moreCount": 20
 }
