@@ -934,6 +934,20 @@
     "queuedAt": "2026-10-25T22:32:19.307Z"
   },
   {
+    "conditionKey": "pending-unrecoverable:harry-potter-and-the-cursed-child-one-part-west-end-2026",
+    "title": "1 review(s) for harry-potter-and-the-cursed-child-one-part-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--unknown.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-palace-theatre-london--new-cast-equals-the-original",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-25T22:42:23.330Z"
+  },
+  {
     "conditionKey": "land:land/bro-267-audit-writer-lint",
     "title": "Landing blocked: unit-tests-node red on land/bro-267-audit-writer-lint",
     "description": "land.yml did not land land/bro-267-audit-writer-lint: the unit-tests-node gate went red at 41669601fb. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40240140232",
