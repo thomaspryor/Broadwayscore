@@ -5361,8 +5361,8 @@ function explainExclusion(data, show, filePath, opts) {
   if (
     data.contentVerification?.wrongArticle === true &&
     data.contentVerification?.confidence === 'high' &&
-    !laneOk('nonReview') && !cvWrongArticleManuallyCleared(data) &&
-    !isCvPartialWindowAdvisory(data, opts)
+    !laneOk('nonReview') && !isCvPartialWindowAdvisory(data, opts) &&
+    !cvWrongArticleManuallyCleared(data)
   ) return 'cvWrongArticleHighConfidence';
 
   // Garbage text or non-review content flagged by collection pipeline or LLM ensemble.
