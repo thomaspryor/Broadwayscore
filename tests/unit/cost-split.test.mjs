@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { splitCosts, costBasis, fixedNutFromBasis, periodGross, EXTRA_VARIABLE } = require('../../scripts/lib/cost-split');
+const { splitCosts, costBasis, fixedNutFromBasis, breakEvenRatio, periodGross, EXTRA_VARIABLE } = require('../../scripts/lib/cost-split');
 const { calculateRecoupment, costPathFactor } = require('../../scripts/lib/recoupment-model');
 
 test('costBasis: explicit field wins, then the source text, default running', () => {
@@ -105,7 +105,7 @@ test('fixedNutFromBasis: running unchanged, breakeven inverts the model breakeve
   assert.equal(fixedNutFromBasis({ weeklyRunningCost: 600_000, weeklyRunningCostBasis: 'bogus' }, 600_000, v, T).basis, 'running');
   // breakeven: the model's own breakeven of the nut comes back to the figure
   const be = fixedNutFromBasis({ weeklyRunningCost: 800_000, weeklyRunningCostBasis: 'breakeven' }, 800_000, v, T);
-  assert.equal(Math.round(be.nut * (1 - T.rentPctOfNut) / (1 - v - T.pctOfGross)), 800_000);
+  assert.equal(Math.round(be.nut * breakEvenRatio(v, T)), 800_000); // BRO-6217 M04
   // all-in over a quoted period: E = nut + v G + max(0, pct G - rent share x nut)
   const weekly = {};
   for (let i = 0; i < 60; i++) weekly[new Date(Date.UTC(2025, 2, 16) + i * 7 * 86400000).toISOString().slice(0, 10)] = { gross: 1_500_000 };
@@ -124,7 +124,7 @@ test('fixedNutFromBasis: running unchanged, breakeven inverts the model breakeve
   assert.equal(costBasis({ weeklyRunningCostBasis: 'breakeven' }), 'all-in');
 });
 
-test('calculateRecoupment ignores the basis unless opts.costBasis is set (BRO-5093)', () => {
+test('calculateRecoupment reads the basis (live since BRO-6217); costBasis: false ignores it (BRO-5093)', () => {
   const WEEK = 7 * 86400000;
   const iso = (t) => new Date(t).toISOString().slice(0, 10);
   const first = Date.now() - 40 * WEEK;
@@ -134,13 +134,14 @@ test('calculateRecoupment ignores the basis unless opts.costBasis is set (BRO-50
   const comm = { capitalization: 15_000_000, weeklyRunningCost: 700_000, weeklyRunningCostBasis: 'breakeven' };
   const { weeklyRunningCostBasis, ...untagged } = comm;
   assert.equal(weeklyRunningCostBasis, 'breakeven');
+  const off = calculateRecoupment(show, comm, null, weekly, { costBasis: false });
+  assert.deepEqual(off, calculateRecoupment(show, untagged, null, weekly));
   const live = calculateRecoupment(show, comm, null, weekly);
-  assert.deepEqual(live, calculateRecoupment(show, untagged, null, weekly));
-  const shadow = calculateRecoupment(show, comm, null, weekly, { costBasis: true });
-  assert.ok(shadow.recoupmentPctCentral > live.recoupmentPctCentral);
-  assert.ok(shadow.warnings.some((w) => /breakeven: fixed nut/.test(w)));
+  assert.deepEqual(live, calculateRecoupment(show, comm, null, weekly, { costBasis: true }));
+  assert.ok(live.recoupmentPctCentral > off.recoupmentPctCentral);
+  assert.ok(live.warnings.some((w) => /breakeven: fixed nut/.test(w)));
   // no cost figure: the estimate is untouched
   const { weeklyRunningCost, ...noCost } = comm;
   assert.equal(weeklyRunningCost, 700_000);
-  assert.equal(calculateRecoupment(show, noCost, null, weekly, { costBasis: true }).recoupmentPctCentral, calculateRecoupment(show, noCost, null, weekly).recoupmentPctCentral);
+  assert.equal(calculateRecoupment(show, noCost, null, weekly).recoupmentPctCentral, calculateRecoupment(show, noCost, null, weekly, { costBasis: false }).recoupmentPctCentral);
 });
