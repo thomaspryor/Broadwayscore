@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect, useRef } from 'react';
+import dynamic from 'next/dynamic';
 import Modal from '@/components/show-cards/Modal';
 import StarRating from './StarRating';
 import { sanitizeRating } from '@/lib/rating';
@@ -47,6 +48,10 @@ interface RatingEditorProps {
 }
 
 const MAX_CHARS = 2000;
+
+// Diary photos for an existing entry (BRO-6170). Lazy: the field (upload
+// pipeline, photo list) only loads when an editor opens on a saved review.
+const ReviewPhotosField = dynamic(() => import('@/components/my-shows/feed/ReviewPhotosField'), { ssr: false });
 
 const HEADER_COPY: Record<NonNullable<RatingEditorProps['mode']>, string> = {
   new: 'Your rating for',
@@ -267,6 +272,11 @@ export default function RatingEditor({
           </span>
         </div>
       </div>
+
+      {/* Photos attach to a saved review (user_review_photos.review_id is a
+          FK), so a brand-new rating gets them after its first save, from
+          this editor or the Feed. */}
+      {reviewId && <ReviewPhotosField reviewId={reviewId} showTitle={showTitle} />}
 
       {/* Inline error — save failed, nothing was lost */}
       {error && (

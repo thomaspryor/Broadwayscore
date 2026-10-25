@@ -180,6 +180,9 @@ data/archives/
 
 # Generated show lookup for My Shows page (regenerated at build time)
 public/data/show-lookup.json
+# Web Stats catalog, projected from mobile-shows.json by scripts/prebuild.sh
+# (scripts/generate-stats-shows.js)
+public/data/stats-shows.json
 
 # Commercial scorecard export (scripts/generate-commercial-export.js). The
 # scorecard is unreleased on prod (owner, 2026-10-04); anything under public/

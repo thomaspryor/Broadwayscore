@@ -76,7 +76,7 @@ Import: `import { ComponentName } from '@/components/show-cards'`
 
 | Component | Use for |
 |-----------|---------|
-| `ScoreBadge` | Score display badge with tier colors and crown |
+| `ScoreBadge` | Score display badge with tier colors and crown. Sizes: `xs` (fixed 40px at every breakpoint, for dense list rows such as the Stats drill-down; crown uses the `mini` size), `sm` (44px, 68px at lg), `md` (56px, 68px at lg), `lg` (64/80px). Never hand-roll a `.score-badge` chip; use `xs` |
 | `ScoreBreakdownBar` | Horizontal bar showing rave/positive/mixed/negative distribution |
 | `ShowListCard` | Primary card for show listings (image + score + metadata) |
 | `MiniShowCard` | Compact card for shelves and grids |

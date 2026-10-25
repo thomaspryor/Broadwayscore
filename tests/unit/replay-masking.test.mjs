@@ -32,3 +32,16 @@ test('the recorder keeps its default mask class', () => {
   const src = read('src/components/AnalyticsWrapper.tsx');
   assert.ok(!/maskTextClass\s*:/.test(src), 'AnalyticsWrapper overrides maskTextClass; the ph-mask markup would stop working');
 });
+
+// BRO-6170: diary photos are private images; the recorder's default block
+// class keeps them (and their signed URLs) out of replays entirely.
+for (const [file, fragment, what] of [
+  ['src/components/my-shows/feed/FeedTab.tsx', '<div className="ph-no-capture">', 'the photo Feed'],
+  ['src/components/my-shows/feed/PhotoLightbox.tsx', 'className="ph-no-capture relative bg-black"', 'the full-size photo view'],
+  ['src/components/my-shows/feed/ReviewPhotosField.tsx', 'className="ph-no-capture mb-3"', "the rating editor's photo row"],
+]) {
+  test(`replays never record ${what}`, () => {
+    assert.ok(read(file).includes(fragment), `${file} lost its ph-no-capture class (private photos would reach session replays)`);
+  });
+}
+

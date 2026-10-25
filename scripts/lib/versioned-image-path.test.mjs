@@ -42,7 +42,8 @@ test('every mobile feed generator versions the paths it emits (BRO-5734)', () =>
   for (const [file, needle] of [
     ['generate-mobile-data.js', /img\.th = versionedImagePath\(/],
     ['generate-mobile-data.js', /img\.po = versionedImagePath\(/],
-    ['generate-stats-canon.js', /entry\.img = versionedImagePath\(show\.images\.poster\)/],
+    // BRO-6170: pickWinnerImage versions whichever existing file it picks.
+    ['generate-stats-canon.js', /return versionedImagePath\(p, publicDir\)/],
   ]) {
     assert.match(fs.readFileSync(path.join(root, file), 'utf8'), needle, `${file} no longer versions its image paths`);
   }

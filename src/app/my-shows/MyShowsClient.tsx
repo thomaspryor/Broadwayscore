@@ -7,7 +7,6 @@ import { featureFlags } from '@/config/feature-flags';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserReviews } from '@/hooks/useUserReviews';
 import { useWatchlist } from '@/hooks/useWatchlist';
-import { useUserLists } from '@/hooks/useUserLists';
 import { invalidateRatingsCache } from '@/hooks/useMyRating';
 import StarRating from '@/components/user/StarRating';
 import RatingEditor, { type RatingEditorSaveData } from '@/components/user/RatingEditor';
@@ -32,6 +31,9 @@ import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
 import dynamic from 'next/dynamic';
 import { ShowSearchDropdown } from '@/components/show-cards';
 import MiniStars from '@/components/user/Stars';
+const StatsTab = dynamic(() => import('@/components/my-shows/stats/StatsTab'), { ssr: false });
+import { TitleTabs, DiarySegmented } from '@/components/my-shows/MyShowsNav';
+const FeedTab = dynamic(() => import('@/components/my-shows/feed/FeedTab'), { ssr: false });
 const ImportShows = dynamic(() => import('./ImportShows'), { ssr: false });
 
 const ListsTab = dynamic(() => import('./ListsTab').catch(() => {
@@ -51,7 +53,8 @@ function ShareIcon() {
   );
 }
 
-type Tab = 'diary' | 'watchlist' | 'lists';
+type Tab = 'diary' | 'feed' | 'stats' | 'watchlist' | 'lists';
+const DIARY_GROUP: Tab[] = ['diary', 'feed', 'stats'];
 type DiarySort = 'date-desc' | 'date-asc' | 'rating-desc';
 type WatchlistSort = 'added-desc' | 'alphabetical' | 'closing-soon';
 /** A welcome-sheet "seen it" pick with no stars and no date (BRO-4619). */
@@ -129,7 +132,9 @@ export default function MyShowsClient() {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTabState] = useState<Tab>(
     searchParams.get('tab') === 'watchlist' ? 'watchlist' :
-    searchParams.get('tab') === 'lists' ? 'lists' : 'diary'
+    searchParams.get('tab') === 'lists' ? 'lists' :
+    searchParams.get('tab') === 'feed' ? 'feed' :
+    searchParams.get('tab') === 'stats' ? 'stats' : 'diary'
   );
 
   // Dev-only mock mode: ?mock=1 on localhost renders with fake data (for Playwright visual QA)
@@ -137,7 +142,7 @@ export default function MyShowsClient() {
   const [isMockMode, setIsMockMode] = useState(false);
   const [createListTrigger, setCreateListTrigger] = useState(0);
   useEffect(() => {
-    if (window.location.hostname === 'localhost' && searchParams.get('mock') === '1') {
+    if (window.location.hostname === 'localhost' && (searchParams.get('mock') === '1' || searchParams.get('mock') === 'large')) {
       setIsMockMode(true);
     }
   }, [searchParams]);
@@ -145,7 +150,7 @@ export default function MyShowsClient() {
   // Update URL when tab changes so back button restores the correct tab
   const setActiveTab = (tab: Tab) => {
     setActiveTabState(tab);
-    const mockParam = isMockMode ? '&mock=1' : '';
+    const mockParam = isMockMode ? `&mock=${searchParams.get('mock') ?? '1'}` : '';
     const url = tab === 'diary'
       ? `/my-shows${mockParam ? `?${mockParam.slice(1)}` : ''}`
       : `/my-shows?tab=${tab}${mockParam}`;
@@ -180,7 +185,6 @@ export default function MyShowsClient() {
   // Count-only lists instance for the tab badge (ListsTab owns its own full
   // CRUD instance; hook instances don't share state, so this fetches the list
   // rows once per page view — cheap, and the badge works without visiting the tab).
-  const { lists: realLists, getLists } = useUserLists(user?.id || null);
   const { showToast } = useToastSafe();
   // Shows saved in this browser while signed out (BRO-4616). The signed-out
   // view lists them above the sign-in pitch (BRO-4903); unknown ids are
@@ -209,10 +213,15 @@ export default function MyShowsClient() {
   const [mockData, setMockData] = useState<{ reviews: UserReview[]; watchlist: WatchlistEntry[]; seenUnrated: SeenUnratedRow[]; showMap: ShowMap } | null>(null);
   useEffect(() => {
     if (!isMockMode) return;
-    import('./__dev-mock-data').then(mod => {
+    import('./__dev-mock-data').then(async mod => {
+      if (searchParams.get('mock') === 'large') {
+        const large = await import('./__dev-mock-data-large');
+        setMockData({ reviews: large.mockReviewsLarge, watchlist: mod.mockWatchlist, seenUnrated: mod.mockSeenUnrated, showMap: { ...mod.mockShowMap, ...large.mockShowMapLarge } });
+        return;
+      }
       setMockData({ reviews: mod.mockReviews, watchlist: mod.mockWatchlist, seenUnrated: mod.mockSeenUnrated, showMap: mod.mockShowMap });
     });
-  }, [isMockMode]);
+  }, [isMockMode, searchParams]);
 
   // "Seen, date not set" picks from the welcome sheet (BRO-4619). Listed under
   // To Be Rated as "Date not set"; a failed load (or the table not being
@@ -231,7 +240,6 @@ export default function MyShowsClient() {
   const reviews = isMockMode && mockData ? mockData.reviews : realReviews;
   const watchlist = isMockMode && mockData ? mockData.watchlist : realWatchlist;
   const seenUnrated = isMockMode && mockData ? mockData.seenUnrated : realSeenUnrated;
-  const listsCount = isMockMode ? 3 : realLists.length;
   const loading = isMockMode ? !mockData : (authLoading || reviewsLoading || watchlistLoading);
   // Latches after the first successful load so refetches never blank the page.
   const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
@@ -431,23 +439,17 @@ export default function MyShowsClient() {
     })();
   }, [isMockMode, showMapLoaded, reviews, watchlist, seenUnrated, showMap]);
 
-  // Load user data when authenticated. getLists swallows failures internally
-  // (returns []) and nothing retried — one transient error on first load left
-  // the Lists tab count blank until a manual refresh (owner, 2026-07-20).
-  // One delayed retry covers the session-restore race window.
+  // Load user data when authenticated. (Lists loads its own data in ListsTab;
+  // the page no longer shows a lists count, BRO-6170.)
   useEffect(() => {
     if (isMockMode) return;
     if (isAuthenticated && user) {
       getAllReviews();
       getWatchlist();
-      getLists().then(r => {
-        if (r.length === 0) setTimeout(() => { getLists(); }, 1500);
-      });
     }
-  }, [isMockMode, isAuthenticated, user, getAllReviews, getWatchlist, getLists]);
+  }, [isMockMode, isAuthenticated, user, getAllReviews, getWatchlist]);
 
   // Stats
-  const showsSeen = new Set(reviews.map(r => r.show_id)).size;
 
   // Sorted diary entries
   const sortedReviews = useMemo(() => {
@@ -560,7 +562,6 @@ export default function MyShowsClient() {
   // rated: the show lives in the Diary; the leftover entry is a remnant of
   // an edit-path save that skips watchlist removal). Badge must match what
   // the tab renders (review finding, 2026-07-20).
-  const visibleWatchlistCount = upcomingBookedWatchlist.length + unbookedWatchlist.length + seenToRateWatchlist.length;
 
   // Shared Plans (BRO-4481): the sheet's counts come from the same rule the
   // friend's page uses, so the numbers can't disagree.
@@ -743,25 +744,34 @@ export default function MyShowsClient() {
   }
 
   return (
-    <div data-testid="my-shows-content" className="ph-mask max-w-3xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-12">
-      {/* Header — flex-wrap lets the opened Add-show search take a full row on
-          mobile (basis-full) instead of squeezing beside the title. */}
+    <div data-testid="my-shows-content" className="ph-mask max-w-3xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-12" data-ready={loading ? undefined : "true"}>
+      {/* Header — the three section names ARE the page title (owner, 2026-10-25,
+          BRO-6170): three text levels — section names, the List/Feed/Stats
+          switch, then controls and content. flex-wrap lets the opened Add-show
+          search take a full row on mobile instead of squeezing beside them. */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white">My Shows</h1>
+        <h1 className="sr-only">My Shows</h1>
+        <TitleTabs
+          items={[{ tab: 'diary', label: 'Diary' }, { tab: 'watchlist', label: 'Watchlist' }, { tab: 'lists', label: 'Lists' }]}
+          isActive={tab => (tab === 'diary' ? DIARY_GROUP.includes(activeTab) : activeTab === tab)}
+          panelFor={tab => `panel-${tab === 'diary' && DIARY_GROUP.includes(activeTab) ? activeTab : tab}`}
+          onSelect={setActiveTab}
+        />
         {activeTab === 'lists' ? (
           <button
             type="button"
             onClick={() => setCreateListTrigger(t => t + 1)}
-            className="btn-primary gap-1.5 text-xs"
+            className="btn-primary gap-1.5 text-xs max-sm:!w-11 max-sm:!h-11 max-sm:!p-0 max-sm:!rounded-full"
+            aria-label="New list"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
             </svg>
-            <span>New list</span>
+            <span className="hidden sm:inline">New list</span>
           </button>
         ) : (
           <AddShowSearch
-            context={activeTab}
+            context={activeTab === 'watchlist' ? 'watchlist' : 'diary'}
             userId={isMockMode ? null : (user?.id ?? null)}
             onAddToWatchlist={async (showId: string, title?: string) => {
               await effectiveAddToWatchlist(showId);
@@ -862,134 +872,15 @@ export default function MyShowsClient() {
       {/* Tab bar + sort/view controls.
           On mobile: tabs only in the tablist row; controls on a second row below.
           On sm+: controls inline to the right of the tabs. */}
-      <div role="tablist" className="flex items-center gap-1 border-b border-white/10 mb-0 sm:mb-6">
-        <button
-          type="button"
-          role="tab"
-          id="tab-diary"
-          aria-selected={activeTab === 'diary'}
-          aria-controls="panel-diary"
-          onClick={() => setActiveTab('diary')}
-          className={`flex-shrink-0 px-2 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] outline-none ${
-            activeTab === 'diary'
-              ? 'text-white border-brand'
-              : 'text-gray-500 border-transparent hover:text-gray-300'
-          }`}
-          aria-label={showsSeen > 0 ? `Diary, ${showsSeen} shows` : 'Diary'}
-        >
-          Diary
-          {showsSeen > 0 && (
-            <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-white/10 rounded-full" aria-hidden="true">
-              {showsSeen}
-            </span>
-          )}
-        </button>
-        <button
-          type="button"
-          role="tab"
-          id="tab-watchlist"
-          aria-selected={activeTab === 'watchlist'}
-          aria-controls="panel-watchlist"
-          onClick={() => setActiveTab('watchlist')}
-          aria-label={visibleWatchlistCount > 0 ? `Watchlist, ${visibleWatchlistCount} shows` : 'Watchlist'}
-          className={`flex-shrink-0 px-2 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] outline-none ${
-            activeTab === 'watchlist'
-              ? 'text-white border-brand'
-              : 'text-gray-500 border-transparent hover:text-gray-300'
-          }`}
-        >
-          Watchlist
-          {visibleWatchlistCount > 0 && (
-            <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-white/10 rounded-full" aria-hidden="true">
-              {visibleWatchlistCount}
-            </span>
-          )}
-        </button>
-        <button
-          type="button"
-          role="tab"
-          id="tab-lists"
-          aria-selected={activeTab === 'lists'}
-          aria-controls="panel-lists"
-          onClick={() => setActiveTab('lists')}
-          className={`flex-shrink-0 px-2 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] outline-none ${
-            activeTab === 'lists'
-              ? 'text-white border-brand'
-              : 'text-gray-500 border-transparent hover:text-gray-300'
-          }`}
-          aria-label={listsCount > 0 ? `Lists, ${listsCount} lists` : 'Lists'}
-        >
-          Lists
-          {listsCount > 0 && (
-            <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-white/10 rounded-full" aria-hidden="true">
-              {listsCount}
-            </span>
-          )}
-        </button>
+      {DIARY_GROUP.includes(activeTab) && (
+        <DiarySegmented active={activeTab} onSelect={setActiveTab} />
+      )}
 
-        {/* Desktop-only inline controls (hidden on mobile — shown in second row below) */}
-        {activeTab !== 'lists' && (
-        <div className="ml-auto hidden sm:flex items-center gap-1.5 sm:gap-2 -mb-[1px]">
-          {activeTab === 'diary' && canSharePlans && (
-            <button
-              type="button"
-              onClick={() => setShareDiaryOpen(true)}
-              className="toolbar-control"
-              data-testid="share-diary-open"
-            >
-              <ShareIcon />
-              Share
-            </button>
-          )}
-          {activeTab === 'diary' && (
-            <select
-              value={diarySort}
-              onChange={e => setDiarySort(e.target.value as DiarySort)}
-              aria-label="Sort diary"
-              className="toolbar-control"
-            >
-              <option value="date-desc">Newest</option>
-              <option value="date-asc">Oldest</option>
-              <option value="rating-desc">Top Rated</option>
-            </select>
-          )}
-          {activeTab === 'watchlist' && canSharePlans && (
-            <button
-              type="button"
-              onClick={() => setSharePlansOpen(true)}
-              className="toolbar-control"
-              data-testid="share-plans-open"
-            >
-              <ShareIcon />
-              Share
-            </button>
-          )}
-          {activeTab === 'watchlist' && (
-            <select
-              value={watchlistSort}
-              onChange={e => setWatchlistSort(e.target.value as WatchlistSort)}
-              aria-label="Sort watchlist"
-              className="toolbar-control"
-            >
-              <option value="added-desc">Recent</option>
-              <option value="alphabetical">A-Z</option>
-              <option value="closing-soon">Closing</option>
-            </select>
-          )}
-          {/* Grid / List toggle */}
-          <ViewModeToggle
-            value={activeTab === 'diary' ? diaryView : watchlistView}
-            onChange={mode => pickView(activeTab === 'diary' ? 'diary' : 'watchlist', mode)}
-          />
-        </div>
-        )}
-      </div>
-
-      {/* Mobile controls row — only visible on mobile, hidden on sm+.
+      {/* Controls row (share, sort, grid/list).
           Selects are 16px on mobile: anything smaller makes iOS Safari zoom
           the whole page on focus and stay zoomed (owner report, 2026-07-17). */}
-      {activeTab !== 'lists' && (
-        <div className="flex sm:hidden items-center justify-end gap-2 py-1.5 mb-2">
+      {(activeTab === 'diary' || activeTab === 'watchlist') && (
+        <div className="flex items-center justify-end gap-2 py-1.5 mb-2">
           {activeTab === 'diary' && canSharePlans && (
             <button
               type="button"
@@ -1391,9 +1282,21 @@ export default function MyShowsClient() {
         </div>
       )}
 
+      {activeTab === 'feed' && (
+        <div id="panel-feed" role="tabpanel" aria-labelledby="view-feed">
+          <FeedTab reviews={reviews} showMap={showMap} userId={user?.id || null} isMockMode={isMockMode} />
+        </div>
+      )}
+
+      {activeTab === 'stats' && (
+        <div id="panel-stats" role="tabpanel" aria-labelledby="view-stats">
+          <StatsTab reviews={reviews} showMap={showMap} isMockMode={isMockMode} />
+        </div>
+      )}
+
       {/* Lists tab */}
       {activeTab === 'lists' && (
-        <div id="panel-lists" role="tabpanel" aria-labelledby="tab-lists" className="pt-4 sm:pt-0">
+        <div id="panel-lists" role="tabpanel" aria-labelledby="tab-lists" className="pt-4">
           <ListsTab userId={user?.id || null} showMap={showMap} isMockMode={isMockMode} createTrigger={createListTrigger} />
         </div>
       )}
@@ -1948,14 +1851,14 @@ function AddShowSearch({
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="btn-primary gap-1.5 text-xs"
+        className="btn-primary gap-1.5 text-xs max-sm:!w-11 max-sm:!h-11 max-sm:!p-0 max-sm:!rounded-full"
         aria-label={context === 'diary' ? 'Add a show to diary' : 'Add to watchlist'}
         title={context === 'diary' ? 'Rate a show' : 'Add to watchlist'}
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
         </svg>
-        <span>Add show</span>
+        <span className="hidden sm:inline">Add show</span>
       </button>
     );
   }

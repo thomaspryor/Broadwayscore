@@ -38,7 +38,9 @@ test('sort selects and Share buttons use .toolbar-control', () => {
     ...tagsWith('aria-label="Sort watchlist"'),
     ...tagsWith('data-testid="share-plans-open'),
   ];
-  assert.equal(tags.length, 6, 'desktop + mobile copies of 2 selects and Share');
+  // One controls row at every width since the title-tab header (BRO-6170);
+  // there used to be desktop + mobile copies (6).
+  assert.equal(tags.length, 3, 'one copy each of the 2 selects and Share');
   for (const tag of tags) {
     assert.match(tag, /className="toolbar-control(?: [^"]*)?"/, `not a toolbar-control: ${tag.slice(0, 120)}`);
   }
@@ -62,9 +64,8 @@ test('My Shows has no Matinee/Evening/Custom picker (show page only)', () => {
 });
 
 test('Lists panel has its own top gap on phones (no toolbar row above it)', () => {
-  // Owner, 2026-10-03: the first list card touched the tab hairline. The
-  // tab bar has no bottom margin on phones because Diary/Watchlist put the
-  // toolbar row there; Lists has no toolbar, so its panel pads itself.
-  assert.match(PAGE, /role="tablist" className="[^"]*\bmb-0 sm:mb-6/);
-  assert.match(PAGE, /id="panel-lists"[^>]*className="pt-4 sm:pt-0"/);
+  // Owner, 2026-10-03: the first list card touched the tab hairline. Lists
+  // has no toolbar row under the header (Diary/Watchlist do), so its panel
+  // pads itself — at every width since the title-tab header (BRO-6170).
+  assert.match(PAGE, /id="panel-lists"[^>]*className="pt-4"/);
 });
