@@ -1,80 +1,30 @@
 {
-  "generatedAt": "2026-10-25T08:14:37.792Z",
+  "generatedAt": "2026-10-25T13:08:43.412Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "373c6909f5db790081801d6612021491c0d30a7e",
-  "state": "RED",
-  "consecutiveFailures": 4,
-  "consecutiveSuccesses": 0,
-  "greenSince": null,
-  "greenForHours": null,
+  "latestRunHeadSha": "8aaead6e44f1d0d26aa5eb710ebc94fe69eb8b7c",
+  "state": "GREEN",
+  "consecutiveFailures": 0,
+  "consecutiveSuccesses": 6,
+  "greenSince": "2026-10-25T12:16:46Z",
+  "greenForHours": 0.8659477777777778,
   "greenDurationIsFloor": false,
-  "redSince": "2026-10-25T03:35:35Z",
-  "redForHours": 4.650775555555556,
+  "redSince": null,
+  "redForHours": null,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-10-25T02:33:28Z",
-  "latestFailedRunId": "40167373734",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40167373734",
-  "decidedRuns": 97,
+  "lastSuccessAt": "2026-10-25T12:37:11Z",
+  "latestFailedRunId": null,
+  "latestFailedRunUrl": null,
+  "decidedRuns": 98,
   "verdictLag": {
-    "verdictSha": "373c6909f5db790081801d6612021491c0d30a7e",
-    "verdictAt": "2026-10-25T05:57:18Z",
-    "verdictAgeHours": 2.288831111111111,
-    "newerHeads": 1,
-    "runsInFlight": 1,
+    "verdictSha": "8aaead6e44f1d0d26aa5eb710ebc94fe69eb8b7c",
+    "verdictAt": "2026-10-25T12:37:11Z",
+    "verdictAgeHours": 0.52567,
+    "newerHeads": 0,
+    "runsInFlight": 0,
     "lagging": false
   },
-  "failingJobs": [
-    {
-      "name": "Unit Tests",
-      "steps": [
-        "Run scripts/lib tests (visual-qa transcript-scan etc.)"
-      ]
-    },
-    {
-      "name": "Data Validation",
-      "steps": [
-        "Audit outlet-registry gaps"
-      ]
-    },
-    {
-      "name": "Test Summary",
-      "steps": [
-        "Check results"
-      ]
-    }
-  ],
-  "failingPaths": [
-    {
-      "path": "tests/unit/rendered-copy-voice.test.mjs",
-      "job": "Unit Tests",
-      "step": "UNKNOWN STEP",
-      "evidence": "not ok 2 - on-screen copy in src/app, src/components, src/config and src/lib follows the voice rules"
-    },
-    {
-      "path": "scripts/lib/audit-ledger-merge-attrs.test.mjs",
-      "job": "Unit Tests",
-      "step": "UNKNOWN STEP",
-      "evidence": "not ok 582 - REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union or a documented exemption"
-    },
-    {
-      "path": "scripts/lib/dummy-helper.test.mjs",
-      "job": "Unit Tests",
-      "step": "UNKNOWN STEP",
-      "evidence": "not ok 1 - foo returns the contracted value"
-    },
-    {
-      "path": "scripts/merge-worktree-to-main.sh",
-      "job": "Unit Tests",
-      "step": "UNKNOWN STEP",
-      "evidence": "❌ post-merge test floor failed — scroll up to the 'post-merge test floor: FAILED (...)' line for the gate's own reason, which distinguishes a NEW-since-origin/main scripts/lib/ colocated test failure "
-    },
-    {
-      "path": "scripts/audit-broadway-category-predicate.js",
-      "job": "Data Validation",
-      "step": "UNKNOWN STEP",
-      "evidence": "##[error]Process completed with exit code 1."
-    }
-  ],
-  "topFailingJob": "Unit Tests"
+  "failingJobs": [],
+  "failingPaths": [],
+  "topFailingJob": null
 }
