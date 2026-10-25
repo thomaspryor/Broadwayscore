@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4937",
   "planId": "a129d9e5-fc93-4d21-bf27-bfa00875169a",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-25T00:38:53.725Z",
   "submitter": {
     "name": null,
@@ -140,5 +140,79 @@
         "description": "BRO-4937: Current record has tierReason:Wrong show, incompleteReason:url_content_mismatch and no body to support a production clear. Restore the historical exclusion; no metadata inferred from the current URL."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-25T02:08:37.930Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--daniel-perks.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-midsummer-nights-dream-west-end-2026/broadwayworld--cheryl-markosky.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "betrayal-2013/financialtimes--financial-times.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cyrano-de-bergerac-2012/ew--tanner-stransky.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-2026/whatsonstage--sarah-crompton.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gypsy-2024/cititour--brian-scott-lipton.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gypsy-2024/dailybeast--tim-teeman.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hercules-west-end-2025/times-uk--clive-davis.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-miserables-2014/northjerseycom--robert-feldberg.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "miles-for-mary-off-broadway-2026/broadwayworld--bww-news-desk.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ride-the-cyclone-off-west-end-2026/whatsonstage--alex-wood.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-color-purple-2005/nytimes--alissa-wilkinson.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-glass-menagerie-2013/dailybeast--tim-teeman.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json wrongProduction: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
