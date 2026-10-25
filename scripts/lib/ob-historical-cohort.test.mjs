@@ -3,7 +3,8 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { decideObHistoricalEntry, toAddShowAction } = require('./ob-historical-cohort.js');
+const { decideObHistoricalEntry, toAddShowAction, isStructuralOnlyMismatch, playbillFacts } = require('./ob-historical-cohort.js');
+const { applyAddShow } = require('./add-show-action.js');
 const { isTmRowInWindow, isCurrentTmRow } = require('./theatermania-ob.js');
 const { selectPromotable } = require('../promote-ob-historical.js');
 
@@ -49,6 +50,37 @@ test('toAddShowAction: closed OB row tagged ob-historical:tm with Playbill date 
   assert.equal(a.show.openingDateSource, 'playbill-ob-historical');
   assert.deepEqual(a.show.evidenceUrls, ['https://playbill.com/x']);
   assert.equal(a.show.slug, a.show.id);
+  assert.deepEqual(a.show.tags, ['historical', 'new']);
+  assert.equal('isRevival' in a.show, false);
+  const rev = toAddShowAction(entry({ isRevival: true }), { discoveredAt: 'x', dateSource: 'y' });
+  assert.deepEqual(rev.show.tags, ['historical', 'revival']);
+  assert.equal(rev.show.isRevival, true);
+});
+
+test('toAddShowAction output passes the real add-show action guard', () => {
+  const a = toAddShowAction(entry({ isRevival: true }), { discoveredAt: '2026-10-25T00:00:00.000Z', dateSource: 'playbill-ob-historical', evidenceUrls: ['https://playbill.com/x'] });
+  const r = applyAddShow([], a);
+  assert.equal(r.ok, true, r.reason);
+});
+
+test('decideObHistoricalEntry: refuses when Playbill printed no opening date (buildShowEntry fell back to preview)', () => {
+  assert.match(decideObHistoricalEntry(entry({ openingFromPlaybill: false }), { todayIso: TODAY }).reason, /no opening date/);
+  assert.equal(decideObHistoricalEntry(entry({ openingFromPlaybill: true }), { todayIso: TODAY }).ok, true);
+});
+
+test('isStructuralOnlyMismatch: revival/type-only mismatches are takeable facts, any date/venue mismatch is not', () => {
+  assert.equal(isStructuralOnlyMismatch({ result: 'mismatch', mismatches: [{ field: 'isRevival' }] }), true);
+  assert.equal(isStructuralOnlyMismatch({ result: 'mismatch', mismatches: [{ field: 'isRevival' }, { field: 'type' }] }), true);
+  assert.equal(isStructuralOnlyMismatch({ result: 'mismatch', mismatches: [{ field: 'isRevival' }, { field: 'openingDate' }] }), false);
+  assert.equal(isStructuralOnlyMismatch({ result: 'mismatch', mismatches: [] }), false);
+  assert.equal(isStructuralOnlyMismatch({ result: 'match', mismatches: [] }), false);
+});
+
+test('playbillFacts: takes Playbill play/musical and revival labels, and whether it printed an opening date', () => {
+  const r = { parsed: { tagLine: { showType: 'musical', revivalStatus: 'revival' }, dates: { openingDate: null, firstPreview: '2025-01-01' } } };
+  assert.deepEqual(playbillFacts(r, { type: 'play' }), { type: 'musical', isRevival: true, openingFromPlaybill: false });
+  const r2 = { parsed: { tagLine: { showType: null, revivalStatus: 'unknown' }, dates: { openingDate: '2025-02-01' } } };
+  assert.deepEqual(playbillFacts(r2, { type: 'play' }), { type: 'play', isRevival: null, openingFromPlaybill: true });
 });
 
 test('isTmRowInWindow: uses the earliest of preview/opening; no dates → false', () => {
