@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-25T14:16:03.425Z",
+  "generatedAt": "2026-10-25T14:53:28.906Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -131,6 +131,10 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
     {
+      "outletId": "theatre-reviews-limited",
+      "error": "Timeout fetching https://www.theatrereviews.com/feed/"
+    },
+    {
       "outletId": "slantmagazine",
       "error": "HTTP 403 for https://www.slantmagazine.com/theater/feed/"
     },
@@ -149,13 +153,9 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 652,
+  "itemsScanned": 684,
   "matchedGaps": 4,
   "possibleGaps": 2,
   "gaps": [
