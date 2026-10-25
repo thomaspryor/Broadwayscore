@@ -142,7 +142,10 @@ const ASYNC_WAIT_RES = [
 // to judge the outcome, so it is a headless blocker here even though
 // bsc-next's verify gate accepts it).
 const OWNER_DECISION_RES = [
-  /\bDECISION NEEDED\b/i,
+  // BRO-6234: a line-start block only (optional bold/list marker). A card that
+  // quotes or discusses the phrase mid-sentence or in backticks (BRO-5371,
+  // BRO-6180) is not asking for a decision.
+  /^[ \t]*(?:[-*][ \t]+)?(?:\*\*|__)?DECISION NEEDED\b/im,
   // Same regex object autonomous-eligibility.js and verify-gate.js use — it
   // was a third handwritten copy until task #1154 pulled it into a leaf module.
   OWNER_JUDGMENT_RE,
@@ -337,6 +340,27 @@ function remainingHeadlessBlockers(blockers, { force = false, automationParked =
     && !(b.code === BLOCKERS.PARKED_SENTINEL && sentinelWaived));
 }
 
+// BRO-6234: a later comment can say the owner gate does not apply. Explicit
+// negation at line start only ("a paused report that says 'this is not an owner
+// decision, it is blocked on X'" must not clear it), or a dedicated
+// OWNER-CLEARED: line. A later line-start DECISION NEEDED or owner-judgment
+// marker re-gates. Comments arrive oldest-first (sortedCommentBodies); the
+// newest decisive comment wins. Comment age vs. description edits is not
+// known here, so a comment always counts as later than the description.
+const OWNER_CLEAR_COMMENT_RE = /^[ \t]*(?:[-*][ \t]+)?(?:\*\*|__)?(?:not an owner decision\b|OWNER-CLEARED\s*:)/im;
+
+/** True when the newest decisive comment (oldest-first array) clears the owner gate. */
+function commentClearsOwnerGate(comments) {
+  const list = Array.isArray(comments) ? comments : [];
+  for (let i = list.length - 1; i >= 0; i--) {
+    const body = String(list[i] || '');
+    // A comment that both clears and re-asserts an owner pattern stays gated.
+    if (OWNER_DECISION_RES.some((re) => re.test(body))) return false;
+    if (OWNER_CLEAR_COMMENT_RE.test(body)) return true;
+  }
+  return false;
+}
+
 function classifyHeadlessDispatchability(card = {}, opts = {}) {
   const subject = String(card.subject || '');
   const notes = String(card.notes != null ? card.notes : (card.description || ''));
@@ -402,7 +426,18 @@ function classifyHeadlessDispatchability(card = {}, opts = {}) {
     });
   }
 
-  const ownerHit = firstMatch(OWNER_DECISION_RES, text);
+  const comments = Array.isArray(card.comments) ? card.comments : [];
+  let ownerHit = firstMatch(OWNER_DECISION_RES, text);
+  if (ownerHit && comments.length) {
+    if (commentClearsOwnerGate(comments)) ownerHit = null;
+    else if (OWNER_JUDGMENT_RE.test(ownerHit)) {
+      // A newer safe VERIFY supersedes the owner-judgment marker only (the
+      // marker says "no command"); it never answers a DECISION NEEDED.
+      const ev = evaluateVerifiability(notes, comments);
+      const onlyJudgment = OWNER_DECISION_RES.every((re) => re === OWNER_JUDGMENT_RE || !re.test(text));
+      if (onlyJudgment && ev.cmd && !ev.ownerJudgment) ownerHit = null;
+    }
+  }
   if (ownerHit) {
     blockers.push({
       code: BLOCKERS.OWNER_DECISION_GATE,
@@ -452,6 +487,7 @@ if (require.main === module) {
 }
 
 module.exports = {
+  commentClearsOwnerGate,
   BLOCKERS,
   UI_PATH_RE,
   UI_CARD_CLASS_RE,

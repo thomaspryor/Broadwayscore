@@ -165,6 +165,59 @@ describe('the other two gates that stranded real sessions', () => {
   });
 });
 
+describe('BRO-6234 owner gate: comment overrides and quoted phrase', () => {
+  const cmd = '`node --test scripts/tests/tm-gap-links.test.mjs`';
+  const base = { subject: 'Fix thing', notes: `DECISION NEEDED: pick A or B.\n${cmd}` };
+  const { commentClearsOwnerGate } = require(path.join(REPO, 'scripts', 'lib', 'headless-dispatchability.js'));
+
+  test('a quoted or inline DECISION NEEDED is not a gate', () => {
+    for (const notes of [
+      `Do not file a DECISION NEEDED block for this.\n${cmd}`,
+      `> DECISION NEEDED: quoted from another card\n${cmd}`,
+      `The \`DECISION NEEDED\` phrase is parsed by the gate.\n${cmd}`,
+    ]) {
+      assert.ok(!codes(classifyHeadlessDispatchability({ subject: 'x', notes })).includes(BLOCKERS.OWNER_DECISION_GATE), notes);
+    }
+  });
+
+  test('a bold or bulleted line-start block still gates', () => {
+    for (const notes of [`**DECISION NEEDED:** pick\n${cmd}`, `- DECISION NEEDED: pick\n${cmd}`]) {
+      assert.ok(codes(classifyHeadlessDispatchability({ subject: 'x', notes })).includes(BLOCKERS.OWNER_DECISION_GATE), notes);
+    }
+  });
+
+  test('a later "not an owner decision" line clears the gate (comments oldest-first)', () => {
+    const r = classifyHeadlessDispatchability({ ...base, comments: ['triage note', 'Not an owner decision: pick A, it matches the spec.'] });
+    assert.ok(!codes(r).includes(BLOCKERS.OWNER_DECISION_GATE));
+  });
+
+  test('the phrase mid-sentence in a paused report does not clear it', () => {
+    const r = classifyHeadlessDispatchability({ ...base, comments: ['This is not an owner decision, it is blocked on BRO-1.'] });
+    assert.ok(codes(r).includes(BLOCKERS.OWNER_DECISION_GATE));
+  });
+
+  test('a newer DECISION NEEDED comment re-gates after a clear', () => {
+    const r = classifyHeadlessDispatchability({ ...base, comments: ['OWNER-CLEARED: go', 'DECISION NEEDED: actually pick A or B'] });
+    assert.ok(codes(r).includes(BLOCKERS.OWNER_DECISION_GATE));
+    assert.strictEqual(commentClearsOwnerGate(['DECISION NEEDED: x', 'OWNER-CLEARED: go']), true);
+    assert.strictEqual(commentClearsOwnerGate([]), false);
+  });
+
+  test('a clear and a block in one comment stays gated; any newer owner phrase re-gates; a quoted clear does not clear', () => {
+    assert.strictEqual(commentClearsOwnerGate(['Not an owner decision yet.\n\nDECISION NEEDED: pick A or B']), false);
+    assert.strictEqual(commentClearsOwnerGate(['OWNER-CLEARED: go', 'needs owner approval after all']), false);
+    assert.strictEqual(commentClearsOwnerGate(['> Not an owner decision, said the bot']), false);
+    assert.strictEqual(commentClearsOwnerGate(['OWNER-CLEARED: go']), true);
+  });
+
+  test('a safe VERIFY comment supersedes VERIFY: owner-judgment but never a DECISION NEEDED', () => {
+    const judged = { subject: 'Fix thing', notes: 'VERIFY: owner-judgment', comments: [`VERIFY: node --test scripts/tests/tm-gap-links.test.mjs`] };
+    assert.ok(!codes(classifyHeadlessDispatchability(judged)).includes(BLOCKERS.OWNER_DECISION_GATE));
+    const decide = { ...base, comments: [`VERIFY: node --test scripts/tests/tm-gap-links.test.mjs`] };
+    assert.ok(codes(classifyHeadlessDispatchability(decide)).includes(BLOCKERS.OWNER_DECISION_GATE));
+  });
+});
+
 describe('no false refusals on ordinary backend cards', () => {
   const armed = '\n## Acceptance criteria\n`node --test scripts/lib/x.test.mjs`';
   const cases = [

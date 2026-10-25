@@ -1088,7 +1088,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // show. Refusing here costs nothing; the issue is still dispatchable to a
   // cmux tab where the owner is present.
   if (routing.mode === 'headless' && !args['allow-human-gated']) {
-    const hg = classifyHeadlessDispatchability({ subject: issue.title, notes: issue.description }, { verifyCmd: gate.cmd });
+    const hg = classifyHeadlessDispatchability({ subject: issue.title, notes: issue.description, comments: ld.sortedCommentBodies(issue) }, { verifyCmd: gate.cmd });
     // PARKED_SENTINEL must honour --force, like the ledger-based parkedGuard at
     // :673 whose comment is literally "--force is the unpark". Nothing ever
     // strips the `PARKED: <reason>` prefix linear-issue-create.js:141 writes

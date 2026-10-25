@@ -134,6 +134,42 @@ test('takes a machine-filed parked card only once it has sat quiet for AUTOMATIO
   assert.equal(skipReason(issue({ state: backlog, description: `PARKED: owner to decide\n\nSee Auto-filed by owner-alert-router cards.\n\n${BODY}`, updatedAt: stale }), NOW), 'parked-or-backlog');
 });
 
+test('BRO-6234: the filer\'s daily re-comment does not reset the quiet timer; real activity does', () => {
+  const { effectiveTouchMs } = require('./cloud-worker-pick.js');
+  const stale = new Date(NOW - AUTOMATION_PARK_STALE_MS - 60 * 60_000).toISOString();
+  const backlog = { name: 'Backlog', type: 'backlog' };
+  const autofix = `PARKED: Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately in the same pass.\n\n${BODY}`;
+  const refresh = (createdAt) => ({ createdAt, body: `Auto-filed by the morning digest (Digest v3, owner mandate 2026-08-02: fix automatically, never ask; BRO-3427 row-family fold). These 3 rows shared one condition.\n\n${BODY}` });
+  const reCommentedNow = new Date(NOW - 60_000).toISOString();
+  const base = { state: backlog, description: autofix, createdAt: stale };
+  // Only the filer's re-comment touched it: still ages out.
+  const quiet = issue({ ...base, updatedAt: reCommentedNow, comments: { nodes: [refresh(reCommentedNow)] } });
+  assert.equal(skipReason(quiet, NOW), null);
+  assert.equal(effectiveTouchMs(quiet), Date.parse(stale));
+  // Without comments loaded the old behaviour holds.
+  assert.equal(skipReason(issue({ ...base, updatedAt: reCommentedNow }), NOW), 'parked-or-backlog');
+  // A person's comment before the re-comment counts as the touch.
+  const person = new Date(NOW - 60 * 60_000).toISOString();
+  const touched = issue({ ...base, updatedAt: reCommentedNow, comments: { nodes: [{ createdAt: person, body: 'looking at this' }, refresh(reCommentedNow)] } });
+  assert.equal(skipReason(touched, NOW), 'parked-or-backlog');
+  // A description or state edit after the re-comment moves updatedAt away from it: kept.
+  const edited = issue({ ...base, updatedAt: new Date(NOW - 30_000).toISOString(), comments: { nodes: [refresh(new Date(NOW - 10 * 60_000).toISOString())] } });
+  assert.equal(effectiveTouchMs(edited), Date.parse(edited.updatedAt));
+  // A person quoting the marker mid-comment is not the filer.
+  const quoted = issue({ ...base, updatedAt: reCommentedNow, comments: { nodes: [{ createdAt: reCommentedNow, body: 'FYI this was Auto-filed by the morning digest, taking it' }] } });
+  assert.equal(effectiveTouchMs(quoted), Date.parse(reCommentedNow));
+  // A dispatch receipt is real activity, not a filer re-comment.
+  const receipt = issue({ ...base, updatedAt: reCommentedNow, comments: { nodes: [{ createdAt: reCommentedNow, body: 'Dispatched abc123 to a headless worker' }] } });
+  assert.equal(effectiveTouchMs(receipt), Date.parse(reCommentedNow));
+});
+
+test('BRO-6234: a later "not an owner decision" comment unblocks an owner-gated card', () => {
+  const gated = issue({ description: `DECISION NEEDED: pick A or B.\n\n${BODY}`, updatedAt: OLD });
+  assert.equal(skipReason(gated, NOW), 'blocker-OWNER_DECISION_GATE');
+  const cleared = issue({ description: gated.description, updatedAt: OLD, comments: { nodes: [{ createdAt: OLD, body: 'Not an owner decision: A matches the spec.' }] } });
+  assert.equal(skipReason(cleared, NOW), null);
+});
+
 test('within a priority, stale machine-filed cards go after Todo and session-parked cards', () => {
   const stale = new Date(NOW - AUTOMATION_PARK_STALE_MS - 60_000).toISOString();
   const backlog = { name: 'Backlog', type: 'backlog' };
