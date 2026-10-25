@@ -1465,6 +1465,12 @@ function isGarbageContent(text) {
     }
   }
 
+  // Registration-wall stub (BRO-6190): sign-up form text right behind a
+  // byline/standfirst. Not review prose whatever its length or keywords.
+  if (require('./paywall-detector').isRegistrationWallStub(text)) {
+    return { isGarbage: true, reason: 'Registration wall stub: sign-up form text instead of a review' };
+  }
+
   // Check for paywall
   const paywall = detectPaywall(text);
   if (paywall.detected) {
@@ -2303,7 +2309,7 @@ function classifyContentTier(review) {
     // wrongProduction clear cannot lift this tier back.
     if (review.manualContentTier !== 'invalid' && review.fullText) {
       const garbage = isGarbageContent(review.fullText);
-      if (garbage && garbage.isGarbage && /^Error\/404 page/.test(garbage.reason || '')) {
+      if (garbage && garbage.isGarbage && /^(Error\/404 page|Registration wall stub|Paywall\/subscription prompt)/.test(garbage.reason || '')) {
         return {
           contentTier: 'invalid',
           wordCount: countWords(review.fullText),
