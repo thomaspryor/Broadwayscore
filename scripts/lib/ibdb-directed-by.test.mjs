@@ -30,3 +30,9 @@ test('film-sequence and similar partial-direction credits are not the director',
   assert.deepEqual(directors('Directed by Jerry Adler; Film Sequences Directed by Joe McGrath'), ['Jerry Adler']);
   assert.deepEqual(directors('Directed by Jerry Adler; Vocal directed by A Person'), ['Jerry Adler']);
 });
+
+test('other partial-direction credits are not the director; flattened film-adaptation text still is', () => {
+  assert.deepEqual(directors('Directed by A Lead; Music Directed by Ted Sperling'), ['A Lead']);
+  assert.deepEqual(directors('Directed by A Lead; Puppetry directed by Basil Twist; Video directed by Z Person'), ['A Lead']);
+  assert.deepEqual(directors('Based on the film Directed by Jane Roe'), ['Jane Roe']);
+});
