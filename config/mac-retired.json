@@ -91,7 +91,7 @@
       "label": "com.broadwayscore.linear-delegation-check",
       "retiredAt": "2026-10-25",
       "replacedBy": [
-        "nothing: Cyrus delegation machinery, owner retired Cyrus Team Cloud (BRO-6110, 2026-10-24); BRO-338, the one delegated issue, is closed"
+        "nothing: Cyrus delegation machinery, owner retired Cyrus Team Cloud (BRO-6110, 2026-10-24); BRO-338, the one delegated issue, is closed; the digest's Codex connection line (written by the same script) goes with it"
       ],
       "watchers": [
         {
@@ -110,8 +110,8 @@
       "watchers": [
         {
           "conditionKey": "assessCloudCoverage",
-          "file": "scripts/check-linear-drain-health.js",
-          "note": "check-linear-drain-health.yml judges a silent Mac drain ledger by cloud-worker coverage of the parked queue (BRO-5360), so a stopped Mac drain pages only when the cloud cannot reach the queue either."
+          "file": "scripts/lib/drain-ledger-health.js",
+          "note": "check-linear-drain-health.yml judges a silent Mac drain ledger (assessCloudCoverage, called from scripts/check-linear-drain-health.js) by cloud-worker coverage of the parked queue (BRO-5360), so a stopped Mac drain pages only when the cloud cannot reach the queue either."
         }
       ]
     }
