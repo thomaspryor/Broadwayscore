@@ -72,7 +72,7 @@ function findBackfillCandidates(reviewTextsDir, showsById) {
   let scanned = 0;
   let malformed = 0;
   let unreadableDirs = 0;
-  const showDirs = listShowDirs(reviewTextsDir, { silent: true });
+  const showDirs = listShowDirs(reviewTextsDir);
   for (const showDir of showDirs) {
     const showPath = path.join(reviewTextsDir, showDir);
     let files;

@@ -52,7 +52,7 @@ const stats = {
 const reroutesByPair = new Map();
 const samples = [];
 
-const showDirs = listShowDirs(reviewTextsDir, { silent: true }).filter(f => {
+const showDirs = listShowDirs(reviewTextsDir).filter(f => {
   try {
     if (fs.lstatSync(path.join(reviewTextsDir, f)).isSymbolicLink()) return false;
   } catch { return false; }
