@@ -372,14 +372,17 @@ export function getAtRiskModelRange(
  * model's break-even when it clears the quality floor, else the recorded
  * weekly running cost, else null. A model break-even below the running cost
  * is stale (the cost changed after the model ran; break-even = cost plus
- * royalties and rent), so the cost is shown instead (BRO-4985).
+ * royalties and rent), so the cost is shown instead (BRO-4985). An all-in
+ * cost already holds the royalties and rent at the period's gross, so a
+ * break-even below it is the model's real reading, not a stale one (BRO-6217).
  */
 export function getBreakEven(
-  commercial: Pick<ShowCommercial, 'modelBreakeven' | 'weeklyRunningCost' | 'modelDataQuality' | 'modelMethod'>
+  commercial: Pick<ShowCommercial, 'modelBreakeven' | 'weeklyRunningCost' | 'weeklyRunningCostBasis' | 'modelDataQuality' | 'modelMethod'>
 ): number | null {
   const cost = commercial.weeklyRunningCost ?? null;
   if (commercial.modelBreakeven && meetsModelQualityFloor(commercial)) {
-    return cost != null && commercial.modelBreakeven < cost ? cost : commercial.modelBreakeven;
+    const stale = cost != null && commercial.modelBreakeven < cost && commercial.weeklyRunningCostBasis !== 'all-in';
+    return stale ? cost : commercial.modelBreakeven;
   }
   return cost;
 }

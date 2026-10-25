@@ -3,10 +3,10 @@
  * weeklyRunningCost between recoupment-model runs (BRO-4985).
  *
  * Break-even is linear in the weekly cost in the weekly tier
- * (recoupment-model.js: nut x (1 - rentPct) / (1 - varRate - theaterPct)) and
+ * (recoupment-model.js: nut x cost-split.js breakEvenRatio) and
  * close to linear in the long-run tier (nut / (1 - costRate), where costRate
  * itself moves a little with the nut), so scaling by the cost ratio is an
- * interim figure, never below the new cost, that the next model run replaces
+ * interim figure (below the new cost only for an all-in cost) that the next model run replaces
  * (the daily stale-closures job and the Friday run both re-run it). It
  * rescales break-even only; recoupment % waits for that run.
  * merge-model-recoupment.js records the
@@ -37,11 +37,15 @@ function syncBreakevenToCost(record) {
   return true;
 }
 
-/** Slugs whose modelBreakeven is below their weeklyRunningCost (a stale model). */
+/**
+ * Slugs whose modelBreakeven is below their weeklyRunningCost (a stale model).
+ * An all-in cost holds royalties and rent already, so it can sit above a
+ * current break-even (BRO-6217) and is skipped.
+ */
 function breakevenBelowCost(shows) {
   const out = [];
   for (const [slug, r] of Object.entries(shows || {})) {
-    if (r && isPositive(r.modelBreakeven) && isPositive(r.weeklyRunningCost) && r.modelBreakeven < r.weeklyRunningCost) {
+    if (r && isPositive(r.modelBreakeven) && isPositive(r.weeklyRunningCost) && r.weeklyRunningCostBasis !== 'all-in' && r.modelBreakeven < r.weeklyRunningCost) {
       out.push({ slug, modelBreakeven: r.modelBreakeven, weeklyRunningCost: r.weeklyRunningCost });
     }
   }

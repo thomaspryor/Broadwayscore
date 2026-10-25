@@ -38,6 +38,8 @@ test('breakevenBelowCost lists stale records only', () => {
     'operation-mincemeat': { weeklyRunningCost: 560_000, modelBreakeven: 536_585 },
     hamilton: { weeklyRunningCost: 643_000, modelBreakeven: 717_981 },
     stub: { weeklyRunningCost: null, modelBreakeven: 100 },
+    // BRO-6217: an all-in cost already holds royalties and rent
+    'the-outsiders': { weeklyRunningCost: 963_000, modelBreakeven: 937_545, weeklyRunningCostBasis: 'all-in' },
   };
   assert.deepEqual(breakevenBelowCost(shows), [
     { slug: 'operation-mincemeat', modelBreakeven: 536_585, weeklyRunningCost: 560_000 },

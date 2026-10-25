@@ -706,7 +706,8 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
 
   // Shadow only (BRO-5073, opts.costSplit): fixed part of the cost and a
   // larger gross-linked rate. The reserve and cap stay on the reported cost.
-  const split = opts.costSplit && !basisNut ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null;
+  // A rejected all-in tag converts nothing, so the play split still applies.
+  const split = opts.costSplit && !(basisNut && !basisNut.rejected) ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null;
   const baseVarRate = split ? split.varRate : getBaseVariableRate(category);
   const runNut = split ? split.fixedNut : weeklyNut;
   // opts.varBandMusicalsWaltz (live for musicals, BRO-5872): the band on a Reddit
@@ -1330,7 +1331,7 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
   if (lifetimeDeals && lifetimeDeals.entries.length) warnings.push('Star deal: sourced grossParticipation not charged on the lifetime tier');
   const basisNut = typedBasisNut(opts, commercial, category); // BRO-5093, live since BRO-6217
   const weeklyNut = basisNut ? basisNut.nut : commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial, { eraAdjust: false });
-  const split = opts.costSplit && !basisNut ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null; // shadow, BRO-5073
+  const split = opts.costSplit && !(basisNut && !basisNut.rejected) ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null; // shadow, BRO-5073
   const baseVarRate = split ? split.varRate : getBaseVariableRate(category);
   const runNut = split ? split.fixedNut : weeklyNut;
 
