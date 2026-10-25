@@ -1,40 +1,34 @@
 {
-  "generatedAt": "2026-10-25T07:52:46.597Z",
+  "generatedAt": "2026-10-25T12:48:38.091Z",
   "shadow": true,
-  "checkoutSha": "95d4a446aa1d712ae13ccd91d22972f15b123b6b",
-  "totalCandidates": 529,
-  "eligibleCandidates": 85,
-  "checked": 16,
+  "checkoutSha": "fc459a351c0ef9adb9e2c4742dde78aaaa9ea3b7",
+  "totalCandidates": 514,
+  "eligibleCandidates": 81,
+  "checked": 14,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 11,
-    "fail": 1,
-    "unverifiable": 4
+    "pass": 8,
+    "fail": 0,
+    "unverifiable": 6
   },
   "alreadyDone": [
     {
-      "id": "BRO-6193",
-      "name": "Model registration-wall exclusion in scoring-delta and LLM parity audit; align manual-tier paywall downgrade",
-      "verifyCmd": "node --test scripts/lib/registration-wall-stub.test.mjs",
+      "id": "BRO-6197",
+      "name": "Version site-page image refs (src/) so replaced art busts caches",
+      "verifyCmd": "node --test scripts/lib/versioned-image-path.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-6188",
-      "name": "Recoupment model: pre-2020 musicals with a known small capitalization read far too negative (Next to Normal -218% vs recouped); eraIndex for musicals trade-off",
-      "verifyCmd": "node --test scripts/lib/musical-model-backtest.test.mjs",
+      "id": "BRO-6187",
+      "name": "Commercial estimates: drift re-sizing pass, getRecentClosings, stunt-casting class, 2 over-100% DNR keepers, 39 locked entries",
+      "verifyCmd": "node scripts/validate-data.js --strict",
       "detail": null
     },
     {
       "id": "BRO-6165",
       "name": "Rerun Bucknell recoupment backtest after BRO-6137 capitalization fills",
       "verifyCmd": "test -f scripts/backtest-recoupment-bucknell.js",
-      "detail": null
-    },
-    {
-      "id": "BRO-6152",
-      "name": "land-local-check: base-comparison leaves the worktree on a detached HEAD, and its harness copy lacks tsc-node-options.sh",
-      "verifyCmd": "node --test scripts/lib/land-local-check.test.mjs",
       "detail": null
     },
     {
@@ -66,40 +60,33 @@
       "name": "Wire top bucket-(a) audit-*.js scripts into data-health-check.yml shadow mode and triage bucket u",
       "verifyCmd": "node --test tests/unit/audit-script-wiring.test.mjs",
       "detail": null
-    },
-    {
-      "id": "BRO-6035",
-      "name": "land.js: regenerate .github/workflows/DEPENDENCIES.md on a rebase conflict instead of refusing the landing",
-      "verifyCmd": "test -f scripts/generate-workflow-dependencies.js",
-      "detail": null
-    },
-    {
-      "id": "BRO-6033",
-      "name": "Opening-night poller: publish main-stage first wave without waiting for Off-Broadway/fringe front shows",
-      "verifyCmd": "node --test scripts/lib/poller-loop-budget.test.mjs",
-      "detail": null
     }
   ],
-  "failing": [
-    {
-      "id": "BRO-6031",
-      "name": "Land queue holds ~285 land/* refs; runs park and cancel for hours (BRO-5528 and BRO-3552 needed 6 and 2 re-runs)",
-      "verifyCmd": "node --test scripts/lib/land-mutex.test.mjs",
-      "detail": "TAP version 13\n# Subtest: ticket names round-trip and sort main-red first, then FIFO\nok 1 - ticket names round-trip and sort main-red first, then FIFO\n  ---\n  duration_ms: 2.480226\n  ...\n# Subtest: no ticket of ours → enqueue; head with no lock → acquire; lock on our ticket → held\nok 2 - no ticket of ours → enqueue; head with no lock → acquire; lock on our ticket → held\n  ---\n  duration_ms: 0.4359"
-    }
-  ],
+  "failing": [],
   "unverifiable": [
+    {
+      "id": "BRO-6191",
+      "name": "Recoupment backtest: add a loss-side gate; stop deep research re-adding an uncited weekly cost to a record whose cost was cleared",
+      "verifyCmd": "node --test scripts/lib/deep-research-cleared-cost.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/deep-research-cleared-cost.test.mjs"
+    },
+    {
+      "id": "BRO-6159",
+      "name": "Money Scorecard: auto-flag a season page that has no custom share card (2027-28 begins July 2027)",
+      "verifyCmd": "node --test scripts/audit-biz-og-coverage.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-biz-og-coverage.test.mjs"
+    },
     {
       "id": "BRO-6128",
       "name": "Fix: Tour candidate: Liberation national tour",
       "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 ZGlnZXN0LW5lZWRzLXlvdTpUb3VyIGNhbmRpZGF0ZTogTGliZXJhdGlvbiBuYXRpb25hbCB0b3Vy",
-      "detail": "check exited 3 (cannot verify — evidence unavailable): [check-alert-condition-absent] CANNOT TELL: \"digest-needs-you:Tour candidate: Liberation national tour\" is in no alert ledger (/tmp/open-backlog-sweep-eKSmtS/main/data/audit/alert-ledger.json) — never"
+      "detail": "check exited 3 (cannot verify — evidence unavailable): [check-alert-condition-absent] CANNOT TELL: \"digest-needs-you:Tour candidate: Liberation national tour\" is in no alert ledger (/tmp/open-backlog-sweep-koULgZ/main/data/audit/alert-ledger.json) — never"
     },
     {
       "id": "BRO-6102",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"silentGapBacklogResults: real audit report shape\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 139792ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 131554ms (timeout — no verdict)"
     },
     {
       "id": "BRO-6098",
@@ -111,16 +98,16 @@
       "id": "BRO-6044",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"Kenrex: both DD 2026 person-name wins routed off-Broadway (no Tony fallback)\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 69633ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 65438ms (timeout — no verdict)"
     }
   ],
   "landedButOpen": [
     {
-      "id": "BRO-6152",
-      "name": "land-local-check: base-comparison leaves the worktree on a detached HEAD, and its harness copy lacks tsc-node-options.sh",
-      "branch": "land/codex-bro-6152",
-      "sha": "65645c744f5751fed0b643fae25262cce47d00b9",
-      "landedAt": "2026-10-24T23:46:58.447Z"
+      "id": "BRO-6165",
+      "name": "Rerun Bucknell recoupment backtest after BRO-6137 capitalization fills",
+      "branch": "land/codex-bro-6165",
+      "sha": "2cea37952976c2db252f963258be74be8f396cbd",
+      "landedAt": "2026-10-25T11:40:01.792Z"
     },
     {
       "id": "BRO-6131",
@@ -156,13 +143,6 @@
       "branch": "land/codex-bro-6038",
       "sha": "cdca40aa73b4913b62a02f53fbc099f1c5b18f0d",
       "landedAt": "2026-10-23T11:37:31.712Z"
-    },
-    {
-      "id": "BRO-6033",
-      "name": "Opening-night poller: publish main-stage first wave without waiting for Off-Broadway/fringe front shows",
-      "branch": "land/bro-6033-poller-first-wave",
-      "sha": "979fa74f85bc25c76d7f23d2b2771df211a14ae5",
-      "landedAt": "2026-10-23T05:02:28.175Z"
     }
   ]
 }
