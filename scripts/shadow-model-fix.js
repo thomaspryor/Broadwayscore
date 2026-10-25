@@ -91,7 +91,7 @@ function grossUnderBreakEven(comm, weeklyRows) {
   if (recent.length < MIN_WEEKS) return false;
   const avg = recent.reduce((a, b) => a + b, 0) / recent.length;
   const cost = comm.weeklyRunningCost ?? null;
-  const be = comm.modelBreakeven ? (cost != null && comm.modelBreakeven < cost ? cost : comm.modelBreakeven) : cost;
+  const be = comm.modelBreakeven ? (cost != null && comm.modelBreakeven < cost && comm.weeklyRunningCostBasis !== 'all-in' ? cost : comm.modelBreakeven) : cost;
   return be != null && be > 0 && avg < be;
 }
 

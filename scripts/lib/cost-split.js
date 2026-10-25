@@ -95,15 +95,6 @@ function periodGross(source, weekly) {
 }
 
 /**
- * The fixed weekly nut behind a tagged cost figure.
- * @param {object} commercial
- * @param {number} weeklyNut - the figure the model would use
- * @param {number} varRate - live gross-linked rate (author royalty, fees)
- * @param {{ pctOfGross: number, rentPctOfNut: number }} theater - THEATER_DEAL
- * @param {object} [weekly] - weekly grosses, uncut, for an all-in period
- * @returns {{ nut: number, basis: string, gross?: number, fromPeriod?: boolean, rejected?: string }}
- */
-/**
  * Break-even gross as a multiple of the fixed nut: the zero of the model's
  * steady-state week, G - varRate x G - max(0, pct x G - rent share x nut) - nut
  * (BRO-6217 M04). Below the theater breakpoint the rent is already in the nut,
@@ -119,6 +110,15 @@ function breakEvenRatio(varRate, theater) {
   return (1 - theater.rentPctOfNut) / (1 - varRate - theater.pctOfGross);
 }
 
+/**
+ * The fixed weekly nut behind a tagged cost figure.
+ * @param {object} commercial
+ * @param {number} weeklyNut - the figure the model would use
+ * @param {number} varRate - live gross-linked rate (author royalty, fees)
+ * @param {{ pctOfGross: number, rentPctOfNut: number }} theater - THEATER_DEAL
+ * @param {object} [weekly] - weekly grosses, uncut, for an all-in period
+ * @returns {{ nut: number, basis: string, gross?: number, fromPeriod?: boolean, rejected?: string }}
+ */
 function fixedNutFromBasis(commercial, weeklyNut, varRate, theater, weekly) {
   const basis = commercial && commercial.weeklyRunningCost && BASES.includes(commercial.weeklyRunningCostBasis) ? commercial.weeklyRunningCostBasis : 'running';
   const keep = 1 - theater.rentPctOfNut;
