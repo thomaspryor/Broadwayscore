@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-25T12:43:24.227Z",
+  "generatedAt": "2026-10-25T23:53:22.644Z",
   "window": {
     "since": "2026-10-19",
     "until": "2026-10-25"
@@ -12,7 +12,7 @@
     },
     {
       "title": "bd-circuit-breaker-web_unlocker2",
-      "detail": "ACCEPTED: 5 trip day(s); rerouted spend on trip days $0.02 (208 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 2718"
+      "detail": "ACCEPTED: 6 trip day(s); rerouted spend on trip days $0.03 (297 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 2718"
     },
     {
       "title": "sb-circuit-breaker",
@@ -60,18 +60,19 @@
       "provider": "brightdata",
       "shadow": false,
       "verdict": "ACCEPTED",
-      "days": 5,
+      "days": 6,
       "dayList": [
         "2026-10-19",
         "2026-10-20",
         "2026-10-22",
         "2026-10-23",
-        "2026-10-24"
+        "2026-10-24",
+        "2026-10-25"
       ],
       "lowerBound": false,
       "spend": {
-        "usd": 0.02,
-        "rows": 208,
+        "usd": 0.03,
+        "rows": 297,
         "unpriced": 0,
         "label": "bd-budget",
         "partialSince": null,
@@ -132,7 +133,7 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 467696,
+        "ceiling": 464696,
         "source": "plan",
         "from": "state",
         "currentZero": false,
@@ -263,7 +264,13 @@
     },
     "2026-10-25": {
       "partial": true,
-      "guards": {}
+      "guards": {
+        "bd-circuit-breaker-web_unlocker2": {
+          "usd": 0.01,
+          "rows": 89,
+          "unpriced": 0
+        }
+      }
     }
   },
   "dailyBreakerPattern": {
@@ -274,13 +281,14 @@
     },
     "providers": {
       "web": {
-        "days": 5,
+        "days": 6,
         "dayList": [
           "2026-10-19",
           "2026-10-20",
           "2026-10-22",
           "2026-10-23",
-          "2026-10-24"
+          "2026-10-24",
+          "2026-10-25"
         ],
         "lowerBound": false
       },
