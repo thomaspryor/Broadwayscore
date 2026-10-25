@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T16:12:06.364Z",
+  "timestamp": "2026-10-25T16:36:44.772Z",
   "stats": {
     "totalReviews": 61603,
-    "alreadyFlagged": 21442,
+    "alreadyFlagged": 21450,
     "dateGuardCatches": 223,
-    "directorMismatch": 2228,
-    "tvFilmSignals": 1748,
+    "directorMismatch": 2235,
+    "tvFilmSignals": 1751,
     "londonSignals": 2977,
-    "offBroadwaySignals": 539,
+    "offBroadwaySignals": 540,
     "yearMismatch": 202,
-    "noPublishDate": 5583
+    "noPublishDate": 5512
   },
   "findings": [
     {
@@ -16096,6 +16096,20 @@
     },
     {
       "showId": "funny-girl-2022",
+      "file": "cititour--unknown.json",
+      "score": null,
+      "publishDate": "2022-09-06",
+      "url": "https://cititour.com/NYC_News/Lea-Michele-is-Broadways-New-Funny-Girl/6700",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "funny-girl-2022",
       "file": "deadline--greg-evans.json",
       "score": 79,
       "publishDate": "April 24, 2022",
@@ -31883,6 +31897,25 @@
     },
     {
       "showId": "oh-mary-off-broadway-2024",
+      "file": "frontmezzjunkies--unknown.json",
+      "score": null,
+      "publishDate": "2024-05-08",
+      "url": "https://frontmezzjunkies.com/2024/05/08/oh-mary-off-broadway/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-off-broadway-2024",
       "file": "nypost--johnny-oleksinski.json",
       "score": 97,
       "publishDate": "2024-02-08",
@@ -31920,6 +31953,20 @@
       "score": 83,
       "publishDate": "2024-02-08",
       "url": "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-off-broadway-2024",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": null,
+      "publishDate": "2024-04-09",
+      "url": "https://newyorktheater.me/2024/04/09/oh-mary-review-cole-escola-as-mrs-lincoln/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -43016,6 +43063,19 @@
       ]
     },
     {
+      "showId": "the-brothers-size-off-broadway-2025",
+      "file": "new-york-sun--elysa-gardner.json",
+      "publishDate": "2025-09-10",
+      "url": "https://www.nysun.com/article/the-tortured-but-unbreakable-bond-between-the-siblings-in-the-brothers-size-speaks-to-the-challenges-of-kinship-and-love",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "the-cher-show-2018",
       "file": "cabaret-scenes--elizabeth-ahlfors.json",
       "score": 77,
@@ -52091,8 +52151,8 @@
     {
       "showId": "the-weir-off-broadway-2025",
       "file": "culturesauce--thom-geier.json",
-      "publishDate": null,
-      "url": "https://culturesauce.com/2025/07/17/the-weir-irish-rep-off-broadway-review/#:~:text=Ever%20since%20its%201997%20debut,knocks%20at%20the%20window%20panes.",
+      "publishDate": "2025-07-17",
+      "url": "https://culturesauce.com/2025/07/17/the-weir-irish-rep-off-broadway-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -52104,8 +52164,73 @@
     {
       "showId": "the-weir-off-broadway-2025",
       "file": "front-row-center--stanford-friedman.json",
-      "publishDate": null,
+      "publishDate": "2025-07-17",
       "url": "https://thefrontrowcenter.com/2025/07/the-weir-3/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-weir-off-broadway-2025",
+      "file": "nysr--michael-sommers.json",
+      "publishDate": "2025-07-17",
+      "url": "https://nystagereview.com/2025/07/17/the-weir-naturally-supernatural/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-weir-off-broadway-2025",
+      "file": "nytimes--juan-a-ramirez.json",
+      "publishDate": "2025-07-18",
+      "url": "https://www.nytimes.com/2025/07/18/theater/the-weir-conor-mcpherson.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-weir-off-broadway-2025",
+      "file": "talkinbroadway--marc-miller.json",
+      "publishDate": "2025-07-17",
+      "url": "https://www.talkinbroadway.com/page/ob/07_17_25.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-weir-off-broadway-2025",
+      "file": "theater-pizzazz--alix-cohen.json",
+      "publishDate": "2025-07-15",
+      "url": "https://theaterpizzazz.com/the-weir-camaraderie-alcohol-and-ghost-stories/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-weir-off-broadway-2025",
+      "file": "wsj--charles-isherwood.json",
+      "publishDate": "2025-07-18",
+      "url": "https://www.wsj.com/articles/the-weir-review-conor-mcphersons-menu-of-spirits-c60daf6a",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -90208,6 +90333,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "tartuffe-off-broadway-2025",
+      "file": "nysr--steven-suskin.json",
+      "publishDate": "2025-12-16",
+      "url": "https://nystagereview.com/2025/12/16/tartuffe-sparkling-wine-without-the-sparkle/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"nytw\""
         }
       ]
     },

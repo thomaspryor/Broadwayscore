@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-25T16:05:37.983Z",
+  "generatedAt": "2026-10-25T16:26:42.827Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 100,
     "avgScoreDiff": 0
   },
   "syndicationPairs": [
@@ -153,7 +153,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "AP wire",
+      "showId": "funny-girl-2022",
+      "primaryOutlet": "ap",
+      "secondaryOutlet": "daily-herald",
+      "primaryFile": "ap--mark-kennedy.json",
+      "secondaryFile": "daily-herald--mark-kennedy.json",
+      "similarity": 100,
+      "primaryScore": null,
+      "secondaryScore": null,
+      "scoreDiff": 0
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
