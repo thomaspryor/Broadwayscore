@@ -77,5 +77,5 @@ ${b.defaultText ? `<p class="small"><strong>If you do not answer:</strong> ${esc
 <p class="small">Card ${esc(d.identifier)}${d.url ? ` · <a href="${esc(d.url)}" rel="noreferrer">open</a>` : ''}</p></section>`;
   }).join('');
   const n = decisions.length;
-  return page('Decisions', `<h1>${n} ${n === 1 ? 'decision is' : 'decisions are'} waiting on you</h1><p class="small">Most urgent first. Tapping an option opens a page that asks you to confirm before anything is saved.</p>${cards}`);
+  return page('Decisions', `<h1>${n} ${n === 1 ? 'decision is' : 'decisions are'} waiting on you</h1><p class="small">Most urgent first. Tapping an option opens a page that asks you to confirm before anything is saved.</p>${cards}${decisions.omitted ? `<p class="small">${decisions.omitted} more not shown here. Answer these first and refresh.</p>` : ''}`);
 }

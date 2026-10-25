@@ -82,3 +82,32 @@ test('digest link only when there are decisions and a secret', () => {
   assert.equal(decisionsListLinkHtml({ items: [{}] }, ''), '');
   assert.match(decisionsListLinkHtml({ items: [{}] }, S), /owner-decision\/list\?t=/);
 });
+
+test('stub markers are skipped like the sender does, so the real question wins', () => {
+  const mk = (description) => [{ identifier: 'BRO-9', title: 't', description, priority: 2, createdAt: '2026-10-01', labels: { nodes: [] } }];
+  assert.equal(link.listOpenDecisions(mk('DECISION NEEDED: none')).length, 0);
+  const l = link.listOpenDecisions(mk('DECISION NEEDED: No decision needed.\nDECISION NEEDED: Real one?'));
+  assert.equal(l.length, 1);
+  assert.equal(l[0].question, 'Real one?');
+});
+
+test('a label-only card with a very long title hashes like loadDecision (opens as open)', async () => {
+  const title = 'T'.repeat(300);
+  const issue = { identifier: 'BRO-8', title, description: 'no block', priority: 2, createdAt: '2026-10-01', labels: { nodes: [{ name: link.AWAITING_OWNER_LABEL }] }, comments: { nodes: [] } };
+  const [d] = link.listOpenDecisions([issue]);
+  const r = await link.loadDecision({ graphql: async () => ({ issue }), id: 'BRO-8', hash: d.hash, secret: S });
+  assert.equal(r.status, 'open');
+});
+
+test('overflow past the cap is reported, and minted tokens never outlive the list token', () => {
+  const many = Array.from({ length: link.MAX_LISTED + 5 }, (_, i) => ({ identifier: `BRO-${i + 1}`, title: 't', description: `DECISION NEEDED: q${i}?`, priority: 3, createdAt: '2026-10-01', labels: { nodes: [] } }));
+  assert.equal(link.listOpenDecisions(many).omitted, 5);
+  const exp = Math.floor(NOW / 1000) + 10;
+  const tok = link.mintDecisionToken({ id: 'BRO-1', hash: 'a'.repeat(12), secret: S, listExpires: exp, now: NOW });
+  assert.equal(link.verifyToken(tok, S, NOW + 11_000).ok, false);
+});
+
+test('the digest list link is suppressed in dry-run previews', () => {
+  process.env.DIGEST_NO_LIST_TOKEN = '1';
+  try { assert.equal(decisionsListLinkHtml({ items: [{}] }, S), ''); } finally { delete process.env.DIGEST_NO_LIST_TOKEN; }
+});

@@ -468,7 +468,8 @@ function mergeNeedsYouSections(cmux, linear) {
 // BRO-6235: one signed link to the private list page of every open decision
 // (answer buttons live there). Omitted without a signing secret.
 function decisionsListLinkHtml(needsYou, secret = process.env.APPROVAL_HMAC_SECRET) {
-  if (!secret || !needsYou || !Array.isArray(needsYou.items) || !needsYou.items.length) return '';
+  // A dry run writes a tracked preview file, so it must never embed a live token.
+  if (process.env.DIGEST_NO_LIST_TOKEN || !secret || !needsYou || !Array.isArray(needsYou.items) || !needsYou.items.length) return '';
   try {
     const { listUrl } = require('./lib/owner-decision-email.js');
     const href = listUrl(secret).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
@@ -885,6 +886,7 @@ async function main() {
 
   const args = parseArgs(process.argv.slice(2));
   const dryRun = !!args['dry-run'];
+  if (dryRun) process.env.DIGEST_NO_LIST_TOKEN = '1';
   let sendTo = args['send-to'] && args['send-to'] !== true ? String(args['send-to']) : null;
   if (!sendTo && args['send-to-owner']) {
     sendTo = process.env.OWNER_EMAIL || null;

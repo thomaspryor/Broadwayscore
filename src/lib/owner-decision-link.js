@@ -353,11 +353,14 @@ function verifyListToken(token, secret, now = Date.now()) {
 // A per-decision token valid no longer than the list token that minted it.
 function mintDecisionToken({ id, hash, secret, listExpires, now = Date.now(), ttlMs = LIST_TTL_MS }) {
   const cap = Number.isInteger(listExpires) ? listExpires * 1000 - now : ttlMs;
-  return signToken({ id, hash, secret, now, ttlMs: Math.max(60_000, Math.min(ttlMs, cap)) });
+  return signToken({ id, hash, secret, now, ttlMs: Math.max(1000, Math.min(ttlMs, cap)) });
 }
 
+// Same stub shapes as scripts/lib/needs-you-snapshot.js isEmptyDecisionContent (the sender's filter);
+// src/ cannot require scripts/, and listOpenDecisions tests pin the two together.
+const EMPTY_CONTENT_RE = /^\s*(?:none|n\/a|nothing)\s*(?:[.,;:\-—–]|$)|^\s*no\s+(?:pending\s+)?decision(?:\s+(?:needed|pending))?\s*(?:[.,;:\-—–]|$)|^\s*nothing\s+pending\s*(?:[.,;:\-—–]|$)/i;
 function isPlaceholderQuestion(q) {
-  return /^</.test(q) || /<(?:what|why|name|upside|downside|x|y)\b/i.test(q) || /^\.{3}$/.test(q) || SETTLED_RE.test(q);
+  return EMPTY_CONTENT_RE.test(q) ||  /^</.test(q) || /<(?:what|why|name|upside|downside|x|y)\b/i.test(q) || /^\.{3}$/.test(q) || SETTLED_RE.test(q);
 }
 
 // One server-side filtered query, no comments: bounded cost for a public GET.
@@ -385,21 +388,24 @@ function listOpenDecisions(issues) {
     const labelled = ((issue.labels && issue.labels.nodes) || []).some((l) => l && l.name === AWAITING_OWNER_LABEL);
     if (!real && !labelled) continue;
     const question = real ? real.question : capQuestion(String(issue.title || issue.identifier));
+    // loadDecision hashes the raw title for label-only cards, so the list must too (long titles are capped for display only).
+    const hash = real ? questionHash(question) : questionHash(issue.title);
     out.push({
       identifier: issue.identifier,
       title: issue.title || issue.identifier,
       url: typeof issue.url === 'string' && issue.url.startsWith('https://linear.app/') ? issue.url : null,
       question,
-      hash: questionHash(question),
+      hash,
       priority: Number.isInteger(issue.priority) && issue.priority > 0 ? issue.priority : 5,
       createdAt: String(issue.createdAt || ''),
       block: parseDecisionBlock(issue.description),
       choices: answerChoices(issue.description),
     });
   }
-  return out
-    .sort((a, b) => a.priority - b.priority || a.createdAt.localeCompare(b.createdAt) || a.identifier.localeCompare(b.identifier))
-    .slice(0, MAX_LISTED);
+  out.sort((a, b) => a.priority - b.priority || a.createdAt.localeCompare(b.createdAt) || a.identifier.localeCompare(b.identifier));
+  const shown = out.slice(0, MAX_LISTED);
+  shown.omitted = out.length - shown.length;
+  return shown;
 }
 
 module.exports = {

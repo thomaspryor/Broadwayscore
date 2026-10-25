@@ -164,7 +164,7 @@ async function main(argv = process.argv.slice(2)) {
     if (!ok) { console.error('[owner-decision-emails] backlog email was not delivered; will retry next run'); return 1; }
     for (const d of fresh) await markTold(d, "Listed in the owner's decisions email (one email with a link to the list page).");
     console.log(`[owner-decision-emails] sent ONE backlog email covering ${fresh.length} decision(s)`);
-    return 0;
+    return failures ? 1 : 0;
   }
   for (const d of fresh.slice(0, opts.max)) {
     const email = buildDecisionEmail({ decision: d, description: byId.get(d.identifier).description, secret });
