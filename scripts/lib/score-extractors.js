@@ -24,6 +24,17 @@
 const EXTRACTOR_VERSION = 7;  // v7 (BRO-922): NY Post css-stars re-scoped to rating__stars DOM boundary (was v6: Guardian class-attribute anchoring, Radio Times <use>-anchored SVG matching)
 
 /**
+ * Remove star glyphs that sit inside <style>…</style> blocks: icon CSS draws
+ * them as `content:"★★★★★"`, never a review's rating. The rest of the CSS is
+ * kept (the Guardian extractor resolves filled/empty stars via custom props).
+ */
+function stripStyleStarGlyphs(html) {
+  if (typeof html !== 'string') return html || '';
+  if (!/[★☆⭐🌟]/u.test(html)) return html;
+  return html.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, block => block.replace(/[★☆⭐🌟]/gu, ''));
+}
+
+/**
  * Clean HTML of scripts, styles, and CSS to avoid false positives
  */
 function cleanHtmlForScoring(html) {
@@ -1539,6 +1550,24 @@ const OUTLET_EXTRACTORS = {
   'slant-magazine': noScoreExtractor,
 };
 
+// BRO-305: callers outside extractScore (collect-review-texts.js,
+// retry-pending-scores.js, backfill-extractor-rescore.js, …) invoke these
+// directly on raw page HTML, so strip <style> star glyphs here too. One wrapper per
+// function keeps shared-extractor identity, and the name is kept for
+// recollect-for-scores.js's `.name === 'noScoreExtractor'` check.
+{
+  const wrapped = new Map();
+  for (const key of Object.keys(OUTLET_EXTRACTORS)) {
+    const fn = OUTLET_EXTRACTORS[key];
+    if (!wrapped.has(fn)) {
+      const w = function (html, ...rest) { return fn(stripStyleStarGlyphs(html), ...rest); };
+      Object.defineProperty(w, 'name', { value: fn.name });
+      wrapped.set(fn, w);
+    }
+    OUTLET_EXTRACTORS[key] = wrapped.get(fn);
+  }
+}
+
 // One printed rating: 1-5 star glyphs, contiguous or separated by spaces on the
 // same line ("★★★☆☆", "★ ★ ★ ★ ☆", "★★ ★★★" from a wrapped run), with an
 // optional half ("½" or "(★)") that may sit before the empty stars
@@ -1739,7 +1768,11 @@ function isForeignStarGroup(text, g, prevGroupEnd, wantedTitle, normalizeLabel) 
  * @returns {object|null} - { originalScore, normalizedScore, source } or null
  */
 function extractScore(html, text, outletId, showTitle) {
-  html = html || '';
+  // BRO-305: <style> blocks never carry a review's rating, but icon CSS can
+  // carry star glyphs (inews.co.uk's Jetpack widget: content:"★★★★★"), which
+  // the raw-HTML outlet-extractor pass below read as 5/5 on a ★★★ review.
+  // Drop those glyphs up front so every extractor (raw and cleaned) is covered.
+  html = stripStyleStarGlyphs(html || '');
   text = text || '';
   outletId = (outletId || '').toLowerCase();
 

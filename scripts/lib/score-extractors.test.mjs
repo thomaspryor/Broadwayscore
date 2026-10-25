@@ -362,3 +362,25 @@ test('The Stage star SVGs are ignored on a /news/ page (sidebar ratings belong t
   const review = extractUKStarRating('<link rel="canonical" href="https://www.thestage.co.uk/reviews/night-city-review">' + stars, '');
   assert.equal(review.originalScore, '4/5 stars');
 });
+
+// BRO-305: inews.co.uk ships a Jetpack search widget whose <style> block draws
+// its icons with content:"★★★★★". The raw-HTML outlet-extractor pass read that
+// as 5/5 on faith-hope-and-charity-west-end-2019's ★★★ review (LLM 59, gap 41).
+const INEWS_HTML =
+  '<html><head><style id="jetpack-search">.jetpack-search-results__rating-stars:before{content:"★★★★★";inset:0}</style></head>' +
+  '<body><div class="inews__post-content entry-content article-content"><h3>Faith, Hope and Charity, National Theatre, London ★★★</h3>' +
+  '<p>Alexander Zeldin continues his exploration of people on the margins.</p></div></body></html>';
+
+test('BRO-305: star glyphs inside <style> CSS are not a rating (extractScore)', () => {
+  const r = extractScore(INEWS_HTML, '', 'i-paper', 'Faith, Hope and Charity');
+  assert.equal(r.originalScore, '3/5 stars');
+});
+
+test('BRO-305: direct OUTLET_EXTRACTORS callers also skip <style> CSS stars', () => {
+  const { OUTLET_EXTRACTORS } = require('./score-extractors.js');
+  assert.equal(OUTLET_EXTRACTORS['i-paper'](INEWS_HTML, '').originalScore, '3/5 stars');
+  const cssOnly = '<style>.r:before{content:"★★★★★"}</style><p>No rating printed.</p>';
+  assert.equal(OUTLET_EXTRACTORS['i-paper'](cssOnly, 'No rating printed.'), null);
+  assert.equal(OUTLET_EXTRACTORS['i-paper'].name, 'extractUKStarRating', 'wrapper keeps the name');
+  assert.equal(OUTLET_EXTRACTORS['nbcny'].name, 'noScoreExtractor');
+});
