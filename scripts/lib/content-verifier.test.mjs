@@ -445,7 +445,15 @@ test('heuristicVerify: a press title (akaTitles) counts as the show being mentio
     assert.equal(isCvPartialWindowAdvisory(promoted({ rejectionReason: 'garbage_text' }), { forScoring: true }), false);
     assert.equal(isCvPartialWindowAdvisory(promoted({ contentVerification: { ...cv, wrongProduction: true } }), { forScoring: true }), false);
     // A short piece was read whole: the verdict stands.
-    assert.equal(explainExclusion(promoted({ ...fresh, fullText: body.slice(0, 3000) }), null, null, { forScoring: true }), 'nonReview');
+    assert.equal(explainExclusion(promoted({ ...fresh, fullText: body.slice(0, 3000) }), null, null, { forScoring: true }), 'nonReview');    // A body still parked in wrongFullText is not what the scorer would read.
+    assert.equal(isCvPartialWindowAdvisory(promoted({ ...fresh, fullText: '', wrongFullText: body }), { forScoring: true }), false);
+  });
+
+  test('llm-scoring-parity mirrors the head-of-article advisory (BRO-6225)', () => {
+    const { classifyRebuildExclusion } = require('./llm-scoring-parity.js');
+    const fresh = { llmScore: { score: 80, confidence: 'high' }, llmMetadata: { scoredAt: '2026-10-02T00:00:00Z' } };
+    assert.equal(classifyRebuildExclusion(promoted(fresh), null), '');
+    assert.equal(classifyRebuildExclusion(promoted(), null), 'nonReview');
   });
 
   test('needsRescoreForCvPartialWindow: queues a score older than the verdict once, then settles (BRO-6225)', () => {
@@ -455,5 +463,7 @@ test('heuristicVerify: a press title (akaTitles) counts as the show being mentio
     assert.equal(needsRescoreForCvPartialWindow({ ...stale, rescoreCompletedAt: '2026-10-02T00:00:00Z' }, null, null), false);
     assert.equal(needsRescoreForCvPartialWindow(promoted(), null, null), false); // unscored: the scorer picks it up anyway
     assert.equal(needsRescoreForCvPartialWindow({ ...stale, rejectedAt: '2026-10-03T00:00:00Z' }, null, null), false);
+    // No verdict date: a rescore could never settle it, so never queue (no loop).
+    assert.equal(needsRescoreForCvPartialWindow({ ...stale, contentVerification: { ...cv, verifiedAt: undefined } }, null, null), false);
   });
 }

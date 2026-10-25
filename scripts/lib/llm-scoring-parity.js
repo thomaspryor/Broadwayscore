@@ -11,6 +11,7 @@ const {
   invalidTierClearedByHuman,
   isFullTextWrongAuthorActive,
   getBodyStubExclusionReason,
+  isCvPartialWindowAdvisory,
 } = require('./review-guards');
 const { laneBypasses } = require('./opening-night-lane/trust-model');
 const { hasExcerpt } = require('./excerpt-fields');
@@ -38,7 +39,7 @@ function classifyRebuildExclusion(data, show) {
     (data.isNonReview === true ||
     data.isNotReview === true ||
     data.nonReviewFlag === true ||
-    data.nonReviewContent === true) && !laneOk('nonReview')
+    data.nonReviewContent === true) && !laneOk('nonReview') && !isCvPartialWindowAdvisory(data)
   ) {
     return 'nonReview';
   }
@@ -52,7 +53,8 @@ function classifyRebuildExclusion(data, show) {
   }
   if (
     data.contentVerification?.wrongArticle === true &&
-    data.contentVerification?.confidence === 'high' && !laneOk('nonReview')
+    data.contentVerification?.confidence === 'high' && !laneOk('nonReview') &&
+    !isCvPartialWindowAdvisory(data) // BRO-6225: mirrors explainExclusion
   ) {
     return 'contentVerificationWrongHigh';
   }

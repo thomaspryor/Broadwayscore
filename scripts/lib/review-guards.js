@@ -2528,8 +2528,10 @@ function isCvPartialWindowAdvisory(data, opts) {
   if (data.manualReviewedBy || data.manualNonReviewSet === true || data.manualNonReviewBy) return false;
   if (data.isNonReview === true && !/^CV-promoted \(not a review\):/.test(String(data.isNonReviewReason || ''))) return false;
   if (data.rejectionReason && data.rejectionReason !== 'not_a_review') return false;
+  // Live text only: a body parked in wrongFullText is not what the scorer
+  // would read, so a parked file stays excluded until its body is restored.
   // lazy: content-verifier requires this module
-  if (!require('./content-verifier').isCvVerdictFromPartialWindow(data.contentVerification, data.fullText, data)) return false;
+  if (!require('./content-verifier').isCvVerdictFromPartialWindow(data.contentVerification, data.fullText)) return false;
   return !!(opts && opts.forScoring) || ensembleScoredSinceCv(data);
 }
 

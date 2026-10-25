@@ -194,7 +194,8 @@ function needsRescoreForCvPartialWindow(data, show, filePath) {
   if (guards.ensembleScoredSinceCv(data)) return false;
   const verified = Date.parse((data.contentVerification && data.contentVerification.verifiedAt) || '');
   const completed = Date.parse(data.rescoreCompletedAt || '');
-  if (Number.isFinite(completed) && Number.isFinite(verified) && completed >= verified) return false;
+  if (!Number.isFinite(verified)) return false; // no verdict date: a rescore could never settle it
+  if (Number.isFinite(completed) && completed >= verified) return false;
   if (!guards.isCvPartialWindowAdvisory(data, { forScoring: true })) return false;
   return isScoreable(data, show, filePath);
 }
