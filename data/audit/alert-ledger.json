@@ -244,7 +244,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-25T06:20:00.816Z",
-      "lastSeen": "2026-10-25T11:00:32.739Z",
+      "lastSeen": "2026-10-25T11:07:06.669Z",
       "lastNotifiedAt": "2026-10-25T06:20:00.816Z",
       "lastSurfacedAt": "2026-10-25T06:20:00.816Z",
       "notifyCount": 167,
@@ -26178,7 +26178,7 @@
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"on-screen copy in src/app, src/components, src/config and src/lib follows the voice rules\"",
       "firstSeen": "2026-10-24T21:18:01.551Z",
       "incidentOpenedAt": "2026-10-25T04:19:37.696Z",
-      "lastSeen": "2026-10-25T09:29:24.338Z",
+      "lastSeen": "2026-10-25T11:07:06.655Z",
       "lastNotifiedAt": "2026-10-25T04:19:37.696Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
@@ -26190,11 +26190,8 @@
         "runId": "40132155159",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40132155159"
       },
-      "absentRunIds": [
-        "40183837265",
-        "40185940457"
-      ],
-      "silentRefires": 3
+      "absentRunIds": [],
+      "silentRefires": 4
     },
     "land:land/bro-6158-plans": {
       "status": "resolved",
@@ -26460,7 +26457,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6198",
-      "silentRefires": 1
+      "absentRunIds": [
+        "40185990920"
+      ]
     }
   }
 }
