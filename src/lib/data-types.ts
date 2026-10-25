@@ -635,6 +635,8 @@ export interface CommercialShowRow {
   weeklyCost: number | null;
   /** isEstimatedRunningCost(): prints "~". */
   weeklyCostIsEstimate: boolean;
+  /** weeklyRunningCostBasis: breakeven and all-in figures get a caption (BRO-5109). */
+  weeklyCostBasis: 'running' | 'breakeven' | 'all-in' | null;
   /** getNonprofitProducer(): nonprofit company behind the production, else null. */
   nonprofitOrg: string | null;
   /** ShowCommercial.commercialConversion: the nonprofit run became a commercial run (BRO-5508). */

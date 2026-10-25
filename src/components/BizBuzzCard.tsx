@@ -29,7 +29,7 @@ import {
   getDisplayableEstimateRange,
   hasNoInvestorsToRepay,
 } from '@/lib/commercial-display';
-import { formatCapitalization } from '@/lib/biz-format';
+import { formatCapitalization, weeklyCostLabel } from '@/lib/biz-format';
 import { isRunningStatus } from '@/lib/commercial-metrics';
 import RecoupmentProgressBar from './RecoupmentProgressBar';
 import AnalystEstimateCredit from './biz/AnalystEstimateCredit';
@@ -360,7 +360,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
                 {formatWithEstimate(formatCurrency(commercial.weeklyRunningCost), isEstimatedRunningCost(commercial))}
               </div>
               <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
-                Weekly Cost
+                {weeklyCostLabel(commercial.weeklyRunningCostBasis)}
               </div>
             </div>
           )}
