@@ -22,13 +22,15 @@
     "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json",
     "jesus-christ-superstar-off-west-end-2026/entertheatre--unknown.json",
     "stories-the-tap-dance-sensation-west-end-2026/theupcoming--scarlett-bruin.json",
-    "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json"
+    "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
+    "other-desert-cities-2026/new-york-city-theatre--unknown.json"
   ],
   "failed": [
     "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
     "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
     "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
-    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
     "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
     "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
     "an-oak-tree-off-west-end-2026/times-uk--dominic-maxwell.json",
@@ -36,7 +38,21 @@
     "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
     "dirty-dancing-the-classic-story-on-stage-west-end-2026/soundsandstage--unknown.json",
     "dirty-dancing-the-classic-story-on-stage-west-end-2026/sportswhereiam--unknown.json",
-    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json"
+    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+    "king-of-the-yees-off-broadway-2026/exeunt-magazine--unknown.json",
+    "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
+    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/timeout--unknown.json",
+    "lincoln-in-the-bardo-off-broadway-2026/hotelbelleclaire--unknown.json",
+    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json",
+    "other-desert-cities-2026/cbsnews--unknown.json",
+    "school-pictures-off-broadway-2026/timeout--unknown.json",
+    "school-pictures-off-broadway-2026/airmail--air-mail.json",
+    "seussical-theatre-young-audiences-off-broadway-2026/wknd--unknown.json",
+    "the-dog-show-come-sit-stay-off-broadway-2026/talkalmanmusic--unknown.json",
+    "two-girls-off-broadway-2026/airmail--air-mail.json",
+    "two-girls-off-broadway-2026/howdidimissthat--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -58,10 +74,15 @@
       "dog-mom-off-west-end-2026/onin--caitlin-neal.json",
       "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--london-living-large.json",
       "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json",
-      "jesus-christ-superstar-off-west-end-2026/entertheatre--unknown.json"
+      "jesus-christ-superstar-off-west-end-2026/entertheatre--unknown.json",
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "phyl-off-broadway-2026/theater-life--paulanne-simmons.json"
@@ -75,11 +96,12 @@
       "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
       "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
       "stories-the-tap-dance-sensation-west-end-2026/theupcoming--scarlett-bruin.json",
-      "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json"
+      "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json",
+      "other-desert-cities-2026/new-york-city-theatre--unknown.json"
     ]
   },
   "startTime": "2026-10-25T02:00:49.358Z",
-  "lastProcessed": "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json",
+  "lastProcessed": "two-girls-off-broadway-2026/howdidimissthat--unknown.json",
   "log": [
     {
       "t": "2026-10-25T02:01:10.790Z",
@@ -128,9 +150,80 @@
       "event": "bb-session",
       "session": "fc2fa10b",
       "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-25T02:32:58.703Z",
+      "event": "bb-session",
+      "session": "d7b3b1ac",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-25T02:33:40.746Z",
+      "event": "bb-session",
+      "session": "5d1b80c6",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-25T02:33:49.213Z",
+      "event": "bb-session",
+      "session": "965d3975",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-25T02:34:28.023Z",
+      "event": "bb-session",
+      "session": "03304c41",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
+    },
+    {
+      "t": "2026-10-25T02:34:36.936Z",
+      "event": "bb-session",
+      "session": "af287323",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
+    },
+    {
+      "t": "2026-10-25T02:35:06.553Z",
+      "event": "bb-session",
+      "session": "9f150ee6",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-25T02:35:07.198Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-25T02:35:16.319Z",
+      "event": "bb-session",
+      "session": "aa2e2335",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-25T02:35:16.948Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-25T02:36:52.049Z",
+      "event": "bb-session",
+      "session": "b16794de",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-25T02:37:00.132Z",
+      "event": "bb-session",
+      "session": "93ad716e",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-25T02:38:02.317Z",
+      "event": "bb-session",
+      "session": "3df4fa43",
+      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
     }
   ],
   "recoveredAfterFailure": [
-    "the-pianist-off-west-end-2026/jonathan-baz--unknown.json"
+    "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json"
   ]
 }
