@@ -2046,8 +2046,13 @@ reconcile_merged_json() {
   # BRO-5310: include the router-attempt and breaker-transition JSONL logs.
   # Router attempts use SCRIPT_ENTRY_BASE to preserve 30-day retention prunes;
   # breaker transitions only append and use their registered union merger.
+  # BRO-5955: the two Express hand-off files. Express runs per show, so on a
+  # night with several openings one show's clean -X theirs hunk replaced
+  # another's retry entry and completed marker (81788096e4 erased Imaginary
+  # Invalid's 03:15Z retry). The queue uses its three-way merge (honours
+  # pruneStale), the completed file runs additions-only under `shows`.
   local ledger_out
-  ledger_out=$(PUSH_RECONCILE_BASE="$SCRIPT_ENTRY_BASE" node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH" data/audit/alert-digest-queue.json data/audit/feedback-request-ledger.json data/audit/alert-ledger.json data/audit/guard-escalation-state.json data/audit/alert-router-attempts.jsonl data/audit/breaker-transitions.jsonl) || ledger_out=""
+  ledger_out=$(PUSH_RECONCILE_BASE="$SCRIPT_ENTRY_BASE" node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH" data/audit/alert-digest-queue.json data/audit/feedback-request-ledger.json data/audit/alert-ledger.json data/audit/guard-escalation-state.json data/audit/alert-router-attempts.jsonl data/audit/breaker-transitions.jsonl data/audit/express-retry-queue.json data/audit/opening-night-express-completed.json) || ledger_out=""
   if [ -n "$ledger_out" ]; then
     out="${out}${out:+$'\n'}${ledger_out}"
   fi

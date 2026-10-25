@@ -236,7 +236,11 @@ const CORE_DATA_MERGE_REGISTRY = [
     // post-rebase reconcile pass since the case-arm fires unconditionally on
     // an actual conflict, which two near-simultaneous appends reliably cause.
     optInReconcile: false,
-    notApiFallbackMerge: 'BRO-3333: mergeExpressRetryQueue is a 2-arg union with no base, and express-retry-queue.js pruneStale() deletes entries; the API fallback runs the merge on every push even when remote is unchanged, so it would resurrect every pruned entry. Needs a base-aware merge first.',
+    // BRO-5955: also named in push-with-retry.sh's unconditional post-rebase
+    // reconcile call (explicit file args ignore optInReconcile). The merge is
+    // three-way now, so a clean -X theirs hunk can no longer drop another
+    // show's retry entry and our pruneStale deletes stay deleted.
+    notApiFallbackMerge: 'BRO-3333: express-retry-queue.js pruneStale() deletes entries. mergeExpressRetryQueue is base-aware since BRO-5955, but push-via-git-api.sh passes no fork point; until it does, a two-way merge on every API-fallback push would resurrect pruned entries.',
   },
 
   // ── public-repo, apiFallbackSafe entries (task: data-health-check.yml
@@ -1303,6 +1307,13 @@ const CORE_DATA_MERGE_REGISTRY = [
     apiFallbackSafe: true,
     concurrencyGroup: 'broadcast-send',
     verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (opening-night-broadcast.yml), group broadcast-send (cancel-in-progress: false).',
+    // BRO-5955: the note above misses opening-night-express.yml, which writes
+    // this file once per show under a PER-SHOW concurrency group, so two
+    // shows' Express pushes race. push-with-retry.sh's post-rebase reconcile
+    // puts back show keys a clean -X theirs hunk dropped (81788096e4 erased
+    // the-imaginary-invalid-2026 on 2026-10-22). The Git Data API overlay is
+    // still last-writer-wins for this file; that is tracked on BRO-5955.
+    localReconcile: { mode: 'additions-only', under: 'shows' },
   },
   {
     file: 'audit/processed-review-submissions.json',

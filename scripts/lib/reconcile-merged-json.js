@@ -150,10 +150,11 @@ function apiFallbackMergerFor(file) {
  * (bare basename, no `data/` prefix) the same way MANAGED does above. */
 function explicitMergerFor(file) {
   const entry = findEntry(file, 'public-repo');
-  if (!entry || !entry.merge) return null;
-  const merge = entry.localReconcile && entry.localReconcile.mode === 'additions-only'
-    ? additionsOnly(entry.localReconcile.under)
-    : entry.merge;
+  const addOnly = !!(entry && entry.localReconcile && entry.localReconcile.mode === 'additions-only');
+  // BRO-5955: an additions-only entry needs no `merge` fn of its own
+  // (opening-night-express-completed.json is apiFallbackSafe, not MANAGED).
+  if (!entry || (!entry.merge && !addOnly)) return null;
+  const merge = addOnly ? additionsOnly(entry.localReconcile.under) : entry.merge;
   return { file, merge, ...(entry.format === 'jsonl' ? { format: 'jsonl' } : { newline: entry.newline }) };
 }
 
@@ -293,7 +294,8 @@ function main() {
   // (the no-args sweep below) — so naming a file here reconciles it even if
   // its registry entry is optInReconcile:false. Today's only caller is
   // push-with-retry.sh's targeted call (alert-digest-queue, feedback-request-ledger,
-  // alert-ledger, guard-escalation-state); any
+  // alert-ledger, guard-escalation-state, the router/breaker logs and, since
+  // BRO-5955, the two Express hand-off files); any
   // FUTURE explicit-arg caller gets the same "any active registry entry,
   // regardless of optInReconcile" behavior — deliberate, not scoped to one
   // filename, since a caller that names a specific file is making its own

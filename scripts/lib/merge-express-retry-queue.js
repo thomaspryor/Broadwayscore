@@ -32,6 +32,17 @@
 //   * BRO-4334: entries with a `kind` (truncated-t1-refetch) come in sets that
 //     share showId+queuedAt (one per +1h/+3h/+12h offset), so their key also
 //     carries kind and dueAt. Legacy (kind-less) keys are unchanged.
+//   * BRO-5955: three-way when `base` (the common ancestor) is supplied. A
+//     remote-only key absent from base is a concurrent ADD and is kept; a
+//     key the base held that either side no longer has was DELETED there
+//     (express-retry-queue.js pruneStale/writeQueueEntries) and stays gone.
+//     Without a base every remote-only key is restored (the old two-way
+//     union), which is right for "they added" and wrong for "we pruned".
+//     Why: on 2026-10-22 The Pianist's Express push (81788096e4) rebased with
+//     `-X theirs` on a clean hunk and replaced the Imaginary Invalid retry
+//     entry queued minutes earlier (fa0b74587d). No conflict, so the case-arm
+//     merge never ran; push-with-retry.sh now names this file in its
+//     post-rebase reconcile call, which passes the true fork point as base.
 function keyOf(entry) {
   if (!entry || typeof entry !== 'object') return null;
   if (!entry.showId || !entry.queuedAt) return null;
@@ -44,22 +55,34 @@ function pickOnCollision(oursEntry, remoteEntry) {
   return oursEntry;
 }
 
-function mergeExpressRetryQueue(ours, remote) {
+function mergeExpressRetryQueue(ours, remote, base) {
   ours = ours && typeof ours === 'object' ? ours : { entries: [] };
   remote = remote && typeof remote === 'object' ? remote : { entries: [] };
   const oursEntries = Array.isArray(ours.entries) ? ours.entries : [];
   const remoteEntries = Array.isArray(remote.entries) ? remote.entries : [];
+  const baseKeys = base && typeof base === 'object' && Array.isArray(base.entries)
+    ? new Set(base.entries.map(keyOf).filter(Boolean))
+    : null;
+  const remoteKeys = new Set(remoteEntries.map(keyOf).filter(Boolean));
 
   const byKey = new Map();
+  const mergedEntries = [];
+  let remotePruned = 0;
   for (const e of oursEntries) {
     const k = keyOf(e);
+    if (k && baseKeys && baseKeys.has(k) && !remoteKeys.has(k)) {
+      // In base, gone from remote: the other side pruned or replaced it.
+      remotePruned++;
+      continue;
+    }
     if (k) byKey.set(k, e);
+    mergedEntries.push(e);
   }
 
-  const mergedEntries = [...oursEntries];
   let added = 0;
   let kept = 0;
   let resolvedToRemoteAttempted = 0;
+  let deletesHonored = 0;
   for (const e of remoteEntries) {
     const k = keyOf(e);
     if (!k) continue;
@@ -75,6 +98,11 @@ function mergeExpressRetryQueue(ours, remote) {
       }
       continue;
     }
+    if (baseKeys && baseKeys.has(k)) {
+      // In base, gone from ours: we pruned it; remote's copy is stale.
+      deletesHonored++;
+      continue;
+    }
     mergedEntries.push(e);
     byKey.set(k, e);
     added++;
@@ -82,8 +110,15 @@ function mergeExpressRetryQueue(ours, remote) {
 
   return {
     merged: { ...ours, entries: mergedEntries },
-    stats: { added, kept, resolvedToRemoteAttempted, totalEntries: mergedEntries.length },
+    stats: {
+      added, kept, resolvedToRemoteAttempted, deletesHonored, remotePruned,
+      baseAvailable: !!baseKeys, totalEntries: mergedEntries.length,
+    },
   };
 }
+// The post-rebase reconcile must pass the real fork point: its fallback
+// (`merge-base HEAD <ref>`) equals the remote after a rebase, which would read
+// every concurrent add as our delete (BRO-4484).
+mergeExpressRetryQueue.requiresTrueBase = true;
 
 module.exports = { mergeExpressRetryQueue, keyOf };
