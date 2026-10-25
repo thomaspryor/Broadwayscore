@@ -139,3 +139,13 @@ test('Buffer metadata: Instagram and Facebook get the required post type', () =>
   assert.deepEqual(metadataFor('facebook'), { facebook: { type: 'post' } });
   assert.equal(metadataFor('bluesky'), undefined);
 });
+
+test('a network that failed is retried, at most 3 attempts and within 12h of the slot', () => {
+  const { pendingRetries } = require('./social-autopost/run.js');
+  const now = Date.parse('2026-11-05T16:00:00Z');
+  const e = over => ({ type: 'score', showId: 'x', dueAt: '2026-11-05T15:00:00Z', pending: { bluesky: 't' }, attempts: 1, ...over });
+  assert.equal(pendingRetries({ posts: [e()] }, now).length, 1);
+  assert.equal(pendingRetries({ posts: [e({ attempts: 3 })] }, now).length, 0, 'gave up');
+  assert.equal(pendingRetries({ posts: [e({ dueAt: '2026-11-04T15:00:00Z' })] }, now).length, 0, 'stale');
+  assert.equal(pendingRetries({ posts: [e({ pending: {} }), { type: 'score', showId: 'y', skipped: 'backlog' }] }, now).length, 0);
+});

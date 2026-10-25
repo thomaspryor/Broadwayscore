@@ -61,6 +61,49 @@ function loadContext() {
   return { shows, reviewsByShow, getOutletTier, slim, history };
 }
 
+const MAX_CHANNEL_ATTEMPTS = 3;
+const RETRY_WINDOW_MS = 12 * 36e5; // a failed network is retried until 12h after the post's slot
+
+/** History entries with networks still owed a post (an earlier run's channel error). */
+function pendingRetries(history, now) {
+  return (history.posts || []).filter(p => p.pending && Object.keys(p.pending).length
+    && (p.attempts || 1) < MAX_CHANNEL_ATTEMPTS && Date.parse(p.dueAt) > now - RETRY_WINDOW_MS);
+}
+
+/**
+ * Re-try the networks an earlier run failed on, reusing that run's image and texts.
+ * findExistingPost still guards each one. Returns the number of channel errors.
+ */
+async function retryFailedChannels(history, channels, buffer, now, summary) {
+  let errors = 0;
+  for (const entry of pendingRetries(history, now)) {
+    entry.attempts = (entry.attempts || 1) + 1;
+    const show = { id: entry.showId, slug: entry.slug };
+    const markers = postMarkers(entry.type, show);
+    for (const [service, text] of Object.entries(entry.pending)) {
+      const ch = channels.find(c => c.service === service);
+      if (!ch) continue;
+      try {
+        const existing = await buffer.findExistingPost({ channel: ch, markers, sinceIso: new Date(now - 4 * 864e5).toISOString() });
+        const post = existing || await buffer.createImagePost({ channel: ch, text, imageUrl: entry.imageUrl, altText: entry.altText || '', dueAt: new Date(Math.max(Date.parse(entry.dueAt), now + 10 * 60e3)) });
+        entry.buffer[service] = post.id;
+        delete entry.pending[service];
+        delete entry.errors[service];
+        console.log(`  ✓ retry ${entry.type} ${entry.showId} on ${service} (${post.id})`);
+        summary.push(`| ${entry.type} (retry) | ${entry.showId} | ${entry.dueAt} | ${service} | - |`);
+      } catch (e) {
+        errors++;
+        entry.errors[service] = e.message.slice(0, 300);
+        console.log(`::error::retry ${entry.showId} ${entry.type} on ${service} (attempt ${entry.attempts}/${MAX_CHANNEL_ATTEMPTS}): ${e.message}`);
+      }
+    }
+    if (!Object.keys(entry.pending).length) { delete entry.pending; delete entry.altText; }
+    if (entry.errors && !Object.keys(entry.errors).length) delete entry.errors;
+    writeHistory(history);
+  }
+  return errors;
+}
+
 function writeHistory(history) {
   history.posts = history.posts.slice(-MAX_HISTORY);
   history._meta = { ...(history._meta || {}), lastUpdated: new Date().toISOString() };
@@ -149,13 +192,15 @@ async function main() {
     // Workflow gate: install the browser only when a card will be rendered. Without
     // a key, scheduled runs render nothing (a manual dispatch still renders as a check).
     const manual = process.env.GITHUB_EVENT_NAME === 'workflow_dispatch';
-    const due = configured || manual ? events.length : 0;
+    const owed = pendingRetries(ctx.history, now).length;
+    const due = configured ? events.length + owed : manual ? events.length : 0;
+    if (owed) console.log(`  ${owed} earlier post(s) still owed on a network that failed`);
     if (!configured) console.log('::notice::BUFFER_API_KEY not set: nothing will be posted');
     if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `due=${due}\n`);
     for (const ev of events) console.log(`  ${ev.type} ${ev.show.id} due ${ev.dueAt.toISOString()}`);
     return;
   }
-  if (!events.length) {
+  if (!events.length && !(configured && !dryRun && pendingRetries(ctx.history, now).length)) {
     if (backlogRecorded) writeHistory(ctx.history);
     return;
   }
@@ -173,6 +218,8 @@ async function main() {
   }
 
   let failedEvents = 0, channelErrors = 0;
+  const summary = [];
+  if (live) channelErrors += await retryFailedChannels(ctx.history, channels, buffer, now, summary);
   try {
     for (const ev of events) {
       // One event's failure must not lose the record of events already scheduled:
@@ -221,11 +268,18 @@ async function main() {
           }
         }
         if (!Object.keys(posted).length) { failedEvents++; continue; } // nothing went out: retry next run
-        ctx.history.posts.push({
-          date: ymd, type: ev.type, showId: ev.show.id, dueAt: ev.dueAt.toISOString(), imageUrl,
-          text: captions.twitter, buffer: posted, ...(Object.keys(errors).length ? { errors } : {}),
-        });
+        const entry = { date: ymd, type: ev.type, showId: ev.show.id, slug: ev.show.slug || ev.show.id, dueAt: ev.dueAt.toISOString(), imageUrl, text: captions.twitter, buffer: posted };
+        if (Object.keys(errors).length) {
+          // Retried by retryFailedChannels() on later runs with these exact texts, so
+          // every network carries the same numbers.
+          entry.errors = errors;
+          entry.pending = Object.fromEntries(channels.filter(c => errors[c.service]).map(c => [c.service, captions[c.network]]));
+          entry.altText = captions.altText;
+          entry.attempts = 1;
+        }
+        ctx.history.posts.push(entry);
         writeHistory(ctx.history);
+        summary.push(`| ${ev.type} | ${ev.show.title} | ${ev.dueAt.toISOString()} | ${Object.keys(posted).join(', ')} | ${Object.keys(errors).join(', ') || '-'} |`);
       } catch (e) {
         failedEvents++;
         console.log(`::error::${ev.type} ${ev.show.id}: ${e.message}`);
@@ -234,6 +288,11 @@ async function main() {
     }
   } finally {
     await closeBrowser();
+  }
+
+  if (summary.length && process.env.GITHUB_STEP_SUMMARY) {
+    fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, ['## Scheduled in Buffer', '', '| Post | Show | Goes out (UTC) | Networks | Failed |', '|---|---|---|---|---|', ...summary,
+      '', 'Undo a post: delete it in Buffer (publish.buffer.com). Stop all posting: set the repository variable SOCIAL_AUTOPOST_DISABLED=true.', ''].join('\n'));
   }
 
   // Partial failures are recorded (so the working channels are not re-posted) and
@@ -248,4 +307,4 @@ if (require.main === module) {
   main().catch(err => { console.error(`[autopost] ${err.stack || err.message}`); process.exit(1); });
 }
 
-module.exports = { describe };
+module.exports = { describe, pendingRetries };
