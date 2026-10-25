@@ -7,7 +7,6 @@ import { featureFlags } from '@/config/feature-flags';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserReviews } from '@/hooks/useUserReviews';
 import { useWatchlist } from '@/hooks/useWatchlist';
-import { useUserLists } from '@/hooks/useUserLists';
 import { invalidateRatingsCache } from '@/hooks/useMyRating';
 import StarRating from '@/components/user/StarRating';
 import RatingEditor, { type RatingEditorSaveData } from '@/components/user/RatingEditor';
@@ -33,7 +32,7 @@ import dynamic from 'next/dynamic';
 import { ShowSearchDropdown } from '@/components/show-cards';
 import MiniStars from '@/components/user/Stars';
 const StatsTab = dynamic(() => import('@/components/my-shows/stats/StatsTab'), { ssr: false });
-import MyShowsNav, { DiaryViewSwitch, TitleTabs, DiarySegmented, type NavVariant } from '@/components/my-shows/MyShowsNav';
+import { TitleTabs, DiarySegmented } from '@/components/my-shows/MyShowsNav';
 const FeedTab = dynamic(() => import('@/components/my-shows/feed/FeedTab'), { ssr: false });
 const ImportShows = dynamic(() => import('./ImportShows'), { ssr: false });
 
@@ -137,14 +136,6 @@ export default function MyShowsClient() {
     searchParams.get('tab') === 'feed' ? 'feed' :
     searchParams.get('tab') === 'stats' ? 'stats' : 'diary'
   );
-  // Design-proposal only (BRO-6170): ?layout=b nests Feed/Stats under Diary as
-  // a segmented control (the iOS shape) instead of top-level tabs.
-  // Design-proposal only: ?nav=segmented|cards|pills swaps the underline tabs
-  // for a louder nav. segmented/cards nest Feed+Stats under Diary; pills is flat.
-  const navParam = searchParams.get('nav');
-  const navVariant: NavVariant | null = (['segmented', 'cards', 'pills', 'titles', 'titles-bar', 'titles-icons'] as const).find(v => v === navParam) ?? null;
-  const titleNav = navVariant === 'titles' || navVariant === 'titles-bar' || navVariant === 'titles-icons';
-  const nestedLayout = searchParams.get('layout') === 'b' || navVariant === 'segmented' || navVariant === 'cards' || titleNav;
 
   // Dev-only mock mode: ?mock=1 on localhost renders with fake data (for Playwright visual QA)
   // Must be state (not derived) to avoid SSR/client hydration mismatch
@@ -159,7 +150,7 @@ export default function MyShowsClient() {
   // Update URL when tab changes so back button restores the correct tab
   const setActiveTab = (tab: Tab) => {
     setActiveTabState(tab);
-    const mockParam = isMockMode ? `&mock=${searchParams.get('mock') ?? '1'}${searchParams.get('layout') === 'b' ? '&layout=b' : ''}${navVariant ? `&nav=${navVariant}` : ''}` : '';
+    const mockParam = isMockMode ? `&mock=${searchParams.get('mock') ?? '1'}` : '';
     const url = tab === 'diary'
       ? `/my-shows${mockParam ? `?${mockParam.slice(1)}` : ''}`
       : `/my-shows?tab=${tab}${mockParam}`;
@@ -194,7 +185,6 @@ export default function MyShowsClient() {
   // Count-only lists instance for the tab badge (ListsTab owns its own full
   // CRUD instance; hook instances don't share state, so this fetches the list
   // rows once per page view — cheap, and the badge works without visiting the tab).
-  const { lists: realLists, getLists } = useUserLists(user?.id || null);
   const { showToast } = useToastSafe();
   // Shows saved in this browser while signed out (BRO-4616). The signed-out
   // view lists them above the sign-in pitch (BRO-4903); unknown ids are
@@ -250,7 +240,6 @@ export default function MyShowsClient() {
   const reviews = isMockMode && mockData ? mockData.reviews : realReviews;
   const watchlist = isMockMode && mockData ? mockData.watchlist : realWatchlist;
   const seenUnrated = isMockMode && mockData ? mockData.seenUnrated : realSeenUnrated;
-  const listsCount = isMockMode ? 3 : realLists.length;
   const loading = isMockMode ? !mockData : (authLoading || reviewsLoading || watchlistLoading);
   // Latches after the first successful load so refetches never blank the page.
   const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
@@ -450,23 +439,17 @@ export default function MyShowsClient() {
     })();
   }, [isMockMode, showMapLoaded, reviews, watchlist, seenUnrated, showMap]);
 
-  // Load user data when authenticated. getLists swallows failures internally
-  // (returns []) and nothing retried — one transient error on first load left
-  // the Lists tab count blank until a manual refresh (owner, 2026-07-20).
-  // One delayed retry covers the session-restore race window.
+  // Load user data when authenticated. (Lists loads its own data in ListsTab;
+  // the page no longer shows a lists count, BRO-6170.)
   useEffect(() => {
     if (isMockMode) return;
     if (isAuthenticated && user) {
       getAllReviews();
       getWatchlist();
-      getLists().then(r => {
-        if (r.length === 0) setTimeout(() => { getLists(); }, 1500);
-      });
     }
-  }, [isMockMode, isAuthenticated, user, getAllReviews, getWatchlist, getLists]);
+  }, [isMockMode, isAuthenticated, user, getAllReviews, getWatchlist]);
 
   // Stats
-  const showsSeen = new Set(reviews.map(r => r.show_id)).size;
 
   // Sorted diary entries
   const sortedReviews = useMemo(() => {
@@ -579,7 +562,6 @@ export default function MyShowsClient() {
   // rated: the show lives in the Diary; the leftover entry is a remnant of
   // an edit-path save that skips watchlist removal). Badge must match what
   // the tab renders (review finding, 2026-07-20).
-  const visibleWatchlistCount = upcomingBookedWatchlist.length + unbookedWatchlist.length + seenToRateWatchlist.length;
 
   // Shared Plans (BRO-4481): the sheet's counts come from the same rule the
   // friend's page uses, so the numbers can't disagree.
@@ -763,37 +745,31 @@ export default function MyShowsClient() {
 
   return (
     <div data-testid="my-shows-content" className="ph-mask max-w-3xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-12">
-      {/* Header — flex-wrap lets the opened Add-show search take a full row on
-          mobile (basis-full) instead of squeezing beside the title. */}
+      {/* Header — the three section names ARE the page title (owner, 2026-10-25,
+          BRO-6170): three text levels — section names, the List/Feed/Stats
+          switch, then controls and content. flex-wrap lets the opened Add-show
+          search take a full row on mobile instead of squeezing beside them. */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
-        {titleNav ? (
-          <>
-            <h1 className="sr-only">My Shows</h1>
-            <TitleTabs
-              bar={navVariant === 'titles-bar'}
-              items={[{ tab: 'diary', label: 'Diary' }, { tab: 'watchlist', label: 'Watchlist' }, { tab: 'lists', label: 'Lists' }]}
-              isActive={tab => (tab === 'diary' ? DIARY_GROUP.includes(activeTab) : activeTab === tab)}
-              onSelect={setActiveTab}
-            />
-          </>
-        ) : (
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">My Shows</h1>
-        )}
+        <h1 className="sr-only">My Shows</h1>
+        <TitleTabs
+          items={[{ tab: 'diary', label: 'Diary' }, { tab: 'watchlist', label: 'Watchlist' }, { tab: 'lists', label: 'Lists' }]}
+          isActive={tab => (tab === 'diary' ? DIARY_GROUP.includes(activeTab) : activeTab === tab)}
+          onSelect={setActiveTab}
+        />
         {activeTab === 'lists' ? (
           <button
             type="button"
             onClick={() => setCreateListTrigger(t => t + 1)}
-            className={`btn-primary gap-1.5 text-xs ${titleNav ? 'max-sm:!w-11 max-sm:!h-11 max-sm:!p-0 max-sm:!rounded-full' : ''}`}
+            className="btn-primary gap-1.5 text-xs max-sm:!w-11 max-sm:!h-11 max-sm:!p-0 max-sm:!rounded-full"
             aria-label="New list"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
             </svg>
-            <span className={titleNav ? 'hidden sm:inline' : ''}>New list</span>
+            <span className="hidden sm:inline">New list</span>
           </button>
         ) : (
           <AddShowSearch
-            compact={titleNav}
             context={activeTab === 'watchlist' ? 'watchlist' : 'diary'}
             userId={isMockMode ? null : (user?.id ?? null)}
             onAddToWatchlist={async (showId: string, title?: string) => {
@@ -895,178 +871,15 @@ export default function MyShowsClient() {
       {/* Tab bar + sort/view controls.
           On mobile: tabs only in the tablist row; controls on a second row below.
           On sm+: controls inline to the right of the tabs. */}
-      {navVariant && !titleNav && (
-        <MyShowsNav
-          variant={navVariant}
-          items={navVariant === 'pills'
-            ? [
-                { tab: 'diary', label: 'Diary', count: showsSeen },
-                { tab: 'feed', label: 'Feed' },
-                { tab: 'stats', label: 'Stats' },
-                { tab: 'watchlist', label: 'Watchlist', count: visibleWatchlistCount },
-                { tab: 'lists', label: 'Lists', count: listsCount },
-              ]
-            : [
-                { tab: 'diary', label: 'Diary', count: showsSeen, detail: `${showsSeen} seen` },
-                { tab: 'watchlist', label: 'Watchlist', count: visibleWatchlistCount, detail: `${visibleWatchlistCount} to see` },
-                { tab: 'lists', label: 'Lists', count: listsCount, detail: `${listsCount} ${listsCount === 1 ? 'list' : 'lists'}` },
-              ]}
-          isActive={tab => (tab === 'diary' && nestedLayout ? DIARY_GROUP.includes(activeTab) : activeTab === tab)}
-          onSelect={setActiveTab}
-        />
+      {DIARY_GROUP.includes(activeTab) && (
+        <DiarySegmented active={activeTab} onSelect={setActiveTab} />
       )}
-      {navVariant && !titleNav && nestedLayout && DIARY_GROUP.includes(activeTab) && (
-        <DiaryViewSwitch active={activeTab} onSelect={setActiveTab} />
-      )}
-      {titleNav && DIARY_GROUP.includes(activeTab) && (
-        <DiarySegmented active={activeTab} onSelect={setActiveTab} icons={navVariant === 'titles-icons'} />
-      )}
-      <div role="tablist" className={`${navVariant ? 'hidden' : 'flex'} items-center gap-1 border-b border-white/10 mb-0 sm:mb-6`}>
-        <button
-          type="button"
-          role="tab"
-          id="tab-diary"
-          aria-selected={nestedLayout ? DIARY_GROUP.includes(activeTab) : activeTab === 'diary'}
-          aria-controls="panel-diary"
-          onClick={() => setActiveTab('diary')}
-          className={`flex-shrink-0 px-2 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] outline-none ${
-            (nestedLayout ? DIARY_GROUP.includes(activeTab) : activeTab === 'diary')
-              ? 'text-white border-brand'
-              : 'text-gray-500 border-transparent hover:text-gray-300'
-          }`}
-          aria-label={showsSeen > 0 ? `Diary, ${showsSeen} shows` : 'Diary'}
-        >
-          Diary
-          {showsSeen > 0 && (
-            <span className={`ml-1.5 px-1.5 py-0.5 text-xs bg-white/10 rounded-full ${nestedLayout ? "" : "hidden sm:inline"}`} aria-hidden="true">
-              {showsSeen}
-            </span>
-          )}
-        </button>
-        {!nestedLayout && (['feed', 'stats'] as const).map(tab => (
-          <button
-            key={tab}
-            type="button"
-            role="tab"
-            id={`tab-${tab}`}
-            aria-selected={activeTab === tab}
-            aria-controls={`panel-${tab}`}
-            onClick={() => setActiveTab(tab)}
-            className={`flex-shrink-0 px-2 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] outline-none ${
-              activeTab === tab
-                ? 'text-white border-brand'
-                : 'text-gray-500 border-transparent hover:text-gray-300'
-            }`}
-          >
-            {tab === 'feed' ? 'Feed' : 'Stats'}
-          </button>
-        ))}
-        <button
-          type="button"
-          role="tab"
-          id="tab-watchlist"
-          aria-selected={activeTab === 'watchlist'}
-          aria-controls="panel-watchlist"
-          onClick={() => setActiveTab('watchlist')}
-          aria-label={visibleWatchlistCount > 0 ? `Watchlist, ${visibleWatchlistCount} shows` : 'Watchlist'}
-          className={`flex-shrink-0 px-2 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] outline-none ${
-            activeTab === 'watchlist'
-              ? 'text-white border-brand'
-              : 'text-gray-500 border-transparent hover:text-gray-300'
-          }`}
-        >
-          Watchlist
-          {visibleWatchlistCount > 0 && (
-            <span className={`ml-1.5 px-1.5 py-0.5 text-xs bg-white/10 rounded-full ${nestedLayout ? "" : "hidden sm:inline"}`} aria-hidden="true">
-              {visibleWatchlistCount}
-            </span>
-          )}
-        </button>
-        <button
-          type="button"
-          role="tab"
-          id="tab-lists"
-          aria-selected={activeTab === 'lists'}
-          aria-controls="panel-lists"
-          onClick={() => setActiveTab('lists')}
-          className={`flex-shrink-0 px-2 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] outline-none ${
-            activeTab === 'lists'
-              ? 'text-white border-brand'
-              : 'text-gray-500 border-transparent hover:text-gray-300'
-          }`}
-          aria-label={listsCount > 0 ? `Lists, ${listsCount} lists` : 'Lists'}
-        >
-          Lists
-          {listsCount > 0 && (
-            <span className={`ml-1.5 px-1.5 py-0.5 text-xs bg-white/10 rounded-full ${nestedLayout ? "" : "hidden sm:inline"}`} aria-hidden="true">
-              {listsCount}
-            </span>
-          )}
-        </button>
 
-        {/* Desktop-only inline controls (hidden on mobile — shown in second row below) */}
-        {(activeTab === 'diary' || activeTab === 'watchlist') && (
-        <div className="ml-auto hidden sm:flex items-center gap-1.5 sm:gap-2 -mb-[1px]">
-          {activeTab === 'diary' && canSharePlans && (
-            <button
-              type="button"
-              onClick={() => setShareDiaryOpen(true)}
-              className="toolbar-control"
-              data-testid="share-diary-open"
-            >
-              <ShareIcon />
-              Share
-            </button>
-          )}
-          {activeTab === 'diary' && (
-            <select
-              value={diarySort}
-              onChange={e => setDiarySort(e.target.value as DiarySort)}
-              aria-label="Sort diary"
-              className="toolbar-control"
-            >
-              <option value="date-desc">Newest</option>
-              <option value="date-asc">Oldest</option>
-              <option value="rating-desc">Top Rated</option>
-            </select>
-          )}
-          {activeTab === 'watchlist' && canSharePlans && (
-            <button
-              type="button"
-              onClick={() => setSharePlansOpen(true)}
-              className="toolbar-control"
-              data-testid="share-plans-open"
-            >
-              <ShareIcon />
-              Share
-            </button>
-          )}
-          {activeTab === 'watchlist' && (
-            <select
-              value={watchlistSort}
-              onChange={e => setWatchlistSort(e.target.value as WatchlistSort)}
-              aria-label="Sort watchlist"
-              className="toolbar-control"
-            >
-              <option value="added-desc">Recent</option>
-              <option value="alphabetical">A-Z</option>
-              <option value="closing-soon">Closing</option>
-            </select>
-          )}
-          {/* Grid / List toggle */}
-          <ViewModeToggle
-            value={activeTab === 'diary' ? diaryView : watchlistView}
-            onChange={mode => pickView(activeTab === 'diary' ? 'diary' : 'watchlist', mode)}
-          />
-        </div>
-        )}
-      </div>
-
-      {/* Mobile controls row — only visible on mobile, hidden on sm+.
+      {/* Controls row (share, sort, grid/list).
           Selects are 16px on mobile: anything smaller makes iOS Safari zoom
           the whole page on focus and stay zoomed (owner report, 2026-07-17). */}
       {(activeTab === 'diary' || activeTab === 'watchlist') && (
-        <div className={`flex ${navVariant ? '' : 'sm:hidden'} items-center justify-end gap-2 py-1.5 mb-2`}>
+        <div className="flex items-center justify-end gap-2 py-1.5 mb-2">
           {activeTab === 'diary' && canSharePlans && (
             <button
               type="button"
@@ -1468,33 +1281,14 @@ export default function MyShowsClient() {
         </div>
       )}
 
-      {!navVariant && nestedLayout && DIARY_GROUP.includes(activeTab) && (
-        <div role="tablist" aria-label="Diary views" className="flex gap-1 p-1 mt-4 mb-4 rounded-xl bg-surface-raised border border-white/10">
-          {(['diary', 'feed', 'stats'] as const).map(tab => (
-            <button
-              key={tab}
-              type="button"
-              role="tab"
-              aria-selected={activeTab === tab}
-              onClick={() => setActiveTab(tab)}
-              className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-colors ${
-                activeTab === tab ? 'bg-surface-overlay text-white' : 'text-gray-500 hover:text-gray-300'
-              }`}
-            >
-              {tab === 'diary' ? 'List' : tab === 'feed' ? 'Feed' : 'Stats'}
-            </button>
-          ))}
-        </div>
-      )}
-
       {activeTab === 'feed' && (
-        <div id="panel-feed" role="tabpanel" aria-labelledby="tab-feed" className="pt-4 sm:pt-0">
+        <div id="panel-feed" role="tabpanel" aria-labelledby="view-feed">
           <FeedTab reviews={reviews} showMap={showMap} userId={user?.id || null} isMockMode={isMockMode} />
         </div>
       )}
 
       {activeTab === 'stats' && (
-        <div id="panel-stats" role="tabpanel" aria-labelledby="tab-stats" className="pt-4 sm:pt-0">
+        <div id="panel-stats" role="tabpanel" aria-labelledby="view-stats">
           <StatsTab reviews={reviews} showMap={showMap} isMockMode={isMockMode} />
         </div>
       )}
@@ -1973,10 +1767,7 @@ function AddShowSearch({
   existingWatchlistIds,
   existingReviewIds,
   onLiveShowAdded,
-  compact,
 }: {
-  /** Icon-only "+" on phones (title-tab header, BRO-6170 proposal). */
-  compact?: boolean;
   context: 'diary' | 'watchlist';
   /** Gates the live Mezzanine catalog search — signed out / mock mode never
    *  offers it (the edge function is JWT-gated anyway). */
@@ -2059,14 +1850,14 @@ function AddShowSearch({
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className={`btn-primary gap-1.5 text-xs ${compact ? 'max-sm:!w-11 max-sm:!h-11 max-sm:!p-0 max-sm:!rounded-full' : ''}`}
+        className="btn-primary gap-1.5 text-xs max-sm:!w-11 max-sm:!h-11 max-sm:!p-0 max-sm:!rounded-full"
         aria-label={context === 'diary' ? 'Add a show to diary' : 'Add to watchlist'}
         title={context === 'diary' ? 'Rate a show' : 'Add to watchlist'}
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
         </svg>
-        <span className={compact ? 'hidden sm:inline' : ''}>Add show</span>
+        <span className="hidden sm:inline">Add show</span>
       </button>
     );
   }
